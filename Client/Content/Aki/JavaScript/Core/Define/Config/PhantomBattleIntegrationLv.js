@@ -1,0 +1,79 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.PhantomBattleIntegrationLv = void 0;
+const GameUtils_1 = require("../../../Game/GameUtils");
+class PhantomBattleIntegrationLv {
+  constructor() {
+    this.J7 = null, this.z7 = 0
+  }
+  get Id() {
+    return this.id()
+  }
+  get Range() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.rangeLength(), this.range, this)
+  }
+  get Title() {
+    return this.title()
+  }
+  get Win() {
+    return this.win()
+  }
+  get Fail() {
+    return this.fail()
+  }
+  get WinSecond() {
+    return this.winsecond()
+  }
+  get FailSecond() {
+    return this.failsecond()
+  }
+  __init(t, i) {
+    return this.z7 = t, this.J7 = i, this
+  }
+  static getRootAsPhantomBattleIntegrationLv(t, i) {
+    return (i || new PhantomBattleIntegrationLv).__init(t.readInt32(t.position()) + t.position(), t)
+  }
+  id() {
+    var t = this.J7.__offset(this.z7, 4);
+    return t ? this.J7.readInt32(this.z7 + t) : 0
+  }
+  GetRangeAt(t) {
+    return this.range(t)
+  }
+  range(t) {
+    var i = this.J7.__offset(this.z7, 6);
+    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+  }
+  rangeLength() {
+    var t = this.J7.__offset(this.z7, 6);
+    return t ? this.J7.__vector_len(this.z7 + t) : 0
+  }
+  rangeArray() {
+    var t = this.J7.__offset(this.z7, 6);
+    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+  }
+  title(t) {
+    var i = this.J7.__offset(this.z7, 8),
+      i = i ? this.J7.__string(this.z7 + i, t) : null;
+    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+  }
+  win() {
+    var t = this.J7.__offset(this.z7, 10);
+    return t ? this.J7.readInt32(this.z7 + t) : 0
+  }
+  fail() {
+    var t = this.J7.__offset(this.z7, 12);
+    return t ? this.J7.readInt32(this.z7 + t) : 0
+  }
+  winsecond() {
+    var t = this.J7.__offset(this.z7, 14);
+    return t ? this.J7.readInt32(this.z7 + t) : 0
+  }
+  failsecond() {
+    var t = this.J7.__offset(this.z7, 16);
+    return t ? this.J7.readInt32(this.z7 + t) : 0
+  }
+}
+exports.PhantomBattleIntegrationLv = PhantomBattleIntegrationLv;
+//# sourceMappingURL=PhantomBattleIntegrationLv.js.map

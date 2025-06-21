@@ -1,0 +1,50 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.configQuestReviewTabById = void 0;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
+  Stats_1 = require("../../Common/Stats"),
+  ConfigCommon_1 = require("../../Config/ConfigCommon"),
+  QuestReviewTab_1 = require("../Config/QuestReviewTab"),
+  DB = "db_questreview.db",
+  FILE = "j.剧情历程.xlsx",
+  TABLE = "QuestReviewTab",
+  COMMAND = "select BinData from `QuestReviewTab` where Id=?",
+  KEY_PREFIX = "QuestReviewTabById",
+  logPair = [
+    ["数据库", DB],
+    ["文件", FILE],
+    ["表名", TABLE],
+    ["语句", COMMAND]
+  ];
+let handleId = 0;
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configQuestReviewTabById.Init"),
+  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configQuestReviewTabById.GetConfig"),
+  CONFIG_STAT_PREFIX = "configQuestReviewTabById.GetConfig(";
+exports.configQuestReviewTabById = {
+  Init: () => {
+    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+  },
+  GetConfig: (e, o = !0) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
+    var i = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${e})`),
+      n = (i?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+    if (n) {
+      if (o) {
+        var t = KEY_PREFIX + `#${e})`;
+        const C = ConfigCommon_1.ConfigCommon.GetConfig(t);
+        if (C) return i?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
+      }
+      if (n = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, e, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", e])) {
+        t = void 0;
+        if ([n, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", e]), n) {
+          const C = QuestReviewTab_1.QuestReviewTab.getRootAsQuestReviewTab(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
+          return o && (n = KEY_PREFIX + `#${e})`, ConfigCommon_1.ConfigCommon.SaveConfig(n, C)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), i?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+    }
+    i?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+  }
+};
+//# sourceMappingURL=QuestReviewTabById.js.map

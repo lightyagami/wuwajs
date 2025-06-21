@@ -1,0 +1,131 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.TrackTextExpressController = void 0;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
+  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
+  StringUtils_1 = require("../../../../../Core/Utils/StringUtils"),
+  IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest"),
+  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
+  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
+  PublicUtil_1 = require("../../../../Common/PublicUtil"),
+  ModelManager_1 = require("../../../../Manager/ModelManager"),
+  LogicNodeBase_1 = require("../../BehaviorNode/LogicNode/LogicNodeBase"),
+  GeneralLogicTreeDefine_1 = require("../../Define/GeneralLogicTreeDefine"),
+  GeneralLogicTreeController_1 = require("../../GeneralLogicTreeController");
+class TrackTextExpressController {
+  constructor(e) {
+    this.Yre = e, this.fXt = void 0, this.pXt = new GeneralLogicTreeDefine_1.TreeTrackTextExpressionInfo, this.vXt = new Map, this.MXt = [], this.EXt = !1, this.aec = void 0, this.fXt = e.UiTrackTextInfo
+  }
+  Clear() {
+    this.pXt.Clear(), this.fXt.Clear(), this.MXt.length = 0, this.vXt.clear(), this.EndTextExpress()
+  }
+  EnableTrack(e, t = 0) {
+    if (e) this.StartTextExpress();
+    else {
+      let e = 1 === t ? 2 : 0;
+      this.EndTextExpress(e)
+    }
+  }
+  StartTextExpress(e = 0) {
+    this.vXt.set(e, !0), this.Yre.IsOccupied || this.SXt(e)
+  }
+  SXt(e) {
+    var t;
+    this.EXt || (t = this.Yre.ContainTag(16) || "Disabled" !== ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.Yre.CreateShowData(), e, t), this.EXt = !0)
+  }
+  EndTextExpress(e = 0) {
+    2 === e ? this.vXt.clear() : this.vXt.delete(e), 0 === this.vXt.size && this.yXt(e)
+  }
+  UpdateOnNodeStatusChange(e, t, i) {
+    this.Tz1(e, t);
+    e = this.RQt(e, t, i);
+    this.bz1(e)
+  }
+  OnBtApplyExpressionOccupation(e) {
+    e || this.yXt(3)
+  }
+  OnBtReleaseExpressionOccupation(e) {
+    e || 0 !== this.vXt.size && this.SXt(3)
+  }
+  OnSuspend(e, t) {
+    switch (t) {
+      case 1:
+        this.LXt(e, t);
+        break;
+      case 2:
+        this.yXt(4)
+    }
+  }
+  OnCancelSuspend() {
+    this.DXt(), 0 !== this.vXt.size && this.SXt(3)
+  }
+  yXt(e) {
+    var t;
+    this.EXt && (t = this.Yre.ContainTag(16) || "Disabled" !== ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.Yre.TreeIncId, e, t), GeneralLogicTreeController_1.GeneralLogicTreeController.TryReleaseExpressionOccupation(this.Yre.TreeIncId), this.EXt = !1, TimerSystem_1.TimerSystem.Has(this.aec)) && TimerSystem_1.TimerSystem.Remove(this.aec)
+  }
+  bz1(e) {
+    this.EXt && !e && (TimerSystem_1.TimerSystem.Has(this.aec) && TimerSystem_1.TimerSystem.Remove(this.aec), this.aec = this.hec())
+  }
+  hec() {
+    return TimerSystem_1.TimerSystem.Delay(() => {
+      var e;
+      this.EXt && (e = this.Yre.ContainTag(16) || "Disabled" !== ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeUpdateShowTrackText, this.Yre.CreateShowData(), e))
+    }, 100)
+  }
+  RQt(e, t, i) {
+    return 0 === i && t === Protocol_1.Aki.Protocol.BNs._5n && this.Yre.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (i = ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id, this.Yre.TreeConfigId !== i) && !(!e.ContainTag(0) || e.ContainTag(2) || (t = GeneralLogicTreeController_1.GeneralLogicTreeController.GetNodeTrackText(this.Yre.TreeIncId, e.NodeId), StringUtils_1.StringUtils.IsEmpty(t)) || (ModelManager_1.ModelManager.GeneralLogicTreeModel.SaveUpdateInfo(this.Yre.TreeIncId, e.NodeId), 0))
+  }
+  Tz1(e, t) {
+    if (e instanceof LogicNodeBase_1.LogicNodeBase) switch (t) {
+      case Protocol_1.Aki.Protocol.BNs._5n:
+        e.ContainTag(0) && this.IXt(e.NodeId, e.CustomUiConfig);
+        break;
+      case Protocol_1.Aki.Protocol.BNs.Proto_CompletedSuccess:
+      case Protocol_1.Aki.Protocol.BNs.Proto_CompletedFailed:
+      case Protocol_1.Aki.Protocol.BNs.Proto_Destroy:
+        this.IXt(e.NodeId, void 0)
+    } else this.Yre.ContainTag(11) || this.TXt()
+  }
+  IXt(i, e) {
+    var t = this.MXt.findIndex((e, t) => e.SourceOfAdd === i);
+    if (e) t < 0 ? this.MXt.push(new GeneralLogicTreeDefine_1.BtCustomUiConfig(i, e)) : this.MXt[t].CustomUiConfig = e;
+    else {
+      if (t < 0) return;
+      this.MXt.splice(t, 1)
+    }
+    this.Yre.RemoveTag(11), this.Yre.RemoveTag(12);
+    let s = void 0;
+    0 !== this.MXt.length ? (this.Yre.AddTag(11), e = this.MXt[this.MXt.length - 1].CustomUiConfig, this.pXt.CopyConfig(e), s = e.TrackRadius?.TrackRadius, e.UiType === IQuest_1.EQuestScheduleUiType.LevelPlay && this.Yre.AddTag(12), this.fXt.Clear(), this.fXt.CopyConfig(e)) : this.TXt(), ModelManager_1.ModelManager.LevelPlayModel.ChangeLevelPlayTrackRange(this.Yre.TreeConfigId, s)
+  }
+  TXt() {
+    this.fXt.Clear();
+    var t = this.Yre.GetNodesByGroupId(1);
+    if (t) {
+      let e = 0;
+      for (var [i, s] of t) s.ContainTag(0) && s.TrackTextConfig && (s = {
+        TidTitle: s.TrackTextConfig,
+        QuestScheduleType: {
+          Type: IQuest_1.EQuestScheduleType.ChildQuestCompleted,
+          ChildQuestId: i,
+          ShowTracking: !0
+        }
+      }, this.fXt.SetMainTitle(s), this.fXt.AddSubTitle(s), e++);
+      1 === e ? this.fXt.ClearSubTitle() : this.fXt.SetMainTitle(void 0)
+    }
+  }
+  LXt(e, t) {
+    var i = "TaskOccupyGeneralDes_1001";
+    this.fXt.Clear(), 1 !== t || StringUtils_1.StringUtils.IsBlank(PublicUtil_1.PublicUtil.GetConfigTextByKey(i)) || (this.fXt.SetMainTitle({
+      TidTitle: i,
+      QuestScheduleType: {
+        Type: IQuest_1.EQuestScheduleType.None
+      }
+    }), this.fXt.ClearSubTitle(), this.Yre.AddTag(10))
+  }
+  DXt() {
+    this.Yre.ContainTag(11) && (this.fXt.Clear(), this.fXt.CopyConfig(this.pXt))
+  }
+}
+exports.TrackTextExpressController = TrackTextExpressController;
+//# sourceMappingURL=TrackTextExpressController.js.map

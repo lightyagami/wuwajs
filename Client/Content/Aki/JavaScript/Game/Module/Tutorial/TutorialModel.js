@@ -1,0 +1,122 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.TutorialModel = void 0;
+const ModelBase_1 = require("../../../Core/Framework/ModelBase"),
+  EventDefine_1 = require("../../Common/Event/EventDefine"),
+  EventSystem_1 = require("../../Common/Event/EventSystem"),
+  ConfigManager_1 = require("../../Manager/ConfigManager"),
+  TutorialDefine_1 = require("./TutorialDefine");
+class TutorialModel extends ModelBase_1.ModelBase {
+  constructor() {
+    super(...arguments), this.RewardInfo = void 0, this.RewardList = [], this.CurrentExclusiveType = 0, this.bRo = new Map, this.qRo = new Map
+  }
+  OnInit() {
+    for (const t in TutorialDefine_1.ETutorialType) {
+      var e = Number(t);
+      isNaN(e) || this.bRo.set(e, new Map)
+    }
+    return !0
+  }
+  InitTutorialTotalData() {
+    for (const r of Array.from(this.qRo.values())) {
+      var e = new TutorialDefine_1.TutorialSaveData,
+        t = (e.TimeStamp = r.TimeStamp, e.TutorialId = r.TutorialId, e.HasRedDot = r.HasRedDot, e.TutorialData.TutorialType),
+        i = e.TutorialData.Id;
+      this.bRo.get(t).set(i, e), this.bRo.get(TutorialDefine_1.ETutorialType.All).set(i, e), this.qRo.set(i, e)
+    }
+  }
+  OnClear() {
+    for (const e of this.bRo.values()) e.clear();
+    return this.bRo.clear(), !0
+  }
+  InitUnlockTutorials(e) {
+    for (const r of e) {
+      var t = new TutorialDefine_1.TutorialSaveData,
+        i = (t.TimeStamp = r.aws, t.TutorialId = r.s5n, t.HasRedDot = !r.nOs, t.TutorialData.TutorialType);
+      Object.values(TutorialDefine_1.ETutorialType).includes(i) && (this.bRo.get(i).has(t.TutorialId) || (this.bRo.get(i).set(t.TutorialId, t), this.qRo.set(t.TutorialId, t)), this.InvokeTutorialRedDot(t))
+    }
+  }
+  InitDefaultUnlockTutorials() {
+    var e, t;
+    for (const i of ConfigManager_1.ConfigManager.GuideConfig.GetAllTutorial()) i.DefaultUnlock && ((e = new TutorialDefine_1.TutorialSaveData).TimeStamp = 0, e.TutorialId = i.Id, e.HasRedDot = !1, t = i.TutorialType, Object.values(TutorialDefine_1.ETutorialType).includes(t)) && (this.bRo.get(t).set(e.TutorialId, e), this.qRo.set(e.TutorialId, e))
+  }
+  UpdateUnlockTutorials(e) {
+    var t = new TutorialDefine_1.TutorialSaveData,
+      e = (t.TimeStamp = e.aws, t.TutorialId = e.s5n, t.HasRedDot = !e.nOs, t.TutorialData.TutorialType);
+    Object.values(TutorialDefine_1.ETutorialType).includes(e) && !this.bRo.get(e).has(t.TutorialId) && (this.bRo.get(e).set(t.TutorialId, t), this.bRo.get(TutorialDefine_1.ETutorialType.All).set(t.TutorialId, t), this.qRo.set(t.TutorialId, t), this.InvokeUpdateTutorials(), this.InvokeTutorialRedDot(t))
+  }
+  GetUnlockedTutorialDataByType(o, e = 0) {
+    var t, i, r, a = [];
+    for (const s of this.bRo.get(o).values()) s.IsExcludedFromWiki || s.TutorialData?.ExclusiveType === e && (t = {
+      IsTypeTitle: !1,
+      TextId: s.TutorialData.GroupName,
+      SavedData: s,
+      OwnerType: o
+    }, s.HasRedDot && this.InvokeTutorialRedDot(s), a.push(t));
+    if (a.sort((e, t) => {
+        var i, r;
+        return e.SavedData.HasRedDot && !t.SavedData.HasRedDot ? -1 : !e.SavedData.HasRedDot && t.SavedData.HasRedDot ? 1 : e.SavedData.HasRedDot && t.SavedData.HasRedDot || o === TutorialDefine_1.ETutorialType.All ? t.SavedData.TimeStamp - e.SavedData.TimeStamp : (i = e.SavedData.TutorialData, r = t.SavedData.TutorialData, e.SavedData.TimeStamp !== t.SavedData.TimeStamp ? e.SavedData.TimeStamp - t.SavedData.TimeStamp : i.TutorialOrder !== r.TutorialOrder ? i.TutorialOrder - r.TutorialOrder : i.Id - r.Id)
+      }), o !== TutorialDefine_1.ETutorialType.All) return a;
+    let n = a.length;
+    for ([i, r] of a.entries())
+      if (!r.SavedData.HasRedDot) {
+        n = i + TutorialDefine_1.TutorialUtils.MaxLatestTutorial;
+        break
+      } return a.slice(0, n)
+  }
+  RemoveRedDotTutorialId(e) {
+    this.qRo.has(e) && ((e = this.qRo.get(e)).HasRedDot = !1, this.InvokeTutorialRedDot(e))
+  }
+  RedDotCheckIsNewTutorial(e) {
+    return this.qRo.get(e)?.HasRedDot ?? !1
+  }
+  InvokeUpdateTutorials() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTutorialUpdate)
+  }
+  InvokeTutorialRedDot(e) {
+    var t = e ? e.TutorialId : 0;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotNewTutorial, t), e && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotNewTutorialType, TutorialDefine_1.ETutorialType.All)
+  }
+  RedDotCheckIsNewTutorialType(e) {
+    if (this.bRo.has(e))
+      for (const t of this.bRo.get(e).values())
+        if (t.TutorialData?.ExclusiveType === this.CurrentExclusiveType && t.HasRedDot && !t.IsExcludedFromWiki) return !0;
+    return !1
+  }
+  MakeSearchList(e, t) {
+    let i = void 0;
+    var r = [];
+    try {
+      i = new RegExp(e, "i")
+    } catch {
+      return {
+        ItemData: r,
+        HasTutorial: !1
+      }
+    }
+    let o = !1;
+    for (const s of Array.from(this.bRo.keys()).sort(e => e === t ? -1 : 1))
+      if (s !== TutorialDefine_1.ETutorialType.All) {
+        var a, n = [];
+        for (const u of this.bRo.get(s).values()) u.IsExcludedFromWiki || (a = u.GetTutorialTitle()).search(i) < 0 || (a = {
+          IsTypeTitle: !1,
+          TextId: u.TutorialData.GroupName,
+          SavedData: u,
+          Text: a.replace(e, TutorialDefine_1.TutorialUtils.AddSearchHighlight(e))
+        }, o = !0, n.push(a));
+        t === TutorialDefine_1.ETutorialType.All ? r.push(...n) : n.length && (r.push({
+          IsTypeTitle: !0,
+          TextId: TutorialDefine_1.TutorialUtils.GetTutorialTypeTxt(s)
+        }), r.push(...n))
+      } return {
+      ItemData: r,
+      HasTutorial: o
+    }
+  }
+  GetSavedDataById(e) {
+    return this.qRo.get(e)
+  }
+}
+exports.TutorialModel = TutorialModel;
+//# sourceMappingURL=TutorialModel.js.map

@@ -1,0 +1,80 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.RouletteComponentAssemblyFunction = exports.RouletteComponentAssemblyExplore = exports.RouletteComponentAssembly = void 0;
+const ModelManager_1 = require("../../../Manager/ModelManager"),
+  RouletteGridForbiddenSettings_1 = require("../RouletteGrid/RouletteGridForbiddenSettings"),
+  RouletteComponent_1 = require("./RouletteComponent");
+class RouletteComponentAssembly extends RouletteComponent_1.RouletteComponentBase {
+  IsCurrentEquippedId(e) {
+    return !1
+  }
+  GamepadReturnEmptyGrid() {
+    this.IsEmptyChoose = !1
+  }
+  JudgeGridStateByData(e, t) {
+    return void 0 !== e && 0 !== e ? void 0 !== (t = RouletteGridForbiddenSettings_1.RouletteGridForbiddenSettings.CheckGridSpecialState(0, t, e)) ? t : 1 : 2
+  }
+  SetCurrentToggleState(e) {
+    this.GetCurrentGrid()?.SetGridToggleNavigation(e)
+  }
+  InitGridEvent(e) {
+    super.InitGridEvent(e), e.SetGridToggleChangeEvent()
+  }
+  GridDataDecorator(e) {
+    return e.State = this.JudgeGridStateByData(e.Id, e.GridType), e.ShowIndex = !0, e.ShowRedDot = !1, e
+  }
+  GetGridId(e, t) {
+    return ModelManager_1.ModelManager.RouletteModel.GetRouletteGridId(e, t, !1)
+  }
+  y0o(e, t) {
+    switch (t) {
+      case 0:
+        var o = ModelManager_1.ModelManager.RouletteModel.GetDefaultExploreSkillIdList();
+        return e > o.length ? void 0 : o[e];
+      case 1:
+        o = ModelManager_1.ModelManager.RouletteModel.GetDefaultFunctionIdList();
+        return e > o.length ? void 0 : o[e];
+      case 2:
+        return
+    }
+  }
+  ResetAllGridDefault() {
+    for (const o of this.RouletteGridList) {
+      o.SetGridEquipped(!1), o.SetGridToggleState(!1);
+      var e = o.Data,
+        t = (e.Name = void 0, this.y0o(e.DataIndex, e.GridType));
+      e.Id = t ?? e.Id, e.State = this.JudgeGridStateByData(e.Id, e.GridType), o.RefreshGrid(e)
+    }
+  }
+  GetGridByValidId(e) {
+    if (0 !== e && void 0 !== e)
+      for (const t of this.RouletteGridList)
+        if (t.Data.Id === e) return t
+  }
+  SetCurrentGridByData(e) {
+    this.CurrentGridIndex = e.GridIndex, this.RefreshRouletteComponent()
+  }
+  RefreshCurrentGridData(e) {
+    this.GridDataDecorator(e), this.GetCurrentGrid()?.RefreshGrid(e), this.RefreshRouletteComponent()
+  }
+  GetGridByIndex(e) {
+    if (!(e < 0 || e >= this.RouletteGridList.length)) return this.RouletteGridList[e]
+  }
+  SetAllGridDeselect() {
+    for (const e of this.RouletteGridList) e.SetGridToggleState(!1)
+  }
+}
+class RouletteComponentAssemblyExplore extends(exports.RouletteComponentAssembly = RouletteComponentAssembly) {
+  GetRouletteInfoMap() {
+    return RouletteComponent_1.exploreRouletteMap
+  }
+}
+exports.RouletteComponentAssemblyExplore = RouletteComponentAssemblyExplore;
+class RouletteComponentAssemblyFunction extends RouletteComponentAssembly {
+  GetRouletteInfoMap() {
+    return RouletteComponent_1.functionRouletteMap
+  }
+}
+exports.RouletteComponentAssemblyFunction = RouletteComponentAssemblyFunction;
+//# sourceMappingURL=RouletteComponentAssembly.js.map

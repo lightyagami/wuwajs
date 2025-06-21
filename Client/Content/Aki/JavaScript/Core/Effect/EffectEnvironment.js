@@ -1,0 +1,36 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.EffectEnvironment = void 0;
+const cpp_1 = require("cpp"),
+  Info_1 = require("../Common/Info");
+class EffectEnvironment {
+  static get GlobalTimeScale() {
+    return this.Lgl
+  }
+  static set GlobalTimeScale(t) {
+    this.Lgl !== t && (this.Lgl = t, this.OpenTickOptimize && cpp_1.FKuroEffectSystemInterface.UpdateGlobalTimeScale(t), this.OpenCppOptimize) && cpp_1.FEffectSystem.SetGlobalTimeScale(t)
+  }
+  static get DisableOtherEffect() {
+    return this.qdc
+  }
+  static set DisableOtherEffect(t) {
+    this.qdc !== t && (this.qdc = t, this.OpenCppOptimize) && cpp_1.FEffectSystem.OnDisableOtherEffectChange(t)
+  }
+  static get EffectQualityBiasRemote() {
+    return this.Gdc
+  }
+  static set EffectQualityBiasRemote(t) {
+    this.Gdc !== t && (this.Gdc = t, this.OpenCppOptimize) && cpp_1.FEffectSystem.OnEffectQualityBiasRemoteChange(t)
+  }
+  static get OpenTickOptimize() {
+    return !Info_1.Info.IsInEditorTick() && this.f0l
+  }
+  static Initialize() {
+    this.UseLog = Info_1.Info.IsBuildDevelopmentOrDebug
+  }
+  static Tick(t, e) {
+    this.GameTimeInSeconds += .001 * t
+  }
+}(exports.EffectEnvironment = EffectEnvironment).GameTimeInSeconds = 0, EffectEnvironment.Lgl = 1, EffectEnvironment.UseLog = !0, EffectEnvironment.qdc = !1, EffectEnvironment.UsePool = !0, EffectEnvironment.Gdc = -1, EffectEnvironment.CloseEffectSubStat = !0, EffectEnvironment.OpenVisibilityOptimize = !0, EffectEnvironment.OpenDistanceOptimize = !0, EffectEnvironment.OpenCppOptimize = !0, EffectEnvironment.f0l = !0;
+//# sourceMappingURL=EffectEnvironment.js.map

@@ -1,0 +1,2201 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+  value: !0
+}), exports.ENTITY_RESETPOINT_BP_TYPE = exports.ENTITY_RESETAREA_BP_TYPE = exports.EHideGroupObjectType = exports.EEffectConfigType = exports.EExploratoryBelongType = exports.decompressEntityData = exports.EDevelopmentStatus = exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = exports.editorBpTypes = exports.getRewardTypeConfig = exports.entityDescriptionConfig = exports.monsterEntityTypes = exports.isValidEntityType = exports.entityTypeConfig = exports.entityTypesAki = exports.entityTypesUe5 = exports.componentsByEntityAki = exports.componentsByEntityUe5 = exports.entityDetails = exports.entityDetailsAki = exports.entityDetailsUe5 = void 0;
+const IComponent_1 = require("./IComponent"),
+  IUtil_1 = require("./IUtil"),
+  monsterComponents = (exports.entityDetailsUe5 = {
+    Player: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: []
+    },
+    AiNpc: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "StateComponent", "FlowComponent", "BehaviorFlowComponent", "TalkComponent", "MoveComponent", "NpcComponent", "InteractiveComponent", "NpcPerformComponent"]
+    },
+    CharacterEntity: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: []
+    },
+    Entity: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent"]
+    },
+    Lamp: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["LampComponent", "EventComponent", "StateComponent", "BaseInfoComponent"]
+    },
+    Npc: {
+      Category: "怪物&生物&NPC类",
+      Owner: 10,
+      Status: "可使用",
+      Description: `
+该类型的实体在SimpleNpc的基础上添加了交互逻辑与AI逻辑。`,
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "StateComponent", "FlowComponent", "BehaviorFlowComponent", "TalkComponent", "NpcComponent", "EntitySpawnerComponent"]
+    },
+    RefreshSingle: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["RefreshSingleComponent", "StateComponent", "EntitySpawnerComponent", "BaseInfoComponent"]
+    },
+    RefreshEntity: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "RefreshEntityComponent", "StateComponent"]
+    },
+    Rotator: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "RotatorComponent", "StateComponent", "EventComponent"]
+    },
+    SphereActor: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "SphereComponent", "GrabComponent"]
+    },
+    SphereFactory: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "SphereFactoryComponent", "EntitySpawnerComponent", "EventComponent", "StateComponent"]
+    },
+    Spring: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["SpringComponent", "BaseInfoComponent"]
+    },
+    SpringBoard: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "SpringBoardComponent", "StateComponent", "SimpleComponent"]
+    },
+    StateEntity: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "EntityStateComponent", "StateComponent", "ActorStateComponent", "CalculateComponent", "VarComponent", "EntitySpawnerComponent"]
+    },
+    Switcher: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "StateComponent", "EntityStateComponent", "ActorStateComponent", "CalculateComponent", "SwitcherComponent", "EntitySpawnerComponent"]
+    },
+    Trample: {
+      Category: "机关玩法类",
+      Owner: 10,
+      Status: "可使用",
+      Description: `
+该类型的实体用于踩踏机关机关的功能实现，详情点击跳转👉[踩踏机关组件](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GjvFds0ctoi8m4xzXTUcNCyrnVe)。`,
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "TrampleUe5Component", "SimpleComponent", "StateComponent"]
+    },
+    TriggerUe5: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "StateComponent", "TriggerUe5Component", "EntitySpawnerComponent"]
+    },
+    Trigger: {
+      Category: "触发器类",
+      Owner: 7,
+      Status: "可使用",
+      Description: `
+该类型的实体视为范围触发器，可在实体进出指定范围时触发对应行为，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcnZuGwddQ1JSyo3UIZ24PC5e。
+- 通过[TriggerComponent](https://kurogame.feishu.cn/wiki/wikcnZuGwddQ1JSyo3UIZ24PC5e)组件设置触发机制、以及实体进出时触发的Action。
+- 通过[RangeComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Uxu9dEsPYoRGOKxlzCrcnkWtnId)组件设置触发区域。`,
+      EntityLogic: "Custom",
+      EntityType: void 0,
+      Components: ["BaseInfoComponent", "TriggerComponent", "RangeComponent"]
+    },
+    Underground: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "UndergroundComponent", "StateComponent", "EventComponent"]
+    },
+    UndergroundComponent: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: []
+    },
+    RefreshComponent: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "InteractiveComponent", "RefreshComponent", "RewardComponent"]
+    },
+    EntityPackage: {
+      Category: "",
+      Owner: 0,
+      Status: "",
+      Description: "",
+      EntityType: void 0,
+      EntityLogic: "Item",
+      Components: ["BaseInfoComponent", "EntityPackageComponent"]
+    }
+  }, ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RewardComponent", "VisionCaptureComponent", "MonsterComponent", "CombatComponent", "RefreshComponent", "EntityVisibleComponent", "BubbleComponent"]);
+
+function isValidEntityType(t) {
+  return void 0 !== exports.entityTypeConfig[t]
+}
+exports.entityDetailsAki = {
+  Position: {
+    Category: "ClientOnly",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于指定一个坐标点。`,
+    EntityLogic: "ClientOnly",
+    EntityType: "坐标实体(Position)",
+    Components: ["BaseInfoComponent"]
+  },
+  Range: {
+    Category: "ClientOnly",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于指定一个范围区域。`,
+    EntityLogic: "ClientOnly",
+    EntityType: "范围实体(Range)",
+    Components: ["BaseInfoComponent", "RangeComponent"]
+  },
+  SummonGongduolaPoint: {
+    Category: "ClientOnly",
+    Owner: 3,
+    Status: "可使用",
+    Description: "该类型的实体用于指定一个坐标点。",
+    EntityLogic: "ClientOnly",
+    EntityType: "贡多拉召唤点(SummonGongduolaPoint)",
+    Components: ["BaseInfoComponent", "RangeComponent"]
+  },
+  SummonGondolaSpline: {
+    Category: "ClientOnly",
+    Owner: 11,
+    Status: "可使用",
+    Description: "该类型的实体用于指定一系列坐标点。",
+    EntityLogic: "ClientOnly",
+    EntityType: "贡多拉召唤点样条(SummonGondolaSpline)",
+    Components: ["BaseInfoComponent", "SplineComponent"]
+  },
+  Item: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "AdsorbComponent", "RewardComponent"]
+  },
+  Drop: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体是通用掉落物。`,
+    EntityType: "掉落物(Drop)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "DropComponent", "InteractComponent"]
+  },
+  VisionItem: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体是幻象掉落物，可被玩家通过交互吸收。`,
+    EntityType: "幻象掉落物(VisionItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "VisionItemComponent", "InteractComponent"]
+  },
+  AdviseItem: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "溯言交互物(AdviseItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "AdviseItemComponent", "InteractComponent"]
+  },
+  Weapon: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体目前用于流放者武器配置，该武器可挂接可掉落。武器掉落时为静态网格体，挂接时使用骨骼网格体。玩家可通过“采集”交互获得对应武器素材道具。`,
+    EntityType: "武器(Weapon)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "CollectComponent", "RewardComponent", "WeaponComponent", "RefreshComponent", "InteractAudioComponent"]
+  },
+  Gear: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityLogic: "Npc",
+    EntityType: "Gear",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent"]
+  },
+  FollowTrack: {
+    Category: "机关玩法类 ",
+    Owner: 10,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: `
+该类型的实体用于实现跟随隙声蝶激活隙声蝶底座的玩法功能，详情点击跳转👉[FollowTrackComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-U1Y3dNIPeo1nJmx7z88cEeQ1ncc)。`,
+    EntityType: "隙声蝶(FollowTrack)",
+    Components: ["BaseInfoComponent", "ModelComponent", "FollowTrackComponent", "SceneItemLifeCycleComponent", "EntityStateComponent"]
+  },
+  FollowTrackFoundation: {
+    Category: "机关玩法类 ",
+    Owner: 10,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: `
+该类型的实体用于实现跟随隙声蝶激活隙声蝶底座的玩法功能，详情点击跳转👉[FollowTrackComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-U1Y3dNIPeo1nJmx7z88cEeQ1ncc)。`,
+    EntityType: "隙声蝶底座(FollowTrackFoundation)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RewardComponent"]
+  },
+  Animal: {
+    Category: "怪物&生物&NPC类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现大世界中生态生物的功能，生物生物为没有战斗逻辑的生物。`,
+    EntityLogic: "Animal",
+    EntityType: "生态动物(Animal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "CollectComponent", "AiComponent", "LevelAiComponent", "RefreshComponent", "RewardComponent", "AnimalComponent", "VarComponent", "InteractAudioComponent"]
+  },
+  Animal2: {
+    Category: "怪物&生物&NPC类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+相比于Animal类型增加了EntityVisible组件，可控制显隐。`,
+    EntityLogic: "Animal",
+    EntityType: "生态动物2(Animal2)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "CollectComponent", "AiComponent", "LevelAiComponent", "RefreshComponent", "RewardComponent", "AnimalComponent", "VarComponent", "InteractAudioComponent", "EntityVisibleComponent"]
+  },
+  CombatAnimal: {
+    Category: "怪物&生物&NPC类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现大世界中具备战斗功能的生物。`,
+    EntityLogic: "Monster",
+    EntityType: "战斗动物(CombatAnimal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RefreshComponent", "RewardComponent", "CombatComponent", "AnimalComponent"]
+  },
+  CombatAnimal2: {
+    Category: "怪物&生物&NPC类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+相比于CombatAnimal类型增加了EntityVisible组件，可控制显隐。`,
+    EntityLogic: "Monster",
+    EntityType: "战斗动物2(CombatAnimal2)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RefreshComponent", "RewardComponent", "CombatComponent", "AnimalComponent", "EntityVisibleComponent"]
+  },
+  CollectAnimal: {
+    Category: "怪物&生物&NPC类",
+    Owner: 11,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现大世界中具备部位采集的生物。`,
+    EntityLogic: "Monster",
+    EntityType: "采集动物(CollectAnimal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RefreshComponent", "RefreshGroupComponent", "RewardComponent", "CombatComponent", "AnimalComponent", "InteractComponent", "InteractAudioComponent"]
+  },
+  Npc: {
+    Category: "怪物&生物&NPC类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体在SimpleNpc的基础上添加了交互逻辑与AI逻辑。`,
+    EntityLogic: "Npc",
+    EntityType: "Npc",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "AiComponent", "LevelAiComponent", "NpcPerformComponent", "EntityVisibleComponent", "BubbleComponent", "VarComponent"]
+  },
+  Npc2: {
+    Category: "怪物&生物&NPC类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+1.2版本专用活动NPC，相比NPC新增了ConditionListenerComponent组件。`,
+    EntityLogic: "Npc",
+    EntityType: "1.2版本活动Npc",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "AiComponent", "LevelAiComponent", "NpcPerformComponent", "EntityVisibleComponent", "BubbleComponent", "VarComponent", "ConditionListenerComponent"]
+  },
+  SimpleNPc: {
+    Category: "怪物&生物&NPC类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现基础NPC的功能逻辑，包括冒泡说话、以及靠近后转头注视等基础表现。
+- 通过NpcPerformComponent组件设置NPC的行为表现。
+- 通过BubbleComponent组件设置NPC的冒泡文本播放。`,
+    EntityLogic: "Npc",
+    EntityType: "SimpleNpc",
+    Components: ["BaseInfoComponent", "ModelComponent", "NpcPerformComponent", "EntityVisibleComponent", "BubbleComponent"]
+  },
+  RewardNpc: {
+    Category: "怪物&生物&NPC类",
+    Owner: 14,
+    Status: "开发中",
+    Description: `
+带有奖励组件的NPC`,
+    EntityType: "奖励Npc(RewardNpc)",
+    EntityLogic: "Npc",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "AiComponent", "LevelAiComponent", "NpcPerformComponent", "EntityVisibleComponent", "BubbleComponent", "VarComponent", "RewardComponent"]
+  },
+  TuanziNpc: {
+    Category: "怪物&生物&NPC类",
+    Owner: 6,
+    Status: "开发中",
+    Description: `
+全服赛马比赛用的团子Npc实体`,
+    EntityType: "团子Npc(TuanziNpc)",
+    EntityLogic: "Npc",
+    Components: ["BaseInfoComponent", "ModelComponent"]
+  },
+  PasserbyNpc: {
+    Category: "机关玩法类",
+    Owner: 0,
+    Status: "可使用",
+    Description: "",
+    EntityLogic: "Npc",
+    EntityType: "PasserbyNpc",
+    Components: ["BaseInfoComponent", "ModelComponent"]
+  },
+  Monster: {
+    Category: "怪物&生物&NPC类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体是怪物。`,
+    EntityLogic: "Monster",
+    EntityType: "怪物(Monster)",
+    Components: monsterComponents
+  },
+  MonsterWithInhalation: {
+    Category: "带吸入能力怪物",
+    Owner: 2,
+    Status: "开法中",
+    Description: "带吸入能力的怪物，比怪物多了一个组件",
+    EntityLogic: "Monster",
+    EntityType: "怪物带吸入能力(MonsterWithInhalation)",
+    Components: [...monsterComponents, "InhalationAbilityComponent"]
+  },
+  GroupAi: {
+    Category: "怪物&生物&NPC类",
+    Owner: 12,
+    Status: "可使用",
+    Description: "配置群组的AI行为",
+    EntityLogic: "Item",
+    EntityType: "群组AI(GroupAi)",
+    Components: ["BaseInfoComponent", "ModelComponent", "GroupAiComponent", "RefreshGroupComponent"]
+  },
+  FollowShooter: {
+    Category: "辅助机类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "1.2版本新增的射击辅助机角色类型专用组件",
+    EntityLogic: "Monster",
+    EntityType: "射击辅助机(FollowShooter)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "MonsterComponent", "CombatComponent", "FollowShooterComponent"]
+  },
+  FollowShooter2: {
+    Category: "辅助机类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "1.2版本新增的射击辅助机角色类型专用组件",
+    EntityLogic: "Monster",
+    EntityType: "射击辅助机2(FollowShooter2)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "MonsterComponent", "CombatComponent", "FollowShooterComponent", "CharacterConnectorComponent"]
+  },
+  HackingTypeFollowShooter: {
+    Category: "辅助机类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "2.1版本新增的骇入型辅助机，在FollowShooter基础上新增骇入管理组件",
+    EntityLogic: "Monster",
+    EntityType: "骇入型辅助机(HackingTypeFollowShooter)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "MonsterComponent", "CombatComponent", "FollowShooterComponent", "HackManagementComponent"]
+  },
+  NpcMonster: {
+    Category: "怪物&生物&NPC类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体同时具备怪物和NPC的功能。`,
+    EntityLogic: "Monster",
+    EntityType: "Npc怪物(NpcMonster)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "BubbleComponent", "AiComponent", "AttributeComponent", "RewardComponent", "VisionCaptureComponent", "MonsterComponent", "CombatComponent", "RefreshComponent", "EntityVisibleComponent"]
+  },
+  Vision: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityLogic: "Vision",
+    EntityType: "战斗幻象(Vision)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "VisionComponent", "CombatComponent"]
+  },
+  RefreshGroup: {
+    Category: "组功能类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于统一管理一批实体的唤醒与刷新规则。例如睡莲底座，玩家采集了莲花一段时间后，底座会将莲花再生出来。
+- 通过[RefreshGroupComponent](https://kurogame.feishu.cn/wiki/O2CjwUa1wi7ODakNSSIcnjnsnke)组件设置其所属的其他实体，并统一管理所属实体的唤醒与刷新规则。`,
+    EntityType: "组刷新器(RefreshGroup)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RefreshGroupComponent", "VarComponent"]
+  },
+  EntityBatchRefresh: {
+    Category: "组功能类",
+    Owner: 4,
+    Status: "开发中",
+    Description: "通用型的实体批次刷新器",
+    EntityLogic: "Item",
+    EntityType: "实体批次刷新器(EntityBatchRefresh)",
+    Components: ["BaseInfoComponent", "ModelComponent", "VarComponent", "EntityStateComponent", "EntityBatchRefreshComponent", "ConditionListenerComponent"],
+    DefaultDisabledComponents: ["VarComponent"]
+  },
+  SimpleInteract: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现简单的交互功能，例如任务中的调查光点。`,
+    EntityLogic: "Item",
+    EntityType: "简单交互物(SimpleInteract)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "BubbleComponent", "EntityVisibleComponent"]
+  },
+  Collect: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体视为可采集物，可以通过”采集“交互获得道具。
+- 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
+- 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-OrAed7lhXoG53ZxTRxFcNgeonPe)组件设置采集后获得的道具ID。
+- 通过[RefreshComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-QD1BdiIyoo5hcIxROsScAkipnqg)组件设置采集后的再生规则。`,
+    EntityLogic: "Item",
+    EntityType: "采集物(Collect)",
+    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent"]
+  },
+  Collect2: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体视为可采集物，可以通过”采集“交互获得道具。
+- 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
+- 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-OrAed7lhXoG53ZxTRxFcNgeonPe)组件设置采集后获得的道具ID。
+- 通过[RefreshComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-QD1BdiIyoo5hcIxROsScAkipnqg)组件设置采集后的再生规则。`,
+    EntityLogic: "Item",
+    EntityType: "采集物(Collect2)",
+    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent", "SceneItemMovementComponent"]
+  },
+  Collect3: {
+    Category: "场景交互物类",
+    Owner: 12,
+    Status: "可使用",
+    Description: `
+    该类型的实体视为可采集物，可以通过”采集“交互获得道具。
+    - 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
+    - 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-OrAed7lhXoG53ZxTRxFcNgeonPe)组件设置采集后获得的道具ID。
+    - 通过[RefreshComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-QD1BdiIyoo5hcIxROsScAkipnqg)组件设置采集后的再生规则。`,
+    EntityLogic: "Item",
+    EntityType: "采集物(Collect3)",
+    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "TriggerComponent", "RangeComponent", "EntityStateComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent"]
+  },
+  TreasureBox: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体视为宝箱，可通过“开启宝箱”交互获得道具。
+- 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
+- 通过[TreasureBoxComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-EgqodaZHBojVgaxWVHgc5ZNAnKe)组件指定宝箱的类型。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)设置宝箱的状态与锁定表现。宝箱拥有"常态”（未被开启）与”激活“（已被开启）两种状态，无锁定表现的宝箱在“常态”时即可交互开启；其他锁定表现则需要解除锁定才可以交互。
+- 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-VWxHd2cFXouLIoxYYY6cVk0Ynmb)组件设置交互开启宝箱后生成的道具组ID。`,
+    EntityLogic: "Item",
+    EntityType: "物资箱(TreasureBox)",
+    Components: ["BaseInfoComponent", "ModelComponent", "RewardComponent", "TreasureBoxComponent", "InteractComponent", "EntityStateComponent", "NearbyTrackingComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  VisionTreasureBox: {
+    Category: "幻象宝箱专用",
+    Owner: 3,
+    Status: "可使用",
+    Description: "该类型为幻象宝箱专用，靠近后触发器触发自动展开为常态，再由玩家交互领取奖励",
+    EntityType: "幻象宝箱(TreasureBox)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "RewardComponent", "TreasureBoxComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "EntityStateComponent", "NearbyTrackingComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  Trigger: {
+    Category: "触发器类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+该类型的实体视为范围触发器，可在实体进出指定范围时触发对应行为，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcnZuGwddQ1JSyo3UIZ24PC5e。
+- 通过[TriggerComponent](https://kurogame.feishu.cn/wiki/wikcnZuGwddQ1JSyo3UIZ24PC5e)组件设置触发机制、以及实体进出时触发的Action。
+- 通过[RangeComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Uxu9dEsPYoRGOKxlzCrcnkWtnId)组件设置触发区域。`,
+    EntityType: "范围触发器(Trigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "TriggerComponent", "RangeComponent", "VarComponent"]
+  },
+  ClientTrigger: {
+    Category: "触发器类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Custom",
+    EntityType: "客户端触发器(ClientTrigger)",
+    Components: ["BaseInfoComponent", "ModelComponent", "RangeComponent", "VarComponent", "ClientTriggerComponent"]
+  },
+  LevelQteTrigger: {
+    Category: "触发器类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "关卡Qte触发器(LevelQteTrigger)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "VarComponent", "ClientTriggerComponent", "LevelQteComponent", "ConditionListenerComponent"]
+  },
+  LevelSeqTrigger: {
+    Category: "触发器类",
+    Owner: 3,
+    Status: "可使用",
+    Description: "可以通过可以客户端触发器触发关卡Seq，通常用于对表现及时性要求高的跑酷类玩法",
+    EntityLogic: "Item",
+    EntityType: "关卡Seq触发器(LevelSeqTrigger)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneActorRefComponent"]
+  },
+  VisibleTrigger: {
+    Category: "触发器类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+功能同范围触发器（Trigger），但区别是有可视外观（例如风场，可看到向上的气流特效）。`,
+    EntityLogic: "Item",
+    EntityType: "VisibleTrigger",
+    Components: ["BaseInfoComponent", "ModelComponent", "TriggerComponent", "RangeComponent", "AttachTargetComponent"]
+  },
+  HookLockPoint: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体被视作钩锁点，允许玩家使用钩锁工具与其交互快速移动。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件设置钩锁点的激活&关闭。
+- 通过HookLockPointComponent组件设置钩锁点的触发范围等数据。`,
+    EntityLogic: "Item",
+    EntityType: "定点钩锁(HookLockPoint)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "HookLockPoint"]
+  },
+  KiteHook: {
+    Category: "场景交互物类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "在定点钩锁的基础上新增移动和追踪能力",
+    EntityLogic: "Item",
+    EntityType: "风筝钩锁(KiteHook)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "HookLockPoint", "NearbyTrackingComponent", "SceneItemMovementComponent", "AttachTargetComponent", "RefreshComponent", "SceneItemLifeCycleComponent"]
+  },
+  SuiGuangHook: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体被视作岁光钩锁点，允许玩家使用钩锁工具与其交互快速移动。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件设置钩锁点的激活&关闭。
+- 通过HookLockPointComponent组件设置钩锁点的触发范围等数据。`,
+    EntityType: "岁光钩锁(SuiGuangHook)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "HookLockPoint", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  HookWithRange: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: "带范围组件的钩锁点，支持钩锁配置其他范围",
+    EntityType: "带范围组件钩锁(HookWithRange)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "HookLockPoint", "SceneItemLifeCycleComponent"]
+  },
+  ItemFoundation: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体为控物实体的回收底座，允许玩家控制控物实体投掷上去与其匹配，并提供可配置的控物匹配条件与匹配后效果。例如：玩家控制电池时，可将电池投掷向电池底座，以此将其激活。
+- 通过[ItemFoundation2](https://kurogame.feishu.cn/wiki/wikcnlh2d65EDYZCioRCwKUE3gh)组件设置控物匹配条件与匹配后效果等机制。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件设置成功匹配后的状态变化。`,
+    EntityLogic: "Item",
+    EntityType: "控物底座(ItemFoundation)",
+    Components: ["BaseInfoComponent", "ModelComponent", "ItemFoundation2", "EntityStateComponent"]
+  },
+  StatueFoundation: {
+    Category: "机关玩法类",
+    Owner: 2,
+    Status: "开发中",
+    Description: `
+雕像底座，玩家可以拉取雕像到雕像底座中`,
+    EntityLogic: "Item",
+    EntityType: "雕像底座(StatueFoundation)",
+    Components: ["BaseInfoComponent", "ModelComponent", "PullingObjectFoundation", "EntityStateComponent"]
+  },
+  InteractFoundationWithSceneItemAttribute: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "功能同InteractFoundation，在其基础上新增SceneItemAttributeComponent",
+    EntityLogic: "Item",
+    EntityType: "带场景物件属性的可交互控物底座(InteractFoundationWithSceneItemAttribute)",
+    Components: ["BaseInfoComponent", "ModelComponent", "ItemFoundation2", "InteractComponent", "EntityStateComponent", "SceneItemAttributeComponent"]
+  },
+  AdsorptionFoundation: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体为控物实体的回收底座，允许玩家控制控物实体投掷上去与其匹配，并提供可配置的控物匹配条件与匹配后效果。例如：玩家控制电池时，可将电池投掷向电池底座，以此将其激活。
+- 通过[ItemFoundation2](https://kurogame.feishu.cn/wiki/wikcnlh2d65EDYZCioRCwKUE3gh)组件设置控物匹配条件与匹配后效果等机制。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件设置成功匹配后的状态变化。`,
+    EntityLogic: "Item",
+    EntityType: "控物吸附底座(AdsorptionFoundation)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "TrampleComponent", "ItemFoundation2"]
+  },
+  InteractFoundation: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "可交互控物底座(InteractFoundation)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "ItemFoundation2", "EntityStateComponent"]
+  },
+  MatchGear: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "匹配机关(MatchGear)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent"]
+  },
+  MatchGroup: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityLogic: "Custom",
+    EntityType: "机关组(MatchGroup)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityGroupComponent", "RewardComponent", "VarComponent"]
+  },
+  InteractGearGroup: {
+    Category: "机关玩法类",
+    Owner: 0,
+    Status: "可使用",
+    Description: "",
+    EntityType: "可交互机关组(InteractGearGroup)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "EntityGroupComponent", "InteractComponent", "ResetEntitiesPosComponent", "SceneItemLifeCycleComponent", "VarComponent"]
+  },
+  TeleControl: {
+    Category: "触发器类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体可以通过控物交互吸取并投掷出去。
+- 通过[TeleControl2](https://kurogame.feishu.cn/wiki/wikcn6Gq4hEX1hHdgS6txOyOMxh)组件设置被控物的类型以及投掷轨迹等数据。`,
+    EntityLogic: "Item",
+    EntityType: "被控物(TeleControl)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "InteractAudioComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "ResetSelfPosComponent", "NearbyTrackingComponent"]
+  },
+  TeleControl2: {
+    Category: "触发器类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "功能同TeleControl类型，额外附带了SceneItemAttributeComponent",
+    EntityType: "带场景物件属性的被控物(TeleControl2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "InteractAudioComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "ResetSelfPosComponent", "NearbyTrackingComponent", "SceneItemAttributeComponent"]
+  },
+  TeleControl3: {
+    Category: "控物类",
+    Owner: 3,
+    Status: "可使用",
+    Description: "功能同TeleControl类型，额外附带了RenderSpecifiedRangeComponent",
+    EntityType: "椿副本专用被控物(TeleControl3)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "InteractAudioComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "ResetSelfPosComponent", "NearbyTrackingComponent", "SceneItemAttributeComponent", "RenderSpecifiedRangeComponent"]
+  },
+  TeleControl4: {
+    Category: "触发器类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体可以通过控物交互吸取并投掷出去。
+- 通过[TeleControl2](https://kurogame.feishu.cn/wiki/wikcn6Gq4hEX1hHdgS6txOyOMxh)组件设置被控物的类型以及投掷轨迹等数据。`,
+    EntityLogic: "Item",
+    EntityType: "培养皿(TeleControl4)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "InteractAudioComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "ResetSelfPosComponent", "NearbyTrackingComponent"]
+  },
+  TeleControlGroup: {
+    Category: "组功能类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于统一管理一批实体的唤醒与刷新规则。例如睡莲底座，玩家采集了莲花一段时间后，底座会将莲花再生出来。
+- 通过[RefreshGroupComponent](https://kurogame.feishu.cn/wiki/O2CjwUa1wi7ODakNSSIcnjnsnke)组件设置其所属的其他实体，并统一管理所属实体的唤醒与刷新规则。`,
+    EntityType: "控物组(TeleControlGroup)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "ResetEntitiesPosComponent", "EntityGroupComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "VarComponent"]
+  },
+  DestructibleControl: {
+    Category: "场景交互物类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体是一种特殊的被控物，用于机械变种Boss生成的垃圾球的功能实现，与被控物的区别在于增加了[DestructibleItem](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-CWQsdjzKToiTQrxxeRMcurmunZk)组件，可被玩家攻击破坏。`,
+    EntityType: "可被破坏被控物(DestructibleControl)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "SceneItemLifeCycleComponent", "RewardComponent", "TeleControl2", "FightInteractComponent", "InteractAudioComponent"]
+  },
+  DestructibleTrigger: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "可被破坏触发器(DestructibleTrigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "RangeComponent", "TriggerComponent", "RefreshComponent", "FightInteractComponent", "AttachTargetComponent", "SceneItemLifeCycleComponent"]
+  },
+  DestructibleSceneBullet: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "可被破坏场景子弹(DestructibleSceneBullet)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "RangeComponent", "SceneBulletComponent", "RefreshComponent", "FightInteractComponent", "AttachTargetComponent", "SceneItemLifeCycleComponent"]
+  },
+  DestructibleExploreInteractor: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "开发中",
+    Description: `
+该类型的实体是一种特殊的被控物，玩家可以瞄准可破坏物后使用特定探索技能。`,
+    EntityType: "可被破坏探索交互物(DestructibleExploreInteractor)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "SceneItemLifeCycleComponent", "RewardComponent", "ExploreSkillInteractComponent", "RangeComponent", "FightInteractComponent", "InteractAudioComponent", "ConditionListenerComponent", "VarComponent", "RefreshComponent"]
+  },
+  RollingFireball: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "滚动火球(RollingFireball)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "TriggerComponent", "RangeComponent", "SceneItemMovementComponent", "SceneItemLifeCycleComponent", "FightInteractComponent"]
+  },
+  WaterSpout: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: "",
+    EntityType: "水龙卷(WaterSpout)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "TriggerComponent", "RangeComponent", "SceneBulletComponent", "SceneItemMovementComponent", "SceneItemLifeCycleComponent", "FightInteractComponent"]
+  },
+  Destructible: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体为可破坏的场景物件
+- 通过[DestructibleItem](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-CWQsdjzKToiTQrxxeRMcurmunZk)组件来配置场景可破坏物功能与参数。
+- 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-VWxHd2cFXouLIoxYYY6cVk0Ynmb)组件来配置实体被摧毁后生成的掉落组ID。
+- 通过[RefreshComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-KB6EdFv2voDYuEx53XDcuAoPnDg)组件来配置实体被摧毁后的刷新规则。
+- 通过[SceneItemLifeCycleComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-PQdydwA0XoLWVZxb3aGcXt9PnXf)组件来配置实体出生以及被摧毁时的表现与出发逻辑。`,
+    EntityLogic: "Item",
+    EntityType: "场景可被破坏物(Destructible)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "SceneItemLifeCycleComponent", "RefreshComponent", "RewardComponent", "FightInteractComponent", "AttachTargetComponent"]
+  },
+  DestructibleWithSceneItemAttribute: {
+    Category: "场景交互物类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "功能同Destructible，在其基础上新增SceneItemAttributeComponent",
+    EntityLogic: "Item",
+    EntityType: "带场景物件属性的可被破坏物(DestructibleWithSceneItemAttribute)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "DestructibleItem", "SceneItemLifeCycleComponent", "RefreshComponent", "RewardComponent", "FightInteractComponent", "AttachTargetComponent"]
+  },
+  LevelPlay: {
+    Category: "其他类型",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+这个类型下仅有一种实体——玩法中心实体。这种实体的作用充当玩法中心实体，用于定位玩法的坐标。
+- 通过[LevelPlayComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-BQ68dKxU3onkRBxCeHGc9SqSngf)组件标识玩法中心实体。`,
+    EntityLogic: "ClientOnly",
+    EntityType: "玩法中心实体(LevelPlay)",
+    Components: ["BaseInfoComponent", "LevelPlayComponent"]
+  },
+  LevelPlayReward: {
+    Category: "场景交互物类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于挑战完成后通过交互实现奖励发放。`,
+    EntityType: "玩法领奖实体(LevelPlayReward)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "SceneItemLifeCycleComponent", "NearbyTrackingComponent"]
+  },
+  Teleporter: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体被视为传送点，激活后可在小地图上传送到其附近。
+- 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件来配置“激活”交互。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件来设置传送点的状态，并设置在激活后关闭追踪。
+- 通过[TeleportComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-M1Lwds7F8o1sJuxrNHZcL7mTnMf)组件来关联传送配置表的ID，并设置传送后玩家与传送点实体的相对位置和角度。
+- 通过[NearbyTrackingComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-NDHedWRY9oBo3mx0GpvcLxcwnFc)组件来设置追踪效果，激活传送点前，玩家靠近传送点会启用追踪。`,
+    EntityType: "传送点(Teleporter)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent", "TeleportComponent", "NearbyTrackingComponent"]
+  },
+  DungeonEntry: {
+    Category: "场景交互物类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+        该类型的实体是副本入口，玩家靠近后点击交互按钮可以呼出副本选择界面，详情点击跳转👉https://kurogame.feishu.cn/wiki/I4VCwNRJSiLRqAk2UgHccPASnDc 。`,
+    EntityType: "副本入口(DungeonEntry)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent", "ItemFoundation2", "TeleportComponent", "NearbyTrackingComponent", "DungeonEntryComponent", "EntityVisibleComponent", "SceneActorRefComponent"]
+  },
+  Resurrection: {
+    Category: "触发器类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体被视为关卡中的检查点，玩家死亡时会在上一个激活的检查点位置复活。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/IejbwWTGXieuESktU07clXEYnDg#part-HKFNdwkUpo9Be0xJwUVcOGUfnlb)组件来控制实体状态：常态&激活。
+- 通过[Range](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Uxu9dEsPYoRGOKxlzCrcnkWtnId)组件设置触发区域。
+- 通过[Trigger](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-QjUadwQL2o8DhFxgr03cvjw4nyb)组件设置，玩家进入Range范围内后将实体状态改成激活态。
+- 通过[ResurrectionComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GHHodcPloosyh7x7dC7cclAonDb)组件，配置复活后传送到的基于复活点实体的相对位置。`,
+    EntityType: "复活点(Resurrection)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "TriggerComponent", "RangeComponent", "EntityStateComponent", "ResurrectionComponent"]
+  },
+  Trample: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体用于踩踏机关机关的功能实现，详情点击跳转👉[踩踏机关组件](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GjvFds0ctoi8m4xzXTUcNCyrnVe)。`,
+    EntityType: "踩踏机关(Trample)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TrampleComponent"]
+  },
+  Trample2: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于踩踏机关机关的功能实现，详情点击跳转👉[踩踏机关组件](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GjvFds0ctoi8m4xzXTUcNCyrnVe)。`,
+    EntityType: "踩踏机关2(Trample2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TrampleComponent", "TriggerComponent"]
+  },
+  Trample3: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+    型的实体用于踩踏机关机关的功能实现，详情点击跳转👉[踩踏机关组件](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GjvFds0ctoi8m4xzXTUcNCyrnVe)。`,
+    EntityType: "踩踏机关3(Trample3)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TrampleComponent", "TriggerComponent", "HitComponent", "SceneItemMovementComponent"]
+  },
+  TrampleWithSceneItemAttribute: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "功能同Trample2，在其基础上新增SceneItemAttributeComponent",
+    EntityType: "带场景物件属性的踩踏机关(TrampleWithSceneItemAttribute)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "RangeComponent", "TrampleComponent", "TriggerComponent"]
+  },
+  InteractGear: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体被视为交互机关，玩家可通过点击交互键进行交互改变其状态，并触发某些Action。
+- 通过[Interact](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-WFAhdyaAgovZ8txawWLcg0qQnmh)组件设置机关状态，以及状态改变后触发的Action。
+- 通过[InteractGearComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-HHjCdQJJgoC0P4xIM2Xcrk1vnof)组件设置机关状态改变时Action触发的延时。`,
+    EntityType: "交互机关(InteractGear)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "SceneItemLifeCycleComponent", "InteractGearComponent", "SceneItemMovementComponent", "AttachTargetComponent", "VarComponent"]
+  },
+  Lift: {
+    Category: "机关玩法类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体被视为电梯，可通过交互使其在不同坐标点之间来回移动。
+- 通过[LiftComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GutVdntk0oFq8oxZrVWcELM8nah)组件设置电梯每个停靠点的位置、以及在停靠点之间的移动速度等参数。
+- 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互，可通过交互使电梯在停靠点之间移动。`,
+    EntityType: "电梯(Lift)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "LiftComponent", "TriggerComponent", "RangeComponent"]
+  },
+  Lift2: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "在原电梯基础上新增监听组件",
+    EntityType: "电梯2(Lift2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "LiftComponent", "TriggerComponent", "RangeComponent", "ConditionListenerComponent", "ClientConditionListenerComponent"]
+  },
+  SpawnMonster: {
+    Category: "组功能类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+该类型的实体为刷怪器，用于实现怪物按一定顺序以及条件生成的玩法需求，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcnkYeSpHkiaRVnjKP4MqJUah。`,
+    EntityType: "刷怪器实体(SpawnMonster)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "SpawnMonsterComponent"]
+  },
+  TargetGear: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体为打击机关，可通过攻击使其状态发生变化
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件定义状态类型、以及不同状态下、以及状态切换过程中的美术表现。
+- 通过[TargetGearComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-WKfedHvaEobcrUxYZRlc4MbonUh)设置受击后的逻辑。`,
+    EntityType: "打击机关(TargetGear)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent"]
+  },
+  TargetGear2: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体为打击机关，可通过攻击使其状态发生变化
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件定义状态类型、以及不同状态下、以及状态切换过程中的美术表现。
+- 通过[TargetGearComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-WKfedHvaEobcrUxYZRlc4MbonUh)设置受击后的逻辑。`,
+    EntityType: "打击机关2(TargetGear2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "CollectComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent"]
+  },
+  TargetGearWithLevelPrefabPerform: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "在打击机关的基础上新增LevelPrefabPerform",
+    EntityType: "带运行时预制体改变的打击机关(TargetGearWithLevelPrefabPerform)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "LevelPrefabPerformComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "SceneBulletComponent", "SceneItemAttributeComponent"]
+  },
+  TargetGearPro: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: `
+该类型的实体为打击机关，可通过攻击使其状态发生变化
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件定义状态类型、以及不同状态下、以及状态切换过程中的美术表现。
+- 通过[TargetGearComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-WKfedHvaEobcrUxYZRlc4MbonUh)设置受击后的逻辑。
+- 基本功能等同于TargetGear，额外支持引用和修改Actor`,
+    EntityType: "打击机关加强版(TargetGearPro)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "SceneActorRefComponent"]
+  },
+  RangeTriggerTargetGear: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: `
+该类型的实体为打击机关，可通过攻击使其状态发生变化
+- 通过[EntityStateComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Q0ZVdEDKloUC7gxs0fOckFQpn3g)组件定义状态类型、以及不同状态下、以及状态切换过程中的美术表现。
+- 通过[TargetGearComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-WKfedHvaEobcrUxYZRlc4MbonUh)设置受击后的逻辑。
+- 基本功能等同于TargetGear，额外支持范围检测和触发`,
+    EntityType: "带范围触发的打击机关(RangeTriggerTargetGear)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "RangeComponent", "TriggerComponent"]
+  },
+  TargetGearGroup: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于统一管理一批打击机关实体的完成逻辑。
+- 通过[TargetGearGroupComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-K9FPdg60IoujBgx5P1qcjf7vnhg)组件来配置组内的机关实体列表，并设置该组机关的完成条件。`,
+    EntityType: "打击机关组(TargetGearGroup)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent", "TargetGearGroupComponent", "VarComponent"]
+  },
+  TargetGearGroup2: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于统一管理一批打击机关实体的完成逻辑。
+- 通过[TargetGearGroupComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-K9FPdg60IoujBgx5P1qcjf7vnhg)组件来配置组内的机关实体列表，并设置该组机关的完成条件。`,
+    EntityType: "打击机关组(TargetGearGroup2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent", "TargetGearGroupComponent", "VarComponent", "RangeComponent", "TriggerComponent"]
+  },
+  BondageTrap: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体用于禁锢陷阱机关的功能实现。`,
+    EntityType: "禁锢陷阱(BondageTrap)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "TriggerComponent", "RangeComponent", "TargetGearComponent", "EntityStateComponent", "SceneItemLifeCycleComponent"]
+  },
+  BurstCrystalFoundation: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体是一种特殊的[组刷新器](https://kurogame.feishu.cn/wiki/IejbwWTGXieuESktU07clXEYnDg#part-GKCvdaIkpottVGxQ8MYcO4FMnje)，所属实体的类型是被控物`,
+    EntityType: "爆裂鸣晶底座(BurstCrystalFoundation)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "ItemFoundation2", "RefreshGroupComponent", "SceneItemLifeCycleComponent"]
+  },
+  BurstCrystalFoundation2: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "功能同BurstCrystalFoundation，在其基础上新增SceneItemAttributeComponent",
+    EntityType: "爆裂鸣晶底座2(BurstCrystalFoundation2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "ItemFoundation2", "RefreshGroupComponent", "SceneItemLifeCycleComponent"]
+  },
+  GuardTarget: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "挑战守护目标物(GuardTarget)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent"]
+  },
+  ChallengeInteract: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体被用于交互开启挑战玩法。`,
+    EntityType: "挑战开启交互物(ChallengeInteract)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "AttachTargetComponent", "EntityVisibleComponent"]
+  },
+  SceneItemStateHint: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于谜题进度提示装置的功能实现，详情点击跳转👉[StateHintComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-DJIFdOBiooyMDAxbNK3cSKgOnBv)。`,
+    EntityType: "谜题进度提示装置(SceneItemStateHint)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "StateHintComponent"]
+  },
+  EntityPackage: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "实体投放组(EntityPackage)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityPackageComponent"]
+  },
+  SkyboxTrigger: {
+    Category: "触发器类",
+    Owner: 6,
+    Status: "可使用",
+    Description: `
+该类型的实体为任务用天空盒，用于控制剧情中的事件&天气变化，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcnPl42GOzoNzXLWUCC9YzrDh 。`,
+    EntityType: "范围触发天空盒(SkyboxTrigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "TriggerComponent", "RangeComponent", "SkyboxComponent"]
+  },
+  SceneAura: {
+    Category: "其他类型",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+该类型的实体用于进行与美术资源相关的场景设置，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcn5MkdNv2wAUZyhnZ1UbELhy `,
+    EntityType: "场景气氛(SceneAura)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneActorRefComponent", "LevelSequenceFrameEventComponent", "AirWallSpawnerComponent", "VarComponent"]
+  },
+  CookTool: {
+    Category: "场景交互物类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体是烹饪工具，玩家靠近后点击交互按钮可以呼出烹饪系统的界面。
+- 通过InteractComponent组件设置交互。`,
+    EntityType: "烹饪工具(CookTool)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent"]
+  },
+  BuffProducer: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于添加区域性Buff，详情点击跳转👉[BuffProducerComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-ISZId3ZdfohwGvxSvTkcAyXRnfc)。`,
+    EntityType: "生产Buff的机关(BuffProducer)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TriggerComponent", "RangeComponent", "BuffProducerComponent", "InteractComponent"]
+  },
+  BuffConsumer: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于设置玩家引入某块区域时移除指定Buff，详情点击跳转👉[BuffConsumerComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-LRAId7bSNoQpX3xBhpfcCwoNnWg)。`,
+    EntityType: "消费Buff的机关(BuffConsumer)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TriggerComponent", "RangeComponent", "BuffConsumerComponent"]
+  },
+  StateTrigger: {
+    Category: "触发器类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体是一种特殊的范围触发器，可在触发事件的同时改变自身状态。`,
+    EntityType: "状态触发器(StateTrigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TriggerComponent", "RangeComponent", "AttachTargetComponent", "VarComponent"]
+  },
+  GuideLineCreator: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "指引线创造器(GuideLineCreator)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "GuideLineCreatorComponent"]
+  },
+  StateSceneItem: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体是可通过外部事件触发状态改变的场景实体。`,
+    EntityType: "有状态的场景实体(StateSceneItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  SoundBox: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体是声匣。`,
+    EntityType: "声匣(SoundBox)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "EntityStateComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "InteractAudioComponent"]
+  },
+  HookSoundBox: {
+    Category: "场景交互物类",
+    Owner: 12,
+    Status: "可使用",
+    Description: `
+融了和钩锁行为的声匣。`,
+    EntityType: "钩锁声匣(HookSoundBox)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "EntityStateComponent", "RewardComponent", "SceneItemLifeCycleComponent", "InteractAudioComponent", "HookLockPoint"]
+  },
+  AnnunciatorCenter: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体用于信号器中枢实体的功能实现。`,
+    EntityType: "信号器中枢(AnnunciatorCenter)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "TargetGearComponent", "ConditionListenerComponent", "FightInteractComponent", "SceneItemLifeCycleComponent"]
+  },
+  LifePointCenter: {
+    Category: "机关玩法类",
+    Owner: 12,
+    Status: "可使用",
+    Description: "生命点UI玩法的终端，用于开启玩法，执行胜利表现",
+    EntityType: "生命点终端(LifePointCenter)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneActorRefComponent", "VarComponent", "LifePointCenterComponent", "RewardComponent"]
+  },
+  Chair: {
+    Category: "场景交互物类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体是椅子，可以交互坐上去。`,
+    EntityType: "椅子(Chair)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent"]
+  },
+  Chair2: {
+    Category: "场景交互物类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体是椅子，可以交互坐上去。`,
+    EntityType: "椅子2(Chair2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "AttachTargetComponent"]
+  },
+  Rotator: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "旋转机关(Rotator)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RotatorComponent2", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  RangeTriggerRotator: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "在旋转机关(Rotator)的基础上新增范围和触发器组件",
+    EntityType: "带范围检测的旋转机关(RangeTriggerRotator)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RotatorComponent2", "SceneItemLifeCycleComponent", "AttachTargetComponent", "RangeComponent", "TriggerComponent"]
+  },
+  AnnunciatorWire: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体用于信号器电线实体的功能实现。`,
+    EntityType: "信号器电线(AnnunciatorWire)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "GuideLineCreatorComponent"]
+  },
+  EntityList: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "实体列表(EntityList)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityListComponent"]
+  },
+  Audio: {
+    Category: "其他类型",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体为音频实体，用于控制音频播放，详情点击跳转👉https://kurogame.feishu.cn/wiki/F71zwR37SiuoOokpLQccsjhBn2g 。`,
+    EntityType: "音频实体(Audio)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateAudioComponent", "EntityStateComponent", "EntityGroupComponent", "RangeComponent", "NearbyTrackingComponent", "EntityVisibleComponent"]
+  },
+  AudioBox: {
+    Category: "其他类型",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体为音频盒子实体，用于配置地图中的背景音乐和背景环境声，详情点击跳转👉https://kurogame.feishu.cn/wiki/Flv0w4UtPiN9ylkn1ntcwNONneh 。`,
+    EntityType: "音频盒子实体(AudioBox)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateAudioComponent", "EntityStateComponent", "SceneActorRefComponent", "RangeComponent"]
+  },
+  Gramophone: {
+    Category: "其他类型",
+    Owner: 11,
+    Status: "开发中",
+    Description: "该类型的实体用于玩家通过留声机界面并选择播放指定BGM，BGM存在有效范围，且支持范围内所有玩家听到",
+    EntityType: "留声机(Gramophone)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "RangeComponent", "EntityCustomAudioComponent"]
+  },
+  Disc: {
+    Category: "场景交互物",
+    Owner: 11,
+    Status: "开发中",
+    Description: "该类型的实体用于根据不同情况发放唱片道具，可在留声机处消耗并播放对应曲目",
+    EntityType: "唱片(Disc)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "RewardComponent", "RangeComponent", "EntityStateAudioComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemMovementComponent", "FollowTrackComponent", "SceneItemLifeCycleComponent", "InteractComponent"]
+  },
+  AreaOccupation: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: "场地(AreaOccupation)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "RangeComponent"]
+  },
+  TimelineTrackController: {
+    Category: "机关玩法类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现时间控制玩法，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcnRbrV0cTOAXhr7g9Dg7Goog。`,
+    EntityType: "时间回放控制器(TimelineTrackController)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "AttachTargetComponent", "TimelineTrackControlComponent"]
+  },
+  Spline: {
+    Category: "ClientOnly",
+    Owner: 5,
+    Status: "可使用",
+    Description: `
+该类型的实体为样条实体，用于设置实体的运动路线，详情点击跳转👉https://kurogame.feishu.cn/wiki/BgTKwTqigi2hTNkTFvecP0IrnIc。`,
+    EntityLogic: "ClientOnly",
+    EntityType: "样条实体(Spline)",
+    Components: ["BaseInfoComponent", "SplineComponent"]
+  },
+  MoveableTrigger: {
+    Category: "触发器类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体是一种特殊的范围触发器，拥有SceneItemMovementComponent组件。拥有并启用了该组件的实体，可通过[MoveSceneItem（移动机关）](https://kurogame.feishu.cn/wiki/BijGwN0rMiM6ELkw9dec6fCNnKc#Df8adaKgOoWdQRxrRzfcX4fynMF)行为来移动。`,
+    EntityType: "可移动触发器(MoveableTrigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "SceneItemMovementComponent", "AttachTargetComponent", "VarComponent"]
+  },
+  CustomAoiEditor: {
+    Category: "其他类型",
+    Owner: 4,
+    Status: "可使用",
+    EntityLogic: "ClientOnly",
+    Description: `
+该类型的实体用于便捷配置实体的AoiZ数值，详情点击跳转👉https://kurogame.feishu.cn/wiki/DYLOwjtgliYYbzkEkYzcmL9vn7f`,
+    EntityType: "自定义AOI编辑(CustomAoiEditor)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EditCustomAoiComponent"]
+  },
+  CombinedVisibleGroup: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityLogic: "Custom",
+    EntityType: "协同显示组(CombinedVisibleGroup)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CombinedVisibleGroupComponent"]
+  },
+  SceneBullet: {
+    Category: "机关玩法类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现在场景GamePlay中控制子弹的发射与销毁，从而实现场景机制的击飞、造成伤害等效果。详情点击跳转👉https://kurogame.feishu.cn/wiki/TdgZwLMJHiNeQQkZ3pYcVqCGnhc 。`,
+    EntityType: "场景子弹(SceneBullet)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneBulletComponent", "RangeComponent"]
+  },
+  SceneBulletWithMovement: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "在SceneBullet基础上扩展移动能力",
+    EntityType: "带移动的场景子弹(SceneBulletWithMovement)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneBulletComponent", "RangeComponent", "SceneItemMovementComponent", "RotatorComponent2", "AttachTargetComponent"]
+  },
+  SceneBulletCanHit: {
+    Category: "机关玩法类",
+    Owner: 12,
+    Status: "可使用",
+    Description: "附带击中效果的的场景子弹",
+    EntityType: "可被击中的场景子弹(SceneBulletCanHit)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TriggerComponent", "RangeComponent", "SceneItemMovementComponent", "TargetGearComponent", "SceneBulletComponent", "SceneItemAttributeComponent", "LevelPrefabPerformComponent", "SceneItemLifeCycleComponent"]
+  },
+  TurntableController: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现稷廷开门装置的功能，详情点击跳转👉https://kurogame.feishu.cn/wiki/BjuGwBQcEiYHRskEJsscZeYdnKb。`,
+    EntityType: "转盘控制机关(TurntableController)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "TurntableControlComponent", "AttachTargetComponent"]
+  },
+  InteractiveConditionListener: {
+    Category: "场景交互物类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+该类型的实体用于监听外部事件并触发对应Action，详情点击跳转👉https://kurogame.feishu.cn/wiki/Qy4wwVEL0iY3V5kUvVkc2Ksgnqb。`,
+    EntityType: "可交互条件监听器(InteractiveConditionListener)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "VarComponent", "ClientConditionListenerComponent"]
+  },
+  TriggerConditionListener: {
+    Category: "场景交互物类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
+该类型的实体用于监听外部事件并触发对应Action，详情点击跳转👉https://kurogame.feishu.cn/wiki/Qy4wwVEL0iY3V5kUvVkc2Ksgnqb。`,
+    EntityType: "带触发器的条件监听器(TriggerConditionListener)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "RangeComponent", "TriggerComponent", "VarComponent", "SceneItemLifeCycleComponent"]
+  },
+  ReboundPlateGear: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现无光之森反弹板机关玩法。
+- 通过[ReboundComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GMwzd1sxdoylG4xJuVgckyQEnWc)组件设置反弹的子弹。`,
+    EntityType: "反弹板机关(ReboundPlateGear)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "ReboundComponent", "FanComponent"]
+  },
+  JigsawItem: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现控物拼图玩法，详情点击跳转👉https://kurogame.feishu.cn/wiki/JwAXwdlGKicIoaknhb6cM0Iynn6 。`,
+    EntityType: "拼图物件机关(JigsawItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "JigsawItem", "ResetSelfPosComponent", "InteractAudioComponent", "SceneItemLifeCycleComponent"]
+  },
+  JigsawFoundation: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现控物拼图玩法，详情点击跳转👉https://kurogame.feishu.cn/wiki/TlEgwszhxiooG5kHRxjcF00anVc`,
+    EntityType: "拼图底座机关(JigsawFoundation)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "ItemFoundation2", "JigsawFoundation", "EntityStateComponent", "SceneItemLifeCycleComponent"]
+  },
+  LevitateMagnet: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现控物拼图玩法，详情点击跳转👉https://kurogame.feishu.cn/wiki/TlEgwszhxiooG5kHRxjcF00anVc`,
+    EntityType: "悬浮磁石(LevitateMagnet)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "JigsawItem", "LevitateMagnetComponent", "FightInteractComponent"]
+  },
+  SoundTransmitter: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于传音装置机关的功能实现。`,
+    EntityType: "传音装置(SoundTransmitter)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "TeleControl2", "InteractAudioComponent", "FightInteractComponent", "TargetGearComponent", "SceneItemLifeCycleComponent"]
+  },
+  PhotoTarget: {
+    Category: "其他类型",
+    Owner: 6,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现拍照玩法，作为拍照目标点存在，详情点击跳转👉https://kurogame.feishu.cn/wiki/TnFhwqRN5ipHNekCLJZcf5Qpnjg 。
+- 通过[PhotoTargetComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Kr2XdoYLco3ZUTxwpLCcLWnJngc)组件设置拍照的目标点。`,
+    EntityType: "拍照目标(PhotoTarget)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "PhotoTargetComponent"]
+  },
+  AiAlertNotifier: {
+    Category: "触发器类",
+    Owner: 4,
+    Status: "可使用",
+    Description: `
+该类型的实体通过[AiAlertNotifyComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-DmwHditesoTb1gxZ9TTcG3i8nge)组件实现潜行玩法中的敌人警戒值计算。`,
+    EntityType: "Ai警戒通知器(AiAlertNotifier)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "TriggerComponent", "RangeComponent", "AiAlertNotifyComponent"]
+  },
+  MonsterGachaItem: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现怪物扭蛋玩法，详情点击跳转👉https://kurogame.feishu.cn/wiki/Ls4dwXwzGi6liCknirZcsRLUngB `,
+    EntityType: "怪物扭蛋(MonsterGachaItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "MonsterGachaItemComponent", "SceneItemLifeCycleComponent"]
+  },
+  MonsterGachaBase: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现怪物扭蛋玩法，详情点击跳转👉https://kurogame.feishu.cn/wiki/Ls4dwXwzGi6liCknirZcsRLUngB`,
+    EntityType: "怪物扭蛋底座(MonsterGachaBase)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "ItemFoundation2", "MonsterGachaBaseComponent", "RefreshComponent", "RefreshGroupComponent", "ResetEntitiesPosComponent"]
+  },
+  ProgressBarController: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "可使用",
+    Description: `
+该类型的实体用于进度条类玩法机关的功能实现，详情点击跳转👉https://kurogame.feishu.cn/wiki/CSFCwRw7TiOOaLkmWEJcgAKJnZg 。`,
+    EntityType: "读条机关(ProgressBarController)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "RangeComponent", "ProgressBarControlComponent"]
+  },
+  ProgressBarControllerWithAttribute: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: `
+该类型的实体用于进度条类玩法机关的功能实现，详情点击跳转👉https://kurogame.feishu.cn/wiki/CSFCwRw7TiOOaLkmWEJcgAKJnZg 。`,
+    EntityType: "带场景物件属性的读条机关(ProgressBarControllerWithAttribute)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "InteractComponent", "RangeComponent", "ProgressBarControlComponent"]
+  },
+  ConveyorBelt: {
+    Category: "机关玩法类",
+    Owner: 2,
+    Status: "可使用",
+    Description: `
+该类型的实体用于传动带机关的功能实现，详情点击跳转👉https://kurogame.feishu.cn/wiki/AdLcwJK1xiFxoTko52pcFAjNnKf 。`,
+    EntityType: "传送带(ConveyorBelt)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "ConveyorBeltComponent", "RangeComponent"]
+  },
+  TemporaryTeleporter: {
+    Category: "其他类型",
+    Owner: 9,
+    Status: "可使用",
+    Description: `
+该类型的实体用于实现玩家通过探索道具生成的临时传送点的功能，不能投放在地图上！！！`,
+    EntityType: "临时传送门(TemporaryTeleporter)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "DynamicTeleportComponent"]
+  },
+  ExploreSkillInteractor: {
+    Category: "场景交互物类",
+    Owner: 7,
+    Status: "开发中",
+    Description: `
+该类型的实体可使用探索技能进行交互，详情点击跳转👉https://kurogame.feishu.cn/wiki/FqEKwqThziWMtrkidXcclEqMnbh。`,
+    EntityType: "探索技能交互物(ExploreSkillInteractor)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ExploreSkillInteractComponent", "AttachTargetComponent"]
+  },
+  PullingObject: {
+    Category: "场景交互物类",
+    Owner: 2,
+    Status: "开发中",
+    Description: `
+被拉取物，通过T键交互拉取，自身可以跟随拉取运动`,
+    EntityType: "被拉取物(PullingObject)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ExploreSkillInteractComponent", "AttachTargetComponent", "SceneItemMovementComponent"]
+  },
+  SpawnPasserbyNpc: {
+    Category: "机关玩法类",
+    Owner: 0,
+    Status: "可使用",
+    Description: "",
+    EntityType: "行人NPC生成器(SpawnPasserbyNpc)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "PasserbyNpcSpawnComponent"]
+  },
+  LightDeliver: {
+    Category: "机关玩法类",
+    Owner: 7,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "光线传导机关(LightDeliver)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "FanComponent", "ItemFoundation2"]
+  },
+  BeamCaster: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "光线发射机关(BeamCaster)",
+    Components: ["BaseInfoComponent", "ModelComponent", "SceneItemMovementComponent", "EntityStateComponent", "BeamCastComponent", "AttachTargetComponent", "InteractComponent"]
+  },
+  BeamCastBullet: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "光线子弹(BeamCastBullet)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemMovementComponent", "RotatorComponent2", "AttachTargetComponent", "SceneBulletComponent", "BeamCastComponent"]
+  },
+  BeamReceiver: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "光线接收机关(BeamReceiver)",
+    Components: ["BaseInfoComponent", "ModelComponent", "SceneItemMovementComponent", "EntityStateComponent", "BeamReceiveComponent", "AttachTargetComponent", "InteractComponent"]
+  },
+  BeamDeliver: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "光线传递机关(BeamDeliver)",
+    Components: ["BaseInfoComponent", "ModelComponent", "SceneItemMovementComponent", "EntityStateComponent", "InteractComponent", "BeamCastComponent", "BeamReceiveComponent", "AttachTargetComponent"]
+  },
+  BeamCrystal: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "光线机关水晶(BeamCrystal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "TeleControl2", "InteractAudioComponent", "ResetSelfPosComponent", "NearbyTrackingComponent", "BeamCastComponent", "BeamReceiveComponent"]
+  },
+  TimeStop: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "时停机关(TimeStop)",
+    Components: ["BaseInfoComponent", "EntityStateComponent", "RangeComponent", "ModelComponent", "TimeStopComponent", "TargetGearComponent", "FightInteractComponent", "AttachTargetComponent"]
+  },
+  Portal: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "传送门机关(Portal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "PortalComponent", "AttachTargetComponent", "SceneItemLifeCycleComponent"]
+  },
+  DynamicPortalCreater: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "动态传送门创建器(DynamicPortalCreater)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "HitComponent", "RangeComponent", "DynamicPortalCreatorComponent", "AttachTargetComponent", "SceneItemLifeCycleComponent"]
+  },
+  NoRenderPortal: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "无渲染传送门机关(Portal)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "NoRenderPortalComponent", "AttachTargetComponent", "SceneItemLifeCycleComponent"]
+  },
+  EffectArea: {
+    Category: "机关玩法类",
+    Owner: 2,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "效果区域实体，用于毒区，焚炎海",
+    EntityType: "效果区域(EffectArea)",
+    Components: ["BaseInfoComponent", "EffectAreaComponent", "RangeComponent", "SceneActorRefComponent", "EntityStateComponent", "ModelComponent"]
+  },
+  ActorRefVolumeTrigger: {
+    Category: "机关玩法类",
+    Owner: 2,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "用于实现新版的效果区域，通过给触发器配置进出行为配置效果，用于毒区，焚炎海",
+    EntityType: "ActorRefVolume触发器(ActorRefVolumeTrigger)",
+    Components: ["BaseInfoComponent", "TriggerComponent", "RangeComponent", "SceneActorRefComponent", "EntityStateComponent", "ModelComponent"]
+  },
+  PhysicsSwing: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "物理摆荡效果的打击机关",
+    EntityType: "物理摆荡物件(PhysicsSwing)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "DestructibleItem", "RewardComponent", "PhysicsConstraintComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  VarManager: {
+    Category: "其他类型",
+    Owner: 7,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "变量管理器",
+    EntityType: "变量管理器(VarManager)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "VarComponent"]
+  },
+  ControlConnector: {
+    Category: "可被控连线机关",
+    Owner: 3,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "可被控、可连接的机关",
+    EntityType: "可被控连线机关(ControlConnector)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "InteractAudioComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "ResetSelfPosComponent", "NearbyTrackingComponent", "RangeComponent", "TriggerComponent", "HitComponent", "ProgressBarControlComponent", "ConnectorComponent"]
+  },
+  EntityBundle: {
+    Category: "实体包",
+    Owner: 12,
+    Status: "可使用",
+    EntityLogic: "Custom",
+    Description: "静态投放的实体包",
+    EntityType: "实体包(EntityBundle)",
+    Components: ["BaseInfoComponent", "EntityBundleComponent"]
+  },
+  Chessboard: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "棋盘形式的拼图底座机关，用于连珠棋或其他棋形式的玩法",
+    EntityType: "棋盘(Chessboard)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "ItemFoundation2", "JigsawFoundation"]
+  },
+  Chessman: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "该类型用于实现下棋类玩法",
+    EntityType: "棋子(Chessman)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemMovementComponent", "JigsawItem", "PickInteractComponent", "ChessmanComponent", "SceneItemLifeCycleComponent"]
+  },
+  AiGearController: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "该类型用于实现AI控制机关",
+    EntityType: "AI机关控制器(AiGearController)",
+    Components: ["BaseInfoComponent", "EntityStateComponent", "AiGearStrategyComponent"]
+  },
+  AiMovementGear: {
+    Category: "机关玩法类",
+    Owner: 3,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "该类型用于实现AI控制机关自身移动",
+    EntityType: "AI移动机关(AiMovementGear)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "AiGearStrategyComponent", "CollectComponent", "InteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent"]
+  },
+  LocationSafety: {
+    Category: "其他类型",
+    Owner: 3,
+    Status: "开发中",
+    Description: "",
+    EntityLogic: "Custom",
+    EntityType: "安全位置检测器(LocationSafety)",
+    Components: ["BaseInfoComponent", "ModelComponent", "RangeComponent", "LocationSafetyComponent"]
+  },
+  BatchBulletCaster: {
+    Category: "机关玩法类",
+    Owner: 12,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "用于多波次冲撞器配置",
+    EntityType: "批次子弹发射器(CollisionController)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "BatchBulletCasterComponent"]
+  },
+  Vehicle: {
+    Category: "载具类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "该类型用于实现特定的，拥有独特运动和操控模式的载具形式实体",
+    EntityType: "载具(Vehicle)",
+    EntityLogic: "Vehicle",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "VehicleComponent"]
+  },
+  Vehicle2: {
+    Category: "载具类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "该类型用于实现特定的，拥有独特运动和操控模式的载具形式实体",
+    EntityType: "载具2(Vehicle2)",
+    EntityLogic: "Vehicle",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "VehicleComponent", "NearbyTrackingComponent"]
+  },
+  VehicleNpc: {
+    Category: "怪物&生物&NPC类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "该类型在NPC的基础上支持部分增载具功能",
+    EntityLogic: "Npc",
+    EntityType: "载具NPC(VehicleNpc)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "AiComponent", "LevelAiComponent", "NpcPerformComponent", "EntityVisibleComponent", "BubbleComponent", "VarComponent", "VehicleComponent"]
+  },
+  VehicleSceneItem: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "该类型在场景物件的基础上支持部分载具功能",
+    EntityType: "载具场景物件(VehicleSceneItem)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemMovementComponent", "SceneItemLifeCycleComponent", "InteractComponent", "VehicleComponent"]
+  },
+  FishingBoat: {
+    Category: "载具类",
+    Owner: 4,
+    Status: "开发中",
+    Description: "该类型为载具的拓展实现，携带属性，支持buff相关功能",
+    EntityType: "载具捕鱼船(FishingBoat)",
+    EntityLogic: "Vehicle",
+    Components: ["BaseInfoComponent", "ModelComponent", "AttributeComponent", "InteractComponent", "VehicleComponent"]
+  },
+  EnrichmentArea: {
+    Category: "富集区",
+    Owner: 2,
+    Status: "可使用",
+    Description: "富集区实体，用于统计其中的采集物",
+    EntityType: "富集区(EnrichmentArea)",
+    EntityLogic: "Custom",
+    Components: ["BaseInfoComponent", "EnrichmentAreaComponent"]
+  },
+  AirPassage: {
+    Category: "机关玩法类",
+    Owner: 12,
+    Status: "可使用",
+    Description: "风道实体，进入风道自动切换翱翔3C",
+    EntityLogic: "Item",
+    EntityType: "风道(AirPassage)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AirPassageComponent", "SplineComponent", "EntityStateComponent", "RangeComponent", "ClientTriggerComponent", "TriggerComponent"]
+  },
+  TimedStrikeDevice: {
+    Category: "限时连击装置",
+    Owner: 12,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "在一定时间内连续打击，中断时自定回退进度",
+    EntityType: "限时连击装置(TimedStrikeDevice)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "ProgressBarControlComponent", "HitComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent", "SceneItemAttributeComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "FightInteractComponent"]
+  },
+  Monitor: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "",
+    EntityLogic: "Item",
+    EntityType: "监控摄像头(Monitor)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "RotatorComponent2", "MonitorComponent", "SceneItemAttributeComponent"]
+  },
+  WaterCollection: {
+    Category: "场景交互类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "支持通过按钮或碰撞交互后发放奖励",
+    EntityLogic: "Item",
+    EntityType: "水上收集品(WaterCollection)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "InteractAudioComponent", "NearbyTrackingComponent", "DestructibleItem", "FightInteractComponent"]
+  },
+  InhaledItem: {
+    Category: "可吸入物体",
+    Owner: 2,
+    Status: "开发中",
+    Description: "可吸入物体，2.0污染物",
+    EntityLogic: "Item",
+    EntityType: "可吸入物体(InhaledItem)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InhaledItemComponent", "RangeComponent", "ExploreSkillInteractComponent", "SceneItemLifeCycleComponent", "LevelPrefabPerformComponent", "RefreshComponent", "RewardComponent", "AttachTargetComponent", "CollectComponent"]
+  },
+  VacuumCleaner: {
+    Category: "吸尘器",
+    Owner: 2,
+    Status: "开发中",
+    Description: "吸尘器，激活时可以吸入物体",
+    EntityLogic: "Item",
+    EntityType: "吸尘器(VacuumCleaner)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InhalationAbilityComponent", "RangeComponent", "SceneItemMovementComponent", "AttachTargetComponent"]
+  },
+  AiSceneItem: {
+    Category: "场景交互物类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "拥有AI能力的与场景、关卡强关联的实体",
+    EntityLogic: "Item",
+    EntityType: "带AI的场景物件(AiSceneItem)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAiComponent", "SceneItemMovementComponent"]
+  },
+  GravityFlip: {
+    Category: "场景交互物类",
+    Owner: 3,
+    Status: "开发中",
+    Description: "可以交互并修改玩家的重力方向",
+    EntityLogic: "Item",
+    EntityType: "重力翻转机关(GravityFlip)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "GravityFlipComponent", "RangeComponent", "TriggerComponent", "SceneItemAttributeComponent", "SceneItemLifeCycleComponent"]
+  },
+  CollectAnimalPart: {
+    Category: "场景交互物类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "用于定义采集动物身上的采集部位，仅用于处理刷新和掉落逻辑，不下发给客户端",
+    EntityLogic: "ServerOnly",
+    EntityType: "采集动物部位(CollectAnimalPart)",
+    Components: ["BaseInfoComponent", "CollectComponent", "RewardComponent"]
+  },
+  RenderSpecifiedRange: {
+    Category: "场景交互物类",
+    Owner: 3,
+    Status: "可使用",
+    Description: "附带了RenderSpecifiedRangeComponent和AttachTargetComponent",
+    EntityType: "范围渲染控制器(RenderSpecifiedRange)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "RenderSpecifiedRangeComponent", "SceneItemMovementComponent", "AttachTargetComponent"]
+  },
+  RenderSpecifiedRange2: {
+    Category: "机关玩法类",
+    Owner: 12,
+    Status: "可使用",
+    Description: "气流剔除和触发器功能",
+    EntityType: "带触发器的范围渲染控制器(RenderSpecifiedRange2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "VarComponent", "RenderSpecifiedRangeComponent", "AttachTargetComponent"]
+  },
+  WalkingPatternController: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "该类型用于实现走图案玩法的配置",
+    EntityType: "走图案玩法控制器(WalkingPatternController)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "WalkingPatternComponent", "VarComponent"]
+  },
+  HorseBettingTuanzi: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "开发中",
+    EntityLogic: "Item",
+    Description: "该类型用于实现全服赌马活动的团子实体",
+    EntityType: "全服赌马活动团子(HorseBettingTuanzi)",
+    Components: ["BaseInfoComponent", "ModelComponent"]
+  },
+  WindSource: {
+    Category: "机关玩法类",
+    Owner: 12,
+    Status: "可使用",
+    EntityLogic: "Item",
+    Description: "生成风源，设置风力参数",
+    EntityType: "风源实体(WindSource)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "WindSourceComponent"]
+  },
+  TemplateEntitySpawner: {
+    Category: "模板实体生成器",
+    Owner: 4,
+    Status: "开发中",
+    EntityLogic: "Item",
+    EntityType: "模板实体生成器(TemplateEntitySpawner)",
+    Description: "用于按规则生成模板实体",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TemplateEntitySpawnerComponent"]
+  },
+  SlideRail: {
+    Category: "跑酷滑轨",
+    Owner: 4,
+    Status: "开发中",
+    Description: "跑酷滑轨，用于实现滑轨跑酷玩法",
+    EntityLogic: "Item",
+    EntityType: "跑酷滑轨(SlideRail)",
+    Components: ["BaseInfoComponent", "ModelComponent", "SlideRailComponent"]
+  },
+  CurveControlDestructible: {
+    Category: "可被曲线控制的可破坏物",
+    Owner: 4,
+    Status: "开发中",
+    Description: "可被曲线控制的可破坏物，可通过曲线配置进行控制控制",
+    EntityType: "可被曲线控制的可破坏物(CurveControlDestructible)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "SceneItemLifeCycleComponent", "RefreshComponent", "RewardComponent", "FightInteractComponent", "AttachTargetComponent", "CurveControlComponent"]
+  },
+  SplineRange: {
+    Category: "样条范围",
+    Owner: 13,
+    Status: "开发中",
+    Description: "用样条生成不规则Actor碰撞体范围",
+    EntityType: "样条范围(SplineRange)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "SplineComponent", "RangeComponent"]
+  },
+  Slots: {
+    Category: "老虎机",
+    Owner: 11,
+    Status: "开发中",
+    Description: "宝箱，当转到指定图案时解锁",
+    EntityType: "老虎机(Slots)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RewardComponent", "TargetGearComponent", "RotatorComponent2", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneItemAttributeComponent"]
+  },
+  TuningStand: {
+    Category: "机关玩法类",
+    Owner: 16,
+    Status: "开发中",
+    Description: "调律台UI玩法的终端，用于开启玩法，执行胜利表现",
+    EntityType: "调律台(TuningStand)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "VarComponent", "RewardComponent"]
+  },
+  TowerDefenseTrap: {
+    Category: "塔防陷阱",
+    Owner: 12,
+    Status: "开发中",
+    Description: "塔防玩法中，由玩家建造的陷阱",
+    EntityType: "塔防陷阱(TowerDefenseTrap)",
+    EntityLogic: "SimpleCombat",
+    Components: ["BaseInfoComponent", "SimpleCombatComponent", "GridObjectComponent"]
+  },
+  TowerDefenseMonster: {
+    Category: "塔防怪物",
+    Owner: 12,
+    Status: "开发中",
+    Description: "塔防玩法中怪物",
+    EntityType: "塔防怪物(TowerDefenseMonster)",
+    EntityLogic: "SimpleCombat",
+    Components: ["BaseInfoComponent", "SimpleCombatComponent"]
+  },
+  PerformanceOptimizer: {
+    Category: "触发器类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "目标对象进入实体范围后开启特定优化",
+    EntityType: "范围优化实体(PerformanceOptimizer)",
+    EntityLogic: "Custom",
+    Components: ["BaseInfoComponent", "RangeComponent", "PerformanceOptimizationComponent"]
+  }
+}, exports.entityDetails = {
+  ...exports.entityDetailsUe5,
+  ...exports.entityDetailsAki
+}, exports.componentsByEntityUe5 = Object.fromEntries(Object.entries(exports.entityDetailsUe5).map(([t, e]) => [t, e.Components])), exports.componentsByEntityAki = Object.fromEntries(Object.entries(exports.entityDetailsAki).map(([t, e]) => [t, e.Components])), exports.entityTypesUe5 = Object.keys(exports.componentsByEntityUe5).sort(), exports.entityTypesAki = Object.keys(exports.componentsByEntityAki).sort(), exports.entityTypeConfig = Object.fromEntries(Object.entries(exports.entityDetails).map(([t, e]) => [t, e.EntityType])), exports.isValidEntityType = isValidEntityType, exports.monsterEntityTypes = new Set(["Monster", "NpcMonster", "MonsterWithInhalation"]), exports.entityDescriptionConfig = Object.fromEntries(Object.entries(exports.entityDetails).map(([t, e]) => [t, {
+  Category: e.Category,
+  Owner: e.Owner,
+  Status: e.Status,
+  Description: e.Description
+}]));
+const collectRewardEntityTypes = ["Collect", "Animal", "Animal2", "CombatAnimal", "CombatAnimal2", "CollectAnimal", "CollectAnimalPart", "TreasureBox"];
+
+function getRewardTypeConfig(t) {
+  return collectRewardEntityTypes.includes(t) ? IComponent_1.rewardTypeCollectConfig : IComponent_1.rewardTypeCommonConfig
+}
+var EDevelopmentStatus, EExploratoryBelongType, EEffectConfigType, EHideGroupObjectType;
+
+function decompressEntityData(t, e) {
+  return void 0 === e ? t : {
+    ObjType: t.ObjType,
+    EdPlannedBranch: t.EdPlannedBranch,
+    BlueprintType: t.BlueprintType,
+    Name: t.Name,
+    Id: t.Id,
+    Transform: t.Transform,
+    InSleep: t.InSleep,
+    IsScaleEnabled: t.IsScaleEnabled,
+    IsHidden: t.IsHidden,
+    IsClientHidden: t.IsClientHidden,
+    IsAlwaysLoad: t.IsAlwaysLoad,
+    ComponentsData: (0, IUtil_1.applyDiff)(t.ComponentsData, e.ComponentsData, IUtil_1.entityDataIgnoreFunc),
+    EdEntityTip: t.EdEntityTip,
+    Children: t.Children,
+    Reference: t.Reference,
+    WeakReference: t.WeakReference,
+    AreaId: t.AreaId,
+    EdBundleMainEntityId: t.EdBundleMainEntityId
+  }
+}
+exports.getRewardTypeConfig = getRewardTypeConfig, exports.editorBpTypes = new Set(["UseCase001", "UseCase002"]), exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = "EntityBundle_MainEntity",
+  function(t) {
+    t[t.Developing = 0] = "Developing", t[t.Released = 1] = "Released", t[t.Discarded = 2] = "Discarded"
+  }(EDevelopmentStatus = exports.EDevelopmentStatus || (exports.EDevelopmentStatus = {})), exports.decompressEntityData = decompressEntityData,
+  function(t) {
+    t[t.Entity = 0] = "Entity", t[t.LevelPlay = 1] = "LevelPlay"
+  }(EExploratoryBelongType = exports.EExploratoryBelongType || (exports.EExploratoryBelongType = {})),
+  function(t) {
+    t[t.Death = 0] = "Death"
+  }(EEffectConfigType = exports.EEffectConfigType || (exports.EEffectConfigType = {})),
+  function(t) {
+    t.Entity = "Entity", t.LevelPlay = "LevelPlay"
+  }(EHideGroupObjectType = exports.EHideGroupObjectType || (exports.EHideGroupObjectType = {})), exports.ENTITY_RESETAREA_BP_TYPE = "Gameplay331", exports.ENTITY_RESETPOINT_BP_TYPE = "Gameplay330";
+//# sourceMappingURL=IEntity.js.map
