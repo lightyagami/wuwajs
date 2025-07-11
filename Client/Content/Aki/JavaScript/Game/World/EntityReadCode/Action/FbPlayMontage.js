@@ -1,29 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayMontage = void 0;
+  value: true
+});
+exports.FbPlayMontage = undefined;
 const FbActionMontage_1 = require("./FbActionMontage");
 class FbPlayMontage {
   constructor(t) {
-    this.FbDataInternal = t, this.a_h = !1, this.I9o = 0, this.gdh = !1, this.fdh = void 0, this.Xdh = !1, this.Ydh = void 0, this.zdh = !1, this.Jdh = void 0, this.I_h = !1, this.y6o = 0
+    this.FbDataInternal = t;
+    this.a_h = false;
+    this.I9o = 0;
+    this.gdh = false;
+    this.fdh = undefined;
+    this.Xdh = false;
+    this.Ydh = undefined;
+    this.zdh = false;
+    this.Jdh = undefined;
+    this.I_h = false;
+    this.y6o = 0;
   }
   static Create(t) {
-    if (t) return new FbPlayMontage(t)
+    if (t) {
+      return new FbPlayMontage(t);
+    }
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get ActionMontage() {
-    return this.gdh || (this.gdh = !0, this.fdh = FbActionMontage_1.FbActionMontage.Create(this.FbDataInternal.actionMontage())), this.fdh
+    if (!this.gdh) {
+      this.gdh = true;
+      this.fdh = FbActionMontage_1.FbActionMontage.Create(this.FbDataInternal.actionMontage());
+    }
+    return this.fdh;
   }
   get ExpressionMontage() {
-    return this.Xdh || (this.Xdh = !0, this.Ydh = this.FbDataInternal.expressionMontage()), this.Ydh
+    if (!this.Xdh) {
+      this.Xdh = true;
+      this.Ydh = this.FbDataInternal.expressionMontage();
+    }
+    return this.Ydh;
   }
   get MouthSequence() {
-    return this.zdh || (this.zdh = !0, this.Jdh = this.FbDataInternal.mouthSequence()), this.Jdh
+    if (!this.zdh) {
+      this.zdh = true;
+      this.Jdh = this.FbDataInternal.mouthSequence();
+    }
+    return this.Jdh;
   }
   get Duration() {
-    return this.I_h || (this.I_h = !0, this.y6o = this.FbDataInternal.duration()), this.y6o
+    if (!this.I_h) {
+      this.I_h = true;
+      this.y6o = this.FbDataInternal.duration();
+    }
+    return this.y6o;
   }
 }
 exports.FbPlayMontage = FbPlayMontage;

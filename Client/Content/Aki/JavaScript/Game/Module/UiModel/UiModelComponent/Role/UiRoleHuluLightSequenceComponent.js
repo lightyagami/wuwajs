@@ -1,60 +1,100 @@
 "use strict";
-var __decorate = this && this.__decorate || function(e, t, i, s) {
-  var o, r = arguments.length,
-    n = r < 3 ? t : null === s ? s = Object.getOwnPropertyDescriptor(t, i) : s;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) n = Reflect.decorate(e, t, i, s);
-  else
-    for (var h = e.length - 1; 0 <= h; h--)(o = e[h]) && (n = (r < 3 ? o(n) : 3 < r ? o(t, i, n) : o(t, i)) || n);
-  return 3 < r && n && Object.defineProperty(t, i, n), n
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiRoleHuluLightSequenceComponent = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem"),
-  ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  ObjectUtils_1 = require("../../../../../Core/Utils/ObjectUtils"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  CharacterNameDefines_1 = require("../../../../NewWorld/Character/Common/CharacterNameDefines"),
-  UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine"),
-  UiModelComponentBase_1 = require("../UiModelComponentBase");
-let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent extends UiModelComponentBase_1.UiModelComponentBase {
-  constructor() {
-    super(...arguments), this.n$t = void 0, this.SPe = void 0, this.b2t = void 0, this.hJ = ResourceSystem_1.ResourceSystem.InvalidId, this.Twr = e => {
-      e || this.StopLightSequence()
+
+var __decorate = this && this.__decorate || function (e, t, i, s) {
+  var o;
+  var r = arguments.length;
+  var n = r < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(e, t, i, s);
+  } else {
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (o = e[h]) {
+        n = (r < 3 ? o(n) : r > 3 ? o(t, i, n) : o(t, i)) || n;
+      }
     }
   }
+  if (r > 3 && n) {
+    Object.defineProperty(t, i, n);
+  }
+  return n;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UiRoleHuluLightSequenceComponent = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem");
+const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const ObjectUtils_1 = require("../../../../../Core/Utils/ObjectUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const CharacterNameDefines_1 = require("../../../../NewWorld/Character/Common/CharacterNameDefines");
+const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
+const UiModelComponentBase_1 = require("../UiModelComponentBase");
+let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent extends UiModelComponentBase_1.UiModelComponentBase {
+  constructor() {
+    super(...arguments);
+    this.n$t = undefined;
+    this.SPe = undefined;
+    this.b2t = undefined;
+    this.hJ = ResourceSystem_1.ResourceSystem.InvalidId;
+    this.Twr = e => {
+      if (!e) {
+        this.StopLightSequence();
+      }
+    };
+  }
   OnInit() {
-    this.n$t = this.Owner.CheckGetComponent(1)
+    this.n$t = this.Owner.CheckGetComponent(1);
   }
   OnStart() {
-    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr)
+    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
   }
   fBr() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("LevelSequence_HuluLight");
     this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LevelSequence, e => {
       var t;
-      ObjectUtils_1.ObjectUtils.IsValid(e) && ((t = new UE.MovieSceneSequencePlaybackSettings).bRestoreState = !0, t.bPauseAtEnd = !0, this.b2t = ActorSystem_1.ActorSystem.Get(UE.LevelSequenceActor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, void 0, !1), this.b2t.PlaybackSettings = t, this.b2t.SetSequence(e), this.SPe = this.b2t.SequencePlayer, this.SPe) && this.PlayLightSequence()
-    })
+      if (ObjectUtils_1.ObjectUtils.IsValid(e) && ((t = new UE.MovieSceneSequencePlaybackSettings()).bRestoreState = true, t.bPauseAtEnd = true, this.b2t = ActorSystem_1.ActorSystem.Spawn(UE.LevelSequenceActor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, undefined), this.b2t.PlaybackSettings = t, this.b2t.SetSequence(e), this.SPe = this.b2t.SequencePlayer, this.SPe)) {
+        this.PlayLightSequence();
+      }
+    });
   }
   PlayLightSequence() {
-    var e, t;
-    this.SPe ? (this.b2t.bOverrideInstanceData = !0, e = this.b2t.DefaultInstanceData, t = this.n$t.MainMeshComponent.D_GetSocketTransform(CharacterNameDefines_1.CharacterNameDefines.GLIDEING_SOCKETNAME), t = new UE.TransformDouble(t.GetLocation()), t = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(t), e.TransformOrigin = t, this.SPe.Play()) : this.hJ === ResourceSystem_1.ResourceSystem.InvalidId && this.fBr()
+    var e;
+    var t;
+    if (this.SPe) {
+      this.b2t.bOverrideInstanceData = true;
+      e = this.b2t.DefaultInstanceData;
+      t = this.n$t.MainMeshComponent.D_GetSocketTransform(CharacterNameDefines_1.CharacterNameDefines.GLIDEING_SOCKETNAME);
+      t = new UE.TransformDouble(t.GetLocation());
+      t = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(t);
+      e.TransformOrigin = t;
+      this.SPe.Play();
+    } else if (this.hJ === ResourceSystem_1.ResourceSystem.InvalidId) {
+      this.fBr();
+    }
   }
   StopLightSequence() {
-    this.SPe ? this.SPe.Stop() : this.hJ !== ResourceSystem_1.ResourceSystem.InvalidId && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.hJ), this.hJ = ResourceSystem_1.ResourceSystem.InvalidId)
+    if (this.SPe) {
+      this.SPe.Stop();
+    } else if (this.hJ !== ResourceSystem_1.ResourceSystem.InvalidId) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.hJ);
+      this.hJ = ResourceSystem_1.ResourceSystem.InvalidId;
+    }
   }
   OnEnd() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr), this.StopLightSequence();
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
+    this.StopLightSequence();
     const e = this.b2t;
-    TimerSystem_1.TimerSystem.Next(() => {
-      ActorSystem_1.ActorSystem.Put("UiRoleHuluLightSequenceComponent.OnEnd", e)
-    }), this.SPe = void 0, this.b2t = void 0
+    TimerSystem_1.GameplayTimerSystem.Next(() => {
+      ActorSystem_1.ActorSystem.Put("UiRoleHuluLightSequenceComponent.OnEnd", e);
+    });
+    this.SPe = undefined;
+    this.b2t = undefined;
   }
 };
-UiRoleHuluLightSequenceComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(20)], UiRoleHuluLightSequenceComponent), exports.UiRoleHuluLightSequenceComponent = UiRoleHuluLightSequenceComponent;
-//# sourceMappingURL=UiRoleHuluLightSequenceComponent.js.map
+UiRoleHuluLightSequenceComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(20)], UiRoleHuluLightSequenceComponent);
+exports.UiRoleHuluLightSequenceComponent = UiRoleHuluLightSequenceComponent; //# sourceMappingURL=UiRoleHuluLightSequenceComponent.js.map

@@ -1,47 +1,74 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkillCdModel = void 0;
-const ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  PassiveSkillCdData_1 = require("./SkillCd/PassiveSkillCdData"),
-  SkillCdData_1 = require("./SkillCd/SkillCdData");
+  value: true
+});
+exports.SkillCdModel = undefined;
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const PassiveSkillCdData_1 = require("./SkillCd/PassiveSkillCdData");
+const SkillCdData_1 = require("./SkillCd/SkillCdData");
 class SkillCdModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.dQe = new SkillCdData_1.WorldSkillCdData, this.CQe = new PassiveSkillCdData_1.WorldPassiveSkillCdData, this.gQe = new SkillCdData_1.WorldSkillCdData, this.fQe = new PassiveSkillCdData_1.WorldPassiveSkillCdData, this.SkillDebugMode = !1
+    super(...arguments);
+    this.dQe = new SkillCdData_1.WorldSkillCdData();
+    this.CQe = new PassiveSkillCdData_1.WorldPassiveSkillCdData();
+    this.gQe = new SkillCdData_1.WorldSkillCdData();
+    this.fQe = new PassiveSkillCdData_1.WorldPassiveSkillCdData();
+    this.SkillDebugMode = false;
   }
   OnInit() {
-    return !0
+    return true;
   }
   OnLeaveLevel() {
-    return this.gQe.Clear(), this.fQe.Clear(), !0
+    this.gQe.Clear();
+    this.fQe.Clear();
+    return true;
   }
   OnClear() {
-    return this.dQe.Clear(), this.CQe.Clear(), this.gQe.Clear(), this.fQe.Clear(), !0
+    this.dQe.Clear();
+    this.CQe.Clear();
+    this.gQe.Clear();
+    this.fQe.Clear();
+    return true;
   }
   GetCurWorldSkillCdData() {
-    return this.pQe() ? this.dQe : this.gQe
+    if (this.pQe()) {
+      return this.dQe;
+    } else {
+      return this.gQe;
+    }
   }
   GetCurWorldPassiveSkillCdData() {
-    return this.pQe() ? this.CQe : this.fQe
+    if (this.pQe()) {
+      return this.CQe;
+    } else {
+      return this.fQe;
+    }
   }
   HandlePlayerSkillInfoPbNotify(e) {
-    this.dQe.HandlePlayerSkillInfoPbNotify(e)
+    this.dQe.HandlePlayerSkillInfoPbNotify(e);
   }
   HandlePassiveSkillNotify(e) {
-    this.CQe.HandlePassiveSkillNotify(e)
+    this.CQe.HandlePassiveSkillNotify(e);
   }
   pQe() {
     var e = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId;
-    if (0 !== e && 0 === ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e).ShareAttri) return !1;
-    return !0
+    if (e !== 0 && ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e).ShareAttri === 0) {
+      return false;
+    }
+    return true;
   }
   GetGroupSkillCdInfoBySkillId(e, i) {
     var a = this.GetCurWorldSkillCdData();
     let t = a.AllShareSkillCdData;
     var l = t.SkillId2GroupIdMap.get(i);
-    return l || (t = a.EntitySkillCdMap.get(e)) && (l = t.SkillId2GroupIdMap.get(i)) ? t.GroupSkillCdInfoMap.get(l) : void 0
+    if (l || (t = a.EntitySkillCdMap.get(e)) && (l = t.SkillId2GroupIdMap.get(i))) {
+      return t.GroupSkillCdInfoMap.get(l);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.SkillCdModel = SkillCdModel;

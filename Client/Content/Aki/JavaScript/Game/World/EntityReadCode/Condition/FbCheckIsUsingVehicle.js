@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckIsUsingVehicle = void 0;
+  value: true
+});
+exports.FbCheckIsUsingVehicle = undefined;
 class FbCheckIsUsingVehicle {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._Mh = !1, this.cMh = 0, this.hMh = !1, this.lMh = void 0, this.WJh = !1, this.QJh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._Mh = false;
+    this.cMh = 0;
+    this.hMh = false;
+    this.lMh = undefined;
+    this.WJh = false;
+    this.QJh = false;
   }
   static Create(t) {
-    if (t) return new FbCheckIsUsingVehicle(t)
+    if (t) {
+      return new FbCheckIsUsingVehicle(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TargetVehicle() {
-    return this._Mh || (this._Mh = !0, this.cMh = this.FbDataInternal.targetVehicle()), this.cMh
+    if (!this._Mh) {
+      this._Mh = true;
+      this.cMh = this.FbDataInternal.targetVehicle();
+    }
+    return this.cMh;
   }
   get Seat() {
-    return this.hMh || (this.hMh = !0, this.lMh = this.FbDataInternal.seat()), this.lMh
+    if (!this.hMh) {
+      this.hMh = true;
+      this.lMh = this.FbDataInternal.seat();
+    }
+    return this.lMh;
   }
   get CheckIsBeingUsed() {
-    return this.WJh || (this.WJh = !0, this.QJh = this.FbDataInternal.checkIsBeingUsed()), this.QJh
+    if (!this.WJh) {
+      this.WJh = true;
+      this.QJh = this.FbDataInternal.checkIsBeingUsed();
+    }
+    return this.QJh;
   }
 }
 exports.FbCheckIsUsingVehicle = FbCheckIsUsingVehicle;

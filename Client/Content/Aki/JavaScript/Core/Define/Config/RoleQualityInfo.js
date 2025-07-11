@@ -1,85 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleQualityInfo = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.RoleQualityInfo = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class RoleQualityInfo {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get Icon() {
-    return this.icon()
+    return this.icon();
   }
   get QualityColor() {
-    return this.qualitycolor()
+    return this.qualitycolor();
   }
   get Image() {
-    return this.image()
+    return this.image();
   }
   get GachaQualityImage() {
-    return this.gachaqualityimage()
+    return this.gachaqualityimage();
   }
   get SpiloverCompensate() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.spilovercompensateLength(), this.spilovercompensateKey, this.spilovercompensateValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.spilovercompensateLength(), this.spilovercompensateKey, this.spilovercompensateValue, this);
   }
   spilovercompensateKey(t) {
-    return this.spilovercompensate(t)?.key()
+    return this.spilovercompensate(t)?.key();
   }
   spilovercompensateValue(t) {
-    return this.spilovercompensate(t)?.value()
+    return this.spilovercompensate(t)?.value();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsRoleQualityInfo(t, i) {
-    return (i || new RoleQualityInfo).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new RoleQualityInfo()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   qualitycolor(t) {
-    var i = this.J7.__offset(this.z7, 10),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   image(t) {
-    var i = this.J7.__offset(this.z7, 12),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   gachaqualityimage(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetSpilovercompensateAt(t, i) {
-    return this.spilovercompensate(t)
+    return this.spilovercompensate(t);
   }
   spilovercompensate(t, i) {
     var e = this.J7.__offset(this.z7, 16);
-    return e ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + 4 * t), this.J7) : null
+    if (e) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   spilovercompensateLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.RoleQualityInfo = RoleQualityInfo;

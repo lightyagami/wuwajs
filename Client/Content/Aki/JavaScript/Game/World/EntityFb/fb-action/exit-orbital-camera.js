@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ExitOrbitalCamera = void 0;
+  value: true
+});
+exports.ExitOrbitalCamera = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ExitOrbitalCamera {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, r) {
-    return this.bb_pos = t, this.bb = r, this
+    this.bb_pos = t;
+    this.bb = r;
+    return this;
   }
   static getRootAsExitOrbitalCamera(t, r) {
-    return (r || new ExitOrbitalCamera).__init(t.readInt32(t.position()) + t.position(), t)
+    return (r || new ExitOrbitalCamera()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsExitOrbitalCamera(t, r) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (r || new ExitOrbitalCamera).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (r || new ExitOrbitalCamera()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static startExitOrbitalCamera(t) {
-    t.startObject(0)
+    t.startObject(0);
   }
   static endExitOrbitalCamera(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createExitOrbitalCamera(t) {
-    return ExitOrbitalCamera.startExitOrbitalCamera(t), ExitOrbitalCamera.endExitOrbitalCamera(t)
+    ExitOrbitalCamera.startExitOrbitalCamera(t);
+    return ExitOrbitalCamera.endExitOrbitalCamera(t);
   }
 }
 exports.ExitOrbitalCamera = ExitOrbitalCamera;

@@ -1,139 +1,202 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Slide = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntFloat_1 = require("./SubType/DicIntFloat"),
-  FloatRange_1 = require("./SubType/FloatRange");
+  value: true
+});
+exports.Slide = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntFloat_1 = require("./SubType/DicIntFloat");
+const FloatRange_1 = require("./SubType/FloatRange");
 class Slide {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get FallingLateralFrictions() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.fallinglateralfrictionsLength(), this.fallinglateralfrictionsKey, this.fallinglateralfrictionsValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.fallinglateralfrictionsLength(), this.fallinglateralfrictionsKey, this.fallinglateralfrictionsValue, this);
   }
   fallinglateralfrictionsKey(t) {
-    return this.fallinglateralfrictions(t)?.key()
+    return this.fallinglateralfrictions(t)?.key();
   }
   fallinglateralfrictionsValue(t) {
-    return this.fallinglateralfrictions(t)?.value()
+    return this.fallinglateralfrictions(t)?.value();
   }
   get SlideFriction() {
-    return this.slidefriction()
+    return this.slidefriction();
   }
   get SlideAccel() {
-    return this.slideaccel()
+    return this.slideaccel();
   }
   get SlideAccelUp() {
-    return this.slideaccelup()
+    return this.slideaccelup();
   }
   get SlideAccelDown() {
-    return this.slideacceldown()
+    return this.slideacceldown();
   }
   get MaxSlideHorizontalSeed() {
-    return this.maxslidehorizontalseed()
+    return this.maxslidehorizontalseed();
   }
   get SlideModeSwitchRange() {
-    return this.slidemodeswitchrange()
+    return this.slidemodeswitchrange();
   }
   get Ski() {
-    return this.ski()
+    return this.ski();
   }
   get SkiMaxSpHor() {
-    return this.skimaxsphor()
+    return this.skimaxsphor();
   }
   get SkiMaxSpVer() {
-    return this.skimaxspver()
+    return this.skimaxspver();
   }
   get JumpRate() {
-    return this.jumprate()
+    return this.jumprate();
   }
   get TurnSpeed() {
-    return this.turnspeed()
+    return this.turnspeed();
   }
   get SkiHorizontalInputSpeedThreshold() {
-    return this.skihorizontalinputspeedthreshold()
+    return this.skihorizontalinputspeedthreshold();
   }
   get SpeedReduceCurve() {
-    return this.speedreducecurve()
+    return this.speedreducecurve();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsSlide(t, i) {
-    return (i || new Slide).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new Slide()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id(t) {
-    var i = this.J7.__offset(this.z7, 4),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 4);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetFallinglateralfrictionsAt(t, i) {
-    return this.fallinglateralfrictions(t)
+    return this.fallinglateralfrictions(t);
   }
   fallinglateralfrictions(t, i) {
     var e = this.J7.__offset(this.z7, 6);
-    return e ? (i || new DicIntFloat_1.DicIntFloat).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + 4 * t), this.J7) : null
+    if (e) {
+      return (i || new DicIntFloat_1.DicIntFloat()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   fallinglateralfrictionsLength() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   slidefriction() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readFloat32(this.z7 + t) : 2
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 2;
+    }
   }
   slideaccel() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   slideaccelup() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   slideacceldown() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   maxslidehorizontalseed() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readFloat32(this.z7 + t) : 500
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 500;
+    }
   }
   slidemodeswitchrange(t) {
     var i = this.J7.__offset(this.z7, 18);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   ski() {
     var t = this.J7.__offset(this.z7, 20);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   skimaxsphor() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readFloat32(this.z7 + t) : 2e3
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 2000;
+    }
   }
   skimaxspver() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readFloat32(this.z7 + t) : 2e3
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 2000;
+    }
   }
   jumprate() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   turnspeed() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readFloat32(this.z7 + t) : 720
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 720;
+    }
   }
   skihorizontalinputspeedthreshold(t) {
     var i = this.J7.__offset(this.z7, 30);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   speedreducecurve(t) {
-    var i = this.J7.__offset(this.z7, 32),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 32);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.Slide = Slide;

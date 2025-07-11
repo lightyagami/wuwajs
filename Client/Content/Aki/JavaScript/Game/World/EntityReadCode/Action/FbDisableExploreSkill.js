@@ -1,28 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDisableExploreSkill = void 0;
+  value: true
+});
+exports.FbDisableExploreSkill = undefined;
 class FbDisableExploreSkill {
   constructor(t) {
-    this.FbDataInternal = t, this.eSh = !1, this.tSh = !1, this.Sh_ = !1, this.Mh_ = !1, this.Eh_ = !1, this.Ih_ = void 0
+    this.FbDataInternal = t;
+    this.eSh = false;
+    this.tSh = false;
+    this.Sh_ = false;
+    this.Mh_ = false;
+    this.Eh_ = false;
+    this.Ih_ = undefined;
   }
   static Create(t) {
-    if (t) return new FbDisableExploreSkill(t)
+    if (t) {
+      return new FbDisableExploreSkill(t);
+    }
   }
   get PlaceTemporaryTeleport() {
-    return this.eSh || (this.eSh = !0, this.tSh = this.FbDataInternal.placeTemporaryTeleport()), this.tSh
+    if (!this.eSh) {
+      this.eSh = true;
+      this.tSh = this.FbDataInternal.placeTemporaryTeleport();
+    }
+    return this.tSh;
   }
   get IsComplementary() {
-    return this.Sh_ || (this.Sh_ = !0, this.Mh_ = this.FbDataInternal.isComplementary()), this.Mh_
+    if (!this.Sh_) {
+      this.Sh_ = true;
+      this.Mh_ = this.FbDataInternal.isComplementary();
+    }
+    return this.Mh_;
   }
   get ExploreSkillList() {
     if (!this.Eh_) {
-      this.Eh_ = !0, this.Ih_ = new Array;
+      this.Eh_ = true;
+      this.Ih_ = new Array();
       var i = this.FbDataInternal.exploreSkillListLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.Ih_.push(this.FbDataInternal.exploreSkillList(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.Ih_.push(this.FbDataInternal.exploreSkillList(t));
+        }
+      }
     }
-    return this.Ih_
+    return this.Ih_;
   }
 }
 exports.FbDisableExploreSkill = FbDisableExploreSkill;

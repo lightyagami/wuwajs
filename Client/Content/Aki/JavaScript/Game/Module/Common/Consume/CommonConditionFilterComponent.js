@@ -1,54 +1,80 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonConditionFilterComponent = void 0;
-const UE = require("ue"),
-  UiLayer_1 = require("../../../Ui/UiLayer"),
-  UiNavigationView_1 = require("../../UiNavigation/UiNavigationView"),
-  GenericLayoutNew_1 = require("../../Util/Layout/GenericLayoutNew"),
-  LevelSequencePlayer_1 = require("../LevelSequencePlayer"),
-  CommonConditionFilterItem_1 = require("./CommonConditionFilterItem");
+  value: true
+});
+exports.CommonConditionFilterComponent = undefined;
+const UE = require("ue");
+const UiLayer_1 = require("../../../Ui/UiLayer");
+const UiNavigationView_1 = require("../../UiNavigation/UiNavigationView");
+const GenericLayoutNew_1 = require("../../Util/Layout/GenericLayoutNew");
+const LevelSequencePlayer_1 = require("../LevelSequencePlayer");
+const CommonConditionFilterItem_1 = require("./CommonConditionFilterItem");
 class CommonConditionFilterComponent extends UiNavigationView_1.UiNavigationView {
   constructor(i, e) {
-    super(), this.ConditionFunction = e, this.Layout = void 0, this.LevelSequencePlayer = void 0, this.YTt = () => {
-      UiLayer_1.UiLayer.SetShowMaskLayer("CommonConditionFilterComponent", !0), this.LevelSequencePlayer.PlayLevelSequenceByName("hide")
-    }, this.JTt = i => {
-      "hide" === i && (this.SetActive(!1), UiLayer_1.UiLayer.SetShowMaskLayer("CommonConditionFilterComponent", !1))
-    }, this.sGe = (i, e, t) => {
+    super();
+    this.ConditionFunction = e;
+    this.Layout = undefined;
+    this.LevelSequencePlayer = undefined;
+    this.YTt = () => {
+      UiLayer_1.UiLayer.SetShowMaskLayer("CommonConditionFilterComponent", true);
+      this.LevelSequencePlayer.PlayLevelSequenceByName("hide");
+    };
+    this.JTt = i => {
+      if (i === "hide") {
+        this.SetActive(false);
+        UiLayer_1.UiLayer.SetShowMaskLayer("CommonConditionFilterComponent", false);
+      }
+    };
+    this.sGe = (i, e, t) => {
       e = new CommonConditionFilterItem_1.CommonConditionFilterItem(e, i);
-      return e.SetToggleFunction(this.j5e), {
+      e.SetToggleFunction(this.j5e);
+      return {
         Key: t,
         Value: e
+      };
+    };
+    this.j5e = (i, e) => {
+      this.ResetComponent();
+      this.SetActive(false);
+      if (this.ConditionFunction) {
+        this.ConditionFunction(i, e);
       }
-    }, this.j5e = (i, e) => {
-      this.ResetComponent(), this.SetActive(!1), this.ConditionFunction && this.ConditionFunction(i, e)
-    }, this.CreateThenShowByActor(i.GetOwner())
+    };
+    this.CreateThenShowByActor(i.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIButtonComponent],
-      [1, UE.UIItem],
-      [2, UE.UIVerticalLayout]
-    ], this.BtnBindInfo = [
-      [0, this.YTt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIVerticalLayout]];
+    this.BtnBindInfo = [[0, this.YTt]];
   }
   OnStart() {
-    this.Layout = new GenericLayoutNew_1.GenericLayoutNew(this.GetVerticalLayout(2), this.sGe), this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem), this.LevelSequencePlayer.BindSequenceCloseEvent(this.JTt)
+    this.Layout = new GenericLayoutNew_1.GenericLayoutNew(this.GetVerticalLayout(2), this.sGe);
+    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.LevelSequencePlayer.BindSequenceCloseEvent(this.JTt);
   }
   RefreshQualityList(i) {
-    this.Layout.RebuildLayoutByDataNew(i), this.Layout.GetLayoutItemByKey(0).SetToggleState(!0)
+    this.Layout.RebuildLayoutByDataNew(i);
+    this.Layout.GetLayoutItemByKey(0).SetToggleState(true);
   }
   ResetComponent() {
-    for (const i of this.Layout.GetLayoutItemMap().values()) i.SetToggleState(!1, !1)
+    for (const i of this.Layout.GetLayoutItemMap().values()) {
+      i.SetToggleState(false, false);
+    }
   }
   OnBeforeDestroy() {
-    this.Layout && (this.Layout.ClearChildren(), this.Layout = void 0)
+    if (this.Layout) {
+      this.Layout.ClearChildren();
+      this.Layout = undefined;
+    }
   }
   UpdateComponent(i) {
-    this.SetActive(!0);
-    for (const e of this.Layout.GetLayoutItemMap().values()) e.GetQualityInfo().Id === i && e.SetToggleState(!0, !1);
-    this.LevelSequencePlayer.PlayLevelSequenceByName("show")
+    this.SetActive(true);
+    for (const e of this.Layout.GetLayoutItemMap().values()) {
+      if (e.GetQualityInfo().Id === i) {
+        e.SetToggleState(true, false);
+      }
+    }
+    this.LevelSequencePlayer.PlayLevelSequenceByName("show");
   }
 }
 exports.CommonConditionFilterComponent = CommonConditionFilterComponent;

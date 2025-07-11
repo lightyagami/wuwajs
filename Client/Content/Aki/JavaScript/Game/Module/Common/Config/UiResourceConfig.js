@@ -1,21 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiResourceConfig = void 0;
-const Info_1 = require("../../../../Core/Common/Info"),
-  LanguageSystem_1 = require("../../../../Core/Common/LanguageSystem"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  CommonDefine_1 = require("../../../../Core/Define/CommonDefine"),
-  LangOfLogoByName_1 = require("../../../../Core/Define/ConfigQuery/LangOfLogoByName"),
-  UiResourceById_1 = require("../../../../Core/Define/ConfigQuery/UiResourceById"),
-  ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.UiResourceConfig = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
+const LanguageSystem_1 = require("../../../../Core/Common/LanguageSystem");
+const Log_1 = require("../../../../Core/Common/Log");
+const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
+const LangOfLogoByName_1 = require("../../../../Core/Define/ConfigQuery/LangOfLogoByName");
+const UiResourceById_1 = require("../../../../Core/Define/ConfigQuery/UiResourceById");
+const ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
 class UiResourceConfig extends ConfigBase_1.ConfigBase {
   GetResourcePath(e) {
     var o = UiResourceById_1.configUiResourceById.GetConfig(e);
-    return o ? UiResourceConfig.GetResourcePathNormal(o) : (Log_1.Log.CheckError() && Log_1.Log.Error("Resource", 10, "查找资源配置失败", ["ResourceId", e]), "")
+    if (o) {
+      return UiResourceConfig.GetResourcePathNormal(o);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Resource", 10, "查找资源配置失败", ["ResourceId", e]);
+      }
+      return "";
+    }
   }
   GetResourceConfig(e) {
-    return UiResourceById_1.configUiResourceById.GetConfig(e)
+    return UiResourceById_1.configUiResourceById.GetConfig(e);
   }
   GetLogoPathByLanguage(e) {
     var o = LangOfLogoByName_1.configLangOfLogoByName.GetConfig(e);
@@ -31,8 +40,9 @@ class UiResourceConfig extends ConfigBase_1.ConfigBase {
       case CommonDefine_1.KOREAN_ISO639_1:
         return o.KrLogo;
       default:
-        return o.EnLogo
+        return o.EnLogo;
     }
   }
-}(exports.UiResourceConfig = UiResourceConfig).IsPcPlatform = !1, UiResourceConfig.GetResourcePathNormal = e => !Info_1.Info.IsInTouch() && e.PcPath ? e.PcPath : e.Path;
-//# sourceMappingURL=UiResourceConfig.js.map
+}
+(exports.UiResourceConfig = UiResourceConfig).IsPcPlatform = false;
+UiResourceConfig.GetResourcePathNormal = e => !Info_1.Info.IsInTouch() && e.PcPath ? e.PcPath : e.Path; //# sourceMappingURL=UiResourceConfig.js.map

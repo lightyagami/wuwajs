@@ -1,15 +1,39 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RouletteViewPanelHandle = void 0;
-const UiNavigationLogic_1 = require("../UiNavigationLogic"),
-  SpecialPanelHandleBase_1 = require("./SpecialPanelHandleBase");
+  value: true
+});
+exports.RouletteViewPanelHandle = undefined;
+const UiNavigationLogic_1 = require("../UiNavigationLogic");
+const SpecialPanelHandleBase_1 = require("./SpecialPanelHandleBase");
 class RouletteViewPanelHandle extends SpecialPanelHandleBase_1.SpecialPanelHandleBase {
   constructor() {
-    super(...arguments), this.aBo = void 0
+    super(...arguments);
+    this.aBo = undefined;
   }
   OnGetSuitableNavigationListenerList(e) {
-    return e ? this.DefaultNavigationListener : (e = this.GetNavigationGroup("Group2"), UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(e) ? (this.aBo || (this.aBo = [...this.DefaultNavigationListener], 2 <= this.aBo.length && (e = this.aBo[0], this.aBo[0] = this.aBo[1], this.aBo[1] = e)), this.aBo) : ((e = this.DefaultNavigationListener[0]).GetNavigationGroup().LastSelectListener && (e = e.GetNavigationGroup().LastSelectListener, this.DefaultNavigationListener[0] = e), this.DefaultNavigationListener))
+    if (e) {
+      return this.DefaultNavigationListener;
+    } else {
+      e = this.GetNavigationGroup("Group2");
+      if (UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(e)) {
+        if (!this.aBo) {
+          this.aBo = [...this.DefaultNavigationListener];
+          if (this.aBo.length >= 2) {
+            e = this.aBo[0];
+            this.aBo[0] = this.aBo[1];
+            this.aBo[1] = e;
+          }
+        }
+        return this.aBo;
+      } else {
+        if ((e = this.DefaultNavigationListener[0]).GetNavigationGroup().LastSelectListener) {
+          e = e.GetNavigationGroup().LastSelectListener;
+          this.DefaultNavigationListener[0] = e;
+        }
+        return this.DefaultNavigationListener;
+      }
+    }
   }
 }
 exports.RouletteViewPanelHandle = RouletteViewPanelHandle;

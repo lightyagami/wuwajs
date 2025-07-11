@@ -1,117 +1,233 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameBudgetInterfaceController = void 0;
-const cpp_1 = require("cpp"),
-  UE = require("ue"),
-  EventDefine_1 = require("../../Game/Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Game/Common/Event/EventSystem"),
-  Global_1 = require("../../Game/Global"),
-  ModelManager_1 = require("../../Game/Manager/ModelManager"),
-  GameBudgetAllocatorConfigCreator_1 = require("../../Game/World/Define/GameBudgetAllocatorConfigCreator"),
-  Log_1 = require("../Common/Log"),
-  ControllerBase_1 = require("../Framework/ControllerBase"),
-  PerfSight_1 = require("../PerfSight/PerfSight"),
-  Vector_1 = require("../Utils/Math/Vector"),
-  GameBudgetTimeEstimationFramesOffset_1 = require("./GameBudgetTimeEstimationFramesOffset");
+  value: true
+});
+exports.GameBudgetInterfaceController = undefined;
+const cpp_1 = require("cpp");
+const UE = require("ue");
+const EventDefine_1 = require("../../Game/Common/Event/EventDefine");
+const EventSystem_1 = require("../../Game/Common/Event/EventSystem");
+const Global_1 = require("../../Game/Global");
+const ModelManager_1 = require("../../Game/Manager/ModelManager");
+const GameBudgetAllocatorConfigCreator_1 = require("../../Game/World/Define/GameBudgetAllocatorConfigCreator");
+const Log_1 = require("../Common/Log");
+const ControllerBase_1 = require("../Framework/ControllerBase");
+const PerfSight_1 = require("../PerfSight/PerfSight");
+const Vector_1 = require("../Utils/Math/Vector");
+const GameBudgetTimeEstimationFramesOffset_1 = require("./GameBudgetTimeEstimationFramesOffset");
 class GameBudgetInterfaceController extends ControllerBase_1.ControllerBase {
   static get CenterRole() {
-    return this.EK
+    return this.EK;
   }
   static get CurrentGlobalMode() {
-    return this.wPa
+    return this.wPa;
   }
   static OnInit() {
-    return EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.SK), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.yK), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraModeChanged, this.IK), this.TK = 0, PerfSight_1.PerfSight.IsEnable && cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.None"), super.OnInit()
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.SK);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.yK);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraModeChanged, this.IK);
+    this.TK = 0;
+    if (PerfSight_1.PerfSight.IsEnable) {
+      cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.None");
+    }
+    return super.OnInit();
   }
   static OnClear() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.SK), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.yK), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraModeChanged, this.IK), this.LK = void 0, PerfSight_1.PerfSight.IsEnable && (0 === this.TK ? cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.None") : 1 === this.TK ? cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Normal") : 2 === this.TK && cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Plot")), super.OnClear()
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.SK);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.yK);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraModeChanged, this.IK);
+    this.LK = undefined;
+    if (PerfSight_1.PerfSight.IsEnable) {
+      if (this.TK === 0) {
+        cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.None");
+      } else if (this.TK === 1) {
+        cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Normal");
+      } else if (this.TK === 2) {
+        cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Plot");
+      }
+    }
+    return super.OnClear();
   }
   static InitializeEnvironment(e) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.InitializeEnvironment(e), cpp_1.FKuroGameBudgetAllocatorInterface.SetUpdateCompensateEnable(0), this.DK && cpp_1.FKuroGameBudgetAllocatorInterface.UpdateMinUpdateFIFOBudgetTime(this.DK), this.RK.Initialize()
+    cpp_1.FKuroGameBudgetAllocatorInterface.InitializeEnvironment(e);
+    cpp_1.FKuroGameBudgetAllocatorInterface.SetUpdateCompensateEnable(0);
+    if (this.DK) {
+      cpp_1.FKuroGameBudgetAllocatorInterface.UpdateMinUpdateFIFOBudgetTime(this.DK);
+    }
+    this.RK.Initialize();
   }
   static IsEnvironmentValid() {
-    return cpp_1.FKuroGameBudgetAllocatorInterface.IsEnvironmentValid()
+    return cpp_1.FKuroGameBudgetAllocatorInterface.IsEnvironmentValid();
   }
   static SetMaximumFrameRate(e) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.SetMaximumFrameRate(e), this.RK.SetMaximumFrameRate(e)
+    cpp_1.FKuroGameBudgetAllocatorInterface.SetMaximumFrameRate(e);
+    this.RK.SetMaximumFrameRate(e);
   }
   static UpdateMinUpdateFifoBudgetTime(e) {
-    this.DK = e, this.IsEnvironmentValid() && cpp_1.FKuroGameBudgetAllocatorInterface.UpdateMinUpdateFIFOBudgetTime(e)
+    this.DK = e;
+    if (this.IsEnvironmentValid()) {
+      cpp_1.FKuroGameBudgetAllocatorInterface.UpdateMinUpdateFIFOBudgetTime(e);
+    }
   }
   static UpdateBudgetTime(e) {
-    this.RK.UpdateBudgetTime(e)
+    this.RK.UpdateBudgetTime(e);
   }
-  static RegisterTick(e, t, a, r, o = !0, i = !0, s = !0, n = !0) {
-    return this.UK.has(a) ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Game", 24, "Object has already added!"), this.UK.get(a)) : (e = cpp_1.FKuroGameBudgetAllocatorInterface.RegisterFunction(e, t, r, a.ScheduledTick, o ? a.ScheduledAfterTick : void 0, i ? a.OnEnabledChange : void 0, s ? a.OnWasRecentlyRenderedOnScreenChange : void 0, n ? a.LocationProxyFunction : void 0, a), this.UK.set(a, e), e)
+  static RegisterTick(e, t, a, r, o = true, i = true, s = true, n = true) {
+    if (this.UK.has(a)) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Game", 24, "Object has already added!");
+      }
+      return this.UK.get(a);
+    } else {
+      e = cpp_1.FKuroGameBudgetAllocatorInterface.RegisterFunction(e, t, r, a.ScheduledTick, o ? a.ScheduledAfterTick : undefined, i ? a.OnEnabledChange : undefined, s ? a.OnWasRecentlyRenderedOnScreenChange : undefined, n ? a.LocationProxyFunction : undefined, a);
+      this.UK.set(a, e);
+      return e;
+    }
   }
   static UnregisterTick(e) {
     var t = this.UK.get(e);
-    t ? (this.UK.delete(e), cpp_1.FKuroGameBudgetAllocatorInterface.UnregisterFunction(t)) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Game", 24, "Not found error!")
+    if (t) {
+      this.UK.delete(e);
+      cpp_1.FKuroGameBudgetAllocatorInterface.UnregisterFunction(t);
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Game", 24, "Not found error!");
+    }
   }
   static UpdateRegisterActor(e, t, a) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.UpdateActor(e, t, a)
+    cpp_1.FKuroGameBudgetAllocatorInterface.UpdateActor(e, t, a);
   }
   static ComputeDistanceScore(e, t, a, r) {
-    var e = new UE.Vector(e[0], e[1], e[2]),
-      t = new UE.Vector(t[0], t[1], t[2]),
-      o = (GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterDtailConfig || GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.CreateCharacterEntityConfigOnly(), GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterDtailConfig),
-      r = r ? o.Normal_Render : o.Normal_NotRendered;
-    return cpp_1.FKuroGameBudgetAllocatorInterface.ComputeDistanceScore(e, t, .01 * r.TickReductionStartSize, .01 * r.TickReductionIntervalSize, r.MaxInterval, a)
+    var e = new UE.Vector(e[0], e[1], e[2]);
+    var t = new UE.Vector(t[0], t[1], t[2]);
+    if (!GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterDtailConfig) {
+      GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.CreateCharacterEntityConfigOnly();
+    }
+    var o = GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterDtailConfig;
+    var r = r ? o.Normal_Render : o.Normal_NotRendered;
+    return cpp_1.FKuroGameBudgetAllocatorInterface.ComputeDistanceScore(e, t, r.TickReductionStartSize * 0.01, r.TickReductionIntervalSize * 0.01, r.MaxInterval, a);
   }
   static RegisterOnceTaskDefaultGroup(e, t, a) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.RegisterOnceTaskDefaultGroup(e, t, a)
+    cpp_1.FKuroGameBudgetAllocatorInterface.RegisterOnceTaskDefaultGroup(e, t, a);
   }
   static ProduceOnceTaskOnDefaultGroup(e, t, a) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.ProduceOnceTask(e, t, a)
+    cpp_1.FKuroGameBudgetAllocatorInterface.ProduceOnceTask(e, t, a);
   }
   static RegisterOnceTaskCustomGroup(e) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.RegisterOnceTaskCustomGroup(e.GroupId, e.Priority, e.IsEmpty, e.Consume, e)
+    cpp_1.FKuroGameBudgetAllocatorInterface.RegisterOnceTaskCustomGroup(e.GroupId, e.Priority, e.IsEmpty, e.Consume, e);
   }
   static SetCenterActorLocationOffset(e) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.SetCenterActorLocationOffset(e)
+    cpp_1.FKuroGameBudgetAllocatorInterface.SetCenterActorLocationOffset(e);
   }
   static SetCenterRole(e) {
-    e && this.EK !== e && (cpp_1.FKuroGameBudgetAllocatorInterface.SetCenterActor(e), this.EK = e, this.SetCenterActorLocationOffset(Vector_1.Vector.ZeroVectorDouble))
+    if (e && this.EK !== e) {
+      cpp_1.FKuroGameBudgetAllocatorInterface.SetCenterActor(e);
+      this.EK = e;
+      this.SetCenterActorLocationOffset(Vector_1.Vector.ZeroVectorDouble);
+    }
   }
   static SetUseBoundsCalculateDistance(e, t, a) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.SetUseBoundsCalculateDistance(e, t, a)
+    cpp_1.FKuroGameBudgetAllocatorInterface.SetUseBoundsCalculateDistance(e, t, a);
   }
   static SetUsePerformanceActorCalculateBounds(e, t, a) {
-    cpp_1.FKuroGameBudgetAllocatorInterface.SetUsePerformanceActorCalculateBounds(e, t, a)
+    cpp_1.FKuroGameBudgetAllocatorInterface.SetUsePerformanceActorCalculateBounds(e, t, a);
   }
   static SetPerformanceLimitMode(e) {
-    this.AK = e, this.PK()
+    this.AK = e;
+    this.PK();
   }
   static SetPlotMode(e) {
-    this.IsInPlot = e, this.PK()
+    this.IsInPlot = e;
+    this.PK();
   }
   static TryUpdateCenterRoleOffset(e) {
     e = e.GetComponent(279)?.GetCenterActorLocationOffset();
-    e && this.SetCenterActorLocationOffset(e)
+    if (e) {
+      this.SetCenterActorLocationOffset(e);
+    }
   }
   static PK() {
     var e = this.IsInPlot ? 2 : this.IsInFight && !this.AK ? 1 : 0;
-    this.wPa = e, cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalMode(e), Log_1.Log.CheckInfo() && Log_1.Log.Info("Game", 36, "[GameBudget]RefreshGlobalMode", ["IsInPlot", this.IsInPlot], ["IsInFight", this.IsInFight], ["IsPerformanceLimitMode", this.AK])
+    this.wPa = e;
+    cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalMode(e);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Game", 36, "[GameBudget]RefreshGlobalMode", ["IsInPlot", this.IsInPlot], ["IsInFight", this.IsInFight], ["IsPerformanceLimitMode", this.AK]);
+    }
   }
   static BK(e) {
-    this.TK !== e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Game", 36, "[GameBudget]时间预算管理模式更改", ["NewModel", e], ["OldModel", this.TK]), PerfSight_1.PerfSight.IsEnable && (0 === this.TK ? cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.None") : 1 === this.TK ? cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Normal") : 2 === this.TK && cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Plot"), 0 === e ? cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.None") : 1 === e ? cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.Normal") : 2 === e && cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.Plot")), this.bK(this.TK), this.TK = e, this.qK(e))
+    if (this.TK !== e) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Game", 36, "[GameBudget]时间预算管理模式更改", ["NewModel", e], ["OldModel", this.TK]);
+      }
+      if (PerfSight_1.PerfSight.IsEnable) {
+        if (this.TK === 0) {
+          cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.None");
+        } else if (this.TK === 1) {
+          cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Normal");
+        } else if (this.TK === 2) {
+          cpp_1.FKuroPerfSightHelper.EndExtTag("EGameBudgetMode.Plot");
+        }
+        if (e === 0) {
+          cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.None");
+        } else if (e === 1) {
+          cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.Normal");
+        } else if (e === 2) {
+          cpp_1.FKuroPerfSightHelper.BeginExtTag("EGameBudgetMode.Plot");
+        }
+      }
+      this.bK(this.TK);
+      this.TK = e;
+      this.qK(e);
+    }
   }
   static qK(e) {
-    1 === e ? this.SetCenterRole(Global_1.Global.BaseCharacter) : 2 === e && (this.SetCenterRole(Global_1.Global.BaseCharacter), e = ModelManager_1.ModelManager.CameraModel?.SequenceCamera?.DisplayComponent?.CineCamera) && (this.LK = e, cpp_1.FKuroGameBudgetAllocatorInterface.AddAssistantActor(e))
+    if (e === 1) {
+      this.SetCenterRole(Global_1.Global.BaseCharacter);
+    } else if (e === 2 && (this.SetCenterRole(Global_1.Global.BaseCharacter), e = ModelManager_1.ModelManager.CameraModel?.SequenceCamera?.DisplayComponent?.CineCamera)) {
+      this.LK = e;
+      cpp_1.FKuroGameBudgetAllocatorInterface.AddAssistantActor(e);
+    }
   }
   static bK(e) {
-    2 === e && this.LK && (cpp_1.FKuroGameBudgetAllocatorInterface.RemoveAssistantActor(this.LK), this.LK = void 0)
+    if (e === 2 && this.LK) {
+      cpp_1.FKuroGameBudgetAllocatorInterface.RemoveAssistantActor(this.LK);
+      this.LK = undefined;
+    }
   }
 }
-exports.GameBudgetInterfaceController = GameBudgetInterfaceController, (_a = GameBudgetInterfaceController).IsOpen = !0, GameBudgetInterfaceController.UK = new Map, GameBudgetInterfaceController.TsGlobalFifoTaskGroupName = new UE.FName("TsGlobalFifoTaskGroup"), GameBudgetInterfaceController.TsGlobalFifoTaskSignificanceGroup = 2, GameBudgetInterfaceController.EK = void 0, GameBudgetInterfaceController.DK = void 0, GameBudgetInterfaceController.IsInPlot = !1, GameBudgetInterfaceController.IsInFight = !1, GameBudgetInterfaceController.AK = !1, GameBudgetInterfaceController.wPa = 0, GameBudgetInterfaceController.RK = new GameBudgetTimeEstimationFramesOffset_1.GameBudgetTimeEstimationFramesOffset, GameBudgetInterfaceController.yK = e => {
-  _a.IsInFight = e, _a.IsInFight && _a.IsInPlot && (_a.IsInPlot = !1, Log_1.Log.CheckError()) && Log_1.Log.Error("Game", 36, "[GameBudget]进入战斗时时间预算管理仍然处于剧情模式"), _a.PK()
-}, GameBudgetInterfaceController.SK = (e, t) => {
+exports.GameBudgetInterfaceController = GameBudgetInterfaceController;
+(_a = GameBudgetInterfaceController).IsOpen = true;
+GameBudgetInterfaceController.UK = new Map();
+GameBudgetInterfaceController.TsGlobalFifoTaskGroupName = new UE.FName("TsGlobalFifoTaskGroup");
+GameBudgetInterfaceController.TsGlobalFifoTaskSignificanceGroup = 2;
+GameBudgetInterfaceController.EK = undefined;
+GameBudgetInterfaceController.DK = undefined;
+GameBudgetInterfaceController.IsInPlot = false;
+GameBudgetInterfaceController.IsInFight = false;
+GameBudgetInterfaceController.AK = false;
+GameBudgetInterfaceController.wPa = 0;
+GameBudgetInterfaceController.RK = new GameBudgetTimeEstimationFramesOffset_1.GameBudgetTimeEstimationFramesOffset();
+GameBudgetInterfaceController.yK = e => {
+  _a.IsInFight = e;
+  if (_a.IsInFight && _a.IsInPlot && (_a.IsInPlot = false, Log_1.Log.CheckError())) {
+    Log_1.Log.Error("Game", 36, "[GameBudget]进入战斗时时间预算管理仍然处于剧情模式");
+  }
+  _a.PK();
+};
+GameBudgetInterfaceController.SK = (e, t) => {
   _a.SetCenterRole(Global_1.Global.BaseCharacter);
   e = e.Entity;
-  e && _a.TryUpdateCenterRoleOffset(e)
-}, GameBudgetInterfaceController.TK = 0, GameBudgetInterfaceController.LK = void 0, GameBudgetInterfaceController.IK = (e, t) => {
-  1 === e && ModelManager_1.ModelManager.PlotModel?.IsInPlot ? _a.BK(2) : _a.BK(1)
+  if (e) {
+    _a.TryUpdateCenterRoleOffset(e);
+  }
 };
-//# sourceMappingURL=GameBudgetInterfaceController.js.map
+GameBudgetInterfaceController.TK = 0;
+GameBudgetInterfaceController.LK = undefined;
+GameBudgetInterfaceController.IK = (e, t) => {
+  if (e === 1 && ModelManager_1.ModelManager.PlotModel?.IsInPlot) {
+    _a.BK(2);
+  } else {
+    _a.BK(1);
+  }
+}; //# sourceMappingURL=GameBudgetInterfaceController.js.map

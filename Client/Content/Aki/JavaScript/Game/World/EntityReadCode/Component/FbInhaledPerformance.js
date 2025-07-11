@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInhaledPerformance = void 0;
+  value: true
+});
+exports.FbInhaledPerformance = undefined;
 class FbInhaledPerformance {
   constructor(e) {
-    this.FbDataInternal = e, this.mYh = !1, this.CYh = 0
+    this.FbDataInternal = e;
+    this.mYh = false;
+    this.CYh = 0;
   }
   static Create(e) {
-    if (e) return new FbInhaledPerformance(e)
+    if (e) {
+      return new FbInhaledPerformance(e);
+    }
   }
   get InhaledTime() {
-    return this.mYh || (this.mYh = !0, this.CYh = this.FbDataInternal.inhaledTime()), this.CYh
+    if (!this.mYh) {
+      this.mYh = true;
+      this.CYh = this.FbDataInternal.inhaledTime();
+    }
+    return this.CYh;
   }
 }
 exports.FbInhaledPerformance = FbInhaledPerformance;

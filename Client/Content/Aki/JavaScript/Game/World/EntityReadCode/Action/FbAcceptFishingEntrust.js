@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAcceptFishingEntrust = void 0;
+  value: true
+});
+exports.FbAcceptFishingEntrust = undefined;
 class FbAcceptFishingEntrust {
   constructor(t) {
-    this.FbDataInternal = t, this.o1_ = !1, this.n1_ = 0, this.s1_ = !1, this.a1_ = !1
+    this.FbDataInternal = t;
+    this.o1_ = false;
+    this.n1_ = 0;
+    this.s1_ = false;
+    this.a1_ = false;
   }
   static Create(t) {
-    if (t) return new FbAcceptFishingEntrust(t)
+    if (t) {
+      return new FbAcceptFishingEntrust(t);
+    }
   }
   get EntrustId() {
-    return this.o1_ || (this.o1_ = !0, this.n1_ = this.FbDataInternal.entrustId()), this.n1_
+    if (!this.o1_) {
+      this.o1_ = true;
+      this.n1_ = this.FbDataInternal.entrustId();
+    }
+    return this.n1_;
   }
   get IsAutoTracking() {
-    return this.s1_ || (this.s1_ = !0, this.a1_ = this.FbDataInternal.isAutoTracking()), this.a1_
+    if (!this.s1_) {
+      this.s1_ = true;
+      this.a1_ = this.FbDataInternal.isAutoTracking();
+    }
+    return this.a1_;
   }
 }
 exports.FbAcceptFishingEntrust = FbAcceptFishingEntrust;

@@ -1,27 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ModifyCd = void 0;
-const AbilityUtils_1 = require("../AbilityUtils"),
-  CharacterAttributeTypes_1 = require("../CharacterAttributeTypes"),
-  ExtraEffectBase_1 = require("./ExtraEffectBase");
+  value: true
+});
+exports.ModifyCd = undefined;
+const AbilityUtils_1 = require("../AbilityUtils");
+const CharacterAttributeTypes_1 = require("../CharacterAttributeTypes");
+const ExtraEffectBase_1 = require("./ExtraEffectBase");
 class ModifyCd extends ExtraEffectBase_1.BuffEffect {
   constructor() {
-    super(...arguments), this.SkillIdOrGenres = new Set, this.SkillType = 0, this.ModifyType = 0, this.ModifyValue = 0, this.Voa = void 0
+    super(...arguments);
+    this.SkillIdOrGenres = new Set();
+    this.SkillType = 0;
+    this.ModifyType = 0;
+    this.ModifyValue = 0;
+    this.Voa = undefined;
   }
   InitParameters(t) {
     var e = t.ExtraEffectParameters;
-    for (const s of e[0].split("#")) this.SkillIdOrGenres.add(Number(s));
-    this.SkillType = Number(e[1]), this.ModifyType = Number(e[2]), this.Voa = t.ExtraEffectGrowParameters1
+    for (const s of e[0].split("#")) {
+      this.SkillIdOrGenres.add(Number(s));
+    }
+    this.SkillType = Number(e[1]);
+    this.ModifyType = Number(e[2]);
+    this.Voa = t.ExtraEffectGrowParameters1;
   }
   OnCreated() {
     var t = this.ExactOwnerEntity?.GetComponent(206);
-    t && (this.ModifyValue = AbilityUtils_1.AbilityUtils.GetLevelValue(this.Voa, this.Level, 0), 1 === this.ModifyType && (this.ModifyValue *= CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND), t.UpdateModifyCdEffect(!0, this))
+    if (t) {
+      this.ModifyValue = AbilityUtils_1.AbilityUtils.GetLevelValue(this.Voa, this.Level, 0);
+      if (this.ModifyType === 1) {
+        this.ModifyValue *= CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
+      }
+      t.UpdateModifyCdEffect(true, this);
+    }
   }
   OnExecute() {}
   OnRemoved(t) {
     var e = this.ExactOwnerEntity?.GetComponent(206);
-    e && e.UpdateModifyCdEffect(!1, this)
+    if (e) {
+      e.UpdateModifyCdEffect(false, this);
+    }
   }
 }
 exports.ModifyCd = ModifyCd;

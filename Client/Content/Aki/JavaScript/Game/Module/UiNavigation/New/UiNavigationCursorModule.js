@@ -1,17 +1,40 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiNavigationCursorModule = void 0;
+  value: true
+});
+exports.UiNavigationCursorModule = undefined;
 const UE = require("ue");
 class UiNavigationCursorModule {
   constructor(t) {
-    this.yBo = void 0, this.yBo = t
+    this.yBo = undefined;
+    this.yBo = t;
   }
   GetCursorOffset() {
-    return 0 === this.yBo.OffsetType ? new UE.Vector2D(0, .5) : 1 === this.yBo.OffsetType ? new UE.Vector2D(.5, 1) : 2 === this.yBo.OffsetType ? new UE.Vector2D(1, .5) : 3 === this.yBo.OffsetType ? new UE.Vector2D(.5, 0) : new UE.Vector2D(0, 0)
+    if (this.yBo.OffsetType === 0) {
+      return new UE.Vector2D(0, 0.5);
+    } else if (this.yBo.OffsetType === 1) {
+      return new UE.Vector2D(0.5, 1);
+    } else if (this.yBo.OffsetType === 2) {
+      return new UE.Vector2D(1, 0.5);
+    } else if (this.yBo.OffsetType === 3) {
+      return new UE.Vector2D(0.5, 0);
+    } else {
+      return new UE.Vector2D(0, 0);
+    }
   }
   GetBoundOffset() {
-    return 0 === this.yBo.OffsetType ? new UE.Vector2D(-this.yBo.BoundOffset, 0) : 1 === this.yBo.OffsetType ? new UE.Vector2D(0, this.yBo.BoundOffset) : 2 === this.yBo.OffsetType ? new UE.Vector2D(this.yBo.BoundOffset, 0) : 3 === this.yBo.OffsetType ? new UE.Vector2D(0, -this.yBo.BoundOffset) : new UE.Vector2D(0, 0)
+    if (this.yBo.OffsetType === 0) {
+      return new UE.Vector2D(-this.yBo.BoundOffset, 0);
+    } else if (this.yBo.OffsetType === 1) {
+      return new UE.Vector2D(0, this.yBo.BoundOffset);
+    } else if (this.yBo.OffsetType === 2) {
+      return new UE.Vector2D(this.yBo.BoundOffset, 0);
+    } else if (this.yBo.OffsetType === 3) {
+      return new UE.Vector2D(0, -this.yBo.BoundOffset);
+    } else {
+      return new UE.Vector2D(0, 0);
+    }
   }
 }
 exports.UiNavigationCursorModule = UiNavigationCursorModule;

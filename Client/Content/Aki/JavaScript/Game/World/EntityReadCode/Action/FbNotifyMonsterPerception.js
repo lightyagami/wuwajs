@@ -1,30 +1,52 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNotifyMonsterPerception = void 0;
+  value: true
+});
+exports.FbNotifyMonsterPerception = undefined;
 const UnionBattleStatePerceptionBehaviorHelper_1 = require("./UnionBattleStatePerceptionBehaviorHelper");
 class FbNotifyMonsterPerception {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.V1h = !1, this.j1h = void 0, this.Ivh = !1, this.Tvh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.Ivh = false;
+    this.Tvh = undefined;
   }
   static Create(t) {
-    if (t) return new FbNotifyMonsterPerception(t)
+    if (t) {
+      return new FbNotifyMonsterPerception(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var e = this.FbDataInternal.entityIdsLength();
-      if (e)
-        for (let t = 0; t < e; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (e) {
+        for (let t = 0; t < e; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get PerceptionBehaviorOption() {
-    var t, e;
-    return !this.Ivh && (this.Ivh = !0, t = this.FbDataInternal.perceptionBehaviorOptionType(), e = UnionBattleStatePerceptionBehaviorHelper_1.UnionBattleStatePerceptionBehaviorHelper.GetUnionBattleStatePerceptionBehaviorObject(t)) && (this.Tvh = UnionBattleStatePerceptionBehaviorHelper_1.UnionBattleStatePerceptionBehaviorHelper.ReadUnionBattleStatePerceptionBehavior(t, this.FbDataInternal.perceptionBehaviorOption(e))), this.Tvh
+    var t;
+    var e;
+    if (!this.Ivh && (this.Ivh = true, t = this.FbDataInternal.perceptionBehaviorOptionType(), e = UnionBattleStatePerceptionBehaviorHelper_1.UnionBattleStatePerceptionBehaviorHelper.GetUnionBattleStatePerceptionBehaviorObject(t))) {
+      this.Tvh = UnionBattleStatePerceptionBehaviorHelper_1.UnionBattleStatePerceptionBehaviorHelper.ReadUnionBattleStatePerceptionBehavior(t, this.FbDataInternal.perceptionBehaviorOption(e));
+    }
+    return this.Tvh;
   }
 }
 exports.FbNotifyMonsterPerception = FbNotifyMonsterPerception;

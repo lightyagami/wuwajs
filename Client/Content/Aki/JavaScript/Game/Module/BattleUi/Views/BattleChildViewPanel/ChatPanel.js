@@ -1,260 +1,421 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChatPanel = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../../../Core/Common/Info"),
-  CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  RedDotController_1 = require("../../../../RedDot/RedDotController"),
-  InputManager_1 = require("../../../../Ui/Input/InputManager"),
-  InputDistributeController_1 = require("../../../../Ui/InputDistribute/InputDistributeController"),
-  InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  ChatDefine_1 = require("../../../Chat/ChatDefine"),
-  LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  BattleSkillLeftRouletteItem_1 = require("../BattleSkillLeftRouletteItem"),
-  ChatRowItem_1 = require("../ChatRowItem"),
-  CommonKeyItem_1 = require("../KeyItem/CommonKeyItem"),
-  BattleChildViewPanel_1 = require("./BattleChildViewPanel");
+  value: true
+});
+exports.ChatPanel = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../../../Core/Common/Info");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const RedDotController_1 = require("../../../../RedDot/RedDotController");
+const InputManager_1 = require("../../../../Ui/Input/InputManager");
+const InputDistributeController_1 = require("../../../../Ui/InputDistribute/InputDistributeController");
+const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const ChatDefine_1 = require("../../../Chat/ChatDefine");
+const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const BattleSkillLeftRouletteItem_1 = require("../BattleSkillLeftRouletteItem");
+const ChatRowItem_1 = require("../ChatRowItem");
+const CommonKeyItem_1 = require("../KeyItem/CommonKeyItem");
+const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
 class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
-    super(...arguments), this.oze = new Map, this.OJs = [], this.rze = void 0, this.nze = 0, this.sze = void 0, this.aze = !1, this.hze = void 0, this.Mah = void 0, this.SPe = void 0, this.FGn = e => {
-      2 === this.GetOperationType() && this.gze().then(() => {
-        this.oze.size <= 0 ? this.Pze(!1) : (this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY), e && !ModelManager_1.ModelManager.ChatModel.HasOfflineMassage() || this.uze())
-      }, () => {})
-    }, this.XBo = () => {
-      this.dze()
-    }, this.Eze = () => {
-      Info_1.Info.IsInTouch() || (this.Sze(), this.yze())
-    }, this.RZe = e => {
-      this.Sah()
-    }, this.Ize = () => {
-      UiManager_1.UiManager.IsViewShow("ChatView") || UiManager_1.UiManager.OpenView("ChatView")
-    }, this.bMe = (e, t) => {
+    super(...arguments);
+    this.oze = new Map();
+    this.OJs = [];
+    this.rze = undefined;
+    this.nze = 0;
+    this.sze = undefined;
+    this.aze = false;
+    this.hze = undefined;
+    this.Mah = undefined;
+    this.SPe = undefined;
+    this.FGn = e => {
+      if (this.GetOperationType() === 2) {
+        this.gze().then(() => {
+          if (this.oze.size <= 0) {
+            this.Pze(false);
+          } else {
+            this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
+            if (!e || !!ModelManager_1.ModelManager.ChatModel.HasOfflineMassage()) {
+              this.uze();
+            }
+          }
+        }, () => {});
+      }
+    };
+    this.XBo = () => {
+      this.dze();
+    };
+    this.Eze = () => {
+      if (!Info_1.Info.IsInTouch()) {
+        this.Sze();
+        this.yze();
+      }
+    };
+    this.RZe = e => {
+      this.Sah();
+    };
+    this.Ize = () => {
+      if (!UiManager_1.UiManager.IsViewShow("ChatView")) {
+        UiManager_1.UiManager.OpenView("ChatView");
+      }
+    };
+    this.bMe = (e, t) => {
       if (e === InputMappingsDefine_1.actionMappings.环境特性) {
-        if (InputManager_1.InputManager.IsAllowOpenViewByShortcutKey() && 0 === t) switch (ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.GetCurEnvironmentalKey() ?? 0) {
-          case 1:
-            this.Tze();
-            break;
-          case 2:
-            this.Lze();
-            break;
-          case 3:
-            this.mXn();
-            break;
-          case 4:
-            this.Dze();
-            break;
-          case 5:
-            this.bZa();
-            break;
-          case 6:
-            this.TG_();
-            break;
-          case 8:
-            this.tz1();
-            break;
-          case 7:
-            this.gw1();
-            break;
-          case 9:
-            this.G_u()
+        if (InputManager_1.InputManager.IsAllowOpenViewByShortcutKey() && t === 0) {
+          switch (ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.GetCurEnvironmentalKey() ?? 0) {
+            case 1:
+              this.Tze();
+              break;
+            case 2:
+              this.Lze();
+              break;
+            case 3:
+              this.mXn();
+              break;
+            case 4:
+              this.Dze();
+              break;
+            case 5:
+              this.bZa();
+              break;
+            case 6:
+              this.TG_();
+              break;
+            case 8:
+              this.Kz1();
+              break;
+            case 7:
+              this.Hw1();
+              break;
+            case 9:
+              this.Q0u();
+          }
         }
-      } else e === InputMappingsDefine_1.actionMappings.组合主键 && this.Rze(t)
-    }, this.Uze = () => {
-      this.fze()
-    }, this.Aze = () => {
-      this.SPe.StopCurrentSequence(), this.SPe.PlaySequencePurely("Close")
-    }
+      } else if (e === InputMappingsDefine_1.actionMappings.组合主键) {
+        this.Rze(t);
+      }
+    };
+    this.Uze = () => {
+      this.fze();
+    };
+    this.Aze = () => {
+      this.SPe.StopCurrentSequence();
+      this.SPe.PlaySequencePurely("Close");
+    };
   }
   InitializeTemp() {
     this.nze = CommonParamById_1.configCommonParamById.GetIntConfig("ChatViewTimeDown");
     var e = this.GetOperationType();
-    2 === e && (this.gze().then(() => {
-      !(this.oze.size <= 0) && ModelManager_1.ModelManager.ChatModel.HasOfflineMassage() ? (this.uze(), this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY)) : this.Pze(!1)
-    }, () => {}), this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(3))), 1 === e && (RedDotController_1.RedDotController.BindRedDot("ChatView", this.GetItem(1)), this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(2))), this.SPe.BindSequenceCloseEvent(e => {
-      "Close" === e && this.Pze(!1)
-    })
+    if (e === 2) {
+      this.gze().then(() => {
+        if (!(this.oze.size <= 0) && ModelManager_1.ModelManager.ChatModel.HasOfflineMassage()) {
+          this.uze();
+          this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
+        } else {
+          this.Pze(false);
+        }
+      }, () => {});
+      this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(3));
+    }
+    if (e === 1) {
+      RedDotController_1.RedDotController.BindRedDot("ChatView", this.GetItem(1));
+      this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(2));
+    }
+    this.SPe.BindSequenceCloseEvent(e => {
+      if (e === "Close") {
+        this.Pze(false);
+      }
+    });
   }
   OnBeforeShow() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRedDot)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRedDot);
   }
   Reset() {
-    super.Reset(), this.xze(), this.wze(), 1 === this.GetOperationType() && RedDotController_1.RedDotController.UnBindRedDot("ChatView")
+    super.Reset();
+    this.xze();
+    this.wze();
+    if (this.GetOperationType() === 1) {
+      RedDotController_1.RedDotController.UnBindRedDot("ChatView");
+    }
   }
   OnRegisterComponent() {
     var e = this.GetOperationType();
-    2 === e ? (this.ComponentRegisterInfos = [
-      [0, UE.UIButtonComponent],
-      [1, UE.UIScrollViewWithScrollbarComponent],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIText],
-      [10, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.Ize]
-    ]) : 1 === e && (this.ComponentRegisterInfos = [
-      [0, UE.UIButtonComponent],
-      [1, UE.UIItem],
-      [2, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.Ize]
-    ])
+    if (e === 2) {
+      this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem]];
+      this.BtnBindInfo = [[0, this.Ize]];
+    } else if (e === 1) {
+      this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem]];
+      this.BtnBindInfo = [[0, this.Ize]];
+    }
   }
   async InitializeAsync() {
     var e;
-    await super.InitializeAsync(), Info_1.Info.IsInTouch() || (e = this.GetItem(8), this.hze = new CommonKeyItem_1.CommonKeyItem, await this.hze.CreateThenShowByActorAsync(e.GetOwner()), await this.yah())
+    await super.InitializeAsync();
+    if (!Info_1.Info.IsInTouch()) {
+      e = this.GetItem(8);
+      this.hze = new CommonKeyItem_1.CommonKeyItem();
+      await this.hze.CreateThenShowByActorAsync(e.GetOwner());
+      await this.yah();
+    }
   }
   async yah() {
     var e = this.GetItem(10)?.GetOwner();
-    e && (this.Mah = new BattleSkillLeftRouletteItem_1.BattleSkillLeftRouletteItem, await this.Mah.CreateThenShowByActorAsync(e))
+    if (e) {
+      this.Mah = new BattleSkillLeftRouletteItem_1.BattleSkillLeftRouletteItem();
+      await this.Mah.CreateThenShowByActorAsync(e);
+    }
   }
   OnShowBattleChildViewPanel() {
     var e = Info_1.Info.OperationType;
-    if (2 === e) {
-      var t = ModelManager_1.ModelManager.FriendModel,
-        i = [];
+    if (e === 2) {
+      var t = ModelManager_1.ModelManager.FriendModel;
+      var i = [];
       for (const a of this.oze.values()) {
-        var r, n, s = a.GetChatRowData();
-        s && (r = s.UniqueId, (n = s.TargetPlayerId) && t.HasBlockedPlayer(n) && i.push(r), s.IsVisible || i.push(r))
+        var r;
+        var n;
+        var s = a.GetChatRowData();
+        if (s) {
+          r = s.UniqueId;
+          if ((n = s.TargetPlayerId) && t.HasBlockedPlayer(n)) {
+            i.push(r);
+          }
+          if (!s.IsVisible) {
+            i.push(r);
+          }
+        }
       }
-      for (const h of i) this.mze(h);
-      this.oze.size <= 0 ? (this.wze(), this.Pze(!1)) : this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
+      for (const h of i) {
+        this.mze(h);
+      }
+      if (this.oze.size <= 0) {
+        this.wze();
+        this.Pze(false);
+      } else {
+        this.DelayScroll(ChatDefine_1.CHAT_SCROLL_DELAY);
+      }
       e = ModelManager_1.ModelManager.BattleUiModel.EnvironmentKeyData;
-      e.SetEnvironmentKeyVisible(2, this.Bze()), e.SetEnvironmentKeyVisible(4, this.bze()), e.SetEnvironmentKeyVisible(7, this._W1()), e.SetEnvironmentKeyVisible(9, this.F_u()), this.hze?.RefreshAction(InputMappingsDefine_1.actionMappings.功能菜单), this.yze(), this.dze(), this.SPe.StopCurrentSequence(), this.SPe.PlaySequencePurely("Start")
+      e.SetEnvironmentKeyVisible(2, this.Bze());
+      e.SetEnvironmentKeyVisible(4, this.bze());
+      e.SetEnvironmentKeyVisible(7, this.QW1());
+      e.SetEnvironmentKeyVisible(9, this.K0u());
+      this.hze?.RefreshAction(InputMappingsDefine_1.actionMappings.功能菜单);
+      this.yze();
+      this.dze();
+      this.SPe.StopCurrentSequence();
+      this.SPe.PlaySequencePurely("Start");
     }
   }
   dze() {
     var e = Info_1.Info.IsInGamepad();
-    this.GetItem(5)?.SetUIActive(e), this.Sze(), this.Sah()
+    this.GetItem(5)?.SetUIActive(e);
+    this.Sze();
+    this.Sah();
   }
   Sze() {
-    var e = Info_1.Info.IsInGamepad(),
-      t = ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.GetCurEnvironmentalKey() ?? 0;
-    this.GetItem(7)?.SetUIActive(0 !== t && this.aze && e)
+    var e = Info_1.Info.IsInGamepad();
+    var t = ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.GetCurEnvironmentalKey() ?? 0;
+    this.GetItem(7)?.SetUIActive(t !== 0 && this.aze && e);
   }
   yze() {
     var e = ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.GetCurKeyText();
-    e && LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), e)
+    if (e) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), e);
+    }
   }
   Sah() {
-    this.Mah?.RefreshVisible()
+    this.Mah?.RefreshVisible();
   }
   AddEvents() {
-    2 === this.GetOperationType() && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshChatRowData, this.FGn), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe), InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe))
+    if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshChatRowData, this.FGn);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe);
+      InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe);
+    }
   }
   RemoveEvents() {
-    2 === this.GetOperationType() && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnRefreshChatRowData, this.FGn) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshChatRowData, this.FGn), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.InputControllerChange, this.XBo) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe), InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe))
+    if (this.GetOperationType() === 2) {
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnRefreshChatRowData, this.FGn)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshChatRowData, this.FGn);
+      }
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.InputControllerChange, this.XBo)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
+      }
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiEnvironmentKeyChanged, this.Eze);
+      }
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, this.RZe);
+      }
+      InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.环境特性, InputMappingsDefine_1.actionMappings.组合主键], this.bMe);
+    }
   }
   Rze(e) {
-    this.aze = 0 === e, this.Sze()
+    this.aze = e === 0;
+    this.Sze();
   }
   Lze() {
-    !this.Bze() || UiManager_1.UiManager.IsViewShow("TowerGuideView") || UiManager_1.UiManager.OpenView("TowerGuideView")
+    if (!!this.Bze() && !UiManager_1.UiManager.IsViewShow("TowerGuideView")) {
+      UiManager_1.UiManager.OpenView("TowerGuideView");
+    }
   }
   Bze() {
-    return ModelManager_1.ModelManager.TowerModel.CheckInTower()
+    return ModelManager_1.ModelManager.TowerModel.CheckInTower();
   }
   mXn() {
-    ControllerHolder_1.ControllerHolder.InstanceDungeonGuideController.StartReplayGuide()
+    ControllerHolder_1.ControllerHolder.InstanceDungeonGuideController.StartReplayGuide();
   }
   Dze() {
     var e;
-    this.bze() && (e = ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue() ? "WeeklyRogueInfo" : "RogueInfoView", UiManager_1.UiManager.IsViewShow(e) || UiManager_1.UiManager.OpenView(e))
+    if (this.bze()) {
+      e = ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue() ? "WeeklyRogueInfo" : "RogueInfoView";
+      if (!UiManager_1.UiManager.IsViewShow(e)) {
+        UiManager_1.UiManager.OpenView(e);
+      }
+    }
   }
   bze() {
-    return ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()
+    return ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue();
   }
-  _W1() {
-    return ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()
+  QW1() {
+    return ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance();
   }
-  F_u() {
-    return !!ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive()
+  K0u() {
+    return !!ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive();
   }
   Tze() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleSilentAreaInfoView)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleSilentAreaInfoView);
   }
   bZa() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleTowerDefenseInfoView)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleTowerDefenseInfoView);
   }
   TG_() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleShipTowerBuffInfo)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleShipTowerBuffInfo);
   }
-  tz1() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo)
+  Kz1() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo);
   }
-  gw1() {
-    UiManager_1.UiManager.IsViewOpen("RogueBattleSummary") || UiManager_1.UiManager.OpenView("RogueBattleSummary")
+  Hw1() {
+    if (!UiManager_1.UiManager.IsViewOpen("RogueBattleSummary")) {
+      UiManager_1.UiManager.OpenView("RogueBattleSummary");
+    }
   }
-  G_u() {
-    ModelManager_1.ModelManager.MoraleModel?.IsInitData && ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive() && UiManager_1.UiManager.OpenView("MoraleAreaSumView")
+  Q0u() {
+    if (ModelManager_1.ModelManager.MoraleModel?.IsInitData && ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive()) {
+      UiManager_1.UiManager.OpenView("MoraleAreaSumView");
+    }
   }
   async gze() {
     this.qze();
-    var e, t = [];
-    for (const i of ModelManager_1.ModelManager.ChatModel.GetChatRowDataList()) i.IsVisible && (e = this._ze(i), t.push(e));
-    await Promise.all(t)
+    var e;
+    var t = [];
+    for (const i of ModelManager_1.ModelManager.ChatModel.GetChatRowDataList()) {
+      if (i.IsVisible) {
+        e = this._ze(i);
+        t.push(e);
+      }
+    }
+    await Promise.all(t);
   }
   async _ze(e) {
     var t = e.UniqueId;
-    if (1 === e.ContentChatRoomType) {
+    if (e.ContentChatRoomType === 1) {
       var i = e.TargetPlayerId;
-      if (!i) return;
-      var r = ModelManager_1.ModelManager.FriendModel,
-        n = r.GetFriendById(i);
-      if (!n) return;
-      if (r.HasBlockedPlayer(i) || n.GetBlockBySdk()) return
+      if (!i) {
+        return;
+      }
+      var r = ModelManager_1.ModelManager.FriendModel;
+      var n = r.GetFriendById(i);
+      if (!n) {
+        return;
+      }
+      if (r.HasBlockedPlayer(i) || n.GetBlockBySdk()) {
+        return;
+      }
     }
-    r = this.GetItem(2), i = await this.NewDynamicChildViewByResourceId(r, "UiItem_ChatRowItem_Prefab", ChatRowItem_1.ChatRowItem, !0, e);
-    this.oze.set(t, i), this.OJs.push(t)
+    r = this.GetItem(2);
+    i = await this.NewDynamicChildViewByResourceId(r, "UiItem_ChatRowItem_Prefab", ChatRowItem_1.ChatRowItem, true, e);
+    this.oze.set(t, i);
+    this.OJs.push(t);
   }
   DelayScroll(e) {
-    this.xze(), 2 === this.GetOperationType() && (this.sze = TimerSystem_1.TimerSystem.Delay(this.Uze, e))
+    this.xze();
+    if (this.GetOperationType() === 2) {
+      this.sze = TimerSystem_1.GameplayTimerSystem.Delay(this.Uze, e);
+    }
   }
   xze() {
-    TimerSystem_1.TimerSystem.Has(this.sze) && TimerSystem_1.TimerSystem.Remove(this.sze), this.sze = void 0
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.sze)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.sze);
+    }
+    this.sze = undefined;
   }
   wze() {
-    TimerSystem_1.TimerSystem.Has(this.rze) && TimerSystem_1.TimerSystem.Remove(this.rze), this.rze = void 0
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.rze)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.rze);
+    }
+    this.rze = undefined;
   }
   fze() {
     var e = this.NJs();
-    e && this.GetScrollViewWithScrollbar(1)?.ScrollTo(e.GetRootItem())
+    if (e) {
+      this.GetScrollViewWithScrollbar(1)?.ScrollTo(e.GetRootItem());
+    }
   }
   mze(e) {
-    var t = this.oze.get(e),
-      t = (t?.GetRootActor()?.IsValid() && t.Destroy(), this.oze.delete(e), this.OJs.indexOf(e));
-    0 <= t && this.OJs.splice(t, 1)
+    var t = this.oze.get(e);
+    if (t?.GetRootActor()?.IsValid()) {
+      t.Destroy();
+    }
+    this.oze.delete(e);
+    var t = this.OJs.indexOf(e);
+    if (t >= 0) {
+      this.OJs.splice(t, 1);
+    }
   }
   qze() {
-    for (const e of this.oze.values()) e?.GetRootActor()?.IsValid() && e.Destroy();
-    this.oze.clear(), this.OJs.length = 0
+    for (const e of this.oze.values()) {
+      if (e?.GetRootActor()?.IsValid()) {
+        e.Destroy();
+      }
+    }
+    this.oze.clear();
+    this.OJs.length = 0;
   }
   NJs() {
     var e = this.OJs.length;
     if (!(e <= 0)) {
       e = this.OJs[e - 1];
-      if (e) return this.oze.get(e)
+      if (e) {
+        return this.oze.get(e);
+      }
     }
   }
   uze() {
-    this.wze(), this.GetItem(3)?.bIsUIActive || (this.SPe.StopCurrentSequence(), this.SPe.PlaySequencePurely("Start")), this.Pze(!0), this.rze = TimerSystem_1.TimerSystem.Delay(this.Aze, this.nze)
+    this.wze();
+    if (!this.GetItem(3)?.bIsUIActive) {
+      this.SPe.StopCurrentSequence();
+      this.SPe.PlaySequencePurely("Start");
+    }
+    this.Pze(true);
+    this.rze = TimerSystem_1.GameplayTimerSystem.Delay(this.Aze, this.nze);
   }
   Pze(e) {
-    this.GetItem(3)?.SetUIActive(e), ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = e
+    this.GetItem(3)?.SetUIActive(e);
+    ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = e;
   }
   OnAfterDestroy() {
-    super.OnAfterDestroy(), ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = !1
+    super.OnAfterDestroy();
+    ModelManager_1.ModelManager.BattleUiModel.ChatScrollViewVisible = false;
   }
 }
 exports.ChatPanel = ChatPanel;

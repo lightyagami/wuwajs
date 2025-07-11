@@ -1,5 +1,8 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WORKSPACE_BRANCH = exports.RUNTIME = void 0, exports.RUNTIME = "aki", exports.WORKSPACE_BRANCH = "branch_2.4";
-//# sourceMappingURL=EditorDefine.js.map
+  value: true
+});
+exports.WORKSPACE_BRANCH = exports.RUNTIME = undefined;
+exports.RUNTIME = "aki";
+exports.WORKSPACE_BRANCH = "branch_2.5"; //# sourceMappingURL=EditorDefine.js.map

@@ -1,92 +1,124 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PropertyIndex = void 0;
+  value: true
+});
+exports.PropertyIndex = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class PropertyIndex {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Key() {
-    return this.key()
+    return this.key();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get AnotherName() {
-    return this.anothername()
+    return this.anothername();
   }
   get ConvertToWhiteId() {
-    return this.converttowhiteid()
+    return this.converttowhiteid();
   }
   get IsShow() {
-    return this.isshow()
+    return this.isshow();
   }
   get IsPercent() {
-    return this.ispercent()
+    return this.ispercent();
   }
   get Priority() {
-    return this.priority()
+    return this.priority();
   }
   get Icon() {
-    return this.icon()
+    return this.icon();
   }
   get Dec() {
-    return this.dec()
+    return this.dec();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsPropertyIndex(t, i) {
-    return (i || new PropertyIndex).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new PropertyIndex()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   key(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   anothername(t) {
-    var i = this.J7.__offset(this.z7, 10),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   converttowhiteid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isshow() {
     var t = this.J7.__offset(this.z7, 14);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   ispercent() {
     var t = this.J7.__offset(this.z7, 16);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   priority() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 20),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   dec(t) {
-    var i = this.J7.__offset(this.z7, 22),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.PropertyIndex = PropertyIndex;

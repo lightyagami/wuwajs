@@ -1,21 +1,33 @@
 "use strict";
-var __decorate = this && this.__decorate || function(e, t, n, o) {
-  var r, i = arguments.length,
-    c = i < 3 ? t : null === o ? o = Object.getOwnPropertyDescriptor(t, n) : o;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) c = Reflect.decorate(e, t, n, o);
-  else
-    for (var s = e.length - 1; 0 <= s; s--)(r = e[s]) && (c = (i < 3 ? r(c) : 3 < i ? r(t, n, c) : r(t, n)) || c);
-  return 3 < i && c && Object.defineProperty(t, n, c), c
+
+var __decorate = this && this.__decorate || function (e, t, n, o) {
+  var r;
+  var i = arguments.length;
+  var c = i < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, n) : o;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    c = Reflect.decorate(e, t, n, o);
+  } else {
+    for (var s = e.length - 1; s >= 0; s--) {
+      if (r = e[s]) {
+        c = (i < 3 ? r(c) : i > 3 ? r(t, n, c) : r(t, n)) || c;
+      }
+    }
+  }
+  if (i > 3 && c) {
+    Object.defineProperty(t, n, c);
+  }
+  return c;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneItemDebugComponent = void 0;
-const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+  value: true
+});
+exports.SceneItemDebugComponent = undefined;
+const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 let SceneItemDebugComponent = class SceneItemDebugComponent extends EntityComponent_1.EntityComponent {
   GetTagDebugStrings() {
-    return this.Entity.GetComponent(196).GetTagDebugStrings()
+    return this.Entity.GetComponent(196).GetTagDebugStrings();
   }
 };
-SceneItemDebugComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], SceneItemDebugComponent), exports.SceneItemDebugComponent = SceneItemDebugComponent;
-//# sourceMappingURL=SceneItemDebugComponent.js.map
+SceneItemDebugComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], SceneItemDebugComponent);
+exports.SceneItemDebugComponent = SceneItemDebugComponent; //# sourceMappingURL=SceneItemDebugComponent.js.map

@@ -1,36 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SdkEnterTipsView = void 0;
-const UE = require("ue"),
-  UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase"),
-  UiLayer_1 = require("../../../Ui/UiLayer");
+  value: true
+});
+exports.SdkEnterTipsView = undefined;
+const UE = require("ue");
+const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
+const UiLayer_1 = require("../../../Ui/UiLayer");
 class SdkEnterTipsView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
-    super(...arguments), this.bWe = !1, this.Pe = void 0
+    super(...arguments);
+    this.bWe = false;
+    this.Pe = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [1, UE.UIItem],
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[1, UE.UIItem], [0, UE.UIText]];
   }
   OnStart() {
-    this.Pe = this.OpenParam, this.UiViewSequence.AddSequenceFinishEvent("Start", () => {
-      this.bWe = !0
-    }), this.T2e(this.Pe)
+    this.Pe = this.OpenParam;
+    this.UiViewSequence.AddSequenceFinishEvent("Start", () => {
+      this.bWe = true;
+    });
+    this.T2e(this.Pe);
   }
   OnBeforeShow() {
-    this.Pe?.NeedMask && UiLayer_1.UiLayer.SetShowMaskLayer("SdkLoading", !0)
+    if (this.Pe?.NeedMask) {
+      UiLayer_1.UiLayer.SetShowMaskLayer("SdkLoading", true);
+    }
   }
   OnBeforeHide() {
-    this.Pe?.NeedMask && UiLayer_1.UiLayer.SetShowMaskLayer("SdkLoading", !1)
+    if (this.Pe?.NeedMask) {
+      UiLayer_1.UiLayer.SetShowMaskLayer("SdkLoading", false);
+    }
   }
   OnTick(i) {
-    this.bWe && this.IsShow && (this.bWe = !1, this.CloseMe())
+    if (this.bWe && this.IsShow) {
+      this.bWe = false;
+      this.CloseMe();
+    }
   }
   T2e(i) {
-    this.GetText(0)?.SetText(i.Text)
+    this.GetText(0)?.SetText(i.Text);
   }
 }
 exports.SdkEnterTipsView = SdkEnterTipsView;

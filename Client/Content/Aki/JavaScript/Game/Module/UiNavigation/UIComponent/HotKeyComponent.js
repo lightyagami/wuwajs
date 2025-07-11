@@ -1,187 +1,319 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.HotKeyComponent = void 0;
-const Info_1 = require("../../../../Core/Common/Info"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  InputSettingsManager_1 = require("../../../InputSettings/InputSettingsManager"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  HotKeyViewDefine_1 = require("../HotKeyViewDefine"),
-  IconKeyComponent_1 = require("../KeyComponent/IconKeyComponent"),
-  UiNavigationUtil_1 = require("../UiNavigationUtil");
+  value: true
+});
+exports.HotKeyComponent = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
+const Log_1 = require("../../../../Core/Common/Log");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const InputSettingsManager_1 = require("../../../InputSettings/InputSettingsManager");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const HotKeyViewDefine_1 = require("../HotKeyViewDefine");
+const IconKeyComponent_1 = require("../KeyComponent/IconKeyComponent");
+const UiNavigationUtil_1 = require("../UiNavigationUtil");
 class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   constructor(t) {
-    super(), this.HotKeyMapIndex = 0, this.CurComponent = void 0, this.IsPress = !1, this.IsAction = !0, this.nqo = void 0, this.sqo = 0, this.HotKeyTextId = void 0, this.w7t = void 0, this.aqo = void 0, this.Xnl = void 0, this.Dut = t => {
+    super();
+    this.HotKeyMapIndex = 0;
+    this.CurComponent = undefined;
+    this.IsPress = false;
+    this.IsAction = true;
+    this.nqo = undefined;
+    this.sqo = 0;
+    this.HotKeyTextId = undefined;
+    this.w7t = undefined;
+    this.aqo = undefined;
+    this.Xnl = undefined;
+    this.Dut = t => {
       var i = this.GetActionName();
-      StringUtils_1.StringUtils.IsEmpty(i) || i !== t || this.hqo()
-    }, this.lqo = !1, this._qo = !1, this.HotKeyMapIndex = t, this.nqo = ConfigManager_1.ConfigManager.UiNavigationConfig.GetHotKeyMapConfig(this.HotKeyMapIndex)
+      if (!StringUtils_1.StringUtils.IsEmpty(i) && i === t) {
+        this.hqo();
+      }
+    };
+    this.lqo = false;
+    this._qo = false;
+    this.HotKeyMapIndex = t;
+    this.nqo = ConfigManager_1.ConfigManager.UiNavigationConfig.GetHotKeyMapConfig(this.HotKeyMapIndex);
   }
   OnBeforeCreateImplement() {
-    this.OnInit()
+    this.OnInit();
   }
   async OnBeforeStartAsync() {
-    this._qo = !!this.nqo && 0 < this.nqo.LongPressTime, this.CurComponent = new IconKeyComponent_1.IconKeyComponent, this.CurComponent.SetIsNeedLongPress(this._qo), this.CurComponent.SetKeyName(this.uqo()), await this.CurComponent.CreateThenShowByActorAsync(this.RootActor), this.aqo = UiNavigationUtil_1.UiNavigationUtil.GetFullPathOfActor(this.CurComponent.GetRootActor())
+    this._qo = !!this.nqo && this.nqo.LongPressTime > 0;
+    this.CurComponent = new IconKeyComponent_1.IconKeyComponent();
+    this.CurComponent.SetIsNeedLongPress(this._qo);
+    this.CurComponent.SetKeyName(this.uqo());
+    await this.CurComponent.CreateThenShowByActorAsync(this.RootActor);
+    this.aqo = UiNavigationUtil_1.UiNavigationUtil.GetFullPathOfActor(this.CurComponent.GetRootActor());
   }
   uqo() {
     var t = this.GetHotKeyConfig();
-    return !t || Info_1.Info.IsInTouch() ? "" : this.Trt(t)
+    if (!t || Info_1.Info.IsInTouch()) {
+      return "";
+    } else {
+      return this.Trt(t);
+    }
   }
   cqo() {
-    return 0 === this.sqo
+    return this.sqo === 0;
   }
   mqo(t) {
-    t ? this.OnRefreshMode() : this.IsPress && this.ReleaseWithoutCheck(), this.CurComponent.SetActive(t)
+    if (t) {
+      this.OnRefreshMode();
+    } else if (this.IsPress) {
+      this.ReleaseWithoutCheck();
+    }
+    this.CurComponent.SetActive(t);
   }
   OnRefreshMode() {
-    this.dqo(), this.RefreshHotKeyNameText()
+    this.dqo();
+    this.RefreshHotKeyNameText();
   }
   dqo() {
     var t = this.GetHotKeyConfig();
-    t && (Info_1.Info.IsInTouch() ? this.CurComponent.SetActive(!1) : (t = this.Trt(t), this.CurComponent.RefreshKeyIcon(t), this.CurComponent.SetActive(!0)))
+    if (t) {
+      if (Info_1.Info.IsInTouch()) {
+        this.CurComponent.SetActive(false);
+      } else {
+        t = this.Trt(t);
+        this.CurComponent.RefreshKeyIcon(t);
+        this.CurComponent.SetActive(true);
+      }
+    }
   }
   hqo() {
     var t = this.GetHotKeyConfig();
-    t && !Info_1.Info.IsInTouch() && (t = this.Trt(t), this.CurComponent.RefreshKeyIcon(t))
+    if (t && !Info_1.Info.IsInTouch()) {
+      t = this.Trt(t);
+      this.CurComponent.RefreshKeyIcon(t);
+    }
   }
   GetHotKeyConfig() {
-    return this.nqo
+    return this.nqo;
   }
   Trt(t) {
-    var i = t.ActionName,
-      t = t.AxisName;
-    return !StringUtils_1.StringUtils.IsEmpty(i) && this.IsAction ? InputSettingsManager_1.InputSettingsManager.GetActionBinding(i).GetCurrentPlatformKeyByIndex(0)?.KeyName : StringUtils_1.StringUtils.IsEmpty(t) ? void 0 : InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t).GetCurrentPlatformKeyByIndex(0)?.KeyName
+    var i = t.ActionName;
+    var t = t.AxisName;
+    if (!StringUtils_1.StringUtils.IsEmpty(i) && this.IsAction) {
+      return InputSettingsManager_1.InputSettingsManager.GetActionBinding(i).GetCurrentPlatformKeyByIndex(0)?.KeyName;
+    } else if (StringUtils_1.StringUtils.IsEmpty(t)) {
+      return undefined;
+    } else {
+      return InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t).GetCurrentPlatformKeyByIndex(0)?.KeyName;
+    }
   }
   Cqo(t, i) {
-    ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigationHotKey", 10, "[LogicMode]模式设置", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()], ["模式", HotKeyViewDefine_1.logicModeLogString[t]], ["值", i]), i ? this.sqo & t && (this.sqo = this.sqo ^ t) : this.sqo = this.sqo | t
+    if (ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigationHotKey", 10, "[LogicMode]模式设置", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()], ["模式", HotKeyViewDefine_1.logicModeLogString[t]], ["值", i]);
+    }
+    if (i) {
+      if (this.sqo & t) {
+        this.sqo = this.sqo ^ t;
+      }
+    } else {
+      this.sqo = this.sqo | t;
+    }
   }
   RefreshHotKeyNameText() {
     var t = this.HotKeyTextId ?? this.GetHotKeyConfig().TextId;
-    this.CurComponent.RefreshNameText(t)
+    this.CurComponent.RefreshNameText(t);
   }
   OnRefreshSelfHotKeyState(t) {
     var i = this.GetBindButtonTag();
-    StringUtils_1.StringUtils.IsEmpty(i) || (t = t.GetActiveListenerByTag(i), this.SetVisibleMode(2, void 0 !== t))
+    if (!StringUtils_1.StringUtils.IsEmpty(i)) {
+      t = t.GetActiveListenerByTag(i);
+      this.SetVisibleMode(2, t !== undefined);
+    }
   }
   OnRefreshHotKeyText(t) {}
   OnRefreshHotKeyTextId(t) {
     var i;
-    this.CurComponent.GetIsForceSetText() || (i = this.GetBindButtonTag(), StringUtils_1.StringUtils.IsEmpty(i)) || (t = t.GetActiveListenerByTag(i)?.GetTipsTextIdByState(), this.SetHotKeyTextId(t), this.RefreshHotKeyNameText())
+    if (!this.CurComponent.GetIsForceSetText() && !(i = this.GetBindButtonTag(), StringUtils_1.StringUtils.IsEmpty(i))) {
+      t = t.GetActiveListenerByTag(i)?.GetTipsTextIdByState();
+      this.SetHotKeyTextId(t);
+      this.RefreshHotKeyNameText();
+    }
   }
   OnRefreshHotKeyShield(t) {
     t = t.GetFocusListener();
-    this.SetVisibleMode(8, !t?.ShieldHotKeyIndexArray.Contains(this.HotKeyMapIndex))
+    this.SetVisibleMode(8, !t?.ShieldHotKeyIndexArray.Contains(this.HotKeyMapIndex));
   }
-  gqo(t = !1) {
-    var i, e = this.nqo.ApplicableType;
-    0 === e ? this.SetVisibleMode(64, !0, !0) : 1 === e ? this.SetVisibleMode(64, Info_1.Info.IsInKeyBoard(), t) : 2 === e ? this.SetVisibleMode(64, Info_1.Info.IsInGamepad(), t) : 3 === e ? (i = Info_1.Info.IsInKeyBoard(), this.RootItem.SetAlpha(i ? 0 : 1), this.SetVisibleMode(64, !0, t), ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigationHotKey", 10, "仅键鼠透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()])) : 4 === e ? (i = Info_1.Info.IsInGamepad(), this.RootItem.SetAlpha(i ? 0 : 1), this.SetVisibleMode(64, !0, t), ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigationHotKey", 10, "仅手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()])) : 5 === e && (i = Info_1.Info.IsInKeyBoard(), t = Info_1.Info.IsInGamepad(), this.RootItem.SetAlpha(i || t ? 0 : 1), this.SetVisibleMode(64, !0, !0), ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog) && Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigationHotKey", 10, "键盘和手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()])
+  gqo(t = false) {
+    var i;
+    var e = this.nqo.ApplicableType;
+    if (e === 0) {
+      this.SetVisibleMode(64, true, true);
+    } else if (e === 1) {
+      this.SetVisibleMode(64, Info_1.Info.IsInKeyBoard(), t);
+    } else if (e === 2) {
+      this.SetVisibleMode(64, Info_1.Info.IsInGamepad(), t);
+    } else if (e === 3) {
+      i = Info_1.Info.IsInKeyBoard();
+      this.RootItem.SetAlpha(i ? 0 : 1);
+      this.SetVisibleMode(64, true, t);
+      if (ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiNavigationHotKey", 10, "仅键鼠透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
+      }
+    } else if (e === 4) {
+      i = Info_1.Info.IsInGamepad();
+      this.RootItem.SetAlpha(i ? 0 : 1);
+      this.SetVisibleMode(64, true, t);
+      if (ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiNavigationHotKey", 10, "仅手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
+      }
+    } else if (e === 5 && (i = Info_1.Info.IsInKeyBoard(), t = Info_1.Info.IsInGamepad(), this.RootItem.SetAlpha(i || t ? 0 : 1), this.SetVisibleMode(64, true, true), ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog) && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigationHotKey", 10, "键盘和手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
+    }
   }
   InitHotKeyLogicMode() {
-    this.SetVisibleMode(16, !Info_1.Info.IsInTouch()), this.SetVisibleMode(2, !1, !0), this.gqo()
+    this.SetVisibleMode(16, !Info_1.Info.IsInTouch());
+    this.SetVisibleMode(2, false, true);
+    this.gqo();
   }
   RegisterMe() {
-    this.dde(), this.gqo(!0), this.hqo()
+    this.dde();
+    this.gqo(true);
+    this.hqo();
   }
   UnRegisterMe() {
-    this.Cde(), this.OnUnRegisterMe(), this.fqo(this.GetAxisName())
+    this.Cde();
+    this.OnUnRegisterMe();
+    this.fqo(this.GetAxisName());
   }
   dde() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActionKeyChanged, this.Dut), this.OnAddEventListener()
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActionKeyChanged, this.Dut);
+    this.OnAddEventListener();
   }
   Cde() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActionKeyChanged, this.Dut), this.OnRemoveEventListener()
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActionKeyChanged, this.Dut);
+    this.OnRemoveEventListener();
   }
-  SetVisibleMode(t, i, e = !1) {
+  SetVisibleMode(t, i, e = false) {
     var s = this.sqo;
-    this.Cqo(t, i), this.sqo === s && !e || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiNavigationHotKey", 10, "[LogicMode]当前设置可见性模式", ["配置id", this.HotKeyMapIndex], ["this.LogicMode", MathUtils_1.MathUtils.DecimalToBinary(this.sqo)], ["lastLogicMode", MathUtils_1.MathUtils.DecimalToBinary(s)], ["Tag", this.GetBindButtonTag()], ["Path", this.aqo]), this.mqo(this.cqo()))
+    this.Cqo(t, i);
+    if (this.sqo !== s || !!e) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("UiNavigationHotKey", 10, "[LogicMode]当前设置可见性模式", ["配置id", this.HotKeyMapIndex], ["this.LogicMode", MathUtils_1.MathUtils.DecimalToBinary(this.sqo)], ["lastLogicMode", MathUtils_1.MathUtils.DecimalToBinary(s)], ["Tag", this.GetBindButtonTag()], ["Path", this.aqo]);
+      }
+      this.mqo(this.cqo());
+    }
   }
   SetHotKeyDescTextForce(t) {
-    this.CurComponent.SetNameTextForce(!0), this.CurComponent.SetNameText(t)
+    this.CurComponent.SetNameTextForce(true);
+    this.CurComponent.SetNameText(t);
   }
   ResetHotKeyDescTextForce() {
-    this.CurComponent.SetNameTextForce(!1)
+    this.CurComponent.SetNameTextForce(false);
   }
   SetHotKeyTextId(t) {
-    StringUtils_1.StringUtils.IsEmpty(t) ? this.HotKeyTextId = void 0 : this.HotKeyTextId = t
+    if (StringUtils_1.StringUtils.IsEmpty(t)) {
+      this.HotKeyTextId = undefined;
+    } else {
+      this.HotKeyTextId = t;
+    }
   }
   IsHotKeyActive() {
-    return 0 === this.sqo
+    return this.sqo === 0;
   }
   IsAllowTickContinue() {
-    return 0 === this.sqo || this.lqo
+    return this.sqo === 0 || this.lqo;
   }
   RefreshMode() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigationHotKey", 10, "切换了控制器,强制刷新表现"), this.gqo(!0), this.CurComponent?.RefreshPcAndGamepad()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigationHotKey", 10, "切换了控制器,强制刷新表现");
+    }
+    this.gqo(true);
+    this.CurComponent?.RefreshPcAndGamepad();
   }
   Press() {
-    this.cqo() && (this.IsPress = !0, this.OnPress(this.GetHotKeyConfig()))
+    if (this.cqo()) {
+      this.IsPress = true;
+      this.OnPress(this.GetHotKeyConfig());
+    }
   }
   Release() {
-    this.cqo() && this.IsPress && this.ReleaseWithoutCheck()
+    if (this.cqo() && this.IsPress) {
+      this.ReleaseWithoutCheck();
+    }
   }
   ReleaseWithoutCheck() {
-    this.IsPress = !1;
+    this.IsPress = false;
     var t = this.GetHotKeyConfig();
-    this.OnRelease(t)
+    this.OnRelease(t);
   }
   InputAxis(t, i) {
-    this.cqo() ? (this.pqo(t), this.OnInputAxis(t, i)) : this.fqo(t)
+    if (this.cqo()) {
+      this.pqo(t);
+      this.OnInputAxis(t, i);
+    } else {
+      this.fqo(t);
+    }
   }
   pqo(t) {
-    this.lqo || (this.lqo = !0, this.OnStartInputAxis(t))
+    if (!this.lqo) {
+      this.lqo = true;
+      this.OnStartInputAxis(t);
+    }
   }
   fqo(t) {
-    this.lqo && (this.lqo = !1, this.OnFinishInputAxis(t))
+    if (this.lqo) {
+      this.lqo = false;
+      this.OnFinishInputAxis(t);
+    }
   }
   GetBindButtonTag() {
-    return this.nqo?.BindButtonTag
+    return this.nqo?.BindButtonTag;
   }
   GetActionName() {
-    return this.nqo?.ActionName
+    return this.nqo?.ActionName;
   }
   GetAxisName() {
-    return this.nqo?.AxisName
+    return this.nqo?.AxisName;
   }
   IsAxisAllDirection() {
-    return 0 === this.nqo?.AxisDirection
+    return this.nqo?.AxisDirection === 0;
   }
   IsAxisPositive() {
-    return 1 !== this.nqo?.AxisDirection
+    return this.nqo?.AxisDirection !== 1;
   }
   IsAxisReverse() {
-    return 2 !== this.nqo?.AxisDirection
+    return this.nqo?.AxisDirection !== 2;
   }
   SetHotKeyFunctionType(t) {
-    this.w7t = t
+    this.w7t = t;
   }
   GetHotKeyFunctionType() {
-    return this.w7t
+    return this.w7t;
   }
   IsOccupancyFightInput() {
-    return this.OnIsOccupancyFightInput()
+    return this.OnIsOccupancyFightInput();
   }
   RefreshSelfHotKeyState(t) {
-    this.OnRefreshHotKeyShield(t), this.OnRefreshSelfHotKeyState(t), this.gqo()
+    this.OnRefreshHotKeyShield(t);
+    this.OnRefreshSelfHotKeyState(t);
+    this.gqo();
   }
   RefreshSelfHotKeyText(t) {
-    this.OnRefreshHotKeyText(t), this.OnRefreshHotKeyTextId(t)
+    this.OnRefreshHotKeyText(t);
+    this.OnRefreshHotKeyTextId(t);
   }
   SetHotKeyType(t) {
-    this.CurComponent.SetHotKeyType(t)
+    this.CurComponent.SetHotKeyType(t);
   }
   SetLinkComponent(t) {
-    this.Xnl = t
+    this.Xnl = t;
   }
   IsLinkListener(t) {
-    return !this.Xnl || !!t && (this.Xnl.ActorList?.Contains(t) ?? !1)
+    return !this.Xnl || !!t && (this.Xnl.ActorList?.Contains(t) ?? false);
   }
   Clear() {
-    this.OnClear()
+    this.OnClear();
   }
   OnInit() {}
   OnAddEventListener() {}
@@ -189,7 +321,7 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   OnUnRegisterMe() {}
   OnClear() {}
   OnIsOccupancyFightInput() {
-    return this.nqo?.IsOccupancyFightInput ?? !0
+    return this.nqo?.IsOccupancyFightInput ?? true;
   }
   OnPress(t) {}
   OnRelease(t) {}
@@ -197,7 +329,9 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   OnStartInputAxis(t) {}
   OnFinishInputAxis(t) {}
   ResetPressState() {
-    !this._qo && this.IsPress && (this.IsPress = !1)
+    if (!this._qo && this.IsPress) {
+      this.IsPress = false;
+    }
   }
 }
 exports.HotKeyComponent = HotKeyComponent;

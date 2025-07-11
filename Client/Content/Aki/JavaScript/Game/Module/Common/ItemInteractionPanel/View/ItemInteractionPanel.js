@@ -1,122 +1,195 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemInteractionPanel = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView"),
-  ItemInteractionPanelItemData_1 = require("../ItemInteractionPanelItemData"),
-  ItemInteractionMediumItemGrid_1 = require("./ItemInteractionMediumItemGrid"),
-  ItemInteractionPanelMainTypeItem_1 = require("./ItemInteractionPanelMainTypeItem");
+  value: true
+});
+exports.ItemInteractionPanel = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView");
+const ItemInteractionPanelItemData_1 = require("../ItemInteractionPanelItemData");
+const ItemInteractionMediumItemGrid_1 = require("./ItemInteractionMediumItemGrid");
+const ItemInteractionPanelMainTypeItem_1 = require("./ItemInteractionPanelMainTypeItem");
 class ItemInteractionPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.KPt = void 0, this.QPt = new Map, this.dgt = new Map, this.XPt = [], this.$Pt = [], this.YPt = new Map, this.JPt = void 0, this.zPt = void 0, this.ZPt = void 0, this.LPt = void 0, this.ext = void 0, this.aMa = void 0, this.cHe = () => {
-      var t = new ItemInteractionMediumItemGrid_1.ItemInteractionMediumItemGrid;
-      return t.BindOnExtendToggleStateChanged(this.txt), t.BindOnCanExecuteChange(this.gke), t.BindReduceLongPress(this.ixt), t
-    }, this.ixt = (t, i, e) => {
-      e && this.ZPt && this.ZPt(e)
-    }, this.txt = t => {
+    super(...arguments);
+    this.KPt = undefined;
+    this.QPt = new Map();
+    this.dgt = new Map();
+    this.XPt = [];
+    this.$Pt = [];
+    this.YPt = new Map();
+    this.JPt = undefined;
+    this.zPt = undefined;
+    this.ZPt = undefined;
+    this.LPt = undefined;
+    this.ext = undefined;
+    this.aMa = undefined;
+    this.cHe = () => {
+      var t = new ItemInteractionMediumItemGrid_1.ItemInteractionMediumItemGrid();
+      t.BindOnExtendToggleStateChanged(this.txt);
+      t.BindOnCanExecuteChange(this.gke);
+      t.BindReduceLongPress(this.ixt);
+      return t;
+    };
+    this.ixt = (t, i, e) => {
+      if (e && this.ZPt) {
+        this.ZPt(e);
+      }
+    };
+    this.txt = t => {
       t = t.Data;
-      this.SetItemGridSelected(!0, t), this.zPt && this.zPt(t)
-    }, this.gke = (t, i, e) => {
-      return !(this.aMa && this.aMa.IsSelected && t === this.aMa || this.$Pt.indexOf(t) < 0) && (!this.LPt || this.LPt(t))
-    }, this.oxt = t => {
-      this.SelectedMainType(t)
-    }
+      this.SetItemGridSelected(true, t);
+      if (this.zPt) {
+        this.zPt(t);
+      }
+    };
+    this.gke = (t, i, e) => {
+      return (!this.aMa || !this.aMa.IsSelected || t !== this.aMa) && !(this.$Pt.indexOf(t) < 0) && (!this.LPt || this.LPt(t));
+    };
+    this.oxt = t => {
+      this.SelectedMainType(t);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UIText],
-      [2, UE.UISprite],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UILoopScrollViewComponent],
-      [6, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UILoopScrollViewComponent], [6, UE.UIItem]];
   }
   OnStart() {
-    this.JPt = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(5), this.GetItem(6).GetOwner(), this.cHe)
+    this.JPt = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(5), this.GetItem(6).GetOwner(), this.cHe);
   }
   async Refresh(t) {
-    this.KPt = t, this.rxt(), await this.nxt();
+    this.KPt = t;
+    this.rxt();
+    await this.nxt();
     t = this.XPt[0];
-    t && this.SelectedMainType(t)
+    if (t) {
+      this.SelectedMainType(t);
+    }
   }
   BindOnReduceButtonTrigger(t) {
-    this.ZPt = t
+    this.ZPt = t;
   }
   BindOnItemExtendToggleStateChanged(t) {
-    this.zPt = t
+    this.zPt = t;
   }
   BindOnCanExecuteChange(t) {
-    this.LPt = t
+    this.LPt = t;
   }
   OnBeforeDestroy() {
-    this.XPt.length = 0, this.$Pt.length = 0, this.JPt = void 0, this.ext = void 0, this.QPt.clear(), this.dgt.clear(), this.zPt = void 0, this.ZPt = void 0, this.sxt()
+    this.XPt.length = 0;
+    this.$Pt.length = 0;
+    this.JPt = undefined;
+    this.ext = undefined;
+    this.QPt.clear();
+    this.dgt.clear();
+    this.zPt = undefined;
+    this.ZPt = undefined;
+    this.sxt();
   }
   rxt() {
-    this.QPt.clear(), this.dgt.clear(), this.XPt.length = 0, this.$Pt.length = 0;
+    this.QPt.clear();
+    this.dgt.clear();
+    this.XPt.length = 0;
+    this.$Pt.length = 0;
     var t = ConfigManager_1.ConfigManager.InventoryConfig;
     for (const n of this.KPt.ItemInfoList) {
-      var i, e, s = n.ItemConfigId,
-        h = t.GetItemConfig(s);
-      h && (i = h.MainTypeId, h = new ItemInteractionPanelItemData_1.ItemInteractionPanelItemData(n, h.QualityId), (e = this.QPt.get(i)) ? e.push(h) : (this.QPt.set(i, [h]), this.XPt.push(i)), this.dgt.set(s, h))
+      var i;
+      var e;
+      var s = n.ItemConfigId;
+      var h = t.GetItemConfig(s);
+      if (h) {
+        i = h.MainTypeId;
+        h = new ItemInteractionPanelItemData_1.ItemInteractionPanelItemData(n, h.QualityId);
+        if (e = this.QPt.get(i)) {
+          e.push(h);
+        } else {
+          this.QPt.set(i, [h]);
+          this.XPt.push(i);
+        }
+        this.dgt.set(s, h);
+      }
     }
-    for (const r of this.QPt.values()) r.sort((t, i) => {
-      var e = t.GetQualityId(),
-        s = i.GetQualityId();
-      return e !== s ? e - s : (e = t.GetItemCount()) !== (s = i.GetItemCount()) ? s - e : t.ItemConfigId - i.ItemConfigId
-    })
+    for (const r of this.QPt.values()) {
+      r.sort((t, i) => {
+        var e = t.GetQualityId();
+        var s = i.GetQualityId();
+        if (e !== s) {
+          return e - s;
+        } else if ((e = t.GetItemCount()) !== (s = i.GetItemCount())) {
+          return s - e;
+        } else {
+          return t.ItemConfigId - i.ItemConfigId;
+        }
+      });
+    }
   }
   async nxt() {
     this.sxt();
-    var t = this.GetItem(4),
-      i = t.GetOwner(),
-      e = (t.SetUIActive(!0), []);
+    var t = this.GetItem(4);
+    var i = t.GetOwner();
+    t.SetUIActive(true);
+    var e = [];
     for (const n of this.XPt) {
-      var s = LguiUtil_1.LguiUtil.DuplicateActor(i, this.GetItem(3)),
-        h = new ItemInteractionPanelMainTypeItem_1.ItemInteractionPanelMainTypeItem;
-      h.BindOnExtendToggleStateChanged(this.oxt), e.push(h.CreateByActorAsync(s, n)), this.YPt.set(n, h)
+      var s = LguiUtil_1.LguiUtil.DuplicateActor(i, this.GetItem(3));
+      var h = new ItemInteractionPanelMainTypeItem_1.ItemInteractionPanelMainTypeItem();
+      h.BindOnExtendToggleStateChanged(this.oxt);
+      e.push(h.CreateByActorAsync(s, n));
+      this.YPt.set(n, h);
     }
-    await Promise.all(e), t.SetUIActive(!1)
+    await Promise.all(e);
+    t.SetUIActive(false);
   }
   SelectedMainType(t) {
-    this.RefreshItemPanel(this.QPt.get(t)), this.ext?.SetSelected(!1);
+    this.RefreshItemPanel(this.QPt.get(t));
+    this.ext?.SetSelected(false);
     t = this.YPt.get(t);
-    t && (t.SetSelected(!0), t.SetRedDotVisible(!1), this.ext = t)
+    if (t) {
+      t.SetSelected(true);
+      t.SetRedDotVisible(false);
+      this.ext = t;
+    }
   }
   SetMainTypeRedDotVisible(t, i) {
-    this.YPt.get(t)?.SetRedDotVisible(i)
+    this.YPt.get(t)?.SetRedDotVisible(i);
   }
   sxt() {
-    for (const t of this.YPt.values()) t.Destroy();
-    this.YPt.clear()
+    for (const t of this.YPt.values()) {
+      t.Destroy();
+    }
+    this.YPt.clear();
   }
   RefreshItemPanel(t) {
-    this.JPt?.RefreshByData(t), this.$Pt = t, this.aMa = void 0
+    this.JPt?.RefreshByData(t);
+    this.$Pt = t;
+    this.aMa = undefined;
   }
   RefreshItemGrid(t) {
     t = this.$Pt.indexOf(t);
-    t < 0 || this.JPt?.RefreshGridProxy(t)
+    if (!(t < 0)) {
+      this.JPt?.RefreshGridProxy(t);
+    }
   }
   SetItemGridSelected(t, i) {
     var e = this.$Pt.indexOf(i);
-    e < 0 || (i.IsSelected = t, this.aMa = t ? i : void 0, this.JPt?.RefreshGridProxy(e))
+    if (!(e < 0)) {
+      i.IsSelected = t;
+      this.aMa = t ? i : undefined;
+      this.JPt?.RefreshGridProxy(e);
+    }
   }
   GetCurrentItemDataList() {
-    return this.$Pt
+    return this.$Pt;
   }
   GetItemData(t) {
-    return this.dgt.get(t)
+    return this.dgt.get(t);
   }
   GetItemDataMainTypeMap() {
-    return this.QPt
+    return this.QPt;
   }
   GetMainTypeIdList() {
-    return this.XPt
+    return this.XPt;
   }
 }
 exports.ItemInteractionPanel = ItemInteractionPanel;

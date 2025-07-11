@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbChangeFightTeam = void 0;
+  value: true
+});
+exports.FbChangeFightTeam = undefined;
 class FbChangeFightTeam {
   constructor(t) {
-    this.FbDataInternal = t, this.oEh = !1, this.nEh = 0
+    this.FbDataInternal = t;
+    this.oEh = false;
+    this.nEh = 0;
   }
   static Create(t) {
-    if (t) return new FbChangeFightTeam(t)
+    if (t) {
+      return new FbChangeFightTeam(t);
+    }
   }
   get TeamIndex() {
-    return this.oEh || (this.oEh = !0, this.nEh = this.FbDataInternal.teamIndex()), this.nEh
+    if (!this.oEh) {
+      this.oEh = true;
+      this.nEh = this.FbDataInternal.teamIndex();
+    }
+    return this.nEh;
   }
 }
 exports.FbChangeFightTeam = FbChangeFightTeam;

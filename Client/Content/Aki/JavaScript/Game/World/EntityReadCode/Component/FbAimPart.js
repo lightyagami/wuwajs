@@ -1,35 +1,81 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAimPart = void 0;
+  value: true
+});
+exports.FbAimPart = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbAimPart {
   constructor(t) {
-    this.FbDataInternal = t, this.dOh = !1, this.z8o = void 0, this.Kdh = !1, this.$dh = void 0, this.mOh = !1, this.COh = 0, this.gOh = !1, this.fOh = 0, this.pOh = !1, this.vOh = 0, this.yOh = !1, this.SOh = 0, this.MOh = !1, this.EOh = 0
+    this.FbDataInternal = t;
+    this.dOh = false;
+    this.z8o = undefined;
+    this.Kdh = false;
+    this.$dh = undefined;
+    this.mOh = false;
+    this.COh = 0;
+    this.gOh = false;
+    this.fOh = 0;
+    this.pOh = false;
+    this.vOh = 0;
+    this.yOh = false;
+    this.SOh = 0;
+    this.MOh = false;
+    this.EOh = 0;
   }
   static Create(t) {
-    if (t) return new FbAimPart(t)
+    if (t) {
+      return new FbAimPart(t);
+    }
   }
   get BoneName() {
-    return this.dOh || (this.dOh = !0, this.z8o = this.FbDataInternal.boneName()), this.z8o
+    if (!this.dOh) {
+      this.dOh = true;
+      this.z8o = this.FbDataInternal.boneName();
+    }
+    return this.z8o;
   }
   get Offset() {
-    return this.Kdh || (this.Kdh = !0, this.$dh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.offset())), this.$dh
+    if (!this.Kdh) {
+      this.Kdh = true;
+      this.$dh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.offset());
+    }
+    return this.$dh;
   }
   get RadiusIn() {
-    return this.mOh || (this.mOh = !0, this.COh = this.FbDataInternal.radiusIn()), this.COh
+    if (!this.mOh) {
+      this.mOh = true;
+      this.COh = this.FbDataInternal.radiusIn();
+    }
+    return this.COh;
   }
   get RadiusOut() {
-    return this.gOh || (this.gOh = !0, this.fOh = this.FbDataInternal.radiusOut()), this.fOh
+    if (!this.gOh) {
+      this.gOh = true;
+      this.fOh = this.FbDataInternal.radiusOut();
+    }
+    return this.fOh;
   }
   get RadiusOutOnStart() {
-    return this.pOh || (this.pOh = !0, this.vOh = this.FbDataInternal.radiusOutOnStart()), this.vOh
+    if (!this.pOh) {
+      this.pOh = true;
+      this.vOh = this.FbDataInternal.radiusOutOnStart();
+    }
+    return this.vOh;
   }
   get MobileCorrect() {
-    return this.yOh || (this.yOh = !0, this.SOh = this.FbDataInternal.mobileCorrect()), this.SOh
+    if (!this.yOh) {
+      this.yOh = true;
+      this.SOh = this.FbDataInternal.mobileCorrect();
+    }
+    return this.SOh;
   }
   get GamePadCorrect() {
-    return this.MOh || (this.MOh = !0, this.EOh = this.FbDataInternal.gamePadCorrect()), this.EOh
+    if (!this.MOh) {
+      this.MOh = true;
+      this.EOh = this.FbDataInternal.gamePadCorrect();
+    }
+    return this.EOh;
   }
 }
 exports.FbAimPart = FbAimPart;

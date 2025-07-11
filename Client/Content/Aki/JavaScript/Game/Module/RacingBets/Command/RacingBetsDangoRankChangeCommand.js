@@ -1,25 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsDangoRankChangeCommand = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  RacingBetsCommandBase_1 = require("./RacingBetsCommandBase");
+  value: true
+});
+exports.RacingBetsDangoRankChangeCommand = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const RacingBetsCommandBase_1 = require("./RacingBetsCommandBase");
 class RacingBetsDangoRankChangeCommand extends RacingBetsCommandBase_1.RacingBetsCommandBase {
   constructor() {
-    super(...arguments), this.CommandType = 13, this.NI1 = []
+    super(...arguments);
+    this.CommandType = 13;
+    this.dT1 = [];
   }
   Init(e) {
-    this.NI1 = e
+    this.dT1 = e;
   }
   async OnExecute() {
     var e;
-    ModelManager_1.ModelManager.RacingBetsModel.RefreshBetsDangoRankInfo(this.NI1) && (e = new CustomPromise_1.CustomPromise, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRacingBetsDungeonDangoRankChange, e), await e.Promise)
+    if (ModelManager_1.ModelManager.RacingBetsModel.RefreshBetsDangoRankInfo(this.dT1)) {
+      e = new CustomPromise_1.CustomPromise();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRacingBetsDungeonDangoRankChange, e);
+      await e.Promise;
+    }
   }
   LogInfo() {
-    return "RacingBetsDangoRankChangeCommand"
+    return "RacingBetsDangoRankChangeCommand";
   }
 }
 exports.RacingBetsDangoRankChangeCommand = RacingBetsDangoRankChangeCommand;

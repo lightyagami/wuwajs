@@ -1,10 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletCasterUtils = void 0;
+  value: true
+});
+exports.BulletCasterUtils = undefined;
 class BulletCasterUtils {
   static SetTimerHandleTimeDilation(e, t) {
-    e.Valid() && (0 === t ? e.IsPause() || e.Pause() : 0 < t && (e.IsPause() && e.Resume(), e.ChangeDilation(t)))
+    if (e.Valid()) {
+      if (t === 0) {
+        if (!e.IsPause()) {
+          e.Pause();
+        }
+      } else if (t > 0) {
+        if (e.IsPause()) {
+          e.Resume();
+        }
+        e.ChangeDilation(t);
+      }
+    }
   }
 }
 exports.BulletCasterUtils = BulletCasterUtils;

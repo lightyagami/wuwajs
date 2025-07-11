@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TextDecoder = void 0;
+exports.TextDecoder = undefined;
 class TextDecoder {
   decode(buffer) {
     return global.newStringFromBuffer(buffer, 0, 0);

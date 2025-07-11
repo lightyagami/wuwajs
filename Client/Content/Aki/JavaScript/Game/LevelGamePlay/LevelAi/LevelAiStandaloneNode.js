@@ -1,18 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelAiStandaloneNode = void 0;
+  value: true
+});
+exports.LevelAiStandaloneNode = undefined;
 const LevelAiNode_1 = require("./LevelAiNode");
 class LevelAiStandaloneNode extends LevelAiNode_1.LevelAiNode {
   constructor() {
-    super(...arguments), this.PlanNextNodesAfterThis = !0, this.NextNodes = new Array, this.Decorators = new Array
+    super(...arguments);
+    this.PlanNextNodesAfterThis = true;
+    this.NextNodes = new Array();
+    this.Decorators = new Array();
   }
   MakePlanExpansions(e, t) {}
   GetNextSteps(e, t) {
-    e.SubmitPlanStep(t)
+    e.SubmitPlanStep(t);
   }
   OnSubLevelStepFinished(e, t, s, o, n) {
-    return !0
+    return true;
   }
 }
 exports.LevelAiStandaloneNode = LevelAiStandaloneNode;

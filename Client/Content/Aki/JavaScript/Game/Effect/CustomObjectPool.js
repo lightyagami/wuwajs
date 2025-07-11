@@ -1,78 +1,126 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EffectActorPool = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../Core/Actor/ActorSystem"),
-  Log_1 = require("../../Core/Common/Log"),
-  Queue_1 = require("../../Core/Container/Queue"),
-  TimerSystem_1 = require("../../Core/Timer/TimerSystem"),
-  DEFAULT_CAPACITY = 4;
+  value: true
+});
+exports.EffectActorPool = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../Core/Actor/ActorSystem");
+const Log_1 = require("../../Core/Common/Log");
+const Queue_1 = require("../../Core/Container/Queue");
+const TimerSystem_1 = require("../../Core/Timer/TimerSystem");
+const DEFAULT_CAPACITY = 4;
 class CustomObjectPool {
   constructor(t = DEFAULT_CAPACITY, e = 0) {
-    this.o7 = t, this.wCe = e, this.BCe = void 0, this.bCe = new Queue_1.Queue(this.o7)
+    this.o7 = t;
+    this.wCe = e;
+    this.BCe = undefined;
+    this.bCe = new Queue_1.Queue(this.o7);
   }
   OnSpawn(t, e) {}
   OnDeSpawn(t) {}
   OnClear() {}
   Spawn(...t) {
-    let e = void 0,
-      i = !1;
-    for (; this.bCe.Size;) {
-      if (e = this.bCe.Pop(), this.OnObjectIsValid(e)) {
-        i = !0;
-        break
+    let e = undefined;
+    let i = false;
+    while (this.bCe.Size) {
+      e = this.bCe.Pop();
+      if (this.OnObjectIsValid(e)) {
+        i = true;
+        break;
       }
-      e = void 0
+      e = undefined;
     }
-    return this.OnObjectIsValid(e) || (e = this.OnCreateObject(...t), i = !1), this.OnSpawn(i, e, ...t), this.wCe && (this.BCe && (TimerSystem_1.TimerSystem.Remove(this.BCe), this.BCe = void 0), this.BCe = TimerSystem_1.TimerSystem.Delay(() => {
-      var t = this.bCe.Size,
-        e = Math.floor(t / 2);
-      if (this.BCe = void 0, !(t <= this.o7))
-        for (var i = Math.max(e, this.o7); this.bCe.Size >= i;) {
-          var s = this.bCe.Pop();
-          this.OnDestroyObject(s)
+    if (!this.OnObjectIsValid(e)) {
+      e = this.OnCreateObject(...t);
+      i = false;
+    }
+    this.OnSpawn(i, e, ...t);
+    if (this.wCe) {
+      if (this.BCe) {
+        TimerSystem_1.TimerSystem.Remove(this.BCe);
+        this.BCe = undefined;
+      }
+      this.BCe = TimerSystem_1.TimerSystem.Delay(() => {
+        var t = this.bCe.Size;
+        var e = Math.floor(t / 2);
+        this.BCe = undefined;
+        if (!(t <= this.o7)) {
+          for (var i = Math.max(e, this.o7); this.bCe.Size >= i;) {
+            var s = this.bCe.Pop();
+            this.OnDestroyObject(s);
+          }
         }
-    }, this.wCe)), e
+      }, this.wCe);
+    }
+    return e;
   }
   DeSpawn(t) {
-    return this.OnObjectIsValid(t) ? (this.OnDeSpawn(t), this.bCe.Push(t), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("RenderEffect", 3, "poolObject无效，回池失败"), !1)
+    if (this.OnObjectIsValid(t)) {
+      this.OnDeSpawn(t);
+      this.bCe.Push(t);
+      return true;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderEffect", 3, "poolObject无效，回池失败");
+      }
+      return false;
+    }
   }
   Clear() {
-    for (; this.bCe.Size;) {
+    while (this.bCe.Size) {
       var t = this.bCe.Pop();
-      this.OnDestroyObject(t)
+      this.OnDestroyObject(t);
     }
-    this.BCe && (TimerSystem_1.TimerSystem.Remove(this.BCe), this.BCe = void 0), this.OnClear()
+    if (this.BCe) {
+      TimerSystem_1.TimerSystem.Remove(this.BCe);
+      this.BCe = undefined;
+    }
+    this.OnClear();
   }
 }
 class EffectActorPool extends CustomObjectPool {
   OnCreateObject(...t) {
     var e = t[0];
-    let i = void 0;
-    e.IsA(UE.Actor.StaticClass()) && (i = e);
+    let i = undefined;
+    if (e.IsA(UE.Actor.StaticClass())) {
+      i = e;
+    }
     e = t[1];
-    return ActorSystem_1.ActorSystem.Get(UE.TsEffectActor_C.StaticClass(), e, i)
+    return ActorSystem_1.ActorSystem.Get(UE.TsEffectActor_C.StaticClass(), e, i);
   }
   OnSpawn(t, e, ...i) {
-    e?.SetActorHiddenInGame(!1), e?.K2_DetachFromActor(1, 1, 1), t && (t = i[1], e?.D_K2_SetActorTransform(t, !1, void 0, !0))
+    e?.SetActorHiddenInGame(false);
+    e?.K2_DetachFromActor(1, 1, 1);
+    if (t) {
+      t = i[1];
+      e?.D_K2_SetActorTransform(t, false, undefined, true);
+    }
   }
   OnDeSpawn(t) {
     if (!this.qCe?.IsValid()) {
-      if (this.qCe = ActorSystem_1.ActorSystem.Get(UE.TsEffectActor_C.StaticClass(), new UE.TransformDouble), void 0 === this.qCe) return;
+      this.qCe = ActorSystem_1.ActorSystem.Get(UE.TsEffectActor_C.StaticClass(), new UE.TransformDouble());
+      if (this.qCe === undefined) {
+        return;
+      }
       var e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldType(t);
-      3 !== e && 2 !== e || (this.qCe.ActorLabel = "EffectActorPool")
+      if (e === 3 || e === 2) {
+        this.qCe.ActorLabel = "EffectActorPool";
+      }
     }
-    t.K2_AttachToActor(this.qCe, void 0, 2, 2, 2, !1)
+    t.K2_AttachToActor(this.qCe, undefined, 2, 2, 2, false);
   }
   OnObjectIsValid(t) {
-    return t?.IsValid() ?? !1
+    return t?.IsValid() ?? false;
   }
   OnDestroyObject(t) {
-    t.K2_DestroyActor()
+    t.K2_DestroyActor();
   }
   OnClear() {
-    this.qCe?.IsValid() && (this.qCe.K2_DestroyActor(), this.qCe = void 0)
+    if (this.qCe?.IsValid()) {
+      this.qCe.K2_DestroyActor();
+      this.qCe = undefined;
+    }
   }
 }
 exports.EffectActorPool = EffectActorPool;

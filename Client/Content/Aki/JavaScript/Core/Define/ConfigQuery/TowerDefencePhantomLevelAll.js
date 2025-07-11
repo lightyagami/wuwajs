@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configTowerDefencePhantomLevelAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  TowerDefencePhantomLevel_1 = require("../Config/TowerDefencePhantomLevel"),
-  DB = "db_activity.db",
-  FILE = "l.联机塔防活动.xlsx",
-  TABLE = "TowerDefencePhantomLevel",
-  COMMAND = "select BinData from `TowerDefencePhantomLevel`",
-  KEY_PREFIX = "TowerDefencePhantomLevelAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configTowerDefencePhantomLevelAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const TowerDefencePhantomLevel_1 = require("../Config/TowerDefencePhantomLevel");
+const DB = "db_activity.db";
+const FILE = "l.联机塔防活动.xlsx";
+const TABLE = "TowerDefencePhantomLevel";
+const COMMAND = "select BinData from `TowerDefencePhantomLevel`";
+const KEY_PREFIX = "TowerDefencePhantomLevelAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configTowerDefencePhantomLevelAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configTowerDefencePhantomLevelAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configTowerDefencePhantomLevelAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configTowerDefencePhantomLevelAll.GetConfigList");
 exports.configTowerDefencePhantomLevelAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (e = !0) => {
+  GetConfigList: (e = true) => {
     var o;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (e) {
         var n = KEY_PREFIX + ")";
         const i = ConfigCommon_1.ConfigCommon.GetConfig(n);
-        if (i) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), i
+        if (i) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return i;
+        }
       }
-      const i = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var t = void 0;
-        if ([o, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !o) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const i = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var t = undefined;
+        [o, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!o) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         t = TowerDefencePhantomLevel_1.TowerDefencePhantomLevel.getRootAsTowerDefencePhantomLevel(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
-        i.push(t)
+        i.push(t);
       }
-      return e && (n = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(n, i, i.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), i
+      if (e) {
+        n = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(n, i, i.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return i;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=TowerDefencePhantomLevelAll.js.map

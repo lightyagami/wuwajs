@@ -1,101 +1,134 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AdviceSelectMotionItem = void 0;
-const UE = require("ue"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  GenericScrollView_1 = require("../../Util/ScrollView/GenericScrollView");
+  value: true
+});
+exports.AdviceSelectMotionItem = undefined;
+const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const GenericScrollView_1 = require("../../Util/ScrollView/GenericScrollView");
 class AdviceSelectMotionItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.ZHe = void 0, this.OnClickBtnBtnCall = () => {}, this.eje = () => {
-      this.OnClickBtnBtnCall && this.OnClickBtnBtnCall()
-    }, this.Bqe = (e, t, i) => {
+    super();
+    this.ZHe = undefined;
+    this.OnClickBtnBtnCall = () => {};
+    this.eje = () => {
+      if (this.OnClickBtnBtnCall) {
+        this.OnClickBtnBtnCall();
+      }
+    };
+    this.Bqe = (e, t, i) => {
       t = new AdviceSelectMotionContent(t);
-      return t.RefreshView(e), {
+      t.RefreshView(e);
+      return {
         Key: i,
         Value: t
-      }
-    }, this.CreateThenShowByActor(e.GetOwner())
+      };
+    };
+    this.CreateThenShowByActor(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIButtonComponent],
-      [1, UE.UIText],
-      [2, UE.UIScrollViewWithScrollbarComponent]
-    ], this.BtnBindInfo = [
-      [0, this.eje]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIScrollViewWithScrollbarComponent]];
+    this.BtnBindInfo = [[0, this.eje]];
   }
   SetClickChangeRoleCall(e) {
-    this.OnClickBtnBtnCall = e
+    this.OnClickBtnBtnCall = e;
   }
   OnStart() {
-    this.ZHe = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(2), this.Bqe)
+    this.ZHe = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(2), this.Bqe);
   }
   RefreshView(e) {
-    this.ZHe.RefreshByData(e), this.tje()
+    this.ZHe.RefreshByData(e);
+    this.tje();
   }
   tje() {
     var e;
-    0 < ModelManager_1.ModelManager.AdviceModel.PreSelectRoleId ? (e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(ModelManager_1.ModelManager.AdviceModel.PreSelectRoleId).Name), this.GetText(1).SetText(e)) : this.GetText(1).SetText("")
+    if (ModelManager_1.ModelManager.AdviceModel.PreSelectRoleId > 0) {
+      e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(ModelManager_1.ModelManager.AdviceModel.PreSelectRoleId).Name);
+      this.GetText(1).SetText(e);
+    } else {
+      this.GetText(1).SetText("");
+    }
   }
   OnBeforeDestroy() {
-    this.ZHe.ClearChildren()
+    this.ZHe.ClearChildren();
   }
 }
 exports.AdviceSelectMotionItem = AdviceSelectMotionItem;
 class AdviceSelectMotionContent extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.Pe = void 0, this.pHe = () => {
-      var e = this.Pe,
-        t = ConfigManager_1.ConfigManager.MotionConfig.GetMotionRoleId(e.GetIndex()),
-        t = ModelManager_1.ModelManager.MotionModel.GetRoleMotionState(t, e.GetIndex()),
-        t = 0 === t || 1 === t;
-      if (!t || -1 === e.GetIndex()) {
-        if (ModelManager_1.ModelManager.AdviceModel.PreSelectMotionId !== this.Pe.GetIndex()) return !0;
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnClickAdviceMotion)
+    super();
+    this.Pe = undefined;
+    this.pHe = () => {
+      var e = this.Pe;
+      var t = ConfigManager_1.ConfigManager.MotionConfig.GetMotionRoleId(e.GetIndex());
+      var t = ModelManager_1.ModelManager.MotionModel.GetRoleMotionState(t, e.GetIndex());
+      var t = t === 0 || t === 1;
+      if (!t || e.GetIndex() === -1) {
+        if (ModelManager_1.ModelManager.AdviceModel.PreSelectMotionId !== this.Pe.GetIndex()) {
+          return true;
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnClickAdviceMotion);
       }
-      return !1
-    }, this.ije = () => {
-      ModelManager_1.ModelManager.AdviceModel.PreSelectMotionId = this.Pe.GetIndex(), ModelManager_1.ModelManager.AdviceModel.CurrentSelectMotionId = this.Pe.GetIndex(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnClickAdviceMotion)
-    }, this.x7e = () => {
-      this.Oqe()
-    }, this.CreateThenShowByActor(e.GetOwner())
+      return false;
+    };
+    this.ije = () => {
+      ModelManager_1.ModelManager.AdviceModel.PreSelectMotionId = this.Pe.GetIndex();
+      ModelManager_1.ModelManager.AdviceModel.CurrentSelectMotionId = this.Pe.GetIndex();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnClickAdviceMotion);
+    };
+    this.x7e = () => {
+      this.Oqe();
+    };
+    this.CreateThenShowByActor(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UISprite],
-      [2, UE.UIText]
-    ], this.BtnBindInfo = [
-      [0, this.ije]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UIText]];
+    this.BtnBindInfo = [[0, this.ije]];
   }
   OnStart() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnClickAdviceMotion, this.x7e);
     var e = this.GetExtendToggle(0);
-    e.CanExecuteChange.Unbind(), e.CanExecuteChange.Bind(this.pHe)
+    e.CanExecuteChange.Unbind();
+    e.CanExecuteChange.Bind(this.pHe);
   }
   RefreshView(e) {
     let t = "";
-    (this.Pe = e).GetIndex() === ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceMotionDefaultConfigId() ? (t = ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceSpecialParamsContent(e.GetIndex()), LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "NoneMotion")) : (t = ConfigManager_1.ConfigManager.MotionConfig.GetMotionTitle(e.GetIndex()), this.GetText(2).SetText(t)), this.oje(), this.Oqe()
+    if ((this.Pe = e).GetIndex() === ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceMotionDefaultConfigId()) {
+      t = ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceSpecialParamsContent(e.GetIndex());
+      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "NoneMotion");
+    } else {
+      t = ConfigManager_1.ConfigManager.MotionConfig.GetMotionTitle(e.GetIndex());
+      this.GetText(2).SetText(t);
+    }
+    this.oje();
+    this.Oqe();
   }
   Oqe() {
-    var e = this.GetExtendToggle(0).ToggleState,
-      t = ModelManager_1.ModelManager.AdviceModel.PreSelectMotionId === this.Pe.GetIndex() ? 1 : 0;
-    e !== t && this.GetExtendToggle(0).SetToggleStateForce(t, !1)
+    var e = this.GetExtendToggle(0).ToggleState;
+    var t = ModelManager_1.ModelManager.AdviceModel.PreSelectMotionId === this.Pe.GetIndex() ? 1 : 0;
+    if (e !== t) {
+      this.GetExtendToggle(0).SetToggleStateForce(t, false);
+    }
   }
   oje() {
-    var e, t = this.Pe;
-    t.GetIndex() === ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceMotionDefaultConfigId() ? this.GetSprite(1).SetUIActive(!1) : (e = ConfigManager_1.ConfigManager.MotionConfig.GetMotionRoleId(t.GetIndex()), t = 0 === (e = ModelManager_1.ModelManager.MotionModel.GetRoleMotionState(e, t.GetIndex())) || 1 === e, this.GetSprite(1).SetUIActive(t))
+    var e;
+    var t = this.Pe;
+    if (t.GetIndex() === ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceMotionDefaultConfigId()) {
+      this.GetSprite(1).SetUIActive(false);
+    } else {
+      e = ConfigManager_1.ConfigManager.MotionConfig.GetMotionRoleId(t.GetIndex());
+      t = (e = ModelManager_1.ModelManager.MotionModel.GetRoleMotionState(e, t.GetIndex())) === 0 || e === 1;
+      this.GetSprite(1).SetUIActive(t);
+    }
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnClickAdviceMotion, this.x7e)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnClickAdviceMotion, this.x7e);
   }
 }
 //# sourceMappingURL=AdviceSelectMotionItem.js.map

@@ -1,26 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRandomVar = void 0;
+  value: true
+});
+exports.FbRandomVar = undefined;
 const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbRandomVar {
   constructor(t) {
-    this.FbDataInternal = t, this.J1h = !1, this.Z1h = void 0, this.ech = !1, this.tch = void 0, this.Y1h = !1, this.z1h = void 0
+    this.FbDataInternal = t;
+    this.J1h = false;
+    this.Z1h = undefined;
+    this.ech = false;
+    this.tch = undefined;
+    this.Y1h = false;
+    this.z1h = undefined;
   }
   static Create(t) {
-    if (t) return new FbRandomVar(t)
+    if (t) {
+      return new FbRandomVar(t);
+    }
   }
   get LeftVar() {
-    var t, e;
-    return !this.J1h && (this.J1h = !0, t = this.FbDataInternal.leftVarType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.Z1h = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.leftVar(e))), this.Z1h
+    var t;
+    var e;
+    if (!this.J1h && (this.J1h = true, t = this.FbDataInternal.leftVarType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.Z1h = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.leftVar(e));
+    }
+    return this.Z1h;
   }
   get RightVar() {
-    var t, e;
-    return !this.ech && (this.ech = !0, t = this.FbDataInternal.rightVarType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.tch = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.rightVar(e))), this.tch
+    var t;
+    var e;
+    if (!this.ech && (this.ech = true, t = this.FbDataInternal.rightVarType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.tch = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.rightVar(e));
+    }
+    return this.tch;
   }
   get Result() {
-    var t, e;
-    return !this.Y1h && (this.Y1h = !0, t = this.FbDataInternal.resultType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.z1h = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.result(e))), this.z1h
+    var t;
+    var e;
+    if (!this.Y1h && (this.Y1h = true, t = this.FbDataInternal.resultType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.z1h = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.result(e));
+    }
+    return this.z1h;
   }
 }
 exports.FbRandomVar = FbRandomVar;

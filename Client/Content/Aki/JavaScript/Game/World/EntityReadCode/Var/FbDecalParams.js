@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDecalParams = void 0;
+  value: true
+});
+exports.FbDecalParams = undefined;
 class FbDecalParams {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.VZh = !1, this.jZh = 0, this.HZh = !1, this.WZh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.VZh = false;
+    this.jZh = 0;
+    this.HZh = false;
+    this.WZh = 0;
   }
   static Create(t) {
-    if (t) return new FbDecalParams(t)
+    if (t) {
+      return new FbDecalParams(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get SpreadRadius() {
-    return this.VZh || (this.VZh = !0, this.jZh = this.FbDataInternal.spreadRadius()), this.jZh
+    if (!this.VZh) {
+      this.VZh = true;
+      this.jZh = this.FbDataInternal.spreadRadius();
+    }
+    return this.jZh;
   }
   get SpreadTime() {
-    return this.HZh || (this.HZh = !0, this.WZh = this.FbDataInternal.spreadTime()), this.WZh
+    if (!this.HZh) {
+      this.HZh = true;
+      this.WZh = this.FbDataInternal.spreadTime();
+    }
+    return this.WZh;
   }
 }
 exports.FbDecalParams = FbDecalParams;

@@ -1,25 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CooperationModel = void 0;
-const ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  LinkCooperationHandler_1 = require("./CooperationHandler/LinkCooperationHandler"),
-  QteCooperationHandler_1 = require("./CooperationHandler/QteCooperationHandler"),
-  SceneTeamCooperationHandler_1 = require("./CooperationHandler/SceneTeamCooperationHandler");
+  value: true
+});
+exports.CooperationModel = undefined;
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const LinkCooperationHandler_1 = require("./CooperationHandler/LinkCooperationHandler");
+const QteCooperationHandler_1 = require("./CooperationHandler/QteCooperationHandler");
+const SceneTeamCooperationHandler_1 = require("./CooperationHandler/SceneTeamCooperationHandler");
 class CooperationModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.vYo = void 0
+    super(...arguments);
+    this.vYo = undefined;
   }
   OnInit() {
-    return this.vYo = [new LinkCooperationHandler_1.LinkCooperationHandler, new QteCooperationHandler_1.QteCooperationHandler, new SceneTeamCooperationHandler_1.SceneTeamCooperationHandler], !0
+    this.vYo = [new LinkCooperationHandler_1.LinkCooperationHandler(), new QteCooperationHandler_1.QteCooperationHandler(), new SceneTeamCooperationHandler_1.SceneTeamCooperationHandler()];
+    return true;
   }
   OnLeaveLevel() {
-    if (this.vYo)
-      for (const e of this.vYo) e.Clear();
-    return !0
+    if (this.vYo) {
+      for (const e of this.vYo) {
+        e.Clear();
+      }
+    }
+    return true;
   }
   GetHandlers() {
-    return this.vYo
+    return this.vYo;
   }
 }
 exports.CooperationModel = CooperationModel;

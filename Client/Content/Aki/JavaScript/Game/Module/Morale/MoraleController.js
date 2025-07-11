@@ -1,50 +1,106 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoraleController = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiControllerBase_1 = require("../../Ui/Base/UiControllerBase"),
-  MORALE_CHARACTER_BUFF_TIPS_PARAM = "0";
+  value: true
+});
+exports.MoraleController = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const MORALE_CHARACTER_BUFF_TIPS_PARAM = "0";
 class MoraleController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemNotify, this.Oeu), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.qeu), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.ZH1), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.Geu), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.Yau), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenTreasureBox, this.Emu)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemNotify, this.xtu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.Utu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.k$1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.Dtu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.Rmu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenTreasureBox, this.LUu);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemNotify, this.Oeu), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.qeu), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.ZH1), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.Geu), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.Yau), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenTreasureBox, this.Emu)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemNotify, this.xtu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.Utu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.k$1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.Dtu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.Rmu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenTreasureBox, this.LUu);
   }
   static async RequestProgressReward(e) {
-    var o = Protocol_1.Aki.Protocol.r91.create(),
-      e = (o.BVn = e ?? [], Log_1.Log.CheckDebug() && Log_1.Log.Debug("Morale", 69, "r91", ["", o]), await Net_1.Net.CallAsync(18430, o));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Morale", 69, "o91", ["", e]), ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 22133) || ModelManager_1.ModelManager.MoraleModel?.ProtoProgressRewardResponse(e)
+    var o = Protocol_1.Aki.Protocol.F91.create();
+    o.BVn = e ?? [];
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Morale", 69, "F91", ["", o]);
+    }
+    var e = await Net_1.Net.CallAsync(27993, o);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Morale", 69, "N91", ["", e]);
+    }
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17198)) {
+      ModelManager_1.ModelManager.MoraleModel?.ProtoProgressRewardResponse(e);
+    }
   }
   static async RequestGetPlayerMoraleAreaId() {
-    var e = Protocol_1.Aki.Protocol.Onu.create(),
-      e = (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Morale", 69, "Onu", ["", e]), await Net_1.Net.CallAsync(17183, e));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Morale", 69, "qnu", ["", e]), ModelManager_1.ModelManager.MoraleModel?.ProtoMoralePosResponse(e)
+    var e = Protocol_1.Aki.Protocol.A1u.create();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Morale", 69, "A1u", ["", e]);
+    }
+    var e = await Net_1.Net.CallAsync(17174, e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Morale", 69, "P1u", ["", e]);
+    }
+    ModelManager_1.ModelManager.MoraleModel?.ProtoMoralePosResponse(e);
   }
   static async RequestGetExplorerBoxTrackList(e) {
-    var o = Protocol_1.Aki.Protocol.Cmu.create(),
-      e = (o.Vnu = e, Log_1.Log.CheckInfo() && Log_1.Log.Info("Morale", 69, "Cmu", ["", o]), await Net_1.Net.CallAsync(27708, o));
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("Morale", 69, "pmu", ["", e]), ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 26122) || ModelManager_1.ModelManager.MoraleModel?.ProtoMoraleTreasureBoxTraceResponse(e)
+    var o = Protocol_1.Aki.Protocol.Vxu.create();
+    o.B1u = e;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Morale", 69, "Vxu", ["", o]);
+    }
+    var e = await Net_1.Net.CallAsync(25795, o);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Morale", 69, "jxu", ["", e]);
+    }
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 23596)) {
+      ModelManager_1.ModelManager.MoraleModel?.ProtoMoraleTreasureBoxTraceResponse(e);
+    }
   }
-}(exports.MoraleController = MoraleController).ZH1 = e => {
-  e && ModelManager_1.ModelManager.MoraleModel?.InitData()
-}, MoraleController.Geu = (e, o, r, t) => {
-  e !== o && ModelManager_1.ModelManager.MoraleModel?.CheckSumLevelChanged(e, o), 0 === r && 0 === t || (e = Math.max(e + r, o)) !== (r = o + t) && ModelManager_1.ModelManager.MoraleModel?.CheckSumLevelChanged(e, r)
-}, MoraleController.Oeu = e => {
-  e = e.find(e => ModelManager_1.ModelManager.MoraleModel?.IsProgressScoreId(e.s5n));
-  e && ModelManager_1.ModelManager.MoraleModel.CheckProgressScoreChange(e.s5n, e.m9n)
-}, MoraleController.qeu = (e, o, r) => {
-  ModelManager_1.ModelManager.MoraleModel?.IsProgressScoreId(e.s5n) && ModelManager_1.ModelManager.MoraleModel.CheckProgressScoreChange(e.s5n, o - r, o)
-}, MoraleController.Yau = (e, o, r, t) => {
-  ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive() && (r || o.Parameters[0] === MORALE_CHARACTER_BUFF_TIPS_PARAM) && (r = o.Parameters[1] ?? 0) && (o = Number(r)) && ModelManager_1.ModelManager.MoraleModel?.TryAddAreaBuffActiveState(o)
-}, MoraleController.Emu = e => {
-  ModelManager_1.ModelManager.MoraleModel?.CheckExplorerBoxOpen(e)
+}
+(exports.MoraleController = MoraleController).k$1 = e => {
+  if (e) {
+    ModelManager_1.ModelManager.MoraleModel?.InitData();
+  }
 };
-//# sourceMappingURL=MoraleController.js.map
+MoraleController.Dtu = (e, o, t, r) => {
+  if (e !== o) {
+    ModelManager_1.ModelManager.MoraleModel?.CheckSumLevelChanged(e, o);
+  }
+  if (t !== 0 || r !== 0) {
+    if ((e = Math.max(e + t, o)) !== (t = o + r)) {
+      ModelManager_1.ModelManager.MoraleModel?.CheckSumLevelChanged(e, t);
+    }
+  }
+};
+MoraleController.xtu = e => {
+  e = e.find(e => ModelManager_1.ModelManager.MoraleModel?.IsProgressScoreId(e.s5n));
+  if (e) {
+    ModelManager_1.ModelManager.MoraleModel.CheckProgressScoreChange(e.s5n, e.m9n);
+  }
+};
+MoraleController.Utu = (e, o, t) => {
+  if (ModelManager_1.ModelManager.MoraleModel?.IsProgressScoreId(e.s5n)) {
+    ModelManager_1.ModelManager.MoraleModel.CheckProgressScoreChange(e.s5n, o - t, o);
+  }
+};
+MoraleController.Rmu = (e, o, t, r) => {
+  if (t && o.Parameters[0] === MORALE_CHARACTER_BUFF_TIPS_PARAM && (t = o.Parameters[1] ?? 0) && (o = Number(t))) {
+    ModelManager_1.ModelManager.MoraleModel?.TryAddAreaBuffActiveState(o);
+  }
+};
+MoraleController.LUu = e => {
+  ModelManager_1.ModelManager.MoraleModel?.CheckExplorerBoxOpen(e);
+}; //# sourceMappingURL=MoraleController.js.map

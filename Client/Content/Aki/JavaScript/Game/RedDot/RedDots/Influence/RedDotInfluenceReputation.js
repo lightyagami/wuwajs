@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotInfluenceReputation = void 0;
+  value: true
+});
+exports.RedDotInfluenceReputation = undefined;
 const RedDotBase_1 = require("../../RedDotBase");
 class RedDotInfluenceReputation extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
-    return "BattleViewMenu"
+    return "BattleViewMenu";
   }
 }
 exports.RedDotInfluenceReputation = RedDotInfluenceReputation;

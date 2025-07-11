@@ -1,25 +1,29 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityRoleGuideController = void 0;
-const ActivityControllerBase_1 = require("../../ActivityControllerBase"),
-  ActivityRoleGuideData_1 = require("./ActivityRoleGuideData"),
-  ActivitySubViewRoleGuide_1 = require("./ActivitySubViewRoleGuide");
+  value: true
+});
+exports.ActivityRoleGuideController = undefined;
+const ActivityControllerBase_1 = require("../../ActivityControllerBase");
+const ActivityRoleGuideData_1 = require("./ActivityRoleGuideData");
+const ActivitySubViewRoleGuide_1 = require("./ActivitySubViewRoleGuide");
 class ActivityRoleGuideController extends ActivityControllerBase_1.ActivityControllerBase {
   OnAddEvents() {}
   OnRemoveEvents() {}
   OnGetActivityResource(e) {
-    return "UiItem_ActivityRoleGuide"
+    return "UiItem_ActivityRoleGuide";
   }
   OnCreateSubPageComponent(e) {
-    return new ActivitySubViewRoleGuide_1.ActivitySubViewRoleGuide
+    return new ActivitySubViewRoleGuide_1.ActivitySubViewRoleGuide();
   }
   OnCreateActivityData(e) {
-    return ActivityRoleGuideController.CurrentActivityId = e.s5n, new ActivityRoleGuideData_1.ActivityRoleGuideData
+    ActivityRoleGuideController.CurrentActivityId = e.s5n;
+    return new ActivityRoleGuideData_1.ActivityRoleGuideData();
   }
   OnOpenView(e) {}
   OnGetIsOpeningActivityRelativeView() {
-    return !1
+    return false;
   }
-}(exports.ActivityRoleGuideController = ActivityRoleGuideController).CurrentActivityId = 0;
+}
+(exports.ActivityRoleGuideController = ActivityRoleGuideController).CurrentActivityId = 0;
 //# sourceMappingURL=ActivityRoleGuideController.js.map

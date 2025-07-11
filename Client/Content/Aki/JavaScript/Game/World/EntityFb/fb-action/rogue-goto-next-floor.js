@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueGotoNextFloor = void 0;
+  value: true
+});
+exports.RogueGotoNextFloor = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class RogueGotoNextFloor {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(o, t) {
-    return this.bb_pos = o, this.bb = t, this
+    this.bb_pos = o;
+    this.bb = t;
+    return this;
   }
   static getRootAsRogueGotoNextFloor(o, t) {
-    return (t || new RogueGotoNextFloor).__init(o.readInt32(o.position()) + o.position(), o)
+    return (t || new RogueGotoNextFloor()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static getSizePrefixedRootAsRogueGotoNextFloor(o, t) {
-    return o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new RogueGotoNextFloor).__init(o.readInt32(o.position()) + o.position(), o)
+    o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new RogueGotoNextFloor()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static startRogueGotoNextFloor(o) {
-    o.startObject(0)
+    o.startObject(0);
   }
   static endRogueGotoNextFloor(o) {
-    return o.endObject()
+    return o.endObject();
   }
   static createRogueGotoNextFloor(o) {
-    return RogueGotoNextFloor.startRogueGotoNextFloor(o), RogueGotoNextFloor.endRogueGotoNextFloor(o)
+    RogueGotoNextFloor.startRogueGotoNextFloor(o);
+    return RogueGotoNextFloor.endRogueGotoNextFloor(o);
   }
 }
 exports.RogueGotoNextFloor = RogueGotoNextFloor;

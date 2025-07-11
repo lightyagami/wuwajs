@@ -1,41 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleModelLoadingItem = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.RoleModelLoadingItem = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class RoleModelLoadingItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.h1o = !0, this.TDe = void 0, this.jFe = !0
+    super(...arguments);
+    this.h1o = true;
+    this.TDe = undefined;
+    this.jFe = true;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   OnStart() {
-    this.l1o()
+    this.l1o();
   }
   OnBeforeDestroy() {
-    this._1o()
+    this._1o();
   }
   _1o() {
-    void 0 !== this.TDe && (TimerSystem_1.TimerSystem.Remove(this.TDe), this.TDe = void 0)
+    if (this.TDe !== undefined) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
+      this.TDe = undefined;
+    }
   }
   l1o() {
-    this.SetActive(this.h1o && this.jFe)
+    this.SetActive(this.h1o && this.jFe);
   }
   SetLoadingOpen(e) {
-    this.jFe = e
+    this.jFe = e;
   }
   SetLoadingActive(e) {
-    this.h1o !== e && ((this.h1o = e) ? this.TDe = TimerSystem_1.TimerSystem.Delay(() => {
-      this._1o(), this.l1o()
-    }, 300) : (this._1o(), this.l1o()))
+    if (this.h1o !== e) {
+      if (this.h1o = e) {
+        this.TDe = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          this._1o();
+          this.l1o();
+        }, 300);
+      } else {
+        this._1o();
+        this.l1o();
+      }
+    }
   }
   SetIconPosition(e) {
-    this.GetItem(0)?.SetAnchorOffset(e)
+    this.GetItem(0)?.SetAnchorOffset(e);
   }
 }
 exports.RoleModelLoadingItem = RoleModelLoadingItem;

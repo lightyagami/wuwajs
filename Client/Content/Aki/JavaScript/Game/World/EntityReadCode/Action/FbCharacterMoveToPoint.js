@@ -1,25 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCharacterMoveToPoint = void 0;
-const UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper"),
-  FbVectorInfo_1 = require("../Var/FbVectorInfo");
+  value: true
+});
+exports.FbCharacterMoveToPoint = undefined;
+const UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper");
+const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbCharacterMoveToPoint {
   constructor(t) {
-    this.FbDataInternal = t, this.ldh = !1, this.NHo = void 0, this.uch = !1, this.dch = void 0, this._dh = !1, this.cdh = void 0
+    this.FbDataInternal = t;
+    this.ldh = false;
+    this.NHo = undefined;
+    this.uch = false;
+    this.dch = undefined;
+    this._dh = false;
+    this.cdh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCharacterMoveToPoint(t)
+    if (t) {
+      return new FbCharacterMoveToPoint(t);
+    }
   }
   get Target() {
-    var t, e;
-    return !this.ldh && (this.ldh = !0, t = this.FbDataInternal.targetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(e))), this.NHo
+    var t;
+    var e;
+    if (!this.ldh && (this.ldh = true, t = this.FbDataInternal.targetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(e));
+    }
+    return this.NHo;
   }
   get Pos() {
-    return this.uch || (this.uch = !0, this.dch = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.pos())), this.dch
+    if (!this.uch) {
+      this.uch = true;
+      this.dch = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.pos());
+    }
+    return this.dch;
   }
   get MoveType() {
-    return this._dh || (this._dh = !0, this.cdh = this.FbDataInternal.moveType()), this.cdh
+    if (!this._dh) {
+      this._dh = true;
+      this.cdh = this.FbDataInternal.moveType();
+    }
+    return this.cdh;
   }
 }
 exports.FbCharacterMoveToPoint = FbCharacterMoveToPoint;

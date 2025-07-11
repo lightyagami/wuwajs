@@ -1,32 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportTransitionWithMp4 = void 0;
+  value: true
+});
+exports.FbTeleportTransitionWithMp4 = undefined;
 const FbMp4BackgroundColor_1 = require("./FbMp4BackgroundColor");
 class FbTeleportTransitionWithMp4 {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ivh = !1, this.rvh = void 0, this.ovh = !1, this.nvh = !1, this.fd_ = !1, this.vd_ = !1, this.$qc = !1, this.Wqc = void 0, this.Qqc = !1, this.Kqc = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ivh = false;
+    this.rvh = undefined;
+    this.ovh = false;
+    this.nvh = false;
+    this.fd_ = false;
+    this.vd_ = false;
+    this.$qc = false;
+    this.Wqc = undefined;
+    this.Qqc = false;
+    this.Kqc = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleportTransitionWithMp4(t)
+    if (t) {
+      return new FbTeleportTransitionWithMp4(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Mp4Path() {
-    return this.ivh || (this.ivh = !0, this.rvh = this.FbDataInternal.mp4Path()), this.rvh
+    if (!this.ivh) {
+      this.ivh = true;
+      this.rvh = this.FbDataInternal.mp4Path();
+    }
+    return this.rvh;
   }
   get IsFadeInScreenAfterTeleport() {
-    return this.ovh || (this.ovh = !0, this.nvh = this.FbDataInternal.isFadeInScreenAfterTeleport()), this.nvh
+    if (!this.ovh) {
+      this.ovh = true;
+      this.nvh = this.FbDataInternal.isFadeInScreenAfterTeleport();
+    }
+    return this.nvh;
   }
   get ReplayWhenReLogin() {
-    return this.fd_ || (this.fd_ = !0, this.vd_ = this.FbDataInternal.replayWhenReLogin()), this.vd_
+    if (!this.fd_) {
+      this.fd_ = true;
+      this.vd_ = this.FbDataInternal.replayWhenReLogin();
+    }
+    return this.vd_;
   }
   get BackgroundColor() {
-    return this.$qc || (this.$qc = !0, this.Wqc = FbMp4BackgroundColor_1.FbMp4BackgroundColor.Create(this.FbDataInternal.backgroundColor())), this.Wqc
+    if (!this.$qc) {
+      this.$qc = true;
+      this.Wqc = FbMp4BackgroundColor_1.FbMp4BackgroundColor.Create(this.FbDataInternal.backgroundColor());
+    }
+    return this.Wqc;
   }
   get AfterTeleportScreenColor() {
-    return this.Qqc || (this.Qqc = !0, this.Kqc = this.FbDataInternal.afterTeleportScreenColor()), this.Kqc
+    if (!this.Qqc) {
+      this.Qqc = true;
+      this.Kqc = this.FbDataInternal.afterTeleportScreenColor();
+    }
+    return this.Kqc;
   }
 }
 exports.FbTeleportTransitionWithMp4 = FbTeleportTransitionWithMp4;

@@ -1,22 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ScratchTicketCellData = void 0;
+  value: true
+});
+exports.ScratchTicketCellData = undefined;
 class ScratchTicketCellData {
   constructor(t) {
-    this.Index = 0, this.Dol = void 0, this.Index = t
+    this.Index = 0;
+    this.Dol = undefined;
+    this.Index = t;
   }
   SetRewardItem(t) {
     this.Dol = [{
       ItemId: t.L8n,
       IncId: 0
-    }, t.D8n]
+    }, t.D8n];
   }
   IsLock() {
-    return void 0 === this.Dol
+    return this.Dol === undefined;
   }
   GetItemData() {
-    return this.Dol
+    return this.Dol;
   }
 }
 exports.ScratchTicketCellData = ScratchTicketCellData;

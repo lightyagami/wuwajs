@@ -1,33 +1,73 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNewMoveWithSpline = void 0;
+  value: true
+});
+exports.FbNewMoveWithSpline = undefined;
 const UnionNewSplineMoveTargetHelper_1 = require("./UnionNewSplineMoveTargetHelper");
 class FbNewMoveWithSpline {
   constructor(t) {
-    this.FbDataInternal = t, this.Buh = !1, this.quh = void 0, this.kuh = !1, this.Guh = 0, this.juh = !1, this.Huh = 0, this.Wuh = !1, this.Quh = 0, this.Xuh = !1, this.Yuh = !1, this.Kuh = !1, this.$uh = !1
+    this.FbDataInternal = t;
+    this.Buh = false;
+    this.quh = undefined;
+    this.kuh = false;
+    this.Guh = 0;
+    this.juh = false;
+    this.Huh = 0;
+    this.Wuh = false;
+    this.Quh = 0;
+    this.Xuh = false;
+    this.Yuh = false;
+    this.Kuh = false;
+    this.$uh = false;
   }
   static Create(t) {
-    if (t) return new FbNewMoveWithSpline(t)
+    if (t) {
+      return new FbNewMoveWithSpline(t);
+    }
   }
   get MoveTarget() {
-    var t, i;
-    return !this.Buh && (this.Buh = !0, t = this.FbDataInternal.moveTargetType(), i = UnionNewSplineMoveTargetHelper_1.UnionNewSplineMoveTargetHelper.GetUnionNewSplineMoveTargetObject(t)) && (this.quh = UnionNewSplineMoveTargetHelper_1.UnionNewSplineMoveTargetHelper.ReadUnionNewSplineMoveTarget(t, this.FbDataInternal.moveTarget(i))), this.quh
+    var t;
+    var i;
+    if (!this.Buh && (this.Buh = true, t = this.FbDataInternal.moveTargetType(), i = UnionNewSplineMoveTargetHelper_1.UnionNewSplineMoveTargetHelper.GetUnionNewSplineMoveTargetObject(t))) {
+      this.quh = UnionNewSplineMoveTargetHelper_1.UnionNewSplineMoveTargetHelper.ReadUnionNewSplineMoveTarget(t, this.FbDataInternal.moveTarget(i));
+    }
+    return this.quh;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get StartPointIndex() {
-    return this.juh || (this.juh = !0, this.Huh = this.FbDataInternal.startPointIndex()), this.Huh
+    if (!this.juh) {
+      this.juh = true;
+      this.Huh = this.FbDataInternal.startPointIndex();
+    }
+    return this.Huh;
   }
   get EndPointIndex() {
-    return this.Wuh || (this.Wuh = !0, this.Quh = this.FbDataInternal.endPointIndex()), this.Quh
+    if (!this.Wuh) {
+      this.Wuh = true;
+      this.Quh = this.FbDataInternal.endPointIndex();
+    }
+    return this.Quh;
   }
   get IsForceToFirstPoint() {
-    return this.Xuh || (this.Xuh = !0, this.Yuh = this.FbDataInternal.isForceToFirstPoint()), this.Yuh
+    if (!this.Xuh) {
+      this.Xuh = true;
+      this.Yuh = this.FbDataInternal.isForceToFirstPoint();
+    }
+    return this.Yuh;
   }
   get IsFollowStrictly() {
-    return this.Kuh || (this.Kuh = !0, this.$uh = this.FbDataInternal.isFollowStrictly()), this.$uh
+    if (!this.Kuh) {
+      this.Kuh = true;
+      this.$uh = this.FbDataInternal.isFollowStrictly();
+    }
+    return this.$uh;
   }
 }
 exports.FbNewMoveWithSpline = FbNewMoveWithSpline;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHasUpgradableVision = void 0;
+  value: true
+});
+exports.FbHasUpgradableVision = undefined;
 class FbHasUpgradableVision {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.s_h = !1, this.Hye = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.s_h = false;
+    this.Hye = undefined;
   }
   static Create(t) {
-    if (t) return new FbHasUpgradableVision(t)
+    if (t) {
+      return new FbHasUpgradableVision(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Option() {
-    return this.s_h || (this.s_h = !0, this.Hye = this.FbDataInternal.option()), this.Hye
+    if (!this.s_h) {
+      this.s_h = true;
+      this.Hye = this.FbDataInternal.option();
+    }
+    return this.Hye;
   }
 }
 exports.FbHasUpgradableVision = FbHasUpgradableVision;

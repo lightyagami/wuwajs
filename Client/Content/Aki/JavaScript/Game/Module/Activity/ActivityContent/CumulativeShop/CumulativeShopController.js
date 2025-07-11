@@ -1,74 +1,97 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CumulativeShopController = void 0;
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../../../Core/Net/Net"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  ActivityControllerBase_1 = require("../../ActivityControllerBase"),
-  CumulativeShopData_1 = require("./CumulativeShopData"),
-  CumulativeShopSubView_1 = require("./CumulativeShopSubView");
+  value: true
+});
+exports.CumulativeShopController = undefined;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../../../Core/Net/Net");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const ActivityControllerBase_1 = require("../../ActivityControllerBase");
+const CumulativeShopData_1 = require("./CumulativeShopData");
+const CumulativeShopSubView_1 = require("./CumulativeShopSubView");
 class CumulativeShopController extends ActivityControllerBase_1.ActivityControllerBase {
   OnOpenView(e) {}
   OnGetActivityResource(e) {
-    return "UiView_CumulativeShop"
+    return "UiView_CumulativeShop";
   }
   OnCreateSubPageComponent(e) {
-    return new CumulativeShopSubView_1.CumulativeShopSubView
+    return new CumulativeShopSubView_1.CumulativeShopSubView();
   }
   OnCreateActivityData(e) {
-    return CumulativeShopController.ActivityId = e.s5n, new CumulativeShopData_1.CumulativeShopData
+    CumulativeShopController.ActivityId = e.s5n;
+    return new CumulativeShopData_1.CumulativeShopData();
   }
   OnGetIsOpeningActivityRelativeView() {
-    return !1
+    return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(25984, CumulativeShopController.ConsumptiveTaskInfoNotify)
+    Net_1.Net.Register(21192, CumulativeShopController.ConsumptiveTaskInfoNotify);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25984)
+    Net_1.Net.UnRegister(21192);
   }
   static ConsumptiveRewardRequest(e) {
-    var t = Protocol_1.Aki.Protocol.Cm1.create();
-    t.w6n = this.ActivityId, t.gps = e, Net_1.Net.Call(21069, t, t => {
+    var t = Protocol_1.Aki.Protocol.Fm1.create();
+    t.w6n = this.ActivityId;
+    t.gps = e;
+    Net_1.Net.Call(15035, t, t => {
       if (t) {
-        t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20641);
-        var r = this.GetCumulativeShopData(),
-          o = (r.TaskDataMap.set(t.Em1.s5n, t.Em1), ConfigManager_1.ConfigManager.CumulativeShopConfig.GetCumulativeShopTaskConfig(t.Em1.s5n)),
-          o = o.TaskTab;
+        if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18541);
+        }
+        var r = this.GetCumulativeShopData();
+        r.TaskDataMap.set(t.Wm1.s5n, t.Wm1);
+        var o = ConfigManager_1.ConfigManager.CumulativeShopConfig.GetCumulativeShopTaskConfig(t.Wm1.s5n);
+        var o = o.TaskTab;
         let e = r.TaskTabMap.get(o);
-        (e = e || []).includes(t.Em1.s5n) || e.push(t.Em1.s5n), r.TaskTabMap.set(o, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CumulativeShopTaskRefresh, o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityId)
+        if (!(e = e || []).includes(t.Wm1.s5n)) {
+          e.push(t.Wm1.s5n);
+        }
+        r.TaskTabMap.set(o, e);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CumulativeShopTaskRefresh, o);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityId);
       }
-    })
+    });
   }
   static GetCumulativeShopData() {
-    return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.ActivityId)
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.ActivityId);
   }
   static ConsumptiveActivityInfoRequest() {
-    var e = Protocol_1.Aki.Protocol.iM1.create();
-    Net_1.Net.Call(23933, e, e => {
-      var t = this.GetCumulativeShopData(),
-        e = (t.TaskDataMap.clear(), t.TaskTabMap.clear(), e.vm1.cMs);
+    var e = Protocol_1.Aki.Protocol.bM1.create();
+    Net_1.Net.Call(22623, e, e => {
+      var t = this.GetCumulativeShopData();
+      t.TaskDataMap.clear();
+      t.TaskTabMap.clear();
+      var e = e.Vm1.cMs;
       for (const o of e) {
         t.TaskDataMap.set(o.s5n, o);
         var r = ConfigManager_1.ConfigManager.CumulativeShopConfig.GetCumulativeShopTaskConfig(o.s5n).TaskTab;
         let e = t.TaskTabMap.get(r);
-        (e = e || []).push(o.s5n), t.TaskTabMap.set(r, e)
+        (e = e || []).push(o.s5n);
+        t.TaskTabMap.set(r, e);
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CumulativeShopTaskViewDataRefresh)
-    })
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CumulativeShopTaskViewDataRefresh);
+    });
   }
 }
-exports.CumulativeShopController = CumulativeShopController, (_a = CumulativeShopController).ActivityId = 0, CumulativeShopController.ConsumptiveTaskInfoNotify = e => {
-  var t = _a.GetCumulativeShopData(),
-    r = (t.TaskDataMap.set(e.Rm1.s5n, e.Rm1), ConfigManager_1.ConfigManager.CumulativeShopConfig.GetCumulativeShopTaskConfig(e.Rm1.s5n)),
-    r = r.TaskTab;
+exports.CumulativeShopController = CumulativeShopController;
+(_a = CumulativeShopController).ActivityId = 0;
+CumulativeShopController.ConsumptiveTaskInfoNotify = e => {
+  var t = _a.GetCumulativeShopData();
+  t.TaskDataMap.set(e.Ym1.s5n, e.Ym1);
+  var r = ConfigManager_1.ConfigManager.CumulativeShopConfig.GetCumulativeShopTaskConfig(e.Ym1.s5n);
+  var r = r.TaskTab;
   let o = t.TaskTabMap.get(r);
-  (o = o || []).includes(e.Rm1.s5n) || o.push(e.Rm1.s5n), t.TaskTabMap.set(r, o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CumulativeShopTaskRefresh, r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, _a.ActivityId)
-};
-//# sourceMappingURL=CumulativeShopController.js.map
+  if (!(o = o || []).includes(e.Ym1.s5n)) {
+    o.push(e.Ym1.s5n);
+  }
+  t.TaskTabMap.set(r, o);
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CumulativeShopTaskRefresh, r);
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, _a.ActivityId);
+}; //# sourceMappingURL=CumulativeShopController.js.map

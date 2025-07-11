@@ -1,27 +1,49 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsBlueprintGameBudgetObject = exports.BlueprintGameBudgetActor = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
+  value: true
+});
+exports.TsBlueprintGameBudgetObject = exports.BlueprintGameBudgetActor = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
 class BlueprintGameBudgetActor {
   constructor() {
-    this.ScheduledTick = void 0
+    this.ScheduledTick = undefined;
   }
 }
 exports.BlueprintGameBudgetActor = BlueprintGameBudgetActor;
 class TsBlueprintGameBudgetObject {
   constructor(e) {
-    this.Actor = e, this.ScheduledAfterTick = void 0, this.OnEnabledChange = void 0, this.OnWasRecentlyRenderedOnScreenChange = void 0, this.LocationProxyFunction = void 0, this.Hv1 = !1
+    this.Actor = e;
+    this.ScheduledAfterTick = undefined;
+    this.OnEnabledChange = undefined;
+    this.OnWasRecentlyRenderedOnScreenChange = undefined;
+    this.LocationProxyFunction = undefined;
+    this.my1 = false;
   }
   RegisterTick(e) {
-    return this.Hv1 ? 0 : (this.Hv1 = !0, GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(e.GroupName, e.SignificanceGroup, this, this.Actor))
+    if (this.my1) {
+      return 0;
+    } else {
+      this.my1 = true;
+      return GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(e.GroupName, e.SignificanceGroup, this, this.Actor);
+    }
   }
   UnregisterTick() {
-    this.Hv1 && (this.Hv1 = !1, GameBudgetInterfaceController_1.GameBudgetInterfaceController.UnregisterTick(this))
+    if (this.my1) {
+      this.my1 = false;
+      GameBudgetInterfaceController_1.GameBudgetInterfaceController.UnregisterTick(this);
+    }
   }
   ScheduledTick(e, t, r) {
-    this.Actor?.IsValid() ? this.Actor.ScheduledTick(e) : (Log_1.Log.CheckError() && Log_1.Log.Error("Game", 36, "TsBlueprintGameBudgetObject Tick Invalid Actor"), this.UnregisterTick())
+    if (this.Actor?.IsValid()) {
+      this.Actor.ScheduledTick(e);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Game", 36, "TsBlueprintGameBudgetObject Tick Invalid Actor");
+      }
+      this.UnregisterTick();
+    }
   }
 }
 exports.TsBlueprintGameBudgetObject = TsBlueprintGameBudgetObject;

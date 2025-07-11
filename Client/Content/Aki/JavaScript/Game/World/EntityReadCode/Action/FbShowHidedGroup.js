@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbShowHidedGroup = void 0;
+  value: true
+});
+exports.FbShowHidedGroup = undefined;
 class FbShowHidedGroup {
   constructor(t) {
-    this.FbDataInternal = t, this.sxh = !1, this.axh = void 0, this.WAh = !1, this.QAh = !1
+    this.FbDataInternal = t;
+    this.sxh = false;
+    this.axh = undefined;
+    this.WAh = false;
+    this.QAh = false;
   }
   static Create(t) {
-    if (t) return new FbShowHidedGroup(t)
+    if (t) {
+      return new FbShowHidedGroup(t);
+    }
   }
   get GroupKey() {
-    return this.sxh || (this.sxh = !0, this.axh = this.FbDataInternal.groupKey()), this.axh
+    if (!this.sxh) {
+      this.sxh = true;
+      this.axh = this.FbDataInternal.groupKey();
+    }
+    return this.axh;
   }
   get DelayShow() {
-    return this.WAh || (this.WAh = !0, this.QAh = this.FbDataInternal.delayShow()), this.QAh
+    if (!this.WAh) {
+      this.WAh = true;
+      this.QAh = this.FbDataInternal.delayShow();
+    }
+    return this.QAh;
   }
 }
 exports.FbShowHidedGroup = FbShowHidedGroup;

@@ -1,29 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFlowActorUnit = void 0;
+  value: true
+});
+exports.FbFlowActorUnit = undefined;
 const FbActorInitialState_1 = require("./FbActorInitialState");
 class FbFlowActorUnit {
   constructor(t) {
-    this.FbDataInternal = t, this.a_h = !1, this.I9o = 0, this.HMh = !1, this.WMh = 0, this.QMh = !1, this.KMh = !1, this.$Mh = !1, this.XMh = !1, this.YMh = !1, this.zMh = void 0
+    this.FbDataInternal = t;
+    this.a_h = false;
+    this.I9o = 0;
+    this.HMh = false;
+    this.WMh = 0;
+    this.QMh = false;
+    this.KMh = false;
+    this.$Mh = false;
+    this.XMh = false;
+    this.YMh = false;
+    this.zMh = undefined;
   }
   static Create(t) {
-    if (t) return new FbFlowActorUnit(t)
+    if (t) {
+      return new FbFlowActorUnit(t);
+    }
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get TalkerId() {
-    return this.HMh || (this.HMh = !0, this.WMh = this.FbDataInternal.talkerId()), this.WMh
+    if (!this.HMh) {
+      this.HMh = true;
+      this.WMh = this.FbDataInternal.talkerId();
+    }
+    return this.WMh;
   }
   get IsPlayer() {
-    return this.QMh || (this.QMh = !0, this.KMh = this.FbDataInternal.isPlayer()), this.KMh
+    if (!this.QMh) {
+      this.QMh = true;
+      this.KMh = this.FbDataInternal.isPlayer();
+    }
+    return this.KMh;
   }
   get IsResetPosition() {
-    return this.$Mh || (this.$Mh = !0, this.XMh = this.FbDataInternal.isResetPosition()), this.XMh
+    if (!this.$Mh) {
+      this.$Mh = true;
+      this.XMh = this.FbDataInternal.isResetPosition();
+    }
+    return this.XMh;
   }
   get InitialState() {
-    return this.YMh || (this.YMh = !0, this.zMh = FbActorInitialState_1.FbActorInitialState.Create(this.FbDataInternal.initialState())), this.zMh
+    if (!this.YMh) {
+      this.YMh = true;
+      this.zMh = FbActorInitialState_1.FbActorInitialState.Create(this.FbDataInternal.initialState());
+    }
+    return this.zMh;
   }
 }
 exports.FbFlowActorUnit = FbFlowActorUnit;

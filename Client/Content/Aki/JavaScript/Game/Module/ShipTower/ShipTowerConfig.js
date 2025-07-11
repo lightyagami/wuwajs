@@ -1,62 +1,64 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerConfig = void 0;
-const SlashAndTowerCfgById_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerCfgById"),
-  SlashAndTowerCfgBySeason_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerCfgBySeason"),
-  SlashAndTowerRewardByBelongToSeason_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerRewardByBelongToSeason"),
-  SlashBuffToItemAll_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemAll"),
-  SlashBuffToItemById_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemById"),
-  SlashBuffToItemByItemId_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemId"),
-  SlashBuffToItemByItemIdAndSeason_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemIdAndSeason"),
-  SlashBuffToItemByItemIdList_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemIdList"),
-  SlashBuffToItemBySeason_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemBySeason"),
-  SlashTowerShowStageAll_1 = require("../../../Core/Define/ConfigQuery/SlashTowerShowStageAll"),
-  SlashTowerStageInfoByInstId_1 = require("../../../Core/Define/ConfigQuery/SlashTowerStageInfoByInstId"),
-  SlashTowerTagInfoById_1 = require("../../../Core/Define/ConfigQuery/SlashTowerTagInfoById"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.ShipTowerConfig = undefined;
+const SlashAndTowerCfgById_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerCfgById");
+const SlashAndTowerCfgBySeason_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerCfgBySeason");
+const SlashAndTowerRewardByBelongToSeason_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerRewardByBelongToSeason");
+const SlashBuffToItemAll_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemAll");
+const SlashBuffToItemById_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemById");
+const SlashBuffToItemByItemId_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemId");
+const SlashBuffToItemByItemIdAndSeason_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemIdAndSeason");
+const SlashBuffToItemByItemIdList_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemIdList");
+const SlashBuffToItemBySeason_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemBySeason");
+const SlashTowerShowStageAll_1 = require("../../../Core/Define/ConfigQuery/SlashTowerShowStageAll");
+const SlashTowerStageInfoByInstId_1 = require("../../../Core/Define/ConfigQuery/SlashTowerStageInfoByInstId");
+const SlashTowerTagInfoById_1 = require("../../../Core/Define/ConfigQuery/SlashTowerTagInfoById");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class ShipTowerConfig extends ConfigBase_1.ConfigBase {
   OnInit() {
-    return !0
+    return true;
   }
   OnClear() {
-    return !0
+    return true;
   }
   GetStageCfgById(e) {
-    return SlashAndTowerCfgById_1.configSlashAndTowerCfgById.GetConfig(e)
+    return SlashAndTowerCfgById_1.configSlashAndTowerCfgById.GetConfig(e);
   }
   GetAllShowStageCfg() {
-    return SlashTowerShowStageAll_1.configSlashTowerShowStageAll.GetConfigList()
+    return SlashTowerShowStageAll_1.configSlashTowerShowStageAll.GetConfigList();
   }
   GetStageInfoCfgByInstId(e) {
-    return SlashTowerStageInfoByInstId_1.configSlashTowerStageInfoByInstId.GetConfig(e)
+    return SlashTowerStageInfoByInstId_1.configSlashTowerStageInfoByInstId.GetConfig(e);
   }
   GetStageCfgBySeason(e) {
-    return SlashAndTowerCfgBySeason_1.configSlashAndTowerCfgBySeason.GetConfigList(e)
+    return SlashAndTowerCfgBySeason_1.configSlashAndTowerCfgBySeason.GetConfigList(e);
   }
   GetChallengeRewardCfgBySeason(e) {
-    return SlashAndTowerRewardByBelongToSeason_1.configSlashAndTowerRewardByBelongToSeason.GetConfigList(e)
+    return SlashAndTowerRewardByBelongToSeason_1.configSlashAndTowerRewardByBelongToSeason.GetConfigList(e);
   }
   GetAllBuffCfg() {
-    return SlashBuffToItemAll_1.configSlashBuffToItemAll.GetConfigList()
+    return SlashBuffToItemAll_1.configSlashBuffToItemAll.GetConfigList();
   }
   GetBuffCfgById(e) {
-    return SlashBuffToItemById_1.configSlashBuffToItemById.GetConfig(e)
+    return SlashBuffToItemById_1.configSlashBuffToItemById.GetConfig(e);
   }
   GetBuffCfgByItemId(e) {
-    return SlashBuffToItemByItemId_1.configSlashBuffToItemByItemId.GetConfig(e)
+    return SlashBuffToItemByItemId_1.configSlashBuffToItemByItemId.GetConfig(e);
   }
   GetBuffCfgBySeason(e) {
-    return SlashBuffToItemBySeason_1.configSlashBuffToItemBySeason.GetConfigList(e)
+    return SlashBuffToItemBySeason_1.configSlashBuffToItemBySeason.GetConfigList(e);
   }
   GetBuffCfgByItemIdAndSeason(e, r) {
-    return SlashBuffToItemByItemIdAndSeason_1.configSlashBuffToItemByItemIdAndSeason.GetConfig(e, r)
+    return SlashBuffToItemByItemIdAndSeason_1.configSlashBuffToItemByItemIdAndSeason.GetConfig(e, r);
   }
   GetBuffCfgByItemIdList(e) {
-    return SlashBuffToItemByItemIdList_1.configSlashBuffToItemByItemIdList.GetConfigList(e)
+    return SlashBuffToItemByItemIdList_1.configSlashBuffToItemByItemIdList.GetConfigList(e);
   }
   GetWordInfoCfgById(e) {
-    return SlashTowerTagInfoById_1.configSlashTowerTagInfoById.GetConfig(e)
+    return SlashTowerTagInfoById_1.configSlashTowerTagInfoById.GetConfig(e);
   }
 }
 exports.ShipTowerConfig = ShipTowerConfig;

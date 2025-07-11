@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityGeneralTipView = void 0;
+  value: true
+});
+exports.ActivityGeneralTipView = undefined;
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 class ActivityGeneralTipView extends UiViewBase_1.UiViewBase {
   OnAfterShow() {
-    this.CloseMe()
+    this.CloseMe();
   }
 }
 exports.ActivityGeneralTipView = ActivityGeneralTipView;

@@ -1,45 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEntityVisibleComponent = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbVisibleConditionGroup_1 = require("./FbVisibleConditionGroup");
+  value: true
+});
+exports.FbEntityVisibleComponent = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbVisibleConditionGroup_1 = require("./FbVisibleConditionGroup");
 class FbEntityVisibleComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Gch = !1, this.Och = !1, this.s5h = !1, this.a5h = !1, this.h5h = !1, this.l5h = !1, this._5h = !1, this.c5h = !1, this.u5h = !1, this.d5h = void 0, this.m5h = !1, this.C5h = 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Gch = false;
+    this.Och = false;
+    this.s5h = false;
+    this.a5h = false;
+    this.h5h = false;
+    this.l5h = false;
+    this._5h = false;
+    this.c5h = false;
+    this.u5h = false;
+    this.d5h = undefined;
+    this.m5h = false;
+    this.C5h = 0;
   }
   static Create(t) {
-    if (t) return new FbEntityVisibleComponent(t)
+    if (t) {
+      return new FbEntityVisibleComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get DelayChange() {
-    return this.Gch || (this.Gch = !0, this.Och = this.FbDataInternal.delayChange()), this.Och
+    if (!this.Gch) {
+      this.Gch = true;
+      this.Och = this.FbDataInternal.delayChange();
+    }
+    return this.Och;
   }
   get UseFadeEffect() {
-    return this.s5h || (this.s5h = !0, this.a5h = this.FbDataInternal.useFadeEffect()), this.a5h
+    if (!this.s5h) {
+      this.s5h = true;
+      this.a5h = this.FbDataInternal.useFadeEffect();
+    }
+    return this.a5h;
   }
   get UseCutEffect() {
-    return this.h5h || (this.h5h = !0, this.l5h = this.FbDataInternal.useCutEffect()), this.l5h
+    if (!this.h5h) {
+      this.h5h = true;
+      this.l5h = this.FbDataInternal.useCutEffect();
+    }
+    return this.l5h;
   }
   get UseHolographicEffect() {
-    return this._5h || (this._5h = !0, this.c5h = this.FbDataInternal.useHolographicEffect()), this.c5h
+    if (!this._5h) {
+      this._5h = true;
+      this.c5h = this.FbDataInternal.useHolographicEffect();
+    }
+    return this.c5h;
   }
   get VisibleConditions() {
     if (!this.u5h) {
-      this.u5h = !0, this.d5h = new Array;
+      this.u5h = true;
+      this.d5h = new Array();
       var i = this.FbDataInternal.visibleConditionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.visibleConditions(t, new fb_component_1.VisibleConditionGroup);
-          this.d5h.push(FbVisibleConditionGroup_1.FbVisibleConditionGroup.Create(s))
+          var s = this.FbDataInternal.visibleConditions(t, new fb_component_1.VisibleConditionGroup());
+          this.d5h.push(FbVisibleConditionGroup_1.FbVisibleConditionGroup.Create(s));
         }
+      }
     }
-    return this.d5h
+    return this.d5h;
   }
   get CustomVisibleRange() {
-    return this.m5h || (this.m5h = !0, this.C5h = this.FbDataInternal.customVisibleRange()), this.C5h
+    if (!this.m5h) {
+      this.m5h = true;
+      this.C5h = this.FbDataInternal.customVisibleRange();
+    }
+    return this.C5h;
   }
 }
 exports.FbEntityVisibleComponent = FbEntityVisibleComponent;

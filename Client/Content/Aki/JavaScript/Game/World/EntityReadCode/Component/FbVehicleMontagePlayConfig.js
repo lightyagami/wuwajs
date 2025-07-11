@@ -1,28 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVehicleMontagePlayConfig = void 0;
+  value: true
+});
+exports.FbVehicleMontagePlayConfig = undefined;
 class FbVehicleMontagePlayConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.l7l = !1, this._7l = 0, this.c7l = !1, this.u7l = 0, this.d7l = !1, this.m7l = 0, this.C7l = !1, this.g7l = 0, this.IOh = !1, this.TOh = void 0
+    this.FbDataInternal = t;
+    this.l7l = false;
+    this._7l = 0;
+    this.c7l = false;
+    this.u7l = 0;
+    this.d7l = false;
+    this.m7l = 0;
+    this.C7l = false;
+    this.g7l = 0;
+    this.IOh = false;
+    this.TOh = undefined;
   }
   static Create(t) {
-    if (t) return new FbVehicleMontagePlayConfig(t)
+    if (t) {
+      return new FbVehicleMontagePlayConfig(t);
+    }
   }
   get MinMontageSpeedFactor() {
-    return this.l7l || (this.l7l = !0, this._7l = this.FbDataInternal.minMontageSpeedFactor()), this._7l
+    if (!this.l7l) {
+      this.l7l = true;
+      this._7l = this.FbDataInternal.minMontageSpeedFactor();
+    }
+    return this._7l;
   }
   get MaxMontageSpeedFactor() {
-    return this.c7l || (this.c7l = !0, this.u7l = this.FbDataInternal.maxMontageSpeedFactor()), this.u7l
+    if (!this.c7l) {
+      this.c7l = true;
+      this.u7l = this.FbDataInternal.maxMontageSpeedFactor();
+    }
+    return this.u7l;
   }
   get MinVehicleSpeed() {
-    return this.d7l || (this.d7l = !0, this.m7l = this.FbDataInternal.minVehicleSpeed()), this.m7l
+    if (!this.d7l) {
+      this.d7l = true;
+      this.m7l = this.FbDataInternal.minVehicleSpeed();
+    }
+    return this.m7l;
   }
   get MaxVehicleSpeed() {
-    return this.C7l || (this.C7l = !0, this.g7l = this.FbDataInternal.maxVehicleSpeed()), this.g7l
+    if (!this.C7l) {
+      this.C7l = true;
+      this.g7l = this.FbDataInternal.maxVehicleSpeed();
+    }
+    return this.g7l;
   }
   get TargetState() {
-    return this.IOh || (this.IOh = !0, this.TOh = this.FbDataInternal.targetState()), this.TOh
+    if (!this.IOh) {
+      this.IOh = true;
+      this.TOh = this.FbDataInternal.targetState();
+    }
+    return this.TOh;
   }
 }
 exports.FbVehicleMontagePlayConfig = FbVehicleMontagePlayConfig;

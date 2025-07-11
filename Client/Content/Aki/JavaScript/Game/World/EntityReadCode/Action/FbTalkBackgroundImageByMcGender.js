@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTalkBackgroundImageByMcGender = void 0;
+  value: true
+});
+exports.FbTalkBackgroundImageByMcGender = undefined;
 class FbTalkBackgroundImageByMcGender {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.nph = !1, this.sph = void 0, this.aph = !1, this.hph = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.nph = false;
+    this.sph = undefined;
+    this.aph = false;
+    this.hph = undefined;
   }
   static Create(t) {
-    if (t) return new FbTalkBackgroundImageByMcGender(t)
+    if (t) {
+      return new FbTalkBackgroundImageByMcGender(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ImageAssetMale() {
-    return this.nph || (this.nph = !0, this.sph = this.FbDataInternal.imageAssetMale()), this.sph
+    if (!this.nph) {
+      this.nph = true;
+      this.sph = this.FbDataInternal.imageAssetMale();
+    }
+    return this.sph;
   }
   get ImageAssetFemale() {
-    return this.aph || (this.aph = !0, this.hph = this.FbDataInternal.imageAssetFemale()), this.hph
+    if (!this.aph) {
+      this.aph = true;
+      this.hph = this.FbDataInternal.imageAssetFemale();
+    }
+    return this.hph;
   }
 }
 exports.FbTalkBackgroundImageByMcGender = FbTalkBackgroundImageByMcGender;

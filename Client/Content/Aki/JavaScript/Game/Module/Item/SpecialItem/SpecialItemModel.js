@@ -1,35 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SpecialItemModel = void 0;
-const ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  SpecialItemDefine_1 = require("./SpecialItemDefine");
+  value: true
+});
+exports.SpecialItemModel = undefined;
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const SpecialItemDefine_1 = require("./SpecialItemDefine");
 class SpecialItemModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.igi = new Map, this.ogi = [], this.TagWatchedItemId = 0, this.TagWatchedEntityHandle = void 0, this.WatchedAllowTagIds = new Set, this.WatchedBanTagIds = new Set
+    super(...arguments);
+    this.igi = new Map();
+    this.ogi = [];
+    this.TagWatchedItemId = 0;
+    this.TagWatchedEntityHandle = undefined;
+    this.WatchedAllowTagIds = new Set();
+    this.WatchedBanTagIds = new Set();
   }
   OnInit() {
     for (const t of this.ogi) {
       var e = new SpecialItemDefine_1.specialItemLogic[t](t);
-      e.Init(), this.igi.set(t, e)
+      e.Init();
+      this.igi.set(t, e);
     }
-    return !0
+    return true;
   }
   GetSpecialItemLogic(t) {
     if (ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(t)) {
-      let e = void 0;
-      return e = (e = this.igi.get(t)) || new SpecialItemDefine_1.specialItemLogic[t](t)
+      let e = undefined;
+      return e = (e = this.igi.get(t)) || new SpecialItemDefine_1.specialItemLogic[t](t);
     }
   }
   GetEquipSpecialItemId() {
-    if (13 === ModelManager_1.ModelManager.RouletteModel.EquipItemType) return ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId
+    if (ModelManager_1.ModelManager.RouletteModel.EquipItemType === 13) {
+      return ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId;
+    }
   }
   OnClear() {
-    return this.igi.forEach(e => {
-      e.Destroy()
-    }), this.igi.clear(), !0
+    this.igi.forEach(e => {
+      e.Destroy();
+    });
+    this.igi.clear();
+    return true;
   }
 }
 exports.SpecialItemModel = SpecialItemModel;

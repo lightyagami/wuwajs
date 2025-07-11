@@ -1,20 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueCommonTipsView = void 0;
-const ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+  value: true
+});
+exports.MapRogueCommonTipsView = undefined;
+const UE = require("ue");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 class MapRogueCommonTipsView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.vo1 = 0
+    super(...arguments);
+    this.Go1 = 0;
+    this.e$c = () => {
+      if (this.UiViewSequence.HasSequenceNameInPlaying(this.UiViewSequence.StartSequenceName)) {
+        this.UiViewSequence.StopSequenceByKey(this.UiViewSequence.StartSequenceName, true, true);
+      }
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[0, this.e$c]];
   }
   OnAfterShow() {
     this.CloseMe(() => {
-      ModelManager_1.ModelManager.MapRogueModel.ExecuteOpData(this.vo1)
-    })
+      ModelManager_1.ModelManager.MapRogueModel.ExecuteOpData(this.Go1);
+    });
   }
   OnStart() {
-    this.vo1 = this.OpenParam
+    this.Go1 = this.OpenParam;
   }
   OnBeforeShow() {}
 }

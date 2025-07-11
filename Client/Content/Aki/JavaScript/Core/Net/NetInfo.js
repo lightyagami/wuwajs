@@ -1,56 +1,73 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NetInfo = void 0;
+  value: true
+});
+exports.NetInfo = undefined;
 const PerfSight_1 = require("../PerfSight/PerfSight");
 class NetInfo {
   static get RttMs() {
-    return NetInfo.iY
+    return NetInfo.iY;
   }
   static SetRttMs(t) {
-    t < NetInfo.iY ? NetInfo.iY = t : NetInfo.iY = .9 * NetInfo.iY + .1 * t, PerfSight_1.PerfSight.IsEnable && PerfSight_1.PerfSight.PostNetworkLatency(t)
+    if (t < NetInfo.iY) {
+      NetInfo.iY = t;
+    } else {
+      NetInfo.iY = NetInfo.iY * 0.9 + t * 0.1;
+    }
+    if (PerfSight_1.PerfSight.IsEnable) {
+      PerfSight_1.PerfSight.PostNetworkLatency(t);
+    }
   }
   static get LoginTraceId() {
-    return NetInfo.CEi
+    return NetInfo.CEi;
   }
   static set LoginTraceId(t) {
-    NetInfo.CEi = t
+    NetInfo.CEi = t;
   }
   static get Token() {
-    return NetInfo.J_u
+    return NetInfo.spu;
   }
   static set Token(t) {
-    NetInfo.J_u = t
+    NetInfo.spu = t;
   }
   static get TcpPort() {
-    return NetInfo.Z_u
+    return NetInfo.apu;
   }
   static set TcpPort(t) {
-    NetInfo.Z_u = t
+    NetInfo.apu = t;
   }
   static get DeviceId() {
-    return NetInfo.e1u
+    return NetInfo.hpu;
   }
   static set DeviceId(t) {
-    NetInfo.e1u = t
+    NetInfo.hpu = t;
   }
   static get UdpPort() {
-    return NetInfo.t1u
+    return NetInfo.lpu;
   }
   static set UdpPort(t) {
-    NetInfo.t1u = t
+    NetInfo.lpu = t;
   }
   static get TcpRatio() {
-    return NetInfo.i1u
+    return NetInfo._pu;
   }
   static set TcpRatio(t) {
-    NetInfo.i1u = t
+    NetInfo._pu = t;
   }
   static get TcpRetry() {
-    return NetInfo.r1u
+    return NetInfo.upu;
   }
   static set TcpRetry(t) {
-    NetInfo.r1u = t
+    NetInfo.upu = t;
   }
-}(exports.NetInfo = NetInfo).iY = 0, NetInfo.CEi = void 0, NetInfo.J_u = void 0, NetInfo.Z_u = 0, NetInfo.e1u = void 0, NetInfo.t1u = 0, NetInfo.i1u = 0, NetInfo.r1u = 0, NetInfo.TcpMaxRetry = 1;
-//# sourceMappingURL=NetInfo.js.map
+}
+(exports.NetInfo = NetInfo).iY = 0;
+NetInfo.CEi = undefined;
+NetInfo.spu = undefined;
+NetInfo.apu = 0;
+NetInfo.hpu = undefined;
+NetInfo.lpu = 0;
+NetInfo._pu = 0;
+NetInfo.upu = 0;
+NetInfo.TcpMaxRetry = 1; //# sourceMappingURL=NetInfo.js.map

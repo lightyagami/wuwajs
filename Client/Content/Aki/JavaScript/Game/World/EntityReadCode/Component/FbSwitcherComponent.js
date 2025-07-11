@@ -1,48 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSwitcherComponent = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbActionInfo_1 = require("../Action/FbActionInfo");
+  value: true
+});
+exports.FbSwitcherComponent = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbActionInfo_1 = require("../Action/FbActionInfo");
 class FbSwitcherComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Euh = !1, this.Iuh = void 0, this.d_h = !1, this.m_h = void 0, this.akh = !1, this.hkh = void 0, this.lkh = !1, this._kh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Euh = false;
+    this.Iuh = undefined;
+    this.d_h = false;
+    this.m_h = undefined;
+    this.akh = false;
+    this.hkh = undefined;
+    this.lkh = false;
+    this._kh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSwitcherComponent(t)
+    if (t) {
+      return new FbSwitcherComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Content() {
-    return this.Euh || (this.Euh = !0, this.Iuh = this.FbDataInternal.content()), this.Iuh
+    if (!this.Euh) {
+      this.Euh = true;
+      this.Iuh = this.FbDataInternal.content();
+    }
+    return this.Iuh;
   }
   get Icon() {
-    return this.d_h || (this.d_h = !0, this.m_h = this.FbDataInternal.icon()), this.m_h
+    if (!this.d_h) {
+      this.d_h = true;
+      this.m_h = this.FbDataInternal.icon();
+    }
+    return this.m_h;
   }
   get OnActions() {
     if (!this.akh) {
-      this.akh = !0, this.hkh = new Array;
+      this.akh = true;
+      this.hkh = new Array();
       var i = this.FbDataInternal.onActionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.onActions(t, new fb_action_1.ActionInfo);
-          this.hkh.push(FbActionInfo_1.FbActionInfo.Create(s))
+          var s = this.FbDataInternal.onActions(t, new fb_action_1.ActionInfo());
+          this.hkh.push(FbActionInfo_1.FbActionInfo.Create(s));
         }
+      }
     }
-    return this.hkh
+    return this.hkh;
   }
   get OffActions() {
     if (!this.lkh) {
-      this.lkh = !0, this._kh = new Array;
+      this.lkh = true;
+      this._kh = new Array();
       var i = this.FbDataInternal.offActionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.offActions(t, new fb_action_1.ActionInfo);
-          this._kh.push(FbActionInfo_1.FbActionInfo.Create(s))
+          var s = this.FbDataInternal.offActions(t, new fb_action_1.ActionInfo());
+          this._kh.push(FbActionInfo_1.FbActionInfo.Create(s));
         }
+      }
     }
-    return this._kh
+    return this._kh;
   }
 }
 exports.FbSwitcherComponent = FbSwitcherComponent;

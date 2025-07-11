@@ -1,145 +1,207 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShopFixed = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.ShopFixed = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class ShopFixed {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ShopId() {
-    return this.shopid()
+    return this.shopid();
   }
   get ItemId() {
-    return this.itemid()
+    return this.itemid();
   }
   get ItemNum() {
-    return this.itemnum()
+    return this.itemnum();
   }
   get CondId() {
-    return this.condid()
+    return this.condid();
   }
   get VisableCondition() {
-    return this.visablecondition()
+    return this.visablecondition();
   }
   get DisableCondition() {
-    return this.disablecondition()
+    return this.disablecondition();
   }
   get LimitNum() {
-    return this.limitnum()
+    return this.limitnum();
   }
   get OriginalPrice() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.originalpriceLength(), this.originalpriceKey, this.originalpriceValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.originalpriceLength(), this.originalpriceKey, this.originalpriceValue, this);
   }
   originalpriceKey(t) {
-    return this.originalprice(t)?.key()
+    return this.originalprice(t)?.key();
   }
   originalpriceValue(t) {
-    return this.originalprice(t)?.value()
+    return this.originalprice(t)?.value();
   }
   get Price() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.priceLength(), this.priceKey, this.priceValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.priceLength(), this.priceKey, this.priceValue, this);
   }
   priceKey(t) {
-    return this.price(t)?.key()
+    return this.price(t)?.key();
   }
   priceValue(t) {
-    return this.price(t)?.value()
+    return this.price(t)?.value();
   }
   get Show() {
-    return this.show()
+    return this.show();
   }
   get Label() {
-    return this.label()
+    return this.label();
   }
   get SwitchText() {
-    return this.switchtext()
+    return this.switchtext();
   }
   get PurchaseText() {
-    return this.purchasetext()
+    return this.purchasetext();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsShopFixed(t, i) {
-    return (i || new ShopFixed).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ShopFixed()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   shopid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   itemid() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   itemnum() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   condid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   visablecondition() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   disablecondition() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   limitnum() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : -1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
   }
   GetOriginalpriceAt(t, i) {
-    return this.originalprice(t)
+    return this.originalprice(t);
   }
   originalprice(t, i) {
     var s = this.J7.__offset(this.z7, 20);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   originalpriceLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPriceAt(t, i) {
-    return this.price(t)
+    return this.price(t);
   }
   price(t, i) {
     var s = this.J7.__offset(this.z7, 22);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   priceLength() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   show() {
     var t = this.J7.__offset(this.z7, 24);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   label(t) {
-    var i = this.J7.__offset(this.z7, 26),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 26);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   switchtext(t) {
-    var i = this.J7.__offset(this.z7, 28),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 28);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   purchasetext(t) {
-    var i = this.J7.__offset(this.z7, 30),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 30);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.ShopFixed = ShopFixed;

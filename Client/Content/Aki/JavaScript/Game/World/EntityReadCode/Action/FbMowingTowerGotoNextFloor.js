@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMowingTowerGotoNextFloor = void 0;
+  value: true
+});
+exports.FbMowingTowerGotoNextFloor = undefined;
 class FbMowingTowerGotoNextFloor {
   constructor(o) {
-    this.FbDataInternal = o
+    this.FbDataInternal = o;
   }
   static Create(o) {
-    if (o) return new FbMowingTowerGotoNextFloor(o)
+    if (o) {
+      return new FbMowingTowerGotoNextFloor(o);
+    }
   }
 }
 exports.FbMowingTowerGotoNextFloor = FbMowingTowerGotoNextFloor;

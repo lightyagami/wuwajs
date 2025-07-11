@@ -1,17 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemHiddenBossWindow = void 0;
-const UiManager_1 = require("../../../Ui/UiManager"),
-  OpenSystemBase_1 = require("./OpenSystemBase");
+  value: true
+});
+exports.OpenSystemHiddenBossWindow = undefined;
+const UiManager_1 = require("../../../Ui/UiManager");
+const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemHiddenBossWindow extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, s) {
-    return e && (e = {
-      UiId: e.BoardId
-    }, await UiManager_1.UiManager.OpenViewAsync("HiddenBossWindow", e)), !0
+    if (e) {
+      e = {
+        UiId: e.BoardId
+      };
+      await UiManager_1.UiManager.OpenViewAsync("HiddenBossWindow", e);
+    }
+    return true;
   }
   GetViewName(e, s) {
-    return "HiddenBossWindow"
+    return "HiddenBossWindow";
   }
 }
 exports.OpenSystemHiddenBossWindow = OpenSystemHiddenBossWindow;

@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayMovie = void 0;
+  value: true
+});
+exports.FbPlayMovie = undefined;
 const FbMovieBackgroundFadeData_1 = require("./FbMovieBackgroundFadeData");
 class FbPlayMovie {
   constructor(t) {
-    this.FbDataInternal = t, this.qdh = !1, this.kdh = void 0, this.Gdh = !1, this.Odh = void 0
+    this.FbDataInternal = t;
+    this.qdh = false;
+    this.kdh = undefined;
+    this.Gdh = false;
+    this.Odh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPlayMovie(t)
+    if (t) {
+      return new FbPlayMovie(t);
+    }
   }
   get VideoName() {
-    return this.qdh || (this.qdh = !0, this.kdh = this.FbDataInternal.videoName()), this.kdh
+    if (!this.qdh) {
+      this.qdh = true;
+      this.kdh = this.FbDataInternal.videoName();
+    }
+    return this.kdh;
   }
   get BackgroundFade() {
-    return this.Gdh || (this.Gdh = !0, this.Odh = FbMovieBackgroundFadeData_1.FbMovieBackgroundFadeData.Create(this.FbDataInternal.backgroundFade())), this.Odh
+    if (!this.Gdh) {
+      this.Gdh = true;
+      this.Odh = FbMovieBackgroundFadeData_1.FbMovieBackgroundFadeData.Create(this.FbDataInternal.backgroundFade());
+    }
+    return this.Odh;
   }
 }
 exports.FbPlayMovie = FbPlayMovie;

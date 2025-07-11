@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCommonTipChallengeFail = void 0;
+  value: true
+});
+exports.FbCommonTipChallengeFail = undefined;
 class FbCommonTipChallengeFail {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._yh = !1, this.cyh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._yh = false;
+    this.cyh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCommonTipChallengeFail(t)
+    if (t) {
+      return new FbCommonTipChallengeFail(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TidMainText() {
-    return this._yh || (this._yh = !0, this.cyh = this.FbDataInternal.tidMainText()), this.cyh
+    if (!this._yh) {
+      this._yh = true;
+      this.cyh = this.FbDataInternal.tidMainText();
+    }
+    return this.cyh;
   }
 }
 exports.FbCommonTipChallengeFail = FbCommonTipChallengeFail;

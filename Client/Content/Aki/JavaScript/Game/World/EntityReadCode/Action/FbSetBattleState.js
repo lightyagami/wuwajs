@@ -1,18 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetBattleState = void 0;
+  value: true
+});
+exports.FbSetBattleState = undefined;
 const UnionStateOptionHelper_1 = require("./UnionStateOptionHelper");
 class FbSetBattleState {
   constructor(t) {
-    this.FbDataInternal = t, this.Mvh = !1, this.Evh = void 0
+    this.FbDataInternal = t;
+    this.Mvh = false;
+    this.Evh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSetBattleState(t)
+    if (t) {
+      return new FbSetBattleState(t);
+    }
   }
   get StateOption() {
-    var t, e;
-    return !this.Mvh && (this.Mvh = !0, t = this.FbDataInternal.stateOptionType(), e = UnionStateOptionHelper_1.UnionStateOptionHelper.GetUnionStateOptionObject(t)) && (this.Evh = UnionStateOptionHelper_1.UnionStateOptionHelper.ReadUnionStateOption(t, this.FbDataInternal.stateOption(e))), this.Evh
+    var t;
+    var e;
+    if (!this.Mvh && (this.Mvh = true, t = this.FbDataInternal.stateOptionType(), e = UnionStateOptionHelper_1.UnionStateOptionHelper.GetUnionStateOptionObject(t))) {
+      this.Evh = UnionStateOptionHelper_1.UnionStateOptionHelper.ReadUnionStateOption(t, this.FbDataInternal.stateOption(e));
+    }
+    return this.Evh;
   }
 }
 exports.FbSetBattleState = FbSetBattleState;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMorseCode = void 0;
+  value: true
+});
+exports.FbMorseCode = undefined;
 class FbMorseCode {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.BIh = !1, this.qIh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.BIh = false;
+    this.qIh = undefined;
   }
   static Create(t) {
-    if (t) return new FbMorseCode(t)
+    if (t) {
+      return new FbMorseCode(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MorseCodeId() {
-    return this.BIh || (this.BIh = !0, this.qIh = this.FbDataInternal.morseCodeId()), this.qIh
+    if (!this.BIh) {
+      this.BIh = true;
+      this.qIh = this.FbDataInternal.morseCodeId();
+    }
+    return this.qIh;
   }
 }
 exports.FbMorseCode = FbMorseCode;

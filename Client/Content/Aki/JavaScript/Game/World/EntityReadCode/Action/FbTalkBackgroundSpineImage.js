@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTalkBackgroundSpineImage = void 0;
+  value: true
+});
+exports.FbTalkBackgroundSpineImage = undefined;
 class FbTalkBackgroundSpineImage {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.tgh = !1, this.FFe = 0, this.Dfh = !1, this.Bfh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.tgh = false;
+    this.FFe = 0;
+    this.Dfh = false;
+    this.Bfh = false;
   }
   static Create(t) {
-    if (t) return new FbTalkBackgroundSpineImage(t)
+    if (t) {
+      return new FbTalkBackgroundSpineImage(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Id() {
-    return this.tgh || (this.tgh = !0, this.FFe = this.FbDataInternal.id()), this.FFe
+    if (!this.tgh) {
+      this.tgh = true;
+      this.FFe = this.FbDataInternal.id();
+    }
+    return this.FFe;
   }
   get IsLoop() {
-    return this.Dfh || (this.Dfh = !0, this.Bfh = this.FbDataInternal.isLoop()), this.Bfh
+    if (!this.Dfh) {
+      this.Dfh = true;
+      this.Bfh = this.FbDataInternal.isLoop();
+    }
+    return this.Bfh;
   }
 }
 exports.FbTalkBackgroundSpineImage = FbTalkBackgroundSpineImage;

@@ -1,76 +1,105 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TabComponentWithTitle = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  CommonTabTitle_1 = require("./CommonTabTitle"),
-  TabComponent_1 = require("./TabComponent"),
-  CommonTabItemBase_1 = require("./TabItem/CommonTabItemBase");
+  value: true
+});
+exports.TabComponentWithTitle = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const CommonTabTitle_1 = require("./CommonTabTitle");
+const TabComponent_1 = require("./TabComponent");
+const CommonTabItemBase_1 = require("./TabItem/CommonTabItemBase");
 class TabComponentWithTitle extends UiPanelBase_1.UiPanelBase {
-  constructor(t, e) {
-    super(), this.TabTitle = void 0, this.Ivt = void 0, this.xqe = void 0, this.pqe = t => {
-      var e = this.Nbt.GetCommonData(t);
-      e && (this.TabTitle.UpdateIcon(e.GetSmallIcon()), this.TabTitle.UpdateTitle(e.GetTitleData())), this.Nbt.ToggleCallBack(t)
-    }, this.R6e = (t, e) => {
-      return this.Nbt.ProxyCreate(t, e)
-    }, this.Nbt = e, this.CreateThenShowByActor(t.GetOwner())
+  constructor(e, t) {
+    super();
+    this.TabTitle = undefined;
+    this.Ivt = undefined;
+    this.xqe = undefined;
+    this.pqe = e => {
+      var t = this.Nbt.GetCommonData(e);
+      if (t) {
+        this.TabTitle.UpdateIcon(t.GetSmallIcon());
+        this.TabTitle.UpdateTitle(t.GetTitleData());
+      }
+      this.Nbt.ToggleCallBack(e);
+    };
+    this.R6e = (e, t) => {
+      return this.Nbt.ProxyCreate(e, t);
+    };
+    this.Nbt = t;
+    this.CreateThenShowByActor(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIScrollViewWithScrollbarComponent]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent]];
   }
   OnStart() {
-    this.xqe = this.GetScrollViewWithScrollbar(1), this.Ivt = new TabComponent_1.TabComponent(this.xqe.ContentUIItem, this.R6e, this.pqe, void 0), this.TabTitle = new CommonTabTitle_1.CommonTabTitle(this.GetItem(0))
+    this.xqe = this.GetScrollViewWithScrollbar(1);
+    this.Ivt = new TabComponent_1.TabComponent(this.xqe.ContentUIItem, this.R6e, this.pqe, undefined);
+    this.TabTitle = new CommonTabTitle_1.CommonTabTitle(this.GetItem(0));
   }
   OnBeforeDestroy() {
-    this.Ivt && (this.Ivt.Destroy(), this.Ivt = void 0), this.TabTitle && (this.TabTitle.Destroy(), this.TabTitle = void 0)
-  }
-  RefreshTabItem(e, t) {
-    var s = new Array;
-    for (let t = 0; t < e; t++) {
-      var i = new CommonTabItemBase_1.CommonTabItemData;
-      i.Index = t, i.Data = this.Nbt.GetCommonData(t), s.push(i)
+    if (this.Ivt) {
+      this.Ivt.Destroy();
+      this.Ivt = undefined;
     }
-    this.Ivt.RefreshTabItem(s, t)
-  }
-  async RefreshTabItemAsync(e) {
-    var s = new Array;
-    for (let t = 0; t < e; t++) {
-      var i = new CommonTabItemBase_1.CommonTabItemData;
-      i.Index = t, i.Data = this.Nbt.GetCommonData(t), s.push(i)
+    if (this.TabTitle) {
+      this.TabTitle.Destroy();
+      this.TabTitle = undefined;
     }
-    await this.RefreshTabItemByDataAsync(s)
   }
-  async RefreshTabItemByDataAsync(t) {
-    await this.Ivt.RefreshTabItemAsync(t)
+  RefreshTabItem(t, e) {
+    var s = new Array();
+    for (let e = 0; e < t; e++) {
+      var i = new CommonTabItemBase_1.CommonTabItemData();
+      i.Index = e;
+      i.Data = this.Nbt.GetCommonData(e);
+      s.push(i);
+    }
+    this.Ivt.RefreshTabItem(s, e);
   }
-  SelectToggleByIndex(t, e = !1) {
-    this.Ivt.SelectToggleByIndex(t, e)
+  async RefreshTabItemAsync(t) {
+    var s = new Array();
+    for (let e = 0; e < t; e++) {
+      var i = new CommonTabItemBase_1.CommonTabItemData();
+      i.Index = e;
+      i.Data = this.Nbt.GetCommonData(e);
+      s.push(i);
+    }
+    await this.RefreshTabItemByDataAsync(s);
+  }
+  async RefreshTabItemByDataAsync(e) {
+    await this.Ivt.RefreshTabItemAsync(e);
+  }
+  SelectToggleByIndex(e, t = false) {
+    this.Ivt.SelectToggleByIndex(e, t);
   }
   GetSelectedIndex() {
-    return this.Ivt.GetSelectedIndex()
+    return this.Ivt.GetSelectedIndex();
   }
-  ScrollToToggleByIndex(t) {
-    t = this.Ivt.GetTabItemByIndex(t);
-    this.xqe.ScrollTo(t.GetRootItem())
+  ScrollToToggleByIndex(e) {
+    const t = this.Ivt.GetTabItemByIndex(e);
+    this.xqe.OnLateUpdate.Bind(() => {
+      TimerSystem_1.GameplayTimerSystem.Next(() => {
+        this.xqe.ScrollTo(t.GetRootItem());
+      });
+      this.xqe.OnLateUpdate.Unbind();
+    });
   }
-  GetTabItemByIndex(t) {
-    return this.Ivt.GetTabItemByIndex(t)
+  GetTabItemByIndex(e) {
+    return this.Ivt.GetTabItemByIndex(e);
   }
   GetTabItemMap() {
-    return this.Ivt.GetTabItemMap()
+    return this.Ivt.GetTabItemMap();
   }
-  GetTabComponentData(t) {
-    return this.Nbt.GetCommonData(t)
+  GetTabComponentData(e) {
+    return this.Nbt.GetCommonData(e);
   }
   GetTabComponent() {
-    return this.Ivt
+    return this.Ivt;
   }
-  SetCanChange(t) {
-    this.Ivt.SetCanChange(t)
+  SetCanChange(e) {
+    this.Ivt.SetCanChange(e);
   }
 }
 exports.TabComponentWithTitle = TabComponentWithTitle;

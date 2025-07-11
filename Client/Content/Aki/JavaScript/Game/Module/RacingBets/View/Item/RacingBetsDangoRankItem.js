@@ -1,59 +1,109 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsDangoRankItem = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../../../Core/Common/CustomPromise"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  UiViewSequence_1 = require("../../../../Ui/Base/UiViewSequence"),
-  DangoManager_1 = require("../../../Dango/DangoLogic/DangoManager"),
-  RacingBetsDefine_1 = require("../../RacingBetsDefine");
+  value: true
+});
+exports.RacingBetsDangoRankItem = undefined;
+const UE = require("ue");
+const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Time_1 = require("../../../../../Core/Common/Time");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const UiViewSequence_1 = require("../../../../Ui/Base/UiViewSequence");
+const DangoManager_1 = require("../../../Dango/DangoLogic/DangoManager");
+const RacingBetsDefine_1 = require("../../RacingBetsDefine");
 class RacingBetsDangoRankItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.UiLevelSequence = void 0, this.jI1 = void 0, this.HI1 = 0, this.LerpTime = RacingBetsDefine_1.RACING_BETS_DANGO_RANK_ITEM_LERP_INTERVAL, this.$I1 = 0, this.WI1 = 0, this.QI1 = 0, this.KI1 = void 0, this.TDe = void 0, this.XI1 = void 0, this.J_ = i => {
-      this.$I1 += i;
+    super(...arguments);
+    this.UiLevelSequence = undefined;
+    this.fT1 = undefined;
+    this.gT1 = 0;
+    this.LerpTime = RacingBetsDefine_1.RACING_BETS_DANGO_RANK_ITEM_LERP_INTERVAL;
+    this.CT1 = 0;
+    this.pT1 = 0;
+    this.vT1 = 0;
+    this.yT1 = undefined;
+    this.TDe = undefined;
+    this.ST1 = undefined;
+    this.J_ = i => {
+      this.CT1 += i;
       var i = this.LerpTime / Time_1.Time.TimeDilation;
-      this.$I1 >= i ? (this.RootItem.SetAnchorOffsetY(this.QI1), this.YI1(), this.ReleaseHandle()) : (i = this.XI1.GetFloatValue(this.$I1 / i) * (this.QI1 - this.WI1) + this.WI1, this.RootItem.SetAnchorOffsetY(i))
-    }
+      if (this.CT1 >= i) {
+        this.RootItem.SetAnchorOffsetY(this.vT1);
+        this.MT1();
+        this.ReleaseHandle();
+      } else {
+        i = this.ST1.GetFloatValue(this.CT1 / i) * (this.vT1 - this.pT1) + this.pT1;
+        this.RootItem.SetAnchorOffsetY(i);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UITexture],
-      [2, UE.UIText],
-      [3, UE.UITexture],
-      [4, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UITexture], [4, UE.UIItem]];
   }
   OnBeforeCreateImplement() {
-    this.UiLevelSequence = new UiViewSequence_1.UiBehaviorLevelSequence(this), this.AddUiBehavior(this.UiLevelSequence)
+    this.UiLevelSequence = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.UiLevelSequence);
   }
   Init(i, e, s) {
-    this.jI1 = i, this.XI1 = e, this.HI1 = s, this.GetText(0).SetText(i.Rank.toString());
-    e = DangoManager_1.DangoManager.GetDangoData(i.DangoId), this.GetText(2).ShowTextNew(e.NameKey), this.RootItem.SetAnchorOffsetY(this.zI1(i.Rank)), this.SetTextureShowUntilLoaded(e.DangoConfig.IconSmall, this.GetTexture(1)), s = i.GetDiceConfig(), this.SetTextureShowUntilLoaded(s.RollDiceBackgroundIcon, this.GetTexture(3)), e = ModelManager_1.ModelManager.RacingBetsModel.IsDungeonBettingDango(i.DangoId);
-    this.GetItem(4).SetUIActive(e)
+    this.fT1 = i;
+    this.ST1 = e;
+    this.gT1 = s;
+    this.GetText(0).SetText(i.Rank.toString());
+    e = DangoManager_1.DangoManager.GetDangoData(i.DangoId);
+    this.GetText(2).ShowTextNew(e.NameKey);
+    this.RootItem.SetAnchorOffsetY(this.ET1(i.Rank));
+    this.SetTextureShowUntilLoaded(e.DangoConfig.IconSmall, this.GetTexture(1));
+    s = i.GetDiceConfig();
+    this.SetTextureShowUntilLoaded(s.RollDiceBackgroundIcon, this.GetTexture(3));
+    e = ModelManager_1.ModelManager.RacingBetsModel.IsDungeonBettingDango(i.DangoId);
+    this.GetItem(4).SetUIActive(e);
   }
   async RefreshAsync() {
-    var i, e, s;
-    this.jI1.LastRank !== this.jI1.Rank && (this.ReleaseHandle(), this.YI1(), s = (i = this.jI1.Rank < this.jI1.LastRank) ? "RiseIn" : "DownIn", i = i ? "RiseOut" : "DownOut", e = new CustomPromise_1.CustomPromise, await this.UiLevelSequence.PlaySequenceAsync(s, e, !1, !1, Time_1.Time.TimeDilation), await this.LerpRankTargetPosition(), this.RootItem.SetHierarchyIndex(this.jI1.Rank), this.GetText(0).SetText(this.jI1.Rank.toString()), s = new CustomPromise_1.CustomPromise, await this.UiLevelSequence.PlaySequenceAsync(i, s, !1, !1, Time_1.Time.TimeDilation))
+    var i;
+    var e;
+    var s;
+    if (this.fT1.LastRank !== this.fT1.Rank) {
+      this.ReleaseHandle();
+      this.MT1();
+      s = (i = this.fT1.Rank < this.fT1.LastRank) ? "RiseIn" : "DownIn";
+      i = i ? "RiseOut" : "DownOut";
+      e = new CustomPromise_1.CustomPromise();
+      await this.UiLevelSequence.PlaySequenceAsync(s, e, false, false, Time_1.Time.TimeDilation);
+      await this.LerpRankTargetPosition();
+      this.RootItem.SetHierarchyIndex(this.fT1.Rank);
+      this.GetText(0).SetText(this.fT1.Rank.toString());
+      s = new CustomPromise_1.CustomPromise();
+      await this.UiLevelSequence.PlaySequenceAsync(i, s, false, false, Time_1.Time.TimeDilation);
+    }
   }
   async LerpRankTargetPosition() {
-    this.KI1 = new CustomPromise_1.CustomPromise, this.WI1 = this.zI1(this.jI1.LastRank), this.QI1 = this.zI1(this.jI1.Rank), this.$I1 = 0, this.TDe = TimerSystem_1.TimerSystem.Forever(this.J_, TimerSystem_1.MIN_TIME), await this.KI1.Promise
+    this.yT1 = new CustomPromise_1.CustomPromise();
+    this.pT1 = this.ET1(this.fT1.LastRank);
+    this.vT1 = this.ET1(this.fT1.Rank);
+    this.CT1 = 0;
+    this.TDe = TimerSystem_1.TimerSystem.Forever(this.J_, TimerSystem_1.MIN_TIME);
+    await this.yT1.Promise;
   }
   OnBeforeDestroy() {
-    this.ReleaseHandle(), this.YI1()
+    this.ReleaseHandle();
+    this.MT1();
   }
-  zI1(i) {
-    return -(i - 1) * (this.RootItem.GetHeight() + this.HI1)
+  ET1(i) {
+    return -(i - 1) * (this.RootItem.GetHeight() + this.gT1);
   }
   ReleaseHandle() {
-    this.TDe && (TimerSystem_1.TimerSystem.Remove(this.TDe), this.TDe = void 0)
+    if (this.TDe) {
+      TimerSystem_1.TimerSystem.Remove(this.TDe);
+      this.TDe = undefined;
+    }
   }
-  YI1() {
-    this.KI1 && (this.KI1.SetResult(void 0), this.KI1 = void 0)
+  MT1() {
+    if (this.yT1) {
+      this.yT1.SetResult(undefined);
+      this.yT1 = undefined;
+    }
   }
 }
 exports.RacingBetsDangoRankItem = RacingBetsDangoRankItem;

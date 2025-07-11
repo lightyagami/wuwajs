@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBaseCurve = void 0;
+  value: true
+});
+exports.FbBaseCurve = undefined;
 class FbBaseCurve {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.sTh = !1, this.aTh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.sTh = false;
+    this.aTh = 0;
   }
   static Create(t) {
-    if (t) return new FbBaseCurve(t)
+    if (t) {
+      return new FbBaseCurve(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get N() {
-    return this.sTh || (this.sTh = !0, this.aTh = this.FbDataInternal.n()), this.aTh
+    if (!this.sTh) {
+      this.sTh = true;
+      this.aTh = this.FbDataInternal.n();
+    }
+    return this.aTh;
   }
 }
 exports.FbBaseCurve = FbBaseCurve;

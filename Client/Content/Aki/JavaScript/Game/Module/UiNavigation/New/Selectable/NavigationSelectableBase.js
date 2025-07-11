@@ -1,113 +1,124 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationSelectableBase = void 0;
-const StringUtils_1 = require("../../../../../Core/Utils/StringUtils"),
-  UiLayer_1 = require("../../../../Ui/UiLayer"),
-  UiNavigationGlobalData_1 = require("../UiNavigationGlobalData");
+  value: true
+});
+exports.NavigationSelectableBase = undefined;
+const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const UiLayer_1 = require("../../../../Ui/UiLayer");
+const UiNavigationGlobalData_1 = require("../UiNavigationGlobalData");
 class NavigationSelectableBase {
   constructor(t, i, e) {
-    this.IsInteractive = !0, this.Selectable = void 0, this.Listener = void 0, this.PanelHandle = void 0, this.E9 = "Button", this.ParamList = [], this.Selectable = t, this.E9 = i, this.ParamList = e
+    this.IsInteractive = true;
+    this.Selectable = undefined;
+    this.Listener = undefined;
+    this.PanelHandle = undefined;
+    this.E9 = "Button";
+    this.ParamList = [];
+    this.Selectable = t;
+    this.E9 = i;
+    this.ParamList = e;
   }
   Init() {
-    this.OnInit()
+    this.OnInit();
   }
   Start() {
-    this.OnStart()
+    this.OnStart();
   }
   Clear() {
-    this.OnClear()
+    this.OnClear();
   }
   CanFocus() {
-    return !!this.IsInteractive && !!this.Selectable.IsValid() && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy()
+    return !!this.IsInteractive && !!this.Selectable.IsValid() && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy();
   }
   CanFocusInScrollOrLayout() {
-    return this.OnCanFocusInScrollOrLayout()
+    return this.OnCanFocusInScrollOrLayout();
   }
   IsActive() {
-    return !!this.IsInteractive && !!this.Selectable.IsValid() && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy()
+    return !!this.IsInteractive && !!this.Selectable.IsValid() && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy();
   }
   SetIsInteractive(t) {
-    this.IsInteractive = t
+    this.IsInteractive = t;
   }
   GetSelectable() {
-    return this.Selectable
+    return this.Selectable;
   }
   SetListener(t) {
-    this.Listener = t
+    this.Listener = t;
   }
   SetPanelHandle(t) {
-    this.PanelHandle = t
+    this.PanelHandle = t;
   }
   GetTipsTextId() {
-    return this.OnGetTipsTextId()
+    return this.OnGetTipsTextId();
   }
   CheckFindNavigationBefore() {
-    return !UiLayer_1.UiLayer.IsInMask() && this.OnCheckFindNavigationBefore()
+    return !UiLayer_1.UiLayer.IsInMask() && this.OnCheckFindNavigationBefore();
   }
   CheckFindOpposite(t) {
-    return !(this.Listener === t || !this.Listener.IsCanFocus()) && this.OnCheckFindOpposite(t)
+    return this.Listener !== t && !!this.Listener.IsCanFocus() && this.OnCheckFindOpposite(t);
   }
   CheckFindNavigationAfter(t) {
-    return this.OnCheckFindNavigationAfter(t)
+    return this.OnCheckFindNavigationAfter(t);
   }
   HandlePointerEnter(t) {
-    return !!this.IsAllowNavigationByGroup() && !!this.IsAllowNavigationBySelfParam(t) && !!this.cBo() && this.OnHandlePointerEnter(t)
+    return !!this.IsAllowNavigationByGroup() && !!this.IsAllowNavigationBySelfParam(t) && !!this.cBo() && this.OnHandlePointerEnter(t);
   }
   HandlePointerSelect(t) {
-    return !!this.cBo() && this.OnHandlePointerSelect(t)
+    return !!this.cBo() && this.OnHandlePointerSelect(t);
   }
   IsIgnoreScrollOrLayoutCheckInSwitchGroup() {
-    return this.OnIsIgnoreScrollOrLayoutCheck()
+    return this.OnIsIgnoreScrollOrLayoutCheck();
   }
   FindLoopScrollViewNavigationComponent(t, i) {
-    return this.OnFindLoopScrollViewNavigationComponent(t, i)
+    return this.OnFindLoopScrollViewNavigationComponent(t, i);
   }
   NotifyFocusListener(t) {
-    this.OnNotifyFocusListener(t)
+    this.OnNotifyFocusListener(t);
   }
   IsAllowNavigationByGroup() {
     var t;
-    return !StringUtils_1.StringUtils.IsEmpty(this.Listener.GroupName) && !!(t = this.Listener.PanelConfig.GetNavigationGroup(this.Listener.GroupName)) && 0 === t.GroupType
+    return !StringUtils_1.StringUtils.IsEmpty(this.Listener.GroupName) && !!(t = this.Listener.PanelConfig.GetNavigationGroup(this.Listener.GroupName)) && t.GroupType === 0;
   }
   OnGetTipsTextId() {
-    return this.Listener.HotKeyTipsTextIdMap.Get(1)
+    return this.Listener.HotKeyTipsTextIdMap.Get(1);
   }
   OnCheckFindNavigationBefore() {
-    return !0
+    return true;
   }
   OnCheckFindOpposite(t) {
-    return !0
+    return true;
   }
   OnCheckFindNavigationAfter(t) {
-    return !0
+    return true;
   }
   IsAllowNavigationBySelfParam(t) {
-    return !0
+    return true;
   }
   OnCanFocusInScrollOrLayout() {
-    return !!this.IsInteractive && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy()
+    return !!this.IsInteractive && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy();
   }
   OnHandlePointerEnter(t) {
-    return !0
+    return true;
   }
   OnIsIgnoreScrollOrLayoutCheck() {
-    return !1
+    return false;
   }
   OnFindLoopScrollViewNavigationComponent(t, i) {
-    let e = void 0;
-    return e = this.Listener.HasLoopScrollView() ? this.Listener.ScrollView.FindNavigationComponent(this.Listener.GetSelectableComponent(), t, i) : e
+    let e = undefined;
+    return e = this.Listener.HasLoopScrollView() ? this.Listener.ScrollView.FindNavigationComponent(this.Listener.GetSelectableComponent(), t, i) : e;
   }
   cBo() {
-    var t, i;
-    return !(!this.Listener.PanelConfig || !UiNavigationGlobalData_1.UiNavigationGlobalData.IsAllowCrossNavigationGroup && (t = this.Listener.PanelConfig.GetFocusListener()) && (!(i = this.Listener.PanelConfig.GetNavigationGroup(t.GroupName)) || i.GroupName !== this.Listener.GroupName || !i.AllowNavigationInSelfDynamic && (void 0 === this.Listener.ScrollViewActor && void 0 === t.ScrollViewActor && void 0 === this.Listener.LayoutActor && void 0 === t.LayoutActor || this.Listener.ScrollViewActor !== t.ScrollViewActor || this.Listener.LayoutActor !== t.LayoutActor)))
+    var t;
+    var i;
+    return !!this.Listener.PanelConfig && (!!UiNavigationGlobalData_1.UiNavigationGlobalData.IsAllowCrossNavigationGroup || !(t = this.Listener.PanelConfig.GetFocusListener()) || !!(i = this.Listener.PanelConfig.GetNavigationGroup(t.GroupName)) && i.GroupName === this.Listener.GroupName && (!!i.AllowNavigationInSelfDynamic || (this.Listener.ScrollViewActor !== undefined || t.ScrollViewActor !== undefined || this.Listener.LayoutActor !== undefined || t.LayoutActor !== undefined) && this.Listener.ScrollViewActor === t.ScrollViewActor && this.Listener.LayoutActor === t.LayoutActor));
   }
   OnNotifyFocusListener(t) {}
   OnInit() {}
   OnStart() {}
   OnClear() {}
   GetType() {
-    return this.E9
+    return this.E9;
   }
 }
 exports.NavigationSelectableBase = NavigationSelectableBase;

@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbLocationSafetyComponent = void 0;
+  value: true
+});
+exports.FbLocationSafetyComponent = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbLocationSafetyComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.sXh = !1, this.aXh = void 0, this.HVh = !1, this.WVh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.sXh = false;
+    this.aXh = undefined;
+    this.HVh = false;
+    this.WVh = undefined;
   }
   static Create(t) {
-    if (t) return new FbLocationSafetyComponent(t)
+    if (t) {
+      return new FbLocationSafetyComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get DetectionFrequency() {
-    return this.sXh || (this.sXh = !0, this.aXh = this.FbDataInternal.detectionFrequency()), this.aXh
+    if (!this.sXh) {
+      this.sXh = true;
+      this.aXh = this.FbDataInternal.detectionFrequency();
+    }
+    return this.aXh;
   }
   get SafeLocation() {
-    return this.HVh || (this.HVh = !0, this.WVh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.safeLocation())), this.WVh
+    if (!this.HVh) {
+      this.HVh = true;
+      this.WVh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.safeLocation());
+    }
+    return this.WVh;
   }
 }
 exports.FbLocationSafetyComponent = FbLocationSafetyComponent;

@@ -1,34 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCreateStageConfig = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbActionInfo_1 = require("../Action/FbActionInfo"),
-  FbCreateBulletConfig_1 = require("./FbCreateBulletConfig");
+  value: true
+});
+exports.FbCreateStageConfig = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbActionInfo_1 = require("../Action/FbActionInfo");
+const FbCreateBulletConfig_1 = require("./FbCreateBulletConfig");
 class FbCreateStageConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.ijh = !1, this.rjh = 0, this.ojh = !1, this.njh = void 0, this.L_h = !1, this.A_h = void 0
+    this.FbDataInternal = t;
+    this.ijh = false;
+    this.rjh = 0;
+    this.ojh = false;
+    this.njh = undefined;
+    this.L_h = false;
+    this.A_h = undefined;
   }
   static Create(t) {
-    if (t) return new FbCreateStageConfig(t)
+    if (t) {
+      return new FbCreateStageConfig(t);
+    }
   }
   get PerformDuration() {
-    return this.ijh || (this.ijh = !0, this.rjh = this.FbDataInternal.performDuration()), this.rjh
+    if (!this.ijh) {
+      this.ijh = true;
+      this.rjh = this.FbDataInternal.performDuration();
+    }
+    return this.rjh;
   }
   get BulletConfig() {
-    return this.ojh || (this.ojh = !0, this.njh = FbCreateBulletConfig_1.FbCreateBulletConfig.Create(this.FbDataInternal.bulletConfig())), this.njh
+    if (!this.ojh) {
+      this.ojh = true;
+      this.njh = FbCreateBulletConfig_1.FbCreateBulletConfig.Create(this.FbDataInternal.bulletConfig());
+    }
+    return this.njh;
   }
   get Actions() {
     if (!this.L_h) {
-      this.L_h = !0, this.A_h = new Array;
+      this.L_h = true;
+      this.A_h = new Array();
       var i = this.FbDataInternal.actionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var e = this.FbDataInternal.actions(t, new fb_action_1.ActionInfo);
-          this.A_h.push(FbActionInfo_1.FbActionInfo.Create(e))
+          var e = this.FbDataInternal.actions(t, new fb_action_1.ActionInfo());
+          this.A_h.push(FbActionInfo_1.FbActionInfo.Create(e));
         }
+      }
     }
-    return this.A_h
+    return this.A_h;
   }
 }
 exports.FbCreateStageConfig = FbCreateStageConfig;

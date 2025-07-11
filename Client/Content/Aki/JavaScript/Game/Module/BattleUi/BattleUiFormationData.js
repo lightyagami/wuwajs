@@ -1,88 +1,150 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleUiFormationData = void 0;
-const UE = require("ue"),
-  CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById"),
-  ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem"),
-  DataTableUtil_1 = require("../../../Core/Utils/DataTableUtil"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  GlobalData_1 = require("../../GlobalData"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  followerMap = new Map([
-    [658750002, 1],
-    [658750003, 1],
-    [65875e4, 2]
-  ]);
+  value: true
+});
+exports.BattleUiFormationData = undefined;
+const UE = require("ue");
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const DataTableUtil_1 = require("../../../Core/Utils/DataTableUtil");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../GlobalData");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const followerMap = new Map([[658750002, 1], [658750003, 1], [658750000, 2]]);
 class BattleUiFormationData {
   constructor() {
-    this.sXe = void 0, this.EnvironmentPropertyList = [], this.UiEnvironmentPropertyMap = new Map, this.gU = !1, this.ORn = void 0, this.doh = 0, this.Coh = !1, this.buc = !1, this.MC1 = !1
+    this.sXe = undefined;
+    this.EnvironmentPropertyList = [];
+    this.UiEnvironmentPropertyMap = new Map();
+    this.gU = false;
+    this.ORn = undefined;
+    this.doh = 0;
+    this.Coh = false;
+    this.buc = false;
+    this.$C1 = false;
   }
   Init() {
-    this.gU = !0;
+    this.gU = true;
     var t = CommonParamById_1.configCommonParamById.GetStringConfig("EnvironmentPropertyInfoPath");
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.DataTable, t => {
       if (this.gU && (this.sXe = t)) {
-        var e = new Array;
+        var e = new Array();
         DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(t, e);
         for (const o of e) {
-          var i, r = Number(o);
-          r && (i = DataTableUtil_1.DataTableUtil.GetDataTableRow(t, o), this.UiEnvironmentPropertyMap.set(r, i), this.EnvironmentPropertyList.push(r))
+          var i;
+          var r = Number(o);
+          if (r) {
+            i = DataTableUtil_1.DataTableUtil.GetDataTableRow(t, o);
+            this.UiEnvironmentPropertyMap.set(r, i);
+            this.EnvironmentPropertyList.push(r);
+          }
         }
       }
-    })
+    });
   }
   OnLeaveLevel() {}
   Clear() {
-    this.gU = !1, this.sXe = void 0, this.EnvironmentPropertyList.length = 0, this.UiEnvironmentPropertyMap.clear(), this.FRn(), this.AutoMovingSettingEnable = !1
+    this.gU = false;
+    this.sXe = undefined;
+    this.EnvironmentPropertyList.length = 0;
+    this.UiEnvironmentPropertyMap.clear();
+    this.FRn();
+    this.AutoMovingSettingEnable = false;
   }
   GetUiEnvironmentProperty(t) {
-    if (this.gU) return GlobalData_1.GlobalData.IsPlayInEditor ? DataTableUtil_1.DataTableUtil.GetDataTableRow(this.sXe, t.toString()) : this.UiEnvironmentPropertyMap.get(t)
+    if (this.gU) {
+      if (GlobalData_1.GlobalData.IsPlayInEditor) {
+        return DataTableUtil_1.DataTableUtil.GetDataTableRow(this.sXe, t.toString());
+      } else {
+        return this.UiEnvironmentPropertyMap.get(t);
+      }
+    }
   }
   AddFollower(e) {
     if (e !== this.ORn) {
       this.FRn();
       var i = (this.ORn = e).Entity.GetComponent(222);
       let t = i?.AimType;
-      t = t || (followerMap.get(e.PbDataId) ?? 0), this.doh = t, this.goh(i?.IsEnable ?? !1)
+      t = t || (followerMap.get(e.PbDataId) ?? 0);
+      this.doh = t;
+      this.goh(i?.IsEnable ?? false);
     }
   }
   RemoveFollower() {
-    this.FRn()
+    this.FRn();
   }
   ChangePlayerFollowerEnable(t) {
-    this.ORn && this.goh(t)
+    if (this.ORn) {
+      this.goh(t);
+    }
   }
   goh(t) {
-    this.Coh !== t && (this.Coh = t, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiFollowerAimStateChanged, t, 0 === this.doh), 1 === this.doh ? (this.Coh && ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(1), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAimVisible, t)) : 3 === this.doh ? (this.Coh && ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(2), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAutoAimVisible, t)) : 4 === this.doh && (this.Coh && ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(3), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAutoAimVisible, t)))
+    if (this.Coh !== t) {
+      this.Coh = t;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiFollowerAimStateChanged, t, this.doh === 0);
+      if (this.doh === 1) {
+        if (this.Coh) {
+          ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(1);
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAimVisible, t);
+      } else if (this.doh === 3) {
+        if (this.Coh) {
+          ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(2);
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAutoAimVisible, t);
+      } else if (this.doh === 4) {
+        if (this.Coh) {
+          ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(3);
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAutoAimVisible, t);
+      }
+    }
   }
   GetFollowType() {
-    return this.doh
+    return this.doh;
   }
   GetFollowerAiming() {
-    return this.Coh && 2 !== this.doh
+    return this.Coh && this.doh !== 2;
   }
   GetFollowerEnable() {
-    return this.Coh
+    return this.Coh;
   }
   GetFollowerEntityHandle() {
-    return this.ORn
+    return this.ORn;
   }
   FRn() {
-    this.Coh && this.goh(!1), this.ORn = void 0, 1 === this.doh ? ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(1) : 3 === this.doh ? ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(2) : 4 === this.doh && ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(3), this.doh = 0
+    if (this.Coh) {
+      this.goh(false);
+    }
+    this.ORn = undefined;
+    if (this.doh === 1) {
+      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(1);
+    } else if (this.doh === 3) {
+      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(2);
+    } else if (this.doh === 4) {
+      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(3);
+    }
+    this.doh = 0;
   }
   get AutoMovingSettingEnable() {
-    return this.buc
+    return this.buc;
   }
   set AutoMovingSettingEnable(t) {
-    this.buc !== t && (this.buc = t, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AutoMovingSettingChanged, t))
+    if (this.buc !== t) {
+      this.buc = t;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AutoMovingSettingChanged, t);
+    }
   }
   get AutoSprintSettingEnable() {
-    return this.MC1
+    return this.$C1;
   }
   set AutoSprintSettingEnable(t) {
-    this.MC1 !== t && (this.MC1 = t, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AutoSprintSettingChanged, t))
+    if (this.$C1 !== t) {
+      this.$C1 = t;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AutoSprintSettingChanged, t);
+    }
   }
 }
 exports.BattleUiFormationData = BattleUiFormationData;

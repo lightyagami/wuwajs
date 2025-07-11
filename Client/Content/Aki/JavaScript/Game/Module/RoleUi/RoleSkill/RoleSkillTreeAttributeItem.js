@@ -1,39 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleSkillTreeAttributeItem = void 0;
-const UE = require("ue"),
-  CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.RoleSkillTreeAttributeItem = undefined;
+const UE = require("ue");
+const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class RoleSkillTreeAttributeItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.r1a = 0, this.CreateThenShowByActor(e.GetOwner())
+    super();
+    this.r1a = 0;
+    this.CreateThenShowByActor(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText],
-      [2, UE.UIItem],
-      [3, UE.UIText],
-      [4, UE.UIItem],
-      [5, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem]];
   }
   OnStart() {
-    this.r1a = this.GetItem(5)?.GetWidth() ?? 0
+    this.r1a = this.GetItem(5)?.GetWidth() ?? 0;
   }
   Refresh(e, t) {
-    var i = this.GetText(0),
-      s = this.GetText(1),
-      r = (i.SetWidth(this.r1a), s.SetWidth(this.r1a), e.AttrBaseValue && s.SetText(e.AttrBaseValue), e.AttrNameText && i.SetText(e.AttrNameText), i.GetTextRenderSize().X),
-      o = s.GetTextRenderSize().X,
-      a = CommonParamById_1.configCommonParamById.GetIntConfig("RoleSkillTreeAttributeSpace") ?? 0,
-      a = this.r1a - a,
-      l = a / 2;
-    r + o < a ? (i.SetWidth(r), s.SetWidth(o)) : l <= r && l <= o ? (i.SetWidth(l), s.SetWidth(l)) : l <= r ? (i.SetWidth(a - o), s.SetWidth(o)) : (i.SetWidth(r), s.SetWidth(a - r)), t && t.AttrBaseValue && ((l = this.GetText(3)).SetText(t.AttrBaseValue), o = t.AttrBaseValue !== e.AttrBaseValue, l.SetChangeColor(o, l.changeColor), this.GetItem(4).SetUIActive(o))
+    var i = this.GetText(0);
+    var s = this.GetText(1);
+    i.SetWidth(this.r1a);
+    s.SetWidth(this.r1a);
+    if (e.AttrBaseValue) {
+      s.SetText(e.AttrBaseValue);
+    }
+    if (e.AttrNameText) {
+      i.SetText(e.AttrNameText);
+    }
+    var r = i.GetTextRenderSize().X;
+    var o = s.GetTextRenderSize().X;
+    var a = CommonParamById_1.configCommonParamById.GetIntConfig("RoleSkillTreeAttributeSpace") ?? 0;
+    var a = this.r1a - a;
+    var l = a / 2;
+    if (r + o < a) {
+      i.SetWidth(r);
+      s.SetWidth(o);
+    } else if (l <= r && l <= o) {
+      i.SetWidth(l);
+      s.SetWidth(l);
+    } else if (l <= r) {
+      i.SetWidth(a - o);
+      s.SetWidth(o);
+    } else {
+      i.SetWidth(r);
+      s.SetWidth(a - r);
+    }
+    if (t && t.AttrBaseValue) {
+      (l = this.GetText(3)).SetText(t.AttrBaseValue);
+      o = t.AttrBaseValue !== e.AttrBaseValue;
+      l.SetChangeColor(o, l.changeColor);
+      this.GetItem(4).SetUIActive(o);
+    }
   }
   SetNextLevelItem(e) {
-    this.GetItem(2).SetUIActive(e)
+    this.GetItem(2).SetUIActive(e);
   }
 }
 exports.RoleSkillTreeAttributeItem = RoleSkillTreeAttributeItem;

@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbChangeInteractOptionText = void 0;
+  value: true
+});
+exports.FbChangeInteractOptionText = undefined;
 class FbChangeInteractOptionText {
   constructor(t) {
-    this.FbDataInternal = t, this.C_h = !1, this.g_h = void 0
+    this.FbDataInternal = t;
+    this.C_h = false;
+    this.g_h = undefined;
   }
   static Create(t) {
-    if (t) return new FbChangeInteractOptionText(t)
+    if (t) {
+      return new FbChangeInteractOptionText(t);
+    }
   }
   get TidContent() {
-    return this.C_h || (this.C_h = !0, this.g_h = this.FbDataInternal.tidContent()), this.g_h
+    if (!this.C_h) {
+      this.C_h = true;
+      this.g_h = this.FbDataInternal.tidContent();
+    }
+    return this.g_h;
   }
 }
 exports.FbChangeInteractOptionText = FbChangeInteractOptionText;

@@ -1,37 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFixAction = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbActionInfo_1 = require("../Action/FbActionInfo"),
-  FbConditionGroup_1 = require("../Condition/FbConditionGroup");
+  value: true
+});
+exports.FbFixAction = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbActionInfo_1 = require("../Action/FbActionInfo");
+const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbFixAction {
   constructor(i) {
-    this.FbDataInternal = i, this.nZh = !1, this.sZh = void 0, this.f_h = !1, this.X6o = void 0, this.aZh = !1, this.hZh = void 0, this.lZh = !1, this._Zh = !1
+    this.FbDataInternal = i;
+    this.nZh = false;
+    this.sZh = undefined;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.aZh = false;
+    this.hZh = undefined;
+    this.lZh = false;
+    this._Zh = false;
   }
   static Create(i) {
-    if (i) return new FbFixAction(i)
+    if (i) {
+      return new FbFixAction(i);
+    }
   }
   get Timing() {
-    return this.nZh || (this.nZh = !0, this.sZh = this.FbDataInternal.timing()), this.sZh
+    if (!this.nZh) {
+      this.nZh = true;
+      this.sZh = this.FbDataInternal.timing();
+    }
+    return this.sZh;
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get ThenActions() {
     if (!this.aZh) {
-      this.aZh = !0, this.hZh = new Array;
+      this.aZh = true;
+      this.hZh = new Array();
       var t = this.FbDataInternal.thenActionsLength();
-      if (t)
+      if (t) {
         for (let i = 0; i < t; ++i) {
-          var s = this.FbDataInternal.thenActions(i, new fb_action_1.ActionInfo);
-          this.hZh.push(FbActionInfo_1.FbActionInfo.Create(s))
+          var s = this.FbDataInternal.thenActions(i, new fb_action_1.ActionInfo());
+          this.hZh.push(FbActionInfo_1.FbActionInfo.Create(s));
         }
+      }
     }
-    return this.hZh
+    return this.hZh;
   }
   get Period() {
-    return this.lZh || (this.lZh = !0, this._Zh = this.FbDataInternal.period()), this._Zh
+    if (!this.lZh) {
+      this.lZh = true;
+      this._Zh = this.FbDataInternal.period();
+    }
+    return this._Zh;
   }
 }
 exports.FbFixAction = FbFixAction;

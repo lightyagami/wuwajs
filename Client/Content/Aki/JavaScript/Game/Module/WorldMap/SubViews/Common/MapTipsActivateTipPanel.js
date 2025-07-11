@@ -1,38 +1,42 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapTipsActivateTipPanel = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  HelpController_1 = require("../../../Help/HelpController"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  HELP_ID = 119;
+  value: true
+});
+exports.MapTipsActivateTipPanel = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const HelpController_1 = require("../../../Help/HelpController");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const HELP_ID = 119;
 class MapTipsActivateTipPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.mji = () => {
-      HelpController_1.HelpController.OpenHelpById(HELP_ID)
-    }
+    super(...arguments);
+    this.mji = () => {
+      HelpController_1.HelpController.OpenHelpById(HELP_ID);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UIText],
-      [2, UE.UIButtonComponent]
-    ], this.BtnBindInfo = [
-      [2, this.mji]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[2, this.mji]];
   }
   OnStart() {
-    this.SetDistanceTips()
+    this.SetDistanceTips();
   }
   SetHideTip(e) {
-    void 0 !== e ? this.GetText(1).SetText(e) : this.SetActivatedTip("PlayPointClearDesc_Text"), this.GetButton(2).RootUIComp.SetUIActive(!1)
+    if (e !== undefined) {
+      this.GetText(1).SetText(e);
+    } else {
+      this.SetActivatedTip("PlayPointClearDesc_Text");
+    }
+    this.GetButton(2).RootUIComp.SetUIActive(false);
   }
   SetDistanceTips() {
-    this.SetActivatedTip("QuickTravelOverDistance_Text"), this.GetButton(2).RootUIComp.SetUIActive(!0)
+    this.SetActivatedTip("QuickTravelOverDistance_Text");
+    this.GetButton(2).RootUIComp.SetUIActive(true);
   }
   SetActivatedTip(e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e)
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e);
   }
 }
 exports.MapTipsActivateTipPanel = MapTipsActivateTipPanel;

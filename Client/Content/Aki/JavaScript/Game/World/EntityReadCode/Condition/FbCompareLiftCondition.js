@@ -1,28 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompareLiftCondition = void 0;
+  value: true
+});
+exports.FbCompareLiftCondition = undefined;
 class FbCompareLiftCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.tIh = !1, this.iIh = !1, this.a_h = !1, this.I9o = 0, this._ch = !1, this.cch = void 0, this.rIh = !1, this.oIh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.tIh = false;
+    this.iIh = false;
+    this.a_h = false;
+    this.I9o = 0;
+    this._ch = false;
+    this.cch = undefined;
+    this.rIh = false;
+    this.oIh = 0;
   }
   static Create(t) {
-    if (t) return new FbCompareLiftCondition(t)
+    if (t) {
+      return new FbCompareLiftCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get IsSelf() {
-    return this.tIh || (this.tIh = !0, this.iIh = this.FbDataInternal.isSelf()), this.iIh
+    if (!this.tIh) {
+      this.tIh = true;
+      this.iIh = this.FbDataInternal.isSelf();
+    }
+    return this.iIh;
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get Location() {
-    return this.rIh || (this.rIh = !0, this.oIh = this.FbDataInternal.location()), this.oIh
+    if (!this.rIh) {
+      this.rIh = true;
+      this.oIh = this.FbDataInternal.location();
+    }
+    return this.oIh;
   }
 }
 exports.FbCompareLiftCondition = FbCompareLiftCondition;

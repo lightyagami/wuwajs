@@ -1,14 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const LogicDataBase_1 = require("./LogicDataBase");
 class LogicDataFreeze extends LogicDataBase_1.default {
   constructor() {
-    super(...arguments), this.Target = 0, this.Tags = void 0, this.FreezeTime = -0
+    super(...arguments);
+    this.Target = 0;
+    this.Tags = undefined;
+    this.FreezeTime = -0;
   }
   Constructor() {
-    super.Constructor()
+    super.Constructor();
   }
 }
 exports.default = LogicDataFreeze;

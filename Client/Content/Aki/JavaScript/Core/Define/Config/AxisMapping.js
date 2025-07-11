@@ -1,122 +1,173 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AxisMapping = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicStringFloat_1 = require("./SubType/DicStringFloat");
+  value: true
+});
+exports.AxisMapping = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicStringFloat_1 = require("./SubType/DicStringFloat");
 class AxisMapping {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get AxisName() {
-    return this.axisname()
+    return this.axisname();
   }
   get AxisType() {
-    return this.axistype()
+    return this.axistype();
   }
   get PcKeys() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.pckeysLength(), this.pckeysKey, this.pckeysValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.pckeysLength(), this.pckeysKey, this.pckeysValue, this);
   }
   pckeysKey(t) {
-    return this.pckeys(t)?.key()
+    return this.pckeys(t)?.key();
   }
   pckeysValue(t) {
-    return this.pckeys(t)?.value()
+    return this.pckeys(t)?.value();
   }
   get FrancePcKeys() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.francepckeysLength(), this.francepckeysKey, this.francepckeysValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.francepckeysLength(), this.francepckeysKey, this.francepckeysValue, this);
   }
   francepckeysKey(t) {
-    return this.francepckeys(t)?.key()
+    return this.francepckeys(t)?.key();
   }
   francepckeysValue(t) {
-    return this.francepckeys(t)?.value()
+    return this.francepckeys(t)?.value();
   }
   get GamepadKeys() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.gamepadkeysLength(), this.gamepadkeysKey, this.gamepadkeysValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.gamepadkeysLength(), this.gamepadkeysKey, this.gamepadkeysValue, this);
   }
   gamepadkeysKey(t) {
-    return this.gamepadkeys(t)?.key()
+    return this.gamepadkeys(t)?.key();
   }
   gamepadkeysValue(t) {
-    return this.gamepadkeys(t)?.value()
+    return this.gamepadkeys(t)?.value();
   }
   get DisplayName() {
-    return this.displayname()
+    return this.displayname();
   }
   get KeyboardVersion() {
-    return this.keyboardversion()
+    return this.keyboardversion();
   }
   get GamepadVersion() {
-    return this.gamepadversion()
+    return this.gamepadversion();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsAxisMapping(t, s) {
-    return (s || new AxisMapping).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new AxisMapping()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   axisname(t) {
-    var s = this.J7.__offset(this.z7, 6),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 6);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   axistype() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPckeysAt(t, s) {
-    return this.pckeys(t)
+    return this.pckeys(t);
   }
   pckeys(t, s) {
     var i = this.J7.__offset(this.z7, 10);
-    return i ? (s || new DicStringFloat_1.DicStringFloat).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new DicStringFloat_1.DicStringFloat()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   pckeysLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetFrancepckeysAt(t, s) {
-    return this.francepckeys(t)
+    return this.francepckeys(t);
   }
   francepckeys(t, s) {
     var i = this.J7.__offset(this.z7, 12);
-    return i ? (s || new DicStringFloat_1.DicStringFloat).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new DicStringFloat_1.DicStringFloat()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   francepckeysLength() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetGamepadkeysAt(t, s) {
-    return this.gamepadkeys(t)
+    return this.gamepadkeys(t);
   }
   gamepadkeys(t, s) {
     var i = this.J7.__offset(this.z7, 14);
-    return i ? (s || new DicStringFloat_1.DicStringFloat).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new DicStringFloat_1.DicStringFloat()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   gamepadkeysLength() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   displayname(t) {
-    var s = this.J7.__offset(this.z7, 16),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   keyboardversion() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   gamepadversion() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.AxisMapping = AxisMapping;

@@ -1,43 +1,95 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableSectionalUi = void 0;
+  value: true
+});
+exports.FbEnableSectionalUi = undefined;
 class FbEnableSectionalUi {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.iSh = !1, this.rSh = !1, this.oSh = !1, this.nSh = !1, this.sSh = !1, this.aSh = !1, this.hSh = !1, this.lSh = !1, this._Sh = !1, this.cSh = !1, this.uSh = !1, this.dSh = !1, this.xPc = !1, this.DPc = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.iSh = false;
+    this.rSh = false;
+    this.oSh = false;
+    this.nSh = false;
+    this.sSh = false;
+    this.aSh = false;
+    this.hSh = false;
+    this.lSh = false;
+    this._Sh = false;
+    this.cSh = false;
+    this.uSh = false;
+    this.dSh = false;
+    this.xPc = false;
+    this.DPc = undefined;
   }
   static Create(t) {
-    if (t) return new FbEnableSectionalUi(t)
+    if (t) {
+      return new FbEnableSectionalUi(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ShowMiniMap() {
-    return this.iSh || (this.iSh = !0, this.rSh = this.FbDataInternal.showMiniMap()), this.rSh
+    if (!this.iSh) {
+      this.iSh = true;
+      this.rSh = this.FbDataInternal.showMiniMap();
+    }
+    return this.rSh;
   }
   get ShowQuestTrack() {
-    return this.oSh || (this.oSh = !0, this.nSh = this.FbDataInternal.showQuestTrack()), this.nSh
+    if (!this.oSh) {
+      this.oSh = true;
+      this.nSh = this.FbDataInternal.showQuestTrack();
+    }
+    return this.nSh;
   }
   get ShowEsc() {
-    return this.sSh || (this.sSh = !0, this.aSh = this.FbDataInternal.showEsc()), this.aSh
+    if (!this.sSh) {
+      this.sSh = true;
+      this.aSh = this.FbDataInternal.showEsc();
+    }
+    return this.aSh;
   }
   get ShowSystem() {
-    return this.hSh || (this.hSh = !0, this.lSh = this.FbDataInternal.showSystem()), this.lSh
+    if (!this.hSh) {
+      this.hSh = true;
+      this.lSh = this.FbDataInternal.showSystem();
+    }
+    return this.lSh;
   }
   get ShowScreenEffect() {
-    return this._Sh || (this._Sh = !0, this.cSh = this.FbDataInternal.showScreenEffect()), this.cSh
+    if (!this._Sh) {
+      this._Sh = true;
+      this.cSh = this.FbDataInternal.showScreenEffect();
+    }
+    return this.cSh;
   }
   get ShowOther() {
-    return this.uSh || (this.uSh = !0, this.dSh = this.FbDataInternal.showOther()), this.dSh
+    if (!this.uSh) {
+      this.uSh = true;
+      this.dSh = this.FbDataInternal.showOther();
+    }
+    return this.dSh;
   }
   get AlwaysShowUiSections() {
     if (!this.xPc) {
-      this.xPc = !0, this.DPc = new Array;
+      this.xPc = true;
+      this.DPc = new Array();
       var i = this.FbDataInternal.alwaysShowUiSectionsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.DPc.push(this.FbDataInternal.alwaysShowUiSections(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.DPc.push(this.FbDataInternal.alwaysShowUiSections(t));
+        }
+      }
     }
-    return this.DPc
+    return this.DPc;
   }
 }
 exports.FbEnableSectionalUi = FbEnableSectionalUi;

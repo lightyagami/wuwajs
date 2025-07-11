@@ -1,39 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SortModel = void 0;
-const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase"),
-  LocalStorage_1 = require("../../../../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../../../../Common/LocalStorageDefine"),
-  ConfigManager_1 = require("../../../../../Manager/ConfigManager"),
-  SortLogic_1 = require("../Logic/SortLogic");
+  value: true
+});
+exports.SortModel = undefined;
+const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
+const LocalStorage_1 = require("../../../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../../../Common/LocalStorageDefine");
+const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const SortLogic_1 = require("../Logic/SortLogic");
 class SortModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.dUt = new Map, this.CUt = new SortLogic_1.SortLogic
+    super(...arguments);
+    this.dUt = new Map();
+    this.CUt = new SortLogic_1.SortLogic();
   }
   SetSortResultData(e, o) {
-    this.dUt.set(e, o)
+    this.dUt.set(e, o);
   }
   DeleteSortResultData(e) {
-    this.dUt.delete(e)
+    this.dUt.delete(e);
   }
   GetSortResultData(e) {
-    return this.dUt.get(e)
+    return this.dUt.get(e);
   }
-  SortDataList(e, o, t, ...a) {
-    this.CUt.SortDataList(e, o, t, ...a)
+  SortDataList(e, o, a, ...t) {
+    this.CUt.SortDataList(e, o, a, ...t);
   }
-  SortDataByData(e, o, t, a) {
-    this.CUt.SortDataByData(e, o, t, a)
+  SortDataByData(e, o, a, t) {
+    this.CUt.SortDataByData(e, o, a, t);
   }
-  GetSortConfigData(e, o) {
-    if (ConfigManager_1.ConfigManager.SortConfig.IsConfigSortSave(e, o)) return e = ConfigManager_1.ConfigManager.SortConfig.GetConfigSortFormatId(e, o), LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig)?.get(e)
+  GetSortConfigData(e, o, a) {
+    if (ConfigManager_1.ConfigManager.SortConfig.IsConfigSortSave(e, o)) {
+      e = ConfigManager_1.ConfigManager.SortConfig.GetConfigSortFormatId(e, o, a);
+      return LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig)?.get(e);
+    }
   }
-  SetSortConfigData(o, t, a) {
-    if (ConfigManager_1.ConfigManager.SortConfig.IsConfigSortSave(o, t)) {
-      o = ConfigManager_1.ConfigManager.SortConfig.GetConfigSortFormatId(o, t);
+  SetSortConfigData(o, a, t, r) {
+    if (ConfigManager_1.ConfigManager.SortConfig.IsConfigSortSave(o, a)) {
+      o = ConfigManager_1.ConfigManager.SortConfig.GetConfigSortFormatId(o, a, r);
       let e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig);
-      (e = e || new Map).set(o, a), LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig, e)
+      (e = e || new Map()).set(o, t);
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig, e);
+    }
+  }
+  ClearSortConfigData(e, o, a) {
+    if (ConfigManager_1.ConfigManager.SortConfig.IsConfigSortSave(e, o) && (e = ConfigManager_1.ConfigManager.SortConfig.GetConfigSortFormatId(e, o, a), o = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig))) {
+      o.delete(e);
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SortConfig, o);
     }
   }
 }

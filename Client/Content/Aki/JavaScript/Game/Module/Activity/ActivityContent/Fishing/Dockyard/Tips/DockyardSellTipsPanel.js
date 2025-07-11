@@ -1,57 +1,68 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DockyardSellTipsPanel = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../../../../../Core/Common/CustomPromise"),
-  UiPanelBase_1 = require("../../../../../../Ui/Base/UiPanelBase"),
-  UiSequencePlayer_1 = require("../../../../../../Ui/Base/UiSequencePlayer"),
-  DockyardTipsPanel_1 = require("./DockyardTipsPanel");
+  value: true
+});
+exports.DockyardSellTipsPanel = undefined;
+const UE = require("ue");
+const CustomPromise_1 = require("../../../../../../../Core/Common/CustomPromise");
+const UiPanelBase_1 = require("../../../../../../Ui/Base/UiPanelBase");
+const UiSequencePlayer_1 = require("../../../../../../Ui/Base/UiSequencePlayer");
+const DockyardTipsPanel_1 = require("./DockyardTipsPanel");
 class DockyardSellTipsPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.TipsPanel = void 0, this.SequencePlayer = void 0, this.Data = void 0, this.SellClick = void 0, this.$Yl = () => {
-      this.SellClick?.(this.Data.IncId, this.Data.ItemId)
-    }
+    super(...arguments);
+    this.TipsPanel = undefined;
+    this.SequencePlayer = undefined;
+    this.Data = undefined;
+    this.SellClick = undefined;
+    this.$Yl = () => {
+      this.SellClick?.(this.Data.IncId, this.Data.ItemId);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIButtonComponent]
-    ], this.BtnBindInfo = [
-      [1, this.$Yl]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[1, this.$Yl]];
   }
   async XXl() {
-    this.TipsPanel = new DockyardTipsPanel_1.DockyardTipsPanel, await this.TipsPanel.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())
+    this.TipsPanel = new DockyardTipsPanel_1.DockyardTipsPanel();
+    await this.TipsPanel.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   async OnBeforeStartAsync() {
-    this.SequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem), await this.XXl()
+    this.SequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
+    await this.XXl();
   }
   XYl() {
-    this.GetButton(1).RootUIComp.SetUIActive(0 < this.Data.Price)
+    this.GetButton(1).RootUIComp.SetUIActive(this.Data.Price > 0);
   }
   async OnShowAsyncImplementImplement() {
-    var e = new CustomPromise_1.CustomPromise;
-    await this.SequencePlayer.PlaySequenceAsync("Start", e)
+    var e = new CustomPromise_1.CustomPromise();
+    await this.SequencePlayer.PlaySequenceAsync("Start", e);
   }
   async OnHideAsyncImplementImplement() {
-    var e = new CustomPromise_1.CustomPromise;
-    await this.SequencePlayer.PlaySequenceAsync("Close", e)
+    var e = new CustomPromise_1.CustomPromise();
+    await this.SequencePlayer.PlaySequenceAsync("Close", e);
   }
   OnBeforeDestroy() {
-    this.SequencePlayer.Clear()
+    this.SequencePlayer.Clear();
   }
   Refresh() {
-    this.TipsPanel.Refresh(this.Data), this.TipsPanel.SetPanelVisible(!0, !1), this.XYl()
+    this.TipsPanel.Refresh(this.Data);
+    this.TipsPanel.SetPanelVisible(true, false);
+    this.XYl();
   }
   ShowTipsPanel(e) {
-    this.Data = e, this.Refresh(), this.SetActive(!0)
+    this.Data = e;
+    this.Refresh();
+    this.SetActive(true);
   }
   HideTipsPanel() {
-    this.IsShowOrShowing && this.SetActive(!1)
+    if (this.IsShowOrShowing) {
+      this.SetActive(false);
+    }
   }
   SetSellClick(e) {
-    this.SellClick = e
+    this.SellClick = e;
   }
 }
 exports.DockyardSellTipsPanel = DockyardSellTipsPanel;

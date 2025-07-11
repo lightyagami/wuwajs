@@ -1,562 +1,923 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Damage = void 0;
+  value: true
+});
+exports.Damage = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class Damage {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get CalculateType() {
-    return this.calculatetype()
+    return this.calculatetype();
   }
   get Element() {
-    return this.element()
+    return this.element();
   }
   get DamageTextType() {
-    return this.damagetexttype()
+    return this.damagetexttype();
   }
   get PayloadId() {
-    return this.payloadid()
+    return this.payloadid();
   }
   get Type() {
-    return this.type()
+    return this.type();
   }
   get SubType() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.subtypeLength(), this.subtype, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.subtypeLength(), this.subtype, this);
   }
   get SmashType() {
-    return this.smashtype()
+    return this.smashtype();
   }
   get CureBaseValue() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.curebasevalueLength(), this.curebasevalue, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.curebasevalueLength(), this.curebasevalue, this);
   }
   get RelatedProperty() {
-    return this.relatedproperty()
+    return this.relatedproperty();
   }
   get RateLv() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.ratelvLength(), this.ratelv, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.ratelvLength(), this.ratelv, this);
   }
   get HardnessLv() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.hardnesslvLength(), this.hardnesslv, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.hardnesslvLength(), this.hardnesslv, this);
   }
   get ToughLv() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.toughlvLength(), this.toughlv, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.toughlvLength(), this.toughlv, this);
   }
   get Energy() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.energyLength(), this.energy, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.energyLength(), this.energy, this);
   }
   get SpecialEnergy1() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy1Length(), this.specialenergy1, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy1Length(), this.specialenergy1, this);
   }
   get SpecialEnergy2() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy2Length(), this.specialenergy2, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy2Length(), this.specialenergy2, this);
   }
   get SpecialEnergy3() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy3Length(), this.specialenergy3, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy3Length(), this.specialenergy3, this);
   }
   get SpecialEnergy4() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy4Length(), this.specialenergy4, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy4Length(), this.specialenergy4, this);
   }
   get SpecialEnergy5() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy5Length(), this.specialenergy5, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.specialenergy5Length(), this.specialenergy5, this);
   }
   get ElementPowerType() {
-    return this.elementpowertype()
+    return this.elementpowertype();
   }
   get ElementPower() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.elementpowerLength(), this.elementpower, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.elementpowerLength(), this.elementpower, this);
   }
   get FormulaType() {
-    return this.formulatype()
+    return this.formulatype();
   }
   get FormulaParam1() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam1Length(), this.formulaparam1, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam1Length(), this.formulaparam1, this);
   }
   get FormulaParam2() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam2Length(), this.formulaparam2, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam2Length(), this.formulaparam2, this);
   }
   get FormulaParam3() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam3Length(), this.formulaparam3, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam3Length(), this.formulaparam3, this);
   }
   get FormulaParam4() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam4Length(), this.formulaparam4, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam4Length(), this.formulaparam4, this);
   }
   get FormulaParam5() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam5Length(), this.formulaparam5, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam5Length(), this.formulaparam5, this);
   }
   get FormulaParam6() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam6Length(), this.formulaparam6, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam6Length(), this.formulaparam6, this);
   }
   get FormulaParam7() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam7Length(), this.formulaparam7, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam7Length(), this.formulaparam7, this);
   }
   get FormulaParam8() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam8Length(), this.formulaparam8, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam8Length(), this.formulaparam8, this);
   }
   get FormulaParam9() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam9Length(), this.formulaparam9, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam9Length(), this.formulaparam9, this);
   }
   get FormulaParam10() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam10Length(), this.formulaparam10, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.formulaparam10Length(), this.formulaparam10, this);
   }
   get ImmuneType() {
-    return this.immunetype()
+    return this.immunetype();
   }
   get Percent0() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.percent0Length(), this.percent0, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.percent0Length(), this.percent0, this);
   }
   get Percent1() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.percent1Length(), this.percent1, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.percent1Length(), this.percent1, this);
   }
   get FluctuationLower() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.fluctuationlowerLength(), this.fluctuationlower, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.fluctuationlowerLength(), this.fluctuationlower, this);
   }
   get FluctuationUpper() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.fluctuationupperLength(), this.fluctuationupper, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.fluctuationupperLength(), this.fluctuationupper, this);
   }
   __init(t, r) {
-    return this.z7 = t, this.J7 = r, this
+    this.z7 = t;
+    this.J7 = r;
+    return this;
   }
   static getRootAsDamage(t, r) {
-    return (r || new Damage).__init(t.readInt32(t.position()) + t.position(), t)
+    return (r || new Damage()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readFloat64(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat64(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   calculatetype() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   element() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   damagetexttype() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   payloadid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readFloat64(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat64(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   type() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetSubtypeAt(t) {
-    return this.subtype(t)
+    return this.subtype(t);
   }
   subtype(t) {
     var r = this.J7.__offset(this.z7, 16);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   subtypeLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   subtypeArray() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   smashtype() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   GetCurebasevalueAt(t) {
-    return this.curebasevalue(t)
+    return this.curebasevalue(t);
   }
   curebasevalue(t) {
     var r = this.J7.__offset(this.z7, 20);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   curebasevalueLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   curebasevalueArray() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   relatedproperty() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 7
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 7;
+    }
   }
   GetRatelvAt(t) {
-    return this.ratelv(t)
+    return this.ratelv(t);
   }
   ratelv(t) {
     var r = this.J7.__offset(this.z7, 24);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   ratelvLength() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   ratelvArray() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetHardnesslvAt(t) {
-    return this.hardnesslv(t)
+    return this.hardnesslv(t);
   }
   hardnesslv(t) {
     var r = this.J7.__offset(this.z7, 26);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   hardnesslvLength() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   hardnesslvArray() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetToughlvAt(t) {
-    return this.toughlv(t)
+    return this.toughlv(t);
   }
   toughlv(t) {
     var r = this.J7.__offset(this.z7, 28);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   toughlvLength() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   toughlvArray() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetEnergyAt(t) {
-    return this.energy(t)
+    return this.energy(t);
   }
   energy(t) {
     var r = this.J7.__offset(this.z7, 30);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   energyLength() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   energyArray() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetSpecialenergy1At(t) {
-    return this.specialenergy1(t)
+    return this.specialenergy1(t);
   }
   specialenergy1(t) {
     var r = this.J7.__offset(this.z7, 32);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   specialenergy1Length() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   specialenergy1Array() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetSpecialenergy2At(t) {
-    return this.specialenergy2(t)
+    return this.specialenergy2(t);
   }
   specialenergy2(t) {
     var r = this.J7.__offset(this.z7, 34);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   specialenergy2Length() {
     var t = this.J7.__offset(this.z7, 34);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   specialenergy2Array() {
     var t = this.J7.__offset(this.z7, 34);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetSpecialenergy3At(t) {
-    return this.specialenergy3(t)
+    return this.specialenergy3(t);
   }
   specialenergy3(t) {
     var r = this.J7.__offset(this.z7, 36);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   specialenergy3Length() {
     var t = this.J7.__offset(this.z7, 36);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   specialenergy3Array() {
     var t = this.J7.__offset(this.z7, 36);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetSpecialenergy4At(t) {
-    return this.specialenergy4(t)
+    return this.specialenergy4(t);
   }
   specialenergy4(t) {
     var r = this.J7.__offset(this.z7, 38);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   specialenergy4Length() {
     var t = this.J7.__offset(this.z7, 38);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   specialenergy4Array() {
     var t = this.J7.__offset(this.z7, 38);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetSpecialenergy5At(t) {
-    return this.specialenergy5(t)
+    return this.specialenergy5(t);
   }
   specialenergy5(t) {
     var r = this.J7.__offset(this.z7, 40);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   specialenergy5Length() {
     var t = this.J7.__offset(this.z7, 40);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   specialenergy5Array() {
     var t = this.J7.__offset(this.z7, 40);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   elementpowertype() {
     var t = this.J7.__offset(this.z7, 42);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetElementpowerAt(t) {
-    return this.elementpower(t)
+    return this.elementpower(t);
   }
   elementpower(t) {
     var r = this.J7.__offset(this.z7, 44);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   elementpowerLength() {
     var t = this.J7.__offset(this.z7, 44);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   elementpowerArray() {
     var t = this.J7.__offset(this.z7, 44);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   formulatype() {
     var t = this.J7.__offset(this.z7, 46);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetFormulaparam1At(t) {
-    return this.formulaparam1(t)
+    return this.formulaparam1(t);
   }
   formulaparam1(t) {
     var r = this.J7.__offset(this.z7, 48);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam1Length() {
     var t = this.J7.__offset(this.z7, 48);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam1Array() {
     var t = this.J7.__offset(this.z7, 48);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam2At(t) {
-    return this.formulaparam2(t)
+    return this.formulaparam2(t);
   }
   formulaparam2(t) {
     var r = this.J7.__offset(this.z7, 50);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam2Length() {
     var t = this.J7.__offset(this.z7, 50);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam2Array() {
     var t = this.J7.__offset(this.z7, 50);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam3At(t) {
-    return this.formulaparam3(t)
+    return this.formulaparam3(t);
   }
   formulaparam3(t) {
     var r = this.J7.__offset(this.z7, 52);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam3Length() {
     var t = this.J7.__offset(this.z7, 52);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam3Array() {
     var t = this.J7.__offset(this.z7, 52);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam4At(t) {
-    return this.formulaparam4(t)
+    return this.formulaparam4(t);
   }
   formulaparam4(t) {
     var r = this.J7.__offset(this.z7, 54);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam4Length() {
     var t = this.J7.__offset(this.z7, 54);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam4Array() {
     var t = this.J7.__offset(this.z7, 54);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam5At(t) {
-    return this.formulaparam5(t)
+    return this.formulaparam5(t);
   }
   formulaparam5(t) {
     var r = this.J7.__offset(this.z7, 56);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam5Length() {
     var t = this.J7.__offset(this.z7, 56);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam5Array() {
     var t = this.J7.__offset(this.z7, 56);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam6At(t) {
-    return this.formulaparam6(t)
+    return this.formulaparam6(t);
   }
   formulaparam6(t) {
     var r = this.J7.__offset(this.z7, 58);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam6Length() {
     var t = this.J7.__offset(this.z7, 58);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam6Array() {
     var t = this.J7.__offset(this.z7, 58);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam7At(t) {
-    return this.formulaparam7(t)
+    return this.formulaparam7(t);
   }
   formulaparam7(t) {
     var r = this.J7.__offset(this.z7, 60);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam7Length() {
     var t = this.J7.__offset(this.z7, 60);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam7Array() {
     var t = this.J7.__offset(this.z7, 60);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam8At(t) {
-    return this.formulaparam8(t)
+    return this.formulaparam8(t);
   }
   formulaparam8(t) {
     var r = this.J7.__offset(this.z7, 62);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam8Length() {
     var t = this.J7.__offset(this.z7, 62);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam8Array() {
     var t = this.J7.__offset(this.z7, 62);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam9At(t) {
-    return this.formulaparam9(t)
+    return this.formulaparam9(t);
   }
   formulaparam9(t) {
     var r = this.J7.__offset(this.z7, 64);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam9Length() {
     var t = this.J7.__offset(this.z7, 64);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam9Array() {
     var t = this.J7.__offset(this.z7, 64);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFormulaparam10At(t) {
-    return this.formulaparam10(t)
+    return this.formulaparam10(t);
   }
   formulaparam10(t) {
     var r = this.J7.__offset(this.z7, 66);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   formulaparam10Length() {
     var t = this.J7.__offset(this.z7, 66);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   formulaparam10Array() {
     var t = this.J7.__offset(this.z7, 66);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   immunetype() {
     var t = this.J7.__offset(this.z7, 68);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPercent0At(t) {
-    return this.percent0(t)
+    return this.percent0(t);
   }
   percent0(t) {
     var r = this.J7.__offset(this.z7, 70);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   percent0Length() {
     var t = this.J7.__offset(this.z7, 70);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   percent0Array() {
     var t = this.J7.__offset(this.z7, 70);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetPercent1At(t) {
-    return this.percent1(t)
+    return this.percent1(t);
   }
   percent1(t) {
     var r = this.J7.__offset(this.z7, 72);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   percent1Length() {
     var t = this.J7.__offset(this.z7, 72);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   percent1Array() {
     var t = this.J7.__offset(this.z7, 72);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFluctuationlowerAt(t) {
-    return this.fluctuationlower(t)
+    return this.fluctuationlower(t);
   }
   fluctuationlower(t) {
     var r = this.J7.__offset(this.z7, 74);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   fluctuationlowerLength() {
     var t = this.J7.__offset(this.z7, 74);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   fluctuationlowerArray() {
     var t = this.J7.__offset(this.z7, 74);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetFluctuationupperAt(t) {
-    return this.fluctuationupper(t)
+    return this.fluctuationupper(t);
   }
   fluctuationupper(t) {
     var r = this.J7.__offset(this.z7, 76);
-    return r ? this.J7.readInt32(this.J7.__vector(this.z7 + r) + 4 * t) : 0
+    if (r) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    } else {
+      return 0;
+    }
   }
   fluctuationupperLength() {
     var t = this.J7.__offset(this.z7, 76);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   fluctuationupperArray() {
     var t = this.J7.__offset(this.z7, 76);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
 }
 exports.Damage = Damage;

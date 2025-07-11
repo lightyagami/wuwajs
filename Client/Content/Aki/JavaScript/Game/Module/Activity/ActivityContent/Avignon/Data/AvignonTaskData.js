@@ -1,16 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AvignonTaskData = void 0;
+  value: true
+});
+exports.AvignonTaskData = undefined;
 class AvignonTaskData {
   constructor(s) {
-    this.TaskId = s, this.Status = 1, this.Current = 0, this.Target = 0, this.JumpId = 0, this.TitleTextId = "", this.RewardList = [], this.ReceiveDelegate = void 0
+    this.TaskId = s;
+    this.Status = 1;
+    this.Current = 0;
+    this.Target = 0;
+    this.JumpId = 0;
+    this.TitleTextId = "";
+    this.RewardList = [];
+    this.ReceiveDelegate = undefined;
   }
   get IsFinished() {
-    return 1 !== this.Status
+    return this.Status !== 1;
   }
   get IsTaken() {
-    return 2 === this.Status
+    return this.Status === 2;
   }
 }
 exports.AvignonTaskData = AvignonTaskData;

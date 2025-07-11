@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbColorChangeStrategyOfRGB = void 0;
+  value: true
+});
+exports.FbColorChangeStrategyOfRGB = undefined;
 class FbColorChangeStrategyOfRGB {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.D5h = !1, this.B5h = void 0, this.q5h = !1, this.k5h = void 0, this.G5h = !1, this.O5h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.D5h = false;
+    this.B5h = undefined;
+    this.q5h = false;
+    this.k5h = undefined;
+    this.G5h = false;
+    this.O5h = undefined;
   }
   static Create(t) {
-    if (t) return new FbColorChangeStrategyOfRGB(t)
+    if (t) {
+      return new FbColorChangeStrategyOfRGB(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BlueState() {
-    return this.D5h || (this.D5h = !0, this.B5h = this.FbDataInternal.blueState()), this.B5h
+    if (!this.D5h) {
+      this.D5h = true;
+      this.B5h = this.FbDataInternal.blueState();
+    }
+    return this.B5h;
   }
   get YellowState() {
-    return this.q5h || (this.q5h = !0, this.k5h = this.FbDataInternal.yellowState()), this.k5h
+    if (!this.q5h) {
+      this.q5h = true;
+      this.k5h = this.FbDataInternal.yellowState();
+    }
+    return this.k5h;
   }
   get RedState() {
-    return this.G5h || (this.G5h = !0, this.O5h = this.FbDataInternal.redState()), this.O5h
+    if (!this.G5h) {
+      this.G5h = true;
+      this.O5h = this.FbDataInternal.redState();
+    }
+    return this.O5h;
   }
 }
 exports.FbColorChangeStrategyOfRGB = FbColorChangeStrategyOfRGB;

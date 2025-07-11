@@ -1,89 +1,154 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CameraController = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  ActorSystem_1 = require("../../Core/Actor/ActorSystem"),
-  Info_1 = require("../../Core/Common/Info"),
-  Log_1 = require("../../Core/Common/Log"),
-  Time_1 = require("../../Core/Common/Time"),
-  ControllerBase_1 = require("../../Core/Framework/ControllerBase"),
-  TimerSystem_1 = require("../../Core/Timer/TimerSystem"),
-  MathUtils_1 = require("../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../Common/Event/EventDefine"),
-  EventSystem_1 = require("../Common/Event/EventSystem"),
-  Global_1 = require("../Global"),
-  GlobalData_1 = require("../GlobalData"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  CameraParams_1 = require("./CameraParams"),
-  CameraUtility_1 = require("./CameraUtility"),
-  SECOND_TO_MILLISECOND = 1e3,
-  CONSTRAIN_ASPECT_RATIO = 1.76,
-  constrainAspectRatioGameplayTag = 1831918996;
+  value: true
+});
+exports.CameraController = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const ActorSystem_1 = require("../../Core/Actor/ActorSystem");
+const Info_1 = require("../../Core/Common/Info");
+const Log_1 = require("../../Core/Common/Log");
+const Time_1 = require("../../Core/Common/Time");
+const ControllerBase_1 = require("../../Core/Framework/ControllerBase");
+const TimerSystem_1 = require("../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../Common/Event/EventDefine");
+const EventSystem_1 = require("../Common/Event/EventSystem");
+const Global_1 = require("../Global");
+const GlobalData_1 = require("../GlobalData");
+const ModelManager_1 = require("../Manager/ModelManager");
+const CameraParams_1 = require("./CameraParams");
+const CameraUtility_1 = require("./CameraUtility");
+const SECOND_TO_MILLISECOND = 1000;
+const CONSTRAIN_ASPECT_RATIO = 1.76;
+const constrainAspectRatioGameplayTag = 1831918996;
 class CameraController extends ControllerBase_1.ControllerBase {
   static get Model() {
-    return ModelManager_1.ModelManager.CameraModel
+    return ModelManager_1.ModelManager.CameraModel;
   }
   static get FightCamera() {
-    return this.Model.FightCamera
+    return this.Model.FightCamera;
   }
   static get SequenceCamera() {
-    return this.Model.SequenceCamera
+    return this.Model.SequenceCamera;
   }
   static get WidgetCamera() {
-    return this.Model.WidgetCamera
+    return this.Model.WidgetCamera;
   }
   static get SceneCamera() {
-    return this.Model.SceneCamera
+    return this.Model.SceneCamera;
   }
   static get OrbitalCamera() {
-    return this.Model.OrbitalCamera
+    return this.Model.OrbitalCamera;
   }
   static get FreeCamera() {
-    return this.Model.FreeCamera
+    return this.Model.FreeCamera;
   }
   static get CameraLocation() {
-    return this.Model.CameraLocation
+    return this.Model.CameraLocation;
   }
   static get CameraRotator() {
-    return this.Model.CameraRotator
+    return this.Model.CameraRotator;
   }
   static get CameraDitherStartHideDistance() {
-    return this.Model.CameraDitherStartHideDistance
+    return this.Model.CameraDitherStartHideDistance;
   }
   static OnInit() {
-    return EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, CameraController.xie), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BeforeLoadMap, CameraController.SMe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AfterLoadMap, CameraController.yMe), super.OnInit()
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, CameraController.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BeforeLoadMap, CameraController.SMe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AfterLoadMap, CameraController.yMe);
+    return super.OnInit();
   }
   static OnPossess(e) {
-    this.FightCamera.LogicComponent.SetPawn(e), this.SequenceCamera.PlayerComponent.SetPawn(e)
+    this.FightCamera.LogicComponent.SetPawn(e);
+    this.SequenceCamera.PlayerComponent.SetPawn(e);
   }
   static SetViewTarget(e, t, a = 0, r = 0, i = 0, s, o) {
     var n;
-    e?.IsValid() ? (n = this.GetPlayerController()) && (n.bShouldPerformFullTickWhenPaused = !0, this.Model.CurrentCameraActor = e, Log_1.Log.CheckInfo() && Log_1.Log.Info("Battle", 33, "绑定相机 SetViewTarget", ["name", e.GetName()], ["blendTime", a], ["reason", t]), n.SetViewTargetWithBlend(e, CameraUtility_1.CameraUtility.CharacterMovementBaseIsMoving() ? 0 : a, r, i, s ?? !1, o ?? !1), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CameraViewTargetChanged, CameraUtility_1.CameraUtility.CharacterMovementBaseIsMoving() ? 0 : a)) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Camera", 6, "Camera not valid")
+    if (e?.IsValid()) {
+      if (n = this.GetPlayerController()) {
+        n.bShouldPerformFullTickWhenPaused = true;
+        this.Model.CurrentCameraActor = e;
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Camera", 33, "绑定相机 SetViewTarget", ["name", e.GetName()], ["blendTime", a], ["reason", t]);
+        }
+        n.SetViewTargetWithBlend(e, CameraUtility_1.CameraUtility.CharacterMovementBaseIsMoving() ? 0 : a, r, i, s ?? false, o ?? false);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CameraViewTargetChanged, CameraUtility_1.CameraUtility.CharacterMovementBaseIsMoving() ? 0 : a);
+      }
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Camera", 6, "Camera not valid");
+    }
   }
   static ResetViewTarget(e = 0, t = 0, a = 0) {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 33, "绑定相机 ResetViewTarget", ["name", this.Model.CurrentCameraActor.GetName()]), this.GetPlayerController().SetViewTargetWithBlend(this.Model.CurrentCameraActor, e, t, a, !0, !0)
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 33, "绑定相机 ResetViewTarget", ["name", this.Model.CurrentCameraActor.GetName()]);
+    }
+    this.GetPlayerController().SetViewTargetWithBlend(this.Model.CurrentCameraActor, e, t, a, true, true);
   }
   static OnTick(e) {
-    this.Model.CurrentCameraActor?.IsValid() && (this.Model.CameraLocation.FromUeVector(this.Model.CurrentCameraActor.D_K2_GetActorLocation()), this.Model.CameraRotator.DeepCopy(this.Model.CurrentCameraActor.K2_GetActorRotation()), this.Model.CameraTransform = this.Model.CurrentCameraActor.D_GetTransform(), this.UpdateCameraDitherRadius())
+    if (this.Model.CurrentCameraActor?.IsValid()) {
+      this.Model.CameraLocation.FromUeVector(this.Model.CurrentCameraActor.D_K2_GetActorLocation());
+      this.Model.CameraRotator.DeepCopy(this.Model.CurrentCameraActor.K2_GetActorRotation());
+      this.Model.CameraTransform = this.Model.CurrentCameraActor.D_GetTransform();
+      this.UpdateCameraDitherRadius();
+    }
   }
-  static EnterCameraMode(e, t = 0, a = 0, r = 0, i = () => {}, s = !1) {
-    return 0 === e ? (Log_1.Log.CheckError() && Log_1.Log.Error("Camera", 14, "战斗镜头不应主动切换，应由其他镜头退出时被动切换"), !1) : (this.Model.EnableMode(e), this.Model.IsInHigherMode(e) ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Camera", 6, "意图进入较低优先级的镜头", ["CurrentMode", this.Model.CameraMode], ["NewMode", e]), s && i && i(), !1) : this.uhe(e, t, a, r, i))
+  static EnterCameraMode(e, t = 0, a = 0, r = 0, i = () => {}, s = false) {
+    if (e === 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Camera", 14, "战斗镜头不应主动切换，应由其他镜头退出时被动切换");
+      }
+      return false;
+    } else {
+      this.Model.EnableMode(e);
+      if (this.Model.IsInHigherMode(e)) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Camera", 6, "意图进入较低优先级的镜头", ["CurrentMode", this.Model.CameraMode], ["NewMode", e]);
+        }
+        if (s && i) {
+          i();
+        }
+        return false;
+      } else {
+        return this.uhe(e, t, a, r, i);
+      }
+    }
   }
   static ExitCameraMode(e, t = 0, a = 0, r = 0, i = () => {}) {
-    return 0 === e ? (Log_1.Log.CheckError() && Log_1.Log.Error("Camera", 14, "战斗镜头不应主动切换，应由其他镜头退出时被动切换"), !1) : (this.Model.DisableMode(e), this.uhe(this.Model.GetNextMode(), t, a, r, i))
+    if (e === 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Camera", 14, "战斗镜头不应主动切换，应由其他镜头退出时被动切换");
+      }
+      return false;
+    } else {
+      this.Model.DisableMode(e);
+      return this.uhe(this.Model.GetNextMode(), t, a, r, i);
+    }
   }
   static GetCameraRotation(e) {
     var t = this.FightCamera?.LogicComponent;
-    return 0 === this.Model.CameraMode && !CameraController?.IsInCameraModeBlending && t ? e.FromUeRotator(t.CameraRotation) : e.FromUeRotator(Global_1.Global.CharacterCameraManager.GetCameraRotation()), e
+    if (this.Model.CameraMode === 0 && !CameraController?.IsInCameraModeBlending && t) {
+      e.FromUeRotator(t.CameraRotation);
+    } else {
+      e.FromUeRotator(Global_1.Global.CharacterCameraManager.GetCameraRotation());
+    }
+    return e;
   }
   static uhe(e, t = 0, a = 0, r = 0, i = () => {}) {
     var s = this.Model;
-    if (s.CameraMode === e) return !1;
+    if (s.CameraMode === e) {
+      return false;
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Camera", 78, "CameraManager.SwitchCameraMode:切换镜头模式", ["mode", e]);
+    }
     s.SetCameraMode(e);
-    let o = void 0;
-    switch (1 !== e && 3 !== e || Global_1.Global.CharacterCameraManager.StopAllCameraShakes(), e) {
+    let o = undefined;
+    if (e === 1 || e === 3) {
+      Global_1.Global.CharacterCameraManager.StopAllCameraShakes();
+    }
+    switch (e) {
       case 0:
         o = this.FightCamera.DisplayComponent.CameraActor;
         break;
@@ -103,119 +168,191 @@ class CameraController extends ControllerBase_1.ControllerBase {
         o = this.FreeCamera.DisplayComponent.CameraActor;
         break;
       default:
-        return Log_1.Log.CheckError() && Log_1.Log.Error("Camera", 57, "CameraManager.SwitchCameraMode: 错误的镜头模式 ", ["mode", e]), !1
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Camera", 57, "CameraManager.SwitchCameraMode: 错误的镜头模式 ", ["mode", e]);
+        }
+        return false;
     }
-    return this.SetViewTarget(o, "SwitchMode", t, a, r, !0, !0), 0 < t ? (this.IsInCameraModeBlending = !0, TimerSystem_1.TimerSystem.Delay(() => {
-      this.IsInCameraModeBlending = !1, i && i()
-    }, t * SECOND_TO_MILLISECOND)) : (this.IsInCameraModeBlending = !1, i && i()), !0
+    s = t * ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation;
+    this.SetViewTarget(o, "SwitchMode", s, a, r, true, true);
+    if (s > 0) {
+      this.IsInCameraModeBlending = true;
+      TimerSystem_1.TimerSystem.Delay(() => {
+        this.IsInCameraModeBlending = false;
+        if (i) {
+          i();
+        }
+      }, s * SECOND_TO_MILLISECOND);
+    } else {
+      this.IsInCameraModeBlending = false;
+      if (i) {
+        i();
+      }
+    }
+    return true;
   }
   static RefreshSequenceCamera() {
-    1 === this.Model.CameraMode && this.SetViewTarget(this.SequenceCamera.DisplayComponent.CineCamera, "RefreshMode")
+    if (this.Model.CameraMode === 1) {
+      this.SetViewTarget(this.SequenceCamera.DisplayComponent.CineCamera, "RefreshMode");
+    }
   }
-  static EnterDialogueMode(e, t = !1, a = void 0, r = void 0) {
-    this.FightCamera.LogicComponent.EnterSequenceDialogue(e, t, a, r)
+  static EnterDialogueMode(e, t = false, a = undefined, r = undefined) {
+    this.FightCamera.LogicComponent.EnterSequenceDialogue(e, t, a, r);
   }
   static ExitDialogMode() {
-    this.FightCamera.LogicComponent.ExitSequenceDialogue()
+    this.FightCamera.LogicComponent.ExitSequenceDialogue();
   }
   static EnterCameraExplore(e, t, a, r, i, s, o) {
-    this.FightCamera.LogicComponent.EnterCameraExplore(e, t, a, r, i, s, o)
+    this.FightCamera.LogicComponent.EnterCameraExplore(e, t, a, r, i, s, o);
   }
   static ExitCameraExplore(e) {
-    this.FightCamera.LogicComponent.ExitCameraExplore(e)
+    this.FightCamera.LogicComponent.ExitCameraExplore(e);
   }
   static SpawnCameraActor() {
     var e = this.SpawnActor(UE.CameraActor.StaticClass());
-    return e.CameraComponent.bConstrainAspectRatio = !1, e
+    e.CameraComponent.bConstrainAspectRatio = false;
+    return e;
   }
   static SetInputEnable(e, t) {
-    this.FightCamera.LogicComponent.CameraInputController.SetInputEnable(e, t)
+    this.FightCamera.LogicComponent.CameraInputController.SetInputEnable(e, t);
   }
   static SpawnCineCamera() {
-    return this.SpawnActor(UE.BP_CineCamera_C.StaticClass())
+    return this.SpawnActor(UE.BP_CineCamera_C.StaticClass());
   }
   static SpawnActor(e) {
-    return ActorSystem_1.ActorSystem.Get(e, MathUtils_1.MathUtils.DefaultTransformDouble)
+    return ActorSystem_1.ActorSystem.Get(e, MathUtils_1.MathUtils.DefaultTransformDouble);
   }
   static GetCharacter() {
-    return Global_1.Global.BaseCharacter
+    return Global_1.Global.BaseCharacter;
   }
   static GetPlayerController() {
-    return Global_1.Global.CharacterController
+    return Global_1.Global.CharacterController;
   }
-  static GetCameraConfigs(e = void 0) {
+  static GetCameraConfigs(e = undefined) {
     var t = (0, puerts_1.$ref)(UE.NewArray(UE.SCamera_Setting));
-    return UE.BPL_CameraUtility_C.DtGetCameraConfigs(t, e, GlobalData_1.GlobalData.World), (0, puerts_1.$unref)(t)
+    UE.BPL_CameraUtility_C.DtGetCameraConfigs(t, e, GlobalData_1.GlobalData.World);
+    return (0, puerts_1.$unref)(t);
   }
-  static GetCameraConfigList(e = void 0) {
+  static GetCameraConfigList(e = undefined) {
     var t = (0, puerts_1.$ref)(UE.NewArray(UE.SCameraConfig));
-    return UE.BPL_CameraUtility_C.DtGetCameraConfigList(t, e, GlobalData_1.GlobalData.World), (0, puerts_1.$unref)(t)
+    UE.BPL_CameraUtility_C.DtGetCameraConfigList(t, e, GlobalData_1.GlobalData.World);
+    return (0, puerts_1.$unref)(t);
   }
   static GetPlayerCameraManager() {
-    return Global_1.Global.CharacterCameraManager
+    return Global_1.Global.CharacterCameraManager;
   }
   static SetTimeDilation(e) {
-    ModelManager_1.ModelManager.CameraModel.FightCamera.SetTimeDilation(e), ModelManager_1.ModelManager.CameraModel.SequenceCamera.SetTimeDilation(e), ModelManager_1.ModelManager.CameraModel.WidgetCamera.SetTimeDilation(e), ModelManager_1.ModelManager.CameraModel.OrbitalCamera.SetTimeDilation(e), ModelManager_1.ModelManager.CameraModel.FreeCamera?.SetTimeDilation(e), Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = e
+    ModelManager_1.ModelManager.CameraModel.FightCamera.SetTimeDilation(e);
+    ModelManager_1.ModelManager.CameraModel.SequenceCamera.SetTimeDilation(e);
+    ModelManager_1.ModelManager.CameraModel.WidgetCamera.SetTimeDilation(e);
+    ModelManager_1.ModelManager.CameraModel.OrbitalCamera.SetTimeDilation(e);
+    ModelManager_1.ModelManager.CameraModel.FreeCamera?.SetTimeDilation(e);
+    Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = e;
   }
   static PlayWorldCameraShake(e, t, a, r, i, s) {
-    this.IsSettlementCamera() || this.IsSequenceCameraInCinematic() || (0 < CameraController.Model.ShakeModify && UE.GameplayStatics.D_PlayWorldCameraShakeWithModifier(GlobalData_1.GlobalData.World, e, t, a, r, i, s, CameraController.Model.ShakeModify), this.PlayForceFeedbackFromCameraShake(e))
+    if (!this.IsSettlementCamera() && !this.IsSequenceCameraInCinematic()) {
+      if (CameraController.Model.ShakeModify > 0) {
+        UE.GameplayStatics.D_PlayWorldCameraShakeWithModifier(GlobalData_1.GlobalData.World, e, t, a, r, i, s, CameraController.Model.ShakeModify, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+      }
+      this.PlayForceFeedbackFromCameraShake(e);
+    }
   }
-  static PlayCameraShake(e, t = void 0, a = void 0, r = void 0, i = !1) {
-    !Global_1.Global.CharacterCameraManager?.IsValid() || this.IsSettlementCamera() || this.IsSequenceCameraInCinematic() || (Global_1.Global.CharacterCameraManager.StartCameraShake(e, t, a, r), i && this.PlayForceFeedbackFromCameraShake(e))
+  static PlayCameraShake(e, t = undefined, a = undefined, r = undefined, i = false) {
+    if (!!Global_1.Global.CharacterCameraManager?.IsValid() && !this.IsSettlementCamera() && !this.IsSequenceCameraInCinematic()) {
+      Global_1.Global.CharacterCameraManager.StartCameraShake(e, t, a, r, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+      if (i) {
+        this.PlayForceFeedbackFromCameraShake(e);
+      }
+    }
   }
   static PlayForceFeedbackFromCameraShake(e) {
-    Info_1.Info.IsInGamepad() && e?.IsChildOf(UE.BP_CameraShakeAndForceFeedback_C.StaticClass()) && (e = UE.KuroStaticLibrary.GetDefaultObject(e).ForceFeedbackEffect) && Global_1.Global.CharacterController && Global_1.Global.CharacterController.PlayKuroForceFeedback(e, void 0, !1, !1, !1)
+    if (Info_1.Info.IsInGamepad() && e?.IsChildOf(UE.BP_CameraShakeAndForceFeedback_C.StaticClass()) && (e = UE.KuroStaticLibrary.GetDefaultObject(e).ForceFeedbackEffect) && Global_1.Global.CharacterController) {
+      Global_1.Global.CharacterController.PlayKuroForceFeedback(e, undefined, false, false, false);
+    }
   }
   static LoadCharacterCameraConfig(e) {
-    this.FightCamera.LogicComponent.CameraConfigController.LoadCharacterConfig(e)
+    this.FightCamera.LogicComponent.CameraConfigController.LoadCharacterConfig(e);
   }
   static UnloadCharacterCameraConfig(e) {
-    this.FightCamera.LogicComponent.CameraConfigController.UnloadCharacterConfig(e)
+    this.FightCamera.LogicComponent.CameraConfigController.UnloadCharacterConfig(e);
   }
   static ReturnLockOnCameraMode(t = 0, a = 0, r = 0, i = () => {}) {
-    if (0 !== this.Model.CameraMode) {
+    if (this.Model.CameraMode !== 0) {
       let e = this.Model.CameraMode;
-      for (; 0 !== e;) this.Model.DisableMode(e), e = this.Model.GetNextMode();
-      this.uhe(e, t, a, r, i)
+      while (e !== 0) {
+        this.Model.DisableMode(e);
+        e = this.Model.GetNextMode();
+      }
+      this.uhe(e, t, a, r, i);
     }
   }
   static IsSequenceCameraInCinematic() {
     var e = CameraController.SequenceCamera?.GetComponent(10);
-    return !!e?.Valid && e.GetIsInCinematic()
+    return !!e?.Valid && e.GetIsInCinematic();
   }
   static UpdateCameraDitherRadius() {
     if (!(Time_1.Time.Now < this.Model.NextFindStartHideDistanceTime)) {
       this.Model.NextFindStartHideDistanceTime = Time_1.Time.Now + CameraParams_1.FIND_DITHER_START_HIDE_DISTANCE_PERIOD;
-      var e, t = [];
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(CameraParams_1.DITHER_START_HIDE_DISTANCE_THRESHOLD, 62, t), this.Model.CameraDitherStartHideDistance = this.FightCamera.LogicComponent.StartHideDistance;
-      for (const a of t) a.Entity?.Active && (!(e = a.Entity.GetComponent(3)) || e.StartHideDistance <= this.Model.CameraDitherStartHideDistance || (this.Model.CameraDitherStartHideDistance = e.StartHideDistance))
+      var e;
+      var t = [];
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(CameraParams_1.DITHER_START_HIDE_DISTANCE_THRESHOLD, 62, t);
+      this.Model.CameraDitherStartHideDistance = this.FightCamera.LogicComponent.StartHideDistance;
+      for (const a of t) {
+        if (a.Entity?.Active) {
+          if (!!(e = a.Entity.GetComponent(3)) && !(e.StartHideDistance <= this.Model.CameraDitherStartHideDistance)) {
+            this.Model.CameraDitherStartHideDistance = e.StartHideDistance;
+          }
+        }
+      }
     }
   }
   static IsSettlementCamera() {
-    return !!this.FightCamera?.LogicComponent?.SettlementCamera && this.FightCamera.LogicComponent.SettlementCamera.IsPlayingSettlementCamera()
+    return !!this.FightCamera?.LogicComponent?.SettlementCamera && this.FightCamera.LogicComponent.SettlementCamera.IsPlayingSettlementCamera();
   }
   static StopAllCameraShakes() {
-    Global_1.Global.CharacterCameraManager.StopAllCameraShakes()
+    Global_1.Global.CharacterCameraManager.StopAllCameraShakes();
   }
   static SetFirstPersonEnable(e) {
-    this.Model.FirstPersonEnabled = e
+    this.Model.FirstPersonEnabled = e;
   }
   static uml(e) {
-    var t, a, r = this.FightCamera?.LogicComponent?.CameraActor;
-    r?.IsValid() && Global_1.Global.CharacterController && (r.CameraComponent.bConstrainAspectRatio === e || (t = (0, puerts_1.$ref)(0), a = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController.GetViewportSize(t, a), (0, puerts_1.$unref)(t) / (0, puerts_1.$unref)(a) >= CONSTRAIN_ASPECT_RATIO) || (r.CameraComponent.bConstrainAspectRatio = e))
+    var t;
+    var a;
+    var r = this.FightCamera?.LogicComponent?.CameraActor;
+    if (r?.IsValid() && Global_1.Global.CharacterController) {
+      if (r.CameraComponent.bConstrainAspectRatio !== e && !(t = (0, puerts_1.$ref)(0), a = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController.GetViewportSize(t, a), (0, puerts_1.$unref)(t) / (0, puerts_1.$unref)(a) >= CONSTRAIN_ASPECT_RATIO)) {
+        r.CameraComponent.bConstrainAspectRatio = e;
+      }
+    }
   }
   static OnClear() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BeforeLoadMap, CameraController.SMe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AfterLoadMap, CameraController.yMe), super.OnClear()
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BeforeLoadMap, CameraController.SMe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AfterLoadMap, CameraController.yMe);
+    return super.OnClear();
   }
-}(exports.CameraController = CameraController).IsInCameraModeBlending = !1, CameraController.xie = (e, t) => {
-  t?.Valid && (t = t.Entity.GetComponent(205))?.Valid && t.RemoveTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml), e?.Valid && (t = e.Entity.GetComponent(205))?.Valid && (t.AddTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml), CameraController.uml(t.HasTag(constrainAspectRatioGameplayTag)))
-}, CameraController.cml = (e, t) => {
-  CameraController.uml(t)
-}, CameraController.SMe = () => {
-  var e = CameraController.GetPlayerCameraManager()?.AnimCameraActor;
-  e?.IsValid() && ModelManager_1.ModelManager.SeamlessTravelModel.AddSeamlessTravelActor(e)
-}, CameraController.yMe = () => {
-  var e = CameraController.GetPlayerCameraManager()?.AnimCameraActor;
-  e?.IsValid() && ModelManager_1.ModelManager.SeamlessTravelModel.RemoveSeamlessTravelActor(e)
+}
+(exports.CameraController = CameraController).IsInCameraModeBlending = false;
+CameraController.xie = (e, t) => {
+  if (t?.Valid && (t = t.Entity.GetComponent(205))?.Valid) {
+    t.RemoveTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
+  }
+  if (e?.Valid && (t = e.Entity.GetComponent(205))?.Valid) {
+    t.AddTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
+    CameraController.uml(t.HasTag(constrainAspectRatioGameplayTag));
+  }
 };
-//# sourceMappingURL=CameraController.js.map
+CameraController.cml = (e, t) => {
+  CameraController.uml(t);
+};
+CameraController.SMe = () => {
+  var e = CameraController.GetPlayerCameraManager()?.AnimCameraActor;
+  if (e?.IsValid()) {
+    ModelManager_1.ModelManager.SeamlessTravelModel.AddSeamlessTravelActor(e);
+  }
+};
+CameraController.yMe = () => {
+  var e = CameraController.GetPlayerCameraManager()?.AnimCameraActor;
+  if (e?.IsValid()) {
+    ModelManager_1.ModelManager.SeamlessTravelModel.RemoveSeamlessTravelActor(e);
+  }
+}; //# sourceMappingURL=CameraController.js.map

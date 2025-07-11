@@ -1,72 +1,132 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEntityStateComponent = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbLockConfig_1 = require("./FbLockConfig"),
-  FbStateChangeBehavior_1 = require("./FbStateChangeBehavior"),
-  FbStateConfig_1 = require("./FbStateConfig"),
-  FbConditionGroup_1 = require("../Condition/FbConditionGroup");
+  value: true
+});
+exports.FbEntityStateComponent = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbLockConfig_1 = require("./FbLockConfig");
+const FbStateChangeBehavior_1 = require("./FbStateChangeBehavior");
+const FbStateConfig_1 = require("./FbStateConfig");
+const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbEntityStateComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.u_h = !1, this.f8o = void 0, this.Bch = !1, this.Cbo = void 0, this.DUh = !1, this.BUh = void 0, this.qUh = !1, this.kUh = void 0, this.HG_ = !1, this.$G_ = !1, this.GUh = !1, this.OUh = void 0, this.FUh = !1, this.NUh = void 0, this.VUh = !1, this.jUh = void 0, this.HUh = !1, this.WUh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Bch = false;
+    this.Cbo = undefined;
+    this.DUh = false;
+    this.BUh = undefined;
+    this.qUh = false;
+    this.kUh = undefined;
+    this.HG_ = false;
+    this.$G_ = false;
+    this.GUh = false;
+    this.OUh = undefined;
+    this.FUh = false;
+    this.NUh = undefined;
+    this.VUh = false;
+    this.jUh = undefined;
+    this.HUh = false;
+    this.WUh = undefined;
   }
   static Create(t) {
-    if (t) return new FbEntityStateComponent(t)
+    if (t) {
+      return new FbEntityStateComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
   get StateChangeCondition() {
-    return this.DUh || (this.DUh = !0, this.BUh = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.stateChangeCondition())), this.BUh
+    if (!this.DUh) {
+      this.DUh = true;
+      this.BUh = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.stateChangeCondition());
+    }
+    return this.BUh;
   }
   get StateChangeBehaviors() {
     if (!this.qUh) {
-      this.qUh = !0, this.kUh = new Array;
+      this.qUh = true;
+      this.kUh = new Array();
       var i = this.FbDataInternal.stateChangeBehaviorsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.stateChangeBehaviors(t, new fb_component_1.StateChangeBehavior);
-          this.kUh.push(FbStateChangeBehavior_1.FbStateChangeBehavior.Create(s))
+          var s = this.FbDataInternal.stateChangeBehaviors(t, new fb_component_1.StateChangeBehavior());
+          this.kUh.push(FbStateChangeBehavior_1.FbStateChangeBehavior.Create(s));
         }
+      }
     }
-    return this.kUh
+    return this.kUh;
   }
   get InstantActionsOnStateChange() {
-    return this.HG_ || (this.HG_ = !0, this.$G_ = this.FbDataInternal.instantActionsOnStateChange()), this.$G_
+    if (!this.HG_) {
+      this.HG_ = true;
+      this.$G_ = this.FbDataInternal.instantActionsOnStateChange();
+    }
+    return this.$G_;
   }
   get LockConfig() {
-    return this.GUh || (this.GUh = !0, this.OUh = FbLockConfig_1.FbLockConfig.Create(this.FbDataInternal.lockConfig())), this.OUh
+    if (!this.GUh) {
+      this.GUh = true;
+      this.OUh = FbLockConfig_1.FbLockConfig.Create(this.FbDataInternal.lockConfig());
+    }
+    return this.OUh;
   }
   get StateConfigs() {
     if (!this.FUh) {
-      this.FUh = !0, this.NUh = new Array;
+      this.FUh = true;
+      this.NUh = new Array();
       var i = this.FbDataInternal.stateConfigsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.stateConfigs(t, new fb_component_1.StateConfig);
-          this.NUh.push(FbStateConfig_1.FbStateConfig.Create(s))
+          var s = this.FbDataInternal.stateConfigs(t, new fb_component_1.StateConfig());
+          this.NUh.push(FbStateConfig_1.FbStateConfig.Create(s));
         }
+      }
     }
-    return this.NUh
+    return this.NUh;
   }
   get CycleStates() {
     if (!this.VUh) {
-      this.VUh = !0, this.jUh = new Array;
+      this.VUh = true;
+      this.jUh = new Array();
       var i = this.FbDataInternal.cycleStatesLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.jUh.push(this.FbDataInternal.cycleStates(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.jUh.push(this.FbDataInternal.cycleStates(t));
+        }
+      }
     }
-    return this.jUh
+    return this.jUh;
   }
   get PrefabPerformanceType() {
-    return this.HUh || (this.HUh = !0, this.WUh = this.FbDataInternal.prefabPerformanceType()), this.WUh
+    if (!this.HUh) {
+      this.HUh = true;
+      this.WUh = this.FbDataInternal.prefabPerformanceType();
+    }
+    return this.WUh;
   }
 }
 exports.FbEntityStateComponent = FbEntityStateComponent;

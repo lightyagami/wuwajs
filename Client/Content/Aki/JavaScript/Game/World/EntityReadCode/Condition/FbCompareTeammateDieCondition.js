@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompareTeammateDieCondition = void 0;
+  value: true
+});
+exports.FbCompareTeammateDieCondition = undefined;
 class FbCompareTeammateDieCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._ch = !1, this.cch = void 0, this.EJh = !1, this.IJh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._ch = false;
+    this.cch = undefined;
+    this.EJh = false;
+    this.IJh = 0;
   }
   static Create(t) {
-    if (t) return new FbCompareTeammateDieCondition(t)
+    if (t) {
+      return new FbCompareTeammateDieCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get DieCount() {
-    return this.EJh || (this.EJh = !0, this.IJh = this.FbDataInternal.dieCount()), this.IJh
+    if (!this.EJh) {
+      this.EJh = true;
+      this.IJh = this.FbDataInternal.dieCount();
+    }
+    return this.IJh;
   }
 }
 exports.FbCompareTeammateDieCondition = FbCompareTeammateDieCondition;

@@ -1,45 +1,98 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.StateMachineCommon = void 0;
+  value: true
+});
+exports.StateMachineCommon = undefined;
 const Log_1 = require("../../Common/Log");
 class StateMachineCommon {
-  constructor(t, i, s = void 0) {
-    this.Parent = s, this.FirstState = void 0, this.kh = new Map, this.Gz = !1, this.Nz = !1, this.CurrentNode = void 0, this.Owner = t, this.State = i
+  constructor(t, i, s = undefined) {
+    this.Parent = s;
+    this.FirstState = undefined;
+    this.kh = new Map();
+    this.Gz = false;
+    this.Nz = false;
+    this.CurrentNode = undefined;
+    this.Owner = t;
+    this.State = i;
   }
   get HasSubNode() {
-    return this.Gz
+    return this.Gz;
   }
   get Activated() {
-    return this.Nz
+    return this.Nz;
   }
   get CurrentLeafNode() {
-    return this.CurrentNode ? this.CurrentNode.CurrentLeafNode : this
+    if (this.CurrentNode) {
+      return this.CurrentNode.CurrentLeafNode;
+    } else {
+      return this;
+    }
   }
   get Root() {
-    return this.Parent ? this.Parent.Root : this
+    if (this.Parent) {
+      return this.Parent.Root;
+    } else {
+      return this;
+    }
   }
   Tick(t) {
-    this.CurrentNode && this.CurrentNode.Tick(t), this.OnTick(t)
+    if (this.CurrentNode) {
+      this.CurrentNode.Tick(t);
+    }
+    this.OnTick(t);
   }
   Start(...t) {
-    this.Parent && (this.Parent.Start(), this.Parent.CurrentNode = this), this.Enter(void 0, !0, !1, ...t)
+    if (this.Parent) {
+      this.Parent.Start();
+      this.Parent.CurrentNode = this;
+    }
+    this.Enter(undefined, true, false, ...t);
   }
-  Enter(t, i = !0, s = !0, ...h) {
-    this.Nz = !0, this.OnActivate(t, ...h), i && this.OnEnter(t, ...h), s && this.Gz && this.FirstState && (this.CurrentNode = this.GetState(this.FirstState), this.CurrentNode ? (this.CurrentNode.Enter(void 0, i, !0, ...h), this.OnSwitchState && this.OnSwitchState(void 0, this.CurrentNode)) : Log_1.Log.CheckError() && Log_1.Log.Error("StateMachine", 14, "状态机切换失败，子节点查找失败"))
+  Enter(t, i = true, s = true, ...h) {
+    this.Nz = true;
+    this.OnActivate(t, ...h);
+    if (i) {
+      this.OnEnter(t, ...h);
+    }
+    if (s && this.Gz && this.FirstState) {
+      this.CurrentNode = this.GetState(this.FirstState);
+      if (this.CurrentNode) {
+        this.CurrentNode.Enter(undefined, i, true, ...h);
+        if (this.OnSwitchState) {
+          this.OnSwitchState(undefined, this.CurrentNode);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("StateMachine", 14, "状态机切换失败，子节点查找失败");
+      }
+    }
   }
   Oz() {
-    this.OnReEnter()
+    this.OnReEnter();
   }
-  Exit(t = void 0, i = !0, s = !0, ...h) {
-    s && this.CurrentNode && (this.OnSwitchState && this.OnSwitchState(this.CurrentNode, void 0), this.CurrentNode.Exit(t, i, s, ...h)), this.OnDeactivate(t, ...h), this.OnExit(t, ...h), this.Nz = !1, this.CurrentNode = void 0
+  Exit(t = undefined, i = true, s = true, ...h) {
+    if (s && this.CurrentNode) {
+      if (this.OnSwitchState) {
+        this.OnSwitchState(this.CurrentNode, undefined);
+      }
+      this.CurrentNode.Exit(t, i, s, ...h);
+    }
+    this.OnDeactivate(t, ...h);
+    this.OnExit(t, ...h);
+    this.Nz = false;
+    this.CurrentNode = undefined;
   }
   Clear() {
-    for (const t of this.kh.values()) t.Clear();
-    this.OnClear(), this.kh.clear(), this.Parent = void 0, this.FirstState = void 0
+    for (const t of this.kh.values()) {
+      t.Clear();
+    }
+    this.OnClear();
+    this.kh.clear();
+    this.Parent = undefined;
+    this.FirstState = undefined;
   }
   CanReEnter() {
-    return !1
+    return false;
   }
   OnTick(t) {}
   OnEnter(t) {}
@@ -51,19 +104,61 @@ class StateMachineCommon {
   OnSwitchState(t, i) {}
   GetState(t) {
     var i = this.kh.get(t);
-    return i || Log_1.Log.CheckError() && Log_1.Log.Error("StateMachine", 11, "状态不存在", ["state", t]), i
+    if (!i) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("StateMachine", 11, "状态不存在", ["state", t]);
+      }
+    }
+    return i;
   }
   AddState(t, i) {
-    this.FirstState || (this.FirstState = t);
+    this.FirstState ||= t;
     i = new i(this.Owner, t, this);
-    this.kh.has(t) ? Log_1.Log.CheckError() && Log_1.Log.Error("StateMachine", 14, "状态重复添加", ["state", t]) : this.kh.set(t, i), this.Gz = !0
+    if (this.kh.has(t)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("StateMachine", 14, "状态重复添加", ["state", t]);
+      }
+    } else {
+      this.kh.set(t, i);
+    }
+    this.Gz = true;
   }
   AddStateInstance(t, i) {
-    this.FirstState || (this.FirstState = t), this.kh.has(t) ? Log_1.Log.CheckError() && Log_1.Log.Error("StateMachine", 14, "状态重复添加", ["state", t]) : this.kh.set(t, i), this.Gz = !0
+    this.FirstState ||= t;
+    if (this.kh.has(t)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("StateMachine", 14, "状态重复添加", ["state", t]);
+      }
+    } else {
+      this.kh.set(t, i);
+    }
+    this.Gz = true;
   }
-  Switch(t, i = !0, s = !0, ...h) {
-    var e, o;
-    return void 0 === this.CurrentNode ? (Log_1.Log.CheckError() && Log_1.Log.Error("StateMachine", 14, "状态机没有启动", ["state", t]), !1) : (e = this.GetState(t)) ? t === this.CurrentNode.State ? !!this.CurrentNode.CanReEnter() && (this.CurrentNode.Oz(), !0) : ((o = this.CurrentNode).Exit(e, i, s, ...h), (this.CurrentNode = e).Enter(o, i, s, ...h), this.OnSwitchState && this.OnSwitchState(o, e), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("StateMachine", 14, "状态机切换失败，目标节点不存在", ["state", t]), !1)
+  Switch(t, i = true, s = true, ...h) {
+    var e;
+    var o;
+    if (this.CurrentNode === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("StateMachine", 14, "状态机没有启动", ["state", t]);
+      }
+      return false;
+    } else if (e = this.GetState(t)) {
+      if (t === this.CurrentNode.State) {
+        return !!this.CurrentNode.CanReEnter() && (this.CurrentNode.Oz(), true);
+      } else {
+        (o = this.CurrentNode).Exit(e, i, s, ...h);
+        (this.CurrentNode = e).Enter(o, i, s, ...h);
+        if (this.OnSwitchState) {
+          this.OnSwitchState(o, e);
+        }
+        return true;
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("StateMachine", 14, "状态机切换失败，目标节点不存在", ["state", t]);
+      }
+      return false;
+    }
   }
 }
 exports.StateMachineCommon = StateMachineCommon;

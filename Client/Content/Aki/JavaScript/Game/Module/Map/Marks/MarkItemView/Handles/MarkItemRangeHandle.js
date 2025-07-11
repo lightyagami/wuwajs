@@ -1,28 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkItemRangeHandle = void 0;
-const MarkRangeImageComponent_1 = require("../Components/MarkRangeImageComponent"),
-  MarkItemComponentHandle_1 = require("./MarkItemComponentHandle");
+  value: true
+});
+exports.MarkItemRangeHandle = undefined;
+const MarkRangeImageComponent_1 = require("../Components/MarkRangeImageComponent");
+const MarkItemComponentHandle_1 = require("./MarkItemComponentHandle");
 class MarkItemRangeHandle extends MarkItemComponentHandle_1.MarkItemComponentHandle {
   async LoadComponentAsync() {
-    return void 0 === this.ComponentInternal && (this.ComponentInternal = new MarkRangeImageComponent_1.MarkRangeImageComponent, await this.ComponentInternal.CreateByPoolResourceIdAsync("UiItem_MarkArea_Prefab", this.Context.MarkComponentContainer)), this.ComponentInternal
+    if (this.ComponentInternal === undefined) {
+      this.ComponentInternal = new MarkRangeImageComponent_1.MarkRangeImageComponent();
+      await this.ComponentInternal.CreateByPoolResourceIdAsync("UiItem_MarkArea_Prefab", this.Context.MarkComponentContainer);
+    }
+    return this.ComponentInternal;
   }
   GetOrCreateComponent() {
-    return void 0 === this.ComponentInternal && this.LoadComponentAsync().then(() => {
-      this.ApplyModified()
-    }), this.ComponentInternal
+    if (this.ComponentInternal === undefined) {
+      this.LoadComponentAsync().then(() => {
+        this.ApplyModified();
+      });
+    }
+    return this.ComponentInternal;
   }
   OnSetVisible(e) {
-    this.Context.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(2, e)
+    this.Context.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(2, e);
   }
   OnApplyModified() {
-    var e, t, n = this.Context.MarkItemEntity.ViewLifeCircle;
-    n.IsChildViewStateDirty(2) && (e = this.GetOrCreateComponent(), this.IsComponentValid(e)) && (t = n.IsChildViewVisible(2), n.SetChildViewVisibleClean(2), this.ResetRangeComponent(e), e.SetActive(t))
+    var e;
+    var t;
+    var n = this.Context.MarkItemEntity.ViewLifeCircle;
+    if (n.IsChildViewStateDirty(2) && (e = this.GetOrCreateComponent(), this.IsComponentValid(e))) {
+      t = n.IsChildViewVisible(2);
+      n.SetChildViewVisibleClean(2);
+      this.ResetRangeComponent(e);
+      e.SetActive(t);
+    }
   }
   ResetRangeComponent(e) {
     var t = this.Context.MarkItemEntity.GetComponent(11).RangeSize;
-    e.RangeArea?.SetWidth(2 * t), e.RangeArea?.SetHeight(2 * t), e.RangeImage?.SetWidth(2 * t), e.RangeImage?.SetHeight(2 * t), this.OnResetRangeComponent(e)
+    e.RangeArea?.SetWidth(t * 2);
+    e.RangeArea?.SetHeight(t * 2);
+    e.RangeImage?.SetWidth(t * 2);
+    e.RangeImage?.SetHeight(t * 2);
+    this.OnResetRangeComponent(e);
   }
   OnResetRangeComponent(e) {}
 }

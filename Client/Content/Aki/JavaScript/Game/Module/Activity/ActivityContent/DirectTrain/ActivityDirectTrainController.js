@@ -1,93 +1,161 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityDirectTrainController = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  Net_1 = require("../../../../../Core/Net/Net"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  LocalStorage_1 = require("../../../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine"),
-  PublicUtil_1 = require("../../../../Common/PublicUtil"),
-  TimeUtil_1 = require("../../../../Common/TimeUtil"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  SplashScreenController_1 = require("../../../SplashScreen/SplashScreenController"),
-  SplashScreenTask_1 = require("../../../SplashScreen/SplashScreenTask"),
-  ActivityControllerBase_1 = require("../../ActivityControllerBase"),
-  ActivityDirectTrainData_1 = require("./ActivityDirectTrainData"),
-  ActivityDirectTrainDefine_1 = require("./ActivityDirectTrainDefine"),
-  ActivityDirectTrainHelper_1 = require("./ActivityDirectTrainHelper"),
-  ActivityDirectTrainSubView_1 = require("./ActivityDirectTrainSubView");
+  value: true
+});
+exports.ActivityDirectTrainController = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const Net_1 = require("../../../../../Core/Net/Net");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
+const PublicUtil_1 = require("../../../../Common/PublicUtil");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const SplashScreenController_1 = require("../../../SplashScreen/SplashScreenController");
+const SplashScreenTask_1 = require("../../../SplashScreen/SplashScreenTask");
+const ActivityControllerBase_1 = require("../../ActivityControllerBase");
+const ActivityDirectTrainData_1 = require("./ActivityDirectTrainData");
+const ActivityDirectTrainDefine_1 = require("./ActivityDirectTrainDefine");
+const ActivityDirectTrainHelper_1 = require("./ActivityDirectTrainHelper");
+const ActivityDirectTrainSubView_1 = require("./ActivityDirectTrainSubView");
 class ActivityDirectTrainController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
-    super(...arguments), this.MCu = void 0, this.aU_ = void 0, this.nye = () => {
-      ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) ? this.zca() : UiManager_1.UiManager.IsViewOpen("DirectTrainProView") || ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.TryOpenPro()
-    }, this.itt = e => {
+    super(...arguments);
+    this.E9c = undefined;
+    this.aU_ = undefined;
+    this.nye = () => {
+      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
+        this.zca();
+      } else if (!UiManager_1.UiManager.IsViewOpen("DirectTrainProView")) {
+        ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.TryOpenPro();
+      }
+    };
+    this.itt = e => {
       var i;
-      ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) ? void 0 !== (i = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetActivityData()) && i.Id === e && (i = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetActivityData()?.IsUnLock(), this.hU_.set(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ActivityOpen, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "OnActivityUpdate", ["activityId", e], ["ready", i], ["showing Activity", ModelManager_1.ModelManager.ActivityModel.HaveShowingActivity()]), i) && this.zca() : Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "直通车收到刷新活动协议时，活动功能还没有开启")
-    }, this.lU_ = e => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "OnThroughTrainForceRemindNotify", ["activityId", e.w6n]), this.aU_ = e.w6n
-    }, this.CB1 = e => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "OnDirectTrainPreOpenCloseNotify", ["notify", e]), ControllerHolder_1.ControllerHolder.SplashScreenController.FinishCurTask(5), UiManager_1.UiManager.IsViewOpen("DirectTrainProView") && UiManager_1.UiManager.CloseView("DirectTrainProView"), ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = !1, ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(!1)
-    }, this.pB1 = e => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "OnDirectTrainInfoNotify", ["notify", e]), e.yU1 && 0 !== e.yU1.s5n && (ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = !0, ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(!0), !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IsDirectTrainProOpened)) && ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "OnDirectTrainInfoNotify，游戏流程进行中尝试开启界面", ["notify", e]), ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.TryOpenPro(!1))
-    }
+      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
+        if ((i = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetActivityData()) !== undefined && i.Id === e && (i = ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.GetActivityData()?.IsUnLock(), this.hU_.set(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ActivityOpen, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 64, "OnActivityUpdate", ["activityId", e], ["ready", i], ["showing Activity", ModelManager_1.ModelManager.ActivityModel.HaveShowingActivity()]), i)) {
+          this.zca();
+        }
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityDirectTrain", 64, "直通车收到刷新活动协议时，活动功能还没有开启");
+      }
+    };
+    this.lU_ = e => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityDirectTrain", 64, "OnThroughTrainForceRemindNotify", ["activityId", e.w6n]);
+      }
+      this.aU_ = e.w6n;
+    };
+    this.KB1 = e => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityDirectTrain", 64, "OnDirectTrainPreOpenCloseNotify", ["notify", e]);
+      }
+      ControllerHolder_1.ControllerHolder.SplashScreenController.FinishCurTask(5);
+      if (UiManager_1.UiManager.IsViewOpen("DirectTrainProView")) {
+        UiManager_1.UiManager.CloseView("DirectTrainProView");
+      }
+      ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = false;
+      ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(false);
+    };
+    this.XB1 = e => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityDirectTrain", 64, "OnDirectTrainInfoNotify", ["notify", e]);
+      }
+      if (e.XU1 && e.XU1.s5n !== 0 && (ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = true, ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(true), !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IsDirectTrainProOpened)) && ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("ActivityDirectTrain", 64, "OnDirectTrainInfoNotify，游戏流程进行中尝试开启界面", ["notify", e]);
+        }
+        ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.TryOpenPro(false);
+      }
+    };
   }
   OnGetIsOpeningActivityRelativeView() {
-    throw new Error("Method not implemented.")
+    throw new Error("Method not implemented.");
   }
   OnInit() {
-    return Log_1.Log.CheckDebug() && Log_1.Log.Debug("Activity", 63, "[剧情直通车]初始化剧情直通车活动"), this.MCu = TimerSystem_1.TimerSystem.Forever(e => {
-      void 0 !== ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache && 0 !== ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache.EndShowTime && ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache.EndShowTime < TimeUtil_1.TimeUtil.GetServerTime() && (ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(!1), ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = !1, this.MCu?.Remove(), this.MCu = void 0)
-    }, 1e3), !0
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Activity", 63, "[剧情直通车]初始化剧情直通车活动");
+    }
+    this.E9c = TimerSystem_1.TimerSystem.Forever(e => {
+      if (ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache !== undefined && ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache.EndShowTime !== 0 && ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache.EndShowTime < TimeUtil_1.TimeUtil.GetServerTime()) {
+        ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(false);
+        ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = false;
+        this.E9c?.Remove();
+        this.E9c = undefined;
+      }
+    }, 1000);
+    return true;
   }
   OnClear() {
-    return this.MCu?.Remove(), !(this.MCu = void 0)
+    this.E9c?.Remove();
+    return !(this.E9c = undefined);
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt), Net_1.Net.Register(17631, this.lU_), Net_1.Net.Register(28420, this.CB1), Net_1.Net.Register(24776, this.pB1)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt);
+    Net_1.Net.Register(29320, this.lU_);
+    Net_1.Net.Register(25644, this.KB1);
+    Net_1.Net.Register(18243, this.XB1);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt), Net_1.Net.UnRegister(17631), Net_1.Net.UnRegister(28420), Net_1.Net.UnRegister(24776)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt);
+    Net_1.Net.UnRegister(29320);
+    Net_1.Net.UnRegister(25644);
+    Net_1.Net.UnRegister(18243);
   }
   OnOpenView(e) {}
   OnCreateActivityData(e) {
-    return ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId = e.s5n, new ActivityDirectTrainData_1.ActivityDirectTrainData
+    ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId = e.s5n;
+    return new ActivityDirectTrainData_1.ActivityDirectTrainData();
   }
   OnCreateSubPageComponent(e) {
-    return new ActivityDirectTrainSubView_1.ActivityDirectTrainSubView
+    return new ActivityDirectTrainSubView_1.ActivityDirectTrainSubView();
   }
   OnGetActivityResource(e) {
-    return "UiItem_PlotTrain"
+    return "UiItem_PlotTrain";
   }
   get hU_() {
-    return ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.DirectTrainStartConditionMap
+    return ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.DirectTrainStartConditionMap;
   }
   zca() {
     if (!PublicUtil_1.PublicUtil.GetIsSilentLogin()) {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 63, "[直通车活动]CheckIsStart->", ["判断当前需要提醒的活动ID", this.aU_], ["当前活动ID", ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId]), void 0 !== this.aU_ && this.aU_ === ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId && this.hU_.set(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ServerConditionDone, !0);
-      let e = !0,
-        i = void 0;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityDirectTrain", 63, "[直通车活动]CheckIsStart->", ["判断当前需要提醒的活动ID", this.aU_], ["当前活动ID", ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId]);
+      }
+      if (this.aU_ !== undefined && this.aU_ === ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId) {
+        this.hU_.set(ActivityDirectTrainDefine_1.EDirectTrainStartCondition.ServerConditionDone, true);
+      }
+      let e = true;
+      let i = undefined;
       for (const n in ActivityDirectTrainDefine_1.EDirectTrainStartCondition) {
         var t = Number(n);
-        if (!isNaN(t))
-          if (!(this.hU_.get(t) ?? !1)) {
-            e = !1, i = ActivityDirectTrainDefine_1.EDirectTrainStartCondition[t];
-            break
+        if (!isNaN(t)) {
+          if (!(this.hU_.get(t) ?? false)) {
+            e = false;
+            i = ActivityDirectTrainDefine_1.EDirectTrainStartCondition[t];
+            break;
           }
+        }
       }
       if (e) {
         if (!ModelManager_1.ModelManager.ActivityDirectTrainModel.AlreadyStartView) {
           const a = ModelManager_1.ModelManager.ActivityDirectTrainModel.ActivityId;
           var r;
-          0 !== a && (r = new SplashScreenTask_1.SplashScreenTask(3, 0, () => {
-            ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityById(a)
-          }), SplashScreenController_1.SplashScreenController.PushSplashScreenTask(r), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("ActivityDirectTrain", 64, "CheckIsStart--PushSplashScreenTask", ["activityId", a])
+          if (a !== 0 && (r = new SplashScreenTask_1.SplashScreenTask(3, 0, () => {
+            ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityById(a);
+          }), SplashScreenController_1.SplashScreenController.PushSplashScreenTask(r), Log_1.Log.CheckDebug())) {
+            Log_1.Log.Debug("ActivityDirectTrain", 64, "CheckIsStart--PushSplashScreenTask", ["activityId", a]);
+          }
         }
-      } else Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityDirectTrain", 63, "[直通车活动]CheckIsStart->", ["未满足启动的条件", i])
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityDirectTrain", 63, "[直通车活动]CheckIsStart->", ["未满足启动的条件", i]);
+      }
     }
   }
 }

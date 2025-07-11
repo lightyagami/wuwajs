@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCompareTeammateDie = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCompareTeammateDie = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCompareTeammateDie extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e) {
-    if (!e) return !1;
+    if (!e) {
+      return false;
+    }
     var r = e;
     let a = 0;
-    for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) t.IsDead() && a++;
+    for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
+      if (t.IsDead()) {
+        a++;
+      }
+    }
     switch (r.Compare) {
       case "Eq":
         return a === r.DieCount;
@@ -24,7 +32,7 @@ class LevelConditionCompareTeammateDie extends LevelGeneralBase_1.LevelCondition
       case "Lt":
         return a < r.DieCount;
       default:
-        return !1
+        return false;
     }
   }
 }

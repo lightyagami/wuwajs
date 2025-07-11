@@ -1,32 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BusinessTipsCurrencyItem = void 0;
-const TimerSystem_1 = require("../../../../../../../../Core/Timer/TimerSystem"),
-  CommonCurrencyItem_1 = require("../../../../../../Common/CommonCurrencyItem"),
-  MoonChasingDefine_1 = require("../../MoonChasingDefine");
+  value: true
+});
+exports.BusinessTipsCurrencyItem = undefined;
+const TimerSystem_1 = require("../../../../../../../../Core/Timer/TimerSystem");
+const CommonCurrencyItem_1 = require("../../../../../../Common/CommonCurrencyItem");
+const MoonChasingDefine_1 = require("../../MoonChasingDefine");
 class BusinessTipsCurrencyItem extends CommonCurrencyItem_1.CommonCurrencyItem {
   constructor() {
-    super(...arguments), this.GOe = void 0
+    super(...arguments);
+    this.GOe = undefined;
   }
   AddEventListener() {}
   RemoveEventListener() {}
   OnBeforeDestroy() {
-    super.OnBeforeDestroy(), this.xHe()
+    super.OnBeforeDestroy();
+    this.xHe();
   }
   PlayReduceTweener(e, s) {
-    void 0 !== this.GOe && this.xHe();
-    let t = 0,
-      i = e;
+    if (this.GOe !== undefined) {
+      this.xHe();
+    }
+    let t = 0;
+    let i = e;
     const r = MoonChasingDefine_1.BUSINESS_TIPS_CURRENCY_TWEEN_TIME;
-    this.GOe = TimerSystem_1.TimerSystem.Forever(e => {
+    this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(e => {
       t = Math.min(t + e, r);
       e = i + Math.floor((s - i) * (e / r) * Math.random());
-      i = e, this.RefreshCountText(e.toString()), t >= r && (this.RefreshCountText(s.toString()), this.xHe())
-    }, TimerSystem_1.MIN_TIME)
+      i = e;
+      this.RefreshCountText(e.toString());
+      if (t >= r) {
+        this.RefreshCountText(s.toString());
+        this.xHe();
+      }
+    }, TimerSystem_1.MIN_TIME);
   }
   xHe() {
-    this.GOe && TimerSystem_1.TimerSystem.Has(this.GOe) && (TimerSystem_1.TimerSystem.Remove(this.GOe), this.GOe = void 0)
+    if (this.GOe && TimerSystem_1.GameplayTimerSystem.Has(this.GOe)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
+      this.GOe = undefined;
+    }
   }
 }
 exports.BusinessTipsCurrencyItem = BusinessTipsCurrencyItem;

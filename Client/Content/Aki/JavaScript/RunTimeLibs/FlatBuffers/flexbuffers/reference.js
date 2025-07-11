@@ -1,15 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Reference = exports.toReference = void 0;
+exports.Reference = exports.toReference = undefined;
 const bit_width_util_js_1 = require("./bit-width-util");
 const value_type_js_1 = require("./value-type");
 const value_type_util_js_1 = require("./value-type-util");
 const reference_util_js_1 = require("./reference-util");
 const flexbuffers_util_js_1 = require("./flexbuffers-util");
 const bit_width_js_1 = require("./bit-width");
-
 function toReference(buffer) {
   const len = buffer.byteLength;
   if (len < 3) {
@@ -23,7 +23,6 @@ function toReference(buffer) {
   return new Reference(dataView, offset, parentWidth, packedType, "/");
 }
 exports.toReference = toReference;
-
 function valueForIndexWithKey(index, key, dataView, offset, parentWidth, byteWidth, length, path) {
   const _indirect = (0, reference_util_js_1.indirect)(dataView, offset, parentWidth);
   const elementOffset = _indirect + index * byteWidth;
@@ -133,7 +132,7 @@ class Reference {
       }
       return new Reference(this.dataView, elementOffset, (0, bit_width_util_js_1.fromByteWidth)(this.byteWidth), _packedType, `${this.path}[${key}]`);
     }
-    if (typeof key === 'string') {
+    if (typeof key === "string") {
       const index = (0, reference_util_js_1.keyIndex)(key, this.dataView, this.offset, this.parentWidth, this.byteWidth, length);
       if (index !== null) {
         return valueForIndexWithKey(index, key, this.dataView, this.offset, this.parentWidth, this.byteWidth, length, this.path);
@@ -148,9 +147,7 @@ class Reference {
     }
     if ((0, value_type_util_js_1.isFixedTypedVector)(this.valueType)) {
       this._length = (0, value_type_util_js_1.fixedTypedVectorElementSize)(this.valueType);
-    } else if (this.valueType === value_type_js_1.ValueType.BLOB ||
-      this.valueType === value_type_js_1.ValueType.MAP ||
-      (0, value_type_util_js_1.isAVector)(this.valueType)) {
+    } else if (this.valueType === value_type_js_1.ValueType.BLOB || this.valueType === value_type_js_1.ValueType.MAP || (0, value_type_util_js_1.isAVector)(this.valueType)) {
       this._length = (0, reference_util_js_1.readUInt)(this.dataView, (0, reference_util_js_1.indirect)(this.dataView, this.offset, this.parentWidth) - this.byteWidth, (0, bit_width_util_js_1.fromByteWidth)(this.byteWidth));
     } else if (this.valueType === value_type_js_1.ValueType.NULL) {
       this._length = 0;

@@ -1,51 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SelectablePropTypeItemVariantSelect = void 0;
-const ItemGridVariantSelect_1 = require("../../ItemGrid/ItemGridVariantSelect"),
-  SelectablePropComponentBase_1 = require("./SelectablePropComponentBase");
+  value: true
+});
+exports.SelectablePropTypeItemVariantSelect = undefined;
+const ItemGridVariantSelect_1 = require("../../ItemGrid/ItemGridVariantSelect");
+const SelectablePropComponentBase_1 = require("./SelectablePropComponentBase");
 class SelectablePropTypeItemVariantSelect extends SelectablePropComponentBase_1.SelectablePropComponentBase {
   constructor() {
-    super(...arguments), this.ebt = void 0
+    super(...arguments);
+    this.ebt = undefined;
   }
   GetSelectableToggle() {
-    return this.ebt.GetClickToggle()
+    return this.ebt.GetClickToggle();
   }
   GetSelectItem() {
-    return this.ebt.GetFinishSelectItem()
+    return this.ebt.GetFinishSelectItem();
   }
   GetReduceButton() {
-    return this.ebt.GetReduceButton()
+    return this.ebt.GetReduceButton();
   }
   GetControlItem() {
-    return this.ebt.GetControlItem()
+    return this.ebt.GetControlItem();
   }
   GetFinishSelectItem() {}
   GetSelectNumberText() {
-    return this.ebt.GetDownText()
+    return this.ebt.GetDownText();
   }
   ShowDefaultDownText() {
-    this.ebt.ShowDefaultDownText()
+    this.ebt.ShowDefaultDownText();
   }
   RefreshRightDownLockSprite(e) {
-    this.ebt.RefreshRightDownLockSprite(e)
+    this.ebt.RefreshRightDownLockSprite(e);
   }
   Refresh(e, t, r) {
     e = [{
       IncId: e.IncId,
       ItemId: e.ItemId
     }, e.Count];
-    this.ebt.Refresh(e, t, r)
+    this.ebt.Refresh(e, t, r);
   }
   SetToggleClick(e) {
-    this.ebt.SetToggleClickStateEvent(e)
+    this.ebt.SetToggleClickStateEvent(e);
   }
   SetRoleIconState() {}
   OnStart() {
-    this.ebt = new ItemGridVariantSelect_1.ItemGridVariantSelect(this.RootItem.GetOwner()), this.ebt.GetFinishMiddleItem().SetUIActive(!1)
+    this.ebt = new ItemGridVariantSelect_1.ItemGridVariantSelect(this.RootItem.GetOwner());
+    this.ebt.GetFinishMiddleItem().SetUIActive(false);
   }
   OnBeforeDestroy() {
-    this.ebt.Destroy()
+    this.ebt.Destroy();
   }
 }
 exports.SelectablePropTypeItemVariantSelect = SelectablePropTypeItemVariantSelect;

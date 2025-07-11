@@ -1,42 +1,86 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SimplePreemptiveFrameQueue = void 0;
+  value: true
+});
+exports.SimplePreemptiveFrameQueue = undefined;
 class SimplePreemptiveFrameQueue {
   constructor(s, t = 0) {
-    this.PerFrameTaskLimit = s, this.ExecuteFrameInterval = t, this.Tasks = [], this.dlh = void 0, this.Clh = 0, this.EnableFlush = !1, this.m8_ = 0, this.m8_ = this.ExecuteFrameInterval
+    this.PerFrameTaskLimit = s;
+    this.ExecuteFrameInterval = t;
+    this.Tasks = [];
+    this.dlh = undefined;
+    this.Clh = 0;
+    this.EnableFlush = false;
+    this.m8_ = 0;
+    this.m8_ = this.ExecuteFrameInterval;
   }
   AddTask(s) {
     let t = 0;
-    for (; t < this.Tasks.length && this.Tasks[t].Priority < s.Priority;) t++;
-    this.Tasks.splice(t, 0, s), this.IsTaskComplete() && !this.OnExecutionInterval && (this.m8_ = this.ExecuteFrameInterval)
+    while (t < this.Tasks.length && this.Tasks[t].Priority < s.Priority) {
+      t++;
+    }
+    this.Tasks.splice(t, 0, s);
+    if (this.IsTaskComplete() && !this.OnExecutionInterval) {
+      this.m8_ = this.ExecuteFrameInterval;
+    }
   }
   CancelTask(t) {
-    var s = this.Tasks.findIndex(s => s === t); - 1 < s && (t.Cancel?.(), this.Tasks.splice(s, 1))
+    var s = this.Tasks.findIndex(s => s === t);
+    if (s > -1) {
+      t.Cancel?.();
+      this.Tasks.splice(s, 1);
+    }
   }
   Process() {
-    if (this.OnExecutionInterval) ++this.m8_;
-    else if (this.m8_ >= this.ExecuteFrameInterval && (this.m8_ = 0), this.IsTaskComplete()) {
-      for (this.Clh = 0; 0 < this.Tasks.length && this.Clh < this.PerFrameTaskLimit;)
-        if (this.dlh = this.ShiftNextTask(), this.dlh) {
-          if (this.dlh.Execute(), this.EnableFlush || this.Clh++, !this.IsTaskComplete()) break;
-          this.OnTaskComplete(this.dlh)
-        } this.Tasks.length || (this.dlh = void 0), this.Clh && this.OnLateExecuteTasksFrame()
-    } else this.dlh.FrameExecute?.()
+    if (this.OnExecutionInterval) {
+      ++this.m8_;
+    } else {
+      if (this.m8_ >= this.ExecuteFrameInterval) {
+        this.m8_ = 0;
+      }
+      if (this.IsTaskComplete()) {
+        for (this.Clh = 0; this.Tasks.length > 0 && this.Clh < this.PerFrameTaskLimit;) {
+          this.dlh = this.ShiftNextTask();
+          if (this.dlh) {
+            this.dlh.Execute();
+            if (!this.EnableFlush) {
+              this.Clh++;
+            }
+            if (!this.IsTaskComplete()) {
+              break;
+            }
+            this.OnTaskComplete(this.dlh);
+          }
+        }
+        if (!this.Tasks.length) {
+          this.dlh = undefined;
+        }
+        if (this.Clh) {
+          this.OnLateExecuteTasksFrame();
+        }
+      } else {
+        this.dlh.FrameExecute?.();
+      }
+    }
   }
   ShiftNextTask() {
-    if (0 < this.Tasks.length) return this.Tasks.shift()
+    if (this.Tasks.length > 0) {
+      return this.Tasks.shift();
+    }
   }
   OnTaskComplete(s) {}
   OnLateExecuteTasksFrame() {}
   IsTaskComplete() {
-    return !this.dlh || (this.dlh.IsComplete?.() ?? !0)
+    return !this.dlh || (this.dlh.IsComplete?.() ?? true);
   }
   get OnExecutionInterval() {
-    return this.m8_ < this.ExecuteFrameInterval
+    return this.m8_ < this.ExecuteFrameInterval;
   }
   Dispose() {
-    this.dlh?.Cancel?.(), this.dlh = void 0, this.Tasks.length = 0
+    this.dlh?.Cancel?.();
+    this.dlh = undefined;
+    this.Tasks.length = 0;
   }
 }
 exports.SimplePreemptiveFrameQueue = SimplePreemptiveFrameQueue;

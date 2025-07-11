@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDangoAbyssActivatePortal = void 0;
+  value: true
+});
+exports.FbDangoAbyssActivatePortal = undefined;
 class FbDangoAbyssActivatePortal {
   constructor(t) {
-    this.FbDataInternal = t
+    this.FbDataInternal = t;
   }
   static Create(t) {
-    if (t) return new FbDangoAbyssActivatePortal(t)
+    if (t) {
+      return new FbDangoAbyssActivatePortal(t);
+    }
   }
 }
 exports.FbDangoAbyssActivatePortal = FbDangoAbyssActivatePortal;

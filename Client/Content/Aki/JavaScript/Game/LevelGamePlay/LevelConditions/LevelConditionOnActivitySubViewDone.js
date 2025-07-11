@@ -1,12 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionOnActivitySubViewDone = void 0;
+  value: true
+});
+exports.LevelConditionOnActivitySubViewDone = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionOnActivitySubViewDone extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, t, ...i) {
     e = e.LimitParams.get("ActivityId");
-    return void 0 !== e && Number(e) === i[0]
+    return e !== undefined && Number(e) === i[0];
   }
 }
 exports.LevelConditionOnActivitySubViewDone = LevelConditionOnActivitySubViewDone;

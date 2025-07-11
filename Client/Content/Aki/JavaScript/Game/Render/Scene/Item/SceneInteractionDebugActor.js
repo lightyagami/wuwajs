@@ -1,70 +1,133 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneInteractionDebugActor = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  RenderModuleController_1 = require("../../Manager/RenderModuleController"),
-  SceneInteractionManager_1 = require("../Interaction/SceneInteractionManager");
+  value: true
+});
+exports.SceneInteractionDebugActor = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const RenderModuleController_1 = require("../../Manager/RenderModuleController");
+const SceneInteractionManager_1 = require("../Interaction/SceneInteractionManager");
 class SceneInteractionDebugActor extends UE.Actor {
   constructor() {
-    super(...arguments), this.HandleId = 0, this.EffectKey = void 0, this.DebugActorRef = void 0, this.DebugActorKey = "", this.NeedTransition = !1, this.Force = !1, this.LevelName = "", this.InitState = void 0, this.CountNumber = 1, this.BaseForce = 0, this.OriginOffset = new UE.Vector(0, 0, 0), this.DamageRadius = 0, this.ImpluseFactor = 0
+    super(...arguments);
+    this.HandleId = 0;
+    this.EffectKey = undefined;
+    this.DebugActorRef = undefined;
+    this.DebugActorKey = "";
+    this.NeedTransition = false;
+    this.Force = false;
+    this.LevelName = "";
+    this.InitState = undefined;
+    this.CountNumber = 1;
+    this.BaseForce = 0;
+    this.OriginOffset = new UE.Vector(0, 0, 0);
+    this.DamageRadius = 0;
+    this.ImpluseFactor = 0;
   }
   Constructor() {
-    this.EffectKey = void 0, this.InitState = void 0
+    this.EffectKey = undefined;
+    this.InitState = undefined;
   }
   ReceiveBeginPlay() {
-    this.HandleId = -1
+    this.HandleId = -1;
   }
   ChangeState1() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state1"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 0, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state1"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 0, this.NeedTransition, this.Force);
+    }
   }
   ChangeState2() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state2"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 1, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state2"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 1, this.NeedTransition, this.Force);
+    }
   }
   ChangeState3() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state3"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 2, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state3"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 2, this.NeedTransition, this.Force);
+    }
   }
   ChangeState4() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state4"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 3, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state4"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 3, this.NeedTransition, this.Force);
+    }
   }
   ChangeState5() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state5"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 4, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state5"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 4, this.NeedTransition, this.Force);
+    }
   }
   ChangeState6() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state6"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 5, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state6"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 5, this.NeedTransition, this.Force);
+    }
   }
   ChangeState7() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state7"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 6, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state7"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 6, this.NeedTransition, this.Force);
+    }
   }
   ChangeState8() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state8"), 0 <= this.HandleId) && SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 7, this.NeedTransition, this.Force)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "change state8"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SwitchSceneInteractionToState(this.HandleId, 7, this.NeedTransition, this.Force);
+    }
   }
   Create() {
     if (RenderModuleController_1.RenderModuleController.IsRuntime()) {
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "create"), 0 <= this.HandleId && this.Remove();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("RenderScene", 11, "create");
+      }
+      if (this.HandleId >= 0) {
+        this.Remove();
+      }
       let e = this.LevelName;
-      e.startsWith("World'") && (e = (e = this.LevelName.replace("World'", "")).split(".")[0]), this.HandleId = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(e, this.InitState, this.D_K2_GetActorLocation(), this.K2_GetActorRotation(), () => {
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "level streaming complete")
-      })
+      if (e.startsWith("World'")) {
+        e = (e = this.LevelName.replace("World'", "")).split(".")[0];
+      }
+      this.HandleId = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(e, this.InitState, this.D_K2_GetActorLocation(), this.K2_GetActorRotation(), () => {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("RenderScene", 11, "level streaming complete");
+        }
+      });
     }
   }
   Remove() {
-    RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "remove"), 0 <= this.HandleId) && (SceneInteractionManager_1.SceneInteractionManager.Get().DestroySceneInteraction(this.HandleId), this.HandleId = -1, this.DebugActorRef = void 0)
+    if (RenderModuleController_1.RenderModuleController.IsRuntime() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 11, "remove"), this.HandleId >= 0)) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().DestroySceneInteraction(this.HandleId);
+      this.HandleId = -1;
+      this.DebugActorRef = undefined;
+    }
   }
   PrintState() {
-    0 <= this.HandleId ? Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderScene", 13, "当前状态", ["状态", SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionCurrentState(this.HandleId) + 1], ["Actor", this.GetName()]) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderScene", 13, "SceneInteractionActor未生成", ["Actor", this.GetName()])
+    if (this.HandleId >= 0) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RenderScene", 13, "当前状态", ["状态", SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionCurrentState(this.HandleId) + 1], ["Actor", this.GetName()]);
+      }
+    } else if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("RenderScene", 13, "SceneInteractionActor未生成", ["Actor", this.GetName()]);
+    }
   }
   PlaySceneEffect() {
-    0 <= this.HandleId ? SceneInteractionManager_1.SceneInteractionManager.Get().PlaySceneInteractionEffect(this.HandleId, this.EffectKey) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderScene", 13, "SceneInteractionActor未生成", ["Actor", this.GetName()])
+    if (this.HandleId >= 0) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().PlaySceneInteractionEffect(this.HandleId, this.EffectKey);
+    } else if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("RenderScene", 13, "SceneInteractionActor未生成", ["Actor", this.GetName()]);
+    }
   }
   ChangeDirection() {
-    0 <= this.HandleId && (this.CountNumber += 1, SceneInteractionManager_1.SceneInteractionManager.Get().ChangeSceneInteractionPlayDirection(this.HandleId, this.CountNumber % 2 == 0))
+    if (this.HandleId >= 0) {
+      this.CountNumber += 1;
+      SceneInteractionManager_1.SceneInteractionManager.Get().ChangeSceneInteractionPlayDirection(this.HandleId, this.CountNumber % 2 == 0);
+    }
   }
   GetDebugActorRefByKey() {
     var e;
-    0 <= this.HandleId && (e = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionActorByKey(this.HandleId, this.DebugActorKey), this.HandleId = -1, this.DebugActorRef = e)
+    if (this.HandleId >= 0) {
+      e = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionActorByKey(this.HandleId, this.DebugActorKey);
+      this.HandleId = -1;
+      this.DebugActorRef = e;
+    }
   }
 }
-exports.SceneInteractionDebugActor = SceneInteractionDebugActor, exports.default = SceneInteractionDebugActor;
-//# sourceMappingURL=SceneInteractionDebugActor.js.map
+exports.SceneInteractionDebugActor = SceneInteractionDebugActor;
+exports.default = SceneInteractionDebugActor; //# sourceMappingURL=SceneInteractionDebugActor.js.map

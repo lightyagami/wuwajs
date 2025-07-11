@@ -1,23 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class TsAnimNotifyStateSkeletalMeshAnimPlay extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.Tag = void 0, this.动画资产 = void 0
+    super(...arguments);
+    this.Tag = undefined;
+    this.动画资产 = undefined;
   }
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     var t = t.GetOwner().GetComponentsByTag(UE.SkeletalMeshComponent.StaticClass(), this.Tag);
-    return 0 !== t.Num() && !!(t = t.Get(0))?.IsValid() && (t.SetHiddenInGame(!1, !1), t.PlayAnimation(this.动画资产, !1), !0)
+    return t.Num() !== 0 && !!(t = t.Get(0))?.IsValid() && (t.SetHiddenInGame(false, false), t.PlayAnimation(this.动画资产, false), true);
   }
   K2_NotifyEnd(t, e) {
     var t = t.GetOwner().GetComponentsByTag(UE.SkeletalMeshComponent.StaticClass(), this.Tag);
-    return 0 !== t.Num() && !!(t = t.Get(0))?.IsValid() && (t.SetHiddenInGame(!0, !1), t.Stop(), !0)
+    return t.Num() !== 0 && !!(t = t.Get(0))?.IsValid() && (t.SetHiddenInGame(true, false), t.Stop(), true);
   }
   GetNotifyName() {
-    return "临时播放特定Mesh的动画"
+    return "临时播放特定Mesh的动画";
   }
 }
 exports.default = TsAnimNotifyStateSkeletalMeshAnimPlay;

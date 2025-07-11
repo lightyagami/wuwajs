@@ -1,65 +1,93 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeeklyRogueTokenInfoGrid = exports.WeeklyRogueTokenGrid = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid"),
-  UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController"),
-  WeeklyRogueGridComponent_1 = require("./WeeklyRogueGridComponent");
+  value: true
+});
+exports.WeeklyRogueTokenInfoGrid = exports.WeeklyRogueTokenGrid = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
+const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
+const WeeklyRogueGridComponent_1 = require("./WeeklyRogueGridComponent");
 class WeeklyRogueTokenGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
-    super(...arguments), this.Data = void 0
+    super(...arguments);
+    this.Data = undefined;
   }
   OnRefresh(e, t, i) {
     this.Data = e;
-    var o, n = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(e.v9n);
-    n && (n = {
+    var o;
+    var n = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(e.v9n);
+    if (n && (n = {
       Type: 4,
       Data: e,
       IconPath: n.BuffIcon,
       QualityId: n.Quality,
       QualityType: "MediumItemGridQualitySpritePath",
       IsDisable: !!e.BN_ && e.BN_.O2s
-    }, this.Apply(n), e.BN_) && (n = this.RefreshComponent(WeeklyRogueGridComponent_1.WeeklyRougeShopDiscountTag, !0, e.BN_), o = e.BN_.qN_ !== e.BN_.kN_, this.SetComponentVisible(n, o), n = this.RefreshComponent(WeeklyRogueGridComponent_1.WeeklyRogueShopDiscount, !0, e.BN_), this.SetComponentVisible(n, !0))
+    }, this.Apply(n), e.BN_)) {
+      n = this.RefreshComponent(WeeklyRogueGridComponent_1.WeeklyRougeShopDiscountTag, true, e.BN_);
+      o = e.BN_.qN_ !== e.BN_.kN_;
+      this.SetComponentVisible(n, o);
+      n = this.RefreshComponent(WeeklyRogueGridComponent_1.WeeklyRogueShopDiscount, true, e.BN_);
+      this.SetComponentVisible(n, true);
+    }
   }
   OnExtendToggleStateChanged(e) {
-    1 === e && this.OnSelected(!0)
+    if (e === 1) {
+      this.OnSelected(true);
+    }
   }
   OnSelected(e) {
-    this.SetSelected(!0), ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry = this.Data, e && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueShopSelect, this.GridIndex, this.Data), UiNavigationNewController_1.UiNavigationNewController.SetNavigationFocusForView(this.GetItemGridExtendToggle().RootUIComp)
+    this.SetSelected(true);
+    ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry = this.Data;
+    if (e) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueShopSelect, this.GridIndex, this.Data);
+    }
+    UiNavigationNewController_1.UiNavigationNewController.SetNavigationFocusForView(this.GetItemGridExtendToggle().RootUIComp);
   }
   OnDeselected(e) {
-    this.SetSelected(!1), ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry = void 0
+    this.SetSelected(false);
+    ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry = undefined;
   }
 }
 exports.WeeklyRogueTokenGrid = WeeklyRogueTokenGrid;
 class WeeklyRogueTokenInfoGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
-    super(...arguments), this.Data = 0, this.OnSelectedChange = void 0
+    super(...arguments);
+    this.Data = 0;
+    this.OnSelectedChange = undefined;
   }
   OnRefresh(e, t, i) {
     this.Data = e;
     var o = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(e);
-    o && (e = {
-      Type: 4,
-      Data: e,
-      IconPath: o.BuffIcon,
-      QualityId: o.Quality,
-      QualityType: "MediumItemGridQualitySpritePath",
-      BottomTextId: o.BuffName
-    }, this.Apply(e))
+    if (o) {
+      e = {
+        Type: 4,
+        Data: e,
+        IconPath: o.BuffIcon,
+        QualityId: o.Quality,
+        QualityType: "MediumItemGridQualitySpritePath",
+        BottomTextId: o.BuffName
+      };
+      this.Apply(e);
+    }
   }
   OnExtendToggleStateChanged(e) {
-    1 === e && this.OnSelectedChange?.(this.GridIndex, this.Data)
+    if (e === 1) {
+      this.OnSelectedChange?.(this.GridIndex, this.Data);
+    }
   }
   OnSelected(e) {
-    this.SetSelected(!0), e && this.OnSelectedChange?.(this.GridIndex, this.Data)
+    this.SetSelected(true);
+    if (e) {
+      this.OnSelectedChange?.(this.GridIndex, this.Data);
+    }
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
 }
 exports.WeeklyRogueTokenInfoGrid = WeeklyRogueTokenInfoGrid;

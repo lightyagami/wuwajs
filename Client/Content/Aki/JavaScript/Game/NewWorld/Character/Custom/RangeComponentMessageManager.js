@@ -1,24 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RangeComponentMessageManager = void 0;
+  value: true
+});
+exports.RangeComponentMessageManager = undefined;
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 class MessageRegisterCallBackInfo {
   constructor() {
-    this.EnterCallbacks = [], this.LeaveCallback = [], this.InitCallback = [], this.EnterCallbacks = [], this.LeaveCallback = [], this.InitCallback = []
+    this.EnterCallbacks = [];
+    this.LeaveCallback = [];
+    this.InitCallback = [];
+    this.EnterCallbacks = [];
+    this.LeaveCallback = [];
+    this.InitCallback = [];
   }
 }
 class RangeComponentMessageManager {
   constructor() {
-    this.gul = new Map, this.gul.clear()
+    this.gul = new Map();
+    this.gul.clear();
   }
   static get Instance() {
-    return void 0 === this.cj && (this.cj = new RangeComponentMessageManager), this.cj
+    if (this.cj === undefined) {
+      this.cj = new RangeComponentMessageManager();
+    }
+    return this.cj;
   }
   RegisterMessage(e, s, o, t) {
     if (this.gul.has(e)) {
       var a = this.gul.get(e);
-      if (void 0 !== a)
+      if (a !== undefined) {
         if (a.has(o)) {
           var r = a.get(o);
           switch (s) {
@@ -29,10 +40,10 @@ class RangeComponentMessageManager {
               r?.LeaveCallback.push(t);
               break;
             case Protocol_1.Aki.Protocol.i6n.Proto_RangeInit:
-              r?.InitCallback.push(t)
+              r?.InitCallback.push(t);
           }
         } else {
-          var c = new MessageRegisterCallBackInfo;
+          var c = new MessageRegisterCallBackInfo();
           switch (s) {
             case Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter:
               c?.EnterCallbacks.push(t);
@@ -41,13 +52,14 @@ class RangeComponentMessageManager {
               c?.LeaveCallback.push(t);
               break;
             case Protocol_1.Aki.Protocol.i6n.Proto_RangeInit:
-              c?.InitCallback.push(t)
+              c?.InitCallback.push(t);
           }
-          a.set(o, c)
+          a.set(o, c);
         }
+      }
     } else {
-      var a = new Map,
-        i = new MessageRegisterCallBackInfo;
+      var a = new Map();
+      var i = new MessageRegisterCallBackInfo();
       switch (s) {
         case Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter:
           i?.EnterCallbacks.push(t);
@@ -56,15 +68,16 @@ class RangeComponentMessageManager {
           i?.LeaveCallback.push(t);
           break;
         case Protocol_1.Aki.Protocol.i6n.Proto_RangeInit:
-          i?.InitCallback.push(t)
+          i?.InitCallback.push(t);
       }
-      a.set(o, i), this.gul.set(e, a)
+      a.set(o, i);
+      this.gul.set(e, a);
     }
   }
   UnRegisterMessage(e, s, o, t) {
     if (this.gul.has(e)) {
       e = this.gul.get(e);
-      if (void 0 !== e && e.has(o)) {
+      if (e !== undefined && e.has(o)) {
         var a = e.get(o);
         switch (s) {
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter:
@@ -74,54 +87,58 @@ class RangeComponentMessageManager {
             this.pul(a.LeaveCallback, t);
             break;
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeInit:
-            this.pul(a.InitCallback, t)
+            this.pul(a.InitCallback, t);
         }
       }
     }
   }
   pul(e, s) {
-    s = e.indexOf(s); - 1 !== s && e.splice(s, 1)
+    s = e.indexOf(s);
+    if (s !== -1) {
+      e.splice(s, 1);
+    }
   }
   HasMessage(e, s, o, t) {
     if (this.gul.has(e)) {
       e = this.gul.get(e);
-      if (void 0 !== e && e.has(o)) {
+      if (e !== undefined && e.has(o)) {
         var a = e.get(o);
         switch (s) {
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter:
-            return a?.EnterCallbacks.includes(t) ?? !1;
+            return a?.EnterCallbacks.includes(t) ?? false;
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave:
-            return a?.LeaveCallback.includes(t) ?? !1;
+            return a?.LeaveCallback.includes(t) ?? false;
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeInit:
-            return a?.InitCallback.includes(t) ?? !1
+            return a?.InitCallback.includes(t) ?? false;
         }
       }
     }
-    return !1
+    return false;
   }
   EmitMessage(e, s, o, t, a) {
     if (this.gul.has(e)) {
       e = this.gul.get(e);
-      if (void 0 !== e && e.has(o)) {
+      if (e !== undefined && e.has(o)) {
         var r = e.get(o);
         switch (s) {
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter:
             r?.EnterCallbacks.forEach(e => {
-              e(s, o, t, a)
+              e(s, o, t, a);
             });
             break;
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave:
             r?.LeaveCallback.forEach(e => {
-              e(s, o, t, a)
+              e(s, o, t, a);
             });
             break;
           case Protocol_1.Aki.Protocol.i6n.Proto_RangeInit:
             r?.InitCallback.forEach(e => {
-              e(s, o, t, a)
-            })
+              e(s, o, t, a);
+            });
         }
       }
     }
   }
-}(exports.RangeComponentMessageManager = RangeComponentMessageManager).cj = void 0;
+}
+(exports.RangeComponentMessageManager = RangeComponentMessageManager).cj = undefined;
 //# sourceMappingURL=RangeComponentMessageManager.js.map

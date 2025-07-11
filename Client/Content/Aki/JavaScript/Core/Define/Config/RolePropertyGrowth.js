@@ -1,58 +1,87 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RolePropertyGrowth = void 0;
+  value: true
+});
+exports.RolePropertyGrowth = undefined;
 class RolePropertyGrowth {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Level() {
-    return this.level()
+    return this.level();
   }
   get BreachLevel() {
-    return this.breachlevel()
+    return this.breachlevel();
   }
   get LifeMaxRatio() {
-    return this.lifemaxratio()
+    return this.lifemaxratio();
   }
   get AtkRatio() {
-    return this.atkratio()
+    return this.atkratio();
   }
   get DefRatio() {
-    return this.defratio()
+    return this.defratio();
   }
   __init(t, r) {
-    return this.z7 = t, this.J7 = r, this
+    this.z7 = t;
+    this.J7 = r;
+    return this;
   }
   static getRootAsRolePropertyGrowth(t, r) {
-    return (r || new RolePropertyGrowth).__init(t.readInt32(t.position()) + t.position(), t)
+    return (r || new RolePropertyGrowth()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   level() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   breachlevel() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   lifemaxratio() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   atkratio() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   defratio() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.RolePropertyGrowth = RolePropertyGrowth;

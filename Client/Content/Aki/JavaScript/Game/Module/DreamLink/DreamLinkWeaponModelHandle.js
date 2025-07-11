@@ -1,31 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DreamLinkWeaponModelHandle = void 0;
-const MathCommon_1 = require("../../../Core/Utils/Math/MathCommon"),
-  Rotator_1 = require("../../../Core/Utils/Math/Rotator");
+  value: true
+});
+exports.DreamLinkWeaponModelHandle = undefined;
+const MathCommon_1 = require("../../../Core/Utils/Math/MathCommon");
+const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 class DreamLinkWeaponModelHandle {
   constructor(t) {
-    this.Actor = t, this.nBr = 0, this.Rxe = !1, this.hwe = void 0, this.sBr = void 0, this.aBr = !1, this.hwe = Rotator_1.Rotator.Create()
+    this.Actor = t;
+    this.nBr = 0;
+    this.Rxe = false;
+    this.hwe = undefined;
+    this.sBr = undefined;
+    this.aBr = false;
+    this.hwe = Rotator_1.Rotator.Create();
   }
-  SetRotateParam(t, i = 1, s = !0) {
-    this.nBr = 0 !== t ? MathCommon_1.MathCommon.RoundAngle / t : 0, this.sBr = i, this.aBr = s
+  SetRotateParam(t, i = 1, s = true) {
+    this.nBr = t !== 0 ? MathCommon_1.MathCommon.RoundAngle / t : 0;
+    this.sBr = i;
+    this.aBr = s;
   }
   StartRotate() {
-    this.Rxe = !0
+    this.Rxe = true;
   }
   StopRotate() {
-    this.Rxe = !1
+    this.Rxe = false;
   }
   Tick(t) {
-    this.OnRotate(t)
+    this.OnRotate(t);
   }
   OnRotate(t) {
     var i;
-    !this.Rxe || this.nBr <= 0 || this.Actor && (i = this.aBr ? 1 : -1, t = this.nBr * t * i, 0 === this.sBr ? this.hwe.Pitch = t : 1 === this.sBr ? this.hwe.Yaw = t : 2 === this.sBr && (this.hwe.Roll = t), this.Actor.K2_AddActorLocalRotation(this.hwe.ToUeRotator(), !1, void 0, !1))
+    if (!!this.Rxe && !(this.nBr <= 0)) {
+      if (this.Actor) {
+        i = this.aBr ? 1 : -1;
+        t = this.nBr * t * i;
+        if (this.sBr === 0) {
+          this.hwe.Pitch = t;
+        } else if (this.sBr === 1) {
+          this.hwe.Yaw = t;
+        } else if (this.sBr === 2) {
+          this.hwe.Roll = t;
+        }
+        this.Actor.K2_AddActorLocalRotation(this.hwe.ToUeRotator(), false, undefined, false);
+      }
+    }
   }
   Destroy() {
-    this.Actor = void 0
+    this.Actor = undefined;
   }
 }
 exports.DreamLinkWeaponModelHandle = DreamLinkWeaponModelHandle;

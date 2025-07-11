@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MediumItemGridWeeklyRogueTagComponent = void 0;
+  value: true
+});
+exports.MediumItemGridWeeklyRogueTagComponent = undefined;
 const MediumItemGridVisibleComponent_1 = require("./MediumItemGridVisibleComponent");
 class MediumItemGridWeeklyRogueTagComponent extends MediumItemGridVisibleComponent_1.MediumItemGridVisibleComponent {
   GetResourceId() {
-    return "UiItem_ItemTagDescript"
+    return "UiItem_ItemTagDescript";
   }
   GetLayoutLevel() {
-    return 1
+    return 1;
   }
 }
 exports.MediumItemGridWeeklyRogueTagComponent = MediumItemGridWeeklyRogueTagComponent;

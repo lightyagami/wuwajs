@@ -1,217 +1,219 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ENTITY_RESETPOINT_BP_TYPE = exports.ENTITY_RESETAREA_BP_TYPE = exports.EHideGroupObjectType = exports.EEffectConfigType = exports.EExploratoryBelongType = exports.decompressEntityData = exports.EDevelopmentStatus = exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = exports.editorBpTypes = exports.getRewardTypeConfig = exports.entityDescriptionConfig = exports.monsterEntityTypes = exports.isValidEntityType = exports.entityTypeConfig = exports.entityTypesAki = exports.entityTypesUe5 = exports.componentsByEntityAki = exports.componentsByEntityUe5 = exports.entityDetails = exports.entityDetailsAki = exports.entityDetailsUe5 = void 0;
-const IComponent_1 = require("./IComponent"),
-  IUtil_1 = require("./IUtil"),
-  monsterComponents = (exports.entityDetailsUe5 = {
-    Player: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: []
-    },
-    AiNpc: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "StateComponent", "FlowComponent", "BehaviorFlowComponent", "TalkComponent", "MoveComponent", "NpcComponent", "InteractiveComponent", "NpcPerformComponent"]
-    },
-    CharacterEntity: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: []
-    },
-    Entity: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent"]
-    },
-    Lamp: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["LampComponent", "EventComponent", "StateComponent", "BaseInfoComponent"]
-    },
-    Npc: {
-      Category: "怪物&生物&NPC类",
-      Owner: 10,
-      Status: "可使用",
-      Description: `
+  value: true
+});
+exports.ENTITY_RESETPOINT_BP_TYPE = exports.ENTITY_RESETAREA_BP_TYPE = exports.EHideGroupObjectType = exports.EEffectConfigType = exports.EExploratoryBelongType = exports.decompressEntityData = exports.EDevelopmentStatus = exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = exports.editorBpTypes = exports.getRewardTypeConfig = exports.entityDescriptionConfig = exports.monsterEntityTypes = exports.isValidEntityType = exports.entityTypeConfig = exports.entityTypesAki = exports.entityTypesUe5 = exports.componentsByEntityAki = exports.componentsByEntityUe5 = exports.entityDetails = exports.entityDetailsAki = exports.entityDetailsUe5 = undefined;
+const IComponent_1 = require("./IComponent");
+const IUtil_1 = require("./IUtil");
+exports.entityDetailsUe5 = {
+  Player: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: []
+  },
+  AiNpc: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "StateComponent", "FlowComponent", "BehaviorFlowComponent", "TalkComponent", "MoveComponent", "NpcComponent", "InteractiveComponent", "NpcPerformComponent"]
+  },
+  CharacterEntity: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: []
+  },
+  Entity: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent"]
+  },
+  Lamp: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["LampComponent", "EventComponent", "StateComponent", "BaseInfoComponent"]
+  },
+  Npc: {
+    Category: "怪物&生物&NPC类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
 该类型的实体在SimpleNpc的基础上添加了交互逻辑与AI逻辑。`,
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "StateComponent", "FlowComponent", "BehaviorFlowComponent", "TalkComponent", "NpcComponent", "EntitySpawnerComponent"]
-    },
-    RefreshSingle: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["RefreshSingleComponent", "StateComponent", "EntitySpawnerComponent", "BaseInfoComponent"]
-    },
-    RefreshEntity: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "RefreshEntityComponent", "StateComponent"]
-    },
-    Rotator: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "RotatorComponent", "StateComponent", "EventComponent"]
-    },
-    SphereActor: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "SphereComponent", "GrabComponent"]
-    },
-    SphereFactory: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "SphereFactoryComponent", "EntitySpawnerComponent", "EventComponent", "StateComponent"]
-    },
-    Spring: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["SpringComponent", "BaseInfoComponent"]
-    },
-    SpringBoard: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "SpringBoardComponent", "StateComponent", "SimpleComponent"]
-    },
-    StateEntity: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "EntityStateComponent", "StateComponent", "ActorStateComponent", "CalculateComponent", "VarComponent", "EntitySpawnerComponent"]
-    },
-    Switcher: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "StateComponent", "EntityStateComponent", "ActorStateComponent", "CalculateComponent", "SwitcherComponent", "EntitySpawnerComponent"]
-    },
-    Trample: {
-      Category: "机关玩法类",
-      Owner: 10,
-      Status: "可使用",
-      Description: `
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "StateComponent", "FlowComponent", "BehaviorFlowComponent", "TalkComponent", "NpcComponent", "EntitySpawnerComponent"]
+  },
+  RefreshSingle: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["RefreshSingleComponent", "StateComponent", "EntitySpawnerComponent", "BaseInfoComponent"]
+  },
+  RefreshEntity: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "RefreshEntityComponent", "StateComponent"]
+  },
+  Rotator: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "RotatorComponent", "StateComponent", "EventComponent"]
+  },
+  SphereActor: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "SphereComponent", "GrabComponent"]
+  },
+  SphereFactory: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "SphereFactoryComponent", "EntitySpawnerComponent", "EventComponent", "StateComponent"]
+  },
+  Spring: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["SpringComponent", "BaseInfoComponent"]
+  },
+  SpringBoard: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "SpringBoardComponent", "StateComponent", "SimpleComponent"]
+  },
+  StateEntity: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "EntityStateComponent", "StateComponent", "ActorStateComponent", "CalculateComponent", "VarComponent", "EntitySpawnerComponent"]
+  },
+  Switcher: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "StateComponent", "EntityStateComponent", "ActorStateComponent", "CalculateComponent", "SwitcherComponent", "EntitySpawnerComponent"]
+  },
+  Trample: {
+    Category: "机关玩法类",
+    Owner: 10,
+    Status: "可使用",
+    Description: `
 该类型的实体用于踩踏机关机关的功能实现，详情点击跳转👉[踩踏机关组件](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-GjvFds0ctoi8m4xzXTUcNCyrnVe)。`,
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "TrampleUe5Component", "SimpleComponent", "StateComponent"]
-    },
-    TriggerUe5: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "StateComponent", "TriggerUe5Component", "EntitySpawnerComponent"]
-    },
-    Trigger: {
-      Category: "触发器类",
-      Owner: 7,
-      Status: "可使用",
-      Description: `
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "TrampleUe5Component", "SimpleComponent", "StateComponent"]
+  },
+  TriggerUe5: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "StateComponent", "TriggerUe5Component", "EntitySpawnerComponent"]
+  },
+  Trigger: {
+    Category: "触发器类",
+    Owner: 7,
+    Status: "可使用",
+    Description: `
 该类型的实体视为范围触发器，可在实体进出指定范围时触发对应行为，详情点击跳转👉https://kurogame.feishu.cn/wiki/wikcnZuGwddQ1JSyo3UIZ24PC5e。
 - 通过[TriggerComponent](https://kurogame.feishu.cn/wiki/wikcnZuGwddQ1JSyo3UIZ24PC5e)组件设置触发机制、以及实体进出时触发的Action。
 - 通过[RangeComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-Uxu9dEsPYoRGOKxlzCrcnkWtnId)组件设置触发区域。`,
-      EntityLogic: "Custom",
-      EntityType: void 0,
-      Components: ["BaseInfoComponent", "TriggerComponent", "RangeComponent"]
-    },
-    Underground: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "UndergroundComponent", "StateComponent", "EventComponent"]
-    },
-    UndergroundComponent: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: []
-    },
-    RefreshComponent: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "InteractiveComponent", "RefreshComponent", "RewardComponent"]
-    },
-    EntityPackage: {
-      Category: "",
-      Owner: 0,
-      Status: "",
-      Description: "",
-      EntityType: void 0,
-      EntityLogic: "Item",
-      Components: ["BaseInfoComponent", "EntityPackageComponent"]
-    }
-  }, ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RewardComponent", "VisionCaptureComponent", "MonsterComponent", "CombatComponent", "RefreshComponent", "EntityVisibleComponent", "BubbleComponent"]);
-
+    EntityLogic: "Custom",
+    EntityType: undefined,
+    Components: ["BaseInfoComponent", "TriggerComponent", "RangeComponent"]
+  },
+  Underground: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "UndergroundComponent", "StateComponent", "EventComponent"]
+  },
+  UndergroundComponent: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: []
+  },
+  RefreshComponent: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "InteractiveComponent", "RefreshComponent", "RewardComponent"]
+  },
+  EntityPackage: {
+    Category: "",
+    Owner: 0,
+    Status: "",
+    Description: "",
+    EntityType: undefined,
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "EntityPackageComponent"]
+  }
+};
+const monsterComponents = ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RewardComponent", "VisionCaptureComponent", "MonsterComponent", "CombatComponent", "RefreshComponent", "EntityVisibleComponent", "BubbleComponent"];
 function isValidEntityType(t) {
-  return void 0 !== exports.entityTypeConfig[t]
+  return exports.entityTypeConfig[t] !== undefined;
 }
 exports.entityDetailsAki = {
   Position: {
@@ -698,6 +700,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "HookLockPoint", "SceneItemLifeCycleComponent"]
   },
+  TimeScaledHook: {
+    Category: "场景交互物类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "时间缩放控制钩锁，支持根据慢放状态解锁钩锁",
+    EntityType: "时间缩放控制钩锁(TimeScaledHook)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "HookLockPoint", "SceneItemLifeCycleComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneItemAttributeComponent"]
+  },
   ItemFoundation: {
     Category: "机关玩法类",
     Owner: 3,
@@ -810,12 +821,10 @@ exports.entityDetailsAki = {
     Category: "触发器类",
     Owner: 3,
     Status: "可使用",
-    Description: `
-该类型的实体可以通过控物交互吸取并投掷出去。
-- 通过[TeleControl2](https://kurogame.feishu.cn/wiki/wikcn6Gq4hEX1hHdgS6txOyOMxh)组件设置被控物的类型以及投掷轨迹等数据。`,
+    Description: "支持触发器和被打击的控物",
     EntityLogic: "Item",
     EntityType: "培养皿(TeleControl4)",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "InteractAudioComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "ResetSelfPosComponent", "NearbyTrackingComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TeleControl2", "ResetSelfPosComponent", "HitComponent", "DestructibleItem", "FightInteractComponent", "SceneItemLifeCycleComponent", "RangeComponent", "TriggerComponent"]
   },
   TeleControlGroup: {
     Category: "组功能类",
@@ -1497,6 +1506,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TriggerComponent", "RangeComponent", "SceneItemMovementComponent", "TargetGearComponent", "SceneBulletComponent", "SceneItemAttributeComponent", "LevelPrefabPerformComponent", "SceneItemLifeCycleComponent"]
   },
+  SceneBulletTrigger: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "带触发器的场景子弹，支持移动旋转",
+    EntityType: "场景子弹触发器(SceneBulletTrigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "TriggerComponent", "RangeComponent", "SceneItemMovementComponent", "RotatorComponent2", "SceneBulletComponent", "SceneItemLifeCycleComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "HitComponent"]
+  },
   TurntableController: {
     Category: "机关玩法类",
     Owner: 3,
@@ -1526,6 +1544,16 @@ exports.entityDetailsAki = {
     EntityType: "带触发器的条件监听器(TriggerConditionListener)",
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "RangeComponent", "TriggerComponent", "VarComponent", "SceneItemLifeCycleComponent"]
+  },
+  HitConditionListener: {
+    Category: "场景交互物类",
+    Owner: 11,
+    Status: "可使用",
+    Description: `
+该类型的实体用于监听外部事件并触发对应Action，详情点击跳转👉https://kurogame.feishu.cn/wiki/Qy4wwVEL0iY3V5kUvVkc2Ksgnqb。`,
+    EntityType: "受击条件监听器(HitConditionListener)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "RangeComponent", "TriggerComponent", "VarComponent", "SceneItemLifeCycleComponent", "HitComponent"]
   },
   ReboundPlateGear: {
     Category: "机关玩法类",
@@ -2120,6 +2148,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "VarComponent", "RewardComponent"]
   },
+  MusicStand: {
+    Category: "机关玩法类",
+    Owner: 16,
+    Status: "开发中",
+    Description: "调律台对应的乐谱架，交付乐谱后解锁调律台",
+    EntityType: "乐谱架(MusicStand)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent"]
+  },
   TowerDefenseTrap: {
     Category: "塔防陷阱",
     Owner: 12,
@@ -2147,55 +2184,81 @@ exports.entityDetailsAki = {
     EntityLogic: "Custom",
     Components: ["BaseInfoComponent", "RangeComponent", "PerformanceOptimizationComponent"]
   }
-}, exports.entityDetails = {
+};
+exports.entityDetails = {
   ...exports.entityDetailsUe5,
   ...exports.entityDetailsAki
-}, exports.componentsByEntityUe5 = Object.fromEntries(Object.entries(exports.entityDetailsUe5).map(([t, e]) => [t, e.Components])), exports.componentsByEntityAki = Object.fromEntries(Object.entries(exports.entityDetailsAki).map(([t, e]) => [t, e.Components])), exports.entityTypesUe5 = Object.keys(exports.componentsByEntityUe5).sort(), exports.entityTypesAki = Object.keys(exports.componentsByEntityAki).sort(), exports.entityTypeConfig = Object.fromEntries(Object.entries(exports.entityDetails).map(([t, e]) => [t, e.EntityType])), exports.isValidEntityType = isValidEntityType, exports.monsterEntityTypes = new Set(["Monster", "NpcMonster", "MonsterWithInhalation"]), exports.entityDescriptionConfig = Object.fromEntries(Object.entries(exports.entityDetails).map(([t, e]) => [t, {
+};
+exports.componentsByEntityUe5 = Object.fromEntries(Object.entries(exports.entityDetailsUe5).map(([t, e]) => [t, e.Components]));
+exports.componentsByEntityAki = Object.fromEntries(Object.entries(exports.entityDetailsAki).map(([t, e]) => [t, e.Components]));
+exports.entityTypesUe5 = Object.keys(exports.componentsByEntityUe5).sort();
+exports.entityTypesAki = Object.keys(exports.componentsByEntityAki).sort();
+exports.entityTypeConfig = Object.fromEntries(Object.entries(exports.entityDetails).map(([t, e]) => [t, e.EntityType]));
+exports.isValidEntityType = isValidEntityType;
+exports.monsterEntityTypes = new Set(["Monster", "NpcMonster", "MonsterWithInhalation"]);
+exports.entityDescriptionConfig = Object.fromEntries(Object.entries(exports.entityDetails).map(([t, e]) => [t, {
   Category: e.Category,
   Owner: e.Owner,
   Status: e.Status,
   Description: e.Description
 }]));
 const collectRewardEntityTypes = ["Collect", "Animal", "Animal2", "CombatAnimal", "CombatAnimal2", "CollectAnimal", "CollectAnimalPart", "TreasureBox"];
-
 function getRewardTypeConfig(t) {
-  return collectRewardEntityTypes.includes(t) ? IComponent_1.rewardTypeCollectConfig : IComponent_1.rewardTypeCommonConfig
-}
-var EDevelopmentStatus, EExploratoryBelongType, EEffectConfigType, EHideGroupObjectType;
-
-function decompressEntityData(t, e) {
-  return void 0 === e ? t : {
-    ObjType: t.ObjType,
-    EdPlannedBranch: t.EdPlannedBranch,
-    BlueprintType: t.BlueprintType,
-    Name: t.Name,
-    Id: t.Id,
-    Transform: t.Transform,
-    InSleep: t.InSleep,
-    IsScaleEnabled: t.IsScaleEnabled,
-    IsHidden: t.IsHidden,
-    IsClientHidden: t.IsClientHidden,
-    IsAlwaysLoad: t.IsAlwaysLoad,
-    ComponentsData: (0, IUtil_1.applyDiff)(t.ComponentsData, e.ComponentsData, IUtil_1.entityDataIgnoreFunc),
-    EdEntityTip: t.EdEntityTip,
-    Children: t.Children,
-    Reference: t.Reference,
-    WeakReference: t.WeakReference,
-    AreaId: t.AreaId,
-    EdBundleMainEntityId: t.EdBundleMainEntityId
+  if (collectRewardEntityTypes.includes(t)) {
+    return IComponent_1.rewardTypeCollectConfig;
+  } else {
+    return IComponent_1.rewardTypeCommonConfig;
   }
 }
-exports.getRewardTypeConfig = getRewardTypeConfig, exports.editorBpTypes = new Set(["UseCase001", "UseCase002"]), exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = "EntityBundle_MainEntity",
-  function(t) {
-    t[t.Developing = 0] = "Developing", t[t.Released = 1] = "Released", t[t.Discarded = 2] = "Discarded"
-  }(EDevelopmentStatus = exports.EDevelopmentStatus || (exports.EDevelopmentStatus = {})), exports.decompressEntityData = decompressEntityData,
-  function(t) {
-    t[t.Entity = 0] = "Entity", t[t.LevelPlay = 1] = "LevelPlay"
-  }(EExploratoryBelongType = exports.EExploratoryBelongType || (exports.EExploratoryBelongType = {})),
-  function(t) {
-    t[t.Death = 0] = "Death"
-  }(EEffectConfigType = exports.EEffectConfigType || (exports.EEffectConfigType = {})),
-  function(t) {
-    t.Entity = "Entity", t.LevelPlay = "LevelPlay"
-  }(EHideGroupObjectType = exports.EHideGroupObjectType || (exports.EHideGroupObjectType = {})), exports.ENTITY_RESETAREA_BP_TYPE = "Gameplay331", exports.ENTITY_RESETPOINT_BP_TYPE = "Gameplay330";
-//# sourceMappingURL=IEntity.js.map
+var EDevelopmentStatus;
+var EExploratoryBelongType;
+var EEffectConfigType;
+var EHideGroupObjectType;
+function decompressEntityData(t, e) {
+  if (e === undefined) {
+    return t;
+  } else {
+    return {
+      ObjType: t.ObjType,
+      EdPlannedBranch: t.EdPlannedBranch,
+      BlueprintType: t.BlueprintType,
+      Name: t.Name,
+      Id: t.Id,
+      Transform: t.Transform,
+      InSleep: t.InSleep,
+      IsScaleEnabled: t.IsScaleEnabled,
+      IsHidden: t.IsHidden,
+      IsClientHidden: t.IsClientHidden,
+      IsAlwaysLoad: t.IsAlwaysLoad,
+      ComponentsData: (0, IUtil_1.applyDiff)(t.ComponentsData, e.ComponentsData, IUtil_1.entityDataIgnoreFunc),
+      EdEntityTip: t.EdEntityTip,
+      Children: t.Children,
+      Reference: t.Reference,
+      WeakReference: t.WeakReference,
+      AreaId: t.AreaId,
+      EdBundleMainEntityId: t.EdBundleMainEntityId
+    };
+  }
+}
+exports.getRewardTypeConfig = getRewardTypeConfig;
+exports.editorBpTypes = new Set(["UseCase001", "UseCase002"]);
+exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = "EntityBundle_MainEntity";
+(function (t) {
+  t[t.Developing = 0] = "Developing";
+  t[t.Released = 1] = "Released";
+  t[t.Discarded = 2] = "Discarded";
+})(EDevelopmentStatus = exports.EDevelopmentStatus ||= {});
+exports.decompressEntityData = decompressEntityData;
+(function (t) {
+  t[t.Entity = 0] = "Entity";
+  t[t.LevelPlay = 1] = "LevelPlay";
+})(EExploratoryBelongType = exports.EExploratoryBelongType ||= {});
+(function (t) {
+  t[t.Death = 0] = "Death";
+})(EEffectConfigType = exports.EEffectConfigType ||= {});
+(function (t) {
+  t.Entity = "Entity";
+  t.LevelPlay = "LevelPlay";
+})(EHideGroupObjectType = exports.EHideGroupObjectType ||= {});
+exports.ENTITY_RESETAREA_BP_TYPE = "Gameplay331";
+exports.ENTITY_RESETPOINT_BP_TYPE = "Gameplay330"; //# sourceMappingURL=IEntity.js.map

@@ -1,24 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log"),
-  IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
+const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
+const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
 class TsGameSplineActor extends UE.Actor {
   constructor() {
-    super(...arguments), this.SplineData = void 0
+    super(...arguments);
+    this.SplineData = undefined;
   }
   Constructor() {
-    this.SplineData = void 0
+    this.SplineData = undefined;
   }
   GetPatrolSpeedByIndex(e) {
-    return this.SplineData.Type !== IComponent_1.ESplineType.Patrol ? (Log_1.Log.CheckError() && Log_1.Log.Error("LevelPlay", 31, "[TsGameSplineActor.GetPatrolSpeedByIndex]当前样条非巡逻样条"), -1) : this.SplineData.Points[e].MoveSpeed
+    if (this.SplineData.Type !== IComponent_1.ESplineType.Patrol) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelPlay", 31, "[TsGameSplineActor.GetPatrolSpeedByIndex]当前样条非巡逻样条");
+      }
+      return -1;
+    } else {
+      return this.SplineData.Points[e].MoveSpeed;
+    }
   }
   GetPointRotatorByIndex(e) {
-    var e = this.SplineData.Points[e].Rotation,
-      t = new UE.Rotator;
-    return void 0 !== e && (t.Pitch = e.Y ?? 0, t.Yaw = e.Z ?? 0, t.Roll = e.X ?? 0), t
+    var e = this.SplineData.Points[e].Rotation;
+    var t = new UE.Rotator();
+    if (e !== undefined) {
+      t.Pitch = e.Y ?? 0;
+      t.Yaw = e.Z ?? 0;
+      t.Roll = e.X ?? 0;
+    }
+    return t;
   }
 }
 exports.default = TsGameSplineActor;

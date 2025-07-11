@@ -1,75 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonItemData = void 0;
-const TimeUtil_1 = require("../../../Common/TimeUtil"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  ItemDataBase_1 = require("./ItemDataBase");
+  value: true
+});
+exports.CommonItemData = undefined;
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const ItemDataBase_1 = require("./ItemDataBase");
 class CommonItemData extends ItemDataBase_1.ItemDataBase {
   constructor(e, t, r, i, s) {
-    super(e, r, i), this.UniqueId = 0, this.EndTime = 0, this.UniqueId = t, this.EndTime = s ?? 0
+    super(e, r, i);
+    this.UniqueId = 0;
+    this.EndTime = 0;
+    this.UniqueId = t;
+    this.EndTime = s ?? 0;
   }
   GetConfig() {
-    return ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(this.ConfigId)
+    return ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(this.ConfigId);
   }
   GetUniqueId() {
-    return this.UniqueId
+    return this.UniqueId;
   }
   GetMainType() {
     var e = this.GetConfig();
-    if (e) return e.MainTypeId
+    if (e) {
+      return e.MainTypeId;
+    }
   }
   GetType() {
     var e = this.GetConfig();
-    if (e) return e.ItemType
+    if (e) {
+      return e.ItemType;
+    }
   }
   GetMaxStackCount() {
     var e = this.GetConfig();
-    return e ? e.MaxStackableNum : 0
+    if (e) {
+      return e.MaxStackableNum;
+    } else {
+      return 0;
+    }
   }
   GetQuality() {
-    return this.GetConfig()?.QualityId
+    return this.GetConfig()?.QualityId;
   }
   GetSortIndex() {
-    return this.GetConfig()?.SortIndex
+    return this.GetConfig()?.SortIndex;
   }
   GetItemAccess() {
-    return this.GetConfig()?.ItemAccess
+    return this.GetConfig()?.ItemAccess;
   }
   GetShowTypeList() {
-    return this.GetConfig()?.ShowTypes
+    return this.GetConfig()?.ShowTypes;
   }
   GetUseCountLimit() {
-    return this.GetConfig().UseCountLimit
+    return this.GetConfig().UseCountLimit;
   }
   GetRedDotDisableRule() {
-    return this.GetConfig().RedDotDisableRule
+    return this.GetConfig().RedDotDisableRule;
   }
   HasRedDot() {
     var e = this.GetConfigId();
-    return ModelManager_1.ModelManager.InventoryModel.IsCommonItemHasRedDot(e)
+    return ModelManager_1.ModelManager.InventoryModel.IsCommonItemHasRedDot(e);
   }
   SetEndTime(e) {
-    this.EndTime = e
+    this.EndTime = e;
   }
   IsLimitTimeItem() {
-    return 0 < this.EndTime && !this.IsOverTime()
+    return this.EndTime > 0 && !this.IsOverTime();
   }
   GetEndTime() {
-    return this.EndTime
+    return this.EndTime;
   }
   IsOverTime() {
-    return !(this.EndTime <= 0) && this.EndTime <= TimeUtil_1.TimeUtil.GetServerTimeStamp()
+    return !(this.EndTime <= 0) && this.EndTime <= TimeUtil_1.TimeUtil.GetServerTimeStamp();
   }
   IsValid() {
-    return !this.IsOverTime()
+    return !this.IsOverTime();
   }
   IsBuffEquipItem() {
-    return ConfigManager_1.ConfigManager.BuffItemConfig.IsEquipBuffItem(this.ConfigId)
+    return ConfigManager_1.ConfigManager.BuffItemConfig.IsEquipBuffItem(this.ConfigId);
   }
   IsBuffEquippedItem() {
-    return !!this.IsBuffEquipItem() && ModelManager_1.ModelManager.BuffItemModel.IsEquippedBuffItem(this.ConfigId)
+    return !!this.IsBuffEquipItem() && ModelManager_1.ModelManager.BuffItemModel.IsEquippedBuffItem(this.ConfigId);
   }
 }
 exports.CommonItemData = CommonItemData;

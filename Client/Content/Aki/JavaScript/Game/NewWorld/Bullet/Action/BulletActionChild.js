@@ -1,40 +1,57 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletActionChild = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon"),
-  TimeUtil_1 = require("../../../Common/TimeUtil"),
-  BulletController_1 = require("../BulletController"),
-  BulletUtil_1 = require("../BulletUtil"),
-  BulletChildInfo_1 = require("../Model/BulletChildInfo"),
-  BulletActionBase_1 = require("./BulletActionBase");
+  value: true
+});
+exports.BulletActionChild = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const BulletController_1 = require("../BulletController");
+const BulletUtil_1 = require("../BulletUtil");
+const BulletChildInfo_1 = require("../Model/BulletChildInfo");
+const BulletActionBase_1 = require("./BulletActionBase");
 class BulletActionChild extends BulletActionBase_1.BulletActionBase {
   constructor() {
-    super(...arguments), this.ChildInfo = void 0, this.L5o = void 0
+    super(...arguments);
+    this.ChildInfo = undefined;
+    this.L5o = undefined;
   }
   OnExecute() {
-    this.ChildInfo = new BulletChildInfo_1.BulletChildInfo, this.BulletInfo.ChildInfo = this.ChildInfo, this.ChildInfo.HaveSummonedBulletNumber = [], this.L5o = this.BulletInfo.BulletDataMain.Children;
+    this.ChildInfo = new BulletChildInfo_1.BulletChildInfo();
+    this.BulletInfo.ChildInfo = this.ChildInfo;
+    this.ChildInfo.HaveSummonedBulletNumber = [];
+    this.L5o = this.BulletInfo.BulletDataMain.Children;
     var i = this.L5o.length;
-    for (let t = 0; t < i; t++) this.ChildInfo.HaveSummonedBulletNumber.push(0);
-    this.D5o()
+    for (let t = 0; t < i; t++) {
+      this.ChildInfo.HaveSummonedBulletNumber.push(0);
+    }
+    this.D5o();
   }
   Clear() {
-    super.Clear(), this.ChildInfo = void 0, this.L5o = void 0
+    super.Clear();
+    this.ChildInfo = undefined;
+    this.L5o = undefined;
   }
   D5o() {
-    for (const t of this.L5o)
-      if (2 === t.Condition) return void(this.ChildInfo.HaveSpecialChildrenBullet = !0)
+    for (const t of this.L5o) {
+      if (t.Condition === 2) {
+        this.ChildInfo.HaveSpecialChildrenBullet = true;
+        return;
+      }
+    }
   }
   OnTick(t) {
-    this.BulletInfo.NeedDestroy || this.R5o()
+    if (!this.BulletInfo.NeedDestroy) {
+      this.R5o();
+    }
   }
   R5o() {
     var i = this.L5o.length;
     for (let t = 0; t < i; ++t) {
-      var e = this.L5o[t],
-        l = t;
-      if (!(e.RowName <= MathCommon_1.MathCommon.KindaSmallNumber || 0 !== e.Condition) && !(0 < e.Num && !(this.ChildInfo.HaveSummonedBulletNumber[l] < e.Num) || (e.Delay < 0 && Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "子弹Delay为负数！"), this.BulletInfo.LiveTime < e.Delay * TimeUtil_1.TimeUtil.InverseMillisecond + this.ChildInfo.HaveSummonedBulletNumber[l] * e.Interval * TimeUtil_1.TimeUtil.InverseMillisecond))) {
+      var e = this.L5o[t];
+      var l = t;
+      if (!(e.RowName <= MathCommon_1.MathCommon.KindaSmallNumber) && e.Condition === 0 && (!(e.Num > 0) || !!(this.ChildInfo.HaveSummonedBulletNumber[l] < e.Num)) && !(e.Delay < 0 && Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "子弹Delay为负数！"), this.BulletInfo.LiveTime < e.Delay * TimeUtil_1.TimeUtil.InverseMillisecond + this.ChildInfo.HaveSummonedBulletNumber[l] * e.Interval * TimeUtil_1.TimeUtil.InverseMillisecond)) {
         this.ChildInfo.HaveSummonedBulletNumber[l]++;
         l = BulletController_1.BulletController.CreateBulletCustomTarget(this.BulletInfo.AttackerActorComp.Actor, e.RowName.toString(), this.BulletInfo.ActorComponent.ActorTransform, {
           SkillId: this.BulletInfo.BulletInitParams.SkillId,
@@ -43,10 +60,13 @@ class BulletActionChild extends BulletActionBase_1.BulletActionBase {
           ParentId: this.BulletInfo.Entity.Id,
           DtType: this.BulletInfo.BulletInitParams.DtType,
           BattleFlags: this.BulletInfo.BulletInitParams.BattleFlags,
-          ParentIds: void 0
+          ParentIds: undefined
         }, this.BulletInfo.ContextId);
-        if (l) BulletUtil_1.BulletUtil.ProcessHandOverEffectToSon(this.BulletInfo, l);
-        else if (e.BreakOnFail) return
+        if (l) {
+          BulletUtil_1.BulletUtil.ProcessHandOverEffectToSon(this.BulletInfo, l);
+        } else if (e.BreakOnFail) {
+          return;
+        }
       }
     }
   }

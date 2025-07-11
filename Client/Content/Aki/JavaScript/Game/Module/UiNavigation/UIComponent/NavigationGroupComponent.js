@@ -1,92 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationGroupInsideComponent = exports.NavigationGroupPrevComponent = exports.NavigationGroupDownNextComponent = exports.NavigationGroupUpNextComponent = exports.NavigationGroupNextComponent = void 0;
-const StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  UiNavigationJoystickInput_1 = require("../Module/UiNavigationJoystickInput"),
-  UiNavigationLogic_1 = require("../New/UiNavigationLogic"),
-  UiNavigationNewController_1 = require("../New/UiNavigationNewController"),
-  HotKeyComponent_1 = require("./HotKeyComponent");
+  value: true
+});
+exports.NavigationGroupInsideComponent = exports.NavigationGroupPrevComponent = exports.NavigationGroupDownNextComponent = exports.NavigationGroupUpNextComponent = exports.NavigationGroupNextComponent = undefined;
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const UiNavigationJoystickInput_1 = require("../Module/UiNavigationJoystickInput");
+const UiNavigationLogic_1 = require("../New/UiNavigationLogic");
+const UiNavigationNewController_1 = require("../New/UiNavigationNewController");
+const HotKeyComponent_1 = require("./HotKeyComponent");
 class NavigationGroupNextComponentBase extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
-    super(...arguments), this.Lqo = t => {
-      t === this.GetDirection() && this.JumpToNextGroupListener()
-    }
+    super(...arguments);
+    this.Lqo = t => {
+      if (t === this.GetDirection()) {
+        this.JumpToNextGroupListener();
+      }
+    };
   }
   JumpToNextGroupListener() {
-    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroupByTag(this.GetHotKeyConfig().BindButtonTag)
+    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroupByTag(this.GetHotKeyConfig().BindButtonTag);
   }
   OnRelease(t) {
-    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroupByTag(t.BindButtonTag)
+    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroupByTag(t.BindButtonTag);
   }
   OnStartInputAxis(t) {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.Lqo)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.Lqo);
   }
   OnFinishInputAxis(t) {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Lqo)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Lqo);
   }
   OnClear() {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Lqo)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Lqo);
   }
   OnRefreshSelfHotKeyState(i) {
     var o = i.GetFocusListener();
     if (o) {
-      var o = o.GetNavigationGroup(),
-        e = this.GetBindButtonTag();
-      let t = void 0;
-      t = e ? o.GroupNameMap.Get(e) : o.NextGroupName, !StringUtils_1.StringUtils.IsEmpty(t) && (e = i.GetActiveNavigationGroupByNameCheckAll(t)) ? (o = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(e), this.SetVisibleMode(2, o)) : this.SetVisibleMode(2, !1)
-    } else this.SetVisibleMode(2, !1)
+      var o = o.GetNavigationGroup();
+      var e = this.GetBindButtonTag();
+      let t = undefined;
+      t = e ? o.GroupNameMap.Get(e) : o.NextGroupName;
+      if (!StringUtils_1.StringUtils.IsEmpty(t) && (e = i.GetActiveNavigationGroupByNameCheckAll(t))) {
+        o = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(e);
+        this.SetVisibleMode(2, o);
+      } else {
+        this.SetVisibleMode(2, false);
+      }
+    } else {
+      this.SetVisibleMode(2, false);
+    }
   }
 }
 class NavigationGroupNextComponent extends NavigationGroupNextComponentBase {
   GetDirection() {
-    return 3
+    return 3;
   }
 }
 exports.NavigationGroupNextComponent = NavigationGroupNextComponent;
 class NavigationGroupUpNextComponent extends NavigationGroupNextComponentBase {
   GetDirection() {
-    return 1
+    return 1;
   }
 }
 exports.NavigationGroupUpNextComponent = NavigationGroupUpNextComponent;
 class NavigationGroupDownNextComponent extends NavigationGroupNextComponentBase {
   GetDirection() {
-    return 0
+    return 0;
   }
 }
 exports.NavigationGroupDownNextComponent = NavigationGroupDownNextComponent;
 class NavigationGroupPrevComponent extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
-    super(...arguments), this.Dqo = t => {
-      2 === t && UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroup(6)
-    }
+    super(...arguments);
+    this.Dqo = t => {
+      if (t === 2) {
+        UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroup(6);
+      }
+    };
   }
   OnPress() {
-    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroup(6)
+    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroup(6);
   }
   OnStartInputAxis(t) {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.Dqo)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.Dqo);
   }
   OnFinishInputAxis(t) {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Dqo)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Dqo);
   }
   OnClear() {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Dqo)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Dqo);
   }
   OnRefreshSelfHotKeyState(t) {
     var i = t.GetFocusListener();
-    i && (i = i.GetNavigationGroup(), !StringUtils_1.StringUtils.IsEmpty(i.PrevGroupName)) && (t = t.GetActiveNavigationGroupByNameCheckAll(i.PrevGroupName)) ? (i = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(t), this.SetVisibleMode(2, i)) : this.SetVisibleMode(2, !1)
+    if (i && (i = i.GetNavigationGroup(), !StringUtils_1.StringUtils.IsEmpty(i.PrevGroupName)) && (t = t.GetActiveNavigationGroupByNameCheckAll(i.PrevGroupName))) {
+      i = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(t);
+      this.SetVisibleMode(2, i);
+    } else {
+      this.SetVisibleMode(2, false);
+    }
   }
 }
 exports.NavigationGroupPrevComponent = NavigationGroupPrevComponent;
 class NavigationGroupInsideComponent extends HotKeyComponent_1.HotKeyComponent {
   OnRelease() {
-    UiNavigationNewController_1.UiNavigationNewController.JumpInsideNavigationGroup()
+    UiNavigationNewController_1.UiNavigationNewController.JumpInsideNavigationGroup();
   }
   OnRefreshSelfHotKeyState(t) {
     t = t.GetFocusListener();
-    t && this.IsLinkListener(t.GetOwner()) && UiNavigationNewController_1.UiNavigationNewController.GetCanFocusInsideListener(t) ? this.SetVisibleMode(2, !0) : this.SetVisibleMode(2, !1)
+    if (t && this.IsLinkListener(t.GetOwner()) && UiNavigationNewController_1.UiNavigationNewController.GetCanFocusInsideListener(t)) {
+      this.SetVisibleMode(2, true);
+    } else {
+      this.SetVisibleMode(2, false);
+    }
   }
 }
 exports.NavigationGroupInsideComponent = NavigationGroupInsideComponent;

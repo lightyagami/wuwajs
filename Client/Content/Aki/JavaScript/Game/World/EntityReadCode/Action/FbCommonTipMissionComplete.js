@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCommonTipMissionComplete = void 0;
+  value: true
+});
+exports.FbCommonTipMissionComplete = undefined;
 class FbCommonTipMissionComplete {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._yh = !1, this.cyh = void 0, this.uyh = !1, this.dyh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._yh = false;
+    this.cyh = undefined;
+    this.uyh = false;
+    this.dyh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCommonTipMissionComplete(t)
+    if (t) {
+      return new FbCommonTipMissionComplete(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TidMainText() {
-    return this._yh || (this._yh = !0, this.cyh = this.FbDataInternal.tidMainText()), this.cyh
+    if (!this._yh) {
+      this._yh = true;
+      this.cyh = this.FbDataInternal.tidMainText();
+    }
+    return this.cyh;
   }
   get TidSubText() {
-    return this.uyh || (this.uyh = !0, this.dyh = this.FbDataInternal.tidSubText()), this.dyh
+    if (!this.uyh) {
+      this.uyh = true;
+      this.dyh = this.FbDataInternal.tidSubText();
+    }
+    return this.dyh;
   }
 }
 exports.FbCommonTipMissionComplete = FbCommonTipMissionComplete;

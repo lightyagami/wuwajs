@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeaponItemSmallItemGrid = void 0;
+  value: true
+});
+exports.WeaponItemSmallItemGrid = undefined;
 const LoopScrollSmallItemGrid_1 = require("../Common/SmallItemGrid/LoopScrollSmallItemGrid");
 class WeaponItemSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGrid {
   OnRefresh(e, l, t) {
-    this.Refresh(e)
+    this.Refresh(e);
   }
   Refresh(e) {
     e = {
@@ -13,10 +15,10 @@ class WeaponItemSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallI
       Data: e,
       ItemConfigId: e.GetItemId()
     };
-    this.Apply(e)
+    this.Apply(e);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
 }
 exports.WeaponItemSmallItemGrid = WeaponItemSmallItemGrid;

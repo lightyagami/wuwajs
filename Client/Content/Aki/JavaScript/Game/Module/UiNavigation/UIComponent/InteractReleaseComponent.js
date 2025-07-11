@@ -1,27 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InteractReleaseComponent = void 0;
-const UiNavigationNewController_1 = require("../New/UiNavigationNewController"),
-  HotKeyComponent_1 = require("./HotKeyComponent");
+  value: true
+});
+exports.InteractReleaseComponent = undefined;
+const UiNavigationNewController_1 = require("../New/UiNavigationNewController");
+const HotKeyComponent_1 = require("./HotKeyComponent");
 class InteractReleaseComponent extends HotKeyComponent_1.HotKeyComponent {
   OnPress(e) {
-    UiNavigationNewController_1.UiNavigationNewController.Interact(!0)
+    UiNavigationNewController_1.UiNavigationNewController.Interact(true);
   }
   OnRelease(e) {
-    UiNavigationNewController_1.UiNavigationNewController.Interact(!1)
+    UiNavigationNewController_1.UiNavigationNewController.Interact(false);
   }
   OnRefreshSelfHotKeyState(e) {
     e = e.GetFocusListener();
-    this.SetVisibleMode(2, void 0 !== e)
+    this.SetVisibleMode(2, e !== undefined);
   }
   OnRefreshHotKeyText(e) {
     e = e.GetFocusListener()?.GetTextChangeComponent();
-    e ? this.SetHotKeyDescTextForce(e.Text.GetText()) : this.ResetHotKeyDescTextForce()
+    if (e) {
+      this.SetHotKeyDescTextForce(e.Text.GetText());
+    } else {
+      this.ResetHotKeyDescTextForce();
+    }
   }
   OnRefreshHotKeyTextId(e) {
     var e = e.GetFocusListener();
-    e && (e = e.GetTipsTextIdByState(), this.SetHotKeyTextId(e), this.RefreshHotKeyNameText())
+    if (e) {
+      e = e.GetTipsTextIdByState();
+      this.SetHotKeyTextId(e);
+      this.RefreshHotKeyNameText();
+    }
   }
 }
 exports.InteractReleaseComponent = InteractReleaseComponent;

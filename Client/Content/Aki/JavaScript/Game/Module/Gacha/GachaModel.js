@@ -1,182 +1,267 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GachaModel = exports.GachaContentInfo = exports.GachaResult = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem"),
-  BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  LocalStorage_1 = require("../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../Common/LocalStorageDefine"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiModelResourcesManager_1 = require("../UiComponent/UiModelResourcesManager"),
-  GachaController_1 = require("./GachaController"),
-  GachaDefine_1 = require("./GachaDefine"),
-  ProtoGachaInfo_1 = require("./ProtoGachaInfo");
+  value: true
+});
+exports.GachaModel = exports.GachaContentInfo = exports.GachaResult = undefined;
+const UE = require("ue");
+const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../Core/Common/Log");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiModelResourcesManager_1 = require("../UiComponent/UiModelResourcesManager");
+const GachaController_1 = require("./GachaController");
+const GachaDefine_1 = require("./GachaDefine");
+const ProtoGachaInfo_1 = require("./ProtoGachaInfo");
 class GachaResult {
   constructor() {
-    this.e9n = void 0, this.a9n = [], this.IsNew = !0, this.h9n = [], this.l9n = void 0
+    this.e9n = undefined;
+    this.a9n = [];
+    this.IsNew = true;
+    this.h9n = [];
+    this.l9n = undefined;
   }
 }
 exports.GachaResult = GachaResult;
 class GachaContentInfo {
   constructor() {
-    this.title = "", this.explain = "", this.detail = ""
+    this.title = "";
+    this.explain = "";
+    this.detail = "";
   }
 }
 exports.GachaContentInfo = GachaContentInfo;
 class GachaModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.IsCacheShowNewNotify = !1, this.MWt = void 0, this.EWt = 0, this.SWt = void 0, this.yWt = void 0, this.IWt = void 0, this.TWt = !0, this.LWt = "", this.DWt = void 0, this.RWt = [], this.UWt = new Map, this.AWt = []
+    super(...arguments);
+    this.IsCacheShowNewNotify = false;
+    this.MWt = undefined;
+    this.EWt = 0;
+    this.SWt = undefined;
+    this.yWt = undefined;
+    this.IWt = undefined;
+    this.TWt = true;
+    this.LWt = "";
+    this.DWt = undefined;
+    this.RWt = [];
+    this.UWt = new Map();
+    this.AWt = [];
   }
   static IsLimit(e) {
-    return 0 !== e.BeginTime || 0 !== e.EndTime
+    return e.BeginTime !== 0 || e.EndTime !== 0;
   }
   static IsValid(e) {
     var o;
-    return !GachaModel.IsLimit(e) || (o = TimeUtil_1.TimeUtil.GetServerTime()) >= e.BeginTime && (o < e.EndTime || 0 === e.EndTime)
+    return !GachaModel.IsLimit(e) || (o = TimeUtil_1.TimeUtil.GetServerTime()) >= e.BeginTime && (o < e.EndTime || e.EndTime === 0);
   }
   GetCachedGachaInfo() {
-    return this.DWt.shift()
+    return this.DWt.shift();
   }
   CacheGachaInfo(e) {
-    this.DWt.push(e)
+    this.DWt.push(e);
   }
   set RecordId(e) {
-    this.LWt = e
+    this.LWt = e;
   }
   get RecordId() {
-    return this.LWt
+    return this.LWt;
   }
   get CanCloseView() {
-    return this.TWt
+    return this.TWt;
   }
   set CanCloseView(e) {
-    this.TWt = e
+    this.TWt = e;
   }
   get TodayResultCount() {
-    return this.EWt
+    return this.EWt;
   }
   set TodayResultCount(e) {
-    this.EWt = e
+    this.EWt = e;
   }
   get GachaInfoArray() {
-    return this.MWt
+    return this.MWt;
   }
   get CurGachaResult() {
-    return this.SWt
+    return this.SWt;
   }
   set CurGachaResult(e) {
     this.SWt = e;
-    var o = new Map;
+    var o = new Map();
     for (const s of this.SWt) {
-      var t = s?.e9n?.L8n,
-        r = s?.e9n?.n9n;
-      o.set(t, (o.get(t) ?? 0) + r)
+      var t = s?.e9n?.L8n;
+      var r = s?.e9n?.n9n;
+      o.set(t, (o.get(t) ?? 0) + r);
     }
     for (const n of this.SWt) {
-      var a = n?.e9n?.L8n,
-        i = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(a);
-      i ? n.IsNew = GachaController_1.GachaController.IsNewRole(i.Id) : (i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaWeaponRecord) ?? []).includes(a) ? n.IsNew = !1 : (n.IsNew = !0, i.push(a), LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaWeaponRecord, i))
+      var a = n?.e9n?.L8n;
+      var i = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(a);
+      if (i) {
+        n.IsNew = GachaController_1.GachaController.IsNewRole(i.Id);
+      } else if ((i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaWeaponRecord) ?? []).includes(a)) {
+        n.IsNew = false;
+      } else {
+        n.IsNew = true;
+        i.push(a);
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaWeaponRecord, i);
+      }
     }
   }
   GetGachaInfoByResourceId(e) {
-    for (const o of this.MWt)
-      if (o.ResourcesId === e) return o
+    for (const o of this.MWt) {
+      if (o.ResourcesId === e) {
+        return o;
+      }
+    }
   }
   OnInit() {
-    return this.DWt = [], !0
+    this.DWt = [];
+    return true;
   }
   OnClear() {
-    return this.CanCloseView = !0, this.MWt = void 0, this.SWt = void 0, this.yWt = void 0, this.IWt = void 0, this.DWt.length = 0, !(this.DWt = void 0)
+    this.CanCloseView = true;
+    this.MWt = undefined;
+    this.SWt = undefined;
+    this.yWt = undefined;
+    this.IWt = undefined;
+    this.DWt.length = 0;
+    return !(this.DWt = undefined);
   }
   InitGachaInfoMap(e) {
     this.MWt = [];
-    for (const o of e) this.MWt.push(new ProtoGachaInfo_1.ProtoGachaInfo(o));
-    this.MWt.sort((e, o) => e.Sort - o.Sort)
+    for (const o of e) {
+      this.MWt.push(new ProtoGachaInfo_1.ProtoGachaInfo(o));
+    }
+    this.MWt.sort((e, o) => e.Sort - o.Sort);
   }
   CheckGachaValid(e) {
-    return GachaModel.IsValid(e)
+    return GachaModel.IsValid(e);
   }
   CheckGachaValidByGachaId(e) {
     e = this.GetGachaInfo(e);
-    return !!e && this.CheckGachaValid(e)
+    return !!e && this.CheckGachaValid(e);
   }
   GetValidGachaList() {
-    var e, o = [];
-    for (const t of ModelManager_1.ModelManager.GachaModel.GachaInfoArray) ModelManager_1.ModelManager.GachaModel.CheckGachaValid(t) && (e = 0 < (e = t.UsePoolId) ? t.GetPoolInfo(e) : t.GetFirstValidPool()) && o.push(new GachaDefine_1.GachaPoolData(t, e));
-    return o
+    var e;
+    var o = [];
+    for (const t of ModelManager_1.ModelManager.GachaModel.GachaInfoArray) {
+      if (ModelManager_1.ModelManager.GachaModel.CheckGachaValid(t) && (e = (e = t.UsePoolId) > 0 ? t.GetPoolInfo(e) : t.GetFirstValidPool())) {
+        o.push(new GachaDefine_1.GachaPoolData(t, e));
+      }
+    }
+    return o;
   }
   CheckCountIsEnough(e, o) {
-    return 0 < e.DailyLimitTimes && e.TodayTimes + o > e.DailyLimitTimes ? [!1, 69] : 0 < e.TotalLimitTimes && e.TotalTimes + o > e.TotalLimitTimes ? [!1, 129] : 0 <= this.EWt && o > this.EWt ? [!1, 130] : [!0, void 0]
+    if (e.DailyLimitTimes > 0 && e.TodayTimes + o > e.DailyLimitTimes) {
+      return [false, 69];
+    } else if (e.TotalLimitTimes > 0 && e.TotalTimes + o > e.TotalLimitTimes) {
+      return [false, 129];
+    } else if (this.EWt >= 0 && o > this.EWt) {
+      return [false, 130];
+    } else {
+      return [true, undefined];
+    }
   }
   IsTotalTimesZero(e) {
-    return 0 < e.TotalLimitTimes && e.TotalTimes >= e.TotalLimitTimes
+    return e.TotalLimitTimes > 0 && e.TotalTimes >= e.TotalLimitTimes;
   }
   GetGachaInfo(e) {
-    for (const o of this.GachaInfoArray)
-      if (o.Id === e) return o
+    for (const o of this.GachaInfoArray) {
+      if (o.Id === e) {
+        return o;
+      }
+    }
   }
   RecordGachaInfo(e) {
-    return !this.IWt.has(e.Id) && (this.IWt.add(e.Id), this.yWt.push(e.Id), LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaPoolOpenRecord, this.yWt), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenGachaChanged), !0)
+    return !this.IWt.has(e.Id) && (this.IWt.add(e.Id), this.yWt.push(e.Id), LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaPoolOpenRecord, this.yWt), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenGachaChanged), true);
   }
   InitGachaPoolOpenRecord() {
-    this.yWt = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaPoolOpenRecord) ?? [], this.IWt = new Set;
-    for (const e of this.yWt) this.IWt.add(e)
+    this.yWt = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.GachaPoolOpenRecord) ?? [];
+    this.IWt = new Set();
+    for (const e of this.yWt) {
+      this.IWt.add(e);
+    }
   }
   UpdateCount(e, o) {
     this.EWt -= o;
-    for (const t of this.GachaInfoArray)
+    for (const t of this.GachaInfoArray) {
       if (t.Id === e) {
-        t.TodayTimes += o, t.TotalTimes += o;
-        break
+        t.TodayTimes += o;
+        t.TotalTimes += o;
+        break;
       }
+    }
   }
   CheckNewGachaPool() {
-    if (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Gacha", 8, "当前打开过的卡池", ["GachaPoolOpenRecord", this.yWt]), this.GachaInfoArray)
-      for (const e of this.GachaInfoArray)
-        if (!this.IWt.has(e.Id)) return !0;
-    return !1
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Gacha", 8, "当前打开过的卡池", ["GachaPoolOpenRecord", this.yWt]);
+    }
+    if (this.GachaInfoArray) {
+      for (const e of this.GachaInfoArray) {
+        if (!this.IWt.has(e.Id)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   CheckNewGachaPoolById(e) {
-    return !this.IWt.has(e)
+    return !this.IWt.has(e);
   }
   async PreloadGachaSequence(e) {
     var o = [];
-    for (const t of e) o.push(this.PreloadGachaSequenceOne(t));
-    await Promise.all(o)
+    for (const t of e) {
+      o.push(this.PreloadGachaSequenceOne(t));
+    }
+    await Promise.all(o);
   }
   GetLoadedSequence(e) {
-    return this.UWt.get(e)
+    return this.UWt.get(e);
   }
   async PreloadGachaSequenceOne(e) {
     var o = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(e);
-    const t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaSequenceConfigById(o.ShowSequence),
-      r = new CustomPromise_1.CustomPromise;
+    const t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaSequenceConfigById(o.ShowSequence);
+    const r = new CustomPromise_1.CustomPromise();
     o = ResourceSystem_1.ResourceSystem.LoadAsync(t.SequencePath, UE.LevelSequence, e => {
-      this.UWt.set(t.SequencePath, e), UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(e, !0), r.SetResult(!0)
-    }, 102), this.RWt.push(o), await r.Promise, o = ConfigManager_1.ConfigManager.GachaConfig.GetItemIdType(e);
-    const a = new CustomPromise_1.CustomPromise;
-    2 === o && (o = UiModelResourcesManager_1.UiModelResourcesManager.GetWeaponResourcesPath(e), e = UiModelResourcesManager_1.UiModelResourcesManager.LoadUiModelResources(o, () => {
-      a.SetResult(!0)
-    }), this.AWt.push(e), await a.Promise)
+      this.UWt.set(t.SequencePath, e);
+      UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(e, true);
+      r.SetResult(true);
+    }, 102);
+    this.RWt.push(o);
+    await r.Promise;
+    o = ConfigManager_1.ConfigManager.GachaConfig.GetItemIdType(e);
+    const a = new CustomPromise_1.CustomPromise();
+    if (o === 2) {
+      o = UiModelResourcesManager_1.UiModelResourcesManager.GetWeaponResourcesPath(e);
+      e = UiModelResourcesManager_1.UiModelResourcesManager.LoadUiModelResources(o, () => {
+        a.SetResult(true);
+      });
+      this.AWt.push(e);
+      await a.Promise;
+    }
   }
   ReleaseLoadGachaSequence() {
-    for (const e of this.RWt) ResourceSystem_1.ResourceSystem.CancelAsyncLoad(e);
-    for (const o of this.AWt) UiModelResourcesManager_1.UiModelResourcesManager.CancelUiModelResourceLoad(o);
+    for (const e of this.RWt) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(e);
+    }
+    for (const o of this.AWt) {
+      UiModelResourcesManager_1.UiModelResourcesManager.CancelUiModelResourceLoad(o);
+    }
     this.UWt.forEach(e => {
-      UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(e, !1)
-    }), this.UWt.clear()
+      UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(e, false);
+    });
+    this.UWt.clear();
   }
   IsRolePool(e) {
-    return 1 === e || 4 === e || 2 === e || 7 === e || 6 === e || 9 === e
+    return e === 1 || e === 4 || e === 2 || e === 7 || e === 6 || e === 9;
   }
   GetGachaQuality(e) {
     let o = 0;
@@ -188,15 +273,21 @@ class GachaModel extends ModelBase_1.ModelBase {
         o = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(e).QualityId;
         break;
       default:
-        Log_1.Log.CheckError() && Log_1.Log.Error("Gacha", 43, "抽卡获得物品的类型错误，必须是角色或武器", ["itemId", e])
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Gacha", 43, "抽卡获得物品的类型错误，必须是角色或武器", ["itemId", e]);
+        }
     }
-    return o
+    return o;
   }
   GetGachaRecordUrlPrefix() {
-    return BaseConfigController_1.BaseConfigController.GetGachaUrl().GachaRecord
+    return BaseConfigController_1.BaseConfigController.GetGachaUrl().GachaRecord;
   }
   GetServerArea() {
-    return ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn"
+    if (ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk()) {
+      return "global";
+    } else {
+      return "cn";
+    }
   }
 }
 exports.GachaModel = GachaModel;

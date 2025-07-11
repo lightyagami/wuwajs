@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportTransitionWithCharacterDisplay = void 0;
+  value: true
+});
+exports.FbTeleportTransitionWithCharacterDisplay = undefined;
 class FbTeleportTransitionWithCharacterDisplay {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.X11 = !1, this.Y11 = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.fc1 = false;
+    this.gc1 = 0;
   }
   static Create(t) {
-    if (t) return new FbTeleportTransitionWithCharacterDisplay(t)
+    if (t) {
+      return new FbTeleportTransitionWithCharacterDisplay(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get StyleId() {
-    return this.X11 || (this.X11 = !0, this.Y11 = this.FbDataInternal.styleId()), this.Y11
+    if (!this.fc1) {
+      this.fc1 = true;
+      this.gc1 = this.FbDataInternal.styleId();
+    }
+    return this.gc1;
   }
 }
 exports.FbTeleportTransitionWithCharacterDisplay = FbTeleportTransitionWithCharacterDisplay;

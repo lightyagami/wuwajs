@@ -1,35 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkIconOption = void 0;
-const UE = require("ue"),
-  GlobalData_1 = require("../../../../GlobalData"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.MarkIconOption = undefined;
+const UE = require("ue");
+const GlobalData_1 = require("../../../../GlobalData");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 class MarkIconOption extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(), this.Config = void 0, this.I2o = void 0
+    super();
+    this.Config = undefined;
+    this.I2o = undefined;
   }
   Initialize(t, e, i) {
-    GlobalData_1.GlobalData.World && (this.I2o = e, e = t.GetOwner(), t.SetUIActive(!0), this.CreateThenShowByActor(e), this.Config = i, this.SetSpriteByPath(this.Config.MarkPic, this.GetSprite(0), !1), this.RootItem.SetRaycastTarget(!0))
+    if (GlobalData_1.GlobalData.World) {
+      this.I2o = e;
+      e = t.GetOwner();
+      t.SetUIActive(true);
+      this.CreateThenShowByActor(e);
+      this.Config = i;
+      this.SetSpriteByPath(this.Config.MarkPic, this.GetSprite(0), false);
+      this.RootItem.SetRaycastTarget(true);
+    }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UIExtendToggle]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIExtendToggle]];
   }
   OnStart() {
-    this.GetExtendToggle(1).SetToggleGroup(this.I2o.GetOwner()), this.GetExtendToggle(1).bLockStateOnSelect = !0
+    this.GetExtendToggle(1).SetToggleGroup(this.I2o.GetOwner());
+    this.GetExtendToggle(1).bLockStateOnSelect = true;
   }
   SetOnclick(t) {
     var e = this.GetExtendToggle(1);
-    e.OnStateChange.Clear(), e.OnStateChange.Add(t)
+    e.OnStateChange.Clear();
+    e.OnStateChange.Add(t);
   }
   SetToggleChecked() {
-    this.GetExtendToggle(1).SetToggleState(1, !0)
+    this.GetExtendToggle(1).SetToggleState(1, true);
   }
   OnBeforeDestroy() {
-    this.GetExtendToggle(1).OnStateChange.Clear()
+    this.GetExtendToggle(1).OnStateChange.Clear();
   }
 }
 exports.MarkIconOption = MarkIconOption;

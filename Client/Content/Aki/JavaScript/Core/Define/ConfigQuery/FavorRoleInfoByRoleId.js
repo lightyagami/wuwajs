@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configFavorRoleInfoByRoleId = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  FavorRoleInfo_1 = require("../Config/FavorRoleInfo"),
-  DB = "db_favor.db",
-  FILE = "h.好感度.xlsx",
-  TABLE = "FavorRoleInfo",
-  COMMAND = "select BinData from `FavorRoleInfo` where RoleId=?",
-  KEY_PREFIX = "FavorRoleInfoByRoleId",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configFavorRoleInfoByRoleId = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const FavorRoleInfo_1 = require("../Config/FavorRoleInfo");
+const DB = "db_favor.db";
+const FILE = "h.好感度.xlsx";
+const TABLE = "FavorRoleInfo";
+const COMMAND = "select BinData from `FavorRoleInfo` where RoleId=?";
+const KEY_PREFIX = "FavorRoleInfoByRoleId";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configFavorRoleInfoByRoleId.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configFavorRoleInfoByRoleId.GetConfig"),
-  CONFIG_STAT_PREFIX = "configFavorRoleInfoByRoleId.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configFavorRoleInfoByRoleId.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configFavorRoleInfoByRoleId.GetConfig");
+const CONFIG_STAT_PREFIX = "configFavorRoleInfoByRoleId.GetConfig(";
 exports.configFavorRoleInfoByRoleId = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (o, n = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var e = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${o})`),
-      i = (e?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (o, n = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var e = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${o})`);
+    e?.Start();
+    var i = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (i) {
       if (n) {
-        var t = KEY_PREFIX + `#${o})`;
+        var t = `${KEY_PREFIX}#${o})`;
         const f = ConfigCommon_1.ConfigCommon.GetConfig(t);
-        if (f) return e?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), f
-      }
-      if (i = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["RoleId", o])) {
-        t = void 0;
-        if ([i, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["RoleId", o]), i) {
-          const f = FavorRoleInfo_1.FavorRoleInfo.getRootAsFavorRoleInfo(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
-          return n && (i = KEY_PREFIX + `#${o})`, ConfigCommon_1.ConfigCommon.SaveConfig(i, f)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), e?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), f
+        if (f) {
+          e?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return f;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (i = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["RoleId", o]) > 0) {
+        t = undefined;
+        [i, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["RoleId", o]);
+        if (i) {
+          const f = FavorRoleInfo_1.FavorRoleInfo.getRootAsFavorRoleInfo(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
+          if (n) {
+            i = `${KEY_PREFIX}#${o})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(i, f);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          e?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return f;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    e?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    e?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=FavorRoleInfoByRoleId.js.map

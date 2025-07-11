@@ -1,38 +1,90 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportTransitionInSeamlessType = void 0;
+  value: true
+});
+exports.FbTeleportTransitionInSeamlessType = undefined;
 const FbFloorSettings_1 = require("./FbFloorSettings");
 class FbTeleportTransitionInSeamlessType {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.q0h = !1, this.k0h = void 0, this.G0h = !1, this.O0h = 0, this.F0h = !1, this.N0h = 0, this.V0h = !1, this.j0h = 0, this.$11 = !1, this.W11 = void 0, this.H0h = !1, this.W0h = void 0, this.Q11 = !1, this.K11 = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.q0h = false;
+    this.k0h = undefined;
+    this.G0h = false;
+    this.O0h = 0;
+    this.F0h = false;
+    this.N0h = 0;
+    this.V0h = false;
+    this.j0h = 0;
+    this.cc1 = false;
+    this.uc1 = undefined;
+    this.H0h = false;
+    this.W0h = undefined;
+    this.dc1 = false;
+    this.mc1 = false;
   }
   static Create(t) {
-    if (t) return new FbTeleportTransitionInSeamlessType(t)
+    if (t) {
+      return new FbTeleportTransitionInSeamlessType(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EffectDaPath() {
-    return this.q0h || (this.q0h = !0, this.k0h = this.FbDataInternal.effectDaPath()), this.k0h
+    if (!this.q0h) {
+      this.q0h = true;
+      this.k0h = this.FbDataInternal.effectDaPath();
+    }
+    return this.k0h;
   }
   get LeastTime() {
-    return this.G0h || (this.G0h = !0, this.O0h = this.FbDataInternal.leastTime()), this.O0h
+    if (!this.G0h) {
+      this.G0h = true;
+      this.O0h = this.FbDataInternal.leastTime();
+    }
+    return this.O0h;
   }
   get EffectExpandTime() {
-    return this.F0h || (this.F0h = !0, this.N0h = this.FbDataInternal.effectExpandTime()), this.N0h
+    if (!this.F0h) {
+      this.F0h = true;
+      this.N0h = this.FbDataInternal.effectExpandTime();
+    }
+    return this.N0h;
   }
   get EffectCollapseTime() {
-    return this.V0h || (this.V0h = !0, this.j0h = this.FbDataInternal.effectCollapseTime()), this.j0h
+    if (!this.V0h) {
+      this.V0h = true;
+      this.j0h = this.FbDataInternal.effectCollapseTime();
+    }
+    return this.j0h;
   }
   get TransitionWeatherDaPath() {
-    return this.$11 || (this.$11 = !0, this.W11 = this.FbDataInternal.transitionWeatherDaPath()), this.W11
+    if (!this.cc1) {
+      this.cc1 = true;
+      this.uc1 = this.FbDataInternal.transitionWeatherDaPath();
+    }
+    return this.uc1;
   }
   get FloorSettings() {
-    return this.H0h || (this.H0h = !0, this.W0h = FbFloorSettings_1.FbFloorSettings.Create(this.FbDataInternal.floorSettings())), this.W0h
+    if (!this.H0h) {
+      this.H0h = true;
+      this.W0h = FbFloorSettings_1.FbFloorSettings.Create(this.FbDataInternal.floorSettings());
+    }
+    return this.W0h;
   }
   get IsTeleportInPlace() {
-    return this.Q11 || (this.Q11 = !0, this.K11 = this.FbDataInternal.isTeleportInPlace()), this.K11
+    if (!this.dc1) {
+      this.dc1 = true;
+      this.mc1 = this.FbDataInternal.isTeleportInPlace();
+    }
+    return this.mc1;
   }
 }
 exports.FbTeleportTransitionInSeamlessType = FbTeleportTransitionInSeamlessType;

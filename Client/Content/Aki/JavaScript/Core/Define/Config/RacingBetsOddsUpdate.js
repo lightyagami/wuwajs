@@ -1,46 +1,66 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsOddsUpdate = void 0;
+  value: true
+});
+exports.RacingBetsOddsUpdate = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class RacingBetsOddsUpdate {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get IndexId() {
-    return this.indexid()
+    return this.indexid();
   }
   get OddsUpdatePoint() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.oddsupdatepointLength(), this.oddsupdatepoint, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.oddsupdatepointLength(), this.oddsupdatepoint, this);
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsRacingBetsOddsUpdate(t, s) {
-    return (s || new RacingBetsOddsUpdate).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new RacingBetsOddsUpdate()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   indexid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetOddsupdatepointAt(t) {
-    return this.oddsupdatepoint(t)
+    return this.oddsupdatepoint(t);
   }
   oddsupdatepoint(t, s) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + 4 * t, s) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   oddsupdatepointLength() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.RacingBetsOddsUpdate = RacingBetsOddsUpdate;

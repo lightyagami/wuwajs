@@ -1,61 +1,92 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlySkinBuyDetailViewData = void 0;
+  value: true
+});
+exports.FlySkinBuyDetailViewData = undefined;
 const ModelManager_1 = require("../../../Manager/ModelManager");
 class FlySkinBuyDetailViewData {
   constructor() {
-    this.GN1 = [], this.FN1 = [], this.vyl = [], this.NOe = 0, this.vUl = ""
+    this.C31 = [];
+    this.p31 = [];
+    this.vyl = [];
+    this.NOe = 0;
+    this.vUl = "";
   }
   static Create(t) {
-    var i = new FlySkinBuyDetailViewData;
-    return i.InitData(t), i
+    var i = new FlySkinBuyDetailViewData();
+    i.InitData(t);
+    return i;
   }
   SetPreviewTitle(t) {
-    this.vUl = t
+    this.vUl = t;
   }
   GetPreviewTitle() {
-    return this.vUl
+    return this.vUl;
   }
   SetIndex(t) {
-    this.NOe = t
+    this.NOe = t;
   }
   InitData(t) {
-    this.vyl = t, this.GN1 = [], this.FN1 = [];
+    this.vyl = t;
+    this.C31 = [];
+    this.p31 = [];
     for (const e of t) {
       var i = ModelManager_1.ModelManager.FlySkinModel.GetFlySkinData(e.GetSoarWingSkinId());
-      this.GN1.push(i), i = ModelManager_1.ModelManager.FlySkinModel.GetFlySkinData(e.GetParaglidingSkinId()), this.FN1.push(i)
+      this.C31.push(i);
+      i = ModelManager_1.ModelManager.FlySkinModel.GetFlySkinData(e.GetParaglidingSkinId());
+      this.p31.push(i);
     }
   }
   CheckIfHaveMutiGood() {
-    return 1 < this.vyl.length
+    return this.vyl.length > 1;
   }
   GetCurrentGoodsData() {
-    if (0 !== this.vyl.length) return this.vyl[this.NOe]
+    if (this.vyl.length !== 0) {
+      return this.vyl[this.NOe];
+    }
   }
   SwitchToNextGoods() {
-    this.NOe++, this.NOe > this.vyl.length - 1 && (this.NOe = 0)
+    this.NOe++;
+    if (this.NOe > this.vyl.length - 1) {
+      this.NOe = 0;
+    }
   }
   SwitchToPreGoods() {
-    this.NOe--, this.NOe < 0 && (this.NOe = this.vyl.length - 1)
+    this.NOe--;
+    if (this.NOe < 0) {
+      this.NOe = this.vyl.length - 1;
+    }
   }
   GetCurrentSkinData(t) {
-    return (0 === t ? this.GN1 : this.FN1)[this.NOe]
+    return (t === 0 ? this.C31 : this.p31)[this.NOe];
   }
   GetDiscountText() {
-    return this.GetCurrentGoodsData() ? this.GetCurrentGoodsData().GetDiscountText() : ""
+    if (this.GetCurrentGoodsData()) {
+      return this.GetCurrentGoodsData().GetDiscountText();
+    } else {
+      return "";
+    }
   }
   GetDiscountTimeData() {
-    if (this.GetCurrentGoodsData()) return this.GetCurrentGoodsData().GetDiscountTimeData()
+    if (this.GetCurrentGoodsData()) {
+      return this.GetCurrentGoodsData().GetDiscountTimeData();
+    }
   }
   GetIfDirect() {
-    return !!this.GetCurrentGoodsData() && this.GetCurrentGoodsData().GetIfDirect()
+    return !!this.GetCurrentGoodsData() && this.GetCurrentGoodsData().GetIfDirect();
   }
   GetPriceData() {
-    if (this.GetCurrentGoodsData()) return this.GetCurrentGoodsData().GetPriceData()
+    if (this.GetCurrentGoodsData()) {
+      return this.GetCurrentGoodsData().GetPriceData();
+    }
   }
   GetDirectPriceText() {
-    return this.GetCurrentGoodsData() ? this.GetCurrentGoodsData().GetDirectPriceText() : ""
+    if (this.GetCurrentGoodsData()) {
+      return this.GetCurrentGoodsData().GetDirectPriceText();
+    } else {
+      return "";
+    }
   }
 }
 exports.FlySkinBuyDetailViewData = FlySkinBuyDetailViewData;

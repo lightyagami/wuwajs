@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaChildViewBase = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  UiSequencePlayer_1 = require("../../../Ui/Base/UiSequencePlayer");
+  value: true
+});
+exports.PhantomArenaChildViewBase = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const UiSequencePlayer_1 = require("../../../Ui/Base/UiSequencePlayer");
 class PhantomArenaChildViewBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.RootView = void 0, this.ViewModel = void 0, this.ViewName = void 0, this.SequencePlayer = void 0, this.Hur = !0, this.GetViewName = () => this.ViewName ?? ""
+    super(...arguments);
+    this.RootView = undefined;
+    this.ViewModel = undefined;
+    this.ViewName = undefined;
+    this.SequencePlayer = undefined;
+    this.Hur = true;
+    this.GetViewName = () => this.ViewName ?? "";
   }
   OnAddEventListener() {}
   async OnPlayingStartSequenceAsync() {}
@@ -18,33 +26,48 @@ class PhantomArenaChildViewBase extends UiPanelBase_1.UiPanelBase {
   async OnPlayingCloseSequenceAsync() {}
   OnRemoveEventListener() {}
   OnStartImplement() {
-    this.SequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem), this.Hur = !0, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaChildViewOpen, this.GetViewName())
+    this.SequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
+    this.Hur = true;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaChildViewOpen, this.GetViewName());
   }
   OnBeforeShowImplement() {
-    this.OnAddEventListener()
+    this.OnAddEventListener();
   }
   async OnShowAsyncImplementImplement() {
     var e;
-    this.Hur ? (e = new CustomPromise_1.CustomPromise, await Promise.all([this.SequencePlayer.PlaySequenceAsync("Start", e), this.OnPlayingStartSequenceAsync()]), this.Hur = !1) : (e = new CustomPromise_1.CustomPromise, await Promise.all([this.SequencePlayer.PlaySequenceAsync("ShowView", e), this.OnPlayingShowSequenceAsync()]))
+    if (this.Hur) {
+      e = new CustomPromise_1.CustomPromise();
+      await Promise.all([this.SequencePlayer.PlaySequenceAsync("Start", e), this.OnPlayingStartSequenceAsync()]);
+      this.Hur = false;
+    } else {
+      e = new CustomPromise_1.CustomPromise();
+      await Promise.all([this.SequencePlayer.PlaySequenceAsync("ShowView", e), this.OnPlayingShowSequenceAsync()]);
+    }
   }
   async OnHideAsyncImplementImplement() {
     var e;
-    this.WaitToDestroy ? (e = new CustomPromise_1.CustomPromise, await Promise.all([this.SequencePlayer.PlaySequenceAsync("Close", e), this.OnPlayingCloseSequenceAsync()])) : (e = new CustomPromise_1.CustomPromise, await Promise.all([this.SequencePlayer.PlaySequenceAsync("HideView", e), this.OnPlayingHideSequenceAsync()]))
+    if (this.WaitToDestroy) {
+      e = new CustomPromise_1.CustomPromise();
+      await Promise.all([this.SequencePlayer.PlaySequenceAsync("Close", e), this.OnPlayingCloseSequenceAsync()]);
+    } else {
+      e = new CustomPromise_1.CustomPromise();
+      await Promise.all([this.SequencePlayer.PlaySequenceAsync("HideView", e), this.OnPlayingHideSequenceAsync()]);
+    }
   }
   OnAfterHideImplement() {
-    this.OnRemoveEventListener()
+    this.OnRemoveEventListener();
   }
   OpenChildView(e) {
-    this.RootView.OpenChildView(e)
+    this.RootView.OpenChildView(e);
   }
   async OpenChildViewAsync(e) {
-    return this.RootView.OpenChildViewAsync(e)
+    return this.RootView.OpenChildViewAsync(e);
   }
   async CloseMeAsync() {
-    return this.RootView.CloseCurChildViewAsync()
+    return this.RootView.CloseCurChildViewAsync();
   }
   CloseMe() {
-    this.RootView.CloseCurChildView()
+    this.RootView.CloseCurChildView();
   }
 }
 exports.PhantomArenaChildViewBase = PhantomArenaChildViewBase;

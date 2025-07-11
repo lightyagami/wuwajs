@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActorRefVolume = void 0;
+  value: true
+});
+exports.ActorRefVolume = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ActorRefVolume {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, e) {
-    return this.bb_pos = t, this.bb = e, this
+    this.bb_pos = t;
+    this.bb = e;
+    return this;
   }
   static getRootAsActorRefVolume(t, e) {
-    return (e || new ActorRefVolume).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new ActorRefVolume()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsActorRefVolume(t, e) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (e || new ActorRefVolume).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (e || new ActorRefVolume()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type(t) {
     var e = this.bb.__offset(this.bb_pos, 4);
-    return e ? this.bb.__string(this.bb_pos + e, t) : void 0
+    if (e) {
+      return this.bb.__string(this.bb_pos + e, t);
+    } else {
+      return undefined;
+    }
   }
   static startActorRefVolume(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addType(t, e) {
-    t.addFieldOffset(0, e, 0)
+    t.addFieldOffset(0, e, 0);
   }
   static endActorRefVolume(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createActorRefVolume(t, e) {
-    return ActorRefVolume.startActorRefVolume(t), ActorRefVolume.addType(t, e), ActorRefVolume.endActorRefVolume(t)
+    ActorRefVolume.startActorRefVolume(t);
+    ActorRefVolume.addType(t, e);
+    return ActorRefVolume.endActorRefVolume(t);
   }
 }
 exports.ActorRefVolume = ActorRefVolume;

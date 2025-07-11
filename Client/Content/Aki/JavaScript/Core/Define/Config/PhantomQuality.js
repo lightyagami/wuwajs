@@ -1,85 +1,125 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomQuality = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.PhantomQuality = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class PhantomQuality {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Quality() {
-    return this.quality()
+    return this.quality();
   }
   get LevelLimit() {
-    return this.levellimit()
+    return this.levellimit();
   }
   get SlotUnlockLevel() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.slotunlocklevelLength(), this.slotunlocklevel, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.slotunlocklevelLength(), this.slotunlocklevel, this);
   }
   get IdentifyCost() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.identifycostLength(), this.identifycostKey, this.identifycostValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.identifycostLength(), this.identifycostKey, this.identifycostValue, this);
   }
   identifycostKey(t) {
-    return this.identifycost(t)?.key()
+    return this.identifycost(t)?.key();
   }
   identifycostValue(t) {
-    return this.identifycost(t)?.value()
+    return this.identifycost(t)?.value();
   }
   get IdentifyCoin() {
-    return this.identifycoin()
+    return this.identifycoin();
   }
   get QualitySprite() {
-    return this.qualitysprite()
+    return this.qualitysprite();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsPhantomQuality(t, i) {
-    return (i || new PhantomQuality).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new PhantomQuality()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   quality() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levellimit() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetSlotunlocklevelAt(t) {
-    return this.slotunlocklevel(t)
+    return this.slotunlocklevel(t);
   }
   slotunlocklevel(t) {
     var i = this.J7.__offset(this.z7, 8);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   slotunlocklevelLength() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   slotunlocklevelArray() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetIdentifycostAt(t, i) {
-    return this.identifycost(t)
+    return this.identifycost(t);
   }
   identifycost(t, i) {
     var s = this.J7.__offset(this.z7, 10);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   identifycostLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   identifycoin() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   qualitysprite(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.PhantomQuality = PhantomQuality;

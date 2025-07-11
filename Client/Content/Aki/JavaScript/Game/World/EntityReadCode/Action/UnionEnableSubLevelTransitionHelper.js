@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionEnableSubLevelTransitionHelper = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbEnableSubLevelTransitionWithSceneCapture_1 = require("./FbEnableSubLevelTransitionWithSceneCapture");
+  value: true
+});
+exports.UnionEnableSubLevelTransitionHelper = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbEnableSubLevelTransitionWithSceneCapture_1 = require("./FbEnableSubLevelTransitionWithSceneCapture");
 class UnionEnableSubLevelTransitionHelper {
   static GetUnionEnableSubLevelTransitionObject(e) {
-    if (e === fb_action_1.UnionEnableSubLevelTransition.EnableSubLevelTransitionWithSceneCapture) return new fb_action_1.EnableSubLevelTransitionWithSceneCapture
+    if (e === fb_action_1.UnionEnableSubLevelTransition.EnableSubLevelTransitionWithSceneCapture) {
+      return new fb_action_1.EnableSubLevelTransitionWithSceneCapture();
+    }
   }
   static ReadUnionEnableSubLevelTransition(e, n) {
-    return void 0 !== n && e === fb_action_1.UnionEnableSubLevelTransition.EnableSubLevelTransitionWithSceneCapture ? FbEnableSubLevelTransitionWithSceneCapture_1.FbEnableSubLevelTransitionWithSceneCapture.Create(n) : void 0
+    if (n !== undefined && e === fb_action_1.UnionEnableSubLevelTransition.EnableSubLevelTransitionWithSceneCapture) {
+      return FbEnableSubLevelTransitionWithSceneCapture_1.FbEnableSubLevelTransitionWithSceneCapture.Create(n);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.UnionEnableSubLevelTransitionHelper = UnionEnableSubLevelTransitionHelper;

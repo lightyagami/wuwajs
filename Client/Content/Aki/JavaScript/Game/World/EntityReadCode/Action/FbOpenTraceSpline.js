@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbOpenTraceSpline = void 0;
+  value: true
+});
+exports.FbOpenTraceSpline = undefined;
 class FbOpenTraceSpline {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.kuh = !1, this.Guh = 0, this.I_h = !1, this.y6o = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.kuh = false;
+    this.Guh = 0;
+    this.I_h = false;
+    this.y6o = 0;
   }
   static Create(t) {
-    if (t) return new FbOpenTraceSpline(t)
+    if (t) {
+      return new FbOpenTraceSpline(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get Duration() {
-    return this.I_h || (this.I_h = !0, this.y6o = this.FbDataInternal.duration()), this.y6o
+    if (!this.I_h) {
+      this.I_h = true;
+      this.y6o = this.FbDataInternal.duration();
+    }
+    return this.y6o;
   }
 }
 exports.FbOpenTraceSpline = FbOpenTraceSpline;

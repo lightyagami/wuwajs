@@ -1,22 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const Log_1 = require("../../../../Core/Common/Log"),
-  GlobalData_1 = require("../../../GlobalData"),
-  TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
+const Log_1 = require("../../../../Core/Common/Log");
+const GlobalData_1 = require("../../../GlobalData");
+const TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
 class TsTaskExecuteEvent extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
-    super(...arguments), this.EventGroupId = 0, this.IsInitTsVariables = !1
+    super(...arguments);
+    this.EventGroupId = 0;
+    this.IsInitTsVariables = false;
   }
   Constructor() {
-    super.Constructor(), this.IsInitTsVariables = !1
+    super.Constructor();
+    this.IsInitTsVariables = false;
   }
   InitTsVariables() {
-    this.IsInitTsVariables && !GlobalData_1.GlobalData.IsPlayInEditor || (this.IsInitTsVariables = !0)
+    if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.IsInitTsVariables = true;
+    }
   }
   ReceiveExecuteAI(e, s) {
-    this.InitTsVariables(), e.AiController ? this.FinishExecute(!0) : (Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]), this.FinishExecute(!1))
+    this.InitTsVariables();
+    if (e.AiController) {
+      this.FinishExecute(true);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]);
+      }
+      this.FinishExecute(false);
+    }
   }
 }
 exports.default = TsTaskExecuteEvent;

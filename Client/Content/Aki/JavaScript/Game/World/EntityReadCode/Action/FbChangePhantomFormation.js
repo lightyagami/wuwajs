@@ -1,31 +1,59 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbChangePhantomFormation = void 0;
+  value: true
+});
+exports.FbChangePhantomFormation = undefined;
 class FbChangePhantomFormation {
   constructor(t) {
-    this.FbDataInternal = t, this.mbh = !1, this.Cbh = 0, this.gbh = !1, this.fbh = !1, this.$Th = !1, this.XTh = 0, this.pbh = !1, this.vbh = void 0
+    this.FbDataInternal = t;
+    this.mbh = false;
+    this.Cbh = 0;
+    this.gbh = false;
+    this.fbh = false;
+    this.$Th = false;
+    this.XTh = 0;
+    this.pbh = false;
+    this.vbh = undefined;
   }
   static Create(t) {
-    if (t) return new FbChangePhantomFormation(t)
+    if (t) {
+      return new FbChangePhantomFormation(t);
+    }
   }
   get FormationId() {
-    return this.mbh || (this.mbh = !0, this.Cbh = this.FbDataInternal.formationId()), this.Cbh
+    if (!this.mbh) {
+      this.mbh = true;
+      this.Cbh = this.FbDataInternal.formationId();
+    }
+    return this.Cbh;
   }
   get RetainRole() {
-    return this.gbh || (this.gbh = !0, this.fbh = this.FbDataInternal.retainRole()), this.fbh
+    if (!this.gbh) {
+      this.gbh = true;
+      this.fbh = this.FbDataInternal.retainRole();
+    }
+    return this.fbh;
   }
   get TeleportEntityId() {
-    return this.$Th || (this.$Th = !0, this.XTh = this.FbDataInternal.teleportEntityId()), this.XTh
+    if (!this.$Th) {
+      this.$Th = true;
+      this.XTh = this.FbDataInternal.teleportEntityId();
+    }
+    return this.XTh;
   }
   get AppendBuffIds() {
     if (!this.pbh) {
-      this.pbh = !0, this.vbh = new Array;
+      this.pbh = true;
+      this.vbh = new Array();
       var i = this.FbDataInternal.appendBuffIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.vbh.push(Number(this.FbDataInternal.appendBuffIds(t) ?? 0))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.vbh.push(Number(this.FbDataInternal.appendBuffIds(t) ?? 0));
+        }
+      }
     }
-    return this.vbh
+    return this.vbh;
   }
 }
 exports.FbChangePhantomFormation = FbChangePhantomFormation;

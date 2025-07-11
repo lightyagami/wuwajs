@@ -1,50 +1,96 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbExploreSkillInteractComponent = void 0;
-const FbIgnoresCollisionCfg_1 = require("./FbIgnoresCollisionCfg"),
-  UnionExploreSkillInteractOptionHelper_1 = require("./UnionExploreSkillInteractOptionHelper"),
-  UnionExploreSkillSearchTargetCfgHelper_1 = require("./UnionExploreSkillSearchTargetCfgHelper"),
-  UnionMatchRoleOptionHelper_1 = require("../Match/UnionMatchRoleOptionHelper");
+  value: true
+});
+exports.FbExploreSkillInteractComponent = undefined;
+const FbIgnoresCollisionCfg_1 = require("./FbIgnoresCollisionCfg");
+const UnionExploreSkillInteractOptionHelper_1 = require("./UnionExploreSkillInteractOptionHelper");
+const UnionExploreSkillSearchTargetCfgHelper_1 = require("./UnionExploreSkillSearchTargetCfgHelper");
+const UnionMatchRoleOptionHelper_1 = require("../Match/UnionMatchRoleOptionHelper");
 class FbExploreSkillInteractComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.J9l = !1, this.Z9l = void 0, this.s_h = !1, this.Hye = void 0, this.fGh = !1, this.pGh = 0, this.qDh = !1, this.PAe = void 0, this.$Nh = !1, this.XNh = void 0, this.qWh = !1, this.kWh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.J9l = false;
+    this.Z9l = undefined;
+    this.s_h = false;
+    this.Hye = undefined;
+    this.fGh = false;
+    this.pGh = 0;
+    this.qDh = false;
+    this.PAe = undefined;
+    this.$Nh = false;
+    this.XNh = undefined;
+    this.qWh = false;
+    this.kWh = undefined;
   }
   static Create(t) {
-    if (t) return new FbExploreSkillInteractComponent(t)
+    if (t) {
+      return new FbExploreSkillInteractComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get ExploreSkillUiResource() {
-    return this.J9l || (this.J9l = !0, this.Z9l = this.FbDataInternal.exploreSkillUiResource()), this.Z9l
+    if (!this.J9l) {
+      this.J9l = true;
+      this.Z9l = this.FbDataInternal.exploreSkillUiResource();
+    }
+    return this.Z9l;
   }
   get Option() {
-    var t, i;
-    return !this.s_h && (this.s_h = !0, t = this.FbDataInternal.optionType(), i = UnionExploreSkillInteractOptionHelper_1.UnionExploreSkillInteractOptionHelper.GetUnionExploreSkillInteractOptionObject(t)) && (this.Hye = UnionExploreSkillInteractOptionHelper_1.UnionExploreSkillInteractOptionHelper.ReadUnionExploreSkillInteractOption(t, this.FbDataInternal.option(i))), this.Hye
+    var t;
+    var i;
+    if (!this.s_h && (this.s_h = true, t = this.FbDataInternal.optionType(), i = UnionExploreSkillInteractOptionHelper_1.UnionExploreSkillInteractOptionHelper.GetUnionExploreSkillInteractOptionObject(t))) {
+      this.Hye = UnionExploreSkillInteractOptionHelper_1.UnionExploreSkillInteractOptionHelper.ReadUnionExploreSkillInteractOption(t, this.FbDataInternal.option(i));
+    }
+    return this.Hye;
   }
   get PlayerStateRestritionId() {
-    return this.fGh || (this.fGh = !0, this.pGh = this.FbDataInternal.playerStateRestritionId()), this.pGh
+    if (!this.fGh) {
+      this.fGh = true;
+      this.pGh = this.FbDataInternal.playerStateRestritionId();
+    }
+    return this.pGh;
   }
   get MatchRoleOption() {
     if (!this.qDh) {
-      this.qDh = !0, this.PAe = new Array;
+      this.qDh = true;
+      this.PAe = new Array();
       var i = this.FbDataInternal.matchRoleOptionLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var e = this.FbDataInternal.matchRoleOptionType(t),
-            r = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.GetUnionMatchRoleOptionObject(e);
-          r && void 0 !== (e = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.ReadUnionMatchRoleOption(e, this.FbDataInternal.matchRoleOption(t, r))) && this.PAe.push(e)
+          var e = this.FbDataInternal.matchRoleOptionType(t);
+          var r = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.GetUnionMatchRoleOptionObject(e);
+          if (r && (e = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.ReadUnionMatchRoleOption(e, this.FbDataInternal.matchRoleOption(t, r))) !== undefined) {
+            this.PAe.push(e);
+          }
         }
+      }
     }
-    return this.PAe
+    return this.PAe;
   }
   get SearchTargetCfg() {
-    var t, i;
-    return !this.$Nh && (this.$Nh = !0, t = this.FbDataInternal.searchTargetCfgType(), i = UnionExploreSkillSearchTargetCfgHelper_1.UnionExploreSkillSearchTargetCfgHelper.GetUnionExploreSkillSearchTargetCfgObject(t)) && (this.XNh = UnionExploreSkillSearchTargetCfgHelper_1.UnionExploreSkillSearchTargetCfgHelper.ReadUnionExploreSkillSearchTargetCfg(t, this.FbDataInternal.searchTargetCfg(i))), this.XNh
+    var t;
+    var i;
+    if (!this.$Nh && (this.$Nh = true, t = this.FbDataInternal.searchTargetCfgType(), i = UnionExploreSkillSearchTargetCfgHelper_1.UnionExploreSkillSearchTargetCfgHelper.GetUnionExploreSkillSearchTargetCfgObject(t))) {
+      this.XNh = UnionExploreSkillSearchTargetCfgHelper_1.UnionExploreSkillSearchTargetCfgHelper.ReadUnionExploreSkillSearchTargetCfg(t, this.FbDataInternal.searchTargetCfg(i));
+    }
+    return this.XNh;
   }
   get IgnoresCollisionCfg() {
-    return this.qWh || (this.qWh = !0, this.kWh = FbIgnoresCollisionCfg_1.FbIgnoresCollisionCfg.Create(this.FbDataInternal.ignoresCollisionCfg())), this.kWh
+    if (!this.qWh) {
+      this.qWh = true;
+      this.kWh = FbIgnoresCollisionCfg_1.FbIgnoresCollisionCfg.Create(this.FbDataInternal.ignoresCollisionCfg());
+    }
+    return this.kWh;
   }
 }
 exports.FbExploreSkillInteractComponent = FbExploreSkillInteractComponent;

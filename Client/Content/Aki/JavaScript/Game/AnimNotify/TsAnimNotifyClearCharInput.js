@@ -1,17 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyClearCharInput extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, r) {
     e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && e.CharacterActorComponent.ClearInput(), !0
+    if (e instanceof TsBaseCharacter_1.default) {
+      e.CharacterActorComponent.ClearInput();
+    }
+    return true;
   }
   GetNotifyName() {
-    return "清除角色移动输入"
+    return "清除角色移动输入";
   }
 }
 exports.default = TsAnimNotifyClearCharInput;

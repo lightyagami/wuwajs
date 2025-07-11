@@ -1,37 +1,49 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PassengerTeleportConfig = void 0;
-const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers"),
-  pos_a_js_1 = require("../fb-action/pos-a.js");
+  value: true
+});
+exports.PassengerTeleportConfig = undefined;
+const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
+const pos_a_js_1 = require("../fb-action/pos-a.js");
 class PassengerTeleportConfig {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, s) {
-    return this.bb_pos = e, this.bb = s, this
+    this.bb_pos = e;
+    this.bb = s;
+    return this;
   }
   static getRootAsPassengerTeleportConfig(e, s) {
-    return (s || new PassengerTeleportConfig).__init(e.readInt32(e.position()) + e.position(), e)
+    return (s || new PassengerTeleportConfig()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsPassengerTeleportConfig(e, s) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (s || new PassengerTeleportConfig).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (s || new PassengerTeleportConfig()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   posA(e) {
     var s = this.bb.__offset(this.bb_pos, 4);
-    return s ? (e || new pos_a_js_1.PosA).__init(this.bb.__indirect(this.bb_pos + s), this.bb) : void 0
+    if (s) {
+      return (e || new pos_a_js_1.PosA()).__init(this.bb.__indirect(this.bb_pos + s), this.bb);
+    } else {
+      return undefined;
+    }
   }
   static startPassengerTeleportConfig(e) {
-    e.startObject(1)
+    e.startObject(1);
   }
   static addPosA(e, s) {
-    e.addFieldOffset(0, s, 0)
+    e.addFieldOffset(0, s, 0);
   }
   static endPassengerTeleportConfig(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createPassengerTeleportConfig(e, s) {
-    return PassengerTeleportConfig.startPassengerTeleportConfig(e), PassengerTeleportConfig.addPosA(e, s), PassengerTeleportConfig.endPassengerTeleportConfig(e)
+    PassengerTeleportConfig.startPassengerTeleportConfig(e);
+    PassengerTeleportConfig.addPosA(e, s);
+    return PassengerTeleportConfig.endPassengerTeleportConfig(e);
   }
 }
 exports.PassengerTeleportConfig = PassengerTeleportConfig;

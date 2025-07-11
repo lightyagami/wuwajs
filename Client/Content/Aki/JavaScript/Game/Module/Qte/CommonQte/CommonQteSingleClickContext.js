@@ -1,42 +1,93 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonQteSingleClickContext = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  QteDefine_1 = require("../QteDefine"),
-  CommonQteContextBase_1 = require("./CommonQteContextBase");
+  value: true
+});
+exports.CommonQteSingleClickContext = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const QteDefine_1 = require("../QteDefine");
+const CommonQteContextBase_1 = require("./CommonQteContextBase");
 class CommonQteSingleClickContext extends CommonQteContextBase_1.CommonQteContextBase {
   constructor() {
-    super(), this.PassTime = 0, this.ResponseCount = 0, this.TargetCount = -1, this.Type = 0
+    super();
+    this.PassTime = 0;
+    this.ResponseCount = 0;
+    this.TargetCount = -1;
+    this.Type = 0;
   }
   OnSetConfig(t) {
-    this.TargetCount = 1
+    this.TargetCount = 1;
   }
   OnResponse() {
-    this.Config && (this.IsPending() || this.IsPendingSuccess() ? (this.IsPending() && (this.ResponseCount += 1), this.By1() && (this.PassTime < this.LeastDuration ? this.QtePendingSuccess() : this.QteSuccess())) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("CommonQte", 67, "Qte无法接收响应", ["HandleId", this.HandleId], ["QteId", this.QteId], ["State", this.State]))
+    if (this.Config) {
+      if (this.IsPending() || this.IsPendingSuccess()) {
+        if (this.IsPending()) {
+          this.ResponseCount += 1;
+        }
+        if (this.nS1()) {
+          if (this.PassTime < this.LeastDuration) {
+            this.QtePendingSuccess();
+          } else {
+            this.QteSuccess();
+          }
+        }
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, "Qte无法接收响应", ["HandleId", this.HandleId], ["QteId", this.QteId], ["State", this.State]);
+      }
+    }
   }
   OnQteSuccess() {
-    this.SuccessCallback && this.SuccessCallback(this), this.SuccessCallback = void 0, ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.HandleId)
+    if (this.SuccessCallback) {
+      this.SuccessCallback(this);
+    }
+    this.SuccessCallback = undefined;
+    ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.HandleId);
   }
   OnQteFail() {
-    this.FailCallback && this.FailCallback(this), this.FailCallback = void 0, ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.HandleId)
+    if (this.FailCallback) {
+      this.FailCallback(this);
+    }
+    this.FailCallback = undefined;
+    ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.HandleId);
   }
   OnUpdateTime(t) {
-    this.Config ? (this.PassTime += t, this.By1() ? this.PassTime < this.LeastDuration ? this.QtePendingSuccess() : this.QteSuccess() : !this.IsPermanent && this.PassTime > this.Duration && this.QteFail()) : (Log_1.Log.CheckError() && Log_1.Log.Error("CommonQte", 67, "Context中获取不到Config", ["QteId", this.QteId]), ControllerHolder_1.ControllerHolder.CommonQteController.StopCurrentQte())
+    if (this.Config) {
+      this.PassTime += t;
+      if (this.nS1()) {
+        if (this.PassTime < this.LeastDuration) {
+          this.QtePendingSuccess();
+        } else {
+          this.QteSuccess();
+        }
+      } else if (!this.IsPermanent && this.PassTime > this.Duration) {
+        this.QteFail();
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("CommonQte", 67, "Context中获取不到Config", ["QteId", this.QteId]);
+      }
+      ControllerHolder_1.ControllerHolder.CommonQteController.StopCurrentQte();
+    }
   }
   OnGetAction() {
     var t;
-    return this.Config && 0 < (t = this.Config.BaseConfig.SingleClickConfig.UIConfig.Action) && t < QteDefine_1.qteInputActions.length ? QteDefine_1.qteInputActions[t] : void 0
+    if (this.Config && (t = this.Config.BaseConfig.SingleClickConfig.UIConfig.Action) > 0 && t < QteDefine_1.qteInputActions.length) {
+      return QteDefine_1.qteInputActions[t];
+    } else {
+      return undefined;
+    }
   }
   OnGetUiConfig() {
-    if (this.Config) return this.Config.BaseConfig.SingleClickConfig
+    if (this.Config) {
+      return this.Config.BaseConfig.SingleClickConfig;
+    }
   }
-  By1() {
-    return this.ResponseCount >= this.TargetCount
+  nS1() {
+    return this.ResponseCount >= this.TargetCount;
   }
   GetRemainingTime() {
-    return Math.max(0, this.Duration - this.PassTime)
+    return Math.max(0, this.Duration - this.PassTime);
   }
 }
 exports.CommonQteSingleClickContext = CommonQteSingleClickContext;

@@ -1,16 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaCardComponentLogic = void 0;
+  value: true
+});
+exports.PhantomArenaCardComponentLogic = undefined;
 class PhantomArenaCardComponentLogic {
   constructor() {
-    this.Component = void 0, this.IsActive = !1, this.IsNeedAutoHide = !0
+    this.Component = undefined;
+    this.IsActive = false;
+    this.IsNeedAutoHide = true;
   }
   SetCardShowComponent(t) {
-    this.Component = t, this.SetActive(this.IsActive)
+    this.Component = t;
+    this.SetActive(this.IsActive);
   }
   SetActive(t) {
-    this.IsActive = t, this.Component && (t ? this.IsNeedAutoHide ? this.Component.PlayStart() : this.Component.PlayLoop() : this.Component.PlayClose())
+    this.IsActive = t;
+    if (this.Component) {
+      if (t) {
+        if (this.IsNeedAutoHide) {
+          this.Component.PlayStart();
+        } else {
+          this.Component.PlayLoop();
+        }
+      } else {
+        this.Component.PlayClose();
+      }
+    }
   }
 }
 exports.PhantomArenaCardComponentLogic = PhantomArenaCardComponentLogic;

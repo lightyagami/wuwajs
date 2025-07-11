@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnlockDungeonEntry = void 0;
+  value: true
+});
+exports.UnlockDungeonEntry = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class UnlockDungeonEntry {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(n, t) {
-    return this.bb_pos = n, this.bb = t, this
+    this.bb_pos = n;
+    this.bb = t;
+    return this;
   }
   static getRootAsUnlockDungeonEntry(n, t) {
-    return (t || new UnlockDungeonEntry).__init(n.readInt32(n.position()) + n.position(), n)
+    return (t || new UnlockDungeonEntry()).__init(n.readInt32(n.position()) + n.position(), n);
   }
   static getSizePrefixedRootAsUnlockDungeonEntry(n, t) {
-    return n.setPosition(n.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new UnlockDungeonEntry).__init(n.readInt32(n.position()) + n.position(), n)
+    n.setPosition(n.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new UnlockDungeonEntry()).__init(n.readInt32(n.position()) + n.position(), n);
   }
   dungeonEntryId() {
     var n = this.bb.__offset(this.bb_pos, 4);
-    return n ? this.bb.readInt32(this.bb_pos + n) : 0
+    if (n) {
+      return this.bb.readInt32(this.bb_pos + n);
+    } else {
+      return 0;
+    }
   }
   static startUnlockDungeonEntry(n) {
-    n.startObject(1)
+    n.startObject(1);
   }
   static addDungeonEntryId(n, t) {
-    n.addFieldInt32(0, t, 0)
+    n.addFieldInt32(0, t, 0);
   }
   static endUnlockDungeonEntry(n) {
-    return n.endObject()
+    return n.endObject();
   }
   static createUnlockDungeonEntry(n, t) {
-    return UnlockDungeonEntry.startUnlockDungeonEntry(n), UnlockDungeonEntry.addDungeonEntryId(n, t), UnlockDungeonEntry.endUnlockDungeonEntry(n)
+    UnlockDungeonEntry.startUnlockDungeonEntry(n);
+    UnlockDungeonEntry.addDungeonEntryId(n, t);
+    return UnlockDungeonEntry.endUnlockDungeonEntry(n);
   }
 }
 exports.UnlockDungeonEntry = UnlockDungeonEntry;

@@ -1,36 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FreeCamera = void 0;
-const Entity_1 = require("../../Core/Entity/Entity"),
-  GameBudgetAllocatorConfigCreator_1 = require("../World/Define/GameBudgetAllocatorConfigCreator"),
-  FreeCameraDisplayComponent_1 = require("./FreeCameraDisplayComponent"),
-  FreeCameraInputComponent_1 = require("./FreeCameraInputComponent"),
-  FreeCameraLogicComponent_1 = require("./FreeCameraLogicComponent");
+  value: true
+});
+exports.FreeCamera = undefined;
+const Entity_1 = require("../../Core/Entity/Entity");
+const GameBudgetAllocatorConfigCreator_1 = require("../World/Define/GameBudgetAllocatorConfigCreator");
+const FreeCameraDisplayComponent_1 = require("./FreeCameraDisplayComponent");
+const FreeCameraInputComponent_1 = require("./FreeCameraInputComponent");
+const FreeCameraLogicComponent_1 = require("./FreeCameraLogicComponent");
 class FreeCamera extends Entity_1.Entity {
   constructor() {
-    super(...arguments), this.Zhe = void 0, this.ele = void 0, this.jU1 = void 0
+    super(...arguments);
+    this.Zhe = undefined;
+    this.ele = undefined;
+    this.yB1 = undefined;
   }
   static StaticGameBudgetConfig() {
-    return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsAlwaysTick2Config
+    return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsAlwaysTick2Config;
   }
   get LogicComponent() {
-    return this.Zhe
+    return this.Zhe;
   }
   get DisplayComponent() {
-    return this.ele
+    return this.ele;
   }
   get InputComponent() {
-    return this.jU1
+    return this.yB1;
   }
   OnCreate() {
-    return !(!this.AddComponent(FreeCameraLogicComponent_1.FreeCameraLogicComponent) || !this.AddComponent(FreeCameraDisplayComponent_1.FreeCameraDisplayComponent) || !this.AddComponent(FreeCameraInputComponent_1.FreeCameraInputComponent) || (this.RegisterToGameBudgetController(void 0), 0))
+    return !!this.AddComponent(FreeCameraLogicComponent_1.FreeCameraLogicComponent) && !!this.AddComponent(FreeCameraDisplayComponent_1.FreeCameraDisplayComponent) && !!this.AddComponent(FreeCameraInputComponent_1.FreeCameraInputComponent) && !(this.RegisterToGameBudgetController(undefined), 0);
   }
   OnStart() {
-    return this.Zhe = this.GetComponent(286), this.ele = this.GetComponent(285), this.jU1 = this.GetComponent(287), !0
+    this.Zhe = this.GetComponent(288);
+    this.ele = this.GetComponent(287);
+    this.yB1 = this.GetComponent(289);
+    return true;
   }
   OnClear() {
-    return this.Zhe = void 0, this.ele = void 0, !(this.jU1 = void 0)
+    this.Zhe = undefined;
+    this.ele = undefined;
+    return !(this.yB1 = undefined);
   }
 }
 exports.FreeCamera = FreeCamera;

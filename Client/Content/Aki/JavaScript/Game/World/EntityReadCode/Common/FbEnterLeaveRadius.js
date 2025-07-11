@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnterLeaveRadius = void 0;
+  value: true
+});
+exports.FbEnterLeaveRadius = undefined;
 class FbEnterLeaveRadius {
   constructor(t) {
-    this.FbDataInternal = t, this.Cmh = !1, this.gmh = 0, this.fmh = !1, this.pmh = 0
+    this.FbDataInternal = t;
+    this.Cmh = false;
+    this.gmh = 0;
+    this.fmh = false;
+    this.pmh = 0;
   }
   static Create(t) {
-    if (t) return new FbEnterLeaveRadius(t)
+    if (t) {
+      return new FbEnterLeaveRadius(t);
+    }
   }
   get EnterRadius() {
-    return this.Cmh || (this.Cmh = !0, this.gmh = this.FbDataInternal.enterRadius()), this.gmh
+    if (!this.Cmh) {
+      this.Cmh = true;
+      this.gmh = this.FbDataInternal.enterRadius();
+    }
+    return this.gmh;
   }
   get LeaveRadius() {
-    return this.fmh || (this.fmh = !0, this.pmh = this.FbDataInternal.leaveRadius()), this.pmh
+    if (!this.fmh) {
+      this.fmh = true;
+      this.pmh = this.FbDataInternal.leaveRadius();
+    }
+    return this.pmh;
   }
 }
 exports.FbEnterLeaveRadius = FbEnterLeaveRadius;

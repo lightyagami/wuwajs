@@ -1,39 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkipTask = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../Core/Common/Log");
+  value: true
+});
+exports.SkipTask = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../Core/Common/Log");
 class SkipTask {
   constructor() {
-    this.cp = !1, this.Lqi = void 0
+    this.cp = false;
+    this.Lqi = undefined;
   }
   Initialize() {
-    this.OnAddEvents(), this.OnInitialize()
+    this.OnAddEvents();
+    this.OnInitialize();
   }
   Destroy() {
-    this.poi(), this.OnDestroyed(), this.OnRemoveEvents()
+    this.poi();
+    this.OnDestroyed();
+    this.OnRemoveEvents();
   }
   Run(...t) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("SkipInterface", 10, "开始跳转任务", ["Name", this.constructor.name]), this.foi(...t)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SkipInterface", 10, "开始跳转任务", ["Name", this.constructor.name]);
+    }
+    this.foi(...t);
   }
   async AsyncRun(...t) {
-    return Log_1.Log.CheckInfo() && Log_1.Log.Info("SkipInterface", 10, "开始跳转任务", ["Name", this.constructor.name]), this.Lqi = new CustomPromise_1.CustomPromise, this.foi(...t), this.Lqi.Promise
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SkipInterface", 10, "开始跳转任务", ["Name", this.constructor.name]);
+    }
+    this.Lqi = new CustomPromise_1.CustomPromise();
+    this.foi(...t);
+    return this.Lqi.Promise;
   }
   GetIsRunning() {
-    return this.cp
+    return this.cp;
   }
   Finish() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("SkipInterface", 10, "结束跳转任务", ["Name", this.constructor.name]), this.Lqi && this.Lqi.SetResult(0), this.OnFinished(), this.poi()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SkipInterface", 10, "结束跳转任务", ["Name", this.constructor.name]);
+    }
+    if (this.Lqi) {
+      this.Lqi.SetResult(0);
+    }
+    this.OnFinished();
+    this.poi();
   }
   Stop() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("SkipInterface", 10, "停止跳转任务", ["Name", this.constructor.name]), this.Lqi && this.Lqi.SetResult(1), this.OnStopped(), this.poi()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SkipInterface", 10, "停止跳转任务", ["Name", this.constructor.name]);
+    }
+    if (this.Lqi) {
+      this.Lqi.SetResult(1);
+    }
+    this.OnStopped();
+    this.poi();
   }
   foi(...t) {
-    this.cp = !0, this.OnRun(...t)
+    this.cp = true;
+    this.OnRun(...t);
   }
   poi() {
-    this.cp = !1, this.Lqi = void 0
+    this.cp = false;
+    this.Lqi = undefined;
   }
   OnInitialize() {}
   OnRun() {}

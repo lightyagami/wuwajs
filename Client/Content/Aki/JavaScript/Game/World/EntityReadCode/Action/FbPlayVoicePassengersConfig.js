@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayVoicePassengersConfig = void 0;
+  value: true
+});
+exports.FbPlayVoicePassengersConfig = undefined;
 class FbPlayVoicePassengersConfig {
   constructor(s) {
-    this.FbDataInternal = s, this.goc = !1, this.Coc = void 0, this.poc = !1, this.voc = !1
+    this.FbDataInternal = s;
+    this.goc = false;
+    this.Coc = undefined;
+    this.poc = false;
+    this.voc = false;
   }
   static Create(s) {
-    if (s) return new FbPlayVoicePassengersConfig(s)
+    if (s) {
+      return new FbPlayVoicePassengersConfig(s);
+    }
   }
   get Passengers() {
     if (!this.goc) {
-      this.goc = !0, this.Coc = new Array;
+      this.goc = true;
+      this.Coc = new Array();
       var t = this.FbDataInternal.passengersLength();
-      if (t)
-        for (let s = 0; s < t; ++s) this.Coc.push(this.FbDataInternal.passengers(s))
+      if (t) {
+        for (let s = 0; s < t; ++s) {
+          this.Coc.push(this.FbDataInternal.passengers(s));
+        }
+      }
     }
-    return this.Coc
+    return this.Coc;
   }
   get MatchNone() {
-    return this.poc || (this.poc = !0, this.voc = this.FbDataInternal.matchNone()), this.voc
+    if (!this.poc) {
+      this.poc = true;
+      this.voc = this.FbDataInternal.matchNone();
+    }
+    return this.voc;
   }
 }
 exports.FbPlayVoicePassengersConfig = FbPlayVoicePassengersConfig;

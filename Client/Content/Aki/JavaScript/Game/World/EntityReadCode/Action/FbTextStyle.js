@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTextStyle = void 0;
+  value: true
+});
+exports.FbTextStyle = undefined;
 const UnionCenterTextShowAnimHelper_1 = require("./UnionCenterTextShowAnimHelper");
 class FbTextStyle {
   constructor(t) {
-    this.FbDataInternal = t, this.wCh = !1, this.PCh = void 0, this.UCh = !1, this.DCh = void 0, this.BCh = !1, this.qCh = void 0, this.kCh = !1, this.GCh = void 0
+    this.FbDataInternal = t;
+    this.wCh = false;
+    this.PCh = undefined;
+    this.UCh = false;
+    this.DCh = undefined;
+    this.BCh = false;
+    this.qCh = undefined;
+    this.kCh = false;
+    this.GCh = undefined;
   }
   static Create(t) {
-    if (t) return new FbTextStyle(t)
+    if (t) {
+      return new FbTextStyle(t);
+    }
   }
   get ShowAnim() {
-    var t, e;
-    return !this.wCh && (this.wCh = !0, t = this.FbDataInternal.showAnimType(), e = UnionCenterTextShowAnimHelper_1.UnionCenterTextShowAnimHelper.GetUnionCenterTextShowAnimObject(t)) && (this.PCh = UnionCenterTextShowAnimHelper_1.UnionCenterTextShowAnimHelper.ReadUnionCenterTextShowAnim(t, this.FbDataInternal.showAnim(e))), this.PCh
+    var t;
+    var e;
+    if (!this.wCh && (this.wCh = true, t = this.FbDataInternal.showAnimType(), e = UnionCenterTextShowAnimHelper_1.UnionCenterTextShowAnimHelper.GetUnionCenterTextShowAnimObject(t))) {
+      this.PCh = UnionCenterTextShowAnimHelper_1.UnionCenterTextShowAnimHelper.ReadUnionCenterTextShowAnim(t, this.FbDataInternal.showAnim(e));
+    }
+    return this.PCh;
   }
   get FontSize() {
-    return this.UCh || (this.UCh = !0, this.DCh = this.FbDataInternal.fontSize()), this.DCh
+    if (!this.UCh) {
+      this.UCh = true;
+      this.DCh = this.FbDataInternal.fontSize();
+    }
+    return this.DCh;
   }
   get TextAlign() {
-    return this.BCh || (this.BCh = !0, this.qCh = this.FbDataInternal.textAlign()), this.qCh
+    if (!this.BCh) {
+      this.BCh = true;
+      this.qCh = this.FbDataInternal.textAlign();
+    }
+    return this.qCh;
   }
   get TextHorizontal() {
-    return this.kCh || (this.kCh = !0, this.GCh = this.FbDataInternal.textHorizontal()), this.GCh
+    if (!this.kCh) {
+      this.kCh = true;
+      this.GCh = this.FbDataInternal.textHorizontal();
+    }
+    return this.GCh;
   }
 }
 exports.FbTextStyle = FbTextStyle;

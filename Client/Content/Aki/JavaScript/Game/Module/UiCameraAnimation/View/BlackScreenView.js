@@ -1,20 +1,20 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BlackScreenView = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.BlackScreenView = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class BlackScreenView extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super()
+    super();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture]];
   }
   GetBlackScreenTextureActor() {
-    return this.GetTexture(0).GetOwner()
+    return this.GetTexture(0).GetOwner();
   }
 }
 exports.BlackScreenView = BlackScreenView;

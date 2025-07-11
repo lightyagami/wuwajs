@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configCookFormulaAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  CookFormula_1 = require("../Config/CookFormula"),
-  DB = "db_cook.db",
-  FILE = "p.烹饪.xlsx",
-  TABLE = "CookFormula",
-  COMMAND = "select BinData from `CookFormula`",
-  KEY_PREFIX = "CookFormulaAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configCookFormulaAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const CookFormula_1 = require("../Config/CookFormula");
+const DB = "db_cook.db";
+const FILE = "p.烹饪.xlsx";
+const TABLE = "CookFormula";
+const COMMAND = "select BinData from `CookFormula`";
+const KEY_PREFIX = "CookFormulaAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configCookFormulaAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configCookFormulaAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configCookFormulaAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configCookFormulaAll.GetConfigList");
 exports.configCookFormulaAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (o = !0) => {
+  GetConfigList: (o = true) => {
     var n;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), n = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (n = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (o) {
         var t = KEY_PREFIX + ")";
         const C = ConfigCommon_1.ConfigCommon.GetConfig(t);
-        if (C) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
+        if (C) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return C;
+        }
       }
-      const C = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var i = void 0;
-        if ([n, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !n) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const C = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var i = undefined;
+        [n, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!n) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         i = CookFormula_1.CookFormula.getRootAsCookFormula(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
-        C.push(i)
+        C.push(i);
       }
-      return o && (t = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(t, C, C.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
+      if (o) {
+        t = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(t, C, C.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return C;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=CookFormulaAll.js.map

@@ -1,26 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.StringBuilder = void 0;
+  value: true
+});
+exports.StringBuilder = undefined;
 const DEFAULT_SIZE = 16;
 class StringBuilder {
   constructor(...t) {
-    this.kz = new Array(DEFAULT_SIZE), 0 < t.length && this.Append(...t)
+    this.kz = new Array(DEFAULT_SIZE);
+    if (t.length > 0) {
+      this.Append(...t);
+    }
   }
   get Store() {
-    return this.kz
+    return this.kz;
   }
   Append(...t) {
-    for (const r of t) "string" == typeof r ? this.kz.push(r) : r instanceof Array ? this.kz.push(...r) : r instanceof StringBuilder ? this.kz.push(...r.Store) : this.kz.push(r)
+    for (const r of t) {
+      if (typeof r == "string") {
+        this.kz.push(r);
+      } else if (r instanceof Array) {
+        this.kz.push(...r);
+      } else if (r instanceof StringBuilder) {
+        this.kz.push(...r.Store);
+      } else {
+        this.kz.push(r);
+      }
+    }
   }
   RemoveLast(r) {
-    for (let t = 0; t < r; ++t) this.kz.pop()
+    for (let t = 0; t < r; ++t) {
+      this.kz.pop();
+    }
   }
   ToString() {
-    return this.kz.join("")
+    return this.kz.join("");
   }
   Clear() {
-    this.kz.length = 0
+    this.kz.length = 0;
   }
 }
 exports.StringBuilder = StringBuilder;

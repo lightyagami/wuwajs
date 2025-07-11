@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbStopNewMoveWithSplineAtTargetPoint = void 0;
+  value: true
+});
+exports.FbStopNewMoveWithSplineAtTargetPoint = undefined;
 class FbStopNewMoveWithSplineAtTargetPoint {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.N11 = !1, this.V11 = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ac1 = false;
+    this.hc1 = 0;
   }
   static Create(t) {
-    if (t) return new FbStopNewMoveWithSplineAtTargetPoint(t)
+    if (t) {
+      return new FbStopNewMoveWithSplineAtTargetPoint(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get PointId() {
-    return this.N11 || (this.N11 = !0, this.V11 = this.FbDataInternal.pointId()), this.V11
+    if (!this.ac1) {
+      this.ac1 = true;
+      this.hc1 = this.FbDataInternal.pointId();
+    }
+    return this.hc1;
   }
 }
 exports.FbStopNewMoveWithSplineAtTargetPoint = FbStopNewMoveWithSplineAtTargetPoint;

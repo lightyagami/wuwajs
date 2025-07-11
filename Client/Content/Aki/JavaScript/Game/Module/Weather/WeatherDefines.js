@@ -1,5 +1,7 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.REFRESH_WEATHER_TIMER_INTERVAL = void 0, exports.REFRESH_WEATHER_TIMER_INTERVAL = 1e3;
-//# sourceMappingURL=WeatherDefines.js.map
+  value: true
+});
+exports.REFRESH_WEATHER_TIMER_INTERVAL = undefined;
+exports.REFRESH_WEATHER_TIMER_INTERVAL = 1000; //# sourceMappingURL=WeatherDefines.js.map

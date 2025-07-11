@@ -1,45 +1,73 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../Core/Common/Log"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter"),
-  TsUiSceneRoleActor_1 = require("../Module/UiComponent/TsUiSceneRoleActor"),
-  UiTagAnsContext_1 = require("../Module/UiModel/UiModelComponent/Common/UiModelAns/UiAnimNotifyStateContext/UiTagAnsContext");
+const UE = require("ue");
+const Log_1 = require("../../Core/Common/Log");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const ModelManager_1 = require("../Manager/ModelManager");
+const TsUiSceneRoleActor_1 = require("../Module/UiComponent/TsUiSceneRoleActor");
+const UiTagAnsContext_1 = require("../Module/UiModel/UiModelComponent/Common/UiModelAns/UiAnimNotifyStateContext/UiTagAnsContext");
 class TsAnimNotifyStateAddTag extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.Tag = void 0, this.UiTagAnsContext = void 0
+    super(...arguments);
+    this.Tag = undefined;
+    this.给召唤者添加 = false;
+    this.UiTagAnsContext = undefined;
   }
   Constructor() {
-    this.UiTagAnsContext = void 0
+    this.UiTagAnsContext = undefined;
   }
-  K2_NotifyBegin(e, t, o) {
-    var e = e.GetOwner(),
-      i = this.Tag?.TagId;
-    if (e instanceof TsBaseCharacter_1.default && i) {
-      var s = e.CharacterActorComponent?.Entity;
-      if (s) {
-        s = s.GetComponent(205);
-        if (s) return s.TagContainer.UpdateExactTag(4, i, 1), !0
-      } else Log_1.Log.CheckWarn() && Log_1.Log.Warn("Test", 6, "No Entity for TsBaseCharacter", ["Name", e.GetName()], ["location", e.D_K2_GetActorLocation()])
-    } else i && e instanceof TsUiSceneRoleActor_1.default && (this.UiTagAnsContext = new UiTagAnsContext_1.UiTagAnsContext(i), e.Model?.CheckGetComponent(6).AddAns("UiTagAnsContext", this.UiTagAnsContext));
-    return !1
+  K2_NotifyBegin(t, e, o) {
+    var t = t.GetOwner();
+    var i = this.Tag?.TagId;
+    if (t instanceof TsBaseCharacter_1.default && i) {
+      let e = t.CharacterActorComponent?.Entity;
+      if (this.给召唤者添加) {
+        r = e?.GetComponent(0)?.GetSummonerId() ?? 0;
+        e = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity;
+      }
+      if (e) {
+        var r = e.GetComponent(205);
+        if (r) {
+          r.TagContainer.UpdateExactTag(4, i, 1);
+          return true;
+        }
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Test", 6, "No Entity for TsBaseCharacter", ["Name", t.GetName()], ["location", t.D_K2_GetActorLocation()]);
+      }
+    } else if (i && t instanceof TsUiSceneRoleActor_1.default) {
+      this.UiTagAnsContext = new UiTagAnsContext_1.UiTagAnsContext(i);
+      t.Model?.CheckGetComponent(6).AddAns("UiTagAnsContext", this.UiTagAnsContext);
+    }
+    return false;
   }
-  K2_NotifyEnd(e, t) {
-    var e = e.GetOwner(),
-      o = this.Tag?.TagId;
-    if (e instanceof TsBaseCharacter_1.default && o) {
-      var i = e.CharacterActorComponent?.Entity;
-      if (i) {
-        i = i.GetComponent(205);
-        if (i) return i.TagContainer.UpdateExactTag(4, o, -1), !0
-      } else Log_1.Log.CheckWarn() && Log_1.Log.Warn("Test", 6, "No Entity for TsBaseCharacter", ["Name", e.GetName()], ["location", e.D_K2_GetActorLocation()])
-    } else this.UiTagAnsContext && e instanceof TsUiSceneRoleActor_1.default && e.Model?.CheckGetComponent(6).ReduceAns("UiTagAnsContext", this.UiTagAnsContext);
-    return !1
+  K2_NotifyEnd(t, e) {
+    var t = t.GetOwner();
+    var o = this.Tag?.TagId;
+    if (t instanceof TsBaseCharacter_1.default && o) {
+      let e = t.CharacterActorComponent?.Entity;
+      if (this.给召唤者添加) {
+        i = e?.GetComponent(0)?.GetSummonerId() ?? 0;
+        e = ModelManager_1.ModelManager.CreatureModel.GetEntity(i)?.Entity;
+      }
+      if (e) {
+        var i = e.GetComponent(205);
+        if (i) {
+          i.TagContainer.UpdateExactTag(4, o, -1);
+          return true;
+        }
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Test", 6, "No Entity for TsBaseCharacter", ["Name", t.GetName()], ["location", t.D_K2_GetActorLocation()]);
+      }
+    } else if (this.UiTagAnsContext && t instanceof TsUiSceneRoleActor_1.default) {
+      t.Model?.CheckGetComponent(6).ReduceAns("UiTagAnsContext", this.UiTagAnsContext);
+    }
+    return false;
   }
   GetNotifyName() {
-    return "添加TAG"
+    return "添加TAG";
   }
 }
 exports.default = TsAnimNotifyStateAddTag;

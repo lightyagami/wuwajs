@@ -1,31 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiModelComponentBase = void 0;
+  value: true
+});
+exports.UiModelComponentBase = undefined;
 class UiModelComponentBase {
   constructor() {
-    this.NeedTick = !1, this.wxo = void 0
+    this.NeedTick = false;
+    this.wxo = undefined;
   }
   get Owner() {
-    return this.wxo
+    return this.wxo;
   }
   Create(t) {
-    this.wxo = t, this.OnCreate()
+    this.wxo = t;
+    this.OnCreate();
   }
   Init() {
-    this.OnInit()
+    this.OnInit();
   }
   Start() {
-    this.OnStart()
+    this.OnStart();
   }
   Tick(t) {
-    this.OnTick(t)
+    this.OnTick(t);
   }
   End() {
-    this.OnEnd()
+    this.OnEnd();
   }
   Clear() {
-    this.OnClear()
+    this.OnClear();
   }
   OnCreate() {}
   OnInit() {}
@@ -33,5 +37,6 @@ class UiModelComponentBase {
   OnTick(t) {}
   OnEnd() {}
   OnClear() {}
-}(exports.UiModelComponentBase = UiModelComponentBase).Id = -1;
+}
+(exports.UiModelComponentBase = UiModelComponentBase).Id = -1;
 //# sourceMappingURL=UiModelComponentBase.js.map

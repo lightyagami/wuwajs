@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInteractPointIconConfig = void 0;
+  value: true
+});
+exports.FbInteractPointIconConfig = undefined;
 class FbInteractPointIconConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.xB1 = !1, this.DB1 = 0
+    this.FbDataInternal = t;
+    this.lk1 = false;
+    this._k1 = 0;
   }
   static Create(t) {
-    if (t) return new FbInteractPointIconConfig(t)
+    if (t) {
+      return new FbInteractPointIconConfig(t);
+    }
   }
   get MaxShowDistance() {
-    return this.xB1 || (this.xB1 = !0, this.DB1 = this.FbDataInternal.maxShowDistance()), this.DB1
+    if (!this.lk1) {
+      this.lk1 = true;
+      this._k1 = this.FbDataInternal.maxShowDistance();
+    }
+    return this._k1;
   }
 }
 exports.FbInteractPointIconConfig = FbInteractPointIconConfig;

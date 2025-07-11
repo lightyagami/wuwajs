@@ -1,104 +1,180 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SelectablePropItemNew = void 0;
-const StringUtils_1 = require("../../../../../Core/Utils/StringUtils"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  LguiEventSystemManager_1 = require("../../../../Ui/LguiEventSystem/LguiEventSystemManager"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  LongPressButtonItem_1 = require("../../Button/LongPressButtonItem"),
-  SelectablePropItemBase_1 = require("./SelectablePropItemBase");
+  value: true
+});
+exports.SelectablePropItemNew = undefined;
+const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const LguiEventSystemManager_1 = require("../../../../Ui/LguiEventSystem/LguiEventSystemManager");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const LongPressButtonItem_1 = require("../../Button/LongPressButtonItem");
+const SelectablePropItemBase_1 = require("./SelectablePropItemBase");
 class SelectablePropItemNew extends SelectablePropItemBase_1.SelectablePropItemBase {
   constructor() {
-    super(...arguments), this.ShowItemTipsFunction = void 0, this.AddFunction = void 0, this.ReduceFunction = void 0, this.GetSelectedNumber = void 0, this.GetSelectedSpriteActive = void 0, this.GetGraySpriteActive = void 0, this.PromptFunction = void 0, this.CheckEnableFunction = void 0, this.HideSelectNumberStateFunction = void 0, this.GBt = !0, this.IsSelectableProp = !0, this.$Bt = void 0, this.YBt = void 0, this.JBt = !1, this.kBt = () => {
+    super(...arguments);
+    this.ShowItemTipsFunction = undefined;
+    this.AddFunction = undefined;
+    this.ReduceFunction = undefined;
+    this.GetSelectedNumber = undefined;
+    this.GetSelectedSpriteActive = undefined;
+    this.GetGraySpriteActive = undefined;
+    this.PromptFunction = undefined;
+    this.CheckEnableFunction = undefined;
+    this.HideSelectNumberStateFunction = undefined;
+    this.GBt = true;
+    this.IsSelectableProp = true;
+    this.$Bt = undefined;
+    this.YBt = undefined;
+    this.JBt = false;
+    this.kBt = () => {
       var t;
-      if (this.JBt && 1 === this.GetSelectedNumber?.(this.PropData)) return this.jBt();
-      return this.PromptFunction && this.PromptFunction(this.PropData, this.GridIndex), !!this.AddFunction && ((t = this.AddFunction(this.PropData, this.GridIndex)) && this.WBt(), this.ScrollViewDelegate && this.ScrollViewDelegate.SelectGridProxy(this.GridIndex, this.DisplayIndex, !1), t)
-    }, this.jBt = () => {
+      if (this.JBt && this.GetSelectedNumber?.(this.PropData) === 1) {
+        return this.jBt();
+      }
+      if (this.PromptFunction) {
+        this.PromptFunction(this.PropData, this.GridIndex);
+      }
+      return !!this.AddFunction && ((t = this.AddFunction(this.PropData, this.GridIndex)) && this.WBt(), this.ScrollViewDelegate && this.ScrollViewDelegate.SelectGridProxy(this.GridIndex, this.DisplayIndex, false), t);
+    };
+    this.jBt = () => {
       var t;
-      return !!this.ReduceFunction && ((t = this.ReduceFunction(this.PropData, this.GridIndex)) && (this.WBt(), this.KBt()), this.ScrollViewDelegate && this.ScrollViewDelegate.SelectGridProxy(this.GridIndex, this.DisplayIndex, !1), t)
-    }, this.FBt = t => {
-      1 === LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0).inputType && (this.ShowItemTipsFunction?.(this.PropData, this.GridIndex), this.ScrollViewDelegate) && this.ScrollViewDelegate.SelectGridProxy(this.GridIndex, this.DisplayIndex, !1)
-    }, this.Lke = () => {
-      var t, i;
-      return !(!this.GetSelectableToggle() || (t = this.GetSelectableToggle().GetToggleState(), 0 < (i = this.GetSelectedNumber?.(this.PropData) ?? 0) && 1 === t) || i <= 0 && 0 === t)
-    }
+      return !!this.ReduceFunction && ((t = this.ReduceFunction(this.PropData, this.GridIndex)) && (this.WBt(), this.KBt()), this.ScrollViewDelegate && this.ScrollViewDelegate.SelectGridProxy(this.GridIndex, this.DisplayIndex, false), t);
+    };
+    this.FBt = t => {
+      if (LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0).inputType === 1 && (this.ShowItemTipsFunction?.(this.PropData, this.GridIndex), this.ScrollViewDelegate)) {
+        this.ScrollViewDelegate.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
+      }
+    };
+    this.Lke = () => {
+      var t;
+      var i;
+      return !!this.GetSelectableToggle() && !(t = this.GetSelectableToggle().GetToggleState(), (i = this.GetSelectedNumber?.(this.PropData) ?? 0) > 0 && t === 1) && (!(i <= 0) || t !== 0);
+    };
   }
   OnStart() {
     var t;
-    this.GetControlItem()?.SetUIActive(!1), this.GetSelectableToggle() && ((t = this.GetSelectableToggle()).OnPointEnterCallBack.Bind(this.FBt), t.CanExecuteChange.Bind(this.Lke)), this.GetReduceButton() && this.GetReduceButton().RootUIComp.SetUIActive(this.GBt), this.$Bt = new LongPressButtonItem_1.LongPressButtonItem(this.GetSelectableToggle(), 1, this.kBt);
-    this.$Bt.SetTickConditionDelegate(() => !this.JBt), this.YBt = new LongPressButtonItem_1.LongPressButtonItem(this.GetReduceButton(), 1, this.jBt)
+    this.GetControlItem()?.SetUIActive(false);
+    if (this.GetSelectableToggle()) {
+      (t = this.GetSelectableToggle()).OnPointEnterCallBack.Bind(this.FBt);
+      t.CanExecuteChange.Bind(this.Lke);
+    }
+    if (this.GetReduceButton()) {
+      this.GetReduceButton().RootUIComp.SetUIActive(this.GBt);
+    }
+    this.$Bt = new LongPressButtonItem_1.LongPressButtonItem(this.GetSelectableToggle(), 1, this.kBt);
+    this.$Bt.SetTickConditionDelegate(() => !this.JBt);
+    this.YBt = new LongPressButtonItem_1.LongPressButtonItem(this.GetReduceButton(), 1, this.jBt);
   }
   WBt() {
-    var t, i;
-    this.HideSelectNumberStateFunction ? this.SetControllerState(this.HideSelectNumberStateFunction(this.PropData, this.GridIndex)) : (0 < (this.GetSelectedNumber?.(this.PropData) ?? 0) ? this.SetControllerState(!0) : this.SetControllerState(!1), this.Oqe()), this.GetSelectNumberText() && (t = ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(this.PropData.IncId), 0 < (i = this.GetSelectedNumber?.(this.PropData) ?? 0) && StringUtils_1.StringUtils.IsEmpty(t?.GetDefaultDownText()) ? LguiUtil_1.LguiUtil.SetLocalText(this.GetSelectNumberText(), "RoleExp", i, this.PropData.Count) : this.ShowDefaultDownText())
+    var t;
+    var i;
+    if (this.HideSelectNumberStateFunction) {
+      this.SetControllerState(this.HideSelectNumberStateFunction(this.PropData, this.GridIndex));
+    } else {
+      if ((this.GetSelectedNumber?.(this.PropData) ?? 0) > 0) {
+        this.SetControllerState(true);
+      } else {
+        this.SetControllerState(false);
+      }
+      this.Oqe();
+    }
+    if (this.GetSelectNumberText()) {
+      t = ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(this.PropData.IncId);
+      if ((i = this.GetSelectedNumber?.(this.PropData) ?? 0) > 0 && StringUtils_1.StringUtils.IsEmpty(t?.GetDefaultDownText())) {
+        LguiUtil_1.LguiUtil.SetLocalText(this.GetSelectNumberText(), "RoleExp", i, this.PropData.Count);
+      } else {
+        this.ShowDefaultDownText();
+      }
+    }
   }
   SetControllerState(t) {
-    var i = this.GetControlItem(),
-      s = ModelManager_1.ModelManager.InventoryModel.GetItemDataBase(this.PropData)[0];
-    s ? (i?.SetUIActive(t), t && (t = 1 === s.GetMaxStackCount(), this.GetFinishSelectItem()?.SetUIActive(t))) : i?.SetUIActive(!1)
+    var i = this.GetControlItem();
+    var s = ModelManager_1.ModelManager.InventoryModel.GetItemDataBase(this.PropData)[0];
+    if (s) {
+      i?.SetUIActive(t);
+      if (t) {
+        t = s.GetMaxStackCount() === 1;
+        this.GetFinishSelectItem()?.SetUIActive(t);
+      }
+    } else {
+      i?.SetUIActive(false);
+    }
   }
   Oqe() {
-    0 < (this.GetSelectedNumber?.(this.PropData) ?? 0) ? this.EUt(1) : this.EUt(0)
+    if ((this.GetSelectedNumber?.(this.PropData) ?? 0) > 0) {
+      this.EUt(1);
+    } else {
+      this.EUt(0);
+    }
   }
   EUt(t) {
-    this.GetSelectableToggle() && this.GetSelectableToggle().SetToggleState(t)
+    if (this.GetSelectableToggle()) {
+      this.GetSelectableToggle().SetToggleState(t);
+    }
   }
   QBt() {
-    this.WBt(), this.GetSelectItem()?.SetUIActive(!1)
+    this.WBt();
+    this.GetSelectItem()?.SetUIActive(false);
   }
   KBt() {
-    (this.GetSelectedNumber?.(this.PropData) ?? 0) <= 0 && this.EUt(0)
+    if ((this.GetSelectedNumber?.(this.PropData) ?? 0) <= 0) {
+      this.EUt(0);
+    }
   }
   OnBeforeDestroy() {
-    this.GetSelectableToggle()?.CanExecuteChange.Unbind(), this.YBt.Clear(), this.$Bt.Clear()
+    this.GetSelectableToggle()?.CanExecuteChange.Unbind();
+    this.YBt.Clear();
+    this.$Bt.Clear();
   }
   OnRefresh(t, i) {
-    this.WBt(), this.Oqe();
-    var s = this.GetSelectedSpriteActive?.(this.PropData, this.GridIndex) ?? !1;
-    this.GetSelectItem()?.SetUIActive(s)
+    this.WBt();
+    this.Oqe();
+    var s = this.GetSelectedSpriteActive?.(this.PropData, this.GridIndex) ?? false;
+    this.GetSelectItem()?.SetUIActive(s);
   }
   OnSelected(t) {
-    this.GetSelectItem()?.SetUIActive(!0)
+    this.GetSelectItem()?.SetUIActive(true);
   }
   OnDeselected(t) {
-    this.QBt()
+    this.QBt();
   }
   Clear() {
-    this.KBt(), this.QBt()
+    this.KBt();
+    this.QBt();
   }
   SetShowItemTipsFunction(t) {
-    this.ShowItemTipsFunction = t
+    this.ShowItemTipsFunction = t;
   }
   SetSelectMode(t) {
-    this.JBt = t
+    this.JBt = t;
   }
   SetAddFunction(t) {
-    this.AddFunction = t
+    this.AddFunction = t;
   }
   SetReduceFunction(t) {
-    this.ReduceFunction = t
+    this.ReduceFunction = t;
   }
   SetSelectedNumber(t) {
-    this.GetSelectedNumber = t
+    this.GetSelectedNumber = t;
   }
   SetSelectedSpriteActive(t) {
-    this.GetSelectedSpriteActive = t
+    this.GetSelectedSpriteActive = t;
   }
   SetGraySpriteActive(t) {
-    this.GetGraySpriteActive = t
+    this.GetGraySpriteActive = t;
   }
   SetReduceButtonActive(t) {
-    this.GBt = t
+    this.GBt = t;
   }
   SetPromptFunction(t) {
-    this.PromptFunction = t
+    this.PromptFunction = t;
   }
   SetCheckEnableFunction(t) {
-    this.CheckEnableFunction = t
+    this.CheckEnableFunction = t;
   }
   SetHideSelectNumberStateFunction(t) {
-    this.HideSelectNumberStateFunction = t
+    this.HideSelectNumberStateFunction = t;
   }
 }
 exports.SelectablePropItemNew = SelectablePropItemNew;

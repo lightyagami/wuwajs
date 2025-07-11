@@ -1,31 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VisionFetterSort = void 0;
-const ModelManager_1 = require("../../../../../../Manager/ModelManager"),
-  CommonSort_1 = require("./CommonSort");
+  value: true
+});
+exports.VisionFetterSort = undefined;
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const CommonSort_1 = require("./CommonSort");
 class VisionFetterSort extends CommonSort_1.CommonSort {
   constructor() {
-    super(...arguments), this.aUt = (e, r, t, o) => {
-      var s = e,
-        n = r,
-        e = o;
-      if (e && 0 < e)
+    super(...arguments);
+    this.aUt = (e, r, t, o) => {
+      var s = e;
+      var n = r;
+      var e = o;
+      if (e && e > 0) {
         for (const M of ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(e).GetIncrIdList()) {
-          var a = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(M),
-            a = a ? a.GetMonsterId() : 0;
+          var a = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(M);
+          var a = a ? a.GetMonsterId() : 0;
           let e = ModelManager_1.ModelManager.PhantomBattleModel.GetFetterGroupMonsterIdArray(s.Id);
-          var i = e.includes(a) ? 1 : -1,
-            a = (e = ModelManager_1.ModelManager.PhantomBattleModel.GetFetterGroupMonsterIdArray(n.Id)).includes(a) ? 1 : -1;
-          if (i != a) return a < i ? t ? 1 : -1 : t ? -1 : 1
+          var i = e.includes(a) ? 1 : -1;
+          var a = (e = ModelManager_1.ModelManager.PhantomBattleModel.GetFetterGroupMonsterIdArray(n.Id)).includes(a) ? 1 : -1;
+          if (i != a) {
+            if (a < i) {
+              if (t) {
+                return 1;
+              } else {
+                return -1;
+              }
+            } else if (t) {
+              return -1;
+            } else {
+              return 1;
+            }
+          }
         }
-      return 0
-    }, this.hUt = (e, r, t) => 0, this.iRt = (e, r, t) => {
-      return e.Id !== r.Id ? (e.Id - r.Id) * (t ? -1 : 1) : 0
-    }
+      }
+      return 0;
+    };
+    this.hUt = (e, r, t) => 0;
+    this.iRt = (e, r, t) => {
+      if (e.Id !== r.Id) {
+        return (e.Id - r.Id) * (t ? -1 : 1);
+      } else {
+        return 0;
+      }
+    };
   }
   OnInitSortMap() {
-    this.SortMap.set(1, this.aUt), this.SortMap.set(2, this.hUt), this.SortMap.set(3, this.iRt)
+    this.SortMap.set(1, this.aUt);
+    this.SortMap.set(2, this.hUt);
+    this.SortMap.set(3, this.iRt);
   }
 }
 exports.VisionFetterSort = VisionFetterSort;

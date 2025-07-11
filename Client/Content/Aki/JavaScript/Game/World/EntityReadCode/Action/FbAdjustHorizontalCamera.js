@@ -1,72 +1,184 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAdjustHorizontalCamera = void 0;
-const FbBaseCurve_1 = require("./FbBaseCurve"),
-  FbCameraDepthOfField_1 = require("./FbCameraDepthOfField"),
-  UnionGravityDirectionHelper_1 = require("../Common/UnionGravityDirectionHelper"),
-  FbVectorInfo_1 = require("../Var/FbVectorInfo");
+  value: true
+});
+exports.FbAdjustHorizontalCamera = undefined;
+const FbBaseCurve_1 = require("./FbBaseCurve");
+const FbCameraDepthOfField_1 = require("./FbCameraDepthOfField");
+const UnionGravityDirectionHelper_1 = require("../Common/UnionGravityDirectionHelper");
+const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbAdjustHorizontalCamera {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.NIh = !1, this.cui = 0, this.mch = !1, this.Cch = 0, this.VIh = !1, this.jIh = void 0, this.pch = !1, this.vch = 0, this.HIh = !1, this.WIh = void 0, this.QIh = !1, this.KIh = 0, this.$Ih = !1, this.XIh = 0, this.YIh = !1, this.zIh = 0, this.Kdh = !1, this.$dh = void 0, this.JIh = !1, this.ZIh = void 0, this.Ich = !1, this.Tch = 0, this.eTh = !1, this.tTh = !1, this.yUh = !1, this.SUh = void 0, this.kuh = !1, this.Guh = 0, this.gTh = !1, this.fTh = 0, this.pTh = !1, this.vTh = 0, this.RTh = !1, this.wTh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.NIh = false;
+    this.cui = 0;
+    this.mch = false;
+    this.Cch = 0;
+    this.VIh = false;
+    this.jIh = undefined;
+    this.pch = false;
+    this.vch = 0;
+    this.HIh = false;
+    this.WIh = undefined;
+    this.QIh = false;
+    this.KIh = 0;
+    this.$Ih = false;
+    this.XIh = 0;
+    this.YIh = false;
+    this.zIh = 0;
+    this.Kdh = false;
+    this.$dh = undefined;
+    this.JIh = false;
+    this.ZIh = undefined;
+    this.Ich = false;
+    this.Tch = 0;
+    this.eTh = false;
+    this.tTh = false;
+    this.yUh = false;
+    this.SUh = undefined;
+    this.kuh = false;
+    this.Guh = 0;
+    this.gTh = false;
+    this.fTh = 0;
+    this.pTh = false;
+    this.vTh = 0;
+    this.RTh = false;
+    this.wTh = undefined;
   }
   static Create(t) {
-    if (t) return new FbAdjustHorizontalCamera(t)
+    if (t) {
+      return new FbAdjustHorizontalCamera(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Priority() {
-    return this.NIh || (this.NIh = !0, this.cui = this.FbDataInternal.priority()), this.cui
+    if (!this.NIh) {
+      this.NIh = true;
+      this.cui = this.FbDataInternal.priority();
+    }
+    return this.cui;
   }
   get FadeInTime() {
-    return this.mch || (this.mch = !0, this.Cch = this.FbDataInternal.fadeInTime()), this.Cch
+    if (!this.mch) {
+      this.mch = true;
+      this.Cch = this.FbDataInternal.fadeInTime();
+    }
+    return this.Cch;
   }
   get FadeInCurve() {
-    return this.VIh || (this.VIh = !0, this.jIh = FbBaseCurve_1.FbBaseCurve.Create(this.FbDataInternal.fadeInCurve())), this.jIh
+    if (!this.VIh) {
+      this.VIh = true;
+      this.jIh = FbBaseCurve_1.FbBaseCurve.Create(this.FbDataInternal.fadeInCurve());
+    }
+    return this.jIh;
   }
   get FadeOutTime() {
-    return this.pch || (this.pch = !0, this.vch = this.FbDataInternal.fadeOutTime()), this.vch
+    if (!this.pch) {
+      this.pch = true;
+      this.vch = this.FbDataInternal.fadeOutTime();
+    }
+    return this.vch;
   }
   get FadeOutCurve() {
-    return this.HIh || (this.HIh = !0, this.WIh = FbBaseCurve_1.FbBaseCurve.Create(this.FbDataInternal.fadeOutCurve())), this.WIh
+    if (!this.HIh) {
+      this.HIh = true;
+      this.WIh = FbBaseCurve_1.FbBaseCurve.Create(this.FbDataInternal.fadeOutCurve());
+    }
+    return this.WIh;
   }
   get ArmLength() {
-    return this.QIh || (this.QIh = !0, this.KIh = this.FbDataInternal.armLength()), this.KIh
+    if (!this.QIh) {
+      this.QIh = true;
+      this.KIh = this.FbDataInternal.armLength();
+    }
+    return this.KIh;
   }
   get MinumArmLength() {
-    return this.$Ih || (this.$Ih = !0, this.XIh = this.FbDataInternal.minumArmLength()), this.XIh
+    if (!this.$Ih) {
+      this.$Ih = true;
+      this.XIh = this.FbDataInternal.minumArmLength();
+    }
+    return this.XIh;
   }
   get MaxiumArmLength() {
-    return this.YIh || (this.YIh = !0, this.zIh = this.FbDataInternal.maxiumArmLength()), this.zIh
+    if (!this.YIh) {
+      this.YIh = true;
+      this.zIh = this.FbDataInternal.maxiumArmLength();
+    }
+    return this.zIh;
   }
   get Offset() {
-    return this.Kdh || (this.Kdh = !0, this.$dh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.offset())), this.$dh
+    if (!this.Kdh) {
+      this.Kdh = true;
+      this.$dh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.offset());
+    }
+    return this.$dh;
   }
   get ArmOffset() {
-    return this.JIh || (this.JIh = !0, this.ZIh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.armOffset())), this.ZIh
+    if (!this.JIh) {
+      this.JIh = true;
+      this.ZIh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.armOffset());
+    }
+    return this.ZIh;
   }
   get Fov() {
-    return this.Ich || (this.Ich = !0, this.Tch = this.FbDataInternal.fov()), this.Tch
+    if (!this.Ich) {
+      this.Ich = true;
+      this.Tch = this.FbDataInternal.fov();
+    }
+    return this.Tch;
   }
   get IsDisableResetFocus() {
-    return this.eTh || (this.eTh = !0, this.tTh = this.FbDataInternal.isDisableResetFocus()), this.tTh
+    if (!this.eTh) {
+      this.eTh = true;
+      this.tTh = this.FbDataInternal.isDisableResetFocus();
+    }
+    return this.tTh;
   }
   get GravityDirection() {
-    var t, i;
-    return !this.yUh && (this.yUh = !0, t = this.FbDataInternal.gravityDirectionType(), i = UnionGravityDirectionHelper_1.UnionGravityDirectionHelper.GetUnionGravityDirectionObject(t)) && (this.SUh = UnionGravityDirectionHelper_1.UnionGravityDirectionHelper.ReadUnionGravityDirection(t, this.FbDataInternal.gravityDirection(i))), this.SUh
+    var t;
+    var i;
+    if (!this.yUh && (this.yUh = true, t = this.FbDataInternal.gravityDirectionType(), i = UnionGravityDirectionHelper_1.UnionGravityDirectionHelper.GetUnionGravityDirectionObject(t))) {
+      this.SUh = UnionGravityDirectionHelper_1.UnionGravityDirectionHelper.ReadUnionGravityDirection(t, this.FbDataInternal.gravityDirection(i));
+    }
+    return this.SUh;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get YawAngle() {
-    return this.gTh || (this.gTh = !0, this.fTh = this.FbDataInternal.yawAngle()), this.fTh
+    if (!this.gTh) {
+      this.gTh = true;
+      this.fTh = this.FbDataInternal.yawAngle();
+    }
+    return this.fTh;
   }
   get PitchAngle() {
-    return this.pTh || (this.pTh = !0, this.vTh = this.FbDataInternal.pitchAngle()), this.vTh
+    if (!this.pTh) {
+      this.pTh = true;
+      this.vTh = this.FbDataInternal.pitchAngle();
+    }
+    return this.vTh;
   }
   get DepthOfField() {
-    return this.RTh || (this.RTh = !0, this.wTh = FbCameraDepthOfField_1.FbCameraDepthOfField.Create(this.FbDataInternal.depthOfField())), this.wTh
+    if (!this.RTh) {
+      this.RTh = true;
+      this.wTh = FbCameraDepthOfField_1.FbCameraDepthOfField.Create(this.FbDataInternal.depthOfField());
+    }
+    return this.wTh;
   }
 }
 exports.FbAdjustHorizontalCamera = FbAdjustHorizontalCamera;

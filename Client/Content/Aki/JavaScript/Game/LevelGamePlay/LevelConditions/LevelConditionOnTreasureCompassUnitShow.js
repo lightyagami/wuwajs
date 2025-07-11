@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionOnTreasureCompassUnitShow = void 0;
+  value: true
+});
+exports.LevelConditionOnTreasureCompassUnitShow = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionOnTreasureCompassUnitShow extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, s, ...o) {
-    return 1 === o.length && "boolean" == typeof o[0] && ([o] = o, o)
+    return o.length === 1 && typeof o[0] == "boolean" && ([o] = o, o);
   }
 }
 exports.LevelConditionOnTreasureCompassUnitShow = LevelConditionOnTreasureCompassUnitShow;

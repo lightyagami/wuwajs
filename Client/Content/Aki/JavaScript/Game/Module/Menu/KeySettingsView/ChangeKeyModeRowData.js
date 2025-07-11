@@ -1,10 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChangeKeyModeRowData = void 0;
+  value: true
+});
+exports.ChangeKeyModeRowData = undefined;
 class ChangeKeyModeRowData {
   constructor(t, s) {
-    this.Index = 0, this.SpriteResourceId = void 0, this.DescriptionA = void 0, this.DescriptionB = void 0, this.DescriptionParametersA = void 0, this.DescriptionParametersB = void 0, this.Index = t, this.SpriteResourceId = s.RowSpriteResourceId, this.DescriptionA = s.DescriptionA, this.DescriptionB = s.DescriptionB, this.DescriptionParametersA = s.DescriptionParametersA, this.DescriptionParametersB = s.DescriptionParametersB
+    this.Index = 0;
+    this.SpriteResourceId = undefined;
+    this.DescriptionA = undefined;
+    this.DescriptionB = undefined;
+    this.DescriptionParametersA = undefined;
+    this.DescriptionParametersB = undefined;
+    this.Index = t;
+    this.SpriteResourceId = s.RowSpriteResourceId;
+    this.DescriptionA = s.DescriptionA;
+    this.DescriptionB = s.DescriptionB;
+    this.DescriptionParametersA = s.DescriptionParametersA;
+    this.DescriptionParametersB = s.DescriptionParametersB;
   }
 }
 exports.ChangeKeyModeRowData = ChangeKeyModeRowData;

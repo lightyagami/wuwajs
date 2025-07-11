@@ -1,28 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.EntityContext = exports.GeneralContext = void 0;
+  value: true
+});
+exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.EntityContext = exports.GeneralContext = undefined;
 class GeneralContext {
   constructor() {
-    this.Type = void 0, this.SubType = void 0, this.DUe = !1
+    this.Type = undefined;
+    this.SubType = undefined;
+    this.DUe = false;
   }
   Reset() {
-    this.SubType = void 0
+    this.SubType = undefined;
   }
   static GetObj(t, e, n) {
-    let s = void 0,
-      r = GeneralContext.RUe.get(t);
-    return r || (r = [], GeneralContext.RUe.set(t, r)), 0 < r.length ? (s = r.pop()).DUe = !1 : s = new n, s.SubType = e, s
+    let s = undefined;
+    let o = GeneralContext.RUe.get(t);
+    if (!o) {
+      o = [];
+      GeneralContext.RUe.set(t, o);
+    }
+    if (o.length > 0) {
+      (s = o.pop()).DUe = false;
+    } else {
+      s = new n();
+    }
+    s.SubType = e;
+    return s;
   }
   Release() {
-    if (this.Reset(), !this.DUe) {
+    this.Reset();
+    if (!this.DUe) {
       let t = GeneralContext.RUe.get(this.Type);
-      t || (t = [], GeneralContext.RUe.set(this.Type, t)), t.push(this), this.DUe = !0
+      if (!t) {
+        t = [];
+        GeneralContext.RUe.set(this.Type, t);
+      }
+      t.push(this);
+      this.DUe = true;
     }
   }
   static Copy(e) {
     if (e) {
-      let t = void 0;
+      let t = undefined;
       switch (e.Type) {
         case 2:
           t = QuestContext.Create(e.QuestId, e.SubType);
@@ -46,133 +66,210 @@ class GeneralContext {
           t = TriggerContext.Create(e.SubType);
           break;
         case 10:
-          t = ClientEventContext.Create(e.EventName, ...e.Params)
+          t = ClientEventContext.Create(e.EventName, ...e.Params);
+          break;
+        case 11:
+          t = CombinationContext.Create(...e.Contexts);
       }
-      return t
+      return t;
     }
   }
-}(exports.GeneralContext = GeneralContext).RUe = new Map;
+}
+(exports.GeneralContext = GeneralContext).RUe = new Map();
 class EntityContext extends GeneralContext {
   constructor() {
-    super(), this.EntityId = 0, this.ClientExecuteActions = !1, this.Type = 1
+    super();
+    this.EntityId = 0;
+    this.ClientExecuteActions = false;
+    this.Type = 1;
   }
   Reset() {
-    this.EntityId = 0
+    this.EntityId = 0;
   }
   static Create(t = 0, e) {
     e = GeneralContext.GetObj(1, e, EntityContext);
-    return e.EntityId = t, e
+    e.EntityId = t;
+    return e;
   }
 }
 exports.EntityContext = EntityContext;
 class QuestContext extends GeneralContext {
   constructor() {
-    super(), this.QuestId = 0, this.Type = 2
+    super();
+    this.QuestId = 0;
+    this.Type = 2;
   }
   Reset() {
-    this.QuestId = 0
+    this.QuestId = 0;
   }
   static Create(t = 0, e) {
     e = GeneralContext.GetObj(2, e, QuestContext);
-    return e.QuestId = t, e
+    e.QuestId = t;
+    return e;
   }
 }
 exports.QuestContext = QuestContext;
 class LevelPlayContext extends GeneralContext {
   constructor() {
-    super(), this.LevelPlayId = 0, this.Type = 3
+    super();
+    this.LevelPlayId = 0;
+    this.Type = 3;
   }
   Reset() {
-    this.LevelPlayId = 0
+    this.LevelPlayId = 0;
   }
   static Create(t = 0, e) {
     e = GeneralContext.GetObj(3, e, LevelPlayContext);
-    return e.LevelPlayId = t, e
+    e.LevelPlayId = t;
+    return e;
   }
 }
 exports.LevelPlayContext = LevelPlayContext;
 class InstanceDungeonContext extends GeneralContext {
   constructor() {
-    super(), this.InstanceDungeonId = 0, this.Type = 4
+    super();
+    this.InstanceDungeonId = 0;
+    this.Type = 4;
   }
   Reset() {
-    this.InstanceDungeonId = 0
+    this.InstanceDungeonId = 0;
   }
   static Create(t = 0, e, n) {
     n = GeneralContext.GetObj(4, n, InstanceDungeonContext);
-    return n.InstanceDungeonId = t, n
+    n.InstanceDungeonId = t;
+    return n;
   }
 }
 exports.InstanceDungeonContext = InstanceDungeonContext;
 class TriggerContext extends GeneralContext {
   constructor() {
-    super(), this.TriggerEntityId = 0, this.OtherEntityId = 0, this.TriggerType = 0, this.IsClientPrePerform = !1, this.Type = 5
+    super();
+    this.TriggerEntityId = 0;
+    this.OtherEntityId = 0;
+    this.TriggerType = 0;
+    this.IsClientPrePerform = false;
+    this.Type = 5;
   }
-  static Create(t = 0, e = 0, n, s, r) {
+  static Create(t = 0, e = 0, n, s, o) {
     n = GeneralContext.GetObj(5, n, TriggerContext);
-    return n.TriggerEntityId = t, n.OtherEntityId = e, n.TriggerType = s ?? 0, n.IsClientPrePerform = r ?? !1, n
+    n.TriggerEntityId = t;
+    n.OtherEntityId = e;
+    n.TriggerType = s ?? 0;
+    n.IsClientPrePerform = o ?? false;
+    return n;
   }
 }
 exports.TriggerContext = TriggerContext;
 class GuaranteeContext extends GeneralContext {
   constructor() {
-    super(), this.Type = 7
+    super();
+    this.Type = 7;
   }
   static Create(t) {
-    return GeneralContext.GetObj(7, t, GuaranteeContext)
+    return GeneralContext.GetObj(7, t, GuaranteeContext);
   }
 }
 exports.GuaranteeContext = GuaranteeContext;
 class GmLevelActionContext extends GeneralContext {
   constructor() {
-    super(), this.Type = 8
+    super();
+    this.Type = 8;
   }
   Reset() {}
   static Create(t) {
-    return GeneralContext.GetObj(8, t, GmLevelActionContext)
+    return GeneralContext.GetObj(8, t, GmLevelActionContext);
   }
 }
 exports.GmLevelActionContext = GmLevelActionContext;
 class PlotContext extends GeneralContext {
   constructor() {
-    super(), this.FlowIncId = 0, this.Type = 9
+    super();
+    this.FlowIncId = 0;
+    this.Type = 9;
   }
   Reset() {
-    this.FlowIncId = 0
+    this.FlowIncId = 0;
   }
   static Create(t, e) {
     e = GeneralContext.GetObj(8, e, PlotContext);
-    return e.FlowIncId = t, e
+    e.FlowIncId = t;
+    return e;
   }
 }
 exports.PlotContext = PlotContext;
 class GeneralLogicTreeContext extends GeneralContext {
   constructor() {
-    super(), this.TreeIncId = BigInt(0), this.TreeConfigId = 0, this.NodeId = 0, this.BtType = 0, this.Type = 6
+    super();
+    this.TreeIncId = BigInt(0);
+    this.TreeConfigId = 0;
+    this.NodeId = 0;
+    this.BtType = 0;
+    this.Type = 6;
   }
   Reset() {
-    this.TreeIncId = BigInt(0), this.NodeId = 0
+    this.TreeIncId = BigInt(0);
+    this.NodeId = 0;
   }
-  static Create(t, e = BigInt(0), n = 0, s = 0, r) {
-    r = GeneralContext.GetObj(6, r, GeneralLogicTreeContext);
-    return r.BtType = t, r.TreeIncId = e, r.TreeConfigId = n, r.NodeId = s, r
+  static Create(t, e = BigInt(0), n = 0, s = 0, o) {
+    o = GeneralContext.GetObj(6, o, GeneralLogicTreeContext);
+    o.BtType = t;
+    o.TreeIncId = e;
+    o.TreeConfigId = n;
+    o.NodeId = s;
+    return o;
   }
 }
 exports.GeneralLogicTreeContext = GeneralLogicTreeContext;
 class ClientEventContext extends GeneralContext {
   constructor() {
-    super(), this.EventName = void 0, this.Params = void 0, this.Type = 10
+    super();
+    this.EventName = undefined;
+    this.Params = undefined;
+    this.Type = 10;
   }
   GetEventHandleParams() {
-    return this.Params
+    return this.Params;
   }
   Reset() {
-    this.EventName = void 0, this.Params = void 0
+    this.EventName = undefined;
+    this.Params = undefined;
   }
   static Create(t, ...e) {
-    var n = GeneralContext.GetObj(10, void 0, ClientEventContext);
-    return n.EventName = t, n.Params = e, n
+    var n = GeneralContext.GetObj(10, undefined, ClientEventContext);
+    n.EventName = t;
+    n.Params = e;
+    return n;
   }
 }
 exports.ClientEventContext = ClientEventContext;
+class CombinationContext extends GeneralContext {
+  constructor() {
+    super();
+    this.Contexts = undefined;
+    this.Type = 11;
+  }
+  Reset() {
+    this.Contexts = undefined;
+  }
+  static Create(...t) {
+    var e = GeneralContext.GetObj(11, undefined, CombinationContext);
+    e.Contexts = [];
+    for (const n of t) {
+      if (n.Type !== e.Type) {
+        e.Contexts.push(n);
+      }
+    }
+    return e;
+  }
+  GetContextByType(t) {
+    if (this.Contexts) {
+      for (const e of this.Contexts) {
+        if (e.Type === t) {
+          return e;
+        }
+      }
+    }
+  }
+}
+exports.CombinationContext = CombinationContext;
 //# sourceMappingURL=LevelGeneralContextDefine.js.map

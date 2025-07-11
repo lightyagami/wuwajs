@@ -1,11 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaNormalSkillInteract = void 0;
+  value: true
+});
+exports.PhantomArenaNormalSkillInteract = undefined;
 const PhantomArenaSkillInteractBase_1 = require("./PhantomArenaSkillInteractBase");
 class PhantomArenaNormalSkillInteract extends PhantomArenaSkillInteractBase_1.PhantomArenaSkillInteractBase {
   async OnExecute(e) {
-    return await this.RequestSelectResultInfo([]) ? 0 : 1
+    if (await this.RequestSelectResultInfo([])) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
 }
 exports.PhantomArenaNormalSkillInteract = PhantomArenaNormalSkillInteract;

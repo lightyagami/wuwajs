@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckChildQuestStatus = void 0;
+  value: true
+});
+exports.FbCheckChildQuestStatus = undefined;
 class FbCheckChildQuestStatus {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.$ch = !1, this.Xch = 0, this.Dzh = !1, this.h0i = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.$ch = false;
+    this.Xch = 0;
+    this.Dzh = false;
+    this.h0i = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckChildQuestStatus(t)
+    if (t) {
+      return new FbCheckChildQuestStatus(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get NodeId() {
-    return this.$ch || (this.$ch = !0, this.Xch = this.FbDataInternal.nodeId()), this.Xch
+    if (!this.$ch) {
+      this.$ch = true;
+      this.Xch = this.FbDataInternal.nodeId();
+    }
+    return this.Xch;
   }
   get Status() {
-    return this.Dzh || (this.Dzh = !0, this.h0i = this.FbDataInternal.status()), this.h0i
+    if (!this.Dzh) {
+      this.Dzh = true;
+      this.h0i = this.FbDataInternal.status();
+    }
+    return this.h0i;
   }
 }
 exports.FbCheckChildQuestStatus = FbCheckChildQuestStatus;

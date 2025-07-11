@@ -1,50 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonTipMissionComplete = void 0;
+  value: true
+});
+exports.CommonTipMissionComplete = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class CommonTipMissionComplete {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(i, t) {
-    return this.bb_pos = i, this.bb = t, this
+    this.bb_pos = i;
+    this.bb = t;
+    return this;
   }
   static getRootAsCommonTipMissionComplete(i, t) {
-    return (t || new CommonTipMissionComplete).__init(i.readInt32(i.position()) + i.position(), i)
+    return (t || new CommonTipMissionComplete()).__init(i.readInt32(i.position()) + i.position(), i);
   }
   static getSizePrefixedRootAsCommonTipMissionComplete(i, t) {
-    return i.setPosition(i.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new CommonTipMissionComplete).__init(i.readInt32(i.position()) + i.position(), i)
+    i.setPosition(i.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new CommonTipMissionComplete()).__init(i.readInt32(i.position()) + i.position(), i);
   }
   type() {
     var i = this.bb.__offset(this.bb_pos, 4);
-    return i ? this.bb.readUint8(this.bb_pos + i) : 0
+    if (i) {
+      return this.bb.readUint8(this.bb_pos + i);
+    } else {
+      return 0;
+    }
   }
   tidMainText(i) {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.__string(this.bb_pos + t, i) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, i);
+    } else {
+      return undefined;
+    }
   }
   tidSubText(i) {
     var t = this.bb.__offset(this.bb_pos, 8);
-    return t ? this.bb.__string(this.bb_pos + t, i) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, i);
+    } else {
+      return undefined;
+    }
   }
   static startCommonTipMissionComplete(i) {
-    i.startObject(3)
+    i.startObject(3);
   }
   static addType(i, t) {
-    i.addFieldInt8(0, t, 0)
+    i.addFieldInt8(0, t, 0);
   }
   static addTidMainText(i, t) {
-    i.addFieldOffset(1, t, 0)
+    i.addFieldOffset(1, t, 0);
   }
   static addTidSubText(i, t) {
-    i.addFieldOffset(2, t, 0)
+    i.addFieldOffset(2, t, 0);
   }
   static endCommonTipMissionComplete(i) {
-    return i.endObject()
+    return i.endObject();
   }
   static createCommonTipMissionComplete(i, t, o, s) {
-    return CommonTipMissionComplete.startCommonTipMissionComplete(i), CommonTipMissionComplete.addType(i, t), CommonTipMissionComplete.addTidMainText(i, o), CommonTipMissionComplete.addTidSubText(i, s), CommonTipMissionComplete.endCommonTipMissionComplete(i)
+    CommonTipMissionComplete.startCommonTipMissionComplete(i);
+    CommonTipMissionComplete.addType(i, t);
+    CommonTipMissionComplete.addTidMainText(i, o);
+    CommonTipMissionComplete.addTidSubText(i, s);
+    return CommonTipMissionComplete.endCommonTipMissionComplete(i);
   }
 }
 exports.CommonTipMissionComplete = CommonTipMissionComplete;

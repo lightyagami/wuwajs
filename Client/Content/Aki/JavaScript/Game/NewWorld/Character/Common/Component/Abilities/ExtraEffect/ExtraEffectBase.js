@@ -1,72 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BuffEffect = exports.BuffEffectBase = void 0;
-const CommonDefine_1 = require("../../../../../../../Core/Define/CommonDefine"),
-  Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol"),
-  EntitySystem_1 = require("../../../../../../../Core/Entity/EntitySystem"),
-  RegisterComponent_1 = require("../../../../../../../Core/Entity/RegisterComponent"),
-  Macro_1 = require("../../../../../../../Core/Preprocessor/Macro"),
-  RandomSystem_1 = require("../../../../../../../Core/Random/RandomSystem"),
-  GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils"),
-  ModelManager_1 = require("../../../../../../Manager/ModelManager"),
-  PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil"),
-  CombatLog_1 = require("../../../../../../Utils/CombatLog"),
-  ActiveBuffConfigs_1 = require("../Buff/ActiveBuffConfigs");
+  value: true
+});
+exports.BuffEffect = exports.BuffEffectBase = undefined;
+const CommonDefine_1 = require("../../../../../../../Core/Define/CommonDefine");
+const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
+const EntitySystem_1 = require("../../../../../../../Core/Entity/EntitySystem");
+const RegisterComponent_1 = require("../../../../../../../Core/Entity/RegisterComponent");
+const Macro_1 = require("../../../../../../../Core/Preprocessor/Macro");
+const RandomSystem_1 = require("../../../../../../../Core/Random/RandomSystem");
+const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
+const CombatLog_1 = require("../../../../../../Utils/CombatLog");
+const ActiveBuffConfigs_1 = require("../Buff/ActiveBuffConfigs");
 class BuffEffectBase {
   constructor(t) {
-    this.RequireAndLimits = t, this.BuffId = -1, this.IsInLoop = !1, this.Level = 0, this.ServerId = -1, this.InstigatorEntityId = 0, this.OpponentEntityId = 0, this.OwnerBuffComponent = void 0
+    this.RequireAndLimits = t;
+    this.BuffId = -1;
+    this.IsInLoop = false;
+    this.Level = 0;
+    this.ServerId = -1;
+    this.InstigatorEntityId = 0;
+    this.OpponentEntityId = 0;
+    this.OwnerBuffComponent = undefined;
   }
   get InstigatorEntity() {
-    return ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.InstigatorEntityId)
+    return ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.InstigatorEntityId);
   }
   get InstigatorCreatureId() {
-    return this.InstigatorEntity?.Entity?.GetComponent(0)?.GetCreatureDataId() ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID
+    return this.InstigatorEntity?.Entity?.GetComponent(0)?.GetCreatureDataId() ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID;
   }
   get InstigatorBuffComponent() {
-    return this.InstigatorEntity?.Entity?.CheckGetComponent(174)
+    return this.InstigatorEntity?.Entity?.CheckGetComponent(174);
   }
   get OpponentEntity() {
-    return EntitySystem_1.EntitySystem.Get(this.OpponentEntityId)
+    return EntitySystem_1.EntitySystem.Get(this.OpponentEntityId);
   }
   get OpponentBuffComponent() {
-    return this.OpponentEntity?.CheckGetComponent(174)
+    return this.OpponentEntity?.CheckGetComponent(174);
   }
   get OwnerEntity() {
-    return this.OwnerBuffComponent?.GetEntity()
+    return this.OwnerBuffComponent?.GetEntity();
   }
   get ExactOwnerEntity() {
-    return this.OwnerBuffComponent?.GetExactEntity()
+    return this.OwnerBuffComponent?.GetExactEntity();
   }
   get OwnerEffectManager() {
-    return this.OwnerBuffComponent.BuffEffectManager
+    return this.OwnerBuffComponent.BuffEffectManager;
   }
   InitParameters(t) {}
   CheckExecutable() {
-    return !0
+    return true;
   }
   CheckAuthority() {
-    return this.OwnerBuffComponent?.HasBuffAuthority() ?? !1
+    return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
   IsPlayerBuff() {
-    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 199)
+    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 199);
   }
   CheckLoop() {
-    return !this.IsInLoop
+    return !this.IsInLoop;
   }
   CheckRequirements(t) {
-    if (0 === this.RequireAndLimits.Requirements.length) return !0;
+    if (this.RequireAndLimits.Requirements.length === 0) {
+      return true;
+    }
     switch (this.RequireAndLimits.CheckType) {
       case 0:
-        for (const e of this.RequireAndLimits.Requirements)
-          if (!this.ZQo(e, t)) return !1;
-        return !0;
+        for (const e of this.RequireAndLimits.Requirements) {
+          if (!this.ZQo(e, t)) {
+            return false;
+          }
+        }
+        return true;
       case 1:
-        for (const r of this.RequireAndLimits.Requirements)
-          if (this.ZQo(r, t)) return !0;
-        return !1;
+        for (const r of this.RequireAndLimits.Requirements) {
+          if (this.ZQo(r, t)) {
+            return true;
+          }
+        }
+        return false;
       default:
-        return !0
+        return true;
     }
   }
   ZQo(t, e) {
@@ -80,7 +97,7 @@ class BuffEffectBase {
       case 4:
         return Number.isInteger(e.SmashType) && t.SmashTypes.includes(e.SmashType ?? -1);
       case 5:
-        return void 0 !== e.BulletId && t.BulletIds.includes(e.BulletId);
+        return e.BulletId !== undefined && t.BulletIds.includes(e.BulletId);
       case 6:
         return t.IsCritical === e.IsCritical;
       case 7:
@@ -95,35 +112,36 @@ class BuffEffectBase {
         return GameplayTagUtils_1.GameplayTagUtils.HasAny(t.RequireBulletTags, e.BulletTags);
       case 12:
         return t.DamageTypes.includes(e.DamageType ?? -1);
-      case 17: {
-        const s = e.DamageSubTypes ?? [];
-        switch (t.IncludeType) {
-          case 1:
-            return t.DamageSubTypes.every(t => s.includes(t));
-          case 3:
-            return t.DamageSubTypes.every(t => !s.includes(t));
-          case 2:
-            return t.DamageSubTypes.some(t => !s.includes(t));
-          default:
-            return t.DamageSubTypes.some(t => s.includes(t))
+      case 17:
+        {
+          const s = e.DamageSubTypes ?? [];
+          switch (t.IncludeType) {
+            case 1:
+              return t.DamageSubTypes.every(t => s.includes(t));
+            case 3:
+              return t.DamageSubTypes.every(t => !s.includes(t));
+            case 2:
+              return t.DamageSubTypes.some(t => !s.includes(t));
+            default:
+              return t.DamageSubTypes.some(t => s.includes(t));
+          }
         }
-      }
       case 13:
         var r = this.eXo(t.RequireTargetType)?.GetEntity()?.GetComponent(0)?.GetMonsterMatchType();
         return Number.isInteger(r) && t.MonsterGenres.includes(r);
       case 14:
         r = this.eXo(t.RequireTargetType);
-        return (r && r.GetBuffTotalStackById(t.BuffId) >= t.MinStack && r.GetBuffTotalStackById(t.BuffId) <= t.MaxStack) ?? !1;
+        return (r && r.GetBuffTotalStackById(t.BuffId) >= t.MinStack && r.GetBuffTotalStackById(t.BuffId) <= t.MaxStack) ?? false;
       case 15:
-        return (PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(t.RequireTargetType).GetEntity(), t.SummonType, t.SummonIndex)?.Entity?.CheckGetComponent(205))?.HasAnyTag(t.RequireTagContainer) === t.IsExist;
+        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(t.RequireTargetType).GetEntity(), t.SummonType, t.SummonIndex)?.Entity?.CheckGetComponent(205)?.HasAnyTag(t.RequireTagContainer) === t.IsExist;
       case 16:
         return t.CalculationTypes.includes(e.CalculateType ?? -1);
       case 18:
         return t.BattleFlags.some(t => e.BattleFlags?.includes(t));
       default:
-        return !0
+        return true;
     }
-    return !0
+    return true;
   }
   eXo(t) {
     switch (t) {
@@ -134,28 +152,37 @@ class BuffEffectBase {
       case 2:
         return this.InstigatorBuffComponent;
       default:
-        return
+        return;
     }
   }
 }
-class BuffEffect extends(exports.BuffEffectBase = BuffEffectBase) {
+class BuffEffect extends (exports.BuffEffectBase = BuffEffectBase) {
   constructor(t, e, r, s, i) {
-    super(r), this.ActiveHandleId = t, this.Index = e, this.Timeout = 0, this.ExecuteContext = void 0;
+    super(r);
+    this.ActiveHandleId = t;
+    this.Index = e;
+    this.Timeout = 0;
+    this.ExecuteContext = undefined;
     r = (this.OwnerBuffComponent = s).GetBuffByHandle(t);
-    r && (this.Level = r.Level, this.ServerId = r.ServerId, this.BuffId = r.Id, i) && (this.InstigatorEntityId = i.Entity.Id)
+    if (r && (this.Level = r.Level, this.ServerId = r.ServerId, this.BuffId = r.Id, i)) {
+      this.InstigatorEntityId = i.Entity.Id;
+    }
   }
   get RemainCd() {
-    return this.OwnerBuffComponent?.GetBuffEffectCd(this.BuffId, this.Index) ?? 0
+    return this.OwnerBuffComponent?.GetBuffEffectCd(this.BuffId, this.Index) ?? 0;
   }
   get Buff() {
-    return this.OwnerBuffComponent.GetBuffByHandle(this.ActiveHandleId)
+    return this.OwnerBuffComponent.GetBuffByHandle(this.ActiveHandleId);
   }
   get PendingBuff() {
-    return this.OwnerBuffComponent.GetPendingBuffByHandle(this.ActiveHandleId)
+    return this.OwnerBuffComponent.GetPendingBuffByHandle(this.ActiveHandleId);
   }
   static Create(t, e, r, s, i, n) {
     t = new this(t, e, r, s, i);
-    return n && t.InitParameters(n), t
+    if (n) {
+      t.InitParameters(n);
+    }
+    return t;
   }
   OnCreated() {}
   OnRemoved(t) {}
@@ -163,19 +190,30 @@ class BuffEffect extends(exports.BuffEffectBase = BuffEffectBase) {
   OnStackIncreased(t, e, r) {}
   OnPeriodCallback() {}
   TryExecute(t, e, ...r) {
-    return !(!this.Check(t, e) || (this.ExecuteContext = t, this.Execute(...r), this.ExecuteContext = void 0))
+    return !!this.Check(t, e) && !(this.ExecuteContext = t, this.Execute(...r), this.ExecuteContext = undefined);
   }
   Check(t, e) {
-    return !!this.CheckExecutable() && (this.OpponentEntityId = e.GetEntity()?.Id ?? 0, !!this.CheckLoop()) && !!this.CheckRequirements(t) && (this.ActiveHandleId < 0 || !(0 < this.RemainCd || RandomSystem_1.default.GetRandomPercent() > this.RequireAndLimits.Limits.ExtraEffectProbability))
+    return !!this.CheckExecutable() && (this.OpponentEntityId = e.GetEntity()?.Id ?? 0, !!this.CheckLoop()) && !!this.CheckRequirements(t) && (this.ActiveHandleId < 0 || !(this.RemainCd > 0) && !(RandomSystem_1.default.GetRandomPercent() > this.RequireAndLimits.Limits.ExtraEffectProbability));
   }
   Execute(...t) {
-    this.IsInLoop = !0;
+    this.IsInLoop = true;
     t = this.OnExecute(...t);
-    return this.PostExecuted(), this.IsInLoop = !1, t
+    this.PostExecuted();
+    this.IsInLoop = false;
+    return t;
   }
   PostExecuted() {
     var t;
-    this.ActiveHandleId < 0 || !this.OwnerBuffComponent || (t = this.RequireAndLimits.Limits.ExtraEffectCd * CommonDefine_1.MILLIONSECOND_PER_SECOND, this.CheckAuthority() && this.OwnerBuffComponent.SetBuffEffectCd(this.BuffId, this.Index, t), t = this.RequireAndLimits.Limits.ExtraEffectRemoveStackNum, this.CheckAuthority() && 0 < t && this.OwnerBuffComponent.RemoveBuffByHandle(this.ActiveHandleId, t, "buff额外效果触发后移除"))
+    if (!(this.ActiveHandleId < 0) && !!this.OwnerBuffComponent) {
+      t = this.RequireAndLimits.Limits.ExtraEffectCd * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+      if (this.CheckAuthority()) {
+        this.OwnerBuffComponent.SetBuffEffectCd(this.BuffId, this.Index, t);
+      }
+      t = this.RequireAndLimits.Limits.ExtraEffectRemoveStackNum;
+      if (this.CheckAuthority() && t > 0) {
+        this.OwnerBuffComponent.RemoveBuffByHandle(this.ActiveHandleId, t, "buff额外效果触发后移除");
+      }
+    }
   }
 }
 exports.BuffEffect = BuffEffect;

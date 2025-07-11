@@ -1,45 +1,75 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonSearchComponent = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.CommonSearchComponent = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class CommonSearchComponent extends UiPanelBase_1.UiPanelBase {
   constructor(t, i, s) {
-    super(), this.SearchFunction = i, this.ClearFunction = s, this.yAt = void 0, this.IAt = void 0, this.TAt = void 0, this.LAt = t => {
-      t && this.yAt.ActivateInputText()
-    }, this.DAt = () => {
+    super();
+    this.SearchFunction = i;
+    this.ClearFunction = s;
+    this.yAt = undefined;
+    this.IAt = undefined;
+    this.TAt = undefined;
+    this.LAt = t => {
+      if (t) {
+        this.yAt.ActivateInputText();
+      }
+    };
+    this.DAt = () => {
       var t = this.yAt.GetText();
-      this.SearchFunction?.(t), this.RAt(!1), this.UAt = !0
-    }, this.AAt = () => {
-      this.ResetSearch(!0)
-    }, this.ZGe = t => {
-      StringUtils_1.StringUtils.IsEmpty(t) ? (this.RAt(!0), this.IAt.SetSelfInteractive(!1), this.ClearFunction?.()) : (this.UAt && this.RAt(!0), this.IAt.SetSelfInteractive(!0))
-    }, this.UAt = !1, this.CreateThenShowByActor(t.GetOwner())
+      this.SearchFunction?.(t);
+      this.RAt(false);
+      this.UAt = true;
+    };
+    this.AAt = () => {
+      this.ResetSearch(true);
+    };
+    this.ZGe = t => {
+      if (StringUtils_1.StringUtils.IsEmpty(t)) {
+        this.RAt(true);
+        this.IAt.SetSelfInteractive(false);
+        this.ClearFunction?.();
+      } else {
+        if (this.UAt) {
+          this.RAt(true);
+        }
+        this.IAt.SetSelfInteractive(true);
+      }
+    };
+    this.UAt = false;
+    this.CreateThenShowByActor(t.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITextInputComponent],
-      [1, UE.UIButtonComponent],
-      [2, UE.UIButtonComponent]
-    ], this.BtnBindInfo = [
-      [0, this.LAt],
-      [1, this.DAt],
-      [2, this.AAt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITextInputComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[0, this.LAt], [1, this.DAt], [2, this.AAt]];
   }
   OnStart() {
-    this.IAt = this.GetButton(1), this.TAt = this.GetButton(2), this.yAt = this.GetInputText(0), this.yAt.OnTextChange.Bind(this.ZGe), this.yAt.OnTextSubmit.Bind(this.DAt), this.ResetSearch(!1), this.RAt(!0), this.IAt.SetSelfInteractive(!1)
+    this.IAt = this.GetButton(1);
+    this.TAt = this.GetButton(2);
+    this.yAt = this.GetInputText(0);
+    this.yAt.OnTextChange.Bind(this.ZGe);
+    this.yAt.OnTextSubmit.Bind(this.DAt);
+    this.ResetSearch(false);
+    this.RAt(true);
+    this.IAt.SetSelfInteractive(false);
   }
   OnBeforeDestroy() {
-    this.yAt = void 0, this.IAt = void 0, this.TAt = void 0
+    this.yAt = undefined;
+    this.IAt = undefined;
+    this.TAt = undefined;
   }
   RAt(t) {
-    this.IAt.RootUIComp.SetUIActive(t), this.TAt.RootUIComp.SetUIActive(!t), this.UAt = !t
+    this.IAt.RootUIComp.SetUIActive(t);
+    this.TAt.RootUIComp.SetUIActive(!t);
+    this.UAt = !t;
   }
   ResetSearch(t) {
-    this.yAt.SetText("", t)
+    this.yAt.SetText("", t);
   }
 }
 exports.CommonSearchComponent = CommonSearchComponent;

@@ -1,54 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InventoryGiftCellItem = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  SmallItemGrid_1 = require("../../Common/SmallItemGrid/SmallItemGrid");
+  value: true
+});
+exports.InventoryGiftCellItem = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const UiManager_1 = require("../../../Ui/UiManager");
+const SmallItemGrid_1 = require("../../Common/SmallItemGrid/SmallItemGrid");
 class InventoryGiftCellItem extends SmallItemGrid_1.SmallItemGrid {
   constructor() {
-    super(...arguments), this.Tgl = void 0
+    super(...arguments);
+    this.Tgl = undefined;
   }
   RefreshByConfigId(e) {
-    if (this.Tgl = e, 1 === ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemId)) {
+    this.Tgl = e;
+    if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemId) === 1) {
       var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.ItemId);
       const i = {
-        Data: void 0,
+        Data: undefined,
         Type: 2,
         ItemConfigId: e.ItemId,
         BottomText: "",
         QualityId: t.QualityId,
-        IsReceivedVisible: !1
+        IsReceivedVisible: false
       };
-      void this.Apply(i)
-    } else if (void 0 !== this.Tgl.PhantomItemData) {
+      this.Apply(i);
+    } else if (this.Tgl.PhantomItemData !== undefined) {
       const i = {
-        Data: void 0,
+        Data: undefined,
         Type: 3,
         ItemConfigId: e.ItemId,
         BottomText: "",
-        IsReceivedVisible: !1,
+        IsReceivedVisible: false,
         FetterGroupId: this.Tgl.PhantomItemData.Kws
       };
-      void this.Apply(i)
+      this.Apply(i);
     } else {
       const i = {
-        Data: void 0,
+        Data: undefined,
         Type: 4,
         ItemConfigId: e.ItemId,
         BottomText: "",
-        IsReceivedVisible: !1
+        IsReceivedVisible: false
       };
-      this.Apply(i)
+      this.Apply(i);
     }
   }
   OnCanExecuteChange() {
-    return !1
+    return false;
   }
   OnExtendToggleClicked() {
     var e = UiManager_1.UiManager.IsViewShow("InventoryView");
-    this.Tgl.PhantomItemData ? ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByExtraParam(this.Tgl.IncId, this.Tgl.PhantomItemData.s5n, this.Tgl.PhantomItemData, e) : ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemUid(this.Tgl.IncId, this.Tgl.ItemId, e)
+    if (this.Tgl.PhantomItemData) {
+      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByExtraParam(this.Tgl.IncId, this.Tgl.PhantomItemData.s5n, this.Tgl.PhantomItemData, e);
+    } else {
+      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemUid(this.Tgl.IncId, this.Tgl.ItemId, e);
+    }
   }
 }
 exports.InventoryGiftCellItem = InventoryGiftCellItem;

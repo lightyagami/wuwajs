@@ -1,139 +1,210 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapNote = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.MapNote = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class MapNote {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Type() {
-    return this.type()
+    return this.type();
   }
   get MapId() {
-    return this.mapid()
+    return this.mapid();
   }
   get Icon() {
-    return this.icon()
+    return this.icon();
   }
   get Desc() {
-    return this.desc()
+    return this.desc();
   }
   get Style() {
-    return this.style()
+    return this.style();
   }
   get Priority() {
-    return this.priority()
+    return this.priority();
   }
   get Rank() {
-    return this.rank()
+    return this.rank();
   }
   get MarkIdMap() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.markidmapLength(), this.markidmapKey, this.markidmapValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.markidmapLength(), this.markidmapKey, this.markidmapValue, this);
   }
   markidmapKey(t) {
-    return this.markidmap(t)?.key()
+    return this.markidmap(t)?.key();
   }
   markidmapValue(t) {
-    return this.markidmap(t)?.value()
+    return this.markidmap(t)?.value();
   }
   get MarkId() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.markidLength(), this.markid, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.markidLength(), this.markid, this);
   }
   get ConditionId() {
-    return this.conditionid()
+    return this.conditionid();
   }
   get QuestIdList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.questidlistLength(), this.questidlist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.questidlistLength(), this.questidlist, this);
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsMapNote(t, i) {
-    return (i || new MapNote).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new MapNote()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   type() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   mapid() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 10),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   desc(t) {
-    var i = this.J7.__offset(this.z7, 12),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   style() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   priority() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rank() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetMarkidmapAt(t, i) {
-    return this.markidmap(t)
+    return this.markidmap(t);
   }
   markidmap(t, i) {
     var s = this.J7.__offset(this.z7, 20);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   markidmapLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetMarkidAt(t) {
-    return this.markid(t)
+    return this.markid(t);
   }
   markid(t) {
     var i = this.J7.__offset(this.z7, 22);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   markidLength() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   markidArray() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   conditionid() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetQuestidlistAt(t) {
-    return this.questidlist(t)
+    return this.questidlist(t);
   }
   questidlist(t) {
     var i = this.J7.__offset(this.z7, 26);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   questidlistLength() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   questidlistArray() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
 }
 exports.MapNote = MapNote;

@@ -1,31 +1,59 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetMonsterMoveTarget = void 0;
+  value: true
+});
+exports.FbSetMonsterMoveTarget = undefined;
 class FbSetMonsterMoveTarget {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Vvh = !1, this.jvh = 0, this.Hvh = !1, this.Wvh = void 0, this.Qvh = !1, this.Kvh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Vvh = false;
+    this.jvh = 0;
+    this.Hvh = false;
+    this.Wvh = undefined;
+    this.Qvh = false;
+    this.Kvh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSetMonsterMoveTarget(t)
+    if (t) {
+      return new FbSetMonsterMoveTarget(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TargetEntityId() {
-    return this.Vvh || (this.Vvh = !0, this.jvh = this.FbDataInternal.targetEntityId()), this.jvh
+    if (!this.Vvh) {
+      this.Vvh = true;
+      this.jvh = this.FbDataInternal.targetEntityId();
+    }
+    return this.jvh;
   }
   get MoveEvent() {
-    return this.Hvh || (this.Hvh = !0, this.Wvh = this.FbDataInternal.moveEvent()), this.Wvh
+    if (!this.Hvh) {
+      this.Hvh = true;
+      this.Wvh = this.FbDataInternal.moveEvent();
+    }
+    return this.Wvh;
   }
   get MonsterEntityIds() {
     if (!this.Qvh) {
-      this.Qvh = !0, this.Kvh = new Array;
+      this.Qvh = true;
+      this.Kvh = new Array();
       var s = this.FbDataInternal.monsterEntityIdsLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.Kvh.push(this.FbDataInternal.monsterEntityIds(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.Kvh.push(this.FbDataInternal.monsterEntityIds(t));
+        }
+      }
     }
-    return this.Kvh
+    return this.Kvh;
   }
 }
 exports.FbSetMonsterMoveTarget = FbSetMonsterMoveTarget;

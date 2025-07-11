@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleSelectMiracleView = void 0;
+  value: true
+});
+exports.RogueBattleSelectMiracleView = undefined;
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 class RogueBattleSelectMiracleView extends UiViewBase_1.UiViewBase {}
 exports.RogueBattleSelectMiracleView = RogueBattleSelectMiracleView;

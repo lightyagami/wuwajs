@@ -1,19 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemMingSuTi = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  MingSuDefine_1 = require("../../../Module/MingSu/MingSuDefine"),
-  OpenSystemBase_1 = require("./OpenSystemBase");
+  value: true
+});
+exports.OpenSystemMingSuTi = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const MingSuDefine_1 = require("../../../Module/MingSu/MingSuDefine");
+const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemMingSuTi extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, i) {
     e = e.BoardId;
-    if (!e) return !1;
-    const n = new CustomPromise_1.CustomPromise;
+    if (!e) {
+      return false;
+    }
+    const n = new CustomPromise_1.CustomPromise();
     return !!ControllerHolder_1.ControllerHolder.MingSuController.OpenView(e, e => {
-      n.SetResult(e)
-    }) && n.Promise
+      n.SetResult(e);
+    }) && n.Promise;
   }
   GetViewName(e) {
     switch (e.BoardId) {
@@ -28,7 +32,7 @@ class OpenSystemMingSuTi extends OpenSystemBase_1.OpenSystemBase {
       case MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID:
         return "DarkCoastDeliveryMainView";
       default:
-        return "MingSuView"
+        return "MingSuView";
     }
   }
 }

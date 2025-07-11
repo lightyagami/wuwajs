@@ -1,22 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueTaskRewardTabData = exports.RogueDungeonParam = exports.RogueIllustratedTabData = void 0;
+  value: true
+});
+exports.RogueTaskRewardTabData = exports.RogueDungeonParam = exports.RogueIllustratedTabData = undefined;
 class RogueIllustratedTabData {
   constructor() {
-    this.TabType = 0, this.Icon = "", this.TabName = "", this.Index = 1, this.Config = void 0
+    this.TabType = 0;
+    this.Icon = "";
+    this.TabName = "";
+    this.Index = 1;
+    this.Config = undefined;
   }
 }
 exports.RogueIllustratedTabData = RogueIllustratedTabData;
 class RogueDungeonParam {
   constructor() {
-    this.SeasonId = 0, this.DungeonList = []
+    this.SeasonId = 0;
+    this.DungeonList = [];
   }
 }
 exports.RogueDungeonParam = RogueDungeonParam;
 class RogueTaskRewardTabData {
   constructor() {
-    this.NameTextId = void 0, this.Index = -1, this.ClickedCallback = void 0, this.RefreshRedDot = void 0
+    this.NameTextId = undefined;
+    this.Index = -1;
+    this.ClickedCallback = undefined;
+    this.RefreshRedDot = undefined;
   }
 }
 exports.RogueTaskRewardTabData = RogueTaskRewardTabData;

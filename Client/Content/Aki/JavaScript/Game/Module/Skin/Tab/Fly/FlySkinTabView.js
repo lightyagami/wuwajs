@@ -1,152 +1,251 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlySkinTabView = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../../../Core/Common/Info"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase"),
-  EffectUtil_1 = require("../../../../Utils/EffectUtil"),
-  ButtonItem_1 = require("../../../Common/Button/ButtonItem"),
-  ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine"),
-  ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController"),
-  UiCameraAnimationManager_1 = require("../../../UiCameraAnimation/UiCameraAnimationManager"),
-  UiSceneManager_1 = require("../../../UiComponent/UiSceneManager"),
-  UiModelUtil_1 = require("../../../UiModel/UiModelUtil"),
-  GenericLayout_1 = require("../../../Util/Layout/GenericLayout"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  FlySkinChildTabItem_1 = require("./FlySkinChildTabItem"),
-  FlySkinDefine_1 = require("./FlySkinDefine"),
-  FlySkinGridItem_1 = require("./FlySkinGridItem"),
-  FlySkinObtainItem_1 = require("./FlySkinObtainItem");
+  value: true
+});
+exports.FlySkinTabView = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../../../Core/Common/Info");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../Core/Common/Time");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
+const EffectUtil_1 = require("../../../../Utils/EffectUtil");
+const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
+const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
+const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
+const UiCameraAnimationManager_1 = require("../../../UiCameraAnimation/UiCameraAnimationManager");
+const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
+const UiModelUtil_1 = require("../../../UiModel/UiModelUtil");
+const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const FlySkinChildTabItem_1 = require("./FlySkinChildTabItem");
+const FlySkinDefine_1 = require("./FlySkinDefine");
+const FlySkinGridItem_1 = require("./FlySkinGridItem");
+const FlySkinObtainItem_1 = require("./FlySkinObtainItem");
 class FlySkinTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
-    super(...arguments), this.yil = void 0, this.Nkc = void 0, this.GridLayout = void 0, this.ObtainLayout = void 0, this.ucc = void 0, this.c3c = void 0, this.u3c = void 0, this.d3c = void 0, this.s11 = 0, this.a11 = !1, this.m3c = !1, this.l01 = void 0, this._01 = !1, this.c01 = () => {
-      this.st1()
-    }, this.CanTabToggleChange = () => {
+    super(...arguments);
+    this.yil = undefined;
+    this.Nkc = undefined;
+    this.GridLayout = undefined;
+    this.ObtainLayout = undefined;
+    this.ucc = undefined;
+    this.c3c = undefined;
+    this.u3c = undefined;
+    this.d3c = undefined;
+    this.A11 = 0;
+    this.P11 = false;
+    this.m3c = false;
+    this.x01 = undefined;
+    this.U01 = false;
+    this.D01 = () => {
+      this.Tt1();
+    };
+    this.CanTabToggleChange = () => {
       var i;
-      return !!Info_1.Info.IsInGamepad() || (i = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), 0 === this.s11) || Time_1.Time.Now - this.s11 >= i
-    }, this.Hkc = i => {
-      1 === i && (this.ChangeSelectedTab(0), this.s11 = Time_1.Time.Now)
-    }, this.$kc = i => {
-      1 === i && (this.ChangeSelectedTab(1), this.s11 = Time_1.Time.Now)
-    }, this.Wkc = i => {
-      this.UpdateUiShowState(1 === i, !0)
-    }, this.Qkc = i => {
-      this.UpdateIsApplyToAll(1 === i), this.RefreshConfirmBtnState()
-    }, this.W2e = () => {
-      var i = new FlySkinGridItem_1.FlySkinGridItem;
-      return i.BindOnExtendToggleStateChanged(this.gGc), i.BindOnCanExecuteChange(this.CGc), i
-    }, this.gGc = i => {
-      i = i.Data.SkinId, i = this.Nkc.GetGridIndexBySkinId(i);
-      void 0 !== i && this.SelectGridByIndex(i)
-    }, this.CGc = i => {
+      return !!Info_1.Info.IsInGamepad() || (i = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), this.A11 === 0) || Time_1.Time.Now - this.A11 >= i;
+    };
+    this.Hkc = i => {
+      if (i === 1) {
+        this.ChangeSelectedTab(0);
+        this.A11 = Time_1.Time.Now;
+      }
+    };
+    this.$kc = i => {
+      if (i === 1) {
+        this.ChangeSelectedTab(1);
+        this.A11 = Time_1.Time.Now;
+      }
+    };
+    this.Wkc = i => {
+      this.UpdateUiShowState(i === 1, true);
+    };
+    this.Qkc = i => {
+      this.UpdateIsApplyToAll(i === 1);
+      this.RefreshConfirmBtnState();
+    };
+    this.W2e = () => {
+      var i = new FlySkinGridItem_1.FlySkinGridItem();
+      i.BindOnExtendToggleStateChanged(this.gGc);
+      i.BindOnCanExecuteChange(this.CGc);
+      return i;
+    };
+    this.gGc = i => {
+      i = i.Data.SkinId;
+      i = this.Nkc.GetGridIndexBySkinId(i);
+      if (i !== undefined) {
+        this.SelectGridByIndex(i);
+      }
+    };
+    this.CGc = i => {
       i = i.SkinId;
-      return this.Nkc.SelectedFlySkinId !== i
-    }, this.qil = () => new FlySkinObtainItem_1.FlySkinObtainItem, this.pGc = () => {
+      return this.Nkc.SelectedFlySkinId !== i;
+    };
+    this.qil = () => new FlySkinObtainItem_1.FlySkinObtainItem();
+    this.pGc = () => {
       var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(294);
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i)
-    }, this.tWt = () => {
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+    };
+    this.tWt = () => {
       var i = this.Nkc;
-      const t = i.SelectedFlySkinId,
-        e = i.SelectedFlySkinType;
+      const t = i.SelectedFlySkinId;
+      const e = i.SelectedFlySkinType;
       var s = i.RoleDataId;
-      i.IsApplyToAll ? ((i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(293)).FunctionMap.set(2, () => {
-        0 === t ? ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinAllUnLoadRequest(e) : ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinWearAllRoleRequest(t), this.UpdateIsApplyToAll(!1), this.RefreshConfirmBtnState()
-      }), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i)) : 0 === t ? (i = ModelManager_1.ModelManager.FlySkinModel.GetRoleEquipFlySkinId(s, e), ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinUnLoadRequest(s, i)) : ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinWearRequest(s, t)
-    }, this.Ykc = (i, t, e, s) => {
+      if (i.IsApplyToAll) {
+        (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(293)).FunctionMap.set(2, () => {
+          if (t === 0) {
+            ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinAllUnLoadRequest(e);
+          } else {
+            ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinWearAllRoleRequest(t);
+          }
+          this.UpdateIsApplyToAll(false);
+          this.RefreshConfirmBtnState();
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+      } else if (t === 0) {
+        i = ModelManager_1.ModelManager.FlySkinModel.GetRoleEquipFlySkinId(s, e);
+        ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinUnLoadRequest(s, i);
+      } else {
+        ControllerHolder_1.ControllerHolder.FlySkinController.FlySkinWearRequest(s, t);
+      }
+    };
+    this.Ykc = (i, t, e, s) => {
       var n = this.Nkc;
-      t === n.SelectedFlySkinType && i === n.RoleDataId && (void 0 !== (t = n.GetGridIndexBySkinId(e)) && this.GridLayout.GetLayoutItemByIndex(t)?.RefreshEquipState(), void 0 !== (i = n.GetGridIndexBySkinId(s))) && this.GridLayout.GetLayoutItemByIndex(i)?.RefreshEquipState()
-    }, this.vGc = (i, t) => {
-      this.d01()
-    }, this.yGc = (i, t) => {
-      this.d01()
-    }, this.SGc = i => {
-      this.d01()
-    }, this.f3c = i => {
-      this.d01()
-    }, this.mmo = i => {
-      i.HandleName === this.l01 && (this.l01 = void 0, this._01 || (this._01 = !0, this.TryLoadModel()))
-    }
+      if (t === n.SelectedFlySkinType && i === n.RoleDataId && ((t = n.GetGridIndexBySkinId(e)) !== undefined && this.GridLayout.GetLayoutItemByIndex(t)?.RefreshEquipState(), (i = n.GetGridIndexBySkinId(s)) !== undefined)) {
+        this.GridLayout.GetLayoutItemByIndex(i)?.RefreshEquipState();
+      }
+    };
+    this.vGc = (i, t) => {
+      this.k01();
+    };
+    this.yGc = (i, t) => {
+      this.k01();
+    };
+    this.SGc = i => {
+      this.k01();
+    };
+    this.f3c = i => {
+      this.k01();
+    };
+    this.mmo = i => {
+      if (i.HandleName === this.x01) {
+        this.x01 = undefined;
+        if (!this.U01) {
+          this.U01 = true;
+          this.TryLoadModel();
+        }
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UILayoutBase],
-      [2, UE.UIItem],
-      [3, UE.UIExtendToggle],
-      [4, UE.UIItem],
-      [5, UE.UILayoutBase],
-      [6, UE.UIItem],
-      [7, UE.UIText],
-      [8, UE.UIText],
-      [9, UE.UIText],
-      [10, UE.UIExtendToggle],
-      [11, UE.UIButtonComponent],
-      [12, UE.UIItem],
-      [13, UE.UIItem],
-      [14, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [11, this.pGc]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILayoutBase], [2, UE.UIItem], [3, UE.UIExtendToggle], [4, UE.UIItem], [5, UE.UILayoutBase], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UIText], [10, UE.UIExtendToggle], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem]];
+    this.BtnBindInfo = [[11, this.pGc]];
   }
   async OnBeforeStartAsync() {
-    this.ucc = new ButtonItem_1.ButtonItem, this.c3c = new FlySkinChildTabItem_1.FlySkinChildTabItem, this.u3c = new FlySkinChildTabItem_1.FlySkinChildTabItem, await Promise.all([this.ucc.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.c3c.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()), this.u3c.CreateThenShowByActorAsync(this.GetItem(13).GetOwner())]), this.ucc.SetFunction(this.tWt), this.c3c.Update(1), this.u3c.Update(0)
+    this.ucc = new ButtonItem_1.ButtonItem();
+    this.c3c = new FlySkinChildTabItem_1.FlySkinChildTabItem();
+    this.u3c = new FlySkinChildTabItem_1.FlySkinChildTabItem();
+    await Promise.all([this.ucc.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()), this.c3c.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()), this.u3c.CreateThenShowByActorAsync(this.GetItem(13).GetOwner())]);
+    this.ucc.SetFunction(this.tWt);
+    this.c3c.Update(1);
+    this.u3c.Update(0);
   }
   OnStart() {
-    this.yil = this.ExtraParams, this.Nkc = this.yil.FlySkinTabViewModel, this.c3c.SetItemToggleState(0, !1), this.u3c.SetItemToggleState(0, !1), this.d3c = void 0, this.Nkc.ResetSelectedTab(), this.c3c.AddItemToggleStateChange(this.Hkc), this.u3c.AddItemToggleStateChange(this.$kc), this.c3c.SetCanItemToggleStateChange(this.CanTabToggleChange), this.u3c.SetCanItemToggleStateChange(this.CanTabToggleChange), this.GetExtendToggle(3).OnStateChange.Add(this.Wkc), this.GetExtendToggle(10).OnStateChange.Add(this.Qkc), this.GridLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(1), this.W2e, this.GetItem(2).GetOwner()), this.ObtainLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(5), this.qil, this.GetItem(6).GetOwner())
+    this.yil = this.ExtraParams;
+    this.Nkc = this.yil.FlySkinTabViewModel;
+    this.c3c.SetItemToggleState(0, false);
+    this.u3c.SetItemToggleState(0, false);
+    this.d3c = undefined;
+    this.Nkc.ResetSelectedTab();
+    this.c3c.AddItemToggleStateChange(this.Hkc);
+    this.u3c.AddItemToggleStateChange(this.$kc);
+    this.c3c.SetCanItemToggleStateChange(this.CanTabToggleChange);
+    this.u3c.SetCanItemToggleStateChange(this.CanTabToggleChange);
+    this.GetExtendToggle(3).OnStateChange.Add(this.Wkc);
+    this.GetExtendToggle(10).OnStateChange.Add(this.Qkc);
+    this.GridLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(1), this.W2e, this.GetItem(2).GetOwner());
+    this.ObtainLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(5), this.qil, this.GetItem(6).GetOwner());
   }
   OnBeforeDestroy() {
-    this.Xkc()
+    this.Xkc();
   }
   OnBeforeShow() {
-    this.Kkc(), this.s11 = 0, this._01 = !1, this.yil.ChangeModelState(2);
-    var i = this.Nkc.SelectedFlySkinId,
-      i = -1 === i ? ModelManager_1.ModelManager.FlySkinModel.GetRoleEquipParaglidingSkinId(this.Nkc.RoleDataId) : i,
-      t = this.Nkc.SelectedTab ?? 0;
+    this.Kkc();
+    this.A11 = 0;
+    this.U01 = false;
+    this.yil.ChangeModelState(2);
+    var i = this.Nkc.SelectedFlySkinId;
+    var i = i === -1 ? ModelManager_1.ModelManager.FlySkinModel.GetRoleEquipParaglidingSkinId(this.Nkc.RoleDataId) : i;
+    var t = this.Nkc.SelectedTab ?? 0;
     this.UpdateView({
       Tab: t,
       SelectedSkinId: i ?? 0,
-      UiShowState: !0,
-      IsApplyToAll: !1
-    })
+      UiShowState: true,
+      IsApplyToAll: false
+    });
   }
   OnAfterShow() {
-    this.a11 = !0, this.h11(), this.l11()
+    this.P11 = true;
+    this.x11();
+    this.U11();
   }
-  u01() {
-    var i, t = this.yil.GliderObserver?.Model;
-    t && (UiModelUtil_1.UiModelUtil.SetVisible(t, !1), 2 === (t?.CheckGetComponent(0))?.GetModelLoadState()) && (i = this.Nkc.SelectedFlySkinType, i = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinSpawnEffectId(i), UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(t, i))
+  B01() {
+    var i;
+    var t = this.yil.GliderObserver?.Model;
+    if (t && (UiModelUtil_1.UiModelUtil.SetVisible(t, false), t?.CheckGetComponent(0)?.GetModelLoadState() === 2)) {
+      i = this.Nkc.SelectedFlySkinType;
+      i = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinSpawnEffectId(i);
+      UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(t, i);
+    }
   }
   OnBeforeHide() {
-    this.st1()
+    this.Tt1();
   }
-  st1() {
-    this.l01 = void 0, this._01 = !1, this.a11 = !1, this.u01(), this._11()
+  Tt1() {
+    this.x01 = undefined;
+    this.U01 = false;
+    this.P11 = false;
+    this.B01();
+    this.D11();
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleFlySkinChange, this.Ykc), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinEquipResponse, this.vGc), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinUnLoadResponse, this.yGc), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinEquipToAllRoleResponse, this.SGc), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinAllUnLoadResponse, this.f3c), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.mmo), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkinRootViewDestroy, this.c01)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleFlySkinChange, this.Ykc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinEquipResponse, this.vGc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinUnLoadResponse, this.yGc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinEquipToAllRoleResponse, this.SGc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFlySkinAllUnLoadResponse, this.f3c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.mmo);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkinRootViewDestroy, this.D01);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleFlySkinChange, this.Ykc), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinEquipResponse, this.vGc), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinUnLoadResponse, this.yGc), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinEquipToAllRoleResponse, this.SGc), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinAllUnLoadResponse, this.f3c), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.mmo), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkinRootViewDestroy, this.c01)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleFlySkinChange, this.Ykc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinEquipResponse, this.vGc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinUnLoadResponse, this.yGc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinEquipToAllRoleResponse, this.SGc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFlySkinAllUnLoadResponse, this.f3c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.mmo);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkinRootViewDestroy, this.D01);
   }
   Kkc() {
     UiSceneManager_1.UiSceneManager.InitGliderSkeletalHandle();
     var i = UiSceneManager_1.UiSceneManager.GetGliderSkeletalHandle();
-    i.Model.CheckGetComponent(1).SetTransformByTag(FlySkinDefine_1.DEFAULT_FLY_SKIN_CASE), this.yil.GliderObserver = i
+    i.Model.CheckGetComponent(1).SetTransformByTag(FlySkinDefine_1.DEFAULT_FLY_SKIN_CASE);
+    this.yil.GliderObserver = i;
   }
   Xkc() {
-    UiSceneManager_1.UiSceneManager.DestroyGliderSkeletalHandle(), this.yil.GliderObserver = void 0
+    UiSceneManager_1.UiSceneManager.DestroyGliderSkeletalHandle();
+    this.yil.GliderObserver = undefined;
   }
   UpdateView(i) {
-    this.UpdateIsApplyToAll(i.IsApplyToAll), this.UpdateUiShowState(i.UiShowState, !1), this.SelectTab(i.Tab, i.SelectedSkinId)
+    this.UpdateIsApplyToAll(i.IsApplyToAll);
+    this.UpdateUiShowState(i.UiShowState, false);
+    this.SelectTab(i.Tab, i.SelectedSkinId);
   }
   SelectTab(i, t) {
     var e = this.Nkc;
@@ -154,85 +253,147 @@ class FlySkinTabView extends UiTabViewBase_1.UiTabViewBase {
     const s = this.Nkc.GetGridIndexBySkinId(t);
     e.SelectGridByIndex(s);
     i = this.GetTabItem(e.SelectedTab);
-    this.d3c?.SetItemToggleState(0, !1), (this.d3c = i).SetItemToggleState(1, !1), this.h11(), this.GridLayout.RefreshByData(e.GridDataList, () => {
-      this.GridLayout.SelectGridProxy(s, !1)
-    }), this.OnGridSelected()
+    this.d3c?.SetItemToggleState(0, false);
+    (this.d3c = i).SetItemToggleState(1, false);
+    this.x11();
+    this.GridLayout.RefreshByData(e.GridDataList, () => {
+      this.GridLayout.SelectGridProxy(s, false);
+    });
+    this.OnGridSelected();
   }
   SelectGridByIndex(i) {
-    this.Nkc.SelectGridByIndex(i), this.GridLayout.SelectGridProxy(i), this.OnGridSelected()
+    this.Nkc.SelectGridByIndex(i);
+    this.GridLayout.SelectGridProxy(i);
+    this.OnGridSelected();
   }
   OnGridSelected() {
-    var i = this.Nkc,
-      t = i.SelectedGridData,
-      e = t?.GetIsLock() ?? !0;
-    this.ObtainLayout.SetActive(e), e && this.ObtainLayout.RefreshByData(i.GetWayDataList), this.RefreshConfirmBtnState(), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), t.GetName()), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), t.GetTypeDescription()), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.GetDescription()), this.TryLoadModel()
+    var i = this.Nkc;
+    var t = i.SelectedGridData;
+    var e = t?.GetIsLock() ?? true;
+    this.ObtainLayout.SetActive(e);
+    if (e) {
+      this.ObtainLayout.RefreshByData(i.GetWayDataList);
+    }
+    this.RefreshConfirmBtnState();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), t.GetName());
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), t.GetTypeDescription());
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.GetDescription());
+    this.TryLoadModel();
   }
   TryLoadModel() {
-    var i = this.Nkc,
-      t = this.yil.GliderObserver?.Model;
-    if (t)
-      if (this._01) {
-        var e = ConfigManager_1.ConfigManager.SkinConfig,
-          s = i.SelectedFlySkinType,
-          n = i.SelectedGridData;
+    var i = this.Nkc;
+    var t = this.yil.GliderObserver?.Model;
+    if (t) {
+      if (this.U01) {
+        var e = ConfigManager_1.ConfigManager.SkinConfig;
+        var s = i.SelectedFlySkinType;
+        var n = i.SelectedGridData;
         const r = n.GetStandAnimPath();
-        var h = e.GetFlySkinSpawnEffectId(s),
-          e = e.GetFlySkinSpawnMaterialController(s),
-          s = EffectUtil_1.EffectUtil.GetEffectPath(h);
+        var h = e.GetFlySkinSpawnEffectId(s);
+        var e = e.GetFlySkinSpawnMaterialController(s);
+        var s = EffectUtil_1.EffectUtil.GetEffectPath(h);
         const o = EffectUtil_1.EffectUtil.GetEffectPath(e);
         h = [r, s, o];
-        const a = t.CheckGetComponent(2),
-          _ = t.CheckGetComponent(1);
-        _.SetTransformByTag(i.ModelCase);
-        a.LoadModelByModelId(n.GetModelId(), !0, () => {
-          var i, t, e = this.yil.GliderObserver?.Model;
-          e && (UiModelUtil_1.UiModelUtil.SetVisible(e, !0), (i = a?.GetLoadedResource(r)) || Log_1.Log.CheckError() && Log_1.Log.Error("UiCommon", 43, "[FlySkin] 飞行皮肤待机动画预加载失败"), e.CheckGetComponent(10).PlayAnimation(i, !0), i = e.CheckGetComponent(5), (t = a.GetLoadedResource(o)) && i?.AddRenderingMaterialByData(t), UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(e, "GliderEffect"))
-        }, h)
-      } else {
-        UiModelUtil_1.UiModelUtil.SetVisible(t, !1);
+        const a = t.CheckGetComponent(2);
         const _ = t.CheckGetComponent(1);
-        void _.SetTransformByTag(i.ModelCase)
+        _.SetTransformByTag(i.ModelCase);
+        a.LoadModelByModelId(n.GetModelId(), true, () => {
+          var i;
+          var t;
+          var e = this.yil.GliderObserver?.Model;
+          if (e) {
+            UiModelUtil_1.UiModelUtil.SetVisible(e, true);
+            if (!(i = a?.GetLoadedResource(r))) {
+              if (Log_1.Log.CheckError()) {
+                Log_1.Log.Error("UiCommon", 43, "[FlySkin] 飞行皮肤待机动画预加载失败");
+              }
+            }
+            e.CheckGetComponent(10).PlayAnimation(i, true);
+            i = e.CheckGetComponent(5);
+            if (t = a.GetLoadedResource(o)) {
+              i?.AddRenderingMaterialByData(t);
+            }
+            UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(e, "GliderEffect");
+          }
+        }, h);
+      } else {
+        UiModelUtil_1.UiModelUtil.SetVisible(t, false);
+        const _ = t.CheckGetComponent(1);
+        _.SetTransformByTag(i.ModelCase);
       }
+    }
   }
   UpdateUiShowState(i, t) {
     this.Nkc.SetUiShowState(i);
     var e = i ? 1 : 0;
-    this.GetExtendToggle(3).SetToggleState(e, !1), this.GetItem(0)?.SetUIActive(i), this.yil.SetCaptionItemActive(i), this.yil.RefreshGamePadKeyTip(), this.yil.CameraInputComponent.CanCameraInput = !i, i && t && this.h11()
+    this.GetExtendToggle(3).SetToggleState(e, false);
+    this.GetItem(0)?.SetUIActive(i);
+    this.yil.SetCaptionItemActive(i);
+    this.yil.RefreshGamePadKeyTip();
+    this.yil.CameraInputComponent.CanCameraInput = !i;
+    if (i && t) {
+      this.x11();
+    }
   }
   UpdateIsApplyToAll(i) {
     this.Nkc.SetIsApplyToAll(i);
     i = i ? 1 : 0;
-    this.GetExtendToggle(10)?.SetToggleState(i, !1)
+    this.GetExtendToggle(10)?.SetToggleState(i, false);
   }
   RefreshConfirmBtnState() {
-    var i, t, e = this.Nkc,
-      s = e.SelectedGridData?.GetIsLock() ?? !0;
-    this.GetItem(14)?.SetUIActive(!s), s || (s = e.SelectedFlySkinId, i = e.SelectedFlySkinType, t = e.RoleDataId, e = !!e.IsApplyToAll || !ModelManager_1.ModelManager.FlySkinModel.CheckRoleEquipFlySkin(t, s, i), this.ucc.SetEnableClick(e), t = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinEquipBtnTextId(i, e), this.ucc.SetLocalTextNew(t))
-  }
-  h11() {
     var i;
-    this.a11 && (i = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinModelCameraId(this.Nkc.SelectedFlySkinType), this.l01 = i, UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(i, !0, !0, "10010"))
+    var t;
+    var e = this.Nkc;
+    var s = e.SelectedGridData?.GetIsLock() ?? true;
+    this.GetItem(14)?.SetUIActive(!s);
+    if (!s) {
+      s = e.SelectedFlySkinId;
+      i = e.SelectedFlySkinType;
+      t = e.RoleDataId;
+      e = !!e.IsApplyToAll || !ModelManager_1.ModelManager.FlySkinModel.CheckRoleEquipFlySkin(t, s, i);
+      this.ucc.SetEnableClick(e);
+      t = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinEquipBtnTextId(i, e);
+      this.ucc.SetLocalTextNew(t);
+    }
   }
-  l11() {
-    this.m3c || (this.yil.InitFlySkinTabCameraInputData(), this.yil.CameraInputComponent.Start(), this.yil.CameraInputComponent.TryActivate(), this.m3c = !0)
+  x11() {
+    var i;
+    if (this.P11) {
+      i = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinModelCameraId(this.Nkc.SelectedFlySkinType);
+      this.x01 = i;
+      UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(i, true, true, "10010");
+    }
   }
-  _11() {
-    this.m3c && (this.yil.CameraInputComponent.End(), this.m3c = !1)
+  U11() {
+    if (!this.m3c) {
+      this.yil.InitFlySkinTabCameraInputData();
+      this.yil.CameraInputComponent.Start();
+      this.yil.CameraInputComponent.TryActivate();
+      this.m3c = true;
+    }
+  }
+  D11() {
+    if (this.m3c) {
+      this.yil.CameraInputComponent.End();
+      this.m3c = false;
+    }
   }
   ChangeSelectedTab(i) {
     var t = ModelManager_1.ModelManager.FlySkinModel.GetRoleEquipFlySkinId(this.Nkc.RoleDataId, FlySkinDefine_1.flySkinTabToType[i]);
-    this.SelectTab(i, t ?? 0)
+    this.SelectTab(i, t ?? 0);
   }
   GetTabItem(i) {
     switch (i) {
       case 0:
         return this.c3c;
       case 1:
-        return this.u3c
+        return this.u3c;
     }
   }
-  d01() {
-    ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("FlySkinReplaceTip"), this.UpdateIsApplyToAll(!1), this.RefreshConfirmBtnState()
+  k01() {
+    ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("FlySkinReplaceTip");
+    this.UpdateIsApplyToAll(false);
+    this.RefreshConfirmBtnState();
   }
 }
 exports.FlySkinTabView = FlySkinTabView;

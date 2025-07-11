@@ -1,15 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineConditionHate = void 0;
+  value: true
+});
+exports.AiStateMachineConditionHate = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const AiStateMachineCondition_1 = require("./AiStateMachineCondition");
 class AiStateMachineConditionHate extends AiStateMachineCondition_1.AiStateMachineCondition {
-  OnTick() {
-    this.ResultSelf = !!this.Node.AiController.AiHateList.GetCurrentTarget(), this.ResultSelf && this.Node.SummonerAiController && (this.ResultSelf = !!this.Node.SummonerAiController.AiHateList.GetCurrentTarget())
+  constructor() {
+    super(...arguments);
+    this.Swu = (e, t) => {
+      this.Mwu();
+      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHate", this.Node?.Name);
+    };
   }
-  ToString(t, i = 0) {
-    super.ToString(t, i), t.Append(`有仇恨
-`)
+  RegisterEvents() {
+    var e;
+    var t;
+    return !!super.RegisterEvents() && (e = this.Node.AiController?.CharAiDesignComp?.Entity, t = this.Node.SummonerAiController?.CharAiDesignComp?.Entity, e && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), true);
+  }
+  UnregisterEvents() {
+    var e;
+    var t;
+    return !!super.UnregisterEvents() && (e = this.Node.AiController?.CharAiDesignComp?.Entity, t = this.Node.SummonerAiController?.CharAiDesignComp?.Entity, e && EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), true);
+  }
+  Mwu() {
+    this.ResultSelf = !!this.Node.AiController.AiHateList.GetCurrentTarget();
+    if (this.ResultSelf && this.Node.SummonerAiController) {
+      this.ResultSelf = !!this.Node.SummonerAiController.AiHateList.GetCurrentTarget();
+    }
+  }
+  OnTick() {
+    this.Mwu();
+  }
+  ToString(e, t = 0) {
+    super.ToString(e, t);
+    e.Append(`有仇恨
+`);
   }
 }
 exports.AiStateMachineConditionHate = AiStateMachineConditionHate;

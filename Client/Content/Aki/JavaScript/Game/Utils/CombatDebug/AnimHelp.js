@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AnimHelp = void 0;
+  value: true
+});
+exports.AnimHelp = undefined;
 const CombatDebugScript_1 = require("./CombatDebugScript");
 class AnimHelp extends CombatDebugScript_1.CombatScriptSet {
   constructor() {
-    super(), this.ResetAnimInstanceCmd = new CombatDebugScript_1.CombatScriptUnit("AnimHelp.ResetAnimInstanceCmd", `
+    super();
+    this.ResetAnimInstanceCmd = new CombatDebugScript_1.CombatScriptUnit("AnimHelp.ResetAnimInstanceCmd", `
 const entityId = 15;
-EventSystem.EmitWithTarget(EntitySystem.Get(entityId), EEventName.CharChangeMeshAnim);`, "重置动画蓝图", ""), this.GetAnimInstanceCmd = new CombatDebugScript_1.CombatScriptUnit("AnimHelp.GetAnimInstanceCmd", `
+EventSystem.EmitWithTarget(EntitySystem.Get(entityId), EEventName.CharChangeMeshAnim);`, "重置动画蓝图", "");
+    this.GetAnimInstanceCmd = new CombatDebugScript_1.CombatScriptUnit("AnimHelp.GetAnimInstanceCmd", `
 const entityId = 15;
 const animInstance = EntitySystem.Get(entityId).GetComponentByEnum(EComponent.CharacterAnimationComponent).MainAnimInstance;
 animInstance.GetName();
@@ -16,7 +20,8 @@ animInstance.GetName();
 //布尔值修改 animInstance.bComponentStart = false;
 //旋转值修改 animInstance.LowerBodyRotator = new UE.Rotator(90,90,90);
 //向量值修改 animInstance.XXXXX = new UE.Vector(0,0,0);
-        `, "获取动画蓝图实例", "获取动画蓝图实例后，可进行动画蓝图变量的实时参数"), this.Introduction = `
+        `, "获取动画蓝图实例", "获取动画蓝图实例后，可进行动画蓝图变量的实时参数");
+    this.Introduction = `
         /** Welcome to use AnimHelp
         *
         *  你可以在这里找部分动画功能相关的调试指令
@@ -38,8 +43,11 @@ animInstance.GetName();
         *
         *
         *
-        */;`, this.CombatScriptUnits.push(this.ResetAnimInstanceCmd, this.GetAnimInstanceCmd);
-    for (const t of this.CombatScriptUnits) this.Introduction += t.ToString()
+        */;`;
+    this.CombatScriptUnits.push(this.ResetAnimInstanceCmd, this.GetAnimInstanceCmd);
+    for (const t of this.CombatScriptUnits) {
+      this.Introduction += t.ToString();
+    }
   }
 }
 exports.AnimHelp = AnimHelp;

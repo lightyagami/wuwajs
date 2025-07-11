@@ -1,49 +1,101 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbOpenSystemBoard = void 0;
-const FbPhotographConfig_1 = require("./FbPhotographConfig"),
-  UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
+  value: true
+});
+exports.FbOpenSystemBoard = undefined;
+const FbPhotographConfig_1 = require("./FbPhotographConfig");
+const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbOpenSystemBoard {
   constructor(t) {
-    this.FbDataInternal = t, this.udh = !1, this.ddh = void 0, this.mdh = !1, this.Cdh = 0, this.gdh = !1, this.fdh = void 0, this.pdh = !1, this.vdh = void 0, this.ydh = !1, this.Sdh = void 0, this.Mdh = !1, this.Edh = 0, this.Q6l = !1, this.K6l = !1, this.kKl = !1, this.OKl = void 0
+    this.FbDataInternal = t;
+    this.udh = false;
+    this.ddh = undefined;
+    this.mdh = false;
+    this.Cdh = 0;
+    this.gdh = false;
+    this.fdh = undefined;
+    this.pdh = false;
+    this.vdh = undefined;
+    this.ydh = false;
+    this.Sdh = undefined;
+    this.Mdh = false;
+    this.Edh = 0;
+    this.Q6l = false;
+    this.K6l = false;
+    this.kKl = false;
+    this.OKl = undefined;
   }
   static Create(t) {
-    if (t) return new FbOpenSystemBoard(t)
+    if (t) {
+      return new FbOpenSystemBoard(t);
+    }
   }
   get SystemType() {
-    return this.udh || (this.udh = !0, this.ddh = this.FbDataInternal.systemType()), this.ddh
+    if (!this.udh) {
+      this.udh = true;
+      this.ddh = this.FbDataInternal.systemType();
+    }
+    return this.ddh;
   }
   get BoardId() {
-    return this.mdh || (this.mdh = !0, this.Cdh = this.FbDataInternal.boardId()), this.Cdh
+    if (!this.mdh) {
+      this.mdh = true;
+      this.Cdh = this.FbDataInternal.boardId();
+    }
+    return this.Cdh;
   }
   get ActionMontage() {
-    return this.gdh || (this.gdh = !0, this.fdh = this.FbDataInternal.actionMontage()), this.fdh
+    if (!this.gdh) {
+      this.gdh = true;
+      this.fdh = this.FbDataInternal.actionMontage();
+    }
+    return this.fdh;
   }
   get InputVars() {
     if (!this.pdh) {
-      this.pdh = !0, this.vdh = new Array;
+      this.pdh = true;
+      this.vdh = new Array();
       var i = this.FbDataInternal.inputVarsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.inputVarsType(t),
-            h = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(s);
-          h && void 0 !== (s = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(s, this.FbDataInternal.inputVars(t, h))) && this.vdh.push(s)
+          var s = this.FbDataInternal.inputVarsType(t);
+          var h = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(s);
+          if (h && (s = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(s, this.FbDataInternal.inputVars(t, h))) !== undefined) {
+            this.vdh.push(s);
+          }
         }
+      }
     }
-    return this.vdh
+    return this.vdh;
   }
   get PhotographConfig() {
-    return this.ydh || (this.ydh = !0, this.Sdh = FbPhotographConfig_1.FbPhotographConfig.Create(this.FbDataInternal.photographConfig())), this.Sdh
+    if (!this.ydh) {
+      this.ydh = true;
+      this.Sdh = FbPhotographConfig_1.FbPhotographConfig.Create(this.FbDataInternal.photographConfig());
+    }
+    return this.Sdh;
   }
   get GramophoneId() {
-    return this.Mdh || (this.Mdh = !0, this.Edh = this.FbDataInternal.gramophoneId()), this.Edh
+    if (!this.Mdh) {
+      this.Mdh = true;
+      this.Edh = this.FbDataInternal.gramophoneId();
+    }
+    return this.Edh;
   }
   get FadeInScreenWhenClose() {
-    return this.Q6l || (this.Q6l = !0, this.K6l = this.FbDataInternal.fadeInScreenWhenClose()), this.K6l
+    if (!this.Q6l) {
+      this.Q6l = true;
+      this.K6l = this.FbDataInternal.fadeInScreenWhenClose();
+    }
+    return this.K6l;
   }
   get SyncOpenSystemBoardFinishTiming() {
-    return this.kKl || (this.kKl = !0, this.OKl = this.FbDataInternal.syncOpenSystemBoardFinishTiming()), this.OKl
+    if (!this.kKl) {
+      this.kKl = true;
+      this.OKl = this.FbDataInternal.syncOpenSystemBoardFinishTiming();
+    }
+    return this.OKl;
   }
 }
 exports.FbOpenSystemBoard = FbOpenSystemBoard;

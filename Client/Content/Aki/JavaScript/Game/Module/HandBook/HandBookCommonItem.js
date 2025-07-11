@@ -1,35 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.HandBookCommonItem = void 0;
+  value: true
+});
+exports.HandBookCommonItem = undefined;
 const LoopScrollSmallItemGrid_1 = require("../Common/SmallItemGrid/LoopScrollSmallItemGrid");
 class HandBookCommonItem extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGrid {
   constructor() {
-    super(...arguments), this.HandBookCommonItemData = void 0
+    super(...arguments);
+    this.HandBookCommonItemData = undefined;
   }
   OnRefresh(e, t, o) {
-    var s = (this.HandBookCommonItemData = e).IsLock,
-      s = {
-        Type: 4,
-        Data: e,
-        IsNotFoundVisible: s,
-        IsNewVisible: e.IsNew,
-        IconPath: s ? void 0 : e.Icon,
-        QualityId: s ? 0 : e.QualityId
-      };
-    this.Apply(s)
+    var s = (this.HandBookCommonItemData = e).IsLock;
+    var s = {
+      Type: 4,
+      Data: e,
+      IsNotFoundVisible: s,
+      IsNewVisible: e.IsNew,
+      IconPath: s ? undefined : e.Icon,
+      QualityId: s ? 0 : e.QualityId
+    };
+    this.Apply(s);
   }
   GetData() {
-    return this.HandBookCommonItemData
+    return this.HandBookCommonItemData;
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
-  SetSelected(e, t = !1) {
-    super.SetSelected(e, t)
+  SetSelected(e, t = false) {
+    super.SetSelected(e, t);
   }
 }
 exports.HandBookCommonItem = HandBookCommonItem;

@@ -1,7 +1,10 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DANGO_MONOPOLY_TIPS_SHOW_TIME = exports.DANGO_MONOPOLY_HELP_ID = exports.dangoMonopolyTextKey = void 0, exports.dangoMonopolyTextKey = {
+  value: true
+});
+exports.DANGO_MONOPOLY_TIPS_SHOW_TIME = exports.DANGO_MONOPOLY_HELP_ID = exports.dangoMonopolyTextKey = undefined;
+exports.dangoMonopolyTextKey = {
   DangoMonopolyRoundTip: "DangoMonopoly_title_1",
   DangoMonopolyBuffTips: "DangoMonopoly_title_2",
   DangoMonopolyRoundSum: "DangoMonopoly_title_3",
@@ -25,5 +28,6 @@ Object.defineProperty(exports, "__esModule", {
   AllGetRoundReward: "DangoMonopoly_title_21",
   TaskRefreshTipsDay: "DangoMonopoly_title_22",
   TaskRefreshTipsWeek: "DangoMonopoly_title_23"
-}, exports.DANGO_MONOPOLY_HELP_ID = 290, exports.DANGO_MONOPOLY_TIPS_SHOW_TIME = 2e3;
-//# sourceMappingURL=DangoMonopolyDefine.js.map
+};
+exports.DANGO_MONOPOLY_HELP_ID = 290;
+exports.DANGO_MONOPOLY_TIPS_SHOW_TIME = 2000; //# sourceMappingURL=DangoMonopolyDefine.js.map

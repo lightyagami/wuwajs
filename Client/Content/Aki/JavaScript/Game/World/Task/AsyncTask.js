@@ -1,14 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AsyncTask = void 0;
+  value: true
+});
+exports.AsyncTask = undefined;
 const TaskBase_1 = require("./TaskBase");
 class AsyncTask extends TaskBase_1.TaskBase {
   constructor(s, e, t, a) {
-    super(s, t, a), this.jEr = e
+    super(s, t, a);
+    this.jEr = e;
   }
   async OnRun() {
-    return this.jEr()
+    return this.jEr();
   }
 }
 exports.AsyncTask = AsyncTask;

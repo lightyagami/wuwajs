@@ -1,31 +1,34 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SmallItemGridVisionFetterComponent = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  VisionFetterSuitItem_1 = require("../../../Phantom/Vision/View/VisionFetterSuitItem"),
-  SmallItemGridComponent_1 = require("./SmallItemGridComponent");
+  value: true
+});
+exports.SmallItemGridVisionFetterComponent = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const VisionFetterSuitItem_1 = require("../../../Phantom/Vision/View/VisionFetterSuitItem");
+const SmallItemGridComponent_1 = require("./SmallItemGridComponent");
 class SmallItemGridVisionFetterComponent extends SmallItemGridComponent_1.SmallItemGridComponent {
   constructor() {
-    super(...arguments), this.bxt = void 0
+    super(...arguments);
+    this.bxt = undefined;
   }
   GetResourceId() {
-    return "UiItem_ItemBElementB"
+    return "UiItem_ItemBElementB";
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.bxt = new VisionFetterSuitItem_1.VisionFetterSuitItem(this.GetItem(0)), await this.bxt.Init().finally(() => {
-      this.GetItem(0).SetUIActive(!0)
-    })
+    this.bxt = new VisionFetterSuitItem_1.VisionFetterSuitItem(this.GetItem(0));
+    await this.bxt.Init().finally(() => {
+      this.GetItem(0).SetUIActive(true);
+    });
   }
   OnRefresh(e) {
     e = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(e);
-    this.SetActive(!0), this.bxt.Update(e)
+    this.SetActive(true);
+    this.bxt.Update(e);
   }
 }
 exports.SmallItemGridVisionFetterComponent = SmallItemGridVisionFetterComponent;

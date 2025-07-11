@@ -1,92 +1,122 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShopFlySkinData = void 0;
-const StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.ShopFlySkinData = undefined;
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class ShopFlySkinData {
   constructor() {
-    this.vFi = void 0, this.fNc = void 0, this.mNc = void 0, this.pyl = new Map
+    this.vFi = undefined;
+    this.fNc = undefined;
+    this.mNc = undefined;
+    this.pyl = new Map();
   }
   static Create(t) {
-    var e = new ShopFlySkinData;
-    return e.InitData(t), e
+    var e = new ShopFlySkinData();
+    e.InitData(t);
+    return e;
   }
   InitData(t) {
-    this.vFi = t, this.pyl.clear();
+    this.vFi = t;
+    this.pyl.clear();
     t = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(t.GetPackageRewardId());
-    if (t)
+    if (t) {
       for (const r of t.Content) {
         var e = r[0];
-        14 === ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) ? 0 === ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e).SkinType ? this.fNc = e : this.mNc = e : this.pyl.set(e, r[1])
+        if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) === 14) {
+          if (ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e).SkinType === 0) {
+            this.fNc = e;
+          } else {
+            this.mNc = e;
+          }
+        } else {
+          this.pyl.set(e, r[1]);
+        }
       }
+    }
   }
   GetIfCanBuy() {
-    return !(!this.GetPayShopGoods().IfCanBuy() || this.GetPayShopGoods().GetGoodsData()?.HasBuyLimit() && 0 === this.GetPayShopGoods().GetGoodsData()?.GetRemainingCount())
+    return !!this.GetPayShopGoods().IfCanBuy() && (!this.GetPayShopGoods().GetGoodsData()?.HasBuyLimit() || this.GetPayShopGoods().GetGoodsData()?.GetRemainingCount() !== 0);
   }
   GetCurrentGoodsData() {
-    return this.vFi
+    return this.vFi;
   }
   GetItemId() {
-    return this.fNc
+    return this.fNc;
   }
   GetSoarWingSkinId() {
-    return this.fNc
+    return this.fNc;
   }
   GetParaglidingSkinId() {
-    return this.mNc
+    return this.mNc;
   }
   GetAllReward() {
-    var t = [],
-      e = {
-        IncId: 0,
-        ItemId: this.GetSoarWingSkinId()
-      };
-    return t.push([e, 1]), e = {
+    var t = [];
+    var e = {
+      IncId: 0,
+      ItemId: this.GetSoarWingSkinId()
+    };
+    t.push([e, 1]);
+    e = {
       IncId: 0,
       ItemId: this.GetParaglidingSkinId()
-    }, t.push([e, 1]), t.push(...this.GetOtherReward()), t
+    };
+    t.push([e, 1]);
+    t.push(...this.GetOtherReward());
+    return t;
   }
   GetOtherReward() {
-    var t, e, r = [];
+    var t;
+    var e;
+    var r = [];
     for ([t, e] of this.pyl) {
       var i = [{
         IncId: 0,
         ItemId: t
       }, e];
-      r.push(i)
+      r.push(i);
     }
-    return r
+    return r;
   }
   GetPayShopGoods() {
-    return this.vFi
+    return this.vFi;
   }
   GetDiscountText() {
     var t = this.GetCurrentGoodsData();
-    return t.HasDiscount() && 0 < (t = t.GetDiscount()) ? StringUtils_1.StringUtils.Format("-{0}%", t.toString()) : ""
+    if (t.HasDiscount() && (t = t.GetDiscount()) > 0) {
+      return StringUtils_1.StringUtils.Format("-{0}%", t.toString());
+    } else {
+      return "";
+    }
   }
   GetDiscountTimeData() {
     var t = this.GetCurrentGoodsData();
-    return t.HasDiscount() && 1 === (t = t.GetCountDownData())[0] ? t[1] : void 0
+    if (t.HasDiscount() && (t = t.GetCountDownData())[0] === 1) {
+      return t[1];
+    } else {
+      return undefined;
+    }
   }
   GetPriceData() {
-    return this.GetCurrentGoodsData().GetPriceData()
+    return this.GetCurrentGoodsData().GetPriceData();
   }
   GetIfDirect() {
-    return this.GetCurrentGoodsData().IsDirect()
+    return this.GetCurrentGoodsData().IsDirect();
   }
   GetDirectPriceText() {
-    return this.GetCurrentGoodsData().GetDirectPriceText()
+    return this.GetCurrentGoodsData().GetDirectPriceText();
   }
   GetFlySkinData() {
-    return ModelManager_1.ModelManager.FlySkinModel.GetFlySkinData(this.GetItemId())
+    return ModelManager_1.ModelManager.FlySkinModel.GetFlySkinData(this.GetItemId());
   }
   GetPreviewTextureInPayShop() {
-    return this.GetFlySkinData().GetPreviewTextureInPayShop()
+    return this.GetFlySkinData().GetPreviewTextureInPayShop();
   }
   GetPreviewTextureInPop() {
-    return this.GetFlySkinData().GetPreviewTextureInPop()
+    return this.GetFlySkinData().GetPreviewTextureInPop();
   }
 }
 exports.ShopFlySkinData = ShopFlySkinData;

@@ -1,37 +1,59 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ConfigMarkItemView = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer"),
-  MarkItemView_1 = require("./MarkItemView");
+  value: true
+});
+exports.ConfigMarkItemView = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const MarkItemView_1 = require("./MarkItemView");
 class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
   constructor(e) {
-    super(e), this.MarkConfig = void 0, this.dRi = void 0, this.CRi = void 0, this.MarkConfig = e.MarkConfig
+    super(e);
+    this.MarkConfig = undefined;
+    this.dRi = undefined;
+    this.CRi = undefined;
+    this.MarkConfig = e.MarkConfig;
   }
   OnInitialize() {
-    super.OnInitialize(), this.CRi = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem)
+    super.OnInitialize();
+    this.CRi = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   async PlayUnlockSequence() {
-    if (await this.LoadingPromise, !this.dRi) {
+    await this.LoadingPromise;
+    if (!this.dRi) {
       var i = await this.LoadPrefabAsync(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Prefab_Effect"), this.RootItem);
       this.dRi = i.GetComponentByClass(UE.UIItem.StaticClass());
       let e = i.GetComponentByClass(UE.UINiagara.StaticClass());
-      (e = e || this.dRi.GetAttachUIChild(0)?.GetOwner()?.GetComponentByClass(UE.UINiagara.StaticClass())) && (2 === this.Holder?.MapType ? e.bAdaptPosAndSizeChanged = !1 : e.bAdaptPosAndSizeChanged = !0)
+      if (e = e || this.dRi.GetAttachUIChild(0)?.GetOwner()?.GetComponentByClass(UE.UINiagara.StaticClass())) {
+        if (this.Holder?.MapType === 2) {
+          e.bAdaptPosAndSizeChanged = false;
+        } else {
+          e.bAdaptPosAndSizeChanged = true;
+        }
+      }
     }
-    this.CRi.PlayLevelSequenceByName("Start")
+    this.CRi.PlayLevelSequenceByName("Start");
   }
   OnBeforeDestroy() {
-    this.dRi && UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.dRi.GetOwner(), !0), super.OnBeforeDestroy()
+    if (this.dRi) {
+      UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.dRi.GetOwner(), true);
+    }
+    super.OnBeforeDestroy();
   }
   OnIconPathChanged(e) {
     var i;
-    this.IsViewReady && (i = this.GetSprite(1), this.LoadIcon(i, e), this.MarkItemChildIconHandle.Update(), this.MarkItemChildIconHandle.ApplyModified())
+    if (this.IsViewReady) {
+      i = this.GetSprite(1);
+      this.LoadIcon(i, e);
+      this.MarkItemChildIconHandle.Update();
+      this.MarkItemChildIconHandle.ApplyModified();
+    }
   }
   UpdateIcon() {
     var e = this.Holder.IconPath;
-    this.OnIconPathChanged(e)
+    this.OnIconPathChanged(e);
   }
 }
 exports.ConfigMarkItemView = ConfigMarkItemView;

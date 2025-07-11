@@ -1,17 +1,27 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFadeOutScreen = void 0;
+  value: true
+});
+exports.FbFadeOutScreen = undefined;
 const FbEaseData_1 = require("./FbEaseData");
 class FbFadeOutScreen {
   constructor(e) {
-    this.FbDataInternal = e, this.nCh = !1, this.sCh = void 0
+    this.FbDataInternal = e;
+    this.nCh = false;
+    this.sCh = undefined;
   }
   static Create(e) {
-    if (e) return new FbFadeOutScreen(e)
+    if (e) {
+      return new FbFadeOutScreen(e);
+    }
   }
   get Ease() {
-    return this.nCh || (this.nCh = !0, this.sCh = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.ease())), this.sCh
+    if (!this.nCh) {
+      this.nCh = true;
+      this.sCh = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.ease());
+    }
+    return this.sCh;
   }
 }
 exports.FbFadeOutScreen = FbFadeOutScreen;

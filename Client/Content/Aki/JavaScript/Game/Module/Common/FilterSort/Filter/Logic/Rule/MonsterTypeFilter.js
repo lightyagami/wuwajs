@@ -1,16 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MonsterTypeFilter = void 0;
+  value: true
+});
+exports.MonsterTypeFilter = undefined;
 const CommonFilter_1 = require("./CommonFilter");
 class MonsterTypeFilter extends CommonFilter_1.CommonFilter {
   constructor() {
-    super(...arguments), this.eDt = e => {
-      return e.Conf.TypeDescription2
-    }
+    super(...arguments);
+    this.eDt = e => {
+      return e.Conf.TypeDescription2;
+    };
   }
   OnInitFilterMap() {
-    this.FilterMap.set(7, this.eDt)
+    this.FilterMap.set(7, this.eDt);
   }
 }
 exports.MonsterTypeFilter = MonsterTypeFilter;

@@ -1,142 +1,432 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Event = void 0;
-const Log_1 = require("../Common/Log"),
-  Stats_1 = require("../Common/Stats"),
-  Macro_1 = require("../Preprocessor/Macro"),
-  DEFAULT_SMALL_NAME_THRESHOLD = 4096;
+  value: true
+});
+exports.Event = undefined;
+const Log_1 = require("../Common/Log");
+const Stats_1 = require("../Common/Stats");
+const Macro_1 = require("../Preprocessor/Macro");
+const EventConditionListener_1 = require("./EventConditionListener");
+const DEFAULT_SMALL_NAME_THRESHOLD = 4096;
 class Event {
   constructor(t, e = DEFAULT_SMALL_NAME_THRESHOLD) {
-    this.rK = t, this.RF_ = e, this.nK = new Map, this.IHl = new Map, this.sK = void 0, this.aK = void 0, this.AF_ = void 0, this.PF_ = new Set, this.unh = new Map, this.AF_ = new Int8Array(Math.ceil(this.RF_))
+    this.rK = t;
+    this.RF_ = e;
+    this.nK = new Map();
+    this.IHl = new Map();
+    this.sK = undefined;
+    this.aK = undefined;
+    this.AF_ = undefined;
+    this.PF_ = new Set();
+    this.unh = new Map();
+    this.wgu = (t, e) => {
+      t = this._K.get(t);
+      return t !== undefined && t.has(e);
+    };
+    this.Agu = new Map();
+    this.AF_ = new Int8Array(Math.ceil(this.RF_));
   }
   cnh(t, e, i, n) {
     let r = n.get(t);
-    r || (r = new Map, n.set(t, r)), r.set(i, e)
+    if (!r) {
+      r = new Map();
+      n.set(t, r);
+    }
+    r.set(i, e);
   }
   mnh(t, e, i) {
     var n = i.get(t);
-    n && (n.delete(e), 0 === n.size) && i.delete(t)
+    if (n && (n.delete(e), n.size === 0)) {
+      i.delete(t);
+    }
   }
   dnh(t, e, i) {
     i = i.get(t);
-    if (i) return i.get(e)
+    if (i) {
+      return i.get(e);
+    }
   }
   AddHoldKeyHandle(t, e, i) {
-    this.cnh(t, i, e, this.unh)
+    this.cnh(t, i, e, this.unh);
   }
   RemoveHoldKeyHandle(t, e) {
-    this.mnh(t, e, this.unh)
+    this.mnh(t, e, this.unh);
   }
   GetHoldKeyByHandle(t, e) {
-    return this.dnh(t, e, this.unh)
+    return this.dnh(t, e, this.unh);
   }
   Has(t, e) {
-    var i, e = Event.lK.get(e);
-    return !!e && ((i = this.nK.get(t)) && i.has(e) ? !(i = this._K.get(t)) || !i.has(e) : void 0 !== (i = this.uK.get(t)) && i.has(e))
+    var i;
+    var e = Event.lK.get(e);
+    return !!e && ((i = this.nK.get(t)) && i.has(e) ? !this.wgu(t, e) : (i = this.uK.get(t)) !== undefined && i.has(e));
   }
   Add(t, e) {
-    return this.YW(t, e, 0)
+    return this.YW(t, e, 0);
   }
   Once(t, e) {
-    return this.YW(t, e, 1)
+    return this.YW(t, e, 1);
   }
   Remove(t, e) {
     e = Event.lK.get(e);
-    return !!e && this.O7(t, e)
+    return !!e && this.O7(t, e);
   }
   ClearObject(t) {
     var e = this.nK.get(t);
-    if (e)
-      for (const i of e.keys()) this.O7(t, i);
-    return !0
-  }
-  Emit(i, ...n) {
-    if (this.cK(i)) return Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件重复派发，请检查事件链是否产生循环调用", ["name", this.rK[i]], ["emittingEventInArray", [...this.AF_.entries()].filter(t => 0 !== t[1]).map(t => t[0])], ["emittingEventInSet", this.PF_]), !1;
-    this.mK(i, !0);
-    var r = this.nK.get(i);
-    if (r) {
-      let t = void 0;
-      !Stats_1.Stat.Enable || (o = this.rK[i], t = Event.dK.get(o)) || (t = Stats_1.Stat.CreateNoFlameGraph("Event." + this.rK[i]), Event.dK.set(o, t)), t?.Start();
-      let e = void 0;
-      for (const v of r) {
-        var s = v[0],
-          h = s.deref();
-        if (h) {
-          if (!(e = e || this._K.get(i)) || !e.has(s)) {
-            1 === v[1] && this.O7(i, s);
-            var a = Event.CK.get(h);
-            a?.Start();
-            try {
-              h(...n)
-            } catch (t) {
-              t instanceof Error ? Log_1.Log.CheckError() && Log_1.Log.ErrorWithStack("Event", 1, "事件处理方法执行异常", t, ["name", this.rK[i]], ["error", t.message]) : Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件处理方法执行异常", ["name", this.rK[i]], ["error", t])
-            }
-            a?.Stop()
-          }
-        } else Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件处理方法已被回收", ["eventName", this.rK[i]], ["stack", void 0]), r.delete(s), 0 === r.size && this.nK.delete(i)
+    if (e) {
+      for (const i of e.keys()) {
+        this.O7(t, i);
       }
-      t?.Stop()
     }
-    this.mK(i, !1);
-    var o = this._K.get(i);
-    if (o) {
-      for (const t of o.values()) this.gK(i, t);
-      o.clear(), this._K.delete(i)
+    return true;
+  }
+  Emit(t, ...e) {
+    if (this.cK(t)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 1, "事件重复派发，请检查事件链是否产生循环调用", ["name", this.rK[t]], ["emittingEventInArray", [...this.AF_.entries()].filter(t => t[1] !== 0).map(t => t[0])], ["emittingEventInSet", this.PF_]);
+      }
+      return false;
     }
-    o = this.uK.get(i);
-    if (o) {
-      for (const e of o) this.fK(i, e[0], e[1]);
-      o.clear(), this.uK.delete(i)
+    this.mK(t, true);
+    var i = this.Agu.get(t);
+    if (i && (r = i.GetHandlesByParam(e[0])) && (this.Pgu(t, r, i, ...e), r.size === 0)) {
+      i.DeleteHandlesByParam(e[0]);
     }
-    return !0
+    const n = this.nK.get(t);
+    if (n && (this.Pgu(t, n, undefined, ...e), n.size === 0)) {
+      this.nK.delete(t);
+    }
+    this.mK(t, false);
+    var r = this._K.get(t);
+    if (r) {
+      for (const s of r) {
+        this.gK(t, s);
+      }
+      r.clear();
+      this._K.delete(t);
+    }
+    e = this.uK.get(t);
+    if (e) {
+      for (const o of e) {
+        this.fK(t, o[0], o[1]);
+      }
+      e.clear();
+      this.uK.delete(t);
+    }
+    if (i) {
+      if (i.PendingRemoveHandles) {
+        for (const [h, n] of i.PendingRemoveHandles) {
+          for (const a of n) {
+            this.xgu(t, h, a);
+          }
+        }
+        i.PendingRemoveHandles.clear();
+      }
+      if (i.PendingAddHandles) {
+        for (const [v, n] of i.PendingAddHandles) {
+          for (const _ of n) {
+            this.Ugu(t, i, _[0], _[1], v);
+          }
+        }
+        i.PendingAddHandles.clear();
+      }
+      if (i.IsHandlesEmpty()) {
+        this.Agu.delete(t);
+      }
+    }
+    return true;
+  }
+  Pgu(e, t, i, ...n) {
+    let r = undefined;
+    var s;
+    if (!!Stats_1.Stat.Enable && !(s = this.rK[e], r = Event.dK.get(s))) {
+      r = Stats_1.Stat.CreateNoFlameGraph("Event." + this.rK[e]);
+      Event.dK.set(s, r);
+    }
+    r?.Start();
+    for (const v of t) {
+      var o = v[0];
+      var h = o.deref();
+      if (h) {
+        if (i ? !i.IsInPendingRemove(o, n[0]) : !this.wgu(e, o)) {
+          if (v[1] === 1) {
+            if (i) {
+              this.Dgu(e, o, n[0]);
+            } else {
+              this.O7(e, o);
+            }
+          }
+          var a = Event.CK.get(h);
+          a?.Start();
+          try {
+            h(...n);
+          } catch (t) {
+            if (t instanceof Error) {
+              if (Log_1.Log.CheckError()) {
+                Log_1.Log.ErrorWithStack("Event", 1, "事件处理方法执行异常", t, ["name", this.rK[e]], ["error", t.message]);
+              }
+            } else if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Event", 1, "事件处理方法执行异常", ["name", this.rK[e]], ["error", t]);
+            }
+          }
+          a?.Stop();
+        }
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 1, "事件处理方法已被回收", ["eventName", this.rK[e]], ["stack", undefined]);
+        }
+        t.delete(o);
+      }
+    }
+    r?.Stop();
   }
   YW(t, e, i) {
-    if (void 0 === this.rK[t]) return Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件名不存在，请检查事件名是否正确", ["name", t]), !1;
-    let n = Event.lK.get(e);
-    if (n || (n = new WeakRef(e), Event.lK.set(e, n)), Stats_1.Stat.Enable && !Event.CK.has(e) && (r = e.name, Event.CK.set(e, r && 0 < r.length ? Stats_1.Stat.CreateNoFlameGraph("EventHandle." + r) : void 0)), !this.cK(t)) return this.fK(t, n, i);
-    var e = this.nK.get(t),
-      r = this._K.get(t);
-    if (e && e.has(n)) return r && r.has(n) ? (r.delete(n), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件已存在，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]), !1);
+    if (this.rK[t] === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 1, "事件名不存在，请检查事件名是否正确", ["name", t]);
+      }
+      return false;
+    }
+    e = this.Bgu(t, e);
+    if (!this.cK(t)) {
+      return this.fK(t, e, i);
+    }
+    var n = this.nK.get(t);
+    var r = this._K.get(t);
+    if (n && n.has(e)) {
+      if (r && r.has(e)) {
+        r.delete(e);
+        return true;
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 1, "事件已存在，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
+        }
+        return false;
+      }
+    }
     let s = this.uK.get(t);
-    return s && s.has(n) ? (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件重复注册在待修改列表，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]), !1) : (s || (s = new Map, this.uK.set(t, s)), s.set(n, i), !0)
+    if (s && s.has(e)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 1, "事件重复注册在待修改列表，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
+      }
+      return false;
+    } else {
+      if (!s) {
+        s = new Map();
+        this.uK.set(t, s);
+      }
+      s.set(e, i);
+      return true;
+    }
+  }
+  Bgu(t, e) {
+    let i = Event.lK.get(e);
+    var n;
+    if (!i) {
+      i = new WeakRef(e);
+      Event.lK.set(e, i);
+    }
+    if (Stats_1.Stat.Enable && !Event.CK.has(e)) {
+      n = e.name;
+      Event.CK.set(e, n && n.length > 0 ? Stats_1.Stat.CreateNoFlameGraph("EventHandle." + n) : undefined);
+    }
+    return i;
   }
   fK(t, e, i) {
     let n = this.nK.get(t);
     if (n) {
-      if (n.has(e)) return Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件重复注册，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]), !1
-    } else n = new Map, this.nK.set(t, n);
-    return n.set(e, i), !0
+      if (n.has(e)) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 1, "事件重复注册，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
+        }
+        return false;
+      }
+    } else {
+      n = new Map();
+      this.nK.set(t, n);
+    }
+    n.set(e, i);
+    return true;
   }
   O7(t, e) {
-    if (!this.cK(t)) return this.gK(t, e);
-    var i = this.nK.get(t),
-      n = this.uK.get(t);
-    if (!i || !i.has(e)) return n && n.has(e) ? (n.delete(e), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]), !1);
+    if (!this.cK(t)) {
+      return this.gK(t, e);
+    }
+    var i = this.nK.get(t);
+    var n = this.uK.get(t);
+    if (!i || !i.has(e)) {
+      if (n && n.has(e)) {
+        n.delete(e);
+        return true;
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 1, "事件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+        }
+        return false;
+      }
+    }
     let r = this._K.get(t);
-    return r && r.has(e) ? (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件重复移除在待移除列表，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]), !1) : (r || (r = new Set, this._K.set(t, r)), r.add(e), !0)
+    if (r && r.has(e)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 1, "事件重复移除在待移除列表，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+      }
+      return false;
+    } else {
+      if (!r) {
+        r = new Set();
+        this._K.set(t, r);
+      }
+      r.add(e);
+      return true;
+    }
   }
   gK(t, e) {
     var i = this.nK.get(t);
-    return i && i.delete(e) ? (0 === i.size && this.nK.delete(t), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]), !1)
+    if (i && i.delete(e)) {
+      if (i.size === 0) {
+        this.nK.delete(t);
+      }
+      return true;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 1, "事件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+      }
+      return false;
+    }
   }
   cK(t) {
-    return t >= this.RF_ || t < 0 ? this.xF_(t) : 0 !== this.AF_[t]
+    if (t >= this.RF_ || t < 0) {
+      return this.xF_(t);
+    } else {
+      return this.AF_[t] !== 0;
+    }
   }
   xF_(t) {
-    return this.PF_.has(t)
+    return this.PF_.has(t);
   }
   mK(t, e) {
-    t >= this.RF_ || t < 0 ? this.UF_(t, e) : this.AF_[t] = e ? 1 : 0
+    if (t >= this.RF_ || t < 0) {
+      this.UF_(t, e);
+    } else {
+      this.AF_[t] = e ? 1 : 0;
+    }
   }
   UF_(t, e) {
-    e ? this.PF_.add(t) : this.PF_.delete(t)
+    if (e) {
+      this.PF_.add(t);
+    } else {
+      this.PF_.delete(t);
+    }
   }
   get uK() {
-    return this.sK || (this.sK = new Map), this.sK
+    this.sK ||= new Map();
+    return this.sK;
   }
   get _K() {
-    return this.aK || (this.aK = new Map), this.aK
+    this.aK ||= new Map();
+    return this.aK;
   }
-}(exports.Event = Event).lK = new WeakMap, Event.dK = new Map, Event.CK = new WeakMap;
-//# sourceMappingURL=Event.js.map
+  HasWithCondition(t, e, i) {
+    e = Event.lK.get(e);
+    return !!e && !!(t = this.Agu.get(t)) && (t.Has(i, e) ? !t.IsInPendingRemove(i, e) : t.IsInPendingAdd(i, e));
+  }
+  AddWithCondition(t, e, i) {
+    return this.kgu(t, e, 0, i);
+  }
+  OnceWithCondition(t, e, i) {
+    return this.kgu(t, e, 1, i);
+  }
+  kgu(t, e, i, n) {
+    if (this.rK[t] === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "事件名不存在，请检查事件名是否正确", ["name", t]);
+      }
+      return false;
+    }
+    e = this.Bgu(t, e);
+    let r = this.Agu.get(t);
+    if (!r) {
+      r = new EventConditionListener_1.ConditionListener();
+      this.Agu.set(t, r);
+    }
+    if (!this.cK(t)) {
+      return this.Ugu(t, r, e, i, n);
+    }
+    if (r.Has(n, e)) {
+      const s = r.RemoveFromPendingMoveHandles(n, e);
+      if (!s) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 18, "条件事件已存在，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
+        }
+      }
+      return s;
+    }
+    const s = r.AddToPendingAddHandles(n, e, i);
+    if (!s) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "条件事件重复注册在待修改列表，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
+      }
+    }
+    return s;
+  }
+  Ugu(t, e, i, n, r) {
+    if (e.Has(r, i)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "事件重复注册，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
+      }
+      return false;
+    } else {
+      e.Add(r, i, n);
+      return true;
+    }
+  }
+  RemoveWithCondition(t, e, i) {
+    e = Event.lK.get(e);
+    return !!e && this.Dgu(t, e, i);
+  }
+  Dgu(t, e, i) {
+    if (!this.cK(t)) {
+      return this.xgu(t, i, e);
+    }
+    var n = this.Agu.get(t);
+    if (!n) {
+      return true;
+    }
+    if (!n.Has(i, e)) {
+      const r = n.RemoveFromPendingAddHandles(i, e);
+      if (!r) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 18, "事件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+        }
+      }
+      return r;
+    }
+    const r = n.AddToPendingRemoveHandles(i, e);
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 1, "事件重复移除在待移除列表，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+      }
+    }
+    return r;
+  }
+  xgu(t, e, i) {
+    var n = this.Agu.get(t);
+    if (n) {
+      if (!(e = n.Remove(e, i))) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 18, "事件条件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+        }
+      }
+      n.GetHandleListenCount(i);
+      return e;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "事件不存在，请检查同一个事件名同一个处理函数的移除逻辑", ["name", this.rK[t]]);
+      }
+      return false;
+    }
+  }
+}
+(exports.Event = Event).lK = new WeakMap();
+Event.dK = new Map();
+Event.CK = new WeakMap(); //# sourceMappingURL=Event.js.map

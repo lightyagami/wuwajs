@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRaceStrategy = void 0;
+  value: true
+});
+exports.FbRaceStrategy = undefined;
 const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbRaceStrategy {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.f_h = !1, this.X6o = void 0, this.kuh = !1, this.Guh = 0, this.o2h = !1, this.n2h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.kuh = false;
+    this.Guh = 0;
+    this.o2h = false;
+    this.n2h = undefined;
   }
   static Create(t) {
-    if (t) return new FbRaceStrategy(t)
+    if (t) {
+      return new FbRaceStrategy(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get CommonConfig() {
-    return this.o2h || (this.o2h = !0, this.n2h = this.FbDataInternal.commonConfig()), this.n2h
+    if (!this.o2h) {
+      this.o2h = true;
+      this.n2h = this.FbDataInternal.commonConfig();
+    }
+    return this.n2h;
   }
 }
 exports.FbRaceStrategy = FbRaceStrategy;

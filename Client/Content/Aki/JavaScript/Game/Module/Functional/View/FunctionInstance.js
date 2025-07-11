@@ -1,31 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FunctionInstance = void 0;
+  value: true
+});
+exports.FunctionInstance = undefined;
 class FunctionInstance {
   constructor(t, e) {
-    this.rKa = !1, this.ige = t, this.w7t = e
+    this.rKa = false;
+    this.ige = t;
+    this.w7t = e;
   }
   GetFunctionId() {
-    return this.w7t
+    return this.w7t;
   }
   GetIsShow() {
-    return 0 < (1 & this.ige)
+    return (this.ige & 1) > 0;
   }
   GetIsOpen() {
-    return 0 < (2 & this.ige)
+    return (this.ige & 2) > 0;
   }
   GetHasManualShowUi() {
-    return 0 < (4 & this.ige)
+    return (this.ige & 4) > 0;
   }
   SetFlag(t) {
-    this.ige = t
+    this.ige = t;
   }
   SetIsLockByBehaviorTree(t) {
-    this.rKa = t
+    this.rKa = t;
   }
   GetIsLockByBehaviorTree() {
-    return this.rKa
+    return this.rKa;
   }
 }
 exports.FunctionInstance = FunctionInstance;

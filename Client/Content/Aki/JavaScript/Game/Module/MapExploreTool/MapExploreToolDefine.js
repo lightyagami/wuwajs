@@ -1,10 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapExploreToolUsingInfo = void 0;
+  value: true
+});
+exports.MapExploreToolUsingInfo = undefined;
 class MapExploreToolUsingInfo {
   constructor() {
-    this.CharId = 0, this.SkillId = 0, this.PhantomSkillId = 0, this.Pos = void 0, this.Rot = void 0, this.MarkId = void 0, this.MarkType = void 0
+    this.CharId = 0;
+    this.SkillId = 0;
+    this.PhantomSkillId = 0;
+    this.Pos = undefined;
+    this.Rot = undefined;
+    this.MarkId = undefined;
+    this.MarkType = undefined;
   }
 }
 exports.MapExploreToolUsingInfo = MapExploreToolUsingInfo;

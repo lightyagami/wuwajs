@@ -1,64 +1,95 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, e, o, i) {
-  var n, r = arguments.length,
-    s = r < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i);
-  else
-    for (var a = t.length - 1; 0 <= a; a--)(n = t[a]) && (s = (r < 3 ? n(s) : 3 < r ? n(e, o, s) : n(e, o)) || s);
-  return 3 < r && s && Object.defineProperty(e, o, s), s
+
+var __decorate = this && this.__decorate || function (t, e, o, i) {
+  var n;
+  var r = arguments.length;
+  var s = r < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    s = Reflect.decorate(t, e, o, i);
+  } else {
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (n = t[a]) {
+        s = (r < 3 ? n(s) : r > 3 ? n(e, o, s) : n(e, o)) || s;
+      }
+    }
+  }
+  if (r > 3 && s) {
+    Object.defineProperty(e, o, s);
+  }
+  return s;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcFlowComponent = void 0;
-const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  CharacterFlowComponent_1 = require("../../Common/Component/Flow/CharacterFlowComponent"),
-  NpcFlowLogic_1 = require("../Logics/NpcFlowLogic"),
-  STOP_MONTAGE_BLEND_OUT_TIME = .3;
+  value: true
+});
+exports.NpcFlowComponent = undefined;
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CharacterFlowComponent_1 = require("../../Common/Component/Flow/CharacterFlowComponent");
+const NpcFlowLogic_1 = require("../Logics/NpcFlowLogic");
+const STOP_MONTAGE_BLEND_OUT_TIME = 0.3;
 let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.CharacterFlowComponent {
   constructor() {
-    super(...arguments), this.Stn = void 0, this.yj_ = -1, this.KYs = -1
+    super(...arguments);
+    this.Stn = undefined;
+    this.yj_ = -1;
+    this.KYs = -1;
   }
   OnStart() {
-    return this.Stn = this.Entity.GetComponent(121), super.OnStart(), !0
+    this.Stn = this.Entity.GetComponent(121);
+    super.OnStart();
+    return true;
   }
   InitFlowLogic(t) {
-    t && (this.FlowLogic = new NpcFlowLogic_1.NpcFlowLogic(this.ActorComp, t), this.InitFlowLogicRange(this.FlowData?.EnterRange, this.FlowData?.LeaveRange), this.IsEnter = !1, this.IsInit = !0)
+    if (t) {
+      this.FlowLogic = new NpcFlowLogic_1.NpcFlowLogic(this.ActorComp, t);
+      this.InitFlowLogicRange(this.FlowData?.EnterRange, this.FlowData?.LeaveRange);
+      this.IsEnter = false;
+      this.IsInit = true;
+    }
   }
   InitFlowLogicRange(t, e) {
-    return !!super.InitFlowLogicRange(t, e) && (this.Stn?.SetLogicRange(e ?? CharacterFlowComponent_1.DEFAULT_BUBBLE_LEAVE_RANGE), !0)
+    return !!super.InitFlowLogicRange(t, e) && (this.Stn?.SetLogicRange(e ?? CharacterFlowComponent_1.DEFAULT_BUBBLE_LEAVE_RANGE), true);
   }
   CheckCondition() {
-    return !!super.CheckCondition() && !!this.Stn && (this.Stn.IsInLogicRange && ModelManager_1.ModelManager.InteractionModel.CurrentInteractEntityId !== this.Entity.Id || (this.ForceStopFlow(), !1))
+    return !!super.CheckCondition() && !!this.Stn && (this.Stn.IsInLogicRange && ModelManager_1.ModelManager.InteractionModel.CurrentInteractEntityId !== this.Entity.Id || (this.ForceStopFlow(), false));
   }
   TryPlayMontage(t) {
-    this.KYs = -1, this.yj_ = -1;
+    this.KYs = -1;
+    this.yj_ = -1;
     var e = this.Entity.GetComponent(46);
-    return e && t?.includes("/") && (this.KYs = e.PlayPerformMontage(3, {
-      MontagePath: t,
-      OnStartCallback: t => {
-        this.yj_ = t
-      },
-      OnEndCallback: () => {
-        this.yj_ = -1
-      }
-    })), !1
+    if (e && t?.includes("/")) {
+      this.KYs = e.PlayPerformMontage(3, {
+        MontagePath: t,
+        OnStartCallback: t => {
+          this.yj_ = t;
+        },
+        OnEndCallback: () => {
+          this.yj_ = -1;
+        }
+      });
+    }
+    return false;
   }
   Vtn() {
     var t;
-    this.ActorComp && this.ActorComp.SkeletalMesh && (t = this.Entity.GetComponent(46)) && (t.EnableAction(this.KYs, !1), t.StopPerformMontage(3, {
-      Method: 0,
-      BlendOutTime: STOP_MONTAGE_BLEND_OUT_TIME,
-      HandleId: this.yj_
-    }))
+    if (this.ActorComp && this.ActorComp.SkeletalMesh && (t = this.Entity.GetComponent(46))) {
+      t.EnableAction(this.KYs, false);
+      t.StopPerformMontage(3, {
+        Method: 0,
+        BlendOutTime: STOP_MONTAGE_BLEND_OUT_TIME,
+        HandleId: this.yj_
+      });
+    }
   }
   RemoveFlowActions() {
     var t = this.FlowLogic;
-    t?.HideDialogueText(), t?.ClearAudio(), this.Vtn()
+    t?.HideDialogueText();
+    t?.ClearAudio();
+    this.Vtn();
   }
   GetTimberId() {
-    return this.FlowData?.TimberId
+    return this.FlowData?.TimberId;
   }
 };
-NpcFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(185)], NpcFlowComponent), exports.NpcFlowComponent = NpcFlowComponent;
-//# sourceMappingURL=NpcFlowComponent.js.map
+NpcFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(185)], NpcFlowComponent);
+exports.NpcFlowComponent = NpcFlowComponent; //# sourceMappingURL=NpcFlowComponent.js.map

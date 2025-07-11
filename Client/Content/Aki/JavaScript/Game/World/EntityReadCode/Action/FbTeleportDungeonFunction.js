@@ -1,28 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportDungeonFunction = void 0;
+  value: true
+});
+exports.FbTeleportDungeonFunction = undefined;
 class FbTeleportDungeonFunction {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Jch = !1, this.l7 = !1, this.Zch = !1, this.euh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Jch = false;
+    this.l7 = false;
+    this.Zch = false;
+    this.euh = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleportDungeonFunction(t)
+    if (t) {
+      return new FbTeleportDungeonFunction(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Enable() {
-    return this.Jch || (this.Jch = !0, this.l7 = this.FbDataInternal.enable()), this.l7
+    if (!this.Jch) {
+      this.Jch = true;
+      this.l7 = this.FbDataInternal.enable();
+    }
+    return this.l7;
   }
   get DungeonList() {
     if (!this.Zch) {
-      this.Zch = !0, this.euh = new Array;
+      this.Zch = true;
+      this.euh = new Array();
       var i = this.FbDataInternal.dungeonListLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.euh.push(this.FbDataInternal.dungeonList(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.euh.push(this.FbDataInternal.dungeonList(t));
+        }
+      }
     }
-    return this.euh
+    return this.euh;
   }
 }
 exports.FbTeleportDungeonFunction = FbTeleportDungeonFunction;

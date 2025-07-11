@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFlowTemplateMode = void 0;
+  value: true
+});
+exports.FbFlowTemplateMode = undefined;
 class FbFlowTemplateMode {
   constructor(t) {
-    this.FbDataInternal = t, this.tgh = !1, this.FFe = 0, this.efh = !1, this.tfh = 0
+    this.FbDataInternal = t;
+    this.tgh = false;
+    this.FFe = 0;
+    this.efh = false;
+    this.tfh = 0;
   }
   static Create(t) {
-    if (t) return new FbFlowTemplateMode(t)
+    if (t) {
+      return new FbFlowTemplateMode(t);
+    }
   }
   get Id() {
-    return this.tgh || (this.tgh = !0, this.FFe = this.FbDataInternal.id()), this.FFe
+    if (!this.tgh) {
+      this.tgh = true;
+      this.FFe = this.FbDataInternal.id();
+    }
+    return this.FFe;
   }
   get CameraId() {
-    return this.efh || (this.efh = !0, this.tfh = this.FbDataInternal.cameraId()), this.tfh
+    if (!this.efh) {
+      this.efh = true;
+      this.tfh = this.FbDataInternal.cameraId();
+    }
+    return this.tfh;
   }
 }
 exports.FbFlowTemplateMode = FbFlowTemplateMode;

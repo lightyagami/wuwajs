@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSlashAndTowerTip = void 0;
+  value: true
+});
+exports.FbSlashAndTowerTip = undefined;
 class FbSlashAndTowerTip {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.hyh = !1, this.lyh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.hyh = false;
+    this.lyh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSlashAndTowerTip(t)
+    if (t) {
+      return new FbSlashAndTowerTip(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get WarningText() {
-    return this.hyh || (this.hyh = !0, this.lyh = this.FbDataInternal.warningText()), this.lyh
+    if (!this.hyh) {
+      this.hyh = true;
+      this.lyh = this.FbDataInternal.warningText();
+    }
+    return this.lyh;
   }
 }
 exports.FbSlashAndTowerTip = FbSlashAndTowerTip;

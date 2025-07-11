@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEntityCategoryWeight = void 0;
+  value: true
+});
+exports.FbEntityCategoryWeight = undefined;
 const FbStaticEntitiyMatch_1 = require("./FbStaticEntitiyMatch");
 class FbEntityCategoryWeight {
   constructor(t) {
-    this.FbDataInternal = t, this.m2h = !1, this.C2h = void 0, this.jDh = !1, this.HDh = 0
+    this.FbDataInternal = t;
+    this.m2h = false;
+    this.C2h = undefined;
+    this.jDh = false;
+    this.HDh = 0;
   }
   static Create(t) {
-    if (t) return new FbEntityCategoryWeight(t)
+    if (t) {
+      return new FbEntityCategoryWeight(t);
+    }
   }
   get EntitiyMatch() {
-    return this.m2h || (this.m2h = !0, this.C2h = FbStaticEntitiyMatch_1.FbStaticEntitiyMatch.Create(this.FbDataInternal.entitiyMatch())), this.C2h
+    if (!this.m2h) {
+      this.m2h = true;
+      this.C2h = FbStaticEntitiyMatch_1.FbStaticEntitiyMatch.Create(this.FbDataInternal.entitiyMatch());
+    }
+    return this.C2h;
   }
   get Weight() {
-    return this.jDh || (this.jDh = !0, this.HDh = this.FbDataInternal.weight()), this.HDh
+    if (!this.jDh) {
+      this.jDh = true;
+      this.HDh = this.FbDataInternal.weight();
+    }
+    return this.HDh;
   }
 }
 exports.FbEntityCategoryWeight = FbEntityCategoryWeight;

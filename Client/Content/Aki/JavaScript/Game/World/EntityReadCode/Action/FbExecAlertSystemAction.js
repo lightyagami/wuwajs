@@ -1,18 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbExecAlertSystemAction = void 0;
+  value: true
+});
+exports.FbExecAlertSystemAction = undefined;
 const UnionAlertSystemOptionHelper_1 = require("./UnionAlertSystemOptionHelper");
 class FbExecAlertSystemAction {
   constructor(t) {
-    this.FbDataInternal = t, this.s_h = !1, this.Hye = void 0
+    this.FbDataInternal = t;
+    this.s_h = false;
+    this.Hye = undefined;
   }
   static Create(t) {
-    if (t) return new FbExecAlertSystemAction(t)
+    if (t) {
+      return new FbExecAlertSystemAction(t);
+    }
   }
   get Option() {
-    var t, e;
-    return !this.s_h && (this.s_h = !0, t = this.FbDataInternal.optionType(), e = UnionAlertSystemOptionHelper_1.UnionAlertSystemOptionHelper.GetUnionAlertSystemOptionObject(t)) && (this.Hye = UnionAlertSystemOptionHelper_1.UnionAlertSystemOptionHelper.ReadUnionAlertSystemOption(t, this.FbDataInternal.option(e))), this.Hye
+    var t;
+    var e;
+    if (!this.s_h && (this.s_h = true, t = this.FbDataInternal.optionType(), e = UnionAlertSystemOptionHelper_1.UnionAlertSystemOptionHelper.GetUnionAlertSystemOptionObject(t))) {
+      this.Hye = UnionAlertSystemOptionHelper_1.UnionAlertSystemOptionHelper.ReadUnionAlertSystemOption(t, this.FbDataInternal.option(e));
+    }
+    return this.Hye;
   }
 }
 exports.FbExecAlertSystemAction = FbExecAlertSystemAction;

@@ -1,25 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventLockEntity = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventLockEntity = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventLockEntity extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.Lo = void 0
+    super(...arguments);
+    this.Lo = undefined;
   }
   ExecuteNew(e, t, s) {
-    1 === t.Type && t.ClientExecuteActions ? (this.Lo = e, this.CreateWaitEntityTask(this.Lo.EntityIds)) : this.FinishExecute(!0)
+    if (t.Type === 1 && t.ClientExecuteActions) {
+      this.Lo = e;
+      this.CreateWaitEntityTask(this.Lo.EntityIds);
+    } else {
+      this.FinishExecute(true);
+    }
   }
   ExecuteWhenEntitiesReady() {
     for (const t of this.Lo.EntityIds) {
       var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
-      e?.IsInit && e.Entity.GetComponent(196)?.AddServerTagByIdLocal(-662723379, "LevelEventLockEntity")
+      if (e?.IsInit) {
+        e.Entity.GetComponent(196)?.AddServerTagByIdLocal(-662723379, "LevelEventLockEntity");
+      }
     }
-    this.FinishExecute(!0)
+    this.FinishExecute(true);
   }
   OnReset() {
-    this.Lo = void 0
+    this.Lo = undefined;
   }
 }
 exports.LevelEventLockEntity = LevelEventLockEntity;

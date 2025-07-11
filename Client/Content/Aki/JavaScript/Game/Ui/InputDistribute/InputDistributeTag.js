@@ -1,24 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InputDistributeTag = void 0;
+  value: true
+});
+exports.InputDistributeTag = undefined;
 class InputDistributeTag {
   constructor(t, e) {
-    this.bdr = new Set, this.qdr = t;
+    this.bdr = new Set();
+    this.qdr = t;
     let s = this.Gdr = e;
-    for (; s;) {
+    while (s) {
       var r = s.TagName;
-      this.bdr.add(r), s = s.ParentTag
+      this.bdr.add(r);
+      s = s.ParentTag;
     }
   }
   get TagName() {
-    return this.qdr
+    return this.qdr;
   }
   get ParentTag() {
-    return this.Gdr
+    return this.Gdr;
   }
-  MatchTag(t, e = !1) {
-    return this.qdr === t || !e && this.bdr.has(t)
+  MatchTag(t, e = false) {
+    return this.qdr === t || !e && this.bdr.has(t);
   }
 }
 exports.InputDistributeTag = InputDistributeTag;

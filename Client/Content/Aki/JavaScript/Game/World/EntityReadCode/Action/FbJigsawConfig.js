@@ -1,39 +1,71 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbJigsawConfig = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbJigsawPiece_1 = require("./FbJigsawPiece");
+  value: true
+});
+exports.FbJigsawConfig = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbJigsawPiece_1 = require("./FbJigsawPiece");
 class FbJigsawConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.eRh = !1, this.tRh = 0, this.iRh = !1, this.rRh = 0, this.oRh = !1, this.n6 = 0, this.nRh = !1, this.c6o = void 0, this.sRh = !1, this.aRh = void 0
+    this.FbDataInternal = t;
+    this.eRh = false;
+    this.tRh = 0;
+    this.iRh = false;
+    this.rRh = 0;
+    this.oRh = false;
+    this.n6 = 0;
+    this.nRh = false;
+    this.c6o = undefined;
+    this.sRh = false;
+    this.aRh = undefined;
   }
   static Create(t) {
-    if (t) return new FbJigsawConfig(t)
+    if (t) {
+      return new FbJigsawConfig(t);
+    }
   }
   get Row() {
-    return this.eRh || (this.eRh = !0, this.tRh = this.FbDataInternal.row()), this.tRh
+    if (!this.eRh) {
+      this.eRh = true;
+      this.tRh = this.FbDataInternal.row();
+    }
+    return this.tRh;
   }
   get Column() {
-    return this.iRh || (this.iRh = !0, this.rRh = this.FbDataInternal.column()), this.rRh
+    if (!this.iRh) {
+      this.iRh = true;
+      this.rRh = this.FbDataInternal.column();
+    }
+    return this.rRh;
   }
   get Size() {
-    return this.oRh || (this.oRh = !0, this.n6 = this.FbDataInternal.size()), this.n6
+    if (!this.oRh) {
+      this.oRh = true;
+      this.n6 = this.FbDataInternal.size();
+    }
+    return this.n6;
   }
   get Shape() {
-    return this.nRh || (this.nRh = !0, this.c6o = this.FbDataInternal.shape()), this.c6o
+    if (!this.nRh) {
+      this.nRh = true;
+      this.c6o = this.FbDataInternal.shape();
+    }
+    return this.c6o;
   }
   get Pieces() {
     if (!this.sRh) {
-      this.sRh = !0, this.aRh = new Array;
+      this.sRh = true;
+      this.aRh = new Array();
       var i = this.FbDataInternal.piecesLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.pieces(t, new fb_action_1.JigsawPiece);
-          this.aRh.push(FbJigsawPiece_1.FbJigsawPiece.Create(s))
+          var s = this.FbDataInternal.pieces(t, new fb_action_1.JigsawPiece());
+          this.aRh.push(FbJigsawPiece_1.FbJigsawPiece.Create(s));
         }
+      }
     }
-    return this.aRh
+    return this.aRh;
   }
 }
 exports.FbJigsawConfig = FbJigsawConfig;

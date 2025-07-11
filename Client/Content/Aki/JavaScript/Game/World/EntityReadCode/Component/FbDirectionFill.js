@@ -1,28 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDirectionFill = void 0;
+  value: true
+});
+exports.FbDirectionFill = undefined;
 class FbDirectionFill {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.iNh = !1, this.rNh = !1, this.oNh = !1, this.nNh = !1, this.Uuh = !1, this.Duh = !1, this.sNh = !1, this.aNh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.iNh = false;
+    this.rNh = false;
+    this.oNh = false;
+    this.nNh = false;
+    this.Uuh = false;
+    this.Duh = false;
+    this.sNh = false;
+    this.aNh = false;
   }
   static Create(t) {
-    if (t) return new FbDirectionFill(t)
+    if (t) {
+      return new FbDirectionFill(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get W() {
-    return this.iNh || (this.iNh = !0, this.rNh = this.FbDataInternal.w()), this.rNh
+    if (!this.iNh) {
+      this.iNh = true;
+      this.rNh = this.FbDataInternal.w();
+    }
+    return this.rNh;
   }
   get S() {
-    return this.oNh || (this.oNh = !0, this.nNh = this.FbDataInternal.s()), this.nNh
+    if (!this.oNh) {
+      this.oNh = true;
+      this.nNh = this.FbDataInternal.s();
+    }
+    return this.nNh;
   }
   get A() {
-    return this.Uuh || (this.Uuh = !0, this.Duh = this.FbDataInternal.a()), this.Duh
+    if (!this.Uuh) {
+      this.Uuh = true;
+      this.Duh = this.FbDataInternal.a();
+    }
+    return this.Duh;
   }
   get D() {
-    return this.sNh || (this.sNh = !0, this.aNh = this.FbDataInternal.d()), this.aNh
+    if (!this.sNh) {
+      this.sNh = true;
+      this.aNh = this.FbDataInternal.d();
+    }
+    return this.aNh;
   }
 }
 exports.FbDirectionFill = FbDirectionFill;

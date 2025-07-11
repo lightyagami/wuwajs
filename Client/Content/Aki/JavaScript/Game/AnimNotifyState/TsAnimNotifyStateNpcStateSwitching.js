@@ -1,21 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyStateNpcStateSwitching extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(e, t, r) {
     e = e.GetOwner();
-    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && ((e.CharacterActorComponent?.Entity.GetComponent(186))?.MarkAnimStateSwitching(!0), !0)
+    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && (e.CharacterActorComponent?.Entity.GetComponent(186)?.MarkAnimStateSwitching(true), true);
   }
   K2_NotifyEnd(e, t) {
     e = e.GetOwner();
-    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && ((e.CharacterActorComponent?.Entity.GetComponent(186))?.MarkAnimStateSwitching(!1), !0)
+    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && (e.CharacterActorComponent?.Entity.GetComponent(186)?.MarkAnimStateSwitching(false), true);
   }
   GetNotifyName() {
-    return "NPC切换动画状态过程中"
+    return "NPC切换动画状态过程中";
   }
 }
 exports.default = TsAnimNotifyStateNpcStateSwitching;

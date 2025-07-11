@@ -1,76 +1,106 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleQuest = void 0;
+  value: true
+});
+exports.RoleQuest = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class RoleQuest {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get RoleId() {
-    return this.roleid()
+    return this.roleid();
   }
   get Region() {
-    return this.region()
+    return this.region();
   }
   get IsShow() {
-    return this.isshow()
+    return this.isshow();
   }
   get QuestId() {
-    return this.questid()
+    return this.questid();
   }
   get QuestName() {
-    return this.questname()
+    return this.questname();
   }
   get Chapter() {
-    return this.chapter()
+    return this.chapter();
   }
   get Consume() {
-    return this.consume()
+    return this.consume();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsRoleQuest(t, s) {
-    return (s || new RoleQuest).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new RoleQuest()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   roleid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   region(t) {
-    var s = this.J7.__offset(this.z7, 8),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 8);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   isshow() {
     var t = this.J7.__offset(this.z7, 10);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   questid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   questname(t) {
-    var s = this.J7.__offset(this.z7, 14),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 14);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   chapter(t) {
-    var s = this.J7.__offset(this.z7, 16),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   consume() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
 }
 exports.RoleQuest = RoleQuest;

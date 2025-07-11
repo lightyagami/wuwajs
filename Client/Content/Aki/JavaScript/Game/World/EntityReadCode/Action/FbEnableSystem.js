@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableSystem = void 0;
+  value: true
+});
+exports.FbEnableSystem = undefined;
 class FbEnableSystem {
   constructor(t) {
-    this.FbDataInternal = t, this.udh = !1, this.ddh = void 0, this.Dch = !1, this.bSo = !1
+    this.FbDataInternal = t;
+    this.udh = false;
+    this.ddh = undefined;
+    this.Dch = false;
+    this.bSo = false;
   }
   static Create(t) {
-    if (t) return new FbEnableSystem(t)
+    if (t) {
+      return new FbEnableSystem(t);
+    }
   }
   get SystemType() {
-    return this.udh || (this.udh = !0, this.ddh = this.FbDataInternal.systemType()), this.ddh
+    if (!this.udh) {
+      this.udh = true;
+      this.ddh = this.FbDataInternal.systemType();
+    }
+    return this.ddh;
   }
   get IsEnable() {
-    return this.Dch || (this.Dch = !0, this.bSo = this.FbDataInternal.isEnable()), this.bSo
+    if (!this.Dch) {
+      this.Dch = true;
+      this.bSo = this.FbDataInternal.isEnable();
+    }
+    return this.bSo;
   }
 }
 exports.FbEnableSystem = FbEnableSystem;

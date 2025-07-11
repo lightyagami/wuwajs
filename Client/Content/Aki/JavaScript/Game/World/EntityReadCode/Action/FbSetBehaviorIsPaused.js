@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetBehaviorIsPaused = void 0;
+  value: true
+});
+exports.FbSetBehaviorIsPaused = undefined;
 class FbSetBehaviorIsPaused {
   constructor(s) {
-    this.FbDataInternal = s, this.bmh = !1, this.dJ = !1
+    this.FbDataInternal = s;
+    this.bmh = false;
+    this.dJ = false;
   }
   static Create(s) {
-    if (s) return new FbSetBehaviorIsPaused(s)
+    if (s) {
+      return new FbSetBehaviorIsPaused(s);
+    }
   }
   get IsPaused() {
-    return this.bmh || (this.bmh = !0, this.dJ = this.FbDataInternal.isPaused()), this.dJ
+    if (!this.bmh) {
+      this.bmh = true;
+      this.dJ = this.FbDataInternal.isPaused();
+    }
+    return this.dJ;
   }
 }
 exports.FbSetBehaviorIsPaused = FbSetBehaviorIsPaused;

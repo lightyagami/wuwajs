@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShowOnlyComponent = void 0;
+  value: true
+});
+exports.ShowOnlyComponent = undefined;
 const HotKeyComponent_1 = require("./HotKeyComponent");
 class ShowOnlyComponent extends HotKeyComponent_1.HotKeyComponent {
   OnRefreshSelfHotKeyState(e) {
-    this.SetVisibleMode(2, !0)
+    this.SetVisibleMode(2, true);
   }
   OnIsOccupancyFightInput() {
-    return !1
+    return false;
   }
 }
 exports.ShowOnlyComponent = ShowOnlyComponent;

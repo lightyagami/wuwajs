@@ -1,30 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelPlayReportMarkItemView = void 0;
-const EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigMarkItemView_1 = require("./ConfigMarkItemView");
+  value: true
+});
+exports.LevelPlayReportMarkItemView = undefined;
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigMarkItemView_1 = require("./ConfigMarkItemView");
 class LevelPlayReportMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   constructor(e) {
-    super(e), this.it_ = () => {
-      this.MarkItemTopRightIconHandle.Update()
-    }
+    super(e);
+    this.it_ = () => {
+      if (this.MarkItemTopRightIconHandle) {
+        this.MarkItemTopRightIconHandle.Update();
+      }
+    };
   }
   OnInitialize() {
-    super.OnInitialize()
+    super.OnInitialize();
   }
   RegisterEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.it_)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.it_);
   }
   UnRegisterEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.it_)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.it_);
   }
   OnAfterShow() {
-    this.UpdateIcon()
+    this.UpdateIcon();
   }
   UpdateIcon() {
-    this.OnIconPathChanged(this.Holder.IconPath), this.MarkItemTopRightIconHandle.Update()
+    this.OnIconPathChanged(this.Holder.IconPath);
+    this.MarkItemTopRightIconHandle.Update();
   }
 }
 exports.LevelPlayReportMarkItemView = LevelPlayReportMarkItemView;

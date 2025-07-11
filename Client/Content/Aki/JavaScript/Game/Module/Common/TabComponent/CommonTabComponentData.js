@@ -1,10 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonTabComponentData = void 0;
+  value: true
+});
+exports.CommonTabComponentData = undefined;
 class CommonTabComponentData {
   constructor(o, t, s) {
-    this.ProxyCreate = o, this.ToggleCallBack = t, this.GetCommonData = s
+    this.ProxyCreate = o;
+    this.ToggleCallBack = t;
+    this.GetCommonData = s;
   }
 }
 exports.CommonTabComponentData = CommonTabComponentData;

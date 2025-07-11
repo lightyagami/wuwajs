@@ -1,17 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityLinkageTabData = void 0;
+  value: true
+});
+exports.ActivityLinkageTabData = undefined;
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 class ActivityLinkageTabData {
   constructor() {
-    this.TabId = 0, this.StartTimeStamp = 0, this.EndTimeStamp = 0, this.IsReceive = !1, this.IsInShowTime = !1
+    this.TabId = 0;
+    this.StartTimeStamp = 0;
+    this.EndTimeStamp = 0;
+    this.IsReceive = false;
+    this.IsInShowTime = false;
   }
   IsInShowTimeChange() {
-    let t = !1;
-    var i = TimeUtil_1.TimeUtil.GetServerTimeStamp(),
-      i = (t = this.StartTimeStamp <= i && i <= this.EndTimeStamp ? !0 : t) !== this.IsInShowTime;
-    return this.IsInShowTime = t, i
+    let t = false;
+    var i = TimeUtil_1.TimeUtil.GetServerTimeStamp();
+    var i = (t = this.StartTimeStamp <= i && i <= this.EndTimeStamp ? true : t) !== this.IsInShowTime;
+    this.IsInShowTime = t;
+    return i;
   }
 }
 exports.ActivityLinkageTabData = ActivityLinkageTabData;

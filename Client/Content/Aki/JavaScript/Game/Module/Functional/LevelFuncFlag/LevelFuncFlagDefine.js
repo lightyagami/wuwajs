@@ -1,8 +1,7 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.levelFuncFlagDefaultVal = void 0, exports.levelFuncFlagDefaultVal = new Map([
-  [0, !0],
-  [1, !0]
-]);
-//# sourceMappingURL=LevelFuncFlagDefine.js.map
+  value: true
+});
+exports.levelFuncFlagDefaultVal = undefined;
+exports.levelFuncFlagDefaultVal = new Map([[0, true], [1, true]]); //# sourceMappingURL=LevelFuncFlagDefine.js.map

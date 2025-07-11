@@ -1,66 +1,104 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonQteContextBase = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  TimeUtil_1 = require("../../../Common/TimeUtil"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.CommonQteContextBase = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class CommonQteContextBase {
   constructor() {
-    this.Type = void 0, this.HandleId = -1, this.QteId = 0, this.Source = void 0, this.State = 0, this.Config = void 0, this.Duration = 0, this.LeastDuration = 0, this.IsPermanent = !1, this.SuccessCallback = void 0, this.FailCallback = void 0
+    this.Type = undefined;
+    this.HandleId = -1;
+    this.QteId = 0;
+    this.Source = undefined;
+    this.State = 0;
+    this.Config = undefined;
+    this.Duration = 0;
+    this.LeastDuration = 0;
+    this.IsPermanent = false;
+    this.SuccessCallback = undefined;
+    this.FailCallback = undefined;
   }
   IsPending() {
-    return 0 === this.State
+    return this.State === 0;
   }
   IsPendingSuccess() {
-    return 1 === this.State
+    return this.State === 1;
   }
   IsSuccess() {
-    return 2 === this.State
+    return this.State === 2;
   }
   IsFail() {
-    return 3 === this.State
+    return this.State === 3;
   }
   IsInvalid() {
-    return 4 === this.State
+    return this.State === 4;
   }
   IsActive() {
-    return this.HandleId === ModelManager_1.ModelManager.CommonQteModel?.GetQteHandleId()
+    return this.HandleId === ModelManager_1.ModelManager.CommonQteModel?.GetQteHandleId();
   }
   Response() {
-    this.OnResponse()
+    this.OnResponse();
   }
   OnResponse() {}
   QtePendingSuccess() {
-    1 !== this.State && (this.State = 1, this.OnQtePendingSuccess())
+    if (this.State !== 1) {
+      this.State = 1;
+      this.OnQtePendingSuccess();
+    }
   }
   OnQtePendingSuccess() {}
   QteSuccess() {
-    2 !== this.State && (this.State = 2, Log_1.Log.CheckDebug() && Log_1.Log.Debug("CommonQte", 67, "通用Qte触发成功", ["HandleId", this.HandleId], ["QteId", this.QteId]), this.OnQteSuccess())
+    if (this.State !== 2) {
+      this.State = 2;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, "通用Qte触发成功", ["HandleId", this.HandleId], ["QteId", this.QteId]);
+      }
+      this.OnQteSuccess();
+    }
   }
   OnQteSuccess() {}
   QteFail() {
-    3 !== this.State && (this.State = 3, Log_1.Log.CheckDebug() && Log_1.Log.Debug("CommonQte", 67, "通用Qte触发失败", ["HandleId", this.HandleId], ["Id", this.QteId]), this.OnQteFail())
+    if (this.State !== 3) {
+      this.State = 3;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, "通用Qte触发失败", ["HandleId", this.HandleId], ["Id", this.QteId]);
+      }
+      this.OnQteFail();
+    }
   }
   OnQteFail() {}
   UpdateTime(t) {
-    this.OnUpdateTime(t)
+    this.OnUpdateTime(t);
   }
   OnUpdateTime(t) {}
   Clear() {
-    this.IsPending() && (this.State = 4), this.OnClear(), this.SuccessCallback = void 0, this.FailCallback = void 0
+    if (this.IsPending()) {
+      this.State = 4;
+    }
+    this.OnClear();
+    this.SuccessCallback = undefined;
+    this.FailCallback = undefined;
   }
   OnClear() {}
   GetAction() {
-    return this.OnGetAction()
+    return this.OnGetAction();
   }
   OnGetAction() {}
   SetConfig(t) {
-    (this.Config = t).BaseConfig.Duration < 0 ? this.IsPermanent = !0 : this.Duration = t.BaseConfig.Duration * TimeUtil_1.TimeUtil.InverseMillisecond, this.LeastDuration = t.BaseConfig.LeastDuration * TimeUtil_1.TimeUtil.InverseMillisecond, this.OnSetConfig(t)
+    if ((this.Config = t).BaseConfig.Duration < 0) {
+      this.IsPermanent = true;
+    } else {
+      this.Duration = t.BaseConfig.Duration * TimeUtil_1.TimeUtil.InverseMillisecond;
+    }
+    this.LeastDuration = t.BaseConfig.LeastDuration * TimeUtil_1.TimeUtil.InverseMillisecond;
+    this.OnSetConfig(t);
   }
   OnSetConfig(t) {}
   GetUiConfig() {
-    return this.OnGetUiConfig()
+    return this.OnGetUiConfig();
   }
   OnGetUiConfig() {}
 }

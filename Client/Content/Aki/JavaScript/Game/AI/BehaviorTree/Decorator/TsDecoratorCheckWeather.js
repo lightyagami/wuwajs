@@ -1,34 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+const UE = require("ue");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class TsDecoratorCheckWeather extends UE.BTDecorator_BlueprintBase {
   constructor() {
-    super(...arguments), this.CheckWeatherState = 0
+    super(...arguments);
+    this.CheckWeatherState = 0;
   }
   Constructor() {}
   PerformConditionCheckAI(e, r) {
     var s = ModelManager_1.ModelManager.WeatherModel?.GetCurrentWeatherType();
-    let t = !1;
-    if (void 0 !== s) switch (s) {
-      case 1:
-        t = 0 === this.CheckWeatherState;
-        break;
-      case 2:
-        t = 3 === this.CheckWeatherState;
-        break;
-      case 3:
-        t = 1 === this.CheckWeatherState;
-        break;
-      case 4:
-        t = 2 === this.CheckWeatherState;
-        break;
-      case 5:
-        t = 4 === this.CheckWeatherState
+    let t = false;
+    if (s !== undefined) {
+      switch (s) {
+        case 1:
+          t = this.CheckWeatherState === 0;
+          break;
+        case 2:
+          t = this.CheckWeatherState === 3;
+          break;
+        case 3:
+          t = this.CheckWeatherState === 1;
+          break;
+        case 4:
+          t = this.CheckWeatherState === 2;
+          break;
+        case 5:
+          t = this.CheckWeatherState === 4;
+      }
     }
-    return t
+    return t;
   }
 }
 exports.default = TsDecoratorCheckWeather;

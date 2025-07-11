@@ -1,25 +1,31 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FormationConcertoItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.FormationConcertoItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class FormationConcertoItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.pat = "", this.CreateThenShowByActor(e)
+    super();
+    this.pat = "";
+    this.CreateThenShowByActor(e);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UITexture]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture]];
   }
   RefreshConcertoInfoView(e, s, t) {
     var o = this.GetTexture(1);
-    o.SetColor(t), this.GetSprite(0).SetColor(t), this.pat !== e.Icon3 && (this.pat = e.Icon3, this.SetElementIcon(e.Icon3, o, s))
+    o.SetColor(t);
+    this.GetSprite(0).SetColor(t);
+    if (this.pat !== e.Icon3) {
+      this.pat = e.Icon3;
+      this.SetElementIcon(e.Icon3, o, s);
+    }
   }
   RefreshConcertoProgress(e) {
-    this.GetSprite(0).SetFillAmount(e)
+    this.GetSprite(0).SetFillAmount(e);
   }
 }
 exports.FormationConcertoItem = FormationConcertoItem;

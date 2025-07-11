@@ -1,17 +1,20 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemTipsModel = void 0;
+  value: true
+});
+exports.ItemTipsModel = undefined;
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 class ItemTipsModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.gxt = void 0
+    super(...arguments);
+    this.gxt = undefined;
   }
   SetCurrentItemTipsData(e) {
-    this.gxt = e
+    this.gxt = e;
   }
   GetCurrentItemTipsData() {
-    return this.gxt
+    return this.gxt;
   }
 }
 exports.ItemTipsModel = ItemTipsModel;

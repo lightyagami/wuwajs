@@ -1,5 +1,10 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VISIONRAREBLUE = exports.VISIONRAREPURPLE = exports.VISIONRAREGOLD = void 0, exports.VISIONRAREGOLD = 3, exports.VISIONRAREPURPLE = 2, exports.VISIONRAREBLUE = 1;
-//# sourceMappingURL=VisionDefine.js.map
+  value: true
+});
+exports.CANNOTLEVELSUBQUALITY = exports.VISIONRAREBLUE = exports.VISIONRAREPURPLE = exports.VISIONRAREGOLD = undefined;
+exports.VISIONRAREGOLD = 3;
+exports.VISIONRAREPURPLE = 2;
+exports.VISIONRAREBLUE = 1;
+exports.CANNOTLEVELSUBQUALITY = 2; //# sourceMappingURL=VisionDefine.js.map

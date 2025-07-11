@@ -1,55 +1,103 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleVisibleChildView = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  VisibleStateUtil_1 = require("../../VisibleStateUtil"),
-  BattleChildView_1 = require("./BattleChildView");
+  value: true
+});
+exports.BattleVisibleChildView = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const VisibleStateUtil_1 = require("../../VisibleStateUtil");
+const BattleChildView_1 = require("./BattleChildView");
 class BattleVisibleChildView extends BattleChildView_1.BattleChildView {
   constructor() {
-    super(...arguments), this.ChildViewData = void 0, this.ChildType = 0, this.BaseVisible = !1, this.IsEnable = !1, this.InnerVisibleState = 0, this.iJe = () => {
-      this.oJe()
-    }
+    super(...arguments);
+    this.ChildViewData = undefined;
+    this.ChildType = 0;
+    this.BaseVisible = false;
+    this.IsEnable = false;
+    this.InnerVisibleState = 0;
+    this.iJe = () => {
+      this.oJe();
+    };
   }
   InitChildType(i = 0) {
-    this.ChildType = i, 25 === this.ChildType ? (this.BaseVisible = !0, this.InnerVisibleState = 1) : (this.ChildViewData = ModelManager_1.ModelManager.BattleUiModel.ChildViewData, this.BaseVisible = this.ChildViewData.GetChildVisible(i), this.InnerVisibleState = 1, this.ChildViewData.AddCallback(i, this.iJe))
+    this.ChildType = i;
+    if (this.ChildType === 26) {
+      this.BaseVisible = true;
+      this.InnerVisibleState = 1;
+    } else {
+      this.ChildViewData = ModelManager_1.ModelManager.BattleUiModel.ChildViewData;
+      this.BaseVisible = this.ChildViewData.GetChildVisible(i);
+      this.InnerVisibleState = 1;
+      this.ChildViewData.AddCallback(i, this.iJe);
+    }
   }
   ShowBattleVisibleChildView() {
-    this.IsEnable = !0, this.rJe(0, !0);
+    this.IsEnable = true;
+    this.rJe(0, true);
     var i = this.GetVisible();
-    this.SetActive(i), i && this.OnShowBattleChildView()
+    this.SetActive(i);
+    if (i) {
+      this.OnShowBattleChildView();
+    }
   }
   HideBattleVisibleChildView() {
-    this.IsEnable = !1;
+    this.IsEnable = false;
     var i = this.GetVisible();
-    this.rJe(0, !1), this.SetActive(this.GetVisible()), i && this.OnHideBattleChildView()
+    this.rJe(0, false);
+    this.SetActive(this.GetVisible());
+    if (i) {
+      this.OnHideBattleChildView();
+    }
   }
   Reset() {
-    this.rJe(0, !1), this.ChildViewData && (this.ChildViewData.RemoveCallback(this.ChildType, this.iJe), this.ChildViewData = void 0), super.Reset()
+    this.rJe(0, false);
+    if (this.ChildViewData) {
+      this.ChildViewData.RemoveCallback(this.ChildType, this.iJe);
+      this.ChildViewData = undefined;
+    }
+    super.Reset();
   }
   ClearChildViewData() {
-    this.ChildViewData && (this.ChildViewData.RemoveCallback(this.ChildType, this.iJe), this.ChildViewData = void 0)
+    if (this.ChildViewData) {
+      this.ChildViewData.RemoveCallback(this.ChildType, this.iJe);
+      this.ChildViewData = undefined;
+    }
   }
   SetActive(i) {
-    this.GetVisible() !== i ? Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 17, "战斗子界面不要直接调用SetActive, 请调用SetVisible") : super.SetActive(i)
+    if (this.GetVisible() !== i) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 17, "战斗子界面不要直接调用SetActive, 请调用SetVisible");
+      }
+    } else {
+      super.SetActive(i);
+    }
   }
   oJe() {
     var i = this.GetVisible();
-    this.BaseVisible = this.ChildViewData.GetChildVisible(this.ChildType), this.nJe(i)
+    this.BaseVisible = this.ChildViewData.GetChildVisible(this.ChildType);
+    this.nJe(i);
   }
   SetVisible(i, t) {
     var e = this.GetVisible();
-    this.rJe(i, t), this.nJe(e)
+    this.rJe(i, t);
+    this.nJe(e);
   }
   nJe(i) {
-    this.IsEnable && i !== (i = this.GetVisible()) && (this.SetActive(i), i ? this.OnShowBattleChildView() : this.OnHideBattleChildView())
+    if (this.IsEnable && i !== (i = this.GetVisible())) {
+      this.SetActive(i);
+      if (i) {
+        this.OnShowBattleChildView();
+      } else {
+        this.OnHideBattleChildView();
+      }
+    }
   }
   rJe(i, t) {
-    this.InnerVisibleState = VisibleStateUtil_1.VisibleStateUtil.SetVisible(this.InnerVisibleState, t, i)
+    this.InnerVisibleState = VisibleStateUtil_1.VisibleStateUtil.SetVisible(this.InnerVisibleState, t, i);
   }
   GetVisible() {
-    return this.BaseVisible && 0 === this.InnerVisibleState
+    return this.BaseVisible && this.InnerVisibleState === 0;
   }
   OnShowBattleChildView() {}
   OnHideBattleChildView() {}

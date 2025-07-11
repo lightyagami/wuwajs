@@ -1,80 +1,82 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BusinessConfig = void 0;
-const CommonParamById_1 = require("../../../../../../../Core/Define/ConfigCommon/CommonParamById"),
-  CharacterById_1 = require("../../../../../../../Core/Define/ConfigQuery/CharacterById"),
-  EntrustFinishDialogByEntrustIdAndLevel_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustFinishDialogByEntrustIdAndLevel"),
-  EntrustRoleAll_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustRoleAll"),
-  EntrustRoleById_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustRoleById"),
-  EntrustTypeById_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustTypeById"),
-  EvaluateById_1 = require("../../../../../../../Core/Define/ConfigQuery/EvaluateById"),
-  PopularityAll_1 = require("../../../../../../../Core/Define/ConfigQuery/PopularityAll"),
-  RoleDevelopCurveByGroupId_1 = require("../../../../../../../Core/Define/ConfigQuery/RoleDevelopCurveByGroupId"),
-  RoleDevelopTypeById_1 = require("../../../../../../../Core/Define/ConfigQuery/RoleDevelopTypeById"),
-  TrackMoonEntrustById_1 = require("../../../../../../../Core/Define/ConfigQuery/TrackMoonEntrustById"),
-  TrainRoleDialogByRoleIdAndTrainType_1 = require("../../../../../../../Core/Define/ConfigQuery/TrainRoleDialogByRoleIdAndTrainType"),
-  ConfigBase_1 = require("../../../../../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.BusinessConfig = undefined;
+const CommonParamById_1 = require("../../../../../../../Core/Define/ConfigCommon/CommonParamById");
+const CharacterById_1 = require("../../../../../../../Core/Define/ConfigQuery/CharacterById");
+const EntrustFinishDialogByEntrustIdAndLevel_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustFinishDialogByEntrustIdAndLevel");
+const EntrustRoleAll_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustRoleAll");
+const EntrustRoleById_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustRoleById");
+const EntrustTypeById_1 = require("../../../../../../../Core/Define/ConfigQuery/EntrustTypeById");
+const EvaluateById_1 = require("../../../../../../../Core/Define/ConfigQuery/EvaluateById");
+const PopularityAll_1 = require("../../../../../../../Core/Define/ConfigQuery/PopularityAll");
+const RoleDevelopCurveByGroupId_1 = require("../../../../../../../Core/Define/ConfigQuery/RoleDevelopCurveByGroupId");
+const RoleDevelopTypeById_1 = require("../../../../../../../Core/Define/ConfigQuery/RoleDevelopTypeById");
+const TrackMoonEntrustById_1 = require("../../../../../../../Core/Define/ConfigQuery/TrackMoonEntrustById");
+const TrainRoleDialogByRoleIdAndTrainType_1 = require("../../../../../../../Core/Define/ConfigQuery/TrainRoleDialogByRoleIdAndTrainType");
+const ConfigBase_1 = require("../../../../../../../Core/Framework/ConfigBase");
 class BusinessConfig extends ConfigBase_1.ConfigBase {
   GetDelegationConfig(e) {
-    return TrackMoonEntrustById_1.configTrackMoonEntrustById.GetConfig(e)
+    return TrackMoonEntrustById_1.configTrackMoonEntrustById.GetConfig(e);
   }
   GetEvaluateByLevel(e) {
-    return EvaluateById_1.configEvaluateById.GetConfig(e)
+    return EvaluateById_1.configEvaluateById.GetConfig(e);
   }
   GetCharacterConfig(e) {
-    return CharacterById_1.configCharacterById.GetConfig(e)
+    return CharacterById_1.configCharacterById.GetConfig(e);
   }
   GetEntrustRoleById(e) {
-    return EntrustRoleById_1.configEntrustRoleById.GetConfig(e)
+    return EntrustRoleById_1.configEntrustRoleById.GetConfig(e);
   }
   GetEntrustRoleAll() {
-    return EntrustRoleAll_1.configEntrustRoleAll.GetConfigList()
+    return EntrustRoleAll_1.configEntrustRoleAll.GetConfigList();
   }
   GetPopularityAll() {
-    return PopularityAll_1.configPopularityAll.GetConfigList()
+    return PopularityAll_1.configPopularityAll.GetConfigList();
   }
   GetRoleDevelopCurveByGroupId(e) {
-    return RoleDevelopCurveByGroupId_1.configRoleDevelopCurveByGroupId.GetConfigList(e)
+    return RoleDevelopCurveByGroupId_1.configRoleDevelopCurveByGroupId.GetConfigList(e);
   }
   GetEntrustFinishDialogByIdAndLevel(e, r) {
-    return EntrustFinishDialogByEntrustIdAndLevel_1.configEntrustFinishDialogByEntrustIdAndLevel.GetConfig(e, r)
+    return EntrustFinishDialogByEntrustIdAndLevel_1.configEntrustFinishDialogByEntrustIdAndLevel.GetConfig(e, r);
   }
   GetEntrustTypeById(e) {
-    return EntrustTypeById_1.configEntrustTypeById.GetConfig(e)
+    return EntrustTypeById_1.configEntrustTypeById.GetConfig(e);
   }
   GetTrainRoleDialogByIdAndType(e, r) {
-    return TrainRoleDialogByRoleIdAndTrainType_1.configTrainRoleDialogByRoleIdAndTrainType.GetConfig(e, r)
+    return TrainRoleDialogByRoleIdAndTrainType_1.configTrainRoleDialogByRoleIdAndTrainType.GetConfig(e, r);
   }
   GetRoleDevelopTypeById(e) {
-    return RoleDevelopTypeById_1.configRoleDevelopTypeById.GetConfig(e)
+    return RoleDevelopTypeById_1.configRoleDevelopTypeById.GetConfig(e);
   }
   GetPowerItemId() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaEnergyItemId")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaEnergyItemId");
   }
   GetCoinItemId() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaCoinItemId")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaCoinItemId");
   }
   GetWishItemId() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaWishItemId")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaWishItemId");
   }
   GetPopularityItemId() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaPopularityItemId")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaPopularityItemId");
   }
   GetTokenItemId() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaTokenItemId")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonFiestaTokenItemId");
   }
   GetTipsCommonRoleIcon() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("MoonFiestaHintRole")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("MoonFiestaHintRole");
   }
   GetSkipAnimDelayTime() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonChasingBusinessSkipAnimDelayTime")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonChasingBusinessSkipAnimDelayTime");
   }
   GetEntrustScoreMax() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonChasingEntrustScoreMax")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonChasingEntrustScoreMax");
   }
   GetRoleCharacterMax() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonChasingRoleCharacterMax")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MoonChasingRoleCharacterMax");
   }
 }
 exports.BusinessConfig = BusinessConfig;

@@ -1,174 +1,247 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaRoleSelectTabView = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  DropPackageById_1 = require("../../../../../Core/Define/ConfigQuery/DropPackageById"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  CommonItemSmallItemGrid_1 = require("../../../Common/ItemGrid/CommonItemSmallItemGrid"),
-  MiniElementItem_1 = require("../../../Common/MiniElementItem"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView"),
-  PhantomArenaController_1 = require("../../PhantomArenaController"),
-  PhantomArenaChildViewBase_1 = require("../PhantomArenaChildViewBase"),
-  PhantomArenaRoleSelectionItem_1 = require("./PhantomArenaRoleSelectionItem"),
-  PhantomArenaRoleSkillItem_1 = require("./PhantomArenaRoleSkillItem");
+  value: true
+});
+exports.PhantomArenaRoleSelectTabView = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const DropPackageById_1 = require("../../../../../Core/Define/ConfigQuery/DropPackageById");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CommonItemSmallItemGrid_1 = require("../../../Common/ItemGrid/CommonItemSmallItemGrid");
+const MiniElementItem_1 = require("../../../Common/MiniElementItem");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView");
+const PhantomArenaController_1 = require("../../PhantomArenaController");
+const PhantomArenaChildViewBase_1 = require("../PhantomArenaChildViewBase");
+const PhantomArenaRoleSelectionItem_1 = require("./PhantomArenaRoleSelectionItem");
+const PhantomArenaRoleSkillItem_1 = require("./PhantomArenaRoleSkillItem");
 class PhantomArenaRoleSelectTabView extends PhantomArenaChildViewBase_1.PhantomArenaChildViewBase {
   constructor() {
-    super(...arguments), this.quu = [], this.i61 = -1, this.r61 = -1, this.aho = void 0, this.o61 = void 0, this.det = [], this.n61 = [], this.qsi = void 0, this.uyi = () => {
-      var t = new PhantomArenaRoleSelectionItem_1.PhantomArenaRoleSelectionItem;
-      return t.BindOnExtendToggleStateChanged(this.j5e), t.BindOnCanExecuteChange(this.CanExecuteChange), t
-    }, this.j5e = t => {
-      1 === t.State && (t = t.Data, this.SelectCardRoleByCardRoleId(t.CardRoleId, !0))
-    }, this.CanExecuteChange = (t, e, i) => {
-      return 1 !== i || t.CardRoleId !== this.GetSelectedCardRoleId()
-    }, this.s61 = t => {
-      t !== this.r61 && (0 <= this.r61 && this.det[this.r61].SetSelected(!1), this.r61 = t, this.det[this.r61].SetSelected(!0), this.RefreshSkillDetailView())
-    }, this.tWt = () => {
-      this.ViewModel.SelectedCardRoleId = this.GetSelectedCardRoleId(), this.ViewModel.RoleSelectedConfirmFlag = !0, this.CloseMe()
-    }, this.G3e = () => {
+    super(...arguments);
+    this.zEu = [];
+    this.D61 = -1;
+    this.U61 = -1;
+    this.aho = undefined;
+    this.B61 = undefined;
+    this.det = [];
+    this.k61 = [];
+    this.qsi = undefined;
+    this.uyi = () => {
+      var t = new PhantomArenaRoleSelectionItem_1.PhantomArenaRoleSelectionItem();
+      t.BindOnExtendToggleStateChanged(this.j5e);
+      t.BindOnCanExecuteChange(this.CanExecuteChange);
+      return t;
+    };
+    this.j5e = t => {
+      if (t.State === 1) {
+        t = t.Data;
+        this.SelectCardRoleByCardRoleId(t.CardRoleId, true);
+      }
+    };
+    this.CanExecuteChange = (t, e, i) => {
+      return i !== 1 || t.CardRoleId !== this.GetSelectedCardRoleId();
+    };
+    this.O61 = t => {
+      if (t !== this.U61) {
+        if (this.U61 >= 0) {
+          this.det[this.U61].SetSelected(false);
+        }
+        this.U61 = t;
+        this.det[this.U61].SetSelected(true);
+        this.RefreshSkillDetailView();
+      }
+    };
+    this.tWt = () => {
+      this.ViewModel.SelectedCardRoleId = this.GetSelectedCardRoleId();
+      this.ViewModel.RoleSelectedConfirmFlag = true;
+      this.CloseMe();
+    };
+    this.G3e = () => {
       var t = this.GetSelectedCardRoleId();
-      PhantomArenaController_1.PhantomArenaController.RoleRewardRequest(t, this.vZ1)
-    }, this.vZ1 = e => {
-      for (let t = 0; t < this.quu.length; t++) {
-        var i = this.quu[t];
+      PhantomArenaController_1.PhantomArenaController.RoleRewardRequest(t, this.meu);
+    };
+    this.meu = e => {
+      for (let t = 0; t < this.zEu.length; t++) {
+        var i = this.zEu[t];
         if (i.CardRoleId === e) {
-          i.CanReceived = !1, this.o61?.RefreshGridProxy(t);
-          break
+          i.CanReceived = false;
+          this.B61?.RefreshGridProxy(t);
+          break;
         }
       }
-      this.RefreshDetailView()
-    }
+      this.RefreshDetailView();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UILoopScrollViewComponent],
-      [1, UE.UIItem],
-      [2, UE.UIText],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UIItem],
-      [6, UE.UIText],
-      [7, UE.UIText],
-      [8, UE.UIButtonComponent],
-      [9, UE.UIItem],
-      [10, UE.UIItem],
-      [11, UE.UIItem],
-      [12, UE.UIText]
-    ], this.BtnBindInfo = [
-      [8, this.tWt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText]];
+    this.BtnBindInfo = [[8, this.tWt]];
   }
   async OnBeforeStartAsync() {
-    for (const r of ModelManager_1.ModelManager.PhantomArenaModel.GetCardRoleList()) this.quu.push(this.CreateCardRoleItemData(r));
-    this.aho = new MiniElementItem_1.MiniElementItem(0, void 0, this.GetItem(3).GetOwner()), this.o61 = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.uyi);
-    var t, e = [];
-    for (let t = 4; t <= 5; t++) {
-      var i = new PhantomArenaRoleSkillItem_1.PhantomArenaRoleSkillItem;
-      i.OnToggleSelect = this.s61, this.det.push(i), e.push(i.CreateByActorAsync(this.GetItem(t).GetOwner()))
+    for (const r of ModelManager_1.ModelManager.PhantomArenaModel.GetCardRoleList()) {
+      this.zEu.push(this.CreateCardRoleItemData(r));
     }
-    this.qsi = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid, e.push(this.qsi.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.o61?.RefreshByDataAsync(this.quu)), await Promise.all(e), this.qsi.SetAllowClickBack(!1), this.qsi.BindOnExtendToggleClicked(this.G3e);
+    this.aho = new MiniElementItem_1.MiniElementItem(0, undefined, this.GetItem(3).GetOwner());
+    this.B61 = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.uyi);
+    var t;
+    var e = [];
+    for (let t = 4; t <= 5; t++) {
+      var i = new PhantomArenaRoleSkillItem_1.PhantomArenaRoleSkillItem();
+      i.OnToggleSelect = this.O61;
+      this.det.push(i);
+      e.push(i.CreateByActorAsync(this.GetItem(t).GetOwner()));
+    }
+    this.qsi = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
+    e.push(this.qsi.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.B61?.RefreshByDataAsync(this.zEu));
+    await Promise.all(e);
+    this.qsi.SetAllowClickBack(false);
+    this.qsi.BindOnExtendToggleClicked(this.G3e);
     const s = this.ViewModel.SelectedCardRoleId;
     let h = 0;
-    s && 0 < s && -1 !== (t = this.quu.findIndex(t => t.CardRoleId === s)) && (h = t), this.i61 = h, this.o61?.SelectGridProxy(h), this.RefreshDetailView()
+    if (s && s > 0 && (t = this.zEu.findIndex(t => t.CardRoleId === s)) !== -1) {
+      h = t;
+    }
+    this.D61 = h;
+    this.B61?.SelectGridProxy(h);
+    this.RefreshDetailView();
   }
   OnBeforeShow() {
-    this.ViewModel.SetViewTitle?.("PhantomArenaRoleSelectTabView_Name"), this.ViewModel.SetViewHelpId?.(337), this.ViewModel.SetViewHelpBtnActive?.(!0), this.ViewModel.SetViewIcon?.("SP_IconSoundRemnantArena4"), this.ViewModel.TextureCardRoleId = this.GetSelectedCardRoleId(), this.ViewModel.RefreshRoleTexture?.(), this.ViewModel.ShowRoleTexture?.(!0)
+    this.ViewModel.SetViewTitle?.("PhantomArenaRoleSelectTabView_Name");
+    this.ViewModel.SetViewHelpId?.(337);
+    this.ViewModel.SetViewHelpBtnActive?.(true);
+    this.ViewModel.SetViewIcon?.("SP_IconSoundRemnantArena4");
+    this.ViewModel.TextureCardRoleId = this.GetSelectedCardRoleId();
+    this.ViewModel.RefreshRoleTexture?.();
+    this.ViewModel.ShowRoleTexture?.(true);
   }
   CreateCardRoleItemData(t) {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.IsRoleUnlock(t),
-      i = this.ViewModel.CanShowSelectBtnInRoleSelectTabView,
-      s = this.ViewModel.CanShowRewardInRoleSelectTabView,
-      h = ModelManager_1.ModelManager.PhantomArenaModel.IsRoleReward(t);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.IsRoleUnlock(t);
+    var i = this.ViewModel.CanShowSelectBtnInRoleSelectTabView;
+    var s = this.ViewModel.CanShowRewardInRoleSelectTabView;
+    var h = ModelManager_1.ModelManager.PhantomArenaModel.IsRoleReward(t);
     return {
       CardRoleId: t,
       CanReceived: s && e && !h,
       IsLocked: !e,
       CanSelect: e && i
-    }
+    };
   }
   GetSelectedCardRoleId() {
-    return this.quu[this.i61].CardRoleId
+    return this.zEu[this.D61].CardRoleId;
   }
   GetSelectedCardRoleData() {
-    return this.quu[this.i61]
+    return this.zEu[this.D61];
   }
   SelectCardRoleByCardRoleId(e, t) {
-    var i = this.quu.findIndex(t => t.CardRoleId === e); - 1 !== i && this.SelectCardRoleByIndex(i, t)
+    var i = this.zEu.findIndex(t => t.CardRoleId === e);
+    if (i !== -1) {
+      this.SelectCardRoleByIndex(i, t);
+    }
   }
   SelectCardRoleByIndex(t, e) {
-    -1 !== t && (this.i61 = t, this.o61?.SelectGridProxy(t), t = this.quu[t].CardRoleId, this.ViewModel.ChangeRoleTexture?.(t, e), this.RefreshDetailView())
+    if (t !== -1) {
+      this.D61 = t;
+      this.B61?.SelectGridProxy(t);
+      t = this.zEu[t].CardRoleId;
+      this.ViewModel.ChangeRoleTexture?.(t, e);
+      this.RefreshDetailView();
+    }
   }
   RefreshDetailView() {
-    if (!(-1 === this.i61 || this.i61 >= this.quu.length)) {
-      var t = this.GetSelectedCardRoleId(),
-        t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t),
-        e = t.RoleConfigId,
-        e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e),
-        e = (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name), this.aho?.RefreshMiniElement(e.ElementId), this.RefreshStates(), [...t.PassiveSkillIconList, ...t.SkillIconList]),
-        i = (this.r61 = 0, e.length);
-      this.n61.length = 0;
+    if (this.D61 !== -1 && !(this.D61 >= this.zEu.length)) {
+      var t = this.GetSelectedCardRoleId();
+      var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t);
+      var e = t.RoleConfigId;
+      var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name);
+      this.aho?.RefreshMiniElement(e.ElementId);
+      this.RefreshStates();
+      var e = [...t.PassiveSkillIconList, ...t.SkillIconList];
+      this.U61 = 0;
+      var i = e.length;
+      this.k61.length = 0;
       for (const o of e) {
         var s = {
           IconPath: o
         };
-        this.n61.push(s)
+        this.k61.push(s);
       }
       for (let t = 0; t < i; t++) {
-        var h = this.det[t],
-          r = this.n61[t];
-        h.SetActive(!0), h.Refresh(r, this.r61 === t, t)
+        var h = this.det[t];
+        var r = this.k61[t];
+        h.SetActive(true);
+        h.Refresh(r, this.U61 === t, t);
       }
-      if (this.det.length > i)
-        for (let t = i; t < this.det.length; t++) this.det[t].SetActive(!1);
-      this.RefreshSkillDetailView()
+      if (this.det.length > i) {
+        for (let t = i; t < this.det.length; t++) {
+          this.det[t].SetActive(false);
+        }
+      }
+      this.RefreshSkillDetailView();
     }
   }
   RefreshStates() {
-    var t = this.GetSelectedCardRoleData(),
-      e = t.CardRoleId,
-      i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
-    if (this.GetItem(11).SetUIActive(t.IsLocked), this.GetItem(9).SetUIActive(t.CanReceived), this.GetButton(8).RootUIComp.SetUIActive(t.CanSelect), t.IsLocked && LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), i.UnlockConditionTip), t.CanReceived) {
+    var t = this.GetSelectedCardRoleData();
+    var e = t.CardRoleId;
+    var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
+    this.GetItem(11).SetUIActive(t.IsLocked);
+    this.GetItem(9).SetUIActive(t.CanReceived);
+    this.GetButton(8).RootUIComp.SetUIActive(t.CanSelect);
+    if (t.IsLocked) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), i.UnlockConditionTip);
+    }
+    if (t.CanReceived) {
       t = i.DropId;
-      if (0 < t) {
-        var s, h, i = DropPackageById_1.configDropPackageById.GetConfig(t).DropPreview;
-        1 < i.size && Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 43, "奖励物品数量大于1，请检查配置", ["cardRoleConfig", e]);
+      if (t > 0) {
+        var s;
+        var h;
+        var i = DropPackageById_1.configDropPackageById.GetConfig(t).DropPreview;
+        if (i.size > 1 && Log_1.Log.CheckError()) {
+          Log_1.Log.Error("PhantomArena", 43, "奖励物品数量大于1，请检查配置", ["cardRoleConfig", e]);
+        }
         for ([s, h] of i) {
           var r = [{
             ItemId: s,
             IncId: 0
           }, h];
-          this.qsi?.Refresh(r), this.qsi?.SetReceivableVisible(!0);
-          break
+          this.qsi?.Refresh(r);
+          this.qsi?.SetReceivableVisible(true);
+          break;
         }
       }
     }
   }
   RefreshSkillDetailView() {
-    if (-1 !== this.r61) {
-      var t = this.GetSelectedCardRoleId(),
-        e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t),
-        i = [...e.PassiveSkillNameList, ...e.SkillNameList],
-        s = [];
+    if (this.U61 !== -1) {
+      var t = this.GetSelectedCardRoleId();
+      var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(t);
+      var i = [...e.PassiveSkillNameList, ...e.SkillNameList];
+      var s = [];
       for (let t = 0; t < e.PassiveSkillDescList.length; t++) {
-        var h = e.PassiveSkillDescList[t],
-          r = e.PassiveSkillDescParamsList[t] ? e.PassiveSkillDescParamsList[t].ArrayString : [];
+        var h = e.PassiveSkillDescList[t];
+        var r = e.PassiveSkillDescParamsList[t] ? e.PassiveSkillDescParamsList[t].ArrayString : [];
         s.push({
           Desc: h,
           Params: r
-        })
+        });
       }
       for (let t = 0; t < e.SkillDescList.length; t++) {
-        var o = e.SkillDescList[t],
-          a = e.SkillDescParamsList[t] ? e.SkillDescParamsList[t].ArrayString : [];
+        var o = e.SkillDescList[t];
+        var a = e.SkillDescParamsList[t] ? e.SkillDescParamsList[t].ArrayString : [];
         s.push({
           Desc: o,
           Params: a
-        })
+        });
       }
-      i.length !== this.n61.length || s.length !== this.n61.length ? Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 43, "技能名称、技能描述数量不一致，请检查配置", ["cardRoleConfig", t]) : (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), i[this.r61]), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), s[this.r61].Desc, ...s[this.r61].Params))
+      if (i.length !== this.k61.length || s.length !== this.k61.length) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("PhantomArena", 43, "技能名称、技能描述数量不一致，请检查配置", ["cardRoleConfig", t]);
+        }
+      } else {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), i[this.U61]);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), s[this.U61].Desc, ...s[this.U61].Params);
+      }
     }
   }
 }

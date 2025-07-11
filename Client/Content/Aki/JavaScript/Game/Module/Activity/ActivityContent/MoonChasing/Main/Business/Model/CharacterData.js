@@ -1,31 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharacterData = void 0;
+  value: true
+});
+exports.CharacterData = undefined;
 const ConfigManager_1 = require("../../../../../../../Manager/ConfigManager");
 class CharacterData {
   constructor(t) {
-    this.Id = t, this.kke = 0, this.Fke = 0, this.ValueInterval = 0, this.Tga = !1;
+    this.Id = t;
+    this.kke = 0;
+    this.Fke = 0;
+    this.ValueInterval = 0;
+    this.Tga = false;
     t = ConfigManager_1.ConfigManager.BusinessConfig.GetRoleCharacterMax();
-    this.Fke = t
+    this.Fke = t;
   }
   SetCurrentValue(t) {
-    this.ValueInterval = t - this.kke, this.kke = t
+    this.ValueInterval = t - this.kke;
+    this.kke = t;
   }
   get CurrentValue() {
-    return this.kke
+    return this.kke;
   }
   SetMaxValue(t) {
-    this.Fke = t
+    this.Fke = t;
   }
   get MaxValue() {
-    return this.Fke
+    return this.Fke;
   }
   SetUseScoreName(t) {
-    this.Tga = t
+    this.Tga = t;
   }
   get UseScoreName() {
-    return this.Tga
+    return this.Tga;
   }
 }
 exports.CharacterData = CharacterData;

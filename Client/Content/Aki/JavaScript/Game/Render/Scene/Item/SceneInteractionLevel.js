@@ -1,109 +1,266 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneInteractionLevel = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Rotator_1 = require("../../../../Core/Utils/Math/Rotator"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+  value: true
+});
+exports.SceneInteractionLevel = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 class SceneInteractionLevel {
   constructor() {
-    this.LevelStreamingDynamic = void 0, this.LevelName = "", this.Location = void 0, this.Rotation = void 0, this.HandleId = 0, this.CurrentState = void 0, this.LoadingLevelComplete = !1, this.InteractionActor = void 0, this.HasTempState = !1, this.TempTargetState = void 0, this.TempNeedTransition = !1, this.IsDestroyed = !1, this.Active = !0, this.TempForce = !1, this.OnLevelStreamingShowCallback = void 0, this.OnLevelStreamingHideCallback = void 0, this.t_r = !1
+    this.LevelStreamingDynamic = undefined;
+    this.LevelName = "";
+    this.Location = undefined;
+    this.Rotation = undefined;
+    this.HandleId = 0;
+    this.CurrentState = undefined;
+    this.LoadingLevelComplete = false;
+    this.InteractionActor = undefined;
+    this.HasTempState = false;
+    this.TempTargetState = undefined;
+    this.TempNeedTransition = false;
+    this.IsDestroyed = false;
+    this.Active = true;
+    this.TempForce = false;
+    this.OnLevelStreamingShowCallback = undefined;
+    this.OnLevelStreamingHideCallback = undefined;
+    this.t_r = false;
   }
-  Init(t, i, e, s, h, r, o, n, a = !1) {
-    this.LevelStreamingDynamic = t, this.LevelName = i, this.Location = e, this.Rotation = s, this.HandleId = h, this.CurrentState = r, this.HasTempState = !1, this.t_r = a, this.LevelStreamingDynamic.bInitiallyLoaded = !0, this.LevelStreamingDynamic.bInitiallyVisible = !0, this.LevelStreamingDynamic.SetShouldBeLoaded(!0), this.LevelStreamingDynamic.SetShouldBeVisible(n), this.LoadingLevelComplete = !1, this.IsDestroyed = !1, this.OnLevelStreamingShowCallback = o, SceneInteractionLevel.wt1 && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.Init]", ["HandleId", h], ["LevelName", i], ["IsInitShow", a], ["afterLoadVisible", n]), this.LevelStreamingDynamic.OnLevelShown.Add(() => {
-      this.i_r("Init")
-    })
+  Init(t, i, e, s, h, r, o, n, a = false) {
+    this.LevelStreamingDynamic = t;
+    this.LevelName = i;
+    this.Location = e;
+    this.Rotation = s;
+    this.HandleId = h;
+    this.CurrentState = r;
+    this.HasTempState = false;
+    this.t_r = a;
+    this.LevelStreamingDynamic.bInitiallyLoaded = true;
+    this.LevelStreamingDynamic.bInitiallyVisible = true;
+    this.LevelStreamingDynamic.SetShouldBeLoaded(true);
+    this.LevelStreamingDynamic.SetShouldBeVisible(n);
+    this.LoadingLevelComplete = false;
+    this.IsDestroyed = false;
+    this.OnLevelStreamingShowCallback = o;
+    if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.Init]", ["HandleId", h], ["LevelName", i], ["IsInitShow", a], ["afterLoadVisible", n]);
+    }
+    this.LevelStreamingDynamic.OnLevelShown.Add(() => {
+      this.i_r("Init");
+    });
   }
-  ToggleLevelVisible(t, i, e = void 0, s = "") {
+  ToggleLevelVisible(t, i, e = undefined, s = "") {
     if (this.LevelStreamingDynamic?.IsValid()) {
       var h = this.GetAllActorsInLevel();
-      if (h && !t && i)
+      if (h && !t && i) {
         for (let t = 0, i = h.Num(); t < i; t++) {
           var r = h.Get(t);
-          r instanceof UE.Actor && r.SetActorHiddenInGame(!0)
+          if (r instanceof UE.Actor) {
+            r.SetActorHiddenInGame(true);
+          }
         }
-      this.LevelStreamingDynamic.SetShouldBeVisible(t), SceneInteractionLevel.wt1 && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.ToggleLevelVisible]", ["HandleId", this.HandleId], ["LevelName", this.LevelName], ["Visible", t], ["NeedHidden", i], ["Reason", s]), t ? (this.OnLevelStreamingShowCallback = e, this.LevelStreamingDynamic.OnLevelShown.Clear(), this.LevelStreamingDynamic.OnLevelShown.Add(() => {
-        this.i_r(s)
-      })) : (this.InteractionActor?.TryStopCurrentState(), this.OnLevelStreamingHideCallback = e, this.LevelStreamingDynamic.OnLevelHidden.Clear(), this.LevelStreamingDynamic.OnLevelHidden.Add(() => {
-        this.q4a(s)
-      }))
+      }
+      this.LevelStreamingDynamic.SetShouldBeVisible(t);
+      if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.ToggleLevelVisible]", ["HandleId", this.HandleId], ["LevelName", this.LevelName], ["Visible", t], ["NeedHidden", i], ["Reason", s]);
+      }
+      if (t) {
+        this.OnLevelStreamingShowCallback = e;
+        this.LevelStreamingDynamic.OnLevelShown.Clear();
+        this.LevelStreamingDynamic.OnLevelShown.Add(() => {
+          this.i_r(s);
+        });
+      } else {
+        this.InteractionActor?.TryStopCurrentState();
+        this.OnLevelStreamingHideCallback = e;
+        this.LevelStreamingDynamic.OnLevelHidden.Clear();
+        this.LevelStreamingDynamic.OnLevelHidden.Add(() => {
+          this.q4a(s);
+        });
+      }
     }
   }
   get MainActor() {
-    return this.InteractionActor
+    return this.InteractionActor;
   }
   GetAllActorsInLevel() {
     var t;
-    if (this.LevelStreamingDynamic) return (t = this.LevelStreamingDynamic.GetLoadedLevel()) ? UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLevelActors(t) : void 0;
-    Log_1.Log.CheckError() && Log_1.Log.Error("RenderScene", 11, "错误，流送关卡为空!!!!!!!!!!!!!")
+    if (this.LevelStreamingDynamic) {
+      if (t = this.LevelStreamingDynamic.GetLoadedLevel()) {
+        return UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLevelActors(t);
+      } else {
+        return undefined;
+      }
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("RenderScene", 11, "错误，流送关卡为空!!!!!!!!!!!!!");
+    }
   }
   IsStreamingComplete() {
-    return this.LoadingLevelComplete
+    return this.LoadingLevelComplete;
   }
   IsInfoDestroyed() {
-    return this.IsDestroyed
+    return this.IsDestroyed;
   }
   Destroy() {
-    this.IsDestroyed = !0, this.SetCollisionActorsOwner(void 0), this.InteractionActor && this.InteractionActor.Clear(), this.LevelStreamingDynamic && (this.LevelStreamingDynamic.OnLevelShown.Clear(), this.LevelStreamingDynamic.SetShouldBeLoaded(!1)), this.LevelStreamingDynamic = void 0, this.InteractionActor = void 0, this.OnLevelStreamingShowCallback = void 0
+    this.IsDestroyed = true;
+    this.SetCollisionActorsOwner(undefined);
+    if (this.InteractionActor) {
+      this.InteractionActor.Clear();
+    }
+    if (this.LevelStreamingDynamic) {
+      this.LevelStreamingDynamic.OnLevelShown.Clear();
+      this.LevelStreamingDynamic.SetShouldBeLoaded(false);
+    }
+    this.LevelStreamingDynamic = undefined;
+    this.InteractionActor = undefined;
+    this.OnLevelStreamingShowCallback = undefined;
   }
   Update(t) {
-    !this.Active || this.IsDestroyed || this.LoadingLevelComplete && this.InteractionActor?.IsValid() && this.InteractionActor.Update(t)
+    if (!!this.Active && !this.IsDestroyed) {
+      if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) {
+        this.InteractionActor.Update(t);
+      }
+    }
   }
   SwitchToState(t, i, e, s) {
     if (this.Active) {
-      if (this.InteractionActor) return this.o_r(t, i, e, s);
-      this.HasTempState = !0, this.TempTargetState = t, this.TempNeedTransition = i, this.TempForce = e
-    } else this.CurrentState = t;
-    return !0
+      if (this.InteractionActor) {
+        return this.o_r(t, i, e, s);
+      }
+      this.HasTempState = true;
+      this.TempTargetState = t;
+      this.TempNeedTransition = i;
+      this.TempForce = e;
+    } else {
+      this.CurrentState = t;
+    }
+    return true;
   }
   GetAllActor() {
-    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) return this.InteractionActor.GetAllActor()
+    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetAllActor();
+    }
   }
   GetActorByKey(t) {
     var i;
-    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) return i = void 0, (i = this.InteractionActor.GetActorByKey(t)) || Log_1.Log.CheckWarn() && Log_1.Log.Warn("RenderScene", 11, "获取actor失败 level:" + this.LevelName + " 不存在key=" + t + " 的Actor"), i
+    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) {
+      i = undefined;
+      if (!(i = this.InteractionActor.GetActorByKey(t))) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RenderScene", 11, "获取actor失败 level:" + this.LevelName + " 不存在key=" + t + " 的Actor");
+        }
+      }
+      return i;
+    }
   }
   GetActorOriginalRelTransform(t) {
-    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) return this.InteractionActor.GetActorOriginalRelTransform(t)
+    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetActorOriginalRelTransform(t);
+    }
   }
   GetRefActorsByTag(t) {
-    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) return this.InteractionActor.GetRefActorsByTag(t)
+    if (this.LoadingLevelComplete && this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetRefActorsByTag(t);
+    }
   }
   o_r(t, i, e, s) {
-    return !!this.InteractionActor?.IsValid() && (e || this.CurrentState !== t ? (this.CurrentState = t, this.InteractionActor.SetState(t, i, s), !0) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 13, "切换状态失败，无法切换到当前状态", ["LevelName", this.LevelName]), !1))
+    return !!this.InteractionActor?.IsValid() && (e || this.CurrentState !== t ? (this.CurrentState = t, this.InteractionActor.SetState(t, i, s), true) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("RenderScene", 13, "切换状态失败，无法切换到当前状态", ["LevelName", this.LevelName]), false));
   }
   GetCurrentState() {
-    return this.InteractionActor ? this.InteractionActor.GetCurrentState() : 21
+    if (this.InteractionActor) {
+      return this.InteractionActor.GetCurrentState();
+    } else {
+      return 21;
+    }
   }
   ChangePlayDirection(t) {
-    this.InteractionActor && this.InteractionActor.ChangeDirection(t)
+    if (this.InteractionActor) {
+      this.InteractionActor.ChangeDirection(t);
+    }
   }
   PlaySceneEffect(t) {
-    this.InteractionActor && this.InteractionActor.PlayIndependentEffect(t)
+    if (this.InteractionActor) {
+      this.InteractionActor.PlayIndependentEffect(t);
+    }
   }
   EndSceneEffect(t) {
-    this.InteractionActor && this.InteractionActor.EndIndependentEffect(t)
+    if (this.InteractionActor) {
+      this.InteractionActor.EndIndependentEffect(t);
+    }
   }
   PlaySceneEndEffect(t) {
-    this.InteractionActor && this.InteractionActor.PlayIndependentEndEffect(t)
+    if (this.InteractionActor) {
+      this.InteractionActor.PlayIndependentEndEffect(t);
+    }
   }
   i_r(t) {
     var i;
-    this.LevelStreamingDynamic ? (this.LoadingLevelComplete = !0, i = this.LevelStreamingDynamic.GetLoadedLevel(), i = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSceneInteractionLevelActor(i), this.InteractionActor = i, this.InteractionActor?.IsValid() ? (this.InteractionActor.Init(this.HandleId, this.LevelName, () => {
-      this.o_r(this.CurrentState, !1, !0, !this.t_r), this.OnLevelStreamingShowCallback && this.OnLevelStreamingShowCallback(), this.OnLevelStreamingShowCallback = void 0, this.HasTempState && (this.o_r(this.TempTargetState, this.TempNeedTransition, this.TempForce, !this.t_r), this.HasTempState = !1), this.LevelStreamingDynamic?.OnLevelShown.Clear()
-    }), SceneInteractionLevel.wt1 && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelShow]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName])) : (Log_1.Log.CheckError() && Log_1.Log.Error("RenderScene", 11, "找不到关卡蓝图,查看prefab是否按照规范进行制作"), this.LevelStreamingDynamic.OnLevelShown.Clear())) : Log_1.Log.CheckError() && Log_1.Log.Error("RenderScene", 11, "错误，流送关卡为空!!!!!!!!!!!!!", ["this.LevelName", this.LevelName])
+    if (this.LevelStreamingDynamic) {
+      this.LoadingLevelComplete = true;
+      i = this.LevelStreamingDynamic.GetLoadedLevel();
+      i = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSceneInteractionLevelActor(i);
+      this.InteractionActor = i;
+      if (this.InteractionActor?.IsValid()) {
+        this.InteractionActor.Init(this.HandleId, this.LevelName, () => {
+          this.o_r(this.CurrentState, false, true, !this.t_r);
+          if (this.OnLevelStreamingShowCallback) {
+            this.OnLevelStreamingShowCallback();
+          }
+          this.OnLevelStreamingShowCallback = undefined;
+          if (this.HasTempState) {
+            this.o_r(this.TempTargetState, this.TempNeedTransition, this.TempForce, !this.t_r);
+            this.HasTempState = false;
+          }
+          this.LevelStreamingDynamic?.OnLevelShown.Clear();
+        });
+        if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelShow]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
+        }
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RenderScene", 11, "找不到关卡蓝图,查看prefab是否按照规范进行制作");
+        }
+        this.LevelStreamingDynamic.OnLevelShown.Clear();
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("RenderScene", 11, "错误，流送关卡为空!!!!!!!!!!!!!", ["this.LevelName", this.LevelName]);
+    }
   }
   q4a(t) {
-    this.OnLevelStreamingHideCallback && this.OnLevelStreamingHideCallback(), this.OnLevelStreamingHideCallback = void 0, this.LevelStreamingDynamic?.OnLevelHidden.Clear(), SceneInteractionLevel.wt1 && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelHide]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName])
+    if (this.OnLevelStreamingHideCallback) {
+      this.OnLevelStreamingHideCallback();
+    }
+    this.OnLevelStreamingHideCallback = undefined;
+    this.LevelStreamingDynamic?.OnLevelHidden.Clear();
+    if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelHide]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
+    }
   }
   GetAttachActor() {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.GetAttachParentActor()
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetAttachParentActor();
+    }
   }
   AttachToActor(t) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.RootComponent?.IsValid() && (0 === this.InteractionActor.RootComponent.Mobility && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("RenderScene", 39, "Prefab根场景组件的移动性为Static, 将被强行设置为Movable, 后续请检查Prefab并修改", ["LevelName", this.LevelName]), this.InteractionActor.RootComponent.SetMobility(2)), t = ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToActor(this.InteractionActor, t, 2, "AttachToActor", void 0, 1, 1, 1, !0), Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderScene", 39, "测试AttachToActor", ["ret", t]), this.InteractionActor.D_K2_SetActorRelativeLocation(Vector_1.Vector.ZeroVectorDouble, !1, void 0, !1), this.InteractionActor.K2_SetActorRelativeRotation(Rotator_1.Rotator.ZeroRotator, !1, void 0, !1))
+    if (this.InteractionActor?.IsValid() && this.InteractionActor.RootComponent?.IsValid()) {
+      if (this.InteractionActor.RootComponent.Mobility === 0) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RenderScene", 39, "Prefab根场景组件的移动性为Static, 将被强行设置为Movable, 后续请检查Prefab并修改", ["LevelName", this.LevelName]);
+        }
+        this.InteractionActor.RootComponent.SetMobility(2);
+      }
+      t = ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToActor(this.InteractionActor, t, 2, "AttachToActor", undefined, 1, 1, 1, true);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RenderScene", 39, "测试AttachToActor", ["ret", t]);
+      }
+      this.InteractionActor.D_K2_SetActorRelativeLocation(Vector_1.Vector.ZeroVectorDouble, false, undefined, false);
+      this.InteractionActor.K2_SetActorRelativeRotation(Rotator_1.Rotator.ZeroRotator, false, undefined, false);
+    }
   }
   SetCollisionActorsOwner(i) {
     if (this.InteractionActor?.IsValid()) {
@@ -111,74 +268,121 @@ class SceneInteractionLevel {
         var e = this.InteractionActor.CollisionActors.Num();
         for (let t = 0; t < e; t++) {
           var s = this.InteractionActor.CollisionActors.Get(t);
-          ObjectUtils_1.ObjectUtils.IsValid(s) && s.SetOwner(i)
+          if (ObjectUtils_1.ObjectUtils.IsValid(s)) {
+            s.SetOwner(i);
+          }
         }
       }
       if (this.InteractionActor.PartCollisionActorsAndCorrespondingTags) {
         var h = this.InteractionActor.PartCollisionActorsAndCorrespondingTags.Num();
         for (let t = 0; t < h; t++) {
           var r = this.InteractionActor.PartCollisionActorsAndCorrespondingTags.GetKey(t);
-          ObjectUtils_1.ObjectUtils.IsValid(r) && r.SetOwner(i)
+          if (ObjectUtils_1.ObjectUtils.IsValid(r)) {
+            r.SetOwner(i);
+          }
         }
       }
     }
   }
   GetMainCollisionActor() {
-    return this.InteractionActor?.IsValid() && this.InteractionActor.CollisionActors && 0 < this.InteractionActor.CollisionActors?.Num() ? this.InteractionActor.CollisionActors.Get(0) : void 0
+    if (this.InteractionActor?.IsValid() && this.InteractionActor.CollisionActors && this.InteractionActor.CollisionActors?.Num() > 0) {
+      return this.InteractionActor.CollisionActors.Get(0);
+    } else {
+      return undefined;
+    }
   }
   GetPartCollisionActorTag(t) {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.PartCollisionActorsAndCorrespondingTags?.Get(t)
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.PartCollisionActorsAndCorrespondingTags?.Get(t);
+    }
   }
   GetPartCollisionActorsNum() {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.PartCollisionActorsAndCorrespondingTags?.Num()
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.PartCollisionActorsAndCorrespondingTags?.Num();
+    }
   }
   GetInteractionEffectHookActors() {
-    if (this.InteractionActor.InteractionEffectHookActors) return this.InteractionActor.InteractionEffectHookActors
+    if (this.InteractionActor.InteractionEffectHookActors) {
+      return this.InteractionActor.InteractionEffectHookActors;
+    }
   }
   PlayExtraEffect(t, i) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.PlayExtraEffectOnTagsChange(t, i)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.PlayExtraEffectOnTagsChange(t, i);
+    }
   }
   PlayKuroSkeletalMeshDestruction(t, i) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.PlayKuroSkeletalMeshDestruction(t, i)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.PlayKuroSkeletalMeshDestruction(t, i);
+    }
   }
   StopExtraEffect(t) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.StopExtraEffectOnTagsChange(t)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.StopExtraEffectOnTagsChange(t);
+    }
   }
   UpdateHitInfo(t, i) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.UpdateHitInfo(t.ToUeVector(), i)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.UpdateHitInfo(t.ToUeVector(), i);
+    }
   }
   GetActiveTagSequencePlaybackProgress(t) {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.GetActiveTagSequencePlaybackProgress(t)
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetActiveTagSequencePlaybackProgress(t);
+    }
   }
   SetActiveTagSequencePlaybackProgress(t, i) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.SetActiveTagSequencePlaybackProgress(t, i)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.SetActiveTagSequencePlaybackProgress(t, i);
+    }
   }
   GetActiveTagSequenceDurationTime(t) {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.GetActiveTagSequenceDurationTime(t)
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetActiveTagSequenceDurationTime(t);
+    }
   }
   SetActiveTagSequenceDurationTime(t, i) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.SetActiveTagSequenceDurationTime(t, i)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.SetActiveTagSequenceDurationTime(t, i);
+    }
   }
   PauseActiveTagSequence(t) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.PauseActiveTagSequence(t)
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.PauseActiveTagSequence(t);
+    }
   }
-  ResumeActiveTagSequence(t, i = !1) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.ResumeActiveTagSequence(t, i)
+  ResumeActiveTagSequence(t, i = false) {
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.ResumeActiveTagSequence(t, i);
+    }
   }
   GetIsActiveTagSequencePlayReverseFromConfig(t) {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.GetIsActiveTagSequencePlayReverseFromConfig(t)
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.GetIsActiveTagSequencePlayReverseFromConfig(t);
+    }
   }
-  PlayActiveTagSequenceTo(t, i, e = !1) {
-    this.InteractionActor?.IsValid() && this.InteractionActor.PlayActiveTagSequenceTo(t, i, e)
+  PlayActiveTagSequenceTo(t, i, e = false) {
+    if (this.InteractionActor?.IsValid()) {
+      this.InteractionActor.PlayActiveTagSequenceTo(t, i, e);
+    }
   }
   GetReceivingDecalsActors() {
-    if (this.InteractionActor?.IsValid()) return this.InteractionActor.ReceivingDecalsActors
+    if (this.InteractionActor?.IsValid()) {
+      return this.InteractionActor.ReceivingDecalsActors;
+    }
   }
   Disable() {
-    this.Active = !1, this.InteractionActor && (this.InteractionActor.Active = !1)
+    this.Active = false;
+    if (this.InteractionActor) {
+      this.InteractionActor.Active = false;
+    }
   }
   Enable() {
-    this.Active = !0, this.InteractionActor && (this.InteractionActor.Active = !0)
+    this.Active = true;
+    if (this.InteractionActor) {
+      this.InteractionActor.Active = true;
+    }
   }
-}(exports.SceneInteractionLevel = SceneInteractionLevel).wt1 = !1;
+}
+(exports.SceneInteractionLevel = SceneInteractionLevel).Xt1 = false;
 //# sourceMappingURL=SceneInteractionLevel.js.map

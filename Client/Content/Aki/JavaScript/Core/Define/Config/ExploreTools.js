@@ -1,168 +1,228 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ExploreTools = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.ExploreTools = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class ExploreTools {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get PhantomSkillId() {
-    return this.phantomskillid()
+    return this.phantomskillid();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get SkillType() {
-    return this.skilltype()
+    return this.skilltype();
   }
   get CanEquip() {
-    return this.canequip()
+    return this.canequip();
   }
   get CurrentSkillInfo() {
-    return this.currentskillinfo()
+    return this.currentskillinfo();
   }
   get HelpId() {
-    return this.helpid()
+    return this.helpid();
   }
   get Icon() {
-    return this.icon()
+    return this.icon();
   }
   get BackGround() {
-    return this.background()
+    return this.background();
   }
   get BattleViewIcon() {
-    return this.battleviewicon()
+    return this.battleviewicon();
   }
   get SortId() {
-    return this.sortid()
+    return this.sortid();
   }
   get AutoFill() {
-    return this.autofill()
+    return this.autofill();
   }
   get ShowUnlock() {
-    return this.showunlock()
+    return this.showunlock();
   }
   get SkillGroupId() {
-    return this.skillgroupid()
+    return this.skillgroupid();
   }
   get IsUseInPhantomTeam() {
-    return this.isuseinphantomteam()
+    return this.isuseinphantomteam();
   }
   get Cost() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.costLength(), this.costKey, this.costValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.costLength(), this.costKey, this.costValue, this);
   }
   costKey(t) {
-    return this.cost(t)?.key()
+    return this.cost(t)?.key();
   }
   costValue(t) {
-    return this.cost(t)?.value()
+    return this.cost(t)?.value();
   }
   get Authorization() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.authorizationLength(), this.authorizationKey, this.authorizationValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.authorizationLength(), this.authorizationKey, this.authorizationValue, this);
   }
   authorizationKey(t) {
-    return this.authorization(t)?.key()
+    return this.authorization(t)?.key();
   }
   authorizationValue(t) {
-    return this.authorization(t)?.value()
+    return this.authorization(t)?.value();
   }
   get SummonConfigId() {
-    return this.summonconfigid()
+    return this.summonconfigid();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsExploreTools(t, i) {
-    return (i || new ExploreTools).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ExploreTools()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   phantomskillid() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   skilltype() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   canequip() {
     var t = this.J7.__offset(this.z7, 10);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   currentskillinfo(t) {
-    var i = this.J7.__offset(this.z7, 12),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   helpid() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 16),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   background(t) {
-    var i = this.J7.__offset(this.z7, 18),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   battleviewicon(t) {
-    var i = this.J7.__offset(this.z7, 20),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   sortid() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   autofill() {
     var t = this.J7.__offset(this.z7, 24);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   showunlock() {
     var t = this.J7.__offset(this.z7, 26);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   skillgroupid() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isuseinphantomteam() {
     var t = this.J7.__offset(this.z7, 30);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetCostAt(t, i) {
-    return this.cost(t)
+    return this.cost(t);
   }
   cost(t, i) {
     var s = this.J7.__offset(this.z7, 32);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   costLength() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetAuthorizationAt(t, i) {
-    return this.authorization(t)
+    return this.authorization(t);
   }
   authorization(t, i) {
     var s = this.J7.__offset(this.z7, 34);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   authorizationLength() {
     var t = this.J7.__offset(this.z7, 34);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   summonconfigid() {
     var t = this.J7.__offset(this.z7, 36);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.ExploreTools = ExploreTools;

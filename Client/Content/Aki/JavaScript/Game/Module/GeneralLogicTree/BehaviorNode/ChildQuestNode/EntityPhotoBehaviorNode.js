@@ -1,31 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EntityPhotoBehaviorNode = void 0;
-const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest"),
-  ChildQuestNodeBase_1 = require("./ChildQuestNodeBase");
+  value: true
+});
+exports.EntityPhotoBehaviorNode = undefined;
+const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
+const ChildQuestNodeBase_1 = require("./ChildQuestNodeBase");
 class EntityPhotoBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
   constructor() {
-    super(...arguments), this.TakePlace = void 0, this.TakeTime = void 0, this.TakeTargetArray = []
+    super(...arguments);
+    this.TakePlace = undefined;
+    this.TakeTime = undefined;
+    this.TakeTargetArray = [];
   }
   get CorrelativeEntities() {}
   OnCreate(e) {
-    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.TakePhoto && (this.TakeTime = e.TimeCondition, this.TakePlace = e.PosCondition, this.TakeTargetArray = e.PhotoTargets, !0)
+    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.TakePhoto && (this.TakeTime = e.TimeCondition, this.TakePlace = e.PosCondition, this.TakeTargetArray = e.PhotoTargets, true);
   }
   UseSubmitNode() {
-    this.SubmitNode()
+    this.SubmitNode();
   }
   OnStart(e) {
-    super.OnStart(e)
+    super.OnStart(e);
   }
   OnEnd(e) {
-    super.OnEnd(e)
+    super.OnEnd(e);
   }
   OnDestroy() {
-    super.OnDestroy()
+    super.OnDestroy();
   }
   GetDungeonId() {
-    return this.Blackboard?.DungeonId
+    return this.Blackboard?.DungeonId;
   }
 }
 exports.EntityPhotoBehaviorNode = EntityPhotoBehaviorNode;

@@ -1,8 +1,8 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const cpp_1 = require("cpp"),
-  Log_1 = require("../Common/Log"),
-  PerformanceController_1 = require("./PerformanceController");
-//# sourceMappingURL=PerformanceDecorators.js.map
+const cpp_1 = require("cpp");
+const Log_1 = require("../Common/Log");
+const PerformanceController_1 = require("./PerformanceController"); //# sourceMappingURL=PerformanceDecorators.js.map

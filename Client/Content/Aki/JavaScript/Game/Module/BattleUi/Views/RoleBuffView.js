@@ -1,59 +1,94 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleBuffView = void 0;
-const UE = require("ue"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  BattleUiControl_1 = require("../BattleUiControl"),
-  BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView"),
-  BuffItemContainer_1 = require("./BuffItemContainer"),
-  EnvironmentItem_1 = require("./EnvironmentItem");
+  value: true
+});
+exports.RoleBuffView = undefined;
+const UE = require("ue");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const BattleUiControl_1 = require("../BattleUiControl");
+const BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView");
+const BuffItemContainer_1 = require("./BuffItemContainer");
+const EnvironmentItem_1 = require("./EnvironmentItem");
 class RoleBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
-    super(...arguments), this.Wst = void 0, this.E0 = void 0, this.lmt = new Map, this.mkn = new BuffItemContainer_1.BuffItemContainer
+    super(...arguments);
+    this.Wst = undefined;
+    this.E0 = undefined;
+    this.lmt = new Map();
+    this.mkn = new BuffItemContainer_1.BuffItemContainer();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   OnStart() {
-    super.OnStart(), this.InitChildType(25), this.mkn.Init(this.GetItem(1), void 0, !1, !0)
+    super.OnStart();
+    this.InitChildType(26);
+    this.mkn.Init(this.GetItem(1), undefined, false, true);
   }
   OnBeforeDestroy() {
-    this.Refresh(void 0), this._mt()
+    this.Refresh(undefined);
+    this._mt();
   }
   Refresh(e) {
-    e ? (this.Wst = e, this.E0 = e?.EntityHandle?.Id, this.mkn.RefreshBuff(e?.EntityHandle)) : (this.Wst = void 0, this.E0 = void 0, this.mkn.ClearAll())
+    if (e) {
+      this.Wst = e;
+      this.E0 = e?.EntityHandle?.Id;
+      this.mkn.RefreshBuff(e?.EntityHandle);
+    } else {
+      this.Wst = undefined;
+      this.E0 = undefined;
+      this.mkn.ClearAll();
+    }
   }
   IsValid() {
-    return void 0 !== this.Wst?.EntityHandle
+    return this.Wst?.EntityHandle !== undefined;
   }
   GetEntityId() {
-    return this.E0
+    return this.E0;
   }
   Tick(e) {
-    this.mkn.Tick(e), this.umt()
+    this.mkn.Tick(e);
+    this.umt();
   }
   AddBuff(e, t) {
-    this.mkn.AddBuffByCue(e, t, !0)
+    this.mkn.AddBuffByCue(e, t, true);
   }
   RemoveBuff(e, t) {
-    this.mkn.RemoveBuffByCue(e, t, !0)
+    this.mkn.RemoveBuffByCue(e, t, true);
   }
   umt() {
     let t = 0;
     for (const s of ModelManager_1.ModelManager.BattleUiModel.FormationData.EnvironmentPropertyList) {
-      var i, r, o = ModelManager_1.ModelManager.FormationAttributeModel.GetValue(s);
-      o > t && (t = o);
+      var i;
+      var r;
+      var o = ModelManager_1.ModelManager.FormationAttributeModel.GetValue(s);
+      if (o > t) {
+        t = o;
+      }
       let e = this.lmt.get(s);
-      void 0 === e ? o <= 0 || (i = this.GetItem(0), i = BattleUiControl_1.BattleUiControl.Pool.GetEnvironmentItem(i), (e = new EnvironmentItem_1.EnvironmentItem).InitPropertyId(s), r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(s), e.SetPercent(o, r), e.CreateThenShowByActorAsync(i).catch(() => {}), this.lmt.set(s, e)) : (r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(s), e.SetPercent(o, r))
+      if (e === undefined) {
+        if (!(o <= 0)) {
+          i = this.GetItem(0);
+          i = BattleUiControl_1.BattleUiControl.Pool.GetEnvironmentItem(i);
+          (e = new EnvironmentItem_1.EnvironmentItem()).InitPropertyId(s);
+          r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(s);
+          e.SetPercent(o, r);
+          e.CreateThenShowByActorAsync(i).catch(() => {});
+          this.lmt.set(s, e);
+        }
+      } else {
+        r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(s);
+        e.SetPercent(o, r);
+      }
     }
   }
   _mt() {
-    for (const e of this.lmt.values()) BattleUiControl_1.BattleUiControl.Pool.RecycleEnvironmentItem(e.GetRootActor()), e.Destroy();
-    this.lmt.clear()
+    for (const e of this.lmt.values()) {
+      BattleUiControl_1.BattleUiControl.Pool.RecycleEnvironmentItem(e.GetRootActor());
+      e.Destroy();
+    }
+    this.lmt.clear();
   }
 }
 exports.RoleBuffView = RoleBuffView;

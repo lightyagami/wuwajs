@@ -1,38 +1,66 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../../../../../Core/Common/Log"),
-  GlobalData_1 = require("../../../../../GlobalData"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager");
+const UE = require("ue");
+const Log_1 = require("../../../../../../Core/Common/Log");
+const GlobalData_1 = require("../../../../../GlobalData");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 class TsDecoratorQuestStepStateCheck extends UE.BTDecorator_BlueprintBase {
   constructor() {
-    super(...arguments), this.QuestId = 0, this.ChildQuestId = 0, this.CheckType = 0, this.IsInitTsVariables = !1, this.TsQuestId = 0, this.TsChildQuestId = 0, this.TsCheckType = 0
+    super(...arguments);
+    this.QuestId = 0;
+    this.ChildQuestId = 0;
+    this.CheckType = 0;
+    this.IsInitTsVariables = false;
+    this.TsQuestId = 0;
+    this.TsChildQuestId = 0;
+    this.TsCheckType = 0;
   }
   Constructor() {
-    this.IsInitTsVariables = !1, this.TsQuestId = 0, this.TsChildQuestId = 0, this.TsCheckType = 0
+    this.IsInitTsVariables = false;
+    this.TsQuestId = 0;
+    this.TsChildQuestId = 0;
+    this.TsCheckType = 0;
   }
   InitTsVariables() {
-    this.IsInitTsVariables && !GlobalData_1.GlobalData.IsPlayInEditor || (this.IsInitTsVariables = !0, this.TsQuestId = this.QuestId, this.TsChildQuestId = this.ChildQuestId, this.TsCheckType = this.CheckType)
+    if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.IsInitTsVariables = true;
+      this.TsQuestId = this.QuestId;
+      this.TsChildQuestId = this.ChildQuestId;
+      this.TsCheckType = this.CheckType;
+    }
   }
   PerformConditionCheckAI(t, e) {
-    if (!t.AiController) return Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", t.GetClass().GetName()]), !1;
-    if (this.InitTsVariables(), !this.TsQuestId || !this.TsChildQuestId) return !1;
-    let s = !1;
+    if (!t.AiController) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", t.GetClass().GetName()]);
+      }
+      return false;
+    }
+    this.InitTsVariables();
+    if (!this.TsQuestId || !this.TsChildQuestId) {
+      return false;
+    }
+    let s = false;
     switch (ModelManager_1.ModelManager.QuestNewModel.GetQuestState(this.TsQuestId)) {
       case 0:
       case 1:
-        s = !1;
+        s = false;
         break;
       case 3:
-        s = !0;
+        s = true;
         break;
       case 2:
         var r = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.TsQuestId)?.GetNode(this.TsChildQuestId);
-        s = r?.IsSuccess ?? !1
+        s = r?.IsSuccess ?? false;
     }
-    return 0 === this.TsCheckType ? s : !s
+    if (this.TsCheckType === 0) {
+      return s;
+    } else {
+      return !s;
+    }
   }
 }
 exports.default = TsDecoratorQuestStepStateCheck;

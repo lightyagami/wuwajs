@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 class EffectConstParameter {
   constructor(t, e) {
-    this.Name = t, this.Value = e
+    this.Name = t;
+    this.Value = e;
   }
 }
 exports.default = EffectConstParameter;

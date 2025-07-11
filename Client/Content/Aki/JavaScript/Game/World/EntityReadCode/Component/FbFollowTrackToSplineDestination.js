@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFollowTrackToSplineDestination = void 0;
+  value: true
+});
+exports.FbFollowTrackToSplineDestination = undefined;
 class FbFollowTrackToSplineDestination {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.GFh = !1, this.OFh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.GFh = false;
+    this.OFh = undefined;
   }
   static Create(t) {
-    if (t) return new FbFollowTrackToSplineDestination(t)
+    if (t) {
+      return new FbFollowTrackToSplineDestination(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ChangeSelfState() {
-    return this.GFh || (this.GFh = !0, this.OFh = this.FbDataInternal.changeSelfState()), this.OFh
+    if (!this.GFh) {
+      this.GFh = true;
+      this.OFh = this.FbDataInternal.changeSelfState();
+    }
+    return this.OFh;
   }
 }
 exports.FbFollowTrackToSplineDestination = FbFollowTrackToSplineDestination;

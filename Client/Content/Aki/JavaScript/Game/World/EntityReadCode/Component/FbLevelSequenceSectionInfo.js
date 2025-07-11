@@ -1,39 +1,71 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbLevelSequenceSectionInfo = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbActionInfo_1 = require("../Action/FbActionInfo");
+  value: true
+});
+exports.FbLevelSequenceSectionInfo = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbActionInfo_1 = require("../Action/FbActionInfo");
 class FbLevelSequenceSectionInfo {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ubh = !1, this.dbh = void 0, this.OYh = !1, this.FYh = 0, this.Bch = !1, this.Cbo = void 0, this.oyh = !1, this.nyh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ubh = false;
+    this.dbh = undefined;
+    this.OYh = false;
+    this.FYh = 0;
+    this.Bch = false;
+    this.Cbo = undefined;
+    this.oyh = false;
+    this.nyh = undefined;
   }
   static Create(t) {
-    if (t) return new FbLevelSequenceSectionInfo(t)
+    if (t) {
+      return new FbLevelSequenceSectionInfo(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Key() {
-    return this.ubh || (this.ubh = !0, this.dbh = this.FbDataInternal.key()), this.dbh
+    if (!this.ubh) {
+      this.ubh = true;
+      this.dbh = this.FbDataInternal.key();
+    }
+    return this.dbh;
   }
   get FrameId() {
-    return this.OYh || (this.OYh = !0, this.FYh = this.FbDataInternal.frameId()), this.FYh
+    if (!this.OYh) {
+      this.OYh = true;
+      this.FYh = this.FbDataInternal.frameId();
+    }
+    return this.FYh;
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
   get ActionList() {
     if (!this.oyh) {
-      this.oyh = !0, this.nyh = new Array;
+      this.oyh = true;
+      this.nyh = new Array();
       var i = this.FbDataInternal.actionListLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var e = this.FbDataInternal.actionList(t, new fb_action_1.ActionInfo);
-          this.nyh.push(FbActionInfo_1.FbActionInfo.Create(e))
+          var e = this.FbDataInternal.actionList(t, new fb_action_1.ActionInfo());
+          this.nyh.push(FbActionInfo_1.FbActionInfo.Create(e));
         }
+      }
     }
-    return this.nyh
+    return this.nyh;
   }
 }
 exports.FbLevelSequenceSectionInfo = FbLevelSequenceSectionInfo;

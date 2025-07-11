@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetInteractionLockState = void 0;
+  value: true
+});
+exports.FbSetInteractionLockState = undefined;
 class FbSetInteractionLockState {
   constructor(t) {
-    this.FbDataInternal = t, this.OAh = !1, this.FAh = !1
+    this.FbDataInternal = t;
+    this.OAh = false;
+    this.FAh = false;
   }
   static Create(t) {
-    if (t) return new FbSetInteractionLockState(t)
+    if (t) {
+      return new FbSetInteractionLockState(t);
+    }
   }
   get IsLock() {
-    return this.OAh || (this.OAh = !0, this.FAh = this.FbDataInternal.isLock()), this.FAh
+    if (!this.OAh) {
+      this.OAh = true;
+      this.FAh = this.FbDataInternal.isLock();
+    }
+    return this.FAh;
   }
 }
 exports.FbSetInteractionLockState = FbSetInteractionLockState;

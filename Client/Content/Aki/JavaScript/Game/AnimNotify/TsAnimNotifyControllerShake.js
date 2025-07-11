@@ -1,16 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Info_1 = require("../../Core/Common/Info"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter"),
-  Global_1 = require("../Global"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  CharacterUtils_1 = require("../NewWorld/Character/CharacterUtils");
+const UE = require("ue");
+const Info_1 = require("../../Core/Common/Info");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const Global_1 = require("../Global");
+const ModelManager_1 = require("../Manager/ModelManager");
+const CharacterUtils_1 = require("../NewWorld/Character/CharacterUtils");
 class TsAnimNotifyControllerShake extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.Effect = void 0, this.Name = void 0, this.IsLooping = !1, this.IsIgnoreTimeDilation = !1, this.IsPlayWhilePaused = !1
+    super(...arguments);
+    this.Effect = undefined;
+    this.Name = undefined;
+    this.IsLooping = false;
+    this.IsIgnoreTimeDilation = false;
+    this.IsPlayWhilePaused = false;
   }
   Constructor() {}
   K2_Notify(e, r) {
@@ -18,15 +24,19 @@ class TsAnimNotifyControllerShake extends UE.KuroAnimNotify {
       e = e.GetOwner();
       if (e instanceof TsBaseCharacter_1.default && e.CharacterActorComponent?.IsAutonomousProxy && Global_1.Global.CharacterController) {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.GetEntityIdNoBlueprint());
-        if (!e?.Valid) return !1;
-        if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(e)) return !1;
-        Global_1.Global.CharacterController.PlayKuroForceFeedback(this.Effect, this.Name, this.IsLooping, this.IsIgnoreTimeDilation, this.IsPlayWhilePaused)
+        if (!e?.Valid) {
+          return false;
+        }
+        if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(e)) {
+          return false;
+        }
+        Global_1.Global.CharacterController.PlayKuroForceFeedback(this.Effect, this.Name, this.IsLooping, this.IsIgnoreTimeDilation, this.IsPlayWhilePaused);
       }
     }
-    return !0
+    return true;
   }
   GetNotifyName() {
-    return "手柄震动"
+    return "手柄震动";
   }
 }
 exports.default = TsAnimNotifyControllerShake;

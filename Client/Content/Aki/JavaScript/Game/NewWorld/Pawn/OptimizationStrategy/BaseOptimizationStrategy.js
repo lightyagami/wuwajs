@@ -1,34 +1,51 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BaseOptimizationStrategy = void 0;
+  value: true
+});
+exports.BaseOptimizationStrategy = undefined;
 class BaseOptimizationStrategy {
   constructor() {
-    this.qW = !1, this.Bgu = !1, this.kgu = !1, this.GW = !1, this.qW = this.OnEnable !== BaseOptimizationStrategy.prototype.OnEnable, this.Bgu = this.OnMyPlayerInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnMyPlayerInOutRangeLocal, this.kgu = this.OnEntityInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnEntityInOutRangeLocal, this.GW = this.OnDisable !== BaseOptimizationStrategy.prototype.OnDisable
+    this.qW = false;
+    this.p7c = false;
+    this.v7c = false;
+    this.GW = false;
+    this.qW = this.OnEnable !== BaseOptimizationStrategy.prototype.OnEnable;
+    this.p7c = this.OnMyPlayerInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnMyPlayerInOutRangeLocal;
+    this.v7c = this.OnEntityInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnEntityInOutRangeLocal;
+    this.GW = this.OnDisable !== BaseOptimizationStrategy.prototype.OnDisable;
   }
   get NeedEnable() {
-    return this.qW
+    return this.qW;
   }
   get NeedTriggerMyPlayerInOutRange() {
-    return this.Bgu
+    return this.p7c;
   }
   get NeedTriggerEntityInOutRange() {
-    return this.kgu
+    return this.v7c;
   }
   get NeedDisable() {
-    return this.GW
+    return this.GW;
   }
   Enable() {
-    this.qW && this.OnEnable()
+    if (this.qW) {
+      this.OnEnable();
+    }
   }
   MyPlayerEntityInOutRange(t) {
-    this.Bgu && this.OnMyPlayerInOutRangeLocal(t)
+    if (this.p7c) {
+      this.OnMyPlayerInOutRangeLocal(t);
+    }
   }
   EntityInOutRange(t, e) {
-    this.kgu && this.OnEntityInOutRangeLocal(t, e)
+    if (this.v7c) {
+      this.OnEntityInOutRangeLocal(t, e);
+    }
   }
   Disable() {
-    this.GW && this.OnDisable()
+    if (this.GW) {
+      this.OnDisable();
+    }
   }
   OnEnable() {}
   OnMyPlayerInOutRangeLocal(t) {}

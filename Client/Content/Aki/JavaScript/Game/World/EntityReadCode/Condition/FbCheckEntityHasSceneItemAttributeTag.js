@@ -1,31 +1,59 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckEntityHasSceneItemAttributeTag = void 0;
+  value: true
+});
+exports.FbCheckEntityHasSceneItemAttributeTag = undefined;
 class FbCheckEntityHasSceneItemAttributeTag {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.wJh = !1, this.PJh = void 0, this.a_h = !1, this.I9o = 0, this.UJh = !1, this.DJh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.wJh = false;
+    this.PJh = undefined;
+    this.a_h = false;
+    this.I9o = 0;
+    this.UJh = false;
+    this.DJh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckEntityHasSceneItemAttributeTag(t)
+    if (t) {
+      return new FbCheckEntityHasSceneItemAttributeTag(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get CheckType() {
-    return this.wJh || (this.wJh = !0, this.PJh = this.FbDataInternal.checkType()), this.PJh
+    if (!this.wJh) {
+      this.wJh = true;
+      this.PJh = this.FbDataInternal.checkType();
+    }
+    return this.PJh;
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get Tags() {
     if (!this.UJh) {
-      this.UJh = !0, this.DJh = new Array;
+      this.UJh = true;
+      this.DJh = new Array();
       var i = this.FbDataInternal.tagsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.DJh.push(this.FbDataInternal.tags(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.DJh.push(this.FbDataInternal.tags(t));
+        }
+      }
     }
-    return this.DJh
+    return this.DJh;
   }
 }
 exports.FbCheckEntityHasSceneItemAttributeTag = FbCheckEntityHasSceneItemAttributeTag;

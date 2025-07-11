@@ -1,53 +1,49 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleMapSummaryGridEffectTabView = void 0;
-const UE = require("ue"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase"),
-  HelpController_1 = require("../../Help/HelpController"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout"),
-  RogueBattleMapGridEffectItem_1 = require("../Component/RogueBattleMapGridEffectItem"),
-  MORE_HELPID = 260;
+  value: true
+});
+exports.RogueBattleMapSummaryGridEffectTabView = undefined;
+const UE = require("ue");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const RogueBattleMapGridEffectItem_1 = require("../Component/RogueBattleMapGridEffectItem");
+const MORE_HELPID = 260;
 class RogueBattleMapSummaryGridEffectTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
-    super(...arguments), this.eGe = void 0, this.gR1 = () => {
-      this.GetItem(2)?.SetUIActive(!0), this.GetItem(5)?.SetUIActive(!1), this.GetExtendToggle(1)?.SetToggleState(0, !1);
-      var e = ModelManager_1.ModelManager.RogueBattleModel.GetEffectList(),
-        e = (this.eGe?.RefreshByData(e, void 0, !0), ModelManager_1.ModelManager.MapRogueModel.GameInfo.TeamLv),
-        e = 10 < e ? e.toString() : "0" + e;
-      this.GetArtText(3).SetText(e)
-    }, this.CR1 = () => {
-      HelpController_1.HelpController.OpenHelpById(MORE_HELPID)
-    }, this.sGe = () => new RogueBattleMapGridEffectItem_1.RogueBattleMapGridEffectTabItem
+    super(...arguments);
+    this.eGe = undefined;
+    this.VR1 = () => {
+      this.GetItem(0)?.SetUIActive(true);
+      this.GetItem(3)?.SetUIActive(false);
+      var e = ModelManager_1.ModelManager.RogueBattleModel.GetEffectList();
+      this.eGe?.RefreshByData(e, undefined, true);
+      var e = ModelManager_1.ModelManager.MapRogueModel.GameInfo.TeamLv;
+      var e = e > 10 ? e.toString() : "0" + e;
+      this.GetArtText(1).SetText(e);
+    };
+    this.sGe = () => new RogueBattleMapGridEffectItem_1.RogueBattleMapGridEffectTabItem();
+    this.jR1 = () => {
+      ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(MORE_HELPID);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIExtendToggle],
-      [2, UE.UIItem],
-      [3, UE.UIArtText],
-      [4, UE.UIButtonComponent],
-      [5, UE.UIItem],
-      [6, UE.UIArtText],
-      [7, UE.UIVerticalLayout],
-      [8, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.gR1],
-      [4, this.CR1]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIArtText], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIArtText], [5, UE.UIVerticalLayout], [6, UE.UIItem]];
+    this.BtnBindInfo = [[2, this.jR1]];
   }
   OnStart() {
-    this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(7), this.sGe), this.GetExtendToggle(1)?.RootUIComp.SetUIActive(!1)
+    this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(5), this.sGe);
   }
   OnBeforeShow() {
-    this.GetExtendToggle(0)?.SetToggleState(1, !0), this.gR1()
+    this.VR1();
   }
   OnAfterShow() {
-    this.UiViewSequence.PlaySequence("Start")
+    this.UiViewSequence.PlaySequence("Start");
   }
   OnBeforeDestroy() {
-    this.eGe = void 0
+    this.eGe = undefined;
   }
 }
 exports.RogueBattleMapSummaryGridEffectTabView = RogueBattleMapSummaryGridEffectTabView;

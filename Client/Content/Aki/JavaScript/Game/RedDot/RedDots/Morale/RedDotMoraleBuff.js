@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotMoraleBuff = void 0;
+  value: true
+});
+exports.RedDotMoraleBuff = undefined;
 const RedDotBase_1 = require("../../RedDotBase");
 class RedDotMoraleBuff extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
-    return "Morale"
+    return "Morale";
   }
 }
 exports.RedDotMoraleBuff = RedDotMoraleBuff;

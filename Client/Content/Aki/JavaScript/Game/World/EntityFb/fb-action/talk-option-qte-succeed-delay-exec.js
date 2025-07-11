@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TalkOptionQteSucceedDelayExec = void 0;
+  value: true
+});
+exports.TalkOptionQteSucceedDelayExec = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class TalkOptionQteSucceedDelayExec {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsTalkOptionQteSucceedDelayExec(e, t) {
-    return (t || new TalkOptionQteSucceedDelayExec).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new TalkOptionQteSucceedDelayExec()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsTalkOptionQteSucceedDelayExec(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new TalkOptionQteSucceedDelayExec).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new TalkOptionQteSucceedDelayExec()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   type(e) {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__string(this.bb_pos + t, e) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, e);
+    } else {
+      return undefined;
+    }
   }
   static startTalkOptionQteSucceedDelayExec(e) {
-    e.startObject(1)
+    e.startObject(1);
   }
   static addType(e, t) {
-    e.addFieldOffset(0, t, 0)
+    e.addFieldOffset(0, t, 0);
   }
   static endTalkOptionQteSucceedDelayExec(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createTalkOptionQteSucceedDelayExec(e, t) {
-    return TalkOptionQteSucceedDelayExec.startTalkOptionQteSucceedDelayExec(e), TalkOptionQteSucceedDelayExec.addType(e, t), TalkOptionQteSucceedDelayExec.endTalkOptionQteSucceedDelayExec(e)
+    TalkOptionQteSucceedDelayExec.startTalkOptionQteSucceedDelayExec(e);
+    TalkOptionQteSucceedDelayExec.addType(e, t);
+    return TalkOptionQteSucceedDelayExec.endTalkOptionQteSucceedDelayExec(e);
   }
 }
 exports.TalkOptionQteSucceedDelayExec = TalkOptionQteSucceedDelayExec;

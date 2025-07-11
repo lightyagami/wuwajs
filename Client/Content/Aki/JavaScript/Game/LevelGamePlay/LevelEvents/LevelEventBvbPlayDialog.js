@@ -1,13 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventBvbPlayDialog = void 0;
-const UiManager_1 = require("../../Ui/UiManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventBvbPlayDialog = undefined;
+const UiManager_1 = require("../../Ui/UiManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventBvbPlayDialog extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, a) {
     var t;
-    e && ((t = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleDetailsView")) ? t.OpenParam.DialogManager.NotifyDialogType(e.DialogType) : (t = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView")) && t.OpenParam.DialogManager.NotifyDialogType(e.DialogType)), this.FinishExecute(!0)
+    if (e) {
+      if (t = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleDetailsView")) {
+        t.OpenParam.DialogManager.NotifyDialogType(e.DialogType);
+      } else if (t = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView")) {
+        t.OpenParam.DialogManager.NotifyDialogType(e.DialogType);
+      }
+    }
+    this.FinishExecute(true);
   }
 }
 exports.LevelEventBvbPlayDialog = LevelEventBvbPlayDialog;

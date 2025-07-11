@@ -1,90 +1,118 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleExpItemGridComponent = void 0;
-const UE = require("ue"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  ButtonItem_1 = require("../../Common/Button/ButtonItem"),
-  GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew"),
-  RoleLevelUpCostMediumItemGrid_1 = require("./RoleLevelUpCostMediumItemGrid");
+  value: true
+});
+exports.RoleExpItemGridComponent = undefined;
+const UE = require("ue");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const ButtonItem_1 = require("../../Common/Button/ButtonItem");
+const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
+const RoleLevelUpCostMediumItemGrid_1 = require("./RoleLevelUpCostMediumItemGrid");
 class RoleExpItemGridComponent extends UiPanelBase_1.UiPanelBase {
-  constructor(t, e, i, s, h, o, r = void 0) {
-    super(), this.A1o = t, this.Tuo = e, this.Luo = i, this.Duo = s, this.Ruo = h, this.Uuo = o, this.BelongView = r, this.ScrollView = void 0, this.ypt = void 0, this.x1o = 0, this.w1o = 0, this.p4e = void 0, this.Auo = 0, this.B1o = !1, this.sGe = () => {
-      var t = new RoleLevelUpCostMediumItemGrid_1.RoleLevelUpCostMediumItemGrid;
-      return t.BindLongPress(1, this.Jgt), t.BindOnCanExecuteChange(() => !1), t.BindReduceLongPress(this.Puo), t
-    }, this.Jgt = (t, e, i) => {
+  constructor(t, e, i, s, h, o, r = undefined) {
+    super();
+    this.A1o = t;
+    this.Tuo = e;
+    this.Luo = i;
+    this.Duo = s;
+    this.Ruo = h;
+    this.Uuo = o;
+    this.BelongView = r;
+    this.ScrollView = undefined;
+    this.ypt = undefined;
+    this.x1o = 0;
+    this.w1o = 0;
+    this.p4e = undefined;
+    this.Auo = 0;
+    this.B1o = false;
+    this.sGe = () => {
+      var t = new RoleLevelUpCostMediumItemGrid_1.RoleLevelUpCostMediumItemGrid();
+      t.BindLongPress(1, this.Jgt);
+      t.BindOnCanExecuteChange(() => false);
+      t.BindReduceLongPress(this.Puo);
+      return t;
+    };
+    this.Jgt = (t, e, i) => {
       i = i.ItemId;
-      (t || this.Ruo(i)) && this.Luo(i)
-    }, this.Puo = (t, e, i) => {
+      if (t || this.Ruo(i)) {
+        this.Luo(i);
+      }
+    };
+    this.Puo = (t, e, i) => {
       i = i.ItemId;
-      this.Uuo(i) && this.Duo(i)
-    }
+      if (this.Uuo(i)) {
+        this.Duo(i);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [7, UE.UITexture],
-      [8, UE.UIText],
-      [4, UE.UIItem],
-      [5, UE.UIScrollViewWithScrollbarComponent],
-      [3, UE.UIButtonComponent],
-      [9, UE.UIText],
-      [11, UE.UIItem],
-      [12, UE.UIItem],
-      [15, UE.UIText]
-    ], this.BtnBindInfo = [
-      [3, this.Tuo]
-    ]
+    this.ComponentRegisterInfos = [[7, UE.UITexture], [8, UE.UIText], [4, UE.UIItem], [5, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIButtonComponent], [9, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [15, UE.UIText]];
+    this.BtnBindInfo = [[3, this.Tuo]];
   }
   OnStart() {
-    this.p4e = new ButtonItem_1.ButtonItem(this.GetItem(11)), this.p4e.SetFunction(this.A1o);
+    this.p4e = new ButtonItem_1.ButtonItem(this.GetItem(11));
+    this.p4e.SetFunction(this.A1o);
     var t = this.GetScrollViewWithScrollbar(5);
-    this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(t, this.sGe)
+    this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(t, this.sGe);
   }
   Update(t, e, i) {
-    this.UpdateByDataList(t), this.UpdateMoney(e, i)
+    this.UpdateByDataList(t);
+    this.UpdateMoney(e, i);
   }
   UpdateByDataList(t) {
-    this.ypt = t, this.ScrollView.RefreshByData(this.ypt), this.UpdateAutoButtonState()
+    this.ypt = t;
+    this.ScrollView.RefreshByData(this.ypt);
+    this.UpdateAutoButtonState();
   }
   UpdateMoney(t, e) {
-    this.x1o = t, this.w1o = e, this.SetItemIcon(this.GetTexture(7), this.x1o);
-    t = this.GetText(8), t.SetText(this.w1o.toString()), e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.x1o);
-    this.B1o = e >= this.w1o, t.useChangeColor = !this.B1o
+    this.x1o = t;
+    this.w1o = e;
+    this.SetItemIcon(this.GetTexture(7), this.x1o);
+    t = this.GetText(8);
+    t.SetText(this.w1o.toString());
+    e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.x1o);
+    this.B1o = e >= this.w1o;
+    t.useChangeColor = !this.B1o;
   }
   GetIsMoneyEnough() {
-    return this.B1o
+    return this.B1o;
   }
   UpdateAutoButtonState() {
-    for (const t of this.ypt)
-      if (0 < t.SelectedCount) return void(this.Auo = 1);
-    this.Auo = 0
+    for (const t of this.ypt) {
+      if (t.SelectedCount > 0) {
+        this.Auo = 1;
+        return;
+      }
+    }
+    this.Auo = 0;
   }
   GetAutoButtonState() {
-    return this.Auo
+    return this.Auo;
   }
   GetDataList() {
-    return this.ypt
+    return this.ypt;
   }
   SetMaxItemActive(t) {
-    this.GetItem(12).SetUIActive(t)
+    this.GetItem(12).SetUIActive(t);
   }
   SetLockItemActive(t) {
-    this.GetItem(13).SetUIActive(t)
+    this.GetItem(13).SetUIActive(t);
   }
   SetButtonItemActive(t) {
-    this.p4e.SetActive(t)
+    this.p4e.SetActive(t);
   }
   SetMaxText(t) {}
   SetLockText(t) {}
   SetButtonItemText(t) {
-    this.p4e.SetLocalText(t)
+    this.p4e.SetLocalText(t);
   }
   SetAutoButtonText(t) {
-    this.GetText(15).ShowTextNew(t)
+    this.GetText(15).ShowTextNew(t);
   }
   GetGenericScrollView() {
-    return this.ScrollView
+    return this.ScrollView;
   }
 }
 exports.RoleExpItemGridComponent = RoleExpItemGridComponent;

@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbForwardFrontRebound = void 0;
+  value: true
+});
+exports.FbForwardFrontRebound = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbForwardFrontRebound {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.w7h = !1, this.P7h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.w7h = false;
+    this.P7h = undefined;
   }
   static Create(t) {
-    if (t) return new FbForwardFrontRebound(t)
+    if (t) {
+      return new FbForwardFrontRebound(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ReboundPoint() {
-    return this.w7h || (this.w7h = !0, this.P7h = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.reboundPoint())), this.P7h
+    if (!this.w7h) {
+      this.w7h = true;
+      this.P7h = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.reboundPoint());
+    }
+    return this.P7h;
   }
 }
 exports.FbForwardFrontRebound = FbForwardFrontRebound;

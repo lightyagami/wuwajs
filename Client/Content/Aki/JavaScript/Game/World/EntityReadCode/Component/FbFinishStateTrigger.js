@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFinishStateTrigger = void 0;
+  value: true
+});
+exports.FbFinishStateTrigger = undefined;
 const FbEntityGroupCondition_1 = require("../Condition/FbEntityGroupCondition");
 class FbFinishStateTrigger {
   constructor(t) {
-    this.FbDataInternal = t, this.AVh = !1, this.xVh = !1, this.MVh = !1, this.EVh = void 0
+    this.FbDataInternal = t;
+    this.AVh = false;
+    this.xVh = false;
+    this.MVh = false;
+    this.EVh = undefined;
   }
   static Create(t) {
-    if (t) return new FbFinishStateTrigger(t)
+    if (t) {
+      return new FbFinishStateTrigger(t);
+    }
   }
   get IsSilenceEntities() {
-    return this.AVh || (this.AVh = !0, this.xVh = this.FbDataInternal.isSilenceEntities()), this.xVh
+    if (!this.AVh) {
+      this.AVh = true;
+      this.xVh = this.FbDataInternal.isSilenceEntities();
+    }
+    return this.xVh;
   }
   get GroupCondition() {
-    return this.MVh || (this.MVh = !0, this.EVh = FbEntityGroupCondition_1.FbEntityGroupCondition.Create(this.FbDataInternal.groupCondition())), this.EVh
+    if (!this.MVh) {
+      this.MVh = true;
+      this.EVh = FbEntityGroupCondition_1.FbEntityGroupCondition.Create(this.FbDataInternal.groupCondition());
+    }
+    return this.EVh;
   }
 }
 exports.FbFinishStateTrigger = FbFinishStateTrigger;

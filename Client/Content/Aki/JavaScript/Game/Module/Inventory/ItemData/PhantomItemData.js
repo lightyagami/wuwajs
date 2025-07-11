@@ -1,53 +1,64 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomItemData = void 0;
-const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  AttributeItemData_1 = require("./AttributeItemData");
+  value: true
+});
+exports.PhantomItemData = undefined;
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const AttributeItemData_1 = require("./AttributeItemData");
 class PhantomItemData extends AttributeItemData_1.AttributeItemData {
   constructor() {
-    super(...arguments), this.HHa = 0
+    super(...arguments);
+    this.HHa = 0;
   }
   SetFetterGroupId(e) {
-    this.HHa = e
+    this.HHa = e;
   }
   GetConfig() {
-    return ConfigManager_1.ConfigManager.InventoryConfig.GetPhantomItemConfig(this.ConfigId)
+    return ConfigManager_1.ConfigManager.InventoryConfig.GetPhantomItemConfig(this.ConfigId);
   }
   GetMainType() {
-    return 3
+    return 3;
   }
   GetType() {
-    return 9
+    return 9;
   }
   GetQuality() {
-    return this.GetConfig()?.QualityId
+    return this.GetConfig()?.QualityId;
   }
   GetSortIndex() {
-    return this.GetConfig()?.SortIndex
+    return this.GetConfig()?.SortIndex;
   }
   GetItemAccess() {
-    return this.GetConfig()?.ItemAccess
+    return this.GetConfig()?.ItemAccess;
   }
   GetMaxStackCount() {
-    return 1
+    return 1;
   }
   OnSetFunctionValue(e) {
     var t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.UniqueId);
-    t && t.OnFunctionValueChange(e)
+    if (t) {
+      t.OnFunctionValueChange(e);
+    }
   }
   GetDefaultDownText() {
     var e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("VisionLevel");
-    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? ""
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? "";
   }
   GetRedDotDisableRule() {
-    return this.GetConfig().RedDotDisableRule
+    return this.GetConfig().RedDotDisableRule;
   }
   GetFetterGroupConfig() {
     var e;
-    return 0 !== this.HHa ? ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(this.HHa) : void 0 !== (e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.UniqueId)) ? e.GetFetterGroupConfig() : void 0
+    if (this.HHa !== 0) {
+      return ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(this.HHa);
+    } else if ((e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.UniqueId)) !== undefined) {
+      return e.GetFetterGroupConfig();
+    } else {
+      return undefined;
+    }
   }
 }
 exports.PhantomItemData = PhantomItemData;

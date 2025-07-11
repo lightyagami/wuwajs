@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configAreaQuestTrackingById = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  AreaQuestTracking_1 = require("../Config/AreaQuestTracking"),
-  DB = "db_areaquesttracking.db",
-  FILE = "UniverseEditor/AreaQuestTracking.csv",
-  TABLE = "AreaQuestTracking",
-  COMMAND = "select BinData from `AreaQuestTracking` where Id=?",
-  KEY_PREFIX = "AreaQuestTrackingById",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configAreaQuestTrackingById = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const AreaQuestTracking_1 = require("../Config/AreaQuestTracking");
+const DB = "db_areaquesttracking.db";
+const FILE = "UniverseEditor/AreaQuestTracking.csv";
+const TABLE = "AreaQuestTracking";
+const COMMAND = "select BinData from `AreaQuestTracking` where Id=?";
+const KEY_PREFIX = "AreaQuestTrackingById";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configAreaQuestTrackingById.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configAreaQuestTrackingById.GetConfig"),
-  CONFIG_STAT_PREFIX = "configAreaQuestTrackingById.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configAreaQuestTrackingById.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configAreaQuestTrackingById.GetConfig");
+const CONFIG_STAT_PREFIX = "configAreaQuestTrackingById.GetConfig(";
 exports.configAreaQuestTrackingById = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (n, o = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var e = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${n})`),
-      i = (e?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (n, o = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var e = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${n})`);
+    e?.Start();
+    var i = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (i) {
       if (o) {
-        var t = KEY_PREFIX + `#${n})`;
+        var t = `${KEY_PREFIX}#${n})`;
         const a = ConfigCommon_1.ConfigCommon.GetConfig(t);
-        if (a) return e?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
-      }
-      if (i = ConfigCommon_1.ConfigCommon.BindString(handleId, 1, n, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", n])) {
-        t = void 0;
-        if ([i, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", n]), i) {
-          const a = AreaQuestTracking_1.AreaQuestTracking.getRootAsAreaQuestTracking(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
-          return o && (i = KEY_PREFIX + `#${n})`, ConfigCommon_1.ConfigCommon.SaveConfig(i, a)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), e?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          e?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (i = ConfigCommon_1.ConfigCommon.BindString(handleId, 1, n, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", n]) > 0) {
+        t = undefined;
+        [i, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", n]);
+        if (i) {
+          const a = AreaQuestTracking_1.AreaQuestTracking.getRootAsAreaQuestTracking(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
+          if (o) {
+            i = `${KEY_PREFIX}#${n})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(i, a);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          e?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    e?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    e?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=AreaQuestTrackingById.js.map

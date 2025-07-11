@@ -1,38 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log");
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
 class AudioVisualizationInstanceBase extends UE.Actor {
   constructor() {
-    super(...arguments), this.Identifier = "", this.ActorEndPlayCallback = void 0
+    super(...arguments);
+    this.Identifier = "";
+    this.ActorEndPlayCallback = undefined;
   }
   Constructor() {
-    this.ActorEndPlayCallback = void 0
+    this.ActorEndPlayCallback = undefined;
   }
   ReceiveEndPlay() {
-    this.ActorEndPlayCallback && this.ActorEndPlayCallback(this)
+    if (this.ActorEndPlayCallback) {
+      this.ActorEndPlayCallback(this);
+    }
   }
   Start() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("Audio", 25, "音频可视化实例开始", ["名称", this.GetName()], ["标识符", this.Identifier]), this.StartInternal()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Audio", 25, "音频可视化实例开始", ["名称", this.GetName()], ["标识符", this.Identifier]);
+    }
+    this.StartInternal();
   }
   End() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("Audio", 25, "音频可视化实例结束", ["名称", this.GetName()], ["标识符", this.Identifier]), this.EndInternal()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Audio", 25, "音频可视化实例结束", ["名称", this.GetName()], ["标识符", this.Identifier]);
+    }
+    this.EndInternal();
   }
   CallBack(i, s, e) {
-    if (i instanceof UE.AkMusicSyncCallbackInfo && this.MidiBpm(), i instanceof UE.AkMIDIEventCallbackInfo) switch (i.GetType()) {
-      case 144:
-        this.TriggerMidiNoteOn(i);
-        break;
-      case 128:
-        this.TriggerMidiNoteOff(i)
+    if (i instanceof UE.AkMusicSyncCallbackInfo) {
+      this.MidiBpm();
     }
-    this.CallBackInternal(i, s, e)
+    if (i instanceof UE.AkMIDIEventCallbackInfo) {
+      switch (i.GetType()) {
+        case 144:
+          this.TriggerMidiNoteOn(i);
+          break;
+        case 128:
+          this.TriggerMidiNoteOff(i);
+      }
+    }
+    this.CallBackInternal(i, s, e);
   }
   TriggerMidiNoteOn(i) {
-    var s = (0, puerts_1.$ref)(void 0);
+    var s = (0, puerts_1.$ref)(undefined);
     if (i.GetNoteOn(s) && s) {
       var e = (0, puerts_1.$unref)(s).Velocity;
       switch ((0, puerts_1.$unref)(s).Note) {
@@ -70,12 +86,12 @@ class AudioVisualizationInstanceBase extends UE.Actor {
           this.MidiAs3On(e);
           break;
         case 71:
-          this.MidiB3On(e)
+          this.MidiB3On(e);
       }
     }
   }
   TriggerMidiNoteOff(i) {
-    var s = (0, puerts_1.$ref)(void 0);
+    var s = (0, puerts_1.$ref)(undefined);
     if (i.GetNoteOff(s) && s) {
       var e = (0, puerts_1.$unref)(s).Velocity;
       switch ((0, puerts_1.$unref)(s).Note) {
@@ -113,7 +129,7 @@ class AudioVisualizationInstanceBase extends UE.Actor {
           this.MidiAs3Off(e);
           break;
         case 71:
-          this.MidiB3Off(e)
+          this.MidiB3Off(e);
       }
     }
   }

@@ -1,102 +1,142 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MobileBattleUiSet = void 0;
+  value: true
+});
+exports.MobileBattleUiSet = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class MobileBattleUiSet {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get PanelIndex() {
-    return this.panelindex()
+    return this.panelindex();
   }
   get ItemIndex() {
-    return this.itemindex()
+    return this.itemindex();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get SourceSize() {
-    return this.sourcesize()
+    return this.sourcesize();
   }
   get SourceAlpha() {
-    return this.sourcealpha()
+    return this.sourcealpha();
   }
   get SourceOffsetX() {
-    return this.sourceoffsetx()
+    return this.sourceoffsetx();
   }
   get SourceOffsetY() {
-    return this.sourceoffsety()
+    return this.sourceoffsety();
   }
   get IsCheckOverlap() {
-    return this.ischeckoverlap()
+    return this.ischeckoverlap();
   }
   get CanEdit() {
-    return this.canedit()
+    return this.canedit();
   }
   get IsDefaultSelected() {
-    return this.isdefaultselected()
+    return this.isdefaultselected();
   }
   get SourceHierarchyIndex() {
-    return this.sourcehierarchyindex()
+    return this.sourcehierarchyindex();
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsMobileBattleUiSet(t, e) {
-    return (e || new MobileBattleUiSet).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new MobileBattleUiSet()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   panelindex() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   itemindex() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var e = this.J7.__offset(this.z7, 10),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 10);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   sourcesize() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readFloat32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sourcealpha() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readFloat32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sourceoffsetx() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readFloat32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sourceoffsety() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readFloat32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   ischeckoverlap() {
     var t = this.J7.__offset(this.z7, 20);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   canedit() {
     var t = this.J7.__offset(this.z7, 22);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   isdefaultselected() {
     var t = this.J7.__offset(this.z7, 24);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   sourcehierarchyindex() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.MobileBattleUiSet = MobileBattleUiSet;

@@ -1,72 +1,142 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletLogicCurveMovementController = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  ActorSystem_1 = require("../../../../Core/Actor/ActorSystem"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  QueryTypeDefine_1 = require("../../../../Core/Define/QueryTypeDefine"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  FNameUtil_1 = require("../../../../Core/Utils/FNameUtil"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils"),
-  TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon"),
-  TimeUtil_1 = require("../../../Common/TimeUtil"),
-  EffectContext_1 = require("../../../Effect/EffectContext/EffectContext"),
-  EffectSystem_1 = require("../../../Effect/EffectSystem"),
-  GlobalData_1 = require("../../../GlobalData"),
-  ColorUtils_1 = require("../../../Utils/ColorUtils"),
-  BulletController_1 = require("../BulletController"),
-  BulletUtil_1 = require("../BulletUtil"),
-  BulletLogicController_1 = require("./BulletLogicController"),
-  PROFILE_KEY = "BulletLogicCurveMovementController_GetDestLocation",
-  HEIGHT_DETECT = 500,
-  DRAW_DURATION = 5;
+  value: true
+});
+exports.BulletLogicCurveMovementController = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../Core/Actor/ActorSystem");
+const Log_1 = require("../../../../Core/Common/Log");
+const QueryTypeDefine_1 = require("../../../../Core/Define/QueryTypeDefine");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils");
+const TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const EffectContext_1 = require("../../../Effect/EffectContext/EffectContext");
+const EffectSystem_1 = require("../../../Effect/EffectSystem");
+const GlobalData_1 = require("../../../GlobalData");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const ColorUtils_1 = require("../../../Utils/ColorUtils");
+const BulletController_1 = require("../BulletController");
+const BulletUtil_1 = require("../BulletUtil");
+const BulletLogicController_1 = require("./BulletLogicController");
+const PROFILE_KEY = "BulletLogicCurveMovementController_GetDestLocation";
+const HEIGHT_DETECT = 500;
+const DRAW_DURATION = 5;
 class BulletLogicCurveMovementController extends BulletLogicController_1.BulletLogicController {
   constructor(t, e) {
-    super(t, e), this.zie = void 0, this.r1t = -0, this.uoe = void 0, this._7o = 0, this.u7o = 1, this.Hte = this.Bullet.GetComponent(169), this.a7o = this.Bullet.GetBulletInfo()
+    super(t, e);
+    this.zie = undefined;
+    this.r1t = -0;
+    this.uoe = undefined;
+    this._7o = 0;
+    this.u7o = 1;
+    this.Hte = this.Bullet.GetComponent(169);
+    this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {
     ResourceSystem_1.ResourceSystem.LoadAsync(this.LogicController.SplineTrace.ToAssetPathName(), UE.Class, t => {
-      this.c7o(t)
-    }), this.a7o.BulletDataMain.Execution.MovementReplaced = !0
+      this.c7o(t);
+    });
+    this.a7o.BulletDataMain.Execution.MovementReplaced = true;
   }
   OnBulletDestroy() {
-    this.zie && (ActorSystem_1.ActorSystem.Put("BulletLogicCurveMovementController.OnBulletDestroy", this.zie.GetOwner()), this.zie = void 0)
+    if (this.zie) {
+      ActorSystem_1.ActorSystem.Put("BulletLogicCurveMovementController.OnBulletDestroy", this.zie.GetOwner());
+      this.zie = undefined;
+    }
   }
   c7o(t) {
-    var e, i;
-    this.Bullet?.Valid && this.LogicController.SplineTrace && (i = (e = this.m7o()) ? UE.KismetMathLibrary.D_FindLookAtRotation(this.Hte.ActorLocation, e) : void 0, i = UE.KismetMathLibrary.MakeTransformDouble(this.Hte.ActorLocation, e ? i : this.Hte.ActorRotation, Vector_1.Vector.OneVector), t = ActorSystem_1.ActorSystem.Get(t, i), ObjectUtils_1.ObjectUtils.IsValid(t) ? t.IsA(UE.BP_BasePathLineBullet_C.StaticClass()) ? (this.zie = t.Spline, i = this.zie.GetNumberOfSplinePoints(), t = this.zie.D_GetLocationAtSplinePoint(i - 1, 1), i = this.zie.D_GetLocationAtSplinePoint(0, 1), i = UE.VectorDouble.DistSquared(i, t), t = e ? UE.VectorDouble.DistSquared(this.Hte.ActorLocation, e) : this.zie.GetSplineLength(), e && (this.u7o = Math.sqrt(t / i), this.zie.GetOwner().D_SetActorScale3D(Vector_1.Vector.OneVectorDouble.op_Multiply(this.u7o))), this.r1t = this.d7o(), this.zie.Duration = this.r1t) : Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "加载的Spline不是BP_BasePathLineBullet_C类型") : Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "加载的Spline为空"))
+    var e;
+    var i;
+    if (this.Bullet?.Valid && this.LogicController.SplineTrace) {
+      i = (e = this.m7o()) ? UE.KismetMathLibrary.D_FindLookAtRotation(this.Hte.ActorLocation, e) : undefined;
+      i = UE.KismetMathLibrary.MakeTransformDouble(this.Hte.ActorLocation, e ? i : this.Hte.ActorRotation, Vector_1.Vector.OneVector);
+      t = ActorSystem_1.ActorSystem.Get(t, i);
+      if (ObjectUtils_1.ObjectUtils.IsValid(t)) {
+        if (t.IsA(UE.BP_BasePathLineBullet_C.StaticClass())) {
+          this.zie = t.Spline;
+          i = this.zie.GetNumberOfSplinePoints();
+          t = this.zie.D_GetLocationAtSplinePoint(i - 1, 1);
+          i = this.zie.D_GetLocationAtSplinePoint(0, 1);
+          i = UE.VectorDouble.DistSquared(i, t);
+          t = e ? UE.VectorDouble.DistSquared(this.Hte.ActorLocation, e) : this.zie.GetSplineLength();
+          if (e) {
+            this.u7o = Math.sqrt(t / i);
+            this.zie.GetOwner().D_SetActorScale3D(Vector_1.Vector.OneVectorDouble.op_Multiply(this.u7o));
+          }
+          this.r1t = this.d7o();
+          this.zie.Duration = this.r1t;
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 20, "加载的Spline不是BP_BasePathLineBullet_C类型");
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Bullet", 20, "加载的Spline为空");
+      }
+    }
   }
   BulletLogicAction(t) {
-    var e, i = this._7o;
-    this.zie && !this.a7o.NeedDestroy && (e = this.zie.D_GetLocationAtTime(i, 1, !0), this.Hte.SetActorLocation(e), this.LogicController.IsForwardTangent && (e = this.zie.GetRotationAtTime(i, 1, !0), this.Hte.SetActorRotation(e)), this._7o += t * this.Hte.TimeDilation), i >= this.r1t && (ObjectUtils_1.ObjectUtils.SoftObjectReferenceValid(this.LogicController.EffectOnReach) && (e = this.Hte.Owner, EffectSystem_1.EffectSystem.SpawnEffect(e, e.D_GetTransform(), this.LogicController.EffectOnReach.ToAssetPathName(), "[BulletLogicCurveMovementController.BulletLogicAction]", new EffectContext_1.EffectContext(this.a7o.Attacker ? this.a7o.Attacker.Id : void 0))), this.LogicController.IsDestroyReach) && BulletController_1.BulletController.DestroyBullet(this.Bullet.Id, this.LogicController.IsSummonOnReach)
+    var e;
+    var i = this._7o;
+    if (this.zie && !this.a7o.NeedDestroy) {
+      e = this.zie.D_GetLocationAtTime(i, 1, true);
+      this.Hte.SetActorLocation(e);
+      if (this.LogicController.IsForwardTangent) {
+        e = this.zie.GetRotationAtTime(i, 1, true);
+        this.Hte.SetActorRotation(e);
+      }
+      this._7o += t * this.Hte.TimeDilation;
+    }
+    if (i >= this.r1t && (ObjectUtils_1.ObjectUtils.SoftObjectReferenceValid(this.LogicController.EffectOnReach) && (e = this.Hte.Owner, t = EffectSystem_1.EffectSystem.SpawnEffect(e, e.D_GetTransform(), this.LogicController.EffectOnReach.ToAssetPathName(), "[BulletLogicCurveMovementController.BulletLogicAction]", new EffectContext_1.EffectContext(this.a7o.Attacker ? this.a7o.Attacker.Id : undefined)), EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation)), this.LogicController.IsDestroyReach)) {
+      BulletController_1.BulletController.DestroyBullet(this.Bullet.Id, this.LogicController.IsSummonOnReach);
+    }
   }
   koe() {
-    this.uoe = UE.NewObject(UE.TraceLineElement.StaticClass()), this.uoe.WorldContextObject = GlobalData_1.GlobalData.World, this.uoe.bIsSingle = !0, this.uoe.bIgnoreSelf = !0, this.uoe.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic), this.uoe.DrawTime = DRAW_DURATION, TraceElementCommon_1.TraceElementCommon.SetTraceColor(this.uoe, ColorUtils_1.ColorUtils.LinearGreen), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(this.uoe, ColorUtils_1.ColorUtils.LinearRed)
+    this.uoe = UE.NewObject(UE.TraceLineElement.StaticClass());
+    this.uoe.WorldContextObject = GlobalData_1.GlobalData.World;
+    this.uoe.bIsSingle = true;
+    this.uoe.bIgnoreSelf = true;
+    this.uoe.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic);
+    this.uoe.DrawTime = DRAW_DURATION;
+    TraceElementCommon_1.TraceElementCommon.SetTraceColor(this.uoe, ColorUtils_1.ColorUtils.LinearGreen);
+    TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(this.uoe, ColorUtils_1.ColorUtils.LinearRed);
   }
   m7o() {
     var t = this.a7o.TargetActorComp;
-    if (this.LogicController.UseTargetLocation) return BulletUtil_1.BulletUtil.GetTargetLocation(t, FNameUtil_1.FNameUtil.NONE, this.a7o);
-    this.uoe || this.koe();
-    var e = t?.Valid,
-      i = (0, puerts_1.$ref)(void 0),
-      t = (UE.BPL_Fight_C.获取Actor周围坐标点(e ? t.Owner : this.a7o.AttackerActorComp.Actor, e ? this.LogicController.Rotate : this.LogicController.SelfRotate, 0, e ? this.LogicController.Length : this.LogicController.SelfLength, this.Hte.Owner, i), (0, puerts_1.$unref)(i)),
-      i = (t.Z += e ? this.LogicController.Height : this.LogicController.SelfHeight, this.uoe.SetStartLocation(t.X, t.Y, t.Z + HEIGHT_DETECT), this.uoe.SetEndLocation(t.X, t.Y, t.Z - HEIGHT_DETECT), t),
-      t = TraceElementCommon_1.TraceElementCommon.LineTrace(this.uoe, PROFILE_KEY),
-      s = this.uoe.HitResult;
-    return t && s.bBlockingHit && (TraceElementCommon_1.TraceElementCommon.GetHitLocation(s, 0, i), i.Z += e ? this.LogicController.Height : this.LogicController.SelfHeight), i
+    if (this.LogicController.UseTargetLocation) {
+      return BulletUtil_1.BulletUtil.GetTargetLocation(t, FNameUtil_1.FNameUtil.NONE, this.a7o);
+    }
+    if (!this.uoe) {
+      this.koe();
+    }
+    var e = t?.Valid;
+    var i = (0, puerts_1.$ref)(undefined);
+    UE.BPL_Fight_C.获取Actor周围坐标点(e ? t.Owner : this.a7o.AttackerActorComp.Actor, e ? this.LogicController.Rotate : this.LogicController.SelfRotate, 0, e ? this.LogicController.Length : this.LogicController.SelfLength, this.Hte.Owner, i);
+    var t = (0, puerts_1.$unref)(i);
+    t.Z += e ? this.LogicController.Height : this.LogicController.SelfHeight;
+    this.uoe.SetStartLocation(t.X, t.Y, t.Z + HEIGHT_DETECT);
+    this.uoe.SetEndLocation(t.X, t.Y, t.Z - HEIGHT_DETECT);
+    var i = t;
+    var t = TraceElementCommon_1.TraceElementCommon.LineTrace(this.uoe, PROFILE_KEY);
+    var s = this.uoe.HitResult;
+    if (t && s.bBlockingHit) {
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(s, 0, i);
+      i.Z += e ? this.LogicController.Height : this.LogicController.SelfHeight;
+    }
+    return i;
   }
   d7o() {
-    var t = this.LogicController.Duration,
-      e = this.LogicController.MaxSpeed,
-      i = this.LogicController.MinSpeed,
-      s = this.zie.GetSplineLength() * this.u7o,
-      i = 0 < i ? s / i : MathUtils_1.MathUtils.MaxFloat,
-      s = 0 < e ? s / e : 0;
-    return MathUtils_1.MathUtils.Clamp(t, s, i) * TimeUtil_1.TimeUtil.InverseMillisecond
+    var t = this.LogicController.Duration;
+    var e = this.LogicController.MaxSpeed;
+    var i = this.LogicController.MinSpeed;
+    var s = this.zie.GetSplineLength() * this.u7o;
+    var i = i > 0 ? s / i : MathUtils_1.MathUtils.MaxFloat;
+    var s = e > 0 ? s / e : 0;
+    return MathUtils_1.MathUtils.Clamp(t, s, i) * TimeUtil_1.TimeUtil.InverseMillisecond;
   }
 }
 exports.BulletLogicCurveMovementController = BulletLogicCurveMovementController;

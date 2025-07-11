@@ -1,44 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DreamLinkRewardSpecialItem = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew"),
-  DreamLinkController_1 = require("../../DreamLinkController"),
-  DreamLinkRewardSmallGrid_1 = require("./DreamLinkRewardSmallGrid");
+  value: true
+});
+exports.DreamLinkRewardSpecialItem = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
+const DreamLinkController_1 = require("../../DreamLinkController");
+const DreamLinkRewardSmallGrid_1 = require("./DreamLinkRewardSmallGrid");
 class DreamLinkRewardSpecialItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.RewardData = e, this.RewardScrollView = void 0, this.W2e = () => {
-      return new DreamLinkRewardSmallGrid_1.DreamLinkRewardSmallGrid
-    }, this.Ucl = () => {
-      DreamLinkController_1.DreamLinkController.LimitTimeRewardRequest(this.RewardData.Id)
-    }
+    super();
+    this.RewardData = e;
+    this.RewardScrollView = undefined;
+    this.W2e = () => {
+      return new DreamLinkRewardSmallGrid_1.DreamLinkRewardSmallGrid();
+    };
+    this.Ucl = () => {
+      DreamLinkController_1.DreamLinkController.LimitTimeRewardRequest(this.RewardData.Id);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIText],
-      [2, UE.UIText],
-      [3, UE.UISprite],
-      [4, UE.UIScrollViewWithScrollbarComponent],
-      [5, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem]];
   }
   OnStart() {
-    this.RewardScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.W2e)
+    this.RewardScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.W2e);
   }
   OnBeforeShow() {
-    this.Refresh()
+    this.Refresh();
   }
   Refresh() {
-    this.Nqe(), this.jqe()
+    this.Nqe();
+    this.jqe();
   }
   Nqe() {
-    var e = this.RewardData.Current,
-      r = this.RewardData.Target;
-    this.GetText(2).SetText(e + "/" + r), this.GetSprite(3).SetFillAmount(e / r)
+    var e = this.RewardData.Current;
+    var r = this.RewardData.Target;
+    this.GetText(2).SetText(e + "/" + r);
+    this.GetSprite(3).SetFillAmount(e / r);
   }
   jqe() {
     var e = ConfigManager_1.ConfigManager.DreamLinkConfig.GetLimitTimeRewardConfig(this.RewardData.Id);
@@ -51,9 +52,9 @@ class DreamLinkRewardSpecialItem extends UiPanelBase_1.UiPanelBase {
           Status: this.RewardData.Status,
           ReceiveDelegate: this.Ucl
         };
-        r.push(i)
+        r.push(i);
       }
-      this.RewardScrollView.RefreshByData(r)
+      this.RewardScrollView.RefreshByData(r);
     }
   }
 }

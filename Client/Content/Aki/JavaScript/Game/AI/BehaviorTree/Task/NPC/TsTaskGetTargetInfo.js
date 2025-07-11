@@ -1,34 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const EntitySystem_1 = require("../../../../../Core/Entity/EntitySystem"),
-  GlobalData_1 = require("../../../../GlobalData"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  CharacterAttributeTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes"),
-  TsAiController_1 = require("../../../Controller/TsAiController"),
-  TsTaskAbortImmediatelyBase_1 = require("../TsTaskAbortImmediatelyBase");
+const EntitySystem_1 = require("../../../../../Core/Entity/EntitySystem");
+const GlobalData_1 = require("../../../../GlobalData");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const CharacterAttributeTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
+const TsAiController_1 = require("../../../Controller/TsAiController");
+const TsTaskAbortImmediatelyBase_1 = require("../TsTaskAbortImmediatelyBase");
 class TsTaskGetTargetInfo extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
-    super(...arguments), this.TargetKey = "", this.PositionKey = "", this.HpKey = "", this.IsInitTsVariables = !1, this.TsTargetKey = "", this.TsPositionKey = "", this.TsHpKey = ""
+    super(...arguments);
+    this.TargetKey = "";
+    this.PositionKey = "";
+    this.HpKey = "";
+    this.IsInitTsVariables = false;
+    this.TsTargetKey = "";
+    this.TsPositionKey = "";
+    this.TsHpKey = "";
   }
   Constructor() {
-    super.Constructor(), this.IsInitTsVariables = !1, this.TsTargetKey = "", this.TsPositionKey = "", this.TsHpKey = ""
+    super.Constructor();
+    this.IsInitTsVariables = false;
+    this.TsTargetKey = "";
+    this.TsPositionKey = "";
+    this.TsHpKey = "";
   }
   InitTsVariables() {
-    this.IsInitTsVariables && !GlobalData_1.GlobalData.IsPlayInEditor || (this.IsInitTsVariables = !0, this.TsTargetKey = this.TargetKey, this.TsPositionKey = this.PositionKey, this.TsHpKey = this.HpKey)
+    if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.IsInitTsVariables = true;
+      this.TsTargetKey = this.TargetKey;
+      this.TsPositionKey = this.PositionKey;
+      this.TsHpKey = this.HpKey;
+    }
   }
   ReceiveExecuteAI(e, t) {
-    if (this.InitTsVariables(), e instanceof TsAiController_1.default) {
+    this.InitTsVariables();
+    if (e instanceof TsAiController_1.default) {
       let t = e.AiController.CharActorComp;
       if (this.TsTargetKey) {
         e = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByWorld(this.TsTargetKey);
-        if (!e) return void this.FinishExecute(!1);
+        if (!e) {
+          this.FinishExecute(false);
+          return;
+        }
         e = EntitySystem_1.EntitySystem.Get(e);
-        t = e.GetComponent(3)
+        t = e.GetComponent(3);
       }
-      t ? (e = t.ActorLocation, ControllerHolder_1.ControllerHolder.BlackboardController.SetVectorValueByGlobal(this.TsPositionKey, e.X, e.Y, e.Z), (e = t.Entity.GetComponent(172)) && (e = e.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life), ControllerHolder_1.ControllerHolder.BlackboardController.SetIntValueByWorld(this.TsHpKey, e)), this.FinishExecute(!0)) : this.FinishExecute(!1)
-    } else this.FinishExecute(!1)
+      if (t) {
+        e = t.ActorLocation;
+        ControllerHolder_1.ControllerHolder.BlackboardController.SetVectorValueByGlobal(this.TsPositionKey, e.X, e.Y, e.Z);
+        if (e = t.Entity.GetComponent(172)) {
+          e = e.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
+          ControllerHolder_1.ControllerHolder.BlackboardController.SetIntValueByWorld(this.TsHpKey, e);
+        }
+        this.FinishExecute(true);
+      } else {
+        this.FinishExecute(false);
+      }
+    } else {
+      this.FinishExecute(false);
+    }
   }
 }
 exports.default = TsTaskGetTargetInfo;

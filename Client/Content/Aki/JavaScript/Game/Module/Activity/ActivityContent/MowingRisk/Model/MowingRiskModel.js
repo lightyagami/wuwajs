@@ -1,179 +1,222 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MowingRiskModel = void 0;
-const MultiTextLang_1 = require("../../../../../../Core/Define/ConfigQuery/MultiTextLang"),
-  Protocol_1 = require("../../../../../../Core/Define/Net/Protocol"),
-  ModelBase_1 = require("../../../../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager"),
-  ActivityMowingRiskController_1 = require("../Controller/ActivityMowingRiskController"),
-  MowingRiskDefine_1 = require("../MowingRiskDefine"),
-  MowingRiskConfigContext_1 = require("./MowingRiskConfigContext"),
-  MowingRiskProtocolContext_1 = require("./MowingRiskProtocolContext"),
-  MowingRiskUiContext_1 = require("./MowingRiskUiContext"),
-  RiskHarvestDifficultyById_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestDifficultyById"),
-  RiskHarvestInstById_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestInstById"),
-  StringUtils_1 = require("../../../../../../Core/Utils/StringUtils"),
-  TimeUtil_1 = require("../../../../../Common/TimeUtil");
+  value: true
+});
+exports.MowingRiskModel = undefined;
+const MultiTextLang_1 = require("../../../../../../Core/Define/ConfigQuery/MultiTextLang");
+const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
+const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const ActivityMowingRiskController_1 = require("../Controller/ActivityMowingRiskController");
+const MowingRiskDefine_1 = require("../MowingRiskDefine");
+const MowingRiskConfigContext_1 = require("./MowingRiskConfigContext");
+const MowingRiskProtocolContext_1 = require("./MowingRiskProtocolContext");
+const MowingRiskUiContext_1 = require("./MowingRiskUiContext");
+const RiskHarvestDifficultyById_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestDifficultyById");
+const RiskHarvestInstById_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestInstById");
+const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
+const TimeUtil_1 = require("../../../../../Common/TimeUtil");
 class MowingRiskModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.UVa = void 0, this.xVa = void 0, this.PVa = void 0, this.wVa = () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, this.BuildActivityRewardViewData())
-    }, this.InstanceSubViewResourceId = "UiItem_CheckpointsMowing"
+    super(...arguments);
+    this.UVa = undefined;
+    this.xVa = undefined;
+    this.PVa = undefined;
+    this.wVa = () => {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, this.BuildActivityRewardViewData());
+    };
+    this.InstanceSubViewResourceId = "UiItem_CheckpointsMowing";
   }
   OnInit() {
-    return this.UVa = new MowingRiskConfigContext_1.MowingRiskConfigContext, this.UVa.Init(), this.xVa = new MowingRiskProtocolContext_1.MowingRiskProtocolContext, this.PVa = new MowingRiskUiContext_1.MowingRiskUiContext(this), !0
+    this.UVa = new MowingRiskConfigContext_1.MowingRiskConfigContext();
+    this.UVa.Init();
+    this.xVa = new MowingRiskProtocolContext_1.MowingRiskProtocolContext();
+    this.PVa = new MowingRiskUiContext_1.MowingRiskUiContext(this);
+    return true;
   }
   OnClear() {
-    return this.UVa.Dispose(), this.xVa.Dispose(), this.PVa.Dispose(), !0
+    this.UVa.Dispose();
+    this.xVa.Dispose();
+    this.PVa.Dispose();
+    return true;
   }
   SyncProtocolRiskHarvestEndNotify(t) {
-    this.xVa?.ParseRiskHarvestEndNotify(t)
+    this.xVa?.ParseRiskHarvestEndNotify(t);
   }
   SyncProtocolRiskHarvestInstUpdateNotify(t) {
-    this.xVa?.ParseRiskHarvestInstUpdateNotify(t)
+    this.xVa?.ParseRiskHarvestInstUpdateNotify(t);
   }
   SyncProtocolRiskHarvestArtifactNotify(t) {
-    this.xVa?.ParseRiskHarvestArtifactNotify(t)
+    this.xVa?.ParseRiskHarvestArtifactNotify(t);
   }
   SyncProtocolRiskHarvestBuffUpdateNotify(t) {
-    this.xVa?.ParseRiskHarvestBuffUpdateNotify(t), this.PVa?.SyncNewBuff(t.lE_)
+    this.xVa?.ParseRiskHarvestBuffUpdateNotify(t);
+    this.PVa?.SyncNewBuff(t.lE_);
   }
   SyncProtocolRiskHarvestBuffUnlockNotify(t) {
-    this.xVa?.ParseRiskHarvestBuffUnlockNotify(t)
+    this.xVa?.ParseRiskHarvestBuffUnlockNotify(t);
   }
   SyncProtocolRiskHarvestActivityUpdateNotify(t) {
-    this.xVa?.ParseRiskHarvestActivityUpdateNotify(t)
+    this.xVa?.ParseRiskHarvestActivityUpdateNotify(t);
   }
   ResetBuffViewCache() {
-    this.CurrentBuffViewType = 0, this.CurrentChosenOverviewBuffId = void 0, this.CurrentChosenProgressIndex = void 0, this.PVa.CurrentBasicBuffConfigs.length = 0, this.PVa.CurrentSuperBuffConfigs.length = 0
+    this.CurrentBuffViewType = 0;
+    this.CurrentChosenOverviewBuffId = undefined;
+    this.CurrentChosenProgressIndex = undefined;
+    this.PVa.CurrentBasicBuffConfigs.length = 0;
+    this.PVa.CurrentSuperBuffConfigs.length = 0;
   }
   ResetCacheInBattle() {
-    this.xVa.ResetCacheInBattle(), this.PVa.ResetCacheInBattle()
+    this.xVa.ResetCacheInBattle();
+    this.PVa.ResetCacheInBattle();
   }
   GetBuffTypeByBuffId(t) {
-    return this.UVa.GetBuffTypeById(t)
+    return this.UVa.GetBuffTypeById(t);
   }
   GetRiskHarvestInstConfigByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    return RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t)
+    return RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t);
   }
   GetDifficultyConfigByInstanceId(t) {
-    t = this.UVa.GetIdByInstanceId(t), t = RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t).Difficulty;
-    return RiskHarvestDifficultyById_1.configRiskHarvestDifficultyById.GetConfig(t)
+    t = this.UVa.GetIdByInstanceId(t);
+    t = RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t).Difficulty;
+    return RiskHarvestDifficultyById_1.configRiskHarvestDifficultyById.GetConfig(t);
   }
   GetMonsterRatioByInstanceId(t) {
-    return this.GetDifficultyConfigByInstanceId(t).MonsterRatio
+    return this.GetDifficultyConfigByInstanceId(t).MonsterRatio;
   }
   GetRecordScoreById(t) {
-    return this.xVa.GetScoreById(t)
+    return this.xVa.GetScoreById(t);
   }
   GetMaxScoreByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    return this.GetMaxScoreById(t)
+    return this.GetMaxScoreById(t);
   }
   GetMaxScoreById(t) {
     t = RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t);
-    return t ? t.MaxScore : 0
+    if (t) {
+      return t.MaxScore;
+    } else {
+      return 0;
+    }
   }
   GetProgressOverallPercentage(t, e) {
-    return this.UVa.GetProgressOverallPercentage(t, e)
+    return this.UVa.GetProgressOverallPercentage(t, e);
   }
   BuildBuffIntroduceDataInOverviewById(t) {
-    var e = this.UVa,
-      i = this.xVa.IsBuffUnlocked(t),
-      r = this.xVa.GetBuffCountInBattleById(t);
+    var e = this.UVa;
+    var i = this.xVa.IsBuffUnlocked(t);
+    var r = this.xVa.GetBuffCountInBattleById(t);
     return {
       BackgroundPath: e.GetBuffIntroduceBackgroundPath(t),
-      LevelTextId: i && void 0 !== r ? "RiskHarvest_LV" : void 0,
-      LevelTextArgs: i && void 0 !== r ? [r.toString()] : void 0,
+      LevelTextId: i && r !== undefined ? "RiskHarvest_LV" : undefined,
+      LevelTextArgs: i && r !== undefined ? [r.toString()] : undefined,
       NameTextId: i ? e.GetBuffNameTextIdById(t) : "RiskHarvest_TitleUnlock",
       TipsTextId: i ? e.GetBuffDescriptionTextIdById(t) : "riskharvest_BuffunlockDesc",
       TipsArgs: i ? e.GetBuffDescriptionArgsById(t) : [],
-      IconPath: i ? e.GetBuffIconPathById(t) : void 0,
+      IconPath: i ? e.GetBuffIconPathById(t) : undefined,
       HexColor: e.GetBuffHexColorById(t),
       IsUnlock: i
-    }
+    };
   }
   BuildBuffIntroduceDataInProgressById(t) {
     var e = this.UVa;
     return {
       BackgroundPath: e.GetBuffIntroduceBackgroundPath(t),
-      LevelTextId: void 0,
-      LevelTextArgs: void 0,
+      LevelTextId: undefined,
+      LevelTextArgs: undefined,
       NameTextId: e.GetBuffNameTextIdById(t),
       TipsTextId: e.GetBuffDescriptionTextIdById(t),
       TipsArgs: e.GetBuffDescriptionArgsById(t),
       IconPath: e.GetBuffIconPathById(t),
       HexColor: e.GetBuffHexColorById(t),
       IsUnlock: this.xVa.IsBuffUnlocked(t)
-    }
+    };
   }
   BuildBuffItemDataById(t) {
-    var e = this.UVa,
-      i = this.xVa.IsBuffUnlocked(t);
+    var e = this.UVa;
+    var i = this.xVa.IsBuffUnlocked(t);
     return {
       BuffId: t,
       QualityPath: e.GetBuffQualityPathById(t),
-      IconPath: i ? e.GetBuffIconPathById(t) : void 0,
+      IconPath: i ? e.GetBuffIconPathById(t) : undefined,
       NameTextId: i ? e.GetBuffNameTextIdById(t) : "RiskHarvest_TitleUnlock",
-      IsShowBackground: !0,
+      IsShowBackground: true,
       IsChosen: t === this.CurrentChosenOverviewBuffId,
       IsUnlock: i,
       LevelContent: this.wZa(t)
-    }
+    };
   }
   BuildSuperBuffUnitDataListById(t) {
-    var e = this.xVa.ArtifactBasicBuffTotalCount,
-      i = this.UVa,
-      r = i.GetThresholdDataByArtifactId(t),
-      s = [];
-    if (void 0 !== r)
+    var e = this.xVa.ArtifactBasicBuffTotalCount;
+    var i = this.UVa;
+    var r = i.GetThresholdDataByArtifactId(t);
+    var s = [];
+    if (r !== undefined) {
       for (var [n, a] of r.entries()) {
-        var o = i.GetBuffThresholdByArtifactIdAndIndex(t, n),
-          n = {
-            Index: a.Index,
-            BuffId: a.BuffId,
-            IsChosen: n === this.CurrentChosenProgressIndex,
-            IsActive: o <= e,
-            IconPath: i.GetBuffIconPathById(a.BuffId),
-            NameTextId: i.GetBuffNameTextIdById(a.BuffId),
-            ThresholdCount: o
-          };
-        s.push(n)
+        var o = i.GetBuffThresholdByArtifactIdAndIndex(t, n);
+        var n = {
+          Index: a.Index,
+          BuffId: a.BuffId,
+          IsChosen: n === this.CurrentChosenProgressIndex,
+          IsActive: o <= e,
+          IconPath: i.GetBuffIconPathById(a.BuffId),
+          NameTextId: i.GetBuffNameTextIdById(a.BuffId),
+          ThresholdCount: o
+        };
+        s.push(n);
       }
-    return s
+    }
+    return s;
   }
   sbc(t) {
     var e = [];
-    for (const i of t) e.push(this.BuildBuffItemDataById(i.Id));
-    return e
+    for (const i of t) {
+      e.push(this.BuildBuffItemDataById(i.Id));
+    }
+    return e;
   }
   BuildOverviewViewData() {
-    var t, e, i, r;
-    if (void 0 !== this.CurrentChosenOverviewBuffId) return t = [], e = (i = this.PVa).CurrentBasicBuffConfigs, i = i.CurrentSuperBuffConfigs, r = 0 === this.CurrentBuffViewUsage, 0 < i.length && t.push({
-      GroupNameTextId: "riskharvest_superbuff",
-      BuffItemList: this.sbc(i),
-      ShowUnlockText: r
-    }), 0 < e.length && t.push({
-      GroupNameTextId: "riskharvest_normalbuff",
-      BuffItemList: this.sbc(e),
-      ShowUnlockText: r
-    }), {
-      IntroduceData: this.BuildBuffIntroduceDataInOverviewById(this.CurrentChosenOverviewBuffId),
-      BuffGroupData: t
+    var t;
+    var e;
+    var i;
+    var r;
+    if (this.CurrentChosenOverviewBuffId !== undefined) {
+      t = [];
+      e = (i = this.PVa).CurrentBasicBuffConfigs;
+      i = i.CurrentSuperBuffConfigs;
+      r = this.CurrentBuffViewUsage === 0;
+      if (i.length > 0) {
+        t.push({
+          GroupNameTextId: "riskharvest_superbuff",
+          BuffItemList: this.sbc(i),
+          ShowUnlockText: r
+        });
+      }
+      if (e.length > 0) {
+        t.push({
+          GroupNameTextId: "riskharvest_normalbuff",
+          BuffItemList: this.sbc(e),
+          ShowUnlockText: r
+        });
+      }
+      return {
+        IntroduceData: this.BuildBuffIntroduceDataInOverviewById(this.CurrentChosenOverviewBuffId),
+        BuffGroupData: t
+      };
     }
   }
   BuildProgressViewData() {
-    var t = this.xVa,
-      e = this.UVa,
-      i = t.ArtifactId,
-      t = t.ArtifactBasicBuffTotalCount,
-      r = e.GetBuffMaxCountByArtifactId(i),
-      s = e.GetBuffIdByArtifactIdAndIndex(i, this.CurrentChosenProgressIndex);
+    var t = this.xVa;
+    var e = this.UVa;
+    var i = t.ArtifactId;
+    var t = t.ArtifactBasicBuffTotalCount;
+    var r = e.GetBuffMaxCountByArtifactId(i);
+    var s = e.GetBuffIdByArtifactIdAndIndex(i, this.CurrentChosenProgressIndex);
     return {
       ArtifactId: i,
       CurBasicBuffCount: t,
@@ -183,37 +226,45 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       ProgressPercentage: e.GetProgressOverallPercentage(i, t),
       SuperBuffList: this.BuildSuperBuffUnitDataListById(i),
       IntroduceData: this.BuildBuffIntroduceDataInProgressById(s)
-    }
+    };
   }
   BuildCaptionViewData() {
     var t = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(MowingRiskDefine_1.MOWING_RISK_ENTRANCE_ID);
     return {
       TitleTextId: t?.Name ?? "",
       IconPath: t?.TitleSprite ?? ""
-    }
+    };
   }
   BuildInstanceDetailDataByInstanceId(t) {
-    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t),
-      i = this.UVa.GetIdByInstanceId(t);
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t);
+    var i = this.UVa.GetIdByInstanceId(t);
     return {
       TitleTextId: e?.MapName ?? "",
       ContentTextId: e?.DungeonDesc ?? "",
       AttributeList: [{
         AttributeTextId: e?.MonsterTips
       }],
-      LockData: void 0 !== i && this.xVa.IsInstanceUnlockedById(i) ? void 0 : this.BuildInstanceLockDataByInstanceId(t)
-    }
+      LockData: i !== undefined && this.xVa.IsInstanceUnlockedById(i) ? undefined : this.BuildInstanceLockDataByInstanceId(t)
+    };
   }
   BuildInstanceDetailLockDataByInstanceId(t) {
     var e = this.UVa.GetIdByInstanceId(t);
-    return void 0 !== e && this.xVa.IsInstanceUnlockedById(e) ? void 0 : this.BuildInstanceLockDataByInstanceId(t)
+    if (e !== undefined && this.xVa.IsInstanceUnlockedById(e)) {
+      return undefined;
+    } else {
+      return this.BuildInstanceLockDataByInstanceId(t);
+    }
   }
   BuildInstanceLockDataByInstanceId(t) {
-    var t = this.UVa.GetIdByInstanceId(t),
-      e = {
-        IsUnlock: !1
-      };
-    return void 0 !== t && (e.LockDescriptionTextId = this.hlh(t), e.LockDescriptionTextArgs = this.llh(t)), e
+    var t = this.UVa.GetIdByInstanceId(t);
+    var e = {
+      IsUnlock: false
+    };
+    if (t !== undefined) {
+      e.LockDescriptionTextId = this.hlh(t);
+      e.LockDescriptionTextArgs = this.llh(t);
+    }
+    return e;
   }
   BuildInstanceRecommendDataByInstanceId(t) {
     t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetRecommendLevel(t, ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel);
@@ -221,38 +272,47 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       TextId: "RecommendLevel",
       TextArgs: [t.toString()],
       RecommendLevel: t
-    }
+    };
   }
   BuildInstanceTotalScore() {
-    return "" + this.xVa.TotalScore
+    return "" + this.xVa.TotalScore;
   }
   BuildInBattleBuffDataById(t) {
     var e = this.UVa;
     return {
       IconPath: e.GetBuffIconPathById(t),
       TitleTextId: e.GetBuffNameTextIdById(t)
-    }
+    };
   }
   BuildInBattleRootData() {
-    var t = this.xVa,
-      e = this.UVa,
-      i = t.ArtifactId,
-      t = t.ArtifactBasicBuffTotalCount;
+    var t = this.xVa;
+    var e = this.UVa;
+    var i = t.ArtifactId;
+    var t = t.ArtifactBasicBuffTotalCount;
     return {
       LevelText: e.GetProgressLevel(i, t).toString(),
       ProgressPercentage: e.GetProgressPartialPercentage(i, t)
-    }
+    };
   }
   BuildActivityRewardViewData() {
-    var t = [],
-      e = this.bVa(0),
-      e = (e && t.push(e), this.bVa(1)),
-      e = (e && t.push(e), this.bVa(2)),
-      e = (e && t.push(e), {
-        DataPageList: t,
-        Source: "MowingRisk"
-      });
-    return e
+    var t = [];
+    var e = this.bVa(0);
+    if (e) {
+      t.push(e);
+    }
+    var e = this.bVa(1);
+    if (e) {
+      t.push(e);
+    }
+    var e = this.bVa(2);
+    if (e) {
+      t.push(e);
+    }
+    var e = {
+      DataPageList: t,
+      Source: "MowingRisk"
+    };
+    return e;
   }
   BuildNewBuffTipsDataById(t) {
     var e = this.UVa;
@@ -264,99 +324,119 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       DescriptionTextId: e.GetBuffDescriptionTextIdById(t),
       DescriptionArgs: e.GetBuffDescriptionArgsById(t),
       QualityTexPath: e.GetNewBuffQualityTexPathById(t)
-    }
+    };
   }
   BuildInstanceSubtitleTextIdByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    if (void 0 !== t) return this.hlh(t)
+    if (t !== undefined) {
+      return this.hlh(t);
+    }
   }
   BuildInstanceSubtitleTextArgsByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    if (void 0 !== t) return this.llh(t)
+    if (t !== undefined) {
+      return this.llh(t);
+    }
   }
   CheckInstanceFinishedByInstanceId(t) {
-    var e, t = this.UVa.GetIdByInstanceId(t);
-    return void 0 !== t && !!this.xVa.IsInstanceUnlockedById(t) && (e = this.xVa.GetScoreById(t), this.GetMaxScoreById(t) <= e)
+    var e;
+    var t = this.UVa.GetIdByInstanceId(t);
+    return t !== undefined && !!this.xVa.IsInstanceUnlockedById(t) && (e = this.xVa.GetScoreById(t), this.GetMaxScoreById(t) <= e);
   }
   IsSuperBuffById(t) {
-    return this.UVa.IsSuperBuffByBuffId(t)
+    return this.UVa.IsSuperBuffByBuffId(t);
   }
   IsBuffGottenInBattleById(t) {
-    var e = this.xVa,
-      i = this.UVa;
-    return !!e.BasicBuffInfoInBattle.has(t) || !!i.IsSuperBuffByBuffId(t) && this.UVa.IsSuperBuffAvailable(e.ArtifactId, t, e.ArtifactBasicBuffTotalCount)
+    var e = this.xVa;
+    var i = this.UVa;
+    return !!e.BasicBuffInfoInBattle.has(t) || !!i.IsSuperBuffByBuffId(t) && this.UVa.IsSuperBuffAvailable(e.ArtifactId, t, e.ArtifactBasicBuffTotalCount);
   }
   GetBasicBuffConfigListInBattle() {
-    var t = this.xVa,
-      e = this.UVa,
-      i = [];
+    var t = this.xVa;
+    var e = this.UVa;
+    var i = [];
     for (const s of t.BasicBuffInfoInBattle.keys()) {
       var r = e.GetBuffConfigById(s);
-      r && i.push(r)
+      if (r) {
+        i.push(r);
+      }
     }
-    return i
+    return i;
   }
   GetSuperBuffConfigListInBattle() {
-    var t = this.xVa,
-      e = this.UVa,
-      i = [],
-      r = e.GetThresholdDataByArtifactId(t.ArtifactId);
+    var t = this.xVa;
+    var e = this.UVa;
+    var i = [];
+    var r = e.GetThresholdDataByArtifactId(t.ArtifactId);
     if (r) {
-      var s, n = t.ArtifactBasicBuffTotalCount;
-      for (const a of r) n >= a.Threshold && (s = e.GetBuffConfigById(a.BuffId)) && i.push(s)
+      var s;
+      var n = t.ArtifactBasicBuffTotalCount;
+      for (const a of r) {
+        if (n >= a.Threshold && (s = e.GetBuffConfigById(a.BuffId))) {
+          i.push(s);
+        }
+      }
     }
-    return i
+    return i;
   }
   GetBuffConfigList() {
-    return this.UVa.GetBuffConfigListByActivityId(this.xVa.Id)
+    return this.UVa.GetBuffConfigListByActivityId(this.xVa.Id);
   }
   GetBasicBuffConfigListBeforeBattle() {
-    return this.GetBuffConfigList().filter(t => 0 < t.BuffProgress)
+    return this.GetBuffConfigList().filter(t => t.BuffProgress > 0);
   }
   GetSuperBuffConfigListBeforeBattle() {
-    return this.GetBuffConfigList().filter(t => 0 === t.BuffProgress)
+    return this.GetBuffConfigList().filter(t => t.BuffProgress === 0);
   }
   IsBuffAvailableInActivity(t) {
-    return this.xVa.Id === t.ActivityId
+    return this.xVa.Id === t.ActivityId;
   }
   IsInstanceUnlockedByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    return void 0 !== t && this.xVa.IsInstanceUnlockedById(t)
+    return t !== undefined && this.xVa.IsInstanceUnlockedById(t);
   }
   IsInstanceNewById(t) {
-    return this.UVa.IsInstanceNewCache.get(t) ?? !1
+    return this.UVa.IsInstanceNewCache.get(t) ?? false;
   }
   SetInstanceOldById(t) {
     var e = this.UVa.IsInstanceNewCache;
-    e.set(t, !1), this.UVa.IsInstanceNewCache = e
+    e.set(t, false);
+    this.UVa.IsInstanceNewCache = e;
   }
   SetCurrentInstancesOld() {
-    var t, e = this.xVa.InstanceInfo,
-      i = this.UVa.IsInstanceNewCache;
-    for ([t] of e) this.xVa.IsInstancePassUnlockTimeById(t) && i.set(t, !1);
-    this.UVa.IsInstanceNewCache = i
+    var t;
+    var e = this.xVa.InstanceInfo;
+    var i = this.UVa.IsInstanceNewCache;
+    for ([t] of e) {
+      if (this.xVa.IsInstancePassUnlockTimeById(t)) {
+        i.set(t, false);
+      }
+    }
+    this.UVa.IsInstanceNewCache = i;
   }
   RecordBuffId(t) {
-    this.xVa.RecordBuffId(t)
+    this.xVa.RecordBuffId(t);
   }
   GetRecordBuffIdSet() {
-    return this.xVa.GetRecordBuffIdSet()
+    return this.xVa.GetRecordBuffIdSet();
   }
   HasBuffIdRecord(t) {
-    return this.GetRecordBuffIdSet().has(t)
+    return this.GetRecordBuffIdSet().has(t);
   }
   RecordProgressPanelBasicBuffCount(t) {
-    this.xVa.RecordProgressPanelBasicBuffCount(t)
+    this.xVa.RecordProgressPanelBasicBuffCount(t);
   }
   GetProgressPanelBasicBuffCountRecord() {
-    return this.xVa.GetProgressPanelBasicBuffCountRecord()
+    return this.xVa.GetProgressPanelBasicBuffCountRecord();
   }
   bVa(t) {
     var e = this.GVa(t);
-    if (e && 0 !== e.length) return {
-      TabName: this.qVa(t),
-      TabTips: 1 === t ? this.OVa() : void 0,
-      DataList: e
+    if (e && e.length !== 0) {
+      return {
+        TabName: this.qVa(t),
+        TabTips: t === 1 ? this.OVa() : undefined,
+        DataList: e
+      };
     }
   }
   GVa(t) {
@@ -368,101 +448,136 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       case 2:
         return this.M6_();
       default:
-        return []
+        return [];
     }
   }
   kVa() {
     var t = [];
     for (const i of this.UVa.GetRiskHarvestInstByActivityId(this.xVa.Id)) {
-      var e = this.VVa(i),
-        e = {
-          NameText: "",
-          NameTextId: i.Desc,
-          RewardList: ConfigManager_1.ConfigManager.RewardConfig?.GetDropPackagePreviewItemList(i.Reward),
-          RewardState: e,
-          RewardButtonText: this.Vea(e),
-          RewardButtonRedDot: 1 === e,
-          ClickFunction: () => {
-            ActivityMowingRiskController_1.ActivityMowingRiskController.Instance.RequestRiskHarvestInstRewardRequest(i.Id).then(this.wVa)
-          }
-        };
-      t.push(e)
+      var e = this.VVa(i);
+      var e = {
+        NameText: "",
+        NameTextId: i.Desc,
+        RewardList: ConfigManager_1.ConfigManager.RewardConfig?.GetDropPackagePreviewItemList(i.Reward),
+        RewardState: e,
+        RewardButtonText: this.Vea(e),
+        RewardButtonRedDot: e === 1,
+        ClickFunction: () => {
+          ActivityMowingRiskController_1.ActivityMowingRiskController.Instance.RequestRiskHarvestInstRewardRequest(i.Id).then(this.wVa);
+        }
+      };
+      t.push(e);
     }
-    return t
+    return t;
   }
   NVa() {
     var t = [];
     for (const i of this.UVa.GetRiskHarvestScoreRewardByActivityId(this.xVa.Id)) {
-      var e = this.HVa(i),
-        e = {
-          NameText: "",
-          NameTextId: i.Desc,
-          RewardList: ConfigManager_1.ConfigManager.RewardConfig?.GetDropPackagePreviewItemList(i.Reward),
-          RewardState: e,
-          RewardButtonText: this.Vea(e),
-          RewardButtonRedDot: 1 === e,
-          ClickFunction: () => {
-            ActivityMowingRiskController_1.ActivityMowingRiskController.Instance.RequestRiskHarvestScoreRewardRequest(i.Id).then(this.wVa)
-          }
-        };
-      t.push(e)
+      var e = this.HVa(i);
+      var e = {
+        NameText: "",
+        NameTextId: i.Desc,
+        RewardList: ConfigManager_1.ConfigManager.RewardConfig?.GetDropPackagePreviewItemList(i.Reward),
+        RewardState: e,
+        RewardButtonText: this.Vea(e),
+        RewardButtonRedDot: e === 1,
+        ClickFunction: () => {
+          ActivityMowingRiskController_1.ActivityMowingRiskController.Instance.RequestRiskHarvestScoreRewardRequest(i.Id).then(this.wVa);
+        }
+      };
+      t.push(e);
     }
-    return t
+    return t;
   }
   M6_() {
     var e = [];
     for (const o of this.UVa.GetRiskHarvestInstByActivityId(this.xVa.Id)) {
-      var i = o.StarRewardList,
-        r = i.length;
+      var i = o.StarRewardList;
+      var r = i.length;
       for (let t = 0; t < r; t++) {
-        var s = i[t],
-          n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o.InstanceID),
-          a = this.E6_(o, t),
-          n = {
-            NameText: "",
-            NameTextId: o.StarRewardDesc,
-            NameTextArgs: [MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.MapName) ?? "", this.sX_(o, t).toString()],
-            RewardList: ConfigManager_1.ConfigManager.RewardConfig?.GetDropPackagePreviewItemList(s.Item2),
-            RewardState: a,
-            RewardButtonText: this.Vea(a),
-            RewardButtonRedDot: 1 === a,
-            ClickFunction: () => {
-              ActivityMowingRiskController_1.ActivityMowingRiskController.Instance.RequestRiskHarvestStarRewardRequest(o.Id, t).then(this.wVa)
-            }
-          };
-        e.push(n)
+        var s = i[t];
+        var n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o.InstanceID);
+        var a = this.E6_(o, t);
+        var n = {
+          NameText: "",
+          NameTextId: o.StarRewardDesc,
+          NameTextArgs: [MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.MapName) ?? "", this.sX_(o, t).toString()],
+          RewardList: ConfigManager_1.ConfigManager.RewardConfig?.GetDropPackagePreviewItemList(s.Item2),
+          RewardState: a,
+          RewardButtonText: this.Vea(a),
+          RewardButtonRedDot: a === 1,
+          ClickFunction: () => {
+            ActivityMowingRiskController_1.ActivityMowingRiskController.Instance.RequestRiskHarvestStarRewardRequest(o.Id, t).then(this.wVa);
+          }
+        };
+        e.push(n);
       }
     }
-    return e
+    return e;
   }
   GetRewardCount() {
-    let e = 0,
-      t = 0;
+    let e = 0;
+    let t = 0;
     for (const s of this.UVa.GetRiskHarvestInstByActivityId(this.xVa.Id)) {
-      2 === this.VVa(s) && e++, t++;
-      var i = s.StarRewardList,
-        r = i.length;
-      for (let t = 0; t < r; t++) 2 === this.E6_(s, t) && e++;
-      t += r
+      if (this.VVa(s) === 2) {
+        e++;
+      }
+      t++;
+      var i = s.StarRewardList;
+      var r = i.length;
+      for (let t = 0; t < r; t++) {
+        if (this.E6_(s, t) === 2) {
+          e++;
+        }
+      }
+      t += r;
     }
-    for (const n of this.UVa.GetRiskHarvestScoreRewardByActivityId(this.xVa.Id)) 2 === this.HVa(n) && e++, t++;
-    return [e, t]
+    for (const n of this.UVa.GetRiskHarvestScoreRewardByActivityId(this.xVa.Id)) {
+      if (this.HVa(n) === 2) {
+        e++;
+      }
+      t++;
+    }
+    return [e, t];
   }
   VVa(t) {
     var e = this.xVa.InstanceInfo.get(t.Id);
-    return void 0 === e || !e.K6n || e.SMs < t.RewardScore ? 0 : e.mLs ? 2 : 1
+    if (e === undefined || !e.K6n || e.SMs < t.RewardScore) {
+      return 0;
+    } else if (e.mLs) {
+      return 2;
+    } else {
+      return 1;
+    }
   }
   E6_(t, e) {
-    var i, t = this.xVa.InstanceInfo.get(t.Id);
-    return void 0 === t || !t.K6n || !(i = t.oX_) || e < 0 || e >= i.length || (e = (i = i[e]).rX_, t.SMs < e) ? 0 : i.mU_ === Protocol_1.Aki.Protocol.gU_.Proto_RiskHarvestRewarded ? 2 : 1
+    var i;
+    var t = this.xVa.InstanceInfo.get(t.Id);
+    if (t === undefined || !t.K6n || !(i = t.oX_) || e < 0 || e >= i.length || (e = (i = i[e]).rX_, t.SMs < e)) {
+      return 0;
+    } else if (i.mU_ === Protocol_1.Aki.Protocol.gU_.Proto_RiskHarvestRewarded) {
+      return 2;
+    } else {
+      return 1;
+    }
   }
   HVa(t) {
     var e = this.xVa;
-    return e.TotalScore < t.Score ? 0 : e.HasScoreRewarded(t.Id) ? 2 : 1
+    if (e.TotalScore < t.Score) {
+      return 0;
+    } else if (e.HasScoreRewarded(t.Id)) {
+      return 2;
+    } else {
+      return 1;
+    }
   }
   sX_(t, e) {
     var t = this.xVa.InstanceInfo.get(t.Id);
-    return void 0 === t || !(t = t.oX_) || e < 0 || e >= t.length ? 0 : t[e].rX_
+    if (t === undefined || !(t = t.oX_) || e < 0 || e >= t.length) {
+      return 0;
+    } else {
+      return t[e].rX_;
+    }
   }
   Vea(t) {
     switch (t) {
@@ -472,7 +587,7 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       case 0:
         return MultiTextLang_1.configMultiTextLang.GetLocalTextNew("TowerDefence_Getbt3") ?? "";
       default:
-        return ""
+        return "";
     }
   }
   qVa(t) {
@@ -484,142 +599,201 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       case 2:
         return MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RiskHarvest_StarRewardTap") ?? "";
       default:
-        return ""
+        return "";
     }
   }
   OVa() {
-    return StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RiskHarvest_InstanceToppoint"), this.xVa.TotalScore.toString())
+    return StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RiskHarvest_InstanceToppoint"), this.xVa.TotalScore.toString());
   }
   wZa(t) {
     t = this.xVa.GetBuffCountInBattleById(t);
-    if (void 0 !== t) return StringUtils_1.StringUtils.Format(ConfigManager_1.ConfigManager.TextConfig.GetTextById("OverSeaServerLv"), t.toString())
+    if (t !== undefined) {
+      return StringUtils_1.StringUtils.Format(ConfigManager_1.ConfigManager.TextConfig.GetTextById("OverSeaServerLv"), t.toString());
+    }
   }
   hlh(t) {
-    return this.xVa.IsInstanceUnlockedById(t) ? this.GetInstanceUnlockTextIdById(t) : this.GetInstanceLockTextIdById(t)
+    if (this.xVa.IsInstanceUnlockedById(t)) {
+      return this.GetInstanceUnlockTextIdById(t);
+    } else {
+      return this.GetInstanceLockTextIdById(t);
+    }
   }
   GetInstanceUnlockTextIdById(t) {
-    return RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t).Accumulate ? "RiskHarvest_TotleScore" : "RiskHarvest_InstanceToppoint"
+    if (RiskHarvestInstById_1.configRiskHarvestInstById.GetConfig(t).Accumulate) {
+      return "RiskHarvest_TotleScore";
+    } else {
+      return "RiskHarvest_InstanceToppoint";
+    }
   }
   GetInstanceLockTextIdByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    return void 0 === t ? "" : this.GetInstanceLockTextIdById(t)
+    if (t === undefined) {
+      return "";
+    } else {
+      return this.GetInstanceLockTextIdById(t);
+    }
   }
   GetInstanceLockTextIdById(t) {
-    return this.xVa.IsInstancePassUnlockTimeById(t) ? "RiskHarvest_Unlock" : "Text_ActiveToOpenTime_Text"
+    if (this.xVa.IsInstancePassUnlockTimeById(t)) {
+      return "RiskHarvest_Unlock";
+    } else {
+      return "Text_ActiveToOpenTime_Text";
+    }
   }
   llh(t) {
-    var e, i;
-    return this.xVa.IsInstanceUnlockedById(t) ? (e = this.xVa.GetScoreById(t), (i = []).push(e.toString()), i) : this.GetLockTextArgsById(t)
+    var e;
+    var i;
+    if (this.xVa.IsInstanceUnlockedById(t)) {
+      e = this.xVa.GetScoreById(t);
+      (i = []).push(e.toString());
+      return i;
+    } else {
+      return this.GetLockTextArgsById(t);
+    }
   }
   GetLockTextArgsById(t) {
-    var e = [],
-      i = this.xVa.GetInstanceUnlockTimestampById(t),
-      r = TimeUtil_1.TimeUtil.GetServerTimeStamp();
-    return r < i ? (i = i - r, r = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat(i * TimeUtil_1.TimeUtil.Millisecond), e.push(r.CountDownText)) : (i = this.UVa.GetScoreToUnlockById(t), e.push(i.toString())), e
+    var e = [];
+    var i = this.xVa.GetInstanceUnlockTimestampById(t);
+    var r = TimeUtil_1.TimeUtil.GetServerTimeStamp();
+    if (r < i) {
+      i = i - r;
+      r = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat(i * TimeUtil_1.TimeUtil.Millisecond);
+      e.push(r.CountDownText);
+    } else {
+      i = this.UVa.GetScoreToUnlockById(t);
+      e.push(i.toString());
+    }
+    return e;
   }
   GetLockTextArgsByInstanceId(t) {
     t = this.UVa.GetIdByInstanceId(t);
-    if (void 0 !== t) return this.GetLockTextArgsById(t)
+    if (t !== undefined) {
+      return this.GetLockTextArgsById(t);
+    }
   }
   get ActivityData() {
-    return this.xVa
+    return this.xVa;
   }
   get CurrentBuffViewUsage() {
-    return this.PVa.CurrentBuffViewUsage
+    return this.PVa.CurrentBuffViewUsage;
   }
   set CurrentBuffViewUsage(t) {
-    this.PVa.CurrentBuffViewUsage = t, this.PVa.SyncCurrentShowingBuffConfigs()
+    this.PVa.CurrentBuffViewUsage = t;
+    this.PVa.SyncCurrentShowingBuffConfigs();
   }
   get CurrentBuffViewType() {
-    return this.PVa.CurrentBuffViewType
+    return this.PVa.CurrentBuffViewType;
   }
   set CurrentBuffViewType(t) {
-    this.PVa.CurrentBuffViewType = t
+    this.PVa.CurrentBuffViewType = t;
   }
   get EntireBasicBuffConfig() {
-    return this.UVa.BasicBuffConfigs
+    return this.UVa.BasicBuffConfigs;
   }
   get EntireSuperBuffConfig() {
-    return this.UVa.SuperBuffConfigs
+    return this.UVa.SuperBuffConfigs;
   }
   get CurrentChosenOverviewBuffId() {
     let e = this.PVa.CurrentChosenOverviewBuffId;
-    if (void 0 === e) {
+    if (e === undefined) {
       let t = this.PVa.CurrentSuperBuffConfigs;
-      0 === t.length && (t = this.PVa.CurrentBasicBuffConfigs), e = 0 < t.length ? t[0].Id : void 0, this.PVa.CurrentChosenOverviewBuffId = e
+      if (t.length === 0) {
+        t = this.PVa.CurrentBasicBuffConfigs;
+      }
+      e = t.length > 0 ? t[0].Id : undefined;
+      this.PVa.CurrentChosenOverviewBuffId = e;
     }
-    return e
+    return e;
   }
   set CurrentChosenOverviewBuffId(t) {
-    this.PVa.CurrentChosenOverviewBuffId = t
+    this.PVa.CurrentChosenOverviewBuffId = t;
   }
   get CurrentChosenProgressIndex() {
     let t = this.PVa.CurrentChosenProgressIndex;
-    return void 0 === t && (t = 0, this.PVa.CurrentChosenProgressIndex = t), t
+    if (t === undefined) {
+      t = 0;
+      this.PVa.CurrentChosenProgressIndex = t;
+    }
+    return t;
   }
   set CurrentChosenProgressIndex(t) {
-    this.PVa.CurrentChosenProgressIndex = t
+    this.PVa.CurrentChosenProgressIndex = t;
   }
   get CurrentHelpButtonId() {
-    return this.xVa.GetHelpId()
+    return this.xVa.GetHelpId();
   }
   get CurrentInstanceId() {
-    return ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId
+    return ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId;
   }
   get IsNewInstanceOpen() {
-    var t, e, i, r = this.UVa.IsInstanceNewCache,
-      s = new Map;
+    var t;
+    var e;
+    var i;
+    var r = this.UVa.IsInstanceNewCache;
+    var s = new Map();
     for ([t, e] of r) {
-      var n = this.xVa.GetInstanceUnlockTimestampById(t),
-        a = s.get(n) ?? !0,
-        o = this.xVa.IsInstancePassUnlockTimeById(t);
-      s.set(n, a && !this.xVa.IsInstancePlayedById(t) && e && o)
+      var n = this.xVa.GetInstanceUnlockTimestampById(t);
+      var a = s.get(n) ?? true;
+      var o = this.xVa.IsInstancePassUnlockTimeById(t);
+      s.set(n, a && !this.xVa.IsInstancePlayedById(t) && e && o);
     }
-    for ([, i] of s)
-      if (i) return !0;
-    return !1
+    for ([, i] of s) {
+      if (i) {
+        return true;
+      }
+    }
+    return false;
   }
   get IsPreQuestFinished() {
-    return this.xVa.GetPreGuideQuestFinishState()
+    return this.xVa.GetPreGuideQuestFinishState();
   }
   get UnFinishPreGuideQuestId() {
-    return this.xVa.GetUnFinishPreGuideQuestId()
+    return this.xVa.GetUnFinishPreGuideQuestId();
   }
   get ActivityTitleTextId() {
-    return this.xVa.LocalConfig?.Title ?? ""
+    return this.xVa.LocalConfig?.Title ?? "";
   }
   get ActivityDescriptionTextId() {
-    return this.xVa.LocalConfig?.Desc ?? ""
+    return this.xVa.LocalConfig?.Desc ?? "";
   }
   get HasAnyReward() {
-    return this.HasAnyInstanceReward || this.HasAnyScoreReward || this.HasAnyStarReward
+    return this.HasAnyInstanceReward || this.HasAnyScoreReward || this.HasAnyStarReward;
   }
   get HasAnyInstanceReward() {
-    for (const t of this.UVa.GetRiskHarvestInstByActivityId(this.xVa.Id))
-      if (1 === this.VVa(t)) return !0;
-    return !1
+    for (const t of this.UVa.GetRiskHarvestInstByActivityId(this.xVa.Id)) {
+      if (this.VVa(t) === 1) {
+        return true;
+      }
+    }
+    return false;
   }
   get HasAnyScoreReward() {
-    for (const t of this.UVa.GetRiskHarvestScoreRewardByActivityId(this.xVa.Id))
-      if (1 === this.HVa(t)) return !0;
-    return !1
+    for (const t of this.UVa.GetRiskHarvestScoreRewardByActivityId(this.xVa.Id)) {
+      if (this.HVa(t) === 1) {
+        return true;
+      }
+    }
+    return false;
   }
   get HasAnyStarReward() {
     for (const i of this.UVa.GetRiskHarvestInstByActivityId(this.xVa.Id)) {
       var e = i.StarRewardList.length;
-      for (let t = 0; t < e; t++)
-        if (1 === this.E6_(i, t)) return !0
+      for (let t = 0; t < e; t++) {
+        if (this.E6_(i, t) === 1) {
+          return true;
+        }
+      }
     }
-    return !1
+    return false;
   }
   get MapMarkId() {
-    return MowingRiskDefine_1.MOWING_RISK_MAP_MARK_ID
+    return MowingRiskDefine_1.MOWING_RISK_MAP_MARK_ID;
   }
   get MapMarkType() {
-    return 6
+    return 6;
   }
   get NextNewBuffId() {
-    return this.PVa.NewBuffToShowCache.shift()
+    return this.PVa.NewBuffToShowCache.shift();
   }
 }
 exports.MowingRiskModel = MowingRiskModel;

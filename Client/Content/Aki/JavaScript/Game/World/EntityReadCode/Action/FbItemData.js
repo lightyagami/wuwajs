@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbItemData = void 0;
+  value: true
+});
+exports.FbItemData = undefined;
 class FbItemData {
   constructor(t) {
-    this.FbDataInternal = t, this.auh = !1, this.huh = 0, this.luh = !1, this.v4i = 0
+    this.FbDataInternal = t;
+    this.auh = false;
+    this.huh = 0;
+    this.luh = false;
+    this.v4i = 0;
   }
   static Create(t) {
-    if (t) return new FbItemData(t)
+    if (t) {
+      return new FbItemData(t);
+    }
   }
   get ItemId() {
-    return this.auh || (this.auh = !0, this.huh = this.FbDataInternal.itemId()), this.huh
+    if (!this.auh) {
+      this.auh = true;
+      this.huh = this.FbDataInternal.itemId();
+    }
+    return this.huh;
   }
   get Count() {
-    return this.luh || (this.luh = !0, this.v4i = this.FbDataInternal.count()), this.v4i
+    if (!this.luh) {
+      this.luh = true;
+      this.v4i = this.FbDataInternal.count();
+    }
+    return this.v4i;
   }
 }
 exports.FbItemData = FbItemData;

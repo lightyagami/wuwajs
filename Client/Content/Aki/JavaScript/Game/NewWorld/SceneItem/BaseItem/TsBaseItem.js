@@ -1,21 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ActorUtils_1 = require("../../../Utils/ActorUtils");
+const UE = require("ue");
+const ActorUtils_1 = require("../../../Utils/ActorUtils");
 class TsBaseItem extends UE.Actor {
   constructor() {
-    super(...arguments), this.EntityHandle = void 0, this.DebugComp = void 0
+    super(...arguments);
+    this.EntityHandle = undefined;
+    this.DebugComp = undefined;
   }
   Constructor() {
-    this.EntityHandle = void 0, this.DebugComp = void 0
+    this.EntityHandle = undefined;
+    this.DebugComp = undefined;
   }
   ReceiveBeginPlay() {
-    this.EntityHandle = ActorUtils_1.ActorUtils.GetEntityByActor(this), this.DebugComp = this.EntityHandle.Entity.GetComponent(126)
+    this.EntityHandle = ActorUtils_1.ActorUtils.GetEntityByActor(this);
+    this.DebugComp = this.EntityHandle.Entity.GetComponent(126);
   }
   GetTagDebugStrings() {
-    return this.DebugComp.GetTagDebugStrings()
+    return this.DebugComp.GetTagDebugStrings();
   }
 }
 exports.default = TsBaseItem;

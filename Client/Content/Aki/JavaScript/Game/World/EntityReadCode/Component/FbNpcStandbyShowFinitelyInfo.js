@@ -1,30 +1,64 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcStandbyShowFinitelyInfo = void 0;
-const FbMontageId_1 = require("../Action/FbMontageId"),
-  FbIgnoreEntityIdsCollision_1 = require("./FbIgnoreEntityIdsCollision");
+  value: true
+});
+exports.FbNpcStandbyShowFinitelyInfo = undefined;
+const FbMontageId_1 = require("../Action/FbMontageId");
+const FbIgnoreEntityIdsCollision_1 = require("./FbIgnoreEntityIdsCollision");
 class FbNpcStandbyShowFinitelyInfo {
   constructor(t) {
-    this.FbDataInternal = t, this.mgh = !1, this.Cgh = void 0, this.j4h = !1, this.H4h = void 0, this.Qfh = !1, this.Kfh = 0, this.Fph = !1, this.Nph = 0, this.W4h = !1, this.Q4h = void 0
+    this.FbDataInternal = t;
+    this.mgh = false;
+    this.Cgh = undefined;
+    this.j4h = false;
+    this.H4h = undefined;
+    this.Qfh = false;
+    this.Kfh = 0;
+    this.Fph = false;
+    this.Nph = 0;
+    this.W4h = false;
+    this.Q4h = undefined;
   }
   static Create(t) {
-    if (t) return new FbNpcStandbyShowFinitelyInfo(t)
+    if (t) {
+      return new FbNpcStandbyShowFinitelyInfo(t);
+    }
   }
   get Montage() {
-    return this.mgh || (this.mgh = !0, this.Cgh = this.FbDataInternal.montage()), this.Cgh
+    if (!this.mgh) {
+      this.mgh = true;
+      this.Cgh = this.FbDataInternal.montage();
+    }
+    return this.Cgh;
   }
   get RegisteredMontageId() {
-    return this.j4h || (this.j4h = !0, this.H4h = FbMontageId_1.FbMontageId.Create(this.FbDataInternal.registeredMontageId())), this.H4h
+    if (!this.j4h) {
+      this.j4h = true;
+      this.H4h = FbMontageId_1.FbMontageId.Create(this.FbDataInternal.registeredMontageId());
+    }
+    return this.H4h;
   }
   get FaceExpressionId() {
-    return this.Qfh || (this.Qfh = !0, this.Kfh = this.FbDataInternal.faceExpressionId()), this.Kfh
+    if (!this.Qfh) {
+      this.Qfh = true;
+      this.Kfh = this.FbDataInternal.faceExpressionId();
+    }
+    return this.Kfh;
   }
   get Time() {
-    return this.Fph || (this.Fph = !0, this.Nph = this.FbDataInternal.time()), this.Nph
+    if (!this.Fph) {
+      this.Fph = true;
+      this.Nph = this.FbDataInternal.time();
+    }
+    return this.Nph;
   }
   get IgnoreEntityCollision() {
-    return this.W4h || (this.W4h = !0, this.Q4h = FbIgnoreEntityIdsCollision_1.FbIgnoreEntityIdsCollision.Create(this.FbDataInternal.ignoreEntityCollision())), this.Q4h
+    if (!this.W4h) {
+      this.W4h = true;
+      this.Q4h = FbIgnoreEntityIdsCollision_1.FbIgnoreEntityIdsCollision.Create(this.FbDataInternal.ignoreEntityCollision());
+    }
+    return this.Q4h;
   }
 }
 exports.FbNpcStandbyShowFinitelyInfo = FbNpcStandbyShowFinitelyInfo;

@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHitBulletTypeCrystalAttack = void 0;
+  value: true
+});
+exports.FbHitBulletTypeCrystalAttack = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbHitBulletTypeCrystalAttack {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.rOh = !1, this.oOh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.rOh = false;
+    this.oOh = undefined;
   }
   static Create(t) {
-    if (t) return new FbHitBulletTypeCrystalAttack(t)
+    if (t) {
+      return new FbHitBulletTypeCrystalAttack(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TrackOffset() {
-    return this.rOh || (this.rOh = !0, this.oOh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.trackOffset())), this.oOh
+    if (!this.rOh) {
+      this.rOh = true;
+      this.oOh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.trackOffset());
+    }
+    return this.oOh;
   }
 }
 exports.FbHitBulletTypeCrystalAttack = FbHitBulletTypeCrystalAttack;

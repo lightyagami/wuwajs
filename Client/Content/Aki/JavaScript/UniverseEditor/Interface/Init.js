@@ -1,15 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.getWorkspaceBranchDefine = exports.isUe5 = void 0;
+  value: true
+});
+exports.getWorkspaceBranchDefine = exports.isUe5 = undefined;
 const EditorDefine_1 = require("../../Core/Define/EditorDefine");
-
 function isUe5() {
-  return "ue5" === EditorDefine_1.RUNTIME
+  return EditorDefine_1.RUNTIME === "ue5";
 }
-
 function getWorkspaceBranchDefine() {
-  return EditorDefine_1.WORKSPACE_BRANCH
+  return EditorDefine_1.WORKSPACE_BRANCH;
 }
-exports.isUe5 = isUe5, exports.getWorkspaceBranchDefine = getWorkspaceBranchDefine;
-//# sourceMappingURL=Init.js.map
+exports.isUe5 = isUe5;
+exports.getWorkspaceBranchDefine = getWorkspaceBranchDefine; //# sourceMappingURL=Init.js.map

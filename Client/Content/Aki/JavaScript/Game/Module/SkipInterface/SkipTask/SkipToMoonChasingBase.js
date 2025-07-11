@@ -1,21 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkipToMoonChasingBase = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  SkipTask_1 = require("./SkipTask");
+  value: true
+});
+exports.SkipToMoonChasingBase = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const UiManager_1 = require("../../../Ui/UiManager");
+const SkipTask_1 = require("./SkipTask");
 class SkipToMoonChasingBase extends SkipTask_1.SkipTask {
   CheckMainViewOpen() {
-    return void 0 !== UiManager_1.UiManager.GetViewByName("MoonChasingMainView")
+    return UiManager_1.UiManager.GetViewByName("MoonChasingMainView") !== undefined;
   }
   SkipToMap(e) {
     var e = ConfigManager_1.ConfigManager.ActivityMoonChasingConfig.GetActivityMoonChasingConfig(e);
-    void 0 !== e && (e = {
-      MarkId: e.FocusMarkId,
-      MarkType: 6
-    }, ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(2, !1, e))
+    if (e !== undefined) {
+      e = {
+        MarkId: e.FocusMarkId,
+        MarkType: 6
+      };
+      ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(2, false, e);
+    }
   }
 }
 exports.SkipToMoonChasingBase = SkipToMoonChasingBase;

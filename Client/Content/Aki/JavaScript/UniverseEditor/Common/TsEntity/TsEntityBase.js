@@ -1,28 +1,35 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsEntityBase = exports.getTsEntityClass = void 0;
-const UE = require("ue"),
-  ue_1 = require("ue"),
-  Init_1 = require("../../Interface/Init"),
-  TS_ENTITY_PATH = "/Game/Aki/TypeScript/UniverseEditor/Common/TsEntity/TsEntityBase.TsEntityBase_C";
-let tsEntityClass = void 0;
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.TsEntityBase = exports.getTsEntityClass = undefined;
+const UE = require("ue");
+const ue_1 = require("ue");
+const Init_1 = require("../../Interface/Init");
+const TS_ENTITY_PATH = "/Game/Aki/TypeScript/UniverseEditor/Common/TsEntity/TsEntityBase.TsEntityBase_C";
+let tsEntityClass = undefined;
 function getTsEntityClass() {
-  return tsEntityClass = tsEntityClass || ue_1.Class.Load(TS_ENTITY_PATH)
+  return tsEntityClass = tsEntityClass || ue_1.Class.Load(TS_ENTITY_PATH);
 }
 exports.getTsEntityClass = getTsEntityClass;
 class TsEntityBase extends UE.KuroEffectActor {
   constructor() {
-    super(...arguments), this.Id = 0
+    super(...arguments);
+    this.Id = 0;
   }
   Constructor() {}
   EditorInit() {
-    super.EditorInit(), this.bSetActorComponentTickEnabledByFocus = !0, this.EditorSetActorComponentsTickEnabled(!1)
+    super.EditorInit();
+    this.bSetActorComponentTickEnabledByFocus = true;
+    this.EditorSetActorComponentsTickEnabled(false);
   }
   ReceiveBeginPlay() {
-    super.ReceiveBeginPlay(), (0, Init_1.isUe5)() || this.K2_DestroyActor()
+    super.ReceiveBeginPlay();
+    if (!(0, Init_1.isUe5)()) {
+      this.K2_DestroyActor();
+    }
   }
 }
-exports.TsEntityBase = TsEntityBase, exports.default = TsEntityBase;
-//# sourceMappingURL=TsEntityBase.js.map
+exports.TsEntityBase = TsEntityBase;
+exports.default = TsEntityBase; //# sourceMappingURL=TsEntityBase.js.map

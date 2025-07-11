@@ -1,14 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaBuffEffectChooseCard = void 0;
+  value: true
+});
+exports.PhantomArenaBuffEffectChooseCard = undefined;
 class PhantomArenaBuffEffectChooseCard {
   constructor(o, s) {
-    this.Data = o, this.Manager = s
+    this.Data = o;
+    this.Manager = s;
   }
   ShowChooseCard() {
-    var o = this.Data.Effect.W21;
-    this.Manager.Proxy.ServerActionQueue.PushChooseCardAction(o)
+    var o = this.Data.Effect.EG1;
+    this.Manager.Proxy.ServerActionQueue.PushChooseCardAction(o);
   }
 }
 exports.PhantomArenaBuffEffectChooseCard = PhantomArenaBuffEffectChooseCard;

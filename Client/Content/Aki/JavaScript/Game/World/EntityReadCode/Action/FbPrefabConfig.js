@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPrefabConfig = void 0;
+  value: true
+});
+exports.FbPrefabConfig = undefined;
 class FbPrefabConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.sAh = !1, this.aAh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.sAh = false;
+    this.aAh = 0;
   }
   static Create(t) {
-    if (t) return new FbPrefabConfig(t)
+    if (t) {
+      return new FbPrefabConfig(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get PrefabId() {
-    return this.sAh || (this.sAh = !0, this.aAh = this.FbDataInternal.prefabId()), this.aAh
+    if (!this.sAh) {
+      this.sAh = true;
+      this.aAh = this.FbDataInternal.prefabId();
+    }
+    return this.aAh;
   }
 }
 exports.FbPrefabConfig = FbPrefabConfig;

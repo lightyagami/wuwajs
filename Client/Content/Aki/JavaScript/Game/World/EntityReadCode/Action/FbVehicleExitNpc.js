@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVehicleExitNpc = void 0;
+  value: true
+});
+exports.FbVehicleExitNpc = undefined;
 const UnionExitVehicleTypeHelper_1 = require("./UnionExitVehicleTypeHelper");
 class FbVehicleExitNpc {
   constructor(t) {
-    this.FbDataInternal = t, this.uMh = !1, this.dMh = 0, this.pMh = !1, this.vMh = !1, this.mMh = !1, this.CMh = void 0
+    this.FbDataInternal = t;
+    this.uMh = false;
+    this.dMh = 0;
+    this.pMh = false;
+    this.vMh = false;
+    this.mMh = false;
+    this.CMh = undefined;
   }
   static Create(t) {
-    if (t) return new FbVehicleExitNpc(t)
+    if (t) {
+      return new FbVehicleExitNpc(t);
+    }
   }
   get TargetNpc() {
-    return this.uMh || (this.uMh = !0, this.dMh = this.FbDataInternal.targetNpc()), this.dMh
+    if (!this.uMh) {
+      this.uMh = true;
+      this.dMh = this.FbDataInternal.targetNpc();
+    }
+    return this.dMh;
   }
   get DestroyVehicle() {
-    return this.pMh || (this.pMh = !0, this.vMh = this.FbDataInternal.destroyVehicle()), this.vMh
+    if (!this.pMh) {
+      this.pMh = true;
+      this.vMh = this.FbDataInternal.destroyVehicle();
+    }
+    return this.vMh;
   }
   get ExitType() {
-    var t, e;
-    return !this.mMh && (this.mMh = !0, t = this.FbDataInternal.exitTypeType(), e = UnionExitVehicleTypeHelper_1.UnionExitVehicleTypeHelper.GetUnionExitVehicleTypeObject(t)) && (this.CMh = UnionExitVehicleTypeHelper_1.UnionExitVehicleTypeHelper.ReadUnionExitVehicleType(t, this.FbDataInternal.exitType(e))), this.CMh
+    var t;
+    var e;
+    if (!this.mMh && (this.mMh = true, t = this.FbDataInternal.exitTypeType(), e = UnionExitVehicleTypeHelper_1.UnionExitVehicleTypeHelper.GetUnionExitVehicleTypeObject(t))) {
+      this.CMh = UnionExitVehicleTypeHelper_1.UnionExitVehicleTypeHelper.ReadUnionExitVehicleType(t, this.FbDataInternal.exitType(e));
+    }
+    return this.CMh;
   }
 }
 exports.FbVehicleExitNpc = FbVehicleExitNpc;

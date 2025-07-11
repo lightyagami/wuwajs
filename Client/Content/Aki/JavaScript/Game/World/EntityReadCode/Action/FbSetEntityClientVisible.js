@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetEntityClientVisible = void 0;
+  value: true
+});
+exports.FbSetEntityClientVisible = undefined;
 class FbSetEntityClientVisible {
   constructor(t) {
-    this.FbDataInternal = t, this.V1h = !1, this.j1h = void 0, this.Amh = !1, this.xmh = !1
+    this.FbDataInternal = t;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.Amh = false;
+    this.xmh = false;
   }
   static Create(t) {
-    if (t) return new FbSetEntityClientVisible(t)
+    if (t) {
+      return new FbSetEntityClientVisible(t);
+    }
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var i = this.FbDataInternal.entityIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get Visible() {
-    return this.Amh || (this.Amh = !0, this.xmh = this.FbDataInternal.visible()), this.xmh
+    if (!this.Amh) {
+      this.Amh = true;
+      this.xmh = this.FbDataInternal.visible();
+    }
+    return this.xmh;
   }
 }
 exports.FbSetEntityClientVisible = FbSetEntityClientVisible;

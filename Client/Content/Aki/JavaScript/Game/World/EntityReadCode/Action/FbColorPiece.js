@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbColorPiece = void 0;
+  value: true
+});
+exports.FbColorPiece = undefined;
 class FbColorPiece {
   constructor(t) {
-    this.FbDataInternal = t, this.xIh = !1, this.RIh = void 0
+    this.FbDataInternal = t;
+    this.xIh = false;
+    this.RIh = undefined;
   }
   static Create(t) {
-    if (t) return new FbColorPiece(t)
+    if (t) {
+      return new FbColorPiece(t);
+    }
   }
   get Color() {
-    return this.xIh || (this.xIh = !0, this.RIh = this.FbDataInternal.color()), this.RIh
+    if (!this.xIh) {
+      this.xIh = true;
+      this.RIh = this.FbDataInternal.color();
+    }
+    return this.RIh;
   }
 }
 exports.FbColorPiece = FbColorPiece;

@@ -1,53 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InfoDisplayNoCircleItem = void 0;
-const UE = require("ue"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  AutoAttachExhibitionItem_1 = require("../../CircleExhibition/AutoAttachExhibitionItem"),
-  InfoDisplayController_1 = require("../InfoDisplayController"),
-  FRONT_HIERACHY = 1,
-  ANIMAL_SCALE = .8,
-  LEFT_RANGE = .4,
-  MIDDLE_RANGE = .5,
-  RIGHT_RANGE = .6;
+  value: true
+});
+exports.InfoDisplayNoCircleItem = undefined;
+const UE = require("ue");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const AutoAttachExhibitionItem_1 = require("../../CircleExhibition/AutoAttachExhibitionItem");
+const InfoDisplayController_1 = require("../InfoDisplayController");
+const FRONT_HIERACHY = 1;
+const ANIMAL_SCALE = 0.8;
+const LEFT_RANGE = 0.4;
+const MIDDLE_RANGE = 0.5;
+const RIGHT_RANGE = 0.6;
 class InfoDisplayNoCircleItem extends AutoAttachExhibitionItem_1.AutoAttachExhibitionItemAbstract {
   constructor() {
-    super(...arguments), this.Pe = void 0, this.rai = "", this.nai = new UE.Vector(ANIMAL_SCALE, ANIMAL_SCALE, ANIMAL_SCALE)
+    super(...arguments);
+    this.Pe = undefined;
+    this.rai = "";
+    this.nai = new UE.Vector(ANIMAL_SCALE, ANIMAL_SCALE, ANIMAL_SCALE);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIButtonComponent],
-      [1, UE.UITexture]
-    ];
-    this.BtnBindInfo = [
-      [0, () => {
-        this.jbe()
-      }]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture]];
+    this.BtnBindInfo = [[0, () => {
+      this.jbe();
+    }]];
   }
   RefreshItem() {
-    this.rai = this.Pe[this.GetShowItemIndex()], this.rai && (this.Aqe(), this.GetRootItem().SetHierarchyIndex(0))
+    this.rai = this.Pe[this.GetShowItemIndex()];
+    if (this.rai) {
+      this.Aqe();
+      this.GetRootItem().SetHierarchyIndex(0);
+    }
   }
   SetData(t) {
-    this.Pe = t
+    this.Pe = t;
   }
   Aqe() {
-    "" !== this.rai && this.SetTextureByPath(this.rai, this.GetTexture(1))
+    if (this.rai !== "") {
+      this.SetTextureByPath(this.rai, this.GetTexture(1));
+    }
   }
   OnMoveItem(t) {
-    var i, e = this.GetRootItem(),
-      s = this.GetAttachItem().ExhibitionView.GetWidth(),
-      s = (e.GetAnchorOffsetX() + s / 2) / s,
-      r = e.RelativeScale3D;
+    var i;
+    var e = this.GetRootItem();
+    var s = this.GetAttachItem().ExhibitionView.GetWidth();
+    var s = (e.GetAnchorOffsetX() + s / 2) / s;
+    var r = e.RelativeScale3D;
     let h = 0;
-    s >= LEFT_RANGE && s <= RIGHT_RANGE ? (s >= LEFT_RANGE && s <= MIDDLE_RANGE ? (h = s - LEFT_RANGE, i = MathUtils_1.MathUtils.Lerp(ANIMAL_SCALE, 1, 10 * h), i = new UE.Vector(i, i, i), e.SetUIItemScale(i)) : (h = s - MIDDLE_RANGE, i = MathUtils_1.MathUtils.Lerp(1, ANIMAL_SCALE, 10 * h), s = new UE.Vector(i, i, i), e.SetUIItemScale(s)), this.GetRootItem().SetHierarchyIndex(FRONT_HIERACHY)) : r.X !== this.nai.X && e.SetUIItemScale(this.nai)
+    if (s >= LEFT_RANGE && s <= RIGHT_RANGE) {
+      if (s >= LEFT_RANGE && s <= MIDDLE_RANGE) {
+        h = s - LEFT_RANGE;
+        i = MathUtils_1.MathUtils.Lerp(ANIMAL_SCALE, 1, h * 10);
+        i = new UE.Vector(i, i, i);
+        e.SetUIItemScale(i);
+      } else {
+        h = s - MIDDLE_RANGE;
+        i = MathUtils_1.MathUtils.Lerp(1, ANIMAL_SCALE, h * 10);
+        s = new UE.Vector(i, i, i);
+        e.SetUIItemScale(s);
+      }
+      this.GetRootItem().SetHierarchyIndex(FRONT_HIERACHY);
+    } else if (r.X !== this.nai.X) {
+      e.SetUIItemScale(this.nai);
+    }
   }
   jbe() {
-    var t = this.GetAttachItem().ExhibitionView.ItemActor.GetWidth(),
-      t = (this.GetRootItem().GetAnchorOffsetX() + t / 2) / t;
-    t >= LEFT_RANGE && t <= RIGHT_RANGE && (ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationTexture(this.rai), InfoDisplayController_1.InfoDisplayController.OpenInfoDisplayImgView())
+    var t = this.GetAttachItem().ExhibitionView.ItemActor.GetWidth();
+    var t = (this.GetRootItem().GetAnchorOffsetX() + t / 2) / t;
+    if (t >= LEFT_RANGE && t <= RIGHT_RANGE) {
+      ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationTexture(this.rai);
+      InfoDisplayController_1.InfoDisplayController.OpenInfoDisplayImgView();
+    }
   }
 }
 exports.InfoDisplayNoCircleItem = InfoDisplayNoCircleItem;

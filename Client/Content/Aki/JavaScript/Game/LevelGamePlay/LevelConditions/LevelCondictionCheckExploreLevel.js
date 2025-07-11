@@ -1,13 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckExploreLevel = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckExploreLevel = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckExploreLevel extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r) {
-    var a = e,
-      n = ModelManager_1.ModelManager.FunctionModel.GetPlayerLevel();
+    var a = e;
+    var n = ModelManager_1.ModelManager.FunctionModel.GetPlayerLevel();
     switch (a.Compare) {
       case "Eq":
         return n === a.Level;
@@ -20,9 +22,9 @@ class LevelConditionCheckExploreLevel extends LevelGeneralBase_1.LevelConditionB
       case "Le":
         return n <= a.Level;
       case "Lt":
-        return n < a.Level
+        return n < a.Level;
     }
-    return !1
+    return false;
   }
 }
 exports.LevelConditionCheckExploreLevel = LevelConditionCheckExploreLevel;

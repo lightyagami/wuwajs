@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbThrowDestroyCondition = void 0;
+  value: true
+});
+exports.FbThrowDestroyCondition = undefined;
 class FbThrowDestroyCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Gfh = !1, this.Ofh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Gfh = false;
+    this.Ofh = 0;
   }
   static Create(t) {
-    if (t) return new FbThrowDestroyCondition(t)
+    if (t) {
+      return new FbThrowDestroyCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get DelayTime() {
-    return this.Gfh || (this.Gfh = !0, this.Ofh = this.FbDataInternal.delayTime()), this.Ofh
+    if (!this.Gfh) {
+      this.Gfh = true;
+      this.Ofh = this.FbDataInternal.delayTime();
+    }
+    return this.Ofh;
   }
 }
 exports.FbThrowDestroyCondition = FbThrowDestroyCondition;

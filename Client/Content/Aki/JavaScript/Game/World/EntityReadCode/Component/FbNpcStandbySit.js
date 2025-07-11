@@ -1,29 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcStandbySit = void 0;
+  value: true
+});
+exports.FbNpcStandbySit = undefined;
 const FbMontageId_1 = require("../Action/FbMontageId");
 class FbNpcStandbySit {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.mgh = !1, this.Cgh = void 0, this.j4h = !1, this.H4h = void 0, this.Qfh = !1, this.Kfh = 0, this.ISh = !1, this.TSh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.mgh = false;
+    this.Cgh = undefined;
+    this.j4h = false;
+    this.H4h = undefined;
+    this.Qfh = false;
+    this.Kfh = 0;
+    this.ISh = false;
+    this.TSh = 0;
   }
   static Create(t) {
-    if (t) return new FbNpcStandbySit(t)
+    if (t) {
+      return new FbNpcStandbySit(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Montage() {
-    return this.mgh || (this.mgh = !0, this.Cgh = this.FbDataInternal.montage()), this.Cgh
+    if (!this.mgh) {
+      this.mgh = true;
+      this.Cgh = this.FbDataInternal.montage();
+    }
+    return this.Cgh;
   }
   get RegisteredMontageId() {
-    return this.j4h || (this.j4h = !0, this.H4h = FbMontageId_1.FbMontageId.Create(this.FbDataInternal.registeredMontageId())), this.H4h
+    if (!this.j4h) {
+      this.j4h = true;
+      this.H4h = FbMontageId_1.FbMontageId.Create(this.FbDataInternal.registeredMontageId());
+    }
+    return this.H4h;
   }
   get FaceExpressionId() {
-    return this.Qfh || (this.Qfh = !0, this.Kfh = this.FbDataInternal.faceExpressionId()), this.Kfh
+    if (!this.Qfh) {
+      this.Qfh = true;
+      this.Kfh = this.FbDataInternal.faceExpressionId();
+    }
+    return this.Kfh;
   }
   get PosEntityId() {
-    return this.ISh || (this.ISh = !0, this.TSh = this.FbDataInternal.posEntityId()), this.TSh
+    if (!this.ISh) {
+      this.ISh = true;
+      this.TSh = this.FbDataInternal.posEntityId();
+    }
+    return this.TSh;
   }
 }
 exports.FbNpcStandbySit = FbNpcStandbySit;

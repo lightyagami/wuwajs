@@ -1,19 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ConfigBase = void 0;
+  value: true
+});
+exports.ConfigBase = undefined;
 class ConfigBase {
   Init() {
-    return this.OnInit()
+    return this.OnInit();
   }
   Clear() {
-    return this.OnClear()
+    return this.OnClear();
   }
   OnInit() {
-    return !0
+    return true;
   }
   OnClear() {
-    return !0
+    return true;
   }
 }
 exports.ConfigBase = ConfigBase;

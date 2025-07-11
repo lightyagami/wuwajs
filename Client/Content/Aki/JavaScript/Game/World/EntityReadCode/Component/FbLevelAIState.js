@@ -1,28 +1,56 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbLevelAIState = void 0;
-const UnionLevelAIBehaviourHelper_1 = require("./UnionLevelAIBehaviourHelper"),
-  FbConditionGroup_1 = require("../Condition/FbConditionGroup");
+  value: true
+});
+exports.FbLevelAIState = undefined;
+const UnionLevelAIBehaviourHelper_1 = require("./UnionLevelAIBehaviourHelper");
+const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbLevelAIState {
   constructor(t) {
-    this.FbDataInternal = t, this.Q_h = !1, this.K_h = 0, this.ewh = !1, this.twh = void 0, this.f_h = !1, this.X6o = void 0, this.iwh = !1, this.rwh = void 0
+    this.FbDataInternal = t;
+    this.Q_h = false;
+    this.K_h = 0;
+    this.ewh = false;
+    this.twh = undefined;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.iwh = false;
+    this.rwh = undefined;
   }
   static Create(t) {
-    if (t) return new FbLevelAIState(t)
+    if (t) {
+      return new FbLevelAIState(t);
+    }
   }
   get StateId() {
-    return this.Q_h || (this.Q_h = !0, this.K_h = this.FbDataInternal.stateId()), this.K_h
+    if (!this.Q_h) {
+      this.Q_h = true;
+      this.K_h = this.FbDataInternal.stateId();
+    }
+    return this.K_h;
   }
   get StateName() {
-    return this.ewh || (this.ewh = !0, this.twh = this.FbDataInternal.stateName()), this.twh
+    if (!this.ewh) {
+      this.ewh = true;
+      this.twh = this.FbDataInternal.stateName();
+    }
+    return this.twh;
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get Behaviour() {
-    var t, i;
-    return !this.iwh && (this.iwh = !0, t = this.FbDataInternal.behaviourType(), i = UnionLevelAIBehaviourHelper_1.UnionLevelAIBehaviourHelper.GetUnionLevelAIBehaviourObject(t)) && (this.rwh = UnionLevelAIBehaviourHelper_1.UnionLevelAIBehaviourHelper.ReadUnionLevelAIBehaviour(t, this.FbDataInternal.behaviour(i))), this.rwh
+    var t;
+    var i;
+    if (!this.iwh && (this.iwh = true, t = this.FbDataInternal.behaviourType(), i = UnionLevelAIBehaviourHelper_1.UnionLevelAIBehaviourHelper.GetUnionLevelAIBehaviourObject(t))) {
+      this.rwh = UnionLevelAIBehaviourHelper_1.UnionLevelAIBehaviourHelper.ReadUnionLevelAIBehaviour(t, this.FbDataInternal.behaviour(i));
+    }
+    return this.rwh;
   }
 }
 exports.FbLevelAIState = FbLevelAIState;

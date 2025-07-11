@@ -1,35 +1,49 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsDangoBroadcastItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  RacingBetsDefine_1 = require("../../RacingBetsDefine");
+  value: true
+});
+exports.RacingBetsDangoBroadcastItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const RacingBetsDefine_1 = require("../../RacingBetsDefine");
 class RacingBetsDangoBroadcastItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Iv1 = 0, this.Tv1 = 0, this.bv1 = !1, this.Kxc = void 0
+    super(...arguments);
+    this.Kv1 = 0;
+    this.Xv1 = 0;
+    this.Yv1 = false;
+    this.Kxc = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText]];
   }
   Init(e) {
-    this.Kxc = e
+    this.Kxc = e;
   }
   OnTick(e) {
-    this.bv1 ? (this.Rv1(e), this.Tv1 += e, this.Tv1 > this.Iv1 && (this.Tv1 = 0, this.bv1 = !1)) : this.Lv1()
+    if (this.Yv1) {
+      this.zv1(e);
+      this.Xv1 += e;
+      if (this.Xv1 > this.Kv1) {
+        this.Xv1 = 0;
+        this.Yv1 = false;
+      }
+    } else {
+      this.Jv1();
+    }
   }
-  Rv1(e) {
+  zv1(e) {
     var t = this.GetText(1);
-    t.SetAnchorOffsetX(t.GetAnchorOffsetX() - e * RacingBetsDefine_1.RACING_BETS_DANGO_BROADCAST_MOVE_SPEED)
+    t.SetAnchorOffsetX(t.GetAnchorOffsetX() - e * RacingBetsDefine_1.RACING_BETS_DANGO_BROADCAST_MOVE_SPEED);
   }
-  Lv1() {
-    this.bv1 = !0;
-    var e = this.GetText(1),
-      t = this.GetItem(0).Width;
-    e.SetAnchorOffsetX(t), e.ShowTextNew(this.Kxc.GetDangoBroadcastText()), this.Iv1 = (t + e.GetTextRenderSize().X) / RacingBetsDefine_1.RACING_BETS_DANGO_BROADCAST_MOVE_SPEED + RacingBetsDefine_1.RACING_BETS_DANGO_BROADCAST_INTERVAL
+  Jv1() {
+    this.Yv1 = true;
+    var e = this.GetText(1);
+    var t = this.GetItem(0).Width;
+    e.SetAnchorOffsetX(t);
+    e.ShowTextNew(this.Kxc.GetDangoBroadcastText());
+    this.Kv1 = (t + e.GetTextRenderSize().X) / RacingBetsDefine_1.RACING_BETS_DANGO_BROADCAST_MOVE_SPEED + RacingBetsDefine_1.RACING_BETS_DANGO_BROADCAST_INTERVAL;
   }
 }
 exports.RacingBetsDangoBroadcastItem = RacingBetsDangoBroadcastItem;

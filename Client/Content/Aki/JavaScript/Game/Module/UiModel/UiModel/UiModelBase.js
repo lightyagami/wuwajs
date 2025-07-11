@@ -1,46 +1,84 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiModelBase = void 0;
+  value: true
+});
+exports.UiModelBase = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 class UiModelBase {
   constructor(o) {
-    this.Id = 0, this.xxo = new Array, this.UseWay = void 0, this.UseWay = o
+    this.Id = 0;
+    this.xxo = new Array();
+    this.UseWay = undefined;
+    this.UseWay = o;
   }
   GetComponent(o) {
-    return this.xxo[o]
+    return this.xxo[o];
   }
   GetComponentByCtor(o) {
-    for (const t of this.xxo)
-      if (t instanceof o) return t
+    for (const t of this.xxo) {
+      if (t instanceof o) {
+        return t;
+      }
+    }
   }
   CheckGetComponent(o) {
     var t = this.GetComponent(o);
-    return t || Log_1.Log.CheckError() && Log_1.Log.Error("Character", 43, "获取组件失败", ["Id", this.Id], ["uiModelName", this.constructor.name], ["component", o]), t
+    if (!t) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 43, "获取组件失败", ["Id", this.Id], ["uiModelName", this.constructor.name], ["component", o]);
+      }
+    }
+    return t;
   }
   AddComponent(o) {
     var t = o.Id;
-    if (t < 0) Log_1.Log.CheckError() && Log_1.Log.Error("UiComponent", 43, "组件未注册, 请检查是否使用装饰器RegisterUiModelComponent注册", ["uiModelName", this.constructor.name], ["componentName", o.name]);
-    else {
-      if (t >= this.xxo.length)
-        for (let o = this.xxo.length; o <= t; o++) this.xxo.push(void 0);
-      this.xxo[t] ? Log_1.Log.CheckError() && Log_1.Log.Error("UiComponent", 43, "添加组件失败：组件已存在，请勿重复添加！", ["uiModelName", this.constructor.name], ["componentName", o.name]) : ((o = new o).Create(this), this.xxo[t] = o)
+    if (t < 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("UiComponent", 43, "组件未注册, 请检查是否使用装饰器RegisterUiModelComponent注册", ["uiModelName", this.constructor.name], ["componentName", o.name]);
+      }
+    } else {
+      if (t >= this.xxo.length) {
+        for (let o = this.xxo.length; o <= t; o++) {
+          this.xxo.push(undefined);
+        }
+      }
+      if (this.xxo[t]) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("UiComponent", 43, "添加组件失败：组件已存在，请勿重复添加！", ["uiModelName", this.constructor.name], ["componentName", o.name]);
+        }
+      } else {
+        (o = new o()).Create(this);
+        this.xxo[t] = o;
+      }
     }
   }
   Init() {
-    for (const o of this.xxo) o?.Init()
+    for (const o of this.xxo) {
+      o?.Init();
+    }
   }
   Start() {
-    for (const o of this.xxo) o?.Start()
+    for (const o of this.xxo) {
+      o?.Start();
+    }
   }
   Tick(o) {
-    for (const t of this.xxo) t && t.NeedTick && t.Tick(o)
+    for (const t of this.xxo) {
+      if (t && t.NeedTick) {
+        t.Tick(o);
+      }
+    }
   }
   End() {
-    for (const o of this.xxo) o?.End()
+    for (const o of this.xxo) {
+      o?.End();
+    }
   }
   Clear() {
-    for (const o of this.xxo) o?.Clear()
+    for (const o of this.xxo) {
+      o?.Clear();
+    }
   }
 }
 exports.UiModelBase = UiModelBase;

@@ -1,49 +1,77 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoveSkillItem = void 0;
-const Info_1 = require("../../../../Core/Common/Info"),
-  InputController_1 = require("../../../Input/InputController"),
-  InputEnums_1 = require("../../../Input/InputEnums"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  BattleSkillItem_1 = require("./BattleSkillItem");
+  value: true
+});
+exports.MoveSkillItem = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
+const InputController_1 = require("../../../Input/InputController");
+const InputEnums_1 = require("../../../Input/InputEnums");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const BattleSkillItem_1 = require("./BattleSkillItem");
 class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
   constructor() {
-    super(...arguments), this.wut = !1, this.$ct = InputEnums_1.EInputAxis.None, this.jce = 0, this.Rhu = 0, this.zfu = !0
+    super(...arguments);
+    this.wut = false;
+    this.$ct = InputEnums_1.EInputAxis.None;
+    this.jce = 0;
+    this.dfu = 0;
+    this.I2u = true;
   }
-  RefreshByMoveType(t, e, i = !0) {
-    this.$ct = t, this.jce = e, this.zfu = i, this.IsShowOrShowing || this.Show()
+  RefreshByMoveType(t, e, i = true) {
+    this.$ct = t;
+    this.jce = e;
+    this.I2u = i;
+    if (!this.IsShowOrShowing) {
+      this.Show();
+    }
   }
   RefreshKeyByActionName(t) {
     var e = Info_1.Info.OperationType;
-    2 !== e || this.KeyActionName === t && this.KeyOperationType === e || (this.KeyItem && (this.KeyItem.RefreshByActionOrAxis({
-      ActionOrAxisName: t
-    }), this.KeyItem.SetActive(!0)), this.KeyOperationType = e, this.KeyActionName = t)
+    if (e === 2 && (this.KeyActionName !== t || this.KeyOperationType !== e)) {
+      if (this.KeyItem) {
+        this.KeyItem.RefreshByActionOrAxis({
+          ActionOrAxisName: t
+        });
+        this.KeyItem.SetActive(true);
+      }
+      this.KeyOperationType = e;
+      this.KeyActionName = t;
+    }
   }
   RefreshSkillIconByResId(t) {
     t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    this.SetSkillIcon(t)
+    this.SetSkillIcon(t);
   }
   OnSkillButtonPressed() {
-    this.wut = !0, this.ClickEffect?.Play(), InputController_1.InputController.InputAxis(this.$ct, this.jce, this.zfu)
+    this.wut = true;
+    this.ClickEffect?.Play();
+    InputController_1.InputController.InputAxis(this.$ct, this.jce, this.I2u);
   }
   OnSkillButtonReleased() {
-    this.wut = !1, InputController_1.InputController.InputAxis(this.$ct, 0, this.zfu)
+    this.wut = false;
+    InputController_1.InputController.InputAxis(this.$ct, 0, this.I2u);
   }
   Tick(t) {
-    super.Tick(t), this.wut && this.zfu && InputController_1.InputController.InputAxis(this.$ct, this.jce)
+    super.Tick(t);
+    if (this.wut && this.I2u) {
+      InputController_1.InputController.InputAxis(this.$ct, this.jce);
+    }
   }
   OnBeforeHide() {
-    this.wut = !1
+    this.wut = false;
   }
   OnInputAction() {
-    this.ClickEffect?.Play()
+    this.ClickEffect?.Play();
   }
   SetCustomDynamicEffectId(t) {
-    this.Rhu = t, this.RefreshDynamicEffect()
+    this.dfu = t;
+    this.RefreshDynamicEffect();
   }
   GetDynamicEffectConfig() {
-    if (0 !== this.Rhu) return ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillButtonEffectConfig(this.Rhu)
+    if (this.dfu !== 0) {
+      return ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillButtonEffectConfig(this.dfu);
+    }
   }
 }
 exports.MoveSkillItem = MoveSkillItem;

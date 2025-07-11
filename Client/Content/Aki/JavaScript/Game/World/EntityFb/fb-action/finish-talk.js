@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FinishTalk = void 0;
+  value: true
+});
+exports.FinishTalk = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class FinishTalk {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(i, t) {
-    return this.bb_pos = i, this.bb = t, this
+    this.bb_pos = i;
+    this.bb = t;
+    return this;
   }
   static getRootAsFinishTalk(i, t) {
-    return (t || new FinishTalk).__init(i.readInt32(i.position()) + i.position(), i)
+    return (t || new FinishTalk()).__init(i.readInt32(i.position()) + i.position(), i);
   }
   static getSizePrefixedRootAsFinishTalk(i, t) {
-    return i.setPosition(i.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new FinishTalk).__init(i.readInt32(i.position()) + i.position(), i)
+    i.setPosition(i.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new FinishTalk()).__init(i.readInt32(i.position()) + i.position(), i);
   }
   static startFinishTalk(i) {
-    i.startObject(0)
+    i.startObject(0);
   }
   static endFinishTalk(i) {
-    return i.endObject()
+    return i.endObject();
   }
   static createFinishTalk(i) {
-    return FinishTalk.startFinishTalk(i), FinishTalk.endFinishTalk(i)
+    FinishTalk.startFinishTalk(i);
+    return FinishTalk.endFinishTalk(i);
   }
 }
 exports.FinishTalk = FinishTalk;

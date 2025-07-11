@@ -1,34 +1,84 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VisibleAnimMachine = void 0;
+  value: true
+});
+exports.VisibleAnimMachine = undefined;
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 class VisibleAnimMachine {
   constructor() {
-    this.State = 0, this.Visible = !1, this.VisibleCallback = void 0, this.PlayAnimCallback = void 0, this.StopAnimCallback = void 0, this._Ct = void 0, this.uCt = () => {
-      this._Ct = void 0, 3 === this.State ? (this.State = 0, this.VisibleCallback(!1)) : 2 === this.State && (this.State = 1)
-    }
+    this.State = 0;
+    this.Visible = false;
+    this.VisibleCallback = undefined;
+    this.PlayAnimCallback = undefined;
+    this.StopAnimCallback = undefined;
+    this._Ct = undefined;
+    this.uCt = () => {
+      this._Ct = undefined;
+      if (this.State === 3) {
+        this.State = 0;
+        this.VisibleCallback(false);
+      } else if (this.State === 2) {
+        this.State = 1;
+      }
+    };
   }
   InitCallback(i, t, s) {
-    this.VisibleCallback = i, this.PlayAnimCallback = t, this.StopAnimCallback = s
+    this.VisibleCallback = i;
+    this.PlayAnimCallback = t;
+    this.StopAnimCallback = s;
   }
   InitVisible(i) {
-    this.Visible = i, this.State = i ? 1 : 0
+    this.Visible = i;
+    this.State = i ? 1 : 0;
   }
   SetVisible(i, t) {
-    this.Visible !== i && (this.Visible = i, this.StopAnimCallback(!i), 0 < t ? (i ? (this.VisibleCallback(!0), this.State = 2) : this.State = 3, this.PlayAnimCallback(i), this.BCe(), this._Ct = TimerSystem_1.TimerSystem.Delay(this.uCt, t)) : (this.State = i ? 1 : 0, this.VisibleCallback(i)))
+    if (this.Visible !== i) {
+      this.Visible = i;
+      this.StopAnimCallback(!i);
+      if (t > 0) {
+        if (i) {
+          this.VisibleCallback(true);
+          this.State = 2;
+        } else {
+          this.State = 3;
+        }
+        this.PlayAnimCallback(i);
+        this.BCe();
+        this._Ct = TimerSystem_1.TimerSystem.Delay(this.uCt, t);
+      } else {
+        this.State = i ? 1 : 0;
+        this.VisibleCallback(i);
+      }
+    }
   }
   ForcePlayShowAnim(i) {
-    2 !== this.State && (3 === this.State && this.StopAnimCallback(!1), this.State = 2, this.PlayAnimCallback(!0), this.BCe(), this._Ct = TimerSystem_1.TimerSystem.Delay(this.uCt, i))
+    if (this.State !== 2) {
+      if (this.State === 3) {
+        this.StopAnimCallback(false);
+      }
+      this.State = 2;
+      this.PlayAnimCallback(true);
+      this.BCe();
+      this._Ct = TimerSystem_1.TimerSystem.Delay(this.uCt, i);
+    }
   }
   Reset() {
-    this.BCe()
+    this.BCe();
   }
   Deactivate() {
-    this.BCe(), 3 === this.State ? this.StopAnimCallback(!1) : 2 === this.State && this.StopAnimCallback(!0)
+    this.BCe();
+    if (this.State === 3) {
+      this.StopAnimCallback(false);
+    } else if (this.State === 2) {
+      this.StopAnimCallback(true);
+    }
   }
   BCe() {
-    this._Ct && (TimerSystem_1.TimerSystem.Remove(this._Ct), this._Ct = void 0)
+    if (this._Ct) {
+      TimerSystem_1.TimerSystem.Remove(this._Ct);
+      this._Ct = undefined;
+    }
   }
 }
 exports.VisibleAnimMachine = VisibleAnimMachine;

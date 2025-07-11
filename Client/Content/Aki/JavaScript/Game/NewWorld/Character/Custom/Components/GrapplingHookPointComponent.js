@@ -1,206 +1,296 @@
 "use strict";
-var GrapplingHookPointComponent_1, __decorate = this && this.__decorate || function(t, e, i, o) {
-  var r, n = arguments.length,
-    s = n < 3 ? e : null === o ? o = Object.getOwnPropertyDescriptor(e, i) : o;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, i, o);
-  else
-    for (var h = t.length - 1; 0 <= h; h--)(r = t[h]) && (s = (n < 3 ? r(s) : 3 < n ? r(e, i, s) : r(e, i)) || s);
-  return 3 < n && s && Object.defineProperty(e, i, s), s
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GrapplingHookPointComponent = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  Rotator_1 = require("../../../../../Core/Utils/Math/Rotator"),
-  Vector_1 = require("../../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../../../Common/TimeUtil"),
-  EffectSystem_1 = require("../../../../Effect/EffectSystem"),
-  TsEffectActor_1 = require("../../../../Effect/TsEffectActor"),
-  Global_1 = require("../../../../Global"),
-  LevelGamePlayController_1 = require("../../../../LevelGamePlay/LevelGamePlayController"),
-  LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGeneralContextDefine"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  CharacterNameDefines_1 = require("../../Common/CharacterNameDefines"),
-  HOOK_VISION_ID = 1001,
-  OVERWRITE_HOOK_LOCATION_KEY = "OverwriteLocation",
-  hookPointStateTagMap = new Map([
-    [0, 1888174838],
-    [1, -1156116864],
-    [2, -43463105]
-  ]),
-  hookTypeTagMap = new Map([
-    ["FixedPointHook", -833935142],
-    ["SuiGuangHook", 561771029],
-    ["KiteHook", -1526637662],
-    ["RagDollJumpingPoint", -1347421268],
-    ["RagDollClimbingPoint", 1978109078],
-    ["MovementPointHook", -1771378495],
-    ["SlashHook", -105059496],
-    ["ChargeSlashHook", -105059496]
-  ]),
-  slashLeftQteTag = 898914517,
-  slashRightQteTag = 2102950531;
-let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class GrapplingHookPointComponent extends EntityComponent_1.EntityComponent {
-  constructor() {
-    super(...arguments), this.cql = -1, this.mql = void 0, this.dql = !1, this._ou = void 0, this.mjl = !1, this.Lo = void 0, this.Lie = void 0, this.RadiusSquared = 0, this.ac = 3, this.Hte = void 0, this.N1_ = void 0, this.Hfn = void 0, this.fen = !1, this.d6o = void 0, this.Ful = 0, this.ggl = 0, this.pgl = () => {
-      ++this.Ful
-    }, this.fgl = () => {
-      ++this.ggl, ++this.Ful
-    }, this.Rnn = () => {
-      var t = this.Hte?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation();
-      this.dql = !!t
-    }, this.pen = t => {
-      t === HOOK_VISION_ID && (this.Lie.AddTag(1888174838), this.ac = 0)
+
+var GrapplingHookPointComponent_1;
+var __decorate = this && this.__decorate || function (t, e, i, o) {
+  var r;
+  var n = arguments.length;
+  var s = n < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    s = Reflect.decorate(t, e, i, o);
+  } else {
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (r = t[h]) {
+        s = (n < 3 ? r(s) : n > 3 ? r(e, i, s) : r(e, i)) || s;
+      }
     }
   }
+  if (n > 3 && s) {
+    Object.defineProperty(e, i, s);
+  }
+  return s;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GrapplingHookPointComponent = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../Core/Common/Time");
+const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const EffectSystem_1 = require("../../../../Effect/EffectSystem");
+const TsEffectActor_1 = require("../../../../Effect/TsEffectActor");
+const Global_1 = require("../../../../Global");
+const LevelGamePlayController_1 = require("../../../../LevelGamePlay/LevelGamePlayController");
+const LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGeneralContextDefine");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
+const HOOK_VISION_ID = 1001;
+const OVERWRITE_HOOK_LOCATION_KEY = "OverwriteLocation";
+const hookPointStateTagMap = new Map([[0, 1888174838], [1, -1156116864], [2, -43463105]]);
+const hookTypeTagMap = new Map([["FixedPointHook", -833935142], ["SuiGuangHook", 561771029], ["KiteHook", -1526637662], ["RagDollJumpingPoint", -1347421268], ["RagDollClimbingPoint", 1978109078], ["MovementPointHook", -1771378495], ["SlashHook", -105059496], ["ChargeSlashHook", -105059496]]);
+const slashLeftQteTag = 898914517;
+const slashRightQteTag = 2102950531;
+let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class GrapplingHookPointComponent extends EntityComponent_1.EntityComponent {
+  constructor() {
+    super(...arguments);
+    this.cql = -1;
+    this.mql = undefined;
+    this.dql = false;
+    this.Jau = undefined;
+    this.mjl = false;
+    this.Lo = undefined;
+    this.Lie = undefined;
+    this.RadiusSquared = 0;
+    this.ac = 3;
+    this.Hte = undefined;
+    this.N1_ = undefined;
+    this.Hfn = undefined;
+    this.fen = false;
+    this.d6o = undefined;
+    this.Ful = 0;
+    this.ggl = 0;
+    this.pgl = () => {
+      ++this.Ful;
+    };
+    this.fgl = () => {
+      ++this.ggl;
+      ++this.Ful;
+    };
+    this.Rnn = () => {
+      var t = this.Hte?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation();
+      this.dql = !!t;
+    };
+    this.pen = t => {
+      if (t === HOOK_VISION_ID) {
+        this.Lie.AddTag(1888174838);
+        this.ac = 0;
+      }
+    };
+  }
   get HookLocation() {
-    return this.Cql ?? this.Hte?.ActorLocationProxy ?? Vector_1.Vector.ZeroVectorProxy
+    return this.Cql ?? this.Hte?.ActorLocationProxy ?? Vector_1.Vector.ZeroVectorProxy;
   }
   get Cql() {
     var t;
-    if (this.dql) return this.cql < Time_1.Time.Frame && (this.cql = Time_1.Time.Frame, (t = this.Hte?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation()) ? (this.mql || (this.mql = Vector_1.Vector.Create()), this.mql.FromUeVector(t)) : (this.mql = void 0, this.dql = !1)), this.mql
+    if (this.dql) {
+      if (this.cql < Time_1.Time.Frame) {
+        this.cql = Time_1.Time.Frame;
+        if (t = this.Hte?.GetActorInSceneInteraction(OVERWRITE_HOOK_LOCATION_KEY)?.D_K2_GetActorLocation()) {
+          this.mql ||= Vector_1.Vector.Create();
+          this.mql.FromUeVector(t);
+        } else {
+          this.mql = undefined;
+          this.dql = false;
+        }
+      }
+      return this.mql;
+    }
   }
   get TriggerLocation() {
-    var t = this.Hte.ActorTransform,
-      e = Vector_1.Vector.Create(this.Lo?.Range.Center.X ?? 0, this.Lo?.Range.Center.Y ?? 0, this.Lo?.Range.Center.Z ?? 0);
-    return Vector_1.Vector.Create(t.TransformPosition(e.ToUeVector()))
+    var t = this.Hte.ActorTransform;
+    var e = Vector_1.Vector.Create(this.Lo?.Range.Center.X ?? 0, this.Lo?.Range.Center.Y ?? 0, this.Lo?.Range.Center.Z ?? 0);
+    return Vector_1.Vector.Create(t.TransformPosition(e.ToUeVector()));
   }
   get Radius() {
-    return this.Lo?.Range.Radius ?? 0
+    return this.Lo?.Range.Radius ?? 0;
   }
   get CameraGaze() {
-    return this.Lo?.CameraGaze
+    return this.Lo?.CameraGaze;
   }
   get InheritSpeed() {
-    return this.Lo?.InheritSpeed ?? !1
+    return this.Lo?.InheritSpeed ?? false;
   }
   get IsClimb() {
-    return this.Lo?.IsClimb ?? !1
+    return this.Lo?.IsClimb ?? false;
   }
   get IsInCd() {
-    return this.fen
+    return this.fen;
   }
   get WillBeDestroyedAfterHook() {
-    return this.Lo?.IsDestroyedSelf ?? !1
+    return this.Lo?.IsDestroyedSelf ?? false;
   }
   get WillBeHideAfterHook() {
-    return this.Lo?.IsHideSelf ?? !1
+    return this.Lo?.IsHideSelf ?? false;
   }
   get UseRangeComponent() {
-    return this.Lo?.UseRangeComponent ?? !1
+    return this.Lo?.UseRangeComponent ?? false;
   }
   get GazeNextPointAfterInteract() {
-    return this.Lo?.GazeNextPointAfterInteract
+    return this.Lo?.GazeNextPointAfterInteract;
   }
   get MatchRoleOption() {
-    return this.Lo?.MatchRoleOption
+    return this.Lo?.MatchRoleOption;
   }
   get IsSummitPoint() {
-    return ("RagDollClimbingPoint" === this.Lo?.HookInteractConfig?.Type && this.Lo.HookInteractConfig.IsSummitPoint) ?? !1
+    return (this.Lo?.HookInteractConfig?.Type === "RagDollClimbingPoint" && this.Lo.HookInteractConfig.IsSummitPoint) ?? false;
   }
   get IsNormalHookPoint() {
     var t = this.Lo?.HookInteractConfig?.Type;
-    return void 0 === t || "FixedPointHook" === t
+    return t === undefined || t === "FixedPointHook";
   }
   get OnlineTypeCanInteract() {
-    return LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(this.Hfn)
+    return LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(this.Hfn);
   }
   get IsHookDisabled() {
-    return this.mjl
+    return this.mjl;
   }
   get IsIgnorePlayerCollision() {
-    return this.Lo?.IgnorePlayCollision ?? !1
+    return this.Lo?.IgnorePlayCollision ?? false;
   }
   get SplineMoveEndCount() {
-    return this.Ful
+    return this.Ful;
   }
   get SplineMoveBrokenCount() {
-    return this.ggl
+    return this.ggl;
   }
   OnInitData(t) {
     var t = t.GetParam(GrapplingHookPointComponent_1)[0];
-    if (this.Lo = t || void 0, this.Lo.PlayerStateRestritionId && (t = {
+    this.Lo = t || undefined;
+    if (this.Lo.PlayerStateRestritionId) {
+      t = {
         Type: "CheckPlayerStateRestriction",
         RestrictionId: this.Lo.PlayerStateRestritionId
-      }, this.N1_ || (this.N1_ = []), this.N1_.push({
+      };
+      this.N1_ ||= [];
+      this.N1_.push({
         Type: 0,
         Conditions: [t]
-      })), this.Lo.HookEnableCondition && (this.N1_ || (this.N1_ = []), this.N1_.push(this.Lo.HookEnableCondition)), this.Lie = this.Entity.GetComponent(196), this.Lie?.Valid && this.Lie.AddTag(-254251760), this.Lo.HookInteractConfig) {
-      if (this.d6o = hookTypeTagMap.get(this.Lo.HookInteractConfig.Type), "SlashHook" === this.Lo.HookInteractConfig.Type) switch (this.Lo.HookInteractConfig.SlashHitType) {
-        case "QTELeft":
-          this.d6o = slashLeftQteTag;
-          break;
-        case "QTERight":
-          this.d6o = slashRightQteTag
+      });
+    }
+    if (this.Lo.HookEnableCondition) {
+      this.N1_ ||= [];
+      this.N1_.push(this.Lo.HookEnableCondition);
+    }
+    this.Lie = this.Entity.GetComponent(196);
+    if (this.Lie?.Valid) {
+      this.Lie.AddTag(-254251760);
+    }
+    if (this.Lo.HookInteractConfig) {
+      this.d6o = hookTypeTagMap.get(this.Lo.HookInteractConfig.Type);
+      if (this.Lo.HookInteractConfig.Type === "SlashHook") {
+        switch (this.Lo.HookInteractConfig.SlashHitType) {
+          case "QTELeft":
+            this.d6o = slashLeftQteTag;
+            break;
+          case "QTERight":
+            this.d6o = slashRightQteTag;
+        }
       }
-    } else this.d6o = -833935142;
+    } else {
+      this.d6o = -833935142;
+    }
     this.RadiusSquared = MathUtils_1.MathUtils.Square(this.Radius);
     t = this.Entity.GetComponent(0);
-    return this.mjl = t.PbHookLockPointDisabled, !0
+    this.mjl = t.PbHookLockPointDisabled;
+    return true;
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(202);
     var e = this.Entity.GetComponent(0);
     if (e) {
       e = e.GetBaseInfo();
-      this.Hfn = e?.OnlineInteractType, GrapplingHookPointComponent_1.ven || ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.has(HOOK_VISION_ID) && (GrapplingHookPointComponent_1.ven = !0);
-      let t = !1;
-      if (GrapplingHookPointComponent_1.ven) {
-        for (const i of hookPointStateTagMap.keys())
-          if (this.Lie.HasTag(i)) {
-            t = !0;
-            break
-          } t || (this.Lie.AddTag(1888174838), this.ac = 0)
+      this.Hfn = e?.OnlineInteractType;
+      if (!GrapplingHookPointComponent_1.ven) {
+        if (ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.has(HOOK_VISION_ID)) {
+          GrapplingHookPointComponent_1.ven = true;
+        }
       }
-      GrapplingHookPointComponent_1.AllPoints.push(this), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddExploreVisionSkill, this.pen), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn)
+      let t = false;
+      if (GrapplingHookPointComponent_1.ven) {
+        for (const i of hookPointStateTagMap.keys()) {
+          if (this.Lie.HasTag(i)) {
+            t = true;
+            break;
+          }
+        }
+        if (!t) {
+          this.Lie.AddTag(1888174838);
+          this.ac = 0;
+        }
+      }
+      GrapplingHookPointComponent_1.AllPoints.push(this);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddExploreVisionSkill, this.pen);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     }
-    return !0
+    return true;
   }
   OnEnd() {
     var t = GrapplingHookPointComponent_1.AllPoints.indexOf(this);
-    return 0 <= t && GrapplingHookPointComponent_1.AllPoints.splice(t, 1), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddExploreVisionSkill, this.pen), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn), !0
+    if (t >= 0) {
+      GrapplingHookPointComponent_1.AllPoints.splice(t, 1);
+    }
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddExploreVisionSkill, this.pen);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.fgl);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.pgl);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+    return true;
   }
   UpdateHookPointInfoByNotify(t) {
-    this.mjl = t.UI_
+    this.mjl = t.UI_;
   }
   IsMovable() {
-    return !!this.Entity.GetComponent(67) || "SuiGuangHook" === this.GetHookInteractType()
+    return !!this.Entity.GetComponent(67) || this.GetHookInteractType() === "SuiGuangHook";
   }
   ChangeHookPointState(t) {
-    this.ac !== t && (this.Lie.RemoveTag(hookPointStateTagMap.get(this.ac)), 1 === this.ac && this.Entity.GetComponent(202).PlaySceneInteractionEndEffect(0), this.ac = t, this.Lie.AddTag(hookPointStateTagMap.get(this.ac)))
+    if (this.ac !== t) {
+      this.Lie.RemoveTag(hookPointStateTagMap.get(this.ac));
+      if (this.ac === 1) {
+        this.Entity.GetComponent(202).PlaySceneInteractionEndEffect(0);
+      }
+      this.ac = t;
+      this.Lie.AddTag(hookPointStateTagMap.get(this.ac));
+    }
   }
   CheckCondition() {
-    return void 0 === this.N1_ || 0 === this.N1_.length || this.N1_.every(t => ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)))
+    return this.N1_ === undefined || this.N1_.length === 0 || this.N1_.every(t => ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
   }
   BeHooked(t) {
-    this.zNc(), "SlashHook" === this.Lo?.HookInteractConfig?.Type && this.JNc(t)
+    this.zNc();
+    if (this.Lo?.HookInteractConfig?.Type === "SlashHook") {
+      this.JNc(t);
+    }
   }
   zNc() {
-    this.Lo.HookLockCd && (this.fen = !0, TimerSystem_1.TimerSystem.Delay(() => {
-      this.fen = !1
-    }, this.Lo.HookLockCd * TimeUtil_1.TimeUtil.InverseMillisecond))
+    if (this.Lo.HookLockCd) {
+      this.fen = true;
+      TimerSystem_1.TimerSystem.Delay(() => {
+        this.fen = false;
+      }, this.Lo.HookLockCd * TimeUtil_1.TimeUtil.InverseMillisecond);
+    }
   }
   JNc(t) {
-    var e = this.Lo?.HookInteractConfig,
-      i = e.SlashAngleType,
-      e = e.DefaultSlashDir,
-      o = (Global_1.Global.BaseCharacter?.GetEntityNoBlueprint())?.GetComponent(205);
+    var e = this.Lo?.HookInteractConfig;
+    var i = e.SlashAngleType;
+    var e = e.DefaultSlashDir;
+    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(205);
     if (o) {
       switch (i) {
         case "Slash30":
           o.AddTag(-1342468038);
           break;
         case "Slash45":
-          o.AddTag(-1374150200)
+          o.AddTag(-1374150200);
       }
       switch (e) {
         case "Vertical":
@@ -215,7 +305,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
           break;
         case "Negative30":
         case "Negative45":
-          o.AddTag(-278703698)
+          o.AddTag(-278703698);
       }
     }
   }
@@ -224,70 +314,99 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     if (t?.IsValid()) {
       if (t instanceof TsEffectActor_1.default) {
         var e = t.GetHandle();
-        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) return !1
+        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) {
+          return false;
+        }
       } else if (t.IsA(UE.EffectSystemActor.StaticClass())) {
         e = t.GetHandle();
-        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) return !1
+        if (!EffectSystem_1.EffectSystem.IsValid(e) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) {
+          return false;
+        }
       }
-      return UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid()) ? !1 : t.WasRecentlyRenderedOnScreen(.5)
+      if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM) && (this.Hte.RefreshShowActor(), !(t = this.Hte?.CurLevelPrefabShowActor)?.IsValid())) {
+        return false;
+      } else {
+        return t.WasRecentlyRenderedOnScreen(0.5);
+      }
     }
-    return !1
+    return false;
   }
   GetTagId() {
-    return this.d6o
+    return this.d6o;
   }
   GetHookInteractType() {
-    return this.Lo.HookInteractConfig?.Type ?? "FixedPointHook"
+    return this.Lo.HookInteractConfig?.Type ?? "FixedPointHook";
   }
   GetHookActions() {
-    return this.Lo.HookInteractConfig?.HookActions
+    return this.Lo.HookInteractConfig?.HookActions;
   }
   GetInterruptHookActions() {
-    return this.Lo.HookInteractConfig?.ExitHookActions
+    return this.Lo.HookInteractConfig?.ExitHookActions;
   }
   GetFinishHookActions() {
-    return this.Lo.HookInteractConfig?.FinishActions
+    return this.Lo.HookInteractConfig?.FinishActions;
   }
   GetSlashHookCharacterLookAtPoint() {
-    var t, e = Vector_1.Vector.Create();
-    return ("SlashHook" === this.Lo.HookInteractConfig?.Type || "ChargeSlashHook" === this.Lo.HookInteractConfig?.Type) && (t = this.Lo?.HookInteractConfig.CharacterLookAtPointId) && (t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t)) && t.Transform ? (e.FromConfigVector(t.Transform.Pos), e) : void 0
+    var t;
+    var e = Vector_1.Vector.Create();
+    if ((this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") && (t = this.Lo?.HookInteractConfig.CharacterLookAtPointId) && (t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t)) && t.Transform) {
+      e.FromConfigVector(t.Transform.Pos);
+      return e;
+    } else {
+      return undefined;
+    }
   }
   GetLevelPlayTakeOverCamera() {
-    return ("SlashHook" === this.Lo.HookInteractConfig?.Type || "ChargeSlashHook" === this.Lo.HookInteractConfig?.Type) && (this.Lo?.HookInteractConfig.IsAdjustCameraConfig ?? !1)
+    return (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") && (this.Lo?.HookInteractConfig.IsAdjustCameraConfig ?? false);
   }
   GetSafePointLocation() {
     var t = Vector_1.Vector.Create();
-    if ("SlashHook" === this.Lo.HookInteractConfig?.Type || "ChargeSlashHook" === this.Lo.HookInteractConfig?.Type) {
-      var e = this.uou();
-      if (!e) return t;
-      t.Set(e.Transform?.Pos.X ?? 0, e.Transform?.Pos.Y ?? 0, e.Transform?.Pos.Z ?? 0)
+    if (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") {
+      var e = this.Zau();
+      if (!e) {
+        return t;
+      }
+      t.Set(e.Transform?.Pos.X ?? 0, e.Transform?.Pos.Y ?? 0, e.Transform?.Pos.Z ?? 0);
     }
-    return t
+    return t;
   }
   GetSafePointRotation() {
     var t = Rotator_1.Rotator.Create();
-    if ("SlashHook" === this.Lo.HookInteractConfig?.Type || "ChargeSlashHook" === this.Lo.HookInteractConfig?.Type) {
-      var e = this.uou();
-      if (!e) return t;
-      t.Set(e.Transform?.Rot?.Y ?? 0, e.Transform?.Rot?.Z ?? 0, e.Transform?.Rot?.X ?? 0)
+    if (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") {
+      var e = this.Zau();
+      if (!e) {
+        return t;
+      }
+      t.Set(e.Transform?.Rot?.Y ?? 0, e.Transform?.Rot?.Z ?? 0, e.Transform?.Rot?.X ?? 0);
     }
-    return t
+    return t;
   }
-  uou() {
-    if (this._ou) return this._ou;
-    if ("SlashHook" === this.Lo.HookInteractConfig?.Type || "ChargeSlashHook" === this.Lo.HookInteractConfig?.Type) {
-      var t = this.Lo?.HookInteractConfig?.SlashBackSafePointId,
-        e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t);
-      if (e) return this._ou = e, this._ou;
-      Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GetSafePointEntityData] entityData is null", ["safePointId", t])
+  Zau() {
+    if (this.Jau) {
+      return this.Jau;
+    }
+    if (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") {
+      var t = this.Lo?.HookInteractConfig?.SlashBackSafePointId;
+      var e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t);
+      if (e) {
+        this.Jau = e;
+        return this.Jau;
+      }
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[GetSafePointEntityData] entityData is null", ["safePointId", t]);
+      }
     }
   }
   GetSlashHitType() {
-    if ("SlashHook" === this.Lo?.HookInteractConfig?.Type) return this.Lo.HookInteractConfig.SlashHitType ?? "HeavySlash"
+    if (this.Lo?.HookInteractConfig?.Type === "SlashHook") {
+      return this.Lo.HookInteractConfig.SlashHitType ?? "HeavySlash";
+    }
   }
   GetHookInteractConfig() {
-    return this.Lo.HookInteractConfig
+    return this.Lo.HookInteractConfig;
   }
 };
-GrapplingHookPointComponent.AllPoints = [], GrapplingHookPointComponent.ven = !1, GrapplingHookPointComponent = GrapplingHookPointComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(85)], GrapplingHookPointComponent), exports.GrapplingHookPointComponent = GrapplingHookPointComponent;
-//# sourceMappingURL=GrapplingHookPointComponent.js.map
+GrapplingHookPointComponent.AllPoints = [];
+GrapplingHookPointComponent.ven = false;
+GrapplingHookPointComponent = GrapplingHookPointComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(85)], GrapplingHookPointComponent);
+exports.GrapplingHookPointComponent = GrapplingHookPointComponent; //# sourceMappingURL=GrapplingHookPointComponent.js.map

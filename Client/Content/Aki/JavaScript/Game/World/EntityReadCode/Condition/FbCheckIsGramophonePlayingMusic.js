@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckIsGramophonePlayingMusic = void 0;
+  value: true
+});
+exports.FbCheckIsGramophonePlayingMusic = undefined;
 const FbGramophoneCheckCondition_1 = require("./FbGramophoneCheckCondition");
 class FbCheckIsGramophonePlayingMusic {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.xbc = !1, this.Ubc = 0, this.Dbc = !1, this.Bbc = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.xbc = false;
+    this.Ubc = 0;
+    this.Dbc = false;
+    this.Bbc = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckIsGramophonePlayingMusic(t)
+    if (t) {
+      return new FbCheckIsGramophonePlayingMusic(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TargetGramophone() {
-    return this.xbc || (this.xbc = !0, this.Ubc = this.FbDataInternal.targetGramophone()), this.Ubc
+    if (!this.xbc) {
+      this.xbc = true;
+      this.Ubc = this.FbDataInternal.targetGramophone();
+    }
+    return this.Ubc;
   }
   get CheckCondition() {
-    return this.Dbc || (this.Dbc = !0, this.Bbc = FbGramophoneCheckCondition_1.FbGramophoneCheckCondition.Create(this.FbDataInternal.checkCondition())), this.Bbc
+    if (!this.Dbc) {
+      this.Dbc = true;
+      this.Bbc = FbGramophoneCheckCondition_1.FbGramophoneCheckCondition.Create(this.FbDataInternal.checkCondition());
+    }
+    return this.Bbc;
   }
 }
 exports.FbCheckIsGramophonePlayingMusic = FbCheckIsGramophonePlayingMusic;

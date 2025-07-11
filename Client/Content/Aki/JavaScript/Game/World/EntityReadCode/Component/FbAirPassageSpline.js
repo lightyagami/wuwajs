@@ -1,60 +1,134 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAirPassageSpline = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbCommonSplinePoint_1 = require("./FbCommonSplinePoint");
+  value: true
+});
+exports.FbAirPassageSpline = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbCommonSplinePoint_1 = require("./FbCommonSplinePoint");
 class FbAirPassageSpline {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.IHh = !1, this.THh = void 0, this.bHh = !1, this.LHh = void 0, this.AHh = !1, this.xHh = void 0, this.RHh = !1, this.wHh = void 0, this.PHh = !1, this.UHh = 0, this.DHh = !1, this.BHh = 0, this.qHh = !1, this.kHh = 0, this.GHh = !1, this.OHh = 0, this.FHh = !1, this.NHh = 0, this.DHl = !1, this.BHl = 0, this.NEh = !1, this.VEh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.IHh = false;
+    this.THh = undefined;
+    this.bHh = false;
+    this.LHh = undefined;
+    this.AHh = false;
+    this.xHh = undefined;
+    this.RHh = false;
+    this.wHh = undefined;
+    this.PHh = false;
+    this.UHh = 0;
+    this.DHh = false;
+    this.BHh = 0;
+    this.qHh = false;
+    this.kHh = 0;
+    this.GHh = false;
+    this.OHh = 0;
+    this.FHh = false;
+    this.NHh = 0;
+    this.DHl = false;
+    this.BHl = 0;
+    this.NEh = false;
+    this.VEh = undefined;
   }
   static Create(t) {
-    if (t) return new FbAirPassageSpline(t)
+    if (t) {
+      return new FbAirPassageSpline(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MiddleLineEffect() {
-    return this.IHh || (this.IHh = !0, this.THh = this.FbDataInternal.middleLineEffect()), this.THh
+    if (!this.IHh) {
+      this.IHh = true;
+      this.THh = this.FbDataInternal.middleLineEffect();
+    }
+    return this.THh;
   }
   get TailCircleEffect() {
-    return this.bHh || (this.bHh = !0, this.LHh = this.FbDataInternal.tailCircleEffect()), this.LHh
+    if (!this.bHh) {
+      this.bHh = true;
+      this.LHh = this.FbDataInternal.tailCircleEffect();
+    }
+    return this.LHh;
   }
   get MiddleCircleEffect() {
-    return this.AHh || (this.AHh = !0, this.xHh = this.FbDataInternal.middleCircleEffect()), this.xHh
+    if (!this.AHh) {
+      this.AHh = true;
+      this.xHh = this.FbDataInternal.middleCircleEffect();
+    }
+    return this.xHh;
   }
   get MiddleCircleOverlyingEffect() {
-    return this.RHh || (this.RHh = !0, this.wHh = this.FbDataInternal.middleCircleOverlyingEffect()), this.wHh
+    if (!this.RHh) {
+      this.RHh = true;
+      this.wHh = this.FbDataInternal.middleCircleOverlyingEffect();
+    }
+    return this.wHh;
   }
   get MiddleCircleSpace() {
-    return this.PHh || (this.PHh = !0, this.UHh = this.FbDataInternal.middleCircleSpace()), this.UHh
+    if (!this.PHh) {
+      this.PHh = true;
+      this.UHh = this.FbDataInternal.middleCircleSpace();
+    }
+    return this.UHh;
   }
   get MiddleCircleRadius() {
-    return this.DHh || (this.DHh = !0, this.BHh = this.FbDataInternal.middleCircleRadius()), this.BHh
+    if (!this.DHh) {
+      this.DHh = true;
+      this.BHh = this.FbDataInternal.middleCircleRadius();
+    }
+    return this.BHh;
   }
   get MovableRadius() {
-    return this.qHh || (this.qHh = !0, this.kHh = this.FbDataInternal.movableRadius()), this.kHh
+    if (!this.qHh) {
+      this.qHh = true;
+      this.kHh = this.FbDataInternal.movableRadius();
+    }
+    return this.kHh;
   }
   get Resistance() {
-    return this.GHh || (this.GHh = !0, this.OHh = this.FbDataInternal.resistance()), this.OHh
+    if (!this.GHh) {
+      this.GHh = true;
+      this.OHh = this.FbDataInternal.resistance();
+    }
+    return this.OHh;
   }
   get SpeedLimit() {
-    return this.FHh || (this.FHh = !0, this.NHh = this.FbDataInternal.speedLimit()), this.NHh
+    if (!this.FHh) {
+      this.FHh = true;
+      this.NHh = this.FbDataInternal.speedLimit();
+    }
+    return this.NHh;
   }
   get SprintSpeedLimit() {
-    return this.DHl || (this.DHl = !0, this.BHl = this.FbDataInternal.sprintSpeedLimit()), this.BHl
+    if (!this.DHl) {
+      this.DHl = true;
+      this.BHl = this.FbDataInternal.sprintSpeedLimit();
+    }
+    return this.BHl;
   }
   get Points() {
     if (!this.NEh) {
-      this.NEh = !0, this.VEh = new Array;
+      this.NEh = true;
+      this.VEh = new Array();
       var i = this.FbDataInternal.pointsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.points(t, new fb_component_1.CommonSplinePoint);
-          this.VEh.push(FbCommonSplinePoint_1.FbCommonSplinePoint.Create(s))
+          var s = this.FbDataInternal.points(t, new fb_component_1.CommonSplinePoint());
+          this.VEh.push(FbCommonSplinePoint_1.FbCommonSplinePoint.Create(s));
         }
+      }
     }
-    return this.VEh
+    return this.VEh;
   }
 }
 exports.FbAirPassageSpline = FbAirPassageSpline;

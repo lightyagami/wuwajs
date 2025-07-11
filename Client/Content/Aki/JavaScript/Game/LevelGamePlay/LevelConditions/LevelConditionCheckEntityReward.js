@@ -1,17 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckEntityReward = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckEntityReward = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckEntityReward extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r, a) {
-    if (!e) return !1;
-    let t = 0,
-      n = void 0;
-    if (e.EntityId) n = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.EntityId);
-    else {
-      if (!a) return !1;
+    if (!e) {
+      return false;
+    }
+    let t = 0;
+    let n = undefined;
+    if (e.EntityId) {
+      n = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.EntityId);
+    } else {
+      if (!a) {
+        return false;
+      }
       switch (a.Type) {
         case 1:
           t = a?.EntityId || 0;
@@ -20,12 +27,14 @@ class LevelConditionCheckEntityReward extends LevelGeneralBase_1.LevelConditionB
           t = a?.TriggerEntityId || 0;
           break;
         default:
-          return !1
+          return false;
       }
-      if (!t) return !1;
-      n = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t)
+      if (!t) {
+        return false;
+      }
+      n = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t);
     }
-    return n?.Entity?.GetComponent(0)?.CanGetReward ?? !1
+    return n?.Entity?.GetComponent(0)?.CanGetReward ?? false;
   }
 }
 exports.LevelConditionCheckEntityReward = LevelConditionCheckEntityReward;

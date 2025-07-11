@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbChangeTimer = void 0;
+  value: true
+});
+exports.FbChangeTimer = undefined;
 const UnionChangeTimerHelper_1 = require("./UnionChangeTimerHelper");
 class FbChangeTimer {
   constructor(e) {
-    this.FbDataInternal = e, this.wEh = !1, this.PEh = void 0, this.UEh = !1, this.DEh = void 0
+    this.FbDataInternal = e;
+    this.wEh = false;
+    this.PEh = undefined;
+    this.UEh = false;
+    this.DEh = undefined;
   }
   static Create(e) {
-    if (e) return new FbChangeTimer(e)
+    if (e) {
+      return new FbChangeTimer(e);
+    }
   }
   get TimerType() {
-    return this.wEh || (this.wEh = !0, this.PEh = this.FbDataInternal.timerType()), this.PEh
+    if (!this.wEh) {
+      this.wEh = true;
+      this.PEh = this.FbDataInternal.timerType();
+    }
+    return this.PEh;
   }
   get ChangeType() {
-    var e, i;
-    return !this.UEh && (this.UEh = !0, e = this.FbDataInternal.changeTypeType(), i = UnionChangeTimerHelper_1.UnionChangeTimerHelper.GetUnionChangeTimerObject(e)) && (this.DEh = UnionChangeTimerHelper_1.UnionChangeTimerHelper.ReadUnionChangeTimer(e, this.FbDataInternal.changeType(i))), this.DEh
+    var e;
+    var i;
+    if (!this.UEh && (this.UEh = true, e = this.FbDataInternal.changeTypeType(), i = UnionChangeTimerHelper_1.UnionChangeTimerHelper.GetUnionChangeTimerObject(e))) {
+      this.DEh = UnionChangeTimerHelper_1.UnionChangeTimerHelper.ReadUnionChangeTimer(e, this.FbDataInternal.changeType(i));
+    }
+    return this.DEh;
   }
 }
 exports.FbChangeTimer = FbChangeTimer;

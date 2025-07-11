@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDangoAbyssReceiveReward = void 0;
+  value: true
+});
+exports.FbDangoAbyssReceiveReward = undefined;
 class FbDangoAbyssReceiveReward {
   constructor(e) {
-    this.FbDataInternal = e
+    this.FbDataInternal = e;
   }
   static Create(e) {
-    if (e) return new FbDangoAbyssReceiveReward(e)
+    if (e) {
+      return new FbDangoAbyssReceiveReward(e);
+    }
   }
 }
 exports.FbDangoAbyssReceiveReward = FbDangoAbyssReceiveReward;

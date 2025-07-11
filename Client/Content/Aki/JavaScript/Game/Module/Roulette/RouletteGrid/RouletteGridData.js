@@ -1,22 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.rouletteGridGenerator = exports.RouletteData = void 0;
-const RouletteGridEquipItem_1 = require("./RouletteGridEquipItem"),
-  RouletteGridExplore_1 = require("./RouletteGridExplore"),
-  RouletteGridFunction_1 = require("./RouletteGridFunction");
+  value: true
+});
+exports.rouletteGridGenerator = exports.RouletteData = undefined;
+const RouletteGridEquipItem_1 = require("./RouletteGridEquipItem");
+const RouletteGridExplore_1 = require("./RouletteGridExplore");
+const RouletteGridFunction_1 = require("./RouletteGridFunction");
 class RouletteData {
   constructor() {
-    this.Id = 0, this.ShowIndex = !1, this.GridIndex = 0, this.GridType = 0, this.ShowNum = !1, this.DataNum = 0, this.DataIndex = 0, this.Name = void 0, this.State = 1, this.ShowRedDot = !0
+    this.Id = 0;
+    this.ShowIndex = false;
+    this.GridIndex = 0;
+    this.GridType = 0;
+    this.ShowNum = false;
+    this.DataNum = 0;
+    this.DataIndex = 0;
+    this.Name = undefined;
+    this.State = 1;
+    this.ShowRedDot = true;
   }
   DeepCopy() {
-    var t = new RouletteData;
-    return t.DataIndex = this.DataIndex, t.GridIndex = this.GridIndex, t.GridType = this.GridType, t.Id = this.Id, t.Name = this.Name, t.State = this.State, t.ShowIndex = this.ShowIndex, t.ShowRedDot = this.ShowRedDot, t
+    var t = new RouletteData();
+    t.DataIndex = this.DataIndex;
+    t.GridIndex = this.GridIndex;
+    t.GridType = this.GridType;
+    t.Id = this.Id;
+    t.Name = this.Name;
+    t.State = this.State;
+    t.ShowIndex = this.ShowIndex;
+    t.ShowRedDot = this.ShowRedDot;
+    return t;
   }
 }
-exports.RouletteData = RouletteData, exports.rouletteGridGenerator = {
+exports.RouletteData = RouletteData;
+exports.rouletteGridGenerator = {
   [0]: RouletteGridExplore_1.RouletteGridExplore,
   1: RouletteGridFunction_1.RouletteGridFunction,
   2: RouletteGridEquipItem_1.RouletteGridEquipItem
-};
-//# sourceMappingURL=RouletteGridData.js.map
+}; //# sourceMappingURL=RouletteGridData.js.map

@@ -1,66 +1,99 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerBuffData = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../Manager/ModelManager");
+  value: true
+});
+exports.ShipTowerBuffData = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
 class ShipTowerBuffData {
   constructor() {
-    this.Id = 0, this.BuffIds = [], this.ItemId = 0, this.Quality = 0, this.ItemNameKey = "", this.ObtainedShowDescKey = "", this.BgDescKey = "", this.IsSelected = !1, this.AG_ = !1, this.Season = 0
+    this.Id = 0;
+    this.BuffIds = [];
+    this.ItemId = 0;
+    this.Quality = 0;
+    this.ItemNameKey = "";
+    this.ObtainedShowDescKey = "";
+    this.BgDescKey = "";
+    this.IsSelected = false;
+    this.AG_ = false;
+    this.Season = 0;
   }
   get CanUseCount() {
-    return this.TotalUseCount - this.UsedCount
+    return this.TotalUseCount - this.UsedCount;
   }
   get IsUnlock() {
-    return 0 < this.TotalUseCount
+    return this.TotalUseCount > 0;
   }
   get TotalUseCount() {
-    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.ItemId)
+    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.ItemId);
   }
   get UsedCount() {
     var t = ModelManager_1.ModelManager.ShipTowerModel.TowerStageDataList;
-    return t[0]?.IsHaveProtoData ? t.filter(t => !t.IsEndLess && t.IsUnLocked()).reduce((t, e) => {
-      return t + e.TeamDataList.filter(t => t.BuffDataEdit?.Id === this.Id).length
-    }, 0) : 0
+    if (t[0]?.IsHaveProtoData) {
+      return t.filter(t => !t.IsEndLess && t.IsUnLocked()).reduce((t, e) => {
+        return t + e.TeamDataList.filter(t => t.BuffDataEdit?.Id === this.Id).length;
+      }, 0);
+    } else {
+      return 0;
+    }
   }
   Init(t) {
-    this.Id = t.Id, this.ItemId = t.ItemId, this.AG_ = !!t.Unlimited, this.BuffIds = t.BuffIds, this.Season = t.Season, this.zn_()
+    this.Id = t.Id;
+    this.ItemId = t.ItemId;
+    this.AG_ = !!t.Unlimited;
+    this.BuffIds = t.BuffIds;
+    this.Season = t.Season;
+    this.zn_();
   }
   zn_() {
     var t = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(this.ItemId);
-    t && (this.Quality = t.QualityId, this.ItemNameKey = t.Name, this.ObtainedShowDescKey = t.ObtainedShowDescription, this.BgDescKey = t.BgDescription)
+    if (t) {
+      this.Quality = t.QualityId;
+      this.ItemNameKey = t.Name;
+      this.ObtainedShowDescKey = t.ObtainedShowDescription;
+      this.BgDescKey = t.BgDescription;
+    }
   }
   SetSelected(t) {
-    t && (ModelManager_1.ModelManager.ShipTowerModel.CurSelectBuffData?.SetSelected(!1), ModelManager_1.ModelManager.ShipTowerModel.CurSelectBuffData = this), this.IsSelected = t
+    if (t) {
+      ModelManager_1.ModelManager.ShipTowerModel.CurSelectBuffData?.SetSelected(false);
+      ModelManager_1.ModelManager.ShipTowerModel.CurSelectBuffData = this;
+    }
+    this.IsSelected = t;
   }
   ClearSelected() {
-    this.IsSelected = !1
+    this.IsSelected = false;
   }
   CanUseCountStr(t) {
-    return this.IsUnlimited(t) ? "∞" : this.CanUseCount.toString()
+    if (this.IsUnlimited(t)) {
+      return "∞";
+    } else {
+      return this.CanUseCount.toString();
+    }
   }
   IsUnlimited(t) {
-    return !!this.AG_ || !(!t || !ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(t)?.IsEndLess)
+    return !!this.AG_ || !!t && !!ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(t)?.IsEndLess;
   }
   IsShowNumTextCallback(t) {
-    return !this.IsUnlimited(t)
+    return !this.IsUnlimited(t);
   }
   GetQualityColor() {
     var t = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(this.Quality);
-    return UE.Color.FromHex(t.DropColor)
+    return UE.Color.FromHex(t.DropColor);
   }
   IsCanUse(t) {
-    return !ModelManager_1.ModelManager.ShipTowerModel?.IsOldSeason(this.Season) && !!this.IsUnlock && (!!this.IsUnlimited(t) || 0 < this.CanUseCount)
+    return !ModelManager_1.ModelManager.ShipTowerModel?.IsOldSeason(this.Season) && !!this.IsUnlock && (!!this.IsUnlimited(t) || this.CanUseCount > 0);
   }
   GetQualityTitle() {
-    return "GhostShipItemQuality_Text" + this.Quality
+    return "GhostShipItemQuality_Text" + this.Quality;
   }
   IsFirstGet() {
-    return !!this.IsUnlock && !ModelManager_1.ModelManager.ShipTowerModel.PlayerGetBuffSet.has(this.Id)
+    return !!this.IsUnlock && !ModelManager_1.ModelManager.ShipTowerModel.PlayerGetBuffSet.has(this.Id);
   }
   AddToGetState() {
-    return !!this.IsFirstGet() && (ModelManager_1.ModelManager.ShipTowerModel.AddPlayerGetBuff(this.Id), !0)
+    return !!this.IsFirstGet() && (ModelManager_1.ModelManager.ShipTowerModel.AddPlayerGetBuff(this.Id), true);
   }
 }
 exports.ShipTowerBuffData = ShipTowerBuffData;

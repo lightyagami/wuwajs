@@ -1,29 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMaskTransition = void 0;
+  value: true
+});
+exports.FbMaskTransition = undefined;
 const FbEaseData_1 = require("./FbEaseData");
 class FbMaskTransition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.I_h = !1, this.y6o = 0, this.hLh = !1, this.lLh = void 0, this._Lh = !1, this.cLh = void 0, this.uLh = !1, this.dLh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.I_h = false;
+    this.y6o = 0;
+    this.hLh = false;
+    this.lLh = undefined;
+    this._Lh = false;
+    this.cLh = undefined;
+    this.uLh = false;
+    this.dLh = undefined;
   }
   static Create(t) {
-    if (t) return new FbMaskTransition(t)
+    if (t) {
+      return new FbMaskTransition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Duration() {
-    return this.I_h || (this.I_h = !0, this.y6o = this.FbDataInternal.duration()), this.y6o
+    if (!this.I_h) {
+      this.I_h = true;
+      this.y6o = this.FbDataInternal.duration();
+    }
+    return this.y6o;
   }
   get Mask() {
-    return this.hLh || (this.hLh = !0, this.lLh = this.FbDataInternal.mask()), this.lLh
+    if (!this.hLh) {
+      this.hLh = true;
+      this.lLh = this.FbDataInternal.mask();
+    }
+    return this.lLh;
   }
   get FadeIn() {
-    return this._Lh || (this._Lh = !0, this.cLh = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.fadeIn())), this.cLh
+    if (!this._Lh) {
+      this._Lh = true;
+      this.cLh = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.fadeIn());
+    }
+    return this.cLh;
   }
   get FadeOut() {
-    return this.uLh || (this.uLh = !0, this.dLh = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.fadeOut())), this.dLh
+    if (!this.uLh) {
+      this.uLh = true;
+      this.dLh = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.fadeOut());
+    }
+    return this.dLh;
   }
 }
 exports.FbMaskTransition = FbMaskTransition;

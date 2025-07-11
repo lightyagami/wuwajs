@@ -1,15 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class TsDecoratorCheck extends UE.BTDecorator_BlueprintBase {
   constructor() {
-    super(...arguments), this.CheckValue = ""
+    super(...arguments);
+    this.CheckValue = "";
   }
   Constructor() {}
   PerformConditionCheckAI(e, r) {
-    return !0
+    return true;
   }
 }
 exports.default = TsDecoratorCheck;

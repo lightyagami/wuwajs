@@ -1,51 +1,80 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InputMultiKeyItemGroup = void 0;
-const UE = require("ue"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  InputKeyDefine_1 = require("./InputKeyDefine"),
-  InputMultiKeyItem_1 = require("./InputMultiKeyItem");
+  value: true
+});
+exports.InputMultiKeyItemGroup = undefined;
+const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const InputKeyDefine_1 = require("./InputKeyDefine");
+const InputMultiKeyItem_1 = require("./InputMultiKeyItem");
 class InputMultiKeyItemGroup extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.vAt = void 0, this.MAt = void 0, this.vq = !1, this.EAt = void 0, this.XBo = () => {
-      this.EAt && this.SAt(this.EAt)
-    }
+    super(...arguments);
+    this.vAt = undefined;
+    this.MAt = undefined;
+    this.vq = false;
+    this.EAt = undefined;
+    this.XBo = () => {
+      if (this.EAt) {
+        this.SAt(this.EAt);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIItem],
-      [2, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.vAt = new InputMultiKeyItem_1.InputMultiKeyItem(!1), this.MAt = new InputMultiKeyItem_1.InputMultiKeyItem(!1), await Promise.all([this.vAt.CreateThenShowByActorAsync(this.GetItem(1).GetOwner(), !0), this.MAt.CreateThenShowByActorAsync(this.GetItem(2).GetOwner(), !0)])
+    this.vAt = new InputMultiKeyItem_1.InputMultiKeyItem(false);
+    this.MAt = new InputMultiKeyItem_1.InputMultiKeyItem(false);
+    await Promise.all([this.vAt.CreateThenShowByActorAsync(this.GetItem(1).GetOwner(), true), this.MAt.CreateThenShowByActorAsync(this.GetItem(2).GetOwner(), true)]);
   }
   OnStart() {}
   OnBeforeDestroy() {
-    this.vAt = void 0, this.vAt = void 0
+    this.vAt = undefined;
+    this.vAt = undefined;
   }
   OnBeforeShow() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo), this.EAt && this.SAt(this.EAt)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
+    if (this.EAt) {
+      this.SAt(this.EAt);
+    }
   }
   OnAfterHide() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
   }
   Refresh(e) {
-    this.EAt = e, this.SAt(e)
+    this.EAt = e;
+    this.SAt(e);
   }
   SAt(e) {
-    var t = e.SingleActionOrAxisKeyItem,
-      i = e.DoubleActionOrAxisKeyItem,
-      e = e.LinkString,
-      s = this.GetText(0);
-    this.vAt?.RefreshByActionOrAxis(t), this.vAt?.SetActive(!0), i ? (this.MAt?.RefreshByActionOrAxis(i), this.MAt?.SetActive(!0), s.SetText(e ?? "/"), s.SetUIActive(!0)) : (this.MAt?.SetActive(!1), s.SetUIActive(!1))
+    var t = e.SingleActionOrAxisKeyItem;
+    var i = e.DoubleActionOrAxisKeyItem;
+    var e = e.LinkString;
+    var s = this.GetText(0);
+    this.vAt?.RefreshByActionOrAxis(t);
+    this.vAt?.SetActive(true);
+    if (i) {
+      this.MAt?.RefreshByActionOrAxis(i);
+      this.MAt?.SetActive(true);
+      s.SetText(e ?? "/");
+      s.SetUIActive(true);
+    } else {
+      this.MAt?.SetActive(false);
+      s.SetUIActive(false);
+    }
   }
-  SetEnable(e, t = !1) {
-    this.vq === e && !t || (e ? this.RootItem.SetAlpha(1) : this.RootItem.SetAlpha(InputKeyDefine_1.DISABLE_ALPHA), this.vq = e)
+  SetEnable(e, t = false) {
+    if (this.vq !== e || !!t) {
+      if (e) {
+        this.RootItem.SetAlpha(1);
+      } else {
+        this.RootItem.SetAlpha(InputKeyDefine_1.DISABLE_ALPHA);
+      }
+      this.vq = e;
+    }
   }
 }
 exports.InputMultiKeyItemGroup = InputMultiKeyItemGroup;

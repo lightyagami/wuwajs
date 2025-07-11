@@ -1,28 +1,56 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFireBulletTrackTarget = void 0;
+  value: true
+});
+exports.FbFireBulletTrackTarget = undefined;
 const UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper");
 class FbFireBulletTrackTarget {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.p0h = !1, this.nXs = 0, this.v0h = !1, this.y0h = void 0, this.ldh = !1, this.NHo = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.p0h = false;
+    this.nXs = 0;
+    this.v0h = false;
+    this.y0h = undefined;
+    this.ldh = false;
+    this.NHo = undefined;
   }
   static Create(t) {
-    if (t) return new FbFireBulletTrackTarget(t)
+    if (t) {
+      return new FbFireBulletTrackTarget(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BulletId() {
-    return this.p0h || (this.p0h = !0, this.nXs = Number(this.FbDataInternal.bulletId())), this.nXs
+    if (!this.p0h) {
+      this.p0h = true;
+      this.nXs = Number(this.FbDataInternal.bulletId());
+    }
+    return this.nXs;
   }
   get Launcher() {
-    var t, e;
-    return !this.v0h && (this.v0h = !0, t = this.FbDataInternal.launcherType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.y0h = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.launcher(e))), this.y0h
+    var t;
+    var e;
+    if (!this.v0h && (this.v0h = true, t = this.FbDataInternal.launcherType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.y0h = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.launcher(e));
+    }
+    return this.y0h;
   }
   get Target() {
-    var t, e;
-    return !this.ldh && (this.ldh = !0, t = this.FbDataInternal.targetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(e))), this.NHo
+    var t;
+    var e;
+    if (!this.ldh && (this.ldh = true, t = this.FbDataInternal.targetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(e));
+    }
+    return this.NHo;
   }
 }
 exports.FbFireBulletTrackTarget = FbFireBulletTrackTarget;

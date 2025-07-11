@@ -1,45 +1,59 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattlePhantomSelectView = void 0;
-const UE = require("ue"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout"),
-  RogueBattleElementPanel_1 = require("../Component/RogueBattleElementPanel"),
-  RogueBattlePhantomItem_1 = require("../Component/RogueBattlePhantomItem"),
-  RogueBattleTopPanel_1 = require("../Component/RogueBattleTopPanel");
+  value: true
+});
+exports.RogueBattlePhantomSelectView = undefined;
+const UE = require("ue");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const RogueBattleElementPanel_1 = require("../Component/RogueBattleElementPanel");
+const RogueBattlePhantomItem_1 = require("../Component/RogueBattlePhantomItem");
+const RogueBattleTopPanel_1 = require("../Component/RogueBattleTopPanel");
 class RogueBattlePhantomSelectView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.PhantomLayout = void 0, this.ElementInfoPanel = void 0, this.CaptionItem = void 0, this.ilo = () => {
+    super(...arguments);
+    this.PhantomLayout = undefined;
+    this.ElementInfoPanel = undefined;
+    this.CaptionItem = undefined;
+    this.ilo = () => {
       var e = this.PhantomLayout?.GetSelectedGridIndex();
-      e && 0 < e || ControllerHolder_1.ControllerHolder.RogueBattleController.SelectTokenRequest(e).then(() => {
-        this.CloseMe()
-      })
-    }, this.m5c = () => {
-      var e = new RogueBattlePhantomItem_1.RogueBattlePhantomItem;
-      return e.SelectCallBack = this.f5c, e
-    }, this.f5c = e => {
-      void 0 === e ? (this.PhantomLayout?.DeselectCurrentGridProxy(), this.GetButton(2).SetSelfInteractive(!1)) : (this.GetButton(2).SetSelfInteractive(!0), this.PhantomLayout?.SelectGridProxy(e))
-    }
+      if (!e || !(e > 0)) {
+        ControllerHolder_1.ControllerHolder.RogueBattleController.SelectTokenRequest(e).then(() => {
+          this.CloseMe();
+        });
+      }
+    };
+    this.m5c = () => {
+      var e = new RogueBattlePhantomItem_1.RogueBattlePhantomItem();
+      e.SelectCallBack = this.f5c;
+      return e;
+    };
+    this.f5c = e => {
+      if (e === undefined) {
+        this.PhantomLayout?.DeselectCurrentGridProxy();
+        this.GetButton(2).SetSelfInteractive(false);
+      } else {
+        this.GetButton(2).SetSelfInteractive(true);
+        this.PhantomLayout?.SelectGridProxy(e);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIHorizontalLayout],
-      [2, UE.UIButtonComponent],
-      [3, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [2, this.ilo]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UIButtonComponent], [3, UE.UIItem]];
+    this.BtnBindInfo = [[2, this.ilo]];
   }
   async OnBeforeStartAsync() {
-    this.PhantomLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.m5c), this.ElementInfoPanel = new RogueBattleElementPanel_1.RogueBattleElementPanel, this.CaptionItem = new RogueBattleTopPanel_1.RogueBattleTopPanel, this.CaptionItem.CloseCallback = () => {
-      this.CloseMe()
+    this.PhantomLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.m5c);
+    this.ElementInfoPanel = new RogueBattleElementPanel_1.RogueBattleElementPanel();
+    this.CaptionItem = new RogueBattleTopPanel_1.RogueBattleTopPanel();
+    this.CaptionItem.CloseCallback = () => {
+      this.CloseMe();
     };
     var e = ModelManager_1.ModelManager.RogueBattleModel?.GetOptionDataById(this.OpenParam);
-    await Promise.all([this.PhantomLayout.RefreshByDataAsync(e.fIc), this.ElementInfoPanel.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())])
+    await Promise.all([this.PhantomLayout.RefreshByDataAsync(e.fIc), this.ElementInfoPanel.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())]);
   }
 }
 exports.RogueBattlePhantomSelectView = RogueBattlePhantomSelectView;

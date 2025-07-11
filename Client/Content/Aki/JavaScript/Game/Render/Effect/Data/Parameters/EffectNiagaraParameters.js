@@ -1,11 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const EffectParameterBase_1 = require("./EffectParameterBase");
 class EffectNiagaraParameters extends EffectParameterBase_1.default {
-  constructor(e = void 0, t = void 0, a = void 0) {
-    super(), e && (this.EffectParameter.FloatCurveMap = e), t && (this.EffectParameter.VectorCurveMap = t), a && (this.EffectParameter.LinearColorCurveMap = a), (e || t || a) && (this.HasCurveParameters = !0)
+  constructor(e = undefined, t = undefined, a = undefined) {
+    super();
+    if (e) {
+      this.EffectParameter.FloatCurveMap = e;
+    }
+    if (t) {
+      this.EffectParameter.VectorCurveMap = t;
+    }
+    if (a) {
+      this.EffectParameter.LinearColorCurveMap = a;
+    }
+    if (e || t || a) {
+      this.HasCurveParameters = true;
+    }
   }
 }
 exports.default = EffectNiagaraParameters;

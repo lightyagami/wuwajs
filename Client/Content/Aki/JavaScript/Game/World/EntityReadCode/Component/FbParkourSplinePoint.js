@@ -1,45 +1,109 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbParkourSplinePoint = void 0;
-const FbPointGroup_1 = require("./FbPointGroup"),
-  FbVectorInfo_1 = require("../Var/FbVectorInfo");
+  value: true
+});
+exports.FbParkourSplinePoint = undefined;
+const FbPointGroup_1 = require("./FbPointGroup");
+const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbParkourSplinePoint {
   constructor(t) {
-    this.FbDataInternal = t, this.dph = !1, this.Cqn = void 0, this.VHh = !1, this.jHh = void 0, this.HHh = !1, this.WHh = void 0, this.QHh = !1, this.KHh = void 0, this.$Hh = !1, this.XHh = void 0, this.sIh = !1, this.s9o = 0, this.P9h = !1, this.U9h = 0, this.I5h = !1, this.T5h = 0, this.D9h = !1, this.B9h = void 0, this.q9h = !1, this.k9h = void 0
+    this.FbDataInternal = t;
+    this.dph = false;
+    this.Cqn = undefined;
+    this.VHh = false;
+    this.jHh = undefined;
+    this.HHh = false;
+    this.WHh = undefined;
+    this.QHh = false;
+    this.KHh = undefined;
+    this.$Hh = false;
+    this.XHh = undefined;
+    this.sIh = false;
+    this.s9o = 0;
+    this.P9h = false;
+    this.U9h = 0;
+    this.I5h = false;
+    this.T5h = 0;
+    this.D9h = false;
+    this.B9h = undefined;
+    this.q9h = false;
+    this.k9h = undefined;
   }
   static Create(t) {
-    if (t) return new FbParkourSplinePoint(t)
+    if (t) {
+      return new FbParkourSplinePoint(t);
+    }
   }
   get Position() {
-    return this.dph || (this.dph = !0, this.Cqn = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.position())), this.Cqn
+    if (!this.dph) {
+      this.dph = true;
+      this.Cqn = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.position());
+    }
+    return this.Cqn;
   }
   get ArriveTangent() {
-    return this.VHh || (this.VHh = !0, this.jHh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.arriveTangent())), this.jHh
+    if (!this.VHh) {
+      this.VHh = true;
+      this.jHh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.arriveTangent());
+    }
+    return this.jHh;
   }
   get LeaveTangent() {
-    return this.HHh || (this.HHh = !0, this.WHh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.leaveTangent())), this.WHh
+    if (!this.HHh) {
+      this.HHh = true;
+      this.WHh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.leaveTangent());
+    }
+    return this.WHh;
   }
   get LineType() {
-    return this.QHh || (this.QHh = !0, this.KHh = this.FbDataInternal.lineType()), this.KHh
+    if (!this.QHh) {
+      this.QHh = true;
+      this.KHh = this.FbDataInternal.lineType();
+    }
+    return this.KHh;
   }
   get Rotation() {
-    return this.$Hh || (this.$Hh = !0, this.XHh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rotation())), this.XHh
+    if (!this.$Hh) {
+      this.$Hh = true;
+      this.XHh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rotation());
+    }
+    return this.XHh;
   }
   get Radius() {
-    return this.sIh || (this.sIh = !0, this.s9o = this.FbDataInternal.radius()), this.s9o
+    if (!this.sIh) {
+      this.sIh = true;
+      this.s9o = this.FbDataInternal.radius();
+    }
+    return this.s9o;
   }
   get ModifiedTime() {
-    return this.P9h || (this.P9h = !0, this.U9h = this.FbDataInternal.modifiedTime()), this.U9h
+    if (!this.P9h) {
+      this.P9h = true;
+      this.U9h = this.FbDataInternal.modifiedTime();
+    }
+    return this.U9h;
   }
   get BuffId() {
-    return this.I5h || (this.I5h = !0, this.T5h = Number(this.FbDataInternal.buffId())), this.T5h
+    if (!this.I5h) {
+      this.I5h = true;
+      this.T5h = Number(this.FbDataInternal.buffId());
+    }
+    return this.T5h;
   }
   get PointGroup() {
-    return this.D9h || (this.D9h = !0, this.B9h = FbPointGroup_1.FbPointGroup.Create(this.FbDataInternal.pointGroup())), this.B9h
+    if (!this.D9h) {
+      this.D9h = true;
+      this.B9h = FbPointGroup_1.FbPointGroup.Create(this.FbDataInternal.pointGroup());
+    }
+    return this.B9h;
   }
   get PlayerTag() {
-    return this.q9h || (this.q9h = !0, this.k9h = this.FbDataInternal.playerTag()), this.k9h
+    if (!this.q9h) {
+      this.q9h = true;
+      this.k9h = this.FbDataInternal.playerTag();
+    }
+    return this.k9h;
   }
 }
 exports.FbParkourSplinePoint = FbParkourSplinePoint;

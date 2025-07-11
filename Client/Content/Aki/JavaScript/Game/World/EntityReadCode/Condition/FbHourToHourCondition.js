@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHourToHourCondition = void 0;
+  value: true
+});
+exports.FbHourToHourCondition = undefined;
 const FbHour_1 = require("./FbHour");
 class FbHourToHourCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.lzh = !1, this._zh = void 0, this.ODh = !1, this.FDh = void 0, this._ch = !1, this.cch = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.lzh = false;
+    this._zh = undefined;
+    this.ODh = false;
+    this.FDh = undefined;
+    this._ch = false;
+    this.cch = undefined;
   }
   static Create(t) {
-    if (t) return new FbHourToHourCondition(t)
+    if (t) {
+      return new FbHourToHourCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Start() {
-    return this.lzh || (this.lzh = !0, this._zh = FbHour_1.FbHour.Create(this.FbDataInternal.start())), this._zh
+    if (!this.lzh) {
+      this.lzh = true;
+      this._zh = FbHour_1.FbHour.Create(this.FbDataInternal.start());
+    }
+    return this._zh;
   }
   get End() {
-    return this.ODh || (this.ODh = !0, this.FDh = FbHour_1.FbHour.Create(this.FbDataInternal.end())), this.FDh
+    if (!this.ODh) {
+      this.ODh = true;
+      this.FDh = FbHour_1.FbHour.Create(this.FbDataInternal.end());
+    }
+    return this.FDh;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
 }
 exports.FbHourToHourCondition = FbHourToHourCondition;

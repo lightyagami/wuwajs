@@ -1,81 +1,173 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TraceElementModel = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  QueryTypeDefine_1 = require("../../../Core/Define/QueryTypeDefine"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon"),
-  ColorUtils_1 = require("../../Utils/ColorUtils");
+  value: true
+});
+exports.TraceElementModel = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const QueryTypeDefine_1 = require("../../../Core/Define/QueryTypeDefine");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
+const ColorUtils_1 = require("../../Utils/ColorUtils");
 class TraceElementModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.JJo = void 0, this.uoe = void 0, this.CommonStartLocation = Vector_1.Vector.Create(), this.CommonEndLocation = Vector_1.Vector.Create(), this.CommonHitLocation = Vector_1.Vector.Create(), this.xEr = void 0, this.wEr = void 0, this.Hu1 = void 0, this.ShowDebugTrace = !1
+    super(...arguments);
+    this.JJo = undefined;
+    this.uoe = undefined;
+    this.CommonStartLocation = Vector_1.Vector.Create();
+    this.CommonEndLocation = Vector_1.Vector.Create();
+    this.CommonHitLocation = Vector_1.Vector.Create();
+    this.xEr = undefined;
+    this.wEr = undefined;
+    this._d1 = undefined;
+    this.ShowDebugTrace = false;
   }
   OnClear() {
-    if (this.Hu1) {
-      for (const e of this.Hu1.values()) e.Dispose();
-      this.Hu1.clear(), this.Hu1 = void 0
+    if (this._d1) {
+      for (const e of this._d1.values()) {
+        e.Dispose();
+      }
+      this._d1.clear();
+      this._d1 = undefined;
     }
-    return this.JJo && (this.JJo.Dispose(), this.JJo = void 0), this.xEr && (this.xEr.Dispose(), this.xEr = void 0), this.wEr && (this.wEr.Dispose(), this.wEr = void 0), !0
+    if (this.JJo) {
+      this.JJo.Dispose();
+      this.JJo = undefined;
+    }
+    if (this.xEr) {
+      this.xEr.Dispose();
+      this.xEr = undefined;
+    }
+    if (this.wEr) {
+      this.wEr.Dispose();
+      this.wEr = undefined;
+    }
+    return true;
   }
   GetActorTrace() {
-    return this.JJo || this.zJo(), this.JJo
+    if (!this.JJo) {
+      this.zJo();
+    }
+    return this.JJo;
   }
   ClearActorTrace() {
-    this.JJo && (this.JJo.WorldContextObject = void 0, this.JJo.ActorsToIgnore.Empty())
+    if (this.JJo) {
+      this.JJo.WorldContextObject = undefined;
+      this.JJo.ActorsToIgnore.Empty();
+    }
   }
   zJo() {
     var e = UE.NewObject(UE.TraceSphereElement.StaticClass());
-    e.bIsSingle = !1, e.bIgnoreSelf = !0, e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround), TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed), this.JJo = e
+    e.bIsSingle = false;
+    e.bIgnoreSelf = true;
+    e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
+    TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen);
+    TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed);
+    this.JJo = e;
   }
   GetLineTrace() {
-    return this.uoe || this.BEr(), this.uoe
+    if (!this.uoe) {
+      this.BEr();
+    }
+    return this.uoe;
   }
   ClearLineTrace() {
-    this.uoe && (this.uoe.WorldContextObject = void 0, this.uoe.ActorsToIgnore.Empty())
+    if (this.uoe) {
+      this.uoe.WorldContextObject = undefined;
+      this.uoe.ActorsToIgnore.Empty();
+    }
   }
   BEr() {
     var e = UE.NewObject(UE.TraceLineElement.StaticClass());
-    e.bIsSingle = !0, e.bIgnoreSelf = !0, e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround), TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed), this.uoe = e
+    e.bIsSingle = true;
+    e.bIgnoreSelf = true;
+    e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
+    TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen);
+    TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed);
+    this.uoe = e;
   }
   GetBoxTrace() {
-    return this.xEr || this.bEr(), this.xEr
+    if (!this.xEr) {
+      this.bEr();
+    }
+    return this.xEr;
   }
   ClearBoxTrace() {
-    this.xEr && (this.xEr.WorldContextObject = void 0, this.xEr.ActorsToIgnore.Empty())
+    if (this.xEr) {
+      this.xEr.WorldContextObject = undefined;
+      this.xEr.ActorsToIgnore.Empty();
+    }
   }
   bEr() {
     var e = UE.NewObject(UE.TraceBoxElement.StaticClass());
-    e.bIsSingle = !0, e.bIgnoreSelf = !0, e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround), TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed), this.xEr = e
+    e.bIsSingle = true;
+    e.bIgnoreSelf = true;
+    e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
+    TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen);
+    TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed);
+    this.xEr = e;
   }
   GetCapsuleTrace() {
-    return this.wEr || this.qEr(), this.wEr
+    if (!this.wEr) {
+      this.qEr();
+    }
+    return this.wEr;
   }
   ClearCapsuleTrace() {
-    this.wEr && (this.wEr.WorldContextObject = void 0, this.wEr.ActorsToIgnore.Empty())
+    if (this.wEr) {
+      this.wEr.WorldContextObject = undefined;
+      this.wEr.ActorsToIgnore.Empty();
+    }
   }
   qEr() {
     var e = UE.NewObject(UE.TraceCapsuleElement.StaticClass());
-    e.bIsSingle = !0, e.bIgnoreSelf = !0, e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround), TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed), this.wEr = e
+    e.bIsSingle = true;
+    e.bIgnoreSelf = true;
+    e.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
+    TraceElementCommon_1.TraceElementCommon.SetTraceColor(e, ColorUtils_1.ColorUtils.LinearGreen);
+    TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(e, ColorUtils_1.ColorUtils.LinearRed);
+    this.wEr = e;
   }
-  $u1(e, t, r, i) {
-    void 0 === this.Hu1 && (this.Hu1 = new Map), this.Hu1.has(e) || (o = UE.NewObject(e), TraceElementCommon_1.TraceElementCommon.SetTraceColor(o, ColorUtils_1.ColorUtils.LinearGreen), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(o, ColorUtils_1.ColorUtils.LinearRed), this.Hu1.set(e, o));
-    var o = this.Hu1.get(e);
-    return o.ClearCacheData(!0), o.ActorsToIgnore.Empty(), o.bIsSingle = r, o.bIgnoreSelf = i, o.WorldContextObject = t, this.ShowDebugTrace && o.SetDrawDebugTrace(2), o
+  cd1(e, t, r, i) {
+    if (this._d1 === undefined) {
+      this._d1 = new Map();
+    }
+    if (!this._d1.has(e)) {
+      o = UE.NewObject(e);
+      TraceElementCommon_1.TraceElementCommon.SetTraceColor(o, ColorUtils_1.ColorUtils.LinearGreen);
+      TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(o, ColorUtils_1.ColorUtils.LinearRed);
+      this._d1.set(e, o);
+    }
+    var o = this._d1.get(e);
+    o.ClearCacheData(true);
+    o.ActorsToIgnore.Empty();
+    o.bIsSingle = r;
+    o.bIgnoreSelf = i;
+    o.WorldContextObject = t;
+    if (this.ShowDebugTrace) {
+      o.SetDrawDebugTrace(2);
+    }
+    return o;
   }
-  GetTraceTypeElement(e, t, r, i = !0, o = !0) {
-    e = this.$u1(e, r, i, o);
-    return e.SetTraceTypeQuery(t), e
+  GetTraceTypeElement(e, t, r, i = true, o = true) {
+    e = this.cd1(e, r, i, o);
+    e.SetTraceTypeQuery(t);
+    return e;
   }
-  GetObjectTypeElement(e, t, r, i = !0, o = !0) {
-    var e = this.$u1(e, r, i, o),
-      s = UE.NewArray(UE.BuiltinByte);
-    if (t instanceof Array)
-      for (const n of t) s.Add(n);
-    else s.Add(t);
-    return e.SetObjectTypesQuery((0, puerts_1.$ref)(s)), e
+  GetObjectTypeElement(e, t, r, i = true, o = true) {
+    var e = this.cd1(e, r, i, o);
+    var s = UE.NewArray(UE.BuiltinByte);
+    if (t instanceof Array) {
+      for (const n of t) {
+        s.Add(n);
+      }
+    } else {
+      s.Add(t);
+    }
+    e.SetObjectTypesQuery((0, puerts_1.$ref)(s));
+    return e;
   }
 }
 exports.TraceElementModel = TraceElementModel;

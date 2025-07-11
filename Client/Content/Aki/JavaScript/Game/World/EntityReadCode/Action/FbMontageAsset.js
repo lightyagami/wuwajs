@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMontageAsset = void 0;
+  value: true
+});
+exports.FbMontageAsset = undefined;
 class FbMontageAsset {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.hRh = !1, this.lRh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.hRh = false;
+    this.lRh = undefined;
   }
   static Create(t) {
-    if (t) return new FbMontageAsset(t)
+    if (t) {
+      return new FbMontageAsset(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Asset() {
-    return this.hRh || (this.hRh = !0, this.lRh = this.FbDataInternal.asset()), this.lRh
+    if (!this.hRh) {
+      this.hRh = true;
+      this.lRh = this.FbDataInternal.asset();
+    }
+    return this.lRh;
   }
 }
 exports.FbMontageAsset = FbMontageAsset;

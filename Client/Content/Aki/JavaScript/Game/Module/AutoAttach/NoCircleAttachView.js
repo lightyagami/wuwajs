@@ -1,145 +1,230 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NoCircleAttachView = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  LguiUtil_1 = require("../Util/LguiUtil"),
-  AutoAttachBaseView_1 = require("./AutoAttachBaseView"),
-  FLOATDURABLENUM = .01;
+  value: true
+});
+exports.NoCircleAttachView = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const LguiUtil_1 = require("../Util/LguiUtil");
+const AutoAttachBaseView_1 = require("./AutoAttachBaseView");
+const FLOATDURABLENUM = 0.01;
 class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
   constructor() {
-    super(...arguments), this.NKe = void 0, this.U1e = void 0, this.OKe = !1, this.p5l = new Array
+    super(...arguments);
+    this.NKe = undefined;
+    this.U1e = undefined;
+    this.OKe = false;
+    this.p5l = new Array();
   }
   SetIfNeedFakeItem(t) {
-    this.OKe = t
+    this.OKe = t;
   }
   SetControllerItem(t) {
-    this.ControllerItem = t, this.ControllerWidth = t.GetWidth(), this.ControllerHeight = t.GetHeight()
+    this.ControllerItem = t;
+    this.ControllerWidth = t.GetWidth();
+    this.ControllerHeight = t.GetHeight();
   }
   FindAutoAttachItem() {
-    return this.kKe()
+    return this.kKe();
   }
   kKe() {
-    let i = void 0,
-      s = 1e7;
+    let i = undefined;
+    let s = 10000000;
     var e = this.Items.length;
     for (let t = 0; t < e; t++) {
-      var h = Math.abs(this.Items[t].GetCurrentPosition()),
-        r = 0 <= this.Items[t].GetCurrentShowItemIndex() && this.Items[t].GetCurrentShowItemIndex() < this.DataLength;
-      h < s && r && (i = this.Items[t], s = h)
+      var h = Math.abs(this.Items[t].GetCurrentPosition());
+      var r = this.Items[t].GetCurrentShowItemIndex() >= 0 && this.Items[t].GetCurrentShowItemIndex() < this.DataLength;
+      if (h < s && r) {
+        i = this.Items[t];
+        s = h;
+      }
     }
-    return void 0 === i && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCommon", 27, "找不到可附着物体，拿第一个做保底"), i = this.Items[0]), i
+    if (i === undefined) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("UiCommon", 27, "找不到可附着物体，拿第一个做保底");
+      }
+      i = this.Items[0];
+    }
+    return i;
   }
   FKe() {
-    if (void 0 === this.NKe) {
+    if (this.NKe === undefined) {
       let i = 0;
       for (let t = 0; t < 1; t += FLOATDURABLENUM) {
         var s = this.GetCurveValue(this.BoundaryCurve, t);
-        i += FLOATDURABLENUM * s * this.MoveBoundary
+        i += FLOATDURABLENUM * s * this.MoveBoundary;
       }
-      this.NKe = i
+      this.NKe = i;
     }
-    return this.NKe
+    return this.NKe;
   }
   RecalculateMoveOffset(t) {
     t = this.VKe(t);
-    if (0 === this.AttachDirection) {
-      if (!this.HKe(t)) return 0
-    } else if (!this.jKe(t)) return 0;
-    return t
+    if (this.AttachDirection === 0) {
+      if (!this.HKe(t)) {
+        return 0;
+      }
+    } else if (!this.jKe(t)) {
+      return 0;
+    }
+    return t;
   }
   WKe(t) {
-    var i = this.FindNearestMiddleItem(),
-      s = i.GetCurrentPosition();
+    var i = this.FindNearestMiddleItem();
+    var s = i.GetCurrentPosition();
     let e = 0;
-    return e = 0 < t ? 0 === this.GetCurrentMoveDirection() ? i.GetCurrentShowItemIndex() * (this.GetItemSize() + this.Gap) + s : (this.DataLength - 1 - i.GetCurrentShowItemIndex()) * (this.GetItemSize() + this.Gap) * -1 + s : 0 === this.GetCurrentMoveDirection() ? (this.DataLength - 1 - i.GetCurrentShowItemIndex()) * (this.GetItemSize() + this.Gap) * -1 + s : i.GetCurrentShowItemIndex() * (this.GetItemSize() + this.Gap) + s
+    return e = t > 0 ? this.GetCurrentMoveDirection() === 0 ? i.GetCurrentShowItemIndex() * (this.GetItemSize() + this.Gap) + s : (this.DataLength - 1 - i.GetCurrentShowItemIndex()) * (this.GetItemSize() + this.Gap) * -1 + s : this.GetCurrentMoveDirection() === 0 ? (this.DataLength - 1 - i.GetCurrentShowItemIndex()) * (this.GetItemSize() + this.Gap) * -1 + s : i.GetCurrentShowItemIndex() * (this.GetItemSize() + this.Gap) + s;
   }
   VKe(t) {
-    let i = 0 < t ? 0 : this.DataLength - 1;
-    0 !== this.AttachDirection && (i = 0 < t ? this.DataLength - 1 : 0);
-    var s, e = this.GetShowIndexItem(i);
-    if (!e) return s = this.WKe(t), Math.abs(s) < Math.abs(t) ? s : t;
-    let h = e.GetCurrentPosition(),
-      r = (h = -FLOATDURABLENUM < h && h < FLOATDURABLENUM ? 0 : h) + t;
-    if (0 !== this.AttachDirection && (r = h - t), 0 < t) {
-      if (r < 0) return t
-    } else if (0 < r) return t;
-    return this.KKe(t, h)
+    let i = t > 0 ? 0 : this.DataLength - 1;
+    if (this.AttachDirection !== 0) {
+      i = t > 0 ? this.DataLength - 1 : 0;
+    }
+    var s;
+    var e = this.GetShowIndexItem(i);
+    if (!e) {
+      s = this.WKe(t);
+      if (Math.abs(s) < Math.abs(t)) {
+        return s;
+      } else {
+        return t;
+      }
+    }
+    let h = e.GetCurrentPosition();
+    let r = (h = -FLOATDURABLENUM < h && h < FLOATDURABLENUM ? 0 : h) + t;
+    if (this.AttachDirection !== 0) {
+      r = h - t;
+    }
+    if (t > 0) {
+      if (r < 0) {
+        return t;
+      }
+    } else if (r > 0) {
+      return t;
+    }
+    return this.KKe(t, h);
   }
   KKe(t, i) {
-    let s = 0,
-      e = 0;
-    0 < t ? i < 0 && (e = 0 - i) : 0 < i && (e = 0 - i);
-    var h = t - (s = 0 + e),
-      r = this.QKe(t, i),
-      h = s + h * r,
-      r = i + h;
-    return s = 0 < t ? r >= this.XKe() ? 0 < e ? e + this.XKe() : this.XKe() - i : h : r <= -1 * this.XKe() ? e < 0 ? e + -1 * this.XKe() : -1 * (this.XKe() + i) : h
+    let s = 0;
+    let e = 0;
+    if (t > 0) {
+      if (i < 0) {
+        e = 0 - i;
+      }
+    } else if (i > 0) {
+      e = 0 - i;
+    }
+    var h = t - (s = 0 + e);
+    var r = this.QKe(t, i);
+    var h = s + h * r;
+    var r = i + h;
+    return s = t > 0 ? r >= this.XKe() ? e > 0 ? e + this.XKe() : this.XKe() - i : h : r <= this.XKe() * -1 ? e < 0 ? e + this.XKe() * -1 : (this.XKe() + i) * -1 : h;
   }
   XKe() {
-    if (void 0 === this.U1e) {
+    if (this.U1e === undefined) {
       let i = 0;
       for (let t = 0; t < this.MoveBoundary; t += 1) {
         var s = this.QKe(1, t);
-        i += +s
+        i += +s;
       }
-      this.U1e = i
+      this.U1e = i;
     }
-    return this.U1e
+    return this.U1e;
   }
   QKe(t, i) {
-    return this.FKe() <= 0 ? 0 : (i = Math.abs(i) / this.FKe(), this.GetCurveValue(this.BoundaryCurve, i = 1 < i ? 1 : i))
+    if (this.FKe() <= 0) {
+      return 0;
+    } else {
+      i = Math.abs(i) / this.FKe();
+      return this.GetCurveValue(this.BoundaryCurve, i = i > 1 ? 1 : i);
+    }
   }
   HKe(i) {
-    let s = void 0;
+    let s = undefined;
     var e = this.Items.length;
-    for (let t = 0; t < e - 1; t++)
-      if (0 === this.Items[t].GetCurrentShowItemIndex()) {
+    for (let t = 0; t < e - 1; t++) {
+      if (this.Items[t].GetCurrentShowItemIndex() === 0) {
         s = this.Items[t];
-        break
-      } if (s && 0 < i) {
+        break;
+      }
+    }
+    if (s && i > 0) {
       var t = s.GetCurrentPosition() + i;
-      if ((this.GetItemSize() + this.Gap) * Math.ceil((this.ShowItemNum + 1) / 2) < t) return !1
-    } else if (i < 0)
-      for (let t = 0; t < e; t++)
-        if (this.Items[t].GetCurrentShowItemIndex() === this.DataLength - 1)
-          if (this.Items[t].GetCurrentPosition() + i < -(this.GetItemSize() + this.Gap) * Math.ceil(this.ShowItemNum / 2)) return !1;
-    return !0
+      if ((this.GetItemSize() + this.Gap) * Math.ceil((this.ShowItemNum + 1) / 2) < t) {
+        return false;
+      }
+    } else if (i < 0) {
+      for (let t = 0; t < e; t++) {
+        if (this.Items[t].GetCurrentShowItemIndex() === this.DataLength - 1) {
+          if (this.Items[t].GetCurrentPosition() + i < -(this.GetItemSize() + this.Gap) * Math.ceil(this.ShowItemNum / 2)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
   jKe(i) {
-    let s = void 0;
+    let s = undefined;
     var e = this.Items.length;
-    for (let t = 0; t < e - 1; t++)
-      if (0 === this.Items[t].GetCurrentShowItemIndex()) {
+    for (let t = 0; t < e - 1; t++) {
+      if (this.Items[t].GetCurrentShowItemIndex() === 0) {
         s = this.Items[t];
-        break
-      } if (0 < i) {
-      for (let t = 0; t < e; t++)
+        break;
+      }
+    }
+    if (i > 0) {
+      for (let t = 0; t < e; t++) {
         if (this.Items[t].GetCurrentShowItemIndex() === this.DataLength - 1) {
           var h = this.Items[t].GetCurrentPosition() + i;
-          if (0 - this.Items[t].GetCurrentPosition() + this.FKe() < h) return !1
+          if (0 - this.Items[t].GetCurrentPosition() + this.FKe() < h) {
+            return false;
+          }
         }
+      }
     } else if (s && i < 0) {
-      var t = s.GetCurrentPosition() + i,
-        r = s.GetCurrentPosition() + this.FKe();
-      if (Math.abs(t) > Math.abs(r)) return !1
+      var t = s.GetCurrentPosition() + i;
+      var r = s.GetCurrentPosition() + this.FKe();
+      if (Math.abs(t) > Math.abs(r)) {
+        return false;
+      }
     }
-    return !0
+    return true;
   }
   FindNextDirectionItem(t) {
     let i = 0;
     var s = this.FindNearestMiddleItem().GetCurrentShowItemIndex();
-    return i = 0 < t ? s + t < this.DataLength ? s + t : this.DataLength - 1 : 0 < s + t ? s + t : 0, this.GetShowIndexItem(i)
+    i = t > 0 ? s + t < this.DataLength ? s + t : this.DataLength - 1 : s + t > 0 ? s + t : 0;
+    return this.GetShowIndexItem(i);
   }
   ReloadItems(i, s, t = 0) {
-    var e, h = i > this.ShowItemNum || this.OKe ? this.ShowItemNum + 1 : i;
-    for (let t = i; t < this.p5l.length; t++) this.p5l[t].SetUiActive(!1);
+    var e;
+    var h = i > this.ShowItemNum || this.OKe ? this.ShowItemNum + 1 : i;
+    for (let t = i; t < this.p5l.length; t++) {
+      this.p5l[t].SetUiActive(false);
+    }
     this.Items = [];
-    for (let t = 0; t < h; t++) t >= this.p5l.length ? (e = LguiUtil_1.LguiUtil.DuplicateActor(this.SourceActor, this.ControllerItem), (e = this.CreateItemFunction(e, t, this.ShowItemNum)).SetSourceView(this), this.Items.push(e), this.p5l.push(e)) : this.Items.push(this.p5l[t]), this.Items[t].SetIfNeedShowFakeItem(this.OKe), this.Items[t].SetItemIndex(t), this.Items[t].SetUiActive(!0), this.Items[t].SetData(s), this.Items[t].InitItem();
-    this.RefreshItems(), this.ForceUnSelectItems(), this.AttachToIndex(t, !0)
+    for (let t = 0; t < h; t++) {
+      if (t >= this.p5l.length) {
+        e = LguiUtil_1.LguiUtil.DuplicateActor(this.SourceActor, this.ControllerItem);
+        (e = this.CreateItemFunction(e, t, this.ShowItemNum)).SetSourceView(this);
+        this.Items.push(e);
+        this.p5l.push(e);
+      } else {
+        this.Items.push(this.p5l[t]);
+      }
+      this.Items[t].SetIfNeedShowFakeItem(this.OKe);
+      this.Items[t].SetItemIndex(t);
+      this.Items[t].SetUiActive(true);
+      this.Items[t].SetData(s);
+      this.Items[t].InitItem();
+    }
+    this.RefreshItems();
+    this.ForceUnSelectItems();
+    this.AttachToIndex(t, true);
   }
   GetIfCircle() {
-    return !1
+    return false;
   }
 }
 exports.NoCircleAttachView = NoCircleAttachView;

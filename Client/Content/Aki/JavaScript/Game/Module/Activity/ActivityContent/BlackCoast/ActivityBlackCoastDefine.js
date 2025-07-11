@@ -1,95 +1,158 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BlackCoastTaskData = exports.BlackCoastStageInfo = exports.BlackCoastProgressRewardData = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  LevelGeneralCommons_1 = require("../../../../LevelGamePlay/LevelGeneralCommons"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  ActivityCommonDefine_1 = require("../../ActivityCommonDefine"),
-  ActivityBlackCoastController_1 = require("./ActivityBlackCoastController");
+  value: true
+});
+exports.BlackCoastTaskData = exports.BlackCoastStageInfo = exports.BlackCoastProgressRewardData = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const LevelGeneralCommons_1 = require("../../../../LevelGamePlay/LevelGeneralCommons");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const ActivityCommonDefine_1 = require("../../ActivityCommonDefine");
+const ActivityBlackCoastController_1 = require("./ActivityBlackCoastController");
 class BlackCoastProgressRewardData {
   constructor() {
-    this.Id = 0, this.Goal = 0, this.Achieved = !1, this.DropId = 0, this.cbe = [], this.GetCurrentGoal = void 0
+    this.Id = 0;
+    this.Goal = 0;
+    this.Achieved = false;
+    this.DropId = 0;
+    this.cbe = [];
+    this.GetCurrentGoal = undefined;
   }
   GetPreviewReward() {
-    if (0 === this.cbe.length) {
-      if (0 === this.DropId) return [];
+    if (this.cbe.length === 0) {
+      if (this.DropId === 0) {
+        return [];
+      }
       var t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackagePreviewItemList(this.DropId);
-      this.cbe = t
+      this.cbe = t;
     }
-    return this.cbe
+    return this.cbe;
   }
   GetState() {
-    return this.Achieved ? 2 : !this.GetCurrentGoal || this.GetCurrentGoal() < this.Goal ? 1 : 0
+    if (this.Achieved) {
+      return 2;
+    } else if (!this.GetCurrentGoal || this.GetCurrentGoal() < this.Goal) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }
 exports.BlackCoastProgressRewardData = BlackCoastProgressRewardData;
 class BlackCoastStageInfo {
   constructor(t, e) {
-    this.StageId = t, this.Index = e, this.TaskMap = new Map, this.kja = !1, this.jOe = (t, e) => t.Status !== e.Status ? t.Status - e.Status : t.SortId !== e.SortId ? t.SortId - e.SortId : t.TaskId - e.TaskId, this.Nja = t => {
-      t && ActivityBlackCoastController_1.ActivityBlackCoastController.RequestTaskReward(this.StageId, t)
+    this.StageId = t;
+    this.Index = e;
+    this.TaskMap = new Map();
+    this.kja = false;
+    this.jOe = (t, e) => t.Status !== e.Status ? t.Status - e.Status : t.SortId !== e.SortId ? t.SortId - e.SortId : t.TaskId - e.TaskId;
+    this.Nja = t => {
+      if (t) {
+        ActivityBlackCoastController_1.ActivityBlackCoastController.RequestTaskReward(this.StageId, t);
+      }
     };
     for (const r of ConfigManager_1.ConfigManager.ActivityBlackCoastConfig.GetAllTaskConfigByStageId(this.StageId)) {
       var s = new BlackCoastTaskData(r.TaskId);
-      s.JumpId = r.JumpId, s.SortId = r.SortId, s.TitleTextId = r.TaskName, s.RewardList = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackagePreviewItemList(r.DropId), s.ReceiveDelegate = this.Nja, this.TaskMap.set(r.TaskId, s)
+      s.JumpId = r.JumpId;
+      s.SortId = r.SortId;
+      s.TitleTextId = r.TaskName;
+      s.RewardList = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackagePreviewItemList(r.DropId);
+      s.ReceiveDelegate = this.Nja;
+      this.TaskMap.set(r.TaskId, s);
     }
   }
   get StageState() {
-    if (!this.kja) return 0;
-    for (const t of this.TaskMap.values())
-      if (!t.IsTaken) return 1;
-    return 2
+    if (!this.kja) {
+      return 0;
+    }
+    for (const t of this.TaskMap.values()) {
+      if (!t.IsTaken) {
+        return 1;
+      }
+    }
+    return 2;
   }
   get IsUnlock() {
-    return 0 !== this.StageState
+    return this.StageState !== 0;
   }
   GetVideoSource() {
-    return ConfigManager_1.ConfigManager.ActivityBlackCoastConfig.GetStageConfig(this.StageId).VideoSource
+    return ConfigManager_1.ConfigManager.ActivityBlackCoastConfig.GetStageConfig(this.StageId).VideoSource;
   }
   GetRewardState() {
-    for (const t of this.TaskMap.values())
-      if (0 === t.Status) return !0;
-    return !1
+    for (const t of this.TaskMap.values()) {
+      if (t.Status === 0) {
+        return true;
+      }
+    }
+    return false;
   }
   GetTaskProgress() {
     var t = this.TaskMap.size;
     let e = 0;
-    for (const s of this.TaskMap.values()) s.IsTaken && e++;
-    return Math.ceil(e / t * 100)
+    for (const s of this.TaskMap.values()) {
+      if (s.IsTaken) {
+        e++;
+      }
+    }
+    return Math.ceil(e / t * 100);
   }
   GetTaskList() {
-    return Array.from(this.TaskMap.values()).sort(this.jOe)
+    return Array.from(this.TaskMap.values()).sort(this.jOe);
   }
   GetLockConditionText() {
     var t = ConfigManager_1.ConfigManager.ActivityBlackCoastConfig.GetStageConfig(this.StageId);
-    return LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(t.OpenConditionId) ?? ""
+    return LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(t.OpenConditionId) ?? "";
   }
   StageUpdate(t) {
     for (const a of t.cMs) {
-      var e, s, r = this.TaskMap.get(a.s5n);
-      r ? (e = r.IsFinished, s = (r.Current = a.lMs, r.Target = a.j6n, r.Status = ActivityCommonDefine_1.taskStateResolver[a.H6n], r.IsFinished), !e && s && this.Fja(r.TaskId)) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Activity", 37, "[BlackCoastActivity] 活动Task不存在", ["StageId", this.StageId], ["TaskId", a.s5n])
+      var e;
+      var s;
+      var r = this.TaskMap.get(a.s5n);
+      if (r) {
+        e = r.IsFinished;
+        r.Current = a.lMs;
+        r.Target = a.j6n;
+        r.Status = ActivityCommonDefine_1.taskStateResolver[a.H6n];
+        s = r.IsFinished;
+        if (!e && s) {
+          this.Fja(r.TaskId);
+        }
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Activity", 37, "[BlackCoastActivity] 活动Task不存在", ["StageId", this.StageId], ["TaskId", a.s5n]);
+      }
     }
-    this.kja = !0
+    this.kja = true;
   }
   SetTaskRewardGot(t) {
-    this.TaskMap.get(t).Status = 2
+    this.TaskMap.get(t).Status = 2;
   }
   Fja(t) {
     var t = this.TaskMap.get(t);
-    0 < t.JumpId && 8 === (t = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(t.JumpId)).SkipName && (t = Number(t.Val1), ModelManager_1.ModelManager.MapModel.RemoveMapMarksByConfigId(7, t))
+    if (t.JumpId > 0 && (t = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(t.JumpId)).SkipName === 8) {
+      t = Number(t.Val1);
+      ModelManager_1.ModelManager.MapModel.RemoveMapMarksByConfigId(7, t);
+    }
   }
 }
 exports.BlackCoastStageInfo = BlackCoastStageInfo;
 class BlackCoastTaskData {
   constructor(t) {
-    this.TaskId = t, this.Status = 1, this.Current = 0, this.Target = 0, this.JumpId = 0, this.SortId = 0, this.TitleTextId = "", this.RewardList = [], this.ReceiveDelegate = void 0
+    this.TaskId = t;
+    this.Status = 1;
+    this.Current = 0;
+    this.Target = 0;
+    this.JumpId = 0;
+    this.SortId = 0;
+    this.TitleTextId = "";
+    this.RewardList = [];
+    this.ReceiveDelegate = undefined;
   }
   get IsFinished() {
-    return 1 !== this.Status
+    return this.Status !== 1;
   }
   get IsTaken() {
-    return 2 === this.Status
+    return this.Status === 2;
   }
 }
 exports.BlackCoastTaskData = BlackCoastTaskData;

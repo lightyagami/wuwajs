@@ -1,16 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineState = void 0;
+  value: true
+});
+exports.AiStateMachineState = undefined;
 class AiStateMachineState {
   constructor(t, i) {
-    this.Node = void 0, this.StateData = void 0, this.Node = t, this.StateData = i
+    this.Node = undefined;
+    this.StateData = undefined;
+    this.Node = t;
+    this.StateData = i;
   }
   Init() {
-    return this.OnInit(this.StateData)
+    return this.OnInit(this.StateData);
   }
   OnInit(t) {
-    return !0
+    return true;
   }
   OnEnter(t, i) {}
   OnExit(t, i) {}
@@ -18,11 +23,12 @@ class AiStateMachineState {
   OnDeactivate(t, i) {}
   OnExecuted(t) {}
   Tick(t, i) {
-    this.OnTick(t, i)
+    this.OnTick(t, i);
   }
   OnTick(t, i) {}
   Clear() {
-    this.OnClear(), this.Node = void 0
+    this.OnClear();
+    this.Node = undefined;
   }
   OnClear() {}
   ToString(t, i = 0) {}

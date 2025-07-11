@@ -1,110 +1,176 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TeleportModel = void 0;
-const ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  Rotator_1 = require("../../../Core/Utils/Math/Rotator"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  GameModePromise_1 = require("../../World/Define/GameModePromise");
+  value: true
+});
+exports.TeleportModel = undefined;
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const Global_1 = require("../../Global");
+const GameModePromise_1 = require("../../World/Define/GameModePromise");
 class TeleportModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.QIo = void 0, this.XIo = void 0, this.$Io = void 0, this.StartGravityDirectCache = void 0, this.YIo = void 0, this.JIo = void 0, this.TargetGravityDirectCache = void 0, this.pml = !0, this.TeleportMode = 1, this.TeleportCameraFadeStatus = void 0, this.CallSource = void 0, this.CheckStreamingCompletedTimerId = void 0, this.CheckPhysicsCompletedTimerId = void 0, this.zIo = void 0, this.DisableAutoFade = !1, this.x$s = void 0, this.eTo = void 0, this.tTo = void 0, this.shh = void 0, this.AllowTeleport = !0, this.TeleportEntityCreatureDataId = 0, this.IsInSeamlessTeleport = !1, this.Treadmill = void 0, this.PostProcess = void 0, this.SeamlessConfig = void 0, this.SeamlessEffectData = void 0, this.SeamlessEndHandle = void 0, this.Bea = void 0, this.Hh1 = void 0, this.$h1 = void 0, this.Wh1 = void 0, this.Qh1 = void 0, this.Kh1 = void 0
+    super(...arguments);
+    this.QIo = undefined;
+    this.XIo = undefined;
+    this.$Io = undefined;
+    this.StartGravityDirectCache = undefined;
+    this.YIo = undefined;
+    this.JIo = undefined;
+    this.TargetGravityDirectCache = undefined;
+    this.pml = true;
+    this.TeleportMode = 1;
+    this.TeleportCameraFadeStatus = undefined;
+    this.CallSource = undefined;
+    this.CheckStreamingCompletedTimerId = undefined;
+    this.CheckPhysicsCompletedTimerId = undefined;
+    this.zIo = undefined;
+    this.DisableAutoFade = false;
+    this.x$s = undefined;
+    this.eTo = undefined;
+    this.tTo = undefined;
+    this.shh = undefined;
+    this.AllowTeleport = true;
+    this.TeleportEntityCreatureDataId = 0;
+    this.IsInSeamlessTeleport = false;
+    this.SeamlessConfig = undefined;
+    this.UseTreadmill = false;
+    this.Treadmill = undefined;
+    this.UseKeepKite = false;
+    this.KeepKite = undefined;
+    this.UseKeepMovementMode = false;
+    this.KeepMovementMode = undefined;
+    this.PostProcess = undefined;
+    this.ScreenEffect = undefined;
+    this.SceneEffect = undefined;
+    this.SeamlessEndHandle = undefined;
+    this.ScreenEffectStarted = undefined;
+    this.ScreenEffectEnded = undefined;
+    this.SceneEffectStarted = undefined;
+    this.SceneEffectEnded = undefined;
+    this.LeastTimeFinished = undefined;
+    this.TreadmillLoaded = undefined;
+    this.TreadmillAppeared = undefined;
+    this.TreadmillDisappeared = undefined;
+    this.PostProcessBlendedIn = undefined;
+    this.PostProcessBlendedOut = undefined;
+    this.KiteAppeared = undefined;
   }
   get IsTeleport() {
-    return this.QIo
+    return this.QIo;
   }
   set IsTeleport(t) {
-    this.QIo = t
+    this.QIo = t;
   }
   get StartPosition() {
-    return this.XIo
+    return this.XIo;
   }
   set StartPosition(t) {
-    this.XIo = t
+    this.XIo = t;
   }
   get StartRotation() {
-    return this.$Io
+    return this.$Io;
   }
   set StartRotation(t) {
-    this.$Io = t
+    this.$Io = t;
   }
   get StartGravityDirect() {
-    return this.StartGravityDirectCache
+    return this.StartGravityDirectCache;
   }
   set StartGravityDirect(t) {
-    this.StartGravityDirectCache = t
+    this.StartGravityDirectCache = t;
   }
   get TargetPosition() {
-    return this.YIo
+    return this.YIo;
   }
   set TargetPosition(t) {
-    this.YIo = t
+    this.YIo = t;
   }
   get TargetRotation() {
-    return this.JIo
+    return this.JIo;
   }
   set TargetRotation(t) {
-    this.JIo = t
+    this.JIo = t;
   }
   get TargetGravityDirect() {
-    return this.TargetGravityDirectCache
+    return this.TargetGravityDirectCache;
   }
   set TargetGravityDirect(t) {
-    this.TargetGravityDirectCache = t
+    this.TargetGravityDirectCache = t;
   }
   get NeedRestoreCamera() {
-    return this.pml
+    return this.pml;
   }
   set NeedRestoreCamera(t) {
-    this.pml = t
+    this.pml = t;
   }
   get StreamingCompleted() {
-    return this.zIo
+    return this.zIo;
   }
   get VoxelStreamingCompleted() {
-    return this.x$s
+    return this.x$s;
   }
   get TeleportFinishRequest() {
-    return this.eTo
+    return this.eTo;
   }
   get CgTeleportCompleted() {
-    return this.tTo
+    return this.tTo;
   }
   get TeleportWaitRequest() {
-    return this.shh
-  }
-  get TreadmillLoaded() {
-    return this.Hh1
-  }
-  get TreadmillLeastTimeFinished() {
-    return this.$h1
-  }
-  get EffectFillScreen() {
-    return this.Bea
-  }
-  get TreadmillDisappeared() {
-    return this.Wh1
-  }
-  get PostProcessBlendedIn() {
-    return this.Qh1
-  }
-  get PostProcessBlendedOut() {
-    return this.Kh1
+    return this.shh;
   }
   OnInit() {
-    return this.XIo = Vector_1.Vector.Create(), this.YIo = Vector_1.Vector.Create(), this.$Io = Rotator_1.Rotator.Create(), this.JIo = Rotator_1.Rotator.Create(), this.StartGravityDirectCache = Vector_1.Vector.Create(), this.TargetGravityDirectCache = Vector_1.Vector.Create(), !(this.TeleportCameraFadeStatus = !1)
+    this.XIo = Vector_1.Vector.Create();
+    this.YIo = Vector_1.Vector.Create();
+    this.$Io = Rotator_1.Rotator.Create();
+    this.JIo = Rotator_1.Rotator.Create();
+    this.StartGravityDirectCache = Vector_1.Vector.Create();
+    this.TargetGravityDirectCache = Vector_1.Vector.Create();
+    return !(this.TeleportCameraFadeStatus = false);
   }
   OnClear() {
-    return this.XIo = void 0, this.YIo = void 0, this.$Io = void 0, this.JIo = void 0, this.StartGravityDirectCache = void 0, this.TargetGravityDirectCache = void 0, !(this.TeleportCameraFadeStatus = !1)
+    this.XIo = undefined;
+    this.YIo = undefined;
+    this.$Io = undefined;
+    this.JIo = undefined;
+    this.StartGravityDirectCache = undefined;
+    this.TargetGravityDirectCache = undefined;
+    return !(this.TeleportCameraFadeStatus = false);
   }
   OnLeaveLevel() {
-    return this.AllowTeleport = !0
+    return this.AllowTeleport = true;
   }
   CreatePromise() {
-    this.zIo = new GameModePromise_1.GameModePromise, this.x$s = new GameModePromise_1.GameModePromise, this.eTo = new GameModePromise_1.GameModePromise, this.tTo = new GameModePromise_1.GameModePromise, this.Bea = new GameModePromise_1.GameModePromise, this.Hh1 = new GameModePromise_1.GameModePromise, this.$h1 = new GameModePromise_1.GameModePromise, this.Wh1 = new GameModePromise_1.GameModePromise, this.Qh1 = new GameModePromise_1.GameModePromise, this.Kh1 = new GameModePromise_1.GameModePromise, this.shh = new GameModePromise_1.GameModePromise
+    this.zIo = new GameModePromise_1.GameModePromise();
+    this.x$s = new GameModePromise_1.GameModePromise();
+    this.eTo = new GameModePromise_1.GameModePromise();
+    this.tTo = new GameModePromise_1.GameModePromise();
+    this.ScreenEffectStarted = new GameModePromise_1.GameModePromise();
+    this.TreadmillLoaded = new GameModePromise_1.GameModePromise();
+    this.LeastTimeFinished = new GameModePromise_1.GameModePromise();
+    this.TreadmillDisappeared = new GameModePromise_1.GameModePromise();
+    this.PostProcessBlendedIn = new GameModePromise_1.GameModePromise();
+    this.PostProcessBlendedOut = new GameModePromise_1.GameModePromise();
+    this.shh = new GameModePromise_1.GameModePromise();
   }
   ResetPromise() {
-    this.zIo = void 0, this.x$s = void 0, this.eTo = void 0, this.tTo = void 0, this.Bea = void 0, this.Hh1 = void 0, this.$h1 = void 0, this.Wh1 = void 0, this.Qh1 = void 0, this.Kh1 = void 0, this.shh = void 0
+    this.zIo = undefined;
+    this.x$s = undefined;
+    this.eTo = undefined;
+    this.tTo = undefined;
+    this.ScreenEffectStarted = undefined;
+    this.TreadmillLoaded = undefined;
+    this.LeastTimeFinished = undefined;
+    this.TreadmillDisappeared = undefined;
+    this.PostProcessBlendedIn = undefined;
+    this.PostProcessBlendedOut = undefined;
+    this.shh = undefined;
+  }
+  GetIsKeepingCurrentMovementMode() {
+    var t;
+    var i;
+    return !!this.IsInSeamlessTeleport && !!this.KeepMovementMode?.IsActive && (t = (i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp?.CharacterMovement)?.MovementMode, i = i?.CustomMovementMode, t !== undefined) && i !== undefined && this.KeepMovementMode.TargetMovementMode === t && this.KeepMovementMode.TargetCustomMode === i;
   }
 }
 exports.TeleportModel = TeleportModel;

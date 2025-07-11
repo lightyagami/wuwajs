@@ -1,58 +1,94 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiConfig = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  StringUtils_1 = require("../../../Core/Utils/StringUtils"),
-  InputSettingsManager_1 = require("../../InputSettings/InputSettingsManager"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  LoadingDefine_1 = require("../../Module/Loading/LoadingDefine"),
-  InputDefine_1 = require("../Input/InputDefine"),
-  InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine"),
-  UiViewStorage_1 = require("../UiViewStorage"),
-  UiLayerType_1 = require("./UiLayerType"),
-  UiViewInfo_1 = require("./UiViewInfo");
+  value: true
+});
+exports.UiConfig = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
+const InputSettingsManager_1 = require("../../InputSettings/InputSettingsManager");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const LoadingDefine_1 = require("../../Module/Loading/LoadingDefine");
+const InputDefine_1 = require("../Input/InputDefine");
+const InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine");
+const UiViewStorage_1 = require("../UiViewStorage");
+const UiLayerType_1 = require("./UiLayerType");
+const UiViewInfo_1 = require("./UiViewInfo");
 class UiConfig {
   static TryGetViewInfo(n) {
     let r = UiConfig.Jcr.get(n);
     if (!r) {
-      var t = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(n),
-        o = UiViewStorage_1.UiViewStorage.GetUiTsInfo(n);
-      if (!o) return void(Log_1.Log.CheckError() && Log_1.Log.Error("UiCore", 16, "[UiConfig.TryGetViewInfo] 未在UiViewManager中注册", ["name", n]));
+      var t = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(n);
+      var o = UiViewStorage_1.UiViewStorage.GetUiTsInfo(n);
+      if (!o) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("UiCore", 16, "[UiConfig.TryGetViewInfo] 未在UiViewManager中注册", ["name", n]);
+        }
+        return;
+      }
       var a = o.ResourceId;
-      let e = "",
-        i = "";
-      if (this.zcr(n)) e = ConfigManager_1.ConfigManager.CommonConfig.GetDebugGmViewPath(n), i = e;
-      else {
+      let e = "";
+      let i = "";
+      if (this.zcr(n)) {
+        e = ConfigManager_1.ConfigManager.CommonConfig.GetDebugGmViewPath(n);
+        i = e;
+      } else {
         var g = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourceConfig(a);
-        if (!g) return void(Log_1.Log.CheckError() && Log_1.Log.Error("UiCore", 16, "[UiConfig.TryGetViewInfo] 找不到界面配置", ["name", n], ["resourceId", a]));
-        e = g.Path, i = g.PcPath
+        if (!g) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("UiCore", 16, "[UiConfig.TryGetViewInfo] 找不到界面配置", ["name", n], ["resourceId", a]);
+          }
+          return;
+        }
+        e = g.Path;
+        i = g.PcPath;
       }
       var f = [];
-      if (t.SkipAnim)
+      if (t.SkipAnim) {
         if (t.IsShortKeysExitView) {
-          for (var [_, u] of InputDefine_1.openViewActionsMap.entries())
+          for (var [_, u] of InputDefine_1.openViewActionsMap.entries()) {
             if (n === u) {
-              if ("Escape" === (InputSettingsManager_1.InputSettingsManager.GetActionBinding(_)?.GetPcKey())?.GetKeyName()) break;
+              if (InputSettingsManager_1.InputSettingsManager.GetActionBinding(_)?.GetPcKey()?.GetKeyName() === "Escape") {
+                break;
+              }
               f.push(_);
-              break
-            } f.push(InputMappingsDefine_1.actionMappings.Ui返回)
-        } else Log_1.Log.CheckError() && Log_1.Log.Error("UiCore", 37, "[UiConfig.SkipAnim] 配置错误,跳过动画功能前提为IsShortKeysExitView=True");
+              break;
+            }
+          }
+          f.push(InputMappingsDefine_1.actionMappings.Ui返回);
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("UiCore", 37, "[UiConfig.SkipAnim] 配置错误,跳过动画功能前提为IsShortKeysExitView=True");
+        }
+      }
       a = UiLayerType_1.ELayerType[t.Type];
-      r = new UiViewInfo_1.UiViewInfo(n, a, o.Ctor, e, i, t.ObstructUi, t.AudioEvent, t.OpenAudioEvent, t.LoopAudioEvent, t.CloseAudioEvent, t.TimeDilation, t.ShowCursorType, t.CanOpenViewByShortcutKey, t.IsShortKeysExitView, o.SourceType, t.LoadAsync, t.NeedGC, t.IsFullScreen, UiLayerType_1.NORMAL_CONTAINER_TYPE & a ? ConfigManager_1.ConfigManager.UiViewConfig.GetUiNormalConfig(n).SortIndex : -1, t.CommonPopBg, t.CommonPopBgKey, t.ScenePath, t.IsPermanent, f, t.ScenePointTag), UiConfig.Jcr.set(n, r)
+      r = new UiViewInfo_1.UiViewInfo(n, a, o.Ctor, e, i, t.ObstructUi, t.AudioEvent, t.OpenAudioEvent, t.LoopAudioEvent, t.CloseAudioEvent, t.TimeDilation, t.ShowCursorType, t.CanOpenViewByShortcutKey, t.IsShortKeysExitView, o.SourceType, t.LoadAsync, t.NeedGC, t.IsFullScreen, UiLayerType_1.NORMAL_CONTAINER_TYPE & a ? ConfigManager_1.ConfigManager.UiViewConfig.GetUiNormalConfig(n).SortIndex : -1, t.CommonPopBg, t.CommonPopBgKey, t.ScenePath, t.IsPermanent, f, t.ScenePointTag);
+      UiConfig.Jcr.set(n, r);
     }
-    return r
+    return r;
   }
   static zcr(e) {
-    return "GmView" === e || "LoginDebugView" === e
+    return e === "GmView" || e === "LoginDebugView";
   }
   static RewritePath(e, i, n) {
     i = i?.GetExtraResourceId?.(n);
-    !i || StringUtils_1.StringUtils.IsBlank(i) ? (e.Path = e.ConfigPath, e.PcPath = e.ConfigPcPath) : (n = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourceConfig(i)) ? (e.Path = n.Path, e.PcPath = n.PcPath) : (Log_1.Log.CheckError() && Log_1.Log.Error("UiCore", 10, "[UiConfig.RewritePath] 找不到界面配置", ["name", e.Name], ["resourceId", i]), e.Path = e.ConfigPath, e.PcPath = e.ConfigPcPath)
+    if (!i || StringUtils_1.StringUtils.IsBlank(i)) {
+      e.Path = e.ConfigPath;
+      e.PcPath = e.ConfigPcPath;
+    } else if (n = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourceConfig(i)) {
+      e.Path = n.Path;
+      e.PcPath = n.PcPath;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("UiCore", 10, "[UiConfig.RewritePath] 找不到界面配置", ["name", e.Name], ["resourceId", i]);
+      }
+      e.Path = e.ConfigPath;
+      e.PcPath = e.ConfigPcPath;
+    }
   }
   static RewritePopFrameType(e, i, n) {
     i = i?.GetExtraPopFrameType?.(n);
-    e.CommonPopBg = void 0 === i ? e.ConfigCommonPopBg : i
+    e.CommonPopBg = i === undefined ? e.ConfigCommonPopBg : i;
   }
-}(exports.UiConfig = UiConfig).Jcr = new Map, UiConfig.CanOpenWhileClearSceneViewNameSet = new Set(LoadingDefine_1.loadingViewList);
-//# sourceMappingURL=UiConfig.js.map
+}
+(exports.UiConfig = UiConfig).Jcr = new Map();
+UiConfig.CanOpenWhileClearSceneViewNameSet = new Set(LoadingDefine_1.loadingViewList); //# sourceMappingURL=UiConfig.js.map

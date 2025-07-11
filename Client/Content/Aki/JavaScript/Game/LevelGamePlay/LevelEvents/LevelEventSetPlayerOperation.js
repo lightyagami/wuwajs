@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventSetPlayerOperation = void 0;
+  value: true
+});
+exports.LevelEventSetPlayerOperation = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventSetPlayerOperation extends LevelGeneralBase_1.LevelEventBase {}
 exports.LevelEventSetPlayerOperation = LevelEventSetPlayerOperation;

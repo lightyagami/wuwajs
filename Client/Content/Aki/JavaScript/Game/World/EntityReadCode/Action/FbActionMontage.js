@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbActionMontage = void 0;
+  value: true
+});
+exports.FbActionMontage = undefined;
 class FbActionMontage {
   constructor(t) {
-    this.FbDataInternal = t, this.Zdh = !1, this.emh = void 0, this.Hdh = !1, this.Xdr = void 0
+    this.FbDataInternal = t;
+    this.Zdh = false;
+    this.emh = undefined;
+    this.Hdh = false;
+    this.Xdr = undefined;
   }
   static Create(t) {
-    if (t) return new FbActionMontage(t)
+    if (t) {
+      return new FbActionMontage(t);
+    }
   }
   get MontageType() {
-    return this.Zdh || (this.Zdh = !0, this.emh = this.FbDataInternal.montageType()), this.emh
+    if (!this.Zdh) {
+      this.Zdh = true;
+      this.emh = this.FbDataInternal.montageType();
+    }
+    return this.emh;
   }
   get Path() {
-    return this.Hdh || (this.Hdh = !0, this.Xdr = this.FbDataInternal.path()), this.Xdr
+    if (!this.Hdh) {
+      this.Hdh = true;
+      this.Xdr = this.FbDataInternal.path();
+    }
+    return this.Xdr;
   }
 }
 exports.FbActionMontage = FbActionMontage;

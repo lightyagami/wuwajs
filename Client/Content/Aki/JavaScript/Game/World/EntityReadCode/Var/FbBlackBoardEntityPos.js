@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBlackBoardEntityPos = void 0;
+  value: true
+});
+exports.FbBlackBoardEntityPos = undefined;
 class FbBlackBoardEntityPos {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ubh = !1, this.dbh = void 0, this.a_h = !1, this.I9o = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ubh = false;
+    this.dbh = undefined;
+    this.a_h = false;
+    this.I9o = 0;
   }
   static Create(t) {
-    if (t) return new FbBlackBoardEntityPos(t)
+    if (t) {
+      return new FbBlackBoardEntityPos(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Key() {
-    return this.ubh || (this.ubh = !0, this.dbh = this.FbDataInternal.key()), this.dbh
+    if (!this.ubh) {
+      this.ubh = true;
+      this.dbh = this.FbDataInternal.key();
+    }
+    return this.dbh;
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
 }
 exports.FbBlackBoardEntityPos = FbBlackBoardEntityPos;

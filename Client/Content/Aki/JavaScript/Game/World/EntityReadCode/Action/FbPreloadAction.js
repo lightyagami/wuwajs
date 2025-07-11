@@ -1,18 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPreloadAction = void 0;
+  value: true
+});
+exports.FbPreloadAction = undefined;
 const UnionPreloadObjectTypeConfigHelper_1 = require("./UnionPreloadObjectTypeConfigHelper");
 class FbPreloadAction {
   constructor(e) {
-    this.FbDataInternal = e, this.xSh = !1, this.RSh = void 0
+    this.FbDataInternal = e;
+    this.xSh = false;
+    this.RSh = undefined;
   }
   static Create(e) {
-    if (e) return new FbPreloadAction(e)
+    if (e) {
+      return new FbPreloadAction(e);
+    }
   }
   get PreloadObjectType() {
-    var e, t;
-    return !this.xSh && (this.xSh = !0, e = this.FbDataInternal.preloadObjectTypeType(), t = UnionPreloadObjectTypeConfigHelper_1.UnionPreloadObjectTypeConfigHelper.GetUnionPreloadObjectTypeConfigObject(e)) && (this.RSh = UnionPreloadObjectTypeConfigHelper_1.UnionPreloadObjectTypeConfigHelper.ReadUnionPreloadObjectTypeConfig(e, this.FbDataInternal.preloadObjectType(t))), this.RSh
+    var e;
+    var t;
+    if (!this.xSh && (this.xSh = true, e = this.FbDataInternal.preloadObjectTypeType(), t = UnionPreloadObjectTypeConfigHelper_1.UnionPreloadObjectTypeConfigHelper.GetUnionPreloadObjectTypeConfigObject(e))) {
+      this.RSh = UnionPreloadObjectTypeConfigHelper_1.UnionPreloadObjectTypeConfigHelper.ReadUnionPreloadObjectTypeConfig(e, this.FbDataInternal.preloadObjectType(t));
+    }
+    return this.RSh;
   }
 }
 exports.FbPreloadAction = FbPreloadAction;

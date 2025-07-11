@@ -1,17 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckLevelOp = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckLevelOp = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckLevelOp extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, r) {
-    if (!e.LimitParams) return !1;
+    if (!e.LimitParams) {
+      return false;
+    }
     var a = e.LimitParams.get("Level");
-    if (!a) return !1;
-    var t = parseInt(a),
-      n = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(0);
-    if (!n) return !1;
+    if (!a) {
+      return false;
+    }
+    var t = parseInt(a);
+    var n = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(0);
+    if (!n) {
+      return false;
+    }
     switch (e.LimitParams.get("Op")) {
       case "Eq":
         return n === t;
@@ -26,7 +34,7 @@ class LevelConditionCheckLevelOp extends LevelGeneralBase_1.LevelConditionBase {
       case "Lt":
         return n < t;
       default:
-        return t <= n
+        return t <= n;
     }
   }
 }

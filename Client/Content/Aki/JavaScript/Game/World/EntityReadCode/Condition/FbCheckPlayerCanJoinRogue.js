@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckPlayerCanJoinRogue = void 0;
+  value: true
+});
+exports.FbCheckPlayerCanJoinRogue = undefined;
 class FbCheckPlayerCanJoinRogue {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.lJh = !1, this._Jh = !1, this.cJh = !1, this.uJh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.lJh = false;
+    this._Jh = false;
+    this.cJh = false;
+    this.uJh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckPlayerCanJoinRogue(t)
+    if (t) {
+      return new FbCheckPlayerCanJoinRogue(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get CanJoin() {
-    return this.lJh || (this.lJh = !0, this._Jh = this.FbDataInternal.canJoin()), this._Jh
+    if (!this.lJh) {
+      this.lJh = true;
+      this._Jh = this.FbDataInternal.canJoin();
+    }
+    return this._Jh;
   }
   get RogueType() {
-    return this.cJh || (this.cJh = !0, this.uJh = this.FbDataInternal.rogueType()), this.uJh
+    if (!this.cJh) {
+      this.cJh = true;
+      this.uJh = this.FbDataInternal.rogueType();
+    }
+    return this.uJh;
   }
 }
 exports.FbCheckPlayerCanJoinRogue = FbCheckPlayerCanJoinRogue;

@@ -1,45 +1,81 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WorldMapAlterMapComponent = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  MapComponent_1 = require("../../Map/Base/MapComponent");
+  value: true
+});
+exports.WorldMapAlterMapComponent = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const MapComponent_1 = require("../../Map/Base/MapComponent");
 class WorldMapAlterMapComponent extends MapComponent_1.MapComponent {
   constructor() {
-    super(...arguments), this.WorldMapViewPlaySequenceFunction = void 0, this.InverTowerCtrlRoot = void 0, this.AUc = void 0, this.$An = e => {
-      "Invert" === e && (this.AUc?.SetResult(!0), this.AUc = void 0)
-    }
+    super(...arguments);
+    this.WorldMapViewPlaySequenceFunction = undefined;
+    this.InverTowerCtrlRoot = undefined;
+    this.AUc = undefined;
+    this.$An = e => {
+      if (e === "Invert") {
+        this.AUc?.SetResult(true);
+        this.AUc = undefined;
+      }
+    };
   }
   get ComponentType() {
-    return 9
+    return 9;
   }
   get NYa() {
     var e = this.Parent;
-    if (void 0 !== e) return e;
-    this.LogError(63, "[地图系统]->二级界面组件没有附加到容器下！")
+    if (e !== undefined) {
+      return e;
+    }
+    this.LogError(63, "[地图系统]->二级界面组件没有附加到容器下！");
   }
   OnEnable() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
   OnDisable() {
-    this.PUc(), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An)
+    this.PUc();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
   PUc() {
-    this.AUc?.SetResult(!1), this.AUc = void 0
+    this.AUc?.SetResult(false);
+    this.AUc = undefined;
   }
   async ChangeMapAsync(e, t) {
     var i = this.NYa.Map;
-    i.UnBindMapTileDelegate(), ControllerHolder_1.ControllerHolder.WorldMapController.ClearFocalMarkItem(), this.NYa.CancelAllTasks(), this.NYa.ReloadComponent(8), void 0 !== t && e === i.MapId && (this.InverTowerCtrlRoot.SetUIActive(!0), this.PUc(), this.AUc = new CustomPromise_1.CustomPromise, this.WorldMapViewPlaySequenceFunction?.("InverTower", !0).then(() => {
-      this.InverTowerCtrlRoot.SetUIActive(!1)
-    })), await this.xUc(e, t)
+    i.UnBindMapTileDelegate();
+    ControllerHolder_1.ControllerHolder.WorldMapController.ClearFocalMarkItem();
+    this.NYa.CancelAllTasks();
+    this.NYa.ReloadComponent(8);
+    if (t !== undefined && e === i.MapId) {
+      this.InverTowerCtrlRoot.SetUIActive(true);
+      this.PUc();
+      this.AUc = new CustomPromise_1.CustomPromise();
+      this.WorldMapViewPlaySequenceFunction?.("InverTower", true).then(() => {
+        this.InverTowerCtrlRoot.SetUIActive(false);
+      });
+    }
+    await this.xUc(e, t);
   }
   async xUc(e, t) {
     var i;
-    !1 === await this.AUc?.Promise ? this.AUc = void 0 : (i = this.NYa.Map, ModelManager_1.ModelManager.WorldMapModel.SetWorldMapSelectedGravity(e, t), await i.ChangeMapAsync(e, ModelManager_1.ModelManager.WorldMapModel.WorldMapSelectGravity ?? 1), this.NYa.MapId = e, this.NYa.RecalculateMapSize(), this.NYa.ReloadComponent(2), this.NYa.MultiFloorComponent.Reset(), this.NYa.Reset(void 0 === t), this.NYa.WorldMapStreamingComponent.BindAll(i.GetAllMapTileItems()), this.NYa.WorldMapStreamingComponent.Update())
+    if ((await this.AUc?.Promise) === false) {
+      this.AUc = undefined;
+    } else {
+      i = this.NYa.Map;
+      ModelManager_1.ModelManager.WorldMapModel.SetWorldMapSelectedGravity(e, t);
+      await i.ChangeMapAsync(e, ModelManager_1.ModelManager.WorldMapModel.WorldMapSelectGravity ?? 1);
+      this.NYa.MapId = e;
+      this.NYa.RecalculateMapSize();
+      this.NYa.ReloadComponent(2);
+      this.NYa.MultiFloorComponent.Reset();
+      this.NYa.Reset(t === undefined);
+      this.NYa.WorldMapStreamingComponent.BindAll(i.GetAllMapTileItems());
+      this.NYa.WorldMapStreamingComponent.Update();
+    }
   }
   ChangeMapGravity() {
     var e = ModelManager_1.ModelManager.WorldMapModel.WorldMapGravity;
@@ -52,18 +88,18 @@ class WorldMapAlterMapComponent extends MapComponent_1.MapComponent {
         t = 1;
         break;
       default:
-        return
+        return;
     }
     ModelManager_1.ModelManager.WorldMapModel.WorldMapSelectGravity = t;
     e = this.NYa.Map;
-    this.ChangeMapAsync(e.MapId, ModelManager_1.ModelManager.WorldMapModel.WorldMapGravity)
+    this.ChangeMapAsync(e.MapId, ModelManager_1.ModelManager.WorldMapModel.WorldMapGravity);
   }
   get CanChangeMapGravity() {
     var e = this.NYa.Map.MapId;
-    return ModelManager_1.ModelManager.WorldMapModel.IsGravityMap(e)
+    return ModelManager_1.ModelManager.WorldMapModel.IsGravityMap(e);
   }
   OnRemove() {
-    ModelManager_1.ModelManager.WorldMapModel.WorldMapSelectGravity = void 0
+    ModelManager_1.ModelManager.WorldMapModel.WorldMapSelectGravity = undefined;
   }
 }
 exports.WorldMapAlterMapComponent = WorldMapAlterMapComponent;

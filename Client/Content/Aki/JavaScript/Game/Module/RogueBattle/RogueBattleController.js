@@ -1,119 +1,175 @@
 "use strict";
-var _a;
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleController = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  StringUtils_1 = require("../../../Core/Utils/StringUtils"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiControllerBase_1 = require("../../Ui/Base/UiControllerBase"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  AsyncTask_1 = require("../../World/Task/AsyncTask"),
-  TaskSystem_1 = require("../../World/Task/TaskSystem"),
-  ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController"),
-  LevelLoadingController_1 = require("../LevelLoading/LevelLoadingController"),
-  WeatherController_1 = require("../Weather/WeatherController"),
-  WeatherModel_1 = require("../Weather/WeatherModel");
+  value: true
+});
+exports.RogueBattleController = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const UiManager_1 = require("../../Ui/UiManager");
+const ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController");
+const WeatherController_1 = require("../Weather/WeatherController");
+const WeatherModel_1 = require("../Weather/WeatherModel");
 class RogueBattleController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15369, RogueBattleController.OnRogueRoomInfoNotify), Net_1.Net.Register(18597, RogueBattleController.OnRogueSubLevelNotify), Net_1.Net.Register(23703, RogueBattleController.OnRogueResInstOptionsUpdateNotify), Net_1.Net.Register(21932, RogueBattleController.OnRogueResGainDataUpdateNotify), Net_1.Net.Register(20068, RogueBattleController.OnRogueResElementUpdateNotify), Net_1.Net.Register(16404, RogueBattleController.OnRogueResRoleBondUpdateNotify), Net_1.Net.Register(21715, RogueBattleController.OnRogueResFormationUpdateNotify)
+    Net_1.Net.Register(27492, RogueBattleController.OnRogueRoomInfoNotify);
+    Net_1.Net.Register(28480, RogueBattleController.OnRogueResInstOptionsUpdateNotify);
+    Net_1.Net.Register(29968, RogueBattleController.OnRogueResGainDataUpdateNotify);
+    Net_1.Net.Register(29407, RogueBattleController.OnRogueResElementUpdateNotify);
+    Net_1.Net.Register(19462, RogueBattleController.OnRogueResRoleBondUpdateNotify);
+    Net_1.Net.Register(17149, RogueBattleController.OnRogueResFormationUpdateNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15369), Net_1.Net.UnRegister(18597), Net_1.Net.UnRegister(23703), Net_1.Net.UnRegister(21932), Net_1.Net.UnRegister(20068), Net_1.Net.UnRegister(16404), Net_1.Net.UnRegister(21715)
+    Net_1.Net.UnRegister(27492);
+    Net_1.Net.UnRegister(28480);
+    Net_1.Net.UnRegister(29968);
+    Net_1.Net.UnRegister(29407);
+    Net_1.Net.UnRegister(19462);
+    Net_1.Net.UnRegister(17149);
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeon, this.OnLeaveInstanceDungeon)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeon, this.OnLeaveInstanceDungeon);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeon, this.OnLeaveInstanceDungeon)
-  }
-  static UWa(o) {
-    return [o.fL_.filter(e => !o.mL_.includes(e)), o.mL_.filter(e => !o.fL_.includes(e))]
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeon, this.OnLeaveInstanceDungeon);
   }
   static async GotoNextRoomRequest() {
-    var e = new Protocol_1.Aki.Protocol.UBc,
-      e = await Net_1.Net.CallAsync(25757, e);
-    e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28133) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("RogueBattle", 34, "进入下一层成功"))
+    var e = new Protocol_1.Aki.Protocol.UBc();
+    var e = await Net_1.Net.CallAsync(28011, e);
+    if (e) {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22317);
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RogueBattle", 34, "进入下一层成功");
+      }
+    }
   }
   static async SwitchFormationRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.G_1,
-      e = (o.c5n = e, await Net_1.Net.CallAsync(19651, o));
-    e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated && ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19651)
+    var o = new Protocol_1.Aki.Protocol.El1();
+    o.c5n = e;
+    var e = await Net_1.Net.CallAsync(29197, o);
+    if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated) {
+      ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29197);
+    }
   }
-  static async ChangeFormationAllListRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.Rr1,
-      t = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(e);
-    t ? (o.Qr1 = new Protocol_1.Aki.Protocol.Qr1, o.Qr1.Q6n = t.Q6n.filter(e => 0 !== e), o.c5n = e, (t = await Net_1.Net.CallAsync(18726, o)) && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18726) : ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, t.Qr1))) : Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 34, "没有找到阵型数据", ["Index:", e])
+  static async ChangeFormationAllListRequest(e, o) {
+    var t = new Protocol_1.Aki.Protocol.Kr1();
+    t.do1 = new Protocol_1.Aki.Protocol.do1();
+    t.do1.Q6n = o.filter(e => e !== 0);
+    t.c5n = e;
+    var o = await Net_1.Net.CallAsync(19194, t);
+    if (o) {
+      if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated) {
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19194);
+      } else {
+        ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.do1);
+      }
+    }
   }
   static async ChangeFormationRequest(e, o, t) {
-    var r = new Protocol_1.Aki.Protocol.Rr1,
-      a = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(e);
-    a ? (a.Q6n[o] === t ? a.Q6n[o] = 0 : a.Q6n[o] = t, a.Q6n = a.Q6n.filter(e => 0 !== e).concat(a.Q6n.filter(e => 0 === e)), r.Qr1 = new Protocol_1.Aki.Protocol.Qr1, r.Qr1.Q6n = a.Q6n.filter(e => 0 !== e), r.c5n = e, (o = await Net_1.Net.CallAsync(18726, r)) && (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 18726) : ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.Qr1))) : Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 34, "没有找到阵型数据", ["Index:", e])
+    var r = new Protocol_1.Aki.Protocol.Kr1();
+    var a = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(e);
+    if (a) {
+      if (a.Q6n[o] === t) {
+        a.Q6n[o] = 0;
+      } else {
+        a.Q6n[o] = t;
+      }
+      a.Q6n = a.Q6n.filter(e => e !== 0).concat(a.Q6n.filter(e => e === 0));
+      r.do1 = new Protocol_1.Aki.Protocol.do1();
+      r.do1.Q6n = a.Q6n.filter(e => e !== 0);
+      r.c5n = e;
+      if (o = await Net_1.Net.CallAsync(19194, r)) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated) {
+          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19194);
+        } else {
+          ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.do1);
+        }
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("RogueBattle", 34, "没有找到阵型数据", ["Index:", e]);
+    }
   }
   static async SelectTokenRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.yEc,
-      e = (o.uB1 = e, await Net_1.Net.CallAsync(19869, o));
-    e && (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs && ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19869), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueBattleSelectOption))
+    var o = new Protocol_1.Aki.Protocol.yEc();
+    o.VB1 = e;
+    var e = await Net_1.Net.CallAsync(20864, o);
+    if (e) {
+      if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 20864);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueBattleSelectOption);
+    }
   }
   static async OpenBuffSelectViewById(e) {
-    var o, t = ModelManager_1.ModelManager.RogueBattleModel.GetOptionDataById(e);
-    return t ? (o = this.GetViewNameByGainType(t.hIc), !!UiManager_1.UiManager.IsViewOpen(o) || (Log_1.Log.CheckInfo() && Log_1.Log.Info("RogueBattle", 34, "肉鸽选择界面数据:", ["BindId:", e], ["Data:", t]), void 0 !== await UiManager_1.UiManager.OpenViewAsync(o, e))) : (Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 34, "没有肉鸽界面数据!"), !1)
+    var o;
+    var t = ModelManager_1.ModelManager.RogueBattleModel.GetOptionDataById(e);
+    if (t) {
+      o = this.GetViewNameByGainType(t.hIc);
+      return !!UiManager_1.UiManager.IsViewOpen(o) || (Log_1.Log.CheckInfo() && Log_1.Log.Info("RogueBattle", 34, "肉鸽选择界面数据:", ["BindId:", e], ["Data:", t]), (await UiManager_1.UiManager.OpenViewAsync(o, e)) !== undefined);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RogueBattle", 34, "没有肉鸽界面数据!");
+      }
+      return false;
+    }
   }
   static GetViewNameByGainType(e) {
     switch (e) {
       case Protocol_1.Aki.Protocol.hIc.$9n:
         return "RogueBattleSelectTokenView";
-      case Protocol_1.Aki.Protocol.hIc.Proto_Event:
+      case Protocol_1.Aki.Protocol.hIc.Nhu:
         return "RogueBattleRandomEventView";
       case Protocol_1.Aki.Protocol.hIc.Proto_TokenShop:
         return "RogueBattleShopView";
       case Protocol_1.Aki.Protocol.hIc.hxs:
-        return "RogueBattlePhantomSelectView"
+        return "RogueBattlePhantomSelectView";
     }
-    Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 34, "当前增益类型没有对应的界面数据", ["type", Protocol_1.Aki.Protocol.hIc[e]])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("RogueBattle", 34, "当前增益类型没有对应的界面数据", ["type", Protocol_1.Aki.Protocol.hIc[e]]);
+    }
   }
 }
-exports.RogueBattleController = RogueBattleController, (_a = RogueBattleController).OnLeaveInstanceDungeon = () => {
-  ModelManager_1.ModelManager.RogueBattleModel.ClearData()
-}, RogueBattleController.OnRogueResRoleBondUpdateNotify = e => {
-  ModelManager_1.ModelManager.RogueBattleModel.UpdateFetterData(e)
-}, RogueBattleController.OnRogueResElementUpdateNotify = e => {
-  ModelManager_1.ModelManager.RogueBattleModel.UpdateElementData(e)
-}, RogueBattleController.OnRogueResGainDataUpdateNotify = e => {
-  ModelManager_1.ModelManager.RogueBattleModel.UpdateGainData(e)
-}, RogueBattleController.OnRogueSubLevelNotify = l => {
-  var e = new AsyncTask_1.AsyncTask("RogueBattleSubLevelNotify", async () => {
-    ModelManager_1.ModelManager.SubLevelLoadingModel.ScreenEffect = 1;
-    const [o, t] = _a.UWa(l);
-    if (0 === o.length && 0 === t.length) await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(15, 3);
-    else {
-      var e = Vector_1.Vector.Create(l.iPs, l.rPs, l.gqs),
-        r = new UE.Rotator(0, l.fqs, 0);
-      await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(15, 3);
-      const a = new CustomPromise_1.CustomPromise;
-      ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(o, t, 0, e, r, e => {
-        e ? a.SetResult(!0) : Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 34, "周常肉鸽子关卡加载失败", ["unloads", o], ["newLoads", t])
-      }), await a.Promise
-    }
-    return await _a.GotoNextRoomRequest(), await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(15, 1), !0
-  });
-  TaskSystem_1.TaskSystem.AddTask(e), TaskSystem_1.TaskSystem.Run()
-}, RogueBattleController.OnRogueRoomInfoNotify = e => {
-  var o = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRoomPoolConfig(e.CL_),
-    t = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueRoomType(e.vqs);
-  ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomTypeId = t.RoomType, ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomId = e.CL_, StringUtils_1.StringUtils.IsEmpty(o?.RoomsMusicState) ? ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomMusicState = t.RoomsMusicState : ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomMusicState = o.RoomsMusicState, 0 !== e.pqs ? WeatherModel_1.WeatherModel.GetWorldWeatherActor().ChangeWeather(e.pqs, 0) : WeatherController_1.WeatherController.StopWeather()
-}, RogueBattleController.OnRogueResInstOptionsUpdateNotify = e => {
-  ModelManager_1.ModelManager.RogueBattleModel.UpdateOptionData(e)
-}, RogueBattleController.OnRogueResFormationUpdateNotify = o => {
-  for (let e = 0; e < o.Wr1.length; e++) ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.Wr1[e])
+(exports.RogueBattleController = RogueBattleController).OnLeaveInstanceDungeon = () => {
+  ModelManager_1.ModelManager.RogueBattleModel.ClearData();
 };
-//# sourceMappingURL=RogueBattleController.js.map
+RogueBattleController.OnRogueResRoleBondUpdateNotify = e => {
+  ModelManager_1.ModelManager.RogueBattleModel.UpdateFetterData(e);
+};
+RogueBattleController.OnRogueResElementUpdateNotify = e => {
+  ModelManager_1.ModelManager.RogueBattleModel.UpdateElementData(e);
+};
+RogueBattleController.OnRogueResGainDataUpdateNotify = e => {
+  ModelManager_1.ModelManager.RogueBattleModel.UpdateGainData(e);
+};
+RogueBattleController.OnRogueRoomInfoNotify = e => {
+  var o = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRoomPoolConfig(e.CL_);
+  var t = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueRoomType(e.vqs);
+  ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomTypeId = t.RoomType;
+  ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomId = e.CL_;
+  if (StringUtils_1.StringUtils.IsEmpty(o?.RoomsMusicState)) {
+    ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomMusicState = t.RoomsMusicState;
+  } else {
+    ModelManager_1.ModelManager.RogueBattleModel.CurrentRoomMusicState = o.RoomsMusicState;
+  }
+  if (e.pqs !== 0) {
+    WeatherModel_1.WeatherModel.GetWorldWeatherActor().ChangeWeather(e.pqs, 0);
+  } else {
+    WeatherController_1.WeatherController.StopWeather();
+  }
+};
+RogueBattleController.OnRogueResInstOptionsUpdateNotify = e => {
+  ModelManager_1.ModelManager.RogueBattleModel.UpdateOptionData(e);
+};
+RogueBattleController.OnRogueResFormationUpdateNotify = o => {
+  for (let e = 0; e < o.uo1.length; e++) {
+    ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.uo1[e]);
+  }
+}; //# sourceMappingURL=RogueBattleController.js.map

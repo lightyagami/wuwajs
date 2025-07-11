@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDetectTrigger = void 0;
+  value: true
+});
+exports.FbDetectTrigger = undefined;
 class FbDetectTrigger {
   constructor(e) {
-    this.FbDataInternal = e
+    this.FbDataInternal = e;
   }
   static Create(e) {
-    if (e) return new FbDetectTrigger(e)
+    if (e) {
+      return new FbDetectTrigger(e);
+    }
   }
 }
 exports.FbDetectTrigger = FbDetectTrigger;

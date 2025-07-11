@@ -1,10 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaBattleGuideDataBase = void 0;
+  value: true
+});
+exports.PhantomArenaBattleGuideDataBase = undefined;
 class PhantomArenaBattleGuideDataBase {
   constructor(t, s) {
-    this.Type = t, this.Param = s, this.Data = void 0, this.Tips = "", this.Tips = this.Param.TidPromptTxt, this.Data = this.Param.EnableOperation
+    this.Type = t;
+    this.Param = s;
+    this.Data = undefined;
+    this.Tips = "";
+    this.Tips = this.Param.TidPromptTxt;
+    this.Data = this.Param.EnableOperation;
   }
 }
 exports.PhantomArenaBattleGuideDataBase = PhantomArenaBattleGuideDataBase;

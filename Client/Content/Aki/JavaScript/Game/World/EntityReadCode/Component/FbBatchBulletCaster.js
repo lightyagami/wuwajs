@@ -1,34 +1,80 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBatchBulletCaster = void 0;
+  value: true
+});
+exports.FbBatchBulletCaster = undefined;
 class FbBatchBulletCaster {
   constructor(t) {
-    this.FbDataInternal = t, this.gXh = !1, this.fXh = 0, this.pXh = !1, this.vXh = 0, this.Gfh = !1, this.Ofh = 0, this.yXh = !1, this.SXh = 0, this.MXh = !1, this.EXh = 0, this.IXh = !1, this.TXh = 0, this.bXh = !1, this.LXh = 0
+    this.FbDataInternal = t;
+    this.gXh = false;
+    this.fXh = 0;
+    this.pXh = false;
+    this.vXh = 0;
+    this.Gfh = false;
+    this.Ofh = 0;
+    this.yXh = false;
+    this.SXh = 0;
+    this.MXh = false;
+    this.EXh = 0;
+    this.IXh = false;
+    this.TXh = 0;
+    this.bXh = false;
+    this.LXh = 0;
   }
   static Create(t) {
-    if (t) return new FbBatchBulletCaster(t)
+    if (t) {
+      return new FbBatchBulletCaster(t);
+    }
   }
   get BulletIndex() {
-    return this.gXh || (this.gXh = !0, this.fXh = this.FbDataInternal.bulletIndex()), this.fXh
+    if (!this.gXh) {
+      this.gXh = true;
+      this.fXh = this.FbDataInternal.bulletIndex();
+    }
+    return this.fXh;
   }
   get BulletType() {
-    return this.pXh || (this.pXh = !0, this.vXh = Number(this.FbDataInternal.bulletType())), this.vXh
+    if (!this.pXh) {
+      this.pXh = true;
+      this.vXh = Number(this.FbDataInternal.bulletType());
+    }
+    return this.vXh;
   }
   get DelayTime() {
-    return this.Gfh || (this.Gfh = !0, this.Ofh = this.FbDataInternal.delayTime()), this.Ofh
+    if (!this.Gfh) {
+      this.Gfh = true;
+      this.Ofh = this.FbDataInternal.delayTime();
+    }
+    return this.Ofh;
   }
   get FlyTime() {
-    return this.yXh || (this.yXh = !0, this.SXh = this.FbDataInternal.flyTime()), this.SXh
+    if (!this.yXh) {
+      this.yXh = true;
+      this.SXh = this.FbDataInternal.flyTime();
+    }
+    return this.SXh;
   }
   get FlyDistance() {
-    return this.MXh || (this.MXh = !0, this.EXh = this.FbDataInternal.flyDistance()), this.EXh
+    if (!this.MXh) {
+      this.MXh = true;
+      this.EXh = this.FbDataInternal.flyDistance();
+    }
+    return this.EXh;
   }
   get WarningTime() {
-    return this.IXh || (this.IXh = !0, this.TXh = this.FbDataInternal.warningTime()), this.TXh
+    if (!this.IXh) {
+      this.IXh = true;
+      this.TXh = this.FbDataInternal.warningTime();
+    }
+    return this.TXh;
   }
   get WarningWidth() {
-    return this.bXh || (this.bXh = !0, this.LXh = this.FbDataInternal.warningWidth()), this.LXh
+    if (!this.bXh) {
+      this.bXh = true;
+      this.LXh = this.FbDataInternal.warningWidth();
+    }
+    return this.LXh;
   }
 }
 exports.FbBatchBulletCaster = FbBatchBulletCaster;

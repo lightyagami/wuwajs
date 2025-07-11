@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetAreaState = void 0;
+  value: true
+});
+exports.FbSetAreaState = undefined;
 class FbSetAreaState {
   constructor(t) {
-    this.FbDataInternal = t, this.Yph = !1, this.zph = 0, this.Bch = !1, this.Cbo = 0
+    this.FbDataInternal = t;
+    this.Yph = false;
+    this.zph = 0;
+    this.Bch = false;
+    this.Cbo = 0;
   }
   static Create(t) {
-    if (t) return new FbSetAreaState(t)
+    if (t) {
+      return new FbSetAreaState(t);
+    }
   }
   get AreaId() {
-    return this.Yph || (this.Yph = !0, this.zph = this.FbDataInternal.areaId()), this.zph
+    if (!this.Yph) {
+      this.Yph = true;
+      this.zph = this.FbDataInternal.areaId();
+    }
+    return this.zph;
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
 }
 exports.FbSetAreaState = FbSetAreaState;

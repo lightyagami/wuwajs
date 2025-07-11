@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFixShowTargetRange = void 0;
+  value: true
+});
+exports.FbFixShowTargetRange = undefined;
 class FbFixShowTargetRange {
   constructor(t) {
-    this.FbDataInternal = t, this.jAh = !1, this.HAh = void 0, this.WAh = !1, this.QAh = !1
+    this.FbDataInternal = t;
+    this.jAh = false;
+    this.HAh = undefined;
+    this.WAh = false;
+    this.QAh = false;
   }
   static Create(t) {
-    if (t) return new FbFixShowTargetRange(t)
+    if (t) {
+      return new FbFixShowTargetRange(t);
+    }
   }
   get RangeEntities() {
     if (!this.jAh) {
-      this.jAh = !0, this.HAh = new Array;
+      this.jAh = true;
+      this.HAh = new Array();
       var i = this.FbDataInternal.rangeEntitiesLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.HAh.push(this.FbDataInternal.rangeEntities(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.HAh.push(this.FbDataInternal.rangeEntities(t));
+        }
+      }
     }
-    return this.HAh
+    return this.HAh;
   }
   get DelayShow() {
-    return this.WAh || (this.WAh = !0, this.QAh = this.FbDataInternal.delayShow()), this.QAh
+    if (!this.WAh) {
+      this.WAh = true;
+      this.QAh = this.FbDataInternal.delayShow();
+    }
+    return this.QAh;
   }
 }
 exports.FbFixShowTargetRange = FbFixShowTargetRange;

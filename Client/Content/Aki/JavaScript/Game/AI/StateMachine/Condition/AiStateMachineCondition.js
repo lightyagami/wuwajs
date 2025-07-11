@@ -1,51 +1,126 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineCondition = void 0;
-const Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  CombatMessage_1 = require("../../../Module/CombatMessage/CombatMessage"),
-  CombatLog_1 = require("../../../Utils/CombatLog"),
-  AiStateMachine_1 = require("../AiStateMachine");
+  value: true
+});
+exports.AiStateMachineCondition = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const CombatMessage_1 = require("../../../Module/CombatMessage/CombatMessage");
+const CharacterStateMachineNewComponent_1 = require("../../../NewWorld/Character/Common/Component/CharacterStateMachineNewComponent");
+const CombatLog_1 = require("../../../Utils/CombatLog");
+const AiStateMachine_1 = require("../AiStateMachine");
 class AiStateMachineCondition {
-  constructor(t, i, s) {
-    this.Inited = !1, this.Node = void 0, this.Transition = void 0, this.ConditionData = void 0, this.Index = void 0, this.CheckForClient = !1, this.Reverse = !1, this.ResultSelf = !1, this.LastResult = void 0, this.HasTaskFinishCondition = !1, this.ResultServer = !1, this.Node = t.Node, this.Transition = t, this.ConditionData = i, this.Reverse = i.Reverse, this.Index = s
+  constructor(t, i, e) {
+    this.Inited = false;
+    this.Node = undefined;
+    this.Transition = undefined;
+    this.ParentCondition = undefined;
+    this.ConditionData = undefined;
+    this.Index = undefined;
+    this.CheckForClient = false;
+    this.Reverse = false;
+    this.ResultSelf = false;
+    this.LastResult = undefined;
+    this.HasTaskFinishCondition = false;
+    this.HasSignaled = false;
+    this.ResultServer = false;
+    this.Node = t.Node;
+    this.Transition = t;
+    this.ConditionData = i;
+    this.Reverse = i.Reverse;
+    this.Index = e;
   }
   get Result() {
-    return this.ResultSelf === !this.Reverse
+    return this.ResultSelf === !this.Reverse;
   }
-  Init() {
-    return this.CheckForClient = !!this.ConditionData.IsClient, this.Inited = this.OnInit(this.ConditionData), this.Inited
+  Init(t) {
+    this.CheckForClient = !!this.ConditionData.IsClient;
+    this.Inited = this.OnInit(this.ConditionData);
+    this.ParentCondition = t;
+    return this.Inited;
   }
   OnInit(t) {
-    return !0
+    return true;
   }
   Enter() {
-    this.LastResult = void 0, this.OnEnter()
+    this.LastResult = undefined;
+    this.OnEnter();
   }
   OnEnter() {}
   Exit() {
-    this.LastResult = void 0, this.OnExit()
+    this.LastResult = undefined;
+    this.OnExit();
   }
   OnExit() {}
   Tick() {
-    if (this.OnTick(), !this.Node.RootNode.IsAnimStateMachine && this.CheckForClient && this.Result !== this.LastResult) {
-      const i = Protocol_1.Aki.Protocol._4n.create();
-      i.$4n = this.Node.RootNode.Uuid, i.J4n = this.Transition.From, i.z4n = this.Transition.To, i.t5n = this.Index, i.e5n = this.Result, CombatMessage_1.CombatNet.Call(25563, this.Node.Entity, i, t => {
-        t.fMs?.Q4n && CombatLog_1.CombatLog.Warn("StateMachineNew", this.Node?.Entity, `客户端条件完成response [${i.J4n}=>${i.z4n}],index:${this.Index},request value:` + i.e5n, ["response", t.fMs])
-      })
+    this.OnTick();
+    if (this.CanReqFsmConditionPass()) {
+      this.ReqFsmConditionPass();
     }
-    this.LastResult = this.Result
+    this.LastResult = this.Result;
+  }
+  CanReqFsmConditionPass() {
+    return !this.Node.RootNode.IsAnimStateMachine && this.CheckForClient && this.Result !== this.LastResult;
+  }
+  ReqFsmConditionPass() {
+    const i = Protocol_1.Aki.Protocol._4n.create();
+    i.$4n = this.Node.RootNode.Uuid;
+    i.J4n = this.Transition.From;
+    i.z4n = this.Transition.To;
+    i.t5n = this.Index;
+    i.e5n = this.Result;
+    CombatMessage_1.CombatNet.Call(22437, this.Node.Entity, i, t => {
+      if (t.fMs?.Q4n) {
+        CombatLog_1.CombatLog.Warn("StateMachineNew", this.Node?.Entity, `客户端条件完成response [${i.J4n}=>${i.z4n}],index:${this.Index},request value:${i.e5n}`, ["response", t.fMs]);
+      }
+    });
   }
   OnTick() {}
   Clear() {
-    this.OnClear(), this.Node = void 0, this.Transition = void 0, this.ConditionData = void 0
+    this.OnClear();
+    this.Node = undefined;
+    this.Transition = undefined;
+    this.ConditionData = undefined;
+    this.ParentCondition = undefined;
   }
   OnClear() {}
   HandleServerDebugInfo(t) {
-    this.ResultServer = t[this.Index]
+    this.ResultServer = t[this.Index];
+  }
+  OnSignaled() {}
+  Signaled() {
+    if (CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn && this.CheckForClient) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("StateMachine", 84, "Signaled", ["condition", this.ConditionData.Name]);
+      }
+      this.HasSignaled = true;
+      if (this.CanReqFsmConditionPass()) {
+        this.ReqFsmConditionPass();
+      }
+      this.LastResult = this.Result;
+      if (this.ParentCondition) {
+        this.ParentCondition.OnSignaled();
+      } else if (this.Result) {
+        this.Node?.TrySwitch(this.Transition.To);
+      }
+    }
+  }
+  RegisterEvents() {
+    return CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn;
+  }
+  UnregisterEvents() {
+    return CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn;
   }
   ToString(t, i = 0) {
-    (0, AiStateMachine_1.appendDepthSpace)(t, i), t.Append(`[${this.Result?"Y":"N"} `), t.Append(`${this.ResultServer?"Y":"N"} `), t.Append(`${this.CheckForClient?"C":"S"}] `), this.Reverse && t.Append("[取反] "), t.Append("" + this.ConditionData.Name)
+    (0, AiStateMachine_1.appendDepthSpace)(t, i);
+    t.Append(`[${this.Result ? "Y" : "N"} `);
+    t.Append(`${this.ResultServer ? "Y" : "N"} `);
+    t.Append(`${this.CheckForClient ? "C" : "S"}] `);
+    if (this.Reverse) {
+      t.Append("[取反] ");
+    }
+    t.Append("" + this.ConditionData.Name);
   }
 }
 exports.AiStateMachineCondition = AiStateMachineCondition;

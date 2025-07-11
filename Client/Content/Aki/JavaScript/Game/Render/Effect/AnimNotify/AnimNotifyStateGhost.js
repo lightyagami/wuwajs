@@ -1,35 +1,66 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter"),
-  EffectRuntimeGhostEffectContext_1 = require("../../../Effect/EffectContext/EffectRuntimeGhostEffectContext"),
-  EffectSystem_1 = require("../../../Effect/EffectSystem");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
+const EffectRuntimeGhostEffectContext_1 = require("../../../Effect/EffectContext/EffectRuntimeGhostEffectContext");
+const EffectSystem_1 = require("../../../Effect/EffectSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const EffectUtil_1 = require("../../../Utils/EffectUtil");
 class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.EffectDataAssetRef = void 0, this.SpawnRate = -0, this.UseSpawnRate = !0, this.SpawnInterval = -0, this.GhostLifeTime = -0, this.EffectHandleMap = void 0
+    super(...arguments);
+    this.EffectDataAssetRef = undefined;
+    this.SpawnRate = -0;
+    this.UseSpawnRate = true;
+    this.SpawnInterval = -0;
+    this.GhostLifeTime = -0;
+    this.EffectHandleMap = undefined;
   }
   Constructor() {
-    this.EffectHandleMap = void 0
+    this.EffectHandleMap = undefined;
   }
   GetNotifyName() {
-    return "角色残影"
+    return "角色残影";
   }
   K2_ValidateAssets() {
-    return !0
+    return true;
   }
   K2_NotifyBegin(t, e, s) {
-    this.EffectHandleMap || (this.EffectHandleMap = new Map), EffectSystem_1.EffectSystem.InitializeWithPreview(!1);
-    var i = t.GetOwner(),
-      f = new EffectRuntimeGhostEffectContext_1.EffectRuntimeGhostEffectContext(void 0);
+    this.EffectHandleMap ||= new Map();
+    EffectSystem_1.EffectSystem.InitializeWithPreview(false);
+    var i = t.GetOwner();
+    var f = new EffectRuntimeGhostEffectContext_1.EffectRuntimeGhostEffectContext(undefined);
     let r = this.EffectDataAssetRef.ToAssetPathName();
-    i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity && (f.EntityId = i.CharacterActorComponent?.Entity.Id, r = i.CharacterActorComponent?.GetReplaceEffect(r) ?? r), f.SkeletalMeshComp = t, f.SpawnRate = this.SpawnRate, f.UseSpawnRate = this.UseSpawnRate, f.SpawnInterval = this.SpawnInterval, f.GhostLifeTime = this.GhostLifeTime, f.SourceObject = i;
-    return (i = EffectSystem_1.EffectSystem.SpawnEffect(i, new UE.TransformDouble(new UE.Rotator, i.D_K2_GetActorLocation(), new UE.VectorDouble(1, 1, 1)), r, "[AnimNotifyStateGhost.K2_NotifyBegin]", f, 0)) && EffectSystem_1.EffectSystem.IsValid(i) && (EffectSystem_1.EffectSystem.SetEffectNotRecord(i, !0), this.EffectHandleMap.set(t, i)), !1
+    if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity) {
+      f.EntityId = i.CharacterActorComponent?.Entity.Id;
+      r = i.CharacterActorComponent?.GetReplaceEffect(r) ?? r;
+    }
+    f.SkeletalMeshComp = t;
+    f.SpawnRate = this.SpawnRate;
+    f.UseSpawnRate = this.UseSpawnRate;
+    f.SpawnInterval = this.SpawnInterval;
+    f.GhostLifeTime = this.GhostLifeTime;
+    f.SourceObject = i;
+    f = EffectSystem_1.EffectSystem.SpawnEffect(i, new UE.TransformDouble(new UE.Rotator(), i.D_K2_GetActorLocation(), new UE.VectorDouble(1, 1, 1)), r, "[AnimNotifyStateGhost.K2_NotifyBegin]", f, 0);
+    if (i instanceof TsBaseCharacter_1.default) {
+      EffectUtil_1.EffectUtil.SetAdditionalEffectTimeScaleByEntity(ModelManager_1.ModelManager.CreatureModel.GetEntityById(i.EntityId), f);
+    }
+    if (f && EffectSystem_1.EffectSystem.IsValid(f)) {
+      EffectSystem_1.EffectSystem.SetEffectNotRecord(f, true);
+      this.EffectHandleMap.set(t, f);
+    }
+    return false;
   }
   K2_NotifyEnd(t, e) {
     var s = this.EffectHandleMap.get(t);
-    return s && EffectSystem_1.EffectSystem.IsValid(s) && EffectSystem_1.EffectSystem.StopEffectById(s, "[AnimNotifyStateGhost.K2_NotifyEnd]", !1), this.EffectHandleMap.delete(t), !0
+    if (s && EffectSystem_1.EffectSystem.IsValid(s)) {
+      EffectSystem_1.EffectSystem.StopEffectById(s, "[AnimNotifyStateGhost.K2_NotifyEnd]", false);
+    }
+    this.EffectHandleMap.delete(t);
+    return true;
   }
 }
 exports.default = AnimNotifyStateGhost;

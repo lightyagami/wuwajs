@@ -1,28 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PunishReportTargetListPanel = void 0;
-const GenericLayoutAdd_1 = require("../../../Util/GenericLayoutAdd"),
-  PunishReportTargetListItemPanel_1 = require("./PunishReportTargetListItemPanel");
+  value: true
+});
+exports.PunishReportTargetListPanel = undefined;
+const GenericLayoutAdd_1 = require("../../../Util/GenericLayoutAdd");
+const PunishReportTargetListItemPanel_1 = require("./PunishReportTargetListItemPanel");
 class PunishReportTargetListPanel {
   constructor() {
-    this.J7a = void 0, this.OnLayoutRefresh = (e, t, i, r) => {
-      var s = new PunishReportTargetListItemPanel_1.PunishReportTargetListItemPanel;
-      return s.CreateThenShowByActorAsync(t.GetOwner()), {
+    this.J7a = undefined;
+    this.OnLayoutRefresh = (e, t, i, r) => {
+      var s = new PunishReportTargetListItemPanel_1.PunishReportTargetListItemPanel();
+      s.CreateThenShowByActorAsync(t.GetOwner());
+      return {
         Key: e,
         Value: s
-      }
-    }
+      };
+    };
   }
   Initialize(e) {
-    this.J7a = new GenericLayoutAdd_1.GenericLayoutAdd(e, this.OnLayoutRefresh)
+    this.J7a = new GenericLayoutAdd_1.GenericLayoutAdd(e, this.OnLayoutRefresh);
   }
   AddItemByKey(e) {
     var t = this.J7a.GetLayoutItemByKey(e);
-    return t || (this.J7a.AddItemToLayout([e]), (t = this.J7a.GetLayoutItemByKey(e)).SetDescTxt(""), t.SetNumTxt(""), t.SetState(0)), t
+    if (!t) {
+      this.J7a.AddItemToLayout([e]);
+      (t = this.J7a.GetLayoutItemByKey(e)).SetDescTxt("");
+      t.SetNumTxt("");
+      t.SetState(0);
+    }
+    return t;
   }
   Clear() {
-    this.J7a.ClearChildren()
+    this.J7a.ClearChildren();
   }
 }
 exports.PunishReportTargetListPanel = PunishReportTargetListPanel;

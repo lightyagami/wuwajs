@@ -1,54 +1,58 @@
 "use strict";
-var __decorate = this && this.__decorate || function(e, t, n, r) {
-  var a, o = arguments.length,
-    s = o < 3 ? t : null === r ? r = Object.getOwnPropertyDescriptor(t, n) : r;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(e, t, n, r);
-  else
-    for (var l = e.length - 1; 0 <= l; l--)(a = e[l]) && (s = (o < 3 ? a(s) : 3 < o ? a(t, n, s) : a(t, n)) || s);
-  return 3 < o && s && Object.defineProperty(t, n, s), s
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlayerGameplayCueComponent = void 0;
-const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  BaseGameplayCueComponent_1 = require("../../Character/Common/Component/Abilities/BaseGameplayCueComponent"),
-  playerGameplayCueType = [0, 4, 2, 14, 5, 9, 22];
-let PlayerGameplayCueComponent = class PlayerGameplayCueComponent extends BaseGameplayCueComponent_1.BaseGameplayCueComponent {
-  constructor() {
-    super(...arguments), this.xie = (e, t) => {
-      for (const n of this.GetAllCurrentCueRef()) n.EntityHandle !== e && n.OnChangeRole(e)
+
+var __decorate = this && this.__decorate || function (e, t, n, o) {
+  var r;
+  var a = arguments.length;
+  var s = a < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, n) : o;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    s = Reflect.decorate(e, t, n, o);
+  } else {
+    for (var i = e.length - 1; i >= 0; i--) {
+      if (r = e[i]) {
+        s = (a < 3 ? r(s) : a > 3 ? r(t, n, s) : r(t, n)) || s;
+      }
     }
   }
+  if (a > 3 && s) {
+    Object.defineProperty(t, n, s);
+  }
+  return s;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.PlayerGameplayCueComponent = undefined;
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const BaseGameplayCueComponent_1 = require("../../Character/Common/Component/Abilities/BaseGameplayCueComponent");
+let PlayerGameplayCueComponent = class PlayerGameplayCueComponent extends BaseGameplayCueComponent_1.BaseGameplayCueComponent {
+  constructor() {
+    super(...arguments);
+    this.xie = (e, t) => {
+      for (const n of this.GetAllCurrentCueRef()) {
+        if (n.EntityHandle !== e) {
+          n.OnChangeRole(e);
+        }
+      }
+    };
+  }
   OnStart() {
-    return super.OnStart(), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), !0
+    super.OnStart();
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    return true;
   }
   OnEnd() {
-    return super.OnEnd(), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie), !0
-  }
-  CreatePlayerGameplayCue(e, t = {}) {
-    var n = this.CreateGameplayCueInner(e, t);
-    n && !t.Instant && this.AddToOtherCueMap(t.Buff.Handle, e, n)
-  }
-  DestroyPlayerGameplayCue(e, t) {
-    this.RemoveFromOtherCueMap(e, t)
-  }
-  DestroyPlayerGameplayCueByBuff(e) {
-    const t = e.Handle;
-    e.Config.GameplayCueIds?.forEach(e => {
-      this.DestroyPlayerGameplayCue(t, e)
-    })
+    super.OnEnd();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    return true;
   }
   GetEntityHandle() {
-    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId(),
-      e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(e)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
-    return ModelManager_1.ModelManager.CreatureModel.GetEntity(e ?? 0)
-  }
-  static IsSupportedCueType(e) {
-    return playerGameplayCueType.includes(e)
+    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(e)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
+    return ModelManager_1.ModelManager.CreatureModel.GetEntity(e ?? 0);
   }
 };
-PlayerGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], PlayerGameplayCueComponent), exports.PlayerGameplayCueComponent = PlayerGameplayCueComponent;
-//# sourceMappingURL=PlayerGameplayCueComponent.js.map
+PlayerGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], PlayerGameplayCueComponent);
+exports.PlayerGameplayCueComponent = PlayerGameplayCueComponent; //# sourceMappingURL=PlayerGameplayCueComponent.js.map

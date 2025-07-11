@@ -1,11 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const PostProcessTriggerStateBase_1 = require("./PostProcessTriggerStateBase");
 class PostProcessTriggerStateOutside extends PostProcessTriggerStateBase_1.default {
   OnEnter(e) {
-    this.Owner.GetPostProcessComponent().BlendWeight = 0
+    this.Owner.GetPostProcessComponent().BlendWeight = 0;
   }
 }
 exports.default = PostProcessTriggerStateOutside;

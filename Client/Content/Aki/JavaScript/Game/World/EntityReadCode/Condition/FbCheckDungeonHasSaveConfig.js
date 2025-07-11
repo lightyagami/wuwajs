@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckDungeonHasSaveConfig = void 0;
+  value: true
+});
+exports.FbCheckDungeonHasSaveConfig = undefined;
 class FbCheckDungeonHasSaveConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.MMh = !1, this.EMh = 0, this.nc1 = !1, this.sc1 = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.MMh = false;
+    this.EMh = 0;
+    this.Tc1 = false;
+    this.bc1 = false;
   }
   static Create(t) {
-    if (t) return new FbCheckDungeonHasSaveConfig(t)
+    if (t) {
+      return new FbCheckDungeonHasSaveConfig(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get DungeonId() {
-    return this.MMh || (this.MMh = !0, this.EMh = this.FbDataInternal.dungeonId()), this.EMh
+    if (!this.MMh) {
+      this.MMh = true;
+      this.EMh = this.FbDataInternal.dungeonId();
+    }
+    return this.EMh;
   }
   get IsHasSaveConfig() {
-    return this.nc1 || (this.nc1 = !0, this.sc1 = this.FbDataInternal.isHasSaveConfig()), this.sc1
+    if (!this.Tc1) {
+      this.Tc1 = true;
+      this.bc1 = this.FbDataInternal.isHasSaveConfig();
+    }
+    return this.bc1;
   }
 }
 exports.FbCheckDungeonHasSaveConfig = FbCheckDungeonHasSaveConfig;

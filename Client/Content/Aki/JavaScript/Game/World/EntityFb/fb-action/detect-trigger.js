@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DetectTrigger = void 0;
+  value: true
+});
+exports.DetectTrigger = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class DetectTrigger {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsDetectTrigger(e, t) {
-    return (t || new DetectTrigger).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new DetectTrigger()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsDetectTrigger(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new DetectTrigger).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new DetectTrigger()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static startDetectTrigger(e) {
-    e.startObject(0)
+    e.startObject(0);
   }
   static endDetectTrigger(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createDetectTrigger(e) {
-    return DetectTrigger.startDetectTrigger(e), DetectTrigger.endDetectTrigger(e)
+    DetectTrigger.startDetectTrigger(e);
+    return DetectTrigger.endDetectTrigger(e);
   }
 }
 exports.DetectTrigger = DetectTrigger;

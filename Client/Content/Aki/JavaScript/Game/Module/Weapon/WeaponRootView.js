@@ -1,107 +1,178 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeaponRootView = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../Ui/Base/UiViewBase"),
-  UiLayer_1 = require("../../Ui/UiLayer"),
-  CommonTabComponentData_1 = require("../Common/TabComponent/CommonTabComponentData"),
-  CommonTabData_1 = require("../Common/TabComponent/CommonTabData"),
-  CommonTabTitleData_1 = require("../Common/TabComponent/CommonTabTitleData"),
-  TabComponentWithCaptionItem_1 = require("../Common/TabComponent/TabComponentWithCaptionItem"),
-  WeaponTabItem_1 = require("../Common/TabComponent/TabItem/WeaponTabItem"),
-  TabViewComponent_1 = require("../Common/TabComponent/TabViewComponent"),
-  ItemDefines_1 = require("../Item/Data/ItemDefines"),
-  UiCameraAnimationManager_1 = require("../UiCameraAnimation/UiCameraAnimationManager"),
-  UiSceneManager_1 = require("../UiComponent/UiSceneManager"),
-  WeaponController_1 = require("./WeaponController");
+  value: true
+});
+exports.WeaponRootView = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
+const UiLayer_1 = require("../../Ui/UiLayer");
+const CommonTabComponentData_1 = require("../Common/TabComponent/CommonTabComponentData");
+const CommonTabData_1 = require("../Common/TabComponent/CommonTabData");
+const CommonTabTitleData_1 = require("../Common/TabComponent/CommonTabTitleData");
+const TabComponentWithCaptionItem_1 = require("../Common/TabComponent/TabComponentWithCaptionItem");
+const WeaponTabItem_1 = require("../Common/TabComponent/TabItem/WeaponTabItem");
+const TabViewComponent_1 = require("../Common/TabComponent/TabViewComponent");
+const ItemDefines_1 = require("../Item/Data/ItemDefines");
+const UiCameraAnimationManager_1 = require("../UiCameraAnimation/UiCameraAnimationManager");
+const UiSceneManager_1 = require("../UiComponent/UiSceneManager");
+const WeaponController_1 = require("./WeaponController");
 class WeaponRootView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.TabViewComponent = void 0, this.TabComponent = void 0, this.TabDataList = [], this._S1 = !0, this.DOo = 0, this.nxl = -1, this.N2i = void 0, this.O2i = void 0, this.R6e = e => new WeaponTabItem_1.WeaponTabItem, this.pqe = e => {
-      var t = this.TabDataList[e],
-        i = t.ChildViewName,
-        e = this.TabComponent.GetTabItemByIndex(e);
-      this.TabViewComponent.ToggleCallBack(t, i, e, this.DOo)
-    }, this.yqe = e => {
+    super(...arguments);
+    this.TabViewComponent = undefined;
+    this.TabComponent = undefined;
+    this.TabDataList = [];
+    this.DS1 = true;
+    this.DOo = 0;
+    this.nxl = -1;
+    this.N2i = undefined;
+    this.O2i = undefined;
+    this.R6e = e => new WeaponTabItem_1.WeaponTabItem();
+    this.pqe = e => {
+      var t = this.TabDataList[e];
+      var i = t.ChildViewName;
+      var e = this.TabComponent.GetTabItemByIndex(e);
+      this.TabViewComponent.ToggleCallBack(t, i, e, this.DOo);
+    };
+    this.yqe = e => {
       e = this.TabDataList[e];
-      return new CommonTabData_1.CommonTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(e.TabName))
-    }, this.Ako = () => {
-      this.UpdateDynamicTabComponent()
-    }, this.l7i = e => {
-      "WeaponRootView" === e.ViewName && (UiLayer_1.UiLayer.SetShowMaskLayer("WeaponRootView", !1), this.N2i) && this.O2i && this._S1 && (WeaponController_1.WeaponController.OnSelectedWeaponChange(ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo), this.N2i, this.O2i, this.nxl), this._S1 = !1)
-    }, this.W7t = () => {
-      this.CloseMe()
-    }
+      return new CommonTabData_1.CommonTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(e.TabName));
+    };
+    this.Ako = () => {
+      this.UpdateDynamicTabComponent();
+    };
+    this.l7i = e => {
+      if (e.ViewName === "WeaponRootView" && (UiLayer_1.UiLayer.SetShowMaskLayer("WeaponRootView", false), this.N2i) && this.O2i && this.DS1) {
+        WeaponController_1.WeaponController.OnSelectedWeaponChange(ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo), this.N2i, this.O2i, this.nxl);
+        this.DS1 = false;
+      }
+    };
+    this.W7t = () => {
+      this.CloseMe();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   OnBeforeCreate() {
     var e = this.OpenParam;
-    e ? (e.IsFromRoleRootView || ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(2), this.DOo = e.WeaponIncId, this.nxl = e.WeaponSkinId, this.N2i = UiSceneManager_1.UiSceneManager.InitWeaponObserver(), this.O2i = UiSceneManager_1.UiSceneManager.InitWeaponScabbardObserver()) : Log_1.Log.CheckError() && Log_1.Log.Error("Weapon", 43, "进入武器培养界面未传参")
+    if (e) {
+      if (!e.IsFromRoleRootView) {
+        ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(2);
+      }
+      this.DOo = e.WeaponIncId;
+      this.nxl = e.WeaponSkinId;
+      this.N2i = UiSceneManager_1.UiSceneManager.InitWeaponObserver();
+      this.O2i = UiSceneManager_1.UiSceneManager.InitWeaponScabbardObserver();
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Weapon", 43, "进入武器培养界面未传参");
+    }
   }
   async OnBeforeStartAsync() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
-    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.W7t), await this.TabComponent.SetCurrencyItemList([ItemDefines_1.EItemId.Gold]), this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1))
+    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.W7t);
+    await this.TabComponent.SetCurrencyItemList([ItemDefines_1.EItemId.Gold]);
+    this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1));
   }
   OnHandleLoadScene() {
-    this.N2i || (this.N2i = UiSceneManager_1.UiSceneManager.InitWeaponObserver()), this.O2i || (this.O2i = UiSceneManager_1.UiSceneManager.InitWeaponScabbardObserver())
+    this.N2i ||= UiSceneManager_1.UiSceneManager.InitWeaponObserver();
+    this.O2i ||= UiSceneManager_1.UiSceneManager.InitWeaponScabbardObserver();
   }
   OnBeforeShow() {
-    UiLayer_1.UiLayer.SetShowMaskLayer("WeaponRootView", !0), this.UpdateDynamicTabComponent(), !UiCameraAnimationManager_1.UiCameraAnimationManager.IsPlayingAnimation() && this._S1 && (WeaponController_1.WeaponController.OnSelectedWeaponChange(ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo), this.N2i, this.O2i, this.nxl), this._S1 = !1, UiLayer_1.UiLayer.SetShowMaskLayer("WeaponRootView", !1))
+    UiLayer_1.UiLayer.SetShowMaskLayer("WeaponRootView", true);
+    this.UpdateDynamicTabComponent();
+    if (!UiCameraAnimationManager_1.UiCameraAnimationManager.IsPlayingAnimation() && this.DS1) {
+      WeaponController_1.WeaponController.OnSelectedWeaponChange(ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo), this.N2i, this.O2i, this.nxl);
+      this.DS1 = false;
+      UiLayer_1.UiLayer.SetShowMaskLayer("WeaponRootView", false);
+    }
   }
   OnAfterShow() {
-    ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(2)
+    ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(2);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeaponCanGoBreach, this.Ako), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.l7i)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeaponCanGoBreach, this.Ako);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.l7i);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeaponCanGoBreach, this.Ako), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.l7i)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeaponCanGoBreach, this.Ako);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.l7i);
   }
   OnBeforePlayCloseSequence() {
-    this.Pko()
+    this.Pko();
   }
   OnHandleReleaseScene() {
-    this.Pko()
+    this.Pko();
   }
   Pko() {
-    this.N2i && (UiSceneManager_1.UiSceneManager.HideObserver(this.N2i, "ShowHideWeaponEffect"), UiSceneManager_1.UiSceneManager.DestroyWeaponObserver(this.N2i), this.N2i = void 0), this.O2i && (UiSceneManager_1.UiSceneManager.HideObserver(this.O2i, "ShowHideWeaponEffect"), UiSceneManager_1.UiSceneManager.DestroyWeaponScabbardObserver(this.O2i), this.O2i = void 0), this._S1 = !0
+    if (this.N2i) {
+      UiSceneManager_1.UiSceneManager.HideObserver(this.N2i, "ShowHideWeaponEffect");
+      UiSceneManager_1.UiSceneManager.DestroyWeaponObserver(this.N2i);
+      this.N2i = undefined;
+    }
+    if (this.O2i) {
+      UiSceneManager_1.UiSceneManager.HideObserver(this.O2i, "ShowHideWeaponEffect");
+      UiSceneManager_1.UiSceneManager.DestroyWeaponScabbardObserver(this.O2i);
+      this.O2i = undefined;
+    }
+    this.DS1 = true;
   }
   OnBeforeDestroy() {
     var e = this.OpenParam;
-    e && e.IsFromRoleRootView && UiSceneManager_1.UiSceneManager.HasRoleSystemRoleActor() && WeaponController_1.WeaponController.RoleFadeOut(UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor()), this.TabComponent && (this.TabComponent.Destroy(), this.TabComponent = void 0), this.TabDataList = [], this.TabViewComponent && (this.TabViewComponent.DestroyTabViewComponent(), this.TabViewComponent = void 0)
+    if (e && e.IsFromRoleRootView && UiSceneManager_1.UiSceneManager.HasRoleSystemRoleActor()) {
+      WeaponController_1.WeaponController.RoleFadeOut(UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor());
+    }
+    if (this.TabComponent) {
+      this.TabComponent.Destroy();
+      this.TabComponent = undefined;
+    }
+    this.TabDataList = [];
+    if (this.TabViewComponent) {
+      this.TabViewComponent.DestroyTabViewComponent();
+      this.TabViewComponent = undefined;
+    }
   }
   UpdateDynamicTabComponent() {
     this.TabDataList = this.GetWeaponTabList();
     const t = this.TabComponent.GetSelectedIndex();
     this.TabComponent.RefreshTabItemByLength(this.TabDataList.length, () => {
-      var e = 0 < t ? t : 0;
-      this.TabComponent.SelectToggleByIndex(e)
-    })
+      var e = t > 0 ? t : 0;
+      this.TabComponent.SelectToggleByIndex(e);
+    });
   }
   GetWeaponTabList() {
-    var e = [],
-      t = ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("WeaponRootView"),
-      i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo).CanGoBreach();
-    for (const n of t) "WeaponBreachView" === n.ChildViewName && !i || "WeaponLevelUpView" === n.ChildViewName && i || e.push(n);
-    return e
+    var e = [];
+    var t = ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("WeaponRootView");
+    var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo).CanGoBreach();
+    for (const n of t) {
+      if ((n.ChildViewName !== "WeaponBreachView" || !!i) && (n.ChildViewName !== "WeaponLevelUpView" || !i)) {
+        e.push(n);
+      }
+    }
+    return e;
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
-    if (1 === e.length) {
-      if (!this.TabComponent) return;
-      if (!this.TabComponent.GetTabComponent().GetLayout()) return void(Log_1.Log.CheckError() && Log_1.Log.Error("Guide", 53, "角色界面聚焦引导的额外参数配置有误, 找不到Layout", ["configParams", e]));
+    if (e.length === 1) {
+      if (!this.TabComponent) {
+        return;
+      }
+      if (!this.TabComponent.GetTabComponent().GetLayout()) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Guide", 53, "角色界面聚焦引导的额外参数配置有误, 找不到Layout", ["configParams", e]);
+        }
+        return;
+      }
       const t = Number(e[0]);
       e = this.TabComponent.GetTabItemByIndex(this.TabDataList.findIndex(e => e.Id === t)).GetRootItem();
-      if (e) return [e, e]
+      if (e) {
+        return [e, e];
+      }
     }
   }
 }

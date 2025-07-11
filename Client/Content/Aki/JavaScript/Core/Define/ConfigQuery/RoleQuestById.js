@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configRoleQuestById = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  RoleQuest_1 = require("../Config/RoleQuest"),
-  DB = "db_rolequest.db",
-  FILE = "j.角色任务.xlsx",
-  TABLE = "RoleQuest",
-  COMMAND = "select BinData from `RoleQuest` where Id = ?",
-  KEY_PREFIX = "RoleQuestById",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configRoleQuestById = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const RoleQuest_1 = require("../Config/RoleQuest");
+const DB = "db_rolequest.db";
+const FILE = "j.角色任务.xlsx";
+const TABLE = "RoleQuest";
+const COMMAND = "select BinData from `RoleQuest` where Id = ?";
+const KEY_PREFIX = "RoleQuestById";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configRoleQuestById.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configRoleQuestById.GetConfig"),
-  CONFIG_STAT_PREFIX = "configRoleQuestById.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configRoleQuestById.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configRoleQuestById.GetConfig");
+const CONFIG_STAT_PREFIX = "configRoleQuestById.GetConfig(";
 exports.configRoleQuestById = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (o, e = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var n = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${o})`),
-      t = (n?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (o, e = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var n = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${o})`);
+    n?.Start();
+    var t = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (t) {
       if (e) {
-        var i = KEY_PREFIX + `#${o})`;
+        var i = `${KEY_PREFIX}#${o})`;
         const C = ConfigCommon_1.ConfigCommon.GetConfig(i);
-        if (C) return n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
-      }
-      if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", o])) {
-        i = void 0;
-        if ([t, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]), t) {
-          const C = RoleQuest_1.RoleQuest.getRootAsRoleQuest(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
-          return e && (t = KEY_PREFIX + `#${o})`, ConfigCommon_1.ConfigCommon.SaveConfig(t, C)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
+        if (C) {
+          n?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return C;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", o]) > 0) {
+        i = undefined;
+        [t, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]);
+        if (t) {
+          const C = RoleQuest_1.RoleQuest.getRootAsRoleQuest(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
+          if (e) {
+            t = `${KEY_PREFIX}#${o})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(t, C);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          n?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return C;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    n?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=RoleQuestById.js.map

@@ -1,51 +1,91 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDynamicEntityMatch = void 0;
-const FbEntityCategory_1 = require("./FbEntityCategory"),
-  FbEntityState_1 = require("./FbEntityState");
+  value: true
+});
+exports.FbDynamicEntityMatch = undefined;
+const FbEntityCategory_1 = require("./FbEntityCategory");
+const FbEntityState_1 = require("./FbEntityState");
 class FbDynamicEntityMatch {
   constructor(t) {
-    this.FbDataInternal = t, this.Rwh = !1, this.wwh = void 0, this.yFh = !1, this.SFh = void 0, this.V1h = !1, this.j1h = void 0, this.Bch = !1, this.Cbo = void 0, this.MFh = !1, this.EFh = void 0, this.IFh = !1, this.TFh = void 0
+    this.FbDataInternal = t;
+    this.Rwh = false;
+    this.wwh = undefined;
+    this.yFh = false;
+    this.SFh = undefined;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.Bch = false;
+    this.Cbo = undefined;
+    this.MFh = false;
+    this.EFh = undefined;
+    this.IFh = false;
+    this.TFh = undefined;
   }
   static Create(t) {
-    if (t) return new FbDynamicEntityMatch(t)
+    if (t) {
+      return new FbDynamicEntityMatch(t);
+    }
   }
   get Category() {
-    return this.Rwh || (this.Rwh = !0, this.wwh = FbEntityCategory_1.FbEntityCategory.Create(this.FbDataInternal.category())), this.wwh
+    if (!this.Rwh) {
+      this.Rwh = true;
+      this.wwh = FbEntityCategory_1.FbEntityCategory.Create(this.FbDataInternal.category());
+    }
+    return this.wwh;
   }
   get CategoryType() {
-    return this.yFh || (this.yFh = !0, this.SFh = this.FbDataInternal.categoryType()), this.SFh
+    if (!this.yFh) {
+      this.yFh = true;
+      this.SFh = this.FbDataInternal.categoryType();
+    }
+    return this.SFh;
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var i = this.FbDataInternal.entityIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.state())), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.state());
+    }
+    return this.Cbo;
   }
   get HasProperty() {
     if (!this.MFh) {
-      this.MFh = !0, this.EFh = new Array;
+      this.MFh = true;
+      this.EFh = new Array();
       var i = this.FbDataInternal.hasPropertyLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.EFh.push(this.FbDataInternal.hasProperty(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.EFh.push(this.FbDataInternal.hasProperty(t));
+        }
+      }
     }
-    return this.EFh
+    return this.EFh;
   }
   get NoProperty() {
     if (!this.IFh) {
-      this.IFh = !0, this.TFh = new Array;
+      this.IFh = true;
+      this.TFh = new Array();
       var i = this.FbDataInternal.noPropertyLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.TFh.push(this.FbDataInternal.noProperty(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.TFh.push(this.FbDataInternal.noProperty(t));
+        }
+      }
     }
-    return this.TFh
+    return this.TFh;
   }
 }
 exports.FbDynamicEntityMatch = FbDynamicEntityMatch;

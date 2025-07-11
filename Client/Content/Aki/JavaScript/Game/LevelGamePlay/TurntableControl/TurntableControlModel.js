@@ -1,29 +1,39 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TurntableControlModel = void 0;
-const EntitySystem_1 = require("../../../Core/Entity/EntitySystem"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase");
+  value: true
+});
+exports.TurntableControlModel = undefined;
+const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 class TurntableControlModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Vwe = void 0, this.Hwe = void 0
+    super(...arguments);
+    this.Vwe = undefined;
+    this.Hwe = undefined;
   }
   get CurControllerEntity() {
-    return this.Vwe
+    return this.Vwe;
   }
   get CurControllerEntityComp() {
-    return this.Hwe
+    return this.Hwe;
   }
   SetCurControllerEntity(t) {
-    var t = EntitySystem_1.EntitySystem.Get(t),
-      e = t?.GetComponent(135);
-    e || this.ClearCurControllerEntity(), this.Vwe = t, this.Hwe = e
+    var t = EntitySystem_1.EntitySystem.Get(t);
+    var e = t?.GetComponent(135);
+    if (!e) {
+      this.ClearCurControllerEntity();
+    }
+    this.Vwe = t;
+    this.Hwe = e;
   }
   ClearCurControllerEntity() {
-    this.Vwe = void 0, this.Hwe = void 0
+    this.Vwe = undefined;
+    this.Hwe = undefined;
   }
   OnClear() {
-    return this.ClearCurControllerEntity(), !0
+    this.ClearCurControllerEntity();
+    return true;
   }
 }
 exports.TurntableControlModel = TurntableControlModel;

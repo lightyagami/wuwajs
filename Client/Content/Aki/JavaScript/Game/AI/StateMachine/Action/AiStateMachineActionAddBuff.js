@@ -1,18 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineActionAddBuff = void 0;
-const AiStateMachine_1 = require("../AiStateMachine"),
-  AiStateMachineAction_1 = require("./AiStateMachineAction");
+  value: true
+});
+exports.AiStateMachineActionAddBuff = undefined;
+const AiStateMachine_1 = require("../AiStateMachine");
+const AiStateMachineAction_1 = require("./AiStateMachineAction");
 class AiStateMachineActionAddBuff extends AiStateMachineAction_1.AiStateMachineAction {
   constructor() {
-    super(...arguments), this.BuffId = void 0
+    super(...arguments);
+    this.BuffId = undefined;
   }
   OnInit(t) {
-    return this.BuffId = BigInt(t.ActionAddBuff.BuffId), !0
+    this.BuffId = BigInt(t.ActionAddBuff.BuffId);
+    return true;
   }
   ToString(t, e = 0) {
-    (0, AiStateMachine_1.appendDepthSpace)(t, e)
+    (0, AiStateMachine_1.appendDepthSpace)(t, e);
   }
 }
 exports.AiStateMachineActionAddBuff = AiStateMachineActionAddBuff;

@@ -1,31 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DifficultUnlockTipView = exports.DifficultUnlockTipsData = void 0;
-const UE = require("ue"),
-  UiViewBase_1 = require("../../Ui/Base/UiViewBase"),
-  LguiUtil_1 = require("../Util/LguiUtil");
+  value: true
+});
+exports.DifficultUnlockTipView = exports.DifficultUnlockTipsData = undefined;
+const UE = require("ue");
+const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
+const LguiUtil_1 = require("../Util/LguiUtil");
 class DifficultUnlockTipsData {
   constructor() {
-    this.Text = "", this.Params = []
+    this.Text = "";
+    this.Params = [];
   }
 }
 exports.DifficultUnlockTipsData = DifficultUnlockTipsData;
 class DifficultUnlockTipView extends UiViewBase_1.UiViewBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   OnBeforeShow() {
     var i = this.OpenParam;
-    this.bl(i)
+    this.bl(i);
   }
   bl(i) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.Text, i.Params)
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.Text, i.Params);
   }
   OnAfterPlayStartSequence() {
-    this.CloseMe()
+    this.CloseMe();
   }
 }
 exports.DifficultUnlockTipView = DifficultUnlockTipView;

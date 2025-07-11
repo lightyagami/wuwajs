@@ -1,27 +1,42 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TickIntervalSchedulerBase = exports.ScoreNode = void 0;
-const Stats_1 = require("../../../Core/Common/Stats"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils");
+  value: true
+});
+exports.TickIntervalSchedulerBase = exports.ScoreNode = undefined;
+const Stats_1 = require("../../../Core/Common/Stats");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 class ScoreNode {
   constructor() {
-    this.Item = void 0, this.Score = 0
+    this.Item = undefined;
+    this.Score = 0;
   }
 }
 exports.ScoreNode = ScoreNode;
 class TickIntervalSchedulerBase {
   constructor() {
-    this.MaxNoIntervalCount = 0, this.AverageOtherTickCount = 0, this.NoIntervalThreshold = 0, this.MinTickCountDelta = 0, this.MaxTickCountDelta = 0, this.CurrentCountDelta = 0, this.DeltaRatio = 1, this.MJ = Stats_1.Stat.CreateNoFlameGraph(this.constructor.name)
+    this.MaxNoIntervalCount = 0;
+    this.AverageOtherTickCount = 0;
+    this.NoIntervalThreshold = 0;
+    this.MinTickCountDelta = 0;
+    this.MaxTickCountDelta = 0;
+    this.CurrentCountDelta = 0;
+    this.DeltaRatio = 1;
+    this.MJ = Stats_1.Stat.CreateNoFlameGraph(this.constructor.name);
   }
   SetBaseConfigs(t, s, e) {
-    this.MaxNoIntervalCount = Math.max(0, t), this.AverageOtherTickCount = Math.max(1, s), this.NoIntervalThreshold = e
+    this.MaxNoIntervalCount = Math.max(0, t);
+    this.AverageOtherTickCount = Math.max(1, s);
+    this.NoIntervalThreshold = e;
   }
   SetCountDelta(t) {
-    this.CurrentCountDelta = MathUtils_1.MathUtils.Clamp(t * this.DeltaRatio, this.MinTickCountDelta, this.MaxTickCountDelta)
+    this.CurrentCountDelta = MathUtils_1.MathUtils.Clamp(t * this.DeltaRatio, this.MinTickCountDelta, this.MaxTickCountDelta);
   }
   Schedule() {
-    this.MJ.Start(), this.GetScores(), this.ScheduleTickInterval(), this.MJ.Stop()
+    this.MJ.Start();
+    this.GetScores();
+    this.ScheduleTickInterval();
+    this.MJ.Stop();
   }
   ChangeTickFramePeriodByFrameRate(t) {}
   GetScores() {}

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRestorePhantomFormation = void 0;
+  value: true
+});
+exports.FbRestorePhantomFormation = undefined;
 class FbRestorePhantomFormation {
   constructor(t) {
-    this.FbDataInternal = t, this.$Th = !1, this.XTh = 0, this.ybh = !1, this.Sbh = !1
+    this.FbDataInternal = t;
+    this.$Th = false;
+    this.XTh = 0;
+    this.ybh = false;
+    this.Sbh = false;
   }
   static Create(t) {
-    if (t) return new FbRestorePhantomFormation(t)
+    if (t) {
+      return new FbRestorePhantomFormation(t);
+    }
   }
   get TeleportEntityId() {
-    return this.$Th || (this.$Th = !0, this.XTh = this.FbDataInternal.teleportEntityId()), this.XTh
+    if (!this.$Th) {
+      this.$Th = true;
+      this.XTh = this.FbDataInternal.teleportEntityId();
+    }
+    return this.XTh;
   }
   get RetainPhantom() {
-    return this.ybh || (this.ybh = !0, this.Sbh = this.FbDataInternal.retainPhantom()), this.Sbh
+    if (!this.ybh) {
+      this.ybh = true;
+      this.Sbh = this.FbDataInternal.retainPhantom();
+    }
+    return this.Sbh;
   }
 }
 exports.FbRestorePhantomFormation = FbRestorePhantomFormation;

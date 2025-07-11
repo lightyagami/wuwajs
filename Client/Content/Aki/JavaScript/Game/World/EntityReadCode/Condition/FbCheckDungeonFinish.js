@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckDungeonFinish = void 0;
+  value: true
+});
+exports.FbCheckDungeonFinish = undefined;
 class FbCheckDungeonFinish {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.MMh = !1, this.EMh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.MMh = false;
+    this.EMh = 0;
   }
   static Create(t) {
-    if (t) return new FbCheckDungeonFinish(t)
+    if (t) {
+      return new FbCheckDungeonFinish(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get DungeonId() {
-    return this.MMh || (this.MMh = !0, this.EMh = this.FbDataInternal.dungeonId()), this.EMh
+    if (!this.MMh) {
+      this.MMh = true;
+      this.EMh = this.FbDataInternal.dungeonId();
+    }
+    return this.EMh;
   }
 }
 exports.FbCheckDungeonFinish = FbCheckDungeonFinish;

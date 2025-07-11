@@ -1,27 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsPureTouchHandle = void 0;
-const cpp_1 = require("cpp"),
-  LogReportModel_1 = require("../Module/LogReport/LogReportModel");
+  value: true
+});
+exports.TsPureTouchHandle = undefined;
+const cpp_1 = require("cpp");
+const LogReportModel_1 = require("../Module/LogReport/LogReportModel");
 class TsPureTouchHandle {
   constructor() {
-    this.R$e = void 0, this.vDa = void 0, this.OnTouchBegin = (t, s) => {
-      this.vDa.TouchBegin(t, s), LogReportModel_1.LogReportModel.RecordOperateTime()
-    }, this.OnTouchEnd = (t, s) => {
-      this.vDa.TouchEnd(t, s)
-    }, this.OnTouchMove = (t, s) => {
-      this.vDa.TouchMove(t, s)
-    }
+    this.R$e = undefined;
+    this.vDa = undefined;
+    this.OnTouchBegin = (t, s) => {
+      this.vDa.TouchBegin(t, s);
+      LogReportModel_1.LogReportModel.RecordOperateTime();
+    };
+    this.OnTouchEnd = (t, s) => {
+      this.vDa.TouchEnd(t, s);
+    };
+    this.OnTouchMove = (t, s) => {
+      this.vDa.TouchMove(t, s);
+    };
   }
   Initialize(t, s) {
-    this.R$e = t, this.vDa = s
+    this.R$e = t;
+    this.vDa = s;
   }
   Reset() {
-    this.R$e = void 0, this.vDa = void 0
+    this.R$e = undefined;
+    this.vDa = undefined;
   }
   BindTouch() {
-    cpp_1.FKuroInputInterface.RegisterTouchBinding(0, this.R$e, this, this.OnTouchBegin), cpp_1.FKuroInputInterface.RegisterTouchBinding(1, this.R$e, this, this.OnTouchEnd), cpp_1.FKuroInputInterface.RegisterTouchBinding(2, this.R$e, this, this.OnTouchMove)
+    cpp_1.FKuroInputInterface.RegisterTouchBinding(0, this.R$e, this, this.OnTouchBegin);
+    cpp_1.FKuroInputInterface.RegisterTouchBinding(1, this.R$e, this, this.OnTouchEnd);
+    cpp_1.FKuroInputInterface.RegisterTouchBinding(2, this.R$e, this, this.OnTouchMove);
   }
 }
 exports.TsPureTouchHandle = TsPureTouchHandle;

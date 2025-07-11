@@ -1,138 +1,213 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueModel = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  Macro_1 = require("../../../Core/Preprocessor/Macro"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  MapRogueDefine_1 = require("./MapRogueDefine"),
-  MapRogueOpFallback_1 = require("./Op/MapRogueOpFallback"),
-  MapRogueOpGotoLevelPlay_1 = require("./Op/MapRogueOpGotoLevelPlay"),
-  MapRogueOpGridEvent_1 = require("./Op/MapRogueOpGridEvent"),
-  MapRogueOpGridFocus_1 = require("./Op/MapRogueOpGridFocus"),
-  MapRogueOpMove_1 = require("./Op/MapRogueOpMove"),
-  MapRogueOpRoleBuffBondLinkId_1 = require("./Op/MapRogueOpRoleBuffBondLinkId"),
-  MapRogueOpSelectView_1 = require("./Op/MapRogueOpSelectView"),
-  MapRogueOpShowView_1 = require("./Op/MapRogueOpShowView"),
-  MapRogueOpTeleport_1 = require("./Op/MapRogueOpTeleport"),
-  SeedRandomUtil_1 = require("./Utils/SeedRandomUtil");
+  value: true
+});
+exports.MapRogueModel = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const Macro_1 = require("../../../Core/Preprocessor/Macro");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const MapRogueDefine_1 = require("./MapRogueDefine");
+const MapRogueOpChangeEvent_1 = require("./Op/MapRogueOpChangeEvent");
+const MapRogueOpFallback_1 = require("./Op/MapRogueOpFallback");
+const MapRogueOpGotoLevelPlay_1 = require("./Op/MapRogueOpGotoLevelPlay");
+const MapRogueOpGridEvent_1 = require("./Op/MapRogueOpGridEvent");
+const MapRogueOpGridFocus_1 = require("./Op/MapRogueOpGridFocus");
+const MapRogueOpMove_1 = require("./Op/MapRogueOpMove");
+const MapRogueOpRoleBuffBondLinkId_1 = require("./Op/MapRogueOpRoleBuffBondLinkId");
+const MapRogueOpSelectView_1 = require("./Op/MapRogueOpSelectView");
+const MapRogueOpShowView_1 = require("./Op/MapRogueOpShowView");
+const MapRogueOpTeleport_1 = require("./Op/MapRogueOpTeleport");
+const SeedRandomUtil_1 = require("./Utils/SeedRandomUtil");
 class MapRogueModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.GameInfo = void 0, this.GameOpList = [], this.GameOpMap = new Map, this.YC1 = 0, this.Zvc = 0, this.Ib1 = 0, this.Eau = !1
+    super(...arguments);
+    this.GameInfo = undefined;
+    this.GameOpList = [];
+    this.GameOpMap = new Map();
+    this.v01 = 0;
+    this.Zvc = 0;
+    this.Yb1 = 0;
+    this.sWc = (e, t) => t.Priority - e.Priority;
+    this.wdu = false;
   }
   RefreshGameInfo(e) {
-    this.GameInfo || (this.GameInfo = new MapRogueDefine_1.MapRogueGameInfo), this.GameInfo.Refresh(e), this.YC1 = e.CurrencyItemId, this.Zvc = e.RoleLevel, this.Ib1 = e.RoleMaxStar
+    this.GameInfo ||= new MapRogueDefine_1.MapRogueGameInfo();
+    this.GameInfo.Refresh(e);
+    this.v01 = e.CurrencyItemId;
+    this.Zvc = e.RoleLevel;
+    this.Yb1 = e.RoleMaxStar;
   }
   ResetGameInfo() {
-    this.GameInfo?.Clear(), this.GameInfo = void 0, this.GameOpList.length = 0
+    this.GameInfo?.Clear();
+    this.GameInfo = undefined;
+    this.GameOpList.length = 0;
   }
   GenerateOpList(e) {
     this.GameOpList.length = 0;
-    for (const o of e) this.AddOpData(o);
-    this.PrintAllOpList()
+    for (const t of e) {
+      this.AddOpData(t, false);
+    }
+    this.GameOpList.sort(this.sWc);
+    this.PrintAllOpList();
   }
   PrintAllOpList() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 指令队列打印开始", ["InBattle", this.GameInfo?.InBattle]);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 指令队列打印开始", ["InBattle", this.GameInfo?.InBattle]);
+    }
     for (let e = 0; e < this.GameOpList.length; e++) {
-      var o = this.GameOpList[e];
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 指令", ["Index", e], ["Data", o.ToString()])
+      var t = this.GameOpList[e];
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 指令", ["Index", e], ["Data", t.ToString()]);
+      }
     }
   }
-  AddOpData(e) {
-    let o = void 0;
+  AddOpData(e, t = true) {
+    let o = undefined;
     switch (e.OEc) {
       case Protocol_1.Aki.Protocol.OEc.TJ_:
         o = new MapRogueOpMove_1.MapRogueOpMove(this.GameInfo?.PlayerGridIndex ?? 0);
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_ShowView:
-        o = new MapRogueOpShowView_1.MapRogueOpShowView;
+        o = new MapRogueOpShowView_1.MapRogueOpShowView();
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_SelectView:
-        o = new MapRogueOpSelectView_1.MapRogueOpSelectView;
+        o = new MapRogueOpSelectView_1.MapRogueOpSelectView();
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_GridEvent:
-        o = new MapRogueOpGridEvent_1.MapRogueOpGridEvent;
+        o = new MapRogueOpGridEvent_1.MapRogueOpGridEvent();
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_RogueGotoLevelPlay:
-        o = new MapRogueOpGotoLevelPlay_1.MapRogueOpGotoLevelPlay;
+        o = new MapRogueOpGotoLevelPlay_1.MapRogueOpGotoLevelPlay();
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_RollBuffBondLinkId:
-        o = new MapRogueOpRoleBuffBondLinkId_1.MapRogueOpRoleBuffBondLinkId;
+        o = new MapRogueOpRoleBuffBondLinkId_1.MapRogueOpRoleBuffBondLinkId();
         break;
-      case Protocol_1.Aki.Protocol.OEc.xb1:
-        o = new MapRogueOpFallback_1.MapRogueOpFallback;
+      case Protocol_1.Aki.Protocol.OEc.oR1:
+        o = new MapRogueOpFallback_1.MapRogueOpFallback();
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_LightBlockByLocationEffect:
-        o = new MapRogueOpGridFocus_1.MapRogueOpGridFocus;
+        o = new MapRogueOpGridFocus_1.MapRogueOpGridFocus();
         break;
       case Protocol_1.Aki.Protocol.OEc.Proto_MapTeleportByLocationEffect:
-        o = new MapRogueOpTeleport_1.MapRogueOpTeleport
+        o = new MapRogueOpTeleport_1.MapRogueOpTeleport();
+        break;
+      case Protocol_1.Aki.Protocol.OEc.Proto_ChangeEventByPos:
+        o = new MapRogueOpChangeEvent_1.MapRogueOpChangeEvent();
     }
-    o && (o.Update(e, this.GameInfo), this.GameOpList.push(o), this.GameOpMap.set(e.w5n, o), Log_1.Log.CheckInfo()) && Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 新增指令", ["Index", this.GameOpList.length - 1], ["Data", o.ToString()])
+    if (o && (o.Update(e, this.GameInfo), this.GameOpList.push(o), this.GameOpMap.set(e.w5n, o), t && this.GameOpList.sort(this.sWc), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 新增指令", ["Index", this.GameOpList.length - 1], ["Data", o.ToString()]);
+    }
   }
-  RemoveOpData(o) {
+  RemoveOpData(t) {
     var e;
-    this.GameInfo && (e = this.GameOpMap.get(o)) && (e.Delete(this.GameInfo), -1 !== (e = this.GameOpList.findIndex(e => e.IncId === o)) && this.GameOpList.splice(e, 1), this.GameOpMap.delete(o), Log_1.Log.CheckInfo()) && Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 删除指令", ["Index", e], ["IncId", o])
+    if (this.GameInfo && (e = this.GameOpMap.get(t)) && (e.Delete(this.GameInfo), (e = this.GameOpList.findIndex(e => e.IncId === t)) !== -1 && this.GameOpList.splice(e, 1), this.GameOpMap.delete(t), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 删除指令", ["Index", e], ["IncId", t]);
+    }
   }
   UpdateOpData(e) {
-    var o = this.GameOpMap.get(e.w5n);
-    o && (o.Update(e, this.GameInfo), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("RogueBattle", 37, "[MapRogue] 更新指令", ["Data", o.ToString()])
+    var t = this.GameOpMap.get(e.w5n);
+    if (t && (t.Update(e, this.GameInfo), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("RogueBattle", 37, "[MapRogue] 更新指令", ["Data", t.ToString()]);
+    }
   }
   GetOpData(e) {
-    return this.GameOpMap.get(e)
+    return this.GameOpMap.get(e);
   }
   GetAllOpData() {
-    return this.GameOpList
+    return this.GameOpList;
   }
-  ExecuteOpData(e, o) {
-    this.GameInfo && this.GameOpMap.get(e)?.Execute(this.GameInfo, o)
+  GetOpDataByType(t) {
+    return this.GameOpList.filter(e => e.Type === t);
+  }
+  ExecuteOpData(e, t) {
+    if (this.GameInfo) {
+      this.GameOpMap.get(e)?.Execute(this.GameInfo, t);
+    }
   }
   ExecuteOpDataList() {
     var e;
-    this.GameInfo && (0 < this.GameOpList.length ? (e = this.GameOpList[this.GameOpList.length - 1], this.GameInfo.GameStage = 2, e.StartExecute(this.GameInfo)) : this.GameInfo.GameStage = 1)
-  }
-  CreateMapGridDataList(o, e) {
-    var t = new SeedRandomUtil_1.SeedRandomUtil,
-      a = (t.SetSeed(e), []);
-    for (let e = 0; e < o.length; e++) {
-      var r = o[e],
-        i = new MapRogueDefine_1.MapGridData;
-      i.RefreshByServer(r), i.GridIndex = e, this.JGc(i, t), a.push(i)
+    if (this.GameInfo) {
+      if (this.GameOpList.length > 0) {
+        e = this.GameOpList[this.GameOpList.length - 1];
+        this.GameInfo.GameStage = 2;
+        e.StartExecute(this.GameInfo);
+      } else {
+        this.GameInfo.GameStage = 1;
+      }
     }
-    return a
   }
-  RefreshMapGridData(e, o) {
-    var t, a, r = this.GameInfo.MapGrids.at(e);
-    r && (t = r.GridTypeId, a = r.IsExplore, r.RefreshByServer(o), t !== r.GridTypeId && ((o = new SeedRandomUtil_1.SeedRandomUtil).SetSeed(this.GameInfo.RandomSeed), this.JGc(r, o)), this.GameInfo.RefreshGrid(e, a !== r.IsExplore))
+  CreateMapGridDataList(t, e) {
+    var o = new SeedRandomUtil_1.SeedRandomUtil();
+    o.SetSeed(e);
+    var a = [];
+    for (let e = 0; e < t.length; e++) {
+      var r = t[e];
+      var i = new MapRogueDefine_1.MapGridData();
+      i.RefreshByServer(r);
+      i.GridIndex = e;
+      this.JGc(i, o);
+      a.push(i);
+    }
+    return a;
   }
-  JGc(e, o) {
-    var t, a = ConfigManager_1.ConfigManager.MapRogueConfig.GetGridMapTypeConfigById(e.GridTypeId);
-    a && (t = Array.from(a.GroundPath.values()), e.GroundPathIndex = o.WeightedRandom(t), (t = a.DecorationPath) && 0 < t.size ? (a = Array.from(t.values()), e.ExtraPathIndex = o.WeightedRandom(a)) : e.ExtraPathIndex = -1)
+  RefreshMapGridData(e, t) {
+    var o;
+    var a;
+    var r = this.GameInfo.MapGrids.at(e);
+    if (r) {
+      o = r.GridTypeId;
+      a = r.IsExplore;
+      r.RefreshByServer(t);
+      if (o !== r.GridTypeId) {
+        (t = new SeedRandomUtil_1.SeedRandomUtil()).SetSeed(this.GameInfo.RandomSeed);
+        this.JGc(r, t);
+      }
+      this.GameInfo.RefreshGrid(e, a !== r.IsExplore);
+    }
+  }
+  JGc(e, t) {
+    var o;
+    var a = ConfigManager_1.ConfigManager.MapRogueConfig.GetGridMapTypeConfigById(e.GridTypeId);
+    if (a) {
+      o = Array.from(a.GroundPath.values());
+      e.GroundPathIndex = t.WeightedRandom(o);
+      if ((o = a.DecorationPath) && o.size > 0) {
+        a = Array.from(o.values());
+        e.ExtraPathIndex = t.WeightedRandom(a);
+      } else {
+        e.ExtraPathIndex = -1;
+      }
+    }
   }
   ShiftGetItemData() {
-    if (this.GameInfo) return this.GameInfo.ShiftGetItemData()
+    if (this.GameInfo) {
+      return this.GameInfo.ShiftGetItemData();
+    }
   }
   GetRogueCurrencyItemId() {
-    return this.YC1
+    return this.v01;
   }
   GetRogueRoleLevel() {
-    return this.Zvc
+    return this.Zvc;
   }
   SetRoleLevel(e) {
-    this.Zvc = e
+    this.Zvc = e;
   }
   GetRogueRoleMaxStar() {
-    return this.Ib1
+    return this.Yb1;
   }
   GetExploredGridCount() {
     let e = 0;
-    for (const o of this.GameInfo.MapGrids) e += o.IsExplore ? 1 : 0;
-    return e
+    for (const t of this.GameInfo.MapGrids) {
+      e += t.IsExplore ? 1 : 0;
+    }
+    return e;
   }
   SetDebugMode(e) {
-    this.Eau = e
+    this.wdu = e;
   }
 }
 exports.MapRogueModel = MapRogueModel;

@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configPhantomBattleCardSlotSortAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  PhantomBattleCardSlotSort_1 = require("../Config/PhantomBattleCardSlotSort"),
-  DB = "db_phantombattle.db",
-  FILE = "s.声骸大作战外围.xlsx",
-  TABLE = "PhantomBattleCardSlotSort",
-  COMMAND = "select BinData from `PhantomBattleCardSlotSort`",
-  KEY_PREFIX = "PhantomBattleCardSlotSortAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configPhantomBattleCardSlotSortAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const PhantomBattleCardSlotSort_1 = require("../Config/PhantomBattleCardSlotSort");
+const DB = "db_phantombattle.db";
+const FILE = "s.声骸大作战外围.xlsx";
+const TABLE = "PhantomBattleCardSlotSort";
+const COMMAND = "select BinData from `PhantomBattleCardSlotSort`";
+const KEY_PREFIX = "PhantomBattleCardSlotSortAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleCardSlotSortAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleCardSlotSortAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleCardSlotSortAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleCardSlotSortAll.GetConfigList");
 exports.configPhantomBattleCardSlotSortAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (t = !0) => {
+  GetConfigList: (t = true) => {
     var o;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (t) {
         var n = KEY_PREFIX + ")";
         const a = ConfigCommon_1.ConfigCommon.GetConfig(n);
-        if (a) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
       }
-      const a = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var i = void 0;
-        if ([o, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !o) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const a = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var i = undefined;
+        [o, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!o) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         i = PhantomBattleCardSlotSort_1.PhantomBattleCardSlotSort.getRootAsPhantomBattleCardSlotSort(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
-        a.push(i)
+        a.push(i);
       }
-      return t && (n = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(n, a, a.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+      if (t) {
+        n = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(n, a, a.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return a;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=PhantomBattleCardSlotSortAll.js.map

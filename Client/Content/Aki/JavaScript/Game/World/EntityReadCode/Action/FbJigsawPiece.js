@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbJigsawPiece = void 0;
+  value: true
+});
+exports.FbJigsawPiece = undefined;
 const FbPieceIndex_1 = require("./FbPieceIndex");
 class FbJigsawPiece {
   constructor(t) {
-    this.FbDataInternal = t, this.Afh = !1, this.V_i = void 0, this.AAh = !1, this.qzo = !1, this.xAh = !1, this.RAh = !1, this.wAh = !1, this.PAh = void 0
+    this.FbDataInternal = t;
+    this.Afh = false;
+    this.V_i = undefined;
+    this.AAh = false;
+    this.qzo = false;
+    this.xAh = false;
+    this.RAh = false;
+    this.wAh = false;
+    this.PAh = undefined;
   }
   static Create(t) {
-    if (t) return new FbJigsawPiece(t)
+    if (t) {
+      return new FbJigsawPiece(t);
+    }
   }
   get Index() {
-    return this.Afh || (this.Afh = !0, this.V_i = FbPieceIndex_1.FbPieceIndex.Create(this.FbDataInternal.index())), this.V_i
+    if (!this.Afh) {
+      this.Afh = true;
+      this.V_i = FbPieceIndex_1.FbPieceIndex.Create(this.FbDataInternal.index());
+    }
+    return this.V_i;
   }
   get Active() {
-    return this.AAh || (this.AAh = !0, this.qzo = this.FbDataInternal.active()), this.qzo
+    if (!this.AAh) {
+      this.AAh = true;
+      this.qzo = this.FbDataInternal.active();
+    }
+    return this.qzo;
   }
   get IsCorrect() {
-    return this.xAh || (this.xAh = !0, this.RAh = this.FbDataInternal.isCorrect()), this.RAh
+    if (!this.xAh) {
+      this.xAh = true;
+      this.RAh = this.FbDataInternal.isCorrect();
+    }
+    return this.RAh;
   }
   get InitState() {
-    return this.wAh || (this.wAh = !0, this.PAh = this.FbDataInternal.initState()), this.PAh
+    if (!this.wAh) {
+      this.wAh = true;
+      this.PAh = this.FbDataInternal.initState();
+    }
+    return this.PAh;
   }
 }
 exports.FbJigsawPiece = FbJigsawPiece;

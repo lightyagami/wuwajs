@@ -1,16 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.QuestReviewTreeData = void 0;
+  value: true
+});
+exports.QuestReviewTreeData = undefined;
 class QuestReviewTreeData {
   constructor(e) {
-    this.Lo = e
+    this.Lo = e;
   }
   get Id() {
-    return this.Lo.Id
+    return this.Lo.Id;
   }
   get QuestLines() {
-    return this.Lo.QuestLines
+    return this.Lo.QuestLines;
   }
 }
 exports.QuestReviewTreeData = QuestReviewTreeData;

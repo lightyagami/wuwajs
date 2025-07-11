@@ -1,31 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFailureStateTrigger = void 0;
-const FbOperationsAfterEntityGroupFailure_1 = require("./FbOperationsAfterEntityGroupFailure"),
-  UnionEntityGroupFailureConditionHelper_1 = require("./UnionEntityGroupFailureConditionHelper");
+  value: true
+});
+exports.FbFailureStateTrigger = undefined;
+const FbOperationsAfterEntityGroupFailure_1 = require("./FbOperationsAfterEntityGroupFailure");
+const UnionEntityGroupFailureConditionHelper_1 = require("./UnionEntityGroupFailureConditionHelper");
 class FbFailureStateTrigger {
   constructor(i) {
-    this.FbDataInternal = i, this.DOh = !1, this.BOh = void 0, this.RVh = !1, this.wVh = void 0
+    this.FbDataInternal = i;
+    this.DOh = false;
+    this.BOh = undefined;
+    this.RVh = false;
+    this.wVh = undefined;
   }
   static Create(i) {
-    if (i) return new FbFailureStateTrigger(i)
+    if (i) {
+      return new FbFailureStateTrigger(i);
+    }
   }
   get FailureConditions() {
     if (!this.DOh) {
-      this.DOh = !0, this.BOh = new Array;
+      this.DOh = true;
+      this.BOh = new Array();
       var t = this.FbDataInternal.failureConditionsLength();
-      if (t)
+      if (t) {
         for (let i = 0; i < t; ++i) {
-          var r = this.FbDataInternal.failureConditionsType(i),
-            e = UnionEntityGroupFailureConditionHelper_1.UnionEntityGroupFailureConditionHelper.GetUnionEntityGroupFailureConditionObject(r);
-          e && void 0 !== (r = UnionEntityGroupFailureConditionHelper_1.UnionEntityGroupFailureConditionHelper.ReadUnionEntityGroupFailureCondition(r, this.FbDataInternal.failureConditions(i, e))) && this.BOh.push(r)
+          var r = this.FbDataInternal.failureConditionsType(i);
+          var e = UnionEntityGroupFailureConditionHelper_1.UnionEntityGroupFailureConditionHelper.GetUnionEntityGroupFailureConditionObject(r);
+          if (e && (r = UnionEntityGroupFailureConditionHelper_1.UnionEntityGroupFailureConditionHelper.ReadUnionEntityGroupFailureCondition(r, this.FbDataInternal.failureConditions(i, e))) !== undefined) {
+            this.BOh.push(r);
+          }
         }
+      }
     }
-    return this.BOh
+    return this.BOh;
   }
   get FailureOperations() {
-    return this.RVh || (this.RVh = !0, this.wVh = FbOperationsAfterEntityGroupFailure_1.FbOperationsAfterEntityGroupFailure.Create(this.FbDataInternal.failureOperations())), this.wVh
+    if (!this.RVh) {
+      this.RVh = true;
+      this.wVh = FbOperationsAfterEntityGroupFailure_1.FbOperationsAfterEntityGroupFailure.Create(this.FbDataInternal.failureOperations());
+    }
+    return this.wVh;
   }
 }
 exports.FbFailureStateTrigger = FbFailureStateTrigger;

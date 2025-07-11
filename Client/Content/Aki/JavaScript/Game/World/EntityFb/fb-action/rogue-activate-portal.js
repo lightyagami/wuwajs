@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueActivatePortal = void 0;
+  value: true
+});
+exports.RogueActivatePortal = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class RogueActivatePortal {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, e) {
-    return this.bb_pos = t, this.bb = e, this
+    this.bb_pos = t;
+    this.bb = e;
+    return this;
   }
   static getRootAsRogueActivatePortal(t, e) {
-    return (e || new RogueActivatePortal).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new RogueActivatePortal()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsRogueActivatePortal(t, e) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (e || new RogueActivatePortal).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (e || new RogueActivatePortal()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static startRogueActivatePortal(t) {
-    t.startObject(0)
+    t.startObject(0);
   }
   static endRogueActivatePortal(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createRogueActivatePortal(t) {
-    return RogueActivatePortal.startRogueActivatePortal(t), RogueActivatePortal.endRogueActivatePortal(t)
+    RogueActivatePortal.startRogueActivatePortal(t);
+    return RogueActivatePortal.endRogueActivatePortal(t);
   }
 }
 exports.RogueActivatePortal = RogueActivatePortal;

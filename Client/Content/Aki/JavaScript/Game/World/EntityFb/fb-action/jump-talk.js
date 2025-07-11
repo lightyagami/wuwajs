@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.JumpTalk = void 0;
+  value: true
+});
+exports.JumpTalk = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class JumpTalk {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, s) {
-    return this.bb_pos = t, this.bb = s, this
+    this.bb_pos = t;
+    this.bb = s;
+    return this;
   }
   static getRootAsJumpTalk(t, s) {
-    return (s || new JumpTalk).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new JumpTalk()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsJumpTalk(t, s) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (s || new JumpTalk).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (s || new JumpTalk()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   talkId() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.readInt32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readInt32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   static startJumpTalk(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addTalkId(t, s) {
-    t.addFieldInt32(0, s, 0)
+    t.addFieldInt32(0, s, 0);
   }
   static endJumpTalk(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createJumpTalk(t, s) {
-    return JumpTalk.startJumpTalk(t), JumpTalk.addTalkId(t, s), JumpTalk.endJumpTalk(t)
+    JumpTalk.startJumpTalk(t);
+    JumpTalk.addTalkId(t, s);
+    return JumpTalk.endJumpTalk(t);
   }
 }
 exports.JumpTalk = JumpTalk;

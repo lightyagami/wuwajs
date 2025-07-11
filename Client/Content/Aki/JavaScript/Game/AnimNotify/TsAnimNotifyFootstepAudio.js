@@ -1,28 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  AudioSystem_1 = require("../../Core/Audio/AudioSystem"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyFootstepAudio extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.Variant = 0
+    super(...arguments);
+    this.Variant = 0;
   }
   Constructor() {}
   K2_Notify(e, t) {
-    e = e.GetOwner();
-    if (!(e instanceof TsBaseCharacter_1.default)) return !1;
-    if ((e.GetEntityNoBlueprint()?.GetComponent(205))?.HasTag(1654452863)) return !1;
-    var r = e.GetEntityNoBlueprint()?.GetComponent(189),
-      e = e.GetEntityNoBlueprint()?.GetComponent(57);
-    if (!r || !e) return !1;
-    r.ChangeFootstepVariant(this.Variant);
-    e = e.GetFootstepTexture(), r.ChangeFootstepTexture(e), e = r.GetAkComponent(), r = r.Config?.FootstepEvent;
-    return e && r && AudioSystem_1.AudioSystem.PostEvent(r, e), !0
+    var r;
+    var e = e.GetOwner();
+    return e instanceof TsBaseCharacter_1.default && !e.GetEntityNoBlueprint()?.GetComponent(205)?.HasTag(1654452863) && !(r = e.GetEntityNoBlueprint()?.GetComponent(189), e = e.GetEntityNoBlueprint()?.GetComponent(57), !r) && !!e && !(r.ChangeFootstepVariant(this.Variant), e.PostFootstepVoice(), 0);
   }
   GetNotifyName() {
-    return "脚步音效"
+    return "脚步音效";
   }
 }
 exports.default = TsAnimNotifyFootstepAudio;

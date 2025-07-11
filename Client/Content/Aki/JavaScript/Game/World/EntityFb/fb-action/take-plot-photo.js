@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TakePlotPhoto = void 0;
+  value: true
+});
+exports.TakePlotPhoto = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class TakePlotPhoto {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, o) {
-    return this.bb_pos = t, this.bb = o, this
+    this.bb_pos = t;
+    this.bb = o;
+    return this;
   }
   static getRootAsTakePlotPhoto(t, o) {
-    return (o || new TakePlotPhoto).__init(t.readInt32(t.position()) + t.position(), t)
+    return (o || new TakePlotPhoto()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsTakePlotPhoto(t, o) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (o || new TakePlotPhoto).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (o || new TakePlotPhoto()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static startTakePlotPhoto(t) {
-    t.startObject(0)
+    t.startObject(0);
   }
   static endTakePlotPhoto(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createTakePlotPhoto(t) {
-    return TakePlotPhoto.startTakePlotPhoto(t), TakePlotPhoto.endTakePlotPhoto(t)
+    TakePlotPhoto.startTakePlotPhoto(t);
+    return TakePlotPhoto.endTakePlotPhoto(t);
   }
 }
 exports.TakePlotPhoto = TakePlotPhoto;

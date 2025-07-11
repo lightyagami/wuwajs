@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Builder = void 0;
+exports.Builder = undefined;
 const byte_buffer_js_1 = require("./byte-buffer");
 const constants_js_1 = require("./constants");
 require("./../text-encoding/encoding"); // Kuro add：用于 import TextEncoder， 由于在./byte-buffer.js中删掉了，所以这里需要重新引入
@@ -96,7 +97,7 @@ class Builder {
     }
     // Find the amount of alignment needed such that `size` is properly
     // aligned after `additional_bytes`
-    const align_size = ((~(this.bb.capacity() - this.space + additional_bytes)) + 1) & (size - 1);
+    const align_size = ~(this.bb.capacity() - this.space + additional_bytes) + 1 & size - 1;
     // Reallocate the buffer if needed.
     while (this.space < align_size + size + additional_bytes) {
       const old_buf_size = this.bb.capacity();
@@ -234,7 +235,7 @@ class Builder {
    */
   nested(obj) {
     if (obj != this.offset()) {
-      throw new TypeError('FlatBuffers: struct must be serialized inline.');
+      throw new TypeError("FlatBuffers: struct must be serialized inline.");
     }
   }
   /**
@@ -243,15 +244,16 @@ class Builder {
    */
   notNested() {
     if (this.isNested) {
-      throw new TypeError('FlatBuffers: object serialization must not be nested.');
+      throw new TypeError("FlatBuffers: object serialization must not be nested.");
     }
   }
   /**
    * Set the current vtable at `voffset` to the current location in the buffer.
    */
   slot(voffset) {
-    if (this.vtable !== null)
+    if (this.vtable !== null) {
       this.vtable[voffset] = this.offset();
+    }
   }
   /**
    * @returns Offset relative to the end of the buffer.
@@ -274,8 +276,8 @@ class Builder {
   static growByteBuffer(bb) {
     const old_buf_size = bb.capacity();
     // Ensure we don't grow beyond what fits in an int.
-    if (old_buf_size & 0xC0000000) {
-      throw new Error('FlatBuffers: cannot grow buffer beyond 2 gigabytes.');
+    if (old_buf_size & -1073741824) {
+      throw new Error("FlatBuffers: cannot grow buffer beyond 2 gigabytes.");
     }
     const new_buf_size = old_buf_size << 1;
     const nbb = byte_buffer_js_1.ByteBuffer.allocate(new_buf_size);
@@ -316,7 +318,7 @@ class Builder {
    */
   endObject() {
     if (this.vtable == null || !this.isNested) {
-      throw new Error('FlatBuffers: endObject called without startObject');
+      throw new Error("FlatBuffers: endObject called without startObject");
     }
     this.addInt32(0);
     const vtableloc = this.offset();
@@ -372,11 +374,9 @@ class Builder {
     const size_prefix = opt_size_prefix ? constants_js_1.SIZE_PREFIX_LENGTH : 0;
     if (opt_file_identifier) {
       const file_identifier = opt_file_identifier;
-      this.prep(this.minalign, constants_js_1.SIZEOF_INT +
-        constants_js_1.FILE_IDENTIFIER_LENGTH + size_prefix);
+      this.prep(this.minalign, constants_js_1.SIZEOF_INT + constants_js_1.FILE_IDENTIFIER_LENGTH + size_prefix);
       if (file_identifier.length != constants_js_1.FILE_IDENTIFIER_LENGTH) {
-        throw new TypeError('FlatBuffers: file identifier must be length ' +
-          constants_js_1.FILE_IDENTIFIER_LENGTH);
+        throw new TypeError("FlatBuffers: file identifier must be length " + constants_js_1.FILE_IDENTIFIER_LENGTH);
       }
       for (let i = constants_js_1.FILE_IDENTIFIER_LENGTH - 1; i >= 0; i--) {
         this.writeInt8(file_identifier.charCodeAt(i));
@@ -402,11 +402,10 @@ class Builder {
   requiredField(table, field) {
     const table_start = this.bb.capacity() - table;
     const vtable_start = table_start - this.bb.readInt32(table_start);
-    const ok = field < this.bb.readInt16(vtable_start) &&
-      this.bb.readInt16(vtable_start + field) != 0;
+    const ok = field < this.bb.readInt16(vtable_start) && this.bb.readInt16(vtable_start + field) != 0;
     // If this fails, the caller will show what field needs to be set.
     if (!ok) {
-      throw new TypeError('FlatBuffers: field ' + field + ' must be set');
+      throw new TypeError("FlatBuffers: field " + field + " must be set");
     }
   }
   /**
@@ -490,7 +489,7 @@ class Builder {
     if (obj === null) {
       return 0;
     }
-    if (typeof obj === 'string') {
+    if (typeof obj === "string") {
       return this.createString(obj);
     } else {
       return obj.pack(this);
@@ -508,7 +507,7 @@ class Builder {
       if (val !== null) {
         ret.push(this.createObjectOffset(val));
       } else {
-        throw new TypeError('FlatBuffers: Argument for createObjectOffsetList cannot contain null.');
+        throw new TypeError("FlatBuffers: Argument for createObjectOffsetList cannot contain null.");
       }
     }
     return ret;

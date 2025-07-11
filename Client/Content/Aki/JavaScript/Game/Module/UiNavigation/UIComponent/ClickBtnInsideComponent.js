@@ -1,25 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ClickBtnInsideComponent = void 0;
-const StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  UiNavigationJoystickInput_1 = require("../Module/UiNavigationJoystickInput"),
-  UiNavigationNewController_1 = require("../New/UiNavigationNewController"),
-  HotKeyComponent_1 = require("./HotKeyComponent");
+  value: true
+});
+exports.ClickBtnInsideComponent = undefined;
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const UiNavigationJoystickInput_1 = require("../Module/UiNavigationJoystickInput");
+const UiNavigationNewController_1 = require("../New/UiNavigationNewController");
+const HotKeyComponent_1 = require("./HotKeyComponent");
 class ClickBtnInsideComponent extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
-    super(...arguments), this.pjs = t => {
-      (this.IsAxisAllDirection() || 2 === t && this.IsAxisReverse() || 3 === t && this.IsAxisPositive()) && UiNavigationNewController_1.UiNavigationNewController.ClickButtonInside(this.GetBindButtonTag())
-    }
+    super(...arguments);
+    this.pjs = t => {
+      if (this.IsAxisAllDirection() || t === 2 && this.IsAxisReverse() || t === 3 && this.IsAxisPositive()) {
+        UiNavigationNewController_1.UiNavigationNewController.ClickButtonInside(this.GetBindButtonTag());
+      }
+    };
   }
   OnPress(t) {
-    UiNavigationNewController_1.UiNavigationNewController.ClickButtonInside(t.BindButtonTag)
+    UiNavigationNewController_1.UiNavigationNewController.ClickButtonInside(t.BindButtonTag);
   }
   OnStartInputAxis(t) {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.pjs)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.pjs);
   }
   OnFinishInputAxis(t) {
-    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.pjs)
+    UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.pjs);
   }
   OnRefreshHotKeyText(i) {
     var e = this.GetBindButtonTag();
@@ -28,7 +33,11 @@ class ClickBtnInsideComponent extends HotKeyComponent_1.HotKeyComponent {
       if (i) {
         let t = UiNavigationNewController_1.UiNavigationNewController.GetFocusListenerInsideListenerByTag(i, e);
         i = (t = t || i.GetChildListenerByTag(e))?.GetTextChangeComponent();
-        i ? this.SetHotKeyDescTextForce(i.Text.GetText()) : this.ResetHotKeyDescTextForce()
+        if (i) {
+          this.SetHotKeyDescTextForce(i.Text.GetText());
+        } else {
+          this.ResetHotKeyDescTextForce();
+        }
       }
     }
   }
@@ -36,12 +45,17 @@ class ClickBtnInsideComponent extends HotKeyComponent_1.HotKeyComponent {
     var e = this.GetBindButtonTag();
     if (!StringUtils_1.StringUtils.IsEmpty(e)) {
       i = i.GetFocusListener();
-      if (i)
+      if (i) {
         if (this.IsLinkListener(i.GetOwner())) {
           let t = UiNavigationNewController_1.UiNavigationNewController.GetFocusListenerInsideListenerByTag(i, e);
-          t = t || i.GetChildListenerByTag(e), this.SetVisibleMode(2, t?.IsListenerActive() ?? !1)
-        } else this.SetVisibleMode(2, !1);
-      else this.SetVisibleMode(2, !1)
+          t = t || i.GetChildListenerByTag(e);
+          this.SetVisibleMode(2, t?.IsListenerActive() ?? false);
+        } else {
+          this.SetVisibleMode(2, false);
+        }
+      } else {
+        this.SetVisibleMode(2, false);
+      }
     }
   }
 }

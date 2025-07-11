@@ -1,21 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationPhantomArenaOwnFunctionalToggle = void 0;
-const UiManager_1 = require("../../../../../Ui/UiManager"),
-  NavigationButton_1 = require("../NavigationButton");
+  value: true
+});
+exports.NavigationPhantomArenaOwnFunctionalToggle = undefined;
+const UiManager_1 = require("../../../../../Ui/UiManager");
+const NavigationButton_1 = require("../NavigationButton");
 class NavigationPhantomArenaOwnFunctionalToggle extends NavigationButton_1.NavigationButton {
   constructor() {
-    super(...arguments), this.ProxyInternal = void 0
+    super(...arguments);
+    this.ProxyInternal = undefined;
   }
   get Proxy() {
     var t;
-    return this.ProxyInternal || (t = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView"), this.ProxyInternal = t?.OpenParam), this.ProxyInternal
+    if (!this.ProxyInternal) {
+      t = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView");
+      this.ProxyInternal = t?.OpenParam;
+    }
+    return this.ProxyInternal;
   }
   OnButtonClick() {}
   OnNotifyFocusListener(t) {
     var i = Number(this.ParamList[0]);
-    this.Proxy && !t && (this.Proxy.GamepadLogic.HideCardTips(), this.Proxy.GamepadLogic.IsInHandCardSelectState ? this.Proxy.GamepadLogic.MoveHandCardToFunctional(i) : this.Proxy.GamepadLogic.IsInBattleCardSelectState && this.Proxy.GamepadLogic.MoveBattleCardToFunctional(i))
+    if (this.Proxy && !t) {
+      this.Proxy.GamepadLogic.HideCardTips();
+      if (this.Proxy.GamepadLogic.IsInHandCardSelectState) {
+        this.Proxy.GamepadLogic.MoveHandCardToFunctional(i);
+      } else if (this.Proxy.GamepadLogic.IsInBattleCardSelectState) {
+        this.Proxy.GamepadLogic.MoveBattleCardToFunctional(i);
+      }
+    }
   }
 }
 exports.NavigationPhantomArenaOwnFunctionalToggle = NavigationPhantomArenaOwnFunctionalToggle;

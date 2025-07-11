@@ -1,101 +1,420 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkillBehaviorBatchBulletTask = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon"),
-  Rotator_1 = require("../../../../Core/Utils/Math/Rotator"),
-  Transform_1 = require("../../../../Core/Utils/Math/Transform"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  BulletUtil_1 = require("../BulletUtil");
+  value: true
+});
+exports.SkillBehaviorBatchBulletTask = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../Core/Actor/ActorSystem");
+const Log_1 = require("../../../../Core/Common/Log");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
+const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
+const Transform_1 = require("../../../../Core/Utils/Math/Transform");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EffectSystem_1 = require("../../../Effect/EffectSystem");
+const GlobalData_1 = require("../../../GlobalData");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const BulletUtil_1 = require("../BulletUtil");
+const BulletPool_1 = require("../Model/BulletPool");
 class BatchBulletPositionCircle {
   constructor() {
-    this.AngleInterval = 0, this.Center = void 0, this.Clockwise = !0, this.Forward = Vector_1.Vector.Create(), this.Radius = 0, this.BeginAngle = 0, this.BeginRotator = 1, this.DistToTarget = 0, this.StartPos = void 0
+    this.AngleInterval = 0;
+    this.Center = undefined;
+    this.Clockwise = true;
+    this.Forward = Vector_1.Vector.Create();
+    this.Radius = 0;
+    this.BeginAngle = 0;
+    this.BeginRotator = 1;
+    this.DistToTarget = 0;
+    this.StartPos = undefined;
   }
+  IsDestroyOnEnd() {
+    return false;
+  }
+  IsSummonChildBullet() {
+    return false;
+  }
+  GetDelay() {
+    return 0;
+  }
+  OnEnd() {}
+  async Load() {}
   static Create(t, i) {
-    var s = new BatchBulletPositionCircle;
-    return s.FromUeConfig(t, i), s
+    var s = new BatchBulletPositionCircle();
+    s.FromUeConfig(t, i);
+    return s;
   }
   FromUeConfig(t, i) {
-    this.AngleInterval = t.GetBlackboard(i.AngleIntervalKey, 0), this.Center = t.GetBlackboard(i.CenterKey), this.Clockwise = i.Clockwise, t.GetBlackboard(i.ForwardKey).Vector(this.Forward), this.Radius = t.GetBlackboard(i.RadiusKey), this.BeginAngle = i.BeginAngle, this.BeginRotator = i.BeginRotator, this.DistToTarget = t.GetBlackboard(i.DistToTarget, 0), this.StartPos = t.GetBlackboard(i.StartPosKey)
+    this.AngleInterval = t.GetBlackboard(i.AngleIntervalKey, 0);
+    this.Center = t.GetBlackboard(i.CenterKey);
+    this.Clockwise = i.Clockwise;
+    t.GetBlackboard(i.ForwardKey).Vector(this.Forward);
+    this.Radius = t.GetBlackboard(i.RadiusKey);
+    this.BeginAngle = i.BeginAngle;
+    this.BeginRotator = i.BeginRotator;
+    this.DistToTarget = t.GetBlackboard(i.DistToTarget, 0);
+    this.StartPos = t.GetBlackboard(i.StartPosKey);
   }
   ToTransform(t) {
-    var i = Transform_1.Transform.Create(),
-      s = (i.SetLocation(this.Center), Vector_1.Vector.Create()),
-      t = this.BeginAngle + t * this.AngleInterval * (this.Clockwise ? 1 : -1);
-    return this.Forward.RotateAngleAxis(t, Vector_1.Vector.UpVectorProxy, s), s.MultiplyEqual(this.Radius), i.GetLocation().AdditionEqual(s), 1 === this.BeginRotator ? (this.Forward.RotateAngleAxis(t + 90, Vector_1.Vector.UpVectorProxy, s), t = Rotator_1.Rotator.Create(), s.Rotation(t), t.Quaternion(i.GetRotation())) : 2 === this.BeginRotator && (t = Rotator_1.Rotator.Create(), s.Normalize(), s.Rotation(t), t.Quaternion(i.GetRotation())), i
+    var i = Transform_1.Transform.Create();
+    i.SetLocation(this.Center);
+    var s = Vector_1.Vector.Create();
+    var t = this.BeginAngle + t * this.AngleInterval * (this.Clockwise ? 1 : -1);
+    this.Forward.RotateAngleAxis(t, Vector_1.Vector.UpVectorProxy, s);
+    s.MultiplyEqual(this.Radius);
+    i.GetLocation().AdditionEqual(s);
+    if (this.BeginRotator === 1) {
+      this.Forward.RotateAngleAxis(t + 90, Vector_1.Vector.UpVectorProxy, s);
+      t = Rotator_1.Rotator.Create();
+      s.Rotation(t);
+      t.Quaternion(i.GetRotation());
+    } else if (this.BeginRotator === 2) {
+      t = Rotator_1.Rotator.Create();
+      s.Normalize();
+      s.Rotation(t);
+      t.Quaternion(i.GetRotation());
+    }
+    return i;
   }
   ToTargetLocation(t) {
     var i;
-    if (t && this.DistToTarget) return i = Vector_1.Vector.Create(), t.GetRotation().GetForwardVector(i), i.MultiplyEqual(this.DistToTarget), this.StartPos ? i.AdditionEqual(this.StartPos) : i.AdditionEqual(t.GetLocation()), i
+    if (t && this.DistToTarget) {
+      i = Vector_1.Vector.Create();
+      t.GetRotation().GetForwardVector(i);
+      i.MultiplyEqual(this.DistToTarget);
+      if (this.StartPos) {
+        i.AdditionEqual(this.StartPos);
+      } else {
+        i.AdditionEqual(t.GetLocation());
+      }
+      return i;
+    }
   }
 }
 class BatchBulletPositionDotMatrix {
   constructor() {
-    this.Center = void 0, this.PositionOffset = void 0, this.PositionOffsetScale = 0, this.Rotator = void 0, this.RotatorOffset = void 0, this.BeginRotator = 1
+    this.Center = undefined;
+    this.PositionOffset = undefined;
+    this.PositionOffsetScale = 0;
+    this.Rotator = undefined;
+    this.RotatorOffset = undefined;
+    this.BeginRotator = 1;
+  }
+  OnEnd() {}
+  async Load() {}
+  GetDelay() {
+    return 0;
+  }
+  IsDestroyOnEnd() {
+    return false;
+  }
+  IsSummonChildBullet() {
+    return false;
   }
   static Create(t, i) {
-    var s = new BatchBulletPositionDotMatrix;
-    return s.FromUeConfig(t, i), s
+    var s = new BatchBulletPositionDotMatrix();
+    s.FromUeConfig(t, i);
+    return s;
   }
   FromUeConfig(t, i) {
-    this.Center = t.GetBlackboard(i.CenterKey), this.PositionOffset = new Array;
-    var s = i.PositionOffset,
-      r = s.Num();
-    for (let t = 0; t < r; t++) this.PositionOffset.push(Vector_1.Vector.Create(s.Get(t)));
-    this.PositionOffsetScale = i.PositionOffsetScale, this.Rotator = t.GetBlackboard(i.RotatorKey), this.RotatorOffset = Rotator_1.Rotator.Create(i.RotatorOffset), this.BeginRotator = i.BeginRotator
+    this.Center = t.GetBlackboard(i.CenterKey);
+    this.PositionOffset = new Array();
+    var s = i.PositionOffset;
+    var r = s.Num();
+    for (let t = 0; t < r; t++) {
+      this.PositionOffset.push(Vector_1.Vector.Create(s.Get(t)));
+    }
+    this.PositionOffsetScale = i.PositionOffsetScale;
+    this.Rotator = t.GetBlackboard(i.RotatorKey);
+    this.RotatorOffset = Rotator_1.Rotator.Create(i.RotatorOffset);
+    this.BeginRotator = i.BeginRotator;
   }
   ToTransform(t) {
-    var i, s;
-    if (!(this.PositionOffset.length <= t)) return (i = Transform_1.Transform.Create()).SetLocation(this.Center), i.SetRotation(this.Rotator.Quaternion()), t = this.PositionOffset[t], s = Vector_1.Vector.Create(), t.Multiply(this.PositionOffsetScale, s), i.TransformPosition(s, s), i.SetLocation(s), 1 === this.BeginRotator && (s.SubtractionEqual(this.Center), s.Normalize(), t = Rotator_1.Rotator.Create(), s.Rotation(t), MathUtils_1.MathUtils.ComposeRotator(t, this.RotatorOffset, i.GetRotation())), i;
-    Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "批量生成子弹失败，生成子弹数量超出 位置偏移 数量")
+    var i;
+    var s;
+    if (!(this.PositionOffset.length <= t)) {
+      (i = Transform_1.Transform.Create()).SetLocation(this.Center);
+      i.SetRotation(this.Rotator.Quaternion());
+      t = this.PositionOffset[t];
+      s = Vector_1.Vector.Create();
+      t.Multiply(this.PositionOffsetScale, s);
+      i.TransformPosition(s, s);
+      i.SetLocation(s);
+      if (this.BeginRotator === 1) {
+        s.SubtractionEqual(this.Center);
+        s.Normalize();
+        t = Rotator_1.Rotator.Create();
+        s.Rotation(t);
+        MathUtils_1.MathUtils.ComposeRotator(t, this.RotatorOffset, i.GetRotation());
+      }
+      return i;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Bullet", 20, "批量生成子弹失败，生成子弹数量超出 位置偏移 数量");
+    }
   }
   ToTargetLocation(t) {}
 }
-class SkillBehaviorBatchBulletTask {
+class BatchBulletPositionSpline {
   constructor() {
-    this.xe = void 0, this.ZZt = 0, this.Vso = 0, this.bjo = void 0, this.EQ_ = !1, this.IQ_ = 0, this.Xte = void 0, this.tRr = void 0, this.OQt = void 0, this.wmo = 0, this.Hhc = !1, this.B7o = 0, this.TQ_ = void 0, this.TDe = void 0, this.IO = (t = 0) => {
-      if (this.bQ_()) {
-        var i = this.oZo(this.B7o);
-        if (i ? (this.TQ_.push(i), this.EQ_ && (ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(i, 0), ControllerHolder_1.ControllerHolder.BulletController.SetBulletLiveRatio(i, 0))) : Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "批量生成子弹失败"), this.B7o++, this.EQ_ && this.B7o >= this.Vso)
-          for (let t = 0; t < this.Vso; t++) {
-            var s = this.TQ_[t];
-            ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(s, 1), ControllerHolder_1.ControllerHolder.BulletController.SetBulletLiveRatio(s, 1)
-          }
-      } else if (this.TDe?.Remove() || Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "停止批量生成子弹失败"), this.EQ_)
-        for (let t = 0; t < this.Vso; t++) ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(this.TQ_[t], 1)
-    }
+    this.buu = undefined;
+    this.md = undefined;
+    this.zie = undefined;
+    this.il = undefined;
+    this.wXt = undefined;
+    this.hwe = undefined;
+    this.r1t = 0;
+    this.Ruu = 0;
+    this.Luu = 0;
+    this.wuu = undefined;
+    this.Auu = undefined;
+    this.nx = undefined;
+    this.Puu = false;
+    this.zDl = false;
   }
   static Create(t, i, s) {
-    var i = ResourceSystem_1.ResourceSystem.Load(i.ToAssetPathName(), UE.DAC_BatchCreateBullet_C),
-      r = i.Base,
-      e = new SkillBehaviorBatchBulletTask,
-      s = (e.wmo = s, e.OQt = t.GetComponent(3)?.Actor, StringUtils_1.NONE_STRING !== r.ContinueWithTag.TagName && (e.Xte = t.GetComponent(205)), e.tRr = t.GetComponent(39), e.Hhc = r.StopOnSkillEnd, t.GetComponent(278)),
-      o = (e.IQ_ = r.ContinueWithTag.TagId, e.xe = new Array, r.Id.Num());
-    for (let t = 0; t < o; t++) e.xe.push(r.Id.Get(t));
-    return e.ZZt = r.Interval, e.Vso = r.Number, 0 === i.BeginPos ? (t = i, e.bjo = BatchBulletPositionDotMatrix.Create(s, t.Shape)) : 1 === i.BeginPos && (t = i, e.bjo = BatchBulletPositionCircle.Create(s, t.Shape), 0 === (i = e.bjo).AngleInterval) && (i.AngleInterval = MathCommon_1.MathCommon.RoundAngle / e.Vso), e.EQ_ = 1 === r.StartMoving, e
+    var r = new BatchBulletPositionSpline();
+    r.xuu(t, i);
+    r.Luu = s.GetInterval();
+    r.nx = s;
+    return r;
   }
-  Start() {
-    if (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Bullet", 20, "开始批量生成子弹"), this.TQ_ = new Array, 0 < this.ZZt) this.IO(), this.TDe = TimerSystem_1.TimerSystem.Loop(this.IO, this.ZZt * MathUtils_1.MathUtils.SecondToMillisecond, this.Vso - 1, 1, void 0, "[批量生成子弹]");
-    else
-      for (let t = 0; t < this.Vso && (!this.Xte || this.Xte.HasTag(this.IQ_)) && (0 === this.wmo || !this.Hhc || this.tRr.CurrentSkill && this.tRr.CurrentSkill.SkillId === this.wmo); t++) {
-        var i = this.oZo(t);
-        i && this.TQ_.push(i)
+  xuu(t, i) {
+    this.buu = i.SplineClass.ToAssetPathName();
+    this.il = t.GetBlackboard(i.StartKey);
+    if (StringUtils_1.StringUtils.IsBlank(i.EndKey)) {
+      this.hwe = t.GetBlackboard(i.RotatorKey);
+    } else {
+      this.wXt = t.GetBlackboard(i.EndKey);
+    }
+    this.r1t = t.GetBlackboard(i.DurationKey);
+    this.Ruu = i.Delay;
+    this.wuu = i.EffectOfEnd.ToAssetPathName();
+    this.Auu = i.BulletIdOfEnd;
+    this.Puu = i.DestroyAllOnEnd;
+    this.zDl = i.DestroySummonBullet;
+  }
+  async Load() {
+    return new Promise(r => {
+      ResourceSystem_1.ResourceSystem.LoadAsync(this.buu, UE.Class, t => {
+        var i = Transform_1.Transform.Create();
+        var s = BulletPool_1.BulletPool.CreateVector();
+        if (this.wXt) {
+          this.wXt.Subtraction(this.il, s);
+          MathUtils_1.MathUtils.LookRotationForwardFirst(s, Vector_1.Vector.UpVectorProxy, i.GetRotation());
+        } else {
+          i.SetRotation(this.hwe.Quaternion());
+        }
+        i.SetLocation(this.il);
+        this.md = ActorSystem_1.ActorSystem.Get(t, i.ToUeTransform());
+        this.zie = this.md.Spline;
+        if (this.wXt) {
+          t = this.zie.GetNumberOfSplinePoints() - 1;
+          i = this.zie.D_GetLocationAtSplinePoint(t, 0).SizeSquared();
+          t = Vector_1.Vector.DistSquared(this.il, this.wXt);
+          t = Math.sqrt(t / i);
+          s.FromUeVector(Vector_1.Vector.OneVectorProxy);
+          s.MultiplyEqual(t);
+          this.md.D_SetActorScale3D(s.ToUeVector());
+        }
+        BulletPool_1.BulletPool.RecycleVector(s);
+        this.zie.Duration = this.r1t;
+        r();
+      });
+    });
+  }
+  OnEnd() {
+    var t;
+    var i;
+    var s = StringUtils_1.StringUtils.IsBlank(this.wuu);
+    var r = StringUtils_1.StringUtils.IsBlank(this.Auu);
+    if ((!s || !r) && !(t = this.zie?.D_GetTransformAtTime(this.r1t, 1, true), s || (s = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, t, this.wuu, "样条批量子弹末尾特效"), EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, s, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation)), r)) {
+      s = this.nx.GetOwner();
+      r = this.nx.GetSkillId();
+      i = (i = this.nx.GetSkillComponent()?.GetSkill(r))?.SkillBehaviorAnimNotifyMessageId || i?.MNc;
+      BulletUtil_1.BulletUtil.CreateBulletFromAN(s, this.Auu, t, r, false, i);
+    }
+    ActorSystem_1.ActorSystem.Put("样条曲线批量子弹", this.md);
+    this.md = undefined;
+    this.zie = undefined;
+  }
+  ToTransform(t) {
+    t = this.Ruu + this.Luu * t;
+    t = this.zie.D_GetTransformAtTime(t, 1, true, true);
+    return Transform_1.Transform.Create(t);
+  }
+  ToTargetLocation(t) {}
+  GetDelay() {
+    return this.Ruu;
+  }
+  IsDestroyOnEnd() {
+    return this.Puu;
+  }
+  IsSummonChildBullet() {
+    return this.zDl;
+  }
+}
+class SkillBehaviorBatchBulletTask {
+  constructor() {
+    this.xe = undefined;
+    this.ZZt = 0;
+    this.Vso = 0;
+    this.bjo = undefined;
+    this.EQ_ = false;
+    this.IQ_ = 0;
+    this.Xte = undefined;
+    this.tRr = undefined;
+    this.OQt = undefined;
+    this.wmo = 0;
+    this.Hhc = false;
+    this.B7o = 0;
+    this.TQ_ = undefined;
+    this.TDe = undefined;
+    this.IO = (t = 0) => {
+      if (this.bQ_()) {
+        var i = this.oZo(this.B7o);
+        if (i) {
+          this.TQ_.push(i);
+          if (this.EQ_) {
+            ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(i, 0);
+            ControllerHolder_1.ControllerHolder.BulletController.SetBulletLiveRatio(i, 0);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 20, "批量生成子弹失败");
+        }
+        this.B7o++;
+        if (this.EQ_ && this.B7o >= this.Vso) {
+          for (let t = 0; t < this.Vso; t++) {
+            var s = this.TQ_[t];
+            ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(s, 1);
+            ControllerHolder_1.ControllerHolder.BulletController.SetBulletLiveRatio(s, 1);
+          }
+        }
+      } else {
+        if (!this.TDe?.Remove()) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Bullet", 20, "停止批量生成子弹失败");
+          }
+        }
+        this.bjo.OnEnd();
+        if (this.bjo.IsDestroyOnEnd()) {
+          for (let t = 0; t < this.Vso; t++) {
+            ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(this.TQ_[t], this.bjo.IsSummonChildBullet());
+          }
+        } else if (this.EQ_) {
+          for (let t = 0; t < this.Vso; t++) {
+            ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(this.TQ_[t], 1);
+          }
+        }
       }
+    };
+  }
+  GetInterval() {
+    return this.ZZt;
+  }
+  GetSkillComponent() {
+    return this.tRr;
+  }
+  GetOwner() {
+    return this.OQt;
+  }
+  GetSkillId() {
+    return this.wmo;
+  }
+  static Create(t, i, s) {
+    var i = ResourceSystem_1.ResourceSystem.Load(i.ToAssetPathName(), UE.DAC_BatchCreateBullet_C);
+    var r = i.Base;
+    var e = new SkillBehaviorBatchBulletTask();
+    e.wmo = s;
+    e.OQt = t.GetComponent(3)?.Actor;
+    if (StringUtils_1.NONE_STRING !== r.ContinueWithTag.TagName) {
+      e.Xte = t.GetComponent(205);
+    }
+    e.tRr = t.GetComponent(39);
+    e.Hhc = r.StopOnSkillEnd;
+    var s = t.GetComponent(278);
+    e.IQ_ = r.ContinueWithTag.TagId;
+    e.xe = new Array();
+    var h = r.Id.Num();
+    for (let t = 0; t < h; t++) {
+      e.xe.push(r.Id.Get(t));
+    }
+    e.ZZt = r.Interval;
+    e.Vso = r.Number;
+    if (i.BeginPos === 0) {
+      t = i;
+      e.bjo = BatchBulletPositionDotMatrix.Create(s, t.Shape);
+    } else if (i.BeginPos === 1) {
+      t = i;
+      e.bjo = BatchBulletPositionCircle.Create(s, t.Shape);
+      if ((t = e.bjo).AngleInterval === 0) {
+        t.AngleInterval = MathCommon_1.MathCommon.RoundAngle / e.Vso;
+      }
+    } else if (i.BeginPos === 2) {
+      t = i;
+      e.bjo = BatchBulletPositionSpline.Create(s, t.Shape, e);
+    }
+    e.EQ_ = r.StartMoving === 1;
+    return e;
+  }
+  async StartAsync() {
+    var t = new Array();
+    t.push(this.bjo.Load());
+    var i = this.bjo.GetDelay();
+    if (i > 0) {
+      t.push(this.Delay(i));
+    }
+    await Promise.all(t);
+    this.il();
+  }
+  async Delay(i) {
+    return new Promise(t => {
+      TimerSystem_1.TimerSystem.Delay(() => {
+        t();
+      }, i);
+    });
+  }
+  il() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Bullet", 20, "开始批量生成子弹");
+    }
+    if (this.bjo.GetDelay() > 0 && !this.bQ_()) {
+      this.bjo.OnEnd();
+    } else {
+      this.TQ_ = new Array();
+      if (this.ZZt > 0) {
+        this.IO();
+        this.TDe = TimerSystem_1.TimerSystem.Loop(this.IO, this.ZZt * MathUtils_1.MathUtils.SecondToMillisecond, this.Vso - 1, 1, undefined, "[批量生成子弹]");
+      } else {
+        for (let t = 0; t < this.Vso && (!this.Xte || this.Xte.HasTag(this.IQ_)) && (this.wmo === 0 || !this.Hhc || this.tRr.CurrentSkill && this.tRr.CurrentSkill.SkillId === this.wmo); t++) {
+          var i = this.oZo(t);
+          if (i) {
+            this.TQ_.push(i);
+          }
+        }
+      }
+    }
   }
   oZo(t) {
-    var i, s, r = this.xe[t % this.xe.length],
-      t = this.bjo.ToTransform(t);
-    return t ? (i = (i = this.tRr?.GetSkill(this.wmo))?.SkillBehaviorAnimNotifyMessageId || i?.MNc, s = this.bjo.ToTargetLocation(t), BulletUtil_1.BulletUtil.CreateBulletFromAN(this.OQt, r, t.ToUeTransform(), this.wmo, !1, i, s?.ToUeVector())) : 0
+    var i;
+    var s;
+    var r = this.xe[t % this.xe.length];
+    var t = this.bjo.ToTransform(t);
+    if (t) {
+      i = (i = this.tRr?.GetSkill(this.wmo))?.SkillBehaviorAnimNotifyMessageId || i?.MNc;
+      s = this.bjo.ToTargetLocation(t);
+      return BulletUtil_1.BulletUtil.CreateBulletFromAN(this.OQt, r, t.ToUeTransform(), this.wmo, false, i, s?.ToUeVector());
+    } else {
+      return 0;
+    }
   }
   bQ_() {
-    return !(this.Xte && !this.Xte.HasTag(this.IQ_) || this.Hhc && (!this.tRr.CurrentSkill || this.tRr.CurrentSkill.SkillId !== this.wmo))
+    return (!this.Xte || !!this.Xte.HasTag(this.IQ_)) && (!this.Hhc || !!this.tRr.CurrentSkill && this.tRr.CurrentSkill.SkillId === this.wmo);
   }
 }
 exports.SkillBehaviorBatchBulletTask = SkillBehaviorBatchBulletTask;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTalkBackgroundIcon = void 0;
+  value: true
+});
+exports.FbTalkBackgroundIcon = undefined;
 class FbTalkBackgroundIcon {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.rph = !1, this.oph = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.rph = false;
+    this.oph = undefined;
   }
   static Create(t) {
-    if (t) return new FbTalkBackgroundIcon(t)
+    if (t) {
+      return new FbTalkBackgroundIcon(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ImageAsset() {
-    return this.rph || (this.rph = !0, this.oph = this.FbDataInternal.imageAsset()), this.oph
+    if (!this.rph) {
+      this.rph = true;
+      this.oph = this.FbDataInternal.imageAsset();
+    }
+    return this.oph;
   }
 }
 exports.FbTalkBackgroundIcon = FbTalkBackgroundIcon;

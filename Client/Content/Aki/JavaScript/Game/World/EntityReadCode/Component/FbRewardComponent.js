@@ -1,29 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRewardComponent = void 0;
+  value: true
+});
+exports.FbRewardComponent = undefined;
 const FbRewardRefreshConfig_1 = require("./FbRewardRefreshConfig");
 class FbRewardComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.UBh = !1, this.DBh = 0, this.BBh = !1, this.qBh = void 0, this.kBh = !1, this.GBh = void 0, this.lxc = !1, this._xc = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.UBh = false;
+    this.DBh = 0;
+    this.BBh = false;
+    this.qBh = undefined;
+    this.kBh = false;
+    this.GBh = undefined;
+    this.lxc = false;
+    this._xc = undefined;
   }
   static Create(t) {
-    if (t) return new FbRewardComponent(t)
+    if (t) {
+      return new FbRewardComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get RewardId() {
-    return this.UBh || (this.UBh = !0, this.DBh = this.FbDataInternal.rewardId()), this.DBh
+    if (!this.UBh) {
+      this.UBh = true;
+      this.DBh = this.FbDataInternal.rewardId();
+    }
+    return this.DBh;
   }
   get RewardType() {
-    return this.BBh || (this.BBh = !0, this.qBh = this.FbDataInternal.rewardType()), this.qBh
+    if (!this.BBh) {
+      this.BBh = true;
+      this.qBh = this.FbDataInternal.rewardType();
+    }
+    return this.qBh;
   }
   get DropOnEvent() {
-    return this.kBh || (this.kBh = !0, this.GBh = this.FbDataInternal.dropOnEvent()), this.GBh
+    if (!this.kBh) {
+      this.kBh = true;
+      this.GBh = this.FbDataInternal.dropOnEvent();
+    }
+    return this.GBh;
   }
   get RefreshConfig() {
-    return this.lxc || (this.lxc = !0, this._xc = FbRewardRefreshConfig_1.FbRewardRefreshConfig.Create(this.FbDataInternal.refreshConfig())), this._xc
+    if (!this.lxc) {
+      this.lxc = true;
+      this._xc = FbRewardRefreshConfig_1.FbRewardRefreshConfig.Create(this.FbDataInternal.refreshConfig());
+    }
+    return this._xc;
   }
 }
 exports.FbRewardComponent = FbRewardComponent;

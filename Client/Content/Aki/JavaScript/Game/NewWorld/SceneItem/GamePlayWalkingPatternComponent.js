@@ -1,147 +1,345 @@
 "use strict";
-var GamePlayWalkingPatternComponent_1, __decorate = this && this.__decorate || function(t, i, e, s) {
-  var o, h = arguments.length,
-    n = h < 3 ? i : null === s ? s = Object.getOwnPropertyDescriptor(i, e) : s;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) n = Reflect.decorate(t, i, e, s);
-  else
-    for (var a = t.length - 1; 0 <= a; a--)(o = t[a]) && (n = (h < 3 ? o(n) : 3 < h ? o(i, e, n) : o(i, e)) || n);
-  return 3 < h && n && Object.defineProperty(i, e, n), n
+
+var GamePlayWalkingPatternComponent_1;
+var __decorate = this && this.__decorate || function (t, i, e, s) {
+  var o;
+  var h = arguments.length;
+  var n = h < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(t, i, e, s);
+  } else {
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (o = t[a]) {
+        n = (h < 3 ? o(n) : h > 3 ? o(i, e, n) : o(i, e)) || n;
+      }
+    }
+  }
+  if (h > 3 && n) {
+    Object.defineProperty(i, e, n);
+  }
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GamePlayWalkingPatternComponent = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../Core/Actor/ActorSystem"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Queue_1 = require("../../../Core/Container/Queue"),
-  GlobalConfigFromCsvByName_1 = require("../../../Core/Define/ConfigQuery/GlobalConfigFromCsvByName"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  EntityComponent_1 = require("../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent"),
-  Net_1 = require("../../../Core/Net/Net"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  IComponent_1 = require("../../../UniverseEditor/Interface/IComponent"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  EffectSystem_1 = require("../../Effect/EffectSystem"),
-  Global_1 = require("../../Global"),
-  GlobalData_1 = require("../../GlobalData"),
-  GameSplineUtils_1 = require("../../LevelGamePlay/Common/GameSplineUtils"),
-  TsGameSplineActor_1 = require("../../LevelGamePlay/Common/TsGameSplineActor"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager");
+  value: true
+});
+exports.GamePlayWalkingPatternComponent = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
+const Log_1 = require("../../../Core/Common/Log");
+const Queue_1 = require("../../../Core/Container/Queue");
+const GlobalConfigFromCsvByName_1 = require("../../../Core/Define/ConfigQuery/GlobalConfigFromCsvByName");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
+const Net_1 = require("../../../Core/Net/Net");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const EffectSystem_1 = require("../../Effect/EffectSystem");
+const Global_1 = require("../../Global");
+const GlobalData_1 = require("../../GlobalData");
+const GameSplineUtils_1 = require("../../LevelGamePlay/Common/GameSplineUtils");
+const TsGameSplineActor_1 = require("../../LevelGamePlay/Common/TsGameSplineActor");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
 let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class GamePlayWalkingPatternComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.Lo = void 0, this.Hte = void 0, this.mBe = void 0, this.HFl = void 0, this.Hnr = void 0, this.zie = void 0, this.WFl = void 0, this.QFl = void 0, this.KFl = void 0, this.$Fl = void 0, this.qsh = void 0, this.Fsh = 0, this.Hln = 0, this.Wlh = 0, this.XFl = 0, this.YFl = 0, this.zFl = void 0, this.JFl = new Queue_1.Queue, this.ZFl = void 0, this.e3l = void 0, this.Vsh = 0, this.r$t = !1, this.ksh = 0, this.Nsh = 0, this.wdt = -1, this.Qlh = -1, this.Nme = Vector_1.Vector.Create(), this.Hsh = Vector_1.Vector.Create(), this.Elu = -1, this.Ilu = -1, this.Tlu = 0, this.blu = 0, this.g_n = (t, i) => {
-      this.t3l(t)
-    }, this.Etn = t => {
+    super(...arguments);
+    this.Lo = undefined;
+    this.Hte = undefined;
+    this.mBe = undefined;
+    this.HFl = undefined;
+    this.Hnr = undefined;
+    this.zie = undefined;
+    this.WFl = undefined;
+    this.QFl = undefined;
+    this.KFl = undefined;
+    this.$Fl = undefined;
+    this.qsh = undefined;
+    this.Fsh = 0;
+    this.Hln = 0;
+    this.Wlh = 0;
+    this.XFl = 0;
+    this.YFl = 0;
+    this.zFl = undefined;
+    this.JFl = new Queue_1.Queue();
+    this.ZFl = undefined;
+    this.e3l = undefined;
+    this.Vsh = 0;
+    this.r$t = false;
+    this.ksh = 0;
+    this.Nsh = 0;
+    this.wdt = -1;
+    this.Qlh = -1;
+    this.Nme = Vector_1.Vector.Create();
+    this.Hsh = Vector_1.Vector.Create();
+    this.Ngu = -1;
+    this.Vgu = -1;
+    this.jgu = 0;
+    this.Hgu = 0;
+    this.g_n = (t, i) => {
+      this.t3l(t);
+    };
+    this.Etn = t => {
       var i;
-      t && !this.r$t && (this.r$t = !0, i = this.Nsh / this.ksh, this.Vsh = 0, i >= this.Fsh && i <= this.Hln ? this.Vsh = 100 - (i - this.Fsh) / (this.Hln - this.Fsh) * 100 : i < this.Fsh ? this.Vsh = 100 : this.Vsh = 0, this.Vsh = Math.min(this.Vsh, this.Qlh / this.wdt * 100), t) && this.EDe()
-    }
+      if (t && !this.r$t && (this.r$t = true, i = this.Nsh / this.ksh, this.Vsh = 0, i >= this.Fsh && i <= this.Hln ? this.Vsh = 100 - (i - this.Fsh) / (this.Hln - this.Fsh) * 100 : i < this.Fsh ? this.Vsh = 100 : this.Vsh = 0, this.Vsh = Math.min(this.Vsh, this.Qlh / this.wdt * 100), t)) {
+        this.EDe();
+      }
+    };
   }
   OnInitData(t) {
     t = t.GetParam(GamePlayWalkingPatternComponent_1)[0];
-    return this.Lo = t, !0
+    this.Lo = t;
+    return true;
   }
   OnStart() {
-    return this.Hte = this.Entity.GetComponent(202), this.mBe = this.Entity.GetComponent(133), this.HFl = this.Disable("GamePlayWalkingPatternComponent 默认关闭Tick"), this.i3l(), this.r3l(), this.mSe(), this.t3l(this.mBe.StateTagId), this.Lo?.StayAwayFailConfig && (this.Elu = this.Lo.StayAwayFailConfig.SplineDistance, this.Ilu = this.Lo.StayAwayFailConfig.StayAwayTime ?? -1), !0
+    this.Hte = this.Entity.GetComponent(202);
+    this.mBe = this.Entity.GetComponent(133);
+    this.HFl = this.Disable("GamePlayWalkingPatternComponent 默认关闭Tick");
+    this.i3l();
+    this.r3l();
+    this.mSe();
+    this.t3l(this.mBe.StateTagId);
+    if (this.Lo?.StayAwayFailConfig) {
+      this.Ngu = this.Lo.StayAwayFailConfig.SplineDistance;
+      this.Vgu = this.Lo.StayAwayFailConfig.StayAwayTime ?? -1;
+    }
+    return true;
   }
   i3l() {
-    this.Hnr = ActorSystem_1.ActorSystem.Get(TsGameSplineActor_1.default.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble), this.zie = GameSplineUtils_1.GameSplineUtils.InitGameSplineBySplineEntity(this.Lo.SplineEntityId, this.Hnr);
+    this.Hnr = ActorSystem_1.ActorSystem.Get(TsGameSplineActor_1.default.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
+    this.zie = GameSplineUtils_1.GameSplineUtils.InitGameSplineBySplineEntity(this.Lo.SplineEntityId, this.Hnr);
     var t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.Lo.SplineEntityId);
-    void 0 === t ? Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GamePlayWalkingPatternComponent]找不到entityData", ["SplineEntityId", this.Lo.SplineEntityId]) : void 0 === (t = (0, IComponent_1.getComponent)(t.ComponentsData, "SplineComponent")) ? Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GamePlayWalkingPatternComponent]找不到SplineComponent", ["SplineEntityId", this.Lo.SplineEntityId]) : t.Option.Type !== IComponent_1.ESplineType.Effect ? Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GamePlayWalkingPatternComponent]引用的样条不是Effect类型", ["SplineEntityId", this.Lo.SplineEntityId]) : (this.WFl = t.Option.Effect, this.QFl = this.Lo.SpineEffectExistDuration, this.ZFl = this.Lo.ReplaySpineEffect)
+    if (t === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[GamePlayWalkingPatternComponent]找不到entityData", ["SplineEntityId", this.Lo.SplineEntityId]);
+      }
+    } else if ((t = (0, IComponent_1.getComponent)(t.ComponentsData, "SplineComponent")) === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[GamePlayWalkingPatternComponent]找不到SplineComponent", ["SplineEntityId", this.Lo.SplineEntityId]);
+      }
+    } else if (t.Option.Type !== IComponent_1.ESplineType.Effect) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[GamePlayWalkingPatternComponent]引用的样条不是Effect类型", ["SplineEntityId", this.Lo.SplineEntityId]);
+      }
+    } else {
+      this.WFl = t.Option.Effect;
+      this.QFl = this.Lo.SpineEffectExistDuration;
+      this.ZFl = this.Lo.ReplaySpineEffect;
+    }
   }
   o3l() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.Lo.EndEntityId);
-    t?.Valid && t.Entity?.Valid ? (this.qsh = t.Entity, EventSystem_1.EventSystem.AddWithTarget(this.qsh, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn)) : Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 31, "[WalkingPatternBehaviorNode]找不到EndEntity", ["EndEntityId", this.Lo.EndEntityId])
+    if (t?.Valid && t.Entity?.Valid) {
+      this.qsh = t.Entity;
+      EventSystem_1.EventSystem.AddWithTarget(this.qsh, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("BehaviorTree", 31, "[WalkingPatternBehaviorNode]找不到EndEntity", ["EndEntityId", this.Lo.EndEntityId]);
+    }
   }
   r3l() {
     var t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.MinDist");
-    t && (this.Fsh = parseInt(t.Value)), (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.MaxDist")) && (this.Hln = parseInt(t.Value)), (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.CheckPointDist")) && (this.Wlh = parseInt(t.Value)), (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.StepNum")) && (this.XFl = parseInt(t.Value)), (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.RecordMinDist")) && (this.YFl = parseInt(t.Value))
+    if (t) {
+      this.Fsh = parseInt(t.Value);
+    }
+    if (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.MaxDist")) {
+      this.Hln = parseInt(t.Value);
+    }
+    if (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.CheckPointDist")) {
+      this.Wlh = parseInt(t.Value);
+    }
+    if (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.StepNum")) {
+      this.XFl = parseInt(t.Value);
+    }
+    if (t = GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.GetConfig("WalkingPattern.RecordMinDist")) {
+      this.YFl = parseInt(t.Value);
+    }
   }
   mSe() {
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n)
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
   }
   OnTick(t) {
     var i = Global_1.Global.BaseCharacter;
-    i && (this.Nme.FromUeVector(i.D_K2_GetActorLocation()), void 0 !== this.zFl && Vector_1.Vector.Dist2D(this.zFl, this.Nme) < this.YFl || (this.zFl = Vector_1.Vector.Create(this.Nme), this.Klh(), this.Wsh(), this.n3l(), this.Rlu(t)))
+    if (i) {
+      this.Nme.FromUeVector(i.D_K2_GetActorLocation());
+      if (this.zFl === undefined || !(Vector_1.Vector.Dist2D(this.zFl, this.Nme) < this.YFl)) {
+        this.zFl = Vector_1.Vector.Create(this.Nme);
+        this.Klh();
+        this.Wsh();
+        this.n3l();
+        this.$gu(t);
+      }
+    }
   }
   Klh() {
-    var t, i;
-    void 0 === this.zie || this.Qlh >= this.wdt || (t = MathUtils_1.MathUtils.Clamp(this.Qlh, 0, this.wdt - 1), i = Vector_1.Vector.Create(this.zie?.D_GetLocationAtSplinePoint(t, 1)), Vector_1.Vector.Dist2D(this.Nme, i) < this.Wlh && (this.Qlh = t + 1))
+    var t;
+    var i;
+    if (this.zie !== undefined && !(this.Qlh >= this.wdt)) {
+      t = MathUtils_1.MathUtils.Clamp(this.Qlh, 0, this.wdt - 1);
+      i = Vector_1.Vector.Create(this.zie?.D_GetLocationAtSplinePoint(t, 1));
+      if (Vector_1.Vector.Dist2D(this.Nme, i) < this.Wlh) {
+        this.Qlh = t + 1;
+      }
+    }
   }
   Wsh() {
-    void 0 !== this.zie && (this.Hsh.FromUeVector(this.zie.D_FindLocationClosestToWorldLocation(this.Nme.ToUeVector(), 1)), this.blu = Vector_1.Vector.Dist2D(this.Nme, this.Hsh), this.Nsh += this.blu, this.ksh++)
+    if (this.zie !== undefined) {
+      this.Hsh.FromUeVector(this.zie.D_FindLocationClosestToWorldLocation(this.Nme.ToUeVector(), 1));
+      this.Hgu = Vector_1.Vector.Dist2D(this.Nme, this.Hsh);
+      this.Nsh += this.Hgu;
+      this.ksh++;
+    }
   }
   n3l() {
-    var t, i;
-    void 0 !== Global_1.Global.BaseCharacter && void 0 !== this.Hte && ((t = Vector_1.Vector.Create(this.Nme)).SubtractionEqual(this.Hte.ActorLocationProxy), this.JFl.Size >= this.XFl && this.JFl.Pop(), void 0 !== (i = Global_1.Global.BaseCharacter.CharacterActorComponent?.HalfHeight) && (t.Z -= i), this.JFl.Push(t))
+    var t;
+    var i;
+    if (Global_1.Global.BaseCharacter !== undefined && this.Hte !== undefined) {
+      (t = Vector_1.Vector.Create(this.Nme)).SubtractionEqual(this.Hte.ActorLocationProxy);
+      if (this.JFl.Size >= this.XFl) {
+        this.JFl.Pop();
+      }
+      if ((i = Global_1.Global.BaseCharacter.CharacterActorComponent?.HalfHeight) !== undefined) {
+        t.Z -= i;
+      }
+      this.JFl.Push(t);
+    }
   }
-  Rlu(t) {
-    this.Elu < 0 || (this.blu > this.Elu ? (this.Tlu += t, this.Tlu >= this.Ilu && (this.EDe(-1), this.Tlu = 0)) : this.Tlu = 0)
+  $gu(t) {
+    if (!(this.Ngu < 0)) {
+      if (this.Hgu > this.Ngu) {
+        this.jgu += t;
+        if (this.jgu >= this.Vgu) {
+          this.EDe(-1);
+          this.jgu = 0;
+        }
+      } else {
+        this.jgu = 0;
+      }
+    }
   }
   OnEnd() {
-    return this.s3l(), this.a3l(), this.dSe(), !0
+    this.s3l();
+    this.a3l();
+    this.dSe();
+    return true;
   }
   dSe() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n)
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
   }
   t3l(t) {
-    switch (951335035 === t ? this.HFl && (this.Enable(this.HFl, "GamePlayWalkingPatternComponent 激活态开启Tick"), this.HFl = void 0) : (void 0 === this.HFl && (this.HFl = this.Disable("GamePlayWalkingPatternComponent 非激活态关闭Tick")), void 0 !== this.qsh && EventSystem_1.EventSystem.HasWithTarget(this.qsh, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn) && EventSystem_1.EventSystem.RemoveWithTarget(this.qsh, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn)), 1052000749 !== t && this.a3l(), t) {
+    if (t === 951335035) {
+      if (this.HFl) {
+        this.Enable(this.HFl, "GamePlayWalkingPatternComponent 激活态开启Tick");
+        this.HFl = undefined;
+      }
+    } else {
+      if (this.HFl === undefined) {
+        this.HFl = this.Disable("GamePlayWalkingPatternComponent 非激活态关闭Tick");
+      }
+      if (this.qsh !== undefined && EventSystem_1.EventSystem.HasWithTarget(this.qsh, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(this.qsh, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn);
+      }
+    }
+    if (t !== 1052000749) {
+      this.a3l();
+    }
+    switch (t) {
       case 984890273:
-        this.s3l(), this.a3l();
+        this.s3l();
+        this.a3l();
         break;
       case 934557416:
-        this.l3l(), this.h3l();
+        this.l3l();
+        this.h3l();
         break;
       case 951335035:
-        this.o3l(), this.h3l(!1, this.QFl);
+        this.o3l();
+        this.h3l(false, this.QFl);
         break;
       case 1035223130:
         this.h3l();
         break;
       case 1052000749:
-        this.h3l(!1), this._3l()
+        this.h3l(false);
+        this._3l();
     }
   }
   l3l() {
-    this.ksh = 0, this.Nsh = 0, this.r$t = !1, this.wdt = this.zie?.GetNumberOfSplinePoints() ?? -1, this.Qlh = 0
+    this.ksh = 0;
+    this.Nsh = 0;
+    this.r$t = false;
+    this.wdt = this.zie?.GetNumberOfSplinePoints() ?? -1;
+    this.Qlh = 0;
   }
-  h3l(t = !0, i = void 0) {
-    if (this.KFl && (TimerSystem_1.TimerSystem.Remove(this.KFl), this.KFl = void 0), t) this.$Fl && this.s3l();
-    else if (this.$Fl) return void(void 0 !== i && (this.KFl = TimerSystem_1.TimerSystem.Delay(() => {
-      this.s3l()
-    }, i * TimeUtil_1.TimeUtil.InverseMillisecond)));
-    this.$Fl = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, this.WFl, "WalkingPattern"), EffectSystem_1.EffectSystem.GetEffectActor(this.$Fl).K2_AttachToActor(this.Hnr, void 0, 2, 2, 2, !1), void 0 !== i && (this.KFl = TimerSystem_1.TimerSystem.Delay(() => {
-      this.s3l()
-    }, i * TimeUtil_1.TimeUtil.InverseMillisecond))
+  h3l(t = true, i = undefined) {
+    if (this.KFl) {
+      TimerSystem_1.TimerSystem.Remove(this.KFl);
+      this.KFl = undefined;
+    }
+    if (t) {
+      if (this.$Fl) {
+        this.s3l();
+      }
+    } else if (this.$Fl) {
+      if (i !== undefined) {
+        this.KFl = TimerSystem_1.TimerSystem.Delay(() => {
+          this.s3l();
+        }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
+      }
+      return;
+    }
+    this.$Fl = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, this.WFl, "WalkingPattern");
+    EffectSystem_1.EffectSystem.GetEffectActor(this.$Fl).K2_AttachToActor(this.Hnr, undefined, 2, 2, 2, false);
+    if (i !== undefined) {
+      this.KFl = TimerSystem_1.TimerSystem.Delay(() => {
+        this.s3l();
+      }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
+    }
   }
   s3l() {
-    this.$Fl && (EffectSystem_1.EffectSystem.StopEffectById(this.$Fl, "WalkingPattern.StopPreviewEffect", !1), this.$Fl = void 0)
+    if (this.$Fl) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.$Fl, "WalkingPattern.StopPreviewEffect", false);
+      this.$Fl = undefined;
+    }
   }
   _3l() {
-    if (void 0 !== this.ZFl) {
-      this.e3l && this.a3l();
-      for (var t = UE.NewArray(UE.VectorDouble); !this.JFl.Empty;) {
+    if (this.ZFl !== undefined) {
+      if (this.e3l) {
+        this.a3l();
+      }
+      var t = UE.NewArray(UE.VectorDouble);
+      for (; !this.JFl.Empty;) {
         var i = this.JFl.Pop();
-        t.Add(i.ToUeVector())
+        t.Add(i.ToUeVector());
       }
       var e = GameSplineUtils_1.GameSplineUtils.GenerateGuideEffect(this.Hte.ActorLocationProxy, t, this.ZFl);
-      this.e3l = e?.EffectHandle
+      this.e3l = e?.EffectHandle;
     }
   }
   a3l() {
-    this.e3l && (EffectSystem_1.EffectSystem.StopEffectById(this.e3l, "WalkingPattern.StopPlaybackEffect", !1), this.e3l = void 0)
+    if (this.e3l) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.e3l, "WalkingPattern.StopPlaybackEffect", false);
+      this.e3l = undefined;
+    }
   }
-  EDe(t = void 0) {
+  EDe(t = undefined) {
     var i = Protocol_1.Aki.Protocol.L0_.create();
-    i.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner(), i.F4n = this.Hte.CreatureData.GetCreatureDataId(), i.Eps = t ?? this.Vsh, Net_1.Net.Call(25234, i, t => {
-      t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28949)
-    }), void 0 === this.HFl && (this.HFl = this.Disable("GamePlayWalkingPatternComponent 请求完成后关闭Tick"))
+    i.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
+    i.F4n = this.Hte.CreatureData.GetCreatureDataId();
+    i.Eps = t ?? this.Vsh;
+    Net_1.Net.Call(21020, i, t => {
+      if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26146);
+      }
+    });
+    if (this.HFl === undefined) {
+      this.HFl = this.Disable("GamePlayWalkingPatternComponent 请求完成后关闭Tick");
+    }
   }
 };
-GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], GamePlayWalkingPatternComponent), exports.GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent;
-//# sourceMappingURL=GamePlayWalkingPatternComponent.js.map
+GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], GamePlayWalkingPatternComponent);
+exports.GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent; //# sourceMappingURL=GamePlayWalkingPatternComponent.js.map

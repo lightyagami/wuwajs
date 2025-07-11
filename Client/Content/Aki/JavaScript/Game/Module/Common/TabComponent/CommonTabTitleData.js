@@ -1,10 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonTabTitleData = void 0;
+  value: true
+});
+exports.CommonTabTitleData = undefined;
 class CommonTabTitleData {
   constructor(t, ...o) {
-    this.TextId = t, this.Args = o
+    this.TextId = t;
+    this.Args = o;
   }
 }
 exports.CommonTabTitleData = CommonTabTitleData;

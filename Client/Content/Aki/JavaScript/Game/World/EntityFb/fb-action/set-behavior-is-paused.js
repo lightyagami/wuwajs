@@ -1,36 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SetBehaviorIsPaused = void 0;
+  value: true
+});
+exports.SetBehaviorIsPaused = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class SetBehaviorIsPaused {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, s) {
-    return this.bb_pos = e, this.bb = s, this
+    this.bb_pos = e;
+    this.bb = s;
+    return this;
   }
   static getRootAsSetBehaviorIsPaused(e, s) {
-    return (s || new SetBehaviorIsPaused).__init(e.readInt32(e.position()) + e.position(), e)
+    return (s || new SetBehaviorIsPaused()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsSetBehaviorIsPaused(e, s) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (s || new SetBehaviorIsPaused).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (s || new SetBehaviorIsPaused()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   isPaused() {
     var e = this.bb.__offset(this.bb_pos, 4);
-    return !!e && !!this.bb.readInt8(this.bb_pos + e)
+    return !!e && !!this.bb.readInt8(this.bb_pos + e);
   }
   static startSetBehaviorIsPaused(e) {
-    e.startObject(1)
+    e.startObject(1);
   }
   static addIsPaused(e, s) {
-    e.addFieldInt8(0, +s, 0)
+    e.addFieldInt8(0, +s, 0);
   }
   static endSetBehaviorIsPaused(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createSetBehaviorIsPaused(e, s) {
-    return SetBehaviorIsPaused.startSetBehaviorIsPaused(e), SetBehaviorIsPaused.addIsPaused(e, s), SetBehaviorIsPaused.endSetBehaviorIsPaused(e)
+    SetBehaviorIsPaused.startSetBehaviorIsPaused(e);
+    SetBehaviorIsPaused.addIsPaused(e, s);
+    return SetBehaviorIsPaused.endSetBehaviorIsPaused(e);
   }
 }
 exports.SetBehaviorIsPaused = SetBehaviorIsPaused;

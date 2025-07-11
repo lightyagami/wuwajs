@@ -1,15 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ConfigCurveUtils = void 0;
-const UE = require("ue"),
-  CurveUtils_1 = require("../../Core/Utils/Curve/CurveUtils");
+  value: true
+});
+exports.ConfigCurveUtils = undefined;
+const UE = require("ue");
+const CurveUtils_1 = require("../../Core/Utils/Curve/CurveUtils");
 class ConfigCurveUtils {
   static CreateCurveByBaseCurve(e) {
-    return CurveUtils_1.CurveUtils.CreateCurveByStruct(this.pgr(e))
+    return CurveUtils_1.CurveUtils.CreateCurveByStruct(this.pgr(e));
   }
   static pgr(e) {
-    switch (this.BaseCurve || (this.BaseCurve = new UE.SBaseCurve), e.Type) {
+    this.BaseCurve ||= new UE.SBaseCurve();
+    switch (e.Type) {
       case 1:
         this.BaseCurve.CurveType = 1;
         break;
@@ -29,9 +32,11 @@ class ConfigCurveUtils {
         this.BaseCurve.CurveType = 6;
         break;
       default:
-        this.BaseCurve.CurveType = 0
+        this.BaseCurve.CurveType = 0;
     }
-    return this.BaseCurve.N = e.N, this.BaseCurve
+    this.BaseCurve.N = e.N;
+    return this.BaseCurve;
   }
-}(exports.ConfigCurveUtils = ConfigCurveUtils).BaseCurve = void 0;
+}
+(exports.ConfigCurveUtils = ConfigCurveUtils).BaseCurve = undefined;
 //# sourceMappingURL=ConfigCurveUtils.js.map

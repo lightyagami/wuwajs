@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSkillBlackboardVector = void 0;
+  value: true
+});
+exports.FbSkillBlackboardVector = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbSkillBlackboardVector {
   constructor(t) {
-    this.FbDataInternal = t, this.ubh = !1, this.dbh = void 0, this.kmh = !1, this.Gmh = void 0
+    this.FbDataInternal = t;
+    this.ubh = false;
+    this.dbh = undefined;
+    this.kmh = false;
+    this.Gmh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSkillBlackboardVector(t)
+    if (t) {
+      return new FbSkillBlackboardVector(t);
+    }
   }
   get Key() {
-    return this.ubh || (this.ubh = !0, this.dbh = this.FbDataInternal.key()), this.dbh
+    if (!this.ubh) {
+      this.ubh = true;
+      this.dbh = this.FbDataInternal.key();
+    }
+    return this.dbh;
   }
   get Value() {
-    return this.kmh || (this.kmh = !0, this.Gmh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.value())), this.Gmh
+    if (!this.kmh) {
+      this.kmh = true;
+      this.Gmh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.value());
+    }
+    return this.Gmh;
   }
 }
 exports.FbSkillBlackboardVector = FbSkillBlackboardVector;

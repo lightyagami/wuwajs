@@ -1,24 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ForgingMediumItemGrid = void 0;
-const ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  LoopScrollMediumItemGrid_1 = require("../../../Common/MediumItemGrid/LoopScrollMediumItemGrid"),
-  ForgingController_1 = require("../ForgingController");
+  value: true
+});
+exports.ForgingMediumItemGrid = undefined;
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const LoopScrollMediumItemGrid_1 = require("../../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
+const ForgingController_1 = require("../ForgingController");
 class ForgingMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
   OnRefresh(i, r, e) {
-    var o = i.ItemId,
-      t = ConfigManager_1.ConfigManager.ForgingConfig.GetForgeFormulaById(o).ItemId,
-      l = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
+    var o = i.ItemId;
+    var t = ConfigManager_1.ConfigManager.ForgingConfig.GetForgeFormulaById(o).ItemId;
+    var l = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
     if (l) {
       var n = i.IsUnlock;
-      let e = !1;
+      let e = false;
       e = n ? ForgingController_1.ForgingController.CheckCanForging(o) : ForgingController_1.ForgingController.CheckCanUnlock(o);
       o = {
         Type: 4,
@@ -27,13 +29,14 @@ class ForgingMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumI
         BottomTextId: l.Name,
         IsProhibit: !n,
         IsNewVisible: i.IsNew,
-        IsDisable: 0 < n && !e,
+        IsDisable: n > 0 && !e,
         IsRedDotVisible: e && !i.IsUnlock,
         StarLevel: l.QualityId,
-        IsOmitBottomText: !0,
-        IsTimeFlagVisible: 0 < i.ExistEndTime
+        IsOmitBottomText: true,
+        IsTimeFlagVisible: i.ExistEndTime > 0
       };
-      this.Apply(o), this.SetSelected(r)
+      this.Apply(o);
+      this.SetSelected(r);
     }
   }
 }

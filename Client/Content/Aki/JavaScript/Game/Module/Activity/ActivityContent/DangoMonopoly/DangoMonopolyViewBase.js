@@ -1,18 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoMonopolyViewBase = void 0;
-const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase"),
-  ActivityDangoMonopolyController_1 = require("./ActivityDangoMonopolyController");
+  value: true
+});
+exports.DangoMonopolyViewBase = undefined;
+const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
+const ActivityDangoMonopolyController_1 = require("./ActivityDangoMonopolyController");
 class DangoMonopolyViewBase extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.ActivityData = void 0
+    super(...arguments);
+    this.ActivityData = undefined;
   }
   OnBeforeCreate() {
-    this.UpdateActivityData()
+    this.UpdateActivityData();
   }
   UpdateActivityData() {
-    return this.ActivityData = ActivityDangoMonopolyController_1.ActivityDangoMonopolyController.GetData(), !!this.ActivityData
+    this.ActivityData = ActivityDangoMonopolyController_1.ActivityDangoMonopolyController.GetData();
+    return !!this.ActivityData;
   }
 }
 exports.DangoMonopolyViewBase = DangoMonopolyViewBase;

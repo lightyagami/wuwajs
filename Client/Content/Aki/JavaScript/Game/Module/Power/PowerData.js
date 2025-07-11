@@ -1,107 +1,140 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OverPowerData = exports.PowerData = void 0;
-const EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  ItemDefines_1 = require("../Item/Data/ItemDefines"),
-  PowerController_1 = require("./PowerController"),
-  TRYREQUESTGAP = 1;
+  value: true
+});
+exports.OverPowerData = exports.PowerData = undefined;
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const ItemDefines_1 = require("../Item/Data/ItemDefines");
+const PowerController_1 = require("./PowerController");
+const TRYREQUESTGAP = 1;
 class PowerData {
   constructor() {
-    this.ItemId = 0, this.CurrentPower = 0, this.FinishUpdateTime = 0, this.NeedUpdateFlag = !1, this.CurrentRecoverMode = 0, this.NextRecoverTime = 0, this.ResetTime = 0, this.CurrentRequestNewPowerTime = 0, this.LastTickCountDown = -1
+    this.ItemId = 0;
+    this.CurrentPower = 0;
+    this.FinishUpdateTime = 0;
+    this.NeedUpdateFlag = false;
+    this.CurrentRecoverMode = 0;
+    this.NextRecoverTime = 0;
+    this.ResetTime = 0;
+    this.CurrentRequestNewPowerTime = 0;
+    this.LastTickCountDown = -1;
   }
   Phrase(e, t, r) {
-    this.ItemId = e, this.Moo(t);
-    e = r, t = (this.GetPowerLimit() - t) * this.GetPowerIncreaseTimeSpan();
-    this.FinishUpdateTime = e + t, this.NextRecoverTime = r + this.GetPowerIncreaseTimeSpan()
+    this.ItemId = e;
+    this.Moo(t);
+    e = r;
+    t = (this.GetPowerLimit() - t) * this.GetPowerIncreaseTimeSpan();
+    this.FinishUpdateTime = e + t;
+    this.NextRecoverTime = r + this.GetPowerIncreaseTimeSpan();
   }
   CheckPowerUpdate() {
-    this.NeedUpdateFlag && this.GetIfCanRequestNewPower() && this.OnCheckPowerUpdate()
+    if (this.NeedUpdateFlag && this.GetIfCanRequestNewPower()) {
+      this.OnCheckPowerUpdate();
+    }
   }
   GetIfCanRequestNewPower() {
     var e = TimeUtil_1.TimeUtil.GetServerTime();
-    return 0 < this.NextRecoverTime && e >= this.NextRecoverTime && ControllerHolder_1.ControllerHolder.PowerController.GetIfCanRequestNewPower() && e - this.CurrentRequestNewPowerTime > TRYREQUESTGAP
+    return this.NextRecoverTime > 0 && e >= this.NextRecoverTime && ControllerHolder_1.ControllerHolder.PowerController.GetIfCanRequestNewPower() && e - this.CurrentRequestNewPowerTime > TRYREQUESTGAP;
   }
   RequestNewPowerDataAndCacheRequestTime() {
-    PowerController_1.PowerController.SendUpdatePowerRequest([this.ItemId]), this.CurrentRequestNewPowerTime = TimeUtil_1.TimeUtil.GetServerTime()
+    PowerController_1.PowerController.SendUpdatePowerRequest([this.ItemId]);
+    this.CurrentRequestNewPowerTime = TimeUtil_1.TimeUtil.GetServerTime();
   }
   OnCheckPowerUpdate() {
-    this.RequestNewPowerDataAndCacheRequestTime()
+    this.RequestNewPowerDataAndCacheRequestTime();
   }
   GetPowerRecoveryMode() {
-    return this.NeedUpdateFlag ? 0 : 2
+    if (this.NeedUpdateFlag) {
+      return 0;
+    } else {
+      return 2;
+    }
   }
   Moo(e) {
-    this.CurrentPower = e, this.CheckPowerIfMax() ? this.NeedUpdateFlag = !1 : this.NeedUpdateFlag = !0, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPowerChanged), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPowerChangedWithId, this.ItemId)
+    this.CurrentPower = e;
+    if (this.CheckPowerIfMax()) {
+      this.NeedUpdateFlag = false;
+    } else {
+      this.NeedUpdateFlag = true;
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPowerChanged);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPowerChangedWithId, this.ItemId);
   }
   GetCurrentPower() {
-    return this.CurrentPower
+    return this.CurrentPower;
   }
   CheckPowerIfMax() {
-    return this.CurrentPower >= this.GetPowerLimit()
+    return this.CurrentPower >= this.GetPowerLimit();
   }
   GetResetTime() {
-    return this.ResetTime
+    return this.ResetTime;
   }
   GetNeedUpdateFlag() {
-    return this.NeedUpdateFlag
+    return this.NeedUpdateFlag;
   }
   GetPowerCurrencyShowTextId() {
-    return "Text_ItemShow_Text"
+    return "Text_ItemShow_Text";
   }
   IfNeedShowMax() {
-    return !1
+    return false;
   }
   GetPowerLimit() {
-    return ConfigManager_1.ConfigManager.PowerConfig.GetPowerNaturalLimit()
+    return ConfigManager_1.ConfigManager.PowerConfig.GetPowerNaturalLimit();
   }
   GetPowerIncreaseTimeSpan() {
-    return ConfigManager_1.ConfigManager.PowerConfig.GetPowerIncreaseSpan()
+    return ConfigManager_1.ConfigManager.PowerConfig.GetPowerIncreaseSpan();
   }
   GetNextTimerRecoverText() {
-    var e = this.NextRecoverTime - TimeUtil_1.TimeUtil.GetServerTime(),
-      t = (e = e < 0 ? 0 : e) / TimeUtil_1.TimeUtil.Minute,
-      e = e % TimeUtil_1.TimeUtil.Minute,
-      t = Math.trunc(t),
-      e = Math.trunc(e);
-    return t.toString().padStart(2, "0") + ":" + e.toString().padStart(2, "0")
+    var e = this.NextRecoverTime - TimeUtil_1.TimeUtil.GetServerTime();
+    var t = (e = e < 0 ? 0 : e) / TimeUtil_1.TimeUtil.Minute;
+    var e = e % TimeUtil_1.TimeUtil.Minute;
+    var t = Math.trunc(t);
+    var e = Math.trunc(e);
+    return t.toString().padStart(2, "0") + ":" + e.toString().padStart(2, "0");
   }
   GetFullRecoverText() {
-    var e = this.FinishUpdateTime - TimeUtil_1.TimeUtil.GetServerTime(),
-      t = (e = e < 0 ? 0 : e) / TimeUtil_1.TimeUtil.Hour,
-      r = e % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute,
-      e = e % TimeUtil_1.TimeUtil.Minute,
-      t = Math.trunc(t),
-      r = Math.trunc(r),
-      e = Math.trunc(e);
-    return `${t.toString().padStart(2,"0")}:${r.toString().padStart(2,"0")}:` + e.toString().padStart(2, "0")
+    var e = this.FinishUpdateTime - TimeUtil_1.TimeUtil.GetServerTime();
+    var t = (e = e < 0 ? 0 : e) / TimeUtil_1.TimeUtil.Hour;
+    var r = e % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute;
+    var e = e % TimeUtil_1.TimeUtil.Minute;
+    var t = Math.trunc(t);
+    var r = Math.trunc(r);
+    var e = Math.trunc(e);
+    return `${t.toString().padStart(2, "0")}:${r.toString().padStart(2, "0")}:${e.toString().padStart(2, "0")}`;
   }
 }
-class OverPowerData extends(exports.PowerData = PowerData) {
+class OverPowerData extends (exports.PowerData = PowerData) {
   GetIfCanRequestNewPower() {
-    var e = TimeUtil_1.TimeUtil.GetServerTime(),
-      t = ModelManager_1.ModelManager.PowerModel.GetPowerDataById(ItemDefines_1.EItemId.Power);
-    return 0 < this.NextRecoverTime && e >= this.NextRecoverTime && ControllerHolder_1.ControllerHolder.PowerController.GetIfCanRequestNewPower() && e - this.CurrentRequestNewPowerTime > TRYREQUESTGAP && ModelManager_1.ModelManager.FunctionModel.IsOpen(10066) && t.CheckPowerIfMax()
+    var e = TimeUtil_1.TimeUtil.GetServerTime();
+    var t = ModelManager_1.ModelManager.PowerModel.GetPowerDataById(ItemDefines_1.EItemId.Power);
+    return this.NextRecoverTime > 0 && e >= this.NextRecoverTime && ControllerHolder_1.ControllerHolder.PowerController.GetIfCanRequestNewPower() && e - this.CurrentRequestNewPowerTime > TRYREQUESTGAP && ModelManager_1.ModelManager.FunctionModel.IsOpen(10066) && t.CheckPowerIfMax();
   }
   GetPowerRecoveryMode() {
-    return this.CheckPowerIfMax() ? 2 : ModelManager_1.ModelManager.PowerModel.GetPowerDataById(ItemDefines_1.EItemId.Power).CheckPowerIfMax() ? 0 : 1
+    if (this.CheckPowerIfMax()) {
+      return 2;
+    } else if (ModelManager_1.ModelManager.PowerModel.GetPowerDataById(ItemDefines_1.EItemId.Power).CheckPowerIfMax()) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
   GetPowerCurrencyShowTextId() {
-    return "PowerNumTips"
+    return "PowerNumTips";
   }
   GetPowerLimit() {
-    return ConfigManager_1.ConfigManager.PowerConfig.GetOverPowerLimit()
+    return ConfigManager_1.ConfigManager.PowerConfig.GetOverPowerLimit();
   }
   GetPowerIncreaseTimeSpan() {
-    return ConfigManager_1.ConfigManager.PowerConfig.GetOverPowerRecoverTimeSpan()
+    return ConfigManager_1.ConfigManager.PowerConfig.GetOverPowerRecoverTimeSpan();
   }
   IfNeedShowMax() {
-    return !0
+    return true;
   }
 }
 exports.OverPowerData = OverPowerData;

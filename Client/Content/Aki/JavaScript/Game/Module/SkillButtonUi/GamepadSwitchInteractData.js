@@ -1,52 +1,108 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GamepadSwitchInteractData = void 0;
-const Info_1 = require("../../../Core/Common/Info"),
-  Log_1 = require("../../../Core/Common/Log"),
-  CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController"),
-  InputMappingsDefine_1 = require("../../Ui/InputDistribute/InputMappingsDefine");
+  value: true
+});
+exports.GamepadSwitchInteractData = undefined;
+const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
+const InputMappingsDefine_1 = require("../../Ui/InputDistribute/InputMappingsDefine");
 class GamepadSwitchInteractData {
   constructor() {
-    this.IsSwitchInteractOpen = !1, this.State = 0, this.Uah = new Set, this.SwitchTime = 0, this.xah = void 0, this.Pah = !1, this.wah = () => {
-      this.Owt(2), this.xah = void 0
-    }
+    this.IsSwitchInteractOpen = false;
+    this.State = 0;
+    this.Uah = new Set();
+    this.SwitchTime = 0;
+    this.xah = undefined;
+    this.Pah = false;
+    this.wah = () => {
+      this.Owt(2);
+      this.xah = undefined;
+    };
   }
   Init() {
-    this.SwitchTime = CommonParamById_1.configCommonParamById.GetIntConfig("SwitchInteractTime") ?? 500
+    this.SwitchTime = CommonParamById_1.configCommonParamById.GetIntConfig("SwitchInteractTime") ?? 500;
   }
   SetInteractExist(t, e) {
-    t ? this.Uah.add(e) : this.Uah.delete(e), this.Bah(0 < this.Uah.size)
+    if (t) {
+      this.Uah.add(e);
+    } else {
+      this.Uah.delete(e);
+    }
+    this.Bah(this.Uah.size > 0);
   }
-  RefreshSwitchInteractOpen(t = !1) {
+  RefreshSwitchInteractOpen(t = false) {
     var e = ModelManager_1.ModelManager.MenuModel.GetGamepadOperationPreferences();
-    e !== this.IsSwitchInteractOpen && (this.IsSwitchInteractOpen = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SwitchInteract]是否开启交互切换探索", ["", e]), t || EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiSwitchInteractOpenChanged, e), this.Bah(0 < this.Uah.size), InputDistributeController_1.InputDistributeController.RefreshInputTag())
+    if (e !== this.IsSwitchInteractOpen) {
+      this.IsSwitchInteractOpen = e;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "[SwitchInteract]是否开启交互切换探索", ["", e]);
+      }
+      if (!t) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiSwitchInteractOpenChanged, e);
+      }
+      this.Bah(this.Uah.size > 0);
+      InputDistributeController_1.InputDistributeController.RefreshInputTag();
+    }
   }
   InputInteractButton(t) {
-    t ? this.IsSwitchInteractOpen && Info_1.Info.IsInGamepad() && 2 === this.State && (this.Pah = !0, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SwitchInteract]按下交互，同时触发按下探索工具"), ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(InputMappingsDefine_1.actionMappings.幻象1, !0)) : this.Pah && (this.Pah = !1, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SwitchInteract]抬起交互，同时触发抬起探索工具"), ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(InputMappingsDefine_1.actionMappings.幻象1, !1))
+    if (t) {
+      if (this.IsSwitchInteractOpen && Info_1.Info.IsInGamepad() && this.State === 2) {
+        this.Pah = true;
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "[SwitchInteract]按下交互，同时触发按下探索工具");
+        }
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(InputMappingsDefine_1.actionMappings.幻象1, true);
+      }
+    } else if (this.Pah) {
+      this.Pah = false;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "[SwitchInteract]抬起交互，同时触发抬起探索工具");
+      }
+      ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(InputMappingsDefine_1.actionMappings.幻象1, false);
+    }
   }
   Bah(t) {
-    if (this.IsSwitchInteractOpen)
-      if (t) switch (this.State) {
-        case 0:
-          break;
-        case 1:
-        case 2:
-          this.bah(), this.Owt(0)
-      } else 0 === this.State && (this.Owt(1), this.bah(), this.xah = TimerSystem_1.TimerSystem.Delay(this.wah, this.SwitchTime));
-      else this.Owt(0)
+    if (this.IsSwitchInteractOpen) {
+      if (t) {
+        switch (this.State) {
+          case 0:
+            break;
+          case 1:
+          case 2:
+            this.bah();
+            this.Owt(0);
+        }
+      } else if (this.State === 0) {
+        this.Owt(1);
+        this.bah();
+        this.xah = TimerSystem_1.TimerSystem.Delay(this.wah, this.SwitchTime);
+      }
+    } else {
+      this.Owt(0);
+    }
   }
   Owt(t) {
-    this.State !== t && (this.State = t, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SwitchInteract]切换状态", ["", t]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiSwitchInteractStateChanged))
+    if (this.State !== t) {
+      this.State = t;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "[SwitchInteract]切换状态", ["", t]);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiSwitchInteractStateChanged);
+    }
   }
   bah() {
-    this.xah && (this.xah.Remove(), this.xah = void 0)
+    if (this.xah) {
+      this.xah.Remove();
+      this.xah = undefined;
+    }
   }
 }
 exports.GamepadSwitchInteractData = GamepadSwitchInteractData;

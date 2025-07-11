@@ -1,41 +1,93 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayLevelSequence = void 0;
-const FbEaseData_1 = require("./FbEaseData"),
-  UnionLevelSequenceTransitionHelper_1 = require("./UnionLevelSequenceTransitionHelper");
+  value: true
+});
+exports.FbPlayLevelSequence = undefined;
+const FbEaseData_1 = require("./FbEaseData");
+const UnionLevelSequenceTransitionHelper_1 = require("./UnionLevelSequenceTransitionHelper");
 class FbPlayLevelSequence {
   constructor(e) {
-    this.FbDataInternal = e, this.Ybh = !1, this.zbh = void 0, this.Jbh = !1, this.Zbh = !1, this.eLh = !1, this.tLh = void 0, this.iLh = !1, this.rLh = void 0, this.oLh = !1, this.nLh = void 0, this.sLh = !1, this.aLh = void 0, this.F4h = !1, this.DTo = 0, this.DDc = !1, this.UDc = void 0
+    this.FbDataInternal = e;
+    this.Ybh = false;
+    this.zbh = undefined;
+    this.Jbh = false;
+    this.Zbh = false;
+    this.eLh = false;
+    this.tLh = undefined;
+    this.iLh = false;
+    this.rLh = undefined;
+    this.oLh = false;
+    this.nLh = undefined;
+    this.sLh = false;
+    this.aLh = undefined;
+    this.F4h = false;
+    this.DTo = 0;
+    this.DDc = false;
+    this.UDc = undefined;
   }
   static Create(e) {
-    if (e) return new FbPlayLevelSequence(e)
+    if (e) {
+      return new FbPlayLevelSequence(e);
+    }
   }
   get LevelSequencePath() {
-    return this.Ybh || (this.Ybh = !0, this.zbh = this.FbDataInternal.levelSequencePath()), this.zbh
+    if (!this.Ybh) {
+      this.Ybh = true;
+      this.zbh = this.FbDataInternal.levelSequencePath();
+    }
+    return this.zbh;
   }
   get KeepUI() {
-    return this.Jbh || (this.Jbh = !0, this.Zbh = this.FbDataInternal.keepUi()), this.Zbh
+    if (!this.Jbh) {
+      this.Jbh = true;
+      this.Zbh = this.FbDataInternal.keepUi();
+    }
+    return this.Zbh;
   }
   get Mark() {
-    return this.eLh || (this.eLh = !0, this.tLh = this.FbDataInternal.mark()), this.tLh
+    if (!this.eLh) {
+      this.eLh = true;
+      this.tLh = this.FbDataInternal.mark();
+    }
+    return this.tLh;
   }
   get PlayMode() {
-    return this.iLh || (this.iLh = !0, this.rLh = this.FbDataInternal.playMode()), this.rLh
+    if (!this.iLh) {
+      this.iLh = true;
+      this.rLh = this.FbDataInternal.playMode();
+    }
+    return this.rLh;
   }
   get Intro() {
-    var e, t;
-    return !this.oLh && (this.oLh = !0, e = this.FbDataInternal.introType(), t = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.GetUnionLevelSequenceTransitionObject(e)) && (this.nLh = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.ReadUnionLevelSequenceTransition(e, this.FbDataInternal.intro(t))), this.nLh
+    var e;
+    var t;
+    if (!this.oLh && (this.oLh = true, e = this.FbDataInternal.introType(), t = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.GetUnionLevelSequenceTransitionObject(e))) {
+      this.nLh = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.ReadUnionLevelSequenceTransition(e, this.FbDataInternal.intro(t));
+    }
+    return this.nLh;
   }
   get Outro() {
-    var e, t;
-    return !this.sLh && (this.sLh = !0, e = this.FbDataInternal.outroType(), t = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.GetUnionLevelSequenceTransitionObject(e)) && (this.aLh = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.ReadUnionLevelSequenceTransition(e, this.FbDataInternal.outro(t))), this.aLh
+    var e;
+    var t;
+    if (!this.sLh && (this.sLh = true, e = this.FbDataInternal.outroType(), t = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.GetUnionLevelSequenceTransitionObject(e))) {
+      this.aLh = UnionLevelSequenceTransitionHelper_1.UnionLevelSequenceTransitionHelper.ReadUnionLevelSequenceTransition(e, this.FbDataInternal.outro(t));
+    }
+    return this.aLh;
   }
   get Rate() {
-    return this.F4h || (this.F4h = !0, this.DTo = this.FbDataInternal.rate()), this.DTo
+    if (!this.F4h) {
+      this.F4h = true;
+      this.DTo = this.FbDataInternal.rate();
+    }
+    return this.DTo;
   }
   get RateEase() {
-    return this.DDc || (this.DDc = !0, this.UDc = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.rateEase())), this.UDc
+    if (!this.DDc) {
+      this.DDc = true;
+      this.UDc = FbEaseData_1.FbEaseData.Create(this.FbDataInternal.rateEase());
+    }
+    return this.UDc;
   }
 }
 exports.FbPlayLevelSequence = FbPlayLevelSequence;

@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ExploreRewardPanelHandle = void 0;
+  value: true
+});
+exports.ExploreRewardPanelHandle = undefined;
 const SpecialPanelHandleBase_1 = require("./SpecialPanelHandleBase");
 class ExploreRewardPanelHandle extends SpecialPanelHandleBase_1.SpecialPanelHandleBase {}
 exports.ExploreRewardPanelHandle = ExploreRewardPanelHandle;

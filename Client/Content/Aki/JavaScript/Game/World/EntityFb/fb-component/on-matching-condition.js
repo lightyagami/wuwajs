@@ -1,43 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OnMatchingCondition = void 0;
+  value: true
+});
+exports.OnMatchingCondition = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class OnMatchingCondition {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsOnMatchingCondition(t, i) {
-    return (i || new OnMatchingCondition).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new OnMatchingCondition()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsOnMatchingCondition(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new OnMatchingCondition).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new OnMatchingCondition()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type(t) {
     var i = this.bb.__offset(this.bb_pos, 4);
-    return i ? this.bb.__string(this.bb_pos + i, t) : void 0
+    if (i) {
+      return this.bb.__string(this.bb_pos + i, t);
+    } else {
+      return undefined;
+    }
   }
   bulletId() {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.readInt64(this.bb_pos + t) : BigInt("0")
+    if (t) {
+      return this.bb.readInt64(this.bb_pos + t);
+    } else {
+      return BigInt("0");
+    }
   }
   static startOnMatchingCondition(t) {
-    t.startObject(2)
+    t.startObject(2);
   }
   static addType(t, i) {
-    t.addFieldOffset(0, i, 0)
+    t.addFieldOffset(0, i, 0);
   }
   static addBulletId(t, i) {
-    t.addFieldInt64(1, i, BigInt("0"))
+    t.addFieldInt64(1, i, BigInt("0"));
   }
   static endOnMatchingCondition(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createOnMatchingCondition(t, i, n) {
-    return OnMatchingCondition.startOnMatchingCondition(t), OnMatchingCondition.addType(t, i), OnMatchingCondition.addBulletId(t, n), OnMatchingCondition.endOnMatchingCondition(t)
+    OnMatchingCondition.startOnMatchingCondition(t);
+    OnMatchingCondition.addType(t, i);
+    OnMatchingCondition.addBulletId(t, n);
+    return OnMatchingCondition.endOnMatchingCondition(t);
   }
 }
 exports.OnMatchingCondition = OnMatchingCondition;

@@ -1,59 +1,66 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SpecialEnergyBarKeyItem = void 0;
-const UE = require("ue"),
-  InputEnums_1 = require("../../../../Input/InputEnums"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  InputMultiKeyItemGroup_1 = require("../../../Common/InputKey/InputMultiKeyItemGroup");
+  value: true
+});
+exports.SpecialEnergyBarKeyItem = undefined;
+const UE = require("ue");
+const InputEnums_1 = require("../../../../Input/InputEnums");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const InputMultiKeyItemGroup_1 = require("../../../Common/InputKey/InputMultiKeyItemGroup");
 class SpecialEnergyBarKeyItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Qtt = void 0, this.Lo = void 0
+    super(...arguments);
+    this.Qtt = undefined;
+    this.Lo = undefined;
   }
   SetConfig(e) {
-    this.Lo = e
+    this.Lo = e;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.Qtt = new InputMultiKeyItemGroup_1.InputMultiKeyItemGroup, await this.Qtt.CreateByActorAsync(this.GetItem(0).GetOwner())
+    this.Qtt = new InputMultiKeyItemGroup_1.InputMultiKeyItemGroup();
+    await this.Qtt.CreateByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
-    var e = this.Lo.KeyInfoList,
-      t = e[0],
-      e = e[1];
+    var e = this.Lo.KeyInfoList;
+    var t = e[0];
+    var e = e[1];
     let i = "";
-    if (0 === this.Lo.KeyType) i = "";
-    else switch (this.Lo.KeyType) {
-      case 1:
-        i = "+";
-        break;
-      case 2:
-        i = "/";
-        break;
-      default:
-        i = ""
+    if (this.Lo.KeyType === 0) {
+      i = "";
+    } else {
+      switch (this.Lo.KeyType) {
+        case 1:
+          i = "+";
+          break;
+        case 2:
+          i = "/";
+          break;
+        default:
+          i = "";
+      }
     }
     t = {
       SingleActionOrAxisKeyItem: this.Ldt(t),
-      DoubleActionOrAxisKeyItem: e ? this.Ldt(e) : void 0,
+      DoubleActionOrAxisKeyItem: e ? this.Ldt(e) : undefined,
       LinkString: i
     };
-    this.Qtt?.Refresh(t), this.Qtt?.SetActive(!0)
+    this.Qtt?.Refresh(t);
+    this.Qtt?.SetActive(true);
   }
   Ldt(e) {
-    var t = 1 === e.Action;
+    var t = e.Action === 1;
     return {
       ActionOrAxisName: InputEnums_1.EInputAction[e.ActionType],
       IsLongPressProcessVisible: t,
       IsTextArrowVisible: t
-    }
+    };
   }
   RefreshKeyEnable(e, t) {
-    this.Qtt?.SetEnable(e, t)
+    this.Qtt?.SetEnable(e, t);
   }
 }
 exports.SpecialEnergyBarKeyItem = SpecialEnergyBarKeyItem;

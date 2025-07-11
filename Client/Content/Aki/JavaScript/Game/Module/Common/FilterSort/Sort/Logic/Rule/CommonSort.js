@@ -1,16 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonSort = void 0;
+  value: true
+});
+exports.CommonSort = undefined;
 class CommonSort {
   constructor() {
-    this.gU = !1, this.SortMap = new Map
+    this.gU = false;
+    this.SortMap = new Map();
   }
   InitSortMap() {
-    this.gU || (this.gU = !0, this.OnInitSortMap())
+    if (!this.gU) {
+      this.gU = true;
+      this.OnInitSortMap();
+    }
   }
   GetSortFunctionByRuleId(t) {
-    return this.SortMap.get(t)
+    return this.SortMap.get(t);
   }
 }
 exports.CommonSort = CommonSort;

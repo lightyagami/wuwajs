@@ -1,36 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Destroy = void 0;
+  value: true
+});
+exports.Destroy = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class Destroy {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, e) {
-    return this.bb_pos = t, this.bb = e, this
+    this.bb_pos = t;
+    this.bb = e;
+    return this;
   }
   static getRootAsDestroy(t, e) {
-    return (e || new Destroy).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new Destroy()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsDestroy(t, e) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (e || new Destroy).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (e || new Destroy()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   delayDestroy() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return !!t && !!this.bb.readInt8(this.bb_pos + t)
+    return !!t && !!this.bb.readInt8(this.bb_pos + t);
   }
   static startDestroy(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addDelayDestroy(t, e) {
-    t.addFieldInt8(0, +e, 0)
+    t.addFieldInt8(0, +e, 0);
   }
   static endDestroy(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createDestroy(t, e) {
-    return Destroy.startDestroy(t), Destroy.addDelayDestroy(t, e), Destroy.endDestroy(t)
+    Destroy.startDestroy(t);
+    Destroy.addDelayDestroy(t, e);
+    return Destroy.endDestroy(t);
   }
 }
 exports.Destroy = Destroy;

@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DockyardInteractFinishTipsViewModel = void 0;
+  value: true
+});
+exports.DockyardInteractFinishTipsViewModel = undefined;
 class DockyardInteractFinishTipsViewModel {
   constructor() {
-    this.CloseCallback = void 0
+    this.CloseCallback = undefined;
   }
 }
 exports.DockyardInteractFinishTipsViewModel = DockyardInteractFinishTipsViewModel;

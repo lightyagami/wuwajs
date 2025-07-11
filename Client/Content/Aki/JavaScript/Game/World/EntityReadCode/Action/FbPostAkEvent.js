@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPostAkEvent = void 0;
+  value: true
+});
+exports.FbPostAkEvent = undefined;
 const UnionPostAkEventHelper_1 = require("./UnionPostAkEventHelper");
 class FbPostAkEvent {
   constructor(t) {
-    this.FbDataInternal = t, this.BEh = !1, this.qEh = void 0, this.dUc = !1, this.mUc = !1
+    this.FbDataInternal = t;
+    this.BEh = false;
+    this.qEh = undefined;
+    this.dUc = false;
+    this.mUc = false;
   }
   static Create(t) {
-    if (t) return new FbPostAkEvent(t)
+    if (t) {
+      return new FbPostAkEvent(t);
+    }
   }
   get EventConfig() {
-    var t, e;
-    return !this.BEh && (this.BEh = !0, t = this.FbDataInternal.eventConfigType(), e = UnionPostAkEventHelper_1.UnionPostAkEventHelper.GetUnionPostAkEventObject(t)) && (this.qEh = UnionPostAkEventHelper_1.UnionPostAkEventHelper.ReadUnionPostAkEvent(t, this.FbDataInternal.eventConfig(e))), this.qEh
+    var t;
+    var e;
+    if (!this.BEh && (this.BEh = true, t = this.FbDataInternal.eventConfigType(), e = UnionPostAkEventHelper_1.UnionPostAkEventHelper.GetUnionPostAkEventObject(t))) {
+      this.qEh = UnionPostAkEventHelper_1.UnionPostAkEventHelper.ReadUnionPostAkEvent(t, this.FbDataInternal.eventConfig(e));
+    }
+    return this.qEh;
   }
   get PersistWhenExitDungeon() {
-    return this.dUc || (this.dUc = !0, this.mUc = this.FbDataInternal.persistWhenExitDungeon()), this.mUc
+    if (!this.dUc) {
+      this.dUc = true;
+      this.mUc = this.FbDataInternal.persistWhenExitDungeon();
+    }
+    return this.mUc;
   }
 }
 exports.FbPostAkEvent = FbPostAkEvent;

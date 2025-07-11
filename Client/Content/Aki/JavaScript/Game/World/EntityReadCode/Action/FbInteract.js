@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInteract = void 0;
+  value: true
+});
+exports.FbInteract = undefined;
 class FbInteract {
   constructor(t) {
-    this.FbDataInternal = t, this.i_h = !1, this.r_h = 0, this.o_h = !1, this.n_h = void 0
+    this.FbDataInternal = t;
+    this.i_h = false;
+    this.r_h = 0;
+    this.o_h = false;
+    this.n_h = undefined;
   }
   static Create(t) {
-    if (t) return new FbInteract(t)
+    if (t) {
+      return new FbInteract(t);
+    }
   }
   get Who() {
-    return this.i_h || (this.i_h = !0, this.r_h = this.FbDataInternal.who()), this.r_h
+    if (!this.i_h) {
+      this.i_h = true;
+      this.r_h = this.FbDataInternal.who();
+    }
+    return this.r_h;
   }
   get Param() {
-    return this.o_h || (this.o_h = !0, this.n_h = this.FbDataInternal.param()), this.n_h
+    if (!this.o_h) {
+      this.o_h = true;
+      this.n_h = this.FbDataInternal.param();
+    }
+    return this.n_h;
   }
 }
 exports.FbInteract = FbInteract;

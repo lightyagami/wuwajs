@@ -1,17 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log");
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
 class TsDecoratorCheckFsmState extends UE.BTDecorator_BlueprintBase {
   constructor() {
-    super(...arguments), this.State = ""
+    super(...arguments);
+    this.State = "";
   }
   Constructor() {}
   PerformConditionCheckAI(e, r) {
     var o = e.AiController;
-    return o ? !!(o = o.CharActorComp.Entity.GetComponent(76).StateMachineGroup.GetNodeByName(this.State)) && o.Activated : (Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]), !1)
+    if (o) {
+      return !!(o = o.CharActorComp.Entity.GetComponent(76).StateMachineGroup.GetNodeByName(this.State)) && o.Activated;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]);
+      }
+      return false;
+    }
   }
 }
 exports.default = TsDecoratorCheckFsmState;

@@ -1,18 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRogueSelectRoom = void 0;
+  value: true
+});
+exports.FbRogueSelectRoom = undefined;
 const UnionRogueSelectRoomHelper_1 = require("./UnionRogueSelectRoomHelper");
 class FbRogueSelectRoom {
   constructor(e) {
-    this.FbDataInternal = e, this.bSh = !1, this.TAe = void 0
+    this.FbDataInternal = e;
+    this.bSh = false;
+    this.TAe = undefined;
   }
   static Create(e) {
-    if (e) return new FbRogueSelectRoom(e)
+    if (e) {
+      return new FbRogueSelectRoom(e);
+    }
   }
   get Config() {
-    var e, o;
-    return !this.bSh && (this.bSh = !0, e = this.FbDataInternal.configType(), o = UnionRogueSelectRoomHelper_1.UnionRogueSelectRoomHelper.GetUnionRogueSelectRoomObject(e)) && (this.TAe = UnionRogueSelectRoomHelper_1.UnionRogueSelectRoomHelper.ReadUnionRogueSelectRoom(e, this.FbDataInternal.config(o))), this.TAe
+    var e;
+    var o;
+    if (!this.bSh && (this.bSh = true, e = this.FbDataInternal.configType(), o = UnionRogueSelectRoomHelper_1.UnionRogueSelectRoomHelper.GetUnionRogueSelectRoomObject(e))) {
+      this.TAe = UnionRogueSelectRoomHelper_1.UnionRogueSelectRoomHelper.ReadUnionRogueSelectRoom(e, this.FbDataInternal.config(o));
+    }
+    return this.TAe;
   }
 }
 exports.FbRogueSelectRoom = FbRogueSelectRoom;

@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportDungeonPos = void 0;
+  value: true
+});
+exports.FbTeleportDungeonPos = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbTeleportDungeonPos {
   constructor(t) {
-    this.FbDataInternal = t, this.MMh = !1, this.EMh = 0, this.VVh = !1, this.jVh = void 0
+    this.FbDataInternal = t;
+    this.MMh = false;
+    this.EMh = 0;
+    this.VVh = false;
+    this.jVh = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleportDungeonPos(t)
+    if (t) {
+      return new FbTeleportDungeonPos(t);
+    }
   }
   get DungeonId() {
-    return this.MMh || (this.MMh = !0, this.EMh = this.FbDataInternal.dungeonId()), this.EMh
+    if (!this.MMh) {
+      this.MMh = true;
+      this.EMh = this.FbDataInternal.dungeonId();
+    }
+    return this.EMh;
   }
   get TeleportPos() {
-    return this.VVh || (this.VVh = !0, this.jVh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.teleportPos())), this.jVh
+    if (!this.VVh) {
+      this.VVh = true;
+      this.jVh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.teleportPos());
+    }
+    return this.jVh;
   }
 }
 exports.FbTeleportDungeonPos = FbTeleportDungeonPos;

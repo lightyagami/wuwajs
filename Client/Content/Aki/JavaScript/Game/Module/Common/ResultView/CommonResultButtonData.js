@@ -1,28 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonResultButtonData = void 0;
+  value: true
+});
+exports.CommonResultButtonData = undefined;
 class CommonResultButtonData {
   constructor() {
-    this.abt = (t, e) => {}, this.hbt = () => {}, this.lbt = t => {}
+    this.abt = (t, e) => {};
+    this.hbt = () => {};
+    this.lbt = t => {};
   }
   GetButtonTimerCallBack() {
-    return this.abt
+    return this.abt;
   }
   GetButtonClickCallBack() {
-    return this.hbt
+    return this.hbt;
   }
   GetButtonRefreshCallBack() {
-    return this.lbt
+    return this.lbt;
   }
   SetTimerCallBack(t) {
-    this.abt = t
+    this.abt = t;
   }
   SetClickCallBack(t) {
-    this.hbt = t
+    this.hbt = t;
   }
   SetRefreshCallBack(t) {
-    this.lbt = t
+    this.lbt = t;
   }
 }
 exports.CommonResultButtonData = CommonResultButtonData;

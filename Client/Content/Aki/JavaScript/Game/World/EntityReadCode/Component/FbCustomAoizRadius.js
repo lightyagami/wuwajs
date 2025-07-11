@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCustomAoizRadius = void 0;
+  value: true
+});
+exports.FbCustomAoizRadius = undefined;
 class FbCustomAoizRadius {
   constructor(t) {
-    this.FbDataInternal = t, this.hUh = !1, this.lUh = 0, this._Uh = !1, this.cUh = 0
+    this.FbDataInternal = t;
+    this.hUh = false;
+    this.lUh = 0;
+    this._Uh = false;
+    this.cUh = 0;
   }
   static Create(t) {
-    if (t) return new FbCustomAoizRadius(t)
+    if (t) {
+      return new FbCustomAoizRadius(t);
+    }
   }
   get Up() {
-    return this.hUh || (this.hUh = !0, this.lUh = this.FbDataInternal.up()), this.lUh
+    if (!this.hUh) {
+      this.hUh = true;
+      this.lUh = this.FbDataInternal.up();
+    }
+    return this.lUh;
   }
   get Down() {
-    return this._Uh || (this._Uh = !0, this.cUh = this.FbDataInternal.down()), this.cUh
+    if (!this._Uh) {
+      this._Uh = true;
+      this.cUh = this.FbDataInternal.down();
+    }
+    return this.cUh;
   }
 }
 exports.FbCustomAoizRadius = FbCustomAoizRadius;

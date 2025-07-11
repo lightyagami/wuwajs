@@ -1,44 +1,108 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetPlotMode = void 0;
+  value: true
+});
+exports.FbSetPlotMode = undefined;
 const FbFadeInScreen_1 = require("./FbFadeInScreen");
 class FbSetPlotMode {
   constructor(t) {
-    this.FbDataInternal = t, this.Lmh = !1, this.NMr = void 0, this.Omh = !1, this.Fmh = !1, this.Nmh = !1, this.Vmh = !1, this.jmh = !1, this.Hmh = !1, this.Wmh = !1, this.Qmh = !1, this.Kmh = !1, this.$mh = !1, this.Xmh = !1, this.Ymh = !1, this.zmh = !1, this.Jmh = !1, this.Zmh = !1, this.eCh = void 0, this.tCh = !1, this.iCh = !1
+    this.FbDataInternal = t;
+    this.Lmh = false;
+    this.NMr = undefined;
+    this.Omh = false;
+    this.Fmh = false;
+    this.Nmh = false;
+    this.Vmh = false;
+    this.jmh = false;
+    this.Hmh = false;
+    this.Wmh = false;
+    this.Qmh = false;
+    this.Kmh = false;
+    this.$mh = false;
+    this.Xmh = false;
+    this.Ymh = false;
+    this.zmh = false;
+    this.Jmh = false;
+    this.Zmh = false;
+    this.eCh = undefined;
+    this.tCh = false;
+    this.iCh = false;
   }
   static Create(t) {
-    if (t) return new FbSetPlotMode(t)
+    if (t) {
+      return new FbSetPlotMode(t);
+    }
   }
   get Mode() {
-    return this.Lmh || (this.Lmh = !0, this.NMr = this.FbDataInternal.mode()), this.NMr
+    if (!this.Lmh) {
+      this.Lmh = true;
+      this.NMr = this.FbDataInternal.mode();
+    }
+    return this.NMr;
   }
   get IsSwitchMainRole() {
-    return this.Omh || (this.Omh = !0, this.Fmh = this.FbDataInternal.isSwitchMainRole()), this.Fmh
+    if (!this.Omh) {
+      this.Omh = true;
+      this.Fmh = this.FbDataInternal.isSwitchMainRole();
+    }
+    return this.Fmh;
   }
   get UseFlowCamera() {
-    return this.Nmh || (this.Nmh = !0, this.Vmh = this.FbDataInternal.useFlowCamera()), this.Vmh
+    if (!this.Nmh) {
+      this.Nmh = true;
+      this.Vmh = this.FbDataInternal.useFlowCamera();
+    }
+    return this.Vmh;
   }
   get Interruptible() {
-    return this.jmh || (this.jmh = !0, this.Hmh = this.FbDataInternal.interruptible()), this.Hmh
+    if (!this.jmh) {
+      this.jmh = true;
+      this.Hmh = this.FbDataInternal.interruptible();
+    }
+    return this.Hmh;
   }
   get NoSkip() {
-    return this.Wmh || (this.Wmh = !0, this.Qmh = this.FbDataInternal.noSkip()), this.Qmh
+    if (!this.Wmh) {
+      this.Wmh = true;
+      this.Qmh = this.FbDataInternal.noSkip();
+    }
+    return this.Qmh;
   }
   get DisableAutoFadeOut() {
-    return this.Kmh || (this.Kmh = !0, this.$mh = this.FbDataInternal.disableAutoFadeOut()), this.$mh
+    if (!this.Kmh) {
+      this.Kmh = true;
+      this.$mh = this.FbDataInternal.disableAutoFadeOut();
+    }
+    return this.$mh;
   }
   get WaitForPlayerMotionEnd() {
-    return this.Xmh || (this.Xmh = !0, this.Ymh = this.FbDataInternal.waitForPlayerMotionEnd()), this.Ymh
+    if (!this.Xmh) {
+      this.Xmh = true;
+      this.Ymh = this.FbDataInternal.waitForPlayerMotionEnd();
+    }
+    return this.Ymh;
   }
   get NoUiEnterAnimation() {
-    return this.zmh || (this.zmh = !0, this.Jmh = this.FbDataInternal.noUiEnterAnimation()), this.Jmh
+    if (!this.zmh) {
+      this.zmh = true;
+      this.Jmh = this.FbDataInternal.noUiEnterAnimation();
+    }
+    return this.Jmh;
   }
   get FastFadeIn() {
-    return this.Zmh || (this.Zmh = !0, this.eCh = FbFadeInScreen_1.FbFadeInScreen.Create(this.FbDataInternal.fastFadeIn())), this.eCh
+    if (!this.Zmh) {
+      this.Zmh = true;
+      this.eCh = FbFadeInScreen_1.FbFadeInScreen.Create(this.FbDataInternal.fastFadeIn());
+    }
+    return this.eCh;
   }
   get KeepMainRolePose() {
-    return this.tCh || (this.tCh = !0, this.iCh = this.FbDataInternal.keepMainRolePose()), this.iCh
+    if (!this.tCh) {
+      this.tCh = true;
+      this.iCh = this.FbDataInternal.keepMainRolePose();
+    }
+    return this.iCh;
   }
 }
 exports.FbSetPlotMode = FbSetPlotMode;

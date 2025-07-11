@@ -1,28 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckGearHit = void 0;
+  value: true
+});
+exports.FbCheckGearHit = undefined;
 class FbCheckGearHit {
   constructor(t) {
-    this.FbDataInternal = t, this.VOh = !1, this.jOh = 0, this.HOh = !1, this.WOh = void 0, this.QOh = !1, this.KOh = void 0
+    this.FbDataInternal = t;
+    this.VOh = false;
+    this.jOh = 0;
+    this.HOh = false;
+    this.WOh = undefined;
+    this.QOh = false;
+    this.KOh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckGearHit(t)
+    if (t) {
+      return new FbCheckGearHit(t);
+    }
   }
   get HitIndex() {
-    return this.VOh || (this.VOh = !0, this.jOh = this.FbDataInternal.hitIndex()), this.jOh
+    if (!this.VOh) {
+      this.VOh = true;
+      this.jOh = this.FbDataInternal.hitIndex();
+    }
+    return this.jOh;
   }
   get AffectIndex() {
     if (!this.HOh) {
-      this.HOh = !0, this.WOh = new Array;
+      this.HOh = true;
+      this.WOh = new Array();
       var i = this.FbDataInternal.affectIndexLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.WOh.push(this.FbDataInternal.affectIndex(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.WOh.push(this.FbDataInternal.affectIndex(t));
+        }
+      }
     }
-    return this.WOh
+    return this.WOh;
   }
   get AffectType() {
-    return this.QOh || (this.QOh = !0, this.KOh = this.FbDataInternal.affectType()), this.KOh
+    if (!this.QOh) {
+      this.QOh = true;
+      this.KOh = this.FbDataInternal.affectType();
+    }
+    return this.KOh;
   }
 }
 exports.FbCheckGearHit = FbCheckGearHit;

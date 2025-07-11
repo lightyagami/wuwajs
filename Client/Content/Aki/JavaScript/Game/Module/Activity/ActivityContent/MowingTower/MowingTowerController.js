@@ -1,176 +1,244 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MowingTowerController = void 0;
-const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../../../Core/Net/Net"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  ItemRewardController_1 = require("../../../ItemReward/ItemRewardController"),
-  ItemRewardDefine_1 = require("../../../ItemReward/ItemRewardDefine"),
-  ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController"),
-  ActivityControllerBase_1 = require("../../ActivityControllerBase"),
-  MowingTowerData_1 = require("./MowingTowerData"),
-  MowingTowerSubView_1 = require("./MowingTowerSubView"),
-  SENDCD = 1e3,
-  BUFF_IS_NOT_VAILD = "ErrorCode_2500057_Text";
+  value: true
+});
+exports.MowingTowerController = undefined;
+const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../Core/Common/Time");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../../../Core/Net/Net");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const ItemRewardController_1 = require("../../../ItemReward/ItemRewardController");
+const ItemRewardDefine_1 = require("../../../ItemReward/ItemRewardDefine");
+const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
+const ActivityControllerBase_1 = require("../../ActivityControllerBase");
+const MowingTowerData_1 = require("./MowingTowerData");
+const MowingTowerSubView_1 = require("./MowingTowerSubView");
+const SENDCD = 1000;
+const BUFF_IS_NOT_VAILD = "ErrorCode_2500057_Text";
 class MowingTowerController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
-    super(...arguments), this.fSn = () => {
+    super(...arguments);
+    this.fSn = () => {
       var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      24 === ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.InstSubType && MowingTowerController.RequestSettlement()
-    }, this.yLl = e => {
-      var o = ConfigManager_1.ConfigManager.MowingTowerConfig.GetBossMowingTowerConfigById(e.jM_[0].ELl).ActivityId,
-        r = ModelManager_1.ModelManager.ActivityModel.GetActivityById(o);
-      r.PhraseLevelInfo(e.jM_), r.PhraseRewardInfo(e.jM_), r.CheckIfNewMowingTowerOpen(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerData), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerRewardRedDot, o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o)
-    }, this.OnMowTowerFirstScoreNotify = () => {}, this.vSn = e => {
-      var o = this.ESn(ItemRewardDefine_1.BOSS_RUSH_SUCCESS, !0, () => {}, e),
-        r = ConfigManager_1.ConfigManager.MowingTowerConfig.GetBossMowingTowerConfigById(e.ELl)?.IsInfinite,
-        t = [],
+      if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.InstSubType === 24) {
+        MowingTowerController.RequestSettlement();
+      }
+    };
+    this.yLl = e => {
+      var o = ConfigManager_1.ConfigManager.MowingTowerConfig.GetBossMowingTowerConfigById(e.jM_[0].ELl).ActivityId;
+      var r = ModelManager_1.ModelManager.ActivityModel.GetActivityById(o);
+      r.PhraseLevelInfo(e.jM_);
+      r.PhraseRewardInfo(e.jM_);
+      r.CheckIfNewMowingTowerOpen();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerData);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerRewardRedDot, o);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o);
+    };
+    this.OnMowTowerFirstScoreNotify = () => {};
+    this.vSn = e => {
+      var o = this.ESn(ItemRewardDefine_1.BOSS_RUSH_SUCCESS, true, () => {}, e);
+      var r = ConfigManager_1.ConfigManager.MowingTowerConfig.GetBossMowingTowerConfigById(e.ELl)?.IsInfinite;
+      var t = [];
+      var n = {
+        Target: e.GM_.toString(),
+        DescriptionTextId: "BossRushMonsterScoreTips",
+        Belong: 0
+      };
+      t.push(n);
+      if (!r) {
         n = {
-          Target: e.GM_.toString(),
-          DescriptionTextId: "BossRushMonsterScoreTips",
-          Belong: 0
-        },
-        n = (t.push(n), r || (n = {
           Target: e.FM_.toString(),
           DescriptionTextId: "BossRushTimeScoreTips",
           Belong: 0
-        }, t.push(n)), {
-          Target: e.NM_.toString(),
-          DescriptionTextId: "BossRushMonsterScoreTips",
-          Belong: 1
-        }),
-        r = (t.push(n), r || (n = {
+        };
+        t.push(n);
+      }
+      var n = {
+        Target: e.NM_.toString(),
+        DescriptionTextId: "BossRushMonsterScoreTips",
+        Belong: 1
+      };
+      t.push(n);
+      if (!r) {
+        n = {
           Target: e.VM_.toString(),
           DescriptionTextId: "BossRushTimeScoreTips",
           Belong: 1
-        }, t.push(n)), e.GM_ + e.FM_ + e.NM_ + e.VM_),
-        n = r > e.AMs;
+        };
+        t.push(n);
+      }
+      var r = e.GM_ + e.FM_ + e.NM_ + e.VM_;
+      var n = r > e.AMs;
       o.SetHalfAreaData({
         ItemList: t,
         IfNewRecord: n,
         FullScore: r
-      }), ItemRewardController_1.ItemRewardController.Open(o)
-    }
+      });
+      ItemRewardController_1.ItemRewardController.Open(o);
+    };
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
-    return "UiItem_ActivityMowingTower"
+    return "UiItem_ActivityMowingTower";
   }
   OnCreateSubPageComponent(e) {
-    return new MowingTowerSubView_1.MowingTowerSubView
+    return new MowingTowerSubView_1.MowingTowerSubView();
   }
   OnCreateActivityData(e) {
-    return new MowingTowerData_1.MowingTowerData
+    return new MowingTowerData_1.MowingTowerData();
   }
   OnGetIsOpeningActivityRelativeView() {
-    return !1
+    return false;
   }
   OnInit() {
-    return UiManager_1.UiManager.AddOpenViewCheckFunction("MowingTowerMainView", MowingTowerController.CheckCanOpen, "MowingTowerController.CheckCanOpen"), !0
+    UiManager_1.UiManager.AddOpenViewCheckFunction("MowingTowerMainView", MowingTowerController.CheckCanOpen, "MowingTowerController.CheckCanOpen");
+    return true;
   }
   OnClear() {
-    return UiManager_1.UiManager.RemoveOpenViewCheckFunction("MowingTowerMainView", MowingTowerController.CheckCanOpen), !0
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("MowingTowerMainView", MowingTowerController.CheckCanOpen);
+    return true;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(18291, this.vSn), Net_1.Net.Register(23417, this.yLl), Net_1.Net.Register(26494, this.OnMowTowerFirstScoreNotify)
+    Net_1.Net.Register(16778, this.vSn);
+    Net_1.Net.Register(15256, this.yLl);
+    Net_1.Net.Register(29189, this.OnMowTowerFirstScoreNotify);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18291), Net_1.Net.UnRegister(23417), Net_1.Net.UnRegister(26494)
+    Net_1.Net.UnRegister(16778);
+    Net_1.Net.UnRegister(15256);
+    Net_1.Net.UnRegister(29189);
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
   }
   ESn(e, o, r, t) {
-    var n = [],
-      i = (n.push({
-        ButtonTextId: "Text_ButtonTextConfirmResult_Text",
-        DescriptionTextId: void 0,
-        IsTimeDownCloseView: !0,
-        IsClickedCloseView: !1,
-        OnClickedCallback: () => {
-          MowingTowerController.OpenDefaultMowingTowerView().then(e => {
-            e || ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon()
-          })
-        }
-      }), 0 < t.AMs),
-      i = (n.push({
-        ButtonTextId: "Text_ButtonTextChallengeOneMore_Text",
-        DescriptionTextId: i ? "BossRushCurrentHighScore" : void 0,
-        DescriptionArgs: [t.AMs],
-        IsTimeDownCloseView: !1,
-        IsClickedCloseView: !1,
-        OnClickedCallback: () => {
-          var e = ConfigManager_1.ConfigManager.MowingTowerConfig.GetBossMowingTowerConfigById(t.ELl).ActivityId,
-            e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e).GetMowingTowerLevelDetailInfoById(t.ELl);
-          MowingTowerController.RequestStartMowingTowerByTeamData(e.ConvertToTeamInfo())
-        }
-      }), ModelManager_1.ModelManager.ItemRewardModel.ClearCurrentRewardData(), ModelManager_1.ModelManager.ItemRewardModel.RefreshExploreRewardDataFromConfig(e, o, void 0, void 0, void 0, n, void 0, void 0, r, void 0));
-    return i
+    var n = [];
+    n.push({
+      ButtonTextId: "Text_ButtonTextConfirmResult_Text",
+      DescriptionTextId: undefined,
+      IsTimeDownCloseView: true,
+      IsClickedCloseView: false,
+      OnClickedCallback: () => {
+        MowingTowerController.OpenDefaultMowingTowerView().then(e => {
+          if (!e) {
+            ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon();
+          }
+        });
+      }
+    });
+    var i = t.AMs > 0;
+    n.push({
+      ButtonTextId: "Text_ButtonTextChallengeOneMore_Text",
+      DescriptionTextId: i ? "BossRushCurrentHighScore" : undefined,
+      DescriptionArgs: [t.AMs],
+      IsTimeDownCloseView: false,
+      IsClickedCloseView: false,
+      OnClickedCallback: () => {
+        var e = ConfigManager_1.ConfigManager.MowingTowerConfig.GetBossMowingTowerConfigById(t.ELl).ActivityId;
+        var e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e).GetMowingTowerLevelDetailInfoById(t.ELl);
+        MowingTowerController.RequestStartMowingTowerByTeamData(e.ConvertToTeamInfo());
+      }
+    });
+    ModelManager_1.ModelManager.ItemRewardModel.ClearCurrentRewardData();
+    var i = ModelManager_1.ModelManager.ItemRewardModel.RefreshExploreRewardDataFromConfig(e, o, undefined, undefined, undefined, n, undefined, undefined, r, undefined);
+    return i;
   }
   static RequestStartMowingTowerByTeamData(e) {
     var o = [];
     for (const a of e.GetPrepareSelectBuff()) {
-      var r = new Protocol_1.Aki.Protocol.Dks;
-      r.b6n = a.BuffId, r.q6n = a.Slot, o.push(r)
+      var r = new Protocol_1.Aki.Protocol.Dks();
+      r.b6n = a.BuffId;
+      r.q6n = a.Slot;
+      o.push(r);
     }
-    var t = e.GetCurrentTeamMembers(),
-      n = t[0],
-      t = t[1],
-      i = e.ActivityId;
-    this.RequestStartMowingTower(i, e.GetCurrentSelectLevel().GetInstanceDungeonId(), e.GetCurrentSelectLevel().GetId(), o, n, t)
+    var t = e.GetCurrentTeamMembers();
+    var n = t[0];
+    var t = t[1];
+    var i = e.ActivityId;
+    this.RequestStartMowingTower(i, e.GetCurrentSelectLevel().GetInstanceDungeonId(), e.GetCurrentSelectLevel().GetId(), o, n, t);
   }
   static RequestStartMowingTower(e, o, r, t, n, i) {
-    if (0 !== MowingTowerController.ILl && Time_1.Time.Now - MowingTowerController.ILl <= SENDCD) return void(Log_1.Log.CheckDebug() && Log_1.Log.Debug("Activity", 5, "发送协议太快"));
+    if (MowingTowerController.ILl !== 0 && Time_1.Time.Now - MowingTowerController.ILl <= SENDCD) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Activity", 5, "发送协议太快");
+      }
+      return;
+    }
     this.ILl = Time_1.Time.Now;
     var a = [];
     for (const s of t) {
-      if (0 === s.b6n) return void ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(BUFF_IS_NOT_VAILD);
-      a.push(s.b6n)
+      if (s.b6n === 0) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(BUFF_IS_NOT_VAILD);
+        return;
+      }
+      a.push(s.b6n);
     }
     var l = [];
-    for (const _ of i) 0 !== _ && l.push(_);
+    for (const _ of i) {
+      if (_ !== 0) {
+        l.push(_);
+      }
+    }
     t = {
       TLl: a,
       ELl: r,
       LLl: l
     };
-    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.RLl = t, ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(o, n, 0, 0)
+    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.RLl = t;
+    ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(o, n, 0, 0);
   }
   static RequestSettlement() {
-    Net_1.Net.Call(27212, new Protocol_1.Aki.Protocol.Wg_, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20808)
-    })
+    Net_1.Net.Call(21756, new Protocol_1.Aki.Protocol.Wg_(), e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17282);
+      }
+    });
   }
   static RequestGetMowingTowerLevelReward(o, e, r, t) {
-    var n = new Protocol_1.Aki.Protocol.Yg_;
-    n.N6n = e, Net_1.Net.Call(16278, n, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23071), ModelManager_1.ModelManager.ActivityModel.GetActivityById(o).SetRewardStateClaimed(r, t), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerReward), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerRewardRedDot, o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o)
-    })
+    var n = new Protocol_1.Aki.Protocol.Yg_();
+    n.N6n = e;
+    Net_1.Net.Call(17095, n, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29478);
+      }
+      ModelManager_1.ModelManager.ActivityModel.GetActivityById(o).SetRewardStateClaimed(r, t);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerReward);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerRewardRedDot, o);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o);
+    });
   }
   static async OpenDefaultMowingTowerView() {
-    for (const e of ModelManager_1.ModelManager.ActivityModel.GetAllActivityMap().values())
-      if (e instanceof MowingTowerData_1.MowingTowerData && e.CheckIfInOpenTime()) return this.OpenMowingTowerView(e.Id);
-    return Log_1.Log.CheckInfo() && Log_1.Log.Info("Activity", 5, "找不到MowingTower活动"), !1
+    for (const e of ModelManager_1.ModelManager.ActivityModel.GetAllActivityMap().values()) {
+      if (e instanceof MowingTowerData_1.MowingTowerData && e.CheckIfInOpenTime()) {
+        return this.OpenMowingTowerView(e.Id);
+      }
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Activity", 5, "找不到MowingTower活动");
+    }
+    return false;
   }
   static async OpenMowingTowerView(e) {
     var o = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e);
-    o.CacheCurrentOpenBossNum(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o.Id);
-    const r = new CustomPromise_1.CustomPromise;
-    return UiManager_1.UiManager.OpenView("MowingTowerMainView", e, e => {
-      r.SetResult(e)
-    }), r.Promise
+    o.CacheCurrentOpenBossNum();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o.Id);
+    const r = new CustomPromise_1.CustomPromise();
+    UiManager_1.UiManager.OpenView("MowingTowerMainView", e, e => {
+      r.SetResult(e);
+    });
+    return r.Promise;
   }
-}(exports.MowingTowerController = MowingTowerController).ILl = 0, MowingTowerController.CheckCanOpen = () => !ModelManager_1.ModelManager.GameModeModel?.IsMulti || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("MowingTowerMultiTips"), !1);
-//# sourceMappingURL=MowingTowerController.js.map
+}
+(exports.MowingTowerController = MowingTowerController).ILl = 0;
+MowingTowerController.CheckCanOpen = () => !ModelManager_1.ModelManager.GameModeModel?.IsMulti || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("MowingTowerMultiTips"), false); //# sourceMappingURL=MowingTowerController.js.map

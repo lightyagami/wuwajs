@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPunishReport = void 0;
+  value: true
+});
+exports.FbPunishReport = undefined;
 class FbPunishReport {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.gyh = !1, this.fyh = void 0, this.pyh = !1, this.vyh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.gyh = false;
+    this.fyh = undefined;
+    this.pyh = false;
+    this.vyh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPunishReport(t)
+    if (t) {
+      return new FbPunishReport(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MainText() {
-    return this.gyh || (this.gyh = !0, this.fyh = this.FbDataInternal.mainText()), this.fyh
+    if (!this.gyh) {
+      this.gyh = true;
+      this.fyh = this.FbDataInternal.mainText();
+    }
+    return this.fyh;
   }
   get SubText() {
-    return this.pyh || (this.pyh = !0, this.vyh = this.FbDataInternal.subText()), this.vyh
+    if (!this.pyh) {
+      this.pyh = true;
+      this.vyh = this.FbDataInternal.subText();
+    }
+    return this.vyh;
   }
 }
 exports.FbPunishReport = FbPunishReport;

@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCurveControlComponent = void 0;
+  value: true
+});
+exports.FbCurveControlComponent = undefined;
 const UnionCurveControlConfigHelper_1 = require("./UnionCurveControlConfigHelper");
 class FbCurveControlComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Au1 = !1, this.Pu1 = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Zu1 = false;
+    this.ed1 = undefined;
   }
   static Create(t) {
-    if (t) return new FbCurveControlComponent(t)
+    if (t) {
+      return new FbCurveControlComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get CurveControlConfig() {
-    var t, o;
-    return !this.Au1 && (this.Au1 = !0, t = this.FbDataInternal.curveControlConfigType(), o = UnionCurveControlConfigHelper_1.UnionCurveControlConfigHelper.GetUnionCurveControlConfigObject(t)) && (this.Pu1 = UnionCurveControlConfigHelper_1.UnionCurveControlConfigHelper.ReadUnionCurveControlConfig(t, this.FbDataInternal.curveControlConfig(o))), this.Pu1
+    var t;
+    var o;
+    if (!this.Zu1 && (this.Zu1 = true, t = this.FbDataInternal.curveControlConfigType(), o = UnionCurveControlConfigHelper_1.UnionCurveControlConfigHelper.GetUnionCurveControlConfigObject(t))) {
+      this.ed1 = UnionCurveControlConfigHelper_1.UnionCurveControlConfigHelper.ReadUnionCurveControlConfig(t, this.FbDataInternal.curveControlConfig(o));
+    }
+    return this.ed1;
   }
 }
 exports.FbCurveControlComponent = FbCurveControlComponent;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEntityAngleWeight = void 0;
+  value: true
+});
+exports.FbEntityAngleWeight = undefined;
 class FbEntityAngleWeight {
   constructor(t) {
-    this.FbDataInternal = t, this.fqh = !1, this.pqh = 0, this.jDh = !1, this.HDh = 0
+    this.FbDataInternal = t;
+    this.fqh = false;
+    this.pqh = 0;
+    this.jDh = false;
+    this.HDh = 0;
   }
   static Create(t) {
-    if (t) return new FbEntityAngleWeight(t)
+    if (t) {
+      return new FbEntityAngleWeight(t);
+    }
   }
   get Angle() {
-    return this.fqh || (this.fqh = !0, this.pqh = this.FbDataInternal.angle()), this.pqh
+    if (!this.fqh) {
+      this.fqh = true;
+      this.pqh = this.FbDataInternal.angle();
+    }
+    return this.pqh;
   }
   get Weight() {
-    return this.jDh || (this.jDh = !0, this.HDh = this.FbDataInternal.weight()), this.HDh
+    if (!this.jDh) {
+      this.jDh = true;
+      this.HDh = this.FbDataInternal.weight();
+    }
+    return this.HDh;
   }
 }
 exports.FbEntityAngleWeight = FbEntityAngleWeight;

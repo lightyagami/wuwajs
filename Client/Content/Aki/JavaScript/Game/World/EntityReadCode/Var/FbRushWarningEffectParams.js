@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRushWarningEffectParams = void 0;
+  value: true
+});
+exports.FbRushWarningEffectParams = undefined;
 class FbRushWarningEffectParams {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.H9h = !1, this.W9h = 0, this.V9h = !1, this.j9h = 0, this.Fph = !1, this.Nph = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.H9h = false;
+    this.W9h = 0;
+    this.V9h = false;
+    this.j9h = 0;
+    this.Fph = false;
+    this.Nph = 0;
   }
   static Create(t) {
-    if (t) return new FbRushWarningEffectParams(t)
+    if (t) {
+      return new FbRushWarningEffectParams(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Length() {
-    return this.H9h || (this.H9h = !0, this.W9h = this.FbDataInternal.length()), this.W9h
+    if (!this.H9h) {
+      this.H9h = true;
+      this.W9h = this.FbDataInternal.length();
+    }
+    return this.W9h;
   }
   get Width() {
-    return this.V9h || (this.V9h = !0, this.j9h = this.FbDataInternal.width()), this.j9h
+    if (!this.V9h) {
+      this.V9h = true;
+      this.j9h = this.FbDataInternal.width();
+    }
+    return this.j9h;
   }
   get Time() {
-    return this.Fph || (this.Fph = !0, this.Nph = this.FbDataInternal.time()), this.Nph
+    if (!this.Fph) {
+      this.Fph = true;
+      this.Nph = this.FbDataInternal.time();
+    }
+    return this.Nph;
   }
 }
 exports.FbRushWarningEffectParams = FbRushWarningEffectParams;

@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFanEffectConfig = void 0;
+  value: true
+});
+exports.FbFanEffectConfig = undefined;
 class FbFanEffectConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.xEh = !1, this.REh = void 0, this.mQh = !1, this.CQh = 0, this.gQh = !1, this.fQh = void 0
+    this.FbDataInternal = t;
+    this.xEh = false;
+    this.REh = undefined;
+    this.mQh = false;
+    this.CQh = 0;
+    this.gQh = false;
+    this.fQh = undefined;
   }
   static Create(t) {
-    if (t) return new FbFanEffectConfig(t)
+    if (t) {
+      return new FbFanEffectConfig(t);
+    }
   }
   get EffectPath() {
-    return this.xEh || (this.xEh = !0, this.REh = this.FbDataInternal.effectPath()), this.REh
+    if (!this.xEh) {
+      this.xEh = true;
+      this.REh = this.FbDataInternal.effectPath();
+    }
+    return this.REh;
   }
   get DefaultEffectLength() {
-    return this.mQh || (this.mQh = !0, this.CQh = this.FbDataInternal.defaultEffectLength()), this.CQh
+    if (!this.mQh) {
+      this.mQh = true;
+      this.CQh = this.FbDataInternal.defaultEffectLength();
+    }
+    return this.CQh;
   }
   get HitEffectPath() {
-    return this.gQh || (this.gQh = !0, this.fQh = this.FbDataInternal.hitEffectPath()), this.fQh
+    if (!this.gQh) {
+      this.gQh = true;
+      this.fQh = this.FbDataInternal.hitEffectPath();
+    }
+    return this.fQh;
   }
 }
 exports.FbFanEffectConfig = FbFanEffectConfig;

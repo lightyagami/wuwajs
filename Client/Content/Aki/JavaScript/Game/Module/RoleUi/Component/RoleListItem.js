@@ -1,116 +1,182 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleListItem = exports.RoleListItemData = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  RedDotController_1 = require("../../../RedDot/RedDotController"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+  value: true
+});
+exports.RoleListItem = exports.RoleListItemData = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const RedDotController_1 = require("../../../RedDot/RedDotController");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
 class RoleListItemData {
   constructor() {
-    this.RoleDataId = 0, this.NeedShowTrial = !0, this.NeedRedDot = !1, this.TeamPositionType = 0
+    this.RoleDataId = 0;
+    this.NeedShowTrial = true;
+    this.NeedRedDot = false;
+    this.TeamPositionType = 0;
   }
 }
 exports.RoleListItemData = RoleListItemData;
 const ROLE_MAX_POSITION = 4;
 class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super(...arguments), this.DataId = 0, this.RoleIconItem = void 0, this.ToggleCallBack = void 0, this.CanToggleExecuteChange = void 0, this.cFe = () => {
-      this.ToggleCallBack && this.ToggleCallBack(this.GridIndex)
-    }, this.CanToggleExecuteChangeInternal = () => !this.CanToggleExecuteChange || this.CanToggleExecuteChange(this.GridIndex)
+    super(...arguments);
+    this.DataId = 0;
+    this.RoleIconItem = undefined;
+    this.ToggleCallBack = undefined;
+    this.CanToggleExecuteChange = undefined;
+    this.cFe = () => {
+      if (this.ToggleCallBack) {
+        this.ToggleCallBack(this.GridIndex);
+      }
+    };
+    this.CanToggleExecuteChangeInternal = () => !this.CanToggleExecuteChange || this.CanToggleExecuteChange(this.GridIndex);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIItem],
-      [2, UE.UIItem],
-      [3, UE.UISprite],
-      [4, UE.UIItem],
-      [5, UE.UIItem],
-      [6, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.cFe]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.cFe]];
   }
   async OnBeforeStartAsync() {
-    var t = this.GetItem(1);
-    this.RoleIconItem = new RoleIconItem, await this.RoleIconItem.CreateThenShowByActorAsync(t.GetOwner())
+    var e = this.GetItem(1);
+    this.RoleIconItem = new RoleIconItem();
+    await this.RoleIconItem.CreateThenShowByActorAsync(e.GetOwner());
   }
   OnStart() {
-    var t = this.GetExtendToggle(0);
-    t && (t.CanExecuteChange.Unbind(), t.CanExecuteChange.Bind(this.CanToggleExecuteChangeInternal))
-  }
-  s1o(t, e = !0) {
-    this.RoleIconItem.Refresh(t), e ? this.GetItem(4).SetUIActive(t.IsTrialRole()) : this.GetItem(4).SetUIActive(!1)
-  }
-  a1o(t) {
-    var e = this.DataId;
-    1 === t.TeamPositionType ? this.jH_(e) : this.HH_(e)
-  }
-  HH_(e) {
-    var t, i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(!0);
-    let s = void 0,
-      o = 1;
-    for (let t = 0; t < i.length; t++) {
-      var r = i[t];
-      r.GetConfigId === e && (s = r, o = t + 1)
+    var e = this.GetExtendToggle(0);
+    if (e) {
+      e.CanExecuteChange.Unbind();
+      e.CanExecuteChange.Bind(this.CanToggleExecuteChangeInternal);
     }
-    void 0 !== s ? (t = Math.min(o, ROLE_MAX_POSITION), this.$H_("SP_RoleFormationPosition" + t)) : this.$H_()
   }
-  jH_(t) {
-    var t = ModelManager_1.ModelManager.RoleSelectModel.GetRoleIndex(t);
-    t <= 0 ? this.$H_() : (t = Math.ceil(t / EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM), this.$H_("SP_TeamEditFormation_" + t, !0))
+  s1o(e, t = true) {
+    this.RoleIconItem.Refresh(e);
+    if (t) {
+      this.GetItem(4).SetUIActive(e.IsTrialRole());
+    } else {
+      this.GetItem(4).SetUIActive(false);
+    }
   }
-  $H_(t, e = !1) {
-    var i = void 0 !== t;
-    this.GetItem(2).SetUIActive(i), this.GetItem(5).SetUIActive(i), i && (i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t), this.SetSpriteByPath(i, this.GetSprite(3), e))
+  a1o(e) {
+    var t = this.DataId;
+    if (e.TeamPositionType === 1) {
+      this.jH_(t);
+    } else {
+      this.HH_(t);
+    }
+  }
+  HH_(t) {
+    var e;
+    var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true);
+    let o = undefined;
+    let s = 1;
+    for (let e = 0; e < i.length; e++) {
+      var r = i[e];
+      if (r.GetConfigId === t) {
+        o = r;
+        s = e + 1;
+      }
+    }
+    if (o !== undefined) {
+      e = Math.min(s, ROLE_MAX_POSITION);
+      this.$H_("SP_RoleFormationPosition" + e);
+    } else {
+      this.$H_();
+    }
+  }
+  jH_(e) {
+    var e = ModelManager_1.ModelManager.RoleSelectModel.GetRoleIndex(e);
+    if (e <= 0) {
+      this.$H_();
+    } else {
+      e = Math.ceil(e / EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM);
+      this.$H_("SP_TeamEditFormation_" + e, true);
+    }
+  }
+  _Su() {
+    var e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.DataId);
+    this.GetItem(7).SetUIActive(e.GetIsNew());
+  }
+  $H_(e, t = false) {
+    var i = e !== undefined;
+    this.GetItem(2).SetUIActive(i);
+    this.GetItem(5).SetUIActive(i);
+    if (i) {
+      i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      this.SetSpriteByPath(i, this.GetSprite(3), t);
+    }
   }
   GetRedDotItem() {
-    return this.GetItem(6)
+    return this.GetItem(6);
   }
-  SetToggleState(t, e = !1) {
+  SetToggleState(e, t = false) {
     var i = this.GetExtendToggle(0);
-    e ? i.SetToggleStateForce(t) : i.SetToggleState(t)
+    if (t) {
+      i.SetToggleStateForce(e);
+    } else {
+      i.SetToggleState(e);
+    }
   }
-  Refresh(t, e, i) {
-    this.DataId = t.RoleDataId;
-    var s = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.DataId);
-    this.s1o(s, t.NeedShowTrial), this.a1o(t), t.NeedRedDot ? RedDotController_1.RedDotController.BindRedDot("RoleSystemRoleList", this.GetRedDotItem(), void 0, this.DataId) : this.GetRedDotItem().SetUIActive(!1), e ? this.OnSelected(!1) : this.OnDeselected(!1)
+  Refresh(e, t, i) {
+    this.DataId = e.RoleDataId;
+    var o = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.DataId);
+    this.s1o(o, e.NeedShowTrial);
+    this.a1o(e);
+    this._Su();
+    if (e.NeedRedDot) {
+      RedDotController_1.RedDotController.BindRedDot("RoleSystemRoleList", this.GetRedDotItem(), undefined, this.DataId);
+    } else {
+      this.GetRedDotItem().SetUIActive(false);
+    }
+    if (t) {
+      this.OnSelected(false);
+    } else {
+      this.OnDeselected(false);
+    }
   }
-  OnSelected(t) {
-    this.SetToggleState(1, !0)
+  OnSelected(e) {
+    this.SetToggleState(1, true);
+    this.N1l(this.DataId);
+    this._Su();
   }
-  OnDeselected(t) {
-    this.SetToggleState(0, !0)
+  N1l(e) {
+    e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);
+    if (e !== undefined && e.TryRemoveNewFlag()) {
+      ModelManager_1.ModelManager.NewFlagModel.SaveNewFlagConfig(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleDataItem);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleSelectionListUpdate);
+    }
+  }
+  OnDeselected(e) {
+    this.SetToggleState(0, true);
   }
   GetToggleForGuide() {
-    return this.GetExtendToggle(0)
+    return this.GetExtendToggle(0);
   }
 }
 exports.RoleListItem = RoleListItem;
 class RoleIconItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture],
-      [1, UE.UISprite],
-      [2, UE.UISprite],
-      [3, UE.UISprite]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite]];
   }
-  Refresh(t) {
-    this.SetRoleSkinIcon(t.GetRoleConfig().RoleHeadIconBig, this.GetTexture(0), t.GetRoleSkinId(), "RoleRootView"), this.mFe(t.GetRoleConfig().QualityId)
+  Refresh(e) {
+    this.SetRoleSkinIcon(e.GetRoleConfig().RoleHeadIconBig, this.GetTexture(0), e.GetRoleSkinId(), "RoleRootView");
+    this.mFe(e.GetRoleConfig().QualityId);
   }
-  mFe(t) {
-    var e = this.GetSprite(1),
-      i = this.GetSprite(2),
-      s = this.GetSprite(3),
-      o = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RoleIconBgUnCheckedUnHover" + t),
-      o = (this.SetSpriteByPath(o, s, !1), ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RoleIconBgUnCheckedHover" + t)),
-      s = (this.SetSpriteByPath(o, i, !1), ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RoleIconBgChecked" + t));
-    this.SetSpriteByPath(s, e, !1)
+  mFe(e) {
+    var t = this.GetSprite(1);
+    var i = this.GetSprite(2);
+    var o = this.GetSprite(3);
+    var s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RoleIconBgUnCheckedUnHover" + e);
+    this.SetSpriteByPath(s, o, false);
+    var s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RoleIconBgUnCheckedHover" + e);
+    this.SetSpriteByPath(s, i, false);
+    var o = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_RoleIconBgChecked" + e);
+    this.SetSpriteByPath(o, t, false);
   }
 }
 //# sourceMappingURL=RoleListItem.js.map

@@ -1,29 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  EntitySystem_1 = require("../../../../Core/Entity/EntitySystem"),
-  GlobalData_1 = require("../../../GlobalData"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  SceneItemUtility_1 = require("../../../NewWorld/SceneItem/Util/SceneItemUtility");
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
+const GlobalData_1 = require("../../../GlobalData");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const SceneItemUtility_1 = require("../../../NewWorld/SceneItem/Util/SceneItemUtility");
 class TsDecoratorItemIsValid extends UE.BTDecorator_BlueprintBase {
   constructor() {
-    super(...arguments), this.ItemBlackboardKey = "", this.IsInitTsVariables = !1, this.TsItemBlackboardKey = ""
+    super(...arguments);
+    this.ItemBlackboardKey = "";
+    this.IsInitTsVariables = false;
+    this.TsItemBlackboardKey = "";
   }
   Constructor() {
-    this.IsInitTsVariables = !1, this.TsItemBlackboardKey = ""
+    this.IsInitTsVariables = false;
+    this.TsItemBlackboardKey = "";
   }
   InitTsVariables() {
-    this.IsInitTsVariables && !GlobalData_1.GlobalData.IsPlayInEditor || (this.IsInitTsVariables = !0, this.TsItemBlackboardKey = this.ItemBlackboardKey)
+    if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.IsInitTsVariables = true;
+      this.TsItemBlackboardKey = this.ItemBlackboardKey;
+    }
   }
   PerformConditionCheckAI(e, t) {
     var r = e.AiController;
-    if (!r) return Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]), !1;
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]);
+      }
+      return false;
+    }
     this.InitTsVariables();
-    e = r.CharActorComp, r = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(e.Entity.Id, this.TsItemBlackboardKey), r = EntitySystem_1.EntitySystem.Get(r);
-    return !(!r || r.GetComponent(144)?.IsSearchByOther(e.Entity.Id) || !SceneItemUtility_1.SceneItemUtility.GetBaseItemActor(r) || !r.Active)
+    e = r.CharActorComp;
+    r = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(e.Entity.Id, this.TsItemBlackboardKey);
+    r = EntitySystem_1.EntitySystem.Get(r);
+    return !!r && !r.GetComponent(144)?.IsSearchByOther(e.Entity.Id) && !!SceneItemUtility_1.SceneItemUtility.GetBaseItemActor(r) && !!r.Active;
   }
 }
 exports.default = TsDecoratorItemIsValid;

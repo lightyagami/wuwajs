@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FixTeleControllerPos = void 0;
+  value: true
+});
+exports.FixTeleControllerPos = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class FixTeleControllerPos {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsFixTeleControllerPos(e, t) {
-    return (t || new FixTeleControllerPos).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new FixTeleControllerPos()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsFixTeleControllerPos(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new FixTeleControllerPos).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new FixTeleControllerPos()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static startFixTeleControllerPos(e) {
-    e.startObject(0)
+    e.startObject(0);
   }
   static endFixTeleControllerPos(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createFixTeleControllerPos(e) {
-    return FixTeleControllerPos.startFixTeleControllerPos(e), FixTeleControllerPos.endFixTeleControllerPos(e)
+    FixTeleControllerPos.startFixTeleControllerPos(e);
+    return FixTeleControllerPos.endFixTeleControllerPos(e);
   }
 }
 exports.FixTeleControllerPos = FixTeleControllerPos;

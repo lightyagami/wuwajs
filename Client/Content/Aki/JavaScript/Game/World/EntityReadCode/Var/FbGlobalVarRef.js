@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbGlobalVarRef = void 0;
+  value: true
+});
+exports.FbGlobalVarRef = undefined;
 class FbGlobalVarRef {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.bZh = !1, this.LZh = void 0, this.AZh = !1, this.xZh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.bZh = false;
+    this.LZh = undefined;
+    this.AZh = false;
+    this.xZh = undefined;
   }
   static Create(t) {
-    if (t) return new FbGlobalVarRef(t)
+    if (t) {
+      return new FbGlobalVarRef(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Source() {
-    return this.bZh || (this.bZh = !0, this.LZh = this.FbDataInternal.source()), this.LZh
+    if (!this.bZh) {
+      this.bZh = true;
+      this.LZh = this.FbDataInternal.source();
+    }
+    return this.LZh;
   }
   get Keyword() {
-    return this.AZh || (this.AZh = !0, this.xZh = this.FbDataInternal.keyword()), this.xZh
+    if (!this.AZh) {
+      this.AZh = true;
+      this.xZh = this.FbDataInternal.keyword();
+    }
+    return this.xZh;
   }
 }
 exports.FbGlobalVarRef = FbGlobalVarRef;

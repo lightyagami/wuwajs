@@ -1,31 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PopupComponentFunctionButton = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase"),
-  ButtonItem_1 = require("../../../../Common/Button/ButtonItem");
+  value: true
+});
+exports.PopupComponentFunctionButton = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
+const ButtonItem_1 = require("../../../../Common/Button/ButtonItem");
 class PopupComponentFunctionButton extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.ButtonItem = void 0
+    super(...arguments);
+    this.ButtonItem = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.ButtonItem = new ButtonItem_1.ButtonItem, await this.ButtonItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())
+    this.ButtonItem = new ButtonItem_1.ButtonItem();
+    await this.ButtonItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   SetButtonTextByTextId(t, ...e) {
-    this.ButtonItem.SetLocalTextNew(t, ...e)
+    this.ButtonItem.SetLocalTextNew(t, ...e);
   }
   SetButtonFunction(t) {
-    this.ButtonItem.SetFunction(t)
+    this.ButtonItem.SetFunction(t);
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
     var e = this.ButtonItem?.GetBtn()?.RootUIComp;
-    return e ? [e, e] : void 0
+    if (e) {
+      return [e, e];
+    } else {
+      return undefined;
+    }
   }
 }
 exports.PopupComponentFunctionButton = PopupComponentFunctionButton;

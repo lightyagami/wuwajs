@@ -1,63 +1,84 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoraleIndomitableLevelView = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../../Ui/Base/UiViewBase"),
-  DELAY_CLOSE_TIME = 2e3,
-  DELAY_EVENT_TIME = 1500;
+  value: true
+});
+exports.MoraleIndomitableLevelView = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
+const DELAY_CLOSE_TIME = 2000;
+const DELAY_EVENT_TIME = 1500;
 class MoraleIndomitableLevelView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.tL1 = void 0, this.xOi = void 0, this.GOe = void 0, this.AMe = () => {
-      this.svi()
-    }
+    super(...arguments);
+    this.RL1 = undefined;
+    this.xOi = undefined;
+    this.GOe = undefined;
+    this.AMe = () => {
+      this.svi();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIArtText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIArtText]];
   }
   OnStart() {
     var e;
-    this.tL1 = this.GetArtText(0), this.tL1 && (e = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel(), this.tL1.SetText(e.toString()))
+    this.RL1 = this.GetArtText(0);
+    if (this.RL1) {
+      e = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel();
+      this.RL1.SetText(e.toString());
+    }
   }
   OnBeforeShow() {
-    this.v1u()
+    this.Ivu();
   }
   OnAfterShow() {
-    this.Rbt()
+    this.Rbt();
   }
   OnBeforeDestroy() {
-    this.vN1(), this.y1u()
+    this.YN1();
+    this.Tvu();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.AMe)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.AMe)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
   }
   svi() {
-    this.IsHideOrHiding || this.CloseMe()
+    if (!this.IsHideOrHiding) {
+      this.CloseMe();
+    }
   }
   Rbt() {
-    this.vN1(), this.xOi = TimerSystem_1.TimerSystem.Delay(() => {
-      this.xOi = void 0, this.svi()
-    }, DELAY_CLOSE_TIME)
+    this.YN1();
+    this.xOi = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      this.xOi = undefined;
+      this.svi();
+    }, DELAY_CLOSE_TIME);
   }
-  v1u() {
-    this.y1u(), this.GOe = TimerSystem_1.TimerSystem.Delay(() => {
-      this.GOe = void 0, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim)
-    }, DELAY_EVENT_TIME)
+  Ivu() {
+    this.Tvu();
+    this.GOe = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      this.GOe = undefined;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim);
+    }, DELAY_EVENT_TIME);
   }
-  vN1() {
-    this.xOi && (TimerSystem_1.TimerSystem.Remove(this.xOi), this.xOi = void 0)
+  YN1() {
+    if (this.xOi) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.xOi);
+      this.xOi = undefined;
+    }
   }
-  y1u() {
-    this.GOe && (TimerSystem_1.TimerSystem.Remove(this.GOe), this.GOe = void 0)
+  Tvu() {
+    if (this.GOe) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
+      this.GOe = undefined;
+    }
   }
 }
 exports.MoraleIndomitableLevelView = MoraleIndomitableLevelView;

@@ -1,249 +1,304 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OtherScenePlayerData = exports.WorldTeamRoleInfo = exports.WorldTeamPlayerFightInfo = exports.OnlineTeamData = exports.OnlineApplyData = exports.OnlineHallData = void 0;
-const Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  PersonalDefine_1 = require("../Personal/Model/PersonalDefine");
+  value: true
+});
+exports.OtherScenePlayerData = exports.WorldTeamRoleInfo = exports.WorldTeamPlayerFightInfo = exports.OnlineTeamData = exports.OnlineApplyData = exports.OnlineHallData = undefined;
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const PersonalDefine_1 = require("../Personal/Model/PersonalDefine");
 class OnlineHallData {
   constructor(t) {
-    this.CardUnlockList = [], this.OGi = 0;
-    for (const e of (this.kGi = t).SSs) this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(e, !0, !0))
+    this.CardUnlockList = [];
+    this.OGi = 0;
+    for (const e of (this.kGi = t).SSs) {
+      this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(e, true, true));
+    }
   }
   SetApplyTime(t) {
-    t <= 0 || (this.OGi = t)
+    if (!(t <= 0)) {
+      this.OGi = t;
+    }
   }
   get ApplyTimeLeftTime() {
-    return this.OGi - TimeUtil_1.TimeUtil.GetServerTime()
+    return this.OGi - TimeUtil_1.TimeUtil.GetServerTime();
   }
   get PlayerId() {
-    return this.kGi.W5n
+    return this.kGi.W5n;
   }
   get HeadId() {
-    return this.kGi.dSs
+    return this.kGi.dSs;
   }
   get Level() {
-    return this.kGi.F6n
+    return this.kGi.F6n;
   }
   get PlayerCount() {
-    return this.kGi.vSs
+    return this.kGi.vSs;
   }
   get WorldLevel() {
-    return this.kGi.cSs
+    return this.kGi.cSs;
   }
   get Name() {
-    return this.kGi.H8n
+    return this.kGi.H8n;
   }
   get PlayerName() {
-    return this.kGi.H8n
+    return this.kGi.H8n;
   }
   get Signature() {
-    return this.kGi.zVn
+    return this.kGi.zVn;
   }
   get PlayerCard() {
-    return this.kGi.ESs
+    return this.kGi.ESs;
   }
   get PlayerTitleId() {
-    return this.kGi.tnc
+    return this.kGi.tnc;
   }
   get PlayerTitleStarLevel() {
-    return this.kGi.inc
+    return this.kGi.inc;
   }
   get Sex() {
-    return this.kGi.v7n
+    return this.kGi.v7n;
   }
   get PlayerDetails() {
-    return this.kGi
+    return this.kGi;
   }
   get PlayerOriginWorldLevel() {
-    return this.kGi.uSs
+    return this.kGi.uSs;
   }
   get PlayerLastOfflineTime() {
-    return MathUtils_1.MathUtils.LongToNumber(this.kGi.fSs)
+    return MathUtils_1.MathUtils.LongToNumber(this.kGi.fSs);
   }
   get PlayerPsAccountId() {
-    return this.kGi.ywa
+    return this.kGi.ywa;
   }
-  GetIfCanShowInHallList(t = void 0) {
-    return !(PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.PlayOnly() && "" === this.PlayerPsAccountId || t && void 0 !== t.get(this.PlayerPsAccountId))
+  GetIfCanShowInHallList(t = undefined) {
+    return (!PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.PlayOnly() || this.PlayerPsAccountId !== "") && (!t || t.get(this.PlayerPsAccountId) === undefined);
   }
 }
 exports.OnlineHallData = OnlineHallData;
 class OnlineApplyData {
   constructor(t, e, r, i, s, a) {
-    this.PlayStationOnlineId = "", this.FGi = t, this.VGi = e, this.OGi = r, this.HGi = i, this.jGi = s, this.PlayStationOnlineId = a
+    this.PlayStationOnlineId = "";
+    this.FGi = t;
+    this.VGi = e;
+    this.OGi = r;
+    this.HGi = i;
+    this.jGi = s;
+    this.PlayStationOnlineId = a;
   }
   get ApplyTimeLeftTime() {
-    return Number(MathUtils_1.MathUtils.LongToBigInt(this.OGi)) - TimeUtil_1.TimeUtil.GetServerTime()
+    return Number(MathUtils_1.MathUtils.LongToBigInt(this.OGi)) - TimeUtil_1.TimeUtil.GetServerTime();
   }
   get PlayerId() {
-    return this.VGi
+    return this.VGi;
   }
   get RefuseTimestamp() {
-    return this.OGi
+    return this.OGi;
   }
   get Level() {
-    return this.jGi
+    return this.jGi;
   }
   get Name() {
-    return this.FGi
+    return this.FGi;
   }
   get HeadId() {
-    return this.HGi
+    return this.HGi;
   }
 }
 exports.OnlineApplyData = OnlineApplyData;
 class OnlineTeamData {
   constructor(t, e, r, i, s, a, n, h, l, o, u) {
-    this.Jmc = 0, this.Zmc = 0, this.ou1 = 0, this.CardUnlockList = [], this.WGi = 0, this.FGi = t, this.VGi = e, this.jGi = r, this.HGi = i, this.KGi = s, this.PlayerNumber = a, this.kGi = n, this.QGi = Protocol_1.Aki.Protocol.r7s.Proto_GREAT, this.Jmc = l, this.Zmc = o, this.ou1 = u;
-    for (const g of n.SSs) this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(g, !0, !0))
+    this.Jmc = 0;
+    this.Zmc = 0;
+    this.Ru1 = 0;
+    this.CardUnlockList = [];
+    this.WGi = 0;
+    this.FGi = t;
+    this.VGi = e;
+    this.jGi = r;
+    this.HGi = i;
+    this.KGi = s;
+    this.PlayerNumber = a;
+    this.kGi = n;
+    this.QGi = Protocol_1.Aki.Protocol.r7s.Proto_GREAT;
+    this.Jmc = l;
+    this.Zmc = o;
+    this.Ru1 = u;
+    for (const g of n.SSs) {
+      this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(g, true, true));
+    }
   }
   get PlayerId() {
-    return this.VGi
+    return this.VGi;
   }
   get HeadId() {
-    return this.HGi
+    return this.HGi;
   }
   set HeadId(t) {
-    this.HGi = t
+    this.HGi = t;
   }
   get Level() {
-    return this.jGi
+    return this.jGi;
   }
   set Level(t) {
-    this.jGi = t
+    this.jGi = t;
   }
   get Name() {
-    return this.GetFormationName()
+    return this.GetFormationName();
   }
   set Name(t) {
-    this.FGi = t
+    this.FGi = t;
   }
   get PlayerTitleId() {
-    return this.Jmc
+    return this.Jmc;
   }
   get PlayerTitleStarLevel() {
-    return this.Zmc
+    return this.Zmc;
   }
   get Sex() {
-    return this.ou1
+    return this.Ru1;
   }
   set Sex(t) {
-    this.ou1 = t
+    this.Ru1 = t;
   }
   SetPlayerTitleInfo(t) {
-    0 !== t.length && (t = t.split("_"), this.Jmc = parseInt(t[0]), t = 2 === t.length ? parseInt(t[1]) : 0, this.Zmc = t)
+    if (t.length !== 0) {
+      t = t.split("_");
+      this.Jmc = parseInt(t[0]);
+      t = t.length === 2 ? parseInt(t[1]) : 0;
+      this.Zmc = t;
+    }
   }
   get PlayerName() {
-    return this.GetFormationName()
+    return this.GetFormationName();
   }
   GetRawName() {
-    return this.FGi
+    return this.FGi;
   }
   GetOnlineName() {
-    return this.PlayerDetails.Qxa
+    return this.PlayerDetails.Qxa;
   }
   GetFormationName() {
     if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.NeedShowThirdPartyId()) {
       var t = this.PlayerDetails.Qxa;
-      if (void 0 !== t && "" !== t) return t
+      if (t !== undefined && t !== "") {
+        return t;
+      }
     }
-    return this.FGi
+    return this.FGi;
   }
   get Signature() {
-    return this.KGi
+    return this.KGi;
   }
   set Signature(t) {
-    this.KGi = t
+    this.KGi = t;
   }
   get PlayerNumber() {
-    return this.WGi
+    return this.WGi;
   }
   set PlayerNumber(t) {
-    this.WGi = t
+    this.WGi = t;
   }
   get IsSelf() {
-    return this.PlayerId === ModelManager_1.ModelManager.PlayerInfoModel.GetId()
+    return this.PlayerId === ModelManager_1.ModelManager.PlayerInfoModel.GetId();
   }
   get PingState() {
-    return this.QGi
+    return this.QGi;
   }
   set PingState(t) {
-    this.QGi = t
+    this.QGi = t;
   }
   get PlayerDetails() {
-    return this.kGi
+    return this.kGi;
   }
   set PlayerDetails(t) {
-    this.kGi = t
+    this.kGi = t;
   }
-  GetIfCanShowInHallList(t = void 0) {
-    return !t || void 0 === t.get(this.kGi.ywa)
+  GetIfCanShowInHallList(t = undefined) {
+    return !t || t.get(this.kGi.ywa) === undefined;
   }
 }
 exports.OnlineTeamData = OnlineTeamData;
 class WorldTeamPlayerFightInfo {
   constructor(t, e, r, i, s, a) {
-    this.FGi = t, this.VGi = e, this.XGi = a, this.$Gi = r, this.dIl = s, this.bSl = i
+    this.FGi = t;
+    this.VGi = e;
+    this.XGi = a;
+    this.$Gi = r;
+    this.dIl = s;
+    this.bSl = i;
   }
   get PlayerId() {
-    return this.VGi
+    return this.VGi;
   }
   get CurRoleId() {
-    return this.$Gi
+    return this.$Gi;
   }
   set CurRoleId(t) {
-    this.$Gi = t
+    this.$Gi = t;
   }
   get RoleInfos() {
-    return this.XGi
+    return this.XGi;
   }
   set RoleInfos(t) {
-    this.XGi = t
+    this.XGi = t;
   }
   GetRoleInfoByConfigId(t) {
-    for (const e of this.XGi)
-      if (e.RoleId === t) return e
+    for (const e of this.XGi) {
+      if (e.RoleId === t) {
+        return e;
+      }
+    }
   }
   get Name() {
-    return this.FGi
+    return this.FGi;
   }
   set Name(t) {
-    this.FGi = t
+    this.FGi = t;
   }
   get ThirdPartyOnlineName() {
-    return this.bSl
+    return this.bSl;
   }
   get ThirdPartyAccountId() {
-    return this.dIl
+    return this.dIl;
   }
 }
 exports.WorldTeamPlayerFightInfo = WorldTeamPlayerFightInfo;
 class WorldTeamRoleInfo {
   constructor(t, e, r) {
-    this.JGi = 0, this.aTl = 0, this.zGi = 0, this.JGi = t, this.aTl = e, this.zGi = r
+    this.JGi = 0;
+    this.aTl = 0;
+    this.zGi = 0;
+    this.JGi = t;
+    this.aTl = e;
+    this.zGi = r;
   }
   get RoleId() {
-    return this.JGi
+    return this.JGi;
   }
   get RoleSkinId() {
-    return this.aTl
+    return this.aTl;
   }
   get RoleLevel() {
-    return this.zGi
+    return this.zGi;
   }
 }
 exports.WorldTeamRoleInfo = WorldTeamRoleInfo;
 class OtherScenePlayerData {
   constructor(t, e, r) {
-    this.PlayerId = 0, this.MapId = 0, this.Location = void 0, this.PlayerId = t, this.MapId = e, this.Location = Vector_1.Vector.Create(r)
+    this.PlayerId = 0;
+    this.MapId = 0;
+    this.Location = undefined;
+    this.PlayerId = t;
+    this.MapId = e;
+    this.Location = Vector_1.Vector.Create(r);
   }
   SetLocation(t) {
-    this.Location?.Set(t?.X ?? 0, t?.Y ?? 0, t?.Z ?? 0)
+    this.Location?.Set(t?.X ?? 0, t?.Y ?? 0, t?.Z ?? 0);
   }
 }
 exports.OtherScenePlayerData = OtherScenePlayerData;

@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCategoryMatchingAnimationBase = void 0;
+  value: true
+});
+exports.FbCategoryMatchingAnimationBase = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbCategoryMatchingAnimationBase {
   constructor(t) {
-    this.FbDataInternal = t, this.bFh = !1, this.LFh = void 0, this.AFh = !1, this.xFh = void 0, this.RFh = !1, this.wFh = void 0
+    this.FbDataInternal = t;
+    this.bFh = false;
+    this.LFh = undefined;
+    this.AFh = false;
+    this.xFh = undefined;
+    this.RFh = false;
+    this.wFh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCategoryMatchingAnimationBase(t)
+    if (t) {
+      return new FbCategoryMatchingAnimationBase(t);
+    }
   }
   get MatchPos() {
-    return this.bFh || (this.bFh = !0, this.LFh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.matchPos())), this.LFh
+    if (!this.bFh) {
+      this.bFh = true;
+      this.LFh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.matchPos());
+    }
+    return this.LFh;
   }
   get MatchRot() {
-    return this.AFh || (this.AFh = !0, this.xFh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.matchRot())), this.xFh
+    if (!this.AFh) {
+      this.AFh = true;
+      this.xFh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.matchRot());
+    }
+    return this.xFh;
   }
   get MatchReferenceKey() {
-    return this.RFh || (this.RFh = !0, this.wFh = this.FbDataInternal.matchReferenceKey()), this.wFh
+    if (!this.RFh) {
+      this.RFh = true;
+      this.wFh = this.FbDataInternal.matchReferenceKey();
+    }
+    return this.wFh;
   }
 }
 exports.FbCategoryMatchingAnimationBase = FbCategoryMatchingAnimationBase;

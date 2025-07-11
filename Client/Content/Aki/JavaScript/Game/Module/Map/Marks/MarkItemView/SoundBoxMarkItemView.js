@@ -1,34 +1,57 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SoundBoxMarkItemView = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  ServerMarkItemView_1 = require("./ServerMarkItemView");
+  value: true
+});
+exports.SoundBoxMarkItemView = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const ServerMarkItemView_1 = require("./ServerMarkItemView");
 class SoundBoxMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
   constructor(e) {
-    super(e), this.GRi = void 0, this.zbn = !1
+    super(e);
+    this.GRi = undefined;
+    this.zbn = false;
   }
   async OnCreateAsync() {
-    var e, r;
-    !this.GRi && (e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Radar_Effect"), e = await this.LoadPrefabAsync(e), this.GRi = e.GetComponentByClass(UE.UIItem.StaticClass()), e = 2 === this.Holder.MapType, r = this.GRi.GetChildComponent(0)) && (r.bAdaptPosAndSizeChanged = e, r.bResetNiagara = !0)
+    var e;
+    var r;
+    if (!this.GRi && (e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Radar_Effect"), e = await this.LoadPrefabAsync(e), this.GRi = e.GetComponentByClass(UE.UIItem.StaticClass()), e = this.Holder.MapType === 2, r = this.GRi.GetChildComponent(0))) {
+      r.bAdaptPosAndSizeChanged = e;
+      r.bResetNiagara = true;
+    }
   }
   OnInitialize() {
-    super.OnInitialize(), this.GRi?.SetUIParent(this.GetRootItem())
+    super.OnInitialize();
+    this.GRi?.SetUIParent(this.GetRootItem());
   }
   OnSafeUpdate(e, r, t) {
     var i = this.Holder.GetSoundBoxEntityId();
-    i && (i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i), this.SwitchSleepState(void 0 === i))
+    if (i) {
+      i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
+      this.SwitchSleepState(i === undefined);
+    }
   }
   SwitchSleepState(e) {
-    this.zbn !== e && ((this.zbn = e) ? (this.SetSpriteByPath(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e ? "SP_MarkSleep" : "SP_MarkNormal"), this.GetSprite(2), !1), this.GetSprite(2).SetUIActive(!0)) : this.GetSprite(2).SetUIActive(!1))
+    if (this.zbn !== e) {
+      if (this.zbn = e) {
+        this.SetSpriteByPath(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e ? "SP_MarkSleep" : "SP_MarkNormal"), this.GetSprite(2), false);
+        this.GetSprite(2).SetUIActive(true);
+      } else {
+        this.GetSprite(2).SetUIActive(false);
+      }
+    }
   }
   GetInteractiveFlag() {
-    return !1
+    return false;
   }
   OnBeforeDestroy() {
-    this.GRi && UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.GRi.GetOwner(), !0), this.GRi = void 0, super.OnBeforeDestroy()
+    if (this.GRi) {
+      UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.GRi.GetOwner(), true);
+    }
+    this.GRi = undefined;
+    super.OnBeforeDestroy();
   }
 }
 exports.SoundBoxMarkItemView = SoundBoxMarkItemView;

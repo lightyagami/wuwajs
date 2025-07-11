@@ -1,371 +1,821 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleLinkModel = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../../Core/Actor/ActorSystem"),
-  AudioSystem_1 = require("../../../../Core/Audio/AudioSystem"),
-  CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Time_1 = require("../../../../Core/Common/Time"),
-  CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById"),
-  ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  CharacterNameDefines_1 = require("../../../NewWorld/Character/Common/CharacterNameDefines"),
-  SequenceDefine_1 = require("../../Plot/Sequence/SequenceDefine"),
-  BattleLinkController_1 = require("./BattleLinkController"),
-  BattleLinkDefine_1 = require("./BattleLinkDefine"),
-  THREE_ROLE = 3,
-  TWO_ROLE = 2,
-  ACTIVITY_ID = 102600001,
-  LINK_COMMON_PARAM_ROW = 1,
-  DEFAULT_COMP_NAME = "WeaponCase";
+  value: true
+});
+exports.BattleLinkModel = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../Core/Actor/ActorSystem");
+const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../Core/Common/Log");
+const Time_1 = require("../../../../Core/Common/Time");
+const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const CharacterNameDefines_1 = require("../../../NewWorld/Character/Common/CharacterNameDefines");
+const SequenceDefine_1 = require("../../Plot/Sequence/SequenceDefine");
+const BattleLinkController_1 = require("./BattleLinkController");
+const BattleLinkDefine_1 = require("./BattleLinkDefine");
+const THREE_ROLE = 3;
+const TWO_ROLE = 2;
+const ACTIVITY_ID = 102600001;
+const LINK_COMMON_PARAM_ROW = 1;
+const DEFAULT_COMP_NAME = "WeaponCase";
 class BattleLinkModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.swa = void 0, this.hwa = void 0, this.gml = void 0, this.lwa = void 0, this._wa = void 0, this.Ush = void 0, this.F$ = void 0, this.Ksl = void 0, this.Ual = void 0, this.Dal = void 0, this.NUe = -1, this.Oll = -1, this.Wke = void 0, this.V1l = !1, this.H1l = !1, this.JKa = void 0, this.kJa = void 0, this.KZa = void 0, this.uul = !1, this.Yul = void 0, this.zul = void 0, this.Nn1 = void 0, this.NewLinkGmTest = !1, this.ZKa = 0, this.th1 = 0, this.rr1 = 0
+    super(...arguments);
+    this.swa = undefined;
+    this.hwa = undefined;
+    this.gml = undefined;
+    this.uUu = undefined;
+    this.cUu = undefined;
+    this.NUe = -1;
+    this.Oll = -1;
+    this.Wke = undefined;
+    this.V1l = false;
+    this.H1l = false;
+    this.JKa = undefined;
+    this.kJa = undefined;
+    this.KZa = undefined;
+    this.uul = false;
+    this.Yul = undefined;
+    this.zul = undefined;
+    this.as1 = undefined;
+    this.g6_ = undefined;
+    this.dUu = undefined;
+    this.NewLinkGmTest = false;
+    this.ZKa = 0;
+    this.Ih1 = 0;
+    this.Er1 = 0;
   }
   OnInit() {
-    return !0
+    return true;
   }
   OnLeaveLevel() {
-    return this.swa && ActorSystem_1.ActorSystem.Put("BattleLinkModel.OnLeaveLevel", this.swa), this.swa = void 0, this.hwa = void 0, this.gml = void 0, this.lwa?.clear(), this._wa?.clear(), this.Ush?.clear(), this.F$?.clear(), this.Ksl?.clear(), this.Ual?.clear(), this.Dal?.clear(), this.NUe = -1, this.Oll = -1, this.V1l = !1, this.H1l = !1, this.zul = void 0, this.uul = !1, this.JKa = void 0, this.ZKa = 0, this.th1 = 0, this.rr1 = 0, !(this.NewLinkGmTest = !1)
+    if (this.swa) {
+      ActorSystem_1.ActorSystem.Put("BattleLinkModel.OnLeaveLevel", this.swa);
+    }
+    this.swa = undefined;
+    this.hwa = undefined;
+    this.gml = undefined;
+    this.uUu?.clear();
+    this.cUu?.clear();
+    this.NUe = -1;
+    this.Oll = -1;
+    this.V1l = false;
+    this.H1l = false;
+    this.zul = undefined;
+    this.uul = false;
+    this.JKa = undefined;
+    this.ZKa = 0;
+    this.Ih1 = 0;
+    this.Er1 = 0;
+    return !(this.NewLinkGmTest = false);
   }
-  jH1(t) {
+  b$1(t) {
     if (this.zul) {
-      var i = [];
-      for (const e of this.zul) t.includes(e) || (i.push(e), this.lwa?.delete(e), this._wa?.delete(e), this.Ush?.delete(e), this.F$?.delete(e), this.Ksl?.delete(e), this.Ual?.delete(e), this.Dal?.delete(e));
-      for (const s of i) this.zul.splice(this.zul.indexOf(s), 1)
-    } else this.lwa?.clear(), this._wa?.clear(), this.Ush?.clear(), this.F$?.clear(), this.Ksl?.clear(), this.Ual?.clear(), this.Dal?.clear()
+      var e = [];
+      for (const i of this.zul) {
+        if (!t.includes(i)) {
+          e.push(i);
+          this.uUu?.delete(i);
+          this.cUu?.delete(i);
+        }
+      }
+      for (const s of e) {
+        this.zul.splice(this.zul.indexOf(s), 1);
+      }
+    } else {
+      this.uUu?.clear();
+      this.cUu?.clear();
+    }
   }
   Jul() {
-    if (this.CheckInNewBattleLink()) return this.Wke;
+    if (this.CheckInNewBattleLink()) {
+      return this.Wke;
+    }
     var t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
     if (!this.Yul) {
-      var i = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetActivityConfig(ACTIVITY_ID);
-      if (!i) return;
-      var e, s, i = i.PreloadRoleIds;
-      this.Yul = new Map;
-      for ([e, s] of i.entries()) {
+      var e = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetActivityConfig(ACTIVITY_ID);
+      if (!e) {
+        return;
+      }
+      var i;
+      var s;
+      var e = e.PreloadRoleIds;
+      this.Yul = new Map();
+      for ([i, s] of e.entries()) {
         var r = s.split(";").map(t => parseInt(t));
-        this.Yul.set(e, r)
+        this.Yul.set(i, r);
       }
     }
     let o = this.Yul.get(t);
-    return o = o || this.Wke
+    return o = o || this.Wke;
   }
-  SetRoleIdList(i) {
-    if (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 67, "[BattleLink]设置角色列表", ["roleIdList", i]), this.Wke = [...i], this.CheckInNewBattleLink()) {
-      var e = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItems();
-      if (e) {
-        this.Nn1?.clear();
-        for (const o of e) {
-          var t, s = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(o.GetConfigId);
-          i.includes(s) && (t = (ModelManager_1.ModelManager.CreatureModel?.GetEntity(o.GetCreatureDataId()))?.Entity?.GetComponent(0)?.GetModelId() ?? 0) && (void 0 === this.Nn1 && (this.Nn1 = new Map), this.Nn1.set(s, t))
+  SetRoleIdList(e) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 67, "[BattleLink]设置角色列表", ["roleIdList", e]);
+    }
+    this.Wke = [...e];
+    if (this.CheckInNewBattleLink()) {
+      var i = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItems();
+      if (i) {
+        this.as1?.clear();
+        this.g6_?.clear();
+        for (const a of i) {
+          var t;
+          var s;
+          var r = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(a.GetConfigId);
+          if (e.includes(r) && ((t = (s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(a.GetCreatureDataId())?.Entity)?.GetComponent(0)?.GetModelId() ?? 0) && (this.as1 === undefined && (this.as1 = new Map()), this.as1.set(r, t)), (t = s?.GetComponent(279))?.IsEnableMorph()) && (s = t.GetMorphData(1)?.ModelId)) {
+            if (this.g6_ === undefined) {
+              this.g6_ = new Map();
+            }
+            this.g6_.set(r, s);
+          }
         }
-        var r = this.GetLinkConfig();
-        1 === e.length && r && r.IsEnableOneRoleBurst && (e = r.OneRoleBurstTeammateId, r = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(e)) && (r = r.RoleId, this.Nn1?.set(r, e), i.push(r))
+        var o = this.GetLinkConfig();
+        if (i.length === 1 && o && o.IsEnableOneRoleBurst && (i = o.OneRoleBurstTeammateId, o = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(i))) {
+          o = o.RoleId;
+          this.as1?.set(o, i);
+          e.push(o);
+        }
       }
     }
-    if (this.V1l = !1, this.H1l = !1, i.length === THREE_ROLE ? this.V1l = !0 : i.length === TWO_ROLE && (this.H1l = !0), this.V1l || this.H1l) {
-      let t = i[0];
-      e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem, r = (e && (t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e.GetConfigId)), [...i]);
-      r.splice(i.indexOf(t), 1), r.splice(1, 0, t), this.Wke = r, this.Oll = t
-    } else this.Oll = -1
+    this.V1l = false;
+    this.H1l = false;
+    if (e.length === THREE_ROLE) {
+      this.V1l = true;
+    } else if (e.length === TWO_ROLE) {
+      this.H1l = true;
+    }
+    if (this.V1l || this.H1l) {
+      let t = e[0];
+      i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
+      if (i) {
+        t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i.GetConfigId);
+      }
+      o = [...e];
+      o.splice(e.indexOf(t), 1);
+      o.splice(1, 0, t);
+      this.Wke = o;
+      this.Oll = t;
+    } else {
+      this.Oll = -1;
+    }
   }
   PreloadRes() {
-    const t = new CustomPromise_1.CustomPromise;
+    const t = new CustomPromise_1.CustomPromise();
     if (this.zul && this.Wke && this.zul.length >= this.Wke.length) {
-      let i = !0;
-      var e = this.Wke.length;
-      for (let t = 0; t < e; t++)
+      let e = true;
+      var i = this.Wke.length;
+      for (let t = 0; t < i; t++) {
         if (!this.zul.includes(this.Wke[t])) {
-          i = !1;
-          break
-        } if (i) {
-        const t = new CustomPromise_1.CustomPromise;
-        return t.SetResult(!0), t
+          e = false;
+          break;
+        }
+      }
+      if (e) {
+        const t = new CustomPromise_1.CustomPromise();
+        t.SetResult(true);
+        return t;
       }
     }
-    return this.zul = this.Jul(), this.zul || (this.zul = []), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 67, "[BattleLink]开始预加载资源", ["roleIdList", this.zul]), this.zl1().then(() => {
-      this.$sl(this.zul).then(() => {
-        this.Jl1(this.zul).then(() => {
-          this.$Za(), this.ResetMainBp(), t.SetResult(!0)
+    this.zul = this.Jul();
+    this.zul ||= [];
+    const e = this.zul;
+    this.uUu ||= new Map();
+    for (const r of e) {
+      var s = {
+        RoleId: r
+      };
+      this.uUu.set(r, s);
+      if (this.g6_?.has(r)) {
+        this.cUu ||= new Map();
+        if (!this.cUu.has(r)) {
+          s = {
+            RoleId: r
+          };
+          s = {
+            RoleId: r,
+            LinkRoleData: s
+          };
+          this.cUu.set(r, s);
+        }
+      }
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 67, "[BattleLink]开始预加载资源", ["roleIdList", this.zul]);
+    }
+    this.O_1().then(() => {
+      this.$sl(e).then(() => {
+        this.q_1(e).then(() => {
+          this.$Za();
+          this.ResetMainBp();
+          t.SetResult(true);
         }).catch(() => {
-          t.SetResult(!1)
-        })
+          t.SetResult(false);
+        });
       }).catch(() => {
-        t.SetResult(!1)
-      })
+        t.SetResult(false);
+      });
     }).catch(() => {
-      t.SetResult(!1)
-    }), t
+      t.SetResult(false);
+    });
+    return t;
   }
   PreloadTeamRoleRes() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamRoleConfigIdList(!1, !0);
-    return t ? (this.SetRoleIdList(t), this.jH1(t)) : this.jH1([]), this.PreloadRes()
+    var t = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamRoleConfigIdList(false, true);
+    if (t) {
+      this.SetRoleIdList(t);
+      this.b$1(t);
+    } else {
+      this.b$1([]);
+    }
+    return this.PreloadRes();
   }
-  async zl1() {
+  async O_1() {
     var t = [];
-    t.push(this.cwa()), this.CheckInNewBattleLink() ? (t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_NEW_PATH)), t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_NEW_PATH))) : (t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_PATH)), t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_PATH))), await Promise.all(t)
+    t.push(this.cwa());
+    if (this.CheckInNewBattleLink()) {
+      t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_NEW_PATH));
+      t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_NEW_PATH));
+    } else {
+      t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_PATH));
+      t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_PATH));
+    }
+    await Promise.all(t);
   }
   async $sl(t) {
     const s = [];
-    t.forEach((t, i) => {
-      var e = this.GetRoleConfig(t);
-      e ? s.push(this.Wll(t, e.CharacterDataAsset)) : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的配置", ["roleid", t])
-    }), await Promise.all(s)
+    t.forEach((t, e) => {
+      var i = this.mUu(t);
+      if (i) {
+        s.push(this.Wll(t, i.Id, i.CharacterDataAsset));
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的配置", ["roleid", t]);
+      }
+      if (this.g6_?.has(t)) {
+        if (i = this.fUu(t)) {
+          s.push(this.Wll(t, i.Id, i.CharacterDataAsset));
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的变身配置", ["roleid", t]);
+        }
+      }
+    });
+    await Promise.all(s);
   }
-  async Jl1(t) {
-    const n = [],
-      l = this.CheckInNewBattleLink();
-    t.forEach((i, t) => {
-      var e, s = this.Ksl?.get(i),
-        r = (s ? (s.CharacterActorClass && (e = UE.KismetSystemLibrary.GetPathName(s.CharacterActorClass), n.push(this.dwa(i, e))), s.Cos_Pose_AnimSequence && (e = UE.KismetSystemLibrary.GetPathName(s.Cos_Pose_AnimSequence), n.push(this.Ral(i, e)))) : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]找不到角色对应的DA", ["roleid", i]), this.GetRoleConfig(i));
-      if (r)
-        if (1 === r.NeedLoadMesh && (s = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(i)?.MeshId) && (e = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, s.toString())?.网格体?.ToAssetPathName()) && e.length && "None" !== e && n.push(this.xsh(i, e)), l) {
-          var o = r.WeaponMeshList.length,
-            a = r.WeaponAnimList.length,
-            h = r.CompNameList.length;
-          for (let t = 0; t < o; t++) n.push(this.xsh(i, r.WeaponMeshList[t], !0, t < h ? r.CompNameList[t] : DEFAULT_COMP_NAME));
-          for (let t = 0; t < a; t++) n.push(this.Ral(i, r.WeaponAnimList[t], !0, t < h ? r.CompNameList[t] : DEFAULT_COMP_NAME))
-        } else 1105 === i && (n.push(this.xsh(i, BattleLinkDefine_1.ZHEZHI_WEAPON_MESH, !0)), n.push(this.Ral(i, BattleLinkDefine_1.ZHEZHI_WEAPON_ANIM, !0)));
-      else Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的配置", ["roleid", i])
-    }), await Promise.all(n)
+  async q_1(t) {
+    this.dUu = [];
+    const s = this.CheckInNewBattleLink();
+    t.forEach((t, e) => {
+      var i;
+      if (s) {
+        if (i = this.as1?.get(t)) {
+          this.gUu(t, i, true);
+        }
+        if (i = this.g6_?.get(t)) {
+          this.gUu(t, i, true);
+        }
+      } else {
+        this.gUu(t);
+      }
+    });
+    await Promise.all(this.dUu);
+    this.dUu = undefined;
+  }
+  gUu(e, i, t) {
+    var s;
+    var r = this.dUu;
+    var o = i && i === this.g6_?.get(e);
+    var a = (o ? this.cUu?.get(e)?.LinkRoleData : this.uUu?.get(e))?.DataAsset;
+    if (a) {
+      if (a.CharacterActorClass) {
+        s = UE.KismetSystemLibrary.GetPathName(a.CharacterActorClass);
+        r.push(this.dwa(e, i, s));
+      }
+      if (a.Cos_Pose_AnimSequence) {
+        s = UE.KismetSystemLibrary.GetPathName(a.Cos_Pose_AnimSequence);
+        r.push(this.Ral(e, i, s));
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Battle", 67, "[BattleLink]找不到角色对应的DA", ["roleid", e]);
+    }
+    var n = o ? this.fUu(e) : this.mUu(e);
+    if (n) {
+      if (n.NeedLoadMesh === 1 && (a = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e)?.MeshId) && (s = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, a.toString())?.网格体?.ToAssetPathName()) && s.length && s !== "None") {
+        r.push(this.xsh(e, i, s));
+      }
+      if (t) {
+        var h = n.WeaponMeshList.length;
+        var l = n.WeaponAnimList.length;
+        var _ = n.CompNameList.length;
+        for (let t = 0; t < h; t++) {
+          r.push(this.xsh(e, i, n.WeaponMeshList[t], true, t < _ ? n.CompNameList[t] : DEFAULT_COMP_NAME));
+        }
+        for (let t = 0; t < l; t++) {
+          r.push(this.Ral(e, i, n.WeaponAnimList[t], true, t < _ ? n.CompNameList[t] : DEFAULT_COMP_NAME));
+        }
+      } else if (e === 1105) {
+        r.push(this.xsh(e, i, BattleLinkDefine_1.ZHEZHI_WEAPON_MESH, true));
+        r.push(this.Ral(e, i, BattleLinkDefine_1.ZHEZHI_WEAPON_ANIM, true));
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的配置", ["roleid", e]);
+    }
   }
   async cwa() {
-    const i = new CustomPromise_1.CustomPromise;
+    const e = new CustomPromise_1.CustomPromise();
     var t = this.CheckInNewBattleLink() ? BattleLinkDefine_1.BATTLE_LINK_BP_NEW_PATH : BattleLinkDefine_1.BATTLE_LINK_BP_PATH;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
-      t ? (this.swa && ActorSystem_1.ActorSystem.Put("BattleLinkModel.LoadMainBp", this.swa), this.swa = ActorSystem_1.ActorSystem.Get(t, MathUtils_1.MathUtils.DefaultTransformDouble)) : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]加载BP_SplitScreen失败"), i.SetResult()
-    }, 100), i.Promise
+    ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
+      if (t) {
+        if (this.swa) {
+          ActorSystem_1.ActorSystem.Put("BattleLinkModel.LoadMainBp", this.swa);
+        }
+        this.swa = ActorSystem_1.ActorSystem.Get(t, MathUtils_1.MathUtils.DefaultTransformDouble);
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]加载BP_SplitScreen失败");
+      }
+      e.SetResult();
+    }, 100);
+    return e.Promise;
   }
-  async Wll(i, t) {
-    const e = new CustomPromise_1.CustomPromise;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.BP_SplitScreenCharacterData_C, t => {
-      t ? (this.Ksl || (this.Ksl = new Map), this.Ksl.set(i, t), e.SetResult()) : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]加载角色DA失败")
-    }, 100), e.Promise
+  async Wll(i, s, t) {
+    const r = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.BP_SplitScreenCharacterData_C, t => {
+      var e;
+      if (t) {
+        if (e = this.CUu(i, s)) {
+          e.DataAsset = t;
+        }
+        r.SetResult();
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]加载角色DA失败");
+      }
+    }, 100);
+    return r.Promise;
   }
-  async Ral(e, t, s = !1, r = DEFAULT_COMP_NAME) {
-    const o = new CustomPromise_1.CustomPromise;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimSequence, i => {
-      if (i)
-        if (s) {
-          this.Ual || (this.Ual = new Map);
-          let t = this.Ual.get(e);
-          t || (t = new Map, this.Ual.set(e, t)), t.set(r, i)
-        } else this._wa || (this._wa = new Map), this._wa.set(e, i);
-      else Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]加载anim失败", ["roleId", e], ["path", t]);
-      o.SetResult()
-    }, 100), o.Promise
+  async Ral(i, s, r, o = false, a = DEFAULT_COMP_NAME) {
+    const n = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.AnimSequence, t => {
+      var e;
+      if (t) {
+        if (e = this.CUu(i, s)) {
+          if (o) {
+            e.WeaponAnimMap ||= new Map();
+            e.WeaponAnimMap.set(a, t);
+          } else {
+            e.Anim = t;
+          }
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]加载anim失败", ["roleId", i], ["path", r]);
+      }
+      n.SetResult();
+    }, 100);
+    return n.Promise;
   }
-  async dwa(i, t) {
-    const e = new CustomPromise_1.CustomPromise;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
-      t ? (this.lwa || (this.lwa = new Map), this.lwa.set(i, t)) : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]加载角色SeqBp失败"), e.SetResult()
-    }, 100), e.Promise
+  async dwa(i, s, t) {
+    const r = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
+      var e;
+      if (t) {
+        if (e = this.CUu(i, s)) {
+          e.SeqBpClass = t;
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]加载角色SeqBp失败");
+      }
+      r.SetResult();
+    }, 100);
+    return r.Promise;
   }
-  async mwa(i) {
-    const e = new CustomPromise_1.CustomPromise;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.LevelSequence, t => {
-      t ? i === BattleLinkDefine_1.THREE_ROLE_SEQ_PATH || i === BattleLinkDefine_1.THREE_ROLE_SEQ_NEW_PATH ? this.hwa = t : this.gml = t : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]加载Seq失败", ["path", i]), e.SetResult()
-    }, 100), e.Promise
+  async mwa(e) {
+    const i = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LevelSequence, t => {
+      if (t) {
+        if (e === BattleLinkDefine_1.THREE_ROLE_SEQ_PATH || e === BattleLinkDefine_1.THREE_ROLE_SEQ_NEW_PATH) {
+          this.hwa = t;
+        } else {
+          this.gml = t;
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]加载Seq失败", ["path", e]);
+      }
+      i.SetResult();
+    }, 100);
+    return i.Promise;
   }
-  async xsh(e, t, s = !1, r = DEFAULT_COMP_NAME) {
-    const o = new CustomPromise_1.CustomPromise;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.SkeletalMesh, i => {
-      if (i)
-        if (s) {
-          this.Dal || (this.Dal = new Map);
-          let t = this.Dal.get(e);
-          t || (t = new Map, this.Dal.set(e, t)), t.set(r, i)
-        } else this.Ush || (this.Ush = new Map), this.Ush.set(e, i);
-      else Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "[BattleLink]加载Mesh失败", ["roleId", e], ["path", t]);
-      o.SetResult()
-    }, 100), o.Promise
+  async xsh(i, s, r, o = false, a = DEFAULT_COMP_NAME) {
+    const n = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.SkeletalMesh, t => {
+      var e;
+      if (t) {
+        if (e = this.CUu(i, s)) {
+          if (o) {
+            e.WeaponMeshMap ||= new Map();
+            e.WeaponMeshMap.set(a, t);
+          } else {
+            e.Mesh = t;
+          }
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 67, "[BattleLink]加载Mesh失败", ["roleId", i], ["path", r]);
+      }
+      n.SetResult();
+    }, 100);
+    return n.Promise;
   }
   CheckSplitScreenRes() {
-    return this.swa ? this.V1l || this.H1l ? this.V1l && !this.hwa ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Battle", 67, "[BattleLink]播放分屏时资源没准备好: ThreeRoleSeq"), !1) : !(this.H1l && !this.gml && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Battle", 67, "[BattleLink]播放分屏时资源没准备好: TwoRoleSeq"), 1)) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Battle", 67, "[BattleLink]非三人或双人队伍, 播放分屏检查seq失败"), !1) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Battle", 67, "[BattleLink]播放分屏时资源没准备好: MainBp"), !1)
+    if (this.swa) {
+      if (this.V1l || this.H1l) {
+        if (this.V1l && !this.hwa) {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("Battle", 67, "[BattleLink]播放分屏时资源没准备好: ThreeRoleSeq");
+          }
+          return false;
+        } else {
+          return !this.H1l || !!this.gml || !(Log_1.Log.CheckWarn() && Log_1.Log.Warn("Battle", 67, "[BattleLink]播放分屏时资源没准备好: TwoRoleSeq"), 1);
+        }
+      } else {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Battle", 67, "[BattleLink]非三人或双人队伍, 播放分屏检查seq失败");
+        }
+        return false;
+      }
+    } else {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Battle", 67, "[BattleLink]播放分屏时资源没准备好: MainBp");
+      }
+      return false;
+    }
   }
   $Za() {
-    this.swa && (this.swa.End(), this.NUe = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), this.swa.D_K2_SetActorLocation(this.GetBpLocation(), !1, void 0, !1), this.swa.SetActorHiddenInGame(!0))
+    if (this.swa) {
+      this.swa.End();
+      this.NUe = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      this.swa.D_K2_SetActorLocation(this.GetBpLocation(), false, undefined, false);
+      this.swa.SetActorHiddenInGame(true);
+    }
   }
   ResetMainBp() {
     var t;
-    this.swa && (this.swa.Reset(), this.V1l ? (this.swa.E_LinkPos_1 = 0, this.swa.E_LinkPos_2 = .5, this.swa.E_LinkPos_3 = 1) : (this.swa.E_LinkPos_1 = 1, this.swa.E_LinkPos_2 = 0), t = [this.swa.CharacterActor_1, this.swa.CharacterActor_2], this.V1l && t.push(this.swa.CharacterActor_3), t.forEach((t, i) => {
-      if (!(i >= this.Wke.length)) {
-        var e = this.Wke[i],
-          s = this.lwa?.get(e),
-          s = (t?.SetChildActorClass(s), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 67, "[BattleLink]分屏Bp设置ChildActor", ["roleId", e], ["class", s]), t?.ChildActor?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass()));
-        if (s) {
-          var r = this.Ush?.get(e),
-            s = (r && s.SetSkeletalMesh(r), this.Dal?.get(e));
-          if (s)
-            for (var [o, a] of s.entries()) {
-              let i = void 0;
-              var h = t?.ChildActor?.K2_GetComponentsByClass(UE.MeshComponent.StaticClass());
-              if (h)
-                for (let t = 0; t < h.Num(); t++) {
-                  var n = h.Get(t);
-                  if (n.IsA(UE.SkeletalMeshComponent.StaticClass()) && n.GetName() === o) {
-                    i = n;
-                    break
+    if (this.swa) {
+      this.swa.Reset();
+      if (this.V1l) {
+        this.swa.E_LinkPos_1 = 0;
+        this.swa.E_LinkPos_2 = 0.5;
+        this.swa.E_LinkPos_3 = 1;
+      } else {
+        this.swa.E_LinkPos_1 = 1;
+        this.swa.E_LinkPos_2 = 0;
+      }
+      t = [this.swa.CharacterActor_1, this.swa.CharacterActor_2];
+      if (this.V1l) {
+        t.push(this.swa.CharacterActor_3);
+      }
+      t.forEach((t, e) => {
+        if (!(e >= this.Wke.length)) {
+          var i = this.Wke[e];
+          var s = this.pUu(i);
+          var s = this.CUu(i, s);
+          var r = s?.SeqBpClass;
+          t?.SetChildActorClass(r);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 67, "[BattleLink]分屏Bp设置ChildActor", ["roleId", i], ["class", r]);
+          }
+          var r = t?.ChildActor?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+          if (r) {
+            var o = s?.Mesh;
+            if (o) {
+              r.SetSkeletalMesh(o);
+            }
+            var r = s?.WeaponMeshMap;
+            if (r) {
+              for (var [a, n] of r.entries()) {
+                let e = undefined;
+                var h = t?.ChildActor?.K2_GetComponentsByClass(UE.MeshComponent.StaticClass());
+                if (h) {
+                  for (let t = 0; t < h.Num(); t++) {
+                    var l = h.Get(t);
+                    if (l.IsA(UE.SkeletalMeshComponent.StaticClass()) && l.GetName() === a) {
+                      e = l;
+                      break;
+                    }
                   }
                 }
-              i && (i.SetSkeletalMesh(a), i.SetVisibility(!0), i.SetActive(!0))
+                if (e) {
+                  e.SetSkeletalMesh(n);
+                  e.SetVisibility(true);
+                  e.SetActive(true);
+                }
+              }
             }
+          }
+          o = s?.DataAsset;
+          if (o) {
+            this.Xsl(e, i, o);
+          }
         }
-        r = this.Ksl?.get(e);
-        r && this.Xsl(i, e, r)
-      }
-    }))
+      });
+    }
   }
-  Xsl(t, i, e) {
+  Xsl(t, e, i) {
     if (this.swa) {
-      var s, r = this.swa;
+      var s;
+      var r = this.swa;
       switch (t) {
         case 0:
-          r.PointLight1_Location = e.PointLight_Location, r.PointLight1_ToonLightColor = e.PointLight_Color, r.EyeLightSimulation_Color1 = e.EyeLightSimulation_Color, r.IsA(UE.BP_SplitScreen_New_C.StaticClass()) && ((s = r).LightYaw1 = e.LightYaw, s.FaceLightYaw1 = e.FaceLightYaw, s.RoleId1 = i);
+          r.PointLight1_Location = i.PointLight_Location;
+          r.PointLight1_ToonLightColor = i.PointLight_Color;
+          r.EyeLightSimulation_Color1 = i.EyeLightSimulation_Color;
+          if (r.IsA(UE.BP_SplitScreen_New_C.StaticClass())) {
+            (s = r).LightYaw1 = i.LightYaw;
+            s.FaceLightYaw1 = i.FaceLightYaw;
+            s.RoleId1 = e;
+          }
           break;
         case 1:
-          r.PointLight2_Location = e.PointLight_Location, r.PointLight2_ToonLightColor = e.PointLight_Color, r.EyeLightSimulation_Color2 = e.EyeLightSimulation_Color, r.IsA(UE.BP_SplitScreen_New_C.StaticClass()) && ((s = r).LightYaw2 = e.LightYaw, s.FaceLightYaw2 = e.FaceLightYaw, s.RoleId2 = i);
+          r.PointLight2_Location = i.PointLight_Location;
+          r.PointLight2_ToonLightColor = i.PointLight_Color;
+          r.EyeLightSimulation_Color2 = i.EyeLightSimulation_Color;
+          if (r.IsA(UE.BP_SplitScreen_New_C.StaticClass())) {
+            (s = r).LightYaw2 = i.LightYaw;
+            s.FaceLightYaw2 = i.FaceLightYaw;
+            s.RoleId2 = e;
+          }
           break;
         case 2:
-          r.PointLight3_Location = e.PointLight_Location, r.PointLight3_ToonLightColor = e.PointLight_Color, r.EyeLightSimulation_Color3 = e.EyeLightSimulation_Color, r.IsA(UE.BP_SplitScreen_New_C.StaticClass()) && ((s = r).LightYaw3 = e.LightYaw, s.FaceLightYaw3 = e.FaceLightYaw, s.RoleId3 = i)
+          r.PointLight3_Location = i.PointLight_Location;
+          r.PointLight3_ToonLightColor = i.PointLight_Color;
+          r.EyeLightSimulation_Color3 = i.EyeLightSimulation_Color;
+          if (r.IsA(UE.BP_SplitScreen_New_C.StaticClass())) {
+            (s = r).LightYaw3 = i.LightYaw;
+            s.FaceLightYaw3 = i.FaceLightYaw;
+            s.RoleId3 = e;
+          }
       }
     }
   }
-  XZa(i, e, s) {
-    var r = e.ChildActor;
+  XZa(e, i, s) {
+    var r = i.ChildActor;
     if (r) {
-      e = r.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-      if (e) {
-        let t = void 0;
-        if (t = (t = e.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_BASE)) || e.GetAnimInstance(), s) {
-          e = this._wa?.get(i), s = t?.PlaySlotAnimationAsDynamicMontage(e, SequenceDefine_1.ABP_Seq_Slot_Name, 0, 0, 1, 1);
-          s && (t?.Montage_Pause(s), this.F$ || (this.F$ = new Map), this.F$.set(i, s))
+      i = r.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+      if (i) {
+        let t = undefined;
+        t = (t = i.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_BASE)) || i.GetAnimInstance();
+        i = this.pUu(e);
+        i = this.CUu(e, i);
+        if (s) {
+          s = i?.Anim;
+          s = t?.PlaySlotAnimationAsDynamicMontage(s, SequenceDefine_1.ABP_Seq_Slot_Name, 0, 0, 1, 1);
+          if (s && (t?.Montage_Pause(s), i)) {
+            i.Montage = s;
+          }
         } else {
-          e = this.F$?.get(i), s = (e && (t?.Montage_Resume(e), this.F$?.delete(i)), this.Ual?.get(i));
-          if (s)
+          s = i?.Montage;
+          if (s) {
+            t?.Montage_Resume(s);
+            i.Montage = undefined;
+          }
+          s = i?.WeaponAnimMap;
+          if (s) {
             for (var [o, a] of s.entries()) {
-              let i = void 0;
-              var h = r.K2_GetComponentsByClass(UE.MeshComponent.StaticClass());
-              if (h)
-                for (let t = 0; t < h.Num(); t++) {
-                  var n = h.Get(t);
-                  if (n.IsA(UE.SkeletalMeshComponent.StaticClass()) && n.GetName() === o) {
-                    i = n;
-                    break
+              let e = undefined;
+              var n = r.K2_GetComponentsByClass(UE.MeshComponent.StaticClass());
+              if (n) {
+                for (let t = 0; t < n.Num(); t++) {
+                  var h = n.Get(t);
+                  if (h.IsA(UE.SkeletalMeshComponent.StaticClass()) && h.GetName() === o) {
+                    e = h;
+                    break;
                   }
                 }
-              i && i.PlayAnimation(a, !1)
+              }
+              if (e) {
+                e.PlayAnimation(a, false);
+              }
             }
+          }
         }
-      } else Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 67, "[BattleLink]找不到ChildActor的骨骼网格体", ["roleId", i])
-    } else Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 67, "[BattleLink]分屏Bp的ChildActor为空", ["roleId", i])
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 67, "[BattleLink]找不到ChildActor的骨骼网格体", ["roleId", e]);
+      }
+    } else if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 67, "[BattleLink]分屏Bp的ChildActor为空", ["roleId", e]);
+    }
   }
-  PlayRoleAnim(t = !1) {
-    this.swa && (this.XZa(this.Wke[0], this.swa.CharacterActor_1, t), this.XZa(this.Wke[1], this.swa.CharacterActor_2, t), this.V1l) && this.XZa(this.Wke[2], this.swa.CharacterActor_3, t)
+  vUu(t) {
+    for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
+      if (t === ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e.GetConfigId)) {
+        return !!e.EntityHandle?.Entity?.GetComponent(279)?.IsMorphing();
+      }
+    }
+    return false;
+  }
+  PlayRoleAnim(t = false) {
+    if (this.swa && (this.XZa(this.Wke[0], this.swa.CharacterActor_1, t), this.XZa(this.Wke[1], this.swa.CharacterActor_2, t), this.V1l)) {
+      this.XZa(this.Wke[2], this.swa.CharacterActor_3, t);
+    }
   }
   PlayRoleLinkAudio() {
-    var i = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetActivityConfig(ACTIVITY_ID);
-    if (ConfigManager_1.ConfigManager.DreamLinkConfig && i) {
-      var e = i.FirstWhiteCatDungeonId;
-      if (this.V1l && this.NUe === e) {
-        let t = !0;
-        for (const s of this.Wke) t = t && i.PlotRoleLinkTeam.includes(s);
-        if (t) return e = i.PlotRoleLinkAudio, AudioSystem_1.AudioSystem.PostEvent(e), void(Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[BattleLink]播放剧情Link语音.", ["Event", e]))
+    var e = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetActivityConfig(ACTIVITY_ID);
+    if (ConfigManager_1.ConfigManager.DreamLinkConfig && e) {
+      var i = e.FirstWhiteCatDungeonId;
+      if (this.V1l && this.NUe === i) {
+        let t = true;
+        for (const s of this.Wke) {
+          t = t && e.PlotRoleLinkTeam.includes(s);
+        }
+        if (t) {
+          i = e.PlotRoleLinkAudio;
+          AudioSystem_1.AudioSystem.PostEvent(i);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Audio", 42, "[BattleLink]播放剧情Link语音.", ["Event", i]);
+          }
+          return;
+        }
       }
-      this._ml()
+      this._ml();
     }
   }
   _ml() {
     var t;
-    this.Oll < 0 ? Log_1.Log.CheckWarn() && Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色失败", ["RoleId", this.Oll]) : (t = this.GetRoleConfig(this.Oll)) ? (t = t.RoleLinkAudio, AudioSystem_1.AudioSystem.PostEvent(t), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[BattleLink]播放主控角色Link语音", ["Event", t])) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色配置失败", ["RoleId", this.Oll])
+    if (this.Oll < 0) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色失败", ["RoleId", this.Oll]);
+      }
+    } else if (t = this.mUu(this.Oll)) {
+      t = t.RoleLinkAudio;
+      AudioSystem_1.AudioSystem.PostEvent(t);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Audio", 42, "[BattleLink]播放主控角色Link语音", ["Event", t]);
+      }
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色配置失败", ["RoleId", this.Oll]);
+    }
   }
   InitBeforeStart() {
     var t;
-    this.swa && this.swa.IsA(UE.BP_SplitScreen_New_C.StaticClass()) && (t = this.swa, this.V1l ? (t.IsThree = !0, t.Width = 38) : (t.IsThree = !1, t.Width = 28))
+    if (this.swa && this.swa.IsA(UE.BP_SplitScreen_New_C.StaticClass())) {
+      t = this.swa;
+      if (this.V1l) {
+        t.IsThree = true;
+        t.Width = 38;
+      } else {
+        t.IsThree = false;
+        t.Width = 28;
+      }
+    }
   }
   GetSplitScreenMainBp() {
-    return this.swa
+    return this.swa;
   }
   GetSplitScreenSeq() {
-    return this.V1l ? this.hwa : this.H1l ? this.gml : void 0
+    if (this.V1l) {
+      return this.hwa;
+    } else if (this.H1l) {
+      return this.gml;
+    } else {
+      return undefined;
+    }
   }
   GetLinkDuration() {
-    return this.kJa || (this.kJa = CommonParamById_1.configCommonParamById.GetIntConfig("LinkPrepareDuration")), this.kJa
+    this.kJa ||= CommonParamById_1.configCommonParamById.GetIntConfig("LinkPrepareDuration");
+    return this.kJa;
   }
   GetBpLocation() {
-    return this.KZa || (this.KZa = new UE.VectorDouble(0, 0, -3e3)), this.KZa
+    this.KZa ||= new UE.VectorDouble(0, 0, -3000);
+    return this.KZa;
   }
   CheckInBattleLink() {
-    return this.CheckInNewBattleLink() || this.CheckInDreamLink()
+    return this.CheckInNewBattleLink() || this.CheckInDreamLink();
   }
   CheckInNewBattleLink() {
-    var t, i;
-    return !!this.NewLinkGmTest || !(!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() || (t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t), i = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW), !t?.InstSubType) || !i?.InstSubTypeList.includes(t.InstSubType))
+    var t;
+    var e;
+    return !!this.NewLinkGmTest || !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t), e = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW), !t?.InstSubType) && !!e?.InstSubTypeList.includes(t.InstSubType);
   }
   CheckInDreamLink() {
-    var t, i;
-    return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && (t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), 23 === ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)?.InstSubType || !(!(i = CommonParamById_1.configCommonParamById.GetIntArrayConfig("LinkInstanceIds")) || !i.includes(t)))
+    var t;
+    var e;
+    return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && (t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)?.InstSubType === 23 || !!(e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("LinkInstanceIds")) && !!e.includes(t));
   }
   IsNewLinkGmTest() {
-    return this.NewLinkGmTest
+    return this.NewLinkGmTest;
   }
   SetNewLinkGmTest(t) {
-    this.NewLinkGmTest = t
+    this.NewLinkGmTest = t;
   }
   GetLinkStatus() {
-    return this.ZKa
+    return this.ZKa;
   }
-  CanUseLinkSkill(t = void 0) {
-    if (2 !== this.ZKa && 3 !== this.ZKa) return !1;
-    if (this.uul) return !1;
-    let i = t;
-    return !(!(i = i || ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.Id) || this.HasLinkEntityId(i))
+  CanUseLinkSkill(t = undefined) {
+    if (this.ZKa !== 2 && this.ZKa !== 3) {
+      return false;
+    }
+    if (this.uul) {
+      return false;
+    }
+    let e = t;
+    return !!(e = e || ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.Id) && !this.HasLinkEntityId(e);
   }
   ResetLinkSkillStatus() {
-    this.SetLinkSkillInCd(!1), this.JKa = void 0
+    this.SetLinkSkillInCd(false);
+    this.JKa = undefined;
   }
-  UpdateLinkStatus(t, i = void 0) {
-    this.ZKa = t, this.SetLinkSkillInCd(!1), 0 === t ? (this.JKa = void 0, ControllerHolder_1.ControllerHolder.BattleLinkController.StopLink(), ControllerHolder_1.ControllerHolder.BattleLinkController.SetMessageId(void 0)) : 2 === t ? this.JKa = void 0 : 3 === t ? (i = MathUtils_1.MathUtils.LongToNumber(i || Time_1.Time.Now), ControllerHolder_1.ControllerHolder.BattleLinkController.StartLink(i)) : 4 === t && ControllerHolder_1.ControllerHolder.BattleLinkController.StartLinkExplosion(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBattleLinkStatusChanged, t)
+  UpdateLinkStatus(t, e = undefined) {
+    this.ZKa = t;
+    this.SetLinkSkillInCd(false);
+    if (t === 0) {
+      this.JKa = undefined;
+      ControllerHolder_1.ControllerHolder.BattleLinkController.StopLink();
+      ControllerHolder_1.ControllerHolder.BattleLinkController.SetMessageId(undefined);
+    } else if (t === 2) {
+      this.JKa = undefined;
+    } else if (t === 3) {
+      e = MathUtils_1.MathUtils.LongToNumber(e || Time_1.Time.Now);
+      ControllerHolder_1.ControllerHolder.BattleLinkController.StartLink(e);
+    } else if (t === 4) {
+      ControllerHolder_1.ControllerHolder.BattleLinkController.StartLinkExplosion();
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBattleLinkStatusChanged, t);
   }
   HandleLinkingStateNotify(t) {
-    ControllerHolder_1.ControllerHolder.BattleLinkController.SetMessageId(t._Vn), 0 === t.sT_ ? this.UpdateLinkStatus(2) : this.V1l || this.H1l ? this.V1l && t.sT_ < 3 || this.H1l && t.sT_ < 2 ? this.UpdateLinkStatus(3, t.J8n) : this.UpdateLinkStatus(4) : this.UpdateLinkStatus(0)
+    ControllerHolder_1.ControllerHolder.BattleLinkController.SetMessageId(t._Vn);
+    if (t.sT_ === 0) {
+      this.UpdateLinkStatus(2);
+    } else if (this.V1l || this.H1l) {
+      if (this.V1l && t.sT_ < 3 || this.H1l && t.sT_ < 2) {
+        this.UpdateLinkStatus(3, t.J8n);
+      } else {
+        this.UpdateLinkStatus(4);
+      }
+    } else {
+      this.UpdateLinkStatus(0);
+    }
   }
   HandleLinkExitNotify(t) {
-    this.UpdateLinkStatus(0)
+    this.UpdateLinkStatus(0);
   }
   AddLinkEntityId(t) {
-    this.JKa ? this.JKa.includes(t) || this.JKa.push(t) : this.JKa = [t], this.SetLinkSkillInCd(!0)
+    if (this.JKa) {
+      if (!this.JKa.includes(t)) {
+        this.JKa.push(t);
+      }
+    } else {
+      this.JKa = [t];
+    }
+    this.SetLinkSkillInCd(true);
   }
   HasLinkEntityId(t) {
-    return !!this.JKa?.includes(t)
+    return !!this.JKa?.includes(t);
   }
   SetLinkSkillInCd(t) {
-    this.uul !== t && (this.uul = t, BattleLinkController_1.BattleLinkController.SetPlayerUltraSkillEnable(!t))
+    if (this.uul !== t) {
+      this.uul = t;
+      BattleLinkController_1.BattleLinkController.SetPlayerUltraSkillEnable(!t);
+    }
   }
-  HandleNewLinkStateNotify(t, i) {
-    var e = Number(t.lMs);
-    4 === this.th1 && 4 !== e && ControllerHolder_1.ControllerHolder.BattleLinkController.OnExitLinkBurst(), this.th1 = e, this.rr1 = t.Cn1
+  HandleNewLinkStateNotify(t, e) {
+    var i = Number(t.lMs);
+    if (this.Ih1 === 4 && i !== 4) {
+      ControllerHolder_1.ControllerHolder.BattleLinkController.OnExitLinkBurst();
+    }
+    this.Ih1 = i;
+    this.Er1 = t.On1;
   }
   GetNewLinkStatus() {
-    return this.th1
+    return this.Ih1;
   }
   GetLinkConfig() {
-    return ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(this.rr1)
+    return ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(this.Er1);
   }
-  GetRoleConfig(t) {
-    let i = void 0;
-    var e;
-    return i = this.CheckInNewBattleLink() ? (e = this.Nn1?.get(t) ?? 0, ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(e)) : ConfigManager_1.ConfigManager.DreamLinkConfig?.GetRoleConfig(t)
+  mUu(t) {
+    let e = undefined;
+    var i;
+    return e = this.CheckInNewBattleLink() ? (i = this.as1?.get(t) ?? 0, ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(i)) : ConfigManager_1.ConfigManager.DreamLinkConfig?.GetRoleConfig(t);
+  }
+  fUu(t) {
+    t = this.g6_?.get(t) ?? 0;
+    return ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(t);
+  }
+  CUu(t, e) {
+    if (e && e !== 0 && (this.g6_?.get(t) ?? 0) === e) {
+      return this.cUu?.get(t)?.LinkRoleData;
+    }
+    return this.uUu?.get(t);
+  }
+  pUu(t) {
+    let e = this.as1?.get(t);
+    return (e = this.g6_?.has(t) && this.vUu(t) ? this.g6_.get(t) : e) ?? 0;
   }
 }
 exports.BattleLinkModel = BattleLinkModel;

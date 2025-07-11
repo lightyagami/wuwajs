@@ -1,28 +1,56 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelAiDecorator = void 0;
+  value: true
+});
+exports.LevelAiDecorator = undefined;
 const LevelAiNode_1 = require("./LevelAiNode");
 class LevelAiDecorator extends LevelAiNode_1.LevelAiNode {
   constructor() {
-    super(...arguments), this.InverseCondition = !1, this.NotifyExecutionStart = !0, this.NotifyExecutionFinish = !0, this.CheckConditionOnPlanEnter = !0, this.CheckConditionOnPlanRecheck = !0, this.CheckConditionOnTick = !1, this.Params = void 0, this.pIe = 1
+    super(...arguments);
+    this.InverseCondition = false;
+    this.NotifyExecutionStart = true;
+    this.NotifyExecutionFinish = true;
+    this.CheckConditionOnPlanEnter = true;
+    this.CheckConditionOnPlanRecheck = true;
+    this.CheckConditionOnTick = false;
+    this.Params = undefined;
+    this.pIe = 1;
   }
   Serialize(t, e, i, s) {
-    super.Serialize(t, e, i), this.Params = s
+    super.Serialize(t, e, i);
+    this.Params = s;
   }
   GetWorldStateProxy(t) {
-    return 0 === t ? this.CharacterPlanComponent.WorldStateProxy : this.CharacterPlanComponent.WorldState
+    if (t === 0) {
+      return this.CharacterPlanComponent.WorldStateProxy;
+    } else {
+      return this.CharacterPlanComponent.WorldState;
+    }
   }
   WrappedExecutionStart() {
-    this.NotifyExecutionStart && this.OnExecutionStart()
+    if (this.NotifyExecutionStart) {
+      this.OnExecutionStart();
+    }
   }
   WrappedExecutionFinish(t) {
-    this.NotifyExecutionFinish && this.OnExecutionFinish(t)
+    if (this.NotifyExecutionFinish) {
+      this.OnExecutionFinish(t);
+    }
   }
   WrappedCheckCondition(t) {
     let e = 1;
     var i;
-    return this.vIe(t) ? (i = this.CheckCondition(t), i = this.InverseCondition ? !i : i, e = i ? 1 : 0, this.pIe = e, this.PrintDescription("Check Condition", ["CheckResult", e])) : 2 === t && (e = this.pIe), e
+    if (this.vIe(t)) {
+      i = this.CheckCondition(t);
+      i = this.InverseCondition ? !i : i;
+      e = i ? 1 : 0;
+      this.pIe = e;
+      this.PrintDescription("Check Condition", ["CheckResult", e]);
+    } else if (t === 2) {
+      e = this.pIe;
+    }
+    return e;
   }
   vIe(t) {
     switch (t) {
@@ -33,18 +61,19 @@ class LevelAiDecorator extends LevelAiNode_1.LevelAiNode {
       case 2:
         return this.CheckConditionOnTick;
       default:
-        return !1
+        return false;
     }
   }
   NotifyEventBasedCondition(t) {
-    var t = this.InverseCondition ? !t : t,
-      e = (this.pIe = t ? 1 : 0, this.CharacterPlanComponent.FindActiveDecoratorInfo(this));
-    return !!e && e.PlanInstance.NotifyEventBasedDecoratorCondition(this, t)
+    var t = this.InverseCondition ? !t : t;
+    this.pIe = t ? 1 : 0;
+    var e = this.CharacterPlanComponent.FindActiveDecoratorInfo(this);
+    return !!e && e.PlanInstance.NotifyEventBasedDecoratorCondition(this, t);
   }
   OnExecutionStart() {}
   OnExecutionFinish(t) {}
   CheckCondition(t) {
-    return !0
+    return true;
   }
 }
 exports.LevelAiDecorator = LevelAiDecorator;

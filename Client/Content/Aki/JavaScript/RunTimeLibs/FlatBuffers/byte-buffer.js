@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ByteBuffer = void 0;
+exports.ByteBuffer = undefined;
 const constants_js_1 = require("./constants");
 const utils_js_1 = require("./utils");
 const encoding_js_1 = require("./encoding");
@@ -134,9 +135,8 @@ class ByteBuffer {
    * start of a the root vtable).
    */
   getBufferIdentifier() {
-    if (this.bytes_.length < this.position_ + constants_js_1.SIZEOF_INT +
-      constants_js_1.FILE_IDENTIFIER_LENGTH) {
-      throw new Error('FlatBuffers: ByteBuffer is too short to contain an identifier.');
+    if (this.bytes_.length < this.position_ + constants_js_1.SIZEOF_INT + constants_js_1.FILE_IDENTIFIER_LENGTH) {
+      throw new Error("FlatBuffers: ByteBuffer is too short to contain an identifier.");
     }
     let result = "";
     for (let i = 0; i < constants_js_1.FILE_IDENTIFIER_LENGTH; i++) {
@@ -150,7 +150,11 @@ class ByteBuffer {
    */
   __offset(bb_pos, vtable_offset) {
     const vtable = bb_pos - this.readInt32(bb_pos);
-    return vtable_offset < this.readInt16(vtable) ? this.readInt16(vtable + vtable_offset) : 0;
+    if (vtable_offset < this.readInt16(vtable)) {
+      return this.readInt16(vtable + vtable_offset);
+    } else {
+      return 0;
+    }
   }
   /**
    * Initialize any Table-derived type to point to the union at the given offset.
@@ -176,10 +180,11 @@ class ByteBuffer {
     const length = this.readInt32(offset);
     offset += constants_js_1.SIZEOF_INT;
     const utf8bytes = this.bytes_.subarray(offset, offset + length);
-    if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES)
+    if (opt_encoding === encoding_js_1.Encoding.UTF8_BYTES) {
       return utf8bytes;
-    else
+    } else {
       return this.text_decoder_.decode(utf8bytes);
+    }
   }
   /**
    * Handle unions that can contain string as its member, if a Table-derived type then initialize it,
@@ -189,7 +194,7 @@ class ByteBuffer {
    * makes the behaviour of __union_with_string different compared to __union
    */
   __union_with_string(o, offset) {
-    if (typeof o === 'string') {
+    if (typeof o === "string") {
       return this.__string(offset);
     }
     return this.__union(o, offset);
@@ -214,8 +219,7 @@ class ByteBuffer {
   }
   __has_identifier(ident) {
     if (ident.length != constants_js_1.FILE_IDENTIFIER_LENGTH) {
-      throw new Error('FlatBuffers: file identifier must be length ' +
-        constants_js_1.FILE_IDENTIFIER_LENGTH);
+      throw new Error("FlatBuffers: file identifier must be length " + constants_js_1.FILE_IDENTIFIER_LENGTH);
     }
     for (let i = 0; i < constants_js_1.FILE_IDENTIFIER_LENGTH; i++) {
       if (ident.charCodeAt(i) != this.readInt8(this.position() + constants_js_1.SIZEOF_INT + i)) {

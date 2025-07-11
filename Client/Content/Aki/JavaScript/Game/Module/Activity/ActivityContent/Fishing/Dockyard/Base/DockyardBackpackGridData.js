@@ -1,29 +1,34 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DockyardBackpackGridData = void 0;
+  value: true
+});
+exports.DockyardBackpackGridData = undefined;
 const FishingDefine_1 = require("../../FishingDefine");
 class DockyardBackpackGridData {
   constructor(t) {
-    this.PosData = t, this.E9 = 1, this.LO_ = !1, this.pXl = FishingDefine_1.UNVALID_ITEM_BLOCK_ID
+    this.PosData = t;
+    this.E9 = 1;
+    this.LO_ = false;
+    this.pXl = FishingDefine_1.UNVALID_ITEM_BLOCK_ID;
   }
   get ItemBlockId() {
-    return this.pXl
+    return this.pXl;
   }
   get IsValid() {
-    return 0 !== this.E9
+    return this.E9 !== 0;
   }
   SetIsQuicklySell(t) {
-    this.LO_ = t
+    this.LO_ = t;
   }
   get IsQuicklySell() {
-    return this.LO_
+    return this.LO_;
   }
   SetGridType(t) {
-    this.E9 = t
+    this.E9 = t;
   }
   SetItemBlockId(t) {
-    this.pXl = t
+    this.pXl = t;
   }
 }
 exports.DockyardBackpackGridData = DockyardBackpackGridData;

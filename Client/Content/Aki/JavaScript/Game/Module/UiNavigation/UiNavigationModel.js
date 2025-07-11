@@ -1,144 +1,207 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiNavigationModel = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  InputSettingsManager_1 = require("../../InputSettings/InputSettingsManager"),
-  CursorData_1 = require("./Data/CursorData"),
-  UiNavigationGlobalData_1 = require("./New/UiNavigationGlobalData");
+  value: true
+});
+exports.UiNavigationModel = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const InputSettingsManager_1 = require("../../InputSettings/InputSettingsManager");
+const CursorData_1 = require("./Data/CursorData");
+const UiNavigationGlobalData_1 = require("./New/UiNavigationGlobalData");
 class UiNavigationModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.yBo = new CursorData_1.Cursor, this.IsOpenLog = !1, this.Nqo = new Map, this.Oqo = new Map, this.kqo = new Set, this.Fqo = void 0
+    super(...arguments);
+    this.yBo = new CursorData_1.Cursor();
+    this.IsOpenLog = false;
+    this.Nqo = new Map();
+    this.Oqo = new Map();
+    this.kqo = new Set();
+    this.Fqo = undefined;
   }
   InputControllerModeChange() {
-    for (const t of this.Nqo.values())
-      for (const e of t) e.RefreshMode();
-    for (const i of this.Oqo.values())
-      for (const r of i) r.RefreshMode();
-    for (const o of this.kqo) o.ChangeAlpha()
+    for (const t of this.Nqo.values()) {
+      for (const e of t) {
+        e.RefreshMode();
+      }
+    }
+    for (const i of this.Oqo.values()) {
+      for (const r of i) {
+        r.RefreshMode();
+      }
+    }
+    for (const o of this.kqo) {
+      o.ChangeAlpha();
+    }
   }
   OnClear() {
-    return this.ClearCursor(), UiNavigationGlobalData_1.UiNavigationGlobalData.ClearBlockListener(), !0
+    this.ClearCursor();
+    UiNavigationGlobalData_1.UiNavigationGlobalData.ClearBlockListener();
+    return true;
   }
   SetCursorFollowItem(t) {
-    this.yBo.SetFollowItem(t)
+    this.yBo.SetFollowItem(t);
   }
   SetIsUseMouse(t) {
-    this.yBo.SetIsUseMouse(t)
+    this.yBo.SetIsUseMouse(t);
   }
   MarkMoveInstantly() {
-    this.yBo.IsMoveInstantly = !0
+    this.yBo.IsMoveInstantly = true;
   }
   SetCursorActiveDelayTime(t) {
-    this.yBo.SetCursorActiveDelayTime(t)
+    this.yBo.SetCursorActiveDelayTime(t);
   }
   TrySetCursorActive(t) {
-    this.yBo.TrySetUseItemUiActive(t)
+    this.yBo.TrySetUseItemUiActive(t);
   }
   RefreshCursorActive() {
-    this.yBo.RefreshCursorActive()
+    this.yBo.RefreshCursorActive();
   }
   RepeatMove() {
-    this.yBo.RepeatMove()
+    this.yBo.RepeatMove();
   }
   ClearCursor() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "清理光标"), this.yBo.Clear()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigation", 10, "清理光标");
+    }
+    this.yBo.Clear();
   }
   OnLeaveLevel() {
-    return this.ClearCursor(), !0
+    this.ClearCursor();
+    return true;
   }
   Tick(t) {
-    this.yBo.Tick(t)
+    this.yBo.Tick(t);
   }
   AddActionHotKeyComponent(t, e) {
-    this.Nqo.set(t, e)
+    this.Nqo.set(t, e);
   }
   GetActionHotKeyComponentSet(t) {
-    return this.Nqo.get(t)
+    return this.Nqo.get(t);
   }
   GetOrAddActionHotKeyComponentSet(t) {
     let e = this.Nqo.get(t);
-    return e || (e = new Set, this.AddActionHotKeyComponent(t, e)), e
+    if (!e) {
+      e = new Set();
+      this.AddActionHotKeyComponent(t, e);
+    }
+    return e;
   }
   Vqo(t, e) {
     var i = [];
     InputSettingsManager_1.InputSettingsManager.GetActionBinding(t).GetCurrentPlatformKeyNameList(i);
-    for (const r of i)
-      if (e.has(r)) return r
+    for (const r of i) {
+      if (e.has(r)) {
+        return r;
+      }
+    }
   }
   rNa(t, e) {
     var i = [];
     InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t).GetCurrentPlatformKeyNameList(i);
-    for (const r of i)
-      if (e.has(r)) return r
+    for (const r of i) {
+      if (e.has(r)) {
+        return r;
+      }
+    }
   }
   Hqo(t) {
     var e = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(t);
     if (e) {
       var i = [];
-      if (e.GetGamepadKeyNameList(i), 0 < i.length) return i
+      e.GetGamepadKeyNameList(i);
+      if (i.length > 0) {
+        return i;
+      }
     }
     e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(t);
     if (e) {
       i = [];
-      if (e.GetCurrentPlatformKeyNameList(i), 0 < i.length) return i
+      e.GetCurrentPlatformKeyNameList(i);
+      if (i.length > 0) {
+        return i;
+      }
     }
   }
   oNa(t) {
     var t = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t);
-    if (t) return t.GetCurrentPlatformKeyNameList(t = []), t
+    if (t) {
+      t.GetCurrentPlatformKeyNameList(t = []);
+      return t;
+    }
   }
   CheckActionNameListInNavigation(t) {
     var e = this.Hqo(t);
     if (e) {
-      var i, r, o = new Set(e);
-      for ([i, r] of this.Nqo)
+      var i;
+      var r;
+      var o = new Set(e);
+      for ([i, r] of this.Nqo) {
         if (t !== i) {
           var n = this.Vqo(i, o);
-          if (n)
-            for (const s of r)
-              if (s.IsHotKeyActive() && s.IsOccupancyFightInput()) return Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiNavigation", 10, "非导航输入被导航输入占用", ["非导航输入", t], ["导航输入", i], ["交集的KeyName", n]), !0
+          if (n) {
+            for (const s of r) {
+              if (s.IsHotKeyActive() && s.IsOccupancyFightInput()) {
+                if (Log_1.Log.CheckDebug()) {
+                  Log_1.Log.Debug("UiNavigation", 10, "非导航输入被导航输入占用", ["非导航输入", t], ["导航输入", i], ["交集的KeyName", n]);
+                }
+                return true;
+              }
+            }
+          }
         }
+      }
     }
-    return !1
+    return false;
   }
   CheckAxisNameListInNavigation(t) {
     var e = this.oNa(t);
     if (e) {
-      var i, r, o = new Set(e);
-      for ([i, r] of this.Oqo)
-        if (t !== i)
-          if (this.rNa(i, o))
-            for (const n of r)
-              if (n.IsHotKeyActive() && "ShowOnly" !== n.GetHotKeyFunctionType()) return !0
+      var i;
+      var r;
+      var o = new Set(e);
+      for ([i, r] of this.Oqo) {
+        if (t !== i) {
+          if (this.rNa(i, o)) {
+            for (const n of r) {
+              if (n.IsHotKeyActive() && n.GetHotKeyFunctionType() !== "ShowOnly") {
+                return true;
+              }
+            }
+          }
+        }
+      }
     }
-    return !1
+    return false;
   }
   AddAxisHotKeyComponent(t, e) {
-    this.Oqo.set(t, e)
+    this.Oqo.set(t, e);
   }
   GetAxisHotKeyComponentSet(t) {
-    return this.Oqo.get(t)
+    return this.Oqo.get(t);
   }
   GetOrAddAxisHotKeyComponentsSet(t) {
     let e = this.Oqo.get(t);
-    return e || (e = new Set, this.AddAxisHotKeyComponent(t, e)), e
+    if (!e) {
+      e = new Set();
+      this.AddAxisHotKeyComponent(t, e);
+    }
+    return e;
   }
   AddPlatformListener(t) {
-    this.kqo.add(t)
+    this.kqo.add(t);
   }
   RemovePlatformListener(t) {
-    this.kqo.delete(t)
+    this.kqo.delete(t);
   }
   get GuideFocusListener() {
-    return this.Fqo
+    return this.Fqo;
   }
   SetGuideFocusListener(t) {
-    this.Fqo = t
+    this.Fqo = t;
   }
   ResetGuideFocusListener() {
-    this.Fqo = void 0
+    this.Fqo = undefined;
   }
 }
 exports.UiNavigationModel = UiNavigationModel;

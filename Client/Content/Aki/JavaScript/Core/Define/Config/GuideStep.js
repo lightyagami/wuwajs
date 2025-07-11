@@ -1,123 +1,179 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GuideStep = void 0;
+  value: true
+});
+exports.GuideStep = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class GuideStep {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Controller() {
-    return this.controller()
+    return this.controller();
   }
   get SuccessCondition() {
-    return this.successcondition()
+    return this.successcondition();
   }
   get FailureCondition() {
-    return this.failurecondition()
+    return this.failurecondition();
   }
   get TickCondition() {
-    return this.tickcondition()
+    return this.tickcondition();
   }
   get SkipCondition() {
-    return this.skipcondition()
+    return this.skipcondition();
   }
   get BreakCondition() {
-    return this.breakcondition()
+    return this.breakcondition();
   }
   get TimeScale() {
-    return this.timescale()
+    return this.timescale();
   }
   get ContentType() {
-    return this.contenttype()
+    return this.contenttype();
   }
   get ReportId() {
-    return this.reportid()
+    return this.reportid();
   }
   get Duration() {
-    return this.duration()
+    return this.duration();
   }
   get MinDuration() {
-    return this.minduration()
+    return this.minduration();
   }
   get ShowDelay() {
-    return this.showdelay()
+    return this.showdelay();
   }
   get IsDangerous() {
-    return this.isdangerous()
+    return this.isdangerous();
   }
   get IsTimeUpAsFinish() {
-    return this.istimeupasfinish()
+    return this.istimeupasfinish();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsGuideStep(t, i) {
-    return (i || new GuideStep).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new GuideStep()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   controller(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   successcondition() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   failurecondition() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tickcondition() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skipcondition() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   breakcondition() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   timescale() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   contenttype() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   reportid() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   duration() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 5e3
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 5000;
+    }
   }
   minduration() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readInt32(this.z7 + t) : -1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
   }
   showdelay() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isdangerous() {
     var t = this.J7.__offset(this.z7, 30);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   istimeupasfinish() {
     var t = this.J7.__offset(this.z7, 32);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.GuideStep = GuideStep;

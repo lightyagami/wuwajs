@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompareExploreLevelCondition = void 0;
+  value: true
+});
+exports.FbCompareExploreLevelCondition = undefined;
 class FbCompareExploreLevelCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._ch = !1, this.cch = void 0, this.Muh = !1, this.jGi = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._ch = false;
+    this.cch = undefined;
+    this.Muh = false;
+    this.jGi = 0;
   }
   static Create(t) {
-    if (t) return new FbCompareExploreLevelCondition(t)
+    if (t) {
+      return new FbCompareExploreLevelCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get Level() {
-    return this.Muh || (this.Muh = !0, this.jGi = this.FbDataInternal.level()), this.jGi
+    if (!this.Muh) {
+      this.Muh = true;
+      this.jGi = this.FbDataInternal.level();
+    }
+    return this.jGi;
   }
 }
 exports.FbCompareExploreLevelCondition = FbCompareExploreLevelCondition;

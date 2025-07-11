@@ -1,61 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DurabilityHeadState = void 0;
-const UE = require("ue"),
-  HeadStateViewBase_1 = require("./HeadStateViewBase");
+  value: true
+});
+exports.DurabilityHeadState = undefined;
+const UE = require("ue");
+const HeadStateViewBase_1 = require("./HeadStateViewBase");
 class DurabilityHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   constructor() {
-    super(...arguments), this.pnt = -0, this.Qlt = t => {
-      this.Xlt(!0)
-    }
+    super(...arguments);
+    this.pnt = -0;
+    this.Qlt = t => {
+      this.Xlt(true);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UISprite],
-      [2, UE.UISprite]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite]];
   }
   GetResourceId() {
-    return "UiItem_DestructionState_Prefab"
+    return "UiItem_DestructionState_Prefab";
   }
   ActiveBattleHeadState(t) {
-    super.ActiveBattleHeadState(t), t.OriginalHp && (this.CurrentBarPercent = t.OriginalHp / this.GetMaxHp()), this.Xlt(!0)
+    super.ActiveBattleHeadState(t);
+    if (t.OriginalHp) {
+      this.CurrentBarPercent = t.OriginalHp / this.GetMaxHp();
+    }
+    this.Xlt(true);
   }
   OnStart() {
-    this.pnt = this.GetSprite(2).GetParentAsUIItem().GetWidth()
+    this.pnt = this.GetSprite(2).GetParentAsUIItem().GetWidth();
   }
   BindCallback() {
-    super.BindCallback(), this.HeadStateData.BindOnSceneItemDurabilityChange(this.Qlt)
+    super.BindCallback();
+    this.HeadStateData.BindOnSceneItemDurabilityChange(this.Qlt);
   }
-  Xlt(t = !1) {
-    var e = this.GetHp(),
-      i = e / this.GetMaxHp();
-    this.Cst(i), t ? this.PlayBarAnimation(i) : this.StopBarLerpAnimation(), this.HeadStateData?.SetOriginalHp(e)
+  Xlt(t = false) {
+    var e = this.GetHp();
+    var i = e / this.GetMaxHp();
+    this.Cst(i);
+    if (t) {
+      this.PlayBarAnimation(i);
+    } else {
+      this.StopBarLerpAnimation();
+    }
+    this.HeadStateData?.SetOriginalHp(e);
   }
   Cst(t) {
-    this.GetSprite(0).SetFillAmount(t)
+    this.GetSprite(0).SetFillAmount(t);
   }
   OnBeginBarAnimation(t) {
-    this.ast(t)
+    this.ast(t);
   }
   StopBarLerpAnimation() {
-    super.StopBarLerpAnimation(), this.GetSprite(1).SetUIActive(!1)
+    super.StopBarLerpAnimation();
+    this.GetSprite(1).SetUIActive(false);
   }
   OnLerpBarBufferPercent(t) {
-    this.ast(t)
+    this.ast(t);
   }
   ast(t) {
-    var e = this.GetSprite(1),
-      e = (e.SetFillAmount(t), e.IsUIActiveSelf() || e.SetUIActive(!0), this.GetSprite(2));
-    e.SetStretchLeft(this.pnt * this.CurrentBarPercent - 2), e.SetStretchRight(this.pnt * (1 - t) - 2)
+    var e = this.GetSprite(1);
+    e.SetFillAmount(t);
+    if (!e.IsUIActiveSelf()) {
+      e.SetUIActive(true);
+    }
+    var e = this.GetSprite(2);
+    e.SetStretchLeft(this.pnt * this.CurrentBarPercent - 2);
+    e.SetStretchRight(this.pnt * (1 - t) - 2);
   }
   GetMaxHp() {
-    return this.HeadStateData.GetMaxDurable()
+    return this.HeadStateData.GetMaxDurable();
   }
   GetHp() {
-    return this.HeadStateData.GetDurable()
+    return this.HeadStateData.GetDurable();
   }
 }
 exports.DurabilityHeadState = DurabilityHeadState;

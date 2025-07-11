@@ -1,81 +1,135 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TreasureHuntModel = void 0;
-const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById"),
-  EntitySystem_1 = require("../../../Core/Entity/EntitySystem"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  Global_1 = require("../../Global"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  NEARBY_TRACK_DIST_DEFAULT = 2e3;
+  value: true
+});
+exports.TreasureHuntModel = undefined;
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const Global_1 = require("../../Global");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const NEARBY_TRACK_DIST_DEFAULT = 2000;
 class TreasureHuntModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.pHl = void 0, this.vHl = void 0, this.yHl = !1, this.fHl = 0, this.PWl = NEARBY_TRACK_DIST_DEFAULT, this.Moc = void 0, this.SHl = (e, t) => e.DistSquared - t.DistSquared
+    super(...arguments);
+    this.pHl = undefined;
+    this.vHl = undefined;
+    this.yHl = false;
+    this.fHl = 0;
+    this.PWl = NEARBY_TRACK_DIST_DEFAULT;
+    this.Moc = undefined;
+    this.SHl = (e, t) => e.DistSquared - t.DistSquared;
   }
   OnInit() {
     var e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("TreasureCompassTrackInfo");
-    return e && 0 < e.length && (this.PWl = e[0]), !0
+    if (e && e.length > 0) {
+      this.PWl = e[0];
+    }
+    return true;
   }
   OnLeaveLevel() {
-    return this.pHl = void 0, this.vHl = void 0, this.yHl = !1, this.fHl = 0, !(this.Moc = void 0)
+    this.pHl = undefined;
+    this.vHl = undefined;
+    this.yHl = false;
+    this.fHl = 0;
+    return !(this.Moc = undefined);
   }
   IsCompassActive() {
-    return this.yHl
+    return this.yHl;
   }
   SetCompassActive(e) {
     var t = e !== this.yHl;
-    this.yHl = e, t && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnUpdateCompassActive, e)
+    this.yHl = e;
+    if (t) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnUpdateCompassActive, e);
+    }
   }
   AddCompassTrack(e) {
-    var t, r, s, i, o, a, n;
-    this.pHl || (this.pHl = new Map), this.pHl.has(e) || (t = (o = EntitySystem_1.EntitySystem.Get(e))?.GetComponent(0)?.GetLocation(), o = o?.GetComponent(160), t && o && ((n = Vector_1.Vector.Create(0, 0, 0)).FromUeVector(t), t = o.ShowRange, r = o.CompassNearbyShowRange || this.PWl, s = o.CompassNearbyHideRange || this.PWl, i = .5 * (t + r), o = o.CompassDetectVehicleTypes, a = !!this.Moc && !!o?.includes(this.Moc), n = {
-      EntityId: e,
-      Location: n,
-      Range: t,
-      RangeSquared: Math.pow(t, 2),
-      NearbyTrackShowRange: r,
-      NearbyTrackShowRangeSquared: Math.pow(r, 2),
-      NearbyTrackHideRange: s,
-      NearbyTrackHideRangeSquared: Math.pow(s, 2),
-      HighlightRange: i,
-      HighlightRangeSquared: Math.pow(i, 2),
-      DetectVehicleTypes: o,
-      IsEnableCompassTracking: a
-    }, this.pHl.set(e, n), this.vHl = [...this.pHl.values()], ControllerHolder_1.ControllerHolder.TreasureHuntController.SetCompassActive(!0, 1)))
+    var t;
+    var r;
+    var s;
+    var i;
+    var o;
+    var a;
+    var n;
+    this.pHl ||= new Map();
+    if (!this.pHl.has(e)) {
+      t = (o = EntitySystem_1.EntitySystem.Get(e))?.GetComponent(0)?.GetLocation();
+      o = o?.GetComponent(160);
+      if (t && o) {
+        (n = Vector_1.Vector.Create(0, 0, 0)).FromUeVector(t);
+        t = o.ShowRange;
+        r = o.CompassNearbyShowRange || this.PWl;
+        s = o.CompassNearbyHideRange || this.PWl;
+        i = (t + r) * 0.5;
+        o = o.CompassDetectVehicleTypes;
+        a = !!this.Moc && !!o?.includes(this.Moc);
+        n = {
+          EntityId: e,
+          Location: n,
+          Range: t,
+          RangeSquared: Math.pow(t, 2),
+          NearbyTrackShowRange: r,
+          NearbyTrackShowRangeSquared: Math.pow(r, 2),
+          NearbyTrackHideRange: s,
+          NearbyTrackHideRangeSquared: Math.pow(s, 2),
+          HighlightRange: i,
+          HighlightRangeSquared: Math.pow(i, 2),
+          DetectVehicleTypes: o,
+          IsEnableCompassTracking: a
+        };
+        this.pHl.set(e, n);
+        this.vHl = [...this.pHl.values()];
+        ControllerHolder_1.ControllerHolder.TreasureHuntController.SetCompassActive(true, 1);
+      }
+    }
   }
   RemoveCompassTrack(e) {
-    this.pHl && this.pHl.has(e) && (this.pHl.delete(e), this.vHl = [...this.pHl.values()], 0 === this.vHl.length) && ControllerHolder_1.ControllerHolder.TreasureHuntController.SetCompassActive(!1, 1)
+    if (this.pHl && this.pHl.has(e) && (this.pHl.delete(e), this.vHl = [...this.pHl.values()], this.vHl.length === 0)) {
+      ControllerHolder_1.ControllerHolder.TreasureHuntController.SetCompassActive(false, 1);
+    }
   }
   IsEnableCompassTrack(e) {
-    return "Gongduola" === e || "FishingBoat" === e
+    return e === "Gongduola" || e === "FishingBoat";
   }
   IsInTracking(e) {
-    return !!this.pHl?.has(e)
+    return !!this.pHl?.has(e);
   }
   SetNearbyTrack(e) {
-    this.fHl = e
+    this.fHl = e;
   }
   ClearNearbyTrack() {
-    this.fHl = 0
+    this.fHl = 0;
   }
   GetTreasureMap() {
-    return this.pHl
+    return this.pHl;
   }
-  GetTreasureList(e = !0) {
+  GetTreasureList(e = true) {
     if (this.pHl && this.vHl) {
       var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy;
       if (t) {
-        for (const r of this.vHl) r.DistSquared = Vector_1.Vector.DistSquaredXY(t, r.Location), r.IsNearbyTracking = this.fHl === r.EntityId;
-        return e && this.vHl.sort(this.SHl), this.vHl
+        for (const r of this.vHl) {
+          r.DistSquared = Vector_1.Vector.DistSquaredXY(t, r.Location);
+          r.IsNearbyTracking = this.fHl === r.EntityId;
+        }
+        if (e) {
+          this.vHl.sort(this.SHl);
+        }
+        return this.vHl;
       }
     }
   }
   SetDetectVehicleType(e) {
-    if (this.Moc = e, this.vHl)
-      for (const t of this.vHl) t.IsEnableCompassTracking = !!e && !!t.DetectVehicleTypes?.includes(e)
+    this.Moc = e;
+    if (this.vHl) {
+      for (const t of this.vHl) {
+        t.IsEnableCompassTracking = !!e && !!t.DetectVehicleTypes?.includes(e);
+      }
+    }
   }
 }
 exports.TreasureHuntModel = TreasureHuntModel;

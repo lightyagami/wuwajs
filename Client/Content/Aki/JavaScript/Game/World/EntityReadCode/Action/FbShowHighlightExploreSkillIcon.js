@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbShowHighlightExploreSkillIcon = void 0;
+  value: true
+});
+exports.FbShowHighlightExploreSkillIcon = undefined;
 class FbShowHighlightExploreSkillIcon {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.sbh = !1, this.abh = 0, this.I_h = !1, this.y6o = 0, this.UAh = !1, this.DAh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.sbh = false;
+    this.abh = 0;
+    this.I_h = false;
+    this.y6o = 0;
+    this.UAh = false;
+    this.DAh = false;
   }
   static Create(t) {
-    if (t) return new FbShowHighlightExploreSkillIcon(t)
+    if (t) {
+      return new FbShowHighlightExploreSkillIcon(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get SkillType() {
-    return this.sbh || (this.sbh = !0, this.abh = this.FbDataInternal.skillType()), this.abh
+    if (!this.sbh) {
+      this.sbh = true;
+      this.abh = this.FbDataInternal.skillType();
+    }
+    return this.abh;
   }
   get Duration() {
-    return this.I_h || (this.I_h = !0, this.y6o = this.FbDataInternal.duration()), this.y6o
+    if (!this.I_h) {
+      this.I_h = true;
+      this.y6o = this.FbDataInternal.duration();
+    }
+    return this.y6o;
   }
   get IsSwitchBack() {
-    return this.UAh || (this.UAh = !0, this.DAh = this.FbDataInternal.isSwitchBack()), this.DAh
+    if (!this.UAh) {
+      this.UAh = true;
+      this.DAh = this.FbDataInternal.isSwitchBack();
+    }
+    return this.DAh;
   }
 }
 exports.FbShowHighlightExploreSkillIcon = FbShowHighlightExploreSkillIcon;

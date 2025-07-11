@@ -1,55 +1,101 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RewardController = void 0;
-const AudioSystem_1 = require("../../../Core/Audio/AudioSystem"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  IComponent_1 = require("../../../UniverseEditor/Interface/IComponent"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiControllerBase_1 = require("../../Ui/Base/UiControllerBase"),
-  RewardModel_1 = require("./RewardModel");
+  value: true
+});
+exports.RewardController = undefined;
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const RewardModel_1 = require("./RewardModel");
 class RewardController extends UiControllerBase_1.UiControllerBase {
   static OnInit() {
-    return RewardController.Model = RewardModel_1.RewardModel, Log_1.Log.CheckInfo() && Log_1.Log.Info("Reward", 8, "初始化"), !0
+    RewardController.Model = RewardModel_1.RewardModel;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Reward", 8, "初始化");
+    }
+    return true;
   }
   static OnClear() {
-    return Log_1.Log.CheckInfo() && Log_1.Log.Info("Reward", 8, "初始化"), !0
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Reward", 8, "初始化");
+    }
+    return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21126, this.fao)
+    Net_1.Net.Register(24389, this.fao);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21126)
+    Net_1.Net.UnRegister(24389);
   }
   static PickUpFightDrop(o, t, n) {
     var e;
-    return RewardController.pao.has(o) ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 36, "Pick up drop has locked", ["creatureDataId", o]), !1) : ((e = Protocol_1.Aki.Protocol.HZn.create()).DHn = MathUtils_1.MathUtils.NumberToLong(o), RewardController.pao.add(o), Net_1.Net.Call(27920, Protocol_1.Aki.Protocol.HZn.create(e), e => {
-      if (RewardController.pao.delete(o), e)
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) n && n(!1), ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15198), e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrPkgCapacityNotEnough && AudioSystem_1.AudioSystem.PostEvent("ui_pickup_capacity_full");
-        else {
-          n && n(!0);
-          e = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(t);
-          if (e) {
-            e = (0, IComponent_1.getComponent)(e.ComponentsData, "RewardComponent");
+    if (RewardController.pao.has(o)) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Interaction", 36, "Pick up drop has locked", ["creatureDataId", o]);
+      }
+      return false;
+    } else {
+      (e = Protocol_1.Aki.Protocol.HZn.create()).DHn = MathUtils_1.MathUtils.NumberToLong(o);
+      RewardController.pao.add(o);
+      Net_1.Net.Call(20508, Protocol_1.Aki.Protocol.HZn.create(e), e => {
+        RewardController.pao.delete(o);
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            if (n) {
+              n(false);
+            }
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29636);
+            if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrPkgCapacityNotEnough) {
+              AudioSystem_1.AudioSystem.PostEvent("ui_pickup_capacity_full");
+            }
+          } else {
+            if (n) {
+              n(true);
+            }
+            e = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(t);
             if (e) {
-              e = e.RewardId, e = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e).DropPreview;
-              if (0 < e.size)
-                for (const r of e.keys()) EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnDropItemSuccess, r)
+              e = (0, IComponent_1.getComponent)(e.ComponentsData, "RewardComponent");
+              if (e) {
+                e = e.RewardId;
+                e = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e).DropPreview;
+                if (e.size > 0) {
+                  for (const r of e.keys()) {
+                    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnDropItemSuccess, r);
+                  }
+                }
+              }
+            }
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess);
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Reward", 8, "拾取掉落返回", ["掉落物实体Id", o]);
             }
           }
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Reward", 8, "拾取掉落返回", ["掉落物实体Id", o])
+        } else {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Interaction", 36, "Pick up drop call send failed", ["creatureDataId", o]);
+          }
+          if (n) {
+            n(false);
+          }
         }
-      else Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 36, "Pick up drop call send failed", ["creatureDataId", o]), n && n(!1)
-    }), !0)
+      });
+      return true;
+    }
   }
-}(exports.RewardController = RewardController).Model = RewardModel_1.RewardModel, RewardController.pao = new Set, RewardController.fao = e => {
-  RewardController.HandleDropInBagInfo(e.PPs, e.P6n)
-}, RewardController.HandleDropInBagInfo = (e, r) => {};
-//# sourceMappingURL=RewardController.js.map
+}
+(exports.RewardController = RewardController).Model = RewardModel_1.RewardModel;
+RewardController.pao = new Set();
+RewardController.fao = e => {
+  RewardController.HandleDropInBagInfo(e.PPs, e.P6n);
+};
+RewardController.HandleDropInBagInfo = (e, r) => {}; //# sourceMappingURL=RewardController.js.map

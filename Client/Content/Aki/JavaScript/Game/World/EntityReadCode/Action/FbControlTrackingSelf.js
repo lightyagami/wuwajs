@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbControlTrackingSelf = void 0;
+  value: true
+});
+exports.FbControlTrackingSelf = undefined;
 class FbControlTrackingSelf {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
   }
   static Create(t) {
-    if (t) return new FbControlTrackingSelf(t)
+    if (t) {
+      return new FbControlTrackingSelf(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
 }
 exports.FbControlTrackingSelf = FbControlTrackingSelf;

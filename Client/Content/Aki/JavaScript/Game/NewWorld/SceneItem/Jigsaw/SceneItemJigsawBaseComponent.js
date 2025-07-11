@@ -1,104 +1,232 @@
 "use strict";
-var SceneItemJigsawBaseComponent_1, __decorate = this && this.__decorate || function(t, i, s, e) {
-  var h, o = arguments.length,
-    r = o < 3 ? i : null === e ? e = Object.getOwnPropertyDescriptor(i, s) : e;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) r = Reflect.decorate(t, i, s, e);
-  else
-    for (var n = t.length - 1; 0 <= n; n--)(h = t[n]) && (r = (o < 3 ? h(r) : 3 < o ? h(i, s, r) : h(i, s)) || r);
-  return 3 < o && r && Object.defineProperty(i, s, r), r
+
+var SceneItemJigsawBaseComponent_1;
+var __decorate = this && this.__decorate || function (t, i, s, e) {
+  var h;
+  var o = arguments.length;
+  var r = o < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    r = Reflect.decorate(t, i, s, e);
+  } else {
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (h = t[n]) {
+        r = (o < 3 ? h(r) : o > 3 ? h(i, s, r) : h(i, s)) || r;
+      }
+    }
+  }
+  if (o > 3 && r) {
+    Object.defineProperty(i, s, r);
+  }
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneItemJigsawBaseComponent = exports.JigsawIndex = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  EntityComponent_1 = require("../../../../Core/Entity/EntityComponent"),
-  EntitySystem_1 = require("../../../../Core/Entity/EntitySystem"),
-  RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent"),
-  Net_1 = require("../../../../Core/Net/Net"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  GameplayTagUtils_1 = require("../../../../Core/Utils/GameplayTagUtils"),
-  Rotator_1 = require("../../../../Core/Utils/Math/Rotator"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  IAction_1 = require("../../../../UniverseEditor/Interface/IAction"),
-  IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent"),
-  CameraController_1 = require("../../../Camera/CameraController"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  TicTacToeGame_1 = require("../../../LevelGamePlay/Chess/TicTacToe/TicTacToeGame"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  COS_45 = Math.cos(.25 * Math.PI),
-  TIMER_PERIOD = 500;
+  value: true
+});
+exports.SceneItemJigsawBaseComponent = exports.JigsawIndex = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
+const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const Net_1 = require("../../../../Core/Net/Net");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const GameplayTagUtils_1 = require("../../../../Core/Utils/GameplayTagUtils");
+const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const IAction_1 = require("../../../../UniverseEditor/Interface/IAction");
+const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
+const CameraController_1 = require("../../../Camera/CameraController");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TicTacToeGame_1 = require("../../../LevelGamePlay/Chess/TicTacToe/TicTacToeGame");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const COS_45 = Math.cos(Math.PI * 0.25);
+const TIMER_PERIOD = 500;
 class JigsawIndex {
   constructor(t, i) {
-    this.Row = 0, this.Col = 0, this.jEe = void 0, this.hnr = void 0, this.lnr = void 0, this.Row = t, this.Col = i
+    this.Row = 0;
+    this.Col = 0;
+    this.jEe = undefined;
+    this.hnr = undefined;
+    this.lnr = undefined;
+    this.Row = t;
+    this.Col = i;
   }
   DeepCopy(t) {
-    this.Row = t.Row, this.Col = t.Col
+    this.Row = t.Row;
+    this.Col = t.Col;
   }
   SetValue(t, i) {
-    this.Row = t, this.Col = i
+    this.Row = t;
+    this.Col = i;
   }
   Equels(t) {
-    return this.Row === t.Row && this.Col === t.Col
+    return this.Row === t.Row && this.Col === t.Col;
   }
   GetKey() {
-    return this.jEe && this.hnr === this.Row && this.lnr === this.Col || (this.jEe = this.Row.toString() + "," + this.Col.toString(), this.hnr = this.Row, this.lnr = this.Col), this.jEe
+    if (!this.jEe || this.hnr !== this.Row || this.lnr !== this.Col) {
+      this.jEe = this.Row.toString() + "," + this.Col.toString();
+      this.hnr = this.Row;
+      this.lnr = this.Col;
+    }
+    return this.jEe;
   }
   static GenObjFromKey(t) {
     t = t.split(",");
-    return new JigsawIndex(Number(t[0]), Number(t[1]))
+    return new JigsawIndex(Number(t[0]), Number(t[1]));
   }
   static GenKey(t, i) {
-    return t.toString() + "," + i.toString()
+    return t.toString() + "," + i.toString();
   }
 }
 exports.JigsawIndex = JigsawIndex;
 class JigsawState {
   constructor(t, i, s) {
-    this.State = 0, this.Occupancy = !1, this.ActivatedNum = 0, this.State = t ?? 0, this.Occupancy = i ?? !1, this.ActivatedNum = s ?? 0
+    this.State = 0;
+    this.Occupancy = false;
+    this.ActivatedNum = 0;
+    this.State = t ?? 0;
+    this.Occupancy = i ?? false;
+    this.ActivatedNum = s ?? 0;
   }
 }
 class BoxTraceCheckData {
   constructor(t, i, s) {
-    this.Location = Vector_1.Vector.Create(), this.TagId = 0, this.CurIndex = void 0, this.Location = t, this.TagId = i, this.CurIndex = s
+    this.Location = Vector_1.Vector.Create();
+    this.TagId = 0;
+    this.CurIndex = undefined;
+    this.Location = t;
+    this.TagId = i;
+    this.CurIndex = s;
   }
 }
 let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneItemJigsawBaseComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.Config = void 0, this.EIe = void 0, this.Hte = void 0, this.fcn = void 0, this.pcn = new Map, this.vcn = new Map, this.Mcn = new Map, this.Ecn = void 0, this.Scn = void 0, this.ycn = 0, this.ui = !1, this.Icn = new Set, this.Tcn = new Map, this.Lcn = void 0, this._Ga = void 0, this.Dcn = (t, i, s) => {
+    super(...arguments);
+    this.Config = undefined;
+    this.EIe = undefined;
+    this.Hte = undefined;
+    this.fcn = undefined;
+    this.pcn = new Map();
+    this.vcn = new Map();
+    this.Mcn = new Map();
+    this.Ecn = undefined;
+    this.Scn = undefined;
+    this.ycn = 0;
+    this.ui = false;
+    this.Icn = new Set();
+    this.Tcn = new Map();
+    this.Lcn = undefined;
+    this._Ga = undefined;
+    this.Dcn = (t, i, s) => {
       var e = i.Entity.GetComponent(0).GetPbDataId();
-      this.Icn.has(e) && this.Rcn(i), this._Ga && this.P5a(e)
-    }, this.Ucn = () => {
-      this.Acn(), this.Pcn()
-    }, this.Hfc = !1, this.fFl = !1, this.vFl = void 0, this.SFl = !0, this.xcn = () => {
-      !this.Tcn.size && this.Lcn && (TimerSystem_1.TimerSystem.Remove(this.Lcn), this.Lcn = void 0);
+      if (this.Icn.has(e)) {
+        this.Rcn(i);
+      }
+      if (this._Ga) {
+        this.P5a(e);
+      }
+    };
+    this.Ucn = () => {
+      this.Acn();
+      this.Pcn();
+    };
+    this.Hfc = false;
+    this.fFl = false;
+    this.vFl = undefined;
+    this.SFl = true;
+    this.xcn = () => {
+      if (!this.Tcn.size && this.Lcn) {
+        TimerSystem_1.TimerSystem.Remove(this.Lcn);
+        this.Lcn = undefined;
+      }
       for (var [t, i] of this.Tcn) {
         var s = t.GetComponent(155);
-        if (s?.Valid)
-          for (const e of i) s.StartBoxTrace(e.Location) ? this.fcn.HasTagByIndex(e.CurIndex, e.TagId) && this.fcn.RemoveTagsByIndex(e.CurIndex, e.TagId) : this.fcn.HasTagByIndex(e.CurIndex, e.TagId) || this.fcn.AddTagsByIndex(e.CurIndex, e.TagId)
+        if (s?.Valid) {
+          for (const e of i) {
+            if (s.StartBoxTrace(e.Location)) {
+              if (this.fcn.HasTagByIndex(e.CurIndex, e.TagId)) {
+                this.fcn.RemoveTagsByIndex(e.CurIndex, e.TagId);
+              }
+            } else if (!this.fcn.HasTagByIndex(e.CurIndex, e.TagId)) {
+              this.fcn.AddTagsByIndex(e.CurIndex, e.TagId);
+            }
+          }
+        }
       }
-    }, this.uGa = void 0, this.cGa = void 0, this.mGa = void 0, this.dGa = void 0, this.CGa = void 0, this.wkl = !1, this.ewl = !1, this.gGa = (t, i) => {
-      var s = this.Config.JigsawConfig.Column,
-        e = t % s,
-        h = Math.floor(t / s),
-        o = this.pGa,
-        h = (o.SetValue(h, e), o.GetKey());
-      this.Mcn.has(h) && (e = this.Mcn.get(h)) && (o = i % s, h = Math.floor(i / s), (s = this.pGa).SetValue(h, o), h = s.GetKey(), this.Mcn.has(h) || (this.twl = !0, this.wkl = !0, this.Mcn.delete(e.PutDownIndex.GetKey()), this.Mcn.set(s.GetKey(), e), o = e.Entity.GetComponent(255), h = this.Config?.JigsawConfig.Shape === IAction_1.EJigsawShape.Circle, o && (this._Ga.CheckIsCenter(t) || this._Ga.CheckIsCenter(i) || !h ? o.OnTicTacToePieceMove(s, this.vGa) : (this.MGa(t, i), o.OnTicTacToePieceMove(s, this.vGa, this.uGa, this.cGa, this.mGa)))))
-    }, this.vGa = (t, i, s) => {
-      this.oGa && t && this.oGa(t), this.fGa(i, s)
-    }, this.SGa = void 0, this.pGa = void 0, this.EGa = new Map, this.yGa = new Map, this.IGa = void 0, this.iwl = new Set, this.w5a = new Set, this.B5a = new Set, this.Ypc = () => {
-      !this._Ga || 0 !== this.w5a.size || this.fcn && !this.fcn.GetIsFinish() || this.zpc()
-    }, this.w1h = void 0, this.oGa = void 0, this.zll = void 0, this.vAl = void 0, this.QPl = void 0, this.KPl = void 0, this.mJl = !1
+    };
+    this.uGa = undefined;
+    this.cGa = undefined;
+    this.mGa = undefined;
+    this.dGa = undefined;
+    this.CGa = undefined;
+    this.wkl = false;
+    this.ewl = false;
+    this.gGa = (t, i) => {
+      var s = this.Config.JigsawConfig.Column;
+      var e = t % s;
+      var h = Math.floor(t / s);
+      var o = this.pGa;
+      o.SetValue(h, e);
+      var h = o.GetKey();
+      if (this.Mcn.has(h) && (e = this.Mcn.get(h))) {
+        o = i % s;
+        h = Math.floor(i / s);
+        (s = this.pGa).SetValue(h, o);
+        h = s.GetKey();
+        if (!this.Mcn.has(h)) {
+          this.twl = true;
+          this.wkl = true;
+          this.Mcn.delete(e.PutDownIndex.GetKey());
+          this.Mcn.set(s.GetKey(), e);
+          o = e.Entity.GetComponent(255);
+          h = this.Config?.JigsawConfig.Shape === IAction_1.EJigsawShape.Circle;
+          if (o) {
+            if (this._Ga.CheckIsCenter(t) || this._Ga.CheckIsCenter(i) || !h) {
+              o.OnTicTacToePieceMove(s, this.vGa);
+            } else {
+              this.MGa(t, i);
+              o.OnTicTacToePieceMove(s, this.vGa, this.uGa, this.cGa, this.mGa);
+            }
+          }
+        }
+      }
+    };
+    this.vGa = (t, i, s) => {
+      if (this.oGa && t) {
+        this.oGa(t);
+      }
+      this.fGa(i, s);
+    };
+    this.SGa = undefined;
+    this.pGa = undefined;
+    this.EGa = new Map();
+    this.yGa = new Map();
+    this.IGa = undefined;
+    this.iwl = new Set();
+    this.w5a = new Set();
+    this.B5a = new Set();
+    this.Ypc = () => {
+      if (!!this._Ga && this.w5a.size === 0 && (!this.fcn || !!this.fcn.GetIsFinish())) {
+        this.zpc();
+      }
+    };
+    this.w1h = undefined;
+    this.oGa = undefined;
+    this.zll = undefined;
+    this.vAl = undefined;
+    this.QPl = undefined;
+    this.KPl = undefined;
+    this.mJl = false;
   }
   get IsTicTacToe() {
-    return void 0 !== this._Ga
+    return this._Ga !== undefined;
   }
   OnInitData(t) {
     t = t.GetParam(SceneItemJigsawBaseComponent_1)[0];
@@ -107,174 +235,299 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       var i = new JigsawIndex(s.Index.RowIndex, s.Index.ColumnIndex);
       switch (s.InitState) {
         case IAction_1.EJigsawPieceState.Disable:
-          this.pcn.set(i.GetKey(), new JigsawState);
+          this.pcn.set(i.GetKey(), new JigsawState());
           break;
         case IAction_1.EJigsawPieceState.Correct:
           this.pcn.set(i.GetKey(), new JigsawState(1));
           break;
         case IAction_1.EJigsawPieceState.Incorrect:
-          this.pcn.set(i.GetKey(), new JigsawState(2))
+          this.pcn.set(i.GetKey(), new JigsawState(2));
       }
     }
-    return !0
+    return true;
   }
   OnStart() {
-    return this.EIe = this.Entity.GetComponent(0), this.Hte = this.Entity.GetComponent(202), this.fcn = this.Entity.GetComponent(159), !0
+    this.EIe = this.Entity.GetComponent(0);
+    this.Hte = this.Entity.GetComponent(202);
+    this.fcn = this.Entity.GetComponent(159);
+    return true;
   }
   OnActivate() {
-    if (this.wcn(), 0 < this.EIe.OccupiedGridInfo.size) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.Dcn), this.Icn.clear();
+    this.wcn();
+    if (this.EIe.OccupiedGridInfo.size > 0) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.Dcn);
+      this.Icn.clear();
       for (const e of this.EIe.OccupiedGridInfo) {
         var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e[0]);
-        this.Icn.add(e[0]), t?.IsInit && this.Rcn(t)
+        this.Icn.add(e[0]);
+        if (t?.IsInit) {
+          this.Rcn(t);
+        }
       }
     }
-    if (this.Config.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece && this.TGa(), 0 < this.EIe.DynamicGridInfo.length)
+    if (this.Config.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece) {
+      this.TGa();
+    }
+    if (this.EIe.DynamicGridInfo.length > 0) {
       for (const h of this.EIe.DynamicGridInfo) {
-        var i = new JigsawIndex(h.zTs, h.ZTs),
-          s = MathUtils_1.MathUtils.LongToNumber(h.eLs);
-        this.DynamicModifySocketState(i, s)
+        var i = new JigsawIndex(h.zTs, h.ZTs);
+        var s = MathUtils_1.MathUtils.LongToNumber(h.eLs);
+        this.DynamicModifySocketState(i, s);
       }
-    this.SFl = this.EIe.BoardCanMove
+    }
+    this.SFl = this.EIe.BoardCanMove;
   }
   OnEnd() {
-    return EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.Dcn) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Dcn), this.Lcn && (TimerSystem_1.TimerSystem.Remove(this.Lcn), this.Lcn = void 0), !0
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.AddEntity, this.Dcn)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Dcn);
+    }
+    if (this.Lcn) {
+      TimerSystem_1.TimerSystem.Remove(this.Lcn);
+      this.Lcn = undefined;
+    }
+    return true;
   }
   DeleteItem(t) {
     t = t.PutDownIndex.GetKey();
-    this.Mcn.has(t) && this.Mcn.delete(t)
+    if (this.Mcn.has(t)) {
+      this.Mcn.delete(t);
+    }
   }
   Rcn(t) {
-    var i = t.Entity.GetComponent(138),
-      s = t.Entity.GetComponent(0),
-      e = this.EIe.OccupiedGridInfo.get(s.GetPbDataId()).l8n,
-      h = new JigsawIndex(e.N5n, e.F5n),
-      e = (i.Rotation = e.V5n, this.GetBlockLocationByIndex(h)),
-      o = Rotator_1.Rotator.Create(0, -i.Rotation, 0).Quaternion(),
-      o = this.Hte?.ActorTransform.TransformRotation(o.ToUeQuat()).Rotator(),
-      e = (t.Entity.GetComponent(202)?.SetActorLocationAndRotation(e.ToUeVector(), o), this.Entity.GetComponent(161)),
-      o = e?.Config.Config.Type ?? IComponent_1.EItemFoundation.BuildingBlock,
-      t = t.Entity.GetComponent(156);
-    t && (t.ActivatedOutlet = e, s.RelationId = this.EIe.GetPbDataId()), this.PutDownItem(i, h, o)
+    var i = t.Entity.GetComponent(138);
+    var s = t.Entity.GetComponent(0);
+    var e = this.EIe.OccupiedGridInfo.get(s.GetPbDataId()).l8n;
+    var h = new JigsawIndex(e.N5n, e.F5n);
+    i.Rotation = e.V5n;
+    var e = this.GetBlockLocationByIndex(h);
+    var o = Rotator_1.Rotator.Create(0, -i.Rotation, 0).Quaternion();
+    var o = this.Hte?.ActorTransform.TransformRotation(o.ToUeQuat()).Rotator();
+    t.Entity.GetComponent(202)?.SetActorLocationAndRotation(e.ToUeVector(), o);
+    var e = this.Entity.GetComponent(161);
+    var o = e?.Config.Config.Type ?? IComponent_1.EItemFoundation.BuildingBlock;
+    var t = t.Entity.GetComponent(156);
+    if (t) {
+      t.ActivatedOutlet = e;
+      s.RelationId = this.EIe.GetPbDataId();
+    }
+    this.PutDownItem(i, h, o);
   }
   wcn() {
     if (this.Config.ModelId) {
-      var s = [],
-        e = new Map;
-      for (let i = 0; i < this.Config.JigsawConfig.Row; i++)
+      var s = [];
+      var e = new Map();
+      for (let i = 0; i < this.Config.JigsawConfig.Row; i++) {
         for (let t = 0; t < this.Config.JigsawConfig.Column; t++) {
-          var h = new JigsawIndex(i, t),
-            o = [];
-          if (this.Entity.GetComponent(133).IsInState(4)) switch (this.GetBlockStateByIndex(h)) {
-            case 2:
-              o.push(-1375820440), s.push(h);
-              break;
-            case 1:
-              o.push(-894208705), o.push(1248700469), s.push(h)
-          } else switch (this.GetBlockStateByIndex(h)) {
-            case 2:
-              o.push(-1375820440), o.push(-2002333932), s.push(h);
-              break;
-            case 1:
-              o.push(-894208705), o.push(-1270526641), s.push(h)
+          var h = new JigsawIndex(i, t);
+          var o = [];
+          if (this.Entity.GetComponent(133).IsInState(4)) {
+            switch (this.GetBlockStateByIndex(h)) {
+              case 2:
+                o.push(-1375820440);
+                s.push(h);
+                break;
+              case 1:
+                o.push(-894208705);
+                o.push(1248700469);
+                s.push(h);
+            }
+          } else {
+            switch (this.GetBlockStateByIndex(h)) {
+              case 2:
+                o.push(-1375820440);
+                o.push(-2002333932);
+                s.push(h);
+                break;
+              case 1:
+                o.push(-894208705);
+                o.push(-1270526641);
+                s.push(h);
+            }
           }
-          e.set(h.GetKey(), o)
+          e.set(h.GetKey(), o);
         }
-      this.fcn.InitGenerateInfo(this.Config.ModelId.toString(), s, t => this.GetBlockLocationByIndex(t, !1), e, this.Ypc)
-    } else this.fcn.SetIsFinish(!0)
-  }
-  GetBlockLocationByIndex(s, e = !0) {
-    if (!(s.Row >= this.Config.JigsawConfig.Row || s.Col >= this.Config.JigsawConfig.Column)) {
-      var h = this.Config?.JigsawConfig.Shape,
-        o = this.vcn.get(s.GetKey());
-      if (void 0 !== o && e) return o;
-      var o = this.Config.JigsawConfig.Row,
-        r = this.Config.JigsawConfig.Column,
-        o = new JigsawIndex(o / 2 - .5, r / 2 - .5),
-        r = o.Row - s.Row,
-        o = o.Col - s.Col,
-        n = this.Config.JigsawConfig.Size;
-      let t = Vector2D_1.Vector2D.Create(r, o),
-        i = (h === IAction_1.EJigsawShape.Circle && (t = Vector2D_1.Vector2D.Create(-o, r), h = Math.max(Math.abs(r), Math.abs(o)), 0 < t.Size()) && (r = h / t.Size(), t = Vector2D_1.Vector2D.Create(r, r).MultiplyEqual(t)), t = Vector2D_1.Vector2D.Create(n, n).MultiplyEqual(t), Vector_1.Vector.ZeroVectorProxy);
-      e && (i = Vector_1.Vector.Create(this.Config.PlaceOffset.X ?? 0, this.Config.PlaceOffset.Y ?? 0, this.Config.PlaceOffset.Z ?? 0));
-      o = new UE.VectorDouble(t.X + i.X, -t.Y + i.Y, i.Z), h = Vector_1.Vector.Create(0, 0, 0);
-      return h.FromUeVector(this.Hte.ActorTransform.TransformPosition(o)), e && this.vcn.set(s.GetKey(), h), h
+      }
+      this.fcn.InitGenerateInfo(this.Config.ModelId.toString(), s, t => this.GetBlockLocationByIndex(t, false), e, this.Ypc);
+    } else {
+      this.fcn.SetIsFinish(true);
     }
   }
-  CalcJigsawSocketLocation(t = !1) {
-    var i, s, e, h, o, r, n, a = Vector_1.Vector.Create(CameraController_1.CameraController.CameraLocation),
-      c = Vector_1.Vector.Create(0, 0, 0);
-    CameraController_1.CameraController.CameraRotator.Vector(c), c.Normalize();
-    let _ = MathUtils_1.MathUtils.MaxFloat,
-      l = void 0;
-    for ([i, s] of this.pcn) 0 === s.State || s.Occupancy && !t || (e = JigsawIndex.GenObjFromKey(i), h = this.GetBlockLocationByIndex(e), o = Vector_1.Vector.Create(a), h.Subtraction(a, o), h = Vector_1.Vector.Create(o), o.Normalize(), o = o.DotProduct(c), (o = Math.acos(o) * (180 / Math.PI) * h.Size()) < _ && (_ = o, l = e));
-    return void 0 === l ? [void 0, void 0] : (r = Vector_1.Vector.Create(this.GetBlockLocationByIndex(l)), n = this.Hte?.ActorTransform.InverseTransformPosition(r.ToUeVector()), r.FromUeVector(n), [r, l])
+  GetBlockLocationByIndex(s, e = true) {
+    if (!(s.Row >= this.Config.JigsawConfig.Row) && !(s.Col >= this.Config.JigsawConfig.Column)) {
+      var h = this.Config?.JigsawConfig.Shape;
+      var o = this.vcn.get(s.GetKey());
+      if (o !== undefined && e) {
+        return o;
+      }
+      var o = this.Config.JigsawConfig.Row;
+      var r = this.Config.JigsawConfig.Column;
+      var o = new JigsawIndex(o / 2 - 0.5, r / 2 - 0.5);
+      var r = o.Row - s.Row;
+      var o = o.Col - s.Col;
+      var n = this.Config.JigsawConfig.Size;
+      let t = Vector2D_1.Vector2D.Create(r, o);
+      if (h === IAction_1.EJigsawShape.Circle && (t = Vector2D_1.Vector2D.Create(-o, r), h = Math.max(Math.abs(r), Math.abs(o)), t.Size() > 0)) {
+        r = h / t.Size();
+        t = Vector2D_1.Vector2D.Create(r, r).MultiplyEqual(t);
+      }
+      t = Vector2D_1.Vector2D.Create(n, n).MultiplyEqual(t);
+      let i = Vector_1.Vector.ZeroVectorProxy;
+      if (e) {
+        i = Vector_1.Vector.Create(this.Config.PlaceOffset.X ?? 0, this.Config.PlaceOffset.Y ?? 0, this.Config.PlaceOffset.Z ?? 0);
+      }
+      o = new UE.VectorDouble(t.X + i.X, -t.Y + i.Y, i.Z);
+      h = Vector_1.Vector.Create(0, 0, 0);
+      h.FromUeVector(this.Hte.ActorTransform.TransformPosition(o));
+      if (e) {
+        this.vcn.set(s.GetKey(), h);
+      }
+      return h;
+    }
+  }
+  CalcJigsawSocketLocation(t = false) {
+    var i;
+    var s;
+    var e;
+    var h;
+    var o;
+    var r;
+    var n;
+    var a = Vector_1.Vector.Create(CameraController_1.CameraController.CameraLocation);
+    var c = Vector_1.Vector.Create(0, 0, 0);
+    CameraController_1.CameraController.CameraRotator.Vector(c);
+    c.Normalize();
+    let _ = MathUtils_1.MathUtils.MaxFloat;
+    let l = undefined;
+    for ([i, s] of this.pcn) {
+      if (s.State !== 0 && (!s.Occupancy || !!t)) {
+        e = JigsawIndex.GenObjFromKey(i);
+        h = this.GetBlockLocationByIndex(e);
+        o = Vector_1.Vector.Create(a);
+        h.Subtraction(a, o);
+        h = Vector_1.Vector.Create(o);
+        o.Normalize();
+        o = o.DotProduct(c);
+        if ((o = Math.acos(o) * (180 / Math.PI) * h.Size()) < _) {
+          _ = o;
+          l = e;
+        }
+      }
+    }
+    if (l === undefined) {
+      return [undefined, undefined];
+    } else {
+      r = Vector_1.Vector.Create(this.GetBlockLocationByIndex(l));
+      n = this.Hte?.ActorTransform.InverseTransformPosition(r.ToUeVector());
+      r.FromUeVector(n);
+      return [r, l];
+    }
   }
   CheckJigsawBlockIllegal(t, i) {
-    if (t.Config.FillCfg.Type !== IComponent_1.EFillType.Direction)
+    if (t.Config.FillCfg.Type !== IComponent_1.EFillType.Direction) {
       for (const e of t.GetActiveBlockOffset()) {
-        var s = new JigsawIndex(i.Row + e.Row, i.Col + e.Col),
-          s = this.pcn.get(s.GetKey());
-        if (void 0 === s || 0 === s.State || s.Occupancy) return !0
+        var s = new JigsawIndex(i.Row + e.Row, i.Col + e.Col);
+        var s = this.pcn.get(s.GetKey());
+        if (s === undefined || s.State === 0 || s.Occupancy) {
+          return true;
+        }
       }
-    return !1
+    }
+    return false;
   }
   CheckJigsawBlockCorrect(t, i) {
     for (const e of t.GetActiveBlockOffset()) {
       var s = new JigsawIndex(i.Row + e.Row, i.Col + e.Col);
-      if (1 !== this.pcn.get(s.GetKey()).State) return !1
+      if (this.pcn.get(s.GetKey()).State !== 1) {
+        return false;
+      }
     }
-    return !0
+    return true;
   }
-  PutDownItem(i, s, e, h = !0) {
-    var t = i.Entity.GetComponent(155),
-      t = (t && t.UpdateBoxTrace(this, s), i.PutDownIndex = s, i.OnPutDownToBase(this), this.pcn.get(s.GetKey()));
-    if (0 === t.State || t.Occupancy && e !== IComponent_1.EItemFoundation.PulseDevice) Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[SceneItemJigsawBaseComponent.OnputDownItem] 目标位置不可用");
-    else {
+  PutDownItem(i, s, e, h = true) {
+    var t = i.Entity.GetComponent(155);
+    if (t) {
+      t.UpdateBoxTrace(this, s);
+    }
+    i.PutDownIndex = s;
+    i.OnPutDownToBase(this);
+    var t = this.pcn.get(s.GetKey());
+    if (t.State === 0 || t.Occupancy && e !== IComponent_1.EItemFoundation.PulseDevice) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[SceneItemJigsawBaseComponent.OnputDownItem] 目标位置不可用");
+      }
+    } else {
       let t = [];
       switch (i.Config.FillCfg.Type) {
         case IComponent_1.EFillType.Fixed:
           t = i.GetActiveBlockOffset();
           break;
         case IComponent_1.EFillType.Direction:
-          t = this.Bcn(s, i.Direction, i.Rotation)
+          t = this.Bcn(s, i.Direction, i.Rotation);
       }
       for (const _ of t) {
-        var o = new JigsawIndex(s.Row + _.Row, s.Col + _.Col),
-          r = o.GetKey(),
-          n = this.pcn.get(r);
-        e === IComponent_1.EItemFoundation.BuildingBlock && 0 !== n.State && (n.Occupancy = !0);
-        let t = void 0;
-        0 === n.ActivatedNum && (2 === n.State ? t = -1279673628 : 1 === n.State && (t = 692213831)), n.ActivatedNum += 1, 0 < n.ActivatedNum && (n.Occupancy = !0), void 0 !== t && this.fcn.AddTagsByIndex(o, t), e !== IComponent_1.EItemFoundation.PulseDevice || r === s.GetKey() || this.Mcn.has(r) || (n.Occupancy = !1)
+        var o = new JigsawIndex(s.Row + _.Row, s.Col + _.Col);
+        var r = o.GetKey();
+        var n = this.pcn.get(r);
+        if (e === IComponent_1.EItemFoundation.BuildingBlock && n.State !== 0) {
+          n.Occupancy = true;
+        }
+        let t = undefined;
+        if (n.ActivatedNum === 0) {
+          if (n.State === 2) {
+            t = -1279673628;
+          } else if (n.State === 1) {
+            t = 692213831;
+          }
+        }
+        n.ActivatedNum += 1;
+        if (n.ActivatedNum > 0) {
+          n.Occupancy = true;
+        }
+        if (t !== undefined) {
+          this.fcn.AddTagsByIndex(o, t);
+        }
+        if (e === IComponent_1.EItemFoundation.PulseDevice && r !== s.GetKey() && !this.Mcn.has(r)) {
+          n.Occupancy = false;
+        }
       }
       this.Mcn.set(s.GetKey(), i);
       for (var [a, c] of this.Mcn) {
         a = JigsawIndex.GenObjFromKey(a);
-        this.Tcn.has(c.Entity) || (this.Tcn.set(c.Entity, []), this.Lcn) || (this.Lcn = TimerSystem_1.TimerSystem.Forever(this.xcn, TIMER_PERIOD)), this.bcn(a, c)
+        if (!this.Tcn.has(c.Entity) && !(this.Tcn.set(c.Entity, []), this.Lcn)) {
+          this.Lcn = TimerSystem_1.TimerSystem.Forever(this.xcn, TIMER_PERIOD);
+        }
+        this.bcn(a, c);
       }
-      h && this.CheckFinish()
+      if (h) {
+        this.CheckFinish();
+      }
     }
   }
   CheckFinish() {
     switch (this.Config.CompleteCondition.Type) {
       case IComponent_1.EJigsawCompleteCondition.ActivateAllCorrectPiece:
-        for (var [, t] of this.pcn)
-          if (1 === t.State && t.ActivatedNum <= 0) return;
+        for (var [, t] of this.pcn) {
+          if (t.State === 1 && t.ActivatedNum <= 0) {
+            return;
+          }
+        }
         break;
       case IComponent_1.EJigsawCompleteCondition.PutInTheSpecifiedPiece:
         for (const s of this.Config.CompleteCondition.MatchList) {
-          var i = JigsawIndex.GenKey(s.Index.RowIndex, s.Index.ColumnIndex),
-            i = this.Mcn.get(i);
-          if (!i?.Valid || i.CreatureDataComp.GetPbDataId() !== s.EntityId) return
+          var i = JigsawIndex.GenKey(s.Index.RowIndex, s.Index.ColumnIndex);
+          var i = this.Mcn.get(i);
+          if (!i?.Valid || i.CreatureDataComp.GetPbDataId() !== s.EntityId) {
+            return;
+          }
         }
         break;
       default:
         IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece;
-        return
+        return;
     }
-    this.EDe()
+    this.EDe();
   }
-  PickUpItem(t, i, s, e = !0) {
+  PickUpItem(t, i, s, e = true) {
     t.OnPickUpFormBase(this);
     let h = [];
     switch (t.Config.FillCfg.Type) {
@@ -282,42 +535,88 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
         h = t.GetActiveBlockOffset();
         break;
       case IComponent_1.EFillType.Direction:
-        h = this.Bcn(i, t.Direction, t.Rotation)
+        h = this.Bcn(i, t.Direction, t.Rotation);
     }
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 31, "[SceneItemJigsawBaseComp] OnPickUpItem", ["PbDataId", t.Entity.GetComponent(0)?.GetPbDataId()], ["SocketIndex", i.GetKey()], ["Direction", t.Direction.toString(2)], ["Rotation", t.Rotation], ["offset", h]);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SceneItem", 31, "[SceneItemJigsawBaseComp] OnPickUpItem", ["PbDataId", t.Entity.GetComponent(0)?.GetPbDataId()], ["SocketIndex", i.GetKey()], ["Direction", t.Direction.toString(2)], ["Rotation", t.Rotation], ["offset", h]);
+    }
     for (const _ of h) {
-      var o = new JigsawIndex(i.Row + _.Row, i.Col + _.Col),
-        r = o.GetKey(),
-        r = this.pcn.get(r);
-      s === IComponent_1.EItemFoundation.BuildingBlock && 0 !== r.State && (r.Occupancy = !1);
-      let t = void 0;
-      --r.ActivatedNum, 0 === r.ActivatedNum && (2 === r.State ? t = -1279673628 : 1 === r.State && (t = 692213831), r.Occupancy = !1), void 0 !== t && this.fcn.RemoveTagsByIndex(o, t)
+      var o = new JigsawIndex(i.Row + _.Row, i.Col + _.Col);
+      var r = o.GetKey();
+      var r = this.pcn.get(r);
+      if (s === IComponent_1.EItemFoundation.BuildingBlock && r.State !== 0) {
+        r.Occupancy = false;
+      }
+      let t = undefined;
+      --r.ActivatedNum;
+      if (r.ActivatedNum === 0) {
+        if (r.State === 2) {
+          t = -1279673628;
+        } else if (r.State === 1) {
+          t = 692213831;
+        }
+        r.Occupancy = false;
+      }
+      if (t !== undefined) {
+        this.fcn.RemoveTagsByIndex(o, t);
+      }
     }
     let n = "";
-    for (var [a, c] of this.Mcn)
+    for (var [a, c] of this.Mcn) {
       if (c === t) {
         n = a;
-        break
+        break;
       }
-    "" !== n && this.Mcn.delete(n), this.RemoveMagnetTipsTag(i), this.Tcn.has(t.Entity) && this.Tcn.delete(t.Entity), e && this.CheckFinish()
+    }
+    if (n !== "") {
+      this.Mcn.delete(n);
+    }
+    this.RemoveMagnetTipsTag(i);
+    if (this.Tcn.has(t.Entity)) {
+      this.Tcn.delete(t.Entity);
+    }
+    if (e) {
+      this.CheckFinish();
+    }
   }
   GetBlockStateByIndex(t) {
     t = t.GetKey();
-    return this.pcn.get(t).State
+    return this.pcn.get(t).State;
   }
   AimBlockByIndex(t, h) {
     if (t?.GetKey() !== this.Ecn?.GetKey() || h.Rotation !== this.ycn || h !== this.Scn) {
-      var i = h.Entity.GetComponent(156),
-        s = (i?.TryRemoveTagById(-2116928595), i?.TryAddTagById(-2116928595), this.Gcn(), this.Acn(), this.Ecn = t, this.Scn = h, this.ycn = h.Rotation, ResourceSystem_1.ResourceSystem.LoadAsync(ConfigManager_1.ConfigManager.ManipulateConfig.MatControllerDaPath, UE.ItemMaterialControllerActorData_C, t => {
-          var i, s, e;
-          t?.IsValid() && (i = this.Scn.Entity.GetComponent(202), s = new UE.TransformDouble, e = this.GetBlockLocationByIndex(this.Ecn).ToUeVector(), s.SetLocation(e), e = Rotator_1.Rotator.Create(0, -h.Rotation, 0).Quaternion(), e = this.Hte?.ActorTransform.TransformRotation(e.ToUeQuat()), s.SetRotation(e), i.GetInteractionMainActor().MakeActorProjection(s, t))
-        }), this.CheckJigsawBlockIllegal(h, t));
+      var i = h.Entity.GetComponent(156);
+      i?.TryRemoveTagById(-2116928595);
+      i?.TryAddTagById(-2116928595);
+      this.Gcn();
+      this.Acn();
+      this.Ecn = t;
+      this.Scn = h;
+      this.ycn = h.Rotation;
+      ResourceSystem_1.ResourceSystem.LoadAsync(ConfigManager_1.ConfigManager.ManipulateConfig.MatControllerDaPath, UE.ItemMaterialControllerActorData_C, t => {
+        var i;
+        var s;
+        var e;
+        if (t?.IsValid()) {
+          i = this.Scn.Entity.GetComponent(202);
+          s = new UE.TransformDouble();
+          e = this.GetBlockLocationByIndex(this.Ecn).ToUeVector();
+          s.SetLocation(e);
+          e = Rotator_1.Rotator.Create(0, -h.Rotation, 0).Quaternion();
+          e = this.Hte?.ActorTransform.TransformRotation(e.ToUeQuat());
+          s.SetRotation(e);
+          i.GetInteractionMainActor().MakeActorProjection(s, t);
+        }
+      });
+      var s = this.CheckJigsawBlockIllegal(h, t);
       for (const r of this.Ncn(t, h)) {
-        var e = new JigsawIndex(t.Row + r.Row, t.Col + r.Col),
-          e = this.fcn.GetInteractionActorByIndex(e);
+        var e = new JigsawIndex(t.Row + r.Row, t.Col + r.Col);
+        var e = this.fcn.GetInteractionActorByIndex(e);
         if (e) {
           var o = e.GetRefActorsByTag(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(s ? -1517802777 : -1817626386));
-          for (let t = 0; t < o.Num(); t++) o.Get(t)?.SetActorHiddenInGame(!1)
+          for (let t = 0; t < o.Num(); t++) {
+            o.Get(t)?.SetActorHiddenInGame(false);
+          }
         }
       }
     }
@@ -327,431 +626,802 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       case IComponent_1.EFillType.Fixed:
         return i.GetActiveBlockOffset(s);
       case IComponent_1.EFillType.Direction:
-        return this.Bcn(t, i.Direction, s ?? i.Rotation)
+        return this.Bcn(t, i.Direction, s ?? i.Rotation);
     }
-    return []
+    return [];
   }
   Gcn() {
-    this.ui || (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HideJigsawBaseHint, this.Ucn), this.ui = !0)
+    if (!this.ui) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HideJigsawBaseHint, this.Ucn);
+      this.ui = true;
+    }
   }
   Pcn() {
-    this.ui && (EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.HideJigsawBaseHint, this.Ucn), this.ui = !1)
+    if (this.ui) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.HideJigsawBaseHint, this.Ucn);
+      this.ui = false;
+    }
   }
   Acn() {
     if (this.Ecn && this.Scn) {
       this.Scn.Entity.GetComponent(202).GetInteractionMainActor().RemoveActorProjection();
       var t = this.Ncn(this.Ecn, this.Scn, this.ycn);
       for (const i of t) {
-        var s = new JigsawIndex(this.Ecn.Row + i.Row, this.Ecn.Col + i.Col),
-          s = this.fcn.GetInteractionActorByIndex(s);
+        var s = new JigsawIndex(this.Ecn.Row + i.Row, this.Ecn.Col + i.Col);
+        var s = this.fcn.GetInteractionActorByIndex(s);
         if (s) {
           let i = s.GetRefActorsByTag(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-1517802777));
-          for (let t = 0; t < i.Num(); t++) i.Get(t)?.SetActorHiddenInGame(!0);
+          for (let t = 0; t < i.Num(); t++) {
+            i.Get(t)?.SetActorHiddenInGame(true);
+          }
           i = s.GetRefActorsByTag(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-1817626386));
-          for (let t = 0; t < i.Num(); t++) i.Get(t)?.SetActorHiddenInGame(!0)
+          for (let t = 0; t < i.Num(); t++) {
+            i.Get(t)?.SetActorHiddenInGame(true);
+          }
         }
       }
     }
-    this.Ecn = void 0, this.Scn = void 0
+    this.Ecn = undefined;
+    this.Scn = undefined;
   }
   RequestPutDownOrPickUpItem(t, i, s) {
-    var e = Protocol_1.Aki.Protocol.ZJn.create(),
-      h = Protocol_1.Aki.Protocol.TFs.create(),
-      o = Protocol_1.Aki.Protocol.LFs.create(),
-      r = Protocol_1.Aki.Protocol.Gks.create(),
-      n = Protocol_1.Aki.Protocol.D2s.create(),
-      a = t.Entity,
-      c = a.GetComponent(202),
-      _ = c.ActorLocationProxy,
-      c = c.ActorRotationProxy;
-    h.N5n = i.Row, h.F5n = i.Col, h.V5n = t.Rotation, r.X = _.X, r.Y = _.Y, r.Z = _.Z, n.Pitch = c.Pitch, n.Roll = c.Roll, n.Yaw = c.Yaw, o.l8n = r, o._8n = n, e.G5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId()), e.O5n = MathUtils_1.MathUtils.NumberToLong(a.GetComponent(0).GetCreatureDataId()), e.H5n = s ? 1 : 0, e.k5n = h, e.sKn = o, Net_1.Net.Call(15835, e, t => {
+    var e = Protocol_1.Aki.Protocol.ZJn.create();
+    var h = Protocol_1.Aki.Protocol.TFs.create();
+    var o = Protocol_1.Aki.Protocol.LFs.create();
+    var r = Protocol_1.Aki.Protocol.Gks.create();
+    var n = Protocol_1.Aki.Protocol.D2s.create();
+    var a = t.Entity;
+    var c = a.GetComponent(202);
+    var _ = c.ActorLocationProxy;
+    var c = c.ActorRotationProxy;
+    h.N5n = i.Row;
+    h.F5n = i.Col;
+    h.V5n = t.Rotation;
+    r.X = _.X;
+    r.Y = _.Y;
+    r.Z = _.Z;
+    n.Pitch = c.Pitch;
+    n.Roll = c.Roll;
+    n.Yaw = c.Yaw;
+    o.l8n = r;
+    o._8n = n;
+    e.G5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
+    e.O5n = MathUtils_1.MathUtils.NumberToLong(a.GetComponent(0).GetCreatureDataId());
+    e.H5n = s ? 1 : 0;
+    e.k5n = h;
+    e.sKn = o;
+    Net_1.Net.Call(21518, e, t => {
       switch (t.G9n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlaceFailOfAlreadyOnBoard:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 22975)
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 21065);
       }
-    })
+    });
   }
   EDe() {
     var t = Protocol_1.Aki.Protocol.izn.create();
-    t.j5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId()), Net_1.Net.Call(27750, t, t => {
-      t.G9n === Protocol_1.Aki.Protocol.Q4n.KRs ? this.OnFinish() : t.G9n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrBoardNotActiveAllGrid && (this.Hfc = !0), this.Config.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece && this.LGa()
-    })
+    t.j5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
+    Net_1.Net.Call(15450, t, t => {
+      if (t.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+        this.OnFinish();
+      } else if (t.G9n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrBoardNotActiveAllGrid) {
+        this.Hfc = true;
+      }
+      if (this.Config.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece) {
+        this.LGa();
+      }
+    });
   }
   OnFinish() {
-    for (var [t, i] of this.pcn) 1 === i.State && this.fcn.AddTagsByIndex(JigsawIndex.GenObjFromKey(t), 1248700469), 0 !== i.State && (this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), 692213831), this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), -1270526641), this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), -1279673628), this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), -2002333932));
-    for (const s of this.Mcn) s[1].OnFinish()
+    for (var [t, i] of this.pcn) {
+      if (i.State === 1) {
+        this.fcn.AddTagsByIndex(JigsawIndex.GenObjFromKey(t), 1248700469);
+      }
+      if (i.State !== 0) {
+        this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), 692213831);
+        this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), -1270526641);
+        this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), -1279673628);
+        this.fcn.RemoveTagsByIndex(JigsawIndex.GenObjFromKey(t), -2002333932);
+      }
+    }
+    for (const s of this.Mcn) {
+      s[1].OnFinish();
+    }
   }
   Bcn(t, i, s) {
     let e = [new JigsawIndex(0, 0)];
-    return this.Ocn(i, 1) && (e = e.concat(this.kcn(t, s))), this.Ocn(i, 2) && (e = e.concat(this.kcn(t, s + 180))), this.Ocn(i, 3) && (e = e.concat(this.kcn(t, s + 90))), e = this.Ocn(i, 4) ? e.concat(this.kcn(t, s + 270)) : e
+    if (this.Ocn(i, 1)) {
+      e = e.concat(this.kcn(t, s));
+    }
+    if (this.Ocn(i, 2)) {
+      e = e.concat(this.kcn(t, s + 180));
+    }
+    if (this.Ocn(i, 3)) {
+      e = e.concat(this.kcn(t, s + 90));
+    }
+    return e = this.Ocn(i, 4) ? e.concat(this.kcn(t, s + 270)) : e;
   }
   Ocn(t, i) {
-    return 1 == (t >> i & 1)
+    return (t >> i & 1) == 1;
   }
   kcn(i, t) {
-    var s = [],
-      e = [{
-        RowDelta: -1,
-        ColDelta: 0
-      }, {
-        RowDelta: 0,
-        ColDelta: -1
-      }, {
-        RowDelta: 1,
-        ColDelta: 0
-      }, {
-        RowDelta: 0,
-        ColDelta: 1
-      }],
-      h = (Math.floor(t / 90) % 4 + 4) % 4;
+    var s = [];
+    var e = [{
+      RowDelta: -1,
+      ColDelta: 0
+    }, {
+      RowDelta: 0,
+      ColDelta: -1
+    }, {
+      RowDelta: 1,
+      ColDelta: 0
+    }, {
+      RowDelta: 0,
+      ColDelta: 1
+    }];
+    var h = (Math.floor(t / 90) % 4 + 4) % 4;
     for (let t = 0; t < this.Config.JigsawConfig.Row * this.Config.JigsawConfig.Column; t++) {
-      var o = i.Row + e[h].RowDelta * t,
-        r = i.Col + e[h].ColDelta * t;
-      if (o < 0 || o >= this.Config.JigsawConfig.Row || r < 0 || r >= this.Config.JigsawConfig.Column) break;
+      var o = i.Row + e[h].RowDelta * t;
+      var r = i.Col + e[h].ColDelta * t;
+      if (o < 0 || o >= this.Config.JigsawConfig.Row || r < 0 || r >= this.Config.JigsawConfig.Column) {
+        break;
+      }
       var n = this.pcn.get(JigsawIndex.GenKey(o, r));
-      if (n && 0 === n.State) break;
-      s.push(new JigsawIndex(o - i.Row, r - i.Col))
+      if (n && n.State === 0) {
+        break;
+      }
+      s.push(new JigsawIndex(o - i.Row, r - i.Col));
     }
-    return s
+    return s;
   }
   GetNextPosByDirection(t, i, s) {
-    var e = new JigsawIndex(t.Row, t.Col),
-      h = Vector_1.Vector.Create(i),
-      o = Vector_1.Vector.Create(this.Hte.ActorUpProxy),
-      r = (o.Normalize(), Vector_1.Vector.Create()),
-      i = i.DotProduct(o),
-      o = (o.Multiply(i, r), h.SubtractionEqual(r), h.Normalize(), Vector_1.Vector.Create(0, 0, 0)),
-      i = (this.Hte.ActorQuatProxy.RotateVector(Vector_1.Vector.BackwardVectorProxy, o), Vector_1.Vector.Create(0, 0, 0)),
-      n = (this.Hte.ActorQuatProxy.RotateVector(Vector_1.Vector.LeftVectorProxy, i), s.GetComponent(155));
+    var e = new JigsawIndex(t.Row, t.Col);
+    var h = Vector_1.Vector.Create(i);
+    var o = Vector_1.Vector.Create(this.Hte.ActorUpProxy);
+    o.Normalize();
+    var r = Vector_1.Vector.Create();
+    var i = i.DotProduct(o);
+    o.Multiply(i, r);
+    h.SubtractionEqual(r);
+    h.Normalize();
+    var o = Vector_1.Vector.Create(0, 0, 0);
+    this.Hte.ActorQuatProxy.RotateVector(Vector_1.Vector.BackwardVectorProxy, o);
+    var i = Vector_1.Vector.Create(0, 0, 0);
+    this.Hte.ActorQuatProxy.RotateVector(Vector_1.Vector.LeftVectorProxy, i);
+    var n = s.GetComponent(155);
     for (const _ of [{
-        Vector: this.Hte.ActorForwardProxy,
-        RowDelta: -1,
-        ColDelta: 0
-      }, {
-        Vector: this.Hte.ActorRightProxy,
-        RowDelta: 0,
-        ColDelta: 1
-      }, {
-        Vector: o,
-        RowDelta: 1,
-        ColDelta: 0
-      }, {
-        Vector: i,
-        RowDelta: 0,
-        ColDelta: -1
-      }])
+      Vector: this.Hte.ActorForwardProxy,
+      RowDelta: -1,
+      ColDelta: 0
+    }, {
+      Vector: this.Hte.ActorRightProxy,
+      RowDelta: 0,
+      ColDelta: 1
+    }, {
+      Vector: o,
+      RowDelta: 1,
+      ColDelta: 0
+    }, {
+      Vector: i,
+      RowDelta: 0,
+      ColDelta: -1
+    }]) {
       if (MathUtils_1.MathUtils.DotProduct(h, _.Vector) > COS_45) {
-        for (; 0 <= e.Row && e.Row < this.Config.JigsawConfig.Row && 0 <= e.Col && e.Col < this.Config.JigsawConfig.Column;)
-          if (e.Row += _.RowDelta, e.Col += _.ColDelta, this.pcn.has(e.GetKey())) {
-            var a, c = this.pcn.get(e.GetKey());
-            if (0 !== c.State) return a = this.GetBlockLocationByIndex(e), n?.StartBoxTrace(a) || 0 !== c.ActivatedNum ? t : e
-          } return t
-      } return e
+        while (e.Row >= 0 && e.Row < this.Config.JigsawConfig.Row && e.Col >= 0 && e.Col < this.Config.JigsawConfig.Column) {
+          e.Row += _.RowDelta;
+          e.Col += _.ColDelta;
+          if (this.pcn.has(e.GetKey())) {
+            var a;
+            var c = this.pcn.get(e.GetKey());
+            if (c.State !== 0) {
+              a = this.GetBlockLocationByIndex(e);
+              if (n?.StartBoxTrace(a) || c.ActivatedNum !== 0) {
+                return t;
+              } else {
+                return e;
+              }
+            }
+          }
+        }
+        return t;
+      }
+    }
+    return e;
   }
   OnItemMove(t, i) {
-    this.PickUpItem(t, t.PutDownIndex, IComponent_1.EItemFoundation.BuildingBlock, !1), this.PutDownItem(t, i, IComponent_1.EItemFoundation.BuildingBlock, !1), this.RequestMoveItem(t, i), this.CheckFinish()
+    this.PickUpItem(t, t.PutDownIndex, IComponent_1.EItemFoundation.BuildingBlock, false);
+    this.PutDownItem(t, i, IComponent_1.EItemFoundation.BuildingBlock, false);
+    this.RequestMoveItem(t, i);
+    this.CheckFinish();
   }
-  RequestMoveItem(s, t, i = void 0) {
-    var e = Protocol_1.Aki.Protocol.nzn.create(),
-      h = Protocol_1.Aki.Protocol.TFs.create(),
-      o = Protocol_1.Aki.Protocol.LFs.create(),
-      r = Protocol_1.Aki.Protocol.Gks.create(),
-      n = Protocol_1.Aki.Protocol.D2s.create(),
-      a = s.Entity,
-      c = a.GetComponent(202),
-      _ = c.ActorLocationProxy,
-      c = c.ActorRotationProxy;
-    h.N5n = t.Row, h.F5n = t.Col, h.V5n = s.Rotation, r.X = _.X, r.Y = _.Y, r.Z = _.Z, n.Pitch = c.Pitch, n.Roll = c.Roll, n.Yaw = c.Yaw, o.l8n = r, o._8n = n, e.G5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId()), e.O5n = MathUtils_1.MathUtils.NumberToLong(a.GetComponent(0).GetCreatureDataId()), e.k5n = h, e.sKn = o, this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece && (this.vFl = i, this.fFl = !0), Net_1.Net.Call(24234, e, t => {
+  RequestMoveItem(s, t, i = undefined) {
+    var e = Protocol_1.Aki.Protocol.nzn.create();
+    var h = Protocol_1.Aki.Protocol.TFs.create();
+    var o = Protocol_1.Aki.Protocol.LFs.create();
+    var r = Protocol_1.Aki.Protocol.Gks.create();
+    var n = Protocol_1.Aki.Protocol.D2s.create();
+    var a = s.Entity;
+    var c = a.GetComponent(202);
+    var _ = c.ActorLocationProxy;
+    var c = c.ActorRotationProxy;
+    h.N5n = t.Row;
+    h.F5n = t.Col;
+    h.V5n = s.Rotation;
+    r.X = _.X;
+    r.Y = _.Y;
+    r.Z = _.Z;
+    n.Pitch = c.Pitch;
+    n.Roll = c.Roll;
+    n.Yaw = c.Yaw;
+    o.l8n = r;
+    o._8n = n;
+    e.G5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
+    e.O5n = MathUtils_1.MathUtils.NumberToLong(a.GetComponent(0).GetCreatureDataId());
+    e.k5n = h;
+    e.sKn = o;
+    if (this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece) {
+      this.vFl = i;
+      this.fFl = true;
+    }
+    Net_1.Net.Call(15522, e, t => {
       switch (t.G9n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrGridPosAlreadyOccupied:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 28471)
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 21408);
       }
       var i;
-      this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece && (t.G9n === Protocol_1.Aki.Protocol.Q4n.KRs ? this.SFl && this.MFl() : this.vFl && (this.fGa(s, this.vFl, !1, !1), i = s.Entity.GetComponent(255)) && i.SetTicTacToePieceLocation(this.vFl, this.oGa), this.vFl = void 0)
-    })
+      if (this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece) {
+        if (t.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+          if (this.SFl) {
+            this.MFl();
+          }
+        } else if (this.vFl && (this.fGa(s, this.vFl, false, false), i = s.Entity.GetComponent(255))) {
+          i.SetTicTacToePieceLocation(this.vFl, this.oGa);
+        }
+        this.vFl = undefined;
+      }
+    });
   }
   OnBoardCanMovePlacementNotify(t) {
-    this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece && ((this.SFl = t) ? (this.KPl && this.KPl(), this.MFl()) : this.QPl && this.QPl())
+    if (this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece) {
+      if (this.SFl = t) {
+        if (this.KPl) {
+          this.KPl();
+        }
+        this.MFl();
+      } else if (this.QPl) {
+        this.QPl();
+      }
+    }
   }
   RemoveMagnetTipsTag(t) {
-    this.fcn.RemoveTagsByIndex(t, 1531999982), this.fcn.RemoveTagsByIndex(t, -1705770981), this.fcn.RemoveTagsByIndex(t, -230062685), this.fcn.RemoveTagsByIndex(t, -447552724)
+    this.fcn.RemoveTagsByIndex(t, 1531999982);
+    this.fcn.RemoveTagsByIndex(t, -1705770981);
+    this.fcn.RemoveTagsByIndex(t, -230062685);
+    this.fcn.RemoveTagsByIndex(t, -447552724);
   }
   bcn(i, t) {
-    if (1 !== this.pcn.get(i.GetKey()).State) {
-      var s = t.Entity.GetComponent(155),
-        e = [];
+    if (this.pcn.get(i.GetKey()).State !== 1) {
+      var s = t.Entity.GetComponent(155);
+      var e = [];
       for (const r of [{
-          Tag: 1531999982,
-          RowDelta: -1,
-          ColDelta: 0
-        }, {
-          Tag: -1705770981,
-          RowDelta: 1,
-          ColDelta: 0
-        }, {
-          Tag: -230062685,
-          RowDelta: 0,
-          ColDelta: -1
-        }, {
-          Tag: -447552724,
-          RowDelta: 0,
-          ColDelta: 1
-        }]) {
-        let t = !1;
-        for (var h = new JigsawIndex(i.Row, i.Col); 0 <= h.Row && h.Row < this.Config.JigsawConfig.Row && 0 <= h.Col && h.Col < this.Config.JigsawConfig.Column;)
-          if (h.Row += r.RowDelta, h.Col += r.ColDelta, this.pcn.has(h.GetKey())) {
+        Tag: 1531999982,
+        RowDelta: -1,
+        ColDelta: 0
+      }, {
+        Tag: -1705770981,
+        RowDelta: 1,
+        ColDelta: 0
+      }, {
+        Tag: -230062685,
+        RowDelta: 0,
+        ColDelta: -1
+      }, {
+        Tag: -447552724,
+        RowDelta: 0,
+        ColDelta: 1
+      }]) {
+        let t = false;
+        for (var h = new JigsawIndex(i.Row, i.Col); h.Row >= 0 && h.Row < this.Config.JigsawConfig.Row && h.Col >= 0 && h.Col < this.Config.JigsawConfig.Column;) {
+          h.Row += r.RowDelta;
+          h.Col += r.ColDelta;
+          if (this.pcn.has(h.GetKey())) {
             var o = this.pcn.get(h.GetKey());
-            if (0 !== o.State) {
-              0 === o.ActivatedNum && (o = this.GetBlockLocationByIndex(h), e.push(new BoxTraceCheckData(o, r.Tag, i)), s?.StartBoxTrace(o) || (t = !0, this.fcn.HasTagByIndex(i, r.Tag)) || this.fcn.AddTagsByIndex(i, r.Tag));
-              break
+            if (o.State !== 0) {
+              if (o.ActivatedNum === 0) {
+                o = this.GetBlockLocationByIndex(h);
+                e.push(new BoxTraceCheckData(o, r.Tag, i));
+                if (!s?.StartBoxTrace(o) && !(t = true, this.fcn.HasTagByIndex(i, r.Tag))) {
+                  this.fcn.AddTagsByIndex(i, r.Tag);
+                }
+              }
+              break;
             }
-          } t || this.fcn.RemoveTagsByIndex(i, r.Tag)
+          }
+        }
+        if (!t) {
+          this.fcn.RemoveTagsByIndex(i, r.Tag);
+        }
       }
-      this.Tcn.set(t.Entity, e)
+      this.Tcn.set(t.Entity, e);
     }
   }
   HasEmptySocket() {
-    for (var [, t] of this.pcn)
-      if (0 !== t.State && !t.Occupancy) return !0;
-    return !1
+    for (var [, t] of this.pcn) {
+      if (t.State !== 0 && !t.Occupancy) {
+        return true;
+      }
+    }
+    return false;
   }
   DynamicModifySocketState(t, i) {
     var s = this.pcn.get(t.GetKey());
     if (s.State !== i) {
-      var e, h, o = [];
-      0 === s.State ? (o.push(1 === i ? -894208705 : -1375820440), this.fcn.DynamicAddActorByIndex(t, o)) : 0 !== i ? (1 === s.State ? this.fcn.RemoveTagsByIndex(t, -894208705) : 2 === s.State && this.fcn.RemoveTagsByIndex(t, -1375820440), 1 === i ? this.fcn.AddTagsByIndex(t, -894208705) : this.fcn.AddTagsByIndex(t, -1375820440)) : this.fcn.DynamicRemoveActorByIndex(t), s.State = i;
-      for ([e, h] of this.Mcn) this.bcn(JigsawIndex.GenObjFromKey(e), h)
+      var e;
+      var h;
+      var o = [];
+      if (s.State === 0) {
+        o.push(i === 1 ? -894208705 : -1375820440);
+        this.fcn.DynamicAddActorByIndex(t, o);
+      } else if (i !== 0) {
+        if (s.State === 1) {
+          this.fcn.RemoveTagsByIndex(t, -894208705);
+        } else if (s.State === 2) {
+          this.fcn.RemoveTagsByIndex(t, -1375820440);
+        }
+        if (i === 1) {
+          this.fcn.AddTagsByIndex(t, -894208705);
+        } else {
+          this.fcn.AddTagsByIndex(t, -1375820440);
+        }
+      } else {
+        this.fcn.DynamicRemoveActorByIndex(t);
+      }
+      s.State = i;
+      for ([e, h] of this.Mcn) {
+        this.bcn(JigsawIndex.GenObjFromKey(e), h);
+      }
     }
   }
   GetAllItemOnBase() {
-    var t, i = [];
-    for ([, t] of this.Mcn) i.push(t);
-    return i
+    var t;
+    var i = [];
+    for ([, t] of this.Mcn) {
+      i.push(t);
+    }
+    return i;
   }
   GetPutItemIndex(t) {
     let i = "";
-    for (var [s, e] of this.Mcn) e === t && (i = s);
-    if ("" !== i) return JigsawIndex.GenObjFromKey(i)
+    for (var [s, e] of this.Mcn) {
+      if (e === t) {
+        i = s;
+      }
+    }
+    if (i !== "") {
+      return JigsawIndex.GenObjFromKey(i);
+    }
   }
   MGa(t, i) {
-    this.uGa || (this.uGa = Vector_1.Vector.Create(), this.cGa = Vector_1.Vector.Create(), this.mGa = Vector_1.Vector.Create(), this.dGa = Vector_1.Vector.Create(), this.CGa = Vector_1.Vector.Create());
-    var s = this.Config.JigsawConfig.Row,
-      e = this.Config.JigsawConfig.Column,
-      t = (this.dGa.X = t % e, this.dGa.Y = Math.floor(t / e), this.dGa.Z = 0, this.CGa.X = i % e, this.CGa.Y = Math.floor(i / e), this.CGa.Z = 0, s / 2 - .5),
-      i = e / 2 - .5,
-      s = (this.dGa.X = this.dGa.X - i, this.dGa.Y = this.dGa.Y - t, this.CGa.X = this.CGa.X - i, this.CGa.Y = this.CGa.Y - t, Math.max(Math.abs(this.dGa.X), Math.abs(this.dGa.Y)));
-    let h = MathUtils_1.MathUtils.GetAngleByVector2D(this.dGa),
-      o = MathUtils_1.MathUtils.GetAngleByVector2D(this.CGa);
-    0 < h && o < 0 ? o += 360 : h < 0 && 0 < o && (h += 360);
-    e = h + (o - h) / 4, i = h + 2 * (o - h) / 4, t = h + 3 * (o - h) / 4, MathUtils_1.MathUtils.GetVector2dByAngle(e, this.uGa), MathUtils_1.MathUtils.GetVector2dByAngle(i, this.cGa), MathUtils_1.MathUtils.GetVector2dByAngle(t, this.mGa), e = this.Config.JigsawConfig.Size;
-    this.uGa.MultiplyEqual(e * s), this.cGa.MultiplyEqual(e * s), this.mGa.MultiplyEqual(e * s), this.uGa.X += this.Config.PlaceOffset.X ?? 0, this.uGa.Y += this.Config.PlaceOffset.Y ?? 0, this.uGa.Z = this.Config.PlaceOffset.Z ?? 0, this.cGa.X += this.Config.PlaceOffset.X ?? 0, this.cGa.Y += this.Config.PlaceOffset.Y ?? 0, this.cGa.Z = this.Config.PlaceOffset.Z ?? 0, this.mGa.X += this.Config.PlaceOffset.X ?? 0, this.mGa.Y += this.Config.PlaceOffset.Y ?? 0, this.mGa.Z = this.Config.PlaceOffset.Z ?? 0, this.uGa.FromUeVector(this.Hte.ActorTransform.TransformPosition(this.uGa.ToUeVector())), this.cGa.FromUeVector(this.Hte.ActorTransform.TransformPosition(this.cGa.ToUeVector())), this.mGa.FromUeVector(this.Hte.ActorTransform.TransformPosition(this.mGa.ToUeVector()))
+    if (!this.uGa) {
+      this.uGa = Vector_1.Vector.Create();
+      this.cGa = Vector_1.Vector.Create();
+      this.mGa = Vector_1.Vector.Create();
+      this.dGa = Vector_1.Vector.Create();
+      this.CGa = Vector_1.Vector.Create();
+    }
+    var s = this.Config.JigsawConfig.Row;
+    var e = this.Config.JigsawConfig.Column;
+    this.dGa.X = t % e;
+    this.dGa.Y = Math.floor(t / e);
+    this.dGa.Z = 0;
+    this.CGa.X = i % e;
+    this.CGa.Y = Math.floor(i / e);
+    this.CGa.Z = 0;
+    var t = s / 2 - 0.5;
+    var i = e / 2 - 0.5;
+    this.dGa.X = this.dGa.X - i;
+    this.dGa.Y = this.dGa.Y - t;
+    this.CGa.X = this.CGa.X - i;
+    this.CGa.Y = this.CGa.Y - t;
+    var s = Math.max(Math.abs(this.dGa.X), Math.abs(this.dGa.Y));
+    let h = MathUtils_1.MathUtils.GetAngleByVector2D(this.dGa);
+    let o = MathUtils_1.MathUtils.GetAngleByVector2D(this.CGa);
+    if (h > 0 && o < 0) {
+      o += 360;
+    } else if (h < 0 && o > 0) {
+      h += 360;
+    }
+    e = h + (o - h) / 4;
+    i = h + (o - h) * 2 / 4;
+    t = h + (o - h) * 3 / 4;
+    MathUtils_1.MathUtils.GetVector2dByAngle(e, this.uGa);
+    MathUtils_1.MathUtils.GetVector2dByAngle(i, this.cGa);
+    MathUtils_1.MathUtils.GetVector2dByAngle(t, this.mGa);
+    e = this.Config.JigsawConfig.Size;
+    this.uGa.MultiplyEqual(e * s);
+    this.cGa.MultiplyEqual(e * s);
+    this.mGa.MultiplyEqual(e * s);
+    this.uGa.X += this.Config.PlaceOffset.X ?? 0;
+    this.uGa.Y += this.Config.PlaceOffset.Y ?? 0;
+    this.uGa.Z = this.Config.PlaceOffset.Z ?? 0;
+    this.cGa.X += this.Config.PlaceOffset.X ?? 0;
+    this.cGa.Y += this.Config.PlaceOffset.Y ?? 0;
+    this.cGa.Z = this.Config.PlaceOffset.Z ?? 0;
+    this.mGa.X += this.Config.PlaceOffset.X ?? 0;
+    this.mGa.Y += this.Config.PlaceOffset.Y ?? 0;
+    this.mGa.Z = this.Config.PlaceOffset.Z ?? 0;
+    this.uGa.FromUeVector(this.Hte.ActorTransform.TransformPosition(this.uGa.ToUeVector()));
+    this.cGa.FromUeVector(this.Hte.ActorTransform.TransformPosition(this.cGa.ToUeVector()));
+    this.mGa.FromUeVector(this.Hte.ActorTransform.TransformPosition(this.mGa.ToUeVector()));
   }
   get twl() {
-    return this.ewl
+    return this.ewl;
   }
   set twl(t) {
     if (this.ewl !== t) {
       this.ewl = t;
-      for (const i of this.iwl) i.OnTicTacToePieceMovingChange(t)
+      for (const i of this.iwl) {
+        i.OnTicTacToePieceMovingChange(t);
+      }
     }
   }
   MFl() {
-    this.wkl && this._Ga && (this._Ga.IsFinish ? this.EDe() : this.fFl && (this.fFl = !1, this._Ga.NextRound(), this._Ga.IsPlayerRound) && (this.wkl = !1, this.twl = !1))
+    if (this.wkl && this._Ga) {
+      if (this._Ga.IsFinish) {
+        this.EDe();
+      } else if (this.fFl && (this.fFl = false, this._Ga.NextRound(), this._Ga.IsPlayerRound)) {
+        this.wkl = false;
+        this.twl = false;
+      }
+    }
   }
   b5a() {
-    var t = this.Config.InitMatchList,
-      i = this.Config.JigsawConfig.Column,
-      s = this.EIe.ComponentDataMap.get("rI_")?.rI_;
+    var t = this.Config.InitMatchList;
+    var i = this.Config.JigsawConfig.Column;
+    var s = this.EIe.ComponentDataMap.get("rI_")?.rI_;
     if (s) {
       this._Ga.SetCurrentRound(s.BI_);
       var e = s?.kI_;
       if (e) {
-        for (const c of this.EIe.OccupiedGridInfo)
+        for (const c of this.EIe.OccupiedGridInfo) {
           if (e === c[0]) {
             var h = c[1].l8n;
             if (h) {
               h = h.N5n * i + h.F5n;
-              if (this._Ga.CheckGameOver(h)) return void this.EDe()
+              if (this._Ga.CheckGameOver(h)) {
+                this.EDe();
+                return;
+              }
             }
-          } for (const _ of t)
-          if (e === _.EntityId) {
-            var o = _.Index,
-              o = o.RowIndex * i + o.ColumnIndex;
-            if (this._Ga.CheckGameOver(o)) return void this.EDe()
           }
+        }
+        for (const _ of t) {
+          if (e === _.EntityId) {
+            var o = _.Index;
+            var o = o.RowIndex * i + o.ColumnIndex;
+            if (this._Ga.CheckGameOver(o)) {
+              this.EDe();
+              return;
+            }
+          }
+        }
       }
     }
     this.iwl.clear();
     for (const l of this._Ga.GetPlayerPieces()) {
-      var r = l % i,
-        n = Math.floor(l / i),
-        a = this.pGa,
-        n = (a.SetValue(n, r), a.GetKey());
-      this.Mcn.has(n) && (r = this.Mcn.get(n)) && (a = r.Entity?.GetComponent(255)) && (this.iwl.add(a), this.mJl) && a.OnTicTacToePieceMovingChange(this.twl)
+      var r = l % i;
+      var n = Math.floor(l / i);
+      var a = this.pGa;
+      a.SetValue(n, r);
+      var n = a.GetKey();
+      if (this.Mcn.has(n) && (r = this.Mcn.get(n)) && (a = r.Entity?.GetComponent(255)) && (this.iwl.add(a), this.mJl)) {
+        a.OnTicTacToePieceMovingChange(this.twl);
+      }
     }
   }
   TGa() {
     const e = this.Config?.CompleteCondition;
-    if (e && !(e.RenjuConfig.length < 2 || this.EIe.OccupiedGridInfo.size < 1)) {
-      this._Ga || (this._Ga = new TicTacToeGame_1.TicTacToeGame), this.pGa = new JigsawIndex(0, 0);
-      var h = new Map,
-        o = new Map,
-        r = new Array,
-        n = new Array;
-      let t = void 0,
-        i = void 0;
-      for (const f of e.RenjuConfig) "Computer" === f.Controller ? i = f : "Player" === f.Controller && (t = f);
+    if (e && !(e.RenjuConfig.length < 2) && !(this.EIe.OccupiedGridInfo.size < 1)) {
+      this._Ga ||= new TicTacToeGame_1.TicTacToeGame();
+      this.pGa = new JigsawIndex(0, 0);
+      var h = new Map();
+      var o = new Map();
+      var r = new Array();
+      var n = new Array();
+      let t = undefined;
+      let i = undefined;
+      for (const f of e.RenjuConfig) {
+        if (f.Controller === "Computer") {
+          i = f;
+        } else if (f.Controller === "Player") {
+          t = f;
+        }
+      }
       var a = this.Config.JigsawConfig.Column;
-      let s = !1;
-      t && i && t.Order > i.Order && (s = !0), this._Ga.Init(s, this.gGa), this.B5a.clear(), this.w5a.clear();
+      let s = false;
+      if (t && i && t.Order > i.Order) {
+        s = true;
+      }
+      this._Ga.Init(s, this.gGa);
+      this.B5a.clear();
+      this.w5a.clear();
       for (const e of this.Config.InitMatchList) {
-        var c, _ = e.Index,
-          _ = (this.B5a.add(e.EntityId), t?.EntityIds?.includes(e.EntityId) ? (c = _.RowIndex * a + _.ColumnIndex, h.set(e.EntityId, c), r.push(c)) : i?.EntityIds?.includes(e.EntityId) && (c = _.RowIndex * a + _.ColumnIndex, o.set(e.EntityId, c), n.push(c)), ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.EntityId));
-        _?.IsInit || this.w5a.add(e.EntityId)
+        var c;
+        var _ = e.Index;
+        this.B5a.add(e.EntityId);
+        if (t?.EntityIds?.includes(e.EntityId)) {
+          c = _.RowIndex * a + _.ColumnIndex;
+          h.set(e.EntityId, c);
+          r.push(c);
+        } else if (i?.EntityIds?.includes(e.EntityId)) {
+          c = _.RowIndex * a + _.ColumnIndex;
+          o.set(e.EntityId, c);
+          n.push(c);
+        }
+        var _ = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.EntityId);
+        if (!_?.IsInit) {
+          this.w5a.add(e.EntityId);
+        }
       }
-      this._Ga.InitBoardInfo(n, r, !0), n.length = 0, r.length = 0;
+      this._Ga.InitBoardInfo(n, r, true);
+      n.length = 0;
+      r.length = 0;
       for (const d of this.EIe.OccupiedGridInfo) {
-        var l, v = d[1].l8n;
-        v && (t?.EntityIds?.includes(d[0]) ? (l = v.N5n * a + v.F5n, h.set(d[0], l)) : i?.EntityIds?.includes(d[0]) && (l = v.N5n * a + v.F5n, o.set(d[0], l)))
+        var l;
+        var v = d[1].l8n;
+        if (v) {
+          if (t?.EntityIds?.includes(d[0])) {
+            l = v.N5n * a + v.F5n;
+            h.set(d[0], l);
+          } else if (i?.EntityIds?.includes(d[0])) {
+            l = v.N5n * a + v.F5n;
+            o.set(d[0], l);
+          }
+        }
       }
-      for (const m of h.values()) r.push(m);
-      for (const w of o.values()) n.push(w);
-      this._Ga.InitBoardInfo(n, r), 0 === this.w5a.size && (this.b5a(), this.vAl) && this.vAl()
+      for (const m of h.values()) {
+        r.push(m);
+      }
+      for (const w of o.values()) {
+        n.push(w);
+      }
+      this._Ga.InitBoardInfo(n, r);
+      if (this.w5a.size === 0 && (this.b5a(), this.vAl)) {
+        this.vAl();
+      }
     }
   }
   get WaitingInitPiecesComplete() {
-    return 0 === this.w5a.size
+    return this.w5a.size === 0;
   }
   P5a(t) {
-    this.w5a.has(t) && (this.w5a.delete(t), 0 !== this.w5a.size || this.fcn && !this.fcn.GetIsFinish() || this.zpc())
+    if (this.w5a.has(t)) {
+      this.w5a.delete(t);
+      if (this.w5a.size === 0 && (!this.fcn || !!this.fcn.GetIsFinish())) {
+        this.zpc();
+      }
+    }
   }
   zpc() {
     var t;
-    this.b5a(), this.vAl ? this.vAl() : ((t = new Protocol_1.Aki.Protocol.Mv_).F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId()), Net_1.Net.Call(19620, t, t => {
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("Level", 36, "OnWaitInitPiecesComplete RenjuExitMatchedActionResponse", ["ErrorCode", t.G9n])
-    }))
+    this.b5a();
+    if (this.vAl) {
+      this.vAl();
+    } else {
+      (t = new Protocol_1.Aki.Protocol.Mv_()).F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
+      Net_1.Net.Call(24469, t, t => {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Level", 36, "OnWaitInitPiecesComplete RenjuExitMatchedActionResponse", ["ErrorCode", t.G9n]);
+        }
+      });
+    }
   }
   ResetTicTacToeGame() {
-    var t, i;
-    this._Ga && (!this._Ga.IsFinish || this.Hfc) && (this.Hfc = !1, this.fFl = !1, this.vFl = void 0, this.w1h = void 0, this.wkl = !1, this.ewl = !1, t = this.EIe?.GetCreatureDataId()) && ((i = Protocol_1.Aki.Protocol.mf_.create()).F4n = t, Net_1.Net.Call(27201, i, t => {
-      if (t?.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        var i = new Map;
-        for (const r of this.Mcn) {
-          var s = r[1],
-            e = s.CreatureDataComp.GetPbDataId();
-          i.set(e, s)
-        }
-        t = this.Config?.InitMatchList;
-        if (t) {
-          this.Mcn.clear();
-          for (const n of t) {
-            var h, o = n.EntityId;
-            i.has(o) && (h = new JigsawIndex(n.Index.RowIndex, n.Index.ColumnIndex), o = i.get(o), this.Mcn.set(h.GetKey(), o), this.fGa(o, h, !1, !1), o = o.Entity.GetComponent(255)) && o.SetTicTacToePieceLocation(h, this.oGa)
+    var t;
+    var i;
+    if (this._Ga && (!this._Ga.IsFinish || this.Hfc) && (this.Hfc = false, this.fFl = false, this.vFl = undefined, this.w1h = undefined, this.wkl = false, this.ewl = false, t = this.EIe?.GetCreatureDataId())) {
+      (i = Protocol_1.Aki.Protocol.mf_.create()).F4n = t;
+      Net_1.Net.Call(29443, i, t => {
+        if (t?.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+          var i = new Map();
+          for (const r of this.Mcn) {
+            var s = r[1];
+            var e = s.CreatureDataComp.GetPbDataId();
+            i.set(e, s);
           }
-          this._Ga.ResetGame()
+          t = this.Config?.InitMatchList;
+          if (t) {
+            this.Mcn.clear();
+            for (const n of t) {
+              var h;
+              var o = n.EntityId;
+              if (i.has(o) && (h = new JigsawIndex(n.Index.RowIndex, n.Index.ColumnIndex), o = i.get(o), this.Mcn.set(h.GetKey(), o), this.fGa(o, h, false, false), o = o.Entity.GetComponent(255))) {
+                o.SetTicTacToePieceLocation(h, this.oGa);
+              }
+            }
+            this._Ga.ResetGame();
+          }
+        } else if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Level", 36, "ResetTicTacToeGame Failed", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
         }
-      } else Log_1.Log.CheckInfo() && Log_1.Log.Info("Level", 36, "ResetTicTacToeGame Failed", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()])
-    }))
+      });
+    }
   }
   OnItemTicTacToeSelect(t) {
     const i = t.Index;
     if (i) {
-      this.SGa || (this.SGa = new Array);
-      var s = this.Config.JigsawConfig.Column,
-        e = i.Row * s + i.Col,
-        e = this._Ga.GetNoneNeighbors(e);
+      this.SGa ||= new Array();
+      var s = this.Config.JigsawConfig.Column;
+      var e = i.Row * s + i.Col;
+      var e = this._Ga.GetNoneNeighbors(e);
       this.SGa.length = 0;
       for (const i of e) {
-        var h = i % s,
-          o = Math.floor(i / s),
-          o = (this.pGa.SetValue(o, h), this.GetBlockLocationByIndex(this.pGa));
-        o && this.SGa.push(o)
+        var h = i % s;
+        var o = Math.floor(i / s);
+        this.pGa.SetValue(o, h);
+        var o = this.GetBlockLocationByIndex(this.pGa);
+        if (o) {
+          this.SGa.push(o);
+        }
       }
-      return this.IGa = t, this.SGa
+      this.IGa = t;
+      return this.SGa;
     }
   }
   OnGridTicTacToeClick(t) {
-    var i, s = this.IGa?.Item;
-    return !!s && (i = this.Config.JigsawConfig.Column, i = t.Row * i + t.Col, !!this._Ga.CheckCanMove(i)) && (this.OnItemTicTacToeMove(s, t), this.IGa && (this.IGa.OnSelectEnd(), this.IGa = void 0), !0)
+    var i;
+    var s = this.IGa?.Item;
+    return !!s && (i = this.Config.JigsawConfig.Column, i = t.Row * i + t.Col, !!this._Ga.CheckCanMove(i)) && (this.OnItemTicTacToeMove(s, t), this.IGa && (this.IGa.OnSelectEnd(), this.IGa = undefined), true);
   }
-  fGa(t, i, s = !0, e = !0) {
-    let h = void 0;
-    e && (h = new JigsawIndex(t.PutDownIndex.Row, t.PutDownIndex.Col)), t.OnPickUpFormBase(this), t.PutDownIndex || (t.PutDownIndex = new JigsawIndex(0, 0)), t.PutDownIndex.DeepCopy(i), e && this.RequestMoveItem(t, i, h), t.OnPutDownToBase(this), s && this.CheckFinish()
+  fGa(t, i, s = true, e = true) {
+    let h = undefined;
+    if (e) {
+      h = new JigsawIndex(t.PutDownIndex.Row, t.PutDownIndex.Col);
+    }
+    t.OnPickUpFormBase(this);
+    t.PutDownIndex ||= new JigsawIndex(0, 0);
+    t.PutDownIndex.DeepCopy(i);
+    if (e) {
+      this.RequestMoveItem(t, i, h);
+    }
+    t.OnPutDownToBase(this);
+    if (s) {
+      this.CheckFinish();
+    }
   }
   OnItemTicTacToeMove(t, i) {
     var s;
-    this.IsTicTacToe && (s = this.Config.JigsawConfig.Column, t = t.PutDownIndex.Row * s + t.PutDownIndex.Col, s = i.Row * s + i.Col, this._Ga.OnIndexMove(t, s))
+    if (this.IsTicTacToe) {
+      s = this.Config.JigsawConfig.Column;
+      t = t.PutDownIndex.Row * s + t.PutDownIndex.Col;
+      s = i.Row * s + i.Col;
+      this._Ga.OnIndexMove(t, s);
+    }
   }
   GetPickItemActors() {
-    this.EGa.clear(), this.yGa.clear();
-    var s = new Array;
+    this.EGa.clear();
+    this.yGa.clear();
+    var s = new Array();
     for (const n of this.B5a) {
-      var t, i, e, h = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(n);
-      h && (t = EntitySystem_1.EntitySystem.GetComponent(h.Id, 254)) && (i = EntitySystem_1.EntitySystem.GetComponent(h.Id, 1), h = EntitySystem_1.EntitySystem.GetComponent(h.Id, 138)) && (h = h.PutDownIndex, e = this.Config.JigsawConfig.Column, e = h.Row * e + h.Col, this._Ga?.CheckIsPlayerPiece(e)) && (h = i?.Owner) && (this.EGa.set(h, t), s.push(h))
-    }
-    for (let i = 0; i < this.Config.JigsawConfig.Row; i++)
-      for (let t = 0; t < this.Config.JigsawConfig.Column; t++) {
-        var o = new JigsawIndex(i, t),
-          r = this.fcn.GetInteractionActorByIndex(o);
-        r && (this.yGa.set(r, o), s.push(r))
+      var t;
+      var i;
+      var e;
+      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(n);
+      if (h && (t = EntitySystem_1.EntitySystem.GetComponent(h.Id, 254)) && (i = EntitySystem_1.EntitySystem.GetComponent(h.Id, 202), h = EntitySystem_1.EntitySystem.GetComponent(h.Id, 138)) && (h = h.PutDownIndex, e = this.Config.JigsawConfig.Column, e = h.Row * e + h.Col, this._Ga?.CheckIsPlayerPiece(e)) && (h = i?.GetInteractionMainActor())) {
+        this.EGa.set(h, t);
+        s.push(h);
       }
-    return s
+    }
+    for (let i = 0; i < this.Config.JigsawConfig.Row; i++) {
+      for (let t = 0; t < this.Config.JigsawConfig.Column; t++) {
+        var o = new JigsawIndex(i, t);
+        var r = this.fcn.GetInteractionActorByIndex(o);
+        if (r) {
+          this.yGa.set(r, o);
+          s.push(r);
+        }
+      }
+    }
+    return s;
   }
   ClearLevelPickSelect() {
     var t;
-    this.w1h && (this.w1h.OnSelectEnd(), (t = this.w1h.Entity.GetComponent(255)) && t.OnTicTacToePieceSelect(!1, !0), this.w1h = void 0), this.twl = !1
+    if (this.w1h) {
+      this.w1h.OnSelectEnd();
+      if (t = this.w1h.Entity.GetComponent(255)) {
+        t.OnTicTacToePieceSelect(false, true);
+      }
+      this.w1h = undefined;
+    }
+    this.twl = false;
   }
   LevelPickSelectUndefined() {
     if (this.w1h) {
       this.ClearLevelPickSelect();
-      for (const t of this.iwl) t.OnTicTacToePieceSelect(!1, !0)
+      for (const t of this.iwl) {
+        t.OnTicTacToePieceSelect(false, true);
+      }
     }
   }
   ForceResetPieceSelect(t) {
     if (t) {
-      this.w1h = void 0, this.twl = !1;
-      for (const i of this.iwl) i.OnTicTacToePieceSelect(!1, !0)
-    } else
-      for (const s of this.iwl) s.OnTicTacToePieceSelect(!1, !1)
+      this.w1h = undefined;
+      this.twl = false;
+      for (const i of this.iwl) {
+        i.OnTicTacToePieceSelect(false, true);
+      }
+    } else {
+      for (const s of this.iwl) {
+        s.OnTicTacToePieceSelect(false, false);
+      }
+    }
   }
   OnLevelPickClick(t) {
     if (!this._Ga?.IsFinish && !this.twl && !this.wkl) {
       if (this.yGa.has(t)) {
         var i = this.yGa.get(t);
-        if (i && this.OnGridTicTacToeClick(i)) return
+        if (i && this.OnGridTicTacToeClick(i)) {
+          return;
+        }
       }
       if (this.EGa.has(t)) {
         i = this.EGa.get(t);
         if (i) {
-          this.ClearLevelPickSelect(), i.OnSelect(), this.w1h = i;
+          this.ClearLevelPickSelect();
+          i.OnSelect();
+          this.w1h = i;
           var s = this.w1h.Entity.GetComponent(255);
-          s && s.OnTicTacToePieceSelect(!0, !1);
-          for (const e of this.iwl) e !== s && e.OnTicTacToePieceSelect(!1, !1)
+          if (s) {
+            s.OnTicTacToePieceSelect(true, false);
+          }
+          for (const e of this.iwl) {
+            if (e !== s) {
+              e.OnTicTacToePieceSelect(false, false);
+            }
+          }
         }
       }
     }
   }
   LGa() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 36, "[SceneItemJigsawBaseComponent.OnTicTacToeGameOver]", ["PlayerWin", this._Ga?.PlayerWin], ["AiWin", this._Ga?.AiWin]), this.zll && this.zll(this._Ga?.PlayerWin ?? !1)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SceneItem", 36, "[SceneItemJigsawBaseComponent.OnTicTacToeGameOver]", ["PlayerWin", this._Ga?.PlayerWin], ["AiWin", this._Ga?.AiWin]);
+    }
+    if (this.zll) {
+      this.zll(this._Ga?.PlayerWin ?? false);
+    }
   }
   RegisterPickControllerEvents(t, i, s, e, h) {
-    this.mJl = !0, this.oGa = t, this.zll = i, this.vAl = s, this.QPl = e, this.KPl = h
+    this.mJl = true;
+    this.oGa = t;
+    this.zll = i;
+    this.vAl = s;
+    this.QPl = e;
+    this.KPl = h;
   }
   UnregisterPickControllerEvents() {
-    this.mJl = !1, this.oGa = void 0, this.zll = void 0, this.vAl = void 0, this.QPl = void 0, this.KPl = void 0
+    this.mJl = false;
+    this.oGa = undefined;
+    this.zll = undefined;
+    this.vAl = undefined;
+    this.QPl = undefined;
+    this.KPl = undefined;
   }
   RegisterAiInfo(t) {
-    this._Ga && t && this._Ga.RefreshAiInfo(t)
+    if (this._Ga && t) {
+      this._Ga.RefreshAiInfo(t);
+    }
   }
   RefreshAiEnable(t) {
-    this._Ga && this._Ga.RefreshAiEnable(t)
+    if (this._Ga) {
+      this._Ga.RefreshAiEnable(t);
+    }
   }
 };
-SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(137)], SceneItemJigsawBaseComponent), exports.SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent;
-//# sourceMappingURL=SceneItemJigsawBaseComponent.js.map
+SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(137)], SceneItemJigsawBaseComponent);
+exports.SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent; //# sourceMappingURL=SceneItemJigsawBaseComponent.js.map

@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoAbyssReceiveReward = void 0;
+  value: true
+});
+exports.DangoAbyssReceiveReward = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class DangoAbyssReceiveReward {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, s) {
-    return this.bb_pos = e, this.bb = s, this
+    this.bb_pos = e;
+    this.bb = s;
+    return this;
   }
   static getRootAsDangoAbyssReceiveReward(e, s) {
-    return (s || new DangoAbyssReceiveReward).__init(e.readInt32(e.position()) + e.position(), e)
+    return (s || new DangoAbyssReceiveReward()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsDangoAbyssReceiveReward(e, s) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (s || new DangoAbyssReceiveReward).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (s || new DangoAbyssReceiveReward()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static startDangoAbyssReceiveReward(e) {
-    e.startObject(0)
+    e.startObject(0);
   }
   static endDangoAbyssReceiveReward(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createDangoAbyssReceiveReward(e) {
-    return DangoAbyssReceiveReward.startDangoAbyssReceiveReward(e), DangoAbyssReceiveReward.endDangoAbyssReceiveReward(e)
+    DangoAbyssReceiveReward.startDangoAbyssReceiveReward(e);
+    return DangoAbyssReceiveReward.endDangoAbyssReceiveReward(e);
   }
 }
 exports.DangoAbyssReceiveReward = DangoAbyssReceiveReward;

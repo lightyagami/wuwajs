@@ -1,45 +1,97 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportDungeon = void 0;
+  value: true
+});
+exports.FbTeleportDungeon = undefined;
 const UnionTeleportTransitionOptionHelper_1 = require("./UnionTeleportTransitionOptionHelper");
 class FbTeleportDungeon {
   constructor(t) {
-    this.FbDataInternal = t, this.MMh = !1, this.EMh = 0, this.IMh = !1, this.TMh = !1, this.bMh = !1, this.LMh = 0, this.L0h = !1, this.khi = void 0, this.AMh = !1, this.xMh = !1, this.aF_ = !1, this.hF_ = !1, this.EBc = !1, this.IBc = !1, this.lO1 = !1, this._O1 = void 0
+    this.FbDataInternal = t;
+    this.MMh = false;
+    this.EMh = 0;
+    this.IMh = false;
+    this.TMh = false;
+    this.bMh = false;
+    this.LMh = 0;
+    this.L0h = false;
+    this.khi = undefined;
+    this.AMh = false;
+    this.xMh = false;
+    this.aF_ = false;
+    this.hF_ = false;
+    this.EBc = false;
+    this.IBc = false;
+    this.FO1 = false;
+    this.NO1 = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleportDungeon(t)
+    if (t) {
+      return new FbTeleportDungeon(t);
+    }
   }
   get DungeonId() {
-    return this.MMh || (this.MMh = !0, this.EMh = this.FbDataInternal.dungeonId()), this.EMh
+    if (!this.MMh) {
+      this.MMh = true;
+      this.EMh = this.FbDataInternal.dungeonId();
+    }
+    return this.EMh;
   }
   get IsRegroup() {
-    return this.IMh || (this.IMh = !0, this.TMh = this.FbDataInternal.isRegroup()), this.TMh
+    if (!this.IMh) {
+      this.IMh = true;
+      this.TMh = this.FbDataInternal.isRegroup();
+    }
+    return this.TMh;
   }
   get LocationEntityId() {
-    return this.bMh || (this.bMh = !0, this.LMh = this.FbDataInternal.locationEntityId()), this.LMh
+    if (!this.bMh) {
+      this.bMh = true;
+      this.LMh = this.FbDataInternal.locationEntityId();
+    }
+    return this.LMh;
   }
   get TransitionOption() {
-    var t, i;
-    return !this.L0h && (this.L0h = !0, t = this.FbDataInternal.transitionOptionType(), i = UnionTeleportTransitionOptionHelper_1.UnionTeleportTransitionOptionHelper.GetUnionTeleportTransitionOptionObject(t)) && (this.khi = UnionTeleportTransitionOptionHelper_1.UnionTeleportTransitionOptionHelper.ReadUnionTeleportTransitionOption(t, this.FbDataInternal.transitionOption(i))), this.khi
+    var t;
+    var i;
+    if (!this.L0h && (this.L0h = true, t = this.FbDataInternal.transitionOptionType(), i = UnionTeleportTransitionOptionHelper_1.UnionTeleportTransitionOptionHelper.GetUnionTeleportTransitionOptionObject(t))) {
+      this.khi = UnionTeleportTransitionOptionHelper_1.UnionTeleportTransitionOptionHelper.ReadUnionTeleportTransitionOption(t, this.FbDataInternal.transitionOption(i));
+    }
+    return this.khi;
   }
   get IsNeedSecondaryConfirmation() {
-    return this.AMh || (this.AMh = !0, this.xMh = this.FbDataInternal.isNeedSecondaryConfirmation()), this.xMh
+    if (!this.AMh) {
+      this.AMh = true;
+      this.xMh = this.FbDataInternal.isNeedSecondaryConfirmation();
+    }
+    return this.xMh;
   }
   get UseLocationEntityGravity() {
-    return this.aF_ || (this.aF_ = !0, this.hF_ = this.FbDataInternal.useLocationEntityGravity()), this.hF_
+    if (!this.aF_) {
+      this.aF_ = true;
+      this.hF_ = this.FbDataInternal.useLocationEntityGravity();
+    }
+    return this.hF_;
   }
   get ContinueSave() {
-    return this.EBc || (this.EBc = !0, this.IBc = this.FbDataInternal.continueSave()), this.IBc
+    if (!this.EBc) {
+      this.EBc = true;
+      this.IBc = this.FbDataInternal.continueSave();
+    }
+    return this.IBc;
   }
   get KeepMovementStates() {
-    if (!this.lO1) {
-      this.lO1 = !0, this._O1 = new Array;
+    if (!this.FO1) {
+      this.FO1 = true;
+      this.NO1 = new Array();
       var i = this.FbDataInternal.keepMovementStatesLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this._O1.push(this.FbDataInternal.keepMovementStates(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.NO1.push(this.FbDataInternal.keepMovementStates(t));
+        }
+      }
     }
-    return this._O1
+    return this.NO1;
   }
 }
 exports.FbTeleportDungeon = FbTeleportDungeon;

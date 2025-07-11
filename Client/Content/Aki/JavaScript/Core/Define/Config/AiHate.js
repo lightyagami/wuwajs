@@ -1,125 +1,188 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiHate = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  FloatRange_1 = require("./SubType/FloatRange");
+  value: true
+});
+exports.AiHate = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const FloatRange_1 = require("./SubType/FloatRange");
 class AiHate {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get BaseHatred() {
-    return this.basehatred()
+    return this.basehatred();
   }
   get DecreaseRate() {
-    return this.decreaserate()
+    return this.decreaserate();
   }
   get DecreaseTimeLength() {
-    return this.decreasetimelength()
+    return this.decreasetimelength();
   }
   get DecreaseTimeCd() {
-    return this.decreasetimecd()
+    return this.decreasetimecd();
   }
   get IncreaseRateWhenDecreasing() {
-    return this.increaseratewhendecreasing()
+    return this.increaseratewhendecreasing();
   }
   get MinClearTime() {
-    return this.mincleartime()
+    return this.mincleartime();
   }
   get DisengageDistanceRange() {
-    return this.disengagedistancerange()
+    return this.disengagedistancerange();
   }
   get DisengageTimeRange() {
-    return this.disengagetimerange()
+    return this.disengagetimerange();
   }
   get DisengageHeightRange() {
-    return this.disengageheightrange()
+    return this.disengageheightrange();
   }
   get DisengageHeightRangeMax() {
-    return this.disengageheightrangemax()
+    return this.disengageheightrangemax();
   }
   get DisengageBornDistance() {
-    return this.disengageborndistance()
+    return this.disengageborndistance();
   }
   get MaxMoveFromBorn() {
-    return this.maxmovefromborn()
+    return this.maxmovefromborn();
   }
   get ExcludeTag() {
-    return this.excludetag()
+    return this.excludetag();
   }
   get SwornHatredTag() {
-    return this.swornhatredtag()
+    return this.swornhatredtag();
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsAiHate(t, e) {
-    return (e || new AiHate).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new AiHate()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   basehatred() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   decreaserate() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readFloat32(this.z7 + t) : .8
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0.8;
+    }
   }
   decreasetimelength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readFloat32(this.z7 + t) : 5e3
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 5000;
+    }
   }
   decreasetimecd() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1e4
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 10000;
+    }
   }
   increaseratewhendecreasing() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   mincleartime() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readFloat32(this.z7 + t) : 1e3
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1000;
+    }
   }
   disengagedistancerange(t) {
     var e = this.J7.__offset(this.z7, 18);
-    return e ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + e), this.J7) : null
+    if (e) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + e), this.J7);
+    } else {
+      return null;
+    }
   }
   disengagetimerange(t) {
     var e = this.J7.__offset(this.z7, 20);
-    return e ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + e), this.J7) : null
+    if (e) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + e), this.J7);
+    } else {
+      return null;
+    }
   }
   disengageheightrange(t) {
     var e = this.J7.__offset(this.z7, 22);
-    return e ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + e), this.J7) : null
+    if (e) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + e), this.J7);
+    } else {
+      return null;
+    }
   }
   disengageheightrangemax(t) {
     var e = this.J7.__offset(this.z7, 24);
-    return e ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + e), this.J7) : null
+    if (e) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + e), this.J7);
+    } else {
+      return null;
+    }
   }
   disengageborndistance(t) {
     var e = this.J7.__offset(this.z7, 26);
-    return e ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + e), this.J7) : null
+    if (e) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + e), this.J7);
+    } else {
+      return null;
+    }
   }
   maxmovefromborn() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readFloat32(this.z7 + t) : -1
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return -1;
+    }
   }
   excludetag(t) {
-    var e = this.J7.__offset(this.z7, 30),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 30);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   swornhatredtag(t) {
-    var e = this.J7.__offset(this.z7, 32),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 32);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
 }
 exports.AiHate = AiHate;

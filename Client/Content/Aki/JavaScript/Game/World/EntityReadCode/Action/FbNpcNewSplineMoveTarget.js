@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcNewSplineMoveTarget = void 0;
+  value: true
+});
+exports.FbNpcNewSplineMoveTarget = undefined;
 class FbNpcNewSplineMoveTarget {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ioc = !1, this.roc = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ioc = false;
+    this.roc = 0;
   }
   static Create(t) {
-    if (t) return new FbNpcNewSplineMoveTarget(t)
+    if (t) {
+      return new FbNpcNewSplineMoveTarget(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get NpcId() {
-    return this.ioc || (this.ioc = !0, this.roc = this.FbDataInternal.npcId()), this.roc
+    if (!this.ioc) {
+      this.ioc = true;
+      this.roc = this.FbDataInternal.npcId();
+    }
+    return this.roc;
   }
 }
 exports.FbNpcNewSplineMoveTarget = FbNpcNewSplineMoveTarget;

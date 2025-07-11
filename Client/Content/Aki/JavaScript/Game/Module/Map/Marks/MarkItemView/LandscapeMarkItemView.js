@@ -1,32 +1,51 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LandscapeMarkItemView = void 0;
-const UE = require("ue"),
-  MarkEffectByMarkId_1 = require("../../../../../Core/Define/ConfigQuery/MarkEffectByMarkId"),
-  ConfigMarkItemView_1 = require("./ConfigMarkItemView");
+  value: true
+});
+exports.LandscapeMarkItemView = undefined;
+const UE = require("ue");
+const MarkEffectByMarkId_1 = require("../../../../../Core/Define/ConfigQuery/MarkEffectByMarkId");
+const ConfigMarkItemView_1 = require("./ConfigMarkItemView");
 class LandscapeMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   constructor(e) {
-    super(e), this.gRi = void 0
+    super(e);
+    this.gRi = undefined;
   }
   OnInitialize() {
-    super.OnInitialize(), this.fRi()
+    super.OnInitialize();
+    this.fRi();
   }
   OnReset() {
-    super.OnReset(), this.d8_(), this.fRi()
+    super.OnReset();
+    this.d8_();
+    this.fRi();
   }
   GetInteractiveFlag() {
-    return !1
+    return false;
   }
   async fRi() {
     var e = MarkEffectByMarkId_1.configMarkEffectByMarkId.GetConfig(this.Holder.MarkId);
-    e && (e = await this.LoadPrefabAsync(e.EffectResourcePath, this.RootItem), this.gRi = e.GetComponentByClass(UE.UIItem.StaticClass()), e = e.GetComponentByClass(UE.UINiagara.StaticClass()), 2 === this.Holder?.MapType ? e.bAdaptPosAndSizeChanged = !1 : e.bAdaptPosAndSizeChanged = !0)
+    if (e) {
+      e = await this.LoadPrefabAsync(e.EffectResourcePath, this.RootItem);
+      this.gRi = e.GetComponentByClass(UE.UIItem.StaticClass());
+      e = e.GetComponentByClass(UE.UINiagara.StaticClass());
+      if (this.Holder?.MapType === 2) {
+        e.bAdaptPosAndSizeChanged = false;
+      } else {
+        e.bAdaptPosAndSizeChanged = true;
+      }
+    }
   }
   d8_() {
-    this.gRi && (UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.gRi.GetOwner(), !0), this.gRi = void 0)
+    if (this.gRi) {
+      UE.LGUIBPLibrary.DestroyActorWithHierarchy(this.gRi.GetOwner(), true);
+      this.gRi = undefined;
+    }
   }
   OnBeforeDestroy() {
-    this.d8_(), super.OnBeforeDestroy()
+    this.d8_();
+    super.OnBeforeDestroy();
   }
   SetScale(e) {}
 }

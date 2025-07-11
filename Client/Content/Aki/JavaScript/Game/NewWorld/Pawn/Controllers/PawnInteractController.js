@@ -1,459 +1,931 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PawnInteractController = exports.InteractEntity = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  Time_1 = require("../../../../Core/Common/Time"),
-  Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent"),
-  MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  StringBuilder_1 = require("../../../../Core/Utils/StringBuilder"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon"),
-  IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  PublicUtil_1 = require("../../../Common/PublicUtil"),
-  Global_1 = require("../../../Global"),
-  LevelGameplayActionsDefine_1 = require("../../../LevelGamePlay/LevelGameplayActionsDefine"),
-  LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine"),
-  LevelGeneralContextUtil_1 = require("../../../LevelGamePlay/LevelGeneralContextUtil"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  ChildQuestNodeBase_1 = require("../../../Module/GeneralLogicTree/BehaviorNode/ChildQuestNode/ChildQuestNodeBase"),
-  GeneralLogicTreeUtil_1 = require("../../../Module/GeneralLogicTree/GeneralLogicTreeUtil"),
-  InteractionModel_1 = require("../../../Module/Interaction/InteractionModel"),
-  TsInteractionUtils_1 = require("../../../Module/Interaction/TsInteractionUtils"),
-  PlotController_1 = require("../../../Module/Plot/PlotController"),
-  SceneTeamController_1 = require("../../../Module/SceneTeam/SceneTeamController"),
-  InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  WorldFunctionLibrary_1 = require("../../../World/Bridge/WorldFunctionLibrary"),
-  DEFAULT_INTERACT_RANGE = 300,
-  PROFILE_DETECT_VISIBLE_BLOCK = "PawnInteractController_DetectVisibleBlock",
-  DETECT_VISIBLE_BLOCK_HEIGHT_OFFSET = 10,
-  EXECUTION_MAX_HEIGHT_DIFF = 50;
+  value: true
+});
+exports.PawnInteractController = exports.InteractEntity = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const Time_1 = require("../../../../Core/Common/Time");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const StringBuilder_1 = require("../../../../Core/Utils/StringBuilder");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon");
+const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../../Common/PublicUtil");
+const Global_1 = require("../../../Global");
+const LevelGameplayActionsDefine_1 = require("../../../LevelGamePlay/LevelGameplayActionsDefine");
+const LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine");
+const LevelGeneralContextUtil_1 = require("../../../LevelGamePlay/LevelGeneralContextUtil");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const ChildQuestNodeBase_1 = require("../../../Module/GeneralLogicTree/BehaviorNode/ChildQuestNode/ChildQuestNodeBase");
+const GeneralLogicTreeUtil_1 = require("../../../Module/GeneralLogicTree/GeneralLogicTreeUtil");
+const InteractionModel_1 = require("../../../Module/Interaction/InteractionModel");
+const TsInteractionUtils_1 = require("../../../Module/Interaction/TsInteractionUtils");
+const PlotController_1 = require("../../../Module/Plot/PlotController");
+const SceneTeamController_1 = require("../../../Module/SceneTeam/SceneTeamController");
+const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
+const UiManager_1 = require("../../../Ui/UiManager");
+const WorldFunctionLibrary_1 = require("../../../World/Bridge/WorldFunctionLibrary");
+const DEFAULT_INTERACT_RANGE = 300;
+const PROFILE_DETECT_VISIBLE_BLOCK = "PawnInteractController_DetectVisibleBlock";
+const DETECT_VISIBLE_BLOCK_HEIGHT_OFFSET = 10;
+const EXECUTION_MAX_HEIGHT_DIFF = 50;
 class InteractEntity {
   constructor(t) {
-    this.IsAdvice = !1, this.Jh = void 0, this.Hte = void 0, this.EntityId = void 0, this.InteractRange = -0, this.cui = 0, this.Crr = -100, this.grr = -9999, this.DirectOptionInstanceIds = [], this.DirectOptionNames = [], this.DirectOptionConditionIcon = [], this.DirectOptionGray = [], this.Jh = t, this.EntityId = t?.Id, this.IsAdvice = void 0 !== t.GetComponent(0).GetAdviceInfo(), this.Hte = t.GetComponent(1), this.DirectOptionInstanceIds = new Array, this.DirectOptionNames = new Array
+    this.IsAdvice = false;
+    this.Jh = undefined;
+    this.Hte = undefined;
+    this.EntityId = undefined;
+    this.InteractRange = -0;
+    this.cui = 0;
+    this.Crr = -100;
+    this.grr = -9999;
+    this.DirectOptionInstanceIds = [];
+    this.DirectOptionNames = [];
+    this.DirectOptionConditionIcon = [];
+    this.DirectOptionGray = [];
+    this.Jh = t;
+    this.EntityId = t?.Id;
+    this.IsAdvice = t.GetComponent(0).GetAdviceInfo() !== undefined;
+    this.Hte = t.GetComponent(1);
+    this.DirectOptionInstanceIds = new Array();
+    this.DirectOptionNames = new Array();
   }
   get Priority() {
-    var t, i;
-    return this.Jh ? (this.IsAdvice && (i = this.Hte.ActorLocationProxy, t = Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy, i = Vector_1.Vector.Distance(i, t), this.cui = MathCommon_1.MathCommon.Clamp(i / this.InteractRange, 0, 1) * this.Crr), this.cui) : this.grr
+    var t;
+    var i;
+    if (this.Jh) {
+      if (this.IsAdvice) {
+        i = this.Hte.ActorLocationProxy;
+        t = Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy;
+        i = Vector_1.Vector.Distance(i, t);
+        this.cui = MathCommon_1.MathCommon.Clamp(i / this.InteractRange, 0, 1) * this.Crr;
+      }
+      return this.cui;
+    } else {
+      return this.grr;
+    }
   }
   GetEntity() {
-    return this.Jh
+    return this.Jh;
   }
 }
 exports.InteractEntity = InteractEntity;
 class PawnInteractController {
   constructor(t) {
-    this.Hte = void 0, this.frr = void 0, this.prr = void 0, this.vrr = void 0, this.Mrr = void 0, this.Err = void 0, this.Srr = void 0, this.yrr = "", this.Irr = DEFAULT_INTERACT_RANGE, this.Trr = -1, this.SectorRange = void 0, this.LocationOffset = void 0, this.InteractCameraOffsetConifg = void 0, this.Lrr = -0, this.Drr = "Option", this._i_ = void 0, this.IsTurnAround = !1, this.IsTurnRecoveryImmediately = !1, this.IsWaitTurnComplete = !1, this.InteractIcon = "Dialog", this.PreTalkConfigs = void 0, this.PlayerInteractiveRange = void 0, this.IsPlayerTurnAround = !1, this.NUe = 0, this.Rrr = 0, this.Urr = 0, this.InteractEntity = void 0, this.Arr = void 0, this.Prr = Vector_1.Vector.Create(), this.a$t = void 0, this.TempDirectOptionInstances = new Array, this.PreDirectOptionInstances = new Array, this.OnInteractionUpdate = void 0, this.OnInteractActionEnd = void 0, this.qdu = new Set, this.InteractEntity = new InteractEntity(t.Entity), this.frr = t, this.Hte = t.Entity.GetComponent(1), this.wrr(), this.InteractEntity.InteractRange = Math.max(this.InteractRange, this.InteractExitRange)
+    this.Hte = undefined;
+    this.frr = undefined;
+    this.prr = undefined;
+    this.vrr = undefined;
+    this.Mrr = undefined;
+    this.Err = undefined;
+    this.Srr = undefined;
+    this.yrr = "";
+    this.Irr = DEFAULT_INTERACT_RANGE;
+    this.Trr = -1;
+    this.SectorRange = undefined;
+    this.LocationOffset = undefined;
+    this.InteractCameraOffsetConifg = undefined;
+    this.Lrr = -0;
+    this.Drr = "Option";
+    this._i_ = undefined;
+    this.IsTurnAround = false;
+    this.IsTurnRecoveryImmediately = false;
+    this.IsWaitTurnComplete = false;
+    this.InteractIcon = "Dialog";
+    this.PreTalkConfigs = undefined;
+    this.PlayerInteractiveRange = undefined;
+    this.IsPlayerTurnAround = false;
+    this.NUe = 0;
+    this.Rrr = 0;
+    this.Urr = 0;
+    this.InteractEntity = undefined;
+    this.Arr = undefined;
+    this.Prr = Vector_1.Vector.Create();
+    this.a$t = undefined;
+    this.TempDirectOptionInstances = new Array();
+    this.PreDirectOptionInstances = new Array();
+    this.OnInteractionUpdate = undefined;
+    this.OnInteractActionEnd = undefined;
+    this.lBu = new Set();
+    this.InteractEntity = new InteractEntity(t.Entity);
+    this.frr = t;
+    this.Hte = t.Entity.GetComponent(1);
+    this.wrr();
+    this.InteractEntity.InteractRange = Math.max(this.InteractRange, this.InteractExitRange);
   }
   Dispose() {
-    this.Hte = void 0, this.frr = void 0, this.prr = void 0, this.Mrr = void 0, this.Err = void 0, this.vrr = void 0, this.Arr = void 0, this.Srr = void 0, this.PlayerInteractiveRange = void 0, this.PreTalkConfigs = void 0, this.SectorRange = void 0, this.OnInteractionUpdate = void 0, this.OnInteractActionEnd = void 0
+    this.Hte = undefined;
+    this.frr = undefined;
+    this.prr = undefined;
+    this.Mrr = undefined;
+    this.Err = undefined;
+    this.vrr = undefined;
+    this.Arr = undefined;
+    this.Srr = undefined;
+    this.PlayerInteractiveRange = undefined;
+    this.PreTalkConfigs = undefined;
+    this.SectorRange = undefined;
+    this.OnInteractionUpdate = undefined;
+    this.OnInteractActionEnd = undefined;
   }
   get DefaultShowOption() {
     var t = this.GetInteractiveOption();
-    return this.HasDynamicOption && "Direct" === t?.DoIntactType && t.TidContent ? PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidContent) : StringUtils_1.StringUtils.IsEmpty(this.yrr) ? void 0 : PublicUtil_1.PublicUtil.GetConfigTextByKey(this.yrr)
+    if (this.HasDynamicOption && t?.DoIntactType === "Direct" && t.TidContent) {
+      return PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidContent);
+    } else if (StringUtils_1.StringUtils.IsEmpty(this.yrr)) {
+      return undefined;
+    } else {
+      return PublicUtil_1.PublicUtil.GetConfigTextByKey(this.yrr);
+    }
   }
   GetInteractType() {
-    return this.Drr
+    return this.Drr;
   }
   wrr() {
-    var t = this.Hte.CreatureData,
-      i = t.GetPbEntityInitData();
+    var t = this.Hte.CreatureData;
+    var i = t.GetPbEntityInitData();
     if (i) {
-      this.prr = new Array, this.Mrr = new Array, this.Err = new Array, this.vrr = new Array;
+      this.prr = new Array();
+      this.Mrr = new Array();
+      this.Err = new Array();
+      this.vrr = new Array();
       var e = (0, IComponent_1.getComponent)(i.ComponentsData, "InteractComponent");
       if (e) {
-        if (this.PreTalkConfigs = e.PreFlow, e.Range && (this.Irr = e.Range), e.ExitRange && (this.Trr = e.ExitRange), e.SectorRange && (this.SectorRange = e.SectorRange), e.SectorRangeFromPlayerToEntity) switch (e.SectorRangeFromPlayerToEntity.Type) {
-          case IComponent_1.EInteractPlayerDiractionType.LeisureInteraction:
-            this.PlayerInteractiveRange = e.SectorRangeFromPlayerToEntity;
-            break;
-          case IComponent_1.EInteractPlayerDiractionType.Npc:
+        this.PreTalkConfigs = e.PreFlow;
+        if (e.Range) {
+          this.Irr = e.Range;
         }
-        if (e.InteractPointOffset && (this.LocationOffset = Vector_1.Vector.Create(e.InteractPointOffset.X || 0, e.InteractPointOffset.Y, e.InteractPointOffset.Z)), e.InteractCameraOffsetConfig && (this.InteractCameraOffsetConifg = e.InteractCameraOffsetConfig), e.TidContent && (this.yrr = e.TidContent), this.Drr = e.DoIntactType, e.TurnAroundType) {
+        if (e.ExitRange) {
+          this.Trr = e.ExitRange;
+        }
+        if (e.SectorRange) {
+          this.SectorRange = e.SectorRange;
+        }
+        if (e.SectorRangeFromPlayerToEntity) {
+          switch (e.SectorRangeFromPlayerToEntity.Type) {
+            case IComponent_1.EInteractPlayerDiractionType.LeisureInteraction:
+              this.PlayerInteractiveRange = e.SectorRangeFromPlayerToEntity;
+              break;
+            case IComponent_1.EInteractPlayerDiractionType.Npc:
+          }
+        }
+        if (e.InteractPointOffset) {
+          this.LocationOffset = Vector_1.Vector.Create(e.InteractPointOffset.X || 0, e.InteractPointOffset.Y, e.InteractPointOffset.Z);
+        }
+        if (e.InteractCameraOffsetConfig) {
+          this.InteractCameraOffsetConifg = e.InteractCameraOffsetConfig;
+        }
+        if (e.TidContent) {
+          this.yrr = e.TidContent;
+        }
+        this.Drr = e.DoIntactType;
+        if (e.TurnAroundType) {
           switch (e.TurnAroundType) {
             case IComponent_1.EInteractTurnAround.FaceEachOther:
             case IComponent_1.EInteractTurnAround.FaceEachOtherWithRecoveryImmediately:
-              this.IsTurnAround = !0, this.IsPlayerTurnAround = !0, e.IsWaitForTurnAroundComplete && (this.IsWaitTurnComplete = !0);
+              this.IsTurnAround = true;
+              this.IsPlayerTurnAround = true;
+              if (e.IsWaitForTurnAroundComplete) {
+                this.IsWaitTurnComplete = true;
+              }
               break;
             case IComponent_1.EInteractTurnAround.PlayerTurnToInteractor:
-              this.IsPlayerTurnAround = !0
+              this.IsPlayerTurnAround = true;
           }
-          e.TurnAroundType === IComponent_1.EInteractTurnAround.FaceEachOtherWithRecoveryImmediately && (this.IsTurnRecoveryImmediately = !0)
+          if (e.TurnAroundType === IComponent_1.EInteractTurnAround.FaceEachOtherWithRecoveryImmediately) {
+            this.IsTurnRecoveryImmediately = true;
+          }
         }
-        e.InteractAdditionalInfo && (this._i_ = e.InteractAdditionalInfo.Type), this.a$t = e.MatchRoleOption, this.Brr(e)
-      } else this.Lrr = this.Irr;
+        if (e.InteractAdditionalInfo) {
+          this._i_ = e.InteractAdditionalInfo.Type;
+        }
+        this.a$t = e.MatchRoleOption;
+        this.Brr(e);
+      } else {
+        this.Lrr = this.Irr;
+      }
       i = t.ComponentDataMap.get("Tys")?.Tys;
-      this.brr(i, e?.RandomInteract, t.GetPbDataId()), this.qrr(i), i && this.frr.SetServerLockInteract(i.UIs, "Init Interact Controller"), this.Grr()
-    } else Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 7, "[PawnInteractComponent.OnStart] 交互组件初始化失败", ["CreatureGenID:", t.GetOwnerId()], ["PbDataId:", t.GetPbDataId()])
+      this.brr(i, e?.RandomInteract, t.GetPbDataId());
+      this.qrr(i);
+      if (i) {
+        this.frr.SetServerLockInteract(i.UIs, "Init Interact Controller");
+      }
+      this.Grr();
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Interaction", 7, "[PawnInteractComponent.OnStart] 交互组件初始化失败", ["CreatureGenID:", t.GetOwnerId()], ["PbDataId:", t.GetPbDataId()]);
+    }
   }
   qrr(t) {
-    if (t?.AIs)
+    if (t?.AIs) {
       for (const r of t.AIs) {
-        var i = ModelManager_1.ModelManager.InteractionModel.GetDynamicConfig(r.e6n),
-          e = LevelGeneralContextUtil_1.LevelGeneralContextUtil.CreateByServerContext(r.cvs);
-        this.AddDynamicInteractOption(i, e, r.DIs, r.XCa, !1)
-      }
-  }
-  ClearDirectOptions() {
-    this.InteractEntity && (this.InteractEntity.DirectOptionInstanceIds.length = 0, this.InteractEntity.DirectOptionNames.length = 0, this.InteractEntity.DirectOptionConditionIcon.length = 0, this.InteractEntity.DirectOptionGray.length = 0)
-  }
-  UpdateDirectOptions(t, i = !0, e = !0, r = !1) {
-    if (!this.prr) return !1;
-    if (!this.Hte) return !1;
-    var n, o;
-    if (!this.Hte.Owner) return !1;
-    if (!this.InteractEntity) return !1;
-    if (this.TempDirectOptionInstances.length = 0, this.InteractEntity.DirectOptionInstanceIds.length = 0, this.InteractEntity.DirectOptionNames.length = 0, this.InteractEntity.DirectOptionConditionIcon.length = 0, this.InteractEntity.DirectOptionGray.length = 0, this.HasDynamicOption) return !0;
-    let s = !1;
-    for (const a of this.prr) a.Disabled || ("Direct" !== a.DoIntactType ? s = !0 : r && "Flow" !== a.Type.Type || 1 !== a.CustomOptionType && this.Nrr(a) && this.Gdu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t) && (this.TempDirectOptionInstances.push(a), this.InteractEntity.DirectOptionInstanceIds.push(a.InstanceId), (n = a.TidContent ? PublicUtil_1.PublicUtil.GetConfigTextByKey(a.TidContent) : void 0) && !a.ConditionCheck && a.LockTips?.TidAppendText ? (o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.LockTips.TidAppendText), o = new StringBuilder_1.StringBuilder(n, InteractionModel_1.COLOR_PREFIX, o, InteractionModel_1.COLOR_SUFFIX), this.InteractEntity.DirectOptionNames.push(o.ToString())) : this.InteractEntity.DirectOptionNames.push(n), a.LockTips ? this.InteractEntity.DirectOptionConditionIcon.push(a.ConditionCheck ? InteractionModel_1.UNLOCK_TEXTURE : InteractionModel_1.LOCK_TEXTURE) : this.InteractEntity.DirectOptionConditionIcon.push(void 0), this.InteractEntity.DirectOptionGray.push(!a.ConditionCheck)));
-    let h = !1;
-    if (i) {
-      if (this.PreDirectOptionInstances.length === this.TempDirectOptionInstances.length) {
-        for (let t = 0; t < this.TempDirectOptionInstances.length; t++)
-          if (this.TempDirectOptionInstances[t] !== this.PreDirectOptionInstances[t]) {
-            h = !0;
-            break
-          }
-      } else h = !0;
-      if (h) {
-        TsInteractionUtils_1.TsInteractionUtils.UpdateInteractHintView(), this.PreDirectOptionInstances.length = 0;
-        for (const l of this.TempDirectOptionInstances) this.PreDirectOptionInstances.push(l)
+        var i = ModelManager_1.ModelManager.InteractionModel.GetDynamicConfig(r.e6n);
+        var e = LevelGeneralContextUtil_1.LevelGeneralContextUtil.CreateByServerContext(r.cvs);
+        this.AddDynamicInteractOption(i, e, r.DIs, r.XCa, false);
       }
     }
-    return s || 0 < this.InteractEntity.DirectOptionInstanceIds.length
+  }
+  ClearDirectOptions() {
+    if (this.InteractEntity) {
+      this.InteractEntity.DirectOptionInstanceIds.length = 0;
+      this.InteractEntity.DirectOptionNames.length = 0;
+      this.InteractEntity.DirectOptionConditionIcon.length = 0;
+      this.InteractEntity.DirectOptionGray.length = 0;
+    }
+  }
+  UpdateDirectOptions(t, i = true, e = true, r = false) {
+    if (!this.prr) {
+      return false;
+    }
+    if (!this.Hte) {
+      return false;
+    }
+    var n;
+    var o;
+    if (!this.Hte.Owner) {
+      return false;
+    }
+    if (!this.InteractEntity) {
+      return false;
+    }
+    this.TempDirectOptionInstances.length = 0;
+    this.InteractEntity.DirectOptionInstanceIds.length = 0;
+    this.InteractEntity.DirectOptionNames.length = 0;
+    this.InteractEntity.DirectOptionConditionIcon.length = 0;
+    this.InteractEntity.DirectOptionGray.length = 0;
+    if (this.HasDynamicOption) {
+      return true;
+    }
+    let s = false;
+    for (const a of this.prr) {
+      if (!a.Disabled) {
+        if (a.DoIntactType !== "Direct") {
+          s = true;
+        } else if (!r || a.Type.Type === "Flow") {
+          if (a.CustomOptionType !== 1 && this.Nrr(a) && this._Bu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t)) {
+            this.TempDirectOptionInstances.push(a);
+            this.InteractEntity.DirectOptionInstanceIds.push(a.InstanceId);
+            if ((n = a.TidContent ? PublicUtil_1.PublicUtil.GetConfigTextByKey(a.TidContent) : undefined) && !a.ConditionCheck && a.LockTips?.TidAppendText) {
+              o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.LockTips.TidAppendText);
+              o = new StringBuilder_1.StringBuilder(n, InteractionModel_1.COLOR_PREFIX, o, InteractionModel_1.COLOR_SUFFIX);
+              this.InteractEntity.DirectOptionNames.push(o.ToString());
+            } else {
+              this.InteractEntity.DirectOptionNames.push(n);
+            }
+            if (a.LockTips) {
+              this.InteractEntity.DirectOptionConditionIcon.push(a.ConditionCheck ? InteractionModel_1.UNLOCK_TEXTURE : InteractionModel_1.LOCK_TEXTURE);
+            } else {
+              this.InteractEntity.DirectOptionConditionIcon.push(undefined);
+            }
+            this.InteractEntity.DirectOptionGray.push(!a.ConditionCheck);
+          }
+        }
+      }
+    }
+    let h = false;
+    if (i) {
+      if (this.PreDirectOptionInstances.length === this.TempDirectOptionInstances.length) {
+        for (let t = 0; t < this.TempDirectOptionInstances.length; t++) {
+          if (this.TempDirectOptionInstances[t] !== this.PreDirectOptionInstances[t]) {
+            h = true;
+            break;
+          }
+        }
+      } else {
+        h = true;
+      }
+      if (h) {
+        TsInteractionUtils_1.TsInteractionUtils.UpdateInteractHintView();
+        this.PreDirectOptionInstances.length = 0;
+        for (const l of this.TempDirectOptionInstances) {
+          this.PreDirectOptionInstances.push(l);
+        }
+      }
+    }
+    return s || this.InteractEntity.DirectOptionInstanceIds.length > 0;
   }
   brr(t, i, e) {
-    if (t && t.PIs && t.PIs.length)
-      if (i)
+    if (t && t.PIs && t.PIs.length) {
+      if (i) {
         for (const n of t.PIs) {
-          var r = i.Options[n].Option,
-            r = this.Orr(r, 2);
-          r.RandomOptionIndex = n, this.prr.push(r)
-        } else Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 18, "找不到随机交互组件的配置", ["实体配置Id", e])
+          var r = i.Options[n].Option;
+          var r = this.Orr(r, 2);
+          r.RandomOptionIndex = n;
+          this.prr.push(r);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Interaction", 18, "找不到随机交互组件的配置", ["实体配置Id", e]);
+      }
+    }
   }
   Brr(e) {
-    if (e.InteractIcon ? this.InteractIcon = e.InteractIcon : e.InteractDefaultIcon ? this.InteractIcon = e.InteractDefaultIcon : this.InteractIcon = "Dialog", 0 < e.Options?.length)
+    if (e.InteractIcon) {
+      this.InteractIcon = e.InteractIcon;
+    } else if (e.InteractDefaultIcon) {
+      this.InteractIcon = e.InteractDefaultIcon;
+    } else {
+      this.InteractIcon = "Dialog";
+    }
+    if (e.Options?.length > 0) {
       for (let t = 0, i = e.Options.length; t < i; t++) {
         var r = this.Orr(e.Options[t], 0);
-        this.prr.push(r)
+        this.prr.push(r);
       }
+    }
   }
   InitOptionWithOffset(t) {
     var i = this.prr;
-    if (i && 0 !== i.length)
-      for (const o of i)
+    if (i && i.length !== 0) {
+      for (const o of i) {
         if (o.Offset && !o.Offset.IsNearlyZero()) {
           const s = o.InstanceId;
-          var e = o.Range,
-            r = -1 === this.Trr ? e : this.Trr,
-            n = o.Offset;
+          var e = o.Range;
+          var r = this.Trr === -1 ? e : this.Trr;
+          var n = o.Offset;
           t(s, e, r, n, () => {
-            this.qdu.add(s)
+            this.lBu.add(s);
           }, () => {
-            this.qdu.delete(s)
-          })
+            this.lBu.delete(s);
+          });
         }
+      }
+    }
   }
   Grr() {
-    this.krr(), this.Frr(), this.vrr.length = 0, this.OnInteractionUpdate && this.OnInteractionUpdate(), this.frr && this.frr.UpdateInteractRange()
+    this.krr();
+    this.Frr();
+    this.vrr.length = 0;
+    if (this.OnInteractionUpdate) {
+      this.OnInteractionUpdate();
+    }
+    if (this.frr) {
+      this.frr.UpdateInteractRange();
+    }
   }
   IsInSectorRange() {
-    if (!this.SectorRange) return !0;
+    if (!this.SectorRange) {
+      return true;
+    }
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent;
     if (e) {
-      if (e.MoveComp && !e.MoveComp.IsStandardGravity) return this.Zuc();
-      var r = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.Begin),
-        n = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.End);
-      let t = void 0;
-      var o = this.Hte.CreatureData.GetEntityType(),
-        o = (t = o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy, PawnInteractController.cz),
-        s = PawnInteractController.fz,
-        e = (e.ActorLocationProxy.Subtraction(this.GetInteractPoint(), o), o.Z = 0, o.Normalize(), o.DotProduct(t));
+      if (e.MoveComp && !e.MoveComp.IsStandardGravity) {
+        return this.Zuc();
+      }
+      var r = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.Begin);
+      var n = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.End);
+      let t = undefined;
+      var o = this.Hte.CreatureData.GetEntityType();
+      t = o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy;
+      var o = PawnInteractController.cz;
+      var s = PawnInteractController.fz;
+      e.ActorLocationProxy.Subtraction(this.GetInteractPoint(), o);
+      o.Z = 0;
+      o.Normalize();
+      var e = o.DotProduct(t);
       let i = Math.acos(e) * MathUtils_1.MathUtils.RadToDeg;
-      if (o.CrossProduct(t, s), 0 < s.Z && (i *= -1), i = MathCommon_1.MathCommon.WrapAngle(i), n < r) {
-        if (i > r || i < n) return !0
-      } else if (i > r && i < n) return !0
+      o.CrossProduct(t, s);
+      if (s.Z > 0) {
+        i *= -1;
+      }
+      i = MathCommon_1.MathCommon.WrapAngle(i);
+      if (n < r) {
+        if (i > r || i < n) {
+          return true;
+        }
+      } else if (i > r && i < n) {
+        return true;
+      }
     }
-    return !1
+    return false;
   }
   IsInPlayerInteractiveRange() {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    if (!t) return !1;
-    if (!this.PlayerInteractiveRange) return !0;
-    if (this.PlayerInteractiveRange.Begin === -MathUtils_1.PI_DEG && this.PlayerInteractiveRange.End === MathUtils_1.PI_DEG) return !0;
-    if (t.MoveComp && !t.MoveComp.IsStandardGravity) return this.edc();
-    var i = PawnInteractController.cz,
-      e = PawnInteractController.fz,
-      t = (i.FromUeVector(this.Hte.ActorLocationProxy), i.SubtractionEqual(t.ActorLocationProxy), i.Z = 0, i.Normalize(), t.ActorForwardProxy),
-      r = i.DotProduct(t);
+    if (!t) {
+      return false;
+    }
+    if (!this.PlayerInteractiveRange) {
+      return true;
+    }
+    if (this.PlayerInteractiveRange.Begin === -MathUtils_1.PI_DEG && this.PlayerInteractiveRange.End === MathUtils_1.PI_DEG) {
+      return true;
+    }
+    if (t.MoveComp && !t.MoveComp.IsStandardGravity) {
+      return this.edc();
+    }
+    var i = PawnInteractController.cz;
+    var e = PawnInteractController.fz;
+    i.FromUeVector(this.Hte.ActorLocationProxy);
+    i.SubtractionEqual(t.ActorLocationProxy);
+    i.Z = 0;
+    i.Normalize();
+    var t = t.ActorForwardProxy;
+    var r = i.DotProduct(t);
     let n = Math.acos(r) * MathUtils_1.MathUtils.RadToDeg;
-    return i.CrossProduct(t, e), 0 < e.Z && (n *= -1), n > this.PlayerInteractiveRange.Begin && n < this.PlayerInteractiveRange.End
+    i.CrossProduct(t, e);
+    if (e.Z > 0) {
+      n *= -1;
+    }
+    return n > this.PlayerInteractiveRange.Begin && n < this.PlayerInteractiveRange.End;
   }
   Zuc() {
-    if (!this.SectorRange) return !0;
-    var e = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.Begin),
-      r = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.End),
-      n = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    if (n) {
-      let t = void 0;
-      var o = this.Hte.CreatureData.GetEntityType(),
-        o = (t = o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy, PawnInteractController.pz),
-        s = (this.Hte.ActorInitGravityRotationProxy.Quaternion().RotateVector(Vector_1.Vector.UpVectorProxy, o), PawnInteractController.tdc),
-        h = (t.CrossProduct(o, s), PawnInteractController.cz),
-        a = PawnInteractController.fz,
-        n = (n.ActorLocationProxy.Subtraction(this.GetInteractPoint(), h), h.Normalize(), h.DotProduct(t)),
-        l = h.DotProduct(s),
-        n = (t.Multiply(n, a), s.Multiply(l, h), h.AdditionEqual(a), h.Normalize(), h.DotProduct(t));
-      let i = Math.acos(n) * MathUtils_1.MathUtils.RadToDeg;
-      if (0 !== i && (h.CrossProduct(t, a), 0 < a.DotProduct(o)) && (i *= -1), i = MathCommon_1.MathCommon.WrapAngle(i), r < e) {
-        if (i > e || i < r) return !0
-      } else if (i > e && i < r) return !0
+    if (!this.SectorRange) {
+      return true;
     }
-    return !1
+    var e = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.Begin);
+    var r = MathCommon_1.MathCommon.WrapAngle(this.SectorRange.End);
+    var n = Global_1.Global.BaseCharacter?.CharacterActorComponent;
+    if (n) {
+      let t = undefined;
+      var o = this.Hte.CreatureData.GetEntityType();
+      t = o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem ? this.Hte.ActorRightProxy : this.Hte.ActorForwardProxy;
+      var o = PawnInteractController.pz;
+      this.Hte.ActorInitGravityRotationProxy.Quaternion().RotateVector(Vector_1.Vector.UpVectorProxy, o);
+      var s = PawnInteractController.tdc;
+      t.CrossProduct(o, s);
+      var h = PawnInteractController.cz;
+      var a = PawnInteractController.fz;
+      n.ActorLocationProxy.Subtraction(this.GetInteractPoint(), h);
+      h.Normalize();
+      var n = h.DotProduct(t);
+      var l = h.DotProduct(s);
+      t.Multiply(n, a);
+      s.Multiply(l, h);
+      h.AdditionEqual(a);
+      h.Normalize();
+      var n = h.DotProduct(t);
+      let i = Math.acos(n) * MathUtils_1.MathUtils.RadToDeg;
+      if (i !== 0 && (h.CrossProduct(t, a), a.DotProduct(o) > 0)) {
+        i *= -1;
+      }
+      i = MathCommon_1.MathCommon.WrapAngle(i);
+      if (r < e) {
+        if (i > e || i < r) {
+          return true;
+        }
+      } else if (i > e && i < r) {
+        return true;
+      }
+    }
+    return false;
   }
   edc() {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    if (!t) return !1;
-    if (!this.PlayerInteractiveRange) return !0;
-    if (this.PlayerInteractiveRange.Begin === -MathUtils_1.PI_DEG && this.PlayerInteractiveRange.End === MathUtils_1.PI_DEG) return !0;
-    var i = PawnInteractController.cz,
-      e = PawnInteractController.fz,
-      r = (i.FromUeVector(this.Hte.ActorLocationProxy), i.SubtractionEqual(t.ActorLocationProxy), i.Normalize(), t.ActorForwardProxy),
-      n = t.ActorRightProxy,
-      o = i.DotProduct(r),
-      s = i.DotProduct(n),
-      o = (r.Multiply(o, e), n.Multiply(s, i), i.AdditionEqual(e), i.Normalize(), i.DotProduct(r));
+    if (!t) {
+      return false;
+    }
+    if (!this.PlayerInteractiveRange) {
+      return true;
+    }
+    if (this.PlayerInteractiveRange.Begin === -MathUtils_1.PI_DEG && this.PlayerInteractiveRange.End === MathUtils_1.PI_DEG) {
+      return true;
+    }
+    var i = PawnInteractController.cz;
+    var e = PawnInteractController.fz;
+    i.FromUeVector(this.Hte.ActorLocationProxy);
+    i.SubtractionEqual(t.ActorLocationProxy);
+    i.Normalize();
+    var r = t.ActorForwardProxy;
+    var n = t.ActorRightProxy;
+    var o = i.DotProduct(r);
+    var s = i.DotProduct(n);
+    r.Multiply(o, e);
+    n.Multiply(s, i);
+    i.AdditionEqual(e);
+    i.Normalize();
+    var o = i.DotProduct(r);
     let h = Math.acos(o) * MathUtils_1.MathUtils.RadToDeg;
-    return 0 !== h && (i.CrossProduct(r, e), 0 < e.DotProduct(t.ActorUpProxy)) && (h *= -1), h > this.PlayerInteractiveRange.Begin && h < this.PlayerInteractiveRange.End
+    if (h !== 0 && (i.CrossProduct(r, e), e.DotProduct(t.ActorUpProxy) > 0)) {
+      h *= -1;
+    }
+    return h > this.PlayerInteractiveRange.Begin && h < this.PlayerInteractiveRange.End;
   }
   IsMatchRoleOption() {
-    return !this.a$t || this.a$t?.length <= 0 ? !ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam : SceneTeamController_1.SceneTeamController.IsMatchRoleOption(this.a$t)
+    if (!this.a$t || this.a$t?.length <= 0) {
+      return !ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam;
+    } else {
+      return SceneTeamController_1.SceneTeamController.IsMatchRoleOption(this.a$t);
+    }
   }
   GetInteractPoint() {
     this.Prr.DeepCopy(this.Hte.ActorLocationProxy);
-    var t = PawnInteractController.cz,
-      i = this.LocationOffset;
-    return !i || 0 === i.X && 0 === i.Y && 0 === i.Z || (0 !== i.X && (this.Hte.ActorForwardProxy.Multiply(i.X, t), this.Prr.AdditionEqual(t)), 0 !== i.Y && (this.Hte.ActorRightProxy.Multiply(i.Y, t), this.Prr.AdditionEqual(t)), 0 !== i.Z && (this.Hte.ActorUpProxy.Multiply(i.Z, t), this.Prr.AdditionEqual(t))), this.Prr
+    var t = PawnInteractController.cz;
+    var i = this.LocationOffset;
+    if (!!i && (i.X !== 0 || i.Y !== 0 || i.Z !== 0)) {
+      if (i.X !== 0) {
+        this.Hte.ActorForwardProxy.Multiply(i.X, t);
+        this.Prr.AdditionEqual(t);
+      }
+      if (i.Y !== 0) {
+        this.Hte.ActorRightProxy.Multiply(i.Y, t);
+        this.Prr.AdditionEqual(t);
+      }
+      if (i.Z !== 0) {
+        this.Hte.ActorUpProxy.Multiply(i.Z, t);
+        this.Prr.AdditionEqual(t);
+      }
+    }
+    return this.Prr;
   }
   GetCameraOffsetConfig() {
-    return this.InteractCameraOffsetConifg
+    return this.InteractCameraOffsetConifg;
   }
   krr() {
-    if (this.Lrr = this.Irr, this.prr)
-      for (const t of this.prr) t.Range > this.Lrr && (this.Lrr = t.Range)
+    this.Lrr = this.Irr;
+    if (this.prr) {
+      for (const t of this.prr) {
+        if (t.Range > this.Lrr) {
+          this.Lrr = t.Range;
+        }
+      }
+    }
   }
   Frr() {
-    this.prr && 0 !== this.prr.length && (this.Srr = this.prr[0], this.Arr = void 0)
+    if (this.prr && this.prr.length !== 0) {
+      this.Srr = this.prr[0];
+      this.Arr = undefined;
+    }
   }
-  GetInteractiveOption(i = !1) {
-    if (this.Urr === Time_1.Time.Frame && this.Arr) return this.Arr;
+  GetInteractiveOption(i = false) {
+    if (this.Urr === Time_1.Time.Frame && this.Arr) {
+      return this.Arr;
+    }
     if (this.Hte && this.Hte.Owner) {
       var e = this.prr;
       if (e) {
-        this.Arr = void 0;
-        for (let t = e.length - 1; - 1 < t; t--) {
+        this.Arr = undefined;
+        for (let t = e.length - 1; t > -1; t--) {
           var r = e[t];
-          if (!r.Disabled && (!i || "Flow" === r.Type.Type)) {
-            var n = this.Nrr(r),
-              o = this.Gdu(r);
+          if (!r.Disabled && (!i || r.Type.Type === "Flow")) {
+            var n = this.Nrr(r);
+            var o = this._Bu(r);
             if (n && o) {
               this.Arr = r;
-              break
+              break;
             }
           }
         }
-        return this.Urr = Time_1.Time.Frame, this.Arr
+        this.Urr = Time_1.Time.Frame;
+        return this.Arr;
       }
     }
   }
-  Orr(t, i, e, r = 0, n = 0, o = !1) {
+  Orr(t, i, e, r = 0, n = 0, o = false) {
     var s = t.Range || this.Irr;
     let h = this.Drr;
-    t.DoIntactType && (h = t.DoIntactType);
-    var a = new LevelGameplayActionsDefine_1.CommonInteractOption;
-    return a.Init(++this.NUe, t, e, s, h, i, r, n, o, t.OptionLockTip), a
+    if (t.DoIntactType) {
+      h = t.DoIntactType;
+    }
+    var a = new LevelGameplayActionsDefine_1.CommonInteractOption();
+    a.Init(++this.NUe, t, e, s, h, i, r, n, o, t.OptionLockTip);
+    return a;
   }
-  AddDynamicInteractOption(t, i, e, r = !1, n = !0) {
-    if (!this.prr) return Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 36, "AddDynamicInteractOption failed. Controller is not init", ["PbDataId", this.GetPbDataId()]), -1;
-    let o = 0,
-      s = 0;
-    i && (i instanceof LevelGeneralContextDefine_1.QuestContext ? (s = 1, o = i.QuestId) : i instanceof LevelGeneralContextDefine_1.GeneralLogicTreeContext && i.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (s = 1, o = i.TreeConfigId));
+  AddDynamicInteractOption(t, i, e, r = false, n = true) {
+    if (!this.prr) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Interaction", 36, "AddDynamicInteractOption failed. Controller is not init", ["PbDataId", this.GetPbDataId()]);
+      }
+      return -1;
+    }
+    let o = 0;
+    let s = 0;
+    if (i) {
+      if (i instanceof LevelGeneralContextDefine_1.QuestContext) {
+        s = 1;
+        o = i.QuestId;
+      } else if (i instanceof LevelGeneralContextDefine_1.GeneralLogicTreeContext && i.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
+        s = 1;
+        o = i.TreeConfigId;
+      }
+    }
     t = this.Orr(t, 1, i, 0, s, r);
-    return t.OptionContentId = o, void 0 !== e && (t.TidContent = e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 36, "AddDynamicInteractOption success", ["PbDataId", this.GetPbDataId()]), this.prr.push(t), this.Mrr.push(t), 1 === s && (this.Err.push(t), this.Vrr()), i && (r = this.Hrr(t.Context), this.ChangeOptionDisabled(t.InstanceId, !r)), n && this.Grr(), this.frr?.Entity.Valid && EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnAddDynamicOption), t.InstanceId
+    t.OptionContentId = o;
+    if (e !== undefined) {
+      t.TidContent = e;
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Interaction", 36, "AddDynamicInteractOption success", ["PbDataId", this.GetPbDataId()]);
+    }
+    this.prr.push(t);
+    this.Mrr.push(t);
+    if (s === 1) {
+      this.Err.push(t);
+      this.Vrr();
+    }
+    if (i) {
+      r = this.Hrr(t.Context);
+      this.ChangeOptionDisabled(t.InstanceId, !r);
+    }
+    if (n) {
+      this.Grr();
+    }
+    if (this.frr?.Entity.Valid) {
+      EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnAddDynamicOption);
+    }
+    return t.InstanceId;
   }
   Vrr() {
     this.Err.sort((t, i) => {
-      t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t.OptionContentId), i = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i.OptionContentId);
-      return t && i ? t.Type !== i.Type ? t.Type - i.Type : t.ChapterId !== i.ChapterId ? t.ChapterId - i.ChapterId : t.Id - i.Id : -1
-    })
+      t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t.OptionContentId);
+      i = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i.OptionContentId);
+      if (t && i) {
+        if (t.Type !== i.Type) {
+          return t.Type - i.Type;
+        } else if (t.ChapterId !== i.ChapterId) {
+          return t.ChapterId - i.ChapterId;
+        } else {
+          return t.Id - i.Id;
+        }
+      } else {
+        return -1;
+      }
+    });
   }
   RemoveDynamicInteractOption(i) {
-    if (!this.prr) return !1;
-    let e = !1;
-    for (let t = this.Mrr.length - 1; - 1 < t; t--) {
+    if (!this.prr) {
+      return false;
+    }
+    let e = false;
+    for (let t = this.Mrr.length - 1; t > -1; t--) {
       var r = this.Mrr[t];
       if (r.Guid === i) {
-        e = 1 === r.ContentType, this.Mrr.splice(t, 1);
-        break
+        e = r.ContentType === 1;
+        this.Mrr.splice(t, 1);
+        break;
       }
     }
-    if (e)
-      for (let t = this.Err.length - 1; - 1 < t; t--)
+    if (e) {
+      for (let t = this.Err.length - 1; t > -1; t--) {
         if (this.Err[t].Guid === i) {
           this.Err.splice(t, 1);
-          break
-        } let n = !1;
-    for (let t = this.prr.length - 1; - 1 < t; t--)
+          break;
+        }
+      }
+    }
+    let n = false;
+    for (let t = this.prr.length - 1; t > -1; t--) {
       if (this.prr[t].Guid === i) {
-        n = !0, this.prr.splice(t, 1)[0].Dispose();
-        break
-      } return n && this.Grr(), this.frr?.Entity.Valid && EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnRemoveDynamicOption), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Interaction", 36, "RemoveDynamicInteractOption success", ["PbDataId", this.GetPbDataId()], ["IsMatch", n]), n
+        n = true;
+        this.prr.splice(t, 1)[0].Dispose();
+        break;
+      }
+    }
+    if (n) {
+      this.Grr();
+    }
+    if (this.frr?.Entity.Valid) {
+      EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnRemoveDynamicOption);
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Interaction", 36, "RemoveDynamicInteractOption success", ["PbDataId", this.GetPbDataId()], ["IsMatch", n]);
+    }
+    return n;
   }
   AddClientInteractOption(t, i, e = "Option", r, n, o = 0, s, h) {
-    var a = new LevelGameplayActionsDefine_1.CommonActionInfo,
-      t = (a.Params = t, new Array),
-      a = (t.push(a), new LevelGameplayActionsDefine_1.CommonInteractActions),
-      t = (a.Actions = t, new LevelGameplayActionsDefine_1.CommonInteractOption);
-    return t.Type = a, t.Condition = i, t.DoIntactType = e, r && (t.Range = r), n && (t.TidContent = n), s && (this.LocationOffset = s), this.prr ? (a = this.Orr(t, 3, void 0, o), this.prr.push(a), this.Grr(), void 0 !== h && (this.IsPlayerTurnAround = h), a.InstanceId) : -1
+    var a = new LevelGameplayActionsDefine_1.CommonActionInfo();
+    a.Params = t;
+    var t = new Array();
+    t.push(a);
+    var a = new LevelGameplayActionsDefine_1.CommonInteractActions();
+    a.Actions = t;
+    var t = new LevelGameplayActionsDefine_1.CommonInteractOption();
+    t.Type = a;
+    t.Condition = i;
+    t.DoIntactType = e;
+    if (r) {
+      t.Range = r;
+    }
+    if (n) {
+      t.TidContent = n;
+    }
+    if (s) {
+      this.LocationOffset = s;
+    }
+    if (this.prr) {
+      a = this.Orr(t, 3, undefined, o);
+      this.prr.push(a);
+      this.Grr();
+      if (h !== undefined) {
+        this.IsPlayerTurnAround = h;
+      }
+      return a.InstanceId;
+    } else {
+      return -1;
+    }
   }
   RemoveClientInteractOption(i) {
-    if (!this.prr) return !1;
-    let e = !1;
-    for (let t = this.prr.length - 1; - 1 < t; t--)
+    if (!this.prr) {
+      return false;
+    }
+    let e = false;
+    for (let t = this.prr.length - 1; t > -1; t--) {
       if (this.prr[t].InstanceId === i) {
-        e = !0, this.prr.splice(t, 1)[0].Dispose();
-        break
-      } return e && this.Grr(), e
+        e = true;
+        this.prr.splice(t, 1)[0].Dispose();
+        break;
+      }
+    }
+    if (e) {
+      this.Grr();
+    }
+    return e;
   }
   OnChangeModeFinish() {
-    if (this.prr)
+    if (this.prr) {
       for (const i of this.prr) {
         var t;
-        i.Context && 1 === i.OptionType && (t = this.Hrr(i.Context), this.ChangeOptionDisabled(i.InstanceId, !t))
+        if (i.Context && i.OptionType === 1) {
+          t = this.Hrr(i.Context);
+          this.ChangeOptionDisabled(i.InstanceId, !t);
+        }
       }
+    }
   }
   ChangeOptionText(i, t) {
     var e;
-    this.prr && (e = this.prr.find(t => t.Guid === i)) && (e.TidContent = t)
+    if (this.prr && (e = this.prr.find(t => t.Guid === i))) {
+      e.TidContent = t;
+    }
   }
   ChangeOptionDisabled(i, t) {
     var e;
-    this.prr && (e = this.prr.find(t => t.InstanceId === i)) && e.SetDisable(t)
+    if (this.prr && (e = this.prr.find(t => t.InstanceId === i))) {
+      e.SetDisable(t);
+    }
   }
   ChangeInteractOption(t) {
-    this.Srr = t
+    this.Srr = t;
   }
   get CurrentInteractOption() {
-    return this.Srr
+    return this.Srr;
   }
   get Options() {
-    if (this.vrr && this.prr)
+    if (this.vrr && this.prr) {
       for (let t = this.vrr.length = 0, i = this.prr.length; t < i; t++) {
         var e = this.prr[t];
-        e.Disabled || this.vrr.push(e)
+        if (!e.Disabled) {
+          this.vrr.push(e);
+        }
       }
-    return this.vrr
+    }
+    return this.vrr;
   }
   get QuestOptionList() {
-    return this.Err
+    return this.Err;
   }
   get ShowOptions() {
-    var e = new Array;
-    for (const t of this.Err) StringUtils_1.StringUtils.IsEmpty(t.TidContent) || t.Disabled || "Option" !== t.DoIntactType || this.Nrr(t) && e.push(t);
+    var e = new Array();
+    for (const t of this.Err) {
+      if (!StringUtils_1.StringUtils.IsEmpty(t.TidContent) && !t.Disabled && t.DoIntactType === "Option") {
+        if (this.Nrr(t)) {
+          e.push(t);
+        }
+      }
+    }
     for (let t = 0, i = this.prr.length; t < i; t++) {
       var r = this.prr[t];
-      StringUtils_1.StringUtils.IsEmpty(r.TidContent) || r.Disabled || "Option" !== r.DoIntactType || 1 === r.ContentType || this.Nrr(r) && e.push(r)
+      if (!StringUtils_1.StringUtils.IsEmpty(r.TidContent) && !r.Disabled && r.DoIntactType === "Option" && r.ContentType !== 1) {
+        if (this.Nrr(r)) {
+          e.push(r);
+        }
+      }
     }
-    return e.push(void 0), e
+    e.push(undefined);
+    return e;
   }
   get HasDynamicOption() {
-    return 0 < this.Mrr.length
+    return this.Mrr.length > 0;
   }
   get Owner() {
-    return this.Hte?.Owner
+    return this.Hte?.Owner;
   }
   get EntityId() {
-    return this.Hte?.Entity?.Id
+    return this.Hte?.Entity?.Id;
   }
   get CreatureData() {
-    return this.Hte?.CreatureData
+    return this.Hte?.CreatureData;
   }
   HasInteractOptions() {
-    return void 0 !== this.prr?.length && 0 < this.prr?.length
+    return this.prr?.length !== undefined && this.prr?.length > 0;
   }
   get InteractRange() {
-    return this.Lrr
+    return this.Lrr;
   }
   get InteractExitRange() {
-    return -1 === this.Trr ? this.Lrr : this.Trr
+    if (this.Trr === -1) {
+      return this.Lrr;
+    } else {
+      return this.Trr;
+    }
   }
   GetAutoTriggerOption() {
-    if (this.prr)
+    if (this.prr) {
       for (let t = 0, i = this.prr.length; t < i; t++) {
         var e = this.prr[t];
-        if ("Auto" === e.DoIntactType)
-          if (this.Nrr(e)) return e
+        if (e.DoIntactType === "Auto") {
+          if (this.Nrr(e)) {
+            return e;
+          }
+        }
       }
+    }
   }
   InteractOption(t = 0) {
-    t >= this.prr.length || !(t = this.prr[t]).Disabled && this.Nrr(t) && (PlotController_1.PlotController.EndInteraction("Flow" === t.Type.Type), TsInteractionUtils_1.TsInteractionUtils.HandleInteractionOptionNew(t, this))
+    if (!(t >= this.prr.length)) {
+      if (!(t = this.prr[t]).Disabled && this.Nrr(t)) {
+        PlotController_1.PlotController.EndInteraction(t.Type.Type === "Flow");
+        TsInteractionUtils_1.TsInteractionUtils.HandleInteractionOptionNew(t, this);
+      }
+    }
   }
   Nrr(i) {
-    if (i.ConditionCheck = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(i.Condition, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Hte.Entity.Id)), !i.ConditionCheck && !i.LockTips) return !1;
-    if (3 === i.OptionType && 1 === i.CustomOptionType) {
+    i.ConditionCheck = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(i.Condition, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Hte.Entity.Id));
+    if (!i.ConditionCheck && !i.LockTips) {
+      return false;
+    }
+    if (i.OptionType === 3 && i.CustomOptionType === 1) {
       var t = this.Hte;
       if (t) {
         var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(3);
         if (e) {
-          e = e.ActorLocationProxy.Z - e.HalfHeight, t = t.ActorLocationProxy.Z - t.HalfHeight;
-          if (Math.abs(e - t) > EXECUTION_MAX_HEIGHT_DIFF || this.jrr()) return !1
+          e = e.ActorLocationProxy.Z - e.HalfHeight;
+          t = t.ActorLocationProxy.Z - t.HalfHeight;
+          if (Math.abs(e - t) > EXECUTION_MAX_HEIGHT_DIFF || this.jrr()) {
+            return false;
+          }
         }
       }
     }
     if (i.Context) {
       let t = 0;
-      if (6 === i.Context.Type && i.Context.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest ? t = i.Context.TreeConfigId : 2 === i.Context.Type && (t = i.Context.QuestId), t && ModelManager_1.ModelManager.QuestNewModel.IsInFocusMode()) return ModelManager_1.ModelManager.QuestNewModel.IsInFocusOnQuest(t)
+      if (i.Context.Type === 6 && i.Context.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
+        t = i.Context.TreeConfigId;
+      } else if (i.Context.Type === 2) {
+        t = i.Context.QuestId;
+      }
+      if (t) {
+        return !ModelManager_1.ModelManager.QuestNewModel.CheckNeedBanQuestPushByFocusMode(t);
+      }
     }
-    return !0
+    return true;
   }
-  Gdu(t, i = !0) {
-    return !(t.Offset && !t.Offset.IsNearlyZero() || !i) || !!this.qdu && !!this.qdu.has(t.InstanceId)
+  _Bu(t, i = true) {
+    return (!t.Offset || !!t.Offset.IsNearlyZero()) && !!i || !!this.lBu && !!this.lBu.has(t.InstanceId);
   }
   InAnyOptionWithOffsetRange() {
-    return 0 < this.qdu.size
+    return this.lBu.size > 0;
   }
   jrr() {
-    var t, i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity,
-      e = i.Entity.GetComponent(3),
-      i = i.Entity.GetComponent(29)?.ExecutionTrace;
-    return i ? (TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, e.ActorLocationProxy), TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Hte.ActorLocationProxy), !!TraceElementCommon_1.TraceElementCommon.LineTrace(i, PROFILE_DETECT_VISIBLE_BLOCK) && (t = PawnInteractController.cz, e.ActorUpProxy.Multiply(e.HalfHeight - DETECT_VISIBLE_BLOCK_HEIGHT_OFFSET, t), e.ActorLocationProxy.Addition(t, t), TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, t), (0, RegisterComponent_1.isComponentInstance)(this.Hte, 3) ? (e = PawnInteractController.fz, this.Hte.ActorUpProxy.Multiply(this.Hte.HalfHeight - DETECT_VISIBLE_BLOCK_HEIGHT_OFFSET, e), this.Hte.ActorLocationProxy.Addition(e, e), TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, e)) : TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Hte.ActorLocationProxy), !!TraceElementCommon_1.TraceElementCommon.LineTrace(i, PROFILE_DETECT_VISIBLE_BLOCK))) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Interaction", 36, "ExecutionTrace is undefined"), !1)
+    var t;
+    var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+    var e = i.Entity.GetComponent(3);
+    var i = i.Entity.GetComponent(29)?.ExecutionTrace;
+    if (i) {
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, e.ActorLocationProxy);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Hte.ActorLocationProxy);
+      return !!TraceElementCommon_1.TraceElementCommon.LineTrace(i, PROFILE_DETECT_VISIBLE_BLOCK) && (t = PawnInteractController.cz, e.ActorUpProxy.Multiply(e.HalfHeight - DETECT_VISIBLE_BLOCK_HEIGHT_OFFSET, t), e.ActorLocationProxy.Addition(t, t), TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, t), (0, RegisterComponent_1.isComponentInstance)(this.Hte, 3) ? (e = PawnInteractController.fz, this.Hte.ActorUpProxy.Multiply(this.Hte.HalfHeight - DETECT_VISIBLE_BLOCK_HEIGHT_OFFSET, e), this.Hte.ActorLocationProxy.Addition(e, e), TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, e)) : TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Hte.ActorLocationProxy), !!TraceElementCommon_1.TraceElementCommon.LineTrace(i, PROFILE_DETECT_VISIBLE_BLOCK));
+    } else {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Interaction", 36, "ExecutionTrace is undefined");
+      }
+      return false;
+    }
   }
   HandlePreInterativeLogic() {
-    this.PreTalkConfigs
+    this.PreTalkConfigs;
   }
   RecordInteraction() {
-    this.Rrr++
+    this.Rrr++;
   }
   HasDynamicOptionType(t) {
-    for (const r of this.Mrr)
-      if (6 === r.Context.Type) {
-        var i = r.Context.TreeConfigId,
-          e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i)?.GetNode(r.Context.NodeId);
-        if (e && e instanceof ChildQuestNodeBase_1.ChildQuestNodeBase)
-          for (const n of t)
-            if (e.ChildQuestType === n) return !0
-      } return !1
+    for (const r of this.Mrr) {
+      if (r.Context.Type === 6) {
+        var i = r.Context.TreeConfigId;
+        var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i)?.GetNode(r.Context.NodeId);
+        if (e && e instanceof ChildQuestNodeBase_1.ChildQuestNodeBase) {
+          for (const n of t) {
+            if (e.ChildQuestType === n) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
   HasDynamicOptionTask() {
-    for (const t of this.Mrr)
-      if (6 === t.Context.Type) return 0 === t.Context.NodeId;
-    return !1
+    for (const t of this.Mrr) {
+      if (t.Context.Type === 6) {
+        return t.Context.NodeId === 0;
+      }
+    }
+    return false;
   }
   CheckInteractCount(t, i) {
     switch (i) {
@@ -468,76 +940,140 @@ class PawnInteractController {
       case 4:
         return this.Rrr > t;
       case 5:
-        return this.Rrr >= t
+        return this.Rrr >= t;
     }
-    return !1
+    return false;
   }
   GetPbDataId() {
-    return this.Hte?.CreatureData.GetPbDataId() ?? 0
+    return this.Hte?.CreatureData.GetPbDataId() ?? 0;
   }
   GetOptionByIndex(t) {
     if (this.prr) {
       var i = t + 1;
-      for (const e of this.prr)
-        if (e.InstanceId === i) return e
+      for (const e of this.prr) {
+        if (e.InstanceId === i) {
+          return e;
+        }
+      }
     }
   }
   GetOptionByInstanceId(t) {
-    if (this.prr)
-      for (const i of this.prr)
-        if (i.InstanceId === t) return i
+    if (this.prr) {
+      for (const i of this.prr) {
+        if (i.InstanceId === t) {
+          return i;
+        }
+      }
+    }
   }
   GetOptionByGuid(t) {
-    if (t && this.prr)
-      for (const i of this.prr)
-        if (i.Guid === t) return i
+    if (t && this.prr) {
+      for (const i of this.prr) {
+        if (i.Guid === t) {
+          return i;
+        }
+      }
+    }
   }
   HandleInteractRequest() {
-    this.frr?.Valid && (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(this.frr.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc && (this.frr.Entity.GetComponent(45)?.MoveToLocationLogic)?.PushMoveInfo(), this.frr.SetInteractionState(!1, "发送交互请求"), InputDistributeController_1.InputDistributeController.RefreshInputTag()), this.OnInteractActionEnd && this.OnInteractActionEnd()
+    if (this.frr?.Valid) {
+      if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(this.frr.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
+        this.frr.Entity.GetComponent(45)?.MoveToLocationLogic?.PushMoveInfo();
+      }
+      this.frr.SetInteractionState(false, "发送交互请求");
+      InputDistributeController_1.InputDistributeController.RefreshInputTag();
+    }
+    if (this.OnInteractActionEnd) {
+      this.OnInteractActionEnd();
+    }
   }
   HandleInteractResponse(t, i) {
-    this.frr?.Valid && (this.frr.SetServerLockInteract(i, "Interaction Response"), this.frr.SetInteractionState(!0, "接收交互应答")), t !== Protocol_1.Aki.Protocol.Q4n.KRs ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Interaction", 36, "交互失败", ["errorCode", t]), this.frr.SetServerLockInteract(!1, "交互失败"), t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractRange && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractCd && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPreCondition && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractOptionGuidInvalid && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractIsNotParticipant && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteracTreeSuspend && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrorBanInteractEntity && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 21923), !ModelManager_1.ModelManager.PlotModel.IsInPlot && UiManager_1.UiManager.IsViewShow("PlotView") && PlotController_1.PlotController.EndInteraction(!1, !0)) : ((i = this.Hte?.Entity?.GetComponent(141)) && i.CloseAllCollisions(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess))
+    if (this.frr?.Valid) {
+      this.frr.SetServerLockInteract(i, "Interaction Response");
+      this.frr.SetInteractionState(true, "接收交互应答");
+    }
+    if (t !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Interaction", 36, "交互失败", ["errorCode", t]);
+      }
+      this.frr.SetServerLockInteract(false, "交互失败");
+      if (t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractRange && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractCd && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPreCondition && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractOptionGuidInvalid && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractIsNotParticipant && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteracTreeSuspend && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrorBanInteractEntity) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 21946);
+      }
+      if (!ModelManager_1.ModelManager.PlotModel.IsInPlot && UiManager_1.UiManager.IsViewShow("PlotView")) {
+        PlotController_1.PlotController.EndInteraction(false, true);
+      }
+    } else {
+      if (i = this.Hte?.Entity?.GetComponent(141)) {
+        i.CloseAllCollisions();
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess);
+    }
   }
   HandleInteractClientAction() {
-    this.frr?.Valid && (this.frr.SetInteractionState(!1, "执行纯客户端行为"), InputDistributeController_1.InputDistributeController.RefreshInputTag())
+    if (this.frr?.Valid) {
+      this.frr.SetInteractionState(false, "执行纯客户端行为");
+      InputDistributeController_1.InputDistributeController.RefreshInputTag();
+    }
   }
   FinishInteractClientAction() {
-    this.frr?.Valid && (this.frr.SetInteractionState(!0, "完成纯客户端行为"), InputDistributeController_1.InputDistributeController.RefreshInputTag())
+    if (this.frr?.Valid) {
+      this.frr.SetInteractionState(true, "完成纯客户端行为");
+      InputDistributeController_1.InputDistributeController.RefreshInputTag();
+    }
   }
   Hrr(t) {
-    if (!t) return !0;
-    let i = !0;
+    if (!t) {
+      return true;
+    }
+    let i = true;
     switch (t.Type) {
       case 2:
         var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t.QuestId);
-        e && (i = e.IsInteractValid);
+        if (e) {
+          i = e.IsInteractValid;
+        }
         break;
       case 3:
         e = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(t.LevelPlayId);
-        e && (i = e.IsInteractValid);
+        if (e) {
+          i = e.IsInteractValid;
+        }
         break;
       case 6:
         e = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetLogicTreeContainer(t.BtType, t.TreeConfigId);
-        e && (i = e.IsInteractValid)
+        if (e) {
+          i = e.IsInteractValid;
+        }
     }
-    return i
+    return i;
   }
   GetInteractAdditionalInfoType() {
-    return this._i_
+    return this._i_;
   }
   GetInteractionDebugInfos() {
-    if (this.prr && 0 < this.prr?.length) {
+    if (this.prr && this.prr?.length > 0) {
       let t = "";
       for (const e of this.prr) {
         t = (t = (t = (t = t + ("选项: " + (e.TidContent || "空名字")) + "\t\t") + ("交互选项类型: " + LevelGameplayActionsDefine_1.optionTypeLogString[e.OptionType]) + "\t\t") + ("交互类型: " + e.DoIntactType) + "\t\t") + ("Enable: " + !e.Disabled) + "\t\t";
         var i = this.Nrr(e);
-        if (t += "满足开启条件: " + i, !i)
-          for (const r of e.Condition.Conditions) t = (t += "\n") + "Condition: " + JSON.stringify(r);
-        1 === e.OptionType && (t = (t += "\nContext:\n") + JSON.stringify(e.Context)), t += "\n\n"
+        t += "满足开启条件: " + i;
+        if (!i) {
+          for (const r of e.Condition.Conditions) {
+            t = (t += "\n") + "Condition: " + JSON.stringify(r);
+          }
+        }
+        if (e.OptionType === 1) {
+          t = (t += "\nContext:\n") + JSON.stringify(e.Context);
+        }
+        t += "\n\n";
       }
-      return t
+      return t;
     }
-    return "无"
+    return "无";
   }
-}(exports.PawnInteractController = PawnInteractController).cz = Vector_1.Vector.Create(), PawnInteractController.fz = Vector_1.Vector.Create(), PawnInteractController.pz = Vector_1.Vector.Create(), PawnInteractController.tdc = Vector_1.Vector.Create();
-//# sourceMappingURL=PawnInteractController.js.map
+}
+(exports.PawnInteractController = PawnInteractController).cz = Vector_1.Vector.Create();
+PawnInteractController.fz = Vector_1.Vector.Create();
+PawnInteractController.pz = Vector_1.Vector.Create();
+PawnInteractController.tdc = Vector_1.Vector.Create(); //# sourceMappingURL=PawnInteractController.js.map

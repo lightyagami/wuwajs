@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configUiCameraMappingAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  UiCameraMapping_1 = require("../Config/UiCameraMapping"),
-  DB = "db_uicamera.db",
-  FILE = "u.Ui相机.xlsx",
-  TABLE = "UiCameraMapping",
-  COMMAND = "select BinData from `UiCameraMapping`",
-  KEY_PREFIX = "UiCameraMappingAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configUiCameraMappingAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const UiCameraMapping_1 = require("../Config/UiCameraMapping");
+const DB = "db_uicamera.db";
+const FILE = "u.Ui相机.xlsx";
+const TABLE = "UiCameraMapping";
+const COMMAND = "select BinData from `UiCameraMapping`";
+const KEY_PREFIX = "UiCameraMappingAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configUiCameraMappingAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configUiCameraMappingAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configUiCameraMappingAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configUiCameraMappingAll.GetConfigList");
 exports.configUiCameraMappingAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (i = !0) => {
+  GetConfigList: (i = true) => {
     var o;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (i) {
         var n = KEY_PREFIX + ")";
         const a = ConfigCommon_1.ConfigCommon.GetConfig(n);
-        if (a) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
       }
-      const a = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var t = void 0;
-        if ([o, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !o) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const a = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var t = undefined;
+        [o, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!o) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         t = UiCameraMapping_1.UiCameraMapping.getRootAsUiCameraMapping(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
-        a.push(t)
+        a.push(t);
       }
-      return i && (n = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(n, a, a.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+      if (i) {
+        n = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(n, a, a.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return a;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=UiCameraMappingAll.js.map

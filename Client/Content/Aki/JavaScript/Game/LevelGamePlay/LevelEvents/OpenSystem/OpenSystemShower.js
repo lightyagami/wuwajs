@@ -1,16 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemShower = void 0;
-const UiManager_1 = require("../../../Ui/UiManager"),
-  OpenSystemBase_1 = require("./OpenSystemBase");
+  value: true
+});
+exports.OpenSystemShower = undefined;
+const UiManager_1 = require("../../../Ui/UiManager");
+const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemShower extends OpenSystemBase_1.OpenSystemBase {
   GetViewName(e, r) {
-    return "ShowerInviteView"
+    return "ShowerInviteView";
   }
   async ExecuteOpenView(e, r) {
     var t;
-    return !!(e.Seats && 0 < e.Seats.length) && ((t = []).push(...e.Seats), void 0 !== await UiManager_1.UiManager.OpenViewAsync("ShowerInviteView", t))
+    return !!e.Seats && !!(e.Seats.length > 0) && ((t = []).push(...e.Seats), (await UiManager_1.UiManager.OpenViewAsync("ShowerInviteView", t)) !== undefined);
   }
 }
 exports.OpenSystemShower = OpenSystemShower;

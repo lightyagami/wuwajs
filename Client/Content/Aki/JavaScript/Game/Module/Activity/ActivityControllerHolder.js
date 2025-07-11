@@ -1,10 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityControllerHolder = void 0;
+  value: true
+});
+exports.ActivityControllerHolder = undefined;
 class ActivityControllerHolder {
   static Clear() {
-    this.ActivitySolarSpeedController = void 0, this.ActivityInviteNewbieController = void 0, this.ActivityRegressController = void 0
+    this.ActivitySolarSpeedController = undefined;
+    this.ActivityInviteNewbieController = undefined;
+    this.ActivityRegressController = undefined;
+    this.LifePointDrawActivityController = undefined;
   }
-}(exports.ActivityControllerHolder = ActivityControllerHolder).ActivitySolarSpeedController = void 0, ActivityControllerHolder.DangoAbyssActivityController = void 0, ActivityControllerHolder.ActivityInviteNewbieController = void 0, ActivityControllerHolder.ActivityRegressController = void 0;
-//# sourceMappingURL=ActivityControllerHolder.js.map
+}
+(exports.ActivityControllerHolder = ActivityControllerHolder).ActivitySolarSpeedController = undefined;
+ActivityControllerHolder.DangoAbyssActivityController = undefined;
+ActivityControllerHolder.ActivityInviteNewbieController = undefined;
+ActivityControllerHolder.ActivityRegressController = undefined;
+ActivityControllerHolder.LifePointDrawActivityController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map

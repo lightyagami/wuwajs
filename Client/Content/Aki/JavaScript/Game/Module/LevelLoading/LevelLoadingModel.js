@@ -1,65 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelLoadingModel = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  GlobalData_1 = require("../../GlobalData");
+  value: true
+});
+exports.LevelLoadingModel = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../GlobalData");
 class LevelLoadingModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.CameraFadeShowPromise = void 0, this.CameraFadeHidePromise = void 0, this.Epi = void 0, this.Spi = void 0, this.ypi = !1
+    super(...arguments);
+    this.CameraFadeShowPromise = undefined;
+    this.CameraFadeHidePromise = undefined;
+    this.Epi = undefined;
+    this.Spi = undefined;
+    this.ypi = false;
   }
   get IsLoading() {
-    return this.ypi
+    return this.ypi;
   }
   OnInit() {
-    return this.Epi = new Map, this.Spi = new Map, !0
+    this.Epi = new Map();
+    this.Spi = new Map();
+    return true;
   }
   OnClear() {
-    return this.Epi?.clear(), this.Epi = void 0, this.Spi?.clear(), !(this.Spi = void 0)
+    this.Epi?.clear();
+    this.Epi = undefined;
+    this.Spi?.clear();
+    return !(this.Spi = undefined);
   }
   SetLoadingState(e) {
     var o;
-    this.ypi !== e && (o = "LoadingMode[Fade]", (this.ypi = e) ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 7, "LevelLoading:LoadingModeEnable"), ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddLevelLoadingTimeDilationTag)) : (this.Ipi(), this.ClearLoadingPerforms(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 7, "LevelLoading:LoadingModeDisable"), ResourceSystem_1.ResourceSystem.IsLoadingReasonNotEmpty(o) && ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemoveLevelLoadingTimeDilationTag)))
+    if (this.ypi !== e) {
+      o = "LoadingMode[Fade]";
+      if (this.ypi = e) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Loading", 7, "LevelLoading:LoadingModeEnable");
+        }
+        ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, o);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddLevelLoadingTimeDilationTag);
+      } else {
+        this.Ipi();
+        this.ClearLoadingPerforms();
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Loading", 7, "LevelLoading:LoadingModeDisable");
+        }
+        if (ResourceSystem_1.ResourceSystem.IsLoadingReasonNotEmpty(o)) {
+          ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, o);
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemoveLevelLoadingTimeDilationTag);
+      }
+    }
   }
   AddLoadingReason(e, o) {
-    this.Epi.set(e, o), this.AddLoadingPerform(o), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 18, "LevelLoading:AddLoadingReason", ["reason", e])
+    this.Epi.set(e, o);
+    this.AddLoadingPerform(o);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Loading", 18, "LevelLoading:AddLoadingReason", ["reason", e]);
+    }
   }
   RemoveLoadingReason(e) {
     var o = this.GetPerformByReason(e);
-    this.Epi.delete(e), this.RemoveLoadingPerform(o), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 18, "LevelLoading:RemoveLoadingReason", ["reason", e])
+    this.Epi.delete(e);
+    this.RemoveLoadingPerform(o);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Loading", 18, "LevelLoading:RemoveLoadingReason", ["reason", e]);
+    }
   }
   AddLoadingPerform(e) {
     var o = this.Spi.get(e) ?? 0;
-    this.Spi.set(e, ++o), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 18, "LevelLoading:AddLoadingPerform", ["perform", e], ["count", o])
+    this.Spi.set(e, ++o);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Loading", 18, "LevelLoading:AddLoadingPerform", ["perform", e], ["count", o]);
+    }
   }
   RemoveLoadingPerform(e) {
     var o = this.Spi.get(e);
-    o && (this.Spi.set(e, --o), o <= 0) && (this.Spi.delete(e), Log_1.Log.CheckInfo()) && Log_1.Log.Info("Loading", 18, "LevelLoading:RemoveLoadingPerform", ["perform", e])
+    if (o && (this.Spi.set(e, --o), o <= 0) && (this.Spi.delete(e), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Loading", 18, "LevelLoading:RemoveLoadingPerform", ["perform", e]);
+    }
   }
   GetPerformByReason(e) {
-    return this.Epi.get(e)
+    return this.Epi.get(e);
   }
   Ipi() {
-    this.Epi.clear(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 18, "LevelLoading:ClearLoadingReason")
+    this.Epi.clear();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Loading", 18, "LevelLoading:ClearLoadingReason");
+    }
   }
   ClearLoadingPerforms() {
-    this.Spi.clear(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 18, "LevelLoading:ClearLoadingPerforms")
+    this.Spi.clear();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Loading", 18, "LevelLoading:ClearLoadingPerforms");
+    }
   }
   CheckLoadingPerformsEmpty() {
-    return 0 === this.Spi.size
+    return this.Spi.size === 0;
   }
-  CheckCanDoClose(e) {
-    return !!this.IsLoading && !this.Spi.get(e)
+  CheckLoadingPerformExist(e) {
+    return !!this.IsLoading && !!this.Spi.get(e);
   }
   FinishCameraShowPromise() {
-    this.CameraFadeShowPromise?.SetResult(), this.CameraFadeShowPromise = void 0
+    this.CameraFadeShowPromise?.SetResult();
+    this.CameraFadeShowPromise = undefined;
   }
   FinishCameraHidePromise() {
-    this.CameraFadeHidePromise?.SetResult(), this.CameraFadeHidePromise = void 0
+    this.CameraFadeHidePromise?.SetResult();
+    this.CameraFadeHidePromise = undefined;
   }
 }
 exports.LevelLoadingModel = LevelLoadingModel;

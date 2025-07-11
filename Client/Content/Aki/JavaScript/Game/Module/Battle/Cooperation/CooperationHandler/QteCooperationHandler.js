@@ -1,22 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.QteCooperationHandler = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  SceneTeamController_1 = require("../../../SceneTeam/SceneTeamController");
+  value: true
+});
+exports.QteCooperationHandler = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const SceneTeamController_1 = require("../../../SceneTeam/SceneTeamController");
 class QteCooperationHandler {
   Trigger(e, r) {
-    if (!r.IsMyRole()) return Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneTeam", 48, "上场角色为其他玩家的角色", ["CreatureDataId", r.GetCreatureDataId()]), SceneTeamController_1.SceneTeamController.TryUseMultiQte(r.EntityHandle), !0;
-    var e = e.EntityHandle,
-      r = r.EntityHandle,
-      o = e.Entity.GetComponent(98),
-      t = r.Entity.GetComponent(98),
-      n = e.Entity.GetComponent(205);
-    if (!o || !t) return !1;
+    if (!r.IsMyRole()) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SceneTeam", 48, "上场角色为其他玩家的角色", ["CreatureDataId", r.GetCreatureDataId()]);
+      }
+      SceneTeamController_1.SceneTeamController.TryUseMultiQte(r.EntityHandle);
+      return true;
+    }
+    var e = e.EntityHandle;
+    var r = r.EntityHandle;
+    var o = e.Entity.GetComponent(98);
+    var t = r.Entity.GetComponent(98);
+    var n = e.Entity.GetComponent(205);
+    if (!o || !t) {
+      return false;
+    }
     var a = t.GetQteTagData();
-    if (!a) return !1;
-    let l = !1;
-    return !n.HasAnyTag([504239013, 855966206]) && t.IsQteReady(e) && (o.UseExitSkill(r), l = t.ExecuteQte(e)), !(l ? a.ChangeRoleOnQte : a.ChangeRole)
+    if (!a) {
+      return false;
+    }
+    let l = false;
+    if (!n.HasAnyTag([504239013, 855966206]) && t.IsQteReady(e)) {
+      o.UseExitSkill(r);
+      l = t.ExecuteQte(e);
+    }
+    return !(l ? a.ChangeRoleOnQte : a.ChangeRole);
   }
   Clear() {}
 }

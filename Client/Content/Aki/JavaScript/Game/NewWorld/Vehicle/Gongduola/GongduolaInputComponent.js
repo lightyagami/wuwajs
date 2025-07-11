@@ -1,64 +1,129 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, i, e, o) {
-  var s, r = arguments.length,
-    n = r < 3 ? i : null === o ? o = Object.getOwnPropertyDescriptor(i, e) : o;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) n = Reflect.decorate(t, i, e, o);
-  else
-    for (var h = t.length - 1; 0 <= h; h--)(s = t[h]) && (n = (r < 3 ? s(n) : 3 < r ? s(i, e, n) : s(i, e)) || n);
-  return 3 < r && n && Object.defineProperty(i, e, n), n
+
+var __decorate = this && this.__decorate || function (t, i, e, o) {
+  var s;
+  var r = arguments.length;
+  var n = r < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(t, i, e, o);
+  } else {
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (s = t[h]) {
+        n = (r < 3 ? s(n) : r > 3 ? s(i, e, n) : s(i, e)) || n;
+      }
+    }
+  }
+  if (r > 3 && n) {
+    Object.defineProperty(i, e, n);
+  }
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GongduolaInputComponent = void 0;
-const Info_1 = require("../../../../Core/Common/Info"),
-  RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  InputEnums_1 = require("../../../Input/InputEnums"),
-  PhotographController_1 = require("../../../Module/Photograph/PhotographController"),
-  ScrollingTipsController_1 = require("../../../Module/ScrollingTips/ScrollingTipsController"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  GravityUtils_1 = require("../../../Utils/GravityUtils"),
-  VehicleInputComponent_1 = require("../Common/VehicleInputComponent"),
-  SKILL_ID_RIDER_SHARING = 100034;
+  value: true
+});
+exports.GongduolaInputComponent = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const InputEnums_1 = require("../../../Input/InputEnums");
+const PhotographController_1 = require("../../../Module/Photograph/PhotographController");
+const ScrollingTipsController_1 = require("../../../Module/ScrollingTips/ScrollingTipsController");
+const UiManager_1 = require("../../../Ui/UiManager");
+const GravityUtils_1 = require("../../../Utils/GravityUtils");
+const VehicleInputComponent_1 = require("../Common/VehicleInputComponent");
+const SKILL_ID_RIDER_SHARING = 100034;
 let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInputComponent_1.VehicleInputComponent {
   constructor() {
-    super(...arguments), this.PerformComp = void 0, this.TurningForceInputFactor = 0, this.TurnForwardInputMinX = 0, this.TurnBackwardInputMaxX = 0, this.MaxForwardThreshold = 1, this.MaxRightThreshold = 1, this.LastInput = Vector_1.Vector.Create(), this.TmpVector1 = Vector_1.Vector.Create(), this.TmpVector2 = Vector_1.Vector.Create(), this.TagEventSprint = void 0
+    super(...arguments);
+    this.PerformComp = undefined;
+    this.TurningForceInputFactor = 0;
+    this.TurnForwardInputMinX = 0;
+    this.TurnBackwardInputMaxX = 0;
+    this.MaxForwardThreshold = 1;
+    this.MaxRightThreshold = 1;
+    this.LastInput = Vector_1.Vector.Create();
+    this.TmpVector1 = Vector_1.Vector.Create();
+    this.TmpVector2 = Vector_1.Vector.Create();
+    this.TagEventSprint = undefined;
   }
   UpdateVehicleInputDirectAndFacing() {
-    this.UpdateMoveCache(), this.InputAdjusted(this.TmpVector1), this.ActorComp.SetInputDirect(this.TmpVector1, !0), this.SetInputFacingFromInputDirect()
+    this.UpdateMoveCache();
+    this.InputAdjusted(this.TmpVector1);
+    this.ActorComp.SetInputDirect(this.TmpVector1, true);
+    this.SetInputFacingFromInputDirect();
   }
-  SetInputFacingFromInputDirect(t = !0) {
-    this.MoveDirectionCache.X < 0 ? (this.MoveDirectionCache.UnaryNegation(this.TempVector), this.TempRotator.DeepCopy(this.ActorComp.ActorRotationProxy), GravityUtils_1.GravityUtils.GetQuatFromRotatorAndGravityForActor(this.ActorComp, this.TempRotator, this.TempQuat), this.TempQuat.RotateVector(this.TempVector, this.TmpVector1), this.ActorComp.SetInputFacing(this.TmpVector1)) : GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.ActorComp.InputDirectProxy) > MathUtils_1.MathUtils.SmallNumber ? this.ActorComp.SetInputFacing(this.GetWorldMoveDirectionCache()) : t && this.ActorComp.SetInputFacing(this.ActorComp.ActorForwardProxy)
+  SetInputFacingFromInputDirect(t = true) {
+    if (this.MoveDirectionCache.X < 0) {
+      this.MoveDirectionCache.UnaryNegation(this.TempVector);
+      this.TempRotator.DeepCopy(this.ActorComp.ActorRotationProxy);
+      GravityUtils_1.GravityUtils.GetQuatFromRotatorAndGravityForActor(this.ActorComp, this.TempRotator, this.TempQuat);
+      this.TempQuat.RotateVector(this.TempVector, this.TmpVector1);
+      this.ActorComp.SetInputFacing(this.TmpVector1);
+    } else if (GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(this.ActorComp, this.ActorComp.InputDirectProxy) > MathUtils_1.MathUtils.SmallNumber) {
+      this.ActorComp.SetInputFacing(this.GetWorldMoveDirectionCache());
+    } else if (t) {
+      this.ActorComp.SetInputFacing(this.ActorComp.ActorForwardProxy);
+    }
   }
   InputAdjusted(i) {
     i.DeepCopy(this.MoveVectorCache);
-    var e = Math.abs(this.MoveVectorCache.X),
-      t = this.MoveVectorCache.X < 0 ? -1 : 1,
-      o = Math.abs(this.MoveVectorCache.Y),
-      s = this.MoveVectorCache.Y < 0 ? -1 : 1;
-    if (this.TurningForceInputFactor && 0 !== o) {
-      var r = !!this.PerformComp?.IsBeingImpacted || 0 <= Vector_1.Vector.DotProduct(this.ActorComp.ActorVelocityProxy, this.ActorComp.ActorForwardProxy),
-        n = r ? 1 : this.TurnBackwardInputMaxX,
-        h = r ? this.TurnForwardInputMinX : -1;
+    var e = Math.abs(this.MoveVectorCache.X);
+    var t = this.MoveVectorCache.X < 0 ? -1 : 1;
+    var o = Math.abs(this.MoveVectorCache.Y);
+    var s = this.MoveVectorCache.Y < 0 ? -1 : 1;
+    if (this.TurningForceInputFactor && o !== 0) {
+      var r = this.ActorComp.ActorVelocityProxy.Size();
+      var n = Vector_1.Vector.DotProduct(this.ActorComp.ActorVelocityProxy, this.ActorComp.ActorForwardProxy);
+      var r = !!this.PerformComp?.IsBeingImpacted || r < 1 || n >= 0;
+      var n = r ? 1 : this.TurnBackwardInputMaxX;
+      var h = r ? this.TurnForwardInputMinX : -1;
       let t = r ? 1 : -1;
-      i.X < h ? t = -1 : i.X > n && (t = 1), i.X = t * Math.max(e, o * this.TurningForceInputFactor)
+      if (i.X < h) {
+        t = -1;
+      } else if (i.X > n) {
+        t = 1;
+      }
+      i.X = t * Math.max(e, o * this.TurningForceInputFactor);
     }
-    e >= this.MaxForwardThreshold && (i.X = t), o >= this.MaxRightThreshold && (i.Y = s), Info_1.Info.IsInGamepad() && i.Y * this.LastInput.Y < 0 && (i.Y = 0), this.LastInput.DeepCopy(i)
+    if (e >= this.MaxForwardThreshold) {
+      i.X = t;
+    }
+    if (o >= this.MaxRightThreshold) {
+      i.Y = s;
+    }
+    if (Info_1.Info.IsInGamepad() && i.Y * this.LastInput.Y < 0) {
+      i.Y = 0;
+    }
+    this.LastInput.DeepCopy(i);
   }
   ExecuteSprint(t) {
-    this.Entity.GetComponent(245)?.TryEnterSprint()
+    this.Entity.GetComponent(245)?.TryEnterSprint();
   }
   ExecuteSkill(t) {
     t = t.IntValue;
-    210012 === t ? PhotographController_1.PhotographController.PhotographFastScreenShot() : t === SKILL_ID_RIDER_SHARING && (this.Entity.GetComponent(245)?.CheckIfCanRiderSharing() ? this.Entity.GetComponent(236)?.IsMoving ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ShipTogetherViewCanNotOpenWhenMoving") : UiManager_1.UiManager.OpenView("ShipTogetherView") : ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_GongDuoLaCarpoolingForbid_Text"))
+    if (t === 210012) {
+      PhotographController_1.PhotographController.PhotographFastScreenShot();
+    } else if (t === SKILL_ID_RIDER_SHARING) {
+      if (this.Entity.GetComponent(245)?.CheckIfCanRiderSharing()) {
+        if (this.Entity.GetComponent(236)?.IsMoving) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ShipTogetherViewCanNotOpenWhenMoving");
+        } else {
+          UiManager_1.UiManager.OpenView("ShipTogetherView");
+        }
+      } else {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_GongDuoLaCarpoolingForbid_Text");
+      }
+    }
   }
   AddBlockEvents() {
-    super.AddBlockEvents(), this.TagEventSprint = this.AddBlockActionEvent(-1347413397, InputEnums_1.EInputAction.闪避)
+    super.AddBlockEvents();
+    this.TagEventSprint = this.AddBlockActionEvent(-1347413397, InputEnums_1.EInputAction.闪避);
   }
   RemoveBlockActionEvents() {
-    super.RemoveBlockActionEvents(), this.TagEventSprint?.EndTask()
+    super.RemoveBlockActionEvents();
+    this.TagEventSprint?.EndTask();
   }
 };
-GongduolaInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(246)], GongduolaInputComponent), exports.GongduolaInputComponent = GongduolaInputComponent;
-//# sourceMappingURL=GongduolaInputComponent.js.map
+GongduolaInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(246)], GongduolaInputComponent);
+exports.GongduolaInputComponent = GongduolaInputComponent; //# sourceMappingURL=GongduolaInputComponent.js.map

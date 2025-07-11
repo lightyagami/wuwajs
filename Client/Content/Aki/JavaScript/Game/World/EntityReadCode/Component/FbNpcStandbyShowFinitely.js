@@ -1,33 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcStandbyShowFinitely = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbNpcStandbyShowFinitelyInfo_1 = require("./FbNpcStandbyShowFinitelyInfo");
+  value: true
+});
+exports.FbNpcStandbyShowFinitely = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbNpcStandbyShowFinitelyInfo_1 = require("./FbNpcStandbyShowFinitelyInfo");
 class FbNpcStandbyShowFinitely {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.iLh = !1, this.rLh = void 0, this.N4h = !1, this.V4h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.iLh = false;
+    this.rLh = undefined;
+    this.N4h = false;
+    this.V4h = undefined;
   }
   static Create(t) {
-    if (t) return new FbNpcStandbyShowFinitely(t)
+    if (t) {
+      return new FbNpcStandbyShowFinitely(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get PlayMode() {
-    return this.iLh || (this.iLh = !0, this.rLh = this.FbDataInternal.playMode()), this.rLh
+    if (!this.iLh) {
+      this.iLh = true;
+      this.rLh = this.FbDataInternal.playMode();
+    }
+    return this.rLh;
   }
   get Montages() {
     if (!this.N4h) {
-      this.N4h = !0, this.V4h = new Array;
+      this.N4h = true;
+      this.V4h = new Array();
       var i = this.FbDataInternal.montagesLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var e = this.FbDataInternal.montages(t, new fb_component_1.NpcStandbyShowFinitelyInfo);
-          this.V4h.push(FbNpcStandbyShowFinitelyInfo_1.FbNpcStandbyShowFinitelyInfo.Create(e))
+          var e = this.FbDataInternal.montages(t, new fb_component_1.NpcStandbyShowFinitelyInfo());
+          this.V4h.push(FbNpcStandbyShowFinitelyInfo_1.FbNpcStandbyShowFinitelyInfo.Create(e));
         }
+      }
     }
-    return this.V4h
+    return this.V4h;
   }
 }
 exports.FbNpcStandbyShowFinitely = FbNpcStandbyShowFinitely;

@@ -1,122 +1,112 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WHOLE_SHADOW_CACHE_DELAY_TIME = exports.mainPlayerRealShadow = exports.maxDecalShadowDistanceWithGameGraphQualityMobile = exports.maxDecalShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowDistanceWithGameGraphQualityMobile = exports.maxRoleShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowNumWithGameGraphQualityMobile = exports.maxRoleShadowNumWithGameGraphQualityPc = exports.HD_SCREEN_HEIGHT = exports.HD_SCREEN_WIDTH = exports.performanceLimitConfigs = exports.PERFORMENCELIMIT_SEQ_TAIL = exports.frameRateListAndroidForRedMagic = exports.frameRateListAndroid = exports.frameRateListIos = exports.frameRateListPc = void 0, exports.frameRateListPc = [30, 45, 60, 120], exports.frameRateListIos = [30, 60, 120], exports.frameRateListAndroid = [24, 30, 40, 60], exports.frameRateListAndroidForRedMagic = [30, 60, 90], exports.PERFORMENCELIMIT_SEQ_TAIL = "_Seq", exports.performanceLimitConfigs = new Map([
-  ["RoleRootView", {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["RoleLevelUpView", {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["HandBookEntranceView", {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["AchievementMainView", {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["CommonActivityView", {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["VideoView", {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["GachaScanView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["DrawMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["GachaResultView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["WorldMapView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["CalabashRootView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["BattlePassMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !1
-  }],
-  ["GachaMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["PayShopRootView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["AdventureGuideView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["TutorialView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["QuestView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["FriendView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["TimeOfDaySecondView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["EditFormationView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["InventoryView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["MailBoxView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["MenuView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["FunctionView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["DreamLinkMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["FishingQteView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["ShipTowerView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["MapRogueMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }],
-  ["FunctionView_Special", {
-    FrameLimit: !1,
-    CacheWorldFrame: !0
-  }]
-]), exports.HD_SCREEN_WIDTH = 2e3, exports.HD_SCREEN_HEIGHT = 1100, exports.maxRoleShadowNumWithGameGraphQualityPc = [0, 0, 10, 15, 15], exports.maxRoleShadowNumWithGameGraphQualityMobile = [0, 0, 3, 6], exports.maxRoleShadowDistanceWithGameGraphQualityPc = [0, 0, 2500, 5e3, 5e3], exports.maxRoleShadowDistanceWithGameGraphQualityMobile = [0, 0, 1500, 3e3], exports.maxDecalShadowDistanceWithGameGraphQualityPc = [2e3, 2e3, 4e3, 6e3, 6e3], exports.maxDecalShadowDistanceWithGameGraphQualityMobile = [1500, 1500, 2500, 3500], exports.mainPlayerRealShadow = [0, 1, 1, 1], exports.WHOLE_SHADOW_CACHE_DELAY_TIME = 1e3;
-//# sourceMappingURL=GameSettingsDeviceRenderDefine.js.map
+  value: true
+});
+exports.WHOLE_SHADOW_CACHE_DELAY_TIME = exports.mainPlayerRealShadow = exports.maxDecalShadowDistanceWithGameGraphQualityMobile = exports.maxDecalShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowDistanceWithGameGraphQualityMobile = exports.maxRoleShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowNumWithGameGraphQualityMobile = exports.maxRoleShadowNumWithGameGraphQualityPc = exports.HD_SCREEN_HEIGHT = exports.HD_SCREEN_WIDTH = exports.performanceLimitConfigs = exports.PERFORMENCELIMIT_SEQ_TAIL = exports.frameRateListAndroidForRedMagic = exports.frameRateListAndroid = exports.frameRateListIos = exports.frameRateListPc = undefined;
+exports.frameRateListPc = [30, 45, 60, 120];
+exports.frameRateListIos = [30, 60, 120];
+exports.frameRateListAndroid = [24, 30, 40, 60];
+exports.frameRateListAndroidForRedMagic = [30, 60, 90];
+exports.PERFORMENCELIMIT_SEQ_TAIL = "_Seq";
+exports.performanceLimitConfigs = new Map([["RoleRootView", {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["RoleLevelUpView", {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["HandBookEntranceView", {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["AchievementMainView", {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["CommonActivityView", {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["VideoView", {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["GachaScanView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["DrawMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["GachaResultView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["WorldMapView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["CalabashRootView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["BattlePassMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: false
+}], ["GachaMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["PayShopRootView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["AdventureGuideView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["TutorialView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["QuestView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FriendView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["TimeOfDaySecondView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["EditFormationView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["InventoryView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["MailBoxView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["MenuView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FunctionView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["DreamLinkMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FishingQteView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["ShipTowerView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["MapRogueMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["TuningStandView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FunctionView_Special", {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}]]);
+exports.HD_SCREEN_WIDTH = 2000;
+exports.HD_SCREEN_HEIGHT = 1100;
+exports.maxRoleShadowNumWithGameGraphQualityPc = [0, 0, 10, 15, 15];
+exports.maxRoleShadowNumWithGameGraphQualityMobile = [0, 0, 3, 6];
+exports.maxRoleShadowDistanceWithGameGraphQualityPc = [0, 0, 2500, 5000, 5000];
+exports.maxRoleShadowDistanceWithGameGraphQualityMobile = [0, 0, 1500, 3000];
+exports.maxDecalShadowDistanceWithGameGraphQualityPc = [2000, 2000, 4000, 6000, 6000];
+exports.maxDecalShadowDistanceWithGameGraphQualityMobile = [1500, 1500, 2500, 3500];
+exports.mainPlayerRealShadow = [0, 1, 1, 1];
+exports.WHOLE_SHADOW_CACHE_DELAY_TIME = 1000; //# sourceMappingURL=GameSettingsDeviceRenderDefine.js.map

@@ -1,142 +1,215 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BusinessMainView = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../../../../../Core/Common/CustomPromise"),
-  EventDefine_1 = require("../../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../../../../Ui/Base/UiViewBase"),
-  PopupCaptionItem_1 = require("../../../../../../Ui/Common/PopupCaptionItem"),
-  ButtonItem_1 = require("../../../../../Common/Button/ButtonItem"),
-  ActivityMoonChasingController_1 = require("../../Activity/ActivityMoonChasingController"),
-  PopularityModule_1 = require("../PopularityModule"),
-  BusinessSkipItem_1 = require("./BusinessSkipItem"),
-  BusinessViewController_1 = require("./BusinessViewController"),
-  DelegationDetailsModule_1 = require("./Delegation/DelegationDetailsModule"),
-  DelegationNonDetailsModule_1 = require("./Delegation/DelegationNonDetailsModule");
+  value: true
+});
+exports.BusinessMainView = undefined;
+const UE = require("ue");
+const CustomPromise_1 = require("../../../../../../../Core/Common/CustomPromise");
+const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../../../../Ui/Base/UiViewBase");
+const PopupCaptionItem_1 = require("../../../../../../Ui/Common/PopupCaptionItem");
+const ButtonItem_1 = require("../../../../../Common/Button/ButtonItem");
+const ActivityMoonChasingController_1 = require("../../Activity/ActivityMoonChasingController");
+const PopularityModule_1 = require("../PopularityModule");
+const BusinessSkipItem_1 = require("./BusinessSkipItem");
+const BusinessViewController_1 = require("./BusinessViewController");
+const DelegationDetailsModule_1 = require("./Delegation/DelegationDetailsModule");
+const DelegationNonDetailsModule_1 = require("./Delegation/DelegationNonDetailsModule");
 class BusinessMainView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.Details = void 0, this.CaptionItem = void 0, this.eke = void 0, this.NonDetailsList = [], this.SkipItem = void 0, this.kKs = void 0, this.tfa = void 0, this.FDa = !1, this.aOn = new BusinessViewController_1.BusinessViewController, this.VDa = () => {
-      this.GetItem(11)?.SetUIActive(!1), ModelManager_1.ModelManager.MoonChasingBusinessModel.IsUnlockRoleIdEmpty() && this.FDa && (this.FDa = !0, this.UiViewSequence?.PlaySequence("Refresh"))
-    }, this.$Oe = e => {
-      "MoonChasingUnlockRoleView" === e && this.FDa && (this.FDa = !0, this.UiViewSequence?.PlaySequence("Refresh"))
-    }, this.rke = () => {
-      this.GetItem(11)?.SetUIActive(!0), this.aOn.BackToState(0)
-    }, this.msa = () => {
-      this.dsa()
-    }, this.iha = e => {
-      e ? (this.FDa = !0, this.vJs()) : this.Vqa(), this.eke.RefreshPopularity()
-    }, this.Gwa = () => {
-      this.Vqa(), this.eke.RefreshPopularity()
-    }, this.SkipToMainView = () => {
-      this.vJs(), this.GetItem(7)?.SetUIActive(!0), this.CaptionItem.SetTitleIconByResourceId("SP_ChasingMoonIcon3"), this.UiViewSequence?.PlaySequenceAsync("SwitchOut", new CustomPromise_1.CustomPromise, !0).finally(() => {
-        this.Details?.SetActive(!1)
-      })
-    }, this.SkipToDelegationDetails = (...e) => {
+    super(...arguments);
+    this.Details = undefined;
+    this.CaptionItem = undefined;
+    this.eke = undefined;
+    this.NonDetailsList = [];
+    this.SkipItem = undefined;
+    this.kKs = undefined;
+    this.tfa = undefined;
+    this.FDa = false;
+    this.aOn = new BusinessViewController_1.BusinessViewController();
+    this.VDa = () => {
+      this.GetItem(11)?.SetUIActive(false);
+      if (ModelManager_1.ModelManager.MoonChasingBusinessModel.IsUnlockRoleIdEmpty() && this.FDa) {
+        this.FDa = true;
+        this.UiViewSequence?.PlaySequence("Refresh");
+      }
+    };
+    this.$Oe = e => {
+      if (e === "MoonChasingUnlockRoleView" && this.FDa) {
+        this.FDa = true;
+        this.UiViewSequence?.PlaySequence("Refresh");
+      }
+    };
+    this.rke = () => {
+      this.GetItem(11)?.SetUIActive(true);
+      this.aOn.BackToState(0);
+    };
+    this.msa = () => {
+      this.dsa();
+    };
+    this.iha = e => {
+      if (e) {
+        this.FDa = true;
+        this.vJs();
+      } else {
+        this.Vqa();
+      }
+      this.eke.RefreshPopularity();
+    };
+    this.Gwa = () => {
+      this.Vqa();
+      this.eke.RefreshPopularity();
+    };
+    this.SkipToMainView = () => {
+      this.vJs();
+      this.GetItem(7)?.SetUIActive(true);
+      this.CaptionItem.SetTitleIconByResourceId("SP_ChasingMoonIcon3");
+      this.UiViewSequence?.PlaySequenceAsync("SwitchOut", new CustomPromise_1.CustomPromise(), true).finally(() => {
+        this.Details?.SetActive(false);
+      });
+    };
+    this.SkipToDelegationDetails = (...e) => {
       e = e[0];
-      this.Npa(e).finally(void 0), this.CaptionItem.SetTitleIconByResourceId("SP_ChasingMoonIcon7"), this.UiViewSequence?.PlaySequenceAsync("SwitchIn", new CustomPromise_1.CustomPromise, !0).finally(() => {
-        this.GetItem(7)?.SetUIActive(!1)
-      })
-    }
+      this.Npa(e).finally(undefined);
+      this.CaptionItem.SetTitleIconByResourceId("SP_ChasingMoonIcon7");
+      this.UiViewSequence?.PlaySequenceAsync("SwitchIn", new CustomPromise_1.CustomPromise(), true).finally(() => {
+        this.GetItem(7)?.SetUIActive(false);
+      });
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UIItem],
-      [6, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIItem],
-      [10, UE.UIItem],
-      [11, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
   }
   async ERn() {
-    this.eke = new PopularityModule_1.PopularityModule, await this.eke.CreateByActorAsync(this.GetItem(9).GetOwner()), this.AddChild(this.eke)
+    this.eke = new PopularityModule_1.PopularityModule();
+    await this.eke.CreateByActorAsync(this.GetItem(9).GetOwner());
+    this.AddChild(this.eke);
   }
   async U3e() {
-    this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(2)), this.CaptionItem.SetCloseCallBack(this.aOn.BackToLastState), this.CaptionItem.SetHelpCallBack(this.aOn.OpenHelpView);
-    var e = ConfigManager_1.ConfigManager.BusinessConfig.GetPowerItemId(),
-      t = ConfigManager_1.ConfigManager.BusinessConfig.GetCoinItemId(),
-      i = ConfigManager_1.ConfigManager.BusinessConfig.GetWishItemId();
-    await Promise.all([this.CaptionItem.SetTitleIconByResourceId("SP_ChasingMoonIcon3"), this.CaptionItem.SetCurrencyItemList([e, t, i])])
+    this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(2));
+    this.CaptionItem.SetCloseCallBack(this.aOn.BackToLastState);
+    this.CaptionItem.SetHelpCallBack(this.aOn.OpenHelpView);
+    var e = ConfigManager_1.ConfigManager.BusinessConfig.GetPowerItemId();
+    var t = ConfigManager_1.ConfigManager.BusinessConfig.GetCoinItemId();
+    var i = ConfigManager_1.ConfigManager.BusinessConfig.GetWishItemId();
+    await Promise.all([this.CaptionItem.SetTitleIconByResourceId("SP_ChasingMoonIcon3"), this.CaptionItem.SetCurrencyItemList([e, t, i])]);
   }
   async MJs(e) {
-    var t = new DelegationNonDetailsModule_1.DelegationNonDetailsModule;
-    t.RegisterViewController(this.aOn), await t.CreateThenShowByActorAsync(e.GetOwner()), this.NonDetailsList.push(t)
+    var t = new DelegationNonDetailsModule_1.DelegationNonDetailsModule();
+    t.RegisterViewController(this.aOn);
+    await t.CreateThenShowByActorAsync(e.GetOwner());
+    this.NonDetailsList.push(t);
   }
   async Csa() {
-    this.SkipItem = new BusinessSkipItem_1.BusinessSkipItem, this.SkipItem.RegisterViewController(this.aOn), await this.SkipItem.CreateByActorAsync(this.GetItem(10).GetOwner())
+    this.SkipItem = new BusinessSkipItem_1.BusinessSkipItem();
+    this.SkipItem.RegisterViewController(this.aOn);
+    await this.SkipItem.CreateByActorAsync(this.GetItem(10).GetOwner());
   }
   async Fpa() {
-    this.Details = new DelegationDetailsModule_1.DelegationDetailsModule, await this.Details.CreateByResourceIdAsync("UiItem_EntrustQuest", this.GetItem(8))
+    this.Details = new DelegationDetailsModule_1.DelegationDetailsModule();
+    await this.Details.CreateByResourceIdAsync("UiItem_EntrustQuest", this.GetItem(8));
   }
   ifa() {
-    this.kKs = new ButtonItem_1.ButtonItem(this.GetItem(0)), this.kKs.SetFunction(this.aOn.SkipToBuild), this.tfa = new ButtonItem_1.ButtonItem(this.GetItem(1)), this.tfa.SetFunction(this.aOn.SkipToHelper)
+    this.kKs = new ButtonItem_1.ButtonItem(this.GetItem(0));
+    this.kKs.SetFunction(this.aOn.SkipToBuild);
+    this.tfa = new ButtonItem_1.ButtonItem(this.GetItem(1));
+    this.tfa.SetFunction(this.aOn.SkipToHelper);
   }
   async SJs() {
-    await Promise.all([this.MJs(this.GetItem(3)), this.MJs(this.GetItem(4)), this.MJs(this.GetItem(5)), this.MJs(this.GetItem(6))]), this.vJs()
+    await Promise.all([this.MJs(this.GetItem(3)), this.MJs(this.GetItem(4)), this.MJs(this.GetItem(5)), this.MJs(this.GetItem(6))]);
+    this.vJs();
   }
   vJs() {
     var t = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetDelegationDataList();
     for (let e = 0; e < this.NonDetailsList.length; e++) {
       var i = this.NonDetailsList[e];
-      e < t.length ? i.Refresh(t[e]) : i.SetActive(!1)
+      if (e < t.length) {
+        i.Refresh(t[e]);
+      } else {
+        i.SetActive(false);
+      }
     }
   }
   Vqa() {
     var t = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetDelegationDataList();
     for (let e = 0; e < this.NonDetailsList.length; e++) {
       var i = this.NonDetailsList[e];
-      e < t.length && i.RefreshConsume()
+      if (e < t.length) {
+        i.RefreshConsume();
+      }
     }
   }
   async OnBeforeStartAsync() {
-    this.aOn.RegisterView(this), await Promise.all([this.ERn(), this.U3e(), this.SJs(), this.Csa(), this.Fpa()]), this.ifa(), this.GetItem(11)?.SetUIActive(!1)
+    this.aOn.RegisterView(this);
+    await Promise.all([this.ERn(), this.U3e(), this.SJs(), this.Csa(), this.Fpa()]);
+    this.ifa();
+    this.GetItem(11)?.SetUIActive(false);
   }
   async OnBeforeShowAsyncImplementImplement() {
-    await this.aOn.BeforeShowAsync()
+    await this.aOn.BeforeShowAsync();
   }
   OnBeforeShow() {
-    this.aOn.Show(), this.RefreshRedDot(), ActivityMoonChasingController_1.ActivityMoonChasingController.CheckIsActivityClose()
+    this.aOn.Show();
+    this.RefreshRedDot();
+    ActivityMoonChasingController_1.ActivityMoonChasingController.CheckIsActivityClose();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenTipsTravelView, this.rke), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UnlockMoonChasingData, this.msa), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshDelegate, this.iha), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BusinessInvestResult, this.Gwa), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ConditionUnlockRole, this.VDa), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Oe)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenTipsTravelView, this.rke);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UnlockMoonChasingData, this.msa);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshDelegate, this.iha);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BusinessInvestResult, this.Gwa);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ConditionUnlockRole, this.VDa);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Oe);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenTipsTravelView, this.rke), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnlockMoonChasingData, this.msa), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshDelegate, this.iha), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BusinessInvestResult, this.Gwa), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ConditionUnlockRole, this.VDa), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Oe)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenTipsTravelView, this.rke);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnlockMoonChasingData, this.msa);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshDelegate, this.iha);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BusinessInvestResult, this.Gwa);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ConditionUnlockRole, this.VDa);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Oe);
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.MoonChasingBusinessModel.SetIsInDelegate(!1)
+    ModelManager_1.ModelManager.MoonChasingBusinessModel.SetIsInDelegate(false);
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
-    return !(e.length < 1) && "Delegation" === e[0] ? this.Details?.GetGuideUiItemAndUiItemForShowEx(e) : void 0
+    if (!(e.length < 1) && e[0] === "Delegation") {
+      return this.Details?.GetGuideUiItemAndUiItemForShowEx(e);
+    } else {
+      return undefined;
+    }
   }
   async Npa(e) {
     e = ModelManager_1.ModelManager.MoonChasingBusinessModel.GetDelegationData(e);
-    this.Details.SetDelegationData(e), await this.Details.ShowAsync()
+    this.Details.SetDelegationData(e);
+    await this.Details.ShowAsync();
   }
   dsa() {
-    void 0 === ModelManager_1.ModelManager.MoonChasingModel?.GetFirstUnlockData() ? this.SkipItem.SetActive(!1) : (this.SkipItem.SetActive(!0), this.SkipItem.Refresh())
+    if (ModelManager_1.ModelManager.MoonChasingModel?.GetFirstUnlockData() === undefined) {
+      this.SkipItem.SetActive(false);
+    } else {
+      this.SkipItem.SetActive(true);
+      this.SkipItem.Refresh();
+    }
   }
   async BeforeShowAsync(e) {
-    e || await this.Details.RefreshAsync()
+    if (!e) {
+      await this.Details.RefreshAsync();
+    }
   }
   Refresh() {
-    this.dsa()
+    this.dsa();
   }
   RefreshRedDot() {
-    this.kKs.BindRedDot("MoonChasingBuilding"), this.tfa.BindRedDot("MoonChasingRole")
+    this.kKs.BindRedDot("MoonChasingBuilding");
+    this.tfa.BindRedDot("MoonChasingRole");
   }
   SwitchShowViewSequence(e) {
-    this.UiViewSequence.ShowSequenceName = e ? "ShowView" : "ShowView01"
+    this.UiViewSequence.ShowSequenceName = e ? "ShowView" : "ShowView01";
   }
 }
 exports.BusinessMainView = BusinessMainView;

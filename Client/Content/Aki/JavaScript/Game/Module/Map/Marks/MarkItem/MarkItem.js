@@ -1,295 +1,457 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkItem = void 0;
-const UE = require("ue"),
-  Vector_1 = require("../../../../../Core/Utils/Math/Vector"),
-  Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  GeneralLogicTreeUtil_1 = require("../../../GeneralLogicTree/GeneralLogicTreeUtil"),
-  WorldMapDefine_1 = require("../../../WorldMap/WorldMapDefine"),
-  WorldMapSecondaryUiDefine_1 = require("../../../WorldMap/WorldMapSecondaryUiDefine"),
-  MarkPanelPoolFactory_1 = require("../../Container/MarkPanelPoolFactory"),
-  MarkSpritePool_1 = require("../../Container/MarkSpritePool"),
-  MapController_1 = require("../../Controller/MapController"),
-  MapDefine_1 = require("../../MapDefine"),
-  MapUtil_1 = require("../../MapUtil"),
-  MarkDefine_1 = require("../../Mark/MarkDefine"),
-  MapLogger_1 = require("../../Misc/MapLogger");
+  value: true
+});
+exports.MarkItem = undefined;
+const UE = require("ue");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const GeneralLogicTreeUtil_1 = require("../../../GeneralLogicTree/GeneralLogicTreeUtil");
+const WorldMapDefine_1 = require("../../../WorldMap/WorldMapDefine");
+const WorldMapSecondaryUiDefine_1 = require("../../../WorldMap/WorldMapSecondaryUiDefine");
+const MarkPanelPoolFactory_1 = require("../../Container/MarkPanelPoolFactory");
+const MarkSpritePool_1 = require("../../Container/MarkSpritePool");
+const MapController_1 = require("../../Controller/MapController");
+const MapDefine_1 = require("../../MapDefine");
+const MapUtil_1 = require("../../MapUtil");
+const MarkDefine_1 = require("../../Mark/MarkDefine");
+const MapLogger_1 = require("../../Misc/MapLogger");
 class MarkItem {
   constructor(t, i, e, s = 1) {
-    this.IsVisible = !1, this.wDl = void 0, this.MapType = 2, this.kDi = 1, this.ShowPriority = 0, this.IsDestroy = !1, this.IsIgnoreScaleShow = !1, this.ConfigScale = 1, this.mfc = 1, this.CornerScaleVector = new UE.Vector(1, 1, 1), this.TrackFxScale = 1, this.FDi = void 0, this.WorldPositionVector = void 0, this.X__ = Vector2D_1.Vector2D.Create(0, 0), this.GridId = 0, this.NeedPlayShowOrHideSeq = void 0, this.h5l = void 0, this.IsStreaming = !0, this.gql = void 0, this.EnableCachePosition = !0, this.TrackSourceInner = 2, this.QDi = void 0, this.InnerView = void 0, this.xbt = "", this.XDi = !1, this.IsCanShowViewFinally = !1, this.MapType = i, this.kDi = e, this.QDi = t, this.TrackSourceInner = s, this.FDi = void 0, this.WorldPositionVector = Vector_1.Vector.Create()
+    this.IsVisible = false;
+    this.wDl = undefined;
+    this.MapType = 2;
+    this.kDi = 1;
+    this.ShowPriority = 0;
+    this.IsDestroy = false;
+    this.IsIgnoreScaleShow = false;
+    this.ConfigScale = 1;
+    this.mfc = 1;
+    this.CornerScaleVector = new UE.Vector(1, 1, 1);
+    this.TrackFxScale = 1;
+    this.FDi = undefined;
+    this.WorldPositionVector = undefined;
+    this.X__ = Vector2D_1.Vector2D.Create(0, 0);
+    this.GridId = 0;
+    this.NeedPlayShowOrHideSeq = undefined;
+    this.h5l = undefined;
+    this.IsStreaming = true;
+    this.gql = undefined;
+    this.EnableCachePosition = true;
+    this.TrackSourceInner = 2;
+    this.QDi = undefined;
+    this.InnerView = undefined;
+    this.xbt = "";
+    this.XDi = false;
+    this.IsCanShowViewFinally = false;
+    this.MapType = i;
+    this.kDi = e;
+    this.QDi = t;
+    this.TrackSourceInner = s;
+    this.FDi = undefined;
+    this.WorldPositionVector = Vector_1.Vector.Create();
   }
   get MarkItemEntity() {
-    return void 0 === this.wDl && MapLogger_1.MapLogger.ErrorOnce(this.MarkId ?? 0, 63, "没有初始化标记逻辑实体，请检查代码逻辑!", ["MarkId", this.MarkId], ["MarkType", this.MarkType]), this.wDl
+    if (this.wDl === undefined) {
+      MapLogger_1.MapLogger.ErrorOnce(this.MarkId ?? 0, 63, "没有初始化标记逻辑实体，请检查代码逻辑!", ["MarkId", this.MarkId], ["MarkType", this.MarkType]);
+    }
+    return this.wDl;
   }
   set MarkItemEntity(t) {
-    this.wDl = t
+    this.wDl = t;
   }
   get MarkItemType() {
-    return 0
+    return 0;
   }
   set CornerScale(t) {
-    this.mfc = t, this.CornerScaleVector.Set(this.CornerScale, this.CornerScale, this.CornerScale)
+    this.mfc = t;
+    this.CornerScaleVector.Set(this.CornerScale, this.CornerScale, this.CornerScale);
   }
   get CornerScale() {
-    return this.mfc
+    return this.mfc;
   }
   get VDi() {
-    return ModelManager_1.ModelManager.TeleportModel.IsTeleport ?? !1
+    return ModelManager_1.ModelManager.TeleportModel.IsTeleport ?? false;
   }
   get MapId() {
-    return 0
+    return 0;
   }
   get InstanceDungeonId() {}
   get RelativeInstanceDungeonId() {
-    return this.InstanceDungeonId
+    return this.InstanceDungeonId;
   }
   get InstanceDungeonOrMapConfigId() {
-    return void 0 === this.InstanceDungeonId || 0 === this.InstanceDungeonId ? this.MapId : this.InstanceDungeonId
+    if (this.InstanceDungeonId === undefined || this.InstanceDungeonId === 0) {
+      return this.MapId;
+    } else {
+      return this.InstanceDungeonId;
+    }
   }
   get MarkScale() {
-    return this.kDi
+    return this.kDi;
   }
   get UiPosition() {
-    return this.FDi || MapUtil_1.MapUtil.WorldPosition2UiPosition(this.WorldPosition, this.FDi)
+    return this.FDi || MapUtil_1.MapUtil.WorldPosition2UiPosition(this.WorldPosition, this.FDi);
   }
   get InitUiPosition() {
-    return this.h5l || this.UiPosition
+    return this.h5l || this.UiPosition;
   }
   SetAnchorOffset(t) {
     var i;
-    t.X === this.h5l?.X && t.Y === this.h5l?.Y || (i = this.View?.GetRootItem(), this.h5l = Vector_1.Vector.Create(t.X, t.Y, 0), void 0 === i) || (t = t.ToUeVector2D(!0), i.SetAnchorOffset(t))
+    if ((t.X !== this.h5l?.X || t.Y !== this.h5l?.Y) && !(i = this.View?.GetRootItem(), this.h5l = Vector_1.Vector.Create(t.X, t.Y, 0), i === undefined)) {
+      t = t.ToUeVector2D(true);
+      i.SetAnchorOffset(t);
+    }
   }
   IsMultiMap() {
-    return !1
+    return false;
   }
   LocateInGround() {
-    return !0
+    return true;
   }
   ConnectGround() {
-    return !0
+    return true;
   }
   GetMultiMapId() {
-    return 0
+    return 0;
   }
   ShowSecondaryUiMultiMapIcon() {
-    return this.IsMultiMap() && !this.LocateInGround()
+    return this.IsMultiMap() && !this.LocateInGround();
   }
   get IsSelectThisFloor() {
-    return this.MarkItemEntity.MultiFloor.IsSelectThisFloor
+    return this.MarkItemEntity.MultiFloor.IsSelectThisFloor;
   }
   set IsSelectThisFloor(t) {
-    this.MarkItemEntity.MultiFloor.IsSelectThisFloor = t
+    this.MarkItemEntity.MultiFloor.IsSelectThisFloor = t;
   }
   GetIsSelectThisFloor() {
     var t;
-    return !!this.IsMultiMap() && (t = this.GetMultiMapId(), 1 === this.MapType ? this.InMultiMapArea(t) : ModelManager_1.ModelManager.WorldMapModel.WorldMapCurrentMultiMapId === t)
+    return !!this.IsMultiMap() && (t = this.GetMultiMapId(), this.MapType === 1 ? this.InMultiMapArea(t) : ModelManager_1.ModelManager.WorldMapModel.WorldMapCurrentMultiMapId === t);
   }
   InMultiMapArea(t) {
-    var i = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(),
-      t = ConfigManager_1.ConfigManager.MapConfig.GetSubMapConfigById(t);
-    return !(!t || !t.Area.includes(i))
+    var i = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
+    var t = ConfigManager_1.ConfigManager.MapConfig.GetSubMapConfigById(t);
+    return !!t && !!t.Area.includes(i);
   }
   $Di(t, i) {
-    i = i.Tuple, t = t.Tuple;
-    return Math.pow(t[0] - i[0], 2) + Math.pow(t[1] - i[1], 2)
+    i = i.Tuple;
+    t = t.Tuple;
+    return Math.pow(t[0] - i[0], 2) + Math.pow(t[1] - i[1], 2);
   }
   get WorldPosition() {
     var t;
-    return 2 !== this.MapType && this.TrackTarget instanceof Vector2D_1.Vector2D && (t = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation(), this.$Di(t, this.TrackTarget) * MapDefine_1.FLOAT_0_01 * MapDefine_1.FLOAT_0_01 < 3600) && !this.VDi && (t = MapUtil_1.MapUtil.WorldPosition2UiPosition(Vector_1.Vector.Create(this.TrackTarget.X, this.TrackTarget.Y, 0)), (t = MapController_1.MapController.GetMarkPosition(t.X, -t.Y)) ? this.UpdateCustomMapMarkPosition(t) : this.TrackTarget = Vector_1.Vector.Create(this.TrackTarget.X, this.TrackTarget.Y, 0)), void 0 !== this.WorldPositionVector && this.EnableCachePosition || (this.WorldPositionVector = MapUtil_1.MapUtil.GetTrackPositionByTrackTargetConfig(this.TrackTarget, this.MapId, this.WorldPositionVector), this.WorldPositionVector = this.WorldPositionVector ?? Vector_1.Vector.ZeroVectorProxy, this.FDi = MapUtil_1.MapUtil.WorldPosition2UiPosition(this.WorldPositionVector, this.FDi)), this.WorldPositionVector
+    if (this.MapType !== 2 && this.TrackTarget instanceof Vector2D_1.Vector2D && (t = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation(), this.$Di(t, this.TrackTarget) * MapDefine_1.FLOAT_0_01 * MapDefine_1.FLOAT_0_01 < 3600) && !this.VDi) {
+      t = MapUtil_1.MapUtil.WorldPosition2UiPosition(Vector_1.Vector.Create(this.TrackTarget.X, this.TrackTarget.Y, 0));
+      if (t = MapController_1.MapController.GetMarkPosition(t.X, -t.Y)) {
+        this.UpdateCustomMapMarkPosition(t);
+      } else {
+        this.TrackTarget = Vector_1.Vector.Create(this.TrackTarget.X, this.TrackTarget.Y, 0);
+      }
+    }
+    if (this.WorldPositionVector === undefined || !this.EnableCachePosition) {
+      this.WorldPositionVector = MapUtil_1.MapUtil.GetTrackPositionByTrackTargetConfig(this.TrackTarget, this.MapId, this.WorldPositionVector);
+      this.WorldPositionVector = this.WorldPositionVector ?? Vector_1.Vector.ZeroVectorProxy;
+      this.FDi = MapUtil_1.MapUtil.WorldPosition2UiPosition(this.WorldPositionVector, this.FDi);
+    }
+    return this.WorldPositionVector;
   }
   UpdateCustomMapMarkPosition(t) {
     var i;
-    9 === this.MarkType && (i = Vector_1.Vector.Create(t.X, -t.Y, t.Z), t = Vector_1.Vector.Create(t.X, t.Y, t.Z), i = MapUtil_1.MapUtil.UiPosition2WorldPosition(i), this.TrackTarget = i, MapController_1.MapController.UpdateCustomMapMarkPosition(this.MarkId, t), i = Vector_1.Vector.Create(), this.TrackTarget.Multiply(MapDefine_1.FLOAT_0_01, i), ModelManager_1.ModelManager.MapModel.UpdateCustomMarkInfo(this.MarkId, i), ModelManager_1.ModelManager.TrackModel.UpdateTrackData(this.TrackSourceInner, this.MarkId, this.TrackTarget))
+    if (this.MarkType === 9) {
+      i = Vector_1.Vector.Create(t.X, -t.Y, t.Z);
+      t = Vector_1.Vector.Create(t.X, t.Y, t.Z);
+      i = MapUtil_1.MapUtil.UiPosition2WorldPosition(i);
+      this.TrackTarget = i;
+      MapController_1.MapController.UpdateCustomMapMarkPosition(this.MarkId, t);
+      i = Vector_1.Vector.Create();
+      this.TrackTarget.Multiply(MapDefine_1.FLOAT_0_01, i);
+      ModelManager_1.ModelManager.MapModel.UpdateCustomMarkInfo(this.MarkId, i);
+      ModelManager_1.ModelManager.TrackModel.UpdateTrackData(this.TrackSourceInner, this.MarkId, this.TrackTarget);
+    }
   }
   OnLoad() {}
   OnUnload() {}
   GetPreloadThreshold() {
-    return this.X__
+    return this.X__;
   }
   GetUiPosition() {
-    return this.UiPosition
+    return this.UiPosition;
   }
   Initialize() {
-    this.MarkItemEntity.Init(), this.IsOutOfBound = !1, this.IsInAoiRange = !1, this.OnInitialize()
+    this.MarkItemEntity.Init();
+    this.IsOutOfBound = false;
+    this.IsInAoiRange = false;
+    this.OnInitialize();
   }
   OnInitialize() {}
   SetTrackData(t) {
-    this.TrackTarget = t
+    this.TrackTarget = t;
   }
   LogicUpdate(t) {
-    this.OnUpdate(t), this.UpdateVisibleRelativeState()
+    this.OnUpdate(t);
+    this.UpdateVisibleRelativeState();
   }
-  async ViewUpdateAsync(t, i = !1, e = !1) {
-    this.CreateOrCycleView(), await this.View?.LoadingPromise, this.InnerView?.OnUpdate(t, i, e)
+  async ViewUpdateAsync(t, i = false, e = false) {
+    this.CreateOrCycleView();
+    await this.View?.LoadingPromise;
+    this.InnerView?.OnUpdate(t, i, e);
   }
-  Destroy(t = !0) {
-    MapLogger_1.MapLogger.Debug(63, "标记系统->MarkItem.Destroy", ["markType", this.MarkType], ["MarkId", this.MarkId], ["InstanceDungeonId", this.InstanceDungeonId], ["MapId", this.MapId]), this.IsDestroy = !0, this.OnDestroy(), this.Ah_(t), this.MarkItemEntity.Dispose(), this.QDi = void 0
+  Destroy(t = true) {
+    MapLogger_1.MapLogger.Debug(63, "标记系统->MarkItem.Destroy", ["markType", this.MarkType], ["MarkId", this.MarkId], ["InstanceDungeonId", this.InstanceDungeonId], ["MapId", this.MapId]);
+    this.IsDestroy = true;
+    this.OnDestroy();
+    this.Ah_(t);
+    this.MarkItemEntity.Dispose();
+    this.QDi = undefined;
   }
   get IsInAoiRange() {
-    return this.MarkItemEntity.ViewLifeCircle.IsInAoiRange
+    return this.MarkItemEntity.ViewLifeCircle.IsInAoiRange;
   }
   set IsInAoiRange(t) {
-    this.MarkItemEntity.ViewLifeCircle.IsInAoiRange = t
+    this.MarkItemEntity.ViewLifeCircle.IsInAoiRange = t;
   }
   u8_() {
     var t;
-    void 0 === this.InnerView ? (t = this.GetMarkItemViewType(), void 0 !== (t = MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Get(t + "_" + this.MapType)) ? (this.InnerView = t, (this.InnerView.Holder = this).MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty(), this.InnerView.Reset(), this.InnerView.SetUiActive(!0)) : (this.InnerView = this.CreateView(), this.InnerView.InitializeMarkItemViewAsync())) : (this.InnerView.Holder = this).InnerView.SetUiActive(!0), this.InnerView.RegisterEvents()
+    if (this.InnerView === undefined) {
+      t = this.GetMarkItemViewType();
+      if ((t = MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Get(t + "_" + this.MapType)) !== undefined) {
+        this.InnerView = t;
+        this._Qc();
+      } else {
+        this.InnerView = this.CreateView();
+        this.InnerView.InitializeMarkItemViewAsync().then(() => {
+          this._Qc();
+        });
+      }
+    } else {
+      this._Qc();
+    }
   }
-  Ah_(t = !1) {
-    this.InnerView && (this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty(), this.InnerView.UnRegisterEvents(), this.InnerView.IsRegister || t ? this.InnerView.RecycleToPool() : (this.InnerView.SetVisible(!1), MarkSpritePool_1.MarkSpritePool.UnRef(this.InnerView.ComponentId), this.InnerView.OnRecycle(), t = this.GetMarkItemViewType(), MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(t + "_" + this.MapType, this.InnerView)), this.InnerView = void 0)
+  _Qc() {
+    if (this.InnerView !== undefined && !this.InnerView.LoadingPromise) {
+      (this.InnerView.Holder = this).MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
+      this.InnerView.Reset();
+      this.InnerView.SetUiActive(true);
+      this.InnerView.RegisterEvents();
+    }
+  }
+  Ah_(t = false) {
+    if (this.InnerView) {
+      this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
+      if (this.InnerView.IsRegister || (this.InnerView.UnRegisterEvents(), t)) {
+        this.InnerView.RecycleToPool();
+      } else {
+        this.InnerView.SetVisible(false);
+        MarkSpritePool_1.MarkSpritePool.UnRef(this.InnerView.ComponentId);
+        this.InnerView.OnRecycle();
+        t = this.GetMarkItemViewType();
+        MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(t + "_" + this.MapType, this.InnerView);
+      }
+      this.InnerView = undefined;
+    }
   }
   get TrackTarget() {
-    return this.gql
+    return this.gql;
   }
   set TrackTarget(t) {
-    this.gql = t, this.WorldPositionVector = void 0, this.h5l = void 0
+    this.gql = t;
+    this.WorldPositionVector = undefined;
+    this.h5l = undefined;
   }
   get TrackAreaId() {}
   get TrackSource() {
-    return this.TrackSourceInner
+    return this.TrackSourceInner;
   }
   get IsTracked() {
-    return this.MarkItemEntity.ViewLifeCircle.IsTracked
+    return this.MarkItemEntity.ViewLifeCircle.IsTracked;
   }
   set IsTracked(t) {
-    this.MarkItemEntity.ViewLifeCircle.IsTracked = t, this.MarkItemEntity.ViewLifeCircle.IsTrackedDirty && (t ? this.OnStartTrack() : this.OnEndTrack())
+    this.MarkItemEntity.ViewLifeCircle.IsTracked = t;
+    if (this.MarkItemEntity.ViewLifeCircle.IsTrackedDirty) {
+      if (t) {
+        this.OnStartTrack();
+      } else {
+        this.OnEndTrack();
+      }
+    }
   }
   get PermanentUpdate() {
-    return this.IsTracked || MarkDefine_1.permanentUpdateTypeSet.has(this.MarkType) || this.MarkItemEntity.ViewLifeCircle.IsSelected
+    return this.IsTracked || MarkDefine_1.permanentUpdateTypeSet.has(this.MarkType) || this.MarkItemEntity.ViewLifeCircle.IsSelected;
   }
   get CanOutOfBound() {
-    return this.IsTracked || MarkDefine_1.canOutOfBoundUpdateTypeSet.has(this.MarkType)
+    return this.IsTracked || MarkDefine_1.canOutOfBoundUpdateTypeSet.has(this.MarkType);
   }
   UpdateVisibleRelativeState() {
-    var t = !this.IsInConsistentDistrict(),
-      i = this.CheckCanShowInGravityLayer(),
-      t = t && i,
-      i = this.MarkItemEntity.ViewLifeCircle.IsSelected,
-      i = this.CheckCanShowView() || i;
-    let e = t && i,
-      s = (1 !== this.MarkItemType && (e &&= this.IsTempMapMarkShow()), this.IsCanShowView = e, this.IsTracked = this.IsTracking(), !0);
-    s = !(!e || !t) && (1 === this.MapType && !this.IsTracked || (this.IsInAoiRange = !0), this.IsTracked || this.IsInAoiRange), this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(9, this.MarkItemEntity.GamePlay.CanShowGravityChildIcon), this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(0, s)
+    var t = !this.IsInConsistentDistrict();
+    var i = this.CheckCanShowInGravityLayer();
+    var t = t && i;
+    var i = this.MarkItemEntity.ViewLifeCircle.IsSelected;
+    var i = this.CheckCanShowView() || i;
+    let e = t && i;
+    if (this.MarkItemType !== 1) {
+      e &&= this.IsTempMapMarkShow();
+    }
+    this.IsCanShowView = e;
+    this.IsTracked = this.IsTracking();
+    let s = true;
+    s = !!e && !!t && (this.MapType === 1 && !this.IsTracked || (this.IsInAoiRange = true), this.IsTracked || this.IsInAoiRange);
+    this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(9, this.MarkItemEntity.GamePlay.CanShowGravityChildIcon);
+    this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(0, s);
   }
   CreateOrCycleView() {
     var t;
-    this.MarkItemEntity.ViewLifeCircle.IsChildViewStateDirty(0) && (t = this.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0), this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibleClean(0), t ? this.u8_() : this.Ah_())
+    if (this.MarkItemEntity.ViewLifeCircle.IsChildViewStateDirty(0)) {
+      t = this.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0);
+      this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibleClean(0);
+      if (t) {
+        this.u8_();
+      } else {
+        this.Ah_();
+      }
+    }
   }
   IsTempMapMarkShow() {
-    return 1 !== this.MapType || !this.MarkItemEntity.IsTempMapMark || this.IsTracked
+    return this.MapType !== 1 || !this.MarkItemEntity.IsTempMapMark || this.IsTracked;
   }
   IsTracking() {
-    return ModelManager_1.ModelManager.TrackModel.IsTracking(this.TrackSource, this.MarkId)
+    return ModelManager_1.ModelManager.TrackModel.IsTracking(this.TrackSource, this.MarkId);
   }
   OnStartTrack() {
-    this.View?.OnStartTrack()
+    this.View?.OnStartTrack();
   }
   OnEndTrack() {
-    this.View?.OnEndTrack()
+    this.View?.OnEndTrack();
   }
   OnUpdate(t) {}
   OnDestroy() {}
   get ViewRoot() {
-    return this.QDi
+    return this.QDi;
   }
   get View() {
-    return this.InnerView
+    return this.InnerView;
   }
   get IconPath() {
-    return this.xbt
+    return this.xbt;
   }
   set IconPath(t) {
-    this.xbt !== t && (this.xbt = t)
+    if (this.xbt !== t) {
+      this.xbt = t;
+    }
   }
   get IsOutOfBound() {
-    return this.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(4)
+    return this.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(4);
   }
   set IsOutOfBound(t) {
-    this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(4, t), this.View && this.View.IsViewReady && this.View.ApplyOutOfBoundActive()
+    this.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(4, t);
+    if (this.View && this.View.IsViewReady) {
+      this.View.ApplyOutOfBoundActive();
+    }
   }
   SetSelected(t) {
-    this.MarkItemEntity.ViewLifeCircle.IsSelected = t, this.InnerView && (this.View.IsSelected = t)
+    this.MarkItemEntity.ViewLifeCircle.IsSelected = t;
+    if (this.InnerView) {
+      this.View.IsSelected = t;
+    }
   }
   async GetRootItemAsync() {
-    if (this.View) return this.View.IsCreating && await this.View.LoadingPromise, this.View.GetRootItem()
+    if (this.View) {
+      if (this.View.IsCreating) {
+        await this.View.LoadingPromise;
+      }
+      return this.View.GetRootItem();
+    }
   }
   GetTitleText() {}
   SetTitleText(t) {
     var i = this.GetTitleText();
-    i && t.SetText(i)
+    if (i) {
+      t.SetText(i);
+    }
   }
   GetStateIconPath() {
     var t = this.IsMultiMap();
-    if (t && !(this.LocateInGround() && this.IsSelectThisFloor)) return ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(this.IsSelectThisFloor ? WorldMapDefine_1.MULTI_MAP_SELECT_ICON_PATH : WorldMapDefine_1.MULTI_MAP_ICON_PATH)
+    if (t && (!this.LocateInGround() || !this.IsSelectThisFloor)) {
+      return ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(this.IsSelectThisFloor ? WorldMapDefine_1.MULTI_MAP_SELECT_ICON_PATH : WorldMapDefine_1.MULTI_MAP_ICON_PATH);
+    }
   }
   GetLocaleDesc() {}
   SetConfigScale(t) {
-    this.ConfigScale = t
+    this.ConfigScale = t;
   }
   SetCornerScale(t) {
-    this.CornerScale = t
+    this.CornerScale = t;
   }
   get JDi() {
-    return ModelManager_1.ModelManager.MapModel.GetMarkForceVisible(this.MarkType, this.MarkId)
+    return ModelManager_1.ModelManager.MapModel.GetMarkForceVisible(this.MarkType, this.MarkId);
   }
   get IsCanShowViewIntermediately() {
-    return this.XDi && this.JDi
+    return this.XDi && this.JDi;
   }
   get IsCanShowView() {
-    return this.IsCanShowViewIntermediately || this.IsCanShowViewFinally
+    return this.IsCanShowViewIntermediately || this.IsCanShowViewFinally;
   }
   set IsCanShowView(t) {
-    this.XDi = t
+    this.XDi = t;
   }
   CheckCanShowView() {
-    return 2 === this.MapType
+    return this.MapType === 2;
   }
-  IsInConsistentDistrict(t = !1) {
-    let i = void 0;
-    var e, s = ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId;
-    return (i = t || 1 === this.MapType ? ModelManager_1.ModelManager.MapModel.GetDungeonMapConfigId(this.InstanceDungeonOrMapConfigId) : ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapId(this.InstanceDungeonOrMapConfigId)) !== s || (t = ModelManager_1.ModelManager.WorldMapModel.IsPlayerInActivityInstanceDungeon(), s = ModelManager_1.ModelManager.MapModel.CurrentMapConfigId, e = ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark, t && e && s === i && 1 !== this.MarkType ? void 0 === this.InstanceDungeonId || this.PW_() : ModelManager_1.ModelManager.WorldMapModel.IsPlayerInStoryInstanceDungeon() ? this.WMc() : (t = ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(this.InstanceDungeonOrMapConfigId), 1 === this.MapType ? t ? this.AW_() : void 0 !== this.InstanceDungeonId && this.PW_() : ModelManager_1.ModelManager.WorldMapModel.IsPlayerInWorldInstanceDungeon() ? this.Klc(t) : this.AW_()))
+  IsInConsistentDistrict(t = false) {
+    let i = undefined;
+    var e;
+    var s = ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId;
+    return (i = t || this.MapType === 1 ? ModelManager_1.ModelManager.MapModel.GetDungeonMapConfigId(this.InstanceDungeonOrMapConfigId) : ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapId(this.InstanceDungeonOrMapConfigId)) !== s || (t = ModelManager_1.ModelManager.WorldMapModel.IsPlayerInActivityInstanceDungeon(), s = ModelManager_1.ModelManager.MapModel.CurrentMapConfigId, e = ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark, t && e && s === i && this.MarkType !== 1 ? this.InstanceDungeonId === undefined || this.PW_() : ModelManager_1.ModelManager.WorldMapModel.IsPlayerInStoryInstanceDungeon() ? this.WMc() : (t = ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(this.InstanceDungeonOrMapConfigId), this.MapType === 1 ? t ? this.AW_() : this.InstanceDungeonId !== undefined && this.PW_() : ModelManager_1.ModelManager.WorldMapModel.IsPlayerInWorldInstanceDungeon() ? this.Klc(t) : this.AW_()));
   }
   AW_() {
-    return 0 !== this.InstanceDungeonId && void 0 !== this.InstanceDungeonId && this.InstanceDungeonId !== ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapInstanceId
+    return this.InstanceDungeonId !== 0 && this.InstanceDungeonId !== undefined && this.InstanceDungeonId !== ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapInstanceId;
   }
   Klc(t) {
-    return 0 !== this.InstanceDungeonId && void 0 !== this.InstanceDungeonId && this.InstanceDungeonId !== ModelManager_1.ModelManager.WorldMapModel.GetCurrentLocateWorldMapInstanceId(t)
+    return this.InstanceDungeonId !== 0 && this.InstanceDungeonId !== undefined && this.InstanceDungeonId !== ModelManager_1.ModelManager.WorldMapModel.GetCurrentLocateWorldMapInstanceId(t);
   }
   PW_() {
-    return this.InstanceDungeonId !== ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapInstanceId
+    return this.InstanceDungeonId !== ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapInstanceId;
   }
   WMc() {
-    return 1 === this.MapType ? this.PW_() : 12 !== this.MarkType && this.AW_()
+    if (this.MapType === 1) {
+      return this.PW_();
+    } else {
+      return this.MarkType !== 12 && this.AW_();
+    }
   }
   CheckCanShowInGravityLayer() {
-    return !(!this.IsTracking() && !MarkDefine_1.permanentShowInGravityLayerTypeSet.has(this.MarkType)) || this.MarkItemEntity.GamePlay.InGravityLayer
+    return !!this.IsTracking() || !!MarkDefine_1.permanentShowInGravityLayerTypeSet.has(this.MarkType) || this.MarkItemEntity.GamePlay.InGravityLayer;
   }
   GetShowScale() {
     var t = this.GetCurrentMapShowScale();
-    return Math.max(0, t)
+    return Math.max(0, t);
   }
   GetCurrentMapShowScale() {
-    return 100 * ModelManager_1.ModelManager.WorldMapModel.MapScale - 100
+    return ModelManager_1.ModelManager.WorldMapModel.MapScale * 100 - 100;
   }
   OnLevelSequenceStart(t) {
-    "ShowView" !== t && "HideView" !== t || (this.IsCanShowViewFinally = !0)
+    if (t === "ShowView" || t === "HideView") {
+      this.IsCanShowViewFinally = true;
+    }
   }
   OnLevelSequenceStop(t) {
-    "ShowView" !== t && "HideView" !== t || (this.IsCanShowViewFinally = !1)
+    if (t === "ShowView" || t === "HideView") {
+      this.IsCanShowViewFinally = false;
+    }
   }
   GetInteractiveFlag() {
-    return this.IsCanShowView ?? !1
+    return this.IsCanShowView ?? false;
   }
   GamePlayIsDiscover() {
-    return !1
+    return false;
   }
   GetSecondaryUiType() {
-    return WorldMapSecondaryUiDefine_1.markPanelTypeMap.get(this.MarkType) ?? WorldMapDefine_1.ESecondaryPanel.GeneralPanel
+    return WorldMapSecondaryUiDefine_1.markPanelTypeMap.get(this.MarkType) ?? WorldMapDefine_1.ESecondaryPanel.GeneralPanel;
   }
   GetIsStrictConfigMark() {
-    return this.MarkItemEntity.IsConfigMark && 1 === this.MarkItemType
+    return this.MarkItemEntity.IsConfigMark && this.MarkItemType === 1;
   }
 }
 exports.MarkItem = MarkItem;

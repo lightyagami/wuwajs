@@ -1,73 +1,125 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueScoreHandle = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  RogueScoreUnit_1 = require("../HudUnit/RogueScoreUnit"),
-  HudUnitHandleBase_1 = require("./HudUnitHandleBase");
+  value: true
+});
+exports.RogueScoreHandle = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const RogueScoreUnit_1 = require("../HudUnit/RogueScoreUnit");
+const HudUnitHandleBase_1 = require("./HudUnitHandleBase");
 class RogueScoreHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
-    super(...arguments), this.JIn = void 0, this.zIn = !1, this.IIn = 0, this.EBn = 0, this.yBn = void 0, this.SBn = void 0, this.IBn = void 0, this.TBn = void 0, this.oTn = (t, e) => {
+    super(...arguments);
+    this.JIn = undefined;
+    this.zIn = false;
+    this.IIn = 0;
+    this.EBn = 0;
+    this.yBn = undefined;
+    this.SBn = undefined;
+    this.IBn = undefined;
+    this.TBn = undefined;
+    this.oTn = (t, e) => {
       if (this.zIn) {
         t = ModelManager_1.ModelManager.BattleScoreModel?.GetScoreConfig(t);
-        if (t && 1 === t.Type) {
+        if (t && t.Type === 1) {
           t = t.LevelGroupId;
-          if (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "肉鸽战斗评分变化", ["scoreActionId", t], ["score", e]), this.EBn !== t && (this.EBn = t, this.yBn = ConfigManager_1.ConfigManager.BattleScoreConfig.GetBattleScoreActionConfigByGroupId(t), this.rTn()), this.yBn && 0 !== this.yBn.length) {
-            if (this.IIn = e, this.IIn < this.IBn.LowerUpperLimits[0]) this.SBn = void 0;
-            else if (this.IIn >= this.TBn.LowerUpperLimits[1]) this.SBn = this.TBn;
-            else {
-              this.SBn = void 0;
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "肉鸽战斗评分变化", ["scoreActionId", t], ["score", e]);
+          }
+          if (this.EBn !== t) {
+            this.EBn = t;
+            this.yBn = ConfigManager_1.ConfigManager.BattleScoreConfig.GetBattleScoreActionConfigByGroupId(t);
+            this.rTn();
+          }
+          if (this.yBn && this.yBn.length !== 0) {
+            this.IIn = e;
+            if (this.IIn < this.IBn.LowerUpperLimits[0]) {
+              this.SBn = undefined;
+            } else if (this.IIn >= this.TBn.LowerUpperLimits[1]) {
+              this.SBn = this.TBn;
+            } else {
+              this.SBn = undefined;
               for (const s of this.yBn) {
                 var i = s.LowerUpperLimits;
-                if (!(i.length < 2) && (this.IIn >= i[0] && this.IIn < i[1])) {
+                if (!(i.length < 2) && this.IIn >= i[0] && this.IIn < i[1]) {
                   this.SBn = s;
-                  break
+                  break;
                 }
               }
-            }!this.SBn && this.JIn ? this.nTn() : this.TryActivateRogueScoreUnit()
+            }
+            if (!this.SBn && this.JIn) {
+              this.nTn();
+            } else {
+              this.TryActivateRogueScoreUnit();
+            }
           }
+        }
+      }
+    };
+  }
+  OnInitialize() {
+    this.zIn = ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.CreatureModel.GetInstanceId() === 1 || ModelManager_1.ModelManager.BossRushModel.CheckInBossRush();
+    if (this.zIn) {
+      for (var [t, e] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreMap()) {
+        if (e > 0) {
+          this.oTn(t, e);
         }
       }
     }
   }
-  OnInitialize() {
-    if (this.zIn = ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || 1 === ModelManager_1.ModelManager.CreatureModel.GetInstanceId() || ModelManager_1.ModelManager.BossRushModel.CheckInBossRush(), this.zIn)
-      for (var [t, e] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreMap()) 0 < e && this.oTn(t, e)
-  }
   OnDestroyed() {
-    this.zIn = !1, this.sTn()
+    this.zIn = false;
+    this.sTn();
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.oTn)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.oTn);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.oTn)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.oTn);
   }
   rTn() {
-    if (this.IBn = void 0, this.TBn = void 0, this.yBn) {
-      let t = MathUtils_1.MathUtils.Int32Max,
-        e = 0;
+    this.IBn = undefined;
+    this.TBn = undefined;
+    if (this.yBn) {
+      let t = MathUtils_1.MathUtils.Int32Max;
+      let e = 0;
       for (const s of this.yBn) {
         var i = s.Level;
-        t > i && (t = i, this.IBn = s), e < i && (e = i, this.TBn = s)
+        if (t > i) {
+          t = i;
+          this.IBn = s;
+        }
+        if (e < i) {
+          e = i;
+          this.TBn = s;
+        }
       }
     }
   }
   TryActivateRogueScoreUnit() {
-    this.JIn ? (this.JIn?.SetVisible(!0), this.nTn()) : this.JIn = this.NewHudUnitWithReturn(RogueScoreUnit_1.RogueScoreUnit, "UiItem_RogueScore", !1, () => {
-      this.JIn?.SetVisible(void 0 !== this.SBn), this.nTn()
-    }, !0)
+    if (this.JIn) {
+      this.JIn?.SetVisible(true);
+      this.nTn();
+    } else {
+      this.JIn = this.NewHudUnitWithReturn(RogueScoreUnit_1.RogueScoreUnit, "UiItem_RogueScore", false, () => {
+        this.JIn?.SetVisible(this.SBn !== undefined);
+        this.nTn();
+      }, true);
+    }
   }
   nTn() {
-    this.JIn?.UpdateScore(this.IIn, this.SBn)
+    this.JIn?.UpdateScore(this.IIn, this.SBn);
   }
   sTn() {
-    this.JIn && (this.DestroyHudUnit(this.JIn), this.JIn = void 0)
+    if (this.JIn) {
+      this.DestroyHudUnit(this.JIn);
+      this.JIn = undefined;
+    }
   }
 }
 exports.RogueScoreHandle = RogueScoreHandle;

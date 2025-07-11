@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckShipTowerTeamOpen = void 0;
+  value: true
+});
+exports.LevelConditionCheckShipTowerTeamOpen = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckShipTowerTeamOpen extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, r) {
-    return !0
+    return true;
   }
 }
 exports.LevelConditionCheckShipTowerTeamOpen = LevelConditionCheckShipTowerTeamOpen;

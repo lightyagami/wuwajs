@@ -1,58 +1,85 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityCorniceMeetingController = void 0;
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../../../Core/Net/Net"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  ActivityControllerBase_1 = require("../../ActivityControllerBase"),
-  ActivityCorniceMeetingData_1 = require("./ActivityCorniceMeetingData"),
-  ActivitySubViewCorniceMeeting_1 = require("./ActivitySubViewCorniceMeeting");
+  value: true
+});
+exports.ActivityCorniceMeetingController = undefined;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../../../Core/Net/Net");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const ActivityControllerBase_1 = require("../../ActivityControllerBase");
+const ActivityCorniceMeetingData_1 = require("./ActivityCorniceMeetingData");
+const ActivitySubViewCorniceMeeting_1 = require("./ActivitySubViewCorniceMeeting");
 class ActivityCorniceMeetingController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
-    super(...arguments), this.vSn = e => {
+    super(...arguments);
+    this.vSn = e => {
       var t = ActivityCorniceMeetingController.GetCurrentActivityData();
-      t && (t = t.GetLevelEntryData(e._ps)) && (e.tM_ && (t.MaxScore = e.SMs), t.CurrentScore = e.SMs, e.iM_ && (t.RemainTime = e.ZS_), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, e._ps), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ConfigManager_1.ConfigManager.ActivityCorniceMeetingConfig.GetCorniceMeetingChallengeConfig(e._ps).ActivityId), UiManager_1.UiManager.OpenView("CorniceMeetingSettleView", e))
-    }
+      if (t &&= t.GetLevelEntryData(e._ps)) {
+        if (e.tM_) {
+          t.MaxScore = e.SMs;
+        }
+        t.CurrentScore = e.SMs;
+        if (e.iM_) {
+          t.RemainTime = e.ZS_;
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, e._ps);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ConfigManager_1.ConfigManager.ActivityCorniceMeetingConfig.GetCorniceMeetingChallengeConfig(e._ps).ActivityId);
+        UiManager_1.UiManager.OpenView("CorniceMeetingSettleView", e);
+      }
+    };
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
-    return "UiItem_AbnormalData"
+    return "UiItem_AbnormalData";
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(18080, this.vSn)
+    Net_1.Net.Register(28776, this.vSn);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18080)
+    Net_1.Net.UnRegister(28776);
   }
   OnCreateSubPageComponent(e) {
-    return new ActivitySubViewCorniceMeeting_1.ActivitySubViewCorniceMeeting
+    return new ActivitySubViewCorniceMeeting_1.ActivitySubViewCorniceMeeting();
   }
   OnCreateActivityData(e) {
-    return ActivityCorniceMeetingController.ActivityId = e.s5n, new ActivityCorniceMeetingData_1.ActivityCorniceMeetingData
+    ActivityCorniceMeetingController.ActivityId = e.s5n;
+    return new ActivityCorniceMeetingData_1.ActivityCorniceMeetingData();
   }
   OnGetIsOpeningActivityRelativeView() {
-    return !1
+    return false;
   }
   static GetCurrentActivityData() {
-    return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityCorniceMeetingController.ActivityId)
+    return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityCorniceMeetingController.ActivityId);
   }
   static CorniceMeetingRewardRequest(t, r, i) {
-    var e = new Protocol_1.Aki.Protocol.ym_;
-    e._ps = t, e.t8n = r, Net_1.Net.Call(17404, e, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17404) : (this.GetCurrentActivityData().UpdateRewarded(t, r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t), i())
-    })
+    var e = new Protocol_1.Aki.Protocol.ym_();
+    e._ps = t;
+    e.t8n = r;
+    Net_1.Net.Call(16840, e, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16840);
+      } else {
+        this.GetCurrentActivityData().UpdateRewarded(t, r);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t);
+        i();
+      }
+    });
   }
   static CorniceMeetingChallengeTransRequest(e) {
-    var t = new Protocol_1.Aki.Protocol.Cf_;
-    t._ps = e, Net_1.Net.Call(29883, t, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29883)
-    })
+    var t = new Protocol_1.Aki.Protocol.Cf_();
+    t._ps = e;
+    Net_1.Net.Call(16619, t, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16619);
+      }
+    });
   }
-}(exports.ActivityCorniceMeetingController = ActivityCorniceMeetingController).ActivityId = 0;
+}
+(exports.ActivityCorniceMeetingController = ActivityCorniceMeetingController).ActivityId = 0;
 //# sourceMappingURL=ActivityCorniceMeetingController.js.map

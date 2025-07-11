@@ -1,29 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameplayCueHitEffect = void 0;
-const UE = require("ue"),
-  ResourceSystem_1 = require("../../../../../../../Core/Resource/ResourceSystem"),
-  GameplayCueBase_1 = require("./GameplayCueBase");
+  value: true
+});
+exports.GameplayCueHitEffect = undefined;
+const UE = require("ue");
+const ResourceSystem_1 = require("../../../../../../../Core/Resource/ResourceSystem");
+const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueHitEffect extends GameplayCueBase_1.GameplayCueBase {
   constructor() {
-    super(...arguments), this.hJ = 0, this.Qgl = !1
+    super(...arguments);
+    this.hJ = 0;
+    this.Qgl = false;
   }
   OnCreate() {
-    this.CueConfig.Path && (this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(this.CueConfig.Path, UE.BP_ReplaceHitEffect_C, e => {
-      this.hJ = 0, this.Uoa(e) && (this.Qgl = !0)
-    }))
+    if (this.CueConfig.Path) {
+      this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(this.CueConfig.Path, UE.BP_ReplaceHitEffect_C, e => {
+        this.hJ = 0;
+        if (this.Uoa(e)) {
+          this.Qgl = true;
+        }
+      });
+    }
   }
   OnDestroy() {
-    0 !== this.hJ && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.hJ), this.hJ = 0), this.Qgl && (this.Qgl = !1, this.Kgl())
+    if (this.hJ !== 0) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.hJ);
+      this.hJ = 0;
+    }
+    if (this.Qgl) {
+      this.Qgl = false;
+      this.Kgl();
+    }
   }
   Uoa(e) {
     var t;
-    return !!e && !!this.EntityHandle.Valid && !!(t = this.EntityHandle.Entity.GetComponent(61)) && t.ReplaceHitEffect(e)
+    return !!e && !!this.EntityHandle.Valid && !!(t = this.EntityHandle.Entity.GetComponent(61)) && t.ReplaceHitEffect(e);
   }
   Kgl() {
     var e;
-    this.EntityHandle.Valid && (e = this.EntityHandle.Entity.GetComponent(61)) && e.RemoveHitEffectReplaced()
+    if (this.EntityHandle.Valid && (e = this.EntityHandle.Entity.GetComponent(61))) {
+      e.RemoveHitEffectReplaced();
+    }
   }
 }
 exports.GameplayCueHitEffect = GameplayCueHitEffect;

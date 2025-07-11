@@ -1,74 +1,127 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DeckBuilderCardDetailPanel = void 0;
-const UE = require("ue"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  ButtonItem_1 = require("../../../Common/Button/ButtonItem"),
-  LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  CardDetailEntryDescLayoutItem_1 = require("../../Common/CardDetail/CardDetailEntryDescLayoutItem"),
-  CardDetailItem_1 = require("../../Common/CardDetail/CardDetailItem"),
-  DetailViewCardItem_1 = require("../../Common/CardItem/Item/DetailViewCardItem"),
-  PhantomArenaController_1 = require("../../PhantomArenaController");
+  value: true
+});
+exports.DeckBuilderCardDetailPanel = undefined;
+const UE = require("ue");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
+const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const CardDetailEntryDescLayoutItem_1 = require("../../Common/CardDetail/CardDetailEntryDescLayoutItem");
+const CardDetailItem_1 = require("../../Common/CardDetail/CardDetailItem");
+const DetailViewCardItem_1 = require("../../Common/CardItem/Item/DetailViewCardItem");
+const PhantomArenaController_1 = require("../../PhantomArenaController");
 class DeckBuilderCardDetailPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Pe = void 0, this.eVi = void 0, this.Ept = void 0, this.nA1 = void 0, this.sA1 = void 0, this.aA1 = void 0, this.$pt = void 0, this._A1 = () => {
-      this.Pe && this.Pe.AddCardToDeck && (this.Pe.AddCardToDeck(), this.RefreshDetailLockState())
-    }, this.cA1 = () => {
-      this.Pe && this.Pe.RemoveCardFromDeck && (this.Pe.RemoveCardFromDeck?.(), this.RefreshDetailLockState())
-    }, this.dA1 = () => {
-      PhantomArenaController_1.PhantomArenaController.CardUnlockRequest(this.GetCardId())
-    }
+    super(...arguments);
+    this.Pe = undefined;
+    this.eVi = undefined;
+    this.Ept = undefined;
+    this.DA1 = undefined;
+    this.UA1 = undefined;
+    this.BA1 = undefined;
+    this.$pt = undefined;
+    this.qA1 = () => {
+      if (this.Pe && this.Pe.AddCardToDeck) {
+        this.Pe.AddCardToDeck();
+        this.RefreshDetailLockState();
+      }
+    };
+    this.FA1 = () => {
+      if (this.Pe && this.Pe.RemoveCardFromDeck) {
+        this.Pe.RemoveCardFromDeck?.();
+        this.RefreshDetailLockState();
+      }
+    };
+    this.NA1 = () => {
+      PhantomArenaController_1.PhantomArenaController.CardUnlockRequest(this.GetCardId());
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UILayoutBase],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UIText],
-      [6, UE.UIItem],
-      [7, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UILayoutBase], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIItem], [7, UE.UIText]];
   }
   async OnBeforeStartAsync() {
-    this.eVi = new DetailViewCardItem_1.DetailViewCardItem, this.Ept = new CardDetailItem_1.CardDetailItem, this.nA1 = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(2)), this.sA1 = new ButtonItem_1.ButtonItem, this.aA1 = new ButtonItem_1.ButtonItem, this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem()), await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Ept.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.sA1.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.aA1.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())])
+    this.eVi = new DetailViewCardItem_1.DetailViewCardItem();
+    this.Ept = new CardDetailItem_1.CardDetailItem();
+    this.DA1 = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(2));
+    this.UA1 = new ButtonItem_1.ButtonItem();
+    this.BA1 = new ButtonItem_1.ButtonItem();
+    this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
+    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Ept.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.UA1.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.BA1.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())]);
   }
   Refresh(t) {
-    this.Pe = t, this.RefreshDetailLockState(), this.eVi.Refresh(t.CardItemData), this.Ept.Refresh(this.Pe.DetailItemData), this.nA1.Refresh(this.Pe.EntryIdList)
+    this.Pe = t;
+    this.RefreshDetailLockState();
+    this.eVi.Refresh(t.CardItemData);
+    this.Ept.Refresh(this.Pe.DetailItemData);
+    this.DA1.Refresh(this.Pe.EntryIdList);
   }
   RefreshDetailLockState() {
-    var t, e;
-    this.Pe?.DeckInfo ? this.Pe.IsCardUnlocked ? (this.sA1.SetActive(!0), this.sA1.SetFunction(this.cA1), this.sA1.SetLocalTextNew("PhantomBattle_1007"), this.aA1.SetActive(!0), this.aA1.SetFunction(this._A1), this.aA1.SetLocalTextNew("PhantomBattle_1008"), this.GetText(5).SetUIActive(!0), this.GetItem(6).SetUIActive(!1), e = this.Pe.DeckInfo, t = this.GetCardId(), e = e.GetCardCount(t), t = this.Pe.CardLimit - e, LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "PhantomBattle_1009", t), this.sA1.SetEnableClick(0 < e), this.aA1.SetEnableClick(0 < t)) : (this.aA1.SetFunction(this.dA1), this.sA1.SetActive(!1), e = {
-      CardId: this.GetCardId(),
-      LockTipItem: this.GetItem(6),
-      LockTipText: this.GetText(7),
-      TipText: this.GetText(5),
-      UnlockBtnItem: this.aA1,
-      IsUnLocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(this.GetCardId()),
-      ShowUnlockRedDotWhenCanUnlock: !1
-    }, PhantomArenaController_1.PhantomArenaController.UpdateCardDetailLockState(e)) : (this.sA1.SetActive(!1), this.aA1.SetActive(!1), this.GetText(5).SetUIActive(!1), this.GetItem(6).SetUIActive(!1))
+    var t;
+    var e;
+    if (this.Pe?.DeckInfo) {
+      if (this.Pe.IsCardUnlocked) {
+        this.UA1.SetActive(true);
+        this.UA1.SetFunction(this.FA1);
+        this.UA1.SetLocalTextNew("PhantomBattle_1007");
+        this.BA1.SetActive(true);
+        this.BA1.SetFunction(this.qA1);
+        this.BA1.SetLocalTextNew("PhantomBattle_1008");
+        this.GetText(5).SetUIActive(true);
+        this.GetItem(6).SetUIActive(false);
+        e = this.Pe.DeckInfo;
+        t = this.GetCardId();
+        e = e.GetCardCount(t);
+        t = this.Pe.CardLimit - e;
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "PhantomBattle_1009", t);
+        this.UA1.SetEnableClick(e > 0);
+        this.BA1.SetEnableClick(t > 0);
+      } else {
+        this.BA1.SetFunction(this.NA1);
+        this.UA1.SetActive(false);
+        e = {
+          CardId: this.GetCardId(),
+          LockTipItem: this.GetItem(6),
+          LockTipText: this.GetText(7),
+          TipText: this.GetText(5),
+          UnlockBtnItem: this.BA1,
+          IsUnLocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(this.GetCardId()),
+          ShowUnlockRedDotWhenCanUnlock: false
+        };
+        PhantomArenaController_1.PhantomArenaController.UpdateCardDetailLockState(e);
+      }
+    } else {
+      this.UA1.SetActive(false);
+      this.BA1.SetActive(false);
+      this.GetText(5).SetUIActive(false);
+      this.GetItem(6).SetUIActive(false);
+    }
   }
   RefreshCardItemLockState() {
-    this.eVi.RefreshIsLocked()
+    this.eVi.RefreshIsLocked();
   }
   RefreshLockState() {
-    this.RefreshDetailLockState(), this.RefreshCardItemLockState()
+    this.RefreshDetailLockState();
+    this.RefreshCardItemLockState();
   }
   PlaySwitchSequence() {
-    this.$pt.PlayOrReplaySequenceByName("Switch")
+    this.$pt.PlayOrReplaySequenceByName("Switch");
   }
   PlayShowSequence() {
-    this.$pt.PlayOrReplaySequenceByName("Start")
+    this.$pt.PlayOrReplaySequenceByName("Start");
   }
   GetCardId() {
-    return this.Pe.CardItemData.CardId
+    return this.Pe.CardItemData.CardId;
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
-    return t && !(t.length <= 0) && "UnlockCard" === t[0] && (t = this.GetGuideUiItem("0")) ? [t, t] : void 0
+    if (t && !(t.length <= 0) && t[0] === "UnlockCard" && (t = this.GetGuideUiItem("0"))) {
+      return [t, t];
+    } else {
+      return undefined;
+    }
   }
 }
 exports.DeckBuilderCardDetailPanel = DeckBuilderCardDetailPanel;

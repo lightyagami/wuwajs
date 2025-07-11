@@ -1,34 +1,70 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SwimConfig = void 0;
-const Log_1 = require("../../../../../../Core/Common/Log"),
-  SwimBuffById_1 = require("../../../../../../Core/Define/ConfigQuery/SwimBuffById"),
-  SwimById_1 = require("../../../../../../Core/Define/ConfigQuery/SwimById"),
-  ConfigBase_1 = require("../../../../../../Core/Framework/ConfigBase"),
-  NORMAL_SWIM_CONFIG_ID = 0,
-  NO_INPUT_CONFIG_ID = 1,
-  FAST_SWIM_CONFIG_ID = 3;
+  value: true
+});
+exports.SwimConfig = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
+const SwimBuffById_1 = require("../../../../../../Core/Define/ConfigQuery/SwimBuffById");
+const SwimById_1 = require("../../../../../../Core/Define/ConfigQuery/SwimById");
+const ConfigBase_1 = require("../../../../../../Core/Framework/ConfigBase");
+const NORMAL_SWIM_CONFIG_ID = 0;
+const NO_INPUT_CONFIG_ID = 1;
+const FAST_SWIM_CONFIG_ID = 3;
 class SwimConfig extends ConfigBase_1.ConfigBase {
   constructor() {
-    super(...arguments), this.UZo = void 0, this.AZo = void 0, this.PZo = void 0, this.xZo = void 0
+    super(...arguments);
+    this.UZo = undefined;
+    this.AZo = undefined;
+    this.PZo = undefined;
+    this.xZo = undefined;
   }
   OnInit() {
-    return this.UZo = new Map, this.AZo = 0, this.PZo = 0, this.xZo = 0, this.InitSwimBuffConfig(), !0
+    this.UZo = new Map();
+    this.AZo = 0;
+    this.PZo = 0;
+    this.xZo = 0;
+    this.InitSwimBuffConfig();
+    return true;
   }
   OnClear() {
-    return this.UZo = void 0, this.AZo = void 0, this.PZo = void 0, !(this.xZo = void 0)
+    this.UZo = undefined;
+    this.AZo = undefined;
+    this.PZo = undefined;
+    return !(this.xZo = undefined);
   }
   GetSwimConfigByRoleBodyId(i) {
     var e = this.UZo.get(i);
-    return e || ((e = SwimById_1.configSwimById.GetConfig(i)) || Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 57, "以下身高没有配置游泳", ["RoleBody", i]), this.UZo.set(i, e), e)
+    return e || ((e = SwimById_1.configSwimById.GetConfig(i)) || Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 57, "以下身高没有配置游泳", ["RoleBody", i]), this.UZo.set(i, e), e);
   }
   GetSwimBuffId(i, e) {
-    return i ? e ? this.PZo : this.AZo : this.xZo
+    if (i) {
+      if (e) {
+        return this.PZo;
+      } else {
+        return this.AZo;
+      }
+    } else {
+      return this.xZo;
+    }
   }
   InitSwimBuffConfig() {
     var i = SwimBuffById_1.configSwimBuffById.GetConfig(NORMAL_SWIM_CONFIG_ID);
-    i ? (this.AZo = i.BuffId, (i = SwimBuffById_1.configSwimBuffById.GetConfig(NO_INPUT_CONFIG_ID)) ? (this.xZo = i.BuffId, (i = SwimBuffById_1.configSwimBuffById.GetConfig(FAST_SWIM_CONFIG_ID)) ? this.PZo = i.BuffId : Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 57, "游泳Buff表没有配置Id为3的基础配置")) : Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 57, "游泳Buff表没有配置Id为1的基础配置")) : Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 57, "游泳Buff表没有配置Id为0的基础配置")
+    if (i) {
+      this.AZo = i.BuffId;
+      if (i = SwimBuffById_1.configSwimBuffById.GetConfig(NO_INPUT_CONFIG_ID)) {
+        this.xZo = i.BuffId;
+        if (i = SwimBuffById_1.configSwimBuffById.GetConfig(FAST_SWIM_CONFIG_ID)) {
+          this.PZo = i.BuffId;
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Movement", 57, "游泳Buff表没有配置Id为3的基础配置");
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Movement", 57, "游泳Buff表没有配置Id为1的基础配置");
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Movement", 57, "游泳Buff表没有配置Id为0的基础配置");
+    }
   }
 }
 exports.SwimConfig = SwimConfig;

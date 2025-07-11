@@ -1,132 +1,191 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomBattleFactor = void 0;
+  value: true
+});
+exports.PhantomBattleFactor = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class PhantomBattleFactor {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get PhantomBattleEffectId() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.phantombattleeffectidLength(), this.phantombattleeffectid, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.phantombattleeffectidLength(), this.phantombattleeffectid, this);
   }
   get IsBeforeBattle() {
-    return this.isbeforebattle()
+    return this.isbeforebattle();
   }
   get Tag() {
-    return this.tag()
+    return this.tag();
   }
   get Sort() {
-    return this.sort()
+    return this.sort();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get Description() {
-    return this.description()
+    return this.description();
   }
   get DescriptionParams() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.descriptionparamsLength(), this.descriptionparams, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.descriptionparamsLength(), this.descriptionparams, this);
   }
   get DeActiveDescription() {
-    return this.deactivedescription()
+    return this.deactivedescription();
   }
   get DeActiveDescriptionParams() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.deactivedescriptionparamsLength(), this.deactivedescriptionparams, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.deactivedescriptionparamsLength(), this.deactivedescriptionparams, this);
   }
   get EntryId() {
-    return this.entryid()
+    return this.entryid();
   }
   get SlotTendency() {
-    return this.slottendency()
+    return this.slottendency();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsPhantomBattleFactor(t, i) {
-    return (i || new PhantomBattleFactor).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new PhantomBattleFactor()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPhantombattleeffectidAt(t) {
-    return this.phantombattleeffectid(t)
+    return this.phantombattleeffectid(t);
   }
   phantombattleeffectid(t) {
     var i = this.J7.__offset(this.z7, 6);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   phantombattleeffectidLength() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   phantombattleeffectidArray() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   isbeforebattle() {
     var t = this.J7.__offset(this.z7, 8);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   tag(t) {
-    var i = this.J7.__offset(this.z7, 10),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   sort() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   description(t) {
-    var i = this.J7.__offset(this.z7, 16),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetDescriptionparamsAt(t) {
-    return this.descriptionparams(t)
+    return this.descriptionparams(t);
   }
   descriptionparams(t, i) {
-    var s = this.J7.__offset(this.z7, 18),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 18);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   descriptionparamsLength() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   deactivedescription(t) {
-    var i = this.J7.__offset(this.z7, 20),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetDeactivedescriptionparamsAt(t) {
-    return this.deactivedescriptionparams(t)
+    return this.deactivedescriptionparams(t);
   }
   deactivedescriptionparams(t, i) {
-    var s = this.J7.__offset(this.z7, 22),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 22);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   deactivedescriptionparamsLength() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   entryid() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   slottendency() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.PhantomBattleFactor = PhantomBattleFactor;

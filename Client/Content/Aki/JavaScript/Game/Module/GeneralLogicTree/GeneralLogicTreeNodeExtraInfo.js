@@ -1,15 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ParkourExtraInfo = exports.GeneralLogicTreeNodeExtraInfo = void 0;
+  value: true
+});
+exports.ParkourExtraInfo = exports.GeneralLogicTreeNodeExtraInfo = undefined;
 class GeneralLogicTreeNodeExtraInfo {
   constructor() {
-    this.Type = void 0
+    this.Type = undefined;
   }
 }
-class ParkourExtraInfo extends(exports.GeneralLogicTreeNodeExtraInfo = GeneralLogicTreeNodeExtraInfo) {
+class ParkourExtraInfo extends (exports.GeneralLogicTreeNodeExtraInfo = GeneralLogicTreeNodeExtraInfo) {
   constructor() {
-    super(), this.TotalScore = void 0, this.Type = 1
+    super();
+    this.TotalScore = undefined;
+    this.Type = 1;
   }
 }
 exports.ParkourExtraInfo = ParkourExtraInfo;

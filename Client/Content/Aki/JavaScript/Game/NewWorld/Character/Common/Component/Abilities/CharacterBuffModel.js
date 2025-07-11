@@ -1,20 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BuffModel = void 0;
+  value: true
+});
+exports.BuffModel = undefined;
 const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
 class BuffModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.HandlePrefix = 0, this.LastHandle = 1, this.SQo = new Map
+    super(...arguments);
+    this.HandlePrefix = 0;
+    this.LastHandle = 1;
+    this.SQo = new Map();
   }
   OnClear() {
-    return this.SQo.clear(), !0
+    this.SQo.clear();
+    return true;
   }
   Add(e, s) {
-    this.SQo.set(e, s)
+    this.SQo.set(e, s);
   }
   Get(e) {
-    return this.SQo.get(e)
+    return this.SQo.get(e);
   }
 }
 exports.BuffModel = BuffModel;

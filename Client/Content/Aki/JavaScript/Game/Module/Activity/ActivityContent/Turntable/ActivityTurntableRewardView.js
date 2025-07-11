@@ -1,19 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityTurntableRewardView = void 0;
+  value: true
+});
+exports.ActivityTurntableRewardView = undefined;
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 class ActivityTurntableRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.oPn = void 0
+    super(...arguments);
+    this.oPn = undefined;
   }
   OnAfterShow() {
     this.CloseMe(() => {
-      this.oPn?.()
-    })
+      this.oPn?.();
+    });
   }
   OnStart() {
-    this.oPn = this.OpenParam ?? void 0
+    this.oPn = this.OpenParam ?? undefined;
   }
 }
 exports.ActivityTurntableRewardView = ActivityTurntableRewardView;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbChangeActorMPC = void 0;
+  value: true
+});
+exports.FbChangeActorMPC = undefined;
 class FbChangeActorMPC {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.qLh = !1, this.kLh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.qLh = false;
+    this.kLh = undefined;
   }
   static Create(t) {
-    if (t) return new FbChangeActorMPC(t)
+    if (t) {
+      return new FbChangeActorMPC(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MpcData() {
-    return this.qLh || (this.qLh = !0, this.kLh = this.FbDataInternal.mpcData()), this.kLh
+    if (!this.qLh) {
+      this.qLh = true;
+      this.kLh = this.FbDataInternal.mpcData();
+    }
+    return this.kLh;
   }
 }
 exports.FbChangeActorMPC = FbChangeActorMPC;

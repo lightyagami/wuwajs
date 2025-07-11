@@ -1,18 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BuffExtraEffectLibrary = void 0;
-const Log_1 = require("../../../../../../../Core/Common/Log"),
-  GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils"),
-  StringUtils_1 = require("../../../../../../../Core/Utils/StringUtils"),
-  AbilityUtils_1 = require("../AbilityUtils"),
-  CharacterAttributeIntervalCheck_1 = require("../CharacterAttributeIntervalCheck"),
-  CharacterAttributeTypes_1 = require("../CharacterAttributeTypes"),
-  ExtraEffectBaseTypes_1 = require("./ExtraEffectBaseTypes"),
-  ADD_BULLET_MIN_INTERVAL = .5;
+  value: true
+});
+exports.BuffExtraEffectLibrary = undefined;
+const Log_1 = require("../../../../../../../Core/Common/Log");
+const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
+const StringUtils_1 = require("../../../../../../../Core/Utils/StringUtils");
+const AbilityUtils_1 = require("../AbilityUtils");
+const CharacterAttributeIntervalCheck_1 = require("../CharacterAttributeIntervalCheck");
+const CharacterAttributeTypes_1 = require("../CharacterAttributeTypes");
+const ExtraEffectBaseTypes_1 = require("./ExtraEffectBaseTypes");
+const ADD_BULLET_MIN_INTERVAL = 0.5;
 class BuffExtraEffectLibrary {
   static ResolveRequireAndLimits(e, r, a) {
-    var t, i, s = new ExtraEffectBaseTypes_1.RequireAndLimits;
+    var t;
+    var i;
+    var s = new ExtraEffectBaseTypes_1.RequireAndLimits();
     s.CheckType = r.ExtraEffectRequirementSetting;
     for ([t, i] of r.ExtraEffectRequirement.entries()) {
       var u = r.ExtraEffectRequirementPara[t].split("#");
@@ -22,7 +26,7 @@ class BuffExtraEffectLibrary {
           s.Requirements.push({
             Type: i,
             RequireTargetType: T === StringUtils_1.ZERO_STRING ? 0 : 1,
-            RequireInterval: new CharacterAttributeIntervalCheck_1.AttributeIntervalCheck(Number(b), Number(y), Number(p), 1 === Number(l))
+            RequireInterval: new CharacterAttributeIntervalCheck_1.AttributeIntervalCheck(Number(b), Number(y), Number(p), Number(l) === 1)
           });
           break;
         case 6:
@@ -36,19 +40,19 @@ class BuffExtraEffectLibrary {
             Type: i,
             RequireTargetType: Number(u[0]),
             IsExist: u[1] === StringUtils_1.ONE_STRING,
-            RequireTagContainer: (u?.slice(2) ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => void 0 !== e)
+            RequireTagContainer: (u?.slice(2) ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined)
           });
           break;
         case 10:
           s.Requirements.push({
             Type: i,
-            RequirePartTags: (u ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => void 0 !== e)
+            RequirePartTags: (u ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined)
           });
           break;
         case 11:
           s.Requirements.push({
             Type: i,
-            RequireBulletTags: (u ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => void 0 !== e)
+            RequireBulletTags: (u ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined)
           });
           break;
         case 13:
@@ -123,7 +127,7 @@ class BuffExtraEffectLibrary {
             SummonType: Number(u[1]),
             SummonIndex: Number(u[2]),
             IsExist: u[3] === StringUtils_1.ONE_STRING,
-            RequireTagContainer: (u?.slice(4) ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => void 0 !== e)
+            RequireTagContainer: (u?.slice(4) ?? []).map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined)
           });
           break;
         case 16:
@@ -139,11 +143,19 @@ class BuffExtraEffectLibrary {
           });
           break;
         default:
-          Log_1.Log.CheckError() && Log_1.Log.Error("Character", 19, "未知的ExtraEffect条件类型", ["requireType", i], ["buffId", e])
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Character", 19, "未知的ExtraEffect条件类型", ["requireType", i], ["buffId", e]);
+          }
       }
     }
     var c = s.Limits;
-    return c.ExtraEffectCd = AbilityUtils_1.AbilityUtils.GetLevelValue(r.ExtraEffectCd, a, -1), 3 === r.ExtraEffectId && (c.ExtraEffectCd = Math.max(c.ExtraEffectCd, ADD_BULLET_MIN_INTERVAL)), c.ExtraEffectRemoveStackNum = r.ExtraEffectRemoveStackNum, c.ExtraEffectProbability = AbilityUtils_1.AbilityUtils.GetLevelValue(r.ExtraEffectProbability, a, CharacterAttributeTypes_1.PER_TEN_THOUSAND), s
+    c.ExtraEffectCd = AbilityUtils_1.AbilityUtils.GetLevelValue(r.ExtraEffectCd, a, -1);
+    if (r.ExtraEffectId === 3) {
+      c.ExtraEffectCd = Math.max(c.ExtraEffectCd, ADD_BULLET_MIN_INTERVAL);
+    }
+    c.ExtraEffectRemoveStackNum = r.ExtraEffectRemoveStackNum;
+    c.ExtraEffectProbability = AbilityUtils_1.AbilityUtils.GetLevelValue(r.ExtraEffectProbability, a, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
+    return s;
   }
 }
 exports.BuffExtraEffectLibrary = BuffExtraEffectLibrary;

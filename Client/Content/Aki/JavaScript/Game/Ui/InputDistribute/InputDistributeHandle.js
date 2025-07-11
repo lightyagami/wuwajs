@@ -1,81 +1,104 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InputDistributeHandle = exports.InputIdentification = void 0;
+  value: true
+});
+exports.InputDistributeHandle = exports.InputIdentification = undefined;
 const InputEnums_1 = require("../../../Game/Input/InputEnums");
 class InputIdentification {
   constructor(t) {
-    this.Hmr = InputEnums_1.EInputAction.None, this.jmr = InputEnums_1.EInputAxis.None, this.FGi = t
+    this.Hmr = InputEnums_1.EInputAction.None;
+    this.jmr = InputEnums_1.EInputAxis.None;
+    this.FGi = t;
   }
   get Name() {
-    return this.FGi
+    return this.FGi;
   }
   GetInputAction() {
     var t;
-    return this.Hmr || ((t = this.FGi) ? (this.Hmr = InputEnums_1.EInputAction[t], this.Hmr) : void 0)
+    return this.Hmr || ((t = this.FGi) ? (this.Hmr = InputEnums_1.EInputAction[t], this.Hmr) : undefined);
   }
   GetInputAxis() {
     var t;
-    return this.jmr || ((t = this.FGi) ? (this.jmr = InputEnums_1.EInputAxis[t], this.jmr) : void 0)
+    return this.jmr || ((t = this.FGi) ? (this.jmr = InputEnums_1.EInputAxis[t], this.jmr) : undefined);
   }
 }
 exports.InputIdentification = InputIdentification;
 class InputCallback {
   constructor(t) {
-    this.fIo = [], this.Wmr = [], this.Kmr = !1, this.Qmr = new InputIdentification(t)
+    this.fIo = [];
+    this.Wmr = [];
+    this.Kmr = false;
+    this.Qmr = new InputIdentification(t);
   }
   Call(t) {
-    this.Kmr = !0;
-    for (const i of this.fIo) i(this.Qmr.Name, t, this.Qmr);
-    this.Xmr(), this.Kmr = !1
+    this.Kmr = true;
+    for (const i of this.fIo) {
+      i(this.Qmr.Name, t, this.Qmr);
+    }
+    this.Xmr();
+    this.Kmr = false;
   }
   Add(t) {
-    (this.Kmr ? this.Wmr : this.fIo).push(t)
+    (this.Kmr ? this.Wmr : this.fIo).push(t);
   }
   Xmr() {
     if (!(this.Wmr.length <= 0)) {
-      for (const t of this.Wmr) this.fIo.push(t);
-      this.Wmr.length = 0
+      for (const t of this.Wmr) {
+        this.fIo.push(t);
+      }
+      this.Wmr.length = 0;
     }
   }
   Remove(t) {
     t = this.fIo.indexOf(t);
-    t < 0 || this.fIo.splice(t, 1)
+    if (!(t < 0)) {
+      this.fIo.splice(t, 1);
+    }
   }
   Clear() {
-    this.Qmr = void 0, this.fIo.length = 0
+    this.Qmr = undefined;
+    this.fIo.length = 0;
   }
   Length() {
-    return this.fIo.length
+    return this.fIo.length;
   }
 }
 class InputDistributeHandle {
   constructor(t, i) {
-    this.$mr = "", this.B7 = void 0, this.jkl = void 0, this.$mr = t, this.B7 = new InputCallback(i), this.jkl = new InputCallback(i)
+    this.$mr = "";
+    this.B7 = undefined;
+    this.jkl = undefined;
+    this.$mr = t;
+    this.B7 = new InputCallback(i);
+    this.jkl = new InputCallback(i);
   }
   Reset() {
-    this.B7.Clear(), this.B7 = void 0, this.jkl.Clear(), this.jkl = void 0
+    this.B7.Clear();
+    this.B7 = undefined;
+    this.jkl.Clear();
+    this.jkl = undefined;
   }
   Bind(t) {
-    this.B7.Add(t)
+    this.B7.Add(t);
   }
   UnBind(t) {
-    this.B7.Remove(t)
+    this.B7.Remove(t);
   }
   Call(t) {
-    this.B7.Call(t)
+    this.B7.Call(t);
   }
   BindIgnoreLimit(t) {
-    this.jkl.Add(t)
+    this.jkl.Add(t);
   }
   UnBindIgnoreLimit(t) {
-    this.jkl.Remove(t)
+    this.jkl.Remove(t);
   }
   CallIgnoreLimit(t) {
-    this.jkl.Call(t)
+    this.jkl.Call(t);
   }
   GetInputDistributeTag() {
-    return this.$mr
+    return this.$mr;
   }
 }
 exports.InputDistributeHandle = InputDistributeHandle;

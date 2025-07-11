@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configPhantomFetterHandBookAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  PhantomFetterHandBook_1 = require("../Config/PhantomFetterHandBook"),
-  DB = "db_handbook.db",
-  FILE = "t.图鉴系统.xlsx",
-  TABLE = "PhantomFetterHandBook",
-  COMMAND = "select BinData from `PhantomFetterHandBook`",
-  KEY_PREFIX = "PhantomFetterHandBookAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configPhantomFetterHandBookAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const PhantomFetterHandBook_1 = require("../Config/PhantomFetterHandBook");
+const DB = "db_handbook.db";
+const FILE = "t.图鉴系统.xlsx";
+const TABLE = "PhantomFetterHandBook";
+const COMMAND = "select BinData from `PhantomFetterHandBook`";
+const KEY_PREFIX = "PhantomFetterHandBookAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomFetterHandBookAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomFetterHandBookAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomFetterHandBookAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomFetterHandBookAll.GetConfigList");
 exports.configPhantomFetterHandBookAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (o = !0) => {
+  GetConfigList: (o = true) => {
     var t;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), t = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (t = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (o) {
         var n = KEY_PREFIX + ")";
         const i = ConfigCommon_1.ConfigCommon.GetConfig(n);
-        if (i) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), i
+        if (i) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return i;
+        }
       }
-      const i = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var e = void 0;
-        if ([t, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !t) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const i = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var e = undefined;
+        [t, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!t) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         e = PhantomFetterHandBook_1.PhantomFetterHandBook.getRootAsPhantomFetterHandBook(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
-        i.push(e)
+        i.push(e);
       }
-      return o && (n = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(n, i, i.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), i
+      if (o) {
+        n = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(n, i, i.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return i;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=PhantomFetterHandBookAll.js.map

@@ -1,17 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Switcher = void 0;
+  value: true
+});
+exports.Switcher = undefined;
 class Switcher {
-  constructor(t, s = void 0) {
-    this.vYo = new Set, this.Egr = t, this.Sgr = s
+  constructor(t, s = undefined) {
+    this.vYo = new Set();
+    this.Egr = t;
+    this.Sgr = s;
   }
   get Active() {
-    return 0 < this.vYo.size !== this.Egr
+    return this.vYo.size > 0 !== this.Egr;
   }
   SetActive(t, s) {
     var i = this.Active;
-    this.Egr !== s ? this.vYo.add(t) : this.vYo.delete(t), i !== this.Active && this.Sgr && this.Sgr(this.Active)
+    if (this.Egr !== s) {
+      this.vYo.add(t);
+    } else {
+      this.vYo.delete(t);
+    }
+    if (i !== this.Active && this.Sgr) {
+      this.Sgr(this.Active);
+    }
   }
 }
 exports.Switcher = Switcher;

@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsPhotographerSource = void 0;
+  value: true
+});
+exports.TsPhotographerSource = undefined;
 const UE = require("ue");
 class TsPhotographerSource extends UE.Actor {
   Constructor() {}
 }
-exports.TsPhotographerSource = TsPhotographerSource, exports.default = TsPhotographerSource;
-//# sourceMappingURL=TsPhotographerSource.js.map
+exports.TsPhotographerSource = TsPhotographerSource;
+exports.default = TsPhotographerSource; //# sourceMappingURL=TsPhotographerSource.js.map

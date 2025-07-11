@@ -1,29 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiBehaviorBaseProxy = void 0;
+  value: true
+});
+exports.UiBehaviorBaseProxy = undefined;
 const ComponentAction_1 = require("./ComponentAction");
 class UiBehaviorBaseProxy extends ComponentAction_1.ComponentAction {
   constructor(e) {
-    super(), this.U_r = e
+    super();
+    this.U_r = e;
   }
   async OnCreateAsyncImplement() {
-    return await this.U_r.OnUiCreateAsync?.(), !0
+    await this.U_r.OnUiCreateAsync?.();
+    return true;
   }
   async OnStartAsyncImplement() {
-    return this.U_r.OnAfterUiStart?.(), Promise.resolve()
+    this.U_r.OnAfterUiStart?.();
+    return Promise.resolve();
   }
   async OnShowAsyncImplement() {
-    return this.U_r.OnAfterUiShow?.(), Promise.resolve()
+    this.U_r.OnAfterUiShow?.();
+    return Promise.resolve();
   }
   async OnHideAsyncImplement() {
-    return this.U_r.OnBeforeUiHide?.(), Promise.resolve()
+    this.U_r.OnBeforeUiHide?.();
+    return Promise.resolve();
   }
   async OnDestroyAsyncImplement() {
-    return void 0 !== this.U_r && (this.U_r.OnBeforeDestroy?.(), this.U_r = void 0), Promise.resolve()
+    if (this.U_r !== undefined) {
+      this.U_r.OnBeforeDestroy?.();
+      this.U_r = undefined;
+    }
+    return Promise.resolve();
   }
   OnDestroyImplementCompatible() {
-    void 0 !== this.U_r && (this.U_r.OnBeforeDestroy?.(), this.U_r = void 0)
+    if (this.U_r !== undefined) {
+      this.U_r.OnBeforeDestroy?.();
+      this.U_r = undefined;
+    }
   }
 }
 exports.UiBehaviorBaseProxy = UiBehaviorBaseProxy;

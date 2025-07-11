@@ -1,46 +1,79 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
+const UE = require("ue");
+const TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
 class TsAnimNotifyStateVehicleAddTag extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.Tag = void 0, this.AddToVehicle = !0, this.AddToDriver = !1, this.AddToPassengerExceptDriver = !1
+    super(...arguments);
+    this.Tag = undefined;
+    this.AddToVehicle = true;
+    this.AddToDriver = false;
+    this.AddToPassengerExceptDriver = false;
   }
   Constructor() {}
   K2_NotifyBegin(e, t, i) {
-    var e = e.GetOwner(),
-      s = this.Tag?.TagId;
-    if (!(s && e instanceof TsBaseVehicle_1.default)) return !1;
-    var e = e.VehicleActorComponent?.Entity,
-      r = e?.GetComponent(241);
-    if (!e || !r) return !1;
-    this.AddToVehicle && r.TagContainer.AddExactTag(4, s);
+    var e = e.GetOwner();
+    var s = this.Tag?.TagId;
+    if (!s || !(e instanceof TsBaseVehicle_1.default)) {
+      return false;
+    }
+    var e = e.VehicleActorComponent?.Entity;
+    var r = e?.GetComponent(241);
+    if (!e || !r) {
+      return false;
+    }
+    if (this.AddToVehicle) {
+      r.TagContainer.AddExactTag(4, s);
+    }
     e = e.GetComponent(233);
-    if (this.AddToDriver)
-      for (const o of e.Drivers) r.AddTagForPassenger(o, 4, s);
-    if (this.AddToPassengerExceptDriver)
-      for (const f of e.PassengerInfoMap.values()) !f.IsDriver && f.PassengerEntity && r.AddTagForPassenger(f.PassengerEntity, 4, s);
-    return !0
+    if (this.AddToDriver) {
+      for (const o of e.Drivers) {
+        r.AddTagForPassenger(o, 4, s);
+      }
+    }
+    if (this.AddToPassengerExceptDriver) {
+      for (const f of e.PassengerInfoMap.values()) {
+        if (!f.IsDriver && f.PassengerEntity) {
+          r.AddTagForPassenger(f.PassengerEntity, 4, s);
+        }
+      }
+    }
+    return true;
   }
   K2_NotifyEnd(e, t) {
-    var e = e.GetOwner(),
-      i = this.Tag?.TagId;
-    if (!(i && e instanceof TsBaseVehicle_1.default)) return !1;
-    var e = e.VehicleActorComponent?.Entity,
-      s = e?.GetComponent(241);
-    if (!e || !s) return !1;
-    this.AddToVehicle && (e?.GetComponent(205))?.TagContainer.RemoveExactTag(4, i);
+    var e = e.GetOwner();
+    var i = this.Tag?.TagId;
+    if (!i || !(e instanceof TsBaseVehicle_1.default)) {
+      return false;
+    }
+    var e = e.VehicleActorComponent?.Entity;
+    var s = e?.GetComponent(241);
+    if (!e || !s) {
+      return false;
+    }
+    if (this.AddToVehicle) {
+      e?.GetComponent(205)?.TagContainer.RemoveExactTag(4, i);
+    }
     e = e.GetComponent(233);
-    if (this.AddToDriver)
-      for (const r of e.Drivers) s.RemoveTagForPassenger(r, 4, i);
-    if (this.AddToPassengerExceptDriver)
-      for (const o of e.PassengerInfoMap.values()) !o.IsDriver && o.PassengerEntity && s.RemoveTagForPassenger(o.PassengerEntity, 4, i);
-    return !0
+    if (this.AddToDriver) {
+      for (const r of e.Drivers) {
+        s.RemoveTagForPassenger(r, 4, i);
+      }
+    }
+    if (this.AddToPassengerExceptDriver) {
+      for (const o of e.PassengerInfoMap.values()) {
+        if (!o.IsDriver && o.PassengerEntity) {
+          s.RemoveTagForPassenger(o.PassengerEntity, 4, i);
+        }
+      }
+    }
+    return true;
   }
   GetNotifyName() {
-    return "载具添加TAG"
+    return "载具添加TAG";
   }
 }
 exports.default = TsAnimNotifyStateVehicleAddTag;

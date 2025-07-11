@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SmallItemGridSelectComponent = void 0;
+  value: true
+});
+exports.SmallItemGridSelectComponent = undefined;
 const SmallItemGridVisibleComponent_1 = require("./SmallItemGridVisibleComponent");
 class SmallItemGridSelectComponent extends SmallItemGridVisibleComponent_1.SmallItemGridVisibleComponent {
   GetResourceId() {
-    return "UiItem_ItemBSelTick"
+    return "UiItem_ItemBSelTick";
   }
 }
 exports.SmallItemGridSelectComponent = SmallItemGridSelectComponent;

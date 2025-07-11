@@ -1,54 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ManipulaterModel = void 0;
-const UE = require("ue"),
-  ModelBase_1 = require("../../../../../Core/Framework/ModelBase"),
-  Vector_1 = require("../../../../../Core/Utils/Math/Vector"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem");
+  value: true
+});
+exports.ManipulaterModel = undefined;
+const UE = require("ue");
+const ModelBase_1 = require("../../../../../Core/Framework/ModelBase");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 class ManipulaterModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.PYo = 0, this.xYo = Vector_1.Vector.ZeroVectorProxy, this.ExitHoldingStateCameraLocation = void 0, this.wYo = 0, this.BYo = new Set, this.k0a = void 0, this.G0a = void 0, this.N0a = void 0
+    super(...arguments);
+    this.PYo = 0;
+    this.xYo = Vector_1.Vector.ZeroVectorProxy;
+    this.ExitHoldingStateCameraLocation = undefined;
+    this.wYo = 0;
+    this.BYo = new Set();
+    this.k0a = undefined;
+    this.G0a = undefined;
+    this.N0a = undefined;
   }
   SetManipulateMode(t) {
-    this.PYo = t
+    this.PYo = t;
   }
   GetManipulateMode() {
-    return this.PYo
+    return this.PYo;
   }
   SetTargetPartLocation(t) {
-    this.xYo = t
+    this.xYo = t;
   }
   GetTargetPartLocation() {
-    return this.xYo
+    return this.xYo;
   }
   NeedShowLandTips() {
-    return 0 < this.wYo
+    return this.wYo > 0;
   }
   AddShowLandTipsCount(t) {
-    this.BYo.has(t) || (0 === this.wYo && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateShowLandTips, !0), this.wYo++, this.BYo.add(t))
+    if (!this.BYo.has(t)) {
+      if (this.wYo === 0) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateShowLandTips, true);
+      }
+      this.wYo++;
+      this.BYo.add(t);
+    }
   }
   RemoveShowLandTipsCount(t) {
-    this.BYo.has(t) && 0 !== this.wYo && (this.BYo.delete(t), this.wYo--, 0 === this.wYo) && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateShowLandTips, !1)
+    if (this.BYo.has(t) && this.wYo !== 0 && (this.BYo.delete(t), this.wYo--, this.wYo === 0)) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateShowLandTips, false);
+    }
   }
   GetProjectilePath() {
-    return void 0 === this.k0a && (this.k0a = UE.NewArray(UE.VectorDouble)), this.k0a
+    if (this.k0a === undefined) {
+      this.k0a = UE.NewArray(UE.VectorDouble);
+    }
+    return this.k0a;
   }
   SetProjectilePath(t) {
-    this.k0a = t
+    this.k0a = t;
   }
   GetAfterPortalProjectilePath() {
-    return void 0 === this.G0a && (this.G0a = UE.NewArray(UE.VectorDouble)), this.G0a
+    if (this.G0a === undefined) {
+      this.G0a = UE.NewArray(UE.VectorDouble);
+    }
+    return this.G0a;
   }
   SetAfterPortalProjectilePath(t) {
-    this.G0a = t
+    this.G0a = t;
   }
   GetAfterPortalStartPosition() {
-    return this.N0a
+    return this.N0a;
   }
   SetAfterPortalStartPosition(t) {
-    this.N0a = t
+    this.N0a = t;
   }
 }
 exports.ManipulaterModel = ManipulaterModel;

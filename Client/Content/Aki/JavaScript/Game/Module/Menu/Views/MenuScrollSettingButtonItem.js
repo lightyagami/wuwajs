@@ -1,78 +1,121 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MenuScrollSettingButtonItem = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  GameSettingsDefine_1 = require("../../../GameSettings/GameSettingsDefine"),
-  GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  ChannelController_1 = require("../../Channel/ChannelController"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  MenuController_1 = require("../MenuController"),
-  MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
+  value: true
+});
+exports.MenuScrollSettingButtonItem = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const GameSettingsDefine_1 = require("../../../GameSettings/GameSettingsDefine");
+const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender");
+const UiManager_1 = require("../../../Ui/UiManager");
+const ChannelController_1 = require("../../Channel/ChannelController");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const MenuController_1 = require("../MenuController");
+const MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
 class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScrollSettingBaseItem {
   constructor() {
-    super(...arguments), this.HBi = "{0}x{1}", this.jBi = "Account,", this.KBi = () => {
-      var t, e;
-      this.GetItemClickLimit(this.GetButton(1)) || ((t = this.Data.ButtonViewName).includes(this.jBi) ? void 0 !== (e = Number(t.substring(this.jBi.length))) && ChannelController_1.ChannelController.ProcessAccountSetting(e) : (e = MenuController_1.MenuController.OpenViewFuncMap.get(t)) ? e() : UiManager_1.UiManager.OpenView(t, [this.Data, this.QBi]))
-    }, this.QBi = (t, e) => {
-      void 0 !== this.Data && t === this.Data.FunctionId && (t === GameSettingsDefine_1.EFunction.RESOLUTION ? this.XBi(e, !0) : t === GameSettingsDefine_1.EFunction.BRIGHTNESS ? this.FireSaveMenuChange(e) : this.SetButtonText(this.Data.OptionsNameList[e], e, !0))
-    }
+    super(...arguments);
+    this.HBi = "{0}x{1}";
+    this.jBi = "Account,";
+    this.KBi = () => {
+      var t;
+      var e;
+      if (!this.GetItemClickLimit(this.GetButton(1))) {
+        if ((t = this.Data.ButtonViewName).includes(this.jBi)) {
+          if ((e = Number(t.substring(this.jBi.length))) !== undefined) {
+            ChannelController_1.ChannelController.ProcessAccountSetting(e);
+          }
+        } else if (e = MenuController_1.MenuController.OpenViewFuncMap.get(t)) {
+          e();
+        } else {
+          UiManager_1.UiManager.OpenView(t, [this.Data, this.QBi]);
+        }
+      }
+    };
+    this.QBi = (t, e) => {
+      if (this.Data !== undefined && t === this.Data.FunctionId) {
+        if (t === GameSettingsDefine_1.EFunction.RESOLUTION) {
+          this.XBi(e, true);
+        } else if (t === GameSettingsDefine_1.EFunction.BRIGHTNESS) {
+          this.FireSaveMenuChange(e);
+        } else {
+          this.SetButtonText(this.Data.OptionsNameList[e], e, true);
+        }
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIButtonComponent],
-      [2, UE.UIText],
-      [3, UE.UIItem],
-      [4, UE.UIText],
-      [5, UE.UISprite]
-    ], this.BtnBindInfo = [
-      [1, this.KBi]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite]];
+    this.BtnBindInfo = [[1, this.KBi]];
   }
   OnStart() {
-    this.GetButton(1).SetCanClickWhenDisable(!0)
+    this.GetButton(1).SetCanClickWhenDisable(true);
   }
   OnBeforeDestroy() {
-    this.Data && (this.Data = void 0)
+    this.Data &&= undefined;
   }
   OnClear() {
-    this.GetButton(1)?.OnClickCallBack.Unbind()
+    this.GetButton(1)?.OnClickCallBack.Unbind();
   }
   Update(t) {
-    this.Data = t, this.RefreshTitle(), this.ZGe(), this.sxi(), this.cHa(), this.SetInteractionActive(t.GetEnable())
+    this.Data = t;
+    this.RefreshTitle();
+    this.ZGe();
+    this.sxi();
+    this.cHa();
+    this.SetInteractionActive(t.GetEnable());
   }
   RefreshTitle() {
-    this.GetText(0).ShowTextNew(this.Data.FunctionName ?? "")
+    this.GetText(0).ShowTextNew(this.Data.FunctionName ?? "");
   }
   ZGe() {
-    this.GetRootItem().SetUIActive(!0);
+    this.GetRootItem().SetUIActive(true);
     var t = MenuController_1.MenuController.GetTargetConfig(this.Data.FunctionId);
-    this.Data.FunctionId === GameSettingsDefine_1.EFunction.RESOLUTION ? this.XBi(t) : this.SetButtonText(this.Data.OptionsNameList[t], t)
+    if (this.Data.FunctionId === GameSettingsDefine_1.EFunction.RESOLUTION) {
+      this.XBi(t);
+    } else {
+      this.SetButtonText(this.Data.OptionsNameList[t], t);
+    }
   }
   sxi() {
-    var t, e;
-    this.Data && this.Data.HasDetailText() && (t = this.GetText(4), e = this.Data.GetDetailTextId(), LguiUtil_1.LguiUtil.SetLocalTextNew(t, e))
+    var t;
+    var e;
+    if (this.Data && this.Data.HasDetailText()) {
+      t = this.GetText(4);
+      e = this.Data.GetDetailTextId();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, e);
+    }
   }
   cHa() {
-    this.Data && this.GetSprite(5)?.SetUIActive(this.Data.HasDetailText())
+    if (this.Data) {
+      this.GetSprite(5)?.SetUIActive(this.Data.HasDetailText());
+    }
   }
-  XBi(t, e = !1) {
+  XBi(t, e = false) {
     var i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t);
-    this.GetText(2).SetText(StringUtils_1.StringUtils.FormatStaticBuilder(this.HBi, i.X, i.Y)), e && this.FireSaveMenuChange(t)
+    this.GetText(2).SetText(StringUtils_1.StringUtils.FormatStaticBuilder(this.HBi, i.X, i.Y));
+    if (e) {
+      this.FireSaveMenuChange(t);
+    }
   }
-  SetButtonText(t, e, i = !1) {
-    var s = this.Data.ButtonTextId,
-      r = this.GetText(2);
-    s ? r.ShowTextNew(s) : r.ShowTextNew(t ?? ""), i && this.FireSaveMenuChange(e)
+  SetButtonText(t, e, i = false) {
+    var s = this.Data.ButtonTextId;
+    var r = this.GetText(2);
+    if (s) {
+      r.ShowTextNew(s);
+    } else {
+      r.ShowTextNew(t ?? "");
+    }
+    if (i) {
+      this.FireSaveMenuChange(e);
+    }
   }
   SetInteractionActive(t) {
-    this.GetButton(1).SetSelfInteractive(t)
+    this.GetButton(1).SetSelfInteractive(t);
   }
   OnSetDetailVisible(t) {
-    this.GetItem(3)?.SetUIActive(t)
+    this.GetItem(3)?.SetUIActive(t);
   }
 }
 exports.MenuScrollSettingButtonItem = MenuScrollSettingButtonItem;

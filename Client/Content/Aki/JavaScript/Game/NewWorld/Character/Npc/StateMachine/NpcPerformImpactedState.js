@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcPerformImpactedState = void 0;
+  value: true
+});
+exports.NpcPerformImpactedState = undefined;
 const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
 class NpcPerformImpactedState extends NpcPerformBaseState_1.NpcPerformBaseState {
   OnEnter(e) {
     this.Owner.Entity.GetComponent(187)?.StopPerformMontage(3, {
       Method: 0,
       BlendOutTime: 0
-    })
+    });
   }
 }
 exports.NpcPerformImpactedState = NpcPerformImpactedState;

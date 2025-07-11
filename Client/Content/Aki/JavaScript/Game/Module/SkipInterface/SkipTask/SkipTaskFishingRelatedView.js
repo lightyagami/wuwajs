@@ -1,26 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkipTaskFishingRelatedView = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  SkipTask_1 = require("./SkipTask"),
-  DEFAULT_PORT_ID = 1;
+  value: true
+});
+exports.SkipTaskFishingRelatedView = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiManager_1 = require("../../../Ui/UiManager");
+const SkipTask_1 = require("./SkipTask");
+const DEFAULT_PORT_ID = 1;
 class SkipTaskFishingRelatedView extends SkipTask_1.SkipTask {
   constructor() {
-    super(...arguments), this.Y9t = () => {
-      this.lY_("FishingQuestView") || UiManager_1.UiManager.OpenView("FishingQuestView")
-    }, this.JO_ = () => {
-      this.lY_("FishingHandBookView") || UiManager_1.UiManager.OpenView("FishingHandBookView")
-    }, this.eG_ = () => {
-      this.lY_("DockyardView") || ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardView()
-    }, this.tG_ = () => {
-      this.lY_("DockyardShopMainView") || ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardShopView(1)
-    }, this.iG_ = () => {
-      this.lY_("DockyardShopMainView") || ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardShopView(0)
-    }
+    super(...arguments);
+    this.Y9t = () => {
+      if (!this.lY_("FishingQuestView")) {
+        UiManager_1.UiManager.OpenView("FishingQuestView");
+      }
+    };
+    this.JO_ = () => {
+      if (!this.lY_("FishingHandBookView")) {
+        UiManager_1.UiManager.OpenView("FishingHandBookView");
+      }
+    };
+    this.eG_ = () => {
+      if (!this.lY_("DockyardView")) {
+        ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardView();
+      }
+    };
+    this.tG_ = () => {
+      if (!this.lY_("DockyardShopMainView")) {
+        ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardShopView(1);
+      }
+    };
+    this.iG_ = () => {
+      if (!this.lY_("DockyardShopMainView")) {
+        ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardShopView(0);
+      }
+    };
   }
   OnRun(e, i, a) {
     switch (Number(e)) {
@@ -33,10 +50,13 @@ class SkipTaskFishingRelatedView extends SkipTask_1.SkipTask {
       case 3:
         this.oG_(() => {
           var e;
-          this.lY_("FishingTechRootView") || (e = {
-            Type: Number(i),
-            NodeId: Number(a)
-          }, UiManager_1.UiManager.OpenView("FishingTechRootView", e))
+          if (!this.lY_("FishingTechRootView")) {
+            e = {
+              Type: Number(i),
+              NodeId: Number(a)
+            };
+            UiManager_1.UiManager.OpenView("FishingTechRootView", e);
+          }
         });
         break;
       case 4:
@@ -46,33 +66,43 @@ class SkipTaskFishingRelatedView extends SkipTask_1.SkipTask {
         this.oG_(this.tG_);
         break;
       case 6:
-        this.oG_(this.iG_)
+        this.oG_(this.iG_);
     }
-    this.Finish()
+    this.Finish();
   }
   CheckMainViewOpen() {
-    return void 0 !== UiManager_1.UiManager.GetViewByName("FishingDockView")
+    return UiManager_1.UiManager.GetViewByName("FishingDockView") !== undefined;
   }
   CheckIsInSailing() {
-    return ModelManager_1.ModelManager.FishingModel.GetShipData()?.IsShipDriving() ?? !1
+    return ModelManager_1.ModelManager.FishingModel.GetShipData()?.IsShipDriving() ?? false;
   }
   SkipToMap() {
     let e = ModelManager_1.ModelManager.FishingModel.GetShipData().GetLastPortId();
-    e <= 0 && (e = DEFAULT_PORT_ID);
+    if (e <= 0) {
+      e = DEFAULT_PORT_ID;
+    }
     var i = {
       MarkId: ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortConfig(e).MarkId,
       MarkType: 34
     };
-    ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(2, !1, i)
+    ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(2, false, i);
   }
   oG_(e) {
-    this.CheckMainViewOpen() ? e() : this.SkipToMap()
+    if (this.CheckMainViewOpen()) {
+      e();
+    } else {
+      this.SkipToMap();
+    }
   }
   rG_(e) {
-    this.CheckMainViewOpen() || this.CheckIsInSailing() ? e() : this.SkipToMap()
+    if (this.CheckMainViewOpen() || this.CheckIsInSailing()) {
+      e();
+    } else {
+      this.SkipToMap();
+    }
   }
   lY_(e) {
-    return !!UiManager_1.UiManager.IsViewOpen(e) || void 0 !== UiManager_1.UiManager.GetViewByName(e) && (UiManager_1.UiManager.NormalResetToView(e), !0)
+    return !!UiManager_1.UiManager.IsViewOpen(e) || UiManager_1.UiManager.GetViewByName(e) !== undefined && (UiManager_1.UiManager.NormalResetToView(e), true);
   }
 }
 exports.SkipTaskFishingRelatedView = SkipTaskFishingRelatedView;

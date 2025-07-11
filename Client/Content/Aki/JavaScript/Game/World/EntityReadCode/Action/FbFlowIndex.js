@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFlowIndex = void 0;
+  value: true
+});
+exports.FbFlowIndex = undefined;
 class FbFlowIndex {
   constructor(t) {
-    this.FbDataInternal = t, this.V_h = !1, this.j_h = void 0, this.H_h = !1, this.W_h = 0
+    this.FbDataInternal = t;
+    this.V_h = false;
+    this.j_h = undefined;
+    this.H_h = false;
+    this.W_h = 0;
   }
   static Create(t) {
-    if (t) return new FbFlowIndex(t)
+    if (t) {
+      return new FbFlowIndex(t);
+    }
   }
   get FlowListName() {
-    return this.V_h || (this.V_h = !0, this.j_h = this.FbDataInternal.flowListName()), this.j_h
+    if (!this.V_h) {
+      this.V_h = true;
+      this.j_h = this.FbDataInternal.flowListName();
+    }
+    return this.j_h;
   }
   get FlowId() {
-    return this.H_h || (this.H_h = !0, this.W_h = this.FbDataInternal.flowId()), this.W_h
+    if (!this.H_h) {
+      this.H_h = true;
+      this.W_h = this.FbDataInternal.flowId();
+    }
+    return this.W_h;
   }
 }
 exports.FbFlowIndex = FbFlowIndex;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbUnlockCookSystemCookBook = void 0;
+  value: true
+});
+exports.FbUnlockCookSystemCookBook = undefined;
 class FbUnlockCookSystemCookBook {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.iyh = !1, this.ryh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.iyh = false;
+    this.ryh = 0;
   }
   static Create(t) {
-    if (t) return new FbUnlockCookSystemCookBook(t)
+    if (t) {
+      return new FbUnlockCookSystemCookBook(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get CookBookId() {
-    return this.iyh || (this.iyh = !0, this.ryh = this.FbDataInternal.cookBookId()), this.ryh
+    if (!this.iyh) {
+      this.iyh = true;
+      this.ryh = this.FbDataInternal.cookBookId();
+    }
+    return this.ryh;
   }
 }
 exports.FbUnlockCookSystemCookBook = FbUnlockCookSystemCookBook;

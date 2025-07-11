@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbStateConfig = void 0;
+  value: true
+});
+exports.FbStateConfig = undefined;
 class FbStateConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.Bch = !1, this.Cbo = void 0, this.I_h = !1, this.y6o = 0
+    this.FbDataInternal = t;
+    this.Bch = false;
+    this.Cbo = undefined;
+    this.I_h = false;
+    this.y6o = 0;
   }
   static Create(t) {
-    if (t) return new FbStateConfig(t)
+    if (t) {
+      return new FbStateConfig(t);
+    }
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
   get Duration() {
-    return this.I_h || (this.I_h = !0, this.y6o = this.FbDataInternal.duration()), this.y6o
+    if (!this.I_h) {
+      this.I_h = true;
+      this.y6o = this.FbDataInternal.duration();
+    }
+    return this.y6o;
   }
 }
 exports.FbStateConfig = FbStateConfig;

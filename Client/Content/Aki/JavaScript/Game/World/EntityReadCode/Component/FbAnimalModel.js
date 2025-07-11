@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAnimalModel = void 0;
+  value: true
+});
+exports.FbAnimalModel = undefined;
 const UnionAnimalModelTypeHelper_1 = require("./UnionAnimalModelTypeHelper");
 class FbAnimalModel {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.$Qh = !1, this.XQh = void 0, this.z11 = !1, this.J11 = void 0, this._Kh = !1, this.cKh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.$Qh = false;
+    this.XQh = undefined;
+    this.Cc1 = false;
+    this.pc1 = undefined;
+    this._Kh = false;
+    this.cKh = undefined;
   }
   static Create(t) {
-    if (t) return new FbAnimalModel(t)
+    if (t) {
+      return new FbAnimalModel(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BlueprintPath() {
-    return this.$Qh || (this.$Qh = !0, this.XQh = this.FbDataInternal.blueprintPath()), this.XQh
+    if (!this.$Qh) {
+      this.$Qh = true;
+      this.XQh = this.FbDataInternal.blueprintPath();
+    }
+    return this.XQh;
   }
   get AnimalModel() {
-    var t, i;
-    return !this.z11 && (this.z11 = !0, t = this.FbDataInternal.animalModelType(), i = UnionAnimalModelTypeHelper_1.UnionAnimalModelTypeHelper.GetUnionAnimalModelTypeObject(t)) && (this.J11 = UnionAnimalModelTypeHelper_1.UnionAnimalModelTypeHelper.ReadUnionAnimalModelType(t, this.FbDataInternal.animalModel(i))), this.J11
+    var t;
+    var i;
+    if (!this.Cc1 && (this.Cc1 = true, t = this.FbDataInternal.animalModelType(), i = UnionAnimalModelTypeHelper_1.UnionAnimalModelTypeHelper.GetUnionAnimalModelTypeObject(t))) {
+      this.pc1 = UnionAnimalModelTypeHelper_1.UnionAnimalModelTypeHelper.ReadUnionAnimalModelType(t, this.FbDataInternal.animalModel(i));
+    }
+    return this.pc1;
   }
   get Abp() {
-    return this._Kh || (this._Kh = !0, this.cKh = this.FbDataInternal.abp()), this.cKh
+    if (!this._Kh) {
+      this._Kh = true;
+      this.cKh = this.FbDataInternal.abp();
+    }
+    return this.cKh;
   }
 }
 exports.FbAnimalModel = FbAnimalModel;

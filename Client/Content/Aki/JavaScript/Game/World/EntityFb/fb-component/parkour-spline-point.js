@@ -1,98 +1,144 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ParkourSplinePoint = void 0;
-const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers"),
-  point_group_js_1 = require("../fb-component/point-group.js"),
-  vector_info_js_1 = require("../fb-var/vector-info.js");
+  value: true
+});
+exports.ParkourSplinePoint = undefined;
+const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
+const point_group_js_1 = require("../fb-component/point-group.js");
+const vector_info_js_1 = require("../fb-var/vector-info.js");
 class ParkourSplinePoint {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsParkourSplinePoint(t, i) {
-    return (i || new ParkourSplinePoint).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ParkourSplinePoint()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsParkourSplinePoint(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new ParkourSplinePoint).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new ParkourSplinePoint()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   position(t) {
     var i = this.bb.__offset(this.bb_pos, 4);
-    return i ? (t || new vector_info_js_1.VectorInfo).__init(this.bb.__indirect(this.bb_pos + i), this.bb) : void 0
+    if (i) {
+      return (t || new vector_info_js_1.VectorInfo()).__init(this.bb.__indirect(this.bb_pos + i), this.bb);
+    } else {
+      return undefined;
+    }
   }
   arriveTangent(t) {
     var i = this.bb.__offset(this.bb_pos, 6);
-    return i ? (t || new vector_info_js_1.VectorInfo).__init(this.bb.__indirect(this.bb_pos + i), this.bb) : void 0
+    if (i) {
+      return (t || new vector_info_js_1.VectorInfo()).__init(this.bb.__indirect(this.bb_pos + i), this.bb);
+    } else {
+      return undefined;
+    }
   }
   leaveTangent(t) {
     var i = this.bb.__offset(this.bb_pos, 8);
-    return i ? (t || new vector_info_js_1.VectorInfo).__init(this.bb.__indirect(this.bb_pos + i), this.bb) : void 0
+    if (i) {
+      return (t || new vector_info_js_1.VectorInfo()).__init(this.bb.__indirect(this.bb_pos + i), this.bb);
+    } else {
+      return undefined;
+    }
   }
   lineType(t) {
     var i = this.bb.__offset(this.bb_pos, 10);
-    return i ? this.bb.__string(this.bb_pos + i, t) : void 0
+    if (i) {
+      return this.bb.__string(this.bb_pos + i, t);
+    } else {
+      return undefined;
+    }
   }
   rotation(t) {
     var i = this.bb.__offset(this.bb_pos, 12);
-    return i ? (t || new vector_info_js_1.VectorInfo).__init(this.bb.__indirect(this.bb_pos + i), this.bb) : void 0
+    if (i) {
+      return (t || new vector_info_js_1.VectorInfo()).__init(this.bb.__indirect(this.bb_pos + i), this.bb);
+    } else {
+      return undefined;
+    }
   }
   radius() {
     var t = this.bb.__offset(this.bb_pos, 14);
-    return t ? this.bb.readInt32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readInt32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   modifiedTime() {
     var t = this.bb.__offset(this.bb_pos, 16);
-    return t ? this.bb.readFloat32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readFloat32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   buffId() {
     var t = this.bb.__offset(this.bb_pos, 18);
-    return t ? this.bb.readInt64(this.bb_pos + t) : BigInt("0")
+    if (t) {
+      return this.bb.readInt64(this.bb_pos + t);
+    } else {
+      return BigInt("0");
+    }
   }
   pointGroup(t) {
     var i = this.bb.__offset(this.bb_pos, 20);
-    return i ? (t || new point_group_js_1.PointGroup).__init(this.bb.__indirect(this.bb_pos + i), this.bb) : void 0
+    if (i) {
+      return (t || new point_group_js_1.PointGroup()).__init(this.bb.__indirect(this.bb_pos + i), this.bb);
+    } else {
+      return undefined;
+    }
   }
   playerTag(t) {
     var i = this.bb.__offset(this.bb_pos, 22);
-    return i ? this.bb.__string(this.bb_pos + i, t) : void 0
+    if (i) {
+      return this.bb.__string(this.bb_pos + i, t);
+    } else {
+      return undefined;
+    }
   }
   static startParkourSplinePoint(t) {
-    t.startObject(10)
+    t.startObject(10);
   }
   static addPosition(t, i) {
-    t.addFieldOffset(0, i, 0)
+    t.addFieldOffset(0, i, 0);
   }
   static addArriveTangent(t, i) {
-    t.addFieldOffset(1, i, 0)
+    t.addFieldOffset(1, i, 0);
   }
   static addLeaveTangent(t, i) {
-    t.addFieldOffset(2, i, 0)
+    t.addFieldOffset(2, i, 0);
   }
   static addLineType(t, i) {
-    t.addFieldOffset(3, i, 0)
+    t.addFieldOffset(3, i, 0);
   }
   static addRotation(t, i) {
-    t.addFieldOffset(4, i, 0)
+    t.addFieldOffset(4, i, 0);
   }
   static addRadius(t, i) {
-    t.addFieldInt32(5, i, 0)
+    t.addFieldInt32(5, i, 0);
   }
   static addModifiedTime(t, i) {
-    t.addFieldFloat32(6, i, 0)
+    t.addFieldFloat32(6, i, 0);
   }
   static addBuffId(t, i) {
-    t.addFieldInt64(7, i, BigInt("0"))
+    t.addFieldInt64(7, i, BigInt("0"));
   }
   static addPointGroup(t, i) {
-    t.addFieldOffset(8, i, 0)
+    t.addFieldOffset(8, i, 0);
   }
   static addPlayerTag(t, i) {
-    t.addFieldOffset(9, i, 0)
+    t.addFieldOffset(9, i, 0);
   }
   static endParkourSplinePoint(t) {
-    return t.endObject()
+    return t.endObject();
   }
 }
 exports.ParkourSplinePoint = ParkourSplinePoint;

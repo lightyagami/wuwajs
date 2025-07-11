@@ -1,43 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChildQuestCondition = void 0;
+  value: true
+});
+exports.ChildQuestCondition = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ChildQuestCondition {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsChildQuestCondition(t, i) {
-    return (i || new ChildQuestCondition).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ChildQuestCondition()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsChildQuestCondition(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new ChildQuestCondition).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new ChildQuestCondition()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   questId() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.readInt32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readInt32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   childQuestId() {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.readInt32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readInt32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   static startChildQuestCondition(t) {
-    t.startObject(2)
+    t.startObject(2);
   }
   static addQuestId(t, i) {
-    t.addFieldInt32(0, i, 0)
+    t.addFieldInt32(0, i, 0);
   }
   static addChildQuestId(t, i) {
-    t.addFieldInt32(1, i, 0)
+    t.addFieldInt32(1, i, 0);
   }
   static endChildQuestCondition(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createChildQuestCondition(t, i, s) {
-    return ChildQuestCondition.startChildQuestCondition(t), ChildQuestCondition.addQuestId(t, i), ChildQuestCondition.addChildQuestId(t, s), ChildQuestCondition.endChildQuestCondition(t)
+    ChildQuestCondition.startChildQuestCondition(t);
+    ChildQuestCondition.addQuestId(t, i);
+    ChildQuestCondition.addChildQuestId(t, s);
+    return ChildQuestCondition.endChildQuestCondition(t);
   }
 }
 exports.ChildQuestCondition = ChildQuestCondition;

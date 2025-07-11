@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAdsorbAddBuff = void 0;
+  value: true
+});
+exports.FbAdsorbAddBuff = undefined;
 class FbAdsorbAddBuff {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.qmh = !1, this.H8o = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.qmh = false;
+    this.H8o = 0;
   }
   static Create(t) {
-    if (t) return new FbAdsorbAddBuff(t)
+    if (t) {
+      return new FbAdsorbAddBuff(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Speed() {
-    return this.qmh || (this.qmh = !0, this.H8o = this.FbDataInternal.speed()), this.H8o
+    if (!this.qmh) {
+      this.qmh = true;
+      this.H8o = this.FbDataInternal.speed();
+    }
+    return this.H8o;
   }
 }
 exports.FbAdsorbAddBuff = FbAdsorbAddBuff;

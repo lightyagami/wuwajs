@@ -1,42 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AttributeItemData = void 0;
-const ModelManager_1 = require("../../../Manager/ModelManager"),
-  ItemDataBase_1 = require("./ItemDataBase"),
-  ATTRIBUTE_ITEM_DEFAULT_COUNT = 1;
+  value: true
+});
+exports.AttributeItemData = undefined;
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const ItemDataBase_1 = require("./ItemDataBase");
+const ATTRIBUTE_ITEM_DEFAULT_COUNT = 1;
 class AttributeItemData extends ItemDataBase_1.ItemDataBase {
   constructor(t, e, r, a) {
-    super(t, ATTRIBUTE_ITEM_DEFAULT_COUNT, a), this.UniqueId = e, this.Smi = r
+    super(t, ATTRIBUTE_ITEM_DEFAULT_COUNT, a);
+    this.UniqueId = e;
+    this.Smi = r;
   }
   GetUniqueId() {
-    return this.UniqueId
+    return this.UniqueId;
   }
   SetFunctionValue(t) {
-    this.Smi = t, this.OnSetFunctionValue(t)
+    this.Smi = t;
+    this.OnSetFunctionValue(t);
   }
   OnSetFunctionValue(t) {}
   IsFunctionValue(t) {
-    return 0 < (this.Smi & 1 << t)
+    return (this.Smi & 1 << t) > 0;
   }
   GetIsLock() {
-    return this.IsFunctionValue(0)
+    return this.IsFunctionValue(0);
   }
   GetIsDeprecated() {
-    return this.IsFunctionValue(1)
+    return this.IsFunctionValue(1);
+  }
+  GetFunctionValueType() {
+    return this.Smi;
   }
   GetDefaultDownText() {
-    return ""
+    return "";
   }
   GetUseCountLimit() {
-    return 1
+    return 1;
   }
   HasRedDot() {
     var t = this.GetUniqueId();
-    return ModelManager_1.ModelManager.InventoryModel.IsAttributeItemHasRedDot(t)
+    return ModelManager_1.ModelManager.InventoryModel.IsAttributeItemHasRedDot(t);
   }
   IsValid() {
-    return !0
+    return true;
   }
 }
 exports.AttributeItemData = AttributeItemData;

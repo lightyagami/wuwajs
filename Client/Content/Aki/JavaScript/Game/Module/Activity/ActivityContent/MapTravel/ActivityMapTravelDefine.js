@@ -1,40 +1,58 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapTravelLockAreaData = exports.FinalTravelTaskData = exports.SoarChallengePlayData = exports.MapTravelAreaData = void 0;
+  value: true
+});
+exports.MapTravelLockAreaData = exports.FinalTravelTaskData = exports.SoarChallengePlayData = exports.MapTravelAreaData = undefined;
 class MapTravelAreaData {
   constructor(t) {
-    this.AreaId = t, this.TravelTaskIdSet = new Set, this.PhantomTaskIdSet = new Set, this.IsUnlock = !1
+    this.AreaId = t;
+    this.TravelTaskIdSet = new Set();
+    this.PhantomTaskIdSet = new Set();
+    this.IsUnlock = false;
   }
 }
 exports.MapTravelAreaData = MapTravelAreaData;
 class SoarChallengePlayData {
   constructor() {
-    this.TabIndex = 0, this.PlayId = 0, this.JumpId = 0, this.NameTextId = "", this.RewardIds = [], this.IsUnlock = !1, this.IsNew = !1, this.HighestPoint = 0, this.CheckRedDot = void 0, this.CheckFinished = void 0
+    this.TabIndex = 0;
+    this.PlayId = 0;
+    this.JumpId = 0;
+    this.NameTextId = "";
+    this.RewardIds = [];
+    this.IsUnlock = false;
+    this.IsNew = false;
+    this.HighestPoint = 0;
+    this.CheckRedDot = undefined;
+    this.CheckFinished = undefined;
   }
   get HasRedDot() {
-    return this.CheckRedDot(this.RewardIds)
+    return this.CheckRedDot(this.RewardIds);
   }
   get IsFinished() {
-    return this.CheckFinished(this.RewardIds)
+    return this.CheckFinished(this.RewardIds);
   }
 }
 exports.SoarChallengePlayData = SoarChallengePlayData;
 class FinalTravelTaskData {
   constructor() {
-    this.Target = 1, this.FinishedIdSet = new Set, this.IsReceived = !1
+    this.Target = 1;
+    this.FinishedIdSet = new Set();
+    this.IsReceived = false;
   }
   get Current() {
-    return this.FinishedIdSet.size
+    return this.FinishedIdSet.size;
   }
   CanReceive() {
-    return !this.IsReceived && this.Current === this.Target
+    return !this.IsReceived && this.Current === this.Target;
   }
 }
 exports.FinalTravelTaskData = FinalTravelTaskData;
 class MapTravelLockAreaData {
   constructor(t) {
-    this.AreaId = t, this.ConditionGroupId = 0, this.JumpId = 0
+    this.AreaId = t;
+    this.ConditionGroupId = 0;
+    this.JumpId = 0;
   }
 }
 exports.MapTravelLockAreaData = MapTravelLockAreaData;

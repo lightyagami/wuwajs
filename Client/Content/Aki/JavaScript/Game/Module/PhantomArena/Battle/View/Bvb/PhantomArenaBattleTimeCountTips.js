@@ -1,33 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaBattleFloatTips = void 0;
-const UE = require("ue"),
-  TickSystem_1 = require("../../../../../../Core/Tick/TickSystem"),
-  TimeUtil_1 = require("../../../../../Common/TimeUtil"),
-  UiTickViewBase_1 = require("../../../../../Ui/Base/UiTickViewBase");
+  value: true
+});
+exports.PhantomArenaBattleFloatTips = undefined;
+const UE = require("ue");
+const TickSystem_1 = require("../../../../../../Core/Tick/TickSystem");
+const TimeUtil_1 = require("../../../../../Common/TimeUtil");
+const UiTickViewBase_1 = require("../../../../../Ui/Base/UiTickViewBase");
+const Time_1 = require("../../../../../../Core/Common/Time");
 class PhantomArenaBattleFloatTips extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
-    super(...arguments), this.Cce = -0, this.cJt = "", this.mJt = "", this.dJt = ""
+    super(...arguments);
+    this.Cce = -0;
+    this.cJt = "";
+    this.mJt = "";
+    this.dJt = "";
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText]];
   }
-  OnTick(t) {
-    TickSystem_1.TickSystem.IsPaused || (this.Cce += t / 1e3, this.PYt(), this.SetExtraText(this.mJt, this.dJt, this.cJt))
+  OnTick(i) {
+    if (!TickSystem_1.TickSystem.IsPaused) {
+      this.Cce += i * Time_1.Time.TimeDilation / 1000;
+      this.PYt();
+      this.SetExtraText(this.mJt, this.dJt, this.cJt);
+    }
   }
   PYt() {
-    var t = this.Cce,
-      i = Math.floor(t % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute),
-      i = (this.mJt = (i < 10 ? "0" : "") + i, Math.floor(t % TimeUtil_1.TimeUtil.Minute)),
-      i = (this.dJt = (i < 10 ? "0" : "") + i, Math.floor(100 * (t - Math.floor(t))));
-    this.cJt = (i < 10 ? "0" : "") + i
+    var i = this.Cce;
+    var e = Math.floor(i % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute);
+    this.mJt = (e < 10 ? "0" : "") + e;
+    var e = Math.floor(i % TimeUtil_1.TimeUtil.Minute);
+    this.dJt = (e < 10 ? "0" : "") + e;
+    var e = Math.floor((i - Math.floor(i)) * 100);
+    this.cJt = (e < 10 ? "0" : "") + e;
   }
-  SetExtraText(t, i, e) {
-    this.GetText(1)?.SetText(t + `:${i}:` + e)
+  SetExtraText(i, e, t) {
+    this.GetText(1)?.SetText(`${i}:${e}:${t}`);
   }
 }
 exports.PhantomArenaBattleFloatTips = PhantomArenaBattleFloatTips;

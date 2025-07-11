@@ -1,18 +1,20 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class TsAnimNotifyEnableEntity extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.IsEnable = !1
+    super(...arguments);
+    this.IsEnable = false;
   }
   Constructor() {}
   K2_Notify(t, e) {
-    return !0
+    return true;
   }
   GetNotifyName() {
-    return "启用实体"
+    return "启用实体";
   }
 }
 exports.default = TsAnimNotifyEnableEntity;

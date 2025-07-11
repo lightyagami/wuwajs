@@ -1,43 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Mp4BackgroundColor = void 0;
+  value: true
+});
+exports.Mp4BackgroundColor = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class Mp4BackgroundColor {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(r, t) {
-    return this.bb_pos = r, this.bb = t, this
+    this.bb_pos = r;
+    this.bb = t;
+    return this;
   }
   static getRootAsMp4BackgroundColor(r, t) {
-    return (t || new Mp4BackgroundColor).__init(r.readInt32(r.position()) + r.position(), r)
+    return (t || new Mp4BackgroundColor()).__init(r.readInt32(r.position()) + r.position(), r);
   }
   static getSizePrefixedRootAsMp4BackgroundColor(r, t) {
-    return r.setPosition(r.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new Mp4BackgroundColor).__init(r.readInt32(r.position()) + r.position(), r)
+    r.setPosition(r.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new Mp4BackgroundColor()).__init(r.readInt32(r.position()) + r.position(), r);
   }
   fadeIn(r) {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__string(this.bb_pos + t, r) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, r);
+    } else {
+      return undefined;
+    }
   }
   fadeOut(r) {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.__string(this.bb_pos + t, r) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, r);
+    } else {
+      return undefined;
+    }
   }
   static startMp4BackgroundColor(r) {
-    r.startObject(2)
+    r.startObject(2);
   }
   static addFadeIn(r, t) {
-    r.addFieldOffset(0, t, 0)
+    r.addFieldOffset(0, t, 0);
   }
   static addFadeOut(r, t) {
-    r.addFieldOffset(1, t, 0)
+    r.addFieldOffset(1, t, 0);
   }
   static endMp4BackgroundColor(r) {
-    return r.endObject()
+    return r.endObject();
   }
   static createMp4BackgroundColor(r, t, o) {
-    return Mp4BackgroundColor.startMp4BackgroundColor(r), Mp4BackgroundColor.addFadeIn(r, t), Mp4BackgroundColor.addFadeOut(r, o), Mp4BackgroundColor.endMp4BackgroundColor(r)
+    Mp4BackgroundColor.startMp4BackgroundColor(r);
+    Mp4BackgroundColor.addFadeIn(r, t);
+    Mp4BackgroundColor.addFadeOut(r, o);
+    return Mp4BackgroundColor.endMp4BackgroundColor(r);
   }
 }
 exports.Mp4BackgroundColor = Mp4BackgroundColor;

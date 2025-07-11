@@ -1,53 +1,132 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SeamlessTravelSceneEffect = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log"),
-  ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  EffectContext_1 = require("../../Effect/EffectContext/EffectContext"),
-  EffectSystem_1 = require("../../Effect/EffectSystem"),
-  Global_1 = require("../../Global"),
-  GlobalData_1 = require("../../GlobalData");
+  value: true
+});
+exports.SeamlessTravelSceneEffect = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EffectContext_1 = require("../../Effect/EffectContext/EffectContext");
+const EffectSystem_1 = require("../../Effect/EffectSystem");
+const Global_1 = require("../../Global");
+const GlobalData_1 = require("../../GlobalData");
 class SeamlessTravelSceneEffect {
   constructor() {
-    this.Hte = void 0, this.nx = void 0, this.I_u = void 0, this.T_u = void 0, this.rvi = void 0, this.ege = void 0, this.qh1 = !1, this.b_u = 0, this.R_u = 0
+    this.Hte = undefined;
+    this.nx = undefined;
+    this.y0u = undefined;
+    this.S0u = undefined;
+    this.rvi = undefined;
+    this.ege = undefined;
+    this.cl1 = false;
+    this.M0u = 0;
+    this.E0u = 0;
   }
   get IsInit() {
-    return this.qh1
+    return this.cl1;
   }
   Init(e, t) {
-    this.Hte = Global_1.Global.BaseCharacter?.CharacterActorComponent, this.Hte ? (this.nx = e, this.IsInit ? t(!0) : (this.I_u = this.nx.SceneEffectDaPath, this.L_u(e => {
-      this.qh1 = !0, t(e)
-    }))) : Log_1.Log.CheckError() && Log_1.Log.Error("SeamlessTravel", 39, "[SeamlessTravelSceneEffect]初始化失败，无效的ActorComp", ["ActorName", Global_1.Global.BaseCharacter?.GetName()])
+    this.Hte = Global_1.Global.BaseCharacter?.CharacterActorComponent;
+    if (this.Hte) {
+      this.nx = e;
+      if (this.IsInit) {
+        t(true);
+      } else {
+        this.y0u = this.nx.SceneEffectDaPath;
+        this.I0u(e => {
+          this.cl1 = true;
+          t(e);
+        });
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SeamlessTravel", 39, "[SeamlessTravelSceneEffect]初始化失败，无效的ActorComp", ["ActorName", Global_1.Global.BaseCharacter?.GetName()]);
+    }
   }
-  L_u(i) {
-    this.I_u?.length ? ResourceSystem_1.ResourceSystem.LoadAsync(this.I_u, UE.EffectModelBase, (e, t) => {
-      var s;
-      e ? (this.T_u = e, e = Math.max(this.nx.EffectExpandTime, this.T_u.StartTime), s = Math.max(this.nx.EffectCollapseTime, this.T_u.EndTime), this.b_u = e * MathUtils_1.MathUtils.SecondToMillisecond, this.R_u = s * MathUtils_1.MathUtils.SecondToMillisecond, i(!0)) : (Log_1.Log.CheckError() && Log_1.Log.Error("SeamlessTravel", 39, "[SeamlessTravelSceneEffect] 加载DA失败", ["path", t], ["ActorName", Global_1.Global.BaseCharacter?.GetName()]), i(!1))
-    }) : i(!0)
+  I0u(i) {
+    if (this.y0u?.length) {
+      ResourceSystem_1.ResourceSystem.LoadAsync(this.y0u, UE.EffectModelBase, (e, t) => {
+        var s;
+        if (e) {
+          this.S0u = e;
+          e = Math.max(this.nx.EffectExpandTime, this.S0u.StartTime);
+          s = Math.max(this.nx.EffectCollapseTime, this.S0u.EndTime);
+          this.M0u = e * MathUtils_1.MathUtils.SecondToMillisecond;
+          this.E0u = s * MathUtils_1.MathUtils.SecondToMillisecond;
+          i(true);
+        } else {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("SeamlessTravel", 39, "[SeamlessTravelSceneEffect] 加载DA失败", ["path", t], ["ActorName", Global_1.Global.BaseCharacter?.GetName()]);
+          }
+          i(false);
+        }
+      });
+    } else {
+      i(true);
+    }
   }
   Tick(e) {}
   Destroy() {
-    this.rvi && EffectSystem_1.EffectSystem.IsValid(this.rvi) && EffectSystem_1.EffectSystem.StopEffectById(this.rvi, "[SeamlessTravelSceneEffect] DisappearEffect", !0), this.ege = void 0, this.rvi = void 0, this.T_u = void 0
+    if (this.rvi && EffectSystem_1.EffectSystem.IsValid(this.rvi)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.rvi, "[SeamlessTravelSceneEffect] DisappearEffect", true);
+    }
+    this.ege = undefined;
+    this.rvi = undefined;
+    this.S0u = undefined;
   }
   AppearEffect(t) {
-    this.IsInit && this.Hte?.Actor?.IsValid() && this.T_u?.IsValid() ? this.rvi = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, this.I_u, "[SeamlessTravelSceneEffect] AppearEffect", new EffectContext_1.EffectContext(void 0, this.Hte.Actor), 0, void 0, void 0, e => {
-      e = EffectSystem_1.EffectSystem.GetSureEffectActor(e);
-      e?.IsValid() ? (this.Hte?.Actor.IsValid() && e.K2_AttachToActor(this.Hte.Actor, void 0, 2, 2, 2, !1), this.ege = e, TimerSystem_1.TimerSystem.Delay(() => {
-        t?.(!0)
-      }, this.b_u)) : t?.(!1)
-    }) : t(!1)
+    if (this.IsInit && this.Hte?.Actor?.IsValid() && this.S0u?.IsValid()) {
+      this.rvi = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, this.y0u, "[SeamlessTravelSceneEffect] AppearEffect", new EffectContext_1.EffectContext(undefined, this.Hte.Actor), 0, undefined, undefined, e => {
+        e = EffectSystem_1.EffectSystem.GetSureEffectActor(e);
+        if (e?.IsValid()) {
+          if (this.Hte?.Actor.IsValid()) {
+            e.K2_AttachToActor(this.Hte.Actor, undefined, 2, 2, 2, false);
+          }
+          this.ege = e;
+          if (this.M0u < TimerSystem_1.MIN_TIME) {
+            t?.(true);
+          } else {
+            TimerSystem_1.TimerSystem.Delay(() => {
+              t?.(true);
+            }, this.M0u);
+          }
+        } else {
+          t?.(false);
+        }
+      });
+    } else {
+      t(false);
+    }
   }
   DisappearEffect(e) {
-    this.IsInit ? this.rvi && EffectSystem_1.EffectSystem.IsValid(this.rvi) ? (EffectSystem_1.EffectSystem.StopEffectById(this.rvi, "[SeamlessTravelSceneEffect] DisappearEffect", !1), this.ege = void 0, this.rvi = void 0, TimerSystem_1.TimerSystem.Delay(() => {
-      e?.(!0)
-    }, this.R_u)) : (this.ege = void 0, this.rvi = void 0, e?.(!0)) : e(!1)
+    if (this.IsInit) {
+      if (this.rvi && EffectSystem_1.EffectSystem.IsValid(this.rvi)) {
+        EffectSystem_1.EffectSystem.StopEffectById(this.rvi, "[SeamlessTravelSceneEffect] DisappearEffect", false);
+        this.ege = undefined;
+        this.rvi = undefined;
+        if (this.E0u < TimerSystem_1.MIN_TIME) {
+          e?.(true);
+        } else {
+          TimerSystem_1.TimerSystem.Delay(() => {
+            e?.(true);
+          }, this.E0u);
+        }
+      } else {
+        this.ege = undefined;
+        this.rvi = undefined;
+        e?.(true);
+      }
+    } else {
+      e(false);
+    }
   }
   GetSeamlessTravelActors(e) {
-    return this.ege && e.push(this.ege), e
+    if (this.ege) {
+      e.push(this.ege);
+    }
+    return e;
   }
 }
 exports.SeamlessTravelSceneEffect = SeamlessTravelSceneEffect;

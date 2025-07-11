@@ -1,15 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class TsTaskAbortImmediatelyBase extends UE.BTTask_BlueprintBase {
   Constructor() {}
   ReceiveAbortAI(e, s) {
-    this.FinishAbort(), this.OnAbort(), this.OnClear()
+    this.FinishAbort();
+    this.OnAbort();
+    this.OnClear();
   }
   Finish(e) {
-    this.FinishExecute(e), this.OnClear()
+    this.FinishExecute(e);
+    this.OnClear();
   }
   OnAbort() {}
   OnClear() {}

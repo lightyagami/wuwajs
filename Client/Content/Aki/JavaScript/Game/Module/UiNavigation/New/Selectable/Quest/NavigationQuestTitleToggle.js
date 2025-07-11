@@ -1,11 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationQuestTitleToggle = void 0;
+  value: true
+});
+exports.NavigationQuestTitleToggle = undefined;
 const NavigationToggle_1 = require("../NavigationToggle");
 class NavigationQuestTitleToggle extends NavigationToggle_1.NavigationToggle {
   OnCanFocusInScrollOrLayout() {
-    return this.IsInteractive, !1
+    this.IsInteractive;
+    return false;
   }
 }
 exports.NavigationQuestTitleToggle = NavigationQuestTitleToggle;

@@ -1,44 +1,65 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetConversionRate = void 0;
+  value: true
+});
+exports.RacingBetConversionRate = undefined;
 class RacingBetConversionRate {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get SeasonId() {
-    return this.seasonid()
+    return this.seasonid();
   }
   get Rank() {
-    return this.rank()
+    return this.rank();
   }
   get ConversionRate() {
-    return this.conversionrate()
+    return this.conversionrate();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsRacingBetConversionRate(t, s) {
-    return (s || new RacingBetConversionRate).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new RacingBetConversionRate()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   seasonid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rank() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   conversionrate() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.RacingBetConversionRate = RacingBetConversionRate;

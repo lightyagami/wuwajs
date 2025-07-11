@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configNounHandBookById = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  NounHandBook_1 = require("../Config/NounHandBook"),
-  DB = "db_handbook.db",
-  FILE = "t.图鉴系统.xlsx",
-  TABLE = "NounHandBook",
-  COMMAND = "select BinData from `NounHandBook` where Id=?",
-  KEY_PREFIX = "NounHandBookById",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configNounHandBookById = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const NounHandBook_1 = require("../Config/NounHandBook");
+const DB = "db_handbook.db";
+const FILE = "t.图鉴系统.xlsx";
+const TABLE = "NounHandBook";
+const COMMAND = "select BinData from `NounHandBook` where Id=?";
+const KEY_PREFIX = "NounHandBookById";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configNounHandBookById.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configNounHandBookById.GetConfig"),
-  CONFIG_STAT_PREFIX = "configNounHandBookById.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configNounHandBookById.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configNounHandBookById.GetConfig");
+const CONFIG_STAT_PREFIX = "configNounHandBookById.GetConfig(";
 exports.configNounHandBookById = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (o, n = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var t = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${o})`),
-      i = (t?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (o, n = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var t = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${o})`);
+    t?.Start();
+    var i = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (i) {
       if (n) {
-        var e = KEY_PREFIX + `#${o})`;
+        var e = `${KEY_PREFIX}#${o})`;
         const a = ConfigCommon_1.ConfigCommon.GetConfig(e);
-        if (a) return t?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
-      }
-      if (i = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", o])) {
-        e = void 0;
-        if ([i, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]), i) {
-          const a = NounHandBook_1.NounHandBook.getRootAsNounHandBook(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
-          return n && (i = KEY_PREFIX + `#${o})`, ConfigCommon_1.ConfigCommon.SaveConfig(i, a)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), t?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          t?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (i = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", o]) > 0) {
+        e = undefined;
+        [i, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]);
+        if (i) {
+          const a = NounHandBook_1.NounHandBook.getRootAsNounHandBook(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
+          if (n) {
+            i = `${KEY_PREFIX}#${o})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(i, a);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          t?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    t?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    t?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=NounHandBookById.js.map

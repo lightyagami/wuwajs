@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BuildingTipsInfoViewModel = void 0;
+  value: true
+});
+exports.BuildingTipsInfoViewModel = undefined;
 class BuildingTipsInfoViewModel {
   constructor() {
-    this.BuildingId = 0
+    this.BuildingId = 0;
   }
 }
 exports.BuildingTipsInfoViewModel = BuildingTipsInfoViewModel;

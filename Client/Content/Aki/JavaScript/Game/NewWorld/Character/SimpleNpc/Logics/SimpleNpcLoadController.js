@@ -1,24 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SimpleNpcLoadController = void 0;
-const Queue_1 = require("../../../../../Core/Container/Queue"),
-  ControllerBase_1 = require("../../../../../Core/Framework/ControllerBase"),
-  ObjectUtils_1 = require("../../../../../Core/Utils/ObjectUtils"),
-  ModelManager_1 = require("../../../../Manager/ModelManager");
+  value: true
+});
+exports.SimpleNpcLoadController = undefined;
+const Queue_1 = require("../../../../../Core/Container/Queue");
+const ControllerBase_1 = require("../../../../../Core/Framework/ControllerBase");
+const ObjectUtils_1 = require("../../../../../Core/Utils/ObjectUtils");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 class SimpleNpcLoadController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return this.Mor = new Queue_1.Queue(256), !0
+    this.Mor = new Queue_1.Queue(256);
+    return true;
   }
   static OnLeaveLevel() {
-    return !0
+    return true;
   }
   static OnTick(e) {
     var r;
-    ModelManager_1.ModelManager.GameModeModel.WorldDone && 0 !== this.Mor.Size && (r = this.Mor.Pop(), ObjectUtils_1.ObjectUtils.IsValid(r)) && r.Mesh && (r.LoadModelByDA() && r.SetDefaultCollision(), r.StartFlowLogic())
+    if (ModelManager_1.ModelManager.GameModeModel.WorldDone && this.Mor.Size !== 0 && (r = this.Mor.Pop(), ObjectUtils_1.ObjectUtils.IsValid(r)) && r.Mesh) {
+      if (r.LoadModelByDA()) {
+        r.SetDefaultCollision();
+      }
+      r.StartFlowLogic();
+    }
   }
   static AddSimpleNpc(e) {
-    this.Mor && this.Mor.Push(e)
+    if (this.Mor) {
+      this.Mor.Push(e);
+    }
   }
-}(exports.SimpleNpcLoadController = SimpleNpcLoadController).Mor = void 0;
+}
+(exports.SimpleNpcLoadController = SimpleNpcLoadController).Mor = undefined;
 //# sourceMappingURL=SimpleNpcLoadController.js.map

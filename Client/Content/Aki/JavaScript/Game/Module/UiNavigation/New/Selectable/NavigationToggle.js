@@ -1,58 +1,76 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationToggle = void 0;
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  UiNavigationViewManager_1 = require("../UiNavigationViewManager"),
-  NavigationSelectableBase_1 = require("./NavigationSelectableBase");
+  value: true
+});
+exports.NavigationToggle = undefined;
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const UiNavigationViewManager_1 = require("../UiNavigationViewManager");
+const NavigationSelectableBase_1 = require("./NavigationSelectableBase");
 class NavigationToggle extends NavigationSelectableBase_1.NavigationSelectableBase {
   constructor() {
-    super(...arguments), this.gBo = e => {
-      UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKeyTextId()
-    }, this.Bke = e => {
-      this.OnToggleClick(e)
-    }
+    super(...arguments);
+    this.gBo = e => {
+      UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKeyTextId();
+    };
+    this.Bke = e => {
+      this.OnToggleClick(e);
+    };
   }
   OnInit() {
-    this.fBo(), this.pBo()
+    this.fBo();
+    this.pBo();
   }
   OnClear() {
-    this.vBo(), this.MBo()
+    this.vBo();
+    this.MBo();
   }
   fBo() {
     var e = this.Selectable;
-    0 < this.Listener.HotKeyTipsTextIdMap.Num() && e.OnStateChange.Add(this.gBo)
+    if (this.Listener.HotKeyTipsTextIdMap.Num() > 0) {
+      e.OnStateChange.Add(this.gBo);
+    }
   }
   vBo() {
     var e = this.Selectable;
-    0 < this.Listener.HotKeyTipsTextIdMap.Num() && e.OnStateChange.Remove(this.gBo)
+    if (this.Listener.HotKeyTipsTextIdMap.Num() > 0) {
+      e.OnStateChange.Remove(this.gBo);
+    }
   }
   pBo() {
-    this.NeedAddToggleClick() && this.Selectable.OnStateChange.Add(this.Bke)
+    if (this.NeedAddToggleClick()) {
+      this.Selectable.OnStateChange.Add(this.Bke);
+    }
   }
   MBo() {
-    this.NeedAddToggleClick() && this.Selectable.OnStateChange.Remove(this.Bke)
+    if (this.NeedAddToggleClick()) {
+      this.Selectable.OnStateChange.Remove(this.Bke);
+    }
   }
   OnToggleClick(e) {}
   NeedAddToggleClick() {
-    return "Toggle" !== this.GetType()
+    return this.GetType() !== "Toggle";
   }
   OnCanFocusInScrollOrLayout() {
     var e;
-    return !!this.IsInteractive && !(1 !== (e = this.Selectable).ToggleState && e.bCheckToggleSelected || !this.Selectable.RootUIComp.IsUIActiveInHierarchy())
+    return !!this.IsInteractive && ((e = this.Selectable).ToggleState === 1 || !e.bCheckToggleSelected) && !!this.Selectable.RootUIComp.IsUIActiveInHierarchy();
   }
   OnGetTipsTextId() {
-    return 1 === this.Selectable.ToggleState ? this.Listener.HotKeyTipsTextIdMap.Get(2) : this.Listener.HotKeyTipsTextIdMap.Get(1)
+    if (this.Selectable.ToggleState === 1) {
+      return this.Listener.HotKeyTipsTextIdMap.Get(2);
+    } else {
+      return this.Listener.HotKeyTipsTextIdMap.Get(1);
+    }
   }
   OnHandlePointerEnter(e) {
-    return !this.Selectable.bToggleOnSelect
+    return !this.Selectable.bToggleOnSelect;
   }
   OnHandlePointerSelect(e) {
     var t;
-    return !!this.OnHandlePointerSelectInheritance(e) && (0 === (t = this.Selectable).ToggleState ? (e && 1 === e.inputType && t.bToggleOnSelect && t.SetToggleState(1, !0), this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t)) : 2 === t.ToggleState ? (this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t), e && 1 === e.inputType && t.bToggleOnSelect && ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulateClickItem(t.RootUIComp)) : this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t), !!this.IsAllowNavigationByGroup())
+    return !!this.OnHandlePointerSelectInheritance(e) && ((t = this.Selectable).ToggleState === 0 ? (e && e.inputType === 1 && t.bToggleOnSelect && t.SetToggleState(1, true), this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t)) : t.ToggleState === 2 ? (this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t), e && e.inputType === 1 && t.bToggleOnSelect && ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulateClickItem(t.RootUIComp)) : this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t), !!this.IsAllowNavigationByGroup());
   }
   OnHandlePointerSelectInheritance(e) {
-    return !0
+    return true;
   }
 }
 exports.NavigationToggle = NavigationToggle;

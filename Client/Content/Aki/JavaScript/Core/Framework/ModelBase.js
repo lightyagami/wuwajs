@@ -1,31 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ModelBase = void 0;
+  value: true
+});
+exports.ModelBase = undefined;
 class ModelBase {
   Init() {
-    return this.OnInit()
+    return this.OnInit();
   }
   Clear() {
-    return this.OnClear()
+    return this.OnClear();
   }
   LeaveLevel() {
-    return this.OnLeaveLevel()
+    return this.OnLeaveLevel();
   }
   ChangeMode() {
-    return this.OnChangeMode()
+    return this.OnChangeMode();
   }
   OnInit() {
-    return !0
+    return true;
   }
   OnClear() {
-    return !0
+    return true;
   }
   OnLeaveLevel() {
-    return !0
+    return true;
   }
   OnChangeMode() {
-    return !0
+    return true;
   }
 }
 exports.ModelBase = ModelBase;

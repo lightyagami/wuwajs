@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRenjuChess = void 0;
+  value: true
+});
+exports.FbRenjuChess = undefined;
 const UnionAdjustPlayerCameraOptionHelper_1 = require("./UnionAdjustPlayerCameraOptionHelper");
 class FbRenjuChess {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.kIh = !1, this.GIh = 0, this.OIh = !1, this.FIh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.kIh = false;
+    this.GIh = 0;
+    this.OIh = false;
+    this.FIh = undefined;
   }
   static Create(t) {
-    if (t) return new FbRenjuChess(t)
+    if (t) {
+      return new FbRenjuChess(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Chessboard() {
-    return this.kIh || (this.kIh = !0, this.GIh = this.FbDataInternal.chessboard()), this.GIh
+    if (!this.kIh) {
+      this.kIh = true;
+      this.GIh = this.FbDataInternal.chessboard();
+    }
+    return this.GIh;
   }
   get CameraConfig() {
-    var t, s;
-    return !this.OIh && (this.OIh = !0, t = this.FbDataInternal.cameraConfigType(), s = UnionAdjustPlayerCameraOptionHelper_1.UnionAdjustPlayerCameraOptionHelper.GetUnionAdjustPlayerCameraOptionObject(t)) && (this.FIh = UnionAdjustPlayerCameraOptionHelper_1.UnionAdjustPlayerCameraOptionHelper.ReadUnionAdjustPlayerCameraOption(t, this.FbDataInternal.cameraConfig(s))), this.FIh
+    var t;
+    var s;
+    if (!this.OIh && (this.OIh = true, t = this.FbDataInternal.cameraConfigType(), s = UnionAdjustPlayerCameraOptionHelper_1.UnionAdjustPlayerCameraOptionHelper.GetUnionAdjustPlayerCameraOptionObject(t))) {
+      this.FIh = UnionAdjustPlayerCameraOptionHelper_1.UnionAdjustPlayerCameraOptionHelper.ReadUnionAdjustPlayerCameraOption(t, this.FbDataInternal.cameraConfig(s));
+    }
+    return this.FIh;
   }
 }
 exports.FbRenjuChess = FbRenjuChess;

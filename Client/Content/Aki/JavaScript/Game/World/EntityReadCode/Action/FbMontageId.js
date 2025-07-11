@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMontageId = void 0;
+  value: true
+});
+exports.FbMontageId = undefined;
 class FbMontageId {
   constructor(t) {
-    this.FbDataInternal = t, this.Rfh = !1, this.wfh = 0, this.$fh = !1, this.Xfh = !1
+    this.FbDataInternal = t;
+    this.Rfh = false;
+    this.wfh = 0;
+    this.$fh = false;
+    this.Xfh = false;
   }
   static Create(t) {
-    if (t) return new FbMontageId(t)
+    if (t) {
+      return new FbMontageId(t);
+    }
   }
   get MontageId() {
-    return this.Rfh || (this.Rfh = !0, this.wfh = this.FbDataInternal.montageId()), this.wfh
+    if (!this.Rfh) {
+      this.Rfh = true;
+      this.wfh = this.FbDataInternal.montageId();
+    }
+    return this.wfh;
   }
   get IsAbp() {
-    return this.$fh || (this.$fh = !0, this.Xfh = this.FbDataInternal.isAbp()), this.Xfh
+    if (!this.$fh) {
+      this.$fh = true;
+      this.Xfh = this.FbDataInternal.isAbp();
+    }
+    return this.Xfh;
   }
 }
 exports.FbMontageId = FbMontageId;

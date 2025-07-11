@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbConnectorEffectConfig = void 0;
+  value: true
+});
+exports.FbConnectorEffectConfig = undefined;
 class FbConnectorEffectConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.xEh = !1, this.REh = void 0, this.p$h = !1, this.v$h = void 0, this.y$h = !1, this.S$h = void 0
+    this.FbDataInternal = t;
+    this.xEh = false;
+    this.REh = undefined;
+    this.p$h = false;
+    this.v$h = undefined;
+    this.y$h = false;
+    this.S$h = undefined;
   }
   static Create(t) {
-    if (t) return new FbConnectorEffectConfig(t)
+    if (t) {
+      return new FbConnectorEffectConfig(t);
+    }
   }
   get EffectPath() {
-    return this.xEh || (this.xEh = !0, this.REh = this.FbDataInternal.effectPath()), this.REh
+    if (!this.xEh) {
+      this.xEh = true;
+      this.REh = this.FbDataInternal.effectPath();
+    }
+    return this.REh;
   }
   get StartPoint() {
-    return this.p$h || (this.p$h = !0, this.v$h = this.FbDataInternal.startPoint()), this.v$h
+    if (!this.p$h) {
+      this.p$h = true;
+      this.v$h = this.FbDataInternal.startPoint();
+    }
+    return this.v$h;
   }
   get EndPoint() {
-    return this.y$h || (this.y$h = !0, this.S$h = this.FbDataInternal.endPoint()), this.S$h
+    if (!this.y$h) {
+      this.y$h = true;
+      this.S$h = this.FbDataInternal.endPoint();
+    }
+    return this.S$h;
   }
 }
 exports.FbConnectorEffectConfig = FbConnectorEffectConfig;

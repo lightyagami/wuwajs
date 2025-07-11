@@ -1,32 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkillCdController = void 0;
-const ControllerBase_1 = require("../../../Core/Framework/ControllerBase"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  VisibleStateUtil_1 = require("../BattleUi/VisibleStateUtil");
+  value: true
+});
+exports.SkillCdController = undefined;
+const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const VisibleStateUtil_1 = require("../BattleUi/VisibleStateUtil");
 class SkillCdController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return Net_1.Net.Register(27909, this.uQe), Net_1.Net.Register(21493, this.cQe), !0
+    Net_1.Net.Register(26478, this.uQe);
+    Net_1.Net.Register(22754, this.cQe);
+    return true;
   }
   static OnClear() {
-    return Net_1.Net.UnRegister(27909), Net_1.Net.UnRegister(21493), !0
+    Net_1.Net.UnRegister(26478);
+    Net_1.Net.UnRegister(22754);
+    return true;
   }
   static OnTick(e) {}
   static Pause(e, t) {
-    var r = this.IsPause(),
-      t = (this.mQe = VisibleStateUtil_1.VisibleStateUtil.SetVisible(this.mQe, !t, e), this.IsPause());
-    r !== t && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharSkillCdPauseStateChanged, t)
+    var r = this.IsPause();
+    this.mQe = VisibleStateUtil_1.VisibleStateUtil.SetVisible(this.mQe, !t, e);
+    var t = this.IsPause();
+    if (r !== t) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharSkillCdPauseStateChanged, t);
+    }
   }
   static IsPause() {
-    return 0 !== this.mQe
+    return this.mQe !== 0;
   }
-}(exports.SkillCdController = SkillCdController).mQe = 0, SkillCdController.uQe = e => {
-  ModelManager_1.ModelManager.SkillCdModel?.HandlePlayerSkillInfoPbNotify(e)
-}, SkillCdController.cQe = e => {
-  ModelManager_1.ModelManager.SkillCdModel?.HandlePassiveSkillNotify(e)
+}
+(exports.SkillCdController = SkillCdController).mQe = 0;
+SkillCdController.uQe = e => {
+  ModelManager_1.ModelManager.SkillCdModel?.HandlePlayerSkillInfoPbNotify(e);
 };
-//# sourceMappingURL=SkillCdController.js.map
+SkillCdController.cQe = e => {
+  ModelManager_1.ModelManager.SkillCdModel?.HandlePassiveSkillNotify(e);
+}; //# sourceMappingURL=SkillCdController.js.map

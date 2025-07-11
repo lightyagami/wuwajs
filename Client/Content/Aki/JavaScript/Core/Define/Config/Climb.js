@@ -1,195 +1,299 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.Climb = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  FloatRange_1 = require("./SubType/FloatRange"),
-  Vector_1 = require("./SubType/Vector");
+  value: true
+});
+exports.Climb = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const FloatRange_1 = require("./SubType/FloatRange");
+const Vector_1 = require("./SubType/Vector");
 class Climb {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ClimbDetectPoints() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.climbdetectpointsLength(), this.climbdetectpoints, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.climbdetectpointsLength(), this.climbdetectpoints, this);
   }
   get DetectRadius() {
-    return this.detectradius()
+    return this.detectradius();
   }
   get ClimbRadius() {
-    return this.climbradius()
+    return this.climbradius();
   }
   get ClimbFromTop() {
-    return this.climbfromtop()
+    return this.climbfromtop();
   }
   get ClimbVault() {
-    return this.climbvault()
+    return this.climbvault();
   }
   get ClimbOnTop() {
-    return this.climbontop()
+    return this.climbontop();
   }
   get VaultRange() {
-    return this.vaultrange()
+    return this.vaultrange();
   }
   get UpArriveRange() {
-    return this.uparriverange()
+    return this.uparriverange();
   }
   get ClimbSprintVault() {
-    return this.climbsprintvault()
+    return this.climbsprintvault();
   }
   get SprintVaultRange() {
-    return this.sprintvaultrange()
+    return this.sprintvaultrange();
   }
   get ForwardBlockHeight() {
-    return this.forwardblockheight()
+    return this.forwardblockheight();
   }
   get ForwardBlockRadius() {
-    return this.forwardblockradius()
+    return this.forwardblockradius();
   }
   get ForwardBlockDistance() {
-    return this.forwardblockdistance()
+    return this.forwardblockdistance();
   }
   get SprintVaultLongNeedDistance() {
-    return this.sprintvaultlongneeddistance()
+    return this.sprintvaultlongneeddistance();
   }
   get SprintVaultLongHeight() {
-    return this.sprintvaultlongheight()
+    return this.sprintvaultlongheight();
   }
   get SprintVaultLongRange() {
-    return this.sprintvaultlongrange()
+    return this.sprintvaultlongrange();
   }
   get BlockUpOffset() {
-    return this.blockupoffset()
+    return this.blockupoffset();
   }
   get BlockUpDetectRadius() {
-    return this.blockupdetectradius()
+    return this.blockupdetectradius();
   }
   get BlockUpDetectDistance() {
-    return this.blockupdetectdistance()
+    return this.blockupdetectdistance();
   }
   get BlockUpBackDistance() {
-    return this.blockupbackdistance()
+    return this.blockupbackdistance();
   }
   get BlockUpBackMinDist() {
-    return this.blockupbackmindist()
+    return this.blockupbackmindist();
   }
   get BlockUpFinalMove() {
-    return this.blockupfinalmove()
+    return this.blockupfinalmove();
   }
   get BlockUpVerticalRange() {
-    return this.blockupverticalrange()
+    return this.blockupverticalrange();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsClimb(t, i) {
-    return (i || new Climb).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new Climb()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id(t) {
-    var i = this.J7.__offset(this.z7, 4),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 4);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetClimbdetectpointsAt(t, i) {
-    return this.climbdetectpoints(t)
+    return this.climbdetectpoints(t);
   }
   climbdetectpoints(t, i) {
     var s = this.J7.__offset(this.z7, 6);
-    return s ? (i || new Vector_1.Vector).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new Vector_1.Vector()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   climbdetectpointsLength() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   detectradius() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readFloat32(this.z7 + t) : 20
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 20;
+    }
   }
   climbradius() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readFloat32(this.z7 + t) : 40
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 40;
+    }
   }
   climbfromtop(t) {
     var i = this.J7.__offset(this.z7, 12);
-    return i ? (t || new Vector_1.Vector).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   climbvault(t) {
     var i = this.J7.__offset(this.z7, 14);
-    return i ? (t || new Vector_1.Vector).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   climbontop(t) {
     var i = this.J7.__offset(this.z7, 16);
-    return i ? (t || new Vector_1.Vector).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   vaultrange(t) {
     var i = this.J7.__offset(this.z7, 18);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   uparriverange(t) {
     var i = this.J7.__offset(this.z7, 20);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   climbsprintvault(t) {
     var i = this.J7.__offset(this.z7, 22);
-    return i ? (t || new Vector_1.Vector).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   sprintvaultrange(t) {
     var i = this.J7.__offset(this.z7, 24);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   forwardblockheight() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readFloat32(this.z7 + t) : 50
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 50;
+    }
   }
   forwardblockradius() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readFloat32(this.z7 + t) : 30
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 30;
+    }
   }
   forwardblockdistance(t) {
     var i = this.J7.__offset(this.z7, 30);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   sprintvaultlongneeddistance() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? this.J7.readFloat32(this.z7 + t) : 48
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 48;
+    }
   }
   sprintvaultlongheight() {
     var t = this.J7.__offset(this.z7, 34);
-    return t ? this.J7.readFloat32(this.z7 + t) : 75
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 75;
+    }
   }
   sprintvaultlongrange(t) {
     var i = this.J7.__offset(this.z7, 36);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   blockupoffset(t) {
     var i = this.J7.__offset(this.z7, 38);
-    return i ? (t || new Vector_1.Vector).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   blockupdetectradius() {
     var t = this.J7.__offset(this.z7, 40);
-    return t ? this.J7.readFloat32(this.z7 + t) : 20
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 20;
+    }
   }
   blockupdetectdistance() {
     var t = this.J7.__offset(this.z7, 42);
-    return t ? this.J7.readFloat32(this.z7 + t) : 250
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 250;
+    }
   }
   blockupbackdistance() {
     var t = this.J7.__offset(this.z7, 44);
-    return t ? this.J7.readFloat32(this.z7 + t) : 100
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 100;
+    }
   }
   blockupbackmindist() {
     var t = this.J7.__offset(this.z7, 46);
-    return t ? this.J7.readFloat32(this.z7 + t) : 50
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 50;
+    }
   }
   blockupfinalmove(t) {
     var i = this.J7.__offset(this.z7, 48);
-    return i ? (t || new Vector_1.Vector).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
   blockupverticalrange(t) {
     var i = this.J7.__offset(this.z7, 50);
-    return i ? (t || new FloatRange_1.FloatRange).__init(this.J7.__indirect(this.z7 + i), this.J7) : null
+    if (i) {
+      return (t || new FloatRange_1.FloatRange()).__init(this.J7.__indirect(this.z7 + i), this.J7);
+    } else {
+      return null;
+    }
   }
 }
 exports.Climb = Climb;

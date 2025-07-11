@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ControllerAssistantBase = void 0;
+  value: true
+});
+exports.ControllerAssistantBase = undefined;
 class ControllerAssistantBase {
   Init() {
-    this.OnInit()
+    this.OnInit();
   }
   OnInit() {}
   OnRegisterNetEvent() {}
@@ -12,7 +14,7 @@ class ControllerAssistantBase {
   OnAddEvents() {}
   OnRemoveEvents() {}
   Destroy() {
-    this.OnDestroy()
+    this.OnDestroy();
   }
 }
 exports.ControllerAssistantBase = ControllerAssistantBase;

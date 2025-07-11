@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbActiveRange = void 0;
+  value: true
+});
+exports.FbActiveRange = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbActiveRange {
   constructor(t) {
-    this.FbDataInternal = t, this.yEh = !1, this.SEh = void 0, this.MEh = !1, this.EEh = 0, this.IEh = !1, this.TEh = 0
+    this.FbDataInternal = t;
+    this.yEh = false;
+    this.SEh = undefined;
+    this.MEh = false;
+    this.EEh = 0;
+    this.IEh = false;
+    this.TEh = 0;
   }
   static Create(t) {
-    if (t) return new FbActiveRange(t)
+    if (t) {
+      return new FbActiveRange(t);
+    }
   }
   get CheckPoint() {
-    return this.yEh || (this.yEh = !0, this.SEh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.checkPoint())), this.SEh
+    if (!this.yEh) {
+      this.yEh = true;
+      this.SEh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.checkPoint());
+    }
+    return this.SEh;
   }
   get CheckEnterRange() {
-    return this.MEh || (this.MEh = !0, this.EEh = this.FbDataInternal.checkEnterRange()), this.EEh
+    if (!this.MEh) {
+      this.MEh = true;
+      this.EEh = this.FbDataInternal.checkEnterRange();
+    }
+    return this.EEh;
   }
   get CheckLeaveRange() {
-    return this.IEh || (this.IEh = !0, this.TEh = this.FbDataInternal.checkLeaveRange()), this.TEh
+    if (!this.IEh) {
+      this.IEh = true;
+      this.TEh = this.FbDataInternal.checkLeaveRange();
+    }
+    return this.TEh;
   }
 }
 exports.FbActiveRange = FbActiveRange;

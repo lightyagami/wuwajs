@@ -1,134 +1,284 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GuideBaseView = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  LevelConditionRegistry_1 = require("../../../LevelGamePlay/LevelConditions/LevelConditionRegistry"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiTimeDilation_1 = require("../../../Ui/Base/UiTimeDilation"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController"),
-  InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  LoadingDefine_1 = require("../../Loading/LoadingDefine"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  guideConflictView = new Set(["MonthCardRewardView", "QuestRewardView", "ExploreRewardView", "CommonRewardView", "ItemTipsView", "ExploreDetailView", "TowerUnlockView", "TowerOverLockUnlockView", "PowerView", "ActivityRewardPopUpView", "RoleGenderChangeView", "ConfirmBoxView", "CdKeyInputView", "CompositeRewardView", "LogUploadView", "RacingBetsSuccessTip", "RacingBetsFailTip", "DangoAbyssInfoView", "PhantomArenaStartView", "TutorialPopView", "ResolutionListView", ...LoadingDefine_1.loadingViewList]);
+  value: true
+});
+exports.GuideBaseView = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const LevelConditionRegistry_1 = require("../../../LevelGamePlay/LevelConditions/LevelConditionRegistry");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiTimeDilation_1 = require("../../../Ui/Base/UiTimeDilation");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
+const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
+const UiManager_1 = require("../../../Ui/UiManager");
+const LoadingDefine_1 = require("../../Loading/LoadingDefine");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const guideConflictView = new Set(["MonthCardRewardView", "QuestRewardView", "ExploreRewardView", "CommonRewardView", "ItemTipsView", "ExploreDetailView", "TowerUnlockView", "TowerOverLockUnlockView", "PowerView", "ActivityRewardPopUpView", "RoleGenderChangeView", "ConfirmBoxView", "CdKeyInputView", "CompositeRewardView", "LogUploadView", "RacingBetsSuccessTip", "RacingBetsFailTip", "DangoAbyssInfoView", "PhantomArenaStartView", "TutorialPopView", "ResolutionListView", ...LoadingDefine_1.loadingViewList]);
 class GuideBaseView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.IgnoreState = !1, this.IsFinished = !1, this.GuideStepInfo = void 0, this.CombineInputMap = new Map, this.RemainDuration = 0, this.Czt = 0, this.gzt = !1, this.Khc = !1, this.fzt = void 0, this.pzt = void 0, this.TimeTicker = void 0, this.vzt = void 0, this.Mzt = i => {
-      this.GetActive() && (i ? this.OnAfterShow() : this.OnAfterHide())
-    }, this.OnFinishConditionOk = () => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导步骤  成功结束条件达成", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["结束条件id", this.GuideStepInfo.Config.SuccessCondition]), this.OnCheckBaseViewFinishConditionOk() && this.DoCloseByFinished()
-    }, this.OnFinishConditionFail = () => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导步骤  失败结束条件达成", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["结束条件id", this.GuideStepInfo.Config.FailureCondition]), this.OnCheckBaseViewFinishConditionFail() && this.Ezt()
-    }, this.OnTick = e => {
+    super(...arguments);
+    this.IgnoreState = false;
+    this.IsFinished = false;
+    this.GuideStepInfo = undefined;
+    this.CombineInputMap = new Map();
+    this.RemainDuration = 0;
+    this.Czt = 0;
+    this.gzt = false;
+    this.Khc = false;
+    this.fzt = undefined;
+    this.pzt = undefined;
+    this.TimeTicker = undefined;
+    this.vzt = undefined;
+    this.Mzt = i => {
+      if (this.GetActive()) {
+        if (i) {
+          this.OnAfterShow();
+        } else {
+          this.OnAfterHide();
+        }
+      }
+    };
+    this.OnFinishConditionOk = () => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "引导步骤  成功结束条件达成", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["结束条件id", this.GuideStepInfo.Config.SuccessCondition]);
+      }
+      if (this.OnCheckBaseViewFinishConditionOk()) {
+        this.DoCloseByFinished();
+      }
+    };
+    this.OnFinishConditionFail = () => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "引导步骤  失败结束条件达成", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["结束条件id", this.GuideStepInfo.Config.FailureCondition]);
+      }
+      if (this.OnCheckBaseViewFinishConditionFail()) {
+        this.Ezt();
+      }
+    };
+    this.OnTick = e => {
       if (!ModelManager_1.ModelManager.LoadingModel.IsLoadingView) {
         this.OnGuideBaseViewTick(e);
         var t = this.RemainDuration;
-        if (t && 0 < t) {
+        if (t && t > 0) {
           let i = e;
-          (t -= i = !this.GuideStepInfo?.ViewData?.IsAttachToBattleView || this.IsShow || this.Khc ? i : 0) <= 0 && this.Szt(), this.RemainDuration = t, this.OnDurationChange(t)
+          if ((t -= i = !this.GuideStepInfo?.ViewData?.IsAttachToBattleView || this.IsShow || this.Khc ? i : 0) <= 0) {
+            this.Szt();
+          }
+          this.RemainDuration = t;
+          this.OnDurationChange(t);
         }
-        this.IsShow && (this.Czt -= e, this.yzt())
+        if (this.IsShow) {
+          this.Czt -= e;
+          this.yzt();
+        }
+      }
+    };
+  }
+  get TotalDuration() {
+    if (this.GuideStepInfo) {
+      return this.GuideStepInfo.Config.Duration;
+    } else {
+      return 0;
+    }
+  }
+  yzt() {
+    var i;
+    var e = this.GuideStepInfo.Config;
+    if (!this.fzt) {
+      if ((i = e.SuccessCondition) && ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(i.toString(), undefined)) {
+        this.OnFinishConditionOk();
+      }
+    }
+    if (!this.pzt) {
+      if ((i = e.FailureCondition) && ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(i.toString(), undefined)) {
+        this.OnFinishConditionFail();
       }
     }
   }
-  get TotalDuration() {
-    return this.GuideStepInfo ? this.GuideStepInfo.Config.Duration : 0
-  }
-  yzt() {
-    var i, e = this.GuideStepInfo.Config;
-    this.fzt || (i = e.SuccessCondition) && ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(i.toString(), void 0) && this.OnFinishConditionOk(), this.pzt || (i = e.FailureCondition) && ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(i.toString(), void 0) && this.OnFinishConditionFail()
-  }
   CheckTickCondition() {
     var i = this.GuideStepInfo.Config.TickCondition;
-    return 0 === i || (this.Khc = !0, ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(i.toString(), void 0, !0, this.GetViewId()))
+    return i === 0 || (this.Khc = true, ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(i.toString(), undefined, true, this.GetViewId()));
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUiScreenRootVisibleChange, this.Mzt), this.OnGuideBaseViewAddEvent()
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUiScreenRootVisibleChange, this.Mzt);
+    this.OnGuideBaseViewAddEvent();
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUiScreenRootVisibleChange, this.Mzt), this.OnGuideBaseViewRemoveEvent()
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUiScreenRootVisibleChange, this.Mzt);
+    this.OnGuideBaseViewRemoveEvent();
   }
   HasConflictView() {
-    for (const i of guideConflictView)
-      if (UiManager_1.UiManager.IsViewShow(i)) return !0;
-    return !1
+    for (const i of guideConflictView) {
+      if (UiManager_1.UiManager.IsViewShow(i)) {
+        return true;
+      }
+    }
+    return false;
   }
   DoCloseByFinished() {
-    this.IsFinished || (this.IsFinished = !0, this.OnGuideViewCloseWhenFinish(), this.Ezt())
+    if (!this.IsFinished) {
+      this.IsFinished = true;
+      this.OnGuideViewCloseWhenFinish();
+      this.Ezt();
+    }
   }
   Ezt() {
     var i = this.Czt;
-    i < TimerSystem_1.MIN_TIME ? this.eNt() : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "[DoClose]引导步骤完成, 但显示时长未达到配置的最小显示时间", ["步骤Id", this.GuideStepInfo.Id], ["剩余倒计时", i]), TimerSystem_1.TimerSystem.Delay(() => {
-      this.eNt()
-    }, i))
+    if (i < TimerSystem_1.MIN_TIME) {
+      this.eNt();
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "[DoClose]引导步骤完成, 但显示时长未达到配置的最小显示时间", ["步骤Id", this.GuideStepInfo.Id], ["剩余倒计时", i]);
+      }
+      TimerSystem_1.GameplayTimerSystem.Delay(() => {
+        this.eNt();
+      }, i);
+    }
   }
   eNt() {
-    this.TimeTicker && (this.TimeTicker.Remove(), this.TimeTicker = void 0), this.CloseMe()
+    if (this.TimeTicker) {
+      this.TimeTicker.Remove();
+      this.TimeTicker = undefined;
+    }
+    this.CloseMe();
   }
   BindInput(e, t, i) {
     if (e.length === t.length && this.vzt !== i) {
       this.vzt = i;
       for (let i = 0; i < t.length; i++) {
         var s = e[i];
-        Object.values(InputMappingsDefine_1.actionMappings).includes(s) ? (InputDistributeController_1.InputDistributeController.BindAction(t[i], this.vzt), this.CombineInputMap.set(t[i], 1)) : Object.values(InputMappingsDefine_1.axisMappings).includes(s) ? (InputDistributeController_1.InputDistributeController.BindAxis(t[i], this.vzt), this.CombineInputMap.set(t[i], 0)) : Log_1.Log.CheckError() && Log_1.Log.Error("Guide", 16, "引导步骤  填的操作映射未定义", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["错误的操作映射", s])
+        if (Object.values(InputMappingsDefine_1.actionMappings).includes(s)) {
+          InputDistributeController_1.InputDistributeController.BindAction(t[i], this.vzt);
+          this.CombineInputMap.set(t[i], 1);
+        } else if (Object.values(InputMappingsDefine_1.axisMappings).includes(s)) {
+          InputDistributeController_1.InputDistributeController.BindAxis(t[i], this.vzt);
+          this.CombineInputMap.set(t[i], 0);
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Guide", 16, "引导步骤  填的操作映射未定义", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["错误的操作映射", s]);
+        }
       }
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导界面绑定输入", ["步骤Id", this.GuideStepInfo.Id], ["输入", t])
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "引导界面绑定输入", ["步骤Id", this.GuideStepInfo.Id], ["输入", t]);
+      }
     }
   }
   IsAllCombineInputPass() {
-    let i = !0;
+    let i = true;
     for (const s of this.CombineInputMap) {
-      var e = s[0],
-        t = s[1];
-      Object.values(InputMappingsDefine_1.actionMappings).includes(e) ? i = i && 1 !== t : Object.values(InputMappingsDefine_1.axisMappings).includes(e) && (i = i && 0 < t)
+      var e = s[0];
+      var t = s[1];
+      if (Object.values(InputMappingsDefine_1.actionMappings).includes(e)) {
+        i = i && t !== 1;
+      } else if (Object.values(InputMappingsDefine_1.axisMappings).includes(e)) {
+        i = i && t > 0;
+      }
     }
-    return i
+    return i;
   }
   UnbindInput(e, t) {
     if (e.length === t.length && this.vzt) {
       for (let i = 0; i < t.length; i++) {
         var s = e[i];
-        Object.values(InputMappingsDefine_1.actionMappings).includes(s) ? InputDistributeController_1.InputDistributeController.UnBindAction(t[i], this.vzt) : Object.values(InputMappingsDefine_1.axisMappings).includes(s) ? InputDistributeController_1.InputDistributeController.UnBindAxis(t[i], this.vzt) : Log_1.Log.CheckError() && Log_1.Log.Error("Guide", 16, "引导步骤  填的操作映射未定义", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["错误的操作映射", s]), this.CombineInputMap.delete(t[i])
+        if (Object.values(InputMappingsDefine_1.actionMappings).includes(s)) {
+          InputDistributeController_1.InputDistributeController.UnBindAction(t[i], this.vzt);
+        } else if (Object.values(InputMappingsDefine_1.axisMappings).includes(s)) {
+          InputDistributeController_1.InputDistributeController.UnBindAxis(t[i], this.vzt);
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Guide", 16, "引导步骤  填的操作映射未定义", ["this.GuideStepInfo!.Id", this.GuideStepInfo.Id], ["错误的操作映射", s]);
+        }
+        this.CombineInputMap.delete(t[i]);
       }
-      this.vzt = void 0
+      this.vzt = undefined;
     }
   }
   OnBeforeCreate() {
-    this.gzt = !1, this.GuideStepInfo = this.OpenParam, this.RemainDuration = this.TotalDuration, this.Czt = this.GuideStepInfo.Config.MinDuration, this.GuideStepInfo.AssignGuideView(this), this.Izt(), this.OnBeforeGuideBaseViewCreate()
+    this.gzt = false;
+    this.GuideStepInfo = this.OpenParam;
+    this.RemainDuration = this.TotalDuration;
+    this.Czt = this.GuideStepInfo.Config.MinDuration;
+    this.GuideStepInfo.AssignGuideView(this);
+    this.Izt();
+    this.OnBeforeGuideBaseViewCreate();
   }
   OnStart() {
-    this.OnGuideBaseViewStart(), this.TimeTicker = TimerSystem_1.TimerSystem.Forever(this.OnTick, TimerSystem_1.MIN_TIME)
+    this.OnGuideBaseViewStart();
+    this.TimeTicker = TimerSystem_1.GameplayTimerSystem.Forever(this.OnTick, TimerSystem_1.MIN_TIME);
   }
   OnAfterShow() {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "[引导界面基类:OnShow]", ["引导步骤", this.GuideStepInfo.Id]);
-    var i = this.GuideStepInfo.Config,
-      i = (i.IsDangerous && LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_Danger_Tip", this.RootItem), i.TimeScale);
-    i < 1 && !ModelManager_1.ModelManager.GameModeModel.IsMulti && (InputDistributeController_1.InputDistributeController.RefreshInputTag(), UiTimeDilation_1.UiTimeDilation.SetTimeDilationHighLevel(i, "GuideBase")), this.Izt(), this.OnGuideViewAfterShow()
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Guide", 16, "[引导界面基类:OnShow]", ["引导步骤", this.GuideStepInfo.Id]);
+    }
+    var i = this.GuideStepInfo.Config;
+    if (i.IsDangerous) {
+      LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_Danger_Tip", this.RootItem);
+    }
+    var i = i.TimeScale;
+    if (i < 1 && !ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+      InputDistributeController_1.InputDistributeController.RefreshInputTag();
+      UiTimeDilation_1.UiTimeDilation.SetTimeDilationHighLevel(i, "GuideBase");
+    }
+    this.Izt();
+    this.OnGuideViewAfterShow();
   }
   OnAfterHide() {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "[引导界面基类:OnHide]", ["引导步骤", this.GuideStepInfo.Id]), this.GuideStepInfo.Config.TimeScale < 1 && !ModelManager_1.ModelManager.GameModeModel.IsMulti && (UiTimeDilation_1.UiTimeDilation.ResetTimeDilationHighLevel("GuideBase"), InputDistributeController_1.InputDistributeController.RefreshInputTag()), this.Tzt(), this.OnGuideBaseViewAfterHide()
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Guide", 16, "[引导界面基类:OnHide]", ["引导步骤", this.GuideStepInfo.Id]);
+    }
+    if (this.GuideStepInfo.Config.TimeScale < 1 && !ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+      UiTimeDilation_1.UiTimeDilation.ResetTimeDilationHighLevel("GuideBase");
+      InputDistributeController_1.InputDistributeController.RefreshInputTag();
+    }
+    this.Tzt();
+    this.OnGuideBaseViewAfterHide();
   }
   Izt() {
-    var i, e;
-    this.gzt || (this.gzt = !0, (i = this.GuideStepInfo.Config).SuccessCondition && (e = new LevelConditionRegistry_1.ConditionPassCallback(this.OnFinishConditionOk), LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(i.SuccessCondition, e)) && (this.fzt = e), i.FailureCondition && (e = new LevelConditionRegistry_1.ConditionPassCallback(this.OnFinishConditionFail), LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(i.FailureCondition, e)) && (this.pzt = e))
+    var i;
+    var e;
+    if (!this.gzt) {
+      this.gzt = true;
+      if ((i = this.GuideStepInfo.Config).SuccessCondition && (e = new LevelConditionRegistry_1.ConditionPassCallback(this.OnFinishConditionOk), LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(i.SuccessCondition, e))) {
+        this.fzt = e;
+      }
+      if (i.FailureCondition && (e = new LevelConditionRegistry_1.ConditionPassCallback(this.OnFinishConditionFail), LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(i.FailureCondition, e))) {
+        this.pzt = e;
+      }
+    }
   }
   Tzt() {
     var i;
-    this.gzt && (this.gzt = !1, (i = this.GuideStepInfo.Config).SuccessCondition && this.fzt && (LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(i.SuccessCondition, this.fzt), this.fzt = void 0), i.FailureCondition) && this.pzt && (LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(i.FailureCondition, this.pzt), this.pzt = void 0)
+    if (this.gzt && (this.gzt = false, (i = this.GuideStepInfo.Config).SuccessCondition && this.fzt && (LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(i.SuccessCondition, this.fzt), this.fzt = undefined), i.FailureCondition) && this.pzt) {
+      LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(i.FailureCondition, this.pzt);
+      this.pzt = undefined;
+    }
   }
   OnBeforeDestroy() {
-    this.Khc = !1, this.TimeTicker && (this.TimeTicker.Remove(), this.TimeTicker = void 0);
+    this.Khc = false;
+    if (this.TimeTicker) {
+      this.TimeTicker.Remove();
+      this.TimeTicker = undefined;
+    }
     var i = this.GuideStepInfo;
-    this.OnGuideBaseViewDestroy(), this.IgnoreState || (this.IsFinished ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "[OnDestroy]引导UI关闭时, 步骤已完成", ["步骤Id", i.Id]), i.SwitchState(4)) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "[OnDestroy]引导UI关闭时, 步骤未完成", ["步骤Id", i.Id]), i.SwitchState(3)))
+    this.OnGuideBaseViewDestroy();
+    if (!this.IgnoreState) {
+      if (this.IsFinished) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Guide", 16, "[OnDestroy]引导UI关闭时, 步骤已完成", ["步骤Id", i.Id]);
+        }
+        i.SwitchState(4);
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Guide", 16, "[OnDestroy]引导UI关闭时, 步骤未完成", ["步骤Id", i.Id]);
+        }
+        i.SwitchState(3);
+      }
+    }
   }
   Szt() {
-    this.eNt()
+    this.eNt();
   }
   OnBeforeGuideBaseViewCreate() {}
   OnGuideBaseViewStart() {}
@@ -141,10 +291,10 @@ class GuideBaseView extends UiViewBase_1.UiViewBase {
   OnDurationChange(i) {}
   OnGuideViewCloseWhenFinish() {}
   OnCheckBaseViewFinishConditionOk() {
-    return !0
+    return true;
   }
   OnCheckBaseViewFinishConditionFail() {
-    return !0
+    return true;
   }
 }
 exports.GuideBaseView = GuideBaseView;

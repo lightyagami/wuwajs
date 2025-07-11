@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCloseFlowTemplate = void 0;
+  value: true
+});
+exports.FbCloseFlowTemplate = undefined;
 const FbEndState_1 = require("./FbEndState");
 class FbCloseFlowTemplate {
   constructor(t) {
-    this.FbDataInternal = t, this.$Mh = !1, this.XMh = !1, this.D1_ = !1, this.B1_ = void 0
+    this.FbDataInternal = t;
+    this.$Mh = false;
+    this.XMh = false;
+    this.D1_ = false;
+    this.B1_ = undefined;
   }
   static Create(t) {
-    if (t) return new FbCloseFlowTemplate(t)
+    if (t) {
+      return new FbCloseFlowTemplate(t);
+    }
   }
   get IsResetPosition() {
-    return this.$Mh || (this.$Mh = !0, this.XMh = this.FbDataInternal.isResetPosition()), this.XMh
+    if (!this.$Mh) {
+      this.$Mh = true;
+      this.XMh = this.FbDataInternal.isResetPosition();
+    }
+    return this.XMh;
   }
   get EndState() {
-    return this.D1_ || (this.D1_ = !0, this.B1_ = FbEndState_1.FbEndState.Create(this.FbDataInternal.endState())), this.B1_
+    if (!this.D1_) {
+      this.D1_ = true;
+      this.B1_ = FbEndState_1.FbEndState.Create(this.FbDataInternal.endState());
+    }
+    return this.B1_;
   }
 }
 exports.FbCloseFlowTemplate = FbCloseFlowTemplate;

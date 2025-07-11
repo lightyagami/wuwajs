@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckIsPlayerUsingVehicle = void 0;
+  value: true
+});
+exports.FbCheckIsPlayerUsingVehicle = undefined;
 const UnionOnlinePlayerConditionTargetHelper_1 = require("./UnionOnlinePlayerConditionTargetHelper");
 class FbCheckIsPlayerUsingVehicle {
   constructor(i) {
-    this.FbDataInternal = i, this.u_h = !1, this.f8o = void 0, this.AXh = !1, this.xXh = void 0, this.wJh = !1, this.PJh = !1, this.czh = !1, this.uzh = void 0
+    this.FbDataInternal = i;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.AXh = false;
+    this.xXh = undefined;
+    this.wJh = false;
+    this.PJh = false;
+    this.czh = false;
+    this.uzh = undefined;
   }
   static Create(i) {
-    if (i) return new FbCheckIsPlayerUsingVehicle(i)
+    if (i) {
+      return new FbCheckIsPlayerUsingVehicle(i);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get VehicleType() {
-    return this.AXh || (this.AXh = !0, this.xXh = this.FbDataInternal.vehicleType()), this.xXh
+    if (!this.AXh) {
+      this.AXh = true;
+      this.xXh = this.FbDataInternal.vehicleType();
+    }
+    return this.xXh;
   }
   get CheckType() {
-    return this.wJh || (this.wJh = !0, this.PJh = this.FbDataInternal.checkType()), this.PJh
+    if (!this.wJh) {
+      this.wJh = true;
+      this.PJh = this.FbDataInternal.checkType();
+    }
+    return this.PJh;
   }
   get OnlinePlayerConditionTargetOption() {
-    var i, e;
-    return !this.czh && (this.czh = !0, i = this.FbDataInternal.onlinePlayerConditionTargetOptionType(), e = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.GetUnionOnlinePlayerConditionTargetObject(i)) && (this.uzh = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.ReadUnionOnlinePlayerConditionTarget(i, this.FbDataInternal.onlinePlayerConditionTargetOption(e))), this.uzh
+    var i;
+    var e;
+    if (!this.czh && (this.czh = true, i = this.FbDataInternal.onlinePlayerConditionTargetOptionType(), e = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.GetUnionOnlinePlayerConditionTargetObject(i))) {
+      this.uzh = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.ReadUnionOnlinePlayerConditionTarget(i, this.FbDataInternal.onlinePlayerConditionTargetOption(e));
+    }
+    return this.uzh;
   }
 }
 exports.FbCheckIsPlayerUsingVehicle = FbCheckIsPlayerUsingVehicle;

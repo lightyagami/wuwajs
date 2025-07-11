@@ -1,99 +1,201 @@
 "use strict";
-var CharacterSkinDamageComponent_1, __decorate = this && this.__decorate || function(t, e, i, s) {
-  var n, a = arguments.length,
-    h = a < 3 ? e : null === s ? s = Object.getOwnPropertyDescriptor(e, i) : s;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) h = Reflect.decorate(t, e, i, s);
-  else
-    for (var r = t.length - 1; 0 <= r; r--)(n = t[r]) && (h = (a < 3 ? n(h) : 3 < a ? n(e, i, h) : n(e, i)) || h);
-  return 3 < a && h && Object.defineProperty(e, i, h), h
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharacterSkinDamageComponent = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController"),
-  CampUtils_1 = require("../Blueprint/Utils/CampUtils"),
-  CharacterNameDefines_1 = require("../CharacterNameDefines"),
-  SKIN_DAMAGE_TIME = 20,
-  SKIN_DAMAGE_LEVEL1_COUNT = 7,
-  SKIN_DAMAGE_LEVEL2_COUNT = 14,
-  skinDamageTagMap = new Map([
-    [0, -723474560],
-    [1, -1450058230],
-    [2, 430401293]
-  ]);
-let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class CharacterSkinDamageComponent extends EntityComponent_1.EntityComponent {
-  constructor() {
-    super(...arguments), this.EIe = void 0, this.Hte = void 0, this.Lie = void 0, this.Yjr = void 0, this.tec = 0, this.wNr = 0, this.zjr = 0, this.Zjr = 0, this.n8 = "", this.eWr = void 0, this.CuePath = "", this.Zpe = t => {
-      this.BCe(), t ? (this.wNr = Time_1.Time.WorldTimeSeconds, this.zjr = 0) : (this.wNr = 0, this.zjr = Time_1.Time.WorldTimeSeconds, this.tWr()), this.Zjr = 0
-    }, this.gne = t => {
-      if (0 !== this.wNr) {
-        t = t.Attacker.GetComponent(3);
-        if (t)
-          if (2 !== CampUtils_1.CampUtils.GetCampRelationship(t.Actor.Camp, this.Hte.Actor.Camp)) return;
-        this.Zjr++;
-        t = Time_1.Time.WorldTimeSeconds - this.wNr;
-        t > SKIN_DAMAGE_TIME && (this.Zjr > SKIN_DAMAGE_LEVEL2_COUNT ? this.iWr(2, "加载2级战损贴图（受击）", ["battleStartDuration", t], ["BeHitCount", this.Zjr]) : this.Zjr > SKIN_DAMAGE_LEVEL1_COUNT && this.iWr(1, "加载1级战损贴图（受击）", ["battleStartDuration", t], ["BeHitCount", this.Zjr]))
+
+var CharacterSkinDamageComponent_1;
+var __decorate = this && this.__decorate || function (t, e, i, s) {
+  var n;
+  var r = arguments.length;
+  var a = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    a = Reflect.decorate(t, e, i, s);
+  } else {
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (n = t[h]) {
+        a = (r < 3 ? n(a) : r > 3 ? n(e, i, a) : n(e, i)) || a;
       }
-    }, this.UQe = () => {
-      FormationDataController_1.FormationDataController.GlobalIsInFight && this.iWr(2, "加载2级战损贴图（复活）")
-    }, this.bpr = () => {
-      this.iWr(0, "战损恢复（传送）")
-    }, this.q2t = t => {
-      t === this.Entity.Id && 0 !== this.zjr && Time_1.Time.WorldTimeSeconds - this.zjr > SKIN_DAMAGE_TIME && this.iWr(0, "战损恢复（下场）")
-    }, this.Mi_ = () => {
-      CharacterSkinDamageComponent_1.EnableSkinDamage ? this.CuePath ? this.ApplySkinDamage(this.CuePath, !1, "战损开关设置为开启，GameplayCueSkinDamage重新加载") : this.ApplySkinDamageByType(this.SkinDamageType, !1, "战损开关设置为开启") : this.ApplySkinDamageByType(0, !0, "战损开关设置为关闭")
     }
   }
+  if (r > 3 && a) {
+    Object.defineProperty(e, i, a);
+  }
+  return a;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CharacterSkinDamageComponent = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../Core/Common/Time");
+const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController");
+const CampUtils_1 = require("../Blueprint/Utils/CampUtils");
+const CharacterNameDefines_1 = require("../CharacterNameDefines");
+const SKIN_DAMAGE_TIME = 20;
+const SKIN_DAMAGE_LEVEL1_COUNT = 7;
+const SKIN_DAMAGE_LEVEL2_COUNT = 14;
+const skinDamageTagMap = new Map([[0, -723474560], [1, -1450058230], [2, 430401293]]);
+let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class CharacterSkinDamageComponent extends EntityComponent_1.EntityComponent {
+  constructor() {
+    super(...arguments);
+    this.EIe = undefined;
+    this.Hte = undefined;
+    this.Lie = undefined;
+    this.Yjr = undefined;
+    this.tec = 0;
+    this.wNr = 0;
+    this.zjr = 0;
+    this.Zjr = 0;
+    this.n8 = "";
+    this.eWr = undefined;
+    this.CuePath = "";
+    this.Zpe = t => {
+      this.BCe();
+      if (t) {
+        this.wNr = Time_1.Time.WorldTimeSeconds;
+        this.zjr = 0;
+      } else {
+        this.wNr = 0;
+        this.zjr = Time_1.Time.WorldTimeSeconds;
+        this.tWr();
+      }
+      this.Zjr = 0;
+    };
+    this.gne = t => {
+      if (this.wNr !== 0) {
+        t = t.Attacker.GetComponent(3);
+        if (t) {
+          if (CampUtils_1.CampUtils.GetCampRelationship(t.Actor.Camp, this.Hte.Actor.Camp) !== 2) {
+            return;
+          }
+        }
+        this.Zjr++;
+        this.Qbu();
+      }
+    };
+    this.UQe = () => {
+      if (FormationDataController_1.FormationDataController.GlobalIsInFight) {
+        this.ApplySkinDamageByType(2, false, "加载2级战损贴图（复活）");
+      }
+    };
+    this.bpr = () => {
+      this.ApplySkinDamageByType(0, false, "战损恢复（传送）");
+    };
+    this.q2t = t => {
+      if (t === this.Entity.Id && this.zjr !== 0 && Time_1.Time.WorldTimeSeconds - this.zjr > SKIN_DAMAGE_TIME) {
+        this.ApplySkinDamageByType(0, false, "战损恢复（下场）");
+      }
+    };
+    this.Mi_ = () => {
+      if (CharacterSkinDamageComponent_1.EnableSkinDamage) {
+        this.Qbu();
+      } else {
+        this.ApplySkinDamageByType(0, true, "战损开关设置为关闭");
+      }
+    };
+  }
   OnStart() {
-    return this.EIe = this.Entity.CheckGetComponent(0), this.Hte = this.Entity.CheckGetComponent(3), this.Lie = this.Entity.CheckGetComponent(205), this.SkinDamageType = 0, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnResetSkinDamageMode, this.Mi_), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRevive, this.UQe), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.bpr), !0
+    this.EIe = this.Entity.CheckGetComponent(0);
+    this.Hte = this.Entity.CheckGetComponent(3);
+    this.Lie = this.Entity.CheckGetComponent(205);
+    this.SkinDamageType = 0;
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnResetSkinDamageMode, this.Mi_);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRevive, this.UQe);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.bpr);
+    return true;
   }
   OnEnd() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleGoDown, this.q2t), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnResetSkinDamageMode, this.Mi_), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRevive, this.UQe), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.bpr), this.BCe(), !0
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleGoDown, this.q2t);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnResetSkinDamageMode, this.Mi_);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRevive, this.UQe);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.bpr);
+    this.BCe();
+    return true;
   }
   oWr() {
-    this.Yjr = this.Hte.Actor.GetComponentByClass(UE.KuroChangeSkeletalMaterialsComponent.StaticClass()), this.Yjr?.IsValid() || (this.Yjr = this.Hte.Actor.AddComponentByClass(UE.KuroChangeSkeletalMaterialsComponent.StaticClass(), !1, MathUtils_1.MathUtils.DefaultTransform, !1, CharacterNameDefines_1.CharacterNameDefines.CHANGE_SKELETAL_MATERIALS_COMP_NAME))
+    this.Yjr = this.Hte.Actor.GetComponentByClass(UE.KuroChangeSkeletalMaterialsComponent.StaticClass());
+    if (!this.Yjr?.IsValid()) {
+      this.Yjr = this.Hte.Actor.AddComponentByClass(UE.KuroChangeSkeletalMaterialsComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.CHANGE_SKELETAL_MATERIALS_COMP_NAME);
+    }
+  }
+  Qbu() {
+    var t = Time_1.Time.WorldTimeSeconds - this.wNr;
+    if (t > SKIN_DAMAGE_TIME) {
+      if (this.Zjr > SKIN_DAMAGE_LEVEL2_COUNT) {
+        this.ApplySkinDamageByType(2, false, "加载2级战损贴图（受击）", ["battleStartDuration", t], ["BeHitCount", this.Zjr]);
+      } else if (this.Zjr > SKIN_DAMAGE_LEVEL1_COUNT) {
+        this.ApplySkinDamageByType(1, false, "加载1级战损贴图（受击）", ["battleStartDuration", t], ["BeHitCount", this.Zjr]);
+      }
+    }
   }
   BCe() {
-    this.eWr && (TimerSystem_1.TimerSystem.Remove(this.eWr), this.eWr = void 0)
+    if (this.eWr) {
+      TimerSystem_1.TimerSystem.Remove(this.eWr);
+      this.eWr = undefined;
+    }
   }
   tWr() {
     this.eWr = TimerSystem_1.TimerSystem.Delay(() => {
-      this.eWr = void 0, ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Id !== this.Entity.Id && this.iWr(0, "战损恢复（定时器）")
-    }, SKIN_DAMAGE_TIME)
+      this.eWr = undefined;
+      if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Id !== this.Entity.Id) {
+        this.ApplySkinDamageByType(0, false, "战损恢复（定时器）");
+      }
+    }, SKIN_DAMAGE_TIME);
   }
   rWr(t) {
     t = this.EIe.GetRoleConfig()?.SkinDamage[t];
-    let e = void 0;
-    return (e = t ? this.Hte.GetReplaceEffect(t) : e) || t
+    let e = undefined;
+    return (e = t ? this.Hte.GetReplaceEffect(t) : e) || t;
   }
   ApplySkinDamageByType(t, e, i, ...s) {
-    this.CuePath && !e || (t = this.rWr(t)) && this.ApplySkinDamage(t, e, i, ...s)
+    if (this.SkinDamageType !== t && (CharacterSkinDamageComponent_1.EnableSkinDamage || e)) {
+      this.SkinDamageType = t;
+      if (!this.CuePath || !!e) {
+        if (t = this.rWr(t)) {
+          this.ApplySkinDamage(t, e, i, ...s);
+        }
+      }
+    }
   }
   ApplySkinDamage(t, e, i, ...s) {
-    (CharacterSkinDamageComponent_1.EnableSkinDamage || e) && this.n8 !== t && (this.n8 = t, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 28, i, ...s), ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.KuroChangeMaterialsTextures, (t, e) => {
-      this.Entity?.Valid && this.Hte.Actor?.IsValid() && e === this.n8 && (this.Yjr?.IsValid() || this.oWr(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 28, "战损贴图生效", ["EntityId", this.Entity.Id], ["path", e]), this.Yjr?.ChangeMaterialsWithDataAsset(t))
-    }))
-  }
-  iWr(t, e, ...i) {
-    this.SkinDamageType !== t && (this.SkinDamageType = t, this.ApplySkinDamageByType(t, !1, e, ...i))
+    if ((CharacterSkinDamageComponent_1.EnableSkinDamage || e) && this.n8 !== t) {
+      this.n8 = t;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 28, i, ...s);
+      }
+      ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.KuroChangeMaterialsTextures, (t, e) => {
+        if (this.Entity?.Valid && this.Hte.Actor?.IsValid() && e === this.n8) {
+          if (!this.Yjr?.IsValid()) {
+            this.oWr();
+          }
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 28, "战损贴图生效", ["EntityId", this.Entity.Id], ["path", e]);
+          }
+          this.Yjr?.ChangeMaterialsWithDataAsset(t);
+        }
+      });
+    }
   }
   set SkinDamageType(t) {
-    this.Lie.RemoveTag(skinDamageTagMap.get(this.tec)), this.tec = t, this.Lie.AddTag(skinDamageTagMap.get(this.tec))
+    this.Lie.RemoveTag(skinDamageTagMap.get(this.tec));
+    this.tec = t;
+    this.Lie.AddTag(skinDamageTagMap.get(this.tec));
   }
   get SkinDamageType() {
-    return this.tec
+    return this.tec;
   }
 };
-CharacterSkinDamageComponent.EnableSkinDamage = !0, CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(210)], CharacterSkinDamageComponent), exports.CharacterSkinDamageComponent = CharacterSkinDamageComponent;
-//# sourceMappingURL=CharacterSkinDamageComponent.js.map
+CharacterSkinDamageComponent.EnableSkinDamage = true;
+CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(210)], CharacterSkinDamageComponent);
+exports.CharacterSkinDamageComponent = CharacterSkinDamageComponent; //# sourceMappingURL=CharacterSkinDamageComponent.js.map

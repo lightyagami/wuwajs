@@ -1,29 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleUiNiagaraItem = void 0;
-const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  DEFAULT_DURATION = 1e3;
+  value: true
+});
+exports.BattleUiNiagaraItem = undefined;
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const DEFAULT_DURATION = 1000;
 class BattleUiNiagaraItem {
   constructor(t) {
-    this.IRe = void 0, this.q7e = () => {
-      this.IRe = void 0, this.Oot()
-    }, this.Item = t, this.Duration = DEFAULT_DURATION, this.Item.bIsAlphaZeroClip = !1
+    this.IRe = undefined;
+    this.q7e = () => {
+      this.IRe = undefined;
+      this.Oot();
+    };
+    this.Item = t;
+    this.Duration = DEFAULT_DURATION;
+    this.Item.bIsAlphaZeroClip = false;
   }
   Play() {
-    this.Item.SetUIActive(!0), this.Item.ActivateSystem(!0), this.xHe(), this.kot()
+    this.Item.SetUIActive(true);
+    this.Item.ActivateSystem(true);
+    this.xHe();
+    this.kot();
   }
   Stop() {
-    this.IRe && (this.xHe(), this.Oot())
+    if (this.IRe) {
+      this.xHe();
+      this.Oot();
+    }
   }
   Oot() {
-    this.Item.SetUIActive(!1)
+    this.Item.SetUIActive(false);
   }
   kot() {
-    this.IRe = TimerSystem_1.TimerSystem.Delay(this.q7e, this.Duration)
+    this.IRe = TimerSystem_1.TimerSystem.Delay(this.q7e, this.Duration);
   }
   xHe() {
-    this.IRe && (TimerSystem_1.TimerSystem.Remove(this.IRe), this.IRe = void 0)
+    if (this.IRe) {
+      TimerSystem_1.TimerSystem.Remove(this.IRe);
+      this.IRe = undefined;
+    }
   }
 }
 exports.BattleUiNiagaraItem = BattleUiNiagaraItem;

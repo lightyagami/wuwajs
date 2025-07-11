@@ -1,49 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkItemComponentHandle = void 0;
+  value: true
+});
+exports.MarkItemComponentHandle = undefined;
 class MarkItemComponentHandle {
   constructor(t) {
-    this.Context = void 0, this.ComponentInternal = void 0, this.Context = t
+    this.Context = undefined;
+    this.ComponentInternal = undefined;
+    this.Context = t;
   }
   Init() {
-    this.OnInit()
+    this.OnInit();
   }
   Update() {
-    void 0 !== this.Context.MarkItemEntity && this.OnUpdate()
+    if (this.Context.MarkItemEntity !== undefined) {
+      this.OnUpdate();
+    }
   }
   SetVisible(t) {
-    void 0 !== this.Context.MarkItemEntity && this.OnSetVisible(t)
+    if (this.Context.MarkItemEntity !== undefined) {
+      this.OnSetVisible(t);
+    }
   }
   ApplyModified() {
-    void 0 !== this.Context.MarkItemEntity && this.OnApplyModified()
+    if (this.Context.MarkItemEntity !== undefined) {
+      this.OnApplyModified();
+    }
   }
   Dispose() {
-    this.OnDispose()
+    this.OnDispose();
   }
   OnInit() {}
   OnUpdate() {}
   OnDispose() {
-    this.DestroyComponent()
+    this.DestroyComponent();
   }
   OnSetVisible(t) {}
   OnApplyModified() {}
   async PreloadComponentAsync() {
-    await this.LoadComponentAsync()
+    await this.LoadComponentAsync();
   }
   async LoadComponentAsync() {
     return new Promise(t => {
-      t(this.ComponentInternal)
-    })
+      t(this.ComponentInternal);
+    });
   }
   GetOrCreateComponent() {
-    return this.ComponentInternal
+    return this.ComponentInternal;
   }
   DestroyComponent() {
-    void 0 !== this.ComponentInternal && (this.ComponentInternal.RecycleToPool(), this.ComponentInternal = void 0)
+    if (this.ComponentInternal !== undefined) {
+      this.ComponentInternal.RecycleToPool();
+      this.ComponentInternal = undefined;
+    }
   }
   IsComponentValid(t) {
-    return !!(t.IsStart || t.IsShowOrShowing || t.IsHideOrHiding)
+    return !!t.IsStart || !!t.IsShowOrShowing || !!t.IsHideOrHiding;
   }
 }
 exports.MarkItemComponentHandle = MarkItemComponentHandle;

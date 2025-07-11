@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FinishCondition = void 0;
+  value: true
+});
+exports.FinishCondition = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class FinishCondition {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(i, t) {
-    return this.bb_pos = i, this.bb = t, this
+    this.bb_pos = i;
+    this.bb = t;
+    return this;
   }
   static getRootAsFinishCondition(i, t) {
-    return (t || new FinishCondition).__init(i.readInt32(i.position()) + i.position(), i)
+    return (t || new FinishCondition()).__init(i.readInt32(i.position()) + i.position(), i);
   }
   static getSizePrefixedRootAsFinishCondition(i, t) {
-    return i.setPosition(i.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new FinishCondition).__init(i.readInt32(i.position()) + i.position(), i)
+    i.setPosition(i.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new FinishCondition()).__init(i.readInt32(i.position()) + i.position(), i);
   }
   static startFinishCondition(i) {
-    i.startObject(0)
+    i.startObject(0);
   }
   static endFinishCondition(i) {
-    return i.endObject()
+    return i.endObject();
   }
   static createFinishCondition(i) {
-    return FinishCondition.startFinishCondition(i), FinishCondition.endFinishCondition(i)
+    FinishCondition.startFinishCondition(i);
+    return FinishCondition.endFinishCondition(i);
   }
 }
 exports.FinishCondition = FinishCondition;

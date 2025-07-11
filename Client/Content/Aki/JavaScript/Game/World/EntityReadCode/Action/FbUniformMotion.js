@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbUniformMotion = void 0;
+  value: true
+});
+exports.FbUniformMotion = undefined;
 class FbUniformMotion {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Fph = !1, this.Nph = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Fph = false;
+    this.Nph = 0;
   }
   static Create(t) {
-    if (t) return new FbUniformMotion(t)
+    if (t) {
+      return new FbUniformMotion(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Time() {
-    return this.Fph || (this.Fph = !0, this.Nph = this.FbDataInternal.time()), this.Nph
+    if (!this.Fph) {
+      this.Fph = true;
+      this.Nph = this.FbDataInternal.time();
+    }
+    return this.Nph;
   }
 }
 exports.FbUniformMotion = FbUniformMotion;

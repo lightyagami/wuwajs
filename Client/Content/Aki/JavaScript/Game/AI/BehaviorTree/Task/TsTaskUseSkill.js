@@ -1,29 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const Log_1 = require("../../../../Core/Common/Log"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
+const Log_1 = require("../../../../Core/Common/Log");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
 class TsTaskUseSkill extends TsTaskAbortImmediatelyBase_1.default {
-  Constructor() {
-    super.Constructor()
+  constructor() {
+    super(...arguments);
+    this.WaitingSkill = false;
   }
-  ReceiveTickAI(e, l, r) {
-    var o = e.AiController;
-    if (o) {
-      var s = o.CharAiDesignComp.Entity.Id,
-        t = o.CharAiDesignComp.Entity.GetComponent(40);
-      if (t.Valid) {
-        let e = ControllerHolder_1.ControllerHolder.BlackboardController.GetStringValueByEntity(s, "SkillId");
+  Constructor() {
+    super.Constructor();
+    this.WaitingSkill = false;
+  }
+  ReceiveExecuteAI(e, r) {
+    this.WaitingSkill = false;
+  }
+  ReceiveTickAI(e, r, o) {
+    const s = e.AiController;
+    if (s) {
+      const t = s.CharAiDesignComp.Entity.Id;
+      var l = s.CharAiDesignComp.Entity.GetComponent(40);
+      if (l.Valid) {
+        let e = ControllerHolder_1.ControllerHolder.BlackboardController.GetStringValueByEntity(t, "SkillId");
         e = e || "0";
-        t = t.BeginSkill(Number(e), {
-          Target: o.AiHateList.GetCurrentTarget()?.Entity,
-          Reason: "TsTaskUseSkill.ReceiveTickAI"
-        });
-        this.FinishExecute(t), t && o.AiSkill && o.AiSkill.SetSkillCdFromNow(ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(s, "SkillInfoId")), ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(s, "SkillId"), ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(s, "SkillInfoId")
-      } else this.FinishExecute(!1)
-    } else Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]), this.FinishExecute(!1)
+        if (!this.WaitingSkill) {
+          this.WaitingSkill = true;
+          l.BeginSkillAsync(Number(e), {
+            Target: s.AiHateList.GetCurrentTarget()?.Entity,
+            Reason: "TsTaskUseSkill.ReceiveTickAI"
+          }).then(e => {
+            this.FinishExecute(e);
+            if (e && s.AiSkill) {
+              s.AiSkill.SetSkillCdFromNow(ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(t, "SkillInfoId"));
+            }
+            ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(t, "SkillId");
+            ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(t, "SkillInfoId");
+          });
+        }
+      } else {
+        this.FinishExecute(false);
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]);
+      }
+      this.FinishExecute(false);
+    }
   }
 }
 exports.default = TsTaskUseSkill;

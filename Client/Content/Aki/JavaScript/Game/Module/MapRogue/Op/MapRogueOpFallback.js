@@ -1,26 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueOpFallback = void 0;
-const UiManager_1 = require("../../../Ui/UiManager"),
-  MapRogueOp_1 = require("./MapRogueOp");
+  value: true
+});
+exports.MapRogueOpFallback = undefined;
+const UiManager_1 = require("../../../Ui/UiManager");
+const MapRogueOp_1 = require("./MapRogueOp");
 class MapRogueOpFallback extends MapRogueOp_1.MapRogueOp {
   constructor() {
-    super(...arguments), this.StepSize = 1, this.AutoFinish = !0, this.ExecuteInMapView = !1
+    super(...arguments);
+    this.StepSize = 1;
+    this.AutoFinish = true;
+    this.ExecuteInMapView = false;
   }
   ToString() {
-    return `[Fallback] IncId:${this.IncId} Step:` + this.CurrentStep
+    return `[Fallback] IncId:${this.IncId} Step:${this.CurrentStep}`;
   }
   OnUpdate() {}
   OnStartExecute(e) {
-    UiManager_1.UiManager.OpenView("RogueBattleFallbackView", this.IncId)
+    UiManager_1.UiManager.OpenView("RogueBattleFallbackView", this.IncId);
   }
   OnExecute(e) {
-    this.AutoFinish && this.Execute(e)
+    if (this.AutoFinish) {
+      this.Execute(e);
+    }
   }
   OnFinish(e) {}
   OnDelete(e) {
-    UiManager_1.UiManager.IsViewOpen("RogueBattleFallbackView") && UiManager_1.UiManager.CloseView("RogueBattleFallbackView")
+    if (UiManager_1.UiManager.IsViewOpen("RogueBattleFallbackView")) {
+      UiManager_1.UiManager.CloseView("RogueBattleFallbackView");
+    }
   }
 }
 exports.MapRogueOpFallback = MapRogueOpFallback;

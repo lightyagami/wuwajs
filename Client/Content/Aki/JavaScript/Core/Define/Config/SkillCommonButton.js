@@ -1,292 +1,440 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkillCommonButton = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt"),
-  DicIntIntArray_1 = require("./SubType/DicIntIntArray");
+  value: true
+});
+exports.SkillCommonButton = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
+const DicIntIntArray_1 = require("./SubType/DicIntIntArray");
 class SkillCommonButton {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get ButtonType() {
-    return this.buttontype()
+    return this.buttontype();
   }
   get ActionType() {
-    return this.actiontype()
+    return this.actiontype();
   }
   get SkillId() {
-    return this.skillid()
+    return this.skillid();
   }
   get SkillIdTagMap() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.skillidtagmapLength(), this.skillidtagmapKey, this.skillidtagmapValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.skillidtagmapLength(), this.skillidtagmapKey, this.skillidtagmapValue, this);
   }
   skillidtagmapKey(t) {
-    return this.skillidtagmap(t)?.key()
+    return this.skillidtagmap(t)?.key();
   }
   skillidtagmapValue(t) {
-    return this.skillidtagmap(t)?.value()
+    return this.skillidtagmap(t)?.value();
   }
   get SkillIconTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.skillicontagsLength(), this.skillicontags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.skillicontagsLength(), this.skillicontags, this);
   }
   get EnableTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.enabletagsLength(), this.enabletags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.enabletagsLength(), this.enabletags, this);
   }
   get DisableTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.disabletagsLength(), this.disabletags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.disabletagsLength(), this.disabletags, this);
   }
   get DisableSkillIdTags() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.disableskillidtagsLength(), this.disableskillidtagsKey, this.disableskillidtagsValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.disableskillidtagsLength(), this.disableskillidtagsKey, this.disableskillidtagsValue, this);
   }
   disableskillidtagsKey(t) {
-    return this.disableskillidtags(t)?.key()
+    return this.disableskillidtags(t)?.key();
   }
   disableskillidtagsValue(t) {
-    return this.disableskillidtags(t)?.value()
+    return this.disableskillidtags(t)?.value();
   }
   get HiddenTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.hiddentagsLength(), this.hiddentags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.hiddentagsLength(), this.hiddentags, this);
   }
   get IsCdVisible() {
-    return this.iscdvisible()
+    return this.iscdvisible();
   }
   get AttributeId() {
-    return this.attributeid()
+    return this.attributeid();
   }
   get MaxAttributeId() {
-    return this.maxattributeid()
+    return this.maxattributeid();
   }
   get AttributeIdTagMap() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.attributeidtagmapLength(), this.attributeidtagmapKey, this.attributeidtagmapValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.attributeidtagmapLength(), this.attributeidtagmapKey, this.attributeidtagmapValue, this);
   }
   attributeidtagmapKey(t) {
-    return this.attributeidtagmap(t)?.key()
+    return this.attributeidtagmap(t)?.key();
   }
   attributeidtagmapValue(t) {
-    return this.attributeidtagmap(t)?.value()
+    return this.attributeidtagmap(t)?.value();
   }
   get AttributeEnableTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.attributeenabletagsLength(), this.attributeenabletags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.attributeenabletagsLength(), this.attributeenabletags, this);
   }
   get MaxAttributeBurstEffectId() {
-    return this.maxattributebursteffectid()
+    return this.maxattributebursteffectid();
   }
   get CdCompletedEffectId() {
-    return this.cdcompletedeffectid()
+    return this.cdcompletedeffectid();
   }
   get IsLongPressControlCamera() {
-    return this.islongpresscontrolcamera()
+    return this.islongpresscontrolcamera();
   }
   get LongPressTime() {
-    return this.longpresstime()
+    return this.longpresstime();
   }
   get DynamicEffectTagMap() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.dynamiceffecttagmapLength(), this.dynamiceffecttagmapKey, this.dynamiceffecttagmapValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.dynamiceffecttagmapLength(), this.dynamiceffecttagmapKey, this.dynamiceffecttagmapValue, this);
   }
   dynamiceffecttagmapKey(t) {
-    return this.dynamiceffecttagmap(t)?.key()
+    return this.dynamiceffecttagmap(t)?.key();
   }
   dynamiceffecttagmapValue(t) {
-    return this.dynamiceffecttagmap(t)?.value()
+    return this.dynamiceffecttagmap(t)?.value();
   }
   get ShowLongPressTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.showlongpresstagsLength(), this.showlongpresstags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.showlongpresstagsLength(), this.showlongpresstags, this);
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsSkillCommonButton(t, i) {
-    return (i || new SkillCommonButton).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new SkillCommonButton()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   buttontype() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   actiontype() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skillid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetSkillidtagmapAt(t, i) {
-    return this.skillidtagmap(t)
+    return this.skillidtagmap(t);
   }
   skillidtagmap(t, i) {
     var s = this.J7.__offset(this.z7, 14);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   skillidtagmapLength() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetSkillicontagsAt(t) {
-    return this.skillicontags(t)
+    return this.skillicontags(t);
   }
   skillicontags(t) {
     var i = this.J7.__offset(this.z7, 16);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   skillicontagsLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skillicontagsArray() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetEnabletagsAt(t) {
-    return this.enabletags(t)
+    return this.enabletags(t);
   }
   enabletags(t) {
     var i = this.J7.__offset(this.z7, 18);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   enabletagsLength() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   enabletagsArray() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetDisabletagsAt(t) {
-    return this.disabletags(t)
+    return this.disabletags(t);
   }
   disabletags(t) {
     var i = this.J7.__offset(this.z7, 20);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   disabletagsLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   disabletagsArray() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetDisableskillidtagsAt(t, i) {
-    return this.disableskillidtags(t)
+    return this.disableskillidtags(t);
   }
   disableskillidtags(t, i) {
     var s = this.J7.__offset(this.z7, 22);
-    return s ? (i || new DicIntIntArray_1.DicIntIntArray).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   disableskillidtagsLength() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetHiddentagsAt(t) {
-    return this.hiddentags(t)
+    return this.hiddentags(t);
   }
   hiddentags(t) {
     var i = this.J7.__offset(this.z7, 24);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   hiddentagsLength() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   hiddentagsArray() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   iscdvisible() {
     var t = this.J7.__offset(this.z7, 26);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   attributeid() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   maxattributeid() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetAttributeidtagmapAt(t, i) {
-    return this.attributeidtagmap(t)
+    return this.attributeidtagmap(t);
   }
   attributeidtagmap(t, i) {
     var s = this.J7.__offset(this.z7, 32);
-    return s ? (i || new DicIntIntArray_1.DicIntIntArray).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   attributeidtagmapLength() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetAttributeenabletagsAt(t) {
-    return this.attributeenabletags(t)
+    return this.attributeenabletags(t);
   }
   attributeenabletags(t) {
     var i = this.J7.__offset(this.z7, 34);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   attributeenabletagsLength() {
     var t = this.J7.__offset(this.z7, 34);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   attributeenabletagsArray() {
     var t = this.J7.__offset(this.z7, 34);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   maxattributebursteffectid() {
     var t = this.J7.__offset(this.z7, 36);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   cdcompletedeffectid() {
     var t = this.J7.__offset(this.z7, 38);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   islongpresscontrolcamera() {
     var t = this.J7.__offset(this.z7, 40);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   longpresstime() {
     var t = this.J7.__offset(this.z7, 42);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetDynamiceffecttagmapAt(t, i) {
-    return this.dynamiceffecttagmap(t)
+    return this.dynamiceffecttagmap(t);
   }
   dynamiceffecttagmap(t, i) {
     var s = this.J7.__offset(this.z7, 44);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   dynamiceffecttagmapLength() {
     var t = this.J7.__offset(this.z7, 44);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetShowlongpresstagsAt(t) {
-    return this.showlongpresstags(t)
+    return this.showlongpresstags(t);
   }
   showlongpresstags(t) {
     var i = this.J7.__offset(this.z7, 46);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   showlongpresstagsLength() {
     var t = this.J7.__offset(this.z7, 46);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   showlongpresstagsArray() {
     var t = this.J7.__offset(this.z7, 46);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
 }
 exports.SkillCommonButton = SkillCommonButton;

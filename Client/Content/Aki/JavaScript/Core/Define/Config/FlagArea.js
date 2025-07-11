@@ -1,148 +1,225 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlagArea = void 0;
+  value: true
+});
+exports.FlagArea = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class FlagArea {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get FlagEntityId() {
-    return this.flagentityid()
+    return this.flagentityid();
   }
   get FlagAreaId() {
-    return this.flagareaid()
+    return this.flagareaid();
   }
   get MapId() {
-    return this.mapid()
+    return this.mapid();
   }
   get FlagType() {
-    return this.flagtype()
+    return this.flagtype();
   }
   get MarkId() {
-    return this.markid()
+    return this.markid();
   }
   get TreasureBoxEntitys() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.treasureboxentitysLength(), this.treasureboxentitys, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.treasureboxentitysLength(), this.treasureboxentitys, this);
   }
   get FlagName() {
-    return this.flagname()
+    return this.flagname();
   }
   get FlagPlotList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.flagplotlistLength(), this.flagplotlist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.flagplotlistLength(), this.flagplotlist, this);
   }
   get FlagPosPlotId() {
-    return this.flagposplotid()
+    return this.flagposplotid();
   }
   get MaxMonsterLv() {
-    return this.maxmonsterlv()
+    return this.maxmonsterlv();
   }
   get MonsterIconPath() {
-    return this.monstericonpath()
+    return this.monstericonpath();
   }
   get MonsterDesc() {
-    return this.monsterdesc()
+    return this.monsterdesc();
   }
   get BoxRewardId() {
-    return this.boxrewardid()
+    return this.boxrewardid();
   }
   get Index() {
-    return this.index()
+    return this.index();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsFlagArea(t, s) {
-    return (s || new FlagArea).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new FlagArea()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   flagentityid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   flagareaid() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   mapid() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   flagtype() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   markid() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetTreasureboxentitysAt(t) {
-    return this.treasureboxentitys(t)
+    return this.treasureboxentitys(t);
   }
   treasureboxentitys(t) {
     var s = this.J7.__offset(this.z7, 16);
-    return s ? this.J7.readInt32(this.J7.__vector(this.z7 + s) + 4 * t) : 0
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    } else {
+      return 0;
+    }
   }
   treasureboxentitysLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   treasureboxentitysArray() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   flagname(t) {
-    var s = this.J7.__offset(this.z7, 18),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 18);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   GetFlagplotlistAt(t) {
-    return this.flagplotlist(t)
+    return this.flagplotlist(t);
   }
   flagplotlist(t) {
     var s = this.J7.__offset(this.z7, 20);
-    return s ? this.J7.readInt32(this.J7.__vector(this.z7 + s) + 4 * t) : 0
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    } else {
+      return 0;
+    }
   }
   flagplotlistLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   flagplotlistArray() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   flagposplotid() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   maxmonsterlv() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   monstericonpath(t) {
-    var s = this.J7.__offset(this.z7, 26),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 26);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   monsterdesc(t) {
-    var s = this.J7.__offset(this.z7, 28),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 28);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   boxrewardid() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   index(t) {
-    var s = this.J7.__offset(this.z7, 32),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 32);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.FlagArea = FlagArea;

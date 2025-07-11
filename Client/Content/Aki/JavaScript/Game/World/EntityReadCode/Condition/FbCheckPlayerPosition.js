@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckPlayerPosition = void 0;
+  value: true
+});
+exports.FbCheckPlayerPosition = undefined;
 const UnionRangeHelper_1 = require("../Shape/UnionRangeHelper");
 class FbCheckPlayerPosition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.M_h = !1, this.E_h = void 0, this.kzh = !1, this.Gzh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.M_h = false;
+    this.E_h = undefined;
+    this.kzh = false;
+    this.Gzh = false;
   }
   static Create(t) {
-    if (t) return new FbCheckPlayerPosition(t)
+    if (t) {
+      return new FbCheckPlayerPosition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Range() {
-    var t, e;
-    return !this.M_h && (this.M_h = !0, t = this.FbDataInternal.rangeType(), e = UnionRangeHelper_1.UnionRangeHelper.GetUnionRangeObject(t)) && (this.E_h = UnionRangeHelper_1.UnionRangeHelper.ReadUnionRange(t, this.FbDataInternal.range(e))), this.E_h
+    var t;
+    var e;
+    if (!this.M_h && (this.M_h = true, t = this.FbDataInternal.rangeType(), e = UnionRangeHelper_1.UnionRangeHelper.GetUnionRangeObject(t))) {
+      this.E_h = UnionRangeHelper_1.UnionRangeHelper.ReadUnionRange(t, this.FbDataInternal.range(e));
+    }
+    return this.E_h;
   }
   get IsOnRange() {
-    return this.kzh || (this.kzh = !0, this.Gzh = this.FbDataInternal.isOnRange()), this.Gzh
+    if (!this.kzh) {
+      this.kzh = true;
+      this.Gzh = this.FbDataInternal.isOnRange();
+    }
+    return this.Gzh;
   }
 }
 exports.FbCheckPlayerPosition = FbCheckPlayerPosition;

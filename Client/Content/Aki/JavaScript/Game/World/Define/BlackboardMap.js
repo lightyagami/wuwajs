@@ -1,60 +1,92 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BlackboardMap = exports.BlackboardParam = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  IVar_1 = require("../../../UniverseEditor/Interface/IVar"),
-  ModelManager_1 = require("../../Manager/ModelManager");
+  value: true
+});
+exports.BlackboardMap = exports.BlackboardParam = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const IVar_1 = require("../../../UniverseEditor/Interface/IVar");
+const ModelManager_1 = require("../../Manager/ModelManager");
 class BlackboardParam {
   constructor(t) {
-    this.jEe = "", this.zpr = 0, this.Zpr = void 0, this.evr = !1, this.tvr = 0, this.ivr = "", this.IGe = void 0, this.ovr = void 0, this.rvr = void 0, this.nvr = void 0, this.E9 = t
+    this.jEe = "";
+    this.zpr = 0;
+    this.Zpr = undefined;
+    this.evr = false;
+    this.tvr = 0;
+    this.ivr = "";
+    this.IGe = undefined;
+    this.ovr = undefined;
+    this.rvr = undefined;
+    this.nvr = undefined;
+    this.E9 = t;
   }
   static CreateByProtocol(t) {
-    if (void 0 !== t) {
-      var r = t,
-        e = new BlackboardParam(r.h5n),
-        t = (e.SetKey(r.Z4n), Protocol_1.Aki.Protocol.sNs);
+    if (t !== undefined) {
+      var r = t;
+      var e = new BlackboardParam(r.h5n);
+      e.SetKey(r.Z4n);
+      var t = Protocol_1.Aki.Protocol.sNs;
       switch (r.h5n) {
         case t.Proto_BlackboardParamType_Int:
-          return e.SetIntValue(r.V8n), e;
+          e.SetIntValue(r.V8n);
+          return e;
         case t.Proto_BlackboardParamType_IntArray:
-          return e.SetIntValues(r.CKn.gKn), e;
+          e.SetIntValues(r.CKn.gKn);
+          return e;
         case t.Proto_BlackboardParamType_Long:
-          return e.SetLongValue(MathUtils_1.MathUtils.LongToBigInt(r.fKn)), e;
+          e.SetLongValue(MathUtils_1.MathUtils.LongToBigInt(r.fKn));
+          return e;
         case t.Proto_BlackboardParamType_LongArray:
-          var a = r.pKn.gKn,
-            o = new Array;
-          for (const i of a) o.push(MathUtils_1.MathUtils.LongToBigInt(i));
-          return e.SetLongValues(o), e;
+          var a = r.pKn.gKn;
+          var o = new Array();
+          for (const i of a) {
+            o.push(MathUtils_1.MathUtils.LongToBigInt(i));
+          }
+          e.SetLongValues(o);
+          return e;
         case t.Proto_BlackboardParamType_Boolean:
-          return e.SetBooleanValue(r.vKn), e;
+          e.SetBooleanValue(r.vKn);
+          return e;
         case t.Proto_BlackboardParamType_String:
-          return e.SetStringValue(r.j8n), e;
+          e.SetStringValue(r.j8n);
+          return e;
         case t.Proto_BlackboardParamType_StringArray:
-          return e.SetStringValues(r.EKn.gKn), e;
+          e.SetStringValues(r.EKn.gKn);
+          return e;
         case t.Proto_BlackboardParamType_Float:
-          return e.SetFloatValue(r.MKn), e;
+          e.SetFloatValue(r.MKn);
+          return e;
         case t.Proto_BlackboardParamType_FloatArray:
-          return e.SetFloatValues(r.SKn.gKn), e;
+          e.SetFloatValues(r.SKn.gKn);
+          return e;
         case t.Proto_BlackboardParamType_Vector:
-          return e.SetVectorValue(r.yKn.X, r.yKn.Y, r.yKn.Z), e;
+          e.SetVectorValue(r.yKn.X, r.yKn.Y, r.yKn.Z);
+          return e;
         case t.Proto_BlackboardParamType_VectorArray:
-          return e.SetVectorValues(r.IKn.gKn), e;
+          e.SetVectorValues(r.IKn.gKn);
+          return e;
         case t.Proto_BlackboardParamType_Rotator:
-          return e.SetRotatorValue(r.TKn.Pitch, r.TKn.Roll, r.TKn.Yaw), e;
+          e.SetRotatorValue(r.TKn.Pitch, r.TKn.Roll, r.TKn.Yaw);
+          return e;
         case t.Proto_BlackboardParamType_RotatorArray:
-          return e.SetRotatorValues(r.LKn.gKn), e;
+          e.SetRotatorValues(r.LKn.gKn);
+          return e;
         case t.Proto_BlackboardParamType_Entity:
-          return e.SetLongValue(MathUtils_1.MathUtils.LongToBigInt(r.fKn)), e;
+          e.SetLongValue(MathUtils_1.MathUtils.LongToBigInt(r.fKn));
+          return e;
         case t.Proto_BlackboardParamType_EntityArray:
-          var a = r.pKn.gKn,
-            s = new Array;
-          for (const n of a) s.push(MathUtils_1.MathUtils.LongToBigInt(n));
-          return e.SetLongValues(s), e;
+          var a = r.pKn.gKn;
+          var s = new Array();
+          for (const n of a) {
+            s.push(MathUtils_1.MathUtils.LongToBigInt(n));
+          }
+          e.SetLongValues(s);
+          return e;
         default:
-          return
+          return;
       }
     }
   }
@@ -63,229 +95,293 @@ class BlackboardParam {
     switch (t.Type) {
       case IVar_1.EBlackBoardType.Boolean:
         var e = new BlackboardParam(r.Proto_BlackboardParamType_Boolean);
-        return e.SetKey(t.Key), e.SetBooleanValue(t.Value), e;
+        e.SetKey(t.Key);
+        e.SetBooleanValue(t.Value);
+        return e;
       case IVar_1.EBlackBoardType.Int:
         e = new BlackboardParam(r.Proto_BlackboardParamType_Int);
-        return e.SetKey(t.Key), e.SetIntValue(t.Value), e;
+        e.SetKey(t.Key);
+        e.SetIntValue(t.Value);
+        return e;
       case IVar_1.EBlackBoardType.Float:
         e = new BlackboardParam(r.Proto_BlackboardParamType_Float);
-        return e.SetKey(t.Key), e.SetFloatValue(t.Value), e;
+        e.SetKey(t.Key);
+        e.SetFloatValue(t.Value);
+        return e;
       case IVar_1.EBlackBoardType.String:
         e = new BlackboardParam(r.Proto_BlackboardParamType_String);
-        return e.SetKey(t.Key), e.SetStringValue(t.Value), e;
+        e.SetKey(t.Key);
+        e.SetStringValue(t.Value);
+        return e;
       case IVar_1.EBlackBoardType.Vector:
         e = new BlackboardParam(r.Proto_BlackboardParamType_Vector);
-        return e.SetKey(t.Key), e.SetVectorValue(t.Vector.X ?? 0, t.Vector.Y ?? 0, t.Vector.Z ?? 0), e;
+        e.SetKey(t.Key);
+        e.SetVectorValue(t.Vector.X ?? 0, t.Vector.Y ?? 0, t.Vector.Z ?? 0);
+        return e;
       case IVar_1.EBlackBoardType.EntityPos:
-        var e = new BlackboardParam(r.Proto_BlackboardParamType_Vector),
-          a = (e.SetKey(t.Key), ModelManager_1.ModelManager.CreatureModel?.GetCompleteEntityData(t.EntityId));
-        return a ? (e.SetVectorValue(a.Transform?.Pos.X ?? 0, a.Transform?.Pos.Y ?? 0, a.Transform?.Pos.Z ?? 0), e) : void 0;
+        var e = new BlackboardParam(r.Proto_BlackboardParamType_Vector);
+        e.SetKey(t.Key);
+        var a = ModelManager_1.ModelManager.CreatureModel?.GetCompleteEntityData(t.EntityId);
+        if (a) {
+          e.SetVectorValue(a.Transform?.Pos.X ?? 0, a.Transform?.Pos.Y ?? 0, a.Transform?.Pos.Z ?? 0);
+          return e;
+        } else {
+          return undefined;
+        }
       case IVar_1.EBlackBoardType.EntityId:
         a = new BlackboardParam(r.Proto_BlackboardParamType_Float);
-        return a.SetKey(t.Key), a.SetFloatValue(t.EntityId), a;
+        a.SetKey(t.Key);
+        a.SetFloatValue(t.EntityId);
+        return a;
       default:
-        return
+        return;
     }
   }
   GetKey() {
-    return this.jEe
+    return this.jEe;
   }
   GetType() {
-    return this.E9
+    return this.E9;
   }
   SetKey(t) {
-    this.jEe = t
+    this.jEe = t;
   }
   GetIntValue() {
-    return this.zpr
+    return this.zpr;
   }
   SetIntValue(t) {
-    this.zpr = t
+    this.zpr = t;
   }
   GetIntValues() {
-    return this.svr
+    return this.svr;
   }
   SetIntValues(t) {
-    this.svr = t
+    this.svr = t;
   }
   GetLongValue() {
-    return this.Zpr
+    return this.Zpr;
   }
   SetLongValue(t) {
-    this.Zpr = t
+    this.Zpr = t;
   }
   GetLongValues() {
-    return this.avr
+    return this.avr;
   }
   SetLongValues(t) {
-    this.avr = t
+    this.avr = t;
   }
   GetBooleanValue() {
-    return this.evr
+    return this.evr;
   }
   SetBooleanValue(t) {
-    this.evr = t
+    this.evr = t;
   }
   GetFloatValue() {
-    return this.tvr
+    return this.tvr;
   }
   SetFloatValue(t) {
-    this.tvr = t
+    this.tvr = t;
   }
   GetFloatValues() {
-    return this.hvr
+    return this.hvr;
   }
   SetFloatValues(t) {
-    this.hvr = t
+    this.hvr = t;
   }
   GetStringValue() {
-    return this.ivr
+    return this.ivr;
   }
   SetStringValue(t) {
-    this.ivr = t
+    this.ivr = t;
   }
   GetStringValues() {
-    return this.lvr
+    return this.lvr;
   }
   SetStringValues(t) {
-    this.lvr = t
+    this.lvr = t;
   }
   GetVectorValue() {
-    return this.IGe
+    return this.IGe;
   }
   SetVectorValue(t, r, e) {
-    this.IGe || (this.IGe = Protocol_1.Aki.Protocol.Gks.create()), this.IGe.X = t, this.IGe.Y = r, this.IGe.Z = e
+    this.IGe ||= Protocol_1.Aki.Protocol.Gks.create();
+    this.IGe.X = t;
+    this.IGe.Y = r;
+    this.IGe.Z = e;
   }
   GetVectorValues() {
-    return this.ovr
+    return this.ovr;
   }
   SetVectorValues(t) {
-    this.ovr = t
+    this.ovr = t;
   }
   GetRotatorValue() {
-    return this.rvr
+    return this.rvr;
   }
   SetRotatorValue(t, r, e) {
-    this.rvr || (this.rvr = Protocol_1.Aki.Protocol.D2s.create()), this.rvr.Pitch = t, this.rvr.Roll = r, this.rvr.Yaw = e
+    this.rvr ||= Protocol_1.Aki.Protocol.D2s.create();
+    this.rvr.Pitch = t;
+    this.rvr.Roll = r;
+    this.rvr.Yaw = e;
   }
   GetRotatorValues() {
-    return this.nvr
+    return this.nvr;
   }
   SetRotatorValues(t) {
-    this.nvr = t
+    this.nvr = t;
   }
   ToString() {
     var t = Protocol_1.Aki.Protocol.sNs;
     switch (this.E9) {
       case t.Proto_BlackboardParamType_Int:
         return this.zpr.toString();
-      case t.Proto_BlackboardParamType_IntArray: {
-        let r = "[";
-        if (void 0 !== this.svr) {
-          var e = this.svr.length;
-          for (let t = 0; t < e; t++) r += this.svr[t], t !== e - 1 && (r += ", ")
+      case t.Proto_BlackboardParamType_IntArray:
+        {
+          let r = "[";
+          if (this.svr !== undefined) {
+            var e = this.svr.length;
+            for (let t = 0; t < e; t++) {
+              r += this.svr[t];
+              if (t !== e - 1) {
+                r += ", ";
+              }
+            }
+          }
+          return r += "]";
         }
-        return r += "]"
-      }
       case t.Proto_BlackboardParamType_Long:
         return this.Zpr.toString();
-      case t.Proto_BlackboardParamType_LongArray: {
-        let r = "[";
-        if (void 0 !== this.avr) {
-          var a = this.avr.length;
-          for (let t = 0; t < a; t++) r += this.avr[t], t !== a - 1 && (r += ", ")
+      case t.Proto_BlackboardParamType_LongArray:
+        {
+          let r = "[";
+          if (this.avr !== undefined) {
+            var a = this.avr.length;
+            for (let t = 0; t < a; t++) {
+              r += this.avr[t];
+              if (t !== a - 1) {
+                r += ", ";
+              }
+            }
+          }
+          return r += "]";
         }
-        return r += "]"
-      }
       case t.Proto_BlackboardParamType_Boolean:
         return this.evr.toString();
       case t.Proto_BlackboardParamType_String:
         return this.ivr;
-      case t.Proto_BlackboardParamType_StringArray: {
-        let r = "[";
-        if (void 0 !== this.lvr) {
-          var o = this.lvr.length;
-          for (let t = 0; t < o; t++) r += this.lvr[t], t !== o - 1 && (r += ", ")
+      case t.Proto_BlackboardParamType_StringArray:
+        {
+          let r = "[";
+          if (this.lvr !== undefined) {
+            var o = this.lvr.length;
+            for (let t = 0; t < o; t++) {
+              r += this.lvr[t];
+              if (t !== o - 1) {
+                r += ", ";
+              }
+            }
+          }
+          return r += "]";
         }
-        return r += "]"
-      }
       case t.Proto_BlackboardParamType_Float:
         return this.tvr.toString();
-      case t.Proto_BlackboardParamType_FloatArray: {
-        let r = "[";
-        if (void 0 !== this.hvr) {
-          var s = this.hvr.length;
-          for (let t = 0; t < s; t++) r += this.hvr[t], t !== s - 1 && (r += ", ")
-        }
-        return r += "]"
-      }
-      case t.Proto_BlackboardParamType_Vector: {
-        let t = "";
-        return void 0 !== this.IGe && (t += `X:${this.IGe.X} Y:${this.IGe.Y} Z:` + this.IGe.Z), t
-      }
-      case t.Proto_BlackboardParamType_VectorArray: {
-        let r = "[";
-        if (void 0 !== this.ovr) {
-          var i = this.ovr.length;
-          for (let t = 0; t < i; t++) {
-            var n = this.ovr[t];
-            r += `X:${n.X} Y:${n.Y} Z:` + n.Z, t !== i - 1 && (r += ", ")
+      case t.Proto_BlackboardParamType_FloatArray:
+        {
+          let r = "[";
+          if (this.hvr !== undefined) {
+            var s = this.hvr.length;
+            for (let t = 0; t < s; t++) {
+              r += this.hvr[t];
+              if (t !== s - 1) {
+                r += ", ";
+              }
+            }
           }
+          return r += "]";
         }
-        return r += "]"
-      }
-      case t.Proto_BlackboardParamType_Rotator: {
-        let t = "";
-        return void 0 !== this.rvr && (t += `Pitch:${this.rvr.Pitch} Roll:${this.rvr.Roll} Yaw:` + this.rvr.Yaw), t
-      }
-      case t.Proto_BlackboardParamType_RotatorArray: {
-        let r = "[";
-        if (void 0 !== this.nvr) {
-          var l = this.nvr.length;
-          for (let t = 0; t < l; t++) {
-            var c = this.nvr[t];
-            r += `Pitch:${c.Pitch} Roll:${c.Roll} Yaw:` + c.Yaw, t !== l - 1 && (r += ", ")
+      case t.Proto_BlackboardParamType_Vector:
+        {
+          let t = "";
+          if (this.IGe !== undefined) {
+            t += `X:${this.IGe.X} Y:${this.IGe.Y} Z:${this.IGe.Z}`;
           }
+          return t;
         }
-        return r += "]"
-      }
+      case t.Proto_BlackboardParamType_VectorArray:
+        {
+          let r = "[";
+          if (this.ovr !== undefined) {
+            var i = this.ovr.length;
+            for (let t = 0; t < i; t++) {
+              var n = this.ovr[t];
+              r += `X:${n.X} Y:${n.Y} Z:${n.Z}`;
+              if (t !== i - 1) {
+                r += ", ";
+              }
+            }
+          }
+          return r += "]";
+        }
+      case t.Proto_BlackboardParamType_Rotator:
+        {
+          let t = "";
+          if (this.rvr !== undefined) {
+            t += `Pitch:${this.rvr.Pitch} Roll:${this.rvr.Roll} Yaw:${this.rvr.Yaw}`;
+          }
+          return t;
+        }
+      case t.Proto_BlackboardParamType_RotatorArray:
+        {
+          let r = "[";
+          if (this.nvr !== undefined) {
+            var l = this.nvr.length;
+            for (let t = 0; t < l; t++) {
+              var c = this.nvr[t];
+              r += `Pitch:${c.Pitch} Roll:${c.Roll} Yaw:${c.Yaw}`;
+              if (t !== l - 1) {
+                r += ", ";
+              }
+            }
+          }
+          return r += "]";
+        }
       default:
-        return ""
+        return "";
     }
   }
 }
 exports.BlackboardParam = BlackboardParam;
 class BlackboardMap {
   constructor() {
-    this.BlackboardMap = new Map
+    this.BlackboardMap = new Map();
   }
   GetValue(t) {
     t = this.BlackboardMap.get(t);
-    return t || void 0
+    return t || undefined;
   }
   HasValue(t) {
-    return this.BlackboardMap.has(t)
+    return this.BlackboardMap.has(t);
   }
   SetValue(t, r) {
-    this.BlackboardMap.set(t, r)
+    this.BlackboardMap.set(t, r);
   }
   RemoveValue(t) {
-    return this.BlackboardMap.delete(t)
+    return this.BlackboardMap.delete(t);
   }
   Clear() {
-    this.BlackboardMap.clear()
+    this.BlackboardMap.clear();
   }
   ToString() {
     let t = "";
     for (const e of this.BlackboardMap.keys()) {
       var r = this.BlackboardMap.get(e);
       t += `key:${e}  type:${BlackboardMap._vr(r.GetType())}  value:${r?.ToString()}
-`
+`;
     }
-    return t
+    return t;
   }
   static CheckValueType(t, r, e) {
-    return r.GetType() === e || (Log_1.Log.CheckError() && Log_1.Log.Error("World", 3, "[BlackboardMap.CheckValue] 设置黑板值失败,因为相同的Key使用了不同的数据类型。", ["Key", t], ["Old字段类型", BlackboardMap._vr(r.GetType())], ["New字段类型", BlackboardMap._vr(e)]), !1)
+    return r.GetType() === e || (Log_1.Log.CheckError() && Log_1.Log.Error("World", 3, "[BlackboardMap.CheckValue] 设置黑板值失败,因为相同的Key使用了不同的数据类型。", ["Key", t], ["Old字段类型", BlackboardMap._vr(r.GetType())], ["New字段类型", BlackboardMap._vr(e)]), false);
   }
   static _vr(t) {
     switch (t) {
@@ -322,7 +418,7 @@ class BlackboardMap {
       case Protocol_1.Aki.Protocol.sNs.Proto_BlackboardParamType_EntityArray:
         return "array<entity>";
       default:
-        return
+        return;
     }
   }
 }

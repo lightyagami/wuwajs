@@ -1,39 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  LevelSequencePlayer_1 = require("../Common/LevelSequencePlayer");
+const UE = require("ue");
+const LevelSequencePlayer_1 = require("../Common/LevelSequencePlayer");
 class TsUiAutoPlayLevelSequenceComponent extends UE.LGUIBehaviour {
   constructor() {
-    super(...arguments), this.LevelSequencePlayer = void 0, this.AutoPlayList = void 0, this.PlayState = void 0
+    super(...arguments);
+    this.LevelSequencePlayer = undefined;
+    this.AutoPlayList = undefined;
+    this.PlayState = undefined;
   }
   Constructor() {
-    this.LevelSequencePlayer = void 0, this.AutoPlayList = void 0, this.PlayState = void 0
+    this.LevelSequencePlayer = undefined;
+    this.AutoPlayList = undefined;
+    this.PlayState = undefined;
   }
   AwakeBP() {
-    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootUIComp), this.PlayState = 0
+    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootUIComp);
+    this.PlayState = 0;
   }
   OnUIActiveInHierarchyBP(e) {
-    this.PlayState = e ? 1 : 2, 2 === this.PlayState && this.TryRefresh()
+    this.PlayState = e ? 1 : 2;
+    if (this.PlayState === 2) {
+      this.TryRefresh();
+    }
   }
   OnDestroyBP() {
-    this.LevelSequencePlayer?.Clear(), this.LevelSequencePlayer = void 0
+    this.LevelSequencePlayer?.Clear();
+    this.LevelSequencePlayer = undefined;
   }
   UpdateBP(e) {
-    this.TryRefresh()
+    this.TryRefresh();
   }
   TryRefresh() {
-    0 !== this.PlayState && (1 === this.PlayState ? (this.TryPlay(), this.PlayState = 0) : 2 === this.PlayState && (this.TryStop(), this.PlayState = 0))
+    if (this.PlayState !== 0) {
+      if (this.PlayState === 1) {
+        this.TryPlay();
+        this.PlayState = 0;
+      } else if (this.PlayState === 2) {
+        this.TryStop();
+        this.PlayState = 0;
+      }
+    }
   }
   TryPlay() {
     var e = this.GetOwner();
     if (e) {
-      var t = e.GetUIItem().LevelSequences,
-        i = (this.AutoPlayList = new Array, t.Num());
+      var t = e.GetUIItem().LevelSequences;
+      this.AutoPlayList = new Array();
+      var i = t.Num();
       for (let e = 0; e < i; ++e) {
         var s = t.GetKey(e);
-        t.Get(s).PlaySetting.bAutoPlay && (this.LevelSequencePlayer.PlaySequencePurely(s), this.AutoPlayList.push(s))
+        if (t.Get(s).PlaySetting.bAutoPlay) {
+          this.LevelSequencePlayer.PlaySequencePurely(s);
+          this.AutoPlayList.push(s);
+        }
       }
     }
   }
@@ -41,8 +64,10 @@ class TsUiAutoPlayLevelSequenceComponent extends UE.LGUIBehaviour {
     if (this.AutoPlayList) {
       var e = this.GetOwner();
       if (e) {
-        for (const t of this.AutoPlayList) e.StopSequenceByKey(t);
-        this.AutoPlayList = void 0
+        for (const t of this.AutoPlayList) {
+          e.StopSequenceByKey(t);
+        }
+        this.AutoPlayList = undefined;
       }
     }
   }

@@ -1,113 +1,210 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChannelModel = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../Core/Common/Info"),
-  LanguageSystem_1 = require("../../../Core/Common/LanguageSystem"),
-  Log_1 = require("../../../Core/Common/Log"),
-  CommunityAll_1 = require("../../../Core/Define/ConfigQuery/CommunityAll"),
-  CommunityById_1 = require("../../../Core/Define/ConfigQuery/CommunityById"),
-  CustomerServiceAll_1 = require("../../../Core/Define/ConfigQuery/CustomerServiceAll"),
-  SetAccountAll_1 = require("../../../Core/Define/ConfigQuery/SetAccountAll"),
-  SetAccountById_1 = require("../../../Core/Define/ConfigQuery/SetAccountById"),
-  SharePlatformAll_1 = require("../../../Core/Define/ConfigQuery/SharePlatformAll"),
-  SharePlatformById_1 = require("../../../Core/Define/ConfigQuery/SharePlatformById"),
-  ShareRewardById_1 = require("../../../Core/Define/ConfigQuery/ShareRewardById"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  PlatformSdkConfig_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkConfig"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  KuroSdkReport_1 = require("../../KuroSdk/KuroSdkReport"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  FeatureRestrictionTemplate_1 = require("../Common/FeatureRestrictionTemplate"),
-  LAGUANGE_ALL = "all",
-  CHANNEL_ALL = 0,
-  PACKAGE_ID_ALL = "all";
+  value: true
+});
+exports.ChannelModel = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../Core/Common/Info");
+const LanguageSystem_1 = require("../../../Core/Common/LanguageSystem");
+const Log_1 = require("../../../Core/Common/Log");
+const CommunityAll_1 = require("../../../Core/Define/ConfigQuery/CommunityAll");
+const CommunityById_1 = require("../../../Core/Define/ConfigQuery/CommunityById");
+const CustomerServiceAll_1 = require("../../../Core/Define/ConfigQuery/CustomerServiceAll");
+const SetAccountAll_1 = require("../../../Core/Define/ConfigQuery/SetAccountAll");
+const SetAccountById_1 = require("../../../Core/Define/ConfigQuery/SetAccountById");
+const SharePlatformAll_1 = require("../../../Core/Define/ConfigQuery/SharePlatformAll");
+const SharePlatformById_1 = require("../../../Core/Define/ConfigQuery/SharePlatformById");
+const ShareRewardById_1 = require("../../../Core/Define/ConfigQuery/ShareRewardById");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const PlatformSdkConfig_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkConfig");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const KuroSdkReport_1 = require("../../KuroSdk/KuroSdkReport");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const FeatureRestrictionTemplate_1 = require("../Common/FeatureRestrictionTemplate");
+const LAGUANGE_ALL = "all";
+const CHANNEL_ALL = 0;
+const PACKAGE_ID_ALL = "all";
 class ChannelModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.gEt = void 0, this.fEt = void 0, this.pEt = void 0, this.vEt = void 0, this.fIn = !1, this.SharingActionId = 1, this.SharingConfigId = 0, this.MEt = () => {
-      if (this.gEt = [], this.fEt = [], this.pEt = [], this.fIn = !1, ControllerHolder_1.ControllerHolder.LoginController.IsSdkLoginMode()) {
-        var e = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk(),
-          r = LanguageSystem_1.LanguageSystem.PackageLanguage,
-          t = Number(ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId()),
-          o = ModelManager_1.ModelManager.KuroSdkModel.GetSdkPackageId(),
-          i = (Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 53, "当前包体信息", ["是否海外", e], ["当前语言码", r], ["当前渠道", t]), FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient);
-        if (Info_1.Info.IsMobilePlatform())
-          for (const n of SharePlatformAll_1.configSharePlatformAll.GetConfigList(e ? 0 : 1)) this.EEt(r, n.Language) && this.SEt(t, n.Channel) && this.S8a(o, n.PackageId) && !i.Check() && this.gEt.push(n.Id);
+    super(...arguments);
+    this.gEt = undefined;
+    this.fEt = undefined;
+    this.pEt = undefined;
+    this.vEt = undefined;
+    this.fIn = false;
+    this.SharingActionId = 1;
+    this.SharingConfigId = 0;
+    this.GameIntroductionUrl = "";
+    this.MEt = () => {
+      this.gEt = [];
+      this.fEt = [];
+      this.pEt = [];
+      this.fIn = false;
+      if (ControllerHolder_1.ControllerHolder.LoginController.IsSdkLoginMode()) {
+        var e = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk();
+        var r = LanguageSystem_1.LanguageSystem.PackageLanguage;
+        var t = Number(ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId());
+        var o = ModelManager_1.ModelManager.KuroSdkModel.GetSdkPackageId();
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("KuroSdk", 53, "当前包体信息", ["是否海外", e], ["当前语言码", r], ["当前渠道", t]);
+        }
+        var i = FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient;
+        if (Info_1.Info.IsMobilePlatform()) {
+          for (const n of SharePlatformAll_1.configSharePlatformAll.GetConfigList(e ? 0 : 1)) {
+            if (this.EEt(r, n.Language) && this.SEt(t, n.Channel) && this.S8a(o, n.PackageId) && !i.Check()) {
+              this.gEt.push(n.Id);
+            }
+          }
+        }
         this.gEt = this.gEt.sort((e, r) => {
-          var t = SharePlatformById_1.configSharePlatformById.GetConfig(e),
-            o = SharePlatformById_1.configSharePlatformById.GetConfig(r);
-          return t && o && t.Sort !== o.Sort ? t.Sort - o.Sort : e - r
-        }), Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 27, "开启分享渠道id ", ["OpenShareChannel", this.gEt]);
-        for (const s of CommunityAll_1.configCommunityAll.GetConfigList(e ? 0 : 1)) this.EEt(r, s.Language) && this.SEt(t, s.Channel) && this.S8a(o, s.PackageId) && !i.Check() && this.fEt.push(s.Id);
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 27, "开启库街区id ", ["OpenKuroStreetId", this.fEt]);
-        for (const l of SetAccountAll_1.configSetAccountAll.GetConfigList(e ? 0 : 1)) this.EEt(r, l.Language) && this.SEt(t, l.Channel) && this.S8a(o, l.PackageId) && (!i.Check() || 1 !== l.Id && 9 !== l.Id) && this.pEt.push(l.Id);
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 27, "开启账号中心id ", ["OpenAccountSetting", this.pEt]);
-        for (const a of CustomerServiceAll_1.configCustomerServiceAll.GetConfigList(e ? 0 : 1)) this.EEt(r, a.Language) && this.SEt(t, a.Channel) && this.S8a(o, a.PackageId) && (this.fIn = !0);
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 10, "客服开启", ["state", this.fIn]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChannelReset)
-      } else Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 53, "不可使用SDK")
-    }
+          var t = SharePlatformById_1.configSharePlatformById.GetConfig(e);
+          var o = SharePlatformById_1.configSharePlatformById.GetConfig(r);
+          if (t && o && t.Sort !== o.Sort) {
+            return t.Sort - o.Sort;
+          } else {
+            return e - r;
+          }
+        });
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("KuroSdk", 27, "开启分享渠道id ", ["OpenShareChannel", this.gEt]);
+        }
+        for (const s of CommunityAll_1.configCommunityAll.GetConfigList(e ? 0 : 1)) {
+          if (this.EEt(r, s.Language) && this.SEt(t, s.Channel) && this.S8a(o, s.PackageId) && !i.Check()) {
+            this.fEt.push(s.Id);
+          }
+        }
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("KuroSdk", 27, "开启库街区id ", ["OpenKuroStreetId", this.fEt]);
+        }
+        for (const h of SetAccountAll_1.configSetAccountAll.GetConfigList(e ? 0 : 1)) {
+          if (this.EEt(r, h.Language) && this.SEt(t, h.Channel) && this.S8a(o, h.PackageId) && (!i.Check() || h.Id !== 1 && h.Id !== 9)) {
+            this.pEt.push(h.Id);
+          }
+        }
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("KuroSdk", 27, "开启账号中心id ", ["OpenAccountSetting", this.pEt]);
+        }
+        for (const l of CustomerServiceAll_1.configCustomerServiceAll.GetConfigList(e ? 0 : 1)) {
+          if (this.EEt(r, l.Language) && this.SEt(t, l.Channel) && this.S8a(o, l.PackageId)) {
+            this.fIn = true;
+          }
+        }
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("KuroSdk", 10, "客服开启", ["state", this.fIn]);
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChannelReset);
+      } else if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 53, "不可使用SDK");
+      }
+    };
   }
   OnInit() {
-    return this.gEt = [], this.fEt = [], this.pEt = [], this.vEt = [], EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SdkInitDone, this.MEt), !0
+    this.gEt = [];
+    this.fEt = [];
+    this.pEt = [];
+    this.vEt = [];
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SdkInitDone, this.MEt);
+    return true;
   }
   OnClear() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SdkInitDone, this.MEt), !0
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SdkInitDone, this.MEt);
+    return true;
   }
   EEt(e, r) {
-    return r.includes(LAGUANGE_ALL) || r.includes(e)
+    return r.includes(LAGUANGE_ALL) || r.includes(e);
   }
   SEt(e, r) {
-    return r.includes(CHANNEL_ALL) || r.includes(e)
+    return r.includes(CHANNEL_ALL) || r.includes(e);
   }
   S8a(e, r) {
-    return !!e && (r.includes(PACKAGE_ID_ALL) || r.includes(e))
+    return !!e && (r.includes(PACKAGE_ID_ALL) || r.includes(e));
   }
   CheckShareChannelOpen(e) {
-    return this.yEt(), this.gEt.includes(e)
+    this.yEt();
+    return this.gEt.includes(e);
   }
   CheckKuroStreetOpen() {
-    return this.yEt(), 0 < this.fEt.length
+    this.yEt();
+    return this.fEt.length > 0;
   }
   CheckAccountSettingOpen(e) {
-    return this.yEt(), this.pEt.includes(e)
+    this.yEt();
+    return this.pEt.includes(e);
   }
   CheckCustomerServiceOpen() {
-    return this.yEt(), Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 10, "客服是否开启", ["IsCustomerServiceOpen", this.fIn]), this.fIn
+    this.yEt();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("KuroSdk", 10, "客服是否开启", ["IsCustomerServiceOpen", this.fIn]);
+    }
+    return this.fIn;
   }
   OpenKuroStreet() {
-    2 === Info_1.Info.PlatformType ? UE.KuroStaticAndroidLibrary.OpenAppWithUrl("kjq://kuro/home?gameId=3", "https://www.kurobbs.com/download.html") : 1 === Info_1.Info.PlatformType ? UE.KuroStaticiOSLibrary.OpenAppWithUrl("kjq://kuro/home?gameId=3", "itms-apps://itunes.apple.com/app/id/1659339393") : this.fEt.length && this.IEt(CommunityById_1.configCommunityById.GetConfig(this.fEt[0])?.Adress)
+    if (Info_1.Info.PlatformType === 2) {
+      UE.KuroStaticAndroidLibrary.OpenAppWithUrl("kjq://kuro/home?gameId=3", "https://www.kurobbs.com/download.html");
+    } else if (Info_1.Info.PlatformType === 1) {
+      UE.KuroStaticiOSLibrary.OpenAppWithUrl("kjq://kuro/home?gameId=3", "itms-apps://itunes.apple.com/app/id/1659339393");
+    } else if (this.fEt.length) {
+      this.IEt(CommunityById_1.configCommunityById.GetConfig(this.fEt[0])?.Adress);
+    }
   }
   yEt() {
-    0 === this.pEt.length && this.MEt()
+    if (this.pEt.length === 0) {
+      this.MEt();
+    }
   }
   ProcessAccountSetting(r) {
-    if (1 === r || 9 === r) ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(13);
-    else if (8 === r) ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(15), ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(12);
-    else {
+    if (r === 1 || r === 9) {
+      ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(13);
+    } else if (r === 8) {
+      ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(15);
+      ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(12);
+    } else {
       let e = SetAccountById_1.configSetAccountById.GetConfig(r).Adress;
-      var t = 7 === Info_1.Info.PlatformType || 8 === Info_1.Info.PlatformType;
-      2 !== r && 3 !== r && 4 !== r && 6 !== r && 7 !== r || KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportOpenPrivacy(void 0)), t && (3 === r || 7 === r ? e = PlatformSdkConfig_1.PlatformSdkConfig.GetPrivacyPolicy() : 6 === r || 2 === r ? e = PlatformSdkConfig_1.PlatformSdkConfig.GetTermsOfService() : 4 === r && (e = PlatformSdkConfig_1.PlatformSdkConfig.GetChildPolicy())), this.IEt(e)
+      var t = Info_1.Info.PlatformType === 7 || Info_1.Info.PlatformType === 8;
+      if (r === 2 || r === 3 || r === 4 || r === 6 || r === 7) {
+        KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportOpenPrivacy(undefined));
+      }
+      if (t) {
+        if (r === 3 || r === 7) {
+          e = PlatformSdkConfig_1.PlatformSdkConfig.GetPrivacyPolicy();
+        } else if (r === 6 || r === 2) {
+          e = PlatformSdkConfig_1.PlatformSdkConfig.GetTermsOfService();
+        } else if (r === 4) {
+          e = PlatformSdkConfig_1.PlatformSdkConfig.GetChildPolicy();
+        }
+      }
+      this.IEt(e);
     }
   }
   GetOpenedShareIds() {
-    return this.yEt(), this.gEt
+    this.yEt();
+    return this.gEt;
   }
   CouldGetShareReward(e) {
     e = ShareRewardById_1.configShareRewardById.GetConfig(e).ShareType;
-    return 0 < this.gEt.length && !this.vEt.includes(e)
+    return this.gEt.length > 0 && !this.vEt.includes(e);
   }
   MarkActionShared(e) {
     e = ShareRewardById_1.configShareRewardById.GetConfig(e).ShareType;
-    this.vEt.push(e)
+    this.vEt.push(e);
   }
   IEt(e) {
-    e && (e = e.replace("{0}", LanguageSystem_1.LanguageSystem.PackageLanguage), Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "根据渠道打开链接 ", ["formatUrl", e]), ControllerHolder_1.ControllerHolder.KuroSdkController.OpenExternalUrl(e))
+    if (e) {
+      e = e.replace("{0}", LanguageSystem_1.LanguageSystem.PackageLanguage);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("KuroSdk", 27, "根据渠道打开链接 ", ["formatUrl", e]);
+      }
+      ControllerHolder_1.ControllerHolder.KuroSdkController.OpenExternalUrl(e);
+    }
   }
   GmOpenShareId(e) {
-    0 === this.pEt.length && this.pEt.push(5), this.gEt?.push(e)
+    if (this.pEt.length === 0) {
+      this.pEt.push(5);
+    }
+    this.gEt?.push(e);
   }
 }
 exports.ChannelModel = ChannelModel;

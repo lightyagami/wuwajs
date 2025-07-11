@@ -1,37 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PortalModel = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../../Core/Actor/ActorSystem"),
-  ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+  value: true
+});
+exports.PortalModel = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../Core/Actor/ActorSystem");
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 class PortalModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Osr = void 0, this.r8a = void 0
+    super(...arguments);
+    this.Osr = undefined;
+    this.r8a = undefined;
   }
   OnInit() {
-    return this.Osr = new Map, !0
+    this.Osr = new Map();
+    return true;
   }
   AddPortalPair(t, e) {
-    this.Osr.has(t) || this.Osr.set(t, e)
+    if (!this.Osr.has(t)) {
+      this.Osr.set(t, e);
+    }
   }
   RemovePortalPair(t) {
-    this.Osr.delete(t)
+    this.Osr.delete(t);
   }
   GetPortal(t) {
-    return this.Osr.get(t)
+    return this.Osr.get(t);
   }
   GetPortals() {
-    return this.Osr
+    return this.Osr;
   }
   OnClear() {
-    return (this.Osr = void 0) !== this.r8a && (ActorSystem_1.ActorSystem.Put("PortalModel.OnClear", this.r8a), this.r8a = void 0), !0
+    if ((this.Osr = undefined) !== this.r8a) {
+      ActorSystem_1.ActorSystem.Put("PortalModel.OnClear", this.r8a);
+      this.r8a = undefined;
+    }
+    return true;
   }
   OnLeaveLevel() {
-    return void 0 !== this.r8a && (ActorSystem_1.ActorSystem.Put("PortalModel.OnLeaveLevel", this.r8a), this.r8a = void 0), !0
+    if (this.r8a !== undefined) {
+      ActorSystem_1.ActorSystem.Put("PortalModel.OnLeaveLevel", this.r8a);
+      this.r8a = undefined;
+    }
+    return true;
   }
   GetBpPortalActor() {
-    return void 0 === this.r8a && (this.r8a = ActorSystem_1.ActorSystem.Spawn(UE.BP_Portal_C.StaticClass(), void 0, void 0)), this.r8a
+    if (this.r8a === undefined) {
+      this.r8a = ActorSystem_1.ActorSystem.Spawn(UE.BP_Portal_C.StaticClass(), undefined, undefined);
+    }
+    return this.r8a;
   }
 }
 exports.PortalModel = PortalModel;

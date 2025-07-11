@@ -1,10 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelBuffBase = void 0;
+  value: true
+});
+exports.LevelBuffBase = undefined;
 class LevelBuffBase {
   constructor(e, s, t, o, a) {
-    this.Entity = e, this.BuffId = s, this.Params = t, this.Param1 = o, this.Param2 = a
+    this.Entity = e;
+    this.BuffId = s;
+    this.Params = t;
+    this.Param1 = o;
+    this.Param2 = a;
   }
   OnCreated() {}
   OnRemoved(e) {}

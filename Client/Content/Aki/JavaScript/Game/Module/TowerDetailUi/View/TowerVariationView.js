@@ -1,107 +1,161 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TowerVariationView = void 0;
-const UE = require("ue"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../../Common/TimeUtil"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  RedDotController_1 = require("../../../RedDot/RedDotController"),
-  UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine"),
-  InstanceDungeonEntranceController_1 = require("../../InstanceDungeon/InstanceDungeonEntranceController"),
-  TowerController_1 = require("../TowerController"),
-  TowerData_1 = require("../TowerData"),
-  TowerAreaItem_1 = require("./TowerAreaItem"),
-  TowerTitleItem_1 = require("./TowerTitleItem");
+  value: true
+});
+exports.TowerVariationView = undefined;
+const UE = require("ue");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const RedDotController_1 = require("../../../RedDot/RedDotController");
+const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
+const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const InstanceDungeonEntranceController_1 = require("../../InstanceDungeon/InstanceDungeonEntranceController");
+const TowerController_1 = require("../TowerController");
+const TowerData_1 = require("../TowerData");
+const TowerAreaItem_1 = require("./TowerAreaItem");
+const TowerTitleItem_1 = require("./TowerTitleItem");
 class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
-    super(...arguments), this.dRo = !1, this._fe = !0, this.y2t = void 0, this.gLt = void 0, this.CRo = [], this.YDo = () => {
-      1 === ModelManager_1.ModelManager.TowerModel?.GetDifficultyRewardProgress(ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties) && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("HaveAllReward"), UiManager_1.UiManager.OpenView("TowerRewardView", void 0, (e, r) => {
-        this.AddChildViewById(r)
-      })
-    }, this.JDo = () => {
-      UiManager_1.UiManager.GetViewByName("TowerNormalView") ? this.CloseMe() : UiManager_1.UiManager.OpenViewAsync("TowerNormalView")
-    }, this.zDo = () => {
-      ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopViewWithTab(5, 0)
-    }, this.ZDo = () => {
+    super(...arguments);
+    this.dRo = false;
+    this._fe = true;
+    this.y2t = undefined;
+    this.gLt = undefined;
+    this.CRo = [];
+    this.YDo = () => {
+      if (ModelManager_1.ModelManager.TowerModel?.GetDifficultyRewardProgress(ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties) === 1) {
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("HaveAllReward");
+      }
+      UiManager_1.UiManager.OpenView("TowerRewardView", undefined, (e, r) => {
+        this.AddChildViewById(r);
+      });
+    };
+    this.JDo = () => {
+      if (UiManager_1.UiManager.GetViewByName("TowerNormalView")) {
+        this.CloseMe();
+      } else {
+        UiManager_1.UiManager.OpenViewAsync("TowerNormalView");
+      }
+    };
+    this.zDo = () => {
+      ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopViewWithTab(5, 0);
+    };
+    this.ZDo = () => {
       var e = ModelManager_1.ModelManager.TowerModel?.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
-      this.GetSprite(6)?.SetFillAmount(e), 1 === e ? (this.GetItem(10)?.SetUIActive(!0), this.GetItem(11)?.SetUIActive(!0)) : (this.GetItem(10)?.SetUIActive(!1), this.GetItem(11)?.SetUIActive(!1))
-    }
+      this.GetSprite(6)?.SetFillAmount(e);
+      if (e === 1) {
+        this.GetItem(10)?.SetUIActive(true);
+        this.GetItem(11)?.SetUIActive(true);
+      } else {
+        this.GetItem(10)?.SetUIActive(false);
+        this.GetItem(11)?.SetUIActive(false);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIHorizontalLayout],
-      [2, UE.UIButtonComponent],
-      [3, UE.UIButtonComponent],
-      [4, UE.UIText],
-      [5, UE.UIItem],
-      [6, UE.UISprite],
-      [7, UE.UIButtonComponent],
-      [8, UE.UIItem],
-      [9, UE.UIItem],
-      [10, UE.UIItem],
-      [11, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [2, this.YDo],
-      [3, this.JDo],
-      [7, this.zDo]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIText], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
+    this.BtnBindInfo = [[2, this.YDo], [3, this.JDo], [7, this.zDo]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo);
   }
   OnBeforeShow() {
-    ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY, RedDotController_1.RedDotController.BindRedDot("TowerReward", this.GetItem(5)), RedDotController_1.RedDotController.BindRedDot("TowerRewardByDifficulties", this.GetItem(8), void 0, 5), this.ZDo(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerReward), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerRewardByDifficulties, 5);
-    var e = !ModelManager_1.ModelManager.TowerModel.GetOverLockHasShow(),
-      r = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.VARIATION_RISK_DIFFICULTY);
-    e && r && this.GetItem(8)?.SetUIActive(!0)
+    ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY;
+    RedDotController_1.RedDotController.BindRedDot("TowerReward", this.GetItem(5));
+    RedDotController_1.RedDotController.BindRedDot("TowerRewardByDifficulties", this.GetItem(8), undefined, 5);
+    this.ZDo();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerReward);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerRewardByDifficulties, 5);
+    var e = !ModelManager_1.ModelManager.TowerModel.GetOverLockHasShow();
+    var r = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.VARIATION_RISK_DIFFICULTY);
+    if (e && r) {
+      this.GetItem(8)?.SetUIActive(true);
+    }
   }
   OnBeforeDestroy() {
-    this.gLt.Destroy(), this.gLt = void 0, InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.RestoreDungeonEntranceEntity()
+    this.gLt.Destroy();
+    this.gLt = undefined;
+    InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.RestoreDungeonEntranceEntity();
   }
   async eRo() {
-    UiManager_1.UiManager.GetViewByName("TowerNormalView") && await UiManager_1.UiManager.CloseViewAsync("TowerNormalView"), this.CloseMe()
+    if (UiManager_1.UiManager.GetViewByName("TowerNormalView")) {
+      await UiManager_1.UiManager.CloseViewAsync("TowerNormalView");
+    }
+    this.CloseMe();
   }
   async OnBeforeStartAsync() {
     var e = ModelManager_1.ModelManager.TowerModel.GetDifficultyAllAreaFirstFloor(TowerData_1.VARIATION_RISK_DIFFICULTY);
     const o = this.GetHorizontalLayout(1).RootUIComp;
     await e.reduce(async (e, r, t) => {
       await e;
-      e = new TowerAreaItem_1.TowerAreaItem;
-      return this.CRo.push(e), e.CreateThenShowByResourceIdAsync(1 === t ? "UiItem_DailyTowerLevelRedItem" : "UiItem_DailyTowerLevelItem", o)
-    }, Promise.resolve())
+      e = new TowerAreaItem_1.TowerAreaItem();
+      this.CRo.push(e);
+      return e.CreateThenShowByResourceIdAsync(t === 1 ? "UiItem_DailyTowerLevelRedItem" : "UiItem_DailyTowerLevelItem", o);
+    }, Promise.resolve());
   }
   OnStart() {
-    ModelManager_1.ModelManager.TowerModel.CheckInTower() && TowerController_1.TowerController.ClearAllHatredInTower(), this.dRo = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.HIGH_RISK_DIFFICULTY), ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY, this.gLt = new TowerTitleItem_1.TowerTitleItem(this.GetItem(0), () => {
+    if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+      TowerController_1.TowerController.ClearAllHatredInTower();
+    }
+    this.dRo = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.HIGH_RISK_DIFFICULTY);
+    ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY;
+    this.gLt = new TowerTitleItem_1.TowerTitleItem(this.GetItem(0), () => {
       var e;
-      ModelManager_1.ModelManager.TowerModel.CheckInTower() ? ((e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(137)).FunctionMap.set(2, () => {
-        TowerController_1.TowerController.LeaveTower()
-      }), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e)) : this.eRo()
-    }), this.gLt.RefreshText("InstanceDungeonTitle_31_CommonText");
-    var e = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData(),
-      r = (this.GetText(4).SetText(e.CountDownText), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerRewardByDifficulties, 3), ModelManager_1.ModelManager.TowerModel.CurrentTowerLock = !this.dRo, ModelManager_1.ModelManager.TowerModel.GetDifficultyAllAreaFirstFloor(TowerData_1.VARIATION_RISK_DIFFICULTY));
-    for (let e = 0; e < this.CRo.length; e++) this.CRo[e].Refresh(r[e])
+      if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+        (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(137)).FunctionMap.set(2, () => {
+          TowerController_1.TowerController.LeaveTower();
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+      } else {
+        this.eRo();
+      }
+    });
+    this.gLt.RefreshText("InstanceDungeonTitle_31_CommonText");
+    var e = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData();
+    this.GetText(4).SetText(e.CountDownText);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerRewardByDifficulties, 3);
+    ModelManager_1.ModelManager.TowerModel.CurrentTowerLock = !this.dRo;
+    var r = ModelManager_1.ModelManager.TowerModel.GetDifficultyAllAreaFirstFloor(TowerData_1.VARIATION_RISK_DIFFICULTY);
+    for (let e = 0; e < this.CRo.length; e++) {
+      this.CRo[e].Refresh(r[e]);
+    }
   }
   OnBeforeHide() {
-    RedDotController_1.RedDotController.UnBindGivenUi("TowerReward", this.GetItem(5)), RedDotController_1.RedDotController.UnBindGivenUi("TowerRewardByDifficulties", this.GetItem(8), 5)
+    RedDotController_1.RedDotController.UnBindGivenUi("TowerReward", this.GetItem(5));
+    RedDotController_1.RedDotController.UnBindGivenUi("TowerRewardByDifficulties", this.GetItem(8), 5);
   }
   OnTick(e) {
-    this._fe && this.B2t()
+    if (this._fe) {
+      this.B2t();
+    }
   }
   B2t() {
-    var e, r = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
-    this.y2t !== r && (this.y2t = r, this.GetText(4).SetText(r)), MathUtils_1.MathUtils.LongToNumber(ModelManager_1.ModelManager.TowerModel.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime() <= 1 && (this._fe = !1, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView), (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(99)).FunctionMap.set(1, e = () => {
-      ModelManager_1.ModelManager.TowerModel.CheckInTower() && InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest()
-    }), r.FunctionMap.set(2, e), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r))
+    var e;
+    var r = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
+    if (this.y2t !== r) {
+      this.y2t = r;
+      this.GetText(4).SetText(r);
+    }
+    if (MathUtils_1.MathUtils.LongToNumber(ModelManager_1.ModelManager.TowerModel.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime() <= 1) {
+      this._fe = false;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+      (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(99)).FunctionMap.set(1, e = () => {
+        if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+          InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
+        }
+      });
+      r.FunctionMap.set(2, e);
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
+    }
   }
 }
 exports.TowerVariationView = TowerVariationView;

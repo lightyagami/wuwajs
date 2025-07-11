@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configGeographyHandBookById = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  GeographyHandBook_1 = require("../Config/GeographyHandBook"),
-  DB = "db_handbook.db",
-  FILE = "t.图鉴系统.xlsx",
-  TABLE = "GeographyHandBook",
-  COMMAND = "select BinData from `GeographyHandBook` where Id=?",
-  KEY_PREFIX = "GeographyHandBookById",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configGeographyHandBookById = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const GeographyHandBook_1 = require("../Config/GeographyHandBook");
+const DB = "db_handbook.db";
+const FILE = "t.图鉴系统.xlsx";
+const TABLE = "GeographyHandBook";
+const COMMAND = "select BinData from `GeographyHandBook` where Id=?";
+const KEY_PREFIX = "GeographyHandBookById";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configGeographyHandBookById.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configGeographyHandBookById.GetConfig"),
-  CONFIG_STAT_PREFIX = "configGeographyHandBookById.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configGeographyHandBookById.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configGeographyHandBookById.GetConfig");
+const CONFIG_STAT_PREFIX = "configGeographyHandBookById.GetConfig(";
 exports.configGeographyHandBookById = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (o, n = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var t = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${o})`),
-      e = (t?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (o, n = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var t = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${o})`);
+    t?.Start();
+    var e = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (e) {
       if (n) {
-        var i = KEY_PREFIX + `#${o})`;
+        var i = `${KEY_PREFIX}#${o})`;
         const a = ConfigCommon_1.ConfigCommon.GetConfig(i);
-        if (a) return t?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
-      }
-      if (e = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", o])) {
-        i = void 0;
-        if ([e, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]), e) {
-          const a = GeographyHandBook_1.GeographyHandBook.getRootAsGeographyHandBook(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
-          return n && (e = KEY_PREFIX + `#${o})`, ConfigCommon_1.ConfigCommon.SaveConfig(e, a)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), t?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          t?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (e = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", o]) > 0) {
+        i = undefined;
+        [e, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]);
+        if (e) {
+          const a = GeographyHandBook_1.GeographyHandBook.getRootAsGeographyHandBook(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
+          if (n) {
+            e = `${KEY_PREFIX}#${o})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(e, a);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          t?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    t?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    t?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=GeographyHandBookById.js.map

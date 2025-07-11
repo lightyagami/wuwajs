@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbChargeSlashControl = void 0;
+  value: true
+});
+exports.FbChargeSlashControl = undefined;
 class FbChargeSlashControl {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Mu1 = !1, this.Eu1 = 0, this.Iu1 = !1, this.Tu1 = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.$u1 = false;
+    this.Wu1 = 0;
+    this.Qu1 = false;
+    this.Ku1 = undefined;
   }
   static Create(t) {
-    if (t) return new FbChargeSlashControl(t)
+    if (t) {
+      return new FbChargeSlashControl(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get UpHeight() {
-    return this.Mu1 || (this.Mu1 = !0, this.Eu1 = this.FbDataInternal.upHeight()), this.Eu1
+    if (!this.$u1) {
+      this.$u1 = true;
+      this.Wu1 = this.FbDataInternal.upHeight();
+    }
+    return this.Wu1;
   }
   get UpCurvePath() {
-    return this.Iu1 || (this.Iu1 = !0, this.Tu1 = this.FbDataInternal.upCurvePath()), this.Tu1
+    if (!this.Qu1) {
+      this.Qu1 = true;
+      this.Ku1 = this.FbDataInternal.upCurvePath();
+    }
+    return this.Ku1;
   }
 }
 exports.FbChargeSlashControl = FbChargeSlashControl;

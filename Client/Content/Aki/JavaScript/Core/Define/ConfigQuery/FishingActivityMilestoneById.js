@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configFishingActivityMilestoneById = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  FishingActivityMilestone_1 = require("../Config/FishingActivityMilestone"),
-  DB = "db_fishing.db",
-  FILE = "b.捕鱼大活动.xlsx",
-  TABLE = "FishingActivityMilestone",
-  COMMAND = "select BinData from `FishingActivityMilestone` where Id=?",
-  KEY_PREFIX = "FishingActivityMilestoneById",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configFishingActivityMilestoneById = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const FishingActivityMilestone_1 = require("../Config/FishingActivityMilestone");
+const DB = "db_fishing.db";
+const FILE = "b.捕鱼大活动.xlsx";
+const TABLE = "FishingActivityMilestone";
+const COMMAND = "select BinData from `FishingActivityMilestone` where Id=?";
+const KEY_PREFIX = "FishingActivityMilestoneById";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configFishingActivityMilestoneById.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configFishingActivityMilestoneById.GetConfig"),
-  CONFIG_STAT_PREFIX = "configFishingActivityMilestoneById.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configFishingActivityMilestoneById.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configFishingActivityMilestoneById.GetConfig");
+const CONFIG_STAT_PREFIX = "configFishingActivityMilestoneById.GetConfig(";
 exports.configFishingActivityMilestoneById = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (i, n = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var o = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${i})`),
-      t = (o?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (i, n = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var o = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${i})`);
+    o?.Start();
+    var t = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (t) {
       if (n) {
-        var e = KEY_PREFIX + `#${i})`;
+        var e = `${KEY_PREFIX}#${i})`;
         const g = ConfigCommon_1.ConfigCommon.GetConfig(e);
-        if (g) return o?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), g
-      }
-      if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, i, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", i])) {
-        e = void 0;
-        if ([t, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", i]), t) {
-          const g = FishingActivityMilestone_1.FishingActivityMilestone.getRootAsFishingActivityMilestone(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
-          return n && (t = KEY_PREFIX + `#${i})`, ConfigCommon_1.ConfigCommon.SaveConfig(t, g)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), o?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), g
+        if (g) {
+          o?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return g;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, i, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", i]) > 0) {
+        e = undefined;
+        [t, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", i]);
+        if (t) {
+          const g = FishingActivityMilestone_1.FishingActivityMilestone.getRootAsFishingActivityMilestone(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
+          if (n) {
+            t = `${KEY_PREFIX}#${i})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(t, g);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          o?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return g;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    o?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    o?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=FishingActivityMilestoneById.js.map

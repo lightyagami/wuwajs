@@ -1,43 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.newNodeObj = exports.childQuestNodeType = exports.NodeTypeData = void 0;
-const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest"),
-  TimerNode_1 = require("../../TimerNode"),
-  AwakeAndLoadEntityNode_1 = require("../BehaviorNode/ChildQuestNode/AwakeAndLoadEntityNode"),
-  CheckCombatStateBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckCombatStateBehaviorNode"),
-  CheckEntityStateNode_1 = require("../BehaviorNode/ChildQuestNode/CheckEntityStateNode"),
-  CheckLevelPlayBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckLevelPlayBehaviorNode"),
-  CheckPlayerInputBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckPlayerInputBehaviorNode"),
-  CommunicateNode_1 = require("../BehaviorNode/ChildQuestNode/CommunicateNode"),
-  CompareDemoActorVarChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/CompareDemoActorVarChildQuestNode"),
-  DeliverBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/DeliverBehaviorNode"),
-  EntityPhotoBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/EntityPhotoBehaviorNode"),
-  GuideFinishBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/GuideFinishBehaviorNode"),
-  InteractBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/InteractBehaviorNode"),
-  KillBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/KillBehaviorNode"),
-  MonsterCreatorBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/MonsterCreatorBehaviorNode"),
-  ParallaxBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ParallaxBehaviorNode"),
-  ParkourBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ParkourBehaviorNode"),
-  PlayFlowBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/PlayFlowBehaviorNode"),
-  ReachAreaBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReachAreaBehaviorNode"),
-  ReadMailBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadMailBehaviorNode"),
-  ServerAchieveChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/ServerAchieveChildQuestNode"),
-  ShowUiBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ShowUiBehaviorNode"),
-  UseItemBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/UseItemBehaviorNode"),
-  WalkingPatternBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/WalkingPatternBehaviorNode"),
-  ParallelSelectNode_1 = require("../BehaviorNode/LogicNode/ParallelSelectNode"),
-  SequenceNode_1 = require("../BehaviorNode/LogicNode/SequenceNode"),
-  QuestFailedBehaviorNode_1 = require("../BehaviorNode/QuestFailedBehaviorNode");
+  value: true
+});
+exports.newNodeObj = exports.childQuestNodeType = exports.NodeTypeData = undefined;
+const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
+const TimerNode_1 = require("../../TimerNode");
+const AwakeAndLoadEntityNode_1 = require("../BehaviorNode/ChildQuestNode/AwakeAndLoadEntityNode");
+const CheckCombatStateBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckCombatStateBehaviorNode");
+const CheckEntityStateNode_1 = require("../BehaviorNode/ChildQuestNode/CheckEntityStateNode");
+const CheckLevelPlayBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckLevelPlayBehaviorNode");
+const CheckPlayerInputBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/CheckPlayerInputBehaviorNode");
+const CommunicateNode_1 = require("../BehaviorNode/ChildQuestNode/CommunicateNode");
+const CompareDemoActorVarChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/CompareDemoActorVarChildQuestNode");
+const DeliverBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/DeliverBehaviorNode");
+const EntityPhotoBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/EntityPhotoBehaviorNode");
+const GuideFinishBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/GuideFinishBehaviorNode");
+const InteractBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/InteractBehaviorNode");
+const KillBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/KillBehaviorNode");
+const MonsterCreatorBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/MonsterCreatorBehaviorNode");
+const ParallaxBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ParallaxBehaviorNode");
+const ParkourBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ParkourBehaviorNode");
+const PlayFlowBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/PlayFlowBehaviorNode");
+const ReachAreaBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReachAreaBehaviorNode");
+const ReadMailBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadMailBehaviorNode");
+const ServerAchieveChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/ServerAchieveChildQuestNode");
+const ShowUiBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ShowUiBehaviorNode");
+const UseItemBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/UseItemBehaviorNode");
+const WalkingPatternBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/WalkingPatternBehaviorNode");
+const ParallelSelectNode_1 = require("../BehaviorNode/LogicNode/ParallelSelectNode");
+const SequenceNode_1 = require("../BehaviorNode/LogicNode/SequenceNode");
+const QuestFailedBehaviorNode_1 = require("../BehaviorNode/QuestFailedBehaviorNode");
 class NodeTypeData {
   constructor(e) {
-    this.Ctor = e
+    this.Ctor = e;
   }
 }
-
 function newNodeObj(o) {
   if (o) {
-    let e = void 0;
+    let e = undefined;
     var a = o.Id;
     switch (o.Type) {
       case "ChildQuest":
@@ -51,12 +52,13 @@ function newNodeObj(o) {
         e = new ParallelSelectNode_1.ParallelSelectNode(a);
         break;
       case "Sequence":
-        e = new SequenceNode_1.SequenceNode(a)
+        e = new SequenceNode_1.SequenceNode(a);
     }
-    return e
+    return e;
   }
 }
-exports.NodeTypeData = NodeTypeData, exports.childQuestNodeType = {
+exports.NodeTypeData = NodeTypeData;
+exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.DoInteract]: new NodeTypeData(InteractBehaviorNode_1.InteractBehaviorNode),
   [IQuest_1.EChildQuest.Kill]: new NodeTypeData(KillBehaviorNode_1.KillBehaviorNode),
   [IQuest_1.EChildQuest.ReachArea]: new NodeTypeData(ReachAreaBehaviorNode_1.ReachAreaBehaviorNode),
@@ -98,5 +100,5 @@ exports.NodeTypeData = NodeTypeData, exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.FinishBvbChallenge]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
   [IQuest_1.EChildQuest.CompareActorVar]: new NodeTypeData(CompareDemoActorVarChildQuestNode_1.CompareDemoActorVarChildQuestNode),
   [IQuest_1.EChildQuest.ProgramSpecialProcess]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode)
-}, exports.newNodeObj = newNodeObj;
-//# sourceMappingURL=NodeTypeDefine.js.map
+};
+exports.newNodeObj = newNodeObj; //# sourceMappingURL=NodeTypeDefine.js.map

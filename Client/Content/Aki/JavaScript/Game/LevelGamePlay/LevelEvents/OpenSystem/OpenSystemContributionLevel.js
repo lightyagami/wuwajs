@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemContributionLevel = void 0;
+  value: true
+});
+exports.OpenSystemContributionLevel = undefined;
 const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemContributionLevel extends OpenSystemBase_1.OpenSystemBase {
   GetViewName(e, t) {
-    return "RegionalQuestView"
+    return "RegionalQuestView";
   }
 }
 exports.OpenSystemContributionLevel = OpenSystemContributionLevel;

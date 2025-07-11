@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleSkillInputHandler = void 0;
+  value: true
+});
+exports.BattleSkillInputHandler = undefined;
 const InputFilter_1 = require("../../../Input/InputFilter");
 class BattleSkillInputHandler {
   constructor() {
-    this.InputFilter = void 0, this.QMc = void 0, this.KMc = void 0, this.InputFilter = new InputFilter_1.InputFilter([], void 0, void 0, void 0)
+    this.InputFilter = undefined;
+    this.QMc = undefined;
+    this.KMc = undefined;
+    this.InputFilter = new InputFilter_1.InputFilter([], undefined, undefined, undefined);
   }
   InitCallback(t, e) {
-    this.QMc = t, this.KMc = e
+    this.QMc = t;
+    this.KMc = e;
   }
   SetActionType(t) {
-    this.InputFilter.Actions.clear(), this.InputFilter.Actions.add(t)
+    this.InputFilter.Actions.clear();
+    this.InputFilter.Actions.add(t);
   }
   GetPriority() {
-    return 1
+    return 1;
   }
   GetInputFilter() {
-    return this.InputFilter
+    return this.InputFilter;
   }
   HandlePressEvent(t, e) {
-    this.QMc?.(t)
+    this.QMc?.(t);
   }
   HandleReleaseEvent(t, e) {
-    this.KMc?.(t)
+    this.KMc?.(t);
   }
   HandleHoldEvent(t, e) {}
   HandleInputAxis(t, e) {}

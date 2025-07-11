@@ -1,20 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NoUiTimer = void 0;
-const TimeUtil_1 = require("../../../Common/TimeUtil"),
-  LogicTreeTimerBase_1 = require("./LogicTreeTimerBase");
+  value: true
+});
+exports.NoUiTimer = undefined;
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const LogicTreeTimerBase_1 = require("./LogicTreeTimerBase");
 class NoUiTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
   constructor() {
-    super(...arguments), this.MYt = -0, this.GP_ = -0
+    super(...arguments);
+    this.MYt = -0;
+    this.GP_ = -0;
   }
   StartShowTimer(e, i) {
-    this.MYt = e, this.GP_ = i
+    this.MYt = e;
+    this.GP_ = i;
   }
   GetRemainTime() {
-    var e = (this.MYt - TimeUtil_1.TimeUtil.GetServerStopTimeStamp()) / 1e3,
-      i = 0 !== this.GP_ ? (this.MYt - this.GP_) / 1e3 : -1;
-    return Math.max(e, i, 0)
+    var e = (this.MYt - TimeUtil_1.TimeUtil.GetServerStopTimeStamp()) / 1000;
+    var i = this.GP_ !== 0 ? (this.MYt - this.GP_) / 1000 : -1;
+    return Math.max(e, i, 0);
   }
 }
 exports.NoUiTimer = NoUiTimer;

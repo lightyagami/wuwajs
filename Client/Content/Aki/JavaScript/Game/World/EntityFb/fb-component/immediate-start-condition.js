@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ImmediateStartCondition = void 0;
+  value: true
+});
+exports.ImmediateStartCondition = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ImmediateStartCondition {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsImmediateStartCondition(t, i) {
-    return (i || new ImmediateStartCondition).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ImmediateStartCondition()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsImmediateStartCondition(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new ImmediateStartCondition).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new ImmediateStartCondition()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.readUint8(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readUint8(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   static startImmediateStartCondition(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addType(t, i) {
-    t.addFieldInt8(0, i, 0)
+    t.addFieldInt8(0, i, 0);
   }
   static endImmediateStartCondition(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createImmediateStartCondition(t, i) {
-    return ImmediateStartCondition.startImmediateStartCondition(t), ImmediateStartCondition.addType(t, i), ImmediateStartCondition.endImmediateStartCondition(t)
+    ImmediateStartCondition.startImmediateStartCondition(t);
+    ImmediateStartCondition.addType(t, i);
+    return ImmediateStartCondition.endImmediateStartCondition(t);
   }
 }
 exports.ImmediateStartCondition = ImmediateStartCondition;

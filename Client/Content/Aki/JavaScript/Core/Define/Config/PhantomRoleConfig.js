@@ -1,111 +1,165 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomRoleConfig = void 0;
+  value: true
+});
+exports.PhantomRoleConfig = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class PhantomRoleConfig {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get GeDesc() {
-    return this.gedesc()
+    return this.gedesc();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get MeshId() {
-    return this.meshid()
+    return this.meshid();
   }
   get SkillId() {
-    return this.skillid()
+    return this.skillid();
   }
   get SkillTreeGroupId() {
-    return this.skilltreegroupid()
+    return this.skilltreegroupid();
   }
   get CameraConfig() {
-    return this.cameraconfig()
+    return this.cameraconfig();
   }
   get CameraFloatHeight() {
-    return this.camerafloatheight()
+    return this.camerafloatheight();
   }
   get PropertyId() {
-    return this.propertyid()
+    return this.propertyid();
   }
   get RoleHeadIcon() {
-    return this.roleheadicon()
+    return this.roleheadicon();
   }
   get CameraId() {
-    return this.cameraid()
+    return this.cameraid();
   }
   get SearchId() {
-    return this.searchid()
+    return this.searchid();
   }
   get HUDId() {
-    return this.hudid()
+    return this.hudid();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsPhantomRoleConfig(t, i) {
-    return (i || new PhantomRoleConfig).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new PhantomRoleConfig()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   gedesc(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   meshid() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skillid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skilltreegroupid() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   cameraconfig() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   camerafloatheight() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readFloat32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   propertyid() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   roleheadicon(t) {
-    var i = this.J7.__offset(this.z7, 22),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   cameraid() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   searchid() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   hudid() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.PhantomRoleConfig = PhantomRoleConfig;

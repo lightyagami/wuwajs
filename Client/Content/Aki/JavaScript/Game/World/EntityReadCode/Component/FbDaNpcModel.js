@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDaNpcModel = void 0;
+  value: true
+});
+exports.FbDaNpcModel = undefined;
 class FbDaNpcModel {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.MKh = !1, this.EKh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.MKh = false;
+    this.EKh = undefined;
   }
   static Create(t) {
-    if (t) return new FbDaNpcModel(t)
+    if (t) {
+      return new FbDaNpcModel(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Da() {
-    return this.MKh || (this.MKh = !0, this.EKh = this.FbDataInternal.da()), this.EKh
+    if (!this.MKh) {
+      this.MKh = true;
+      this.EKh = this.FbDataInternal.da();
+    }
+    return this.EKh;
   }
 }
 exports.FbDaNpcModel = FbDaNpcModel;

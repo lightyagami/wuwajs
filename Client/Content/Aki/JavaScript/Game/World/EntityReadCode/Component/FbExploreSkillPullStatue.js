@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbExploreSkillPullStatue = void 0;
+  value: true
+});
+exports.FbExploreSkillPullStatue = undefined;
 const FbCategoryMatchingCondition_1 = require("./FbCategoryMatchingCondition");
 class FbExploreSkillPullStatue {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.f_h = !1, this.X6o = void 0, this.VWh = !1, this.jWh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.VWh = false;
+    this.jWh = 0;
   }
   static Create(t) {
-    if (t) return new FbExploreSkillPullStatue(t)
+    if (t) {
+      return new FbExploreSkillPullStatue(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbCategoryMatchingCondition_1.FbCategoryMatchingCondition.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbCategoryMatchingCondition_1.FbCategoryMatchingCondition.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get StatueInteractPointId() {
-    return this.VWh || (this.VWh = !0, this.jWh = this.FbDataInternal.statueInteractPointId()), this.jWh
+    if (!this.VWh) {
+      this.VWh = true;
+      this.jWh = this.FbDataInternal.statueInteractPointId();
+    }
+    return this.jWh;
   }
 }
 exports.FbExploreSkillPullStatue = FbExploreSkillPullStatue;

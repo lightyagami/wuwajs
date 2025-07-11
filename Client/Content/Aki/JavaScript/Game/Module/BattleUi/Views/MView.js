@@ -1,40 +1,61 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MView = void 0;
-const UE = require("ue"),
-  BaseConfigController_1 = require("../../../../Launcher/BaseConfig/BaseConfigController"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase"),
-  CHECK_INTERVAL = 1e3;
+  value: true
+});
+exports.MView = undefined;
+const UE = require("ue");
+const BaseConfigController_1 = require("../../../../Launcher/BaseConfig/BaseConfigController");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
+const CHECK_INTERVAL = 1000;
 class MView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
-    super(...arguments), this.OQl = !1, this.FQl = "", this.NQl = 0, this.Xy = 0, this.pbc = () => {
-      this.VQl()
-    }
+    super(...arguments);
+    this.OQl = false;
+    this.FQl = "";
+    this.NQl = 0;
+    this.Xy = 0;
+    this.pbc = () => {
+      this.VQl();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MReady, this.pbc)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MReady, this.pbc);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MReady, this.pbc)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MReady, this.pbc);
   }
   OnStart() {
-    BaseConfigController_1.BaseConfigController.GetRptIsOpen() ? (this.FQl = ModelManager_1.ModelManager.LoginModel.GetWaterMarkPath(), this.VQl()) : this.OQl = !0
+    if (BaseConfigController_1.BaseConfigController.GetRptIsOpen()) {
+      this.FQl = ModelManager_1.ModelManager.LoginModel.GetWaterMarkPath();
+      this.VQl();
+    } else {
+      this.OQl = true;
+    }
   }
   OnTick(e) {
-    this.OQl || (this.NQl > CHECK_INTERVAL ? (this.NQl = 0, this.VQl()) : this.NQl += e)
+    if (!this.OQl) {
+      if (this.NQl > CHECK_INTERVAL) {
+        this.NQl = 0;
+        this.VQl();
+      } else {
+        this.NQl += e;
+      }
+    }
   }
   VQl() {
-    var e, t;
-    UE.KuroStaticLibrary.FileExists(this.FQl) && (this.OQl = !0, e = this.GetTexture(0), t = UE.LGUIBPLibrary.CreateTexture2DFromPath(this.FQl, "Mask" + this.Xy, 0), this.Xy++, t) && (e?.SetTexture(t), e?.SetUIActive(!0))
+    var e;
+    var t;
+    if (UE.KuroStaticLibrary.FileExists(this.FQl) && (this.OQl = true, e = this.GetTexture(0), t = UE.LGUIBPLibrary.CreateTexture2DFromPath(this.FQl, "Mask" + this.Xy, 0), this.Xy++, t)) {
+      e?.SetTexture(t);
+      e?.SetUIActive(true);
+    }
   }
 }
 exports.MView = MView;

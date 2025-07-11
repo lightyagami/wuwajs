@@ -1,17 +1,34 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlotReviewComponent = void 0;
+  value: true
+});
+exports.PlotReviewComponent = undefined;
 class PlotReviewComponent {
   constructor(t, s) {
-    this.dce = !1, this.quc = void 0, this.EnableReviewButton = t => {
-      this.dce !== t && (this.dce = t, this.Ouc.SetUIActive(this.dce))
-    }, this.Guc = () => {
-      this.dce && this.NTt?.()
-    }, this.quc = t, this.Ouc = t.RootUIComp, this.NTt = s, this.quc.OnClickCallBack.Bind(this.Guc), this.dce = !1
+    this.dce = false;
+    this.quc = undefined;
+    this.EnableReviewButton = t => {
+      if (this.dce !== t) {
+        this.dce = t;
+        this.Ouc.SetUIActive(this.dce);
+      }
+    };
+    this.Guc = () => {
+      if (this.dce) {
+        this.NTt?.();
+      }
+    };
+    this.quc = t;
+    this.Ouc = t.RootUIComp;
+    this.NTt = s;
+    this.quc.OnClickCallBack.Bind(this.Guc);
+    this.dce = false;
   }
   OnClear() {
-    this.dce = !1, this.NTt = void 0, this.quc?.OnClickCallBack.Unbind()
+    this.dce = false;
+    this.NTt = undefined;
+    this.quc?.OnClickCallBack.Unbind();
   }
 }
 exports.PlotReviewComponent = PlotReviewComponent;

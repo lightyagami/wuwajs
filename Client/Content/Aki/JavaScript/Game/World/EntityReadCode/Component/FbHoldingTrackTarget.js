@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHoldingTrackTarget = void 0;
+  value: true
+});
+exports.FbHoldingTrackTarget = undefined;
 class FbHoldingTrackTarget {
   constructor(t) {
-    this.FbDataInternal = t, this.xEh = !1, this.REh = void 0, this.T2h = !1, this.b2h = 0, this.a_h = !1, this.I9o = 0
+    this.FbDataInternal = t;
+    this.xEh = false;
+    this.REh = undefined;
+    this.T2h = false;
+    this.b2h = 0;
+    this.a_h = false;
+    this.I9o = 0;
   }
   static Create(t) {
-    if (t) return new FbHoldingTrackTarget(t)
+    if (t) {
+      return new FbHoldingTrackTarget(t);
+    }
   }
   get EffectPath() {
-    return this.xEh || (this.xEh = !0, this.REh = this.FbDataInternal.effectPath()), this.REh
+    if (!this.xEh) {
+      this.xEh = true;
+      this.REh = this.FbDataInternal.effectPath();
+    }
+    return this.REh;
   }
   get EffectLength() {
-    return this.T2h || (this.T2h = !0, this.b2h = this.FbDataInternal.effectLength()), this.b2h
+    if (!this.T2h) {
+      this.T2h = true;
+      this.b2h = this.FbDataInternal.effectLength();
+    }
+    return this.b2h;
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
 }
 exports.FbHoldingTrackTarget = FbHoldingTrackTarget;

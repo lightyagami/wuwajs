@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbLinearOverRangeCameraShake = void 0;
+  value: true
+});
+exports.FbLinearOverRangeCameraShake = undefined;
 class FbLinearOverRangeCameraShake {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.eAh = !1, this.tAh = 0, this.iAh = !1, this.rAh = 0, this.oAh = !1, this.nAh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.eAh = false;
+    this.tAh = 0;
+    this.iAh = false;
+    this.rAh = 0;
+    this.oAh = false;
+    this.nAh = 0;
   }
   static Create(t) {
-    if (t) return new FbLinearOverRangeCameraShake(t)
+    if (t) {
+      return new FbLinearOverRangeCameraShake(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get CenterEntityId() {
-    return this.eAh || (this.eAh = !0, this.tAh = this.FbDataInternal.centerEntityId()), this.tAh
+    if (!this.eAh) {
+      this.eAh = true;
+      this.tAh = this.FbDataInternal.centerEntityId();
+    }
+    return this.tAh;
   }
   get MinRange() {
-    return this.iAh || (this.iAh = !0, this.rAh = this.FbDataInternal.minRange()), this.rAh
+    if (!this.iAh) {
+      this.iAh = true;
+      this.rAh = this.FbDataInternal.minRange();
+    }
+    return this.rAh;
   }
   get MaxRange() {
-    return this.oAh || (this.oAh = !0, this.nAh = this.FbDataInternal.maxRange()), this.nAh
+    if (!this.oAh) {
+      this.oAh = true;
+      this.nAh = this.FbDataInternal.maxRange();
+    }
+    return this.nAh;
   }
 }
 exports.FbLinearOverRangeCameraShake = FbLinearOverRangeCameraShake;

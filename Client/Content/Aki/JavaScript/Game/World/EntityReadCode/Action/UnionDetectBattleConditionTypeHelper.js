@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionDetectBattleConditionTypeHelper = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbDetectBattleTag_1 = require("./FbDetectBattleTag");
+  value: true
+});
+exports.UnionDetectBattleConditionTypeHelper = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbDetectBattleTag_1 = require("./FbDetectBattleTag");
 class UnionDetectBattleConditionTypeHelper {
   static GetUnionDetectBattleConditionTypeObject(t) {
-    if (t === fb_action_1.UnionDetectBattleConditionType.DetectBattleTag) return new fb_action_1.DetectBattleTag
+    if (t === fb_action_1.UnionDetectBattleConditionType.DetectBattleTag) {
+      return new fb_action_1.DetectBattleTag();
+    }
   }
   static ReadUnionDetectBattleConditionType(t, e) {
-    return void 0 !== e && t === fb_action_1.UnionDetectBattleConditionType.DetectBattleTag ? FbDetectBattleTag_1.FbDetectBattleTag.Create(e) : void 0
+    if (e !== undefined && t === fb_action_1.UnionDetectBattleConditionType.DetectBattleTag) {
+      return FbDetectBattleTag_1.FbDetectBattleTag.Create(e);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.UnionDetectBattleConditionTypeHelper = UnionDetectBattleConditionTypeHelper;

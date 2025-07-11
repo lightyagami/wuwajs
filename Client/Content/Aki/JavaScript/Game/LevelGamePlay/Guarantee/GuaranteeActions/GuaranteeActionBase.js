@@ -1,13 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GuaranteeActionBase = void 0;
+  value: true
+});
+exports.GuaranteeActionBase = undefined;
 class GuaranteeActionBase {
   constructor() {
-    this.Type = "EnablePlayerMoveControl", this.ActionInfo = void 0, this.Context = void 0
+    this.Type = "EnablePlayerMoveControl";
+    this.ActionInfo = undefined;
+    this.Context = undefined;
   }
   Execute(e, t) {
-    this.ActionInfo = e, this.Context = t, this.OnExecute(e.Params)
+    this.ActionInfo = e;
+    this.Context = t;
+    this.OnExecute(e.Params);
   }
   OnExecute(e) {}
 }

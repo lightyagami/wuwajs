@@ -1,49 +1,147 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RangeComponentConfigHelper = void 0;
+  value: true
+});
+exports.RangeComponentConfigHelper = undefined;
 const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
 class CompConfig {
   constructor() {
-    this.NeedReqEntityAccessRange = !1, this.NeedReqPlayerAccessRange = !1, this.NeedPendingEmitEvent = !1, this.NeedDisablePassiveCollision = !1, this.NeedUseFullCollisionPreset = !1
+    this.NeedReqEntityAccessRange = false;
+    this.NeedReqPlayerAccessRange = false;
+    this.NeedPendingEmitEvent = false;
+    this.NeedDisablePassiveCollision = false;
+    this.NeedUseFullCollisionPreset = false;
   }
 }
 class RangeComponentConfigHelper {
   constructor() {
-    this.Bql = new Map, this.bql = t => {
+    this.Bql = new Map();
+    this.bql = t => {
       t = (0, IComponent_1.getComponent)(t.ComponentsData, "TriggerComponent");
-      return !(!t || t.Match.OnlyPlayer && !t.ChangeRoleTrigger && !t.Match.AllCharacter && !t.Match.Categories?.length)
-    }
+      return !!t && (!t.Match.OnlyPlayer || !!t.ChangeRoleTrigger || !!t.Match.AllCharacter || !!t.Match.Categories?.length);
+    };
   }
   static get Instance() {
-    return void 0 === this.cj && (this.cj = new RangeComponentConfigHelper, this.cj.Init()), this.cj
+    if (this.cj === undefined) {
+      this.cj = new RangeComponentConfigHelper();
+      this.cj.Init();
+    }
+    return this.cj;
   }
   get CompConfig() {
-    return this.Bql
+    return this.Bql;
   }
   qql(t, o, n) {
     let e = this.Bql.get(t);
-    e || (e = new CompConfig, this.Bql.set(t, e)), e.NeedReqEntityAccessRange = o, e.NeedReqPlayerAccessRange = n
+    if (!e) {
+      e = new CompConfig();
+      this.Bql.set(t, e);
+    }
+    e.NeedReqEntityAccessRange = o;
+    e.NeedReqPlayerAccessRange = n;
   }
   Gql(t, o) {
     let n = this.Bql.get(t);
-    n || (n = new CompConfig, this.Bql.set(t, n)), n.NeedPendingEmitEvent = o
+    if (!n) {
+      n = new CompConfig();
+      this.Bql.set(t, n);
+    }
+    n.NeedPendingEmitEvent = o;
   }
   QKl(t, o, n) {
     let e = this.Bql.get(t);
-    e || (e = new CompConfig, this.Bql.set(t, e)), e.NeedDisablePassiveCollision = o, e.NeedUseFullCollisionPreset = n
+    if (!e) {
+      e = new CompConfig();
+      this.Bql.set(t, e);
+    }
+    e.NeedDisablePassiveCollision = o;
+    e.NeedUseFullCollisionPreset = n;
   }
   Init() {
-    this.kql(), this.Oql(), this.KKl()
+    this.kql();
+    this.Oql();
+    this.KKl();
   }
   kql() {
-    this.qql("TrampleComponent", !0, !1), this.qql("EffectAreaComponent", !1, !0), this.qql("SkyboxComponent", !1, !1), this.qql("ProgressBarControlComponent", !1, !1), this.qql("EntityStateAudioComponent", !1, !1), this.qql("TriggerComponent", this.bql, !0), this.qql("ClientTriggerComponent", !1, !1), this.qql("AirPassageComponent", !1, !0), this.qql("PortalComponent", !1, !0), this.qql("LocationSafetyComponent", !1, !1), this.qql("FanComponent", !1, !1), this.qql("BeamCastComponent", !1, !1), this.qql("MonitorComponent", !1, !1), this.qql("LiftComponent", !1, !1), this.qql("ExploreSkillInteractComponent", !1, !1), this.qql("BuffProducerComponent", !1, !1), this.qql("BuffConsumerComponent", !1, !1), this.qql("SceneItemAiComponent", !1, !1), this.qql("AiAlertNotifyComponent", !1, !1), this.qql("ConveyorBeltComponent", !1, !1), this.qql("SceneBulletComponent", !1, !1), this.qql("ItemFoundation2", !1, !1), this.qql("EntityCustomAudioComponent", !1, !1)
+    this.qql("TrampleComponent", true, false);
+    this.qql("EffectAreaComponent", false, true);
+    this.qql("SkyboxComponent", false, false);
+    this.qql("ProgressBarControlComponent", false, false);
+    this.qql("EntityStateAudioComponent", false, false);
+    this.qql("TriggerComponent", this.bql, true);
+    this.qql("ClientTriggerComponent", false, false);
+    this.qql("AirPassageComponent", false, true);
+    this.qql("PortalComponent", false, true);
+    this.qql("LocationSafetyComponent", false, false);
+    this.qql("FanComponent", false, false);
+    this.qql("BeamCastComponent", false, false);
+    this.qql("MonitorComponent", false, false);
+    this.qql("LiftComponent", false, false);
+    this.qql("ExploreSkillInteractComponent", false, false);
+    this.qql("BuffProducerComponent", false, false);
+    this.qql("BuffConsumerComponent", false, false);
+    this.qql("SceneItemAiComponent", false, false);
+    this.qql("AiAlertNotifyComponent", false, false);
+    this.qql("ConveyorBeltComponent", false, false);
+    this.qql("SceneBulletComponent", false, false);
+    this.qql("ItemFoundation2", false, false);
+    this.qql("EntityCustomAudioComponent", false, false);
   }
   Oql() {
-    this.Gql("TrampleComponent", !1), this.Gql("EffectAreaComponent", !1), this.Gql("SkyboxComponent", !1), this.Gql("ProgressBarControlComponent", !1), this.Gql("EntityStateAudioComponent", !1), this.Gql("TriggerComponent", !1), this.Gql("ClientTriggerComponent", !1), this.Gql("AirPassageComponent", !1), this.Gql("PortalComponent", !1), this.Gql("LocationSafetyComponent", !1), this.Gql("FanComponent", !1), this.Gql("BeamCastComponent", !0), this.Gql("MonitorComponent", !1), this.Gql("LiftComponent", !1), this.Gql("ExploreSkillInteractComponent", !1), this.Gql("BuffProducerComponent", !1), this.Gql("BuffConsumerComponent", !1), this.Gql("SceneItemAiComponent", !1), this.Gql("AiAlertNotifyComponent", !1), this.Gql("ConveyorBeltComponent", !1), this.Gql("SceneBulletComponent", !1), this.Gql("ItemFoundation2", !1), this.Gql("EntityCustomAudioComponent", !1)
+    this.Gql("TrampleComponent", false);
+    this.Gql("EffectAreaComponent", false);
+    this.Gql("SkyboxComponent", false);
+    this.Gql("ProgressBarControlComponent", false);
+    this.Gql("EntityStateAudioComponent", false);
+    this.Gql("TriggerComponent", false);
+    this.Gql("ClientTriggerComponent", false);
+    this.Gql("AirPassageComponent", false);
+    this.Gql("PortalComponent", false);
+    this.Gql("LocationSafetyComponent", false);
+    this.Gql("FanComponent", false);
+    this.Gql("BeamCastComponent", true);
+    this.Gql("MonitorComponent", false);
+    this.Gql("LiftComponent", false);
+    this.Gql("ExploreSkillInteractComponent", false);
+    this.Gql("BuffProducerComponent", false);
+    this.Gql("BuffConsumerComponent", false);
+    this.Gql("SceneItemAiComponent", false);
+    this.Gql("AiAlertNotifyComponent", false);
+    this.Gql("ConveyorBeltComponent", false);
+    this.Gql("SceneBulletComponent", false);
+    this.Gql("ItemFoundation2", false);
+    this.Gql("EntityCustomAudioComponent", false);
   }
   KKl() {
-    this.QKl("TrampleComponent", !1, !0), this.QKl("EffectAreaComponent", !1, !1), this.QKl("SkyboxComponent", !1, !1), this.QKl("ProgressBarControlComponent", !1, !0), this.QKl("EntityStateAudioComponent", !1, !1), this.QKl("TriggerComponent", !1, this.bql), this.QKl("ClientTriggerComponent", !1, !0), this.QKl("AirPassageComponent", !1, !1), this.QKl("PortalComponent", !1, !1), this.QKl("LocationSafetyComponent", !1, !1), this.QKl("FanComponent", !0, !0), this.QKl("BeamCastComponent", !1, !0), this.QKl("MonitorComponent", !0, !1), this.QKl("LiftComponent", !0, !0), this.QKl("ExploreSkillInteractComponent", !1, !1), this.QKl("BuffProducerComponent", !1, !1), this.QKl("BuffConsumerComponent", !1, !1), this.QKl("SceneItemAiComponent", !1, !1), this.QKl("AiAlertNotifyComponent", !1, !0), this.QKl("ConveyorBeltComponent", !1, !0), this.QKl("SceneBulletComponent", !1, !0), this.QKl("ItemFoundation2", !1, !0), this.QKl("EntityCustomAudioComponent", !1, !1), this.QKl("SceneItemMovementComponent", !0, !1), this.QKl("RotatorComponent2", !0, !1), this.QKl("AttachTargetComponent", !0, !1), this.QKl("PerformanceOptimizationComponent", !0, !0)
+    this.QKl("TrampleComponent", false, true);
+    this.QKl("EffectAreaComponent", false, false);
+    this.QKl("SkyboxComponent", false, false);
+    this.QKl("ProgressBarControlComponent", false, true);
+    this.QKl("EntityStateAudioComponent", false, false);
+    this.QKl("TriggerComponent", false, this.bql);
+    this.QKl("ClientTriggerComponent", false, true);
+    this.QKl("AirPassageComponent", false, false);
+    this.QKl("PortalComponent", false, false);
+    this.QKl("LocationSafetyComponent", false, false);
+    this.QKl("FanComponent", true, true);
+    this.QKl("BeamCastComponent", false, true);
+    this.QKl("MonitorComponent", true, false);
+    this.QKl("LiftComponent", true, true);
+    this.QKl("ExploreSkillInteractComponent", false, false);
+    this.QKl("BuffProducerComponent", false, false);
+    this.QKl("BuffConsumerComponent", false, false);
+    this.QKl("SceneItemAiComponent", false, false);
+    this.QKl("AiAlertNotifyComponent", false, true);
+    this.QKl("ConveyorBeltComponent", false, true);
+    this.QKl("SceneBulletComponent", false, true);
+    this.QKl("ItemFoundation2", false, true);
+    this.QKl("EntityCustomAudioComponent", false, false);
+    this.QKl("SceneItemMovementComponent", true, false);
+    this.QKl("RotatorComponent2", true, false);
+    this.QKl("AttachTargetComponent", true, false);
+    this.QKl("PerformanceOptimizationComponent", true, true);
   }
-}(exports.RangeComponentConfigHelper = RangeComponentConfigHelper).cj = void 0;
+}
+(exports.RangeComponentConfigHelper = RangeComponentConfigHelper).cj = undefined;
 //# sourceMappingURL=RangeComponentConfigHelper.js.map

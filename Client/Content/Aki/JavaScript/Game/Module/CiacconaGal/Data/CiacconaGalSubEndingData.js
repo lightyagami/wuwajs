@@ -1,46 +1,56 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CiacconaGalSubEndingData = void 0;
+  value: true
+});
+exports.CiacconaGalSubEndingData = undefined;
 class CiacconaGalSubEndingData {
   constructor(t) {
-    this.Lo = t, this.jqc = !1, this.iVc = !1, this.oVc = !1
+    this.Lo = t;
+    this.jqc = false;
+    this.iVc = false;
+    this.oVc = false;
   }
   get Id() {
-    return this.Lo.Id
+    return this.Lo.Id;
   }
   get Title() {
-    return this.Lo.Title
+    return this.Lo.Title;
   }
   get Desc() {
-    return this.Lo.Desc
+    return this.Lo.Desc;
   }
   get ImagePath() {
-    return this.Lo.BackgroundImage
+    return this.Lo.BackgroundImage;
   }
   get Type() {
-    return this.Lo.Type
+    return this.Lo.Type;
   }
   get RewardId() {
-    return this.Lo.Reward
+    return this.Lo.Reward;
   }
   get IsFinished() {
-    return this.jqc
+    return this.jqc;
   }
   get IsRewarded() {
-    return this.iVc
+    return this.iVc;
   }
   get ShouldExitOnFirstFinish() {
-    return this.Lo.ExitOnFinish
+    return this.Lo.ExitOnFinish;
   }
   get IsFaked() {
-    return this.oVc
+    return this.oVc;
   }
   UpdateByServerData(t) {
-    this.jqc = t.a3_, this.iVc = t.d4c, this.oVc = !1
+    this.jqc = t.a3_;
+    this.iVc = t.d4c;
+    this.oVc = false;
   }
   ClientSetFinished(t) {
-    this.jqc !== t && (this.jqc = t, this.oVc = !0)
+    if (this.jqc !== t) {
+      this.jqc = t;
+      this.oVc = true;
+    }
   }
 }
 exports.CiacconaGalSubEndingData = CiacconaGalSubEndingData;

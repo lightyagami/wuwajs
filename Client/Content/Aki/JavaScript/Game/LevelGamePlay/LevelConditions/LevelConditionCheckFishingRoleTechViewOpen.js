@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckFishingRoleTechViewOpen = void 0;
+  value: true
+});
+exports.LevelConditionCheckFishingRoleTechViewOpen = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckFishingRoleTechViewOpen extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, s) {
-    return !0
+    return true;
   }
 }
 exports.LevelConditionCheckFishingRoleTechViewOpen = LevelConditionCheckFishingRoleTechViewOpen;

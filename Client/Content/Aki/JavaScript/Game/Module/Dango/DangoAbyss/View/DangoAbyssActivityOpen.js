@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoAbyssActivityOpen = void 0;
+  value: true
+});
+exports.DangoAbyssActivityOpen = undefined;
 const GenericPromptFloatTipsBase_1 = require("../../../GenericPrompt/View/GenericPromptFloatTipsBase");
 class DangoAbyssActivityOpen extends GenericPromptFloatTipsBase_1.GenericPromptFloatTipsBase {
   SetMainText() {}

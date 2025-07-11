@@ -1,26 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  GlobalData_1 = require("../../../GlobalData"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const GlobalData_1 = require("../../../GlobalData");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class TsDecoratorWeatherStateCheck extends UE.BTDecorator_BlueprintBase {
   constructor() {
-    super(...arguments), this.WeatherStateId = 0, this.CheckType = 0, this.IsInitTsVariables = !1, this.TsWeatherStateId = 0, this.TsCheckType = 0
+    super(...arguments);
+    this.WeatherStateId = 0;
+    this.CheckType = 0;
+    this.IsInitTsVariables = false;
+    this.TsWeatherStateId = 0;
+    this.TsCheckType = 0;
   }
   Constructor() {
-    this.IsInitTsVariables = !1, this.TsWeatherStateId = 0
+    this.IsInitTsVariables = false;
+    this.TsWeatherStateId = 0;
   }
   InitTsVariables() {
-    this.IsInitTsVariables && !GlobalData_1.GlobalData.IsPlayInEditor || (this.IsInitTsVariables = !0, this.TsWeatherStateId = this.WeatherStateId, this.TsCheckType = this.CheckType)
+    if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.IsInitTsVariables = true;
+      this.TsWeatherStateId = this.WeatherStateId;
+      this.TsCheckType = this.CheckType;
+    }
   }
   PerformConditionCheckAI(e, t) {
-    if (!e.AiController) return Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]), !1;
+    if (!e.AiController) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]);
+      }
+      return false;
+    }
     this.InitTsVariables();
     e = ModelManager_1.ModelManager.WeatherModel;
-    if (!e) return !1;
+    if (!e) {
+      return false;
+    }
     var r = e.CurrentWeatherId;
     switch (this.TsCheckType) {
       case 0:
@@ -36,7 +54,7 @@ class TsDecoratorWeatherStateCheck extends UE.BTDecorator_BlueprintBase {
       case 5:
         return r >= this.TsWeatherStateId;
       default:
-        return !1
+        return false;
     }
   }
 }

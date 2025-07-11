@@ -1,33 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const Log_1 = require("../../../../../../Core/Common/Log"),
-  TsTaskAbortImmediatelyBase_1 = require("../../TsTaskAbortImmediatelyBase");
+const Log_1 = require("../../../../../../Core/Common/Log");
+const TsTaskAbortImmediatelyBase_1 = require("../../TsTaskAbortImmediatelyBase");
 class TsTaskLog extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
-    super(...arguments), this.Level = "", this.Content = ""
+    super(...arguments);
+    this.Level = "";
+    this.Content = "";
   }
   Constructor() {
-    super.Constructor()
+    super.Constructor();
   }
   ReceiveExecuteAI(e, s) {
     if (this.Level && this.Content) {
       switch (this.Level) {
         case "Warn":
-          Log_1.Log.CheckWarn() && Log_1.Log.Warn("BehaviorTree", 50, this.Content);
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("BehaviorTree", 50, this.Content);
+          }
           break;
         case "Info":
-          Log_1.Log.CheckInfo() && Log_1.Log.Info("BehaviorTree", 50, this.Content);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("BehaviorTree", 50, this.Content);
+          }
           break;
         case "Error":
-          Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 50, this.Content);
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("BehaviorTree", 50, this.Content);
+          }
           break;
         default:
-          Log_1.Log.CheckDebug() && Log_1.Log.Debug("BehaviorTree", 50, this.Content)
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("BehaviorTree", 50, this.Content);
+          }
       }
-      this.FinishExecute(!0)
-    } else this.FinishExecute(!1)
+      this.FinishExecute(true);
+    } else {
+      this.FinishExecute(false);
+    }
   }
 }
 exports.default = TsTaskLog;

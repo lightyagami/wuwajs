@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDestroySelf = void 0;
+  value: true
+});
+exports.FbDestroySelf = undefined;
 class FbDestroySelf {
   constructor(t) {
-    this.FbDataInternal = t, this.Ych = !1, this.zch = !1
+    this.FbDataInternal = t;
+    this.Ych = false;
+    this.zch = false;
   }
   static Create(t) {
-    if (t) return new FbDestroySelf(t)
+    if (t) {
+      return new FbDestroySelf(t);
+    }
   }
   get DelayDestroy() {
-    return this.Ych || (this.Ych = !0, this.zch = this.FbDataInternal.delayDestroy()), this.zch
+    if (!this.Ych) {
+      this.Ych = true;
+      this.zch = this.FbDataInternal.delayDestroy();
+    }
+    return this.zch;
   }
 }
 exports.FbDestroySelf = FbDestroySelf;

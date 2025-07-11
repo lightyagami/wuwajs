@@ -1,19 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaSkillInteractBase = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  PhantomArenaDefine_1 = require("../PhantomArenaDefine");
+  value: true
+});
+exports.PhantomArenaSkillInteractBase = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const PhantomArenaDefine_1 = require("../PhantomArenaDefine");
 class PhantomArenaSkillInteractBase {
   constructor() {
-    this.BattleProxy = void 0, this.Info = void 0, this.Data = void 0
+    this.BattleProxy = undefined;
+    this.Info = undefined;
+    this.Data = undefined;
   }
   async Execute(e, t) {
-    return Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "开始执行Buff交互操作"), this.BattleProxy = e, this.Info = t, this.Data = this.Info.GetData(), this.OnExecute(this.BattleProxy)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "开始执行Buff交互操作");
+    }
+    this.BattleProxy = e;
+    this.Info = t;
+    this.Data = this.Info.GetData();
+    return this.OnExecute(this.BattleProxy);
   }
   async RequestSelectResultInfo(e) {
-    return this.Data.LastCardIndex !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX ? ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleSlotCardSkill(this.Data.DataId, e) : this.Data.IsPassive ? ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleSelectTarget(e) : this.Data.IsRole ? ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestBattleCardRoleSkill(this.Data.DataId, e) : ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestBattleCardSkill(this.Data.DataId, e)
+    if (this.Data.LastCardIndex !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
+      return ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleSlotCardSkill(this.Data.DataId, e);
+    } else if (this.Data.IsPassive) {
+      return ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleSelectTarget(e);
+    } else if (this.Data.IsRole) {
+      return ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestBattleCardRoleSkill(this.Data.DataId, e);
+    } else {
+      return ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestBattleCardSkill(this.Data.DataId, e);
+    }
   }
 }
 exports.PhantomArenaSkillInteractBase = PhantomArenaSkillInteractBase;

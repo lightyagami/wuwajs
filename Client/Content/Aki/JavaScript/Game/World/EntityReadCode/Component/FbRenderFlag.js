@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRenderFlag = void 0;
+  value: true
+});
+exports.FbRenderFlag = undefined;
 class FbRenderFlag {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Jch = !1, this.l7 = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Jch = false;
+    this.l7 = false;
   }
   static Create(t) {
-    if (t) return new FbRenderFlag(t)
+    if (t) {
+      return new FbRenderFlag(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Enable() {
-    return this.Jch || (this.Jch = !0, this.l7 = this.FbDataInternal.enable()), this.l7
+    if (!this.Jch) {
+      this.Jch = true;
+      this.l7 = this.FbDataInternal.enable();
+    }
+    return this.l7;
   }
 }
 exports.FbRenderFlag = FbRenderFlag;

@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckPlayerStateRestrictionCondition = void 0;
+  value: true
+});
+exports.FbCheckPlayerStateRestrictionCondition = undefined;
 const UnionOnlinePlayerConditionTargetHelper_1 = require("./UnionOnlinePlayerConditionTargetHelper");
 class FbCheckPlayerStateRestrictionCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Wzh = !1, this.Qzh = 0, this.czh = !1, this.uzh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Wzh = false;
+    this.Qzh = 0;
+    this.czh = false;
+    this.uzh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckPlayerStateRestrictionCondition(t)
+    if (t) {
+      return new FbCheckPlayerStateRestrictionCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get RestrictionId() {
-    return this.Wzh || (this.Wzh = !0, this.Qzh = this.FbDataInternal.restrictionId()), this.Qzh
+    if (!this.Wzh) {
+      this.Wzh = true;
+      this.Qzh = this.FbDataInternal.restrictionId();
+    }
+    return this.Qzh;
   }
   get OnlinePlayerConditionTargetOption() {
-    var t, i;
-    return !this.czh && (this.czh = !0, t = this.FbDataInternal.onlinePlayerConditionTargetOptionType(), i = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.GetUnionOnlinePlayerConditionTargetObject(t)) && (this.uzh = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.ReadUnionOnlinePlayerConditionTarget(t, this.FbDataInternal.onlinePlayerConditionTargetOption(i))), this.uzh
+    var t;
+    var i;
+    if (!this.czh && (this.czh = true, t = this.FbDataInternal.onlinePlayerConditionTargetOptionType(), i = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.GetUnionOnlinePlayerConditionTargetObject(t))) {
+      this.uzh = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.ReadUnionOnlinePlayerConditionTarget(t, this.FbDataInternal.onlinePlayerConditionTargetOption(i));
+    }
+    return this.uzh;
   }
 }
 exports.FbCheckPlayerStateRestrictionCondition = FbCheckPlayerStateRestrictionCondition;

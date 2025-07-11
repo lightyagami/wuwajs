@@ -1,25 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBvbAiDeployData = void 0;
+  value: true
+});
+exports.FbBvbAiDeployData = undefined;
 const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbBvbAiDeployData {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Cw1 = !1, this.pw1 = void 0, this.vw1 = !1, this.yw1 = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.$w1 = false;
+    this.Ww1 = undefined;
+    this.Qw1 = false;
+    this.Kw1 = undefined;
   }
   static Create(t) {
-    if (t) return new FbBvbAiDeployData(t)
+    if (t) {
+      return new FbBvbAiDeployData(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get HandCard() {
-    var t, e;
-    return !this.Cw1 && (this.Cw1 = !0, t = this.FbDataInternal.handCardType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.pw1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.handCard(e))), this.pw1
+    var t;
+    var e;
+    if (!this.$w1 && (this.$w1 = true, t = this.FbDataInternal.handCardType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.Ww1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.handCard(e));
+    }
+    return this.Ww1;
   }
   get BoardPos() {
-    var t, e;
-    return !this.vw1 && (this.vw1 = !0, t = this.FbDataInternal.boardPosType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.yw1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.boardPos(e))), this.yw1
+    var t;
+    var e;
+    if (!this.Qw1 && (this.Qw1 = true, t = this.FbDataInternal.boardPosType(), e = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.Kw1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.boardPos(e));
+    }
+    return this.Kw1;
   }
 }
 exports.FbBvbAiDeployData = FbBvbAiDeployData;

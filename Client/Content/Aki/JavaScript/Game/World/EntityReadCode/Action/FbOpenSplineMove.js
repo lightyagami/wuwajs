@@ -1,29 +1,57 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbOpenSplineMove = void 0;
-const UnionSplineMovePatternHelper_1 = require("./UnionSplineMovePatternHelper"),
-  UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper");
+  value: true
+});
+exports.FbOpenSplineMove = undefined;
+const UnionSplineMovePatternHelper_1 = require("./UnionSplineMovePatternHelper");
+const UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper");
 class FbOpenSplineMove {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ldh = !1, this.NHo = void 0, this.kuh = !1, this.Guh = 0, this.Pbh = !1, this.Ubh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ldh = false;
+    this.NHo = undefined;
+    this.kuh = false;
+    this.Guh = 0;
+    this.Pbh = false;
+    this.Ubh = undefined;
   }
   static Create(t) {
-    if (t) return new FbOpenSplineMove(t)
+    if (t) {
+      return new FbOpenSplineMove(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Target() {
-    var t, e;
-    return !this.ldh && (this.ldh = !0, t = this.FbDataInternal.targetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(e))), this.NHo
+    var t;
+    var e;
+    if (!this.ldh && (this.ldh = true, t = this.FbDataInternal.targetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(e));
+    }
+    return this.NHo;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get Pattern() {
-    var t, e;
-    return !this.Pbh && (this.Pbh = !0, t = this.FbDataInternal.patternType(), e = UnionSplineMovePatternHelper_1.UnionSplineMovePatternHelper.GetUnionSplineMovePatternObject(t)) && (this.Ubh = UnionSplineMovePatternHelper_1.UnionSplineMovePatternHelper.ReadUnionSplineMovePattern(t, this.FbDataInternal.pattern(e))), this.Ubh
+    var t;
+    var e;
+    if (!this.Pbh && (this.Pbh = true, t = this.FbDataInternal.patternType(), e = UnionSplineMovePatternHelper_1.UnionSplineMovePatternHelper.GetUnionSplineMovePatternObject(t))) {
+      this.Ubh = UnionSplineMovePatternHelper_1.UnionSplineMovePatternHelper.ReadUnionSplineMovePattern(t, this.FbDataInternal.pattern(e));
+    }
+    return this.Ubh;
   }
 }
 exports.FbOpenSplineMove = FbOpenSplineMove;

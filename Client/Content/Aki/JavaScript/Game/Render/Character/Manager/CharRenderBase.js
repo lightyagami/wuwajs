@@ -1,22 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharRenderBase = void 0;
+  value: true
+});
+exports.CharRenderBase = undefined;
 class CharRenderBase {
   constructor() {
-    this.RenderComponent = void 0, this.jlr = !1
+    this.RenderComponent = undefined;
+    this.jlr = false;
   }
   GetIsInitSuc() {
-    return this.jlr
+    return this.jlr;
   }
   GetRenderingComponent() {
-    return this.RenderComponent
+    return this.RenderComponent;
   }
   OnInitSuccess() {
-    this.jlr = !0
+    this.jlr = true;
   }
   Awake(e) {
-    this.RenderComponent = e
+    this.RenderComponent = e;
   }
   Start() {}
   Update() {}
@@ -24,7 +27,7 @@ class CharRenderBase {
   Destroy() {}
   OnResetRenderState() {}
   GetDeltaTime() {
-    return this.RenderComponent.GetDeltaTime()
+    return this.RenderComponent.GetDeltaTime();
   }
 }
 exports.CharRenderBase = CharRenderBase;

@@ -1,46 +1,88 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, e, s, n) {
-  var o, i = arguments.length,
-    r = i < 3 ? e : null === n ? n = Object.getOwnPropertyDescriptor(e, s) : n;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) r = Reflect.decorate(t, e, s, n);
-  else
-    for (var h = t.length - 1; 0 <= h; h--)(o = t[h]) && (r = (i < 3 ? o(r) : 3 < i ? o(e, s, r) : o(e, s)) || r);
-  return 3 < i && r && Object.defineProperty(e, s, r), r
+
+var __decorate = this && this.__decorate || function (t, e, s, n) {
+  var o;
+  var i = arguments.length;
+  var r = i < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, s) : n;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    r = Reflect.decorate(t, e, s, n);
+  } else {
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (o = t[h]) {
+        r = (i < 3 ? o(r) : i > 3 ? o(e, s, r) : o(e, s)) || r;
+      }
+    }
+  }
+  if (i > 3 && r) {
+    Object.defineProperty(e, s, r);
+  }
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PawnSensoryComponent = void 0;
-const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  PawnSensoryInfoController_1 = require("../Controllers/PawnSensoryInfoController"),
-  TICK_INTERVAL_TIME = 1e3;
+  value: true
+});
+exports.PawnSensoryComponent = undefined;
+const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const PawnSensoryInfoController_1 = require("../Controllers/PawnSensoryInfoController");
+const TICK_INTERVAL_TIME = 1000;
 let PawnSensoryComponent = class PawnSensoryComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.Uhn = 0, this.Ahn = void 0, this.Phn = -0, this.Ioe = [], this.Hte = void 0, this.Wnr = Vector_1.Vector.Create()
+    super(...arguments);
+    this.Uhn = 0;
+    this.Ahn = undefined;
+    this.Phn = -0;
+    this.Ioe = [];
+    this.Hte = undefined;
+    this.Wnr = Vector_1.Vector.Create();
   }
   OnInit() {
-    return this.Uhn = 0, this.Phn = 0, this.Hte = this.Entity.GetComponent(1), this.Wnr.DeepCopy(this.Hte.ActorLocationProxy), this.Ahn = new PawnSensoryInfoController_1.SensoryInfoController, !0
+    this.Uhn = 0;
+    this.Phn = 0;
+    this.Hte = this.Entity.GetComponent(1);
+    this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
+    this.Ahn = new PawnSensoryInfoController_1.SensoryInfoController();
+    return true;
   }
   AddSensoryInfo(t) {
-    this.Hte || (this.Hte = this.Entity.GetComponent(1));
+    this.Hte ||= this.Entity.GetComponent(1);
     t = this.Ahn.AddSensoryInfo(t);
-    return this.xhn(), t
+    this.xhn();
+    return t;
   }
   RemoveSensoryInfo(t) {
-    this.Ahn.RemoveSensoryInfo(t), this.xhn()
+    this.Ahn.RemoveSensoryInfo(t);
+    this.xhn();
   }
   xhn() {
     var t = this.Ahn.MaxSensoryRange;
-    this.Uhn !== t && (this.Uhn = t)
+    if (this.Uhn !== t) {
+      this.Uhn = t;
+    }
   }
   OnTick(t) {
-    this.Hte && this.Ahn && 0 !== this.Ahn.SensoryInfoType && (this.Ahn.Tick(t), this.Phn += t, this.Phn < TICK_INTERVAL_TIME || (this.Phn = 0, this.Ioe && (this.Wnr.Equals(this.Hte.ActorLocationProxy) || this.Wnr.DeepCopy(this.Hte.ActorLocationProxy), ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.Hte.ActorLocationProxy, this.Uhn, 63, this.Ioe), this.Ahn.HandleEntities(this.Ioe, this.Hte.ActorLocationProxy, this.Entity.Id))))
+    if (this.Hte && this.Ahn && this.Ahn.SensoryInfoType !== 0) {
+      this.Ahn.Tick(t);
+      this.Phn += t;
+      if (!(this.Phn < TICK_INTERVAL_TIME)) {
+        this.Phn = 0;
+        if (this.Ioe) {
+          if (!this.Wnr.Equals(this.Hte.ActorLocationProxy)) {
+            this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
+          }
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.Hte.ActorLocationProxy, this.Uhn, 63, this.Ioe);
+          this.Ahn.HandleEntities(this.Ioe, this.Hte.ActorLocationProxy, this.Entity.Id);
+        }
+      }
+    }
   }
   OnClear() {
-    return this.Ioe.length = 0, this.Ahn?.Clear(), !0
+    this.Ioe.length = 0;
+    this.Ahn?.Clear();
+    return true;
   }
 };
-PawnSensoryComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(120)], PawnSensoryComponent), exports.PawnSensoryComponent = PawnSensoryComponent;
-//# sourceMappingURL=PawnSensoryComponent.js.map
+PawnSensoryComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(120)], PawnSensoryComponent);
+exports.PawnSensoryComponent = PawnSensoryComponent; //# sourceMappingURL=PawnSensoryComponent.js.map

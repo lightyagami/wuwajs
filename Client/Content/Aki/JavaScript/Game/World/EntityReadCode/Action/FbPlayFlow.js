@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayFlow = void 0;
+  value: true
+});
+exports.FbPlayFlow = undefined;
 class FbPlayFlow {
   constructor(t) {
-    this.FbDataInternal = t, this.V_h = !1, this.j_h = void 0, this.H_h = !1, this.W_h = 0, this.Q_h = !1, this.K_h = 0, this.$_h = !1, this.X_h = void 0
+    this.FbDataInternal = t;
+    this.V_h = false;
+    this.j_h = undefined;
+    this.H_h = false;
+    this.W_h = 0;
+    this.Q_h = false;
+    this.K_h = 0;
+    this.$_h = false;
+    this.X_h = undefined;
   }
   static Create(t) {
-    if (t) return new FbPlayFlow(t)
+    if (t) {
+      return new FbPlayFlow(t);
+    }
   }
   get FlowListName() {
-    return this.V_h || (this.V_h = !0, this.j_h = this.FbDataInternal.flowListName()), this.j_h
+    if (!this.V_h) {
+      this.V_h = true;
+      this.j_h = this.FbDataInternal.flowListName();
+    }
+    return this.j_h;
   }
   get FlowId() {
-    return this.H_h || (this.H_h = !0, this.W_h = this.FbDataInternal.flowId()), this.W_h
+    if (!this.H_h) {
+      this.H_h = true;
+      this.W_h = this.FbDataInternal.flowId();
+    }
+    return this.W_h;
   }
   get StateId() {
-    return this.Q_h || (this.Q_h = !0, this.K_h = this.FbDataInternal.stateId()), this.K_h
+    if (!this.Q_h) {
+      this.Q_h = true;
+      this.K_h = this.FbDataInternal.stateId();
+    }
+    return this.K_h;
   }
   get FlowGuid() {
-    return this.$_h || (this.$_h = !0, this.X_h = this.FbDataInternal.flowGuid()), this.X_h
+    if (!this.$_h) {
+      this.$_h = true;
+      this.X_h = this.FbDataInternal.flowGuid();
+    }
+    return this.X_h;
   }
 }
 exports.FbPlayFlow = FbPlayFlow;

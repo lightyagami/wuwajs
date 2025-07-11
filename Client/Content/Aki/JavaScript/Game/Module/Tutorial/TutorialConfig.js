@@ -1,15 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TutorialConfig = void 0;
-const GuideTutorialById_1 = require("../../../Core/Define/ConfigQuery/GuideTutorialById"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.TutorialConfig = undefined;
+const GuideTutorialById_1 = require("../../../Core/Define/ConfigQuery/GuideTutorialById");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class TutorialConfig extends ConfigBase_1.ConfigBase {
   GetTutorial(e) {
-    return GuideTutorialById_1.configGuideTutorialById.GetConfig(e)
+    return GuideTutorialById_1.configGuideTutorialById.GetConfig(e);
   }
   HasUnlockReward(e) {
-    return !1 === this.GetTutorial(e)?.DisableDropReward
+    return this.GetTutorial(e)?.DisableDropReward === false;
   }
 }
 exports.TutorialConfig = TutorialConfig;

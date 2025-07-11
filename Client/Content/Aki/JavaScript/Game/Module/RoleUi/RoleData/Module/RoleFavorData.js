@@ -1,114 +1,160 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleFavorData = void 0;
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  FavorItemInfo_1 = require("./DataInfo/FavorItemInfo"),
-  RoleModuleDataBase_1 = require("./RoleModuleDataBase");
+  value: true
+});
+exports.RoleFavorData = undefined;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const FavorItemInfo_1 = require("./DataInfo/FavorItemInfo");
+const RoleModuleDataBase_1 = require("./RoleModuleDataBase");
 class RoleFavorData extends RoleModuleDataBase_1.RoleModuleDataBase {
   constructor() {
-    super(...arguments), this.Level = 0, this.Exp = 0, this.K1o = new Map
+    super(...arguments);
+    this.Level = 0;
+    this.Exp = 0;
+    this.K1o = new Map();
   }
   GetFavorLevel() {
-    return this.Level
+    return this.Level;
   }
   SetFavorLevel(e) {
-    this.Level = e
+    this.Level = e;
   }
   GetFavorExp() {
-    return this.Exp
+    return this.Exp;
   }
   SetFavorExp(e) {
-    this.Exp = e, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleFavorExpChange)
+    this.Exp = e;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleFavorExpChange);
   }
   UpdateRoleFavorData(e, t) {
-    this.K1o.set(e, this.Q1o(t)), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleFavorData, this.RoleId)
+    this.K1o.set(e, this.Q1o(t));
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleFavorData, this.RoleId);
   }
   UpdateUnlockId(e, t, r) {
-    var e = this.GetClientFavorTabType(e),
-      o = this.K1o.get(e),
-      a = o.length;
+    var e = this.GetClientFavorTabType(e);
+    var o = this.K1o.get(e);
+    var a = o.length;
     for (let e = 0; e < a; e++) {
       var n = o[e];
-      n.Id === r && (n.Status = 2)
+      if (n.Id === r) {
+        n.Status = 2;
+      }
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleFavorData, this.RoleId), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UnLockRoleFavorItem, t, r)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleFavorData, this.RoleId);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UnLockRoleFavorItem, t, r);
   }
   UpdateCanUnlockId(e, r) {
-    var t, e = this.GetClientFavorTabType(e),
-      o = this.K1o.get(e);
+    var t;
+    var e = this.GetClientFavorTabType(e);
+    var o = this.K1o.get(e);
     if (o) {
       var a = o.length;
-      let t = !1;
+      let t = false;
       for (let e = 0; e < a; e++) {
         var n = o[e];
         if (n.Id === r) {
-          t = !0, n.Status = 1;
-          break
+          t = true;
+          n.Status = 1;
+          break;
         }
       }
-      t || o.push(new FavorItemInfo_1.FavorItemInfo(r, 1)), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleFavorData, this.RoleId)
-    } else(t = []).push(new FavorItemInfo_1.FavorItemInfo(r, 1)), this.K1o.set(e, t)
+      if (!t) {
+        o.push(new FavorItemInfo_1.FavorItemInfo(r, 1));
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleFavorData, this.RoleId);
+    } else {
+      (t = []).push(new FavorItemInfo_1.FavorItemInfo(r, 1));
+      this.K1o.set(e, t);
+    }
   }
   Q1o(t) {
-    var r = [],
-      o = t.length;
+    var r = [];
+    var o = t.length;
     for (let e = 0; e < o; e++) {
       var a = t[e];
-      r.push(this.X1o(a))
+      r.push(this.X1o(a));
     }
-    return r
+    return r;
   }
   X1o(e) {
     var t = this.GetClientFavorItemStatus(e.H6n);
-    return new FavorItemInfo_1.FavorItemInfo(e.s5n, t)
+    return new FavorItemInfo_1.FavorItemInfo(e.s5n, t);
   }
   GetFavorItemState(t, e) {
-    var r = this.K1o.get(e),
-      o = r.length;
+    var r = this.K1o.get(e);
+    var o = r.length;
     for (let e = 0; e < o; e++) {
       var a = r[e];
-      if (a.Id === t) return a.Status
+      if (a.Id === t) {
+        return a.Status;
+      }
     }
-    return 0
+    return 0;
   }
   GetClientFavorItemStatus(e) {
-    let t = void 0;
-    return e === Protocol_1.Aki.Protocol.h6s.Proto_ItemLocked ? t = 0 : e === Protocol_1.Aki.Protocol.h6s.Proto_ItemCanUnLock ? t = 1 : e === Protocol_1.Aki.Protocol.h6s.Proto_ItemUnLocked && (t = 2), t
+    let t = undefined;
+    if (e === Protocol_1.Aki.Protocol.h6s.Proto_ItemLocked) {
+      t = 0;
+    } else if (e === Protocol_1.Aki.Protocol.h6s.Proto_ItemCanUnLock) {
+      t = 1;
+    } else if (e === Protocol_1.Aki.Protocol.h6s.Proto_ItemUnLocked) {
+      t = 2;
+    }
+    return t;
   }
   GetClientFavorTabType(e) {
-    return e === Protocol_1.Aki.Protocol.l6s.m8n ? 0 : e === Protocol_1.Aki.Protocol.l6s.Proto_Story ? 1 : e === Protocol_1.Aki.Protocol.l6s.Proto_Goods ? 3 : void 0
+    if (e === Protocol_1.Aki.Protocol.l6s.m8n) {
+      return 0;
+    } else if (e === Protocol_1.Aki.Protocol.l6s.Proto_Story) {
+      return 1;
+    } else if (e === Protocol_1.Aki.Protocol.l6s.Proto_Goods) {
+      return 3;
+    } else {
+      return undefined;
+    }
   }
   IsExistCanUnlockFavorItem() {
-    for (var [e] of this.K1o)
-      if (this.IsFavorItemCanUnlock(e)) return !0;
-    return !1
+    for (var [e] of this.K1o) {
+      if (this.IsFavorItemCanUnlock(e)) {
+        return true;
+      }
+    }
+    return false;
   }
   IsFavorItemCanUnlock(e) {
-    if (2 === e) return ModelManager_1.ModelManager.MotionModel.IfRoleMotionCanUnlock(this.RoleId);
+    if (e === 2) {
+      return ModelManager_1.ModelManager.MotionModel.IfRoleMotionCanUnlock(this.RoleId);
+    }
     var t = this.K1o.get(e);
     if (t) {
       var r = t.length;
-      for (let e = 0; e < r; e++)
-        if (1 === t[e].Status) return !0
+      for (let e = 0; e < r; e++) {
+        if (t[e].Status === 1) {
+          return true;
+        }
+      }
     }
-    return !1
+    return false;
   }
   GetUnlockActionIndexList() {
-    var t = [],
-      r = this.K1o.get(2);
+    var t = [];
+    var r = this.K1o.get(2);
     if (r) {
       var o = r.length;
       for (let e = 0; e < o; e++) {
         var a = r[e];
-        2 === a.Status && (a = ConfigManager_1.ConfigManager.MotionConfig.GetMotionConfig(a.Id), t.push(a.Sort))
+        if (a.Status === 2) {
+          a = ConfigManager_1.ConfigManager.MotionConfig.GetMotionConfig(a.Id);
+          t.push(a.Sort);
+        }
       }
     }
-    return t
+    return t;
   }
 }
 exports.RoleFavorData = RoleFavorData;

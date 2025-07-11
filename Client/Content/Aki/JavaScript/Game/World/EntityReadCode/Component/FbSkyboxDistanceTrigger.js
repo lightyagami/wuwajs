@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSkyboxDistanceTrigger = void 0;
+  value: true
+});
+exports.FbSkyboxDistanceTrigger = undefined;
 class FbSkyboxDistanceTrigger {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.rdh = !1, this.odh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.rdh = false;
+    this.odh = 0;
   }
   static Create(t) {
-    if (t) return new FbSkyboxDistanceTrigger(t)
+    if (t) {
+      return new FbSkyboxDistanceTrigger(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Distance() {
-    return this.rdh || (this.rdh = !0, this.odh = this.FbDataInternal.distance()), this.odh
+    if (!this.rdh) {
+      this.rdh = true;
+      this.odh = this.FbDataInternal.distance();
+    }
+    return this.odh;
   }
 }
 exports.FbSkyboxDistanceTrigger = FbSkyboxDistanceTrigger;

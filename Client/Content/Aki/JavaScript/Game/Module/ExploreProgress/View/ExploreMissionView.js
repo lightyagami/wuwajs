@@ -1,26 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ExploreMissionView = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView"),
-  ExploreAreaMissionData_1 = require("../ExploreAreaMissionData"),
-  ExploreMissionItem_1 = require("./ExploreMissionItem");
+  value: true
+});
+exports.ExploreMissionView = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
+const ExploreAreaMissionData_1 = require("../ExploreAreaMissionData");
+const ExploreMissionItem_1 = require("./ExploreMissionItem");
 class ExploreMissionView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.L9e = 0, this.ejs = [], this.tjs = void 0, this.cHe = () => {
-      return new ExploreMissionItem_1.ExploreMissionItem
-    }
+    super(...arguments);
+    this.L9e = 0;
+    this.ejs = [];
+    this.tjs = undefined;
+    this.cHe = () => {
+      return new ExploreMissionItem_1.ExploreMissionItem();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UILoopScrollViewComponent],
-      [1, UE.UIItem],
-      [2, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIItem], [2, UE.UIText]];
   }
   OnStart() {
     this.L9e = this.OpenParam;
@@ -28,19 +30,46 @@ class ExploreMissionView extends UiViewBase_1.UiViewBase {
     if (e) {
       for (const r of e) {
         var s = new ExploreAreaMissionData_1.ExploreAreaMissionData(r);
-        this.ejs.push(s)
+        this.ejs.push(s);
       }
       this.ejs.sort((i, e) => {
         var s = i.IsQuestVisible();
-        return s !== e.IsQuestVisible() ? s ? -1 : 1 : (s = i.QuestStatus) !== e.QuestStatus ? 3 === s ? 1 : -1 : (s = i.IsBranchQuest()) !== e.IsBranchQuest() ? s ? 1 : -1 : i.QuestId - e.QuestId
-      }), this.tjs = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1)?.GetOwner(), this.cHe), this.tjs.RefreshByData(this.ejs);
+        if (s !== e.IsQuestVisible()) {
+          if (s) {
+            return -1;
+          } else {
+            return 1;
+          }
+        } else if ((s = i.QuestStatus) !== e.QuestStatus) {
+          if (s === 3) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else if ((s = i.IsBranchQuest()) !== e.IsBranchQuest()) {
+          if (s) {
+            return 1;
+          } else {
+            return -1;
+          }
+        } else {
+          return i.QuestId - e.QuestId;
+        }
+      });
+      this.tjs = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1)?.GetOwner(), this.cHe);
+      this.tjs.RefreshByData(this.ejs);
       let i = 0;
-      for (const t of this.ejs) 3 === t.QuestStatus && i++;
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "ExploreMissionProgress", i, this.ejs.length)
+      for (const t of this.ejs) {
+        if (t.QuestStatus === 3) {
+          i++;
+        }
+      }
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "ExploreMissionProgress", i, this.ejs.length);
     }
   }
   OnBeforeDestroy() {
-    this.L9e = 0, this.ejs.length = 0
+    this.L9e = 0;
+    this.ejs.length = 0;
   }
 }
 exports.ExploreMissionView = ExploreMissionView;

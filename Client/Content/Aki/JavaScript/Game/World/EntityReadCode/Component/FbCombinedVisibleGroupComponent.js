@@ -1,37 +1,65 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCombinedVisibleGroupComponent = void 0;
+  value: true
+});
+exports.FbCombinedVisibleGroupComponent = undefined;
 class FbCombinedVisibleGroupComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.g5h = !1, this.f5h = void 0, this.p5h = !1, this.v5h = !1, this.V1h = !1, this.j1h = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.g5h = false;
+    this.f5h = undefined;
+    this.p5h = false;
+    this.v5h = false;
+    this.V1h = false;
+    this.j1h = undefined;
   }
   static Create(t) {
-    if (t) return new FbCombinedVisibleGroupComponent(t)
+    if (t) {
+      return new FbCombinedVisibleGroupComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get AreaIds() {
     if (!this.g5h) {
-      this.g5h = !0, this.f5h = new Array;
+      this.g5h = true;
+      this.f5h = new Array();
       var i = this.FbDataInternal.areaIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.f5h.push(this.FbDataInternal.areaIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.f5h.push(this.FbDataInternal.areaIds(t));
+        }
+      }
     }
-    return this.f5h
+    return this.f5h;
   }
   get IncludeSubArea() {
-    return this.p5h || (this.p5h = !0, this.v5h = this.FbDataInternal.includeSubArea()), this.v5h
+    if (!this.p5h) {
+      this.p5h = true;
+      this.v5h = this.FbDataInternal.includeSubArea();
+    }
+    return this.v5h;
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var i = this.FbDataInternal.entityIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
 }
 exports.FbCombinedVisibleGroupComponent = FbCombinedVisibleGroupComponent;

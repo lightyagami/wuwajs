@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSceneItemAttributeComponent = void 0;
+  value: true
+});
+exports.FbSceneItemAttributeComponent = undefined;
 class FbSceneItemAttributeComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.oDh = !1, this.nDh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.oDh = false;
+    this.nDh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSceneItemAttributeComponent(t)
+    if (t) {
+      return new FbSceneItemAttributeComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get AttributeType() {
-    return this.oDh || (this.oDh = !0, this.nDh = this.FbDataInternal.attributeType()), this.nDh
+    if (!this.oDh) {
+      this.oDh = true;
+      this.nDh = this.FbDataInternal.attributeType();
+    }
+    return this.nDh;
   }
 }
 exports.FbSceneItemAttributeComponent = FbSceneItemAttributeComponent;

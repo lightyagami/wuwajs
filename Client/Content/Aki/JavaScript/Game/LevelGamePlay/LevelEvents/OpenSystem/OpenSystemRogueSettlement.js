@@ -1,13 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemRogueSettlement = void 0;
+  value: true
+});
+exports.OpenSystemRogueSettlement = undefined;
 const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemRogueSettlement extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, t) {
     return new Promise(e => {
-      e(!0)
-    })
+      e(true);
+    });
   }
   GetViewName(e, t) {}
 }

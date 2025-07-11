@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SolarSpeedUiContext = void 0;
+  value: true
+});
+exports.SolarSpeedUiContext = undefined;
 class SolarSpeedUiContext {
   constructor() {
-    this.CurrentChosenTabInRewardView = void 0
+    this.CurrentChosenTabInRewardView = undefined;
   }
   Dispose() {}
 }

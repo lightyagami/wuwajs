@@ -1,14 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const LogicDataBase_1 = require("./LogicDataBase");
 class LogicDataDestroyBullet extends LogicDataBase_1.default {
   constructor() {
-    super(...arguments), this.BulletOwner = 0, this.DestroyBulletRowName = "None", this.SummonChildBullet = !1
+    super(...arguments);
+    this.BulletOwner = 0;
+    this.DestroyBulletRowName = "None";
+    this.SummonChildBullet = false;
   }
   Constructor() {
-    super.Constructor()
+    super.Constructor();
   }
 }
 exports.default = LogicDataDestroyBullet;

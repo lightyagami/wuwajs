@@ -1,31 +1,59 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMonsterGachaItemComponent = void 0;
+  value: true
+});
+exports.FbMonsterGachaItemComponent = undefined;
 class FbMonsterGachaItemComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.X7h = !1, this.Y7h = void 0, this.z7h = !1, this.J7h = void 0, this.Qvh = !1, this.Kvh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.X7h = false;
+    this.Y7h = undefined;
+    this.z7h = false;
+    this.J7h = undefined;
+    this.Qvh = false;
+    this.Kvh = undefined;
   }
   static Create(t) {
-    if (t) return new FbMonsterGachaItemComponent(t)
+    if (t) {
+      return new FbMonsterGachaItemComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get MaterialDataPath() {
-    return this.X7h || (this.X7h = !0, this.Y7h = this.FbDataInternal.materialDataPath()), this.Y7h
+    if (!this.X7h) {
+      this.X7h = true;
+      this.Y7h = this.FbDataInternal.materialDataPath();
+    }
+    return this.Y7h;
   }
   get MonsterType() {
-    return this.z7h || (this.z7h = !0, this.J7h = this.FbDataInternal.monsterType()), this.J7h
+    if (!this.z7h) {
+      this.z7h = true;
+      this.J7h = this.FbDataInternal.monsterType();
+    }
+    return this.J7h;
   }
   get MonsterEntityIds() {
     if (!this.Qvh) {
-      this.Qvh = !0, this.Kvh = new Array;
+      this.Qvh = true;
+      this.Kvh = new Array();
       var s = this.FbDataInternal.monsterEntityIdsLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.Kvh.push(this.FbDataInternal.monsterEntityIds(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.Kvh.push(this.FbDataInternal.monsterEntityIds(t));
+        }
+      }
     }
-    return this.Kvh
+    return this.Kvh;
   }
 }
 exports.FbMonsterGachaItemComponent = FbMonsterGachaItemComponent;

@@ -1,10 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapLifeEventListener = void 0;
+  value: true
+});
+exports.MapLifeEventListener = undefined;
 class MapLifeEventListener {
   constructor(e) {
-    this.TargetExpressionMap = void 0, this.TargetExpressionMap = e
+    this.TargetExpressionMap = undefined;
+    this.TargetExpressionMap = e;
   }
   async OnWorldMapBeforeStartAsync() {}
   OnWorldMapBeforeShow() {}

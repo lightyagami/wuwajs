@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbConnectorComponent = void 0;
+  value: true
+});
+exports.FbConnectorComponent = undefined;
 const UnionConnectorLogicHelper_1 = require("./UnionConnectorLogicHelper");
 class FbConnectorComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.h$h = !1, this.l$h = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.h$h = false;
+    this.l$h = undefined;
   }
   static Create(t) {
-    if (t) return new FbConnectorComponent(t)
+    if (t) {
+      return new FbConnectorComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get LogicType() {
-    var t, e;
-    return !this.h$h && (this.h$h = !0, t = this.FbDataInternal.logicTypeType(), e = UnionConnectorLogicHelper_1.UnionConnectorLogicHelper.GetUnionConnectorLogicObject(t)) && (this.l$h = UnionConnectorLogicHelper_1.UnionConnectorLogicHelper.ReadUnionConnectorLogic(t, this.FbDataInternal.logicType(e))), this.l$h
+    var t;
+    var e;
+    if (!this.h$h && (this.h$h = true, t = this.FbDataInternal.logicTypeType(), e = UnionConnectorLogicHelper_1.UnionConnectorLogicHelper.GetUnionConnectorLogicObject(t))) {
+      this.l$h = UnionConnectorLogicHelper_1.UnionConnectorLogicHelper.ReadUnionConnectorLogic(t, this.FbDataInternal.logicType(e));
+    }
+    return this.l$h;
   }
 }
 exports.FbConnectorComponent = FbConnectorComponent;

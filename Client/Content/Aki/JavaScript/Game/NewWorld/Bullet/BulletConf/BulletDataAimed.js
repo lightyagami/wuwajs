@@ -1,19 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletDataAimed = void 0;
+  value: true
+});
+exports.BulletDataAimed = undefined;
 class BulletDataAimed {
   constructor(t) {
-    this.KVo = void 0, this.QVo = void 0, this.XVo = void 0, this.Pe = t
+    this.KVo = undefined;
+    this.QVo = undefined;
+    this.XVo = undefined;
+    this.Pe = t;
   }
   get AimedCtrlDir() {
-    return void 0 === this.KVo && (this.KVo = this.Pe.瞄准发射), this.KVo
+    if (this.KVo === undefined) {
+      this.KVo = this.Pe.瞄准发射;
+    }
+    return this.KVo;
   }
   get AngleOffset() {
-    return void 0 === this.QVo && (this.QVo = this.Pe.瞄准子弹最大偏转角度), this.QVo
+    if (this.QVo === undefined) {
+      this.QVo = this.Pe.瞄准子弹最大偏转角度;
+    }
+    return this.QVo;
   }
   get DistLimit() {
-    return void 0 === this.XVo && (this.XVo = this.Pe.瞄准子弹最大射程), this.XVo
+    if (this.XVo === undefined) {
+      this.XVo = this.Pe.瞄准子弹最大射程;
+    }
+    return this.XVo;
   }
 }
 exports.BulletDataAimed = BulletDataAimed;

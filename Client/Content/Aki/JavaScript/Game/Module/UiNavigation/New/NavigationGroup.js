@@ -1,110 +1,145 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationGroup = void 0;
+  value: true
+});
+exports.NavigationGroup = undefined;
 class NavigationGroup {
   constructor(t) {
-    this.Lo = void 0, this.Oeh = void 0, this.Geh = void 0, this.keh = !1, this.Neh = [], this.xo1 = (t, e) => {
-      let r = 0,
-        i = 0;
-      return t.IsValid() && (r = t.RootUIComp.flattenHierarchyIndex), e.IsValid() && (i = e.RootUIComp.flattenHierarchyIndex), r === i || r < i ? -1 : 1
-    }, this.Lo = t
+    this.Lo = undefined;
+    this.Oeh = undefined;
+    this.Geh = undefined;
+    this.keh = false;
+    this.Neh = [];
+    this.Jo1 = (t, e) => {
+      let r = 0;
+      let i = 0;
+      if (t.IsValid()) {
+        r = t.RootUIComp.flattenHierarchyIndex;
+      }
+      if (e.IsValid()) {
+        i = e.RootUIComp.flattenHierarchyIndex;
+      }
+      if (r === i || r < i) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
+    this.Lo = t;
   }
   AddListener(t) {
-    this.Neh.push(t), this.keh = !0
+    this.Neh.push(t);
+    this.keh = true;
   }
   RemoveListenerByIndex(t) {
-    this.Neh.splice(t, 1)
+    this.Neh.splice(t, 1);
   }
   get ListenerList() {
-    return this.keh && (this.keh = !1, this.Neh.sort(this.xo1)), this.Neh
+    if (this.keh) {
+      this.keh = false;
+      this.Neh.sort(this.Jo1);
+    }
+    return this.Neh;
   }
   get LoopScrollSortListenerList() {
     return this.ListenerList.slice().sort((t, e) => {
-      let r = 0,
-        i = 0;
-      return t.HasLoopScrollView() && e.HasLoopScrollView() && (t.IsValid() && (r = t.LoopScrollViewGridIndex), e.IsValid() && (i = e.LoopScrollViewGridIndex), r !== i) ? r - i : this.xo1(t, e)
-    })
+      let r = 0;
+      let i = 0;
+      if (t.HasLoopScrollView() && e.HasLoopScrollView() && (t.IsValid() && (r = t.LoopScrollViewGridIndex), e.IsValid() && (i = e.LoopScrollViewGridIndex), r !== i)) {
+        return r - i;
+      } else {
+        return this.Jo1(t, e);
+      }
+    });
   }
   get ActiveListenerList() {
     var r = [];
     for (let t = 0, e = this.ListenerList.length; t < e; ++t) {
       var i = this.ListenerList[t];
-      i.IsListenerActive() && r.push(i)
+      if (i.IsListenerActive()) {
+        r.push(i);
+      }
     }
-    return r
+    return r;
   }
   GetOppositeListenerListByListener(r) {
-    if (this.AllowNavigationInSelfDynamic) return this.ListenerList;
+    if (this.AllowNavigationInSelfDynamic) {
+      return this.ListenerList;
+    }
     var i = [];
     for (let t = 0, e = this.ListenerList.length; t < e; ++t) {
       var s = this.ListenerList[t];
-      void 0 === r.ScrollViewActor && void 0 === s.ScrollViewActor && void 0 === r.LayoutActor && void 0 === s.LayoutActor || r.ScrollViewActor === s.ScrollViewActor && r.LayoutActor === s.LayoutActor && i.push(s)
+      if (r.ScrollViewActor !== undefined || s.ScrollViewActor !== undefined || r.LayoutActor !== undefined || s.LayoutActor !== undefined) {
+        if (r.ScrollViewActor === s.ScrollViewActor && r.LayoutActor === s.LayoutActor) {
+          i.push(s);
+        }
+      }
     }
-    return i
+    return i;
   }
   get AllowNavigationInSelfDynamic() {
-    return this.Lo.AllowNavigationInSelfDynamic
+    return this.Lo.AllowNavigationInSelfDynamic;
   }
   set DefaultListener(t) {
-    this.Oeh = t
+    this.Oeh = t;
   }
   get DefaultListener() {
-    return this.Oeh
+    return this.Oeh;
   }
   get GroupName() {
-    return this.Lo.GroupName
+    return this.Lo.GroupName;
   }
   get GroupNameMap() {
-    return this.Lo.GroupNameMap
+    return this.Lo.GroupNameMap;
   }
   get GroupType() {
-    return this.Lo.GroupType
+    return this.Lo.GroupType;
   }
   get HorizontalPriorityMode() {
-    return this.Lo.HorizontalPriorityMode
+    return this.Lo.HorizontalPriorityMode;
   }
   get HorizontalWrapMode() {
-    return this.Lo.HorizontalWrapMode
+    return this.Lo.HorizontalWrapMode;
   }
   get InsideGroupName() {
-    return this.Lo.InsideGroupName
+    return this.Lo.InsideGroupName;
   }
   set LastSelectListener(t) {
-    this.Geh = t
+    this.Geh = t;
   }
   get LastSelectListener() {
-    return this.Geh
+    return this.Geh;
   }
   get NextGroupName() {
-    return this.Lo.NextGroupName
+    return this.Lo.NextGroupName;
   }
   set PrevGroupName(t) {
-    this.Lo.PrevGroupName = t
+    this.Lo.PrevGroupName = t;
   }
   get PrevGroupName() {
-    return this.Lo.PrevGroupName
+    return this.Lo.PrevGroupName;
   }
   get RefreshNavigation() {
-    return this.Lo.RefreshNavigation
+    return this.Lo.RefreshNavigation;
   }
   get SelectableMemory() {
-    return this.Lo.SelectableMemory
+    return this.Lo.SelectableMemory;
   }
   get SuitableListenerByNoDynamic() {
-    return this.Lo.SuitableListenerByNoDynamic
+    return this.Lo.SuitableListenerByNoDynamic;
   }
   get VerticalPriorityMode() {
-    return this.Lo.VerticalPriorityMode
+    return this.Lo.VerticalPriorityMode;
   }
   get VerticalWrapMode() {
-    return this.Lo.VerticalWrapMode
+    return this.Lo.VerticalWrapMode;
   }
   get SlideToLeftOrTop() {
-    return this.Lo.SlideToLeftOrTop
+    return this.Lo.SlideToLeftOrTop;
   }
   get SlideToRightOrDown() {
-    return this.Lo.SlideToRightOrDown
+    return this.Lo.SlideToRightOrDown;
   }
 }
 exports.NavigationGroup = NavigationGroup;

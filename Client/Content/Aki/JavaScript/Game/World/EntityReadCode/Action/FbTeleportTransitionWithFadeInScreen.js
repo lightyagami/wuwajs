@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportTransitionWithFadeInScreen = void 0;
+  value: true
+});
+exports.FbTeleportTransitionWithFadeInScreen = undefined;
 class FbTeleportTransitionWithFadeInScreen {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.aCh = !1, this.hCh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.aCh = false;
+    this.hCh = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleportTransitionWithFadeInScreen(t)
+    if (t) {
+      return new FbTeleportTransitionWithFadeInScreen(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ScreenType() {
-    return this.aCh || (this.aCh = !0, this.hCh = this.FbDataInternal.screenType()), this.hCh
+    if (!this.aCh) {
+      this.aCh = true;
+      this.hCh = this.FbDataInternal.screenType();
+    }
+    return this.hCh;
   }
 }
 exports.FbTeleportTransitionWithFadeInScreen = FbTeleportTransitionWithFadeInScreen;

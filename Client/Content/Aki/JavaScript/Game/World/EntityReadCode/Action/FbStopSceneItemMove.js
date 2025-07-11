@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbStopSceneItemMove = void 0;
+  value: true
+});
+exports.FbStopSceneItemMove = undefined;
 class FbStopSceneItemMove {
   constructor(t) {
-    this.FbDataInternal = t, this.V1h = !1, this.j1h = void 0, this.ZEh = !1, this.eIh = void 0
+    this.FbDataInternal = t;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.ZEh = false;
+    this.eIh = undefined;
   }
   static Create(t) {
-    if (t) return new FbStopSceneItemMove(t)
+    if (t) {
+      return new FbStopSceneItemMove(t);
+    }
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var e = this.FbDataInternal.entityIdsLength();
-      if (e)
-        for (let t = 0; t < e; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (e) {
+        for (let t = 0; t < e; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get StopType() {
-    return this.ZEh || (this.ZEh = !0, this.eIh = this.FbDataInternal.stopType()), this.eIh
+    if (!this.ZEh) {
+      this.ZEh = true;
+      this.eIh = this.FbDataInternal.stopType();
+    }
+    return this.eIh;
   }
 }
 exports.FbStopSceneItemMove = FbStopSceneItemMove;

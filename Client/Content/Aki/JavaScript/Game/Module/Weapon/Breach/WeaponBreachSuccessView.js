@@ -1,46 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeaponBreachSuccessView = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  StarItem_1 = require("../../RoleUi/View/StarItem"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+  value: true
+});
+exports.WeaponBreachSuccessView = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
+const StarItem_1 = require("../../RoleUi/View/StarItem");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 class WeaponBreachSuccessView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.StarLayout = void 0, this.SuccessStarItem = void 0, this.DOo = 0, this.vke = () => {
-      return new StarItem_1.StarItem
-    }, this.qAt = () => {
-      UiManager_1.UiManager.IsViewShow(this.Info.Name) && this.CloseMe()
-    }
+    super(...arguments);
+    this.StarLayout = undefined;
+    this.SuccessStarItem = undefined;
+    this.DOo = 0;
+    this.vke = () => {
+      return new StarItem_1.StarItem();
+    };
+    this.qAt = () => {
+      if (UiManager_1.UiManager.IsViewShow(this.Info.Name)) {
+        this.CloseMe();
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIHorizontalLayout],
-      [1, UE.UIButtonComponent],
-      [2, UE.UIText],
-      [3, UE.UIText]
-    ], this.BtnBindInfo = [
-      [1, this.qAt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIText]];
+    this.BtnBindInfo = [[1, this.qAt]];
   }
   async OnBeforeStartAsync() {
     this.DOo = this.OpenParam;
-    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo),
-      t = (this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.vke), e.GetWeaponConfig()),
-      t = t.BreachId,
-      i = e.GetBreachLevel(),
-      a = i - 1,
-      i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponBreach(t, i),
-      a = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponBreach(t, a),
-      a = (this.GetText(2).SetText(a.LevelLimit.toString()), this.GetText(3).SetText(i.LevelLimit.toString()), ModelManager_1.ModelManager.WeaponModel.GetWeaponBreachMaxLevel(t));
-    await this.UpdateStar(e.GetBreachLevel(), a)
+    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
+    this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.vke);
+    var t = e.GetWeaponConfig();
+    var t = t.BreachId;
+    var i = e.GetBreachLevel();
+    var a = i - 1;
+    var i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponBreach(t, i);
+    var a = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponBreach(t, a);
+    this.GetText(2).SetText(a.LevelLimit.toString());
+    this.GetText(3).SetText(i.LevelLimit.toString());
+    var a = ModelManager_1.ModelManager.WeaponModel.GetWeaponBreachMaxLevel(t);
+    await this.UpdateStar(e.GetBreachLevel(), a);
   }
   OnAfterPlayStartSequence() {
-    this.SuccessStarItem?.PlayActiveSequence(), this.UiViewSequence.PlaySequencePurely("Loop")
+    this.SuccessStarItem?.PlayActiveSequence();
+    this.UiViewSequence.PlaySequencePurely("Loop");
   }
   async UpdateStar(e, t) {
     var i = e - 1;
@@ -50,14 +57,15 @@ class WeaponBreachSuccessView extends UiViewBase_1.UiViewBase {
         var r = {
           StarOnActive: e < i,
           StarOffActive: e >= i,
-          StarNextActive: !1,
-          StarLoopActive: !1,
-          PlayLoopSequence: !1,
-          PlayActivateSequence: !1
+          StarNextActive: false,
+          StarLoopActive: false,
+          PlayLoopSequence: false,
+          PlayActivateSequence: false
         };
-        a[e] = r
+        a[e] = r;
       }
-      await this.StarLayout.RefreshByDataAsync(a), this.SuccessStarItem = this.StarLayout.GetLayoutItemByIndex(i)
+      await this.StarLayout.RefreshByDataAsync(a);
+      this.SuccessStarItem = this.StarLayout.GetLayoutItemByIndex(i);
     }
   }
 }

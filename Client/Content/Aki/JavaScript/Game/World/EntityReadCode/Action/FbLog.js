@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbLog = void 0;
+  value: true
+});
+exports.FbLog = undefined;
 class FbLog {
   constructor(t) {
-    this.FbDataInternal = t, this.Muh = !1, this.jGi = void 0, this.Euh = !1, this.Iuh = void 0
+    this.FbDataInternal = t;
+    this.Muh = false;
+    this.jGi = undefined;
+    this.Euh = false;
+    this.Iuh = undefined;
   }
   static Create(t) {
-    if (t) return new FbLog(t)
+    if (t) {
+      return new FbLog(t);
+    }
   }
   get Level() {
-    return this.Muh || (this.Muh = !0, this.jGi = this.FbDataInternal.level()), this.jGi
+    if (!this.Muh) {
+      this.Muh = true;
+      this.jGi = this.FbDataInternal.level();
+    }
+    return this.jGi;
   }
   get Content() {
-    return this.Euh || (this.Euh = !0, this.Iuh = this.FbDataInternal.content()), this.Iuh
+    if (!this.Euh) {
+      this.Euh = true;
+      this.Iuh = this.FbDataInternal.content();
+    }
+    return this.Iuh;
   }
 }
 exports.FbLog = FbLog;

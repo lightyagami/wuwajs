@@ -1,245 +1,469 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletDataBase = void 0;
-const UE = require("ue"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  Rotator_1 = require("../../../../Core/Utils/Math/Rotator"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+  value: true
+});
+exports.BulletDataBase = undefined;
+const UE = require("ue");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 class BulletDataBase {
   constructor(t) {
-    this.$Vo = void 0, this.YVo = void 0, this.JVo = void 0, this.lGl = !1, this.hGl = void 0, this.zVo = void 0, this.ZVo = void 0, this.e6o = void 0, this.t6o = void 0, this.i6o = void 0, this.o6o = void 0, this.r6o = void 0, this.n6 = void 0, this.IsOversizeForTrace = !1, this.kJ = void 0, this.n6o = void 0, this.s6o = 0, this.a6o = !1, this.h6o = void 0, this.l6o = !1, this._6o = "", this.BulletCamp = void 0, this.u6o = void 0, this.c6o = void 0, this.m6o = void 0, this.d6o = 0, this.C6o = !1, this.g6o = void 0, this.f6o = void 0, this.p6o = !1, this.v6o = void 0, this.M6o = !1, this._Gl = void 0, this.uGl = !1, this.E6o = void 0, this.S6o = void 0, this.y6o = void 0, this.I6o = void 0, this.T6o = !1, this.L6o = void 0, this.Huc = void 0, this.D6o = void 0, this.R6o = void 0, this.Ptc = void 0, this.U6o = void 0, this.A6o = void 0, this.P6o = void 0, this.x6o = void 0, this.w6o = void 0, this.B6o = void 0, this.b6o = !1, this.cGl = void 0, this.mGl = !1, this.q6o = void 0, this.G6o = 0, this.N6o = !1, this.O6o = void 0, this.iSa = void 0, this.HitActorTypeInternal = void 0, this.Pe = t
+    this.$Vo = undefined;
+    this.YVo = undefined;
+    this.JVo = undefined;
+    this.lGl = false;
+    this.hGl = undefined;
+    this.zVo = undefined;
+    this.ZVo = undefined;
+    this.e6o = undefined;
+    this.t6o = undefined;
+    this.i6o = undefined;
+    this.o6o = undefined;
+    this.r6o = undefined;
+    this.n6 = undefined;
+    this.IsOversizeForTrace = false;
+    this.kJ = undefined;
+    this.n6o = undefined;
+    this.s6o = 0;
+    this.a6o = false;
+    this.h6o = undefined;
+    this.l6o = false;
+    this._6o = "";
+    this.BulletCamp = undefined;
+    this.u6o = undefined;
+    this.c6o = undefined;
+    this.m6o = undefined;
+    this.d6o = 0;
+    this.C6o = false;
+    this.g6o = undefined;
+    this.f6o = undefined;
+    this.p6o = false;
+    this.v6o = undefined;
+    this.M6o = false;
+    this._Gl = undefined;
+    this.uGl = false;
+    this.E6o = undefined;
+    this.S6o = undefined;
+    this.y6o = undefined;
+    this.I6o = undefined;
+    this.T6o = false;
+    this.L6o = undefined;
+    this.Huc = undefined;
+    this.D6o = undefined;
+    this.R6o = undefined;
+    this.Ptc = undefined;
+    this.U6o = undefined;
+    this.A6o = undefined;
+    this.P6o = undefined;
+    this.x6o = undefined;
+    this.w6o = undefined;
+    this.B6o = undefined;
+    this.b6o = false;
+    this.cGl = undefined;
+    this.mGl = false;
+    this.q6o = undefined;
+    this.G6o = 0;
+    this.N6o = false;
+    this.O6o = undefined;
+    this.iSa = undefined;
+    this.HitActorTypeInternal = undefined;
+    this.Osu = undefined;
+    this.Pe = t;
   }
   get IgnoreGradient() {
-    return void 0 === this.$Vo && (this.$Vo = this.Pe.不适配坡度), this.$Vo
+    if (this.$Vo === undefined) {
+      this.$Vo = this.Pe.不适配坡度;
+    }
+    return this.$Vo;
   }
   get CenterOffset() {
-    return this.YVo || (this.YVo = Vector_1.Vector.Create(this.Pe.中心位置偏移)), this.YVo
+    this.YVo ||= Vector_1.Vector.Create(this.Pe.中心位置偏移);
+    return this.YVo;
   }
   get DamageId() {
-    return void 0 === this.JVo && (this.JVo = Number(this.Pe.伤害ID)), this.JVo
+    if (this.JVo === undefined) {
+      this.JVo = Number(this.Pe.伤害ID);
+    }
+    return this.JVo;
   }
   get MultiDamageId() {
     if (!this.lGl) {
-      this.lGl = !0;
-      var i = this.Pe.多伤害ID,
-        s = i.Num();
-      0 < s && (this.hGl = new Array);
+      this.lGl = true;
+      var i = this.Pe.多伤害ID;
+      var s = i.Num();
+      if (s > 0) {
+        this.hGl = new Array();
+      }
       for (let t = 0; t < s; t++) {
         var h = i.Get(t);
-        this.hGl.push(Number(h))
+        this.hGl.push(Number(h));
       }
     }
-    return this.hGl
+    return this.hGl;
   }
   get EnablePartHitAudio() {
-    return void 0 === this.zVo && (this.zVo = this.Pe.是否响应材质受击音效), this.zVo
+    if (this.zVo === undefined) {
+      this.zVo = this.Pe.是否响应材质受击音效;
+    }
+    return this.zVo;
   }
   get IntervalAfterHit() {
-    return void 0 === this.ZVo && (this.ZVo = this.Pe.作用间隔基于个体), this.ZVo
+    if (this.ZVo === undefined) {
+      this.ZVo = this.Pe.作用间隔基于个体;
+    }
+    return this.ZVo;
   }
   get Interval() {
-    return void 0 === this.e6o && (this.e6o = this.Pe.作用间隔), this.e6o
+    if (this.e6o === undefined) {
+      this.e6o = this.Pe.作用间隔;
+    }
+    return this.e6o;
   }
   get ShareCounter() {
-    return void 0 === this.t6o && (this.t6o = this.Pe.共享父子弹次数), this.t6o
+    if (this.t6o === undefined) {
+      this.t6o = this.Pe.共享父子弹次数;
+    }
+    return this.t6o;
   }
   get BornPosition() {
-    return this.i6o || (this.i6o = Vector_1.Vector.Create(this.Pe.出生位置偏移)), this.i6o
+    this.i6o ||= Vector_1.Vector.Create(this.Pe.出生位置偏移);
+    return this.i6o;
   }
   get BornPositionStandard() {
-    return void 0 === this.o6o && (this.o6o = this.Pe.出生位置基准), this.o6o
+    if (this.o6o === undefined) {
+      this.o6o = this.Pe.出生位置基准;
+    }
+    return this.o6o;
   }
   get BornPositionRandom() {
-    return this.r6o || (this.r6o = Vector_1.Vector.Create(this.Pe.出生位置随机)), this.r6o
+    this.r6o ||= Vector_1.Vector.Create(this.Pe.出生位置随机);
+    return this.r6o;
   }
   get Size() {
-    return this.n6 || (this.n6 = Vector_1.Vector.Create(this.Pe.初始大小)), this.n6
+    this.n6 ||= Vector_1.Vector.Create(this.Pe.初始大小);
+    return this.n6;
   }
   get Rotator() {
-    return this.kJ || (this.kJ = Rotator_1.Rotator.Create(this.Pe.初始旋转)), this.kJ
+    this.kJ ||= Rotator_1.Rotator.Create(this.Pe.初始旋转);
+    return this.kJ;
   }
   get VictimCount() {
-    return void 0 === this.n6o && (this.n6o = this.Pe.命中个数), this.n6o
+    if (this.n6o === undefined) {
+      this.n6o = this.Pe.命中个数;
+    }
+    return this.n6o;
   }
   get HitConditionTagId() {
-    return this.k6o(), this.s6o
+    this.k6o();
+    return this.s6o;
   }
   k6o() {
     var t;
-    this.a6o || (this.a6o = !0, (t = this.Pe.命中判定Tag)?.TagName !== StringUtils_1.NONE_STRING ? this.s6o = t.TagId : this.s6o = 0)
+    if (!this.a6o) {
+      this.a6o = true;
+      if ((t = this.Pe.命中判定Tag)?.TagName !== StringUtils_1.NONE_STRING) {
+        this.s6o = t.TagId;
+      } else {
+        this.s6o = 0;
+      }
+    }
   }
   get HitType() {
-    return void 0 === this.h6o && (this.h6o = this.Pe.命中判定类型), this.h6o
+    if (this.h6o === undefined) {
+      this.h6o = this.Pe.命中判定类型;
+    }
+    return this.h6o;
   }
   get DaHitTypePreset() {
-    return this.F6o(), this._6o
+    this.F6o();
+    return this._6o;
   }
   F6o() {
     var t;
-    this.l6o || (this.l6o = !0, this._6o = this.Pe.命中判定类型预设.ToAssetPathName(), 0 < this._6o?.length && (t = ResourceSystem_1.ResourceSystem.Load(this._6o, UE.BulletCampType_C), this.BulletCamp = t?.阵营))
+    if (!this.l6o) {
+      this.l6o = true;
+      this._6o = this.Pe.命中判定类型预设.ToAssetPathName();
+      if (this._6o?.length > 0) {
+        t = ResourceSystem_1.ResourceSystem.Load(this._6o, UE.BulletCampType_C);
+        this.BulletCamp = t?.阵营;
+      }
+    }
   }
   get RelativeDirection() {
-    return void 0 === this.u6o && (this.u6o = this.Pe.子弹受击方向), this.u6o
+    if (this.u6o === undefined) {
+      this.u6o = this.Pe.子弹受击方向;
+    }
+    return this.u6o;
   }
   get Shape() {
-    return void 0 === this.c6o && (this.c6o = this.Pe.子弹形状), this.c6o
+    if (this.c6o === undefined) {
+      this.c6o = this.Pe.子弹形状;
+    }
+    return this.c6o;
   }
   get AttackDirection() {
-    return this.m6o || (this.m6o = Rotator_1.Rotator.Create(this.Pe.子弹攻击方向)), this.m6o
+    this.m6o ||= Rotator_1.Rotator.Create(this.Pe.子弹攻击方向);
+    return this.m6o;
   }
   get TagId() {
-    return this.V6o(), this.d6o
+    this.V6o();
+    return this.d6o;
   }
   V6o() {
     var t;
-    this.C6o || (this.C6o = !0, (t = this.Pe.子弹标签)?.TagName !== StringUtils_1.NONE_STRING ? this.d6o = t.TagId : this.d6o = 0)
+    if (!this.C6o) {
+      this.C6o = true;
+      if ((t = this.Pe.子弹标签)?.TagName !== StringUtils_1.NONE_STRING) {
+        this.d6o = t.TagId;
+      } else {
+        this.d6o = 0;
+      }
+    }
   }
   get BornRequireTagIds() {
-    return this.H6o(), this.g6o
+    this.H6o();
+    return this.g6o;
   }
   get BornForbidTagIds() {
-    return this.H6o(), this.f6o
+    this.H6o();
+    return this.f6o;
   }
   H6o() {
     if (!this.p6o) {
-      this.p6o = !0;
+      this.p6o = true;
       var t = this.Pe.子弹禁止生成Tag;
       if (t) {
-        var i = t.GameplayTags,
-          s = i.Num();
-        if (0 < s) {
+        var i = t.GameplayTags;
+        var s = i.Num();
+        if (s > 0) {
           this.f6o = [];
           for (let t = 0; t < s; t++) {
             var h = i.Get(t);
-            h?.TagId && this.f6o.push(h.TagId)
+            if (h?.TagId) {
+              this.f6o.push(h.TagId);
+            }
           }
         }
       }
       t = this.Pe.子弹允许生成Tag;
       if (t) {
-        var e = t.GameplayTags,
-          r = e.Num();
-        if (0 < r) {
+        var e = t.GameplayTags;
+        var r = e.Num();
+        if (r > 0) {
           this.g6o = [];
           for (let t = 0; t < r; t++) {
             var o = e.Get(t);
-            o?.TagId && this.g6o.push(o.TagId)
+            if (o?.TagId) {
+              this.g6o.push(o.TagId);
+            }
           }
         }
       }
     }
   }
   get HitEffectWeakness() {
-    return this.M6o || (this.M6o = !0, this.v6o = this.Pe.弱点被击效果), this.v6o
+    if (!this.M6o) {
+      this.M6o = true;
+      this.v6o = this.Pe.弱点被击效果;
+    }
+    return this.v6o;
   }
   get MultiHitEffectWeakness() {
     if (!this.uGl) {
-      this.uGl = !0;
-      var i = this.Pe.多弱点被击效果,
-        s = i.Num();
-      if (0 < s) {
-        this._Gl = new Array;
+      this.uGl = true;
+      var i = this.Pe.多弱点被击效果;
+      var s = i.Num();
+      if (s > 0) {
+        this._Gl = new Array();
         for (let t = 0; t < s; t++) {
           var h = i.Get(t);
-          this._Gl.push(h)
+          this._Gl.push(h);
         }
       }
     }
-    return this._Gl
+    return this._Gl;
   }
   get HitCountMax() {
-    return void 0 === this.E6o && (this.E6o = this.Pe.总作用次数限制), this.E6o
+    if (this.E6o === undefined) {
+      this.E6o = this.Pe.总作用次数限制;
+    }
+    return this.E6o;
   }
   get DestroyOnSkillEnd() {
-    return void 0 === this.S6o && (this.S6o = this.Pe.技能结束是否销毁子弹), this.S6o
+    if (this.S6o === undefined) {
+      this.S6o = this.Pe.技能结束是否销毁子弹;
+    }
+    return this.S6o;
   }
   get Duration() {
-    return void 0 === this.y6o && (this.y6o = this.Pe.持续时间), this.y6o
+    if (this.y6o === undefined) {
+      this.y6o = this.Pe.持续时间;
+    }
+    return this.y6o;
   }
   get BlackboardKey() {
-    return this.T6o || (this.T6o = !0, this.I6o = this.Pe.攻击者黑板Key值), this.I6o
+    if (!this.T6o) {
+      this.T6o = true;
+      this.I6o = this.Pe.攻击者黑板Key值;
+    }
+    return this.I6o;
   }
   get ContinuesCollision() {
-    return void 0 === this.L6o && (this.L6o = this.Pe.是否持续碰撞), this.L6o
+    if (this.L6o === undefined) {
+      this.L6o = this.Pe.是否持续碰撞;
+    }
+    return this.L6o;
   }
   get StickGround() {
-    return void 0 === this.R6o && (this.R6o = this.Pe.是否贴地子弹), this.R6o
+    if (this.R6o === undefined) {
+      this.R6o = this.Pe.是否贴地子弹;
+    }
+    return this.R6o;
   }
   get StickWater() {
-    return void 0 === this.Ptc && (this.Ptc = this.Pe.是否贴水面), this.Ptc
+    if (this.Ptc === undefined) {
+      this.Ptc = this.Pe.是否贴水面;
+    }
+    return this.Ptc;
   }
   get NotFollowMovePlatform() {
-    return void 0 === this.Huc && (this.Huc = this.Pe.不跟随移动平台), this.Huc
+    if (this.Huc === undefined) {
+      this.Huc = this.Pe.不跟随移动平台;
+    }
+    return this.Huc;
   }
   get StickTraceLen() {
-    return void 0 === this.D6o && (this.D6o = this.Pe.贴地探测距离), this.D6o
+    if (this.D6o === undefined) {
+      this.D6o = this.Pe.贴地探测距离;
+    }
+    return this.D6o;
   }
   get HitCountPerVictim() {
-    return void 0 === this.U6o && (this.U6o = this.Pe.每个单位总作用次数), this.U6o
+    if (this.U6o === undefined) {
+      this.U6o = this.Pe.每个单位总作用次数;
+    }
+    return this.U6o;
   }
   get SpecialParams() {
     if (!this.A6o) {
-      this.A6o = new Map;
+      this.A6o = new Map();
       var i = this.Pe.特殊参数;
       for (let t = 0; t < i.Num(); t++) {
         var s = i.GetKey(t);
-        this.A6o.set(s, i.Get(s))
+        this.A6o.set(s, i.Get(s));
       }
     }
-    return this.A6o
+    return this.A6o;
   }
   get CollisionActiveDelay() {
-    return void 0 === this.P6o && (this.P6o = this.Pe.碰撞判定延迟), this.P6o
+    if (this.P6o === undefined) {
+      this.P6o = this.Pe.碰撞判定延迟;
+    }
+    return this.P6o;
   }
   get CollisionActiveDuration() {
-    return void 0 === this.x6o && (this.x6o = this.Pe.碰撞判定时长), this.x6o
+    if (this.x6o === undefined) {
+      this.x6o = this.Pe.碰撞判定时长;
+    }
+    return this.x6o;
   }
   get SyncType() {
-    return void 0 === this.w6o && (this.w6o = this.Pe.网络同步类型), this.w6o
+    if (this.w6o === undefined) {
+      this.w6o = this.Pe.网络同步类型;
+    }
+    return this.w6o;
   }
   get BeHitEffect() {
-    return this.b6o || (this.b6o = !0, this.B6o = this.Pe.被击效果), this.B6o
+    if (!this.b6o) {
+      this.b6o = true;
+      this.B6o = this.Pe.被击效果;
+    }
+    return this.B6o;
   }
   get MultiBeHitEffect() {
     if (!this.mGl) {
-      this.mGl = !0;
-      var i = this.Pe.多被击效果,
-        s = i.Num();
-      if (0 < s) {
-        this.cGl = new Array;
+      this.mGl = true;
+      var i = this.Pe.多被击效果;
+      var s = i.Num();
+      if (s > 0) {
+        this.cGl = new Array();
         for (let t = 0; t < s; t++) {
           var h = i.Get(t);
-          this.cGl.push(h)
+          this.cGl.push(h);
         }
       }
     }
-    return this.cGl
+    return this.cGl;
   }
   get BornDistLimit() {
-    return this.q6o || (this.q6o = Vector_1.Vector.Create(this.Pe.限制生成距离)), this.q6o
+    this.q6o ||= Vector_1.Vector.Create(this.Pe.限制生成距离);
+    return this.q6o;
   }
   get BanHitTagId() {
-    return this.j6o(), this.G6o
+    this.j6o();
+    return this.G6o;
   }
   j6o() {
     var t;
-    this.N6o || (this.N6o = !0, (t = this.Pe.禁止命中Tag)?.TagName !== StringUtils_1.NONE_STRING ? this.G6o = t.TagId : this.G6o = 0)
+    if (!this.N6o) {
+      this.N6o = true;
+      if ((t = this.Pe.禁止命中Tag)?.TagName !== StringUtils_1.NONE_STRING) {
+        this.G6o = t.TagId;
+      } else {
+        this.G6o = 0;
+      }
+    }
   }
   get DebugShowProgress() {
-    return void 0 === this.O6o && (this.O6o = this.Pe.Debug显示子弹进度), this.O6o
+    if (this.O6o === undefined) {
+      this.O6o = this.Pe.Debug显示子弹进度;
+    }
+    return this.O6o;
   }
   get BigRangeHitSceneItem() {
-    return void 0 === this.iSa && (this.iSa = this.Pe.大范围子弹对场景物件生效), this.iSa
+    if (this.iSa === undefined) {
+      this.iSa = this.Pe.大范围子弹对场景物件生效;
+    }
+    return this.iSa;
   }
   get HitActorType() {
-    return void 0 === this.HitActorTypeInternal && (this.HitActorTypeInternal = this.Pe.命中实体类型), this.HitActorTypeInternal
+    if (this.HitActorTypeInternal === undefined) {
+      this.HitActorTypeInternal = this.Pe.命中实体类型;
+    }
+    return this.HitActorTypeInternal;
+  }
+  get BigRangeSearchType() {
+    if (this.Osu === undefined) {
+      this.Osu = this.Pe.大范围子弹检测方式;
+    }
+    return this.Osu;
   }
   Preload() {
-    this.F6o(), this.H6o(), this.k6o(), this.j6o();
+    this.F6o();
+    this.H6o();
+    this.k6o();
+    this.j6o();
     this.CenterOffset;
-    return this.Interval, this.ShareCounter, this.BornPosition, this.BornPositionStandard, this.BornPositionRandom, this.Size, this.Rotator, this.HitType, this.Shape, this.TagId, this.Duration, this.CollisionActiveDelay, this.CollisionActiveDuration, this.SyncType, this.BornDistLimit, this.HitActorType, !0
+    this.Interval;
+    this.ShareCounter;
+    this.BornPosition;
+    this.BornPositionStandard;
+    this.BornPositionRandom;
+    this.Size;
+    this.Rotator;
+    this.HitType;
+    this.Shape;
+    this.TagId;
+    this.Duration;
+    this.CollisionActiveDelay;
+    this.CollisionActiveDuration;
+    this.SyncType;
+    this.BornDistLimit;
+    this.HitActorType;
+    return true;
   }
 }
 exports.BulletDataBase = BulletDataBase;

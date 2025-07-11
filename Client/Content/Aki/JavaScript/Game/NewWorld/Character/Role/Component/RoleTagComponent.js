@@ -1,65 +1,101 @@
 "use strict";
-var __decorate = this && this.__decorate || function(e, o, t, n) {
-  var r, a = arguments.length,
-    s = a < 3 ? o : null === n ? n = Object.getOwnPropertyDescriptor(o, t) : n;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(e, o, t, n);
-  else
-    for (var i = e.length - 1; 0 <= i; i--)(r = e[i]) && (s = (a < 3 ? r(s) : 3 < a ? r(o, t, s) : r(o, t)) || s);
-  return 3 < a && s && Object.defineProperty(o, t, s), s
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleTagComponent = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController"),
-  CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage"),
-  BaseTagComponent_1 = require("../../../Common/Component/BaseTagComponent");
-let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTagComponent {
-  constructor() {
-    super(...arguments), this.OnFormationLoaded = () => {
-      var e = this.Entity.GetComponent(0),
-        o = e.GetPlayerId(),
-        t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(o),
-        o = FormationDataController_1.FormationDataController.GetPlayerEntity(o)?.GetComponent(205);
-      if (o) {
-        var n, r, t = t.some(e => e.EntityHandle?.Entity === this.Entity) && o,
-          a = new Map;
-        if (t) {
-          var s = this.TagContainer,
-            i = o.TagContainer;
-          for (const l of this.TagContainer.GetAllExactTags()) a.set(l, i.GetExactTagCount(l) - s.GetRawTagCount(5, l));
-          for (const m of o.TagContainer.GetAllExactTags()) a.has(m) || a.set(m, i.GetExactTagCount(m) - s.GetRawTagCount(5, m))
-        } else
-          for (const C of this.TagContainer.GetAllExactTags()) a.set(C, -this.TagContainer.GetRawTagCount(5, C));
-        for ([n, r] of a.entries()) this.TagContainer.UpdateExactTag(5, n, r)
-      } else Log_1.Log.CheckWarn() && Log_1.Log.Warn("Battle", 19, "RoleTagComponent初始化时找不到对应的PlayerTag组件", ["PlayerId", e?.GetPlayerId()], ["Entity", this.Entity.Id])
+
+var __decorate = this && this.__decorate || function (e, o, t, n) {
+  var r;
+  var a = arguments.length;
+  var s = a < 3 ? o : n === null ? n = Object.getOwnPropertyDescriptor(o, t) : n;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    s = Reflect.decorate(e, o, t, n);
+  } else {
+    for (var i = e.length - 1; i >= 0; i--) {
+      if (r = e[i]) {
+        s = (a < 3 ? r(s) : a > 3 ? r(o, t, s) : r(o, t)) || s;
+      }
     }
   }
+  if (a > 3 && s) {
+    Object.defineProperty(o, t, s);
+  }
+  return s;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RoleTagComponent = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController");
+const CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage");
+const BaseTagComponent_1 = require("../../../Common/Component/BaseTagComponent");
+let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTagComponent {
+  constructor() {
+    super(...arguments);
+    this.OnFormationLoaded = () => {
+      var e = this.Entity.GetComponent(0);
+      var o = e.GetPlayerId();
+      var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(o);
+      var o = FormationDataController_1.FormationDataController.GetPlayerEntity(o)?.GetComponent(205);
+      if (o) {
+        var n;
+        var r;
+        var t = t.some(e => e.EntityHandle?.Entity === this.Entity) && o;
+        var a = new Map();
+        if (t) {
+          var s = this.TagContainer;
+          var i = o.TagContainer;
+          for (const l of this.TagContainer.GetAllExactTags()) {
+            a.set(l, i.GetExactTagCount(l) - s.GetRawTagCount(5, l));
+          }
+          for (const m of o.TagContainer.GetAllExactTags()) {
+            if (!a.has(m)) {
+              a.set(m, i.GetExactTagCount(m) - s.GetRawTagCount(5, m));
+            }
+          }
+        } else {
+          for (const C of this.TagContainer.GetAllExactTags()) {
+            a.set(C, -this.TagContainer.GetRawTagCount(5, C));
+          }
+        }
+        for ([n, r] of a.entries()) {
+          this.TagContainer.UpdateExactTag(5, n, r);
+        }
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Battle", 19, "RoleTagComponent初始化时找不到对应的PlayerTag组件", ["PlayerId", e?.GetPlayerId()], ["Entity", this.Entity.Id]);
+      }
+    };
+  }
   OnCreate() {
-    return EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.OnFormationLoaded), !0
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.OnFormationLoaded);
+    return true;
   }
   OnClear() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.OnFormationLoaded), !0
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.OnFormationLoaded);
+    return true;
   }
   OnAnyTagChanged(e, o, t) {
-    if (void 0 !== e && t !== o) {
+    if (e !== undefined && t !== o) {
       switch (e) {
         case -1384309247:
         case -1207177910:
         case -1388400236:
           var n;
-          (0 < o && t <= 0 || o <= 0 && 0 < t) && ((n = Protocol_1.Aki.Protocol.Ke_.create()).m5n = e, n.iSs = o, CombatMessage_1.CombatNet.Send(17516, this.Entity, n, void 0))
+          if (o > 0 && t <= 0 || o <= 0 && t > 0) {
+            (n = Protocol_1.Aki.Protocol.Ke_.create()).m5n = e;
+            n.iSs = o;
+            CombatMessage_1.CombatNet.Send(21446, this.Entity, n, undefined);
+          }
       }
       super.OnAnyTagChanged(e, o, t);
       var r = this.Entity.GetComponent(0)?.GetPlayerId();
-      r && (FormationDataController_1.FormationDataController.GetPlayerEntity(r)?.GetComponent(199))?.OnTagChanged(e)
+      if (r) {
+        FormationDataController_1.FormationDataController.GetPlayerEntity(r)?.GetComponent(199)?.OnTagChanged(e);
+      }
     }
   }
 };
-RoleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(193)], RoleTagComponent), exports.RoleTagComponent = RoleTagComponent;
-//# sourceMappingURL=RoleTagComponent.js.map
+RoleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(193)], RoleTagComponent);
+exports.RoleTagComponent = RoleTagComponent; //# sourceMappingURL=RoleTagComponent.js.map

@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ServerMarkItemView = void 0;
+  value: true
+});
+exports.ServerMarkItemView = undefined;
 const MarkItemView_1 = require("./MarkItemView");
 class ServerMarkItemView extends MarkItemView_1.MarkItemView {
   constructor(e) {
-    super(e)
+    super(e);
   }
 }
 exports.ServerMarkItemView = ServerMarkItemView;

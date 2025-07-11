@@ -1,22 +1,34 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcRedDotFlowLogic = void 0;
+  value: true
+});
+exports.NpcRedDotFlowLogic = undefined;
 class NpcRedDotFlowLogic {
   constructor() {
-    this.qer = !1, this.Ger = !1
+    this.qer = false;
+    this.Ger = false;
   }
   GetRedDotActive() {
-    return this.Ger || this.Ner(), this.qer
+    if (!this.Ger) {
+      this.Ner();
+    }
+    return this.qer;
   }
   Ner() {
-    this.qer = !1
+    this.qer = false;
   }
   ManualControlRedDotActive(t, i) {
-    this.Ger = t, this.Ger ? this.qer = i : this.qer = !1
+    this.Ger = t;
+    if (this.Ger) {
+      this.qer = i;
+    } else {
+      this.qer = false;
+    }
   }
   Clear() {
-    this.qer = !1, this.Ger = !1
+    this.qer = false;
+    this.Ger = false;
   }
 }
 exports.NpcRedDotFlowLogic = NpcRedDotFlowLogic;

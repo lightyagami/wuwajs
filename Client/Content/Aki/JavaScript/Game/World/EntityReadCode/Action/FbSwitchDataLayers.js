@@ -1,31 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSwitchDataLayers = void 0;
+  value: true
+});
+exports.FbSwitchDataLayers = undefined;
 class FbSwitchDataLayers {
   constructor(t) {
-    this.FbDataInternal = t, this.YTh = !1, this.zTh = void 0, this.JTh = !1, this.ZTh = void 0
+    this.FbDataInternal = t;
+    this.YTh = false;
+    this.zTh = undefined;
+    this.JTh = false;
+    this.ZTh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSwitchDataLayers(t)
+    if (t) {
+      return new FbSwitchDataLayers(t);
+    }
   }
   get LoadDataLayers() {
     if (!this.YTh) {
-      this.YTh = !0, this.zTh = new Array;
+      this.YTh = true;
+      this.zTh = new Array();
       var s = this.FbDataInternal.loadDataLayersLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.zTh.push(this.FbDataInternal.loadDataLayers(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.zTh.push(this.FbDataInternal.loadDataLayers(t));
+        }
+      }
     }
-    return this.zTh
+    return this.zTh;
   }
   get UnloadDataLayers() {
     if (!this.JTh) {
-      this.JTh = !0, this.ZTh = new Array;
+      this.JTh = true;
+      this.ZTh = new Array();
       var s = this.FbDataInternal.unloadDataLayersLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.ZTh.push(this.FbDataInternal.unloadDataLayers(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.ZTh.push(this.FbDataInternal.unloadDataLayers(t));
+        }
+      }
     }
-    return this.ZTh
+    return this.ZTh;
   }
 }
 exports.FbSwitchDataLayers = FbSwitchDataLayers;

@@ -1,21 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter"),
-  BATLLE_IDLE_TIME = 5e3;
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const BATLLE_IDLE_TIME = 5000;
 class TsAnimNotifyFightStand extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.BattleIdleTime = BATLLE_IDLE_TIME
+    super(...arguments);
+    this.BattleIdleTime = BATLLE_IDLE_TIME;
   }
   Constructor() {}
   K2_Notify(t, e) {
     t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t?.CharacterActorComponent?.Entity?.GetComponent(177))?.EnterBattleIdle(this.BattleIdleTime), !0
+    if (t instanceof TsBaseCharacter_1.default) {
+      t?.CharacterActorComponent?.Entity?.GetComponent(177)?.EnterBattleIdle(this.BattleIdleTime);
+    }
+    return true;
   }
   GetNotifyName() {
-    return "设置战斗待机"
+    return "设置战斗待机";
   }
 }
 exports.default = TsAnimNotifyFightStand;

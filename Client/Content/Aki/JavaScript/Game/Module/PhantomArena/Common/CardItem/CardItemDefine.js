@@ -1,16 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.cardItemCreatorMap = void 0;
-const BattleCardComponent_1 = require("./Component/BattleCardComponent"),
-  CardAllInDeckComponent_1 = require("./Component/CardAllInDeckComponent"),
-  CardCheckComponent_1 = require("./Component/CardCheckComponent"),
-  CardCommonComponent_1 = require("./Component/CardCommonComponent"),
-  CardDisabledComponent_1 = require("./Component/CardDisabledComponent"),
-  CardLockComponent_1 = require("./Component/CardLockComponent"),
-  CardReplaceComponent_1 = require("./Component/CardReplaceComponent"),
-  CardSpineComponent_1 = require("./Component/CardSpineComponent"),
-  CommonBaseCardComponent_1 = require("./Component/CommonBaseCardComponent");
+  value: true
+});
+exports.cardItemCreatorMap = undefined;
+const BattleCardComponent_1 = require("./Component/BattleCardComponent");
+const CardAllInDeckComponent_1 = require("./Component/CardAllInDeckComponent");
+const CardCheckComponent_1 = require("./Component/CardCheckComponent");
+const CardCommonComponent_1 = require("./Component/CardCommonComponent");
+const CardDisabledComponent_1 = require("./Component/CardDisabledComponent");
+const CardLockComponent_1 = require("./Component/CardLockComponent");
+const CardReplaceComponent_1 = require("./Component/CardReplaceComponent");
+const CardSpineComponent_1 = require("./Component/CardSpineComponent");
+const CommonBaseCardComponent_1 = require("./Component/CommonBaseCardComponent");
 exports.cardItemCreatorMap = {
   [0]: CommonBaseCardComponent_1.CommonBaseCardComponent,
   1: CardLockComponent_1.CardLockComponent,

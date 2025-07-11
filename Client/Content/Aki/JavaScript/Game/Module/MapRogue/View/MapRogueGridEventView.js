@@ -1,182 +1,339 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueGridEventView = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  AudioSystem_1 = require("../../../../Core/Audio/AudioSystem"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem"),
-  GridEventCompChoice_1 = require("./Components/GridEventCompChoice"),
-  GridEventCompDesc_1 = require("./Components/GridEventCompDesc"),
-  GridEventCompEnding_1 = require("./Components/GridEventCompEnding"),
-  SPINE_DEFAULT_ANIM_NAME = "idle";
+  value: true
+});
+exports.MapRogueGridEventView = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
+const Log_1 = require("../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const GridEventCompChoice_1 = require("./Components/GridEventCompChoice");
+const GridEventCompDesc_1 = require("./Components/GridEventCompDesc");
+const GridEventCompEnding_1 = require("./Components/GridEventCompEnding");
+const MapRoguePanelLv_1 = require("./Components/MapRoguePanelLv");
+const MapRogueMoodBar_1 = require("./MapRogueMoodBar");
+const SPINE_DEFAULT_ANIM_NAME = "idle";
 class MapRogueGridEventView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.lqe = void 0, this.go1 = [], this.Co1 = 0, this.po1 = !0, this.AutoState = !1, this.vo1 = 0, this.OpData = void 0, this.CurrentBgId = 0, this.CurrentBgmId = 0, this.ehr = () => {
-      this.po1 = !this.po1, this.GetItem(7).SetUIActive(this.po1), this.GetItem(1).SetUIActive(this.po1)
-    }, this.ET1 = () => {
-      var t = this.Ln1();
-      t && 1 === t.StepType && (this.AutoState = !0, 2 === this.ViewState ? (this.XTt(), this.XTt()) : 3 === this.ViewState && this.XTt())
-    }, this.B6e = () => {
-      0 !== this.ViewState && ControllerHolder_1.ControllerHolder.MapRogueController.OpenExploreEnd()
-    }, this.$An = t => {
-      "Change" === t && this.WNe()
-    }, this.bzt = !1, this.w8i = t => this.bzt = !0, this.b8i = t => !(this.bzt = !1), this.XTt = () => {
-      if (!this.bzt) {
-        var t = this.Ln1();
-        if (t) switch (t.StepType) {
-          case 1:
-            2 === this.ViewState ? t.MaskClick?.() : 3 === this.ViewState && (this.GetItem(5).SetUIActive(!1), this.GetItem(6).SetUIActive(!1), this.GetButton(8).RootUIComp.SetUIActive(!1), this.Mo1(t.StepId, 0));
-            break;
-          case 2:
-            break;
-          case 4:
-            3 === this.ViewState && (this.GetButton(8).RootUIComp.SetUIActive(!1), this.Mo1(t.StepId, 0))
+    super(...arguments);
+    this.s9c = 0;
+    this.lqe = undefined;
+    this.Dvu = undefined;
+    this.Bvu = undefined;
+    this.ko1 = [];
+    this.Oo1 = 0;
+    this.qo1 = true;
+    this.AutoState = false;
+    this.Go1 = 0;
+    this.OpData = undefined;
+    this.CurrentBgId = 0;
+    this.CurrentBgmId = 0;
+    this.ehr = () => {
+      this.qo1 = !this.qo1;
+      this.GetItem(7).SetUIActive(this.qo1);
+      this.GetItem(1).SetUIActive(this.qo1);
+    };
+    this.XT1 = () => {
+      var t = this.Kn1();
+      if (t && t.StepType === 1) {
+        this.AutoState = true;
+        if (this.ViewState === 2) {
+          this.XTt();
+          this.XTt();
+        } else if (this.ViewState === 3) {
+          this.XTt();
         }
       }
-    }, this.wn1 = (t, i) => {
+    };
+    this.B6e = () => {
+      if (this.ViewState !== 0) {
+        ControllerHolder_1.ControllerHolder.MapRogueController.OpenExploreEnd();
+      }
+    };
+    this.$An = t => {
+      if (t === "Change") {
+        this.WNe();
+      }
+    };
+    this.kvu = t => {
+      this.$P1(true);
+    };
+    this.Ovu = () => {
+      this.qvu(true);
+    };
+    this.bzt = false;
+    this.w8i = t => this.bzt = true;
+    this.b8i = t => !(this.bzt = false);
+    this.XTt = () => {
+      if (!this.bzt) {
+        var t = this.Kn1();
+        if (t) {
+          switch (t.StepType) {
+            case 1:
+              if (this.ViewState === 2) {
+                t.MaskClick?.();
+              } else if (this.ViewState === 3) {
+                this.GetItem(5).SetUIActive(false);
+                this.GetItem(6).SetUIActive(false);
+                this.GetButton(8).RootUIComp.SetUIActive(false);
+                this.Vo1(t.StepId, 0);
+              }
+              break;
+            case 2:
+              break;
+            case 4:
+              if (this.ViewState === 3) {
+                this.GetButton(8).RootUIComp.SetUIActive(false);
+                this.Vo1(t.StepId, 0);
+              }
+          }
+        }
+      }
+    };
+    this.Xn1 = (t, i) => {
       switch (i) {
         case 1:
-          this.GetItem(5).SetUIActive(!1), this.GetItem(6).SetUIActive(!0);
+          this.GetItem(5).SetUIActive(false);
+          this.GetItem(6).SetUIActive(true);
           break;
         case 2:
         case 4:
-          this.GetButton(8).RootUIComp.SetUIActive(!1)
+          this.GetButton(8).RootUIComp.SetUIActive(false);
       }
-      this.ViewState = 3
-    }, this.Mo1 = (t, i) => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("RogueBattle", 37, "[MapRogue] 步骤执行", ["StepId", t], ["OptionId", i]), this.OpData?.ExecuteStep(t, i)
-    }, this.Io1 = t => {
-      this.QCa(this.OpData.CurrentPlotBgId, !0), this.UU1(this.OpData.CurrentPlotBgmId), this.To1(t)
-    }
+      this.ViewState = 3;
+    };
+    this.Vo1 = (t, i) => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RogueBattle", 37, "[MapRogue] 步骤执行", ["StepId", t], ["OptionId", i]);
+      }
+      this.OpData?.ExecuteStep(t, i);
+    };
+    this.Ho1 = t => {
+      this.QCa(this.OpData.CurrentPlotBgId, true);
+      this.uB1(this.OpData.CurrentPlotBgmId);
+      this.$o1(t);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture],
-      [1, UE.UIItem],
-      [2, UE.UIScrollViewWithScrollbarComponent],
-      [3, UE.UIVerticalLayout],
-      [4, UE.UIButtonComponent],
-      [5, UE.UIItem],
-      [6, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UIButtonComponent],
-      [9, UE.UIButtonComponent],
-      [10, UE.SpineSkeletonAnimationComponent],
-      [11, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [4, this.ehr],
-      [8, this.XTt],
-      [9, this.ET1]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIVerticalLayout], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIButtonComponent], [10, UE.SpineSkeletonAnimationComponent], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem]];
+    this.BtnBindInfo = [[4, this.ehr], [8, this.XTt], [9, this.XT1]];
   }
   async OnBeforeStartAsync() {
-    this.vo1 = this.OpenParam, this.OpData = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this.vo1), this.OpData.EventStepUpdateFunc = this.Io1, this.GetButton(8).RootUIComp.SetUIActive(!1);
-    var t = this.GetScrollViewWithScrollbar(2),
-      t = (t.OnPointerBeginDragCallBack.Bind(this.w8i), t.OnPointerEndDragCallBack.Bind(this.b8i), this.GetItem(5).SetUIActive(!1), this.GetItem(6).SetUIActive(!1), []),
-      t = (t.push(this.zDn()), this.OpData.IsInPlot && t.push(this.To1(this.OpData.CurrentStepId)), await Promise.all(t), ConfigManager_1.ConfigManager.MapRogueConfig.GetRogueEventPlotById(this.OpData.CurrentPlotId));
-    t && this.lqe.SetTitleLocalText(t.Title), this.QCa(this.OpData.CurrentPlotBgId, !1), this.UU1(this.OpData.CurrentPlotBgmId)
+    this.Go1 = this.OpenParam;
+    this.OpData = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this.Go1);
+    this.OpData.EventStepUpdateFunc = this.Ho1;
+    this.GetButton(8).RootUIComp.SetUIActive(false);
+    var t = this.GetScrollViewWithScrollbar(2);
+    t.OnPointerBeginDragCallBack.Bind(this.w8i);
+    t.OnPointerEndDragCallBack.Bind(this.b8i);
+    this.GetItem(5).SetUIActive(false);
+    this.GetItem(6).SetUIActive(false);
+    var t = [];
+    t.push(this.zDn());
+    if (this.OpData.IsInPlot) {
+      t.push(this.$o1(this.OpData.CurrentStepId));
+    }
+    this.Dvu = new MapRoguePanelLv_1.MapRoguePanelLv();
+    t.push(this.Dvu.CreateThenShowByActorAsync(this.GetItem(13).GetOwner()));
+    this.Bvu = new MapRogueMoodBar_1.MapRogueMoodBar();
+    t.push(this.Bvu.CreateThenShowByResourceIdAsync("UiItem_MoodBar", this.GetItem(12)));
+    await Promise.all(t);
+    var t = ConfigManager_1.ConfigManager.MapRogueConfig.GetRogueEventPlotById(this.OpData.CurrentPlotId);
+    if (t) {
+      this.lqe.SetTitleLocalText(t.Title);
+    }
+    this.QCa(this.OpData.CurrentPlotBgId, false);
+    this.uB1(this.OpData.CurrentPlotBgmId);
   }
-  OnStart() {}
+  OnBeforeShow() {
+    this.$P1(false);
+    this.qvu(false);
+  }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResTeamLvChange, this.kvu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMoodChange, this.Ovu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResTeamLvChange, this.kvu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMoodChange, this.Ovu);
   }
   OnBeforeDestroy() {
-    this.OpData && (this.OpData.EventStepUpdateFunc = void 0, this.OpData = void 0), this.go1.length = 0
+    if (this.OpData) {
+      this.OpData.EventStepUpdateFunc = undefined;
+      this.OpData = undefined;
+    }
+    this.ko1.length = 0;
   }
   async zDn() {
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem, await this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.lqe.SetCloseCallBack(this.B6e), this.lqe.SetCurrencyItemList([ModelManager_1.ModelManager.MapRogueModel.GetRogueCurrencyItemId()])
+    this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
+    await this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
+    this.lqe.SetCloseCallBack(this.B6e);
+    this.lqe.SetCurrencyItemList([ModelManager_1.ModelManager.MapRogueModel.GetRogueCurrencyItemId()]);
   }
   QCa(t, i) {
-    0 !== t && this.CurrentBgId !== t && (this.CurrentBgId = t, !i || this.UiViewSequence.HasSequenceNameInPlaying("Switch") ? this.WNe() : this.UiViewSequence.PlaySequence("Switch"))
+    if (t !== 0 && this.CurrentBgId !== t) {
+      this.CurrentBgId = t;
+      if (!i || this.UiViewSequence.HasSequenceNameInPlaying("Switch")) {
+        this.WNe();
+      } else {
+        this.UiViewSequence.PlaySequence("Switch");
+      }
+    }
+  }
+  $P1(t) {
+    var i = ModelManager_1.ModelManager.MapRogueModel.GameInfo;
+    if (i) {
+      this.Dvu.SetLv(i.TeamLv, t);
+    }
+  }
+  qvu(t) {
+    var i = ModelManager_1.ModelManager.MapRogueModel.GameInfo;
+    if (i) {
+      this.Bvu.SetLimit(i.MoodMin, i.MoodMax);
+      if (t) {
+        t = i.Mood - this.s9c;
+        this.Bvu.ShowPreviewValue(t, i.Mood);
+        this.s9c = i.Mood;
+      } else {
+        this.s9c = i.Mood;
+        this.Bvu.SetCurrentValue(i.Mood);
+      }
+    }
   }
   WNe() {
     var t = ConfigManager_1.ConfigManager.MapRogueConfig.GetEventBgById(this.CurrentBgId);
     if (t) {
       const n = this.GetTexture(0);
-      var i, e = this.GetItem(11),
-        s = this.GetSpine(10),
-        h = !StringUtils_1.StringUtils.IsEmpty(t.BgPath) || !StringUtils_1.StringUtils.IsEmpty(t.BgFemalePath),
-        r = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-      h ? (i = 0 === r ? t.BgFemalePath : t.BgPath, this.SetTextureByPath(i, n, void 0, () => {
-        n.SetSizeFromTexture()
-      })) : (i = 0 === r ? t.BgSpineAtlasFemalePath : t.BgSpineAtlasPath, r = 0 === r ? t.BgSpineSkeletonFemalePath : t.BgSpineSkeletonPath, this.SetSpineAssetByPath(i, r, s), s.SetAnimation(0, SPINE_DEFAULT_ANIM_NAME, !0)), n.SetUIActive(h), e.SetUIActive(!h)
+      var i;
+      var e = this.GetItem(11);
+      var s = this.GetSpine(10);
+      var h = !StringUtils_1.StringUtils.IsEmpty(t.BgPath) || !StringUtils_1.StringUtils.IsEmpty(t.BgFemalePath);
+      var r = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
+      if (h) {
+        i = r === 0 ? t.BgFemalePath : t.BgPath;
+        this.SetTextureByPath(i, n, undefined, () => {
+          n.SetSizeFromTexture();
+        });
+      } else {
+        i = r === 0 ? t.BgSpineAtlasFemalePath : t.BgSpineAtlasPath;
+        r = r === 0 ? t.BgSpineSkeletonFemalePath : t.BgSpineSkeletonPath;
+        this.SetSpineAssetByPath(i, r, s);
+        s.SetAnimation(0, SPINE_DEFAULT_ANIM_NAME, true);
+      }
+      n.SetUIActive(h);
+      e.SetUIActive(!h);
     }
   }
-  UU1(t) {
-    0 !== t && this.CurrentBgmId !== t && (this.CurrentBgmId = t, t = ConfigManager_1.ConfigManager.MapRogueConfig.GetEventBgmById(t)) && (t = t.BgmPath, AudioSystem_1.AudioSystem.PostEvent(t))
+  uB1(t) {
+    if (t !== 0 && this.CurrentBgmId !== t && (this.CurrentBgmId = t, t = ConfigManager_1.ConfigManager.MapRogueConfig.GetEventBgmById(t))) {
+      t = t.BgmPath;
+      AudioSystem_1.AudioSystem.PostEvent(t);
+    }
   }
   set ViewState(t) {
-    this.Co1 !== t && (this.Co1 = t)
+    if (this.Oo1 !== t) {
+      this.Oo1 = t;
+    }
   }
   get ViewState() {
-    return this.Co1
+    return this.Oo1;
   }
-  bo1() {
-    return this.GetVerticalLayout(3).RootUIComp
+  Wo1() {
+    return this.GetVerticalLayout(3).RootUIComp;
   }
-  Ln1() {
-    var t = this.go1.length;
-    if (0 < t) return this.go1[t - 1]
+  Kn1() {
+    var t = this.ko1.length;
+    if (t > 0) {
+      return this.ko1[t - 1];
+    }
   }
   fze(t) {
-    const i = this.GetScrollViewWithScrollbar(2),
-      e = (0, puerts_1.$ref)(new UE.Vector2D(i.ContentUIItem.RelativeLocation));
+    const i = this.GetScrollViewWithScrollbar(2);
+    const e = (0, puerts_1.$ref)(new UE.Vector2D(i.ContentUIItem.RelativeLocation));
     TimerSystem_1.TimerSystem.Delay(() => {
-      i.ScrollToBottom(e, t, !1)
-    }, 100)
+      i.ScrollToBottom(e, t, false);
+    }, 100);
   }
   async CreateComponentChoice(t, i) {
     t = new GridEventCompChoice_1.GridEventChoice(t);
-    t.CanInteractCallback = this.wn1, t.ExecuteStep = this.Mo1, this.go1.push(t), await t.CreateByResourceIdAsync("UiItem_RandomEventChoose", this.bo1()), await t.Refresh(i)
+    t.CanInteractCallback = this.Xn1;
+    t.ExecuteStep = this.Vo1;
+    this.ko1.push(t);
+    await t.CreateByResourceIdAsync("UiItem_RandomEventChoose", this.Wo1());
+    await t.Refresh(i);
   }
   async CreateComponentDesc(t) {
     t = new GridEventCompDesc_1.GridEventCompDesc(t);
-    t.CanInteractCallback = this.wn1, this.go1.push(t), await t.CreateByResourceIdAsync("UiItem_RandomEventDesc", this.bo1()), t.Refresh(this.AutoState)
+    t.CanInteractCallback = this.Xn1;
+    this.ko1.push(t);
+    await t.CreateByResourceIdAsync("UiItem_RandomEventDesc", this.Wo1());
+    t.Refresh(this.AutoState);
   }
   async CreateComponentEnding(t) {
     t = new GridEventCompEnding_1.GridEventCompEnding(t);
-    t.CanInteractCallback = this.wn1, this.go1.push(t), await t.CreateByResourceIdAsync("UiItem_RandomEventEnd", this.bo1()), t.Refresh()
+    t.CanInteractCallback = this.Xn1;
+    this.ko1.push(t);
+    await t.CreateByResourceIdAsync("UiItem_RandomEventEnd", this.Wo1());
+    t.Refresh();
   }
-  async To1(t) {
-    if (0 !== t) {
+  async $o1(t) {
+    if (t !== 0) {
       var i = ConfigManager_1.ConfigManager.MapRogueConfig.GetRogueEventStepById(t);
       if (i) {
-        switch (this.ViewState = 1, this.GetButton(8).RootUIComp.SetUIActive(!0), i.Type) {
+        this.ViewState = 1;
+        this.GetButton(8).RootUIComp.SetUIActive(true);
+        switch (i.Type) {
           case 1:
-            if (await this.CreateComponentDesc(t), this.AutoState) {
-              const e = this.Ln1()?.GetOriginalItem?.();
-              return e && this.fze(e), void this.Mo1(t, 0)
+            await this.CreateComponentDesc(t);
+            if (this.AutoState) {
+              const e = this.Kn1()?.GetOriginalItem?.();
+              if (e) {
+                this.fze(e);
+              }
+              this.Vo1(t, 0);
+              return;
             }
-            this.GetItem(5).SetUIActive(!0), this.GetItem(6).SetUIActive(!1);
+            this.GetItem(5).SetUIActive(true);
+            this.GetItem(6).SetUIActive(false);
             break;
           case 2:
-            this.AutoState = !1, await this.CreateComponentChoice(t, this.OpData.CurrentOptions);
+            this.AutoState = false;
+            await this.CreateComponentChoice(t, this.OpData.CurrentOptions);
             break;
           case 3:
-            this.AutoState = !1, this.Mo1(t, 0);
+            this.AutoState = false;
+            this.Vo1(t, 0);
             break;
           case 4:
-            this.AutoState = !1, await this.CreateComponentEnding(t);
+            this.AutoState = false;
+            await this.CreateComponentEnding(t);
             break;
           default:
-            this.AutoState = !1, Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 37, "[MapRogue] 步骤类型生成错误", ["StepId", t])
+            this.AutoState = false;
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("RogueBattle", 37, "[MapRogue] 步骤类型生成错误", ["StepId", t]);
+            }
         }
-        const e = this.Ln1()?.GetOriginalItem?.();
-        e && this.fze(e), this.ViewState = 2
-      } else Log_1.Log.CheckError() && Log_1.Log.Error("RogueBattle", 37, "[MapRogue] 无法查询到对应步骤,结束执行", ["StepId", t])
+        const e = this.Kn1()?.GetOriginalItem?.();
+        if (e) {
+          this.fze(e);
+        }
+        this.ViewState = 2;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RogueBattle", 37, "[MapRogue] 无法查询到对应步骤,结束执行", ["StepId", t]);
+      }
     }
   }
 }

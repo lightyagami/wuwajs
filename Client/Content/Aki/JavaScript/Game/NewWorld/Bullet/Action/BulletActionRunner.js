@@ -1,107 +1,195 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletActionRunner = void 0;
-const cpp_1 = require("cpp"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Stats_1 = require("../../../../Core/Common/Stats"),
-  PerformanceController_1 = require("../../../../Core/Performance/PerformanceController"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  BulletConstant_1 = require("../BulletConstant"),
-  BulletActionCenter_1 = require("./BulletActionCenter");
+  value: true
+});
+exports.BulletActionRunner = undefined;
+const cpp_1 = require("cpp");
+const Log_1 = require("../../../../Core/Common/Log");
+const Stats_1 = require("../../../../Core/Common/Stats");
+const PerformanceController_1 = require("../../../../Core/Performance/PerformanceController");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const BulletConstant_1 = require("../BulletConstant");
+const BulletActionCenter_1 = require("./BulletActionCenter");
 class BulletActionRunner {
   constructor() {
-    this.AVo = new BulletActionCenter_1.BulletActionCenter, this.ac = 0, this.PVo = [], this.xVo = [], this.wVo = void 0
+    this.AVo = new BulletActionCenter_1.BulletActionCenter();
+    this.ac = 0;
+    this.PVo = [];
+    this.xVo = [];
+    this.wVo = undefined;
   }
   Init() {
-    this.AVo.Init()
+    this.AVo.Init();
   }
   Clear() {
-    this.AVo.Clear()
+    this.AVo.Clear();
   }
   GetActionCenter() {
-    return this.AVo
+    return this.AVo;
   }
   Pause() {
-    0 !== this.ac ? Log_1.Log.CheckError() && Log_1.Log.Error("Temp", 17, "当前不是空闲状态，不允许暂停") : this.ac = 1
-  }
-  Resume() {
-    1 !== this.ac ? Log_1.Log.CheckError() && Log_1.Log.Error("Temp", 17, "当前不是暂停状态") : this.ac = 0
-  }
-  Run(t = 0, e = !1) {
-    if (0 !== this.ac) Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "当前不是空闲状态，不允许切换到运行状态");
-    else {
-      BulletActionRunner.BVo.Start(), this.ac = 2;
-      var o = ModelManager_1.ModelManager.BulletModel.GetBulletEntityMap();
-      if (0 < t) {
-        this.PVo.length = 0, this.xVo.length = 0;
-        for (const i of o.values()) {
-          var r = i.GetBulletInfo();
-          this.PVo.push(r)
-        }
+    if (this.ac !== 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Temp", 17, "当前不是空闲状态，不允许暂停");
       }
-      for (this.bVo(t, e), this.PVo.length = 0; 0 < this.xVo.length;) {
-        var l = this.PVo;
-        this.PVo = this.xVo, this.xVo = l, this.bVo(0), this.PVo.length = 0
-      }
-      BulletActionRunner.BVo.Stop(), this.ac = 3, ModelManager_1.ModelManager.BulletModel.ClearDestroyedBullets(), this.ac = 0
+    } else {
+      this.ac = 1;
     }
   }
-  bVo(t = 0, e = !1) {
+  Resume() {
+    if (this.ac !== 1) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Temp", 17, "当前不是暂停状态");
+      }
+    } else {
+      this.ac = 0;
+    }
+  }
+  Run(t = 0, e = false) {
+    if (this.ac !== 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Bullet", 17, "当前不是空闲状态，不允许切换到运行状态");
+      }
+    } else {
+      BulletActionRunner.BVo.Start();
+      this.ac = 2;
+      var o = ModelManager_1.ModelManager.BulletModel.GetBulletEntityMap();
+      if (t > 0) {
+        this.PVo.length = 0;
+        this.xVo.length = 0;
+        for (const i of o.values()) {
+          var r = i.GetBulletInfo();
+          this.PVo.push(r);
+        }
+      }
+      this.bVo(t, e);
+      this.PVo.length = 0;
+      while (this.xVo.length > 0) {
+        var l = this.PVo;
+        this.PVo = this.xVo;
+        this.xVo = l;
+        this.bVo(0);
+        this.PVo.length = 0;
+      }
+      BulletActionRunner.BVo.Stop();
+      this.ac = 3;
+      ModelManager_1.ModelManager.BulletModel.ClearDestroyedBullets();
+      this.ac = 0;
+    }
+  }
+  bVo(t = 0, e = false) {
     let o = 0;
     var r = this.AVo;
     for (const s of this.PVo) {
-      PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (o = cpp_1.KuroTime.GetMilliseconds64());
+      if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest) {
+        o = cpp_1.KuroTime.GetMilliseconds64();
+      }
       try {
-        if (this.wVo = s, 0 < t) {
+        this.wVo = s;
+        if (t > 0) {
           var l = s.PersistentActionList;
-          if (e)
-            for (const u of l) u.AfterTick(t);
-          else
-            for (const a of l) a.Tick(t);
-          for (let t = l.length - 1; 0 <= t; t--) {
+          if (e) {
+            for (const u of l) {
+              u.AfterTick(t);
+            }
+          } else {
+            for (const a of l) {
+              a.Tick(t);
+            }
+          }
+          for (let t = l.length - 1; t >= 0; t--) {
             var i = l[t];
-            i.IsFinish && (l.splice(t, 1), r.RecycleBulletAction(i))
+            if (i.IsFinish) {
+              l.splice(t, 1);
+              r.RecycleBulletAction(i);
+            }
           }
         }
-        for (; 0 < s.ActionInfoList.length || 0 < s.NextActionInfoList.length;) {
+        while (s.ActionInfoList.length > 0 || s.NextActionInfoList.length > 0) {
           for (const c of s.ActionInfoList) {
             var n = r.CreateBulletAction(c.Type);
-            BulletConstant_1.BulletConstant.OpenActionStat ? (BulletActionRunner.qVo[c.Type]?.Start(), n.Execute(s, c), BulletActionRunner.qVo[c.Type]?.Stop()) : n.Execute(s, c), n.IsInPool || n.IsFinish ? r.RecycleBulletAction(n) : s.PersistentActionList.push(n)
+            if (BulletConstant_1.BulletConstant.OpenActionStat) {
+              BulletActionRunner.qVo[c.Type]?.Start();
+              n.Execute(s, c);
+              BulletActionRunner.qVo[c.Type]?.Stop();
+            } else {
+              n.Execute(s, c);
+            }
+            if (n.IsInPool || n.IsFinish) {
+              r.RecycleBulletAction(n);
+            } else {
+              s.PersistentActionList.push(n);
+            }
           }
-          s.SwapActionInfoList()
+          s.SwapActionInfoList();
         }
       } catch (t) {
-        t instanceof Error ? Log_1.Log.CheckError() && Log_1.Log.ErrorWithStack("Bullet", 17, "Run BulletAction Error", t, ["BulletEntityId", s.BulletEntityId], ["BulletRowName", s.BulletRowName], ["error", t.message]) : Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "Run BulletAction Error", ["BulletEntityId", s.BulletEntityId], ["BulletRowName", s.BulletRowName], ["error", t])
+        if (t instanceof Error) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.ErrorWithStack("Bullet", 17, "Run BulletAction Error", t, ["BulletEntityId", s.BulletEntityId], ["BulletRowName", s.BulletRowName], ["error", t.message]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 17, "Run BulletAction Error", ["BulletEntityId", s.BulletEntityId], ["BulletRowName", s.BulletRowName], ["error", t]);
+        }
       }
-      PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && PerformanceController_1.PerformanceController.CollectTickPerformanceInfo("Bullet", !1, cpp_1.KuroTime.GetMilliseconds64() - o, 1, s.BornFrameCount)
+      if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest) {
+        PerformanceController_1.PerformanceController.CollectTickPerformanceInfo("Bullet", false, cpp_1.KuroTime.GetMilliseconds64() - o, 1, s.BornFrameCount);
+      }
     }
-    this.wVo = void 0
+    this.wVo = undefined;
   }
   AddAction(t, e) {
     switch (this.ac) {
       case 0:
-        t.ActionInfoList.push(e), this.PVo.push(t), this.Run();
+        t.ActionInfoList.push(e);
+        this.PVo.push(t);
+        this.Run();
         break;
       case 1:
         t.ActionInfoList.push(e);
         break;
       case 2:
-        t.NextActionInfoList.push(e), t !== this.wVo && this.xVo.push(t);
+        t.NextActionInfoList.push(e);
+        if (t !== this.wVo) {
+          this.xVo.push(t);
+        }
         break;
       case 3:
-        Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "清理子弹数据期间不允许有新的行为进来，请检查代码逻辑");
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 17, "清理子弹数据期间不允许有新的行为进来，请检查代码逻辑");
+        }
         break;
       default:
-        Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "当前状态异常")
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 17, "当前状态异常");
+        }
     }
   }
   IsRunning() {
-    return 2 === this.ac
+    return this.ac === 2;
   }
   static InitStat() {
-    if (BulletConstant_1.BulletConstant.OpenActionStat && !(0 < this.qVo.length))
-      for (let t = 0; t < 19; t++) 6 === t ? this.qVo.push(Stats_1.Stat.Create("BulletActionInitCollision")) : 3 === t ? this.qVo.push(Stats_1.Stat.Create("BulletActionInitMove")) : 7 === t ? this.qVo.push(Stats_1.Stat.Create("BulletActionUpdateEffect")) : 13 === t ? this.qVo.push(Stats_1.Stat.Create("BulletActionDestroyBullet")) : 11 === t ? this.qVo.push(Stats_1.Stat.Create("BulletActionSummonBullet")) : BulletConstant_1.BulletConstant.OpenAllActionStat ? this.qVo.push(Stats_1.Stat.CreateNoFlameGraph("BulletAction" + t)) : this.qVo.push(void 0)
+    if (BulletConstant_1.BulletConstant.OpenActionStat && !(this.qVo.length > 0)) {
+      for (let t = 0; t < 19; t++) {
+        if (t === 6) {
+          this.qVo.push(Stats_1.Stat.Create("BulletActionInitCollision"));
+        } else if (t === 3) {
+          this.qVo.push(Stats_1.Stat.Create("BulletActionInitMove"));
+        } else if (t === 7) {
+          this.qVo.push(Stats_1.Stat.Create("BulletActionUpdateEffect"));
+        } else if (t === 13) {
+          this.qVo.push(Stats_1.Stat.Create("BulletActionDestroyBullet"));
+        } else if (t === 11) {
+          this.qVo.push(Stats_1.Stat.Create("BulletActionSummonBullet"));
+        } else if (BulletConstant_1.BulletConstant.OpenAllActionStat) {
+          this.qVo.push(Stats_1.Stat.CreateNoFlameGraph("BulletAction" + t));
+        } else {
+          this.qVo.push(undefined);
+        }
+      }
+    }
   }
-}(exports.BulletActionRunner = BulletActionRunner).BVo = Stats_1.Stat.Create("BulletActionRunner"), BulletActionRunner.qVo = new Array;
-//# sourceMappingURL=BulletActionRunner.js.map
+}
+(exports.BulletActionRunner = BulletActionRunner).BVo = Stats_1.Stat.Create("BulletActionRunner");
+BulletActionRunner.qVo = new Array(); //# sourceMappingURL=BulletActionRunner.js.map

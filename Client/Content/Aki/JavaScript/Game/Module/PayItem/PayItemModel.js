@@ -1,68 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PayItemModel = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  PayItemDefine_1 = require("./PayItemDefine");
+  value: true
+});
+exports.PayItemModel = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const PayItemDefine_1 = require("./PayItemDefine");
 class PayItemModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.YOi = [], this.JOi = new Map, this.Version = "", this.zOi = void 0, this.cFa = new Map
+    super(...arguments);
+    this.YOi = [];
+    this.JOi = new Map();
+    this.Version = "";
+    this.zOi = undefined;
+    this.cFa = new Map();
   }
   UpdateProductInfoMap(e) {
     e.forEach(e => {
-      this.cFa.set(e.GoodId, e)
-    }), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Pay", 16, "PayItemModel UpdateProductInfoMap:", ["ProductInfoMap", this.cFa])
+      this.cFa.set(e.GoodId, e);
+    });
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Pay", 16, "PayItemModel UpdateProductInfoMap:", ["ProductInfoMap", this.cFa]);
+    }
   }
   GetProductLabelByGoodsId(e) {
-    return this.cFa.get(e)?.GoodLabel
+    return this.cFa.get(e)?.GoodLabel;
   }
   GetProductChannelGoodsIdByGoodsId(e) {
-    return this.cFa.get(e)?.ChannelGoodId
+    return this.cFa.get(e)?.ChannelGoodId;
   }
   GetProductInfoByGoodsId(e) {
-    return this.cFa.get(e)
+    return this.cFa.get(e);
   }
   GetDataList() {
-    return this.YOi
+    return this.YOi;
   }
   GetPayingItemName() {
-    return this.zOi
+    return this.zOi;
   }
   CleanPayingItemName() {
-    this.zOi = void 0
+    this.zOi = undefined;
   }
   ConvertPayItemDataToPayShopItemBaseSt(e) {
-    return e.ConvertPayItemDataToPayShopItemBaseSt()
+    return e.ConvertPayItemDataToPayShopItemBaseSt();
   }
   UpdatePayingItemName(e) {
-    e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayItem(e), e = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
-    this.zOi = e
+    e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayItem(e);
+    e = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
+    this.zOi = e;
   }
   ResetSpecialBonus(e) {
     for (const a of e) {
       var t = this.JOi.get(a);
-      t && (t.CanSpecialBonus = !0)
+      if (t) {
+        t.CanSpecialBonus = true;
+      }
     }
   }
   InitDataListByServer(e) {
-    0 !== this.YOi.length && 0 !== e.length && (this.YOi.length = 0);
+    if (this.YOi.length !== 0 && e.length !== 0) {
+      this.YOi.length = 0;
+    }
     for (const a of e) {
-      var t = new PayItemDefine_1.PayItemData;
-      t.Phrase(a), this.YOi.push(t), this.JOi.set(a.s5n, t)
+      var t = new PayItemDefine_1.PayItemData();
+      t.Phrase(a);
+      this.YOi.push(t);
+      this.JOi.set(a.s5n, t);
     }
   }
   OnClear() {
-    return this.YOi.length = 0, this.YOi = void 0, this.JOi.clear(), this.Version = "", !(this.zOi = void 0)
+    this.YOi.length = 0;
+    this.YOi = undefined;
+    this.JOi.clear();
+    this.Version = "";
+    return !(this.zOi = undefined);
   }
   CreateSdkPayment(e, t, a) {
-    var e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayItem(e),
-      r = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId),
-      o = ConfigManager_1.ConfigManager.ItemConfig.GetItemDesc(e.ItemId),
-      n = e.PayId,
-      s = ModelManager_1.ModelManager.RechargeModel.GetPayIdAmount(n);
+    var e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayItem(e);
+    var r = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
+    var o = ConfigManager_1.ConfigManager.ItemConfig.GetItemDesc(e.ItemId);
+    var n = e.PayId;
+    var s = ModelManager_1.ModelManager.RechargeModel.GetPayIdAmount(n);
     return {
       product_id: ModelManager_1.ModelManager.RechargeModel.GetPayIdProductId(n),
       cpOrderId: t,
@@ -72,13 +93,17 @@ class PayItemModel extends ModelBase_1.ModelBase {
       extraParams: " ",
       callbackUrl: a,
       currency: ""
-    }
+    };
   }
   HasBonusData() {
-    if (0 !== this.YOi.length)
-      for (const e of this.YOi)
-        if (e.CanSpecialBonus) return !0;
-    return !1
+    if (this.YOi.length !== 0) {
+      for (const e of this.YOi) {
+        if (e.CanSpecialBonus) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
 exports.PayItemModel = PayItemModel;

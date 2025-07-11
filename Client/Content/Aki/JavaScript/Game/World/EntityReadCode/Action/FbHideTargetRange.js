@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHideTargetRange = void 0;
+  value: true
+});
+exports.FbHideTargetRange = undefined;
 const UnionHideRangeConfigHelper_1 = require("./UnionHideRangeConfigHelper");
 class FbHideTargetRange {
   constructor(i) {
-    this.FbDataInternal = i, this.ILh = !1, this.TLh = 0, this.JAh = !1, this.ZAh = void 0, this.exh = !1, this.txh = !1, this.ixh = !1, this.rxh = !1
+    this.FbDataInternal = i;
+    this.ILh = false;
+    this.TLh = 0;
+    this.JAh = false;
+    this.ZAh = undefined;
+    this.exh = false;
+    this.txh = false;
+    this.ixh = false;
+    this.rxh = false;
   }
   static Create(i) {
-    if (i) return new FbHideTargetRange(i)
+    if (i) {
+      return new FbHideTargetRange(i);
+    }
   }
   get RangeEntity() {
-    return this.ILh || (this.ILh = !0, this.TLh = this.FbDataInternal.rangeEntity()), this.TLh
+    if (!this.ILh) {
+      this.ILh = true;
+      this.TLh = this.FbDataInternal.rangeEntity();
+    }
+    return this.TLh;
   }
   get HideConfig() {
-    var i, t;
-    return !this.JAh && (this.JAh = !0, i = this.FbDataInternal.hideConfigType(), t = UnionHideRangeConfigHelper_1.UnionHideRangeConfigHelper.GetUnionHideRangeConfigObject(i)) && (this.ZAh = UnionHideRangeConfigHelper_1.UnionHideRangeConfigHelper.ReadUnionHideRangeConfig(i, this.FbDataInternal.hideConfig(t))), this.ZAh
+    var i;
+    var t;
+    if (!this.JAh && (this.JAh = true, i = this.FbDataInternal.hideConfigType(), t = UnionHideRangeConfigHelper_1.UnionHideRangeConfigHelper.GetUnionHideRangeConfigObject(i))) {
+      this.ZAh = UnionHideRangeConfigHelper_1.UnionHideRangeConfigHelper.ReadUnionHideRangeConfig(i, this.FbDataInternal.hideConfig(t));
+    }
+    return this.ZAh;
   }
   get IsHideSimpleNpc() {
-    return this.exh || (this.exh = !0, this.txh = this.FbDataInternal.isHideSimpleNpc()), this.txh
+    if (!this.exh) {
+      this.exh = true;
+      this.txh = this.FbDataInternal.isHideSimpleNpc();
+    }
+    return this.txh;
   }
   get IsHidePasserByNpc() {
-    return this.ixh || (this.ixh = !0, this.rxh = this.FbDataInternal.isHidePasserByNpc()), this.rxh
+    if (!this.ixh) {
+      this.ixh = true;
+      this.rxh = this.FbDataInternal.isHidePasserByNpc();
+    }
+    return this.rxh;
   }
 }
 exports.FbHideTargetRange = FbHideTargetRange;

@@ -1,43 +1,79 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsBulletScreenItem = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  DangoManager_1 = require("../../../Dango/DangoLogic/DangoManager");
+  value: true
+});
+exports.RacingBetsBulletScreenItem = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const DangoManager_1 = require("../../../Dango/DangoLogic/DangoManager");
 class RacingBetsBulletScreenItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.S01 = void 0, this.M01 = !1
+    super(...arguments);
+    this.$01 = undefined;
+    this.W01 = false;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture],
-      [1, UE.UIText],
-      [2, UE.UITexture],
-      [3, UE.UISizeControlByOther],
-      [4, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UITexture], [3, UE.UISizeControlByOther], [4, UE.UIItem]];
   }
   RefreshUi(e, t) {
-    this.S01 = ConfigManager_1.ConfigManager.RacingBetsConfig.GetRacingBetsBulletScreen(e), this.M01 = t;
-    var i, e = this.GetTexture(0),
-      s = this.GetTexture(2),
-      h = this.GetText(1);
-    1 === this.S01.Type ? (e.SetUIActive(!1), s.SetUIActive(!0), h.SetUIActive(!1), this.GetItem(4).SetUIActive(!1), this.SetTextureShowUntilLoaded(this.S01.Icon, s)) : (2 === this.S01.Type ? (e.SetUIActive(!0), s.SetUIActive(!1), h.SetUIActive(!0), this.GetItem(4).SetUIActive(!0), i = DangoManager_1.DangoManager.GetDangoData(this.S01.DangoId), this.SetTextureShowUntilLoaded(i.DangoConfig.IconSmall, e)) : (e.SetUIActive(!1), s.SetUIActive(!1), h.SetUIActive(!0), this.GetItem(4).SetUIActive(!0)), h.ShowTextNew(this.S01.Name)), this.GetUiSizeControlByOther(3).RootUIComp.SetUIActive(t)
+    this.$01 = ConfigManager_1.ConfigManager.RacingBetsConfig.GetRacingBetsBulletScreen(e);
+    this.W01 = t;
+    var i;
+    var e = this.GetTexture(0);
+    var s = this.GetTexture(2);
+    var h = this.GetText(1);
+    if (this.$01.Type === 1) {
+      e.SetUIActive(false);
+      s.SetUIActive(true);
+      h.SetUIActive(false);
+      this.GetItem(4).SetUIActive(false);
+      this.SetTextureShowUntilLoaded(this.$01.Icon, s);
+    } else {
+      if (this.$01.Type === 2) {
+        e.SetUIActive(true);
+        s.SetUIActive(false);
+        h.SetUIActive(true);
+        this.GetItem(4).SetUIActive(true);
+        i = DangoManager_1.DangoManager.GetDangoData(this.$01.DangoId);
+        this.SetTextureShowUntilLoaded(i.DangoConfig.IconSmall, e);
+      } else {
+        e.SetUIActive(false);
+        s.SetUIActive(false);
+        h.SetUIActive(true);
+        this.GetItem(4).SetUIActive(true);
+      }
+      h.ShowTextNew(this.$01.Name);
+    }
+    this.GetUiSizeControlByOther(3).RootUIComp.SetUIActive(t);
   }
   GetBulletScreenItemWidth() {
     let e = 0;
     var t;
-    return e = 1 === this.S01.Type ? this.GetTexture(2).GetWidth() + 200 : 2 === this.S01.Type ? this.GetText(1).GetTextRenderSize().X + this.GetTexture(0).GetWidth() : this.GetText(1).GetTextRenderSize().X, this.M01 ? (t = this.GetUiSizeControlByOther(3), e + t.AdditionalWidth / 2) : e
+    e = this.$01.Type === 1 ? this.GetTexture(2).GetWidth() + 200 : this.$01.Type === 2 ? this.GetText(1).GetTextRenderSize().X + this.GetTexture(0).GetWidth() : this.GetText(1).GetTextRenderSize().X;
+    if (this.W01) {
+      t = this.GetUiSizeControlByOther(3);
+      return e + t.AdditionalWidth / 2;
+    } else {
+      return e;
+    }
   }
   GetBulletScreenItemHeight() {
     let e = this.GetTexture(0).GetHeight();
     var t;
-    return 1 === this.S01.Type && (e = this.GetTexture(2).GetHeight()), this.M01 ? (t = this.GetUiSizeControlByOther(3), e + t.AdditionalHeight) : e
+    if (this.$01.Type === 1) {
+      e = this.GetTexture(2).GetHeight();
+    }
+    if (this.W01) {
+      t = this.GetUiSizeControlByOther(3);
+      return e + t.AdditionalHeight;
+    } else {
+      return e;
+    }
   }
   MoveLeft(e) {
-    this.GetRootItem().SetAnchorOffsetX(this.GetRootItem().GetAnchorOffsetX() - e)
+    this.GetRootItem().SetAnchorOffsetX(this.GetRootItem().GetAnchorOffsetX() - e);
   }
 }
 exports.RacingBetsBulletScreenItem = RacingBetsBulletScreenItem;

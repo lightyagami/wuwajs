@@ -1,25 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyWeaponHide extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.Hide = !0, this.WeaponIndex = -1, this.HideEffect = !0, this.UseHighPriority = !1
+    super(...arguments);
+    this.Hide = true;
+    this.WeaponIndex = -1;
+    this.HideEffect = true;
+    this.UseHighPriority = false;
   }
   Constructor() {}
   K2_Notify(e, t) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default) {
       e = e?.CharacterActorComponent?.Entity;
-      if (!e?.Valid) return !1;
-      e.GetComponent(81)?.HideWeapon(this.WeaponIndex, this.Hide, this.HideEffect, !1, this.UseHighPriority ? 1 : 0)
+      if (!e?.Valid) {
+        return false;
+      }
+      e.GetComponent(81)?.HideWeapon(this.WeaponIndex, this.Hide, this.HideEffect, false, this.UseHighPriority ? 1 : 0);
     }
-    return !0
+    return true;
   }
   GetNotifyName() {
-    return "武器隐藏"
+    return "武器隐藏";
   }
 }
 exports.default = TsAnimNotifyWeaponHide;

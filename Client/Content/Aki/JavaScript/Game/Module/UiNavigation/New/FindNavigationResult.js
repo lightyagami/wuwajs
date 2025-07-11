@@ -1,19 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FindNavigationResult = void 0;
+  value: true
+});
+exports.FindNavigationResult = undefined;
 class FindNavigationResult {
   constructor() {
-    this.Result = 0, this.Listener = void 0
+    this.Result = 0;
+    this.Listener = undefined;
   }
   IsFindNavigation() {
-    return 1 === this.Result
+    return this.Result === 1;
   }
   IsInLoopingProcess() {
-    return 4 === this.Result
+    return this.Result === 4;
   }
   IsNotFindNavigation() {
-    return 2 === this.Result
+    return this.Result === 2;
   }
 }
 exports.FindNavigationResult = FindNavigationResult;

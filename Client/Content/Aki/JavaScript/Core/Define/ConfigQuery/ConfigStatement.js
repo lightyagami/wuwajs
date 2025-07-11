@@ -1,1423 +1,2949 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ConfigStatement = void 0;
-const CommonParamById_1 = require("../ConfigCommon/CommonParamById"),
-  CommonParamLang_1 = require("../ConfigCommon/CommonParamLang"),
-  AbnormalDamageConfigByLevel_1 = require("./AbnormalDamageConfigByLevel"),
-  AbpMontageDataById_1 = require("./AbpMontageDataById"),
-  AbpStateByAbp_1 = require("./AbpStateByAbp"),
-  AbyssActivityAll_1 = require("./AbyssActivityAll"),
-  AbyssActivityByActivityId_1 = require("./AbyssActivityByActivityId"),
-  AbyssCastDescAll_1 = require("./AbyssCastDescAll"),
-  AbyssCastDescById_1 = require("./AbyssCastDescById"),
-  AbyssInstAll_1 = require("./AbyssInstAll"),
-  AbyssInstByActivityId_1 = require("./AbyssInstByActivityId"),
-  AbyssInstById_1 = require("./AbyssInstById"),
-  AbyssInstByInstId_1 = require("./AbyssInstByInstId"),
-  AbyssItemAll_1 = require("./AbyssItemAll"),
-  AbyssItemById_1 = require("./AbyssItemById"),
-  AbyssLittleRoleAll_1 = require("./AbyssLittleRoleAll"),
-  AbyssLittleRoleById_1 = require("./AbyssLittleRoleById"),
-  AbyssPluginPropDescAll_1 = require("./AbyssPluginPropDescAll"),
-  AbyssPluginPropDescById_1 = require("./AbyssPluginPropDescById"),
-  AbyssQualityAll_1 = require("./AbyssQualityAll"),
-  AbyssQualityById_1 = require("./AbyssQualityById"),
-  AbyssRewardAll_1 = require("./AbyssRewardAll"),
-  AbyssRewardById_1 = require("./AbyssRewardById"),
-  AbyssRewardTabAll_1 = require("./AbyssRewardTabAll"),
-  AbyssRewardTabById_1 = require("./AbyssRewardTabById"),
-  AbyssRewardTypeAll_1 = require("./AbyssRewardTypeAll"),
-  AbyssRewardTypeById_1 = require("./AbyssRewardTypeById"),
-  AbyssRoleLevelAll_1 = require("./AbyssRoleLevelAll"),
-  AbyssRoleLevelByGroupId_1 = require("./AbyssRoleLevelByGroupId"),
-  AbyssRoleLevelById_1 = require("./AbyssRoleLevelById"),
-  AbyssRoleLevelByLevelAndGroupId_1 = require("./AbyssRoleLevelByLevelAndGroupId"),
-  AbyssRoleSlotAll_1 = require("./AbyssRoleSlotAll"),
-  AbyssRoleSlotById_1 = require("./AbyssRoleSlotById"),
-  AbyssRoomAll_1 = require("./AbyssRoomAll"),
-  AbyssRoomById_1 = require("./AbyssRoomById"),
-  AbyssRouteAll_1 = require("./AbyssRouteAll"),
-  AbyssRouteById_1 = require("./AbyssRouteById"),
-  AbyssRouteByRouterAndFloor_1 = require("./AbyssRouteByRouterAndFloor"),
-  AbyssSettleAll_1 = require("./AbyssSettleAll"),
-  AbyssSettleById_1 = require("./AbyssSettleById"),
-  AbyssSynthesisAll_1 = require("./AbyssSynthesisAll"),
-  AbyssSynthesisById_1 = require("./AbyssSynthesisById"),
-  AccessPathById_1 = require("./AccessPathById"),
-  AchievementAll_1 = require("./AchievementAll"),
-  AchievementByGroupId_1 = require("./AchievementByGroupId"),
-  AchievementById_1 = require("./AchievementById"),
-  AchievementCategoryAll_1 = require("./AchievementCategoryAll"),
-  AchievementCategoryById_1 = require("./AchievementCategoryById"),
-  AchievementGroupByCategory_1 = require("./AchievementGroupByCategory"),
-  AchievementGroupById_1 = require("./AchievementGroupById"),
-  AchievementStarLevelByLevel_1 = require("./AchievementStarLevelByLevel"),
-  ActionMappingAll_1 = require("./ActionMappingAll"),
-  ActionMappingByActionName_1 = require("./ActionMappingByActionName"),
-  ActionMappingByActionType_1 = require("./ActionMappingByActionType"),
-  ActivityById_1 = require("./ActivityById"),
-  ActivityLinkageById_1 = require("./ActivityLinkageById"),
-  ActivityLinkageInfoByIdAndLanguage_1 = require("./ActivityLinkageInfoByIdAndLanguage"),
-  ActivityLinkageUrlByIdAndIsNational_1 = require("./ActivityLinkageUrlByIdAndIsNational"),
-  ActivityQuestConfigAll_1 = require("./ActivityQuestConfigAll"),
-  ActivityQuestConfigById_1 = require("./ActivityQuestConfigById"),
-  ActivityQuestConfigByQuestId_1 = require("./ActivityQuestConfigByQuestId"),
-  ActivitySignById_1 = require("./ActivitySignById"),
-  ActivityViewNameById_1 = require("./ActivityViewNameById"),
-  ActivityViewNameByType_1 = require("./ActivityViewNameByType"),
-  AdventureTaskAll_1 = require("./AdventureTaskAll"),
-  AdventureTaskById_1 = require("./AdventureTaskById"),
-  AdventureTaskChapterAll_1 = require("./AdventureTaskChapterAll"),
-  AdventureTaskChapterById_1 = require("./AdventureTaskChapterById"),
-  AdviceConjunctionAll_1 = require("./AdviceConjunctionAll"),
-  AdviceConjunctionById_1 = require("./AdviceConjunctionById"),
-  AdviceParamsById_1 = require("./AdviceParamsById"),
-  AdviceSentenceAll_1 = require("./AdviceSentenceAll"),
-  AdviceSentenceById_1 = require("./AdviceSentenceById"),
-  AdviceWordAll_1 = require("./AdviceWordAll"),
-  AdviceWordById_1 = require("./AdviceWordById"),
-  AdviceWordByType_1 = require("./AdviceWordByType"),
-  AdviceWordTypeAll_1 = require("./AdviceWordTypeAll"),
-  AdviceWordTypeById_1 = require("./AdviceWordTypeById"),
-  AiAlertById_1 = require("./AiAlertById"),
-  AiBaseById_1 = require("./AiBaseById"),
-  AiBaseSkillById_1 = require("./AiBaseSkillById"),
-  AiBattleWanderById_1 = require("./AiBattleWanderById"),
-  AiBattleWanderGroupById_1 = require("./AiBattleWanderGroupById"),
-  AiFleeById_1 = require("./AiFleeById"),
-  AiHateById_1 = require("./AiHateById"),
-  AiPatrolById_1 = require("./AiPatrolById"),
-  AiSenseById_1 = require("./AiSenseById"),
-  AiSenseGroupById_1 = require("./AiSenseGroupById"),
-  AiSkillInfosById_1 = require("./AiSkillInfosById"),
-  AiSkillPreconditionById_1 = require("./AiSkillPreconditionById"),
-  AiStateMachineConfigById_1 = require("./AiStateMachineConfigById"),
-  AiTeamAreaNewById_1 = require("./AiTeamAreaNewById"),
-  AiTeamAttackById_1 = require("./AiTeamAttackById"),
-  AiTeamLevelNewById_1 = require("./AiTeamLevelNewById"),
-  AiWanderById_1 = require("./AiWanderById"),
-  AiWanderRadiusConfigById_1 = require("./AiWanderRadiusConfigById"),
-  AkiMapAll_1 = require("./AkiMapAll"),
-  AkiMapByMapId_1 = require("./AkiMapByMapId"),
-  AkiMapSourceByMapId_1 = require("./AkiMapSourceByMapId"),
-  AlertAreaConfigById_1 = require("./AlertAreaConfigById"),
-  AnimalHandBookAll_1 = require("./AnimalHandBookAll"),
-  AnimalHandBookById_1 = require("./AnimalHandBookById"),
-  AnimalHandBookByMeshId_1 = require("./AnimalHandBookByMeshId"),
-  AreaByAreaId_1 = require("./AreaByAreaId"),
-  AreaByCountryAndLevel_1 = require("./AreaByCountryAndLevel"),
-  AreaByDeliveryMarkId_1 = require("./AreaByDeliveryMarkId"),
-  AreaByLevel_1 = require("./AreaByLevel"),
-  AreaAtmosphereInfoById_1 = require("./AreaAtmosphereInfoById"),
-  AreaMpcById_1 = require("./AreaMpcById"),
-  AreaQuestTrackingById_1 = require("./AreaQuestTrackingById"),
-  AreaReportByAreaId_1 = require("./AreaReportByAreaId"),
-  AreaReportByAreaIdAndStage_1 = require("./AreaReportByAreaIdAndStage"),
-  AreaTaskExploreByAreaId_1 = require("./AreaTaskExploreByAreaId"),
-  AreaTaskExploreById_1 = require("./AreaTaskExploreById"),
-  AudioById_1 = require("./AudioById"),
-  AutoRoleByAll_1 = require("./AutoRoleByAll"),
-  AutoRoleById_1 = require("./AutoRoleById"),
-  AvignonStageAll_1 = require("./AvignonStageAll"),
-  AvignonStageById_1 = require("./AvignonStageById"),
-  AvignonTaskByStageId_1 = require("./AvignonTaskByStageId"),
-  AvignonTaskByTaskId_1 = require("./AvignonTaskByTaskId"),
-  AxisMappingAll_1 = require("./AxisMappingAll"),
-  AxisMappingByAxisName_1 = require("./AxisMappingByAxisName"),
-  AxisMappingByAxisType_1 = require("./AxisMappingByAxisType"),
-  AxisRevertAll_1 = require("./AxisRevertAll"),
-  AxisRevertByRevertType_1 = require("./AxisRevertByRevertType"),
-  BabelTowerActivityByActivityId_1 = require("./BabelTowerActivityByActivityId"),
-  BabelTowerBuffAll_1 = require("./BabelTowerBuffAll"),
-  BabelTowerBuffById_1 = require("./BabelTowerBuffById"),
-  BabelTowerDailyTaskAll_1 = require("./BabelTowerDailyTaskAll"),
-  BabelTowerDailyTaskByTaskId_1 = require("./BabelTowerDailyTaskByTaskId"),
-  BabelTowerDeTermAll_1 = require("./BabelTowerDeTermAll"),
-  BabelTowerDeTermByGroupId_1 = require("./BabelTowerDeTermByGroupId"),
-  BabelTowerDeTermById_1 = require("./BabelTowerDeTermById"),
-  BabelTowerDeTermMutexById_1 = require("./BabelTowerDeTermMutexById"),
-  BabelTowerDifficultyAll_1 = require("./BabelTowerDifficultyAll"),
-  BabelTowerDifficultyByActivityId_1 = require("./BabelTowerDifficultyByActivityId"),
-  BabelTowerDifficultyByActivityIdAndDifficultyId_1 = require("./BabelTowerDifficultyByActivityIdAndDifficultyId"),
-  BabelTowerDifficultyById_1 = require("./BabelTowerDifficultyById"),
-  BabelTowerLevelAll_1 = require("./BabelTowerLevelAll"),
-  BabelTowerLevelById_1 = require("./BabelTowerLevelById"),
-  BabelTowerTaskAll_1 = require("./BabelTowerTaskAll"),
-  BabelTowerTaskByTaskId_1 = require("./BabelTowerTaskByTaskId"),
-  BackgroundCardAll_1 = require("./BackgroundCardAll"),
-  BackgroundCardById_1 = require("./BackgroundCardById"),
-  BanInfoById_1 = require("./BanInfoById"),
-  BanInfoByTypeAndReason_1 = require("./BanInfoByTypeAndReason"),
-  BasePropertyById_1 = require("./BasePropertyById"),
-  BattleLinkCharacterAll_1 = require("./BattleLinkCharacterAll"),
-  BattleLinkCharacterById_1 = require("./BattleLinkCharacterById"),
-  BattlePassById_1 = require("./BattlePassById"),
-  BattlePassRewardByBattlePassId_1 = require("./BattlePassRewardByBattlePassId"),
-  BattlePassTaskByTaskId_1 = require("./BattlePassTaskByTaskId"),
-  BattlePassUnlockPopByBattlePassTypeId_1 = require("./BattlePassUnlockPopByBattlePassTypeId"),
-  BattleScoreConfById_1 = require("./BattleScoreConfById"),
-  BattleScoreLevelConfByGroupId_1 = require("./BattleScoreLevelConfByGroupId"),
-  BattleScoreLevelConfById_1 = require("./BattleScoreLevelConfById"),
-  BeginnerGuideById_1 = require("./BeginnerGuideById"),
-  BirthDayByItemId_1 = require("./BirthDayByItemId"),
-  BirthDayByYear_1 = require("./BirthDayByYear"),
-  BlackCoastThemeConfigByActivityId_1 = require("./BlackCoastThemeConfigByActivityId"),
-  BlackCoastThemeRewardReByActivityId_1 = require("./BlackCoastThemeRewardReByActivityId"),
-  BlackCoastThemeRewardReById_1 = require("./BlackCoastThemeRewardReById"),
-  BlackCoastThemeStageReByActivityId_1 = require("./BlackCoastThemeStageReByActivityId"),
-  BlackCoastThemeStageReById_1 = require("./BlackCoastThemeStageReById"),
-  BlackCoastThemeTaskReByStageId_1 = require("./BlackCoastThemeTaskReByStageId"),
-  BlackCoastThemeTaskReByTaskId_1 = require("./BlackCoastThemeTaskReByTaskId"),
-  BlackboardWhiteListAll_1 = require("./BlackboardWhiteListAll"),
-  BlockSwitchById_1 = require("./BlockSwitchById"),
-  BlueprintConfigAll_1 = require("./BlueprintConfigAll"),
-  BlueprintConfigByBlueprintType_1 = require("./BlueprintConfigByBlueprintType"),
-  BossRushActivityAll_1 = require("./BossRushActivityAll"),
-  BossRushActivityByActivityIdAndInstanceId_1 = require("./BossRushActivityByActivityIdAndInstanceId"),
-  BossRushActivityById_1 = require("./BossRushActivityById"),
-  BossRushBuffAll_1 = require("./BossRushBuffAll"),
-  BossRushBuffById_1 = require("./BossRushBuffById"),
-  BossRushBuffDescAll_1 = require("./BossRushBuffDescAll"),
-  BossRushBuffDescById_1 = require("./BossRushBuffDescById"),
-  BossRushMapMarkByActivityId_1 = require("./BossRushMapMarkByActivityId"),
-  BossRushScoreAll_1 = require("./BossRushScoreAll"),
-  BossRushScoreById_1 = require("./BossRushScoreById"),
-  BossRushTaskConfigAll_1 = require("./BossRushTaskConfigAll"),
-  BossRushTaskConfigByActivityId_1 = require("./BossRushTaskConfigByActivityId"),
-  BossRushTaskConfigByTaskId_1 = require("./BossRushTaskConfigByTaskId"),
-  BossRushTaskTabAll_1 = require("./BossRushTaskTabAll"),
-  BossRushTaskTabByActivityId_1 = require("./BossRushTaskTabByActivityId"),
-  BossRushTaskTabByTabId_1 = require("./BossRushTaskTabByTabId"),
-  BoxStateById_1 = require("./BoxStateById"),
-  BoxTypeById_1 = require("./BoxTypeById"),
-  BranchLineAll_1 = require("./BranchLineAll"),
-  BranchLineById_1 = require("./BranchLineById"),
-  BroadcastImageById_1 = require("./BroadcastImageById"),
-  BrokenRockConfigById_1 = require("./BrokenRockConfigById"),
-  BrokenRockRingById_1 = require("./BrokenRockRingById"),
-  BubbleDataByActionGuid_1 = require("./BubbleDataByActionGuid"),
-  BuffById_1 = require("./BuffById"),
-  BuffGetAll_1 = require("./BuffGetAll"),
-  BuffEquipItemByItemId_1 = require("./BuffEquipItemByItemId"),
-  BuffEquipItemByRoleId_1 = require("./BuffEquipItemByRoleId"),
-  BuffItemById_1 = require("./BuffItemById"),
-  BuffItemByPublicCdGroup_1 = require("./BuffItemByPublicCdGroup"),
-  BuffItemCdGroupById_1 = require("./BuffItemCdGroupById"),
-  BuildingAll_1 = require("./BuildingAll"),
-  BuildingById_1 = require("./BuildingById"),
-  BuildingUpGradeCurveByGroupId_1 = require("./BuildingUpGradeCurveByGroupId"),
-  BuildingUpGradeCurveByGroupIdAndLevel_1 = require("./BuildingUpGradeCurveByGroupIdAndLevel"),
-  BulletPreloadByActorBlueprint_1 = require("./BulletPreloadByActorBlueprint"),
-  BulletPreloadByActorBlueprintAndBulletId_1 = require("./BulletPreloadByActorBlueprintAndBulletId"),
-  BulletPreloadByAll_1 = require("./BulletPreloadByAll"),
-  BulletPreloadById_1 = require("./BulletPreloadById"),
-  CalabashDevelopConditionById_1 = require("./CalabashDevelopConditionById"),
-  CalabashDevelopRewardAll_1 = require("./CalabashDevelopRewardAll"),
-  CalabashDevelopRewardByMonsterId_1 = require("./CalabashDevelopRewardByMonsterId"),
-  CalabashLevelAll_1 = require("./CalabashLevelAll"),
-  CalabashLevelByLevel_1 = require("./CalabashLevelByLevel"),
-  CalabashTransformById_1 = require("./CalabashTransformById"),
-  CatchSignalDifficultyById_1 = require("./CatchSignalDifficultyById"),
-  CatchSignalGameplayById_1 = require("./CatchSignalGameplayById"),
-  CharacterAll_1 = require("./CharacterAll"),
-  CharacterById_1 = require("./CharacterById"),
-  CharacterAudioConfigById_1 = require("./CharacterAudioConfigById"),
-  CharacterAudioConfigByIdWithDefaultId_1 = require("./CharacterAudioConfigByIdWithDefaultId"),
-  CharacterDisplayStyleById_1 = require("./CharacterDisplayStyleById"),
-  CharacterPreloadByAll_1 = require("./CharacterPreloadByAll"),
-  CharacterPreloadById_1 = require("./CharacterPreloadById"),
-  ChatById_1 = require("./ChatById"),
-  ChatExpressionAll_1 = require("./ChatExpressionAll"),
-  ChatExpressionByGroupId_1 = require("./ChatExpressionByGroupId"),
-  ChatExpressionById_1 = require("./ChatExpressionById"),
-  ChatExpressionGroupAll_1 = require("./ChatExpressionGroupAll"),
-  ChatExpressionGroupById_1 = require("./ChatExpressionGroupById"),
-  ChildUiCameraMappingAll_1 = require("./ChildUiCameraMappingAll"),
-  ChildUiCameraMappingById_1 = require("./ChildUiCameraMappingById"),
-  ChildUiCameraMappingByViewName_1 = require("./ChildUiCameraMappingByViewName"),
-  ChipHandBookAll_1 = require("./ChipHandBookAll"),
-  ChipHandBookById_1 = require("./ChipHandBookById"),
-  ChipHandBookByType_1 = require("./ChipHandBookByType"),
-  ChipTypeAll_1 = require("./ChipTypeAll"),
-  ChipTypeById_1 = require("./ChipTypeById"),
-  CiacconaActivityConfigById_1 = require("./CiacconaActivityConfigById"),
-  CiacconaActivityRewardAll_1 = require("./CiacconaActivityRewardAll"),
-  CiacconaActivityRewardById_1 = require("./CiacconaActivityRewardById"),
-  CiacconaChapterSlotById_1 = require("./CiacconaChapterSlotById"),
-  CiacconaGalChapterAll_1 = require("./CiacconaGalChapterAll"),
-  CiacconaGalChapterById_1 = require("./CiacconaGalChapterById"),
-  CiacconaGalChoiceById_1 = require("./CiacconaGalChoiceById"),
-  CiacconaGalEndingAll_1 = require("./CiacconaGalEndingAll"),
-  CiacconaGalEndingById_1 = require("./CiacconaGalEndingById"),
-  CiacconaGalStepById_1 = require("./CiacconaGalStepById"),
-  CiacconaGalSubEndingById_1 = require("./CiacconaGalSubEndingById"),
-  CiacconaGalTextById_1 = require("./CiacconaGalTextById"),
-  CipherGameplayById_1 = require("./CipherGameplayById"),
-  CircumBaseByEntryType_1 = require("./CircumBaseByEntryType"),
-  CircumEntryByEntryType_1 = require("./CircumEntryByEntryType"),
-  CircumFluenceTaskById_1 = require("./CircumFluenceTaskById"),
-  CircumFluenceTaskByTaskType_1 = require("./CircumFluenceTaskByTaskType"),
-  CircumScoreRewardAll_1 = require("./CircumScoreRewardAll"),
-  CircumScoreRewardById_1 = require("./CircumScoreRewardById"),
-  ClimbById_1 = require("./ClimbById"),
-  ClueContentByGroupId_1 = require("./ClueContentByGroupId"),
-  ClueContentById_1 = require("./ClueContentById"),
-  ClueEntranceById_1 = require("./ClueEntranceById"),
-  CombinationActionAll_1 = require("./CombinationActionAll"),
-  CombinationActionByActionName_1 = require("./CombinationActionByActionName"),
-  CombinationActionByActionType_1 = require("./CombinationActionByActionType"),
-  CombinationActionById_1 = require("./CombinationActionById"),
-  CombinationAxisAll_1 = require("./CombinationAxisAll"),
-  CombinationAxisByAxisName_1 = require("./CombinationAxisByAxisName"),
-  CombinationAxisByAxisType_1 = require("./CombinationAxisByAxisType"),
-  CombinationAxisById_1 = require("./CombinationAxisById"),
-  ComboTeachingById_1 = require("./ComboTeachingById"),
-  ComboTeachingConditionById_1 = require("./ComboTeachingConditionById"),
-  CommonRewardViewDisplayById_1 = require("./CommonRewardViewDisplayById"),
-  CommonSkillPreloadAll_1 = require("./CommonSkillPreloadAll"),
-  CommonSkillPreloadById_1 = require("./CommonSkillPreloadById"),
-  CommunicateById_1 = require("./CommunicateById"),
-  CommunityAll_1 = require("./CommunityAll"),
-  CommunityById_1 = require("./CommunityById"),
-  CompositeRewardDisplayById_1 = require("./CompositeRewardDisplayById"),
-  ConditionById_1 = require("./ConditionById"),
-  ConditionGroupById_1 = require("./ConditionGroupById"),
-  ConfirmBoxById_1 = require("./ConfirmBoxById"),
-  ConsumptiveTaskById_1 = require("./ConsumptiveTaskById"),
-  ConsumptiveTaskTabById_1 = require("./ConsumptiveTaskTabById"),
-  CookFixToolById_1 = require("./CookFixToolById"),
-  CookFormulaAll_1 = require("./CookFormulaAll"),
-  CookFormulaByFormulaItemId_1 = require("./CookFormulaByFormulaItemId"),
-  CookFormulaById_1 = require("./CookFormulaById"),
-  CookLevelAll_1 = require("./CookLevelAll"),
-  CookLevelById_1 = require("./CookLevelById"),
-  CookProcessMsgById_1 = require("./CookProcessMsgById"),
-  CookProcessedAll_1 = require("./CookProcessedAll"),
-  CookProcessedById_1 = require("./CookProcessedById"),
-  CorniceChallengeById_1 = require("./CorniceChallengeById"),
-  CorniceChallengeByMarkId_1 = require("./CorniceChallengeByMarkId"),
-  CorniceQuestById_1 = require("./CorniceQuestById"),
-  CountryAll_1 = require("./CountryAll"),
-  CountryById_1 = require("./CountryById"),
-  CouponById_1 = require("./CouponById"),
-  CustomMarkAll_1 = require("./CustomMarkAll"),
-  CustomMarkByMarkId_1 = require("./CustomMarkByMarkId"),
-  CustomSequenceById_1 = require("./CustomSequenceById"),
-  CustomSequenceLang_1 = require("./CustomSequenceLang"),
-  CustomerServiceAll_1 = require("./CustomerServiceAll"),
-  CustomerServiceById_1 = require("./CustomerServiceById"),
-  DailyAdventureActivityByActivityId_1 = require("./DailyAdventureActivityByActivityId"),
-  DailyAdventurePointById_1 = require("./DailyAdventurePointById"),
-  DailyAdventureTaskByTaskId_1 = require("./DailyAdventureTaskByTaskId"),
-  DailyTaskById_1 = require("./DailyTaskById"),
-  DailyTaskGroupById_1 = require("./DailyTaskGroupById"),
-  DamageByAll_1 = require("./DamageByAll"),
-  DamageById_1 = require("./DamageById"),
-  DamagePayloadById_1 = require("./DamagePayloadById"),
-  DamageTextAll_1 = require("./DamageTextAll"),
-  DangoById_1 = require("./DangoById"),
-  DangoBroadcastById_1 = require("./DangoBroadcastById"),
-  DangoMonopolyByActivityId_1 = require("./DangoMonopolyByActivityId"),
-  DangoMonopolyBoardByGroup_1 = require("./DangoMonopolyBoardByGroup"),
-  DangoMonopolyBoardById_1 = require("./DangoMonopolyBoardById"),
-  DangoMonopolyGridByGroup_1 = require("./DangoMonopolyGridByGroup"),
-  DangoMonopolyGridById_1 = require("./DangoMonopolyGridById"),
-  DangoMonopolyMapPointByActivityId_1 = require("./DangoMonopolyMapPointByActivityId"),
-  DangoMonopolyPropertyById_1 = require("./DangoMonopolyPropertyById"),
-  DangoMonopolyPropertyTypeByType_1 = require("./DangoMonopolyPropertyTypeByType"),
-  DangoMonopolyTaskByGroup_1 = require("./DangoMonopolyTaskByGroup"),
-  DangoMonopolyTaskById_1 = require("./DangoMonopolyTaskById"),
-  DangoSkillById_1 = require("./DangoSkillById"),
-  DangoSkillEffectById_1 = require("./DangoSkillEffectById"),
-  DarkCoastDeliveryAll_1 = require("./DarkCoastDeliveryAll"),
-  DarkCoastDeliveryById_1 = require("./DarkCoastDeliveryById"),
-  DataLayerById_1 = require("./DataLayerById"),
-  DaySelectPresetAll_1 = require("./DaySelectPresetAll"),
-  DaySelectPresetById_1 = require("./DaySelectPresetById"),
-  DebugCommandConfigById_1 = require("./DebugCommandConfigById"),
-  DebugEntranceConfigAll_1 = require("./DebugEntranceConfigAll"),
-  DebugEntranceConfigById_1 = require("./DebugEntranceConfigById"),
-  DebugEntranceTypeConfigAll_1 = require("./DebugEntranceTypeConfigAll"),
-  DebugEntranceTypeConfigById_1 = require("./DebugEntranceTypeConfigById"),
-  DetectionTabTypeById_1 = require("./DetectionTabTypeById"),
-  DetectionTextById_1 = require("./DetectionTextById"),
-  DevicePlatformById_1 = require("./DevicePlatformById"),
-  DevicePlatformByPidAndVid_1 = require("./DevicePlatformByPidAndVid"),
-  DeviceRenderFeatureByDeviceId_1 = require("./DeviceRenderFeatureByDeviceId"),
-  DiceById_1 = require("./DiceById"),
-  DigitalScreenById_1 = require("./DigitalScreenById"),
-  DigitalScreenTextById_1 = require("./DigitalScreenTextById"),
-  DirectTrainActivityAll_1 = require("./DirectTrainActivityAll"),
-  DirectTrainActivityById_1 = require("./DirectTrainActivityById"),
-  DoubleRewardActivityById_1 = require("./DoubleRewardActivityById"),
-  DownLoadTabAll_1 = require("./DownLoadTabAll"),
-  DownLoadTabById_1 = require("./DownLoadTabById"),
-  DragonPoolAll_1 = require("./DragonPoolAll"),
-  DragonPoolById_1 = require("./DragonPoolById"),
-  DreamLinkRoleDungeonById_1 = require("./DreamLinkRoleDungeonById"),
-  DreamLinkWorldRunById_1 = require("./DreamLinkWorldRunById"),
-  DreamLinkWorldRunByMarkId_1 = require("./DreamLinkWorldRunByMarkId"),
-  DropPackageById_1 = require("./DropPackageById"),
-  DropShowPlanById_1 = require("./DropShowPlanById"),
-  DungeonDetectionAll_1 = require("./DungeonDetectionAll"),
-  DungeonDetectionByDungeonId_1 = require("./DungeonDetectionByDungeonId"),
-  DungeonDetectionById_1 = require("./DungeonDetectionById"),
-  DynamicMapMarkAll_1 = require("./DynamicMapMarkAll"),
-  DynamicMapMarkByMapId_1 = require("./DynamicMapMarkByMapId"),
-  DynamicMapMarkByMarkId_1 = require("./DynamicMapMarkByMarkId"),
-  EffectConfigById_1 = require("./EffectConfigById"),
-  EffectCsvConfigById_1 = require("./EffectCsvConfigById"),
-  EffectSpecDataById_1 = require("./EffectSpecDataById"),
-  EffectSpecDataGetAll_1 = require("./EffectSpecDataGetAll"),
-  ElementIconTagById_1 = require("./ElementIconTagById"),
-  ElementInfoById_1 = require("./ElementInfoById"),
-  ElementInfoById2_1 = require("./ElementInfoById2"),
-  ElementLevelByLevel_1 = require("./ElementLevelByLevel"),
-  ElementReactionMatrixAll_1 = require("./ElementReactionMatrixAll"),
-  ElementalReactionAll_1 = require("./ElementalReactionAll"),
-  ElementalReactionByReactionId_1 = require("./ElementalReactionByReactionId"),
-  EnrichmentAreaConfigByEnrichmentId_1 = require("./EnrichmentAreaConfigByEnrichmentId"),
-  EnrichmentAreaConfigByItemId_1 = require("./EnrichmentAreaConfigByItemId"),
-  EntityAudioConfigById_1 = require("./EntityAudioConfigById"),
-  EntityAudioConfigByIdWithZero_1 = require("./EntityAudioConfigByIdWithZero"),
-  EntityGravityConfigAll_1 = require("./EntityGravityConfigAll"),
-  EntityGravityConfigByMapIdAndEntityId_1 = require("./EntityGravityConfigByMapIdAndEntityId"),
-  EntityOwnerDataByGuid_1 = require("./EntityOwnerDataByGuid"),
-  EntitySelfEventConfigById_1 = require("./EntitySelfEventConfigById"),
-  EntitySelfEventConfigByKey_1 = require("./EntitySelfEventConfigByKey"),
-  EntitySkillPreloadByActorBlueprint_1 = require("./EntitySkillPreloadByActorBlueprint"),
-  EntitySkillPreloadByActorBlueprintAndSkillId_1 = require("./EntitySkillPreloadByActorBlueprintAndSkillId"),
-  EntitySkillPreloadByAll_1 = require("./EntitySkillPreloadByAll"),
-  EntitySkillPreloadById_1 = require("./EntitySkillPreloadById"),
-  EntityVoxelInfoByMapIdAndEntityId_1 = require("./EntityVoxelInfoByMapIdAndEntityId"),
-  EntranceIconTagById_1 = require("./EntranceIconTagById"),
-  EntrustFinishDialogByEntrustIdAndLevel_1 = require("./EntrustFinishDialogByEntrustIdAndLevel"),
-  EntrustRoleAll_1 = require("./EntrustRoleAll"),
-  EntrustRoleById_1 = require("./EntrustRoleById"),
-  EntrustTypeById_1 = require("./EntrustTypeById"),
-  ErrorCodeById_1 = require("./ErrorCodeById"),
-  EvaluateById_1 = require("./EvaluateById"),
-  ExchangeRewardById_1 = require("./ExchangeRewardById"),
-  ExchangeSharedById_1 = require("./ExchangeSharedById"),
-  ExecutionConfById_1 = require("./ExecutionConfById"),
-  ExploreActivityById_1 = require("./ExploreActivityById"),
-  ExploreActivityTaskByActivityId_1 = require("./ExploreActivityTaskByActivityId"),
-  ExploreActivityTaskByTaskId_1 = require("./ExploreActivityTaskByTaskId"),
-  ExploreProgressAll_1 = require("./ExploreProgressAll"),
-  ExploreProgressByArea_1 = require("./ExploreProgressByArea"),
-  ExploreProgressById_1 = require("./ExploreProgressById"),
-  ExploreProgressRewardAll_1 = require("./ExploreProgressRewardAll"),
-  ExploreProgressRewardByArea_1 = require("./ExploreProgressRewardByArea"),
-  ExploreRewardByCountry_1 = require("./ExploreRewardByCountry"),
-  ExploreRewardById_1 = require("./ExploreRewardById"),
-  ExploreRewardDisplayById_1 = require("./ExploreRewardDisplayById"),
-  ExploreRouletteAll_1 = require("./ExploreRouletteAll"),
-  ExploreRouletteReplaceAll_1 = require("./ExploreRouletteReplaceAll"),
-  ExploreRouletteReplaceById_1 = require("./ExploreRouletteReplaceById"),
-  ExploreScoreAll_1 = require("./ExploreScoreAll"),
-  ExploreScoreByArea_1 = require("./ExploreScoreByArea"),
-  ExploreSkillInteractById_1 = require("./ExploreSkillInteractById"),
-  ExploreToolsAll_1 = require("./ExploreToolsAll"),
-  ExploreToolsByPhantomSkillId_1 = require("./ExploreToolsByPhantomSkillId"),
-  ExploreTypeByType_1 = require("./ExploreTypeByType"),
-  ExternalSourceSettingById_1 = require("./ExternalSourceSettingById"),
-  FaceExpressionDataById_1 = require("./FaceExpressionDataById"),
-  FarmGoldActivityAll_1 = require("./FarmGoldActivityAll"),
-  FarmGoldActivityByActivityIdAndInstanceId_1 = require("./FarmGoldActivityByActivityIdAndInstanceId"),
-  FarmGoldActivityById_1 = require("./FarmGoldActivityById"),
-  FarmGoldDifficultyAll_1 = require("./FarmGoldDifficultyAll"),
-  FarmGoldDifficultyById_1 = require("./FarmGoldDifficultyById"),
-  FarmGoldMapMarkByActivityId_1 = require("./FarmGoldMapMarkByActivityId"),
-  FarmGoldScoreAll_1 = require("./FarmGoldScoreAll"),
-  FarmGoldScoreByActivityId_1 = require("./FarmGoldScoreByActivityId"),
-  FarmGoldScoreById_1 = require("./FarmGoldScoreById"),
-  FavorGoodsByRoleId_1 = require("./FavorGoodsByRoleId"),
-  FavorLevelByLevel_1 = require("./FavorLevelByLevel"),
-  FavorRoleInfoByRoleId_1 = require("./FavorRoleInfoByRoleId"),
-  FavorStoryByRoleId_1 = require("./FavorStoryByRoleId"),
-  FavorTabCameraById_1 = require("./FavorTabCameraById"),
-  FavorWordByRoleIdAndType_1 = require("./FavorWordByRoleIdAndType"),
-  FeedingAnimalById_1 = require("./FeedingAnimalById"),
-  FightFormationById_1 = require("./FightFormationById"),
-  FilterById_1 = require("./FilterById"),
-  FilterRuleById_1 = require("./FilterRuleById"),
-  FilterSettingAll_1 = require("./FilterSettingAll"),
-  FilterSettingById_1 = require("./FilterSettingById"),
-  FilterSortConfigById_1 = require("./FilterSortConfigById"),
-  FilterSortGroupById_1 = require("./FilterSortGroupById"),
-  FishingActivityByActivityId_1 = require("./FishingActivityByActivityId"),
-  FishingActivityGroupAll_1 = require("./FishingActivityGroupAll"),
-  FishingActivityGroupById_1 = require("./FishingActivityGroupById"),
-  FishingActivityLimitTaskByTaskId_1 = require("./FishingActivityLimitTaskByTaskId"),
-  FishingActivityMilestoneAll_1 = require("./FishingActivityMilestoneAll"),
-  FishingActivityMilestoneById_1 = require("./FishingActivityMilestoneById"),
-  FishingDeliveryById_1 = require("./FishingDeliveryById"),
-  FishingEntrustById_1 = require("./FishingEntrustById"),
-  FishingEntrustPoolAll_1 = require("./FishingEntrustPoolAll"),
-  FishingEntrustPoolById_1 = require("./FishingEntrustPoolById"),
-  FishingEntrustTypeById_1 = require("./FishingEntrustTypeById"),
-  FishingGridItemShapeById_1 = require("./FishingGridItemShapeById"),
-  FishingIllustratedRewardById_1 = require("./FishingIllustratedRewardById"),
-  FishingItemAll_1 = require("./FishingItemAll"),
-  FishingItemById_1 = require("./FishingItemById"),
-  FishingManualRefreshByEntrustPoolTypeAndStar_1 = require("./FishingManualRefreshByEntrustPoolTypeAndStar"),
-  FishingManualRefreshById_1 = require("./FishingManualRefreshById"),
-  FishingNoticeById_1 = require("./FishingNoticeById"),
-  FishingNpcPerformById_1 = require("./FishingNpcPerformById"),
-  FishingPointByEntityConfigId_1 = require("./FishingPointByEntityConfigId"),
-  FishingPointById_1 = require("./FishingPointById"),
-  FishingPointByShowItem_1 = require("./FishingPointByShowItem"),
-  FishingPortById_1 = require("./FishingPortById"),
-  FishingPositionById_1 = require("./FishingPositionById"),
-  FishingQteConfigById_1 = require("./FishingQteConfigById"),
-  FishingQualityById_1 = require("./FishingQualityById"),
-  FishingReputationAll_1 = require("./FishingReputationAll"),
-  FishingReputationByLevel_1 = require("./FishingReputationByLevel"),
-  FishingShipSkinAll_1 = require("./FishingShipSkinAll"),
-  FishingShipSkinById_1 = require("./FishingShipSkinById"),
-  FishingTagById_1 = require("./FishingTagById"),
-  FishingTechAll_1 = require("./FishingTechAll"),
-  FishingTechById_1 = require("./FishingTechById"),
-  FishingTechEffectById_1 = require("./FishingTechEffectById"),
-  FishingTechEffectByType_1 = require("./FishingTechEffectByType"),
-  FlagAreaByAreaId_1 = require("./FlagAreaByAreaId"),
-  FlagAreaByEntity_1 = require("./FlagAreaByEntity"),
-  FlagAreaById_1 = require("./FlagAreaById"),
-  FlowById_1 = require("./FlowById"),
-  FlowStateByStateKey_1 = require("./FlowStateByStateKey"),
-  FlowTemplateDataById_1 = require("./FlowTemplateDataById"),
-  FlowTextByIdAndFlowListId_1 = require("./FlowTextByIdAndFlowListId"),
-  FlowTextLang_1 = require("./FlowTextLang"),
-  FlySkinConfigById_1 = require("./FlySkinConfigById"),
-  FlySkinConfigByType_1 = require("./FlySkinConfigByType"),
-  FogBlockAll_1 = require("./FogBlockAll"),
-  FogBlockByBlock_1 = require("./FogBlockByBlock"),
-  FogBlockByBlockAndMapId_1 = require("./FogBlockByBlockAndMapId"),
-  FogTextureConfigAll_1 = require("./FogTextureConfigAll"),
-  FogTextureConfigByBlock_1 = require("./FogTextureConfigByBlock"),
-  FogTextureConfigByBlockAndMapId_1 = require("./FogTextureConfigByBlockAndMapId"),
-  FogTextureConfigByBlockAndMapIdAndGravity_1 = require("./FogTextureConfigByBlockAndMapIdAndGravity"),
-  FogTextureConfigByMapId_1 = require("./FogTextureConfigByMapId"),
-  FoleySynthBoneConfigById_1 = require("./FoleySynthBoneConfigById"),
-  FoleySynthConfigById_1 = require("./FoleySynthConfigById"),
-  FoleySynthConfigByIdWithDefaultId_1 = require("./FoleySynthConfigByIdWithDefaultId"),
-  ForgeFormulaAll_1 = require("./ForgeFormulaAll"),
-  ForgeFormulaByFormulaItemId_1 = require("./ForgeFormulaByFormulaItemId"),
-  ForgeFormulaById_1 = require("./ForgeFormulaById"),
-  ForgeFormulaByTypeId_1 = require("./ForgeFormulaByTypeId"),
-  FormationPropertyAll_1 = require("./FormationPropertyAll"),
-  FormationPropertyById_1 = require("./FormationPropertyById"),
-  FriendFilterAll_1 = require("./FriendFilterAll"),
-  FuncMenuReplaceAll_1 = require("./FuncMenuReplaceAll"),
-  FuncMenuReplaceInstSubType_1 = require("./FuncMenuReplaceInstSubType"),
-  FuncMenuWheelAll_1 = require("./FuncMenuWheelAll"),
-  FuncMenuWheelByFuncId_1 = require("./FuncMenuWheelByFuncId"),
-  FunctionConditionByFunctionId_1 = require("./FunctionConditionByFunctionId"),
-  FunctionMenuAll_1 = require("./FunctionMenuAll"),
-  FunctionMenuByFunctionId_1 = require("./FunctionMenuByFunctionId"),
-  FunctionOpenViewLimitAll_1 = require("./FunctionOpenViewLimitAll"),
-  GaChaShareById_1 = require("./GaChaShareById"),
-  GachaAll_1 = require("./GachaAll"),
-  GachaById_1 = require("./GachaById"),
-  GachaEffectConfigByTimesAndQuality_1 = require("./GachaEffectConfigByTimesAndQuality"),
-  GachaPoolById_1 = require("./GachaPoolById"),
-  GachaSequenceConfigById_1 = require("./GachaSequenceConfigById"),
-  GachaTextureInfoById_1 = require("./GachaTextureInfoById"),
-  GachaViewInfoById_1 = require("./GachaViewInfoById"),
-  GachaViewTypeInfoByType_1 = require("./GachaViewTypeInfoByType"),
-  GachaWeaponTransformById_1 = require("./GachaWeaponTransformById"),
-  GamePlayInformationGroupById_1 = require("./GamePlayInformationGroupById"),
-  GamePlayInformationInfoById_1 = require("./GamePlayInformationInfoById"),
-  GamePlayScanByUid_1 = require("./GamePlayScanByUid"),
-  GamePlayScanCompositeByUid_1 = require("./GamePlayScanCompositeByUid"),
-  GamepadKeyById_1 = require("./GamepadKeyById"),
-  GamepadKeyByKeyName_1 = require("./GamepadKeyByKeyName"),
-  GameplayCueById_1 = require("./GameplayCueById"),
-  GatherActivityAll_1 = require("./GatherActivityAll"),
-  GatherActivityById_1 = require("./GatherActivityById"),
-  GenderTextByMaleText_1 = require("./GenderTextByMaleText"),
-  GenericPromptByTipsId_1 = require("./GenericPromptByTipsId"),
-  GenericPromptTypesByTypeId_1 = require("./GenericPromptTypesByTypeId"),
-  GeographyHandBookAll_1 = require("./GeographyHandBookAll"),
-  GeographyHandBookById_1 = require("./GeographyHandBookById"),
-  GeographyHandBookByType_1 = require("./GeographyHandBookByType"),
-  GeographyTypeAll_1 = require("./GeographyTypeAll"),
-  GeographyTypeById_1 = require("./GeographyTypeById"),
-  GiftPackageAll_1 = require("./GiftPackageAll"),
-  GiftPackageById_1 = require("./GiftPackageById"),
-  GlobalConfigFromCsvByName_1 = require("./GlobalConfigFromCsvByName"),
-  GmAccountAll_1 = require("./GmAccountAll"),
-  GmAccountById_1 = require("./GmAccountById"),
-  GmOrderConfigAll_1 = require("./GmOrderConfigAll"),
-  GmOrderListAll_1 = require("./GmOrderListAll"),
-  GmOrderListById_1 = require("./GmOrderListById"),
-  GongduolaPassengerVoiceConfigById_1 = require("./GongduolaPassengerVoiceConfigById"),
-  GongduolaPassengerVoiceConfigByRoleIdAndTriggerType_1 = require("./GongduolaPassengerVoiceConfigByRoleIdAndTriggerType"),
-  GuideDataById_1 = require("./GuideDataById"),
-  GuideDungeonSetDefineByStrId_1 = require("./GuideDungeonSetDefineByStrId"),
-  GuideFocusNewByGuideId_1 = require("./GuideFocusNewByGuideId"),
-  GuideFromMontageByEventGroupId_1 = require("./GuideFromMontageByEventGroupId"),
-  GuideGroupAll_1 = require("./GuideGroupAll"),
-  GuideGroupById_1 = require("./GuideGroupById"),
-  GuideStepAll_1 = require("./GuideStepAll"),
-  GuideStepById_1 = require("./GuideStepById"),
-  GuideTipsByGuideId_1 = require("./GuideTipsByGuideId"),
-  GuideTutorialAll_1 = require("./GuideTutorialAll"),
-  GuideTutorialById_1 = require("./GuideTutorialById"),
-  GuideTutorialPageById_1 = require("./GuideTutorialPageById"),
-  H5CircumUrlById_1 = require("./H5CircumUrlById"),
-  HandBookEntranceAll_1 = require("./HandBookEntranceAll"),
-  HandBookEntranceById_1 = require("./HandBookEntranceById"),
-  HandBookQuestTabAll_1 = require("./HandBookQuestTabAll"),
-  HandBookQuestTabById_1 = require("./HandBookQuestTabById"),
-  HardnessModeById_1 = require("./HardnessModeById"),
-  HeadIconById_1 = require("./HeadIconById"),
-  HeadIconEnergyBarAll_1 = require("./HeadIconEnergyBarAll"),
-  HeadIconEnergyBarById_1 = require("./HeadIconEnergyBarById"),
-  HelpTextByGroupId_1 = require("./HelpTextByGroupId"),
-  HelpTextById_1 = require("./HelpTextById"),
-  HiddenBossWindowById_1 = require("./HiddenBossWindowById"),
-  HotKeyIconByKeyName_1 = require("./HotKeyIconByKeyName"),
-  HotKeyMapById_1 = require("./HotKeyMapById"),
-  HotKeyTextByTextId_1 = require("./HotKeyTextByTextId"),
-  HotKeyTypeById_1 = require("./HotKeyTypeById"),
-  HotKeyViewById_1 = require("./HotKeyViewById"),
-  HotPatchTextLang_1 = require("./HotPatchTextLang"),
-  I18nResourcesAll_1 = require("./I18nResourcesAll"),
-  I18nResourcesById_1 = require("./I18nResourcesById"),
-  I18nTexturesAll_1 = require("./I18nTexturesAll"),
-  I18nTexturesById_1 = require("./I18nTexturesById"),
-  InfluenceAll_1 = require("./InfluenceAll"),
-  InfluenceById_1 = require("./InfluenceById"),
-  InfoDisplayById_1 = require("./InfoDisplayById"),
-  InstanceDungeonAll_1 = require("./InstanceDungeonAll"),
-  InstanceDungeonById_1 = require("./InstanceDungeonById"),
-  InstanceDungeonEntranceAll_1 = require("./InstanceDungeonEntranceAll"),
-  InstanceDungeonEntranceById_1 = require("./InstanceDungeonEntranceById"),
-  InstanceDungeonEntranceByMarkId_1 = require("./InstanceDungeonEntranceByMarkId"),
-  InstanceDungeonTitleById_1 = require("./InstanceDungeonTitleById"),
-  InstanceEnterControlById_1 = require("./InstanceEnterControlById"),
-  InstanceGameplayModeById_1 = require("./InstanceGameplayModeById"),
-  InstanceTrialRoleConfigById_1 = require("./InstanceTrialRoleConfigById"),
-  InteractAudioMaterialByCollisionMaterial_1 = require("./InteractAudioMaterialByCollisionMaterial"),
-  InteractBackGroundById_1 = require("./InteractBackGroundById"),
-  InteractBackGroundByViewName_1 = require("./InteractBackGroundByViewName"),
-  InteractDataByGuid_1 = require("./InteractDataByGuid"),
-  InterjectionByTimberIdAndUniversalToneId_1 = require("./InterjectionByTimberIdAndUniversalToneId"),
-  ItemAccessedPathById_1 = require("./ItemAccessedPathById"),
-  ItemExchangeContentAll_1 = require("./ItemExchangeContentAll"),
-  ItemExchangeContentByItemId_1 = require("./ItemExchangeContentByItemId"),
-  ItemExchangeLimitByItemId_1 = require("./ItemExchangeLimitByItemId"),
-  ItemHandBookAll_1 = require("./ItemHandBookAll"),
-  ItemHandBookById_1 = require("./ItemHandBookById"),
-  ItemHandBookByType_1 = require("./ItemHandBookByType"),
-  ItemHandBookTypeAll_1 = require("./ItemHandBookTypeAll"),
-  ItemHandBookTypeById_1 = require("./ItemHandBookTypeById"),
-  ItemIconTagById_1 = require("./ItemIconTagById"),
-  ItemInfoAll_1 = require("./ItemInfoAll"),
-  ItemInfoById_1 = require("./ItemInfoById"),
-  ItemInfoByItemType_1 = require("./ItemInfoByItemType"),
-  ItemMainTypeAll_1 = require("./ItemMainTypeAll"),
-  ItemMainTypeById_1 = require("./ItemMainTypeById"),
-  ItemShowTypeById_1 = require("./ItemShowTypeById"),
-  KeyPoolAll_1 = require("./KeyPoolAll"),
-  KeyPoolById_1 = require("./KeyPoolById"),
-  KeySettingAll_1 = require("./KeySettingAll"),
-  KeySettingById_1 = require("./KeySettingById"),
-  KeySettingByTypeId_1 = require("./KeySettingByTypeId"),
-  KeySettingByTypeIdAndInputControllerType_1 = require("./KeySettingByTypeIdAndInputControllerType"),
-  KeyTypeAll_1 = require("./KeyTypeAll"),
-  KeyTypeByTypeId_1 = require("./KeyTypeByTypeId"),
-  KillMonstersScoresByInstanceID_1 = require("./KillMonstersScoresByInstanceID"),
-  LangOfLogoByName_1 = require("./LangOfLogoByName"),
-  LanguageDefineByLanguageCode_1 = require("./LanguageDefineByLanguageCode"),
-  LanguageDefineByLanguageType_1 = require("./LanguageDefineByLanguageType"),
-  LevelEntityConfigByBlueprintType_1 = require("./LevelEntityConfigByBlueprintType"),
-  LevelEntityConfigByMapId_1 = require("./LevelEntityConfigByMapId"),
-  LevelEntityConfigByMapIdAndEntityId_1 = require("./LevelEntityConfigByMapIdAndEntityId"),
-  LevelPlayDataById_1 = require("./LevelPlayDataById"),
-  LevelPlayInfoMappingConfigAll_1 = require("./LevelPlayInfoMappingConfigAll"),
-  LevelPlayInfoMappingConfigById_1 = require("./LevelPlayInfoMappingConfigById"),
-  LevelPlayNodeDataByKey_1 = require("./LevelPlayNodeDataByKey"),
-  LinkCharacterById_1 = require("./LinkCharacterById"),
-  LinkDataById_1 = require("./LinkDataById"),
-  LinkParamById_1 = require("./LinkParamById"),
-  LivenessAll_1 = require("./LivenessAll"),
-  LivenessById_1 = require("./LivenessById"),
-  LivenessTaskByTaskId_1 = require("./LivenessTaskByTaskId"),
-  LoadingLevelAreaAll_1 = require("./LoadingLevelAreaAll"),
-  LoadingTipsTextAll_1 = require("./LoadingTipsTextAll"),
-  LoadingTipsTextById_1 = require("./LoadingTipsTextById"),
-  LoadingTipsTextByLevelAreaId_1 = require("./LoadingTipsTextByLevelAreaId"),
-  LockOnConfigById_1 = require("./LockOnConfigById"),
-  LongPressConfigById_1 = require("./LongPressConfigById"),
-  LongShanActivityConfigByActivityId_1 = require("./LongShanActivityConfigByActivityId"),
-  LongShanScoreRewardByActivityId_1 = require("./LongShanScoreRewardByActivityId"),
-  LongShanScoreRewardById_1 = require("./LongShanScoreRewardById"),
-  LongShanStageAll_1 = require("./LongShanStageAll"),
-  LongShanStageById_1 = require("./LongShanStageById"),
-  LongShanTaskById_1 = require("./LongShanTaskById"),
-  LordGymAll_1 = require("./LordGymAll"),
-  LordGymByDifficulty_1 = require("./LordGymByDifficulty"),
-  LordGymById_1 = require("./LordGymById"),
-  LordGymEntranceAll_1 = require("./LordGymEntranceAll"),
-  LordGymEntranceById_1 = require("./LordGymEntranceById"),
-  LordGymEntranceByMarkId_1 = require("./LordGymEntranceByMarkId"),
-  LordGymEntranceGroupByMarkId_1 = require("./LordGymEntranceGroupByMarkId"),
-  LordGymEntranceSetAll_1 = require("./LordGymEntranceSetAll"),
-  LordGymEntranceSetById_1 = require("./LordGymEntranceSetById"),
-  LordGymEntranceSetByMarkId_1 = require("./LordGymEntranceSetByMarkId"),
-  LordGymFilterTypeAll_1 = require("./LordGymFilterTypeAll"),
-  LordGymFilterTypeById_1 = require("./LordGymFilterTypeById"),
-  MailFilterAll_1 = require("./MailFilterAll"),
-  MailFilterById_1 = require("./MailFilterById"),
-  MainLineAll_1 = require("./MainLineAll"),
-  MainLineById_1 = require("./MainLineById"),
-  MainRoleConfigAll_1 = require("./MainRoleConfigAll"),
-  MainRoleConfigByGender_1 = require("./MainRoleConfigByGender"),
-  MainRoleConfigById_1 = require("./MainRoleConfigById"),
-  MainTypeAll_1 = require("./MainTypeAll"),
-  MainTypeById_1 = require("./MainTypeById"),
-  MapAudioById_1 = require("./MapAudioById"),
-  MapBorderAll_1 = require("./MapBorderAll"),
-  MapBorderByBorderId_1 = require("./MapBorderByBorderId"),
-  MapBorderByBorderIdAndMapId_1 = require("./MapBorderByBorderIdAndMapId"),
-  MapFogByAreaId_1 = require("./MapFogByAreaId"),
-  MapFogByFog_1 = require("./MapFogByFog"),
-  MapLevelExpByActivityId_1 = require("./MapLevelExpByActivityId"),
-  MapLevelExpById_1 = require("./MapLevelExpById"),
-  MapMarkAll_1 = require("./MapMarkAll"),
-  MapMarkByEntityConfigId_1 = require("./MapMarkByEntityConfigId"),
-  MapMarkByInstanceDungeonId_1 = require("./MapMarkByInstanceDungeonId"),
-  MapMarkByMapId_1 = require("./MapMarkByMapId"),
-  MapMarkByMarkId_1 = require("./MapMarkByMarkId"),
-  MapMarkByRelativeId_1 = require("./MapMarkByRelativeId"),
-  MapMarkByRelativeMainSubType_1 = require("./MapMarkByRelativeMainSubType"),
-  MapMarkHasEntityConfigId_1 = require("./MapMarkHasEntityConfigId"),
-  MapMarkPhantomGroupByMarkId_1 = require("./MapMarkPhantomGroupByMarkId"),
-  MapMarkRelativeSubTypeAll_1 = require("./MapMarkRelativeSubTypeAll"),
-  MapMarkRelativeSubTypeByFunctionId_1 = require("./MapMarkRelativeSubTypeByFunctionId"),
-  MapMarkRelativeSubTypeById_1 = require("./MapMarkRelativeSubTypeById"),
-  MapNoteById_1 = require("./MapNoteById"),
-  MapRangeAll_1 = require("./MapRangeAll"),
-  MapRangeByMapId_1 = require("./MapRangeByMapId"),
-  MapTravelConfigByActivityId_1 = require("./MapTravelConfigByActivityId"),
-  MappingBySheetNameAndFieldName_1 = require("./MappingBySheetNameAndFieldName"),
-  MappingBySheetNameFieldNameAndValue_1 = require("./MappingBySheetNameFieldNameAndValue"),
-  MarkEffectByMarkId_1 = require("./MarkEffectByMarkId"),
-  MaterialReplaceAll_1 = require("./MaterialReplaceAll"),
-  MaterialReplaceByGroupId_1 = require("./MaterialReplaceByGroupId"),
-  MaterialReplaceByItemId_1 = require("./MaterialReplaceByItemId"),
-  MenuConfigAll_1 = require("./MenuConfigAll"),
-  MenuConfigByFunctionId_1 = require("./MenuConfigByFunctionId"),
-  MobileBattleUiSetAll_1 = require("./MobileBattleUiSetAll"),
-  MobileBattleUiSetByPanelIndex_1 = require("./MobileBattleUiSetByPanelIndex"),
-  ModelConfigPreloadByAll_1 = require("./ModelConfigPreloadByAll"),
-  ModelConfigPreloadById_1 = require("./ModelConfigPreloadById"),
-  MonsterBattleConfById_1 = require("./MonsterBattleConfById"),
-  MonsterBattleConfByRoleId_1 = require("./MonsterBattleConfByRoleId"),
-  MonsterBodyTypeConfigById_1 = require("./MonsterBodyTypeConfigById"),
-  MonsterDetectionAll_1 = require("./MonsterDetectionAll"),
-  MonsterDetectionById_1 = require("./MonsterDetectionById"),
-  MonsterDetectionByMarkId_1 = require("./MonsterDetectionByMarkId"),
-  MonsterDetectionFilterAll_1 = require("./MonsterDetectionFilterAll"),
-  MonsterDisplayById_1 = require("./MonsterDisplayById"),
-  MonsterDisplayLang_1 = require("./MonsterDisplayLang"),
-  MonsterHandBookAll_1 = require("./MonsterHandBookAll"),
-  MonsterHandBookById_1 = require("./MonsterHandBookById"),
-  MonsterHandBookByType_1 = require("./MonsterHandBookByType"),
-  MonsterHandBookTypeAll_1 = require("./MonsterHandBookTypeAll"),
-  MonsterIconTagById_1 = require("./MonsterIconTagById"),
-  MonsterInfoById_1 = require("./MonsterInfoById"),
-  MonsterPerchById_1 = require("./MonsterPerchById"),
-  MonsterPerformanceConfById_1 = require("./MonsterPerformanceConfById"),
-  MonsterPropertyGrowthById_1 = require("./MonsterPropertyGrowthById"),
-  MonsterRarityById_1 = require("./MonsterRarityById"),
-  MonsterSizeIdById_1 = require("./MonsterSizeIdById"),
-  MontageDataById_1 = require("./MontageDataById"),
-  MonthCardContentById_1 = require("./MonthCardContentById"),
-  MoraleAreaAll_1 = require("./MoraleAreaAll"),
-  MoraleAreaById_1 = require("./MoraleAreaById"),
-  MoraleFlagTypeById_1 = require("./MoraleFlagTypeById"),
-  MoraleFlagTypeByType_1 = require("./MoraleFlagTypeByType"),
-  MoraleKeepLevelAll_1 = require("./MoraleKeepLevelAll"),
-  MoraleKeepLevelById_1 = require("./MoraleKeepLevelById"),
-  MoraleLevelDiffById_1 = require("./MoraleLevelDiffById"),
-  MoraleLevelDiffShowAll_1 = require("./MoraleLevelDiffShowAll"),
-  MoraleLevelDiffShowById_1 = require("./MoraleLevelDiffShowById"),
-  MoraleLvPowerAll_1 = require("./MoraleLvPowerAll"),
-  MoraleLvPowerById_1 = require("./MoraleLvPowerById"),
-  MoralePlayById_1 = require("./MoralePlayById"),
-  MoraleRoleGrowthByLevel_1 = require("./MoraleRoleGrowthByLevel"),
-  MotionById_1 = require("./MotionById"),
-  MotionByRoleId_1 = require("./MotionByRoleId"),
-  MotionByRoleIdAndType_1 = require("./MotionByRoleIdAndType"),
-  MotionBySkinId_1 = require("./MotionBySkinId"),
-  MowTowerBuffReAll_1 = require("./MowTowerBuffReAll"),
-  MowTowerBuffReById_1 = require("./MowTowerBuffReById"),
-  MowTowerLevelsReAll_1 = require("./MowTowerLevelsReAll"),
-  MowTowerLevelsReById_1 = require("./MowTowerLevelsReById"),
-  MowTowerRewardReAll_1 = require("./MowTowerRewardReAll"),
-  MowTowerRewardReById_1 = require("./MowTowerRewardReById"),
-  MultiMapAll_1 = require("./MultiMapAll"),
-  MultiMapByGroupId_1 = require("./MultiMapByGroupId"),
-  MultiMapById_1 = require("./MultiMapById"),
-  MultiMapAreaConfigAll_1 = require("./MultiMapAreaConfigAll"),
-  MultiTextLang_1 = require("./MultiTextLang"),
-  NewOccupationConfigAll_1 = require("./NewOccupationConfigAll"),
-  NewOccupationConfigById_1 = require("./NewOccupationConfigById"),
-  NewbieCarnivalParamByActivityId_1 = require("./NewbieCarnivalParamByActivityId"),
-  NewbieCarnivalRoleByRoleId_1 = require("./NewbieCarnivalRoleByRoleId"),
-  NewbieCarnivalTaskByTaskId_1 = require("./NewbieCarnivalTaskByTaskId"),
-  NewbieCarnivalTaskByTaskType_1 = require("./NewbieCarnivalTaskByTaskType"),
-  NewbieCarnivalTaskTypeById_1 = require("./NewbieCarnivalTaskTypeById"),
-  NewbieCourseAll_1 = require("./NewbieCourseAll"),
-  NewbieCourseById_1 = require("./NewbieCourseById"),
-  NounHandBookAll_1 = require("./NounHandBookAll"),
-  NounHandBookById_1 = require("./NounHandBookById"),
-  NounHandBookByType_1 = require("./NounHandBookByType"),
-  NounTypeAll_1 = require("./NounTypeAll"),
-  NounTypeById_1 = require("./NounTypeById"),
-  NpcHeadInfoById_1 = require("./NpcHeadInfoById"),
-  NpcSystemBackgroundById_1 = require("./NpcSystemBackgroundById"),
-  NpcSystemBackgroundByViewName_1 = require("./NpcSystemBackgroundByViewName"),
-  OccupationConfigById_1 = require("./OccupationConfigById"),
-  OccupationConfigLang_1 = require("./OccupationConfigLang"),
-  OccupyScoreAll_1 = require("./OccupyScoreAll"),
-  OccupyScoreById_1 = require("./OccupyScoreById"),
-  OpenAndCloseViewHotKeyAll_1 = require("./OpenAndCloseViewHotKeyAll"),
-  OpenAndCloseViewHotKeyByActionName_1 = require("./OpenAndCloseViewHotKeyByActionName"),
-  OpenAndCloseViewHotKeyByInputControllerType_1 = require("./OpenAndCloseViewHotKeyByInputControllerType"),
-  OverlayAbpMontageDataById_1 = require("./OverlayAbpMontageDataById"),
-  PackageCapacityAll_1 = require("./PackageCapacityAll"),
-  PackageCapacityByPackageId_1 = require("./PackageCapacityByPackageId"),
-  ParkourChallengeById_1 = require("./ParkourChallengeById"),
-  ParkourChallengeByMarkId_1 = require("./ParkourChallengeByMarkId"),
-  PassiveSkillById_1 = require("./PassiveSkillById"),
-  PayById_1 = require("./PayById"),
-  PayByPayIdAndRegion_1 = require("./PayByPayIdAndRegion"),
-  PayByRegion_1 = require("./PayByRegion"),
-  PayGiftAll_1 = require("./PayGiftAll"),
-  PayGiftById_1 = require("./PayGiftById"),
-  PayItemAll_1 = require("./PayItemAll"),
-  PayItemById_1 = require("./PayItemById"),
-  PayShopAll_1 = require("./PayShopAll"),
-  PayShopById_1 = require("./PayShopById"),
-  PayShopConditionById_1 = require("./PayShopConditionById"),
-  PayShopDirectGoodsByGoodsId_1 = require("./PayShopDirectGoodsByGoodsId"),
-  PayShopGoodsAll_1 = require("./PayShopGoodsAll"),
-  PayShopGoodsById_1 = require("./PayShopGoodsById"),
-  PayShopGoodsByItemId_1 = require("./PayShopGoodsByItemId"),
-  PayShopRecommendAll_1 = require("./PayShopRecommendAll"),
-  PayShopRecommendById_1 = require("./PayShopRecommendById"),
-  PayShopTabByShopId_1 = require("./PayShopTabByShopId"),
-  PayShopTabByShopIdAndTabId_1 = require("./PayShopTabByShopIdAndTabId"),
-  PbDataPreloadAll_1 = require("./PbDataPreloadAll"),
-  PbDataPreloadByMapIdAndPbId_1 = require("./PbDataPreloadByMapIdAndPbId"),
-  PcKeyAll_1 = require("./PcKeyAll"),
-  PcKeyById_1 = require("./PcKeyById"),
-  PcKeyByKeyName_1 = require("./PcKeyByKeyName"),
-  PerformanceConditionById_1 = require("./PerformanceConditionById"),
-  PerformanceConditionByIdWithZero_1 = require("./PerformanceConditionByIdWithZero"),
-  PersonalTipsByFunctionId_1 = require("./PersonalTipsByFunctionId"),
-  PersonalTipsById_1 = require("./PersonalTipsById"),
-  PhantomBattleActivityByActivityId_1 = require("./PhantomBattleActivityByActivityId"),
-  PhantomBattleBadgeAll_1 = require("./PhantomBattleBadgeAll"),
-  PhantomBattleBadgeByActivityGroupId_1 = require("./PhantomBattleBadgeByActivityGroupId"),
-  PhantomBattleBadgeByGroupId_1 = require("./PhantomBattleBadgeByGroupId"),
-  PhantomBattleBadgeById_1 = require("./PhantomBattleBadgeById"),
-  PhantomBattleBadgeGroupAll_1 = require("./PhantomBattleBadgeGroupAll"),
-  PhantomBattleBadgeGroupByGroupId_1 = require("./PhantomBattleBadgeGroupByGroupId"),
-  PhantomBattleBadgeRewardByActivityId_1 = require("./PhantomBattleBadgeRewardByActivityId"),
-  PhantomBattleBadgeRewardById_1 = require("./PhantomBattleBadgeRewardById"),
-  PhantomBattleBuffById_1 = require("./PhantomBattleBuffById"),
-  PhantomBattleCardAll_1 = require("./PhantomBattleCardAll"),
-  PhantomBattleCardByActivityId_1 = require("./PhantomBattleCardByActivityId"),
-  PhantomBattleCardById_1 = require("./PhantomBattleCardById"),
-  PhantomBattleCardElementById_1 = require("./PhantomBattleCardElementById"),
-  PhantomBattleCardFilterAll_1 = require("./PhantomBattleCardFilterAll"),
-  PhantomBattleCardFilterById_1 = require("./PhantomBattleCardFilterById"),
-  PhantomBattleCardGroupByGroupId_1 = require("./PhantomBattleCardGroupByGroupId"),
-  PhantomBattleCardGroupInfoById_1 = require("./PhantomBattleCardGroupInfoById"),
-  PhantomBattleCardRewardByActivityId_1 = require("./PhantomBattleCardRewardByActivityId"),
-  PhantomBattleCardRewardById_1 = require("./PhantomBattleCardRewardById"),
-  PhantomBattleCardRoleAll_1 = require("./PhantomBattleCardRoleAll"),
-  PhantomBattleCardRoleById_1 = require("./PhantomBattleCardRoleById"),
-  PhantomBattleCardSlotSortAll_1 = require("./PhantomBattleCardSlotSortAll"),
-  PhantomBattleCardSlotSortById_1 = require("./PhantomBattleCardSlotSortById"),
-  PhantomBattleChallengeByActivityGymId_1 = require("./PhantomBattleChallengeByActivityGymId"),
-  PhantomBattleChallengeByActivityId_1 = require("./PhantomBattleChallengeByActivityId"),
-  PhantomBattleChallengeByGymId_1 = require("./PhantomBattleChallengeByGymId"),
-  PhantomBattleChallengeById_1 = require("./PhantomBattleChallengeById"),
-  PhantomBattleDialogById_1 = require("./PhantomBattleDialogById"),
-  PhantomBattleEntryById_1 = require("./PhantomBattleEntryById"),
-  PhantomBattleFactorAll_1 = require("./PhantomBattleFactorAll"),
-  PhantomBattleFactorById_1 = require("./PhantomBattleFactorById"),
-  PhantomBattleFourCTaskByCardId_1 = require("./PhantomBattleFourCTaskByCardId"),
-  PhantomBattleGymByActivityId_1 = require("./PhantomBattleGymByActivityId"),
-  PhantomBattleMasterLevelAll_1 = require("./PhantomBattleMasterLevelAll"),
-  PhantomBattleMasterLevelById_1 = require("./PhantomBattleMasterLevelById"),
-  PhantomBattleMasterTitleAll_1 = require("./PhantomBattleMasterTitleAll"),
-  PhantomBattleMasterTitleById_1 = require("./PhantomBattleMasterTitleById"),
-  PhantomBattleNPCByGroupId_1 = require("./PhantomBattleNPCByGroupId"),
-  PhantomBattleNPCById_1 = require("./PhantomBattleNPCById"),
-  PhantomBattleSkillById_1 = require("./PhantomBattleSkillById"),
-  PhantomBattleTaskByActivityId_1 = require("./PhantomBattleTaskByActivityId"),
-  PhantomBattleTaskByTaskId_1 = require("./PhantomBattleTaskByTaskId"),
-  PhantomBattleTaskTabById_1 = require("./PhantomBattleTaskTabById"),
-  PhantomBattleWeekExpAll_1 = require("./PhantomBattleWeekExpAll"),
-  PhantomBattleWeekExpById_1 = require("./PhantomBattleWeekExpById"),
-  PhantomBattleWinSeqById_1 = require("./PhantomBattleWinSeqById"),
-  PhantomCollectActivityById_1 = require("./PhantomCollectActivityById"),
-  PhantomCollectTaskDescById_1 = require("./PhantomCollectTaskDescById"),
-  PhantomCustomizeItemByItemId_1 = require("./PhantomCustomizeItemByItemId"),
-  PhantomExpItemAll_1 = require("./PhantomExpItemAll"),
-  PhantomExpItemByItemId_1 = require("./PhantomExpItemByItemId"),
-  PhantomFetterAll_1 = require("./PhantomFetterAll"),
-  PhantomFetterById_1 = require("./PhantomFetterById"),
-  PhantomFetterGroupAll_1 = require("./PhantomFetterGroupAll"),
-  PhantomFetterGroupById_1 = require("./PhantomFetterGroupById"),
-  PhantomFetterHandBookAll_1 = require("./PhantomFetterHandBookAll"),
-  PhantomFormationById_1 = require("./PhantomFormationById"),
-  PhantomGainByActivityId_1 = require("./PhantomGainByActivityId"),
-  PhantomGainById_1 = require("./PhantomGainById"),
-  PhantomGrowthByGrowthIdAndLevel_1 = require("./PhantomGrowthByGrowthIdAndLevel"),
-  PhantomHandBookAll_1 = require("./PhantomHandBookAll"),
-  PhantomHandBookById_1 = require("./PhantomHandBookById"),
-  PhantomHandBookPageAll_1 = require("./PhantomHandBookPageAll"),
-  PhantomItemAll_1 = require("./PhantomItemAll"),
-  PhantomItemByItemId_1 = require("./PhantomItemByItemId"),
-  PhantomItemByMonsterId_1 = require("./PhantomItemByMonsterId"),
-  PhantomLevelByGroupId_1 = require("./PhantomLevelByGroupId"),
-  PhantomLevelByGroupIdAndLevel_1 = require("./PhantomLevelByGroupIdAndLevel"),
-  PhantomMainPropItemById_1 = require("./PhantomMainPropItemById"),
-  PhantomMainPropertyById_1 = require("./PhantomMainPropertyById"),
-  PhantomMainPropertyByRandGroupId_1 = require("./PhantomMainPropertyByRandGroupId"),
-  PhantomQualityByQuality_1 = require("./PhantomQualityByQuality"),
-  PhantomRarityAll_1 = require("./PhantomRarityAll"),
-  PhantomRarityByRare_1 = require("./PhantomRarityByRare"),
-  PhantomSkillById_1 = require("./PhantomSkillById"),
-  PhantomSkillByPhantomSkillId_1 = require("./PhantomSkillByPhantomSkillId"),
-  PhantomSubPropertyById_1 = require("./PhantomSubPropertyById"),
-  PhantomSubPropertyByPropId_1 = require("./PhantomSubPropertyByPropId"),
-  PhantomWildItemAll_1 = require("./PhantomWildItemAll"),
-  PhantomWildItemByItemId_1 = require("./PhantomWildItemByItemId"),
-  PhonographAlbumAll_1 = require("./PhonographAlbumAll"),
-  PhonographAlbumById_1 = require("./PhonographAlbumById"),
-  PhonographMusicAll_1 = require("./PhonographMusicAll"),
-  PhonographMusicById_1 = require("./PhonographMusicById"),
-  PhotoFilterAll_1 = require("./PhotoFilterAll"),
-  PhotoFilterById_1 = require("./PhotoFilterById"),
-  PhotoMemoryActivityById_1 = require("./PhotoMemoryActivityById"),
-  PhotoMemoryCollectById_1 = require("./PhotoMemoryCollectById"),
-  PhotoMemoryCollectByTopicID_1 = require("./PhotoMemoryCollectByTopicID"),
-  PhotoMemoryTopicAll_1 = require("./PhotoMemoryTopicAll"),
-  PhotoMemoryTopicById_1 = require("./PhotoMemoryTopicById"),
-  PhotoMontageById_1 = require("./PhotoMontageById"),
-  PhotoMontageByRoleId_1 = require("./PhotoMontageByRoleId"),
-  PhotoMontageByRoleIdAndMainAnimInstanceType_1 = require("./PhotoMontageByRoleIdAndMainAnimInstanceType"),
-  PhotoSetupAll_1 = require("./PhotoSetupAll"),
-  PhotoSetupByValueType_1 = require("./PhotoSetupByValueType"),
-  PhotographHandBookAll_1 = require("./PhotographHandBookAll"),
-  PhotographHandBookById_1 = require("./PhotographHandBookById"),
-  PhotographHandBookByType_1 = require("./PhotographHandBookByType"),
-  PhysicsAssetConfigById_1 = require("./PhysicsAssetConfigById"),
-  PhysicsAssetConfigByIdWithDefaultId_1 = require("./PhysicsAssetConfigByIdWithDefaultId"),
-  PlatformIconById_1 = require("./PlatformIconById"),
-  PlayStationActivityConfigAll_1 = require("./PlayStationActivityConfigAll"),
-  PlayerExpByPlayerLevel_1 = require("./PlayerExpByPlayerLevel"),
-  PlayerExpByPlayerLevelArea_1 = require("./PlayerExpByPlayerLevelArea"),
-  PlayerHeadReAll_1 = require("./PlayerHeadReAll"),
-  PlayerHeadReById_1 = require("./PlayerHeadReById"),
-  PlayerStateRestrictionById_1 = require("./PlayerStateRestrictionById"),
-  PlayerTitleAll_1 = require("./PlayerTitleAll"),
-  PlayerTitleById_1 = require("./PlayerTitleById"),
-  PlotAudioById_1 = require("./PlotAudioById"),
-  PlotGuestByGuestID_1 = require("./PlotGuestByGuestID"),
-  PlotHandBookConfigAll_1 = require("./PlotHandBookConfigAll"),
-  PlotHandBookConfigByQuestId_1 = require("./PlotHandBookConfigByQuestId"),
-  PlotTypeAll_1 = require("./PlotTypeAll"),
-  PlotTypeById_1 = require("./PlotTypeById"),
-  PopularityAll_1 = require("./PopularityAll"),
-  PreOpenDetectionAll_1 = require("./PreOpenDetectionAll"),
-  PreOpenDetectionById_1 = require("./PreOpenDetectionById"),
-  PrefabConfigById_1 = require("./PrefabConfigById"),
-  PrefabRichTextDataById_1 = require("./PrefabRichTextDataById"),
-  PrefabTextItemAll_1 = require("./PrefabTextItemAll"),
-  PrefabTextItemByItemId_1 = require("./PrefabTextItemByItemId"),
-  PrefabTextItemByPrefabPathHash_1 = require("./PrefabTextItemByPrefabPathHash"),
-  PreheatBonusAll_1 = require("./PreheatBonusAll"),
-  PreheatBonusById_1 = require("./PreheatBonusById"),
-  PreheatQuestTextAll_1 = require("./PreheatQuestTextAll"),
-  PreheatQuestTextById_1 = require("./PreheatQuestTextById"),
-  PreheatSignReAll_1 = require("./PreheatSignReAll"),
-  PreheatSignReById_1 = require("./PreheatSignReById"),
-  PreheatVoteAll_1 = require("./PreheatVoteAll"),
-  PreheatVoteById_1 = require("./PreheatVoteById"),
-  PreviewItemAll_1 = require("./PreviewItemAll"),
-  PreviewItemById_1 = require("./PreviewItemById"),
-  PropRewardConfById_1 = require("./PropRewardConfById"),
-  PropertyIndexAll_1 = require("./PropertyIndexAll"),
-  PropertyIndexById_1 = require("./PropertyIndexById"),
-  PunishReportById_1 = require("./PunishReportById"),
-  QualityIconTagById_1 = require("./QualityIconTagById"),
-  QualityInfoAll_1 = require("./QualityInfoAll"),
-  QualityInfoById_1 = require("./QualityInfoById"),
-  QuestById_1 = require("./QuestById"),
-  QuestChapterById_1 = require("./QuestChapterById"),
-  QuestDataById_1 = require("./QuestDataById"),
-  QuestMainTypeById_1 = require("./QuestMainTypeById"),
-  QuestNodeDataByKey_1 = require("./QuestNodeDataByKey"),
-  QuestRefVideoConfigAll_1 = require("./QuestRefVideoConfigAll"),
-  QuestReviewEntryAll_1 = require("./QuestReviewEntryAll"),
-  QuestReviewEntryById_1 = require("./QuestReviewEntryById"),
-  QuestReviewLineById_1 = require("./QuestReviewLineById"),
-  QuestReviewNodeById_1 = require("./QuestReviewNodeById"),
-  QuestReviewNodeByQuestLine_1 = require("./QuestReviewNodeByQuestLine"),
-  QuestReviewTabById_1 = require("./QuestReviewTabById"),
-  QuestReviewTreeById_1 = require("./QuestReviewTreeById"),
-  QuestTagById_1 = require("./QuestTagById"),
-  QuestTrackingConfigAll_1 = require("./QuestTrackingConfigAll"),
-  QuestTrackingConfigById_1 = require("./QuestTrackingConfigById"),
-  QuestTypeAll_1 = require("./QuestTypeAll"),
-  QuestTypeById_1 = require("./QuestTypeById"),
-  QuestTypeByMainId_1 = require("./QuestTypeByMainId"),
-  QuickChatAll_1 = require("./QuickChatAll"),
-  RacingBetConversionRateById_1 = require("./RacingBetConversionRateById"),
-  RacingBetConversionRateBySeasonId_1 = require("./RacingBetConversionRateBySeasonId"),
-  RacingBetMapPointById_1 = require("./RacingBetMapPointById"),
-  RacingBetMapPointBySeasonId_1 = require("./RacingBetMapPointBySeasonId"),
-  RacingBetRankOpenTimeById_1 = require("./RacingBetRankOpenTimeById"),
-  RacingBetsBulletScreenById_1 = require("./RacingBetsBulletScreenById"),
-  RacingBetsBulletScreenBySeasonId_1 = require("./RacingBetsBulletScreenBySeasonId"),
-  RacingBetsGroupMatchById_1 = require("./RacingBetsGroupMatchById"),
-  RacingBetsGroupMatchBySeasonId_1 = require("./RacingBetsGroupMatchBySeasonId"),
-  RacingBetsLegMatchesById_1 = require("./RacingBetsLegMatchesById"),
-  RacingBetsLegMatchesByMatchId_1 = require("./RacingBetsLegMatchesByMatchId"),
-  RacingBetsRewardById_1 = require("./RacingBetsRewardById"),
-  RacingBetsRewardBySeasonId_1 = require("./RacingBetsRewardBySeasonId"),
-  RacingBetsSeasonById_1 = require("./RacingBetsSeasonById"),
-  RacingBettingGearById_1 = require("./RacingBettingGearById"),
-  RacingBettingGearBySeasonId_1 = require("./RacingBettingGearBySeasonId"),
-  RecordConfigById_1 = require("./RecordConfigById"),
-  RedDotByRelativeName_1 = require("./RedDotByRelativeName"),
-  RefineRecommendAll_1 = require("./RefineRecommendAll"),
-  RefineRecommendByCost_1 = require("./RefineRecommendByCost"),
-  RegressBaseAll_1 = require("./RegressBaseAll"),
-  RegressBaseByEntryType_1 = require("./RegressBaseByEntryType"),
-  RegressBonusRewardAll_1 = require("./RegressBonusRewardAll"),
-  RegressBonusRewardByGrade_1 = require("./RegressBonusRewardByGrade"),
-  RegressBonusRewardByIdAndGrade_1 = require("./RegressBonusRewardByIdAndGrade"),
-  RegressDoubleDropAll_1 = require("./RegressDoubleDropAll"),
-  RegressDoubleDropByGrade_1 = require("./RegressDoubleDropByGrade"),
-  RegressDoubleDropById_1 = require("./RegressDoubleDropById"),
-  RegressEntryAll_1 = require("./RegressEntryAll"),
-  RegressEntryByEntryType_1 = require("./RegressEntryByEntryType"),
-  RegressInvestigationAll_1 = require("./RegressInvestigationAll"),
-  RegressInvestigationByInvestigationTypeAndIfGlobal_1 = require("./RegressInvestigationByInvestigationTypeAndIfGlobal"),
-  RegressQuestAll_1 = require("./RegressQuestAll"),
-  RegressQuestById_1 = require("./RegressQuestById"),
-  RegressRewardsById_1 = require("./RegressRewardsById"),
-  RegressSignRewardAll_1 = require("./RegressSignRewardAll"),
-  RegressSignRewardByGradeAndActivityId_1 = require("./RegressSignRewardByGradeAndActivityId"),
-  ReportPlayerInfoAll_1 = require("./ReportPlayerInfoAll"),
-  ResElementLevelGainByTargetType_1 = require("./ResElementLevelGainByTargetType"),
-  ResonantChainByGroupId_1 = require("./ResonantChainByGroupId"),
-  ResonantChainByGroupIdAndGroupIndex_1 = require("./ResonantChainByGroupIdAndGroupIndex"),
-  ResonantChainByGroupIdAndNodeType_1 = require("./ResonantChainByGroupIdAndNodeType"),
-  ResonantChainById_1 = require("./ResonantChainById"),
-  ReviveById_1 = require("./ReviveById"),
-  RewardConfigById_1 = require("./RewardConfigById"),
-  RewardViewFromSourceAll_1 = require("./RewardViewFromSourceAll"),
-  RewardViewFromSourceBySourceId_1 = require("./RewardViewFromSourceBySourceId"),
-  RiskHarvestActivityInfoByActivityId_1 = require("./RiskHarvestActivityInfoByActivityId"),
-  RiskHarvestArtifactAll_1 = require("./RiskHarvestArtifactAll"),
-  RiskHarvestArtifactById_1 = require("./RiskHarvestArtifactById"),
-  RiskHarvestBuffGroupAll_1 = require("./RiskHarvestBuffGroupAll"),
-  RiskHarvestBuffGroupByActivityId_1 = require("./RiskHarvestBuffGroupByActivityId"),
-  RiskHarvestBuffGroupById_1 = require("./RiskHarvestBuffGroupById"),
-  RiskHarvestBuffRewardAll_1 = require("./RiskHarvestBuffRewardAll"),
-  RiskHarvestBuffRewardById_1 = require("./RiskHarvestBuffRewardById"),
-  RiskHarvestDifficultyById_1 = require("./RiskHarvestDifficultyById"),
-  RiskHarvestInstAll_1 = require("./RiskHarvestInstAll"),
-  RiskHarvestInstByActivityId_1 = require("./RiskHarvestInstByActivityId"),
-  RiskHarvestInstById_1 = require("./RiskHarvestInstById"),
-  RiskHarvestInstByInstanceID_1 = require("./RiskHarvestInstByInstanceID"),
-  RiskHarvestScoreRewardAll_1 = require("./RiskHarvestScoreRewardAll"),
-  RiskHarvestScoreRewardByActivityId_1 = require("./RiskHarvestScoreRewardByActivityId"),
-  RiskHarvestScoreRewardById_1 = require("./RiskHarvestScoreRewardById"),
-  RogueActivityById_1 = require("./RogueActivityById"),
-  RogueAffixById_1 = require("./RogueAffixById"),
-  RogueBossInstanceById_1 = require("./RogueBossInstanceById"),
-  RogueBuffPoolById_1 = require("./RogueBuffPoolById"),
-  RogueCharacterById_1 = require("./RogueCharacterById"),
-  RogueCharacterBuffById_1 = require("./RogueCharacterBuffById"),
-  RogueCurrencyById_1 = require("./RogueCurrencyById"),
-  RogueEffectById_1 = require("./RogueEffectById"),
-  RogueEventById_1 = require("./RogueEventById"),
-  RogueLimitTimeRewardById_1 = require("./RogueLimitTimeRewardById"),
-  RogueParamById_1 = require("./RogueParamById"),
-  RoguePokemonById_1 = require("./RoguePokemonById"),
-  RoguePopularEntrieArgAll_1 = require("./RoguePopularEntrieArgAll"),
-  RoguePopularEntrieArgById_1 = require("./RoguePopularEntrieArgById"),
-  RoguePopularEntrieArgBySeasonIdAndInstId_1 = require("./RoguePopularEntrieArgBySeasonIdAndInstId"),
-  RogueQualityConfigById_1 = require("./RogueQualityConfigById"),
-  RogueResAffixById_1 = require("./RogueResAffixById"),
-  RogueResBondAll_1 = require("./RogueResBondAll"),
-  RogueResBondById_1 = require("./RogueResBondById"),
-  RogueResBondRoleAll_1 = require("./RogueResBondRoleAll"),
-  RogueResBondRoleByRoleId_1 = require("./RogueResBondRoleByRoleId"),
-  RogueResBuffPoolById_1 = require("./RogueResBuffPoolById"),
-  RogueResCharacterById_1 = require("./RogueResCharacterById"),
-  RogueResCharacterBuffById_1 = require("./RogueResCharacterBuffById"),
-  RogueResCollectionAll_1 = require("./RogueResCollectionAll"),
-  RogueResCollectionById_1 = require("./RogueResCollectionById"),
-  RogueResCollectionByIdKey_1 = require("./RogueResCollectionByIdKey"),
-  RogueResCollectionByIndex_1 = require("./RogueResCollectionByIndex"),
-  RogueResCollectionRuleById_1 = require("./RogueResCollectionRuleById"),
-  RogueResCurrencyById_1 = require("./RogueResCurrencyById"),
-  RogueResDungeonConfigById_1 = require("./RogueResDungeonConfigById"),
-  RogueResEffectById_1 = require("./RogueResEffectById"),
-  RogueResEffectTagById_1 = require("./RogueResEffectTagById"),
-  RogueResEndAll_1 = require("./RogueResEndAll"),
-  RogueResEndById_1 = require("./RogueResEndById"),
-  RogueResEndAwardById_1 = require("./RogueResEndAwardById"),
-  RogueResEventById_1 = require("./RogueResEventById"),
-  RogueResEventBgById_1 = require("./RogueResEventBgById"),
-  RogueResEventBgmById_1 = require("./RogueResEventBgmById"),
-  RogueResEventCueByType_1 = require("./RogueResEventCueByType"),
-  RogueResEventPlotByPlotId_1 = require("./RogueResEventPlotByPlotId"),
-  RogueResEventStepById_1 = require("./RogueResEventStepById"),
-  RogueResGlobalParamAll_1 = require("./RogueResGlobalParamAll"),
-  RogueResGridEventById_1 = require("./RogueResGridEventById"),
-  RogueResGridExploreByInstId_1 = require("./RogueResGridExploreByInstId"),
-  RogueResGridMapTypeById_1 = require("./RogueResGridMapTypeById"),
-  RogueResInstGridById_1 = require("./RogueResInstGridById"),
-  RogueResMoodRuleById_1 = require("./RogueResMoodRuleById"),
-  RogueResPokemonById_1 = require("./RogueResPokemonById"),
-  RogueResQualityConfigById_1 = require("./RogueResQualityConfigById"),
-  RogueResRoomPoolById_1 = require("./RogueResRoomPoolById"),
-  RogueResRoomTypeById_1 = require("./RogueResRoomTypeById"),
-  RogueResSkillLvRuleAll_1 = require("./RogueResSkillLvRuleAll"),
-  RogueResSortById_1 = require("./RogueResSortById"),
-  RogueResSynergyTypeAll_1 = require("./RogueResSynergyTypeAll"),
-  RogueResSynergyTypeById_1 = require("./RogueResSynergyTypeById"),
-  RogueResTalentTreeAll_1 = require("./RogueResTalentTreeAll"),
-  RogueResTalentTreeById_1 = require("./RogueResTalentTreeById"),
-  RogueResTalentTreeDescById_1 = require("./RogueResTalentTreeDescById"),
-  RogueResTaskById_1 = require("./RogueResTaskById"),
-  RogueResTaskThemeById_1 = require("./RogueResTaskThemeById"),
-  RogueResTeamLvRuleAll_1 = require("./RogueResTeamLvRuleAll"),
-  RogueResThemeAll_1 = require("./RogueResThemeAll"),
-  RogueResThemeById_1 = require("./RogueResThemeById"),
-  RogueRoomPoolById_1 = require("./RogueRoomPoolById"),
-  RogueRoomShowConfigById_1 = require("./RogueRoomShowConfigById"),
-  RogueRoomTypeById_1 = require("./RogueRoomTypeById"),
-  RogueSeasonAll_1 = require("./RogueSeasonAll"),
-  RogueSeasonById_1 = require("./RogueSeasonById"),
-  RogueSeasonRewardBySeasonId_1 = require("./RogueSeasonRewardBySeasonId"),
-  RogueTalentTreeAll_1 = require("./RogueTalentTreeAll"),
-  RogueTalentTreeById_1 = require("./RogueTalentTreeById"),
-  RogueTalentTreeDescById_1 = require("./RogueTalentTreeDescById"),
-  RogueTokenBySeasonId_1 = require("./RogueTokenBySeasonId"),
-  RogueWeekQualityConfigAll_1 = require("./RogueWeekQualityConfigAll"),
-  RogueWeekQualityConfigById_1 = require("./RogueWeekQualityConfigById"),
-  RogueWeeklyBuffDescAll_1 = require("./RogueWeeklyBuffDescAll"),
-  RogueWeeklyBuffDescById_1 = require("./RogueWeeklyBuffDescById"),
-  RogueWeeklyBuffPoolAll_1 = require("./RogueWeeklyBuffPoolAll"),
-  RogueWeeklyBuffPoolById_1 = require("./RogueWeeklyBuffPoolById"),
-  RogueWeeklyCycleById_1 = require("./RogueWeeklyCycleById"),
-  RogueWeeklyParamAll_1 = require("./RogueWeeklyParamAll"),
-  RogueWeeklyParamById_1 = require("./RogueWeeklyParamById"),
-  RogueWeeklyRewardByCycleId_1 = require("./RogueWeeklyRewardByCycleId"),
-  RogueWeeklyRewardById_1 = require("./RogueWeeklyRewardById"),
-  RogueWeeklyRoomPoolAll_1 = require("./RogueWeeklyRoomPoolAll"),
-  RogueWeeklyRoomPoolById_1 = require("./RogueWeeklyRoomPoolById"),
-  RogueWeeklyRoomTypeAll_1 = require("./RogueWeeklyRoomTypeAll"),
-  RogueWeeklyRoomTypeById_1 = require("./RogueWeeklyRoomTypeById"),
-  RogueWhiteCatById_1 = require("./RogueWhiteCatById"),
-  RogueWhiteCatBossRewardById_1 = require("./RogueWhiteCatBossRewardById"),
-  RogueWhiteCatInstById_1 = require("./RogueWhiteCatInstById"),
-  RogueWhiteCatRewardById_1 = require("./RogueWhiteCatRewardById"),
-  RoleAnimAudioByRoleId_1 = require("./RoleAnimAudioByRoleId"),
-  RoleAudioById_1 = require("./RoleAudioById"),
-  RoleAudioRulesById_1 = require("./RoleAudioRulesById"),
-  RoleBattleViewInfoAll_1 = require("./RoleBattleViewInfoAll"),
-  RoleBattleViewInfoById_1 = require("./RoleBattleViewInfoById"),
-  RoleBirthdayAll_1 = require("./RoleBirthdayAll"),
-  RoleBirthdayById_1 = require("./RoleBirthdayById"),
-  RoleBreachByBreachGroupId_1 = require("./RoleBreachByBreachGroupId"),
-  RoleBreachByBreachGroupIdAndBreachLevel_1 = require("./RoleBreachByBreachGroupIdAndBreachLevel"),
-  RoleDescriptionById_1 = require("./RoleDescriptionById"),
-  RoleDevelopCurveByGroupId_1 = require("./RoleDevelopCurveByGroupId"),
-  RoleDevelopTypeById_1 = require("./RoleDevelopTypeById"),
-  RoleExpItemAll_1 = require("./RoleExpItemAll"),
-  RoleExpItemById_1 = require("./RoleExpItemById"),
-  RoleGuideActivityById_1 = require("./RoleGuideActivityById"),
-  RoleIconTagById_1 = require("./RoleIconTagById"),
-  RoleInfluenceAll_1 = require("./RoleInfluenceAll"),
-  RoleInfluenceById_1 = require("./RoleInfluenceById"),
-  RoleInfoAll_1 = require("./RoleInfoAll"),
-  RoleInfoById_1 = require("./RoleInfoById"),
-  RoleInfoByRoleType_1 = require("./RoleInfoByRoleType"),
-  RoleLevelConsumeByConsumeGroupIdAndLevel_1 = require("./RoleLevelConsumeByConsumeGroupIdAndLevel"),
-  RoleMorphAll_1 = require("./RoleMorphAll"),
-  RoleMorphById_1 = require("./RoleMorphById"),
-  RoleMorphByRoleId_1 = require("./RoleMorphByRoleId"),
-  RoleMorphAudioRulesAll_1 = require("./RoleMorphAudioRulesAll"),
-  RoleMorphAudioRulesByModelId_1 = require("./RoleMorphAudioRulesByModelId"),
-  RolePropertyGrowthByLevelAndBreachLevel_1 = require("./RolePropertyGrowthByLevelAndBreachLevel"),
-  RoleQualityInfoById_1 = require("./RoleQualityInfoById"),
-  RoleQuestById_1 = require("./RoleQuestById"),
-  RoleQuestByRoleId_1 = require("./RoleQuestByRoleId"),
-  RoleQuestByRoleIdAll_1 = require("./RoleQuestByRoleIdAll"),
-  RoleSkillInputById_1 = require("./RoleSkillInputById"),
-  RoleSkinAll_1 = require("./RoleSkinAll"),
-  RoleSkinById_1 = require("./RoleSkinById"),
-  RoleSkinByRoleId_1 = require("./RoleSkinByRoleId"),
-  RoleSkinBirthdayById_1 = require("./RoleSkinBirthdayById"),
-  RoleSkinTrialActivityById_1 = require("./RoleSkinTrialActivityById"),
-  RoleSkinTrialInfoById_1 = require("./RoleSkinTrialInfoById"),
-  RoleSkinTrialInfoByRoleId_1 = require("./RoleSkinTrialInfoByRoleId"),
-  RoleSkinTrialUiConfigById_1 = require("./RoleSkinTrialUiConfigById"),
-  RoleTagAll_1 = require("./RoleTagAll"),
-  RoleTagById_1 = require("./RoleTagById"),
-  RoleTrainingDegreeByDifficultyLevel_1 = require("./RoleTrainingDegreeByDifficultyLevel"),
-  RoleTrialActivityById_1 = require("./RoleTrialActivityById"),
-  RoleTrialInfoById_1 = require("./RoleTrialInfoById"),
-  RoleTrialRoleConfigByRoleId_1 = require("./RoleTrialRoleConfigByRoleId"),
-  RoleTrialUiConfigById_1 = require("./RoleTrialUiConfigById"),
-  RougeMiraclecreationById_1 = require("./RougeMiraclecreationById"),
-  RougePopularEntrieAll_1 = require("./RougePopularEntrieAll"),
-  RougePopularEntrieById_1 = require("./RougePopularEntrieById"),
-  RougeResMiraclecreationById_1 = require("./RougeResMiraclecreationById"),
-  ScoreRewardById_1 = require("./ScoreRewardById"),
-  ScratchCardActivityReById_1 = require("./ScratchCardActivityReById"),
-  ScratchCardRewardReById_1 = require("./ScratchCardRewardReById"),
-  ScratchCardRewardReByType_1 = require("./ScratchCardRewardReByType"),
-  ScratchCardRoundReByRoundId_1 = require("./ScratchCardRoundReByRoundId"),
-  ScratchCardTimesReByTaskId_1 = require("./ScratchCardTimesReByTaskId"),
-  SecondaryGuideDataById_1 = require("./SecondaryGuideDataById"),
-  ServerLimitAll_1 = require("./ServerLimitAll"),
-  ServerLimitById_1 = require("./ServerLimitById"),
-  SetAccountAll_1 = require("./SetAccountAll"),
-  SetAccountById_1 = require("./SetAccountById"),
-  SettleFlagAll_1 = require("./SettleFlagAll"),
-  SettleFlagById_1 = require("./SettleFlagById"),
-  SettleRewardAll_1 = require("./SettleRewardAll"),
-  SettleRewardByActivityId_1 = require("./SettleRewardByActivityId"),
-  SharePlatformAll_1 = require("./SharePlatformAll"),
-  SharePlatformById_1 = require("./SharePlatformById"),
-  ShareRewardById_1 = require("./ShareRewardById"),
-  ShieldById_1 = require("./ShieldById"),
-  ShopFixedByShopId_1 = require("./ShopFixedByShopId"),
-  ShopFixedByShopIdAndId_1 = require("./ShopFixedByShopIdAndId"),
-  ShopInfoById_1 = require("./ShopInfoById"),
-  SignRewardByActivityId_1 = require("./SignRewardByActivityId"),
-  SignalDecodeGamePlayById_1 = require("./SignalDecodeGamePlayById"),
-  SignalDecodeTabColorById_1 = require("./SignalDecodeTabColorById"),
-  SignalDecodeWaveformById_1 = require("./SignalDecodeWaveformById"),
-  SilentAreaDetectionAll_1 = require("./SilentAreaDetectionAll"),
-  SilentAreaDetectionById_1 = require("./SilentAreaDetectionById"),
-  SkillById_1 = require("./SkillById"),
-  SkillBySkillGroupId_1 = require("./SkillBySkillGroupId"),
-  SkillButtonByRoleId_1 = require("./SkillButtonByRoleId"),
-  SkillButtonCustomById_1 = require("./SkillButtonCustomById"),
-  SkillButtonEffectById_1 = require("./SkillButtonEffectById"),
-  SkillButtonIndexById_1 = require("./SkillButtonIndexById"),
-  SkillButtonTextAll_1 = require("./SkillButtonTextAll"),
-  SkillButtonTextById_1 = require("./SkillButtonTextById"),
-  SkillCommonButtonAll_1 = require("./SkillCommonButtonAll"),
-  SkillConditionById_1 = require("./SkillConditionById"),
-  SkillDescriptionById_1 = require("./SkillDescriptionById"),
-  SkillDescriptionBySkillLevelGroupId_1 = require("./SkillDescriptionBySkillLevelGroupId"),
-  SkillFollowerButtonByPbDataId_1 = require("./SkillFollowerButtonByPbDataId"),
-  SkillIconByTag_1 = require("./SkillIconByTag"),
-  SkillInputById_1 = require("./SkillInputById"),
-  SkillLevelBySkillLevelGroupId_1 = require("./SkillLevelBySkillLevelGroupId"),
-  SkillLevelBySkillLevelGroupIdAndSkillId_1 = require("./SkillLevelBySkillLevelGroupIdAndSkillId"),
-  SkillPriorityButtonAll_1 = require("./SkillPriorityButtonAll"),
-  SkillTreeById_1 = require("./SkillTreeById"),
-  SkillTreeByNodeGroup_1 = require("./SkillTreeByNodeGroup"),
-  SkillTreeByNodeGroupAndNodeIndex_1 = require("./SkillTreeByNodeGroupAndNodeIndex"),
-  SkillTreeByNodeIndex_1 = require("./SkillTreeByNodeIndex"),
-  SkillTypeById_1 = require("./SkillTypeById"),
-  SkillVehicleButtonByPbDataId_1 = require("./SkillVehicleButtonByPbDataId"),
-  SkyboxById_1 = require("./SkyboxById"),
-  SlashAndTowerCfgById_1 = require("./SlashAndTowerCfgById"),
-  SlashAndTowerCfgBySeason_1 = require("./SlashAndTowerCfgBySeason"),
-  SlashAndTowerRewardByBelongToSeason_1 = require("./SlashAndTowerRewardByBelongToSeason"),
-  SlashBuffToItemAll_1 = require("./SlashBuffToItemAll"),
-  SlashBuffToItemById_1 = require("./SlashBuffToItemById"),
-  SlashBuffToItemByItemId_1 = require("./SlashBuffToItemByItemId"),
-  SlashBuffToItemByItemIdAndSeason_1 = require("./SlashBuffToItemByItemIdAndSeason"),
-  SlashBuffToItemByItemIdList_1 = require("./SlashBuffToItemByItemIdList"),
-  SlashBuffToItemBySeason_1 = require("./SlashBuffToItemBySeason"),
-  SlashTowerShowStageAll_1 = require("./SlashTowerShowStageAll"),
-  SlashTowerStageInfoByInstId_1 = require("./SlashTowerStageInfoByInstId"),
-  SlashTowerTagInfoById_1 = require("./SlashTowerTagInfoById"),
-  SlideById_1 = require("./SlideById"),
-  SoarById_1 = require("./SoarById"),
-  SoarChallengeAll_1 = require("./SoarChallengeAll"),
-  SoarChallengeById_1 = require("./SoarChallengeById"),
-  SortById_1 = require("./SortById"),
-  SortRuleByIdAndDataId_1 = require("./SortRuleByIdAndDataId"),
-  SoundAreaPlayInfoAll_1 = require("./SoundAreaPlayInfoAll"),
-  SoundAreaPlayInfoById_1 = require("./SoundAreaPlayInfoById"),
-  SoundBoxMarkByMarkId_1 = require("./SoundBoxMarkByMarkId"),
-  SpeakerById_1 = require("./SpeakerById"),
-  SpeakerLang_1 = require("./SpeakerLang"),
-  SpecialHateAndSenseById_1 = require("./SpecialHateAndSenseById"),
-  SpecialItemById_1 = require("./SpecialItemById"),
-  SpineBackgroundById_1 = require("./SpineBackgroundById"),
-  SplashScreenAll_1 = require("./SplashScreenAll"),
-  SplashScreenById_1 = require("./SplashScreenById"),
-  SpringChatById_1 = require("./SpringChatById"),
-  SpringResourceAll_1 = require("./SpringResourceAll"),
-  SpringResourceById_1 = require("./SpringResourceById"),
-  SpringResourceByRoleType_1 = require("./SpringResourceByRoleType"),
-  SpringRewardAll_1 = require("./SpringRewardAll"),
-  SpringSignAll_1 = require("./SpringSignAll"),
-  SpringSignById_1 = require("./SpringSignById"),
-  StateByStateId_1 = require("./StateByStateId"),
-  StateMachinePreloadByAll_1 = require("./StateMachinePreloadByAll"),
-  StateMachinePreloadByFsmKey_1 = require("./StateMachinePreloadByFsmKey"),
-  StateMachinePreloadById_1 = require("./StateMachinePreloadById"),
-  SubtitleTextByRowNameAndDatatableName_1 = require("./SubtitleTextByRowNameAndDatatableName"),
-  SubtitleTextLang_1 = require("./SubtitleTextLang"),
-  SummonCfgById_1 = require("./SummonCfgById"),
-  SwimById_1 = require("./SwimById"),
-  SwimBuffById_1 = require("./SwimBuffById"),
-  SynthesisFormulaByFormulaItemId_1 = require("./SynthesisFormulaByFormulaItemId"),
-  SynthesisFormulaByFormulaType_1 = require("./SynthesisFormulaByFormulaType"),
-  SynthesisFormulaById_1 = require("./SynthesisFormulaById"),
-  SynthesisLevelAll_1 = require("./SynthesisLevelAll"),
-  TakeWeedsDifficultyById_1 = require("./TakeWeedsDifficultyById"),
-  TalkOptionIconById_1 = require("./TalkOptionIconById"),
-  TaskMarkAll_1 = require("./TaskMarkAll"),
-  TaskMarkByMarkId_1 = require("./TaskMarkByMarkId"),
-  TeamConfigById_1 = require("./TeamConfigById"),
-  TeamParKOurCfgAll_1 = require("./TeamParKOurCfgAll"),
-  TeamParKOurCfgById_1 = require("./TeamParKOurCfgById"),
-  TeamParKOurRewardAll_1 = require("./TeamParKOurRewardAll"),
-  TeamParKOurRewardById_1 = require("./TeamParKOurRewardById"),
-  TeleporterById_1 = require("./TeleporterById"),
-  TemplateConfigAll_1 = require("./TemplateConfigAll"),
-  TemplateConfigByBlueprintType_1 = require("./TemplateConfigByBlueprintType"),
-  TemplateConfigById_1 = require("./TemplateConfigById"),
-  TemplateDataPreloadByAll_1 = require("./TemplateDataPreloadByAll"),
-  TemplateDataPreloadById_1 = require("./TemplateDataPreloadById"),
-  TemporaryTeleportMarkByMarkId_1 = require("./TemporaryTeleportMarkByMarkId"),
-  TermById_1 = require("./TermById"),
-  TermByKey_1 = require("./TermByKey"),
-  TextById_1 = require("./TextById"),
-  TimeOfDayById_1 = require("./TimeOfDayById"),
-  TimePointRewardActivityByActivityId_1 = require("./TimePointRewardActivityByActivityId"),
-  TimePointRewardActivityById_1 = require("./TimePointRewardActivityById"),
-  TimePointRewardConfigByActivityId_1 = require("./TimePointRewardConfigByActivityId"),
-  ToughCalcRatioById_1 = require("./ToughCalcRatioById"),
-  TowerBuffById_1 = require("./TowerBuffById"),
-  TowerConfigAll_1 = require("./TowerConfigAll"),
-  TowerConfigById_1 = require("./TowerConfigById"),
-  TowerConfigBySeason_1 = require("./TowerConfigBySeason"),
-  TowerDefenceInstanceAll_1 = require("./TowerDefenceInstanceAll"),
-  TowerDefenceInstanceById_1 = require("./TowerDefenceInstanceById"),
-  TowerDefenceInstanceByInstanceId_1 = require("./TowerDefenceInstanceByInstanceId"),
-  TowerDefenceMapMarkAll_1 = require("./TowerDefenceMapMarkAll"),
-  TowerDefenceMapMarkByActivityId_1 = require("./TowerDefenceMapMarkByActivityId"),
-  TowerDefencePhantomAll_1 = require("./TowerDefencePhantomAll"),
-  TowerDefencePhantomById_1 = require("./TowerDefencePhantomById"),
-  TowerDefencePhantomLevelAll_1 = require("./TowerDefencePhantomLevelAll"),
-  TowerDefencePhantomLevelByGroupId_1 = require("./TowerDefencePhantomLevelByGroupId"),
-  TowerDefencePhantomLevelById_1 = require("./TowerDefencePhantomLevelById"),
-  TowerDefenceRewardAll_1 = require("./TowerDefenceRewardAll"),
-  TowerDefenceRewardById_1 = require("./TowerDefenceRewardById"),
-  TowerDefenseConfigById_1 = require("./TowerDefenseConfigById"),
-  TowerDefenseSettleById_1 = require("./TowerDefenseSettleById"),
-  TowerDifficultyByDifficulty_1 = require("./TowerDifficultyByDifficulty"),
-  TowerGuideById_1 = require("./TowerGuideById"),
-  TowerTargetById_1 = require("./TowerTargetById"),
-  TrackMoonActivityById_1 = require("./TrackMoonActivityById"),
-  TrackMoonActivityRewardAll_1 = require("./TrackMoonActivityRewardAll"),
-  TrackMoonActivityRewardById_1 = require("./TrackMoonActivityRewardById"),
-  TrackMoonEntrustById_1 = require("./TrackMoonEntrustById"),
-  TrackMoonHandbookRewardAll_1 = require("./TrackMoonHandbookRewardAll"),
-  TrackMoonHandbookRewardById_1 = require("./TrackMoonHandbookRewardById"),
-  TrackMoonMemoryAll_1 = require("./TrackMoonMemoryAll"),
-  TrackMoonMemoryByClassify_1 = require("./TrackMoonMemoryByClassify"),
-  TrackMoonMemoryById_1 = require("./TrackMoonMemoryById"),
-  TrackMoonPhaseActivityById_1 = require("./TrackMoonPhaseActivityById"),
-  TrackMoonTargetById_1 = require("./TrackMoonTargetById"),
-  TrackMoonTargetTypeAll_1 = require("./TrackMoonTargetTypeAll"),
-  TrailPhantomPropById_1 = require("./TrailPhantomPropById"),
-  TrainRoleDialogByRoleIdAndTrainType_1 = require("./TrainRoleDialogByRoleIdAndTrainType"),
-  TravelPhantomQuestByActivityId_1 = require("./TravelPhantomQuestByActivityId"),
-  TravelPhantomQuestById_1 = require("./TravelPhantomQuestById"),
-  TravelPhantomQuestByMapMarkId_1 = require("./TravelPhantomQuestByMapMarkId"),
-  TravelTaskByActivityId_1 = require("./TravelTaskByActivityId"),
-  TravelTaskByTaskId_1 = require("./TravelTaskByTaskId"),
-  TravelTaskAreaByActivityId_1 = require("./TravelTaskAreaByActivityId"),
-  TravelTaskAreaById_1 = require("./TravelTaskAreaById"),
-  TreasureBoxDetectorMarkByMarkId_1 = require("./TreasureBoxDetectorMarkByMarkId"),
-  TreasureBoxMarkByMarkId_1 = require("./TreasureBoxMarkByMarkId"),
-  TrialPhantomPropItemById_1 = require("./TrialPhantomPropItemById"),
-  TrialRoleInfoAll_1 = require("./TrialRoleInfoAll"),
-  TrialRoleInfoByGroupId_1 = require("./TrialRoleInfoByGroupId"),
-  TrialRoleInfoById_1 = require("./TrialRoleInfoById"),
-  TrialWeaponInfoById_1 = require("./TrialWeaponInfoById"),
-  TurntableActivityByActivityId_1 = require("./TurntableActivityByActivityId"),
-  TurntableAwardsByActivityId_1 = require("./TurntableAwardsByActivityId"),
-  TurntableAwardsById_1 = require("./TurntableAwardsById"),
-  TurntableInfoById_1 = require("./TurntableInfoById"),
-  TurntableTaskByTaskId_1 = require("./TurntableTaskByTaskId"),
-  TypeInfoById_1 = require("./TypeInfoById"),
-  UiCameraMappingAll_1 = require("./UiCameraMappingAll"),
-  UiCameraMappingById_1 = require("./UiCameraMappingById"),
-  UiCameraMappingByViewName_1 = require("./UiCameraMappingByViewName"),
-  UiDynamicTabByChildViewName_1 = require("./UiDynamicTabByChildViewName"),
-  UiDynamicTabById_1 = require("./UiDynamicTabById"),
-  UiDynamicTabByParentViewName_1 = require("./UiDynamicTabByParentViewName"),
-  UiFloatConfigByViewName_1 = require("./UiFloatConfigByViewName"),
-  UiFloatConfigByViewNameIfNull_1 = require("./UiFloatConfigByViewNameIfNull"),
-  UiNormalConfigByViewName_1 = require("./UiNormalConfigByViewName"),
-  UiNormalConfigByViewNameIfNull_1 = require("./UiNormalConfigByViewNameIfNull"),
-  UiPlayItemById_1 = require("./UiPlayItemById"),
-  UiResourceById_1 = require("./UiResourceById"),
-  UiShowByViewName_1 = require("./UiShowByViewName"),
-  UiWeaponVisibleConfigById_1 = require("./UiWeaponVisibleConfigById"),
-  UniversalActivityById_1 = require("./UniversalActivityById"),
-  VideoCaptionByCgName_1 = require("./VideoCaptionByCgName"),
-  VideoDataByCgNameAndGirlOrBoy_1 = require("./VideoDataByCgNameAndGirlOrBoy"),
-  VideoQteByCgName_1 = require("./VideoQteByCgName"),
-  VideoSoundByCgNameAndGirlOrBoy_1 = require("./VideoSoundByCgNameAndGirlOrBoy"),
-  WeaponBreachByBreachId_1 = require("./WeaponBreachByBreachId"),
-  WeaponBreachByBreachIdAndLevel_1 = require("./WeaponBreachByBreachIdAndLevel"),
-  WeaponConfByItemId_1 = require("./WeaponConfByItemId"),
-  WeaponExpItemById_1 = require("./WeaponExpItemById"),
-  WeaponHandBookAll_1 = require("./WeaponHandBookAll"),
-  WeaponHandBookById_1 = require("./WeaponHandBookById"),
-  WeaponHideConfigById_1 = require("./WeaponHideConfigById"),
-  WeaponHideConfigByIdWithZero_1 = require("./WeaponHideConfigByIdWithZero"),
-  WeaponLevelByLevelId_1 = require("./WeaponLevelByLevelId"),
-  WeaponLevelByLevelIdAndLevel_1 = require("./WeaponLevelByLevelIdAndLevel"),
-  WeaponModelTransformById_1 = require("./WeaponModelTransformById"),
-  WeaponPropertyGrowthByCurveIdLevelAndBreachLevel_1 = require("./WeaponPropertyGrowthByCurveIdLevelAndBreachLevel"),
-  WeaponQualityInfoById_1 = require("./WeaponQualityInfoById"),
-  WeaponResonByResonIdAndLevel_1 = require("./WeaponResonByResonIdAndLevel"),
-  WeaponSceneInteractById_1 = require("./WeaponSceneInteractById"),
-  WeaponSkinById_1 = require("./WeaponSkinById"),
-  WeaponSkinByType_1 = require("./WeaponSkinByType"),
-  WeaponVisibleConfigById_1 = require("./WeaponVisibleConfigById"),
-  WeaponVisibleConfigByIdWithZero_1 = require("./WeaponVisibleConfigByIdWithZero"),
-  WeatherById_1 = require("./WeatherById"),
-  WorldLevelById_1 = require("./WorldLevelById"),
-  WorldNewJourneyAll_1 = require("./WorldNewJourneyAll"),
-  WorldNewJourneyById_1 = require("./WorldNewJourneyById");
+  value: true
+});
+exports.ConfigStatement = undefined;
+const CommonParamById_1 = require("../ConfigCommon/CommonParamById");
+const CommonParamLang_1 = require("../ConfigCommon/CommonParamLang");
+const AbnormalDamageConfigByLevel_1 = require("./AbnormalDamageConfigByLevel");
+const AbpMontageDataById_1 = require("./AbpMontageDataById");
+const AbpStateByAbp_1 = require("./AbpStateByAbp");
+const AbyssActivityAll_1 = require("./AbyssActivityAll");
+const AbyssActivityByActivityId_1 = require("./AbyssActivityByActivityId");
+const AbyssCastDescAll_1 = require("./AbyssCastDescAll");
+const AbyssCastDescById_1 = require("./AbyssCastDescById");
+const AbyssInstAll_1 = require("./AbyssInstAll");
+const AbyssInstByActivityId_1 = require("./AbyssInstByActivityId");
+const AbyssInstById_1 = require("./AbyssInstById");
+const AbyssInstByInstId_1 = require("./AbyssInstByInstId");
+const AbyssItemAll_1 = require("./AbyssItemAll");
+const AbyssItemById_1 = require("./AbyssItemById");
+const AbyssLittleRoleAll_1 = require("./AbyssLittleRoleAll");
+const AbyssLittleRoleById_1 = require("./AbyssLittleRoleById");
+const AbyssPluginPropDescAll_1 = require("./AbyssPluginPropDescAll");
+const AbyssPluginPropDescById_1 = require("./AbyssPluginPropDescById");
+const AbyssQualityAll_1 = require("./AbyssQualityAll");
+const AbyssQualityById_1 = require("./AbyssQualityById");
+const AbyssRewardAll_1 = require("./AbyssRewardAll");
+const AbyssRewardById_1 = require("./AbyssRewardById");
+const AbyssRewardTabAll_1 = require("./AbyssRewardTabAll");
+const AbyssRewardTabById_1 = require("./AbyssRewardTabById");
+const AbyssRewardTypeAll_1 = require("./AbyssRewardTypeAll");
+const AbyssRewardTypeById_1 = require("./AbyssRewardTypeById");
+const AbyssRoleLevelAll_1 = require("./AbyssRoleLevelAll");
+const AbyssRoleLevelByGroupId_1 = require("./AbyssRoleLevelByGroupId");
+const AbyssRoleLevelById_1 = require("./AbyssRoleLevelById");
+const AbyssRoleLevelByLevelAndGroupId_1 = require("./AbyssRoleLevelByLevelAndGroupId");
+const AbyssRoleSlotAll_1 = require("./AbyssRoleSlotAll");
+const AbyssRoleSlotById_1 = require("./AbyssRoleSlotById");
+const AbyssRoomAll_1 = require("./AbyssRoomAll");
+const AbyssRoomById_1 = require("./AbyssRoomById");
+const AbyssRouteAll_1 = require("./AbyssRouteAll");
+const AbyssRouteById_1 = require("./AbyssRouteById");
+const AbyssRouteByRouterAndFloor_1 = require("./AbyssRouteByRouterAndFloor");
+const AbyssSettleAll_1 = require("./AbyssSettleAll");
+const AbyssSettleById_1 = require("./AbyssSettleById");
+const AbyssSynthesisAll_1 = require("./AbyssSynthesisAll");
+const AbyssSynthesisById_1 = require("./AbyssSynthesisById");
+const AccessPathById_1 = require("./AccessPathById");
+const AchievementAll_1 = require("./AchievementAll");
+const AchievementByGroupId_1 = require("./AchievementByGroupId");
+const AchievementById_1 = require("./AchievementById");
+const AchievementCategoryAll_1 = require("./AchievementCategoryAll");
+const AchievementCategoryById_1 = require("./AchievementCategoryById");
+const AchievementGroupByCategory_1 = require("./AchievementGroupByCategory");
+const AchievementGroupById_1 = require("./AchievementGroupById");
+const AchievementStarLevelByLevel_1 = require("./AchievementStarLevelByLevel");
+const ActionMappingAll_1 = require("./ActionMappingAll");
+const ActionMappingByActionName_1 = require("./ActionMappingByActionName");
+const ActionMappingByActionType_1 = require("./ActionMappingByActionType");
+const ActivityById_1 = require("./ActivityById");
+const ActivityLinkageById_1 = require("./ActivityLinkageById");
+const ActivityLinkageInfoByIdAndLanguage_1 = require("./ActivityLinkageInfoByIdAndLanguage");
+const ActivityLinkageUrlByIdAndIsNational_1 = require("./ActivityLinkageUrlByIdAndIsNational");
+const ActivityQuestConfigAll_1 = require("./ActivityQuestConfigAll");
+const ActivityQuestConfigById_1 = require("./ActivityQuestConfigById");
+const ActivityQuestConfigByQuestId_1 = require("./ActivityQuestConfigByQuestId");
+const ActivitySignById_1 = require("./ActivitySignById");
+const ActivityViewNameById_1 = require("./ActivityViewNameById");
+const ActivityViewNameByType_1 = require("./ActivityViewNameByType");
+const AdventureTaskAll_1 = require("./AdventureTaskAll");
+const AdventureTaskById_1 = require("./AdventureTaskById");
+const AdventureTaskChapterAll_1 = require("./AdventureTaskChapterAll");
+const AdventureTaskChapterById_1 = require("./AdventureTaskChapterById");
+const AdviceConjunctionAll_1 = require("./AdviceConjunctionAll");
+const AdviceConjunctionById_1 = require("./AdviceConjunctionById");
+const AdviceParamsById_1 = require("./AdviceParamsById");
+const AdviceSentenceAll_1 = require("./AdviceSentenceAll");
+const AdviceSentenceById_1 = require("./AdviceSentenceById");
+const AdviceWordAll_1 = require("./AdviceWordAll");
+const AdviceWordById_1 = require("./AdviceWordById");
+const AdviceWordByType_1 = require("./AdviceWordByType");
+const AdviceWordTypeAll_1 = require("./AdviceWordTypeAll");
+const AdviceWordTypeById_1 = require("./AdviceWordTypeById");
+const AiAlertById_1 = require("./AiAlertById");
+const AiBaseById_1 = require("./AiBaseById");
+const AiBaseSkillById_1 = require("./AiBaseSkillById");
+const AiBattleWanderById_1 = require("./AiBattleWanderById");
+const AiBattleWanderGroupById_1 = require("./AiBattleWanderGroupById");
+const AiFleeById_1 = require("./AiFleeById");
+const AiHateById_1 = require("./AiHateById");
+const AiPatrolById_1 = require("./AiPatrolById");
+const AiSenseById_1 = require("./AiSenseById");
+const AiSenseGroupById_1 = require("./AiSenseGroupById");
+const AiSkillInfosById_1 = require("./AiSkillInfosById");
+const AiSkillPreconditionById_1 = require("./AiSkillPreconditionById");
+const AiStateMachineConfigById_1 = require("./AiStateMachineConfigById");
+const AiTeamAreaNewById_1 = require("./AiTeamAreaNewById");
+const AiTeamAttackById_1 = require("./AiTeamAttackById");
+const AiTeamLevelNewById_1 = require("./AiTeamLevelNewById");
+const AiWanderById_1 = require("./AiWanderById");
+const AiWanderRadiusConfigById_1 = require("./AiWanderRadiusConfigById");
+const AkiMapAll_1 = require("./AkiMapAll");
+const AkiMapByMapId_1 = require("./AkiMapByMapId");
+const AkiMapSourceByMapId_1 = require("./AkiMapSourceByMapId");
+const AlertAreaConfigById_1 = require("./AlertAreaConfigById");
+const AnimalHandBookAll_1 = require("./AnimalHandBookAll");
+const AnimalHandBookById_1 = require("./AnimalHandBookById");
+const AnimalHandBookByMeshId_1 = require("./AnimalHandBookByMeshId");
+const AreaByAreaId_1 = require("./AreaByAreaId");
+const AreaByCountryAndLevel_1 = require("./AreaByCountryAndLevel");
+const AreaByDeliveryMarkId_1 = require("./AreaByDeliveryMarkId");
+const AreaByLevel_1 = require("./AreaByLevel");
+const AreaAtmosphereInfoById_1 = require("./AreaAtmosphereInfoById");
+const AreaMpcById_1 = require("./AreaMpcById");
+const AreaQuestTrackingById_1 = require("./AreaQuestTrackingById");
+const AreaReportByAreaId_1 = require("./AreaReportByAreaId");
+const AreaReportByAreaIdAndStage_1 = require("./AreaReportByAreaIdAndStage");
+const AreaTaskExploreByAreaId_1 = require("./AreaTaskExploreByAreaId");
+const AreaTaskExploreById_1 = require("./AreaTaskExploreById");
+const AudioById_1 = require("./AudioById");
+const AutoRoleByAll_1 = require("./AutoRoleByAll");
+const AutoRoleById_1 = require("./AutoRoleById");
+const AvignonStageAll_1 = require("./AvignonStageAll");
+const AvignonStageById_1 = require("./AvignonStageById");
+const AvignonTaskByStageId_1 = require("./AvignonTaskByStageId");
+const AvignonTaskByTaskId_1 = require("./AvignonTaskByTaskId");
+const AxisMappingAll_1 = require("./AxisMappingAll");
+const AxisMappingByAxisName_1 = require("./AxisMappingByAxisName");
+const AxisMappingByAxisType_1 = require("./AxisMappingByAxisType");
+const AxisRevertAll_1 = require("./AxisRevertAll");
+const AxisRevertByRevertType_1 = require("./AxisRevertByRevertType");
+const BabelTowerActivityByActivityId_1 = require("./BabelTowerActivityByActivityId");
+const BabelTowerBuffAll_1 = require("./BabelTowerBuffAll");
+const BabelTowerBuffById_1 = require("./BabelTowerBuffById");
+const BabelTowerDailyTaskAll_1 = require("./BabelTowerDailyTaskAll");
+const BabelTowerDailyTaskByTaskId_1 = require("./BabelTowerDailyTaskByTaskId");
+const BabelTowerDeTermAll_1 = require("./BabelTowerDeTermAll");
+const BabelTowerDeTermByGroupId_1 = require("./BabelTowerDeTermByGroupId");
+const BabelTowerDeTermById_1 = require("./BabelTowerDeTermById");
+const BabelTowerDeTermMutexById_1 = require("./BabelTowerDeTermMutexById");
+const BabelTowerDifficultyAll_1 = require("./BabelTowerDifficultyAll");
+const BabelTowerDifficultyByActivityId_1 = require("./BabelTowerDifficultyByActivityId");
+const BabelTowerDifficultyByActivityIdAndDifficultyId_1 = require("./BabelTowerDifficultyByActivityIdAndDifficultyId");
+const BabelTowerDifficultyById_1 = require("./BabelTowerDifficultyById");
+const BabelTowerLevelAll_1 = require("./BabelTowerLevelAll");
+const BabelTowerLevelById_1 = require("./BabelTowerLevelById");
+const BabelTowerTaskAll_1 = require("./BabelTowerTaskAll");
+const BabelTowerTaskByTaskId_1 = require("./BabelTowerTaskByTaskId");
+const BackgroundCardAll_1 = require("./BackgroundCardAll");
+const BackgroundCardById_1 = require("./BackgroundCardById");
+const BanInfoById_1 = require("./BanInfoById");
+const BanInfoByTypeAndReason_1 = require("./BanInfoByTypeAndReason");
+const BasePropertyById_1 = require("./BasePropertyById");
+const BattleLinkCharacterAll_1 = require("./BattleLinkCharacterAll");
+const BattleLinkCharacterById_1 = require("./BattleLinkCharacterById");
+const BattlePassById_1 = require("./BattlePassById");
+const BattlePassRewardByBattlePassId_1 = require("./BattlePassRewardByBattlePassId");
+const BattlePassTaskByTaskId_1 = require("./BattlePassTaskByTaskId");
+const BattlePassUnlockPopByBattlePassTypeId_1 = require("./BattlePassUnlockPopByBattlePassTypeId");
+const BattleScoreConfById_1 = require("./BattleScoreConfById");
+const BattleScoreLevelConfByGroupId_1 = require("./BattleScoreLevelConfByGroupId");
+const BattleScoreLevelConfById_1 = require("./BattleScoreLevelConfById");
+const BeginnerGuideById_1 = require("./BeginnerGuideById");
+const BirthDayByItemId_1 = require("./BirthDayByItemId");
+const BirthDayByYear_1 = require("./BirthDayByYear");
+const BlackCoastThemeConfigByActivityId_1 = require("./BlackCoastThemeConfigByActivityId");
+const BlackCoastThemeRewardReByActivityId_1 = require("./BlackCoastThemeRewardReByActivityId");
+const BlackCoastThemeRewardReById_1 = require("./BlackCoastThemeRewardReById");
+const BlackCoastThemeStageReByActivityId_1 = require("./BlackCoastThemeStageReByActivityId");
+const BlackCoastThemeStageReById_1 = require("./BlackCoastThemeStageReById");
+const BlackCoastThemeTaskReByStageId_1 = require("./BlackCoastThemeTaskReByStageId");
+const BlackCoastThemeTaskReByTaskId_1 = require("./BlackCoastThemeTaskReByTaskId");
+const BlackboardWhiteListAll_1 = require("./BlackboardWhiteListAll");
+const BlockSwitchById_1 = require("./BlockSwitchById");
+const BlueprintConfigAll_1 = require("./BlueprintConfigAll");
+const BlueprintConfigByBlueprintType_1 = require("./BlueprintConfigByBlueprintType");
+const BossRushActivityAll_1 = require("./BossRushActivityAll");
+const BossRushActivityByActivityIdAndInstanceId_1 = require("./BossRushActivityByActivityIdAndInstanceId");
+const BossRushActivityById_1 = require("./BossRushActivityById");
+const BossRushBuffAll_1 = require("./BossRushBuffAll");
+const BossRushBuffById_1 = require("./BossRushBuffById");
+const BossRushBuffDescAll_1 = require("./BossRushBuffDescAll");
+const BossRushBuffDescById_1 = require("./BossRushBuffDescById");
+const BossRushMapMarkByActivityId_1 = require("./BossRushMapMarkByActivityId");
+const BossRushScoreAll_1 = require("./BossRushScoreAll");
+const BossRushScoreById_1 = require("./BossRushScoreById");
+const BossRushTaskConfigAll_1 = require("./BossRushTaskConfigAll");
+const BossRushTaskConfigByActivityId_1 = require("./BossRushTaskConfigByActivityId");
+const BossRushTaskConfigByTaskId_1 = require("./BossRushTaskConfigByTaskId");
+const BossRushTaskTabAll_1 = require("./BossRushTaskTabAll");
+const BossRushTaskTabByActivityId_1 = require("./BossRushTaskTabByActivityId");
+const BossRushTaskTabByTabId_1 = require("./BossRushTaskTabByTabId");
+const BoxStateById_1 = require("./BoxStateById");
+const BoxTypeById_1 = require("./BoxTypeById");
+const BranchLineAll_1 = require("./BranchLineAll");
+const BranchLineById_1 = require("./BranchLineById");
+const BroadcastImageById_1 = require("./BroadcastImageById");
+const BrokenRockConfigById_1 = require("./BrokenRockConfigById");
+const BrokenRockRingById_1 = require("./BrokenRockRingById");
+const BubbleDataByActionGuid_1 = require("./BubbleDataByActionGuid");
+const BuffById_1 = require("./BuffById");
+const BuffGetAll_1 = require("./BuffGetAll");
+const BuffEquipItemByItemId_1 = require("./BuffEquipItemByItemId");
+const BuffEquipItemByRoleId_1 = require("./BuffEquipItemByRoleId");
+const BuffItemById_1 = require("./BuffItemById");
+const BuffItemByPublicCdGroup_1 = require("./BuffItemByPublicCdGroup");
+const BuffItemCdGroupById_1 = require("./BuffItemCdGroupById");
+const BuildingAll_1 = require("./BuildingAll");
+const BuildingById_1 = require("./BuildingById");
+const BuildingUpGradeCurveByGroupId_1 = require("./BuildingUpGradeCurveByGroupId");
+const BuildingUpGradeCurveByGroupIdAndLevel_1 = require("./BuildingUpGradeCurveByGroupIdAndLevel");
+const BulletPreloadByActorBlueprint_1 = require("./BulletPreloadByActorBlueprint");
+const BulletPreloadByActorBlueprintAndBulletId_1 = require("./BulletPreloadByActorBlueprintAndBulletId");
+const BulletPreloadByAll_1 = require("./BulletPreloadByAll");
+const BulletPreloadById_1 = require("./BulletPreloadById");
+const CalabashDevelopConditionById_1 = require("./CalabashDevelopConditionById");
+const CalabashDevelopRewardAll_1 = require("./CalabashDevelopRewardAll");
+const CalabashDevelopRewardByMonsterId_1 = require("./CalabashDevelopRewardByMonsterId");
+const CalabashLevelAll_1 = require("./CalabashLevelAll");
+const CalabashLevelByLevel_1 = require("./CalabashLevelByLevel");
+const CalabashTransformById_1 = require("./CalabashTransformById");
+const CatchSignalDifficultyById_1 = require("./CatchSignalDifficultyById");
+const CatchSignalGameplayById_1 = require("./CatchSignalGameplayById");
+const CharacterAll_1 = require("./CharacterAll");
+const CharacterById_1 = require("./CharacterById");
+const CharacterAudioConfigById_1 = require("./CharacterAudioConfigById");
+const CharacterAudioConfigByIdWithDefaultId_1 = require("./CharacterAudioConfigByIdWithDefaultId");
+const CharacterDisplayStyleById_1 = require("./CharacterDisplayStyleById");
+const CharacterPreloadByAll_1 = require("./CharacterPreloadByAll");
+const CharacterPreloadById_1 = require("./CharacterPreloadById");
+const ChatById_1 = require("./ChatById");
+const ChatExpressionAll_1 = require("./ChatExpressionAll");
+const ChatExpressionByGroupId_1 = require("./ChatExpressionByGroupId");
+const ChatExpressionById_1 = require("./ChatExpressionById");
+const ChatExpressionGroupAll_1 = require("./ChatExpressionGroupAll");
+const ChatExpressionGroupById_1 = require("./ChatExpressionGroupById");
+const ChildUiCameraMappingAll_1 = require("./ChildUiCameraMappingAll");
+const ChildUiCameraMappingById_1 = require("./ChildUiCameraMappingById");
+const ChildUiCameraMappingByViewName_1 = require("./ChildUiCameraMappingByViewName");
+const ChipHandBookAll_1 = require("./ChipHandBookAll");
+const ChipHandBookById_1 = require("./ChipHandBookById");
+const ChipHandBookByType_1 = require("./ChipHandBookByType");
+const ChipTypeAll_1 = require("./ChipTypeAll");
+const ChipTypeById_1 = require("./ChipTypeById");
+const CiacconaActivityConfigById_1 = require("./CiacconaActivityConfigById");
+const CiacconaActivityRewardAll_1 = require("./CiacconaActivityRewardAll");
+const CiacconaActivityRewardById_1 = require("./CiacconaActivityRewardById");
+const CiacconaChapterSlotById_1 = require("./CiacconaChapterSlotById");
+const CiacconaGalChapterAll_1 = require("./CiacconaGalChapterAll");
+const CiacconaGalChapterById_1 = require("./CiacconaGalChapterById");
+const CiacconaGalChoiceById_1 = require("./CiacconaGalChoiceById");
+const CiacconaGalEndingAll_1 = require("./CiacconaGalEndingAll");
+const CiacconaGalEndingById_1 = require("./CiacconaGalEndingById");
+const CiacconaGalStepById_1 = require("./CiacconaGalStepById");
+const CiacconaGalSubEndingById_1 = require("./CiacconaGalSubEndingById");
+const CiacconaGalTextById_1 = require("./CiacconaGalTextById");
+const CipherGameplayById_1 = require("./CipherGameplayById");
+const CircumBaseByEntryType_1 = require("./CircumBaseByEntryType");
+const CircumEntryByEntryType_1 = require("./CircumEntryByEntryType");
+const CircumFluenceTaskById_1 = require("./CircumFluenceTaskById");
+const CircumFluenceTaskByTaskType_1 = require("./CircumFluenceTaskByTaskType");
+const CircumScoreRewardAll_1 = require("./CircumScoreRewardAll");
+const CircumScoreRewardById_1 = require("./CircumScoreRewardById");
+const ClimbById_1 = require("./ClimbById");
+const ClueContentByGroupId_1 = require("./ClueContentByGroupId");
+const ClueContentById_1 = require("./ClueContentById");
+const ClueEntranceById_1 = require("./ClueEntranceById");
+const CombinationActionAll_1 = require("./CombinationActionAll");
+const CombinationActionByActionName_1 = require("./CombinationActionByActionName");
+const CombinationActionByActionType_1 = require("./CombinationActionByActionType");
+const CombinationActionById_1 = require("./CombinationActionById");
+const CombinationAxisAll_1 = require("./CombinationAxisAll");
+const CombinationAxisByAxisName_1 = require("./CombinationAxisByAxisName");
+const CombinationAxisByAxisType_1 = require("./CombinationAxisByAxisType");
+const CombinationAxisById_1 = require("./CombinationAxisById");
+const ComboTeachingById_1 = require("./ComboTeachingById");
+const ComboTeachingConditionById_1 = require("./ComboTeachingConditionById");
+const CommonRewardViewDisplayById_1 = require("./CommonRewardViewDisplayById");
+const CommonSkillPreloadAll_1 = require("./CommonSkillPreloadAll");
+const CommonSkillPreloadById_1 = require("./CommonSkillPreloadById");
+const CommunicateById_1 = require("./CommunicateById");
+const CommunityAll_1 = require("./CommunityAll");
+const CommunityById_1 = require("./CommunityById");
+const CompositeRewardDisplayById_1 = require("./CompositeRewardDisplayById");
+const ConditionById_1 = require("./ConditionById");
+const ConditionGroupById_1 = require("./ConditionGroupById");
+const ConfirmBoxById_1 = require("./ConfirmBoxById");
+const ConsumptiveTaskById_1 = require("./ConsumptiveTaskById");
+const ConsumptiveTaskTabById_1 = require("./ConsumptiveTaskTabById");
+const CookFixToolById_1 = require("./CookFixToolById");
+const CookFormulaAll_1 = require("./CookFormulaAll");
+const CookFormulaByFormulaItemId_1 = require("./CookFormulaByFormulaItemId");
+const CookFormulaById_1 = require("./CookFormulaById");
+const CookLevelAll_1 = require("./CookLevelAll");
+const CookLevelById_1 = require("./CookLevelById");
+const CookProcessMsgById_1 = require("./CookProcessMsgById");
+const CookProcessedAll_1 = require("./CookProcessedAll");
+const CookProcessedById_1 = require("./CookProcessedById");
+const CorniceChallengeById_1 = require("./CorniceChallengeById");
+const CorniceChallengeByMarkId_1 = require("./CorniceChallengeByMarkId");
+const CorniceQuestById_1 = require("./CorniceQuestById");
+const CountryAll_1 = require("./CountryAll");
+const CountryById_1 = require("./CountryById");
+const CouponById_1 = require("./CouponById");
+const CustomMarkAll_1 = require("./CustomMarkAll");
+const CustomMarkByMarkId_1 = require("./CustomMarkByMarkId");
+const CustomSequenceById_1 = require("./CustomSequenceById");
+const CustomSequenceLang_1 = require("./CustomSequenceLang");
+const CustomerServiceAll_1 = require("./CustomerServiceAll");
+const CustomerServiceById_1 = require("./CustomerServiceById");
+const CustomizedThumbnailById_1 = require("./CustomizedThumbnailById");
+const DailyAdventureActivityByActivityId_1 = require("./DailyAdventureActivityByActivityId");
+const DailyAdventurePointById_1 = require("./DailyAdventurePointById");
+const DailyAdventureTaskByTaskId_1 = require("./DailyAdventureTaskByTaskId");
+const DailyTaskById_1 = require("./DailyTaskById");
+const DailyTaskGroupById_1 = require("./DailyTaskGroupById");
+const DamageByAll_1 = require("./DamageByAll");
+const DamageById_1 = require("./DamageById");
+const DamagePayloadById_1 = require("./DamagePayloadById");
+const DamageTextAll_1 = require("./DamageTextAll");
+const DangoById_1 = require("./DangoById");
+const DangoBroadcastById_1 = require("./DangoBroadcastById");
+const DangoMonopolyByActivityId_1 = require("./DangoMonopolyByActivityId");
+const DangoMonopolyBoardByGroup_1 = require("./DangoMonopolyBoardByGroup");
+const DangoMonopolyBoardById_1 = require("./DangoMonopolyBoardById");
+const DangoMonopolyGridByGroup_1 = require("./DangoMonopolyGridByGroup");
+const DangoMonopolyGridById_1 = require("./DangoMonopolyGridById");
+const DangoMonopolyMapPointByActivityId_1 = require("./DangoMonopolyMapPointByActivityId");
+const DangoMonopolyPropertyById_1 = require("./DangoMonopolyPropertyById");
+const DangoMonopolyPropertyTypeByType_1 = require("./DangoMonopolyPropertyTypeByType");
+const DangoMonopolyTaskByGroup_1 = require("./DangoMonopolyTaskByGroup");
+const DangoMonopolyTaskById_1 = require("./DangoMonopolyTaskById");
+const DangoSkillById_1 = require("./DangoSkillById");
+const DangoSkillEffectById_1 = require("./DangoSkillEffectById");
+const DarkCoastDeliveryAll_1 = require("./DarkCoastDeliveryAll");
+const DarkCoastDeliveryById_1 = require("./DarkCoastDeliveryById");
+const DataLayerConfigById_1 = require("./DataLayerConfigById");
+const DaySelectPresetAll_1 = require("./DaySelectPresetAll");
+const DaySelectPresetById_1 = require("./DaySelectPresetById");
+const DebugCommandConfigById_1 = require("./DebugCommandConfigById");
+const DebugEntranceConfigAll_1 = require("./DebugEntranceConfigAll");
+const DebugEntranceConfigById_1 = require("./DebugEntranceConfigById");
+const DebugEntranceTypeConfigAll_1 = require("./DebugEntranceTypeConfigAll");
+const DebugEntranceTypeConfigById_1 = require("./DebugEntranceTypeConfigById");
+const DetectionDropDownTypeById_1 = require("./DetectionDropDownTypeById");
+const DetectionTabTypeById_1 = require("./DetectionTabTypeById");
+const DetectionTextById_1 = require("./DetectionTextById");
+const DevicePlatformById_1 = require("./DevicePlatformById");
+const DevicePlatformByPidAndVid_1 = require("./DevicePlatformByPidAndVid");
+const DeviceRenderFeatureByDeviceId_1 = require("./DeviceRenderFeatureByDeviceId");
+const DiceById_1 = require("./DiceById");
+const DigitalScreenById_1 = require("./DigitalScreenById");
+const DigitalScreenTextById_1 = require("./DigitalScreenTextById");
+const DirectTrainActivityAll_1 = require("./DirectTrainActivityAll");
+const DirectTrainActivityById_1 = require("./DirectTrainActivityById");
+const DoubleRewardActivityById_1 = require("./DoubleRewardActivityById");
+const DownLoadTabAll_1 = require("./DownLoadTabAll");
+const DownLoadTabById_1 = require("./DownLoadTabById");
+const DragonPoolAll_1 = require("./DragonPoolAll");
+const DragonPoolById_1 = require("./DragonPoolById");
+const DreamLinkRoleDungeonById_1 = require("./DreamLinkRoleDungeonById");
+const DreamLinkWorldRunById_1 = require("./DreamLinkWorldRunById");
+const DreamLinkWorldRunByMarkId_1 = require("./DreamLinkWorldRunByMarkId");
+const DropPackageById_1 = require("./DropPackageById");
+const DropShowPlanById_1 = require("./DropShowPlanById");
+const DungeonDetectionAll_1 = require("./DungeonDetectionAll");
+const DungeonDetectionByDungeonId_1 = require("./DungeonDetectionByDungeonId");
+const DungeonDetectionById_1 = require("./DungeonDetectionById");
+const DynamicMapMarkAll_1 = require("./DynamicMapMarkAll");
+const DynamicMapMarkByMapId_1 = require("./DynamicMapMarkByMapId");
+const DynamicMapMarkByMarkId_1 = require("./DynamicMapMarkByMarkId");
+const EffectConfigById_1 = require("./EffectConfigById");
+const EffectCsvConfigById_1 = require("./EffectCsvConfigById");
+const EffectSpecDataById_1 = require("./EffectSpecDataById");
+const EffectSpecDataGetAll_1 = require("./EffectSpecDataGetAll");
+const ElementIconTagById_1 = require("./ElementIconTagById");
+const ElementInfoById_1 = require("./ElementInfoById");
+const ElementInfoById2_1 = require("./ElementInfoById2");
+const ElementLevelByLevel_1 = require("./ElementLevelByLevel");
+const ElementReactionMatrixAll_1 = require("./ElementReactionMatrixAll");
+const ElementalReactionAll_1 = require("./ElementalReactionAll");
+const ElementalReactionByReactionId_1 = require("./ElementalReactionByReactionId");
+const EnrichmentAreaConfigByEnrichmentId_1 = require("./EnrichmentAreaConfigByEnrichmentId");
+const EnrichmentAreaConfigByItemId_1 = require("./EnrichmentAreaConfigByItemId");
+const EntityAudioConfigById_1 = require("./EntityAudioConfigById");
+const EntityAudioConfigByIdWithZero_1 = require("./EntityAudioConfigByIdWithZero");
+const EntityGravityConfigAll_1 = require("./EntityGravityConfigAll");
+const EntityGravityConfigByMapIdAndEntityId_1 = require("./EntityGravityConfigByMapIdAndEntityId");
+const EntityOwnerDataByGuid_1 = require("./EntityOwnerDataByGuid");
+const EntitySelfEventConfigById_1 = require("./EntitySelfEventConfigById");
+const EntitySelfEventConfigByKey_1 = require("./EntitySelfEventConfigByKey");
+const EntitySkillPreloadByActorBlueprint_1 = require("./EntitySkillPreloadByActorBlueprint");
+const EntitySkillPreloadByActorBlueprintAndSkillId_1 = require("./EntitySkillPreloadByActorBlueprintAndSkillId");
+const EntitySkillPreloadByAll_1 = require("./EntitySkillPreloadByAll");
+const EntitySkillPreloadById_1 = require("./EntitySkillPreloadById");
+const EntityVoxelInfoByMapIdAndEntityId_1 = require("./EntityVoxelInfoByMapIdAndEntityId");
+const EntranceIconTagById_1 = require("./EntranceIconTagById");
+const EntrustFinishDialogByEntrustIdAndLevel_1 = require("./EntrustFinishDialogByEntrustIdAndLevel");
+const EntrustRoleAll_1 = require("./EntrustRoleAll");
+const EntrustRoleById_1 = require("./EntrustRoleById");
+const EntrustTypeById_1 = require("./EntrustTypeById");
+const ErrorCodeById_1 = require("./ErrorCodeById");
+const EvaluateById_1 = require("./EvaluateById");
+const ExchangeRewardById_1 = require("./ExchangeRewardById");
+const ExchangeSharedById_1 = require("./ExchangeSharedById");
+const ExecutionConfById_1 = require("./ExecutionConfById");
+const ExploreActivityById_1 = require("./ExploreActivityById");
+const ExploreActivityTaskByActivityId_1 = require("./ExploreActivityTaskByActivityId");
+const ExploreActivityTaskByTaskId_1 = require("./ExploreActivityTaskByTaskId");
+const ExploreProgressAll_1 = require("./ExploreProgressAll");
+const ExploreProgressByArea_1 = require("./ExploreProgressByArea");
+const ExploreProgressById_1 = require("./ExploreProgressById");
+const ExploreProgressRewardAll_1 = require("./ExploreProgressRewardAll");
+const ExploreProgressRewardByArea_1 = require("./ExploreProgressRewardByArea");
+const ExploreRewardByCountry_1 = require("./ExploreRewardByCountry");
+const ExploreRewardById_1 = require("./ExploreRewardById");
+const ExploreRewardDisplayById_1 = require("./ExploreRewardDisplayById");
+const ExploreRouletteAll_1 = require("./ExploreRouletteAll");
+const ExploreRouletteReplaceAll_1 = require("./ExploreRouletteReplaceAll");
+const ExploreRouletteReplaceById_1 = require("./ExploreRouletteReplaceById");
+const ExploreScoreAll_1 = require("./ExploreScoreAll");
+const ExploreScoreByArea_1 = require("./ExploreScoreByArea");
+const ExploreSkillInteractById_1 = require("./ExploreSkillInteractById");
+const ExploreToolsAll_1 = require("./ExploreToolsAll");
+const ExploreToolsByPhantomSkillId_1 = require("./ExploreToolsByPhantomSkillId");
+const ExploreTypeByType_1 = require("./ExploreTypeByType");
+const ExternalSourceSettingById_1 = require("./ExternalSourceSettingById");
+const FaceExpressionDataById_1 = require("./FaceExpressionDataById");
+const FarmGoldActivityAll_1 = require("./FarmGoldActivityAll");
+const FarmGoldActivityByActivityIdAndInstanceId_1 = require("./FarmGoldActivityByActivityIdAndInstanceId");
+const FarmGoldActivityById_1 = require("./FarmGoldActivityById");
+const FarmGoldDifficultyAll_1 = require("./FarmGoldDifficultyAll");
+const FarmGoldDifficultyById_1 = require("./FarmGoldDifficultyById");
+const FarmGoldMapMarkByActivityId_1 = require("./FarmGoldMapMarkByActivityId");
+const FarmGoldScoreAll_1 = require("./FarmGoldScoreAll");
+const FarmGoldScoreByActivityId_1 = require("./FarmGoldScoreByActivityId");
+const FarmGoldScoreById_1 = require("./FarmGoldScoreById");
+const FavorGoodsByRoleId_1 = require("./FavorGoodsByRoleId");
+const FavorLevelByLevel_1 = require("./FavorLevelByLevel");
+const FavorRoleInfoByRoleId_1 = require("./FavorRoleInfoByRoleId");
+const FavorStoryByRoleId_1 = require("./FavorStoryByRoleId");
+const FavorTabCameraById_1 = require("./FavorTabCameraById");
+const FavorWordByRoleIdAndType_1 = require("./FavorWordByRoleIdAndType");
+const FeedingAnimalById_1 = require("./FeedingAnimalById");
+const FightFormationById_1 = require("./FightFormationById");
+const FilterById_1 = require("./FilterById");
+const FilterRuleById_1 = require("./FilterRuleById");
+const FilterSettingAll_1 = require("./FilterSettingAll");
+const FilterSettingById_1 = require("./FilterSettingById");
+const FilterSortConfigById_1 = require("./FilterSortConfigById");
+const FilterSortGroupById_1 = require("./FilterSortGroupById");
+const FishingActivityByActivityId_1 = require("./FishingActivityByActivityId");
+const FishingActivityGroupAll_1 = require("./FishingActivityGroupAll");
+const FishingActivityGroupById_1 = require("./FishingActivityGroupById");
+const FishingActivityLimitTaskByTaskId_1 = require("./FishingActivityLimitTaskByTaskId");
+const FishingActivityMilestoneAll_1 = require("./FishingActivityMilestoneAll");
+const FishingActivityMilestoneById_1 = require("./FishingActivityMilestoneById");
+const FishingDeliveryById_1 = require("./FishingDeliveryById");
+const FishingEntrustById_1 = require("./FishingEntrustById");
+const FishingEntrustPoolAll_1 = require("./FishingEntrustPoolAll");
+const FishingEntrustPoolById_1 = require("./FishingEntrustPoolById");
+const FishingEntrustTypeById_1 = require("./FishingEntrustTypeById");
+const FishingGridItemShapeById_1 = require("./FishingGridItemShapeById");
+const FishingIllustratedRewardById_1 = require("./FishingIllustratedRewardById");
+const FishingItemAll_1 = require("./FishingItemAll");
+const FishingItemById_1 = require("./FishingItemById");
+const FishingManualRefreshByEntrustPoolTypeAndStar_1 = require("./FishingManualRefreshByEntrustPoolTypeAndStar");
+const FishingManualRefreshById_1 = require("./FishingManualRefreshById");
+const FishingNoticeById_1 = require("./FishingNoticeById");
+const FishingNpcPerformById_1 = require("./FishingNpcPerformById");
+const FishingPointByEntityConfigId_1 = require("./FishingPointByEntityConfigId");
+const FishingPointById_1 = require("./FishingPointById");
+const FishingPointByShowItem_1 = require("./FishingPointByShowItem");
+const FishingPortById_1 = require("./FishingPortById");
+const FishingPositionById_1 = require("./FishingPositionById");
+const FishingQteConfigById_1 = require("./FishingQteConfigById");
+const FishingQualityById_1 = require("./FishingQualityById");
+const FishingReputationAll_1 = require("./FishingReputationAll");
+const FishingReputationByLevel_1 = require("./FishingReputationByLevel");
+const FishingShipSkinAll_1 = require("./FishingShipSkinAll");
+const FishingShipSkinById_1 = require("./FishingShipSkinById");
+const FishingTagById_1 = require("./FishingTagById");
+const FishingTechAll_1 = require("./FishingTechAll");
+const FishingTechById_1 = require("./FishingTechById");
+const FishingTechEffectById_1 = require("./FishingTechEffectById");
+const FishingTechEffectByType_1 = require("./FishingTechEffectByType");
+const FlagAreaByAreaId_1 = require("./FlagAreaByAreaId");
+const FlagAreaByEntity_1 = require("./FlagAreaByEntity");
+const FlagAreaById_1 = require("./FlagAreaById");
+const FloroRanchActionById_1 = require("./FloroRanchActionById");
+const FloroRanchActivityById_1 = require("./FloroRanchActivityById");
+const FloroRanchAudioAll_1 = require("./FloroRanchAudioAll");
+const FloroRanchAudioById_1 = require("./FloroRanchAudioById");
+const FloroRanchBuffAll_1 = require("./FloroRanchBuffAll");
+const FloroRanchBuffById_1 = require("./FloroRanchBuffById");
+const FloroRanchCardAll_1 = require("./FloroRanchCardAll");
+const FloroRanchCardById_1 = require("./FloroRanchCardById");
+const FloroRanchCardGroupAll_1 = require("./FloroRanchCardGroupAll");
+const FloroRanchCardGroupById_1 = require("./FloroRanchCardGroupById");
+const FloroRanchCurrencyAll_1 = require("./FloroRanchCurrencyAll");
+const FloroRanchCurrencyById_1 = require("./FloroRanchCurrencyById");
+const FloroRanchEventAll_1 = require("./FloroRanchEventAll");
+const FloroRanchEventById_1 = require("./FloroRanchEventById");
+const FloroRanchEventGroupById_1 = require("./FloroRanchEventGroupById");
+const FloroRanchFilterTypeAll_1 = require("./FloroRanchFilterTypeAll");
+const FloroRanchFilterTypeById_1 = require("./FloroRanchFilterTypeById");
+const FloroRanchInsByActivityId_1 = require("./FloroRanchInsByActivityId");
+const FloroRanchInsById_1 = require("./FloroRanchInsById");
+const FloroRanchRaceAll_1 = require("./FloroRanchRaceAll");
+const FloroRanchRaceById_1 = require("./FloroRanchRaceById");
+const FloroRanchRarityAll_1 = require("./FloroRanchRarityAll");
+const FloroRanchRarityById_1 = require("./FloroRanchRarityById");
+const FloroRanchRewardByActivityId_1 = require("./FloroRanchRewardByActivityId");
+const FloroRanchRewardById_1 = require("./FloroRanchRewardById");
+const FloroRanchSkillAll_1 = require("./FloroRanchSkillAll");
+const FloroRanchSkillById_1 = require("./FloroRanchSkillById");
+const FloroRanchSubInsById_1 = require("./FloroRanchSubInsById");
+const FloroRanchTagAll_1 = require("./FloroRanchTagAll");
+const FloroRanchTagById_1 = require("./FloroRanchTagById");
+const FloroRanchTaskByActivityId_1 = require("./FloroRanchTaskByActivityId");
+const FloroRanchTaskById_1 = require("./FloroRanchTaskById");
+const FloroRanchTaskTabAll_1 = require("./FloroRanchTaskTabAll");
+const FloroRanchTaskTabById_1 = require("./FloroRanchTaskTabById");
+const FloroRanchTechByActivityId_1 = require("./FloroRanchTechByActivityId");
+const FloroRanchTechById_1 = require("./FloroRanchTechById");
+const FloroRanchTerrainAll_1 = require("./FloroRanchTerrainAll");
+const FloroRanchTerrainById_1 = require("./FloroRanchTerrainById");
+const FloroRanchToyAll_1 = require("./FloroRanchToyAll");
+const FloroRanchToyById_1 = require("./FloroRanchToyById");
+const FlowById_1 = require("./FlowById");
+const FlowStateByStateKey_1 = require("./FlowStateByStateKey");
+const FlowTemplateDataById_1 = require("./FlowTemplateDataById");
+const FlowTextByIdAndFlowListId_1 = require("./FlowTextByIdAndFlowListId");
+const FlowTextLang_1 = require("./FlowTextLang");
+const FlySkinConfigById_1 = require("./FlySkinConfigById");
+const FlySkinConfigByType_1 = require("./FlySkinConfigByType");
+const FogBlockAll_1 = require("./FogBlockAll");
+const FogBlockByBlock_1 = require("./FogBlockByBlock");
+const FogBlockByBlockAndMapId_1 = require("./FogBlockByBlockAndMapId");
+const FogTextureConfigAll_1 = require("./FogTextureConfigAll");
+const FogTextureConfigByBlock_1 = require("./FogTextureConfigByBlock");
+const FogTextureConfigByBlockAndMapId_1 = require("./FogTextureConfigByBlockAndMapId");
+const FogTextureConfigByBlockAndMapIdAndGravity_1 = require("./FogTextureConfigByBlockAndMapIdAndGravity");
+const FogTextureConfigByMapId_1 = require("./FogTextureConfigByMapId");
+const FoleySynthBoneConfigById_1 = require("./FoleySynthBoneConfigById");
+const FoleySynthConfigById_1 = require("./FoleySynthConfigById");
+const FoleySynthConfigByIdWithDefaultId_1 = require("./FoleySynthConfigByIdWithDefaultId");
+const ForgeFormulaAll_1 = require("./ForgeFormulaAll");
+const ForgeFormulaByFormulaItemId_1 = require("./ForgeFormulaByFormulaItemId");
+const ForgeFormulaById_1 = require("./ForgeFormulaById");
+const ForgeFormulaByTypeId_1 = require("./ForgeFormulaByTypeId");
+const FormationPropertyAll_1 = require("./FormationPropertyAll");
+const FormationPropertyById_1 = require("./FormationPropertyById");
+const FriendFilterAll_1 = require("./FriendFilterAll");
+const FuncMenuReplaceAll_1 = require("./FuncMenuReplaceAll");
+const FuncMenuReplaceInstSubType_1 = require("./FuncMenuReplaceInstSubType");
+const FuncMenuWheelAll_1 = require("./FuncMenuWheelAll");
+const FuncMenuWheelByFuncId_1 = require("./FuncMenuWheelByFuncId");
+const FunctionConditionByFunctionId_1 = require("./FunctionConditionByFunctionId");
+const FunctionMenuAll_1 = require("./FunctionMenuAll");
+const FunctionMenuByFunctionId_1 = require("./FunctionMenuByFunctionId");
+const FunctionOpenViewLimitAll_1 = require("./FunctionOpenViewLimitAll");
+const GaChaShareById_1 = require("./GaChaShareById");
+const GachaAll_1 = require("./GachaAll");
+const GachaById_1 = require("./GachaById");
+const GachaEffectConfigByTimesAndQuality_1 = require("./GachaEffectConfigByTimesAndQuality");
+const GachaPoolById_1 = require("./GachaPoolById");
+const GachaSequenceConfigById_1 = require("./GachaSequenceConfigById");
+const GachaTextureInfoById_1 = require("./GachaTextureInfoById");
+const GachaViewInfoById_1 = require("./GachaViewInfoById");
+const GachaViewTypeInfoByType_1 = require("./GachaViewTypeInfoByType");
+const GachaWeaponTransformById_1 = require("./GachaWeaponTransformById");
+const GamePlayInformationGroupById_1 = require("./GamePlayInformationGroupById");
+const GamePlayInformationInfoById_1 = require("./GamePlayInformationInfoById");
+const GamePlayScanByUid_1 = require("./GamePlayScanByUid");
+const GamePlayScanCompositeByUid_1 = require("./GamePlayScanCompositeByUid");
+const GamepadKeyById_1 = require("./GamepadKeyById");
+const GamepadKeyByKeyName_1 = require("./GamepadKeyByKeyName");
+const GameplayCueById_1 = require("./GameplayCueById");
+const GatherActivityAll_1 = require("./GatherActivityAll");
+const GatherActivityById_1 = require("./GatherActivityById");
+const GenderTextByMaleText_1 = require("./GenderTextByMaleText");
+const GenericPromptByTipsId_1 = require("./GenericPromptByTipsId");
+const GenericPromptTypesByTypeId_1 = require("./GenericPromptTypesByTypeId");
+const GeographyHandBookAll_1 = require("./GeographyHandBookAll");
+const GeographyHandBookById_1 = require("./GeographyHandBookById");
+const GeographyHandBookByType_1 = require("./GeographyHandBookByType");
+const GeographyTypeAll_1 = require("./GeographyTypeAll");
+const GeographyTypeById_1 = require("./GeographyTypeById");
+const GiftPackageAll_1 = require("./GiftPackageAll");
+const GiftPackageById_1 = require("./GiftPackageById");
+const GlobalConfigFromCsvByName_1 = require("./GlobalConfigFromCsvByName");
+const GmAccountAll_1 = require("./GmAccountAll");
+const GmAccountById_1 = require("./GmAccountById");
+const GmOrderConfigAll_1 = require("./GmOrderConfigAll");
+const GmOrderListAll_1 = require("./GmOrderListAll");
+const GmOrderListById_1 = require("./GmOrderListById");
+const GongduolaPassengerVoiceConfigById_1 = require("./GongduolaPassengerVoiceConfigById");
+const GongduolaPassengerVoiceConfigByRoleIdAndTriggerType_1 = require("./GongduolaPassengerVoiceConfigByRoleIdAndTriggerType");
+const GuideDataById_1 = require("./GuideDataById");
+const GuideDungeonSetDefineByStrId_1 = require("./GuideDungeonSetDefineByStrId");
+const GuideFocusNewByGuideId_1 = require("./GuideFocusNewByGuideId");
+const GuideFromMontageByEventGroupId_1 = require("./GuideFromMontageByEventGroupId");
+const GuideGroupAll_1 = require("./GuideGroupAll");
+const GuideGroupById_1 = require("./GuideGroupById");
+const GuideStepAll_1 = require("./GuideStepAll");
+const GuideStepById_1 = require("./GuideStepById");
+const GuideTipsByGuideId_1 = require("./GuideTipsByGuideId");
+const GuideTutorialAll_1 = require("./GuideTutorialAll");
+const GuideTutorialById_1 = require("./GuideTutorialById");
+const GuideTutorialPageById_1 = require("./GuideTutorialPageById");
+const H5CircumUrlById_1 = require("./H5CircumUrlById");
+const HandBookEntranceAll_1 = require("./HandBookEntranceAll");
+const HandBookEntranceById_1 = require("./HandBookEntranceById");
+const HandBookQuestTabAll_1 = require("./HandBookQuestTabAll");
+const HandBookQuestTabById_1 = require("./HandBookQuestTabById");
+const HardnessModeById_1 = require("./HardnessModeById");
+const HeadIconById_1 = require("./HeadIconById");
+const HeadIconEnergyBarAll_1 = require("./HeadIconEnergyBarAll");
+const HeadIconEnergyBarById_1 = require("./HeadIconEnergyBarById");
+const HelpTextByGroupId_1 = require("./HelpTextByGroupId");
+const HelpTextById_1 = require("./HelpTextById");
+const HiddenBossWindowById_1 = require("./HiddenBossWindowById");
+const HotKeyIconByKeyName_1 = require("./HotKeyIconByKeyName");
+const HotKeyMapById_1 = require("./HotKeyMapById");
+const HotKeyTextByTextId_1 = require("./HotKeyTextByTextId");
+const HotKeyTypeById_1 = require("./HotKeyTypeById");
+const HotKeyViewById_1 = require("./HotKeyViewById");
+const HotPatchTextLang_1 = require("./HotPatchTextLang");
+const I18nResourcesAll_1 = require("./I18nResourcesAll");
+const I18nResourcesById_1 = require("./I18nResourcesById");
+const I18nTexturesAll_1 = require("./I18nTexturesAll");
+const I18nTexturesById_1 = require("./I18nTexturesById");
+const InfluenceAll_1 = require("./InfluenceAll");
+const InfluenceById_1 = require("./InfluenceById");
+const InfoDisplayById_1 = require("./InfoDisplayById");
+const InstanceDungeonAll_1 = require("./InstanceDungeonAll");
+const InstanceDungeonById_1 = require("./InstanceDungeonById");
+const InstanceDungeonEntranceAll_1 = require("./InstanceDungeonEntranceAll");
+const InstanceDungeonEntranceById_1 = require("./InstanceDungeonEntranceById");
+const InstanceDungeonEntranceByMarkId_1 = require("./InstanceDungeonEntranceByMarkId");
+const InstanceDungeonTitleById_1 = require("./InstanceDungeonTitleById");
+const InstanceEnterControlById_1 = require("./InstanceEnterControlById");
+const InstanceGameplayModeById_1 = require("./InstanceGameplayModeById");
+const InstanceTrialRoleConfigById_1 = require("./InstanceTrialRoleConfigById");
+const InteractAudioMaterialByCollisionMaterial_1 = require("./InteractAudioMaterialByCollisionMaterial");
+const InteractBackGroundById_1 = require("./InteractBackGroundById");
+const InteractBackGroundByViewName_1 = require("./InteractBackGroundByViewName");
+const InteractDataByGuid_1 = require("./InteractDataByGuid");
+const InterjectionByTimberIdAndUniversalToneId_1 = require("./InterjectionByTimberIdAndUniversalToneId");
+const ItemAccessedPathById_1 = require("./ItemAccessedPathById");
+const ItemExchangeContentAll_1 = require("./ItemExchangeContentAll");
+const ItemExchangeContentByItemId_1 = require("./ItemExchangeContentByItemId");
+const ItemExchangeLimitByItemId_1 = require("./ItemExchangeLimitByItemId");
+const ItemHandBookAll_1 = require("./ItemHandBookAll");
+const ItemHandBookById_1 = require("./ItemHandBookById");
+const ItemHandBookByType_1 = require("./ItemHandBookByType");
+const ItemHandBookTypeAll_1 = require("./ItemHandBookTypeAll");
+const ItemHandBookTypeById_1 = require("./ItemHandBookTypeById");
+const ItemIconTagById_1 = require("./ItemIconTagById");
+const ItemInfoAll_1 = require("./ItemInfoAll");
+const ItemInfoById_1 = require("./ItemInfoById");
+const ItemInfoByItemType_1 = require("./ItemInfoByItemType");
+const ItemMainTypeAll_1 = require("./ItemMainTypeAll");
+const ItemMainTypeById_1 = require("./ItemMainTypeById");
+const ItemShowTypeById_1 = require("./ItemShowTypeById");
+const KeyPoolAll_1 = require("./KeyPoolAll");
+const KeyPoolById_1 = require("./KeyPoolById");
+const KeySettingAll_1 = require("./KeySettingAll");
+const KeySettingById_1 = require("./KeySettingById");
+const KeySettingByTypeId_1 = require("./KeySettingByTypeId");
+const KeySettingByTypeIdAndInputControllerType_1 = require("./KeySettingByTypeIdAndInputControllerType");
+const KeyTypeAll_1 = require("./KeyTypeAll");
+const KeyTypeByTypeId_1 = require("./KeyTypeByTypeId");
+const KillMonstersScoresByInstanceID_1 = require("./KillMonstersScoresByInstanceID");
+const KingShipAttributeById_1 = require("./KingShipAttributeById");
+const KingShipBuffById_1 = require("./KingShipBuffById");
+const LangOfLogoByName_1 = require("./LangOfLogoByName");
+const LanguageDefineByLanguageCode_1 = require("./LanguageDefineByLanguageCode");
+const LanguageDefineByLanguageType_1 = require("./LanguageDefineByLanguageType");
+const LevelEntityConfigByBlueprintType_1 = require("./LevelEntityConfigByBlueprintType");
+const LevelEntityConfigByMapId_1 = require("./LevelEntityConfigByMapId");
+const LevelEntityConfigByMapIdAndEntityId_1 = require("./LevelEntityConfigByMapIdAndEntityId");
+const LevelPlayDataById_1 = require("./LevelPlayDataById");
+const LevelPlayInfoMappingConfigAll_1 = require("./LevelPlayInfoMappingConfigAll");
+const LevelPlayInfoMappingConfigById_1 = require("./LevelPlayInfoMappingConfigById");
+const LevelPlayNodeDataByKey_1 = require("./LevelPlayNodeDataByKey");
+const LifePointActivityByActivityId_1 = require("./LifePointActivityByActivityId");
+const LifePointChallengeById_1 = require("./LifePointChallengeById");
+const LifePointEntranceById_1 = require("./LifePointEntranceById");
+const LifePointGroupByGroupId_1 = require("./LifePointGroupByGroupId");
+const LinkCharacterById_1 = require("./LinkCharacterById");
+const LinkDataById_1 = require("./LinkDataById");
+const LinkParamById_1 = require("./LinkParamById");
+const LivenessAll_1 = require("./LivenessAll");
+const LivenessById_1 = require("./LivenessById");
+const LivenessTaskByTaskId_1 = require("./LivenessTaskByTaskId");
+const LoadingLevelAreaAll_1 = require("./LoadingLevelAreaAll");
+const LoadingTipsTextAll_1 = require("./LoadingTipsTextAll");
+const LoadingTipsTextById_1 = require("./LoadingTipsTextById");
+const LoadingTipsTextByLevelAreaId_1 = require("./LoadingTipsTextByLevelAreaId");
+const LockOnConfigById_1 = require("./LockOnConfigById");
+const LongPressConfigById_1 = require("./LongPressConfigById");
+const LongShanActivityConfigByActivityId_1 = require("./LongShanActivityConfigByActivityId");
+const LongShanScoreRewardByActivityId_1 = require("./LongShanScoreRewardByActivityId");
+const LongShanScoreRewardById_1 = require("./LongShanScoreRewardById");
+const LongShanStageAll_1 = require("./LongShanStageAll");
+const LongShanStageById_1 = require("./LongShanStageById");
+const LongShanTaskById_1 = require("./LongShanTaskById");
+const LordGymAll_1 = require("./LordGymAll");
+const LordGymByDifficulty_1 = require("./LordGymByDifficulty");
+const LordGymById_1 = require("./LordGymById");
+const LordGymEntranceAll_1 = require("./LordGymEntranceAll");
+const LordGymEntranceById_1 = require("./LordGymEntranceById");
+const LordGymEntranceByMarkId_1 = require("./LordGymEntranceByMarkId");
+const LordGymEntranceGroupByMarkId_1 = require("./LordGymEntranceGroupByMarkId");
+const LordGymEntranceSetAll_1 = require("./LordGymEntranceSetAll");
+const LordGymEntranceSetById_1 = require("./LordGymEntranceSetById");
+const LordGymEntranceSetByMarkId_1 = require("./LordGymEntranceSetByMarkId");
+const LordGymFilterTypeAll_1 = require("./LordGymFilterTypeAll");
+const LordGymFilterTypeById_1 = require("./LordGymFilterTypeById");
+const MailFilterAll_1 = require("./MailFilterAll");
+const MailFilterById_1 = require("./MailFilterById");
+const MainLineAll_1 = require("./MainLineAll");
+const MainLineById_1 = require("./MainLineById");
+const MainRoleConfigAll_1 = require("./MainRoleConfigAll");
+const MainRoleConfigByGender_1 = require("./MainRoleConfigByGender");
+const MainRoleConfigById_1 = require("./MainRoleConfigById");
+const MainTypeAll_1 = require("./MainTypeAll");
+const MainTypeById_1 = require("./MainTypeById");
+const MapAudioById_1 = require("./MapAudioById");
+const MapBorderAll_1 = require("./MapBorderAll");
+const MapBorderByBorderId_1 = require("./MapBorderByBorderId");
+const MapBorderByBorderIdAndMapId_1 = require("./MapBorderByBorderIdAndMapId");
+const MapFogByAreaId_1 = require("./MapFogByAreaId");
+const MapFogByFog_1 = require("./MapFogByFog");
+const MapLevelExpByActivityId_1 = require("./MapLevelExpByActivityId");
+const MapLevelExpById_1 = require("./MapLevelExpById");
+const MapMarkAll_1 = require("./MapMarkAll");
+const MapMarkByEntityConfigId_1 = require("./MapMarkByEntityConfigId");
+const MapMarkByInstanceDungeonId_1 = require("./MapMarkByInstanceDungeonId");
+const MapMarkByMapId_1 = require("./MapMarkByMapId");
+const MapMarkByMarkId_1 = require("./MapMarkByMarkId");
+const MapMarkByRelativeId_1 = require("./MapMarkByRelativeId");
+const MapMarkByRelativeMainSubType_1 = require("./MapMarkByRelativeMainSubType");
+const MapMarkHasEntityConfigId_1 = require("./MapMarkHasEntityConfigId");
+const MapMarkPhantomGroupByMarkId_1 = require("./MapMarkPhantomGroupByMarkId");
+const MapMarkRelativeSubTypeAll_1 = require("./MapMarkRelativeSubTypeAll");
+const MapMarkRelativeSubTypeByFunctionId_1 = require("./MapMarkRelativeSubTypeByFunctionId");
+const MapMarkRelativeSubTypeById_1 = require("./MapMarkRelativeSubTypeById");
+const MapNoteById_1 = require("./MapNoteById");
+const MapRangeAll_1 = require("./MapRangeAll");
+const MapRangeByMapId_1 = require("./MapRangeByMapId");
+const MapTravelConfigByActivityId_1 = require("./MapTravelConfigByActivityId");
+const MappingBySheetNameAndFieldName_1 = require("./MappingBySheetNameAndFieldName");
+const MappingBySheetNameFieldNameAndValue_1 = require("./MappingBySheetNameFieldNameAndValue");
+const MarkEffectByMarkId_1 = require("./MarkEffectByMarkId");
+const MaterialReplaceAll_1 = require("./MaterialReplaceAll");
+const MaterialReplaceByGroupId_1 = require("./MaterialReplaceByGroupId");
+const MaterialReplaceByItemId_1 = require("./MaterialReplaceByItemId");
+const MenuConfigAll_1 = require("./MenuConfigAll");
+const MenuConfigByFunctionId_1 = require("./MenuConfigByFunctionId");
+const MobileBattleUiSetAll_1 = require("./MobileBattleUiSetAll");
+const MobileBattleUiSetByPanelIndex_1 = require("./MobileBattleUiSetByPanelIndex");
+const ModelConfigPreloadByAll_1 = require("./ModelConfigPreloadByAll");
+const ModelConfigPreloadById_1 = require("./ModelConfigPreloadById");
+const MonsterBattleConfById_1 = require("./MonsterBattleConfById");
+const MonsterBattleConfByRoleId_1 = require("./MonsterBattleConfByRoleId");
+const MonsterBodyTypeConfigById_1 = require("./MonsterBodyTypeConfigById");
+const MonsterDetectionAll_1 = require("./MonsterDetectionAll");
+const MonsterDetectionById_1 = require("./MonsterDetectionById");
+const MonsterDetectionByMarkId_1 = require("./MonsterDetectionByMarkId");
+const MonsterDetectionFilterAll_1 = require("./MonsterDetectionFilterAll");
+const MonsterDisplayById_1 = require("./MonsterDisplayById");
+const MonsterDisplayLang_1 = require("./MonsterDisplayLang");
+const MonsterHandBookAll_1 = require("./MonsterHandBookAll");
+const MonsterHandBookById_1 = require("./MonsterHandBookById");
+const MonsterHandBookByType_1 = require("./MonsterHandBookByType");
+const MonsterHandBookTypeAll_1 = require("./MonsterHandBookTypeAll");
+const MonsterIconTagById_1 = require("./MonsterIconTagById");
+const MonsterInfoById_1 = require("./MonsterInfoById");
+const MonsterPerchById_1 = require("./MonsterPerchById");
+const MonsterPerformanceConfById_1 = require("./MonsterPerformanceConfById");
+const MonsterPropertyGrowthById_1 = require("./MonsterPropertyGrowthById");
+const MonsterRarityById_1 = require("./MonsterRarityById");
+const MonsterSizeIdById_1 = require("./MonsterSizeIdById");
+const MontageDataById_1 = require("./MontageDataById");
+const MonthCardContentById_1 = require("./MonthCardContentById");
+const MoraleAreaAll_1 = require("./MoraleAreaAll");
+const MoraleAreaById_1 = require("./MoraleAreaById");
+const MoraleFlagTypeById_1 = require("./MoraleFlagTypeById");
+const MoraleFlagTypeByType_1 = require("./MoraleFlagTypeByType");
+const MoraleKeepLevelAll_1 = require("./MoraleKeepLevelAll");
+const MoraleKeepLevelById_1 = require("./MoraleKeepLevelById");
+const MoraleLevelDiffById_1 = require("./MoraleLevelDiffById");
+const MoraleLevelDiffShowAll_1 = require("./MoraleLevelDiffShowAll");
+const MoraleLevelDiffShowById_1 = require("./MoraleLevelDiffShowById");
+const MoraleLvPowerAll_1 = require("./MoraleLvPowerAll");
+const MoraleLvPowerById_1 = require("./MoraleLvPowerById");
+const MoralePlayById_1 = require("./MoralePlayById");
+const MoraleRoleGrowthByLevel_1 = require("./MoraleRoleGrowthByLevel");
+const MotionById_1 = require("./MotionById");
+const MotionByRoleId_1 = require("./MotionByRoleId");
+const MotionByRoleIdAndType_1 = require("./MotionByRoleIdAndType");
+const MotionBySkinId_1 = require("./MotionBySkinId");
+const MowTowerBuffReAll_1 = require("./MowTowerBuffReAll");
+const MowTowerBuffReById_1 = require("./MowTowerBuffReById");
+const MowTowerLevelsReAll_1 = require("./MowTowerLevelsReAll");
+const MowTowerLevelsReById_1 = require("./MowTowerLevelsReById");
+const MowTowerRewardReAll_1 = require("./MowTowerRewardReAll");
+const MowTowerRewardReById_1 = require("./MowTowerRewardReById");
+const MultiMapAll_1 = require("./MultiMapAll");
+const MultiMapByGroupId_1 = require("./MultiMapByGroupId");
+const MultiMapById_1 = require("./MultiMapById");
+const MultiMapAreaConfigAll_1 = require("./MultiMapAreaConfigAll");
+const MultiTextLang_1 = require("./MultiTextLang");
+const NewOccupationConfigAll_1 = require("./NewOccupationConfigAll");
+const NewOccupationConfigById_1 = require("./NewOccupationConfigById");
+const NewbieCarnivalParamByActivityId_1 = require("./NewbieCarnivalParamByActivityId");
+const NewbieCarnivalRoleByRoleId_1 = require("./NewbieCarnivalRoleByRoleId");
+const NewbieCarnivalTaskByTaskId_1 = require("./NewbieCarnivalTaskByTaskId");
+const NewbieCarnivalTaskByTaskType_1 = require("./NewbieCarnivalTaskByTaskType");
+const NewbieCarnivalTaskTypeById_1 = require("./NewbieCarnivalTaskTypeById");
+const NewbieCourseAll_1 = require("./NewbieCourseAll");
+const NewbieCourseById_1 = require("./NewbieCourseById");
+const NounHandBookAll_1 = require("./NounHandBookAll");
+const NounHandBookById_1 = require("./NounHandBookById");
+const NounHandBookByType_1 = require("./NounHandBookByType");
+const NounTypeAll_1 = require("./NounTypeAll");
+const NounTypeById_1 = require("./NounTypeById");
+const NpcHeadInfoById_1 = require("./NpcHeadInfoById");
+const NpcSystemBackgroundById_1 = require("./NpcSystemBackgroundById");
+const NpcSystemBackgroundByViewName_1 = require("./NpcSystemBackgroundByViewName");
+const OccupationConfigById_1 = require("./OccupationConfigById");
+const OccupationConfigLang_1 = require("./OccupationConfigLang");
+const OccupyScoreAll_1 = require("./OccupyScoreAll");
+const OccupyScoreById_1 = require("./OccupyScoreById");
+const OpenAndCloseViewHotKeyAll_1 = require("./OpenAndCloseViewHotKeyAll");
+const OpenAndCloseViewHotKeyByActionName_1 = require("./OpenAndCloseViewHotKeyByActionName");
+const OpenAndCloseViewHotKeyByInputControllerType_1 = require("./OpenAndCloseViewHotKeyByInputControllerType");
+const OverlayAbpMontageDataById_1 = require("./OverlayAbpMontageDataById");
+const PackageCapacityAll_1 = require("./PackageCapacityAll");
+const PackageCapacityByPackageId_1 = require("./PackageCapacityByPackageId");
+const ParkourChallengeById_1 = require("./ParkourChallengeById");
+const ParkourChallengeByMarkId_1 = require("./ParkourChallengeByMarkId");
+const PassiveSkillById_1 = require("./PassiveSkillById");
+const PayById_1 = require("./PayById");
+const PayByPayIdAndRegion_1 = require("./PayByPayIdAndRegion");
+const PayByRegion_1 = require("./PayByRegion");
+const PayGiftAll_1 = require("./PayGiftAll");
+const PayGiftById_1 = require("./PayGiftById");
+const PayItemAll_1 = require("./PayItemAll");
+const PayItemById_1 = require("./PayItemById");
+const PayShopAll_1 = require("./PayShopAll");
+const PayShopById_1 = require("./PayShopById");
+const PayShopConditionById_1 = require("./PayShopConditionById");
+const PayShopDirectGoodsByGoodsId_1 = require("./PayShopDirectGoodsByGoodsId");
+const PayShopGoodsAll_1 = require("./PayShopGoodsAll");
+const PayShopGoodsById_1 = require("./PayShopGoodsById");
+const PayShopGoodsByItemId_1 = require("./PayShopGoodsByItemId");
+const PayShopRecommendAll_1 = require("./PayShopRecommendAll");
+const PayShopRecommendById_1 = require("./PayShopRecommendById");
+const PayShopTabByShopId_1 = require("./PayShopTabByShopId");
+const PayShopTabByShopIdAndTabId_1 = require("./PayShopTabByShopIdAndTabId");
+const PbDataPreloadAll_1 = require("./PbDataPreloadAll");
+const PbDataPreloadByMapIdAndPbId_1 = require("./PbDataPreloadByMapIdAndPbId");
+const PcKeyAll_1 = require("./PcKeyAll");
+const PcKeyById_1 = require("./PcKeyById");
+const PcKeyByKeyName_1 = require("./PcKeyByKeyName");
+const PerformanceConditionById_1 = require("./PerformanceConditionById");
+const PerformanceConditionByIdWithZero_1 = require("./PerformanceConditionByIdWithZero");
+const PersonalTipsByFunctionId_1 = require("./PersonalTipsByFunctionId");
+const PersonalTipsById_1 = require("./PersonalTipsById");
+const PhantomBattleActivityByActivityId_1 = require("./PhantomBattleActivityByActivityId");
+const PhantomBattleBadgeAll_1 = require("./PhantomBattleBadgeAll");
+const PhantomBattleBadgeByActivityGroupId_1 = require("./PhantomBattleBadgeByActivityGroupId");
+const PhantomBattleBadgeByGroupId_1 = require("./PhantomBattleBadgeByGroupId");
+const PhantomBattleBadgeById_1 = require("./PhantomBattleBadgeById");
+const PhantomBattleBadgeGroupAll_1 = require("./PhantomBattleBadgeGroupAll");
+const PhantomBattleBadgeGroupByGroupId_1 = require("./PhantomBattleBadgeGroupByGroupId");
+const PhantomBattleBadgeRewardByActivityId_1 = require("./PhantomBattleBadgeRewardByActivityId");
+const PhantomBattleBadgeRewardById_1 = require("./PhantomBattleBadgeRewardById");
+const PhantomBattleBuffById_1 = require("./PhantomBattleBuffById");
+const PhantomBattleCardAll_1 = require("./PhantomBattleCardAll");
+const PhantomBattleCardByActivityId_1 = require("./PhantomBattleCardByActivityId");
+const PhantomBattleCardById_1 = require("./PhantomBattleCardById");
+const PhantomBattleCardElementById_1 = require("./PhantomBattleCardElementById");
+const PhantomBattleCardFilterAll_1 = require("./PhantomBattleCardFilterAll");
+const PhantomBattleCardFilterById_1 = require("./PhantomBattleCardFilterById");
+const PhantomBattleCardGroupByGroupId_1 = require("./PhantomBattleCardGroupByGroupId");
+const PhantomBattleCardGroupInfoById_1 = require("./PhantomBattleCardGroupInfoById");
+const PhantomBattleCardRewardByActivityId_1 = require("./PhantomBattleCardRewardByActivityId");
+const PhantomBattleCardRewardById_1 = require("./PhantomBattleCardRewardById");
+const PhantomBattleCardRoleAll_1 = require("./PhantomBattleCardRoleAll");
+const PhantomBattleCardRoleById_1 = require("./PhantomBattleCardRoleById");
+const PhantomBattleCardSlotSortAll_1 = require("./PhantomBattleCardSlotSortAll");
+const PhantomBattleCardSlotSortById_1 = require("./PhantomBattleCardSlotSortById");
+const PhantomBattleChallengeByActivityGymId_1 = require("./PhantomBattleChallengeByActivityGymId");
+const PhantomBattleChallengeByActivityId_1 = require("./PhantomBattleChallengeByActivityId");
+const PhantomBattleChallengeByGymId_1 = require("./PhantomBattleChallengeByGymId");
+const PhantomBattleChallengeById_1 = require("./PhantomBattleChallengeById");
+const PhantomBattleDialogById_1 = require("./PhantomBattleDialogById");
+const PhantomBattleEntryById_1 = require("./PhantomBattleEntryById");
+const PhantomBattleFactorAll_1 = require("./PhantomBattleFactorAll");
+const PhantomBattleFactorById_1 = require("./PhantomBattleFactorById");
+const PhantomBattleFourCTaskByCardId_1 = require("./PhantomBattleFourCTaskByCardId");
+const PhantomBattleGymByActivityId_1 = require("./PhantomBattleGymByActivityId");
+const PhantomBattleMasterLevelAll_1 = require("./PhantomBattleMasterLevelAll");
+const PhantomBattleMasterLevelById_1 = require("./PhantomBattleMasterLevelById");
+const PhantomBattleMasterTitleAll_1 = require("./PhantomBattleMasterTitleAll");
+const PhantomBattleMasterTitleById_1 = require("./PhantomBattleMasterTitleById");
+const PhantomBattleNPCByGroupId_1 = require("./PhantomBattleNPCByGroupId");
+const PhantomBattleNPCById_1 = require("./PhantomBattleNPCById");
+const PhantomBattleSkillById_1 = require("./PhantomBattleSkillById");
+const PhantomBattleTaskByActivityId_1 = require("./PhantomBattleTaskByActivityId");
+const PhantomBattleTaskByTaskId_1 = require("./PhantomBattleTaskByTaskId");
+const PhantomBattleTaskTabById_1 = require("./PhantomBattleTaskTabById");
+const PhantomBattleWeekExpAll_1 = require("./PhantomBattleWeekExpAll");
+const PhantomBattleWeekExpById_1 = require("./PhantomBattleWeekExpById");
+const PhantomBattleWinSeqById_1 = require("./PhantomBattleWinSeqById");
+const PhantomCollectActivityById_1 = require("./PhantomCollectActivityById");
+const PhantomCollectTaskDescById_1 = require("./PhantomCollectTaskDescById");
+const PhantomCustomizeItemByItemId_1 = require("./PhantomCustomizeItemByItemId");
+const PhantomExpItemAll_1 = require("./PhantomExpItemAll");
+const PhantomExpItemByItemId_1 = require("./PhantomExpItemByItemId");
+const PhantomFetterAll_1 = require("./PhantomFetterAll");
+const PhantomFetterById_1 = require("./PhantomFetterById");
+const PhantomFetterGroupAll_1 = require("./PhantomFetterGroupAll");
+const PhantomFetterGroupById_1 = require("./PhantomFetterGroupById");
+const PhantomFetterHandBookAll_1 = require("./PhantomFetterHandBookAll");
+const PhantomFormationById_1 = require("./PhantomFormationById");
+const PhantomGainByActivityId_1 = require("./PhantomGainByActivityId");
+const PhantomGainById_1 = require("./PhantomGainById");
+const PhantomGrowthByGrowthIdAndLevel_1 = require("./PhantomGrowthByGrowthIdAndLevel");
+const PhantomHandBookAll_1 = require("./PhantomHandBookAll");
+const PhantomHandBookById_1 = require("./PhantomHandBookById");
+const PhantomHandBookPageAll_1 = require("./PhantomHandBookPageAll");
+const PhantomItemAll_1 = require("./PhantomItemAll");
+const PhantomItemByItemId_1 = require("./PhantomItemByItemId");
+const PhantomItemByMonsterId_1 = require("./PhantomItemByMonsterId");
+const PhantomLevelByGroupId_1 = require("./PhantomLevelByGroupId");
+const PhantomLevelByGroupIdAndLevel_1 = require("./PhantomLevelByGroupIdAndLevel");
+const PhantomMainPropItemById_1 = require("./PhantomMainPropItemById");
+const PhantomMainPropertyById_1 = require("./PhantomMainPropertyById");
+const PhantomMainPropertyByRandGroupId_1 = require("./PhantomMainPropertyByRandGroupId");
+const PhantomManagePlanConfigAll_1 = require("./PhantomManagePlanConfigAll");
+const PhantomManagePlanConfigById_1 = require("./PhantomManagePlanConfigById");
+const PhantomManagePlanConfigByType_1 = require("./PhantomManagePlanConfigByType");
+const PhantomQualityByQuality_1 = require("./PhantomQualityByQuality");
+const PhantomRarityAll_1 = require("./PhantomRarityAll");
+const PhantomRarityByRare_1 = require("./PhantomRarityByRare");
+const PhantomSkillById_1 = require("./PhantomSkillById");
+const PhantomSkillByPhantomSkillId_1 = require("./PhantomSkillByPhantomSkillId");
+const PhantomSubPropertyById_1 = require("./PhantomSubPropertyById");
+const PhantomSubPropertyByPropId_1 = require("./PhantomSubPropertyByPropId");
+const PhantomWildItemAll_1 = require("./PhantomWildItemAll");
+const PhantomWildItemByItemId_1 = require("./PhantomWildItemByItemId");
+const PhonographAlbumAll_1 = require("./PhonographAlbumAll");
+const PhonographAlbumById_1 = require("./PhonographAlbumById");
+const PhonographMusicAll_1 = require("./PhonographMusicAll");
+const PhonographMusicById_1 = require("./PhonographMusicById");
+const PhotoFilterAll_1 = require("./PhotoFilterAll");
+const PhotoFilterById_1 = require("./PhotoFilterById");
+const PhotoMemoryActivityById_1 = require("./PhotoMemoryActivityById");
+const PhotoMemoryCollectById_1 = require("./PhotoMemoryCollectById");
+const PhotoMemoryCollectByTopicID_1 = require("./PhotoMemoryCollectByTopicID");
+const PhotoMemoryTopicAll_1 = require("./PhotoMemoryTopicAll");
+const PhotoMemoryTopicById_1 = require("./PhotoMemoryTopicById");
+const PhotoMontageById_1 = require("./PhotoMontageById");
+const PhotoMontageByRoleId_1 = require("./PhotoMontageByRoleId");
+const PhotoMontageByRoleIdAndMainAnimInstanceType_1 = require("./PhotoMontageByRoleIdAndMainAnimInstanceType");
+const PhotoSetupAll_1 = require("./PhotoSetupAll");
+const PhotoSetupByValueType_1 = require("./PhotoSetupByValueType");
+const PhotographHandBookAll_1 = require("./PhotographHandBookAll");
+const PhotographHandBookById_1 = require("./PhotographHandBookById");
+const PhotographHandBookByType_1 = require("./PhotographHandBookByType");
+const PhysicsAssetConfigById_1 = require("./PhysicsAssetConfigById");
+const PhysicsAssetConfigByIdWithDefaultId_1 = require("./PhysicsAssetConfigByIdWithDefaultId");
+const PlatformIconById_1 = require("./PlatformIconById");
+const PlayStationActivityConfigAll_1 = require("./PlayStationActivityConfigAll");
+const PlayerExpByPlayerLevel_1 = require("./PlayerExpByPlayerLevel");
+const PlayerExpByPlayerLevelArea_1 = require("./PlayerExpByPlayerLevelArea");
+const PlayerHeadReAll_1 = require("./PlayerHeadReAll");
+const PlayerHeadReById_1 = require("./PlayerHeadReById");
+const PlayerStateRestrictionById_1 = require("./PlayerStateRestrictionById");
+const PlayerTitleAll_1 = require("./PlayerTitleAll");
+const PlayerTitleById_1 = require("./PlayerTitleById");
+const PlotAudioById_1 = require("./PlotAudioById");
+const PlotGuestByGuestID_1 = require("./PlotGuestByGuestID");
+const PlotHandBookConfigAll_1 = require("./PlotHandBookConfigAll");
+const PlotHandBookConfigByQuestId_1 = require("./PlotHandBookConfigByQuestId");
+const PlotTypeAll_1 = require("./PlotTypeAll");
+const PlotTypeById_1 = require("./PlotTypeById");
+const PopularityAll_1 = require("./PopularityAll");
+const PreOpenDetectionAll_1 = require("./PreOpenDetectionAll");
+const PreOpenDetectionById_1 = require("./PreOpenDetectionById");
+const PrefabConfigById_1 = require("./PrefabConfigById");
+const PrefabRichTextDataById_1 = require("./PrefabRichTextDataById");
+const PrefabTextItemAll_1 = require("./PrefabTextItemAll");
+const PrefabTextItemByItemId_1 = require("./PrefabTextItemByItemId");
+const PrefabTextItemByPrefabPathHash_1 = require("./PrefabTextItemByPrefabPathHash");
+const PreheatBonusAll_1 = require("./PreheatBonusAll");
+const PreheatBonusById_1 = require("./PreheatBonusById");
+const PreheatQuestTextAll_1 = require("./PreheatQuestTextAll");
+const PreheatQuestTextById_1 = require("./PreheatQuestTextById");
+const PreheatSignReAll_1 = require("./PreheatSignReAll");
+const PreheatSignReById_1 = require("./PreheatSignReById");
+const PreheatVoteAll_1 = require("./PreheatVoteAll");
+const PreheatVoteById_1 = require("./PreheatVoteById");
+const PreviewItemAll_1 = require("./PreviewItemAll");
+const PreviewItemById_1 = require("./PreviewItemById");
+const PropRewardConfById_1 = require("./PropRewardConfById");
+const PropertyIndexAll_1 = require("./PropertyIndexAll");
+const PropertyIndexById_1 = require("./PropertyIndexById");
+const PunishReportById_1 = require("./PunishReportById");
+const QualityIconTagById_1 = require("./QualityIconTagById");
+const QualityInfoAll_1 = require("./QualityInfoAll");
+const QualityInfoById_1 = require("./QualityInfoById");
+const QuestById_1 = require("./QuestById");
+const QuestChapterById_1 = require("./QuestChapterById");
+const QuestDataById_1 = require("./QuestDataById");
+const QuestMainTypeById_1 = require("./QuestMainTypeById");
+const QuestNodeDataByKey_1 = require("./QuestNodeDataByKey");
+const QuestRefVideoConfigAll_1 = require("./QuestRefVideoConfigAll");
+const QuestReviewEntryAll_1 = require("./QuestReviewEntryAll");
+const QuestReviewEntryById_1 = require("./QuestReviewEntryById");
+const QuestReviewLineById_1 = require("./QuestReviewLineById");
+const QuestReviewNodeById_1 = require("./QuestReviewNodeById");
+const QuestReviewNodeByQuestLine_1 = require("./QuestReviewNodeByQuestLine");
+const QuestReviewTabById_1 = require("./QuestReviewTabById");
+const QuestReviewTreeById_1 = require("./QuestReviewTreeById");
+const QuestTagById_1 = require("./QuestTagById");
+const QuestTrackingConfigAll_1 = require("./QuestTrackingConfigAll");
+const QuestTrackingConfigById_1 = require("./QuestTrackingConfigById");
+const QuestTypeAll_1 = require("./QuestTypeAll");
+const QuestTypeById_1 = require("./QuestTypeById");
+const QuestTypeByMainId_1 = require("./QuestTypeByMainId");
+const QuickChatAll_1 = require("./QuickChatAll");
+const RacingBetConversionRateById_1 = require("./RacingBetConversionRateById");
+const RacingBetConversionRateBySeasonId_1 = require("./RacingBetConversionRateBySeasonId");
+const RacingBetMapPointById_1 = require("./RacingBetMapPointById");
+const RacingBetMapPointBySeasonId_1 = require("./RacingBetMapPointBySeasonId");
+const RacingBetRankOpenTimeById_1 = require("./RacingBetRankOpenTimeById");
+const RacingBetsBulletScreenById_1 = require("./RacingBetsBulletScreenById");
+const RacingBetsBulletScreenBySeasonId_1 = require("./RacingBetsBulletScreenBySeasonId");
+const RacingBetsGroupMatchById_1 = require("./RacingBetsGroupMatchById");
+const RacingBetsGroupMatchBySeasonId_1 = require("./RacingBetsGroupMatchBySeasonId");
+const RacingBetsLegMatchesById_1 = require("./RacingBetsLegMatchesById");
+const RacingBetsLegMatchesByMatchId_1 = require("./RacingBetsLegMatchesByMatchId");
+const RacingBetsRewardById_1 = require("./RacingBetsRewardById");
+const RacingBetsRewardBySeasonId_1 = require("./RacingBetsRewardBySeasonId");
+const RacingBetsSeasonById_1 = require("./RacingBetsSeasonById");
+const RacingBettingGearById_1 = require("./RacingBettingGearById");
+const RacingBettingGearBySeasonId_1 = require("./RacingBettingGearBySeasonId");
+const RecordConfigById_1 = require("./RecordConfigById");
+const RedDotByRelativeName_1 = require("./RedDotByRelativeName");
+const RefineRecommendAll_1 = require("./RefineRecommendAll");
+const RefineRecommendByCost_1 = require("./RefineRecommendByCost");
+const RegressBaseAll_1 = require("./RegressBaseAll");
+const RegressBaseByEntryType_1 = require("./RegressBaseByEntryType");
+const RegressBonusRewardAll_1 = require("./RegressBonusRewardAll");
+const RegressBonusRewardByGrade_1 = require("./RegressBonusRewardByGrade");
+const RegressBonusRewardByIdAndGrade_1 = require("./RegressBonusRewardByIdAndGrade");
+const RegressDoubleDropAll_1 = require("./RegressDoubleDropAll");
+const RegressDoubleDropByGrade_1 = require("./RegressDoubleDropByGrade");
+const RegressDoubleDropById_1 = require("./RegressDoubleDropById");
+const RegressEntryAll_1 = require("./RegressEntryAll");
+const RegressEntryByEntryType_1 = require("./RegressEntryByEntryType");
+const RegressInvestigationAll_1 = require("./RegressInvestigationAll");
+const RegressInvestigationByInvestigationTypeAndIfGlobal_1 = require("./RegressInvestigationByInvestigationTypeAndIfGlobal");
+const RegressQuestAll_1 = require("./RegressQuestAll");
+const RegressQuestById_1 = require("./RegressQuestById");
+const RegressRewardsById_1 = require("./RegressRewardsById");
+const RegressSignRewardAll_1 = require("./RegressSignRewardAll");
+const RegressSignRewardByGradeAndActivityId_1 = require("./RegressSignRewardByGradeAndActivityId");
+const ReignsById_1 = require("./ReignsById");
+const ReignsCardById_1 = require("./ReignsCardById");
+const ReportPlayerInfoAll_1 = require("./ReportPlayerInfoAll");
+const ResElementLevelGainByTargetType_1 = require("./ResElementLevelGainByTargetType");
+const ResonantChainByGroupId_1 = require("./ResonantChainByGroupId");
+const ResonantChainByGroupIdAndGroupIndex_1 = require("./ResonantChainByGroupIdAndGroupIndex");
+const ResonantChainByGroupIdAndNodeType_1 = require("./ResonantChainByGroupIdAndNodeType");
+const ResonantChainById_1 = require("./ResonantChainById");
+const ReviveById_1 = require("./ReviveById");
+const RewardConfigById_1 = require("./RewardConfigById");
+const RewardViewFromSourceAll_1 = require("./RewardViewFromSourceAll");
+const RewardViewFromSourceBySourceId_1 = require("./RewardViewFromSourceBySourceId");
+const RiskHarvestActivityInfoByActivityId_1 = require("./RiskHarvestActivityInfoByActivityId");
+const RiskHarvestArtifactAll_1 = require("./RiskHarvestArtifactAll");
+const RiskHarvestArtifactById_1 = require("./RiskHarvestArtifactById");
+const RiskHarvestBuffGroupAll_1 = require("./RiskHarvestBuffGroupAll");
+const RiskHarvestBuffGroupByActivityId_1 = require("./RiskHarvestBuffGroupByActivityId");
+const RiskHarvestBuffGroupById_1 = require("./RiskHarvestBuffGroupById");
+const RiskHarvestBuffRewardAll_1 = require("./RiskHarvestBuffRewardAll");
+const RiskHarvestBuffRewardById_1 = require("./RiskHarvestBuffRewardById");
+const RiskHarvestDifficultyById_1 = require("./RiskHarvestDifficultyById");
+const RiskHarvestInstAll_1 = require("./RiskHarvestInstAll");
+const RiskHarvestInstByActivityId_1 = require("./RiskHarvestInstByActivityId");
+const RiskHarvestInstById_1 = require("./RiskHarvestInstById");
+const RiskHarvestInstByInstanceID_1 = require("./RiskHarvestInstByInstanceID");
+const RiskHarvestScoreRewardAll_1 = require("./RiskHarvestScoreRewardAll");
+const RiskHarvestScoreRewardByActivityId_1 = require("./RiskHarvestScoreRewardByActivityId");
+const RiskHarvestScoreRewardById_1 = require("./RiskHarvestScoreRewardById");
+const RogueActivityById_1 = require("./RogueActivityById");
+const RogueAffixById_1 = require("./RogueAffixById");
+const RogueBossInstanceById_1 = require("./RogueBossInstanceById");
+const RogueBuffPoolById_1 = require("./RogueBuffPoolById");
+const RogueCharacterById_1 = require("./RogueCharacterById");
+const RogueCharacterBuffById_1 = require("./RogueCharacterBuffById");
+const RogueCurrencyById_1 = require("./RogueCurrencyById");
+const RogueEffectById_1 = require("./RogueEffectById");
+const RogueEventById_1 = require("./RogueEventById");
+const RogueLimitTimeRewardById_1 = require("./RogueLimitTimeRewardById");
+const RogueParamById_1 = require("./RogueParamById");
+const RoguePokemonById_1 = require("./RoguePokemonById");
+const RoguePopularEntrieArgAll_1 = require("./RoguePopularEntrieArgAll");
+const RoguePopularEntrieArgById_1 = require("./RoguePopularEntrieArgById");
+const RoguePopularEntrieArgBySeasonIdAndInstId_1 = require("./RoguePopularEntrieArgBySeasonIdAndInstId");
+const RogueQualityConfigById_1 = require("./RogueQualityConfigById");
+const RogueResAffixById_1 = require("./RogueResAffixById");
+const RogueResBondAll_1 = require("./RogueResBondAll");
+const RogueResBondById_1 = require("./RogueResBondById");
+const RogueResBondLvByLv_1 = require("./RogueResBondLvByLv");
+const RogueResBondRoleAll_1 = require("./RogueResBondRoleAll");
+const RogueResBondRoleByRoleId_1 = require("./RogueResBondRoleByRoleId");
+const RogueResBuffPoolById_1 = require("./RogueResBuffPoolById");
+const RogueResCharacterById_1 = require("./RogueResCharacterById");
+const RogueResCharacterBuffById_1 = require("./RogueResCharacterBuffById");
+const RogueResCollectionAll_1 = require("./RogueResCollectionAll");
+const RogueResCollectionById_1 = require("./RogueResCollectionById");
+const RogueResCollectionByIdKey_1 = require("./RogueResCollectionByIdKey");
+const RogueResCollectionByIndex_1 = require("./RogueResCollectionByIndex");
+const RogueResCollectionRuleById_1 = require("./RogueResCollectionRuleById");
+const RogueResCurrencyById_1 = require("./RogueResCurrencyById");
+const RogueResDungeonConfigById_1 = require("./RogueResDungeonConfigById");
+const RogueResEffectById_1 = require("./RogueResEffectById");
+const RogueResEffectTagById_1 = require("./RogueResEffectTagById");
+const RogueResEndAll_1 = require("./RogueResEndAll");
+const RogueResEndById_1 = require("./RogueResEndById");
+const RogueResEndAwardById_1 = require("./RogueResEndAwardById");
+const RogueResEventById_1 = require("./RogueResEventById");
+const RogueResEventBgById_1 = require("./RogueResEventBgById");
+const RogueResEventBgmById_1 = require("./RogueResEventBgmById");
+const RogueResEventCueByType_1 = require("./RogueResEventCueByType");
+const RogueResEventPlotByPlotId_1 = require("./RogueResEventPlotByPlotId");
+const RogueResEventStepById_1 = require("./RogueResEventStepById");
+const RogueResGlobalParamAll_1 = require("./RogueResGlobalParamAll");
+const RogueResGridEventById_1 = require("./RogueResGridEventById");
+const RogueResGridExploreByInstId_1 = require("./RogueResGridExploreByInstId");
+const RogueResGridMapTypeById_1 = require("./RogueResGridMapTypeById");
+const RogueResInstGridById_1 = require("./RogueResInstGridById");
+const RogueResMoodRuleById_1 = require("./RogueResMoodRuleById");
+const RogueResPokemonById_1 = require("./RogueResPokemonById");
+const RogueResQualityConfigById_1 = require("./RogueResQualityConfigById");
+const RogueResRoomPoolById_1 = require("./RogueResRoomPoolById");
+const RogueResRoomTypeById_1 = require("./RogueResRoomTypeById");
+const RogueResSkillLvRuleAll_1 = require("./RogueResSkillLvRuleAll");
+const RogueResSortById_1 = require("./RogueResSortById");
+const RogueResSynergyTypeAll_1 = require("./RogueResSynergyTypeAll");
+const RogueResSynergyTypeById_1 = require("./RogueResSynergyTypeById");
+const RogueResTalentTreeAll_1 = require("./RogueResTalentTreeAll");
+const RogueResTalentTreeById_1 = require("./RogueResTalentTreeById");
+const RogueResTalentTreeDescById_1 = require("./RogueResTalentTreeDescById");
+const RogueResTaskById_1 = require("./RogueResTaskById");
+const RogueResTaskThemeById_1 = require("./RogueResTaskThemeById");
+const RogueResTeamLvRuleAll_1 = require("./RogueResTeamLvRuleAll");
+const RogueResThemeAll_1 = require("./RogueResThemeAll");
+const RogueResThemeById_1 = require("./RogueResThemeById");
+const RogueRoomPoolById_1 = require("./RogueRoomPoolById");
+const RogueRoomShowConfigById_1 = require("./RogueRoomShowConfigById");
+const RogueRoomTypeById_1 = require("./RogueRoomTypeById");
+const RogueSeasonAll_1 = require("./RogueSeasonAll");
+const RogueSeasonById_1 = require("./RogueSeasonById");
+const RogueSeasonRewardBySeasonId_1 = require("./RogueSeasonRewardBySeasonId");
+const RogueTalentTreeAll_1 = require("./RogueTalentTreeAll");
+const RogueTalentTreeById_1 = require("./RogueTalentTreeById");
+const RogueTalentTreeDescById_1 = require("./RogueTalentTreeDescById");
+const RogueTokenBySeasonId_1 = require("./RogueTokenBySeasonId");
+const RogueWeekQualityConfigAll_1 = require("./RogueWeekQualityConfigAll");
+const RogueWeekQualityConfigById_1 = require("./RogueWeekQualityConfigById");
+const RogueWeeklyBuffDescAll_1 = require("./RogueWeeklyBuffDescAll");
+const RogueWeeklyBuffDescById_1 = require("./RogueWeeklyBuffDescById");
+const RogueWeeklyBuffPoolAll_1 = require("./RogueWeeklyBuffPoolAll");
+const RogueWeeklyBuffPoolById_1 = require("./RogueWeeklyBuffPoolById");
+const RogueWeeklyCycleById_1 = require("./RogueWeeklyCycleById");
+const RogueWeeklyParamAll_1 = require("./RogueWeeklyParamAll");
+const RogueWeeklyParamById_1 = require("./RogueWeeklyParamById");
+const RogueWeeklyRewardByCycleId_1 = require("./RogueWeeklyRewardByCycleId");
+const RogueWeeklyRewardById_1 = require("./RogueWeeklyRewardById");
+const RogueWeeklyRoomPoolAll_1 = require("./RogueWeeklyRoomPoolAll");
+const RogueWeeklyRoomPoolById_1 = require("./RogueWeeklyRoomPoolById");
+const RogueWeeklyRoomTypeAll_1 = require("./RogueWeeklyRoomTypeAll");
+const RogueWeeklyRoomTypeById_1 = require("./RogueWeeklyRoomTypeById");
+const RogueWhiteCatById_1 = require("./RogueWhiteCatById");
+const RogueWhiteCatBossRewardById_1 = require("./RogueWhiteCatBossRewardById");
+const RogueWhiteCatInstById_1 = require("./RogueWhiteCatInstById");
+const RogueWhiteCatRewardById_1 = require("./RogueWhiteCatRewardById");
+const RoleAnimAudioByRoleId_1 = require("./RoleAnimAudioByRoleId");
+const RoleAudioById_1 = require("./RoleAudioById");
+const RoleAudioRulesById_1 = require("./RoleAudioRulesById");
+const RoleBattleViewInfoAll_1 = require("./RoleBattleViewInfoAll");
+const RoleBattleViewInfoById_1 = require("./RoleBattleViewInfoById");
+const RoleBirthdayAll_1 = require("./RoleBirthdayAll");
+const RoleBirthdayById_1 = require("./RoleBirthdayById");
+const RoleBreachByBreachGroupId_1 = require("./RoleBreachByBreachGroupId");
+const RoleBreachByBreachGroupIdAndBreachLevel_1 = require("./RoleBreachByBreachGroupIdAndBreachLevel");
+const RoleDescriptionById_1 = require("./RoleDescriptionById");
+const RoleDevelopCurveByGroupId_1 = require("./RoleDevelopCurveByGroupId");
+const RoleDevelopTypeById_1 = require("./RoleDevelopTypeById");
+const RoleExpItemAll_1 = require("./RoleExpItemAll");
+const RoleExpItemById_1 = require("./RoleExpItemById");
+const RoleGuideActivityById_1 = require("./RoleGuideActivityById");
+const RoleIconTagById_1 = require("./RoleIconTagById");
+const RoleInfluenceAll_1 = require("./RoleInfluenceAll");
+const RoleInfluenceById_1 = require("./RoleInfluenceById");
+const RoleInfoAll_1 = require("./RoleInfoAll");
+const RoleInfoById_1 = require("./RoleInfoById");
+const RoleInfoByRoleType_1 = require("./RoleInfoByRoleType");
+const RoleLevelConsumeByConsumeGroupIdAndLevel_1 = require("./RoleLevelConsumeByConsumeGroupIdAndLevel");
+const RoleMorphAll_1 = require("./RoleMorphAll");
+const RoleMorphById_1 = require("./RoleMorphById");
+const RoleMorphByRoleId_1 = require("./RoleMorphByRoleId");
+const RoleMorphAudioRulesAll_1 = require("./RoleMorphAudioRulesAll");
+const RoleMorphAudioRulesByModelId_1 = require("./RoleMorphAudioRulesByModelId");
+const RolePropertyGrowthByLevelAndBreachLevel_1 = require("./RolePropertyGrowthByLevelAndBreachLevel");
+const RoleQualityInfoById_1 = require("./RoleQualityInfoById");
+const RoleQuestById_1 = require("./RoleQuestById");
+const RoleQuestByRoleId_1 = require("./RoleQuestByRoleId");
+const RoleQuestByRoleIdAll_1 = require("./RoleQuestByRoleIdAll");
+const RoleSkillInputById_1 = require("./RoleSkillInputById");
+const RoleSkinAll_1 = require("./RoleSkinAll");
+const RoleSkinById_1 = require("./RoleSkinById");
+const RoleSkinByRoleId_1 = require("./RoleSkinByRoleId");
+const RoleSkinBirthdayById_1 = require("./RoleSkinBirthdayById");
+const RoleSkinTrialActivityById_1 = require("./RoleSkinTrialActivityById");
+const RoleSkinTrialInfoById_1 = require("./RoleSkinTrialInfoById");
+const RoleSkinTrialInfoByRoleId_1 = require("./RoleSkinTrialInfoByRoleId");
+const RoleSkinTrialUiConfigById_1 = require("./RoleSkinTrialUiConfigById");
+const RoleTagAll_1 = require("./RoleTagAll");
+const RoleTagById_1 = require("./RoleTagById");
+const RoleTrainingDegreeByDifficultyLevel_1 = require("./RoleTrainingDegreeByDifficultyLevel");
+const RoleTrialActivityById_1 = require("./RoleTrialActivityById");
+const RoleTrialInfoById_1 = require("./RoleTrialInfoById");
+const RoleTrialRoleConfigByRoleId_1 = require("./RoleTrialRoleConfigByRoleId");
+const RoleTrialUiConfigById_1 = require("./RoleTrialUiConfigById");
+const RougeMiraclecreationById_1 = require("./RougeMiraclecreationById");
+const RougePopularEntrieAll_1 = require("./RougePopularEntrieAll");
+const RougePopularEntrieById_1 = require("./RougePopularEntrieById");
+const RougeResMiraclecreationById_1 = require("./RougeResMiraclecreationById");
+const ScoreRewardById_1 = require("./ScoreRewardById");
+const ScratchCardActivityReById_1 = require("./ScratchCardActivityReById");
+const ScratchCardRewardReById_1 = require("./ScratchCardRewardReById");
+const ScratchCardRewardReByType_1 = require("./ScratchCardRewardReByType");
+const ScratchCardRoundReByRoundId_1 = require("./ScratchCardRoundReByRoundId");
+const ScratchCardTimesReByTaskId_1 = require("./ScratchCardTimesReByTaskId");
+const SecondaryGuideDataById_1 = require("./SecondaryGuideDataById");
+const ServerLimitAll_1 = require("./ServerLimitAll");
+const ServerLimitById_1 = require("./ServerLimitById");
+const SetAccountAll_1 = require("./SetAccountAll");
+const SetAccountById_1 = require("./SetAccountById");
+const SettleFlagAll_1 = require("./SettleFlagAll");
+const SettleFlagById_1 = require("./SettleFlagById");
+const SettleRewardAll_1 = require("./SettleRewardAll");
+const SettleRewardByActivityId_1 = require("./SettleRewardByActivityId");
+const SharePlatformAll_1 = require("./SharePlatformAll");
+const SharePlatformById_1 = require("./SharePlatformById");
+const ShareRewardById_1 = require("./ShareRewardById");
+const ShieldById_1 = require("./ShieldById");
+const ShopFixedByShopId_1 = require("./ShopFixedByShopId");
+const ShopFixedByShopIdAndId_1 = require("./ShopFixedByShopIdAndId");
+const ShopInfoById_1 = require("./ShopInfoById");
+const SignRewardByActivityId_1 = require("./SignRewardByActivityId");
+const SignalDecodeGamePlayById_1 = require("./SignalDecodeGamePlayById");
+const SignalDecodeTabColorById_1 = require("./SignalDecodeTabColorById");
+const SignalDecodeWaveformById_1 = require("./SignalDecodeWaveformById");
+const SilentAreaDetectionAll_1 = require("./SilentAreaDetectionAll");
+const SilentAreaDetectionById_1 = require("./SilentAreaDetectionById");
+const SkillById_1 = require("./SkillById");
+const SkillBySkillGroupId_1 = require("./SkillBySkillGroupId");
+const SkillButtonByRoleId_1 = require("./SkillButtonByRoleId");
+const SkillButtonCustomById_1 = require("./SkillButtonCustomById");
+const SkillButtonEffectById_1 = require("./SkillButtonEffectById");
+const SkillButtonIndexById_1 = require("./SkillButtonIndexById");
+const SkillButtonTextAll_1 = require("./SkillButtonTextAll");
+const SkillButtonTextById_1 = require("./SkillButtonTextById");
+const SkillCommonButtonAll_1 = require("./SkillCommonButtonAll");
+const SkillConditionById_1 = require("./SkillConditionById");
+const SkillDescriptionById_1 = require("./SkillDescriptionById");
+const SkillDescriptionBySkillLevelGroupId_1 = require("./SkillDescriptionBySkillLevelGroupId");
+const SkillFollowerButtonByPbDataId_1 = require("./SkillFollowerButtonByPbDataId");
+const SkillIconByTag_1 = require("./SkillIconByTag");
+const SkillInputById_1 = require("./SkillInputById");
+const SkillLevelBySkillLevelGroupId_1 = require("./SkillLevelBySkillLevelGroupId");
+const SkillLevelBySkillLevelGroupIdAndSkillId_1 = require("./SkillLevelBySkillLevelGroupIdAndSkillId");
+const SkillPriorityButtonAll_1 = require("./SkillPriorityButtonAll");
+const SkillTreeById_1 = require("./SkillTreeById");
+const SkillTreeByNodeGroup_1 = require("./SkillTreeByNodeGroup");
+const SkillTreeByNodeGroupAndNodeIndex_1 = require("./SkillTreeByNodeGroupAndNodeIndex");
+const SkillTreeByNodeIndex_1 = require("./SkillTreeByNodeIndex");
+const SkillTypeById_1 = require("./SkillTypeById");
+const SkillVehicleButtonByPbDataId_1 = require("./SkillVehicleButtonByPbDataId");
+const SkyboxById_1 = require("./SkyboxById");
+const SlashAndTowerCfgById_1 = require("./SlashAndTowerCfgById");
+const SlashAndTowerCfgBySeason_1 = require("./SlashAndTowerCfgBySeason");
+const SlashAndTowerRewardByBelongToSeason_1 = require("./SlashAndTowerRewardByBelongToSeason");
+const SlashBuffToItemAll_1 = require("./SlashBuffToItemAll");
+const SlashBuffToItemById_1 = require("./SlashBuffToItemById");
+const SlashBuffToItemByItemId_1 = require("./SlashBuffToItemByItemId");
+const SlashBuffToItemByItemIdAndSeason_1 = require("./SlashBuffToItemByItemIdAndSeason");
+const SlashBuffToItemByItemIdList_1 = require("./SlashBuffToItemByItemIdList");
+const SlashBuffToItemBySeason_1 = require("./SlashBuffToItemBySeason");
+const SlashTowerShowStageAll_1 = require("./SlashTowerShowStageAll");
+const SlashTowerStageInfoByInstId_1 = require("./SlashTowerStageInfoByInstId");
+const SlashTowerTagInfoById_1 = require("./SlashTowerTagInfoById");
+const SlideById_1 = require("./SlideById");
+const SoarById_1 = require("./SoarById");
+const SoarChallengeAll_1 = require("./SoarChallengeAll");
+const SoarChallengeById_1 = require("./SoarChallengeById");
+const SortById_1 = require("./SortById");
+const SortRuleByIdAndDataId_1 = require("./SortRuleByIdAndDataId");
+const SoundAreaPlayInfoAll_1 = require("./SoundAreaPlayInfoAll");
+const SoundAreaPlayInfoById_1 = require("./SoundAreaPlayInfoById");
+const SoundBoxMarkByMarkId_1 = require("./SoundBoxMarkByMarkId");
+const SpeakerById_1 = require("./SpeakerById");
+const SpeakerLang_1 = require("./SpeakerLang");
+const SpecialHateAndSenseById_1 = require("./SpecialHateAndSenseById");
+const SpecialItemById_1 = require("./SpecialItemById");
+const SpineBackgroundById_1 = require("./SpineBackgroundById");
+const SplashScreenAll_1 = require("./SplashScreenAll");
+const SplashScreenById_1 = require("./SplashScreenById");
+const SpringChatById_1 = require("./SpringChatById");
+const SpringResourceAll_1 = require("./SpringResourceAll");
+const SpringResourceById_1 = require("./SpringResourceById");
+const SpringResourceByRoleType_1 = require("./SpringResourceByRoleType");
+const SpringRewardAll_1 = require("./SpringRewardAll");
+const SpringSignAll_1 = require("./SpringSignAll");
+const SpringSignById_1 = require("./SpringSignById");
+const StateByStateId_1 = require("./StateByStateId");
+const StateMachinePreloadByAll_1 = require("./StateMachinePreloadByAll");
+const StateMachinePreloadByFsmKey_1 = require("./StateMachinePreloadByFsmKey");
+const StateMachinePreloadById_1 = require("./StateMachinePreloadById");
+const SubtitleTextByRowNameAndDatatableName_1 = require("./SubtitleTextByRowNameAndDatatableName");
+const SubtitleTextLang_1 = require("./SubtitleTextLang");
+const SummonCfgById_1 = require("./SummonCfgById");
+const SwimById_1 = require("./SwimById");
+const SwimBuffById_1 = require("./SwimBuffById");
+const SynthesisFormulaByFormulaItemId_1 = require("./SynthesisFormulaByFormulaItemId");
+const SynthesisFormulaByFormulaType_1 = require("./SynthesisFormulaByFormulaType");
+const SynthesisFormulaById_1 = require("./SynthesisFormulaById");
+const SynthesisLevelAll_1 = require("./SynthesisLevelAll");
+const TakeWeedsDifficultyById_1 = require("./TakeWeedsDifficultyById");
+const TalkOptionIconById_1 = require("./TalkOptionIconById");
+const TaskMarkAll_1 = require("./TaskMarkAll");
+const TaskMarkByMarkId_1 = require("./TaskMarkByMarkId");
+const TeamConfigById_1 = require("./TeamConfigById");
+const TeamParKOurCfgAll_1 = require("./TeamParKOurCfgAll");
+const TeamParKOurCfgById_1 = require("./TeamParKOurCfgById");
+const TeamParKOurRewardAll_1 = require("./TeamParKOurRewardAll");
+const TeamParKOurRewardById_1 = require("./TeamParKOurRewardById");
+const TeleporterById_1 = require("./TeleporterById");
+const TemplateConfigAll_1 = require("./TemplateConfigAll");
+const TemplateConfigByBlueprintType_1 = require("./TemplateConfigByBlueprintType");
+const TemplateConfigById_1 = require("./TemplateConfigById");
+const TemplateDataPreloadByAll_1 = require("./TemplateDataPreloadByAll");
+const TemplateDataPreloadById_1 = require("./TemplateDataPreloadById");
+const TemporaryTeleportMarkByMarkId_1 = require("./TemporaryTeleportMarkByMarkId");
+const TermConfigById_1 = require("./TermConfigById");
+const TermConfigByKey_1 = require("./TermConfigByKey");
+const TermExplanationViewStyleById_1 = require("./TermExplanationViewStyleById");
+const TextById_1 = require("./TextById");
+const TimeOfDayById_1 = require("./TimeOfDayById");
+const TimePointRewardActivityByActivityId_1 = require("./TimePointRewardActivityByActivityId");
+const TimePointRewardActivityById_1 = require("./TimePointRewardActivityById");
+const TimePointRewardConfigByActivityId_1 = require("./TimePointRewardConfigByActivityId");
+const ToughCalcRatioById_1 = require("./ToughCalcRatioById");
+const TowerBuffById_1 = require("./TowerBuffById");
+const TowerConfigAll_1 = require("./TowerConfigAll");
+const TowerConfigById_1 = require("./TowerConfigById");
+const TowerConfigBySeason_1 = require("./TowerConfigBySeason");
+const TowerDefenceInstanceAll_1 = require("./TowerDefenceInstanceAll");
+const TowerDefenceInstanceById_1 = require("./TowerDefenceInstanceById");
+const TowerDefenceInstanceByInstanceId_1 = require("./TowerDefenceInstanceByInstanceId");
+const TowerDefenceMapMarkAll_1 = require("./TowerDefenceMapMarkAll");
+const TowerDefenceMapMarkByActivityId_1 = require("./TowerDefenceMapMarkByActivityId");
+const TowerDefencePhantomAll_1 = require("./TowerDefencePhantomAll");
+const TowerDefencePhantomById_1 = require("./TowerDefencePhantomById");
+const TowerDefencePhantomLevelAll_1 = require("./TowerDefencePhantomLevelAll");
+const TowerDefencePhantomLevelByGroupId_1 = require("./TowerDefencePhantomLevelByGroupId");
+const TowerDefencePhantomLevelById_1 = require("./TowerDefencePhantomLevelById");
+const TowerDefenceRewardAll_1 = require("./TowerDefenceRewardAll");
+const TowerDefenceRewardById_1 = require("./TowerDefenceRewardById");
+const TowerDefenseConfigById_1 = require("./TowerDefenseConfigById");
+const TowerDefenseSettleById_1 = require("./TowerDefenseSettleById");
+const TowerDifficultyByDifficulty_1 = require("./TowerDifficultyByDifficulty");
+const TowerGuideById_1 = require("./TowerGuideById");
+const TowerTargetById_1 = require("./TowerTargetById");
+const TrackMoonActivityById_1 = require("./TrackMoonActivityById");
+const TrackMoonActivityRewardAll_1 = require("./TrackMoonActivityRewardAll");
+const TrackMoonActivityRewardById_1 = require("./TrackMoonActivityRewardById");
+const TrackMoonEntrustById_1 = require("./TrackMoonEntrustById");
+const TrackMoonHandbookRewardAll_1 = require("./TrackMoonHandbookRewardAll");
+const TrackMoonHandbookRewardById_1 = require("./TrackMoonHandbookRewardById");
+const TrackMoonMemoryAll_1 = require("./TrackMoonMemoryAll");
+const TrackMoonMemoryByClassify_1 = require("./TrackMoonMemoryByClassify");
+const TrackMoonMemoryById_1 = require("./TrackMoonMemoryById");
+const TrackMoonPhaseActivityById_1 = require("./TrackMoonPhaseActivityById");
+const TrackMoonTargetById_1 = require("./TrackMoonTargetById");
+const TrackMoonTargetTypeAll_1 = require("./TrackMoonTargetTypeAll");
+const TrailPhantomPropById_1 = require("./TrailPhantomPropById");
+const TrainRoleDialogByRoleIdAndTrainType_1 = require("./TrainRoleDialogByRoleIdAndTrainType");
+const TravelPhantomQuestByActivityId_1 = require("./TravelPhantomQuestByActivityId");
+const TravelPhantomQuestById_1 = require("./TravelPhantomQuestById");
+const TravelPhantomQuestByMapMarkId_1 = require("./TravelPhantomQuestByMapMarkId");
+const TravelTaskByActivityId_1 = require("./TravelTaskByActivityId");
+const TravelTaskByTaskId_1 = require("./TravelTaskByTaskId");
+const TravelTaskAreaByActivityId_1 = require("./TravelTaskAreaByActivityId");
+const TravelTaskAreaById_1 = require("./TravelTaskAreaById");
+const TreasureBoxDetectorMarkByMarkId_1 = require("./TreasureBoxDetectorMarkByMarkId");
+const TreasureBoxMarkByMarkId_1 = require("./TreasureBoxMarkByMarkId");
+const TrialPhantomPropItemById_1 = require("./TrialPhantomPropItemById");
+const TrialRoleInfoAll_1 = require("./TrialRoleInfoAll");
+const TrialRoleInfoByGroupId_1 = require("./TrialRoleInfoByGroupId");
+const TrialRoleInfoById_1 = require("./TrialRoleInfoById");
+const TrialWeaponInfoById_1 = require("./TrialWeaponInfoById");
+const TuningNodeByAll_1 = require("./TuningNodeByAll");
+const TuningNodeById_1 = require("./TuningNodeById");
+const TurntableActivityByActivityId_1 = require("./TurntableActivityByActivityId");
+const TurntableAwardsByActivityId_1 = require("./TurntableAwardsByActivityId");
+const TurntableAwardsById_1 = require("./TurntableAwardsById");
+const TurntableInfoById_1 = require("./TurntableInfoById");
+const TurntableTaskByTaskId_1 = require("./TurntableTaskByTaskId");
+const TypeInfoById_1 = require("./TypeInfoById");
+const UiCameraMappingAll_1 = require("./UiCameraMappingAll");
+const UiCameraMappingById_1 = require("./UiCameraMappingById");
+const UiCameraMappingByViewName_1 = require("./UiCameraMappingByViewName");
+const UiDynamicTabByChildViewName_1 = require("./UiDynamicTabByChildViewName");
+const UiDynamicTabById_1 = require("./UiDynamicTabById");
+const UiDynamicTabByParentViewName_1 = require("./UiDynamicTabByParentViewName");
+const UiFloatConfigByViewName_1 = require("./UiFloatConfigByViewName");
+const UiFloatConfigByViewNameIfNull_1 = require("./UiFloatConfigByViewNameIfNull");
+const UiNormalConfigByViewName_1 = require("./UiNormalConfigByViewName");
+const UiNormalConfigByViewNameIfNull_1 = require("./UiNormalConfigByViewNameIfNull");
+const UiPlayItemById_1 = require("./UiPlayItemById");
+const UiResourceById_1 = require("./UiResourceById");
+const UiShowByViewName_1 = require("./UiShowByViewName");
+const UiWeaponVisibleConfigById_1 = require("./UiWeaponVisibleConfigById");
+const UniversalActivityById_1 = require("./UniversalActivityById");
+const VideoCaptionByCgName_1 = require("./VideoCaptionByCgName");
+const VideoDataByCgNameAndGirlOrBoy_1 = require("./VideoDataByCgNameAndGirlOrBoy");
+const VideoQteByCgName_1 = require("./VideoQteByCgName");
+const VideoSoundByCgNameAndGirlOrBoy_1 = require("./VideoSoundByCgNameAndGirlOrBoy");
+const WeaponBreachByBreachId_1 = require("./WeaponBreachByBreachId");
+const WeaponBreachByBreachIdAndLevel_1 = require("./WeaponBreachByBreachIdAndLevel");
+const WeaponConfByItemId_1 = require("./WeaponConfByItemId");
+const WeaponExpItemById_1 = require("./WeaponExpItemById");
+const WeaponHandBookAll_1 = require("./WeaponHandBookAll");
+const WeaponHandBookById_1 = require("./WeaponHandBookById");
+const WeaponHideConfigById_1 = require("./WeaponHideConfigById");
+const WeaponHideConfigByIdWithZero_1 = require("./WeaponHideConfigByIdWithZero");
+const WeaponLevelByLevelId_1 = require("./WeaponLevelByLevelId");
+const WeaponLevelByLevelIdAndLevel_1 = require("./WeaponLevelByLevelIdAndLevel");
+const WeaponModelTransformById_1 = require("./WeaponModelTransformById");
+const WeaponPropertyGrowthByCurveIdLevelAndBreachLevel_1 = require("./WeaponPropertyGrowthByCurveIdLevelAndBreachLevel");
+const WeaponQualityInfoById_1 = require("./WeaponQualityInfoById");
+const WeaponResonByResonIdAndLevel_1 = require("./WeaponResonByResonIdAndLevel");
+const WeaponSceneInteractById_1 = require("./WeaponSceneInteractById");
+const WeaponSkinById_1 = require("./WeaponSkinById");
+const WeaponSkinByType_1 = require("./WeaponSkinByType");
+const WeaponVisibleConfigById_1 = require("./WeaponVisibleConfigById");
+const WeaponVisibleConfigByIdWithZero_1 = require("./WeaponVisibleConfigByIdWithZero");
+const WeatherById_1 = require("./WeatherById");
+const WorldLevelById_1 = require("./WorldLevelById");
+const WorldNewJourneyAll_1 = require("./WorldNewJourneyAll");
+const WorldNewJourneyById_1 = require("./WorldNewJourneyById");
 class ConfigStatement {
   static Init() {
-    CommonParamById_1.configCommonParamById.Init(), CommonParamLang_1.configCommonParamLang.Init(), AbnormalDamageConfigByLevel_1.configAbnormalDamageConfigByLevel.Init(), AbpMontageDataById_1.configAbpMontageDataById.Init(), AbpStateByAbp_1.configAbpStateByAbp.Init(), AbyssActivityAll_1.configAbyssActivityAll.Init(), AbyssActivityByActivityId_1.configAbyssActivityByActivityId.Init(), AbyssCastDescAll_1.configAbyssCastDescAll.Init(), AbyssCastDescById_1.configAbyssCastDescById.Init(), AbyssInstAll_1.configAbyssInstAll.Init(), AbyssInstByActivityId_1.configAbyssInstByActivityId.Init(), AbyssInstById_1.configAbyssInstById.Init(), AbyssInstByInstId_1.configAbyssInstByInstId.Init(), AbyssItemAll_1.configAbyssItemAll.Init(), AbyssItemById_1.configAbyssItemById.Init(), AbyssLittleRoleAll_1.configAbyssLittleRoleAll.Init(), AbyssLittleRoleById_1.configAbyssLittleRoleById.Init(), AbyssPluginPropDescAll_1.configAbyssPluginPropDescAll.Init(), AbyssPluginPropDescById_1.configAbyssPluginPropDescById.Init(), AbyssQualityAll_1.configAbyssQualityAll.Init(), AbyssQualityById_1.configAbyssQualityById.Init(), AbyssRewardAll_1.configAbyssRewardAll.Init(), AbyssRewardById_1.configAbyssRewardById.Init(), AbyssRewardTabAll_1.configAbyssRewardTabAll.Init(), AbyssRewardTabById_1.configAbyssRewardTabById.Init(), AbyssRewardTypeAll_1.configAbyssRewardTypeAll.Init(), AbyssRewardTypeById_1.configAbyssRewardTypeById.Init(), AbyssRoleLevelAll_1.configAbyssRoleLevelAll.Init(), AbyssRoleLevelByGroupId_1.configAbyssRoleLevelByGroupId.Init(), AbyssRoleLevelById_1.configAbyssRoleLevelById.Init(), AbyssRoleLevelByLevelAndGroupId_1.configAbyssRoleLevelByLevelAndGroupId.Init(), AbyssRoleSlotAll_1.configAbyssRoleSlotAll.Init(), AbyssRoleSlotById_1.configAbyssRoleSlotById.Init(), AbyssRoomAll_1.configAbyssRoomAll.Init(), AbyssRoomById_1.configAbyssRoomById.Init(), AbyssRouteAll_1.configAbyssRouteAll.Init(), AbyssRouteById_1.configAbyssRouteById.Init(), AbyssRouteByRouterAndFloor_1.configAbyssRouteByRouterAndFloor.Init(), AbyssSettleAll_1.configAbyssSettleAll.Init(), AbyssSettleById_1.configAbyssSettleById.Init(), AbyssSynthesisAll_1.configAbyssSynthesisAll.Init(), AbyssSynthesisById_1.configAbyssSynthesisById.Init(), AccessPathById_1.configAccessPathById.Init(), AchievementAll_1.configAchievementAll.Init(), AchievementByGroupId_1.configAchievementByGroupId.Init(), AchievementById_1.configAchievementById.Init(), AchievementCategoryAll_1.configAchievementCategoryAll.Init(), AchievementCategoryById_1.configAchievementCategoryById.Init(), AchievementGroupByCategory_1.configAchievementGroupByCategory.Init(), AchievementGroupById_1.configAchievementGroupById.Init(), AchievementStarLevelByLevel_1.configAchievementStarLevelByLevel.Init(), ActionMappingAll_1.configActionMappingAll.Init(), ActionMappingByActionName_1.configActionMappingByActionName.Init(), ActionMappingByActionType_1.configActionMappingByActionType.Init(), ActivityById_1.configActivityById.Init(), ActivityLinkageById_1.configActivityLinkageById.Init(), ActivityLinkageInfoByIdAndLanguage_1.configActivityLinkageInfoByIdAndLanguage.Init(), ActivityLinkageUrlByIdAndIsNational_1.configActivityLinkageUrlByIdAndIsNational.Init(), ActivityQuestConfigAll_1.configActivityQuestConfigAll.Init(), ActivityQuestConfigById_1.configActivityQuestConfigById.Init(), ActivityQuestConfigByQuestId_1.configActivityQuestConfigByQuestId.Init(), ActivitySignById_1.configActivitySignById.Init(), ActivityViewNameById_1.configActivityViewNameById.Init(), ActivityViewNameByType_1.configActivityViewNameByType.Init(), AdventureTaskAll_1.configAdventureTaskAll.Init(), AdventureTaskById_1.configAdventureTaskById.Init(), AdventureTaskChapterAll_1.configAdventureTaskChapterAll.Init(), AdventureTaskChapterById_1.configAdventureTaskChapterById.Init(), AdviceConjunctionAll_1.configAdviceConjunctionAll.Init(), AdviceConjunctionById_1.configAdviceConjunctionById.Init(), AdviceParamsById_1.configAdviceParamsById.Init(), AdviceSentenceAll_1.configAdviceSentenceAll.Init(), AdviceSentenceById_1.configAdviceSentenceById.Init(), AdviceWordAll_1.configAdviceWordAll.Init(), AdviceWordById_1.configAdviceWordById.Init(), AdviceWordByType_1.configAdviceWordByType.Init(), AdviceWordTypeAll_1.configAdviceWordTypeAll.Init(), AdviceWordTypeById_1.configAdviceWordTypeById.Init(), AiAlertById_1.configAiAlertById.Init(), AiBaseById_1.configAiBaseById.Init(), AiBaseSkillById_1.configAiBaseSkillById.Init(), AiBattleWanderById_1.configAiBattleWanderById.Init(), AiBattleWanderGroupById_1.configAiBattleWanderGroupById.Init(), AiFleeById_1.configAiFleeById.Init(), AiHateById_1.configAiHateById.Init(), AiPatrolById_1.configAiPatrolById.Init(), AiSenseById_1.configAiSenseById.Init(), AiSenseGroupById_1.configAiSenseGroupById.Init(), AiSkillInfosById_1.configAiSkillInfosById.Init(), AiSkillPreconditionById_1.configAiSkillPreconditionById.Init(), AiStateMachineConfigById_1.configAiStateMachineConfigById.Init(), AiTeamAreaNewById_1.configAiTeamAreaNewById.Init(), AiTeamAttackById_1.configAiTeamAttackById.Init(), AiTeamLevelNewById_1.configAiTeamLevelNewById.Init(), AiWanderById_1.configAiWanderById.Init(), AiWanderRadiusConfigById_1.configAiWanderRadiusConfigById.Init(), AkiMapAll_1.configAkiMapAll.Init(), AkiMapByMapId_1.configAkiMapByMapId.Init(), AkiMapSourceByMapId_1.configAkiMapSourceByMapId.Init(), AlertAreaConfigById_1.configAlertAreaConfigById.Init(), AnimalHandBookAll_1.configAnimalHandBookAll.Init(), AnimalHandBookById_1.configAnimalHandBookById.Init(), AnimalHandBookByMeshId_1.configAnimalHandBookByMeshId.Init(), AreaByAreaId_1.configAreaByAreaId.Init(), AreaByCountryAndLevel_1.configAreaByCountryAndLevel.Init(), AreaByDeliveryMarkId_1.configAreaByDeliveryMarkId.Init(), AreaByLevel_1.configAreaByLevel.Init(), AreaAtmosphereInfoById_1.configAreaAtmosphereInfoById.Init(), AreaMpcById_1.configAreaMpcById.Init(), AreaQuestTrackingById_1.configAreaQuestTrackingById.Init(), AreaReportByAreaId_1.configAreaReportByAreaId.Init(), AreaReportByAreaIdAndStage_1.configAreaReportByAreaIdAndStage.Init(), AreaTaskExploreByAreaId_1.configAreaTaskExploreByAreaId.Init(), AreaTaskExploreById_1.configAreaTaskExploreById.Init(), AudioById_1.configAudioById.Init(), AutoRoleByAll_1.configAutoRoleByAll.Init(), AutoRoleById_1.configAutoRoleById.Init(), AvignonStageAll_1.configAvignonStageAll.Init(), AvignonStageById_1.configAvignonStageById.Init(), AvignonTaskByStageId_1.configAvignonTaskByStageId.Init(), AvignonTaskByTaskId_1.configAvignonTaskByTaskId.Init(), AxisMappingAll_1.configAxisMappingAll.Init(), AxisMappingByAxisName_1.configAxisMappingByAxisName.Init(), AxisMappingByAxisType_1.configAxisMappingByAxisType.Init(), AxisRevertAll_1.configAxisRevertAll.Init(), AxisRevertByRevertType_1.configAxisRevertByRevertType.Init(), BabelTowerActivityByActivityId_1.configBabelTowerActivityByActivityId.Init(), BabelTowerBuffAll_1.configBabelTowerBuffAll.Init(), BabelTowerBuffById_1.configBabelTowerBuffById.Init(), BabelTowerDailyTaskAll_1.configBabelTowerDailyTaskAll.Init(), BabelTowerDailyTaskByTaskId_1.configBabelTowerDailyTaskByTaskId.Init(), BabelTowerDeTermAll_1.configBabelTowerDeTermAll.Init(), BabelTowerDeTermByGroupId_1.configBabelTowerDeTermByGroupId.Init(), BabelTowerDeTermById_1.configBabelTowerDeTermById.Init(), BabelTowerDeTermMutexById_1.configBabelTowerDeTermMutexById.Init(), BabelTowerDifficultyAll_1.configBabelTowerDifficultyAll.Init(), BabelTowerDifficultyByActivityId_1.configBabelTowerDifficultyByActivityId.Init(), BabelTowerDifficultyByActivityIdAndDifficultyId_1.configBabelTowerDifficultyByActivityIdAndDifficultyId.Init(), BabelTowerDifficultyById_1.configBabelTowerDifficultyById.Init(), BabelTowerLevelAll_1.configBabelTowerLevelAll.Init(), BabelTowerLevelById_1.configBabelTowerLevelById.Init(), BabelTowerTaskAll_1.configBabelTowerTaskAll.Init(), BabelTowerTaskByTaskId_1.configBabelTowerTaskByTaskId.Init(), BackgroundCardAll_1.configBackgroundCardAll.Init(), BackgroundCardById_1.configBackgroundCardById.Init(), BanInfoById_1.configBanInfoById.Init(), BanInfoByTypeAndReason_1.configBanInfoByTypeAndReason.Init(), BasePropertyById_1.configBasePropertyById.Init(), BattleLinkCharacterAll_1.configBattleLinkCharacterAll.Init(), BattleLinkCharacterById_1.configBattleLinkCharacterById.Init(), BattlePassById_1.configBattlePassById.Init(), BattlePassRewardByBattlePassId_1.configBattlePassRewardByBattlePassId.Init(), BattlePassTaskByTaskId_1.configBattlePassTaskByTaskId.Init(), BattlePassUnlockPopByBattlePassTypeId_1.configBattlePassUnlockPopByBattlePassTypeId.Init(), BattleScoreConfById_1.configBattleScoreConfById.Init(), BattleScoreLevelConfByGroupId_1.configBattleScoreLevelConfByGroupId.Init(), BattleScoreLevelConfById_1.configBattleScoreLevelConfById.Init(), BeginnerGuideById_1.configBeginnerGuideById.Init(), BirthDayByItemId_1.configBirthDayByItemId.Init(), BirthDayByYear_1.configBirthDayByYear.Init(), BlackCoastThemeConfigByActivityId_1.configBlackCoastThemeConfigByActivityId.Init(), BlackCoastThemeRewardReByActivityId_1.configBlackCoastThemeRewardReByActivityId.Init(), BlackCoastThemeRewardReById_1.configBlackCoastThemeRewardReById.Init(), BlackCoastThemeStageReByActivityId_1.configBlackCoastThemeStageReByActivityId.Init(), BlackCoastThemeStageReById_1.configBlackCoastThemeStageReById.Init(), BlackCoastThemeTaskReByStageId_1.configBlackCoastThemeTaskReByStageId.Init(), BlackCoastThemeTaskReByTaskId_1.configBlackCoastThemeTaskReByTaskId.Init(), BlackboardWhiteListAll_1.configBlackboardWhiteListAll.Init(), BlockSwitchById_1.configBlockSwitchById.Init(), BlueprintConfigAll_1.configBlueprintConfigAll.Init(), BlueprintConfigByBlueprintType_1.configBlueprintConfigByBlueprintType.Init(), BossRushActivityAll_1.configBossRushActivityAll.Init(), BossRushActivityByActivityIdAndInstanceId_1.configBossRushActivityByActivityIdAndInstanceId.Init(), BossRushActivityById_1.configBossRushActivityById.Init(), BossRushBuffAll_1.configBossRushBuffAll.Init(), BossRushBuffById_1.configBossRushBuffById.Init(), BossRushBuffDescAll_1.configBossRushBuffDescAll.Init(), BossRushBuffDescById_1.configBossRushBuffDescById.Init(), BossRushMapMarkByActivityId_1.configBossRushMapMarkByActivityId.Init(), BossRushScoreAll_1.configBossRushScoreAll.Init(), BossRushScoreById_1.configBossRushScoreById.Init(), BossRushTaskConfigAll_1.configBossRushTaskConfigAll.Init(), BossRushTaskConfigByActivityId_1.configBossRushTaskConfigByActivityId.Init(), BossRushTaskConfigByTaskId_1.configBossRushTaskConfigByTaskId.Init(), BossRushTaskTabAll_1.configBossRushTaskTabAll.Init(), BossRushTaskTabByActivityId_1.configBossRushTaskTabByActivityId.Init(), BossRushTaskTabByTabId_1.configBossRushTaskTabByTabId.Init(), BoxStateById_1.configBoxStateById.Init(), BoxTypeById_1.configBoxTypeById.Init(), BranchLineAll_1.configBranchLineAll.Init(), BranchLineById_1.configBranchLineById.Init(), BroadcastImageById_1.configBroadcastImageById.Init(), BrokenRockConfigById_1.configBrokenRockConfigById.Init(), BrokenRockRingById_1.configBrokenRockRingById.Init(), BubbleDataByActionGuid_1.configBubbleDataByActionGuid.Init(), BuffById_1.configBuffById.Init(), BuffGetAll_1.configBuffGetAll.Init(), BuffEquipItemByItemId_1.configBuffEquipItemByItemId.Init(), BuffEquipItemByRoleId_1.configBuffEquipItemByRoleId.Init(), BuffItemById_1.configBuffItemById.Init(), BuffItemByPublicCdGroup_1.configBuffItemByPublicCdGroup.Init(), BuffItemCdGroupById_1.configBuffItemCdGroupById.Init(), BuildingAll_1.configBuildingAll.Init(), BuildingById_1.configBuildingById.Init(), BuildingUpGradeCurveByGroupId_1.configBuildingUpGradeCurveByGroupId.Init(), BuildingUpGradeCurveByGroupIdAndLevel_1.configBuildingUpGradeCurveByGroupIdAndLevel.Init(), BulletPreloadByActorBlueprint_1.configBulletPreloadByActorBlueprint.Init(), BulletPreloadByActorBlueprintAndBulletId_1.configBulletPreloadByActorBlueprintAndBulletId.Init(), BulletPreloadByAll_1.configBulletPreloadByAll.Init(), BulletPreloadById_1.configBulletPreloadById.Init(), CalabashDevelopConditionById_1.configCalabashDevelopConditionById.Init(), CalabashDevelopRewardAll_1.configCalabashDevelopRewardAll.Init(), CalabashDevelopRewardByMonsterId_1.configCalabashDevelopRewardByMonsterId.Init(), CalabashLevelAll_1.configCalabashLevelAll.Init(), CalabashLevelByLevel_1.configCalabashLevelByLevel.Init(), CalabashTransformById_1.configCalabashTransformById.Init(), CatchSignalDifficultyById_1.configCatchSignalDifficultyById.Init(), CatchSignalGameplayById_1.configCatchSignalGameplayById.Init(), CharacterAll_1.configCharacterAll.Init(), CharacterById_1.configCharacterById.Init(), CharacterAudioConfigById_1.configCharacterAudioConfigById.Init(), CharacterAudioConfigByIdWithDefaultId_1.configCharacterAudioConfigByIdWithDefaultId.Init(), CharacterDisplayStyleById_1.configCharacterDisplayStyleById.Init(), CharacterPreloadByAll_1.configCharacterPreloadByAll.Init(), CharacterPreloadById_1.configCharacterPreloadById.Init(), ChatById_1.configChatById.Init(), ChatExpressionAll_1.configChatExpressionAll.Init(), ChatExpressionByGroupId_1.configChatExpressionByGroupId.Init(), ChatExpressionById_1.configChatExpressionById.Init(), ChatExpressionGroupAll_1.configChatExpressionGroupAll.Init(), ChatExpressionGroupById_1.configChatExpressionGroupById.Init(), ChildUiCameraMappingAll_1.configChildUiCameraMappingAll.Init(), ChildUiCameraMappingById_1.configChildUiCameraMappingById.Init(), ChildUiCameraMappingByViewName_1.configChildUiCameraMappingByViewName.Init(), ChipHandBookAll_1.configChipHandBookAll.Init(), ChipHandBookById_1.configChipHandBookById.Init(), ChipHandBookByType_1.configChipHandBookByType.Init(), ChipTypeAll_1.configChipTypeAll.Init(), ChipTypeById_1.configChipTypeById.Init(), CiacconaActivityConfigById_1.configCiacconaActivityConfigById.Init(), CiacconaActivityRewardAll_1.configCiacconaActivityRewardAll.Init(), CiacconaActivityRewardById_1.configCiacconaActivityRewardById.Init(), CiacconaChapterSlotById_1.configCiacconaChapterSlotById.Init(), CiacconaGalChapterAll_1.configCiacconaGalChapterAll.Init(), CiacconaGalChapterById_1.configCiacconaGalChapterById.Init(), CiacconaGalChoiceById_1.configCiacconaGalChoiceById.Init(), CiacconaGalEndingAll_1.configCiacconaGalEndingAll.Init(), CiacconaGalEndingById_1.configCiacconaGalEndingById.Init(), CiacconaGalStepById_1.configCiacconaGalStepById.Init(), CiacconaGalSubEndingById_1.configCiacconaGalSubEndingById.Init(), CiacconaGalTextById_1.configCiacconaGalTextById.Init(), CipherGameplayById_1.configCipherGameplayById.Init(), CircumBaseByEntryType_1.configCircumBaseByEntryType.Init(), CircumEntryByEntryType_1.configCircumEntryByEntryType.Init(), CircumFluenceTaskById_1.configCircumFluenceTaskById.Init(), CircumFluenceTaskByTaskType_1.configCircumFluenceTaskByTaskType.Init(), CircumScoreRewardAll_1.configCircumScoreRewardAll.Init(), CircumScoreRewardById_1.configCircumScoreRewardById.Init(), ClimbById_1.configClimbById.Init(), ClueContentByGroupId_1.configClueContentByGroupId.Init(), ClueContentById_1.configClueContentById.Init(), ClueEntranceById_1.configClueEntranceById.Init(), CombinationActionAll_1.configCombinationActionAll.Init(), CombinationActionByActionName_1.configCombinationActionByActionName.Init(), CombinationActionByActionType_1.configCombinationActionByActionType.Init(), CombinationActionById_1.configCombinationActionById.Init(), CombinationAxisAll_1.configCombinationAxisAll.Init(), CombinationAxisByAxisName_1.configCombinationAxisByAxisName.Init(), CombinationAxisByAxisType_1.configCombinationAxisByAxisType.Init(), CombinationAxisById_1.configCombinationAxisById.Init(), ComboTeachingById_1.configComboTeachingById.Init(), ComboTeachingConditionById_1.configComboTeachingConditionById.Init(), CommonRewardViewDisplayById_1.configCommonRewardViewDisplayById.Init(), CommonSkillPreloadAll_1.configCommonSkillPreloadAll.Init(), CommonSkillPreloadById_1.configCommonSkillPreloadById.Init(), CommunicateById_1.configCommunicateById.Init(), CommunityAll_1.configCommunityAll.Init(), CommunityById_1.configCommunityById.Init(), CompositeRewardDisplayById_1.configCompositeRewardDisplayById.Init(), ConditionById_1.configConditionById.Init(), ConditionGroupById_1.configConditionGroupById.Init(), ConfirmBoxById_1.configConfirmBoxById.Init(), ConsumptiveTaskById_1.configConsumptiveTaskById.Init(), ConsumptiveTaskTabById_1.configConsumptiveTaskTabById.Init(), CookFixToolById_1.configCookFixToolById.Init(), CookFormulaAll_1.configCookFormulaAll.Init(), CookFormulaByFormulaItemId_1.configCookFormulaByFormulaItemId.Init(), CookFormulaById_1.configCookFormulaById.Init(), CookLevelAll_1.configCookLevelAll.Init(), CookLevelById_1.configCookLevelById.Init(), CookProcessMsgById_1.configCookProcessMsgById.Init(), CookProcessedAll_1.configCookProcessedAll.Init(), CookProcessedById_1.configCookProcessedById.Init(), CorniceChallengeById_1.configCorniceChallengeById.Init(), CorniceChallengeByMarkId_1.configCorniceChallengeByMarkId.Init(), CorniceQuestById_1.configCorniceQuestById.Init(), CountryAll_1.configCountryAll.Init(), CountryById_1.configCountryById.Init(), CouponById_1.configCouponById.Init(), CustomMarkAll_1.configCustomMarkAll.Init(), CustomMarkByMarkId_1.configCustomMarkByMarkId.Init(), CustomSequenceById_1.configCustomSequenceById.Init(), CustomSequenceLang_1.configCustomSequenceLang.Init(), CustomerServiceAll_1.configCustomerServiceAll.Init(), CustomerServiceById_1.configCustomerServiceById.Init(), DailyAdventureActivityByActivityId_1.configDailyAdventureActivityByActivityId.Init(), DailyAdventurePointById_1.configDailyAdventurePointById.Init(), DailyAdventureTaskByTaskId_1.configDailyAdventureTaskByTaskId.Init(), DailyTaskById_1.configDailyTaskById.Init(), DailyTaskGroupById_1.configDailyTaskGroupById.Init(), DamageByAll_1.configDamageByAll.Init(), DamageById_1.configDamageById.Init(), DamagePayloadById_1.configDamagePayloadById.Init(), DamageTextAll_1.configDamageTextAll.Init(), DangoById_1.configDangoById.Init(), DangoBroadcastById_1.configDangoBroadcastById.Init(), DangoMonopolyByActivityId_1.configDangoMonopolyByActivityId.Init(), DangoMonopolyBoardByGroup_1.configDangoMonopolyBoardByGroup.Init(), DangoMonopolyBoardById_1.configDangoMonopolyBoardById.Init(), DangoMonopolyGridByGroup_1.configDangoMonopolyGridByGroup.Init(), DangoMonopolyGridById_1.configDangoMonopolyGridById.Init(), DangoMonopolyMapPointByActivityId_1.configDangoMonopolyMapPointByActivityId.Init(), DangoMonopolyPropertyById_1.configDangoMonopolyPropertyById.Init(), DangoMonopolyPropertyTypeByType_1.configDangoMonopolyPropertyTypeByType.Init(), DangoMonopolyTaskByGroup_1.configDangoMonopolyTaskByGroup.Init(), DangoMonopolyTaskById_1.configDangoMonopolyTaskById.Init(), DangoSkillById_1.configDangoSkillById.Init(), DangoSkillEffectById_1.configDangoSkillEffectById.Init(), DarkCoastDeliveryAll_1.configDarkCoastDeliveryAll.Init(), DarkCoastDeliveryById_1.configDarkCoastDeliveryById.Init(), DataLayerById_1.configDataLayerById.Init(), DaySelectPresetAll_1.configDaySelectPresetAll.Init(), DaySelectPresetById_1.configDaySelectPresetById.Init(), DebugCommandConfigById_1.configDebugCommandConfigById.Init(), DebugEntranceConfigAll_1.configDebugEntranceConfigAll.Init(), DebugEntranceConfigById_1.configDebugEntranceConfigById.Init(), DebugEntranceTypeConfigAll_1.configDebugEntranceTypeConfigAll.Init(), DebugEntranceTypeConfigById_1.configDebugEntranceTypeConfigById.Init(), DetectionTabTypeById_1.configDetectionTabTypeById.Init(), DetectionTextById_1.configDetectionTextById.Init(), DevicePlatformById_1.configDevicePlatformById.Init(), DevicePlatformByPidAndVid_1.configDevicePlatformByPidAndVid.Init(), DeviceRenderFeatureByDeviceId_1.configDeviceRenderFeatureByDeviceId.Init(), DiceById_1.configDiceById.Init(), DigitalScreenById_1.configDigitalScreenById.Init(), DigitalScreenTextById_1.configDigitalScreenTextById.Init(), DirectTrainActivityAll_1.configDirectTrainActivityAll.Init(), DirectTrainActivityById_1.configDirectTrainActivityById.Init(), DoubleRewardActivityById_1.configDoubleRewardActivityById.Init(), DownLoadTabAll_1.configDownLoadTabAll.Init(), DownLoadTabById_1.configDownLoadTabById.Init(), DragonPoolAll_1.configDragonPoolAll.Init(), DragonPoolById_1.configDragonPoolById.Init(), DreamLinkRoleDungeonById_1.configDreamLinkRoleDungeonById.Init(), DreamLinkWorldRunById_1.configDreamLinkWorldRunById.Init(), DreamLinkWorldRunByMarkId_1.configDreamLinkWorldRunByMarkId.Init(), DropPackageById_1.configDropPackageById.Init(), DropShowPlanById_1.configDropShowPlanById.Init(), DungeonDetectionAll_1.configDungeonDetectionAll.Init(), DungeonDetectionByDungeonId_1.configDungeonDetectionByDungeonId.Init(), DungeonDetectionById_1.configDungeonDetectionById.Init(), DynamicMapMarkAll_1.configDynamicMapMarkAll.Init(), DynamicMapMarkByMapId_1.configDynamicMapMarkByMapId.Init(), DynamicMapMarkByMarkId_1.configDynamicMapMarkByMarkId.Init(), EffectConfigById_1.configEffectConfigById.Init(), EffectCsvConfigById_1.configEffectCsvConfigById.Init(), EffectSpecDataById_1.configEffectSpecDataById.Init(), EffectSpecDataGetAll_1.configEffectSpecDataGetAll.Init(), ElementIconTagById_1.configElementIconTagById.Init(), ElementInfoById_1.configElementInfoById.Init(), ElementInfoById2_1.configElementInfoById2.Init(), ElementLevelByLevel_1.configElementLevelByLevel.Init(), ElementReactionMatrixAll_1.configElementReactionMatrixAll.Init(), ElementalReactionAll_1.configElementalReactionAll.Init(), ElementalReactionByReactionId_1.configElementalReactionByReactionId.Init(), EnrichmentAreaConfigByEnrichmentId_1.configEnrichmentAreaConfigByEnrichmentId.Init(), EnrichmentAreaConfigByItemId_1.configEnrichmentAreaConfigByItemId.Init(), EntityAudioConfigById_1.configEntityAudioConfigById.Init(), EntityAudioConfigByIdWithZero_1.configEntityAudioConfigByIdWithZero.Init(), EntityGravityConfigAll_1.configEntityGravityConfigAll.Init(), EntityGravityConfigByMapIdAndEntityId_1.configEntityGravityConfigByMapIdAndEntityId.Init(), EntityOwnerDataByGuid_1.configEntityOwnerDataByGuid.Init(), EntitySelfEventConfigById_1.configEntitySelfEventConfigById.Init(), EntitySelfEventConfigByKey_1.configEntitySelfEventConfigByKey.Init(), EntitySkillPreloadByActorBlueprint_1.configEntitySkillPreloadByActorBlueprint.Init(), EntitySkillPreloadByActorBlueprintAndSkillId_1.configEntitySkillPreloadByActorBlueprintAndSkillId.Init(), EntitySkillPreloadByAll_1.configEntitySkillPreloadByAll.Init(), EntitySkillPreloadById_1.configEntitySkillPreloadById.Init(), EntityVoxelInfoByMapIdAndEntityId_1.configEntityVoxelInfoByMapIdAndEntityId.Init(), EntranceIconTagById_1.configEntranceIconTagById.Init(), EntrustFinishDialogByEntrustIdAndLevel_1.configEntrustFinishDialogByEntrustIdAndLevel.Init(), EntrustRoleAll_1.configEntrustRoleAll.Init(), EntrustRoleById_1.configEntrustRoleById.Init(), EntrustTypeById_1.configEntrustTypeById.Init(), ErrorCodeById_1.configErrorCodeById.Init(), EvaluateById_1.configEvaluateById.Init(), ExchangeRewardById_1.configExchangeRewardById.Init(), ExchangeSharedById_1.configExchangeSharedById.Init(), ExecutionConfById_1.configExecutionConfById.Init(), ExploreActivityById_1.configExploreActivityById.Init(), ExploreActivityTaskByActivityId_1.configExploreActivityTaskByActivityId.Init(), ExploreActivityTaskByTaskId_1.configExploreActivityTaskByTaskId.Init(), ExploreProgressAll_1.configExploreProgressAll.Init(), ExploreProgressByArea_1.configExploreProgressByArea.Init(), ExploreProgressById_1.configExploreProgressById.Init(), ExploreProgressRewardAll_1.configExploreProgressRewardAll.Init(), ExploreProgressRewardByArea_1.configExploreProgressRewardByArea.Init(), ExploreRewardByCountry_1.configExploreRewardByCountry.Init(), ExploreRewardById_1.configExploreRewardById.Init(), ExploreRewardDisplayById_1.configExploreRewardDisplayById.Init(), ExploreRouletteAll_1.configExploreRouletteAll.Init(), ExploreRouletteReplaceAll_1.configExploreRouletteReplaceAll.Init(), ExploreRouletteReplaceById_1.configExploreRouletteReplaceById.Init(), ExploreScoreAll_1.configExploreScoreAll.Init(), ExploreScoreByArea_1.configExploreScoreByArea.Init(), ExploreSkillInteractById_1.configExploreSkillInteractById.Init(), ExploreToolsAll_1.configExploreToolsAll.Init(), ExploreToolsByPhantomSkillId_1.configExploreToolsByPhantomSkillId.Init(), ExploreTypeByType_1.configExploreTypeByType.Init(), ExternalSourceSettingById_1.configExternalSourceSettingById.Init(), FaceExpressionDataById_1.configFaceExpressionDataById.Init(), FarmGoldActivityAll_1.configFarmGoldActivityAll.Init(), FarmGoldActivityByActivityIdAndInstanceId_1.configFarmGoldActivityByActivityIdAndInstanceId.Init(), FarmGoldActivityById_1.configFarmGoldActivityById.Init(), FarmGoldDifficultyAll_1.configFarmGoldDifficultyAll.Init(), FarmGoldDifficultyById_1.configFarmGoldDifficultyById.Init(), FarmGoldMapMarkByActivityId_1.configFarmGoldMapMarkByActivityId.Init(), FarmGoldScoreAll_1.configFarmGoldScoreAll.Init(), FarmGoldScoreByActivityId_1.configFarmGoldScoreByActivityId.Init(), FarmGoldScoreById_1.configFarmGoldScoreById.Init(), FavorGoodsByRoleId_1.configFavorGoodsByRoleId.Init(), FavorLevelByLevel_1.configFavorLevelByLevel.Init(), FavorRoleInfoByRoleId_1.configFavorRoleInfoByRoleId.Init(), FavorStoryByRoleId_1.configFavorStoryByRoleId.Init(), FavorTabCameraById_1.configFavorTabCameraById.Init(), FavorWordByRoleIdAndType_1.configFavorWordByRoleIdAndType.Init(), FeedingAnimalById_1.configFeedingAnimalById.Init(), FightFormationById_1.configFightFormationById.Init(), FilterById_1.configFilterById.Init(), FilterRuleById_1.configFilterRuleById.Init(), FilterSettingAll_1.configFilterSettingAll.Init(), FilterSettingById_1.configFilterSettingById.Init(), FilterSortConfigById_1.configFilterSortConfigById.Init(), FilterSortGroupById_1.configFilterSortGroupById.Init(), FishingActivityByActivityId_1.configFishingActivityByActivityId.Init(), FishingActivityGroupAll_1.configFishingActivityGroupAll.Init(), FishingActivityGroupById_1.configFishingActivityGroupById.Init(), FishingActivityLimitTaskByTaskId_1.configFishingActivityLimitTaskByTaskId.Init(), FishingActivityMilestoneAll_1.configFishingActivityMilestoneAll.Init(), FishingActivityMilestoneById_1.configFishingActivityMilestoneById.Init(), FishingDeliveryById_1.configFishingDeliveryById.Init(), FishingEntrustById_1.configFishingEntrustById.Init(), FishingEntrustPoolAll_1.configFishingEntrustPoolAll.Init(), FishingEntrustPoolById_1.configFishingEntrustPoolById.Init(), FishingEntrustTypeById_1.configFishingEntrustTypeById.Init(), FishingGridItemShapeById_1.configFishingGridItemShapeById.Init(), FishingIllustratedRewardById_1.configFishingIllustratedRewardById.Init(), FishingItemAll_1.configFishingItemAll.Init(), FishingItemById_1.configFishingItemById.Init(), FishingManualRefreshByEntrustPoolTypeAndStar_1.configFishingManualRefreshByEntrustPoolTypeAndStar.Init(), FishingManualRefreshById_1.configFishingManualRefreshById.Init(), FishingNoticeById_1.configFishingNoticeById.Init(), FishingNpcPerformById_1.configFishingNpcPerformById.Init(), FishingPointByEntityConfigId_1.configFishingPointByEntityConfigId.Init(), FishingPointById_1.configFishingPointById.Init(), FishingPointByShowItem_1.configFishingPointByShowItem.Init(), FishingPortById_1.configFishingPortById.Init(), FishingPositionById_1.configFishingPositionById.Init(), FishingQteConfigById_1.configFishingQteConfigById.Init(), FishingQualityById_1.configFishingQualityById.Init(), FishingReputationAll_1.configFishingReputationAll.Init(), FishingReputationByLevel_1.configFishingReputationByLevel.Init(), FishingShipSkinAll_1.configFishingShipSkinAll.Init(), FishingShipSkinById_1.configFishingShipSkinById.Init(), FishingTagById_1.configFishingTagById.Init(), FishingTechAll_1.configFishingTechAll.Init(), FishingTechById_1.configFishingTechById.Init(), FishingTechEffectById_1.configFishingTechEffectById.Init(), FishingTechEffectByType_1.configFishingTechEffectByType.Init(), FlagAreaByAreaId_1.configFlagAreaByAreaId.Init(), FlagAreaByEntity_1.configFlagAreaByEntity.Init(), FlagAreaById_1.configFlagAreaById.Init(), FlowById_1.configFlowById.Init(), FlowStateByStateKey_1.configFlowStateByStateKey.Init(), FlowTemplateDataById_1.configFlowTemplateDataById.Init(), FlowTextByIdAndFlowListId_1.configFlowTextByIdAndFlowListId.Init(), FlowTextLang_1.configFlowTextLang.Init(), FlySkinConfigById_1.configFlySkinConfigById.Init(), FlySkinConfigByType_1.configFlySkinConfigByType.Init(), FogBlockAll_1.configFogBlockAll.Init(), FogBlockByBlock_1.configFogBlockByBlock.Init(), FogBlockByBlockAndMapId_1.configFogBlockByBlockAndMapId.Init(), FogTextureConfigAll_1.configFogTextureConfigAll.Init(), FogTextureConfigByBlock_1.configFogTextureConfigByBlock.Init(), FogTextureConfigByBlockAndMapId_1.configFogTextureConfigByBlockAndMapId.Init(), FogTextureConfigByBlockAndMapIdAndGravity_1.configFogTextureConfigByBlockAndMapIdAndGravity.Init(), FogTextureConfigByMapId_1.configFogTextureConfigByMapId.Init(), FoleySynthBoneConfigById_1.configFoleySynthBoneConfigById.Init(), FoleySynthConfigById_1.configFoleySynthConfigById.Init(), FoleySynthConfigByIdWithDefaultId_1.configFoleySynthConfigByIdWithDefaultId.Init(), ForgeFormulaAll_1.configForgeFormulaAll.Init(), ForgeFormulaByFormulaItemId_1.configForgeFormulaByFormulaItemId.Init(), ForgeFormulaById_1.configForgeFormulaById.Init(), ForgeFormulaByTypeId_1.configForgeFormulaByTypeId.Init(), FormationPropertyAll_1.configFormationPropertyAll.Init(), FormationPropertyById_1.configFormationPropertyById.Init(), FriendFilterAll_1.configFriendFilterAll.Init(), FuncMenuReplaceAll_1.configFuncMenuReplaceAll.Init(), FuncMenuReplaceInstSubType_1.configFuncMenuReplaceInstSubType.Init(), FuncMenuWheelAll_1.configFuncMenuWheelAll.Init(), FuncMenuWheelByFuncId_1.configFuncMenuWheelByFuncId.Init(), FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.Init(), FunctionMenuAll_1.configFunctionMenuAll.Init(), FunctionMenuByFunctionId_1.configFunctionMenuByFunctionId.Init(), FunctionOpenViewLimitAll_1.configFunctionOpenViewLimitAll.Init(), GaChaShareById_1.configGaChaShareById.Init(), GachaAll_1.configGachaAll.Init(), GachaById_1.configGachaById.Init(), GachaEffectConfigByTimesAndQuality_1.configGachaEffectConfigByTimesAndQuality.Init(), GachaPoolById_1.configGachaPoolById.Init(), GachaSequenceConfigById_1.configGachaSequenceConfigById.Init(), GachaTextureInfoById_1.configGachaTextureInfoById.Init(), GachaViewInfoById_1.configGachaViewInfoById.Init(), GachaViewTypeInfoByType_1.configGachaViewTypeInfoByType.Init(), GachaWeaponTransformById_1.configGachaWeaponTransformById.Init(), GamePlayInformationGroupById_1.configGamePlayInformationGroupById.Init(), GamePlayInformationInfoById_1.configGamePlayInformationInfoById.Init(), GamePlayScanByUid_1.configGamePlayScanByUid.Init(), GamePlayScanCompositeByUid_1.configGamePlayScanCompositeByUid.Init(), GamepadKeyById_1.configGamepadKeyById.Init(), GamepadKeyByKeyName_1.configGamepadKeyByKeyName.Init(), GameplayCueById_1.configGameplayCueById.Init(), GatherActivityAll_1.configGatherActivityAll.Init(), GatherActivityById_1.configGatherActivityById.Init(), GenderTextByMaleText_1.configGenderTextByMaleText.Init(), GenericPromptByTipsId_1.configGenericPromptByTipsId.Init(), GenericPromptTypesByTypeId_1.configGenericPromptTypesByTypeId.Init(), GeographyHandBookAll_1.configGeographyHandBookAll.Init(), GeographyHandBookById_1.configGeographyHandBookById.Init(), GeographyHandBookByType_1.configGeographyHandBookByType.Init(), GeographyTypeAll_1.configGeographyTypeAll.Init(), GeographyTypeById_1.configGeographyTypeById.Init(), GiftPackageAll_1.configGiftPackageAll.Init(), GiftPackageById_1.configGiftPackageById.Init(), GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.Init(), GmAccountAll_1.configGmAccountAll.Init(), GmAccountById_1.configGmAccountById.Init(), GmOrderConfigAll_1.configGmOrderConfigAll.Init(), GmOrderListAll_1.configGmOrderListAll.Init(), GmOrderListById_1.configGmOrderListById.Init(), GongduolaPassengerVoiceConfigById_1.configGongduolaPassengerVoiceConfigById.Init(), GongduolaPassengerVoiceConfigByRoleIdAndTriggerType_1.configGongduolaPassengerVoiceConfigByRoleIdAndTriggerType.Init(), GuideDataById_1.configGuideDataById.Init(), GuideDungeonSetDefineByStrId_1.configGuideDungeonSetDefineByStrId.Init(), GuideFocusNewByGuideId_1.configGuideFocusNewByGuideId.Init(), GuideFromMontageByEventGroupId_1.configGuideFromMontageByEventGroupId.Init(), GuideGroupAll_1.configGuideGroupAll.Init(), GuideGroupById_1.configGuideGroupById.Init(), GuideStepAll_1.configGuideStepAll.Init(), GuideStepById_1.configGuideStepById.Init(), GuideTipsByGuideId_1.configGuideTipsByGuideId.Init(), GuideTutorialAll_1.configGuideTutorialAll.Init(), GuideTutorialById_1.configGuideTutorialById.Init(), GuideTutorialPageById_1.configGuideTutorialPageById.Init(), H5CircumUrlById_1.configH5CircumUrlById.Init(), HandBookEntranceAll_1.configHandBookEntranceAll.Init(), HandBookEntranceById_1.configHandBookEntranceById.Init(), HandBookQuestTabAll_1.configHandBookQuestTabAll.Init(), HandBookQuestTabById_1.configHandBookQuestTabById.Init(), HardnessModeById_1.configHardnessModeById.Init(), HeadIconById_1.configHeadIconById.Init(), HeadIconEnergyBarAll_1.configHeadIconEnergyBarAll.Init(), HeadIconEnergyBarById_1.configHeadIconEnergyBarById.Init(), HelpTextByGroupId_1.configHelpTextByGroupId.Init(), HelpTextById_1.configHelpTextById.Init(), HiddenBossWindowById_1.configHiddenBossWindowById.Init(), HotKeyIconByKeyName_1.configHotKeyIconByKeyName.Init(), HotKeyMapById_1.configHotKeyMapById.Init(), HotKeyTextByTextId_1.configHotKeyTextByTextId.Init(), HotKeyTypeById_1.configHotKeyTypeById.Init(), HotKeyViewById_1.configHotKeyViewById.Init(), HotPatchTextLang_1.configHotPatchTextLang.Init(), I18nResourcesAll_1.configI18nResourcesAll.Init(), I18nResourcesById_1.configI18nResourcesById.Init(), I18nTexturesAll_1.configI18nTexturesAll.Init(), I18nTexturesById_1.configI18nTexturesById.Init(), InfluenceAll_1.configInfluenceAll.Init(), InfluenceById_1.configInfluenceById.Init(), InfoDisplayById_1.configInfoDisplayById.Init(), InstanceDungeonAll_1.configInstanceDungeonAll.Init(), InstanceDungeonById_1.configInstanceDungeonById.Init(), InstanceDungeonEntranceAll_1.configInstanceDungeonEntranceAll.Init(), InstanceDungeonEntranceById_1.configInstanceDungeonEntranceById.Init(), InstanceDungeonEntranceByMarkId_1.configInstanceDungeonEntranceByMarkId.Init(), InstanceDungeonTitleById_1.configInstanceDungeonTitleById.Init(), InstanceEnterControlById_1.configInstanceEnterControlById.Init(), InstanceGameplayModeById_1.configInstanceGameplayModeById.Init(), InstanceTrialRoleConfigById_1.configInstanceTrialRoleConfigById.Init(), InteractAudioMaterialByCollisionMaterial_1.configInteractAudioMaterialByCollisionMaterial.Init(), InteractBackGroundById_1.configInteractBackGroundById.Init(), InteractBackGroundByViewName_1.configInteractBackGroundByViewName.Init(), InteractDataByGuid_1.configInteractDataByGuid.Init(), InterjectionByTimberIdAndUniversalToneId_1.configInterjectionByTimberIdAndUniversalToneId.Init(), ItemAccessedPathById_1.configItemAccessedPathById.Init(), ItemExchangeContentAll_1.configItemExchangeContentAll.Init(), ItemExchangeContentByItemId_1.configItemExchangeContentByItemId.Init(), ItemExchangeLimitByItemId_1.configItemExchangeLimitByItemId.Init(), ItemHandBookAll_1.configItemHandBookAll.Init(), ItemHandBookById_1.configItemHandBookById.Init(), ItemHandBookByType_1.configItemHandBookByType.Init(), ItemHandBookTypeAll_1.configItemHandBookTypeAll.Init(), ItemHandBookTypeById_1.configItemHandBookTypeById.Init(), ItemIconTagById_1.configItemIconTagById.Init(), ItemInfoAll_1.configItemInfoAll.Init(), ItemInfoById_1.configItemInfoById.Init(), ItemInfoByItemType_1.configItemInfoByItemType.Init(), ItemMainTypeAll_1.configItemMainTypeAll.Init(), ItemMainTypeById_1.configItemMainTypeById.Init(), ItemShowTypeById_1.configItemShowTypeById.Init(), KeyPoolAll_1.configKeyPoolAll.Init(), KeyPoolById_1.configKeyPoolById.Init(), KeySettingAll_1.configKeySettingAll.Init(), KeySettingById_1.configKeySettingById.Init(), KeySettingByTypeId_1.configKeySettingByTypeId.Init(), KeySettingByTypeIdAndInputControllerType_1.configKeySettingByTypeIdAndInputControllerType.Init(), KeyTypeAll_1.configKeyTypeAll.Init(), KeyTypeByTypeId_1.configKeyTypeByTypeId.Init(), KillMonstersScoresByInstanceID_1.configKillMonstersScoresByInstanceID.Init(), LangOfLogoByName_1.configLangOfLogoByName.Init(), LanguageDefineByLanguageCode_1.configLanguageDefineByLanguageCode.Init(), LanguageDefineByLanguageType_1.configLanguageDefineByLanguageType.Init(), LevelEntityConfigByBlueprintType_1.configLevelEntityConfigByBlueprintType.Init(), LevelEntityConfigByMapId_1.configLevelEntityConfigByMapId.Init(), LevelEntityConfigByMapIdAndEntityId_1.configLevelEntityConfigByMapIdAndEntityId.Init(), LevelPlayDataById_1.configLevelPlayDataById.Init(), LevelPlayInfoMappingConfigAll_1.configLevelPlayInfoMappingConfigAll.Init(), LevelPlayInfoMappingConfigById_1.configLevelPlayInfoMappingConfigById.Init(), LevelPlayNodeDataByKey_1.configLevelPlayNodeDataByKey.Init(), LinkCharacterById_1.configLinkCharacterById.Init(), LinkDataById_1.configLinkDataById.Init(), LinkParamById_1.configLinkParamById.Init(), LivenessAll_1.configLivenessAll.Init(), LivenessById_1.configLivenessById.Init(), LivenessTaskByTaskId_1.configLivenessTaskByTaskId.Init(), LoadingLevelAreaAll_1.configLoadingLevelAreaAll.Init(), LoadingTipsTextAll_1.configLoadingTipsTextAll.Init(), LoadingTipsTextById_1.configLoadingTipsTextById.Init(), LoadingTipsTextByLevelAreaId_1.configLoadingTipsTextByLevelAreaId.Init(), LockOnConfigById_1.configLockOnConfigById.Init(), LongPressConfigById_1.configLongPressConfigById.Init(), LongShanActivityConfigByActivityId_1.configLongShanActivityConfigByActivityId.Init(), LongShanScoreRewardByActivityId_1.configLongShanScoreRewardByActivityId.Init(), LongShanScoreRewardById_1.configLongShanScoreRewardById.Init(), LongShanStageAll_1.configLongShanStageAll.Init(), LongShanStageById_1.configLongShanStageById.Init(), LongShanTaskById_1.configLongShanTaskById.Init(), LordGymAll_1.configLordGymAll.Init(), LordGymByDifficulty_1.configLordGymByDifficulty.Init(), LordGymById_1.configLordGymById.Init(), LordGymEntranceAll_1.configLordGymEntranceAll.Init(), LordGymEntranceById_1.configLordGymEntranceById.Init(), LordGymEntranceByMarkId_1.configLordGymEntranceByMarkId.Init(), LordGymEntranceGroupByMarkId_1.configLordGymEntranceGroupByMarkId.Init(), LordGymEntranceSetAll_1.configLordGymEntranceSetAll.Init(), LordGymEntranceSetById_1.configLordGymEntranceSetById.Init(), LordGymEntranceSetByMarkId_1.configLordGymEntranceSetByMarkId.Init(), LordGymFilterTypeAll_1.configLordGymFilterTypeAll.Init(), LordGymFilterTypeById_1.configLordGymFilterTypeById.Init(), MailFilterAll_1.configMailFilterAll.Init(), MailFilterById_1.configMailFilterById.Init(), MainLineAll_1.configMainLineAll.Init(), MainLineById_1.configMainLineById.Init(), MainRoleConfigAll_1.configMainRoleConfigAll.Init(), MainRoleConfigByGender_1.configMainRoleConfigByGender.Init(), MainRoleConfigById_1.configMainRoleConfigById.Init(), MainTypeAll_1.configMainTypeAll.Init(), MainTypeById_1.configMainTypeById.Init(), MapAudioById_1.configMapAudioById.Init(), MapBorderAll_1.configMapBorderAll.Init(), MapBorderByBorderId_1.configMapBorderByBorderId.Init(), MapBorderByBorderIdAndMapId_1.configMapBorderByBorderIdAndMapId.Init(), MapFogByAreaId_1.configMapFogByAreaId.Init(), MapFogByFog_1.configMapFogByFog.Init(), MapLevelExpByActivityId_1.configMapLevelExpByActivityId.Init(), MapLevelExpById_1.configMapLevelExpById.Init(), MapMarkAll_1.configMapMarkAll.Init(), MapMarkByEntityConfigId_1.configMapMarkByEntityConfigId.Init(), MapMarkByInstanceDungeonId_1.configMapMarkByInstanceDungeonId.Init(), MapMarkByMapId_1.configMapMarkByMapId.Init(), MapMarkByMarkId_1.configMapMarkByMarkId.Init(), MapMarkByRelativeId_1.configMapMarkByRelativeId.Init(), MapMarkByRelativeMainSubType_1.configMapMarkByRelativeMainSubType.Init(), MapMarkHasEntityConfigId_1.configMapMarkHasEntityConfigId.Init(), MapMarkPhantomGroupByMarkId_1.configMapMarkPhantomGroupByMarkId.Init(), MapMarkRelativeSubTypeAll_1.configMapMarkRelativeSubTypeAll.Init(), MapMarkRelativeSubTypeByFunctionId_1.configMapMarkRelativeSubTypeByFunctionId.Init(), MapMarkRelativeSubTypeById_1.configMapMarkRelativeSubTypeById.Init(), MapNoteById_1.configMapNoteById.Init(), MapRangeAll_1.configMapRangeAll.Init(), MapRangeByMapId_1.configMapRangeByMapId.Init(), MapTravelConfigByActivityId_1.configMapTravelConfigByActivityId.Init(), MappingBySheetNameAndFieldName_1.configMappingBySheetNameAndFieldName.Init(), MappingBySheetNameFieldNameAndValue_1.configMappingBySheetNameFieldNameAndValue.Init(), MarkEffectByMarkId_1.configMarkEffectByMarkId.Init(), MaterialReplaceAll_1.configMaterialReplaceAll.Init(), MaterialReplaceByGroupId_1.configMaterialReplaceByGroupId.Init(), MaterialReplaceByItemId_1.configMaterialReplaceByItemId.Init(), MenuConfigAll_1.configMenuConfigAll.Init(), MenuConfigByFunctionId_1.configMenuConfigByFunctionId.Init(), MobileBattleUiSetAll_1.configMobileBattleUiSetAll.Init(), MobileBattleUiSetByPanelIndex_1.configMobileBattleUiSetByPanelIndex.Init(), ModelConfigPreloadByAll_1.configModelConfigPreloadByAll.Init(), ModelConfigPreloadById_1.configModelConfigPreloadById.Init(), MonsterBattleConfById_1.configMonsterBattleConfById.Init(), MonsterBattleConfByRoleId_1.configMonsterBattleConfByRoleId.Init(), MonsterBodyTypeConfigById_1.configMonsterBodyTypeConfigById.Init(), MonsterDetectionAll_1.configMonsterDetectionAll.Init(), MonsterDetectionById_1.configMonsterDetectionById.Init(), MonsterDetectionByMarkId_1.configMonsterDetectionByMarkId.Init(), MonsterDetectionFilterAll_1.configMonsterDetectionFilterAll.Init(), MonsterDisplayById_1.configMonsterDisplayById.Init(), MonsterDisplayLang_1.configMonsterDisplayLang.Init(), MonsterHandBookAll_1.configMonsterHandBookAll.Init(), MonsterHandBookById_1.configMonsterHandBookById.Init(), MonsterHandBookByType_1.configMonsterHandBookByType.Init(), MonsterHandBookTypeAll_1.configMonsterHandBookTypeAll.Init(), MonsterIconTagById_1.configMonsterIconTagById.Init(), MonsterInfoById_1.configMonsterInfoById.Init(), MonsterPerchById_1.configMonsterPerchById.Init(), MonsterPerformanceConfById_1.configMonsterPerformanceConfById.Init(), MonsterPropertyGrowthById_1.configMonsterPropertyGrowthById.Init(), MonsterRarityById_1.configMonsterRarityById.Init(), MonsterSizeIdById_1.configMonsterSizeIdById.Init(), MontageDataById_1.configMontageDataById.Init(), MonthCardContentById_1.configMonthCardContentById.Init(), MoraleAreaAll_1.configMoraleAreaAll.Init(), MoraleAreaById_1.configMoraleAreaById.Init(), MoraleFlagTypeById_1.configMoraleFlagTypeById.Init(), MoraleFlagTypeByType_1.configMoraleFlagTypeByType.Init(), MoraleKeepLevelAll_1.configMoraleKeepLevelAll.Init(), MoraleKeepLevelById_1.configMoraleKeepLevelById.Init(), MoraleLevelDiffById_1.configMoraleLevelDiffById.Init(), MoraleLevelDiffShowAll_1.configMoraleLevelDiffShowAll.Init(), MoraleLevelDiffShowById_1.configMoraleLevelDiffShowById.Init(), MoraleLvPowerAll_1.configMoraleLvPowerAll.Init(), MoraleLvPowerById_1.configMoraleLvPowerById.Init(), MoralePlayById_1.configMoralePlayById.Init(), MoraleRoleGrowthByLevel_1.configMoraleRoleGrowthByLevel.Init(), MotionById_1.configMotionById.Init(), MotionByRoleId_1.configMotionByRoleId.Init(), MotionByRoleIdAndType_1.configMotionByRoleIdAndType.Init(), MotionBySkinId_1.configMotionBySkinId.Init(), MowTowerBuffReAll_1.configMowTowerBuffReAll.Init(), MowTowerBuffReById_1.configMowTowerBuffReById.Init(), MowTowerLevelsReAll_1.configMowTowerLevelsReAll.Init(), MowTowerLevelsReById_1.configMowTowerLevelsReById.Init(), MowTowerRewardReAll_1.configMowTowerRewardReAll.Init(), MowTowerRewardReById_1.configMowTowerRewardReById.Init(), MultiMapAll_1.configMultiMapAll.Init(), MultiMapByGroupId_1.configMultiMapByGroupId.Init(), MultiMapById_1.configMultiMapById.Init(), MultiMapAreaConfigAll_1.configMultiMapAreaConfigAll.Init(), MultiTextLang_1.configMultiTextLang.Init(), NewOccupationConfigAll_1.configNewOccupationConfigAll.Init(), NewOccupationConfigById_1.configNewOccupationConfigById.Init(), NewbieCarnivalParamByActivityId_1.configNewbieCarnivalParamByActivityId.Init(), NewbieCarnivalRoleByRoleId_1.configNewbieCarnivalRoleByRoleId.Init(), NewbieCarnivalTaskByTaskId_1.configNewbieCarnivalTaskByTaskId.Init(), NewbieCarnivalTaskByTaskType_1.configNewbieCarnivalTaskByTaskType.Init(), NewbieCarnivalTaskTypeById_1.configNewbieCarnivalTaskTypeById.Init(), NewbieCourseAll_1.configNewbieCourseAll.Init(), NewbieCourseById_1.configNewbieCourseById.Init(), NounHandBookAll_1.configNounHandBookAll.Init(), NounHandBookById_1.configNounHandBookById.Init(), NounHandBookByType_1.configNounHandBookByType.Init(), NounTypeAll_1.configNounTypeAll.Init(), NounTypeById_1.configNounTypeById.Init(), NpcHeadInfoById_1.configNpcHeadInfoById.Init(), NpcSystemBackgroundById_1.configNpcSystemBackgroundById.Init(), NpcSystemBackgroundByViewName_1.configNpcSystemBackgroundByViewName.Init(), OccupationConfigById_1.configOccupationConfigById.Init(), OccupationConfigLang_1.configOccupationConfigLang.Init(), OccupyScoreAll_1.configOccupyScoreAll.Init(), OccupyScoreById_1.configOccupyScoreById.Init(), OpenAndCloseViewHotKeyAll_1.configOpenAndCloseViewHotKeyAll.Init(), OpenAndCloseViewHotKeyByActionName_1.configOpenAndCloseViewHotKeyByActionName.Init(), OpenAndCloseViewHotKeyByInputControllerType_1.configOpenAndCloseViewHotKeyByInputControllerType.Init(), OverlayAbpMontageDataById_1.configOverlayAbpMontageDataById.Init(), PackageCapacityAll_1.configPackageCapacityAll.Init(), PackageCapacityByPackageId_1.configPackageCapacityByPackageId.Init(), ParkourChallengeById_1.configParkourChallengeById.Init(), ParkourChallengeByMarkId_1.configParkourChallengeByMarkId.Init(), PassiveSkillById_1.configPassiveSkillById.Init(), PayById_1.configPayById.Init(), PayByPayIdAndRegion_1.configPayByPayIdAndRegion.Init(), PayByRegion_1.configPayByRegion.Init(), PayGiftAll_1.configPayGiftAll.Init(), PayGiftById_1.configPayGiftById.Init(), PayItemAll_1.configPayItemAll.Init(), PayItemById_1.configPayItemById.Init();
-    PayShopAll_1.configPayShopAll.Init(), PayShopById_1.configPayShopById.Init(), PayShopConditionById_1.configPayShopConditionById.Init(), PayShopDirectGoodsByGoodsId_1.configPayShopDirectGoodsByGoodsId.Init(), PayShopGoodsAll_1.configPayShopGoodsAll.Init(), PayShopGoodsById_1.configPayShopGoodsById.Init(), PayShopGoodsByItemId_1.configPayShopGoodsByItemId.Init(), PayShopRecommendAll_1.configPayShopRecommendAll.Init(), PayShopRecommendById_1.configPayShopRecommendById.Init(), PayShopTabByShopId_1.configPayShopTabByShopId.Init(), PayShopTabByShopIdAndTabId_1.configPayShopTabByShopIdAndTabId.Init(), PbDataPreloadAll_1.configPbDataPreloadAll.Init(), PbDataPreloadByMapIdAndPbId_1.configPbDataPreloadByMapIdAndPbId.Init(), PcKeyAll_1.configPcKeyAll.Init(), PcKeyById_1.configPcKeyById.Init(), PcKeyByKeyName_1.configPcKeyByKeyName.Init(), PerformanceConditionById_1.configPerformanceConditionById.Init(), PerformanceConditionByIdWithZero_1.configPerformanceConditionByIdWithZero.Init(), PersonalTipsByFunctionId_1.configPersonalTipsByFunctionId.Init(), PersonalTipsById_1.configPersonalTipsById.Init(), PhantomBattleActivityByActivityId_1.configPhantomBattleActivityByActivityId.Init(), PhantomBattleBadgeAll_1.configPhantomBattleBadgeAll.Init(), PhantomBattleBadgeByActivityGroupId_1.configPhantomBattleBadgeByActivityGroupId.Init(), PhantomBattleBadgeByGroupId_1.configPhantomBattleBadgeByGroupId.Init(), PhantomBattleBadgeById_1.configPhantomBattleBadgeById.Init(), PhantomBattleBadgeGroupAll_1.configPhantomBattleBadgeGroupAll.Init(), PhantomBattleBadgeGroupByGroupId_1.configPhantomBattleBadgeGroupByGroupId.Init(), PhantomBattleBadgeRewardByActivityId_1.configPhantomBattleBadgeRewardByActivityId.Init(), PhantomBattleBadgeRewardById_1.configPhantomBattleBadgeRewardById.Init(), PhantomBattleBuffById_1.configPhantomBattleBuffById.Init(), PhantomBattleCardAll_1.configPhantomBattleCardAll.Init(), PhantomBattleCardByActivityId_1.configPhantomBattleCardByActivityId.Init(), PhantomBattleCardById_1.configPhantomBattleCardById.Init(), PhantomBattleCardElementById_1.configPhantomBattleCardElementById.Init(), PhantomBattleCardFilterAll_1.configPhantomBattleCardFilterAll.Init(), PhantomBattleCardFilterById_1.configPhantomBattleCardFilterById.Init(), PhantomBattleCardGroupByGroupId_1.configPhantomBattleCardGroupByGroupId.Init(), PhantomBattleCardGroupInfoById_1.configPhantomBattleCardGroupInfoById.Init(), PhantomBattleCardRewardByActivityId_1.configPhantomBattleCardRewardByActivityId.Init(), PhantomBattleCardRewardById_1.configPhantomBattleCardRewardById.Init(), PhantomBattleCardRoleAll_1.configPhantomBattleCardRoleAll.Init(), PhantomBattleCardRoleById_1.configPhantomBattleCardRoleById.Init(), PhantomBattleCardSlotSortAll_1.configPhantomBattleCardSlotSortAll.Init(), PhantomBattleCardSlotSortById_1.configPhantomBattleCardSlotSortById.Init(), PhantomBattleChallengeByActivityGymId_1.configPhantomBattleChallengeByActivityGymId.Init(), PhantomBattleChallengeByActivityId_1.configPhantomBattleChallengeByActivityId.Init(), PhantomBattleChallengeByGymId_1.configPhantomBattleChallengeByGymId.Init(), PhantomBattleChallengeById_1.configPhantomBattleChallengeById.Init(), PhantomBattleDialogById_1.configPhantomBattleDialogById.Init(), PhantomBattleEntryById_1.configPhantomBattleEntryById.Init(), PhantomBattleFactorAll_1.configPhantomBattleFactorAll.Init(), PhantomBattleFactorById_1.configPhantomBattleFactorById.Init(), PhantomBattleFourCTaskByCardId_1.configPhantomBattleFourCTaskByCardId.Init(), PhantomBattleGymByActivityId_1.configPhantomBattleGymByActivityId.Init(), PhantomBattleMasterLevelAll_1.configPhantomBattleMasterLevelAll.Init(), PhantomBattleMasterLevelById_1.configPhantomBattleMasterLevelById.Init(), PhantomBattleMasterTitleAll_1.configPhantomBattleMasterTitleAll.Init(), PhantomBattleMasterTitleById_1.configPhantomBattleMasterTitleById.Init(), PhantomBattleNPCByGroupId_1.configPhantomBattleNPCByGroupId.Init(), PhantomBattleNPCById_1.configPhantomBattleNPCById.Init(), PhantomBattleSkillById_1.configPhantomBattleSkillById.Init(), PhantomBattleTaskByActivityId_1.configPhantomBattleTaskByActivityId.Init(), PhantomBattleTaskByTaskId_1.configPhantomBattleTaskByTaskId.Init(), PhantomBattleTaskTabById_1.configPhantomBattleTaskTabById.Init(), PhantomBattleWeekExpAll_1.configPhantomBattleWeekExpAll.Init(), PhantomBattleWeekExpById_1.configPhantomBattleWeekExpById.Init(), PhantomBattleWinSeqById_1.configPhantomBattleWinSeqById.Init(), PhantomCollectActivityById_1.configPhantomCollectActivityById.Init(), PhantomCollectTaskDescById_1.configPhantomCollectTaskDescById.Init(), PhantomCustomizeItemByItemId_1.configPhantomCustomizeItemByItemId.Init(), PhantomExpItemAll_1.configPhantomExpItemAll.Init(), PhantomExpItemByItemId_1.configPhantomExpItemByItemId.Init(), PhantomFetterAll_1.configPhantomFetterAll.Init(), PhantomFetterById_1.configPhantomFetterById.Init(), PhantomFetterGroupAll_1.configPhantomFetterGroupAll.Init(), PhantomFetterGroupById_1.configPhantomFetterGroupById.Init(), PhantomFetterHandBookAll_1.configPhantomFetterHandBookAll.Init(), PhantomFormationById_1.configPhantomFormationById.Init(), PhantomGainByActivityId_1.configPhantomGainByActivityId.Init(), PhantomGainById_1.configPhantomGainById.Init(), PhantomGrowthByGrowthIdAndLevel_1.configPhantomGrowthByGrowthIdAndLevel.Init(), PhantomHandBookAll_1.configPhantomHandBookAll.Init(), PhantomHandBookById_1.configPhantomHandBookById.Init(), PhantomHandBookPageAll_1.configPhantomHandBookPageAll.Init(), PhantomItemAll_1.configPhantomItemAll.Init(), PhantomItemByItemId_1.configPhantomItemByItemId.Init(), PhantomItemByMonsterId_1.configPhantomItemByMonsterId.Init(), PhantomLevelByGroupId_1.configPhantomLevelByGroupId.Init(), PhantomLevelByGroupIdAndLevel_1.configPhantomLevelByGroupIdAndLevel.Init(), PhantomMainPropItemById_1.configPhantomMainPropItemById.Init(), PhantomMainPropertyById_1.configPhantomMainPropertyById.Init(), PhantomMainPropertyByRandGroupId_1.configPhantomMainPropertyByRandGroupId.Init(), PhantomQualityByQuality_1.configPhantomQualityByQuality.Init(), PhantomRarityAll_1.configPhantomRarityAll.Init(), PhantomRarityByRare_1.configPhantomRarityByRare.Init(), PhantomSkillById_1.configPhantomSkillById.Init(), PhantomSkillByPhantomSkillId_1.configPhantomSkillByPhantomSkillId.Init(), PhantomSubPropertyById_1.configPhantomSubPropertyById.Init(), PhantomSubPropertyByPropId_1.configPhantomSubPropertyByPropId.Init(), PhantomWildItemAll_1.configPhantomWildItemAll.Init(), PhantomWildItemByItemId_1.configPhantomWildItemByItemId.Init(), PhonographAlbumAll_1.configPhonographAlbumAll.Init(), PhonographAlbumById_1.configPhonographAlbumById.Init(), PhonographMusicAll_1.configPhonographMusicAll.Init(), PhonographMusicById_1.configPhonographMusicById.Init(), PhotoFilterAll_1.configPhotoFilterAll.Init(), PhotoFilterById_1.configPhotoFilterById.Init(), PhotoMemoryActivityById_1.configPhotoMemoryActivityById.Init(), PhotoMemoryCollectById_1.configPhotoMemoryCollectById.Init(), PhotoMemoryCollectByTopicID_1.configPhotoMemoryCollectByTopicID.Init(), PhotoMemoryTopicAll_1.configPhotoMemoryTopicAll.Init(), PhotoMemoryTopicById_1.configPhotoMemoryTopicById.Init(), PhotoMontageById_1.configPhotoMontageById.Init(), PhotoMontageByRoleId_1.configPhotoMontageByRoleId.Init(), PhotoMontageByRoleIdAndMainAnimInstanceType_1.configPhotoMontageByRoleIdAndMainAnimInstanceType.Init(), PhotoSetupAll_1.configPhotoSetupAll.Init(), PhotoSetupByValueType_1.configPhotoSetupByValueType.Init(), PhotographHandBookAll_1.configPhotographHandBookAll.Init(), PhotographHandBookById_1.configPhotographHandBookById.Init(), PhotographHandBookByType_1.configPhotographHandBookByType.Init(), PhysicsAssetConfigById_1.configPhysicsAssetConfigById.Init(), PhysicsAssetConfigByIdWithDefaultId_1.configPhysicsAssetConfigByIdWithDefaultId.Init(), PlatformIconById_1.configPlatformIconById.Init(), PlayStationActivityConfigAll_1.configPlayStationActivityConfigAll.Init(), PlayerExpByPlayerLevel_1.configPlayerExpByPlayerLevel.Init(), PlayerExpByPlayerLevelArea_1.configPlayerExpByPlayerLevelArea.Init(), PlayerHeadReAll_1.configPlayerHeadReAll.Init(), PlayerHeadReById_1.configPlayerHeadReById.Init(), PlayerStateRestrictionById_1.configPlayerStateRestrictionById.Init(), PlayerTitleAll_1.configPlayerTitleAll.Init(), PlayerTitleById_1.configPlayerTitleById.Init(), PlotAudioById_1.configPlotAudioById.Init(), PlotGuestByGuestID_1.configPlotGuestByGuestID.Init(), PlotHandBookConfigAll_1.configPlotHandBookConfigAll.Init(), PlotHandBookConfigByQuestId_1.configPlotHandBookConfigByQuestId.Init(), PlotTypeAll_1.configPlotTypeAll.Init(), PlotTypeById_1.configPlotTypeById.Init(), PopularityAll_1.configPopularityAll.Init(), PreOpenDetectionAll_1.configPreOpenDetectionAll.Init(), PreOpenDetectionById_1.configPreOpenDetectionById.Init(), PrefabConfigById_1.configPrefabConfigById.Init(), PrefabRichTextDataById_1.configPrefabRichTextDataById.Init(), PrefabTextItemAll_1.configPrefabTextItemAll.Init(), PrefabTextItemByItemId_1.configPrefabTextItemByItemId.Init(), PrefabTextItemByPrefabPathHash_1.configPrefabTextItemByPrefabPathHash.Init(), PreheatBonusAll_1.configPreheatBonusAll.Init(), PreheatBonusById_1.configPreheatBonusById.Init(), PreheatQuestTextAll_1.configPreheatQuestTextAll.Init(), PreheatQuestTextById_1.configPreheatQuestTextById.Init(), PreheatSignReAll_1.configPreheatSignReAll.Init(), PreheatSignReById_1.configPreheatSignReById.Init(), PreheatVoteAll_1.configPreheatVoteAll.Init(), PreheatVoteById_1.configPreheatVoteById.Init(), PreviewItemAll_1.configPreviewItemAll.Init(), PreviewItemById_1.configPreviewItemById.Init(), PropRewardConfById_1.configPropRewardConfById.Init(), PropertyIndexAll_1.configPropertyIndexAll.Init(), PropertyIndexById_1.configPropertyIndexById.Init(), PunishReportById_1.configPunishReportById.Init(), QualityIconTagById_1.configQualityIconTagById.Init(), QualityInfoAll_1.configQualityInfoAll.Init(), QualityInfoById_1.configQualityInfoById.Init(), QuestById_1.configQuestById.Init(), QuestChapterById_1.configQuestChapterById.Init(), QuestDataById_1.configQuestDataById.Init(), QuestMainTypeById_1.configQuestMainTypeById.Init(), QuestNodeDataByKey_1.configQuestNodeDataByKey.Init(), QuestRefVideoConfigAll_1.configQuestRefVideoConfigAll.Init(), QuestReviewEntryAll_1.configQuestReviewEntryAll.Init(), QuestReviewEntryById_1.configQuestReviewEntryById.Init(), QuestReviewLineById_1.configQuestReviewLineById.Init(), QuestReviewNodeById_1.configQuestReviewNodeById.Init(), QuestReviewNodeByQuestLine_1.configQuestReviewNodeByQuestLine.Init(), QuestReviewTabById_1.configQuestReviewTabById.Init(), QuestReviewTreeById_1.configQuestReviewTreeById.Init(), QuestTagById_1.configQuestTagById.Init(), QuestTrackingConfigAll_1.configQuestTrackingConfigAll.Init(), QuestTrackingConfigById_1.configQuestTrackingConfigById.Init(), QuestTypeAll_1.configQuestTypeAll.Init(), QuestTypeById_1.configQuestTypeById.Init(), QuestTypeByMainId_1.configQuestTypeByMainId.Init(), QuickChatAll_1.configQuickChatAll.Init(), RacingBetConversionRateById_1.configRacingBetConversionRateById.Init(), RacingBetConversionRateBySeasonId_1.configRacingBetConversionRateBySeasonId.Init(), RacingBetMapPointById_1.configRacingBetMapPointById.Init(), RacingBetMapPointBySeasonId_1.configRacingBetMapPointBySeasonId.Init(), RacingBetRankOpenTimeById_1.configRacingBetRankOpenTimeById.Init(), RacingBetsBulletScreenById_1.configRacingBetsBulletScreenById.Init(), RacingBetsBulletScreenBySeasonId_1.configRacingBetsBulletScreenBySeasonId.Init(), RacingBetsGroupMatchById_1.configRacingBetsGroupMatchById.Init(), RacingBetsGroupMatchBySeasonId_1.configRacingBetsGroupMatchBySeasonId.Init(), RacingBetsLegMatchesById_1.configRacingBetsLegMatchesById.Init(), RacingBetsLegMatchesByMatchId_1.configRacingBetsLegMatchesByMatchId.Init(), RacingBetsRewardById_1.configRacingBetsRewardById.Init(), RacingBetsRewardBySeasonId_1.configRacingBetsRewardBySeasonId.Init(), RacingBetsSeasonById_1.configRacingBetsSeasonById.Init(), RacingBettingGearById_1.configRacingBettingGearById.Init(), RacingBettingGearBySeasonId_1.configRacingBettingGearBySeasonId.Init(), RecordConfigById_1.configRecordConfigById.Init(), RedDotByRelativeName_1.configRedDotByRelativeName.Init(), RefineRecommendAll_1.configRefineRecommendAll.Init(), RefineRecommendByCost_1.configRefineRecommendByCost.Init(), RegressBaseAll_1.configRegressBaseAll.Init(), RegressBaseByEntryType_1.configRegressBaseByEntryType.Init(), RegressBonusRewardAll_1.configRegressBonusRewardAll.Init(), RegressBonusRewardByGrade_1.configRegressBonusRewardByGrade.Init(), RegressBonusRewardByIdAndGrade_1.configRegressBonusRewardByIdAndGrade.Init(), RegressDoubleDropAll_1.configRegressDoubleDropAll.Init(), RegressDoubleDropByGrade_1.configRegressDoubleDropByGrade.Init(), RegressDoubleDropById_1.configRegressDoubleDropById.Init(), RegressEntryAll_1.configRegressEntryAll.Init(), RegressEntryByEntryType_1.configRegressEntryByEntryType.Init(), RegressInvestigationAll_1.configRegressInvestigationAll.Init(), RegressInvestigationByInvestigationTypeAndIfGlobal_1.configRegressInvestigationByInvestigationTypeAndIfGlobal.Init(), RegressQuestAll_1.configRegressQuestAll.Init(), RegressQuestById_1.configRegressQuestById.Init(), RegressRewardsById_1.configRegressRewardsById.Init(), RegressSignRewardAll_1.configRegressSignRewardAll.Init(), RegressSignRewardByGradeAndActivityId_1.configRegressSignRewardByGradeAndActivityId.Init(), ReportPlayerInfoAll_1.configReportPlayerInfoAll.Init(), ResElementLevelGainByTargetType_1.configResElementLevelGainByTargetType.Init(), ResonantChainByGroupId_1.configResonantChainByGroupId.Init(), ResonantChainByGroupIdAndGroupIndex_1.configResonantChainByGroupIdAndGroupIndex.Init(), ResonantChainByGroupIdAndNodeType_1.configResonantChainByGroupIdAndNodeType.Init(), ResonantChainById_1.configResonantChainById.Init(), ReviveById_1.configReviveById.Init(), RewardConfigById_1.configRewardConfigById.Init(), RewardViewFromSourceAll_1.configRewardViewFromSourceAll.Init(), RewardViewFromSourceBySourceId_1.configRewardViewFromSourceBySourceId.Init(), RiskHarvestActivityInfoByActivityId_1.configRiskHarvestActivityInfoByActivityId.Init(), RiskHarvestArtifactAll_1.configRiskHarvestArtifactAll.Init(), RiskHarvestArtifactById_1.configRiskHarvestArtifactById.Init(), RiskHarvestBuffGroupAll_1.configRiskHarvestBuffGroupAll.Init(), RiskHarvestBuffGroupByActivityId_1.configRiskHarvestBuffGroupByActivityId.Init(), RiskHarvestBuffGroupById_1.configRiskHarvestBuffGroupById.Init(), RiskHarvestBuffRewardAll_1.configRiskHarvestBuffRewardAll.Init(), RiskHarvestBuffRewardById_1.configRiskHarvestBuffRewardById.Init(), RiskHarvestDifficultyById_1.configRiskHarvestDifficultyById.Init(), RiskHarvestInstAll_1.configRiskHarvestInstAll.Init(), RiskHarvestInstByActivityId_1.configRiskHarvestInstByActivityId.Init(), RiskHarvestInstById_1.configRiskHarvestInstById.Init(), RiskHarvestInstByInstanceID_1.configRiskHarvestInstByInstanceID.Init(), RiskHarvestScoreRewardAll_1.configRiskHarvestScoreRewardAll.Init(), RiskHarvestScoreRewardByActivityId_1.configRiskHarvestScoreRewardByActivityId.Init(), RiskHarvestScoreRewardById_1.configRiskHarvestScoreRewardById.Init(), RogueActivityById_1.configRogueActivityById.Init(), RogueAffixById_1.configRogueAffixById.Init(), RogueBossInstanceById_1.configRogueBossInstanceById.Init(), RogueBuffPoolById_1.configRogueBuffPoolById.Init(), RogueCharacterById_1.configRogueCharacterById.Init(), RogueCharacterBuffById_1.configRogueCharacterBuffById.Init(), RogueCurrencyById_1.configRogueCurrencyById.Init(), RogueEffectById_1.configRogueEffectById.Init(), RogueEventById_1.configRogueEventById.Init(), RogueLimitTimeRewardById_1.configRogueLimitTimeRewardById.Init(), RogueParamById_1.configRogueParamById.Init(), RoguePokemonById_1.configRoguePokemonById.Init(), RoguePopularEntrieArgAll_1.configRoguePopularEntrieArgAll.Init(), RoguePopularEntrieArgById_1.configRoguePopularEntrieArgById.Init(), RoguePopularEntrieArgBySeasonIdAndInstId_1.configRoguePopularEntrieArgBySeasonIdAndInstId.Init(), RogueQualityConfigById_1.configRogueQualityConfigById.Init(), RogueResAffixById_1.configRogueResAffixById.Init(), RogueResBondAll_1.configRogueResBondAll.Init(), RogueResBondById_1.configRogueResBondById.Init(), RogueResBondRoleAll_1.configRogueResBondRoleAll.Init(), RogueResBondRoleByRoleId_1.configRogueResBondRoleByRoleId.Init(), RogueResBuffPoolById_1.configRogueResBuffPoolById.Init(), RogueResCharacterById_1.configRogueResCharacterById.Init(), RogueResCharacterBuffById_1.configRogueResCharacterBuffById.Init(), RogueResCollectionAll_1.configRogueResCollectionAll.Init(), RogueResCollectionById_1.configRogueResCollectionById.Init(), RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.Init(), RogueResCollectionByIndex_1.configRogueResCollectionByIndex.Init(), RogueResCollectionRuleById_1.configRogueResCollectionRuleById.Init(), RogueResCurrencyById_1.configRogueResCurrencyById.Init(), RogueResDungeonConfigById_1.configRogueResDungeonConfigById.Init(), RogueResEffectById_1.configRogueResEffectById.Init(), RogueResEffectTagById_1.configRogueResEffectTagById.Init(), RogueResEndAll_1.configRogueResEndAll.Init(), RogueResEndById_1.configRogueResEndById.Init(), RogueResEndAwardById_1.configRogueResEndAwardById.Init(), RogueResEventById_1.configRogueResEventById.Init(), RogueResEventBgById_1.configRogueResEventBgById.Init(), RogueResEventBgmById_1.configRogueResEventBgmById.Init(), RogueResEventCueByType_1.configRogueResEventCueByType.Init(), RogueResEventPlotByPlotId_1.configRogueResEventPlotByPlotId.Init(), RogueResEventStepById_1.configRogueResEventStepById.Init(), RogueResGlobalParamAll_1.configRogueResGlobalParamAll.Init(), RogueResGridEventById_1.configRogueResGridEventById.Init(), RogueResGridExploreByInstId_1.configRogueResGridExploreByInstId.Init(), RogueResGridMapTypeById_1.configRogueResGridMapTypeById.Init(), RogueResInstGridById_1.configRogueResInstGridById.Init(), RogueResMoodRuleById_1.configRogueResMoodRuleById.Init(), RogueResPokemonById_1.configRogueResPokemonById.Init(), RogueResQualityConfigById_1.configRogueResQualityConfigById.Init(), RogueResRoomPoolById_1.configRogueResRoomPoolById.Init(), RogueResRoomTypeById_1.configRogueResRoomTypeById.Init(), RogueResSkillLvRuleAll_1.configRogueResSkillLvRuleAll.Init(), RogueResSortById_1.configRogueResSortById.Init(), RogueResSynergyTypeAll_1.configRogueResSynergyTypeAll.Init(), RogueResSynergyTypeById_1.configRogueResSynergyTypeById.Init(), RogueResTalentTreeAll_1.configRogueResTalentTreeAll.Init(), RogueResTalentTreeById_1.configRogueResTalentTreeById.Init(), RogueResTalentTreeDescById_1.configRogueResTalentTreeDescById.Init(), RogueResTaskById_1.configRogueResTaskById.Init(), RogueResTaskThemeById_1.configRogueResTaskThemeById.Init(), RogueResTeamLvRuleAll_1.configRogueResTeamLvRuleAll.Init(), RogueResThemeAll_1.configRogueResThemeAll.Init(), RogueResThemeById_1.configRogueResThemeById.Init(), RogueRoomPoolById_1.configRogueRoomPoolById.Init(), RogueRoomShowConfigById_1.configRogueRoomShowConfigById.Init(), RogueRoomTypeById_1.configRogueRoomTypeById.Init(), RogueSeasonAll_1.configRogueSeasonAll.Init(), RogueSeasonById_1.configRogueSeasonById.Init(), RogueSeasonRewardBySeasonId_1.configRogueSeasonRewardBySeasonId.Init(), RogueTalentTreeAll_1.configRogueTalentTreeAll.Init(), RogueTalentTreeById_1.configRogueTalentTreeById.Init(), RogueTalentTreeDescById_1.configRogueTalentTreeDescById.Init(), RogueTokenBySeasonId_1.configRogueTokenBySeasonId.Init(), RogueWeekQualityConfigAll_1.configRogueWeekQualityConfigAll.Init(), RogueWeekQualityConfigById_1.configRogueWeekQualityConfigById.Init(), RogueWeeklyBuffDescAll_1.configRogueWeeklyBuffDescAll.Init(), RogueWeeklyBuffDescById_1.configRogueWeeklyBuffDescById.Init(), RogueWeeklyBuffPoolAll_1.configRogueWeeklyBuffPoolAll.Init(), RogueWeeklyBuffPoolById_1.configRogueWeeklyBuffPoolById.Init(), RogueWeeklyCycleById_1.configRogueWeeklyCycleById.Init(), RogueWeeklyParamAll_1.configRogueWeeklyParamAll.Init(), RogueWeeklyParamById_1.configRogueWeeklyParamById.Init(), RogueWeeklyRewardByCycleId_1.configRogueWeeklyRewardByCycleId.Init(), RogueWeeklyRewardById_1.configRogueWeeklyRewardById.Init(), RogueWeeklyRoomPoolAll_1.configRogueWeeklyRoomPoolAll.Init(), RogueWeeklyRoomPoolById_1.configRogueWeeklyRoomPoolById.Init(), RogueWeeklyRoomTypeAll_1.configRogueWeeklyRoomTypeAll.Init(), RogueWeeklyRoomTypeById_1.configRogueWeeklyRoomTypeById.Init(), RogueWhiteCatById_1.configRogueWhiteCatById.Init(), RogueWhiteCatBossRewardById_1.configRogueWhiteCatBossRewardById.Init(), RogueWhiteCatInstById_1.configRogueWhiteCatInstById.Init(), RogueWhiteCatRewardById_1.configRogueWhiteCatRewardById.Init(), RoleAnimAudioByRoleId_1.configRoleAnimAudioByRoleId.Init(), RoleAudioById_1.configRoleAudioById.Init(), RoleAudioRulesById_1.configRoleAudioRulesById.Init(), RoleBattleViewInfoAll_1.configRoleBattleViewInfoAll.Init(), RoleBattleViewInfoById_1.configRoleBattleViewInfoById.Init(), RoleBirthdayAll_1.configRoleBirthdayAll.Init(), RoleBirthdayById_1.configRoleBirthdayById.Init(), RoleBreachByBreachGroupId_1.configRoleBreachByBreachGroupId.Init(), RoleBreachByBreachGroupIdAndBreachLevel_1.configRoleBreachByBreachGroupIdAndBreachLevel.Init(), RoleDescriptionById_1.configRoleDescriptionById.Init(), RoleDevelopCurveByGroupId_1.configRoleDevelopCurveByGroupId.Init(), RoleDevelopTypeById_1.configRoleDevelopTypeById.Init(), RoleExpItemAll_1.configRoleExpItemAll.Init(), RoleExpItemById_1.configRoleExpItemById.Init(), RoleGuideActivityById_1.configRoleGuideActivityById.Init(), RoleIconTagById_1.configRoleIconTagById.Init(), RoleInfluenceAll_1.configRoleInfluenceAll.Init(), RoleInfluenceById_1.configRoleInfluenceById.Init(), RoleInfoAll_1.configRoleInfoAll.Init(), RoleInfoById_1.configRoleInfoById.Init(), RoleInfoByRoleType_1.configRoleInfoByRoleType.Init(), RoleLevelConsumeByConsumeGroupIdAndLevel_1.configRoleLevelConsumeByConsumeGroupIdAndLevel.Init(), RoleMorphAll_1.configRoleMorphAll.Init(), RoleMorphById_1.configRoleMorphById.Init(), RoleMorphByRoleId_1.configRoleMorphByRoleId.Init(), RoleMorphAudioRulesAll_1.configRoleMorphAudioRulesAll.Init(), RoleMorphAudioRulesByModelId_1.configRoleMorphAudioRulesByModelId.Init(), RolePropertyGrowthByLevelAndBreachLevel_1.configRolePropertyGrowthByLevelAndBreachLevel.Init(), RoleQualityInfoById_1.configRoleQualityInfoById.Init(), RoleQuestById_1.configRoleQuestById.Init(), RoleQuestByRoleId_1.configRoleQuestByRoleId.Init(), RoleQuestByRoleIdAll_1.configRoleQuestByRoleIdAll.Init(), RoleSkillInputById_1.configRoleSkillInputById.Init(), RoleSkinAll_1.configRoleSkinAll.Init(), RoleSkinById_1.configRoleSkinById.Init(), RoleSkinByRoleId_1.configRoleSkinByRoleId.Init(), RoleSkinBirthdayById_1.configRoleSkinBirthdayById.Init(), RoleSkinTrialActivityById_1.configRoleSkinTrialActivityById.Init(), RoleSkinTrialInfoById_1.configRoleSkinTrialInfoById.Init(), RoleSkinTrialInfoByRoleId_1.configRoleSkinTrialInfoByRoleId.Init(), RoleSkinTrialUiConfigById_1.configRoleSkinTrialUiConfigById.Init(), RoleTagAll_1.configRoleTagAll.Init(), RoleTagById_1.configRoleTagById.Init(), RoleTrainingDegreeByDifficultyLevel_1.configRoleTrainingDegreeByDifficultyLevel.Init(), RoleTrialActivityById_1.configRoleTrialActivityById.Init(), RoleTrialInfoById_1.configRoleTrialInfoById.Init(), RoleTrialRoleConfigByRoleId_1.configRoleTrialRoleConfigByRoleId.Init(), RoleTrialUiConfigById_1.configRoleTrialUiConfigById.Init(), RougeMiraclecreationById_1.configRougeMiraclecreationById.Init(), RougePopularEntrieAll_1.configRougePopularEntrieAll.Init(), RougePopularEntrieById_1.configRougePopularEntrieById.Init(), RougeResMiraclecreationById_1.configRougeResMiraclecreationById.Init(), ScoreRewardById_1.configScoreRewardById.Init(), ScratchCardActivityReById_1.configScratchCardActivityReById.Init(), ScratchCardRewardReById_1.configScratchCardRewardReById.Init(), ScratchCardRewardReByType_1.configScratchCardRewardReByType.Init(), ScratchCardRoundReByRoundId_1.configScratchCardRoundReByRoundId.Init(), ScratchCardTimesReByTaskId_1.configScratchCardTimesReByTaskId.Init(), SecondaryGuideDataById_1.configSecondaryGuideDataById.Init(), ServerLimitAll_1.configServerLimitAll.Init(), ServerLimitById_1.configServerLimitById.Init(), SetAccountAll_1.configSetAccountAll.Init(), SetAccountById_1.configSetAccountById.Init(), SettleFlagAll_1.configSettleFlagAll.Init(), SettleFlagById_1.configSettleFlagById.Init(), SettleRewardAll_1.configSettleRewardAll.Init(), SettleRewardByActivityId_1.configSettleRewardByActivityId.Init(), SharePlatformAll_1.configSharePlatformAll.Init(), SharePlatformById_1.configSharePlatformById.Init(), ShareRewardById_1.configShareRewardById.Init(), ShieldById_1.configShieldById.Init(), ShopFixedByShopId_1.configShopFixedByShopId.Init(), ShopFixedByShopIdAndId_1.configShopFixedByShopIdAndId.Init(), ShopInfoById_1.configShopInfoById.Init(), SignRewardByActivityId_1.configSignRewardByActivityId.Init(), SignalDecodeGamePlayById_1.configSignalDecodeGamePlayById.Init(), SignalDecodeTabColorById_1.configSignalDecodeTabColorById.Init(), SignalDecodeWaveformById_1.configSignalDecodeWaveformById.Init(), SilentAreaDetectionAll_1.configSilentAreaDetectionAll.Init(), SilentAreaDetectionById_1.configSilentAreaDetectionById.Init(), SkillById_1.configSkillById.Init(), SkillBySkillGroupId_1.configSkillBySkillGroupId.Init(), SkillButtonByRoleId_1.configSkillButtonByRoleId.Init(), SkillButtonCustomById_1.configSkillButtonCustomById.Init(), SkillButtonEffectById_1.configSkillButtonEffectById.Init(), SkillButtonIndexById_1.configSkillButtonIndexById.Init(), SkillButtonTextAll_1.configSkillButtonTextAll.Init(), SkillButtonTextById_1.configSkillButtonTextById.Init(), SkillCommonButtonAll_1.configSkillCommonButtonAll.Init(), SkillConditionById_1.configSkillConditionById.Init(), SkillDescriptionById_1.configSkillDescriptionById.Init(), SkillDescriptionBySkillLevelGroupId_1.configSkillDescriptionBySkillLevelGroupId.Init(), SkillFollowerButtonByPbDataId_1.configSkillFollowerButtonByPbDataId.Init(), SkillIconByTag_1.configSkillIconByTag.Init(), SkillInputById_1.configSkillInputById.Init(), SkillLevelBySkillLevelGroupId_1.configSkillLevelBySkillLevelGroupId.Init(), SkillLevelBySkillLevelGroupIdAndSkillId_1.configSkillLevelBySkillLevelGroupIdAndSkillId.Init(), SkillPriorityButtonAll_1.configSkillPriorityButtonAll.Init(), SkillTreeById_1.configSkillTreeById.Init(), SkillTreeByNodeGroup_1.configSkillTreeByNodeGroup.Init(), SkillTreeByNodeGroupAndNodeIndex_1.configSkillTreeByNodeGroupAndNodeIndex.Init(), SkillTreeByNodeIndex_1.configSkillTreeByNodeIndex.Init(), SkillTypeById_1.configSkillTypeById.Init(), SkillVehicleButtonByPbDataId_1.configSkillVehicleButtonByPbDataId.Init(), SkyboxById_1.configSkyboxById.Init(), SlashAndTowerCfgById_1.configSlashAndTowerCfgById.Init(), SlashAndTowerCfgBySeason_1.configSlashAndTowerCfgBySeason.Init(), SlashAndTowerRewardByBelongToSeason_1.configSlashAndTowerRewardByBelongToSeason.Init(), SlashBuffToItemAll_1.configSlashBuffToItemAll.Init(), SlashBuffToItemById_1.configSlashBuffToItemById.Init(), SlashBuffToItemByItemId_1.configSlashBuffToItemByItemId.Init(), SlashBuffToItemByItemIdAndSeason_1.configSlashBuffToItemByItemIdAndSeason.Init(), SlashBuffToItemByItemIdList_1.configSlashBuffToItemByItemIdList.Init(), SlashBuffToItemBySeason_1.configSlashBuffToItemBySeason.Init(), SlashTowerShowStageAll_1.configSlashTowerShowStageAll.Init(), SlashTowerStageInfoByInstId_1.configSlashTowerStageInfoByInstId.Init(), SlashTowerTagInfoById_1.configSlashTowerTagInfoById.Init(), SlideById_1.configSlideById.Init(), SoarById_1.configSoarById.Init(), SoarChallengeAll_1.configSoarChallengeAll.Init(), SoarChallengeById_1.configSoarChallengeById.Init(), SortById_1.configSortById.Init(), SortRuleByIdAndDataId_1.configSortRuleByIdAndDataId.Init(), SoundAreaPlayInfoAll_1.configSoundAreaPlayInfoAll.Init(), SoundAreaPlayInfoById_1.configSoundAreaPlayInfoById.Init(), SoundBoxMarkByMarkId_1.configSoundBoxMarkByMarkId.Init(), SpeakerById_1.configSpeakerById.Init(), SpeakerLang_1.configSpeakerLang.Init(), SpecialHateAndSenseById_1.configSpecialHateAndSenseById.Init(), SpecialItemById_1.configSpecialItemById.Init(), SpineBackgroundById_1.configSpineBackgroundById.Init(), SplashScreenAll_1.configSplashScreenAll.Init(), SplashScreenById_1.configSplashScreenById.Init(), SpringChatById_1.configSpringChatById.Init(), SpringResourceAll_1.configSpringResourceAll.Init(), SpringResourceById_1.configSpringResourceById.Init(), SpringResourceByRoleType_1.configSpringResourceByRoleType.Init(), SpringRewardAll_1.configSpringRewardAll.Init(), SpringSignAll_1.configSpringSignAll.Init(), SpringSignById_1.configSpringSignById.Init(), StateByStateId_1.configStateByStateId.Init(), StateMachinePreloadByAll_1.configStateMachinePreloadByAll.Init(), StateMachinePreloadByFsmKey_1.configStateMachinePreloadByFsmKey.Init(), StateMachinePreloadById_1.configStateMachinePreloadById.Init(), SubtitleTextByRowNameAndDatatableName_1.configSubtitleTextByRowNameAndDatatableName.Init(), SubtitleTextLang_1.configSubtitleTextLang.Init(), SummonCfgById_1.configSummonCfgById.Init(), SwimById_1.configSwimById.Init(), SwimBuffById_1.configSwimBuffById.Init(), SynthesisFormulaByFormulaItemId_1.configSynthesisFormulaByFormulaItemId.Init(), SynthesisFormulaByFormulaType_1.configSynthesisFormulaByFormulaType.Init(), SynthesisFormulaById_1.configSynthesisFormulaById.Init(), SynthesisLevelAll_1.configSynthesisLevelAll.Init(), TakeWeedsDifficultyById_1.configTakeWeedsDifficultyById.Init(), TalkOptionIconById_1.configTalkOptionIconById.Init(), TaskMarkAll_1.configTaskMarkAll.Init(), TaskMarkByMarkId_1.configTaskMarkByMarkId.Init(), TeamConfigById_1.configTeamConfigById.Init(), TeamParKOurCfgAll_1.configTeamParKOurCfgAll.Init(), TeamParKOurCfgById_1.configTeamParKOurCfgById.Init(), TeamParKOurRewardAll_1.configTeamParKOurRewardAll.Init(), TeamParKOurRewardById_1.configTeamParKOurRewardById.Init(), TeleporterById_1.configTeleporterById.Init(), TemplateConfigAll_1.configTemplateConfigAll.Init(), TemplateConfigByBlueprintType_1.configTemplateConfigByBlueprintType.Init(), TemplateConfigById_1.configTemplateConfigById.Init(), TemplateDataPreloadByAll_1.configTemplateDataPreloadByAll.Init(), TemplateDataPreloadById_1.configTemplateDataPreloadById.Init(), TemporaryTeleportMarkByMarkId_1.configTemporaryTeleportMarkByMarkId.Init(), TermById_1.configTermById.Init(), TermByKey_1.configTermByKey.Init(), TextById_1.configTextById.Init(), TimeOfDayById_1.configTimeOfDayById.Init(), TimePointRewardActivityByActivityId_1.configTimePointRewardActivityByActivityId.Init(), TimePointRewardActivityById_1.configTimePointRewardActivityById.Init(), TimePointRewardConfigByActivityId_1.configTimePointRewardConfigByActivityId.Init(), ToughCalcRatioById_1.configToughCalcRatioById.Init(), TowerBuffById_1.configTowerBuffById.Init(), TowerConfigAll_1.configTowerConfigAll.Init(), TowerConfigById_1.configTowerConfigById.Init(), TowerConfigBySeason_1.configTowerConfigBySeason.Init(), TowerDefenceInstanceAll_1.configTowerDefenceInstanceAll.Init(), TowerDefenceInstanceById_1.configTowerDefenceInstanceById.Init(), TowerDefenceInstanceByInstanceId_1.configTowerDefenceInstanceByInstanceId.Init(), TowerDefenceMapMarkAll_1.configTowerDefenceMapMarkAll.Init(), TowerDefenceMapMarkByActivityId_1.configTowerDefenceMapMarkByActivityId.Init(), TowerDefencePhantomAll_1.configTowerDefencePhantomAll.Init(), TowerDefencePhantomById_1.configTowerDefencePhantomById.Init(), TowerDefencePhantomLevelAll_1.configTowerDefencePhantomLevelAll.Init(), TowerDefencePhantomLevelByGroupId_1.configTowerDefencePhantomLevelByGroupId.Init(), TowerDefencePhantomLevelById_1.configTowerDefencePhantomLevelById.Init(), TowerDefenceRewardAll_1.configTowerDefenceRewardAll.Init(), TowerDefenceRewardById_1.configTowerDefenceRewardById.Init(), TowerDefenseConfigById_1.configTowerDefenseConfigById.Init(), TowerDefenseSettleById_1.configTowerDefenseSettleById.Init(), TowerDifficultyByDifficulty_1.configTowerDifficultyByDifficulty.Init(), TowerGuideById_1.configTowerGuideById.Init(), TowerTargetById_1.configTowerTargetById.Init(), TrackMoonActivityById_1.configTrackMoonActivityById.Init(), TrackMoonActivityRewardAll_1.configTrackMoonActivityRewardAll.Init(), TrackMoonActivityRewardById_1.configTrackMoonActivityRewardById.Init(), TrackMoonEntrustById_1.configTrackMoonEntrustById.Init(), TrackMoonHandbookRewardAll_1.configTrackMoonHandbookRewardAll.Init(), TrackMoonHandbookRewardById_1.configTrackMoonHandbookRewardById.Init(), TrackMoonMemoryAll_1.configTrackMoonMemoryAll.Init(), TrackMoonMemoryByClassify_1.configTrackMoonMemoryByClassify.Init(), TrackMoonMemoryById_1.configTrackMoonMemoryById.Init(), TrackMoonPhaseActivityById_1.configTrackMoonPhaseActivityById.Init(), TrackMoonTargetById_1.configTrackMoonTargetById.Init(), TrackMoonTargetTypeAll_1.configTrackMoonTargetTypeAll.Init(), TrailPhantomPropById_1.configTrailPhantomPropById.Init(), TrainRoleDialogByRoleIdAndTrainType_1.configTrainRoleDialogByRoleIdAndTrainType.Init(), TravelPhantomQuestByActivityId_1.configTravelPhantomQuestByActivityId.Init(), TravelPhantomQuestById_1.configTravelPhantomQuestById.Init(), TravelPhantomQuestByMapMarkId_1.configTravelPhantomQuestByMapMarkId.Init(), TravelTaskByActivityId_1.configTravelTaskByActivityId.Init(), TravelTaskByTaskId_1.configTravelTaskByTaskId.Init(), TravelTaskAreaByActivityId_1.configTravelTaskAreaByActivityId.Init(), TravelTaskAreaById_1.configTravelTaskAreaById.Init(), TreasureBoxDetectorMarkByMarkId_1.configTreasureBoxDetectorMarkByMarkId.Init(), TreasureBoxMarkByMarkId_1.configTreasureBoxMarkByMarkId.Init(), TrialPhantomPropItemById_1.configTrialPhantomPropItemById.Init(), TrialRoleInfoAll_1.configTrialRoleInfoAll.Init(), TrialRoleInfoByGroupId_1.configTrialRoleInfoByGroupId.Init(), TrialRoleInfoById_1.configTrialRoleInfoById.Init(), TrialWeaponInfoById_1.configTrialWeaponInfoById.Init(), TurntableActivityByActivityId_1.configTurntableActivityByActivityId.Init(), TurntableAwardsByActivityId_1.configTurntableAwardsByActivityId.Init(), TurntableAwardsById_1.configTurntableAwardsById.Init(), TurntableInfoById_1.configTurntableInfoById.Init(), TurntableTaskByTaskId_1.configTurntableTaskByTaskId.Init(), TypeInfoById_1.configTypeInfoById.Init(), UiCameraMappingAll_1.configUiCameraMappingAll.Init(), UiCameraMappingById_1.configUiCameraMappingById.Init(), UiCameraMappingByViewName_1.configUiCameraMappingByViewName.Init(), UiDynamicTabByChildViewName_1.configUiDynamicTabByChildViewName.Init(), UiDynamicTabById_1.configUiDynamicTabById.Init(), UiDynamicTabByParentViewName_1.configUiDynamicTabByParentViewName.Init(), UiFloatConfigByViewName_1.configUiFloatConfigByViewName.Init(), UiFloatConfigByViewNameIfNull_1.configUiFloatConfigByViewNameIfNull.Init(), UiNormalConfigByViewName_1.configUiNormalConfigByViewName.Init(), UiNormalConfigByViewNameIfNull_1.configUiNormalConfigByViewNameIfNull.Init(), UiPlayItemById_1.configUiPlayItemById.Init(), UiResourceById_1.configUiResourceById.Init(), UiShowByViewName_1.configUiShowByViewName.Init(), UiWeaponVisibleConfigById_1.configUiWeaponVisibleConfigById.Init(), UniversalActivityById_1.configUniversalActivityById.Init(), VideoCaptionByCgName_1.configVideoCaptionByCgName.Init(), VideoDataByCgNameAndGirlOrBoy_1.configVideoDataByCgNameAndGirlOrBoy.Init(), VideoQteByCgName_1.configVideoQteByCgName.Init(), VideoSoundByCgNameAndGirlOrBoy_1.configVideoSoundByCgNameAndGirlOrBoy.Init(), WeaponBreachByBreachId_1.configWeaponBreachByBreachId.Init(), WeaponBreachByBreachIdAndLevel_1.configWeaponBreachByBreachIdAndLevel.Init(), WeaponConfByItemId_1.configWeaponConfByItemId.Init(), WeaponExpItemById_1.configWeaponExpItemById.Init(), WeaponHandBookAll_1.configWeaponHandBookAll.Init(), WeaponHandBookById_1.configWeaponHandBookById.Init(), WeaponHideConfigById_1.configWeaponHideConfigById.Init(), WeaponHideConfigByIdWithZero_1.configWeaponHideConfigByIdWithZero.Init(), WeaponLevelByLevelId_1.configWeaponLevelByLevelId.Init(), WeaponLevelByLevelIdAndLevel_1.configWeaponLevelByLevelIdAndLevel.Init(), WeaponModelTransformById_1.configWeaponModelTransformById.Init(), WeaponPropertyGrowthByCurveIdLevelAndBreachLevel_1.configWeaponPropertyGrowthByCurveIdLevelAndBreachLevel.Init(), WeaponQualityInfoById_1.configWeaponQualityInfoById.Init(), WeaponResonByResonIdAndLevel_1.configWeaponResonByResonIdAndLevel.Init(), WeaponSceneInteractById_1.configWeaponSceneInteractById.Init(), WeaponSkinById_1.configWeaponSkinById.Init(), WeaponSkinByType_1.configWeaponSkinByType.Init(), WeaponVisibleConfigById_1.configWeaponVisibleConfigById.Init(), WeaponVisibleConfigByIdWithZero_1.configWeaponVisibleConfigByIdWithZero.Init(), WeatherById_1.configWeatherById.Init(), WorldLevelById_1.configWorldLevelById.Init(), WorldNewJourneyAll_1.configWorldNewJourneyAll.Init(), WorldNewJourneyById_1.configWorldNewJourneyById.Init()
+    CommonParamById_1.configCommonParamById.Init();
+    CommonParamLang_1.configCommonParamLang.Init();
+    AbnormalDamageConfigByLevel_1.configAbnormalDamageConfigByLevel.Init();
+    AbpMontageDataById_1.configAbpMontageDataById.Init();
+    AbpStateByAbp_1.configAbpStateByAbp.Init();
+    AbyssActivityAll_1.configAbyssActivityAll.Init();
+    AbyssActivityByActivityId_1.configAbyssActivityByActivityId.Init();
+    AbyssCastDescAll_1.configAbyssCastDescAll.Init();
+    AbyssCastDescById_1.configAbyssCastDescById.Init();
+    AbyssInstAll_1.configAbyssInstAll.Init();
+    AbyssInstByActivityId_1.configAbyssInstByActivityId.Init();
+    AbyssInstById_1.configAbyssInstById.Init();
+    AbyssInstByInstId_1.configAbyssInstByInstId.Init();
+    AbyssItemAll_1.configAbyssItemAll.Init();
+    AbyssItemById_1.configAbyssItemById.Init();
+    AbyssLittleRoleAll_1.configAbyssLittleRoleAll.Init();
+    AbyssLittleRoleById_1.configAbyssLittleRoleById.Init();
+    AbyssPluginPropDescAll_1.configAbyssPluginPropDescAll.Init();
+    AbyssPluginPropDescById_1.configAbyssPluginPropDescById.Init();
+    AbyssQualityAll_1.configAbyssQualityAll.Init();
+    AbyssQualityById_1.configAbyssQualityById.Init();
+    AbyssRewardAll_1.configAbyssRewardAll.Init();
+    AbyssRewardById_1.configAbyssRewardById.Init();
+    AbyssRewardTabAll_1.configAbyssRewardTabAll.Init();
+    AbyssRewardTabById_1.configAbyssRewardTabById.Init();
+    AbyssRewardTypeAll_1.configAbyssRewardTypeAll.Init();
+    AbyssRewardTypeById_1.configAbyssRewardTypeById.Init();
+    AbyssRoleLevelAll_1.configAbyssRoleLevelAll.Init();
+    AbyssRoleLevelByGroupId_1.configAbyssRoleLevelByGroupId.Init();
+    AbyssRoleLevelById_1.configAbyssRoleLevelById.Init();
+    AbyssRoleLevelByLevelAndGroupId_1.configAbyssRoleLevelByLevelAndGroupId.Init();
+    AbyssRoleSlotAll_1.configAbyssRoleSlotAll.Init();
+    AbyssRoleSlotById_1.configAbyssRoleSlotById.Init();
+    AbyssRoomAll_1.configAbyssRoomAll.Init();
+    AbyssRoomById_1.configAbyssRoomById.Init();
+    AbyssRouteAll_1.configAbyssRouteAll.Init();
+    AbyssRouteById_1.configAbyssRouteById.Init();
+    AbyssRouteByRouterAndFloor_1.configAbyssRouteByRouterAndFloor.Init();
+    AbyssSettleAll_1.configAbyssSettleAll.Init();
+    AbyssSettleById_1.configAbyssSettleById.Init();
+    AbyssSynthesisAll_1.configAbyssSynthesisAll.Init();
+    AbyssSynthesisById_1.configAbyssSynthesisById.Init();
+    AccessPathById_1.configAccessPathById.Init();
+    AchievementAll_1.configAchievementAll.Init();
+    AchievementByGroupId_1.configAchievementByGroupId.Init();
+    AchievementById_1.configAchievementById.Init();
+    AchievementCategoryAll_1.configAchievementCategoryAll.Init();
+    AchievementCategoryById_1.configAchievementCategoryById.Init();
+    AchievementGroupByCategory_1.configAchievementGroupByCategory.Init();
+    AchievementGroupById_1.configAchievementGroupById.Init();
+    AchievementStarLevelByLevel_1.configAchievementStarLevelByLevel.Init();
+    ActionMappingAll_1.configActionMappingAll.Init();
+    ActionMappingByActionName_1.configActionMappingByActionName.Init();
+    ActionMappingByActionType_1.configActionMappingByActionType.Init();
+    ActivityById_1.configActivityById.Init();
+    ActivityLinkageById_1.configActivityLinkageById.Init();
+    ActivityLinkageInfoByIdAndLanguage_1.configActivityLinkageInfoByIdAndLanguage.Init();
+    ActivityLinkageUrlByIdAndIsNational_1.configActivityLinkageUrlByIdAndIsNational.Init();
+    ActivityQuestConfigAll_1.configActivityQuestConfigAll.Init();
+    ActivityQuestConfigById_1.configActivityQuestConfigById.Init();
+    ActivityQuestConfigByQuestId_1.configActivityQuestConfigByQuestId.Init();
+    ActivitySignById_1.configActivitySignById.Init();
+    ActivityViewNameById_1.configActivityViewNameById.Init();
+    ActivityViewNameByType_1.configActivityViewNameByType.Init();
+    AdventureTaskAll_1.configAdventureTaskAll.Init();
+    AdventureTaskById_1.configAdventureTaskById.Init();
+    AdventureTaskChapterAll_1.configAdventureTaskChapterAll.Init();
+    AdventureTaskChapterById_1.configAdventureTaskChapterById.Init();
+    AdviceConjunctionAll_1.configAdviceConjunctionAll.Init();
+    AdviceConjunctionById_1.configAdviceConjunctionById.Init();
+    AdviceParamsById_1.configAdviceParamsById.Init();
+    AdviceSentenceAll_1.configAdviceSentenceAll.Init();
+    AdviceSentenceById_1.configAdviceSentenceById.Init();
+    AdviceWordAll_1.configAdviceWordAll.Init();
+    AdviceWordById_1.configAdviceWordById.Init();
+    AdviceWordByType_1.configAdviceWordByType.Init();
+    AdviceWordTypeAll_1.configAdviceWordTypeAll.Init();
+    AdviceWordTypeById_1.configAdviceWordTypeById.Init();
+    AiAlertById_1.configAiAlertById.Init();
+    AiBaseById_1.configAiBaseById.Init();
+    AiBaseSkillById_1.configAiBaseSkillById.Init();
+    AiBattleWanderById_1.configAiBattleWanderById.Init();
+    AiBattleWanderGroupById_1.configAiBattleWanderGroupById.Init();
+    AiFleeById_1.configAiFleeById.Init();
+    AiHateById_1.configAiHateById.Init();
+    AiPatrolById_1.configAiPatrolById.Init();
+    AiSenseById_1.configAiSenseById.Init();
+    AiSenseGroupById_1.configAiSenseGroupById.Init();
+    AiSkillInfosById_1.configAiSkillInfosById.Init();
+    AiSkillPreconditionById_1.configAiSkillPreconditionById.Init();
+    AiStateMachineConfigById_1.configAiStateMachineConfigById.Init();
+    AiTeamAreaNewById_1.configAiTeamAreaNewById.Init();
+    AiTeamAttackById_1.configAiTeamAttackById.Init();
+    AiTeamLevelNewById_1.configAiTeamLevelNewById.Init();
+    AiWanderById_1.configAiWanderById.Init();
+    AiWanderRadiusConfigById_1.configAiWanderRadiusConfigById.Init();
+    AkiMapAll_1.configAkiMapAll.Init();
+    AkiMapByMapId_1.configAkiMapByMapId.Init();
+    AkiMapSourceByMapId_1.configAkiMapSourceByMapId.Init();
+    AlertAreaConfigById_1.configAlertAreaConfigById.Init();
+    AnimalHandBookAll_1.configAnimalHandBookAll.Init();
+    AnimalHandBookById_1.configAnimalHandBookById.Init();
+    AnimalHandBookByMeshId_1.configAnimalHandBookByMeshId.Init();
+    AreaByAreaId_1.configAreaByAreaId.Init();
+    AreaByCountryAndLevel_1.configAreaByCountryAndLevel.Init();
+    AreaByDeliveryMarkId_1.configAreaByDeliveryMarkId.Init();
+    AreaByLevel_1.configAreaByLevel.Init();
+    AreaAtmosphereInfoById_1.configAreaAtmosphereInfoById.Init();
+    AreaMpcById_1.configAreaMpcById.Init();
+    AreaQuestTrackingById_1.configAreaQuestTrackingById.Init();
+    AreaReportByAreaId_1.configAreaReportByAreaId.Init();
+    AreaReportByAreaIdAndStage_1.configAreaReportByAreaIdAndStage.Init();
+    AreaTaskExploreByAreaId_1.configAreaTaskExploreByAreaId.Init();
+    AreaTaskExploreById_1.configAreaTaskExploreById.Init();
+    AudioById_1.configAudioById.Init();
+    AutoRoleByAll_1.configAutoRoleByAll.Init();
+    AutoRoleById_1.configAutoRoleById.Init();
+    AvignonStageAll_1.configAvignonStageAll.Init();
+    AvignonStageById_1.configAvignonStageById.Init();
+    AvignonTaskByStageId_1.configAvignonTaskByStageId.Init();
+    AvignonTaskByTaskId_1.configAvignonTaskByTaskId.Init();
+    AxisMappingAll_1.configAxisMappingAll.Init();
+    AxisMappingByAxisName_1.configAxisMappingByAxisName.Init();
+    AxisMappingByAxisType_1.configAxisMappingByAxisType.Init();
+    AxisRevertAll_1.configAxisRevertAll.Init();
+    AxisRevertByRevertType_1.configAxisRevertByRevertType.Init();
+    BabelTowerActivityByActivityId_1.configBabelTowerActivityByActivityId.Init();
+    BabelTowerBuffAll_1.configBabelTowerBuffAll.Init();
+    BabelTowerBuffById_1.configBabelTowerBuffById.Init();
+    BabelTowerDailyTaskAll_1.configBabelTowerDailyTaskAll.Init();
+    BabelTowerDailyTaskByTaskId_1.configBabelTowerDailyTaskByTaskId.Init();
+    BabelTowerDeTermAll_1.configBabelTowerDeTermAll.Init();
+    BabelTowerDeTermByGroupId_1.configBabelTowerDeTermByGroupId.Init();
+    BabelTowerDeTermById_1.configBabelTowerDeTermById.Init();
+    BabelTowerDeTermMutexById_1.configBabelTowerDeTermMutexById.Init();
+    BabelTowerDifficultyAll_1.configBabelTowerDifficultyAll.Init();
+    BabelTowerDifficultyByActivityId_1.configBabelTowerDifficultyByActivityId.Init();
+    BabelTowerDifficultyByActivityIdAndDifficultyId_1.configBabelTowerDifficultyByActivityIdAndDifficultyId.Init();
+    BabelTowerDifficultyById_1.configBabelTowerDifficultyById.Init();
+    BabelTowerLevelAll_1.configBabelTowerLevelAll.Init();
+    BabelTowerLevelById_1.configBabelTowerLevelById.Init();
+    BabelTowerTaskAll_1.configBabelTowerTaskAll.Init();
+    BabelTowerTaskByTaskId_1.configBabelTowerTaskByTaskId.Init();
+    BackgroundCardAll_1.configBackgroundCardAll.Init();
+    BackgroundCardById_1.configBackgroundCardById.Init();
+    BanInfoById_1.configBanInfoById.Init();
+    BanInfoByTypeAndReason_1.configBanInfoByTypeAndReason.Init();
+    BasePropertyById_1.configBasePropertyById.Init();
+    BattleLinkCharacterAll_1.configBattleLinkCharacterAll.Init();
+    BattleLinkCharacterById_1.configBattleLinkCharacterById.Init();
+    BattlePassById_1.configBattlePassById.Init();
+    BattlePassRewardByBattlePassId_1.configBattlePassRewardByBattlePassId.Init();
+    BattlePassTaskByTaskId_1.configBattlePassTaskByTaskId.Init();
+    BattlePassUnlockPopByBattlePassTypeId_1.configBattlePassUnlockPopByBattlePassTypeId.Init();
+    BattleScoreConfById_1.configBattleScoreConfById.Init();
+    BattleScoreLevelConfByGroupId_1.configBattleScoreLevelConfByGroupId.Init();
+    BattleScoreLevelConfById_1.configBattleScoreLevelConfById.Init();
+    BeginnerGuideById_1.configBeginnerGuideById.Init();
+    BirthDayByItemId_1.configBirthDayByItemId.Init();
+    BirthDayByYear_1.configBirthDayByYear.Init();
+    BlackCoastThemeConfigByActivityId_1.configBlackCoastThemeConfigByActivityId.Init();
+    BlackCoastThemeRewardReByActivityId_1.configBlackCoastThemeRewardReByActivityId.Init();
+    BlackCoastThemeRewardReById_1.configBlackCoastThemeRewardReById.Init();
+    BlackCoastThemeStageReByActivityId_1.configBlackCoastThemeStageReByActivityId.Init();
+    BlackCoastThemeStageReById_1.configBlackCoastThemeStageReById.Init();
+    BlackCoastThemeTaskReByStageId_1.configBlackCoastThemeTaskReByStageId.Init();
+    BlackCoastThemeTaskReByTaskId_1.configBlackCoastThemeTaskReByTaskId.Init();
+    BlackboardWhiteListAll_1.configBlackboardWhiteListAll.Init();
+    BlockSwitchById_1.configBlockSwitchById.Init();
+    BlueprintConfigAll_1.configBlueprintConfigAll.Init();
+    BlueprintConfigByBlueprintType_1.configBlueprintConfigByBlueprintType.Init();
+    BossRushActivityAll_1.configBossRushActivityAll.Init();
+    BossRushActivityByActivityIdAndInstanceId_1.configBossRushActivityByActivityIdAndInstanceId.Init();
+    BossRushActivityById_1.configBossRushActivityById.Init();
+    BossRushBuffAll_1.configBossRushBuffAll.Init();
+    BossRushBuffById_1.configBossRushBuffById.Init();
+    BossRushBuffDescAll_1.configBossRushBuffDescAll.Init();
+    BossRushBuffDescById_1.configBossRushBuffDescById.Init();
+    BossRushMapMarkByActivityId_1.configBossRushMapMarkByActivityId.Init();
+    BossRushScoreAll_1.configBossRushScoreAll.Init();
+    BossRushScoreById_1.configBossRushScoreById.Init();
+    BossRushTaskConfigAll_1.configBossRushTaskConfigAll.Init();
+    BossRushTaskConfigByActivityId_1.configBossRushTaskConfigByActivityId.Init();
+    BossRushTaskConfigByTaskId_1.configBossRushTaskConfigByTaskId.Init();
+    BossRushTaskTabAll_1.configBossRushTaskTabAll.Init();
+    BossRushTaskTabByActivityId_1.configBossRushTaskTabByActivityId.Init();
+    BossRushTaskTabByTabId_1.configBossRushTaskTabByTabId.Init();
+    BoxStateById_1.configBoxStateById.Init();
+    BoxTypeById_1.configBoxTypeById.Init();
+    BranchLineAll_1.configBranchLineAll.Init();
+    BranchLineById_1.configBranchLineById.Init();
+    BroadcastImageById_1.configBroadcastImageById.Init();
+    BrokenRockConfigById_1.configBrokenRockConfigById.Init();
+    BrokenRockRingById_1.configBrokenRockRingById.Init();
+    BubbleDataByActionGuid_1.configBubbleDataByActionGuid.Init();
+    BuffById_1.configBuffById.Init();
+    BuffGetAll_1.configBuffGetAll.Init();
+    BuffEquipItemByItemId_1.configBuffEquipItemByItemId.Init();
+    BuffEquipItemByRoleId_1.configBuffEquipItemByRoleId.Init();
+    BuffItemById_1.configBuffItemById.Init();
+    BuffItemByPublicCdGroup_1.configBuffItemByPublicCdGroup.Init();
+    BuffItemCdGroupById_1.configBuffItemCdGroupById.Init();
+    BuildingAll_1.configBuildingAll.Init();
+    BuildingById_1.configBuildingById.Init();
+    BuildingUpGradeCurveByGroupId_1.configBuildingUpGradeCurveByGroupId.Init();
+    BuildingUpGradeCurveByGroupIdAndLevel_1.configBuildingUpGradeCurveByGroupIdAndLevel.Init();
+    BulletPreloadByActorBlueprint_1.configBulletPreloadByActorBlueprint.Init();
+    BulletPreloadByActorBlueprintAndBulletId_1.configBulletPreloadByActorBlueprintAndBulletId.Init();
+    BulletPreloadByAll_1.configBulletPreloadByAll.Init();
+    BulletPreloadById_1.configBulletPreloadById.Init();
+    CalabashDevelopConditionById_1.configCalabashDevelopConditionById.Init();
+    CalabashDevelopRewardAll_1.configCalabashDevelopRewardAll.Init();
+    CalabashDevelopRewardByMonsterId_1.configCalabashDevelopRewardByMonsterId.Init();
+    CalabashLevelAll_1.configCalabashLevelAll.Init();
+    CalabashLevelByLevel_1.configCalabashLevelByLevel.Init();
+    CalabashTransformById_1.configCalabashTransformById.Init();
+    CatchSignalDifficultyById_1.configCatchSignalDifficultyById.Init();
+    CatchSignalGameplayById_1.configCatchSignalGameplayById.Init();
+    CharacterAll_1.configCharacterAll.Init();
+    CharacterById_1.configCharacterById.Init();
+    CharacterAudioConfigById_1.configCharacterAudioConfigById.Init();
+    CharacterAudioConfigByIdWithDefaultId_1.configCharacterAudioConfigByIdWithDefaultId.Init();
+    CharacterDisplayStyleById_1.configCharacterDisplayStyleById.Init();
+    CharacterPreloadByAll_1.configCharacterPreloadByAll.Init();
+    CharacterPreloadById_1.configCharacterPreloadById.Init();
+    ChatById_1.configChatById.Init();
+    ChatExpressionAll_1.configChatExpressionAll.Init();
+    ChatExpressionByGroupId_1.configChatExpressionByGroupId.Init();
+    ChatExpressionById_1.configChatExpressionById.Init();
+    ChatExpressionGroupAll_1.configChatExpressionGroupAll.Init();
+    ChatExpressionGroupById_1.configChatExpressionGroupById.Init();
+    ChildUiCameraMappingAll_1.configChildUiCameraMappingAll.Init();
+    ChildUiCameraMappingById_1.configChildUiCameraMappingById.Init();
+    ChildUiCameraMappingByViewName_1.configChildUiCameraMappingByViewName.Init();
+    ChipHandBookAll_1.configChipHandBookAll.Init();
+    ChipHandBookById_1.configChipHandBookById.Init();
+    ChipHandBookByType_1.configChipHandBookByType.Init();
+    ChipTypeAll_1.configChipTypeAll.Init();
+    ChipTypeById_1.configChipTypeById.Init();
+    CiacconaActivityConfigById_1.configCiacconaActivityConfigById.Init();
+    CiacconaActivityRewardAll_1.configCiacconaActivityRewardAll.Init();
+    CiacconaActivityRewardById_1.configCiacconaActivityRewardById.Init();
+    CiacconaChapterSlotById_1.configCiacconaChapterSlotById.Init();
+    CiacconaGalChapterAll_1.configCiacconaGalChapterAll.Init();
+    CiacconaGalChapterById_1.configCiacconaGalChapterById.Init();
+    CiacconaGalChoiceById_1.configCiacconaGalChoiceById.Init();
+    CiacconaGalEndingAll_1.configCiacconaGalEndingAll.Init();
+    CiacconaGalEndingById_1.configCiacconaGalEndingById.Init();
+    CiacconaGalStepById_1.configCiacconaGalStepById.Init();
+    CiacconaGalSubEndingById_1.configCiacconaGalSubEndingById.Init();
+    CiacconaGalTextById_1.configCiacconaGalTextById.Init();
+    CipherGameplayById_1.configCipherGameplayById.Init();
+    CircumBaseByEntryType_1.configCircumBaseByEntryType.Init();
+    CircumEntryByEntryType_1.configCircumEntryByEntryType.Init();
+    CircumFluenceTaskById_1.configCircumFluenceTaskById.Init();
+    CircumFluenceTaskByTaskType_1.configCircumFluenceTaskByTaskType.Init();
+    CircumScoreRewardAll_1.configCircumScoreRewardAll.Init();
+    CircumScoreRewardById_1.configCircumScoreRewardById.Init();
+    ClimbById_1.configClimbById.Init();
+    ClueContentByGroupId_1.configClueContentByGroupId.Init();
+    ClueContentById_1.configClueContentById.Init();
+    ClueEntranceById_1.configClueEntranceById.Init();
+    CombinationActionAll_1.configCombinationActionAll.Init();
+    CombinationActionByActionName_1.configCombinationActionByActionName.Init();
+    CombinationActionByActionType_1.configCombinationActionByActionType.Init();
+    CombinationActionById_1.configCombinationActionById.Init();
+    CombinationAxisAll_1.configCombinationAxisAll.Init();
+    CombinationAxisByAxisName_1.configCombinationAxisByAxisName.Init();
+    CombinationAxisByAxisType_1.configCombinationAxisByAxisType.Init();
+    CombinationAxisById_1.configCombinationAxisById.Init();
+    ComboTeachingById_1.configComboTeachingById.Init();
+    ComboTeachingConditionById_1.configComboTeachingConditionById.Init();
+    CommonRewardViewDisplayById_1.configCommonRewardViewDisplayById.Init();
+    CommonSkillPreloadAll_1.configCommonSkillPreloadAll.Init();
+    CommonSkillPreloadById_1.configCommonSkillPreloadById.Init();
+    CommunicateById_1.configCommunicateById.Init();
+    CommunityAll_1.configCommunityAll.Init();
+    CommunityById_1.configCommunityById.Init();
+    CompositeRewardDisplayById_1.configCompositeRewardDisplayById.Init();
+    ConditionById_1.configConditionById.Init();
+    ConditionGroupById_1.configConditionGroupById.Init();
+    ConfirmBoxById_1.configConfirmBoxById.Init();
+    ConsumptiveTaskById_1.configConsumptiveTaskById.Init();
+    ConsumptiveTaskTabById_1.configConsumptiveTaskTabById.Init();
+    CookFixToolById_1.configCookFixToolById.Init();
+    CookFormulaAll_1.configCookFormulaAll.Init();
+    CookFormulaByFormulaItemId_1.configCookFormulaByFormulaItemId.Init();
+    CookFormulaById_1.configCookFormulaById.Init();
+    CookLevelAll_1.configCookLevelAll.Init();
+    CookLevelById_1.configCookLevelById.Init();
+    CookProcessMsgById_1.configCookProcessMsgById.Init();
+    CookProcessedAll_1.configCookProcessedAll.Init();
+    CookProcessedById_1.configCookProcessedById.Init();
+    CorniceChallengeById_1.configCorniceChallengeById.Init();
+    CorniceChallengeByMarkId_1.configCorniceChallengeByMarkId.Init();
+    CorniceQuestById_1.configCorniceQuestById.Init();
+    CountryAll_1.configCountryAll.Init();
+    CountryById_1.configCountryById.Init();
+    CouponById_1.configCouponById.Init();
+    CustomMarkAll_1.configCustomMarkAll.Init();
+    CustomMarkByMarkId_1.configCustomMarkByMarkId.Init();
+    CustomSequenceById_1.configCustomSequenceById.Init();
+    CustomSequenceLang_1.configCustomSequenceLang.Init();
+    CustomerServiceAll_1.configCustomerServiceAll.Init();
+    CustomerServiceById_1.configCustomerServiceById.Init();
+    CustomizedThumbnailById_1.configCustomizedThumbnailById.Init();
+    DailyAdventureActivityByActivityId_1.configDailyAdventureActivityByActivityId.Init();
+    DailyAdventurePointById_1.configDailyAdventurePointById.Init();
+    DailyAdventureTaskByTaskId_1.configDailyAdventureTaskByTaskId.Init();
+    DailyTaskById_1.configDailyTaskById.Init();
+    DailyTaskGroupById_1.configDailyTaskGroupById.Init();
+    DamageByAll_1.configDamageByAll.Init();
+    DamageById_1.configDamageById.Init();
+    DamagePayloadById_1.configDamagePayloadById.Init();
+    DamageTextAll_1.configDamageTextAll.Init();
+    DangoById_1.configDangoById.Init();
+    DangoBroadcastById_1.configDangoBroadcastById.Init();
+    DangoMonopolyByActivityId_1.configDangoMonopolyByActivityId.Init();
+    DangoMonopolyBoardByGroup_1.configDangoMonopolyBoardByGroup.Init();
+    DangoMonopolyBoardById_1.configDangoMonopolyBoardById.Init();
+    DangoMonopolyGridByGroup_1.configDangoMonopolyGridByGroup.Init();
+    DangoMonopolyGridById_1.configDangoMonopolyGridById.Init();
+    DangoMonopolyMapPointByActivityId_1.configDangoMonopolyMapPointByActivityId.Init();
+    DangoMonopolyPropertyById_1.configDangoMonopolyPropertyById.Init();
+    DangoMonopolyPropertyTypeByType_1.configDangoMonopolyPropertyTypeByType.Init();
+    DangoMonopolyTaskByGroup_1.configDangoMonopolyTaskByGroup.Init();
+    DangoMonopolyTaskById_1.configDangoMonopolyTaskById.Init();
+    DangoSkillById_1.configDangoSkillById.Init();
+    DangoSkillEffectById_1.configDangoSkillEffectById.Init();
+    DarkCoastDeliveryAll_1.configDarkCoastDeliveryAll.Init();
+    DarkCoastDeliveryById_1.configDarkCoastDeliveryById.Init();
+    DataLayerConfigById_1.configDataLayerConfigById.Init();
+    DaySelectPresetAll_1.configDaySelectPresetAll.Init();
+    DaySelectPresetById_1.configDaySelectPresetById.Init();
+    DebugCommandConfigById_1.configDebugCommandConfigById.Init();
+    DebugEntranceConfigAll_1.configDebugEntranceConfigAll.Init();
+    DebugEntranceConfigById_1.configDebugEntranceConfigById.Init();
+    DebugEntranceTypeConfigAll_1.configDebugEntranceTypeConfigAll.Init();
+    DebugEntranceTypeConfigById_1.configDebugEntranceTypeConfigById.Init();
+    DetectionDropDownTypeById_1.configDetectionDropDownTypeById.Init();
+    DetectionTabTypeById_1.configDetectionTabTypeById.Init();
+    DetectionTextById_1.configDetectionTextById.Init();
+    DevicePlatformById_1.configDevicePlatformById.Init();
+    DevicePlatformByPidAndVid_1.configDevicePlatformByPidAndVid.Init();
+    DeviceRenderFeatureByDeviceId_1.configDeviceRenderFeatureByDeviceId.Init();
+    DiceById_1.configDiceById.Init();
+    DigitalScreenById_1.configDigitalScreenById.Init();
+    DigitalScreenTextById_1.configDigitalScreenTextById.Init();
+    DirectTrainActivityAll_1.configDirectTrainActivityAll.Init();
+    DirectTrainActivityById_1.configDirectTrainActivityById.Init();
+    DoubleRewardActivityById_1.configDoubleRewardActivityById.Init();
+    DownLoadTabAll_1.configDownLoadTabAll.Init();
+    DownLoadTabById_1.configDownLoadTabById.Init();
+    DragonPoolAll_1.configDragonPoolAll.Init();
+    DragonPoolById_1.configDragonPoolById.Init();
+    DreamLinkRoleDungeonById_1.configDreamLinkRoleDungeonById.Init();
+    DreamLinkWorldRunById_1.configDreamLinkWorldRunById.Init();
+    DreamLinkWorldRunByMarkId_1.configDreamLinkWorldRunByMarkId.Init();
+    DropPackageById_1.configDropPackageById.Init();
+    DropShowPlanById_1.configDropShowPlanById.Init();
+    DungeonDetectionAll_1.configDungeonDetectionAll.Init();
+    DungeonDetectionByDungeonId_1.configDungeonDetectionByDungeonId.Init();
+    DungeonDetectionById_1.configDungeonDetectionById.Init();
+    DynamicMapMarkAll_1.configDynamicMapMarkAll.Init();
+    DynamicMapMarkByMapId_1.configDynamicMapMarkByMapId.Init();
+    DynamicMapMarkByMarkId_1.configDynamicMapMarkByMarkId.Init();
+    EffectConfigById_1.configEffectConfigById.Init();
+    EffectCsvConfigById_1.configEffectCsvConfigById.Init();
+    EffectSpecDataById_1.configEffectSpecDataById.Init();
+    EffectSpecDataGetAll_1.configEffectSpecDataGetAll.Init();
+    ElementIconTagById_1.configElementIconTagById.Init();
+    ElementInfoById_1.configElementInfoById.Init();
+    ElementInfoById2_1.configElementInfoById2.Init();
+    ElementLevelByLevel_1.configElementLevelByLevel.Init();
+    ElementReactionMatrixAll_1.configElementReactionMatrixAll.Init();
+    ElementalReactionAll_1.configElementalReactionAll.Init();
+    ElementalReactionByReactionId_1.configElementalReactionByReactionId.Init();
+    EnrichmentAreaConfigByEnrichmentId_1.configEnrichmentAreaConfigByEnrichmentId.Init();
+    EnrichmentAreaConfigByItemId_1.configEnrichmentAreaConfigByItemId.Init();
+    EntityAudioConfigById_1.configEntityAudioConfigById.Init();
+    EntityAudioConfigByIdWithZero_1.configEntityAudioConfigByIdWithZero.Init();
+    EntityGravityConfigAll_1.configEntityGravityConfigAll.Init();
+    EntityGravityConfigByMapIdAndEntityId_1.configEntityGravityConfigByMapIdAndEntityId.Init();
+    EntityOwnerDataByGuid_1.configEntityOwnerDataByGuid.Init();
+    EntitySelfEventConfigById_1.configEntitySelfEventConfigById.Init();
+    EntitySelfEventConfigByKey_1.configEntitySelfEventConfigByKey.Init();
+    EntitySkillPreloadByActorBlueprint_1.configEntitySkillPreloadByActorBlueprint.Init();
+    EntitySkillPreloadByActorBlueprintAndSkillId_1.configEntitySkillPreloadByActorBlueprintAndSkillId.Init();
+    EntitySkillPreloadByAll_1.configEntitySkillPreloadByAll.Init();
+    EntitySkillPreloadById_1.configEntitySkillPreloadById.Init();
+    EntityVoxelInfoByMapIdAndEntityId_1.configEntityVoxelInfoByMapIdAndEntityId.Init();
+    EntranceIconTagById_1.configEntranceIconTagById.Init();
+    EntrustFinishDialogByEntrustIdAndLevel_1.configEntrustFinishDialogByEntrustIdAndLevel.Init();
+    EntrustRoleAll_1.configEntrustRoleAll.Init();
+    EntrustRoleById_1.configEntrustRoleById.Init();
+    EntrustTypeById_1.configEntrustTypeById.Init();
+    ErrorCodeById_1.configErrorCodeById.Init();
+    EvaluateById_1.configEvaluateById.Init();
+    ExchangeRewardById_1.configExchangeRewardById.Init();
+    ExchangeSharedById_1.configExchangeSharedById.Init();
+    ExecutionConfById_1.configExecutionConfById.Init();
+    ExploreActivityById_1.configExploreActivityById.Init();
+    ExploreActivityTaskByActivityId_1.configExploreActivityTaskByActivityId.Init();
+    ExploreActivityTaskByTaskId_1.configExploreActivityTaskByTaskId.Init();
+    ExploreProgressAll_1.configExploreProgressAll.Init();
+    ExploreProgressByArea_1.configExploreProgressByArea.Init();
+    ExploreProgressById_1.configExploreProgressById.Init();
+    ExploreProgressRewardAll_1.configExploreProgressRewardAll.Init();
+    ExploreProgressRewardByArea_1.configExploreProgressRewardByArea.Init();
+    ExploreRewardByCountry_1.configExploreRewardByCountry.Init();
+    ExploreRewardById_1.configExploreRewardById.Init();
+    ExploreRewardDisplayById_1.configExploreRewardDisplayById.Init();
+    ExploreRouletteAll_1.configExploreRouletteAll.Init();
+    ExploreRouletteReplaceAll_1.configExploreRouletteReplaceAll.Init();
+    ExploreRouletteReplaceById_1.configExploreRouletteReplaceById.Init();
+    ExploreScoreAll_1.configExploreScoreAll.Init();
+    ExploreScoreByArea_1.configExploreScoreByArea.Init();
+    ExploreSkillInteractById_1.configExploreSkillInteractById.Init();
+    ExploreToolsAll_1.configExploreToolsAll.Init();
+    ExploreToolsByPhantomSkillId_1.configExploreToolsByPhantomSkillId.Init();
+    ExploreTypeByType_1.configExploreTypeByType.Init();
+    ExternalSourceSettingById_1.configExternalSourceSettingById.Init();
+    FaceExpressionDataById_1.configFaceExpressionDataById.Init();
+    FarmGoldActivityAll_1.configFarmGoldActivityAll.Init();
+    FarmGoldActivityByActivityIdAndInstanceId_1.configFarmGoldActivityByActivityIdAndInstanceId.Init();
+    FarmGoldActivityById_1.configFarmGoldActivityById.Init();
+    FarmGoldDifficultyAll_1.configFarmGoldDifficultyAll.Init();
+    FarmGoldDifficultyById_1.configFarmGoldDifficultyById.Init();
+    FarmGoldMapMarkByActivityId_1.configFarmGoldMapMarkByActivityId.Init();
+    FarmGoldScoreAll_1.configFarmGoldScoreAll.Init();
+    FarmGoldScoreByActivityId_1.configFarmGoldScoreByActivityId.Init();
+    FarmGoldScoreById_1.configFarmGoldScoreById.Init();
+    FavorGoodsByRoleId_1.configFavorGoodsByRoleId.Init();
+    FavorLevelByLevel_1.configFavorLevelByLevel.Init();
+    FavorRoleInfoByRoleId_1.configFavorRoleInfoByRoleId.Init();
+    FavorStoryByRoleId_1.configFavorStoryByRoleId.Init();
+    FavorTabCameraById_1.configFavorTabCameraById.Init();
+    FavorWordByRoleIdAndType_1.configFavorWordByRoleIdAndType.Init();
+    FeedingAnimalById_1.configFeedingAnimalById.Init();
+    FightFormationById_1.configFightFormationById.Init();
+    FilterById_1.configFilterById.Init();
+    FilterRuleById_1.configFilterRuleById.Init();
+    FilterSettingAll_1.configFilterSettingAll.Init();
+    FilterSettingById_1.configFilterSettingById.Init();
+    FilterSortConfigById_1.configFilterSortConfigById.Init();
+    FilterSortGroupById_1.configFilterSortGroupById.Init();
+    FishingActivityByActivityId_1.configFishingActivityByActivityId.Init();
+    FishingActivityGroupAll_1.configFishingActivityGroupAll.Init();
+    FishingActivityGroupById_1.configFishingActivityGroupById.Init();
+    FishingActivityLimitTaskByTaskId_1.configFishingActivityLimitTaskByTaskId.Init();
+    FishingActivityMilestoneAll_1.configFishingActivityMilestoneAll.Init();
+    FishingActivityMilestoneById_1.configFishingActivityMilestoneById.Init();
+    FishingDeliveryById_1.configFishingDeliveryById.Init();
+    FishingEntrustById_1.configFishingEntrustById.Init();
+    FishingEntrustPoolAll_1.configFishingEntrustPoolAll.Init();
+    FishingEntrustPoolById_1.configFishingEntrustPoolById.Init();
+    FishingEntrustTypeById_1.configFishingEntrustTypeById.Init();
+    FishingGridItemShapeById_1.configFishingGridItemShapeById.Init();
+    FishingIllustratedRewardById_1.configFishingIllustratedRewardById.Init();
+    FishingItemAll_1.configFishingItemAll.Init();
+    FishingItemById_1.configFishingItemById.Init();
+    FishingManualRefreshByEntrustPoolTypeAndStar_1.configFishingManualRefreshByEntrustPoolTypeAndStar.Init();
+    FishingManualRefreshById_1.configFishingManualRefreshById.Init();
+    FishingNoticeById_1.configFishingNoticeById.Init();
+    FishingNpcPerformById_1.configFishingNpcPerformById.Init();
+    FishingPointByEntityConfigId_1.configFishingPointByEntityConfigId.Init();
+    FishingPointById_1.configFishingPointById.Init();
+    FishingPointByShowItem_1.configFishingPointByShowItem.Init();
+    FishingPortById_1.configFishingPortById.Init();
+    FishingPositionById_1.configFishingPositionById.Init();
+    FishingQteConfigById_1.configFishingQteConfigById.Init();
+    FishingQualityById_1.configFishingQualityById.Init();
+    FishingReputationAll_1.configFishingReputationAll.Init();
+    FishingReputationByLevel_1.configFishingReputationByLevel.Init();
+    FishingShipSkinAll_1.configFishingShipSkinAll.Init();
+    FishingShipSkinById_1.configFishingShipSkinById.Init();
+    FishingTagById_1.configFishingTagById.Init();
+    FishingTechAll_1.configFishingTechAll.Init();
+    FishingTechById_1.configFishingTechById.Init();
+    FishingTechEffectById_1.configFishingTechEffectById.Init();
+    FishingTechEffectByType_1.configFishingTechEffectByType.Init();
+    FlagAreaByAreaId_1.configFlagAreaByAreaId.Init();
+    FlagAreaByEntity_1.configFlagAreaByEntity.Init();
+    FlagAreaById_1.configFlagAreaById.Init();
+    FloroRanchActionById_1.configFloroRanchActionById.Init();
+    FloroRanchActivityById_1.configFloroRanchActivityById.Init();
+    FloroRanchAudioAll_1.configFloroRanchAudioAll.Init();
+    FloroRanchAudioById_1.configFloroRanchAudioById.Init();
+    FloroRanchBuffAll_1.configFloroRanchBuffAll.Init();
+    FloroRanchBuffById_1.configFloroRanchBuffById.Init();
+    FloroRanchCardAll_1.configFloroRanchCardAll.Init();
+    FloroRanchCardById_1.configFloroRanchCardById.Init();
+    FloroRanchCardGroupAll_1.configFloroRanchCardGroupAll.Init();
+    FloroRanchCardGroupById_1.configFloroRanchCardGroupById.Init();
+    FloroRanchCurrencyAll_1.configFloroRanchCurrencyAll.Init();
+    FloroRanchCurrencyById_1.configFloroRanchCurrencyById.Init();
+    FloroRanchEventAll_1.configFloroRanchEventAll.Init();
+    FloroRanchEventById_1.configFloroRanchEventById.Init();
+    FloroRanchEventGroupById_1.configFloroRanchEventGroupById.Init();
+    FloroRanchFilterTypeAll_1.configFloroRanchFilterTypeAll.Init();
+    FloroRanchFilterTypeById_1.configFloroRanchFilterTypeById.Init();
+    FloroRanchInsByActivityId_1.configFloroRanchInsByActivityId.Init();
+    FloroRanchInsById_1.configFloroRanchInsById.Init();
+    FloroRanchRaceAll_1.configFloroRanchRaceAll.Init();
+    FloroRanchRaceById_1.configFloroRanchRaceById.Init();
+    FloroRanchRarityAll_1.configFloroRanchRarityAll.Init();
+    FloroRanchRarityById_1.configFloroRanchRarityById.Init();
+    FloroRanchRewardByActivityId_1.configFloroRanchRewardByActivityId.Init();
+    FloroRanchRewardById_1.configFloroRanchRewardById.Init();
+    FloroRanchSkillAll_1.configFloroRanchSkillAll.Init();
+    FloroRanchSkillById_1.configFloroRanchSkillById.Init();
+    FloroRanchSubInsById_1.configFloroRanchSubInsById.Init();
+    FloroRanchTagAll_1.configFloroRanchTagAll.Init();
+    FloroRanchTagById_1.configFloroRanchTagById.Init();
+    FloroRanchTaskByActivityId_1.configFloroRanchTaskByActivityId.Init();
+    FloroRanchTaskById_1.configFloroRanchTaskById.Init();
+    FloroRanchTaskTabAll_1.configFloroRanchTaskTabAll.Init();
+    FloroRanchTaskTabById_1.configFloroRanchTaskTabById.Init();
+    FloroRanchTechByActivityId_1.configFloroRanchTechByActivityId.Init();
+    FloroRanchTechById_1.configFloroRanchTechById.Init();
+    FloroRanchTerrainAll_1.configFloroRanchTerrainAll.Init();
+    FloroRanchTerrainById_1.configFloroRanchTerrainById.Init();
+    FloroRanchToyAll_1.configFloroRanchToyAll.Init();
+    FloroRanchToyById_1.configFloroRanchToyById.Init();
+    FlowById_1.configFlowById.Init();
+    FlowStateByStateKey_1.configFlowStateByStateKey.Init();
+    FlowTemplateDataById_1.configFlowTemplateDataById.Init();
+    FlowTextByIdAndFlowListId_1.configFlowTextByIdAndFlowListId.Init();
+    FlowTextLang_1.configFlowTextLang.Init();
+    FlySkinConfigById_1.configFlySkinConfigById.Init();
+    FlySkinConfigByType_1.configFlySkinConfigByType.Init();
+    FogBlockAll_1.configFogBlockAll.Init();
+    FogBlockByBlock_1.configFogBlockByBlock.Init();
+    FogBlockByBlockAndMapId_1.configFogBlockByBlockAndMapId.Init();
+    FogTextureConfigAll_1.configFogTextureConfigAll.Init();
+    FogTextureConfigByBlock_1.configFogTextureConfigByBlock.Init();
+    FogTextureConfigByBlockAndMapId_1.configFogTextureConfigByBlockAndMapId.Init();
+    FogTextureConfigByBlockAndMapIdAndGravity_1.configFogTextureConfigByBlockAndMapIdAndGravity.Init();
+    FogTextureConfigByMapId_1.configFogTextureConfigByMapId.Init();
+    FoleySynthBoneConfigById_1.configFoleySynthBoneConfigById.Init();
+    FoleySynthConfigById_1.configFoleySynthConfigById.Init();
+    FoleySynthConfigByIdWithDefaultId_1.configFoleySynthConfigByIdWithDefaultId.Init();
+    ForgeFormulaAll_1.configForgeFormulaAll.Init();
+    ForgeFormulaByFormulaItemId_1.configForgeFormulaByFormulaItemId.Init();
+    ForgeFormulaById_1.configForgeFormulaById.Init();
+    ForgeFormulaByTypeId_1.configForgeFormulaByTypeId.Init();
+    FormationPropertyAll_1.configFormationPropertyAll.Init();
+    FormationPropertyById_1.configFormationPropertyById.Init();
+    FriendFilterAll_1.configFriendFilterAll.Init();
+    FuncMenuReplaceAll_1.configFuncMenuReplaceAll.Init();
+    FuncMenuReplaceInstSubType_1.configFuncMenuReplaceInstSubType.Init();
+    FuncMenuWheelAll_1.configFuncMenuWheelAll.Init();
+    FuncMenuWheelByFuncId_1.configFuncMenuWheelByFuncId.Init();
+    FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.Init();
+    FunctionMenuAll_1.configFunctionMenuAll.Init();
+    FunctionMenuByFunctionId_1.configFunctionMenuByFunctionId.Init();
+    FunctionOpenViewLimitAll_1.configFunctionOpenViewLimitAll.Init();
+    GaChaShareById_1.configGaChaShareById.Init();
+    GachaAll_1.configGachaAll.Init();
+    GachaById_1.configGachaById.Init();
+    GachaEffectConfigByTimesAndQuality_1.configGachaEffectConfigByTimesAndQuality.Init();
+    GachaPoolById_1.configGachaPoolById.Init();
+    GachaSequenceConfigById_1.configGachaSequenceConfigById.Init();
+    GachaTextureInfoById_1.configGachaTextureInfoById.Init();
+    GachaViewInfoById_1.configGachaViewInfoById.Init();
+    GachaViewTypeInfoByType_1.configGachaViewTypeInfoByType.Init();
+    GachaWeaponTransformById_1.configGachaWeaponTransformById.Init();
+    GamePlayInformationGroupById_1.configGamePlayInformationGroupById.Init();
+    GamePlayInformationInfoById_1.configGamePlayInformationInfoById.Init();
+    GamePlayScanByUid_1.configGamePlayScanByUid.Init();
+    GamePlayScanCompositeByUid_1.configGamePlayScanCompositeByUid.Init();
+    GamepadKeyById_1.configGamepadKeyById.Init();
+    GamepadKeyByKeyName_1.configGamepadKeyByKeyName.Init();
+    GameplayCueById_1.configGameplayCueById.Init();
+    GatherActivityAll_1.configGatherActivityAll.Init();
+    GatherActivityById_1.configGatherActivityById.Init();
+    GenderTextByMaleText_1.configGenderTextByMaleText.Init();
+    GenericPromptByTipsId_1.configGenericPromptByTipsId.Init();
+    GenericPromptTypesByTypeId_1.configGenericPromptTypesByTypeId.Init();
+    GeographyHandBookAll_1.configGeographyHandBookAll.Init();
+    GeographyHandBookById_1.configGeographyHandBookById.Init();
+    GeographyHandBookByType_1.configGeographyHandBookByType.Init();
+    GeographyTypeAll_1.configGeographyTypeAll.Init();
+    GeographyTypeById_1.configGeographyTypeById.Init();
+    GiftPackageAll_1.configGiftPackageAll.Init();
+    GiftPackageById_1.configGiftPackageById.Init();
+    GlobalConfigFromCsvByName_1.configGlobalConfigFromCsvByName.Init();
+    GmAccountAll_1.configGmAccountAll.Init();
+    GmAccountById_1.configGmAccountById.Init();
+    GmOrderConfigAll_1.configGmOrderConfigAll.Init();
+    GmOrderListAll_1.configGmOrderListAll.Init();
+    GmOrderListById_1.configGmOrderListById.Init();
+    GongduolaPassengerVoiceConfigById_1.configGongduolaPassengerVoiceConfigById.Init();
+    GongduolaPassengerVoiceConfigByRoleIdAndTriggerType_1.configGongduolaPassengerVoiceConfigByRoleIdAndTriggerType.Init();
+    GuideDataById_1.configGuideDataById.Init();
+    GuideDungeonSetDefineByStrId_1.configGuideDungeonSetDefineByStrId.Init();
+    GuideFocusNewByGuideId_1.configGuideFocusNewByGuideId.Init();
+    GuideFromMontageByEventGroupId_1.configGuideFromMontageByEventGroupId.Init();
+    GuideGroupAll_1.configGuideGroupAll.Init();
+    GuideGroupById_1.configGuideGroupById.Init();
+    GuideStepAll_1.configGuideStepAll.Init();
+    GuideStepById_1.configGuideStepById.Init();
+    GuideTipsByGuideId_1.configGuideTipsByGuideId.Init();
+    GuideTutorialAll_1.configGuideTutorialAll.Init();
+    GuideTutorialById_1.configGuideTutorialById.Init();
+    GuideTutorialPageById_1.configGuideTutorialPageById.Init();
+    H5CircumUrlById_1.configH5CircumUrlById.Init();
+    HandBookEntranceAll_1.configHandBookEntranceAll.Init();
+    HandBookEntranceById_1.configHandBookEntranceById.Init();
+    HandBookQuestTabAll_1.configHandBookQuestTabAll.Init();
+    HandBookQuestTabById_1.configHandBookQuestTabById.Init();
+    HardnessModeById_1.configHardnessModeById.Init();
+    HeadIconById_1.configHeadIconById.Init();
+    HeadIconEnergyBarAll_1.configHeadIconEnergyBarAll.Init();
+    HeadIconEnergyBarById_1.configHeadIconEnergyBarById.Init();
+    HelpTextByGroupId_1.configHelpTextByGroupId.Init();
+    HelpTextById_1.configHelpTextById.Init();
+    HiddenBossWindowById_1.configHiddenBossWindowById.Init();
+    HotKeyIconByKeyName_1.configHotKeyIconByKeyName.Init();
+    HotKeyMapById_1.configHotKeyMapById.Init();
+    HotKeyTextByTextId_1.configHotKeyTextByTextId.Init();
+    HotKeyTypeById_1.configHotKeyTypeById.Init();
+    HotKeyViewById_1.configHotKeyViewById.Init();
+    HotPatchTextLang_1.configHotPatchTextLang.Init();
+    I18nResourcesAll_1.configI18nResourcesAll.Init();
+    I18nResourcesById_1.configI18nResourcesById.Init();
+    I18nTexturesAll_1.configI18nTexturesAll.Init();
+    I18nTexturesById_1.configI18nTexturesById.Init();
+    InfluenceAll_1.configInfluenceAll.Init();
+    InfluenceById_1.configInfluenceById.Init();
+    InfoDisplayById_1.configInfoDisplayById.Init();
+    InstanceDungeonAll_1.configInstanceDungeonAll.Init();
+    InstanceDungeonById_1.configInstanceDungeonById.Init();
+    InstanceDungeonEntranceAll_1.configInstanceDungeonEntranceAll.Init();
+    InstanceDungeonEntranceById_1.configInstanceDungeonEntranceById.Init();
+    InstanceDungeonEntranceByMarkId_1.configInstanceDungeonEntranceByMarkId.Init();
+    InstanceDungeonTitleById_1.configInstanceDungeonTitleById.Init();
+    InstanceEnterControlById_1.configInstanceEnterControlById.Init();
+    InstanceGameplayModeById_1.configInstanceGameplayModeById.Init();
+    InstanceTrialRoleConfigById_1.configInstanceTrialRoleConfigById.Init();
+    InteractAudioMaterialByCollisionMaterial_1.configInteractAudioMaterialByCollisionMaterial.Init();
+    InteractBackGroundById_1.configInteractBackGroundById.Init();
+    InteractBackGroundByViewName_1.configInteractBackGroundByViewName.Init();
+    InteractDataByGuid_1.configInteractDataByGuid.Init();
+    InterjectionByTimberIdAndUniversalToneId_1.configInterjectionByTimberIdAndUniversalToneId.Init();
+    ItemAccessedPathById_1.configItemAccessedPathById.Init();
+    ItemExchangeContentAll_1.configItemExchangeContentAll.Init();
+    ItemExchangeContentByItemId_1.configItemExchangeContentByItemId.Init();
+    ItemExchangeLimitByItemId_1.configItemExchangeLimitByItemId.Init();
+    ItemHandBookAll_1.configItemHandBookAll.Init();
+    ItemHandBookById_1.configItemHandBookById.Init();
+    ItemHandBookByType_1.configItemHandBookByType.Init();
+    ItemHandBookTypeAll_1.configItemHandBookTypeAll.Init();
+    ItemHandBookTypeById_1.configItemHandBookTypeById.Init();
+    ItemIconTagById_1.configItemIconTagById.Init();
+    ItemInfoAll_1.configItemInfoAll.Init();
+    ItemInfoById_1.configItemInfoById.Init();
+    ItemInfoByItemType_1.configItemInfoByItemType.Init();
+    ItemMainTypeAll_1.configItemMainTypeAll.Init();
+    ItemMainTypeById_1.configItemMainTypeById.Init();
+    ItemShowTypeById_1.configItemShowTypeById.Init();
+    KeyPoolAll_1.configKeyPoolAll.Init();
+    KeyPoolById_1.configKeyPoolById.Init();
+    KeySettingAll_1.configKeySettingAll.Init();
+    KeySettingById_1.configKeySettingById.Init();
+    KeySettingByTypeId_1.configKeySettingByTypeId.Init();
+    KeySettingByTypeIdAndInputControllerType_1.configKeySettingByTypeIdAndInputControllerType.Init();
+    KeyTypeAll_1.configKeyTypeAll.Init();
+    KeyTypeByTypeId_1.configKeyTypeByTypeId.Init();
+    KillMonstersScoresByInstanceID_1.configKillMonstersScoresByInstanceID.Init();
+    KingShipAttributeById_1.configKingShipAttributeById.Init();
+    KingShipBuffById_1.configKingShipBuffById.Init();
+    LangOfLogoByName_1.configLangOfLogoByName.Init();
+    LanguageDefineByLanguageCode_1.configLanguageDefineByLanguageCode.Init();
+    LanguageDefineByLanguageType_1.configLanguageDefineByLanguageType.Init();
+    LevelEntityConfigByBlueprintType_1.configLevelEntityConfigByBlueprintType.Init();
+    LevelEntityConfigByMapId_1.configLevelEntityConfigByMapId.Init();
+    LevelEntityConfigByMapIdAndEntityId_1.configLevelEntityConfigByMapIdAndEntityId.Init();
+    LevelPlayDataById_1.configLevelPlayDataById.Init();
+    LevelPlayInfoMappingConfigAll_1.configLevelPlayInfoMappingConfigAll.Init();
+    LevelPlayInfoMappingConfigById_1.configLevelPlayInfoMappingConfigById.Init();
+    LevelPlayNodeDataByKey_1.configLevelPlayNodeDataByKey.Init();
+    LifePointActivityByActivityId_1.configLifePointActivityByActivityId.Init();
+    LifePointChallengeById_1.configLifePointChallengeById.Init();
+    LifePointEntranceById_1.configLifePointEntranceById.Init();
+    LifePointGroupByGroupId_1.configLifePointGroupByGroupId.Init();
+    LinkCharacterById_1.configLinkCharacterById.Init();
+    LinkDataById_1.configLinkDataById.Init();
+    LinkParamById_1.configLinkParamById.Init();
+    LivenessAll_1.configLivenessAll.Init();
+    LivenessById_1.configLivenessById.Init();
+    LivenessTaskByTaskId_1.configLivenessTaskByTaskId.Init();
+    LoadingLevelAreaAll_1.configLoadingLevelAreaAll.Init();
+    LoadingTipsTextAll_1.configLoadingTipsTextAll.Init();
+    LoadingTipsTextById_1.configLoadingTipsTextById.Init();
+    LoadingTipsTextByLevelAreaId_1.configLoadingTipsTextByLevelAreaId.Init();
+    LockOnConfigById_1.configLockOnConfigById.Init();
+    LongPressConfigById_1.configLongPressConfigById.Init();
+    LongShanActivityConfigByActivityId_1.configLongShanActivityConfigByActivityId.Init();
+    LongShanScoreRewardByActivityId_1.configLongShanScoreRewardByActivityId.Init();
+    LongShanScoreRewardById_1.configLongShanScoreRewardById.Init();
+    LongShanStageAll_1.configLongShanStageAll.Init();
+    LongShanStageById_1.configLongShanStageById.Init();
+    LongShanTaskById_1.configLongShanTaskById.Init();
+    LordGymAll_1.configLordGymAll.Init();
+    LordGymByDifficulty_1.configLordGymByDifficulty.Init();
+    LordGymById_1.configLordGymById.Init();
+    LordGymEntranceAll_1.configLordGymEntranceAll.Init();
+    LordGymEntranceById_1.configLordGymEntranceById.Init();
+    LordGymEntranceByMarkId_1.configLordGymEntranceByMarkId.Init();
+    LordGymEntranceGroupByMarkId_1.configLordGymEntranceGroupByMarkId.Init();
+    LordGymEntranceSetAll_1.configLordGymEntranceSetAll.Init();
+    LordGymEntranceSetById_1.configLordGymEntranceSetById.Init();
+    LordGymEntranceSetByMarkId_1.configLordGymEntranceSetByMarkId.Init();
+    LordGymFilterTypeAll_1.configLordGymFilterTypeAll.Init();
+    LordGymFilterTypeById_1.configLordGymFilterTypeById.Init();
+    MailFilterAll_1.configMailFilterAll.Init();
+    MailFilterById_1.configMailFilterById.Init();
+    MainLineAll_1.configMainLineAll.Init();
+    MainLineById_1.configMainLineById.Init();
+    MainRoleConfigAll_1.configMainRoleConfigAll.Init();
+    MainRoleConfigByGender_1.configMainRoleConfigByGender.Init();
+    MainRoleConfigById_1.configMainRoleConfigById.Init();
+    MainTypeAll_1.configMainTypeAll.Init();
+    MainTypeById_1.configMainTypeById.Init();
+    MapAudioById_1.configMapAudioById.Init();
+    MapBorderAll_1.configMapBorderAll.Init();
+    MapBorderByBorderId_1.configMapBorderByBorderId.Init();
+    MapBorderByBorderIdAndMapId_1.configMapBorderByBorderIdAndMapId.Init();
+    MapFogByAreaId_1.configMapFogByAreaId.Init();
+    MapFogByFog_1.configMapFogByFog.Init();
+    MapLevelExpByActivityId_1.configMapLevelExpByActivityId.Init();
+    MapLevelExpById_1.configMapLevelExpById.Init();
+    MapMarkAll_1.configMapMarkAll.Init();
+    MapMarkByEntityConfigId_1.configMapMarkByEntityConfigId.Init();
+    MapMarkByInstanceDungeonId_1.configMapMarkByInstanceDungeonId.Init();
+    MapMarkByMapId_1.configMapMarkByMapId.Init();
+    MapMarkByMarkId_1.configMapMarkByMarkId.Init();
+    MapMarkByRelativeId_1.configMapMarkByRelativeId.Init();
+    MapMarkByRelativeMainSubType_1.configMapMarkByRelativeMainSubType.Init();
+    MapMarkHasEntityConfigId_1.configMapMarkHasEntityConfigId.Init();
+    MapMarkPhantomGroupByMarkId_1.configMapMarkPhantomGroupByMarkId.Init();
+    MapMarkRelativeSubTypeAll_1.configMapMarkRelativeSubTypeAll.Init();
+    MapMarkRelativeSubTypeByFunctionId_1.configMapMarkRelativeSubTypeByFunctionId.Init();
+    MapMarkRelativeSubTypeById_1.configMapMarkRelativeSubTypeById.Init();
+    MapNoteById_1.configMapNoteById.Init();
+    MapRangeAll_1.configMapRangeAll.Init();
+    MapRangeByMapId_1.configMapRangeByMapId.Init();
+    MapTravelConfigByActivityId_1.configMapTravelConfigByActivityId.Init();
+    MappingBySheetNameAndFieldName_1.configMappingBySheetNameAndFieldName.Init();
+    MappingBySheetNameFieldNameAndValue_1.configMappingBySheetNameFieldNameAndValue.Init();
+    MarkEffectByMarkId_1.configMarkEffectByMarkId.Init();
+    MaterialReplaceAll_1.configMaterialReplaceAll.Init();
+    MaterialReplaceByGroupId_1.configMaterialReplaceByGroupId.Init();
+    MaterialReplaceByItemId_1.configMaterialReplaceByItemId.Init();
+    MenuConfigAll_1.configMenuConfigAll.Init();
+    MenuConfigByFunctionId_1.configMenuConfigByFunctionId.Init();
+    MobileBattleUiSetAll_1.configMobileBattleUiSetAll.Init();
+    MobileBattleUiSetByPanelIndex_1.configMobileBattleUiSetByPanelIndex.Init();
+    ModelConfigPreloadByAll_1.configModelConfigPreloadByAll.Init();
+    ModelConfigPreloadById_1.configModelConfigPreloadById.Init();
+    MonsterBattleConfById_1.configMonsterBattleConfById.Init();
+    MonsterBattleConfByRoleId_1.configMonsterBattleConfByRoleId.Init();
+    MonsterBodyTypeConfigById_1.configMonsterBodyTypeConfigById.Init();
+    MonsterDetectionAll_1.configMonsterDetectionAll.Init();
+    MonsterDetectionById_1.configMonsterDetectionById.Init();
+    MonsterDetectionByMarkId_1.configMonsterDetectionByMarkId.Init();
+    MonsterDetectionFilterAll_1.configMonsterDetectionFilterAll.Init();
+    MonsterDisplayById_1.configMonsterDisplayById.Init();
+    MonsterDisplayLang_1.configMonsterDisplayLang.Init();
+    MonsterHandBookAll_1.configMonsterHandBookAll.Init();
+    MonsterHandBookById_1.configMonsterHandBookById.Init();
+    MonsterHandBookByType_1.configMonsterHandBookByType.Init();
+    MonsterHandBookTypeAll_1.configMonsterHandBookTypeAll.Init();
+    MonsterIconTagById_1.configMonsterIconTagById.Init();
+    MonsterInfoById_1.configMonsterInfoById.Init();
+    MonsterPerchById_1.configMonsterPerchById.Init();
+    MonsterPerformanceConfById_1.configMonsterPerformanceConfById.Init();
+    MonsterPropertyGrowthById_1.configMonsterPropertyGrowthById.Init();
+    MonsterRarityById_1.configMonsterRarityById.Init();
+    MonsterSizeIdById_1.configMonsterSizeIdById.Init();
+    MontageDataById_1.configMontageDataById.Init();
+    MonthCardContentById_1.configMonthCardContentById.Init();
+    MoraleAreaAll_1.configMoraleAreaAll.Init();
+    MoraleAreaById_1.configMoraleAreaById.Init();
+    MoraleFlagTypeById_1.configMoraleFlagTypeById.Init();
+    MoraleFlagTypeByType_1.configMoraleFlagTypeByType.Init();
+    MoraleKeepLevelAll_1.configMoraleKeepLevelAll.Init();
+    MoraleKeepLevelById_1.configMoraleKeepLevelById.Init();
+    MoraleLevelDiffById_1.configMoraleLevelDiffById.Init();
+    MoraleLevelDiffShowAll_1.configMoraleLevelDiffShowAll.Init();
+    MoraleLevelDiffShowById_1.configMoraleLevelDiffShowById.Init();
+    MoraleLvPowerAll_1.configMoraleLvPowerAll.Init();
+    MoraleLvPowerById_1.configMoraleLvPowerById.Init();
+    MoralePlayById_1.configMoralePlayById.Init();
+    MoraleRoleGrowthByLevel_1.configMoraleRoleGrowthByLevel.Init();
+    MotionById_1.configMotionById.Init();
+    MotionByRoleId_1.configMotionByRoleId.Init();
+    MotionByRoleIdAndType_1.configMotionByRoleIdAndType.Init();
+    MotionBySkinId_1.configMotionBySkinId.Init();
+    MowTowerBuffReAll_1.configMowTowerBuffReAll.Init();
+    MowTowerBuffReById_1.configMowTowerBuffReById.Init();
+    MowTowerLevelsReAll_1.configMowTowerLevelsReAll.Init();
+    MowTowerLevelsReById_1.configMowTowerLevelsReById.Init();
+    MowTowerRewardReAll_1.configMowTowerRewardReAll.Init();
+    MowTowerRewardReById_1.configMowTowerRewardReById.Init();
+    MultiMapAll_1.configMultiMapAll.Init();
+    MultiMapByGroupId_1.configMultiMapByGroupId.Init();
+    MultiMapById_1.configMultiMapById.Init();
+    MultiMapAreaConfigAll_1.configMultiMapAreaConfigAll.Init();
+    MultiTextLang_1.configMultiTextLang.Init();
+    NewOccupationConfigAll_1.configNewOccupationConfigAll.Init();
+    NewOccupationConfigById_1.configNewOccupationConfigById.Init();
+    NewbieCarnivalParamByActivityId_1.configNewbieCarnivalParamByActivityId.Init();
+    NewbieCarnivalRoleByRoleId_1.configNewbieCarnivalRoleByRoleId.Init();
+    NewbieCarnivalTaskByTaskId_1.configNewbieCarnivalTaskByTaskId.Init();
+    NewbieCarnivalTaskByTaskType_1.configNewbieCarnivalTaskByTaskType.Init();
+    NewbieCarnivalTaskTypeById_1.configNewbieCarnivalTaskTypeById.Init();
+    NewbieCourseAll_1.configNewbieCourseAll.Init();
+    NewbieCourseById_1.configNewbieCourseById.Init();
+    NounHandBookAll_1.configNounHandBookAll.Init();
+    NounHandBookById_1.configNounHandBookById.Init();
+    NounHandBookByType_1.configNounHandBookByType.Init();
+    NounTypeAll_1.configNounTypeAll.Init();
+    NounTypeById_1.configNounTypeById.Init();
+    NpcHeadInfoById_1.configNpcHeadInfoById.Init();
+    NpcSystemBackgroundById_1.configNpcSystemBackgroundById.Init();
+    NpcSystemBackgroundByViewName_1.configNpcSystemBackgroundByViewName.Init();
+    OccupationConfigById_1.configOccupationConfigById.Init();
+    OccupationConfigLang_1.configOccupationConfigLang.Init();
+    OccupyScoreAll_1.configOccupyScoreAll.Init();
+    OccupyScoreById_1.configOccupyScoreById.Init();
+    OpenAndCloseViewHotKeyAll_1.configOpenAndCloseViewHotKeyAll.Init();
+    OpenAndCloseViewHotKeyByActionName_1.configOpenAndCloseViewHotKeyByActionName.Init();
+    OpenAndCloseViewHotKeyByInputControllerType_1.configOpenAndCloseViewHotKeyByInputControllerType.Init();
+    OverlayAbpMontageDataById_1.configOverlayAbpMontageDataById.Init();
+    PackageCapacityAll_1.configPackageCapacityAll.Init();
+    PackageCapacityByPackageId_1.configPackageCapacityByPackageId.Init();
+    ParkourChallengeById_1.configParkourChallengeById.Init();
+    ParkourChallengeByMarkId_1.configParkourChallengeByMarkId.Init();
+    PassiveSkillById_1.configPassiveSkillById.Init();
+    PayById_1.configPayById.Init();
+    PayByPayIdAndRegion_1.configPayByPayIdAndRegion.Init();
+    PayByRegion_1.configPayByRegion.Init();
+    PayGiftAll_1.configPayGiftAll.Init();
+    PayGiftById_1.configPayGiftById.Init();
+    PayItemAll_1.configPayItemAll.Init();
+    PayItemById_1.configPayItemById.Init();
+    PayShopAll_1.configPayShopAll.Init();
+    PayShopById_1.configPayShopById.Init();
+    PayShopConditionById_1.configPayShopConditionById.Init();
+    PayShopDirectGoodsByGoodsId_1.configPayShopDirectGoodsByGoodsId.Init();
+    PayShopGoodsAll_1.configPayShopGoodsAll.Init();
+    PayShopGoodsById_1.configPayShopGoodsById.Init();
+    PayShopGoodsByItemId_1.configPayShopGoodsByItemId.Init();
+    PayShopRecommendAll_1.configPayShopRecommendAll.Init();
+    PayShopRecommendById_1.configPayShopRecommendById.Init();
+    PayShopTabByShopId_1.configPayShopTabByShopId.Init();
+    PayShopTabByShopIdAndTabId_1.configPayShopTabByShopIdAndTabId.Init();
+    PbDataPreloadAll_1.configPbDataPreloadAll.Init();
+    PbDataPreloadByMapIdAndPbId_1.configPbDataPreloadByMapIdAndPbId.Init();
+    PcKeyAll_1.configPcKeyAll.Init();
+    PcKeyById_1.configPcKeyById.Init();
+    PcKeyByKeyName_1.configPcKeyByKeyName.Init();
+    PerformanceConditionById_1.configPerformanceConditionById.Init();
+    PerformanceConditionByIdWithZero_1.configPerformanceConditionByIdWithZero.Init();
+    PersonalTipsByFunctionId_1.configPersonalTipsByFunctionId.Init();
+    PersonalTipsById_1.configPersonalTipsById.Init();
+    PhantomBattleActivityByActivityId_1.configPhantomBattleActivityByActivityId.Init();
+    PhantomBattleBadgeAll_1.configPhantomBattleBadgeAll.Init();
+    PhantomBattleBadgeByActivityGroupId_1.configPhantomBattleBadgeByActivityGroupId.Init();
+    PhantomBattleBadgeByGroupId_1.configPhantomBattleBadgeByGroupId.Init();
+    PhantomBattleBadgeById_1.configPhantomBattleBadgeById.Init();
+    PhantomBattleBadgeGroupAll_1.configPhantomBattleBadgeGroupAll.Init();
+    PhantomBattleBadgeGroupByGroupId_1.configPhantomBattleBadgeGroupByGroupId.Init();
+    PhantomBattleBadgeRewardByActivityId_1.configPhantomBattleBadgeRewardByActivityId.Init();
+    PhantomBattleBadgeRewardById_1.configPhantomBattleBadgeRewardById.Init();
+    PhantomBattleBuffById_1.configPhantomBattleBuffById.Init();
+    PhantomBattleCardAll_1.configPhantomBattleCardAll.Init();
+    PhantomBattleCardByActivityId_1.configPhantomBattleCardByActivityId.Init();
+    PhantomBattleCardById_1.configPhantomBattleCardById.Init();
+    PhantomBattleCardElementById_1.configPhantomBattleCardElementById.Init();
+    PhantomBattleCardFilterAll_1.configPhantomBattleCardFilterAll.Init();
+    PhantomBattleCardFilterById_1.configPhantomBattleCardFilterById.Init();
+    PhantomBattleCardGroupByGroupId_1.configPhantomBattleCardGroupByGroupId.Init();
+    PhantomBattleCardGroupInfoById_1.configPhantomBattleCardGroupInfoById.Init();
+    PhantomBattleCardRewardByActivityId_1.configPhantomBattleCardRewardByActivityId.Init();
+    PhantomBattleCardRewardById_1.configPhantomBattleCardRewardById.Init();
+    PhantomBattleCardRoleAll_1.configPhantomBattleCardRoleAll.Init();
+    PhantomBattleCardRoleById_1.configPhantomBattleCardRoleById.Init();
+    PhantomBattleCardSlotSortAll_1.configPhantomBattleCardSlotSortAll.Init();
+    PhantomBattleCardSlotSortById_1.configPhantomBattleCardSlotSortById.Init();
+    PhantomBattleChallengeByActivityGymId_1.configPhantomBattleChallengeByActivityGymId.Init();
+    PhantomBattleChallengeByActivityId_1.configPhantomBattleChallengeByActivityId.Init();
+    PhantomBattleChallengeByGymId_1.configPhantomBattleChallengeByGymId.Init();
+    PhantomBattleChallengeById_1.configPhantomBattleChallengeById.Init();
+    PhantomBattleDialogById_1.configPhantomBattleDialogById.Init();
+    PhantomBattleEntryById_1.configPhantomBattleEntryById.Init();
+    PhantomBattleFactorAll_1.configPhantomBattleFactorAll.Init();
+    PhantomBattleFactorById_1.configPhantomBattleFactorById.Init();
+    PhantomBattleFourCTaskByCardId_1.configPhantomBattleFourCTaskByCardId.Init();
+    PhantomBattleGymByActivityId_1.configPhantomBattleGymByActivityId.Init();
+    PhantomBattleMasterLevelAll_1.configPhantomBattleMasterLevelAll.Init();
+    PhantomBattleMasterLevelById_1.configPhantomBattleMasterLevelById.Init();
+    PhantomBattleMasterTitleAll_1.configPhantomBattleMasterTitleAll.Init();
+    PhantomBattleMasterTitleById_1.configPhantomBattleMasterTitleById.Init();
+    PhantomBattleNPCByGroupId_1.configPhantomBattleNPCByGroupId.Init();
+    PhantomBattleNPCById_1.configPhantomBattleNPCById.Init();
+    PhantomBattleSkillById_1.configPhantomBattleSkillById.Init();
+    PhantomBattleTaskByActivityId_1.configPhantomBattleTaskByActivityId.Init();
+    PhantomBattleTaskByTaskId_1.configPhantomBattleTaskByTaskId.Init();
+    PhantomBattleTaskTabById_1.configPhantomBattleTaskTabById.Init();
+    PhantomBattleWeekExpAll_1.configPhantomBattleWeekExpAll.Init();
+    PhantomBattleWeekExpById_1.configPhantomBattleWeekExpById.Init();
+    PhantomBattleWinSeqById_1.configPhantomBattleWinSeqById.Init();
+    PhantomCollectActivityById_1.configPhantomCollectActivityById.Init();
+    PhantomCollectTaskDescById_1.configPhantomCollectTaskDescById.Init();
+    PhantomCustomizeItemByItemId_1.configPhantomCustomizeItemByItemId.Init();
+    PhantomExpItemAll_1.configPhantomExpItemAll.Init();
+    PhantomExpItemByItemId_1.configPhantomExpItemByItemId.Init();
+    PhantomFetterAll_1.configPhantomFetterAll.Init();
+    PhantomFetterById_1.configPhantomFetterById.Init();
+    PhantomFetterGroupAll_1.configPhantomFetterGroupAll.Init();
+    PhantomFetterGroupById_1.configPhantomFetterGroupById.Init();
+    PhantomFetterHandBookAll_1.configPhantomFetterHandBookAll.Init();
+    PhantomFormationById_1.configPhantomFormationById.Init();
+    PhantomGainByActivityId_1.configPhantomGainByActivityId.Init();
+    PhantomGainById_1.configPhantomGainById.Init();
+    PhantomGrowthByGrowthIdAndLevel_1.configPhantomGrowthByGrowthIdAndLevel.Init();
+    PhantomHandBookAll_1.configPhantomHandBookAll.Init();
+    PhantomHandBookById_1.configPhantomHandBookById.Init();
+    PhantomHandBookPageAll_1.configPhantomHandBookPageAll.Init();
+    PhantomItemAll_1.configPhantomItemAll.Init();
+    PhantomItemByItemId_1.configPhantomItemByItemId.Init();
+    PhantomItemByMonsterId_1.configPhantomItemByMonsterId.Init();
+    PhantomLevelByGroupId_1.configPhantomLevelByGroupId.Init();
+    PhantomLevelByGroupIdAndLevel_1.configPhantomLevelByGroupIdAndLevel.Init();
+    PhantomMainPropItemById_1.configPhantomMainPropItemById.Init();
+    PhantomMainPropertyById_1.configPhantomMainPropertyById.Init();
+    PhantomMainPropertyByRandGroupId_1.configPhantomMainPropertyByRandGroupId.Init();
+    PhantomManagePlanConfigAll_1.configPhantomManagePlanConfigAll.Init();
+    PhantomManagePlanConfigById_1.configPhantomManagePlanConfigById.Init();
+    PhantomManagePlanConfigByType_1.configPhantomManagePlanConfigByType.Init();
+    PhantomQualityByQuality_1.configPhantomQualityByQuality.Init();
+    PhantomRarityAll_1.configPhantomRarityAll.Init();
+    PhantomRarityByRare_1.configPhantomRarityByRare.Init();
+    PhantomSkillById_1.configPhantomSkillById.Init();
+    PhantomSkillByPhantomSkillId_1.configPhantomSkillByPhantomSkillId.Init();
+    PhantomSubPropertyById_1.configPhantomSubPropertyById.Init();
+    PhantomSubPropertyByPropId_1.configPhantomSubPropertyByPropId.Init();
+    PhantomWildItemAll_1.configPhantomWildItemAll.Init();
+    PhantomWildItemByItemId_1.configPhantomWildItemByItemId.Init();
+    PhonographAlbumAll_1.configPhonographAlbumAll.Init();
+    PhonographAlbumById_1.configPhonographAlbumById.Init();
+    PhonographMusicAll_1.configPhonographMusicAll.Init();
+    PhonographMusicById_1.configPhonographMusicById.Init();
+    PhotoFilterAll_1.configPhotoFilterAll.Init();
+    PhotoFilterById_1.configPhotoFilterById.Init();
+    PhotoMemoryActivityById_1.configPhotoMemoryActivityById.Init();
+    PhotoMemoryCollectById_1.configPhotoMemoryCollectById.Init();
+    PhotoMemoryCollectByTopicID_1.configPhotoMemoryCollectByTopicID.Init();
+    PhotoMemoryTopicAll_1.configPhotoMemoryTopicAll.Init();
+    PhotoMemoryTopicById_1.configPhotoMemoryTopicById.Init();
+    PhotoMontageById_1.configPhotoMontageById.Init();
+    PhotoMontageByRoleId_1.configPhotoMontageByRoleId.Init();
+    PhotoMontageByRoleIdAndMainAnimInstanceType_1.configPhotoMontageByRoleIdAndMainAnimInstanceType.Init();
+    PhotoSetupAll_1.configPhotoSetupAll.Init();
+    PhotoSetupByValueType_1.configPhotoSetupByValueType.Init();
+    PhotographHandBookAll_1.configPhotographHandBookAll.Init();
+    PhotographHandBookById_1.configPhotographHandBookById.Init();
+    PhotographHandBookByType_1.configPhotographHandBookByType.Init();
+    PhysicsAssetConfigById_1.configPhysicsAssetConfigById.Init();
+    PhysicsAssetConfigByIdWithDefaultId_1.configPhysicsAssetConfigByIdWithDefaultId.Init();
+    PlatformIconById_1.configPlatformIconById.Init();
+    PlayStationActivityConfigAll_1.configPlayStationActivityConfigAll.Init();
+    PlayerExpByPlayerLevel_1.configPlayerExpByPlayerLevel.Init();
+    PlayerExpByPlayerLevelArea_1.configPlayerExpByPlayerLevelArea.Init();
+    PlayerHeadReAll_1.configPlayerHeadReAll.Init();
+    PlayerHeadReById_1.configPlayerHeadReById.Init();
+    PlayerStateRestrictionById_1.configPlayerStateRestrictionById.Init();
+    PlayerTitleAll_1.configPlayerTitleAll.Init();
+    PlayerTitleById_1.configPlayerTitleById.Init();
+    PlotAudioById_1.configPlotAudioById.Init();
+    PlotGuestByGuestID_1.configPlotGuestByGuestID.Init();
+    PlotHandBookConfigAll_1.configPlotHandBookConfigAll.Init();
+    PlotHandBookConfigByQuestId_1.configPlotHandBookConfigByQuestId.Init();
+    PlotTypeAll_1.configPlotTypeAll.Init();
+    PlotTypeById_1.configPlotTypeById.Init();
+    PopularityAll_1.configPopularityAll.Init();
+    PreOpenDetectionAll_1.configPreOpenDetectionAll.Init();
+    PreOpenDetectionById_1.configPreOpenDetectionById.Init();
+    PrefabConfigById_1.configPrefabConfigById.Init();
+    PrefabRichTextDataById_1.configPrefabRichTextDataById.Init();
+    PrefabTextItemAll_1.configPrefabTextItemAll.Init();
+    PrefabTextItemByItemId_1.configPrefabTextItemByItemId.Init();
+    PrefabTextItemByPrefabPathHash_1.configPrefabTextItemByPrefabPathHash.Init();
+    PreheatBonusAll_1.configPreheatBonusAll.Init();
+    PreheatBonusById_1.configPreheatBonusById.Init();
+    PreheatQuestTextAll_1.configPreheatQuestTextAll.Init();
+    PreheatQuestTextById_1.configPreheatQuestTextById.Init();
+    PreheatSignReAll_1.configPreheatSignReAll.Init();
+    PreheatSignReById_1.configPreheatSignReById.Init();
+    PreheatVoteAll_1.configPreheatVoteAll.Init();
+    PreheatVoteById_1.configPreheatVoteById.Init();
+    PreviewItemAll_1.configPreviewItemAll.Init();
+    PreviewItemById_1.configPreviewItemById.Init();
+    PropRewardConfById_1.configPropRewardConfById.Init();
+    PropertyIndexAll_1.configPropertyIndexAll.Init();
+    PropertyIndexById_1.configPropertyIndexById.Init();
+    PunishReportById_1.configPunishReportById.Init();
+    QualityIconTagById_1.configQualityIconTagById.Init();
+    QualityInfoAll_1.configQualityInfoAll.Init();
+    QualityInfoById_1.configQualityInfoById.Init();
+    QuestById_1.configQuestById.Init();
+    QuestChapterById_1.configQuestChapterById.Init();
+    QuestDataById_1.configQuestDataById.Init();
+    QuestMainTypeById_1.configQuestMainTypeById.Init();
+    QuestNodeDataByKey_1.configQuestNodeDataByKey.Init();
+    QuestRefVideoConfigAll_1.configQuestRefVideoConfigAll.Init();
+    QuestReviewEntryAll_1.configQuestReviewEntryAll.Init();
+    QuestReviewEntryById_1.configQuestReviewEntryById.Init();
+    QuestReviewLineById_1.configQuestReviewLineById.Init();
+    QuestReviewNodeById_1.configQuestReviewNodeById.Init();
+    QuestReviewNodeByQuestLine_1.configQuestReviewNodeByQuestLine.Init();
+    QuestReviewTabById_1.configQuestReviewTabById.Init();
+    QuestReviewTreeById_1.configQuestReviewTreeById.Init();
+    QuestTagById_1.configQuestTagById.Init();
+    QuestTrackingConfigAll_1.configQuestTrackingConfigAll.Init();
+    QuestTrackingConfigById_1.configQuestTrackingConfigById.Init();
+    QuestTypeAll_1.configQuestTypeAll.Init();
+    QuestTypeById_1.configQuestTypeById.Init();
+    QuestTypeByMainId_1.configQuestTypeByMainId.Init();
+    QuickChatAll_1.configQuickChatAll.Init();
+    RacingBetConversionRateById_1.configRacingBetConversionRateById.Init();
+    RacingBetConversionRateBySeasonId_1.configRacingBetConversionRateBySeasonId.Init();
+    RacingBetMapPointById_1.configRacingBetMapPointById.Init();
+    RacingBetMapPointBySeasonId_1.configRacingBetMapPointBySeasonId.Init();
+    RacingBetRankOpenTimeById_1.configRacingBetRankOpenTimeById.Init();
+    RacingBetsBulletScreenById_1.configRacingBetsBulletScreenById.Init();
+    RacingBetsBulletScreenBySeasonId_1.configRacingBetsBulletScreenBySeasonId.Init();
+    RacingBetsGroupMatchById_1.configRacingBetsGroupMatchById.Init();
+    RacingBetsGroupMatchBySeasonId_1.configRacingBetsGroupMatchBySeasonId.Init();
+    RacingBetsLegMatchesById_1.configRacingBetsLegMatchesById.Init();
+    RacingBetsLegMatchesByMatchId_1.configRacingBetsLegMatchesByMatchId.Init();
+    RacingBetsRewardById_1.configRacingBetsRewardById.Init();
+    RacingBetsRewardBySeasonId_1.configRacingBetsRewardBySeasonId.Init();
+    RacingBetsSeasonById_1.configRacingBetsSeasonById.Init();
+    RacingBettingGearById_1.configRacingBettingGearById.Init();
+    RacingBettingGearBySeasonId_1.configRacingBettingGearBySeasonId.Init();
+    RecordConfigById_1.configRecordConfigById.Init();
+    RedDotByRelativeName_1.configRedDotByRelativeName.Init();
+    RefineRecommendAll_1.configRefineRecommendAll.Init();
+    RefineRecommendByCost_1.configRefineRecommendByCost.Init();
+    RegressBaseAll_1.configRegressBaseAll.Init();
+    RegressBaseByEntryType_1.configRegressBaseByEntryType.Init();
+    RegressBonusRewardAll_1.configRegressBonusRewardAll.Init();
+    RegressBonusRewardByGrade_1.configRegressBonusRewardByGrade.Init();
+    RegressBonusRewardByIdAndGrade_1.configRegressBonusRewardByIdAndGrade.Init();
+    RegressDoubleDropAll_1.configRegressDoubleDropAll.Init();
+    RegressDoubleDropByGrade_1.configRegressDoubleDropByGrade.Init();
+    RegressDoubleDropById_1.configRegressDoubleDropById.Init();
+    RegressEntryAll_1.configRegressEntryAll.Init();
+    RegressEntryByEntryType_1.configRegressEntryByEntryType.Init();
+    RegressInvestigationAll_1.configRegressInvestigationAll.Init();
+    RegressInvestigationByInvestigationTypeAndIfGlobal_1.configRegressInvestigationByInvestigationTypeAndIfGlobal.Init();
+    RegressQuestAll_1.configRegressQuestAll.Init();
+    RegressQuestById_1.configRegressQuestById.Init();
+    RegressRewardsById_1.configRegressRewardsById.Init();
+    RegressSignRewardAll_1.configRegressSignRewardAll.Init();
+    RegressSignRewardByGradeAndActivityId_1.configRegressSignRewardByGradeAndActivityId.Init();
+    ReignsById_1.configReignsById.Init();
+    ReignsCardById_1.configReignsCardById.Init();
+    ReportPlayerInfoAll_1.configReportPlayerInfoAll.Init();
+    ResElementLevelGainByTargetType_1.configResElementLevelGainByTargetType.Init();
+    ResonantChainByGroupId_1.configResonantChainByGroupId.Init();
+    ResonantChainByGroupIdAndGroupIndex_1.configResonantChainByGroupIdAndGroupIndex.Init();
+    ResonantChainByGroupIdAndNodeType_1.configResonantChainByGroupIdAndNodeType.Init();
+    ResonantChainById_1.configResonantChainById.Init();
+    ReviveById_1.configReviveById.Init();
+    RewardConfigById_1.configRewardConfigById.Init();
+    RewardViewFromSourceAll_1.configRewardViewFromSourceAll.Init();
+    RewardViewFromSourceBySourceId_1.configRewardViewFromSourceBySourceId.Init();
+    RiskHarvestActivityInfoByActivityId_1.configRiskHarvestActivityInfoByActivityId.Init();
+    RiskHarvestArtifactAll_1.configRiskHarvestArtifactAll.Init();
+    RiskHarvestArtifactById_1.configRiskHarvestArtifactById.Init();
+    RiskHarvestBuffGroupAll_1.configRiskHarvestBuffGroupAll.Init();
+    RiskHarvestBuffGroupByActivityId_1.configRiskHarvestBuffGroupByActivityId.Init();
+    RiskHarvestBuffGroupById_1.configRiskHarvestBuffGroupById.Init();
+    RiskHarvestBuffRewardAll_1.configRiskHarvestBuffRewardAll.Init();
+    RiskHarvestBuffRewardById_1.configRiskHarvestBuffRewardById.Init();
+    RiskHarvestDifficultyById_1.configRiskHarvestDifficultyById.Init();
+    RiskHarvestInstAll_1.configRiskHarvestInstAll.Init();
+    RiskHarvestInstByActivityId_1.configRiskHarvestInstByActivityId.Init();
+    RiskHarvestInstById_1.configRiskHarvestInstById.Init();
+    RiskHarvestInstByInstanceID_1.configRiskHarvestInstByInstanceID.Init();
+    RiskHarvestScoreRewardAll_1.configRiskHarvestScoreRewardAll.Init();
+    RiskHarvestScoreRewardByActivityId_1.configRiskHarvestScoreRewardByActivityId.Init();
+    RiskHarvestScoreRewardById_1.configRiskHarvestScoreRewardById.Init();
+    RogueActivityById_1.configRogueActivityById.Init();
+    RogueAffixById_1.configRogueAffixById.Init();
+    RogueBossInstanceById_1.configRogueBossInstanceById.Init();
+    RogueBuffPoolById_1.configRogueBuffPoolById.Init();
+    RogueCharacterById_1.configRogueCharacterById.Init();
+    RogueCharacterBuffById_1.configRogueCharacterBuffById.Init();
+    RogueCurrencyById_1.configRogueCurrencyById.Init();
+    RogueEffectById_1.configRogueEffectById.Init();
+    RogueEventById_1.configRogueEventById.Init();
+    RogueLimitTimeRewardById_1.configRogueLimitTimeRewardById.Init();
+    RogueParamById_1.configRogueParamById.Init();
+    RoguePokemonById_1.configRoguePokemonById.Init();
+    RoguePopularEntrieArgAll_1.configRoguePopularEntrieArgAll.Init();
+    RoguePopularEntrieArgById_1.configRoguePopularEntrieArgById.Init();
+    RoguePopularEntrieArgBySeasonIdAndInstId_1.configRoguePopularEntrieArgBySeasonIdAndInstId.Init();
+    RogueQualityConfigById_1.configRogueQualityConfigById.Init();
+    RogueResAffixById_1.configRogueResAffixById.Init();
+    RogueResBondAll_1.configRogueResBondAll.Init();
+    RogueResBondById_1.configRogueResBondById.Init();
+    RogueResBondLvByLv_1.configRogueResBondLvByLv.Init();
+    RogueResBondRoleAll_1.configRogueResBondRoleAll.Init();
+    RogueResBondRoleByRoleId_1.configRogueResBondRoleByRoleId.Init();
+    RogueResBuffPoolById_1.configRogueResBuffPoolById.Init();
+    RogueResCharacterById_1.configRogueResCharacterById.Init();
+    RogueResCharacterBuffById_1.configRogueResCharacterBuffById.Init();
+    RogueResCollectionAll_1.configRogueResCollectionAll.Init();
+    RogueResCollectionById_1.configRogueResCollectionById.Init();
+    RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.Init();
+    RogueResCollectionByIndex_1.configRogueResCollectionByIndex.Init();
+    RogueResCollectionRuleById_1.configRogueResCollectionRuleById.Init();
+    RogueResCurrencyById_1.configRogueResCurrencyById.Init();
+    RogueResDungeonConfigById_1.configRogueResDungeonConfigById.Init();
+    RogueResEffectById_1.configRogueResEffectById.Init();
+    RogueResEffectTagById_1.configRogueResEffectTagById.Init();
+    RogueResEndAll_1.configRogueResEndAll.Init();
+    RogueResEndById_1.configRogueResEndById.Init();
+    RogueResEndAwardById_1.configRogueResEndAwardById.Init();
+    RogueResEventById_1.configRogueResEventById.Init();
+    RogueResEventBgById_1.configRogueResEventBgById.Init();
+    RogueResEventBgmById_1.configRogueResEventBgmById.Init();
+    RogueResEventCueByType_1.configRogueResEventCueByType.Init();
+    RogueResEventPlotByPlotId_1.configRogueResEventPlotByPlotId.Init();
+    RogueResEventStepById_1.configRogueResEventStepById.Init();
+    RogueResGlobalParamAll_1.configRogueResGlobalParamAll.Init();
+    RogueResGridEventById_1.configRogueResGridEventById.Init();
+    RogueResGridExploreByInstId_1.configRogueResGridExploreByInstId.Init();
+    RogueResGridMapTypeById_1.configRogueResGridMapTypeById.Init();
+    RogueResInstGridById_1.configRogueResInstGridById.Init();
+    RogueResMoodRuleById_1.configRogueResMoodRuleById.Init();
+    RogueResPokemonById_1.configRogueResPokemonById.Init();
+    RogueResQualityConfigById_1.configRogueResQualityConfigById.Init();
+    RogueResRoomPoolById_1.configRogueResRoomPoolById.Init();
+    RogueResRoomTypeById_1.configRogueResRoomTypeById.Init();
+    RogueResSkillLvRuleAll_1.configRogueResSkillLvRuleAll.Init();
+    RogueResSortById_1.configRogueResSortById.Init();
+    RogueResSynergyTypeAll_1.configRogueResSynergyTypeAll.Init();
+    RogueResSynergyTypeById_1.configRogueResSynergyTypeById.Init();
+    RogueResTalentTreeAll_1.configRogueResTalentTreeAll.Init();
+    RogueResTalentTreeById_1.configRogueResTalentTreeById.Init();
+    RogueResTalentTreeDescById_1.configRogueResTalentTreeDescById.Init();
+    RogueResTaskById_1.configRogueResTaskById.Init();
+    RogueResTaskThemeById_1.configRogueResTaskThemeById.Init();
+    RogueResTeamLvRuleAll_1.configRogueResTeamLvRuleAll.Init();
+    RogueResThemeAll_1.configRogueResThemeAll.Init();
+    RogueResThemeById_1.configRogueResThemeById.Init();
+    RogueRoomPoolById_1.configRogueRoomPoolById.Init();
+    RogueRoomShowConfigById_1.configRogueRoomShowConfigById.Init();
+    RogueRoomTypeById_1.configRogueRoomTypeById.Init();
+    RogueSeasonAll_1.configRogueSeasonAll.Init();
+    RogueSeasonById_1.configRogueSeasonById.Init();
+    RogueSeasonRewardBySeasonId_1.configRogueSeasonRewardBySeasonId.Init();
+    RogueTalentTreeAll_1.configRogueTalentTreeAll.Init();
+    RogueTalentTreeById_1.configRogueTalentTreeById.Init();
+    RogueTalentTreeDescById_1.configRogueTalentTreeDescById.Init();
+    RogueTokenBySeasonId_1.configRogueTokenBySeasonId.Init();
+    RogueWeekQualityConfigAll_1.configRogueWeekQualityConfigAll.Init();
+    RogueWeekQualityConfigById_1.configRogueWeekQualityConfigById.Init();
+    RogueWeeklyBuffDescAll_1.configRogueWeeklyBuffDescAll.Init();
+    RogueWeeklyBuffDescById_1.configRogueWeeklyBuffDescById.Init();
+    RogueWeeklyBuffPoolAll_1.configRogueWeeklyBuffPoolAll.Init();
+    RogueWeeklyBuffPoolById_1.configRogueWeeklyBuffPoolById.Init();
+    RogueWeeklyCycleById_1.configRogueWeeklyCycleById.Init();
+    RogueWeeklyParamAll_1.configRogueWeeklyParamAll.Init();
+    RogueWeeklyParamById_1.configRogueWeeklyParamById.Init();
+    RogueWeeklyRewardByCycleId_1.configRogueWeeklyRewardByCycleId.Init();
+    RogueWeeklyRewardById_1.configRogueWeeklyRewardById.Init();
+    RogueWeeklyRoomPoolAll_1.configRogueWeeklyRoomPoolAll.Init();
+    RogueWeeklyRoomPoolById_1.configRogueWeeklyRoomPoolById.Init();
+    RogueWeeklyRoomTypeAll_1.configRogueWeeklyRoomTypeAll.Init();
+    RogueWeeklyRoomTypeById_1.configRogueWeeklyRoomTypeById.Init();
+    RogueWhiteCatById_1.configRogueWhiteCatById.Init();
+    RogueWhiteCatBossRewardById_1.configRogueWhiteCatBossRewardById.Init();
+    RogueWhiteCatInstById_1.configRogueWhiteCatInstById.Init();
+    RogueWhiteCatRewardById_1.configRogueWhiteCatRewardById.Init();
+    RoleAnimAudioByRoleId_1.configRoleAnimAudioByRoleId.Init();
+    RoleAudioById_1.configRoleAudioById.Init();
+    RoleAudioRulesById_1.configRoleAudioRulesById.Init();
+    RoleBattleViewInfoAll_1.configRoleBattleViewInfoAll.Init();
+    RoleBattleViewInfoById_1.configRoleBattleViewInfoById.Init();
+    RoleBirthdayAll_1.configRoleBirthdayAll.Init();
+    RoleBirthdayById_1.configRoleBirthdayById.Init();
+    RoleBreachByBreachGroupId_1.configRoleBreachByBreachGroupId.Init();
+    RoleBreachByBreachGroupIdAndBreachLevel_1.configRoleBreachByBreachGroupIdAndBreachLevel.Init();
+    RoleDescriptionById_1.configRoleDescriptionById.Init();
+    RoleDevelopCurveByGroupId_1.configRoleDevelopCurveByGroupId.Init();
+    RoleDevelopTypeById_1.configRoleDevelopTypeById.Init();
+    RoleExpItemAll_1.configRoleExpItemAll.Init();
+    RoleExpItemById_1.configRoleExpItemById.Init();
+    RoleGuideActivityById_1.configRoleGuideActivityById.Init();
+    RoleIconTagById_1.configRoleIconTagById.Init();
+    RoleInfluenceAll_1.configRoleInfluenceAll.Init();
+    RoleInfluenceById_1.configRoleInfluenceById.Init();
+    RoleInfoAll_1.configRoleInfoAll.Init();
+    RoleInfoById_1.configRoleInfoById.Init();
+    RoleInfoByRoleType_1.configRoleInfoByRoleType.Init();
+    RoleLevelConsumeByConsumeGroupIdAndLevel_1.configRoleLevelConsumeByConsumeGroupIdAndLevel.Init();
+    RoleMorphAll_1.configRoleMorphAll.Init();
+    RoleMorphById_1.configRoleMorphById.Init();
+    RoleMorphByRoleId_1.configRoleMorphByRoleId.Init();
+    RoleMorphAudioRulesAll_1.configRoleMorphAudioRulesAll.Init();
+    RoleMorphAudioRulesByModelId_1.configRoleMorphAudioRulesByModelId.Init();
+    RolePropertyGrowthByLevelAndBreachLevel_1.configRolePropertyGrowthByLevelAndBreachLevel.Init();
+    RoleQualityInfoById_1.configRoleQualityInfoById.Init();
+    RoleQuestById_1.configRoleQuestById.Init();
+    RoleQuestByRoleId_1.configRoleQuestByRoleId.Init();
+    RoleQuestByRoleIdAll_1.configRoleQuestByRoleIdAll.Init();
+    RoleSkillInputById_1.configRoleSkillInputById.Init();
+    RoleSkinAll_1.configRoleSkinAll.Init();
+    RoleSkinById_1.configRoleSkinById.Init();
+    RoleSkinByRoleId_1.configRoleSkinByRoleId.Init();
+    RoleSkinBirthdayById_1.configRoleSkinBirthdayById.Init();
+    RoleSkinTrialActivityById_1.configRoleSkinTrialActivityById.Init();
+    RoleSkinTrialInfoById_1.configRoleSkinTrialInfoById.Init();
+    RoleSkinTrialInfoByRoleId_1.configRoleSkinTrialInfoByRoleId.Init();
+    RoleSkinTrialUiConfigById_1.configRoleSkinTrialUiConfigById.Init();
+    RoleTagAll_1.configRoleTagAll.Init();
+    RoleTagById_1.configRoleTagById.Init();
+    RoleTrainingDegreeByDifficultyLevel_1.configRoleTrainingDegreeByDifficultyLevel.Init();
+    RoleTrialActivityById_1.configRoleTrialActivityById.Init();
+    RoleTrialInfoById_1.configRoleTrialInfoById.Init();
+    RoleTrialRoleConfigByRoleId_1.configRoleTrialRoleConfigByRoleId.Init();
+    RoleTrialUiConfigById_1.configRoleTrialUiConfigById.Init();
+    RougeMiraclecreationById_1.configRougeMiraclecreationById.Init();
+    RougePopularEntrieAll_1.configRougePopularEntrieAll.Init();
+    RougePopularEntrieById_1.configRougePopularEntrieById.Init();
+    RougeResMiraclecreationById_1.configRougeResMiraclecreationById.Init();
+    ScoreRewardById_1.configScoreRewardById.Init();
+    ScratchCardActivityReById_1.configScratchCardActivityReById.Init();
+    ScratchCardRewardReById_1.configScratchCardRewardReById.Init();
+    ScratchCardRewardReByType_1.configScratchCardRewardReByType.Init();
+    ScratchCardRoundReByRoundId_1.configScratchCardRoundReByRoundId.Init();
+    ScratchCardTimesReByTaskId_1.configScratchCardTimesReByTaskId.Init();
+    SecondaryGuideDataById_1.configSecondaryGuideDataById.Init();
+    ServerLimitAll_1.configServerLimitAll.Init();
+    ServerLimitById_1.configServerLimitById.Init();
+    SetAccountAll_1.configSetAccountAll.Init();
+    SetAccountById_1.configSetAccountById.Init();
+    SettleFlagAll_1.configSettleFlagAll.Init();
+    SettleFlagById_1.configSettleFlagById.Init();
+    SettleRewardAll_1.configSettleRewardAll.Init();
+    SettleRewardByActivityId_1.configSettleRewardByActivityId.Init();
+    SharePlatformAll_1.configSharePlatformAll.Init();
+    SharePlatformById_1.configSharePlatformById.Init();
+    ShareRewardById_1.configShareRewardById.Init();
+    ShieldById_1.configShieldById.Init();
+    ShopFixedByShopId_1.configShopFixedByShopId.Init();
+    ShopFixedByShopIdAndId_1.configShopFixedByShopIdAndId.Init();
+    ShopInfoById_1.configShopInfoById.Init();
+    SignRewardByActivityId_1.configSignRewardByActivityId.Init();
+    SignalDecodeGamePlayById_1.configSignalDecodeGamePlayById.Init();
+    SignalDecodeTabColorById_1.configSignalDecodeTabColorById.Init();
+    SignalDecodeWaveformById_1.configSignalDecodeWaveformById.Init();
+    SilentAreaDetectionAll_1.configSilentAreaDetectionAll.Init();
+    SilentAreaDetectionById_1.configSilentAreaDetectionById.Init();
+    SkillById_1.configSkillById.Init();
+    SkillBySkillGroupId_1.configSkillBySkillGroupId.Init();
+    SkillButtonByRoleId_1.configSkillButtonByRoleId.Init();
+    SkillButtonCustomById_1.configSkillButtonCustomById.Init();
+    SkillButtonEffectById_1.configSkillButtonEffectById.Init();
+    SkillButtonIndexById_1.configSkillButtonIndexById.Init();
+    SkillButtonTextAll_1.configSkillButtonTextAll.Init();
+    SkillButtonTextById_1.configSkillButtonTextById.Init();
+    SkillCommonButtonAll_1.configSkillCommonButtonAll.Init();
+    SkillConditionById_1.configSkillConditionById.Init();
+    SkillDescriptionById_1.configSkillDescriptionById.Init();
+    SkillDescriptionBySkillLevelGroupId_1.configSkillDescriptionBySkillLevelGroupId.Init();
+    SkillFollowerButtonByPbDataId_1.configSkillFollowerButtonByPbDataId.Init();
+    SkillIconByTag_1.configSkillIconByTag.Init();
+    SkillInputById_1.configSkillInputById.Init();
+    SkillLevelBySkillLevelGroupId_1.configSkillLevelBySkillLevelGroupId.Init();
+    SkillLevelBySkillLevelGroupIdAndSkillId_1.configSkillLevelBySkillLevelGroupIdAndSkillId.Init();
+    SkillPriorityButtonAll_1.configSkillPriorityButtonAll.Init();
+    SkillTreeById_1.configSkillTreeById.Init();
+    SkillTreeByNodeGroup_1.configSkillTreeByNodeGroup.Init();
+    SkillTreeByNodeGroupAndNodeIndex_1.configSkillTreeByNodeGroupAndNodeIndex.Init();
+    SkillTreeByNodeIndex_1.configSkillTreeByNodeIndex.Init();
+    SkillTypeById_1.configSkillTypeById.Init();
+    SkillVehicleButtonByPbDataId_1.configSkillVehicleButtonByPbDataId.Init();
+    SkyboxById_1.configSkyboxById.Init();
+    SlashAndTowerCfgById_1.configSlashAndTowerCfgById.Init();
+    SlashAndTowerCfgBySeason_1.configSlashAndTowerCfgBySeason.Init();
+    SlashAndTowerRewardByBelongToSeason_1.configSlashAndTowerRewardByBelongToSeason.Init();
+    SlashBuffToItemAll_1.configSlashBuffToItemAll.Init();
+    SlashBuffToItemById_1.configSlashBuffToItemById.Init();
+    SlashBuffToItemByItemId_1.configSlashBuffToItemByItemId.Init();
+    SlashBuffToItemByItemIdAndSeason_1.configSlashBuffToItemByItemIdAndSeason.Init();
+    SlashBuffToItemByItemIdList_1.configSlashBuffToItemByItemIdList.Init();
+    SlashBuffToItemBySeason_1.configSlashBuffToItemBySeason.Init();
+    SlashTowerShowStageAll_1.configSlashTowerShowStageAll.Init();
+    SlashTowerStageInfoByInstId_1.configSlashTowerStageInfoByInstId.Init();
+    SlashTowerTagInfoById_1.configSlashTowerTagInfoById.Init();
+    SlideById_1.configSlideById.Init();
+    SoarById_1.configSoarById.Init();
+    SoarChallengeAll_1.configSoarChallengeAll.Init();
+    SoarChallengeById_1.configSoarChallengeById.Init();
+    SortById_1.configSortById.Init();
+    SortRuleByIdAndDataId_1.configSortRuleByIdAndDataId.Init();
+    SoundAreaPlayInfoAll_1.configSoundAreaPlayInfoAll.Init();
+    SoundAreaPlayInfoById_1.configSoundAreaPlayInfoById.Init();
+    SoundBoxMarkByMarkId_1.configSoundBoxMarkByMarkId.Init();
+    SpeakerById_1.configSpeakerById.Init();
+    SpeakerLang_1.configSpeakerLang.Init();
+    SpecialHateAndSenseById_1.configSpecialHateAndSenseById.Init();
+    SpecialItemById_1.configSpecialItemById.Init();
+    SpineBackgroundById_1.configSpineBackgroundById.Init();
+    SplashScreenAll_1.configSplashScreenAll.Init();
+    SplashScreenById_1.configSplashScreenById.Init();
+    SpringChatById_1.configSpringChatById.Init();
+    SpringResourceAll_1.configSpringResourceAll.Init();
+    SpringResourceById_1.configSpringResourceById.Init();
+    SpringResourceByRoleType_1.configSpringResourceByRoleType.Init();
+    SpringRewardAll_1.configSpringRewardAll.Init();
+    SpringSignAll_1.configSpringSignAll.Init();
+    SpringSignById_1.configSpringSignById.Init();
+    StateByStateId_1.configStateByStateId.Init();
+    StateMachinePreloadByAll_1.configStateMachinePreloadByAll.Init();
+    StateMachinePreloadByFsmKey_1.configStateMachinePreloadByFsmKey.Init();
+    StateMachinePreloadById_1.configStateMachinePreloadById.Init();
+    SubtitleTextByRowNameAndDatatableName_1.configSubtitleTextByRowNameAndDatatableName.Init();
+    SubtitleTextLang_1.configSubtitleTextLang.Init();
+    SummonCfgById_1.configSummonCfgById.Init();
+    SwimById_1.configSwimById.Init();
+    SwimBuffById_1.configSwimBuffById.Init();
+    SynthesisFormulaByFormulaItemId_1.configSynthesisFormulaByFormulaItemId.Init();
+    SynthesisFormulaByFormulaType_1.configSynthesisFormulaByFormulaType.Init();
+    SynthesisFormulaById_1.configSynthesisFormulaById.Init();
+    SynthesisLevelAll_1.configSynthesisLevelAll.Init();
+    TakeWeedsDifficultyById_1.configTakeWeedsDifficultyById.Init();
+    TalkOptionIconById_1.configTalkOptionIconById.Init();
+    TaskMarkAll_1.configTaskMarkAll.Init();
+    TaskMarkByMarkId_1.configTaskMarkByMarkId.Init();
+    TeamConfigById_1.configTeamConfigById.Init();
+    TeamParKOurCfgAll_1.configTeamParKOurCfgAll.Init();
+    TeamParKOurCfgById_1.configTeamParKOurCfgById.Init();
+    TeamParKOurRewardAll_1.configTeamParKOurRewardAll.Init();
+    TeamParKOurRewardById_1.configTeamParKOurRewardById.Init();
+    TeleporterById_1.configTeleporterById.Init();
+    TemplateConfigAll_1.configTemplateConfigAll.Init();
+    TemplateConfigByBlueprintType_1.configTemplateConfigByBlueprintType.Init();
+    TemplateConfigById_1.configTemplateConfigById.Init();
+    TemplateDataPreloadByAll_1.configTemplateDataPreloadByAll.Init();
+    TemplateDataPreloadById_1.configTemplateDataPreloadById.Init();
+    TemporaryTeleportMarkByMarkId_1.configTemporaryTeleportMarkByMarkId.Init();
+    TermConfigById_1.configTermConfigById.Init();
+    TermConfigByKey_1.configTermConfigByKey.Init();
+    TermExplanationViewStyleById_1.configTermExplanationViewStyleById.Init();
+    TextById_1.configTextById.Init();
+    TimeOfDayById_1.configTimeOfDayById.Init();
+    TimePointRewardActivityByActivityId_1.configTimePointRewardActivityByActivityId.Init();
+    TimePointRewardActivityById_1.configTimePointRewardActivityById.Init();
+    TimePointRewardConfigByActivityId_1.configTimePointRewardConfigByActivityId.Init();
+    ToughCalcRatioById_1.configToughCalcRatioById.Init();
+    TowerBuffById_1.configTowerBuffById.Init();
+    TowerConfigAll_1.configTowerConfigAll.Init();
+    TowerConfigById_1.configTowerConfigById.Init();
+    TowerConfigBySeason_1.configTowerConfigBySeason.Init();
+    TowerDefenceInstanceAll_1.configTowerDefenceInstanceAll.Init();
+    TowerDefenceInstanceById_1.configTowerDefenceInstanceById.Init();
+    TowerDefenceInstanceByInstanceId_1.configTowerDefenceInstanceByInstanceId.Init();
+    TowerDefenceMapMarkAll_1.configTowerDefenceMapMarkAll.Init();
+    TowerDefenceMapMarkByActivityId_1.configTowerDefenceMapMarkByActivityId.Init();
+    TowerDefencePhantomAll_1.configTowerDefencePhantomAll.Init();
+    TowerDefencePhantomById_1.configTowerDefencePhantomById.Init();
+    TowerDefencePhantomLevelAll_1.configTowerDefencePhantomLevelAll.Init();
+    TowerDefencePhantomLevelByGroupId_1.configTowerDefencePhantomLevelByGroupId.Init();
+    TowerDefencePhantomLevelById_1.configTowerDefencePhantomLevelById.Init();
+    TowerDefenceRewardAll_1.configTowerDefenceRewardAll.Init();
+    TowerDefenceRewardById_1.configTowerDefenceRewardById.Init();
+    TowerDefenseConfigById_1.configTowerDefenseConfigById.Init();
+    TowerDefenseSettleById_1.configTowerDefenseSettleById.Init();
+    TowerDifficultyByDifficulty_1.configTowerDifficultyByDifficulty.Init();
+    TowerGuideById_1.configTowerGuideById.Init();
+    TowerTargetById_1.configTowerTargetById.Init();
+    TrackMoonActivityById_1.configTrackMoonActivityById.Init();
+    TrackMoonActivityRewardAll_1.configTrackMoonActivityRewardAll.Init();
+    TrackMoonActivityRewardById_1.configTrackMoonActivityRewardById.Init();
+    TrackMoonEntrustById_1.configTrackMoonEntrustById.Init();
+    TrackMoonHandbookRewardAll_1.configTrackMoonHandbookRewardAll.Init();
+    TrackMoonHandbookRewardById_1.configTrackMoonHandbookRewardById.Init();
+    TrackMoonMemoryAll_1.configTrackMoonMemoryAll.Init();
+    TrackMoonMemoryByClassify_1.configTrackMoonMemoryByClassify.Init();
+    TrackMoonMemoryById_1.configTrackMoonMemoryById.Init();
+    TrackMoonPhaseActivityById_1.configTrackMoonPhaseActivityById.Init();
+    TrackMoonTargetById_1.configTrackMoonTargetById.Init();
+    TrackMoonTargetTypeAll_1.configTrackMoonTargetTypeAll.Init();
+    TrailPhantomPropById_1.configTrailPhantomPropById.Init();
+    TrainRoleDialogByRoleIdAndTrainType_1.configTrainRoleDialogByRoleIdAndTrainType.Init();
+    TravelPhantomQuestByActivityId_1.configTravelPhantomQuestByActivityId.Init();
+    TravelPhantomQuestById_1.configTravelPhantomQuestById.Init();
+    TravelPhantomQuestByMapMarkId_1.configTravelPhantomQuestByMapMarkId.Init();
+    TravelTaskByActivityId_1.configTravelTaskByActivityId.Init();
+    TravelTaskByTaskId_1.configTravelTaskByTaskId.Init();
+    TravelTaskAreaByActivityId_1.configTravelTaskAreaByActivityId.Init();
+    TravelTaskAreaById_1.configTravelTaskAreaById.Init();
+    TreasureBoxDetectorMarkByMarkId_1.configTreasureBoxDetectorMarkByMarkId.Init();
+    TreasureBoxMarkByMarkId_1.configTreasureBoxMarkByMarkId.Init();
+    TrialPhantomPropItemById_1.configTrialPhantomPropItemById.Init();
+    TrialRoleInfoAll_1.configTrialRoleInfoAll.Init();
+    TrialRoleInfoByGroupId_1.configTrialRoleInfoByGroupId.Init();
+    TrialRoleInfoById_1.configTrialRoleInfoById.Init();
+    TrialWeaponInfoById_1.configTrialWeaponInfoById.Init();
+    TuningNodeByAll_1.configTuningNodeByAll.Init();
+    TuningNodeById_1.configTuningNodeById.Init();
+    TurntableActivityByActivityId_1.configTurntableActivityByActivityId.Init();
+    TurntableAwardsByActivityId_1.configTurntableAwardsByActivityId.Init();
+    TurntableAwardsById_1.configTurntableAwardsById.Init();
+    TurntableInfoById_1.configTurntableInfoById.Init();
+    TurntableTaskByTaskId_1.configTurntableTaskByTaskId.Init();
+    TypeInfoById_1.configTypeInfoById.Init();
+    UiCameraMappingAll_1.configUiCameraMappingAll.Init();
+    UiCameraMappingById_1.configUiCameraMappingById.Init();
+    UiCameraMappingByViewName_1.configUiCameraMappingByViewName.Init();
+    UiDynamicTabByChildViewName_1.configUiDynamicTabByChildViewName.Init();
+    UiDynamicTabById_1.configUiDynamicTabById.Init();
+    UiDynamicTabByParentViewName_1.configUiDynamicTabByParentViewName.Init();
+    UiFloatConfigByViewName_1.configUiFloatConfigByViewName.Init();
+    UiFloatConfigByViewNameIfNull_1.configUiFloatConfigByViewNameIfNull.Init();
+    UiNormalConfigByViewName_1.configUiNormalConfigByViewName.Init();
+    UiNormalConfigByViewNameIfNull_1.configUiNormalConfigByViewNameIfNull.Init();
+    UiPlayItemById_1.configUiPlayItemById.Init();
+    UiResourceById_1.configUiResourceById.Init();
+    UiShowByViewName_1.configUiShowByViewName.Init();
+    UiWeaponVisibleConfigById_1.configUiWeaponVisibleConfigById.Init();
+    UniversalActivityById_1.configUniversalActivityById.Init();
+    VideoCaptionByCgName_1.configVideoCaptionByCgName.Init();
+    VideoDataByCgNameAndGirlOrBoy_1.configVideoDataByCgNameAndGirlOrBoy.Init();
+    VideoQteByCgName_1.configVideoQteByCgName.Init();
+    VideoSoundByCgNameAndGirlOrBoy_1.configVideoSoundByCgNameAndGirlOrBoy.Init();
+    WeaponBreachByBreachId_1.configWeaponBreachByBreachId.Init();
+    WeaponBreachByBreachIdAndLevel_1.configWeaponBreachByBreachIdAndLevel.Init();
+    WeaponConfByItemId_1.configWeaponConfByItemId.Init();
+    WeaponExpItemById_1.configWeaponExpItemById.Init();
+    WeaponHandBookAll_1.configWeaponHandBookAll.Init();
+    WeaponHandBookById_1.configWeaponHandBookById.Init();
+    WeaponHideConfigById_1.configWeaponHideConfigById.Init();
+    WeaponHideConfigByIdWithZero_1.configWeaponHideConfigByIdWithZero.Init();
+    WeaponLevelByLevelId_1.configWeaponLevelByLevelId.Init();
+    WeaponLevelByLevelIdAndLevel_1.configWeaponLevelByLevelIdAndLevel.Init();
+    WeaponModelTransformById_1.configWeaponModelTransformById.Init();
+    WeaponPropertyGrowthByCurveIdLevelAndBreachLevel_1.configWeaponPropertyGrowthByCurveIdLevelAndBreachLevel.Init();
+    WeaponQualityInfoById_1.configWeaponQualityInfoById.Init();
+    WeaponResonByResonIdAndLevel_1.configWeaponResonByResonIdAndLevel.Init();
+    WeaponSceneInteractById_1.configWeaponSceneInteractById.Init();
+    WeaponSkinById_1.configWeaponSkinById.Init();
+    WeaponSkinByType_1.configWeaponSkinByType.Init();
+    WeaponVisibleConfigById_1.configWeaponVisibleConfigById.Init();
+    WeaponVisibleConfigByIdWithZero_1.configWeaponVisibleConfigByIdWithZero.Init();
+    WeatherById_1.configWeatherById.Init();
+    WorldLevelById_1.configWorldLevelById.Init();
+    WorldNewJourneyAll_1.configWorldNewJourneyAll.Init();
+    WorldNewJourneyById_1.configWorldNewJourneyById.Init();
   }
 }
 exports.ConfigStatement = ConfigStatement;

@@ -1,65 +1,98 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BehaviorTreeSuspendComponent = void 0;
-const UE = require("ue"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  GeneralLogicTreeUtil_1 = require("../GeneralLogicTreeUtil");
+  value: true
+});
+exports.BehaviorTreeSuspendComponent = undefined;
+const UE = require("ue");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const GeneralLogicTreeUtil_1 = require("../GeneralLogicTreeUtil");
 class BehaviorTreeSuspendComponent {
   constructor(e, t) {
-    this.$mt = BigInt(0), this.Yre = void 0, this._Qt = void 0, this.Wjs = 0, this.Yre = t, this._Qt = [], this.$mt = e
+    this.$mt = BigInt(0);
+    this.Yre = undefined;
+    this._Qt = undefined;
+    this.Wjs = 0;
+    this.Yre = t;
+    this._Qt = [];
+    this.$mt = e;
   }
   GetSuspendType() {
-    return this.Wjs ? 2 == (2 & this.Wjs) ? 2 : 1 == (1 & this.Wjs) ? 1 : 0 : 0
+    if (this.Wjs) {
+      if ((this.Wjs & 2) == 2) {
+        return 2;
+      } else if ((this.Wjs & 1) == 1) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
+    }
   }
   GetSuspendText() {
     if (this.Yre.IsSuspend()) {
-      let e = void 0;
+      let e = undefined;
       switch (this.GetSuspendType()) {
         case 1:
-          this._Qt && 0 < this._Qt.length && (e = this.cQt(this._Qt[0]));
+          if (this._Qt && this._Qt.length > 0) {
+            e = this.cQt(this._Qt[0]);
+          }
           break;
         case 2:
-          e = ConfigManager_1.ConfigManager.TextConfig.GetTextById("SuspendByOnline")
+          e = ConfigManager_1.ConfigManager.TextConfig.GetTextById("SuspendByOnline");
       }
-      return e
+      return e;
     }
   }
   GetOccupations() {
-    return this._Qt
+    return this._Qt;
   }
   cQt(e) {
-    var t = ConfigManager_1.ConfigManager.TextConfig.GetTextById("QuestResourcesIsOccupied"),
-      i = UE.NewArray(UE.BuiltinString),
-      s = ConfigManager_1.ConfigManager.QuestNewConfig.GetOccupationResourceName(e.ResourceName),
-      e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTreeName(e.TreeIncId);
-    return i.Add(s), i.Add(e), UE.KuroStaticLibrary.KuroFormatText(t, i)
+    var t = ConfigManager_1.ConfigManager.TextConfig.GetTextById("QuestResourcesIsOccupied");
+    var i = UE.NewArray(UE.BuiltinString);
+    var s = ConfigManager_1.ConfigManager.QuestNewConfig.GetOccupationResourceName(e.ResourceName);
+    var e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTreeName(e.TreeIncId);
+    i.Add(s);
+    i.Add(e);
+    return UE.KuroStaticLibrary.KuroFormatText(t, i);
   }
   UpdateOccupations(e, t, i) {
-    if (0 === (this.Wjs = t)) this.ClearOccupations();
-    else {
-      this.Yre.RemoveTag(9), this._Qt.splice(0, this._Qt.length);
+    if ((this.Wjs = t) === 0) {
+      this.ClearOccupations();
+    } else {
+      this.Yre.RemoveTag(9);
+      this._Qt.splice(0, this._Qt.length);
       for (const n of i) {
-        var s = MathUtils_1.MathUtils.LongToBigInt(n.w5n),
-          s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(s);
+        var s = MathUtils_1.MathUtils.LongToBigInt(n.w5n);
+        var s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(s);
         let e = "";
-        s && (s = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetLogicTreeContainer(s.BtType, s.TreeConfigId), e = s.Name), this._Qt.push({
+        if (s) {
+          s = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetLogicTreeContainer(s.BtType, s.TreeConfigId);
+          e = s.Name;
+        }
+        this._Qt.push({
           ResourceName: n.qEs,
           QuestName: e,
           TreeIncId: MathUtils_1.MathUtils.LongToBigInt(n.w5n)
-        })
+        });
       }
       this.Yre.AddTag(9);
       t = this.GetSuspendType();
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.$mt, e, t), EventSystem_1.EventSystem.EmitWithTarget(this.Yre, EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.$mt, e, t)
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.$mt, e, t);
+      EventSystem_1.EventSystem.EmitWithTarget(this.Yre, EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.$mt, e, t);
     }
   }
   ClearOccupations() {
-    this._Qt.splice(0, this._Qt.length), this.Yre.RemoveTag(9), this.Yre.RemoveTag(10), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.$mt), EventSystem_1.EventSystem.EmitWithTarget(this.Yre, EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.$mt)
+    this._Qt.splice(0, this._Qt.length);
+    this.Yre.RemoveTag(9);
+    this.Yre.RemoveTag(10);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.$mt);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Yre, EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.$mt);
   }
 }
 exports.BehaviorTreeSuspendComponent = BehaviorTreeSuspendComponent;

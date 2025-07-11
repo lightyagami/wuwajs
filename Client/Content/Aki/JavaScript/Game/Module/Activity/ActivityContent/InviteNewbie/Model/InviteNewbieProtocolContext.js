@@ -1,29 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InviteNewbieProtocolContext = void 0;
-const Log_1 = require("../../../../../../Core/Common/Log"),
-  EventDefine_1 = require("../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../Common/Event/EventSystem"),
-  ActivityData_1 = require("../../../ActivityData");
+  value: true
+});
+exports.InviteNewbieProtocolContext = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const ActivityData_1 = require("../../../ActivityData");
 class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
   constructor(e) {
-    super(), this.Ck1 = void 0, this.Score = 0, this.i5l = void 0, this.i5l = e
+    super();
+    this.Kk1 = undefined;
+    this.Score = 0;
+    this.i5l = undefined;
+    this.i5l = e;
   }
   get InviteCode() {
-    return this.Ck1
+    return this.Kk1;
   }
   set InviteCode(e) {
-    this.Ck1 = e, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InviteNewbieInviteCodeChanged, e), Log_1.Log.CheckInfo() && Log_1.Log.Info("InviteNewbie", 64, "邀请码变更", ["InviteCode", e])
+    this.Kk1 = e;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InviteNewbieInviteCodeChanged, e);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("InviteNewbie", 64, "邀请码变更", ["InviteCode", e]);
+    }
   }
   Dispose() {}
   PhraseEx(e) {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("InviteNewbie", 64, "解析邀请新人活动数据", ["ActivityData", e]);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("InviteNewbie", 64, "解析邀请新人活动数据", ["ActivityData", e]);
+    }
     e = e.KRc;
-    void 0 !== e && (this.InviteCode = e.XRc, this.Score = e.SMs)
+    if (e !== undefined) {
+      this.InviteCode = e.XRc;
+      this.Score = e.SMs;
+    }
   }
   GetExDataRedPointShowState() {
-    return this.i5l.HasRedDot
+    return this.i5l.HasRedDot;
   }
 }
 exports.InviteNewbieProtocolContext = InviteNewbieProtocolContext;

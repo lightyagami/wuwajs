@@ -1,68 +1,99 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DebugCommandConfig = void 0;
+  value: true
+});
+exports.DebugCommandConfig = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class DebugCommandConfig {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get GetTargetStage() {
-    return this.gettargetstage()
+    return this.gettargetstage();
   }
   get ParamGetTarget() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.paramgettargetLength(), this.paramgettarget, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.paramgettargetLength(), this.paramgettarget, this);
   }
   get EffectStage() {
-    return this.effectstage()
+    return this.effectstage();
   }
   get ParamEffect() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.parameffectLength(), this.parameffect, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.parameffectLength(), this.parameffect, this);
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsDebugCommandConfig(t, e) {
-    return (e || new DebugCommandConfig).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new DebugCommandConfig()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   gettargetstage() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetParamgettargetAt(t) {
-    return this.paramgettarget(t)
+    return this.paramgettarget(t);
   }
   paramgettarget(t, e) {
-    var s = this.J7.__offset(this.z7, 8),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, e) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 8);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, e) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   paramgettargetLength() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   effectstage() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetParameffectAt(t) {
-    return this.parameffect(t)
+    return this.parameffect(t);
   }
   parameffect(t, e) {
-    var s = this.J7.__offset(this.z7, 12),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, e) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 12);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, e) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   parameffectLength() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.DebugCommandConfig = DebugCommandConfig;

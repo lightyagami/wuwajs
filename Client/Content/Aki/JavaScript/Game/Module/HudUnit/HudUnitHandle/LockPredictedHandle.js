@@ -1,61 +1,110 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LockPredictedHandle = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  FNameUtil_1 = require("../../../../Core/Utils/FNameUtil"),
-  Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D"),
-  TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  LockPredictedUnit_1 = require("../HudUnit/LockPredictedUnit"),
-  HudUnitUtils_1 = require("../Utils/HudUnitUtils"),
-  HudUnitHandleBase_1 = require("./HudUnitHandleBase"),
-  HIT_CASE_SOCKET = new UE.FName("HitCase");
+  value: true
+});
+exports.LockPredictedHandle = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
+const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
+const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LockPredictedUnit_1 = require("../HudUnit/LockPredictedUnit");
+const HudUnitUtils_1 = require("../Utils/HudUnitUtils");
+const HudUnitHandleBase_1 = require("./HudUnitHandleBase");
+const HIT_CASE_SOCKET = new UE.FName("HitCase");
 class LockPredictedHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
-    super(...arguments), this.jma = new Vector2D_1.Vector2D, this.lga = void 0, this.v$e = !1, this.dDr = !1, this.rqo = void 0, this._ga = () => {
-      this.yyo()
-    }, this.lne = (e, t) => {
-      this.dDr = t, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "预测锁定Tag改变", ["HasTag", t]), this.dDr || this.Deactivate()
-    }
+    super(...arguments);
+    this.jma = new Vector2D_1.Vector2D();
+    this.lga = undefined;
+    this.v$e = false;
+    this.dDr = false;
+    this.rqo = undefined;
+    this._ga = () => {
+      this.yyo();
+    };
+    this.lne = (e, t) => {
+      this.dDr = t;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "预测锁定Tag改变", ["HasTag", t]);
+      }
+      if (!this.dDr) {
+        this.Deactivate();
+      }
+    };
   }
   OnInitialize() {
-    super.OnInitialize(), this.yyo()
+    super.OnInitialize();
+    this.yyo();
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this._ga)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this._ga);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this._ga)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this._ga);
   }
   yyo() {
     this.uga();
     var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
-    e && e.EntityHandle?.Valid && (e = e.GameplayTagComponent) && (this.dDr = e.HasTag(-126337119), this.rqo = e.ListenForTagAddOrRemove(-126337119, this.lne), this.dDr || this.Deactivate())
+    if (e && e.EntityHandle?.Valid && (e = e.GameplayTagComponent)) {
+      this.dDr = e.HasTag(-126337119);
+      this.rqo = e.ListenForTagAddOrRemove(-126337119, this.lne);
+      if (!this.dDr) {
+        this.Deactivate();
+      }
+    }
   }
   OnDestroyed() {
-    this.lga = void 0, this.uga()
+    this.lga = undefined;
+    this.uga();
   }
   uga() {
-    this.dDr = !1, this.rqo && (this.rqo.EndTask(), this.rqo = void 0)
+    this.dDr = false;
+    if (this.rqo) {
+      this.rqo.EndTask();
+      this.rqo = undefined;
+    }
   }
   OnTick(e) {
-    super.OnTick(e), !this.v$e && this.dDr && ((e = this.GetTargetInfo()) && e.EntityHandle?.Valid && (e = this.GetWorldLocation(e)) && HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(e, this.jma) ? (this.Activate(), this.lga && this.lga.GetRootItem()?.SetAnchorOffset(this.jma.ToUeVector2D(!0))) : this.Deactivate())
+    super.OnTick(e);
+    if (!this.v$e && this.dDr) {
+      if ((e = this.GetTargetInfo()) && e.EntityHandle?.Valid && (e = this.GetWorldLocation(e)) && HudUnitUtils_1.HudUnitUtils.PositionUtil.ProjectWorldToScreen(e, this.jma)) {
+        this.Activate();
+        if (this.lga) {
+          this.lga.GetRootItem()?.SetAnchorOffset(this.jma.ToUeVector2D(true));
+        }
+      } else {
+        this.Deactivate();
+      }
+    }
   }
   Activate() {
-    this.lga ? this.lga.Activate() : this.v$e || (this.v$e = !0, this.NewHudUnit(LockPredictedUnit_1.LockPredictedUnit, "UiItem_SuoDingArrow").then(e => {
-      e && (this.v$e = !1, this.lga = e)
-    }, () => {}))
+    if (this.lga) {
+      this.lga.Activate();
+    } else if (!this.v$e) {
+      this.v$e = true;
+      this.NewHudUnit(LockPredictedUnit_1.LockPredictedUnit, "UiItem_SuoDingArrow").then(e => {
+        if (e) {
+          this.v$e = false;
+          this.lga = e;
+        }
+      }, () => {});
+    }
   }
   Deactivate() {
-    this.lga && this.lga.Deactivate()
+    if (this.lga) {
+      this.lga.Deactivate();
+    }
   }
   GetTargetInfo() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid) return e.Entity.CheckGetComponent(32).GetPredictedLockOnTarget()
+    if (e?.Valid) {
+      return e.Entity.CheckGetComponent(32).GetPredictedLockOnTarget();
+    }
   }
   GetWorldLocation(t) {
     var i = t.EntityHandle;
@@ -64,7 +113,10 @@ class LockPredictedHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       if (i instanceof TsBaseCharacter_1.default) {
         i = i.Mesh;
         let e = FNameUtil_1.FNameUtil.GetDynamicFName(t.SocketName);
-        return e && i.DoesSocketExist(e) || (e = HIT_CASE_SOCKET), i.D_GetSocketLocation(e)
+        if (!e || !i.DoesSocketExist(e)) {
+          e = HIT_CASE_SOCKET;
+        }
+        return i.D_GetSocketLocation(e);
       }
     }
   }

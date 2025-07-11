@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSummonVehicle = void 0;
+  value: true
+});
+exports.FbSummonVehicle = undefined;
 class FbSummonVehicle {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.q$h = !1, this.k$h = void 0, this.S0h = !1, this.M0h = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.q$h = false;
+    this.k$h = undefined;
+    this.S0h = false;
+    this.M0h = 0;
   }
   static Create(t) {
-    if (t) return new FbSummonVehicle(t)
+    if (t) {
+      return new FbSummonVehicle(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TemplateId() {
-    return this.q$h || (this.q$h = !0, this.k$h = this.FbDataInternal.templateId()), this.k$h
+    if (!this.q$h) {
+      this.q$h = true;
+      this.k$h = this.FbDataInternal.templateId();
+    }
+    return this.k$h;
   }
   get PositionEntityId() {
-    return this.S0h || (this.S0h = !0, this.M0h = this.FbDataInternal.positionEntityId()), this.M0h
+    if (!this.S0h) {
+      this.S0h = true;
+      this.M0h = this.FbDataInternal.positionEntityId();
+    }
+    return this.M0h;
   }
 }
 exports.FbSummonVehicle = FbSummonVehicle;

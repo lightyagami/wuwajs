@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFanInteractByFKey = void 0;
+  value: true
+});
+exports.FbFanInteractByFKey = undefined;
 class FbFanInteractByFKey {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.uQh = !1, this.dQh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.uQh = false;
+    this.dQh = undefined;
   }
   static Create(t) {
-    if (t) return new FbFanInteractByFKey(t)
+    if (t) {
+      return new FbFanInteractByFKey(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TidInteractOptionText() {
-    return this.uQh || (this.uQh = !0, this.dQh = this.FbDataInternal.tidInteractOptionText()), this.dQh
+    if (!this.uQh) {
+      this.uQh = true;
+      this.dQh = this.FbDataInternal.tidInteractOptionText();
+    }
+    return this.dQh;
   }
 }
 exports.FbFanInteractByFKey = FbFanInteractByFKey;

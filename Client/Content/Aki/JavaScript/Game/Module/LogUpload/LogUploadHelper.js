@@ -1,12 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LogUploadHelper = void 0;
-const Net_1 = require("../../../Core/Net/Net"),
-  LocalStorage_1 = require("../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../Common/LocalStorageDefine"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager");
+  value: true
+});
+exports.LogUploadHelper = undefined;
+const Net_1 = require("../../../Core/Net/Net");
+const LocalStorage_1 = require("../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
 class LogUploadHelper {
   static CreateParams() {
     return {
@@ -19,7 +21,7 @@ class LogUploadHelper {
       LoginModel: {
         GetSdkLoginConfigUid: () => ModelManager_1.ModelManager.LoginModel.GetSdkLoginConfig()?.Uid
       }
-    }
+    };
   }
 }
 exports.LogUploadHelper = LogUploadHelper;

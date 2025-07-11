@@ -1,45 +1,70 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneInteractionModel = void 0;
-const UE = require("ue"),
-  Stats_1 = require("../../../../Core/Common/Stats"),
-  EntitySystem_1 = require("../../../../Core/Entity/EntitySystem"),
-  ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  ActorUtils_1 = require("../../../Utils/ActorUtils"),
-  CharacterNameDefines_1 = require("../../Character/Common/CharacterNameDefines");
+  value: true
+});
+exports.SceneInteractionModel = undefined;
+const UE = require("ue");
+const Stats_1 = require("../../../../Core/Common/Stats");
+const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const ActorUtils_1 = require("../../../Utils/ActorUtils");
+const CharacterNameDefines_1 = require("../../Character/Common/CharacterNameDefines");
 class SceneInteractionModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Fsr = !1, this.JQl = Stats_1.Stat.Create("SceneInteractionModel.GetEntityByActor")
+    super(...arguments);
+    this.Fsr = false;
+    this.JQl = Stats_1.Stat.Create("SceneInteractionModel.GetEntityByActor");
   }
   GetEntityByBaseItem(e) {
-    this.Fsr || (this.Fsr = !0, UE.KuroLevelPlayLibrary.RegisterBaseItemInfo(UE.BP_BaseItem_C.StaticClass(), "EntityId"));
+    if (!this.Fsr) {
+      this.Fsr = true;
+      UE.KuroLevelPlayLibrary.RegisterBaseItemInfo(UE.BP_BaseItem_C.StaticClass(), "EntityId");
+    }
     e = UE.KuroLevelPlayLibrary.GetEntityIdByBaseItem(e);
-    return ModelManager_1.ModelManager.CreatureModel?.GetEntityById(e)
+    return ModelManager_1.ModelManager.CreatureModel?.GetEntityById(e);
   }
-  GetEntityByActor(e, t = !1) {
+  GetEntityByActor(e, t = false) {
     this.JQl.Start();
     e = this.GetBaseItemByActor(e, t);
-    if (e) return t = ActorUtils_1.ActorUtils.GetEntityByActor(e), this.JQl.Stop(), t;
-    this.JQl.Stop()
+    if (e) {
+      t = ActorUtils_1.ActorUtils.GetEntityByActor(e);
+      this.JQl.Stop();
+      return t;
+    }
+    this.JQl.Stop();
   }
-  GetBaseItemByActor(t, r = !1) {
+  GetBaseItemByActor(t, r = false) {
     if (t?.IsValid()) {
       let e = t.GetOwner();
-      if (void 0 === e) {
-        if (r) return;
-        if (void 0 === (e = this.Vsr(t))) return
+      if (e === undefined) {
+        if (r) {
+          return;
+        }
+        if ((e = this.Vsr(t)) === undefined) {
+          return;
+        }
       }
-      return UE.KuroStaticLibrary.IsObjectClassByName(e, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM) ? e : r ? void 0 : this.Vsr(t)
+      if (UE.KuroStaticLibrary.IsObjectClassByName(e, CharacterNameDefines_1.CharacterNameDefines.BP_BASEITEM)) {
+        return e;
+      } else if (r) {
+        return undefined;
+      } else {
+        return this.Vsr(t);
+      }
     }
   }
   Vsr(e) {
     let t = e;
-    for (; t && !UE.KuroStaticLibrary.IsImplementInterface(t.GetClass(), UE.BPI_CreatureInterface_C.StaticClass());) t = t.GetAttachParentActor();
+    while (t && !UE.KuroStaticLibrary.IsImplementInterface(t.GetClass(), UE.BPI_CreatureInterface_C.StaticClass())) {
+      t = t.GetAttachParentActor();
+    }
     if (t) {
       e = t;
-      if (EntitySystem_1.EntitySystem.Get(e.GetEntityId())?.Valid) return t
+      if (EntitySystem_1.EntitySystem.Get(e.GetEntityId())?.Valid) {
+        return t;
+      }
     }
   }
 }

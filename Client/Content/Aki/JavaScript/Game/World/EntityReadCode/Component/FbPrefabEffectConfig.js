@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPrefabEffectConfig = void 0;
+  value: true
+});
+exports.FbPrefabEffectConfig = undefined;
 class FbPrefabEffectConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.iKh = !1, this.rKh = 0, this.sKh = !1, this.aKh = void 0
+    this.FbDataInternal = t;
+    this.iKh = false;
+    this.rKh = 0;
+    this.sKh = false;
+    this.aKh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPrefabEffectConfig(t)
+    if (t) {
+      return new FbPrefabEffectConfig(t);
+    }
   }
   get LevelTag() {
-    return this.iKh || (this.iKh = !0, this.rKh = this.FbDataInternal.levelTag()), this.rKh
+    if (!this.iKh) {
+      this.iKh = true;
+      this.rKh = this.FbDataInternal.levelTag();
+    }
+    return this.rKh;
   }
   get SceneInteractionEffectState() {
-    return this.sKh || (this.sKh = !0, this.aKh = this.FbDataInternal.sceneInteractionEffectState()), this.aKh
+    if (!this.sKh) {
+      this.sKh = true;
+      this.aKh = this.FbDataInternal.sceneInteractionEffectState();
+    }
+    return this.aKh;
   }
 }
 exports.FbPrefabEffectConfig = FbPrefabEffectConfig;

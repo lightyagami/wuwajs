@@ -1,18 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DockyardShopBackpackPanelModel = void 0;
-const ModelManager_1 = require("../../../../../../Manager/ModelManager"),
-  DockyardBackpackPanelModelBase_1 = require("../Base/DockyardBackpackPanelModelBase");
+  value: true
+});
+exports.DockyardShopBackpackPanelModel = undefined;
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const DockyardBackpackPanelModelBase_1 = require("../Base/DockyardBackpackPanelModelBase");
 class DockyardShopBackpackPanelModel extends DockyardBackpackPanelModelBase_1.DockyardBackpackPanelModelBase {
   constructor() {
-    super(...arguments), this.IsAllSellOpen = !0, this.IsDeleteOpen = !1
+    super(...arguments);
+    this.IsAllSellOpen = true;
+    this.IsDeleteOpen = false;
   }
   GetIsTrawlOpen() {
-    return ModelManager_1.ModelManager.FishingModel.IsInDock && ModelManager_1.ModelManager.DockyardModel.IsTrawlOpen
+    return ModelManager_1.ModelManager.FishingModel.IsInDock && ModelManager_1.ModelManager.DockyardModel.IsTrawlOpen;
   }
   GetIsBackToWareHouseOpen() {
-    return !1
+    return false;
   }
 }
 exports.DockyardShopBackpackPanelModel = DockyardShopBackpackPanelModel;

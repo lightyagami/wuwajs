@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SlashAndTowerGotoNextFloor = void 0;
+  value: true
+});
+exports.SlashAndTowerGotoNextFloor = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class SlashAndTowerGotoNextFloor {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(o, t) {
-    return this.bb_pos = o, this.bb = t, this
+    this.bb_pos = o;
+    this.bb = t;
+    return this;
   }
   static getRootAsSlashAndTowerGotoNextFloor(o, t) {
-    return (t || new SlashAndTowerGotoNextFloor).__init(o.readInt32(o.position()) + o.position(), o)
+    return (t || new SlashAndTowerGotoNextFloor()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static getSizePrefixedRootAsSlashAndTowerGotoNextFloor(o, t) {
-    return o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new SlashAndTowerGotoNextFloor).__init(o.readInt32(o.position()) + o.position(), o)
+    o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new SlashAndTowerGotoNextFloor()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static startSlashAndTowerGotoNextFloor(o) {
-    o.startObject(0)
+    o.startObject(0);
   }
   static endSlashAndTowerGotoNextFloor(o) {
-    return o.endObject()
+    return o.endObject();
   }
   static createSlashAndTowerGotoNextFloor(o) {
-    return SlashAndTowerGotoNextFloor.startSlashAndTowerGotoNextFloor(o), SlashAndTowerGotoNextFloor.endSlashAndTowerGotoNextFloor(o)
+    SlashAndTowerGotoNextFloor.startSlashAndTowerGotoNextFloor(o);
+    return SlashAndTowerGotoNextFloor.endSlashAndTowerGotoNextFloor(o);
   }
 }
 exports.SlashAndTowerGotoNextFloor = SlashAndTowerGotoNextFloor;

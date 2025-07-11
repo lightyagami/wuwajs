@@ -1,103 +1,193 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EventSystem = void 0;
-const Info_1 = require("../../../Core/Common/Info"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Stats_1 = require("../../../Core/Common/Stats"),
-  Event_1 = require("../../../Core/Event/Event"),
-  EventDefine_1 = require("./EventDefine");
+  value: true
+});
+exports.EventSystem = undefined;
+const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
+const Stats_1 = require("../../../Core/Common/Stats");
+const Event_1 = require("../../../Core/Event/Event");
+const EventDefine_1 = require("./EventDefine");
 class EventSystem {
-  static Has(e, t) {
-    return EventSystem.Me.Has(e, t)
+  static Has(t, e) {
+    return EventSystem.Me.Has(t, e);
   }
-  static RemoveTargetEvents(e) {
-    EventSystem._de.get(e) && EventSystem._de.delete(e)
-  }
-  static HasWithTarget(e, t, r) {
-    e = EventSystem.hde(e);
-    return !!e && e.Has(t, r)
-  }
-  static Add(e, t) {
-    return EventSystem.Me.Add(e, t)
-  }
-  static AddWithTargetUseHoldKey(e, t, r, n) {
-    var s = EventSystem.lde(t);
-    if (!s.Add(r, n)) return !1;
-    let v = EventSystem.Cnh.get(e);
-    return v || (v = new Array, EventSystem.Cnh.set(e, v)), s.AddHoldKeyHandle(r, e, n), v.push({
-      Key: e,
-      Handle: n,
-      Target: t,
-      EventName: r
-    }), !0
-  }
-  static AddWithTarget(e, t, r) {
-    return EventSystem.lde(e).Add(t, r)
-  }
-  static Once(e, t) {
-    return EventSystem.Me.Once(e, t)
-  }
-  static OnceWithTarget(e, t, r) {
-    return EventSystem.lde(e).Once(t, r)
-  }
-  static Remove(e, t) {
-    return EventSystem.Me.Remove(e, t)
-  }
-  static RemoveWithTarget(e, t, r) {
-    var n = EventSystem.hde(e);
-    if (n) {
-      if (Info_1.Info.IsBuildDevelopmentOrDebug) {
-        var s = n.GetHoldKeyByHandle(t, r);
-        if (s) return EventSystem.gnh(s, e, t, r), Log_1.Log.CheckError() && Log_1.Log.Error("Event", 66, "事件系统调用错误,请使用[RemoveWithTargetUseKey]", ["target", e]), !0
-      }
-      return n.Remove(t, r)
+  static RemoveTargetEvents(t) {
+    if (EventSystem._de.get(t)) {
+      EventSystem._de.delete(t);
     }
-    return !1
   }
-  static gnh(t, r, n, s) {
+  static HasWithTarget(t, e, n) {
+    t = EventSystem.hde(t);
+    return !!t && t.Has(e, n);
+  }
+  static Add(t, e) {
+    return EventSystem.Me.Add(t, e);
+  }
+  static AddWithTargetUseHoldKey(t, e, n, r) {
+    var s = EventSystem.lde(e);
+    if (!s.Add(n, r)) {
+      return false;
+    }
+    let v = EventSystem.Cnh.get(t);
+    if (!v) {
+      v = new Array();
+      EventSystem.Cnh.set(t, v);
+    }
+    s.AddHoldKeyHandle(n, t, r);
+    v.push({
+      Key: t,
+      Handle: r,
+      Target: e,
+      EventName: n
+    });
+    return true;
+  }
+  static AddWithTarget(t, e, n) {
+    return EventSystem.lde(t).Add(e, n);
+  }
+  static Once(t, e) {
+    return EventSystem.Me.Once(t, e);
+  }
+  static OnceWithTarget(t, e, n) {
+    return EventSystem.lde(t).Once(e, n);
+  }
+  static Remove(t, e) {
+    return EventSystem.Me.Remove(t, e);
+  }
+  static RemoveWithTarget(t, e, n) {
+    var r = EventSystem.hde(t);
+    if (r) {
+      if (Info_1.Info.IsBuildDevelopmentOrDebug) {
+        var s = r.GetHoldKeyByHandle(e, n);
+        if (s) {
+          EventSystem.gnh(s, t, e, n);
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Event", 66, "事件系统调用错误,请使用[RemoveWithTargetUseKey]", ["target", t]);
+          }
+          return true;
+        }
+      }
+      return r.Remove(e, n);
+    }
+    return false;
+  }
+  static gnh(e, n, r, s) {
     EventSystem.fnh.Start();
-    var v = EventSystem.Cnh.get(t);
+    var v = EventSystem.Cnh.get(e);
     if (v) {
       var a = v.length;
-      for (let e = 0; e < a; ++e) {
-        var i = v[e];
-        if (i.Handle === s && i.EventName === n && i.Target === r) return v.splice(e, 1), (i = EventSystem.hde(r)) && (i.Remove(n, s), i.RemoveHoldKeyHandle(n, s)), 0 === v.length && EventSystem.Cnh.delete(t), EventSystem.fnh.Stop(), !0
+      for (let t = 0; t < a; ++t) {
+        var i = v[t];
+        if (i.Handle === s && i.EventName === r && i.Target === n) {
+          v.splice(t, 1);
+          if (i = EventSystem.hde(n)) {
+            i.Remove(r, s);
+            i.RemoveHoldKeyHandle(r, s);
+          }
+          if (v.length === 0) {
+            EventSystem.Cnh.delete(e);
+          }
+          EventSystem.fnh.Stop();
+          return true;
+        }
       }
     }
-    return EventSystem.fnh.Stop(), !1
+    EventSystem.fnh.Stop();
+    return false;
   }
-  static RemoveWithTargetUseKey(e, t, r, n) {
-    return EventSystem.gnh(e, t, r, n)
+  static RemoveWithTargetUseKey(t, e, n, r) {
+    return EventSystem.gnh(t, e, n, r);
   }
-  static RemoveAllTargetUseKey(e) {
-    var t = EventSystem.Cnh.get(e);
-    if (!t) return !1;
-    var r = t.length;
-    for (let e = 0; e < r; ++e) {
-      var n = t[e],
-        s = EventSystem.hde(n.Target);
-      s && (s.Remove(n.EventName, n.Handle), s.RemoveHoldKeyHandle(n.EventName, n.Handle))
+  static RemoveAllTargetUseKey(t) {
+    var e = EventSystem.Cnh.get(t);
+    if (!e) {
+      return false;
     }
-    return EventSystem.Cnh.delete(e), !0
+    var n = e.length;
+    for (let t = 0; t < n; ++t) {
+      var r = e[t];
+      var s = EventSystem.hde(r.Target);
+      if (s) {
+        s.Remove(r.EventName, r.Handle);
+        s.RemoveHoldKeyHandle(r.EventName, r.Handle);
+      }
+    }
+    EventSystem.Cnh.delete(t);
+    return true;
   }
-  static Emit(e, ...t) {
-    return EventSystem.Me.Emit(e, ...t)
+  static Emit(t, ...e) {
+    return EventSystem.Me.Emit(t, ...e);
   }
-  static EmitWithTarget(e, t, ...r) {
-    return EventSystem.hde(e)?.Emit(t, ...r) ?? !1
+  static EmitWithTarget(t, e, ...n) {
+    return EventSystem.hde(t)?.Emit(e, ...n) ?? false;
   }
-  static EmitWithTargets(e, t, ...r) {
-    if (e && !(e.length <= 0))
-      for (const n of e) EventSystem.hde(n)?.Emit(t, ...r)
+  static EmitWithTargets(t, e, ...n) {
+    if (t && !(t.length <= 0)) {
+      for (const r of t) {
+        EventSystem.hde(r)?.Emit(e, ...n);
+      }
+    }
   }
-  static hde(e) {
-    if (e) return EventSystem._de.get(e);
-    Log_1.Log.CheckError() && Log_1.Log.Error("Event", 1, "事件系统目标不存在，请检查目标", ["target", e])
+  static hde(t) {
+    if (t) {
+      return EventSystem._de.get(t);
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Event", 1, "事件系统目标不存在，请检查目标", ["target", t]);
+    }
   }
-  static lde(e) {
-    let t = EventSystem.hde(e);
-    return t || (t = new Event_1.Event(EventDefine_1.EEventName, 0), EventSystem._de.set(e, t)), t
+  static lde(t) {
+    let e = EventSystem.hde(t);
+    if (!e) {
+      e = new Event_1.Event(EventDefine_1.EEventName, 0);
+      EventSystem._de.set(t, e);
+    }
+    return e;
   }
-}(exports.EventSystem = EventSystem).Me = new Event_1.Event(EventDefine_1.EEventName), EventSystem._de = new WeakMap, EventSystem.Cnh = new WeakMap, EventSystem.fnh = Stats_1.Stat.Create("EventSystem.RemoveWithTargetUseKey");
-//# sourceMappingURL=EventSystem.js.map
+  static AddWithCondition(t, e, n) {
+    if (n) {
+      return EventSystem.Me.AddWithCondition(t, e, n);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "添加条件监听事件时，条件参数为空", ["name", t]);
+      }
+      return false;
+    }
+  }
+  static OnceWithCondition(t, e, n) {
+    if (n) {
+      return EventSystem.Me.OnceWithCondition(t, e, n);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "添加一次性条件监听事件时，条件参数为空", ["name", t]);
+      }
+      return false;
+    }
+  }
+  static RemoveWithCondition(t, e, n) {
+    if (n) {
+      return EventSystem.Me.RemoveWithCondition(t, e, n);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "移除条件监听事件时，条件参数为空", ["name", t]);
+      }
+      return false;
+    }
+  }
+  static HasWithCondition(t, e, n) {
+    if (n) {
+      return EventSystem.Me.HasWithCondition(t, e, n);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 18, "检查条件监听事件时，条件参数为空", ["name", t]);
+      }
+      return false;
+    }
+  }
+}
+(exports.EventSystem = EventSystem).Me = new Event_1.Event(EventDefine_1.EEventName);
+EventSystem._de = new WeakMap();
+EventSystem.Cnh = new WeakMap();
+EventSystem.fnh = Stats_1.Stat.Create("EventSystem.RemoveWithTargetUseKey"); //# sourceMappingURL=EventSystem.js.map

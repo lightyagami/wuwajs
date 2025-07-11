@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCameraDepthOfField = void 0;
+  value: true
+});
+exports.FbCameraDepthOfField = undefined;
 class FbCameraDepthOfField {
   constructor(t) {
-    this.FbDataInternal = t, this.PTh = !1, this.UTh = 0, this.rdh = !1, this.odh = 0, this.DTh = !1, this.BTh = 0, this.qTh = !1, this.kTh = 0
+    this.FbDataInternal = t;
+    this.PTh = false;
+    this.UTh = 0;
+    this.rdh = false;
+    this.odh = 0;
+    this.DTh = false;
+    this.BTh = 0;
+    this.qTh = false;
+    this.kTh = 0;
   }
   static Create(t) {
-    if (t) return new FbCameraDepthOfField(t)
+    if (t) {
+      return new FbCameraDepthOfField(t);
+    }
   }
   get Fstop() {
-    return this.PTh || (this.PTh = !0, this.UTh = this.FbDataInternal.fstop()), this.UTh
+    if (!this.PTh) {
+      this.PTh = true;
+      this.UTh = this.FbDataInternal.fstop();
+    }
+    return this.UTh;
   }
   get Distance() {
-    return this.rdh || (this.rdh = !0, this.odh = this.FbDataInternal.distance()), this.odh
+    if (!this.rdh) {
+      this.rdh = true;
+      this.odh = this.FbDataInternal.distance();
+    }
+    return this.odh;
   }
   get BlurAmount() {
-    return this.DTh || (this.DTh = !0, this.BTh = this.FbDataInternal.blurAmount()), this.BTh
+    if (!this.DTh) {
+      this.DTh = true;
+      this.BTh = this.FbDataInternal.blurAmount();
+    }
+    return this.BTh;
   }
   get BlurRadius() {
-    return this.qTh || (this.qTh = !0, this.kTh = this.FbDataInternal.blurRadius()), this.kTh
+    if (!this.qTh) {
+      this.qTh = true;
+      this.kTh = this.FbDataInternal.blurRadius();
+    }
+    return this.kTh;
   }
 }
 exports.FbCameraDepthOfField = FbCameraDepthOfField;

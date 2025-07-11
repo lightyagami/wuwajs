@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SmallItemGridReceivedComponent = void 0;
+  value: true
+});
+exports.SmallItemGridReceivedComponent = undefined;
 const SmallItemGridVisibleComponent_1 = require("./SmallItemGridVisibleComponent");
 class SmallItemGridReceivedComponent extends SmallItemGridVisibleComponent_1.SmallItemGridVisibleComponent {
   GetResourceId() {
-    return "UiItem_ItemBReceived"
+    return "UiItem_ItemBReceived";
   }
   GetLayoutLevel() {
-    return 0
+    return 0;
   }
 }
 exports.SmallItemGridReceivedComponent = SmallItemGridReceivedComponent;

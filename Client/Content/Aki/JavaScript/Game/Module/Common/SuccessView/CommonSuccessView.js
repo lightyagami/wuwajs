@@ -1,66 +1,96 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonSuccessView = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  CommonSuccessData_1 = require("./CommonSuccessData");
+  value: true
+});
+exports.CommonSuccessView = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const CommonSuccessData_1 = require("./CommonSuccessData");
 class CommonSuccessView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.Pe = void 0, this.TimerId = void 0, this.Rvt = () => {
-      this.Pe.GetNeedDelay() || this.$Oe()
-    }
+    super(...arguments);
+    this.Pe = undefined;
+    this.TimerId = undefined;
+    this.Rvt = () => {
+      if (!this.Pe.GetNeedDelay()) {
+        this.$Oe();
+      }
+    };
   }
   OnBeforeCreate() {
-    this.Pe = this.OpenParam ?? new CommonSuccessData_1.CommonSuccessData, this.Dbt()
+    this.Pe = this.OpenParam ?? new CommonSuccessData_1.CommonSuccessData();
+    this.Dbt();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText],
-      [2, UE.UIText],
-      [3, UE.UIButtonComponent],
-      [4, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [3, this.Rvt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIItem]];
+    this.BtnBindInfo = [[3, this.Rvt]];
   }
   OnAfterPlayStartSequence() {
-    this.UiViewSequence.PlaySequencePurely("Xunhuan"), this.Rbt()
+    this.UiViewSequence.PlaySequencePurely("Xunhuan");
+    this.Rbt();
   }
   OnAfterShow() {
-    this.Ubt(), this.Abt(), this.Pbt()
+    this.Ubt();
+    this.Abt();
+    this.Pbt();
   }
   Dbt() {
     var i = this.Pe.GetAudioPath();
-    i && this.SetAudioEvent(i)
+    if (i) {
+      this.SetAudioEvent(i);
+    }
   }
   Ubt() {
-    var i, e = this.Pe.GetTitleText();
-    e && (i = this.GetText(0), LguiUtil_1.LguiUtil.SetLocalText(i, e))
+    var i;
+    var e = this.Pe.GetTitleText();
+    if (e) {
+      i = this.GetText(0);
+      LguiUtil_1.LguiUtil.SetLocalText(i, e);
+    }
   }
   Abt() {
-    var i = this.Pe.GetSubTitleText(),
-      e = this.GetText(1);
-    i ? (e.SetUIActive(!0), LguiUtil_1.LguiUtil.SetLocalText(e, i)) : e.SetUIActive(!1)
+    var i = this.Pe.GetSubTitleText();
+    var e = this.GetText(1);
+    if (i) {
+      e.SetUIActive(true);
+      LguiUtil_1.LguiUtil.SetLocalText(e, i);
+    } else {
+      e.SetUIActive(false);
+    }
   }
   Pbt() {
-    var i, e = this.Pe.GetClickText();
-    e && (this.GetItem(4).SetUIActive(!0), i = this.GetText(2), LguiUtil_1.LguiUtil.SetLocalText(i, e))
+    var i;
+    var e = this.Pe.GetClickText();
+    if (e) {
+      this.GetItem(4).SetUIActive(true);
+      i = this.GetText(2);
+      LguiUtil_1.LguiUtil.SetLocalText(i, e);
+    }
   }
   Rbt() {
-    this.Pe.GetNeedDelay() && (this.TimerId = TimerSystem_1.TimerSystem.Delay(() => {
-      this.$Oe()
-    }, CommonSuccessView.rbt))
+    if (this.Pe.GetNeedDelay()) {
+      this.TimerId = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+        this.$Oe();
+      }, CommonSuccessView.rbt);
+    }
   }
   $Oe() {
     var i = this.Pe.GetClickFunction();
-    i && i(), this.TimerId = void 0, this.CloseMe()
+    if (i) {
+      i();
+    }
+    this.TimerId = undefined;
+    this.CloseMe();
   }
   OnBeforeDestroy() {
-    void 0 !== this.TimerId && (TimerSystem_1.TimerSystem.Remove(this.TimerId), this.TimerId = void 0)
+    if (this.TimerId !== undefined) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TimerId);
+      this.TimerId = undefined;
+    }
   }
-}(exports.CommonSuccessView = CommonSuccessView).rbt = 1500;
+}
+(exports.CommonSuccessView = CommonSuccessView).rbt = 1500;
 //# sourceMappingURL=CommonSuccessView.js.map

@@ -1,33 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEntityPackageData = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbEntityPackageNode_1 = require("./FbEntityPackageNode");
+  value: true
+});
+exports.FbEntityPackageData = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbEntityPackageNode_1 = require("./FbEntityPackageNode");
 class FbEntityPackageData {
   constructor(t) {
-    this.FbDataInternal = t, this.Vjh = !1, this.jjh = 0, this.Hjh = !1, this.Wjh = 0, this.Qjh = !1, this.Kjh = void 0
+    this.FbDataInternal = t;
+    this.Vjh = false;
+    this.jjh = 0;
+    this.Hjh = false;
+    this.Wjh = 0;
+    this.Qjh = false;
+    this.Kjh = undefined;
   }
   static Create(t) {
-    if (t) return new FbEntityPackageData(t)
+    if (t) {
+      return new FbEntityPackageData(t);
+    }
   }
   get PackagedLevelId() {
-    return this.Vjh || (this.Vjh = !0, this.jjh = this.FbDataInternal.packagedLevelId()), this.jjh
+    if (!this.Vjh) {
+      this.Vjh = true;
+      this.jjh = this.FbDataInternal.packagedLevelId();
+    }
+    return this.jjh;
   }
   get PackageEntityId() {
-    return this.Hjh || (this.Hjh = !0, this.Wjh = this.FbDataInternal.packageEntityId()), this.Wjh
+    if (!this.Hjh) {
+      this.Hjh = true;
+      this.Wjh = this.FbDataInternal.packageEntityId();
+    }
+    return this.Wjh;
   }
   get PackageTree() {
     if (!this.Qjh) {
-      this.Qjh = !0, this.Kjh = new Array;
+      this.Qjh = true;
+      this.Kjh = new Array();
       var e = this.FbDataInternal.packageTreeLength();
-      if (e)
+      if (e) {
         for (let t = 0; t < e; ++t) {
-          var i = this.FbDataInternal.packageTree(t, new fb_component_1.EntityPackageNode);
-          this.Kjh.push(FbEntityPackageNode_1.FbEntityPackageNode.Create(i))
+          var i = this.FbDataInternal.packageTree(t, new fb_component_1.EntityPackageNode());
+          this.Kjh.push(FbEntityPackageNode_1.FbEntityPackageNode.Create(i));
         }
+      }
     }
-    return this.Kjh
+    return this.Kjh;
   }
 }
 exports.FbEntityPackageData = FbEntityPackageData;

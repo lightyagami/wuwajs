@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNextSlideRail = void 0;
+  value: true
+});
+exports.FbNextSlideRail = undefined;
 class FbNextSlideRail {
   constructor(t) {
-    this.FbDataInternal = t, this.t2c = !1, this.i2c = void 0, this.tv1 = !1, this.iv1 = 0, this.r2c = !1, this.o2c = !1
+    this.FbDataInternal = t;
+    this.t2c = false;
+    this.i2c = undefined;
+    this.Iv1 = false;
+    this.Tv1 = 0;
+    this.r2c = false;
+    this.o2c = false;
   }
   static Create(t) {
-    if (t) return new FbNextSlideRail(t)
+    if (t) {
+      return new FbNextSlideRail(t);
+    }
   }
   get TriggerKey() {
-    return this.t2c || (this.t2c = !0, this.i2c = this.FbDataInternal.triggerKey()), this.i2c
+    if (!this.t2c) {
+      this.t2c = true;
+      this.i2c = this.FbDataInternal.triggerKey();
+    }
+    return this.i2c;
   }
   get TargetRailEntityId() {
-    return this.tv1 || (this.tv1 = !0, this.iv1 = this.FbDataInternal.targetRailEntityId()), this.iv1
+    if (!this.Iv1) {
+      this.Iv1 = true;
+      this.Tv1 = this.FbDataInternal.targetRailEntityId();
+    }
+    return this.Tv1;
   }
   get IsFallbackRail() {
-    return this.r2c || (this.r2c = !0, this.o2c = this.FbDataInternal.isFallbackRail()), this.o2c
+    if (!this.r2c) {
+      this.r2c = true;
+      this.o2c = this.FbDataInternal.isFallbackRail();
+    }
+    return this.o2c;
   }
 }
 exports.FbNextSlideRail = FbNextSlideRail;

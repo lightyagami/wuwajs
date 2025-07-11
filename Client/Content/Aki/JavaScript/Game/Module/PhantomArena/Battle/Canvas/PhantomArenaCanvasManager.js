@@ -1,22 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaCanvasManager = void 0;
+  value: true
+});
+exports.PhantomArenaCanvasManager = undefined;
 class PhantomArenaCanvasManager {
   constructor() {
-    this.AreaCanvasList = []
+    this.AreaCanvasList = [];
   }
   AddAreaCanvas(a) {
-    this.AreaCanvasList.push(a)
+    this.AreaCanvasList.push(a);
   }
   ClearAreaCanvas() {
-    this.AreaCanvasList = []
+    this.AreaCanvasList = [];
   }
   SortOrderAreaCanvas(a, s, e) {
-    for (const r of this.AreaCanvasList) r.CheckCanvasSortOrder(a, s) && (r.HandleSortOrder(), r.ReceiveUiInteract?.(e))
+    for (const r of this.AreaCanvasList) {
+      if (r.CheckCanvasSortOrder(a, s)) {
+        r.HandleSortOrder();
+        r.ReceiveUiInteract?.(e);
+      }
+    }
   }
   ResetAreaCanvas() {
-    for (const a of this.AreaCanvasList) a.CancelSortOrder(), a.ReceiveUiInteract?.(void 0)
+    for (const a of this.AreaCanvasList) {
+      a.CancelSortOrder();
+      a.ReceiveUiInteract?.(undefined);
+    }
   }
 }
 exports.PhantomArenaCanvasManager = PhantomArenaCanvasManager;

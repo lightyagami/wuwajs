@@ -1,54 +1,113 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlowActionDestroyEntity = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent"),
-  LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  WaitEntityTask_1 = require("../../../World/Define/WaitEntityTask"),
-  FlowActionUtils_1 = require("../Flow/FlowActionUtils"),
-  FlowActionServerAction_1 = require("./FlowActionServerAction");
+  value: true
+});
+exports.FlowActionDestroyEntity = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
+const LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const WaitEntityTask_1 = require("../../../World/Define/WaitEntityTask");
+const FlowActionUtils_1 = require("../Flow/FlowActionUtils");
+const FlowActionServerAction_1 = require("./FlowActionServerAction");
+class DestroyEntityActionRecord {
+  constructor(e, o) {
+    this.ActionInfo = e;
+    this.EntityStateTagIdMap = new Map();
+    this.EntityStateTagIdMap = o;
+  }
+}
 class FlowActionDestroyEntity extends FlowActionServerAction_1.FlowActionServerAction {
   constructor() {
-    super(...arguments), this.Task = void 0, this.W$i = e => {
-      this.Task = void 0;
+    super(...arguments);
+    this.Task = undefined;
+    this.W$i = e => {
+      this.Task = undefined;
       var o = this.ActionInfo.Params;
-      e || ControllerHolder_1.ControllerHolder.FlowController.LogError("加载实体失败");
-      let t = !1;
-      for (const l of o.EntityIds) {
-        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l);
-        if (i) {
-          var r = i.Entity.GetComponent(0).GetPbEntityInitData(),
-            n = i.Entity.GetComponent(133);
-          let e = !1;
-          r && (r = (0, IComponent_1.getComponent)(r?.ComponentsData, "SceneItemLifeCycleComponent"), e = Boolean(n && r?.DestroyStageConfig.PerformDuration)), e ? (LevelGeneralCommons_1.LevelGeneralCommons.ChangeToDestroyState(l), n.HandleDestroyState()) : ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i.Entity, !1, "FlowActionDestroyEntity.OnEntityReady")
-        } else Log_1.Log.CheckWarn() && Log_1.Log.Warn("Plot", 26, "实体未下发，联系服务端检查配置", ["ids", l]), t = !0
+      if (!e) {
+        ControllerHolder_1.ControllerHolder.FlowController.LogError("加载实体失败");
       }
-      t && this.RequestServerAction(!1), this.RecordAction(), this.FinishExecute(!0)
-    }
+      let t = false;
+      var r = new Map();
+      for (const s of o.EntityIds) {
+        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s);
+        if (i) {
+          var n = i.Entity.GetComponent(0).GetPbEntityInitData();
+          var l = i.Entity.GetComponent(133);
+          let e = false;
+          if (n) {
+            n = (0, IComponent_1.getComponent)(n?.ComponentsData, "SceneItemLifeCycleComponent");
+            e = Boolean(l && n?.DestroyStageConfig.PerformDuration);
+          }
+          if (e) {
+            r.set(s, l.StateTagId);
+            LevelGeneralCommons_1.LevelGeneralCommons.ChangeToDestroyState(s);
+            l.HandleDestroyState();
+          } else {
+            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i.Entity, false, "FlowActionDestroyEntity.OnEntityReady");
+          }
+        } else {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("Plot", 26, "实体未下发，联系服务端检查配置", ["ids", s]);
+          }
+          t = true;
+        }
+      }
+      if (t) {
+        this.RequestServerAction(false);
+      }
+      this.RecordAction(new DestroyEntityActionRecord(this.ActionInfo, r));
+      this.FinishExecute(true);
+    };
   }
   OnExecute() {
     if (this.ActionInfo.Params) {
       var o = this.ActionInfo.Params;
       if (o.EntityIds?.length) {
-        let e = !1;
-        for (const t of o.EntityIds) FlowActionUtils_1.FlowActionUtils.CheckEntityInAoi(t) || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Plot", 26, "剧情中销毁实体过远，请检查配置", ["pbDataId", t], ["flow", this.Context.FormatId], ["id", this.ActionInfo.ActionId]), e = !0);
-        e ? (this.RequestServerAction(!1), this.FinishExecute(!0)) : this.Task = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("FlowActionDestroyEntity.OnExecute", o.EntityIds, this.W$i, FlowActionUtils_1.WAIT_ENTITY_TIME)
-      } else this.FinishExecute(!0)
-    } else this.FinishExecute(!0)
+        let e = false;
+        for (const t of o.EntityIds) {
+          if (!FlowActionUtils_1.FlowActionUtils.CheckEntityInAoi(t)) {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Plot", 26, "剧情中销毁实体过远，请检查配置", ["pbDataId", t], ["flow", this.Context.FormatId], ["id", this.ActionInfo.ActionId]);
+            }
+            e = true;
+          }
+        }
+        if (e) {
+          this.RequestServerAction(false);
+          this.FinishExecute(true);
+        } else {
+          this.Task = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("FlowActionDestroyEntity.OnExecute", o.EntityIds, this.W$i, FlowActionUtils_1.WAIT_ENTITY_TIME);
+        }
+      } else {
+        this.FinishExecute(true);
+      }
+    } else {
+      this.FinishExecute(true);
+    }
   }
   OnBackgroundExecute() {
-    this.OnExecute()
+    this.OnExecute();
   }
   OnInterruptExecute() {
-    this.Task?.Cancel(), this.Task = void 0, this.FinishExecute(!0)
+    this.Task?.Cancel();
+    this.Task = undefined;
+    this.FinishExecute(true);
   }
   OnRollback(e, o) {
-    for (const i of e.ActionInfo.Params.EntityIds) {
-      var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
-      t?.IsInit && ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t.Entity, !0, "FlowActionAwakeEntity.OnRollback")
+    var t = e?.EntityStateTagIdMap;
+    if (t) {
+      for (var [r, i] of t) {
+        LevelGeneralCommons_1.LevelGeneralCommons.RollbackDestroyState(r, i);
+      }
+    }
+    for (const l of e.ActionInfo.Params.EntityIds) {
+      var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l);
+      if (n?.IsInit) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(n.Entity, true, "FlowActionAwakeEntity.OnRollback");
+      }
     }
   }
 }

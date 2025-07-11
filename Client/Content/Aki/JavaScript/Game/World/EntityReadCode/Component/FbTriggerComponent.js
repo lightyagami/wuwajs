@@ -1,74 +1,148 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTriggerComponent = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbActionInfo_1 = require("../Action/FbActionInfo"),
-  FbEntityMatch_1 = require("./FbEntityMatch"),
-  FbTriggerExitConfig_1 = require("./FbTriggerExitConfig"),
-  FbConditionGroup_1 = require("../Condition/FbConditionGroup"),
-  UnionMatchRoleOptionHelper_1 = require("../Match/UnionMatchRoleOptionHelper");
+  value: true
+});
+exports.FbTriggerComponent = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbActionInfo_1 = require("../Action/FbActionInfo");
+const FbEntityMatch_1 = require("./FbEntityMatch");
+const FbTriggerExitConfig_1 = require("./FbTriggerExitConfig");
+const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
+const UnionMatchRoleOptionHelper_1 = require("../Match/UnionMatchRoleOptionHelper");
 class FbTriggerComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Ukh = !1, this.Dkh = void 0, this.vkh = !1, this.ykh = 0, this.Bkh = !1, this.qkh = 0, this.f_h = !1, this.X6o = void 0, this.L_h = !1, this.A_h = void 0, this.kkh = !1, this.Gkh = void 0, this.qDh = !1, this.PAe = void 0, this.Okh = !1, this.Fkh = !1, this.Nkh = !1, this.Vkh = !1, this.jkh = !1, this.Hkh = !1, this.dD_ = !1, this.mD_ = !1
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Ukh = false;
+    this.Dkh = undefined;
+    this.vkh = false;
+    this.ykh = 0;
+    this.Bkh = false;
+    this.qkh = 0;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.L_h = false;
+    this.A_h = undefined;
+    this.kkh = false;
+    this.Gkh = undefined;
+    this.qDh = false;
+    this.PAe = undefined;
+    this.Okh = false;
+    this.Fkh = false;
+    this.Nkh = false;
+    this.Vkh = false;
+    this.jkh = false;
+    this.Hkh = false;
+    this.dD_ = false;
+    this.mD_ = false;
   }
   static Create(t) {
-    if (t) return new FbTriggerComponent(t)
+    if (t) {
+      return new FbTriggerComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Match() {
-    return this.Ukh || (this.Ukh = !0, this.Dkh = FbEntityMatch_1.FbEntityMatch.Create(this.FbDataInternal.match())), this.Dkh
+    if (!this.Ukh) {
+      this.Ukh = true;
+      this.Dkh = FbEntityMatch_1.FbEntityMatch.Create(this.FbDataInternal.match());
+    }
+    return this.Dkh;
   }
   get MaxTriggerTimes() {
-    return this.vkh || (this.vkh = !0, this.ykh = this.FbDataInternal.maxTriggerTimes()), this.ykh
+    if (!this.vkh) {
+      this.vkh = true;
+      this.ykh = this.FbDataInternal.maxTriggerTimes();
+    }
+    return this.ykh;
   }
   get MatchTypeCount() {
-    return this.Bkh || (this.Bkh = !0, this.qkh = this.FbDataInternal.matchTypeCount()), this.qkh
+    if (!this.Bkh) {
+      this.Bkh = true;
+      this.qkh = this.FbDataInternal.matchTypeCount();
+    }
+    return this.qkh;
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get Actions() {
     if (!this.L_h) {
-      this.L_h = !0, this.A_h = new Array;
+      this.L_h = true;
+      this.A_h = new Array();
       var i = this.FbDataInternal.actionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.actions(t, new fb_action_1.ActionInfo);
-          this.A_h.push(FbActionInfo_1.FbActionInfo.Create(s))
+          var s = this.FbDataInternal.actions(t, new fb_action_1.ActionInfo());
+          this.A_h.push(FbActionInfo_1.FbActionInfo.Create(s));
         }
+      }
     }
-    return this.A_h
+    return this.A_h;
   }
   get ExitConfig() {
-    return this.kkh || (this.kkh = !0, this.Gkh = FbTriggerExitConfig_1.FbTriggerExitConfig.Create(this.FbDataInternal.exitConfig())), this.Gkh
+    if (!this.kkh) {
+      this.kkh = true;
+      this.Gkh = FbTriggerExitConfig_1.FbTriggerExitConfig.Create(this.FbDataInternal.exitConfig());
+    }
+    return this.Gkh;
   }
   get MatchRoleOption() {
     if (!this.qDh) {
-      this.qDh = !0, this.PAe = new Array;
+      this.qDh = true;
+      this.PAe = new Array();
       var i = this.FbDataInternal.matchRoleOptionLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.matchRoleOptionType(t),
-            h = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.GetUnionMatchRoleOptionObject(s);
-          h && void 0 !== (s = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.ReadUnionMatchRoleOption(s, this.FbDataInternal.matchRoleOption(t, h))) && this.PAe.push(s)
+          var s = this.FbDataInternal.matchRoleOptionType(t);
+          var h = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.GetUnionMatchRoleOptionObject(s);
+          if (h && (s = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.ReadUnionMatchRoleOption(s, this.FbDataInternal.matchRoleOption(t, h))) !== undefined) {
+            this.PAe.push(s);
+          }
         }
+      }
     }
-    return this.PAe
+    return this.PAe;
   }
   get ChangeRoleTrigger() {
-    return this.Okh || (this.Okh = !0, this.Fkh = this.FbDataInternal.changeRoleTrigger()), this.Fkh
+    if (!this.Okh) {
+      this.Okh = true;
+      this.Fkh = this.FbDataInternal.changeRoleTrigger();
+    }
+    return this.Fkh;
   }
   get ClientPrePerformance() {
-    return this.Nkh || (this.Nkh = !0, this.Vkh = this.FbDataInternal.clientPrePerformance()), this.Vkh
+    if (!this.Nkh) {
+      this.Nkh = true;
+      this.Vkh = this.FbDataInternal.clientPrePerformance();
+    }
+    return this.Vkh;
   }
   get OnlineDisableTip() {
-    return this.jkh || (this.jkh = !0, this.Hkh = this.FbDataInternal.onlineDisableTip()), this.Hkh
+    if (!this.jkh) {
+      this.jkh = true;
+      this.Hkh = this.FbDataInternal.onlineDisableTip();
+    }
+    return this.Hkh;
   }
   get OnlineAutoExit() {
-    return this.dD_ || (this.dD_ = !0, this.mD_ = this.FbDataInternal.onlineAutoExit()), this.mD_
+    if (!this.dD_) {
+      this.dD_ = true;
+      this.mD_ = this.FbDataInternal.onlineAutoExit();
+    }
+    return this.mD_;
   }
 }
 exports.FbTriggerComponent = FbTriggerComponent;

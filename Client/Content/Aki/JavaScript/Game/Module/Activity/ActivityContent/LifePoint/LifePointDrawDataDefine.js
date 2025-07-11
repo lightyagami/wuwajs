@@ -1,0 +1,45 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LifePointChallengeData = undefined;
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+class LifePointChallengeData {
+  constructor() {
+    this.xe = 0;
+    this.Tvc = false;
+    this.iPu = 0;
+    this.Jkt = 0;
+    this.HYo = 0;
+    this.mxu = false;
+  }
+  GetId() {
+    return this.xe;
+  }
+  GetHasGetReward() {
+    return this.Tvc;
+  }
+  GetOpenTime() {
+    return this.iPu / 1000;
+  }
+  GetRewardId() {
+    return this.Jkt;
+  }
+  GetEntityConfigId() {
+    return this.HYo;
+  }
+  GetPreChallengeState() {
+    return this.mxu;
+  }
+  Phrase(t) {
+    this.xe = t.e8n;
+    this.Tvc = t.mLs;
+    this.iPu = Number(MathUtils_1.MathUtils.LongToBigInt(t.pDs));
+    this.Jkt = t.N6n;
+    this.HYo = t.A5n;
+    this.mxu = t.Vwu;
+  }
+}
+exports.LifePointChallengeData = LifePointChallengeData;
+//# sourceMappingURL=LifePointDrawDataDefine.js.map

@@ -1,95 +1,125 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CookMaterialItem = void 0;
-const UE = require("ue"),
-  CommonDefine_1 = require("../../../../Core/Define/CommonDefine"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.CookMaterialItem = undefined;
+const UE = require("ue");
+const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class CookMaterialItemContent extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.wGt = void 0, this.ClickDelegate = void 0, this.OnClick = () => {
-      this?.ClickDelegate()
-    }
+    super(...arguments);
+    this.wGt = undefined;
+    this.ClickDelegate = undefined;
+    this.OnClick = () => {
+      this?.ClickDelegate();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UITexture],
-      [2, UE.UIText],
-      [3, UE.UIItem],
-      [4, UE.UIExtendToggle],
-      [5, UE.UIItem],
-      [6, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIText],
-      [10, UE.UISprite],
-      [11, UE.UISprite]
-    ], this.BtnBindInfo = [
-      [4, this.OnClick]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIExtendToggle], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UISprite], [11, UE.UISprite]];
+    this.BtnBindInfo = [[4, this.OnClick]];
   }
   SetSelect() {
-    this.GetExtendToggle(4).SetToggleState(1, !1)
+    this.GetExtendToggle(4).SetToggleState(1, false);
   }
   SetDelect() {
-    this.GetExtendToggle(4).SetToggleState(0, !1)
+    this.GetExtendToggle(4).SetToggleState(0, false);
   }
   OnStart() {
-    this.GetSprite(0).SetUIActive(!0), this.GetTexture(1).SetUIActive(!0), this.GetText(2).SetUIActive(!0), this.GetExtendToggle(4).GetOwner().GetComponentByClass(UE.UIItem.StaticClass()).SetUIActive(!0), this.GetItem(3).SetUIActive(!0), this.GetItem(5).SetUIActive(!1), this.GetItem(6).SetUIActive(!1), this.GetItem(7).SetUIActive(!1), this.GetItem(8).SetUIActive(!1), this.GetText(9).SetUIActive(!1), this.GetSprite(10).SetUIActive(!1), this.GetSprite(11).SetUIActive(!1)
+    this.GetSprite(0).SetUIActive(true);
+    this.GetTexture(1).SetUIActive(true);
+    this.GetText(2).SetUIActive(true);
+    this.GetExtendToggle(4).GetOwner().GetComponentByClass(UE.UIItem.StaticClass()).SetUIActive(true);
+    this.GetItem(3).SetUIActive(true);
+    this.GetItem(5).SetUIActive(false);
+    this.GetItem(6).SetUIActive(false);
+    this.GetItem(7).SetUIActive(false);
+    this.GetItem(8).SetUIActive(false);
+    this.GetText(9).SetUIActive(false);
+    this.GetSprite(10).SetUIActive(false);
+    this.GetSprite(11).SetUIActive(false);
   }
   Update(t) {
-    this.wGt = t, this.RefreshHave(), this.Kbe(), this.BGt()
+    this.wGt = t;
+    this.RefreshHave();
+    this.Kbe();
+    this.BGt();
   }
   RefreshNeed(t = 1) {
-    this.RefreshHave(t)
+    this.RefreshHave(t);
   }
   RefreshHave(t = 1) {
-    var t = this.wGt.UVn * t,
-      i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.wGt.L8n);
-    let e = void 0;
-    e = this.wGt.K6n ? i < this.wGt.UVn ? StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_NOT_ENOUGHT_TEXT_PATTERN, i.toString(), t.toString()) : StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_ENOUGHT_TEXT_PATTERN, i.toString(), t.toString()) : StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_NEED_SELECT_TEXT_PATTERN, t.toString()), this.GetText(2).SetText(e)
+    var t = this.wGt.UVn * t;
+    var i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.wGt.L8n);
+    let e = undefined;
+    e = this.wGt.K6n ? i < this.wGt.UVn ? StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_NOT_ENOUGHT_TEXT_PATTERN, i.toString(), t.toString()) : StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_ENOUGHT_TEXT_PATTERN, i.toString(), t.toString()) : StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_NEED_SELECT_TEXT_PATTERN, t.toString());
+    this.GetText(2).SetText(e);
   }
   Kbe() {
     var t;
-    this.wGt.K6n ? (this.GetTexture(1).SetUIActive(!0), t = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(this.wGt.L8n), this.SetTextureByPath(t.Icon, this.GetTexture(1))) : this.GetTexture(1).SetUIActive(!1)
+    if (this.wGt.K6n) {
+      this.GetTexture(1).SetUIActive(true);
+      t = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(this.wGt.L8n);
+      this.SetTextureByPath(t.Icon, this.GetTexture(1));
+    } else {
+      this.GetTexture(1).SetUIActive(false);
+    }
   }
   BGt() {
-    this.wGt.K6n ? (this.GetSprite(0).SetUIActive(!0), this.SetItemQualityIcon(this.GetSprite(0), this.wGt.L8n)) : this.GetSprite(0).SetUIActive(!1)
+    if (this.wGt.K6n) {
+      this.GetSprite(0).SetUIActive(true);
+      this.SetItemQualityIcon(this.GetSprite(0), this.wGt.L8n);
+    } else {
+      this.GetSprite(0).SetUIActive(false);
+    }
   }
   OnBeforeDestroy() {}
 }
 class CookMaterialItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.yGe = void 0, this.Xy = 0, this.oft = void 0, this.wGt = void 0, this.OnClick = () => {
-      this?.oft(this.wGt, this.Xy)
-    }
+    super(...arguments);
+    this.yGe = undefined;
+    this.Xy = 0;
+    this.oft = undefined;
+    this.wGt = undefined;
+    this.OnClick = () => {
+      this?.oft(this.wGt, this.Xy);
+    };
   }
   BindOnClickedCallback(t) {
-    this.oft = void 0, this.oft = t
+    this.oft = undefined;
+    this.oft = t;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   OnStart() {
-    this.yGe = new CookMaterialItemContent, this.yGe.CreateThenShowByActor(this.GetItem(0).GetOwner()), this.yGe.ClickDelegate = void 0, this.yGe.ClickDelegate = this.OnClick
+    this.yGe = new CookMaterialItemContent();
+    this.yGe.CreateThenShowByActor(this.GetItem(0).GetOwner());
+    this.yGe.ClickDelegate = undefined;
+    this.yGe.ClickDelegate = this.OnClick;
   }
   Update(t, i) {
-    this.wGt = t, this.yGe.Update(t), this.Xy = i
+    this.wGt = t;
+    this.yGe.Update(t);
+    this.Xy = i;
   }
   UpdateSelectedState(t) {
-    t === this.Xy ? this.yGe.SetSelect() : this.yGe.SetDelect()
+    if (t === this.Xy) {
+      this.yGe.SetSelect();
+    } else {
+      this.yGe.SetDelect();
+    }
   }
   RefreshNeed(t = 1) {
-    this.yGe.RefreshNeed(t)
+    this.yGe.RefreshNeed(t);
   }
   OnBeforeDestroy() {
-    this.yGe.Destroy()
+    this.yGe.Destroy();
   }
 }
 exports.CookMaterialItem = CookMaterialItem;

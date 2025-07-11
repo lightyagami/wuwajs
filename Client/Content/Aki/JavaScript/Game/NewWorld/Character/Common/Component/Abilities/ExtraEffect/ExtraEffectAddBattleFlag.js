@@ -1,23 +1,31 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AddBattleFlag = void 0;
+  value: true
+});
+exports.AddBattleFlag = undefined;
 const ExtraEffectBase_1 = require("./ExtraEffectBase");
 class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
   constructor() {
-    super(...arguments), this.LNc = 1, this.KXo = [], this.wNc = [], this.RNc = ""
+    super(...arguments);
+    this.LNc = 1;
+    this.KXo = [];
+    this.wNc = [];
+    this.RNc = "";
   }
   InitParameters(t) {
-    switch (this.LNc = Number(t.ExtraEffectParameters[0]), this.RNc = t.ExtraEffectParameters[2], this.LNc) {
+    this.LNc = Number(t.ExtraEffectParameters[0]);
+    this.RNc = t.ExtraEffectParameters[2];
+    switch (this.LNc) {
       case 2:
         this.KXo = t.ExtraEffectParameters[1].split("#").map(t => Number(t));
         break;
       case 3:
-        this.wNc = t.ExtraEffectParameters[1].split("#").map(t => Number(t))
+        this.wNc = t.ExtraEffectParameters[1].split("#").map(t => Number(t));
     }
   }
   OnExecute() {
-    return this.RNc
+    return this.RNc;
   }
   GetDebugEffectString() {
     let t = "";
@@ -29,29 +37,37 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
         t = "技能Id " + this.KXo;
         break;
       case 3:
-        t = "技能类型 " + this.wNc
+        t = "技能类型 " + this.wNc;
     }
-    return `添加战斗标记 ${this.RNc} 到 ` + t
+    return `添加战斗标记 ${this.RNc} 到 ${t}`;
   }
   CheckExecutable() {
-    return this.OwnerBuffComponent?.HasBuffAuthority() ?? !1
+    return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
   static ApplyEffects(t, e) {
     e.BattleFlags = [];
-    var s = t.GetComponent(174),
-      t = s?.BuffEffectManager;
-    if (t)
-      for (const r of t.FilterById(76))
-        if (r.Check({}, s)) switch (r.LNc) {
-          case 1:
-            e.BattleFlags.push(r.Execute());
-            break;
-          case 2:
-            r.KXo.includes(e.SkillId) && e.BattleFlags.push(r.Execute());
-            break;
-          case 3:
-            r.wNc.includes(e.SkillInfo.SkillGenre) && e.BattleFlags.push(r.Execute())
+    var s = t.GetComponent(174);
+    var t = s?.BuffEffectManager;
+    if (t) {
+      for (const r of t.FilterById(76)) {
+        if (r.Check({}, s)) {
+          switch (r.LNc) {
+            case 1:
+              e.BattleFlags.push(r.Execute());
+              break;
+            case 2:
+              if (r.KXo.includes(e.SkillId)) {
+                e.BattleFlags.push(r.Execute());
+              }
+              break;
+            case 3:
+              if (r.wNc.includes(e.SkillInfo.SkillGenre)) {
+                e.BattleFlags.push(r.Execute());
+              }
+          }
         }
+      }
+    }
   }
 }
 exports.AddBattleFlag = AddBattleFlag;

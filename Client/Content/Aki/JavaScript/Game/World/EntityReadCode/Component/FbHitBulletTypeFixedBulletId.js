@@ -1,28 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHitBulletTypeFixedBulletId = void 0;
+  value: true
+});
+exports.FbHitBulletTypeFixedBulletId = undefined;
 class FbHitBulletTypeFixedBulletId {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.p0h = !1, this.nXs = void 0, this.nOh = !1, this.sOh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.p0h = false;
+    this.nXs = undefined;
+    this.nOh = false;
+    this.sOh = false;
   }
   static Create(t) {
-    if (t) return new FbHitBulletTypeFixedBulletId(t)
+    if (t) {
+      return new FbHitBulletTypeFixedBulletId(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BulletId() {
     if (!this.p0h) {
-      this.p0h = !0, this.nXs = new Array;
+      this.p0h = true;
+      this.nXs = new Array();
       var i = this.FbDataInternal.bulletIdLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.nXs.push(Number(this.FbDataInternal.bulletId(t) ?? 0))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.nXs.push(Number(this.FbDataInternal.bulletId(t) ?? 0));
+        }
+      }
     }
-    return this.nXs
+    return this.nXs;
   }
   get PlayerAttack() {
-    return this.nOh || (this.nOh = !0, this.sOh = this.FbDataInternal.playerAttack()), this.sOh
+    if (!this.nOh) {
+      this.nOh = true;
+      this.sOh = this.FbDataInternal.playerAttack();
+    }
+    return this.sOh;
   }
 }
 exports.FbHitBulletTypeFixedBulletId = FbHitBulletTypeFixedBulletId;

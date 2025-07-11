@@ -1,40 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbContinuesVariableSpeedMovementSpline = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbContinuesVariableSpeedSplinePoint_1 = require("./FbContinuesVariableSpeedSplinePoint"),
-  FbTimePathConfig_1 = require("./FbTimePathConfig");
+  value: true
+});
+exports.FbContinuesVariableSpeedMovementSpline = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbContinuesVariableSpeedSplinePoint_1 = require("./FbContinuesVariableSpeedSplinePoint");
+const FbTimePathConfig_1 = require("./FbTimePathConfig");
 class FbContinuesVariableSpeedMovementSpline {
   constructor(i) {
-    this.FbDataInternal = i, this.u_h = !1, this.f8o = void 0, this.e9h = !1, this.t9h = 0, this.i9h = !1, this.r9h = void 0, this.rc1 = !1, this.oc1 = void 0, this.NEh = !1, this.VEh = void 0
+    this.FbDataInternal = i;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.e9h = false;
+    this.t9h = 0;
+    this.i9h = false;
+    this.r9h = undefined;
+    this.Ec1 = false;
+    this.Ic1 = undefined;
+    this.NEh = false;
+    this.VEh = undefined;
   }
   static Create(i) {
-    if (i) return new FbContinuesVariableSpeedMovementSpline(i)
+    if (i) {
+      return new FbContinuesVariableSpeedMovementSpline(i);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TransitionSpeed() {
-    return this.e9h || (this.e9h = !0, this.t9h = this.FbDataInternal.transitionSpeed()), this.t9h
+    if (!this.e9h) {
+      this.e9h = true;
+      this.t9h = this.FbDataInternal.transitionSpeed();
+    }
+    return this.t9h;
   }
   get EntireTimePathConfig() {
-    return this.i9h || (this.i9h = !0, this.r9h = FbTimePathConfig_1.FbTimePathConfig.Create(this.FbDataInternal.entireTimePathConfig())), this.r9h
+    if (!this.i9h) {
+      this.i9h = true;
+      this.r9h = FbTimePathConfig_1.FbTimePathConfig.Create(this.FbDataInternal.entireTimePathConfig());
+    }
+    return this.r9h;
   }
   get CircleMode() {
-    return this.rc1 || (this.rc1 = !0, this.oc1 = this.FbDataInternal.circleMode()), this.oc1
+    if (!this.Ec1) {
+      this.Ec1 = true;
+      this.Ic1 = this.FbDataInternal.circleMode();
+    }
+    return this.Ic1;
   }
   get Points() {
     if (!this.NEh) {
-      this.NEh = !0, this.VEh = new Array;
+      this.NEh = true;
+      this.VEh = new Array();
       var t = this.FbDataInternal.pointsLength();
-      if (t)
+      if (t) {
         for (let i = 0; i < t; ++i) {
-          var e = this.FbDataInternal.points(i, new fb_component_1.ContinuesVariableSpeedSplinePoint);
-          this.VEh.push(FbContinuesVariableSpeedSplinePoint_1.FbContinuesVariableSpeedSplinePoint.Create(e))
+          var e = this.FbDataInternal.points(i, new fb_component_1.ContinuesVariableSpeedSplinePoint());
+          this.VEh.push(FbContinuesVariableSpeedSplinePoint_1.FbContinuesVariableSpeedSplinePoint.Create(e));
         }
+      }
     }
-    return this.VEh
+    return this.VEh;
   }
 }
 exports.FbContinuesVariableSpeedMovementSpline = FbContinuesVariableSpeedMovementSpline;

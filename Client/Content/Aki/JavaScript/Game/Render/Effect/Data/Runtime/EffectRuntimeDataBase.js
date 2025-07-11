@@ -1,10 +1,11 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 class EffectRuntimeDataBase {
   constructor() {
-    this.SkeletalMeshComp = void 0
+    this.SkeletalMeshComp = undefined;
   }
 }
 exports.default = EffectRuntimeDataBase;

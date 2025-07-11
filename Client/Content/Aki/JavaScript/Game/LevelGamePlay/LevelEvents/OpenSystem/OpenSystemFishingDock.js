@@ -1,17 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemFishingDock = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  OpenSystemBase_1 = require("./OpenSystemBase");
+  value: true
+});
+exports.OpenSystemFishingDock = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiManager_1 = require("../../../Ui/UiManager");
+const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemFishingDock extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, a) {
-    return e && (e = e.BoardId, ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortConfig(e)) && (ModelManager_1.ModelManager.FishingModel.DockId = e, await UiManager_1.UiManager.OpenViewAsync("FishingLoadingView", !0)), !0
+    if (e && (e = e.BoardId, ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortConfig(e))) {
+      ModelManager_1.ModelManager.FishingModel.DockId = e;
+      await UiManager_1.UiManager.OpenViewAsync("FishingLoadingView", true);
+    }
+    return true;
   }
   GetViewName(e, a) {
-    return "FishingDockView"
+    return "FishingDockView";
   }
 }
 exports.OpenSystemFishingDock = OpenSystemFishingDock;

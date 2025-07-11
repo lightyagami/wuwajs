@@ -1,16 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShootTargetModel = void 0;
+  value: true
+});
+exports.ShootTargetModel = undefined;
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 class ShootTargetModel extends ModelBase_1.ModelBase {
   OnInit() {
-    return !0
+    return true;
   }
   AddTarget(e, o) {}
   RemoveTarget(e) {}
   OnClear() {
-    return !0
+    return true;
   }
 }
 exports.ShootTargetModel = ShootTargetModel;

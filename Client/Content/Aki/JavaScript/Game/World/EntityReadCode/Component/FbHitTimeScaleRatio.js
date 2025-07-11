@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHitTimeScaleRatio = void 0;
+  value: true
+});
+exports.FbHitTimeScaleRatio = undefined;
 class FbHitTimeScaleRatio {
   constructor(t) {
-    this.FbDataInternal = t, this.aOh = !1, this.hOh = 0, this.lOh = !1, this._Oh = 0, this.cOh = !1, this.uOh = 0
+    this.FbDataInternal = t;
+    this.aOh = false;
+    this.hOh = 0;
+    this.lOh = false;
+    this._Oh = 0;
+    this.cOh = false;
+    this.uOh = 0;
   }
   static Create(t) {
-    if (t) return new FbHitTimeScaleRatio(t)
+    if (t) {
+      return new FbHitTimeScaleRatio(t);
+    }
   }
   get TimeRatio() {
-    return this.aOh || (this.aOh = !0, this.hOh = this.FbDataInternal.timeRatio()), this.hOh
+    if (!this.aOh) {
+      this.aOh = true;
+      this.hOh = this.FbDataInternal.timeRatio();
+    }
+    return this.hOh;
   }
   get MaxExtraTime() {
-    return this.lOh || (this.lOh = !0, this._Oh = this.FbDataInternal.maxExtraTime()), this._Oh
+    if (!this.lOh) {
+      this.lOh = true;
+      this._Oh = this.FbDataInternal.maxExtraTime();
+    }
+    return this._Oh;
   }
   get ValueRatio() {
-    return this.cOh || (this.cOh = !0, this.uOh = this.FbDataInternal.valueRatio()), this.uOh
+    if (!this.cOh) {
+      this.cOh = true;
+      this.uOh = this.FbDataInternal.valueRatio();
+    }
+    return this.uOh;
   }
 }
 exports.FbHitTimeScaleRatio = FbHitTimeScaleRatio;

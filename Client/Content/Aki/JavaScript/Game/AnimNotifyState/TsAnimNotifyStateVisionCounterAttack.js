@@ -1,24 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyStateVisionCounterAttack extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.对策设置 = void 0
+    super(...arguments);
+    this.对策设置 = undefined;
   }
   Constructor() {}
   K2_NotifyBegin(t, e, r) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (e = t.GetComponent(209)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex), (t = t.GetComponent(61))?.SetCounterAttackAnsInfo(e, this.exportIndex), t?.SetVisionCounterAttackInfo(this.对策设置), t?.SetCounterAttackEndTime(r), !0)
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (e = t.GetComponent(209)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex), (t = t.GetComponent(61))?.SetCounterAttackAnsInfo(e, this.exportIndex), t?.SetVisionCounterAttackInfo(this.对策设置), t?.SetCounterAttackEndTime(r), true);
   }
   K2_NotifyEnd(t, e) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (t.GetComponent(61)?.VisionCounterAttackEnd(), !0)
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity)?.Valid && (t.GetComponent(61)?.VisionCounterAttackEnd(), true);
   }
   GetNotifyName() {
-    return "幻象弹反"
+    return "幻象弹反";
   }
 }
 exports.default = TsAnimNotifyStateVisionCounterAttack;

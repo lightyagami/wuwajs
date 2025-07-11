@@ -1,8 +1,10 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.tsBaseMonsterConfig = void 0, exports.tsBaseMonsterConfig = {
-  MaxDistance: 12e3,
+  value: true
+});
+exports.tsBaseMonsterConfig = undefined;
+exports.tsBaseMonsterConfig = {
+  MaxDistance: 12000,
   InSphereRadiusRate: 100
-};
-//# sourceMappingURL=TsBaseMonsterConfig.js.map
+}; //# sourceMappingURL=TsBaseMonsterConfig.js.map

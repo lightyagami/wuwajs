@@ -1,16 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletChildInfo = void 0;
+  value: true
+});
+exports.BulletChildInfo = undefined;
 class BulletChildInfo {
   constructor() {
-    this.IsNumberNotEnough = !1, this.IsActiveSummonChildBullet = !1, this.HaveSpecialChildrenBullet = !1, this.HaveSummonedBulletNumber = void 0
+    this.IsNumberNotEnough = false;
+    this.IsActiveSummonChildBullet = false;
+    this.HaveSpecialChildrenBullet = false;
+    this.HaveSummonedBulletNumber = undefined;
   }
   SetIsNumberNotEnough(t) {
-    this.IsNumberNotEnough = t
+    this.IsNumberNotEnough = t;
   }
   SetIsActiveSummonChildBullet(t) {
-    this.IsActiveSummonChildBullet = t
+    this.IsActiveSummonChildBullet = t;
   }
 }
 exports.BulletChildInfo = BulletChildInfo;

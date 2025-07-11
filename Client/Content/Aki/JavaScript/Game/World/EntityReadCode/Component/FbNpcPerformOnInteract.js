@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcPerformOnInteract = void 0;
+  value: true
+});
+exports.FbNpcPerformOnInteract = undefined;
 class FbNpcPerformOnInteract {
   constructor(t) {
-    this.FbDataInternal = t, this.mgh = !1, this.Cgh = void 0
+    this.FbDataInternal = t;
+    this.mgh = false;
+    this.Cgh = undefined;
   }
   static Create(t) {
-    if (t) return new FbNpcPerformOnInteract(t)
+    if (t) {
+      return new FbNpcPerformOnInteract(t);
+    }
   }
   get Montage() {
-    return this.mgh || (this.mgh = !0, this.Cgh = this.FbDataInternal.montage()), this.Cgh
+    if (!this.mgh) {
+      this.mgh = true;
+      this.Cgh = this.FbDataInternal.montage();
+    }
+    return this.Cgh;
   }
 }
 exports.FbNpcPerformOnInteract = FbNpcPerformOnInteract;

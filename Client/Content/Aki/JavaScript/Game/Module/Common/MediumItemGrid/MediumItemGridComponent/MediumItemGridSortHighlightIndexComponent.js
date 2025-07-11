@@ -1,20 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MediumItemGridSortHighlightIndexComponent = void 0;
-const UE = require("ue"),
-  MediumItemGridComponent_1 = require("./MediumItemGridComponent");
+  value: true
+});
+exports.MediumItemGridSortHighlightIndexComponent = undefined;
+const UE = require("ue");
+const MediumItemGridComponent_1 = require("./MediumItemGridComponent");
 class MediumItemGridSortHighlightIndexComponent extends MediumItemGridComponent_1.MediumItemGridComponent {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   GetResourceId() {
-    return "UiItem_ItemSortNumYellow"
+    return "UiItem_ItemSortNumYellow";
   }
   OnRefresh(e) {
-    void 0 === e || 0 === e ? this.SetActive(!1) : (this.GetText(0).SetText(e.toString()), this.SetActive(!0))
+    if (e === undefined || e === 0) {
+      this.SetActive(false);
+    } else {
+      this.GetText(0).SetText(e.toString());
+      this.SetActive(true);
+    }
   }
 }
 exports.MediumItemGridSortHighlightIndexComponent = MediumItemGridSortHighlightIndexComponent;

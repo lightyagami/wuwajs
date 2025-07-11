@@ -1,92 +1,146 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, e, i, n) {
-  var r, o = arguments.length,
-    s = o < 3 ? e : null === n ? n = Object.getOwnPropertyDescriptor(e, i) : n;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, i, n);
-  else
-    for (var a = t.length - 1; 0 <= a; a--)(r = t[a]) && (s = (o < 3 ? r(s) : 3 < o ? r(e, i, s) : r(e, i)) || s);
-  return 3 < o && s && Object.defineProperty(e, i, s), s
+
+var __decorate = this && this.__decorate || function (t, e, i, n) {
+  var r;
+  var o = arguments.length;
+  var s = o < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    s = Reflect.decorate(t, e, i, n);
+  } else {
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (r = t[a]) {
+        s = (o < 3 ? r(s) : o > 3 ? r(e, i, s) : r(e, i)) || s;
+      }
+    }
+  }
+  if (o > 3 && s) {
+    Object.defineProperty(e, i, s);
+  }
+  return s;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PawnInfoManageComponent = void 0;
-const LanguageSystem_1 = require("../../../../Core/Common/LanguageSystem"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang"),
-  EntityComponent_1 = require("../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent"),
-  IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent"),
-  PublicUtil_1 = require("../../../Common/PublicUtil"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  SOCKET_NAME = "MarkCase";
+  value: true
+});
+exports.PawnInfoManageComponent = undefined;
+const LanguageSystem_1 = require("../../../../Core/Common/LanguageSystem");
+const Log_1 = require("../../../../Core/Common/Log");
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
+const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
+const PublicUtil_1 = require("../../../Common/PublicUtil");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const SOCKET_NAME = "MarkCase";
 let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.he = "", this.mm1 = void 0, this.fm1 = void 0, this.Ovr = void 0, this.han = void 0, this.lan = void 0, this._an = -1, this.xrr = void 0, this.KQs = void 0
+    super(...arguments);
+    this.he = "";
+    this.Om1 = undefined;
+    this.qm1 = undefined;
+    this.Ovr = undefined;
+    this.han = undefined;
+    this.lan = undefined;
+    this._an = -1;
+    this.xrr = undefined;
+    this.KQs = undefined;
   }
   OnInit() {
-    return this.Ovr = this.Entity.GetComponent(0), this.han = this.Entity.GetComponent(149), !0
+    this.Ovr = this.Entity.GetComponent(0);
+    this.han = this.Entity.GetComponent(149);
+    return true;
   }
   get LockRange() {
-    return this._an
+    return this._an;
   }
   get PawnName() {
-    return this.xrr !== LanguageSystem_1.LanguageSystem.PackageLanguage && this.oCo(), this.he
+    if (this.xrr !== LanguageSystem_1.LanguageSystem.PackageLanguage) {
+      this.oCo();
+    }
+    return this.he;
   }
   set PawnName(t) {
-    this.he = t
+    this.he = t;
   }
   get SecondName() {
-    return this.mm1
+    return this.Om1;
   }
   get FunctionIcon() {
-    return this.fm1
+    return this.qm1;
   }
   UpdateNameAndHeadInfo() {
-    this.oCo(), this.gm1()
+    this.oCo();
+    this.Gm1();
   }
   SetPawnNameKey(t) {
-    this.KQs = t, this.oCo()
+    this.KQs = t;
+    this.oCo();
   }
   oCo() {
     var t;
-    this.xrr = LanguageSystem_1.LanguageSystem.PackageLanguage, this.KQs ? this.he = ConfigManager_1.ConfigManager.TextConfig.GetTextById(this.KQs) : this.han?.DropItemConfig ? (t = this.han.DropItemConfig.Config, this.he = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name)) : (t = this.Ovr?.GetEntityTidName()) && (this.he = PublicUtil_1.PublicUtil.GetConfigTextByKey(t))
+    this.xrr = LanguageSystem_1.LanguageSystem.PackageLanguage;
+    if (this.KQs) {
+      this.he = ConfigManager_1.ConfigManager.TextConfig.GetTextById(this.KQs);
+    } else if (this.han?.DropItemConfig) {
+      t = this.han.DropItemConfig.Config;
+      this.he = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name);
+    } else if (t = this.Ovr?.GetEntityTidName()) {
+      this.he = PublicUtil_1.PublicUtil.GetConfigTextByKey(t);
+    }
   }
-  gm1() {
-    var t = this.Ovr?.GetBaseInfo()?.HeadInfo,
-      t = t ? ConfigManager_1.ConfigManager.NpcIconConfig?.GetNpcHeadInfo(t) : void 0;
-    this.mm1 = this.Ovr?.GetEntitySecondName(), this.mm1 || (this.mm1 = t?.SecondName), this.fm1 = this.Ovr?.GetEntityFunctionIcon(), this.fm1 || (this.fm1 = t?.FunctionPath)
+  Gm1() {
+    var t = this.Ovr?.GetBaseInfo()?.HeadInfo;
+    var t = t ? ConfigManager_1.ConfigManager.NpcIconConfig?.GetNpcHeadInfo(t) : undefined;
+    this.Om1 = this.Ovr?.GetEntitySecondName();
+    this.Om1 ||= t?.SecondName;
+    this.qm1 = this.Ovr?.GetEntityFunctionIcon();
+    this.qm1 ||= t?.FunctionPath;
   }
   get DropItemId() {
-    return this.han?.DropItemConfig?.ConfigId
+    return this.han?.DropItemConfig?.ConfigId;
   }
   get DropItemCount() {
-    return this.han?.DropItemConfig.ItemCount
+    return this.han?.DropItemConfig.ItemCount;
   }
   get EntityId() {
-    return this.Entity.Id
+    return this.Entity.Id;
   }
   get HasQuestOption() {
     var t = this.Entity.GetComponent(197);
-    return !!t && !!(t = t.GetInteractController()) && t.HasDynamicOption
+    return !!t && !!(t = t.GetInteractController()) && t.HasDynamicOption;
   }
   uan() {
     var t;
-    return this.lan = this.Ovr.GetPbEntityInitData(), this.lan ? (t = this.Ovr.GetBaseInfo(), this.he = PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidName), t = (0, IComponent_1.getComponent)(this.lan.ComponentsData, "FightInteractComponent"), this._an = t ? t.LockRange : -1, !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 28, "[清理CDT_EntityConfig]该实体没有对应的Pb表信息", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["TidName", this.Ovr.GetBaseInfo()?.TidName], ["PbDataId", this.Ovr.GetPbDataId()]), !1)
+    this.lan = this.Ovr.GetPbEntityInitData();
+    if (this.lan) {
+      t = this.Ovr.GetBaseInfo();
+      this.he = PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidName);
+      t = (0, IComponent_1.getComponent)(this.lan.ComponentsData, "FightInteractComponent");
+      this._an = t ? t.LockRange : -1;
+      return true;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 28, "[清理CDT_EntityConfig]该实体没有对应的Pb表信息", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["TidName", this.Ovr.GetBaseInfo()?.TidName], ["PbDataId", this.Ovr.GetPbDataId()]);
+      }
+      return false;
+    }
   }
   OnStart() {
-    return this.uan() && this.oCo(), !0
+    if (this.uan()) {
+      this.oCo();
+    }
+    return true;
   }
   IsDropItem() {
-    return void 0 !== this.han
+    return this.han !== undefined;
   }
   GetHeadStateSocketName() {
     var t = this.Entity.GetComponent(0)?.GetBaseInfo()?.HeadStateViewConfig?.HeadStateSocketName;
-    return t || SOCKET_NAME
+    return t || SOCKET_NAME;
   }
   GetHeadStateOffset() {
     var t = this.Ovr.GetBaseInfo()?.HeadStateViewConfig?.ZOffset;
-    return t || ((t = this.Entity.GetComponent(0)?.GetModelConfig()) ? t.名字Z偏移 : 0)
+    return t || ((t = this.Entity.GetComponent(0)?.GetModelConfig()) ? t.名字Z偏移 : 0);
   }
 };
-PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(117)], PawnInfoManageComponent), exports.PawnInfoManageComponent = PawnInfoManageComponent;
-//# sourceMappingURL=PawnInfoManageComponent.js.map
+PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(117)], PawnInfoManageComponent);
+exports.PawnInfoManageComponent = PawnInfoManageComponent; //# sourceMappingURL=PawnInfoManageComponent.js.map

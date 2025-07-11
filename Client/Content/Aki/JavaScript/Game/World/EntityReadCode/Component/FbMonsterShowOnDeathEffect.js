@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMonsterShowOnDeathEffect = void 0;
+  value: true
+});
+exports.FbMonsterShowOnDeathEffect = undefined;
 class FbMonsterShowOnDeathEffect {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.J6l = !1, this.Z6l = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.J6l = false;
+    this.Z6l = 0;
   }
   static Create(t) {
-    if (t) return new FbMonsterShowOnDeathEffect(t)
+    if (t) {
+      return new FbMonsterShowOnDeathEffect(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EffectId() {
-    return this.J6l || (this.J6l = !0, this.Z6l = this.FbDataInternal.effectId()), this.Z6l
+    if (!this.J6l) {
+      this.J6l = true;
+      this.Z6l = this.FbDataInternal.effectId();
+    }
+    return this.Z6l;
   }
 }
 exports.FbMonsterShowOnDeathEffect = FbMonsterShowOnDeathEffect;

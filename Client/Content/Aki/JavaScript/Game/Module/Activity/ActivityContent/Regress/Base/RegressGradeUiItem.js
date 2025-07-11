@@ -1,16 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RegressGradeUiItem = void 0;
+  value: true
+});
+exports.RegressGradeUiItem = undefined;
 class RegressGradeUiItem {
   constructor() {
-    this.bl1 = 1
+    this.u_1 = 1;
   }
   get Grade() {
-    return this.bl1
+    return this.u_1;
   }
   set Grade(e) {
-    this.bl1 = e, this.Cl()
+    this.u_1 = e;
+    this.Cl();
   }
   Cl() {
     switch (this.Grade) {
@@ -18,7 +21,7 @@ class RegressGradeUiItem {
         this.OnSetToNormal();
         break;
       case 2:
-        this.OnSetToHyper()
+        this.OnSetToHyper();
     }
   }
   OnSetToNormal() {}

@@ -1,16 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FilterItemData = void 0;
+  value: true
+});
+exports.FilterItemData = undefined;
 class FilterItemData {
-  constructor(t = 0, s = void 0, e = void 0) {
-    this.FilterId = t, this.Content = s, this.xst = e, this.rDt = !0, this.NeedChangeColor = !1
+  constructor(t = 0, s = undefined, e = undefined) {
+    this.FilterId = t;
+    this.Content = s;
+    this.xst = e;
+    this.rDt = true;
+    this.NeedChangeColor = false;
   }
   SetIsShowIcon(t) {
-    this.rDt = t
+    this.rDt = t;
   }
   GetIconPath() {
-    if (this.rDt) return this.xst
+    if (this.rDt) {
+      return this.xst;
+    }
   }
 }
 exports.FilterItemData = FilterItemData;

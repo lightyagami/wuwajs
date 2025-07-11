@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbManualOccupations = void 0;
+  value: true
+});
+exports.FbManualOccupations = undefined;
 class FbManualOccupations {
   constructor(t) {
-    this.FbDataInternal = t, this.sEh = !1, this.aEh = void 0, this.hEh = !1, this.lEh = void 0
+    this.FbDataInternal = t;
+    this.sEh = false;
+    this.aEh = undefined;
+    this.hEh = false;
+    this.lEh = undefined;
   }
   static Create(t) {
-    if (t) return new FbManualOccupations(t)
+    if (t) {
+      return new FbManualOccupations(t);
+    }
   }
   get OccupationType() {
-    return this.sEh || (this.sEh = !0, this.aEh = this.FbDataInternal.occupationType()), this.aEh
+    if (!this.sEh) {
+      this.sEh = true;
+      this.aEh = this.FbDataInternal.occupationType();
+    }
+    return this.aEh;
   }
   get Occupations() {
     if (!this.hEh) {
-      this.hEh = !0, this.lEh = new Array;
+      this.hEh = true;
+      this.lEh = new Array();
       var s = this.FbDataInternal.occupationsLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.lEh.push(this.FbDataInternal.occupations(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.lEh.push(this.FbDataInternal.occupations(t));
+        }
+      }
     }
-    return this.lEh
+    return this.lEh;
   }
 }
 exports.FbManualOccupations = FbManualOccupations;

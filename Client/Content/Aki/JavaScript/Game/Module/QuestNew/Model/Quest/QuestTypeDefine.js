@@ -1,13 +1,14 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoActivityQuest = exports.HiddenQuest = exports.ActivityQuest = exports.PoiQuest = exports.GuideQuest = exports.RoleQuest = exports.TestQuest = exports.BranchQuest = exports.MainQuest = exports.createQuestObj = void 0;
-const DailyQuest_1 = require("./DailyQuest"),
-  Quest_1 = require("./Quest");
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DangoActivityQuest = exports.HiddenQuest = exports.ActivityQuest = exports.PoiQuest = exports.GuideQuest = exports.RoleQuest = exports.TestQuest = exports.BranchQuest = exports.MainQuest = exports.createQuestObj = undefined;
+const DailyQuest_1 = require("./DailyQuest");
+const Quest_1 = require("./Quest");
 function createQuestObj(s) {
   if (s) {
-    let e = void 0;
+    let e = undefined;
     switch (s.Type) {
       case 100:
         e = new TestQuest(100, s);
@@ -40,15 +41,16 @@ function createQuestObj(s) {
         e = new DangoActivityQuest(12, s);
         break;
       default:
-        e = new Quest_1.Quest(s.Type, s)
+        e = new Quest_1.Quest(s.Type, s);
     }
-    return e
+    return e;
   }
 }
 exports.createQuestObj = createQuestObj;
 class MainQuest extends Quest_1.Quest {
   SetUpBehaviorTree(e) {
-    super.SetUpBehaviorTree(e), e.SetMapMarkResident(!0)
+    super.SetUpBehaviorTree(e);
+    e.SetMapMarkResident(true);
   }
 }
 exports.MainQuest = MainQuest;

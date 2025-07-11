@@ -1,15 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemBase = void 0;
+  value: true
+});
+exports.OpenSystemBase = undefined;
 class OpenSystemBase {
   constructor(e) {
-    this.EventBase = e
+    this.EventBase = e;
   }
   async ExecuteOpenView(e, s) {
     return new Promise(e => {
-      e(!1)
-    })
+      e(false);
+    });
   }
 }
 exports.OpenSystemBase = OpenSystemBase;

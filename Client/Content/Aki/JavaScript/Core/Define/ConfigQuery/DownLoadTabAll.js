@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configDownLoadTabAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  DownLoadTab_1 = require("../Config/DownLoadTab"),
-  DB = "db_download.db",
-  FILE = "b.包体管理.xlsx",
-  TABLE = "DownLoadTab",
-  COMMAND = "select BinData from `DownLoadTab`",
-  KEY_PREFIX = "DownLoadTabAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configDownLoadTabAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const DownLoadTab_1 = require("../Config/DownLoadTab");
+const DB = "db_download.db";
+const FILE = "b.包体管理.xlsx";
+const TABLE = "DownLoadTab";
+const COMMAND = "select BinData from `DownLoadTab`";
+const KEY_PREFIX = "DownLoadTabAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configDownLoadTabAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configDownLoadTabAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configDownLoadTabAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configDownLoadTabAll.GetConfigList");
 exports.configDownLoadTabAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (o = !0) => {
+  GetConfigList: (o = true) => {
     var n;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), n = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (n = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (o) {
         var t = KEY_PREFIX + ")";
         const a = ConfigCommon_1.ConfigCommon.GetConfig(t);
-        if (a) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
       }
-      const a = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var i = void 0;
-        if ([n, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !n) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const a = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var i = undefined;
+        [n, i] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!n) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         i = DownLoadTab_1.DownLoadTab.getRootAsDownLoadTab(new byte_buffer_1.ByteBuffer(new Uint8Array(i.buffer)));
-        a.push(i)
+        a.push(i);
       }
-      return o && (t = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(t, a, a.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+      if (o) {
+        t = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(t, a, a.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return a;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=DownLoadTabAll.js.map

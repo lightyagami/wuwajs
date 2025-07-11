@@ -1,40 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InstanceBeInviteData = void 0;
-const InstanceDungeonById_1 = require("../../../../Core/Define/ConfigQuery/InstanceDungeonById"),
-  MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
+  value: true
+});
+exports.InstanceBeInviteData = undefined;
+const InstanceDungeonById_1 = require("../../../../Core/Define/ConfigQuery/InstanceDungeonById");
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 class InstanceBeInviteData {
   constructor() {
-    this.j8 = 0, this.NUe = 0, this.he = "", this.Eai = 0
+    this.j8 = 0;
+    this.NUe = 0;
+    this.he = "";
+    this.Eai = 0;
   }
   SetPlayerId(e) {
-    this.j8 = e
+    this.j8 = e;
   }
   GetPlayerId() {
-    return this.j8
+    return this.j8;
   }
   SetInstanceId(e) {
-    this.NUe = e
+    this.NUe = e;
   }
   GetInstanceId() {
-    return this.NUe
+    return this.NUe;
   }
   SetName(e) {
-    this.he = e
+    this.he = e;
   }
   GetName() {
-    return this.he
+    return this.he;
   }
   SetLimitTimestamp(e) {
-    this.Eai = e
+    this.Eai = e;
   }
   GetLimitTimestamp() {
-    return this.Eai
+    return this.Eai;
   }
   GetInstanceName() {
     var e = InstanceDungeonById_1.configInstanceDungeonById.GetConfig(this.NUe);
-    if (e) return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.MapName)
+    if (e) {
+      return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.MapName);
+    }
   }
 }
 exports.InstanceBeInviteData = InstanceBeInviteData;

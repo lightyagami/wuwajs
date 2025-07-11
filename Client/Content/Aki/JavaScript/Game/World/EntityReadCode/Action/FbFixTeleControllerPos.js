@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFixTeleControllerPos = void 0;
+  value: true
+});
+exports.FbFixTeleControllerPos = undefined;
 class FbFixTeleControllerPos {
   constructor(e) {
-    this.FbDataInternal = e
+    this.FbDataInternal = e;
   }
   static Create(e) {
-    if (e) return new FbFixTeleControllerPos(e)
+    if (e) {
+      return new FbFixTeleControllerPos(e);
+    }
   }
 }
 exports.FbFixTeleControllerPos = FbFixTeleControllerPos;

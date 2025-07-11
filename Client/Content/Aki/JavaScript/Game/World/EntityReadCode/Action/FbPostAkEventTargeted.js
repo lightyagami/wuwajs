@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPostAkEventTargeted = void 0;
+  value: true
+});
+exports.FbPostAkEventTargeted = undefined;
 class FbPostAkEventTargeted {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.a_h = !1, this.I9o = 0, this.zfh = !1, this.Jfh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.a_h = false;
+    this.I9o = 0;
+    this.zfh = false;
+    this.Jfh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPostAkEventTargeted(t)
+    if (t) {
+      return new FbPostAkEventTargeted(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get AkEvent() {
-    return this.zfh || (this.zfh = !0, this.Jfh = this.FbDataInternal.akEvent()), this.Jfh
+    if (!this.zfh) {
+      this.zfh = true;
+      this.Jfh = this.FbDataInternal.akEvent();
+    }
+    return this.Jfh;
   }
 }
 exports.FbPostAkEventTargeted = FbPostAkEventTargeted;

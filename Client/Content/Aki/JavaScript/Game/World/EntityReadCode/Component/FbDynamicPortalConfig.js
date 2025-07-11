@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDynamicPortalConfig = void 0;
+  value: true
+});
+exports.FbDynamicPortalConfig = undefined;
 class FbDynamicPortalConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.DKh = !1, this.BKh = void 0, this.q$h = !1, this.k$h = void 0
+    this.FbDataInternal = t;
+    this.DKh = false;
+    this.BKh = undefined;
+    this.q$h = false;
+    this.k$h = undefined;
   }
   static Create(t) {
-    if (t) return new FbDynamicPortalConfig(t)
+    if (t) {
+      return new FbDynamicPortalConfig(t);
+    }
   }
   get PortalModel() {
-    return this.DKh || (this.DKh = !0, this.BKh = this.FbDataInternal.portalModel()), this.BKh
+    if (!this.DKh) {
+      this.DKh = true;
+      this.BKh = this.FbDataInternal.portalModel();
+    }
+    return this.BKh;
   }
   get TemplateId() {
-    return this.q$h || (this.q$h = !0, this.k$h = this.FbDataInternal.templateId()), this.k$h
+    if (!this.q$h) {
+      this.q$h = true;
+      this.k$h = this.FbDataInternal.templateId();
+    }
+    return this.k$h;
   }
 }
 exports.FbDynamicPortalConfig = FbDynamicPortalConfig;

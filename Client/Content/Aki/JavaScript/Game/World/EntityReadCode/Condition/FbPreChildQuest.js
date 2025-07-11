@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPreChildQuest = void 0;
+  value: true
+});
+exports.FbPreChildQuest = undefined;
 const FbChildQuestCondition_1 = require("./FbChildQuestCondition");
 class FbPreChildQuest {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._ch = !1, this.cch = void 0, this.ZJh = !1, this.eZh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._ch = false;
+    this.cch = undefined;
+    this.ZJh = false;
+    this.eZh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPreChildQuest(t)
+    if (t) {
+      return new FbPreChildQuest(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get PreChildQuest() {
-    return this.ZJh || (this.ZJh = !0, this.eZh = FbChildQuestCondition_1.FbChildQuestCondition.Create(this.FbDataInternal.preChildQuest())), this.eZh
+    if (!this.ZJh) {
+      this.ZJh = true;
+      this.eZh = FbChildQuestCondition_1.FbChildQuestCondition.Create(this.FbDataInternal.preChildQuest());
+    }
+    return this.eZh;
   }
 }
 exports.FbPreChildQuest = FbPreChildQuest;

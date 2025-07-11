@@ -1,94 +1,141 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivitySign = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  OneItemConfig_1 = require("./SubType/OneItemConfig");
+  value: true
+});
+exports.ActivitySign = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const OneItemConfig_1 = require("./SubType/OneItemConfig");
 class ActivitySign {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get Type() {
-    return this.type()
+    return this.type();
   }
   get PrefabResource() {
-    return this.prefabresource()
+    return this.prefabresource();
   }
   get SignRewards() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.signrewardsLength(), this.signrewards, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.signrewardsLength(), this.signrewards, this);
   }
   get ImportantRewardIndex() {
-    return this.importantrewardindex()
+    return this.importantrewardindex();
   }
   get ImportantRewardIcon() {
-    return this.importantrewardicon()
+    return this.importantrewardicon();
   }
   get ImportantRewardType() {
-    return this.importantrewardtype()
+    return this.importantrewardtype();
   }
   get PreviewList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.previewlistLength(), this.previewlist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.previewlistLength(), this.previewlist, this);
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsActivitySign(t, i) {
-    return (i || new ActivitySign).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ActivitySign()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   type() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   prefabresource(t) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetSignrewardsAt(t, i) {
-    return this.signrewards(t)
+    return this.signrewards(t);
   }
   signrewards(t, i) {
     var r = this.J7.__offset(this.z7, 10);
-    return r ? (i || new OneItemConfig_1.OneItemConfig).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + 4 * t), this.J7) : null
+    if (r) {
+      return (i || new OneItemConfig_1.OneItemConfig()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   signrewardsLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   importantrewardindex() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : -1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
   }
   importantrewardicon(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   importantrewardtype() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPreviewlistAt(t) {
-    return this.previewlist(t)
+    return this.previewlist(t);
   }
   previewlist(t) {
     var i = this.J7.__offset(this.z7, 18);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   previewlistLength() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   previewlistArray() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
 }
 exports.ActivitySign = ActivitySign;

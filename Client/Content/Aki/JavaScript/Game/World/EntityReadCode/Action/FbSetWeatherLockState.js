@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetWeatherLockState = void 0;
+  value: true
+});
+exports.FbSetWeatherLockState = undefined;
 class FbSetWeatherLockState {
   constructor(t) {
-    this.FbDataInternal = t, this.ibh = !1, this.rbh = void 0, this.g5h = !1, this.f5h = void 0
+    this.FbDataInternal = t;
+    this.ibh = false;
+    this.rbh = undefined;
+    this.g5h = false;
+    this.f5h = undefined;
   }
   static Create(t) {
-    if (t) return new FbSetWeatherLockState(t)
+    if (t) {
+      return new FbSetWeatherLockState(t);
+    }
   }
   get LockState() {
-    return this.ibh || (this.ibh = !0, this.rbh = this.FbDataInternal.lockState()), this.rbh
+    if (!this.ibh) {
+      this.ibh = true;
+      this.rbh = this.FbDataInternal.lockState();
+    }
+    return this.rbh;
   }
   get AreaIds() {
     if (!this.g5h) {
-      this.g5h = !0, this.f5h = new Array;
+      this.g5h = true;
+      this.f5h = new Array();
       var e = this.FbDataInternal.areaIdsLength();
-      if (e)
-        for (let t = 0; t < e; ++t) this.f5h.push(this.FbDataInternal.areaIds(t))
+      if (e) {
+        for (let t = 0; t < e; ++t) {
+          this.f5h.push(this.FbDataInternal.areaIds(t));
+        }
+      }
     }
-    return this.f5h
+    return this.f5h;
   }
 }
 exports.FbSetWeatherLockState = FbSetWeatherLockState;

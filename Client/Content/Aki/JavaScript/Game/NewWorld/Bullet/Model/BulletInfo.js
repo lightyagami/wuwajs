@@ -1,207 +1,552 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletAdditionInfo = exports.BulletInfo = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Time_1 = require("../../../../Core/Common/Time"),
-  EntitySystem_1 = require("../../../../Core/Entity/EntitySystem"),
-  PerformanceController_1 = require("../../../../Core/Performance/PerformanceController"),
-  Rotator_1 = require("../../../../Core/Utils/Math/Rotator"),
-  Transform_1 = require("../../../../Core/Utils/Math/Transform"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  BulletConstant_1 = require("../../Bullet/BulletConstant"),
-  BulletController_1 = require("../BulletController"),
-  BulletCollisionInfo_1 = require("./BulletCollisionInfo"),
-  BulletEffectInfo_1 = require("./BulletEffectInfo"),
-  BulletMoveInfo_1 = require("./BulletMoveInfo"),
-  BulletRayInfo_1 = require("./BulletRayInfo");
+  value: true
+});
+exports.BulletAdditionInfo = exports.BulletInfo = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const Time_1 = require("../../../../Core/Common/Time");
+const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
+const PerformanceController_1 = require("../../../../Core/Performance/PerformanceController");
+const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
+const Transform_1 = require("../../../../Core/Utils/Math/Transform");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const BulletConstant_1 = require("../../Bullet/BulletConstant");
+const BulletController_1 = require("../BulletController");
+const BulletStaticFunction_1 = require("../BulletStaticMethod/BulletStaticFunction");
+const BulletCollisionInfo_1 = require("./BulletCollisionInfo");
+const BulletEffectInfo_1 = require("./BulletEffectInfo");
+const BulletMoveInfo_1 = require("./BulletMoveInfo");
+const BulletRayInfo_1 = require("./BulletRayInfo");
 class BulletInfo {
   constructor() {
-    this.xe = 0, this.Entity = void 0, this.EHo = !1, this.SHo = void 0, this.Lo = void 0, this.ActionInfoList = [], this.NextActionInfoList = [], this.PersistentActionList = [], this.Actor = void 0, this.ActorComponent = void 0, this.ActionLogicComponent = void 0, this.IsInit = !1, this.NeedDestroy = !1, this.IsDestroyByCharSkillEnd = !1, this.GenerateTime = -0, this.BulletCamp = 0, this.ShakeNumbers = 0, this.IsFrozen = !1, this.FrozenTime = void 0, this.IsShield = !1, this.yHo = void 0, this.Fyn = !1, this.RandomPosOffset = Vector_1.Vector.Create(), this.RandomInitSpeedOffset = Vector_1.Vector.Create(), this.IHo = !1, this.THo = !1, this.LHo = Vector_1.Vector.Create(), this.gii = Rotator_1.Rotator.Create(), this.InitPosition = Vector_1.Vector.Create(), this.DHo = new Array, this.CreateFrame = 0, this.LiveTimeRatio = 1, this.LiveTimeAddDelta = 0, this.LiveTime = 0, this.LiveTimeCurHit = 0, this.IsTimeNotEnough = !1, this.Size = Vector_1.Vector.Create(), this.RHo = Vector_1.Vector.Create(), this.UHo = void 0, this.CloseCollision = !1, this.CollisionInfo = new BulletCollisionInfo_1.BulletCollisionInfo, this.AHo = Vector_1.Vector.Create(), this.GetCollisionLocationFrame = 0, this.IsCollisionRelativeLocationZero = !1, this.IsCollisionRelativeRotationModify = !1, this.MoveInfo = new BulletMoveInfo_1.BulletMoveInfo, this.EffectInfo = new BulletEffectInfo_1.BulletEffectInfo, this.PHo = 0, this.xHo = void 0, this.wHo = void 0, this.eVo = void 0, this.BHo = void 0, this.bHo = void 0, this.qHo = void 0, this.GHo = void 0, this.IsAutonomousProxy = !1, this.AttackerCamp = 0, this.AttackerPlayerId = 0, this.SkillBoneName = void 0, this.SkillLevel = 0, this.TargetId = 0, this.TargetIdLast = 0, this.NHo = void 0, this.OHo = void 0, this.ParentBulletInfo = void 0, this.ChildEntityIds = void 0, this.ChildInfo = void 0, this.ParentEffect = 0, this.NeedNotifyChildrenWhenDestroy = !1, this.HitNumberAll = 0, this.EntityHitCount = new Map, this.CountByParent = !1, this.TimeScaleList = void 0, this.TimeScaleMap = void 0, this.TimeScaleId = 0, this.SummonSkillId = 0, this.SummonAttackerId = 0, this.SummonServerEntityId = 0, this.BornFrameCount = void 0, this.PreContextId = void 0, this.ContextId = void 0, this.HHo = () => {
-      this.ClearAttacker(), BulletController_1.BulletController.DestroyBullet(this.BulletEntityId, !1)
-    }, this.jHo = () => {
-      this.ClearTarget()
-    }, this.BornLocationOffset = Vector_1.Vector.Create(), this.AdditionInfo = void 0, this.y6o = 0, this.ParentIds = void 0
+    this.xe = 0;
+    this.Entity = undefined;
+    this.EHo = false;
+    this.SHo = undefined;
+    this.Lo = undefined;
+    this.ActionInfoList = [];
+    this.NextActionInfoList = [];
+    this.PersistentActionList = [];
+    this.Actor = undefined;
+    this.ActorComponent = undefined;
+    this.ActionLogicComponent = undefined;
+    this.IsInit = false;
+    this.NeedDestroy = false;
+    this.IsDestroyByCharSkillEnd = false;
+    this.GenerateTime = -0;
+    this.BulletCamp = 0;
+    this.ShakeNumbers = 0;
+    this.IsFrozen = false;
+    this.FrozenTime = undefined;
+    this.IsShield = false;
+    this.yHo = undefined;
+    this.Fyn = false;
+    this.RandomPosOffset = Vector_1.Vector.Create();
+    this.RandomInitSpeedOffset = Vector_1.Vector.Create();
+    this.IHo = false;
+    this.THo = false;
+    this.LHo = Vector_1.Vector.Create();
+    this.gii = Rotator_1.Rotator.Create();
+    this.InitPosition = Vector_1.Vector.Create();
+    this.DHo = new Array();
+    this.CreateFrame = 0;
+    this.LiveTimeRatio = 1;
+    this.LiveTimeAddDelta = 0;
+    this.LiveTime = 0;
+    this.LiveTimeCurHit = 0;
+    this.IsTimeNotEnough = false;
+    this.BaseSize = Vector_1.Vector.Create();
+    this.Size = Vector_1.Vector.Create();
+    this.RHo = Vector_1.Vector.Create();
+    this.UHo = undefined;
+    this.CloseCollision = false;
+    this.CollisionInfo = new BulletCollisionInfo_1.BulletCollisionInfo();
+    this.AHo = Vector_1.Vector.Create();
+    this.GetCollisionLocationFrame = 0;
+    this.IsCollisionRelativeLocationZero = false;
+    this.IsCollisionRelativeRotationModify = false;
+    this.MoveInfo = new BulletMoveInfo_1.BulletMoveInfo();
+    this.EffectInfo = new BulletEffectInfo_1.BulletEffectInfo();
+    this.PHo = 0;
+    this.xHo = undefined;
+    this.wHo = undefined;
+    this.eVo = undefined;
+    this.BHo = undefined;
+    this.bHo = undefined;
+    this.qHo = undefined;
+    this.GHo = undefined;
+    this.IsAutonomousProxy = false;
+    this.AttackerCamp = 0;
+    this.AttackerPlayerId = 0;
+    this.SkillBoneName = undefined;
+    this.SkillLevel = 0;
+    this.TargetId = 0;
+    this.TargetIdLast = 0;
+    this.NHo = undefined;
+    this.OHo = undefined;
+    this.ParentBulletInfo = undefined;
+    this.ChildEntityIds = undefined;
+    this.ChildInfo = undefined;
+    this.ParentEffect = 0;
+    this.NeedNotifyChildrenWhenDestroy = false;
+    this.HitNumberAll = 0;
+    this.EntityHitCount = new Map();
+    this.CountByParent = false;
+    this.TimeScaleList = undefined;
+    this.TimeScaleMap = undefined;
+    this.TimeScaleId = 0;
+    this.SummonSkillId = 0;
+    this.SummonAttackerId = 0;
+    this.SummonServerEntityId = 0;
+    this.BornFrameCount = undefined;
+    this.PreContextId = undefined;
+    this.ContextId = undefined;
+    this.HHo = () => {
+      this.ClearAttacker();
+      BulletController_1.BulletController.DestroyBullet(this.BulletEntityId, false);
+    };
+    this.jHo = () => {
+      this.ClearTarget();
+    };
+    this.BornLocationOffset = Vector_1.Vector.Create();
+    this.AdditionInfo = undefined;
+    this.y6o = 0;
+    this.ParentIds = undefined;
   }
   get BulletEntityId() {
-    return this.xe
+    return this.xe;
   }
   get HasCheckedPosition() {
-    return this.EHo
+    return this.EHo;
   }
   CheckedPosition() {
-    this.EHo = !0
+    this.EHo = true;
   }
   get BulletInitParams() {
-    return this.SHo
+    return this.SHo;
   }
   get TransformCreate() {
-    return this.SHo.InitialTransform
+    return this.SHo.InitialTransform;
   }
   get BaseVelocityEntityId() {
-    return this.SHo.BaseVelocityId
+    return this.SHo.BaseVelocityId;
   }
   get BulletRowName() {
-    return this.SHo.BulletRowName
+    return this.SHo.BulletRowName;
   }
   GetBaseVelocityTarget() {
-    return EntitySystem_1.EntitySystem.Get(this.SHo.BaseVelocityId)?.GetComponent(1)
+    return EntitySystem_1.EntitySystem.Get(this.SHo.BaseVelocityId)?.GetComponent(1);
   }
   get BulletDataMain() {
-    return this.Lo
+    return this.Lo;
   }
   get IsTensile() {
-    return 2 === this.BulletDataMain.Move.FollowType
+    return this.BulletDataMain.Move.FollowType === 2;
   }
   get BaseTransformEntity() {
     var t;
-    return this.Fyn || this.yHo || ((t = ModelManager_1.ModelManager.CharacterModel.GetHandle(this.SHo.BaseTransformId))?.Valid && (this.yHo = t), this.Fyn = !0), this.yHo
+    if (!this.Fyn && !this.yHo) {
+      if ((t = ModelManager_1.ModelManager.CharacterModel.GetHandle(this.SHo.BaseTransformId))?.Valid) {
+        this.yHo = t;
+      }
+      this.Fyn = true;
+    }
+    return this.yHo;
   }
   SetActorLocation(t) {
-    isNaN(t.X) || isNaN(t.Y) || isNaN(t.Z) ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Bullet", 17, "设置子弹坐标为Nan,直接销毁", ["location", t], ["BulletEntityId", this.BulletEntityId], ["BulletRowName", this.BulletRowName]), BulletController_1.BulletController.DestroyBullet(this.BulletEntityId, !1)) : (this.LHo.FromUeVector(t), this.IHo = !0)
+    if (isNaN(t.X) || isNaN(t.Y) || isNaN(t.Z)) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Bullet", 17, "设置子弹坐标为Nan,直接销毁", ["location", t], ["BulletEntityId", this.BulletEntityId], ["BulletRowName", this.BulletRowName]);
+      }
+      BulletController_1.BulletController.DestroyBullet(this.BulletEntityId, false);
+    } else {
+      this.LHo.FromUeVector(t);
+      this.IHo = true;
+    }
   }
   SetActorRotation(t) {
-    isNaN(t.Pitch) || isNaN(t.Yaw) || isNaN(t.Roll) ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Bullet", 17, "设置子弹朝向为Nan,直接销毁", ["rotation", t], ["BulletEntityId", this.BulletEntityId], ["BulletRowName", this.BulletRowName]), BulletController_1.BulletController.DestroyBullet(this.BulletEntityId, !1)) : (this.gii.FromUeRotator(t), this.THo = !0)
+    if (isNaN(t.Pitch) || isNaN(t.Yaw) || isNaN(t.Roll)) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Bullet", 17, "设置子弹朝向为Nan,直接销毁", ["rotation", t], ["BulletEntityId", this.BulletEntityId], ["BulletRowName", this.BulletRowName]);
+      }
+      BulletController_1.BulletController.DestroyBullet(this.BulletEntityId, false);
+    } else {
+      this.gii.FromUeRotator(t);
+      this.THo = true;
+    }
   }
   GetActorLocation() {
-    return this.IHo ? this.LHo : this.ActorComponent.ActorLocationProxy
+    if (this.IHo) {
+      return this.LHo;
+    } else {
+      return this.ActorComponent.ActorLocationProxy;
+    }
   }
   GetActorRotation() {
-    return this.THo ? this.gii : this.ActorComponent.ActorRotationProxy
+    if (this.THo) {
+      return this.gii;
+    } else {
+      return this.ActorComponent.ActorRotationProxy;
+    }
   }
   GetActorForward(t) {
-    this.THo ? this.gii.Vector(t) : t.FromUeVector(this.ActorComponent.ActorForwardProxy)
+    if (this.THo) {
+      this.gii.Vector(t);
+    } else {
+      t.FromUeVector(this.ActorComponent.ActorForwardProxy);
+    }
   }
   ActorRotateVector(t, i) {
-    (this.THo ? this.gii : this.ActorComponent.ActorRotationProxy).Quaternion().RotateVector(t, i)
+    (this.THo ? this.gii : this.ActorComponent.ActorRotationProxy).Quaternion().RotateVector(t, i);
   }
   AddBulletLocalRotator(t) {
-    this.ApplyCacheLocationAndRotation(), this.ActorComponent.AddBulletLocalRotator(t)
+    this.ApplyCacheLocationAndRotation();
+    this.ActorComponent.AddBulletLocalRotator(t);
   }
   ApplyCacheLocationAndRotation() {
-    this.IHo ? (this.THo ? (this.ActorComponent.SetActorLocationAndRotation(this.LHo.ToUeVector(), this.gii.ToUeRotator(), this.constructor.name, !1), this.IHo = !1, this.THo = !1) : (this.ActorComponent.SetActorLocation(this.LHo.ToUeVector(), this.constructor.name, !1), this.IHo = !1), this.GetCollisionLocationFrame = 0) : this.THo && (this.ActorComponent.SetActorRotation(this.gii.ToUeRotator(), this.constructor.name, !1), this.THo = !1, this.GetCollisionLocationFrame = 0)
+    if (this.IHo) {
+      if (this.THo) {
+        this.ActorComponent.SetActorLocationAndRotation(this.LHo.ToUeVector(), this.gii.ToUeRotator(), this.constructor.name, false);
+        this.IHo = false;
+        this.THo = false;
+      } else {
+        this.ActorComponent.SetActorLocation(this.LHo.ToUeVector(), this.constructor.name, false);
+        this.IHo = false;
+      }
+      this.GetCollisionLocationFrame = 0;
+    } else if (this.THo) {
+      this.ActorComponent.SetActorRotation(this.gii.ToUeRotator(), this.constructor.name, false);
+      this.THo = false;
+      this.GetCollisionLocationFrame = 0;
+    }
   }
   ClearCacheLocationAndRotation() {
-    this.IHo = !1, this.THo = !1
+    this.IHo = false;
+    this.THo = false;
   }
   get Tags() {
-    return this.DHo
+    return this.DHo;
   }
   AddTag(t) {
-    this.DHo.push(t.TagId)
+    this.DHo.push(t.TagId);
   }
   AddTagId(t) {
-    this.DHo.push(t)
+    this.DHo.push(t);
   }
   HasTag(t) {
-    if (this.DHo && 0 < this.DHo.length)
-      for (const i of this.DHo)
-        if (i === t.TagId) return !0;
-    return !1
+    if (this.DHo && this.DHo.length > 0) {
+      for (const i of this.DHo) {
+        if (i === t.TagId) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   HasTagId(t) {
-    return !!this.DHo && this.DHo.includes(t)
+    return !!this.DHo && this.DHo.includes(t);
   }
   get CenterLocation() {
-    return this.ActorComponent.ActorQuatProxy.RotateVector(this.CollisionInfo.CenterLocalLocation, this.RHo), this.RHo.AdditionEqual(this.ActorComponent.ActorLocationProxy), this.RHo
+    this.ActorComponent.ActorQuatProxy.RotateVector(this.CollisionInfo.CenterLocalLocation, this.RHo);
+    this.RHo.AdditionEqual(this.ActorComponent.ActorLocationProxy);
+    return this.RHo;
   }
   get RayInfo() {
-    return this.UHo || (this.UHo = new BulletRayInfo_1.BulletRayInfo), this.UHo
+    this.UHo ||= new BulletRayInfo_1.BulletRayInfo();
+    return this.UHo;
   }
   get CollisionRotator() {
-    return this.CollisionInfo.CollisionComponent ? this.CollisionInfo.CollisionComponent.K2_GetComponentRotation() : this.ActorComponent.ActorRotation
+    if (this.CollisionInfo.CollisionComponent) {
+      return this.CollisionInfo.CollisionComponent.K2_GetComponentRotation();
+    } else {
+      return this.ActorComponent.ActorRotation;
+    }
   }
-  GetCollisionLocation(t = !0) {
-    return t && !BulletInfo.InAfterTick ? Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 20, "GetCollisionLocation只能在AfterTick中使用", ["BulletEntityId", this.BulletEntityId], ["BulletRowName", this.BulletRowName]) : this.GetCollisionLocationFrame < Time_1.Time.Frame && (this.GetCollisionLocationFrame = Time_1.Time.Frame, !this.IsCollisionRelativeLocationZero && this.CollisionInfo.CollisionComponent ? this.AHo.FromUeVector(this.CollisionInfo.CollisionComponent.D_K2_GetComponentLocation()) : this.AHo.FromUeVector(this.ActorComponent.ActorLocationProxy)), this.AHo
+  GetCollisionLocation(t = true) {
+    if (t && !BulletInfo.InAfterTick) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Bullet", 20, "GetCollisionLocation只能在AfterTick中使用", ["BulletEntityId", this.BulletEntityId], ["BulletRowName", this.BulletRowName]);
+      }
+    } else if (this.GetCollisionLocationFrame < Time_1.Time.Frame) {
+      this.GetCollisionLocationFrame = Time_1.Time.Frame;
+      if (!this.IsCollisionRelativeLocationZero && this.CollisionInfo.CollisionComponent) {
+        this.AHo.FromUeVector(this.CollisionInfo.CollisionComponent.D_K2_GetComponentLocation());
+      } else {
+        this.AHo.FromUeVector(this.ActorComponent.ActorLocationProxy);
+      }
+    }
+    return this.AHo;
   }
   get AttackerId() {
-    return this.PHo
+    return this.PHo;
   }
   get AttackerHandle() {
-    return this.xHo
+    return this.xHo;
   }
   get Attacker() {
-    return this.xHo?.Entity
+    return this.xHo?.Entity;
   }
   ClearAttacker() {
-    this.KHo(), this.xHo = void 0, this.wHo = void 0, this.eVo = void 0, this.BHo = void 0, this.bHo = void 0, this.qHo = void 0, this.GHo = void 0
+    this.KHo();
+    this.xHo = undefined;
+    this.wHo = undefined;
+    this.eVo = undefined;
+    this.BHo = undefined;
+    this.bHo = undefined;
+    this.qHo = undefined;
+    this.GHo = undefined;
   }
   get AttackerCreatureDataComp() {
-    return this.wHo || (this.wHo = this.Attacker?.GetComponent(0)), this.wHo
+    this.wHo ||= this.Attacker?.GetComponent(0);
+    return this.wHo;
   }
   get AttackerActorComp() {
-    return this.eVo || (this.eVo = this.Attacker?.GetComponent(3)), this.eVo
+    this.eVo ||= this.Attacker?.GetComponent(3);
+    return this.eVo;
   }
   get AttackerSkillComp() {
-    return this.BHo || (this.BHo = this.Attacker?.GetComponent(40)), this.BHo
+    this.BHo ||= this.Attacker?.GetComponent(40);
+    return this.BHo;
   }
   get AttackerBuffComp() {
-    return this.bHo || (this.bHo = this.Attacker?.GetComponent(174)), this.bHo
+    this.bHo ||= this.Attacker?.GetComponent(174);
+    return this.bHo;
   }
   get AttackerMoveComp() {
-    return this.qHo || (this.qHo = this.Attacker?.GetComponent(178)), this.qHo
+    this.qHo ||= this.Attacker?.GetComponent(178);
+    return this.qHo;
   }
   get AttackerAudioComponent() {
-    return this.GHo || (this.GHo = this.Attacker?.GetComponent(51)), this.GHo
+    this.GHo ||= this.Attacker?.GetComponent(51);
+    return this.GHo;
   }
   get Target() {
-    if (this.NHo) return this.NHo?.Entity
+    if (this.NHo) {
+      return this.NHo?.Entity;
+    }
   }
   SetTargetById(t) {
     t = ModelManager_1.ModelManager.CharacterModel.GetHandle(t);
-    t?.Valid ? (this.QHo(), this.NHo = t, this.OHo = void 0, this.XHo()) : this.ClearTarget()
+    if (t?.Valid) {
+      this.QHo();
+      this.NHo = t;
+      this.OHo = undefined;
+      this.XHo();
+    } else {
+      this.ClearTarget();
+    }
   }
   ClearTarget() {
-    this.QHo(), this.NHo = void 0, this.TargetId = 0, this.OHo = void 0
+    this.QHo();
+    this.NHo = undefined;
+    this.TargetId = 0;
+    this.OHo = undefined;
   }
   get TargetActorComp() {
-    return this.OHo || (this.OHo = this.Target?.GetComponent(1)), this.OHo
+    this.OHo ||= this.Target?.GetComponent(1);
+    return this.OHo;
   }
   GetLockOnTargetDynamic() {
-    return (this.xHo?.Entity?.GetComponent(32)?.GetCurrentTarget())?.Entity?.GetComponent(1)
+    return this.xHo?.Entity?.GetComponent(32)?.GetCurrentTarget()?.Entity?.GetComponent(1);
   }
   get ParentEntityId() {
-    return this.SHo.ParentId
+    return this.SHo.ParentId;
   }
   Init(t, i) {
-    this.SHo = t, this.Lo = i, this.ActionInfoList.length = 0, this.NextActionInfoList.length = 0, this.PersistentActionList.length = 0, this.PHo = this.SHo.Owner?.Id, this.xHo = ModelManager_1.ModelManager.CharacterModel.GetHandle(this.PHo), this.IsInit = !1, this.NeedDestroy = !1, this.ShakeNumbers = 0, this.HitNumberAll = 0, this.GetCollisionLocationFrame = 0, this.SkillBoneName = BulletConstant_1.BulletConstant.HitCase, this.PreContextId = void 0, this.ContextId = void 0, t.LocationOffset ? (this.BornLocationOffset.FromUeVector(t.LocationOffset), this.BornLocationOffset.AdditionEqual(i.Base.BornPosition)) : this.BornLocationOffset.FromUeVector(i.Base.BornPosition), this.JHo(), PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (this.BornFrameCount = UE.KismetSystemLibrary.GetFrameCount())
+    this.SHo = t;
+    this.Lo = i;
+    this.ActionInfoList.length = 0;
+    this.NextActionInfoList.length = 0;
+    this.PersistentActionList.length = 0;
+    this.PHo = this.SHo.Owner?.Id;
+    this.xHo = ModelManager_1.ModelManager.CharacterModel.GetHandle(this.PHo);
+    this.IsInit = false;
+    this.NeedDestroy = false;
+    this.ShakeNumbers = 0;
+    this.HitNumberAll = 0;
+    this.GetCollisionLocationFrame = 0;
+    this.SkillBoneName = BulletConstant_1.BulletConstant.HitCase;
+    this.PreContextId = undefined;
+    this.ContextId = undefined;
+    if (t.LocationOffset) {
+      this.BornLocationOffset.FromUeVector(t.LocationOffset);
+      this.BornLocationOffset.AdditionEqual(i.Base.BornPosition);
+    } else {
+      this.BornLocationOffset.FromUeVector(i.Base.BornPosition);
+    }
+    this.JHo();
+    if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest) {
+      this.BornFrameCount = UE.KismetSystemLibrary.GetFrameCount();
+    }
   }
   InitEntity(t) {
-    this.Entity = t, this.xe = t.Id
+    this.Entity = t;
+    this.xe = t.Id;
   }
   Clear() {
-    this.xe = 0, this.Entity = void 0, this.SHo = void 0, this.Lo = void 0;
+    this.xe = 0;
+    this.Entity = undefined;
+    this.SHo = undefined;
+    this.Lo = undefined;
     var t = BulletController_1.BulletController.GetActionCenter();
-    for (const i of this.ActionInfoList) t.RecycleBulletActionInfo(i);
-    for (const s of this.NextActionInfoList) t.RecycleBulletActionInfo(s);
-    for (const e of this.PersistentActionList) t.RecycleBulletAction(e);
-    this.ActionInfoList.length = 0, this.NextActionInfoList.length = 0, this.PersistentActionList.length = 0, this.Actor = void 0, this.ActorComponent = void 0, this.ActionLogicComponent = void 0, this.IsInit = !1, this.EHo = !1, this.NeedDestroy = !1, this.IsDestroyByCharSkillEnd = !1, this.GenerateTime = 0, this.BulletCamp = 0, this.yHo = void 0, this.IHo = !1, this.THo = !1, this.LHo.Reset(), this.gii.Reset(), this.RandomInitSpeedOffset.Reset(), this.RandomPosOffset.Reset(), this.ShakeNumbers = 0, this.IsFrozen = !1, this.FrozenTime = void 0, this.IsShield = !1, this.InitPosition.Reset(), this.DHo.length = 0, this.CreateFrame = 0, this.LiveTimeAddDelta = 0, this.LiveTime = 0, this.IsTimeNotEnough = !1, this.Size.Reset(), this.RHo.Reset(), this.CloseCollision = !1, this.AHo.Reset(), this.GetCollisionLocationFrame = 0, this.IsCollisionRelativeLocationZero = !1, this.IsCollisionRelativeRotationModify = !1, this.PHo = 0, this.ClearAttacker(), this.IsAutonomousProxy = !1, this.AttackerCamp = 0, this.AttackerPlayerId = 0, this.SkillBoneName = void 0, this.SkillLevel = 0, this.ClearTarget(), this.TargetIdLast = 0, this.ParentBulletInfo = void 0, this.ChildEntityIds = void 0, this.ParentEffect = 0, this.NeedNotifyChildrenWhenDestroy = !1, this.HitNumberAll = 0, this.EntityHitCount.clear(), this.CountByParent = !1, this.TimeScaleList = void 0, this.TimeScaleMap = void 0, this.TimeScaleId = 0, this.SummonSkillId = 0, this.SummonAttackerId = 0, this.SummonServerEntityId = 0, this.CollisionInfo.Clear(), this.MoveInfo.Clear(), this.EffectInfo.Clear(), this.AdditionInfo?.Clear(), this.ChildInfo = void 0, this.UHo = void 0, this.BornLocationOffset.Reset(), this.ContextId = void 0, this.PreContextId = void 0, this.Fyn = !1, this.ParentIds = void 0, BulletConstant_1.BulletConstant.OpenClearCheck && BulletInfo.zHo(this)
+    for (const i of this.ActionInfoList) {
+      t.RecycleBulletActionInfo(i);
+    }
+    for (const s of this.NextActionInfoList) {
+      t.RecycleBulletActionInfo(s);
+    }
+    for (const e of this.PersistentActionList) {
+      t.RecycleBulletAction(e);
+    }
+    this.ActionInfoList.length = 0;
+    this.NextActionInfoList.length = 0;
+    this.PersistentActionList.length = 0;
+    this.Actor = undefined;
+    this.ActorComponent = undefined;
+    this.ActionLogicComponent = undefined;
+    this.IsInit = false;
+    this.EHo = false;
+    this.NeedDestroy = false;
+    this.IsDestroyByCharSkillEnd = false;
+    this.GenerateTime = 0;
+    this.BulletCamp = 0;
+    this.yHo = undefined;
+    this.IHo = false;
+    this.THo = false;
+    this.LHo.Reset();
+    this.gii.Reset();
+    this.RandomInitSpeedOffset.Reset();
+    this.RandomPosOffset.Reset();
+    this.ShakeNumbers = 0;
+    this.IsFrozen = false;
+    this.FrozenTime = undefined;
+    this.IsShield = false;
+    this.InitPosition.Reset();
+    this.DHo.length = 0;
+    this.CreateFrame = 0;
+    this.LiveTimeAddDelta = 0;
+    this.LiveTime = 0;
+    this.IsTimeNotEnough = false;
+    this.BaseSize.Reset();
+    this.Size.Reset();
+    this.RHo.Reset();
+    this.CloseCollision = false;
+    this.AHo.Reset();
+    this.GetCollisionLocationFrame = 0;
+    this.IsCollisionRelativeLocationZero = false;
+    this.IsCollisionRelativeRotationModify = false;
+    this.PHo = 0;
+    this.ClearAttacker();
+    this.IsAutonomousProxy = false;
+    this.AttackerCamp = 0;
+    this.AttackerPlayerId = 0;
+    this.SkillBoneName = undefined;
+    this.SkillLevel = 0;
+    this.ClearTarget();
+    this.TargetIdLast = 0;
+    this.ParentBulletInfo = undefined;
+    this.ChildEntityIds = undefined;
+    this.ParentEffect = 0;
+    this.NeedNotifyChildrenWhenDestroy = false;
+    this.HitNumberAll = 0;
+    this.EntityHitCount.clear();
+    this.CountByParent = false;
+    this.TimeScaleList = undefined;
+    this.TimeScaleMap = undefined;
+    this.TimeScaleId = 0;
+    this.SummonSkillId = 0;
+    this.SummonAttackerId = 0;
+    this.SummonServerEntityId = 0;
+    this.CollisionInfo.Clear();
+    this.MoveInfo.Clear();
+    BulletStaticFunction_1.BulletStaticFunction.DestroyEffect(this);
+    this.EffectInfo.Clear();
+    this.AdditionInfo?.Clear();
+    this.ChildInfo = undefined;
+    this.UHo = undefined;
+    this.BornLocationOffset.Reset();
+    this.ContextId = undefined;
+    this.PreContextId = undefined;
+    this.Fyn = false;
+    this.ParentIds = undefined;
+    if (BulletConstant_1.BulletConstant.OpenClearCheck) {
+      BulletInfo.zHo(this);
+    }
   }
   SwapActionInfoList() {
     var t;
-    (this.ActionInfoList.length = 0) < this.NextActionInfoList.length && (t = this.ActionInfoList, this.ActionInfoList = this.NextActionInfoList, this.NextActionInfoList = t)
+    if ((this.ActionInfoList.length = 0) < this.NextActionInfoList.length) {
+      t = this.ActionInfoList;
+      this.ActionInfoList = this.NextActionInfoList;
+      this.NextActionInfoList = t;
+    }
   }
   JHo() {
-    this.AttackerHandle && EventSystem_1.EventSystem.AddWithTarget(this.AttackerHandle, EventDefine_1.EEventName.RemoveEntity, this.HHo)
+    if (this.AttackerHandle) {
+      EventSystem_1.EventSystem.AddWithTarget(this.AttackerHandle, EventDefine_1.EEventName.RemoveEntity, this.HHo);
+    }
   }
   KHo() {
-    this.AttackerHandle && EventSystem_1.EventSystem.RemoveWithTarget(this.AttackerHandle, EventDefine_1.EEventName.RemoveEntity, this.HHo)
+    if (this.AttackerHandle) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.AttackerHandle, EventDefine_1.EEventName.RemoveEntity, this.HHo);
+    }
   }
   XHo() {
-    this.NHo && EventSystem_1.EventSystem.AddWithTarget(this.NHo, EventDefine_1.EEventName.RemoveEntity, this.jHo)
+    if (this.NHo) {
+      EventSystem_1.EventSystem.AddWithTarget(this.NHo, EventDefine_1.EEventName.RemoveEntity, this.jHo);
+    }
   }
   QHo() {
-    this.NHo && EventSystem_1.EventSystem.RemoveWithTarget(this.NHo, EventDefine_1.EEventName.RemoveEntity, this.jHo)
+    if (this.NHo) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.NHo, EventDefine_1.EEventName.RemoveEntity, this.jHo);
+    }
   }
   static zHo(t) {
     for (const e in t) {
-      var i = t[e],
-        s = typeof i;
-      void 0 === i || "function" == s || "number" == s && 0 === i || "boolean" == s && !1 === i || (i instanceof BulletCollisionInfo_1.BulletCollisionInfo || i instanceof BulletMoveInfo_1.BulletMoveInfo || i instanceof BulletEffectInfo_1.BulletEffectInfo ? this.zHo(i) : i instanceof Vector_1.Vector ? i.IsZero() || Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Vector没重置", ["key", e]) : i instanceof Rotator_1.Rotator ? i.IsNearlyZero() || Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Rotator没重置", ["key", e]) : i instanceof Transform_1.Transform ? i.GetLocation().IsZero() && i.GetScale3D().IsZero() && 0 === i.GetRotation().X && 0 === i.GetRotation().Y && 0 === i.GetRotation().Z && 1 === i.GetRotation().W || Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Transform没重置", ["key", e]) : i instanceof Array ? 0 !== i.length && Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Array没清空", ["key", e]) : i instanceof Map ? 0 !== i.size && Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Map没清空", ["key", e]) : i instanceof Set ? 0 !== i.size && Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Set没清空", ["key", e]) : Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，该变量不为undefined", ["type", s], ["key", e]))
+      var i = t[e];
+      var s = typeof i;
+      if (i !== undefined && s != "function" && (s != "number" || i !== 0) && (s != "boolean" || i !== false)) {
+        if (i instanceof BulletCollisionInfo_1.BulletCollisionInfo || i instanceof BulletMoveInfo_1.BulletMoveInfo || i instanceof BulletEffectInfo_1.BulletEffectInfo) {
+          this.zHo(i);
+        } else if (i instanceof Vector_1.Vector) {
+          if (!i.IsZero()) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Vector没重置", ["key", e]);
+            }
+          }
+        } else if (i instanceof Rotator_1.Rotator) {
+          if (!i.IsNearlyZero()) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Rotator没重置", ["key", e]);
+            }
+          }
+        } else if (i instanceof Transform_1.Transform) {
+          if (!i.GetLocation().IsZero() || !i.GetScale3D().IsZero() || i.GetRotation().X !== 0 || i.GetRotation().Y !== 0 || i.GetRotation().Z !== 0 || i.GetRotation().W !== 1) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Transform没重置", ["key", e]);
+            }
+          }
+        } else if (i instanceof Array) {
+          if (i.length !== 0 && Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Array没清空", ["key", e]);
+          }
+        } else if (i instanceof Map) {
+          if (i.size !== 0 && Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Map没清空", ["key", e]);
+          }
+        } else if (i instanceof Set) {
+          if (i.size !== 0 && Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，Set没清空", ["key", e]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 17, "BulletInfo回收时，该变量不为undefined", ["type", s], ["key", e]);
+        }
+      }
     }
   }
   OnTargetInValid() {
@@ -214,28 +559,35 @@ class BulletInfo {
       case 5:
       case 9:
       case 4:
-        this.SetTargetById(0)
+        this.SetTargetById(0);
     }
   }
   get Duration() {
-    return this.y6o
+    return this.y6o;
   }
   set Duration(t) {
-    this.y6o = t
+    this.y6o = t;
   }
-}(exports.BulletInfo = BulletInfo).InAfterTick = !1;
+}
+(exports.BulletInfo = BulletInfo).InAfterTick = false;
 class BulletAdditionInfo {
   constructor() {
-    this.SizeScale = Vector_1.Vector.Create(), this.IntervalScale = 0, this.DurationAddition = 0, this.iMc = !1
+    this.SizeScale = Vector_1.Vector.Create();
+    this.IntervalScale = 0;
+    this.DurationAddition = 0;
+    this.iMc = false;
   }
   get Valid() {
-    return this.iMc
+    return this.iMc;
   }
   Clear() {
-    this.iMc = !1, this.SizeScale.Reset(), this.IntervalScale = 0, this.DurationAddition = 0
+    this.iMc = false;
+    this.SizeScale.Reset();
+    this.IntervalScale = 0;
+    this.DurationAddition = 0;
   }
   Init() {
-    this.iMc = !0
+    this.iMc = true;
   }
 }
 exports.BulletAdditionInfo = BulletAdditionInfo;

@@ -1,19 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenRacingBetsGamePlayPreviewViewCommand = void 0;
-const UiManager_1 = require("../../../Ui/UiManager"),
-  UiSceneDangoActorManager_1 = require("../../UiComponent/UiSceneDangoActorManager"),
-  RacingBetsCommandBase_1 = require("./RacingBetsCommandBase");
+  value: true
+});
+exports.OpenRacingBetsGamePlayPreviewViewCommand = undefined;
+const UiManager_1 = require("../../../Ui/UiManager");
+const UiSceneDangoActorManager_1 = require("../../UiComponent/UiSceneDangoActorManager");
+const RacingBetsCommandBase_1 = require("./RacingBetsCommandBase");
 class OpenRacingBetsGamePlayPreviewViewCommand extends RacingBetsCommandBase_1.RacingBetsCommandBase {
   constructor() {
-    super(...arguments), this.CommandType = 52
+    super(...arguments);
+    this.CommandType = 52;
   }
   async OnExecute() {
-    await UiManager_1.UiManager.OpenViewAsync("RacingBetsGamePlayPreviewView"), UiSceneDangoActorManager_1.UiSceneDangoActorManager.SetAllActorVisible(!1)
+    await UiManager_1.UiManager.OpenViewAsync("RacingBetsGamePlayPreviewView");
+    UiSceneDangoActorManager_1.UiSceneDangoActorManager.SetAllActorVisible(false);
   }
   LogInfo() {
-    return "RacingBetsGamePlayPreviewView"
+    return "RacingBetsGamePlayPreviewView";
   }
 }
 exports.OpenRacingBetsGamePlayPreviewViewCommand = OpenRacingBetsGamePlayPreviewViewCommand;

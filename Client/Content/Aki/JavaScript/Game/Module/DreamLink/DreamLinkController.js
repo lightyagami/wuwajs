@@ -1,128 +1,229 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DreamLinkController = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  ActivityControllerBase_1 = require("../Activity/ActivityControllerBase"),
-  ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController"),
-  RoleController_1 = require("../RoleUi/RoleController"),
-  ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController"),
-  DreamLinkData_1 = require("./DreamLinkData"),
-  DreamLinkDefine_1 = require("./DreamLinkDefine"),
-  DreamLinkActivitySubView_1 = require("./View/DreamLinkActivitySubView");
+  value: true
+});
+exports.DreamLinkController = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiManager_1 = require("../../Ui/UiManager");
+const ActivityControllerBase_1 = require("../Activity/ActivityControllerBase");
+const ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController");
+const RoleController_1 = require("../RoleUi/RoleController");
+const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
+const DreamLinkData_1 = require("./DreamLinkData");
+const DreamLinkDefine_1 = require("./DreamLinkDefine");
+const DreamLinkActivitySubView_1 = require("./View/DreamLinkActivitySubView");
 class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
-    super(...arguments), this._Ol = e => !ModelManager_1.ModelManager.GameModeModel?.IsMulti || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("DreamLink_MultiModeNotSupport"), !1), this.DSe = (e, r) => {
+    super(...arguments);
+    this._Ol = e => !ModelManager_1.ModelManager.GameModeModel?.IsMulti || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("DreamLink_MultiModeNotSupport"), false);
+    this.DSe = (e, r) => {
       var t = DreamLinkController.GetCurrentActivityData();
-      t && t.LocalConfig.PreShowGuideQuest.includes(e) && t.RefreshActivityRedDotState()
-    }, this.OEl = e => {
-      UiManager_1.UiManager.OpenView("DreamLinkWhiteCatSettleView", e)
-    }, this.ZZa = e => {
+      if (t && t.LocalConfig.PreShowGuideQuest.includes(e)) {
+        t.RefreshActivityRedDotState();
+      }
+    };
+    this.OEl = e => {
+      UiManager_1.UiManager.OpenView("DreamLinkWhiteCatSettleView", e);
+    };
+    this.ZZa = e => {
       var r = DreamLinkController.GetCurrentActivityData();
-      r && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Activity", 37, "[DreamLink] Update"), r.UpdateData(e))
-    }, this.ecl = e => {
+      if (r) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Activity", 37, "[DreamLink] Update");
+        }
+        r.UpdateData(e);
+      }
+    };
+    this.ecl = e => {
       var r = DreamLinkController.GetCurrentActivityData();
-      r && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Activity", 37, "[DreamLink] LimitTimeUpdate"), r.RefreshAllLimitTimeReward(e.hM_), r.RefreshLimitRewardPerformance())
-    }, this.V0l = e => {
-      var r, t;
-      DreamLinkController.GetCurrentActivityData() && (r = {
-        ButtonTextId: "ConfirmBox_45_ButtonText_1",
-        DescriptionTextId: void 0,
-        IsTimeDownCloseView: !1,
-        IsClickedCloseView: !0
-      }, t = {
-        TitleTextId: "WorldRun_Settlement",
-        Record: TimeUtil_1.TimeUtil.GetTimeString(Math.max(e.Y2s, 0)),
-        IsNewRecord: e.Yxs
-      }, ControllerHolder_1.ControllerHolder.ItemRewardController.OpenExploreRewardView(DreamLinkDefine_1.WORLD_RUN_ENDING_ID, e.Mws, void 0, t, void 0, [r]))
-    }
+      if (r) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Activity", 37, "[DreamLink] LimitTimeUpdate");
+        }
+        r.RefreshAllLimitTimeReward(e.hM_);
+        r.RefreshLimitRewardPerformance();
+      }
+    };
+    this.V0l = e => {
+      var r;
+      var t;
+      if (DreamLinkController.GetCurrentActivityData()) {
+        r = {
+          ButtonTextId: "ConfirmBox_45_ButtonText_1",
+          DescriptionTextId: undefined,
+          IsTimeDownCloseView: false,
+          IsClickedCloseView: true
+        };
+        t = {
+          TitleTextId: "WorldRun_Settlement",
+          Record: TimeUtil_1.TimeUtil.GetTimeString(Math.max(e.Y2s, 0)),
+          IsNewRecord: e.Yxs
+        };
+        ControllerHolder_1.ControllerHolder.ItemRewardController.OpenExploreRewardView(DreamLinkDefine_1.WORLD_RUN_ENDING_ID, e.Mws, undefined, t, undefined, [r]);
+      }
+    };
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
-    return "UiView_DreamLandActivity"
+    return "UiView_DreamLandActivity";
   }
   OnCreateSubPageComponent(e) {
-    return new DreamLinkActivitySubView_1.DreamLinkActivitySubView
+    return new DreamLinkActivitySubView_1.DreamLinkActivitySubView();
   }
   OnCreateActivityData(e) {
-    return new DreamLinkData_1.DreamLinkData
+    return new DreamLinkData_1.DreamLinkData();
   }
   OnGetIsOpeningActivityRelativeView() {
-    return !1
+    return false;
   }
   static GetCurrentActivityData() {
     var e = ModelManager_1.ModelManager.ActivityModel?.GetCurrentActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_RogueWhiteCat);
-    let r = void 0;
-    return e?.forEach(e => {
-      r = e
-    }), r
+    let r = undefined;
+    e?.forEach(e => {
+      r = e;
+    });
+    return r;
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe), UiManager_1.UiManager.AddOpenViewCheckFunction("DreamLinkDungeonView", this._Ol, "DreamLinkDungeonView.Check"), UiManager_1.UiManager.AddOpenViewCheckFunction("DreamLinkWhiteCatView", this._Ol, "DreamLinkWhiteCatView.Check")
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
+    UiManager_1.UiManager.AddOpenViewCheckFunction("DreamLinkDungeonView", this._Ol, "DreamLinkDungeonView.Check");
+    UiManager_1.UiManager.AddOpenViewCheckFunction("DreamLinkWhiteCatView", this._Ol, "DreamLinkWhiteCatView.Check");
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.DSe), UiManager_1.UiManager.RemoveOpenViewCheckFunction("DreamLinkDungeonView", this._Ol), UiManager_1.UiManager.RemoveOpenViewCheckFunction("DreamLinkWhiteCatView", this._Ol)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("DreamLinkDungeonView", this._Ol);
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("DreamLinkWhiteCatView", this._Ol);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(26119, this.ZZa), Net_1.Net.Register(17499, this.ecl), Net_1.Net.Register(23314, this.V0l), Net_1.Net.Register(20245, this.OEl)
+    Net_1.Net.Register(21550, this.ZZa);
+    Net_1.Net.Register(16441, this.ecl);
+    Net_1.Net.Register(23663, this.V0l);
+    Net_1.Net.Register(26666, this.OEl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26119), Net_1.Net.UnRegister(17499), Net_1.Net.UnRegister(23314), Net_1.Net.UnRegister(20245)
+    Net_1.Net.UnRegister(21550);
+    Net_1.Net.UnRegister(16441);
+    Net_1.Net.UnRegister(23663);
+    Net_1.Net.UnRegister(26666);
   }
   GetActivityMapMarkState(e) {
     var r = DreamLinkController.GetCurrentActivityData();
-    return !!r && r.IsDreamLinkRunMarkShow(e)
+    return !!r && r.IsDreamLinkRunMarkShow(e);
   }
   static RoguelikeSetDungeonProgressRequest(r) {
-    var e = new Protocol_1.Aki.Protocol.yg_;
-    e.e5n = r, e.w6n = DreamLinkController.GetCurrentActivityData().Id, Net_1.Net.Call(22895, e, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22895) : DreamLinkController.GetCurrentActivityData().DungeonProgressRecord = r
-    })
+    var e = new Protocol_1.Aki.Protocol.yg_();
+    e.e5n = r;
+    e.w6n = DreamLinkController.GetCurrentActivityData().Id;
+    Net_1.Net.Call(22676, e, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22676);
+      } else {
+        DreamLinkController.GetCurrentActivityData().DungeonProgressRecord = r;
+      }
+    });
   }
   static RoguelikeRoleInstStartRequest(e) {
-    var r, t;
-    RoleController_1.RoleController.IsInRoleTrial() ? ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrialRoleDungeonsLimit") : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PhantomFormationEnterInstanceTip") : (r = DreamLinkController.GetCurrentActivityData()) && ((t = new Protocol_1.Aki.Protocol.xf_).c5n = e, t.w6n = r.Id, Net_1.Net.Call(22538, t, e => {
-      e ? e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22538) : Log_1.Log.CheckError() && Log_1.Log.Error("DreamLink", 34, "RoleInstStartRequest response is undefined")
-    }))
+    var r;
+    var t;
+    if (RoleController_1.RoleController.IsInRoleTrial()) {
+      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrialRoleDungeonsLimit");
+    } else if (ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam) {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PhantomFormationEnterInstanceTip");
+    } else if (r = DreamLinkController.GetCurrentActivityData()) {
+      (t = new Protocol_1.Aki.Protocol.xf_()).c5n = e;
+      t.w6n = r.Id;
+      Net_1.Net.Call(20010, t, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20010);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("DreamLink", 34, "RoleInstStartRequest response is undefined");
+        }
+      });
+    }
   }
   static RunTaskRewardRequest(r) {
     const t = DreamLinkController.GetCurrentActivityData();
     var e;
-    t && ((e = new Protocol_1.Aki.Protocol.uC_).c5n = r, e.w6n = t.Id, Net_1.Net.Call(18625, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18625) : (t.SetRunTaskDone(r), t.RefreshRewardPerformance()))
-    }))
+    if (t) {
+      (e = new Protocol_1.Aki.Protocol.uC_()).c5n = r;
+      e.w6n = t.Id;
+      Net_1.Net.Call(24537, e, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24537);
+          } else {
+            t.SetRunTaskDone(r);
+            t.RefreshRewardPerformance();
+          }
+        }
+      });
+    }
   }
   static EnergyRewardRequest(r) {
     const t = DreamLinkController.GetCurrentActivityData();
     var e;
-    t && ((e = new Protocol_1.Aki.Protocol.Xf_).c5n = r, e.w6n = t.Id, Net_1.Net.Call(28449, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28449) : (t.RefreshEnergyRewardData(r, 2), t.RefreshRewardPerformance()))
-    }))
+    if (t) {
+      (e = new Protocol_1.Aki.Protocol.Xf_()).c5n = r;
+      e.w6n = t.Id;
+      Net_1.Net.Call(18560, e, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18560);
+          } else {
+            t.RefreshEnergyRewardData(r, 2);
+            t.RefreshRewardPerformance();
+          }
+        }
+      });
+    }
   }
   static LimitTimeRewardRequest(r) {
     const t = DreamLinkController.GetCurrentActivityData();
     var e;
-    t && ((e = new Protocol_1.Aki.Protocol.cg_).c5n = r, Net_1.Net.Call(29871, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29871) : (t.RefreshLimitTimeRewardData(r, 2), t.RefreshLimitRewardPerformance()))
-    }))
+    if (t) {
+      (e = new Protocol_1.Aki.Protocol.cg_()).c5n = r;
+      Net_1.Net.Call(20239, e, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20239);
+          } else {
+            t.RefreshLimitTimeRewardData(r, 2);
+            t.RefreshLimitRewardPerformance();
+          }
+        }
+      });
+    }
   }
   static BossRewardRequest(r) {
     const t = DreamLinkController.GetCurrentActivityData();
     var e;
-    t && ((e = new Protocol_1.Aki.Protocol._C_).c5n = r, e.w6n = t.Id, Net_1.Net.Call(24540, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24540) : (t.RefreshBossRewardData(r, 2), t.RefreshRewardPerformance()))
-    }))
+    if (t) {
+      (e = new Protocol_1.Aki.Protocol._C_()).c5n = r;
+      e.w6n = t.Id;
+      Net_1.Net.Call(18313, e, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18313);
+          } else {
+            t.RefreshBossRewardData(r, 2);
+            t.RefreshRewardPerformance();
+          }
+        }
+      });
+    }
   }
   OnActivityFirstUnlock(e) {
-    UiManager_1.UiManager.OpenView("ActivityUnlockTipDreamLinkView")
+    UiManager_1.UiManager.OpenView("ActivityUnlockTipDreamLinkView");
   }
 }
 exports.DreamLinkController = DreamLinkController;

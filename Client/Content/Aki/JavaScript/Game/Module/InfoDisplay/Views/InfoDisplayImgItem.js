@@ -1,11 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InfoDisplayImgItem = exports.InfoDisplayImgItemSt = void 0;
+  value: true
+});
+exports.InfoDisplayImgItem = exports.InfoDisplayImgItemSt = undefined;
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 class InfoDisplayImgItemSt {
   constructor() {
-    this.Index = 0, this.Image = "", this.Desc = ""
+    this.Index = 0;
+    this.Image = "";
+    this.Desc = "";
   }
 }
 exports.InfoDisplayImgItemSt = InfoDisplayImgItemSt;

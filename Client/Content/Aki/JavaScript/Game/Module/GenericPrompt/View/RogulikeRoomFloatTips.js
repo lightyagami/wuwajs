@@ -1,22 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoguelikeRoomFloatTips = void 0;
-const UE = require("ue"),
-  Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  GenericPromptFloatTipsBase_1 = require("./GenericPromptFloatTipsBase");
+  value: true
+});
+exports.RoguelikeRoomFloatTips = undefined;
+const UE = require("ue");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const GenericPromptFloatTipsBase_1 = require("./GenericPromptFloatTipsBase");
 class RoguelikeRoomFloatTips extends GenericPromptFloatTipsBase_1.GenericPromptFloatTipsBase {
   OnRegisterComponent() {
-    super.OnRegisterComponent(), this.ComponentRegisterInfos.push([2, UE.UISprite])
+    super.OnRegisterComponent();
+    this.ComponentRegisterInfos.push([2, UE.UISprite]);
   }
   SetMainText() {
     var e;
-    ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue() ? (LguiUtil_1.LguiUtil.SetLocalTextNew(this.MainText, "RoguelikeRoomFloatTips_Normal", ModelManager_1.ModelManager.WeeklyRogueModel.CurrentLayer, ModelManager_1.ModelManager.WeeklyRogueModel.MaxLayer), LguiUtil_1.LguiUtil.SetLocalTextNew(this.ExtraText, "RoguelikeRoomFloatTips_NormalDesc")) : (e = ModelManager_1.ModelManager.RoguelikeModel.CurRoomType === Protocol_1.Aki.Protocol.d8s.Proto_Normal, this.MainText.SetUIActive(e), e && LguiUtil_1.LguiUtil.SetLocalTextNew(this.MainText, "RoguelikeRoomFloatTips_Normal", ModelManager_1.ModelManager.RoguelikeModel.CurRoomCount, ModelManager_1.ModelManager.RoguelikeModel.TotalRoomCount))
+    if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.MainText, "RoguelikeRoomFloatTips_Normal", ModelManager_1.ModelManager.WeeklyRogueModel.CurrentLayer, ModelManager_1.ModelManager.WeeklyRogueModel.MaxLayer);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.ExtraText, "RoguelikeRoomFloatTips_NormalDesc");
+    } else {
+      e = ModelManager_1.ModelManager.RoguelikeModel.CurRoomType === Protocol_1.Aki.Protocol.d8s.Proto_Normal;
+      this.MainText.SetUIActive(e);
+      if (e) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.MainText, "RoguelikeRoomFloatTips_Normal", ModelManager_1.ModelManager.RoguelikeModel.CurRoomCount, ModelManager_1.ModelManager.RoguelikeModel.TotalRoomCount);
+      }
+    }
   }
   SetExtraText() {
-    switch (this.GetSprite(2).SetUIActive(!1), ModelManager_1.ModelManager.RoguelikeModel.CurRoomType) {
+    this.GetSprite(2).SetUIActive(false);
+    switch (ModelManager_1.ModelManager.RoguelikeModel.CurRoomType) {
       case Protocol_1.Aki.Protocol.d8s.Proto_Normal:
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.ExtraText, "RoguelikeRoomFloatTips_NormalDesc");
         break;
@@ -24,7 +37,7 @@ class RoguelikeRoomFloatTips extends GenericPromptFloatTipsBase_1.GenericPromptF
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.ExtraText, "RoguelikeRoomFloatTips_NoHeadDesc");
         break;
       case Protocol_1.Aki.Protocol.d8s.Proto_Special:
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.ExtraText, "RoguelikeRoomFloatTips_SpecialDesc")
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.ExtraText, "RoguelikeRoomFloatTips_SpecialDesc");
     }
   }
 }

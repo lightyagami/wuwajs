@@ -1,29 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkItemEntity = void 0;
+  value: true
+});
+exports.MarkItemEntity = undefined;
 const MapEntity_1 = require("../Base/MapEntity");
 class MarkItemEntity extends MapEntity_1.MapEntity {
   constructor() {
-    super(...arguments), this.IsTempMapMark = !1
+    super(...arguments);
+    this.IsTempMapMark = false;
   }
   get GamePlay() {
-    return this.GetOrAddComponent(10)
+    return this.GetOrAddComponent(10);
   }
   get Resource() {
-    return this.GetOrAddComponent(11)
+    return this.GetOrAddComponent(11);
   }
   get ViewLifeCircle() {
-    return this.GetOrAddComponent(12)
+    return this.GetOrAddComponent(12);
   }
   get MultiFloor() {
-    return this.GetOrAddComponent(17)
+    return this.GetOrAddComponent(17);
   }
   OnInit() {
-    this.EnsureComponent(10), this.EnsureComponent(11), this.EnsureComponent(12), this.EnsureComponent(17)
+    this.EnsureComponent(10);
+    this.EnsureComponent(11);
+    this.EnsureComponent(12);
+    this.EnsureComponent(17);
   }
   get IsConfigMark() {
-    return void 0 !== this.GetComponent(15)?.MapMarkConfig
+    return this.GetComponent(15)?.MapMarkConfig !== undefined;
   }
 }
 exports.MarkItemEntity = MarkItemEntity;

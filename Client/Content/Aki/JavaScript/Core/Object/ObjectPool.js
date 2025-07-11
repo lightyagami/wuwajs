@@ -1,19 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ObjectPool = void 0;
+  value: true
+});
+exports.ObjectPool = undefined;
 class ObjectPool {
   constructor() {
-    this.oY = []
+    this.oY = [];
   }
   Spawn(t) {
-    return this.oY.pop()
+    return this.oY.pop();
   }
   DeSpawn(t) {
-    this.oY.push(t)
+    this.oY.push(t);
   }
   IsEmpty() {
-    return 0 === this.oY.length
+    return this.oY.length === 0;
   }
 }
 exports.ObjectPool = ObjectPool;

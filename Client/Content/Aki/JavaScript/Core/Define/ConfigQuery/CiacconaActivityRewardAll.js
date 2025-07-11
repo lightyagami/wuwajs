@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configCiacconaActivityRewardAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  CiacconaActivityReward_1 = require("../Config/CiacconaActivityReward"),
-  DB = "db_ciacconagal.db",
-  FILE = "x.夏空活动.xlsx",
-  TABLE = "CiacconaActivityReward",
-  COMMAND = "select BinData from `CiacconaActivityReward`",
-  KEY_PREFIX = "CiacconaActivityRewardAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configCiacconaActivityRewardAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const CiacconaActivityReward_1 = require("../Config/CiacconaActivityReward");
+const DB = "db_ciacconagal.db";
+const FILE = "x.夏空活动.xlsx";
+const TABLE = "CiacconaActivityReward";
+const COMMAND = "select BinData from `CiacconaActivityReward`";
+const KEY_PREFIX = "CiacconaActivityRewardAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configCiacconaActivityRewardAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configCiacconaActivityRewardAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configCiacconaActivityRewardAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configCiacconaActivityRewardAll.GetConfigList");
 exports.configCiacconaActivityRewardAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (i = !0) => {
+  GetConfigList: (i = true) => {
     var o;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (i) {
         var t = KEY_PREFIX + ")";
         const a = ConfigCommon_1.ConfigCommon.GetConfig(t);
-        if (a) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
       }
-      const a = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var n = void 0;
-        if ([o, n] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !o) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const a = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var n = undefined;
+        [o, n] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!o) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         n = CiacconaActivityReward_1.CiacconaActivityReward.getRootAsCiacconaActivityReward(new byte_buffer_1.ByteBuffer(new Uint8Array(n.buffer)));
-        a.push(n)
+        a.push(n);
       }
-      return i && (t = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(t, a, a.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+      if (i) {
+        t = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(t, a, a.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return a;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=CiacconaActivityRewardAll.js.map

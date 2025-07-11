@@ -1,90 +1,163 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionExParams = exports.LevelConditionBase = exports.CodeCondition = exports.LevelConditionGroup = exports.LevelEventBase = void 0;
-const Log_1 = require("../../Core/Common/Log"),
-  EventDefine_1 = require("../Common/Event/EventDefine"),
-  EventSystem_1 = require("../Common/Event/EventSystem"),
-  GlobalData_1 = require("../GlobalData"),
-  ControllerHolder_1 = require("../Manager/ControllerHolder"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  WaitEntityTask_1 = require("../World/Define/WaitEntityTask"),
-  EACH_WAIT_ENTITY_OVER_TIME = 3e4;
+  value: true
+});
+exports.LevelConditionExParams = exports.LevelConditionBase = exports.CodeCondition = exports.LevelConditionGroup = exports.LevelEventBase = undefined;
+const Log_1 = require("../../Core/Common/Log");
+const EventDefine_1 = require("../Common/Event/EventDefine");
+const EventSystem_1 = require("../Common/Event/EventSystem");
+const GlobalData_1 = require("../GlobalData");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
+const ModelManager_1 = require("../Manager/ModelManager");
+const WaitEntityTask_1 = require("../World/Define/WaitEntityTask");
+const EACH_WAIT_ENTITY_OVER_TIME = 30000;
 class LevelEventBase {
   constructor(e) {
-    this.Id = e, this.GroupId = 0, this.Type = "", this.IsWaitEnd = !1, this.IsAsync = !1, this.SessionId = -1, this.ActionIndex = 0, this.ActionGuid = "", this.yUe = !1, this.BaseContext = void 0
+    this.Id = e;
+    this.GroupId = 0;
+    this.Type = "";
+    this.IsWaitEnd = false;
+    this.IsAsync = false;
+    this.SessionId = -1;
+    this.ActionIndex = 0;
+    this.ActionGuid = "";
+    this.yUe = false;
+    this.BaseContext = undefined;
   }
   ExecuteAction(e, t, i) {
-    this.BaseContext = t, ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 18, "LevelEvent:开始执行行为", ["行为类型", this.Type]), ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() ? this.ExecuteInGm(e, t, i) : this.ExecuteNew(e, t, i)
+    this.BaseContext = t;
+    if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 18, "LevelEvent:开始执行行为", ["行为类型", this.Type]);
+    }
+    if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      this.ExecuteInGm(e, t, i);
+    } else {
+      this.ExecuteNew(e, t, i);
+    }
   }
   ExecuteNew(e, t, i) {}
   ExecuteInGm(e, t, i) {
-    this.ExecuteNew(e, t, i)
+    this.ExecuteNew(e, t, i);
   }
   CreateWaitEntityTask(t) {
-    ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "等待实体创建", ["行为类型", this.Type], ["EntityIds", t.toString()]);
+    if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 7, "等待实体创建", ["行为类型", this.Type], ["EntityIds", t.toString()]);
+    }
     let i = 1;
-    Array.isArray(t) && (i = t.length), WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelEventBase.CreateWaitEntityTask", t, e => {
-      e ? this.ExecuteWhenEntitiesReady() : (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 7, "Entity加载超时或已被移除", ["EntityCount", i], ["EntityIds", t?.toString()]), this.FinishExecute(!1))
-    }, EACH_WAIT_ENTITY_OVER_TIME * i)
+    if (Array.isArray(t)) {
+      i = t.length;
+    }
+    WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelEventBase.CreateWaitEntityTask", t, e => {
+      if (e) {
+        this.ExecuteWhenEntitiesReady();
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 7, "Entity加载超时或已被移除", ["EntityCount", i], ["EntityIds", t?.toString()]);
+        }
+        this.FinishExecute(false);
+      }
+    }, EACH_WAIT_ENTITY_OVER_TIME * i);
   }
   CreateWaitEntityTaskBigInt(e) {
-    ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "等待实体创建", ["行为类型", this.Type], ["EntityIds", e.toString()]);
+    if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 7, "等待实体创建", ["行为类型", this.Type], ["EntityIds", e.toString()]);
+    }
     let t = 1;
-    Array.isArray(e) && (t = e.length), WaitEntityTask_1.WaitEntityTask.Create("LevelEventBase.CreateWaitEntityTaskBigInt", e, e => {
-      e ? this.ExecuteWhenEntitiesReady() : (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 7, "Entity加载超时或已被移除", ["EntityCount", t]), this.FinishExecute(!1))
-    }, t * EACH_WAIT_ENTITY_OVER_TIME)
+    if (Array.isArray(e)) {
+      t = e.length;
+    }
+    WaitEntityTask_1.WaitEntityTask.Create("LevelEventBase.CreateWaitEntityTaskBigInt", e, e => {
+      if (e) {
+        this.ExecuteWhenEntitiesReady();
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 7, "Entity加载超时或已被移除", ["EntityCount", t]);
+        }
+        this.FinishExecute(false);
+      }
+    }, t * EACH_WAIT_ENTITY_OVER_TIME);
   }
   ExecuteWhenEntitiesReady() {}
   OpenTick() {
-    this.IsWaitEnd = !0, this.yUe = !1, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddToTickList, !0, this)
+    this.IsWaitEnd = true;
+    this.yUe = false;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddToTickList, true, this);
   }
   Tick(e) {
-    return this.OnTick(e), this.yUe
+    this.OnTick(e);
+    return this.yUe;
   }
   OnTick(e) {}
-  FinishExecute(e, t = !1, i = !0) {
-    this.yUe = e, this.yUe || this.Failure(t, i)
+  FinishExecute(e, t = false, i = true) {
+    this.yUe = e;
+    if (!this.yUe) {
+      this.Failure(t, i);
+    }
   }
   Finish() {
-    this.OnFinish(), this.UpdateGuarantee(), this.Release(), ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 18, "LevelEvent:行为执行完毕_NodeFinished", ["行为类型", this.Type]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HandleNextAction, this.GroupId)
+    this.OnFinish();
+    this.UpdateGuarantee();
+    this.Release();
+    if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 18, "LevelEvent:行为执行完毕_NodeFinished", ["行为类型", this.Type]);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HandleNextAction, this.GroupId);
   }
   OnFinish() {}
   UpdateGuarantee() {
-    this.OnUpdateGuarantee()
+    this.OnUpdateGuarantee();
   }
   OnUpdateGuarantee() {}
-  Failure(e = !1, t = !0) {
-    GlobalData_1.GlobalData.IsPlayInEditor && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GmHandleActionFailed, this.BaseContext, this.ActionIndex), this.OnFailure(), this.Release(), Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 18, "LevelEvent:行为执行失败", ["行为类型", this.Type]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HandleActionFailure, this.GroupId, this.Type, e, t)
+  Failure(e = false, t = true) {
+    if (GlobalData_1.GlobalData.IsPlayInEditor) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GmHandleActionFailed, this.BaseContext, this.ActionIndex);
+    }
+    this.OnFailure();
+    this.Release();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 18, "LevelEvent:行为执行失败", ["行为类型", this.Type]);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HandleActionFailure, this.GroupId, this.Type, e, t);
   }
   OnFailure() {}
   Release() {
-    this.IsWaitEnd && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddToTickList, !1, this)
+    if (this.IsWaitEnd) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddToTickList, false, this);
+    }
   }
   Reset() {
-    this.OnReset(), this.GroupId = 0, this.IsWaitEnd = !1, this.yUe = !0, this.IsAsync = !1, this.SessionId = -1, this.ActionIndex = -1
+    this.OnReset();
+    this.GroupId = 0;
+    this.IsWaitEnd = false;
+    this.yUe = true;
+    this.IsAsync = false;
+    this.SessionId = -1;
+    this.ActionIndex = -1;
   }
   OnReset() {}
 }
 exports.LevelEventBase = LevelEventBase;
 class LevelConditionGroup {
   constructor() {
-    this.Type = 0, this.Conditions = void 0
+    this.Type = 0;
+    this.Conditions = undefined;
   }
 }
 exports.LevelConditionGroup = LevelConditionGroup;
 class CodeCondition {
   constructor() {
-    this.Type = void 0, this.CodeType = void 0
+    this.Type = undefined;
+    this.CodeType = undefined;
   }
 }
 exports.CodeCondition = CodeCondition;
 class LevelConditionBase {
   Check(e, t) {
-    return !1
+    return false;
   }
   CheckNew(e, t) {
-    return !1
+    return false;
   }
   CheckCompareValue(e, t = 0, i = 0) {
     switch (e) {
@@ -101,7 +174,7 @@ class LevelConditionBase {
       case "Lt":
         return t < i;
       default:
-        return i <= t
+        return i <= t;
     }
   }
 }

@@ -1,40 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiTabCamera = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  DynamicTabCamera_1 = require("../DynamicTabCamera"),
-  UiTabViewBehavior_1 = require("./UiTabViewBehavior");
+  value: true
+});
+exports.UiTabCamera = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const DynamicTabCamera_1 = require("../DynamicTabCamera");
+const UiTabViewBehavior_1 = require("./UiTabViewBehavior");
 class UiTabCamera extends UiTabViewBehavior_1.UiTabViewBehavior {
   constructor() {
-    super(...arguments), this.TabData = void 0, this.j3t = e => {
-      DynamicTabCamera_1.DynamicTabCamera.OnPlayCameraAnimationFinished(e)
-    }
+    super(...arguments);
+    this.TabData = undefined;
+    this.j3t = e => {
+      DynamicTabCamera_1.DynamicTabCamera.OnPlayCameraAnimationFinished(e);
+    };
   }
   SetTabData(e) {
-    this.TabData = ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTab(e)
+    this.TabData = ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTab(e);
   }
   Init() {}
   Begin() {
-    DynamicTabCamera_1.DynamicTabCamera.PlayTabUiCamera(this.TabData.ChildViewName), this.Ore()
+    DynamicTabCamera_1.DynamicTabCamera.PlayTabUiCamera(this.TabData.ChildViewName);
+    this.Ore();
   }
   ShowFromToggle() {
-    DynamicTabCamera_1.DynamicTabCamera.PlayTabUiCamera(this.TabData.ChildViewName, this.TabData.BackViewBlendName)
+    DynamicTabCamera_1.DynamicTabCamera.PlayTabUiCamera(this.TabData.ChildViewName, this.TabData.BackViewBlendName);
   }
   ShowFromView() {
-    DynamicTabCamera_1.DynamicTabCamera.PlayTabUiCamera(this.TabData.ChildViewName)
+    DynamicTabCamera_1.DynamicTabCamera.PlayTabUiCamera(this.TabData.ChildViewName);
   }
   Hide() {}
   Destroy() {
-    this.TabData = void 0, this.kre()
+    this.TabData = undefined;
+    this.kre();
   }
   Ore() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayCameraAnimationFinish, this.j3t)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayCameraAnimationFinish, this.j3t);
   }
   kre() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayCameraAnimationFinish, this.j3t)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayCameraAnimationFinish, this.j3t);
   }
 }
 exports.UiTabCamera = UiTabCamera;

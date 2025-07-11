@@ -1,50 +1,64 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AvignonController = void 0;
-const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../../../../Core/Net/Net"),
-  ControllerHolder_1 = require("../../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../../Ui/UiManager"),
-  ActivityControllerBase_1 = require("../../../ActivityControllerBase"),
-  AvignonActivitySubView_1 = require("../View/AvignonActivitySubView");
+  value: true
+});
+exports.AvignonController = undefined;
+const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../../../../Core/Net/Net");
+const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../../Ui/UiManager");
+const ActivityControllerBase_1 = require("../../../ActivityControllerBase");
+const AvignonActivitySubView_1 = require("../View/AvignonActivitySubView");
 class AvignonController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
-    super(...arguments), this.kSc = e => {
-      ModelManager_1.ModelManager.AvignonModel.AvignonInfoUpdate(e)
-    }
+    super(...arguments);
+    this.kSc = e => {
+      ModelManager_1.ModelManager.AvignonModel.AvignonInfoUpdate(e);
+    };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15176, this.kSc)
+    Net_1.Net.Register(23389, this.kSc);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15176)
+    Net_1.Net.UnRegister(23389);
   }
   OnGetIsOpeningActivityRelativeView() {
-    for (const e of ["AvignonActivityMainView", "AvignonStageTaskView"])
-      if (UiManager_1.UiManager.IsViewOpen(e)) return !0;
-    return !1
+    for (const e of ["AvignonActivityMainView", "AvignonStageTaskView"]) {
+      if (UiManager_1.UiManager.IsViewOpen(e)) {
+        return true;
+      }
+    }
+    return false;
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
-    return "UiItem_CollegeThemeGuide"
+    return "UiItem_CollegeThemeGuide";
   }
   OnCreateSubPageComponent(e) {
-    return new AvignonActivitySubView_1.AvignonActivitySubView
+    return new AvignonActivitySubView_1.AvignonActivitySubView();
   }
   OnCreateActivityData(e) {
-    return ModelManager_1.ModelManager.AvignonModel.GetAvigonoProtocolData()
+    return ModelManager_1.ModelManager.AvignonModel.GetAvigonoProtocolData();
   }
   OnActivityFirstUnlock(e) {
-    UiManager_1.UiManager.OpenView("ActivityUnlockTipAvignonView")
+    UiManager_1.UiManager.OpenView("ActivityUnlockTipAvignonView");
   }
   static RequestTaskReward(t) {
-    var e = new Protocol_1.Aki.Protocol.ofc,
-      r = (e.gps = t, ModelManager_1.ModelManager.AvignonModel.GetAvignonActivityId());
-    e.w6n = r, Net_1.Net.Call(22472, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28376) : ModelManager_1.ModelManager.AvignonModel.UpdateTaskRewardStatus(t))
-    })
+    var e = new Protocol_1.Aki.Protocol.ofc();
+    e.gps = t;
+    var r = ModelManager_1.ModelManager.AvignonModel.GetAvignonActivityId();
+    e.w6n = r;
+    Net_1.Net.Call(28271, e, e => {
+      if (e) {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22027);
+        } else {
+          ModelManager_1.ModelManager.AvignonModel.UpdateTaskRewardStatus(t);
+        }
+      }
+    });
   }
 }
 exports.AvignonController = AvignonController;

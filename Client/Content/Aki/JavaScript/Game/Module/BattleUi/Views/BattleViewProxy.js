@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleViewProxy = void 0;
+  value: true
+});
+exports.BattleViewProxy = undefined;
 class BattleViewProxy {
   constructor() {
-    this.HeadStatePanel = void 0
+    this.HeadStatePanel = undefined;
   }
 }
 exports.BattleViewProxy = BattleViewProxy;

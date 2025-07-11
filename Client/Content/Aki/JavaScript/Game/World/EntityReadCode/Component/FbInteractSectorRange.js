@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInteractSectorRange = void 0;
+  value: true
+});
+exports.FbInteractSectorRange = undefined;
 class FbInteractSectorRange {
   constructor(t) {
-    this.FbDataInternal = t, this.kDh = !1, this.GDh = 0, this.ODh = !1, this.FDh = 0
+    this.FbDataInternal = t;
+    this.kDh = false;
+    this.GDh = 0;
+    this.ODh = false;
+    this.FDh = 0;
   }
   static Create(t) {
-    if (t) return new FbInteractSectorRange(t)
+    if (t) {
+      return new FbInteractSectorRange(t);
+    }
   }
   get Begin() {
-    return this.kDh || (this.kDh = !0, this.GDh = this.FbDataInternal.begin()), this.GDh
+    if (!this.kDh) {
+      this.kDh = true;
+      this.GDh = this.FbDataInternal.begin();
+    }
+    return this.GDh;
   }
   get End() {
-    return this.ODh || (this.ODh = !0, this.FDh = this.FbDataInternal.end()), this.FDh
+    if (!this.ODh) {
+      this.ODh = true;
+      this.FDh = this.FbDataInternal.end();
+    }
+    return this.FDh;
   }
 }
 exports.FbInteractSectorRange = FbInteractSectorRange;

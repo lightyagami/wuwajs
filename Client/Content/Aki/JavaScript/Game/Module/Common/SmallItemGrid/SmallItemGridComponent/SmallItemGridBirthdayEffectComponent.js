@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SmallItemGridBirthdayEffectComponent = void 0;
+  value: true
+});
+exports.SmallItemGridBirthdayEffectComponent = undefined;
 const SmallItemGridVisibleComponent_1 = require("./SmallItemGridVisibleComponent");
 class SmallItemGridBirthdayEffectComponent extends SmallItemGridVisibleComponent_1.SmallItemGridVisibleComponent {
   GetResourceId() {
-    return "UiItem_ItemBShinning"
+    return "UiItem_ItemBShinning";
   }
   GetLayoutLevel() {
-    return 0
+    return 0;
   }
 }
 exports.SmallItemGridBirthdayEffectComponent = SmallItemGridBirthdayEffectComponent;

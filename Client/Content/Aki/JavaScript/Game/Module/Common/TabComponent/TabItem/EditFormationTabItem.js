@@ -1,56 +1,66 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EditFormationTabItem = void 0;
-const UE = require("ue"),
-  RedDotController_1 = require("../../../../RedDot/RedDotController"),
-  CommonTabItemBase_1 = require("./CommonTabItemBase");
+  value: true
+});
+exports.EditFormationTabItem = undefined;
+const UE = require("ue");
+const RedDotController_1 = require("../../../../RedDot/RedDotController");
+const CommonTabItemBase_1 = require("./CommonTabItemBase");
 class EditFormationTabItem extends CommonTabItemBase_1.CommonTabItemBase {
   constructor() {
-    super(...arguments), this.l4e = void 0, this.Bke = t => {
-      1 === t && this.SelectedCallBack(this.GridIndex)
-    }, this.RefreshTransition = () => {
+    super(...arguments);
+    this.l4e = undefined;
+    this.Bke = t => {
+      if (t === 1) {
+        this.SelectedCallBack(this.GridIndex);
+      }
+    };
+    this.RefreshTransition = () => {
       var t = this.GetUiExtendToggleSpriteTransition(3);
-      t && t.SetAllStateSprite(this.GetSprite(0).GetSprite())
-    }
+      if (t) {
+        t.SetAllStateSprite(this.GetSprite(0).GetSprite());
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UIExtendToggle],
-      [2, UE.UIItem],
-      [3, UE.UIExtendToggleSpriteTransition],
-      [4, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [1, this.Bke]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIExtendToggle], [2, UE.UIItem], [3, UE.UIExtendToggleSpriteTransition], [4, UE.UIItem]];
+    this.BtnBindInfo = [[1, this.Bke]];
   }
   OnStart() {
-    super.OnStart(), this.GetExtendToggle(1).SetToggleState(0), this.GetItem(2).SetUIActive(!1)
+    super.OnStart();
+    this.GetExtendToggle(1).SetToggleState(0);
+    this.GetItem(2).SetUIActive(false);
   }
   OnBeforeDestroy() {
-    this.UnBindRedDot()
+    this.UnBindRedDot();
   }
   ShowTeamBattleTips() {
-    this.GetItem(4).SetUIActive(!0)
+    this.GetItem(4).SetUIActive(true);
   }
   OnRefresh(t, e, s) {
-    this.UpdateTabIcon(t.Data?.GetIcon())
+    this.UpdateTabIcon(t.Data?.GetIcon());
   }
   OnUpdateTabIcon(t) {
-    this.SetSpriteByPath(t, this.GetSprite(0), !1, void 0, this.RefreshTransition)
+    this.SetSpriteByPath(t, this.GetSprite(0), false, undefined, this.RefreshTransition);
   }
   OnSetToggleState(t, e) {
-    this.GetExtendToggle(1).SetToggleState(t, e)
+    this.GetExtendToggle(1).SetToggleState(t, e);
   }
   GetTabToggle() {
-    return this.GetExtendToggle(1)
+    return this.GetExtendToggle(1);
   }
   BindRedDot(t, e = 0) {
-    this.l4e = t, this.l4e && RedDotController_1.RedDotController.BindRedDot(t, this.GetItem(2), void 0, e)
+    this.l4e = t;
+    if (this.l4e) {
+      RedDotController_1.RedDotController.BindRedDot(t, this.GetItem(2), undefined, e);
+    }
   }
   UnBindRedDot() {
-    this.l4e && (RedDotController_1.RedDotController.UnBindRedDot(this.l4e), this.l4e = void 0)
+    if (this.l4e) {
+      RedDotController_1.RedDotController.UnBindRedDot(this.l4e);
+      this.l4e = undefined;
+    }
   }
 }
 exports.EditFormationTabItem = EditFormationTabItem;

@@ -1,102 +1,136 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiCameraStructure = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  FNameUtil_1 = require("../../../../Core/Utils/FNameUtil"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+  value: true
+});
+exports.UiCameraStructure = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 class UiCameraStructure {
   constructor() {
-    this.ZUo = void 0, this.CameraActor = void 0, this.SpringArmComponent = void 0, this.OwnActor = void 0
+    this.ZUo = undefined;
+    this.CameraActor = undefined;
+    this.SpringArmComponent = undefined;
+    this.OwnActor = undefined;
   }
   Initialize(t) {
-    this.ZUo = t, this.CameraActor = this.ZUo.GetCameraActor(), this.OwnActor = this.OnSpawnStructureActor(), this.SpringArmComponent = this.OnSetSpringArmComponent(), this.OnInitialize()
+    this.ZUo = t;
+    this.CameraActor = this.ZUo.GetCameraActor();
+    this.OwnActor = this.OnSpawnStructureActor();
+    this.SpringArmComponent = this.OnSetSpringArmComponent();
+    this.OnInitialize();
   }
   Destroy() {
-    this.Deactivate(), this.OnDestroy(), this.CameraActor = void 0, this.OwnActor = void 0
+    this.Deactivate();
+    this.OnDestroy();
+    this.CameraActor = undefined;
+    this.OwnActor = undefined;
   }
   IsValid() {
-    return !(!this.CameraActor || !this.OwnActor) && this.CameraActor.IsValid() && this.OwnActor.IsValid()
+    return !!this.CameraActor && !!this.OwnActor && this.CameraActor.IsValid() && this.OwnActor.IsValid();
   }
   Activate() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCamera", 58, "激活相机结构", ["Name", this.constructor.name]), this.OnActivate()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiCamera", 58, "激活相机结构", ["Name", this.constructor.name]);
+    }
+    this.OnActivate();
   }
   Deactivate() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCamera", 58, "休眠相机结构", ["Name", this.constructor.name]), this.OnDeactivate()
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiCamera", 58, "休眠相机结构", ["Name", this.constructor.name]);
+    }
+    this.OnDeactivate();
   }
   OnActivate() {}
   OnDeactivate() {}
   OnSpawnStructureActor() {
-    Log_1.Log.CheckError() && Log_1.Log.Error("UiCamera", 58, "没有创建StructureActor", ["Name", this.constructor.name])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("UiCamera", 58, "没有创建StructureActor", ["Name", this.constructor.name]);
+    }
   }
   OnSetSpringArmComponent() {
-    Log_1.Log.CheckError() && Log_1.Log.Error("UiCamera", 58, "没有实现OnSetSpringArmComponent", ["Name", this.constructor.name])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("UiCamera", 58, "没有实现OnSetSpringArmComponent", ["Name", this.constructor.name]);
+    }
   }
   GetSpringArmComponent() {
-    return this.SpringArmComponent
+    return this.SpringArmComponent;
   }
   OnInitialize() {}
   OnDestroy() {}
   AttachToComponent(t, i = FNameUtil_1.FNameUtil.NONE, e = 2, o = 2, r = 1) {
-    this.CameraActor?.IsValid() && this.CameraActor.K2_AttachToComponent(t, i, e, o, r, !1)
+    if (this.CameraActor?.IsValid()) {
+      this.CameraActor.K2_AttachToComponent(t, i, e, o, r, false);
+    }
   }
   DetachFromComponent(t = 1, i = 1, e = 1) {
-    this.CameraActor?.IsValid() && this.CameraActor.K2_DetachFromActor(t, i, e)
+    if (this.CameraActor?.IsValid()) {
+      this.CameraActor.K2_DetachFromActor(t, i, e);
+    }
   }
   DetachUiCameraSpringActor(t, i, e) {
-    this.OwnActor?.K2_DetachFromActor(t, i, e)
+    this.OwnActor?.K2_DetachFromActor(t, i, e);
   }
   SetActorTransform(t) {
-    this.OwnActor.D_K2_SetActorTransform(t, !1, void 0, !1)
+    this.OwnActor.D_K2_SetActorTransform(t, false, undefined, false);
   }
   SetActorLocation(t) {
-    this.OwnActor.D_K2_GetActorLocation().Equals(t, MathUtils_1.MathUtils.SmallNumber) || this.OwnActor.D_K2_SetActorLocation(t, !1, void 0, !1)
+    if (!this.OwnActor.D_K2_GetActorLocation().Equals(t, MathUtils_1.MathUtils.SmallNumber)) {
+      this.OwnActor.D_K2_SetActorLocation(t, false, undefined, false);
+    }
   }
   SetActorRelativeLocation(t) {
-    void 0 !== this.OwnActor.GetParentComponent() ? this.OwnActor.D_K2_SetActorRelativeLocation(t, !1, void 0, !1) : this.OwnActor.D_K2_SetActorLocation(t, !1, void 0, !1)
+    if (this.OwnActor.GetParentComponent() !== undefined) {
+      this.OwnActor.D_K2_SetActorRelativeLocation(t, false, undefined, false);
+    } else {
+      this.OwnActor.D_K2_SetActorLocation(t, false, undefined, false);
+    }
   }
   SetCameraActorRelativeLocation(t) {
-    this.CameraActor.D_K2_SetActorRelativeLocation(t, !1, void 0, !1)
+    this.CameraActor.D_K2_SetActorRelativeLocation(t, false, undefined, false);
   }
   SetActorRotation(t) {
-    this.OwnActor.K2_GetActorRotation().Equals(t, MathUtils_1.MathUtils.SmallNumber) || this.OwnActor.K2_SetActorRotation(t, !1)
+    if (!this.OwnActor.K2_GetActorRotation().Equals(t, MathUtils_1.MathUtils.SmallNumber)) {
+      this.OwnActor.K2_SetActorRotation(t, false);
+    }
   }
   SetActorLocationAndRotation(t, i) {
-    this.OwnActor.D_K2_SetActorLocationAndRotation(t, i, !0, void 0, !1)
+    this.OwnActor.D_K2_SetActorLocationAndRotation(t, i, true, undefined, false);
   }
   SetUiCameraAnimationRelativeRotation(t) {
-    this.OwnActor.K2_SetActorRelativeRotation(t, !1, void 0, !1)
+    this.OwnActor.K2_SetActorRelativeRotation(t, false, undefined, false);
   }
   SetSprintArmRelativeRotation(t) {
-    this.SpringArmComponent.K2_SetRelativeRotation(t, !1, void 0, !1)
+    this.SpringArmComponent.K2_SetRelativeRotation(t, false, undefined, false);
   }
   SetSpringArmRelativeLocation(t) {
-    this.SpringArmComponent.D_K2_SetRelativeLocation(t, !1, void 0, !1)
+    this.SpringArmComponent.D_K2_SetRelativeLocation(t, false, undefined, false);
   }
   SetCollisionTest(t) {
-    this.SpringArmComponent.bDoCollisionTest = t
+    this.SpringArmComponent.bDoCollisionTest = t;
   }
   SetSpringArmLength(t) {
-    this.SpringArmComponent.TargetArmLength = t
+    this.SpringArmComponent.TargetArmLength = t;
   }
   GetSpringArmLength() {
-    return this.SpringArmComponent.TargetArmLength
+    return this.SpringArmComponent.TargetArmLength;
   }
   GetSpringRelativeLocation() {
-    return new UE.VectorDouble(this.SpringArmComponent.RelativeLocation)
+    return new UE.VectorDouble(this.SpringArmComponent.RelativeLocation);
   }
   GetSpringRelativeRotation() {
-    return this.SpringArmComponent.RelativeRotation
+    return this.SpringArmComponent.RelativeRotation;
   }
   GetActorLocation() {
-    return this.OwnActor.D_K2_GetActorLocation()
+    return this.OwnActor.D_K2_GetActorLocation();
   }
   GetActorRotation() {
-    return this.OwnActor.K2_GetActorRotation()
+    return this.OwnActor.K2_GetActorRotation();
   }
   GetOwnActor() {
-    return this.OwnActor
+    return this.OwnActor;
   }
 }
 exports.UiCameraStructure = UiCameraStructure;

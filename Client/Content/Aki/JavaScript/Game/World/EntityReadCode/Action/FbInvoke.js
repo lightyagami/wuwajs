@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInvoke = void 0;
+  value: true
+});
+exports.FbInvoke = undefined;
 const FbActionInfo_1 = require("./FbActionInfo");
 class FbInvoke {
   constructor(t) {
-    this.FbDataInternal = t, this.i_h = !1, this.r_h = 0, this.puh = !1, this.vuh = void 0
+    this.FbDataInternal = t;
+    this.i_h = false;
+    this.r_h = 0;
+    this.puh = false;
+    this.vuh = undefined;
   }
   static Create(t) {
-    if (t) return new FbInvoke(t)
+    if (t) {
+      return new FbInvoke(t);
+    }
   }
   get Who() {
-    return this.i_h || (this.i_h = !0, this.r_h = this.FbDataInternal.who()), this.r_h
+    if (!this.i_h) {
+      this.i_h = true;
+      this.r_h = this.FbDataInternal.who();
+    }
+    return this.r_h;
   }
   get ActionInfo() {
-    return this.puh || (this.puh = !0, this.vuh = FbActionInfo_1.FbActionInfo.Create(this.FbDataInternal.actionInfo())), this.vuh
+    if (!this.puh) {
+      this.puh = true;
+      this.vuh = FbActionInfo_1.FbActionInfo.Create(this.FbDataInternal.actionInfo());
+    }
+    return this.vuh;
   }
 }
 exports.FbInvoke = FbInvoke;

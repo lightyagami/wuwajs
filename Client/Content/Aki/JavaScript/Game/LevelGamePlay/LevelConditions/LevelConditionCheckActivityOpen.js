@@ -1,12 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckActivityOpen = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckActivityOpen = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckActivityOpen extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, r) {
-    return !!e.LimitParams && !!(e = Number(e.LimitParams.get("ActivityId"))) && void 0 !== (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) && !e.CheckIfClose()
+    return !!e.LimitParams && !!(e = Number(e.LimitParams.get("ActivityId"))) && (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) !== undefined && !e.CheckIfClose();
   }
 }
 exports.LevelConditionCheckActivityOpen = LevelConditionCheckActivityOpen;

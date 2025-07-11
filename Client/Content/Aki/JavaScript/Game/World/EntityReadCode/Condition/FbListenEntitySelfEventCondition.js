@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbListenEntitySelfEventCondition = void 0;
+  value: true
+});
+exports.FbListenEntitySelfEventCondition = undefined;
 class FbListenEntitySelfEventCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.lmh = !1, this._mh = void 0, this.TJh = !1, this.bJh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.lmh = false;
+    this._mh = undefined;
+    this.TJh = false;
+    this.bJh = false;
   }
   static Create(t) {
-    if (t) return new FbListenEntitySelfEventCondition(t)
+    if (t) {
+      return new FbListenEntitySelfEventCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EventKey() {
-    return this.lmh || (this.lmh = !0, this._mh = this.FbDataInternal.eventKey()), this._mh
+    if (!this.lmh) {
+      this.lmh = true;
+      this._mh = this.FbDataInternal.eventKey();
+    }
+    return this._mh;
   }
   get ResetAfterConditionMet() {
-    return this.TJh || (this.TJh = !0, this.bJh = this.FbDataInternal.resetAfterConditionMet()), this.bJh
+    if (!this.TJh) {
+      this.TJh = true;
+      this.bJh = this.FbDataInternal.resetAfterConditionMet();
+    }
+    return this.bJh;
   }
 }
 exports.FbListenEntitySelfEventCondition = FbListenEntitySelfEventCondition;

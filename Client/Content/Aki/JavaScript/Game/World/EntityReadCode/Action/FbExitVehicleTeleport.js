@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbExitVehicleTeleport = void 0;
+  value: true
+});
+exports.FbExitVehicleTeleport = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbExitVehicleTeleport {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.uch = !1, this.dch = void 0, this.Aph = !1, this.xph = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.uch = false;
+    this.dch = undefined;
+    this.Aph = false;
+    this.xph = undefined;
   }
   static Create(t) {
-    if (t) return new FbExitVehicleTeleport(t)
+    if (t) {
+      return new FbExitVehicleTeleport(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Pos() {
-    return this.uch || (this.uch = !0, this.dch = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.pos())), this.dch
+    if (!this.uch) {
+      this.uch = true;
+      this.dch = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.pos());
+    }
+    return this.dch;
   }
   get Rot() {
-    return this.Aph || (this.Aph = !0, this.xph = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rot())), this.xph
+    if (!this.Aph) {
+      this.Aph = true;
+      this.xph = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rot());
+    }
+    return this.xph;
   }
 }
 exports.FbExitVehicleTeleport = FbExitVehicleTeleport;

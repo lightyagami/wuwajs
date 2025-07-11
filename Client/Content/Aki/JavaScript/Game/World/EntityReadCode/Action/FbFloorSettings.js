@@ -1,29 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFloorSettings = void 0;
+  value: true
+});
+exports.FbFloorSettings = undefined;
 const FbVector2_1 = require("../Var/FbVector2");
 class FbFloorSettings {
   constructor(t) {
-    this.FbDataInternal = t, this.Q0h = !1, this.K0h = void 0, this.$0h = !1, this.X0h = void 0, this.Rph = !1, this.wph = void 0, this.Y0h = !1, this.z0h = 0, this.J0h = !1, this.Z0h = 0
+    this.FbDataInternal = t;
+    this.Q0h = false;
+    this.K0h = undefined;
+    this.$0h = false;
+    this.X0h = undefined;
+    this.Rph = false;
+    this.wph = undefined;
+    this.Y0h = false;
+    this.z0h = 0;
+    this.J0h = false;
+    this.Z0h = 0;
   }
   static Create(t) {
-    if (t) return new FbFloorSettings(t)
+    if (t) {
+      return new FbFloorSettings(t);
+    }
   }
   get MeshPath() {
-    return this.Q0h || (this.Q0h = !0, this.K0h = this.FbDataInternal.meshPath()), this.K0h
+    if (!this.Q0h) {
+      this.Q0h = true;
+      this.K0h = this.FbDataInternal.meshPath();
+    }
+    return this.K0h;
   }
   get MaterialPath() {
-    return this.$0h || (this.$0h = !0, this.X0h = this.FbDataInternal.materialPath()), this.X0h
+    if (!this.$0h) {
+      this.$0h = true;
+      this.X0h = this.FbDataInternal.materialPath();
+    }
+    return this.X0h;
   }
   get Scale() {
-    return this.Rph || (this.Rph = !0, this.wph = FbVector2_1.FbVector2.Create(this.FbDataInternal.scale())), this.wph
+    if (!this.Rph) {
+      this.Rph = true;
+      this.wph = FbVector2_1.FbVector2.Create(this.FbDataInternal.scale());
+    }
+    return this.wph;
   }
   get ShowTime() {
-    return this.Y0h || (this.Y0h = !0, this.z0h = this.FbDataInternal.showTime()), this.z0h
+    if (!this.Y0h) {
+      this.Y0h = true;
+      this.z0h = this.FbDataInternal.showTime();
+    }
+    return this.z0h;
   }
   get DisappearTime() {
-    return this.J0h || (this.J0h = !0, this.Z0h = this.FbDataInternal.disappearTime()), this.Z0h
+    if (!this.J0h) {
+      this.J0h = true;
+      this.Z0h = this.FbDataInternal.disappearTime();
+    }
+    return this.Z0h;
   }
 }
 exports.FbFloorSettings = FbFloorSettings;

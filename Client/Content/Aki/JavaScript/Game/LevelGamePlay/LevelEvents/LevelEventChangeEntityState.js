@@ -1,38 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventChangeEntityState = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils"),
-  IAction_1 = require("../../../UniverseEditor/Interface/IAction"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase"),
-  LevelGeneralCommons_1 = require("../LevelGeneralCommons");
+  value: true
+});
+exports.LevelEventChangeEntityState = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
+const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
+const LevelGeneralCommons_1 = require("../LevelGeneralCommons");
 class LevelEventChangeEntityState extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.Lo = void 0, this.tRl = 0, this.fLe = void 0
+    super(...arguments);
+    this.Lo = undefined;
+    this.tRl = 0;
+    this.fLe = undefined;
   }
   ExecuteNew(t, e, i) {
-    if (1 === e.Type && e.ClientExecuteActions) {
+    if (e.Type === 1 && e.ClientExecuteActions) {
       this.Lo = t;
-      let e = void 0;
+      let e = undefined;
       switch (this.Lo.Type) {
         case IAction_1.EChangeEntityState.Directly:
-          e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Lo.State), this.fLe = [this.Lo.EntityId];
+          e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Lo.State);
+          this.fLe = [this.Lo.EntityId];
           break;
         case IAction_1.EChangeEntityState.Loop:
-          return Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 26, "不支持的切换实体状态"), void this.FinishExecute(!0);
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("LevelEvent", 26, "不支持的切换实体状态");
+          }
+          this.FinishExecute(true);
+          return;
         case IAction_1.EChangeEntityState.BatchDirectly:
-          e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Lo.State), this.fLe = this.Lo.EntityIds
+          e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Lo.State);
+          this.fLe = this.Lo.EntityIds;
       }
-      void 0 === e ? this.FinishExecute(!0) : (this.tRl = e, this.CreateWaitEntityTask(this.fLe))
-    } else this.FinishExecute(!0)
+      if (e === undefined) {
+        this.FinishExecute(true);
+      } else {
+        this.tRl = e;
+        this.CreateWaitEntityTask(this.fLe);
+      }
+    } else {
+      this.FinishExecute(true);
+    }
   }
   ExecuteWhenEntitiesReady() {
-    for (const e of this.fLe) LevelGeneralCommons_1.LevelGeneralCommons.PrechangeStateTag(e, this.tRl, "ShowInRefSequence");
-    this.FinishExecute(!0)
+    for (const e of this.fLe) {
+      LevelGeneralCommons_1.LevelGeneralCommons.PrechangeStateTag(e, this.tRl, "ShowInRefSequence");
+    }
+    this.FinishExecute(true);
   }
   OnReset() {
-    this.Lo = void 0, this.tRl = 0, this.fLe = void 0
+    this.Lo = undefined;
+    this.tRl = 0;
+    this.fLe = undefined;
   }
 }
 exports.LevelEventChangeEntityState = LevelEventChangeEntityState;

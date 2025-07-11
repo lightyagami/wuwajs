@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFinishDoInteract = void 0;
+  value: true
+});
+exports.FbFinishDoInteract = undefined;
 class FbFinishDoInteract {
   constructor(t) {
-    this.FbDataInternal = t
+    this.FbDataInternal = t;
   }
   static Create(t) {
-    if (t) return new FbFinishDoInteract(t)
+    if (t) {
+      return new FbFinishDoInteract(t);
+    }
   }
 }
 exports.FbFinishDoInteract = FbFinishDoInteract;

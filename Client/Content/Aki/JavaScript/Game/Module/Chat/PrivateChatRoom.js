@@ -1,40 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PrivateChatRoom = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  ChatRoom_1 = require("./ChatRoom");
+  value: true
+});
+exports.PrivateChatRoom = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const ChatRoom_1 = require("./ChatRoom");
 class PrivateChatRoom extends ChatRoom_1.ChatRoom {
   constructor(e, t) {
-    super(1, t), this.iSt = e
+    super(1, t);
+    this.iSt = e;
   }
   GetFriendData() {
-    return ModelManager_1.ModelManager.FriendModel.GetFriendById(this.iSt)
+    return ModelManager_1.ModelManager.FriendModel.GetFriendById(this.iSt);
   }
   GetTargetPlayerId() {
-    return this.iSt
+    return this.iSt;
   }
   GetUniqueId() {
-    return this.iSt
+    return this.iSt;
   }
   GetPlayerName() {
-    return this.GetFriendData()?.PlayerName
+    return this.GetFriendData()?.PlayerName;
   }
   GetPlayerRemarks() {
-    return this.GetFriendData()?.FriendRemark
+    return this.GetFriendData()?.FriendRemark;
   }
   IsOnline() {
-    return this.GetFriendData()?.PlayerIsOnline
+    return this.GetFriendData()?.PlayerIsOnline;
   }
   GetPsnUserId() {
-    return this.GetFriendData()?.GetSdkUserId()
+    return this.GetFriendData()?.GetSdkUserId();
   }
   GetPsnOnlineId() {
-    return this.GetFriendData()?.GetSdkOnlineId()
+    return this.GetFriendData()?.GetSdkOnlineId();
   }
   CanChat() {
     var e = ModelManager_1.ModelManager.FriendModel;
-    return !e.HasBlockedPlayer(this.iSt) && !!e.HasFriend(this.iSt)
+    return !e.HasBlockedPlayer(this.iSt) && !!e.HasFriend(this.iSt);
   }
 }
 exports.PrivateChatRoom = PrivateChatRoom;

@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSpawnMonsterConstraintAnnularSector = void 0;
+  value: true
+});
+exports.FbSpawnMonsterConstraintAnnularSector = undefined;
 class FbSpawnMonsterConstraintAnnularSector {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.rkh = !1, this.okh = 0, this.nkh = !1, this.skh = 0, this.fqh = !1, this.pqh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.rkh = false;
+    this.okh = 0;
+    this.nkh = false;
+    this.skh = 0;
+    this.fqh = false;
+    this.pqh = 0;
   }
   static Create(t) {
-    if (t) return new FbSpawnMonsterConstraintAnnularSector(t)
+    if (t) {
+      return new FbSpawnMonsterConstraintAnnularSector(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get InnerRadius() {
-    return this.rkh || (this.rkh = !0, this.okh = this.FbDataInternal.innerRadius()), this.okh
+    if (!this.rkh) {
+      this.rkh = true;
+      this.okh = this.FbDataInternal.innerRadius();
+    }
+    return this.okh;
   }
   get OuterRadius() {
-    return this.nkh || (this.nkh = !0, this.skh = this.FbDataInternal.outerRadius()), this.skh
+    if (!this.nkh) {
+      this.nkh = true;
+      this.skh = this.FbDataInternal.outerRadius();
+    }
+    return this.skh;
   }
   get Angle() {
-    return this.fqh || (this.fqh = !0, this.pqh = this.FbDataInternal.angle()), this.pqh
+    if (!this.fqh) {
+      this.fqh = true;
+      this.pqh = this.FbDataInternal.angle();
+    }
+    return this.pqh;
   }
 }
 exports.FbSpawnMonsterConstraintAnnularSector = FbSpawnMonsterConstraintAnnularSector;

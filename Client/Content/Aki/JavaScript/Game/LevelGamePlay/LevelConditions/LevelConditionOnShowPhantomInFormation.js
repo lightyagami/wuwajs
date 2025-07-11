@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionOnShowPhantomInFormation = void 0;
+  value: true
+});
+exports.LevelConditionOnShowPhantomInFormation = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionOnShowPhantomInFormation extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, n) {
-    return !0
+    return true;
   }
 }
 exports.LevelConditionOnShowPhantomInFormation = LevelConditionOnShowPhantomInFormation;

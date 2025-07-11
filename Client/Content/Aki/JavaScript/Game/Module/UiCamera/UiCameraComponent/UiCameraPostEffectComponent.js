@@ -1,41 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiCameraPostEffectComponent = void 0;
+  value: true
+});
+exports.UiCameraPostEffectComponent = undefined;
 const UiCameraComponent_1 = require("./UiCameraComponent");
 class UiCameraPostEffectComponent extends UiCameraComponent_1.UiCameraComponent {
   SetCameraFocusMethod(e) {
-    this.CineCameraComponent.FocusSettings.FocusMethod = e
+    this.CineCameraComponent.FocusSettings.FocusMethod = e;
   }
   SetCameraFieldOfView(e) {
-    this.CineCameraComponent.SetFieldOfView(e)
+    this.CineCameraComponent.SetFieldOfView(e);
   }
   SetCameraFocalDistance(e) {
-    this.CineCameraComponent.FocusSettings.ManualFocusDistance = e
+    this.CineCameraComponent.FocusSettings.ManualFocusDistance = e;
   }
   SetCameraCurrentFocalLength(e) {
-    this.CineCameraComponent.CurrentFocalLength = e
+    this.CineCameraComponent.CurrentFocalLength = e;
   }
   SetCameraAperture(e) {
-    this.CineCameraComponent.CurrentAperture = e
+    this.CineCameraComponent.CurrentAperture = e;
   }
   SetCameraFocalRegion(e) {
-    this.CineCameraComponent.CurrentFocalRegion = e
+    this.CineCameraComponent.CurrentFocalRegion = e;
   }
   SetCameraPostProcessBlendWeight(e) {
-    this.CineCameraComponent.SetPostProcessBlendWeight(e)
+    this.CineCameraComponent.SetPostProcessBlendWeight(e);
   }
   GetFieldOfView() {
-    return this.CineCameraComponent.FieldOfView
+    return this.CineCameraComponent.FieldOfView;
   }
   GetManualFocusDistance() {
-    return this.CineCameraComponent.FocusSettings.ManualFocusDistance
+    return this.CineCameraComponent.FocusSettings.ManualFocusDistance;
   }
   GetCurrentAperture() {
-    return this.CineCameraComponent.CurrentAperture
+    return this.CineCameraComponent.CurrentAperture;
   }
   GetPostProcessBlendWeight() {
-    return this.CineCameraComponent.PostProcessBlendWeight
+    return this.CineCameraComponent.PostProcessBlendWeight;
   }
 }
 exports.UiCameraPostEffectComponent = UiCameraPostEffectComponent;

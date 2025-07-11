@@ -1,92 +1,115 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShopSkinData = void 0;
-const StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.ShopSkinData = undefined;
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class ShopSkinData {
   constructor() {
-    this.vFi = void 0, this.gyl = void 0, this.pyl = new Map
+    this.vFi = undefined;
+    this.gyl = undefined;
+    this.pyl = new Map();
   }
   static Create(t) {
-    var e = new ShopSkinData;
-    return e.InitData(t), e
+    var e = new ShopSkinData();
+    e.InitData(t);
+    return e;
   }
   InitData(t) {
-    this.vFi = t, this.pyl.clear();
+    this.vFi = t;
+    this.pyl.clear();
     t = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(t.GetPackageRewardId());
-    if (t)
+    if (t) {
       for (const r of t.Content) {
         var e = r[0];
-        11 === ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) ? this.gyl = e : this.pyl.set(e, r[1])
+        if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) === 11) {
+          this.gyl = e;
+        } else {
+          this.pyl.set(e, r[1]);
+        }
       }
+    }
   }
   GetIfCanBuy() {
-    return !(!this.GetPayShopGoods().IfCanBuy() || this.GetPayShopGoods().GetGoodsData()?.HasBuyLimit() && 0 === this.GetPayShopGoods().GetGoodsData()?.GetRemainingCount())
+    return !!this.GetPayShopGoods().IfCanBuy() && (!this.GetPayShopGoods().GetGoodsData()?.HasBuyLimit() || this.GetPayShopGoods().GetGoodsData()?.GetRemainingCount() !== 0);
   }
   GetCurrentGoodsData() {
-    return this.vFi
+    return this.vFi;
   }
   GetItemId() {
-    return this.gyl
+    return this.gyl;
   }
   GetAllReward() {
-    var t = [],
-      e = {
-        IncId: 0,
-        ItemId: this.GetItemId()
-      };
-    return t.push([e, 1]), t.push(...this.GetOtherReward()), t
+    var t = [];
+    var e = {
+      IncId: 0,
+      ItemId: this.GetItemId()
+    };
+    t.push([e, 1]);
+    t.push(...this.GetOtherReward());
+    return t;
   }
   GetOtherReward() {
-    var t, e, r = [];
+    var t;
+    var e;
+    var r = [];
     for ([t, e] of this.pyl) {
       var i = [{
         IncId: 0,
         ItemId: t
       }, e];
-      r.push(i)
+      r.push(i);
     }
-    return r
+    return r;
   }
   GetPayShopGoods() {
-    return this.vFi
+    return this.vFi;
   }
   GetDiscountText() {
     var t = this.GetCurrentGoodsData();
-    return t.HasDiscount() && 0 < (t = t.GetDiscount()) ? StringUtils_1.StringUtils.Format("-{0}%", t.toString()) : ""
+    if (t.HasDiscount() && (t = t.GetDiscount()) > 0) {
+      return StringUtils_1.StringUtils.Format("-{0}%", t.toString());
+    } else {
+      return "";
+    }
   }
   GetDiscountTimeData() {
     var t = this.GetCurrentGoodsData();
-    return t.HasDiscount() && 1 === (t = t.GetCountDownData())[0] ? t[1] : void 0
+    if (t.HasDiscount() && (t = t.GetCountDownData())[0] === 1) {
+      return t[1];
+    } else {
+      return undefined;
+    }
   }
   GetPriceData() {
-    return this.GetCurrentGoodsData().GetPriceData()
+    return this.GetCurrentGoodsData().GetPriceData();
   }
   GetIfDirect() {
-    return this.GetCurrentGoodsData().IsDirect()
+    return this.GetCurrentGoodsData().IsDirect();
   }
   GetDirectPriceText() {
-    return this.GetCurrentGoodsData().GetDirectPriceText()
+    return this.GetCurrentGoodsData().GetDirectPriceText();
   }
   GetRoleSkinData() {
-    return ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(this.GetItemId())
+    return ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(this.GetItemId());
   }
   GetPayShopPreviewRoleTexturePath() {
-    return this.GetRoleSkinData().GetPayShopPreviewRoleTexturePath()
+    return this.GetRoleSkinData().GetPayShopPreviewRoleTexturePath();
   }
   GetPayShopPreviewRoleTextureBgPath() {
-    return this.GetRoleSkinData().GetPayShopPreviewRoleTextureBgPath()
+    return this.GetRoleSkinData().GetPayShopPreviewRoleTextureBgPath();
   }
   GetPayShopPreviewWeaponTexturePath() {
-    return this.GetRoleSkinData().GetPayShopPreviewWeaponTexturePath()
+    return this.GetRoleSkinData().GetPayShopPreviewWeaponTexturePath();
   }
   GetPayShopPreviewBuyRoleTexturePath() {
-    return this.GetRoleSkinData().GetPayShopPreviewBuyRoleTexturePath()
+    return this.GetRoleSkinData().GetPayShopPreviewBuyRoleTexturePath();
   }
   GetPayShopPreviewBuyRoleSuitWeaponTexturePath() {
-    return this.GetRoleSkinData().GetPayShopPreviewBuyRoleSuitWeaponTexturePath()
+    return this.GetRoleSkinData().GetPayShopPreviewBuyRoleSuitWeaponTexturePath();
   }
 }
 exports.ShopSkinData = ShopSkinData;

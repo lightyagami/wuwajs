@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionDelayRemoveConfigHelper = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbDelayRemoveAfterSkillFinish_1 = require("./FbDelayRemoveAfterSkillFinish");
+  value: true
+});
+exports.UnionDelayRemoveConfigHelper = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbDelayRemoveAfterSkillFinish_1 = require("./FbDelayRemoveAfterSkillFinish");
 class UnionDelayRemoveConfigHelper {
   static GetUnionDelayRemoveConfigObject(e) {
-    if (e === fb_action_1.UnionDelayRemoveConfig.DelayRemoveAfterSkillFinish) return new fb_action_1.DelayRemoveAfterSkillFinish
+    if (e === fb_action_1.UnionDelayRemoveConfig.DelayRemoveAfterSkillFinish) {
+      return new fb_action_1.DelayRemoveAfterSkillFinish();
+    }
   }
   static ReadUnionDelayRemoveConfig(e, i) {
-    return void 0 !== i && e === fb_action_1.UnionDelayRemoveConfig.DelayRemoveAfterSkillFinish ? FbDelayRemoveAfterSkillFinish_1.FbDelayRemoveAfterSkillFinish.Create(i) : void 0
+    if (i !== undefined && e === fb_action_1.UnionDelayRemoveConfig.DelayRemoveAfterSkillFinish) {
+      return FbDelayRemoveAfterSkillFinish_1.FbDelayRemoveAfterSkillFinish.Create(i);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.UnionDelayRemoveConfigHelper = UnionDelayRemoveConfigHelper;

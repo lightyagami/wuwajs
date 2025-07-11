@@ -1,55 +1,93 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CycleCounter = exports.STAT_MAX_NAME_LENGTH = void 0;
-const cpp_1 = require("cpp"),
-  puerts_1 = require("puerts");
+  value: true
+});
+exports.CycleCounter = exports.STAT_MAX_NAME_LENGTH = undefined;
+const cpp_1 = require("cpp");
+const puerts_1 = require("puerts");
 exports.STAT_MAX_NAME_LENGTH = 800;
 class CycleCounter {
   static RefreshState() {
-    if (this.uY = !1, this.cY !== this.mY && (this.cY = this.mY, this.uY = !0, !this.cY)) {
+    this.uY = false;
+    if (this.cY !== this.mY && (this.cY = this.mY, this.uY = true, !this.cY)) {
       var e = this.dY.length;
-      for (let t = 0; t < e; t++) cpp_1.FKuroCycleCounter.StopCycleCounter();
-      this.dY.splice(0)
+      for (let t = 0; t < e; t++) {
+        cpp_1.FKuroCycleCounter.StopCycleCounter();
+      }
+      this.dY.splice(0);
     }
-    this.CY !== this.gY && (this.CY = this.gY, this.uY = !0)
+    if (this.CY !== this.gY) {
+      this.CY = this.gY;
+      this.uY = true;
+    }
   }
   static get IsEnabled() {
-    return this.cY
+    return this.cY;
   }
   static SetEnable(t) {
-    this.mY = t
+    this.mY = t;
   }
   static SetNeedCheck(t) {
-    this.gY = t
+    this.gY = t;
   }
   static Start(t) {
-    this.cY && (cpp_1.FKuroCycleCounter.StartCycleCounterByName(t), this.CheckStart(t))
+    if (this.cY) {
+      cpp_1.FKuroCycleCounter.StartCycleCounterByName(t);
+      this.CheckStart(t);
+    }
   }
   static CheckStart(t) {
-    this.CY && this.dY.push(t)
+    if (this.CY) {
+      this.dY.push(t);
+    }
   }
   static Stop(t) {
-    this.cY && this.IsPassedStackCheck(t) && cpp_1.FKuroCycleCounter.StopCycleCounter()
+    if (this.cY && this.IsPassedStackCheck(t)) {
+      cpp_1.FKuroCycleCounter.StopCycleCounter();
+    }
   }
   static IsPassedStackCheck(s) {
-    if (!this.CY) return !0;
-    if (0 < this.dY.length) {
-      if (s === this.dY[this.dY.length - 1]) return this.dY.pop(), !0;
-      let e = !1;
-      for (let t = this.dY.length - 1; 0 <= t; t--)
+    if (!this.CY) {
+      return true;
+    }
+    if (this.dY.length > 0) {
+      if (s === this.dY[this.dY.length - 1]) {
+        this.dY.pop();
+        return true;
+      }
+      let e = false;
+      for (let t = this.dY.length - 1; t >= 0; t--) {
         if (this.dY[t] === s) {
-          e = !0;
-          break
-        } if (e) {
+          e = true;
+          break;
+        }
+      }
+      if (e) {
         var i = [];
         i.push(this.dY.pop());
         let t = i[0];
-        for (; t !== s;) cpp_1.FKuroCycleCounter.StopCycleCounter(), i.push(this.dY.pop()), t = i[i.length - 1];
-        return puerts_1.logger.error(`CycleCounter.Stop()匹配失败，已尝试从栈中恢复 current stat name: ${s}, none stopped names: ` + i), !0
+        while (t !== s) {
+          cpp_1.FKuroCycleCounter.StopCycleCounter();
+          i.push(this.dY.pop());
+          t = i[i.length - 1];
+        }
+        puerts_1.logger.error(`CycleCounter.Stop()匹配失败，已尝试从栈中恢复 current stat name: ${s}, none stopped names: ${i}`);
+        return true;
       }
     }
-    return this.uY ? (puerts_1.logger.log("CycleCounter.Stop()匹配失败，但当前帧切换过开关状态 name: " + s), !0) : (puerts_1.logger.error("CycleCounter.Stop()匹配失败 name: " + s), !1)
+    if (this.uY) {
+      puerts_1.logger.log("CycleCounter.Stop()匹配失败，但当前帧切换过开关状态 name: " + s);
+      return true;
+    } else {
+      puerts_1.logger.error("CycleCounter.Stop()匹配失败 name: " + s);
+      return false;
+    }
   }
-}(exports.CycleCounter = CycleCounter).cY = cpp_1.KuroApplication.IsWithStat(), CycleCounter.mY = CycleCounter.cY, CycleCounter.CY = !cpp_1.KuroApplication.IsBuildShipping(), CycleCounter.gY = CycleCounter.CY, CycleCounter.uY = !1, CycleCounter.dY = new Array;
-//# sourceMappingURL=CycleCounter.js.map
+}
+(exports.CycleCounter = CycleCounter).cY = cpp_1.KuroApplication.IsWithStat();
+CycleCounter.mY = CycleCounter.cY;
+CycleCounter.CY = !cpp_1.KuroApplication.IsBuildShipping();
+CycleCounter.gY = CycleCounter.CY;
+CycleCounter.uY = false;
+CycleCounter.dY = new Array(); //# sourceMappingURL=CycleCounter.js.map

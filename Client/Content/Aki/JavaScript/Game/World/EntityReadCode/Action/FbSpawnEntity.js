@@ -1,25 +1,47 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSpawnEntity = void 0;
-const FbTransform_1 = require("./FbTransform"),
-  UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
+  value: true
+});
+exports.FbSpawnEntity = undefined;
+const FbTransform_1 = require("./FbTransform");
+const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbSpawnEntity {
   constructor(t) {
-    this.FbDataInternal = t, this.Pph = !1, this.Uph = 0, this.bph = !1, this.Lph = void 0, this.Dph = !1, this.Bph = void 0
+    this.FbDataInternal = t;
+    this.Pph = false;
+    this.Uph = 0;
+    this.bph = false;
+    this.Lph = undefined;
+    this.Dph = false;
+    this.Bph = undefined;
   }
   static Create(t) {
-    if (t) return new FbSpawnEntity(t)
+    if (t) {
+      return new FbSpawnEntity(t);
+    }
   }
   get EntityDataId() {
-    return this.Pph || (this.Pph = !0, this.Uph = this.FbDataInternal.entityDataId()), this.Uph
+    if (!this.Pph) {
+      this.Pph = true;
+      this.Uph = this.FbDataInternal.entityDataId();
+    }
+    return this.Uph;
   }
   get Transform() {
-    return this.bph || (this.bph = !0, this.Lph = FbTransform_1.FbTransform.Create(this.FbDataInternal.transform())), this.Lph
+    if (!this.bph) {
+      this.bph = true;
+      this.Lph = FbTransform_1.FbTransform.Create(this.FbDataInternal.transform());
+    }
+    return this.Lph;
   }
   get Save() {
-    var t, i;
-    return !this.Dph && (this.Dph = !0, t = this.FbDataInternal.saveType(), i = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.Bph = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.save(i))), this.Bph
+    var t;
+    var i;
+    if (!this.Dph && (this.Dph = true, t = this.FbDataInternal.saveType(), i = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.Bph = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.save(i));
+    }
+    return this.Bph;
   }
 }
 exports.FbSpawnEntity = FbSpawnEntity;

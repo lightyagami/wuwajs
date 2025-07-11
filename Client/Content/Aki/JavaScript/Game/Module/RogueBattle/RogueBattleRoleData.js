@@ -1,39 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleRoleData = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  RoleDataBase_1 = require("../RoleUi/RoleData/RoleDataBase");
+  value: true
+});
+exports.RogueBattleRoleData = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const RoleDataBase_1 = require("../RoleUi/RoleData/RoleDataBase");
 class RogueBattleRoleData extends RoleDataBase_1.RoleDataBase {
   constructor(e) {
-    super(e)
+    super(e);
   }
   IsTrialRole() {
-    return !1
+    return false;
   }
   GetName(e) {
-    return this.GetRoleInstanceData().GetName(e)
+    return this.GetRoleInstanceData().GetName(e);
   }
   GetRoleId() {
-    return this.Id
+    return this.Id;
   }
   IsOnlineRole() {
-    return !1
+    return false;
   }
   CanChangeName() {
-    return !1
+    return false;
   }
   GetRoleCreateTime() {
-    return 0
+    return 0;
   }
   GetIsNew() {
-    return !1
+    return false;
   }
   GetRoleSkinId() {
-    return this.GetRoleInstanceData().GetRoleSkinId()
+    return this.GetRoleInstanceData().GetRoleSkinId();
   }
   GetRoleInstanceData() {
-    return ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.GetRoleId())
+    return ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.GetRoleId());
   }
 }
 exports.RogueBattleRoleData = RogueBattleRoleData;

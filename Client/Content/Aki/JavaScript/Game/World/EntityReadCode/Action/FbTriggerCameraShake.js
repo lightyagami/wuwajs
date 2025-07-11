@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTriggerCameraShake = void 0;
+  value: true
+});
+exports.FbTriggerCameraShake = undefined;
 const UnionCameraShakeConfigHelper_1 = require("./UnionCameraShakeConfigHelper");
 class FbTriggerCameraShake {
   constructor(e) {
-    this.FbDataInternal = e, this.YLh = !1, this.zLh = void 0, this.JLh = !1, this.ZLh = void 0
+    this.FbDataInternal = e;
+    this.YLh = false;
+    this.zLh = undefined;
+    this.JLh = false;
+    this.ZLh = undefined;
   }
   static Create(e) {
-    if (e) return new FbTriggerCameraShake(e)
+    if (e) {
+      return new FbTriggerCameraShake(e);
+    }
   }
   get CameraShakeConfig() {
-    var e, i;
-    return !this.YLh && (this.YLh = !0, e = this.FbDataInternal.cameraShakeConfigType(), i = UnionCameraShakeConfigHelper_1.UnionCameraShakeConfigHelper.GetUnionCameraShakeConfigObject(e)) && (this.zLh = UnionCameraShakeConfigHelper_1.UnionCameraShakeConfigHelper.ReadUnionCameraShakeConfig(e, this.FbDataInternal.cameraShakeConfig(i))), this.zLh
+    var e;
+    var i;
+    if (!this.YLh && (this.YLh = true, e = this.FbDataInternal.cameraShakeConfigType(), i = UnionCameraShakeConfigHelper_1.UnionCameraShakeConfigHelper.GetUnionCameraShakeConfigObject(e))) {
+      this.zLh = UnionCameraShakeConfigHelper_1.UnionCameraShakeConfigHelper.ReadUnionCameraShakeConfig(e, this.FbDataInternal.cameraShakeConfig(i));
+    }
+    return this.zLh;
   }
   get CameraShakeBp() {
-    return this.JLh || (this.JLh = !0, this.ZLh = this.FbDataInternal.cameraShakeBp()), this.ZLh
+    if (!this.JLh) {
+      this.JLh = true;
+      this.ZLh = this.FbDataInternal.cameraShakeBp();
+    }
+    return this.ZLh;
   }
 }
 exports.FbTriggerCameraShake = FbTriggerCameraShake;

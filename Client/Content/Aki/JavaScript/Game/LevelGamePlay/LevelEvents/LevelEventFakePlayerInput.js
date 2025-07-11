@@ -1,17 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventFakePlayerInput = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  InputEnums_1 = require("../../Input/InputEnums"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventFakePlayerInput = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const InputEnums_1 = require("../../Input/InputEnums");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventFakePlayerInput extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.OPt = void 0
+    super(...arguments);
+    this.OPt = undefined;
   }
   ExecuteNew(e, n) {
-    e || Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 31, "[LevelEventFakePlayerInput] 参数配置错误"), this.OPt = e;
+    if (!e) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelEvent", 31, "[LevelEventFakePlayerInput] 参数配置错误");
+      }
+    }
+    this.OPt = e;
     let t = InputEnums_1.EInputAction.None;
     switch (this.OPt.Input) {
       case 1:
@@ -33,9 +41,16 @@ class LevelEventFakePlayerInput extends LevelGeneralBase_1.LevelEventBase {
         t = InputEnums_1.EInputAction.幻象2;
         break;
       case 6:
-        t = InputEnums_1.EInputAction.大招
+        t = InputEnums_1.EInputAction.大招;
     }
-    t === InputEnums_1.EInputAction.None ? Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 31, "[LevelEventFakePlayerInput] 未知的输入类型", ["Input", this.OPt.Input]) : (ControllerHolder_1.ControllerHolder.InputController.InputAction(t, 1), ControllerHolder_1.ControllerHolder.InputController.InputAction(t, 2))
+    if (t === InputEnums_1.EInputAction.None) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelEvent", 31, "[LevelEventFakePlayerInput] 未知的输入类型", ["Input", this.OPt.Input]);
+      }
+    } else {
+      ControllerHolder_1.ControllerHolder.InputController.InputAction(t, 1);
+      ControllerHolder_1.ControllerHolder.InputController.InputAction(t, 2);
+    }
   }
 }
 exports.LevelEventFakePlayerInput = LevelEventFakePlayerInput;

@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckInCombat = void 0;
+  value: true
+});
+exports.FbCheckInCombat = undefined;
 const UnionOnlinePlayerConditionTargetHelper_1 = require("./UnionOnlinePlayerConditionTargetHelper");
 class FbCheckInCombat {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Rzh = !1, this.wzh = !1, this.czh = !1, this.uzh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Rzh = false;
+    this.wzh = false;
+    this.czh = false;
+    this.uzh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckInCombat(t)
+    if (t) {
+      return new FbCheckInCombat(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get InCombat() {
-    return this.Rzh || (this.Rzh = !0, this.wzh = this.FbDataInternal.inCombat()), this.wzh
+    if (!this.Rzh) {
+      this.Rzh = true;
+      this.wzh = this.FbDataInternal.inCombat();
+    }
+    return this.wzh;
   }
   get OnlinePlayerConditionTargetOption() {
-    var t, i;
-    return !this.czh && (this.czh = !0, t = this.FbDataInternal.onlinePlayerConditionTargetOptionType(), i = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.GetUnionOnlinePlayerConditionTargetObject(t)) && (this.uzh = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.ReadUnionOnlinePlayerConditionTarget(t, this.FbDataInternal.onlinePlayerConditionTargetOption(i))), this.uzh
+    var t;
+    var i;
+    if (!this.czh && (this.czh = true, t = this.FbDataInternal.onlinePlayerConditionTargetOptionType(), i = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.GetUnionOnlinePlayerConditionTargetObject(t))) {
+      this.uzh = UnionOnlinePlayerConditionTargetHelper_1.UnionOnlinePlayerConditionTargetHelper.ReadUnionOnlinePlayerConditionTarget(t, this.FbDataInternal.onlinePlayerConditionTargetOption(i));
+    }
+    return this.uzh;
   }
 }
 exports.FbCheckInCombat = FbCheckInCombat;

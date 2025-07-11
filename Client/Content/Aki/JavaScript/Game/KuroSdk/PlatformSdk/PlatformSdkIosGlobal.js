@@ -1,106 +1,198 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlatformSdkIosGlobal = void 0;
-const cpp_1 = require("cpp"),
-  UE = require("ue"),
-  ue_1 = require("ue"),
-  Json_1 = require("../../../Core/Common/Json"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Time_1 = require("../../../Core/Common/Time"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  KuroSdkData_1 = require("../KuroSdkData"),
-  PlatformSdkBase_1 = require("./PlatformSdkBase"),
-  WEBVIEWCD = 5e3,
-  MAXREVIEWTIME = 3;
+  value: true
+});
+exports.PlatformSdkIosGlobal = undefined;
+const cpp_1 = require("cpp");
+const UE = require("ue");
+const ue_1 = require("ue");
+const Json_1 = require("../../../Core/Common/Json");
+const Log_1 = require("../../../Core/Common/Log");
+const Time_1 = require("../../../Core/Common/Time");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const KuroSdkData_1 = require("../KuroSdkData");
+const PlatformSdkBase_1 = require("./PlatformSdkBase");
+const WEBVIEWCD = 5000;
+const MAXREVIEWTIME = 3;
 class IQueryProduct extends Json_1.JsonObjBase {
   constructor() {
-    super(...arguments), this.products = void 0, this.code = 0, this.msg = ""
+    super(...arguments);
+    this.products = undefined;
+    this.code = 0;
+    this.msg = "";
   }
 }
 class ISdkCustomerService extends Json_1.JsonObjBase {
   constructor() {
-    super(...arguments), this.cuid = "", this.isredot = 0
+    super(...arguments);
+    this.cuid = "";
+    this.isredot = 0;
   }
 }
 class PlatformSdkIosGlobal extends PlatformSdkBase_1.PlatformSdkBase {
   constructor() {
-    super(...arguments), this.JSe = void 0, this.AnnounceRedPointCallBack = e => {
-      e.includes("showRed") && (e.includes("1") || e.includes("YES")) ? ControllerHolder_1.ControllerHolder.KuroSdkController.SetPostWebViewRedPointState(!0) : ControllerHolder_1.ControllerHolder.KuroSdkController.SetPostWebViewRedPointState(!1), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkPostWebViewRedPointRefresh)
-    }, this.CustomerServiceResultCallBack = e => {
+    super(...arguments);
+    this.JSe = undefined;
+    this.AnnounceRedPointCallBack = e => {
+      if (e.includes("showRed") && (e.includes("1") || e.includes("YES"))) {
+        ControllerHolder_1.ControllerHolder.KuroSdkController.SetPostWebViewRedPointState(true);
+      } else {
+        ControllerHolder_1.ControllerHolder.KuroSdkController.SetPostWebViewRedPointState(false);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkPostWebViewRedPointRefresh);
+    };
+    this.CustomerServiceResultCallBack = e => {
       var r = Json_1.Json.Parse(e);
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "当前客服红点数量", ["num", e]), r && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "当前客服红点数量", ["num", r.isredot]), this.CurrentCustomerShowState = 0 < r.isredot), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkCustomerRedPointRefresh)
-    }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("KuroSdk", 27, "当前客服红点数量", ["num", e]);
+      }
+      if (r) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("KuroSdk", 27, "当前客服红点数量", ["num", r.isredot]);
+        }
+        this.CurrentCustomerShowState = r.isredot > 0;
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkCustomerRedPointRefresh);
+    };
   }
   OnInit() {
-    this.CurrentDid = ue_1.KuroSDKManager.GetBasicInfo().DeviceId, cpp_1.FCrashSightProxy.SetCustomData("SdkDeviceId", this.CurrentDid), cpp_1.FCrashSightProxy.SetCustomData("Sdkidfv", this.YSe()), cpp_1.FCrashSightProxy.SetCustomData("SdkJyId", this.GetJyDid()), cpp_1.FCrashSightProxy.SetCustomData("SdkChannelId", this.GetChannelId())
+    this.CurrentDid = ue_1.KuroSDKManager.GetBasicInfo().DeviceId;
+    cpp_1.FCrashSightProxy.SetCustomData("SdkDeviceId", this.CurrentDid);
+    cpp_1.FCrashSightProxy.SetCustomData("Sdkidfv", this.YSe());
+    cpp_1.FCrashSightProxy.SetCustomData("SdkJyId", this.GetJyDid());
+    cpp_1.FCrashSightProxy.SetCustomData("SdkChannelId", this.GetChannelId());
   }
   BindSpecialEvent() {
-    ue_1.KuroSDKManager.Get().AnnounceRedPointDelegate.Clear(), ue_1.KuroSDKManager.Get().AnnounceRedPointDelegate.Add(this.AnnounceRedPointCallBack), ue_1.KuroSDKManager.Get().CustomerServiceResultDelegate.Clear(), ue_1.KuroSDKManager.Get().CustomerServiceResultDelegate.Add(this.CustomerServiceResultCallBack)
+    ue_1.KuroSDKManager.Get().AnnounceRedPointDelegate.Clear();
+    ue_1.KuroSDKManager.Get().AnnounceRedPointDelegate.Add(this.AnnounceRedPointCallBack);
+    ue_1.KuroSDKManager.Get().CustomerServiceResultDelegate.Clear();
+    ue_1.KuroSDKManager.Get().CustomerServiceResultDelegate.Add(this.CustomerServiceResultCallBack);
   }
   OpenCustomerService(e) {
-    var r = ModelManager_1.ModelManager.LoginModel,
-      o = ModelManager_1.ModelManager.PlayerInfoModel,
-      t = new KuroSdkData_1.OpenCustomerServiceParamIos,
-      e = (t.islogin = r.IsSdkLoggedIn() ? 1 : 0, t.from = e, t.RoleId = this.GetCustomServerRoleId(), t.RoleName = o.GetAccountName(), t.ServerId = r.GetServerId(), t.ServerName = r.GetServerName(), t.RoleLevel = o.GetPlayerLevel(), Json_1.Json.Stringify(t));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "IosCustomerService", ["json", e]), ue_1.KuroSDKManager.OpenCustomerService(e)
+    var r = ModelManager_1.ModelManager.LoginModel;
+    var o = ModelManager_1.ModelManager.PlayerInfoModel;
+    var t = new KuroSdkData_1.OpenCustomerServiceParamIos();
+    t.islogin = r.IsSdkLoggedIn() ? 1 : 0;
+    t.from = e;
+    t.RoleId = this.GetCustomServerRoleId();
+    t.RoleName = o.GetAccountName();
+    t.ServerId = r.GetServerId();
+    t.ServerName = r.GetServerName();
+    t.RoleLevel = o.GetPlayerLevel();
+    t.ExtendsInfo = this.GetCustomServerExtendsInfo();
+    var e = Json_1.Json.Stringify(t);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "IosCustomerService", ["json", e]);
+    }
+    ue_1.KuroSDKManager.OpenCustomerService(e);
   }
   GetChannelId() {
     var e = this.zSe();
-    return e?.channelId ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "channel_id", ["userInfo", e]), e?.channelId) : ""
+    if (e?.channelId) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("KuroSdk", 27, "channel_id", ["userInfo", e]);
+      }
+      return e?.channelId;
+    } else {
+      return "";
+    }
   }
   YSe() {
     var e = this.zSe();
-    return e?.idfv ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "idfv", ["userInfo", e]), e?.idfv) : ""
+    if (e?.idfv) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("KuroSdk", 27, "idfv", ["userInfo", e]);
+      }
+      return e?.idfv;
+    } else {
+      return "";
+    }
   }
   GetJyDid() {
     var e = this.zSe();
-    return e?.jyDeviceId ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "jyDeviceId", ["userInfo", e]), e?.jyDeviceId) : ""
+    if (e?.jyDeviceId) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("KuroSdk", 27, "jyDeviceId", ["userInfo", e]);
+      }
+      return e?.jyDeviceId;
+    } else {
+      return "";
+    }
   }
   zSe() {
     var e;
-    return void 0 === this.JSe && (e = ue_1.KuroSDKManager.GetSdkParams(""), this.JSe = Json_1.Json.Parse(e)), this.JSe
+    if (this.JSe === undefined) {
+      e = ue_1.KuroSDKManager.GetSdkParams("");
+      this.JSe = Json_1.Json.Parse(e);
+    }
+    return this.JSe;
   }
   QueryProduct(r, e) {
     let o = "";
     var t = r.length;
-    for (let e = 0; e < t; e++) o += r[e], e !== t - 1 && (o += ",");
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "QueryProduct", ["data", o]), ue_1.KuroSDKManager.QueryProductInfo(o)
+    for (let e = 0; e < t; e++) {
+      o += r[e];
+      if (e !== t - 1) {
+        o += ",";
+      }
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "QueryProduct", ["data", o]);
+    }
+    ue_1.KuroSDKManager.QueryProductInfo(o);
   }
   OnQueryProduct(e) {
     var e = e.split("|");
-    const o = new Array;
-    return 0 < e?.length && ((e = Json_1.Json.Parse(e[1]))?.products?.forEach(e => {
-      var r = new PlatformSdkBase_1.QueryProductSt;
-      r.Currency = e.currency, r.GoodId = e.goodsId, r.Name = e.name, r.Desc = e.desc, r.Price = e.price, o.push(r)
-    }), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("KuroSdk", 27, "queryProduct", ["queryProduct", e]), o
+    const o = new Array();
+    if (e?.length > 0 && ((e = Json_1.Json.Parse(e[1]))?.products?.forEach(e => {
+      var r = new PlatformSdkBase_1.QueryProductSt();
+      r.Currency = e.currency;
+      r.GoodId = e.goodsId;
+      r.Name = e.name;
+      r.Desc = e.desc;
+      r.Price = e.price;
+      o.push(r);
+    }), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("KuroSdk", 27, "queryProduct", ["queryProduct", e]);
+    }
+    return o;
   }
   OnGetSharePlatform(e) {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "OnGetSharePlatform", ["OnGetSharePlatform", e]);
-    var r = Json_1.Json.Parse(e);
-    if (0 === r.KROVERSEA_SDK_KEY_RESULT) {
-      r = Json_1.Json.Parse(r.KROVERSEA_SDK_KEY_DATA);
-      const o = new Array;
-      r?.forEach(e => {
-        var r = new PlatformSdkBase_1.SharePlatformSt;
-        r.IconUrl = e.iconUrl, r.PlatformId = e.platform.toString(), o.push(r)
-      }), this.GetSharePlatformCallBackList.forEach(e => {
-        e(o)
-      }), this.GetSharePlatformCallBackList = []
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "OnGetSharePlatform", ["OnGetSharePlatform", e]);
     }
-    super.OnGetSharePlatform(e)
+    var r = Json_1.Json.Parse(e);
+    if (r.KROVERSEA_SDK_KEY_RESULT === 0) {
+      r = Json_1.Json.Parse(r.KROVERSEA_SDK_KEY_DATA);
+      const o = new Array();
+      r?.forEach(e => {
+        var r = new PlatformSdkBase_1.SharePlatformSt();
+        r.IconUrl = e.iconUrl;
+        r.PlatformId = e.platform.toString();
+        o.push(r);
+      });
+      this.GetSharePlatformCallBackList.forEach(e => {
+        e(o);
+      });
+      this.GetSharePlatformCallBackList = [];
+    }
+    super.OnGetSharePlatform(e);
   }
   SdkPay(e) {
-    var r = this.bSe(),
-      r = this.qSe(e, r);
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "AndroidPayment", ["json", r], ["paymentInfo", e]), ue_1.KuroSDKManager.KuroSDKEvent(8, r)
+    var r = this.bSe();
+    var r = this.qSe(e, r);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "AndroidPayment", ["json", r], ["paymentInfo", e]);
+    }
+    ue_1.KuroSDKManager.KuroSDKEvent(8, r);
   }
   bSe() {
-    var e = ModelManager_1.ModelManager.FunctionModel,
-      r = ModelManager_1.ModelManager.LoginModel;
+    var e = ModelManager_1.ModelManager.FunctionModel;
+    var r = ModelManager_1.ModelManager.LoginModel;
     return {
       roleId: this.GetRoleId(),
       roleName: e.GetPlayerName() ? e.GetPlayerName() : "",
@@ -111,42 +203,72 @@ class PlatformSdkIosGlobal extends PlatformSdkBase_1.PlatformSdkBase {
       partyName: " ",
       setBalanceLevelOne: 0,
       setBalanceLevelTwo: 0
-    }
+    };
   }
   qSe(e, r) {
-    var o = new KuroSdkData_1.PayInfoMacIosGlobal;
-    return o.RoleId = r.roleId.toString(), o.RoleName = r.roleName.toString(), o.ServerId = r.serverId.toString(), o.ServerName = r.serverName.toString(), o.CpOrder = e.cpOrderId.toString(), o.CallbackUrl = e.callbackUrl.toString(), o.GamePropID = e.product_id.toString(), o.GoodsName = e.goodsName.toString(), o.GoodsDesc = e.goodsDesc.toString(), o.Price = e.price.toString(), o.GoodsCurrency = "USD", o.ExtraParams = r.roleId.toString(), Json_1.Json.Stringify(o) ?? ""
+    var o = new KuroSdkData_1.PayInfoMacIosGlobal();
+    o.RoleId = r.roleId.toString();
+    o.RoleName = r.roleName.toString();
+    o.ServerId = r.serverId.toString();
+    o.ServerName = r.serverName.toString();
+    o.CpOrder = e.cpOrderId.toString();
+    o.CallbackUrl = e.callbackUrl.toString();
+    o.GamePropID = e.product_id.toString();
+    o.GoodsName = e.goodsName.toString();
+    o.GoodsDesc = e.goodsDesc.toString();
+    o.Price = e.price.toString();
+    o.GoodsCurrency = "USD";
+    o.ExtraParams = r.roleId.toString();
+    return Json_1.Json.Stringify(o) ?? "";
   }
   Share(e, r) {
     e = Json_1.Json.Stringify(e);
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "Share", ["json", e], ["imagePath", r]), UE.KuroSDKStaticLibrary.Share(r, e)
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "Share", ["json", e], ["imagePath", r]);
+    }
+    UE.KuroSDKStaticLibrary.Share(r, e);
   }
   ShareTexture(e, r) {
     e = Json_1.Json.Stringify(e);
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 27, "Share", ["json", e], ["imagePath", r]), UE.KuroSDKStaticLibrary.Share(r, e)
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "Share", ["json", e], ["imagePath", r]);
+    }
+    UE.KuroSDKStaticLibrary.Share(r, e);
   }
   SetFont() {
     var e = ModelManager_1.ModelManager.KuroSdkModel.GetDeviceFontAsset();
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 27, "SetFont", ["fontPath", e]), ue_1.KuroSDKManager.SetFont(e)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("KuroSdk", 27, "SetFont", ["fontPath", e]);
+    }
+    ue_1.KuroSDKManager.SetFont(e);
   }
   OnShareResult(e, r, o) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("KuroSdk", 27, "OnShareResult", ["code", e], ["platform", r], ["msg", o]), 1 === e ? EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnShareResult, !0) : EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnShareResult, !1)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("KuroSdk", 27, "OnShareResult", ["code", e], ["platform", r], ["msg", o]);
+    }
+    if (e === 1) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnShareResult, true);
+    } else {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnShareResult, false);
+    }
   }
-  OpenWebView(e, r, o, t, n) {
-    ue_1.KuroSDKManager.OpenWebView(r, e, o, t, n, "")
-  }
-  SdkOpenUrlWnd(e, r, o, t, n = !0) {
+  SdkOpenUrlWnd(e, r, o, t, n = true) {
     if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-      if (0 !== this.LastOpenTime)
-        if (Time_1.Time.Now - this.LastOpenTime <= WEBVIEWCD) return void ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("InDisplayCd");
-      this.LastOpenTime = Time_1.Time.Now, this.OpenWebView(e, r, o, t, n)
+      if (this.LastOpenTime !== 0) {
+        if (Time_1.Time.Now - this.LastOpenTime <= WEBVIEWCD) {
+          ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("InDisplayCd");
+          return;
+        }
+      }
+      this.LastOpenTime = Time_1.Time.Now;
+      this.OpenWebView(e, r, o, t, n, "");
     }
   }
   OpenExternalUrl(e) {
-    UE.KuroSDKManager.OpenDefaultWebView(e)
+    UE.KuroSDKManager.OpenDefaultWebView(e);
   }
   CurrentPlatformYearReviewTime() {
-    return MAXREVIEWTIME
+    return MAXREVIEWTIME;
   }
 }
 exports.PlatformSdkIosGlobal = PlatformSdkIosGlobal;

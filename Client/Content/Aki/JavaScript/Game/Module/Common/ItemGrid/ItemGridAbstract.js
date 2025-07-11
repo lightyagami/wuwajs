@@ -1,49 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemGridAbstract = void 0;
-const StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  PhantomItemData_1 = require("../../Inventory/ItemData/PhantomItemData"),
-  WeaponItemData_1 = require("../../Inventory/ItemData/WeaponItemData"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+  value: true
+});
+exports.ItemGridAbstract = undefined;
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const PhantomItemData_1 = require("../../Inventory/ItemData/PhantomItemData");
+const WeaponItemData_1 = require("../../Inventory/ItemData/WeaponItemData");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 class ItemGridAbstract extends GridProxyAbstract_1.GridProxyAbstract {
-  constructor(t = void 0, e = void 0, i = void 0) {
-    super(), this.apt = void 0, this.ETt = 0, this.hPt = 0, this.wTt = 0, this.GTt = void 0, this.wqe = e, this.SetBelongViewName(i), t && this.CreateThenShowByActor(t)
+  constructor(t = undefined, e = undefined, i = undefined) {
+    super();
+    this.apt = undefined;
+    this.ETt = 0;
+    this.hPt = 0;
+    this.wTt = 0;
+    this.GTt = undefined;
+    this.wqe = e;
+    this.SetBelongViewName(i);
+    if (t) {
+      this.CreateThenShowByActor(t);
+    }
   }
   GetItemConfig() {
-    return this.wqe ? this.wqe.GetItemConfig() : this.apt
+    if (this.wqe) {
+      return this.wqe.GetItemConfig();
+    } else {
+      return this.apt;
+    }
   }
   GetItemId() {
-    return this.wqe ? this.wqe.GetItemId() : this.ETt
+    if (this.wqe) {
+      return this.wqe.GetItemId();
+    } else {
+      return this.ETt;
+    }
   }
   GetBelongView() {
-    return this.wqe ? this.wqe.GetBelongView() : this.GTt
+    if (this.wqe) {
+      return this.wqe.GetBelongView();
+    } else {
+      return this.GTt;
+    }
   }
   Refresh(t, e, i) {
     var r = t[0];
-    this.RefreshByItemId(r.ItemId), this.hPt = t[1], this.wTt = r.IncId
+    this.RefreshByItemId(r.ItemId);
+    this.hPt = t[1];
+    this.wTt = r.IncId;
   }
   RefreshByItemId(t) {
-    this.ETt = t, this.apt = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t), this.lPt(this) && (this.RefreshQualitySprite(), this.RefreshTextureIcon())
+    this.ETt = t;
+    this.apt = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
+    if (this.lPt(this)) {
+      this.RefreshQualitySprite();
+      this.RefreshTextureIcon();
+    }
   }
   ShowDefaultDownText() {
-    this.lPt(this) && this.RefreshTextDown(!0, this.GetDefaultDownText())
+    if (this.lPt(this)) {
+      this.RefreshTextDown(true, this.GetDefaultDownText());
+    }
   }
   GetDefaultDownText() {
-    var t, e = ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(this.wTt);
-    if (!(1 < this.hPt || StringUtils_1.StringUtils.IsEmpty(e?.GetDefaultDownText()))) {
-      if (e instanceof PhantomItemData_1.PhantomItemData) return t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.wTt).GetPhantomLevel(), StringUtils_1.StringUtils.Format(e.GetDefaultDownText(), t.toString());
-      if (e instanceof WeaponItemData_1.WeaponItemData) return t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.wTt).GetLevel(), StringUtils_1.StringUtils.Format(e.GetDefaultDownText(), t.toString())
+    var t;
+    var e = ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(this.wTt);
+    if (!(this.hPt > 1) && !StringUtils_1.StringUtils.IsEmpty(e?.GetDefaultDownText())) {
+      if (e instanceof PhantomItemData_1.PhantomItemData) {
+        t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.wTt).GetPhantomLevel();
+        return StringUtils_1.StringUtils.Format(e.GetDefaultDownText(), t.toString());
+      }
+      if (e instanceof WeaponItemData_1.WeaponItemData) {
+        t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.wTt).GetLevel();
+        return StringUtils_1.StringUtils.Format(e.GetDefaultDownText(), t.toString());
+      }
     }
-    return this.hPt.toString()
+    return this.hPt.toString();
   }
   lPt(t) {
-    return !0 === t.IsItemGrid
+    return t.IsItemGrid === true;
   }
   SetBelongViewName(t) {
-    this.GTt = t
+    this.GTt = t;
   }
 }
 exports.ItemGridAbstract = ItemGridAbstract;

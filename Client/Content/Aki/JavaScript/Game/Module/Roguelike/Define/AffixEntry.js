@@ -1,26 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AffixEntry = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  RoguelikeDefine_1 = require("./RoguelikeDefine");
+  value: true
+});
+exports.AffixEntry = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const RoguelikeDefine_1 = require("./RoguelikeDefine");
 class AffixEntry {
   constructor(e) {
-    this.Id = e.s5n ?? void 0, this.IsUnlock = e.K6n ?? void 0, this.ElementDict = new Map;
+    this.Id = e.s5n ?? undefined;
+    this.IsUnlock = e.K6n ?? undefined;
+    this.ElementDict = new Map();
     for (const n of Object.keys(e.x2s ?? {})) {
       var r = e.x2s[n] ?? 0;
-      r && this.ElementDict.set(Number(n), r)
+      if (r) {
+        this.ElementDict.set(Number(n), r);
+      }
     }
   }
-  GetSortElementInfoArrayByCount(e = !1) {
-    var r, n, o = new Array;
-    for ([r, n] of this.ElementDict) e && 9 === r || o.push(new RoguelikeDefine_1.ElementInfo(r, n));
-    return o.sort((e, r) => r.Count - e.Count), o
+  GetSortElementInfoArrayByCount(e = false) {
+    var r;
+    var n;
+    var o = new Array();
+    for ([r, n] of this.ElementDict) {
+      if (!e || r !== 9) {
+        o.push(new RoguelikeDefine_1.ElementInfo(r, n));
+      }
+    }
+    o.sort((e, r) => r.Count - e.Count);
+    return o;
   }
   GetAffixDesc() {
     var e = ConfigManager_1.ConfigManager.RoguelikeConfig?.GetRogueAffixConfig(this.Id);
-    return 0 === ModelManager_1.ModelManager.RoguelikeModel?.GetDescModel() ? e?.AffixDescSimple ?? "" : e?.AffixDesc ?? ""
+    if (ModelManager_1.ModelManager.RoguelikeModel?.GetDescModel() === 0) {
+      return e?.AffixDescSimple ?? "";
+    } else {
+      return e?.AffixDesc ?? "";
+    }
   }
 }
 exports.AffixEntry = AffixEntry;

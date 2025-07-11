@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnterNpcVehicle = void 0;
+  value: true
+});
+exports.FbEnterNpcVehicle = undefined;
 class FbEnterNpcVehicle {
   constructor(t) {
-    this.FbDataInternal = t, this.ldh = !1, this.NHo = 0, this.hMh = !1, this.lMh = 0
+    this.FbDataInternal = t;
+    this.ldh = false;
+    this.NHo = 0;
+    this.hMh = false;
+    this.lMh = 0;
   }
   static Create(t) {
-    if (t) return new FbEnterNpcVehicle(t)
+    if (t) {
+      return new FbEnterNpcVehicle(t);
+    }
   }
   get Target() {
-    return this.ldh || (this.ldh = !0, this.NHo = this.FbDataInternal.target()), this.NHo
+    if (!this.ldh) {
+      this.ldh = true;
+      this.NHo = this.FbDataInternal.target();
+    }
+    return this.NHo;
   }
   get Seat() {
-    return this.hMh || (this.hMh = !0, this.lMh = this.FbDataInternal.seat()), this.lMh
+    if (!this.hMh) {
+      this.hMh = true;
+      this.lMh = this.FbDataInternal.seat();
+    }
+    return this.lMh;
   }
 }
 exports.FbEnterNpcVehicle = FbEnterNpcVehicle;

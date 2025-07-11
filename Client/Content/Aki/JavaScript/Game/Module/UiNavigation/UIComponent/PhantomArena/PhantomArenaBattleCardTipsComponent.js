@@ -1,28 +1,42 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaBattleCardTipsComponent = void 0;
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  PhantomArenaBattleComponentBase_1 = require("./PhantomArenaBattleComponentBase");
+  value: true
+});
+exports.PhantomArenaBattleCardTipsComponent = undefined;
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const PhantomArenaBattleComponentBase_1 = require("./PhantomArenaBattleComponentBase");
 class PhantomArenaBattleCardTipsComponent extends PhantomArenaBattleComponentBase_1.PhantomArenaBattleComponentBase {
   OnPress() {
     var e = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GetNavigationComponent();
-    e && ("PhantomArenaOwnHandToggle" === e.GetType() ? this.SwitchHandCardTips(e) : "PhantomArenaOwnBattleToggle" === e.GetType() ? this.SwitchOwnBattleCardTips(e) : "PhantomArenaOpponentBattleToggle" === e.GetType() && this.SwitchOpponentBattleCardTips(e))
+    if (e) {
+      if (e.GetType() === "PhantomArenaOwnHandToggle") {
+        this.SwitchHandCardTips(e);
+      } else if (e.GetType() === "PhantomArenaOwnBattleToggle") {
+        this.SwitchOwnBattleCardTips(e);
+      } else if (e.GetType() === "PhantomArenaOpponentBattleToggle") {
+        this.SwitchOpponentBattleCardTips(e);
+      }
+    }
   }
   OnRefreshSelfHotKeyStateImplement() {
-    !this.Proxy || this.Proxy.GamepadLogic.IsInCardSelectState ? this.SetVisibleMode(2, !1) : this.SetVisibleMode(2, !0)
+    if (!this.Proxy || this.Proxy.GamepadLogic.IsInCardSelectState) {
+      this.SetVisibleMode(2, false);
+    } else {
+      this.SetVisibleMode(2, true);
+    }
   }
   OnRefreshSelfHotKeyStateIsMainInVisible() {
-    this.SetVisibleMode(2, !0)
+    this.SetVisibleMode(2, true);
   }
   SwitchHandCardTips(e) {
-    e.SwitchHandCardTips()
+    e.SwitchHandCardTips();
   }
   SwitchOwnBattleCardTips(e) {
-    e.SwitchBattleCardTips()
+    e.SwitchBattleCardTips();
   }
   SwitchOpponentBattleCardTips(e) {
-    e.SwitchBattleCardTips()
+    e.SwitchBattleCardTips();
   }
 }
 exports.PhantomArenaBattleCardTipsComponent = PhantomArenaBattleCardTipsComponent;

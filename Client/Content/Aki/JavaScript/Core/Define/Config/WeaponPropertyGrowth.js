@@ -1,51 +1,76 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeaponPropertyGrowth = void 0;
+  value: true
+});
+exports.WeaponPropertyGrowth = undefined;
 class WeaponPropertyGrowth {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get CurveId() {
-    return this.curveid()
+    return this.curveid();
   }
   get Level() {
-    return this.level()
+    return this.level();
   }
   get BreachLevel() {
-    return this.breachlevel()
+    return this.breachlevel();
   }
   get CurveValue() {
-    return this.curvevalue()
+    return this.curvevalue();
   }
   __init(t, r) {
-    return this.z7 = t, this.J7 = r, this
+    this.z7 = t;
+    this.J7 = r;
+    return this;
   }
   static getRootAsWeaponPropertyGrowth(t, r) {
-    return (r || new WeaponPropertyGrowth).__init(t.readInt32(t.position()) + t.position(), t)
+    return (r || new WeaponPropertyGrowth()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   curveid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   level() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   breachlevel() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   curvevalue() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.WeaponPropertyGrowth = WeaponPropertyGrowth;

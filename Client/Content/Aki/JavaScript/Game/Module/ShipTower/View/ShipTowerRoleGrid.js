@@ -1,40 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerRoleGrid = void 0;
-const ModelManager_1 = require("../../../Manager/ModelManager"),
-  LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
+  value: true
+});
+exports.ShipTowerRoleGrid = undefined;
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
 class ShipTowerRoleGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
-    super(...arguments), this.IsHighlightIndex = void 0
+    super(...arguments);
+    this.IsHighlightIndex = undefined;
   }
   OnRefresh(e, o, t) {
-    var r = e.GetLevelData(),
-      i = e.GetDataId(),
-      r = {
-        Type: 2,
-        ItemConfigId: i,
-        SkinId: e.GetRoleSkinId(),
-        IsTrialRoleVisible: e.IsTrialRole(),
-        BottomTextId: "Text_LevelShow_Text",
-        BottomTextParameter: [r.GetLevel()],
-        ElementId: e.GetRoleConfig().ElementId,
-        IsShowCost: !1,
-        Data: e,
-        IsRecommendVisible: !1,
-        HalfAreaInfo: ModelManager_1.ModelManager.ShipTowerModel.GetAllTeamRoleData(i)
-      },
-      e = (this.Apply(r), e.IsTrialRole() ? this.SetLevelAndLock() : (r = !e || !ModelManager_1.ModelManager.EditBattleTeamModel.CanAddRoleToEditTeam(i), this.SetLevelAndLock(void 0, r)), ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.has(i));
-    this.SetSelected(e, !0)
+    var r = e.GetLevelData();
+    var i = e.GetDataId();
+    var r = {
+      Type: 2,
+      ItemConfigId: i,
+      SkinId: e.GetRoleSkinId(),
+      IsTrialRoleVisible: e.IsTrialRole(),
+      BottomTextId: "Text_LevelShow_Text",
+      BottomTextParameter: [r.GetLevel()],
+      ElementId: e.GetRoleConfig().ElementId,
+      IsShowCost: false,
+      Data: e,
+      IsRecommendVisible: false,
+      HalfAreaInfo: ModelManager_1.ModelManager.ShipTowerModel.GetAllTeamRoleData(i)
+    };
+    this.Apply(r);
+    if (e.IsTrialRole()) {
+      this.SetLevelAndLock();
+    } else {
+      r = !e || !ModelManager_1.ModelManager.EditBattleTeamModel.CanAddRoleToEditTeam(i);
+      this.SetLevelAndLock(undefined, r);
+    }
+    var e = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.has(i);
+    this.SetSelected(e, true);
   }
   OnForceSelected() {
-    this.SetSelected(!0, !0)
+    this.SetSelected(true, true);
   }
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
 }
 exports.ShipTowerRoleGrid = ShipTowerRoleGrid;

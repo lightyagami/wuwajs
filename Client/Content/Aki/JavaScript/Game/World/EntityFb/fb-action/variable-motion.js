@@ -1,50 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VariableMotion = void 0;
+  value: true
+});
+exports.VariableMotion = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class VariableMotion {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsVariableMotion(t, i) {
-    return (i || new VariableMotion).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new VariableMotion()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsVariableMotion(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new VariableMotion).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new VariableMotion()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type(t) {
     var i = this.bb.__offset(this.bb_pos, 4);
-    return i ? this.bb.__string(this.bb_pos + i, t) : void 0
+    if (i) {
+      return this.bb.__string(this.bb_pos + i, t);
+    } else {
+      return undefined;
+    }
   }
   acceleration() {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.readFloat32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readFloat32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   maxSpeed() {
     var t = this.bb.__offset(this.bb_pos, 8);
-    return t ? this.bb.readFloat32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readFloat32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   static startVariableMotion(t) {
-    t.startObject(3)
+    t.startObject(3);
   }
   static addType(t, i) {
-    t.addFieldOffset(0, i, 0)
+    t.addFieldOffset(0, i, 0);
   }
   static addAcceleration(t, i) {
-    t.addFieldFloat32(1, i, 0)
+    t.addFieldFloat32(1, i, 0);
   }
   static addMaxSpeed(t, i) {
-    t.addFieldFloat32(2, i, 0)
+    t.addFieldFloat32(2, i, 0);
   }
   static endVariableMotion(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createVariableMotion(t, i, e, a) {
-    return VariableMotion.startVariableMotion(t), VariableMotion.addType(t, i), VariableMotion.addAcceleration(t, e), VariableMotion.addMaxSpeed(t, a), VariableMotion.endVariableMotion(t)
+    VariableMotion.startVariableMotion(t);
+    VariableMotion.addType(t, i);
+    VariableMotion.addAcceleration(t, e);
+    VariableMotion.addMaxSpeed(t, a);
+    return VariableMotion.endVariableMotion(t);
   }
 }
 exports.VariableMotion = VariableMotion;

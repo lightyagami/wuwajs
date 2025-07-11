@@ -1,27 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiNavigationView = void 0;
+  value: true
+});
+exports.UiNavigationView = undefined;
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 class UiNavigationView extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.ViewName = ""
+    super(...arguments);
+    this.ViewName = "";
   }
   OnBeforeShowImplement() {
-    this.Fq()
+    this.Fq();
   }
   OnAfterShowImplement() {
-    this.AfterActive()
+    this.AfterActive();
   }
   FindDefault() {
-    return !0
+    return true;
   }
   AfterActive() {}
   OnBeforeDestroyImplement() {
-    this.RootItem?.IsValid() && this.SetActive(!1)
+    if (this.RootItem?.IsValid()) {
+      this.SetActive(false);
+    }
   }
   Fq() {
-    this.ViewName = this.GetRootItem().GetDisplayName()
+    this.ViewName = this.GetRootItem().GetDisplayName();
   }
 }
 exports.UiNavigationView = UiNavigationView;

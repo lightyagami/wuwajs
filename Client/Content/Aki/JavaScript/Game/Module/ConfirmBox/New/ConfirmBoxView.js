@@ -1,130 +1,231 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ConfirmBoxView = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid"),
-  ItemDefines_1 = require("../../Item/Data/ItemDefines"),
-  PowerController_1 = require("../../Power/PowerController"),
-  PowerCurrencyItem_1 = require("../../Power/SubViews/PowerCurrencyItem"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  GenericScrollView_1 = require("../../Util/ScrollView/GenericScrollView"),
-  ConfirmBoxButton_1 = require("./ConfirmBoxButton");
+  value: true
+});
+exports.ConfirmBoxView = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid");
+const ItemDefines_1 = require("../../Item/Data/ItemDefines");
+const PowerController_1 = require("../../Power/PowerController");
+const PowerCurrencyItem_1 = require("../../Power/SubViews/PowerCurrencyItem");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const GenericScrollView_1 = require("../../Util/ScrollView/GenericScrollView");
+const ConfirmBoxButton_1 = require("./ConfirmBoxButton");
 class ConfirmBoxView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.ButtonList = [], this.PropScrollView = void 0, this.Config = void 0, this.ConfirmBoxData = void 0, this.SelectedIndex = -1, this.ButtonComponentList = new Array, this.NXs = void 0, this.fea = void 0, this.OnClose = () => {
-      this.SelectedIndex = -1, this.ConfirmBoxButtonClick()
-    }, this.JGe = (t, i, e) => {
-      var s = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid;
-      return s.Initialize(i.GetOwner()), s.RefreshByConfigId(t[0], t[1]), {
+    super(...arguments);
+    this.ButtonList = [];
+    this.PropScrollView = undefined;
+    this.Config = undefined;
+    this.ConfirmBoxData = undefined;
+    this.SelectedIndex = -1;
+    this.ButtonComponentList = new Array();
+    this.NXs = undefined;
+    this.fea = undefined;
+    this.OnClose = () => {
+      this.SelectedIndex = -1;
+      this.ConfirmBoxButtonClick();
+    };
+    this.JGe = (t, i, e) => {
+      var s = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
+      s.Initialize(i.GetOwner());
+      s.RefreshByConfigId(t[0], t[1]);
+      return {
         Key: e,
         Value: s
+      };
+    };
+    this.ToggleFunction = undefined;
+    this.Bke = t => {
+      if (this.ToggleFunction) {
+        this.ToggleFunction(t);
       }
-    }, this.ToggleFunction = void 0, this.Bke = t => {
-      this.ToggleFunction && this.ToggleFunction(t)
-    }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText],
-      [2, UE.UIItem],
-      [3, UE.UIScrollViewWithScrollbarComponent],
-      [4, UE.UIButtonComponent],
-      [5, UE.UIButtonComponent],
-      [6, UE.UIExtendToggle],
-      [7, UE.UIText],
-      [8, UE.UIItem],
-      [9, UE.UIText]
-    ], this.BtnBindInfo = [
-      [6, this.Bke]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIExtendToggle], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText]];
+    this.BtnBindInfo = [[6, this.Bke]];
   }
   GetExtraPopFrameType(t) {
-    if (t) return t.CustomPopType
+    if (t) {
+      return t.CustomPopType;
+    }
   }
   GetExtraResourceId(t) {
-    return t?.CustomResourceId ?? ""
+    return t?.CustomResourceId ?? "";
   }
   ConfirmBoxButtonClick() {
     var t = this.ConfirmBoxData?.CanExecuteCloseFunc;
-    t && !t(this.SelectedIndex) ? (t = this.ConfirmBoxData?.FunctionMap.get(this.SelectedIndex)) && t() : this.CloseMe(this.ConfirmBoxData.GetCloseFunction())
+    if (t && !t(this.SelectedIndex)) {
+      if (t = this.ConfirmBoxData?.FunctionMap.get(this.SelectedIndex)) {
+        t();
+      }
+    } else {
+      this.CloseMe(this.ConfirmBoxData.GetCloseFunction());
+    }
   }
   vqt() {
-    -1 === this.SelectedIndex && (1 === this.Config.ButtonText.length || this.ConfirmBoxData.IsEscViewTriggerCallBack ? this.SelectedIndex = 1 : this.SelectedIndex = 0)
+    if (this.SelectedIndex === -1) {
+      if (this.Config.ButtonText.length === 1 || this.ConfirmBoxData.IsEscViewTriggerCallBack) {
+        this.SelectedIndex = 1;
+      } else {
+        this.SelectedIndex = 0;
+      }
+    }
   }
   OnGetTimeDilation() {
     var t = this.OpenParam;
-    return ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(t.ConfigId).TimeDilation
+    return ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(t.ConfigId).TimeDilation;
   }
   async OnBeforeStartAsync() {
-    this.ButtonComponentList.push(this.GetButton(4)), this.ButtonComponentList.push(this.GetButton(5)), this.PropScrollView = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(3), this.JGe);
-    var t = this.OpenParam,
-      i = (this.ConfirmBoxData = t, this.Config = ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(t.ConfigId), StringUtils_1.StringUtils.IsBlank(t.GetTitle()) ? ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetTitle(this.Config.Title) : t.GetTitle()),
-      i = (this.GetText(0).SetText(i), t.TextArgs || []);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.Config.Content, ...i), this.GetItem(8).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(t.Tip)), t.Tip && this.GetText(9).SetText(t.Tip), await this.InitButton(), this.InitPropItem(), this.Mqt(), this.ConfirmBoxData.ShowPowerItem && (this.fea = new PowerCurrencyItem_1.PowerCurrencyItem, await this.fea.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem"), this.fea.ShowWithoutText(ItemDefines_1.EItemId.OverPower), this.fea.RefreshAddButtonActive(), this.fea.SetActive(ModelManager_1.ModelManager.FunctionModel.IsOpen(10066)), this.NXs = new PowerCurrencyItem_1.PowerCurrencyItem, await this.NXs.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem"))
+    this.ButtonComponentList.push(this.GetButton(4));
+    this.ButtonComponentList.push(this.GetButton(5));
+    this.PropScrollView = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(3), this.JGe);
+    var t = this.OpenParam;
+    this.ConfirmBoxData = t;
+    this.Config = ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(t.ConfigId);
+    var i = StringUtils_1.StringUtils.IsBlank(t.GetTitle()) ? ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetTitle(this.Config.Title) : t.GetTitle();
+    this.GetText(0).SetText(i);
+    var i = t.TextArgs || [];
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.Config.Content, ...i);
+    this.GetItem(8).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(t.Tip));
+    if (t.Tip) {
+      this.GetText(9).SetText(t.Tip);
+    }
+    await this.InitButton();
+    this.InitPropItem();
+    this.Mqt();
+    if (this.ConfirmBoxData.ShowPowerItem) {
+      this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
+      await this.fea.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem");
+      this.fea.ShowWithoutText(ItemDefines_1.EItemId.OverPower);
+      this.fea.RefreshAddButtonActive();
+      this.fea.SetActive(ModelManager_1.ModelManager.FunctionModel.IsOpen(10066));
+      this.NXs = new PowerCurrencyItem_1.PowerCurrencyItem();
+      await this.NXs.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem");
+    }
   }
   OnStart() {
     var t = this.OpenParam.AttachView?.GetRootItem();
-    t && this.ChildPopView.GetPopViewOriginalActor().GetComponentByClass(UE.UIItem.StaticClass()).SetUIParent(t)
+    if (t) {
+      this.ChildPopView.GetPopViewOriginalActor().GetComponentByClass(UE.UIItem.StaticClass()).SetUIParent(t);
+    }
   }
   OnBeforeShow() {
-    this.ChildPopView?.SetBackBtnShowState(this.Config.NeedClose), this.ChildPopView?.PopItem.SetMaskResponsibleState(this.Config.NeedMaskClose), this.ChildPopView?.PopItem.OverrideBackBtnCallBack(this.OnClose), this.ConfirmBoxData.ShowPowerItem && (this.fea?.GetOriginalItem()?.SetUIParent(this.ChildPopView?.PopItem?.GetCostParent()), this.NXs?.GetOriginalItem()?.SetUIParent(this.ChildPopView?.PopItem?.GetCostParent()), this.NXs.ShowWithoutText(ItemDefines_1.EItemId.Power), this.NXs?.SetButtonFunction(() => {
-      PowerController_1.PowerController.OpenPowerView()
-    }))
+    this.ChildPopView?.SetBackBtnShowState(this.Config.NeedClose);
+    this.ChildPopView?.PopItem.SetMaskResponsibleState(this.Config.NeedMaskClose);
+    this.ChildPopView?.PopItem.OverrideBackBtnCallBack(this.OnClose);
+    if (this.ConfirmBoxData.ShowPowerItem) {
+      this.fea?.GetOriginalItem()?.SetUIParent(this.ChildPopView?.PopItem?.GetCostParent());
+      this.NXs?.GetOriginalItem()?.SetUIParent(this.ChildPopView?.PopItem?.GetCostParent());
+      this.NXs.ShowWithoutText(ItemDefines_1.EItemId.Power);
+      this.NXs?.SetButtonFunction(() => {
+        PowerController_1.PowerController.OpenPowerView();
+      });
+    }
   }
   OnAfterShow() {
-    this.ConfirmBoxData.GetAfterShowFunction()?.()
+    this.ConfirmBoxData.GetAfterShowFunction()?.();
   }
   OnBeforeHide() {
-    this.LastHide && this.ConfirmBoxData?.BeforePlayCloseFunction?.()
+    if (this.LastHide) {
+      this.ConfirmBoxData?.BeforePlayCloseFunction?.();
+    }
   }
   async InitButton() {
-    var t = this.GetItem(2),
-      i = this.Config.ButtonText.length;
-    if (t.SetUIActive(0 < i), 0 !== i) {
+    var t = this.GetItem(2);
+    var i = this.Config.ButtonText.length;
+    t.SetUIActive(i > 0);
+    if (i !== 0) {
       var e = [];
       for (let t = 0, i = this.ButtonComponentList.length; t < i; ++t) {
         var s = this.ButtonComponentList[t];
         e.push(this.i3e(s.RootUIComp, t, () => {
-          this.SelectedIndex = t + 1, this.ConfirmBoxButtonClick()
-        }))
+          this.SelectedIndex = t + 1;
+          this.ConfirmBoxButtonClick();
+        }));
       }
-      this.ButtonList = await Promise.all(e)
+      this.ButtonList = await Promise.all(e);
     }
   }
   async i3e(t, i, e) {
-    var s = new ConfirmBoxButton_1.ConfirmBoxButton;
-    return await s.CreateByActorAsync(t.GetOwner()), this.Config.ButtonText.length > i && (s.SetClickFunction(e), i + 1 === this.Config.DelayButtonIndex && 0 < this.Config.DelayTime ? s.SetTimer(this.Config.ButtonText[i], this.Config.DelayTime, this.ConfirmBoxData.CanClickDuringTimer) : (t = this.ConfirmBoxData.GetBtnText(i), StringUtils_1.StringUtils.IsBlank(t) ? s.SetTextById(this.Config.ButtonText[i]) : s.SetText(t))), this.ConfirmBoxData.InteractionMap.has(i) && (e = this.ConfirmBoxData.InteractionMap.get(i), s.SetBtnCanClick(e)), this.Config.ButtonText.length >= i + 1 && await s.ShowAsync(), s
+    var s = new ConfirmBoxButton_1.ConfirmBoxButton();
+    await s.CreateByActorAsync(t.GetOwner());
+    if (this.Config.ButtonText.length > i) {
+      s.SetClickFunction(e);
+      if (i + 1 === this.Config.DelayButtonIndex && this.Config.DelayTime > 0) {
+        s.SetTimer(this.Config.ButtonText[i], this.Config.DelayTime, this.ConfirmBoxData.CanClickDuringTimer);
+      } else {
+        t = this.ConfirmBoxData.GetBtnText(i);
+        if (StringUtils_1.StringUtils.IsBlank(t)) {
+          s.SetTextById(this.Config.ButtonText[i]);
+        } else {
+          s.SetText(t);
+        }
+      }
+    }
+    if (this.ConfirmBoxData.InteractionMap.has(i)) {
+      e = this.ConfirmBoxData.InteractionMap.get(i);
+      s.SetBtnCanClick(e);
+    }
+    if (this.Config.ButtonText.length >= i + 1) {
+      await s.ShowAsync();
+    }
+    return s;
   }
   dbt() {
-    for (let t = 0, i = this.ButtonList.length; t < i; ++t) this.ButtonList[t].Destroy();
-    this.ButtonList = []
+    for (let t = 0, i = this.ButtonList.length; t < i; ++t) {
+      this.ButtonList[t].Destroy();
+    }
+    this.ButtonList = [];
   }
   InitPropItem() {
-    var t = this.GetScrollViewWithScrollbar(3),
-      i = this.ConfirmBoxData.ItemIdMap.size;
-    if (t.RootUIComp.SetUIActive(0 < i), 0 !== i) {
+    var t = this.GetScrollViewWithScrollbar(3);
+    var i = this.ConfirmBoxData.ItemIdMap.size;
+    t.RootUIComp.SetUIActive(i > 0);
+    if (i !== 0) {
       const e = [];
       this.ConfirmBoxData.ItemIdMap.forEach((t, i) => {
-        e.push([i, t])
-      }), this.PropScrollView.RefreshByData(e)
+        e.push([i, t]);
+      });
+      this.PropScrollView.RefreshByData(e);
     }
   }
   Mqt() {
-    var t = this.OpenParam,
-      i = this.GetExtendToggle(6),
-      e = this.GetText(7);
-    i.RootUIComp.SetUIActive(t.HasToggle), this.ToggleFunction = void 0, t.HasToggle && e && (StringUtils_1.StringUtils.IsBlank(t.ToggleText) ? StringUtils_1.StringUtils.IsBlank(t.ToggleTextKey) ? i.RootUIComp.SetUIActive(!1) : LguiUtil_1.LguiUtil.SetLocalTextNew(e, t.ToggleTextKey) : e.SetText(t.ToggleText), this.ToggleFunction = t.GetToggleFunction())
+    var t = this.OpenParam;
+    var i = this.GetExtendToggle(6);
+    var e = this.GetText(7);
+    i.RootUIComp.SetUIActive(t.HasToggle);
+    this.ToggleFunction = undefined;
+    if (t.HasToggle && e) {
+      if (StringUtils_1.StringUtils.IsBlank(t.ToggleText)) {
+        if (StringUtils_1.StringUtils.IsBlank(t.ToggleTextKey)) {
+          i.RootUIComp.SetUIActive(false);
+        } else {
+          LguiUtil_1.LguiUtil.SetLocalTextNew(e, t.ToggleTextKey);
+        }
+      } else {
+        e.SetText(t.ToggleText);
+      }
+      this.ToggleFunction = t.GetToggleFunction();
+    }
   }
   OnBeforeDestroy() {
-    this.dbt(), this.PropScrollView?.ClearChildren(), this.vqt();
+    this.dbt();
+    this.PropScrollView?.ClearChildren();
+    this.vqt();
     var t = this.ConfirmBoxData?.FunctionMap.get(this.SelectedIndex);
-    t && t(), this.ConfirmBoxData?.DestroyFunction?.(), this.NXs?.Destroy(), this.fea?.Destroy()
+    if (t) {
+      t();
+    }
+    this.ConfirmBoxData?.DestroyFunction?.();
+    this.NXs?.Destroy();
+    this.fea?.Destroy();
   }
 }
 exports.ConfirmBoxView = ConfirmBoxView;

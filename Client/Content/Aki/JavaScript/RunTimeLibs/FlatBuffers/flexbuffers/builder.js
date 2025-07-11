@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Builder = void 0;
+exports.Builder = undefined;
 const bit_width_js_1 = require("./bit-width");
 const bit_width_util_js_1 = require("./bit-width-util");
 const flexbuffers_util_js_1 = require("./flexbuffers-util");
@@ -134,7 +135,7 @@ class Builder {
     const newOffset = this.computeOffset(byteWidth);
     if (value.isOffset()) {
       const relativeOffset = this.offset - value.offset;
-      if (byteWidth === 8 || BigInt(relativeOffset) < (BigInt(1) << BigInt(byteWidth * 8))) {
+      if (byteWidth === 8 || BigInt(relativeOffset) < BigInt(1) << BigInt(byteWidth * 8)) {
         this.writeUInt(relativeOffset, byteWidth);
       } else {
         throw `Unexpected size ${byteWidth}. This might be a bug. Please create an issue https://github.com/google/flatbuffers/issues/new`;
@@ -189,7 +190,7 @@ class Builder {
     for (let i = stackPointer.stackPosition; i < this.stack.length; i += 2) {
       keyVectorHash += `,${this.stack[i].offset}`;
     }
-    const vecLength = (this.stack.length - stackPointer.stackPosition) >> 1;
+    const vecLength = this.stack.length - stackPointer.stackPosition >> 1;
     if (this.dedupKeyVectors && !Object.prototype.hasOwnProperty.call(this.keyVectorLookup, keyVectorHash)) {
       this.keyVectorLookup[keyVectorHash] = this.createVector(stackPointer.stackPosition, vecLength, 2);
     }
@@ -201,28 +202,30 @@ class Builder {
   sort(stackPointer) {
     const view = this.view;
     const stack = this.stack;
-
     function shouldFlip(v1, v2) {
       if (v1.type !== value_type_js_1.ValueType.KEY || v2.type !== value_type_js_1.ValueType.KEY) {
         throw `Stack values are not keys ${v1} | ${v2}. Check if you combined [addKey] with add... method calls properly.`;
       }
-      let c1, c2;
+      let c1;
+      let c2;
       let index = 0;
       do {
         c1 = view.getUint8(v1.offset + index);
         c2 = view.getUint8(v2.offset + index);
-        if (c2 < c1)
+        if (c2 < c1) {
           return true;
-        if (c1 < c2)
+        }
+        if (c1 < c2) {
           return false;
+        }
         index += 1;
       } while (c1 !== 0 && c2 !== 0);
       return false;
     }
-
     function swap(stack, flipIndex, i) {
-      if (flipIndex === i)
+      if (flipIndex === i) {
         return;
+      }
       const k = stack[flipIndex];
       const v = stack[flipIndex + 1];
       stack[flipIndex] = stack[i];
@@ -230,7 +233,6 @@ class Builder {
       stack[i] = k;
       stack[i + 1] = v;
     }
-
     function selectionSort() {
       for (let i = stackPointer.stackPosition; i < stack.length; i += 2) {
         let flipIndex = i;
@@ -244,7 +246,6 @@ class Builder {
         }
       }
     }
-
     function smaller(v1, v2) {
       if (v1.type !== value_type_js_1.ValueType.KEY || v2.type !== value_type_js_1.ValueType.KEY) {
         throw `Stack values are not keys ${v1} | ${v2}. Check if you combined [addKey] with add... method calls properly.`;
@@ -252,23 +253,25 @@ class Builder {
       if (v1.offset === v2.offset) {
         return false;
       }
-      let c1, c2;
+      let c1;
+      let c2;
       let index = 0;
       do {
         c1 = view.getUint8(v1.offset + index);
         c2 = view.getUint8(v2.offset + index);
-        if (c1 < c2)
+        if (c1 < c2) {
           return true;
-        if (c2 < c1)
+        }
+        if (c2 < c1) {
           return false;
+        }
         index += 1;
       } while (c1 !== 0 && c2 !== 0);
       return false;
     }
-
     function quickSort(left, right) {
       if (left < right) {
-        const mid = left + (((right - left) >> 2)) * 2;
+        const mid = left + (right - left >> 2) * 2;
         const pivot = stack[mid];
         let left_new = left;
         let right_new = right;
@@ -305,8 +308,9 @@ class Builder {
     }
   }
   end() {
-    if (this.stackPointers.length < 1)
+    if (this.stackPointers.length < 1) {
       return;
+    }
     const pointer = this.stackPointers.pop();
     if (pointer.isVector) {
       this.endVector(pointer);
@@ -334,10 +338,8 @@ class Builder {
       if (i === start) {
         vectorType = this.stack[i].type;
         typed = typed && (0, value_type_util_js_1.isTypedVectorElement)(vectorType);
-      } else {
-        if (vectorType !== this.stack[i].type) {
-          typed = false;
-        }
+      } else if (vectorType !== this.stack[i].type) {
+        typed = false;
       }
     }
     const byteWidth = this.align(bitWidth);
@@ -398,7 +400,7 @@ class Builder {
   }
   add(value) {
     this.integrityCheckOnValueAddition();
-    if (typeof value === 'undefined') {
+    if (typeof value === "undefined") {
       throw "You need to provide a value";
     }
     if (value === null) {
@@ -407,7 +409,7 @@ class Builder {
       this.stack.push(this.boolStackValue(value));
     } else if (typeof value === "bigint") {
       this.stack.push(this.intStackValue(value));
-    } else if (typeof value == 'number') {
+    } else if (typeof value == "number") {
       if (Number.isInteger(value)) {
         this.stack.push(this.intStackValue(value));
       } else {
@@ -415,7 +417,7 @@ class Builder {
       }
     } else if (ArrayBuffer.isView(value)) {
       this.writeBlob(value.buffer);
-    } else if (typeof value === 'string' || value instanceof String) {
+    } else if (typeof value === "string" || value instanceof String) {
       this.writeString(value);
     } else if (Array.isArray(value)) {
       this.startVector();
@@ -423,7 +425,7 @@ class Builder {
         this.add(value[i]);
       }
       this.end();
-    } else if (typeof value === 'object') {
+    } else if (typeof value === "object") {
       const properties = Object.getOwnPropertyNames(value).sort();
       this.startMap(true);
       for (let i = 0; i < properties.length; i++) {

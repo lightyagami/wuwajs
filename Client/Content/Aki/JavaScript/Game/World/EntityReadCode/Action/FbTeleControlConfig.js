@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleControlConfig = void 0;
+  value: true
+});
+exports.FbTeleControlConfig = undefined;
 class FbTeleControlConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.mLh = !1, this.CLh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.mLh = false;
+    this.CLh = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleControlConfig(t)
+    if (t) {
+      return new FbTeleControlConfig(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TeleControlType() {
-    return this.mLh || (this.mLh = !0, this.CLh = this.FbDataInternal.teleControlType()), this.CLh
+    if (!this.mLh) {
+      this.mLh = true;
+      this.CLh = this.FbDataInternal.teleControlType();
+    }
+    return this.CLh;
   }
 }
 exports.FbTeleControlConfig = FbTeleControlConfig;

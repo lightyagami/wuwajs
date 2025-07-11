@@ -1,77 +1,107 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SplineMove = void 0;
-const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers"),
-  entity_state_condition_js_1 = require("../fb-condition/entity-state-condition.js");
+  value: true
+});
+exports.SplineMove = undefined;
+const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
+const entity_state_condition_js_1 = require("../fb-condition/entity-state-condition.js");
 class SplineMove {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsSplineMove(t, i) {
-    return (i || new SplineMove).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new SplineMove()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsSplineMove(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new SplineMove).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new SplineMove()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   stateConditions(t, i) {
     var e = this.bb.__offset(this.bb_pos, 4);
-    return e ? (i || new entity_state_condition_js_1.EntityStateCondition).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + e) + 4 * t), this.bb) : void 0
+    if (e) {
+      return (i || new entity_state_condition_js_1.EntityStateCondition()).__init(this.bb.__indirect(this.bb.__vector(this.bb_pos + e) + t * 4), this.bb);
+    } else {
+      return undefined;
+    }
   }
   stateConditionsLength() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__vector_len(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.__vector_len(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   speed() {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.readInt32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readInt32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   splineEntityId() {
     var t = this.bb.__offset(this.bb_pos, 8);
-    return t ? this.bb.readInt32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readInt32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   isCircle() {
     var t = this.bb.__offset(this.bb_pos, 10);
-    return !!t && !!this.bb.readInt8(this.bb_pos + t)
+    return !!t && !!this.bb.readInt8(this.bb_pos + t);
   }
   isLookDir() {
     var t = this.bb.__offset(this.bb_pos, 12);
-    return !!t && !!this.bb.readInt8(this.bb_pos + t)
+    return !!t && !!this.bb.readInt8(this.bb_pos + t);
   }
   static startSplineMove(t) {
-    t.startObject(5)
+    t.startObject(5);
   }
   static addStateConditions(t, i) {
-    t.addFieldOffset(0, i, 0)
+    t.addFieldOffset(0, i, 0);
   }
   static createStateConditionsVector(i, e) {
     i.startVector(4, e.length, 4);
-    for (let t = e.length - 1; 0 <= t; t--) i.addOffset(e[t]);
-    return i.endVector()
+    for (let t = e.length - 1; t >= 0; t--) {
+      i.addOffset(e[t]);
+    }
+    return i.endVector();
   }
   static startStateConditionsVector(t, i) {
-    t.startVector(4, i, 4)
+    t.startVector(4, i, 4);
   }
   static addSpeed(t, i) {
-    t.addFieldInt32(1, i, 0)
+    t.addFieldInt32(1, i, 0);
   }
   static addSplineEntityId(t, i) {
-    t.addFieldInt32(2, i, 0)
+    t.addFieldInt32(2, i, 0);
   }
   static addIsCircle(t, i) {
-    t.addFieldInt8(3, +i, 0)
+    t.addFieldInt8(3, +i, 0);
   }
   static addIsLookDir(t, i) {
-    t.addFieldInt8(4, +i, 0)
+    t.addFieldInt8(4, +i, 0);
   }
   static endSplineMove(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createSplineMove(t, i, e, s, n, r) {
-    return SplineMove.startSplineMove(t), SplineMove.addStateConditions(t, i), SplineMove.addSpeed(t, e), SplineMove.addSplineEntityId(t, s), SplineMove.addIsCircle(t, n), SplineMove.addIsLookDir(t, r), SplineMove.endSplineMove(t)
+    SplineMove.startSplineMove(t);
+    SplineMove.addStateConditions(t, i);
+    SplineMove.addSpeed(t, e);
+    SplineMove.addSplineEntityId(t, s);
+    SplineMove.addIsCircle(t, n);
+    SplineMove.addIsLookDir(t, r);
+    return SplineMove.endSplineMove(t);
   }
 }
 exports.SplineMove = SplineMove;

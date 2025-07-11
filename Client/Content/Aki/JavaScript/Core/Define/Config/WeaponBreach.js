@@ -1,80 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeaponBreach = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.WeaponBreach = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class WeaponBreach {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get BreachId() {
-    return this.breachid()
+    return this.breachid();
   }
   get Level() {
-    return this.level()
+    return this.level();
   }
   get ConditionId() {
-    return this.conditionid()
+    return this.conditionid();
   }
   get LevelLimit() {
-    return this.levellimit()
+    return this.levellimit();
   }
   get Consume() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.consumeLength(), this.consumeKey, this.consumeValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.consumeLength(), this.consumeKey, this.consumeValue, this);
   }
   consumeKey(t) {
-    return this.consume(t)?.key()
+    return this.consume(t)?.key();
   }
   consumeValue(t) {
-    return this.consume(t)?.value()
+    return this.consume(t)?.value();
   }
   get GoldConsume() {
-    return this.goldconsume()
+    return this.goldconsume();
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsWeaponBreach(t, e) {
-    return (e || new WeaponBreach).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new WeaponBreach()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   breachid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   level() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   conditionid() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levellimit() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetConsumeAt(t, e) {
-    return this.consume(t)
+    return this.consume(t);
   }
   consume(t, e) {
     var i = this.J7.__offset(this.z7, 14);
-    return i ? (e || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   consumeLength() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   goldconsume() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.WeaponBreach = WeaponBreach;

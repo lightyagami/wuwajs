@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetCameraMode = void 0;
+  value: true
+});
+exports.FbSetCameraMode = undefined;
 class FbSetCameraMode {
   constructor(t) {
-    this.FbDataInternal = t, this.Lmh = !1, this.NMr = void 0
+    this.FbDataInternal = t;
+    this.Lmh = false;
+    this.NMr = undefined;
   }
   static Create(t) {
-    if (t) return new FbSetCameraMode(t)
+    if (t) {
+      return new FbSetCameraMode(t);
+    }
   }
   get Mode() {
-    return this.Lmh || (this.Lmh = !0, this.NMr = this.FbDataInternal.mode()), this.NMr
+    if (!this.Lmh) {
+      this.Lmh = true;
+      this.NMr = this.FbDataInternal.mode();
+    }
+    return this.NMr;
   }
 }
 exports.FbSetCameraMode = FbSetCameraMode;

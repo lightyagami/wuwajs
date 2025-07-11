@@ -1,38 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  CameraController_1 = require("../../Camera/CameraController"),
-  Global_1 = require("../../Global");
+const UE = require("ue");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const CameraController_1 = require("../../Camera/CameraController");
+const Global_1 = require("../../Global");
 class TsSceneUiTag extends UE.Actor {
   constructor() {
-    super(...arguments), this.SceneUiTag = "", this.CalculateCamera = !1, this.BindUiTagArray = void 0
+    super(...arguments);
+    this.SceneUiTag = "";
+    this.CalculateCamera = false;
+    this.BindUiTagArray = undefined;
   }
   Constructor() {}
   ReceiveBeginPlay() {}
   ReceiveEndPlay() {}
   CalculateSquaredDistance() {
     const e = CameraController_1.CameraController.Model;
-    if (!e) return 0;
-    let r = void 0;
+    if (!e) {
+      return 0;
+    }
+    let r = undefined;
     if (this.CalculateCamera) {
       const e = CameraController_1.CameraController.Model;
-      if (!e) return 0;
-      r = e.CameraTransform
+      if (!e) {
+        return 0;
+      }
+      r = e.CameraTransform;
     } else {
       var t = Global_1.Global.BaseCharacter;
-      if (!t) return 0;
-      r = t.D_GetTransform()
+      if (!t) {
+        return 0;
+      }
+      r = t.D_GetTransform();
     }
-    return Vector_1.Vector.Create(r.InverseTransformPositionNoScale(this.D_K2_GetActorLocation())).SizeSquared()
+    return Vector_1.Vector.Create(r.InverseTransformPositionNoScale(this.D_K2_GetActorLocation())).SizeSquared();
   }
   CanTick() {
-    return this.OnCanTick()
+    return this.OnCanTick();
   }
   OnCanTick() {
-    return !1
+    return false;
   }
 }
 exports.default = TsSceneUiTag;

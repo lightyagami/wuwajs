@@ -1,19 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ScreenEffectSystem_1 = require("../Render/Effect/ScreenEffectSystem/ScreenEffectSystem");
+const UE = require("ue");
+const ScreenEffectSystem_1 = require("../Render/Effect/ScreenEffectSystem/ScreenEffectSystem");
 class TsAnimNotifyCameraEffect extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.EffectData = void 0
+    super(...arguments);
+    this.EffectData = undefined;
   }
   Constructor() {}
   K2_Notify(e, t) {
-    return this.EffectData && ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(this.EffectData), !0
+    if (this.EffectData) {
+      ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(this.EffectData);
+    }
+    return true;
   }
   GetNotifyName() {
-    return "镜头特效"
+    return "镜头特效";
   }
 }
 exports.default = TsAnimNotifyCameraEffect;

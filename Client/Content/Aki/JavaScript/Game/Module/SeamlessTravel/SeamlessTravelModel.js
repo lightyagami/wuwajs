@@ -1,52 +1,158 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SeamlessTravelModel = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  Global_1 = require("../../Global"),
-  GameModePromise_1 = require("../../World/Define/GameModePromise");
+  value: true
+});
+exports.SeamlessTravelModel = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const Global_1 = require("../../Global");
+const GameModePromise_1 = require("../../World/Define/GameModePromise");
 class SeamlessTravelModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.svo = !1, this.InSeamlessTraveling = !1, this.HasPreEnableSeamlessTravel = !1, this.SeamlessEndHandle = void 0, this.Config = void 0, this.SeamlessTravelController = void 0, this.SeamlessTravelDefaultController = void 0, this.SeamlessTravelTeamDefaultController = new Array, this.SeamlessTravelPlayerEntityHandle = void 0, this.SeamlessTravelPlayerTeamHandles = new Array, this.SeamlessTravelCamera = void 0, this.SeamlessTravelScreenEffect = void 0, this.UseTreadmill = !1, this.SeamlessTravelTreadmill = void 0, this.UseKeepKite = !1, this.SeamlessTravelKeepKite = void 0, this.UseKeepMovementMode = !1, this.SeamlessTravelKeepMovementMode = void 0, this.SeamlessTravelPostProcess = void 0, this.SeamlessTravelSceneEffect = void 0, this.cvo = [], this.SeamlessTravelInputDistributeTags = [], this.MeshAssetLoadedPromise = void 0, this.ScreenEffectStartedPromise = void 0, this.ScreenEffectEndedPromise = void 0, this.TransitionFloorLoadedPromise = void 0, this.EnterTransitionMapPromise = void 0, this.EnterDestinationMapPromise = void 0, this.TransitionFloorUnloadedPromise = void 0, this.EffectAssetLoadedPromise = void 0, this.KiteInitPromise = void 0, this.PostProcessAssetLoadedPromise = void 0, this.PostProcessBlendedInPromise = void 0, this.PostProcessBlendedOutPromise = void 0, this.SceneEffectAssetLoadedPromise = void 0, this.SceneEffectStartedPromise = void 0, this.SceneEffectEndedPromise = void 0
+    super(...arguments);
+    this.svo = false;
+    this.InSeamlessTraveling = false;
+    this.HasPreEnableSeamlessTravel = false;
+    this.SeamlessEndHandle = undefined;
+    this.Config = undefined;
+    this.SeamlessTravelController = undefined;
+    this.SeamlessTravelDefaultController = undefined;
+    this.SeamlessTravelTeamDefaultController = new Array();
+    this.SeamlessTravelPlayerEntityHandle = undefined;
+    this.SeamlessTravelPlayerTeamHandles = new Array();
+    this.SeamlessTravelCamera = undefined;
+    this.SeamlessTravelScreenEffect = undefined;
+    this.UseTreadmill = false;
+    this.SeamlessTravelTreadmill = undefined;
+    this.UseKeepKite = false;
+    this.SeamlessTravelKeepKite = undefined;
+    this.UseKeepMovementMode = false;
+    this.SeamlessTravelKeepMovementMode = undefined;
+    this.SeamlessTravelPostProcess = undefined;
+    this.SeamlessTravelSceneEffect = undefined;
+    this.cvo = [];
+    this.SeamlessTravelInputDistributeTags = [];
+    this.MeshAssetLoadedPromise = undefined;
+    this.ScreenEffectStartedPromise = undefined;
+    this.ScreenEffectEndedPromise = undefined;
+    this.TransitionFloorLoadedPromise = undefined;
+    this.EnterTransitionMapPromise = undefined;
+    this.EnterDestinationMapPromise = undefined;
+    this.TransitionFloorUnloadedPromise = undefined;
+    this.EffectAssetLoadedPromise = undefined;
+    this.KiteInitPromise = undefined;
+    this.PostProcessAssetLoadedPromise = undefined;
+    this.PostProcessBlendedInPromise = undefined;
+    this.PostProcessBlendedOutPromise = undefined;
+    this.SceneEffectAssetLoadedPromise = undefined;
+    this.SceneEffectStartedPromise = undefined;
+    this.SceneEffectEndedPromise = undefined;
   }
   get IsSeamlessTravel() {
-    return this.svo
+    return this.svo;
   }
   set IsSeamlessTravel(e) {
-    this.InSeamlessTraveling && Log_1.Log.CheckError() && Log_1.Log.Error("SeamlessTravel", 29, "无缝加载中，禁止修改是否无缝加载"), this.svo = e
+    if (this.InSeamlessTraveling && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SeamlessTravel", 29, "无缝加载中，禁止修改是否无缝加载");
+    }
+    this.svo = e;
   }
   OnClear() {
-    return this.ClearSeamlessTravelActor(), !0
+    this.ClearSeamlessTravelActor();
+    return true;
   }
   AddSeamlessTravelActor(e) {
-    return e?.IsValid() ? (this.cvo.push(e), UE.KuroStaticLibrary.SetActorPermanent(e, !0, !0), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("SeamlessTravel", 29, "[AddSeamlessTravelActor] Actor Invalid"), !1)
+    if (e?.IsValid()) {
+      this.cvo.push(e);
+      UE.KuroStaticLibrary.SetActorPermanent(e, true, true);
+      return true;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SeamlessTravel", 29, "[AddSeamlessTravelActor] Actor Invalid");
+      }
+      return false;
+    }
   }
   RemoveSeamlessTravelActor(e) {
     var i;
-    return e?.IsValid() ? (0 <= (i = this.cvo.indexOf(e)) && this.cvo.splice(i, 1), UE.KuroStaticLibrary.SetActorPermanent(e, !1, !0), !0) : (Log_1.Log.CheckError() && Log_1.Log.Error("SeamlessTravel", 29, "[RemoveSeamlessTravelActor] Actor Invalid"), !1)
+    if (e?.IsValid()) {
+      if ((i = this.cvo.indexOf(e)) >= 0) {
+        this.cvo.splice(i, 1);
+      }
+      UE.KuroStaticLibrary.SetActorPermanent(e, false, true);
+      return true;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SeamlessTravel", 29, "[RemoveSeamlessTravelActor] Actor Invalid");
+      }
+      return false;
+    }
   }
   IsSeamlessTravelActor(e) {
-    return e?.IsValid() ? 0 <= this.cvo.indexOf(e) : (Log_1.Log.CheckError() && Log_1.Log.Error("SeamlessTravel", 29, "[IsSeamlessTravelActor] Actor Invalid"), !1)
+    if (e?.IsValid()) {
+      return this.cvo.indexOf(e) >= 0;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SeamlessTravel", 29, "[IsSeamlessTravelActor] Actor Invalid");
+      }
+      return false;
+    }
   }
   GetSeamlessTravelRoleEntityHandle(e) {
-    for (const i of this.SeamlessTravelPlayerTeamHandles)
-      if (i.Entity.GetComponent(0).GetCreatureDataId() === e) return i
+    for (const i of this.SeamlessTravelPlayerTeamHandles) {
+      if (i.Entity.GetComponent(0).GetCreatureDataId() === e) {
+        return i;
+      }
+    }
   }
   CreatePromise() {
-    this.MeshAssetLoadedPromise = new GameModePromise_1.GameModePromise, this.ScreenEffectStartedPromise = new GameModePromise_1.GameModePromise, this.ScreenEffectEndedPromise = new GameModePromise_1.GameModePromise, this.EnterTransitionMapPromise = new GameModePromise_1.GameModePromise, this.EnterDestinationMapPromise = new GameModePromise_1.GameModePromise, this.TransitionFloorLoadedPromise = new GameModePromise_1.GameModePromise, this.TransitionFloorUnloadedPromise = new GameModePromise_1.GameModePromise, this.KiteInitPromise = new GameModePromise_1.GameModePromise, this.EffectAssetLoadedPromise = new GameModePromise_1.GameModePromise, this.PostProcessAssetLoadedPromise = new GameModePromise_1.GameModePromise, this.PostProcessBlendedInPromise = new GameModePromise_1.GameModePromise, this.PostProcessBlendedOutPromise = new GameModePromise_1.GameModePromise, this.SceneEffectAssetLoadedPromise = new GameModePromise_1.GameModePromise, this.SceneEffectStartedPromise = new GameModePromise_1.GameModePromise, this.SceneEffectEndedPromise = new GameModePromise_1.GameModePromise
+    this.MeshAssetLoadedPromise = new GameModePromise_1.GameModePromise();
+    this.ScreenEffectStartedPromise = new GameModePromise_1.GameModePromise();
+    this.ScreenEffectEndedPromise = new GameModePromise_1.GameModePromise();
+    this.EnterTransitionMapPromise = new GameModePromise_1.GameModePromise();
+    this.EnterDestinationMapPromise = new GameModePromise_1.GameModePromise();
+    this.TransitionFloorLoadedPromise = new GameModePromise_1.GameModePromise();
+    this.TransitionFloorUnloadedPromise = new GameModePromise_1.GameModePromise();
+    this.KiteInitPromise = new GameModePromise_1.GameModePromise();
+    this.EffectAssetLoadedPromise = new GameModePromise_1.GameModePromise();
+    this.PostProcessAssetLoadedPromise = new GameModePromise_1.GameModePromise();
+    this.PostProcessBlendedInPromise = new GameModePromise_1.GameModePromise();
+    this.PostProcessBlendedOutPromise = new GameModePromise_1.GameModePromise();
+    this.SceneEffectAssetLoadedPromise = new GameModePromise_1.GameModePromise();
+    this.SceneEffectStartedPromise = new GameModePromise_1.GameModePromise();
+    this.SceneEffectEndedPromise = new GameModePromise_1.GameModePromise();
   }
   ClearPromise() {
-    this.MeshAssetLoadedPromise = void 0, this.ScreenEffectStartedPromise = void 0, this.ScreenEffectEndedPromise = void 0, this.EnterTransitionMapPromise = void 0, this.EnterDestinationMapPromise = void 0, this.TransitionFloorLoadedPromise = void 0, this.TransitionFloorUnloadedPromise = void 0, this.KiteInitPromise = void 0, this.EffectAssetLoadedPromise = void 0, this.PostProcessAssetLoadedPromise = void 0, this.PostProcessBlendedInPromise = void 0, this.PostProcessBlendedOutPromise = void 0, this.SceneEffectAssetLoadedPromise = void 0, this.SceneEffectStartedPromise = void 0, this.SceneEffectEndedPromise = void 0
+    this.MeshAssetLoadedPromise = undefined;
+    this.ScreenEffectStartedPromise = undefined;
+    this.ScreenEffectEndedPromise = undefined;
+    this.EnterTransitionMapPromise = undefined;
+    this.EnterDestinationMapPromise = undefined;
+    this.TransitionFloorLoadedPromise = undefined;
+    this.TransitionFloorUnloadedPromise = undefined;
+    this.KiteInitPromise = undefined;
+    this.EffectAssetLoadedPromise = undefined;
+    this.PostProcessAssetLoadedPromise = undefined;
+    this.PostProcessBlendedInPromise = undefined;
+    this.PostProcessBlendedOutPromise = undefined;
+    this.SceneEffectAssetLoadedPromise = undefined;
+    this.SceneEffectStartedPromise = undefined;
+    this.SceneEffectEndedPromise = undefined;
   }
   ClearSeamlessTravelActor() {
-    for (const e of this.cvo) e?.IsValid() && UE.KuroStaticLibrary.SetActorPermanent(e, !1, !1);
-    this.cvo.length = 0
+    for (const e of this.cvo) {
+      if (e?.IsValid()) {
+        UE.KuroStaticLibrary.SetActorPermanent(e, false, false);
+      }
+    }
+    this.cvo.length = 0;
   }
   GetIsKeepingCurrentMovementMode() {
-    var e, i;
-    return !(!this.IsSeamlessTravel || !this.SeamlessTravelKeepMovementMode?.IsActive) && (e = (i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp?.CharacterMovement)?.MovementMode, i = i?.CustomMovementMode, void 0 !== e) && void 0 !== i && this.SeamlessTravelKeepMovementMode.TargetMovementMode === e && this.SeamlessTravelKeepMovementMode.TargetCustomMode === i
+    var e;
+    var i;
+    return !!this.IsSeamlessTravel && !!this.SeamlessTravelKeepMovementMode?.IsActive && (e = (i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp?.CharacterMovement)?.MovementMode, i = i?.CustomMovementMode, e !== undefined) && i !== undefined && this.SeamlessTravelKeepMovementMode.TargetMovementMode === e && this.SeamlessTravelKeepMovementMode.TargetCustomMode === i;
   }
 }
 exports.SeamlessTravelModel = SeamlessTravelModel;

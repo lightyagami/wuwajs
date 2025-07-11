@@ -1,26 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InputAxisHandle = void 0;
+  value: true
+});
+exports.InputAxisHandle = undefined;
 const InputDistributeHandle_1 = require("./InputDistributeHandle");
 class InputAxisHandle extends InputDistributeHandle_1.InputDistributeHandle {
   constructor() {
-    super(...arguments), this.qmr = 0
+    super(...arguments);
+    this.qmr = 0;
   }
   BindAxis(t) {
-    this.Bind(t)
+    this.Bind(t);
   }
   UnBindAxis(t) {
-    this.UnBind(t)
+    this.UnBind(t);
   }
   InputAxis(t) {
-    this.InputCacheAxisValue(t), this.Call(t)
+    this.InputCacheAxisValue(t);
+    this.Call(t);
   }
   InputCacheAxisValue(t) {
-    this.qmr = t
+    this.qmr = t;
   }
   GetCacheAxisValue() {
-    return this.qmr
+    return this.qmr;
   }
 }
 exports.InputAxisHandle = InputAxisHandle;

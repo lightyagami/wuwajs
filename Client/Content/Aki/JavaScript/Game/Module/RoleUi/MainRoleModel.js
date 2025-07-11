@@ -1,21 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MainRoleModel = void 0;
-const ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  TimeUtil_1 = require("../../Common/TimeUtil");
+  value: true
+});
+exports.MainRoleModel = undefined;
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const TimeUtil_1 = require("../../Common/TimeUtil");
 class MainRoleModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Lkl = 0
+    super(...arguments);
+    this.Lkl = 0;
   }
   UpdateCanChangeSexTime(e) {
-    this.Lkl = e
+    this.Lkl = e;
   }
   CanChangeSex() {
-    return TimeUtil_1.TimeUtil.GetServerTimeStamp() >= this.Lkl
+    return TimeUtil_1.TimeUtil.GetServerTimeStamp() >= this.Lkl;
   }
   GetCanChangeSexTime() {
-    return this.Lkl
+    return this.Lkl;
   }
 }
 exports.MainRoleModel = MainRoleModel;

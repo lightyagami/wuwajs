@@ -1,15 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class TsAnimNotifyWaterfallMoveEnd extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, t) {
-    return !0
+    return true;
   }
   GetNotifyName() {
-    return "攀瀑结束(已废弃)"
+    return "攀瀑结束(已废弃)";
   }
 }
 exports.default = TsAnimNotifyWaterfallMoveEnd;

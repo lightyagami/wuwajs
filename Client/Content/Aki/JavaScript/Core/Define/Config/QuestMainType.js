@@ -1,99 +1,139 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.QuestMainType = void 0;
+  value: true
+});
+exports.QuestMainType = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class QuestMainType {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get MainTypeName() {
-    return this.maintypename()
+    return this.maintypename();
   }
   get QuestTabIcon() {
-    return this.questtabicon()
+    return this.questtabicon();
   }
   get QuestTypeTitleIcon() {
-    return this.questtypetitleicon()
+    return this.questtypetitleicon();
   }
   get QuestChapterBg() {
-    return this.questchapterbg()
+    return this.questchapterbg();
   }
   get TrackIconId() {
-    return this.trackiconid()
+    return this.trackiconid();
   }
   get TypeColor() {
-    return this.typecolor()
+    return this.typecolor();
   }
   get SortValue() {
-    return this.sortvalue()
+    return this.sortvalue();
   }
   get AutoHideTrack() {
-    return this.autohidetrack()
+    return this.autohidetrack();
   }
   get NewQuestTipTime() {
-    return this.newquesttiptime()
+    return this.newquesttiptime();
   }
   get QuestUpdateTipsTime() {
-    return this.questupdatetipstime()
+    return this.questupdatetipstime();
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsQuestMainType(t, e) {
-    return (e || new QuestMainType).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new QuestMainType()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   maintypename(t) {
-    var e = this.J7.__offset(this.z7, 6),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 6);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   questtabicon(t) {
-    var e = this.J7.__offset(this.z7, 8),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 8);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   questtypetitleicon(t) {
-    var e = this.J7.__offset(this.z7, 10),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 10);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   questchapterbg(t) {
-    var e = this.J7.__offset(this.z7, 12),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 12);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   trackiconid() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 2
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 2;
+    }
   }
   typecolor(t) {
-    var e = this.J7.__offset(this.z7, 16),
-      e = e ? this.J7.__string(this.z7 + e, t) : null;
-    return "string" == typeof e && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(e), e
+    var e = this.J7.__offset(this.z7, 16);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
   }
   sortvalue() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   autohidetrack() {
     var t = this.J7.__offset(this.z7, 20);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   newquesttiptime() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 2
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 2;
+    }
   }
   questupdatetipstime() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 2
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 2;
+    }
   }
 }
 exports.QuestMainType = QuestMainType;

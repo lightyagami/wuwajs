@@ -1,10 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoonChasingMainViewModel = void 0;
+  value: true
+});
+exports.MoonChasingMainViewModel = undefined;
 class MoonChasingMainViewModel {
   constructor() {
-    this.SkipTarget = 0, this.BuildingBackToBusiness = !1, this.RefreshBuildingId = 0, this.IsInBuildingModule = !1, this.TaskType = 1, this.IsLastTask = !1
+    this.SkipTarget = 0;
+    this.BuildingBackToBusiness = false;
+    this.RefreshBuildingId = 0;
+    this.IsInBuildingModule = false;
+    this.TaskType = 1;
+    this.IsLastTask = false;
   }
 }
 exports.MoonChasingMainViewModel = MoonChasingMainViewModel;

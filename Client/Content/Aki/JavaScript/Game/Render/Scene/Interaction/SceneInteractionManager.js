@@ -1,141 +1,225 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneInteractionManager = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  GlobalData_1 = require("../../../GlobalData"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  ActorUtils_1 = require("../../../Utils/ActorUtils"),
-  RenderModuleConfig_1 = require("../../Manager/RenderModuleConfig"),
-  SceneInteractionLevel_1 = require("../Item/SceneInteractionLevel");
+  value: true
+});
+exports.SceneInteractionManager = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../../GlobalData");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const ActorUtils_1 = require("../../../Utils/ActorUtils");
+const RenderModuleConfig_1 = require("../../Manager/RenderModuleConfig");
+const SceneInteractionLevel_1 = require("../Item/SceneInteractionLevel");
 class SceneInteractionManager {
   constructor() {
-    this.IsOnMobile = !1, this.UniqueLevelInstanceId = 0, this.AllSceneInteractionInfos = void 0, this.TempCacheIds = new Array, this.ActorMap = void 0, this.MainPlayerConfig = void 0, this.WaterObjects = void 0, this.AirWallObjects = void 0, this.TempVector = void 0, this.xie = () => {
-      this.Bkn()
-    }
+    this.IsOnMobile = false;
+    this.UniqueLevelInstanceId = 0;
+    this.AllSceneInteractionInfos = undefined;
+    this.TempCacheIds = new Array();
+    this.ActorMap = undefined;
+    this.MainPlayerConfig = undefined;
+    this.WaterObjects = undefined;
+    this.AirWallObjects = undefined;
+    this.TempVector = undefined;
+    this.xie = () => {
+      this.Bkn();
+    };
   }
   static Get() {
-    return this.Instanced
+    return this.Instanced;
   }
   static Initialize() {
-    this.Instanced || (this.Instanced = new SceneInteractionManager, this.Instanced.Init())
+    if (!this.Instanced) {
+      this.Instanced = new SceneInteractionManager();
+      this.Instanced.Init();
+    }
   }
   static Tick(e) {
     RenderModuleConfig_1.RenderStats.StatSceneInteractionManagerTick.Start();
-    this.Instanced && this.Instanced.Tick(e / 1e3), RenderModuleConfig_1.RenderStats.StatSceneInteractionManagerTick.Stop()
+    if (this.Instanced) {
+      this.Instanced.Tick(e / 1000);
+    }
+    RenderModuleConfig_1.RenderStats.StatSceneInteractionManagerTick.Stop();
   }
   Init() {
-    this.IsOnMobile = 0 === UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(GlobalData_1.GlobalData.World), this.UniqueLevelInstanceId = 1, this.AllSceneInteractionInfos = new Map, this.TempCacheIds.length = 0, this.ActorMap = new Map, this.TempVector = Vector_1.Vector.Create(), this.WaterObjects = new Array, this.AirWallObjects = new Array, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.xie), this.LoadAssets()
+    this.IsOnMobile = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(GlobalData_1.GlobalData.World) === 0;
+    this.UniqueLevelInstanceId = 1;
+    this.AllSceneInteractionInfos = new Map();
+    this.TempCacheIds.length = 0;
+    this.ActorMap = new Map();
+    this.TempVector = Vector_1.Vector.Create();
+    this.WaterObjects = new Array();
+    this.AirWallObjects = new Array();
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.xie);
+    this.LoadAssets();
   }
   Bkn() {
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
       var e = t.EntityHandle?.Entity?.GetComponent(3)?.Owner;
-      e && (t.IsControl() ? e.CharRenderingComponent?.AddInteraction(this.MainPlayerConfig, t.IsMyRole() ? 1 : 2) : e.CharRenderingComponent?.RemoveInteraction())
+      if (e) {
+        if (t.IsControl()) {
+          e.CharRenderingComponent?.AddInteraction(this.MainPlayerConfig, t.IsMyRole() ? 1 : 2);
+        } else {
+          e.CharRenderingComponent?.RemoveInteraction();
+        }
+      }
     }
   }
   LoadAssets() {
     ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Data/Interaction/DA_InteractionMainPlayerConfig.DA_InteractionMainPlayerConfig", UE.PDA_InteractionPlayerConfig_C, e => {
-      this.MainPlayerConfig = e, this.xie()
-    })
+      this.MainPlayerConfig = e;
+      this.xie();
+    });
   }
-  CreateSceneInteractionLevel(e, t, i, r, n, s = !0, o = !1) {
+  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false) {
     var a = GlobalData_1.GlobalData.World;
-    if (!a) return Log_1.Log.CheckError() && Log_1.Log.Error("RenderScene", 11, "错误，获取不到World"), -1;
+    if (!a) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderScene", 11, "错误，获取不到World");
+      }
+      return -1;
+    }
     let c = e;
-    e.includes(".") && (c = e.split(".")[0]);
-    var e = this.UniqueLevelInstanceId,
-      h = (0, puerts_1.$ref)(!1),
-      l = "KuroSceneInteraction_" + e,
-      a = UE.LevelStreamingDynamic.LoadLevelInstance(a, c, i.op_ToVector(), r, h, l);
-    return (0, puerts_1.$unref)(h) && a ? ((l = new SceneInteractionLevel_1.SceneInteractionLevel).Init(a, c, i, r, e, t, n, s, o), this.UniqueLevelInstanceId++, this.AllSceneInteractionInfos.set(e, l), e) : -1
+    if (e.includes(".")) {
+      c = e.split(".")[0];
+    }
+    var e = this.UniqueLevelInstanceId;
+    var h = (0, puerts_1.$ref)(false);
+    var l = "KuroSceneInteraction_" + e;
+    var a = UE.LevelStreamingDynamic.LoadLevelInstance(a, c, i.op_ToVector(), r, h, l);
+    if ((0, puerts_1.$unref)(h) && a) {
+      (l = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(a, c, i, r, e, t, n, s, o);
+      this.UniqueLevelInstanceId++;
+      this.AllSceneInteractionInfos.set(e, l);
+      return e;
+    } else {
+      return -1;
+    }
   }
   DestroySceneInteraction(e) {
     var t = this.AllSceneInteractionInfos.get(e);
     if (t) {
-      t.Destroy(), this.AllSceneInteractionInfos.delete(e);
+      t.Destroy();
+      this.AllSceneInteractionInfos.delete(e);
       var i = t.GetAllActor();
-      if (i)
+      if (i) {
         for (let e = 0; e < i.Num(); e++) {
           var r = i.Get(i.GetKey(e));
-          this.ActorMap.has(r) && this.ActorMap.delete(r)
+          if (this.ActorMap.has(r)) {
+            this.ActorMap.delete(r);
+          }
         }
-      return !0
+      }
+      return true;
     }
-    return !1
+    return false;
   }
-  SwitchSceneInteractionToState(e, t, i, r, n = !1) {
+  SwitchSceneInteractionToState(e, t, i, r, n = false) {
     e = this.AllSceneInteractionInfos.get(e);
-    return !!e && e.SwitchToState(t, i, r, n)
+    return !!e && e.SwitchToState(t, i, r, n);
   }
   GetSceneInteractionCurrentState(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    return e ? e.GetCurrentState() : 21
+    if (e) {
+      return e.GetCurrentState();
+    } else {
+      return 21;
+    }
   }
   PlaySceneInteractionEffect(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.PlaySceneEffect(t)
+    if (e) {
+      e.PlaySceneEffect(t);
+    }
   }
   EndSceneInteractionEffect(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.EndSceneEffect(t)
+    if (e) {
+      e.EndSceneEffect(t);
+    }
   }
   PlaySceneInteractionEndEffect(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.PlaySceneEndEffect(t)
+    if (e) {
+      e.PlaySceneEndEffect(t);
+    }
   }
   ChangeSceneInteractionPlayDirection(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.ChangePlayDirection(t)
+    if (e) {
+      e.ChangePlayDirection(t);
+    }
   }
   IsSceneInteractionStreamingComplete(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    return !!e && e.IsStreamingComplete()
+    return !!e && e.IsStreamingComplete();
   }
-  ToggleSceneInteractionVisible(e, t, i = !1, r = void 0, n = "") {
+  ToggleSceneInteractionVisible(e, t, i = false, r = undefined, n = "") {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.ToggleLevelVisible(t, i, r, n)
+    if (e) {
+      e.ToggleLevelVisible(t, i, r, n);
+    }
   }
   GetSceneInteractionLevelName(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.LevelName
+    if (e) {
+      return e.LevelName;
+    }
   }
   GetSceneInteractionMainActor(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.MainActor
+    if (e) {
+      return e.MainActor;
+    }
   }
   GetSceneInteractionActorByKey(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetActorByKey(t)
+    if (e) {
+      return e.GetActorByKey(t);
+    }
   }
   GetSceneInteractionAllKeyRefActors(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetAllActor()
+    if (e) {
+      return e.GetAllActor();
+    }
   }
   GetRefSceneInteractionActorsByTag(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetRefActorsByTag(t)
+    if (e) {
+      return e.GetRefActorsByTag(t);
+    }
   }
   GetSceneInteractionAllActorsInLevel(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetAllActorsInLevel()
+    if (e) {
+      return e.GetAllActorsInLevel();
+    }
   }
   GetActorOriginalRelTransform(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetActorOriginalRelTransform(t)
+    if (e) {
+      return e.GetActorOriginalRelTransform(t);
+    }
   }
   AttachToActor(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.AttachToActor(t)
+    if (e) {
+      e.AttachToActor(t);
+    }
   }
   SetCollisionActorsOwner(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.SetCollisionActorsOwner(t)
+    if (e) {
+      e.SetCollisionActorsOwner(t);
+    }
   }
   AttachChildActor(t) {
     var e = this.AllSceneInteractionInfos.get(t);
@@ -143,112 +227,187 @@ class SceneInteractionManager {
       var i = e.GetAllActor();
       for (let e = 0; e < i.Num(); e++) {
         var r = i.Get(i.GetKey(e));
-        this.ActorMap.set(r, t)
+        this.ActorMap.set(r, t);
       }
     }
   }
   EmitActor(e, t, i) {
-    e && (e = this.ActorMap.get(e), e = this.AllSceneInteractionInfos.get(e)) && (e = e.GetAttachActor()) && (e = ActorUtils_1.ActorUtils.GetEntityByActor(e)) && EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.SceneItemInteractionEvent, t, i)
+    if (e && (e = this.ActorMap.get(e), e = this.AllSceneInteractionInfos.get(e)) && (e = e.GetAttachActor()) && (e = ActorUtils_1.ActorUtils.GetEntityByActor(e))) {
+      EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.SceneItemInteractionEvent, t, i);
+    }
   }
   GetMainCollisionActor(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetMainCollisionActor()
+    if (e) {
+      return e.GetMainCollisionActor();
+    }
   }
   GetPartCollisionActorTag(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetPartCollisionActorTag(t)
+    if (e) {
+      return e.GetPartCollisionActorTag(t);
+    }
   }
   GetPartCollisionActorsNum(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetPartCollisionActorsNum()
+    if (e) {
+      return e.GetPartCollisionActorsNum();
+    }
   }
   GetInteractionEffectHookActors(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetInteractionEffectHookActors()
+    if (e) {
+      return e.GetInteractionEffectHookActors();
+    }
   }
   GetActiveTagSequencePlaybackProgress(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetActiveTagSequencePlaybackProgress(t)
+    if (e) {
+      return e.GetActiveTagSequencePlaybackProgress(t);
+    }
   }
   SetActiveTagSequencePlaybackProgress(e, t, i) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.SetActiveTagSequencePlaybackProgress(t, i)
+    if (e) {
+      e.SetActiveTagSequencePlaybackProgress(t, i);
+    }
   }
   GetActiveTagSequenceDurationTime(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetActiveTagSequenceDurationTime(t)
+    if (e) {
+      return e.GetActiveTagSequenceDurationTime(t);
+    }
   }
   SetActiveTagSequenceDurationTime(e, t, i) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.SetActiveTagSequenceDurationTime(t, i)
+    if (e) {
+      e.SetActiveTagSequenceDurationTime(t, i);
+    }
   }
   PauseActiveTagSequence(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.PauseActiveTagSequence(t)
+    if (e) {
+      e.PauseActiveTagSequence(t);
+    }
   }
-  ResumeActiveTagSequence(e, t, i = !1) {
+  ResumeActiveTagSequence(e, t, i = false) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.ResumeActiveTagSequence(t, i)
+    if (e) {
+      e.ResumeActiveTagSequence(t, i);
+    }
   }
   GetIsActiveTagSequencePlayReverseFromConfig(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetIsActiveTagSequencePlayReverseFromConfig(t)
+    if (e) {
+      return e.GetIsActiveTagSequencePlayReverseFromConfig(t);
+    }
   }
-  PlayActiveTagSequenceTo(e, t, i, r = !1) {
+  PlayActiveTagSequenceTo(e, t, i, r = false) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.PlayActiveTagSequenceTo(t, i, r)
+    if (e) {
+      e.PlayActiveTagSequenceTo(t, i, r);
+    }
   }
   RegisterWaterEffectObject(e) {
-    this.WaterObjects.push(e), e.AfterRegistered()
+    this.WaterObjects.push(e);
+    e.AfterRegistered();
   }
   UnregisterWaterEffectObject(t) {
-    var e = this.WaterObjects.findIndex(e => e === t); - 1 === e ? (Log_1.Log.CheckError() && Log_1.Log.Error("RenderEffect", 25, "要移除的SceneObjectWaterEffect不存在队列中"), t && t.BeforeUnregistered()) : (t.BeforeUnregistered(), this.WaterObjects[e] = this.WaterObjects[this.WaterObjects.length - 1], this.WaterObjects.pop())
+    var e = this.WaterObjects.findIndex(e => e === t);
+    if (e === -1) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderEffect", 25, "要移除的SceneObjectWaterEffect不存在队列中");
+      }
+      if (t) {
+        t.BeforeUnregistered();
+      }
+    } else {
+      t.BeforeUnregistered();
+      this.WaterObjects[e] = this.WaterObjects[this.WaterObjects.length - 1];
+      this.WaterObjects.pop();
+    }
   }
   RegisterAirWallEffectObject(e) {
-    this.AirWallObjects.push(e), e.AfterRegistered()
+    this.AirWallObjects.push(e);
+    e.AfterRegistered();
   }
   UnregisterAirWallEffectObject(t) {
-    var e = this.AirWallObjects.findIndex(e => e === t); - 1 === e ? (Log_1.Log.CheckError() && Log_1.Log.Error("RenderEffect", 31, "要移除的SceneObjectAirWallEffect不存在队列中"), t && t.BeforeUnregistered()) : (t.BeforeUnregistered(), this.AirWallObjects[e] = this.AirWallObjects[this.AirWallObjects.length - 1], this.AirWallObjects.pop())
+    var e = this.AirWallObjects.findIndex(e => e === t);
+    if (e === -1) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderEffect", 31, "要移除的SceneObjectAirWallEffect不存在队列中");
+      }
+      if (t) {
+        t.BeforeUnregistered();
+      }
+    } else {
+      t.BeforeUnregistered();
+      this.AirWallObjects[e] = this.AirWallObjects[this.AirWallObjects.length - 1];
+      this.AirWallObjects.pop();
+    }
   }
   PlayExtraEffectByTag(e, t, i) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.PlayExtraEffect(t, i)
+    if (e) {
+      e.PlayExtraEffect(t, i);
+    }
   }
-  PlayKuroSkeletalMeshDestruction(e, t, i = !1) {
+  PlayKuroSkeletalMeshDestruction(e, t, i = false) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.PlayKuroSkeletalMeshDestruction(t, i)
+    if (e) {
+      e.PlayKuroSkeletalMeshDestruction(t, i);
+    }
   }
   StopExtraEffectByTag(e, t) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.StopExtraEffect(t)
+    if (e) {
+      e.StopExtraEffect(t);
+    }
   }
   UpdateHitInfo(e, t, i) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.UpdateHitInfo(t, i)
+    if (e) {
+      e.UpdateHitInfo(t, i);
+    }
   }
   GetReceivingDecalsActors(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    if (e) return e.GetReceivingDecalsActors()
+    if (e) {
+      return e.GetReceivingDecalsActors();
+    }
   }
   DisableInteractionLevel(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.Disable()
+    if (e) {
+      e.Disable();
+    }
   }
   EnableInteractionLevel(e) {
     e = this.AllSceneInteractionInfos.get(e);
-    e && e.Enable()
+    if (e) {
+      e.Enable();
+    }
   }
   Tick(i) {
     RenderModuleConfig_1.RenderStats.StatSceneInteractionOthers.Start();
-    for (let e = 0, t = this.WaterObjects.length; e < t; e++) this.WaterObjects[e].Update(i);
-    for (let e = 0, t = this.AirWallObjects.length; e < t; e++) this.AirWallObjects[e].Update(i);
+    for (let e = 0, t = this.WaterObjects.length; e < t; e++) {
+      this.WaterObjects[e].Update(i);
+    }
+    for (let e = 0, t = this.AirWallObjects.length; e < t; e++) {
+      this.AirWallObjects[e].Update(i);
+    }
     this.TempCacheIds.length = 0;
-    for (const t of this.AllSceneInteractionInfos.keys()) this.TempCacheIds.push(t);
+    for (const t of this.AllSceneInteractionInfos.keys()) {
+      this.TempCacheIds.push(t);
+    }
     for (const r of this.TempCacheIds) {
       var e = this.AllSceneInteractionInfos.get(r);
-      e && !e.IsInfoDestroyed() && e.Update(i)
+      if (e && !e.IsInfoDestroyed()) {
+        e.Update(i);
+      }
     }
-    RenderModuleConfig_1.RenderStats.StatSceneInteractionOthers.Stop()
+    RenderModuleConfig_1.RenderStats.StatSceneInteractionOthers.Stop();
   }
-}(exports.SceneInteractionManager = SceneInteractionManager).Instanced = void 0;
+}
+(exports.SceneInteractionManager = SceneInteractionManager).Instanced = undefined;
 //# sourceMappingURL=SceneInteractionManager.js.map

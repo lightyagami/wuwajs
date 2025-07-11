@@ -1,134 +1,157 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoraleAreaData = void 0;
-const Macro_1 = require("../../../../Core/Preprocessor/Macro"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  MoraleAreaFlagData_1 = require("./MoraleAreaFlagData");
+  value: true
+});
+exports.MoraleAreaData = undefined;
+const Macro_1 = require("../../../../Core/Preprocessor/Macro");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const MoraleAreaFlagData_1 = require("./MoraleAreaFlagData");
 class MoraleAreaData {
   constructor(t) {
-    this.Id = 0, this.KH1 = [], this.XH1 = [], this.YH1 = new Map, this.zH1 = new Map, this.Config = void 0, this.ExploreBoxReceivedCount = 0, this.ExploreBoxTotalCount = 0, this.IsNewActiveAreaBuff = !1, this.Config = t, this.Id = t.Id, this.ExploreBoxTotalCount = t.exploreboxLength()
+    this.Id = 0;
+    this.P$1 = [];
+    this.x$1 = [];
+    this.U$1 = new Map();
+    this.D$1 = new Map();
+    this.Config = undefined;
+    this.ExploreBoxReceivedCount = 0;
+    this.ExploreBoxTotalCount = 0;
+    this.IsNewActiveAreaBuff = false;
+    this.Config = t;
+    this.Id = t.Id;
+    this.ExploreBoxTotalCount = t.exploreboxLength();
   }
   static Create(t) {
     t = new MoraleAreaData(t);
-    return t.AU(), t
+    t.AU();
+    return t;
   }
   AU() {
     ConfigManager_1.ConfigManager.MoraleConfig.GetFlagConfigListByAreaId(this.Id).forEach(t => {
       t = MoraleAreaFlagData_1.MoraleAreaFlagData.Create(t);
-      this.KH1.push(t), this.YH1.set(t.Id, t), t.TypeConfig.ShowUiMap && (this.XH1.push(t), t.AreaPlotDataList.forEach(t => {
-        this.zH1.set(t.Id, t)
-      }))
-    }), this.XH1.sort((t, e) => t.Id - e.Id)
+      this.P$1.push(t);
+      this.U$1.set(t.Id, t);
+      if (t.TypeConfig.ShowUiMap) {
+        this.x$1.push(t);
+        t.AreaPlotDataList.forEach(t => {
+          this.D$1.set(t.Id, t);
+        });
+      }
+    });
+    this.x$1.sort((t, e) => t.Id - e.Id);
   }
   GetFlag(t) {
-    return this.YH1.get(t)
+    return this.U$1.get(t);
   }
   GetFlagList() {
-    return this.KH1
+    return this.P$1;
   }
   GetAllPlotIdList() {
-    return this.Config.PlotIdList
+    return this.Config.PlotIdList;
   }
   GetPlotData(t) {
-    return this.zH1.get(t)
+    return this.D$1.get(t);
   }
   GetActiveFlagNum() {
-    return this.KH1.filter(t => t.IsActive).length
+    return this.P$1.filter(t => t.IsActive).length;
   }
   GetTotalFlagNum() {
-    return this.KH1.length
+    return this.P$1.length;
   }
   IsAllFlagActive() {
-    return this.GetActiveFlagNum() === this.GetTotalFlagNum()
+    return this.GetActiveFlagNum() === this.GetTotalFlagNum();
   }
   GetUiFlagList() {
-    return this.XH1
+    return this.x$1;
   }
   GetUiActiveFlagNum() {
-    return this.XH1.filter(t => t.IsActive).length
+    return this.x$1.filter(t => t.IsActive).length;
   }
   GetUiTotalFlagNum() {
-    return this.XH1.length
+    return this.x$1.length;
   }
   IsAllUiFlagActive() {
-    return this.XH1.every(t => t.IsActive)
+    return this.x$1.every(t => t.IsActive);
   }
   GetAreaFlagActiveNum(e) {
-    return this.KH1.filter(t => t.IsFlagType(e) && t.IsActive).length
+    return this.P$1.filter(t => t.IsFlagType(e) && t.IsActive).length;
   }
   GetAreaFlagTotalNum(e) {
-    return this.KH1.filter(t => t.IsFlagType(e)).length
+    return this.P$1.filter(t => t.IsFlagType(e)).length;
   }
   IsExistFlagRewardCanGet() {
-    return this.XH1.some(t => t.HasBoxCanGet())
+    return this.x$1.some(t => t.HasBoxCanGet());
   }
   IsAllFlagRewardReceived() {
-    return this.XH1.filter(t => t.HasBox).every(t => t.IsGetBox)
+    return this.x$1.filter(t => t.HasBox).every(t => t.IsGetBox);
   }
   GetUnlockPlotList() {
-    return this.XH1.filter(t => t.IsActive && !t.IsNewUnlock).flatMap(t => t.AreaPlotDataList)
+    return this.x$1.filter(t => t.IsActive && !t.IsNewUnlock).flatMap(t => t.AreaPlotDataList);
   }
   GetNewUnlockPlotList() {
-    return this.XH1.filter(t => t.IsNewUnlock).flatMap(t => t.AreaPlotDataList)
+    return this.x$1.filter(t => t.IsNewUnlock).flatMap(t => t.AreaPlotDataList);
   }
   UpdateExploreBoxReceived(t) {
-    this.ExploreBoxReceivedCount = t
+    this.ExploreBoxReceivedCount = t;
   }
   IsExistBox() {
-    return 0 < this.ExploreBoxTotalCount || this.XH1.some(t => t.HasBox)
+    return this.ExploreBoxTotalCount > 0 || this.x$1.some(t => t.HasBox);
   }
   GetAllFlagBoxReceivedCount() {
-    return this.XH1.reduce((t, e) => t + e.BoxReceivedCount, 0)
+    return this.x$1.reduce((t, e) => t + e.BoxReceivedCount, 0);
   }
   GetAllFlagBoxTotalCount() {
-    return this.XH1.reduce((t, e) => t + e.BoxTotalCount, 0)
+    return this.x$1.reduce((t, e) => t + e.BoxTotalCount, 0);
   }
   GetAllBoxReceivedCount() {
-    return this.GetAllFlagBoxReceivedCount() + this.ExploreBoxReceivedCount
+    return this.GetAllFlagBoxReceivedCount() + this.ExploreBoxReceivedCount;
   }
   GetAllBoxTotalCount() {
-    return this.GetAllFlagBoxTotalCount() + this.ExploreBoxTotalCount
+    return this.GetAllFlagBoxTotalCount() + this.ExploreBoxTotalCount;
   }
   IsPlayerInArea() {
     var t = ModelManager_1.ModelManager.MoraleModel?.PlayerMoraleAreaId;
-    return this.Id === t
+    return this.Id === t;
   }
   GetDefaultSelectFlagId() {
     if (ConfigManager_1.ConfigManager.MoraleConfig.GetMoraleSelectHighLevelFlag()) {
-      const t = this.XH1.find(t => t.IsHighDifficultyChallenge());
-      if (t) return t.Id
+      const t = this.x$1.find(t => t.IsHighDifficultyChallenge());
+      if (t) {
+        return t.Id;
+      }
     }
-    const t = this.XH1.find(t => !t.IsActive);
-    return (t || this.XH1[this.XH1.length - 1]).Id
+    const t = this.x$1.find(t => !t.IsActive);
+    return (t || this.x$1[this.x$1.length - 1]).Id;
   }
   IsAreaBuffActive() {
-    return !!(ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(209))?.HasBuff(this.Config.BuffId)
+    return !!ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(209)?.HasBuff(this.Config.BuffId) || !!ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(199)?.HasBuff(this.Config.BuffId);
   }
   SetNewActiveAreaBuff(t) {
-    this.IsNewActiveAreaBuff = t
+    this.IsNewActiveAreaBuff = t;
   }
   HighDifficultyFlagSomeActive() {
-    return this.XH1.some(t => t.IsActive && t.IsHighDifficultyChallenge())
+    return this.x$1.some(t => t.IsActive && t.IsHighDifficultyChallenge());
   }
   HighDifficultyFlagSomeUnActive() {
-    return this.XH1.some(t => !t.IsActive && t.IsHighDifficultyChallenge())
+    return this.x$1.some(t => !t.IsActive && t.IsHighDifficultyChallenge());
   }
   HighDifficultyFlagSomeNewActive() {
-    return this.XH1.some(t => t.IsNewUnlock && t.IsHighDifficultyChallenge())
+    return this.x$1.some(t => t.IsNewUnlock && t.IsHighDifficultyChallenge());
   }
   ExploreBoxIsAllGet() {
-    return this.ExploreBoxReceivedCount >= this.ExploreBoxTotalCount
+    return this.ExploreBoxReceivedCount >= this.ExploreBoxTotalCount;
   }
   GetHighMonsterProgress() {
-    return this.XH1.filter(t => t.IsActive && t.IsHighDifficultyChallenge()).length
+    return this.x$1.filter(t => t.IsActive && t.IsHighDifficultyChallenge()).length;
   }
   GetHighMonsterProgressExcludeNew() {
-    return this.XH1.filter(t => t.IsActive && !t.IsNewUnlock && t.IsHighDifficultyChallenge()).length
+    return this.x$1.filter(t => t.IsActive && !t.IsNewUnlock && t.IsHighDifficultyChallenge()).length;
   }
   GetHighMonsterTotal() {
-    return this.XH1.filter(t => t.IsHighDifficultyChallenge()).length
+    return this.x$1.filter(t => t.IsHighDifficultyChallenge()).length;
   }
 }
 exports.MoraleAreaData = MoraleAreaData;

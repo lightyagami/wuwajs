@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCaptionParam = void 0;
+  value: true
+});
+exports.FbCaptionParam = undefined;
 class FbCaptionParam {
   constructor(t) {
-    this.FbDataInternal = t, this.Dgh = !1, this.Bgh = 0, this.SCh = !1, this.MCh = 0, this.qgh = !1, this.kgh = 0
+    this.FbDataInternal = t;
+    this.Dgh = false;
+    this.Bgh = 0;
+    this.SCh = false;
+    this.MCh = 0;
+    this.qgh = false;
+    this.kgh = 0;
   }
   static Create(t) {
-    if (t) return new FbCaptionParam(t)
+    if (t) {
+      return new FbCaptionParam(t);
+    }
   }
   get StartTime() {
-    return this.Dgh || (this.Dgh = !0, this.Bgh = this.FbDataInternal.startTime()), this.Bgh
+    if (!this.Dgh) {
+      this.Dgh = true;
+      this.Bgh = this.FbDataInternal.startTime();
+    }
+    return this.Bgh;
   }
   get TotalTime() {
-    return this.SCh || (this.SCh = !0, this.MCh = this.FbDataInternal.totalTime()), this.MCh
+    if (!this.SCh) {
+      this.SCh = true;
+      this.MCh = this.FbDataInternal.totalTime();
+    }
+    return this.MCh;
   }
   get IntervalTime() {
-    return this.qgh || (this.qgh = !0, this.kgh = this.FbDataInternal.intervalTime()), this.kgh
+    if (!this.qgh) {
+      this.qgh = true;
+      this.kgh = this.FbDataInternal.intervalTime();
+    }
+    return this.kgh;
   }
 }
 exports.FbCaptionParam = FbCaptionParam;

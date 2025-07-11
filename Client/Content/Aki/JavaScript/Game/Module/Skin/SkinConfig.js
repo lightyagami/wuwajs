@@ -1,87 +1,175 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkinConfig = void 0;
-const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById"),
-  FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById"),
-  FlySkinConfigByType_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigByType"),
-  RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById"),
-  RoleSkinByRoleId_1 = require("../../../Core/Define/ConfigQuery/RoleSkinByRoleId"),
-  WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById"),
-  WeaponSkinByType_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinByType"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.SkinConfig = undefined;
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
+const FlySkinConfigByType_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigByType");
+const RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById");
+const RoleSkinByRoleId_1 = require("../../../Core/Define/ConfigQuery/RoleSkinByRoleId");
+const WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById");
+const WeaponSkinByType_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinByType");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class SkinConfig extends ConfigBase_1.ConfigBase {
   GetWeaponSkinConfig(n) {
-    return WeaponSkinById_1.configWeaponSkinById.GetConfig(n)
+    return WeaponSkinById_1.configWeaponSkinById.GetConfig(n);
   }
   GetWeaponSkinConfigListByType(n) {
-    return WeaponSkinByType_1.configWeaponSkinByType.GetConfigList(n)
+    return WeaponSkinByType_1.configWeaponSkinByType.GetConfigList(n);
   }
   GetDefaultWeaponSkinIconPath() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalWeaponSkinIcon")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalWeaponSkinIcon");
   }
   GetDefaultWeaponSkinName() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalWeaponSkinName")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalWeaponSkinName");
   }
   GetDefaultWeaponSkinDescription() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalWeaponSkinDescription")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalWeaponSkinDescription");
   }
   GetDefaultFlySkinIconPath(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinIcon") : 0 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingIcon") : ""
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinIcon");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingIcon");
+    } else {
+      return "";
+    }
   }
   GetDefaultFlySkinName(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinName") : 0 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinName") : ""
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinName");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinName");
+    } else {
+      return "";
+    }
   }
   GetDefaultFlySkinDescription(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinDescription") : 0 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinDescription") : ""
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinDescription");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinDescription");
+    } else {
+      return "";
+    }
   }
   GetDefaultFlySkinTypeDescription(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinTypeDesc") : 0 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinTypeDesc") : ""
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinTypeDesc");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinTypeDesc");
+    } else {
+      return "";
+    }
   }
   GetDefaultFlySkinStandAnimPath(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinStandAnim") : 0 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinStandAnim") : ""
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalParaglidingSkinStandAnim");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalSoarWingSkinStandAnim");
+    } else {
+      return "";
+    }
   }
   GetDefaultFlySkinModelId(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetIntConfig("OriginalParaglidingSkinModelId") : 0 === n ? CommonParamById_1.configCommonParamById.GetIntConfig("OriginalSoarWingSkinModelId") : 0
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetIntConfig("OriginalParaglidingSkinModelId");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetIntConfig("OriginalSoarWingSkinModelId");
+    } else {
+      return 0;
+    }
   }
   GetFlySkinModelOffsetTransform(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetFloatArrayConfig("ParaglidingSkinOffsetTransform") : 0 === n ? CommonParamById_1.configCommonParamById.GetFloatArrayConfig("SoarWingSkinOffsetTransform") : void 0
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("ParaglidingSkinOffsetTransform");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("SoarWingSkinOffsetTransform");
+    } else {
+      return undefined;
+    }
   }
   GetFlySkinModelCameraId(n) {
-    return 1 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("ParaglidingSkinCameraId") : 0 === n ? CommonParamById_1.configCommonParamById.GetStringConfig("SoarWingSkinCameraId") : ""
+    if (n === 1) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("ParaglidingSkinCameraId");
+    } else if (n === 0) {
+      return CommonParamById_1.configCommonParamById.GetStringConfig("SoarWingSkinCameraId");
+    } else {
+      return "";
+    }
   }
   GetFlySkinTabName(n) {
-    return 1 === n ? "Text_ParaglidingSkinTab_Text" : 0 === n ? "Text_SoarWingSkinTab_Text" : ""
+    if (n === 1) {
+      return "Text_ParaglidingSkinTab_Text";
+    } else if (n === 0) {
+      return "Text_SoarWingSkinTab_Text";
+    } else {
+      return "";
+    }
   }
   GetFlySkinBottomIconResourceId(n) {
-    return 1 === n ? "T_IconParagliding" : 0 === n ? "T_IconSoarWing" : ""
+    if (n === 1) {
+      return "T_IconParagliding";
+    } else if (n === 0) {
+      return "T_IconSoarWing";
+    } else {
+      return "";
+    }
   }
   GetFlySkinEquipBtnTextId(n, i) {
-    return 1 === n ? i ? "GliderSkin_EquipmentStatus_Equip" : "GliderSkin_EquipmentStatus_IsEquipped" : 0 === n ? i ? "SoarWingSkin_EquipmentStatus_Equip" : "SoarWingSkin_EquipmentStatus_IsEquipped" : ""
+    if (n === 1) {
+      if (i) {
+        return "GliderSkin_EquipmentStatus_Equip";
+      } else {
+        return "GliderSkin_EquipmentStatus_IsEquipped";
+      }
+    } else if (n === 0) {
+      if (i) {
+        return "SoarWingSkin_EquipmentStatus_Equip";
+      } else {
+        return "SoarWingSkin_EquipmentStatus_IsEquipped";
+      }
+    } else {
+      return "";
+    }
   }
   GetFlySkinSpawnEffectId(n) {
-    return 1 === n ? "GliderEffect" : 0 === n ? "SoarWingEffect" : ""
+    if (n === 1) {
+      return "GliderEffect";
+    } else if (n === 0) {
+      return "SoarWingEffect";
+    } else {
+      return "";
+    }
   }
   GetFlySkinSpawnMaterialController(n) {
-    return 1 === n ? "GliderMaterialController" : 0 === n ? "SoarWingMaterialController" : ""
+    if (n === 1) {
+      return "GliderMaterialController";
+    } else if (n === 0) {
+      return "SoarWingMaterialController";
+    } else {
+      return "";
+    }
   }
   GetRoleSkinConfig(n) {
-    return RoleSkinById_1.configRoleSkinById.GetConfig(n)
+    return RoleSkinById_1.configRoleSkinById.GetConfig(n);
   }
   GetRoleSkinConfigList(n) {
-    return RoleSkinByRoleId_1.configRoleSkinByRoleId.GetConfigList(n)
+    return RoleSkinByRoleId_1.configRoleSkinByRoleId.GetConfigList(n);
   }
   GetSkinDetailButtonGap() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("SkinDetailButtonGap")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("SkinDetailButtonGap");
   }
   GetSkinDetailButtonSwitchGap() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("SkinDetailButtonSwitchGap")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("SkinDetailButtonSwitchGap");
   }
   GetFlySkinConfig(n) {
-    return FlySkinConfigById_1.configFlySkinConfigById.GetConfig(n)
+    return FlySkinConfigById_1.configFlySkinConfigById.GetConfig(n);
   }
   GetFlySkinConfigListByType(n) {
-    return FlySkinConfigByType_1.configFlySkinConfigByType.GetConfigList(n)
+    return FlySkinConfigByType_1.configFlySkinConfigByType.GetConfigList(n);
   }
 }
 exports.SkinConfig = SkinConfig;

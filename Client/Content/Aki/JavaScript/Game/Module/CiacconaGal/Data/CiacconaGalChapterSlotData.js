@@ -1,25 +1,27 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CiacconaGalChapterSlotData = void 0;
+  value: true
+});
+exports.CiacconaGalChapterSlotData = undefined;
 class CiacconaGalChapterSlotData {
   constructor(t) {
-    this.Lo = t
+    this.Lo = t;
   }
   get Id() {
-    return this.Lo.Id
+    return this.Lo.Id;
   }
   get ChapterId() {
-    return this.Lo.ChapterId
+    return this.Lo.ChapterId;
   }
   get SlotImagePath() {
-    return this.Lo.SlotImage
+    return this.Lo.SlotImage;
   }
   get SlotLockImagePath() {
-    return this.Lo.SlotLockImage
+    return this.Lo.SlotLockImage;
   }
   get RomanNumberIconPath() {
-    return this.Lo.RomanNumberIcon
+    return this.Lo.RomanNumberIcon;
   }
 }
 exports.CiacconaGalChapterSlotData = CiacconaGalChapterSlotData;

@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MowingTowerGotoNextFloor = void 0;
+  value: true
+});
+exports.MowingTowerGotoNextFloor = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class MowingTowerGotoNextFloor {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(o, t) {
-    return this.bb_pos = o, this.bb = t, this
+    this.bb_pos = o;
+    this.bb = t;
+    return this;
   }
   static getRootAsMowingTowerGotoNextFloor(o, t) {
-    return (t || new MowingTowerGotoNextFloor).__init(o.readInt32(o.position()) + o.position(), o)
+    return (t || new MowingTowerGotoNextFloor()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static getSizePrefixedRootAsMowingTowerGotoNextFloor(o, t) {
-    return o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new MowingTowerGotoNextFloor).__init(o.readInt32(o.position()) + o.position(), o)
+    o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new MowingTowerGotoNextFloor()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static startMowingTowerGotoNextFloor(o) {
-    o.startObject(0)
+    o.startObject(0);
   }
   static endMowingTowerGotoNextFloor(o) {
-    return o.endObject()
+    return o.endObject();
   }
   static createMowingTowerGotoNextFloor(o) {
-    return MowingTowerGotoNextFloor.startMowingTowerGotoNextFloor(o), MowingTowerGotoNextFloor.endMowingTowerGotoNextFloor(o)
+    MowingTowerGotoNextFloor.startMowingTowerGotoNextFloor(o);
+    return MowingTowerGotoNextFloor.endMowingTowerGotoNextFloor(o);
   }
 }
 exports.MowingTowerGotoNextFloor = MowingTowerGotoNextFloor;

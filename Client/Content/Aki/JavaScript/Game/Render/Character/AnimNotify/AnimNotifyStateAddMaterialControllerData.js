@@ -1,21 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter"),
-  TsUiSceneRoleActor_1 = require("../../../Module/UiComponent/TsUiSceneRoleActor");
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
+const TsUiSceneRoleActor_1 = require("../../../Module/UiComponent/TsUiSceneRoleActor");
 class MaterialControllerData {
   constructor() {
-    this.HandleId = -1, this.CharRenderingComponent = void 0
+    this.HandleId = -1;
+    this.CharRenderingComponent = undefined;
   }
 }
-const materialControllerStateHandleMap = new Map;
+const materialControllerStateHandleMap = new Map();
 class AnimNotifyStateAddMaterialControllerData extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.MaterialAssetData = void 0
+    super(...arguments);
+    this.MaterialAssetData = undefined;
   }
   Constructor() {}
   K2_NotifyBegin(r, a, e) {
@@ -23,43 +26,87 @@ class AnimNotifyStateAddMaterialControllerData extends UE.KuroAnimNotifyState {
     if (this.IsAllValid(r, a)) {
       a = r.GetOwner();
       if (a) {
-        let t = void 0;
+        let t = undefined;
         if (a instanceof UE.TsBaseCharacter_C) {
-          (t = a.CharRenderingComponent).CheckInit() || t.Init(a.RenderType);
-          let e = void 0;
+          if (!(t = a.CharRenderingComponent).CheckInit()) {
+            t.Init(a.RenderType);
+          }
+          let e = undefined;
           var i = (e = a instanceof TsBaseCharacter_1.default ? a.CharacterActorComponent?.GetReplaceEffect(UE.KismetSystemLibrary.GetPathName(this.MaterialAssetData)) : e) ? ResourceSystem_1.ResourceSystem.Load(e, UE.PD_CharacterControllerData_C) : this.MaterialAssetData;
-          o = t.AddMaterialControllerDataWithAnimObject(i, r, void 0)
-        } else o = a instanceof TsUiSceneRoleActor_1.default ? a.Model.CheckGetComponent(5).AddRenderingMaterialByData(this.MaterialAssetData) : ((t = a.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())) || ((t = a.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), !1, new UE.Transform, !1)).Init(8), t.SetLogicOwner(a)), t.AddMaterialControllerDataWithAnimObject(this.MaterialAssetData, r, void 0));
-        if (0 <= o) {
+          o = t.AddMaterialControllerDataWithAnimObject(i, r, undefined);
+        } else {
+          o = a instanceof TsUiSceneRoleActor_1.default ? a.Model.CheckGetComponent(5).AddRenderingMaterialByData(this.MaterialAssetData) : ((t = a.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())) || ((t = a.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, new UE.Transform(), false)).Init(8), t.SetLogicOwner(a)), t.AddMaterialControllerDataWithAnimObject(this.MaterialAssetData, r, undefined));
+        }
+        if (o >= 0) {
           let e = materialControllerStateHandleMap.get(r);
-          e || (e = new Map, materialControllerStateHandleMap.set(r, e));
-          i = new MaterialControllerData;
-          return i.HandleId = o, i.CharRenderingComponent = t, e.set(this, i), !0
+          if (!e) {
+            e = new Map();
+            materialControllerStateHandleMap.set(r, e);
+          }
+          i = new MaterialControllerData();
+          i.HandleId = o;
+          i.CharRenderingComponent = t;
+          e.set(this, i);
+          return true;
         }
       }
     }
-    return !1
+    return false;
   }
   K2_NotifyEnd(e, t) {
     var r = materialControllerStateHandleMap.get(e);
-    if (!r) return !0;
-    var a = r.get(this);
-    if (!a) return !0;
-    r.delete(this), r.size || materialControllerStateHandleMap.delete(e);
-    r = e.GetOwner();
-    if (r) try {
-      return r instanceof TsUiSceneRoleActor_1.default ? r.Model.CheckGetComponent(5).RemoveRenderingMaterialWithEnding(a.HandleId) : a.CharRenderingComponent?.RemoveMaterialControllerDataWithEnding(a.HandleId), !0
-    } catch {
-      Log_1.Log.CheckWarn() && Log_1.Log.Warn("RenderCharacter", 25, "AnimNotifyStateAddMaterialControllerData移除材质控制器特效失败", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()], ["handleId", a.HandleId])
+    if (!r) {
+      return true;
     }
-    return !1
+    var a = r.get(this);
+    if (!a) {
+      return true;
+    }
+    r.delete(this);
+    if (!r.size) {
+      materialControllerStateHandleMap.delete(e);
+    }
+    r = e.GetOwner();
+    if (r) {
+      try {
+        if (r instanceof TsUiSceneRoleActor_1.default) {
+          r.Model.CheckGetComponent(5).RemoveRenderingMaterialWithEnding(a.HandleId);
+        } else {
+          a.CharRenderingComponent?.RemoveMaterialControllerDataWithEnding(a.HandleId);
+        }
+        return true;
+      } catch {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("RenderCharacter", 25, "AnimNotifyStateAddMaterialControllerData移除材质控制器特效失败", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()], ["handleId", a.HandleId]);
+        }
+      }
+    }
+    return false;
   }
   IsAllValid(e, t) {
-    return UE.KismetSystemLibrary.IsValid(this.MaterialAssetData) ? e && UE.KismetSystemLibrary.IsValid(e) ? !!UE.KismetSystemLibrary.IsValid(e.GetOwner()) || (Log_1.Log.CheckError() && Log_1.Log.Error("RenderCharacter", 13, "错误：动画Owner不合法", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()]), !1) : (Log_1.Log.CheckError() && Log_1.Log.Error("RenderCharacter", 13, "错误：动画Mesh不合法", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()]), !1) : (Log_1.Log.CheckError() && Log_1.Log.Error("RenderCharacter", 13, "错误：特效DA不合法", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()]), !1)
+    if (UE.KismetSystemLibrary.IsValid(this.MaterialAssetData)) {
+      if (e && UE.KismetSystemLibrary.IsValid(e)) {
+        return !!UE.KismetSystemLibrary.IsValid(e.GetOwner()) || (Log_1.Log.CheckError() && Log_1.Log.Error("RenderCharacter", 13, "错误：动画Owner不合法", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()]), false);
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RenderCharacter", 13, "错误：动画Mesh不合法", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()]);
+        }
+        return false;
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderCharacter", 13, "错误：特效DA不合法", ["Actor", e?.GetOwner()?.GetName()], ["动画", t?.GetName()]);
+      }
+      return false;
+    }
   }
   GetNotifyName() {
     var e = this.MaterialAssetData.GetName();
-    return e && "" !== e ? "材质控制器:" + UE.BlueprintPathsLibrary.GetBaseFilename(e, !0) : "材质控制器"
+    if (e && e !== "") {
+      return "材质控制器:" + UE.BlueprintPathsLibrary.GetBaseFilename(e, true);
+    } else {
+      return "材质控制器";
+    }
   }
 }
 exports.default = AnimNotifyStateAddMaterialControllerData;

@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckVehicleCondition = void 0;
+  value: true
+});
+exports.FbCheckVehicleCondition = undefined;
 const UnionVehicleConditionHelper_1 = require("./UnionVehicleConditionHelper");
 class FbCheckVehicleCondition {
   constructor(i) {
-    this.FbDataInternal = i, this.u_h = !1, this.f8o = void 0, this.f_h = !1, this.X6o = void 0
+    this.FbDataInternal = i;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.f_h = false;
+    this.X6o = undefined;
   }
   static Create(i) {
-    if (i) return new FbCheckVehicleCondition(i)
+    if (i) {
+      return new FbCheckVehicleCondition(i);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Condition() {
-    var i, e;
-    return !this.f_h && (this.f_h = !0, i = this.FbDataInternal.conditionType(), e = UnionVehicleConditionHelper_1.UnionVehicleConditionHelper.GetUnionVehicleConditionObject(i)) && (this.X6o = UnionVehicleConditionHelper_1.UnionVehicleConditionHelper.ReadUnionVehicleCondition(i, this.FbDataInternal.condition(e))), this.X6o
+    var i;
+    var e;
+    if (!this.f_h && (this.f_h = true, i = this.FbDataInternal.conditionType(), e = UnionVehicleConditionHelper_1.UnionVehicleConditionHelper.GetUnionVehicleConditionObject(i))) {
+      this.X6o = UnionVehicleConditionHelper_1.UnionVehicleConditionHelper.ReadUnionVehicleCondition(i, this.FbDataInternal.condition(e));
+    }
+    return this.X6o;
   }
 }
 exports.FbCheckVehicleCondition = FbCheckVehicleCondition;

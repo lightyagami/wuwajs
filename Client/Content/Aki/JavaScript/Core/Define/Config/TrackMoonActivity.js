@@ -1,85 +1,121 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TrackMoonActivity = void 0;
+  value: true
+});
+exports.TrackMoonActivity = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class TrackMoonActivity {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ActivityReward() {
-    return this.activityreward()
+    return this.activityreward();
   }
   get PermanentTarget() {
-    return this.permanenttarget()
+    return this.permanenttarget();
   }
   get ActivityButtonType() {
-    return this.activitybuttontype()
+    return this.activitybuttontype();
   }
   get RewardList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.rewardlistLength(), this.rewardlist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.rewardlistLength(), this.rewardlist, this);
   }
   get FocusMarkId() {
-    return this.focusmarkid()
+    return this.focusmarkid();
   }
   get StageQuestTips() {
-    return this.stagequesttips()
+    return this.stagequesttips();
   }
   get StageQuestId() {
-    return this.stagequestid()
+    return this.stagequestid();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsTrackMoonActivity(t, i) {
-    return (i || new TrackMoonActivity).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new TrackMoonActivity()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   activityreward() {
     var t = this.J7.__offset(this.z7, 6);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   permanenttarget() {
     var t = this.J7.__offset(this.z7, 8);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   activitybuttontype() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetRewardlistAt(t) {
-    return this.rewardlist(t)
+    return this.rewardlist(t);
   }
   rewardlist(t) {
     var i = this.J7.__offset(this.z7, 12);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   rewardlistLength() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rewardlistArray() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   focusmarkid() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   stagequesttips(t) {
-    var i = this.J7.__offset(this.z7, 16),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   stagequestid() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.TrackMoonActivity = TrackMoonActivity;

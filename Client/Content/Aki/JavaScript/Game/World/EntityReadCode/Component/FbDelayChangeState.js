@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDelayChangeState = void 0;
+  value: true
+});
+exports.FbDelayChangeState = undefined;
 class FbDelayChangeState {
   constructor(t) {
-    this.FbDataInternal = t, this.Fph = !1, this.Nph = 0, this.JUh = !1, this.ZUh = void 0
+    this.FbDataInternal = t;
+    this.Fph = false;
+    this.Nph = 0;
+    this.JUh = false;
+    this.ZUh = undefined;
   }
   static Create(t) {
-    if (t) return new FbDelayChangeState(t)
+    if (t) {
+      return new FbDelayChangeState(t);
+    }
   }
   get Time() {
-    return this.Fph || (this.Fph = !0, this.Nph = this.FbDataInternal.time()), this.Nph
+    if (!this.Fph) {
+      this.Fph = true;
+      this.Nph = this.FbDataInternal.time();
+    }
+    return this.Nph;
   }
   get NewState() {
-    return this.JUh || (this.JUh = !0, this.ZUh = this.FbDataInternal.newState()), this.ZUh
+    if (!this.JUh) {
+      this.JUh = true;
+      this.ZUh = this.FbDataInternal.newState();
+    }
+    return this.ZUh;
   }
 }
 exports.FbDelayChangeState = FbDelayChangeState;

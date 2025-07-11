@@ -1,10 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiViewData = void 0;
+  value: true
+});
+exports.UiViewData = undefined;
 class UiViewData {
   constructor() {
-    this.StartSequenceName = void 0, this.CloseSequenceName = void 0
+    this.StartSequenceName = undefined;
+    this.CloseSequenceName = undefined;
   }
 }
 exports.UiViewData = UiViewData;

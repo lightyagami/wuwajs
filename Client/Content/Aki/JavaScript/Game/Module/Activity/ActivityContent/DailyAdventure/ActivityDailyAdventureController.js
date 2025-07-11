@@ -1,71 +1,101 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityDailyAdventureController = void 0;
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../../../Core/Net/Net"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  ActivityControllerBase_1 = require("../../ActivityControllerBase"),
-  ActivityDailyAdventureData_1 = require("./ActivityDailyAdventureData"),
-  ActivityDailyAdventureDefine_1 = require("./ActivityDailyAdventureDefine"),
-  ActivitySubViewDailyAdventure_1 = require("./ActivitySubViewDailyAdventure");
+  value: true
+});
+exports.ActivityDailyAdventureController = undefined;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../../../Core/Net/Net");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const ActivityControllerBase_1 = require("../../ActivityControllerBase");
+const ActivityDailyAdventureData_1 = require("./ActivityDailyAdventureData");
+const ActivityDailyAdventureDefine_1 = require("./ActivityDailyAdventureDefine");
+const ActivitySubViewDailyAdventure_1 = require("./ActivitySubViewDailyAdventure");
 class ActivityDailyAdventureController extends ActivityControllerBase_1.ActivityControllerBase {
   OnGetIsOpeningActivityRelativeView() {
-    return !1
+    return false;
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
-    return "UiItem_ActivityDailyAdventure"
+    return "UiItem_ActivityDailyAdventure";
   }
   OnCreateSubPageComponent(e) {
-    return new ActivitySubViewDailyAdventure_1.ActivitySubViewDailyAdventure
+    return new ActivitySubViewDailyAdventure_1.ActivitySubViewDailyAdventure();
   }
   OnCreateActivityData(e) {
-    return ActivityDailyAdventureController.CurrentActivityId = e.s5n, new ActivityDailyAdventureData_1.ActivityDailyAdventureData
+    ActivityDailyAdventureController.CurrentActivityId = e.s5n;
+    return new ActivityDailyAdventureData_1.ActivityDailyAdventureData();
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityDailyAdventureController.qdi)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityDailyAdventureController.qdi);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityDailyAdventureController.qdi)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityDailyAdventureController.qdi);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15011, ActivityDailyAdventureController.KNe)
+    Net_1.Net.Register(26978, ActivityDailyAdventureController.KNe);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15011)
+    Net_1.Net.UnRegister(26978);
   }
   static GetDailyAdventureData() {
-    return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityDailyAdventureController.CurrentActivityId)
+    return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityDailyAdventureController.CurrentActivityId);
   }
   static GetDefaultMapMarkId() {
     var e = this.GetDailyAdventureData();
-    return e ? e.GetDefaultMapMarkId() : 0
+    if (e) {
+      return e.GetDefaultMapMarkId();
+    } else {
+      return 0;
+    }
   }
   static RequestTaskReward(t) {
-    var e = new Protocol_1.Aki.Protocol.xZn;
-    e.s5n = t, Net_1.Net.Call(27775, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28354) : (e = this.GetDailyAdventureData()) && (e.SetTaskInfo(t, 2), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id)))
-    })
+    var e = new Protocol_1.Aki.Protocol.xZn();
+    e.s5n = t;
+    Net_1.Net.Call(23937, e, e => {
+      if (e) {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20458);
+        } else if (e = this.GetDailyAdventureData()) {
+          e.SetTaskInfo(t, 2);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
+        }
+      }
+    });
   }
   static RequestPointReward(t) {
-    var e = new Protocol_1.Aki.Protocol.UZn;
-    e.s5n = t, Net_1.Net.Call(19575, e, e => {
-      e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27816) : (e = this.GetDailyAdventureData()) && (e.SetPointReward(t, !0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id)))
-    })
+    var e = new Protocol_1.Aki.Protocol.UZn();
+    e.s5n = t;
+    Net_1.Net.Call(24723, e, e => {
+      if (e) {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25884);
+        } else if (e = this.GetDailyAdventureData()) {
+          e.SetPointReward(t, true);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
+        }
+      }
+    });
   }
 }
-exports.ActivityDailyAdventureController = ActivityDailyAdventureController, (_a = ActivityDailyAdventureController).CurrentActivityId = 0, ActivityDailyAdventureController.qdi = (e, t) => {
-  e === ActivityDailyAdventureDefine_1.DAILY_ADVENTURE_PT_CONFIGID && (e = _a.GetDailyAdventureData()) && (e.SetProgressPoint(t), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id))
-}, ActivityDailyAdventureController.KNe = e => {
-  var t = _a.GetDailyAdventureData();
-  if (t) {
-    for (const r of e._Ms) t.SetTaskInfo(r.s5n, ActivityDailyAdventureData_1.rewardStateResolver[r.H6n], r.lMs);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id)
+exports.ActivityDailyAdventureController = ActivityDailyAdventureController;
+(_a = ActivityDailyAdventureController).CurrentActivityId = 0;
+ActivityDailyAdventureController.qdi = (e, t) => {
+  if (e === ActivityDailyAdventureDefine_1.DAILY_ADVENTURE_PT_CONFIGID && (e = _a.GetDailyAdventureData())) {
+    e.SetProgressPoint(t);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
   }
 };
-//# sourceMappingURL=ActivityDailyAdventureController.js.map
+ActivityDailyAdventureController.KNe = e => {
+  var t = _a.GetDailyAdventureData();
+  if (t) {
+    for (const r of e._Ms) {
+      t.SetTaskInfo(r.s5n, ActivityDailyAdventureData_1.rewardStateResolver[r.H6n], r.lMs);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
+  }
+}; //# sourceMappingURL=ActivityDailyAdventureController.js.map

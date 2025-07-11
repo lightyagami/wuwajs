@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHitLogicChangeNextAndLockTargetState = void 0;
+  value: true
+});
+exports.FbHitLogicChangeNextAndLockTargetState = undefined;
 class FbHitLogicChangeNextAndLockTargetState {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.IOh = !1, this.TOh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.IOh = false;
+    this.TOh = undefined;
   }
   static Create(t) {
-    if (t) return new FbHitLogicChangeNextAndLockTargetState(t)
+    if (t) {
+      return new FbHitLogicChangeNextAndLockTargetState(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TargetState() {
-    return this.IOh || (this.IOh = !0, this.TOh = this.FbDataInternal.targetState()), this.TOh
+    if (!this.IOh) {
+      this.IOh = true;
+      this.TOh = this.FbDataInternal.targetState();
+    }
+    return this.TOh;
   }
 }
 exports.FbHitLogicChangeNextAndLockTargetState = FbHitLogicChangeNextAndLockTargetState;

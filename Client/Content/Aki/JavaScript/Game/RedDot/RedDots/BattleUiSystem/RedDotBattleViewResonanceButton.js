@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotBattleViewResonanceButton = void 0;
+  value: true
+});
+exports.RedDotBattleViewResonanceButton = undefined;
 const RedDotBase_1 = require("../../RedDotBase");
 class RedDotBattleViewResonanceButton extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
-    return "BattleViewMenu"
+    return "BattleViewMenu";
   }
 }
 exports.RedDotBattleViewResonanceButton = RedDotBattleViewResonanceButton;

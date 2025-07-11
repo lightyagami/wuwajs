@@ -1,30 +1,64 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNearbyTrackingComponent = void 0;
+  value: true
+});
+exports.FbNearbyTrackingComponent = undefined;
 const UnionNearbyTrackingHelper_1 = require("./UnionNearbyTrackingHelper");
 class FbNearbyTrackingComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Dch = !1, this.bSo = !1, this.pjh = !1, this.vjh = !1, this.yjh = !1, this.Sjh = !1, this.Mjh = !1, this.Ejh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Dch = false;
+    this.bSo = false;
+    this.pjh = false;
+    this.vjh = false;
+    this.yjh = false;
+    this.Sjh = false;
+    this.Mjh = false;
+    this.Ejh = undefined;
   }
   static Create(t) {
-    if (t) return new FbNearbyTrackingComponent(t)
+    if (t) {
+      return new FbNearbyTrackingComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get IsEnable() {
-    return this.Dch || (this.Dch = !0, this.bSo = this.FbDataInternal.isEnable()), this.bSo
+    if (!this.Dch) {
+      this.Dch = true;
+      this.bSo = this.FbDataInternal.isEnable();
+    }
+    return this.bSo;
   }
   get IsEnableWhileUnlock() {
-    return this.pjh || (this.pjh = !0, this.vjh = this.FbDataInternal.isEnableWhileUnlock()), this.vjh
+    if (!this.pjh) {
+      this.pjh = true;
+      this.vjh = this.FbDataInternal.isEnableWhileUnlock();
+    }
+    return this.vjh;
   }
   get IsEnbaleWhileHoming() {
-    return this.yjh || (this.yjh = !0, this.Sjh = this.FbDataInternal.isEnbaleWhileHoming()), this.Sjh
+    if (!this.yjh) {
+      this.yjh = true;
+      this.Sjh = this.FbDataInternal.isEnbaleWhileHoming();
+    }
+    return this.Sjh;
   }
   get TrackingType() {
-    var t, i;
-    return !this.Mjh && (this.Mjh = !0, t = this.FbDataInternal.trackingTypeType(), i = UnionNearbyTrackingHelper_1.UnionNearbyTrackingHelper.GetUnionNearbyTrackingObject(t)) && (this.Ejh = UnionNearbyTrackingHelper_1.UnionNearbyTrackingHelper.ReadUnionNearbyTracking(t, this.FbDataInternal.trackingType(i))), this.Ejh
+    var t;
+    var i;
+    if (!this.Mjh && (this.Mjh = true, t = this.FbDataInternal.trackingTypeType(), i = UnionNearbyTrackingHelper_1.UnionNearbyTrackingHelper.GetUnionNearbyTrackingObject(t))) {
+      this.Ejh = UnionNearbyTrackingHelper_1.UnionNearbyTrackingHelper.ReadUnionNearbyTracking(t, this.FbDataInternal.trackingType(i));
+    }
+    return this.Ejh;
   }
 }
 exports.FbNearbyTrackingComponent = FbNearbyTrackingComponent;

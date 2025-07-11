@@ -1,114 +1,193 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AutoRunModel = exports.GmDataLayerInfo = exports.TeleportInfo = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  DataLayerById_1 = require("../../../Core/Define/ConfigQuery/DataLayerById"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../Manager/ModelManager");
+  value: true
+});
+exports.AutoRunModel = exports.GmDataLayerInfo = exports.TeleportInfo = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const DataLayerConfigById_1 = require("../../../Core/Define/ConfigQuery/DataLayerConfigById");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../Manager/ModelManager");
 class TeleportInfo {
   constructor(e, t) {
-    this.Location = e, this.Rotator = t
+    this.Location = e;
+    this.Rotator = t;
   }
 }
 exports.TeleportInfo = TeleportInfo;
 class GmDataLayerInfo {
   constructor(e, t) {
-    this.LoadDataLayers = e, this.UnloadDataLayers = t
+    this.LoadDataLayers = e;
+    this.UnloadDataLayers = t;
   }
 }
 exports.GmDataLayerInfo = GmDataLayerInfo;
 class AutoRunModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.$Ke = "Stopped", this.YKe = "Disabled", this.JKe = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid, this.zKe = 0, this.ZKe = 0, this.ShouldTpAfterSkip = !1, this.ShouldFastSkip = !1, this.eQe = new Map, this.tQe = new Map, this.dKs = new Map, this.MapEntityDataCache = new Map
+    super(...arguments);
+    this.$Ke = "Stopped";
+    this.YKe = "Disabled";
+    this.JKe = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid;
+    this.zKe = 0;
+    this.ZKe = 0;
+    this.ShouldTpAfterSkip = false;
+    this.ShouldFastSkip = false;
+    this.eQe = new Map();
+    this.tQe = new Map();
+    this.dKs = new Map();
+    this.MapEntityDataCache = new Map();
   }
   OnInit() {
-    return this.YKe = "Disabled", this.JKe = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid, this.zKe = 0, !(this.ZKe = 0)
+    this.YKe = "Disabled";
+    this.JKe = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid;
+    this.zKe = 0;
+    return !(this.ZKe = 0);
   }
   OnClear() {
-    return this.ClearAllOverrideTpInfo(), this.ClearAllGuaranteeTpInfo(), this.ClearCachedDataLayerInfo(), this.MapEntityDataCache.clear(), !0
+    this.ClearAllOverrideTpInfo();
+    this.ClearAllGuaranteeTpInfo();
+    this.ClearCachedDataLayerInfo();
+    this.MapEntityDataCache.clear();
+    return true;
   }
   GetAutoRunState() {
-    return this.$Ke
+    return this.$Ke;
   }
   SetAutoRunState(e) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("Gm", 39, "[Gm一键推进] AutoRunState改变", ["原AutoRunState", this.$Ke], ["新AutoRunState", e]), this.$Ke !== e && (this.$Ke = e, ModelManager_1.ModelManager.SundryModel.IsBlockTips = this.IsInLogicTreeGmMode(), ModelManager_1.ModelManager.GuideModel.SetGmLock(this.IsInLogicTreeGmMode()), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GmAutoModeChange, e))
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Gm", 39, "[Gm一键推进] AutoRunState改变", ["原AutoRunState", this.$Ke], ["新AutoRunState", e]);
+    }
+    if (this.$Ke !== e) {
+      this.$Ke = e;
+      ModelManager_1.ModelManager.SundryModel.IsBlockTips = this.IsInLogicTreeGmMode();
+      ModelManager_1.ModelManager.GuideModel.SetGmLock(this.IsInLogicTreeGmMode());
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GmAutoModeChange, e);
+    }
   }
   IsInLogicTreeGmMode() {
-    return "Disabled" !== this.YKe && "Running" === this.$Ke
+    return this.YKe !== "Disabled" && this.$Ke === "Running";
   }
   IsInAfterRunningState() {
-    return "Disabled" !== this.YKe && "AfterRunning" === this.$Ke
+    return this.YKe !== "Disabled" && this.$Ke === "AfterRunning";
   }
   IsInServerControlGmMode() {
-    return "ServerControlledSkip" === this.YKe
+    return this.YKe === "ServerControlledSkip";
   }
   GetAutoRunMode() {
-    return this.YKe
+    return this.YKe;
   }
-  SetAutoRunMode(e, t = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid, r = 0, o = 0) {
-    this.YKe = e, this.JKe = t, this.zKe = r, this.ZKe = o
+  SetAutoRunMode(e, t = Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid, o = 0, r = 0) {
+    this.YKe = e;
+    this.JKe = t;
+    this.zKe = o;
+    this.ZKe = r;
   }
   StopAutoRunAndClearInfo() {
-    this.SetAutoRunState("Stopped"), this.ClearAutoRunInfo()
+    this.SetAutoRunState("Stopped");
+    this.ClearAutoRunInfo();
   }
   ClearAutoRunInfo() {
-    this.SetAutoRunMode("Disabled"), this.ShouldFastSkip = !1, this.ShouldTpAfterSkip = !1, this.ShouldTpAfterSkip = !1, this.ClearAllOverrideTpInfo(), this.ClearAllGuaranteeTpInfo(), this.ClearCachedDataLayerInfo()
+    this.SetAutoRunMode("Disabled");
+    this.ShouldFastSkip = false;
+    this.ShouldTpAfterSkip = false;
+    this.ShouldTpAfterSkip = false;
+    this.ClearAllOverrideTpInfo();
+    this.ClearAllGuaranteeTpInfo();
+    this.ClearCachedDataLayerInfo();
   }
   GetGmSkipTreeType() {
-    return this.JKe
+    return this.JKe;
   }
   GetGmSkipTreeConfigId() {
-    return this.zKe
+    return this.zKe;
   }
   GetGmSkipNodeId() {
-    return this.ZKe
+    return this.ZKe;
   }
   GetGuaranteeTpInfo(e) {
     e = e ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    return this.tQe.get(e)
+    return this.tQe.get(e);
   }
   SetGuaranteeTpInfo(e, t) {
     t = t ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Gm", 39, "[Gm一键推进] 设置保底传送信息", ["地图Id", t], ["旧值", this.tQe.get(t)], ["新值", e]), e ? this.tQe.set(t, e) : this.tQe.delete(t)
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Gm", 39, "[Gm一键推进] 设置保底传送信息", ["地图Id", t], ["旧值", this.tQe.get(t)], ["新值", e]);
+    }
+    if (e) {
+      this.tQe.set(t, e);
+    } else {
+      this.tQe.delete(t);
+    }
   }
   ClearAllGuaranteeTpInfo() {
-    this.tQe.clear()
+    this.tQe.clear();
   }
   GetOverrideTpInfo(e) {
     e = e ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    return this.eQe.get(e)
+    return this.eQe.get(e);
   }
   SetOverrideTpInfo(e, t) {
     t = t ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Gm", 39, "[Gm一键推进] 设置覆盖传送信息", ["地图Id", t], ["旧值", this.eQe.get(t)], ["新值", e]), e ? this.eQe.set(t, e) : this.eQe.delete(t)
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Gm", 39, "[Gm一键推进] 设置覆盖传送信息", ["地图Id", t], ["旧值", this.eQe.get(t)], ["新值", e]);
+    }
+    if (e) {
+      this.eQe.set(t, e);
+    } else {
+      this.eQe.delete(t);
+    }
   }
   ClearAllOverrideTpInfo() {
-    this.eQe.clear()
+    this.eQe.clear();
   }
   GetCachedDataLayerInfo(e) {
     e = e ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    return this.dKs.get(e)
+    return this.dKs.get(e);
   }
-  UpdateCachedDataLayerInfo(t, r, o) {
-    if (t.length || r.length) {
-      var n, s, o = o ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-        i = new Array,
-        a = new Array;
-      for (const h of t) "string" == typeof h ? i.push(h) : (n = DataLayerById_1.configDataLayerById.GetConfig(h)) && i.push(n.DataLayer);
-      for (const u of r) "string" == typeof u ? a.push(u) : (s = DataLayerById_1.configDataLayerById.GetConfig(u)) && a.push(s.DataLayer);
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("Gm", 39, "[Gm一键推进] 更新缓存的DataLayer信息", ["地图Id", o], ["加载", i], ["卸载", a]);
-      let e = this.dKs.get(o);
-      e || (e = new GmDataLayerInfo(new Set, new Set), this.dKs.set(o, e));
-      for (const d of i) e.LoadDataLayers.add(d), e.UnloadDataLayers.delete(d);
-      for (const l of a) e.UnloadDataLayers.add(l), e.LoadDataLayers.delete(l)
+  UpdateCachedDataLayerInfo(t, o, r) {
+    if (t.length || o.length) {
+      var n;
+      var s;
+      var r = r ?? ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      var i = new Array();
+      var a = new Array();
+      for (const h of t) {
+        if (typeof h == "string") {
+          i.push(h);
+        } else if (n = DataLayerConfigById_1.configDataLayerConfigById.GetConfig(h)) {
+          i.push(n.DataLayer);
+        }
+      }
+      for (const u of o) {
+        if (typeof u == "string") {
+          a.push(u);
+        } else if (s = DataLayerConfigById_1.configDataLayerConfigById.GetConfig(u)) {
+          a.push(s.DataLayer);
+        }
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Gm", 39, "[Gm一键推进] 更新缓存的DataLayer信息", ["地图Id", r], ["加载", i], ["卸载", a]);
+      }
+      let e = this.dKs.get(r);
+      if (!e) {
+        e = new GmDataLayerInfo(new Set(), new Set());
+        this.dKs.set(r, e);
+      }
+      for (const d of i) {
+        e.LoadDataLayers.add(d);
+        e.UnloadDataLayers.delete(d);
+      }
+      for (const l of a) {
+        e.UnloadDataLayers.add(l);
+        e.LoadDataLayers.delete(l);
+      }
     }
   }
   ClearCachedDataLayerInfo() {
-    this.dKs.clear()
+    this.dKs.clear();
   }
 }
 exports.AutoRunModel = AutoRunModel;

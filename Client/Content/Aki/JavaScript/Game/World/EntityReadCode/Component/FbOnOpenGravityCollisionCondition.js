@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbOnOpenGravityCollisionCondition = void 0;
+  value: true
+});
+exports.FbOnOpenGravityCollisionCondition = undefined;
 class FbOnOpenGravityCollisionCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.p0h = !1, this.nXs = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.p0h = false;
+    this.nXs = 0;
   }
   static Create(t) {
-    if (t) return new FbOnOpenGravityCollisionCondition(t)
+    if (t) {
+      return new FbOnOpenGravityCollisionCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BulletId() {
-    return this.p0h || (this.p0h = !0, this.nXs = Number(this.FbDataInternal.bulletId())), this.nXs
+    if (!this.p0h) {
+      this.p0h = true;
+      this.nXs = Number(this.FbDataInternal.bulletId());
+    }
+    return this.nXs;
   }
 }
 exports.FbOnOpenGravityCollisionCondition = FbOnOpenGravityCollisionCondition;

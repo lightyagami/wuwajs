@@ -1,562 +1,823 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleInfo = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.RoleInfo = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class RoleInfo {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get QualityId() {
-    return this.qualityid()
+    return this.qualityid();
   }
   get RoleType() {
-    return this.roletype()
+    return this.roletype();
   }
   get IsTrial() {
-    return this.istrial()
+    return this.istrial();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get NickName() {
-    return this.nickname()
+    return this.nickname();
   }
   get Introduction() {
-    return this.introduction()
+    return this.introduction();
   }
   get Tag() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.tagLength(), this.tag, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.tagLength(), this.tag, this);
   }
   get ParentId() {
-    return this.parentid()
+    return this.parentid();
   }
   get Priority() {
-    return this.priority()
+    return this.priority();
   }
   get PropertyId() {
-    return this.propertyid()
+    return this.propertyid();
   }
   get ShowProperty() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.showpropertyLength(), this.showproperty, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.showpropertyLength(), this.showproperty, this);
   }
   get ElementId() {
-    return this.elementid()
+    return this.elementid();
   }
   get SkinId() {
-    return this.skinid()
+    return this.skinid();
   }
   get RoleHeadIconCircle() {
-    return this.roleheadiconcircle()
+    return this.roleheadiconcircle();
   }
   get RoleHeadIconLarge() {
-    return this.roleheadiconlarge()
+    return this.roleheadiconlarge();
   }
   get RoleHeadIconBig() {
-    return this.roleheadiconbig()
+    return this.roleheadiconbig();
   }
   get Card() {
-    return this.card()
+    return this.card();
   }
   get RoleHeadIcon() {
-    return this.roleheadicon()
+    return this.roleheadicon();
   }
   get FormationRoleCard() {
-    return this.formationrolecard()
+    return this.formationrolecard();
   }
   get RoleStand() {
-    return this.rolestand()
+    return this.rolestand();
   }
   get RolePortrait() {
-    return this.roleportrait()
+    return this.roleportrait();
   }
   get SpilloverItem() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.spilloveritemLength(), this.spilloveritemKey, this.spilloveritemValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.spilloveritemLength(), this.spilloveritemKey, this.spilloveritemValue, this);
   }
   spilloveritemKey(t) {
-    return this.spilloveritem(t)?.key()
+    return this.spilloveritem(t)?.key();
   }
   spilloveritemValue(t) {
-    return this.spilloveritem(t)?.value()
+    return this.spilloveritem(t)?.value();
   }
   get MeshId() {
-    return this.meshid()
+    return this.meshid();
   }
   get UiMeshId() {
-    return this.uimeshid()
+    return this.uimeshid();
   }
   get RoleBody() {
-    return this.rolebody()
+    return this.rolebody();
   }
   get BreachModel() {
-    return this.breachmodel()
+    return this.breachmodel();
   }
   get SpecialEnergyBarId() {
-    return this.specialenergybarid()
+    return this.specialenergybarid();
   }
   get CameraConfig() {
-    return this.cameraconfig()
+    return this.cameraconfig();
   }
   get CameraFloatHeight() {
-    return this.camerafloatheight()
+    return this.camerafloatheight();
   }
   get EntityProperty() {
-    return this.entityproperty()
+    return this.entityproperty();
   }
   get MaxLevel() {
-    return this.maxlevel()
+    return this.maxlevel();
   }
   get LevelConsumeId() {
-    return this.levelconsumeid()
+    return this.levelconsumeid();
   }
   get BreachId() {
-    return this.breachid()
+    return this.breachid();
   }
   get SkillId() {
-    return this.skillid()
+    return this.skillid();
   }
   get SkillTreeGroupId() {
-    return this.skilltreegroupid()
+    return this.skilltreegroupid();
   }
   get ResonanceId() {
-    return this.resonanceid()
+    return this.resonanceid();
   }
   get ResonantChainGroupId() {
-    return this.resonantchaingroupid()
+    return this.resonantchaingroupid();
   }
   get IsShow() {
-    return this.isshow()
+    return this.isshow();
   }
   get ExchangeConsume() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.exchangeconsumeLength(), this.exchangeconsumeKey, this.exchangeconsumeValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.exchangeconsumeLength(), this.exchangeconsumeKey, this.exchangeconsumeValue, this);
   }
   exchangeconsumeKey(t) {
-    return this.exchangeconsume(t)?.key()
+    return this.exchangeconsume(t)?.key();
   }
   exchangeconsumeValue(t) {
-    return this.exchangeconsume(t)?.value()
+    return this.exchangeconsume(t)?.value();
   }
   get InitWeaponItemId() {
-    return this.initweaponitemid()
+    return this.initweaponitemid();
   }
   get WeaponType() {
-    return this.weapontype()
+    return this.weapontype();
   }
   get SkillDAPath() {
-    return this.skilldapath()
+    return this.skilldapath();
   }
   get SkillLockDAPath() {
-    return this.skilllockdapath()
+    return this.skilllockdapath();
   }
   get UiScenePerformanceABP() {
-    return this.uisceneperformanceabp()
+    return this.uisceneperformanceabp();
   }
   get LockOnDefaultId() {
-    return this.lockondefaultid()
+    return this.lockondefaultid();
   }
   get LockOnLookOnId() {
-    return this.lockonlookonid()
+    return this.lockonlookonid();
   }
   get SkillEffectDA() {
-    return this.skilleffectda()
+    return this.skilleffectda();
   }
   get FootStepState() {
-    return this.footstepstate()
+    return this.footstepstate();
   }
   get PartyId() {
-    return this.partyid()
+    return this.partyid();
   }
   get AttributesDescription() {
-    return this.attributesdescription()
+    return this.attributesdescription();
   }
   get Icon() {
-    return this.icon()
+    return this.icon();
   }
   get ItemQualityId() {
-    return this.itemqualityid()
+    return this.itemqualityid();
   }
   get ObtainedShowDescription() {
-    return this.obtainedshowdescription()
+    return this.obtainedshowdescription();
   }
   get NumLimit() {
-    return this.numlimit()
+    return this.numlimit();
   }
   get ShowInBag() {
-    return this.showinbag()
+    return this.showinbag();
   }
   get WeaponScale() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.weaponscaleLength(), this.weaponscale, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.weaponscaleLength(), this.weaponscale, this);
   }
   get Intervene() {
-    return this.intervene()
+    return this.intervene();
   }
   get CharacterVoice() {
-    return this.charactervoice()
+    return this.charactervoice();
   }
   get TrialRole() {
-    return this.trialrole()
+    return this.trialrole();
   }
   get IsAim() {
-    return this.isaim()
+    return this.isaim();
   }
   get RoleGuide() {
-    return this.roleguide()
+    return this.roleguide();
   }
   get RedDotDisableRule() {
-    return this.reddotdisablerule()
+    return this.reddotdisablerule();
   }
   get SkinDamage() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.skindamageLength(), this.skindamage, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.skindamageLength(), this.skindamage, this);
   }
   get HideHuLu() {
-    return this.hidehulu()
+    return this.hidehulu();
+  }
+  get EnableOperateSelfBgm() {
+    return this.enableoperateselfbgm();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsRoleInfo(t, i) {
-    return (i || new RoleInfo).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new RoleInfo()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   qualityid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   roletype() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   istrial() {
     var t = this.J7.__offset(this.z7, 10);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 12),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   nickname(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   introduction(t) {
-    var i = this.J7.__offset(this.z7, 16),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetTagAt(t) {
-    return this.tag(t)
+    return this.tag(t);
   }
   tag(t) {
     var i = this.J7.__offset(this.z7, 18);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   tagLength() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tagArray() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   parentid() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   priority() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   propertyid() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetShowpropertyAt(t) {
-    return this.showproperty(t)
+    return this.showproperty(t);
   }
   showproperty(t) {
     var i = this.J7.__offset(this.z7, 26);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   showpropertyLength() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   showpropertyArray() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   elementid() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skinid() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   roleheadiconcircle(t) {
-    var i = this.J7.__offset(this.z7, 32),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 32);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   roleheadiconlarge(t) {
-    var i = this.J7.__offset(this.z7, 34),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 34);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   roleheadiconbig(t) {
-    var i = this.J7.__offset(this.z7, 36),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 36);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   card(t) {
-    var i = this.J7.__offset(this.z7, 38),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 38);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   roleheadicon(t) {
-    var i = this.J7.__offset(this.z7, 40),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 40);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   formationrolecard(t) {
-    var i = this.J7.__offset(this.z7, 42),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 42);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   rolestand(t) {
-    var i = this.J7.__offset(this.z7, 44),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 44);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   roleportrait(t) {
-    var i = this.J7.__offset(this.z7, 46),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 46);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetSpilloveritemAt(t, i) {
-    return this.spilloveritem(t)
+    return this.spilloveritem(t);
   }
   spilloveritem(t, i) {
     var s = this.J7.__offset(this.z7, 48);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   spilloveritemLength() {
     var t = this.J7.__offset(this.z7, 48);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   meshid() {
     var t = this.J7.__offset(this.z7, 50);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   uimeshid() {
     var t = this.J7.__offset(this.z7, 52);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rolebody(t) {
-    var i = this.J7.__offset(this.z7, 54),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 54);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   breachmodel() {
     var t = this.J7.__offset(this.z7, 56);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   specialenergybarid() {
     var t = this.J7.__offset(this.z7, 58);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   cameraconfig(t) {
-    var i = this.J7.__offset(this.z7, 60),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 60);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   camerafloatheight() {
     var t = this.J7.__offset(this.z7, 62);
-    return t ? this.J7.readFloat32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   entityproperty() {
     var t = this.J7.__offset(this.z7, 64);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   maxlevel() {
     var t = this.J7.__offset(this.z7, 66);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levelconsumeid() {
     var t = this.J7.__offset(this.z7, 68);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   breachid() {
     var t = this.J7.__offset(this.z7, 70);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skillid() {
     var t = this.J7.__offset(this.z7, 72);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skilltreegroupid() {
     var t = this.J7.__offset(this.z7, 74);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   resonanceid() {
     var t = this.J7.__offset(this.z7, 76);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   resonantchaingroupid() {
     var t = this.J7.__offset(this.z7, 78);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isshow() {
     var t = this.J7.__offset(this.z7, 80);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetExchangeconsumeAt(t, i) {
-    return this.exchangeconsume(t)
+    return this.exchangeconsume(t);
   }
   exchangeconsume(t, i) {
     var s = this.J7.__offset(this.z7, 82);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   exchangeconsumeLength() {
     var t = this.J7.__offset(this.z7, 82);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   initweaponitemid() {
     var t = this.J7.__offset(this.z7, 84);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   weapontype() {
     var t = this.J7.__offset(this.z7, 86);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skilldapath(t) {
-    var i = this.J7.__offset(this.z7, 88),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 88);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   skilllockdapath(t) {
-    var i = this.J7.__offset(this.z7, 90),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 90);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   uisceneperformanceabp(t) {
-    var i = this.J7.__offset(this.z7, 92),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 92);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   lockondefaultid() {
     var t = this.J7.__offset(this.z7, 94);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   lockonlookonid() {
     var t = this.J7.__offset(this.z7, 96);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   skilleffectda(t) {
-    var i = this.J7.__offset(this.z7, 98),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 98);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   footstepstate(t) {
-    var i = this.J7.__offset(this.z7, 100),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 100);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   partyid() {
     var t = this.J7.__offset(this.z7, 102);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   attributesdescription(t) {
-    var i = this.J7.__offset(this.z7, 104),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 104);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 106),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 106);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   itemqualityid() {
     var t = this.J7.__offset(this.z7, 108);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   obtainedshowdescription(t) {
-    var i = this.J7.__offset(this.z7, 110),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 110);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   numlimit() {
     var t = this.J7.__offset(this.z7, 112);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   showinbag() {
     var t = this.J7.__offset(this.z7, 114);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetWeaponscaleAt(t) {
-    return this.weaponscale(t)
+    return this.weaponscale(t);
   }
   weaponscale(t) {
     var i = this.J7.__offset(this.z7, 116);
-    return i ? this.J7.readFloat32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   weaponscaleLength() {
     var t = this.J7.__offset(this.z7, 116);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   weaponscaleArray() {
     var t = this.J7.__offset(this.z7, 116);
-    return t ? new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   intervene() {
     var t = this.J7.__offset(this.z7, 118);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   charactervoice(t) {
-    var i = this.J7.__offset(this.z7, 120),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 120);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   trialrole() {
     var t = this.J7.__offset(this.z7, 122);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isaim() {
     var t = this.J7.__offset(this.z7, 124);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   roleguide() {
     var t = this.J7.__offset(this.z7, 126);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   reddotdisablerule() {
     var t = this.J7.__offset(this.z7, 128);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetSkindamageAt(t) {
-    return this.skindamage(t)
+    return this.skindamage(t);
   }
   skindamage(t, i) {
-    var s = this.J7.__offset(this.z7, 130),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 130);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   skindamageLength() {
     var t = this.J7.__offset(this.z7, 130);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   hidehulu() {
     var t = this.J7.__offset(this.z7, 132);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  enableoperateselfbgm() {
+    var t = this.J7.__offset(this.z7, 134);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.RoleInfo = RoleInfo;

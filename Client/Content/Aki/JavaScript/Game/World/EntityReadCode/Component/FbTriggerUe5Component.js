@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTriggerUe5Component = void 0;
+  value: true
+});
+exports.FbTriggerUe5Component = undefined;
 const FbTriggerActions_1 = require("../Action/FbTriggerActions");
 class FbTriggerUe5Component {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.vkh = !1, this.ykh = 0, this.Skh = !1, this.Mkh = !1, this.dkh = !1, this.mkh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.vkh = false;
+    this.ykh = 0;
+    this.Skh = false;
+    this.Mkh = false;
+    this.dkh = false;
+    this.mkh = undefined;
   }
   static Create(t) {
-    if (t) return new FbTriggerUe5Component(t)
+    if (t) {
+      return new FbTriggerUe5Component(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get MaxTriggerTimes() {
-    return this.vkh || (this.vkh = !0, this.ykh = this.FbDataInternal.maxTriggerTimes()), this.ykh
+    if (!this.vkh) {
+      this.vkh = true;
+      this.ykh = this.FbDataInternal.maxTriggerTimes();
+    }
+    return this.ykh;
   }
   get IsNotLoad() {
-    return this.Skh || (this.Skh = !0, this.Mkh = this.FbDataInternal.isNotLoad()), this.Mkh
+    if (!this.Skh) {
+      this.Skh = true;
+      this.Mkh = this.FbDataInternal.isNotLoad();
+    }
+    return this.Mkh;
   }
   get TriggerActions() {
-    return this.dkh || (this.dkh = !0, this.mkh = FbTriggerActions_1.FbTriggerActions.Create(this.FbDataInternal.triggerActions())), this.mkh
+    if (!this.dkh) {
+      this.dkh = true;
+      this.mkh = FbTriggerActions_1.FbTriggerActions.Create(this.FbDataInternal.triggerActions());
+    }
+    return this.mkh;
   }
 }
 exports.FbTriggerUe5Component = FbTriggerUe5Component;

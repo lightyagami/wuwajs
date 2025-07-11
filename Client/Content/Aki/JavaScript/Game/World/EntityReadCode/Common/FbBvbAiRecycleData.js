@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBvbAiRecycleData = void 0;
+  value: true
+});
+exports.FbBvbAiRecycleData = undefined;
 const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbBvbAiRecycleData {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.Tw1 = !1, this.bw1 = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Zw1 = false;
+    this.eA1 = undefined;
   }
   static Create(e) {
-    if (e) return new FbBvbAiRecycleData(e)
+    if (e) {
+      return new FbBvbAiRecycleData(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BoardCard() {
-    var e, t;
-    return !this.Tw1 && (this.Tw1 = !0, e = this.FbDataInternal.boardCardType(), t = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(e)) && (this.bw1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(e, this.FbDataInternal.boardCard(t))), this.bw1
+    var e;
+    var t;
+    if (!this.Zw1 && (this.Zw1 = true, e = this.FbDataInternal.boardCardType(), t = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(e))) {
+      this.eA1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(e, this.FbDataInternal.boardCard(t));
+    }
+    return this.eA1;
   }
 }
 exports.FbBvbAiRecycleData = FbBvbAiRecycleData;

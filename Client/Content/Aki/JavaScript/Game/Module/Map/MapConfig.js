@@ -1,109 +1,169 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapConfig = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  MapMark_1 = require("../../../Core/Define/Config/MapMark"),
-  CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById"),
-  AreaByLevel_1 = require("../../../Core/Define/ConfigQuery/AreaByLevel"),
-  BlockSwitchById_1 = require("../../../Core/Define/ConfigQuery/BlockSwitchById"),
-  CustomMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/CustomMarkByMarkId"),
-  DynamicMapMarkAll_1 = require("../../../Core/Define/ConfigQuery/DynamicMapMarkAll"),
-  DynamicMapMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/DynamicMapMarkByMarkId"),
-  EnrichmentAreaConfigByEnrichmentId_1 = require("../../../Core/Define/ConfigQuery/EnrichmentAreaConfigByEnrichmentId"),
-  EnrichmentAreaConfigByItemId_1 = require("../../../Core/Define/ConfigQuery/EnrichmentAreaConfigByItemId"),
-  FogBlockAll_1 = require("../../../Core/Define/ConfigQuery/FogBlockAll"),
-  FogBlockByBlockAndMapId_1 = require("../../../Core/Define/ConfigQuery/FogBlockByBlockAndMapId"),
-  FogTextureConfigAll_1 = require("../../../Core/Define/ConfigQuery/FogTextureConfigAll"),
-  FogTextureConfigByMapId_1 = require("../../../Core/Define/ConfigQuery/FogTextureConfigByMapId"),
-  LevelEntityConfigByMapIdAndEntityId_1 = require("../../../Core/Define/ConfigQuery/LevelEntityConfigByMapIdAndEntityId"),
-  MapBorderAll_1 = require("../../../Core/Define/ConfigQuery/MapBorderAll"),
-  MapMarkAll_1 = require("../../../Core/Define/ConfigQuery/MapMarkAll"),
-  MapMarkByEntityConfigId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByEntityConfigId"),
-  MapMarkByInstanceDungeonId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByInstanceDungeonId"),
-  MapMarkByMapId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByMapId"),
-  MapMarkByRelativeId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByRelativeId"),
-  MapMarkRelativeSubTypeAll_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeAll"),
-  MapMarkRelativeSubTypeByFunctionId_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeByFunctionId"),
-  MapMarkRelativeSubTypeById_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeById"),
-  MonsterDetectionAll_1 = require("../../../Core/Define/ConfigQuery/MonsterDetectionAll"),
-  MultiMapAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAll"),
-  MultiMapAreaConfigAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAreaConfigAll"),
-  MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang"),
-  SoundBoxMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/SoundBoxMarkByMarkId"),
-  TaskMarkAll_1 = require("../../../Core/Define/ConfigQuery/TaskMarkAll"),
-  TaskMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TaskMarkByMarkId"),
-  TeleporterById_1 = require("../../../Core/Define/ConfigQuery/TeleporterById"),
-  TemporaryTeleportMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TemporaryTeleportMarkByMarkId"),
-  TreasureBoxDetectorMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TreasureBoxDetectorMarkByMarkId"),
-  TreasureBoxMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TreasureBoxMarkByMarkId"),
-  UiResourceById_1 = require("../../../Core/Define/ConfigQuery/UiResourceById"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase"),
-  StringUtils_1 = require("../../../Core/Utils/StringUtils"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  MapLogger_1 = require("./Misc/MapLogger");
+  value: true
+});
+exports.MapConfig = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const MapMark_1 = require("../../../Core/Define/Config/MapMark");
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const AreaByLevel_1 = require("../../../Core/Define/ConfigQuery/AreaByLevel");
+const BlockSwitchById_1 = require("../../../Core/Define/ConfigQuery/BlockSwitchById");
+const CustomMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/CustomMarkByMarkId");
+const DynamicMapMarkAll_1 = require("../../../Core/Define/ConfigQuery/DynamicMapMarkAll");
+const DynamicMapMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/DynamicMapMarkByMarkId");
+const EnrichmentAreaConfigByEnrichmentId_1 = require("../../../Core/Define/ConfigQuery/EnrichmentAreaConfigByEnrichmentId");
+const EnrichmentAreaConfigByItemId_1 = require("../../../Core/Define/ConfigQuery/EnrichmentAreaConfigByItemId");
+const FogBlockAll_1 = require("../../../Core/Define/ConfigQuery/FogBlockAll");
+const FogBlockByBlockAndMapId_1 = require("../../../Core/Define/ConfigQuery/FogBlockByBlockAndMapId");
+const FogTextureConfigAll_1 = require("../../../Core/Define/ConfigQuery/FogTextureConfigAll");
+const FogTextureConfigByMapId_1 = require("../../../Core/Define/ConfigQuery/FogTextureConfigByMapId");
+const LevelEntityConfigByMapIdAndEntityId_1 = require("../../../Core/Define/ConfigQuery/LevelEntityConfigByMapIdAndEntityId");
+const MapBorderAll_1 = require("../../../Core/Define/ConfigQuery/MapBorderAll");
+const MapMarkAll_1 = require("../../../Core/Define/ConfigQuery/MapMarkAll");
+const MapMarkByEntityConfigId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByEntityConfigId");
+const MapMarkByInstanceDungeonId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByInstanceDungeonId");
+const MapMarkByMapId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByMapId");
+const MapMarkByRelativeId_1 = require("../../../Core/Define/ConfigQuery/MapMarkByRelativeId");
+const MapMarkRelativeSubTypeAll_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeAll");
+const MapMarkRelativeSubTypeByFunctionId_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeByFunctionId");
+const MapMarkRelativeSubTypeById_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeById");
+const MonsterDetectionAll_1 = require("../../../Core/Define/ConfigQuery/MonsterDetectionAll");
+const MultiMapAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAll");
+const MultiMapAreaConfigAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAreaConfigAll");
+const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
+const SoundBoxMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/SoundBoxMarkByMarkId");
+const TaskMarkAll_1 = require("../../../Core/Define/ConfigQuery/TaskMarkAll");
+const TaskMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TaskMarkByMarkId");
+const TeleporterById_1 = require("../../../Core/Define/ConfigQuery/TeleporterById");
+const TemporaryTeleportMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TemporaryTeleportMarkByMarkId");
+const TreasureBoxDetectorMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TreasureBoxDetectorMarkByMarkId");
+const TreasureBoxMarkByMarkId_1 = require("../../../Core/Define/ConfigQuery/TreasureBoxMarkByMarkId");
+const UiResourceById_1 = require("../../../Core/Define/ConfigQuery/UiResourceById");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const MapLogger_1 = require("./Misc/MapLogger");
 class MapConfig extends ConfigBase_1.ConfigBase {
   constructor() {
-    super(...arguments), this.Pt1 = new Map, this.pDi = void 0, this.vDi = void 0, this.aVa = void 0, this.vSl = void 0, this.MSl = void 0, this.rO_ = void 0, this.vYa = void 0, this.MYa = void 0, this.dfc = [], this.mlh = new Map, this.Ey1 = new Map, this.R31 = new Map, this.L31 = []
+    super(...arguments);
+    this.Yt1 = new Map();
+    this.pDi = undefined;
+    this.vDi = undefined;
+    this.aVa = undefined;
+    this.vSl = undefined;
+    this.MSl = undefined;
+    this.rO_ = undefined;
+    this.vYa = undefined;
+    this.MYa = undefined;
+    this.dfc = [];
+    this.mlh = new Map();
+    this.Qy1 = new Map();
+    this.o41 = new Map();
+    this.n41 = [];
   }
   OnInit() {
-    this.pDi = new Map, this.vDi = new Map;
+    this.pDi = new Map();
+    this.vDi = new Map();
     var e = MapMarkRelativeSubTypeAll_1.configMapMarkRelativeSubTypeAll.GetConfigList();
-    if (e)
-      for (const r of e) this.pDi.set(r.FunctionId, !0);
+    if (e) {
+      for (const r of e) {
+        this.pDi.set(r.FunctionId, true);
+      }
+    }
     e = FogBlockAll_1.configFogBlockAll.GetConfigList();
-    if (e)
-      for (const i of e) this.vDi.set(i.Block + "_" + i.MapId, !0);
+    if (e) {
+      for (const i of e) {
+        this.vDi.set(i.Block + "_" + i.MapId, true);
+      }
+    }
     e = TaskMarkAll_1.configTaskMarkAll.GetConfigList();
     if (e) {
-      this.aVa = new Map;
-      for (const a of e) this.aVa.set(a.QuestId, a)
+      this.aVa = new Map();
+      for (const a of e) {
+        this.aVa.set(a.QuestId, a);
+      }
     }
     e = MonsterDetectionAll_1.configMonsterDetectionAll.GetConfigList();
     if (e) {
-      this.rO_ = new Map;
-      for (const t of e) this.rO_.set(t.MarkId, t)
+      this.rO_ = new Map();
+      for (const t of e) {
+        this.rO_.set(t.MarkId, t);
+      }
     }
     e = MapMarkAll_1.configMapMarkAll.GetConfigList();
     if (e) {
-      this.vSl = new Map;
-      for (const o of e) this.vSl.set(o.MarkId, o)
+      this.vSl = new Map();
+      for (const o of e) {
+        this.vSl.set(o.MarkId, o);
+      }
     }
     e = DynamicMapMarkAll_1.configDynamicMapMarkAll.GetConfigList();
     if (e) {
-      this.MSl = new Map;
-      for (const n of e) this.MSl.set(n.MarkId, n)
+      this.MSl = new Map();
+      for (const n of e) {
+        this.MSl.set(n.MarkId, n);
+      }
     }
-    return this.SYa(), this.xt1(), this.Iy1(), this.w31(), !0
+    this.SYa();
+    this.zt1();
+    this.Ky1();
+    this.s41();
+    return true;
   }
   OnClear() {
-    return this.pDi?.clear(), this.vDi?.clear(), this.aVa?.clear(), this.vSl?.clear(), this.MSl?.clear(), this.WorldMapNavigateAreaMap?.clear(), this.WorldMapNavigateCountryMap?.clear(), this.rO_?.clear(), this.mlh.clear(), this.Pt1?.clear(), this.pDi = void 0, this.vDi = void 0, this.Ey1.clear(), this.R31.clear(), !(this.L31.length = 0)
+    this.pDi?.clear();
+    this.vDi?.clear();
+    this.aVa?.clear();
+    this.vSl?.clear();
+    this.MSl?.clear();
+    this.WorldMapNavigateAreaMap?.clear();
+    this.WorldMapNavigateCountryMap?.clear();
+    this.rO_?.clear();
+    this.mlh.clear();
+    this.Yt1?.clear();
+    this.pDi = undefined;
+    this.vDi = undefined;
+    this.Qy1.clear();
+    this.o41.clear();
+    return !(this.n41.length = 0);
   }
   SYa() {
-    this.vYa = new Map, this.MYa = new Map;
+    this.vYa = new Map();
+    this.MYa = new Map();
     var e = AreaByLevel_1.configAreaByLevel.GetConfigList(2);
-    e ? this.yYa(e) : Log_1.Log.CheckError() && Log_1.Log.Error("Map", 63, "[地图系统]->不存在1级区域配置，请联系策划检查q.区域配置!")
+    if (e) {
+      this.yYa(e);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Map", 63, "[地图系统]->不存在1级区域配置，请联系策划检查q.区域配置!");
+    }
   }
-  xt1() {
+  zt1() {
     var e = this.GetAllTileConfig();
-    if (e)
+    if (e) {
       for (const i of e) {
-        var r = this.Dt1(i.Block, i.MapId, i.GravityFlip);
-        this.Pt1.set(r, i)
+        var r = this.Jt1(i.Block, i.MapId, i.GravityFlip);
+        this.Yt1.set(r, i);
       }
+    }
   }
-  Iy1() {
+  Ky1() {
     var e = this.GetMapBorderConfigList();
-    if (e)
+    if (e) {
       for (const i of e) {
-        var r = this.Ty1(i.BorderId, i.MapId);
-        this.Ey1.set(r, i)
+        var r = this.Xy1(i.BorderId, i.MapId);
+        this.Qy1.set(r, i);
       }
+    }
   }
-  w31() {
+  s41() {
     var e = MultiMapAll_1.configMultiMapAll.GetConfigList();
-    if (e)
-      for (const r of e) this.R31.set(r.Id, r), this.L31.push(r)
+    if (e) {
+      for (const r of e) {
+        this.o41.set(r.Id, r);
+        this.n41.push(r);
+      }
+    }
   }
   yYa(e) {
     e.forEach(e => {
@@ -116,170 +176,270 @@ class MapConfig extends ConfigBase_1.ConfigBase {
       };
       this.vYa.set(e.AreaId, r);
       let i = this.MYa.get(e.CountryId);
-      void 0 === i && (i = {
-        StateMap: void 0,
-        AreaNavigateList: []
-      }, this.MYa.set(e.CountryId, i), e = {
-        CountryId: e.CountryId,
-        NavigateCountry: i
-      }, this.dfc.push(e), this.dfc.sort((e, r) => {
-        return (ConfigManager_1.ConfigManager.InfluenceConfig.GetCountryConfig(e.CountryId)?.SortIndex ?? 0) - (ConfigManager_1.ConfigManager.InfluenceConfig.GetCountryConfig(r.CountryId)?.SortIndex ?? 0)
-      }));
+      if (i === undefined) {
+        i = {
+          StateMap: undefined,
+          AreaNavigateList: []
+        };
+        this.MYa.set(e.CountryId, i);
+        e = {
+          CountryId: e.CountryId,
+          NavigateCountry: i
+        };
+        this.dfc.push(e);
+        this.dfc.sort((e, r) => {
+          return (ConfigManager_1.ConfigManager.InfluenceConfig.GetCountryConfig(e.CountryId)?.SortIndex ?? 0) - (ConfigManager_1.ConfigManager.InfluenceConfig.GetCountryConfig(r.CountryId)?.SortIndex ?? 0);
+        });
+      }
       e = r.StateId;
-      0 !== e && (void 0 === i.StateMap && (i.StateMap = new Map), i.StateMap.has(e) || i.StateMap.set(e, {
-        StateId: e,
-        AreaNavigateList: []
-      }), i.StateMap.get(e).AreaNavigateList.push(r)), i.AreaNavigateList.push(r)
-    })
+      if (e !== 0) {
+        if (i.StateMap === undefined) {
+          i.StateMap = new Map();
+        }
+        if (!i.StateMap.has(e)) {
+          i.StateMap.set(e, {
+            StateId: e,
+            AreaNavigateList: []
+          });
+        }
+        i.StateMap.get(e).AreaNavigateList.push(r);
+      }
+      i.AreaNavigateList.push(r);
+    });
   }
   get WorldMapNavigateAreaMap() {
-    return this.vYa
+    return this.vYa;
   }
   get WorldMapNavigateCountryMap() {
-    return this.MYa
+    return this.MYa;
   }
   get WorldMapNavigateCountryList() {
-    return this.dfc
+    return this.dfc;
   }
   GetTaskMarkConfig(e) {
-    return TaskMarkByMarkId_1.configTaskMarkByMarkId.GetConfig(e)
+    return TaskMarkByMarkId_1.configTaskMarkByMarkId.GetConfig(e);
   }
   GetTaskMarkConfigByQuestId(e) {
-    return this.aVa?.get(e)
+    return this.aVa?.get(e);
   }
   GetMonsterDetectionConfig(e) {
-    return this.rO_?.get(e)
+    return this.rO_?.get(e);
   }
   GetConfigMarks(e) {
     var r = MapMarkByMapId_1.configMapMarkByMapId.GetConfigList(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 63, "找不到MapMark表", ["mapId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 63, "找不到MapMark表", ["mapId", e]);
+      }
+    }
+    return r;
   }
   GetConfigMark(e) {
-    return this.vSl.get(e)
+    return this.vSl.get(e);
   }
   GetConfigMarkMap() {
-    return this.vSl
+    return this.vSl;
   }
   GetDynamicConfigMark(e) {
     var r = DynamicMapMarkByMarkId_1.configDynamicMapMarkByMarkId.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 63, "找不到DynamicMapMark表", ["markId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 63, "找不到DynamicMapMark表", ["markId", e]);
+      }
+    }
+    return r;
   }
   SearchMarkConfig(e) {
-    return this.vSl.has(e) ? this.vSl.get(e) : this.MSl.has(e) ? this.MSl.get(e) : void MapLogger_1.MapLogger.ErrorOnce(e, 63, "查询标记配置失败->MapMark和DynamicMark配置都不存在相关配置", ["MarkId", e])
+    if (this.vSl.has(e)) {
+      return this.vSl.get(e);
+    } else if (this.MSl.has(e)) {
+      return this.MSl.get(e);
+    } else {
+      MapLogger_1.MapLogger.ErrorOnce(e, 63, "查询标记配置失败->MapMark和DynamicMark配置都不存在相关配置", ["MarkId", e]);
+      return;
+    }
   }
   SearchMapConfigByType(e, r) {
     var i = this.vSl.get(e);
-    return i && i.ObjectType === r || (i = this.MSl.get(e)) && i.ObjectType === r ? i : void 0
+    if (i && i.ObjectType === r || (i = this.MSl.get(e)) && i.ObjectType === r) {
+      return i;
+    } else {
+      return undefined;
+    }
   }
   SearchMarkInstanceDungeonId(e, r) {
-    if (9 !== r) return (e = this.SearchMapConfigByType(e, r)) instanceof MapMark_1.MapMark ? e.RelativeDungeonId : e?.InstanceDungeonId
+    if (r !== 9) {
+      if ((e = this.SearchMapConfigByType(e, r)) instanceof MapMark_1.MapMark) {
+        return e.RelativeDungeonId;
+      } else {
+        return e?.InstanceDungeonId;
+      }
+    }
   }
   GetTeleportConfigById(e) {
     var r = TeleporterById_1.configTeleporterById.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 18, "找不到Teleporter表的配置,Id = ", ["teleportId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 18, "找不到Teleporter表的配置,Id = ", ["teleportId", e]);
+      }
+    }
+    return r;
   }
   GetTemporaryTeleportMarkConfigById(e) {
     var r = TemporaryTeleportMarkByMarkId_1.configTemporaryTeleportMarkByMarkId.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 49, "找不到TemporaryTeleportMark表的配置,Id = ", ["markId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 49, "找不到TemporaryTeleportMark表的配置,Id = ", ["markId", e]);
+      }
+    }
+    return r;
   }
-  Dt1(e, r, i) {
-    return e + `_${r}_` + i
+  Jt1(e, r, i) {
+    return `${e}_${r}_${i}`;
   }
   GetTileConfig(e, r, i) {
-    e = this.Dt1(e, r, i);
-    return this.Pt1.get(e)
+    e = this.Jt1(e, r, i);
+    return this.Yt1.get(e);
   }
   GetAllTileConfig() {
-    return FogTextureConfigAll_1.configFogTextureConfigAll.GetConfigList()
+    return FogTextureConfigAll_1.configFogTextureConfigAll.GetConfigList();
   }
   GetAllTileConfigByMapId(e) {
-    return FogTextureConfigByMapId_1.configFogTextureConfigByMapId.GetConfigList(e)
+    return FogTextureConfigByMapId_1.configFogTextureConfigByMapId.GetConfigList(e);
   }
   GetUnlockMapTileConfigById(e) {
-    return BlockSwitchById_1.configBlockSwitchById.GetConfig(e)
+    return BlockSwitchById_1.configBlockSwitchById.GetConfig(e);
   }
   GetSubMapConfigByGroupId(e) {
     var r = [];
-    for (const i of this.L31) i.GroupId === e && r.push(i);
-    return r
+    for (const i of this.n41) {
+      if (i.GroupId === e) {
+        r.push(i);
+      }
+    }
+    return r;
   }
   GetSubMapConfigById(e) {
-    return this.R31.get(e)
+    return this.o41.get(e);
   }
   GetAllSubMapConfig() {
-    return this.L31
+    return this.n41;
   }
   GetSubMapConfigByAreaId(e) {
-    for (const r of this.L31)
-      if (r.Area.includes(e)) return r
+    for (const r of this.n41) {
+      if (r.Area.includes(e)) {
+        return r;
+      }
+    }
   }
   GetCustomMarkConfig(e) {
     var r = CustomMarkByMarkId_1.configCustomMarkByMarkId.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 18, "找不到CustomMark表的配置", ["MarkId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 18, "找不到CustomMark表的配置", ["MarkId", e]);
+      }
+    }
+    return r;
   }
   GetFogBlockConfig(e, r) {
-    if (this.vDi.has(e + "_" + r)) return FogBlockByBlockAndMapId_1.configFogBlockByBlockAndMapId.GetConfig(e, r)
+    if (this.vDi.has(e + "_" + r)) {
+      return FogBlockByBlockAndMapId_1.configFogBlockByBlockAndMapId.GetConfig(e, r);
+    }
   }
   GetLocalText(e) {
-    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? ""
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? "";
   }
   GetEntityConfigByMapIdAndEntityId(e, r) {
     var i = e + "-" + r;
-    if (!this.mlh.has(i)) return void 0 === (e = LevelEntityConfigByMapIdAndEntityId_1.configLevelEntityConfigByMapIdAndEntityId.GetConfig(e, r)) && this.mlh.set(i, !0), e
+    if (!this.mlh.has(i)) {
+      if ((e = LevelEntityConfigByMapIdAndEntityId_1.configLevelEntityConfigByMapIdAndEntityId.GetConfig(e, r)) === undefined) {
+        this.mlh.set(i, true);
+      }
+      return e;
+    }
   }
-  Ty1(e, r) {
-    return e + "_" + r
+  Xy1(e, r) {
+    return e + "_" + r;
   }
   GetMapBorderConfig(e, r) {
-    e = this.Ty1(e, r);
-    return this.Ey1.get(e)
+    e = this.Xy1(e, r);
+    return this.Qy1.get(e);
   }
   GetMapBorderConfigList() {
-    return MapBorderAll_1.configMapBorderAll.GetConfigList()
+    return MapBorderAll_1.configMapBorderAll.GetConfigList();
   }
   GetMapDissolveTime() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("MapDissolveTime")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("MapDissolveTime");
   }
   GetSoundBoxMarkConfig(e) {
     var r = SoundBoxMarkByMarkId_1.configSoundBoxMarkByMarkId.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 49, "找不到SoundBoxMark表的配置", ["MarkId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 49, "找不到SoundBoxMark表的配置", ["MarkId", e]);
+      }
+    }
+    return r;
   }
   GetTreasureBoxMarkConfig(e) {
     var r = TreasureBoxMarkByMarkId_1.configTreasureBoxMarkByMarkId.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 49, "找不到TreasureBoxMark表的配置", ["MarkId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 49, "找不到TreasureBoxMark表的配置", ["MarkId", e]);
+      }
+    }
+    return r;
   }
   GetTreasureBoxDetectorMarkConfig(e) {
     var r = TreasureBoxDetectorMarkByMarkId_1.configTreasureBoxDetectorMarkByMarkId.GetConfig(e);
-    return r || Log_1.Log.CheckError() && Log_1.Log.Error("Map", 49, "找不到TreasureBoxDetectorMark表的配置", ["MarkId", e]), r
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 49, "找不到TreasureBoxDetectorMark表的配置", ["MarkId", e]);
+      }
+    }
+    return r;
   }
   GetMapMarkFuncTypeConfigByFuncId(e) {
-    if (this.pDi.has(e)) return MapMarkRelativeSubTypeByFunctionId_1.configMapMarkRelativeSubTypeByFunctionId.GetConfig(e)
+    if (this.pDi.has(e)) {
+      return MapMarkRelativeSubTypeByFunctionId_1.configMapMarkRelativeSubTypeByFunctionId.GetConfig(e);
+    }
   }
   GetMapMarkFuncTypeConfigById(e) {
-    return MapMarkRelativeSubTypeById_1.configMapMarkRelativeSubTypeById.GetConfig(e)
+    return MapMarkRelativeSubTypeById_1.configMapMarkRelativeSubTypeById.GetConfig(e);
   }
   GetUiResourcePathById(e) {
     var r;
-    return StringUtils_1.StringUtils.IsEmpty(e) ? "" : (r = UiResourceById_1.configUiResourceById.GetConfig(e)) ? r.Path : (Log_1.Log.CheckError() && Log_1.Log.Error("Map", 63, "找不到UiResource表的配置", ["key", e]), "")
+    if (StringUtils_1.StringUtils.IsEmpty(e)) {
+      return "";
+    } else if (r = UiResourceById_1.configUiResourceById.GetConfig(e)) {
+      return r.Path;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 63, "找不到UiResource表的配置", ["key", e]);
+      }
+      return "";
+    }
   }
   GetMultiMapAreaConfigList() {
-    return MultiMapAreaConfigAll_1.configMultiMapAreaConfigAll.GetConfigList()
+    return MultiMapAreaConfigAll_1.configMultiMapAreaConfigAll.GetConfigList();
   }
   GetEnrichmentAreaConfigByItemId(e) {
-    return EnrichmentAreaConfigByItemId_1.configEnrichmentAreaConfigByItemId.GetConfigList(e)
+    return EnrichmentAreaConfigByItemId_1.configEnrichmentAreaConfigByItemId.GetConfigList(e);
   }
   GetEnrichmentAreaConfigByEnrichmentId(e) {
     e = EnrichmentAreaConfigByEnrichmentId_1.configEnrichmentAreaConfigByEnrichmentId.GetConfigList(e);
-    if (e) return e[0]
+    if (e) {
+      return e[0];
+    }
   }
   GetMapMarkByRelativeId(e, r) {
-    return MapMarkByRelativeId_1.configMapMarkByRelativeId.GetConfig(e, r)
+    return MapMarkByRelativeId_1.configMapMarkByRelativeId.GetConfig(e, r);
   }
   GetMapMarkByEntityConfigId(e) {
-    return MapMarkByEntityConfigId_1.configMapMarkByEntityConfigId.GetConfig(e)
+    return MapMarkByEntityConfigId_1.configMapMarkByEntityConfigId.GetConfig(e);
   }
   GetMapMarkListByInstanceDungeonId(e) {
-    return MapMarkByInstanceDungeonId_1.configMapMarkByInstanceDungeonId.GetConfigList(e)
+    return MapMarkByInstanceDungeonId_1.configMapMarkByInstanceDungeonId.GetConfigList(e);
   }
-}(exports.MapConfig = MapConfig).EnableAsyncMiniMap = !1;
+}
+(exports.MapConfig = MapConfig).EnableAsyncMiniMap = false;
 //# sourceMappingURL=MapConfig.js.map

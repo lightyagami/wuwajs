@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbGravityFlipFixedPos = void 0;
+  value: true
+});
+exports.FbGravityFlipFixedPos = undefined;
 class FbGravityFlipFixedPos {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.R0h = !1, this.w0h = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.R0h = false;
+    this.w0h = 0;
   }
   static Create(t) {
-    if (t) return new FbGravityFlipFixedPos(t)
+    if (t) {
+      return new FbGravityFlipFixedPos(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get GravityAndPosEntityId() {
-    return this.R0h || (this.R0h = !0, this.w0h = this.FbDataInternal.gravityAndPosEntityId()), this.w0h
+    if (!this.R0h) {
+      this.R0h = true;
+      this.w0h = this.FbDataInternal.gravityAndPosEntityId();
+    }
+    return this.w0h;
   }
 }
 exports.FbGravityFlipFixedPos = FbGravityFlipFixedPos;

@@ -1,29 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionEntityGroupFailureConditionHelper = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbEntityGroupFailureArbitraryState_1 = require("./FbEntityGroupFailureArbitraryState"),
-  FbEntityGroupFailureSequentialState_1 = require("./FbEntityGroupFailureSequentialState");
+  value: true
+});
+exports.UnionEntityGroupFailureConditionHelper = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbEntityGroupFailureArbitraryState_1 = require("./FbEntityGroupFailureArbitraryState");
+const FbEntityGroupFailureSequentialState_1 = require("./FbEntityGroupFailureSequentialState");
 class UnionEntityGroupFailureConditionHelper {
   static GetUnionEntityGroupFailureConditionObject(t) {
     switch (t) {
       case fb_component_1.UnionEntityGroupFailureCondition.EntityGroupFailureArbitraryState:
-        return new fb_component_1.EntityGroupFailureArbitraryState;
+        return new fb_component_1.EntityGroupFailureArbitraryState();
       case fb_component_1.UnionEntityGroupFailureCondition.EntityGroupFailureSequentialState:
-        return new fb_component_1.EntityGroupFailureSequentialState;
+        return new fb_component_1.EntityGroupFailureSequentialState();
       default:
-        return
+        return;
     }
   }
   static ReadUnionEntityGroupFailureCondition(t, e) {
-    if (void 0 !== e) switch (t) {
-      case fb_component_1.UnionEntityGroupFailureCondition.EntityGroupFailureArbitraryState:
-        return FbEntityGroupFailureArbitraryState_1.FbEntityGroupFailureArbitraryState.Create(e);
-      case fb_component_1.UnionEntityGroupFailureCondition.EntityGroupFailureSequentialState:
-        return FbEntityGroupFailureSequentialState_1.FbEntityGroupFailureSequentialState.Create(e);
-      default:
-        return
+    if (e !== undefined) {
+      switch (t) {
+        case fb_component_1.UnionEntityGroupFailureCondition.EntityGroupFailureArbitraryState:
+          return FbEntityGroupFailureArbitraryState_1.FbEntityGroupFailureArbitraryState.Create(e);
+        case fb_component_1.UnionEntityGroupFailureCondition.EntityGroupFailureSequentialState:
+          return FbEntityGroupFailureSequentialState_1.FbEntityGroupFailureSequentialState.Create(e);
+        default:
+          return;
+      }
     }
   }
 }

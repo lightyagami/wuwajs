@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CurrentVehicle = void 0;
+  value: true
+});
+exports.CurrentVehicle = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class CurrentVehicle {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsCurrentVehicle(e, t) {
-    return (t || new CurrentVehicle).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new CurrentVehicle()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsCurrentVehicle(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new CurrentVehicle).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new CurrentVehicle()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   type(e) {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__string(this.bb_pos + t, e) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, e);
+    } else {
+      return undefined;
+    }
   }
   static startCurrentVehicle(e) {
-    e.startObject(1)
+    e.startObject(1);
   }
   static addType(e, t) {
-    e.addFieldOffset(0, t, 0)
+    e.addFieldOffset(0, t, 0);
   }
   static endCurrentVehicle(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createCurrentVehicle(e, t) {
-    return CurrentVehicle.startCurrentVehicle(e), CurrentVehicle.addType(e, t), CurrentVehicle.endCurrentVehicle(e)
+    CurrentVehicle.startCurrentVehicle(e);
+    CurrentVehicle.addType(e, t);
+    return CurrentVehicle.endCurrentVehicle(e);
   }
 }
 exports.CurrentVehicle = CurrentVehicle;

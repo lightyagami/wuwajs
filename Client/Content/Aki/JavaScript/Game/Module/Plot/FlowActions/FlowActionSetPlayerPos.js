@@ -1,15 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlowActionSetPlayerPos = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  Global_1 = require("../../../Global"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  FlowActionServerAction_1 = require("./FlowActionServerAction");
+  value: true
+});
+exports.FlowActionSetPlayerPos = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const Global_1 = require("../../../Global");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const FlowActionServerAction_1 = require("./FlowActionServerAction");
 class FlowActionSetPlayerPos extends FlowActionServerAction_1.FlowActionServerAction {
   constructor() {
-    super(...arguments), this.Ilt = () => {
+    super(...arguments);
+    this.Ilt = () => {
       ModelManager_1.ModelManager.PlotModel.SetTemplatePlayerTransform({
         X: Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorLocationProxy.X,
         Y: Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorLocationProxy.Y,
@@ -17,17 +20,28 @@ class FlowActionSetPlayerPos extends FlowActionServerAction_1.FlowActionServerAc
         A: Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorRotationProxy.Yaw,
         Roll: Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorRotationProxy.Roll,
         Pitch: Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorRotationProxy.Pitch
-      }), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt), this.FinishExecute(!0)
-    }
+      });
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt);
+      }
+      this.FinishExecute(true);
+    };
   }
   OnExecute() {
-    this.RequestServerAction(), EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt)
+    this.RequestServerAction();
+    EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt);
   }
   OnBackgroundExecute() {
-    ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() ? this.FinishExecute(!0) : this.OnExecute()
+    if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      this.FinishExecute(true);
+    } else {
+      this.OnExecute();
+    }
   }
   OnInterruptExecute() {
-    EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt) && this.Ilt()
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.PlotTeleportToPositionFinished, this.Ilt)) {
+      this.Ilt();
+    }
   }
 }
 exports.FlowActionSetPlayerPos = FlowActionSetPlayerPos;

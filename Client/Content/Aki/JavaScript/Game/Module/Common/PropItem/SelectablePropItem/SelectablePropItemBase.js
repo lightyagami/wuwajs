@@ -1,46 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SelectablePropItemBase = void 0;
-const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract"),
-  SelectablePropTypeItemVariantSelect_1 = require("./SelectablePropTypeItemVariantSelect"),
-  SelectablePropTypeOne_1 = require("./SelectablePropTypeOne");
+  value: true
+});
+exports.SelectablePropItemBase = undefined;
+const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
+const SelectablePropTypeItemVariantSelect_1 = require("./SelectablePropTypeItemVariantSelect");
+const SelectablePropTypeOne_1 = require("./SelectablePropTypeOne");
 class SelectablePropItemBase extends GridProxyAbstract_1.GridProxyAbstract {
   constructor(e = 1) {
-    super(), this.PropData = void 0, this.OnToggleClick = e => {}, this.XBt = void 0, this.ComponentType = e
+    super();
+    this.PropData = undefined;
+    this.OnToggleClick = e => {};
+    this.XBt = undefined;
+    this.ComponentType = e;
   }
   OnRegisterComponent() {
-    0 === this.ComponentType ? this.XBt = new SelectablePropTypeOne_1.SelectablePropTypeOne(this.RootItem) : 1 === this.ComponentType && (this.XBt = new SelectablePropTypeItemVariantSelect_1.SelectablePropTypeItemVariantSelect(this.RootItem)), this.XBt.SetToggleClick(this.OnToggleClick)
+    if (this.ComponentType === 0) {
+      this.XBt = new SelectablePropTypeOne_1.SelectablePropTypeOne(this.RootItem);
+    } else if (this.ComponentType === 1) {
+      this.XBt = new SelectablePropTypeItemVariantSelect_1.SelectablePropTypeItemVariantSelect(this.RootItem);
+    }
+    this.XBt.SetToggleClick(this.OnToggleClick);
   }
   GetSelectItem() {
-    return this.XBt.GetSelectItem()
+    return this.XBt.GetSelectItem();
   }
   GetReduceButton() {
-    return this.XBt.GetReduceButton()
+    return this.XBt.GetReduceButton();
   }
   GetControlItem() {
-    return this.XBt.GetControlItem()
+    return this.XBt.GetControlItem();
   }
   GetFinishSelectItem() {
-    return this.XBt.GetFinishSelectItem()
+    return this.XBt.GetFinishSelectItem();
   }
   GetSelectNumberText() {
-    return this.XBt.GetSelectNumberText()
+    return this.XBt.GetSelectNumberText();
   }
   GetSelectableToggle() {
-    return this.XBt.GetSelectableToggle()
+    return this.XBt.GetSelectableToggle();
   }
   SetRoleIconState() {
-    this.XBt.SetRoleIconState()
+    this.XBt.SetRoleIconState();
   }
   ShowDefaultDownText() {
-    this.XBt instanceof SelectablePropTypeItemVariantSelect_1.SelectablePropTypeItemVariantSelect && this.XBt.ShowDefaultDownText()
+    if (this.XBt instanceof SelectablePropTypeItemVariantSelect_1.SelectablePropTypeItemVariantSelect) {
+      this.XBt.ShowDefaultDownText();
+    }
   }
   RefreshRightDownLockSprite(e) {
-    this.XBt instanceof SelectablePropTypeItemVariantSelect_1.SelectablePropTypeItemVariantSelect && this.XBt.RefreshRightDownLockSprite(e)
+    if (this.XBt instanceof SelectablePropTypeItemVariantSelect_1.SelectablePropTypeItemVariantSelect) {
+      this.XBt.RefreshRightDownLockSprite(e);
+    }
   }
   Refresh(e, t, r) {
-    this.PropData = e, this.XBt.Refresh(e, t, r), this.OnRefresh(t, r)
+    this.PropData = e;
+    this.XBt.Refresh(e, t, r);
+    this.OnRefresh(t, r);
   }
   OnRefresh(e, t) {}
   Clear() {}

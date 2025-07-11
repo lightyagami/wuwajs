@@ -1,13 +1,14 @@
 "use strict";
 
 function alwaysTrueCriteria(e) {
-  return !0
+  return true;
 }
-
 function alwaysFalseCriteria(e) {
-  return !1
+  return false;
 }
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.alwaysFalseCriteria = exports.alwaysTrueCriteria = void 0, exports.alwaysTrueCriteria = alwaysTrueCriteria, exports.alwaysFalseCriteria = alwaysFalseCriteria;
-//# sourceMappingURL=Criteria.js.map
+  value: true
+});
+exports.alwaysFalseCriteria = exports.alwaysTrueCriteria = undefined;
+exports.alwaysTrueCriteria = alwaysTrueCriteria;
+exports.alwaysFalseCriteria = alwaysFalseCriteria; //# sourceMappingURL=Criteria.js.map

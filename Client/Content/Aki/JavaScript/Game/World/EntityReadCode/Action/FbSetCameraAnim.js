@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetCameraAnim = void 0;
+  value: true
+});
+exports.FbSetCameraAnim = undefined;
 class FbSetCameraAnim {
   constructor(t) {
-    this.FbDataInternal = t, this.ifh = !1, this.rfh = void 0, this.qmh = !1, this.H8o = 0, this.ofh = !1, this.nfh = !1
+    this.FbDataInternal = t;
+    this.ifh = false;
+    this.rfh = undefined;
+    this.qmh = false;
+    this.H8o = 0;
+    this.ofh = false;
+    this.nfh = false;
   }
   static Create(t) {
-    if (t) return new FbSetCameraAnim(t)
+    if (t) {
+      return new FbSetCameraAnim(t);
+    }
   }
   get CameraAnimDataAsset() {
-    return this.ifh || (this.ifh = !0, this.rfh = this.FbDataInternal.cameraAnimDataAsset()), this.rfh
+    if (!this.ifh) {
+      this.ifh = true;
+      this.rfh = this.FbDataInternal.cameraAnimDataAsset();
+    }
+    return this.rfh;
   }
   get Speed() {
-    return this.qmh || (this.qmh = !0, this.H8o = this.FbDataInternal.speed()), this.H8o
+    if (!this.qmh) {
+      this.qmh = true;
+      this.H8o = this.FbDataInternal.speed();
+    }
+    return this.H8o;
   }
   get UseNoise() {
-    return this.ofh || (this.ofh = !0, this.nfh = this.FbDataInternal.useNoise()), this.nfh
+    if (!this.ofh) {
+      this.ofh = true;
+      this.nfh = this.FbDataInternal.useNoise();
+    }
+    return this.nfh;
   }
 }
 exports.FbSetCameraAnim = FbSetCameraAnim;

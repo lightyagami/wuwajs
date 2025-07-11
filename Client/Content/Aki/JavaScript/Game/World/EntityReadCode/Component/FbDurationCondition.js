@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDurationCondition = void 0;
+  value: true
+});
+exports.FbDurationCondition = undefined;
 class FbDurationCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.I_h = !1, this.y6o = 0, this.zqh = !1, this.Jqh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.I_h = false;
+    this.y6o = 0;
+    this.zqh = false;
+    this.Jqh = false;
   }
   static Create(t) {
-    if (t) return new FbDurationCondition(t)
+    if (t) {
+      return new FbDurationCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Duration() {
-    return this.I_h || (this.I_h = !0, this.y6o = this.FbDataInternal.duration()), this.y6o
+    if (!this.I_h) {
+      this.I_h = true;
+      this.y6o = this.FbDataInternal.duration();
+    }
+    return this.y6o;
   }
   get Refill() {
-    return this.zqh || (this.zqh = !0, this.Jqh = this.FbDataInternal.refill()), this.Jqh
+    if (!this.zqh) {
+      this.zqh = true;
+      this.Jqh = this.FbDataInternal.refill();
+    }
+    return this.Jqh;
   }
 }
 exports.FbDurationCondition = FbDurationCondition;

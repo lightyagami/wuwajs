@@ -1,47 +1,79 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEntityGroupComponent = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbEntityStateTrigger_1 = require("./FbEntityStateTrigger"),
-  FbFailureStateTrigger_1 = require("./FbFailureStateTrigger"),
-  FbFinishStateTrigger_1 = require("./FbFinishStateTrigger");
+  value: true
+});
+exports.FbEntityGroupComponent = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbEntityStateTrigger_1 = require("./FbEntityStateTrigger");
+const FbFailureStateTrigger_1 = require("./FbFailureStateTrigger");
+const FbFinishStateTrigger_1 = require("./FbFinishStateTrigger");
 class FbEntityGroupComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.V1h = !1, this.j1h = void 0, this.gVh = !1, this.fVh = void 0, this.pVh = !1, this.vVh = void 0, this.yVh = !1, this.SVh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.gVh = false;
+    this.fVh = undefined;
+    this.pVh = false;
+    this.vVh = undefined;
+    this.yVh = false;
+    this.SVh = undefined;
   }
   static Create(t) {
-    if (t) return new FbEntityGroupComponent(t)
+    if (t) {
+      return new FbEntityGroupComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var i = this.FbDataInternal.entityIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get StateTriggers() {
     if (!this.gVh) {
-      this.gVh = !0, this.fVh = new Array;
+      this.gVh = true;
+      this.fVh = new Array();
       var i = this.FbDataInternal.stateTriggersLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var e = this.FbDataInternal.stateTriggers(t, new fb_component_1.EntityStateTrigger);
-          this.fVh.push(FbEntityStateTrigger_1.FbEntityStateTrigger.Create(e))
+          var e = this.FbDataInternal.stateTriggers(t, new fb_component_1.EntityStateTrigger());
+          this.fVh.push(FbEntityStateTrigger_1.FbEntityStateTrigger.Create(e));
         }
+      }
     }
-    return this.fVh
+    return this.fVh;
   }
   get FinishState() {
-    return this.pVh || (this.pVh = !0, this.vVh = FbFinishStateTrigger_1.FbFinishStateTrigger.Create(this.FbDataInternal.finishState())), this.vVh
+    if (!this.pVh) {
+      this.pVh = true;
+      this.vVh = FbFinishStateTrigger_1.FbFinishStateTrigger.Create(this.FbDataInternal.finishState());
+    }
+    return this.vVh;
   }
   get FailureState() {
-    return this.yVh || (this.yVh = !0, this.SVh = FbFailureStateTrigger_1.FbFailureStateTrigger.Create(this.FbDataInternal.failureState())), this.SVh
+    if (!this.yVh) {
+      this.yVh = true;
+      this.SVh = FbFailureStateTrigger_1.FbFailureStateTrigger.Create(this.FbDataInternal.failureState());
+    }
+    return this.SVh;
   }
 }
 exports.FbEntityGroupComponent = FbEntityGroupComponent;

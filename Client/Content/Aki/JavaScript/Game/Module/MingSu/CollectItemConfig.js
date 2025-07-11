@@ -1,23 +1,29 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CollectItemConfig = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  DarkCoastDeliveryById_1 = require("../../../Core/Define/ConfigQuery/DarkCoastDeliveryById"),
-  DragonPoolAll_1 = require("../../../Core/Define/ConfigQuery/DragonPoolAll"),
-  DragonPoolById_1 = require("../../../Core/Define/ConfigQuery/DragonPoolById"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.CollectItemConfig = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const DarkCoastDeliveryById_1 = require("../../../Core/Define/ConfigQuery/DarkCoastDeliveryById");
+const DragonPoolAll_1 = require("../../../Core/Define/ConfigQuery/DragonPoolAll");
+const DragonPoolById_1 = require("../../../Core/Define/ConfigQuery/DragonPoolById");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class CollectItemConfig extends ConfigBase_1.ConfigBase {
   GetAllDragonPoolConfigList() {
-    return DragonPoolAll_1.configDragonPoolAll.GetConfigList()
+    return DragonPoolAll_1.configDragonPoolAll.GetConfigList();
   }
   GetDragonPoolConfigById(o) {
-    return DragonPoolById_1.configDragonPoolById.GetConfig(o)
+    return DragonPoolById_1.configDragonPoolById.GetConfig(o);
   }
   GetDarkCoastDeliveryById(o) {
     var e = DarkCoastDeliveryById_1.configDarkCoastDeliveryById.GetConfig(o);
-    if (void 0 !== e) return e;
-    Log_1.Log.CheckError() && Log_1.Log.Error("MingSuTi", 58, "DarkCoastDelivery表无当前id", ["id", o.toString()])
+    if (e !== undefined) {
+      return e;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("MingSuTi", 58, "DarkCoastDelivery表无当前id", ["id", o.toString()]);
+    }
   }
 }
 exports.CollectItemConfig = CollectItemConfig;

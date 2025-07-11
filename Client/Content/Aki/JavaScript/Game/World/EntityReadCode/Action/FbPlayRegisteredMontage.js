@@ -1,37 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayRegisteredMontage = void 0;
+  value: true
+});
+exports.FbPlayRegisteredMontage = undefined;
 class FbPlayRegisteredMontage {
   constructor(t) {
-    this.FbDataInternal = t, this.a_h = !1, this.I9o = 0, this.Rfh = !1, this.wfh = 0, this.Pfh = !1, this.Ufh = !1, this.Qfh = !1, this.Kfh = 0, this._Ah = !1, this.cAh = 0, this.uAh = !1, this.dAh = 0, this.px_ = !1, this.vx_ = !1, this.Ep1 = !1, this.Ip1 = !1
+    this.FbDataInternal = t;
+    this.a_h = false;
+    this.I9o = 0;
+    this.Rfh = false;
+    this.wfh = 0;
+    this.Pfh = false;
+    this.Ufh = false;
+    this.Qfh = false;
+    this.Kfh = 0;
+    this._Ah = false;
+    this.cAh = 0;
+    this.uAh = false;
+    this.dAh = 0;
+    this.px_ = false;
+    this.vx_ = false;
+    this.Wp1 = false;
+    this.Qp1 = false;
   }
   static Create(t) {
-    if (t) return new FbPlayRegisteredMontage(t)
+    if (t) {
+      return new FbPlayRegisteredMontage(t);
+    }
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get MontageId() {
-    return this.Rfh || (this.Rfh = !0, this.wfh = this.FbDataInternal.montageId()), this.wfh
+    if (!this.Rfh) {
+      this.Rfh = true;
+      this.wfh = this.FbDataInternal.montageId();
+    }
+    return this.wfh;
   }
   get IsAbpMontage() {
-    return this.Pfh || (this.Pfh = !0, this.Ufh = this.FbDataInternal.isAbpMontage()), this.Ufh
+    if (!this.Pfh) {
+      this.Pfh = true;
+      this.Ufh = this.FbDataInternal.isAbpMontage();
+    }
+    return this.Ufh;
   }
   get FaceExpressionId() {
-    return this.Qfh || (this.Qfh = !0, this.Kfh = this.FbDataInternal.faceExpressionId()), this.Kfh
+    if (!this.Qfh) {
+      this.Qfh = true;
+      this.Kfh = this.FbDataInternal.faceExpressionId();
+    }
+    return this.Kfh;
   }
   get LoopDuration() {
-    return this._Ah || (this._Ah = !0, this.cAh = this.FbDataInternal.loopDuration()), this.cAh
+    if (!this._Ah) {
+      this._Ah = true;
+      this.cAh = this.FbDataInternal.loopDuration();
+    }
+    return this.cAh;
   }
   get RepeatTimes() {
-    return this.uAh || (this.uAh = !0, this.dAh = this.FbDataInternal.repeatTimes()), this.dAh
+    if (!this.uAh) {
+      this.uAh = true;
+      this.dAh = this.FbDataInternal.repeatTimes();
+    }
+    return this.dAh;
   }
   get KeepMontageWhenEnd() {
-    return this.px_ || (this.px_ = !0, this.vx_ = this.FbDataInternal.keepMontageWhenEnd()), this.vx_
+    if (!this.px_) {
+      this.px_ = true;
+      this.vx_ = this.FbDataInternal.keepMontageWhenEnd();
+    }
+    return this.vx_;
   }
   get KeepMontageAfterFlow() {
-    return this.Ep1 || (this.Ep1 = !0, this.Ip1 = this.FbDataInternal.keepMontageAfterFlow()), this.Ip1
+    if (!this.Wp1) {
+      this.Wp1 = true;
+      this.Qp1 = this.FbDataInternal.keepMontageAfterFlow();
+    }
+    return this.Qp1;
   }
 }
 exports.FbPlayRegisteredMontage = FbPlayRegisteredMontage;

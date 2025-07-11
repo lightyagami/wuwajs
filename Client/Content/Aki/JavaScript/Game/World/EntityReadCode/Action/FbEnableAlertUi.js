@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableAlertUi = void 0;
+  value: true
+});
+exports.FbEnableAlertUi = undefined;
 class FbEnableAlertUi {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Yph = !1, this.zph = 0, this.Dch = !1, this.bSo = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Yph = false;
+    this.zph = 0;
+    this.Dch = false;
+    this.bSo = false;
   }
   static Create(t) {
-    if (t) return new FbEnableAlertUi(t)
+    if (t) {
+      return new FbEnableAlertUi(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get AreaId() {
-    return this.Yph || (this.Yph = !0, this.zph = this.FbDataInternal.areaId()), this.zph
+    if (!this.Yph) {
+      this.Yph = true;
+      this.zph = this.FbDataInternal.areaId();
+    }
+    return this.zph;
   }
   get IsEnable() {
-    return this.Dch || (this.Dch = !0, this.bSo = this.FbDataInternal.isEnable()), this.bSo
+    if (!this.Dch) {
+      this.Dch = true;
+      this.bSo = this.FbDataInternal.isEnable();
+    }
+    return this.bSo;
   }
 }
 exports.FbEnableAlertUi = FbEnableAlertUi;

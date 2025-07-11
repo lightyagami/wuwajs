@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDynamicPortal = void 0;
+  value: true
+});
+exports.FbDynamicPortal = undefined;
 const FbPortalRenderConfig_1 = require("./FbPortalRenderConfig");
 class FbDynamicPortal {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.DKh = !1, this.BKh = void 0, this.qKh = !1, this.kKh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.DKh = false;
+    this.BKh = undefined;
+    this.qKh = false;
+    this.kKh = undefined;
   }
   static Create(t) {
-    if (t) return new FbDynamicPortal(t)
+    if (t) {
+      return new FbDynamicPortal(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get PortalModel() {
-    return this.DKh || (this.DKh = !0, this.BKh = this.FbDataInternal.portalModel()), this.BKh
+    if (!this.DKh) {
+      this.DKh = true;
+      this.BKh = this.FbDataInternal.portalModel();
+    }
+    return this.BKh;
   }
   get RenderConfig() {
-    return this.qKh || (this.qKh = !0, this.kKh = FbPortalRenderConfig_1.FbPortalRenderConfig.Create(this.FbDataInternal.renderConfig())), this.kKh
+    if (!this.qKh) {
+      this.qKh = true;
+      this.kKh = FbPortalRenderConfig_1.FbPortalRenderConfig.Create(this.FbDataInternal.renderConfig());
+    }
+    return this.kKh;
   }
 }
 exports.FbDynamicPortal = FbDynamicPortal;

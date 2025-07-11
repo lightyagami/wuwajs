@@ -1,184 +1,420 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VisionRecommendModel = exports.VisionSelectRecommendData = exports.AttrRecommendInfo = exports.VisionAttrRecommendInfo = exports.VisionFetterRecommendInfo = void 0;
-const ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.VisionRecommendModel = exports.VisionSelectRecommendData = exports.AttrRecommendInfo = exports.VisionAttrRecommendInfo = exports.VisionFetterRecommendInfo = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const PhantomBattleDefine_1 = require("./PhantomBattleDefine");
+const VisionFetterDescItem_1 = require("./View/VisionFetterDescItem");
 class VisionFetterRecommendInfo {
   constructor() {
-    this.HHa = 0, this.bo_ = 0
+    this.HHa = 0;
+    this.Kwu = 0;
+    this.bo_ = 0;
+    this.Xwu = 0;
+    this.Ywu = [];
   }
   GetRecommendFetterGroupId() {
-    return this.HHa
+    return this.HHa;
+  }
+  GetSpecialFetterSubGroupId() {
+    return this.Kwu;
   }
   GetUsage() {
-    return this.bo_
+    return this.bo_;
   }
   GetUsageText() {
     var e = (this.bo_ - this.bo_ % 10) / 100;
-    return 0 === this.bo_ ? "" : e.toFixed(1) + "%"
+    if (this.bo_ === 0) {
+      return "";
+    } else {
+      return e.toFixed(1) + "%";
+    }
+  }
+  GetFetterCountList() {
+    return this.Ywu;
+  }
+  GetFetterType() {
+    return this.Xwu;
   }
   Phrase(e) {
-    this.HHa = e.rL_, this.bo_ = e.PGs
+    this.zwu(e);
+    this.bo_ = e.PGs;
+    this.Xwu = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(this.HHa).FetterType;
+  }
+  zwu(e) {
+    this.Ywu = [];
+    let t = 0;
+    let r = 0;
+    e = e.Lwu;
+    if (e.length !== 2 && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Phantom", 75, "推荐的套装羁绊数量异常，请确认配置与统计");
+    }
+    for (const s of e) {
+      var n = s.rL_;
+      var o = s.Awu;
+      var i = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(n);
+      if (t === 0 || i.FetterType === 1) {
+        t = n;
+      } else {
+        r = n;
+      }
+      var i = i.FetterMap.get(o);
+      if (i) {
+        this.Ywu.push({
+          GroupId: n,
+          Count: o,
+          FetterId: i
+        });
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Phantom", 75, "推荐的套装没有对应的羁绊效果", ["Group", n], ["Count", o]);
+      }
+    }
+    this.HHa = t;
+    this.Kwu = r;
   }
 }
 exports.VisionFetterRecommendInfo = VisionFetterRecommendInfo;
 class VisionAttrRecommendInfo {
   constructor() {
-    this.Lo_ = new Array, this.Ao_ = new Array
+    this.Lo_ = new Array();
+    this.Ao_ = new Array();
   }
   GetMainAttrRecommendInfo() {
-    return this.Lo_
+    return this.Lo_;
   }
   GetSubAttrRecommendInfo() {
-    return this.Ao_
+    return this.Ao_;
   }
 }
 exports.VisionAttrRecommendInfo = VisionAttrRecommendInfo;
 class AttrRecommendInfo {
   constructor() {
-    this.gXo = 0, this.bo_ = 0, this.xo_ = 0
+    this.gXo = 0;
+    this.bo_ = 0;
+    this.xo_ = 0;
   }
   GetAttrId() {
-    return this.gXo
+    return this.gXo;
   }
   GetUsage() {
-    return this.bo_
+    return this.bo_;
   }
   GetUsageText() {
     var e = (this.bo_ - this.bo_ % 10) / 100;
-    return 0 === this.bo_ ? "" : e.toFixed(1) + "%"
+    if (this.bo_ === 0) {
+      return "";
+    } else {
+      return e.toFixed(1) + "%";
+    }
   }
   GetAddType() {
-    return this.xo_
+    return this.xo_;
   }
   Phrase(e) {
-    this.gXo = e.oL_, this.bo_ = e.PGs, this.xo_ = e.nL_
+    this.gXo = e.oL_;
+    this.bo_ = e.PGs;
+    this.xo_ = e.nL_;
   }
 }
 exports.AttrRecommendInfo = AttrRecommendInfo;
 class VisionSelectRecommendData {
   constructor() {
-    this.AttrId = 0, this.AddType = 0
+    this.AttrId = 0;
+    this.AddType = 0;
   }
 }
 exports.VisionSelectRecommendData = VisionSelectRecommendData;
 class VisionRecommendModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Ro_ = new Map, this.Po_ = new Map, this.CurrentSelectMainAttrArray = new Array, this.CurrentSelectSubAttrArray = new Array, this.Y8_ = 0, this.wo_ = new Array(4, 3, 3, 1, 1), this.Uo_ = new Array(4, 3, 1, 1, 1), this.q6i = void 0, this.Do_ = 0, this.SortRecommend = (e, t) => {
-      var r = e.GetFetterGroupId() === this.Do_,
-        o = t.GetFetterGroupId() === this.Do_;
-      return r && !o ? -1 : o && !r ? 1 : e.GetQuality() !== t.GetQuality() ? t.GetQuality() - e.GetQuality() : (o = e.GetIfHaveRecommendMainProp(this.Y8_), r = t.GetIfHaveRecommendMainProp(this.Y8_), o && !r ? -1 : r && !o ? 1 : (r = e.GetIfHaveRecommendSubProp(this.Y8_), o = t.GetIfHaveRecommendSubProp(this.Y8_), r && !o ? -1 : o && !r ? 1 : e.GetPhantomLevel() !== t.GetPhantomLevel() ? t.GetPhantomLevel() - e.GetPhantomLevel() : (o = this.q6i.includes(e.GetUniqueId()), r = this.q6i.includes(t.GetUniqueId()), o && !r ? -1 : r && !o ? 1 : t.GetConfigId() - e.GetConfigId())))
-    }
+    super(...arguments);
+    this.Ro_ = new Map();
+    this.Po_ = new Map();
+    this.CurrentSelectMainAttrArray = new Array();
+    this.CurrentSelectSubAttrArray = new Array();
+    this.Jwu = (e, t, r, n, o) => {
+      e = e.GetFetterGroupId() === n;
+      t = t.GetFetterGroupId() === n;
+      if (e && !t) {
+        return -1;
+      } else if (t && !e) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+    this.Zwu = (e, t) => t.GetQuality() - e.GetQuality();
+    this.eLu = (e, t, r) => {
+      e = e.GetIfHaveRecommendMainProp(r);
+      t = t.GetIfHaveRecommendMainProp(r);
+      if (e && !t) {
+        return -1;
+      } else if (t && !e) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+    this.tLu = (e, t, r) => {
+      e = e.GetIfHaveRecommendSubProp(r);
+      t = t.GetIfHaveRecommendSubProp(r);
+      if (e && !t) {
+        return -1;
+      } else if (t && !e) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+    this.iLu = (e, t) => t.GetPhantomLevel() - e.GetPhantomLevel();
+    this.jRt = (e, t, r, n, o, i) => {
+      e = o.includes(e.GetUniqueId());
+      o = o.includes(t.GetUniqueId());
+      if (e && !o) {
+        return -1;
+      } else if (o && !e) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+    this.rLu = (e, t) => t.GetConfigId() - e.GetConfigId();
+    this.G2u = (e, t, r) => {
+      e = e.GetFetterGroupId();
+      if (e === t) {
+        return 2;
+      } else if (e === r) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+    this.F2u = (e, t, r, n, o, i) => {
+      e = this.G2u(e, n, i);
+      return this.G2u(t, n, i) - e;
+    };
+    this.UU1 = (e, t) => {
+      e = e.GetCost();
+      return t.GetCost() - e;
+    };
+    this.nLu = [this.Jwu, this.Zwu, this.eLu, this.tLu, this.iLu, this.jRt, this.rLu];
+    this.sLu = [this.F2u, this.UU1, this.Zwu, this.eLu, this.tLu, this.iLu, this.jRt, this.rLu];
   }
   OnRoleRecommendData(e, t) {
     if (t && t.hL_) {
-      var r = new Array;
-      for (const n of t.hL_) {
-        var o = new VisionFetterRecommendInfo;
-        o.Phrase(n), r.push(o)
+      var r = new Array();
+      for (const o of t.hL_) {
+        var n = new VisionFetterRecommendInfo();
+        n.Phrase(o);
+        r.push(n);
       }
-      this.Ro_.set(e, r)
+      this.Ro_.set(e, r);
     }
   }
   OnRoleRecommendAttrData(e, t) {
     if (t && t.lL_) {
       if (!this.Po_.get(e)) {
-        const s = new Map;
-        this.Po_.set(e, s)
+        const i = new Map();
+        this.Po_.set(e, i);
       }
-      const s = this.Po_.get(e);
-      if (s)
-        for (const i of t.lL_) {
-          var r = new VisionAttrRecommendInfo;
-          for (const a of i.sL_) {
-            var o = new AttrRecommendInfo;
-            o.Phrase(a), r.GetMainAttrRecommendInfo().push(o)
+      const i = this.Po_.get(e);
+      if (i) {
+        for (const s of t.lL_) {
+          var r = new VisionAttrRecommendInfo();
+          for (const a of s.sL_) {
+            var n = new AttrRecommendInfo();
+            n.Phrase(a);
+            r.GetMainAttrRecommendInfo().push(n);
           }
-          for (const h of i.aL_) {
-            var n = new AttrRecommendInfo;
-            n.Phrase(h), r.GetSubAttrRecommendInfo().push(n)
+          for (const h of s.aL_) {
+            var o = new AttrRecommendInfo();
+            o.Phrase(h);
+            r.GetSubAttrRecommendInfo().push(o);
           }
-          s.set(i.N2s, r)
+          i.set(s.N2s, r);
         }
+      }
     }
   }
   GetRoleFetterRecommendInfo(e) {
-    return this.Ro_.get(e)
+    return this.Ro_.get(e);
   }
   GetRoleCostAttrRecommendInfo(e, t) {
     e = this.Po_.get(e);
-    if (e) return e.get(t)
+    if (e) {
+      return e.get(t);
+    }
   }
   CheckVisionOneKeyEquipRedDot(r) {
-    var o, n = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(r);
-    if (n && !n.IsTrialRole()) {
-      let e = !1,
-        t = 0;
-      for (const i of ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(r).GetIncrIdList()) 0 === i ? e = !0 : (o = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i)) && (t += o.GetCost());
-      if (e) {
-        var s = ModelManager_1.ModelManager.PhantomBattleModel.GetMaxCost() - t,
-          n = this.Bo_(r, !1);
-        if (n)
-          for (const a of n)
-            if (a.GetEquipRoleId() !== r && a.GetCost() <= s) return !0
-      }
-    }
-    return !1
-  }
-  GetRecommendEquipUniqueIdList(e, t = 0) {
-    this.Y8_ = e;
-    var r = ModelManager_1.ModelManager.CalabashModel.GetCalabashLevel(),
-      o = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionRecommendRuleLevel();
-    let n = this.Uo_;
-    o <= r && (n = this.wo_);
-    var s = [0, 0, 0, 0, 0],
-      i = ((this.Do_ = 0) < t ? this.Do_ = t : (o = this.GetRoleFetterRecommendInfo(e)) && (this.Do_ = 0 < o.length ? o?.[0].GetRecommendFetterGroupId() : 0), this.q6i = ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(e).GetIncrIdList(), this.Bo_(e));
-    if (i) {
-      var a = s.length;
+    var n;
+    var o = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(r);
+    if (o && !o.IsTrialRole()) {
+      let e = false;
       let t = 0;
-      var h = ModelManager_1.ModelManager.PhantomBattleModel.GetMaxCost();
-      for (let e = 0; e < a && !(t >= h); e++) {
-        var c = n[e],
-          c = this.qo_(s, c, i);
-        0 !== c && (t += ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(c).GetCost(), s[e] = c)
+      for (const s of ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(r).GetIncrIdList()) {
+        if (s === 0) {
+          e = true;
+        } else if (n = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(s)) {
+          t += n.GetCost();
+        }
+      }
+      if (e) {
+        var i = ModelManager_1.ModelManager.PhantomBattleModel.GetMaxCost() - t;
+        var o = this.Bo_(r);
+        if (o) {
+          for (const a of o) {
+            if (a.GetEquipRoleId() !== r && a.GetCost() <= i) {
+              return true;
+            }
+          }
+        }
       }
     }
-    return s
+    return false;
   }
-  qo_(t, r, o) {
-    const n = new Array;
+  GetRecommendEquipUniqueIdList(e, t) {
+    var r = ModelManager_1.ModelManager.CalabashModel.GetCalabashLevel();
+    var n = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionRecommendRuleLevel();
+    let o = PhantomBattleDefine_1.costListRecommendLowLevel;
+    if (n <= r) {
+      o = PhantomBattleDefine_1.costListRecommendHighLevel;
+    }
+    var n = t.GetRecommendFetterGroupId();
+    var r = t.GetSpecialFetterSubGroupId();
+    var i = [0, 0, 0, 0, 0];
+    if (t.GetFetterType() === 1) {
+      this.hLu(e, n, r, o, i);
+    } else {
+      this.lLu(e, n, o, i);
+    }
+    return i;
+  }
+  hLu(e, r, n, o, i) {
+    var s = this.Bo_(e);
+    if (s) {
+      this.uLu(s, this.sLu, e, r, n);
+      let t = 0;
+      var a = ModelManager_1.ModelManager.PhantomBattleModel.GetMaxCost();
+      var h = i.length;
+      for (let e = 0; e < h && !(t >= a); e++) {
+        var c = o[e];
+        var f = this.cLu(i) ? [r] : [];
+        if ((c = this.qo_(i, c, s, false, f)) !== 0) {
+          t += ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(c).GetCost();
+          i[e] = c;
+        }
+      }
+    }
+    return i;
+  }
+  cLu(e) {
+    var t;
+    var r;
+    var n;
+    var o = new Map();
+    for (const s of e) {
+      if (!(s <= 0)) {
+        t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(s).GetFetterGroupId();
+        o.set(t, (o.get(t) ?? 0) + 1);
+      }
+    }
+    for ([r, n] of o) {
+      if (ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(r).FetterType === 1) {
+        var i = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupMaxCountById(r);
+        if (n >= i) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  lLu(e, r, n, o) {
+    var i = this.Bo_(e);
+    if (i) {
+      this.uLu(i, this.nLu, e, r);
+      var s = o.length;
+      let t = 0;
+      var a = ModelManager_1.ModelManager.PhantomBattleModel.GetMaxCost();
+      for (let e = 0; e < s && !(t >= a); e++) {
+        var h = n[e];
+        var h = this.qo_(o, h, i, true, []);
+        if (h !== 0) {
+          t += ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(h).GetCost();
+          o[e] = h;
+        }
+      }
+    }
+    return o;
+  }
+  qo_(t, r, n, o, i) {
+    const s = new Array();
     t.forEach(e => {
       e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e);
-      e && n.push(e.GetMonsterId())
+      if (e) {
+        s.push(e.GetMonsterId());
+      }
     });
-    var s = o.length;
-    let i = 0;
-    var a = new Array;
-    for (let e = 0; e < s; e++) {
-      var h = o[e];
-      if (h?.GetCost() === r && !t.includes(h?.GetUniqueId())) {
-        var c = h.GetMonsterId();
-        if (!n.includes(c)) {
-          i = h.GetUniqueId();
-          break
+    var a = n.length;
+    let h = 0;
+    var c = new Array();
+    for (let e = 0; e < a; e++) {
+      var f = n[e];
+      if (!t.includes(f?.GetUniqueId()) && !(o ? f.GetCost() !== r : f.GetCost() > r) && !i.includes(f.GetFetterGroupId())) {
+        var u = f.GetMonsterId();
+        if (!s.includes(u)) {
+          h = f.GetUniqueId();
+          break;
         }
-        a.push(h.GetUniqueId())
+        c.push(f.GetUniqueId());
       }
     }
-    return i = 0 === i && 0 < a.length ? a[0] : i
+    return h = h === 0 && c.length > 0 ? c[0] : h;
   }
-  Bo_(e, t = !0) {
-    var r, o = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemDataList();
-    if (0 !== o.length) {
-      const n = new Array;
-      for (const s of o) ModelManager_1.ModelManager.PhantomBattleModel.CheckPhantomIsEquip(s.GetUniqueId()) || (r = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(s.GetUniqueId()), n.push(r));
-      return ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(e).GetIncrIdList().forEach(e => {
+  Bo_(e) {
+    var t;
+    var r = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemDataList();
+    if (r.length !== 0) {
+      const n = new Array();
+      for (const o of r) {
+        if (!ModelManager_1.ModelManager.PhantomBattleModel.CheckPhantomIsEquip(o.GetUniqueId())) {
+          t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(o.GetUniqueId());
+          n.push(t);
+        }
+      }
+      ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(e).GetIncrIdList().forEach(e => {
         e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e);
-        e && n.push(e)
-      }), t ? n.sort(this.SortRecommend) : n
+        if (e) {
+          n.push(e);
+        }
+      });
+      return n;
     }
+  }
+  uLu(e, o, i, s, a) {
+    const h = ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(i).GetIncrIdList();
+    e.sort((e, t) => {
+      for (const n of o) {
+        var r = n(e, t, i, s, h, a);
+        if (r !== 0) {
+          return r;
+        }
+      }
+      return 0;
+    });
+  }
+  GetFetterDescByRecommendInfo(e) {
+    var t = new Array();
+    for (const n of e.GetFetterCountList()) {
+      var r = new VisionFetterDescItem_1.VisionFetterDescData();
+      r.Key = n.Count;
+      r.Value = n.FetterId;
+      t.push(r);
+    }
+    return t;
   }
 }
 exports.VisionRecommendModel = VisionRecommendModel;

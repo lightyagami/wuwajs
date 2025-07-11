@@ -1,23 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TutorialPageItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.TutorialPageItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class TutorialPageItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.Xxt = void 0, this.Xxt = e
+    super();
+    this.Xxt = undefined;
+    this.Xxt = e;
   }
   Init() {
-    this.CreateThenShowByActor(this.Xxt.GetOwner())
+    this.CreateThenShowByActor(this.Xxt.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem]
-    ], this.BtnBindInfo = []
+    this.ComponentRegisterInfos = [[0, UE.UIItem]];
+    this.BtnBindInfo = [];
   }
   UpdateShow(e) {
-    this.GetItem(0).SetUIActive(e)
+    this.GetItem(0).SetUIActive(e);
   }
 }
 exports.TutorialPageItem = TutorialPageItem;

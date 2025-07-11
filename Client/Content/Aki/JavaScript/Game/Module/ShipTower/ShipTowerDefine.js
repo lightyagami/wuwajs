@@ -1,7 +1,10 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.shipTowerCurveRes = exports.shipTowerTextKey = exports.SHIP_TOWER_HELP_ID = exports.SHIP_TOWER_ZERO_SEASON = exports.SHIP_TOWER_MARK_ID = exports.shipTowerScoreGradeMap = void 0, exports.shipTowerScoreGradeMap = {
+  value: true
+});
+exports.shipTowerCurveRes = exports.shipTowerTextKey = exports.SHIP_TOWER_HELP_ID = exports.SHIP_TOWER_ZERO_SEASON = exports.SHIP_TOWER_MARK_ID = exports.shipTowerScoreGradeMap = undefined;
+exports.shipTowerScoreGradeMap = {
   D: {
     ResId: "T_ScoreD",
     Index: 1
@@ -30,7 +33,11 @@ Object.defineProperty(exports, "__esModule", {
     ResId: "T_ScoreSSS",
     Index: 7
   }
-}, exports.SHIP_TOWER_MARK_ID = 302001, exports.SHIP_TOWER_ZERO_SEASON = 0, exports.SHIP_TOWER_HELP_ID = 201, exports.shipTowerTextKey = {
+};
+exports.SHIP_TOWER_MARK_ID = 302001;
+exports.SHIP_TOWER_ZERO_SEASON = 0;
+exports.SHIP_TOWER_HELP_ID = 201;
+exports.shipTowerTextKey = {
   TeamAreaNameUp: "GhostShipTeamName_Text3",
   TeamAreaNameDown: "GhostShipTeamName_Text4",
   AreaNameShallow: "GhostShipLevelStage_Text1",
@@ -88,8 +95,8 @@ Object.defineProperty(exports, "__esModule", {
   MapMarkRewardTitle: "GhostShipMarkRewardTitle_Text",
   ScorePointNoColor: "GhostShipPointNoColor_Text",
   LastReviewProgress: "GhostShipLastReview_Text"
-}, exports.shipTowerCurveRes = {
+};
+exports.shipTowerCurveRes = {
   ChangeArea: "Ani_SliderCurve_InOut",
   FlipPage: "Ani_SliderCurve_Flat"
-};
-//# sourceMappingURL=ShipTowerDefine.js.map
+}; //# sourceMappingURL=ShipTowerDefine.js.map

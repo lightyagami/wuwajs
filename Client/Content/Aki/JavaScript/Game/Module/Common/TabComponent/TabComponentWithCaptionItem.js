@@ -1,152 +1,182 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TabComponentWithCaptionItem = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem"),
-  LevelSequencePlayer_1 = require("../LevelSequencePlayer"),
-  TabComponent_1 = require("./TabComponent"),
-  CommonTabItemBase_1 = require("./TabItem/CommonTabItemBase");
+  value: true
+});
+exports.TabComponentWithCaptionItem = undefined;
+const UE = require("ue");
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const LevelSequencePlayer_1 = require("../LevelSequencePlayer");
+const TabComponent_1 = require("./TabComponent");
+const CommonTabItemBase_1 = require("./TabItem/CommonTabItemBase");
 class TabComponentWithCaptionItem extends UiPanelBase_1.UiPanelBase {
-  constructor(t, e, i, s = !1) {
-    super(), this.lqe = void 0, this.Nbt = void 0, this.Gbt = void 0, this.xqe = void 0, this.$pt = void 0, this.Obt = void 0, this.NeedCaptionSwitchWithToggle = !0, this.R6e = (t, e) => {
-      return this.Nbt.ProxyCreate(t, e)
-    }, this.pqe = t => {
+  constructor(t, e, i, s = false) {
+    super();
+    this.lqe = undefined;
+    this.Nbt = undefined;
+    this.Gbt = undefined;
+    this.xqe = undefined;
+    this.$pt = undefined;
+    this.Obt = undefined;
+    this.NeedCaptionSwitchWithToggle = true;
+    this.R6e = (t, e) => {
+      return this.Nbt.ProxyCreate(t, e);
+    };
+    this.pqe = t => {
       var e = this.Nbt.GetCommonData(t);
-      e && this.NeedCaptionSwitchWithToggle && (this.lqe.SetTitleByTitleData(e.GetTitleData()), this.lqe.SetTitleIcon(e.GetSmallIcon())), this.Nbt.ToggleCallBack(t)
-    }, this.Nbt = e, this.Obt = i, s || this.CreateThenShowByActor(t.GetOwner())
+      if (e && this.NeedCaptionSwitchWithToggle) {
+        this.lqe.SetTitleByTitleData(e.GetTitleData());
+        this.lqe.SetTitleIcon(e.GetSmallIcon());
+      }
+      this.Nbt.ToggleCallBack(t);
+    };
+    this.Nbt = e;
+    this.Obt = i;
+    if (!s) {
+      this.CreateThenShowByActor(t.GetOwner());
+    }
   }
   get TabComponent() {
-    return this.Gbt
+    return this.Gbt;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIScrollViewWithScrollbarComponent],
-      [2, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem]];
   }
   OnStart() {
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0)), this.lqe.SetCloseCallBack(this.Obt), this.xqe = this.GetScrollViewWithScrollbar(1), this.Gbt = new TabComponent_1.TabComponent(this.xqe.Content.GetUIItem(), this.R6e, this.pqe, void 0), this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem())
+    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
+    this.lqe.SetCloseCallBack(this.Obt);
+    this.xqe = this.GetScrollViewWithScrollbar(1);
+    this.Gbt = new TabComponent_1.TabComponent(this.xqe.Content.GetUIItem(), this.R6e, this.pqe, undefined);
+    this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   SetCloseCallBack(t) {
-    this.Obt = t
+    this.Obt = t;
   }
   RefreshTabItem(t, e) {
-    this.TabComponent.RefreshTabItem(t, e)
+    this.TabComponent.RefreshTabItem(t, e);
   }
-  async RefreshTabItemAsync(t, e = !0) {
-    await this.TabComponent.RefreshTabItemAsync(t, e)
+  async RefreshTabItemAsync(t, e = true) {
+    await this.TabComponent.RefreshTabItemAsync(t, e);
   }
   RefreshTabItemByLength(t, e) {
     t = this.CreateTabItemDataByLength(t);
-    this.RefreshTabItem(t, e)
+    this.RefreshTabItem(t, e);
   }
   async RefreshTabItemByLengthAsync(t) {
     t = this.CreateTabItemDataByLength(t);
-    await this.RefreshTabItemAsync(t)
+    await this.RefreshTabItemAsync(t);
   }
   async CreatePopupToggleTab(t) {
-    await this.lqe.CreateToggleTab(t)
+    await this.lqe.CreateToggleTab(t);
   }
   GetCaptionToggleState() {
-    return this.lqe.GetToggleState()
+    return this.lqe.GetToggleState();
   }
   SetPopupToggleName(t) {
-    this.lqe?.SetToggleName(t)
+    this.lqe?.SetToggleName(t);
   }
   SetPopupToggleVisible(t) {
-    this.lqe?.SetToggleVisible(t)
+    this.lqe?.SetToggleVisible(t);
   }
   CreateTabItemDataByLength(e) {
-    var i = new Array;
+    var i = new Array();
     for (let t = 0; t < e; t++) {
-      var s = new CommonTabItemBase_1.CommonTabItemData;
-      s.Index = t, s.Data = this.Nbt.GetCommonData(t), i.push(s)
+      var s = new CommonTabItemBase_1.CommonTabItemData();
+      s.Index = t;
+      s.Data = this.Nbt.GetCommonData(t);
+      i.push(s);
     }
-    return i
+    return i;
   }
-  SelectToggleByIndex(t, e = !1) {
-    this.TabComponent.SelectToggleByIndex(t, e)
+  SelectToggleByIndex(t, e = false) {
+    this.TabComponent.SelectToggleByIndex(t, e);
   }
   ShowItem() {
-    this.$pt.PlayLevelSequenceByName("Start", !0)
+    this.$pt.PlayLevelSequenceByName("Start", true);
   }
   async ShowItemAsync() {
-    var t = new CustomPromise_1.CustomPromise;
-    await this.$pt.PlaySequenceAsync("Start", t, !0)
+    var t = new CustomPromise_1.CustomPromise();
+    await this.$pt.PlaySequenceAsync("Start", t, true);
   }
   HideItem() {
-    this.$pt.PlayLevelSequenceByName("Close", !0)
+    this.$pt.PlayLevelSequenceByName("Close", true);
   }
   GetSelectedIndex() {
-    return this.TabComponent.GetSelectedIndex()
+    return this.TabComponent.GetSelectedIndex();
   }
   ScrollToToggleByIndex(t) {
     t = this.TabComponent.GetTabItemByIndex(t);
-    this.xqe.ScrollTo(t.GetRootItem())
+    this.xqe.ScrollTo(t.GetRootItem());
   }
   GetTabItemByIndex(t) {
-    return this.TabComponent.GetTabItemByIndex(t)
+    return this.TabComponent.GetTabItemByIndex(t);
   }
   GetTabItemMap() {
-    return this.TabComponent.GetTabItemMap()
+    return this.TabComponent.GetTabItemMap();
   }
   GetTabComponent() {
-    return this.TabComponent
+    return this.TabComponent;
   }
   SetCanChange(t) {
-    this.TabComponent.SetCanChange(t)
+    this.TabComponent.SetCanChange(t);
   }
   SetTabRootActive(t) {
-    this.GetItem(2).SetUIActive(t)
+    this.GetItem(2).SetUIActive(t);
   }
   SetRootActive(t) {
-    this.GetItem(2).SetUIActive(t), this.lqe?.SetUiActive(t)
+    this.GetItem(2).SetUIActive(t);
+    this.lqe?.SetUiActive(t);
   }
   async SetCurrencyItemList(t) {
-    await this.lqe.SetCurrencyItemList(t)
+    await this.lqe.SetCurrencyItemList(t);
   }
   GetCurrencyItemList() {
-    return this.lqe.GetCurrencyItemList()
+    return this.lqe.GetCurrencyItemList();
   }
   SetHelpButtonShowState(t) {
-    this.lqe.SetHelpBtnActive(t)
+    this.lqe.SetHelpBtnActive(t);
   }
   SetHelpButtonCallBack(t) {
-    this.lqe.SetHelpCallBack(t)
+    this.lqe.SetHelpCallBack(t);
   }
   SetCloseBtnRaycast(t) {
-    this.lqe.SetCloseBtnRaycast(t)
+    this.lqe.SetCloseBtnRaycast(t);
   }
   SetCloseBtnShowState(t) {
-    this.lqe.SetCloseBtnShowState(t)
+    this.lqe.SetCloseBtnShowState(t);
   }
   SetTabComponentShowState(t) {
-    this.xqe.RootUIComp.SetUIActive(t)
+    this.xqe.RootUIComp.SetUIActive(t);
   }
   OnBeforeDestroy() {
-    this.Gbt && (this.Gbt.Destroy(), this.Gbt = void 0), this.lqe && (this.lqe.Destroy(), this.lqe = void 0)
+    if (this.Gbt) {
+      this.Gbt.Destroy();
+      this.Gbt = undefined;
+    }
+    if (this.lqe) {
+      this.lqe.Destroy();
+      this.lqe = undefined;
+    }
   }
   SetTitle(t) {
-    this.lqe?.SetTitle(t)
+    this.lqe?.SetTitle(t);
   }
   SetTitleByTextIdAndArgNew(t, ...e) {
-    this.lqe?.SetTitleByTextIdAndArgNew(t, e)
+    this.lqe?.SetTitleByTextIdAndArgNew(t, e);
   }
   SetTitleIcon(t) {
-    this.lqe.SetTitleIcon(t)
+    this.lqe.SetTitleIcon(t);
   }
   SetTitleIconVisible(t) {
-    this.lqe?.SetTitleIconVisible(t)
+    this.lqe?.SetTitleIconVisible(t);
   }
   SetScrollViewVisible(t) {
-    this.GetScrollViewWithScrollbar(1).RootUIComp.SetUIActive(t)
+    this.GetScrollViewWithScrollbar(1).RootUIComp.SetUIActive(t);
   }
   DestroyOverride() {
-    return !0
+    return true;
   }
 }
 exports.TabComponentWithCaptionItem = TabComponentWithCaptionItem;

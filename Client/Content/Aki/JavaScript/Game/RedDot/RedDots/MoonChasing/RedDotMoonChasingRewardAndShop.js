@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotMoonChasingRewardAndShop = void 0;
+  value: true
+});
+exports.RedDotMoonChasingRewardAndShop = undefined;
 const RedDotBase_1 = require("../../RedDotBase");
 class RedDotMoonChasingRewardAndShop extends RedDotBase_1.RedDotBase {
   OnCheck() {
-    return !1
+    return false;
   }
 }
 exports.RedDotMoonChasingRewardAndShop = RedDotMoonChasingRewardAndShop;

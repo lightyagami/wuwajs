@@ -1,134 +1,202 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TowerDefenceInstance = void 0;
+  value: true
+});
+exports.TowerDefenceInstance = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class TowerDefenceInstance {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get InstanceId() {
-    return this.instanceid()
+    return this.instanceid();
   }
   get ActivityId() {
-    return this.activityid()
+    return this.activityid();
   }
   get GroupId() {
-    return this.groupid()
+    return this.groupid();
   }
   get Difficulty() {
-    return this.difficulty()
+    return this.difficulty();
   }
   get SortId() {
-    return this.sortid()
+    return this.sortid();
   }
   get OptionalBuff() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.optionalbuffLength(), this.optionalbuff, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.optionalbuffLength(), this.optionalbuff, this);
   }
   get OpenDay() {
-    return this.openday()
+    return this.openday();
   }
   get Condition() {
-    return this.condition()
+    return this.condition();
   }
   get RewardId() {
-    return this.rewardid()
+    return this.rewardid();
   }
   get RewardScore() {
-    return this.rewardscore()
+    return this.rewardscore();
   }
   get LevelRewardDesc() {
-    return this.levelrewarddesc()
+    return this.levelrewarddesc();
   }
   get BaseEntityId() {
-    return this.baseentityid()
+    return this.baseentityid();
   }
   get UnlockScoreLimit() {
-    return this.unlockscorelimit()
+    return this.unlockscorelimit();
   }
   get IsDifficult() {
-    return this.isdifficult()
+    return this.isdifficult();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsTowerDefenceInstance(t, i) {
-    return (i || new TowerDefenceInstance).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new TowerDefenceInstance()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   instanceid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   activityid() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   groupid() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 999
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 999;
+    }
   }
   difficulty() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sortid() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetOptionalbuffAt(t) {
-    return this.optionalbuff(t)
+    return this.optionalbuff(t);
   }
   optionalbuff(t) {
     var i = this.J7.__offset(this.z7, 16);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   optionalbuffLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   optionalbuffArray() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   openday() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   condition() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rewardid() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rewardscore() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levelrewarddesc(t) {
-    var i = this.J7.__offset(this.z7, 26),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 26);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   baseentityid() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   unlockscorelimit() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isdifficult() {
     var t = this.J7.__offset(this.z7, 32);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.TowerDefenceInstance = TowerDefenceInstance;

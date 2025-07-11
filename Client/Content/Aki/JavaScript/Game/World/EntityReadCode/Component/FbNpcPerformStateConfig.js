@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcPerformStateConfig = void 0;
+  value: true
+});
+exports.FbNpcPerformStateConfig = undefined;
 class FbNpcPerformStateConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.Bch = !1, this.Cbo = void 0, this.L6h = !1, this.A6h = void 0
+    this.FbDataInternal = t;
+    this.Bch = false;
+    this.Cbo = undefined;
+    this.L6h = false;
+    this.A6h = undefined;
   }
   static Create(t) {
-    if (t) return new FbNpcPerformStateConfig(t)
+    if (t) {
+      return new FbNpcPerformStateConfig(t);
+    }
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
   get MaterialDa() {
-    return this.L6h || (this.L6h = !0, this.A6h = this.FbDataInternal.materialDa()), this.A6h
+    if (!this.L6h) {
+      this.L6h = true;
+      this.A6h = this.FbDataInternal.materialDa();
+    }
+    return this.A6h;
   }
 }
 exports.FbNpcPerformStateConfig = FbNpcPerformStateConfig;

@@ -1,84 +1,137 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsCharacterController = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  Info_1 = require("../../Core/Common/Info"),
-  Log_1 = require("../../Core/Common/Log"),
-  Vector2D_1 = require("../../Core/Utils/Math/Vector2D"),
-  ControllerHolder_1 = require("../Manager/ControllerHolder"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  InputMappingsDefine_1 = require("../Ui/InputDistribute/InputMappingsDefine"),
-  UiLayer_1 = require("../Ui/UiLayer"),
-  TsBasePlayerController_1 = require("./TsBasePlayerController"),
-  TsPureUiKeyHandle_1 = require("./TsPureUiKeyHandle"),
-  LEFT_BARACKET_NAME = new UE.FName("LeftBracket"),
-  RIGHT_BARACKET_NAME = new UE.FName("RightBracket");
+  value: true
+});
+exports.TsCharacterController = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const Info_1 = require("../../Core/Common/Info");
+const Log_1 = require("../../Core/Common/Log");
+const Vector2D_1 = require("../../Core/Utils/Math/Vector2D");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
+const ModelManager_1 = require("../Manager/ModelManager");
+const InputMappingsDefine_1 = require("../Ui/InputDistribute/InputMappingsDefine");
+const UiLayer_1 = require("../Ui/UiLayer");
+const TsBasePlayerController_1 = require("./TsBasePlayerController");
+const TsPureUiKeyHandle_1 = require("./TsPureUiKeyHandle");
+const LEFT_BARACKET_NAME = new UE.FName("LeftBracket");
+const RIGHT_BARACKET_NAME = new UE.FName("RightBracket");
 class TsCharacterController extends TsBasePlayerController_1.TsBasePlayerController {
   constructor() {
-    super(...arguments), this.CursorInputVector = void 0, this.MoveInputVector = void 0, this.TsUiKeyHandle = void 0
+    super(...arguments);
+    this.CursorInputVector = undefined;
+    this.MoveInputVector = undefined;
+    this.TsUiKeyHandle = undefined;
   }
   Constructor() {
-    super.Constructor(), this.CursorInputVector = void 0, this.MoveInputVector = void 0, this.TsUiKeyHandle = void 0
+    super.Constructor();
+    this.CursorInputVector = undefined;
+    this.MoveInputVector = undefined;
+    this.TsUiKeyHandle = undefined;
   }
   ReceiveBeginPlay() {
-    super.ReceiveBeginPlay(), this.ChangeRotationOnPossess = !1, this.bShowMouseCursor = Info_1.Info.IsInKeyBoard(), UE.KuroInputFunctionLibrary.ApplyInputMode(this)
+    super.ReceiveBeginPlay();
+    this.ChangeRotationOnPossess = false;
+    this.bShowMouseCursor = Info_1.Info.IsInKeyBoard();
+    UE.KuroInputFunctionLibrary.ApplyInputMode(this);
   }
   ReceiveDestroyed() {
-    super.ReceiveDestroyed(), this.TsUiKeyHandle && (this.TsUiKeyHandle.Reset(), this.TsUiKeyHandle = void 0)
+    super.ReceiveDestroyed();
+    if (this.TsUiKeyHandle) {
+      this.TsUiKeyHandle.Reset();
+      this.TsUiKeyHandle = undefined;
+    }
   }
   ReceivePossess(e) {
-    super.ReceivePossess(e), ControllerHolder_1.ControllerHolder.CameraController.OnPossess(e)
+    super.ReceivePossess(e);
+    ControllerHolder_1.ControllerHolder.CameraController.OnPossess(e);
   }
   ReceiveUnPossess(e) {
-    super.ReceiveUnPossess(e), ControllerHolder_1.ControllerHolder.CameraController.OnPossess(void 0)
+    super.ReceiveUnPossess(e);
+    ControllerHolder_1.ControllerHolder.CameraController.OnPossess(undefined);
   }
   OnSetupInputComponent() {
-    super.OnSetupInputComponent(), this.CursorInputVector = Vector2D_1.Vector2D.Create(0, 0), this.MoveInputVector = Vector2D_1.Vector2D.Create(0, 0)
+    super.OnSetupInputComponent();
+    this.CursorInputVector = Vector2D_1.Vector2D.Create(0, 0);
+    this.MoveInputVector = Vector2D_1.Vector2D.Create(0, 0);
   }
   BindActionHandle() {
     super.BindActionHandle();
-    var e = (0, puerts_1.$ref)(void 0),
-      r = (UE.InputSettings.GetInputSettings().GetActionNames(e), (0, puerts_1.$unref)(e));
+    var e = (0, puerts_1.$ref)(undefined);
+    UE.InputSettings.GetInputSettings().GetActionNames(e);
+    var r = (0, puerts_1.$unref)(e);
     for (let e = 0; e < r.Num(); e++) {
       var t = r.Get(e);
-      this.AddActionHandle(t.toString())
+      this.AddActionHandle(t.toString());
     }
   }
   BindAxisHandle() {
     super.BindAxisHandle();
-    var e = (0, puerts_1.$ref)(void 0),
-      r = (UE.InputSettings.GetInputSettings().GetAxisNames(e), (0, puerts_1.$unref)(e));
+    var e = (0, puerts_1.$ref)(undefined);
+    UE.InputSettings.GetInputSettings().GetAxisNames(e);
+    var r = (0, puerts_1.$unref)(e);
     for (let e = 0; e < r.Num(); e++) {
       var t = r.Get(e);
-      this.AddAxisHandle(t.toString())
+      this.AddAxisHandle(t.toString());
     }
   }
   BindKeyHandle() {
-    super.BindKeyHandle(), Info_1.Info.UseFastInputCallback ? (this.TsUiKeyHandle || (this.TsUiKeyHandle = new TsPureUiKeyHandle_1.TsPureUiKeyHandle, this.TsUiKeyHandle.Initialize(this)), this.TsUiKeyHandle.BindKey()) : (this.AddKeyBinding(new UE.InputChord(new UE.Key(LEFT_BARACKET_NAME), !1, !1, !1, !1), 1, this, new UE.FName(this.OnSetUiRootDeactivate.name)), this.AddKeyBinding(new UE.InputChord(new UE.Key(RIGHT_BARACKET_NAME), !1, !1, !1, !1), 1, this, new UE.FName(this.OnSetUiRootActive.name)))
+    super.BindKeyHandle();
+    if (Info_1.Info.UseFastInputCallback) {
+      if (!this.TsUiKeyHandle) {
+        this.TsUiKeyHandle = new TsPureUiKeyHandle_1.TsPureUiKeyHandle();
+        this.TsUiKeyHandle.Initialize(this);
+      }
+      this.TsUiKeyHandle.BindKey();
+    } else {
+      this.AddKeyBinding(new UE.InputChord(new UE.Key(LEFT_BARACKET_NAME), false, false, false, false), 1, this, new UE.FName(this.OnSetUiRootDeactivate.name));
+      this.AddKeyBinding(new UE.InputChord(new UE.Key(RIGHT_BARACKET_NAME), false, false, false, false), 1, this, new UE.FName(this.OnSetUiRootActive.name));
+    }
   }
-  OnInputAxis(e, r, t = !1) {
-    super.OnInputAxis(e, r, t), e === InputMappingsDefine_1.axisMappings.LookUp && (this.CursorInputVector.Y = r), e === InputMappingsDefine_1.axisMappings.Turn && (this.CursorInputVector.X = r), e === InputMappingsDefine_1.axisMappings.MoveForward && (this.MoveInputVector.Y = r), e === InputMappingsDefine_1.axisMappings.MoveRight && (this.MoveInputVector.X = r)
+  OnInputAxis(e, r, t = false) {
+    super.OnInputAxis(e, r, t);
+    if (e === InputMappingsDefine_1.axisMappings.LookUp) {
+      this.CursorInputVector.Y = r;
+    }
+    if (e === InputMappingsDefine_1.axisMappings.Turn) {
+      this.CursorInputVector.X = r;
+    }
+    if (e === InputMappingsDefine_1.axisMappings.MoveForward) {
+      this.MoveInputVector.Y = r;
+    }
+    if (e === InputMappingsDefine_1.axisMappings.MoveRight) {
+      this.MoveInputVector.X = r;
+    }
   }
   ReceivePreProcessInput(e, r) {
-    ControllerHolder_1.ControllerHolder.InputController.PreProcessInput(e, r)
+    ControllerHolder_1.ControllerHolder.InputController.PreProcessInput(e, r);
   }
   ReceivePostProcessInput(e, r) {
-    ControllerHolder_1.ControllerHolder.InputController.PostProcessInput(e, r)
+    ControllerHolder_1.ControllerHolder.InputController.PostProcessInput(e, r);
   }
   OnSetUiRootActive() {
-    ModelManager_1.ModelManager.SundryModel.CanOpenGmView && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 10, "按下 】 键显示所有界面"), UiLayer_1.UiLayer.ForceShowUi())
+    if (ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Input", 10, "按下 】 键显示所有界面");
+      }
+      UiLayer_1.UiLayer.ForceShowUi();
+    }
   }
   OnSetUiRootDeactivate() {
-    ModelManager_1.ModelManager.SundryModel.CanOpenGmView && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 10, "按下 【 键隐藏所有界面"), UiLayer_1.UiLayer.ForceHideUi())
+    if (ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Input", 10, "按下 【 键隐藏所有界面");
+      }
+      UiLayer_1.UiLayer.ForceHideUi();
+    }
   }
   GetCursorInputVector() {
-    return this.CursorInputVector
+    return this.CursorInputVector;
   }
   GetMoveInputVector() {
-    return this.MoveInputVector
+    return this.MoveInputVector;
   }
 }
-exports.TsCharacterController = TsCharacterController, exports.default = TsCharacterController;
-//# sourceMappingURL=TsCharacterController.js.map
+exports.TsCharacterController = TsCharacterController;
+exports.default = TsCharacterController; //# sourceMappingURL=TsCharacterController.js.map

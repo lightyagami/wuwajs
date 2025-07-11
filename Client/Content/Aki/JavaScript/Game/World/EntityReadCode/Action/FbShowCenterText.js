@@ -1,38 +1,90 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbShowCenterText = void 0;
+  value: true
+});
+exports.FbShowCenterText = undefined;
 const FbTextStyle_1 = require("./FbTextStyle");
 class FbShowCenterText {
   constructor(t) {
-    this.FbDataInternal = t, this.CCh = !1, this.gCh = 0, this.fCh = !1, this.pCh = void 0, this.vCh = !1, this.yCh = void 0, this.SCh = !1, this.MCh = 0, this.ECh = !1, this.ICh = void 0, this.TCh = !1, this.bCh = void 0, this.LCh = !1, this.ACh = !1, this.xCh = !1, this.RCh = !1
+    this.FbDataInternal = t;
+    this.CCh = false;
+    this.gCh = 0;
+    this.fCh = false;
+    this.pCh = undefined;
+    this.vCh = false;
+    this.yCh = undefined;
+    this.SCh = false;
+    this.MCh = 0;
+    this.ECh = false;
+    this.ICh = undefined;
+    this.TCh = false;
+    this.bCh = undefined;
+    this.LCh = false;
+    this.ACh = false;
+    this.xCh = false;
+    this.RCh = false;
   }
   static Create(t) {
-    if (t) return new FbShowCenterText(t)
+    if (t) {
+      return new FbShowCenterText(t);
+    }
   }
   get TextId() {
-    return this.CCh || (this.CCh = !0, this.gCh = this.FbDataInternal.textId()), this.gCh
+    if (!this.CCh) {
+      this.CCh = true;
+      this.gCh = this.FbDataInternal.textId();
+    }
+    return this.gCh;
   }
   get TidCenterText() {
-    return this.fCh || (this.fCh = !0, this.pCh = this.FbDataInternal.tidCenterText()), this.pCh
+    if (!this.fCh) {
+      this.fCh = true;
+      this.pCh = this.FbDataInternal.tidCenterText();
+    }
+    return this.pCh;
   }
   get PlotLineKey() {
-    return this.vCh || (this.vCh = !0, this.yCh = this.FbDataInternal.plotLineKey()), this.yCh
+    if (!this.vCh) {
+      this.vCh = true;
+      this.yCh = this.FbDataInternal.plotLineKey();
+    }
+    return this.yCh;
   }
   get TotalTime() {
-    return this.SCh || (this.SCh = !0, this.MCh = this.FbDataInternal.totalTime()), this.MCh
+    if (!this.SCh) {
+      this.SCh = true;
+      this.MCh = this.FbDataInternal.totalTime();
+    }
+    return this.MCh;
   }
   get TextStyle() {
-    return this.ECh || (this.ECh = !0, this.ICh = FbTextStyle_1.FbTextStyle.Create(this.FbDataInternal.textStyle())), this.ICh
+    if (!this.ECh) {
+      this.ECh = true;
+      this.ICh = FbTextStyle_1.FbTextStyle.Create(this.FbDataInternal.textStyle());
+    }
+    return this.ICh;
   }
   get BgImageId() {
-    return this.TCh || (this.TCh = !0, this.bCh = this.FbDataInternal.bgImageId()), this.bCh
+    if (!this.TCh) {
+      this.TCh = true;
+      this.bCh = this.FbDataInternal.bgImageId();
+    }
+    return this.bCh;
   }
   get IsMulLine() {
-    return this.LCh || (this.LCh = !0, this.ACh = this.FbDataInternal.isMulLine()), this.ACh
+    if (!this.LCh) {
+      this.LCh = true;
+      this.ACh = this.FbDataInternal.isMulLine();
+    }
+    return this.ACh;
   }
   get IsManualNext() {
-    return this.xCh || (this.xCh = !0, this.RCh = this.FbDataInternal.isManualNext()), this.RCh
+    if (!this.xCh) {
+      this.xCh = true;
+      this.RCh = this.FbDataInternal.isManualNext();
+    }
+    return this.RCh;
   }
 }
 exports.FbShowCenterText = FbShowCenterText;

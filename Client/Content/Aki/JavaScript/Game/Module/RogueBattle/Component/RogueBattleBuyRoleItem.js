@@ -1,65 +1,227 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleBuyRoleItem = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout"),
-  RogueBattleFetterIconItem_1 = require("./RogueBattleFetterIconItem"),
-  RogueBattleTokenElement_1 = require("./RogueBattleTokenElement");
-class RogueBattleBuyRoleItem extends GridProxyAbstract_1.GridProxyAbstract {
-  constructor() {
-    super(...arguments), this.Pe = void 0, this.aho = void 0, this.kC1 = void 0, this.OnSelectCallback = void 0, this.OC1 = () => {
-      this.OnSelectCallback?.(this.GridIndex, this.Pe)
-    }
-  }
-  OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture],
-      [1, UE.UIItem],
-      [2, UE.UIVerticalLayout],
-      [3, UE.UIText],
-      [4, UE.UIItem],
-      [5, UE.UIExtendToggle],
-      [6, UE.UIItem],
-      [7, UE.UISprite],
-      [8, UE.UIText],
-      [9, UE.UIText],
-      [10, UE.UIItem],
-      [11, UE.UIItem],
-      [12, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [5, this.OC1]
-    ]
-  }
-  async OnBeforeStartAsync() {
-    this.aho = new RogueBattleTokenElement_1.RogueBattleTokenElement, this.kC1 = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), () => new RogueBattleFetterIconItem_1.RogueBattleFetterIconItem), await this.aho.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())
-  }
-  Refresh(e, t, i) {
-    this.Pe = e;
-    var s = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e.mIc.Um1);
-    if (s) {
-      this.GetExtendToggle(5).SetToggleState(t ? 1 : 0, !1), this.SetTextureShowUntilLoaded(s.RoleHeadIconLarge, this.GetTexture(0)), this.aho?.Refresh(s.ElementId, !1, 0);
-      var r = this.GetText(3),
-        a = (r.SetText(e.mIc.qN_.toString()), ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e.mIc.L8n));
-      r.SetChangeColor(a < e.mIc.qN_, r.changeColor), this.GetItem(4).SetUIActive(e.mIc.O2s), this.GetItem(12).SetUIActive(!e.mIc.O2s);
-      const o = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(s.Id);
-      o && (a = new UiAsyncTask_1.UiAsyncTask("RogueBattleBuyRoleItem.Refresh", async () => {
-        await this.kC1?.RefreshByDataAsync(o.BondIds)
-      }), this.RunAsyncTask(a));
-      r = ModelManager_1.ModelManager.RogueBattleModel?.GetRoleInfoById(e.mIc.Um1);
-      r ? (this.GetText(8).SetText(r.F6n.toString()), this.GetText(9).SetText(Math.min(r.F6n + e.mIc.F6n, ModelManager_1.ModelManager.RogueBattleModel.MaxRoleStar).toString()), this.GetItem(11).SetUIActive(r.F6n < ModelManager_1.ModelManager.RogueBattleModel.MaxRoleStar && e.mIc.O2s)) : (this.GetText(8).SetText("0"), this.GetText(9).SetText(e.mIc.F6n.toString()), this.GetItem(11).SetUIActive(t)), this.GetItem(10).SetUIActive(!e.mIc.O2s)
-    }
-  }
-  OnSelected(e) {
-    this.GetExtendToggle(5).SetToggleState(1, !1), this.GetItem(11).SetUIActive(!0)
-  }
-  OnDeselected(e) {
-    this.GetExtendToggle(5).SetToggleState(0, !1), this.GetItem(11).SetUIActive(!1)
+  value: true
+});
+exports.RogueBattleBuyRoleGroupItem = exports.RoleBuyInfoGroupData = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const RogueBattleDefine_1 = require("../RogueBattleDefine");
+const RogueBattleFetterIconItem_1 = require("./RogueBattleFetterIconItem");
+const RogueBattleTokenElement_1 = require("./RogueBattleTokenElement");
+class RoleBuyInfoGroupData {
+  constructor(e, t) {
+    this.Data1 = e;
+    this.Data2 = t;
   }
 }
-exports.RogueBattleBuyRoleItem = RogueBattleBuyRoleItem;
+exports.RoleBuyInfoGroupData = RoleBuyInfoGroupData;
+class RogueBattleBuyRoleGroupItem extends GridProxyAbstract_1.GridProxyAbstract {
+  constructor() {
+    super(...arguments);
+    this.OnSelectCallback = undefined;
+    this.IsSelectOn = undefined;
+    this.dpu = undefined;
+    this.mpu = undefined;
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
+  }
+  async OnBeforeStartAsync() {
+    this.dpu = new RogueBattleBuyRoleItem();
+    await this.dpu.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.dpu.OnSelectCallback = this.OnSelectCallback;
+    this.mpu = new RogueBattleBuyRoleItem();
+    await this.mpu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
+    this.mpu.OnSelectCallback = this.OnSelectCallback;
+  }
+  Refresh(e, t, i) {
+    var s = i * 2;
+    var i = i * 2 + 1;
+    this.dpu.Refresh(e.Data1, this.IsSelectOn?.(s) ?? false, s);
+    this.mpu.Refresh(e.Data2, this.IsSelectOn?.(i) ?? false, i);
+  }
+  fpu(e) {
+    if (e % 2 == 0) {
+      return this.dpu;
+    } else {
+      return this.mpu;
+    }
+  }
+  Select(e) {
+    this.fpu(e).OnSelected();
+  }
+  Deselect(e) {
+    this.fpu(e).OnDeselected();
+  }
+  GetRoleUiItem(e) {
+    return this.fpu(e).GetOriginalItem();
+  }
+}
+exports.RogueBattleBuyRoleGroupItem = RogueBattleBuyRoleGroupItem;
+class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
+  constructor() {
+    super(...arguments);
+    this.SPe = undefined;
+    this.Pe = undefined;
+    this.gpu = -1;
+    this.aho = undefined;
+    this.l01 = undefined;
+    this.$be = undefined;
+    this.OnSelectCallback = undefined;
+    this.gke = () => {
+      var e = this.GetExtendToggle(0).GetToggleState();
+      return !this.Pe?.mIc.O2s || !!e;
+    };
+    this._01 = () => {
+      this.OnSelectCallback?.(this.gpu, this.Pe);
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIItem], [3, UE.UIVerticalLayout], [4, UE.UIItem], [5, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem]];
+    this.BtnBindInfo = [[0, this._01]];
+  }
+  OnStart() {
+    this.GetExtendToggle(0).CanExecuteChange.Bind(this.gke);
+    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
+  }
+  async OnBeforeStartAsync() {
+    this.aho = new RogueBattleTokenElement_1.RogueBattleTokenElement();
+    await this.aho.CreateThenShowByActorAsync(this.GetItem(14).GetOwner());
+    this.l01 = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), () => new RogueBattleFetterIconItem_1.RogueBattleFetterIconItem());
+    this.$be = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), () => new RogueBattleStarItem());
+  }
+  Refresh(e, a, t) {
+    this.gpu = t;
+    this.Pe = e;
+    this.GetExtendToggle(0).RootUIComp.SetUIActive(e !== undefined);
+    this.GetItem(12).SetUIActive(e === undefined);
+    if (e) {
+      t = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e.mIc.if1);
+      if (t) {
+        var i = ModelManager_1.ModelManager.RogueBattleModel.GetRoleInfoById(e.mIc.if1);
+        const h = t.GetRoleConfig();
+        var t = t.GetRoleSkinId();
+        var t = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(t);
+        var s = e.mIc.O2s;
+        const n = ModelManager_1.ModelManager.RogueBattleModel.MaxRoleStar;
+        const l = i?.F6n ?? 0;
+        const u = s ? 0 : e.mIc.F6n;
+        this.GetExtendToggle(0).SetToggleState(a ? 1 : 0, false);
+        this.SetTextureShowUntilLoaded(t.FormationRoleCard, this.GetTexture(1));
+        this.aho.Refresh(h.ElementId, false, 0);
+        this.GetItem(2).SetUIActive(l === 0 && !s);
+        this.GetItem(13).SetUIActive(l > 0 && !s);
+        this.GetItem(11).SetUIActive(s);
+        var i = e.mIc.qN_;
+        var t = e.mIc.kN_;
+        var r = this.GetText(9);
+        var o = this.GetText(10);
+        var e = e.mIc.L8n;
+        r.SetText(i.toString());
+        o.SetUIActive(i !== t);
+        o.SetText(t.toString());
+        var o = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e);
+        r.SetChangeColor(o < i, r.changeColor);
+        this.GetItem(7).SetUIActive(!s);
+        this.SetItemIcon(this.GetTexture(8), e);
+        var t = new UiAsyncTask_1.UiAsyncTask("RogueBattleBuyRoleItem.Refresh", async () => {
+          var e = [];
+          var t = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(h.Id);
+          if (t) {
+            var i = [];
+            for (const o of t.BondIds) {
+              var s = {
+                OldRoleBondInfo: ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(o),
+                NewRoleBondInfo: ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondPreviewDataById(o, u),
+                AddStar: u
+              };
+              i.push(s);
+            }
+            i.sort(RogueBattleDefine_1.sortRogueBattleRoleBondUpdateInfo);
+            e.push(this.l01.RefreshByDataAsync(i));
+          }
+          var r = [];
+          for (let e = 0; e < n; e++) {
+            r.push(e < l);
+          }
+          e.push(this.$be.RefreshByDataAsync(r));
+          await Promise.all(e);
+          this.ppu(a);
+        });
+        this.RunAsyncTask(t);
+        this.SPe?.PlayLevelSequenceByName("Start");
+      }
+    }
+  }
+  OnSelected() {
+    if (this.Pe) {
+      this.GetExtendToggle(0).SetToggleState(1, false);
+      this.Gvu(true);
+      this.ppu(true);
+    }
+  }
+  OnDeselected() {
+    if (this.Pe) {
+      this.GetExtendToggle(0).SetToggleState(0, false);
+      this.Gvu(false);
+      this.ppu(false);
+    }
+  }
+  Gvu(e) {
+    for (const t of this.l01.GetLayoutItemList()) {
+      t.RefreshSelectState(e);
+    }
+  }
+  ppu(t) {
+    if (this.Pe && !this.Pe.mIc.O2s) {
+      var i = ModelManager_1.ModelManager.RogueBattleModel.GetRoleInfoById(this.Pe.mIc.if1);
+      var e = ModelManager_1.ModelManager.RogueBattleModel.MaxRoleStar;
+      var s = this.Pe.mIc.F6n;
+      var i = i?.F6n ?? 0;
+      var r = Math.min(i + s, e);
+      for (let e = i; e < r; e++) {
+        this.$be.GetLayoutItemByIndex(e)?.SetPreviewAnimOn(t);
+      }
+    }
+  }
+}
+const SEQ_LIGHT = "Light";
+class RogueBattleStarItem extends GridProxyAbstract_1.GridProxyAbstract {
+  constructor() {
+    super(...arguments);
+    this.SPe = undefined;
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UIItem]];
+  }
+  OnStart() {
+    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
+    this.GetSprite(0).SetUIActive(true);
+  }
+  Refresh(e, t, i) {
+    this.GetSprite(1).SetUIActive(e);
+    this.GetItem(2).SetUIActive(false);
+  }
+  SetPreviewAnimOn(e) {
+    this.GetSprite(1).SetUIActive(e);
+    this.GetItem(2).SetUIActive(e);
+    if (e) {
+      if (this.SPe.GetCurrentSequence() === SEQ_LIGHT) {
+        this.SPe.ReplaySequenceByKey(SEQ_LIGHT);
+      } else {
+        this.SPe.StopPlayingSequence(false, true);
+        this.SPe.PlayLevelSequenceByName(SEQ_LIGHT);
+      }
+    } else {
+      this.SPe?.StopSequenceByKey("Light");
+    }
+  }
+}
 //# sourceMappingURL=RogueBattleBuyRoleItem.js.map

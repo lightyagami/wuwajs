@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AdaptLevelRefList = exports.AdaptLevelsConfig = exports.AdaptEditorStartConfig = exports.AdaptEditorSaveConfig = exports.AdaptEditorConfig = void 0;
+  value: true
+});
+exports.AdaptLevelRefList = exports.AdaptLevelsConfig = exports.AdaptEditorStartConfig = exports.AdaptEditorSaveConfig = exports.AdaptEditorConfig = undefined;
 const Json_1 = require("../../Core/Common/Json");
 class AdaptEditorConfig extends Json_1.JsonObjBase {}
 exports.AdaptEditorConfig = AdaptEditorConfig;

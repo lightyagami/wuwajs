@@ -1,34 +1,52 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaRoleHpTween = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  GlobalData_1 = require("../../../../../GlobalData"),
-  ConfigManager_1 = require("../../../../../Manager/ConfigManager"),
-  LoadAsyncPromise_1 = require("../../../../UiComponent/LoadAsyncPromise"),
-  PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
+  value: true
+});
+exports.PhantomArenaRoleHpTween = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const GlobalData_1 = require("../../../../../GlobalData");
+const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const LoadAsyncPromise_1 = require("../../../../UiComponent/LoadAsyncPromise");
+const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaRoleHpTween {
   constructor() {
-    this.RoleItem = void 0, this.MaxLifeNum = 0, this.CurveDamage = void 0, this.Tweener = void 0, this.Delegate = void 0, this.vlu = e => {
-      this.RoleItem.RefreshLifeNumTween(e, this.MaxLifeNum)
-    }, this.Uau = () => {
-      this.Tweener && (this.Tweener = void 0)
-    }, this.Delegate = (0, puerts_1.toManualReleaseDelegate)(this.vlu)
+    this.RoleItem = undefined;
+    this.MaxLifeNum = 0;
+    this.CurveDamage = undefined;
+    this.Tweener = undefined;
+    this.Delegate = undefined;
+    this.bgu = e => {
+      this.RoleItem.RefreshLifeNumTween(e, this.MaxLifeNum);
+    };
+    this.qdu = () => {
+      this.Tweener &&= undefined;
+    };
+    this.Delegate = (0, puerts_1.toManualReleaseDelegate)(this.bgu);
   }
   SetRoleItem(e) {
-    this.RoleItem = e
+    this.RoleItem = e;
   }
   async InitCurveDamage() {
-    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamage"),
-      e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat);
-    this.CurveDamage = await e.Promise
+    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleDamage");
+    var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat);
+    this.CurveDamage = await e.Promise;
   }
   PlayHpTween(e, t, i) {
-    this.MaxLifeNum = i, this.RoleItem.RefreshLifeNumTweenStart(t, i), this.RoleItem.RefreshLifeNumTween(e, this.MaxLifeNum), this.Tweener = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.Delegate, e, t, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME), this.Tweener && (this.Tweener.SetEase(28), this.Tweener.SetCurveFloat(this.CurveDamage), this.Tweener.OnCompleteCallBack.Bind(this.Uau))
+    this.MaxLifeNum = i;
+    this.RoleItem.RefreshLifeNumTweenStart(t, i);
+    this.RoleItem.RefreshLifeNumTween(e, this.MaxLifeNum);
+    this.Tweener = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.Delegate, e, t, PhantomArenaDefine_1.DAMAGE_TWEEN_TIME);
+    if (this.Tweener) {
+      this.Tweener.SetEase(28);
+      this.Tweener.SetCurveFloat(this.CurveDamage);
+      this.Tweener.OnCompleteCallBack.Bind(this.qdu);
+    }
   }
   Clear() {
-    (0, puerts_1.releaseManualReleaseDelegate)(this.vlu), this.CurveDamage = void 0
+    (0, puerts_1.releaseManualReleaseDelegate)(this.bgu);
+    this.CurveDamage = undefined;
   }
 }
 exports.PhantomArenaRoleHpTween = PhantomArenaRoleHpTween;

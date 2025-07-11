@@ -1,84 +1,160 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FilterEntrance = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../../../Core/Utils/StringUtils"),
-  EventDefine_1 = require("../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase"),
-  FilterSortController_1 = require("../../FilterSortController"),
-  FilterViewData_1 = require("../Model/FilterViewData");
+  value: true
+});
+exports.FilterEntrance = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
+const FilterSortController_1 = require("../../FilterSortController");
+const FilterViewData_1 = require("../Model/FilterViewData");
 class FilterEntrance extends UiPanelBase_1.UiPanelBase {
-  constructor(t, e) {
-    super(), this.UpdateDataListFunction = e, this.hDt = void 0, this.ypt = [], this.lDt = [], this._Dt = void 0, this.Mne = 0, this.uDt = () => {
+  constructor(t, i) {
+    super();
+    this.UpdateDataListFunction = i;
+    this.hDt = undefined;
+    this.ypt = [];
+    this.lDt = [];
+    this._Dt = undefined;
+    this.Mne = 0;
+    this.$Fa = undefined;
+    this.lSu = "";
+    this.uDt = () => {
       var t = new FilterViewData_1.FilterViewData(this.Mne, this.vTt);
-      FilterSortController_1.FilterSortController.OpenFilterView(t)
-    }, this.vTt = () => {
-      this.P5e(), this.qpt(!1)
-    }, this.gPe = () => {
-      ModelManager_1.ModelManager.FilterModel.ClearData(this.Mne), this.GetItem(1).SetUIActive(!1), this.qpt(!1)
-    }, this.cDt = t => {
-      this.Mne === t && (this.qpt(!0), this.P5e())
-    }, this.CreateThenShowByActor(t.GetOwner())
+      FilterSortController_1.FilterSortController.OpenFilterView(t);
+    };
+    this.vTt = () => {
+      this.XFa();
+      this.P5e();
+      this.qpt(false);
+    };
+    this.gPe = () => {
+      ModelManager_1.ModelManager.FilterModel.ClearData(this.Mne);
+      this.GetItem(1).SetUIActive(false);
+      this.XFa();
+      this.qpt(false);
+    };
+    this.cDt = t => {
+      if (this.Mne === t) {
+        this.qpt(true);
+        this.P5e();
+      }
+    };
+    this.CreateThenShowByActor(t.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIButtonComponent],
-      [1, UE.UIItem],
-      [2, UE.UIText],
-      [3, UE.UIButtonComponent]
-    ], this.BtnBindInfo = [
-      [0, this.uDt],
-      [3, this.gPe]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[0, this.uDt], [3, this.gPe]];
   }
   TryClearData() {
     var t;
-    return !(this.Mne <= 0 || (t = this.hDt.ShowAllFilterContent(), StringUtils_1.StringUtils.IsBlank(t)) || (this.gPe(), 0))
+    return !(this.Mne <= 0) && !(t = this.hDt.ShowAllFilterContent(), StringUtils_1.StringUtils.IsBlank(t)) && !(this.gPe(), 0);
   }
   OnStart() {
-    this.GetItem(1).SetUIActive(!1), this.AddEventListener()
+    this.hDt = new FilterViewData_1.FilterResultData();
+    this.GetItem(1).SetUIActive(false);
+    this.AddEventListener();
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.FilterModel.DeleteFilterResultData(this.Mne), this.RemoveEventListener()
+    ModelManager_1.ModelManager.FilterModel.DeleteFilterResultData(this.Mne);
+    this.RemoveEventListener();
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFilterDataUpdate, this.cDt)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFilterDataUpdate, this.cDt);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFilterDataUpdate, this.cDt)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFilterDataUpdate, this.cDt);
   }
   P5e() {
-    var t = this.hDt.ShowAllFilterContent(),
-      e = this.GetItem(1);
-    StringUtils_1.StringUtils.IsBlank(t) ? e.SetUIActive(!1) : (e.SetUIActive(!0), this.GetText(2).SetText(t))
+    var t = this.hDt.ShowAllFilterContent();
+    var i = this.GetItem(1);
+    if (StringUtils_1.StringUtils.IsBlank(t)) {
+      i.SetUIActive(false);
+    } else {
+      i.SetUIActive(true);
+      this.GetText(2).SetText(t);
+    }
   }
   qpt(t) {
-    var e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.Mne),
-      i = e.DataType,
-      s = this.hDt.GetSelectRuleData(),
-      i = ModelManager_1.ModelManager.FilterModel.GetFilterList(this.ypt, i, e.IsSupportSelectAll, s),
-      e = ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt),
-      s = ModelManager_1.ModelManager.SortModel.GetSortResultData(e);
-    s && ModelManager_1.ModelManager.SortModel.SortDataList(i, e, s, ...this.lDt), this.UpdateDataListFunction?.(i, t, 0)
+    var i = this.hDt.GetSelectRuleData();
+    var i = ModelManager_1.ModelManager.FilterModel.GetFilterList(this.ypt, this.Mne, i);
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt);
+    var s = ModelManager_1.ModelManager.SortModel.GetSortResultData(e);
+    if (s) {
+      ModelManager_1.ModelManager.SortModel.SortDataList(i, e, s, ...this.lDt);
+    }
+    this.UpdateDataListFunction?.(i, t, 0);
   }
   GetSelectRuleDataMap() {
-    return this.hDt.GetSelectRuleData()
+    return this.hDt.GetSelectRuleData();
   }
-  mDt(t) {
-    this._Dt = t, this.Mne = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(t)
+  mDt(t, i, e) {
+    this._Dt = t;
+    this.Mne = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(t);
+    this.$Fa = i ?? undefined;
+    this.lSu = e ?? "";
   }
-  dDt() {
-    this.hDt = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.Mne), this.hDt || (this.hDt = new FilterViewData_1.FilterResultData, this.hDt.SetConfigId(this.Mne), ModelManager_1.ModelManager.FilterModel.SetFilterResultData(this.Mne, this.hDt))
+  XFa() {
+    var t;
+    if (this.$Fa && this._Dt !== 0) {
+      t = this.hDt.ConvertToStorageData();
+      ModelManager_1.ModelManager.FilterModel.SetFilterConfigData(this.$Fa, this._Dt, t, this.lSu);
+    }
+  }
+  dDt(t) {
+    this.hDt = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.Mne);
+    if (!this.hDt) {
+      if (this.hDt === undefined) {
+        this.hDt = new FilterViewData_1.FilterResultData();
+        const s = new Map();
+        t?.SelectRuleMap.forEach((t, i) => {
+          const e = new Map();
+          ModelManager_1.ModelManager.FilterModel.GetFilterDataFuncByFilterType(i)(t).forEach(t => {
+            e.set(t.FilterId, t.Content);
+          });
+          s.set(i, e);
+        });
+        this.hDt.SetRuleData(s);
+      }
+      this.hDt.SetConfigId(this.Mne);
+      ModelManager_1.ModelManager.FilterModel.SetFilterResultData(this.Mne, this.hDt);
+    }
   }
   CDt() {
-    this.SetActive(0 < this.Mne)
+    this.SetActive(this.Mne > 0);
   }
-  UpdateData(t, e, ...i) {
-    this.mDt(t), this.CDt(), this.Mne <= 0 || (this.ypt = e, this.lDt = i, this.dDt(), this.P5e(), 0 === ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt) && this.qpt(!0))
+  UpdateData(t, i, ...e) {
+    this.mDt(t);
+    this.CDt();
+    if (!(this.Mne <= 0)) {
+      this.ypt = i;
+      this.lDt = e;
+      this.dDt();
+      this.P5e();
+      if (ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt) === 0) {
+        this.qpt(true);
+      }
+    }
+  }
+  UpdateDataWithConfig(t, i, e, s = "", ...r) {
+    this.XFa();
+    this.mDt(t, i, s);
+    this.CDt();
+    if (!(this.Mne <= 0)) {
+      this.ypt = e;
+      this.lDt = r;
+      t = ModelManager_1.ModelManager.FilterModel.GetFilterConfigData(i, this._Dt, s);
+      this.dDt(t);
+      this.P5e();
+      if (ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt) === 0) {
+        this.qpt(true);
+      }
+    }
   }
 }
 exports.FilterEntrance = FilterEntrance;

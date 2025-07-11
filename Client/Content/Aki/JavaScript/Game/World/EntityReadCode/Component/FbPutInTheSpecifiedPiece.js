@@ -1,30 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPutInTheSpecifiedPiece = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbJigsawPieceMatch_1 = require("./FbJigsawPieceMatch");
+  value: true
+});
+exports.FbPutInTheSpecifiedPiece = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbJigsawPieceMatch_1 = require("./FbJigsawPieceMatch");
 class FbPutInTheSpecifiedPiece {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.RNh = !1, this.wNh = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.RNh = false;
+    this.wNh = undefined;
   }
   static Create(e) {
-    if (e) return new FbPutInTheSpecifiedPiece(e)
+    if (e) {
+      return new FbPutInTheSpecifiedPiece(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MatchList() {
     if (!this.RNh) {
-      this.RNh = !0, this.wNh = new Array;
+      this.RNh = true;
+      this.wNh = new Array();
       var t = this.FbDataInternal.matchListLength();
-      if (t)
+      if (t) {
         for (let e = 0; e < t; ++e) {
-          var i = this.FbDataInternal.matchList(e, new fb_component_1.JigsawPieceMatch);
-          this.wNh.push(FbJigsawPieceMatch_1.FbJigsawPieceMatch.Create(i))
+          var i = this.FbDataInternal.matchList(e, new fb_component_1.JigsawPieceMatch());
+          this.wNh.push(FbJigsawPieceMatch_1.FbJigsawPieceMatch.Create(i));
         }
+      }
     }
-    return this.wNh
+    return this.wNh;
   }
 }
 exports.FbPutInTheSpecifiedPiece = FbPutInTheSpecifiedPiece;

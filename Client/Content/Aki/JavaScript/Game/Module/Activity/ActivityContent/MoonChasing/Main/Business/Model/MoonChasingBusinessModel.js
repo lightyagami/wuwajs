@@ -1,121 +1,241 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoonChasingBusinessModel = void 0;
-const ModelBase_1 = require("../../../../../../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../../../../Manager/ModelManager"),
-  BusinessDefine_1 = require("../BusinessDefine"),
-  CharacterData_1 = require("./CharacterData"),
-  DelegationData_1 = require("./DelegationData"),
-  EditTeamData_1 = require("./EditTeamData");
+  value: true
+});
+exports.MoonChasingBusinessModel = undefined;
+const ModelBase_1 = require("../../../../../../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../../../../Manager/ModelManager");
+const BusinessDefine_1 = require("../BusinessDefine");
+const CharacterData_1 = require("./CharacterData");
+const DelegationData_1 = require("./DelegationData");
+const EditTeamData_1 = require("./EditTeamData");
 class MoonChasingBusinessModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Qke = new Map, this.Xke = new Map, this.$ke = void 0, this.rha = [], this.oha = !1, this.dTa = (e, t) => {
-      var a, r;
-      return e.IsOwn !== t.IsOwn ? e.IsOwn ? -1 : 1 : e.Level !== t.Level ? e.Level > t.Level ? -1 : 1 : (a = e.GetAllCharacterValue()) !== (r = t.GetAllCharacterValue()) ? r < a ? -1 : 1 : (r = 1 === e.GetTeamDataUnLockState()) != (1 === t.GetTeamDataUnLockState()) ? r ? -1 : 1 : e.Id < t.Id ? -1 : 1
-    }
+    super(...arguments);
+    this.Qke = new Map();
+    this.Xke = new Map();
+    this.$ke = undefined;
+    this.rha = [];
+    this.oha = false;
+    this.dTa = (e, t) => {
+      var a;
+      var r;
+      if (e.IsOwn !== t.IsOwn) {
+        if (e.IsOwn) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if (e.Level !== t.Level) {
+        if (e.Level > t.Level) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if ((a = e.GetAllCharacterValue()) !== (r = t.GetAllCharacterValue())) {
+        if (r < a) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if ((r = e.GetTeamDataUnLockState() === 1) != (t.GetTeamDataUnLockState() === 1)) {
+        if (r) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if (e.Id < t.Id) {
+        return -1;
+      } else {
+        return 1;
+      }
+    };
   }
   get IsInDelegate() {
-    return this.oha
+    return this.oha;
   }
   OnInit() {
     var e = ConfigManager_1.ConfigManager.BusinessConfig.GetEntrustRoleAll();
-    if (e)
+    if (e) {
       for (const a of e) {
         var t = new EditTeamData_1.EditTeamData(a.Id, a.Type, a.UnLockCondition);
-        this.Xke.set(a.Id, t)
+        this.Xke.set(a.Id, t);
       }
-    return !0
+    }
+    return true;
   }
   SetAllDelegationData(e) {
-    for (const t of e) this.SetDelegationData(t)
+    for (const t of e) {
+      this.SetDelegationData(t);
+    }
   }
   SetDelegationData(e) {
     var t = new DelegationData_1.DelegationData(e.X6n, e.FGs, e.NGs);
-    this.Qke.set(e.X6n, t)
+    this.Qke.set(e.X6n, t);
   }
   ReplaceDelegationData(e, t) {
-    e === t.X6n ? EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshDelegate, !1) : (this.Qke.delete(e), this.SetDelegationData(t), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshDelegate, !0))
+    if (e === t.X6n) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshDelegate, false);
+    } else {
+      this.Qke.delete(e);
+      this.SetDelegationData(t);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshDelegate, true);
+    }
   }
   ConditionUnlockDelegationData(e) {
-    this.SetDelegationData(e)
+    this.SetDelegationData(e);
   }
   GetDelegationData(e) {
-    return this.Qke.get(e)
+    return this.Qke.get(e);
   }
   GetDelegationDataList() {
     var e = Array.from(this.Qke.values());
-    return e.sort((e, t) => {
-      var a, r;
-      return e.IsVisible !== t.IsVisible ? e.IsVisible ? -1 : 1 : (a = ConfigManager_1.ConfigManager.BusinessConfig.GetDelegationConfig(e.Id), r = ConfigManager_1.ConfigManager.BusinessConfig.GetDelegationConfig(t.Id), a.Star !== r.Star ? a.Star < r.Star ? -1 : 1 : e.BestEvaluateLevel !== t.BestEvaluateLevel ? e.BestEvaluateLevel < t.BestEvaluateLevel ? -1 : 1 : e.Id < t.Id ? -1 : 1)
-    }), e
+    e.sort((e, t) => {
+      var a;
+      var r;
+      if (e.IsVisible !== t.IsVisible) {
+        if (e.IsVisible) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else {
+        a = ConfigManager_1.ConfigManager.BusinessConfig.GetDelegationConfig(e.Id);
+        r = ConfigManager_1.ConfigManager.BusinessConfig.GetDelegationConfig(t.Id);
+        if (a.Star !== r.Star) {
+          if (a.Star < r.Star) {
+            return -1;
+          } else {
+            return 1;
+          }
+        } else if (e.BestEvaluateLevel !== t.BestEvaluateLevel) {
+          if (e.BestEvaluateLevel < t.BestEvaluateLevel) {
+            return -1;
+          } else {
+            return 1;
+          }
+        } else if (e.Id < t.Id) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+    });
+    return e;
   }
   SetAllEditTeamData(e) {
-    for (const t of e) this.SetEditTeamData(t)
+    for (const t of e) {
+      this.SetEditTeamData(t);
+    }
   }
   SetEditTeamData(e) {
     var t = this.Xke.get(e.BGs.Q6n);
-    t && (t.IsOwn = !0, t.SetCharacterDataList(e.BGs))
+    if (t) {
+      t.IsOwn = true;
+      t.SetCharacterDataList(e.BGs);
+    }
   }
   DeepCopyEditTeamData(e) {
     var t = new EditTeamData_1.EditTeamData(e.Id, e.Type, e.UnLockCondition);
-    return t.SetCharacterDataByEditTeamData(e), t
+    t.SetCharacterDataByEditTeamData(e);
+    return t;
   }
   ConditionUnlockEditTeamData(e) {
-    this.SetEditTeamData(e), this.rha.push(e.BGs.Q6n), ModelManager_1.ModelManager.MoonChasingModel.SaveRoleIdUnlockFlag(e.BGs.Q6n), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ConditionUnlockRole)
+    this.SetEditTeamData(e);
+    this.rha.push(e.BGs.Q6n);
+    ModelManager_1.ModelManager.MoonChasingModel.SaveRoleIdUnlockFlag(e.BGs.Q6n);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ConditionUnlockRole);
   }
   PopUnlockRoleId() {
-    return this.rha.shift()
+    return this.rha.shift();
   }
   IsUnlockRoleIdEmpty() {
-    return 0 === this.rha.length
+    return this.rha.length === 0;
   }
-  GetHelpEditTeamDataList(e = !1) {
+  GetHelpEditTeamDataList(e = false) {
     var t = [];
-    for (const a of this.Xke.values()) !this.x1a(a.Type) || 0 !== a.Type && !e || t.push(a);
-    return t.sort(this.dTa), t
+    for (const a of this.Xke.values()) {
+      if (!!this.x1a(a.Type) && (a.Type === 0 || !!e)) {
+        t.push(a);
+      }
+    }
+    t.sort(this.dTa);
+    return t;
   }
-  GetUnlockHelpEditTeamDataList(e = !1) {
+  GetUnlockHelpEditTeamDataList(e = false) {
     var t = [];
-    for (const a of this.Xke.values()) this.x1a(a.Type) && (0 === a.Type || e) && a.IsOwn && t.push(a);
-    return t.sort(this.dTa), t
+    for (const a of this.Xke.values()) {
+      if (this.x1a(a.Type) && (a.Type === 0 || e) && a.IsOwn) {
+        t.push(a);
+      }
+    }
+    t.sort(this.dTa);
+    return t;
   }
   GetPlayerRoleId() {
-    for (const e of this.Xke.values())
-      if (this.x1a(e.Type) && 0 !== e.Type) return e.Id;
-    return 0
+    for (const e of this.Xke.values()) {
+      if (this.x1a(e.Type) && e.Type !== 0) {
+        return e.Id;
+      }
+    }
+    return 0;
   }
   x1a(e) {
     var t = ModelManager_1.ModelManager.PlayerInfoModel;
-    return !(1 === e && 1 !== t.GetPlayerGender() || 2 === e && 0 !== t.GetPlayerGender())
+    return (e !== 1 || t.GetPlayerGender() === 1) && (e !== 2 || t.GetPlayerGender() === 0);
   }
   GetOwnEditTeamDataList() {
     var e = [];
-    for (const t of this.Xke.values()) this.x1a(t.Type) && t.IsOwn && e.push(t);
-    return e.sort((e, t) => {
-      var a, r;
-      return e.Level !== t.Level ? e.Level > t.Level ? -1 : 1 : (a = e.GetAllCharacterValue()) !== (r = t.GetAllCharacterValue()) ? r < a ? -1 : 1 : e.Id < t.Id ? -1 : 1
-    }), e
+    for (const t of this.Xke.values()) {
+      if (this.x1a(t.Type) && t.IsOwn) {
+        e.push(t);
+      }
+    }
+    e.sort((e, t) => {
+      var a;
+      var r;
+      if (e.Level !== t.Level) {
+        if (e.Level > t.Level) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if ((a = e.GetAllCharacterValue()) !== (r = t.GetAllCharacterValue())) {
+        if (r < a) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if (e.Id < t.Id) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+    return e;
   }
   GetEditTeamDataById(e) {
-    return this.Xke.get(e)
+    return this.Xke.get(e);
   }
   SetResultData(e) {
-    this.$ke = e, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetDelegationResultData)
+    this.$ke = e;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetDelegationResultData);
   }
   GetResultData() {
-    return this.$ke
+    return this.$ke;
   }
   Yke(t) {
     var a = [];
     for (let e = 1; e <= BusinessDefine_1.CHARACTER_MAX; ++e) {
       var r = new CharacterData_1.CharacterData(e);
-      r.SetUseScoreName(t), a.push(r)
+      r.SetUseScoreName(t);
+      a.push(r);
     }
-    return a
+    return a;
   }
   GetCharacterValueListByRoleIds(e, t) {
     var a = this.Yke(t);
@@ -123,45 +243,52 @@ class MoonChasingBusinessModel extends ModelBase_1.ModelBase {
       var r = this.Xke.get(i).GetCharacterDataList();
       for (let e = 0; e < BusinessDefine_1.CHARACTER_MAX; ++e) {
         var n = a[e];
-        n.SetCurrentValue(n.CurrentValue + r[e].CurrentValue)
+        n.SetCurrentValue(n.CurrentValue + r[e].CurrentValue);
       }
     }
-    return a
+    return a;
   }
   GetInvestData(e) {
-    var t = this.GetResultData(),
-      t = ConfigManager_1.ConfigManager.BusinessConfig.GetDelegationConfig(t.EntrustId),
-      a = Array.from(t.IdeaSuccRatio);
+    var t = this.GetResultData();
+    var t = ConfigManager_1.ConfigManager.BusinessConfig.GetDelegationConfig(t.EntrustId);
+    var a = Array.from(t.IdeaSuccRatio);
     let r = 0;
     r = e >= a[1][0] ? a[1][1] / 10 : ((a[1][1] - a[0][1]) / (a[1][0] - a[0][0]) * e + a[0][1]) / 10;
-    a = t.IdeaSuccMul[0] / 1e3 * e / (t.IdeaSuccMul[1] / 1e3 + e);
+    a = t.IdeaSuccMul[0] / 1000 * e / (t.IdeaSuccMul[1] / 1000 + e);
     return {
       SuccessProbability: Math.floor(r),
-      Ratio: Math.floor(100 * (1 + a))
-    }
+      Ratio: Math.floor((1 + a) * 100)
+    };
   }
   GetCurrentPopularityConfig() {
     var e = ModelManager_1.ModelManager.MoonChasingModel.GetPopularityValue();
-    return this.GetPopularityConfigByValue(e)
+    return this.GetPopularityConfigByValue(e);
   }
   GetLastPopularityConfig() {
-    let e = void 0;
-    var t = ConfigManager_1.ConfigManager.BusinessConfig.GetPopularityAll(),
-      a = ModelManager_1.ModelManager.MoonChasingModel.GetPopularityValue();
+    let e = undefined;
+    var t = ConfigManager_1.ConfigManager.BusinessConfig.GetPopularityAll();
+    var a = ModelManager_1.ModelManager.MoonChasingModel.GetPopularityValue();
     for (const r of t) {
-      if (r.PopularityValue > a) break;
-      e = r
+      if (r.PopularityValue > a) {
+        break;
+      }
+      e = r;
     }
-    return e
+    return e;
   }
   GetPopularityConfigByValue(e) {
     var t = ConfigManager_1.ConfigManager.BusinessConfig.GetPopularityAll();
-    for (const a of t)
-      if (a.PopularityValue > e) return a;
-    return t[t.length - 1]
+    for (const a of t) {
+      if (a.PopularityValue > e) {
+        return a;
+      }
+    }
+    return t[t.length - 1];
   }
   SetIsInDelegate(e) {
-    (this.oha = e) || EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ConditionUnlockRole)
+    if (!(this.oha = e)) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ConditionUnlockRole);
+    }
   }
 }
 exports.MoonChasingBusinessModel = MoonChasingBusinessModel;

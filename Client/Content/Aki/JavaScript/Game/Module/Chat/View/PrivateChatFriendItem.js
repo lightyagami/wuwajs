@@ -1,93 +1,168 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChatRoomItem = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  PlayerHeadItem_1 = require("../../Common/PlayerHeadItem"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  PrivateChatRoom_1 = require("../PrivateChatRoom"),
-  TeamChatRoom_1 = require("../TeamChatRoom"),
-  WorldTeamChatRoom_1 = require("../WorldTeamChatRoom");
+  value: true
+});
+exports.ChatRoomItem = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const PlayerHeadItem_1 = require("../../Common/PlayerHeadItem");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const PrivateChatRoom_1 = require("../PrivateChatRoom");
+const TeamChatRoom_1 = require("../TeamChatRoom");
+const WorldTeamChatRoom_1 = require("../WorldTeamChatRoom");
 class ChatRoomItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super(...arguments), this.Eyt = void 0, this.fye = 0, this.pSt = void 0, this.oSt = void 0, this.oft = void 0, this.Syt = t => {
-      1 === t && this.oft && this.oft(this.Eyt, this.fye)
-    }
+    super(...arguments);
+    this.Eyt = undefined;
+    this.fye = 0;
+    this.pSt = undefined;
+    this.oSt = undefined;
+    this.oft = undefined;
+    this.Syt = t => {
+      if (t === 1 && this.oft) {
+        this.oft(this.Eyt, this.fye);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIText],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UISprite],
-      [6, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.Syt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UISprite], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.Syt]];
   }
   OnStart() {
     var t = this.GetItem(4);
-    this.oSt = new PlayerHeadItem_1.PlayerHeadItem(t.GetOwner())
+    this.oSt = new PlayerHeadItem_1.PlayerHeadItem(t.GetOwner());
   }
   OnBeforeDestroy() {
-    this.pSt = void 0, this.Eyt = void 0, this.fye = 0
+    this.pSt = undefined;
+    this.Eyt = undefined;
+    this.fye = 0;
   }
   Clear() {}
   Refresh(t, i, e) {
-    if (this.GetItem(6).SetUIActive(!1), this.GetItem(7).SetUIActive(!1), this.GetSprite(5).SetIsGray(!1), t instanceof PrivateChatRoom_1.PrivateChatRoom) {
+    this.GetItem(6).SetUIActive(false);
+    this.GetItem(7).SetUIActive(false);
+    this.GetSprite(5).SetIsGray(false);
+    if (t instanceof PrivateChatRoom_1.PrivateChatRoom) {
       var s = t.GetTargetPlayerId();
-      if (this.pSt = ModelManager_1.ModelManager.FriendModel.GetFriendById(s), !this.pSt) return;
-      this.Eyt = 1, this.fye = this.pSt.PlayerId, this.RefreshIsOnline(t)
-    } else t instanceof TeamChatRoom_1.TeamChatRoom ? (this.pSt = void 0, this.Eyt = 2, this.fye = ModelManager_1.ModelManager.PlayerInfoModel.GetId()) : t instanceof WorldTeamChatRoom_1.WorldChatRoom && (this.pSt = void 0, this.Eyt = 3, this.fye = ModelManager_1.ModelManager.PlayerInfoModel.GetId());
+      this.pSt = ModelManager_1.ModelManager.FriendModel.GetFriendById(s);
+      if (!this.pSt) {
+        return;
+      }
+      this.Eyt = 1;
+      this.fye = this.pSt.PlayerId;
+      this.RefreshIsOnline(t);
+    } else if (t instanceof TeamChatRoom_1.TeamChatRoom) {
+      this.pSt = undefined;
+      this.Eyt = 2;
+      this.fye = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    } else if (t instanceof WorldTeamChatRoom_1.WorldChatRoom) {
+      this.pSt = undefined;
+      this.Eyt = 3;
+      this.fye = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    }
     s = t.GetIsShowRedDot();
-    this.GetItem(2)?.SetUIActive(s), this.RefreshPlayerTexture(), this.K7e(), this.RefreshMuteItem(), this.Nxa(), this.sPa(), i ? this.SetToggleState(1) : this.SetToggleState(0)
+    this.GetItem(2)?.SetUIActive(s);
+    this.RefreshPlayerTexture();
+    this.K7e();
+    this.RefreshMuteItem();
+    this.Nxa();
+    this.sPa();
+    if (i) {
+      this.SetToggleState(1);
+    } else {
+      this.SetToggleState(0);
+    }
   }
   Nxa() {
     var t;
-    PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.NeedShowThirdPartyId() ? (t = void 0 !== this.pSt && "" !== this.pSt?.GetSdkUserId(), this.GetItem(8)?.SetUIActive(t)) : this.GetItem(8)?.SetUIActive(!1)
+    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.NeedShowThirdPartyId()) {
+      t = this.pSt !== undefined && this.pSt?.GetSdkUserId() !== "";
+      this.GetItem(8)?.SetUIActive(t);
+    } else {
+      this.GetItem(8)?.SetUIActive(false);
+    }
   }
   sPa() {
     var t;
-    void 0 !== this.Eyt && 1 === this.Eyt && PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.NeedShowThirdPartyId() ? (t = void 0 !== this.pSt && "" !== this.pSt?.GetSdkUserId(), this.GetItem(9)?.SetUIActive(!t)) : this.GetItem(9)?.SetUIActive(!1)
+    if (this.Eyt !== undefined && this.Eyt === 1 && PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.NeedShowThirdPartyId()) {
+      t = this.pSt !== undefined && this.pSt?.GetSdkUserId() !== "";
+      this.GetItem(9)?.SetUIActive(!t);
+    } else {
+      this.GetItem(9)?.SetUIActive(false);
+    }
   }
   OnSelected(t) {
-    this.SetToggleState(1), this.GetItem(2)?.SetUIActive(!1)
+    this.SetToggleState(1);
+    this.GetItem(2)?.SetUIActive(false);
   }
   OnDeselected(t) {
-    this.SetToggleState(0)
+    this.SetToggleState(0);
   }
   RefreshIsOnline(t) {
-    var i = this.GetItem(6),
-      t = t.IsOnline();
-    i.SetUIActive(!t), this.GetSprite(5).SetIsGray(!t), this.GetItem(7).SetUIActive(t), this.oSt.SetIsGray(!t)
+    var i = this.GetItem(6);
+    var t = t.IsOnline();
+    i.SetUIActive(!t);
+    this.GetSprite(5).SetIsGray(!t);
+    this.GetItem(7).SetUIActive(t);
+    this.oSt.SetIsGray(!t);
   }
   RefreshPlayerTexture() {
-    var t, i = this.GetSprite(5);
-    2 === this.Eyt || 3 === this.Eyt ? (i.SetUIActive(!0), this.oSt.SetActive(!1)) : (i?.SetUIActive(!1), (i = this.pSt?.PlayerId ?? ModelManager_1.ModelManager.PlayerInfoModel.GetId()) ? (t = ModelManager_1.ModelManager.ChatModel.GetChatPlayerData(i)?.GetPlayerIcon()) ? this.oSt.RefreshByRoleIdUseCard(t) : this.oSt.RefreshByPlayerId(i, !0) : this.oSt.SetActive(!1))
+    var t;
+    var i = this.GetSprite(5);
+    if (this.Eyt === 2 || this.Eyt === 3) {
+      i.SetUIActive(true);
+      this.oSt.SetActive(false);
+    } else {
+      i?.SetUIActive(false);
+      if (i = this.pSt?.PlayerId ?? ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
+        if (t = ModelManager_1.ModelManager.ChatModel.GetChatPlayerData(i)?.GetPlayerIcon()) {
+          this.oSt.RefreshByRoleIdUseCard(t);
+        } else {
+          this.oSt.RefreshByPlayerId(i, true);
+        }
+      } else {
+        this.oSt.SetActive(false);
+      }
+    }
   }
   K7e() {
-    var t, i, e = this.GetText(1);
-    2 === this.Eyt || 3 === this.Eyt ? LguiUtil_1.LguiUtil.SetLocalText(e, "CurrentTeam") : (t = this.pSt.FriendRemark, StringUtils_1.StringUtils.IsEmpty(t) ? (i = this.pSt.PlayerName, e.SetText(i)) : e.SetText(t))
+    var t;
+    var i;
+    var e = this.GetText(1);
+    if (this.Eyt === 2 || this.Eyt === 3) {
+      LguiUtil_1.LguiUtil.SetLocalText(e, "CurrentTeam");
+    } else {
+      t = this.pSt.FriendRemark;
+      if (StringUtils_1.StringUtils.IsEmpty(t)) {
+        i = this.pSt.PlayerName;
+        e.SetText(i);
+      } else {
+        e.SetText(t);
+      }
+    }
   }
   RefreshMuteItem() {
-    var t, i = this.GetItem(3);
-    this.pSt ? (t = ModelManager_1.ModelManager.ChatModel.IsInMute(this.pSt.PlayerId), i.SetUIActive(t)) : i.SetUIActive(!1)
+    var t;
+    var i = this.GetItem(3);
+    if (this.pSt) {
+      t = ModelManager_1.ModelManager.ChatModel.IsInMute(this.pSt.PlayerId);
+      i.SetUIActive(t);
+    } else {
+      i.SetUIActive(false);
+    }
   }
   BindOnClicked(t) {
-    this.oft = t
+    this.oft = t;
   }
   SetToggleState(t) {
     var i = this.GetExtendToggle(0);
-    i && i.GetToggleState() !== t && i.SetToggleState(t, !1)
+    if (i && i.GetToggleState() !== t) {
+      i.SetToggleState(t, false);
+    }
   }
 }
 exports.ChatRoomItem = ChatRoomItem;

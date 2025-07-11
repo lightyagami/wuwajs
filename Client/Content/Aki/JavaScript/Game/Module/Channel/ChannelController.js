@@ -1,93 +1,121 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChannelController = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  PublicUtil_1 = require("../../Common/PublicUtil"),
-  KuroSdkData_1 = require("../../KuroSdk/KuroSdkData"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiControllerBase_1 = require("../../Ui/Base/UiControllerBase"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  LogReportDefine_1 = require("../LogReport/LogReportDefine");
+  value: true
+});
+exports.ChannelController = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../Common/PublicUtil");
+const KuroSdkData_1 = require("../../KuroSdk/KuroSdkData");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const UiManager_1 = require("../../Ui/UiManager");
+const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 class ChannelController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24800, this.dEt)
+    Net_1.Net.Register(18964, this.dEt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24800)
+    Net_1.Net.UnRegister(18964);
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnShareResult, this.CEt)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnShareResult, this.CEt);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnShareResult, this.CEt)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnShareResult, this.CEt);
   }
   static CheckShareChannelOpen(e) {
-    return ModelManager_1.ModelManager.ChannelModel.CheckShareChannelOpen(e)
+    return ModelManager_1.ModelManager.ChannelModel.CheckShareChannelOpen(e);
   }
   static CheckKuroStreetOpen() {
-    return ModelManager_1.ModelManager.ChannelModel.CheckKuroStreetOpen()
+    return ModelManager_1.ModelManager.ChannelModel.CheckKuroStreetOpen();
   }
   static CheckAccountSettingOpen(e) {
-    return ModelManager_1.ModelManager.ChannelModel.CheckAccountSettingOpen(e)
+    return ModelManager_1.ModelManager.ChannelModel.CheckAccountSettingOpen(e);
   }
   static CheckCustomerServiceOpen() {
-    return ModelManager_1.ModelManager.ChannelModel.CheckCustomerServiceOpen()
+    return ModelManager_1.ModelManager.ChannelModel.CheckCustomerServiceOpen();
   }
   static OpenKuroStreet() {
-    ModelManager_1.ModelManager.ChannelModel.OpenKuroStreet()
+    ModelManager_1.ModelManager.ChannelModel.OpenKuroStreet();
   }
   static ProcessAccountSetting(e) {
-    ModelManager_1.ModelManager.ChannelModel.ProcessAccountSetting(e)
+    ModelManager_1.ModelManager.ChannelModel.ProcessAccountSetting(e);
   }
   static OpenGameIntroduction() {
-    let e = "";
-    e = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? ConfigManager_1.ConfigManager.CommonConfig.GetGameIntroductionGlobalUrl() : ConfigManager_1.ConfigManager.CommonConfig.GetGameIntroductionUrl();
-    var r = PublicUtil_1.PublicUtil.GetExternalUrl(e, 2) ?? "",
-      t = new LogReportDefine_1.GameInformationClickLogEvent;
-    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t), ControllerHolder_1.ControllerHolder.KuroSdkController.OpenWebView("", r, !0, !0, !0)
+    let e = ModelManager_1.ModelManager.ChannelModel.GameIntroductionUrl;
+    if (e === "") {
+      e = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? ConfigManager_1.ConfigManager.CommonConfig.GetGameIntroductionGlobalUrl() : ConfigManager_1.ConfigManager.CommonConfig.GetGameIntroductionUrl();
+    }
+    var r = PublicUtil_1.PublicUtil.GetExternalUrl(e, 2) ?? "";
+    var t = new LogReportDefine_1.GameInformationClickLogEvent();
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
+    ControllerHolder_1.ControllerHolder.KuroSdkController.OpenWebView("", r, true, true, true);
   }
   static RequestFirstShareReward(r) {
-    var e = new Protocol_1.Aki.Protocol.BCs;
-    e.x8n = r, Net_1.Net.Call(28082, e, e => {
-      e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs && (ModelManager_1.ModelManager.ChannelModel.MarkActionShared(r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFirstShare))
-    })
+    var e = new Protocol_1.Aki.Protocol.BCs();
+    e.x8n = r;
+    Net_1.Net.Call(16231, e, e => {
+      if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ModelManager_1.ModelManager.ChannelModel.MarkActionShared(r);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFirstShare);
+      }
+    });
   }
   static GetOpenedShareIds() {
-    return ModelManager_1.ModelManager.ChannelModel.GetOpenedShareIds()
+    return ModelManager_1.ModelManager.ChannelModel.GetOpenedShareIds();
   }
   static CouldShare() {
-    return 0 < ModelManager_1.ModelManager.ChannelModel.GetOpenedShareIds().length
+    return ModelManager_1.ModelManager.ChannelModel.GetOpenedShareIds().length > 0;
   }
   static ShareChannel(e, r, t, o) {
-    r ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("KuroSdk", 53, "分享图片", ["channel", e], ["shareConfigId", o], ["arraySize", r.Num()]), ModelManager_1.ModelManager.ChannelModel.SharingActionId = t, ModelManager_1.ModelManager.ChannelModel.SharingConfigId = o, (t = new KuroSdkData_1.ShareData).platform = String(e), ControllerHolder_1.ControllerHolder.KuroSdkController.ShareByteData(t, r)) : Log_1.Log.CheckError() && Log_1.Log.Error("KuroSdk", 53, "分享图片数据为空")
+    if (r) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("KuroSdk", 53, "分享图片", ["channel", e], ["shareConfigId", o], ["arraySize", r.Num()]);
+      }
+      ModelManager_1.ModelManager.ChannelModel.SharingActionId = t;
+      ModelManager_1.ModelManager.ChannelModel.SharingConfigId = o;
+      (t = new KuroSdkData_1.ShareData()).platform = String(e);
+      ControllerHolder_1.ControllerHolder.KuroSdkController.ShareByteData(t, r);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("KuroSdk", 53, "分享图片数据为空");
+    }
   }
-  static $R1(e, r, t) {
-    var o = new LogReportDefine_1.ShareEvent;
-    o.i_share_channel = r, o.i_share_result = t ? 1 : 0, o.i_share_scene = e, ControllerHolder_1.ControllerHolder.LogReportController.LogReport(o)
+  static CL1(e, r, t) {
+    var o = new LogReportDefine_1.ShareEvent();
+    o.i_share_channel = r;
+    o.i_share_result = t ? 1 : 0;
+    o.i_share_scene = e;
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(o);
   }
   static ShareGacha(e) {
     e = {
-      ScreenShot: !1,
-      IsHiddenBattleView: !1,
-      HandBookPhotoData: void 0,
+      ScreenShot: false,
+      IsHiddenBattleView: false,
+      HandBookPhotoData: undefined,
       GachaData: e
     };
-    UiManager_1.UiManager.OpenView("PhotoSaveView", e)
+    UiManager_1.UiManager.OpenView("PhotoSaveView", e);
   }
 }
-exports.ChannelController = ChannelController, (_a = ChannelController).dEt = e => {
-  for (const r of e.mGs) ModelManager_1.ModelManager.ChannelModel.MarkActionShared(r)
-}, ChannelController.CEt = e => {
-  var r = ModelManager_1.ModelManager.ChannelModel.SharingActionId,
-    t = ModelManager_1.ModelManager.ChannelModel.SharingConfigId;
-  e && ModelManager_1.ModelManager.ChannelModel.CouldGetShareReward(r) && _a.RequestFirstShareReward(r), _a.$R1(r, t, e)
+exports.ChannelController = ChannelController;
+(_a = ChannelController).dEt = e => {
+  for (const r of e.mGs) {
+    ModelManager_1.ModelManager.ChannelModel.MarkActionShared(r);
+  }
 };
-//# sourceMappingURL=ChannelController.js.map
+ChannelController.CEt = e => {
+  var r = ModelManager_1.ModelManager.ChannelModel.SharingActionId;
+  var t = ModelManager_1.ModelManager.ChannelModel.SharingConfigId;
+  if (e && ModelManager_1.ModelManager.ChannelModel.CouldGetShareReward(r)) {
+    _a.RequestFirstShareReward(r);
+  }
+  _a.CL1(r, t, e);
+}; //# sourceMappingURL=ChannelController.js.map

@@ -1,20 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.StackableChessManager = void 0;
-const StackableChessboradPoint_1 = require("./StackableChessboradPoint"),
-  StackableChessItem_1 = require("./StackableChessItem");
+  value: true
+});
+exports.StackableChessManager = undefined;
+const StackableChessboradPoint_1 = require("./StackableChessboradPoint");
+const StackableChessItem_1 = require("./StackableChessItem");
 class StackableChessManager {
   CreateChessboardPoint() {
-    return new StackableChessboradPoint_1.StackableChessboardPoint
+    return new StackableChessboradPoint_1.StackableChessboardPoint();
   }
   CreateChessItem() {
-    return new StackableChessItem_1.StackableChessItem
+    return new StackableChessItem_1.StackableChessItem();
   }
   GetChessAgent(e, s) {
-    if (0 === e) {
+    if (e === 0) {
       e = s?.Entity;
-      if (e?.Valid) return e.GetComponent(282)
+      if (e?.Valid) {
+        return e.GetComponent(282);
+      }
     }
   }
 }

@@ -1,32 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSpawnTemplateEntityConfig = void 0;
+  value: true
+});
+exports.FbSpawnTemplateEntityConfig = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbSpawnTemplateEntityConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.FPc = !1, this.NPc = void 0, this.VPc = !1, this.jPc = void 0, this.HPc = !1, this.$Pc = void 0, this.WPc = !1, this.QPc = void 0
+    this.FbDataInternal = t;
+    this.FPc = false;
+    this.NPc = undefined;
+    this.VPc = false;
+    this.jPc = undefined;
+    this.HPc = false;
+    this.$Pc = undefined;
+    this.WPc = false;
+    this.QPc = undefined;
   }
   static Create(t) {
-    if (t) return new FbSpawnTemplateEntityConfig(t)
+    if (t) {
+      return new FbSpawnTemplateEntityConfig(t);
+    }
   }
   get TemplateBpType() {
-    return this.FPc || (this.FPc = !0, this.NPc = this.FbDataInternal.templateBpType()), this.NPc
+    if (!this.FPc) {
+      this.FPc = true;
+      this.NPc = this.FbDataInternal.templateBpType();
+    }
+    return this.NPc;
   }
   get PosOffset() {
-    return this.VPc || (this.VPc = !0, this.jPc = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.posOffset())), this.jPc
+    if (!this.VPc) {
+      this.VPc = true;
+      this.jPc = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.posOffset());
+    }
+    return this.jPc;
   }
   get RotOffset() {
-    return this.HPc || (this.HPc = !0, this.$Pc = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rotOffset())), this.$Pc
+    if (!this.HPc) {
+      this.HPc = true;
+      this.$Pc = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rotOffset());
+    }
+    return this.$Pc;
   }
   get GroupTypes() {
     if (!this.WPc) {
-      this.WPc = !0, this.QPc = new Array;
+      this.WPc = true;
+      this.QPc = new Array();
       var i = this.FbDataInternal.groupTypesLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.QPc.push(this.FbDataInternal.groupTypes(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.QPc.push(this.FbDataInternal.groupTypes(t));
+        }
+      }
     }
-    return this.QPc
+    return this.QPc;
   }
 }
 exports.FbSpawnTemplateEntityConfig = FbSpawnTemplateEntityConfig;

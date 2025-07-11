@@ -1,78 +1,100 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ExchangeRewardModel = exports.POWER_DISCOUNT_HELP_ID = void 0;
-const ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ExchangeRewardData_1 = require("./ExchangeRewardData");
+  value: true
+});
+exports.ExchangeRewardModel = exports.POWER_DISCOUNT_HELP_ID = undefined;
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ExchangeRewardData_1 = require("./ExchangeRewardData");
 exports.POWER_DISCOUNT_HELP_ID = 26;
 class ExchangeRewardModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.FQ = new Map, this.bai = new Map
+    super(...arguments);
+    this.FQ = new Map();
+    this.bai = new Map();
   }
   OnInit() {
-    return !0
+    return true;
   }
   Phrase(e) {
-    this.FQ.clear(), this.bai.clear();
+    this.FQ.clear();
+    this.bai.clear();
     for (const r of Object.keys(e.yws)) {
-      var a = new ExchangeRewardData_1.ExchangeShareData;
-      a.Phrase(Number.parseInt(r), e.yws[r]), this.bai.set(a.GetId(), a)
+      var a = new ExchangeRewardData_1.ExchangeShareData();
+      a.Phrase(Number.parseInt(r), e.yws[r]);
+      this.bai.set(a.GetId(), a);
     }
     for (const t of Object.keys(e.Iws)) {
-      var n = new ExchangeRewardData_1.ExchangeRewardData;
-      n.Phrase(Number.parseInt(t), e.Iws[t]), this.FQ.set(n.GetId(), n)
+      var n = new ExchangeRewardData_1.ExchangeRewardData();
+      n.Phrase(Number.parseInt(t), e.Iws[t]);
+      this.FQ.set(n.GetId(), n);
     }
   }
   OnExchangeRewardNotify(e) {
     let a = this.FQ.get(e.Tws);
-    a || (a = new ExchangeRewardData_1.ExchangeRewardData, this.FQ.set(e.Tws, a)), a.Phrase(e.Tws, e.m9n)
+    if (!a) {
+      a = new ExchangeRewardData_1.ExchangeRewardData();
+      this.FQ.set(e.Tws, a);
+    }
+    a.Phrase(e.Tws, e.m9n);
   }
   OnShareInfoNotify(a) {
     for (const r of Object.keys(a.Lws)) {
       var n = Number.parseInt(r);
       let e = this.bai.get(n);
-      e || (e = new ExchangeRewardData_1.ExchangeShareData, this.bai.set(n, e)), e.Phrase(n, a.Lws[r])
+      if (!e) {
+        e = new ExchangeRewardData_1.ExchangeShareData();
+        this.bai.set(n, e);
+      }
+      e.Phrase(n, a.Lws[r]);
     }
   }
   GetInstanceDungeonIfCanExchange(e) {
     e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e).RewardId;
-    if (!e) return !0;
+    if (!e) {
+      return true;
+    }
     var a = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareId(e);
-    let n = 0,
-      r = 0;
-    return r = (a ? (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetShareMaxCount(a), this.bai.get(a)) : (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e), this.FQ.get(e)))?.GetCount(), !(n && r && r >= n)
+    let n = 0;
+    let r = 0;
+    r = (a ? (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetShareMaxCount(a), this.bai.get(a)) : (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e), this.FQ.get(e)))?.GetCount();
+    return !n || !r || !(r >= n);
   }
   GetRewardIfCanExchange(e) {
     var a = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareId(e);
-    let n = 0,
-      r = 0;
-    return r = (a ? (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetShareMaxCount(a), this.bai.get(a)) : (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e), this.FQ.get(e)))?.GetCount(), !(n && r && r >= n)
+    let n = 0;
+    let r = 0;
+    r = (a ? (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetShareMaxCount(a), this.bai.get(a)) : (n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e), this.FQ.get(e)))?.GetCount();
+    return !n || !r || !(r >= n);
   }
   GetExchangeRewardShareCount(e) {
-    return this.bai.get(e)?.GetCount() ?? 0
+    return this.bai.get(e)?.GetCount() ?? 0;
   }
   GetExchangeNormalConsume(e) {
     e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e).RewardId;
     if (e) {
-      var a, n, r = [];
+      var a;
+      var n;
+      var r = [];
       for ([a, n] of ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeCost(e)) {
         var t = [{
           IncId: 0,
           ItemId: a
         }, n];
-        r.push(t)
+        r.push(t);
       }
-      return r
+      return r;
     }
   }
   IsFinishInstance(e) {
-    var a, e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceFirstRewardId(e);
-    return !!e && (a = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e), e = this.FQ.get(e)?.GetCount(), !!(a && e && a <= e))
+    var a;
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceFirstRewardId(e);
+    return !!e && (a = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e), e = this.FQ.get(e)?.GetCount(), !!a && !!e && !!(a <= e));
   }
   IsFinishInstanceCompatible(e) {
     var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.RewardId;
-    return !!e && 1 === ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e) && !!((e = this.FQ.get(e)?.GetCount()) && 1 <= e)
+    return !!e && ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardMaxCount(e) === 1 && !!(e = this.FQ.get(e)?.GetCount()) && !!(e >= 1);
   }
 }
 exports.ExchangeRewardModel = ExchangeRewardModel;

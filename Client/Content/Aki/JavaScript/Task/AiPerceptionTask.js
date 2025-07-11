@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AiPerceptionTask = void 0;
+exports.AiPerceptionTask = undefined;
 const UE = require("ue");
 const JsModelManager_1 = require("../Core/Model/JsModelManager");
 const AsyncAiPerception_1 = require("./AsyncObject/AsyncAiPerception");

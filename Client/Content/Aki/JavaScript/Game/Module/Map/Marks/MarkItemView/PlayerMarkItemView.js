@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlayerMarkItemView = void 0;
+  value: true
+});
+exports.PlayerMarkItemView = undefined;
 const MarkItemView_1 = require("./MarkItemView");
 class PlayerMarkItemView extends MarkItemView_1.MarkItemView {
   constructor(e) {
-    super(e)
+    super(e);
   }
   GetInteractiveFlag() {
-    return !1
+    return false;
   }
 }
 exports.PlayerMarkItemView = PlayerMarkItemView;

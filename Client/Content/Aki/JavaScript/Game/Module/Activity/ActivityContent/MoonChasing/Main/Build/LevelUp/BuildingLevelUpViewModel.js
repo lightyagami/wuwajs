@@ -1,10 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BuildingLevelUpViewModel = void 0;
+  value: true
+});
+exports.BuildingLevelUpViewModel = undefined;
 class BuildingLevelUpViewModel {
   constructor() {
-    this.IsLevelUp = !1, this.BuildingId = 0
+    this.IsLevelUp = false;
+    this.BuildingId = 0;
   }
 }
 exports.BuildingLevelUpViewModel = BuildingLevelUpViewModel;

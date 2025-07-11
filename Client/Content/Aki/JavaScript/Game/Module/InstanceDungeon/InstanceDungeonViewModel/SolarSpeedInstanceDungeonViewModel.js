@@ -1,14 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SolarSpeedInstanceDungeonViewModel = void 0;
+  value: true
+});
+exports.SolarSpeedInstanceDungeonViewModel = undefined;
 const InstanceDungeonViewModelBase_1 = require("./InstanceDungeonViewModelBase");
 class SolarSpeedInstanceDungeonViewModel extends InstanceDungeonViewModelBase_1.InstanceDungeonViewModelBase {
   OnCheckNeedOnTimer(e) {
-    return this.View.RefreshSolarSpeedInstance(0, !0), !0
+    this.View.RefreshSolarSpeedInstance(0, true);
+    return true;
   }
   OnTimerRefreshFunction(e) {
-    this.View.RefreshSolarSpeedInstance(e)
+    this.View.RefreshSolarSpeedInstance(e);
   }
 }
 exports.SolarSpeedInstanceDungeonViewModel = SolarSpeedInstanceDungeonViewModel;

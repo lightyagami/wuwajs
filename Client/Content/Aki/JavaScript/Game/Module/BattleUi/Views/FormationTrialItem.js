@@ -1,23 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FormationTrialItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.FormationTrialItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class FormationTrialItem extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
-    super(), this.fht = void 0, this.CreateThenShowByResourceIdAsync("UiItem_FigthRoleHeadTest", e)
+    super();
+    this.fht = undefined;
+    this.CreateThenShowByResourceIdAsync("UiItem_FigthRoleHeadTest", e);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   OnStart() {
-    this.fht && this.GetText(0).SetText(this.fht), this.fht = void 0
+    if (this.fht) {
+      this.GetText(0).SetText(this.fht);
+    }
+    this.fht = undefined;
   }
   SetNameText(e) {
-    this.InAsyncLoading() ? this.fht = e : this.GetText(0).SetText(e)
+    if (this.InAsyncLoading()) {
+      this.fht = e;
+    } else {
+      this.GetText(0).SetText(e);
+    }
   }
 }
 exports.FormationTrialItem = FormationTrialItem;

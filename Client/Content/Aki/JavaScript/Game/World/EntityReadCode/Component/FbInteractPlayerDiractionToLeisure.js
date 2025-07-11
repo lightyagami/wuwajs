@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInteractPlayerDiractionToLeisure = void 0;
+  value: true
+});
+exports.FbInteractPlayerDiractionToLeisure = undefined;
 class FbInteractPlayerDiractionToLeisure {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.kDh = !1, this.GDh = 0, this.ODh = !1, this.FDh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.kDh = false;
+    this.GDh = 0;
+    this.ODh = false;
+    this.FDh = 0;
   }
   static Create(t) {
-    if (t) return new FbInteractPlayerDiractionToLeisure(t)
+    if (t) {
+      return new FbInteractPlayerDiractionToLeisure(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Begin() {
-    return this.kDh || (this.kDh = !0, this.GDh = this.FbDataInternal.begin()), this.GDh
+    if (!this.kDh) {
+      this.kDh = true;
+      this.GDh = this.FbDataInternal.begin();
+    }
+    return this.GDh;
   }
   get End() {
-    return this.ODh || (this.ODh = !0, this.FDh = this.FbDataInternal.end()), this.FDh
+    if (!this.ODh) {
+      this.ODh = true;
+      this.FDh = this.FbDataInternal.end();
+    }
+    return this.FDh;
   }
 }
 exports.FbInteractPlayerDiractionToLeisure = FbInteractPlayerDiractionToLeisure;

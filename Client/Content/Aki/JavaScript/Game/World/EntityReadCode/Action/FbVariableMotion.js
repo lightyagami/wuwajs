@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVariableMotion = void 0;
+  value: true
+});
+exports.FbVariableMotion = undefined;
 class FbVariableMotion {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.KEh = !1, this.$Eh = 0, this.XEh = !1, this.YEh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.KEh = false;
+    this.$Eh = 0;
+    this.XEh = false;
+    this.YEh = 0;
   }
   static Create(t) {
-    if (t) return new FbVariableMotion(t)
+    if (t) {
+      return new FbVariableMotion(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Acceleration() {
-    return this.KEh || (this.KEh = !0, this.$Eh = this.FbDataInternal.acceleration()), this.$Eh
+    if (!this.KEh) {
+      this.KEh = true;
+      this.$Eh = this.FbDataInternal.acceleration();
+    }
+    return this.$Eh;
   }
   get MaxSpeed() {
-    return this.XEh || (this.XEh = !0, this.YEh = this.FbDataInternal.maxSpeed()), this.YEh
+    if (!this.XEh) {
+      this.XEh = true;
+      this.YEh = this.FbDataInternal.maxSpeed();
+    }
+    return this.YEh;
   }
 }
 exports.FbVariableMotion = FbVariableMotion;

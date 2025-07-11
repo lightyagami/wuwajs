@@ -1,22 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiNavigationGlobalData = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  UiLayer_1 = require("../../../Ui/UiLayer");
+  value: true
+});
+exports.UiNavigationGlobalData = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const UiLayer_1 = require("../../../Ui/UiLayer");
 class UiNavigationGlobalData {
   static AddBlockListenerFocusTag(a) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "添加禁止切换导航对象标签", ["标签", a]), this.IBo.add(a)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigation", 10, "添加禁止切换导航对象标签", ["标签", a]);
+    }
+    this.IBo.add(a);
   }
   static DeleteBlockListenerFocusTag(a) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "移除禁止切换导航对象标签", ["标签", a]), this.IBo.delete(a)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigation", 10, "移除禁止切换导航对象标签", ["标签", a]);
+    }
+    this.IBo.delete(a);
   }
   static get IsBlockNavigation() {
-    return 0 < this.IBo.size || ControllerHolder_1.ControllerHolder.BlackScreenController.IsBlackScreenActive() || UiLayer_1.UiLayer.IsInMask()
+    return this.IBo.size > 0 || ControllerHolder_1.ControllerHolder.BlackScreenController.IsBlackScreenActive() || UiLayer_1.UiLayer.IsInMask();
   }
   static ClearBlockListener() {
-    this.IBo.clear()
+    this.IBo.clear();
   }
-}(exports.UiNavigationGlobalData = UiNavigationGlobalData).NeedCalculateCurrentPanel = !1, UiNavigationGlobalData.NeedRefreshCurrentPanel = !1, UiNavigationGlobalData.IsAllowCrossNavigationGroup = !1, UiNavigationGlobalData.IsAllowLoopScrollInteractHighlight = !1, UiNavigationGlobalData.VisionReplaceViewFindDefault = !0, UiNavigationGlobalData.IBo = new Set;
-//# sourceMappingURL=UiNavigationGlobalData.js.map
+}
+(exports.UiNavigationGlobalData = UiNavigationGlobalData).NeedCalculateCurrentPanel = false;
+UiNavigationGlobalData.NeedRefreshCurrentPanel = false;
+UiNavigationGlobalData.IsAllowCrossNavigationGroup = false;
+UiNavigationGlobalData.IsAllowLoopScrollInteractHighlight = false;
+UiNavigationGlobalData.VisionReplaceViewFindDefault = true;
+UiNavigationGlobalData.IBo = new Set(); //# sourceMappingURL=UiNavigationGlobalData.js.map

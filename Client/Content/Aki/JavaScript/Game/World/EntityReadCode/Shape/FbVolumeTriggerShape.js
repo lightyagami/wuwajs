@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVolumeTriggerShape = void 0;
+  value: true
+});
+exports.FbVolumeTriggerShape = undefined;
 class FbVolumeTriggerShape {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.IZh = !1, this.TZh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.IZh = false;
+    this.TZh = undefined;
   }
   static Create(t) {
-    if (t) return new FbVolumeTriggerShape(t)
+    if (t) {
+      return new FbVolumeTriggerShape(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get VolumeKey() {
-    return this.IZh || (this.IZh = !0, this.TZh = this.FbDataInternal.volumeKey()), this.TZh
+    if (!this.IZh) {
+      this.IZh = true;
+      this.TZh = this.FbDataInternal.volumeKey();
+    }
+    return this.TZh;
   }
 }
 exports.FbVolumeTriggerShape = FbVolumeTriggerShape;

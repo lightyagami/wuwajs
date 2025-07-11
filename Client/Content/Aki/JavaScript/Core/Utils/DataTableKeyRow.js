@@ -1,10 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DataTableKeyRow = void 0;
+  value: true
+});
+exports.DataTableKeyRow = undefined;
 class DataTableKeyRow {
   constructor() {
-    this[0] = void 0, this[1] = void 0
+    this[0] = undefined;
+    this[1] = undefined;
   }
 }
 exports.DataTableKeyRow = DataTableKeyRow;

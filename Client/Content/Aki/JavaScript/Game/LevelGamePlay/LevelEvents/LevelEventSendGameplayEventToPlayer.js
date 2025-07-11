@@ -1,14 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventSendGameplayEventToPlayer = void 0;
-const EntitySystem_1 = require("../../../Core/Entity/EntitySystem"),
-  Global_1 = require("../../Global"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventSendGameplayEventToPlayer = undefined;
+const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
+const Global_1 = require("../../Global");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventSendGameplayEventToPlayer extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, t) {
     var l = Global_1.Global.BaseCharacter;
-    l && ((l = l.CharacterActorComponent.Entity.GetComponent(18)) && e.Tag && l.SendGameplayEventToActor(e.Tag), e.Both) && 1 === t.Type && (l = EntitySystem_1.EntitySystem.Get(t.EntityId))?.Valid && (t = l.GetComponent(18))?.Valid && t.SendGameplayEventToActor(e.Tag)
+    if (l && ((l = l.CharacterActorComponent.Entity.GetComponent(18)) && e.Tag && l.SendGameplayEventToActor(e.Tag), e.Both) && t.Type === 1 && (l = EntitySystem_1.EntitySystem.Get(t.EntityId))?.Valid && (t = l.GetComponent(18))?.Valid) {
+      t.SendGameplayEventToActor(e.Tag);
+    }
   }
 }
 exports.LevelEventSendGameplayEventToPlayer = LevelEventSendGameplayEventToPlayer;

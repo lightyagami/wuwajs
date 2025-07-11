@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPlayGuestUiAnimation = void 0;
+  value: true
+});
+exports.FbPlayGuestUiAnimation = undefined;
 const UnionPlayGuestUiAnimationTypeHelper_1 = require("./UnionPlayGuestUiAnimationTypeHelper");
 class FbPlayGuestUiAnimation {
   constructor(i) {
-    this.FbDataInternal = i, this.u_h = !1, this.f8o = void 0, this.f2c = !1, this.g2c = void 0
+    this.FbDataInternal = i;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.f2c = false;
+    this.g2c = undefined;
   }
   static Create(i) {
-    if (i) return new FbPlayGuestUiAnimation(i)
+    if (i) {
+      return new FbPlayGuestUiAnimation(i);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get PlayGuestUiAnimation() {
-    var i, t;
-    return !this.f2c && (this.f2c = !0, i = this.FbDataInternal.playGuestUiAnimationType(), t = UnionPlayGuestUiAnimationTypeHelper_1.UnionPlayGuestUiAnimationTypeHelper.GetUnionPlayGuestUiAnimationTypeObject(i)) && (this.g2c = UnionPlayGuestUiAnimationTypeHelper_1.UnionPlayGuestUiAnimationTypeHelper.ReadUnionPlayGuestUiAnimationType(i, this.FbDataInternal.playGuestUiAnimation(t))), this.g2c
+    var i;
+    var t;
+    if (!this.f2c && (this.f2c = true, i = this.FbDataInternal.playGuestUiAnimationType(), t = UnionPlayGuestUiAnimationTypeHelper_1.UnionPlayGuestUiAnimationTypeHelper.GetUnionPlayGuestUiAnimationTypeObject(i))) {
+      this.g2c = UnionPlayGuestUiAnimationTypeHelper_1.UnionPlayGuestUiAnimationTypeHelper.ReadUnionPlayGuestUiAnimationType(i, this.FbDataInternal.playGuestUiAnimation(t));
+    }
+    return this.g2c;
   }
 }
 exports.FbPlayGuestUiAnimation = FbPlayGuestUiAnimation;

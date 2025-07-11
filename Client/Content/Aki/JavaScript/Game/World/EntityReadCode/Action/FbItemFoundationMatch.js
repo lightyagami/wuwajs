@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbItemFoundationMatch = void 0;
+  value: true
+});
+exports.FbItemFoundationMatch = undefined;
 class FbItemFoundationMatch {
   constructor(t) {
-    this.FbDataInternal = t, this.yvh = !1, this.Svh = 0
+    this.FbDataInternal = t;
+    this.yvh = false;
+    this.Svh = 0;
   }
   static Create(t) {
-    if (t) return new FbItemFoundationMatch(t)
+    if (t) {
+      return new FbItemFoundationMatch(t);
+    }
   }
   get MatchEntityId() {
-    return this.yvh || (this.yvh = !0, this.Svh = this.FbDataInternal.matchEntityId()), this.Svh
+    if (!this.yvh) {
+      this.yvh = true;
+      this.Svh = this.FbDataInternal.matchEntityId();
+    }
+    return this.Svh;
   }
 }
 exports.FbItemFoundationMatch = FbItemFoundationMatch;

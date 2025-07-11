@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbStopGuestUiAnimation = void 0;
+  value: true
+});
+exports.FbStopGuestUiAnimation = undefined;
 const UnionStopGuestUiAnimationTypeHelper_1 = require("./UnionStopGuestUiAnimationTypeHelper");
 class FbStopGuestUiAnimation {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.C2c = !1, this.p2c = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.C2c = false;
+    this.p2c = undefined;
   }
   static Create(t) {
-    if (t) return new FbStopGuestUiAnimation(t)
+    if (t) {
+      return new FbStopGuestUiAnimation(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get StopGuestUiAnimation() {
-    var t, i;
-    return !this.C2c && (this.C2c = !0, t = this.FbDataInternal.stopGuestUiAnimationType(), i = UnionStopGuestUiAnimationTypeHelper_1.UnionStopGuestUiAnimationTypeHelper.GetUnionStopGuestUiAnimationTypeObject(t)) && (this.p2c = UnionStopGuestUiAnimationTypeHelper_1.UnionStopGuestUiAnimationTypeHelper.ReadUnionStopGuestUiAnimationType(t, this.FbDataInternal.stopGuestUiAnimation(i))), this.p2c
+    var t;
+    var i;
+    if (!this.C2c && (this.C2c = true, t = this.FbDataInternal.stopGuestUiAnimationType(), i = UnionStopGuestUiAnimationTypeHelper_1.UnionStopGuestUiAnimationTypeHelper.GetUnionStopGuestUiAnimationTypeObject(t))) {
+      this.p2c = UnionStopGuestUiAnimationTypeHelper_1.UnionStopGuestUiAnimationTypeHelper.ReadUnionStopGuestUiAnimationType(t, this.FbDataInternal.stopGuestUiAnimation(i));
+    }
+    return this.p2c;
   }
 }
 exports.FbStopGuestUiAnimation = FbStopGuestUiAnimation;

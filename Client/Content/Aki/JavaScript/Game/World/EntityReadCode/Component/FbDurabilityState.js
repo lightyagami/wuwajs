@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDurabilityState = void 0;
+  value: true
+});
+exports.FbDurabilityState = undefined;
 class FbDurabilityState {
   constructor(t) {
-    this.FbDataInternal = t, this.e3h = !1, this.t3h = 0, this.Bch = !1, this.Cbo = void 0
+    this.FbDataInternal = t;
+    this.e3h = false;
+    this.t3h = 0;
+    this.Bch = false;
+    this.Cbo = undefined;
   }
   static Create(t) {
-    if (t) return new FbDurabilityState(t)
+    if (t) {
+      return new FbDurabilityState(t);
+    }
   }
   get Durability() {
-    return this.e3h || (this.e3h = !0, this.t3h = this.FbDataInternal.durability()), this.t3h
+    if (!this.e3h) {
+      this.e3h = true;
+      this.t3h = this.FbDataInternal.durability();
+    }
+    return this.t3h;
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
 }
 exports.FbDurabilityState = FbDurabilityState;

@@ -1,87 +1,168 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerController = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiControllerBase_1 = require("../../Ui/Base/UiControllerBase"),
-  UiManager_1 = require("../../Ui/UiManager");
+  value: true
+});
+exports.ShipTowerController = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const UiManager_1 = require("../../Ui/UiManager");
 class ShipTowerController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26641, e => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "My_", ["割草爬塔活动副本积分结算推送", e]), ModelManager_1.ModelManager.ShipTowerModel.UpdateResultNotify(e)
-    }), Net_1.Net.Register(20814, e => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Ey_", ["割草爬塔关卡信息更新", e]), ModelManager_1.ModelManager.ShipTowerModel.UpdateLevelPlayNotify(e)
-    }), Net_1.Net.Register(26381, e => {
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Dk1", ["割草爬塔局内周期更新推送", e]), ModelManager_1.ModelManager.ShipTowerModel.UpdateSeasonNotify(e)
-    })
+    Net_1.Net.Register(20264, e => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ShipTower", 69, "My_", ["割草爬塔活动副本积分结算推送", e]);
+      }
+      ModelManager_1.ModelManager.ShipTowerModel.UpdateResultNotify(e);
+    });
+    Net_1.Net.Register(18856, e => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ShipTower", 69, "Ey_", ["割草爬塔关卡信息更新", e]);
+      }
+      ModelManager_1.ModelManager.ShipTowerModel.UpdateLevelPlayNotify(e);
+    });
+    Net_1.Net.Register(20755, e => {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ShipTower", 69, "_O1", ["割草爬塔局内周期更新推送", e]);
+      }
+      ModelManager_1.ModelManager.ShipTowerModel.UpdateSeasonNotify(e);
+    });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26641), Net_1.Net.UnRegister(20814), Net_1.Net.UnRegister(26381)
+    Net_1.Net.UnRegister(20264);
+    Net_1.Net.UnRegister(18856);
+    Net_1.Net.UnRegister(20755);
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_);
   }
-  static RequestChallenge(e, o = !1, r = !1) {
-    var t = e.TeamDataList[0],
-      a = e.TeamDataList[1],
-      n = new Protocol_1.Aki.Protocol.Yn_,
-      e = (n.ELl = e.Id, n.TLl = e.GetAllTeamBuffIdList(), n.LLl = a.GetRoleIdListEdit(), n.xQ_ = r, ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Yn_ = n, (o ? a : t).GetRoleIdListEdit()),
-      r = (o ? a : t).InstId;
-    ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(r, e, 0, 0)
+  static RequestChallenge(e, o = false, r = false) {
+    var t = e.TeamDataList[0];
+    var a = e.TeamDataList[1];
+    var n = new Protocol_1.Aki.Protocol.Yn_();
+    n.ELl = e.Id;
+    n.TLl = e.GetAllTeamBuffIdList();
+    n.LLl = a.GetRoleIdListEdit();
+    n.xQ_ = r;
+    ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Yn_ = n;
+    var e = (o ? a : t).GetRoleIdListEdit();
+    var r = (o ? a : t).InstId;
+    ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(r, e, 0, 0);
   }
   static async SlashAndTowerInfoRequest() {
-    var e = Protocol_1.Aki.Protocol.Cy_.create(),
-      e = (Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Cy_"), await Net_1.Net.CallAsync(19991, e));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "gy_", ["", e]), ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerInfoResponse(e)
+    var e = Protocol_1.Aki.Protocol.Cy_.create();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "Cy_");
+    }
+    var e = await Net_1.Net.CallAsync(18911, e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "gy_", ["", e]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerInfoResponse(e);
   }
   static async SlashAndTowerScoreRewardRequest(e, o) {
-    var r = new Protocol_1.Aki.Protocol.py_,
-      e = (r.s5n = e, r.cOl = o, Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "py_", ["", r]), await Net_1.Net.CallAsync(29579, r));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "vy_", ["", e]), ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerScoreRewardResponse(e)
+    var r = new Protocol_1.Aki.Protocol.py_();
+    r.s5n = e;
+    r.cOl = o;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "py_", ["", r]);
+    }
+    var e = await Net_1.Net.CallAsync(27869, r);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "vy_", ["", e]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerScoreRewardResponse(e);
   }
   static async EndLessHistoryRequest() {
-    var e = Protocol_1.Aki.Protocol.yy_.create(),
-      e = (Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "yy_"), await Net_1.Net.CallAsync(17579, e));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Sy_", ["", e]), ModelManager_1.ModelManager.ShipTowerModel.EndLessHistoryResponse(e)
+    var e = Protocol_1.Aki.Protocol.yy_.create();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "yy_");
+    }
+    var e = await Net_1.Net.CallAsync(25830, e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "Sy_", ["", e]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.EndLessHistoryResponse(e);
   }
   static async SlashAndTowerSaveRecordRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.Iy_,
-      o = (o.s5n = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Iy_", ["", o]), await Net_1.Net.CallAsync(25369, o));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Ty_", ["", o]), ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerSaveRecordResponse(e, o)
+    var o = new Protocol_1.Aki.Protocol.Iy_();
+    o.s5n = e;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "Iy_", ["", o]);
+    }
+    var o = await Net_1.Net.CallAsync(29037, o);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "Ty_", ["", o]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerSaveRecordResponse(e, o);
   }
   static async SlashAndTowerResetRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.by_,
-      o = (o.s5n = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "by_", ["", o]), await Net_1.Net.CallAsync(24247, o));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Ly_", ["", o]), ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerResetResponse(e, o)
+    var o = new Protocol_1.Aki.Protocol.by_();
+    o.s5n = e;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "by_", ["", o]);
+    }
+    var o = await Net_1.Net.CallAsync(25133, o);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "Ly_", ["", o]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerResetResponse(e, o);
   }
   static async SlashAndTowerRecommendRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.wy_,
-      o = (o.s5n = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "wy_", ["", o]), await Net_1.Net.CallAsync(17051, o));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "Ry_", ["", o]), ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerRecommendResponse(e, o)
+    var o = new Protocol_1.Aki.Protocol.wy_();
+    o.s5n = e;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "wy_", ["", o]);
+    }
+    var o = await Net_1.Net.CallAsync(21483, o);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "Ry_", ["", o]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerRecommendResponse(e, o);
   }
   static async SlashAndTowerReviewRequest() {
-    var e = Protocol_1.Aki.Protocol.lG_.create(),
-      e = (Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "lG_"), await Net_1.Net.CallAsync(16220, e));
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("ShipTower", 69, "_G_", ["", e]), ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerReviewResponse(e)
+    var e = Protocol_1.Aki.Protocol.lG_.create();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "lG_");
+    }
+    var e = await Net_1.Net.CallAsync(28563, e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ShipTower", 69, "_G_", ["", e]);
+    }
+    ModelManager_1.ModelManager.ShipTowerModel.SlashAndTowerReviewResponse(e);
   }
-}(exports.ShipTowerController = ShipTowerController).Jn_ = () => {
-  ModelManager_1.ModelManager.ShipTowerModel.InitData(), ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto()
-}, ShipTowerController.PG_ = e => {
+}
+(exports.ShipTowerController = ShipTowerController).Jn_ = () => {
+  ModelManager_1.ModelManager.ShipTowerModel.InitData();
+  ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+};
+ShipTowerController.PG_ = e => {
   e.forEach(e => {
     var e = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e.s5n);
-    60005 === e?.ItemType && (e = ConfigManager_1.ConfigManager.ShipTowerConfig.GetBuffCfgByItemIdList(e.Id)?.filter(e => !ModelManager_1.ModelManager.ShipTowerModel.IsOldSeason(e.Season))[0]) && ModelManager_1.ModelManager.ShipTowerModel.AddShowBuffId(e.Id, 1 === e.Tips)
-  }), UiManager_1.UiManager.IsViewOpen("ShipTowerView") && ModelManager_1.ModelManager.ShipTowerModel.CheckShowGetBuff()
-}, ShipTowerController.m7_ = (e, o) => {
-  o && 10081 === e && ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto()
+    if (e?.ItemType === 60005 && (e = ConfigManager_1.ConfigManager.ShipTowerConfig.GetBuffCfgByItemIdList(e.Id)?.filter(e => !ModelManager_1.ModelManager.ShipTowerModel.IsOldSeason(e.Season))[0])) {
+      ModelManager_1.ModelManager.ShipTowerModel.AddShowBuffId(e.Id, e.Tips === 1);
+    }
+  });
+  if (UiManager_1.UiManager.IsViewOpen("ShipTowerView")) {
+    ModelManager_1.ModelManager.ShipTowerModel.CheckShowGetBuff();
+  }
 };
-//# sourceMappingURL=ShipTowerController.js.map
+ShipTowerController.m7_ = (e, o) => {
+  if (o && e === 10081) {
+    ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
+  }
+}; //# sourceMappingURL=ShipTowerController.js.map

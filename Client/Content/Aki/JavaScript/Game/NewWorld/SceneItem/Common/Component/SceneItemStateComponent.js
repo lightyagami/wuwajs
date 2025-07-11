@@ -1,118 +1,252 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, e, i, s) {
-  var o, r = arguments.length,
-    n = r < 3 ? e : null === s ? s = Object.getOwnPropertyDescriptor(e, i) : s;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) n = Reflect.decorate(t, e, i, s);
-  else
-    for (var h = t.length - 1; 0 <= h; h--)(o = t[h]) && (n = (r < 3 ? o(n) : 3 < r ? o(e, i, n) : o(e, i)) || n);
-  return 3 < r && n && Object.defineProperty(e, i, n), n
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneItemStateComponent = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  GameplayTagUtils_1 = require("../../../../../Core/Utils/GameplayTagUtils"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  IAction_1 = require("../../../../../UniverseEditor/Interface/IAction"),
-  IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../../../Common/TimeUtil"),
-  Global_1 = require("../../../../Global"),
-  LevelGeneralNetworks_1 = require("../../../../LevelGamePlay/LevelGeneralNetworks"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  BulletController_1 = require("../../../Bullet/BulletController"),
-  MIN_DELAY_THRESHOLD = .1,
-  RESET_LIMIT = 2,
-  SERVER_DATA = "bys";
-let SceneItemStateComponent = class SceneItemStateComponent extends EntityComponent_1.EntityComponent {
-  constructor() {
-    super(...arguments), this._ii = 1, this.W1n = void 0, this.JUn = void 0, this.BehaviorMap = void 0, this.Hte = void 0, this.r_n = void 0, this.StateConfig = void 0, this.s_n = !1, this.Wpo = void 0, this.Xte = void 0, this.nXr = void 0, this.JQr = void 0, this.a_n = void 0, this.h_n = void 0, this.l_n = void 0, this.__n = void 0, this.I5a = void 0, this.v81 = void 0, this.Rnn = () => {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
-      var t = this.r_n?.CreateStageConfig.PerformDuration;
-      t >= MIN_DELAY_THRESHOLD ? this.I5a = TimerSystem_1.TimerSystem.Delay(() => {
-        this.T5a(!1)
-      }, t * TimeUtil_1.TimeUtil.InverseMillisecond) : (LevelGeneralNetworks_1.LevelGeneralNetworks.RequestSetInitTagRequest(this.Wpo), this.s_n = !0)
-    }, this.u_n = t => {
-      TimerSystem_1.TimerSystem.Delay(() => {
-        ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity)
-      }, RESET_LIMIT * TimeUtil_1.TimeUtil.InverseMillisecond)
+
+var __decorate = this && this.__decorate || function (t, e, i, s) {
+  var o;
+  var r = arguments.length;
+  var n = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(t, e, i, s);
+  } else {
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (o = t[h]) {
+        n = (r < 3 ? o(n) : r > 3 ? o(e, i, n) : o(e, i)) || n;
+      }
     }
   }
+  if (r > 3 && n) {
+    Object.defineProperty(e, i, n);
+  }
+  return n;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SceneItemStateComponent = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const GameplayTagUtils_1 = require("../../../../../Core/Utils/GameplayTagUtils");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const IAction_1 = require("../../../../../UniverseEditor/Interface/IAction");
+const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const Global_1 = require("../../../../Global");
+const LevelGeneralNetworks_1 = require("../../../../LevelGamePlay/LevelGeneralNetworks");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const BulletController_1 = require("../../../Bullet/BulletController");
+const MIN_DELAY_THRESHOLD = 0.1;
+const RESET_LIMIT = 2;
+const SERVER_DATA = "bys";
+let SceneItemStateComponent = class SceneItemStateComponent extends EntityComponent_1.EntityComponent {
+  constructor() {
+    super(...arguments);
+    this._ii = 1;
+    this.W1n = undefined;
+    this.JUn = undefined;
+    this.BehaviorMap = undefined;
+    this.Hte = undefined;
+    this.r_n = undefined;
+    this.StateConfig = undefined;
+    this.s_n = false;
+    this.Wpo = undefined;
+    this.Xte = undefined;
+    this.nXr = undefined;
+    this.JQr = undefined;
+    this.a_n = undefined;
+    this.h_n = undefined;
+    this.l_n = undefined;
+    this.__n = undefined;
+    this.I5a = undefined;
+    this.Sj1 = undefined;
+    this.Rnn = () => {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+      var t = this.r_n?.CreateStageConfig.PerformDuration;
+      if (t >= MIN_DELAY_THRESHOLD) {
+        this.I5a = TimerSystem_1.TimerSystem.Delay(() => {
+          this.T5a(false);
+        }, t * TimeUtil_1.TimeUtil.InverseMillisecond);
+      } else {
+        LevelGeneralNetworks_1.LevelGeneralNetworks.RequestSetInitTagRequest(this.Wpo);
+        this.s_n = true;
+      }
+    };
+    this.u_n = t => {
+      TimerSystem_1.TimerSystem.Delay(() => {
+        ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
+      }, RESET_LIMIT * TimeUtil_1.TimeUtil.InverseMillisecond);
+    };
+  }
   get IsInteractState() {
-    return this.s_n && this.l_n
+    return this.s_n && this.l_n;
   }
   get State() {
-    return this._ii
+    return this._ii;
   }
   get StateTagId() {
-    return this.W1n || 0
+    return this.W1n || 0;
   }
   OnInitData() {
     var t = this.Entity?.GetComponent(0);
-    if (this.Hte = this.Entity?.GetComponent(1), t) {
-      this.JQr = t.GetSummonerId(), this.nXr = this.Hte?.CreatureData.GetModelConfig(), this.s_n = !0, this.l_n = !0;
+    this.Hte = this.Entity?.GetComponent(1);
+    if (t) {
+      this.JQr = t.GetSummonerId();
+      this.nXr = this.Hte?.CreatureData.GetModelConfig();
+      this.s_n = true;
+      this.l_n = true;
       var e = t.GetPbEntityInitData();
       if (e) {
-        this.Xte = this.Entity?.GetComponent(196), this.Wpo = t.GetCreatureDataId(), this.r_n = (0, IComponent_1.getComponent)(e.ComponentsData, "SceneItemLifeCycleComponent"), this.StateConfig = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent");
-        var e = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent"),
-          i = (this.BehaviorMap = new Map, e),
-          s = e?.StateChangeBehaviors;
+        this.Xte = this.Entity?.GetComponent(196);
+        this.Wpo = t.GetCreatureDataId();
+        this.r_n = (0, IComponent_1.getComponent)(e.ComponentsData, "SceneItemLifeCycleComponent");
+        this.StateConfig = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent");
+        var e = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent");
+        this.BehaviorMap = new Map();
+        var i = e;
+        var s = e?.StateChangeBehaviors;
         if (i && s) {
           let t = 0;
-          for (const o of e.StateChangeBehaviors) this.BehaviorMap.set(t, o.Action), t++
+          for (const o of e.StateChangeBehaviors) {
+            this.BehaviorMap.set(t, o.Action);
+            t++;
+          }
         }
-        i = t.ComponentDataMap.get(SERVER_DATA)?.bys, s = (this.W1n = i.X5n, t.ComponentDataMap.get("Wys"));
-        s && (this.JUn = MathUtils_1.MathUtils.LongToBigInt(s.Wys?._Vn))
+        i = t.ComponentDataMap.get(SERVER_DATA)?.bys;
+        this.W1n = i.X5n;
+        s = t.ComponentDataMap.get("Wys");
+        if (s) {
+          this.JUn = MathUtils_1.MathUtils.LongToBigInt(s.Wys?._Vn);
+        }
       }
     }
-    return !0
+    return true;
   }
   OnStart() {
-    return this.c_n(this.W1n), !0
+    this.c_n(this.W1n);
+    return true;
   }
   OnEnd() {
-    return EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn), void 0 !== this.a_n && TimerSystem_1.TimerSystem.Remove(this.a_n), !0
+    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+    }
+    if (this.a_n !== undefined) {
+      TimerSystem_1.TimerSystem.Remove(this.a_n);
+    }
+    return true;
   }
   IsInState(t) {
-    return this._ii === t
+    return this._ii === t;
   }
   StartFadeOut() {
     var t;
-    this.v81 ? Log_1.Log.CheckError() && Log_1.Log.Error("Level", 79, "[SceneItemStateComponent] 实体尝试重复渐出", ["Context", context], ["CreatureDataId", this.Wpo]) : (this.Xte?.AddTag(-416978627), t = ControllerHolder_1.ControllerHolder.CreatureController.LeaveAoiFadeOutDuration, Log_1.Log.CheckInfo() && Log_1.Log.Info("Level", 79, "[SceneItemStateComponent] 实体渐出", ["CreatureDataId", this.Wpo], ["Duration", t]), this.v81 = TimerSystem_1.TimerSystem.Delay(() => {
-      this.Entity?.Valid && (this.Xte?.RemoveTag(-416978627), ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity), this.v81 = void 0)
-    }, t * TimeUtil_1.TimeUtil.InverseMillisecond))
+    if (this.Sj1) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Level", 79, "[SceneItemStateComponent] 实体尝试重复渐出", ["Context", context], ["CreatureDataId", this.Wpo]);
+      }
+    } else {
+      this.Xte?.AddTag(-416978627);
+      t = ControllerHolder_1.ControllerHolder.CreatureController.LeaveAoiFadeOutDuration;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Level", 79, "[SceneItemStateComponent] 实体渐出", ["CreatureDataId", this.Wpo], ["Duration", t]);
+      }
+      this.Sj1 = TimerSystem_1.TimerSystem.Delay(() => {
+        if (this.Entity?.Valid) {
+          this.Xte?.RemoveTag(-416978627);
+          ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
+          this.Sj1 = undefined;
+        }
+      }, t * TimeUtil_1.TimeUtil.InverseMillisecond);
+    }
   }
   StopFadeOut() {
-    this.v81 && (TimerSystem_1.TimerSystem.Remove(this.v81), this.v81 = void 0)
+    if (this.Sj1) {
+      TimerSystem_1.TimerSystem.Remove(this.Sj1);
+      this.Sj1 = undefined;
+    }
   }
   HandleDestroyState() {
-    var t, e;
-    if (this.s_n = !1, this.Xte?.HasTag(-991879492) && (this.Xte?.RemoveTag(-991879492), this.UpdateState(-1278190765, !0)), 3 !== this._ii || !this.r_n) return (e = this.Entity.GetComponent(163)) ? (t = (t = this.StateConfig?.State) ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t) : void 0, void(this.W1n !== t ? e.ResetToInitState(this.StateConfig.State, this.u_n) : ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity))) : void 0;
-    void 0 === this.__n && ((t = this.r_n.DestroyStageConfig?.BulletId) && void 0 !== this.JQr && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr), BulletController_1.BulletController.CreateBulletCustomTarget(e ? e.Entity : Global_1.Global.BaseCharacter, t.toString(), this.Hte.ActorTransform, {}, this.JUn)), (e = this.r_n.DestroyStageConfig?.PerformDuration) ? this.__n = TimerSystem_1.TimerSystem.Delay(() => {
-      this.Entity?.Valid && (ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity), this.__n = void 0)
-    }, e * TimeUtil_1.TimeUtil.InverseMillisecond) : ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity))
+    var t;
+    var e;
+    this.s_n = false;
+    if (this.Xte?.HasTag(-991879492)) {
+      this.Xte?.RemoveTag(-991879492);
+      this.UpdateState(-1278190765, true);
+    }
+    if (this._ii !== 3 || !this.r_n) {
+      if (e = this.Entity.GetComponent(163)) {
+        t = (t = this.StateConfig?.State) ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t) : undefined;
+        if (this.W1n !== t) {
+          e.ResetToInitState(this.StateConfig.State, this.u_n);
+        } else {
+          ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
+        }
+        return;
+      } else {
+        return undefined;
+      }
+    }
+    if (this.__n === undefined) {
+      if ((t = this.r_n.DestroyStageConfig?.BulletId) && this.JQr !== undefined) {
+        e = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr);
+        BulletController_1.BulletController.CreateBulletCustomTarget(e ? e.Entity : Global_1.Global.BaseCharacter, t.toString(), this.Hte.ActorTransform, {}, this.JUn);
+      }
+      if (e = this.r_n.DestroyStageConfig?.PerformDuration) {
+        this.__n = TimerSystem_1.TimerSystem.Delay(() => {
+          if (this.Entity?.Valid) {
+            ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
+            this.__n = undefined;
+          }
+        }, e * TimeUtil_1.TimeUtil.InverseMillisecond);
+      } else {
+        ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
+      }
+    }
   }
   c_n(t) {
     const e = this.r_n?.CreateStageConfig?.BulletConfig?.BulletId;
-    if (e && void 0 !== this.JQr && ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr)) {
+    if (e && this.JQr !== undefined && ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr)) {
       var i = this.r_n?.CreateStageConfig?.BulletConfig?.Delay;
       const s = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.JQr);
-      i >= MIN_DELAY_THRESHOLD ? this.a_n = TimerSystem_1.TimerSystem.Delay(() => {
-        BulletController_1.BulletController.CreateBulletCustomTarget(s ? s.Entity : Global_1.Global.BaseCharacter, e.toString(), this.Hte.ActorTransform, {}, this.JUn), this.a_n = void 0
-      }, i * TimeUtil_1.TimeUtil.InverseMillisecond) : BulletController_1.BulletController.CreateBulletCustomTarget(s ? s.Entity : Global_1.Global.BaseCharacter, e.toString(), this.Hte.ActorTransform, {}, this.JUn)
+      if (i >= MIN_DELAY_THRESHOLD) {
+        this.a_n = TimerSystem_1.TimerSystem.Delay(() => {
+          BulletController_1.BulletController.CreateBulletCustomTarget(s ? s.Entity : Global_1.Global.BaseCharacter, e.toString(), this.Hte.ActorTransform, {}, this.JUn);
+          this.a_n = undefined;
+        }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
+      } else {
+        BulletController_1.BulletController.CreateBulletCustomTarget(s ? s.Entity : Global_1.Global.BaseCharacter, e.toString(), this.Hte.ActorTransform, {}, this.JUn);
+      }
     }
     i = 0;
-    this.s_n = !1, 2096634051 !== t ? this.UpdateState(t, !0, !0) : (this.W1n = t, this._ii = 0, i = this.r_n?.CreateStageConfig.PerformDuration, t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-991879492), void 0 !== this.nXr?.场景交互物状态列表.Get(t) && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(202).GetIsSceneInteractionLoadCompleted()) ? EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn) : i >= MIN_DELAY_THRESHOLD ? this.I5a = TimerSystem_1.TimerSystem.Delay(() => {
-      this.T5a(!1)
-    }, i * TimeUtil_1.TimeUtil.InverseMillisecond) : (LevelGeneralNetworks_1.LevelGeneralNetworks.RequestSetInitTagRequest(this.Wpo), this.s_n = !0))
+    this.s_n = false;
+    if (t !== 2096634051) {
+      this.UpdateState(t, true, true);
+    } else {
+      this.W1n = t;
+      this._ii = 0;
+      i = this.r_n?.CreateStageConfig.PerformDuration;
+      t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-991879492);
+      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(202).GetIsSceneInteractionLoadCompleted())) {
+        EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+      } else if (i >= MIN_DELAY_THRESHOLD) {
+        this.I5a = TimerSystem_1.TimerSystem.Delay(() => {
+          this.T5a(false);
+        }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
+      } else {
+        LevelGeneralNetworks_1.LevelGeneralNetworks.RequestSetInitTagRequest(this.Wpo);
+        this.s_n = true;
+      }
+    }
   }
-  UpdateState(t, e, i = !1) {
-    switch (0 === this._ii && this.T5a(!0), this.s_n = e, this.W1n = t, this.W1n) {
+  UpdateState(t, e, i = false) {
+    if (this._ii === 0) {
+      this.T5a(true);
+    }
+    this.s_n = e;
+    this.W1n = t;
+    switch (this.W1n) {
       case -1152559349:
         this._ii = 1;
         break;
@@ -126,19 +260,51 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
         this._ii = 3;
         break;
       default:
-        this._ii = 5
+        this._ii = 5;
     }
-    i || (e ? EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, t, !0) : EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStatePreChange, t))
+    if (!i) {
+      if (e) {
+        EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, t, true);
+      } else {
+        EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStatePreChange, t);
+      }
+    }
   }
-  ChangePerformanceState(t, e = !1, i = !0) {
-    t === this.h_n && !e || (e = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t), !(0, IAction_1.isPerformanceTypeContainTag)(this.StateConfig.PrefabPerformanceType, e) && i ? Log_1.Log.CheckError() && Log_1.Log.Error("Level", 7, "[ChangePerformanceTag] 传入的Tag与Entity设定的状态类型不匹配", ["configComp", this.StateConfig.PrefabPerformanceType], ["TagName", e], ["CreatureDataId", this.Wpo]) : (this.h_n ? (i = this.h_n, this.h_n = t, this.Xte?.ChangeLocalLevelTag(this.h_n, i)) : (this.h_n = t, this.Xte?.AddTag(t)), this.l_n = -687845e3 !== t))
+  ChangePerformanceState(t, e = false, i = true) {
+    if (t !== this.h_n || !!e) {
+      e = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t);
+      if (!(0, IAction_1.isPerformanceTypeContainTag)(this.StateConfig.PrefabPerformanceType, e) && i) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Level", 7, "[ChangePerformanceTag] 传入的Tag与Entity设定的状态类型不匹配", ["configComp", this.StateConfig.PrefabPerformanceType], ["TagName", e], ["CreatureDataId", this.Wpo]);
+        }
+      } else {
+        if (this.h_n) {
+          i = this.h_n;
+          this.h_n = t;
+          this.Xte?.ChangeLocalLevelTag(this.h_n, i);
+        } else {
+          this.h_n = t;
+          this.Xte?.AddTag(t);
+        }
+        this.l_n = t !== -687845000;
+      }
+    }
   }
   GetLifeCycleStageActions(t) {
-    return (t ? this.r_n?.CreateStageConfig : this.r_n?.DestroyStageConfig).Actions
+    return (t ? this.r_n?.CreateStageConfig : this.r_n?.DestroyStageConfig).Actions;
   }
   T5a(t) {
-    this.Xte?.RemoveTag(-991879492), t ? TimerSystem_1.TimerSystem.Has(this.I5a) && this.I5a && TimerSystem_1.TimerSystem.Remove(this.I5a) : (this.s_n = !0, LevelGeneralNetworks_1.LevelGeneralNetworks.RequestSetInitTagRequest(this.Wpo)), this.I5a = void 0
+    this.Xte?.RemoveTag(-991879492);
+    if (t) {
+      if (TimerSystem_1.TimerSystem.Has(this.I5a) && this.I5a) {
+        TimerSystem_1.TimerSystem.Remove(this.I5a);
+      }
+    } else {
+      this.s_n = true;
+      LevelGeneralNetworks_1.LevelGeneralNetworks.RequestSetInitTagRequest(this.Wpo);
+    }
+    this.I5a = undefined;
   }
 };
-SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], SceneItemStateComponent), exports.SceneItemStateComponent = SceneItemStateComponent;
-//# sourceMappingURL=SceneItemStateComponent.js.map
+SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], SceneItemStateComponent);
+exports.SceneItemStateComponent = SceneItemStateComponent; //# sourceMappingURL=SceneItemStateComponent.js.map

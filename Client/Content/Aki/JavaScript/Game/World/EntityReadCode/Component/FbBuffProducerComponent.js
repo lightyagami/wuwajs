@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBuffProducerComponent = void 0;
+  value: true
+});
+exports.FbBuffProducerComponent = undefined;
 const UnionAddBuffModeHelper_1 = require("./UnionAddBuffModeHelper");
 class FbBuffProducerComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.M5h = !1, this.E5h = void 0, this.I5h = !1, this.T5h = 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.M5h = false;
+    this.E5h = undefined;
+    this.I5h = false;
+    this.T5h = 0;
   }
   static Create(t) {
-    if (t) return new FbBuffProducerComponent(t)
+    if (t) {
+      return new FbBuffProducerComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get AddBuffMode() {
-    var t, e;
-    return !this.M5h && (this.M5h = !0, t = this.FbDataInternal.addBuffModeType(), e = UnionAddBuffModeHelper_1.UnionAddBuffModeHelper.GetUnionAddBuffModeObject(t)) && (this.E5h = UnionAddBuffModeHelper_1.UnionAddBuffModeHelper.ReadUnionAddBuffMode(t, this.FbDataInternal.addBuffMode(e))), this.E5h
+    var t;
+    var e;
+    if (!this.M5h && (this.M5h = true, t = this.FbDataInternal.addBuffModeType(), e = UnionAddBuffModeHelper_1.UnionAddBuffModeHelper.GetUnionAddBuffModeObject(t))) {
+      this.E5h = UnionAddBuffModeHelper_1.UnionAddBuffModeHelper.ReadUnionAddBuffMode(t, this.FbDataInternal.addBuffMode(e));
+    }
+    return this.E5h;
   }
   get BuffId() {
-    return this.I5h || (this.I5h = !0, this.T5h = Number(this.FbDataInternal.buffId())), this.T5h
+    if (!this.I5h) {
+      this.I5h = true;
+      this.T5h = Number(this.FbDataInternal.buffId());
+    }
+    return this.T5h;
   }
 }
 exports.FbBuffProducerComponent = FbBuffProducerComponent;

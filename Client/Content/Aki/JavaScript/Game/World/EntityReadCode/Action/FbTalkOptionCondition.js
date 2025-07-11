@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTalkOptionCondition = void 0;
+  value: true
+});
+exports.FbTalkOptionCondition = undefined;
 const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbTalkOptionCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ich = !1, this.rch = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ich = false;
+    this.rch = undefined;
   }
   static Create(t) {
-    if (t) return new FbTalkOptionCondition(t)
+    if (t) {
+      return new FbTalkOptionCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Conditions() {
-    return this.ich || (this.ich = !0, this.rch = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.conditions())), this.rch
+    if (!this.ich) {
+      this.ich = true;
+      this.rch = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.conditions());
+    }
+    return this.rch;
   }
 }
 exports.FbTalkOptionCondition = FbTalkOptionCondition;

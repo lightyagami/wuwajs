@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaActivityOpen = void 0;
+  value: true
+});
+exports.PhantomArenaActivityOpen = undefined;
 const GenericPromptFloatTipsBase_1 = require("../../../GenericPrompt/View/GenericPromptFloatTipsBase");
 class PhantomArenaActivityOpen extends GenericPromptFloatTipsBase_1.GenericPromptFloatTipsBase {
   SetMainText() {}

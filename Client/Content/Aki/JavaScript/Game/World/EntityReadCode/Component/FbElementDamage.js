@@ -1,37 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbElementDamage = void 0;
+  value: true
+});
+exports.FbElementDamage = undefined;
 class FbElementDamage {
   constructor(t) {
-    this.FbDataInternal = t, this.I3h = !1, this.T3h = 0, this.F3h = !1, this.N3h = 0, this.V3h = !1, this.j3h = 0, this.H3h = !1, this.W3h = 0, this.Q3h = !1, this.K3h = 0, this.$3h = !1, this.X3h = 0, this.Y3h = !1, this.z3h = 0, this.J3h = !1, this.Z3h = 0
+    this.FbDataInternal = t;
+    this.I3h = false;
+    this.T3h = 0;
+    this.F3h = false;
+    this.N3h = 0;
+    this.V3h = false;
+    this.j3h = 0;
+    this.H3h = false;
+    this.W3h = 0;
+    this.Q3h = false;
+    this.K3h = 0;
+    this.$3h = false;
+    this.X3h = 0;
+    this.Y3h = false;
+    this.z3h = 0;
+    this.J3h = false;
+    this.Z3h = 0;
   }
   static Create(t) {
-    if (t) return new FbElementDamage(t)
+    if (t) {
+      return new FbElementDamage(t);
+    }
   }
   get DefaultValue() {
-    return this.I3h || (this.I3h = !0, this.T3h = this.FbDataInternal.defaultValue()), this.T3h
+    if (!this.I3h) {
+      this.I3h = true;
+      this.T3h = this.FbDataInternal.defaultValue();
+    }
+    return this.T3h;
   }
   get Physics() {
-    return this.F3h || (this.F3h = !0, this.N3h = this.FbDataInternal.physics()), this.N3h
+    if (!this.F3h) {
+      this.F3h = true;
+      this.N3h = this.FbDataInternal.physics();
+    }
+    return this.N3h;
   }
   get Ice() {
-    return this.V3h || (this.V3h = !0, this.j3h = this.FbDataInternal.ice()), this.j3h
+    if (!this.V3h) {
+      this.V3h = true;
+      this.j3h = this.FbDataInternal.ice();
+    }
+    return this.j3h;
   }
   get Fire() {
-    return this.H3h || (this.H3h = !0, this.W3h = this.FbDataInternal.fire()), this.W3h
+    if (!this.H3h) {
+      this.H3h = true;
+      this.W3h = this.FbDataInternal.fire();
+    }
+    return this.W3h;
   }
   get Thunder() {
-    return this.Q3h || (this.Q3h = !0, this.K3h = this.FbDataInternal.thunder()), this.K3h
+    if (!this.Q3h) {
+      this.Q3h = true;
+      this.K3h = this.FbDataInternal.thunder();
+    }
+    return this.K3h;
   }
   get Wind() {
-    return this.$3h || (this.$3h = !0, this.X3h = this.FbDataInternal.wind()), this.X3h
+    if (!this.$3h) {
+      this.$3h = true;
+      this.X3h = this.FbDataInternal.wind();
+    }
+    return this.X3h;
   }
   get Light() {
-    return this.Y3h || (this.Y3h = !0, this.z3h = this.FbDataInternal.light()), this.z3h
+    if (!this.Y3h) {
+      this.Y3h = true;
+      this.z3h = this.FbDataInternal.light();
+    }
+    return this.z3h;
   }
   get Dark() {
-    return this.J3h || (this.J3h = !0, this.Z3h = this.FbDataInternal.dark()), this.Z3h
+    if (!this.J3h) {
+      this.J3h = true;
+      this.Z3h = this.FbDataInternal.dark();
+    }
+    return this.Z3h;
   }
 }
 exports.FbElementDamage = FbElementDamage;

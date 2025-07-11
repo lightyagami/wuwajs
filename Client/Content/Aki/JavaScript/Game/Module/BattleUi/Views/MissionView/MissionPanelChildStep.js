@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MissionPanelChildStep = void 0;
-const ue_1 = require("ue"),
-  CustomPromise_1 = require("../../../../../Core/Common/CustomPromise"),
-  Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGeneralContextDefine"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer"),
-  StepWithStatusItem_1 = require("./TreeStep/StepWithStatusItem"),
-  UNLOCK_ANIM = "Unlock";
+  value: true
+});
+exports.MissionPanelChildStep = undefined;
+const ue_1 = require("ue");
+const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const LevelGeneralContextDefine_1 = require("../../../../LevelGamePlay/LevelGeneralContextDefine");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const StepProgressBarController_1 = require("./TreeStep/StepProgressBarController");
+const StepWithStatusItem_1 = require("./TreeStep/StepWithStatusItem");
+const UNLOCK_ANIM = "Unlock";
 class MissionPanelChildStep extends StepWithStatusItem_1.StepWithStatusItem {
-  constructor(t, i) {
-    super(t, i), this.ViewId = t, this.StepId = i, this.Oct = void 0, this.kct = void 0, this.Fct = void 0, this.LevelSequencePlayer = void 0, this.KF_ = void 0, this.XF_ = void 0, this.kj_ = void 0, this.qj_ = void 0, this.Vct = void 0, this.Hct = void 0, this.jct = IQuest_1.EQuestScheduleType.None, this.Gr_ = !0, this.Oj_ = !1, this.Th_ = !1, this.g1_ = 0, this.yct = t => {
+  constructor(t, e) {
+    super(t, e);
+    this.ViewId = t;
+    this.StepId = e;
+    this.Oct = undefined;
+    this.kct = undefined;
+    this.Fct = undefined;
+    this.LevelSequencePlayer = undefined;
+    this.KF_ = undefined;
+    this.XF_ = undefined;
+    this.kj_ = undefined;
+    this.qj_ = undefined;
+    this.Vct = undefined;
+    this.Hct = undefined;
+    this.jct = IQuest_1.EQuestScheduleType.None;
+    this.Gr_ = true;
+    this.Oj_ = false;
+    this.Th_ = false;
+    this.g1_ = 0;
+    this.yct = t => {
       switch (t) {
         case "Success":
           this.DescribeTextComp?.SetColor(this.Vct);
@@ -26,121 +48,250 @@ class MissionPanelChildStep extends StepWithStatusItem_1.StepWithStatusItem {
           this.DescribeTextComp?.SetColor(this.Hct);
           break;
         case "Start":
-          this.KF_?.IsPending() && this.KF_.SetResult(!0);
+          if (this.KF_?.IsPending()) {
+            this.KF_.SetResult(true);
+          }
           break;
         case "Close":
-          this.XF_?.IsPending() && this.XF_.SetResult(!0);
+          if (this.XF_?.IsPending()) {
+            this.XF_.SetResult(true);
+          }
           break;
         case UNLOCK_ANIM:
-          this.kj_?.IsPending() && this.kj_.SetResult(!0)
+          if (this.kj_?.IsPending()) {
+            this.kj_.SetResult(true);
+          }
       }
-    }, this.nJa = t => {
-      t === UNLOCK_ANIM && (this.g1_ === MissionPanelChildStep.p1_ && this.qj_?.IsPending() && this.qj_.SetResult(!0), MissionPanelChildStep.p1_++)
-    }, this.Oct = ue_1.Color.FromHex("ECE5D8FF"), this.kct = ue_1.Color.FromHex("ADADADFF"), this.Fct = ue_1.Color.FromHex("C9F797FF")
+    };
+    this.nJa = t => {
+      if (t === UNLOCK_ANIM) {
+        if (this.g1_ === MissionPanelChildStep.p1_ && this.qj_?.IsPending()) {
+          this.qj_.SetResult(true);
+        }
+        MissionPanelChildStep.p1_++;
+      }
+    };
+    this.Oct = ue_1.Color.FromHex("ECE5D8FF");
+    this.kct = ue_1.Color.FromHex("ADADADFF");
+    this.Fct = ue_1.Color.FromHex("C9F797FF");
   }
   OnRegisterComponent() {
-    super.OnRegisterComponent(), this.ComponentRegisterInfos.push([5, ue_1.UIItem]), this.ComponentRegisterInfos.push([6, ue_1.UISprite])
+    super.OnRegisterComponent();
+    this.ComponentRegisterInfos.push([5, ue_1.UIItem]);
+    this.ComponentRegisterInfos.push([6, ue_1.UISprite]);
+    this.ComponentRegisterInfos.push([7, ue_1.UIItem]);
+  }
+  async OnBeforeStartAsync() {
+    await super.OnBeforeStartAsync();
+    var t;
+    var e = this.GetItem(7);
+    if (e) {
+      await (t = new StepProgressBarController_1.StepProgressBarController(e)).CreateByResourceIdAsync("UiItem_MissionBar", e);
+      this.StepControllers.set(1, t);
+    }
   }
   OnStart() {
-    super.OnStart(), this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem), this.LevelSequencePlayer.BindSequenceCloseEvent(this.yct), this.RootActor.OnSequencePlayEvent.Bind(this.nJa), this.GetItem(5)?.SetUIActive(!1), this.GetSprite(6)?.SetUIActive(!1), this.RootActor.GetComponentByClass(ue_1.UISizeControlByOther.StaticClass()).bSizeZeroWhenNotActive = !0, this.YQ_()
+    super.OnStart();
+    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.LevelSequencePlayer.BindSequenceCloseEvent(this.yct);
+    this.RootActor.OnSequencePlayEvent.Bind(this.nJa);
+    this.GetItem(5)?.SetUIActive(false);
+    this.GetSprite(6)?.SetUIActive(false);
+    this.GetItem(7)?.SetUIActive(false);
+    var t = this.RootActor.GetComponentByClass(ue_1.UISizeControlByOther.StaticClass());
+    if (t) {
+      t.bSizeZeroWhenNotActive = true;
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Battle", 72, "MissionPanelChildStep 无法获取UISizeControlByOther");
+    }
+    this.YQ_();
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.nJa)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.nJa);
   }
   OnAfterShow() {
-    this.LevelSequencePlayer?.ResumeSequence(), this.YQ_()
+    this.LevelSequencePlayer?.ResumeSequence();
+    this.YQ_();
   }
   OnAfterHide() {
-    this.LevelSequencePlayer?.PauseSequence()
+    this.LevelSequencePlayer?.PauseSequence();
   }
   async StartShow(t) {
-    await this.ShowAsync(), this.LevelSequencePlayer?.PlayLevelSequenceByName("Start");
-    var i = this.CheckVisible();
-    this.KF_ = new CustomPromise_1.CustomPromise, !t && i || this.LevelSequencePlayer.EndSequenceLastFrame("Start"), await this.KF_.Promise
+    await this.ShowAsync();
+    this.LevelSequencePlayer?.PlayLevelSequenceByName("Start");
+    var e = this.CheckVisible();
+    this.KF_ = new CustomPromise_1.CustomPromise();
+    if (!!t || !e) {
+      this.LevelSequencePlayer.EndSequenceLastFrame("Start");
+    }
+    await this.KF_.Promise;
   }
   async EndShow(t) {
     this.LevelSequencePlayer?.PlayLevelSequenceByName("Close");
-    var i = this.CheckVisible();
-    this.XF_ = new CustomPromise_1.CustomPromise, !t && i || this.LevelSequencePlayer.EndSequenceLastFrame("Close"), await this.XF_.Promise, await this.Refresh(void 0, void 0), await this.HideAsync()
+    var e = this.CheckVisible();
+    this.XF_ = new CustomPromise_1.CustomPromise();
+    if (!!t || !e) {
+      this.LevelSequencePlayer.EndSequenceLastFrame("Close");
+    }
+    await this.XF_.Promise;
+    await this.Refresh(undefined, undefined);
+    await this.HideAsync();
   }
   CheckVisible() {
     var t = super.CheckVisible();
-    return this.YQ_(), t
+    this.YQ_();
+    return t;
   }
   async OnReset() {
-    this.LevelSequencePlayer?.StopCurrentSequence(!0, !0), await this.HideAsync(), this.GetItem(5)?.SetUIActive(!1), await super.OnReset()
+    this.LevelSequencePlayer?.StopCurrentSequence(true, true);
+    await this.HideAsync();
+    this.GetItem(5)?.SetUIActive(false);
+    await super.OnReset();
   }
   UpdateStepInfo() {
-    this.Wct(), this.bh_(), super.UpdateStepInfo(), this.YQ_()
+    this.Wct();
+    this.bh_();
+    super.UpdateStepInfo();
+    this.YQ_();
+    this.VBu();
   }
+  VBu() {}
   YQ_() {
-    this.GetItem(5)?.SetUIActive(this.IsDescribeTextVisible)
+    this.GetItem(5)?.SetUIActive(this.IsDescribeTextVisible);
   }
   bh_() {
     var t;
-    this.Oj_ || (t = this.CheckMeetPreCondition(), this.Gr_ !== t && (t ? this.PlayUnlockAnim() : (this.Gr_ = !1, this.DescribeTextComp.SetColor(this.kct), this.GetSprite(6)?.SetAlpha(1), this.GetSprite(6)?.SetUIActive(!0), 0 === this.Config?.ShowSource && (this.Config.UsePreStateText = !0))))
-  }
-  async PlayUnlockAnim() {
-    this.LevelSequencePlayer && (this.Oj_ = !0, this.g1_ = MissionPanelChildStep.p1_, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.nJa), this.LevelSequencePlayer.StopCurrentSequence(!0, !0), this.LevelSequencePlayer.PlayLevelSequenceByName(UNLOCK_ANIM), this.qj_ = new CustomPromise_1.CustomPromise, await this.qj_.Promise, this.Th_ = !0, this.DescribeTextComp?.SetColor(this.Oct), 0 === this.Config?.ShowSource && (this.Config.UsePreStateText = !1), this.kj_ = new CustomPromise_1.CustomPromise, await this.kj_.Promise, EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.nJa), this.Th_ = !1, this.Oj_ = !1, this.Gr_ = !0, this.GetSprite(6)?.SetUIActive(!1))
-  }
-  CheckCanShowStatusRoot() {
-    return this.Gr_ ? super.CheckCanShowStatusRoot() : this.Th_
-  }
-  CheckCanUpdateStatusNode() {
-    return this.Gr_
-  }
-  CheckMeetPreCondition() {
-    if (0 === this.Config?.ShowSource) {
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData?.Id);
-      if (t && t.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
-        var i = this.Config.QuestScheduleType;
-        if (i.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted) {
-          i = i?.TitlePreState;
-          if (i) return t = LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(t.BtType, t.TreeIncId, t.TreeConfigId, void 0, void 0), ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(i.SwitchConditions, void 0, t)
+    if (!this.Oj_) {
+      t = this.CheckMeetPreCondition();
+      if (this.Gr_ !== t) {
+        if (t) {
+          this.PlayUnlockAnim();
+        } else {
+          this.Gr_ = false;
+          this.DescribeTextComp.SetColor(this.kct);
+          this.GetSprite(6)?.SetAlpha(1);
+          this.GetSprite(6)?.SetUIActive(true);
+          if (this.Config?.ShowSource === 0) {
+            this.Config.UsePreStateText = true;
+          }
         }
       }
     }
-    return !0
+  }
+  async PlayUnlockAnim() {
+    if (this.LevelSequencePlayer) {
+      this.Oj_ = true;
+      this.g1_ = MissionPanelChildStep.p1_;
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.nJa);
+      this.LevelSequencePlayer.StopCurrentSequence(true, true);
+      this.LevelSequencePlayer.PlayLevelSequenceByName(UNLOCK_ANIM);
+      this.qj_ = new CustomPromise_1.CustomPromise();
+      await this.qj_.Promise;
+      this.Th_ = true;
+      this.DescribeTextComp?.SetColor(this.Oct);
+      if (this.Config?.ShowSource === 0) {
+        this.Config.UsePreStateText = false;
+      }
+      this.kj_ = new CustomPromise_1.CustomPromise();
+      await this.kj_.Promise;
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.nJa);
+      this.Th_ = false;
+      this.Oj_ = false;
+      this.Gr_ = true;
+      this.GetSprite(6)?.SetUIActive(false);
+    }
+  }
+  CheckCanShowStatusRoot() {
+    if (this.Gr_) {
+      return super.CheckCanShowStatusRoot();
+    } else {
+      return this.Th_;
+    }
+  }
+  CheckCanUpdateStatusNode() {
+    return this.Gr_;
+  }
+  CheckMeetPreCondition() {
+    if (this.Config?.ShowSource === 0) {
+      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.ShowData?.Id);
+      if (t && t.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
+        var e = this.Config.QuestScheduleType;
+        if (e.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted) {
+          e = e?.TitlePreState;
+          if (e) {
+            t = LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(t.BtType, t.TreeIncId, t.TreeConfigId, undefined, undefined);
+            return ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(e.SwitchConditions, undefined, t);
+          }
+        }
+      }
+    }
+    return true;
   }
   Wct() {
     if (this.Config) {
-      let i = IQuest_1.EQuestScheduleType.None;
-      if (1 === this.Config.ShowSource ? i = this.Config.QuestScheduleType : 0 === this.Config.ShowSource && this.Config.QuestScheduleType && (i = this.Config.QuestScheduleType.Type), this.jct !== i) switch (this.jct = i) {
-        case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
-        case "FishingEntrust":
-          this.Vct = this.Fct, this.Hct = this.kct;
-          var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MissionState"),
-            s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MissionComplete"),
-            h = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MissionLose");
-          this.SetSpriteByPath(e, this.StepStatusNode, !0), this.SetSpriteByPath(s, this.StepSuccess, !0), this.SetSpriteByPath(h, this.StepLose, !0);
-          break;
-        case IQuest_1.EQuestScheduleType.Condition:
-        case IQuest_1.EQuestScheduleType.TimeLeft: {
-          let t = void 0;
-          t = (i, IQuest_1.EQuestScheduleType.Condition, this.Config.QuestScheduleType), this.Vct = this.Oct, this.Hct = this.kct;
-          e = 1 === t.IconType ? "SP_DailyTowerStarBg" : "SP_ComStateOffline", s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e), h = (this.SetSpriteByPath(s, this.StepStatusNode, !0), 1 === t.IconType ? "SP_DailyTowerStar" : "SP_ComStateOnline"), e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(h);
-          this.SetSpriteByPath(e, this.StepSuccess, !0), this.SetSpriteByPath(s, this.StepLose, !0);
-          break
+      let e = IQuest_1.EQuestScheduleType.None;
+      if (this.Config.ShowSource === 1) {
+        e = this.Config.QuestScheduleType;
+      } else if (this.Config.ShowSource === 0 && this.Config.QuestScheduleType) {
+        e = this.Config.QuestScheduleType.Type;
+      }
+      if (this.jct !== e) {
+        switch (this.jct = e) {
+          case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
+          case "FishingEntrust":
+            this.Vct = this.Fct;
+            this.Hct = this.kct;
+            var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MissionState");
+            var s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MissionComplete");
+            var h = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MissionLose");
+            this.SetSpriteByPath(i, this.StepStatusNode, true);
+            this.SetSpriteByPath(s, this.StepSuccess, true);
+            this.SetSpriteByPath(h, this.StepLose, true);
+            break;
+          case IQuest_1.EQuestScheduleType.Condition:
+          case IQuest_1.EQuestScheduleType.TimeLeft:
+            {
+              let t = undefined;
+              e;
+              IQuest_1.EQuestScheduleType.Condition;
+              t = this.Config.QuestScheduleType;
+              this.Vct = this.Oct;
+              this.Hct = this.kct;
+              i = t.IconType === 1 ? "SP_DailyTowerStarBg" : "SP_ComStateOffline";
+              s = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
+              this.SetSpriteByPath(s, this.StepStatusNode, true);
+              h = t.IconType === 1 ? "SP_DailyTowerStar" : "SP_ComStateOnline";
+              i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(h);
+              this.SetSpriteByPath(i, this.StepSuccess, true);
+              this.SetSpriteByPath(s, this.StepLose, true);
+              break;
+            }
         }
       }
     }
   }
-  OnStatusChanged(t, i) {
-    let e = void 0;
+  OnStatusChanged(t, e) {
+    let i = undefined;
     switch (t) {
       case 0:
         this.DescribeTextComp.SetColor(this.Oct);
         break;
       case 1:
-        e = "Success";
+        i = "Success";
         break;
       case 2:
-        e = "Fail"
+        i = "Fail";
     }
-    e && (this.LevelSequencePlayer.StopCurrentSequence(!0, !0), this.LevelSequencePlayer.PlayLevelSequenceByName(e), 3 !== i) && this.LevelSequencePlayer.EndSequenceLastFrame(e)
+    if (i && (this.LevelSequencePlayer.StopCurrentSequence(true, true), this.LevelSequencePlayer.PlayLevelSequenceByName(i), e !== 3)) {
+      this.LevelSequencePlayer.EndSequenceLastFrame(i);
+    }
   }
-  async OnConfigRefresh(t, i) {
-    await super.OnConfigRefresh(t, i), this.Gr_ = !0, this.Th_ = !1, this.LevelSequencePlayer?.StopCurrentSequence(!0, !0)
+  async OnConfigRefresh(t, e) {
+    await super.OnConfigRefresh(t, e);
+    this.Gr_ = true;
+    this.Th_ = false;
+    this.LevelSequencePlayer?.StopCurrentSequence(true, true);
   }
-}(exports.MissionPanelChildStep = MissionPanelChildStep).p1_ = 0;
+}
+(exports.MissionPanelChildStep = MissionPanelChildStep).p1_ = 0;
 //# sourceMappingURL=MissionPanelChildStep.js.map

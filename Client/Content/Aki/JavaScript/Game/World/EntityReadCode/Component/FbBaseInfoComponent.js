@@ -1,135 +1,311 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBaseInfoComponent = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbCustomAoizRadius_1 = require("./FbCustomAoizRadius"),
-  FbEntityCategory_1 = require("./FbEntityCategory"),
-  FbEntityGravityConfig_1 = require("./FbEntityGravityConfig"),
-  FbEntityScanFunction_1 = require("./FbEntityScanFunction"),
-  FbHeadInfoChangeData_1 = require("./FbHeadInfoChangeData"),
-  FbHeadStateViewConfig_1 = require("./FbHeadStateViewConfig"),
-  FbFixProcessor_1 = require("../FixProcessor/FbFixProcessor");
+  value: true
+});
+exports.FbBaseInfoComponent = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbCustomAoizRadius_1 = require("./FbCustomAoizRadius");
+const FbEntityCategory_1 = require("./FbEntityCategory");
+const FbEntityGravityConfig_1 = require("./FbEntityGravityConfig");
+const FbEntityScanFunction_1 = require("./FbEntityScanFunction");
+const FbHeadInfoChangeData_1 = require("./FbHeadInfoChangeData");
+const FbHeadStateViewConfig_1 = require("./FbHeadStateViewConfig");
+const FbFixProcessor_1 = require("../FixProcessor/FbFixProcessor");
 class FbBaseInfoComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.bwh = !1, this.Lwh = void 0, this.Awh = !1, this.xwh = !1, this.Rwh = !1, this.wwh = void 0, this.Pwh = !1, this.Uwh = void 0, this.Dwh = !1, this.Bwh = 0, this.qwh = !1, this.kwh = void 0, this.Gwh = !1, this.Owh = void 0, this.Fwh = !1, this.Nwh = void 0, this.Mb1 = !1, this.Eb1 = !1, this.Vwh = !1, this.jwh = void 0, this.Hwh = !1, this.Wwh = 0, this.Qwh = !1, this.Kwh = 0, this.$wh = !1, this.Xwh = void 0, this.Ywh = !1, this.zwh = void 0, this.Jwh = !1, this.Zwh = 0, this.ePh = !1, this.tPh = 0, this.iPh = !1, this.rPh = void 0, this.oPh = !1, this.nPh = !1, this.sPh = !1, this.aPh = void 0, this.hPh = !1, this.lPh = void 0, this._Ph = !1, this.cPh = void 0, this.uPh = !1, this.dPh = !1, this.Kq_ = !1, this.Xq_ = void 0, this.mPh = !1, this.CPh = void 0, this.gPh = !1, this.fPh = void 0, this.pPh = !1, this.vPh = void 0, this.yPh = !1, this.SPh = void 0, this.NZ_ = !1, this.VZ_ = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.bwh = false;
+    this.Lwh = undefined;
+    this.Awh = false;
+    this.xwh = false;
+    this.Rwh = false;
+    this.wwh = undefined;
+    this.Pwh = false;
+    this.Uwh = undefined;
+    this.Dwh = false;
+    this.Bwh = 0;
+    this.qwh = false;
+    this.kwh = undefined;
+    this.Gwh = false;
+    this.Owh = undefined;
+    this.Fwh = false;
+    this.Nwh = undefined;
+    this.Mb1 = false;
+    this.Eb1 = false;
+    this.Vwh = false;
+    this.jwh = undefined;
+    this.Hwh = false;
+    this.Wwh = 0;
+    this.Qwh = false;
+    this.Kwh = 0;
+    this.$wh = false;
+    this.Xwh = undefined;
+    this.Ywh = false;
+    this.zwh = undefined;
+    this.Jwh = false;
+    this.Zwh = 0;
+    this.ePh = false;
+    this.tPh = 0;
+    this.iPh = false;
+    this.rPh = undefined;
+    this.oPh = false;
+    this.nPh = false;
+    this.sPh = false;
+    this.aPh = undefined;
+    this.hPh = false;
+    this.lPh = undefined;
+    this._Ph = false;
+    this.cPh = undefined;
+    this.uPh = false;
+    this.dPh = false;
+    this.Kq_ = false;
+    this.Xq_ = undefined;
+    this.mPh = false;
+    this.CPh = undefined;
+    this.gPh = false;
+    this.fPh = undefined;
+    this.pPh = false;
+    this.vPh = undefined;
+    this.yPh = false;
+    this.SPh = undefined;
+    this.NZ_ = false;
+    this.VZ_ = undefined;
   }
   static Create(t) {
-    if (t) return new FbBaseInfoComponent(t)
+    if (t) {
+      return new FbBaseInfoComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get TidName() {
-    return this.bwh || (this.bwh = !0, this.Lwh = this.FbDataInternal.tidName()), this.Lwh
+    if (!this.bwh) {
+      this.bwh = true;
+      this.Lwh = this.FbDataInternal.tidName();
+    }
+    return this.Lwh;
   }
   get IsShowNameOnHead() {
-    return this.Awh || (this.Awh = !0, this.xwh = this.FbDataInternal.isShowNameOnHead()), this.xwh
+    if (!this.Awh) {
+      this.Awh = true;
+      this.xwh = this.FbDataInternal.isShowNameOnHead();
+    }
+    return this.xwh;
   }
   get Category() {
-    return this.Rwh || (this.Rwh = !0, this.wwh = FbEntityCategory_1.FbEntityCategory.Create(this.FbDataInternal.category())), this.wwh
+    if (!this.Rwh) {
+      this.Rwh = true;
+      this.wwh = FbEntityCategory_1.FbEntityCategory.Create(this.FbDataInternal.category());
+    }
+    return this.wwh;
   }
   get ScanFunction() {
-    return this.Pwh || (this.Pwh = !0, this.Uwh = FbEntityScanFunction_1.FbEntityScanFunction.Create(this.FbDataInternal.scanFunction())), this.Uwh
+    if (!this.Pwh) {
+      this.Pwh = true;
+      this.Uwh = FbEntityScanFunction_1.FbEntityScanFunction.Create(this.FbDataInternal.scanFunction());
+    }
+    return this.Uwh;
   }
   get HeadInfo() {
-    return this.Dwh || (this.Dwh = !0, this.Bwh = this.FbDataInternal.headInfo()), this.Bwh
+    if (!this.Dwh) {
+      this.Dwh = true;
+      this.Bwh = this.FbDataInternal.headInfo();
+    }
+    return this.Bwh;
   }
   get Camp() {
-    return this.qwh || (this.qwh = !0, this.kwh = this.FbDataInternal.camp()), this.kwh
+    if (!this.qwh) {
+      this.qwh = true;
+      this.kwh = this.FbDataInternal.camp();
+    }
+    return this.kwh;
   }
   get AoiLayer() {
-    return this.Gwh || (this.Gwh = !0, this.Owh = this.FbDataInternal.aoiLayer()), this.Owh
+    if (!this.Gwh) {
+      this.Gwh = true;
+      this.Owh = this.FbDataInternal.aoiLayer();
+    }
+    return this.Owh;
   }
   get AoiZRadius() {
-    return this.Fwh || (this.Fwh = !0, this.Nwh = this.FbDataInternal.aoiZRadius()), this.Nwh
+    if (!this.Fwh) {
+      this.Fwh = true;
+      this.Nwh = this.FbDataInternal.aoiZRadius();
+    }
+    return this.Nwh;
   }
   get IsAoiFitterPlatform() {
-    return this.Mb1 || (this.Mb1 = !0, this.Eb1 = this.FbDataInternal.isAoiFitterPlatform()), this.Eb1
+    if (!this.Mb1) {
+      this.Mb1 = true;
+      this.Eb1 = this.FbDataInternal.isAoiFitterPlatform();
+    }
+    return this.Eb1;
   }
   get CustomAoiZRadius() {
-    return this.Vwh || (this.Vwh = !0, this.jwh = FbCustomAoizRadius_1.FbCustomAoizRadius.Create(this.FbDataInternal.customAoiZRadius())), this.jwh
+    if (!this.Vwh) {
+      this.Vwh = true;
+      this.jwh = FbCustomAoizRadius_1.FbCustomAoizRadius.Create(this.FbDataInternal.customAoiZRadius());
+    }
+    return this.jwh;
   }
   get MapIcon() {
-    return this.Hwh || (this.Hwh = !0, this.Wwh = this.FbDataInternal.mapIcon()), this.Wwh
+    if (!this.Hwh) {
+      this.Hwh = true;
+      this.Wwh = this.FbDataInternal.mapIcon();
+    }
+    return this.Wwh;
   }
   get PackId() {
-    return this.Qwh || (this.Qwh = !0, this.Kwh = this.FbDataInternal.packId()), this.Kwh
+    if (!this.Qwh) {
+      this.Qwh = true;
+      this.Kwh = this.FbDataInternal.packId();
+    }
+    return this.Kwh;
   }
   get Occupation() {
-    return this.$wh || (this.$wh = !0, this.Xwh = this.FbDataInternal.occupation()), this.Xwh
+    if (!this.$wh) {
+      this.$wh = true;
+      this.Xwh = this.FbDataInternal.occupation();
+    }
+    return this.Xwh;
   }
   get HeadStateViewConfig() {
-    return this.Ywh || (this.Ywh = !0, this.zwh = FbHeadStateViewConfig_1.FbHeadStateViewConfig.Create(this.FbDataInternal.headStateViewConfig())), this.zwh
+    if (!this.Ywh) {
+      this.Ywh = true;
+      this.zwh = FbHeadStateViewConfig_1.FbHeadStateViewConfig.Create(this.FbDataInternal.headStateViewConfig());
+    }
+    return this.zwh;
   }
   get EntityPropertyId() {
-    return this.Jwh || (this.Jwh = !0, this.Zwh = this.FbDataInternal.entityPropertyId()), this.Zwh
+    if (!this.Jwh) {
+      this.Jwh = true;
+      this.Zwh = this.FbDataInternal.entityPropertyId();
+    }
+    return this.Zwh;
   }
   get FocusPriority() {
-    return this.ePh || (this.ePh = !0, this.tPh = this.FbDataInternal.focusPriority()), this.tPh
+    if (!this.ePh) {
+      this.ePh = true;
+      this.tPh = this.FbDataInternal.focusPriority();
+    }
+    return this.tPh;
   }
   get OnlineInteractType() {
-    return this.iPh || (this.iPh = !0, this.rPh = this.FbDataInternal.onlineInteractType()), this.rPh
+    if (!this.iPh) {
+      this.iPh = true;
+      this.rPh = this.FbDataInternal.onlineInteractType();
+    }
+    return this.rPh;
   }
   get NotAllowHidedByTargetRange() {
-    return this.oPh || (this.oPh = !0, this.nPh = this.FbDataInternal.notAllowHidedByTargetRange()), this.nPh
+    if (!this.oPh) {
+      this.oPh = true;
+      this.nPh = this.FbDataInternal.notAllowHidedByTargetRange();
+    }
+    return this.nPh;
   }
   get LowerNpcDensity() {
-    return this.sPh || (this.sPh = !0, this.aPh = this.FbDataInternal.lowerNpcDensity()), this.aPh
+    if (!this.sPh) {
+      this.sPh = true;
+      this.aPh = this.FbDataInternal.lowerNpcDensity();
+    }
+    return this.aPh;
   }
   get DataLayers() {
     if (!this.hPh) {
-      this.hPh = !0, this.lPh = new Array;
+      this.hPh = true;
+      this.lPh = new Array();
       var i = this.FbDataInternal.dataLayersLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.lPh.push(this.FbDataInternal.dataLayers(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.lPh.push(this.FbDataInternal.dataLayers(t));
+        }
+      }
     }
-    return this.lPh
+    return this.lPh;
   }
   get ChildEntityIds() {
     if (!this._Ph) {
-      this._Ph = !0, this.cPh = new Array;
+      this._Ph = true;
+      this.cPh = new Array();
       var i = this.FbDataInternal.childEntityIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.cPh.push(this.FbDataInternal.childEntityIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.cPh.push(this.FbDataInternal.childEntityIds(t));
+        }
+      }
     }
-    return this.cPh
+    return this.cPh;
   }
   get IsOnlineStandalone() {
-    return this.uPh || (this.uPh = !0, this.dPh = this.FbDataInternal.isOnlineStandalone()), this.dPh
+    if (!this.uPh) {
+      this.uPh = true;
+      this.dPh = this.FbDataInternal.isOnlineStandalone();
+    }
+    return this.dPh;
   }
   get SpecifiedOnlineStandaloneParentUids() {
     if (!this.Kq_) {
-      this.Kq_ = !0, this.Xq_ = new Array;
+      this.Kq_ = true;
+      this.Xq_ = new Array();
       var i = this.FbDataInternal.specifiedOnlineStandaloneParentUidsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.Xq_.push(this.FbDataInternal.specifiedOnlineStandaloneParentUids(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.Xq_.push(this.FbDataInternal.specifiedOnlineStandaloneParentUids(t));
+        }
+      }
     }
-    return this.Xq_
+    return this.Xq_;
   }
   get FixProcessor() {
-    return this.mPh || (this.mPh = !0, this.CPh = FbFixProcessor_1.FbFixProcessor.Create(this.FbDataInternal.fixProcessor())), this.CPh
+    if (!this.mPh) {
+      this.mPh = true;
+      this.CPh = FbFixProcessor_1.FbFixProcessor.Create(this.FbDataInternal.fixProcessor());
+    }
+    return this.CPh;
   }
   get EntityUpdateStrategy() {
-    return this.gPh || (this.gPh = !0, this.fPh = this.FbDataInternal.entityUpdateStrategy()), this.fPh
+    if (!this.gPh) {
+      this.gPh = true;
+      this.fPh = this.FbDataInternal.entityUpdateStrategy();
+    }
+    return this.fPh;
   }
   get TimeScaleModifyStrategy() {
-    return this.pPh || (this.pPh = !0, this.vPh = this.FbDataInternal.timeScaleModifyStrategy()), this.vPh
+    if (!this.pPh) {
+      this.pPh = true;
+      this.vPh = this.FbDataInternal.timeScaleModifyStrategy();
+    }
+    return this.vPh;
   }
   get GravityConfig() {
-    return this.yPh || (this.yPh = !0, this.SPh = FbEntityGravityConfig_1.FbEntityGravityConfig.Create(this.FbDataInternal.gravityConfig())), this.SPh
+    if (!this.yPh) {
+      this.yPh = true;
+      this.SPh = FbEntityGravityConfig_1.FbEntityGravityConfig.Create(this.FbDataInternal.gravityConfig());
+    }
+    return this.SPh;
   }
   get HeadInfoChangeConfig() {
     if (!this.NZ_) {
-      this.NZ_ = !0, this.VZ_ = new Array;
+      this.NZ_ = true;
+      this.VZ_ = new Array();
       var i = this.FbDataInternal.headInfoChangeConfigLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.headInfoChangeConfig(t, new fb_component_1.HeadInfoChangeData);
-          this.VZ_.push(FbHeadInfoChangeData_1.FbHeadInfoChangeData.Create(s))
+          var s = this.FbDataInternal.headInfoChangeConfig(t, new fb_component_1.HeadInfoChangeData());
+          this.VZ_.push(FbHeadInfoChangeData_1.FbHeadInfoChangeData.Create(s));
         }
+      }
     }
-    return this.VZ_
+    return this.VZ_;
   }
 }
 exports.FbBaseInfoComponent = FbBaseInfoComponent;

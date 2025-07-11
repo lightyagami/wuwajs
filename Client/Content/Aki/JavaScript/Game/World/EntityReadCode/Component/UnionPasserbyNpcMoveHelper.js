@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionPasserbyNpcMoveHelper = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbPasserbyNpcSplineMove_1 = require("./FbPasserbyNpcSplineMove");
+  value: true
+});
+exports.UnionPasserbyNpcMoveHelper = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbPasserbyNpcSplineMove_1 = require("./FbPasserbyNpcSplineMove");
 class UnionPasserbyNpcMoveHelper {
   static GetUnionPasserbyNpcMoveObject(e) {
-    if (e === fb_component_1.UnionPasserbyNpcMove.PasserbyNpcSplineMove) return new fb_component_1.PasserbyNpcSplineMove
+    if (e === fb_component_1.UnionPasserbyNpcMove.PasserbyNpcSplineMove) {
+      return new fb_component_1.PasserbyNpcSplineMove();
+    }
   }
   static ReadUnionPasserbyNpcMove(e, o) {
-    return void 0 !== o && e === fb_component_1.UnionPasserbyNpcMove.PasserbyNpcSplineMove ? FbPasserbyNpcSplineMove_1.FbPasserbyNpcSplineMove.Create(o) : void 0
+    if (o !== undefined && e === fb_component_1.UnionPasserbyNpcMove.PasserbyNpcSplineMove) {
+      return FbPasserbyNpcSplineMove_1.FbPasserbyNpcSplineMove.Create(o);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.UnionPasserbyNpcMoveHelper = UnionPasserbyNpcMoveHelper;

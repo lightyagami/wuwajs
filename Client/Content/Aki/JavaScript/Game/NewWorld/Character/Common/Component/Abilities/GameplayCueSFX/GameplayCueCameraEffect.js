@@ -1,24 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameplayCueCameraEffect = void 0;
-const ModelManager_1 = require("../../../../../../Manager/ModelManager"),
-  GameplayCueBase_1 = require("./GameplayCueBase");
+  value: true
+});
+exports.GameplayCueCameraEffect = undefined;
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueCameraEffect extends GameplayCueBase_1.GameplayCueBase {
   constructor() {
-    super(...arguments), this.hJ = 0
+    super(...arguments);
+    this.hJ = 0;
   }
   OnCreate() {
-    this.CueConfig.Path && this.EntityHandle.Entity.GetComponent(3).IsAutonomousProxy && (0 !== this.hJ && ModelManager_1.ModelManager.ScreenEffectModel.EndScreenEffect(this.hJ), this.hJ = ModelManager_1.ModelManager.ScreenEffectModel.PlayScreenEffect(this.CueConfig.Path))
+    if (this.CueConfig.Path && this.EntityHandle.Entity.GetComponent(3).IsAutonomousProxy) {
+      if (this.hJ !== 0) {
+        ModelManager_1.ModelManager.ScreenEffectModel.EndScreenEffect(this.hJ);
+      }
+      this.hJ = ModelManager_1.ModelManager.ScreenEffectModel.PlayScreenEffect(this.CueConfig.Path);
+    }
   }
   OnDestroy() {
-    0 !== this.hJ && (ModelManager_1.ModelManager.ScreenEffectModel.EndScreenEffect(this.hJ), this.hJ = 0)
+    if (this.hJ !== 0) {
+      ModelManager_1.ModelManager.ScreenEffectModel.EndScreenEffect(this.hJ);
+      this.hJ = 0;
+    }
   }
   OnEnable() {
-    this.Create()
+    this.OnCreate();
   }
   OnDisable() {
-    this.Destroy()
+    this.OnDestroy();
   }
 }
 exports.GameplayCueCameraEffect = GameplayCueCameraEffect;

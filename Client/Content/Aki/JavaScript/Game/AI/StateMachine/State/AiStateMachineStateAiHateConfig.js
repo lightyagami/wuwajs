@@ -1,25 +1,40 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineStateAiHateConfig = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  AiStateMachine_1 = require("../AiStateMachine"),
-  AiStateMachineState_1 = require("./AiStateMachineState");
+  value: true
+});
+exports.AiStateMachineStateAiHateConfig = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const AiStateMachine_1 = require("../AiStateMachine");
+const AiStateMachineState_1 = require("./AiStateMachineState");
 class AiStateMachineStateAiHateConfig extends AiStateMachineState_1.AiStateMachineState {
   constructor() {
-    super(...arguments), this.Mne = 0, this.Ene = void 0
+    super(...arguments);
+    this.Mne = 0;
+    this.Ene = undefined;
   }
   OnInit(t) {
-    return this.Mne = t.BindAiHateConfig.ConfigId, !0
+    this.Mne = t.BindAiHateConfig.ConfigId;
+    return true;
   }
   OnActivate() {
-    this.Ene = this.Node.AiController.AiHateList?.AiHate?.Id, this.Mne ? this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHate(this.Mne) : this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHateByController(this.Node.AiController, void 0)
+    this.Ene = this.Node.AiController.AiHateList?.AiHate?.Id;
+    if (this.Mne) {
+      this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHate(this.Mne);
+    } else {
+      this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHateByController(this.Node.AiController, undefined);
+    }
   }
   OnDeactivate() {
-    this.Ene ? this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHate(this.Ene) : this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHateByController(this.Node.AiController, void 0), this.Ene = void 0
+    if (this.Ene) {
+      this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHate(this.Ene);
+    } else {
+      this.Node.AiController.AiHateList.AiHate = ConfigManager_1.ConfigManager.AiConfig.LoadAiHateByController(this.Node.AiController, undefined);
+    }
+    this.Ene = undefined;
   }
   ToString(t, i = 0) {
-    (0, AiStateMachine_1.appendDepthSpace)(t, i)
+    (0, AiStateMachine_1.appendDepthSpace)(t, i);
   }
 }
 exports.AiStateMachineStateAiHateConfig = AiStateMachineStateAiHateConfig;

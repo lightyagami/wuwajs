@@ -1,24 +1,33 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.battleQteChangeRole = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  CooperationController_1 = require("../../Battle/Cooperation/CooperationController");
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.battleQteChangeRole = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const CooperationController_1 = require("../../Battle/Cooperation/CooperationController");
 function battleQteChangeRole(r) {
   var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
   if (!e?.EntityHandle?.Entity?.GetComponent(205)?.HasTag(-1697149502)) {
-    var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(),
-      n = a.length,
-      t = a.indexOf(e);
+    var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
+    var n = a.length;
+    var t = a.indexOf(e);
     for (let o = 1; o < n; o++) {
       let e = t + o;
-      e >= n && (e -= n);
+      if (e >= n) {
+        e -= n;
+      }
       var i = a[e];
-      if (r)
-        if (ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i.GetConfigId) !== r) continue;
-      if (0 === i?.CanGoBattle()) return void CooperationController_1.CooperationController.TryCooperate(i.GetCreatureDataId())
+      if (r) {
+        if (ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i.GetConfigId) !== r) {
+          continue;
+        }
+      }
+      if (i?.CanGoBattle() === 0) {
+        CooperationController_1.CooperationController.TryCooperate(i.GetCreatureDataId());
+        return;
+      }
     }
   }
 }

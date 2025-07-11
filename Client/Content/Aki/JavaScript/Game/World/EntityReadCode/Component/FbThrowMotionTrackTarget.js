@@ -1,32 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbThrowMotionTrackTarget = void 0;
+  value: true
+});
+exports.FbThrowMotionTrackTarget = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbThrowMotionTrackTarget {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.x2h = !1, this.R2h = 0, this.w2h = !1, this.P2h = void 0, this.Y2h = !1, this.z2h = void 0, this.U2h = !1, this.D2h = 0, this.k2h = !1, this.G2h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.x2h = false;
+    this.R2h = 0;
+    this.w2h = false;
+    this.P2h = undefined;
+    this.Y2h = false;
+    this.z2h = undefined;
+    this.U2h = false;
+    this.D2h = 0;
+    this.k2h = false;
+    this.G2h = undefined;
   }
   static Create(t) {
-    if (t) return new FbThrowMotionTrackTarget(t)
+    if (t) {
+      return new FbThrowMotionTrackTarget(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Velocity() {
-    return this.x2h || (this.x2h = !0, this.R2h = this.FbDataInternal.velocity()), this.R2h
+    if (!this.x2h) {
+      this.x2h = true;
+      this.R2h = this.FbDataInternal.velocity();
+    }
+    return this.R2h;
   }
   get VelocityCurve() {
-    return this.w2h || (this.w2h = !0, this.P2h = this.FbDataInternal.velocityCurve()), this.P2h
+    if (!this.w2h) {
+      this.w2h = true;
+      this.P2h = this.FbDataInternal.velocityCurve();
+    }
+    return this.P2h;
   }
   get VelocityOffset() {
-    return this.Y2h || (this.Y2h = !0, this.z2h = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.velocityOffset())), this.z2h
+    if (!this.Y2h) {
+      this.Y2h = true;
+      this.z2h = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.velocityOffset());
+    }
+    return this.z2h;
   }
   get AngularVelocity() {
-    return this.U2h || (this.U2h = !0, this.D2h = this.FbDataInternal.angularVelocity()), this.D2h
+    if (!this.U2h) {
+      this.U2h = true;
+      this.D2h = this.FbDataInternal.angularVelocity();
+    }
+    return this.D2h;
   }
   get AngularVelocityCurve() {
-    return this.k2h || (this.k2h = !0, this.G2h = this.FbDataInternal.angularVelocityCurve()), this.G2h
+    if (!this.k2h) {
+      this.k2h = true;
+      this.G2h = this.FbDataInternal.angularVelocityCurve();
+    }
+    return this.G2h;
   }
 }
 exports.FbThrowMotionTrackTarget = FbThrowMotionTrackTarget;

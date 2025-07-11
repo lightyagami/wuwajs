@@ -1,32 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcUiInteractOnHandInItem = void 0;
+  value: true
+});
+exports.FbNpcUiInteractOnHandInItem = undefined;
 const FbPlayFlow_1 = require("../Action/FbPlayFlow");
 class FbNpcUiInteractOnHandInItem {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.K4h = !1, this.$4h = void 0, this.X4h = !1, this.Y4h = void 0, this.S6h = !1, this.M6h = void 0, this.Z4h = !1, this.e6h = void 0, this.E6h = !1, this.I6h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.K4h = false;
+    this.$4h = undefined;
+    this.X4h = false;
+    this.Y4h = undefined;
+    this.S6h = false;
+    this.M6h = undefined;
+    this.Z4h = false;
+    this.e6h = undefined;
+    this.E6h = false;
+    this.I6h = undefined;
   }
   static Create(t) {
-    if (t) return new FbNpcUiInteractOnHandInItem(t)
+    if (t) {
+      return new FbNpcUiInteractOnHandInItem(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EnterMontage() {
-    return this.K4h || (this.K4h = !0, this.$4h = this.FbDataInternal.enterMontage()), this.$4h
+    if (!this.K4h) {
+      this.K4h = true;
+      this.$4h = this.FbDataInternal.enterMontage();
+    }
+    return this.$4h;
   }
   get StandByMontage() {
-    return this.X4h || (this.X4h = !0, this.Y4h = this.FbDataInternal.standByMontage()), this.Y4h
+    if (!this.X4h) {
+      this.X4h = true;
+      this.Y4h = this.FbDataInternal.standByMontage();
+    }
+    return this.Y4h;
   }
   get HandInFailedMontage() {
-    return this.S6h || (this.S6h = !0, this.M6h = this.FbDataInternal.handInFailedMontage()), this.M6h
+    if (!this.S6h) {
+      this.S6h = true;
+      this.M6h = this.FbDataInternal.handInFailedMontage();
+    }
+    return this.M6h;
   }
   get EnterFlow() {
-    return this.Z4h || (this.Z4h = !0, this.e6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.enterFlow())), this.e6h
+    if (!this.Z4h) {
+      this.Z4h = true;
+      this.e6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.enterFlow());
+    }
+    return this.e6h;
   }
   get HandInFailedFlow() {
-    return this.E6h || (this.E6h = !0, this.I6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.handInFailedFlow())), this.I6h
+    if (!this.E6h) {
+      this.E6h = true;
+      this.I6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.handInFailedFlow());
+    }
+    return this.I6h;
   }
 }
 exports.FbNpcUiInteractOnHandInItem = FbNpcUiInteractOnHandInItem;

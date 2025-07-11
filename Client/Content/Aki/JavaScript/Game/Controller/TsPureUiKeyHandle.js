@@ -1,30 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsPureUiKeyHandle = void 0;
-const cpp_1 = require("cpp"),
-  UE = require("ue"),
-  Log_1 = require("../../Core/Common/Log"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  UiLayer_1 = require("../Ui/UiLayer"),
-  LEFT_BARACKET_NAME = new UE.FName("LeftBracket"),
-  RIGHT_BARACKET_NAME = new UE.FName("RightBracket");
+  value: true
+});
+exports.TsPureUiKeyHandle = undefined;
+const cpp_1 = require("cpp");
+const UE = require("ue");
+const Log_1 = require("../../Core/Common/Log");
+const ModelManager_1 = require("../Manager/ModelManager");
+const UiLayer_1 = require("../Ui/UiLayer");
+const LEFT_BARACKET_NAME = new UE.FName("LeftBracket");
+const RIGHT_BARACKET_NAME = new UE.FName("RightBracket");
 class TsPureUiKeyHandle {
   constructor() {
-    this.R$e = void 0, this.MDa = () => {
-      ModelManager_1.ModelManager.SundryModel.CanOpenGmView && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 10, "按下 】 键显示所有界面"), UiLayer_1.UiLayer.ForceShowUi())
-    }, this.SDa = () => {
-      ModelManager_1.ModelManager.SundryModel.CanOpenGmView && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 10, "按下 【 键隐藏所有界面"), UiLayer_1.UiLayer.ForceHideUi())
-    }
+    this.R$e = undefined;
+    this.MDa = () => {
+      if (ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 10, "按下 】 键显示所有界面");
+        }
+        UiLayer_1.UiLayer.ForceShowUi();
+      }
+    };
+    this.SDa = () => {
+      if (ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 10, "按下 【 键隐藏所有界面");
+        }
+        UiLayer_1.UiLayer.ForceHideUi();
+      }
+    };
   }
   Initialize(e) {
-    this.R$e = e
+    this.R$e = e;
   }
   Reset() {
-    this.R$e = void 0
+    this.R$e = undefined;
   }
   BindKey() {
-    cpp_1.FKuroInputInterface.RegisterKeyBinding(new UE.InputChord(new UE.Key(LEFT_BARACKET_NAME), !1, !1, !1, !1), 1, this.R$e, this, this.MDa), cpp_1.FKuroInputInterface.RegisterKeyBinding(new UE.InputChord(new UE.Key(RIGHT_BARACKET_NAME), !1, !1, !1, !1), 1, this.R$e, this, this.SDa)
+    cpp_1.FKuroInputInterface.RegisterKeyBinding(new UE.InputChord(new UE.Key(LEFT_BARACKET_NAME), false, false, false, false), 1, this.R$e, this, this.MDa);
+    cpp_1.FKuroInputInterface.RegisterKeyBinding(new UE.InputChord(new UE.Key(RIGHT_BARACKET_NAME), false, false, false, false), 1, this.R$e, this, this.SDa);
   }
 }
 exports.TsPureUiKeyHandle = TsPureUiKeyHandle;

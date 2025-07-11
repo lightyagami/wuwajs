@@ -1,38 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SmallItemGridVisionRoleHeadComponent = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  SmallItemGridComponent_1 = require("./SmallItemGridComponent");
+  value: true
+});
+exports.SmallItemGridVisionRoleHeadComponent = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const SmallItemGridComponent_1 = require("./SmallItemGridComponent");
 class SmallItemGridVisionRoleHeadComponent extends SmallItemGridComponent_1.SmallItemGridComponent {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture],
-      [1, UE.UISprite],
-      [2, UE.UISprite]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UISprite]];
   }
   GetResourceId() {
-    return "UiItem_ItemRoleS"
+    return "UiItem_ItemRoleS";
   }
   OnRefresh(e) {
     if (e) {
       var t = e;
-      if (t && 0 !== t) {
+      if (t && t !== 0) {
         const r = this.GetTexture(0);
         var i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t)?.Card;
-        i ? (r.SetUIActive(!1), this.SetRoleIcon(i, r, t, void 0, () => {
-          r.SetUIActive(!0)
-        }), this.qwt(e), this.Gwt(e), this.SetActive(!0)) : this.SetActive(!1)
-      } else this.SetActive(!1)
-    } else this.SetActive(!1)
+        if (i) {
+          r.SetUIActive(false);
+          this.SetRoleIcon(i, r, t, undefined, () => {
+            r.SetUIActive(true);
+          });
+          this.qwt(e);
+          this.Gwt(e);
+          this.SetActive(true);
+        } else {
+          this.SetActive(false);
+        }
+      } else {
+        this.SetActive(false);
+      }
+    } else {
+      this.SetActive(false);
+    }
   }
   qwt(e) {
-    this.GetSprite(2).SetUIActive(!1)
+    this.GetSprite(2).SetUIActive(false);
   }
   Gwt(e) {
-    this.GetSprite(1).SetUIActive(!0)
+    this.GetSprite(1).SetUIActive(true);
   }
 }
 exports.SmallItemGridVisionRoleHeadComponent = SmallItemGridVisionRoleHeadComponent;

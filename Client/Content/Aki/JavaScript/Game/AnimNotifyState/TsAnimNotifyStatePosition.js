@@ -1,28 +1,32 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyStatePosition extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.移动速度 = void 0, this.速度曲线 = void 0, this.是否持续朝向目标 = !1
+    super(...arguments);
+    this.移动速度 = undefined;
+    this.速度曲线 = undefined;
+    this.是否持续朝向目标 = false;
   }
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     var r = t.GetOwner();
-    return r instanceof TsBaseCharacter_1.default && ((r.CharacterActorComponent?.Entity?.GetComponent(45))?.SetAddMoveWithMesh(t, new UE.VectorDouble(this.移动速度), s, this.速度曲线), !0)
+    return r instanceof TsBaseCharacter_1.default && (r.CharacterActorComponent?.Entity?.GetComponent(45)?.SetAddMoveWithMesh(t, new UE.VectorDouble(this.移动速度), s, this.速度曲线), true);
   }
   K2_NotifyTick(t, e, s) {
     var r;
-    return !!this.是否持续朝向目标 && (r = t.GetOwner()) instanceof TsBaseCharacter_1.default && ((r.CharacterActorComponent?.Entity?.GetComponent(45))?.SetAddMoveWorldSpeedWithMesh(t, UE.KismetMathLibrary.D_TransformDirection(r.D_GetTransform(), new UE.VectorDouble(this.移动速度))), !0)
+    return !!this.是否持续朝向目标 && (r = t.GetOwner()) instanceof TsBaseCharacter_1.default && (r.CharacterActorComponent?.Entity?.GetComponent(45)?.SetAddMoveWorldSpeedWithMesh(t, UE.KismetMathLibrary.D_TransformDirection(r.D_GetTransform(), new UE.VectorDouble(this.移动速度))), true);
   }
   K2_NotifyEnd(t, e) {
     var s = t.GetOwner();
-    return s instanceof TsBaseCharacter_1.default && ((s.CharacterActorComponent?.Entity?.GetComponent(45))?.StopAddMoveWithMesh(t), !0)
+    return s instanceof TsBaseCharacter_1.default && (s.CharacterActorComponent?.Entity?.GetComponent(45)?.StopAddMoveWithMesh(t), true);
   }
   GetNotifyName() {
-    return "位移到坐标点"
+    return "位移到坐标点";
   }
 }
 exports.default = TsAnimNotifyStatePosition;

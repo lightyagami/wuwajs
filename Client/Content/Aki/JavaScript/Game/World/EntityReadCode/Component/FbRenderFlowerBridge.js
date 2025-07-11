@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRenderFlowerBridge = void 0;
+  value: true
+});
+exports.FbRenderFlowerBridge = undefined;
 const UnionTargetEntityHelper_1 = require("../Action/UnionTargetEntityHelper");
 class FbRenderFlowerBridge {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.sIh = !1, this.s9o = 0, this.gYh = !1, this.fYh = void 0, this.zfh = !1, this.Jfh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.sIh = false;
+    this.s9o = 0;
+    this.gYh = false;
+    this.fYh = undefined;
+    this.zfh = false;
+    this.Jfh = undefined;
   }
   static Create(t) {
-    if (t) return new FbRenderFlowerBridge(t)
+    if (t) {
+      return new FbRenderFlowerBridge(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Radius() {
-    return this.sIh || (this.sIh = !0, this.s9o = this.FbDataInternal.radius()), this.s9o
+    if (!this.sIh) {
+      this.sIh = true;
+      this.s9o = this.FbDataInternal.radius();
+    }
+    return this.s9o;
   }
   get CenterTarget() {
-    var t, e;
-    return !this.gYh && (this.gYh = !0, t = this.FbDataInternal.centerTargetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.fYh = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.centerTarget(e))), this.fYh
+    var t;
+    var e;
+    if (!this.gYh && (this.gYh = true, t = this.FbDataInternal.centerTargetType(), e = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.fYh = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.centerTarget(e));
+    }
+    return this.fYh;
   }
   get AkEvent() {
-    return this.zfh || (this.zfh = !0, this.Jfh = this.FbDataInternal.akEvent()), this.Jfh
+    if (!this.zfh) {
+      this.zfh = true;
+      this.Jfh = this.FbDataInternal.akEvent();
+    }
+    return this.Jfh;
   }
 }
 exports.FbRenderFlowerBridge = FbRenderFlowerBridge;

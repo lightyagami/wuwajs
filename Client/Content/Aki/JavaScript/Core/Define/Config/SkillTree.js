@@ -1,177 +1,266 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkillTree = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  ConfigPropValue_1 = require("./SubType/ConfigPropValue"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.SkillTree = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const ConfigPropValue_1 = require("./SubType/ConfigPropValue");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class SkillTree {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get NodeIndex() {
-    return this.nodeindex()
+    return this.nodeindex();
   }
   get NodeGroup() {
-    return this.nodegroup()
+    return this.nodegroup();
   }
   get ParentNodes() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.parentnodesLength(), this.parentnodes, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.parentnodesLength(), this.parentnodes, this);
   }
   get NodeType() {
-    return this.nodetype()
+    return this.nodetype();
   }
   get Coordinate() {
-    return this.coordinate()
+    return this.coordinate();
   }
   get Condition() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.conditionLength(), this.condition, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.conditionLength(), this.condition, this);
   }
   get SkillId() {
-    return this.skillid()
+    return this.skillid();
   }
   get PropertyNodeTitle() {
-    return this.propertynodetitle()
+    return this.propertynodetitle();
   }
   get PropertyNodeDescribe() {
-    return this.propertynodedescribe()
+    return this.propertynodedescribe();
   }
   get PropertyNodeParam() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.propertynodeparamLength(), this.propertynodeparam, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.propertynodeparamLength(), this.propertynodeparam, this);
   }
   get PropertyNodeIcon() {
-    return this.propertynodeicon()
+    return this.propertynodeicon();
   }
   get Property() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.propertyLength(), this.property, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.propertyLength(), this.property, this);
   }
   get Consume() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.consumeLength(), this.consumeKey, this.consumeValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.consumeLength(), this.consumeKey, this.consumeValue, this);
   }
   consumeKey(t) {
-    return this.consume(t)?.key()
+    return this.consume(t)?.key();
   }
   consumeValue(t) {
-    return this.consume(t)?.value()
+    return this.consume(t)?.value();
   }
   get UnLockCondition() {
-    return this.unlockcondition()
+    return this.unlockcondition();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsSkillTree(t, i) {
-    return (i || new SkillTree).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new SkillTree()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   nodeindex() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   nodegroup() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetParentnodesAt(t) {
-    return this.parentnodes(t)
+    return this.parentnodes(t);
   }
   parentnodes(t) {
     var i = this.J7.__offset(this.z7, 10);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   parentnodesLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   parentnodesArray() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   nodetype() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   coordinate() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetConditionAt(t) {
-    return this.condition(t)
+    return this.condition(t);
   }
   condition(t) {
     var i = this.J7.__offset(this.z7, 16);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   conditionLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   conditionArray() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   skillid() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   propertynodetitle(t) {
-    var i = this.J7.__offset(this.z7, 20),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   propertynodedescribe(t) {
-    var i = this.J7.__offset(this.z7, 22),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetPropertynodeparamAt(t) {
-    return this.propertynodeparam(t)
+    return this.propertynodeparam(t);
   }
   propertynodeparam(t, i) {
-    var r = this.J7.__offset(this.z7, 24),
-      r = r ? this.J7.__string(this.J7.__vector(this.z7 + r) + 4 * t, i) : null;
-    return "string" == typeof r && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(r), r
+    var r = this.J7.__offset(this.z7, 24);
+    var r = r ? this.J7.__string(this.J7.__vector(this.z7 + r) + t * 4, i) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
   }
   propertynodeparamLength() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   propertynodeicon(t) {
-    var i = this.J7.__offset(this.z7, 26),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 26);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetPropertyAt(t, i) {
-    return this.property(t)
+    return this.property(t);
   }
   property(t, i) {
     var r = this.J7.__offset(this.z7, 28);
-    return r ? (i || new ConfigPropValue_1.ConfigPropValue).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + 4 * t), this.J7) : null
+    if (r) {
+      return (i || new ConfigPropValue_1.ConfigPropValue()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   propertyLength() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetConsumeAt(t, i) {
-    return this.consume(t)
+    return this.consume(t);
   }
   consume(t, i) {
     var r = this.J7.__offset(this.z7, 30);
-    return r ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + 4 * t), this.J7) : null
+    if (r) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   consumeLength() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   unlockcondition() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.SkillTree = SkillTree;

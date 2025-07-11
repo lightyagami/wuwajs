@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPasserbyNpcSpline = void 0;
+  value: true
+});
+exports.FbPasserbyNpcSpline = undefined;
 const FbPasserbyNpcMoveState_1 = require("./FbPasserbyNpcMoveState");
 class FbPasserbyNpcSpline {
   constructor(t) {
-    this.FbDataInternal = t, this.kuh = !1, this.Guh = 0, this.PQh = !1, this.UQh = 0, this.Dfh = !1, this.Bfh = !1, this.Nuh = !1, this.Vuh = void 0
+    this.FbDataInternal = t;
+    this.kuh = false;
+    this.Guh = 0;
+    this.PQh = false;
+    this.UQh = 0;
+    this.Dfh = false;
+    this.Bfh = false;
+    this.Nuh = false;
+    this.Vuh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPasserbyNpcSpline(t)
+    if (t) {
+      return new FbPasserbyNpcSpline(t);
+    }
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get SpawnWeight() {
-    return this.PQh || (this.PQh = !0, this.UQh = this.FbDataInternal.spawnWeight()), this.UQh
+    if (!this.PQh) {
+      this.PQh = true;
+      this.UQh = this.FbDataInternal.spawnWeight();
+    }
+    return this.UQh;
   }
   get IsLoop() {
-    return this.Dfh || (this.Dfh = !0, this.Bfh = this.FbDataInternal.isLoop()), this.Bfh
+    if (!this.Dfh) {
+      this.Dfh = true;
+      this.Bfh = this.FbDataInternal.isLoop();
+    }
+    return this.Bfh;
   }
   get MoveState() {
-    return this.Nuh || (this.Nuh = !0, this.Vuh = FbPasserbyNpcMoveState_1.FbPasserbyNpcMoveState.Create(this.FbDataInternal.moveState())), this.Vuh
+    if (!this.Nuh) {
+      this.Nuh = true;
+      this.Vuh = FbPasserbyNpcMoveState_1.FbPasserbyNpcMoveState.Create(this.FbDataInternal.moveState());
+    }
+    return this.Vuh;
   }
 }
 exports.FbPasserbyNpcSpline = FbPasserbyNpcSpline;

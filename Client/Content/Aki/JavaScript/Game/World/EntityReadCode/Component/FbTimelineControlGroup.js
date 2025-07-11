@@ -1,54 +1,92 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTimelineControlGroup = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbControlPointEventConfig_1 = require("./FbControlPointEventConfig"),
-  UnionTimelineTrackControlConfigHelper_1 = require("./UnionTimelineTrackControlConfigHelper"),
-  FbConditionGroup_1 = require("../Condition/FbConditionGroup");
+  value: true
+});
+exports.FbTimelineControlGroup = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbControlPointEventConfig_1 = require("./FbControlPointEventConfig");
+const UnionTimelineTrackControlConfigHelper_1 = require("./UnionTimelineTrackControlConfigHelper");
+const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbTimelineControlGroup {
   constructor(i) {
-    this.FbDataInternal = i, this.f_h = !1, this.X6o = void 0, this.C_h = !1, this.g_h = void 0, this.eHh = !1, this.tHh = 0, this.iHh = !1, this.rHh = void 0, this.oHh = !1, this.nHh = void 0, this.sHh = !1, this.aHh = void 0
+    this.FbDataInternal = i;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.C_h = false;
+    this.g_h = undefined;
+    this.eHh = false;
+    this.tHh = 0;
+    this.iHh = false;
+    this.rHh = undefined;
+    this.oHh = false;
+    this.nHh = undefined;
+    this.sHh = false;
+    this.aHh = undefined;
   }
   static Create(i) {
-    if (i) return new FbTimelineControlGroup(i)
+    if (i) {
+      return new FbTimelineControlGroup(i);
+    }
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get TidContent() {
-    return this.C_h || (this.C_h = !0, this.g_h = this.FbDataInternal.tidContent()), this.g_h
+    if (!this.C_h) {
+      this.C_h = true;
+      this.g_h = this.FbDataInternal.tidContent();
+    }
+    return this.g_h;
   }
   get SegmentTime() {
-    return this.eHh || (this.eHh = !0, this.tHh = this.FbDataInternal.segmentTime()), this.tHh
+    if (!this.eHh) {
+      this.eHh = true;
+      this.tHh = this.FbDataInternal.segmentTime();
+    }
+    return this.tHh;
   }
   get ControlConfigs() {
     if (!this.iHh) {
-      this.iHh = !0, this.rHh = new Array;
+      this.iHh = true;
+      this.rHh = new Array();
       var t = this.FbDataInternal.controlConfigsLength();
-      if (t)
+      if (t) {
         for (let i = 0; i < t; ++i) {
-          var o = this.FbDataInternal.controlConfigsType(i),
-            n = UnionTimelineTrackControlConfigHelper_1.UnionTimelineTrackControlConfigHelper.GetUnionTimelineTrackControlConfigObject(o);
-          n && void 0 !== (o = UnionTimelineTrackControlConfigHelper_1.UnionTimelineTrackControlConfigHelper.ReadUnionTimelineTrackControlConfig(o, this.FbDataInternal.controlConfigs(i, n))) && this.rHh.push(o)
+          var o = this.FbDataInternal.controlConfigsType(i);
+          var n = UnionTimelineTrackControlConfigHelper_1.UnionTimelineTrackControlConfigHelper.GetUnionTimelineTrackControlConfigObject(o);
+          if (n && (o = UnionTimelineTrackControlConfigHelper_1.UnionTimelineTrackControlConfigHelper.ReadUnionTimelineTrackControlConfig(o, this.FbDataInternal.controlConfigs(i, n))) !== undefined) {
+            this.rHh.push(o);
+          }
         }
+      }
     }
-    return this.rHh
+    return this.rHh;
   }
   get ControlPointEvents() {
     if (!this.oHh) {
-      this.oHh = !0, this.nHh = new Array;
+      this.oHh = true;
+      this.nHh = new Array();
       var t = this.FbDataInternal.controlPointEventsLength();
-      if (t)
+      if (t) {
         for (let i = 0; i < t; ++i) {
-          var o = this.FbDataInternal.controlPointEvents(i, new fb_component_1.ControlPointEventConfig);
-          this.nHh.push(FbControlPointEventConfig_1.FbControlPointEventConfig.Create(o))
+          var o = this.FbDataInternal.controlPointEvents(i, new fb_component_1.ControlPointEventConfig());
+          this.nHh.push(FbControlPointEventConfig_1.FbControlPointEventConfig.Create(o));
         }
+      }
     }
-    return this.nHh
+    return this.nHh;
   }
   get Description() {
-    return this.sHh || (this.sHh = !0, this.aHh = this.FbDataInternal.description()), this.aHh
+    if (!this.sHh) {
+      this.sHh = true;
+      this.aHh = this.FbDataInternal.description();
+    }
+    return this.aHh;
   }
 }
 exports.FbTimelineControlGroup = FbTimelineControlGroup;

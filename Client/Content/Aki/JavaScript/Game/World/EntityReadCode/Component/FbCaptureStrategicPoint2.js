@@ -1,41 +1,99 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCaptureStrategicPoint2 = void 0;
+  value: true
+});
+exports.FbCaptureStrategicPoint2 = undefined;
 const FbStaticEntitiyMatch_1 = require("./FbStaticEntitiyMatch");
 class FbCaptureStrategicPoint2 {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.nWh = !1, this.Fke = 0, this.sWh = !1, this.aWh = 0, this.hWh = !1, this.lWh = 0, this.gWh = !1, this.fWh = void 0, this.yWh = !1, this.SWh = 0, this.MWh = !1, this.EWh = 0, this.IWh = !1, this.TWh = 0, this.bWh = !1, this.LWh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.nWh = false;
+    this.Fke = 0;
+    this.sWh = false;
+    this.aWh = 0;
+    this.hWh = false;
+    this.lWh = 0;
+    this.gWh = false;
+    this.fWh = undefined;
+    this.yWh = false;
+    this.SWh = 0;
+    this.MWh = false;
+    this.EWh = 0;
+    this.IWh = false;
+    this.TWh = 0;
+    this.bWh = false;
+    this.LWh = 0;
   }
   static Create(t) {
-    if (t) return new FbCaptureStrategicPoint2(t)
+    if (t) {
+      return new FbCaptureStrategicPoint2(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MaxValue() {
-    return this.nWh || (this.nWh = !0, this.Fke = this.FbDataInternal.maxValue()), this.Fke
+    if (!this.nWh) {
+      this.nWh = true;
+      this.Fke = this.FbDataInternal.maxValue();
+    }
+    return this.Fke;
   }
   get InitValue() {
-    return this.sWh || (this.sWh = !0, this.aWh = this.FbDataInternal.initValue()), this.aWh
+    if (!this.sWh) {
+      this.sWh = true;
+      this.aWh = this.FbDataInternal.initValue();
+    }
+    return this.aWh;
   }
   get ProgressPerformanceAttribute() {
-    return this.hWh || (this.hWh = !0, this.lWh = this.FbDataInternal.progressPerformanceAttribute()), this.lWh
+    if (!this.hWh) {
+      this.hWh = true;
+      this.lWh = this.FbDataInternal.progressPerformanceAttribute();
+    }
+    return this.lWh;
   }
   get EnemyEntitiyMatch() {
-    return this.gWh || (this.gWh = !0, this.fWh = FbStaticEntitiyMatch_1.FbStaticEntitiyMatch.Create(this.FbDataInternal.enemyEntitiyMatch())), this.fWh
+    if (!this.gWh) {
+      this.gWh = true;
+      this.fWh = FbStaticEntitiyMatch_1.FbStaticEntitiyMatch.Create(this.FbDataInternal.enemyEntitiyMatch());
+    }
+    return this.fWh;
   }
   get PlayerInMonsterOutCaptureSpeed() {
-    return this.yWh || (this.yWh = !0, this.SWh = this.FbDataInternal.playerInMonsterOutCaptureSpeed()), this.SWh
+    if (!this.yWh) {
+      this.yWh = true;
+      this.SWh = this.FbDataInternal.playerInMonsterOutCaptureSpeed();
+    }
+    return this.SWh;
   }
   get PlayerInMonsterInCaptureSpeed() {
-    return this.MWh || (this.MWh = !0, this.EWh = this.FbDataInternal.playerInMonsterInCaptureSpeed()), this.EWh
+    if (!this.MWh) {
+      this.MWh = true;
+      this.EWh = this.FbDataInternal.playerInMonsterInCaptureSpeed();
+    }
+    return this.EWh;
   }
   get PlayerOutMonsterOutCaptureSpeed() {
-    return this.IWh || (this.IWh = !0, this.TWh = this.FbDataInternal.playerOutMonsterOutCaptureSpeed()), this.TWh
+    if (!this.IWh) {
+      this.IWh = true;
+      this.TWh = this.FbDataInternal.playerOutMonsterOutCaptureSpeed();
+    }
+    return this.TWh;
   }
   get PlayerOutMonsterInCaptureSpeed() {
-    return this.bWh || (this.bWh = !0, this.LWh = this.FbDataInternal.playerOutMonsterInCaptureSpeed()), this.LWh
+    if (!this.bWh) {
+      this.bWh = true;
+      this.LWh = this.FbDataInternal.playerOutMonsterInCaptureSpeed();
+    }
+    return this.LWh;
   }
 }
 exports.FbCaptureStrategicPoint2 = FbCaptureStrategicPoint2;

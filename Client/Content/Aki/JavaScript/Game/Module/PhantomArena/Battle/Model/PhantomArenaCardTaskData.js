@@ -1,28 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaCardTaskData = void 0;
-const EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem");
+  value: true
+});
+exports.PhantomArenaCardTaskData = undefined;
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 class PhantomArenaCardTaskData {
   constructor(t) {
-    this.IsOwn = t, this.A21 = [], this.Buu = !1, this.FinishTaskNum = 0, this.IsExecuteFourCostLogic = !1, this.TaskCardConfigId = 0
+    this.IsOwn = t;
+    this.aG1 = [];
+    this.tEu = false;
+    this.FinishTaskNum = 0;
+    this.IsExecuteFourCostLogic = false;
+    this.TaskCardConfigId = 0;
   }
   get IsAllFinish() {
-    return this.Buu
+    return this.tEu;
   }
   get AllTaskNum() {
-    return this.A21.length
+    return this.aG1.length;
   }
   SetTaskData(t) {
-    this.A21 = t.L21, this.Buu = t.CM_, this.TaskCardConfigId = t.Eg1, this.FinishTaskNum = 0;
-    for (const e of this.A21) e.CM_ && this.FinishTaskNum++;
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyCardTaskData, this.IsOwn)
+    this.aG1 = t.nG1;
+    this.tEu = t.CM_;
+    this.TaskCardConfigId = t.Wg1;
+    this.FinishTaskNum = 0;
+    for (const e of this.aG1) {
+      if (e.CM_) {
+        this.FinishTaskNum++;
+      }
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyCardTaskData, this.IsOwn);
   }
   GetConditionDescCurrentProgress(t) {
     let e = 0;
-    for (const s of this.A21) s.dLs === t && (e = s.tvs);
-    return e
+    for (const s of this.aG1) {
+      if (s.dLs === t) {
+        e = s.tvs;
+      }
+    }
+    return e;
   }
 }
 exports.PhantomArenaCardTaskData = PhantomArenaCardTaskData;

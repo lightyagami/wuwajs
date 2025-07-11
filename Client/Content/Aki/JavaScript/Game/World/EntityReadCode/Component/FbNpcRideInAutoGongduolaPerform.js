@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcRideInAutoGongduolaPerform = void 0;
+  value: true
+});
+exports.FbNpcRideInAutoGongduolaPerform = undefined;
 class FbNpcRideInAutoGongduolaPerform {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.mgh = !1, this.Cgh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.mgh = false;
+    this.Cgh = undefined;
   }
   static Create(t) {
-    if (t) return new FbNpcRideInAutoGongduolaPerform(t)
+    if (t) {
+      return new FbNpcRideInAutoGongduolaPerform(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Montage() {
-    return this.mgh || (this.mgh = !0, this.Cgh = this.FbDataInternal.montage()), this.Cgh
+    if (!this.mgh) {
+      this.mgh = true;
+      this.Cgh = this.FbDataInternal.montage();
+    }
+    return this.Cgh;
   }
 }
 exports.FbNpcRideInAutoGongduolaPerform = FbNpcRideInAutoGongduolaPerform;

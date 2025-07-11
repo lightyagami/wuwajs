@@ -1,39 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.QuestLockPreview = void 0;
-const UE = require("ue"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  LockReasonItem_1 = require("./LockReasonItem");
+  value: true
+});
+exports.QuestLockPreview = undefined;
+const UE = require("ue");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const LockReasonItem_1 = require("./LockReasonItem");
 class QuestLockPreview extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.Rno = void 0, this.Uno = void 0
+    super(...arguments);
+    this.Rno = undefined;
+    this.Uno = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIItem],
-      [2, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIItem]];
   }
   OnBeforeCreate() {
-    this.Rno = this.OpenParam
+    this.Rno = this.OpenParam;
   }
   OnStart() {
-    super.OnStart(), this.Ano()
+    super.OnStart();
+    this.Ano();
   }
   Ano() {
-    if (this.Rno && 0 !== this.Rno.length) {
+    if (this.Rno && this.Rno.length !== 0) {
       this.Uno = [];
-      var e = this.GetItem(2),
-        i = this.GetItem(1);
+      var e = this.GetItem(2);
+      var i = this.GetItem(1);
       for (const o of this.Rno) {
-        var t = LguiUtil_1.LguiUtil.CopyItem(e, i),
-          s = new LockReasonItem_1.LockReasonItem(o);
-        s.CreateThenShowByActorAsync(t.GetOwner()), this.Uno.push(s)
+        var t = LguiUtil_1.LguiUtil.CopyItem(e, i);
+        var s = new LockReasonItem_1.LockReasonItem(o);
+        s.CreateThenShowByActorAsync(t.GetOwner());
+        this.Uno.push(s);
       }
-      e.SetUIActive(!1)
+      e.SetUIActive(false);
     }
   }
 }

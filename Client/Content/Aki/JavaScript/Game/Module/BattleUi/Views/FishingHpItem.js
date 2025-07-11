@@ -1,18 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FishingHpItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.FishingHpItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class FishingHpItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIItem]];
   }
   SetHpVisible(e) {
-    this.GetSprite(0)?.SetUIActive(e)
+    this.GetSprite(0)?.SetUIActive(e);
   }
 }
 exports.FishingHpItem = FishingHpItem;

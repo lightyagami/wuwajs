@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCharacterGroupNew = void 0;
+  value: true
+});
+exports.FbCharacterGroupNew = undefined;
 class FbCharacterGroupNew {
   constructor(t) {
-    this.FbDataInternal = t, this.USh = !1, this.DSh = 0, this.BSh = !1, this.qSh = !1
+    this.FbDataInternal = t;
+    this.USh = false;
+    this.DSh = 0;
+    this.BSh = false;
+    this.qSh = false;
   }
   static Create(t) {
-    if (t) return new FbCharacterGroupNew(t)
+    if (t) {
+      return new FbCharacterGroupNew(t);
+    }
   }
   get CharacterId() {
-    return this.USh || (this.USh = !0, this.DSh = this.FbDataInternal.characterId()), this.DSh
+    if (!this.USh) {
+      this.USh = true;
+      this.DSh = this.FbDataInternal.characterId();
+    }
+    return this.DSh;
   }
   get IsAiCharacter() {
-    return this.BSh || (this.BSh = !0, this.qSh = this.FbDataInternal.isAiCharacter()), this.qSh
+    if (!this.BSh) {
+      this.BSh = true;
+      this.qSh = this.FbDataInternal.isAiCharacter();
+    }
+    return this.qSh;
   }
 }
 exports.FbCharacterGroupNew = FbCharacterGroupNew;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSignalBreakGameplay = void 0;
+  value: true
+});
+exports.FbSignalBreakGameplay = undefined;
 class FbSignalBreakGameplay {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.GTh = !1, this.OTh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.GTh = false;
+    this.OTh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSignalBreakGameplay(t)
+    if (t) {
+      return new FbSignalBreakGameplay(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get SignalBreakId() {
-    return this.GTh || (this.GTh = !0, this.OTh = this.FbDataInternal.signalBreakId()), this.OTh
+    if (!this.GTh) {
+      this.GTh = true;
+      this.OTh = this.FbDataInternal.signalBreakId();
+    }
+    return this.OTh;
   }
 }
 exports.FbSignalBreakGameplay = FbSignalBreakGameplay;

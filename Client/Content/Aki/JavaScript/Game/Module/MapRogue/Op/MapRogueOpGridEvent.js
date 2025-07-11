@@ -1,69 +1,125 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueOpGridEvent = void 0;
-const Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  MapRogueOp_1 = require("./MapRogueOp");
+  value: true
+});
+exports.MapRogueOpGridEvent = undefined;
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const UiManager_1 = require("../../../Ui/UiManager");
+const MapRogueOp_1 = require("./MapRogueOp");
 class MapRogueOpGridEvent extends MapRogueOp_1.MapRogueOp {
   constructor() {
-    super(...arguments), this.InEventView = !1, this.StepSize = 2, this.sX1 = new Set, this.EventStepUpdateFunc = void 0
+    super(...arguments);
+    this.InEventView = false;
+    this.StepSize = 2;
+    this.NX1 = new Set();
+    this.EventStepUpdateFunc = undefined;
   }
   ToString() {
-    return `[GridEvent] IncId:${this.IncId} InStart:${this.IsInStart} InPlot:${this.IsInPlot} PlotStepId:` + this.CurrentStepId
+    return `[GridEvent] IncId:${this.IncId} InStart:${this.IsInStart} InPlot:${this.IsInPlot} PlotStepId:${this.CurrentStepId}`;
   }
   OnUpdate(t) {
-    this.IsStartExecute && this.ksi(t)
+    if (this.IsStartExecute) {
+      this.ksi(t);
+    }
   }
   ksi(t) {
-    var e, i;
-    this.IsInStart ? (e = this.Data.qEc?.xr1?.J2s ?? 0, (e = ConfigManager_1.ConfigManager.MapRogueConfig.GetGridEventConfigById(e)) && ((i = ConfigManager_1.ConfigManager.MapRogueConfig.GetGlobalParamConfig()).EventStartSpineType.includes(e.EventType) && t.RoleAnimProxy("Fight", !1), i.EventStartSeqType.includes(e.EventType)) ? UiManager_1.UiManager.OpenView("MapRogueEventStartView", this.IncId) : this.Execute(t)) : this.IsInPlot && !t.InBattle && (this.InEventView ? this.EventStepUpdateFunc?.(this.CurrentStepId) : 3 === ConfigManager_1.ConfigManager.MapRogueConfig.GetRogueEventStepById(this.CurrentStepId)?.Type ? this.ExecuteStep(this.CurrentStepId, 0) : UiManager_1.UiManager.OpenView("MapRogueGridEventView", this.IncId, t => {
-      this.InEventView = t
-    }))
+    var e;
+    var i;
+    if (this.IsInStart) {
+      e = this.Data.qEc?.Jr1?.J2s ?? 0;
+      if ((e = ConfigManager_1.ConfigManager.MapRogueConfig.GetGridEventConfigById(e)) && ((i = ConfigManager_1.ConfigManager.MapRogueConfig.GetGlobalParamConfig()).EventStartSpineType.includes(e.EventType) && t.RoleAnimProxy("Fight", false), i.EventStartSeqType.includes(e.EventType))) {
+        UiManager_1.UiManager.OpenView("MapRogueEventStartView", this.IncId);
+      } else {
+        this.Execute(t);
+      }
+    } else if (this.IsInPlot && !t.InBattle) {
+      if (this.InEventView) {
+        this.EventStepUpdateFunc?.(this.CurrentStepId);
+      } else if (ConfigManager_1.ConfigManager.MapRogueConfig.GetRogueEventStepById(this.CurrentStepId)?.Type === 3) {
+        this.ExecuteStep(this.CurrentStepId, 0);
+      } else {
+        UiManager_1.UiManager.OpenView("MapRogueGridEventView", this.IncId, t => {
+          this.InEventView = t;
+        });
+      }
+    }
   }
   OnBattleStateUpdate(t, e) {
-    t && this.InEventView && UiManager_1.UiManager.CloseView("MapRogueGridEventView", () => {
-      this.InEventView = !1
-    })
+    if (t && this.InEventView) {
+      UiManager_1.UiManager.CloseView("MapRogueGridEventView", () => {
+        this.InEventView = false;
+      });
+    }
   }
   OnStartExecute(t) {
-    this.ksi(t)
+    this.ksi(t);
   }
   OnExecute(t) {
-    1 === this.CurrentStep && this.ExecuteOp()
+    if (this.CurrentStep === 1) {
+      this.ExecuteOp();
+    }
   }
   OnFinish(t) {}
   OnDelete(t) {
-    this.InEventView && UiManager_1.UiManager.CloseView("MapRogueGridEventView", () => {
-      this.InEventView = !1
-    })
+    if (this.InEventView) {
+      UiManager_1.UiManager.CloseView("MapRogueGridEventView", () => {
+        this.InEventView = false;
+      });
+    }
   }
   ExecuteStep(t, e) {
-    this.CurrentStepId !== t || this.sX1.has(t) || this.Data.qEc.$_1.Ur1 === Protocol_1.Aki.Protocol.Ur1.Proto_WaitConfirm && (this.sX1.add(t), this.OpExecuteClientId = e, this.ExecuteOp(() => {
-      this.sX1.delete(t)
-    }))
+    if (this.CurrentStepId === t && !this.NX1.has(t)) {
+      if (this.Data.qEc.wl1.eo1 === Protocol_1.Aki.Protocol.eo1.Proto_WaitConfirm) {
+        this.NX1.add(t);
+        this.OpExecuteClientId = e;
+        this.ExecuteOp(() => {
+          this.NX1.delete(t);
+        });
+      }
+    }
   }
   get IsInStart() {
-    return this.Data.qEc?.V_1 === Protocol_1.Aki.Protocol.V_1.Proto_SpecialEffect
+    return this.Data.qEc?.bl1 === Protocol_1.Aki.Protocol.bl1.Proto_SpecialEffect;
   }
   get IsInPlot() {
-    return this.Data.qEc?.V_1 === Protocol_1.Aki.Protocol.V_1.Proto_EventPloting
+    return this.Data.qEc?.bl1 === Protocol_1.Aki.Protocol.bl1.Proto_EventPloting;
   }
   get CurrentPlotId() {
-    return this.IsInPlot ? this.Data.qEc?.$_1?.Dr1 ?? 0 : 0
+    if (this.IsInPlot) {
+      return this.Data.qEc?.wl1?.Zr1 ?? 0;
+    } else {
+      return 0;
+    }
   }
   get CurrentStepId() {
-    return this.IsInPlot ? this.Data.qEc?.$_1?.kqs ?? 0 : 0
+    if (this.IsInPlot) {
+      return this.Data.qEc?.wl1?.kqs ?? 0;
+    } else {
+      return 0;
+    }
   }
   get CurrentPlotBgId() {
-    return this.IsInPlot ? this.Data.qEc?.$_1?.kr1 ?? 0 : 0
+    if (this.IsInPlot) {
+      return this.Data.qEc?.wl1?.io1 ?? 0;
+    } else {
+      return 0;
+    }
   }
   get CurrentPlotBgmId() {
-    return this.IsInPlot ? this.Data.qEc?.$_1?.Or1 ?? 0 : 0
+    if (this.IsInPlot) {
+      return this.Data.qEc?.wl1?.ro1 ?? 0;
+    } else {
+      return 0;
+    }
   }
   get CurrentOptions() {
-    return this.IsInPlot ? this.Data.qEc?.$_1?.Br1 ?? [] : []
+    if (this.IsInPlot) {
+      return this.Data.qEc?.wl1?.to1 ?? [];
+    } else {
+      return [];
+    }
   }
 }
 exports.MapRogueOpGridEvent = MapRogueOpGridEvent;

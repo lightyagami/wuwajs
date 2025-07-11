@@ -1,46 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BeInviteData = void 0;
+  value: true
+});
+exports.BeInviteData = undefined;
 class BeInviteData {
   constructor() {
-    this.j8 = 0, this.he = "", this.zz = "", this.Eai = 0, this.Ypr = "", this.Jpr = void 0
+    this.j8 = 0;
+    this.he = "";
+    this.zz = "";
+    this.Eai = 0;
+    this.Ypr = "";
+    this.Jpr = undefined;
   }
   SetPlayerId(t) {
-    this.j8 = t
+    this.j8 = t;
   }
   GetPlayerId() {
-    return this.j8
+    return this.j8;
   }
   SetName(t) {
-    this.he = t
+    this.he = t;
   }
   GetName() {
-    return this.he
+    return this.he;
   }
   SetContent(t) {
-    this.zz = t
+    this.zz = t;
   }
   GetContent() {
-    return this.zz
+    return this.zz;
   }
   SetLimitTimestamp(t) {
-    this.Eai = t
+    this.Eai = t;
   }
   GetLimitTimestamp() {
-    return this.Eai
+    return this.Eai;
   }
   SetToken(t) {
-    this.Ypr = t
+    this.Ypr = t;
   }
   GetToken() {
-    return this.Ypr
+    return this.Ypr;
   }
   SetGameplayTagHash(t) {
-    this.Jpr = t
+    this.Jpr = t;
   }
   GetGameplayTagHash() {
-    return this.Jpr
+    return this.Jpr;
   }
 }
 exports.BeInviteData = BeInviteData;

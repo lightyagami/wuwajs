@@ -1,77 +1,210 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const Log_1 = require("../../../../Core/Common/Log"),
-  Time_1 = require("../../../../Core/Common/Time"),
-  Quat_1 = require("../../../../Core/Utils/Math/Quat"),
-  Vector_1 = require("../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../Core/Utils/MathUtils"),
-  GlobalData_1 = require("../../../GlobalData"),
-  CharacterUnifiedStateTypes_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes"),
-  GravityUtils_1 = require("../../../Utils/GravityUtils"),
-  AiContollerLibrary_1 = require("../../Controller/AiContollerLibrary"),
-  TsAiController_1 = require("../../Controller/TsAiController"),
-  TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase"),
-  MAX_DISTANCE_INDEX = 4,
-  SUM_WEIGHT = 100,
-  TRIGGER_PERIOD = 500,
-  NAV_INTERVAL_TIME = 3;
+const Log_1 = require("../../../../Core/Common/Log");
+const Time_1 = require("../../../../Core/Common/Time");
+const Quat_1 = require("../../../../Core/Utils/Math/Quat");
+const Vector_1 = require("../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const GlobalData_1 = require("../../../GlobalData");
+const CharacterUnifiedStateTypes_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
+const GravityUtils_1 = require("../../../Utils/GravityUtils");
+const AiContollerLibrary_1 = require("../../Controller/AiContollerLibrary");
+const TsAiController_1 = require("../../Controller/TsAiController");
+const TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
+const MAX_DISTANCE_INDEX = 4;
+const SUM_WEIGHT = 100;
+const TRIGGER_PERIOD = 500;
+const NAV_INTERVAL_TIME = 3;
 class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
   constructor() {
-    super(...arguments), this.MoveState = 0, this.AllyDetect = 0, this.WalkOff = !1, this.IsInitTsVariables = !1, this.TsMoveState = 0, this.TsAllyDetect = 0, this.TsWalkOff = !1, this.DistanceIndex = 0, this.DirectIndex = 4, this.EndTime = -0, this.NextPickDirectTime = -0, this.TmpVector = Vector_1.Vector.Create(), this.TmpOffset = Vector_1.Vector.Create(), this.TmpDirection = Vector_1.Vector.Create(), this.TmpVector2 = Vector_1.Vector.Create(), this.LastDestination = Vector_1.Vector.Create(), this.TmpQuat = Quat_1.Quat.Create(), this.NextTriggerTime = -0, this.NavigationInterval = 0
+    super(...arguments);
+    this.MoveState = 0;
+    this.AllyDetect = 0;
+    this.WalkOff = false;
+    this.IsInitTsVariables = false;
+    this.TsMoveState = 0;
+    this.TsAllyDetect = 0;
+    this.TsWalkOff = false;
+    this.DistanceIndex = 0;
+    this.DirectIndex = 4;
+    this.EndTime = -0;
+    this.NextPickDirectTime = -0;
+    this.TmpVector = Vector_1.Vector.Create();
+    this.TmpOffset = Vector_1.Vector.Create();
+    this.TmpDirection = Vector_1.Vector.Create();
+    this.TmpVector2 = Vector_1.Vector.Create();
+    this.LastDestination = Vector_1.Vector.Create();
+    this.TmpQuat = Quat_1.Quat.Create();
+    this.NextTriggerTime = -0;
+    this.NavigationInterval = 0;
   }
   Constructor() {
-    super.Constructor(), this.IsInitTsVariables = !1, this.TsMoveState = 0, this.TsAllyDetect = 0, this.TsWalkOff = !1, this.DistanceIndex = 0, this.DirectIndex = 4, this.EndTime = -0, this.NextPickDirectTime = -0, this.TmpVector = Vector_1.Vector.Create(), this.TmpOffset = Vector_1.Vector.Create(), this.TmpDirection = Vector_1.Vector.Create(), this.TmpVector2 = Vector_1.Vector.Create(), this.LastDestination = Vector_1.Vector.Create(), this.TmpQuat = Quat_1.Quat.Create(), this.NextTriggerTime = -0, this.NavigationInterval = 0
+    super.Constructor();
+    this.IsInitTsVariables = false;
+    this.TsMoveState = 0;
+    this.TsAllyDetect = 0;
+    this.TsWalkOff = false;
+    this.DistanceIndex = 0;
+    this.DirectIndex = 4;
+    this.EndTime = -0;
+    this.NextPickDirectTime = -0;
+    this.TmpVector = Vector_1.Vector.Create();
+    this.TmpOffset = Vector_1.Vector.Create();
+    this.TmpDirection = Vector_1.Vector.Create();
+    this.TmpVector2 = Vector_1.Vector.Create();
+    this.LastDestination = Vector_1.Vector.Create();
+    this.TmpQuat = Quat_1.Quat.Create();
+    this.NextTriggerTime = -0;
+    this.NavigationInterval = 0;
   }
   InitTsVariables() {
-    this.IsInitTsVariables && !GlobalData_1.GlobalData.IsPlayInEditor || (this.IsInitTsVariables = !0, this.TsMoveState = this.MoveState, this.TsAllyDetect = this.AllyDetect, this.TsWalkOff = this.WalkOff), this.TmpVector || (this.TmpVector = Vector_1.Vector.Create(), this.TmpOffset = Vector_1.Vector.Create(), this.TmpVector2 = Vector_1.Vector.Create(), this.TmpDirection = Vector_1.Vector.Create(), this.TmpQuat = Quat_1.Quat.Create(), this.LastDestination = Vector_1.Vector.Create())
+    if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.IsInitTsVariables = true;
+      this.TsMoveState = this.MoveState;
+      this.TsAllyDetect = this.AllyDetect;
+      this.TsWalkOff = this.WalkOff;
+    }
+    if (!this.TmpVector) {
+      this.TmpVector = Vector_1.Vector.Create();
+      this.TmpOffset = Vector_1.Vector.Create();
+      this.TmpVector2 = Vector_1.Vector.Create();
+      this.TmpDirection = Vector_1.Vector.Create();
+      this.TmpQuat = Quat_1.Quat.Create();
+      this.LastDestination = Vector_1.Vector.Create();
+    }
   }
   ReceiveExecuteAI(t, i) {
-    this.InitTsVariables(), this.DistanceIndex = MAX_DISTANCE_INDEX, t instanceof TsAiController_1.default && (t = t.AiController, this.TsWalkOff || t.CharActorComp.Entity.GetComponent(178)?.SetWalkOffLedgeRecord(!1), t.AiWanderInfos?.AiBattleWanderGroups?.length ? (this.EndTime = Time_1.Time.WorldTime + t.AiWanderInfos.RandomBattleWanderEndTime(), t.AiWanderInfos.BattleWanderAddTime = 0, this.NextPickDirectTime = 0, this.NextTriggerTime = 0, this.NavigationInterval = NAV_INTERVAL_TIME, this.DistanceIndex = -1, this.DirectIndex = 4) : Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "没有配置战斗游荡", ["AiBaseId", t.AiBase.Id]))
+    this.InitTsVariables();
+    this.DistanceIndex = MAX_DISTANCE_INDEX;
+    if (t instanceof TsAiController_1.default) {
+      t = t.AiController;
+      if (!this.TsWalkOff) {
+        t.CharActorComp.Entity.GetComponent(178)?.SetWalkOffLedgeRecord(false);
+      }
+      if (t.AiWanderInfos?.AiBattleWanderGroups?.length) {
+        this.EndTime = Time_1.Time.WorldTime + t.AiWanderInfos.RandomBattleWanderEndTime();
+        t.AiWanderInfos.BattleWanderAddTime = 0;
+        this.NextPickDirectTime = 0;
+        this.NextTriggerTime = 0;
+        this.NavigationInterval = NAV_INTERVAL_TIME;
+        this.DistanceIndex = -1;
+        this.DirectIndex = 4;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "没有配置战斗游荡", ["AiBaseId", t.AiBase.Id]);
+      }
+    }
   }
   ReceiveTickAI(t, i, s) {
-    var e, h, r, a;
-    this.NavigationInterval += s, t instanceof TsAiController_1.default ? (s = t.AiController).AiWanderInfos?.AiBattleWanderGroups?.length ? this.EndTime + s.AiWanderInfos.BattleWanderAddTime < Time_1.Time.WorldTime ? this.Finish(!0) : (e = this.GetWanderData(s), h = s.CharActorComp, (r = s.AiHateList.GetCurrentTarget())?.Valid && (r = r.Entity.GetComponent(3)) ? Time_1.Time.Now < this.NextTriggerTime ? this.SetInputParams(t.AiController.CharActorComp, r, e) : (this.NextTriggerTime = Time_1.Time.Now + TRIGGER_PERIOD, r.ActorLocationProxy.Subtraction(h.ActorLocationProxy, this.TmpOffset), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(h, this.TmpOffset), (a = this.TmpOffset.Size()) < MathUtils_1.MathUtils.SmallNumber ? (h.ActorForwardProxy.Multiply(-1, this.TmpVector), h.SetInputDirect(this.TmpVector)) : (a <= e.DistanceRange[0] ? (this.DistanceIndex = 0, this.DirectIndex = 1) : a > e.DistanceRange[MAX_DISTANCE_INDEX - 1] ? (this.DistanceIndex = MAX_DISTANCE_INDEX, this.DirectIndex = 0) : this.NextPickDirectTime < Time_1.Time.WorldTime && (this.PickDirect(s, e), this.NextPickDirectTime = Time_1.Time.WorldTime + MathUtils_1.MathUtils.GetRandomRange(e.WanderTime.Min, e.WanderTime.Max)), this.SetInputParams(t.AiController.CharActorComp, r, e))) : this.Finish(!1)) : this.Finish(!1) : (Log_1.Log.CheckError() && Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", t.GetClass().GetName()]), this.Finish(!1))
+    var e;
+    var h;
+    var r;
+    var a;
+    this.NavigationInterval += s;
+    if (t instanceof TsAiController_1.default) {
+      if ((s = t.AiController).AiWanderInfos?.AiBattleWanderGroups?.length) {
+        if (this.EndTime + s.AiWanderInfos.BattleWanderAddTime < Time_1.Time.WorldTime) {
+          this.Finish(true);
+        } else {
+          e = this.GetWanderData(s);
+          h = s.CharActorComp;
+          if ((r = s.AiHateList.GetCurrentTarget())?.Valid && (r = r.Entity.GetComponent(3))) {
+            if (Time_1.Time.Now < this.NextTriggerTime) {
+              this.SetInputParams(t.AiController.CharActorComp, r, e);
+            } else {
+              this.NextTriggerTime = Time_1.Time.Now + TRIGGER_PERIOD;
+              r.ActorLocationProxy.Subtraction(h.ActorLocationProxy, this.TmpOffset);
+              GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(h, this.TmpOffset);
+              if ((a = this.TmpOffset.Size()) < MathUtils_1.MathUtils.SmallNumber) {
+                h.ActorForwardProxy.Multiply(-1, this.TmpVector);
+                h.SetInputDirect(this.TmpVector);
+              } else {
+                if (a <= e.DistanceRange[0]) {
+                  this.DistanceIndex = 0;
+                  this.DirectIndex = 1;
+                } else if (a > e.DistanceRange[MAX_DISTANCE_INDEX - 1]) {
+                  this.DistanceIndex = MAX_DISTANCE_INDEX;
+                  this.DirectIndex = 0;
+                } else if (this.NextPickDirectTime < Time_1.Time.WorldTime) {
+                  this.PickDirect(s, e);
+                  this.NextPickDirectTime = Time_1.Time.WorldTime + MathUtils_1.MathUtils.GetRandomRange(e.WanderTime.Min, e.WanderTime.Max);
+                }
+                this.SetInputParams(t.AiController.CharActorComp, r, e);
+              }
+            }
+          } else {
+            this.Finish(false);
+          }
+        }
+      } else {
+        this.Finish(false);
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", t.GetClass().GetName()]);
+      }
+      this.Finish(false);
+    }
   }
   OnClear() {
     var t;
-    this.AIOwner instanceof TsAiController_1.default && ((t = this.AIOwner.AiController.CharActorComp.Entity.GetComponent(45))?.MoveController.StopMoveToLocation(), this.LastDestination?.Reset(), AiContollerLibrary_1.AiControllerLibrary.ClearInput(this.AIOwner), this.TsWalkOff || t?.SetWalkOffLedgeRecord(!0))
+    if (this.AIOwner instanceof TsAiController_1.default) {
+      (t = this.AIOwner.AiController.CharActorComp.Entity.GetComponent(45))?.MoveController.StopMoveToLocation();
+      this.LastDestination?.Reset();
+      AiContollerLibrary_1.AiControllerLibrary.ClearInput(this.AIOwner);
+      if (!this.TsWalkOff) {
+        t?.SetWalkOffLedgeRecord(true);
+      }
+    }
   }
   GetWanderData(t) {
-    return t.AiWanderInfos.GetCurrentBattleWander()
+    return t.AiWanderInfos.GetCurrentBattleWander();
   }
   PickDirect(t, i) {
-    var s = t.AiHateList.GetCurrentTarget(),
-      e = t.CharActorComp;
-    if (!s?.Valid) return !1;
-    s = s.Entity.GetComponent(3);
-    if (!s) return !1;
-    s.ActorLocationProxy.Subtraction(e.ActorLocationProxy, this.TmpOffset), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(e, this.TmpOffset);
-    var e = this.TmpOffset.Size() - e.ScaledRadius - s.ScaledRadius,
-      h = (this.DistanceIndex = this.FindDistanceIndexByDistance(i, e), this.FindDirectByWeights(i), this.CheckNavigationAndAllyBlock(t, this.TmpOffset, e), t.CharAiDesignComp.Entity.GetComponent(175));
-    if (h.Valid) switch (this.TsMoveState) {
-      case 1:
-        h.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
-        break;
-      case 2:
-        h.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Run);
-        break;
-      case 3:
-        h.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Sprint)
+    var s = t.AiHateList.GetCurrentTarget();
+    var e = t.CharActorComp;
+    if (!s?.Valid) {
+      return false;
     }
-    return !0
+    s = s.Entity.GetComponent(3);
+    if (!s) {
+      return false;
+    }
+    s.ActorLocationProxy.Subtraction(e.ActorLocationProxy, this.TmpOffset);
+    GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(e, this.TmpOffset);
+    var e = this.TmpOffset.Size() - e.ScaledRadius - s.ScaledRadius;
+    this.DistanceIndex = this.FindDistanceIndexByDistance(i, e);
+    this.FindDirectByWeights(i);
+    this.CheckNavigationAndAllyBlock(t, this.TmpOffset, e);
+    var h = t.CharAiDesignComp.Entity.GetComponent(175);
+    if (h.Valid) {
+      switch (this.TsMoveState) {
+        case 1:
+          h.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
+          break;
+        case 2:
+          h.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Run);
+          break;
+        case 3:
+          h.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Sprint);
+      }
+    }
+    return true;
   }
   FindDistanceIndexByDistance(t, i) {
     let s = 0;
     for (; s < MAX_DISTANCE_INDEX && !(i <= t.DistanceRange[s]); ++s);
-    return s
+    return s;
   }
   FindDirectByWeights(s) {
-    if (0 === this.DistanceIndex) this.DirectIndex = 1;
-    else if (this.DistanceIndex === MAX_DISTANCE_INDEX) this.DirectIndex = 0;
-    else {
-      let t = new Array;
+    if (this.DistanceIndex === 0) {
+      this.DirectIndex = 1;
+    } else if (this.DistanceIndex === MAX_DISTANCE_INDEX) {
+      this.DirectIndex = 0;
+    } else {
+      let t = new Array();
       switch (this.DistanceIndex) {
         case 1:
           t = s.NearActionRates;
@@ -80,42 +213,80 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
           t = s.MiddleActionRates;
           break;
         default:
-          t = s.FarActionRates
+          t = s.FarActionRates;
       }
       let i = MathUtils_1.MathUtils.GetRandomRange(0, SUM_WEIGHT);
-      for (this.DirectIndex = 0; this.DirectIndex < t.length && i >= t[this.DirectIndex];) i -= t[this.DirectIndex], ++this.DirectIndex
+      for (this.DirectIndex = 0; this.DirectIndex < t.length && i >= t[this.DirectIndex];) {
+        i -= t[this.DirectIndex];
+        ++this.DirectIndex;
+      }
     }
   }
   CheckNavigationAndAllyBlock(t, i, s) {
-    4 === this.DirectIndex || s <= MathUtils_1.MathUtils.SmallNumber || (this.TmpVector.DeepCopy(i), this.TmpVector.DivisionEqual(s), AiContollerLibrary_1.AiControllerLibrary.AllyOnPath(t, this.TmpVector, this.TsAllyDetect, this.DirectIndex) ? this.DirectIndex = 4 : GravityUtils_1.GravityUtils.TurnVectorByDirectionInGravityForActor(t.CharActorComp, this.TmpVector, this.DirectIndex))
+    if (this.DirectIndex !== 4 && !(s <= MathUtils_1.MathUtils.SmallNumber)) {
+      this.TmpVector.DeepCopy(i);
+      this.TmpVector.DivisionEqual(s);
+      if (AiContollerLibrary_1.AiControllerLibrary.AllyOnPath(t, this.TmpVector, this.TsAllyDetect, this.DirectIndex)) {
+        this.DirectIndex = 4;
+      } else {
+        GravityUtils_1.GravityUtils.TurnVectorByDirectionInGravityForActor(t.CharActorComp, this.TmpVector, this.DirectIndex);
+      }
+    }
   }
   SetInputParams(t, i, s) {
-    i.ActorLocationProxy.Subtraction(t.ActorLocationProxy, this.TmpOffset), this.TmpDirection.DeepCopy(this.TmpOffset), GravityUtils_1.GravityUtils.TurnVectorByDirectionInGravityForActor(t, this.TmpOffset, this.DirectIndex);
-    s = 2 === this.TsMoveState ? s.RunTurnSpeed : s.TurnSpeeds[this.DirectIndex];
+    i.ActorLocationProxy.Subtraction(t.ActorLocationProxy, this.TmpOffset);
+    this.TmpDirection.DeepCopy(this.TmpOffset);
+    GravityUtils_1.GravityUtils.TurnVectorByDirectionInGravityForActor(t, this.TmpOffset, this.DirectIndex);
+    s = this.TsMoveState === 2 ? s.RunTurnSpeed : s.TurnSpeeds[this.DirectIndex];
     if (this.NavigationInterval > NAV_INTERVAL_TIME) {
-      if (this.NavigationInterval = 0, this.SetMoveToLocation(this.TmpOffset, t, s, i.ActorLocationProxy)) return;
-      Log_1.Log.CheckDebug() && Log_1.Log.Debug("AI", 42, "BattleWander 寻路失败", ["EntityId", t.Entity.Id]), this.StopMoveToLocation(t)
+      this.NavigationInterval = 0;
+      if (this.SetMoveToLocation(this.TmpOffset, t, s, i.ActorLocationProxy)) {
+        return;
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("AI", 42, "BattleWander 寻路失败", ["EntityId", t.Entity.Id]);
+      }
+      this.StopMoveToLocation(t);
     }
-    4 !== this.DirectIndex && AiContollerLibrary_1.AiControllerLibrary.NavigationBlockDirectionE(this.AIOwner, t.ActorLocationProxy, t.ActorForwardProxy, this.DirectIndex) ? (this.DirectIndex = 4, t.ClearInput()) : (i = t.Entity.GetComponent(45)) && i.MoveController.IsMovingToLocation() || (t.Entity.GetComponent(101)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk ? (AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(t, this.TmpOffset, s), t.SetInputDirect(t.ActorForwardProxy)) : AiContollerLibrary_1.AiControllerLibrary.InputNearestDirection(t, this.TmpOffset, this.TmpQuat, this.TmpVector2, s, !0, this.TmpDirection))
+    if (this.DirectIndex !== 4 && AiContollerLibrary_1.AiControllerLibrary.NavigationBlockDirectionE(this.AIOwner, t.ActorLocationProxy, t.ActorForwardProxy, this.DirectIndex)) {
+      this.DirectIndex = 4;
+      t.ClearInput();
+    } else if (!(i = t.Entity.GetComponent(45)) || !i.MoveController.IsMovingToLocation()) {
+      if (t.Entity.GetComponent(101)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
+        AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(t, this.TmpOffset, s);
+        t.SetInputDirect(t.ActorForwardProxy);
+      } else {
+        AiContollerLibrary_1.AiControllerLibrary.InputNearestDirection(t, this.TmpOffset, this.TmpQuat, this.TmpVector2, s, true, this.TmpDirection);
+      }
+    }
   }
   StopMoveToLocation(t) {
     t = t.Entity.GetComponent(45);
-    t && t.MoveController.IsMovingToLocation() && t?.MoveController.StopMoveToLocation(), this.LastDestination.Reset()
+    if (t && t.MoveController.IsMovingToLocation()) {
+      t?.MoveController.StopMoveToLocation();
+    }
+    this.LastDestination.Reset();
   }
   SetMoveToLocation(t, i, s, e) {
-    this.TmpVector2.DeepCopy(t), this.TmpVector2.AdditionEqual(i.ActorLocationProxy);
+    this.TmpVector2.DeepCopy(t);
+    this.TmpVector2.AdditionEqual(i.ActorLocationProxy);
     t = i.Entity.GetComponent(45);
-    if (!t) return !1;
-    if ((!this.LastDestination.IsNearlyZero() || Vector_1.Vector.Dist(this.LastDestination, this.TmpVector2) < 100) && t.MoveController.IsMovingToLocation()) return this.LastDestination.DeepCopy(this.TmpVector2), !0;
+    if (!t) {
+      return false;
+    }
+    if ((!this.LastDestination.IsNearlyZero() || Vector_1.Vector.Dist(this.LastDestination, this.TmpVector2) < 100) && t.MoveController.IsMovingToLocation()) {
+      this.LastDestination.DeepCopy(this.TmpVector2);
+      return true;
+    }
     this.LastDestination.DeepCopy(this.TmpVector2);
-    i = (3 === this.DirectIndex || 2 === this.DirectIndex) && 1 === i.WanderDirectionType;
+    i = (this.DirectIndex === 3 || this.DirectIndex === 2) && i.WanderDirectionType === 1;
     return t.MoveController.NavigateMoveToLocation({
       Position: this.TmpVector2,
       TurnSpeed: s,
       UseNearestDirection: !i,
-      FaceToPosition: i ? void 0 : e,
-      ResetCondition: () => !1
-    }, !0, !1)
+      FaceToPosition: i ? undefined : e,
+      ResetCondition: () => false
+    }, true, false);
   }
 }
 exports.default = TsTaskBattleWander;

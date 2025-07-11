@@ -1,13 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyUiTimeDilation extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, t) {
-    return e.GetOwner() instanceof TsBaseCharacter_1.default
+    return e.GetOwner() instanceof TsBaseCharacter_1.default;
   }
 }
 exports.default = TsAnimNotifyUiTimeDilation;

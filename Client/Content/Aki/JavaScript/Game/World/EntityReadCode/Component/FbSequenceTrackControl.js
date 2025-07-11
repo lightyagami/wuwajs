@@ -1,33 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSequenceTrackControl = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbSequenceTrackControlPoint_1 = require("./FbSequenceTrackControlPoint");
+  value: true
+});
+exports.FbSequenceTrackControl = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbSequenceTrackControlPoint_1 = require("./FbSequenceTrackControlPoint");
 class FbSequenceTrackControl {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.mHh = !1, this.CHh = void 0, this.hHh = !1, this.lHh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.mHh = false;
+    this.CHh = undefined;
+    this.hHh = false;
+    this.lHh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSequenceTrackControl(t)
+    if (t) {
+      return new FbSequenceTrackControl(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Sequence() {
-    return this.mHh || (this.mHh = !0, this.CHh = this.FbDataInternal.sequence()), this.CHh
+    if (!this.mHh) {
+      this.mHh = true;
+      this.CHh = this.FbDataInternal.sequence();
+    }
+    return this.CHh;
   }
   get ControlPoints() {
     if (!this.hHh) {
-      this.hHh = !0, this.lHh = new Array;
+      this.hHh = true;
+      this.lHh = new Array();
       var e = this.FbDataInternal.controlPointsLength();
-      if (e)
+      if (e) {
         for (let t = 0; t < e; ++t) {
-          var i = this.FbDataInternal.controlPoints(t, new fb_component_1.SequenceTrackControlPoint);
-          this.lHh.push(FbSequenceTrackControlPoint_1.FbSequenceTrackControlPoint.Create(i))
+          var i = this.FbDataInternal.controlPoints(t, new fb_component_1.SequenceTrackControlPoint());
+          this.lHh.push(FbSequenceTrackControlPoint_1.FbSequenceTrackControlPoint.Create(i));
         }
+      }
     }
-    return this.lHh
+    return this.lHh;
   }
 }
 exports.FbSequenceTrackControl = FbSequenceTrackControl;

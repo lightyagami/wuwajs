@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBlackBoardString = void 0;
+  value: true
+});
+exports.FbBlackBoardString = undefined;
 class FbBlackBoardString {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ubh = !1, this.dbh = void 0, this.kmh = !1, this.Gmh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ubh = false;
+    this.dbh = undefined;
+    this.kmh = false;
+    this.Gmh = undefined;
   }
   static Create(t) {
-    if (t) return new FbBlackBoardString(t)
+    if (t) {
+      return new FbBlackBoardString(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Key() {
-    return this.ubh || (this.ubh = !0, this.dbh = this.FbDataInternal.key()), this.dbh
+    if (!this.ubh) {
+      this.ubh = true;
+      this.dbh = this.FbDataInternal.key();
+    }
+    return this.dbh;
   }
   get Value() {
-    return this.kmh || (this.kmh = !0, this.Gmh = this.FbDataInternal.value()), this.Gmh
+    if (!this.kmh) {
+      this.kmh = true;
+      this.Gmh = this.FbDataInternal.value();
+    }
+    return this.Gmh;
   }
 }
 exports.FbBlackBoardString = FbBlackBoardString;

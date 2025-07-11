@@ -1,38 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHideByRangeInFlow = void 0;
+  value: true
+});
+exports.FbHideByRangeInFlow = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbHideByRangeInFlow {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.nIh = !1, this.n9o = void 0, this.sIh = !1, this.s9o = 0, this.V1h = !1, this.j1h = void 0, this.aIh = !1, this.hIh = !1, this.lIh = !1, this._Ih = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.nIh = false;
+    this.n9o = undefined;
+    this.sIh = false;
+    this.s9o = 0;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.aIh = false;
+    this.hIh = false;
+    this.lIh = false;
+    this._Ih = false;
   }
   static Create(t) {
-    if (t) return new FbHideByRangeInFlow(t)
+    if (t) {
+      return new FbHideByRangeInFlow(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Center() {
-    return this.nIh || (this.nIh = !0, this.n9o = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.center())), this.n9o
+    if (!this.nIh) {
+      this.nIh = true;
+      this.n9o = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.center());
+    }
+    return this.n9o;
   }
   get Radius() {
-    return this.sIh || (this.sIh = !0, this.s9o = this.FbDataInternal.radius()), this.s9o
+    if (!this.sIh) {
+      this.sIh = true;
+      this.s9o = this.FbDataInternal.radius();
+    }
+    return this.s9o;
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var s = this.FbDataInternal.entityIdsLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get IsCleanSimpleNpc() {
-    return this.aIh || (this.aIh = !0, this.hIh = this.FbDataInternal.isCleanSimpleNpc()), this.hIh
+    if (!this.aIh) {
+      this.aIh = true;
+      this.hIh = this.FbDataInternal.isCleanSimpleNpc();
+    }
+    return this.hIh;
   }
   get IsCleanPasserByNpc() {
-    return this.lIh || (this.lIh = !0, this._Ih = this.FbDataInternal.isCleanPasserByNpc()), this._Ih
+    if (!this.lIh) {
+      this.lIh = true;
+      this._Ih = this.FbDataInternal.isCleanPasserByNpc();
+    }
+    return this._Ih;
   }
 }
 exports.FbHideByRangeInFlow = FbHideByRangeInFlow;

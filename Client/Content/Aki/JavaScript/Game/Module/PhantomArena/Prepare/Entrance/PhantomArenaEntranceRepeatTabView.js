@@ -1,116 +1,153 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DropDownTitle = exports.PhantomArenaEntranceRepeatTabView = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  LocalStorage_1 = require("../../../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  ButtonItem_1 = require("../../../Common/Button/ButtonItem"),
-  CommonDropDown_1 = require("../../../Common/DropDown/CommonDropDown"),
-  DropDownItemBase_1 = require("../../../Common/DropDown/Item/DropDownItemBase"),
-  TitleItemBase_1 = require("../../../Common/DropDown/Item/TitleItemBase"),
-  CommonItemSmallItemGrid_1 = require("../../../Common/ItemGrid/CommonItemSmallItemGrid"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew"),
-  PhantomArenaDefine_1 = require("../../PhantomArenaDefine"),
-  PhantomArenaChildViewBase_1 = require("../PhantomArenaChildViewBase");
+  value: true
+});
+exports.DropDownTitle = exports.PhantomArenaEntranceRepeatTabView = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const LocalStorage_1 = require("../../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
+const CommonDropDown_1 = require("../../../Common/DropDown/CommonDropDown");
+const DropDownItemBase_1 = require("../../../Common/DropDown/Item/DropDownItemBase");
+const TitleItemBase_1 = require("../../../Common/DropDown/Item/TitleItemBase");
+const CommonItemSmallItemGrid_1 = require("../../../Common/ItemGrid/CommonItemSmallItemGrid");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
+const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
+const PhantomArenaChildViewBase_1 = require("../PhantomArenaChildViewBase");
 class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.PhantomArenaChildViewBase {
   constructor() {
-    super(...arguments), this.Hnu = void 0, this.bj1 = void 0, this.Uou = void 0, this.Dou = void 0, this.bs_ = void 0, this.gW1 = () => {
+    super(...arguments);
+    this.O1u = undefined;
+    this.a71 = undefined;
+    this.Shu = undefined;
+    this.Mhu = undefined;
+    this.bs_ = undefined;
+    this.ZW1 = () => {
       UiManager_1.UiManager.OpenView("PhantomArenaMainView", {
         ChallengeId: 0,
         OpenView: "PhantomArenaDeckOverviewTabView"
-      })
-    }, this.p5t = () => {
-      ModelManager_1.ModelManager.PhantomArenaModel.GetRepeatChallengeOpen(this.hyc) ? this.ViewModel.SetRepeatChallenge(this.hyc) : ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1112")
-    }, this.rOe = () => {
-      return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid
-    }, this.Adu = (e, t) => {
-      return e !== t && 0 !== ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL)[t].State
-    }, this.f_i = (e, t) => {
-      this.Hnu = t, LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex, e), this.nOe()
-    }, this.g_i = e => e
+      });
+    };
+    this.p5t = () => {
+      if (ModelManager_1.ModelManager.PhantomArenaModel.GetRepeatChallengeOpen(this.hyc)) {
+        this.ViewModel.SetRepeatChallenge(this.hyc);
+      } else {
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1112");
+      }
+    };
+    this.rOe = () => {
+      return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
+    };
+    this.dwu = (e, t) => {
+      return e !== t && ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL)[t].State !== 0;
+    };
+    this.f_i = (e, t) => {
+      this.O1u = t;
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex, e);
+      this.nOe();
+    };
+    this.g_i = e => e;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText],
-      [2, UE.UIText],
-      [3, UE.UIText],
-      [4, UE.UIScrollViewWithScrollbarComponent],
-      [5, UE.UIItem],
-      [6, UE.UIText],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.Dou = new ButtonItem_1.ButtonItem, this.Dou.SetFunction(this.gW1), await this.Dou.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()), this.bs_ = new ButtonItem_1.ButtonItem, this.bs_.SetFunction(this.p5t), await this.bs_.CreateThenShowByActorAsync(this.GetItem(9).GetOwner()), this.Uou = new CommonDropDown_1.CommonDropDown(this.GetItem(7), e => new DropDownItem(e), e => new DropDownTitle(e)), this.Uou.SetOnCanChangeCall(this.Adu), await this.Uou.Init()
+    this.Mhu = new ButtonItem_1.ButtonItem();
+    this.Mhu.SetFunction(this.ZW1);
+    await this.Mhu.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
+    this.bs_ = new ButtonItem_1.ButtonItem();
+    this.bs_.SetFunction(this.p5t);
+    await this.bs_.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
+    this.Shu = new CommonDropDown_1.CommonDropDown(this.GetItem(7), e => new DropDownItem(e), e => new DropDownTitle(e));
+    this.Shu.SetOnCanChangeCall(this.dwu);
+    await this.Shu.Init();
   }
   OnStart() {
-    this.bj1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.rOe, this.GetItem(5).GetOwner()), ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(PhantomArenaDefine_1.GYM_MAX_LEVEL);
-    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex) ?? 0,
-      t = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL);
-    this.Hnu = t[e], this.Uou.InitScroll(t, this.g_i, e), this.Uou.SetShowType(1), this.Uou.SetOnSelectCall(this.f_i)
+    this.a71 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.rOe, this.GetItem(5).GetOwner());
+    ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(PhantomArenaDefine_1.GYM_MAX_LEVEL);
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex) ?? 0;
+    var t = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL);
+    this.O1u = t[e];
+    this.Shu.InitScroll(t, this.g_i, e);
+    this.Shu.SetShowType(1);
+    this.Shu.SetOnSelectCall(this.f_i);
   }
   OnBeforeShow() {
-    this.nOe(), this.Bou(), this.Nv1()
+    this.nOe();
+    this.Ehu();
+    this.cy1();
   }
   nOe() {
-    var e, t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(this.hyc);
-    t ? (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.ChallengeName), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t.NpcDesc), t = ModelManager_1.ModelManager.PhantomArenaModel.GetRewardListByChallengeId(this.hyc), this.bj1.RefreshByData(t), t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel(), t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetRepeatGymExpWeekLimitByLevel(t), e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpWeek(), LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(6), "PhantomBattle_1117", e, t)) : Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 75, "获取挑战信息失败", ["ChallengeId", this.hyc])
+    var e;
+    var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(this.hyc);
+    if (t) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.ChallengeName);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t.NpcDesc);
+      t = ModelManager_1.ModelManager.PhantomArenaModel.GetRewardListByChallengeId(this.hyc);
+      this.a71.RefreshByData(t);
+      t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel();
+      t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetRepeatGymExpWeekLimitByLevel(t);
+      e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterExpWeek();
+      LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(6), "PhantomBattle_1117", e, t);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("PhantomArena", 75, "获取挑战信息失败", ["ChallengeId", this.hyc]);
+    }
   }
-  Bou() {
+  Ehu() {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), PhantomArenaDefine_1.POINTS_NAME_TEXT);
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId(),
-      e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(e);
-    this.GetText(1).SetText(e.toString())
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId();
+    var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(e);
+    this.GetText(1).SetText(e.toString());
   }
-  Nv1() {
+  cy1() {
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10090);
-    this.Dou.SetUiActive(e)
+    this.Mhu.SetUiActive(e);
   }
   get hyc() {
-    return this.Hnu?.Id ?? -1
+    return this.O1u?.Id ?? -1;
   }
 }
 exports.PhantomArenaEntranceRepeatTabView = PhantomArenaEntranceRepeatTabView;
 class DropDownItem extends DropDownItemBase_1.DropDownItemBase {
   constructor() {
-    super(...arguments), this.Pe = void 0, this.gmu = () => {
-      0 === this.Pe?.State && ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1112")
-    }
+    super(...arguments);
+    this.Pe = undefined;
+    this.kxu = () => {
+      if (this.Pe?.State === 0) {
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1112");
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
   }
   GetDropDownToggle() {
-    return this.GetExtendToggle(0)
+    return this.GetExtendToggle(0);
   }
   OnShowDropDownItemBase(e) {
     this.Pe = e;
     var t = this.Pe.IsLast ? "PhantomBattle_1115" : "PhantomBattle_1114";
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t), 0 === e.State && (this.GetDropDownToggle().OnUndeterminedClicked.Add(this.gmu), this.GetDropDownToggle().SetToggleStateForce(2))
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t);
+    if (e.State === 0) {
+      this.GetDropDownToggle().OnUndeterminedClicked.Add(this.kxu);
+      this.GetDropDownToggle().SetToggleStateForce(2);
+    }
   }
 }
 class DropDownTitle extends TitleItemBase_1.TitleItemBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   ShowTemp(e, t) {
     e = e.IsLast ? "PhantomBattle_1115" : "PhantomBattle_1114";
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e)
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e);
   }
 }
 exports.DropDownTitle = DropDownTitle;

@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBvbAiDiscardData = void 0;
+  value: true
+});
+exports.FbBvbAiDiscardData = undefined;
 const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbBvbAiDiscardData {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Sw1 = !1, this.Mw1 = void 0, this.Ew1 = !1, this.Iw1 = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Xw1 = false;
+    this.Yw1 = undefined;
+    this.zw1 = false;
+    this.Jw1 = undefined;
   }
   static Create(t) {
-    if (t) return new FbBvbAiDiscardData(t)
+    if (t) {
+      return new FbBvbAiDiscardData(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ReserveHandCard() {
-    var t, i;
-    return !this.Sw1 && (this.Sw1 = !0, t = this.FbDataInternal.reserveHandCardType(), i = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.Mw1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.reserveHandCard(i))), this.Mw1
+    var t;
+    var i;
+    if (!this.Xw1 && (this.Xw1 = true, t = this.FbDataInternal.reserveHandCardType(), i = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.Yw1 = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.reserveHandCard(i));
+    }
+    return this.Yw1;
   }
   get Strategy() {
-    return this.Ew1 || (this.Ew1 = !0, this.Iw1 = this.FbDataInternal.strategy()), this.Iw1
+    if (!this.zw1) {
+      this.zw1 = true;
+      this.Jw1 = this.FbDataInternal.strategy();
+    }
+    return this.Jw1;
   }
 }
 exports.FbBvbAiDiscardData = FbBvbAiDiscardData;

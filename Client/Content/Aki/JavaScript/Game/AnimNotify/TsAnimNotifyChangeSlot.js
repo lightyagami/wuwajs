@@ -1,31 +1,42 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyChangeSlot extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.ComponentName = void 0, this.SwitchToSlotName = void 0, this.SlotTransform = void 0
+    super(...arguments);
+    this.ComponentName = undefined;
+    this.SwitchToSlotName = undefined;
+    this.SlotTransform = undefined;
   }
   Constructor() {}
   K2_Notify(t, e) {
     t = t.GetOwner();
-    if (!(t instanceof TsBaseCharacter_1.default)) return !1;
+    if (!(t instanceof TsBaseCharacter_1.default)) {
+      return false;
+    }
     var r = t.CharacterActorComponent;
-    if (!r) return !1;
+    if (!r) {
+      return false;
+    }
     var s = r.SkeletalMesh?.GetNumChildrenComponents();
     for (let t = 0; t < s; t++) {
       var i = r.SkeletalMesh?.GetChildComponent(t);
       if (i && i.GetName() === this.ComponentName && i instanceof UE.SkeletalMeshComponent) {
-        i.K2_AttachToComponent(r.SkeletalMesh, this.SwitchToSlotName, 0, 0, 0, !0), this.SlotTransform && i.K2_SetRelativeTransform(this.SlotTransform, !1, void 0, !0);
-        break
+        i.K2_AttachToComponent(r.SkeletalMesh, this.SwitchToSlotName, 0, 0, 0, true);
+        if (this.SlotTransform) {
+          i.K2_SetRelativeTransform(this.SlotTransform, false, undefined, true);
+        }
+        break;
       }
     }
-    return !0
+    return true;
   }
   GetNotifyName() {
-    return "切换组件到指定插槽"
+    return "切换组件到指定插槽";
   }
 }
 exports.default = TsAnimNotifyChangeSlot;

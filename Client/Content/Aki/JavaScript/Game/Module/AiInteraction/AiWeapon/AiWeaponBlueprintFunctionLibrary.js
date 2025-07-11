@@ -1,13 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+const UE = require("ue");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class AiWeaponBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static CharacterRequestPickUpAiWeapon(e, r) {
-    ModelManager_1.ModelManager.AiWeaponModel.Net.SendHoldWeaponPush(e, r)
+    ModelManager_1.ModelManager.AiWeaponModel.Net.SendHoldWeaponPush(e, r);
   }
 }
 exports.default = AiWeaponBlueprintFunctionLibrary;

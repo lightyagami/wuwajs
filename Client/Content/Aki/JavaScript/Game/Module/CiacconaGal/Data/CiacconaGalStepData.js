@@ -1,62 +1,75 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CiacconaGalStepData = void 0;
-const PublicUtil_1 = require("../../../Common/PublicUtil"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.CiacconaGalStepData = undefined;
+const PublicUtil_1 = require("../../../Common/PublicUtil");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class CiacconaGalStepData {
   constructor(t) {
-    this.Lo = t, this.Zbc = 0
+    this.Lo = t;
+    this.Zbc = 0;
   }
   get Id() {
-    return this.Lo.Id
+    return this.Lo.Id;
   }
   get Type() {
-    return this.Lo.Type
+    return this.Lo.Type;
   }
   get TalkTid() {
-    return this.Lo.Content
+    return this.Lo.Content;
   }
   get Content() {
     var t = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(this.Lo.Content);
-    return ModelManager_1.ModelManager.PlotModel.PlotTextReplacer.Replace(t)
+    return ModelManager_1.ModelManager.PlotModel.PlotTextReplacer.Replace(t);
   }
   get ImagePath() {
     var t;
-    return this.Lo.ImageMale ? !this.Lo.ImageFemale || 1 === (t = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender()) ? this.Lo.ImageMale : 0 === t ? this.Lo.ImageFemale : "" : this.Lo.ImageFemale
+    if (this.Lo.ImageMale) {
+      if (!this.Lo.ImageFemale || (t = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender()) === 1) {
+        return this.Lo.ImageMale;
+      } else if (t === 0) {
+        return this.Lo.ImageFemale;
+      } else {
+        return "";
+      }
+    } else {
+      return this.Lo.ImageFemale;
+    }
   }
   get AudioEvent() {
-    return this.Lo.Audio
+    return this.Lo.Audio;
   }
   get MusicState() {
-    return this.Lo.MusicState
+    return this.Lo.MusicState;
   }
   get AnimPath() {
-    return this.Lo.Anim
+    return this.Lo.Anim;
   }
   get TriggerSubEndingId() {
-    return this.Lo.TriggerSubEnding
+    return this.Lo.TriggerSubEnding;
   }
   get ChoiceIds() {
-    return this.Lo.Choices
+    return this.Lo.Choices;
   }
   get NextStepId() {
-    return this.Lo.Id + 1
+    return this.Lo.Id + 1;
   }
   get SubEndingId() {
-    return this.Lo.TriggerSubEnding
+    return this.Lo.TriggerSubEnding;
   }
   get TextAnimDefaultDuration() {
-    return 3
+    return 3;
   }
   set ChosenId(t) {
-    this.Zbc = t
+    this.Zbc = t;
   }
   get ChosenId() {
-    return this.Zbc
+    return this.Zbc;
   }
   get HasText() {
-    return !!this.Lo.Content
+    return !!this.Lo.Content;
   }
 }
 exports.CiacconaGalStepData = CiacconaGalStepData;

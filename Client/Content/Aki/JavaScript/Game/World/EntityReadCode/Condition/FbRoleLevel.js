@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRoleLevel = void 0;
+  value: true
+});
+exports.FbRoleLevel = undefined;
 const UnionRoleLevelHelper_1 = require("./UnionRoleLevelHelper");
 class FbRoleLevel {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.s_h = !1, this.Hye = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.s_h = false;
+    this.Hye = undefined;
   }
   static Create(e) {
-    if (e) return new FbRoleLevel(e)
+    if (e) {
+      return new FbRoleLevel(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Option() {
-    var e, t;
-    return !this.s_h && (this.s_h = !0, e = this.FbDataInternal.optionType(), t = UnionRoleLevelHelper_1.UnionRoleLevelHelper.GetUnionRoleLevelObject(e)) && (this.Hye = UnionRoleLevelHelper_1.UnionRoleLevelHelper.ReadUnionRoleLevel(e, this.FbDataInternal.option(t))), this.Hye
+    var e;
+    var t;
+    if (!this.s_h && (this.s_h = true, e = this.FbDataInternal.optionType(), t = UnionRoleLevelHelper_1.UnionRoleLevelHelper.GetUnionRoleLevelObject(e))) {
+      this.Hye = UnionRoleLevelHelper_1.UnionRoleLevelHelper.ReadUnionRoleLevel(e, this.FbDataInternal.option(t));
+    }
+    return this.Hye;
   }
 }
 exports.FbRoleLevel = FbRoleLevel;

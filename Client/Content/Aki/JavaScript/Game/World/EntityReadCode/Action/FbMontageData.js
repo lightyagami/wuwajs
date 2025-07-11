@@ -1,47 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMontageData = void 0;
+  value: true
+});
+exports.FbMontageData = undefined;
 const FbMontageParam_1 = require("./FbMontageParam");
 class FbMontageData {
   constructor(t) {
-    this.FbDataInternal = t, this.xfh = !1, this.Y_i = 0, this.Rfh = !1, this.wfh = 0, this.Pfh = !1, this.Ufh = !1, this.Dfh = !1, this.Bfh = !1, this.qfh = !1, this.kfh = !1, this.Gfh = !1, this.Ofh = 0, this.Ffh = !1, this.Nfh = !1, this.Vfh = !1, this.jfh = !1, this.O1_ = !1, this.G1_ = !1, this.Hfh = !1, this.Wfh = void 0, this.Qfh = !1, this.Kfh = 0
+    this.FbDataInternal = t;
+    this.xfh = false;
+    this.Y_i = 0;
+    this.Rfh = false;
+    this.wfh = 0;
+    this.Pfh = false;
+    this.Ufh = false;
+    this.Dfh = false;
+    this.Bfh = false;
+    this.qfh = false;
+    this.kfh = false;
+    this.Gfh = false;
+    this.Ofh = 0;
+    this.Ffh = false;
+    this.Nfh = false;
+    this.Vfh = false;
+    this.jfh = false;
+    this.O1_ = false;
+    this.G1_ = false;
+    this.Hfh = false;
+    this.Wfh = undefined;
+    this.Qfh = false;
+    this.Kfh = 0;
   }
   static Create(t) {
-    if (t) return new FbMontageData(t)
+    if (t) {
+      return new FbMontageData(t);
+    }
   }
   get ActorIndex() {
-    return this.xfh || (this.xfh = !0, this.Y_i = this.FbDataInternal.actorIndex()), this.Y_i
+    if (!this.xfh) {
+      this.xfh = true;
+      this.Y_i = this.FbDataInternal.actorIndex();
+    }
+    return this.Y_i;
   }
   get MontageId() {
-    return this.Rfh || (this.Rfh = !0, this.wfh = this.FbDataInternal.montageId()), this.wfh
+    if (!this.Rfh) {
+      this.Rfh = true;
+      this.wfh = this.FbDataInternal.montageId();
+    }
+    return this.wfh;
   }
   get IsAbpMontage() {
-    return this.Pfh || (this.Pfh = !0, this.Ufh = this.FbDataInternal.isAbpMontage()), this.Ufh
+    if (!this.Pfh) {
+      this.Pfh = true;
+      this.Ufh = this.FbDataInternal.isAbpMontage();
+    }
+    return this.Ufh;
   }
   get IsLoop() {
-    return this.Dfh || (this.Dfh = !0, this.Bfh = this.FbDataInternal.isLoop()), this.Bfh
+    if (!this.Dfh) {
+      this.Dfh = true;
+      this.Bfh = this.FbDataInternal.isLoop();
+    }
+    return this.Bfh;
   }
   get KeepPose() {
-    return this.qfh || (this.qfh = !0, this.kfh = this.FbDataInternal.keepPose()), this.kfh
+    if (!this.qfh) {
+      this.qfh = true;
+      this.kfh = this.FbDataInternal.keepPose();
+    }
+    return this.kfh;
   }
   get DelayTime() {
-    return this.Gfh || (this.Gfh = !0, this.Ofh = this.FbDataInternal.delayTime()), this.Ofh
+    if (!this.Gfh) {
+      this.Gfh = true;
+      this.Ofh = this.FbDataInternal.delayTime();
+    }
+    return this.Ofh;
   }
   get EndLoopingMontage() {
-    return this.Ffh || (this.Ffh = !0, this.Nfh = this.FbDataInternal.endLoopingMontage()), this.Nfh
+    if (!this.Ffh) {
+      this.Ffh = true;
+      this.Nfh = this.FbDataInternal.endLoopingMontage();
+    }
+    return this.Nfh;
   }
   get EndMontageDirectly() {
-    return this.Vfh || (this.Vfh = !0, this.jfh = this.FbDataInternal.endMontageDirectly()), this.jfh
+    if (!this.Vfh) {
+      this.Vfh = true;
+      this.jfh = this.FbDataInternal.endMontageDirectly();
+    }
+    return this.jfh;
   }
   get StartFromLoop() {
-    return this.O1_ || (this.O1_ = !0, this.G1_ = this.FbDataInternal.startFromLoop()), this.G1_
+    if (!this.O1_) {
+      this.O1_ = true;
+      this.G1_ = this.FbDataInternal.startFromLoop();
+    }
+    return this.G1_;
   }
   get OverlayMontage() {
-    return this.Hfh || (this.Hfh = !0, this.Wfh = FbMontageParam_1.FbMontageParam.Create(this.FbDataInternal.overlayMontage())), this.Wfh
+    if (!this.Hfh) {
+      this.Hfh = true;
+      this.Wfh = FbMontageParam_1.FbMontageParam.Create(this.FbDataInternal.overlayMontage());
+    }
+    return this.Wfh;
   }
   get FaceExpressionId() {
-    return this.Qfh || (this.Qfh = !0, this.Kfh = this.FbDataInternal.faceExpressionId()), this.Kfh
+    if (!this.Qfh) {
+      this.Qfh = true;
+      this.Kfh = this.FbDataInternal.faceExpressionId();
+    }
+    return this.Kfh;
   }
 }
 exports.FbMontageData = FbMontageData;

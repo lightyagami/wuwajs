@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPieceIndex = void 0;
+  value: true
+});
+exports.FbPieceIndex = undefined;
 class FbPieceIndex {
   constructor(t) {
-    this.FbDataInternal = t, this.MAh = !1, this.EAh = 0, this.IAh = !1, this.TAh = 0
+    this.FbDataInternal = t;
+    this.MAh = false;
+    this.EAh = 0;
+    this.IAh = false;
+    this.TAh = 0;
   }
   static Create(t) {
-    if (t) return new FbPieceIndex(t)
+    if (t) {
+      return new FbPieceIndex(t);
+    }
   }
   get RowIndex() {
-    return this.MAh || (this.MAh = !0, this.EAh = this.FbDataInternal.rowIndex()), this.EAh
+    if (!this.MAh) {
+      this.MAh = true;
+      this.EAh = this.FbDataInternal.rowIndex();
+    }
+    return this.EAh;
   }
   get ColumnIndex() {
-    return this.IAh || (this.IAh = !0, this.TAh = this.FbDataInternal.columnIndex()), this.TAh
+    if (!this.IAh) {
+      this.IAh = true;
+      this.TAh = this.FbDataInternal.columnIndex();
+    }
+    return this.TAh;
   }
 }
 exports.FbPieceIndex = FbPieceIndex;

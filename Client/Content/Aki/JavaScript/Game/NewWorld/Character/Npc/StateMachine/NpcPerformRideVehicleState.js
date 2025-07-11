@@ -1,68 +1,136 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcPerformRideVehicleState = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem"),
-  NpcPerformBaseState_1 = require("./NpcPerformBaseState");
+  value: true
+});
+exports.NpcPerformRideVehicleState = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
+const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
 class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseState {
   constructor() {
-    super(...arguments), this._Ul = new Map, this.uUl = !1, this.uKl = !1, this.dKl = !1, this.Qer = void 0, this.mKl = (t, e) => {
-      this.uUl = !1, this.dKl = !1, this.Qer = void 0
-    }, this.OnLoopMontageEndForTurning = () => {
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnLoopMontageEndForTurning][交互转身] Montage播放完毕", ["PbDataID", this.ConfigId]), this.AnimComp?.MainAnimInstance?.OnAllMontageInstancesEnded.Remove(this.OnLoopMontageEndForTurning), 9 !== this.Owner.Entity.GetComponent(187)?.GetCurrentState() && this.TurnActionController.TurnToInteractTarget()
-    }
+    super(...arguments);
+    this._Ul = new Map();
+    this.uUl = false;
+    this.uKl = false;
+    this.dKl = false;
+    this.Qer = undefined;
+    this.mKl = (t, e) => {
+      this.uUl = false;
+      this.dKl = false;
+      this.Qer = undefined;
+    };
+    this.OnLoopMontageEndForTurning = () => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnLoopMontageEndForTurning][交互转身] Montage播放完毕", ["PbDataID", this.ConfigId]);
+      }
+      this.AnimComp?.MainAnimInstance?.OnAllMontageInstancesEnded.Remove(this.OnLoopMontageEndForTurning);
+      if (this.Owner.Entity.GetComponent(187)?.GetCurrentState() !== 9) {
+        this.TurnActionController.TurnToInteractTarget();
+      }
+    };
   }
   OnCreate(t) {
-    if (super.OnCreate(t), t?.ShowOnRideInVehicle?.length)
-      for (const e of t.ShowOnRideInVehicle) this._Ul.set(e.Type, e.Montage)
+    super.OnCreate(t);
+    if (t?.ShowOnRideInVehicle?.length) {
+      for (const e of t.ShowOnRideInVehicle) {
+        this._Ul.set(e.Type, e.Montage);
+      }
+    }
   }
   OnEnter(t) {
-    this.PerformComp?.IsBaseRoleNpc || this.CKl()
+    if (!this.PerformComp?.IsBaseRoleNpc) {
+      this.CKl();
+    }
   }
   OnExit(t) {
-    9 === t || this.PerformComp?.IsBaseRoleNpc || this.vtr()
+    if (t !== 9 && !this.PerformComp?.IsBaseRoleNpc) {
+      this.vtr();
+    }
   }
   OnUpdate(t) {
-    this.PerformComp?.IsBaseRoleNpc || this.PerformComp?.IsInPlot || this.InteractRequestWaiting || this.TurnActionController.NeedTurn || this.CKl()
+    if (!this.PerformComp?.IsBaseRoleNpc && !this.PerformComp?.IsInPlot && !this.InteractRequestWaiting && !this.TurnActionController.NeedTurn) {
+      this.CKl();
+    }
   }
   CKl() {
     if (!this.uKl && !this.uUl) {
       const e = this.Owner?.Entity?.GetComponent(229);
       var t;
-      e?.VehicleType && ((t = this._Ul.get(e.VehicleType)) ? (this.uKl = !0, ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimMontage, t => {
-        this.uKl = !1, t?.IsValid() && e.IsOnVehicle && 8 === this.PerformComp?.GetCurrentState() && (this.PlayMontage({
-          MontageAsset: t,
-          OnEndCallback: this.mKl
-        }), this.uUl = !0, this.Qer = t)
-      })) : Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 50, "获取NPC乘坐载具Montage失败", ["PbDataId", this.ConfigId], ["VehicleType", e.VehicleType]))
+      if (e?.VehicleType) {
+        if (t = this._Ul.get(e.VehicleType)) {
+          this.uKl = true;
+          ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimMontage, t => {
+            this.uKl = false;
+            if (t?.IsValid() && e.IsOnVehicle && this.PerformComp?.GetCurrentState() === 8) {
+              this.PlayMontage({
+                MontageAsset: t,
+                OnEndCallback: this.mKl
+              });
+              this.uUl = true;
+              this.Qer = t;
+            }
+          });
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("NPC", 50, "获取NPC乘坐载具Montage失败", ["PbDataId", this.ConfigId], ["VehicleType", e.VehicleType]);
+        }
+      }
     }
   }
   vtr(t = 0) {
-    !this.uUl && !this.uUl || this.dKl || (this.dKl = !0, this.StopMontage({
-      Method: 2
-    }))
+    if ((!!this.uUl || !!this.uUl) && !this.dKl) {
+      this.dKl = true;
+      this.StopMontage({
+        Method: 2
+      });
+    }
   }
   OnPlayerInteractTurnActionStart() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionStart] 开始执行交互转身", ["PbDataID", this.ConfigId]), this.InteractRequestWaiting = !0;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionStart] 开始执行交互转身", ["PbDataID", this.ConfigId]);
+    }
+    this.InteractRequestWaiting = true;
     var t = this.Owner?.Entity?.GetComponent(44);
-    t?.MainAnimInstance?.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionStart][交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]), this.AnimComp?.MainAnimInstance?.OnAllMontageInstancesEnded.Add(this.OnLoopMontageEndForTurning), this.Utr()) : this.TurnActionController.TurnToInteractTarget()
+    if (t?.MainAnimInstance?.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionStart][交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]);
+      }
+      this.AnimComp?.MainAnimInstance?.OnAllMontageInstancesEnded.Add(this.OnLoopMontageEndForTurning);
+      this.Utr();
+    } else {
+      this.TurnActionController.TurnToInteractTarget();
+    }
   }
   OnPlayerInteractTurnActionEnd() {
     var t = this.Owner.Entity.GetComponent(44);
-    t.MainAnimInstance.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn && (Log_1.Log.CheckInfo() && Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionEnd][结束交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]), this.Utr());
+    if (t.MainAnimInstance.IsAnyMontagePlaying() && this.TurnActionController.NeedTurn) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnPlayerInteractTurnActionEnd][结束交互转身] 停止播放Montage", ["PbDataID", this.ConfigId], ["CurrentMontage", t?.MainAnimInstance?.GetCurrentActiveMontage()?.GetName()]);
+      }
+      this.Utr();
+    }
     const e = this.Owner.Entity.GetComponent(229);
-    e?.GetSeatTransform(this.TmpTrans) && (this.TmpTrans.GetRotation().GetForwardVector(this.TmpVector), this.TurnActionController.UpdateDefaultDirect(this.TmpVector), this.TurnActionController.OnTurnToDefaultForwardEndHandle = () => {
-      this?.Owner?.Valid && (this.TurnActionController.NeedTurn = !1, e?.AttachAndSetPassengerTransform())
-    }, this.TurnActionController.TurnToDefaultForward(), this.InteractRequestWaiting = !1)
+    if (e?.GetSeatTransform(this.TmpTrans)) {
+      this.TmpTrans.GetRotation().GetForwardVector(this.TmpVector);
+      this.TurnActionController.UpdateDefaultDirect(this.TmpVector);
+      this.TurnActionController.OnTurnToDefaultForwardEndHandle = () => {
+        if (this?.Owner?.Valid) {
+          this.TurnActionController.NeedTurn = false;
+          e?.AttachAndSetPassengerTransform();
+        }
+      };
+      this.TurnActionController.TurnToDefaultForward();
+      this.InteractRequestWaiting = false;
+    }
   }
   Utr() {
-    this.dKl = !0, this.StopMontage({
+    this.dKl = true;
+    this.StopMontage({
       Method: 0,
-      BlendOutTime: .5,
+      BlendOutTime: 0.5,
       Montage: this.Qer
-    })
+    });
   }
 }
 exports.NpcPerformRideVehicleState = NpcPerformRideVehicleState;

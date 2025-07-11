@@ -1,32 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAiAlertNotifyComponent = void 0;
+  value: true
+});
+exports.FbAiAlertNotifyComponent = undefined;
 const FbExtraAiAlert_1 = require("./FbExtraAiAlert");
 class FbAiAlertNotifyComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.N7h = !1, this.V7h = void 0, this.oxh = !1, this.nxh = void 0, this.j7h = !1, this.H7h = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.N7h = false;
+    this.V7h = undefined;
+    this.oxh = false;
+    this.nxh = undefined;
+    this.j7h = false;
+    this.H7h = undefined;
   }
   static Create(t) {
-    if (t) return new FbAiAlertNotifyComponent(t)
+    if (t) {
+      return new FbAiAlertNotifyComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get ExtraAiAlert() {
-    return this.N7h || (this.N7h = !0, this.V7h = FbExtraAiAlert_1.FbExtraAiAlert.Create(this.FbDataInternal.extraAiAlert())), this.V7h
+    if (!this.N7h) {
+      this.N7h = true;
+      this.V7h = FbExtraAiAlert_1.FbExtraAiAlert.Create(this.FbDataInternal.extraAiAlert());
+    }
+    return this.V7h;
   }
   get ExcludeEntities() {
     if (!this.oxh) {
-      this.oxh = !0, this.nxh = new Array;
+      this.oxh = true;
+      this.nxh = new Array();
       var i = this.FbDataInternal.excludeEntitiesLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.nxh.push(this.FbDataInternal.excludeEntities(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.nxh.push(this.FbDataInternal.excludeEntities(t));
+        }
+      }
     }
-    return this.nxh
+    return this.nxh;
   }
   get AlertSound() {
-    return this.j7h || (this.j7h = !0, this.H7h = this.FbDataInternal.alertSound()), this.H7h
+    if (!this.j7h) {
+      this.j7h = true;
+      this.H7h = this.FbDataInternal.alertSound();
+    }
+    return this.H7h;
   }
 }
 exports.FbAiAlertNotifyComponent = FbAiAlertNotifyComponent;

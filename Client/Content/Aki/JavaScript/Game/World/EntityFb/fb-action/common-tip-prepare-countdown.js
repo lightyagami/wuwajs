@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonTipPrepareCountdown = void 0;
+  value: true
+});
+exports.CommonTipPrepareCountdown = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class CommonTipPrepareCountdown {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(o, t) {
-    return this.bb_pos = o, this.bb = t, this
+    this.bb_pos = o;
+    this.bb = t;
+    return this;
   }
   static getRootAsCommonTipPrepareCountdown(o, t) {
-    return (t || new CommonTipPrepareCountdown).__init(o.readInt32(o.position()) + o.position(), o)
+    return (t || new CommonTipPrepareCountdown()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   static getSizePrefixedRootAsCommonTipPrepareCountdown(o, t) {
-    return o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new CommonTipPrepareCountdown).__init(o.readInt32(o.position()) + o.position(), o)
+    o.setPosition(o.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new CommonTipPrepareCountdown()).__init(o.readInt32(o.position()) + o.position(), o);
   }
   type() {
     var o = this.bb.__offset(this.bb_pos, 4);
-    return o ? this.bb.readUint8(this.bb_pos + o) : 0
+    if (o) {
+      return this.bb.readUint8(this.bb_pos + o);
+    } else {
+      return 0;
+    }
   }
   static startCommonTipPrepareCountdown(o) {
-    o.startObject(1)
+    o.startObject(1);
   }
   static addType(o, t) {
-    o.addFieldInt8(0, t, 0)
+    o.addFieldInt8(0, t, 0);
   }
   static endCommonTipPrepareCountdown(o) {
-    return o.endObject()
+    return o.endObject();
   }
   static createCommonTipPrepareCountdown(o, t) {
-    return CommonTipPrepareCountdown.startCommonTipPrepareCountdown(o), CommonTipPrepareCountdown.addType(o, t), CommonTipPrepareCountdown.endCommonTipPrepareCountdown(o)
+    CommonTipPrepareCountdown.startCommonTipPrepareCountdown(o);
+    CommonTipPrepareCountdown.addType(o, t);
+    return CommonTipPrepareCountdown.endCommonTipPrepareCountdown(o);
   }
 }
 exports.CommonTipPrepareCountdown = CommonTipPrepareCountdown;

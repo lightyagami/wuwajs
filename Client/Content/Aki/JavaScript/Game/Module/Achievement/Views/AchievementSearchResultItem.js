@@ -1,38 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AchievementSearchResultItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  AchievementDataItem_1 = require("./AchievementDataItem"),
-  AchievementSearchDescItem_1 = require("./AchievementSearchDescItem");
+  value: true
+});
+exports.AchievementSearchResultItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const AchievementDataItem_1 = require("./AchievementDataItem");
+const AchievementSearchDescItem_1 = require("./AchievementSearchDescItem");
 class AchievementSearchResultItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Data = void 0, this.SGe = void 0, this.yGe = void 0, this.IGe = void 0
+    super(...arguments);
+    this.Data = undefined;
+    this.SGe = undefined;
+    this.yGe = undefined;
+    this.IGe = undefined;
   }
   async Init(e) {
-    await super.CreateByActorAsync(e.GetOwner(), void 0, !0)
+    await super.CreateByActorAsync(e.GetOwner(), undefined, true);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    void 0 === this.SGe && (this.SGe = new AchievementSearchDescItem_1.AchievementSearchDescItem(this.GetItem(0)), await this.SGe.Init()), void 0 === this.yGe && (this.yGe = new AchievementDataItem_1.AchievementDataItem, await this.yGe.Init(this.GetItem(1)))
+    if (this.SGe === undefined) {
+      this.SGe = new AchievementSearchDescItem_1.AchievementSearchDescItem(this.GetItem(0));
+      await this.SGe.Init();
+    }
+    if (this.yGe === undefined) {
+      this.yGe = new AchievementDataItem_1.AchievementDataItem();
+      await this.yGe.Init(this.GetItem(1));
+    }
   }
   GetUsingItem(e) {
-    return e.AchievementSearchGroupData ? this.GetItem(0).GetOwner() : e.AchievementData ? this.GetItem(1).GetOwner() : void 0
+    if (e.AchievementSearchGroupData) {
+      return this.GetItem(0).GetOwner();
+    } else if (e.AchievementData) {
+      return this.GetItem(1).GetOwner();
+    } else {
+      return undefined;
+    }
   }
   Update(e, t) {
-    this.Data = e, this.SGe.SetActive(!1), this.yGe.SetActive(!1), e.AchievementSearchGroupData ? (this.SGe.SetActive(!0), this.SGe.Update(e)) : e.AchievementData && (this.yGe.SetActive(!0), this.yGe.RefreshUi(e.AchievementData))
+    this.Data = e;
+    this.SGe.SetActive(false);
+    this.yGe.SetActive(false);
+    if (e.AchievementSearchGroupData) {
+      this.SGe.SetActive(true);
+      this.SGe.Update(e);
+    } else if (e.AchievementData) {
+      this.yGe.SetActive(true);
+      this.yGe.RefreshUi(e.AchievementData);
+    }
   }
   ClearItem() {
-    this.Destroy()
+    this.Destroy();
   }
   OnBeforeDestroy() {
-    this.SGe && this.SGe.ClearItem(), this.yGe && this.yGe.ClearItem(), this.IGe && (this.IGe = void 0)
+    if (this.SGe) {
+      this.SGe.ClearItem();
+    }
+    if (this.yGe) {
+      this.yGe.ClearItem();
+    }
+    this.IGe &&= undefined;
   }
 }
 exports.AchievementSearchResultItem = AchievementSearchResultItem;

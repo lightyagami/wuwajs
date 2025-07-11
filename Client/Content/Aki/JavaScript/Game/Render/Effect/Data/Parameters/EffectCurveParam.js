@@ -1,10 +1,12 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 class EffectCurveParameter {
   constructor(e, t) {
-    this.Name = e, this.Value = t
+    this.Name = e;
+    this.Value = t;
   }
 }
 exports.default = EffectCurveParameter;

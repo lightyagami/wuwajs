@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionSetSpineAnimationHelper = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbPlaySpineAnimation_1 = require("./FbPlaySpineAnimation");
+  value: true
+});
+exports.UnionSetSpineAnimationHelper = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbPlaySpineAnimation_1 = require("./FbPlaySpineAnimation");
 class UnionSetSpineAnimationHelper {
   static GetUnionSetSpineAnimationObject(i) {
-    if (i === fb_action_1.UnionSetSpineAnimation.PlaySpineAnimation) return new fb_action_1.PlaySpineAnimation
+    if (i === fb_action_1.UnionSetSpineAnimation.PlaySpineAnimation) {
+      return new fb_action_1.PlaySpineAnimation();
+    }
   }
   static ReadUnionSetSpineAnimation(i, n) {
-    return void 0 !== n && i === fb_action_1.UnionSetSpineAnimation.PlaySpineAnimation ? FbPlaySpineAnimation_1.FbPlaySpineAnimation.Create(n) : void 0
+    if (n !== undefined && i === fb_action_1.UnionSetSpineAnimation.PlaySpineAnimation) {
+      return FbPlaySpineAnimation_1.FbPlaySpineAnimation.Create(n);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.UnionSetSpineAnimationHelper = UnionSetSpineAnimationHelper;

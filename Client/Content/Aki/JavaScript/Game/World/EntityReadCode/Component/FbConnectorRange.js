@@ -1,61 +1,115 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbConnectorRange = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbConnectorEffectConfig_1 = require("./FbConnectorEffectConfig"),
-  FbDynamicEntityMatch_1 = require("./FbDynamicEntityMatch");
+  value: true
+});
+exports.FbConnectorRange = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbConnectorEffectConfig_1 = require("./FbConnectorEffectConfig");
+const FbDynamicEntityMatch_1 = require("./FbDynamicEntityMatch");
 class FbConnectorRange {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.hQh = !1, this.lQh = void 0, this.PKh = !1, this.UKh = void 0, this.ljh = !1, this._jh = 0, this.cjh = !1, this.ujh = 0, this._$h = !1, this.c$h = void 0, this.u$h = !1, this.d$h = void 0, this.m$h = !1, this.C$h = void 0, this.g$h = !1, this.f$h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.hQh = false;
+    this.lQh = undefined;
+    this.PKh = false;
+    this.UKh = undefined;
+    this.ljh = false;
+    this._jh = 0;
+    this.cjh = false;
+    this.ujh = 0;
+    this._$h = false;
+    this.c$h = undefined;
+    this.u$h = false;
+    this.d$h = undefined;
+    this.m$h = false;
+    this.C$h = undefined;
+    this.g$h = false;
+    this.f$h = undefined;
   }
   static Create(t) {
-    if (t) return new FbConnectorRange(t)
+    if (t) {
+      return new FbConnectorRange(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EffectConfig() {
-    return this.hQh || (this.hQh = !0, this.lQh = FbConnectorEffectConfig_1.FbConnectorEffectConfig.Create(this.FbDataInternal.effectConfig())), this.lQh
+    if (!this.hQh) {
+      this.hQh = true;
+      this.lQh = FbConnectorEffectConfig_1.FbConnectorEffectConfig.Create(this.FbDataInternal.effectConfig());
+    }
+    return this.lQh;
   }
   get ActiveState() {
-    return this.PKh || (this.PKh = !0, this.UKh = this.FbDataInternal.activeState()), this.UKh
+    if (!this.PKh) {
+      this.PKh = true;
+      this.UKh = this.FbDataInternal.activeState();
+    }
+    return this.UKh;
   }
   get EnterRange() {
-    return this.ljh || (this.ljh = !0, this._jh = this.FbDataInternal.enterRange()), this._jh
+    if (!this.ljh) {
+      this.ljh = true;
+      this._jh = this.FbDataInternal.enterRange();
+    }
+    return this._jh;
   }
   get LeaveRange() {
-    return this.cjh || (this.cjh = !0, this.ujh = this.FbDataInternal.leaveRange()), this.ujh
+    if (!this.cjh) {
+      this.cjh = true;
+      this.ujh = this.FbDataInternal.leaveRange();
+    }
+    return this.ujh;
   }
   get MatchConditions() {
     if (!this._$h) {
-      this._$h = !0, this.c$h = new Array;
+      this._$h = true;
+      this.c$h = new Array();
       var i = this.FbDataInternal.matchConditionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.matchConditions(t, new fb_component_1.DynamicEntityMatch);
-          this.c$h.push(FbDynamicEntityMatch_1.FbDynamicEntityMatch.Create(s))
+          var s = this.FbDataInternal.matchConditions(t, new fb_component_1.DynamicEntityMatch());
+          this.c$h.push(FbDynamicEntityMatch_1.FbDynamicEntityMatch.Create(s));
         }
+      }
     }
-    return this.c$h
+    return this.c$h;
   }
   get KeepConditions() {
     if (!this.u$h) {
-      this.u$h = !0, this.d$h = new Array;
+      this.u$h = true;
+      this.d$h = new Array();
       var i = this.FbDataInternal.keepConditionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.keepConditions(t, new fb_component_1.DynamicEntityMatch);
-          this.d$h.push(FbDynamicEntityMatch_1.FbDynamicEntityMatch.Create(s))
+          var s = this.FbDataInternal.keepConditions(t, new fb_component_1.DynamicEntityMatch());
+          this.d$h.push(FbDynamicEntityMatch_1.FbDynamicEntityMatch.Create(s));
         }
+      }
     }
-    return this.d$h
+    return this.d$h;
   }
   get ConnectedState() {
-    return this.m$h || (this.m$h = !0, this.C$h = this.FbDataInternal.connectedState()), this.C$h
+    if (!this.m$h) {
+      this.m$h = true;
+      this.C$h = this.FbDataInternal.connectedState();
+    }
+    return this.C$h;
   }
   get DisconnectedState() {
-    return this.g$h || (this.g$h = !0, this.f$h = this.FbDataInternal.disconnectedState()), this.f$h
+    if (!this.g$h) {
+      this.g$h = true;
+      this.f$h = this.FbDataInternal.disconnectedState();
+    }
+    return this.f$h;
   }
 }
 exports.FbConnectorRange = FbConnectorRange;

@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableNearbyTracking = void 0;
+  value: true
+});
+exports.FbEnableNearbyTracking = undefined;
 const UnionControlTrackingTypeHelper_1 = require("./UnionControlTrackingTypeHelper");
 class FbEnableNearbyTracking {
   constructor(e) {
-    this.FbDataInternal = e, this.Dch = !1, this.bSo = !1, this.byh = !1, this.Lyh = void 0
+    this.FbDataInternal = e;
+    this.Dch = false;
+    this.bSo = false;
+    this.byh = false;
+    this.Lyh = undefined;
   }
   static Create(e) {
-    if (e) return new FbEnableNearbyTracking(e)
+    if (e) {
+      return new FbEnableNearbyTracking(e);
+    }
   }
   get IsEnable() {
-    return this.Dch || (this.Dch = !0, this.bSo = this.FbDataInternal.isEnable()), this.bSo
+    if (!this.Dch) {
+      this.Dch = true;
+      this.bSo = this.FbDataInternal.isEnable();
+    }
+    return this.bSo;
   }
   get ControlType() {
-    var e, t;
-    return !this.byh && (this.byh = !0, e = this.FbDataInternal.controlTypeType(), t = UnionControlTrackingTypeHelper_1.UnionControlTrackingTypeHelper.GetUnionControlTrackingTypeObject(e)) && (this.Lyh = UnionControlTrackingTypeHelper_1.UnionControlTrackingTypeHelper.ReadUnionControlTrackingType(e, this.FbDataInternal.controlType(t))), this.Lyh
+    var e;
+    var t;
+    if (!this.byh && (this.byh = true, e = this.FbDataInternal.controlTypeType(), t = UnionControlTrackingTypeHelper_1.UnionControlTrackingTypeHelper.GetUnionControlTrackingTypeObject(e))) {
+      this.Lyh = UnionControlTrackingTypeHelper_1.UnionControlTrackingTypeHelper.ReadUnionControlTrackingType(e, this.FbDataInternal.controlType(t));
+    }
+    return this.Lyh;
   }
 }
 exports.FbEnableNearbyTracking = FbEnableNearbyTracking;

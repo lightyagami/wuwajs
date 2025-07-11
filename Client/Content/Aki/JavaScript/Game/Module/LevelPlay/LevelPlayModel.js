@@ -1,118 +1,227 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelPlayModel = void 0;
-const ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  PublicUtil_1 = require("../../../Game/Common/PublicUtil"),
-  ICondition_1 = require("../../../UniverseEditor/Interface/ICondition"),
-  IGlobal_1 = require("../../../UniverseEditor/Interface/IGlobal"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  GeneralLogicTreeConfigUtil_1 = require("../GeneralLogicTree/GeneralLogicTreeConfigUtil"),
-  LevelPlay_1 = require("./LevelPlay"),
-  LevelPlayDefine_1 = require("./LevelPlayDefine");
+  value: true
+});
+exports.LevelPlayModel = exports.NightmareKillInfo = undefined;
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const PublicUtil_1 = require("../../../Game/Common/PublicUtil");
+const ICondition_1 = require("../../../UniverseEditor/Interface/ICondition");
+const IGlobal_1 = require("../../../UniverseEditor/Interface/IGlobal");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const GeneralLogicTreeConfigUtil_1 = require("../GeneralLogicTree/GeneralLogicTreeConfigUtil");
+const RangeCheck_1 = require("../Util/RangeCheck");
+const LevelPlay_1 = require("./LevelPlay");
+const LevelPlayDefine_1 = require("./LevelPlayDefine");
+class NightmareKillInfo {
+  constructor(e = false, i = 0, t = 0, r = []) {
+    this.Enable = e;
+    this.CurrentKillCount = i;
+    this.CurrentIntervalIndex = t;
+    this.IntervalKillNumber = r;
+  }
+}
+exports.NightmareKillInfo = NightmareKillInfo;
 class LevelPlayModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Xpi = void 0, this.$pi = void 0, this.Ypi = 0, this.Jpi = void 0, this.zpi = void 0, this.IsInReceiveReward = !1, this.Zpi = e => {
-      for (const i of JSON.parse(e).LevelPlays) this.Jpi.set(i.Id, i), i.Tree && GeneralLogicTreeConfigUtil_1.GeneralLogicTreeConfigUtil.InitBehaviorNodeConfig(this.zpi, i.Id, i.Tree)
-    }
+    super(...arguments);
+    this.Xpi = undefined;
+    this.$pi = undefined;
+    this.Ypi = 0;
+    this.Jpi = undefined;
+    this.zpi = undefined;
+    this.NightmareLevelPlayInfos = undefined;
+    this.NightmareLevelPlayWaitEntityTask = undefined;
+    this.IsInReceiveReward = false;
+    this.EntityPositionRangeCheck = undefined;
+    this.Zpi = e => {
+      for (const i of JSON.parse(e).LevelPlays) {
+        this.Jpi.set(i.Id, i);
+        if (i.Tree) {
+          GeneralLogicTreeConfigUtil_1.GeneralLogicTreeConfigUtil.InitBehaviorNodeConfig(this.zpi, i.Id, i.Tree);
+        }
+      }
+    };
   }
   OnInit() {
-    return this.Xpi = new Map, this.$pi = new Map, this.Jpi = new Map, this.zpi = new Map, this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID, this.InitLevelPlayConfig(), PublicUtil_1.PublicUtil.RegisterEditorLocalConfig(), !0
+    this.Xpi = new Map();
+    this.$pi = new Map();
+    this.Jpi = new Map();
+    this.zpi = new Map();
+    this.NightmareLevelPlayInfos = new Map();
+    this.NightmareLevelPlayWaitEntityTask = new Map();
+    this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID;
+    this.EntityPositionRangeCheck = new RangeCheck_1.RangeCheck();
+    this.InitLevelPlayConfig();
+    PublicUtil_1.PublicUtil.RegisterEditorLocalConfig();
+    return true;
   }
   OnClear() {
-    return this.Xpi = void 0, this.$pi = void 0, this.Jpi.clear(), this.Jpi = void 0, this.zpi.clear(), !(this.zpi = void 0)
+    this.Xpi = undefined;
+    this.$pi = undefined;
+    this.Jpi.clear();
+    this.Jpi = undefined;
+    this.zpi.clear();
+    this.zpi = undefined;
+    this.NightmareLevelPlayInfos?.clear();
+    this.NightmareLevelPlayInfos = undefined;
+    this.NightmareLevelPlayWaitEntityTask?.clear();
+    this.NightmareLevelPlayWaitEntityTask = undefined;
+    this.EntityPositionRangeCheck?.OnClear();
+    return !(this.EntityPositionRangeCheck = undefined);
   }
   OnLeaveLevel() {
-    return this.SetTrackLevelPlayId(0), !0
+    this.SetTrackLevelPlayId(0);
+    return true;
   }
   InitLevelPlayConfig() {
     var e;
-    PublicUtil_1.PublicUtil.UseDbConfig() || (this.Jpi.clear(), this.zpi.clear(), e = (0, PublicUtil_1.getConfigPath)(IGlobal_1.globalConfig.LevelPlayListDir), GeneralLogicTreeConfigUtil_1.GeneralLogicTreeConfigUtil.InitConfig(e, this.Zpi))
+    if (!PublicUtil_1.PublicUtil.UseDbConfig()) {
+      this.Jpi.clear();
+      this.zpi.clear();
+      e = (0, PublicUtil_1.getConfigPath)(IGlobal_1.globalConfig.LevelPlayListDir);
+      GeneralLogicTreeConfigUtil_1.GeneralLogicTreeConfigUtil.InitConfig(e, this.Zpi);
+    }
   }
   GetLevelPlayConfig(e) {
-    if (!PublicUtil_1.PublicUtil.UseDbConfig()) return this.Jpi.get(e);
+    if (!PublicUtil_1.PublicUtil.UseDbConfig()) {
+      return this.Jpi.get(e);
+    }
     let i = this.Jpi.get(e);
     var t;
-    return i || (t = ConfigManager_1.ConfigManager.LevelPlayConfig.GetLevelPlayConfig(e), i = JSON.parse(t.Data), this.Jpi.set(e, i)), i
+    if (!i) {
+      t = ConfigManager_1.ConfigManager.LevelPlayConfig.GetLevelPlayConfig(e);
+      i = JSON.parse(t.Data);
+      this.Jpi.set(e, i);
+    }
+    return i;
   }
   GetLevelPlayNodeConfig(e, i) {
-    if (!PublicUtil_1.PublicUtil.UseDbConfig()) return this.zpi.get(e)?.get(i);
-    let t = this.zpi.get(e),
-      r = (t = t || new Map).get(i);
-    return r || (e = ConfigManager_1.ConfigManager.LevelPlayConfig.GetLevelPlayNodeConfig(e, i), r = JSON.parse(e.Data), t.set(i, r)), r
+    if (!PublicUtil_1.PublicUtil.UseDbConfig()) {
+      return this.zpi.get(e)?.get(i);
+    }
+    let t = this.zpi.get(e);
+    let r = (t = t || new Map()).get(i);
+    if (!r) {
+      e = ConfigManager_1.ConfigManager.LevelPlayConfig.GetLevelPlayNodeConfig(e, i);
+      r = JSON.parse(e.Data);
+      t.set(i, r);
+    }
+    return r;
   }
   CreateLevelPlayInfo(e) {
     var i = new LevelPlay_1.LevelPlayInfo(e);
-    return i.InitConfig(), this.Xpi.set(e, i), i
+    i.InitConfig();
+    this.Xpi.set(e, i);
+    return i;
   }
   EnterLevelPlayRange(e) {
     var i = this.SafeCreateLevelPlayInfo(e);
-    return this.$pi.set(e, i), i
+    this.$pi.set(e, i);
+    return i;
   }
   LeaveLevelPlayRange(e) {
     var i = this.GetProcessingLevelPlayInfo(e);
-    i && (i.Destroy(), this.$pi.delete(e), i.NeedShowInMap || this.Xpi.delete(e))
+    if (i) {
+      i.Destroy();
+      this.$pi.delete(e);
+      if (!i.NeedShowInMap) {
+        this.Xpi.delete(e);
+      }
+    }
   }
   LevelPlayFinish(e) {
     var i = this.GetProcessingLevelPlayInfo(e);
-    i && (i.Destroy(), i.UpdateState(3), this.$pi.delete(e), this.Ypi === e) && (i.SetTrack(!1), this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID)
+    if (i && (i.Destroy(), i.UpdateState(3), this.$pi.delete(e), this.Ypi === e)) {
+      i.SetTrack(false);
+      this.Ypi = LevelPlayDefine_1.INVALID_LEVELPLAYID;
+    }
   }
   LevelPlayClose(e) {
-    e && (e.UpdateState(0), e.Destroy(), this.$pi.delete(e.Id))
+    if (e) {
+      e.UpdateState(0);
+      e.Destroy();
+      this.$pi.delete(e.Id);
+    }
   }
   SetTrackLevelPlayId(e) {
-    this.Ypi !== e && (this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(!1), this.Ypi = e, this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(!0))
+    if (this.Ypi !== e) {
+      this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(false);
+      this.Ypi = e;
+      this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(true);
+    }
   }
   ChangeLevelPlayTrackRange(e, i) {
     e = this.GetProcessingLevelPlayInfo(e);
-    e && e.ChangeLevelPlayTrackRange(i)
+    if (e) {
+      e.ChangeLevelPlayTrackRange(i);
+    }
   }
   CheckLevelPlayState(e, i, t) {
-    let r = !1;
-    var l = this.GetLevelPlayInfo(e)?.PlayState;
+    let r = false;
+    var s = this.GetLevelPlayInfo(e)?.PlayState;
     switch (i) {
       case ICondition_1.ELevelPlayState.Close:
-        r = void 0 === l || 0 === l || 1 === l;
+        r = s === undefined || s === 0 || s === 1;
         break;
       case ICondition_1.ELevelPlayState.Running:
-        r = 2 === l;
+        r = s === 2;
         break;
       case ICondition_1.ELevelPlayState.Complete:
-        r = 3 === l
+        r = s === 3;
     }
-    return "Eq" === t ? r : !r
+    if (t === "Eq") {
+      return r;
+    } else {
+      return !r;
+    }
   }
   SafeCreateLevelPlayInfo(e) {
     let i = this.GetLevelPlayInfo(e);
-    return i = i || this.CreateLevelPlayInfo(e)
+    return i = i || this.CreateLevelPlayInfo(e);
   }
   GetLevelPlayInfo(e) {
-    return this.Xpi.get(e)
+    return this.Xpi.get(e);
   }
   GetProcessingLevelPlayInfo(e) {
-    return this.$pi.get(e)
+    return this.$pi.get(e);
   }
   GetProcessingLevelPlayInfos() {
-    return this.$pi
+    return this.$pi;
   }
   GetTrackLevelPlayInfo() {
-    if (this.Ypi !== LevelPlayDefine_1.INVALID_LEVELPLAYID) return this.GetProcessingLevelPlayInfo(this.Ypi)
+    if (this.Ypi !== LevelPlayDefine_1.INVALID_LEVELPLAYID) {
+      return this.GetProcessingLevelPlayInfo(this.Ypi);
+    }
   }
   GetTrackLevelPlayId() {
-    return this.Ypi
+    return this.Ypi;
   }
   GetLevelPlayInfoByRewardEntityId(e) {
-    for (var [, i] of this.Xpi)
-      if (i.RewardEntityId === e) return i
+    for (var [, i] of this.Xpi) {
+      if (i.RewardEntityId === e) {
+        return i;
+      }
+    }
   }
   GetLevelPlayAllEntities(e) {
     e = this.GetLevelPlayConfig(e);
-    if (!e) return [];
-    const i = new Set;
+    if (!e) {
+      return [];
+    }
+    const i = new Set();
     var t = e => {
-      return e.startsWith("e") && (e = e.split("_"), e = parseInt(e[2]), i.add(e)), !0
+      if (e.startsWith("e")) {
+        e = e.split("_");
+        e = parseInt(e[2]);
+        i.add(e);
+      }
+      return true;
     };
-    return e.Children?.forEach(t), e.Reference?.forEach(t), e.WeakReference?.forEach(t), Array.from(i)
+    e.Children?.forEach(t);
+    e.Reference?.forEach(t);
+    e.WeakReference?.forEach(t);
+    return Array.from(i);
   }
 }
 exports.LevelPlayModel = LevelPlayModel;

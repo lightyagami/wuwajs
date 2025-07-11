@@ -1,11 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PrepareCountdownFloatTips = void 0;
+  value: true
+});
+exports.PrepareCountdownFloatTips = undefined;
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 class PrepareCountdownFloatTips extends UiViewBase_1.UiViewBase {
   OnAfterPlayStartSequence() {
-    this.ClosePromise?.IsPending() || this.CloseMe()
+    if (!this.ClosePromise?.IsPending()) {
+      this.CloseMe();
+    }
   }
 }
 exports.PrepareCountdownFloatTips = PrepareCountdownFloatTips;

@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckMoonBuildingState = void 0;
+  value: true
+});
+exports.FbCheckMoonBuildingState = undefined;
 class FbCheckMoonBuildingState {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.CJh = !1, this.gJh = 0, this.fJh = !1, this.pJh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.CJh = false;
+    this.gJh = 0;
+    this.fJh = false;
+    this.pJh = false;
   }
   static Create(t) {
-    if (t) return new FbCheckMoonBuildingState(t)
+    if (t) {
+      return new FbCheckMoonBuildingState(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BuildingId() {
-    return this.CJh || (this.CJh = !0, this.gJh = this.FbDataInternal.buildingId()), this.gJh
+    if (!this.CJh) {
+      this.CJh = true;
+      this.gJh = this.FbDataInternal.buildingId();
+    }
+    return this.gJh;
   }
   get IsBuilt() {
-    return this.fJh || (this.fJh = !0, this.pJh = this.FbDataInternal.isBuilt()), this.pJh
+    if (!this.fJh) {
+      this.fJh = true;
+      this.pJh = this.FbDataInternal.isBuilt();
+    }
+    return this.pJh;
   }
 }
 exports.FbCheckMoonBuildingState = FbCheckMoonBuildingState;

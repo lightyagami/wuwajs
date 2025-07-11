@@ -1,25 +1,42 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkItemTrackHandle = void 0;
-const MarkTrackComponent_1 = require("../Components/MarkTrackComponent"),
-  MarkItemComponentHandle_1 = require("./MarkItemComponentHandle");
+  value: true
+});
+exports.MarkItemTrackHandle = undefined;
+const MarkTrackComponent_1 = require("../Components/MarkTrackComponent");
+const MarkItemComponentHandle_1 = require("./MarkItemComponentHandle");
 class MarkItemTrackHandle extends MarkItemComponentHandle_1.MarkItemComponentHandle {
   async LoadComponentAsync() {
     var e;
-    return void 0 === this.ComponentInternal && ((e = new MarkTrackComponent_1.MarkTrackComponent).MapType = this.Context.MarkItem.MapType, e.TrackFxScale = this.Context.MarkItem.TrackFxScale, this.ComponentInternal = e, await this.ComponentInternal.CreateByPoolResourceIdAsync("UiItem_MarkTrackNia_Prefab", this.Context.MarkComponentContainer)), this.ComponentInternal
+    if (this.ComponentInternal === undefined) {
+      (e = new MarkTrackComponent_1.MarkTrackComponent()).MapType = this.Context.MarkItem.MapType;
+      e.TrackFxScale = this.Context.MarkItem.TrackFxScale;
+      this.ComponentInternal = e;
+      await this.ComponentInternal.CreateByPoolResourceIdAsync("UiItem_MarkTrackNia_Prefab", this.Context.MarkComponentContainer);
+    }
+    return this.ComponentInternal;
   }
   GetOrCreateComponent() {
-    return void 0 === this.ComponentInternal && this.LoadComponentAsync().then(() => {
-      this.ApplyModified()
-    }), this.ComponentInternal
+    if (this.ComponentInternal === undefined) {
+      this.LoadComponentAsync().then(() => {
+        this.ApplyModified();
+      });
+    }
+    return this.ComponentInternal;
   }
   OnSetVisible(e) {
-    this.Context.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(6, e)
+    this.Context.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(6, e);
   }
   OnApplyModified() {
-    var e, t, n = this.Context.MarkItemEntity.ViewLifeCircle;
-    n.IsChildViewStateDirty(6) && (e = this.GetOrCreateComponent(), this.IsComponentValid(e)) && (t = n.IsChildViewVisible(6), n.SetChildViewVisibleClean(6), e.SetActive(t))
+    var e;
+    var t;
+    var n = this.Context.MarkItemEntity.ViewLifeCircle;
+    if (n.IsChildViewStateDirty(6) && (e = this.GetOrCreateComponent(), this.IsComponentValid(e))) {
+      t = n.IsChildViewVisible(6);
+      n.SetChildViewVisibleClean(6);
+      e.SetActive(t);
+    }
   }
 }
 exports.MarkItemTrackHandle = MarkItemTrackHandle;

@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbDestroyQuestItem = void 0;
+  value: true
+});
+exports.FbDestroyQuestItem = undefined;
 class FbDestroyQuestItem {
   constructor(t) {
-    this.FbDataInternal = t, this.auh = !1, this.huh = 0, this.luh = !1, this.v4i = 0, this.muh = !1, this.Cuh = !1
+    this.FbDataInternal = t;
+    this.auh = false;
+    this.huh = 0;
+    this.luh = false;
+    this.v4i = 0;
+    this.muh = false;
+    this.Cuh = false;
   }
   static Create(t) {
-    if (t) return new FbDestroyQuestItem(t)
+    if (t) {
+      return new FbDestroyQuestItem(t);
+    }
   }
   get ItemId() {
-    return this.auh || (this.auh = !0, this.huh = this.FbDataInternal.itemId()), this.huh
+    if (!this.auh) {
+      this.auh = true;
+      this.huh = this.FbDataInternal.itemId();
+    }
+    return this.huh;
   }
   get Count() {
-    return this.luh || (this.luh = !0, this.v4i = this.FbDataInternal.count()), this.v4i
+    if (!this.luh) {
+      this.luh = true;
+      this.v4i = this.FbDataInternal.count();
+    }
+    return this.v4i;
   }
   get IsAll() {
-    return this.muh || (this.muh = !0, this.Cuh = this.FbDataInternal.isAll()), this.Cuh
+    if (!this.muh) {
+      this.muh = true;
+      this.Cuh = this.FbDataInternal.isAll();
+    }
+    return this.Cuh;
   }
 }
 exports.FbDestroyQuestItem = FbDestroyQuestItem;

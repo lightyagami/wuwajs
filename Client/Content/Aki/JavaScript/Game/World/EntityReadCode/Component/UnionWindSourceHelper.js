@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UnionWindSourceHelper = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbWindDirectional_1 = require("./FbWindDirectional");
+  value: true
+});
+exports.UnionWindSourceHelper = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbWindDirectional_1 = require("./FbWindDirectional");
 class UnionWindSourceHelper {
   static GetUnionWindSourceObject(e) {
-    if (e === fb_component_1.UnionWindSource.WindDirectional) return new fb_component_1.WindDirectional
+    if (e === fb_component_1.UnionWindSource.WindDirectional) {
+      return new fb_component_1.WindDirectional();
+    }
   }
   static ReadUnionWindSource(e, n) {
-    return void 0 !== n && e === fb_component_1.UnionWindSource.WindDirectional ? FbWindDirectional_1.FbWindDirectional.Create(n) : void 0
+    if (n !== undefined && e === fb_component_1.UnionWindSource.WindDirectional) {
+      return FbWindDirectional_1.FbWindDirectional.Create(n);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.UnionWindSourceHelper = UnionWindSourceHelper;

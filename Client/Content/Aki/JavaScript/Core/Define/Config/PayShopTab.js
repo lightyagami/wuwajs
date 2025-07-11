@@ -1,60 +1,84 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PayShopTab = void 0;
+  value: true
+});
+exports.PayShopTab = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class PayShopTab {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get ShopId() {
-    return this.shopid()
+    return this.shopid();
   }
   get TabId() {
-    return this.tabid()
+    return this.tabid();
   }
   get Sort() {
-    return this.sort()
+    return this.sort();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get Logic() {
-    return this.logic()
+    return this.logic();
   }
   get Enable() {
-    return this.enable()
+    return this.enable();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsPayShopTab(t, s) {
-    return (s || new PayShopTab).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new PayShopTab()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   shopid() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tabid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sort() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var s = this.J7.__offset(this.z7, 10),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 10);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   logic() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   enable() {
     var t = this.J7.__offset(this.z7, 14);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.PayShopTab = PayShopTab;

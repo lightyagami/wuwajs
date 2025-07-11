@@ -1,159 +1,223 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GuideTutorial = void 0;
+  value: true
+});
+exports.GuideTutorial = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class GuideTutorial {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get TutorialType() {
-    return this.tutorialtype()
+    return this.tutorialtype();
   }
   get TutorialOrder() {
-    return this.tutorialorder()
+    return this.tutorialorder();
   }
   get PageId() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.pageidLength(), this.pageid, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.pageidLength(), this.pageid, this);
   }
   get PageReplaceConditionGroupId() {
-    return this.pagereplaceconditiongroupid()
+    return this.pagereplaceconditiongroupid();
   }
   get ReplacePageId() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.replacepageidLength(), this.replacepageid, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.replacepageidLength(), this.replacepageid, this);
   }
   get GroupName() {
-    return this.groupname()
+    return this.groupname();
   }
   get ExclusiveType() {
-    return this.exclusivetype()
+    return this.exclusivetype();
   }
   get TutorialTip() {
-    return this.tutorialtip()
+    return this.tutorialtip();
   }
   get DropId() {
-    return this.dropid()
+    return this.dropid();
   }
   get DisableDropReward() {
-    return this.disabledropreward()
+    return this.disabledropreward();
   }
   get RequireReadAll() {
-    return this.requirereadall()
+    return this.requirereadall();
   }
   get ExcludeFromWiki() {
-    return this.excludefromwiki()
+    return this.excludefromwiki();
   }
   get CopiedFrom() {
-    return this.copiedfrom()
+    return this.copiedfrom();
   }
   get DefaultUnlock() {
-    return this.defaultunlock()
+    return this.defaultunlock();
   }
   get SilentUnlock() {
-    return this.silentunlock()
+    return this.silentunlock();
   }
   get ShowLayer() {
-    return this.showlayer()
+    return this.showlayer();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsGuideTutorial(t, i) {
-    return (i || new GuideTutorial).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new GuideTutorial()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tutorialtype() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 11
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 11;
+    }
   }
   tutorialorder() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPageidAt(t) {
-    return this.pageid(t)
+    return this.pageid(t);
   }
   pageid(t) {
     var i = this.J7.__offset(this.z7, 10);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   pageidLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   pageidArray() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   pagereplaceconditiongroupid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetReplacepageidAt(t) {
-    return this.replacepageid(t)
+    return this.replacepageid(t);
   }
   replacepageid(t) {
     var i = this.J7.__offset(this.z7, 14);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   replacepageidLength() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   replacepageidArray() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   groupname(t) {
-    var i = this.J7.__offset(this.z7, 16),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   exclusivetype() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tutorialtip() {
     var t = this.J7.__offset(this.z7, 20);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   dropid() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 100001
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 100001;
+    }
   }
   disabledropreward() {
     var t = this.J7.__offset(this.z7, 24);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   requirereadall() {
     var t = this.J7.__offset(this.z7, 26);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   excludefromwiki() {
     var t = this.J7.__offset(this.z7, 28);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   copiedfrom() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   defaultunlock() {
     var t = this.J7.__offset(this.z7, 32);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   silentunlock() {
     var t = this.J7.__offset(this.z7, 34);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   showlayer() {
     var t = this.J7.__offset(this.z7, 36);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.GuideTutorial = GuideTutorial;

@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBounce = void 0;
+  value: true
+});
+exports.FbBounce = undefined;
 class FbBounce {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.mSh = !1, this.CSh = 0, this.Fph = !1, this.Nph = 0, this.gSh = !1, this.fSh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.mSh = false;
+    this.CSh = 0;
+    this.Fph = false;
+    this.Nph = 0;
+    this.gSh = false;
+    this.fSh = undefined;
   }
   static Create(t) {
-    if (t) return new FbBounce(t)
+    if (t) {
+      return new FbBounce(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Height() {
-    return this.mSh || (this.mSh = !0, this.CSh = this.FbDataInternal.height()), this.CSh
+    if (!this.mSh) {
+      this.mSh = true;
+      this.CSh = this.FbDataInternal.height();
+    }
+    return this.CSh;
   }
   get Time() {
-    return this.Fph || (this.Fph = !0, this.Nph = this.FbDataInternal.time()), this.Nph
+    if (!this.Fph) {
+      this.Fph = true;
+      this.Nph = this.FbDataInternal.time();
+    }
+    return this.Nph;
   }
   get MotionCurve() {
-    return this.gSh || (this.gSh = !0, this.fSh = this.FbDataInternal.motionCurve()), this.fSh
+    if (!this.gSh) {
+      this.gSh = true;
+      this.fSh = this.FbDataInternal.motionCurve();
+    }
+    return this.fSh;
   }
 }
 exports.FbBounce = FbBounce;

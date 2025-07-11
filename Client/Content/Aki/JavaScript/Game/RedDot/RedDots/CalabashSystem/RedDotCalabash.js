@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotCalabashUpdate = void 0;
+  value: true
+});
+exports.RedDotCalabashUpdate = undefined;
 const RedDotBase_1 = require("../../RedDotBase");
 class RedDotCalabashUpdate extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
-    return "BattleViewResonanceButton"
+    return "BattleViewResonanceButton";
   }
 }
 exports.RedDotCalabashUpdate = RedDotCalabashUpdate;

@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configAiAlertById = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  AiAlert_1 = require("../Config/AiAlert"),
-  DB = "db_ai.db",
-  FILE = "a.AI警戒.xlsx",
-  TABLE = "AiAlert",
-  COMMAND = "select BinData from `AiAlert` where Id=?",
-  KEY_PREFIX = "AiAlertById",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configAiAlertById = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const AiAlert_1 = require("../Config/AiAlert");
+const DB = "db_ai.db";
+const FILE = "a.AI警戒.xlsx";
+const TABLE = "AiAlert";
+const COMMAND = "select BinData from `AiAlert` where Id=?";
+const KEY_PREFIX = "AiAlertById";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configAiAlertById.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configAiAlertById.GetConfig"),
-  CONFIG_STAT_PREFIX = "configAiAlertById.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configAiAlertById.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configAiAlertById.GetConfig");
+const CONFIG_STAT_PREFIX = "configAiAlertById.GetConfig(";
 exports.configAiAlertById = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (o, i = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var n = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${o})`),
-      t = (n?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (o, i = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var n = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${o})`);
+    n?.Start();
+    var t = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (t) {
       if (i) {
-        var e = KEY_PREFIX + `#${o})`;
+        var e = `${KEY_PREFIX}#${o})`;
         const C = ConfigCommon_1.ConfigCommon.GetConfig(e);
-        if (C) return n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
-      }
-      if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["Id", o])) {
-        e = void 0;
-        if ([t, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]), t) {
-          const C = AiAlert_1.AiAlert.getRootAsAiAlert(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
-          return i && (t = KEY_PREFIX + `#${o})`, ConfigCommon_1.ConfigCommon.SaveConfig(t, C)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), C
+        if (C) {
+          n?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return C;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", o]) > 0) {
+        e = undefined;
+        [t, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", o]);
+        if (t) {
+          const C = AiAlert_1.AiAlert.getRootAsAiAlert(new byte_buffer_1.ByteBuffer(new Uint8Array(e.buffer)));
+          if (i) {
+            t = `${KEY_PREFIX}#${o})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(t, C);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          n?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return C;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    n?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=AiAlertById.js.map

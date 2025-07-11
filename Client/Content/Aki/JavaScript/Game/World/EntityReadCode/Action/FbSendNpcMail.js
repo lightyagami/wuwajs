@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSendNpcMail = void 0;
+  value: true
+});
+exports.FbSendNpcMail = undefined;
 class FbSendNpcMail {
   constructor(t) {
-    this.FbDataInternal = t, this.Imh = !1, this.Tmh = 0
+    this.FbDataInternal = t;
+    this.Imh = false;
+    this.Tmh = 0;
   }
   static Create(t) {
-    if (t) return new FbSendNpcMail(t)
+    if (t) {
+      return new FbSendNpcMail(t);
+    }
   }
   get MailId() {
-    return this.Imh || (this.Imh = !0, this.Tmh = this.FbDataInternal.mailId()), this.Tmh
+    if (!this.Imh) {
+      this.Imh = true;
+      this.Tmh = this.FbDataInternal.mailId();
+    }
+    return this.Tmh;
   }
 }
 exports.FbSendNpcMail = FbSendNpcMail;

@@ -1,10 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TeleportContext = void 0;
+  value: true
+});
+exports.TeleportContext = undefined;
 class TeleportContext {
-  constructor(t = void 0, i = void 0, o = 0, s = void 0, e = void 0) {
-    this.TeleportReason = void 0, this.TeleportId = void 0, this.TeleportCallSource = 0, this.CtxType = void 0, this.Option = void 0, this.TeleportReason = t, this.TeleportId = i, this.TeleportCallSource = o, this.CtxType = s, this.Option = e
+  constructor(t = undefined, i = undefined, o = 0, s = undefined, e = undefined) {
+    this.TeleportReason = undefined;
+    this.TeleportId = undefined;
+    this.TeleportCallSource = 0;
+    this.CtxType = undefined;
+    this.Option = undefined;
+    this.TeleportReason = t;
+    this.TeleportId = i;
+    this.TeleportCallSource = o;
+    this.CtxType = s;
+    this.Option = e;
   }
 }
 exports.TeleportContext = TeleportContext;

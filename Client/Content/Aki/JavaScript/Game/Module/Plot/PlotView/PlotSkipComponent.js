@@ -1,51 +1,137 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlotSkipComponent = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  PublicUtil_1 = require("../../../Common/PublicUtil"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+  value: true
+});
+exports.PlotSkipComponent = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../../Common/PublicUtil");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiManager_1 = require("../../../Ui/UiManager");
+const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 class PlotSkipComponent {
   constructor(i, t, e, s, o) {
-    this.dce = !1, this.Zzi = void 0, this.eZi = StringUtils_1.EMPTY_STRING, this.tZi = !0, this.iZi = void 0, this.uCa = void 0, this.ro_ = !1, this.EnableSkipButton = i => {
-      i && !ModelManager_1.ModelManager.PlotModel.PlotConfig.CanSkip || this.dce === i || (this.dce = i, this.oZi.SetUIActive(this.dce), this.dce) || (this.ro_ && (this.ro_ = !1, ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView()), UiManager_1.UiManager.IsViewOpen("SummaryPopView") && UiManager_1.UiManager.CloseView("SummaryPopView"), this.rsa?.())
-    }, this.rZi = () => {
-      var i;
-      this.dce && (this.NTt?.(), StringUtils_1.StringUtils.IsEmpty(this.uCa) ? ModelManager_1.ModelManager.PlotModel.PlotConfig.IsSkipConfirmBoxShow ? (this.tZi = !0, (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(180)).HasToggle = !0, i.ToggleText = this.eZi, i.SetToggleFunction(this.Cke), i.AttachView = this.iZi, i.FunctionMap.set(1, () => {
-        this?.dce && (this.ro_ = !1, this.rsa?.())
-      }), i.FunctionMap.set(2, () => {
-        this?.dce && (ModelManager_1.ModelManager.PlotModel.PlotConfig.IsSkipConfirmBoxShow = this.tZi, this.dce = !1, this.ro_ = !1, this.nZi?.())
-      }), this.ro_ = ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i)) : this.nZi?.() : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "剧情梗概", ["text", this.uCa]), i = {
-        Text: this.uCa,
-        ConfirmFunc: () => {
-          this?.dce && (this.dce = !1, this.nZi?.())
-        },
-        CancelFunc: () => {
-          this?.dce && this.rsa?.()
+    this.dce = false;
+    this.Zzi = undefined;
+    this.eZi = StringUtils_1.EMPTY_STRING;
+    this.tZi = true;
+    this.iZi = undefined;
+    this.uCa = undefined;
+    this.ro_ = false;
+    this.EnableSkipButton = i => {
+      if ((!i || !!ModelManager_1.ModelManager.PlotModel.PlotConfig.CanSkip) && this.dce !== i && !(this.dce = i, this.oZi.SetUIActive(this.dce), this.dce)) {
+        if (this.ro_) {
+          this.ro_ = false;
+          ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
         }
-      }, UiManager_1.UiManager.OpenView("SummaryPopView", i)))
-    }, this.Cke = i => {
-      this?.dce && (this.tZi = !i)
-    }, this.Zzi = i, this.oZi = i.RootUIComp, this.nZi = t, this.NTt = e, this.rsa = o, this.iZi = s, this.dce = !1, this.uCa = void 0, this.Zzi.OnClickCallBack.Bind(this.rZi), this.eZi = ConfigManager_1.ConfigManager.TextConfig?.GetTextById("PlotSkipConfirmToggle"), StringUtils_1.StringUtils.IsEmpty(this.eZi) && (ControllerHolder_1.ControllerHolder.FlowController.LogError('剧情跳过二次确认框读不到Toggle文本 "PlotSkipConfirmToggle"'), this.eZi = "")
+        if (UiManager_1.UiManager.IsViewOpen("SummaryPopView")) {
+          UiManager_1.UiManager.CloseView("SummaryPopView");
+        }
+        this.rsa?.();
+      }
+    };
+    this.rZi = () => {
+      var i;
+      if (this.dce) {
+        this.NTt?.();
+        if (StringUtils_1.StringUtils.IsEmpty(this.uCa)) {
+          if (ModelManager_1.ModelManager.PlotModel.PlotConfig.IsSkipConfirmBoxShow) {
+            this.tZi = true;
+            (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(180)).HasToggle = true;
+            i.ToggleText = this.eZi;
+            i.SetToggleFunction(this.Cke);
+            i.AttachView = this.iZi;
+            i.FunctionMap.set(1, () => {
+              if (this?.dce) {
+                this.ro_ = false;
+                this.rsa?.();
+              }
+            });
+            i.FunctionMap.set(2, () => {
+              if (this?.dce) {
+                ModelManager_1.ModelManager.PlotModel.PlotConfig.IsSkipConfirmBoxShow = this.tZi;
+                this.dce = false;
+                this.ro_ = false;
+                this.nZi?.();
+              }
+            });
+            this.ro_ = ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+          } else {
+            this.nZi?.();
+          }
+        } else {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Plot", 26, "剧情梗概", ["text", this.uCa]);
+          }
+          i = {
+            Text: this.uCa,
+            ConfirmFunc: () => {
+              if (this?.dce) {
+                this.dce = false;
+                this.nZi?.();
+              }
+            },
+            CancelFunc: () => {
+              if (this?.dce) {
+                this.rsa?.();
+              }
+            }
+          };
+          UiManager_1.UiManager.OpenView("SummaryPopView", i);
+        }
+      }
+    };
+    this.Cke = i => {
+      if (this?.dce) {
+        this.tZi = !i;
+      }
+    };
+    this.Zzi = i;
+    this.oZi = i.RootUIComp;
+    this.nZi = t;
+    this.NTt = e;
+    this.rsa = o;
+    this.iZi = s;
+    this.dce = false;
+    this.uCa = undefined;
+    this.Zzi.OnClickCallBack.Bind(this.rZi);
+    this.eZi = ConfigManager_1.ConfigManager.TextConfig?.GetTextById("PlotSkipConfirmToggle");
+    if (StringUtils_1.StringUtils.IsEmpty(this.eZi)) {
+      ControllerHolder_1.ControllerHolder.FlowController.LogError("剧情跳过二次确认框读不到Toggle文本 \"PlotSkipConfirmToggle\"");
+      this.eZi = "";
+    }
   }
   OnClear() {
-    this.dce = !1, this.Zzi?.OnClickCallBack.Unbind(), this.Zzi = void 0, this.oZi = void 0, this.iZi = void 0, this.uCa = void 0, this.nZi = void 0, this.NTt = void 0, this.rsa = void 0, this.ro_ && (this.ro_ = !1, ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView())
+    this.dce = false;
+    this.Zzi?.OnClickCallBack.Unbind();
+    this.Zzi = undefined;
+    this.oZi = undefined;
+    this.iZi = undefined;
+    this.uCa = undefined;
+    this.nZi = undefined;
+    this.NTt = undefined;
+    this.rsa = undefined;
+    if (this.ro_) {
+      this.ro_ = false;
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
+    }
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableSkipPlot, this.EnableSkipButton)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableSkipPlot, this.EnableSkipButton);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableSkipPlot, this.EnableSkipButton)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableSkipPlot, this.EnableSkipButton);
   }
   AddSummary(i) {
-    i && !StringUtils_1.StringUtils.IsEmpty(i.TidOutline) && (i = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(i.TidOutline), this.uCa = ModelManager_1.ModelManager.PlotModel.PlotTextReplacer.Replace(i))
+    if (i && !StringUtils_1.StringUtils.IsEmpty(i.TidOutline)) {
+      i = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(i.TidOutline);
+      this.uCa = ModelManager_1.ModelManager.PlotModel.PlotTextReplacer.Replace(i);
+    }
   }
 }
 exports.PlotSkipComponent = PlotSkipComponent;

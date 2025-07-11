@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckGameplayTagCondition = void 0;
+  value: true
+});
+exports.FbCheckGameplayTagCondition = undefined;
 const UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper");
 class FbCheckGameplayTagCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ldh = !1, this.NHo = void 0, this.Rvh = !1, this.wvh = void 0, this._ch = !1, this.cch = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ldh = false;
+    this.NHo = undefined;
+    this.Rvh = false;
+    this.wvh = undefined;
+    this._ch = false;
+    this.cch = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckGameplayTagCondition(t)
+    if (t) {
+      return new FbCheckGameplayTagCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Target() {
-    var t, i;
-    return !this.ldh && (this.ldh = !0, t = this.FbDataInternal.targetType(), i = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(i))), this.NHo
+    var t;
+    var i;
+    if (!this.ldh && (this.ldh = true, t = this.FbDataInternal.targetType(), i = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(i));
+    }
+    return this.NHo;
   }
   get GameplayTag() {
-    return this.Rvh || (this.Rvh = !0, this.wvh = this.FbDataInternal.gameplayTag()), this.wvh
+    if (!this.Rvh) {
+      this.Rvh = true;
+      this.wvh = this.FbDataInternal.gameplayTag();
+    }
+    return this.wvh;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
 }
 exports.FbCheckGameplayTagCondition = FbCheckGameplayTagCondition;

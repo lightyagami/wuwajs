@@ -1,41 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GridPopupViewModelBase = void 0;
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
+  value: true
+});
+exports.GridPopupViewModelBase = undefined;
 class GridPopupViewModelBase {
-  constructor(e, i) {
-    this.GridData = e, this.GameInfo = i, this.View = void 0, this.IsEnd = !1, this.MoveButtonFunction = () => {
+  constructor(t, i) {
+    this.GridData = t;
+    this.GameInfo = i;
+    this.View = undefined;
+    this.IsEnd = false;
+    this.MoveButtonFunction = () => {
       if (!this.IsEnd) {
-        const i = () => {
-          this.IsEnd = !0, this.GameInfo.RequestMove(), this.View?.CloseMeAsync()
-        };
-        var e;
-        this.GameInfo.TeamLv >= this.GridData.Lv || this.GridData.IsExplore ? i() : ((e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(309)).FunctionMap.set(2, () => {
-          i()
-        }), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e))
+        this.IsEnd = true;
+        this.GameInfo.RequestMove(t => {
+          if (this.IsEnd = t) {
+            this.View?.CloseMeAsync();
+          }
+        });
       }
-    }
+    };
   }
-  BindView(e) {
-    this.View = e
+  BindView(t) {
+    this.View = t;
   }
   EventAvailable() {
-    var e = 0 === this.GameInfo.MoveState,
-      i = this.GridData.IsUnlock();
-    return e && i
+    var t = this.GameInfo.MoveState === 0;
+    var i = this.GridData.IsUnlock();
+    return t && i;
   }
   async Init() {}
   GetSubTxtInfo() {}
   GetBtnDetailFunc() {}
   OnClickedClose() {
-    this.IsEnd || (this.IsEnd = !0, this.GameInfo.GameStage = 1, this.View?.CloseMeAsync())
+    if (!this.IsEnd) {
+      this.IsEnd = true;
+      this.GameInfo.GameStage = 1;
+      this.View?.CloseMeAsync();
+    }
   }
   RefreshTop() {}
   RefreshBottom() {}
   RefreshFunctional() {}
-  GetGuideUiItemAndUiItemForShowEx(e) {}
+  GetGuideUiItemAndUiItemForShowEx(t) {}
 }
 exports.GridPopupViewModelBase = GridPopupViewModelBase;
 //# sourceMappingURL=GridPopupViewModelBase.js.map

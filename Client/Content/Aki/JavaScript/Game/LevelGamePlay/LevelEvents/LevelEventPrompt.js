@@ -1,107 +1,157 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventPrompt = void 0;
-const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang"),
-  GameplayViewDefine_1 = require("../../../Game/Module/LevelPlay/GameplayView/GameplayViewDefine"),
-  IAction_1 = require("../../../UniverseEditor/Interface/IAction"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  PublicUtil_1 = require("../../Common/PublicUtil"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  LguiUtil_1 = require("../../Module/Util/LguiUtil"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventPrompt = undefined;
+const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
+const GameplayViewDefine_1 = require("../../../Game/Module/LevelPlay/GameplayView/GameplayViewDefine");
+const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../Common/PublicUtil");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LguiUtil_1 = require("../../Module/Util/LguiUtil");
+const UiManager_1 = require("../../Ui/UiManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, i) {
     var t = e;
     if (t) {
-      if (3 === i.Type) {
+      if (i.Type === 3) {
         i = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(i.LevelPlayId);
-        if (i && "Hang" === i.OnlineType && ModelManager_1.ModelManager.GameModeModel.IsMulti) return
+        if (i && i.OnlineType === "Hang" && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+          return;
+        }
       }
       var o = t.TipOption;
       if (o) {
-        let e = void 0,
-          i = void 0,
-          r = 0,
-          a = void 0,
-          n = void 0;
+        let e = undefined;
+        let i = undefined;
+        let a = 0;
+        let r = undefined;
+        let n = undefined;
         switch (o.Type) {
           case IAction_1.ECommonTipType.TipId:
-            a = o.Id, r = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(a).TypeId, e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(a).TipsText);
+            r = o.Id;
+            a = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(r).TypeId;
+            e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(r).TipsText);
             break;
           case IAction_1.ECommonTipType.ChallengeFail:
-            e = o.TidMainText, r = 4;
+            e = o.TidMainText;
+            a = 4;
             break;
           case IAction_1.ECommonTipType.ChallengeCondition:
-            e = o.TidMainText, i = o.TidSubText, r = 0;
+            e = o.TidMainText;
+            i = o.TidSubText;
+            a = 0;
             break;
           case IAction_1.ECommonTipType.ChallengeSuccess:
-            e = o.TidMainText, r = 3;
+            e = o.TidMainText;
+            a = 3;
             break;
           case IAction_1.ECommonTipType.GeneralFloatingTip:
-            e = o.TidMainText, r = 9;
+            e = o.TidMainText;
+            a = 9;
             break;
           case IAction_1.ECommonTipType.MissionComplete:
-            e = o.TidMainText, i = o.TidSubText, r = 7;
+            e = o.TidMainText;
+            i = o.TidSubText;
+            a = 7;
             break;
           case IAction_1.ECommonTipType.ReachChallenge:
-            e = o.TidMainText, r = 5;
+            e = o.TidMainText;
+            a = 5;
             break;
           case IAction_1.ECommonTipType.TriggerDelegation:
-            e = o.TidMainText, i = o.TidSubText, r = 6;
+            e = o.TidMainText;
+            i = o.TidSubText;
+            a = 6;
             break;
           case IAction_1.ECommonTipType.PrepareCountdown:
-            r = 13;
+            a = 13;
             break;
           case IAction_1.ECommonTipType.EnterInRange:
             var l = o.TidText;
-            return l ? ((_ = new GameplayViewDefine_1.GameplayEnterViewData).InfoId = "GameplayEnter", _.TitleId = l, void UiManager_1.UiManager.OpenView("GameplayEnterView", _)) : void 0;
+            if (l) {
+              (_ = new GameplayViewDefine_1.GameplayEnterViewData()).InfoId = "GameplayEnter";
+              _.TitleId = l;
+              UiManager_1.UiManager.OpenView("GameplayEnterView", _);
+              return;
+            } else {
+              return undefined;
+            }
           case IAction_1.ECommonTipType.FirstComplete:
             l = o.TidText;
-            return l ? ((_ = new GameplayViewDefine_1.GameplayFirstPassViewData).InfoId = "GameplayFirstPass", _.TitleId = l, void UiManager_1.UiManager.OpenView("GameplayFirstPassView", _)) : void 0;
+            if (l) {
+              (_ = new GameplayViewDefine_1.GameplayFirstPassViewData()).InfoId = "GameplayFirstPass";
+              _.TitleId = l;
+              UiManager_1.UiManager.OpenView("GameplayFirstPassView", _);
+              return;
+            } else {
+              return undefined;
+            }
           case IAction_1.ECommonTipType.RemainStarWarning:
-            r = 18;
+            a = 18;
             l = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(l);
             break;
           case IAction_1.ECommonTipType.DreamlessWarning:
-            r = 20;
+            a = 20;
             var _ = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(_);
             break;
           case IAction_1.ECommonTipType.PunishReport:
             l = o;
-            return void UiManager_1.UiManager.OpenView("PunishReportView", l);
+            UiManager_1.UiManager.OpenView("PunishReportView", l);
+            return;
           case IAction_1.ECommonTipType.WhiteCatWarning:
-            r = 22;
+            a = 22;
             _ = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(_);
             break;
           case IAction_1.ECommonTipType.BlackCatWarning:
-            r = 23;
+            a = 23;
             l = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(l);
             break;
           case IAction_1.ECommonTipType.SlashAndTowerTip:
             _ = o.WarningText;
-            return void EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, _);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, _);
+            return;
           case IAction_1.ECommonTipType.BadBuKingChallengeTip:
             l = o.WarningText;
-            return void EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowBadDangoTip, l);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowBadDangoTip, l);
+            return;
           case IAction_1.ECommonTipType.MoraleAreaTip:
             _ = {
               AreaId: o.AreaType
             };
-            return void ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(31, void 0, void 0, [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidAreaNameText)], [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidRecommendText)], void 0, void 0, _);
+            ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(31, undefined, undefined, [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidAreaNameText)], [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidRecommendText)], undefined, undefined, _);
+            return;
+          case IAction_1.ECommonTipType.NightmareLord:
+            a = 32;
+            e = o.TidMainText;
+            i = o.TidSubText;
+            break;
+          case IAction_1.ECommonTipType.NightmareSpawnPoint:
+            a = 33;
+            e = o.TidMainText;
+            i = o.TidSubText;
+            break;
           default:
-            return
+            return;
         }
-        e = e && PublicUtil_1.PublicUtil.GetConfigTextByKey(e), i = i && PublicUtil_1.PublicUtil.GetConfigTextByKey(i), ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(r, n, void 0, [e], [i], a, void 0, void 0, t.Duration)
-      } else i = e.GeneralTextId, t = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(i).TypeId, ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(t, void 0, void 0, void 0, void 0, i)
+        e = e && PublicUtil_1.PublicUtil.GetConfigTextByKey(e);
+        i = i && PublicUtil_1.PublicUtil.GetConfigTextByKey(i);
+        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(a, n, undefined, [e], [i], r, undefined, undefined, t.Duration, false, t.Token);
+      } else {
+        i = e.GeneralTextId;
+        t = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(i).TypeId;
+        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(t, undefined, undefined, undefined, undefined, i);
+      }
     }
   }
 }

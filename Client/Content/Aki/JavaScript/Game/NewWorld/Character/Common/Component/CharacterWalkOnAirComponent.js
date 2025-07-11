@@ -1,88 +1,214 @@
 "use strict";
-var CharacterWalkOnAirComponent_1, __decorate = this && this.__decorate || function(t, i, e, s) {
-  var r, h = arguments.length,
-    n = h < 3 ? i : null === s ? s = Object.getOwnPropertyDescriptor(i, e) : s;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) n = Reflect.decorate(t, i, e, s);
-  else
-    for (var o = t.length - 1; 0 <= o; o--)(r = t[o]) && (n = (h < 3 ? r(n) : 3 < h ? r(i, e, n) : r(i, e)) || n);
-  return 3 < h && n && Object.defineProperty(i, e, n), n
+
+var CharacterWalkOnAirComponent_1;
+var __decorate = this && this.__decorate || function (t, i, e, s) {
+  var r;
+  var h = arguments.length;
+  var n = h < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(t, i, e, s);
+  } else {
+    for (var o = t.length - 1; o >= 0; o--) {
+      if (r = t[o]) {
+        n = (h < 3 ? r(n) : h > 3 ? r(i, e, n) : r(i, e)) || n;
+      }
+    }
+  }
+  if (h > 3 && n) {
+    Object.defineProperty(i, e, n);
+  }
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharacterWalkOnAirComponent = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  QueryTypeDefine_1 = require("../../../../../Core/Define/QueryTypeDefine"),
-  EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  Vector_1 = require("../../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  FormationAttributeController_1 = require("../../../../Module/Abilities/FormationAttributeController"),
-  CombatLog_1 = require("../../../../Utils/CombatLog"),
-  GravityUtils_1 = require("../../../../Utils/GravityUtils"),
-  CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes"),
-  STRENGTH_THREADHOLD = 10,
-  FRAME_INTERNAL = 2,
-  BOX_LENGTH = 200,
-  SWITCH_DISTANCE_SQUARE = 22500;
+  value: true
+});
+exports.CharacterWalkOnAirComponent = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem");
+const Time_1 = require("../../../../../Core/Common/Time");
+const QueryTypeDefine_1 = require("../../../../../Core/Define/QueryTypeDefine");
+const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const FormationAttributeController_1 = require("../../../../Module/Abilities/FormationAttributeController");
+const CombatLog_1 = require("../../../../Utils/CombatLog");
+const GravityUtils_1 = require("../../../../Utils/GravityUtils");
+const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
+const STRENGTH_THREADHOLD = 10;
+const FRAME_INTERNAL = 2;
+const BOX_LENGTH = 200;
+const SWITCH_DISTANCE_SQUARE = 22500;
 let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class CharacterWalkOnAirComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.Hte = void 0, this.Lie = void 0, this.iY1 = void 0, this.Sgu = void 0, this.dce = !1, this.rY1 = !1, this.oY1 = [], this.Fru = [], this.Nru = 0, this.Vru = Vector_1.Vector.Create(0, 0, 0), this.jru = 0, this.nY1 = void 0, this.mBe = void 0, this.Hru = 0, this.RKr = (t, i) => {
-      this.dce = i, this.dce || this.sY1(!1)
-    }, this.Mgu = (t, i) => {
-      i || this.sY1(!1)
-    }, this.DVr = (t, i) => {
-      i === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.rY1 && this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir)
-    }, this.I3r = t => {
-      t?.Valid && (this.dce = this.Lie.HasTag(1970009389), this.dce || this.sY1(!1))
-    }, this.Ilt = (t, i) => {
-      this.dce && this.rY1 && this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir)
-    }, this.Hqr = (t, i, e, s, r) => {
-      !this.dce || this.Hru >= Time_1.Time.Frame || (1 === i && 3 === e && !this.Hte.InputDirectProxy.IsNearlyZero() && !this.nY1?.IsKuroForceFlying() && FormationAttributeController_1.FormationAttributeController.GetValue(1) > STRENGTH_THREADHOLD && this.mBe?.IsWalkMode ? (this.hY1(), this.sY1(!0), this.Hru = Time_1.Time.Frame + FRAME_INTERNAL) : 1 !== e && this.sY1(!1))
-    }
+    super(...arguments);
+    this.Hte = undefined;
+    this.Lie = undefined;
+    this.XY1 = undefined;
+    this.KFu = undefined;
+    this.TWc = undefined;
+    this.dce = false;
+    this.YY1 = false;
+    this.zY1 = [];
+    this.Lau = [];
+    this.wau = 0;
+    this.Aau = Vector_1.Vector.Create(0, 0, 0);
+    this.Pau = 0;
+    this.JY1 = undefined;
+    this.mBe = undefined;
+    this.xau = 0;
+    this.bWc = (t, i) => {
+      if (i && this.YY1) {
+        this.ZY1(false);
+      }
+    };
+    this.RKr = (t, i) => {
+      this.dce = i;
+      if (!this.dce) {
+        this.ZY1(false);
+      }
+    };
+    this.XFu = (t, i) => {
+      if (!i) {
+        this.ZY1(false);
+      }
+    };
+    this.DVr = (t, i) => {
+      if (i === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.YY1) {
+        this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir);
+      }
+    };
+    this.I3r = t => {
+      if (t?.Valid) {
+        this.dce = this.Lie.HasTag(1970009389);
+        if (!this.dce) {
+          this.ZY1(false);
+        }
+      }
+    };
+    this.Ilt = (t, i) => {
+      if (this.dce && this.YY1) {
+        this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir);
+      }
+    };
+    this.Hqr = (t, i, e, s, r) => {
+      if (!!this.dce && !(this.xau >= Time_1.Time.Frame)) {
+        if (i === 1 && e === 3 && !this.Hte.InputDirectProxy.IsNearlyZero() && !this.JY1?.IsKuroForceFlying() && !this.Lie.HasTag(-1371021686) && FormationAttributeController_1.FormationAttributeController.GetValue(1) > STRENGTH_THREADHOLD && this.mBe?.IsWalkMode) {
+          this.tz1();
+          this.ZY1(true);
+          this.xau = Time_1.Time.Frame + FRAME_INTERNAL;
+        } else if (e !== 1) {
+          this.ZY1(false);
+        }
+      }
+    };
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
     var t = this.Entity.GetComponent(205);
-    return !!t?.Valid && (this.nY1 = this.Hte.Actor, this.Lie = t, !!this.Entity.GetComponent(178)?.Valid) && (this.k_(), this.mBe = this.Entity.GetComponent(175), !0)
+    return !!t?.Valid && (this.JY1 = this.Hte.Actor, this.Lie = t, !!this.Entity.GetComponent(178)?.Valid) && (this.k_(), this.mBe = this.Entity.GetComponent(175), true);
   }
   k_() {
-    this.iY1 = this.Lie.ListenForTagAddOrRemove(1970009389, this.RKr), this.Sgu = this.Lie.ListenForTagAddOrRemove(-1384309247, this.Mgu), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt)
+    this.XY1 = this.Lie.ListenForTagAddOrRemove(1970009389, this.RKr);
+    this.KFu = this.Lie.ListenForTagAddOrRemove(-1384309247, this.XFu);
+    this.TWc = this.Lie.ListenForTagAddOrRemove(-1371021686, this.bWc);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
   }
   BKr() {
-    this.iY1?.EndTask(), this.Sgu?.EndTask(), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt)
+    this.XY1?.EndTask();
+    this.KFu?.EndTask();
+    this.TWc?.EndTask();
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
   }
-  $ru(t) {
-    var i, e = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
-    e ? ((i = e.AddComponentByClass(UE.BoxComponent.StaticClass(), !1, MathUtils_1.MathUtils.DefaultTransform, !1)).D_SetBoxExtent(CharacterWalkOnAirComponent_1.lY1), i.SetCollisionObjectType(QueryTypeDefine_1.KuroCollisionChannel.WorldStaticIgnoreBullet), i.SetCollisionResponseToAllChannels(0), i.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.PawnPlayer, 2), this.oY1[t] = e, this.Fru[t] = i) : CombatLog_1.CombatLog.Warn("Move", this.Entity, "空中行走创建地面失败")
+  Uau(t) {
+    var i;
+    var e = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble);
+    if (e) {
+      (i = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false)).D_SetBoxExtent(CharacterWalkOnAirComponent_1.iz1);
+      i.SetCollisionObjectType(QueryTypeDefine_1.KuroCollisionChannel.WorldStaticIgnoreBullet);
+      i.SetCollisionResponseToAllChannels(0);
+      i.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.PawnPlayer, 2);
+      this.zY1[t] = e;
+      this.Lau[t] = i;
+    } else {
+      CombatLog_1.CombatLog.Warn("Move", this.Entity, "空中行走创建地面失败");
+    }
   }
-  hY1() {
-    0 < this.oY1.length || (this.Nru = 0, this.$ru(0), this.Fru[0]?.SetCollisionEnabled(1), this.$ru(1), this.Fru[1]?.SetCollisionEnabled(0))
+  tz1() {
+    if (!(this.zY1.length > 0)) {
+      this.wau = 0;
+      this.Uau(0);
+      this.Lau[0]?.SetCollisionEnabled(1);
+      this.Uau(1);
+      this.Lau[1]?.SetCollisionEnabled(0);
+    }
   }
-  sY1(t) {
-    t === this.rY1 ? t && this._Y1() : (this.rY1 = t) ? (this._Y1(), this.Fru[this.Nru]?.SetCollisionEnabled(1), this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir)) : (this.Fru[this.Nru]?.SetCollisionEnabled(0), this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.None))
+  ZY1(t) {
+    if (t === this.YY1) {
+      if (t) {
+        this.rz1();
+      }
+    } else if (this.YY1 = t) {
+      this.rz1();
+      this.Lau[this.wau]?.SetCollisionEnabled(1);
+      this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir);
+    } else {
+      this.Lau[this.wau]?.SetCollisionEnabled(0);
+      this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.None);
+    }
   }
-  _Y1(t = !1) {
-    var i = this.Hte.FloorLocation,
-      e = (GravityUtils_1.GravityUtils.AddZnInGravityForActor(this.Hte, i, -CharacterWalkOnAirComponent_1.lY1.Z), this.Vru.DeepCopy(i), GravityUtils_1.GravityUtils.GetGravityDirectForActor(this.Hte));
-    t ? (t = i.DotProduct(e), i.AdditionEqual(e.Multiply(this.jru - t, MathUtils_1.MathUtils.CommonTempVector))) : this.jru = i.DotProduct(e), this.oY1[this.Nru]?.D_K2_SetActorLocationAndRotation(i.ToUeVector(), this.Hte.ActorRotation, !1, void 0, !1)
+  rz1(t = false) {
+    var i = this.Hte.FloorLocation;
+    GravityUtils_1.GravityUtils.AddZnInGravityForActor(this.Hte, i, -CharacterWalkOnAirComponent_1.iz1.Z);
+    this.Aau.DeepCopy(i);
+    var e = GravityUtils_1.GravityUtils.GetGravityDirectForActor(this.Hte);
+    if (t) {
+      t = i.DotProduct(e);
+      i.AdditionEqual(e.Multiply(this.Pau - t, MathUtils_1.MathUtils.CommonTempVector));
+    } else {
+      this.Pau = i.DotProduct(e);
+    }
+    this.zY1[this.wau]?.D_K2_SetActorLocationAndRotation(i.ToUeVector(), this.Hte.ActorRotation, false, undefined, false);
   }
-  Wru() {
-    this.Fru[this.Nru]?.SetCollisionEnabled(0), this.Nru ^= 1, this.Fru[this.Nru]?.SetCollisionEnabled(1)
+  Dau() {
+    this.Lau[this.wau]?.SetCollisionEnabled(0);
+    this.wau ^= 1;
+    this.Lau[this.wau]?.SetCollisionEnabled(1);
   }
   OnTick(t) {
-    this.rY1 && (Vector_1.Vector.DistSquared(this.Vru, this.Hte.FloorLocation) > SWITCH_DISTANCE_SQUARE && (this.Wru(), this._Y1(!0)), this.Hru >= Time_1.Time.Frame || (!this.Lie.HasTag(498191540) || FormationAttributeController_1.FormationAttributeController.GetValue(1) <= 0) && (this.sY1(!1), this.Hru = Time_1.Time.Frame + FRAME_INTERNAL))
+    if (this.YY1) {
+      if (Vector_1.Vector.DistSquared(this.Aau, this.Hte.FloorLocation) > SWITCH_DISTANCE_SQUARE) {
+        this.Dau();
+        this.rz1(true);
+      }
+      if (!(this.xau >= Time_1.Time.Frame)) {
+        if (!this.Lie.HasTag(498191540) || FormationAttributeController_1.FormationAttributeController.GetValue(1) <= 0) {
+          this.ZY1(false);
+          this.xau = Time_1.Time.Frame + FRAME_INTERNAL;
+        }
+      }
+    }
   }
   OnEnd() {
-    return this.BKr(), !0
+    this.BKr();
+    return true;
   }
   OnClear() {
-    for (const t of this.oY1) ActorSystem_1.ActorSystem.Put("OnClearWalkOnAir", t);
-    return this.oY1.length = 0, !(this.Fru.length = 0)
+    for (const t of this.zY1) {
+      ActorSystem_1.ActorSystem.Put("OnClearWalkOnAir", t);
+    }
+    this.zY1.length = 0;
+    return !(this.Lau.length = 0);
   }
 };
-CharacterWalkOnAirComponent.lY1 = new UE.VectorDouble(BOX_LENGTH, BOX_LENGTH, 1), CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(80)], CharacterWalkOnAirComponent), exports.CharacterWalkOnAirComponent = CharacterWalkOnAirComponent;
-//# sourceMappingURL=CharacterWalkOnAirComponent.js.map
+CharacterWalkOnAirComponent.iz1 = new UE.VectorDouble(BOX_LENGTH, BOX_LENGTH, 1);
+CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(80)], CharacterWalkOnAirComponent);
+exports.CharacterWalkOnAirComponent = CharacterWalkOnAirComponent; //# sourceMappingURL=CharacterWalkOnAirComponent.js.map

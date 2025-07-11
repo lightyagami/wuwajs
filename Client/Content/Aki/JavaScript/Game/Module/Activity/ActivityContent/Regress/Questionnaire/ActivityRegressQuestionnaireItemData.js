@@ -1,11 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityRegressQuestionnaireItemData = void 0;
+  value: true
+});
+exports.ActivityRegressQuestionnaireItemData = undefined;
 const RegressDefine_1 = require("../Base/RegressDefine");
 class ActivityRegressQuestionnaireItemData {
   constructor() {
-    this.Type = RegressDefine_1.ERegressQuestionnaireType.Type1, this.ItemData = void 0
+    this.Type = RegressDefine_1.ERegressQuestionnaireType.Type1;
+    this.ItemData = undefined;
   }
 }
 exports.ActivityRegressQuestionnaireItemData = ActivityRegressQuestionnaireItemData;

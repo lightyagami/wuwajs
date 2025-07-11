@@ -1,32 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAdsorbComponent = void 0;
+  value: true
+});
+exports.FbAdsorbComponent = undefined;
 const FbEntityState_1 = require("./FbEntityState");
 class FbAdsorbComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.M_h = !1, this.E_h = 0, this.DVh = !1, this.BVh = 0, this.KEh = !1, this.$Eh = 0, this.qVh = !1, this.kVh = void 0, this.GVh = !1, this.OVh = 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.M_h = false;
+    this.E_h = 0;
+    this.DVh = false;
+    this.BVh = 0;
+    this.KEh = false;
+    this.$Eh = 0;
+    this.qVh = false;
+    this.kVh = undefined;
+    this.GVh = false;
+    this.OVh = 0;
   }
   static Create(t) {
-    if (t) return new FbAdsorbComponent(t)
+    if (t) {
+      return new FbAdsorbComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Range() {
-    return this.M_h || (this.M_h = !0, this.E_h = this.FbDataInternal.range()), this.E_h
+    if (!this.M_h) {
+      this.M_h = true;
+      this.E_h = this.FbDataInternal.range();
+    }
+    return this.E_h;
   }
   get StartVelocity() {
-    return this.DVh || (this.DVh = !0, this.BVh = this.FbDataInternal.startVelocity()), this.BVh
+    if (!this.DVh) {
+      this.DVh = true;
+      this.BVh = this.FbDataInternal.startVelocity();
+    }
+    return this.BVh;
   }
   get Acceleration() {
-    return this.KEh || (this.KEh = !0, this.$Eh = this.FbDataInternal.acceleration()), this.$Eh
+    if (!this.KEh) {
+      this.KEh = true;
+      this.$Eh = this.FbDataInternal.acceleration();
+    }
+    return this.$Eh;
   }
   get ActiveStateCondition() {
-    return this.qVh || (this.qVh = !0, this.kVh = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.activeStateCondition())), this.kVh
+    if (!this.qVh) {
+      this.qVh = true;
+      this.kVh = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.activeStateCondition());
+    }
+    return this.kVh;
   }
   get AdsorbLimitedTime() {
-    return this.GVh || (this.GVh = !0, this.OVh = this.FbDataInternal.adsorbLimitedTime()), this.OVh
+    if (!this.GVh) {
+      this.GVh = true;
+      this.OVh = this.FbDataInternal.adsorbLimitedTime();
+    }
+    return this.OVh;
   }
 }
 exports.FbAdsorbComponent = FbAdsorbComponent;

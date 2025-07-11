@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationSelectable = void 0;
+  value: true
+});
+exports.NavigationSelectable = undefined;
 const NavigationSelectableBase_1 = require("./NavigationSelectableBase");
 class NavigationSelectable extends NavigationSelectableBase_1.NavigationSelectableBase {
   OnHandlePointerSelect(e) {
-    return !1
+    return false;
   }
 }
 exports.NavigationSelectable = NavigationSelectable;

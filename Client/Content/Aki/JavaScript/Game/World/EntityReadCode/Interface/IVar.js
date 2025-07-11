@@ -1,8 +1,11 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EBlackBoardType = exports.getVarTypeByIndex = exports.getVarConfigIndex = exports.getVarDefaultValue = exports.varConfig = void 0, exports.varConfig = {
-  Boolean: !1,
+  value: true
+});
+exports.EBlackBoardType = exports.getVarTypeByIndex = exports.getVarConfigIndex = exports.getVarDefaultValue = exports.varConfig = undefined;
+exports.varConfig = {
+  Boolean: false,
   Int: 0,
   String: "",
   Float: 0,
@@ -23,27 +26,32 @@ const varIndexConfig = {
   Transform: 7,
   Prefab: 8
 };
-
 function getVarDefaultValue(e) {
-  return exports.varConfig[e]
+  return exports.varConfig[e];
 }
-
 function getVarConfigIndex(e) {
-  return varIndexConfig[e]
+  return varIndexConfig[e];
 }
-exports.getVarDefaultValue = getVarDefaultValue, exports.getVarConfigIndex = getVarConfigIndex;
-let varTypeByIndex = void 0;
-
+exports.getVarDefaultValue = getVarDefaultValue;
+exports.getVarConfigIndex = getVarConfigIndex;
+let varTypeByIndex = undefined;
 function getVarTypeByIndex(e) {
   if (!varTypeByIndex) {
     varTypeByIndex = {};
-    for (const t in varIndexConfig) varTypeByIndex[varIndexConfig[t]] = t
+    for (const t in varIndexConfig) {
+      varTypeByIndex[varIndexConfig[t]] = t;
+    }
   }
-  return varTypeByIndex[e]
+  return varTypeByIndex[e];
 }
 var EBlackBoardType;
-exports.getVarTypeByIndex = getVarTypeByIndex,
-  function(e) {
-    e.Boolean = "Boolean", e.Int = "Int", e.String = "String", e.Float = "Float", e.Vector = "Vector", e.EntityId = "EntityId", e.EntityPos = "EntityPos"
-  }(EBlackBoardType = exports.EBlackBoardType || (exports.EBlackBoardType = {}));
-//# sourceMappingURL=IVar.js.map
+exports.getVarTypeByIndex = getVarTypeByIndex;
+(function (e) {
+  e.Boolean = "Boolean";
+  e.Int = "Int";
+  e.String = "String";
+  e.Float = "Float";
+  e.Vector = "Vector";
+  e.EntityId = "EntityId";
+  e.EntityPos = "EntityPos";
+})(EBlackBoardType = exports.EBlackBoardType ||= {}); //# sourceMappingURL=IVar.js.map

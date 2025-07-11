@@ -1,76 +1,206 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SequenceModel = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  Queue_1 = require("../../../../Core/Container/Queue"),
-  ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil"),
-  Transform_1 = require("../../../../Core/Utils/Math/Transform"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  LoginDefine_1 = require("../../Login/Data/LoginDefine"),
-  FlowSequence_1 = require("../Flow/FlowSequence"),
-  SequenceDefine_1 = require("./SequenceDefine");
+  value: true
+});
+exports.SequenceModel = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const Queue_1 = require("../../../../Core/Container/Queue");
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil");
+const Transform_1 = require("../../../../Core/Utils/Math/Transform");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LoginDefine_1 = require("../../Login/Data/LoginDefine");
+const FlowSequence_1 = require("../Flow/FlowSequence");
+const SequenceDefine_1 = require("./SequenceDefine");
 class SequenceModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.State = 0, this.IsPaused = !1, this.Config = void 0, this.SequenceData = void 0, this.MainSeqCharacterMesh = void 0, this.TalkNpcList = void 0, this.BindingActorMap = new Map, this.BindingEntityMap = new Map, this.ControlEntityMap = new Map, this.FrameEvents = new Map, this.ActionQueue = new Queue_1.Queue, this.FrameEventsMap = new Map, this.IsViewTargetControl = !1, this.IsSubtitleUiUse = !1, this.IsWaitRenderData = !1, this.PreviousMotionBlur = 0, this.SubSeqLen = 0, this.SubSeqIndex = FlowSequence_1.INVALID_INDEX, this.PlayRate = 1, this.SeqMainCharacter = void 0, this.BlendInCharacter = void 0, this.BlendOutCharacter = void 0, this.NeedsQueueLatentAction = !1, this.LatentActions = [], this.LastIndex = FlowSequence_1.INVALID_INDEX, this.NextIndex = FlowSequence_1.INVALID_INDEX, this.HidePlayer = !1, this.FinishCallback = void 0, this.Type = void 0, this.RelativeTransform = void 0, this.CurFinalPos = [], this.IsFadeEnd = [], this.CurLanguageAudio = 0, this.NeedJumpWhenResume = !1, this.CurLevelSeqActor = void 0, this.CurSubtitleStartFrames = [], this.CurSubtitleEndFrames = [], this.CurShotStartFrames = [], this.CurShotEndFrames = [], this.CurStartFrame = 0, this.CurEndFrame = 0, this.CurFrameRate = 0, this.SelectedOption = 0, this.CurSubtitle = new SequenceDefine_1.PlotSubtitleConfig, this.bdu = void 0, this.IsSubtitleConfigInit = !1, this.DefaultGuardTime = 0, this.DefaultAudioDelay = 0, this.DefaultAudioTransitionDuration = 0, this.EndLeastTime = void 0, this.UseRuntimeData = !0, this.IsSeamless = !1, this.PoseSwitched = !1, this.MuteQteList = new Set, this.IsMuteAllQte = !1, this.DisableMotionBlurFrame = 0, this.BeginSwitchFrame = 0, this.TwiceAnimFlag = !1
+    super(...arguments);
+    this.State = 0;
+    this.IsPaused = false;
+    this.Config = undefined;
+    this.SequenceData = undefined;
+    this.MainSeqCharacterMesh = undefined;
+    this.TalkNpcList = undefined;
+    this.BindingActorMap = new Map();
+    this.BindingEntityMap = new Map();
+    this.ControlEntityMap = new Map();
+    this.FrameEvents = new Map();
+    this.ActionQueue = new Queue_1.Queue();
+    this.FrameEventsMap = new Map();
+    this.IsViewTargetControl = false;
+    this.IsSubtitleUiUse = false;
+    this.IsWaitRenderData = false;
+    this.PreviousMotionBlur = 0;
+    this.SubSeqLen = 0;
+    this.SubSeqIndex = FlowSequence_1.INVALID_INDEX;
+    this.PlayRate = 1;
+    this.SeqMainCharacter = undefined;
+    this.BlendInCharacter = undefined;
+    this.BlendOutCharacter = undefined;
+    this.NeedsQueueLatentAction = false;
+    this.LatentActions = [];
+    this.LastIndex = FlowSequence_1.INVALID_INDEX;
+    this.NextIndex = FlowSequence_1.INVALID_INDEX;
+    this.HidePlayer = false;
+    this.FinishCallback = undefined;
+    this.Type = undefined;
+    this.RelativeTransform = undefined;
+    this.CurFinalPos = [];
+    this.IsFadeEnd = [];
+    this.CurLanguageAudio = 0;
+    this.NeedJumpWhenResume = false;
+    this.CurLevelSeqActor = undefined;
+    this.CurSubtitleStartFrames = [];
+    this.CurSubtitleEndFrames = [];
+    this.CurShotStartFrames = [];
+    this.CurShotEndFrames = [];
+    this.CurStartFrame = 0;
+    this.CurEndFrame = 0;
+    this.CurFrameRate = 0;
+    this.SelectedOption = 0;
+    this.CurSubtitle = new SequenceDefine_1.PlotSubtitleConfig();
+    this.$Pu = undefined;
+    this.IsSubtitleConfigInit = false;
+    this.DefaultGuardTime = 0;
+    this.DefaultAudioDelay = 0;
+    this.DefaultAudioTransitionDuration = 0;
+    this.EndLeastTime = undefined;
+    this.UseRuntimeData = true;
+    this.HasPlayedBefore = false;
+    this.IsSeamless = false;
+    this.PoseSwitched = false;
+    this.MuteQteList = new Set();
+    this.IsMuteAllQte = false;
+    this.DisableMotionBlurFrame = 0;
+    this.BeginSwitchFrame = 0;
+    this.TwiceAnimFlag = false;
+    this.AdditionSeqDirector = undefined;
   }
   get SeqMainCharacterModelConfig() {
-    if (!this.bdu) {
+    if (!this.$Pu) {
       var t = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(9);
       let i = SequenceDefine_1.FEMALE_SEQ_MODEL_ID;
-      t === LoginDefine_1.ELoginSex.Boy && (i = SequenceDefine_1.MALE_SEQ_MODEL_ID);
+      if (t === LoginDefine_1.ELoginSex.Boy) {
+        i = SequenceDefine_1.MALE_SEQ_MODEL_ID;
+      }
       t = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, i.toString());
-      this.bdu = t
+      this.$Pu = t;
     }
-    return this.bdu
+    return this.$Pu;
   }
   Reset() {
-    this.IsPaused = void 0, this.Config = void 0, this.SequenceData = void 0, this.BindingActorMap.clear(), this.BindingEntityMap.clear(), this.ControlEntityMap.clear(), this.FrameEvents.clear(), this.ActionQueue.Clear(), this.FrameEventsMap.clear(), this.IsViewTargetControl = void 0, this.IsSubtitleUiUse = void 0, this.PreviousMotionBlur = void 0, this.SubSeqLen = void 0, this.SubSeqIndex = FlowSequence_1.INVALID_INDEX, this.PlayRate = 1, this.SeqMainCharacter = void 0, this.NeedsQueueLatentAction = void 0, this.CurLevelSeqActor = void 0, this.LatentActions.length = 0, this.LastIndex = FlowSequence_1.INVALID_INDEX, this.NextIndex = FlowSequence_1.INVALID_INDEX, this.HidePlayer = !1, this.CurSubtitleStartFrames.length = 0, this.CurSubtitleEndFrames.length = 0, this.CurShotStartFrames.length = 0, this.CurShotEndFrames.length = 0, this.CurFinalPos.length = 0, this.IsFadeEnd.length = 0, this.CurStartFrame = void 0, this.CurEndFrame = void 0, this.CurFrameRate = void 0, this.SelectedOption = void 0, this.CurSubtitle.Clear(), this.Type = void 0, this.RelativeTransform = void 0, this.CurLanguageAudio = 0, this.NeedJumpWhenResume = !1, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 38, "清理引用数据-SequenceModel")
+    this.IsPaused = undefined;
+    this.Config = undefined;
+    this.SequenceData = undefined;
+    this.BindingActorMap.clear();
+    this.BindingEntityMap.clear();
+    this.ControlEntityMap.clear();
+    this.FrameEvents.clear();
+    this.ActionQueue.Clear();
+    this.FrameEventsMap.clear();
+    this.IsViewTargetControl = undefined;
+    this.IsSubtitleUiUse = undefined;
+    this.PreviousMotionBlur = undefined;
+    this.SubSeqLen = undefined;
+    this.SubSeqIndex = FlowSequence_1.INVALID_INDEX;
+    this.PlayRate = 1;
+    this.SeqMainCharacter = undefined;
+    this.NeedsQueueLatentAction = undefined;
+    this.CurLevelSeqActor = undefined;
+    this.LatentActions.length = 0;
+    this.LastIndex = FlowSequence_1.INVALID_INDEX;
+    this.NextIndex = FlowSequence_1.INVALID_INDEX;
+    this.HidePlayer = false;
+    this.CurSubtitleStartFrames.length = 0;
+    this.CurSubtitleEndFrames.length = 0;
+    this.CurShotStartFrames.length = 0;
+    this.CurShotEndFrames.length = 0;
+    this.CurFinalPos.length = 0;
+    this.IsFadeEnd.length = 0;
+    this.CurStartFrame = undefined;
+    this.CurEndFrame = undefined;
+    this.CurFrameRate = undefined;
+    this.SelectedOption = undefined;
+    this.CurSubtitle.Clear();
+    this.Type = undefined;
+    this.RelativeTransform = undefined;
+    this.CurLanguageAudio = 0;
+    this.NeedJumpWhenResume = false;
+    this.AdditionSeqDirector = undefined;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Plot", 38, "清理引用数据-SequenceModel");
+    }
   }
   GetCurrentSequence() {
-    return this.SubSeqIndex < this.SubSeqLen ? this.SequenceData?.剧情资源.Get(this.SubSeqIndex) : void 0
+    if (this.SubSeqIndex < this.SubSeqLen) {
+      return this.SequenceData?.剧情资源.Get(this.SubSeqIndex);
+    } else {
+      return undefined;
+    }
   }
   GetCurrentKeyFramesInfo() {
-    return this.SequenceData?.GeneratedData?.KeyFrames.IsValidIndex(this.SubSeqIndex) ? this.SequenceData.GeneratedData.KeyFrames.Get(this.SubSeqIndex) : void 0
+    if (this.SequenceData?.GeneratedData?.KeyFrames.IsValidIndex(this.SubSeqIndex)) {
+      return this.SequenceData.GeneratedData.KeyFrames.Get(this.SubSeqIndex);
+    } else {
+      return undefined;
+    }
   }
   IsFinish() {
-    return this.SubSeqIndex === FlowSequence_1.FINISH_INDEX
+    return this.SubSeqIndex === FlowSequence_1.FINISH_INDEX;
   }
   WillFinish() {
-    return this.NextIndex === FlowSequence_1.FINISH_INDEX
+    return this.NextIndex === FlowSequence_1.FINISH_INDEX;
   }
   QueueLatentAction(i) {
-    this.LatentActions.push(i)
+    this.LatentActions.push(i);
   }
   RunLatentActions() {
-    for (const i of this.LatentActions) i();
-    this.LatentActions.length = 0
+    for (const i of this.LatentActions) {
+      i();
+    }
+    this.LatentActions.length = 0;
   }
   GetLastFadeEnd() {
-    return 0 <= this.LastIndex && this.IsFadeEnd.length > this.LastIndex && this.IsFadeEnd[this.LastIndex]
+    return this.LastIndex >= 0 && this.IsFadeEnd.length > this.LastIndex && this.IsFadeEnd[this.LastIndex];
   }
   GetLastTransform() {
-    return 0 <= this.LastIndex && this.CurFinalPos.length > this.LastIndex ? this.CurFinalPos[this.LastIndex] : void 0
+    if (this.LastIndex >= 0 && this.CurFinalPos.length > this.LastIndex) {
+      return this.CurFinalPos[this.LastIndex];
+    } else {
+      return undefined;
+    }
   }
   GetFrameEvents(i) {
-    return this.FrameEvents.get(i)
+    return this.FrameEvents.get(i);
   }
   GetType() {
-    return this.Type || this.UseRuntimeData || (this.Type = this.SequenceData.类型), this.Type
+    if (!this.Type && !this.UseRuntimeData) {
+      this.Type = this.SequenceData.类型;
+    }
+    return this.Type;
   }
   HasSubtitle() {
-    return 0 !== this.CurSubtitleStartFrames.length && 0 !== this.CurSubtitleEndFrames.length
+    return this.CurSubtitleStartFrames.length !== 0 && this.CurSubtitleEndFrames.length !== 0;
   }
   get IsEnding() {
-    return 5 === this.State
+    return this.State === 5;
   }
   get IsPlaying() {
-    return 0 !== this.State
+    return this.State !== 0;
   }
   AddFinalPos(i) {
     var t;
-    i || this.CurFinalPos.push(i), this.RelativeTransform ? (t = Transform_1.Transform.Create(), i.ComposeTransforms(this.RelativeTransform, t), this.CurFinalPos.push(t)) : this.CurFinalPos.push(i)
+    if (!i) {
+      this.CurFinalPos.push(i);
+    }
+    if (this.RelativeTransform) {
+      t = Transform_1.Transform.Create();
+      i.ComposeTransforms(this.RelativeTransform, t);
+      this.CurFinalPos.push(t);
+    } else {
+      this.CurFinalPos.push(i);
+    }
   }
 }
 exports.SequenceModel = SequenceModel;

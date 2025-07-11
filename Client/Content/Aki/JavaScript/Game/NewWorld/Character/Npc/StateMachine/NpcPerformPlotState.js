@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcPerformPlotState = void 0;
+  value: true
+});
+exports.NpcPerformPlotState = undefined;
 const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
 class NpcPerformPlotState extends NpcPerformBaseState_1.NpcPerformBaseState {}
 exports.NpcPerformPlotState = NpcPerformPlotState;

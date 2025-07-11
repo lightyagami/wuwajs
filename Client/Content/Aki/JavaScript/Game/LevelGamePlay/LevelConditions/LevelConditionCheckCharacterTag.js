@@ -1,20 +1,31 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckCharacterTag = void 0;
-const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckCharacterTag = undefined;
+const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckCharacterTag extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, a) {
     var r;
-    return !!(e.LimitParams && (e = e.LimitParams.get("Tag")) && (r = (r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && r.Entity.GetComponent(205))) && r.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))
+    return !!e.LimitParams && !!(e = e.LimitParams.get("Tag")) && !!(r = (r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && r.Entity.GetComponent(205)) && r.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
   }
   CheckNew(e, a) {
-    if (!e) return !1;
-    let r = !1;
+    if (!e) {
+      return false;
+    }
+    let r = false;
     var l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return l && (l = l.Entity.GetComponent(205)) && (r = l.HasTag(e.TagId)), e.IsContain ? r : !r
+    if (l &&= l.Entity.GetComponent(205)) {
+      r = l.HasTag(e.TagId);
+    }
+    if (e.IsContain) {
+      return r;
+    } else {
+      return !r;
+    }
   }
 }
 exports.LevelConditionCheckCharacterTag = LevelConditionCheckCharacterTag;

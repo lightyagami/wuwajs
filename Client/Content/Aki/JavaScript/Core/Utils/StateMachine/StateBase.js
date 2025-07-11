@@ -1,40 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.StateBase = void 0;
+  value: true
+});
+exports.StateBase = undefined;
 class StateBase {
   constructor(t, e, s) {
-    this.StateMachine = s, this.Owner = t, this.State = e
+    this.StateMachine = s;
+    this.Owner = t;
+    this.State = e;
   }
   GetState(t) {
-    return this.StateMachine?.GetState(t)
+    return this.StateMachine?.GetState(t);
   }
   Create(t) {
-    this.OnCreate(t)
+    this.OnCreate(t);
   }
   Start() {
-    this.OnStart()
+    this.OnStart();
   }
   Update(t) {
-    this.OnUpdate(t)
+    this.OnUpdate(t);
   }
   Enter(t) {
-    this.OnEnter(t)
+    this.OnEnter(t);
   }
   ReEnter() {
-    this.OnReEnter()
+    this.OnReEnter();
   }
   Exit(t) {
-    this.OnExit(t)
+    this.OnExit(t);
   }
   Destroy() {
-    this.OnDestroy(), this.Owner = void 0, this.State = void 0
+    this.OnDestroy();
+    this.Owner = undefined;
+    this.State = undefined;
   }
   CanReEnter() {
-    return !1
+    return false;
   }
   CanChangeFrom(t) {
-    return !0
+    return true;
   }
   OnCreate(t) {}
   OnStart() {}

@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MediumItemGridProhibitComponent = void 0;
+  value: true
+});
+exports.MediumItemGridProhibitComponent = undefined;
 const MediumItemGridVisibleComponent_1 = require("./MediumItemGridVisibleComponent");
 class MediumItemGridProhibitComponent extends MediumItemGridVisibleComponent_1.MediumItemGridVisibleComponent {
   GetResourceId() {
-    return "UiItem_ItemLock"
+    return "UiItem_ItemLock";
   }
 }
 exports.MediumItemGridProhibitComponent = MediumItemGridProhibitComponent;

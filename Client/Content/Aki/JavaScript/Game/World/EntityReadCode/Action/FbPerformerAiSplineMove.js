@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPerformerAiSplineMove = void 0;
+  value: true
+});
+exports.FbPerformerAiSplineMove = undefined;
 class FbPerformerAiSplineMove {
   constructor(e) {
-    this.FbDataInternal = e, this.kuh = !1, this.Guh = 0
+    this.FbDataInternal = e;
+    this.kuh = false;
+    this.Guh = 0;
   }
   static Create(e) {
-    if (e) return new FbPerformerAiSplineMove(e)
+    if (e) {
+      return new FbPerformerAiSplineMove(e);
+    }
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
 }
 exports.FbPerformerAiSplineMove = FbPerformerAiSplineMove;

@@ -1,62 +1,103 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeeklyRogueData = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Time_1 = require("../../../Core/Common/Time"),
-  CommonDefine_1 = require("../../../Core/Define/CommonDefine"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  ActivityData_1 = require("../Activity/ActivityData");
+  value: true
+});
+exports.WeeklyRogueData = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Time_1 = require("../../../Core/Common/Time");
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const ActivityData_1 = require("../Activity/ActivityData");
 class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
   constructor() {
-    super(...arguments), this.Score = 0, this.LastInstInfo = void 0, this.AwardsInfoList = void 0, this.CycleId = 0, this.CycleBeginTime = 0, this.CycleEndTime = 0, this.WorldLevel = 0
+    super(...arguments);
+    this.Score = 0;
+    this.LastInstInfo = undefined;
+    this.AwardsInfoList = undefined;
+    this.CycleId = 0;
+    this.CycleBeginTime = 0;
+    this.CycleEndTime = 0;
+    this.WorldLevel = 0;
   }
   GetExDataRedPointShowState() {
-    return this.HasScoreRewardEnable() || this.HasNewCycle()
+    return this.HasScoreRewardEnable() || this.HasNewCycle();
   }
   HasNewCycle() {
-    return !ModelManager_1.ModelManager.ActivityModel?.GetActivityCacheData(this.Id, 0, this.CycleId, 0, 0)
+    return !ModelManager_1.ModelManager.ActivityModel?.GetActivityCacheData(this.Id, 0, this.CycleId, 0, 0);
   }
   HasScoreRewardEnable() {
-    return this.AwardsInfoList?.some(e => e.zps === Protocol_1.Aki.Protocol.zps.CMs) ?? !1
+    return this.AwardsInfoList?.some(e => e.zps === Protocol_1.Aki.Protocol.zps.CMs) ?? false;
   }
   SetScoreRewardState(t, e) {
     var o = this.AwardsInfoList?.find(e => e.v9n === t);
-    o && (o.zps = e)
+    if (o) {
+      o.zps = e;
+    }
   }
   GetScoreRewardStateById(t) {
     var e = this.AwardsInfoList?.find(e => e.v9n === t);
-    return e?.zps === Protocol_1.Aki.Protocol.zps.ovs ? 2 : e?.zps === Protocol_1.Aki.Protocol.zps.Z6n ? 0 : 1
+    if (e?.zps === Protocol_1.Aki.Protocol.zps.ovs) {
+      return 2;
+    } else if (e?.zps === Protocol_1.Aki.Protocol.zps.Z6n) {
+      return 0;
+    } else {
+      return 1;
+    }
   }
   GetCycleConfig() {
-    return ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyCycleConfig(this.CycleId)
+    return ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyCycleConfig(this.CycleId);
   }
   GetCycleRemainTime() {
-    return this.CycleEndTime - Time_1.Time.ServerTimeStamp / CommonDefine_1.MILLIONSECOND_PER_SECOND
+    return this.CycleEndTime - Time_1.Time.ServerTimeStamp / CommonDefine_1.MILLIONSECOND_PER_SECOND;
   }
   GetCycleBlackFlowerCost() {
     var e = this.GetCycleConfig();
-    let o = 999,
-      i = 0,
-      t = (e.BlackFlowerCost.forEach((e, t) => {
-        t < o && (o = t), t > i && (i = t)
-      }), 0);
-    return t = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel < o ? e.BlackFlowerCost.get(o) ?? 0 : ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel > i ? e.BlackFlowerCost.get(i) ?? 0 : e.BlackFlowerCost.get(ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel) ?? 0
+    let o = 999;
+    let i = 0;
+    e.BlackFlowerCost.forEach((e, t) => {
+      if (t < o) {
+        o = t;
+      }
+      if (t > i) {
+        i = t;
+      }
+    });
+    let t = 0;
+    return t = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel < o ? e.BlackFlowerCost.get(o) ?? 0 : ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel > i ? e.BlackFlowerCost.get(i) ?? 0 : e.BlackFlowerCost.get(ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel) ?? 0;
   }
   GetCycleCountDownData() {
     let e = this.GetCycleRemainTime();
-    var t = (e = e <= 1 ? 1 : e) >= CommonDefine_1.SECOND_PER_DAY ? 3 : e >= CommonDefine_1.SECOND_PER_HOUR ? 2 : 1,
-      o = e >= CommonDefine_1.SECOND_PER_DAY ? 2 : e >= CommonDefine_1.SECOND_PER_HOUR ? 1 : 0;
-    return TimeUtil_1.TimeUtil.GetCountDownDataFormat2(e, t, o)
+    var t = (e = e <= 1 ? 1 : e) >= CommonDefine_1.SECOND_PER_DAY ? 3 : e >= CommonDefine_1.SECOND_PER_HOUR ? 2 : 1;
+    var o = e >= CommonDefine_1.SECOND_PER_DAY ? 2 : e >= CommonDefine_1.SECOND_PER_HOUR ? 1 : 0;
+    return TimeUtil_1.TimeUtil.GetCountDownDataFormat2(e, t, o);
   }
   PhraseEx(e) {
     var t = e.TN_;
-    t ? (this.CheckIfInShowTime() && (ModelManager_1.ModelManager.WeeklyRogueModel.CurrentActivityId = e.s5n), e = this.CycleId, this.CycleId = t.bN_, e !== t.bN_ && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueCycleRefresh), this.CycleBeginTime = t.RN_, this.CycleEndTime = t.AN_, this.LastInstInfo = t.LN_, this.Score = t.SMs, this.AwardsInfoList = t.wN_, this.WorldLevel = t.cSs, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot)) : Log_1.Log.CheckError() && Log_1.Log.Error("WeeklyRogue", 34, "WeeklyRogueData无周常数据")
+    if (t) {
+      if (this.CheckIfInShowTime()) {
+        ModelManager_1.ModelManager.WeeklyRogueModel.CurrentActivityId = e.s5n;
+      }
+      e = this.CycleId;
+      this.CycleId = t.bN_;
+      if (e !== t.bN_) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueCycleRefresh);
+      }
+      this.CycleBeginTime = t.RN_;
+      this.CycleEndTime = t.AN_;
+      this.LastInstInfo = t.LN_;
+      this.Score = t.SMs;
+      this.AwardsInfoList = t.wN_;
+      this.WorldLevel = t.cSs;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("WeeklyRogue", 34, "WeeklyRogueData无周常数据");
+    }
   }
 }
 exports.WeeklyRogueData = WeeklyRogueData;

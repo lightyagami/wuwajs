@@ -1,109 +1,118 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AchievementConfig = void 0;
-const AchievementByGroupId_1 = require("../../../Core/Define/ConfigQuery/AchievementByGroupId"),
-  AchievementById_1 = require("../../../Core/Define/ConfigQuery/AchievementById"),
-  AchievementCategoryAll_1 = require("../../../Core/Define/ConfigQuery/AchievementCategoryAll"),
-  AchievementCategoryById_1 = require("../../../Core/Define/ConfigQuery/AchievementCategoryById"),
-  AchievementGroupByCategory_1 = require("../../../Core/Define/ConfigQuery/AchievementGroupByCategory"),
-  AchievementGroupById_1 = require("../../../Core/Define/ConfigQuery/AchievementGroupById"),
-  AchievementStarLevelByLevel_1 = require("../../../Core/Define/ConfigQuery/AchievementStarLevelByLevel"),
-  MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase"),
-  ConfigManager_1 = require("../../Manager/ConfigManager");
+  value: true
+});
+exports.AchievementConfig = undefined;
+const AchievementByGroupId_1 = require("../../../Core/Define/ConfigQuery/AchievementByGroupId");
+const AchievementById_1 = require("../../../Core/Define/ConfigQuery/AchievementById");
+const AchievementCategoryAll_1 = require("../../../Core/Define/ConfigQuery/AchievementCategoryAll");
+const AchievementCategoryById_1 = require("../../../Core/Define/ConfigQuery/AchievementCategoryById");
+const AchievementGroupByCategory_1 = require("../../../Core/Define/ConfigQuery/AchievementGroupByCategory");
+const AchievementGroupById_1 = require("../../../Core/Define/ConfigQuery/AchievementGroupById");
+const AchievementStarLevelByLevel_1 = require("../../../Core/Define/ConfigQuery/AchievementStarLevelByLevel");
+const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 class AchievementConfig extends ConfigBase_1.ConfigBase {
   GetAchievementConfig(e) {
-    return AchievementById_1.configAchievementById.GetConfig(e)
+    return AchievementById_1.configAchievementById.GetConfig(e);
   }
   GetAchievementGroupAchievementList(e) {
-    return AchievementByGroupId_1.configAchievementByGroupId.GetConfigList(e)
+    return AchievementByGroupId_1.configAchievementByGroupId.GetConfigList(e);
   }
   GetAchievementStarLevelConfig(e) {
-    return AchievementStarLevelByLevel_1.configAchievementStarLevelByLevel.GetConfig(e)
+    return AchievementStarLevelByLevel_1.configAchievementStarLevelByLevel.GetConfig(e);
   }
   GetAchievementGroupConfig(e) {
-    return AchievementGroupById_1.configAchievementGroupById.GetConfig(e)
+    return AchievementGroupById_1.configAchievementGroupById.GetConfig(e);
   }
   GetAchievementCategory(e) {
-    return AchievementCategoryById_1.configAchievementCategoryById.GetConfig(e)
+    return AchievementCategoryById_1.configAchievementCategoryById.GetConfig(e);
   }
   GetAllAchievementCategory() {
-    return AchievementCategoryAll_1.configAchievementCategoryAll.GetConfigList()
+    return AchievementCategoryAll_1.configAchievementCategoryAll.GetConfigList();
   }
   GetAchievementCategoryGroups(e) {
-    return AchievementGroupByCategory_1.configAchievementGroupByCategory.GetConfigList(e)
+    return AchievementGroupByCategory_1.configAchievementGroupByCategory.GetConfigList(e);
   }
   GetAchievementTitle(e) {
     e = this.GetAchievementConfig(e);
-    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name)
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name);
   }
   GetAchievementDesc(e) {
     e = this.GetAchievementConfig(e);
-    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Desc)
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Desc);
   }
   GetAchievementHiddenState(e) {
-    return this.GetAchievementConfig(e).Hidden
+    return this.GetAchievementConfig(e).Hidden;
   }
   GetAchievementNextLink(e) {
-    return this.GetAchievementConfig(e).NextLink
+    return this.GetAchievementConfig(e).NextLink;
   }
   GetThirdPartyTrophyId(e) {
-    return this.GetAchievementConfig(e).ThirdPartyTrophyId
+    return this.GetAchievementConfig(e).ThirdPartyTrophyId;
   }
   GetAchievementLevel(e) {
-    return this.GetAchievementConfig(e).Level
+    return this.GetAchievementConfig(e).Level;
   }
   GetAchievementGroup(e) {
-    return this.GetAchievementConfig(e).GroupId
+    return this.GetAchievementConfig(e).GroupId;
   }
   GetAchievementIcon(e) {
-    return this.GetAchievementConfig(e).IconPath
+    return this.GetAchievementConfig(e).IconPath;
   }
   GetAchievementReward(e) {
     var t;
-    return 0 < (t = this.GetAchievementConfig(e).OverrideDropId) ? ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(t)?.DropPreview : (t = this.GetAchievementStarLevelConfig(this.GetAchievementLevel(e)).DropId, ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(t).DropPreview)
+    if ((t = this.GetAchievementConfig(e).OverrideDropId) > 0) {
+      return ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(t)?.DropPreview;
+    } else {
+      t = this.GetAchievementStarLevelConfig(this.GetAchievementLevel(e)).DropId;
+      return ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(t).DropPreview;
+    }
   }
   GetAchievementGroupTitle(e) {
     e = this.GetAchievementGroupConfig(e);
-    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name)
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name);
   }
   GetAchievementGroupSort(e) {
-    return this.GetAchievementGroupConfig(e).Sort
+    return this.GetAchievementGroupConfig(e).Sort;
   }
   GetAchievementGroupIcon(e) {
-    return this.GetAchievementGroupConfig(e).Icon
+    return this.GetAchievementGroupConfig(e).Icon;
   }
   GetAchievementGroupSmallIcon(e) {
-    return this.GetAchievementGroupConfig(e).SmallIcon
+    return this.GetAchievementGroupConfig(e).SmallIcon;
   }
   GetAchievementGroupBackgroundIcon(e) {
-    return this.GetAchievementGroupConfig(e).BackgroundIcon
+    return this.GetAchievementGroupConfig(e).BackgroundIcon;
   }
   GetAchievementGroupEnable(e) {
-    return this.GetAchievementGroupConfig(e).Enable
+    return this.GetAchievementGroupConfig(e).Enable;
   }
   GetAchievementGroupReward(e) {
     e = this.GetAchievementGroupConfig(e);
-    if (e.DropId) return ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e.DropId)?.DropPreview
+    if (e.DropId) {
+      return ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e.DropId)?.DropPreview;
+    }
   }
   GetAchievementGroupCategory(e) {
-    return this.GetAchievementGroupConfig(e).Category
+    return this.GetAchievementGroupConfig(e).Category;
   }
   GetCategoryOriginalTitle(e) {
-    return this.GetAchievementCategory(e)?.Name ?? ""
+    return this.GetAchievementCategory(e)?.Name ?? "";
   }
   GetCategoryTitle(e) {
-    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.GetCategoryOriginalTitle(e))
+    return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.GetCategoryOriginalTitle(e));
   }
   GetCategoryTexture(e) {
-    return this.GetAchievementCategory(e)?.TexturePath ?? ""
+    return this.GetAchievementCategory(e)?.TexturePath ?? "";
   }
   GetCategorySprite(e) {
-    return this.GetAchievementCategory(e)?.SpritePath ?? ""
+    return this.GetAchievementCategory(e)?.SpritePath ?? "";
   }
   GetCategoryFunctionType(e) {
-    return this.GetAchievementCategory(e).FunctionType
+    return this.GetAchievementCategory(e).FunctionType;
   }
 }
 exports.AchievementConfig = AchievementConfig;

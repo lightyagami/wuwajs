@@ -1,35 +1,81 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCategoryMatchingSucceedBase = void 0;
+  value: true
+});
+exports.FbCategoryMatchingSucceedBase = undefined;
 const FbEntityState_1 = require("./FbEntityState");
 class FbCategoryMatchingSucceedBase {
   constructor(t) {
-    this.FbDataInternal = t, this.iFh = !1, this.rFh = !1, this.bEh = !1, this.LEh = !1, this.qFh = !1, this.kFh = !1, this.GFh = !1, this.OFh = void 0, this.FFh = !1, this.NFh = void 0, this.VFh = !1, this.jFh = void 0, this.HFh = !1, this.WFh = void 0
+    this.FbDataInternal = t;
+    this.iFh = false;
+    this.rFh = false;
+    this.bEh = false;
+    this.LEh = false;
+    this.qFh = false;
+    this.kFh = false;
+    this.GFh = false;
+    this.OFh = undefined;
+    this.FFh = false;
+    this.NFh = undefined;
+    this.VFh = false;
+    this.jFh = undefined;
+    this.HFh = false;
+    this.WFh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCategoryMatchingSucceedBase(t)
+    if (t) {
+      return new FbCategoryMatchingSucceedBase(t);
+    }
   }
   get IsSilent() {
-    return this.iFh || (this.iFh = !0, this.rFh = this.FbDataInternal.isSilent()), this.rFh
+    if (!this.iFh) {
+      this.iFh = true;
+      this.rFh = this.FbDataInternal.isSilent();
+    }
+    return this.rFh;
   }
   get IsDestroy() {
-    return this.bEh || (this.bEh = !0, this.LEh = this.FbDataInternal.isDestroy()), this.LEh
+    if (!this.bEh) {
+      this.bEh = true;
+      this.LEh = this.FbDataInternal.isDestroy();
+    }
+    return this.LEh;
   }
   get SyncAdsorbatePerformance() {
-    return this.qFh || (this.qFh = !0, this.kFh = this.FbDataInternal.syncAdsorbatePerformance()), this.kFh
+    if (!this.qFh) {
+      this.qFh = true;
+      this.kFh = this.FbDataInternal.syncAdsorbatePerformance();
+    }
+    return this.kFh;
   }
   get ChangeSelfState() {
-    return this.GFh || (this.GFh = !0, this.OFh = this.FbDataInternal.changeSelfState()), this.OFh
+    if (!this.GFh) {
+      this.GFh = true;
+      this.OFh = this.FbDataInternal.changeSelfState();
+    }
+    return this.OFh;
   }
   get ChangeSelfStateAfterDischarged() {
-    return this.FFh || (this.FFh = !0, this.NFh = this.FbDataInternal.changeSelfStateAfterDischarged()), this.NFh
+    if (!this.FFh) {
+      this.FFh = true;
+      this.NFh = this.FbDataInternal.changeSelfStateAfterDischarged();
+    }
+    return this.NFh;
   }
   get ChangeItemState() {
-    return this.VFh || (this.VFh = !0, this.jFh = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.changeItemState())), this.jFh
+    if (!this.VFh) {
+      this.VFh = true;
+      this.jFh = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.changeItemState());
+    }
+    return this.jFh;
   }
   get ChangeItemStateAfterDischarged() {
-    return this.HFh || (this.HFh = !0, this.WFh = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.changeItemStateAfterDischarged())), this.WFh
+    if (!this.HFh) {
+      this.HFh = true;
+      this.WFh = FbEntityState_1.FbEntityState.Create(this.FbDataInternal.changeItemStateAfterDischarged());
+    }
+    return this.WFh;
   }
 }
 exports.FbCategoryMatchingSucceedBase = FbCategoryMatchingSucceedBase;

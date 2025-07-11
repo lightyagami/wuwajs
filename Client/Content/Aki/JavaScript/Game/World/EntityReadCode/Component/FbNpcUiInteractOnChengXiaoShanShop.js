@@ -1,44 +1,108 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcUiInteractOnChengXiaoShanShop = void 0;
+  value: true
+});
+exports.FbNpcUiInteractOnChengXiaoShanShop = undefined;
 const FbPlayFlow_1 = require("../Action/FbPlayFlow");
 class FbNpcUiInteractOnChengXiaoShanShop {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.K4h = !1, this.$4h = void 0, this.X4h = !1, this.Y4h = void 0, this.z4h = !1, this.J4h = void 0, this.Z4h = !1, this.e6h = void 0, this.t6h = !1, this.i6h = void 0, this.r6h = !1, this.o6h = void 0, this.n6h = !1, this.s6h = void 0, this.c6h = !1, this.u6h = void 0, this.d6h = !1, this.m6h = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.K4h = false;
+    this.$4h = undefined;
+    this.X4h = false;
+    this.Y4h = undefined;
+    this.z4h = false;
+    this.J4h = undefined;
+    this.Z4h = false;
+    this.e6h = undefined;
+    this.t6h = false;
+    this.i6h = undefined;
+    this.r6h = false;
+    this.o6h = undefined;
+    this.n6h = false;
+    this.s6h = undefined;
+    this.c6h = false;
+    this.u6h = undefined;
+    this.d6h = false;
+    this.m6h = false;
   }
   static Create(t) {
-    if (t) return new FbNpcUiInteractOnChengXiaoShanShop(t)
+    if (t) {
+      return new FbNpcUiInteractOnChengXiaoShanShop(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EnterMontage() {
-    return this.K4h || (this.K4h = !0, this.$4h = this.FbDataInternal.enterMontage()), this.$4h
+    if (!this.K4h) {
+      this.K4h = true;
+      this.$4h = this.FbDataInternal.enterMontage();
+    }
+    return this.$4h;
   }
   get StandByMontage() {
-    return this.X4h || (this.X4h = !0, this.Y4h = this.FbDataInternal.standByMontage()), this.Y4h
+    if (!this.X4h) {
+      this.X4h = true;
+      this.Y4h = this.FbDataInternal.standByMontage();
+    }
+    return this.Y4h;
   }
   get ShopSuccessMontage() {
-    return this.z4h || (this.z4h = !0, this.J4h = this.FbDataInternal.shopSuccessMontage()), this.J4h
+    if (!this.z4h) {
+      this.z4h = true;
+      this.J4h = this.FbDataInternal.shopSuccessMontage();
+    }
+    return this.J4h;
   }
   get EnterFlow() {
-    return this.Z4h || (this.Z4h = !0, this.e6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.enterFlow())), this.e6h
+    if (!this.Z4h) {
+      this.Z4h = true;
+      this.e6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.enterFlow());
+    }
+    return this.e6h;
   }
   get ShopFailedFlow() {
-    return this.t6h || (this.t6h = !0, this.i6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.shopFailedFlow())), this.i6h
+    if (!this.t6h) {
+      this.t6h = true;
+      this.i6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.shopFailedFlow());
+    }
+    return this.i6h;
   }
   get ShopSuccessFlow() {
-    return this.r6h || (this.r6h = !0, this.o6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.shopSuccessFlow())), this.o6h
+    if (!this.r6h) {
+      this.r6h = true;
+      this.o6h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.shopSuccessFlow());
+    }
+    return this.o6h;
   }
   get UpgradeSequence() {
-    return this.n6h || (this.n6h = !0, this.s6h = this.FbDataInternal.upgradeSequence()), this.s6h
+    if (!this.n6h) {
+      this.n6h = true;
+      this.s6h = this.FbDataInternal.upgradeSequence();
+    }
+    return this.s6h;
   }
   get FinishDeliverySequence() {
-    return this.c6h || (this.c6h = !0, this.u6h = this.FbDataInternal.finishDeliverySequence()), this.u6h
+    if (!this.c6h) {
+      this.c6h = true;
+      this.u6h = this.FbDataInternal.finishDeliverySequence();
+    }
+    return this.u6h;
   }
   get ShowNpcWhilePlayingSequence() {
-    return this.d6h || (this.d6h = !0, this.m6h = this.FbDataInternal.showNpcWhilePlayingSequence()), this.m6h
+    if (!this.d6h) {
+      this.d6h = true;
+      this.m6h = this.FbDataInternal.showNpcWhilePlayingSequence();
+    }
+    return this.m6h;
   }
 }
 exports.FbNpcUiInteractOnChengXiaoShanShop = FbNpcUiInteractOnChengXiaoShanShop;

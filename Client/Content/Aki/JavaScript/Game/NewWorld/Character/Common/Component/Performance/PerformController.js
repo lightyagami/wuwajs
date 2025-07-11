@@ -1,25 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PerformController = void 0;
-const ControllerBase_1 = require("../../../../../../Core/Framework/ControllerBase"),
-  Net_1 = require("../../../../../../Core/Net/Net"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager"),
-  PerformActionCenter_1 = require("./Action/PerformActionCenter");
+  value: true
+});
+exports.PerformController = undefined;
+const ControllerBase_1 = require("../../../../../../Core/Framework/ControllerBase");
+const Net_1 = require("../../../../../../Core/Net/Net");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const PerformActionCenter_1 = require("./Action/PerformActionCenter");
 class PerformController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return Net_1.Net.Register(27208, this.tX_), !0
+    Net_1.Net.Register(20519, this.tX_);
+    return true;
   }
   static OnClear() {
-    return Net_1.Net.UnRegister(27208), !0
+    Net_1.Net.UnRegister(20519);
+    return true;
   }
   static RecoverTreeInfo(e) {
-    for (const r of e) ModelManager_1.ModelManager.PerformModel.SetSightTarget(r)
+    for (const r of e) {
+      ModelManager_1.ModelManager.PerformModel.SetSightTarget(r);
+    }
   }
   static OnLeaveLevel() {
-    return PerformActionCenter_1.PerformActionPool.Clear(), !0
+    PerformActionCenter_1.PerformActionPool.Clear();
+    return true;
   }
-}(exports.PerformController = PerformController).tX_ = e => {
-  for (const r of e.hK_) ModelManager_1.ModelManager.PerformModel.SetSightTarget(r)
+}
+(exports.PerformController = PerformController).tX_ = e => {
+  for (const r of e.hK_) {
+    ModelManager_1.ModelManager.PerformModel.SetSightTarget(r);
+  }
 };
 //# sourceMappingURL=PerformController.js.map

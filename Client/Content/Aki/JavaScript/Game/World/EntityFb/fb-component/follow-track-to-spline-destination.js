@@ -1,43 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FollowTrackToSplineDestination = void 0;
+  value: true
+});
+exports.FollowTrackToSplineDestination = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class FollowTrackToSplineDestination {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsFollowTrackToSplineDestination(t, i) {
-    return (i || new FollowTrackToSplineDestination).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new FollowTrackToSplineDestination()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsFollowTrackToSplineDestination(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new FollowTrackToSplineDestination).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new FollowTrackToSplineDestination()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.readUint8(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readUint8(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   changeSelfState(t) {
     var i = this.bb.__offset(this.bb_pos, 6);
-    return i ? this.bb.__string(this.bb_pos + i, t) : void 0
+    if (i) {
+      return this.bb.__string(this.bb_pos + i, t);
+    } else {
+      return undefined;
+    }
   }
   static startFollowTrackToSplineDestination(t) {
-    t.startObject(2)
+    t.startObject(2);
   }
   static addType(t, i) {
-    t.addFieldInt8(0, i, 0)
+    t.addFieldInt8(0, i, 0);
   }
   static addChangeSelfState(t, i) {
-    t.addFieldOffset(1, i, 0)
+    t.addFieldOffset(1, i, 0);
   }
   static endFollowTrackToSplineDestination(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createFollowTrackToSplineDestination(t, i, e) {
-    return FollowTrackToSplineDestination.startFollowTrackToSplineDestination(t), FollowTrackToSplineDestination.addType(t, i), FollowTrackToSplineDestination.addChangeSelfState(t, e), FollowTrackToSplineDestination.endFollowTrackToSplineDestination(t)
+    FollowTrackToSplineDestination.startFollowTrackToSplineDestination(t);
+    FollowTrackToSplineDestination.addType(t, i);
+    FollowTrackToSplineDestination.addChangeSelfState(t, e);
+    return FollowTrackToSplineDestination.endFollowTrackToSplineDestination(t);
   }
 }
 exports.FollowTrackToSplineDestination = FollowTrackToSplineDestination;

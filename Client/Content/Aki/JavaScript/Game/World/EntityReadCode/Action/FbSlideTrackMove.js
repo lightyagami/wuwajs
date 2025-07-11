@@ -1,31 +1,71 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSlideTrackMove = void 0;
+  value: true
+});
+exports.FbSlideTrackMove = undefined;
 class FbSlideTrackMove {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Dbh = !1, this.Bbh = 0, this.qbh = !1, this.kbh = !1, this.qtc = !1, this.Otc = 0, this.Gbh = !1, this.Obh = 0, this.Fbh = !1, this.Nbh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Dbh = false;
+    this.Bbh = 0;
+    this.qbh = false;
+    this.kbh = false;
+    this.qtc = false;
+    this.Otc = 0;
+    this.Gbh = false;
+    this.Obh = 0;
+    this.Fbh = false;
+    this.Nbh = 0;
   }
   static Create(t) {
-    if (t) return new FbSlideTrackMove(t)
+    if (t) {
+      return new FbSlideTrackMove(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MaxOffsetDistance() {
-    return this.Dbh || (this.Dbh = !0, this.Bbh = this.FbDataInternal.maxOffsetDistance()), this.Bbh
+    if (!this.Dbh) {
+      this.Dbh = true;
+      this.Bbh = this.FbDataInternal.maxOffsetDistance();
+    }
+    return this.Bbh;
   }
   get IsOneWay() {
-    return this.qbh || (this.qbh = !0, this.kbh = this.FbDataInternal.isOneWay()), this.kbh
+    if (!this.qbh) {
+      this.qbh = true;
+      this.kbh = this.FbDataInternal.isOneWay();
+    }
+    return this.kbh;
   }
   get LayerVerticalLimit() {
-    return this.qtc || (this.qtc = !0, this.Otc = this.FbDataInternal.layerVerticalLimit()), this.Otc
+    if (!this.qtc) {
+      this.qtc = true;
+      this.Otc = this.FbDataInternal.layerVerticalLimit();
+    }
+    return this.Otc;
   }
   get DirectionAngleLimit() {
-    return this.Gbh || (this.Gbh = !0, this.Obh = this.FbDataInternal.directionAngleLimit()), this.Obh
+    if (!this.Gbh) {
+      this.Gbh = true;
+      this.Obh = this.FbDataInternal.directionAngleLimit();
+    }
+    return this.Obh;
   }
   get EdgeLimitCurveFactor() {
-    return this.Fbh || (this.Fbh = !0, this.Nbh = this.FbDataInternal.edgeLimitCurveFactor()), this.Nbh
+    if (!this.Fbh) {
+      this.Fbh = true;
+      this.Nbh = this.FbDataInternal.edgeLimitCurveFactor();
+    }
+    return this.Nbh;
   }
 }
 exports.FbSlideTrackMove = FbSlideTrackMove;

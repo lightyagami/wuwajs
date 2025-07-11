@@ -1,112 +1,195 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleBuyRoleView = void 0;
-const UE = require("ue"),
-  Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  MapRoguePopupBase_1 = require("../../MapRogue/View/Components/MapRoguePopupBase"),
-  RoleDefine_1 = require("../../RoleUi/RoleDefine"),
-  ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew"),
-  RogueBattleBuyRoleItem_1 = require("../Component/RogueBattleBuyRoleItem"),
-  RogueBattleFetterInfoItem_1 = require("../Component/RogueBattleFetterInfoItem");
+  value: true
+});
+exports.RogueBattleBuyRoleView = undefined;
+const UE = require("ue");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const MapRoguePanelFetter_1 = require("../../MapRogue/View/Components/MapRoguePanelFetter");
+const MapRogueTitleItem_1 = require("../../MapRogue/View/Components/MapRogueTitleItem");
+const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
+const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
+const RogueBattleBuyRoleItem_1 = require("../Component/RogueBattleBuyRoleItem");
+const RogueBattleBuyRolePreviewPanel_1 = require("../Component/RogueBattleBuyRolePreviewPanel");
+const RogueBattleShopButton_1 = require("../Component/RogueBattleShopButton");
 class RogueBattleBuyRoleView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.iJl = void 0, this._Xe = 0, this.qC1 = void 0, this.GC1 = void 0, this.iJs = void 0, this.JGn = () => {
-      ControllerHolder_1.ControllerHolder.MapRogueController.OpenMapHelpView()
-    }, this.FC1 = () => {
-      var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
-      e && e.Select(Protocol_1.Aki.Protocol.Ku1.Proto_GiveUp)
-    }, this.ilo = () => {
-      var e, t = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
-      t && ((e = this.iJl.mIc).qN_ > ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e.L8n) ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("RogueBattle_BuyItemNotEnough") : t.Select(e.c5n))
-    }, this.vlo = () => {
-      var e, t = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
-      t && ((e = t.Data.GEc.QEc).Wd1 > ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e.$d1) ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("RogueBattle_RefreshItemNotEnough") : e.to1 >= e.eo1 ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("RogueBattle_RefreshCountMax") : t.Select(Protocol_1.Aki.Protocol.Ku1.Proto_Refresh))
-    }, this.UIi = (e, t) => {
-      this.iJl = t, this.GetButton(3).SetSelfInteractive(!0), this.qC1?.SelectGridProxy(e), this.GetButton(3).SetSelfInteractive(!t.mIc?.O2s);
-      let i = t.mIc.Um1;
-      t.mIc.Um1 > RoleDefine_1.ROBOT_DATA_MIN_ID && (e = ConfigManager_1.ConfigManager.RoleConfig?.GetTrialRoleConfig(t.mIc.Um1), i = e.ParentId);
-      e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(i);
-      if (e) {
-        var o = [];
-        for (const r of e.BondIds) ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(r) && o.push({
-          Id: r,
-          AddStar: t.mIc.F6n
-        });
-        o.sort((e, t) => {
-          var i = ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(e.Id),
-            o = ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(t.Id),
-            e = i.Whc + e.AddStar >= i.Pm1,
-            t = o.Whc + t.AddStar >= o.Pm1;
-          return e && !t ? -1 : !e && t ? 1 : o.F6n - i.F6n
-        }), this.GC1.RefreshByDataAsync(o, !0)
+    super(...arguments);
+    this.Mpu = -1;
+    this.Epu = false;
+    this._Xe = 0;
+    this.Ipu = undefined;
+    this.lqe = undefined;
+    this.Tpu = undefined;
+    this.bpu = undefined;
+    this.ZGe = undefined;
+    this.c01 = undefined;
+    this.JGn = () => {
+      ControllerHolder_1.ControllerHolder.MapRogueController.OpenMapHelpView();
+    };
+    this.d01 = () => {
+      var t = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
+      if (t) {
+        t.Select(Protocol_1.Aki.Protocol.pd1.Proto_GiveUp);
       }
-      this.GC1.GetRootUiItem().SetUIActive(!t.mIc?.O2s), ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty()
-    }, this.Bqe = () => {
-      var e = new RogueBattleBuyRoleItem_1.RogueBattleBuyRoleItem;
-      return e.OnSelectCallback = this.UIi, e
-    }
+    };
+    this.vlo = () => {
+      var t;
+      var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
+      if (e) {
+        if ((t = e.Data.GEc.QEc).fm1 > ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.mm1)) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("RogueBattle_RefreshItemNotEnough");
+        } else if (t.So1 >= t.yo1) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("RogueBattle_RefreshCountMax");
+        } else {
+          e.Select(Protocol_1.Aki.Protocol.pd1.Proto_Refresh);
+        }
+      }
+    };
+    this.Rpu = () => {
+      if (this.Epu) {
+        this.Lpu();
+      }
+    };
+    this.UIi = (t, e) => {
+      var i = this.Mpu;
+      if (this.Mpu >= 0) {
+        this.c01.UnsafeGetGridProxy(this.wpu(this.Mpu))?.Deselect(this.Mpu);
+      }
+      this.Mpu = t;
+      this.c01.UnsafeGetGridProxy(this.wpu(this.Mpu))?.Select(t);
+      this.ZGe.SetInteractive(!e.mIc?.O2s);
+      this.bpu.Refresh(e);
+      this.z3e(true);
+      if (i === -1) {
+        this.UiViewSequence?.StopSequenceByKey("Switch02", false, true);
+        this.UiViewSequence?.StopSequenceByKey("Switch", false, true);
+        this.UiViewSequence?.PlaySequence("Switch");
+      } else if (i !== this.Mpu) {
+        this.UiViewSequence?.StopSequenceByKey("Switch02", false, true);
+        this.UiViewSequence?.StopSequenceByKey("Switch", false, true);
+        this.UiViewSequence?.PlaySequence("Switch02");
+      }
+      ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty();
+    };
+    this.vIl = t => this.Mpu === t;
+    this.Bqe = () => {
+      var t = new RogueBattleBuyRoleItem_1.RogueBattleBuyRoleGroupItem();
+      t.OnSelectCallback = this.UIi;
+      t.IsSelectOn = this.vIl;
+      return t;
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIScrollViewWithScrollbarComponent],
-      [1, UE.UIItem],
-      [2, UE.UIButtonComponent],
-      [3, UE.UIButtonComponent],
-      [4, UE.UIButtonComponent],
-      [5, UE.UIHorizontalLayout],
-      [6, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UITexture],
-      [10, UE.UIText],
-      [9, UE.UIText]
-    ], this.BtnBindInfo = [
-      [2, this.FC1],
-      [3, this.ilo],
-      [4, this.vlo]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[9, this.Rpu]];
+  }
+  wpu(t) {
+    return Math.floor(t / 2);
+  }
+  Lpu() {
+    if (this.Mpu >= 0) {
+      this.c01.UnsafeGetGridProxy(this.wpu(this.Mpu))?.Deselect(this.Mpu);
+    }
+    this.Mpu = -1;
+    this.z3e(false);
   }
   async OnBeforeStartAsync() {
     this._Xe = this.OpenParam;
-    var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
-    e && (e.UpdateViewFunc = () => {
-      this.RefreshRoleList()
-    }, e.CloseViewFunc = () => {
-      this.CloseMe()
-    }), this.qC1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Bqe), this.GC1 = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), () => new RogueBattleFetterInfoItem_1.RogueBattleFetterInfoItem, this.GetItem(6).GetOwner()), this.GetButton(3).SetSelfInteractive(!1), this.iJs = new MapRoguePopupBase_1.MapRoguePopupBase, await Promise.all([this.iJs.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.RefreshRoleList()]), this.iJs.SetHelpCallBack(this.JGn), this.iJs.SetPanelFetterVisible(!1)
+    var t = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
+    if (t) {
+      t.UpdateViewFunc = () => {
+        this.RefreshRoleList();
+      };
+      t.CloseViewFunc = () => {
+        this.CloseMe();
+      };
+    }
+    var t = [];
+    this.Ipu = new MapRogueTitleItem_1.MapRogueTitleItem();
+    t.push(this.Ipu.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
+    this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
+    t.push(this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    this.Tpu = new MapRoguePanelFetter_1.MapRoguePanelFetter();
+    t.push(this.Tpu.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
+    this.bpu = new RogueBattleBuyRolePreviewPanel_1.RogueBattleBuyRolePreviewPanel(this._Xe);
+    this.bpu.BackBtnFunc = this.Rpu;
+    t.push(this.bpu.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
+    this.ZGe = new RogueBattleShopButton_1.RogueBattleShopButton();
+    t.push(this.ZGe.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.c01 = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(2), this.GetItem(3).GetOwner(), this.Bqe, true);
+    await Promise.all(t);
+    await this.lqe.SetCurrencyItemList([ModelManager_1.ModelManager.MapRogueModel.GetRogueCurrencyItemId()]);
+    this.lqe.SetHelpCallBack(this.JGn);
+    this.lqe.SetCloseCallBack(this.d01);
+    this.lqe.SetHelpBtnActive(true);
+    this.UiViewSequence.AddSequenceFinishEvent("SwClose", () => {
+      this.GetItem(7).SetUIActive(false);
+    });
+    this.ZGe.SetFunction(this.vlo);
+    this.bjc();
+    await this.RefreshRoleList();
+  }
+  bjc() {
+    this.Epu = false;
+    this.lqe.SetCloseBtnActive(true);
+    this.lqe.SetHelpBtnActive(true);
+    this.GetItem(5).SetUIActive(true);
+    this.GetItem(7).SetUIActive(false);
+  }
+  z3e(t) {
+    if (this.Epu !== t && !(this.Epu = t, this.lqe.SetCloseBtnActive(!t), this.lqe.SetHelpBtnActive(!t), this.RefreshBtnRefresh(), this.UiViewSequence?.StopSequenceByKey("SwClose", false, true), this.GetItem(7).SetUIActive(true), t)) {
+      this.Tpu.RefreshFetter();
+      this.UiViewSequence?.PlaySequence("SwClose");
+    }
   }
   async RefreshRoleList() {
-    var e = new UiAsyncTask_1.UiAsyncTask("RogueBattleBuyRoleView.RefreshRoleList", async () => {
-      var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
-      if (e) {
-        const r = e.Data.GEc.QEc.fIc;
-        this.qC1?.BindLateUpdate(() => {
-          var e = this.GetItem(1).GetWidth(),
-            t = this.GetScrollViewWithScrollbar(0),
-            i = t.GetViewport().GetUIItem().GetWidth(),
-            o = t.Content.GetComponentByClass(UE.UIGridLayout.StaticClass()),
-            i = Math.round(i / (e + o.GetSpacing().X));
-          r.length <= i ? (o.SetHorizontalOrVertical(!0), o.SetAlign(4), t.Content.GetUIItem().SetStretchRight(0)) : r.length > i && r.length <= 2 * i ? (o.SetHorizontalOrVertical(!0), o.SetAlign(3), t.Content.GetUIItem().SetStretchRight(0)) : (o.SetHorizontalOrVertical(!1), o.SetAlign(0)), this.qC1?.UnBindLateUpdate()
-        }), this.RefreshBtnRefresh(), await this.qC1.RefreshByDataAsync(r, !0), this.UIi(0, e.Data.GEc.QEc.fIc[0])
+    var t = new UiAsyncTask_1.UiAsyncTask("RogueBattleBuyRoleView.RefreshRoleList", async () => {
+      var t = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
+      if (t) {
+        var e = t.Data.GEc.QEc.fIc;
+        this.RefreshBtnRefresh();
+        var t = this.GetLoopScrollViewComponent(2);
+        var i = this.GetItem(3).GetWidth();
+        var s = t.GetViewport().GetUIItem().GetWidth();
+        var s = Math.floor(s / (i + t.SpacingHorizontal)) * 2;
+        var o = Math.max(s, e.length);
+        var h = [];
+        for (let t = 0; t < o; t += 2) {
+          var r = new RogueBattleBuyRoleItem_1.RoleBuyInfoGroupData();
+          if (t < e.length) {
+            r.Data1 = e[t];
+          }
+          if (t + 1 < e.length) {
+            r.Data2 = e[t + 1];
+          }
+          h.push(r);
+        }
+        await this.c01.RefreshByDataAsync(h, true);
+        this.Lpu();
       }
     });
-    await this.RunAsyncTask(e)
+    await this.RunAsyncTask(t);
   }
   RefreshBtnRefresh() {
-    var e, t = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
-    t && (e = 0 < (t = t.Data.GEc.QEc).eo1, this.GetButton(4).RootUIComp.SetUIActive(e), e) && (void 0 !== t.Wd1 && this.GetText(9).SetText(t.Wd1.toString()), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), "RogueBattle_BuyRole_RefreshCost", t.to1, t.eo1), void 0 !== t.$d1) && this.SetItemIcon(this.GetTexture(8), t.$d1)
-  }
-  GetGuideUiItemAndUiItemForShowEx(e) {
     var t;
-    if (0 !== e.length) return "FirstRole" === (e = e[0]) ? (t = this.qC1?.GetItemByIndex(0)) ? [t, t] : void 0 : "FirstFetter" === e && (t = this.GC1?.GetGridByDisplayIndex(0)) ? [t, t] : void 0
+    var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this._Xe);
+    if (e && (t = (e = e.Data.GEc.QEc).yo1 > 0 && !this.Epu, this.ZGe.SetActive(t), t) && (e.fm1 !== undefined && (t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e.mm1), this.ZGe.SetCostText(e.fm1.toString(), t < e.fm1)), this.ZGe.SetText("RogueBattle_BuyRole_RefreshCost", e.So1, e.yo1), e.mm1 !== undefined)) {
+      this.ZGe.SetCostItem(e.mm1);
+    }
+  }
+  GetGuideUiItemAndUiItemForShowEx(t) {
+    if (t.length !== 0 && t[0] === "FirstRole" && (t = this.c01?.UnsafeGetGridProxy(0)?.GetRoleUiItem(0))) {
+      return [t, t];
+    } else {
+      return undefined;
+    }
   }
 }
 exports.RogueBattleBuyRoleView = RogueBattleBuyRoleView;

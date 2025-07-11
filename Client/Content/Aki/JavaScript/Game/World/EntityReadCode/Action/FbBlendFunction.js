@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBlendFunction = void 0;
+  value: true
+});
+exports.FbBlendFunction = undefined;
 class FbBlendFunction {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ATh = !1, this.xTh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ATh = false;
+    this.xTh = 0;
   }
   static Create(t) {
-    if (t) return new FbBlendFunction(t)
+    if (t) {
+      return new FbBlendFunction(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BlendExp() {
-    return this.ATh || (this.ATh = !0, this.xTh = this.FbDataInternal.blendExp()), this.xTh
+    if (!this.ATh) {
+      this.ATh = true;
+      this.xTh = this.FbDataInternal.blendExp();
+    }
+    return this.xTh;
   }
 }
 exports.FbBlendFunction = FbBlendFunction;

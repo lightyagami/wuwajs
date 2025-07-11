@@ -1,80 +1,146 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTrampleComponent = void 0;
-const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action"),
-  FbActionInfo_1 = require("../Action/FbActionInfo"),
-  FbEnterLeaveRadius_1 = require("../Common/FbEnterLeaveRadius"),
-  FbEntityMatch_1 = require("./FbEntityMatch"),
-  FbConditionGroup_1 = require("../Condition/FbConditionGroup"),
-  UnionMatchRoleOptionHelper_1 = require("../Match/UnionMatchRoleOptionHelper");
+  value: true
+});
+exports.FbTrampleComponent = undefined;
+const fb_action_1 = require("../../../../Game/World/EntityFb/fb-action");
+const FbActionInfo_1 = require("../Action/FbActionInfo");
+const FbEnterLeaveRadius_1 = require("../Common/FbEnterLeaveRadius");
+const FbEntityMatch_1 = require("./FbEntityMatch");
+const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
+const UnionMatchRoleOptionHelper_1 = require("../Match/UnionMatchRoleOptionHelper");
 class FbTrampleComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.f_h = !1, this.X6o = void 0, this.Ukh = !1, this.Dkh = void 0, this.qDh = !1, this.PAe = void 0, this.QVh = !1, this.KVh = 0, this.gch = !1, this.fch = 0, this.$Vh = !1, this.XVh = !1, this.YVh = !1, this.zVh = void 0, this.JVh = !1, this.ZVh = !1, this.e4h = !1, this.t4h = void 0, this.i4h = !1, this.r4h = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.f_h = false;
+    this.X6o = undefined;
+    this.Ukh = false;
+    this.Dkh = undefined;
+    this.qDh = false;
+    this.PAe = undefined;
+    this.QVh = false;
+    this.KVh = 0;
+    this.gch = false;
+    this.fch = 0;
+    this.$Vh = false;
+    this.XVh = false;
+    this.YVh = false;
+    this.zVh = undefined;
+    this.JVh = false;
+    this.ZVh = false;
+    this.e4h = false;
+    this.t4h = undefined;
+    this.i4h = false;
+    this.r4h = undefined;
   }
   static Create(t) {
-    if (t) return new FbTrampleComponent(t)
+    if (t) {
+      return new FbTrampleComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Condition() {
-    return this.f_h || (this.f_h = !0, this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition())), this.X6o
+    if (!this.f_h) {
+      this.f_h = true;
+      this.X6o = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.condition());
+    }
+    return this.X6o;
   }
   get Match() {
-    return this.Ukh || (this.Ukh = !0, this.Dkh = FbEntityMatch_1.FbEntityMatch.Create(this.FbDataInternal.match())), this.Dkh
+    if (!this.Ukh) {
+      this.Ukh = true;
+      this.Dkh = FbEntityMatch_1.FbEntityMatch.Create(this.FbDataInternal.match());
+    }
+    return this.Dkh;
   }
   get MatchRoleOption() {
     if (!this.qDh) {
-      this.qDh = !0, this.PAe = new Array;
+      this.qDh = true;
+      this.PAe = new Array();
       var i = this.FbDataInternal.matchRoleOptionLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.matchRoleOptionType(t),
-            h = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.GetUnionMatchRoleOptionObject(s);
-          h && void 0 !== (s = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.ReadUnionMatchRoleOption(s, this.FbDataInternal.matchRoleOption(t, h))) && this.PAe.push(s)
+          var s = this.FbDataInternal.matchRoleOptionType(t);
+          var h = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.GetUnionMatchRoleOptionObject(s);
+          if (h && (s = UnionMatchRoleOptionHelper_1.UnionMatchRoleOptionHelper.ReadUnionMatchRoleOption(s, this.FbDataInternal.matchRoleOption(t, h))) !== undefined) {
+            this.PAe.push(s);
+          }
         }
+      }
     }
-    return this.PAe
+    return this.PAe;
   }
   get DownTime() {
-    return this.QVh || (this.QVh = !0, this.KVh = this.FbDataInternal.downTime()), this.KVh
+    if (!this.QVh) {
+      this.QVh = true;
+      this.KVh = this.FbDataInternal.downTime();
+    }
+    return this.KVh;
   }
   get StayTime() {
-    return this.gch || (this.gch = !0, this.fch = this.FbDataInternal.stayTime()), this.fch
+    if (!this.gch) {
+      this.gch = true;
+      this.fch = this.FbDataInternal.stayTime();
+    }
+    return this.fch;
   }
   get IsResetGear() {
-    return this.$Vh || (this.$Vh = !0, this.XVh = this.FbDataInternal.isResetGear()), this.XVh
+    if (!this.$Vh) {
+      this.$Vh = true;
+      this.XVh = this.FbDataInternal.isResetGear();
+    }
+    return this.XVh;
   }
   get ShowLandTipRadius() {
-    return this.YVh || (this.YVh = !0, this.zVh = FbEnterLeaveRadius_1.FbEnterLeaveRadius.Create(this.FbDataInternal.showLandTipRadius())), this.zVh
+    if (!this.YVh) {
+      this.YVh = true;
+      this.zVh = FbEnterLeaveRadius_1.FbEnterLeaveRadius.Create(this.FbDataInternal.showLandTipRadius());
+    }
+    return this.zVh;
   }
   get StopTeleControlMove() {
-    return this.JVh || (this.JVh = !0, this.ZVh = this.FbDataInternal.stopTeleControlMove()), this.ZVh
+    if (!this.JVh) {
+      this.JVh = true;
+      this.ZVh = this.FbDataInternal.stopTeleControlMove();
+    }
+    return this.ZVh;
   }
   get EnterActions() {
     if (!this.e4h) {
-      this.e4h = !0, this.t4h = new Array;
+      this.e4h = true;
+      this.t4h = new Array();
       var i = this.FbDataInternal.enterActionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.enterActions(t, new fb_action_1.ActionInfo);
-          this.t4h.push(FbActionInfo_1.FbActionInfo.Create(s))
+          var s = this.FbDataInternal.enterActions(t, new fb_action_1.ActionInfo());
+          this.t4h.push(FbActionInfo_1.FbActionInfo.Create(s));
         }
+      }
     }
-    return this.t4h
+    return this.t4h;
   }
   get ExitActions() {
     if (!this.i4h) {
-      this.i4h = !0, this.r4h = new Array;
+      this.i4h = true;
+      this.r4h = new Array();
       var i = this.FbDataInternal.exitActionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.exitActions(t, new fb_action_1.ActionInfo);
-          this.r4h.push(FbActionInfo_1.FbActionInfo.Create(s))
+          var s = this.FbDataInternal.exitActions(t, new fb_action_1.ActionInfo());
+          this.r4h.push(FbActionInfo_1.FbActionInfo.Create(s));
         }
+      }
     }
-    return this.r4h
+    return this.r4h;
   }
 }
 exports.FbTrampleComponent = FbTrampleComponent;

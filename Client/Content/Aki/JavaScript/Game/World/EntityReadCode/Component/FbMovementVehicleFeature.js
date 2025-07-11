@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMovementVehicleFeature = void 0;
+  value: true
+});
+exports.FbMovementVehicleFeature = undefined;
 const FbMovementPerformConfig_1 = require("./FbMovementPerformConfig");
 class FbMovementVehicleFeature {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.nHl = !1, this.sHl = 0, this.n7l = !1, this.s7l = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.nHl = false;
+    this.sHl = 0;
+    this.n7l = false;
+    this.s7l = undefined;
   }
   static Create(e) {
-    if (e) return new FbMovementVehicleFeature(e)
+    if (e) {
+      return new FbMovementVehicleFeature(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MoveSpline() {
-    return this.nHl || (this.nHl = !0, this.sHl = this.FbDataInternal.moveSpline()), this.sHl
+    if (!this.nHl) {
+      this.nHl = true;
+      this.sHl = this.FbDataInternal.moveSpline();
+    }
+    return this.sHl;
   }
   get MovePerformConfig() {
-    return this.n7l || (this.n7l = !0, this.s7l = FbMovementPerformConfig_1.FbMovementPerformConfig.Create(this.FbDataInternal.movePerformConfig())), this.s7l
+    if (!this.n7l) {
+      this.n7l = true;
+      this.s7l = FbMovementPerformConfig_1.FbMovementPerformConfig.Create(this.FbDataInternal.movePerformConfig());
+    }
+    return this.s7l;
   }
 }
 exports.FbMovementVehicleFeature = FbMovementVehicleFeature;

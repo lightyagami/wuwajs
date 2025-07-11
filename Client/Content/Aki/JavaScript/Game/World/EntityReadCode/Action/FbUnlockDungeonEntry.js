@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbUnlockDungeonEntry = void 0;
+  value: true
+});
+exports.FbUnlockDungeonEntry = undefined;
 class FbUnlockDungeonEntry {
   constructor(t) {
-    this.FbDataInternal = t, this.RMh = !1, this.wMh = 0
+    this.FbDataInternal = t;
+    this.RMh = false;
+    this.wMh = 0;
   }
   static Create(t) {
-    if (t) return new FbUnlockDungeonEntry(t)
+    if (t) {
+      return new FbUnlockDungeonEntry(t);
+    }
   }
   get DungeonEntryId() {
-    return this.RMh || (this.RMh = !0, this.wMh = this.FbDataInternal.dungeonEntryId()), this.wMh
+    if (!this.RMh) {
+      this.RMh = true;
+      this.wMh = this.FbDataInternal.dungeonEntryId();
+    }
+    return this.wMh;
   }
 }
 exports.FbUnlockDungeonEntry = FbUnlockDungeonEntry;

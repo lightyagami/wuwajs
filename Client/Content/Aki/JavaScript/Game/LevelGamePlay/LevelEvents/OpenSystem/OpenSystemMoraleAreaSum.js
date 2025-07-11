@@ -1,17 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemMoraleAreaSum = void 0;
-const UiManager_1 = require("../../../Ui/UiManager"),
-  OpenSystemBase_1 = require("./OpenSystemBase");
+  value: true
+});
+exports.OpenSystemMoraleAreaSum = undefined;
+const UiManager_1 = require("../../../Ui/UiManager");
+const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemMoraleAreaSum extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, a) {
-    return e && (0 === e.BoardId ? await UiManager_1.UiManager.OpenViewAsync("MoraleAreaSumView", {
-      StartSequenceName: "Occupy"
-    }) : await UiManager_1.UiManager.OpenViewAsync("MoraleAreaSumView")), !0
+    if (e) {
+      if (e.BoardId === 0) {
+        await UiManager_1.UiManager.OpenViewAsync("MoraleAreaSumView", {
+          StartSequenceName: "Occupy"
+        });
+      } else {
+        await UiManager_1.UiManager.OpenViewAsync("MoraleAreaSumView");
+      }
+    }
+    return true;
   }
   GetViewName(e, a) {
-    return "MoraleAreaSumView"
+    return "MoraleAreaSumView";
   }
 }
 exports.OpenSystemMoraleAreaSum = OpenSystemMoraleAreaSum;

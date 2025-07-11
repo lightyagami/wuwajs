@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRefreshComponent = void 0;
+  value: true
+});
+exports.FbRefreshComponent = undefined;
 const UnionRefreshRuleHelper_1 = require("./UnionRefreshRuleHelper");
 class FbRefreshComponent {
   constructor(e) {
-    this.FbDataInternal = e, this.q_h = !1, this.k_h = !1, this.KDh = !1, this.$Dh = void 0, this.XDh = !1, this.YDh = !1
+    this.FbDataInternal = e;
+    this.q_h = false;
+    this.k_h = false;
+    this.KDh = false;
+    this.$Dh = undefined;
+    this.XDh = false;
+    this.YDh = false;
   }
   static Create(e) {
-    if (e) return new FbRefreshComponent(e)
+    if (e) {
+      return new FbRefreshComponent(e);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get RefreshRule() {
-    var e, s;
-    return !this.KDh && (this.KDh = !0, e = this.FbDataInternal.refreshRuleType(), s = UnionRefreshRuleHelper_1.UnionRefreshRuleHelper.GetUnionRefreshRuleObject(e)) && (this.$Dh = UnionRefreshRuleHelper_1.UnionRefreshRuleHelper.ReadUnionRefreshRule(e, this.FbDataInternal.refreshRule(s))), this.$Dh
+    var e;
+    var s;
+    if (!this.KDh && (this.KDh = true, e = this.FbDataInternal.refreshRuleType(), s = UnionRefreshRuleHelper_1.UnionRefreshRuleHelper.GetUnionRefreshRuleObject(e))) {
+      this.$Dh = UnionRefreshRuleHelper_1.UnionRefreshRuleHelper.ReadUnionRefreshRule(e, this.FbDataInternal.refreshRule(s));
+    }
+    return this.$Dh;
   }
   get IsDisableRefreshAfterDroppingReward() {
-    return this.XDh || (this.XDh = !0, this.YDh = this.FbDataInternal.isDisableRefreshAfterDroppingReward()), this.YDh
+    if (!this.XDh) {
+      this.XDh = true;
+      this.YDh = this.FbDataInternal.isDisableRefreshAfterDroppingReward();
+    }
+    return this.YDh;
   }
 }
 exports.FbRefreshComponent = FbRefreshComponent;

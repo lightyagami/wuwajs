@@ -1,33 +1,52 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletActionTest = exports.BulletActionBase = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  Stats_1 = require("../../../../Core/Common/Stats"),
-  BulletConstant_1 = require("../BulletConstant");
+  value: true
+});
+exports.BulletActionTest = exports.BulletActionBase = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const Stats_1 = require("../../../../Core/Common/Stats");
+const BulletConstant_1 = require("../BulletConstant");
 class BulletActionBase {
   constructor(t) {
-    this.IsInPool = !1, this.Index = 0, this.IsFinish = !1, this.BulletInfo = void 0, this.ActionInfo = void 0, this.gW = void 0, this.Type = t, BulletConstant_1.BulletConstant.OpenAllActionStat && (this.gW = Stats_1.Stat.CreateNoFlameGraph("BulletActionTick" + t))
+    this.IsInPool = false;
+    this.Index = 0;
+    this.IsFinish = false;
+    this.BulletInfo = undefined;
+    this.ActionInfo = undefined;
+    this.gW = undefined;
+    this.Type = t;
+    if (BulletConstant_1.BulletConstant.OpenAllActionStat) {
+      this.gW = Stats_1.Stat.CreateNoFlameGraph("BulletActionTick" + t);
+    }
   }
   Execute(t, e) {
-    this.BulletInfo = t, this.ActionInfo = e, this.OnExecute()
+    this.BulletInfo = t;
+    this.ActionInfo = e;
+    this.OnExecute();
   }
   OnExecute() {}
   Tick(t) {
-    this.gW?.Start(), this.OnTick(t), this.gW?.Stop()
+    this.gW?.Start();
+    this.OnTick(t);
+    this.gW?.Stop();
   }
   OnTick(t) {}
   AfterTick(t) {}
   GetActionInfo() {
-    return this.ActionInfo
+    return this.ActionInfo;
   }
   Clear() {
-    this.IsFinish = !1, this.BulletInfo = void 0, this.ActionInfo = void 0
+    this.IsFinish = false;
+    this.BulletInfo = undefined;
+    this.ActionInfo = undefined;
   }
 }
-class BulletActionTest extends(exports.BulletActionBase = BulletActionBase) {
+class BulletActionTest extends (exports.BulletActionBase = BulletActionBase) {
   OnExecute() {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Bullet", 17, "BulletActionTest", ["BulletId", this.BulletInfo.BulletRowName])
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Bullet", 17, "BulletActionTest", ["BulletId", this.BulletInfo.BulletRowName]);
+    }
   }
 }
 exports.BulletActionTest = BulletActionTest;

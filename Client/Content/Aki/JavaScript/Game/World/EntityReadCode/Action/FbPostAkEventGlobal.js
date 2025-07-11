@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPostAkEventGlobal = void 0;
+  value: true
+});
+exports.FbPostAkEventGlobal = undefined;
 class FbPostAkEventGlobal {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.zfh = !1, this.Jfh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.zfh = false;
+    this.Jfh = undefined;
   }
   static Create(t) {
-    if (t) return new FbPostAkEventGlobal(t)
+    if (t) {
+      return new FbPostAkEventGlobal(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get AkEvent() {
-    return this.zfh || (this.zfh = !0, this.Jfh = this.FbDataInternal.akEvent()), this.Jfh
+    if (!this.zfh) {
+      this.zfh = true;
+      this.Jfh = this.FbDataInternal.akEvent();
+    }
+    return this.Jfh;
   }
 }
 exports.FbPostAkEventGlobal = FbPostAkEventGlobal;

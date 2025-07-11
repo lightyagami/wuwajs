@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckTrackMoonPopularity = void 0;
+  value: true
+});
+exports.FbCheckTrackMoonPopularity = undefined;
 class FbCheckTrackMoonPopularity {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._ch = !1, this.cch = void 0, this.vJh = !1, this.yJh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._ch = false;
+    this.cch = undefined;
+    this.vJh = false;
+    this.yJh = 0;
   }
   static Create(t) {
-    if (t) return new FbCheckTrackMoonPopularity(t)
+    if (t) {
+      return new FbCheckTrackMoonPopularity(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get Popularity() {
-    return this.vJh || (this.vJh = !0, this.yJh = this.FbDataInternal.popularity()), this.yJh
+    if (!this.vJh) {
+      this.vJh = true;
+      this.yJh = this.FbDataInternal.popularity();
+    }
+    return this.yJh;
   }
 }
 exports.FbCheckTrackMoonPopularity = FbCheckTrackMoonPopularity;

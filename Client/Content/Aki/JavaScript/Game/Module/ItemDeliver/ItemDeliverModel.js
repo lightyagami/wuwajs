@@ -1,20 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemDeliverModel = void 0;
+  value: true
+});
+exports.ItemDeliverModel = undefined;
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 class ItemDeliverModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this._gi = void 0
+    super(...arguments);
+    this._gi = undefined;
   }
   OnClear() {
-    return !(this._gi = void 0)
+    return !(this._gi = undefined);
   }
   SetItemDeliverData(e) {
-    this._gi = e
+    this._gi = e;
   }
   GetItemDeliverData() {
-    return this._gi
+    return this._gi;
   }
 }
 exports.ItemDeliverModel = ItemDeliverModel;

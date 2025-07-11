@@ -1,25 +1,29 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifySendGamePlayEvent extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.事件Tag = void 0
+    super(...arguments);
+    this.事件Tag = undefined;
   }
   Constructor() {}
   K2_Notify(e, t) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default) {
       e = e.CharacterActorComponent.Entity.GetComponent(17);
-      if (!e?.Valid) return !1;
-      e.SendGameplayEventToActor(this.事件Tag)
+      if (!e?.Valid) {
+        return false;
+      }
+      e.SendGameplayEventToActor(this.事件Tag);
     }
-    return !1
+    return false;
   }
   GetNotifyName() {
-    return "发送动画通知广播"
+    return "发送动画通知广播";
   }
 }
 exports.default = TsAnimNotifySendGamePlayEvent;

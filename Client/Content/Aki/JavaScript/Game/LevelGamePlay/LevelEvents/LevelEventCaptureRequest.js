@@ -1,33 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventCaptureRequest = void 0;
-const EntitySystem_1 = require("../../../Core/Entity/EntitySystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  BattleNetController_1 = require("../../World/Controller/BattleNetController"),
-  LevelGameplayActionsDefine_1 = require("../LevelGameplayActionsDefine"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase"),
-  LevelGeneralContextDefine_1 = require("../LevelGeneralContextDefine");
+  value: true
+});
+exports.LevelEventCaptureRequest = undefined;
+const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const BattleNetController_1 = require("../../World/Controller/BattleNetController");
+const LevelGameplayActionsDefine_1 = require("../LevelGameplayActionsDefine");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
+const LevelGeneralContextDefine_1 = require("../LevelGeneralContextDefine");
 class LevelEventCaptureRequest extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.NLe = "", this.E0 = 0
+    super(...arguments);
+    this.NLe = "";
+    this.E0 = 0;
   }
   ExecuteNew(t, e) {
-    1 === e.Type && EntitySystem_1.EntitySystem.Get(e.EntityId)?.Valid ? (this.E0 = e.EntityId, BattleNetController_1.BattleNetController.RequestCaptureEntity(this.E0).then(e => {
-      e ? (this.kLe(t), this.OLe(), this.FinishExecute(!0)) : this.FinishExecute(!1)
-    })) : this.FinishExecute(!1)
+    if (e.Type === 1 && EntitySystem_1.EntitySystem.Get(e.EntityId)?.Valid) {
+      this.E0 = e.EntityId;
+      BattleNetController_1.BattleNetController.RequestCaptureEntity(this.E0).then(e => {
+        if (e) {
+          this.kLe(t);
+          this.OLe();
+          this.FinishExecute(true);
+        } else {
+          this.FinishExecute(false);
+        }
+      });
+    } else {
+      this.FinishExecute(false);
+    }
   }
   kLe(e) {
-    var t = new LevelGameplayActionsDefine_1.CommonActionInfo,
-      e = (t.Params = e.SuccessEvent, new Array);
-    e.push(t), ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(e, LevelGeneralContextDefine_1.EntityContext.Create(this.E0))
+    var t = new LevelGameplayActionsDefine_1.CommonActionInfo();
+    t.Params = e.SuccessEvent;
+    var e = new Array();
+    e.push(t);
+    ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(e, LevelGeneralContextDefine_1.EntityContext.Create(this.E0));
   }
   OLe() {
     var e = EntitySystem_1.EntitySystem.Get(this.E0);
-    e && (e = e.GetComponent(146)) && e.ExecuteCapture(this.NLe)
+    if (e &&= e.GetComponent(146)) {
+      e.ExecuteCapture(this.NLe);
+    }
   }
   OnReset() {
-    this.NLe = void 0, this.E0 = 0
+    this.NLe = undefined;
+    this.E0 = 0;
   }
 }
 exports.LevelEventCaptureRequest = LevelEventCaptureRequest;

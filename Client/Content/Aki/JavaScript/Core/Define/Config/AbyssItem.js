@@ -1,253 +1,372 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AbyssItem = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  ConfigPropValue_1 = require("./SubType/ConfigPropValue"),
-  DicIntInt_1 = require("./SubType/DicIntInt"),
-  StringArray_1 = require("./SubType/StringArray");
+  value: true
+});
+exports.AbyssItem = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const ConfigPropValue_1 = require("./SubType/ConfigPropValue");
+const DicIntInt_1 = require("./SubType/DicIntInt");
+const StringArray_1 = require("./SubType/StringArray");
 class AbyssItem {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ActivityId() {
-    return this.activityid()
+    return this.activityid();
   }
   get SlotType() {
-    return this.slottype()
+    return this.slottype();
   }
   get QualityId() {
-    return this.qualityid()
+    return this.qualityid();
   }
   get BelongLittleRole() {
-    return this.belonglittlerole()
+    return this.belonglittlerole();
   }
   get PassiveBuffShowName() {
-    return this.passivebuffshowname()
+    return this.passivebuffshowname();
   }
   get PassiveBuffShowDesc() {
-    return this.passivebuffshowdesc()
+    return this.passivebuffshowdesc();
   }
   get LevelDescStrArray() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.leveldescstrarrayLength(), this.leveldescstrarray, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.leveldescstrarrayLength(), this.leveldescstrarray, this);
   }
   get AbyssBuff() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.abyssbuffLength(), this.abyssbuff, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.abyssbuffLength(), this.abyssbuff, this);
   }
   get AbyssPhantomBuff() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.abyssphantombuffLength(), this.abyssphantombuff, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.abyssphantombuffLength(), this.abyssphantombuff, this);
   }
   get Prop() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.propLength(), this.prop, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.propLength(), this.prop, this);
   }
   get AttributesDescription() {
-    return this.attributesdescription()
+    return this.attributesdescription();
   }
   get AddTag() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.addtagLength(), this.addtagKey, this.addtagValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.addtagLength(), this.addtagKey, this.addtagValue, this);
   }
   addtagKey(t) {
-    return this.addtag(t)?.key()
+    return this.addtag(t)?.key();
   }
   addtagValue(t) {
-    return this.addtag(t)?.value()
+    return this.addtag(t)?.value();
   }
   get CertainTag() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.certaintagLength(), this.certaintagKey, this.certaintagValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.certaintagLength(), this.certaintagKey, this.certaintagValue, this);
   }
   certaintagKey(t) {
-    return this.certaintag(t)?.key()
+    return this.certaintag(t)?.key();
   }
   certaintagValue(t) {
-    return this.certaintag(t)?.value()
+    return this.certaintag(t)?.value();
   }
   get AddProp() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.addpropLength(), this.addprop, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.addpropLength(), this.addprop, this);
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get TypeDescription() {
-    return this.typedescription()
+    return this.typedescription();
   }
   get BgDescription() {
-    return this.bgdescription()
+    return this.bgdescription();
   }
   get Icon() {
-    return this.icon()
+    return this.icon();
   }
   get IconMiddle() {
-    return this.iconmiddle()
+    return this.iconmiddle();
   }
   get IconSmall() {
-    return this.iconsmall()
+    return this.iconsmall();
   }
   get Mesh() {
-    return this.mesh()
+    return this.mesh();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsAbyssItem(t, s) {
-    return (s || new AbyssItem).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new AbyssItem()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   activityid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   slottype() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   qualityid() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   belonglittlerole() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   passivebuffshowname(t) {
-    var s = this.J7.__offset(this.z7, 14),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 14);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   passivebuffshowdesc(t) {
-    var s = this.J7.__offset(this.z7, 16),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   GetLeveldescstrarrayAt(t, s) {
-    return this.leveldescstrarray(t)
+    return this.leveldescstrarray(t);
   }
   leveldescstrarray(t, s) {
     var i = this.J7.__offset(this.z7, 18);
-    return i ? (s || new StringArray_1.StringArray).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new StringArray_1.StringArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   leveldescstrarrayLength() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetAbyssbuffAt(t) {
-    return this.abyssbuff(t)
+    return this.abyssbuff(t);
   }
   abyssbuff(t) {
     var s = this.J7.__offset(this.z7, 20);
-    return s ? this.J7.readFloat64(this.J7.__vector(this.z7 + s) + 8 * t) : 0
+    if (s) {
+      return this.J7.readFloat64(this.J7.__vector(this.z7 + s) + t * 8);
+    } else {
+      return 0;
+    }
   }
   abyssbuffLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   abyssbuffArray() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetAbyssphantombuffAt(t) {
-    return this.abyssphantombuff(t)
+    return this.abyssphantombuff(t);
   }
   abyssphantombuff(t) {
     var s = this.J7.__offset(this.z7, 22);
-    return s ? this.J7.readFloat64(this.J7.__vector(this.z7 + s) + 8 * t) : 0
+    if (s) {
+      return this.J7.readFloat64(this.J7.__vector(this.z7 + s) + t * 8);
+    } else {
+      return 0;
+    }
   }
   abyssphantombuffLength() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   abyssphantombuffArray() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetPropAt(t, s) {
-    return this.prop(t)
+    return this.prop(t);
   }
   prop(t, s) {
     var i = this.J7.__offset(this.z7, 24);
-    return i ? (s || new ConfigPropValue_1.ConfigPropValue).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new ConfigPropValue_1.ConfigPropValue()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   propLength() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   attributesdescription(t) {
-    var s = this.J7.__offset(this.z7, 26),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 26);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   GetAddtagAt(t, s) {
-    return this.addtag(t)
+    return this.addtag(t);
   }
   addtag(t, s) {
     var i = this.J7.__offset(this.z7, 28);
-    return i ? (s || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   addtagLength() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetCertaintagAt(t, s) {
-    return this.certaintag(t)
+    return this.certaintag(t);
   }
   certaintag(t, s) {
     var i = this.J7.__offset(this.z7, 30);
-    return i ? (s || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   certaintagLength() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetAddpropAt(t, s) {
-    return this.addprop(t)
+    return this.addprop(t);
   }
   addprop(t, s) {
     var i = this.J7.__offset(this.z7, 32);
-    return i ? (s || new ConfigPropValue_1.ConfigPropValue).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + 4 * t), this.J7) : null
+    if (i) {
+      return (s || new ConfigPropValue_1.ConfigPropValue()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   addpropLength() {
     var t = this.J7.__offset(this.z7, 32);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var s = this.J7.__offset(this.z7, 34),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 34);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   typedescription(t) {
-    var s = this.J7.__offset(this.z7, 36),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 36);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   bgdescription(t) {
-    var s = this.J7.__offset(this.z7, 38),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 38);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   icon(t) {
-    var s = this.J7.__offset(this.z7, 40),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 40);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   iconmiddle(t) {
-    var s = this.J7.__offset(this.z7, 42),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 42);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   iconsmall(t) {
-    var s = this.J7.__offset(this.z7, 44),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 44);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   mesh(t) {
-    var s = this.J7.__offset(this.z7, 46),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 46);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.AbyssItem = AbyssItem;

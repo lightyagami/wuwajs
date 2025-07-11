@@ -1,38 +1,52 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SeedRandomUtil = void 0;
+  value: true
+});
+exports.SeedRandomUtil = undefined;
 class SeedRandomUtil {
   constructor() {
-    this.RJ = 1664525, this.UJ = 1013904223, this.Cc1 = Math.pow(2, 32), this.pc1 = 0
+    this.RJ = 1664525;
+    this.UJ = 1013904223;
+    this.Fc1 = Math.pow(2, 32);
+    this.Nc1 = 0;
   }
   SetSeed(t) {
-    this.pc1 = t
+    this.Nc1 = t;
   }
   GetFraction() {
-    return this.pc1 = (this.RJ * this.pc1 + this.UJ) % this.Cc1, this.pc1 / this.Cc1
+    this.Nc1 = (this.RJ * this.Nc1 + this.UJ) % this.Fc1;
+    return this.Nc1 / this.Fc1;
   }
   SeedRandomRangeInt(t, e) {
     var r = this.GetFraction();
-    return Math.min(e, Math.floor(t + r * (e - t + 1)))
+    return Math.min(e, Math.floor(t + r * (e - t + 1)));
   }
   GenerateRandomSequence(e) {
     var r = Array.from(Array(e), (t, e) => e + 1);
-    for (let t = e - 1; 0 < t; t--) {
+    for (let t = e - 1; t > 0; t--) {
       var s = this.SeedRandomRangeInt(0, t);
-      [r[t], r[s]] = [r[s], r[t]]
+      [r[t], r[s]] = [r[s], r[t]];
     }
-    return r
+    return r;
   }
   WeightedRandom(t) {
-    if (1 === t.length) return 0;
+    if (t.length === 1) {
+      return 0;
+    }
     var e = [];
     let r = 0;
-    for (const i of t) r += i, e.push(r);
+    for (const i of t) {
+      r += i;
+      e.push(r);
+    }
     var s = this.SeedRandomRangeInt(0, r);
-    for (let t = 0; t < e.length; t++)
-      if (s < e[t]) return t;
-    return t.length - 1
+    for (let t = 0; t < e.length; t++) {
+      if (s < e[t]) {
+        return t;
+      }
+    }
+    return t.length - 1;
   }
 }
 exports.SeedRandomUtil = SeedRandomUtil;

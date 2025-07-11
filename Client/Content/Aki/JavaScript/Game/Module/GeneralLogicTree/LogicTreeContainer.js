@@ -1,114 +1,124 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LogicTreeContainer = void 0;
-const EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem");
+  value: true
+});
+exports.LogicTreeContainer = undefined;
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
 class LogicTreeContainer {
   constructor() {
-    this.BehaviorTree = void 0, this.vYt = !1
+    this.BehaviorTree = undefined;
+    this.vYt = false;
   }
   get Tree() {
-    if (this.BehaviorTree) return this.BehaviorTree
+    if (this.BehaviorTree) {
+      return this.BehaviorTree;
+    }
   }
   get TreeId() {
-    return this.Tree?.TreeIncId
+    return this.Tree?.TreeIncId;
   }
   get TreeConfigId() {
-    return this.Tree?.TreeConfigId
+    return this.Tree?.TreeConfigId;
   }
   Destroy() {
-    this.AH1()
+    this.d$1();
   }
   get IsBelongPlayer() {
-    return this.vYt
+    return this.vYt;
   }
   SetUpBehaviorTree(e) {
-    (this.BehaviorTree = e) && (this.vYt = !0)
+    if (this.BehaviorTree = e) {
+      this.vYt = true;
+    }
   }
-  AH1() {
-    this.BehaviorTree && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TearDownGeneralLogicTree, this.TreeId, this.TreeConfigId), this.BehaviorTree = void 0)
+  d$1() {
+    if (this.BehaviorTree) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TearDownGeneralLogicTree, this.TreeId, this.TreeConfigId);
+      this.BehaviorTree = undefined;
+    }
   }
   GetNode(e) {
-    return this.Tree?.GetNode(e)
+    return this.Tree?.GetNode(e);
   }
   GetCurrentActiveChildQuestNode() {
-    return this.Tree?.GetCurrentActiveChildQuestNode()
+    return this.Tree?.GetCurrentActiveChildQuestNode();
   }
   GetCurrentActiveChildQuestNodes() {
-    return this.Tree?.GetCurrentActiveChildQuestNodes()
+    return this.Tree?.GetCurrentActiveChildQuestNodes();
   }
   GetActiveChildQuestNodesId() {
-    return this.Tree?.GetActiveChildQuestNodesId()
+    return this.Tree?.GetActiveChildQuestNodesId();
   }
   GetCurrentCorrelativeEntities() {
-    return this.Tree?.GetCurrentCorrelativeEntities()
+    return this.Tree?.GetCurrentCorrelativeEntities();
   }
   SetTrack(e, t = 0) {
-    this.Tree?.SetTrack(e, t)
+    this.Tree?.SetTrack(e, t);
   }
   GetNodeTrackPosition(e) {
-    return this.Tree?.GetNodeTrackPosition(e)
+    return this.Tree?.GetNodeTrackPosition(e);
   }
   GetTrackDistance(e) {
-    return this.Tree?.GetTrackDistance(e)
+    return this.Tree?.GetTrackDistance(e);
   }
   GetDefaultMark(e) {
-    return this.Tree?.GetDefaultMark(e)
+    return this.Tree?.GetDefaultMark(e);
   }
   GetGuideLineHideDistance(e) {
-    return this.Tree?.GetGuideLineHideDistance(e)
+    return this.Tree?.GetGuideLineHideDistance(e);
   }
   IsInTrackRange() {
-    return this.Tree.IsInTrackRange()
+    return this.Tree.IsInTrackRange();
   }
   IsRangeTrack(e) {
-    return this.Tree.IsRangeTrack(e)
+    return this.Tree.IsRangeTrack(e);
   }
   CreateMapMarks() {
-    this.Tree.CreateMapMarks()
+    this.Tree.CreateMapMarks();
   }
   GetUiPriority() {
-    return 0
+    return 0;
   }
   CanShowInUiPanel() {
-    return this.Tree?.CheckCanShow() ?? !1
+    return this.Tree?.CheckCanShow() ?? false;
   }
   CanShowTrackExpression() {
-    return this.Tree?.CanShowTrackExpression() ?? !1
+    return this.Tree?.CanShowTrackExpression() ?? false;
   }
   StartTextExpress(e = 0) {
-    this.Tree?.StartTextExpress(e)
+    this.Tree?.StartTextExpress(e);
   }
   EndTextExpress(e = 0) {
-    this.Tree?.EndTextExpress(e)
+    this.Tree?.EndTextExpress(e);
   }
   IsSuspend() {
-    return this.Tree?.IsSuspend() ?? !1
+    return this.Tree?.IsSuspend() ?? false;
   }
   GetSuspendType() {
-    return this.Tree?.GetSuspendType() ?? 0
+    return this.Tree?.GetSuspendType() ?? 0;
   }
   GetSuspendText() {
-    return this.Tree?.GetSuspendText()
+    return this.Tree?.GetSuspendText();
   }
   GetOccupations() {
-    return this.Tree?.GetOccupations()
+    return this.Tree?.GetOccupations();
   }
   HasRefOccupiedEntity() {
-    return this.Tree?.HasRefOccupiedEntity() ?? !1
+    return this.Tree?.HasRefOccupiedEntity() ?? false;
   }
   GetRefOccupiedEntityText() {
-    return this.Tree?.GetRefOccupiedEntityText()
+    return this.Tree?.GetRefOccupiedEntityText();
   }
   HasBehaviorTree() {
-    return void 0 !== this.BehaviorTree
+    return this.BehaviorTree !== undefined;
   }
   CanShowGuideLine() {
-    return this.GetCurrentActiveChildQuestNode()?.ContainTag(4) ?? !1
+    return this.GetCurrentActiveChildQuestNode()?.ContainTag(4) ?? false;
   }
   IsAlwaysShowGuideLine() {
-    return this.GetCurrentActiveChildQuestNode()?.ContainTag(5) ?? !1
+    return this.GetCurrentActiveChildQuestNode()?.ContainTag(5) ?? false;
   }
 }
 exports.LogicTreeContainer = LogicTreeContainer;

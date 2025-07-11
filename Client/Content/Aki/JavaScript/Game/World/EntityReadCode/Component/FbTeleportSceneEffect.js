@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTeleportSceneEffect = void 0;
+  value: true
+});
+exports.FbTeleportSceneEffect = undefined;
 class FbTeleportSceneEffect {
   constructor(t) {
-    this.FbDataInternal = t, this.JKh = !1, this.ZKh = void 0, this.e$h = !1, this.t$h = void 0
+    this.FbDataInternal = t;
+    this.JKh = false;
+    this.ZKh = undefined;
+    this.e$h = false;
+    this.t$h = undefined;
   }
   static Create(t) {
-    if (t) return new FbTeleportSceneEffect(t)
+    if (t) {
+      return new FbTeleportSceneEffect(t);
+    }
   }
   get WorldEffectPath() {
-    return this.JKh || (this.JKh = !0, this.ZKh = this.FbDataInternal.worldEffectPath()), this.ZKh
+    if (!this.JKh) {
+      this.JKh = true;
+      this.ZKh = this.FbDataInternal.worldEffectPath();
+    }
+    return this.ZKh;
   }
   get ScreenEffectPath() {
-    return this.e$h || (this.e$h = !0, this.t$h = this.FbDataInternal.screenEffectPath()), this.t$h
+    if (!this.e$h) {
+      this.e$h = true;
+      this.t$h = this.FbDataInternal.screenEffectPath();
+    }
+    return this.t$h;
   }
 }
 exports.FbTeleportSceneEffect = FbTeleportSceneEffect;

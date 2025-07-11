@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActiveAntiGravitySafePoint = void 0;
+  value: true
+});
+exports.ActiveAntiGravitySafePoint = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ActiveAntiGravitySafePoint {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsActiveAntiGravitySafePoint(t, i) {
-    return (i || new ActiveAntiGravitySafePoint).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ActiveAntiGravitySafePoint()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsActiveAntiGravitySafePoint(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new ActiveAntiGravitySafePoint).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new ActiveAntiGravitySafePoint()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static startActiveAntiGravitySafePoint(t) {
-    t.startObject(0)
+    t.startObject(0);
   }
   static endActiveAntiGravitySafePoint(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createActiveAntiGravitySafePoint(t) {
-    return ActiveAntiGravitySafePoint.startActiveAntiGravitySafePoint(t), ActiveAntiGravitySafePoint.endActiveAntiGravitySafePoint(t)
+    ActiveAntiGravitySafePoint.startActiveAntiGravitySafePoint(t);
+    return ActiveAntiGravitySafePoint.endActiveAntiGravitySafePoint(t);
   }
 }
 exports.ActiveAntiGravitySafePoint = ActiveAntiGravitySafePoint;

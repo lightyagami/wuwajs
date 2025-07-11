@@ -1,98 +1,142 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ControllerBase = void 0;
-const Log_1 = require("../Common/Log"),
-  Stats_1 = require("../Common/Stats");
+  value: true
+});
+exports.ControllerBase = undefined;
+const Log_1 = require("../Common/Log");
+const Stats_1 = require("../Common/Stats");
 class ControllerBase {
   constructor() {}
   static get IsTickEvenPaused() {
-    return this.IsTickEvenPausedInternal
+    return this.IsTickEvenPausedInternal;
   }
   static SetControllerManager(t) {
-    this.Manager = t
+    this.Manager = t;
   }
   static Init() {
-    return this.OnInit()
+    return this.OnInit();
   }
   static Clear() {
-    return this.vK = !0, this.OnClear()
+    this.vK = true;
+    return this.OnClear();
   }
   static PauseTick() {
-    this.vDe = !1
+    this.vDe = false;
   }
   static ResumeTick() {
-    this.vDe = !0
+    this.vDe = true;
   }
   static InitTickOptimize(t = 1, e = 1) {
-    this.TickInterval = t, this.TickIntervalInFight = e, this.Xyl = !1
+    this.TickInterval = t;
+    this.TickIntervalInFight = e;
+    this.Xyl = false;
   }
   static get vDe() {
-    return this.Yyl
+    return this.Yyl;
   }
   static set vDe(t) {
-    this.Yyl !== t && (this.Yyl = t, this.Xyl = !1, this.zyl = 0, this.Jyl = 0)
+    if (this.Yyl !== t) {
+      this.Yyl = t;
+      this.Xyl = false;
+      this.zyl = 0;
+      this.Jyl = 0;
+    }
   }
   static CheckTick(t, e) {
     if (!this.Xyl) {
-      if (!this.vDe) return !1;
-      if (t) {
-        if (this.TickIntervalInFight < 0) return !1;
-        if (this.zyl++, this.Jyl += e, this.TickIntervalInFight > this.zyl) return !1
-      } else {
-        if (this.TickInterval < 0) return !1;
-        if (this.zyl++, this.Jyl += e, this.TickInterval > this.zyl) return !1
+      if (!this.vDe) {
+        return false;
       }
-      this.zyl = 0
+      if (t) {
+        if (this.TickIntervalInFight < 0) {
+          return false;
+        }
+        this.zyl++;
+        this.Jyl += e;
+        if (this.TickIntervalInFight > this.zyl) {
+          return false;
+        }
+      } else {
+        if (this.TickInterval < 0) {
+          return false;
+        }
+        this.zyl++;
+        this.Jyl += e;
+        if (this.TickInterval > this.zyl) {
+          return false;
+        }
+      }
+      this.zyl = 0;
     }
-    return !0
+    return true;
   }
   static Tick(e) {
     if (!this.vK) {
       let t = e;
-      0 !== this.Jyl && (t = this.Jyl, this.Jyl = 0);
+      if (this.Jyl !== 0) {
+        t = this.Jyl;
+        this.Jyl = 0;
+      }
       try {
-        this.OnTick(t)
+        this.OnTick(t);
       } catch (t) {
-        t instanceof Error ? Log_1.Log.CheckError() && Log_1.Log.ErrorWithStack("Controller", 3, "Tick方法执行异常", t, ["name", this.name], ["error", t.message]) : Log_1.Log.CheckError() && Log_1.Log.Error("Controller", 3, "Tick方法执行异常", ["name", this.name], ["error", t])
+        if (t instanceof Error) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.ErrorWithStack("Controller", 3, "Tick方法执行异常", t, ["name", this.name], ["error", t.message]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Controller", 3, "Tick方法执行异常", ["name", this.name], ["error", t]);
+        }
       }
     }
   }
   static AfterTick(t) {
-    this.vK || this.OnAfterTick(t)
+    if (!this.vK) {
+      this.OnAfterTick(t);
+    }
   }
   static Preload() {
-    return this.OnPreload()
+    return this.OnPreload();
   }
   static LeaveLevel() {
-    return this.OnLeaveLevel()
+    return this.OnLeaveLevel();
   }
   static ChangeMode() {
-    return this.OnChangeMode()
+    return this.OnChangeMode();
   }
   static SetPerformanceStateObject(t, e = "", i = "") {
-    this.PerformanceState = Stats_1.Stat.CreateNoFlameGraph(t, e, i)
+    this.PerformanceState = Stats_1.Stat.CreateNoFlameGraph(t, e, i);
   }
   static GetPerformanceStateObject() {
-    return this.OnGetPerformanceStateObject()
+    return this.OnGetPerformanceStateObject();
   }
   static OnInit() {
-    return !0
+    return true;
   }
   static OnTick(t) {}
   static OnAfterTick(t) {}
   static OnClear() {
-    return !0
+    return true;
   }
   static OnPreload() {}
   static OnLeaveLevel() {
-    return !0
+    return true;
   }
   static OnGetPerformanceStateObject() {
-    return this.PerformanceState
+    return this.PerformanceState;
   }
   static OnChangeMode() {
-    return !0
+    return true;
   }
-}(exports.ControllerBase = ControllerBase).Manager = void 0, ControllerBase.PerformanceState = void 0, ControllerBase.IsTickEvenPausedInternal = !1, ControllerBase.vK = !1, ControllerBase.Xyl = !0, ControllerBase.Yyl = !0, ControllerBase.TickIntervalInFight = 1, ControllerBase.TickInterval = 1, ControllerBase.zyl = 0, ControllerBase.Jyl = 0;
-//# sourceMappingURL=ControllerBase.js.map
+}
+(exports.ControllerBase = ControllerBase).Manager = undefined;
+ControllerBase.PerformanceState = undefined;
+ControllerBase.IsTickEvenPausedInternal = false;
+ControllerBase.vK = false;
+ControllerBase.Xyl = true;
+ControllerBase.Yyl = true;
+ControllerBase.TickIntervalInFight = 1;
+ControllerBase.TickInterval = 1;
+ControllerBase.zyl = 0;
+ControllerBase.Jyl = 0; //# sourceMappingURL=ControllerBase.js.map

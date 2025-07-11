@@ -1,37 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InActiveRedItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../Util/LguiUtil");
+  value: true
+});
+exports.InActiveRedItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../Util/LguiUtil");
 class InActiveRedItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Fvc = () => {}, this.Nvc = () => {
-      this.Fvc()
-    }
+    super(...arguments);
+    this.Fvc = () => {};
+    this.Nvc = () => {
+      this.Fvc();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIText],
-      [2, UE.UIButtonComponent]
-    ], this.BtnBindInfo = [
-      [2, this.Nvc]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[2, this.Nvc]];
   }
   BindDetailButtonCall(e) {
-    this.Fvc = e
+    this.Fvc = e;
   }
   SetDetailButtonVisible(e) {
-    this.GetButton(2).RootUIComp.SetUIActive(e)
+    this.GetButton(2).RootUIComp.SetUIActive(e);
   }
   SetLockItemVisible(e) {
-    this.GetItem(0).SetUIActive(e)
+    this.GetItem(0).SetUIActive(e);
   }
   SetText(e, ...t) {
     var i = this.GetText(1);
-    LguiUtil_1.LguiUtil.TrySetLocalTextNew(i, e, ...t)
+    LguiUtil_1.LguiUtil.TrySetLocalTextNew(i, e, ...t);
   }
 }
 exports.InActiveRedItem = InActiveRedItem;

@@ -1,20 +1,27 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class TsAnimNotifyStateStopRotateBoneToLocation extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, o) {
     t = t.GetAnimInstance();
-    return t instanceof UE.KuroAnimInstance && t.SetBoneRotateToLocationInfoStopBegin(), !0
+    if (t instanceof UE.KuroAnimInstance) {
+      t.SetBoneRotateToLocationInfoStopBegin();
+    }
+    return true;
   }
   K2_NotifyEnd(t, e) {
     t = t.GetAnimInstance();
-    return t instanceof UE.KuroAnimInstance && t.SetBoneRotateToLocationInfoStopEnd(), !0
+    if (t instanceof UE.KuroAnimInstance) {
+      t.SetBoneRotateToLocationInfoStopEnd();
+    }
+    return true;
   }
   GetNotifyName() {
-    return "停止将骨骼旋转至目标位置"
+    return "停止将骨骼旋转至目标位置";
   }
 }
 exports.default = TsAnimNotifyStateStopRotateBoneToLocation;

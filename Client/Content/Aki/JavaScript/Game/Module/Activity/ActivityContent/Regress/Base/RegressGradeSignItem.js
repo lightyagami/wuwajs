@@ -1,39 +1,57 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RegressGradeSignItem = void 0;
-const RedDotController_1 = require("../../../../../RedDot/RedDotController"),
-  RegressGradeUiItem_1 = require("./RegressGradeUiItem");
+  value: true
+});
+exports.RegressGradeSignItem = undefined;
+const RedDotController_1 = require("../../../../../RedDot/RedDotController");
+const RegressGradeUiItem_1 = require("./RegressGradeUiItem");
 class RegressGradeSignItem extends RegressGradeUiItem_1.RegressGradeUiItem {
   constructor(t, e) {
-    super(), this.NormalContext = t, this.HyperContext = e, this.F01 = void 0
+    super();
+    this.NormalContext = t;
+    this.HyperContext = e;
+    this._p1 = undefined;
   }
   BindRedDot(t) {
-    RedDotController_1.RedDotController.BindRedDot(t, this.NormalContext.RedDotItem), RedDotController_1.RedDotController.BindRedDot(t, this.HyperContext.RedDotItem), this.F01 = t
+    RedDotController_1.RedDotController.BindRedDot(t, this.NormalContext.RedDotItem);
+    RedDotController_1.RedDotController.BindRedDot(t, this.HyperContext.RedDotItem);
+    this._p1 = t;
   }
   UnBindRedDot() {
-    this.F01 && (RedDotController_1.RedDotController.UnBindGivenUi(this.F01, this.NormalContext.RedDotItem), RedDotController_1.RedDotController.UnBindGivenUi(this.F01, this.HyperContext.RedDotItem), this.F01 = void 0)
+    if (this._p1) {
+      RedDotController_1.RedDotController.UnBindGivenUi(this._p1, this.NormalContext.RedDotItem);
+      RedDotController_1.RedDotController.UnBindGivenUi(this._p1, this.HyperContext.RedDotItem);
+      this._p1 = undefined;
+    }
   }
   Clear() {
-    this.UnBindRedDot()
+    this.UnBindRedDot();
   }
   OnSetToNormal() {
-    this.Il1()
+    this.__1();
   }
   OnSetToHyper() {
-    this.Il1()
+    this.__1();
   }
-  Il1() {
-    this.Tl1(this.NormalContext, 1), this.Tl1(this.HyperContext, 2)
+  __1() {
+    this.c_1(this.NormalContext, 1);
+    this.c_1(this.HyperContext, 2);
   }
-  Tl1(t, e) {
-    t.Btn.RootUIComp.SetUIActive(e === this.Grade), t.CurrencyTexNode.SetUIActive(e === this.Grade), t.BubbleNode.SetUIActive(e === this.Grade)
+  c_1(t, e) {
+    t.Btn.RootUIComp.SetUIActive(e === this.Grade);
+    t.CurrencyTexNode.SetUIActive(e === this.Grade);
+    t.BubbleNode.SetUIActive(e === this.Grade);
   }
   GetActivateContext() {
-    return 1 === this.Grade ? this.NormalContext : this.HyperContext
+    if (this.Grade === 1) {
+      return this.NormalContext;
+    } else {
+      return this.HyperContext;
+    }
   }
   SetClaimRewardBubbleActive(t) {
-    this.GetActivateContext().BubbleNode.SetUIActive(t)
+    this.GetActivateContext().BubbleNode.SetUIActive(t);
   }
 }
 exports.RegressGradeSignItem = RegressGradeSignItem;

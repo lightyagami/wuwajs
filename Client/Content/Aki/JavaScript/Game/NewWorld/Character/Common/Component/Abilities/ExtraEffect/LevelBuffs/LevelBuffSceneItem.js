@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelBuffSceneItem = void 0;
+  value: true
+});
+exports.LevelBuffSceneItem = undefined;
 const LevelBuffBase_1 = require("./LevelBuffBase");
 class LevelBuffSceneItem extends LevelBuffBase_1.LevelBuffBase {
   OnRemoved(e) {}

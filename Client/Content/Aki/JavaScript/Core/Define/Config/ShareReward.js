@@ -1,59 +1,84 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShareReward = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.ShareReward = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class ShareReward {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ShareType() {
-    return this.sharetype()
+    return this.sharetype();
   }
-  get ShareReward() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.sharerewardLength(), this.sharerewardKey, this.sharerewardValue, this)
+  get Reward() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.rewardLength(), this.rewardKey, this.rewardValue, this);
   }
-  sharerewardKey(t) {
-    return this.sharereward(t)?.key()
+  rewardKey(t) {
+    return this.reward(t)?.key();
   }
-  sharerewardValue(t) {
-    return this.sharereward(t)?.value()
+  rewardValue(t) {
+    return this.reward(t)?.value();
   }
   get UpdateType() {
-    return this.updatetype()
+    return this.updatetype();
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsShareReward(t, e) {
-    return (e || new ShareReward).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new ShareReward()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sharetype() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
-  GetSharerewardAt(t, e) {
-    return this.sharereward(t)
+  GetRewardAt(t, e) {
+    return this.reward(t);
   }
-  sharereward(t, e) {
+  reward(t, e) {
     var r = this.J7.__offset(this.z7, 8);
-    return r ? (e || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + 4 * t), this.J7) : null
+    if (r) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
-  sharerewardLength() {
+  rewardLength() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   updatetype() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.ShareReward = ShareReward;

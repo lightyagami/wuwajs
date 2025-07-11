@@ -1,90 +1,137 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AchievementController = void 0;
-const Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  ControllerBase_1 = require("../../../Core/Framework/ControllerBase"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiManager_1 = require("../../Ui/UiManager");
+  value: true
+});
+exports.AchievementController = undefined;
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiManager_1 = require("../../Ui/UiManager");
 class AchievementController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return this.OnAddEvents(), this.OnRegisterNetEvent(), !0
+    this.OnAddEvents();
+    this.OnRegisterNetEvent();
+    return true;
   }
   static OnClear() {
-    return this.OnRemoveEvents(), this.OnUnRegisterNetEvent(), !0
+    this.OnRemoveEvents();
+    this.OnUnRegisterNetEvent();
+    return true;
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLoadingNetDataDone, AchievementController.obe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleViewActiveSequenceFinish, this.rbe)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLoadingNetDataDone, AchievementController.obe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleViewActiveSequenceFinish, this.rbe);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, AchievementController.obe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleViewActiveSequenceFinish, this.rbe)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, AchievementController.obe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleViewActiveSequenceFinish, this.rbe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26482, AchievementController.nbe), Net_1.Net.Register(21284, AchievementController.sbe), Net_1.Net.Register(19996, AchievementController.abe), Net_1.Net.Register(20469, AchievementController.yth)
+    Net_1.Net.Register(15473, AchievementController.nbe);
+    Net_1.Net.Register(29204, AchievementController.sbe);
+    Net_1.Net.Register(27414, AchievementController.abe);
+    Net_1.Net.Register(27852, AchievementController.yth);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26482), Net_1.Net.UnRegister(21284), Net_1.Net.UnRegister(19996), Net_1.Net.UnRegister(20469)
+    Net_1.Net.UnRegister(15473);
+    Net_1.Net.UnRegister(29204);
+    Net_1.Net.UnRegister(27414);
+    Net_1.Net.UnRegister(27852);
   }
   static OpenAchievementMainView() {
-    UiManager_1.UiManager.OpenView("AchievementMainView")
+    UiManager_1.UiManager.OpenView("AchievementMainView");
   }
   static ChangeAchievementPopViewShowState() {
-    this.Wq_ = !this.Wq_
+    this.Wq_ = !this.Wq_;
   }
   static OpenAchievementDetailView(e, t, r = -1) {
-    t = ModelManager_1.ModelManager.AchievementModel.GetAchievementGroupData(t), e = ModelManager_1.ModelManager.AchievementModel.GetCategory(e);
-    ModelManager_1.ModelManager.AchievementModel.CurrentSelectCategory = e, ModelManager_1.ModelManager.AchievementModel.CurrentSelectGroup = t, ModelManager_1.ModelManager.AchievementModel.AchievementSearchState = !1, ModelManager_1.ModelManager.AchievementModel.CurrentSelectAchievementId = r, ModelManager_1.ModelManager.AchievementModel.CurrentSearchText = "", UiManager_1.UiManager.OpenView("AchievementDetailView")
+    t = ModelManager_1.ModelManager.AchievementModel.GetAchievementGroupData(t);
+    e = ModelManager_1.ModelManager.AchievementModel.GetCategory(e);
+    ModelManager_1.ModelManager.AchievementModel.CurrentSelectCategory = e;
+    ModelManager_1.ModelManager.AchievementModel.CurrentSelectGroup = t;
+    ModelManager_1.ModelManager.AchievementModel.AchievementSearchState = false;
+    ModelManager_1.ModelManager.AchievementModel.CurrentSelectAchievementId = r;
+    ModelManager_1.ModelManager.AchievementModel.CurrentSearchText = "";
+    UiManager_1.UiManager.OpenView("AchievementDetailView");
   }
   static async RequestUpdateAchievementInfo() {
-    var e = new Protocol_1.Aki.Protocol.kg_,
-      e = await Net_1.Net.CallAsync(21640, e);
-    e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18616) : ModelManager_1.ModelManager.AchievementModel.PhraseUpdateData(e)
+    var e = new Protocol_1.Aki.Protocol.kg_();
+    var e = await Net_1.Net.CallAsync(28136, e);
+    if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19756);
+    } else {
+      ModelManager_1.ModelManager.AchievementModel.PhraseUpdateData(e);
+    }
   }
   static RequestGetAchievementReward(e, t) {
-    var r = new Protocol_1.Aki.Protocol.o$n;
-    r.s5n = t, r.x6n = e, Net_1.Net.Call(15342, r, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21632)
-    })
+    var r = new Protocol_1.Aki.Protocol.o$n();
+    r.s5n = t;
+    r.x6n = e;
+    Net_1.Net.Call(22998, r, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19714);
+      }
+    });
   }
   static RequestAchievementFinish(e) {
-    var t = new Protocol_1.Aki.Protocol.l$n;
-    t.s5n = e, Net_1.Net.Call(18476, t, e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20897)
-    })
+    var t = new Protocol_1.Aki.Protocol.l$n();
+    t.s5n = e;
+    Net_1.Net.Call(17344, t, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28839);
+      }
+    });
   }
   static hbe(e) {
-    var t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e.s5n).GetFinishState(),
-      r = (ModelManager_1.ModelManager.AchievementModel.OnAchievementProgressNotify(e), ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e.s5n).GetFinishState());
-    t !== r && 2 !== r && 0 !== r && (t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e.s5n), ModelManager_1.ModelManager.AchievementModel?.IsHideAchievementGroup(t.GetGroupId()) || (ModelManager_1.ModelManager.AchievementModel.CurrentFinishAchievementArray.push(e.s5n), this.lbe()))
+    var t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e.s5n).GetFinishState();
+    ModelManager_1.ModelManager.AchievementModel.OnAchievementProgressNotify(e);
+    var r = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e.s5n).GetFinishState();
+    if (t !== r && r !== 2 && r !== 0) {
+      t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(e.s5n);
+      if (!ModelManager_1.ModelManager.AchievementModel?.IsHideAchievementGroup(t.GetGroupId())) {
+        ModelManager_1.ModelManager.AchievementModel.CurrentFinishAchievementArray.push(e.s5n);
+        this.lbe();
+      }
+    }
   }
   static lbe() {
-    if (this.Wq_ && !UiManager_1.UiManager.IsViewOpen("AchievementCompleteTipsView") && UiManager_1.UiManager.IsViewShow("BattleView"))
-      for (var e = ModelManager_1.ModelManager.AchievementModel.CurrentFinishAchievementArray; 0 < e.length;) {
-        var t = e.shift(),
-          t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(t);
-        UiManager_1.UiManager.OpenView("AchievementCompleteTipsView", t)
+    if (this.Wq_ && !UiManager_1.UiManager.IsViewOpen("AchievementCompleteTipsView") && UiManager_1.UiManager.IsViewShow("BattleView")) {
+      for (var e = ModelManager_1.ModelManager.AchievementModel.CurrentFinishAchievementArray; e.length > 0;) {
+        var t = e.shift();
+        var t = ModelManager_1.ModelManager.AchievementModel.GetAchievementData(t);
+        UiManager_1.UiManager.OpenView("AchievementCompleteTipsView", t);
       }
+    }
   }
 }
-exports.AchievementController = AchievementController, (_a = AchievementController).Wq_ = !0, AchievementController.obe = async () => {
-  var e = new Protocol_1.Aki.Protocol.i$n,
-    e = await Net_1.Net.CallAsync(19007, e);
-  ModelManager_1.ModelManager.AchievementModel.PhraseBaseData(e)
-}, AchievementController.nbe = e => {
-  AchievementController.hbe(e.uvs)
-}, AchievementController.rbe = () => {
-  _a.lbe()
-}, AchievementController.abe = t => {
-  var r = t.avs.length;
-  for (let e = 0; e < r; e++) AchievementController.hbe(t.avs[e])
-}, AchievementController.yth = e => {
-  ModelManager_1.ModelManager.AchievementModel.OnAchievementCountChangeNotify(e)
-}, AchievementController.sbe = e => {
-  ModelManager_1.ModelManager.AchievementModel.OnAchievementGroupProgressNotify(e)
+exports.AchievementController = AchievementController;
+(_a = AchievementController).Wq_ = true;
+AchievementController.obe = async () => {
+  var e = new Protocol_1.Aki.Protocol.i$n();
+  var e = await Net_1.Net.CallAsync(17406, e);
+  ModelManager_1.ModelManager.AchievementModel.PhraseBaseData(e);
 };
-//# sourceMappingURL=AchievementController.js.map
+AchievementController.nbe = e => {
+  AchievementController.hbe(e.uvs);
+};
+AchievementController.rbe = () => {
+  _a.lbe();
+};
+AchievementController.abe = t => {
+  var r = t.avs.length;
+  for (let e = 0; e < r; e++) {
+    AchievementController.hbe(t.avs[e]);
+  }
+};
+AchievementController.yth = e => {
+  ModelManager_1.ModelManager.AchievementModel.OnAchievementCountChangeNotify(e);
+};
+AchievementController.sbe = e => {
+  ModelManager_1.ModelManager.AchievementModel.OnAchievementGroupProgressNotify(e);
+}; //# sourceMappingURL=AchievementController.js.map

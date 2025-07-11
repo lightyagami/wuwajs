@@ -1,15 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelGeneralContextUtil = void 0;
-const Protocol_1 = require("../../Core/Define/Net/Protocol"),
-  MathUtils_1 = require("../../Core/Utils/MathUtils"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  LevelGeneralContextDefine_1 = require("./LevelGeneralContextDefine");
+  value: true
+});
+exports.LevelGeneralContextUtil = undefined;
+const Protocol_1 = require("../../Core/Define/Net/Protocol");
+const MathUtils_1 = require("../../Core/Utils/MathUtils");
+const ModelManager_1 = require("../Manager/ModelManager");
+const LevelGeneralContextDefine_1 = require("./LevelGeneralContextDefine");
 class LevelGeneralContextUtil {
   static CreateByServerContext(t) {
     if (t) {
-      let e = void 0;
+      let e = undefined;
       switch (t.fvs) {
         case Protocol_1.Aki.Protocol.TOs.pvs:
           e = LevelGeneralContextUtil.UUe(t.fvs, t.pvs);
@@ -78,18 +80,22 @@ class LevelGeneralContextUtil {
           e = LevelGeneralContextUtil.AUe(t.fvs, t.Fvs.ups);
           break;
         case Protocol_1.Aki.Protocol.TOs.Vvs:
-          e = LevelGeneralContextUtil.AUe(t.fvs, t.Vvs.ups)
+          e = LevelGeneralContextUtil.AUe(t.fvs, t.Vvs.ups);
+          break;
+        case Protocol_1.Aki.Protocol.TOs.Gvs:
+          e = LevelGeneralContextUtil.AUe(t.fvs, t.Gvs.ups);
       }
-      return e
+      return e;
     }
   }
   static AUe(e, t) {
     var o = MathUtils_1.MathUtils.LongToBigInt(t.w5n);
-    return LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(t.hps, o, t.lps, t.b5n, e)
+    return LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(t.hps, o, t.lps, t.b5n, e);
   }
   static UUe(e, t) {
-    t = MathUtils_1.MathUtils.LongToNumber(t.w5n), t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-    return LevelGeneralContextDefine_1.EntityContext.Create(t?.Id, e)
+    t = MathUtils_1.MathUtils.LongToNumber(t.w5n);
+    t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
+    return LevelGeneralContextDefine_1.EntityContext.Create(t?.Id, e);
   }
 }
 exports.LevelGeneralContextUtil = LevelGeneralContextUtil;

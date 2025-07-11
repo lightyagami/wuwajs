@@ -1,13 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SkillButtonTypeFormationData = void 0;
+  value: true
+});
+exports.SkillButtonTypeFormationData = undefined;
 class SkillButtonTypeFormationData {
   constructor() {
-    this.SkillIconPath = void 0, this.EnableSkillId = 0, this.IsLongPressControlCamera = !1, this.LongPressTime = 0, this.IgnoreHiddenTag = !1, this.IgnoreDefaultHidden = !1
+    this.SkillIconPath = undefined;
+    this.EnableSkillId = 0;
+    this.IsLongPressControlCamera = false;
+    this.LongPressTime = 0;
+    this.IgnoreHiddenTag = false;
+    this.IgnoreDefaultHidden = false;
   }
   Clear() {
-    this.SkillIconPath = void 0, this.EnableSkillId = 0, this.IsLongPressControlCamera = !1, this.LongPressTime = 0, this.IgnoreHiddenTag = !1, this.IgnoreDefaultHidden = !1
+    this.SkillIconPath = undefined;
+    this.EnableSkillId = 0;
+    this.IsLongPressControlCamera = false;
+    this.LongPressTime = 0;
+    this.IgnoreHiddenTag = false;
+    this.IgnoreDefaultHidden = false;
   }
 }
 exports.SkillButtonTypeFormationData = SkillButtonTypeFormationData;

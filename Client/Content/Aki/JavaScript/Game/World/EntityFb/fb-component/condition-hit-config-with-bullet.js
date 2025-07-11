@@ -1,59 +1,86 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ConditionHitConfigWithBullet = void 0;
-const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers"),
-  union_hit_bullet_type_js_1 = require("../fb-component/union-hit-bullet-type.js"),
-  condition_group_js_1 = require("../fb-condition/condition-group.js");
+  value: true
+});
+exports.ConditionHitConfigWithBullet = undefined;
+const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
+const union_hit_bullet_type_js_1 = require("../fb-component/union-hit-bullet-type.js");
+const condition_group_js_1 = require("../fb-condition/condition-group.js");
 class ConditionHitConfigWithBullet {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsConditionHitConfigWithBullet(t, i) {
-    return (i || new ConditionHitConfigWithBullet).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new ConditionHitConfigWithBullet()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsConditionHitConfigWithBullet(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new ConditionHitConfigWithBullet).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new ConditionHitConfigWithBullet()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   conditions(t) {
     var i = this.bb.__offset(this.bb_pos, 4);
-    return i ? (t || new condition_group_js_1.ConditionGroup).__init(this.bb.__indirect(this.bb_pos + i), this.bb) : void 0
+    if (i) {
+      return (t || new condition_group_js_1.ConditionGroup()).__init(this.bb.__indirect(this.bb_pos + i), this.bb);
+    } else {
+      return undefined;
+    }
   }
   state(t) {
     var i = this.bb.__offset(this.bb_pos, 6);
-    return i ? this.bb.__string(this.bb_pos + i, t) : void 0
+    if (i) {
+      return this.bb.__string(this.bb_pos + i, t);
+    } else {
+      return undefined;
+    }
   }
   hitBulletsType() {
     var t = this.bb.__offset(this.bb_pos, 8);
-    return t ? this.bb.readUint8(this.bb_pos + t) : union_hit_bullet_type_js_1.UnionHitBulletType.NONE
+    if (t) {
+      return this.bb.readUint8(this.bb_pos + t);
+    } else {
+      return union_hit_bullet_type_js_1.UnionHitBulletType.NONE;
+    }
   }
   hitBullets(t) {
     var i = this.bb.__offset(this.bb_pos, 10);
-    return i ? this.bb.__union(t, this.bb_pos + i) : void 0
+    if (i) {
+      return this.bb.__union(t, this.bb_pos + i);
+    } else {
+      return undefined;
+    }
   }
   static startConditionHitConfigWithBullet(t) {
-    t.startObject(4)
+    t.startObject(4);
   }
   static addConditions(t, i) {
-    t.addFieldOffset(0, i, 0)
+    t.addFieldOffset(0, i, 0);
   }
   static addState(t, i) {
-    t.addFieldOffset(1, i, 0)
+    t.addFieldOffset(1, i, 0);
   }
   static addHitBulletsType(t, i) {
-    t.addFieldInt8(2, i, union_hit_bullet_type_js_1.UnionHitBulletType.NONE)
+    t.addFieldInt8(2, i, union_hit_bullet_type_js_1.UnionHitBulletType.NONE);
   }
   static addHitBullets(t, i) {
-    t.addFieldOffset(3, i, 0)
+    t.addFieldOffset(3, i, 0);
   }
   static endConditionHitConfigWithBullet(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createConditionHitConfigWithBullet(t, i, n, o, e) {
-    return ConditionHitConfigWithBullet.startConditionHitConfigWithBullet(t), ConditionHitConfigWithBullet.addConditions(t, i), ConditionHitConfigWithBullet.addState(t, n), ConditionHitConfigWithBullet.addHitBulletsType(t, o), ConditionHitConfigWithBullet.addHitBullets(t, e), ConditionHitConfigWithBullet.endConditionHitConfigWithBullet(t)
+    ConditionHitConfigWithBullet.startConditionHitConfigWithBullet(t);
+    ConditionHitConfigWithBullet.addConditions(t, i);
+    ConditionHitConfigWithBullet.addState(t, n);
+    ConditionHitConfigWithBullet.addHitBulletsType(t, o);
+    ConditionHitConfigWithBullet.addHitBullets(t, e);
+    return ConditionHitConfigWithBullet.endConditionHitConfigWithBullet(t);
   }
 }
 exports.ConditionHitConfigWithBullet = ConditionHitConfigWithBullet;

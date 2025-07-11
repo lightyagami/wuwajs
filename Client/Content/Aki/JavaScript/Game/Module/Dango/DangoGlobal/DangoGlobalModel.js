@@ -1,23 +1,29 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoGlobalModel = void 0;
+  value: true
+});
+exports.DangoGlobalModel = undefined;
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 class DangoGlobalModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Config = void 0
+    super(...arguments);
+    this.Config = undefined;
   }
   OnClear() {
-    return this.qFt(), !0
+    this.qFt();
+    return true;
   }
   OnLeaveLevel() {
-    return this.qFt(), !0
+    this.qFt();
+    return true;
   }
   OnChangeMode() {
-    return this.qFt(), !0
+    this.qFt();
+    return true;
   }
   qFt() {
-    this.Config = void 0
+    this.Config = undefined;
   }
 }
 exports.DangoGlobalModel = DangoGlobalModel;

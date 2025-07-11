@@ -1,36 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RewardExploreToggle = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil");
+  value: true
+});
+exports.RewardExploreToggle = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
 class RewardExploreToggle extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Afi = void 0
+    super(...arguments);
+    this.Afi = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [1, UE.UIExtendToggle],
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[1, UE.UIExtendToggle], [0, UE.UIText]];
   }
   OnStart() {
-    this.Afi = this.GetExtendToggle(1)
+    this.Afi = this.GetExtendToggle(1);
   }
   OnBeforeDestroy() {
-    this.Afi = void 0
+    this.Afi = undefined;
   }
   Refresh(e) {
-    e.OnToggleClick && this.Afi.OnStateChange.Add(e.OnToggleClick), StringUtils_1.StringUtils.IsEmpty(e.DescriptionTextId) || this.Ubt(e.DescriptionTextId)
+    if (e.OnToggleClick) {
+      this.Afi.OnStateChange.Add(e.OnToggleClick);
+    }
+    if (!StringUtils_1.StringUtils.IsEmpty(e.DescriptionTextId)) {
+      this.Ubt(e.DescriptionTextId);
+    }
   }
   Ubt(e) {
     var t;
-    StringUtils_1.StringUtils.IsEmpty(e) || (t = this.GetText(0), LguiUtil_1.LguiUtil.SetLocalTextNew(t, e))
+    if (!StringUtils_1.StringUtils.IsEmpty(e)) {
+      t = this.GetText(0);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, e);
+    }
   }
   GetToggleState() {
-    return this.Afi?.GetToggleState()
+    return this.Afi?.GetToggleState();
   }
 }
 exports.RewardExploreToggle = RewardExploreToggle;

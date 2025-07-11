@@ -1,16 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoonChasingHandbookConfig = void 0;
-const TrackMoonHandbookRewardAll_1 = require("../../../../../../../Core/Define/ConfigQuery/TrackMoonHandbookRewardAll"),
-  TrackMoonHandbookRewardById_1 = require("../../../../../../../Core/Define/ConfigQuery/TrackMoonHandbookRewardById"),
-  ConfigBase_1 = require("../../../../../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.MoonChasingHandbookConfig = undefined;
+const TrackMoonHandbookRewardAll_1 = require("../../../../../../../Core/Define/ConfigQuery/TrackMoonHandbookRewardAll");
+const TrackMoonHandbookRewardById_1 = require("../../../../../../../Core/Define/ConfigQuery/TrackMoonHandbookRewardById");
+const ConfigBase_1 = require("../../../../../../../Core/Framework/ConfigBase");
 class MoonChasingHandbookConfig extends ConfigBase_1.ConfigBase {
   GetHandbookRewardById(o) {
-    return TrackMoonHandbookRewardById_1.configTrackMoonHandbookRewardById.GetConfig(o)
+    return TrackMoonHandbookRewardById_1.configTrackMoonHandbookRewardById.GetConfig(o);
   }
   GetHandbookRewardList() {
-    return TrackMoonHandbookRewardAll_1.configTrackMoonHandbookRewardAll.GetConfigList() ?? []
+    return TrackMoonHandbookRewardAll_1.configTrackMoonHandbookRewardAll.GetConfigList() ?? [];
   }
 }
 exports.MoonChasingHandbookConfig = MoonChasingHandbookConfig;

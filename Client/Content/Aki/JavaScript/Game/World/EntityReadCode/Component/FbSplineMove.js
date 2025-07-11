@@ -1,39 +1,71 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSplineMove = void 0;
-const fb_condition_1 = require("../../../../Game/World/EntityFb/fb-condition"),
-  FbEntityStateCondition_1 = require("../Condition/FbEntityStateCondition");
+  value: true
+});
+exports.FbSplineMove = undefined;
+const fb_condition_1 = require("../../../../Game/World/EntityFb/fb-condition");
+const FbEntityStateCondition_1 = require("../Condition/FbEntityStateCondition");
 class FbSplineMove {
   constructor(t) {
-    this.FbDataInternal = t, this.bOh = !1, this.LOh = void 0, this.qmh = !1, this.H8o = 0, this.kuh = !1, this.Guh = 0, this.QRh = !1, this.KRh = !1, this.zuh = !1, this.Juh = !1
+    this.FbDataInternal = t;
+    this.bOh = false;
+    this.LOh = undefined;
+    this.qmh = false;
+    this.H8o = 0;
+    this.kuh = false;
+    this.Guh = 0;
+    this.QRh = false;
+    this.KRh = false;
+    this.zuh = false;
+    this.Juh = false;
   }
   static Create(t) {
-    if (t) return new FbSplineMove(t)
+    if (t) {
+      return new FbSplineMove(t);
+    }
   }
   get StateConditions() {
     if (!this.bOh) {
-      this.bOh = !0, this.LOh = new Array;
+      this.bOh = true;
+      this.LOh = new Array();
       var i = this.FbDataInternal.stateConditionsLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.stateConditions(t, new fb_condition_1.EntityStateCondition);
-          this.LOh.push(FbEntityStateCondition_1.FbEntityStateCondition.Create(s))
+          var s = this.FbDataInternal.stateConditions(t, new fb_condition_1.EntityStateCondition());
+          this.LOh.push(FbEntityStateCondition_1.FbEntityStateCondition.Create(s));
         }
+      }
     }
-    return this.LOh
+    return this.LOh;
   }
   get Speed() {
-    return this.qmh || (this.qmh = !0, this.H8o = this.FbDataInternal.speed()), this.H8o
+    if (!this.qmh) {
+      this.qmh = true;
+      this.H8o = this.FbDataInternal.speed();
+    }
+    return this.H8o;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get IsCircle() {
-    return this.QRh || (this.QRh = !0, this.KRh = this.FbDataInternal.isCircle()), this.KRh
+    if (!this.QRh) {
+      this.QRh = true;
+      this.KRh = this.FbDataInternal.isCircle();
+    }
+    return this.KRh;
   }
   get IsLookDir() {
-    return this.zuh || (this.zuh = !0, this.Juh = this.FbDataInternal.isLookDir()), this.Juh
+    if (!this.zuh) {
+      this.zuh = true;
+      this.Juh = this.FbDataInternal.isLookDir();
+    }
+    return this.Juh;
   }
 }
 exports.FbSplineMove = FbSplineMove;

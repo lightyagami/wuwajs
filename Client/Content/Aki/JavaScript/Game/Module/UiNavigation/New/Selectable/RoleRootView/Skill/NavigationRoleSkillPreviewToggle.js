@@ -1,13 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationRoleSkillPreviewToggle = void 0;
-const UiNavigationViewManager_1 = require("../../../UiNavigationViewManager"),
-  NavigationToggle_1 = require("../../NavigationToggle");
+  value: true
+});
+exports.NavigationRoleSkillPreviewToggle = undefined;
+const UiNavigationViewManager_1 = require("../../../UiNavigationViewManager");
+const NavigationToggle_1 = require("../../NavigationToggle");
 class NavigationRoleSkillPreviewToggle extends NavigationToggle_1.NavigationToggle {
   OnToggleClick(e) {
     var i = UiNavigationViewManager_1.UiNavigationViewManager.GetCurrentViewHandle().GetPanelConfigByType("RoleSkill");
-    i && ((i = i.GetPanelHandle()).IsInPreview = 1 === e, i.SetSkillTreeToggleCursorActive(1 !== e))
+    if (i) {
+      (i = i.GetPanelHandle()).IsInPreview = e === 1;
+      i.SetSkillTreeToggleCursorActive(e !== 1);
+    }
   }
 }
 exports.NavigationRoleSkillPreviewToggle = NavigationRoleSkillPreviewToggle;

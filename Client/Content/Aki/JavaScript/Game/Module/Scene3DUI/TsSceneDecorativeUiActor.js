@@ -1,39 +1,51 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../Core/Actor/ActorSystem"),
-  ColorUtils_1 = require("../../Utils/ColorUtils"),
-  TsSceneUiTag_1 = require("./TsSceneUiTag");
+const UE = require("ue");
+const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
+const ColorUtils_1 = require("../../Utils/ColorUtils");
+const TsSceneUiTag_1 = require("./TsSceneUiTag");
 class TsSceneDecorativeUiActor extends TsSceneUiTag_1.default {
   constructor() {
-    super(...arguments), this.ShowDistance = 0, this.IsFaceToCharacter = !1, this.IsControlledInternal = !1, this.InShowInternal = !1, this.EditorUiActor = void 0
+    super(...arguments);
+    this.ShowDistance = 0;
+    this.IsFaceToCharacter = false;
+    this.IsControlledInternal = false;
+    this.InShowInternal = false;
+    this.EditorUiActor = undefined;
   }
   Constructor() {
-    super.Constructor(), this.IsControlledInternal = !1, this.InShowInternal = !1, this.EditorUiActor = void 0
+    super.Constructor();
+    this.IsControlledInternal = false;
+    this.InShowInternal = false;
+    this.EditorUiActor = undefined;
   }
   set IsControlled(t) {
-    this.IsControlledInternal = t
+    this.IsControlledInternal = t;
   }
   get IsControlled() {
-    return this.IsControlledInternal
+    return this.IsControlledInternal;
   }
   set InShow(t) {
-    this.InShowInternal = t
+    this.InShowInternal = t;
   }
   get InShow() {
-    return this.InShowInternal
+    return this.InShowInternal;
   }
   Create3dUi() {}
   Destroy3dUi() {
-    this.EditorUiActor && (ActorSystem_1.ActorSystem.Put("TsSceneDecorativeUiActor.Destroy3dUi", this.EditorUiActor), this.EditorUiActor = void 0)
+    if (this.EditorUiActor) {
+      ActorSystem_1.ActorSystem.Put("TsSceneDecorativeUiActor.Destroy3dUi", this.EditorUiActor);
+      this.EditorUiActor = undefined;
+    }
   }
   DrawDistance() {
-    UE.KismetSystemLibrary.D_DrawDebugSphere(this, this.D_K2_GetActorLocation(), this.ShowDistance, 12, ColorUtils_1.ColorUtils.LinearRed, 5)
+    UE.KismetSystemLibrary.D_DrawDebugSphere(this, this.D_K2_GetActorLocation(), this.ShowDistance, 12, ColorUtils_1.ColorUtils.LinearRed, 5);
   }
   OnCanTick() {
-    return !this.IsControlled && this.CalculateSquaredDistance() <= this.ShowDistance * this.ShowDistance
+    return !this.IsControlled && this.CalculateSquaredDistance() <= this.ShowDistance * this.ShowDistance;
   }
 }
 exports.default = TsSceneDecorativeUiActor;

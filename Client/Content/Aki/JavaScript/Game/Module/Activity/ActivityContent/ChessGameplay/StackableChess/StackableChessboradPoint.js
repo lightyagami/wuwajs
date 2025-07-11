@@ -1,40 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.StackableChessboardPoint = void 0;
-const Log_1 = require("../../../../../../Core/Common/Log"),
-  ChessboradPoint_1 = require("../ChessBase/ChessboradPoint");
+  value: true
+});
+exports.StackableChessboardPoint = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
+const ChessboradPoint_1 = require("../ChessBase/ChessboradPoint");
 class StackableChessboardPoint extends ChessboradPoint_1.ChessboardPoint {
   constructor() {
-    super(...arguments), this.iGi = void 0, this.cdc = void 0, this.s7 = 0
+    super(...arguments);
+    this.iGi = undefined;
+    this.cdc = undefined;
+    this.s7 = 0;
   }
   GetMoveLocationAndRotator() {
     var t = this.cdc?.GetStackableLocation();
-    return t ? [t, this.Rotator] : super.GetMoveLocationAndRotator()
+    if (t) {
+      return [t, this.Rotator];
+    } else {
+      return super.GetMoveLocationAndRotator();
+    }
   }
   ItemEnter(t) {
-    var i = new Set;
-    let s = 1,
-      e = (t.SetCurrentPoint(this), t),
-      h = t.GetNextItem();
-    for (; void 0 !== h;) {
+    var i = new Set();
+    let s = 1;
+    t.SetCurrentPoint(this);
+    let e = t;
+    let h = t.GetNextItem();
+    while (h !== undefined) {
       if (i.has(h.GetId())) {
-        Log_1.Log.CheckError() && Log_1.Log.Error("Chess", 48, "ItemEnter 发生循环，数据错误");
-        break
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Chess", 48, "ItemEnter 发生循环，数据错误");
+        }
+        break;
       }
-      s++, h.SetCurrentPoint(this), e = h, i.add(h.GetId()), h = h.GetNextItem()
+      s++;
+      h.SetCurrentPoint(this);
+      e = h;
+      i.add(h.GetId());
+      h = h.GetNextItem();
     }
-    this.cdc ? this.cdc.SetNextItem(t) : this.iGi = t, this.cdc = e, this.s7 += s
+    if (this.cdc) {
+      this.cdc.SetNextItem(t);
+    } else {
+      this.iGi = t;
+    }
+    this.cdc = e;
+    this.s7 += s;
   }
   ItemLeave(t) {
     var e = t;
-    if (e === this.iGi) this.iGi = void 0, this.cdc = void 0, this.s7 = 0;
-    else {
-      let t = void 0,
-        i = 0,
-        s = this.iGi;
-      for (; i < this.s7 && s !== e;) s = (t = s)?.GetNextItem(), i++;
-      i !== this.s7 && (this.cdc = t, this.cdc?.SetNextItem(void 0), this.s7 = i)
+    if (e === this.iGi) {
+      this.iGi = undefined;
+      this.cdc = undefined;
+      this.s7 = 0;
+    } else {
+      let t = undefined;
+      let i = 0;
+      let s = this.iGi;
+      while (i < this.s7 && s !== e) {
+        s = (t = s)?.GetNextItem();
+        i++;
+      }
+      if (i !== this.s7) {
+        this.cdc = t;
+        this.cdc?.SetNextItem(undefined);
+        this.s7 = i;
+      }
     }
   }
   ChangeItemToMaxPriority(s) {
@@ -42,41 +74,60 @@ class StackableChessboardPoint extends ChessboradPoint_1.ChessboardPoint {
       var e = s.GetId();
       if (e !== this.cdc.GetId()) {
         var h = s.GetNextItem();
-        if (h)
+        if (h) {
           if (e === this.iGi.GetId()) {
-            s.SetNextItem(void 0);
+            s.SetNextItem(undefined);
             const r = this.cdc.GetStackableLocation();
-            s.Teleport(r || this.Location, this.Rotator), this.cdc.SetNextItem(s), this.cdc = s, h.Teleport(this.Location, this.Rotator), void(this.iGi = h)
+            s.Teleport(r || this.Location, this.Rotator);
+            this.cdc.SetNextItem(s);
+            this.cdc = s;
+            h.Teleport(this.Location, this.Rotator);
+            this.iGi = h;
           } else {
-            let t = 0,
-              i = this.iGi;
-            for (; t < this.s7;) {
+            let t = 0;
+            let i = this.iGi;
+            while (t < this.s7) {
               var o = i.GetNextItem();
-              if (!o) return;
-              if (o.GetId() === e) break;
-              i = o, t++
+              if (!o) {
+                return;
+              }
+              if (o.GetId() === e) {
+                break;
+              }
+              i = o;
+              t++;
             }
-            i.SetNextItem(void 0), s.SetNextItem(void 0);
+            i.SetNextItem(undefined);
+            s.SetNextItem(undefined);
             const r = this.cdc.GetStackableLocation();
-            s.Teleport(r || this.Location, this.Rotator), this.cdc.SetNextItem(s), this.cdc = s;
+            s.Teleport(r || this.Location, this.Rotator);
+            this.cdc.SetNextItem(s);
+            this.cdc = s;
             s = i.GetStackableLocation();
-            h.Teleport(s || this.Location, this.Rotator), i.SetNextItem(h)
+            h.Teleport(s || this.Location, this.Rotator);
+            i.SetNextItem(h);
           }
+        }
       }
     }
   }
   ComparePriority(t, i) {
-    var s = t.GetId(),
-      e = i.GetId();
-    let h = 0,
-      o = this.iGi;
-    for (; o && h < this.s7;) {
+    var s = t.GetId();
+    var e = i.GetId();
+    let h = 0;
+    let o = this.iGi;
+    while (o && h < this.s7) {
       var r = o.GetId();
-      if (r === s) return 1;
-      if (r === e) return -1;
-      o = o.GetNextItem(), h++
+      if (r === s) {
+        return 1;
+      }
+      if (r === e) {
+        return -1;
+      }
+      o = o.GetNextItem();
+      h++;
     }
-    return 0
+    return 0;
   }
 }
 exports.StackableChessboardPoint = StackableChessboardPoint;

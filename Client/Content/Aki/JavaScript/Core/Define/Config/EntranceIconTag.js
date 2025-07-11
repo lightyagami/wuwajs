@@ -1,33 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EntranceIconTag = void 0;
+  value: true
+});
+exports.EntranceIconTag = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class EntranceIconTag {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ConfigParam() {
-    return this.configparam()
+    return this.configparam();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsEntranceIconTag(t, s) {
-    return (s || new EntranceIconTag).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new EntranceIconTag()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id(t) {
-    var s = this.J7.__offset(this.z7, 4),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 4);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   configparam(t) {
-    var s = this.J7.__offset(this.z7, 6),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 6);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.EntranceIconTag = EntranceIconTag;

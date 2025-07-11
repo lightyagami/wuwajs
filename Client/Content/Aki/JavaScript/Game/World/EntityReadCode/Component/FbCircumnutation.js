@@ -1,38 +1,90 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCircumnutation = void 0;
+  value: true
+});
+exports.FbCircumnutation = undefined;
 const FbRenderTrajectoryConfig_1 = require("./FbRenderTrajectoryConfig");
 class FbCircumnutation {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.x2h = !1, this.R2h = 0, this.w2h = !1, this.P2h = void 0, this.tdh = !1, this.idh = void 0, this.U2h = !1, this.D2h = 0, this.B2h = !1, this.q2h = 0, this.k2h = !1, this.G2h = void 0, this.O2h = !1, this.F2h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.x2h = false;
+    this.R2h = 0;
+    this.w2h = false;
+    this.P2h = undefined;
+    this.tdh = false;
+    this.idh = undefined;
+    this.U2h = false;
+    this.D2h = 0;
+    this.B2h = false;
+    this.q2h = 0;
+    this.k2h = false;
+    this.G2h = undefined;
+    this.O2h = false;
+    this.F2h = undefined;
   }
   static Create(t) {
-    if (t) return new FbCircumnutation(t)
+    if (t) {
+      return new FbCircumnutation(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Velocity() {
-    return this.x2h || (this.x2h = !0, this.R2h = this.FbDataInternal.velocity()), this.R2h
+    if (!this.x2h) {
+      this.x2h = true;
+      this.R2h = this.FbDataInternal.velocity();
+    }
+    return this.R2h;
   }
   get VelocityCurve() {
-    return this.w2h || (this.w2h = !0, this.P2h = this.FbDataInternal.velocityCurve()), this.P2h
+    if (!this.w2h) {
+      this.w2h = true;
+      this.P2h = this.FbDataInternal.velocityCurve();
+    }
+    return this.P2h;
   }
   get Direction() {
-    return this.tdh || (this.tdh = !0, this.idh = this.FbDataInternal.direction()), this.idh
+    if (!this.tdh) {
+      this.tdh = true;
+      this.idh = this.FbDataInternal.direction();
+    }
+    return this.idh;
   }
   get AngularVelocity() {
-    return this.U2h || (this.U2h = !0, this.D2h = this.FbDataInternal.angularVelocity()), this.D2h
+    if (!this.U2h) {
+      this.U2h = true;
+      this.D2h = this.FbDataInternal.angularVelocity();
+    }
+    return this.D2h;
   }
   get RotationSpeed() {
-    return this.B2h || (this.B2h = !0, this.q2h = this.FbDataInternal.rotationSpeed()), this.q2h
+    if (!this.B2h) {
+      this.B2h = true;
+      this.q2h = this.FbDataInternal.rotationSpeed();
+    }
+    return this.q2h;
   }
   get AngularVelocityCurve() {
-    return this.k2h || (this.k2h = !0, this.G2h = this.FbDataInternal.angularVelocityCurve()), this.G2h
+    if (!this.k2h) {
+      this.k2h = true;
+      this.G2h = this.FbDataInternal.angularVelocityCurve();
+    }
+    return this.G2h;
   }
   get RenderTrajectoryConfig() {
-    return this.O2h || (this.O2h = !0, this.F2h = FbRenderTrajectoryConfig_1.FbRenderTrajectoryConfig.Create(this.FbDataInternal.renderTrajectoryConfig())), this.F2h
+    if (!this.O2h) {
+      this.O2h = true;
+      this.F2h = FbRenderTrajectoryConfig_1.FbRenderTrajectoryConfig.Create(this.FbDataInternal.renderTrajectoryConfig());
+    }
+    return this.F2h;
   }
 }
 exports.FbCircumnutation = FbCircumnutation;

@@ -1,25 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableAI = void 0;
+  value: true
+});
+exports.FbEnableAI = undefined;
 class FbEnableAI {
   constructor(t) {
-    this.FbDataInternal = t, this.V1h = !1, this.j1h = void 0, this.Dch = !1, this.bSo = !1
+    this.FbDataInternal = t;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.Dch = false;
+    this.bSo = false;
   }
   static Create(t) {
-    if (t) return new FbEnableAI(t)
+    if (t) {
+      return new FbEnableAI(t);
+    }
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var s = this.FbDataInternal.entityIdsLength();
-      if (s)
-        for (let t = 0; t < s; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (s) {
+        for (let t = 0; t < s; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get IsEnable() {
-    return this.Dch || (this.Dch = !0, this.bSo = this.FbDataInternal.isEnable()), this.bSo
+    if (!this.Dch) {
+      this.Dch = true;
+      this.bSo = this.FbDataInternal.isEnable();
+    }
+    return this.bSo;
   }
 }
 exports.FbEnableAI = FbEnableAI;

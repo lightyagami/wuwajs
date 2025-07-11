@@ -1,47 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BaseScoreItem = void 0;
-const EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  BattleChildView_1 = require("../BattleChildView/BattleChildView");
+  value: true
+});
+exports.BaseScoreItem = undefined;
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const BattleChildView_1 = require("../BattleChildView/BattleChildView");
 class BaseScoreItem extends BattleChildView_1.BattleChildView {
   constructor() {
-    super(...arguments), this.IsScoreEnable = !1, this.jau = (e, t) => {
-      this.IsValidScore(e) && this.OnBattleScoreChanged(e, t)
-    }, this.Hau = (e, t) => {
-      this.IsValidScore(e) && this.OnBattleScoreEnableChanged(e, t)
-    }
+    super(...arguments);
+    this.IsScoreEnable = false;
+    this.nmu = (e, t) => {
+      if (this.IsValidScore(e)) {
+        this.OnBattleScoreChanged(e, t);
+      }
+    };
+    this.smu = (e, t) => {
+      if (this.IsValidScore(e)) {
+        this.OnBattleScoreEnableChanged(e, t);
+      }
+    };
   }
   OnStart() {
     var e = ModelManager_1.ModelManager.BattleScoreModel?.GetScoreEnableMap();
-    if (e)
-      for (var [t, i] of e.entries())
+    if (e) {
+      for (var [t, i] of e.entries()) {
         if (i && this.IsValidScore(t)) {
-          this.IsScoreEnable = !0;
-          break
-        } EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.jau), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreEnableChanged, this.Hau)
+          this.IsScoreEnable = true;
+          break;
+        }
+      }
+    }
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.nmu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreEnableChanged, this.smu);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.jau), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreEnableChanged, this.Hau)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.nmu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreEnableChanged, this.smu);
   }
   OnShowFirstTime() {
-    this.IsScoreEnable && this.ShowScore()
+    if (this.IsScoreEnable) {
+      this.ShowScore();
+    }
   }
   OnTick(e) {}
   IsValidScore(e) {
-    return !1
+    return false;
   }
   OnBattleScoreChanged(e, t) {}
   OnBattleScoreEnableChanged(e, t) {
-    this.IsScoreEnable !== t && ((this.IsScoreEnable = t) ? this.ShowScore() : this.HideScore())
+    if (this.IsScoreEnable !== t) {
+      if (this.IsScoreEnable = t) {
+        this.ShowScore();
+      } else {
+        this.HideScore();
+      }
+    }
   }
   ShowScore() {
-    this.IsScoreEnable = !0
+    this.IsScoreEnable = true;
   }
   HideScore() {
-    this.IsScoreEnable = !1
+    this.IsScoreEnable = false;
   }
 }
 exports.BaseScoreItem = BaseScoreItem;

@@ -1,43 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MeshAnimalModel = void 0;
+  value: true
+});
+exports.MeshAnimalModel = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class MeshAnimalModel {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsMeshAnimalModel(e, t) {
-    return (t || new MeshAnimalModel).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new MeshAnimalModel()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsMeshAnimalModel(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new MeshAnimalModel).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new MeshAnimalModel()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   type(e) {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__string(this.bb_pos + t, e) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, e);
+    } else {
+      return undefined;
+    }
   }
   mesh(e) {
     var t = this.bb.__offset(this.bb_pos, 6);
-    return t ? this.bb.__string(this.bb_pos + t, e) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, e);
+    } else {
+      return undefined;
+    }
   }
   static startMeshAnimalModel(e) {
-    e.startObject(2)
+    e.startObject(2);
   }
   static addType(e, t) {
-    e.addFieldOffset(0, t, 0)
+    e.addFieldOffset(0, t, 0);
   }
   static addMesh(e, t) {
-    e.addFieldOffset(1, t, 0)
+    e.addFieldOffset(1, t, 0);
   }
   static endMeshAnimalModel(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createMeshAnimalModel(e, t, s) {
-    return MeshAnimalModel.startMeshAnimalModel(e), MeshAnimalModel.addType(e, t), MeshAnimalModel.addMesh(e, s), MeshAnimalModel.endMeshAnimalModel(e)
+    MeshAnimalModel.startMeshAnimalModel(e);
+    MeshAnimalModel.addType(e, t);
+    MeshAnimalModel.addMesh(e, s);
+    return MeshAnimalModel.endMeshAnimalModel(e);
   }
 }
 exports.MeshAnimalModel = MeshAnimalModel;

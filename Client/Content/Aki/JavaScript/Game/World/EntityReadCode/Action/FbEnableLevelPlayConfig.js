@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableLevelPlayConfig = void 0;
+  value: true
+});
+exports.FbEnableLevelPlayConfig = undefined;
 class FbEnableLevelPlayConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.Ryh = !1, this.wyh = 0, this.Jch = !1, this.l7 = !1
+    this.FbDataInternal = t;
+    this.Ryh = false;
+    this.wyh = 0;
+    this.Jch = false;
+    this.l7 = false;
   }
   static Create(t) {
-    if (t) return new FbEnableLevelPlayConfig(t)
+    if (t) {
+      return new FbEnableLevelPlayConfig(t);
+    }
   }
   get LevelPlayId() {
-    return this.Ryh || (this.Ryh = !0, this.wyh = this.FbDataInternal.levelPlayId()), this.wyh
+    if (!this.Ryh) {
+      this.Ryh = true;
+      this.wyh = this.FbDataInternal.levelPlayId();
+    }
+    return this.wyh;
   }
   get Enable() {
-    return this.Jch || (this.Jch = !0, this.l7 = this.FbDataInternal.enable()), this.l7
+    if (!this.Jch) {
+      this.Jch = true;
+      this.l7 = this.FbDataInternal.enable();
+    }
+    return this.l7;
   }
 }
 exports.FbEnableLevelPlayConfig = FbEnableLevelPlayConfig;

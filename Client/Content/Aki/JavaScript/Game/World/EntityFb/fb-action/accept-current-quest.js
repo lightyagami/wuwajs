@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AcceptCurrentQuest = void 0;
+  value: true
+});
+exports.AcceptCurrentQuest = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class AcceptCurrentQuest {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, e) {
-    return this.bb_pos = t, this.bb = e, this
+    this.bb_pos = t;
+    this.bb = e;
+    return this;
   }
   static getRootAsAcceptCurrentQuest(t, e) {
-    return (e || new AcceptCurrentQuest).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new AcceptCurrentQuest()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsAcceptCurrentQuest(t, e) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (e || new AcceptCurrentQuest).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (e || new AcceptCurrentQuest()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static startAcceptCurrentQuest(t) {
-    t.startObject(0)
+    t.startObject(0);
   }
   static endAcceptCurrentQuest(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createAcceptCurrentQuest(t) {
-    return AcceptCurrentQuest.startAcceptCurrentQuest(t), AcceptCurrentQuest.endAcceptCurrentQuest(t)
+    AcceptCurrentQuest.startAcceptCurrentQuest(t);
+    return AcceptCurrentQuest.endAcceptCurrentQuest(t);
   }
 }
 exports.AcceptCurrentQuest = AcceptCurrentQuest;

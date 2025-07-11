@@ -1,18 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GridProxyAbstract = void 0;
+  value: true
+});
+exports.GridProxyAbstract = undefined;
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class GridProxyAbstract extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.ScrollViewDelegate = void 0, this.GridIndex = 0, this.DisplayIndex = 0
+    super(...arguments);
+    this.ScrollViewDelegate = undefined;
+    this.GridIndex = 0;
+    this.DisplayIndex = 0;
   }
   Refresh(e, s, t) {}
   Clear() {}
   OnSelected(e) {}
   OnDeselected(e) {}
   GetKey(e, s) {
-    return this.GridIndex
+    return this.GridIndex;
   }
 }
 exports.GridProxyAbstract = GridProxyAbstract;

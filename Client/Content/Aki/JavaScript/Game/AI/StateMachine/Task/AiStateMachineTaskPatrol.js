@@ -1,59 +1,119 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineTaskPatrol = void 0;
-const GlobalData_1 = require("../../../GlobalData"),
-  TsAiController_1 = require("../../Controller/TsAiController"),
-  AiStateMachineTask_1 = require("./AiStateMachineTask");
+  value: true
+});
+exports.AiStateMachineTaskPatrol = undefined;
+const GlobalData_1 = require("../../../GlobalData");
+const TsAiController_1 = require("../../Controller/TsAiController");
+const AiStateMachineTask_1 = require("./AiStateMachineTask");
 class AiStateMachineTaskPatrol extends AiStateMachineTask_1.AiStateMachineTask {
   constructor() {
-    super(...arguments), this.JLn = void 0, this.$ie = void 0, this.Jh = void 0, this.Gce = void 0, this.mBe = void 0, this.zLn = void 0, this.Hte = void 0, this.Bte = void 0, this.MoveState = 0, this.OpenDebugMode = !1
+    super(...arguments);
+    this.JLn = undefined;
+    this.$ie = undefined;
+    this.Jh = undefined;
+    this.Gce = undefined;
+    this.mBe = undefined;
+    this.zLn = undefined;
+    this.Hte = undefined;
+    this.Bte = undefined;
+    this.MoveState = 0;
+    this.OpenDebugMode = false;
   }
   OnInit(t) {
-    return this.MoveState = t.TaskPatrol.MoveState, this.OpenDebugMode = t.TaskPatrol.OpenDebugMode, !0
+    this.MoveState = t.TaskPatrol.MoveState;
+    this.OpenDebugMode = t.TaskPatrol.OpenDebugMode;
+    return true;
   }
   OnEnter(t) {
     var i = this.Node.AiComponent.TsAiController;
-    i instanceof TsAiController_1.default && (this.Bte = i.AiController, this.JLn = this.Bte.AiPatrol, this.$ie = this.JLn.GetConfig(), this.$ie) && (this.Jh = this.Bte.CharAiDesignComp.Entity, this.Gce = this.Jh.GetComponent(45), this.mBe = this.Jh.GetComponent(101), this.zLn = this.Jh.GetComponent(48), this.Hte = this.Bte.CharActorComp, this.zLn) ? this.ZLn() : this.$ne()
+    if (i instanceof TsAiController_1.default && (this.Bte = i.AiController, this.JLn = this.Bte.AiPatrol, this.$ie = this.JLn.GetConfig(), this.$ie) && (this.Jh = this.Bte.CharAiDesignComp.Entity, this.Gce = this.Jh.GetComponent(45), this.mBe = this.Jh.GetComponent(101), this.zLn = this.Jh.GetComponent(48), this.Hte = this.Bte.CharActorComp, this.zLn)) {
+      this.ZLn();
+    } else {
+      this.$ne();
+    }
   }
   OnExit(t) {
-    this.Node.TaskFinish || (this.zLn && this.$ie && this.zLn.PausePatrol(this.$ie.SplineEntityId, "AiStateMachineTaskPatrol"), this.eDn(), this.$ne()), this.Gce && (this.Gce.StopMoveNew(), this.Gce.IsSpecialMove = !1)
+    if (!this.Node.TaskFinished) {
+      if (this.zLn && this.$ie) {
+        this.zLn.PausePatrol(this.$ie.SplineEntityId, "AiStateMachineTaskPatrol");
+      }
+      this.eDn();
+      this.$ne();
+    }
+    if (this.Gce) {
+      this.Gce.StopMoveNew();
+      this.Gce.IsSpecialMove = false;
+    }
   }
   $ne() {
-    this.Node.TaskFinish = !0
+    this.Node.TaskFinished = true;
   }
   tDn() {
-    this.JLn.GeneratePatrol(!0), this.JLn.StartPatrol(!0, () => {
-      this.iDn()
-    }), this.JLn.ResetBaseInfoByMainPoint(this.Gce, this.mBe, this.MoveState)
+    this.JLn.GeneratePatrol(true);
+    this.JLn.StartPatrol(true, () => {
+      this.iDn();
+    });
+    this.JLn.ResetBaseInfoByMainPoint(this.Gce, this.mBe, this.MoveState);
   }
   iDn() {
     var t;
-    GlobalData_1.GlobalData.BpEventManager && (t = this.JLn?.PatrolPoint) && t.IsMain && GlobalData_1.GlobalData.BpEventManager.AI巡逻达到样条点.Broadcast(this.Hte.Actor, this.JLn.PatrolIndex)
+    if (GlobalData_1.GlobalData.BpEventManager && (t = this.JLn?.PatrolPoint) && t.IsMain) {
+      GlobalData_1.GlobalData.BpEventManager.AI巡逻达到样条点.Broadcast(this.Hte.Actor, this.JLn.PatrolIndex);
+    }
   }
   oDn() {
     const i = this.JLn?.PatrolPoint;
     var t;
-    i && (this.zLn.HasPatrolRecord() ? this.zLn.ResumePatrol(this.$ie.SplineEntityId, "AiStateMachineTaskPatrol") : (t = {
-      DebugMode: this.OpenDebugMode,
-      UseNearestPoint: !0,
-      ReturnFalseWhenNavigationFailed: !1,
-      OnArrivePointHandle: () => {
-        var t = this.zLn.GetLastPointRawIndex(); - 1 !== t && this.JLn.SetPatrolIndex(t), i.IsMain && this.iDn()
-      },
-      OnPatrolEndHandle: t => {
-        1 === t && this.eDn(), this.$ne()
+    if (i) {
+      if (this.zLn.HasPatrolRecord()) {
+        this.zLn.ResumePatrol(this.$ie.SplineEntityId, "AiStateMachineTaskPatrol");
+      } else {
+        t = {
+          DebugMode: this.OpenDebugMode,
+          UseNearestPoint: true,
+          ReturnFalseWhenNavigationFailed: false,
+          OnArrivePointHandle: () => {
+            var t = this.zLn.GetLastPointRawIndex();
+            if (t !== -1) {
+              this.JLn.SetPatrolIndex(t);
+            }
+            if (i.IsMain) {
+              this.iDn();
+            }
+          },
+          OnPatrolEndHandle: t => {
+            if (t === 1) {
+              this.eDn();
+            }
+            this.$ne();
+          }
+        };
+        this.zLn.StartPatrol(this.$ie.SplineEntityId, t);
       }
-    }, this.zLn.StartPatrol(this.$ie.SplineEntityId, t)))
+    }
   }
   eDn() {
-    this.iDn(), this.JLn?.PatrolFinish()
+    this.iDn();
+    this.JLn?.PatrolFinish();
   }
   ZLn() {
-    this.$ie.ContainZ && this.Gce && this.Hte?.Actor.KuroSetMovementMode({
-      Mode: 5,
-      Context: "[AiStateMachineTaskPatrol.BeginPatrol]"
-    }), this.tDn(), this.JLn?.PatrolPoint ? (this.oDn(), void 0 !== this.Bte.AiPatrol.StartWithInversePath && (this.Bte.AiPatrol.StartWithInversePath = void 0)) : this.$ne()
+    if (this.$ie.ContainZ && this.Gce) {
+      this.Hte?.Actor.KuroSetMovementMode({
+        Mode: 5,
+        Context: "[AiStateMachineTaskPatrol.BeginPatrol]"
+      });
+    }
+    this.tDn();
+    if (this.JLn?.PatrolPoint) {
+      this.oDn();
+      if (this.Bte.AiPatrol.StartWithInversePath !== undefined) {
+        this.Bte.AiPatrol.StartWithInversePath = undefined;
+      }
+    } else {
+      this.$ne();
+    }
   }
 }
 exports.AiStateMachineTaskPatrol = AiStateMachineTaskPatrol;

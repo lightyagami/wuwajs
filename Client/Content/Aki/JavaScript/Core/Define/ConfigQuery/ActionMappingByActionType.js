@@ -1,54 +1,79 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configActionMappingByActionType = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  ActionMapping_1 = require("../Config/ActionMapping"),
-  DB = "db_input_settings.db",
-  FILE = "s.输入配置.xlsx",
-  TABLE = "ActionMapping",
-  COMMAND = "select BinData from `ActionMapping` where ActionType=?",
-  KEY_PREFIX = "ActionMappingByActionType",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configActionMappingByActionType = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const ActionMapping_1 = require("../Config/ActionMapping");
+const DB = "db_input_settings.db";
+const FILE = "s.输入配置.xlsx";
+const TABLE = "ActionMapping";
+const COMMAND = "select BinData from `ActionMapping` where ActionType=?";
+const KEY_PREFIX = "ActionMappingByActionType";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configActionMappingByActionType.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configActionMappingByActionType.GetConfigList"),
-  CONFIG_LIST_STAT_PREFIX = "configActionMappingByActionType.GetConfigList(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configActionMappingByActionType.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configActionMappingByActionType.GetConfigList");
+const CONFIG_LIST_STAT_PREFIX = "configActionMappingByActionType.GetConfigList(";
 exports.configActionMappingByActionType = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (n, o = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start();
-    var i = Stats_1.Stat.CreateNoFlameGraph(CONFIG_LIST_STAT_PREFIX + `#${n})`),
-      t = (i?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfigList: (n, o = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    var i = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_LIST_STAT_PREFIX}#${n})`);
+    i?.Start();
+    var t = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (t) {
       if (o) {
-        var e = KEY_PREFIX + `#${n})`;
+        var e = `${KEY_PREFIX}#${n})`;
         const a = ConfigCommon_1.ConfigCommon.GetConfig(e);
-        if (a) return i?.Stop(), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (a) {
+          i?.Stop();
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return a;
+        }
       }
       if (t = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, n, ...logPair)) {
-        const a = new Array;
-        for (;;) {
-          if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair, ["ActionType", n])) break;
-          var g = void 0;
-          if ([t, g] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["ActionType", n]), !t) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), i?.Stop(), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+        const a = new Array();
+        while (true) {
+          if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair, ["ActionType", n]) !== 1) {
+            break;
+          }
+          var g = undefined;
+          [t, g] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["ActionType", n]);
+          if (!t) {
+            ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+            i?.Stop();
+            getConfigListStat?.Stop();
+            ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+            return;
+          }
           g = ActionMapping_1.ActionMapping.getRootAsActionMapping(new byte_buffer_1.ByteBuffer(new Uint8Array(g.buffer)));
-          a.push(g)
+          a.push(g);
         }
-        return o && (e = KEY_PREFIX + `#${n})`, ConfigCommon_1.ConfigCommon.SaveConfig(e, a, a.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), i?.Stop(), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), a
+        if (o) {
+          e = `${KEY_PREFIX}#${n})`;
+          ConfigCommon_1.ConfigCommon.SaveConfig(e, a, a.length);
+        }
+        ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+        i?.Stop();
+        getConfigListStat?.Stop();
+        ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+        return a;
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    i?.Stop(), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    i?.Stop();
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=ActionMappingByActionType.js.map

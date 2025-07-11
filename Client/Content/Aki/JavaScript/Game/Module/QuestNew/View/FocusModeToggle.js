@@ -1,42 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FocusModeToggle = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil");
+  value: true
+});
+exports.FocusModeToggle = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
 class FocusModeToggle extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.F91 = !1, this.A5e = () => {
+    super(...arguments);
+    this.RH1 = false;
+    this.A5e = () => {
       var e = this.GetExtendToggle(0)?.GetToggleState();
-      return this.F91 || 1 === e
-    }
+      return this.RH1 || e === 1;
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
   }
   OnStart() {
-    this.GetExtendToggle(0).SetToggleState(0)
+    this.GetExtendToggle(0).SetToggleState(0);
   }
   OnBeforeDestroy() {
     var e = this.GetExtendToggle(0);
-    e.OnStateChange.Clear(), e.OnPointUpCallBack.Unbind(), e.CanExecuteChange.Unbind()
+    e.OnStateChange.Clear();
+    e.OnPointUpCallBack.Unbind();
+    e.CanExecuteChange.Unbind();
   }
   BindToggleCallback(e, t) {
     var s = this.GetExtendToggle(0);
-    s.OnStateChange.Add(e), s.OnPointUpCallBack.Bind(t), s.CanExecuteChange.Bind(this.A5e)
+    s.OnStateChange.Add(e);
+    s.OnPointUpCallBack.Bind(t);
+    s.CanExecuteChange.Bind(this.A5e);
   }
   SetToggleState(e) {
-    this.F91 = !0;
-    var t = this.GetExtendToggle(0)?.SetToggleState(e ? 1 : 0, !0);
-    this.F91 = !1, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Temp", 18, "FocusModeToggle", ["ret", t], ["active", e])
+    this.RH1 = true;
+    var t = this.GetExtendToggle(0)?.SetToggleState(e ? 1 : 0, true);
+    this.RH1 = false;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Temp", 18, "FocusModeToggle", ["ret", t], ["active", e]);
+    }
   }
   SetButtonText(e) {
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), e)
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), e);
   }
 }
 exports.FocusModeToggle = FocusModeToggle;

@@ -1,21 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.gmCommandConfigs = exports.gmSubTypeConfig = exports.gmTypeConfig = void 0, exports.gmTypeConfig = {
+  value: true
+});
+exports.gmCommandConfigs = exports.gmSubTypeConfig = exports.gmTypeConfig = undefined;
+exports.gmTypeConfig = {
   Quest: "任务",
   Dungeon: "副本",
   LevelPlay: "玩法",
   Entity: "实体",
   System: "系统",
   Other: "其它"
-}, exports.gmSubTypeConfig = {
+};
+exports.gmSubTypeConfig = {
   Process: "进程",
   Attributes: "属性",
   System: "系统",
   Ability: "养成",
   Action: "行为",
   Flow: "剧情"
-}, exports.gmCommandConfigs = {
+};
+exports.gmCommandConfigs = {
   SkipToLevelPlayNode: {
     CnName: "一键推进",
     GmType: "LevelPlay",
@@ -162,7 +167,7 @@ Object.defineProperty(exports, "__esModule", {
     GmSubType: "System",
     ParseType: "Client",
     Code: "TeleportToEntity",
-    Hide: !0
+    Hide: true
   },
   GmTeleportToEntity: {
     CnName: "传送到实体",
@@ -338,7 +343,7 @@ Object.defineProperty(exports, "__esModule", {
     GmSubType: "System",
     ParseType: "Client",
     Code: "OpenBackLoginView",
-    Hide: !0
+    Hide: true
   },
   SavePlayerData: {
     CnName: "保存玩家数据",
@@ -346,7 +351,7 @@ Object.defineProperty(exports, "__esModule", {
     GmSubType: "System",
     ParseType: "Server",
     Code: "GmSavePlayerData",
-    Hide: !0
+    Hide: true
   },
   BrokenRockHotFix: {
     CnName: "热更破碎岩石玩法",
@@ -354,7 +359,6 @@ Object.defineProperty(exports, "__esModule", {
     GmSubType: "System",
     ParseType: "Client",
     Code: "BrokenRockConfigHotFix",
-    Hide: !0
+    Hide: true
   }
-};
-//# sourceMappingURL=IGm.js.map
+}; //# sourceMappingURL=IGm.js.map

@@ -1,72 +1,119 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleUiChildViewData = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  VisibleStateUtil_1 = require("./VisibleStateUtil"),
-  battleUiChildren = [0, 14, 15, 16, 17, 18, 19, 20, 27];
+  value: true
+});
+exports.BattleUiChildViewData = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const VisibleStateUtil_1 = require("./VisibleStateUtil");
+const battleUiChildren = [0, 14, 15, 16, 17, 18, 19, 20, 28];
 class BattleUiChildViewData {
   constructor() {
-    this.EQe = [], this.SQe = new Map, this.kx1 = new Set
+    this.EQe = [];
+    this.SQe = new Map();
+    this.uD1 = new Set();
   }
   AddBattleUiCommonChildVisibleReason(t) {
-    this.kx1.add(t), this.SetChildrenVisible(0, battleUiChildren, 0 < this.kx1.size)
+    this.uD1.add(t);
+    this.SetChildrenVisible(0, battleUiChildren, this.uD1.size > 0);
   }
   RemoveBattleUiCommonChildVisibleReason(t) {
-    this.kx1.delete(t), this.SetChildrenVisible(0, battleUiChildren, 0 < this.kx1.size)
+    this.uD1.delete(t);
+    this.SetChildrenVisible(0, battleUiChildren, this.uD1.size > 0);
   }
   Init() {
-    for (let t = this.EQe.length = 0; t < 24; t++) this.EQe.push(1);
-    this.EQe.push(0)
+    for (let t = this.EQe.length = 0; t < 25; t++) {
+      this.EQe.push(1);
+    }
+    this.EQe.push(0);
   }
   OnLeaveLevel() {}
   Clear() {}
   GetChildVisible(t) {
-    return 0 === this.EQe[t]
+    return this.EQe[t] === 0;
   }
-  SetChildVisible(t, i, e, l = !0) {
-    var s = this.EQe[i],
-      e = VisibleStateUtil_1.VisibleStateUtil.SetVisible(s, e, t);
-    return this.EQe[i] = e, !l || s === e || 0 !== s && 0 !== e || this.yQe(i), 0 === e
+  SetChildVisible(t, i, e, l = true) {
+    var s = this.EQe[i];
+    var e = VisibleStateUtil_1.VisibleStateUtil.SetVisible(s, e, t);
+    this.EQe[i] = e;
+    if (!!l && s !== e && (s === 0 || e === 0)) {
+      this.yQe(i);
+    }
+    return e === 0;
   }
-  SetChildrenVisible(t, i, e, l = !0) {
-    for (const s of i) this.SetChildVisible(t, s, e, l)
+  SetChildrenVisible(t, i, e, l = true) {
+    for (const s of i) {
+      this.SetChildVisible(t, s, e, l);
+    }
   }
   HideBattleView(i, t) {
-    for (let t = 0; t < 25; t++) this.SetChildVisible(i, t, !1, !1);
-    if (t)
-      for (const e of t) this.SetChildVisible(i, e, !0, !1);
-    this.IQe()
+    for (let t = 0; t < 26; t++) {
+      this.SetChildVisible(i, t, false, false);
+    }
+    if (t) {
+      for (const e of t) {
+        this.SetChildVisible(i, e, true, false);
+      }
+    }
+    this.IQe();
   }
   ShowBattleView(i) {
-    for (let t = 0; t < 25; t++) this.SetChildVisible(i, t, !0, !1);
-    this.IQe()
+    for (let t = 0; t < 26; t++) {
+      this.SetChildVisible(i, t, true, false);
+    }
+    this.IQe();
   }
   AddCallback(t, i) {
     let e = this.SQe.get(t);
-    e || (e = [], this.SQe.set(t, e)), e.push(i)
+    if (!e) {
+      e = [];
+      this.SQe.set(t, e);
+    }
+    e.push(i);
   }
   RemoveCallback(t, i) {
     t = this.SQe.get(t);
-    t && -1 !== (i = t.indexOf(i)) && t.splice(i, 1)
+    if (t && (i = t.indexOf(i)) !== -1) {
+      t.splice(i, 1);
+    }
   }
   yQe(t) {
     t = this.SQe.get(t);
-    if (t)
-      for (const i of t) i()
+    if (t) {
+      for (const i of t) {
+        i();
+      }
+    }
   }
   IQe() {
     try {
-      for (const t of this.SQe.values())
-        for (const i of t) i()
+      for (const t of this.SQe.values()) {
+        for (const i of t) {
+          i();
+        }
+      }
     } catch (t) {
-      t instanceof Error ? Log_1.Log.CheckError() && Log_1.Log.ErrorWithStack("Battle", 17, "childViewError", t, ["", t.message]) : Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 17, "childViewError", ["error", t])
+      if (t instanceof Error) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.ErrorWithStack("Battle", 17, "childViewError", t, ["", t.message]);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 17, "childViewError", ["error", t]);
+      }
     }
   }
   DebugLogAllChildState() {
-    for (let i = 0; i < 26; i++)
-      if (0 !== this.EQe[i])
-        for (let t = 0; t < 14; t++) VisibleStateUtil_1.VisibleStateUtil.GetVisibleByType(this.EQe[i], t) || Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "界面被隐藏", ["编号", i], ["原因", t])
+    for (let i = 0; i < 27; i++) {
+      if (this.EQe[i] !== 0) {
+        for (let t = 0; t < 14; t++) {
+          if (!VisibleStateUtil_1.VisibleStateUtil.GetVisibleByType(this.EQe[i], t)) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Battle", 17, "界面被隐藏", ["编号", i], ["原因", t]);
+            }
+          }
+        }
+      }
+    }
   }
 }
 exports.BattleUiChildViewData = BattleUiChildViewData;

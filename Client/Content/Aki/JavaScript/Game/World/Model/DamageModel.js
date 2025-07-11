@@ -1,27 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DamageModel = void 0;
-const Info_1 = require("../../../Core/Common/Info"),
-  DamageByAll_1 = require("../../../Core/Define/ConfigQuery/DamageByAll"),
-  DamageById_1 = require("../../../Core/Define/ConfigQuery/DamageById"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  CloudGameManager_1 = require("../../Manager/CloudGameManager");
+  value: true
+});
+exports.DamageModel = undefined;
+const Info_1 = require("../../../Core/Common/Info");
+const DamageByAll_1 = require("../../../Core/Define/ConfigQuery/DamageByAll");
+const DamageById_1 = require("../../../Core/Define/ConfigQuery/DamageById");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const CloudGameManager_1 = require("../../Manager/CloudGameManager");
 class DamageModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.z9l = void 0
+    super(...arguments);
+    this.z9l = undefined;
   }
   OnInit() {
     var e;
-    return (Info_1.Info.IsPs5Platform() || CloudGameManager_1.CloudGameManager.IsCloudGame) && (this.z9l = new Map, e = DamageByAll_1.configDamageByAll.GetConfigList()) && e.forEach(e => {
-      this.z9l.set(e.Id, e)
-    }), !0
+    if ((Info_1.Info.IsPs5Platform() || CloudGameManager_1.CloudGameManager.IsCloudGame) && (this.z9l = new Map(), e = DamageByAll_1.configDamageByAll.GetConfigList())) {
+      e.forEach(e => {
+        this.z9l.set(e.Id, e);
+      });
+    }
+    return true;
   }
   GetDamageConfigById(e) {
-    return Info_1.Info.IsPs5Platform() || CloudGameManager_1.CloudGameManager.IsCloudGame ? 0 < e ? this.z9l.get(e) : void 0 : 0 < e ? DamageById_1.configDamageById.GetConfig(e) : void 0
+    if (Info_1.Info.IsPs5Platform() || CloudGameManager_1.CloudGameManager.IsCloudGame) {
+      if (e > 0) {
+        return this.z9l.get(e);
+      } else {
+        return undefined;
+      }
+    } else if (e > 0) {
+      return DamageById_1.configDamageById.GetConfig(e);
+    } else {
+      return undefined;
+    }
   }
   OnClear() {
-    return this.z9l?.clear(), !0
+    this.z9l?.clear();
+    return true;
   }
 }
 exports.DamageModel = DamageModel;

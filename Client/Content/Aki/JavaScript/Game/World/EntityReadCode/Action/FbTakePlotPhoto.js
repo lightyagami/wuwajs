@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTakePlotPhoto = void 0;
+  value: true
+});
+exports.FbTakePlotPhoto = undefined;
 class FbTakePlotPhoto {
   constructor(t) {
-    this.FbDataInternal = t
+    this.FbDataInternal = t;
   }
   static Create(t) {
-    if (t) return new FbTakePlotPhoto(t)
+    if (t) {
+      return new FbTakePlotPhoto(t);
+    }
   }
 }
 exports.FbTakePlotPhoto = FbTakePlotPhoto;

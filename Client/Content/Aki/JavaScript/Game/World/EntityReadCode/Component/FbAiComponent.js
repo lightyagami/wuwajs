@@ -1,51 +1,103 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAiComponent = void 0;
-const FbPatrol_1 = require("./FbPatrol"),
-  UnionInitStateHelper_1 = require("./UnionInitStateHelper"),
-  UnionBlackBoardHelper_1 = require("../Var/UnionBlackBoardHelper");
+  value: true
+});
+exports.FbAiComponent = undefined;
+const FbPatrol_1 = require("./FbPatrol");
+const UnionInitStateHelper_1 = require("./UnionInitStateHelper");
+const UnionBlackBoardHelper_1 = require("../Var/UnionBlackBoardHelper");
 class FbAiComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.DRh = !1, this.BRh = 0, this.qRh = !1, this.kRh = void 0, this.wAh = !1, this.PAh = void 0, this.GRh = !1, this.ORh = 0, this.FRh = !1, this.NRh = void 0, this.VRh = !1, this.jRh = void 0, this.HRh = !1, this.WRh = 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.DRh = false;
+    this.BRh = 0;
+    this.qRh = false;
+    this.kRh = undefined;
+    this.wAh = false;
+    this.PAh = undefined;
+    this.GRh = false;
+    this.ORh = 0;
+    this.FRh = false;
+    this.NRh = undefined;
+    this.VRh = false;
+    this.jRh = undefined;
+    this.HRh = false;
+    this.WRh = 0;
   }
   static Create(t) {
-    if (t) return new FbAiComponent(t)
+    if (t) {
+      return new FbAiComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get AiId() {
-    return this.DRh || (this.DRh = !0, this.BRh = this.FbDataInternal.aiId()), this.BRh
+    if (!this.DRh) {
+      this.DRh = true;
+      this.BRh = this.FbDataInternal.aiId();
+    }
+    return this.BRh;
   }
   get Patrol() {
-    return this.qRh || (this.qRh = !0, this.kRh = FbPatrol_1.FbPatrol.Create(this.FbDataInternal.patrol())), this.kRh
+    if (!this.qRh) {
+      this.qRh = true;
+      this.kRh = FbPatrol_1.FbPatrol.Create(this.FbDataInternal.patrol());
+    }
+    return this.kRh;
   }
   get InitState() {
-    var t, i;
-    return !this.wAh && (this.wAh = !0, t = this.FbDataInternal.initStateType(), i = UnionInitStateHelper_1.UnionInitStateHelper.GetUnionInitStateObject(t)) && (this.PAh = UnionInitStateHelper_1.UnionInitStateHelper.ReadUnionInitState(t, this.FbDataInternal.initState(i))), this.PAh
+    var t;
+    var i;
+    if (!this.wAh && (this.wAh = true, t = this.FbDataInternal.initStateType(), i = UnionInitStateHelper_1.UnionInitStateHelper.GetUnionInitStateObject(t))) {
+      this.PAh = UnionInitStateHelper_1.UnionInitStateHelper.ReadUnionInitState(t, this.FbDataInternal.initState(i));
+    }
+    return this.PAh;
   }
   get CenterPoint() {
-    return this.GRh || (this.GRh = !0, this.ORh = this.FbDataInternal.centerPoint()), this.ORh
+    if (!this.GRh) {
+      this.GRh = true;
+      this.ORh = this.FbDataInternal.centerPoint();
+    }
+    return this.ORh;
   }
   get InitBlackBoard() {
     if (!this.FRh) {
-      this.FRh = !0, this.NRh = new Array;
+      this.FRh = true;
+      this.NRh = new Array();
       var i = this.FbDataInternal.initBlackBoardLength();
-      if (i)
+      if (i) {
         for (let t = 0; t < i; ++t) {
-          var s = this.FbDataInternal.initBlackBoardType(t),
-            e = UnionBlackBoardHelper_1.UnionBlackBoardHelper.GetUnionBlackBoardObject(s);
-          e && void 0 !== (s = UnionBlackBoardHelper_1.UnionBlackBoardHelper.ReadUnionBlackBoard(s, this.FbDataInternal.initBlackBoard(t, e))) && this.NRh.push(s)
+          var s = this.FbDataInternal.initBlackBoardType(t);
+          var e = UnionBlackBoardHelper_1.UnionBlackBoardHelper.GetUnionBlackBoardObject(s);
+          if (e && (s = UnionBlackBoardHelper_1.UnionBlackBoardHelper.ReadUnionBlackBoard(s, this.FbDataInternal.initBlackBoard(t, e))) !== undefined) {
+            this.NRh.push(s);
+          }
         }
+      }
     }
-    return this.NRh
+    return this.NRh;
   }
   get WeaponId() {
-    return this.VRh || (this.VRh = !0, this.jRh = this.FbDataInternal.weaponId()), this.jRh
+    if (!this.VRh) {
+      this.VRh = true;
+      this.jRh = this.FbDataInternal.weaponId();
+    }
+    return this.jRh;
   }
   get AiTeamLevelId() {
-    return this.HRh || (this.HRh = !0, this.WRh = this.FbDataInternal.aiTeamLevelId()), this.WRh
+    if (!this.HRh) {
+      this.HRh = true;
+      this.WRh = this.FbDataInternal.aiTeamLevelId();
+    }
+    return this.WRh;
   }
 }
 exports.FbAiComponent = FbAiComponent;

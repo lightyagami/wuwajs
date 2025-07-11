@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleVehicleFeature = void 0;
+  value: true
+});
+exports.BattleVehicleFeature = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class BattleVehicleFeature {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsBattleVehicleFeature(e, t) {
-    return (t || new BattleVehicleFeature).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new BattleVehicleFeature()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsBattleVehicleFeature(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new BattleVehicleFeature).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new BattleVehicleFeature()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   type() {
     var e = this.bb.__offset(this.bb_pos, 4);
-    return e ? this.bb.readUint8(this.bb_pos + e) : 0
+    if (e) {
+      return this.bb.readUint8(this.bb_pos + e);
+    } else {
+      return 0;
+    }
   }
   static startBattleVehicleFeature(e) {
-    e.startObject(1)
+    e.startObject(1);
   }
   static addType(e, t) {
-    e.addFieldInt8(0, t, 0)
+    e.addFieldInt8(0, t, 0);
   }
   static endBattleVehicleFeature(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createBattleVehicleFeature(e, t) {
-    return BattleVehicleFeature.startBattleVehicleFeature(e), BattleVehicleFeature.addType(e, t), BattleVehicleFeature.endBattleVehicleFeature(e)
+    BattleVehicleFeature.startBattleVehicleFeature(e);
+    BattleVehicleFeature.addType(e, t);
+    return BattleVehicleFeature.endBattleVehicleFeature(e);
   }
 }
 exports.BattleVehicleFeature = BattleVehicleFeature;

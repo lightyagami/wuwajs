@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationInventoryDestroyEnterButton = void 0;
+  value: true
+});
+exports.NavigationInventoryDestroyEnterButton = undefined;
 const NavigationButton_1 = require("../NavigationButton");
 class NavigationInventoryDestroyEnterButton extends NavigationButton_1.NavigationButton {
   OnButtonClick() {
-    this.PanelHandle.SetItemGridDestroyMode(!0)
+    this.PanelHandle.SetItemGridDestroyMode(true);
   }
 }
 exports.NavigationInventoryDestroyEnterButton = NavigationInventoryDestroyEnterButton;

@@ -1,67 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineFactory = void 0;
-const AiStateMachineAction_1 = require("./Action/AiStateMachineAction"),
-  AiStateMachineActionActivateSkillGroup_1 = require("./Action/AiStateMachineActionActivateSkillGroup"),
-  AiStateMachineActionAddBuff_1 = require("./Action/AiStateMachineActionAddBuff"),
-  AiStateMachineActionChangeInstState_1 = require("./Action/AiStateMachineActionChangeInstState"),
-  AiStateMachineActionCue_1 = require("./Action/AiStateMachineActionCue"),
-  AiStateMachineActionEnterFight_1 = require("./Action/AiStateMachineActionEnterFight"),
-  AiStateMachineActionExitHit_1 = require("./Action/AiStateMachineActionExitHit"),
-  AiStateMachineActionRemoveBuff_1 = require("./Action/AiStateMachineActionRemoveBuff"),
-  AiStateMachineActionResetPart_1 = require("./Action/AiStateMachineActionResetPart"),
-  AiStateMachineActionResetStatus_1 = require("./Action/AiStateMachineActionResetStatus"),
-  AiStateMachineActionSendGameplayEvent_1 = require("./Action/AiStateMachineActionSendGameplayEvent"),
-  AiStateMachineActionStopMontage_1 = require("./Action/AiStateMachineActionStopMontage"),
-  AiStateMachineCondition_1 = require("./Condition/AiStateMachineCondition"),
-  AiStateMachineConditionAnd_1 = require("./Condition/AiStateMachineConditionAnd"),
-  AiStateMachineConditionAttribute_1 = require("./Condition/AiStateMachineConditionAttribute"),
-  AiStateMachineConditionAttributeRate_1 = require("./Condition/AiStateMachineConditionAttributeRate"),
-  AiStateMachineConditionBuffStack_1 = require("./Condition/AiStateMachineConditionBuffStack"),
-  AiStateMachineConditionCheckGroupPatrol_1 = require("./Condition/AiStateMachineConditionCheckGroupPatrol"),
-  AiStateMachineConditionCheckInstState_1 = require("./Condition/AiStateMachineConditionCheckInstState"),
-  AiStateMachineConditionCheckLastState_1 = require("./Condition/AiStateMachineConditionCheckLastState"),
-  AiStateMachineConditionCheckPositionState_1 = require("./Condition/AiStateMachineConditionCheckPositionState"),
-  AiStateMachineConditionCheckState_1 = require("./Condition/AiStateMachineConditionCheckState"),
-  AiStateMachineConditionHasMoveInput_1 = require("./Condition/AiStateMachineConditionHasMoveInput"),
-  AiStateMachineConditionHate_1 = require("./Condition/AiStateMachineConditionHate"),
-  AiStateMachineConditionListenBeHit_1 = require("./Condition/AiStateMachineConditionListenBeHit"),
-  AiStateMachineConditionMontageTimeElapsing_1 = require("./Condition/AiStateMachineConditionMontageTimeElapsing"),
-  AiStateMachineConditionMontageTimeRemaining_1 = require("./Condition/AiStateMachineConditionMontageTimeRemaining"),
-  AiStateMachineConditionOr_1 = require("./Condition/AiStateMachineConditionOr"),
-  AiStateMachineConditionPartLife_1 = require("./Condition/AiStateMachineConditionPartLife"),
-  AiStateMachineConditionTag_1 = require("./Condition/AiStateMachineConditionTag"),
-  AiStateMachineConditionTaskFinish_1 = require("./Condition/AiStateMachineConditionTaskFinish"),
-  AiStateMachineConditionTimer_1 = require("./Condition/AiStateMachineConditionTimer"),
-  AiStateMachineConditionTrue_1 = require("./Condition/AiStateMachineConditionTrue"),
-  AiStateMachineState_1 = require("./State/AiStateMachineState"),
-  AiStateMachineStateAiHateConfig_1 = require("./State/AiStateMachineStateAiHateConfig"),
-  AiStateMachineStateAiSenseEnable_1 = require("./State/AiStateMachineStateAiSenseEnable"),
-  AiStateMachineStateBoneCollision_1 = require("./State/AiStateMachineStateBoneCollision"),
-  AiStateMachineStateBoneVisible_1 = require("./State/AiStateMachineStateBoneVisible"),
-  AiStateMachineStateBuff_1 = require("./State/AiStateMachineStateBuff"),
-  AiStateMachineStateCollisionChannel_1 = require("./State/AiStateMachineStateCollisionChannel"),
-  AiStateMachineStateCue_1 = require("./State/AiStateMachineStateCue"),
-  AiStateMachineStateDeathMontage_1 = require("./State/AiStateMachineStateDeathMontage"),
-  AiStateMachineStateDisableActor_1 = require("./State/AiStateMachineStateDisableActor"),
-  AiStateMachineStateDisableCollision_1 = require("./State/AiStateMachineStateDisableCollision"),
-  AiStateMachineStateMeshVisible_1 = require("./State/AiStateMachineStateMeshVisible"),
-  AiStateMachineStatePalsy_1 = require("./State/AiStateMachineStatePalsy"),
-  AiStateMachineStatePartPanelVisible_1 = require("./State/AiStateMachineStatePartPanelVisible"),
-  AiStateMachineStateTag_1 = require("./State/AiStateMachineStateTag"),
-  AiStateMachineTask_1 = require("./Task/AiStateMachineTask"),
-  AiStateMachineTaskBeHitMontage_1 = require("./Task/AiStateMachineTaskBeHitMontage"),
-  AiStateMachineTaskGroupPatrol_1 = require("./Task/AiStateMachineTaskGroupPatrol"),
-  AiStateMachineTaskLeaveFight_1 = require("./Task/AiStateMachineTaskLeaveFight"),
-  AiStateMachineTaskMontage_1 = require("./Task/AiStateMachineTaskMontage"),
-  AiStateMachineTaskMoveToTarget_1 = require("./Task/AiStateMachineTaskMoveToTarget"),
-  AiStateMachineTaskPatrol_1 = require("./Task/AiStateMachineTaskPatrol"),
-  AiStateMachineTaskRandomMontage_1 = require("./Task/AiStateMachineTaskRandomMontage"),
-  AiStateMachineTaskSkill_1 = require("./Task/AiStateMachineTaskSkill");
+  value: true
+});
+exports.AiStateMachineFactory = undefined;
+const AiStateMachineAction_1 = require("./Action/AiStateMachineAction");
+const AiStateMachineActionActivateSkillGroup_1 = require("./Action/AiStateMachineActionActivateSkillGroup");
+const AiStateMachineActionAddBuff_1 = require("./Action/AiStateMachineActionAddBuff");
+const AiStateMachineActionChangeInstState_1 = require("./Action/AiStateMachineActionChangeInstState");
+const AiStateMachineActionCue_1 = require("./Action/AiStateMachineActionCue");
+const AiStateMachineActionEnterFight_1 = require("./Action/AiStateMachineActionEnterFight");
+const AiStateMachineActionExitHit_1 = require("./Action/AiStateMachineActionExitHit");
+const AiStateMachineActionRemoveBuff_1 = require("./Action/AiStateMachineActionRemoveBuff");
+const AiStateMachineActionResetPart_1 = require("./Action/AiStateMachineActionResetPart");
+const AiStateMachineActionResetStatus_1 = require("./Action/AiStateMachineActionResetStatus");
+const AiStateMachineActionSendGameplayEvent_1 = require("./Action/AiStateMachineActionSendGameplayEvent");
+const AiStateMachineActionStopMontage_1 = require("./Action/AiStateMachineActionStopMontage");
+const AiStateMachineCondition_1 = require("./Condition/AiStateMachineCondition");
+const AiStateMachineConditionAnd_1 = require("./Condition/AiStateMachineConditionAnd");
+const AiStateMachineConditionAttribute_1 = require("./Condition/AiStateMachineConditionAttribute");
+const AiStateMachineConditionAttributeRate_1 = require("./Condition/AiStateMachineConditionAttributeRate");
+const AiStateMachineConditionBuffStack_1 = require("./Condition/AiStateMachineConditionBuffStack");
+const AiStateMachineConditionCheckGroupPatrol_1 = require("./Condition/AiStateMachineConditionCheckGroupPatrol");
+const AiStateMachineConditionCheckInstState_1 = require("./Condition/AiStateMachineConditionCheckInstState");
+const AiStateMachineConditionCheckLastState_1 = require("./Condition/AiStateMachineConditionCheckLastState");
+const AiStateMachineConditionCheckPositionState_1 = require("./Condition/AiStateMachineConditionCheckPositionState");
+const AiStateMachineConditionCheckState_1 = require("./Condition/AiStateMachineConditionCheckState");
+const AiStateMachineConditionHasMoveInput_1 = require("./Condition/AiStateMachineConditionHasMoveInput");
+const AiStateMachineConditionHate_1 = require("./Condition/AiStateMachineConditionHate");
+const AiStateMachineConditionListenBeHit_1 = require("./Condition/AiStateMachineConditionListenBeHit");
+const AiStateMachineConditionMontageTimeElapsing_1 = require("./Condition/AiStateMachineConditionMontageTimeElapsing");
+const AiStateMachineConditionMontageTimeRemaining_1 = require("./Condition/AiStateMachineConditionMontageTimeRemaining");
+const AiStateMachineConditionOr_1 = require("./Condition/AiStateMachineConditionOr");
+const AiStateMachineConditionPartLife_1 = require("./Condition/AiStateMachineConditionPartLife");
+const AiStateMachineConditionTag_1 = require("./Condition/AiStateMachineConditionTag");
+const AiStateMachineConditionTaskFinish_1 = require("./Condition/AiStateMachineConditionTaskFinish");
+const AiStateMachineConditionTimer_1 = require("./Condition/AiStateMachineConditionTimer");
+const AiStateMachineConditionTrue_1 = require("./Condition/AiStateMachineConditionTrue");
+const AiStateMachineState_1 = require("./State/AiStateMachineState");
+const AiStateMachineStateAiHateConfig_1 = require("./State/AiStateMachineStateAiHateConfig");
+const AiStateMachineStateAiSenseEnable_1 = require("./State/AiStateMachineStateAiSenseEnable");
+const AiStateMachineStateBoneCollision_1 = require("./State/AiStateMachineStateBoneCollision");
+const AiStateMachineStateBoneVisible_1 = require("./State/AiStateMachineStateBoneVisible");
+const AiStateMachineStateBuff_1 = require("./State/AiStateMachineStateBuff");
+const AiStateMachineStateCollisionChannel_1 = require("./State/AiStateMachineStateCollisionChannel");
+const AiStateMachineStateCue_1 = require("./State/AiStateMachineStateCue");
+const AiStateMachineStateDeathMontage_1 = require("./State/AiStateMachineStateDeathMontage");
+const AiStateMachineStateDisableActor_1 = require("./State/AiStateMachineStateDisableActor");
+const AiStateMachineStateDisableCollision_1 = require("./State/AiStateMachineStateDisableCollision");
+const AiStateMachineStateMeshVisible_1 = require("./State/AiStateMachineStateMeshVisible");
+const AiStateMachineStatePalsy_1 = require("./State/AiStateMachineStatePalsy");
+const AiStateMachineStatePartPanelVisible_1 = require("./State/AiStateMachineStatePartPanelVisible");
+const AiStateMachineStateTag_1 = require("./State/AiStateMachineStateTag");
+const AiStateMachineTask_1 = require("./Task/AiStateMachineTask");
+const AiStateMachineTaskBeHitMontage_1 = require("./Task/AiStateMachineTaskBeHitMontage");
+const AiStateMachineTaskGroupPatrol_1 = require("./Task/AiStateMachineTaskGroupPatrol");
+const AiStateMachineTaskLeaveFight_1 = require("./Task/AiStateMachineTaskLeaveFight");
+const AiStateMachineTaskMontage_1 = require("./Task/AiStateMachineTaskMontage");
+const AiStateMachineTaskMoveToTarget_1 = require("./Task/AiStateMachineTaskMoveToTarget");
+const AiStateMachineTaskPatrol_1 = require("./Task/AiStateMachineTaskPatrol");
+const AiStateMachineTaskRandomMontage_1 = require("./Task/AiStateMachineTaskRandomMontage");
+const AiStateMachineTaskSkill_1 = require("./Task/AiStateMachineTaskSkill");
 class AiStateMachineFactory {
   CreateTask(i, e) {
-    let t = void 0;
+    let t = undefined;
     try {
       switch (e.Type) {
         case 1:
@@ -90,17 +92,21 @@ class AiStateMachineFactory {
           t = new AiStateMachineTaskGroupPatrol_1.AiStateMachineTaskGroupPatrol(i, e);
           break;
         default:
-          t = new AiStateMachineTask_1.AiStateMachineTask(i, e)
+          t = new AiStateMachineTask_1.AiStateMachineTask(i, e);
       }
     } catch (e) {
       let t = "";
-      e instanceof Error && (t = e.message), i.Owner.PushErrorMessage(`初始化主状态失败异常 [${i.Name}|${i.Uuid}]
-error:` + t)
+      if (e instanceof Error) {
+        t = e.message;
+      }
+      i.Owner.PushErrorMessage(`初始化主状态失败异常 [${i.Name}|${i.Uuid}]
+error:${t}`);
     }
-    return t?.Init(), t
+    t?.Init();
+    return t;
   }
   CreateState(i, e) {
-    let t = void 0;
+    let t = undefined;
     try {
       switch (e.Type) {
         case 1:
@@ -146,17 +152,21 @@ error:` + t)
           t = new AiStateMachineStateDisableCollision_1.AiStateMachineStateDisableCollision(i, e);
           break;
         default:
-          t = new AiStateMachineState_1.AiStateMachineState(i, e)
+          t = new AiStateMachineState_1.AiStateMachineState(i, e);
       }
     } catch (e) {
       let t = "";
-      e instanceof Error && (t = e.message), i.Owner.PushErrorMessage(`初始化节点绑定状态异常 [${i.Name}|${i.Uuid}]
-error:` + t)
+      if (e instanceof Error) {
+        t = e.message;
+      }
+      i.Owner.PushErrorMessage(`初始化节点绑定状态异常 [${i.Name}|${i.Uuid}]
+error:${t}`);
     }
-    return t?.Init(), t
+    t?.Init();
+    return t;
   }
   CreateAction(i, e) {
-    let t = void 0;
+    let t = undefined;
     try {
       switch (e.Type) {
         case 1:
@@ -193,89 +203,97 @@ error:` + t)
           t = new AiStateMachineActionSendGameplayEvent_1.AiStateMachineActionSendGameplayEvent(i, e);
           break;
         default:
-          t = new AiStateMachineAction_1.AiStateMachineAction(i, e)
+          t = new AiStateMachineAction_1.AiStateMachineAction(i, e);
       }
     } catch (e) {
       let t = "";
-      e instanceof Error && (t = e.message), i.Owner.PushErrorMessage(`初始化节点Action失败，初始化异常，node[${i.Name}|${i.Uuid}]
-error:` + t)
+      if (e instanceof Error) {
+        t = e.message;
+      }
+      i.Owner.PushErrorMessage(`初始化节点Action失败，初始化异常，node[${i.Name}|${i.Uuid}]
+error:${t}`);
     }
-    return t?.Init(), t
+    t?.Init();
+    return t;
   }
-  CreateCondition(i, a, e) {
-    let t = void 0;
+  CreateCondition(i, a, e, t) {
+    let n = undefined;
     try {
       switch (a.Type) {
         case 1:
-          t = new AiStateMachineConditionAnd_1.AiStateMachineConditionAnd(i, a, e);
+          n = new AiStateMachineConditionAnd_1.AiStateMachineConditionAnd(i, a, e);
           break;
         case 2:
-          t = new AiStateMachineConditionOr_1.AiStateMachineConditionOr(i, a, e);
+          n = new AiStateMachineConditionOr_1.AiStateMachineConditionOr(i, a, e);
           break;
         case 4:
-          t = new AiStateMachineConditionTrue_1.AiStateMachineConditionTrue(i, a, e);
+          n = new AiStateMachineConditionTrue_1.AiStateMachineConditionTrue(i, a, e);
           break;
         case 17:
-          t = new AiStateMachineConditionAttribute_1.AiStateMachineConditionAttribute(i, a, e);
+          n = new AiStateMachineConditionAttribute_1.AiStateMachineConditionAttribute(i, a, e);
           break;
         case 18:
-          t = new AiStateMachineConditionAttributeRate_1.AiStateMachineConditionAttributeRate(i, a, e);
+          n = new AiStateMachineConditionAttributeRate_1.AiStateMachineConditionAttributeRate(i, a, e);
           break;
         case 20:
-          t = new AiStateMachineConditionHate_1.AiStateMachineConditionHate(i, a, e);
+          n = new AiStateMachineConditionHate_1.AiStateMachineConditionHate(i, a, e);
           break;
         case 24:
         case 19:
-          t = new AiStateMachineConditionCheckState_1.AiStateMachineConditionCheckState(i, a, e);
+          n = new AiStateMachineConditionCheckState_1.AiStateMachineConditionCheckState(i, a, e);
           break;
         case 14:
-          t = new AiStateMachineConditionTag_1.AiStateMachineConditionTag(i, a, e);
+          n = new AiStateMachineConditionTag_1.AiStateMachineConditionTag(i, a, e);
           break;
         case 22:
-          t = new AiStateMachineConditionTimer_1.AiStateMachineConditionTimer(i, a, e);
+          n = new AiStateMachineConditionTimer_1.AiStateMachineConditionTimer(i, a, e);
           break;
         case 25:
-          t = new AiStateMachineConditionCheckInstState_1.AiStateMachineConditionCheckInstState(i, a, e);
+          n = new AiStateMachineConditionCheckInstState_1.AiStateMachineConditionCheckInstState(i, a, e);
           break;
         case 101:
-          t = new AiStateMachineConditionTaskFinish_1.AiStateMachineConditionTaskFinish(i, a, e);
+          n = new AiStateMachineConditionTaskFinish_1.AiStateMachineConditionTaskFinish(i, a, e);
           break;
         case 26:
-          t = new AiStateMachineConditionBuffStack_1.AiStateMachineConditionBuffStack(i, a, e);
+          n = new AiStateMachineConditionBuffStack_1.AiStateMachineConditionBuffStack(i, a, e);
           break;
         case 27:
-          t = new AiStateMachineConditionPartLife_1.AiStateMachineConditionPartLife(i, a, e);
+          n = new AiStateMachineConditionPartLife_1.AiStateMachineConditionPartLife(i, a, e);
           break;
         case 102:
-          t = new AiStateMachineConditionMontageTimeRemaining_1.AiStateMachineConditionMontageTimeRemaining(i, a, e);
+          n = new AiStateMachineConditionMontageTimeRemaining_1.AiStateMachineConditionMontageTimeRemaining(i, a, e);
           break;
         case 103:
-          t = new AiStateMachineConditionListenBeHit_1.AiStateMachineConditionListenBeHit(i, a, e);
+          n = new AiStateMachineConditionListenBeHit_1.AiStateMachineConditionListenBeHit(i, a, e);
           break;
         case 108:
-          t = new AiStateMachineConditionCheckPositionState_1.AiStateMachineConditionCheckPositionState(i, a, e);
+          n = new AiStateMachineConditionCheckPositionState_1.AiStateMachineConditionCheckPositionState(i, a, e);
           break;
         case 104:
-          t = new AiStateMachineConditionHasMoveInput_1.AiStateMachineConditionHasMoveInput(i, a, e);
+          n = new AiStateMachineConditionHasMoveInput_1.AiStateMachineConditionHasMoveInput(i, a, e);
           break;
         case 105:
-          t = new AiStateMachineConditionMontageTimeElapsing_1.AiStateMachineConditionMontageTimeElapsing(i, a, e);
+          n = new AiStateMachineConditionMontageTimeElapsing_1.AiStateMachineConditionMontageTimeElapsing(i, a, e);
           break;
         case 106:
-          t = new AiStateMachineConditionCheckGroupPatrol_1.AiStateMachineConditionCheckGroupPatrol(i, a, e);
+          n = new AiStateMachineConditionCheckGroupPatrol_1.AiStateMachineConditionCheckGroupPatrol(i, a, e);
           break;
         case 31:
-          t = new AiStateMachineConditionCheckLastState_1.AiStateMachineConditionCheckLastState(i, a, e);
+          n = new AiStateMachineConditionCheckLastState_1.AiStateMachineConditionCheckLastState(i, a, e);
           break;
         default:
-          t = new AiStateMachineCondition_1.AiStateMachineCondition(i, a, e)
+          n = new AiStateMachineCondition_1.AiStateMachineCondition(i, a, e);
       }
     } catch (e) {
       let t = "";
-      e instanceof Error && (t = e.message), i.Node.Owner.PushErrorMessage(`初始化节点条件失败，初始化异常，node[${i.Node.Name}|${i.Node.Uuid}]，name[${a.Name}]，type[${a.Type}]
-error:` + t)
+      if (e instanceof Error) {
+        t = e.message;
+      }
+      i.Node.Owner.PushErrorMessage(`初始化节点条件失败，初始化异常，node[${i.Node.Name}|${i.Node.Uuid}]，name[${a.Name}]，type[${a.Type}]
+error:${t}`);
     }
-    return t?.Init(), t
+    n?.Init(t);
+    return n;
   }
 }
 exports.AiStateMachineFactory = AiStateMachineFactory;

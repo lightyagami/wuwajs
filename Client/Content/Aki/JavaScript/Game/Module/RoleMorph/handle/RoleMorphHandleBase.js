@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleMorphHandleBase = void 0;
+  value: true
+});
+exports.RoleMorphHandleBase = undefined;
 class RoleMorphHandleBase {
   BeginMorph() {}
   EndMorph() {}

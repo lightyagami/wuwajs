@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbShowTalkFrameEventPosition = void 0;
+  value: true
+});
+exports.FbShowTalkFrameEventPosition = undefined;
 class FbShowTalkFrameEventPosition {
   constructor(t) {
-    this.FbDataInternal = t, this.mph = !1, this.Cph = 0, this.Kdh = !1, this.$dh = 0
+    this.FbDataInternal = t;
+    this.mph = false;
+    this.Cph = 0;
+    this.Kdh = false;
+    this.$dh = 0;
   }
   static Create(t) {
-    if (t) return new FbShowTalkFrameEventPosition(t)
+    if (t) {
+      return new FbShowTalkFrameEventPosition(t);
+    }
   }
   get TalkItemId() {
-    return this.mph || (this.mph = !0, this.Cph = this.FbDataInternal.talkItemId()), this.Cph
+    if (!this.mph) {
+      this.mph = true;
+      this.Cph = this.FbDataInternal.talkItemId();
+    }
+    return this.Cph;
   }
   get Offset() {
-    return this.Kdh || (this.Kdh = !0, this.$dh = this.FbDataInternal.offset()), this.$dh
+    if (!this.Kdh) {
+      this.Kdh = true;
+      this.$dh = this.FbDataInternal.offset();
+    }
+    return this.$dh;
   }
 }
 exports.FbShowTalkFrameEventPosition = FbShowTalkFrameEventPosition;

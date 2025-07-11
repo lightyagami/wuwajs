@@ -1,121 +1,246 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharRenderShell = void 0;
-const cpp_1 = require("cpp"),
-  UE = require("ue"),
-  Info_1 = require("../../../../Core/Common/Info"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Time_1 = require("../../../../Core/Common/Time"),
-  Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  GameBudgetInterfaceController_1 = require("../../../../Core/GameBudgetAllocator/GameBudgetInterfaceController"),
-  PerformanceController_1 = require("../../../../Core/Performance/PerformanceController"),
-  TickProcessSystem_1 = require("../../../../Core/Tick/TickProcessSystem"),
-  TickSystem_1 = require("../../../../Core/Tick/TickSystem"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  SceneTeamDefine_1 = require("../../../Module/SceneTeam/SceneTeamDefine"),
-  GameBudgetAllocatorConfigCreator_1 = require("../../../World/Define/GameBudgetAllocatorConfigCreator"),
-  RenderModuleConfig_1 = require("../../Manager/RenderModuleConfig");
+  value: true
+});
+exports.CharRenderShell = undefined;
+const cpp_1 = require("cpp");
+const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
+const Log_1 = require("../../../../Core/Common/Log");
+const Time_1 = require("../../../../Core/Common/Time");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const GameBudgetInterfaceController_1 = require("../../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
+const PerformanceController_1 = require("../../../../Core/Performance/PerformanceController");
+const TickProcessSystem_1 = require("../../../../Core/Tick/TickProcessSystem");
+const TickSystem_1 = require("../../../../Core/Tick/TickSystem");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const SceneTeamDefine_1 = require("../../../Module/SceneTeam/SceneTeamDefine");
+const GameBudgetAllocatorConfigCreator_1 = require("../../../World/Define/GameBudgetAllocatorConfigCreator");
+const RenderModuleConfig_1 = require("../../Manager/RenderModuleConfig");
 class CharRenderShell {
   constructor() {
-    this.RenderingComponent = void 0, this.veh = !1, this.yW = void 0, this.s6a = void 0, this.P1h = !1, this.Mq_ = !1, this.RoleEntity = void 0, this.xie = (e, t) => {
-      this.RoleEntity && e.Id === this.RoleEntity.Id && this.A4i()
-    }, this.OnExecuteQte = (e, t) => {
-      this.RoleEntity && e === this.RoleEntity.Id && this.A4i()
-    }, this.lSl = () => {
-      this.RenderingComponent?.ShouldTickAfterGoDown() ? this.Mq_ = !0 : this.o3a()
-    }, this.OtherRoleEntityId = 0, this.rZe = (e, t) => {
-      this.j4_ && (e.Id === this.OtherRoleEntityId ? this.A4i() : t?.Id === this.OtherRoleEntityId && (this.RenderingComponent?.ShouldTickAfterGoDown() ? this.Mq_ = !0 : this.o3a()))
-    }, this.VB1 = 0, this.par = (e, t, i) => {
-      Time_1.Time.IsAfterPrePhysicTick ? 0 === this.VB1 && (this.VB1 = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, !0, this.A$a)) : TimerSystem_1.TimerSystem.Next(this.gc_)
-    }, this.A$a = e => {
-      this.VB1 = 0, this.RenderingComponent?.UpdateMaterialEffectsOnly()
-    }, this.gc_ = e => {
-      this.yW && this.pc_ < Time_1.Time.Frame && this.Tick(0, !0)
-    }, this.a6a = e => {
-      this.yW && cpp_1.FKuroGameBudgetAllocatorInterface.MarkActorInFighting(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig.GroupName, this.yW, e)
-    }, this.pc_ = 0, this.ScheduledAfterTick = void 0, this.OnEnabledChange = void 0, this.i3a = !1, this.r3a = 0, this.LocationProxyFunction = void 0
+    this.RenderingComponent = undefined;
+    this.veh = false;
+    this.yW = undefined;
+    this.s6a = undefined;
+    this.P1h = false;
+    this.Mq_ = false;
+    this.RoleEntity = undefined;
+    this.xie = (e, t) => {
+      if (this.RoleEntity && e.Id === this.RoleEntity.Id) {
+        this.A4i();
+      }
+    };
+    this.OnExecuteQte = (e, t) => {
+      if (this.RoleEntity && e === this.RoleEntity.Id) {
+        this.A4i();
+      }
+    };
+    this.lSl = () => {
+      if (this.RenderingComponent?.ShouldTickAfterGoDown()) {
+        this.Mq_ = true;
+      } else {
+        this.o3a();
+      }
+    };
+    this.OtherRoleEntityId = 0;
+    this.rZe = (e, t) => {
+      if (this.j4_ && e.Id === this.OtherRoleEntityId) {
+        this.A4i();
+      }
+    };
+    this.ojc = () => {
+      if (this.RenderingComponent?.ShouldTickAfterGoDown()) {
+        this.Mq_ = true;
+      } else {
+        this.o3a();
+      }
+    };
+    this.vk1 = 0;
+    this.par = (e, t, i) => {
+      if (Time_1.Time.IsAfterPrePhysicTick) {
+        if (this.vk1 === 0) {
+          this.vk1 = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, this.A$a);
+        }
+      } else {
+        TimerSystem_1.TimerSystem.Next(this.gc_);
+      }
+    };
+    this.A$a = e => {
+      this.vk1 = 0;
+      this.RenderingComponent?.UpdateMaterialEffectsOnly();
+    };
+    this.gc_ = e => {
+      if (this.yW && this.pc_ < Time_1.Time.Frame) {
+        this.Tick(0, true);
+      }
+    };
+    this.a6a = e => {
+      if (this.yW) {
+        cpp_1.FKuroGameBudgetAllocatorInterface.MarkActorInFighting(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig.GroupName, this.yW, e);
+      }
+    };
+    this.pc_ = 0;
+    this.ScheduledAfterTick = undefined;
+    this.OnEnabledChange = undefined;
+    this.i3a = false;
+    this.r3a = 0;
+    this.LocationProxyFunction = undefined;
   }
   get IsAlwaysTick() {
-    return this.veh
+    return this.veh;
   }
   Init(e) {
-    if (this.RenderingComponent = e, this.veh = 5 === e.RenderType || 6 === e.RenderType || e.IsUiUpdate, !this.veh) {
+    this.RenderingComponent = e;
+    this.veh = e.RenderType === 5 || e.RenderType === 6 || e.IsUiUpdate;
+    if (!this.veh) {
       var t = this.RenderingComponent.GetOwner();
       if (t instanceof TsBaseCharacter_1.default) {
-        var i = t.EntityId,
-          r = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(i),
-          s = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
+        var i = t.EntityId;
+        var r = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(i);
+        var s = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
         for (let e = 0; e < SceneTeamDefine_1.SCENE_TEAM_MAX_NUM; e++) {
           var h = s[e];
           if (h?.GetCreatureDataId() === r) {
-            if (h.IsMyRole()) return void((h = t.CharacterActorComponent?.Entity) && (this.RoleEntity = h, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnRoleGoDownFinish, this.lSl), ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()) && EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte));
+            if (h.IsMyRole()) {
+              if ((h = t.CharacterActorComponent?.Entity) && (this.RoleEntity = h, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnRoleGoDownFinish, this.lSl), ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance())) {
+                EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte);
+              }
+              return;
+            }
             h = t.CharacterActorComponent?.Entity;
-            if (h)
-              if (h.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player) return this.OtherRoleEntityId = i, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe), void this.A4i()
+            if (h) {
+              if (h.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player) {
+                this.OtherRoleEntityId = i;
+                EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
+                EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.ojc);
+                this.A4i();
+                return;
+              }
+            }
           }
         }
       }
-      this.A4i()
+      this.A4i();
     }
   }
   Clear() {
-    this.veh || this.o3a(), this.Xjt && (EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.RemoveWithTarget(this.RoleEntity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.lSl), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte), this.RoleEntity = void 0), this.j4_ && (EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe), this.OtherRoleEntityId = 0)
+    var e;
+    if (!this.veh) {
+      this.o3a();
+    }
+    if (this.Xjt) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.RoleEntity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.lSl);
+      if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte);
+      }
+      this.RoleEntity = undefined;
+    }
+    if (this.j4_) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
+      if (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.OtherRoleEntityId)?.Entity) {
+        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.ojc);
+      }
+      this.OtherRoleEntityId = 0;
+    }
   }
   A4i() {
-    if (CharRenderShell.CharRenderShellGameBudgetOptimize && this.RenderingComponent && (!this.Mq_ || (this.Mq_ = !1, !this.yW))) {
-      this.yW && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("HudUnit", 36, "CharRenderShell RegisterTick: 重复注册Tick", ["Actor", UE.KismetSystemLibrary.GetPathName(this.RenderingComponent.GetCachedOwner())]), this.o3a()), this.r3a = Time_1.Time.WorldTimeSeconds;
-      var e = this.Xjt ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig : GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig,
-        t = (this.yW = GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(e.GroupName, e.SignificanceGroup, this, this.RenderingComponent.GetCachedOwner()), this.RenderingComponent.GetOwner());
-      if (t && (this.s6a = t, EventSystem_1.EventSystem.AddWithTarget(this.s6a, EventDefine_1.EEventName.OnMarkActorInFighting, this.a6a)), this.P1h || (this.P1h = !0, EventSystem_1.EventSystem.AddWithTarget(this.RenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par)), t instanceof UE.BP_SplitScreen_C) {
-        if (t.CharacterActor_1) {
-          var i = t.CharacterActor_1.ChildActor;
-          if (i) return void cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(e.GroupName, this.yW, i)
+    var e;
+    var t;
+    if (!!CharRenderShell.CharRenderShellGameBudgetOptimize && !!this.RenderingComponent && (!this.Mq_ || !(this.Mq_ = false, this.yW))) {
+      if (this.yW) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("HudUnit", 36, "CharRenderShell RegisterTick: 重复注册Tick", ["Actor", UE.KismetSystemLibrary.GetPathName(this.RenderingComponent.GetCachedOwner())]);
         }
-        if (t.CharacterActor_2) {
-          var i = t.CharacterActor_2.ChildActor;
-          if (i) return void cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(e.GroupName, this.yW, i)
-        }
-        t.CharacterActor_3 && (i = t.CharacterActor_3.ChildActor) && cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(e.GroupName, this.yW, i)
+        this.o3a();
       }
-      t instanceof UE.BP_MaterialControllerRenderActor_C && t.RefActor && (cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(e.GroupName, this.yW, t.RefActor), this.i3a = t.RefActor.WasRecentlyRendered())
+      this.r3a = Time_1.Time.WorldTimeSeconds;
+      e = this.Xjt ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig : GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
+      this.yW = GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(e.GroupName, e.SignificanceGroup, this, this.RenderingComponent.GetCachedOwner());
+      if (t = this.RenderingComponent.GetOwner()) {
+        this.s6a = t;
+        EventSystem_1.EventSystem.AddWithTarget(this.s6a, EventDefine_1.EEventName.OnMarkActorInFighting, this.a6a);
+      }
+      if (!this.P1h) {
+        this.P1h = true;
+        EventSystem_1.EventSystem.AddWithTarget(this.RenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
+      }
+      if (t instanceof UE.BP_MaterialControllerRenderActor_C && t.RefActor) {
+        cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(e.GroupName, this.yW, t.RefActor);
+        this.i3a = t.RefActor.WasRecentlyRendered();
+      }
     }
   }
   get Xjt() {
-    return void 0 !== this.RoleEntity
+    return this.RoleEntity !== undefined;
   }
   get j4_() {
-    return 0 !== this.OtherRoleEntityId
+    return this.OtherRoleEntityId !== 0;
   }
   o3a() {
-    this.P1h && (this.P1h = !1, this.RenderingComponent) && EventSystem_1.EventSystem.RemoveWithTarget(this.RenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par), CharRenderShell.CharRenderShellGameBudgetOptimize && (this.s6a && (EventSystem_1.EventSystem.RemoveWithTarget(this.s6a, EventDefine_1.EEventName.OnMarkActorInFighting, this.a6a), this.s6a = void 0), this.yW && (GameBudgetInterfaceController_1.GameBudgetInterfaceController.UnregisterTick(this), this.yW = void 0), this.Mq_ = !1)
+    if (this.P1h && (this.P1h = false, this.RenderingComponent)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.RenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
+    }
+    if (CharRenderShell.CharRenderShellGameBudgetOptimize) {
+      if (this.s6a) {
+        EventSystem_1.EventSystem.RemoveWithTarget(this.s6a, EventDefine_1.EEventName.OnMarkActorInFighting, this.a6a);
+        this.s6a = undefined;
+      }
+      if (this.yW) {
+        GameBudgetInterfaceController_1.GameBudgetInterfaceController.UnregisterTick(this);
+        this.yW = undefined;
+      }
+      this.Mq_ = false;
+    }
   }
   ScheduledTick(e, t, i) {
     RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickRenderShell?.Start();
     try {
-      this.pc_ = Time_1.Time.Frame, this.Tick(e)
+      this.pc_ = Time_1.Time.Frame;
+      this.Tick(e);
     } catch (e) {
-      e instanceof Error && Log_1.Log.CheckError() && Log_1.Log.ErrorWithStack("Render", 25, "RenderShell Tick执行异常", e, ["error", e.message])
+      if (e instanceof Error && Log_1.Log.CheckError()) {
+        Log_1.Log.ErrorWithStack("Render", 25, "RenderShell Tick执行异常", e, ["error", e.message]);
+      }
     }
-    RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickRenderShell?.Stop()
+    RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickRenderShell?.Stop();
   }
   OnWasRecentlyRenderedOnScreenChange(e) {
-    this.i3a = e, this.i3a || (this.r3a = Time_1.Time.WorldTimeSeconds)
-  }
-  Tick(i, r = !1) {
-    if ((!CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || r || this.Mq_ || this.veh || this.i3a) && this.RenderingComponent)
-      if (this.Mq_ && !this.RenderingComponent.ShouldTickAfterGoDown()) this.o3a();
-      else if (!TickSystem_1.TickSystem.IsPaused || this.veh) {
-      RenderModuleConfig_1.RenderStats.StatCharRenderShellTick.Start();
-      let e = i,
-        t = (0 < this.r3a && (e += Time_1.Time.WorldTimeSeconds - this.r3a, this.r3a = 0), 0);
-      PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (t = cpp_1.KuroTime.GetMilliseconds64()), this.RenderingComponent.Tick(e), PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (r = this.RenderingComponent.GetOwner()) instanceof TsBaseCharacter_1.default && PerformanceController_1.PerformanceController.CollectComponentTickPerformanceInfo(r.EntityId, "CharRenderingComponent", !0, cpp_1.KuroTime.GetMilliseconds64() - t), RenderModuleConfig_1.RenderStats.StatCharRenderShellTick.Stop()
+    this.i3a = e;
+    if (!this.i3a) {
+      this.r3a = Time_1.Time.WorldTimeSeconds;
     }
   }
-}(exports.CharRenderShell = CharRenderShell).CharRenderShellGameBudgetOptimize = !0;
+  Tick(i, r = false) {
+    if ((!CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || r || this.Mq_ || this.veh || this.i3a) && this.RenderingComponent) {
+      if (this.Mq_ && !this.RenderingComponent.ShouldTickAfterGoDown()) {
+        this.o3a();
+      } else if (!TickSystem_1.TickSystem.IsPaused || this.veh) {
+        RenderModuleConfig_1.RenderStats.StatCharRenderShellTick.Start();
+        let e = i;
+        if (this.r3a > 0) {
+          e += Time_1.Time.WorldTimeSeconds - this.r3a;
+          this.r3a = 0;
+        }
+        let t = 0;
+        if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest) {
+          t = cpp_1.KuroTime.GetMilliseconds64();
+        }
+        this.RenderingComponent.Tick(e);
+        if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (r = this.RenderingComponent.GetOwner()) instanceof TsBaseCharacter_1.default) {
+          PerformanceController_1.PerformanceController.CollectComponentTickPerformanceInfo(r.EntityId, "CharRenderingComponent", true, cpp_1.KuroTime.GetMilliseconds64() - t);
+        }
+        RenderModuleConfig_1.RenderStats.StatCharRenderShellTick.Stop();
+      }
+    }
+  }
+}
+(exports.CharRenderShell = CharRenderShell).CharRenderShellGameBudgetOptimize = true;
 //# sourceMappingURL=CharRenderShell.js.map

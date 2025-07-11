@@ -1,60 +1,87 @@
 "use strict";
-var __decorate = this && this.__decorate || function(e, t, o, r) {
-  var n, s = arguments.length,
-    i = s < 3 ? t : null === r ? r = Object.getOwnPropertyDescriptor(t, o) : r;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) i = Reflect.decorate(e, t, o, r);
-  else
-    for (var a = e.length - 1; 0 <= a; a--)(n = e[a]) && (i = (s < 3 ? n(i) : 3 < s ? n(t, o, i) : n(t, o)) || i);
-  return 3 < s && i && Object.defineProperty(t, o, i), i
+
+var __decorate = this && this.__decorate || function (e, t, o, r) {
+  var n;
+  var s = arguments.length;
+  var i = s < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, o) : r;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    i = Reflect.decorate(e, t, o, r);
+  } else {
+    for (var a = e.length - 1; a >= 0; a--) {
+      if (n = e[a]) {
+        i = (s < 3 ? n(i) : s > 3 ? n(t, o, i) : n(t, o)) || i;
+      }
+    }
+  }
+  if (s > 3 && i) {
+    Object.defineProperty(t, o, i);
+  }
+  return i;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharacterMontageComponent = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../../Core/Common/Log"),
-  RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent"),
-  BaseMontageComponent_1 = require("./BaseMontageComponent");
+  value: true
+});
+exports.CharacterMontageComponent = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../../Core/Common/Log");
+const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const BaseMontageComponent_1 = require("./BaseMontageComponent");
 let CharacterMontageComponent = class CharacterMontageComponent extends BaseMontageComponent_1.BaseMontageComponent {
   constructor() {
-    super(...arguments), this.AnimationComponent = void 0, this.MorphComponent = void 0, this.$Rc = !1
+    super(...arguments);
+    this.AnimationComponent = undefined;
+    this.MorphComponent = undefined;
+    this.$Rc = false;
   }
   OnStart() {
-    return this.AnimationComponent = this.Entity.CheckGetComponent(177), !!super.OnStart()
+    this.AnimationComponent = this.Entity.CheckGetComponent(177);
+    return !!super.OnStart();
   }
   GetMainAnimInstance() {
-    return this.AnimationComponent.MainAnimInstance
+    return this.AnimationComponent.MainAnimInstance;
   }
   AddMontage(e, t, o) {
     if (this.$Rc) {
       this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(279);
       var r = this.MorphComponent;
-      if (r?.IsMorphMontage(o)) return t ? (r.AddMontage(e, t, o), void UE.KuroStaticLibrary.SetMontageANIndex(t)) : void(Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 67, "添加的多形态蒙太奇不存在", ["Name", e]))
+      if (r?.IsMorphMontage(o)) {
+        if (t) {
+          r.AddMontage(e, t, o);
+          UE.KuroStaticLibrary.SetMontageANIndex(t);
+          return;
+        } else {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Battle", 67, "添加的多形态蒙太奇不存在", ["Name", e]);
+          }
+          return;
+        }
+      }
     }
-    super.AddMontage(e, t, o)
+    super.AddMontage(e, t, o);
   }
-  GetMontageByName(t, o = !0, r = !1) {
+  GetMontageByName(t, o = true, r = false) {
     if (o && this.$Rc) {
       o = this.MorphComponent;
       if (o && o.IsMorphing()) {
         let e = o.GetMontageByName(t);
-        return e = !e && r ? super.GetMontageByName(t) : e
+        return e = !e && r ? super.GetMontageByName(t) : e;
       }
     }
-    return super.GetMontageByName(t)
+    return super.GetMontageByName(t);
   }
-  GetMontagePathByName(t, o = !0, r = !1) {
+  GetMontagePathByName(t, o = true, r = false) {
     if (o && this.$Rc) {
       o = this.MorphComponent;
       if (o && o.IsMorphing()) {
         let e = o.GetMontagePathByName(t);
-        return e = !e && r ? super.GetMontagePathByName(t) : e
+        return e = !e && r ? super.GetMontagePathByName(t) : e;
       }
     }
-    return super.GetMontagePathByName(t)
+    return super.GetMontagePathByName(t);
   }
   SetHasMorphMontage(e) {
-    this.$Rc = e
+    this.$Rc = e;
   }
 };
-CharacterMontageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(25)], CharacterMontageComponent), exports.CharacterMontageComponent = CharacterMontageComponent;
-//# sourceMappingURL=CharacterMontageComponent.js.map
+CharacterMontageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(25)], CharacterMontageComponent);
+exports.CharacterMontageComponent = CharacterMontageComponent; //# sourceMappingURL=CharacterMontageComponent.js.map

@@ -1,82 +1,129 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChildQuestNodeBase = void 0;
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  PublicUtil_1 = require("../../../../Common/PublicUtil"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  BehaviorNodeBase_1 = require("../BehaviorNodeBase");
+  value: true
+});
+exports.ChildQuestNodeBase = undefined;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../../../Common/PublicUtil");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const BehaviorNodeBase_1 = require("../BehaviorNodeBase");
 class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   constructor(t) {
-    super(t), this.ChildQuestType = IQuest_1.EChildQuest.CheckEntityState, this.CustomTrackIconId = 0, this.Submitting = !1, this.ChildQuestStatus = void 0, this.OnFocusQuestChange = t => {
-      t && this.TreeConfigId !== t || this.SubmitNode()
-    }, this.NodeType = "ChildQuest"
+    super(t);
+    this.ChildQuestType = IQuest_1.EChildQuest.CheckEntityState;
+    this.CustomTrackIconId = 0;
+    this.Submitting = false;
+    this.ChildQuestStatus = undefined;
+    this.NodeType = "ChildQuest";
   }
   get CanGiveUp() {
-    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress
+    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress;
   }
   get IsFinished() {
-    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished || this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_FinishAction
+    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished || this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_FinishAction;
   }
   Init(t, e, i, s, h) {
-    "ChildQuest" === s.Type && (super.Init(t, e, i, s, h), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive, this.CustomTrackIconId = s.CustomIcon ?? 0, i.nEs) && (this.UpdateChildQuestStatus(i.nEs.H6n, e), this.UpdateProgress(i.nEs.nvs))
+    if (s.Type === "ChildQuest" && (super.Init(t, e, i, s, h), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive, this.CustomTrackIconId = s.CustomIcon ?? 0, i.nEs)) {
+      this.UpdateChildQuestStatus(i.nEs.H6n, e);
+      this.UpdateProgress(i.nEs.nvs);
+    }
   }
   UpdateChildQuestStatus(t, e) {
     var i = this.ChildQuestStatus;
-    if (this.ChildQuestStatus = t, i !== this.ChildQuestStatus) {
+    this.ChildQuestStatus = t;
+    if (i !== this.ChildQuestStatus) {
       switch (t) {
         case Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress:
           this.il(e);
           break;
         case Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished:
-          this.$ne()
+          this.$ne();
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLogicTreeChildQuestNodeStatusChange, this.Context, i, this.ChildQuestStatus, e), EventSystem_1.EventSystem.EmitWithTarget(this.Blackboard, EventDefine_1.EEventName.OnLogicTreeChildQuestNodeStatusChange, this.Context, i, this.ChildQuestStatus, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AfterLogicTreeChildQuestNodeStatusChange, this.Context, i, this.ChildQuestStatus)
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLogicTreeChildQuestNodeStatusChange, this.Context, i, this.ChildQuestStatus, e);
+      EventSystem_1.EventSystem.EmitWithTarget(this.Blackboard, EventDefine_1.EEventName.OnLogicTreeChildQuestNodeStatusChange, this.Context, i, this.ChildQuestStatus, e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AfterLogicTreeChildQuestNodeStatusChange, this.Context, i, this.ChildQuestStatus);
     }
   }
   OnNodeActive() {
-    this.AddTag(0, this.NodeId.toString())
+    this.AddTag(0, this.NodeId.toString());
   }
   il(t) {
-    this.AddEventsOnChildQuestStart(), this.OnStart(t)
+    this.AddEventsOnChildQuestStart();
+    this.OnStart(t);
   }
   $ne() {
-    this.wXt(!0)
+    this.wXt(true);
   }
   OnNodeDeActive(t) {
-    this.RemoveTag(0, this.NodeId.toString()), t || (this.wXt(!1), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive)
+    this.RemoveTag(0, this.NodeId.toString());
+    if (!t) {
+      this.wXt(false);
+      this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive;
+    }
   }
   wXt(t) {
-    this.RemoveEventsOnChildQuestEnd(), this.OnEnd(t)
+    this.RemoveEventsOnChildQuestEnd();
+    this.OnEnd(t);
   }
   OnCreate(t) {
-    return this.ChildQuestType = t.Condition.Type, t.HideTip && this.AddTag(2), t.HideUiExceptTaskList && (this.AddTag(1), this.AddTag(2)), t.HideUi && (this.AddTag(1), this.AddTag(2), this.AddTag(3)), t.ShowNavigation && (this.AddTag(4), this.NavigationStyle = t.NavigationStyle ?? 0), t.AlwaysShowNavigation && this.AddTag(5), this.TrackTarget = t.TrackTarget, this.TrackTextConfig = t.TidTip, this.MultiTrackText = PublicUtil_1.PublicUtil.GetConfigTextByKey(this.TrackTextConfig), this.ShowTipBeforeEnterActions = t.ShowTipBeforeEnterActions ?? !1, !0
+    this.ChildQuestType = t.Condition.Type;
+    if (t.HideTip) {
+      this.AddTag(2);
+    }
+    if (t.HideUiExceptTaskList) {
+      this.AddTag(1);
+      this.AddTag(2);
+    }
+    if (t.HideUi) {
+      this.AddTag(1);
+      this.AddTag(2);
+      this.AddTag(3);
+    }
+    if (t.ShowNavigation) {
+      this.AddTag(4);
+      this.NavigationStyle = t.NavigationStyle ?? 0;
+    }
+    if (t.AlwaysShowNavigation) {
+      this.AddTag(5);
+    }
+    this.TrackTarget = t.TrackTarget;
+    this.TrackTextConfig = t.TidTip;
+    this.MultiTrackText = PublicUtil_1.PublicUtil.GetConfigTextByKey(this.TrackTextConfig);
+    this.ShowTipBeforeEnterActions = t.ShowTipBeforeEnterActions ?? false;
+    return true;
   }
   OnStart(t) {}
   OnEnd(t) {}
   AddEventsOnChildQuestStart() {}
-  RemoveEventsOnChildQuestEnd() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FocusQuestChange, this.OnFocusQuestChange)
-  }
+  RemoveEventsOnChildQuestEnd() {}
   SubmitNode(t) {
-    var e;
-    this.Blackboard.ContainTag(6) || this.Submitting || this.Blackboard.IsSuspend() || (e = ModelManager_1.ModelManager.QuestNewModel, this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && e.IsInFocusMode() && !e.IsInFocusOnQuest(this.Blackboard.TreeConfigId) ? this.BecauseOfFocusModeNoSubmit() : (this.OnBeforeSubmit(), ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.RequestSubmitNode(this.Context, t => {
-      this.OnAfterSubmit(t)
-    }, t)))
+    if (!this.Blackboard.ContainTag(6) && !this.Submitting && !this.Blackboard.IsSuspend()) {
+      if (this.CheckCanSubmitAboutFocusMode()) {
+        this.OnBeforeSubmit();
+        ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.RequestSubmitNode(this.Context, t => {
+          this.OnAfterSubmit(t);
+        }, t);
+      } else {
+        this.BecauseOfFocusModeNoSubmit();
+      }
+    }
   }
   OnBeforeSubmit() {
-    this.Submitting = !0
+    this.Submitting = true;
   }
   OnAfterSubmit(t) {
-    this.Submitting = !1
+    this.Submitting = false;
+  }
+  CheckCanSubmitAboutFocusMode() {
+    return true;
   }
   BecauseOfFocusModeNoSubmit() {}
   GetCorrelativeEntities() {
-    return this.CorrelativeEntities
+    return this.CorrelativeEntities;
   }
 }
 exports.ChildQuestNodeBase = ChildQuestNodeBase;

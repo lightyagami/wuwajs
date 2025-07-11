@@ -1,34 +1,56 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbGuideTrigger = void 0;
+  value: true
+});
+exports.FbGuideTrigger = undefined;
 const UnionCondition2Helper_1 = require("../Condition/UnionCondition2Helper");
 class FbGuideTrigger {
   constructor(i) {
-    this.FbDataInternal = i, this.u_h = !1, this.f8o = void 0, this.ich = !1, this.rch = void 0, this.guh = !1, this.fuh = 0
+    this.FbDataInternal = i;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ich = false;
+    this.rch = undefined;
+    this.guh = false;
+    this.fuh = 0;
   }
   static Create(i) {
-    if (i) return new FbGuideTrigger(i)
+    if (i) {
+      return new FbGuideTrigger(i);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Conditions() {
     if (!this.ich) {
-      this.ich = !0, this.rch = new Array;
+      this.ich = true;
+      this.rch = new Array();
       var t = this.FbDataInternal.conditionsLength();
-      if (t)
+      if (t) {
         for (let i = 0; i < t; ++i) {
-          var e = this.FbDataInternal.conditionsExtType(i),
-            s = UnionCondition2Helper_1.UnionCondition2Helper.GetUnionCondition2Object(e),
-            e = UnionCondition2Helper_1.UnionCondition2Helper.ReadUnionCondition2(e, this.FbDataInternal.conditions(i, s));
-          void 0 !== e && this.rch.push(e)
+          var e = this.FbDataInternal.conditionsExtType(i);
+          var s = UnionCondition2Helper_1.UnionCondition2Helper.GetUnionCondition2Object(e);
+          var e = UnionCondition2Helper_1.UnionCondition2Helper.ReadUnionCondition2(e, this.FbDataInternal.conditions(i, s));
+          if (e !== undefined) {
+            this.rch.push(e);
+          }
         }
+      }
     }
-    return this.rch
+    return this.rch;
   }
   get GuideId() {
-    return this.guh || (this.guh = !0, this.fuh = this.FbDataInternal.guideId()), this.fuh
+    if (!this.guh) {
+      this.guh = true;
+      this.fuh = this.FbDataInternal.guideId();
+    }
+    return this.fuh;
   }
 }
 exports.FbGuideTrigger = FbGuideTrigger;

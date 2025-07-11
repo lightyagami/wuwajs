@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckRogueAbilitySelectCondition = void 0;
+  value: true
+});
+exports.FbCheckRogueAbilitySelectCondition = undefined;
 class FbCheckRogueAbilitySelectCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.mdh = !1, this.Cdh = 0, this.nJh = !1, this.sJh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.mdh = false;
+    this.Cdh = 0;
+    this.nJh = false;
+    this.sJh = false;
   }
   static Create(t) {
-    if (t) return new FbCheckRogueAbilitySelectCondition(t)
+    if (t) {
+      return new FbCheckRogueAbilitySelectCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get BoardId() {
-    return this.mdh || (this.mdh = !0, this.Cdh = this.FbDataInternal.boardId()), this.Cdh
+    if (!this.mdh) {
+      this.mdh = true;
+      this.Cdh = this.FbDataInternal.boardId();
+    }
+    return this.Cdh;
   }
   get IsReceived() {
-    return this.nJh || (this.nJh = !0, this.sJh = this.FbDataInternal.isReceived()), this.sJh
+    if (!this.nJh) {
+      this.nJh = true;
+      this.sJh = this.FbDataInternal.isReceived();
+    }
+    return this.sJh;
   }
 }
 exports.FbCheckRogueAbilitySelectCondition = FbCheckRogueAbilitySelectCondition;

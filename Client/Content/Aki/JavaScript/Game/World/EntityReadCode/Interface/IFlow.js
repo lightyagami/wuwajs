@@ -1,7 +1,10 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.defaultFlowTemplateConfig = void 0, exports.defaultFlowTemplateConfig = {
+  value: true
+});
+exports.defaultFlowTemplateConfig = undefined;
+exports.defaultFlowTemplateConfig = {
   List: [{
     TemplateId: 1,
     Name: "二人模板",
@@ -13,7 +16,7 @@ Object.defineProperty(exports, "__esModule", {
     }, {
       X: 112,
       Y: 5.06351,
-      Z: 122e-6,
+      Z: 0.000122,
       A: 181.275497
     }],
     CameraParamMap: [{
@@ -26,7 +29,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 22e-6,
+        X: 0.000022,
         Y: 5.652093,
         Z: 224.545105,
         A: 0
@@ -45,7 +48,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 22e-6,
+        X: 0.000022,
         Y: -24.536306,
         Z: 135.731415,
         A: 0
@@ -64,7 +67,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 22e-6,
+        X: 0.000022,
         Y: -18.521418,
         Z: -29.616098,
         A: 0
@@ -103,7 +106,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 2e-5,
+        X: 0.00002,
         Y: -6.59954,
         Z: -155.786539,
         A: 0
@@ -119,7 +122,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 2e-5,
+        X: 0.00002,
         Y: -6.59954,
         Z: -155.786539,
         A: 0
@@ -138,7 +141,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 2e-5,
+        X: 0.00002,
         Y: -6.59954,
         Z: -155.786539,
         A: 0
@@ -177,7 +180,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: -4e-6,
+        X: -0.000004,
         Y: -25.370316,
         Z: -474.973267,
         A: 0
@@ -196,7 +199,7 @@ Object.defineProperty(exports, "__esModule", {
         A: 0
       },
       Rot: {
-        X: 4e-6,
+        X: 0.000004,
         Y: -24.379408,
         Z: -560.786255,
         A: 0
@@ -224,7 +227,7 @@ Object.defineProperty(exports, "__esModule", {
         Z: 124.70050811767578
       },
       Rot: {
-        X: 21949896108708344e-21,
+        X: 0.000021949896108708344,
         Y: 1.2528409957885742,
         Z: -173.84832763671875
       },
@@ -240,7 +243,7 @@ Object.defineProperty(exports, "__esModule", {
         Z: 117.75502395629883
       },
       Rot: {
-        X: 21921572624705732e-21,
+        X: 0.000021921572624705732,
         Y: 2.2529377937316895,
         Z: -162.25057983398438
       },
@@ -256,7 +259,7 @@ Object.defineProperty(exports, "__esModule", {
         Z: 119.87808990478516
       },
       Rot: {
-        X: 2194873377447948e-20,
+        X: 0.00002194873377447948,
         Y: 2.0529634952545166,
         Z: 177.54595947265625
       },
@@ -272,8 +275,8 @@ Object.defineProperty(exports, "__esModule", {
         Z: 121.50974655151367
       },
       Rot: {
-        X: 21952006136416458e-21,
-        Y: .45290300250053406,
+        X: 0.000021952006136416458,
+        Y: 0.45290300250053406,
         Z: -171.6492919921875
       },
       Aperture: 123.78594970703125,
@@ -288,8 +291,8 @@ Object.defineProperty(exports, "__esModule", {
         Z: 127.20752716064453
       },
       Rot: {
-        X: 21945052139926702e-21,
-        Y: -.3463452160358429,
+        X: 0.000021945052139926702,
+        Y: -0.3463452160358429,
         Z: -159.4495086669922
       },
       Aperture: 84.23015594482422,
@@ -304,8 +307,8 @@ Object.defineProperty(exports, "__esModule", {
         Z: 125.15797424316406
       },
       Rot: {
-        X: 21948890207568184e-21,
-        Y: -.1470607966184616,
+        X: 0.000021948890207568184,
+        Y: -0.1470607966184616,
         Z: 175.7424621582031
       },
       Aperture: 151.06243896484375,
@@ -335,11 +338,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 134.83038330078125
       },
       Rot: {
-        X: 219550547626568e-19,
-        Y: -.3459422290325165,
+        X: 0.0000219550547626568,
+        Y: -0.3459422290325165,
         Z: 13.761751174926758
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 273.2271728515625
     }, {
@@ -351,11 +354,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 130.67216110229492
       },
       Rot: {
-        X: 2194819535361603e-20,
-        Y: .251357764005661,
+        X: 0.00002194819535361603,
+        Y: 0.251357764005661,
         Z: -162.7920227050781
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 446.1028137207031
     }, {
@@ -367,11 +370,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 136.61712265014648
       },
       Rot: {
-        X: 21934311007498764e-21,
-        Y: -.9476613998413086,
+        X: 0.000021934311007498764,
+        Y: -0.9476613998413086,
         Z: 166.92257690429688
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 949.8233642578125
     }, {
@@ -383,11 +386,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 132.69974899291992
       },
       Rot: {
-        X: 21948377252556384e-21,
-        Y: -.34243834018707275,
+        X: 0.000021948377252556384,
+        Y: -0.34243834018707275,
         Z: -13.051044464111328
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 233.133544921875
     }, {
@@ -399,11 +402,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 210.8933563232422
       },
       Rot: {
-        X: 20842684534727596e-21,
+        X: 0.000020842684534727596,
         Y: -10.546753883361816,
         Z: 41.7546501159668
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 273.2271728515625
     }, {
@@ -415,11 +418,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 155.91388702392578
       },
       Rot: {
-        X: 21739127987530082e-21,
+        X: 0.000021739127987530082,
         Y: -4.74875020980835,
         Z: -138.39369201660156
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 446.1028137207031
     }, {
@@ -431,11 +434,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 197.78326416015625
       },
       Rot: {
-        X: 22231599359656684e-21,
+        X: 0.000022231599359656684,
         Y: -8.547544479370117,
         Z: 149.73211669921875
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 949.8233642578125
     }, {
@@ -447,11 +450,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 174.42108154296875
       },
       Rot: {
-        X: 22352707674144767e-21,
+        X: 0.000022352707674144767,
         Y: -6.742489337921143,
         Z: -32.64649963378906
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 233.133544921875
     }, {
@@ -463,7 +466,7 @@ Object.defineProperty(exports, "__esModule", {
         Z: 251.9814910888672
       },
       Rot: {
-        X: 21349540475057438e-21,
+        X: 0.000021349540475057438,
         Y: -11.546871185302734,
         Z: 41.35246658325195
       },
@@ -479,11 +482,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 181.52035522460938
       },
       Rot: {
-        X: 21866411771043204e-21,
+        X: 0.000021866411771043204,
         Y: -5.347962856292725,
         Z: -132.0566864013672
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 893.2247924804688
     }, {
@@ -495,11 +498,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 223.7623596191406
       },
       Rot: {
-        X: 21249086785246618e-21,
+        X: 0.000021249086785246618,
         Y: -10.135918617248535,
         Z: 141.9295196533203
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 493.7651062011719
     }, {
@@ -511,11 +514,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 180.76708984375
       },
       Rot: {
-        X: 2209473677794449e-20,
+        X: 0.00002209473677794449,
         Y: -5.721375942230225,
         Z: -33.01994705200195
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 50,
       FocusDistance: 443.6825866699219
     }]
@@ -535,7 +538,7 @@ Object.defineProperty(exports, "__esModule", {
     }, {
       X: 187.201569,
       Y: 120.104958,
-      Z: -137e-6,
+      Z: -0.000137,
       A: 209.629807
     }],
     CameraParamMap: [{
@@ -547,11 +550,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 129.0511245727539
       },
       Rot: {
-        X: 1268221421923954e-20,
+        X: 0.00001268221421923954,
         Y: -2.160252094268799,
         Z: -169.6076202392578
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -563,11 +566,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 129.39244079589844
       },
       Rot: {
-        X: 30269889975897968e-21,
+        X: 0.000030269889975897968,
         Y: -1.760467529296875,
         Z: 49.79736328125
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -579,11 +582,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 142.40137481689453
       },
       Rot: {
-        X: 26325606086174957e-21,
+        X: 0.000026325606086174957,
         Y: -2.1601223945617676,
         Z: -38.60346221923828
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -595,11 +598,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 177.91403198242188
       },
       Rot: {
-        X: 22711523342877626e-21,
+        X: 0.000022711523342877626,
         Y: -4.160179138183594,
         Z: -169.00509643554688
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -611,11 +614,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 141.84397888183594
       },
       Rot: {
-        X: 30213444915716536e-21,
+        X: 0.000030213444915716536,
         Y: -1.5604522228240967,
         Z: 49.79737854003906
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -627,11 +630,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 154.78564453125
       },
       Rot: {
-        X: 28084241421311162e-21,
+        X: 0.000028084241421311162,
         Y: -1.9601070880889893,
         Z: -38.802711486816406
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }]
@@ -668,11 +671,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 129.0511245727539
       },
       Rot: {
-        X: 12655515092774294e-21,
+        X: 0.000012655515092774294,
         Y: -2.160252094268799,
         Z: -169.60763549804688
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -684,11 +687,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 127.63373565673828
       },
       Rot: {
-        X: 33736563636921346e-21,
+        X: 0.000033736563636921346,
         Y: -1.5601789951324463,
         Z: 54.385528564453125
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -700,11 +703,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 130.1424903869629
       },
       Rot: {
-        X: 33801436075009406e-21,
+        X: 0.000033801436075009406,
         Y: -2.159937858581543,
         Z: -9.418805122375488
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -716,11 +719,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 142.67408752441406
       },
       Rot: {
-        X: 12668865565501619e-21,
+        X: 0.000012668865565501619,
         Y: -2.160252094268799,
         Z: -169.60751342773438
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -732,11 +735,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 138.16055297851562
       },
       Rot: {
-        X: 337899436999578e-19,
+        X: 0.0000337899436999578,
         Y: -1.5601789951324463,
         Z: 54.18551254272461
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -748,11 +751,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 143.7094268798828
       },
       Rot: {
-        X: 33770491427276284e-21,
+        X: 0.000033770491427276284,
         Y: -1.95986807346344,
         Z: -9.418346405029297
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }]
@@ -794,11 +797,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 129.0511245727539
       },
       Rot: {
-        X: 12655515092774294e-21,
+        X: 0.000012655515092774294,
         Y: -2.160252094268799,
         Z: -169.60763549804688
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -810,11 +813,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 153.80548858642578
       },
       Rot: {
-        X: 1283136589336209e-20,
+        X: 0.00001283136589336209,
         Y: -3.5601470470428467,
         Z: 63.591522216796875
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -826,11 +829,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 138.80372619628906
       },
       Rot: {
-        X: 12680619875027332e-21,
+        X: 0.000012680619875027332,
         Y: -1.95986807346344,
         Z: -23.201156616210938
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -842,11 +845,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 142.8807373046875
       },
       Rot: {
-        X: 12680622603511438e-21,
+        X: 0.000012680622603511438,
         Y: -1.96023690700531,
         Z: -169.80690002441406
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -858,11 +861,11 @@ Object.defineProperty(exports, "__esModule", {
         Z: 197.4166717529297
       },
       Rot: {
-        X: 12840437193517573e-21,
+        X: 0.000012840437193517573,
         Y: -4.160179138183594,
         Z: 64.992919921875
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }, {
@@ -874,14 +877,13 @@ Object.defineProperty(exports, "__esModule", {
         Z: 180.82005310058594
       },
       Rot: {
-        X: 12719219739665277e-21,
+        X: 0.000012719219739665277,
         Y: -3.1597888469696045,
         Z: -22.397443771362305
       },
-      Aperture: 1e3,
+      Aperture: 1000,
       FocalLength: 60,
       FocusDistance: 210.1748046875
     }]
   }]
-};
-//# sourceMappingURL=IFlow.js.map
+}; //# sourceMappingURL=IFlow.js.map

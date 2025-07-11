@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleHandBookSelectionItem = void 0;
+  value: true
+});
+exports.RoleHandBookSelectionItem = undefined;
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 class RoleHandBookSelectionItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {}

@@ -1,22 +1,31 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlowActionSetHeadIconVisible = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  FlowActionBase_1 = require("./FlowActionBase");
+  value: true
+});
+exports.FlowActionSetHeadIconVisible = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const FlowActionBase_1 = require("./FlowActionBase");
 class FlowActionSetHeadIconVisible extends FlowActionBase_1.FlowActionBase {
   constructor() {
-    super(...arguments), this.nYa = !1, this.$$i = () => {
-      this?.nYa && (this.nYa = !1, this.FinishExecute(!0))
-    }
+    super(...arguments);
+    this.nYa = false;
+    this.$$i = () => {
+      if (this?.nYa) {
+        this.nYa = false;
+        this.FinishExecute(true);
+      }
+    };
   }
   OnExecute() {
     var e = this.ActionInfo.Params;
-    this.nYa = !0, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdatePortraitVisible, e, this.$$i)
+    this.nYa = true;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdatePortraitVisible, e, this.$$i);
   }
   OnInterruptExecute() {
-    this.nYa = !1, this.FinishExecute(!0)
+    this.nYa = false;
+    this.FinishExecute(true);
   }
 }
 exports.FlowActionSetHeadIconVisible = FlowActionSetHeadIconVisible;

@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbFightInteractComponent = void 0;
+  value: true
+});
+exports.FbFightInteractComponent = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbFightInteractComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Cjh = !1, this._an = 0, this.gjh = !1, this.fjh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Cjh = false;
+    this._an = 0;
+    this.gjh = false;
+    this.fjh = undefined;
   }
   static Create(t) {
-    if (t) return new FbFightInteractComponent(t)
+    if (t) {
+      return new FbFightInteractComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get LockRange() {
-    return this.Cjh || (this.Cjh = !0, this._an = this.FbDataInternal.lockRange()), this._an
+    if (!this.Cjh) {
+      this.Cjh = true;
+      this._an = this.FbDataInternal.lockRange();
+    }
+    return this._an;
   }
   get LockOffset() {
-    return this.gjh || (this.gjh = !0, this.fjh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.lockOffset())), this.fjh
+    if (!this.gjh) {
+      this.gjh = true;
+      this.fjh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.lockOffset());
+    }
+    return this.fjh;
   }
 }
 exports.FbFightInteractComponent = FbFightInteractComponent;

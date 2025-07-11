@@ -1,17 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyBreakPoint extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, r) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity.GetComponent(62)) && e.AnimBreakPoint(), !0
+    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity.GetComponent(62))) {
+      e.AnimBreakPoint();
+    }
+    return true;
   }
   GetNotifyName() {
-    return "打断点（强制执行一次按键缓存检测）"
+    return "打断点（强制执行一次按键缓存检测）";
   }
 }
 exports.default = TsAnimNotifyBreakPoint;

@@ -1,11 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const UE = require("ue");
 class ItemMaterialControllerActorData extends UE.PrimaryDataAsset {
   constructor() {
-    super(...arguments), this.StartTime = -0, this.LoopTime = -0, this.EndTime = -0, this.EnableBaseColorScale = !1, this.BaseColorScale = void 0, this.EnableAddEmissionColor = !1, this.AddEmissionColor = void 0, this.EnableEmissionChange = !1, this.EmissionLightColorChangeProgress = void 0, this.EmissionLightColorChangeStrength = void 0, this.EmissionLightColorChangeColor = void 0, this.EnableRimLight = !1, this.RimLightColor = void 0, this.RimPower = void 0, this.EnableDissolve = !1, this.DissolveProgress = void 0, this.DissolveAdjustment = void 0, this.DissolveEdageWidth = void 0, this.DissolveEdageColor = void 0, this.DissolveEdageStrength = void 0, this.DissolveTexSpeed = void 0, this.DissolveUv = 0, this.DissolveTexScaleOffset = void 0, this.EnableScanning = !1, this.ScanningOutlineMixNoiseStrength = void 0, this.ScanningOutlineStrength = void 0, this.ScanningOutlineTexScaleOffset = void 0, this.ScanningOutlineColor = void 0, this.VertexAnimTimeDebug = void 0, this.VertexAnimFrame = void 0, this.PivotPainterTransform = void 0, this.FloatingThreshold = void 0, this.EnablePivotPainterWorldPositionOffset = !1, this.EnableWorldPositionOffset = !1, this.DisableFoliageEffect = !1, this.EnableFoliageEffect = !1, this.RimLightColorSpecil = void 0, this.UseRimlightColorSpecil = !1, this.RimlightColorStrength = void 0, this.UseEmissionTex = !1, this.EmissionTexStrength = void 0, this.WorldPositionOffsetNormal = void 0, this.WorldPositionOffsetOffset = void 0, this.SimpleUspeed = void 0, this.SimpleVspeed = void 0, this.SimpleUseFlow = void 0, this.EnableQuanXiPinTu = !1, this.TransparencyQuanXiPinTu = void 0, this.TransparentColorQuanXiPinTu = void 0, this.OpaqueColorQuanXiPinTu = void 0, this.EnableQuanXiFengSuo = !1, this.TransparencyQuanXiFengSuo = void 0, this.TransparentColorQuanXiFengSuo = void 0, this.CustomScalarParMap = void 0, this.CustomColorParMap = void 0
+    super(...arguments);
+    this.StartTime = -0;
+    this.LoopTime = -0;
+    this.EndTime = -0;
+    this.EnableBaseColorScale = false;
+    this.BaseColorScale = undefined;
+    this.EnableAddEmissionColor = false;
+    this.AddEmissionColor = undefined;
+    this.EnableEmissionChange = false;
+    this.EmissionLightColorChangeProgress = undefined;
+    this.EmissionLightColorChangeStrength = undefined;
+    this.EmissionLightColorChangeColor = undefined;
+    this.EnableRimLight = false;
+    this.RimLightColor = undefined;
+    this.RimPower = undefined;
+    this.EnableDissolve = false;
+    this.DissolveProgress = undefined;
+    this.DissolveAdjustment = undefined;
+    this.DissolveEdageWidth = undefined;
+    this.DissolveEdageColor = undefined;
+    this.DissolveEdageStrength = undefined;
+    this.DissolveTexSpeed = undefined;
+    this.DissolveUv = 0;
+    this.DissolveTexScaleOffset = undefined;
+    this.EnableScanning = false;
+    this.ScanningOutlineMixNoiseStrength = undefined;
+    this.ScanningOutlineStrength = undefined;
+    this.ScanningOutlineTexScaleOffset = undefined;
+    this.ScanningOutlineColor = undefined;
+    this.VertexAnimTimeDebug = undefined;
+    this.VertexAnimFrame = undefined;
+    this.PivotPainterTransform = undefined;
+    this.FloatingThreshold = undefined;
+    this.EnablePivotPainterWorldPositionOffset = false;
+    this.EnableWorldPositionOffset = false;
+    this.DisableFoliageEffect = false;
+    this.EnableFoliageEffect = false;
+    this.RimLightColorSpecil = undefined;
+    this.UseRimlightColorSpecil = false;
+    this.RimlightColorStrength = undefined;
+    this.UseEmissionTex = false;
+    this.EmissionTexStrength = undefined;
+    this.WorldPositionOffsetNormal = undefined;
+    this.WorldPositionOffsetOffset = undefined;
+    this.SimpleUspeed = undefined;
+    this.SimpleVspeed = undefined;
+    this.SimpleUseFlow = undefined;
+    this.EnableQuanXiPinTu = false;
+    this.TransparencyQuanXiPinTu = undefined;
+    this.TransparentColorQuanXiPinTu = undefined;
+    this.OpaqueColorQuanXiPinTu = undefined;
+    this.EnableQuanXiFengSuo = false;
+    this.TransparencyQuanXiFengSuo = undefined;
+    this.TransparentColorQuanXiFengSuo = undefined;
+    this.CustomScalarParMap = undefined;
+    this.CustomColorParMap = undefined;
   }
   Constructor() {}
 }

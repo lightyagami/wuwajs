@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCommonTipFirstComplete = void 0;
+  value: true
+});
+exports.FbCommonTipFirstComplete = undefined;
 class FbCommonTipFirstComplete {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.myh = !1, this.Cyh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.myh = false;
+    this.Cyh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCommonTipFirstComplete(t)
+    if (t) {
+      return new FbCommonTipFirstComplete(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get TidText() {
-    return this.myh || (this.myh = !0, this.Cyh = this.FbDataInternal.tidText()), this.Cyh
+    if (!this.myh) {
+      this.myh = true;
+      this.Cyh = this.FbDataInternal.tidText();
+    }
+    return this.Cyh;
   }
 }
 exports.FbCommonTipFirstComplete = FbCommonTipFirstComplete;

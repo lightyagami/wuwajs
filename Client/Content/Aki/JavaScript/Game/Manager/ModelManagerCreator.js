@@ -1,269 +1,974 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ModelManagerCreator = void 0;
-const AudioModel_1 = require("../../Core/Audio/AudioModel"),
-  Info_1 = require("../../Core/Common/Info"),
-  AiModel_1 = require("../AI/Common/AiModel"),
-  AiStateMachineModel_1 = require("../AI/StateMachine/AiStateMachineModel"),
-  TestModuleBridge_1 = require("../Bridge/TestModuleBridge"),
-  CameraModel_1 = require("../Camera/CameraModel"),
-  InputModel_1 = require("../Input/InputModel"),
-  KuroSdkModel_1 = require("../KuroSdk/KuroSdkModel"),
-  AlertAreaModel_1 = require("../LevelGamePlay/AlertArea/AlertAreaModel"),
-  BigStuffedDollModel_1 = require("../LevelGamePlay/BigStuffedDoll/BigStuffedDollModel"),
-  CipherModel_1 = require("../LevelGamePlay/Cipher/CipherModel"),
-  GameSplineModel_1 = require("../LevelGamePlay/Common/GameSplineModel"),
-  LevelPrefabConfigModel_1 = require("../LevelGamePlay/Common/LevelPrefabConfigModel"),
-  DigitalScreenModel_1 = require("../LevelGamePlay/DigitalScreen/DigitalScreenModel"),
-  FishingQteModel_1 = require("../LevelGamePlay/FishingQte/FishingQteModel"),
-  GongduolaSummonModel_1 = require("../LevelGamePlay/GongduolaSummon/GongduolaSummonModel"),
-  GravityFlipModel_1 = require("../LevelGamePlay/GravityFlip/GravityFlipModel"),
-  LevelGamePlayModel_1 = require("../LevelGamePlay/LevelGamePlayModel"),
-  LevelGeneralModel_1 = require("../LevelGamePlay/LevelGeneralModel"),
-  LifePointModel_1 = require("../LevelGamePlay/LifePoint/LifePointModel"),
-  ParkourModel_1 = require("../LevelGamePlay/Parkour/ParkourModel"),
-  SignalDeviceModel_1 = require("../LevelGamePlay/SignalDeviceControl/SignalDeviceModel"),
-  StaticSceneModel_1 = require("../LevelGamePlay/StaticScene/StaticSceneModel"),
-  SundialControlModel_1 = require("../LevelGamePlay/SundialControl/SundialControlModel"),
-  TimeTrackControlModel_1 = require("../LevelGamePlay/TimeTrackControl/TimeTrackControlModel"),
-  TurntableControlModel_1 = require("../LevelGamePlay/TurntableControl/TurntableControlModel"),
-  FormationAttributeModel_1 = require("../Module/Abilities/FormationAttributeModel"),
-  FormationDataModel_1 = require("../Module/Abilities/FormationDataModel"),
-  AchievementModel_1 = require("../Module/Achievement/AchievementModel"),
-  AvignonModel_1 = require("../Module/Activity/ActivityContent/Avignon/AvignonModel"),
-  BabelTowerModel_1 = require("../Module/Activity/ActivityContent/BabelTower/BabelTowerModel"),
-  BossRushModel_1 = require("../Module/Activity/ActivityContent/BossRush/BossRushModel"),
-  ChessModel_1 = require("../Module/Activity/ActivityContent/ChessGameplay/ChessModel"),
-  ActivityDirectTrainModel_1 = require("../Module/Activity/ActivityContent/DirectTrain/ActivityDirectTrainModel"),
-  DockyardModel_1 = require("../Module/Activity/ActivityContent/Fishing/Dockyard/DockyardModel"),
-  FishingModel_1 = require("../Module/Activity/ActivityContent/Fishing/FishingModel"),
-  FishingQuestModel_1 = require("../Module/Activity/ActivityContent/Fishing/FishingQuest/FishingQuestModel"),
-  InviteNewbieModel_1 = require("../Module/Activity/ActivityContent/InviteNewbie/Model/InviteNewbieModel"),
-  MoonChasingBuildingModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Build/Model/MoonChasingBuildingModel"),
-  MoonChasingBusinessModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Business/Model/MoonChasingBusinessModel"),
-  MoonChasingModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Model/MoonChasingModel"),
-  MoonChasingRewardModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Reward/Model/MoonChasingRewardModel"),
-  MoonChasingTaskModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Task/Model/MoonChasingTaskModel"),
-  MowingRiskModel_1 = require("../Module/Activity/ActivityContent/MowingRisk/Model/MowingRiskModel"),
-  MowingTowerModel_1 = require("../Module/Activity/ActivityContent/MowingTower/MowingTowerModel"),
-  ActivityRegressModel_1 = require("../Module/Activity/ActivityContent/Regress/ActivityRegressModel"),
-  ActivityRunModel_1 = require("../Module/Activity/ActivityContent/Run/ActivityRunModel"),
-  ActivityScratchTicketModel_1 = require("../Module/Activity/ActivityContent/ScratchTicket/ActivityScratchTicketModel"),
-  SolarSpeedModel_1 = require("../Module/Activity/ActivityContent/SolarisSpeed/Model/SolarSpeedModel"),
-  Spring25Model_1 = require("../Module/Activity/ActivityContent/Spring25/Model/Spring25Model"),
-  VersionPreheatModel_1 = require("../Module/Activity/ActivityContent/VersionPreheat/Model/VersionPreheatModel"),
-  ActivityModel_1 = require("../Module/Activity/ActivityModel"),
-  AdventureGuideModel_1 = require("../Module/AdventureGuide/AdventureGuideModel"),
-  AdviceModel_1 = require("../Module/Advice/AdviceModel"),
-  AiWeaponModel_1 = require("../Module/AiInteraction/AiWeapon/AiWeaponModel"),
-  AntiCheatModel_1 = require("../Module/AntiCheat/AntiCheatModel"),
-  AreaModel_1 = require("../Module/Area/AreaModel"),
-  AttributeModel_1 = require("../Module/Attribute/AttributeModel"),
-  GameAudioModel_1 = require("../Module/Audio/GameAudioModel"),
-  AutoRunModel_1 = require("../Module/AutoRunMode/AutoRunModel"),
-  CooperationModel_1 = require("../Module/Battle/Cooperation/CooperationModel"),
-  BattleInputModel_1 = require("../Module/Battle/Input/BattleInputModel"),
-  BattleLinkModel_1 = require("../Module/Battle/Link/BattleLinkModel"),
-  MoraleBattleModel_1 = require("../Module/Battle/Morale/MoraleBattleModel"),
-  BattleScoreModel_1 = require("../Module/Battle/Score/BattleScoreModel"),
-  SkillCdModel_1 = require("../Module/Battle/SkillCdModel"),
-  BattleUiModel_1 = require("../Module/BattleUi/BattleUiModel"),
-  AlertMarksModel_1 = require("../Module/BattleUi/Views/AlertMarksModel"),
-  BattleUiSetModel_1 = require("../Module/BattleUiSet/BattleUiSetModel"),
-  BirthdayModel_1 = require("../Module/Birthday/BirthdayModel"),
-  BuffItemModel_1 = require("../Module/BuffItem/BuffItemModel"),
-  CalabashModel_1 = require("../Module/Calabash/CalabashModel"),
-  ChannelModel_1 = require("../Module/Channel/ChannelModel"),
-  ChatModel_1 = require("../Module/Chat/ChatModel"),
-  CiacconaGalModel_1 = require("../Module/CiacconaGal/CiacconaGalModel"),
-  CombatMessageModel_1 = require("../Module/CombatMessage/CombatMessageModel"),
-  ComboTeachingModel_1 = require("../Module/ComboTeach/ComboTeachingModel"),
-  FilterModel_1 = require("../Module/Common/FilterSort/Filter/Model/FilterModel"),
-  SortModel_1 = require("../Module/Common/FilterSort/Sort/Model/SortModel"),
-  ItemTipsModel_1 = require("../Module/Common/ItemTips/ItemTipsModel"),
-  MediumItemGridModel_1 = require("../Module/Common/MediumItemGrid/MediumItemGridModel"),
-  SmallItemGridModel_1 = require("../Module/Common/SmallItemGrid/SmallItemGridModel"),
-  ControlScreenModel_1 = require("../Module/ControlScreen/ControlScreenModel"),
-  CookModel_1 = require("../Module/Cook/CookModel"),
-  DailyActivityModel_1 = require("../Module/DailyActivity/DailyActivityModel"),
-  DangoAbyssModel_1 = require("../Module/Dango/DangoAbyss/DangoAbyssModel"),
-  DangoGlobalModel_1 = require("../Module/Dango/DangoGlobal/DangoGlobalModel"),
-  DeadReviveModel_1 = require("../Module/DeadRevive/DeadReviveModel"),
-  EditBattleTeamModel_1 = require("../Module/EditBattleTeam/EditBattleTeamModel"),
-  EditFormationModel_1 = require("../Module/EditFormation/EditFormationModel"),
-  ExploreLevelModel_1 = require("../Module/ExploreLevel/ExploreLevelModel"),
-  ExploreProgressModel_1 = require("../Module/ExploreProgress/ExploreProgressModel"),
-  ExploreResultModel_1 = require("../Module/ExploreUi/ExploreResultModel"),
-  FragmentMemoryModel_1 = require("../Module/FragmentMemory/FragmentMemoryModel"),
-  FriendModel_1 = require("../Module/Friend/FriendModel"),
-  ExploreSkillFlagModel_1 = require("../Module/Functional/ExploreSkillFlag/ExploreSkillFlagModel"),
-  FunctionModel_1 = require("../Module/Functional/FunctionModel"),
-  LevelFuncFlagModel_1 = require("../Module/Functional/LevelFuncFlag/LevelFuncFlagModel"),
-  GachaModel_1 = require("../Module/Gacha/GachaModel"),
-  GamePingModel_1 = require("../Module/GamePing/GamePingModel"),
-  GeneralLogicTreeModel_1 = require("../Module/GeneralLogicTree/GeneralLogicTreeModel"),
-  GenericPromptModel_1 = require("../Module/GenericPrompt/GenericPromptModel"),
-  GuideModel_1 = require("../Module/Guide/Model/GuideModel"),
-  HandBookModel_1 = require("../Module/HandBook/HandBookModel"),
-  InfluenceModel_1 = require("../Module/Influence/Model/InfluenceModel"),
-  InfluenceReputationModel_1 = require("../Module/Influence/Model/InfluenceReputationModel"),
-  InfoDisplayModel_1 = require("../Module/InfoDisplay/Data/InfoDisplayModel"),
-  ExchangeRewardModel_1 = require("../Module/InstanceDungeon/ExchangeReward/ExchangeRewardModel"),
-  InstanceDungeonEntranceModel_1 = require("../Module/InstanceDungeon/InstanceDungeonEntranceModel"),
-  InstanceDungeonGuideModel_1 = require("../Module/InstanceDungeon/InstanceDungeonGuideModel"),
-  InstanceDungeonModel_1 = require("../Module/InstanceDungeon/InstanceDungeonModel"),
-  InstanceGameplayModeModel_1 = require("../Module/InstanceGameplayMode/InstanceGameplayModeModel"),
-  InteractionModel_1 = require("../Module/Interaction/InteractionModel"),
-  InventoryModel_1 = require("../Module/Inventory/InventoryModel"),
-  ItemModel_1 = require("../Module/Item/ItemModel"),
-  SpecialItemModel_1 = require("../Module/Item/SpecialItem/SpecialItemModel"),
-  ItemDeliverModel_1 = require("../Module/ItemDeliver/ItemDeliverModel"),
-  ItemExchangeModel_1 = require("../Module/ItemExchange/ItemExchangeModel"),
-  ItemHintModel_1 = require("../Module/ItemHint/ItemHintModel"),
-  ItemRewardModel_1 = require("../Module/ItemReward/ItemRewardModel"),
-  JoinTeamModel_1 = require("../Module/JoinTeam/JoinTeamModel"),
-  LevelLoadingModel_1 = require("../Module/LevelLoading/LevelLoadingModel"),
-  LevelPlayModel_1 = require("../Module/LevelPlay/LevelPlayModel"),
-  LevelPlayReportModel_1 = require("../Module/LevelPlayReport/LevelPlayReportModel"),
-  LevelUpModel_1 = require("../Module/LevelUp/LevelUpModel"),
-  LoadingModel_1 = require("../Module/Loading/LoadingModel"),
-  LoginModel_1 = require("../Module/Login/LoginModel"),
-  LoginServerModel_1 = require("../Module/Login/LoginServerModel"),
-  LogReportModel_1 = require("../Module/LogReport/LogReportModel"),
-  LordGymModel_1 = require("../Module/LordGym/LordGymModel"),
-  MailModel_1 = require("../Module/Mail/MailModel"),
-  MailBindModel_1 = require("../Module/MailBind/MailBindModel"),
-  ComposeModel_1 = require("../Module/Manufacture/Compose/ComposeModel"),
-  ForgingModel_1 = require("../Module/Manufacture/Forging/ForgingModel"),
-  MapModel_1 = require("../Module/Map/MapModel"),
-  MapExploreToolModel_1 = require("../Module/MapExploreTool/MapExploreToolModel"),
-  MapRogueModel_1 = require("../Module/MapRogue/MapRogueModel"),
-  MarqueeModel_1 = require("../Module/Marquee/MarqueeModel"),
-  MenuModel_1 = require("../Module/Menu/MenuModel"),
-  MingSuModel_1 = require("../Module/MingSu/MingSuModel"),
-  PreDownloadModel_1 = require("../Module/MobilePredownload/PreDownloadModel"),
-  MonsterGroupPatrolModel_1 = require("../Module/MonsterGroup/MonsterGroupPatrolModel"),
-  MoraleModel_1 = require("../Module/Morale/MoraleModel"),
-  MotionModel_1 = require("../Module/Motion/MotionModel"),
-  NetworkDetectionModel_1 = require("../Module/NetworkDetection/NetworkDetectionModel"),
-  NewFlagModel_1 = require("../Module/NewFlag/NewFlagModel"),
-  OnlineModel_1 = require("../Module/Online/OnlineModel"),
-  PanelQteModel_1 = require("../Module/PanelQte/PanelQteModel"),
-  PayItemModel_1 = require("../Module/PayItem/PayItemModel"),
-  BattlePassModel_1 = require("../Module/PayShop/BattlePass/BattlePassModel"),
-  MonthCardModel_1 = require("../Module/PayShop/MonthCard/MonthCardModel"),
-  PayGiftModel_1 = require("../Module/PayShop/PayGiftModel"),
-  PayShopModel_1 = require("../Module/PayShop/PayShopModel"),
-  ActivityPermanentRogueModel_1 = require("../Module/PermanentRogue/ActivityPermanentRogueModel"),
-  PersonalModel_1 = require("../Module/Personal/Model/PersonalModel"),
-  PhantomBattleModel_1 = require("../Module/Phantom/PhantomBattle/PhantomBattleModel"),
-  VisionEquipGroupModel_1 = require("../Module/Phantom/PhantomBattle/VisionEquipGroupModel"),
-  VisionRecommendModel_1 = require("../Module/Phantom/PhantomBattle/VisionRecommendModel"),
-  PhantomArenaBattleModel_1 = require("../Module/PhantomArena/Battle/Model/PhantomArenaBattleModel"),
-  PhantomArenaModel_1 = require("../Module/PhantomArena/PhantomArenaModel"),
-  PhonographModel_1 = require("../Module/Phonograph/PhonographModel"),
-  PhotographModel_1 = require("../Module/Photograph/PhotographModel"),
-  PlatformModel_1 = require("../Module/Platform/PlatformModel"),
-  PlayerInfoModel_1 = require("../Module/PlayerInfo/PlayerInfoModel"),
-  PlotModel_1 = require("../Module/Plot/PlotModel"),
-  SequenceModel_1 = require("../Module/Plot/Sequence/SequenceModel"),
-  PowerModel_1 = require("../Module/Power/PowerModel"),
-  BattleQteModel_1 = require("../Module/Qte/BattleQte/BattleQteModel"),
-  CommonQteModel_1 = require("../Module/Qte/CommonQte/CommonQteModel"),
-  DailyTaskModel_1 = require("../Module/QuestNew/Model/DailyTaskModel"),
-  QuestModel_1 = require("../Module/QuestNew/Model/QuestModel"),
-  QuestResourceModel_1 = require("../Module/QuestResource/Model/QuestResourceModel"),
-  QuestReviewModel_1 = require("../Module/QuestReview/QuestReviewModel"),
-  RacingBetsModel_1 = require("../Module/RacingBets/RacingBetsModel"),
-  RechargeModel_1 = require("../Module/Recharge/RechargeModel"),
-  RecommendQualityModel_1 = require("../Module/RecommendQuality/RecommendQualityModel"),
-  ReConnectModel_1 = require("../Module/ReConnect/ReConnectModel"),
-  ResDownLoadModel_1 = require("../Module/ResDownLoad/ResDownLoadModel"),
-  RewardModel_1 = require("../Module/Reward/RewardModel"),
-  RogueBattleModel_1 = require("../Module/RogueBattle/RogueBattleModel"),
-  RoguelikeModel_1 = require("../Module/Roguelike/RoguelikeModel"),
-  RoleSelectModel_1 = require("../Module/RoleSelect/RoleSelectModel"),
-  MainRoleModel_1 = require("../Module/RoleUi/MainRoleModel"),
-  RoleFavorConditionModel_1 = require("../Module/RoleUi/RoleFavorConditionModel"),
-  RoleModel_1 = require("../Module/RoleUi/RoleModel"),
-  RouletteModel_1 = require("../Module/Roulette/RouletteModel"),
-  SceneBattleInteractModel_1 = require("../Module/SceneBattleInteract/SceneBattleInteractModel"),
-  SceneTeamModel_1 = require("../Module/SceneTeam/SceneTeamModel"),
-  ScoreModel_1 = require("../Module/Score/ScoreModel"),
-  SeamlessTravelModel_1 = require("../Module/SeamlessTravel/SeamlessTravelModel"),
-  ShipTogetherModel_1 = require("../Module/Ship/ShipTogetherModel"),
-  ShipTowerModel_1 = require("../Module/ShipTower/ShipTowerModel"),
-  ShopModel_1 = require("../Module/Shop/ShopModel"),
-  ShowerModel_1 = require("../Module/Shower/ShowerModel"),
-  SignalDecodeModel_1 = require("../Module/SignalDecode/SignalDecodeModel"),
-  SkillButtonUiModel_1 = require("../Module/SkillButtonUi/SkillButtonUiModel"),
-  RoleSkinModel_1 = require("../Module/Skin/Model/RoleSkinModel"),
-  FlySkinModel_1 = require("../Module/Skin/Tab/Fly/FlySkinModel"),
-  WeaponSkinModel_1 = require("../Module/Skin/Tab/Weapon/WeaponSkinModel"),
-  SkipInterfaceModel_1 = require("../Module/SkipInterface/SkipInterfaceModel"),
-  SoundAreaPlayTipsModel_1 = require("../Module/SoundArea/SoundAreaPlayTipsModel"),
-  SubLevelLoadingModel_1 = require("../Module/SubLevelLoading/SubLevelLoadingModel"),
-  SundryModel_1 = require("../Module/Sundry/SundryModel"),
-  TeleportModel_1 = require("../Module/Teleport/TeleportModel"),
-  TimeOfDayModel_1 = require("../Module/TimeOfDay/TimeOfDayModel"),
-  TowerDefenceModel_1 = require("../Module/TowerDefence/TowerDefenceModel"),
-  TowerDetailModel_1 = require("../Module/TowerDetailUi/TowerDetailModel"),
-  TowerModel_1 = require("../Module/TowerDetailUi/TowerModel"),
-  TrackModel_1 = require("../Module/Track/TrackModel"),
-  TrainingDegreeModel_1 = require("../Module/TrainingDegree/TrainingDegreeModel"),
-  TreasureHuntModel_1 = require("../Module/TreasureHunt/TreasureHuntModel"),
-  TutorialModel_1 = require("../Module/Tutorial/TutorialModel"),
-  UiNavigationModel_1 = require("../Module/UiNavigation/UiNavigationModel"),
-  WaitEntityTaskModel_1 = require("../Module/WaitEntityTask/WaitEntityTaskModel"),
-  WeaponModel_1 = require("../Module/Weapon/WeaponModel"),
-  WeatherModel_1 = require("../Module/Weather/WeatherModel"),
-  WeeklyRogueModel_1 = require("../Module/WeeklyRogue/WeeklyRogueModel"),
-  WorldLevelModel_1 = require("../Module/WorldLevel/WorldLevelModel"),
-  WorldMapModel_1 = require("../Module/WorldMap/WorldMapModel"),
-  WuYinAreaModel_1 = require("../Module/WuYinArea/WuYinAreaModel"),
-  BulletModel_1 = require("../NewWorld/Bullet/Model/BulletModel"),
-  CharacterModel_1 = require("../NewWorld/Character/CharacterModel"),
-  CharacterBuffModel_1 = require("../NewWorld/Character/Common/Component/Abilities/CharacterBuffModel"),
-  CharacterExploreModel_1 = require("../NewWorld/Character/Common/Component/CharacterExploreModel"),
-  CharacterManipulateInteractModel_1 = require("../NewWorld/Character/Common/Component/CharacterManipulateInteractModel"),
-  CharacterManipulaterModel_1 = require("../NewWorld/Character/Common/Component/CharacterManipulaterModel"),
-  PerformModel_1 = require("../NewWorld/Character/Common/Component/Performance/PerformModel"),
-  NpcConfigModel_1 = require("../NewWorld/Character/Npc/Datas/NpcConfigModel"),
-  ConnectGamePlayModel_1 = require("../NewWorld/SceneItem/Model/ConnectGamePlayModel"),
-  PortalModel_1 = require("../NewWorld/SceneItem/Model/PortalModel"),
-  RangeItemModel_1 = require("../NewWorld/SceneItem/Model/RangeItemModel"),
-  SceneInteractionModel_1 = require("../NewWorld/SceneItem/Model/SceneInteractionModel"),
-  SceneItemBuffModel_1 = require("../NewWorld/SceneItem/Model/SceneItemBuffModel"),
-  ShootTargetModel_1 = require("../NewWorld/SceneItem/Model/ShootTargetModel"),
-  VisionCaptureModel_1 = require("../NewWorld/SceneItem/Model/VisionCaptureModel"),
-  TriggerVolumeModel_1 = require("../NewWorld/TriggerItems/Model/TriggerVolumeModel"),
-  VehicleModel_1 = require("../NewWorld/Vehicle/Model/VehicleModel"),
-  RedDotModel_1 = require("../RedDot/RedDotModel"),
-  ScreenEffectModel_1 = require("../Render/Effect/ScreenEffectSystem/ScreenEffectModel"),
-  RenderModuleModel_1 = require("../Render/Manager/RenderModuleModel"),
-  InputDistributeModel_1 = require("../Ui/InputDistribute/InputDistributeModel"),
-  AoiModel_1 = require("../World/Model/AoiModel"),
-  AttachToActorModel_1 = require("../World/Model/AttachToActorModel"),
-  BlackboardModel_1 = require("../World/Model/BlackboardModel"),
-  CreatureModel_1 = require("../World/Model/CreatureModel"),
-  DamageModel_1 = require("../World/Model/DamageModel"),
-  GameModeModel_1 = require("../World/Model/GameModeModel"),
-  PreloadModel_1 = require("../World/Model/PreloadModel"),
-  PreloadModelNew_1 = require("../World/Model/PreloadModelNew"),
-  SubLevelModel_1 = require("../World/Model/SubLevelModel"),
-  TraceElementModel_1 = require("../World/Model/TraceElementModel"),
-  WorldDebugModel_1 = require("../World/Model/WorldDebugModel"),
-  WorldModel_1 = require("../World/Model/WorldModel"),
-  ModelManager_1 = require("./ModelManager");
+  value: true
+});
+exports.ModelManagerCreator = undefined;
+const AudioModel_1 = require("../../Core/Audio/AudioModel");
+const Info_1 = require("../../Core/Common/Info");
+const AiModel_1 = require("../AI/Common/AiModel");
+const AiStateMachineModel_1 = require("../AI/StateMachine/AiStateMachineModel");
+const TestModuleBridge_1 = require("../Bridge/TestModuleBridge");
+const CameraModel_1 = require("../Camera/CameraModel");
+const InputModel_1 = require("../Input/InputModel");
+const KuroSdkModel_1 = require("../KuroSdk/KuroSdkModel");
+const AlertAreaModel_1 = require("../LevelGamePlay/AlertArea/AlertAreaModel");
+const BigStuffedDollModel_1 = require("../LevelGamePlay/BigStuffedDoll/BigStuffedDollModel");
+const CipherModel_1 = require("../LevelGamePlay/Cipher/CipherModel");
+const GameSplineModel_1 = require("../LevelGamePlay/Common/GameSplineModel");
+const LevelPrefabConfigModel_1 = require("../LevelGamePlay/Common/LevelPrefabConfigModel");
+const DigitalScreenModel_1 = require("../LevelGamePlay/DigitalScreen/DigitalScreenModel");
+const FishingQteModel_1 = require("../LevelGamePlay/FishingQte/FishingQteModel");
+const GongduolaSummonModel_1 = require("../LevelGamePlay/GongduolaSummon/GongduolaSummonModel");
+const GravityFlipModel_1 = require("../LevelGamePlay/GravityFlip/GravityFlipModel");
+const LevelGamePlayModel_1 = require("../LevelGamePlay/LevelGamePlayModel");
+const LevelGeneralModel_1 = require("../LevelGamePlay/LevelGeneralModel");
+const LifePointModel_1 = require("../LevelGamePlay/LifePoint/LifePointModel");
+const ParkourModel_1 = require("../LevelGamePlay/Parkour/ParkourModel");
+const SignalDeviceModel_1 = require("../LevelGamePlay/SignalDeviceControl/SignalDeviceModel");
+const StaticSceneModel_1 = require("../LevelGamePlay/StaticScene/StaticSceneModel");
+const SundialControlModel_1 = require("../LevelGamePlay/SundialControl/SundialControlModel");
+const TimeTrackControlModel_1 = require("../LevelGamePlay/TimeTrackControl/TimeTrackControlModel");
+const TuningStandModel_1 = require("../LevelGamePlay/TuningStand/TuningStandModel");
+const TurntableControlModel_1 = require("../LevelGamePlay/TurntableControl/TurntableControlModel");
+const FormationAttributeModel_1 = require("../Module/Abilities/FormationAttributeModel");
+const FormationDataModel_1 = require("../Module/Abilities/FormationDataModel");
+const AchievementModel_1 = require("../Module/Achievement/AchievementModel");
+const AvignonModel_1 = require("../Module/Activity/ActivityContent/Avignon/AvignonModel");
+const BabelTowerModel_1 = require("../Module/Activity/ActivityContent/BabelTower/BabelTowerModel");
+const BossRushModel_1 = require("../Module/Activity/ActivityContent/BossRush/BossRushModel");
+const ChessModel_1 = require("../Module/Activity/ActivityContent/ChessGameplay/ChessModel");
+const ActivityDirectTrainModel_1 = require("../Module/Activity/ActivityContent/DirectTrain/ActivityDirectTrainModel");
+const DockyardModel_1 = require("../Module/Activity/ActivityContent/Fishing/Dockyard/DockyardModel");
+const FishingModel_1 = require("../Module/Activity/ActivityContent/Fishing/FishingModel");
+const FishingQuestModel_1 = require("../Module/Activity/ActivityContent/Fishing/FishingQuest/FishingQuestModel");
+const InviteNewbieModel_1 = require("../Module/Activity/ActivityContent/InviteNewbie/Model/InviteNewbieModel");
+const LifePointDrawModel_1 = require("../Module/Activity/ActivityContent/LifePoint/LifePointDrawModel");
+const MoonChasingBuildingModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Build/Model/MoonChasingBuildingModel");
+const MoonChasingBusinessModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Business/Model/MoonChasingBusinessModel");
+const MoonChasingModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Model/MoonChasingModel");
+const MoonChasingRewardModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Reward/Model/MoonChasingRewardModel");
+const MoonChasingTaskModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Task/Model/MoonChasingTaskModel");
+const MowingRiskModel_1 = require("../Module/Activity/ActivityContent/MowingRisk/Model/MowingRiskModel");
+const MowingTowerModel_1 = require("../Module/Activity/ActivityContent/MowingTower/MowingTowerModel");
+const ActivityRegressModel_1 = require("../Module/Activity/ActivityContent/Regress/ActivityRegressModel");
+const ActivityRunModel_1 = require("../Module/Activity/ActivityContent/Run/ActivityRunModel");
+const ActivityScratchTicketModel_1 = require("../Module/Activity/ActivityContent/ScratchTicket/ActivityScratchTicketModel");
+const SolarSpeedModel_1 = require("../Module/Activity/ActivityContent/SolarisSpeed/Model/SolarSpeedModel");
+const Spring25Model_1 = require("../Module/Activity/ActivityContent/Spring25/Model/Spring25Model");
+const VersionPreheatModel_1 = require("../Module/Activity/ActivityContent/VersionPreheat/Model/VersionPreheatModel");
+const ActivityModel_1 = require("../Module/Activity/ActivityModel");
+const AdventureGuideModel_1 = require("../Module/AdventureGuide/AdventureGuideModel");
+const AdviceModel_1 = require("../Module/Advice/AdviceModel");
+const AiWeaponModel_1 = require("../Module/AiInteraction/AiWeapon/AiWeaponModel");
+const AntiCheatModel_1 = require("../Module/AntiCheat/AntiCheatModel");
+const AreaModel_1 = require("../Module/Area/AreaModel");
+const AttributeModel_1 = require("../Module/Attribute/AttributeModel");
+const GameAudioModel_1 = require("../Module/Audio/GameAudioModel");
+const AutoRunModel_1 = require("../Module/AutoRunMode/AutoRunModel");
+const CooperationModel_1 = require("../Module/Battle/Cooperation/CooperationModel");
+const BattleInputModel_1 = require("../Module/Battle/Input/BattleInputModel");
+const BattleLinkModel_1 = require("../Module/Battle/Link/BattleLinkModel");
+const MoraleBattleModel_1 = require("../Module/Battle/Morale/MoraleBattleModel");
+const BattleScoreModel_1 = require("../Module/Battle/Score/BattleScoreModel");
+const SkillCdModel_1 = require("../Module/Battle/SkillCdModel");
+const BattleUiModel_1 = require("../Module/BattleUi/BattleUiModel");
+const AlertMarksModel_1 = require("../Module/BattleUi/Views/AlertMarksModel");
+const BattleUiSetModel_1 = require("../Module/BattleUiSet/BattleUiSetModel");
+const BirthdayModel_1 = require("../Module/Birthday/BirthdayModel");
+const BuffItemModel_1 = require("../Module/BuffItem/BuffItemModel");
+const CalabashModel_1 = require("../Module/Calabash/CalabashModel");
+const ChannelModel_1 = require("../Module/Channel/ChannelModel");
+const ChatModel_1 = require("../Module/Chat/ChatModel");
+const CiacconaGalModel_1 = require("../Module/CiacconaGal/CiacconaGalModel");
+const CombatMessageModel_1 = require("../Module/CombatMessage/CombatMessageModel");
+const ComboTeachingModel_1 = require("../Module/ComboTeach/ComboTeachingModel");
+const FilterModel_1 = require("../Module/Common/FilterSort/Filter/Model/FilterModel");
+const SortModel_1 = require("../Module/Common/FilterSort/Sort/Model/SortModel");
+const ItemTipsModel_1 = require("../Module/Common/ItemTips/ItemTipsModel");
+const MediumItemGridModel_1 = require("../Module/Common/MediumItemGrid/MediumItemGridModel");
+const SmallItemGridModel_1 = require("../Module/Common/SmallItemGrid/SmallItemGridModel");
+const ControlScreenModel_1 = require("../Module/ControlScreen/ControlScreenModel");
+const CookModel_1 = require("../Module/Cook/CookModel");
+const DailyActivityModel_1 = require("../Module/DailyActivity/DailyActivityModel");
+const DangoAbyssModel_1 = require("../Module/Dango/DangoAbyss/DangoAbyssModel");
+const DangoGlobalModel_1 = require("../Module/Dango/DangoGlobal/DangoGlobalModel");
+const DeadReviveModel_1 = require("../Module/DeadRevive/DeadReviveModel");
+const EditBattleTeamModel_1 = require("../Module/EditBattleTeam/EditBattleTeamModel");
+const EditFormationModel_1 = require("../Module/EditFormation/EditFormationModel");
+const ExploreLevelModel_1 = require("../Module/ExploreLevel/ExploreLevelModel");
+const ExploreProgressModel_1 = require("../Module/ExploreProgress/ExploreProgressModel");
+const ExploreResultModel_1 = require("../Module/ExploreUi/ExploreResultModel");
+const FloroRanchGamePlayModel_1 = require("../Module/FloroBranch/FloroRanchGamePlayModel");
+const FloroRanchModel_1 = require("../Module/FloroBranch/FloroRanchModel");
+const FragmentMemoryModel_1 = require("../Module/FragmentMemory/FragmentMemoryModel");
+const FriendModel_1 = require("../Module/Friend/FriendModel");
+const ExploreSkillFlagModel_1 = require("../Module/Functional/ExploreSkillFlag/ExploreSkillFlagModel");
+const FunctionModel_1 = require("../Module/Functional/FunctionModel");
+const LevelFuncFlagModel_1 = require("../Module/Functional/LevelFuncFlag/LevelFuncFlagModel");
+const GachaModel_1 = require("../Module/Gacha/GachaModel");
+const GamePingModel_1 = require("../Module/GamePing/GamePingModel");
+const GeneralLogicTreeModel_1 = require("../Module/GeneralLogicTree/GeneralLogicTreeModel");
+const GenericPromptModel_1 = require("../Module/GenericPrompt/GenericPromptModel");
+const GuideModel_1 = require("../Module/Guide/Model/GuideModel");
+const HandBookModel_1 = require("../Module/HandBook/HandBookModel");
+const InfluenceModel_1 = require("../Module/Influence/Model/InfluenceModel");
+const InfluenceReputationModel_1 = require("../Module/Influence/Model/InfluenceReputationModel");
+const InfoDisplayModel_1 = require("../Module/InfoDisplay/Data/InfoDisplayModel");
+const ExchangeRewardModel_1 = require("../Module/InstanceDungeon/ExchangeReward/ExchangeRewardModel");
+const InstanceDungeonEntranceModel_1 = require("../Module/InstanceDungeon/InstanceDungeonEntranceModel");
+const InstanceDungeonGuideModel_1 = require("../Module/InstanceDungeon/InstanceDungeonGuideModel");
+const InstanceDungeonModel_1 = require("../Module/InstanceDungeon/InstanceDungeonModel");
+const InstanceGameplayModeModel_1 = require("../Module/InstanceGameplayMode/InstanceGameplayModeModel");
+const InteractionModel_1 = require("../Module/Interaction/InteractionModel");
+const InventoryModel_1 = require("../Module/Inventory/InventoryModel");
+const ItemModel_1 = require("../Module/Item/ItemModel");
+const SpecialItemModel_1 = require("../Module/Item/SpecialItem/SpecialItemModel");
+const ItemDeliverModel_1 = require("../Module/ItemDeliver/ItemDeliverModel");
+const ItemExchangeModel_1 = require("../Module/ItemExchange/ItemExchangeModel");
+const ItemHintModel_1 = require("../Module/ItemHint/ItemHintModel");
+const ItemRewardModel_1 = require("../Module/ItemReward/ItemRewardModel");
+const JoinTeamModel_1 = require("../Module/JoinTeam/JoinTeamModel");
+const LevelLoadingModel_1 = require("../Module/LevelLoading/LevelLoadingModel");
+const LevelPlayModel_1 = require("../Module/LevelPlay/LevelPlayModel");
+const LevelPlayReportModel_1 = require("../Module/LevelPlayReport/LevelPlayReportModel");
+const LevelUpModel_1 = require("../Module/LevelUp/LevelUpModel");
+const LoadingModel_1 = require("../Module/Loading/LoadingModel");
+const LoginModel_1 = require("../Module/Login/LoginModel");
+const LoginServerModel_1 = require("../Module/Login/LoginServerModel");
+const LogReportModel_1 = require("../Module/LogReport/LogReportModel");
+const LordGymModel_1 = require("../Module/LordGym/LordGymModel");
+const MailModel_1 = require("../Module/Mail/MailModel");
+const MailBindModel_1 = require("../Module/MailBind/MailBindModel");
+const ComposeModel_1 = require("../Module/Manufacture/Compose/ComposeModel");
+const ForgingModel_1 = require("../Module/Manufacture/Forging/ForgingModel");
+const MapModel_1 = require("../Module/Map/MapModel");
+const MapExploreToolModel_1 = require("../Module/MapExploreTool/MapExploreToolModel");
+const MapRogueModel_1 = require("../Module/MapRogue/MapRogueModel");
+const MarqueeModel_1 = require("../Module/Marquee/MarqueeModel");
+const MenuModel_1 = require("../Module/Menu/MenuModel");
+const MingSuModel_1 = require("../Module/MingSu/MingSuModel");
+const PreDownloadModel_1 = require("../Module/MobilePredownload/PreDownloadModel");
+const MonsterGroupPatrolModel_1 = require("../Module/MonsterGroup/MonsterGroupPatrolModel");
+const MoraleModel_1 = require("../Module/Morale/MoraleModel");
+const MotionModel_1 = require("../Module/Motion/MotionModel");
+const NetworkDetectionModel_1 = require("../Module/NetworkDetection/NetworkDetectionModel");
+const NewFlagModel_1 = require("../Module/NewFlag/NewFlagModel");
+const OnlineModel_1 = require("../Module/Online/OnlineModel");
+const PanelQteModel_1 = require("../Module/PanelQte/PanelQteModel");
+const PayItemModel_1 = require("../Module/PayItem/PayItemModel");
+const BattlePassModel_1 = require("../Module/PayShop/BattlePass/BattlePassModel");
+const MonthCardModel_1 = require("../Module/PayShop/MonthCard/MonthCardModel");
+const PayGiftModel_1 = require("../Module/PayShop/PayGiftModel");
+const PayShopModel_1 = require("../Module/PayShop/PayShopModel");
+const ActivityPermanentRogueModel_1 = require("../Module/PermanentRogue/ActivityPermanentRogueModel");
+const PersonalModel_1 = require("../Module/Personal/Model/PersonalModel");
+const PhantomBattleModel_1 = require("../Module/Phantom/PhantomBattle/PhantomBattleModel");
+const VisionEquipGroupModel_1 = require("../Module/Phantom/PhantomBattle/VisionEquipGroupModel");
+const VisionRecommendModel_1 = require("../Module/Phantom/PhantomBattle/VisionRecommendModel");
+const PhantomArenaBattleModel_1 = require("../Module/PhantomArena/Battle/Model/PhantomArenaBattleModel");
+const PhantomArenaModel_1 = require("../Module/PhantomArena/PhantomArenaModel");
+const PhonographModel_1 = require("../Module/Phonograph/PhonographModel");
+const PhotographModel_1 = require("../Module/Photograph/PhotographModel");
+const PlatformModel_1 = require("../Module/Platform/PlatformModel");
+const PlayerInfoModel_1 = require("../Module/PlayerInfo/PlayerInfoModel");
+const PlotModel_1 = require("../Module/Plot/PlotModel");
+const SequenceModel_1 = require("../Module/Plot/Sequence/SequenceModel");
+const PowerModel_1 = require("../Module/Power/PowerModel");
+const BattleQteModel_1 = require("../Module/Qte/BattleQte/BattleQteModel");
+const CommonQteModel_1 = require("../Module/Qte/CommonQte/CommonQteModel");
+const DailyTaskModel_1 = require("../Module/QuestNew/Model/DailyTaskModel");
+const QuestModel_1 = require("../Module/QuestNew/Model/QuestModel");
+const QuestResourceModel_1 = require("../Module/QuestResource/Model/QuestResourceModel");
+const QuestReviewModel_1 = require("../Module/QuestReview/QuestReviewModel");
+const RacingBetsModel_1 = require("../Module/RacingBets/RacingBetsModel");
+const RechargeModel_1 = require("../Module/Recharge/RechargeModel");
+const RecommendQualityModel_1 = require("../Module/RecommendQuality/RecommendQualityModel");
+const ReConnectModel_1 = require("../Module/ReConnect/ReConnectModel");
+const ResDownLoadModel_1 = require("../Module/ResDownLoad/ResDownLoadModel");
+const RewardModel_1 = require("../Module/Reward/RewardModel");
+const RogueBattleModel_1 = require("../Module/RogueBattle/RogueBattleModel");
+const RoguelikeModel_1 = require("../Module/Roguelike/RoguelikeModel");
+const RoleSelectModel_1 = require("../Module/RoleSelect/RoleSelectModel");
+const MainRoleModel_1 = require("../Module/RoleUi/MainRoleModel");
+const RoleFavorConditionModel_1 = require("../Module/RoleUi/RoleFavorConditionModel");
+const RoleModel_1 = require("../Module/RoleUi/RoleModel");
+const RouletteModel_1 = require("../Module/Roulette/RouletteModel");
+const SceneBattleInteractModel_1 = require("../Module/SceneBattleInteract/SceneBattleInteractModel");
+const SceneTeamModel_1 = require("../Module/SceneTeam/SceneTeamModel");
+const ScoreModel_1 = require("../Module/Score/ScoreModel");
+const SeamlessTravelModel_1 = require("../Module/SeamlessTravel/SeamlessTravelModel");
+const ShipTogetherModel_1 = require("../Module/Ship/ShipTogetherModel");
+const ShipTowerModel_1 = require("../Module/ShipTower/ShipTowerModel");
+const ShopModel_1 = require("../Module/Shop/ShopModel");
+const ShowerModel_1 = require("../Module/Shower/ShowerModel");
+const SignalDecodeModel_1 = require("../Module/SignalDecode/SignalDecodeModel");
+const SkillButtonUiModel_1 = require("../Module/SkillButtonUi/SkillButtonUiModel");
+const RoleSkinModel_1 = require("../Module/Skin/Model/RoleSkinModel");
+const FlySkinModel_1 = require("../Module/Skin/Tab/Fly/FlySkinModel");
+const WeaponSkinModel_1 = require("../Module/Skin/Tab/Weapon/WeaponSkinModel");
+const SkipInterfaceModel_1 = require("../Module/SkipInterface/SkipInterfaceModel");
+const SoundAreaPlayTipsModel_1 = require("../Module/SoundArea/SoundAreaPlayTipsModel");
+const SubLevelLoadingModel_1 = require("../Module/SubLevelLoading/SubLevelLoadingModel");
+const SundryModel_1 = require("../Module/Sundry/SundryModel");
+const TeleportModel_1 = require("../Module/Teleport/TeleportModel");
+const TimeOfDayModel_1 = require("../Module/TimeOfDay/TimeOfDayModel");
+const TowerDefenceModel_1 = require("../Module/TowerDefence/TowerDefenceModel");
+const TowerDetailModel_1 = require("../Module/TowerDetailUi/TowerDetailModel");
+const TowerModel_1 = require("../Module/TowerDetailUi/TowerModel");
+const TrackModel_1 = require("../Module/Track/TrackModel");
+const TrainingDegreeModel_1 = require("../Module/TrainingDegree/TrainingDegreeModel");
+const TreasureHuntModel_1 = require("../Module/TreasureHunt/TreasureHuntModel");
+const TutorialModel_1 = require("../Module/Tutorial/TutorialModel");
+const UiNavigationModel_1 = require("../Module/UiNavigation/UiNavigationModel");
+const WaitEntityTaskModel_1 = require("../Module/WaitEntityTask/WaitEntityTaskModel");
+const WeaponModel_1 = require("../Module/Weapon/WeaponModel");
+const WeatherModel_1 = require("../Module/Weather/WeatherModel");
+const WeeklyRogueModel_1 = require("../Module/WeeklyRogue/WeeklyRogueModel");
+const WorldLevelModel_1 = require("../Module/WorldLevel/WorldLevelModel");
+const WorldMapModel_1 = require("../Module/WorldMap/WorldMapModel");
+const WuYinAreaModel_1 = require("../Module/WuYinArea/WuYinAreaModel");
+const BulletModel_1 = require("../NewWorld/Bullet/Model/BulletModel");
+const CharacterModel_1 = require("../NewWorld/Character/CharacterModel");
+const CharacterBuffModel_1 = require("../NewWorld/Character/Common/Component/Abilities/CharacterBuffModel");
+const CharacterExploreModel_1 = require("../NewWorld/Character/Common/Component/CharacterExploreModel");
+const CharacterManipulateInteractModel_1 = require("../NewWorld/Character/Common/Component/CharacterManipulateInteractModel");
+const CharacterManipulaterModel_1 = require("../NewWorld/Character/Common/Component/CharacterManipulaterModel");
+const PerformModel_1 = require("../NewWorld/Character/Common/Component/Performance/PerformModel");
+const NpcConfigModel_1 = require("../NewWorld/Character/Npc/Datas/NpcConfigModel");
+const ConnectGamePlayModel_1 = require("../NewWorld/SceneItem/Model/ConnectGamePlayModel");
+const PortalModel_1 = require("../NewWorld/SceneItem/Model/PortalModel");
+const RangeItemModel_1 = require("../NewWorld/SceneItem/Model/RangeItemModel");
+const SceneInteractionModel_1 = require("../NewWorld/SceneItem/Model/SceneInteractionModel");
+const SceneItemBuffModel_1 = require("../NewWorld/SceneItem/Model/SceneItemBuffModel");
+const ShootTargetModel_1 = require("../NewWorld/SceneItem/Model/ShootTargetModel");
+const VisionCaptureModel_1 = require("../NewWorld/SceneItem/Model/VisionCaptureModel");
+const TriggerVolumeModel_1 = require("../NewWorld/TriggerItems/Model/TriggerVolumeModel");
+const VehicleModel_1 = require("../NewWorld/Vehicle/Model/VehicleModel");
+const RedDotModel_1 = require("../RedDot/RedDotModel");
+const ScreenEffectModel_1 = require("../Render/Effect/ScreenEffectSystem/ScreenEffectModel");
+const RenderModuleModel_1 = require("../Render/Manager/RenderModuleModel");
+const InputDistributeModel_1 = require("../Ui/InputDistribute/InputDistributeModel");
+const AoiModel_1 = require("../World/Model/AoiModel");
+const AttachToActorModel_1 = require("../World/Model/AttachToActorModel");
+const BlackboardModel_1 = require("../World/Model/BlackboardModel");
+const CreatureModel_1 = require("../World/Model/CreatureModel");
+const DamageModel_1 = require("../World/Model/DamageModel");
+const GameModeModel_1 = require("../World/Model/GameModeModel");
+const PreloadModel_1 = require("../World/Model/PreloadModel");
+const PreloadModelNew_1 = require("../World/Model/PreloadModelNew");
+const SubLevelModel_1 = require("../World/Model/SubLevelModel");
+const TraceElementModel_1 = require("../World/Model/TraceElementModel");
+const WorldDebugModel_1 = require("../World/Model/WorldDebugModel");
+const WorldModel_1 = require("../World/Model/WorldModel");
+const ModelManager_1 = require("./ModelManager");
 class ModelManagerCreator {
   static Init() {
-    return ModelManager_1.ModelManager.PlatformModel = new PlatformModel_1.PlatformModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PlatformModel), ModelManager_1.ModelManager.RedDotModel = new RedDotModel_1.RedDotModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RedDotModel), ModelManager_1.ModelManager.InputModel = new InputModel_1.InputModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InputModel), ModelManager_1.ModelManager.CameraModel = new CameraModel_1.CameraModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CameraModel), ModelManager_1.ModelManager.CharacterModel = new CharacterModel_1.CharacterModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CharacterModel), ModelManager_1.ModelManager.CreatureModel = new CreatureModel_1.CreatureModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CreatureModel), ModelManager_1.ModelManager.WorldModel = new WorldModel_1.WorldModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldModel), ModelManager_1.ModelManager.AttachToActorModel = new AttachToActorModel_1.AttachToActorModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AttachToActorModel), ModelManager_1.ModelManager.SubLevelLoadingModel = new SubLevelLoadingModel_1.SubLevelLoadingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SubLevelLoadingModel), ModelManager_1.ModelManager.WorldDebugModel = new WorldDebugModel_1.WorldDebugModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldDebugModel), ModelManager_1.ModelManager.BlackboardModel = new BlackboardModel_1.BlackboardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BlackboardModel), ModelManager_1.ModelManager.GameModeModel = new GameModeModel_1.GameModeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GameModeModel), ModelManager_1.ModelManager.AreaModel = new AreaModel_1.AreaModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AreaModel), ModelManager_1.ModelManager.MailModel = new MailModel_1.MailModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MailModel), ModelManager_1.ModelManager.MailBindModel = new MailBindModel_1.MailBindModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MailBindModel), ModelManager_1.ModelManager.LoginModel = new LoginModel_1.LoginModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LoginModel), ModelManager_1.ModelManager.LogReportModel = new LogReportModel_1.LogReportModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LogReportModel), ModelManager_1.ModelManager.ItemModel = new ItemModel_1.ItemModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemModel), ModelManager_1.ModelManager.SpecialItemModel = new SpecialItemModel_1.SpecialItemModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SpecialItemModel), ModelManager_1.ModelManager.GuideModel = new GuideModel_1.GuideModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GuideModel), ModelManager_1.ModelManager.PlayerInfoModel = new PlayerInfoModel_1.PlayerInfoModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PlayerInfoModel), ModelManager_1.ModelManager.CipherModel = new CipherModel_1.CipherModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CipherModel), ModelManager_1.ModelManager.EditBattleTeamModel = new EditBattleTeamModel_1.EditBattleTeamModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.EditBattleTeamModel), ModelManager_1.ModelManager.MapModel = new MapModel_1.MapModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MapModel), ModelManager_1.ModelManager.InventoryModel = new InventoryModel_1.InventoryModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InventoryModel), ModelManager_1.ModelManager.ReConnectModel = new ReConnectModel_1.ReConnectModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ReConnectModel), ModelManager_1.ModelManager.CooperationModel = new CooperationModel_1.CooperationModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CooperationModel), ModelManager_1.ModelManager.SceneTeamModel = new SceneTeamModel_1.SceneTeamModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneTeamModel), ModelManager_1.ModelManager.ChannelModel = new ChannelModel_1.ChannelModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ChannelModel), ModelManager_1.ModelManager.EditFormationModel = new EditFormationModel_1.EditFormationModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.EditFormationModel), ModelManager_1.ModelManager.SkillCdModel = new SkillCdModel_1.SkillCdModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkillCdModel), ModelManager_1.ModelManager.BattleInputModel = new BattleInputModel_1.BattleInputModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleInputModel), ModelManager_1.ModelManager.BattleUiModel = new BattleUiModel_1.BattleUiModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleUiModel), ModelManager_1.ModelManager.BattleScoreModel = new BattleScoreModel_1.BattleScoreModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleScoreModel), ModelManager_1.ModelManager.BattleLinkModel = new BattleLinkModel_1.BattleLinkModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleLinkModel), ModelManager_1.ModelManager.MoraleBattleModel = new MoraleBattleModel_1.MoraleBattleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoraleBattleModel), ModelManager_1.ModelManager.MingSuModel = new MingSuModel_1.MingSuModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MingSuModel), ModelManager_1.ModelManager.ShopModel = new ShopModel_1.ShopModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShopModel), ModelManager_1.ModelManager.WeaponModel = new WeaponModel_1.WeaponModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeaponModel), ModelManager_1.ModelManager.InstanceDungeonModel = new InstanceDungeonModel_1.InstanceDungeonModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceDungeonModel), ModelManager_1.ModelManager.InstanceDungeonEntranceModel = new InstanceDungeonEntranceModel_1.InstanceDungeonEntranceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceDungeonEntranceModel), ModelManager_1.ModelManager.RoleModel = new RoleModel_1.RoleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleModel), ModelManager_1.ModelManager.QuestNewModel = new QuestModel_1.QuestNewModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestNewModel), ModelManager_1.ModelManager.QuestResourceModel = new QuestResourceModel_1.QuestResourceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestResourceModel), ModelManager_1.ModelManager.ItemHintModel = new ItemHintModel_1.ItemHintModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemHintModel), ModelManager_1.ModelManager.AttributeModel = new AttributeModel_1.AttributeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AttributeModel), ModelManager_1.ModelManager.WorldMapModel = new WorldMapModel_1.WorldMapModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldMapModel), ModelManager_1.ModelManager.LoadingModel = new LoadingModel_1.LoadingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LoadingModel), ModelManager_1.ModelManager.RewardModel = new RewardModel_1.RewardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RewardModel), ModelManager_1.ModelManager.FunctionModel = new FunctionModel_1.FunctionModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FunctionModel), ModelManager_1.ModelManager.LevelFuncFlagModel = new LevelFuncFlagModel_1.LevelFuncFlagModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelFuncFlagModel), ModelManager_1.ModelManager.ExploreSkillFlagModel = new ExploreSkillFlagModel_1.ExploreSkillFlagModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreSkillFlagModel), ModelManager_1.ModelManager.LevelGeneralModel = new LevelGeneralModel_1.LevelGeneralModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelGeneralModel), ModelManager_1.ModelManager.BulletModel = new BulletModel_1.BulletModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BulletModel), ModelManager_1.ModelManager.BuffModel = new CharacterBuffModel_1.BuffModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BuffModel), ModelManager_1.ModelManager.PowerModel = new PowerModel_1.PowerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PowerModel), ModelManager_1.ModelManager.LevelUpModel = new LevelUpModel_1.LevelUpModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelUpModel), ModelManager_1.ModelManager.InputDistributeModel = new InputDistributeModel_1.InputDistributeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InputDistributeModel), ModelManager_1.ModelManager.AoiModel = new AoiModel_1.AoiModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AoiModel), ModelManager_1.ModelManager.PreloadModel = new PreloadModel_1.PreloadModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PreloadModel), ModelManager_1.ModelManager.PreloadModelNew = new PreloadModelNew_1.PreloadModelNew, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PreloadModelNew), ModelManager_1.ModelManager.DamageModel = new DamageModel_1.DamageModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DamageModel), ModelManager_1.ModelManager.TimeOfDayModel = new TimeOfDayModel_1.TimeOfDayModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TimeOfDayModel), ModelManager_1.ModelManager.DeadReviveModel = new DeadReviveModel_1.DeadReviveModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DeadReviveModel), ModelManager_1.ModelManager.WorldLevelModel = new WorldLevelModel_1.WorldLevelModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldLevelModel), ModelManager_1.ModelManager.AiModel = new AiModel_1.AiModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AiModel), ModelManager_1.ModelManager.CalabashModel = new CalabashModel_1.CalabashModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CalabashModel), ModelManager_1.ModelManager.PlotModel = new PlotModel_1.PlotModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PlotModel), ModelManager_1.ModelManager.JoinTeamModel = new JoinTeamModel_1.JoinTeamModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.JoinTeamModel), ModelManager_1.ModelManager.ControlScreenModel = new ControlScreenModel_1.ControlScreenModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ControlScreenModel), ModelManager_1.ModelManager.WuYinAreaModel = new WuYinAreaModel_1.WuYinAreaModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WuYinAreaModel), ModelManager_1.ModelManager.AiWeaponModel = new AiWeaponModel_1.AiWeaponModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AiWeaponModel), ModelManager_1.ModelManager.BuffItemModel = new BuffItemModel_1.BuffItemModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BuffItemModel), ModelManager_1.ModelManager.MarqueeModel = new MarqueeModel_1.MarqueeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MarqueeModel), ModelManager_1.ModelManager.ShootTargetModel = new ShootTargetModel_1.ShootTargetModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShootTargetModel), ModelManager_1.ModelManager.SequenceModel = new SequenceModel_1.SequenceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SequenceModel), ModelManager_1.ModelManager.TriggerVolumeModel = new TriggerVolumeModel_1.TriggerVolumeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TriggerVolumeModel), ModelManager_1.ModelManager.SceneInteractionModel = new SceneInteractionModel_1.SceneInteractionModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneInteractionModel), ModelManager_1.ModelManager.MenuModel = new MenuModel_1.MenuModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MenuModel), ModelManager_1.ModelManager.GenericPromptModel = new GenericPromptModel_1.GenericPromptModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GenericPromptModel), ModelManager_1.ModelManager.InteractionModel = new InteractionModel_1.InteractionModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InteractionModel), ModelManager_1.ModelManager.LevelGamePlayModel = new LevelGamePlayModel_1.LevelGamePlayModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelGamePlayModel), ModelManager_1.ModelManager.TrackModel = new TrackModel_1.TrackModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TrackModel), ModelManager_1.ModelManager.FormationAttributeModel = new FormationAttributeModel_1.FormationAttributeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FormationAttributeModel), ModelManager_1.ModelManager.FormationDataModel = new FormationDataModel_1.FormationDataModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FormationDataModel), ModelManager_1.ModelManager.CombatMessageModel = new CombatMessageModel_1.CombatMessageModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CombatMessageModel), ModelManager_1.ModelManager.RenderModuleModel = new RenderModuleModel_1.RenderModuleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RenderModuleModel), ModelManager_1.ModelManager.FriendModel = new FriendModel_1.FriendModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FriendModel), ModelManager_1.ModelManager.UiNavigationModel = new UiNavigationModel_1.UiNavigationModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.UiNavigationModel), ModelManager_1.ModelManager.ChatModel = new ChatModel_1.ChatModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ChatModel), ModelManager_1.ModelManager.ParkourModel = new ParkourModel_1.ParkourModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ParkourModel), ModelManager_1.ModelManager.GeneralLogicTreeModel = new GeneralLogicTreeModel_1.GeneralLogicTreeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GeneralLogicTreeModel), ModelManager_1.ModelManager.LevelPlayModel = new LevelPlayModel_1.LevelPlayModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelPlayModel), ModelManager_1.ModelManager.PayItemModel = new PayItemModel_1.PayItemModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PayItemModel), ModelManager_1.ModelManager.PayShopModel = new PayShopModel_1.PayShopModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PayShopModel), ModelManager_1.ModelManager.PhantomBattleModel = new PhantomBattleModel_1.PhantomBattleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhantomBattleModel), ModelManager_1.ModelManager.OnlineModel = new OnlineModel_1.OnlineModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.OnlineModel), ModelManager_1.ModelManager.NpcConfigModel = new NpcConfigModel_1.NpcConfigModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.NpcConfigModel), ModelManager_1.ModelManager.PerformModel = new PerformModel_1.PerformModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PerformModel), ModelManager_1.ModelManager.GachaModel = new GachaModel_1.GachaModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GachaModel), ModelManager_1.ModelManager.ItemExchangeModel = new ItemExchangeModel_1.ItemExchangeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemExchangeModel), ModelManager_1.ModelManager.SkillButtonUiModel = new SkillButtonUiModel_1.SkillButtonUiModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkillButtonUiModel), ModelManager_1.ModelManager.AdventureGuideModel = new AdventureGuideModel_1.AdventureGuideModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AdventureGuideModel), ModelManager_1.ModelManager.TutorialModel = new TutorialModel_1.TutorialModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TutorialModel), ModelManager_1.ModelManager.WeatherModel = new WeatherModel_1.WeatherModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeatherModel), ModelManager_1.ModelManager.InfoDisplayModel = new InfoDisplayModel_1.InfoDisplayModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfoDisplayModel), ModelManager_1.ModelManager.AudioModel = new AudioModel_1.AudioModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AudioModel), ModelManager_1.ModelManager.DailyTaskModel = new DailyTaskModel_1.DailyTaskModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DailyTaskModel), ModelManager_1.ModelManager.InfluenceModel = new InfluenceModel_1.InfluenceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfluenceModel), ModelManager_1.ModelManager.MonthCardModel = new MonthCardModel_1.MonthCardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MonthCardModel), ModelManager_1.ModelManager.RangeItemModel = new RangeItemModel_1.RangeItemModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RangeItemModel), ModelManager_1.ModelManager.CookModel = new CookModel_1.CookModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CookModel), ModelManager_1.ModelManager.ManipulaterModel = new CharacterManipulaterModel_1.ManipulaterModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ManipulaterModel), ModelManager_1.ModelManager.ManipulateInteractModel = new CharacterManipulateInteractModel_1.ManipulateInteractModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ManipulateInteractModel), ModelManager_1.ModelManager.ExploreModel = new CharacterExploreModel_1.CharacterExploreModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreModel), ModelManager_1.ModelManager.SceneItemBuffModel = new SceneItemBuffModel_1.SceneItemBuffModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneItemBuffModel), ModelManager_1.ModelManager.InfluenceReputationModel = new InfluenceReputationModel_1.InfluenceReputationModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfluenceReputationModel), ModelManager_1.ModelManager.MainRoleModel = new MainRoleModel_1.MainRoleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MainRoleModel), ModelManager_1.ModelManager.RoleFavorConditionModel = new RoleFavorConditionModel_1.RoleFavorConditionModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleFavorConditionModel), ModelManager_1.ModelManager.ExploreResultModel = new ExploreResultModel_1.ExploreResultModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreResultModel), ModelManager_1.ModelManager.TowerDetailModel = new TowerDetailModel_1.TowerDetailModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerDetailModel), ModelManager_1.ModelManager.BattlePassModel = new BattlePassModel_1.BattlePassModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattlePassModel), ModelManager_1.ModelManager.ComposeModel = new ComposeModel_1.ComposeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ComposeModel), ModelManager_1.ModelManager.ForgingModel = new ForgingModel_1.ForgingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ForgingModel), ModelManager_1.ModelManager.ScoreModel = new ScoreModel_1.ScoreModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ScoreModel), ModelManager_1.ModelManager.AdviceModel = new AdviceModel_1.AdviceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AdviceModel), ModelManager_1.ModelManager.ScoreModel = new ScoreModel_1.ScoreModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ScoreModel), ModelManager_1.ModelManager.MotionModel = new MotionModel_1.MotionModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MotionModel), ModelManager_1.ModelManager.PhotographModel = new PhotographModel_1.PhotographModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhotographModel), ModelManager_1.ModelManager.HandBookModel = new HandBookModel_1.HandBookModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.HandBookModel), ModelManager_1.ModelManager.AntiCheatModel = new AntiCheatModel_1.AntiCheatModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AntiCheatModel), ModelManager_1.ModelManager.TraceElementModel = new TraceElementModel_1.TraceElementModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TraceElementModel), ModelManager_1.ModelManager.BattleUiSetModel = new BattleUiSetModel_1.BattleUiSetModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleUiSetModel), ModelManager_1.ModelManager.TimeTrackControlModel = new TimeTrackControlModel_1.TimeTrackControlModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TimeTrackControlModel), ModelManager_1.ModelManager.TurntableControlModel = new TurntableControlModel_1.TurntableControlModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TurntableControlModel), ModelManager_1.ModelManager.SundialControlModel = new SundialControlModel_1.SundialControlModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SundialControlModel), ModelManager_1.ModelManager.SignalDeviceModel = new SignalDeviceModel_1.SignalDeviceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SignalDeviceModel), ModelManager_1.ModelManager.AchievementModel = new AchievementModel_1.AchievementModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AchievementModel), ModelManager_1.ModelManager.NewFlagModel = new NewFlagModel_1.NewFlagModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.NewFlagModel), ModelManager_1.ModelManager.WaitEntityTaskModel = new WaitEntityTaskModel_1.WaitEntityTaskModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WaitEntityTaskModel), ModelManager_1.ModelManager.GameSplineModel = new GameSplineModel_1.GameSplineModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GameSplineModel), ModelManager_1.ModelManager.ComboTeachingModel = new ComboTeachingModel_1.ComboTeachingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ComboTeachingModel), ModelManager_1.ModelManager.PersonalModel = new PersonalModel_1.PersonalModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PersonalModel), ModelManager_1.ModelManager.ActivityModel = new ActivityModel_1.ActivityModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityModel), ModelManager_1.ModelManager.ActivityRunModel = new ActivityRunModel_1.ActivityRunModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityRunModel), ModelManager_1.ModelManager.WeeklyRogueModel = new WeeklyRogueModel_1.WeeklyRogueModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeeklyRogueModel), ModelManager_1.ModelManager.SkillCdModel = new SkillCdModel_1.SkillCdModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkillCdModel), ModelManager_1.ModelManager.TeleportModel = new TeleportModel_1.TeleportModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TeleportModel), ModelManager_1.ModelManager.StaticSceneModel = new StaticSceneModel_1.StaticSceneModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.StaticSceneModel), ModelManager_1.ModelManager.RoguelikeModel = new RoguelikeModel_1.RoguelikeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoguelikeModel), ModelManager_1.ModelManager.RogueBattleModel = new RogueBattleModel_1.RogueBattleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RogueBattleModel), ModelManager_1.ModelManager.ItemRewardModel = new ItemRewardModel_1.ItemRewardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemRewardModel), ModelManager_1.ModelManager.SeamlessTravelModel = new SeamlessTravelModel_1.SeamlessTravelModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SeamlessTravelModel), ModelManager_1.ModelManager.LoginServerModel = new LoginServerModel_1.LoginServerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LoginServerModel), ModelManager_1.ModelManager.FilterModel = new FilterModel_1.FilterModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FilterModel), ModelManager_1.ModelManager.SortModel = new SortModel_1.SortModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SortModel), ModelManager_1.ModelManager.ExchangeRewardModel = new ExchangeRewardModel_1.ExchangeRewardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExchangeRewardModel), ModelManager_1.ModelManager.InstanceDungeonGuideModel = new InstanceDungeonGuideModel_1.InstanceDungeonGuideModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceDungeonGuideModel), ModelManager_1.ModelManager.DailyActivityModel = new DailyActivityModel_1.DailyActivityModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DailyActivityModel), ModelManager_1.ModelManager.LevelLoadingModel = new LevelLoadingModel_1.LevelLoadingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelLoadingModel), ModelManager_1.ModelManager.MediumItemGridModel = new MediumItemGridModel_1.MediumItemGridModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MediumItemGridModel), ModelManager_1.ModelManager.SmallItemGridModel = new SmallItemGridModel_1.SmallItemGridModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SmallItemGridModel), ModelManager_1.ModelManager.RouletteModel = new RouletteModel_1.RouletteModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RouletteModel), ModelManager_1.ModelManager.MapExploreToolModel = new MapExploreToolModel_1.MapExploreToolModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MapExploreToolModel), ModelManager_1.ModelManager.SundryModel = new SundryModel_1.SundryModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SundryModel), ModelManager_1.ModelManager.AutoRunModel = new AutoRunModel_1.AutoRunModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AutoRunModel), ModelManager_1.ModelManager.GamePingModel = new GamePingModel_1.GamePingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GamePingModel), ModelManager_1.ModelManager.ItemTipsModel = new ItemTipsModel_1.ItemTipsModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemTipsModel), ModelManager_1.ModelManager.SkipInterfaceModel = new SkipInterfaceModel_1.SkipInterfaceModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkipInterfaceModel), ModelManager_1.ModelManager.PanelQteModel = new PanelQteModel_1.PanelQteModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PanelQteModel), ModelManager_1.ModelManager.CommonQteModel = new CommonQteModel_1.CommonQteModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CommonQteModel), ModelManager_1.ModelManager.BattleQteModel = new BattleQteModel_1.BattleQteModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleQteModel), ModelManager_1.ModelManager.TowerModel = new TowerModel_1.TowerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerModel), ModelManager_1.ModelManager.LordGymModel = new LordGymModel_1.LordGymModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LordGymModel), ModelManager_1.ModelManager.ExploreProgressModel = new ExploreProgressModel_1.ExploreProgressModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreProgressModel), ModelManager_1.ModelManager.ExploreLevelModel = new ExploreLevelModel_1.ExploreLevelModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreLevelModel), ModelManager_1.ModelManager.SignalDecodeModel = new SignalDecodeModel_1.SignalDecodeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SignalDecodeModel), ModelManager_1.ModelManager.TrainingDegreeModel = new TrainingDegreeModel_1.TrainingDegreeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TrainingDegreeModel), ModelManager_1.ModelManager.ItemDeliverModel = new ItemDeliverModel_1.ItemDeliverModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemDeliverModel), ModelManager_1.ModelManager.KuroSdkModel = new KuroSdkModel_1.KuroSdkModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.KuroSdkModel), ModelManager_1.ModelManager.VisionCaptureModel = new VisionCaptureModel_1.VisionCaptureModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VisionCaptureModel), ModelManager_1.ModelManager.RoleSelectModel = new RoleSelectModel_1.RoleSelectModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleSelectModel), ModelManager_1.ModelManager.AiStateMachineModel = new AiStateMachineModel_1.AiStateMachineModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AiStateMachineModel), ModelManager_1.ModelManager.FragmentMemoryModel = new FragmentMemoryModel_1.FragmentMemoryModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FragmentMemoryModel), ModelManager_1.ModelManager.RechargeModel = new RechargeModel_1.RechargeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RechargeModel), ModelManager_1.ModelManager.PortalModel = new PortalModel_1.PortalModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PortalModel), ModelManager_1.ModelManager.PayGiftModel = new PayGiftModel_1.PayGiftModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PayGiftModel), ModelManager_1.ModelManager.PhonographModel = new PhonographModel_1.PhonographModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhonographModel), ModelManager_1.ModelManager.BossRushModel = new BossRushModel_1.BossRushModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BossRushModel), ModelManager_1.ModelManager.TowerDefenseModel = new TowerDefenceModel_1.TowerDefenseModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerDefenseModel), ModelManager_1.ModelManager.MoonChasingModel = new MoonChasingModel_1.MoonChasingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingModel), ModelManager_1.ModelManager.MoonChasingBusinessModel = new MoonChasingBusinessModel_1.MoonChasingBusinessModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingBusinessModel), ModelManager_1.ModelManager.MoonChasingBuildingModel = new MoonChasingBuildingModel_1.MoonChasingBuildingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingBuildingModel), ModelManager_1.ModelManager.MoonChasingTaskModel = new MoonChasingTaskModel_1.MoonChasingTaskModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingTaskModel), ModelManager_1.ModelManager.MoonChasingRewardModel = new MoonChasingRewardModel_1.MoonChasingRewardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingRewardModel), ModelManager_1.ModelManager.MowingRiskModel = new MowingRiskModel_1.MowingRiskModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MowingRiskModel), ModelManager_1.ModelManager.VersionPreheatModel = new VersionPreheatModel_1.VersionPreheatModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VersionPreheatModel), ModelManager_1.ModelManager.Spring25Model = new Spring25Model_1.Spring25Model, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.Spring25Model), ModelManager_1.ModelManager.SolarSpeedModel = new SolarSpeedModel_1.SolarSpeedModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SolarSpeedModel), ModelManager_1.ModelManager.AlertMarkModel = new AlertMarksModel_1.AlertMarkModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AlertMarkModel), ModelManager_1.ModelManager.ActivityRegressModel = new ActivityRegressModel_1.ActivityRegressModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityRegressModel), ModelManager_1.ModelManager.ActivityScratchTicketModel = new ActivityScratchTicketModel_1.ActivityScratchTicketModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityScratchTicketModel), ModelManager_1.ModelManager.RacingBetsModel = new RacingBetsModel_1.RacingBetsModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RacingBetsModel), ModelManager_1.ModelManager.ConnectGamePlayModel = new ConnectGamePlayModel_1.ConnectGamePlayModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ConnectGamePlayModel), ModelManager_1.ModelManager.DigitalScreenModel = new DigitalScreenModel_1.DigitalScreenModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DigitalScreenModel), ModelManager_1.ModelManager.ScreenEffectModel = new ScreenEffectModel_1.ScreenEffectModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ScreenEffectModel), ModelManager_1.ModelManager.GameAudioModel = new GameAudioModel_1.GameAudioModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GameAudioModel), ModelManager_1.ModelManager.WeaponSkinModel = new WeaponSkinModel_1.WeaponSkinModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeaponSkinModel), ModelManager_1.ModelManager.FlySkinModel = new FlySkinModel_1.FlySkinModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FlySkinModel), ModelManager_1.ModelManager.RecommendQualityModel = new RecommendQualityModel_1.RecommendQualityModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RecommendQualityModel), ModelManager_1.ModelManager.MowingTowerModel = new MowingTowerModel_1.MowingTowerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MowingTowerModel), ModelManager_1.ModelManager.VehicleModel = new VehicleModel_1.VehicleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VehicleModel), ModelManager_1.ModelManager.MonsterGroupPatrolModel = new MonsterGroupPatrolModel_1.MonsterGroupPatrolModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MonsterGroupPatrolModel), ModelManager_1.ModelManager.AlertAreaModel = new AlertAreaModel_1.AlertAreaModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AlertAreaModel), ModelManager_1.ModelManager.BigStuffedDollModel = new BigStuffedDollModel_1.BigStuffedDollModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BigStuffedDollModel), ModelManager_1.ModelManager.RoleSkinModel = new RoleSkinModel_1.RoleSkinModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleSkinModel), ModelManager_1.ModelManager.LevelPlayReportModel = new LevelPlayReportModel_1.LevelPlayReportModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelPlayReportModel), ModelManager_1.ModelManager.LifePointModel = new LifePointModel_1.LifePointModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LifePointModel), ModelManager_1.ModelManager.FishingModel = new FishingModel_1.FishingModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FishingModel), ModelManager_1.ModelManager.DockyardModel = new DockyardModel_1.DockyardModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DockyardModel), ModelManager_1.ModelManager.ActivityDirectTrainModel = new ActivityDirectTrainModel_1.ActivityDirectTrainModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityDirectTrainModel), ModelManager_1.ModelManager.ShipTogetherModel = new ShipTogetherModel_1.ShipTogetherModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShipTogetherModel), ModelManager_1.ModelManager.TreasureHuntModel = new TreasureHuntModel_1.TreasureHuntModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TreasureHuntModel), ModelManager_1.ModelManager.FishingQteModel = new FishingQteModel_1.FishingQteModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FishingQteModel), ModelManager_1.ModelManager.FishingQuestModel = new FishingQuestModel_1.FishingQuestModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FishingQuestModel), ModelManager_1.ModelManager.VisionRecommendModel = new VisionRecommendModel_1.VisionRecommendModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VisionRecommendModel), ModelManager_1.ModelManager.VisionEquipGroupModel = new VisionEquipGroupModel_1.VisionEquipGroupModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VisionEquipGroupModel), ModelManager_1.ModelManager.ShipTowerModel = new ShipTowerModel_1.ShipTowerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShipTowerModel), ModelManager_1.ModelManager.MoraleModel = new MoraleModel_1.MoraleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoraleModel), ModelManager_1.ModelManager.MapRogueModel = new MapRogueModel_1.MapRogueModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MapRogueModel), ModelManager_1.ModelManager.SoundAreaPlayTipsModel = new SoundAreaPlayTipsModel_1.SoundAreaPlayTipsModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SoundAreaPlayTipsModel), ModelManager_1.ModelManager.SubLevelModel = new SubLevelModel_1.SubLevelModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SubLevelModel), ModelManager_1.ModelManager.GravityFlipModel = new GravityFlipModel_1.GravityFlipModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GravityFlipModel), ModelManager_1.ModelManager.BabelTowerModel = new BabelTowerModel_1.BabelTowerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BabelTowerModel), ModelManager_1.ModelManager.NetworkDetectionModel = new NetworkDetectionModel_1.NetworkDetectionModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.NetworkDetectionModel), ModelManager_1.ModelManager.AvignonModel = new AvignonModel_1.AvignonModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AvignonModel), ModelManager_1.ModelManager.PreDownloadModel = new PreDownloadModel_1.PreDownloadModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PreDownloadModel), ModelManager_1.ModelManager.BirthdayModel = new BirthdayModel_1.BirthdayModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BirthdayModel), ModelManager_1.ModelManager.GongduolaSummonModel = new GongduolaSummonModel_1.GongduolaSummonModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GongduolaSummonModel), ModelManager_1.ModelManager.ChessModel = new ChessModel_1.ChessModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ChessModel), ModelManager_1.ModelManager.DangoAbyssModel = new DangoAbyssModel_1.DangoAbyssModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DangoAbyssModel), ModelManager_1.ModelManager.CiacconaGalModel = new CiacconaGalModel_1.CiacconaGalModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CiacconaGalModel), ModelManager_1.ModelManager.ActivityPermanentRogueModel = new ActivityPermanentRogueModel_1.ActivityPermanentRogueModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityPermanentRogueModel), ModelManager_1.ModelManager.InviteNewbieModel = new InviteNewbieModel_1.InviteNewbieModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InviteNewbieModel), ModelManager_1.ModelManager.SceneBattleInteractModel = new SceneBattleInteractModel_1.SceneBattleInteractModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneBattleInteractModel), ModelManager_1.ModelManager.InstanceGameplayModeModel = new InstanceGameplayModeModel_1.InstanceGameplayModeModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceGameplayModeModel), ModelManager_1.ModelManager.DangoGlobalModel = new DangoGlobalModel_1.DangoGlobalModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DangoGlobalModel), ModelManager_1.ModelManager.ResDownLoadModel = new ResDownLoadModel_1.ResDownLoadModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ResDownLoadModel), ModelManager_1.ModelManager.PhantomArenaModel = new PhantomArenaModel_1.PhantomArenaModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhantomArenaModel), ModelManager_1.ModelManager.PhantomArenaBattleModel = new PhantomArenaBattleModel_1.PhantomArenaBattleModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhantomArenaBattleModel), ModelManager_1.ModelManager.ShowerModel = new ShowerModel_1.ShowerModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShowerModel), ModelManager_1.ModelManager.QuestReviewModel = new QuestReviewModel_1.QuestReviewModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestReviewModel), ModelManager_1.ModelManager.LevelPrefabConfigModel = new LevelPrefabConfigModel_1.LevelPrefabConfigModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelPrefabConfigModel), ModelManager_1.ModelManager.Init(), Info_1.Info.IsPlayInEditor && TestModuleBridge_1.TestModuleBridge.TryGetTestModuleExports().then(e => {
-      e && e.KuroDemoInteractModel && (ModelManager_1.ModelManager.KuroDemoInteractModel = new e.KuroDemoInteractModel, ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.KuroDemoInteractModel), ModelManager_1.ModelManager.KuroDemoInteractModel.Init())
-    }), !0
+    ModelManager_1.ModelManager.PlatformModel = new PlatformModel_1.PlatformModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PlatformModel);
+    ModelManager_1.ModelManager.RedDotModel = new RedDotModel_1.RedDotModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RedDotModel);
+    ModelManager_1.ModelManager.InputModel = new InputModel_1.InputModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InputModel);
+    ModelManager_1.ModelManager.CameraModel = new CameraModel_1.CameraModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CameraModel);
+    ModelManager_1.ModelManager.CharacterModel = new CharacterModel_1.CharacterModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CharacterModel);
+    ModelManager_1.ModelManager.CreatureModel = new CreatureModel_1.CreatureModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CreatureModel);
+    ModelManager_1.ModelManager.WorldModel = new WorldModel_1.WorldModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldModel);
+    ModelManager_1.ModelManager.AttachToActorModel = new AttachToActorModel_1.AttachToActorModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AttachToActorModel);
+    ModelManager_1.ModelManager.SubLevelLoadingModel = new SubLevelLoadingModel_1.SubLevelLoadingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SubLevelLoadingModel);
+    ModelManager_1.ModelManager.WorldDebugModel = new WorldDebugModel_1.WorldDebugModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldDebugModel);
+    ModelManager_1.ModelManager.BlackboardModel = new BlackboardModel_1.BlackboardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BlackboardModel);
+    ModelManager_1.ModelManager.GameModeModel = new GameModeModel_1.GameModeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GameModeModel);
+    ModelManager_1.ModelManager.AreaModel = new AreaModel_1.AreaModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AreaModel);
+    ModelManager_1.ModelManager.MailModel = new MailModel_1.MailModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MailModel);
+    ModelManager_1.ModelManager.MailBindModel = new MailBindModel_1.MailBindModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MailBindModel);
+    ModelManager_1.ModelManager.LoginModel = new LoginModel_1.LoginModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LoginModel);
+    ModelManager_1.ModelManager.LogReportModel = new LogReportModel_1.LogReportModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LogReportModel);
+    ModelManager_1.ModelManager.ItemModel = new ItemModel_1.ItemModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemModel);
+    ModelManager_1.ModelManager.SpecialItemModel = new SpecialItemModel_1.SpecialItemModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SpecialItemModel);
+    ModelManager_1.ModelManager.GuideModel = new GuideModel_1.GuideModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GuideModel);
+    ModelManager_1.ModelManager.PlayerInfoModel = new PlayerInfoModel_1.PlayerInfoModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PlayerInfoModel);
+    ModelManager_1.ModelManager.CipherModel = new CipherModel_1.CipherModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CipherModel);
+    ModelManager_1.ModelManager.EditBattleTeamModel = new EditBattleTeamModel_1.EditBattleTeamModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.EditBattleTeamModel);
+    ModelManager_1.ModelManager.MapModel = new MapModel_1.MapModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MapModel);
+    ModelManager_1.ModelManager.InventoryModel = new InventoryModel_1.InventoryModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InventoryModel);
+    ModelManager_1.ModelManager.ReConnectModel = new ReConnectModel_1.ReConnectModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ReConnectModel);
+    ModelManager_1.ModelManager.CooperationModel = new CooperationModel_1.CooperationModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CooperationModel);
+    ModelManager_1.ModelManager.SceneTeamModel = new SceneTeamModel_1.SceneTeamModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneTeamModel);
+    ModelManager_1.ModelManager.ChannelModel = new ChannelModel_1.ChannelModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ChannelModel);
+    ModelManager_1.ModelManager.EditFormationModel = new EditFormationModel_1.EditFormationModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.EditFormationModel);
+    ModelManager_1.ModelManager.SkillCdModel = new SkillCdModel_1.SkillCdModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkillCdModel);
+    ModelManager_1.ModelManager.BattleInputModel = new BattleInputModel_1.BattleInputModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleInputModel);
+    ModelManager_1.ModelManager.BattleUiModel = new BattleUiModel_1.BattleUiModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleUiModel);
+    ModelManager_1.ModelManager.BattleScoreModel = new BattleScoreModel_1.BattleScoreModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleScoreModel);
+    ModelManager_1.ModelManager.BattleLinkModel = new BattleLinkModel_1.BattleLinkModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleLinkModel);
+    ModelManager_1.ModelManager.MoraleBattleModel = new MoraleBattleModel_1.MoraleBattleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoraleBattleModel);
+    ModelManager_1.ModelManager.MingSuModel = new MingSuModel_1.MingSuModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MingSuModel);
+    ModelManager_1.ModelManager.ShopModel = new ShopModel_1.ShopModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShopModel);
+    ModelManager_1.ModelManager.WeaponModel = new WeaponModel_1.WeaponModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeaponModel);
+    ModelManager_1.ModelManager.InstanceDungeonModel = new InstanceDungeonModel_1.InstanceDungeonModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceDungeonModel);
+    ModelManager_1.ModelManager.InstanceDungeonEntranceModel = new InstanceDungeonEntranceModel_1.InstanceDungeonEntranceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceDungeonEntranceModel);
+    ModelManager_1.ModelManager.RoleModel = new RoleModel_1.RoleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleModel);
+    ModelManager_1.ModelManager.QuestNewModel = new QuestModel_1.QuestNewModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestNewModel);
+    ModelManager_1.ModelManager.QuestResourceModel = new QuestResourceModel_1.QuestResourceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestResourceModel);
+    ModelManager_1.ModelManager.ItemHintModel = new ItemHintModel_1.ItemHintModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemHintModel);
+    ModelManager_1.ModelManager.AttributeModel = new AttributeModel_1.AttributeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AttributeModel);
+    ModelManager_1.ModelManager.WorldMapModel = new WorldMapModel_1.WorldMapModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldMapModel);
+    ModelManager_1.ModelManager.LoadingModel = new LoadingModel_1.LoadingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LoadingModel);
+    ModelManager_1.ModelManager.RewardModel = new RewardModel_1.RewardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RewardModel);
+    ModelManager_1.ModelManager.FunctionModel = new FunctionModel_1.FunctionModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FunctionModel);
+    ModelManager_1.ModelManager.LevelFuncFlagModel = new LevelFuncFlagModel_1.LevelFuncFlagModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelFuncFlagModel);
+    ModelManager_1.ModelManager.ExploreSkillFlagModel = new ExploreSkillFlagModel_1.ExploreSkillFlagModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreSkillFlagModel);
+    ModelManager_1.ModelManager.LevelGeneralModel = new LevelGeneralModel_1.LevelGeneralModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelGeneralModel);
+    ModelManager_1.ModelManager.BulletModel = new BulletModel_1.BulletModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BulletModel);
+    ModelManager_1.ModelManager.BuffModel = new CharacterBuffModel_1.BuffModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BuffModel);
+    ModelManager_1.ModelManager.PowerModel = new PowerModel_1.PowerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PowerModel);
+    ModelManager_1.ModelManager.LevelUpModel = new LevelUpModel_1.LevelUpModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelUpModel);
+    ModelManager_1.ModelManager.InputDistributeModel = new InputDistributeModel_1.InputDistributeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InputDistributeModel);
+    ModelManager_1.ModelManager.AoiModel = new AoiModel_1.AoiModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AoiModel);
+    ModelManager_1.ModelManager.PreloadModel = new PreloadModel_1.PreloadModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PreloadModel);
+    ModelManager_1.ModelManager.PreloadModelNew = new PreloadModelNew_1.PreloadModelNew();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PreloadModelNew);
+    ModelManager_1.ModelManager.DamageModel = new DamageModel_1.DamageModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DamageModel);
+    ModelManager_1.ModelManager.TimeOfDayModel = new TimeOfDayModel_1.TimeOfDayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TimeOfDayModel);
+    ModelManager_1.ModelManager.DeadReviveModel = new DeadReviveModel_1.DeadReviveModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DeadReviveModel);
+    ModelManager_1.ModelManager.WorldLevelModel = new WorldLevelModel_1.WorldLevelModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WorldLevelModel);
+    ModelManager_1.ModelManager.AiModel = new AiModel_1.AiModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AiModel);
+    ModelManager_1.ModelManager.CalabashModel = new CalabashModel_1.CalabashModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CalabashModel);
+    ModelManager_1.ModelManager.PlotModel = new PlotModel_1.PlotModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PlotModel);
+    ModelManager_1.ModelManager.JoinTeamModel = new JoinTeamModel_1.JoinTeamModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.JoinTeamModel);
+    ModelManager_1.ModelManager.ControlScreenModel = new ControlScreenModel_1.ControlScreenModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ControlScreenModel);
+    ModelManager_1.ModelManager.WuYinAreaModel = new WuYinAreaModel_1.WuYinAreaModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WuYinAreaModel);
+    ModelManager_1.ModelManager.AiWeaponModel = new AiWeaponModel_1.AiWeaponModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AiWeaponModel);
+    ModelManager_1.ModelManager.BuffItemModel = new BuffItemModel_1.BuffItemModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BuffItemModel);
+    ModelManager_1.ModelManager.MarqueeModel = new MarqueeModel_1.MarqueeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MarqueeModel);
+    ModelManager_1.ModelManager.ShootTargetModel = new ShootTargetModel_1.ShootTargetModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShootTargetModel);
+    ModelManager_1.ModelManager.SequenceModel = new SequenceModel_1.SequenceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SequenceModel);
+    ModelManager_1.ModelManager.TriggerVolumeModel = new TriggerVolumeModel_1.TriggerVolumeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TriggerVolumeModel);
+    ModelManager_1.ModelManager.SceneInteractionModel = new SceneInteractionModel_1.SceneInteractionModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneInteractionModel);
+    ModelManager_1.ModelManager.MenuModel = new MenuModel_1.MenuModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MenuModel);
+    ModelManager_1.ModelManager.GenericPromptModel = new GenericPromptModel_1.GenericPromptModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GenericPromptModel);
+    ModelManager_1.ModelManager.InteractionModel = new InteractionModel_1.InteractionModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InteractionModel);
+    ModelManager_1.ModelManager.LevelGamePlayModel = new LevelGamePlayModel_1.LevelGamePlayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelGamePlayModel);
+    ModelManager_1.ModelManager.TrackModel = new TrackModel_1.TrackModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TrackModel);
+    ModelManager_1.ModelManager.FormationAttributeModel = new FormationAttributeModel_1.FormationAttributeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FormationAttributeModel);
+    ModelManager_1.ModelManager.FormationDataModel = new FormationDataModel_1.FormationDataModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FormationDataModel);
+    ModelManager_1.ModelManager.CombatMessageModel = new CombatMessageModel_1.CombatMessageModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CombatMessageModel);
+    ModelManager_1.ModelManager.RenderModuleModel = new RenderModuleModel_1.RenderModuleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RenderModuleModel);
+    ModelManager_1.ModelManager.FriendModel = new FriendModel_1.FriendModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FriendModel);
+    ModelManager_1.ModelManager.UiNavigationModel = new UiNavigationModel_1.UiNavigationModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.UiNavigationModel);
+    ModelManager_1.ModelManager.ChatModel = new ChatModel_1.ChatModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ChatModel);
+    ModelManager_1.ModelManager.ParkourModel = new ParkourModel_1.ParkourModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ParkourModel);
+    ModelManager_1.ModelManager.GeneralLogicTreeModel = new GeneralLogicTreeModel_1.GeneralLogicTreeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GeneralLogicTreeModel);
+    ModelManager_1.ModelManager.LevelPlayModel = new LevelPlayModel_1.LevelPlayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelPlayModel);
+    ModelManager_1.ModelManager.PayItemModel = new PayItemModel_1.PayItemModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PayItemModel);
+    ModelManager_1.ModelManager.PayShopModel = new PayShopModel_1.PayShopModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PayShopModel);
+    ModelManager_1.ModelManager.PhantomBattleModel = new PhantomBattleModel_1.PhantomBattleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhantomBattleModel);
+    ModelManager_1.ModelManager.OnlineModel = new OnlineModel_1.OnlineModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.OnlineModel);
+    ModelManager_1.ModelManager.NpcConfigModel = new NpcConfigModel_1.NpcConfigModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.NpcConfigModel);
+    ModelManager_1.ModelManager.PerformModel = new PerformModel_1.PerformModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PerformModel);
+    ModelManager_1.ModelManager.GachaModel = new GachaModel_1.GachaModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GachaModel);
+    ModelManager_1.ModelManager.ItemExchangeModel = new ItemExchangeModel_1.ItemExchangeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemExchangeModel);
+    ModelManager_1.ModelManager.SkillButtonUiModel = new SkillButtonUiModel_1.SkillButtonUiModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkillButtonUiModel);
+    ModelManager_1.ModelManager.AdventureGuideModel = new AdventureGuideModel_1.AdventureGuideModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AdventureGuideModel);
+    ModelManager_1.ModelManager.TutorialModel = new TutorialModel_1.TutorialModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TutorialModel);
+    ModelManager_1.ModelManager.WeatherModel = new WeatherModel_1.WeatherModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeatherModel);
+    ModelManager_1.ModelManager.InfoDisplayModel = new InfoDisplayModel_1.InfoDisplayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfoDisplayModel);
+    ModelManager_1.ModelManager.AudioModel = new AudioModel_1.AudioModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AudioModel);
+    ModelManager_1.ModelManager.DailyTaskModel = new DailyTaskModel_1.DailyTaskModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DailyTaskModel);
+    ModelManager_1.ModelManager.InfluenceModel = new InfluenceModel_1.InfluenceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfluenceModel);
+    ModelManager_1.ModelManager.MonthCardModel = new MonthCardModel_1.MonthCardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MonthCardModel);
+    ModelManager_1.ModelManager.RangeItemModel = new RangeItemModel_1.RangeItemModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RangeItemModel);
+    ModelManager_1.ModelManager.CookModel = new CookModel_1.CookModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CookModel);
+    ModelManager_1.ModelManager.ManipulaterModel = new CharacterManipulaterModel_1.ManipulaterModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ManipulaterModel);
+    ModelManager_1.ModelManager.ManipulateInteractModel = new CharacterManipulateInteractModel_1.ManipulateInteractModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ManipulateInteractModel);
+    ModelManager_1.ModelManager.ExploreModel = new CharacterExploreModel_1.CharacterExploreModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreModel);
+    ModelManager_1.ModelManager.SceneItemBuffModel = new SceneItemBuffModel_1.SceneItemBuffModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneItemBuffModel);
+    ModelManager_1.ModelManager.InfluenceReputationModel = new InfluenceReputationModel_1.InfluenceReputationModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InfluenceReputationModel);
+    ModelManager_1.ModelManager.MainRoleModel = new MainRoleModel_1.MainRoleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MainRoleModel);
+    ModelManager_1.ModelManager.RoleFavorConditionModel = new RoleFavorConditionModel_1.RoleFavorConditionModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleFavorConditionModel);
+    ModelManager_1.ModelManager.ExploreResultModel = new ExploreResultModel_1.ExploreResultModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreResultModel);
+    ModelManager_1.ModelManager.TowerDetailModel = new TowerDetailModel_1.TowerDetailModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerDetailModel);
+    ModelManager_1.ModelManager.BattlePassModel = new BattlePassModel_1.BattlePassModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattlePassModel);
+    ModelManager_1.ModelManager.ComposeModel = new ComposeModel_1.ComposeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ComposeModel);
+    ModelManager_1.ModelManager.ForgingModel = new ForgingModel_1.ForgingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ForgingModel);
+    ModelManager_1.ModelManager.ScoreModel = new ScoreModel_1.ScoreModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ScoreModel);
+    ModelManager_1.ModelManager.AdviceModel = new AdviceModel_1.AdviceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AdviceModel);
+    ModelManager_1.ModelManager.ScoreModel = new ScoreModel_1.ScoreModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ScoreModel);
+    ModelManager_1.ModelManager.MotionModel = new MotionModel_1.MotionModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MotionModel);
+    ModelManager_1.ModelManager.PhotographModel = new PhotographModel_1.PhotographModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhotographModel);
+    ModelManager_1.ModelManager.HandBookModel = new HandBookModel_1.HandBookModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.HandBookModel);
+    ModelManager_1.ModelManager.AntiCheatModel = new AntiCheatModel_1.AntiCheatModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AntiCheatModel);
+    ModelManager_1.ModelManager.TraceElementModel = new TraceElementModel_1.TraceElementModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TraceElementModel);
+    ModelManager_1.ModelManager.BattleUiSetModel = new BattleUiSetModel_1.BattleUiSetModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleUiSetModel);
+    ModelManager_1.ModelManager.TimeTrackControlModel = new TimeTrackControlModel_1.TimeTrackControlModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TimeTrackControlModel);
+    ModelManager_1.ModelManager.TurntableControlModel = new TurntableControlModel_1.TurntableControlModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TurntableControlModel);
+    ModelManager_1.ModelManager.SundialControlModel = new SundialControlModel_1.SundialControlModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SundialControlModel);
+    ModelManager_1.ModelManager.SignalDeviceModel = new SignalDeviceModel_1.SignalDeviceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SignalDeviceModel);
+    ModelManager_1.ModelManager.AchievementModel = new AchievementModel_1.AchievementModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AchievementModel);
+    ModelManager_1.ModelManager.NewFlagModel = new NewFlagModel_1.NewFlagModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.NewFlagModel);
+    ModelManager_1.ModelManager.WaitEntityTaskModel = new WaitEntityTaskModel_1.WaitEntityTaskModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WaitEntityTaskModel);
+    ModelManager_1.ModelManager.GameSplineModel = new GameSplineModel_1.GameSplineModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GameSplineModel);
+    ModelManager_1.ModelManager.ComboTeachingModel = new ComboTeachingModel_1.ComboTeachingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ComboTeachingModel);
+    ModelManager_1.ModelManager.PersonalModel = new PersonalModel_1.PersonalModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PersonalModel);
+    ModelManager_1.ModelManager.ActivityModel = new ActivityModel_1.ActivityModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityModel);
+    ModelManager_1.ModelManager.ActivityRunModel = new ActivityRunModel_1.ActivityRunModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityRunModel);
+    ModelManager_1.ModelManager.WeeklyRogueModel = new WeeklyRogueModel_1.WeeklyRogueModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeeklyRogueModel);
+    ModelManager_1.ModelManager.SkillCdModel = new SkillCdModel_1.SkillCdModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkillCdModel);
+    ModelManager_1.ModelManager.TeleportModel = new TeleportModel_1.TeleportModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TeleportModel);
+    ModelManager_1.ModelManager.StaticSceneModel = new StaticSceneModel_1.StaticSceneModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.StaticSceneModel);
+    ModelManager_1.ModelManager.RoguelikeModel = new RoguelikeModel_1.RoguelikeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoguelikeModel);
+    ModelManager_1.ModelManager.RogueBattleModel = new RogueBattleModel_1.RogueBattleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RogueBattleModel);
+    ModelManager_1.ModelManager.ItemRewardModel = new ItemRewardModel_1.ItemRewardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemRewardModel);
+    ModelManager_1.ModelManager.SeamlessTravelModel = new SeamlessTravelModel_1.SeamlessTravelModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SeamlessTravelModel);
+    ModelManager_1.ModelManager.LoginServerModel = new LoginServerModel_1.LoginServerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LoginServerModel);
+    ModelManager_1.ModelManager.FilterModel = new FilterModel_1.FilterModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FilterModel);
+    ModelManager_1.ModelManager.SortModel = new SortModel_1.SortModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SortModel);
+    ModelManager_1.ModelManager.ExchangeRewardModel = new ExchangeRewardModel_1.ExchangeRewardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExchangeRewardModel);
+    ModelManager_1.ModelManager.InstanceDungeonGuideModel = new InstanceDungeonGuideModel_1.InstanceDungeonGuideModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceDungeonGuideModel);
+    ModelManager_1.ModelManager.DailyActivityModel = new DailyActivityModel_1.DailyActivityModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DailyActivityModel);
+    ModelManager_1.ModelManager.LevelLoadingModel = new LevelLoadingModel_1.LevelLoadingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelLoadingModel);
+    ModelManager_1.ModelManager.MediumItemGridModel = new MediumItemGridModel_1.MediumItemGridModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MediumItemGridModel);
+    ModelManager_1.ModelManager.SmallItemGridModel = new SmallItemGridModel_1.SmallItemGridModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SmallItemGridModel);
+    ModelManager_1.ModelManager.RouletteModel = new RouletteModel_1.RouletteModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RouletteModel);
+    ModelManager_1.ModelManager.MapExploreToolModel = new MapExploreToolModel_1.MapExploreToolModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MapExploreToolModel);
+    ModelManager_1.ModelManager.SundryModel = new SundryModel_1.SundryModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SundryModel);
+    ModelManager_1.ModelManager.AutoRunModel = new AutoRunModel_1.AutoRunModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AutoRunModel);
+    ModelManager_1.ModelManager.GamePingModel = new GamePingModel_1.GamePingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GamePingModel);
+    ModelManager_1.ModelManager.ItemTipsModel = new ItemTipsModel_1.ItemTipsModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemTipsModel);
+    ModelManager_1.ModelManager.SkipInterfaceModel = new SkipInterfaceModel_1.SkipInterfaceModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SkipInterfaceModel);
+    ModelManager_1.ModelManager.PanelQteModel = new PanelQteModel_1.PanelQteModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PanelQteModel);
+    ModelManager_1.ModelManager.CommonQteModel = new CommonQteModel_1.CommonQteModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CommonQteModel);
+    ModelManager_1.ModelManager.BattleQteModel = new BattleQteModel_1.BattleQteModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BattleQteModel);
+    ModelManager_1.ModelManager.TowerModel = new TowerModel_1.TowerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerModel);
+    ModelManager_1.ModelManager.LordGymModel = new LordGymModel_1.LordGymModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LordGymModel);
+    ModelManager_1.ModelManager.ExploreProgressModel = new ExploreProgressModel_1.ExploreProgressModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreProgressModel);
+    ModelManager_1.ModelManager.ExploreLevelModel = new ExploreLevelModel_1.ExploreLevelModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ExploreLevelModel);
+    ModelManager_1.ModelManager.SignalDecodeModel = new SignalDecodeModel_1.SignalDecodeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SignalDecodeModel);
+    ModelManager_1.ModelManager.TrainingDegreeModel = new TrainingDegreeModel_1.TrainingDegreeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TrainingDegreeModel);
+    ModelManager_1.ModelManager.ItemDeliverModel = new ItemDeliverModel_1.ItemDeliverModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemDeliverModel);
+    ModelManager_1.ModelManager.KuroSdkModel = new KuroSdkModel_1.KuroSdkModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.KuroSdkModel);
+    ModelManager_1.ModelManager.VisionCaptureModel = new VisionCaptureModel_1.VisionCaptureModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VisionCaptureModel);
+    ModelManager_1.ModelManager.RoleSelectModel = new RoleSelectModel_1.RoleSelectModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleSelectModel);
+    ModelManager_1.ModelManager.AiStateMachineModel = new AiStateMachineModel_1.AiStateMachineModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AiStateMachineModel);
+    ModelManager_1.ModelManager.FragmentMemoryModel = new FragmentMemoryModel_1.FragmentMemoryModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FragmentMemoryModel);
+    ModelManager_1.ModelManager.RechargeModel = new RechargeModel_1.RechargeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RechargeModel);
+    ModelManager_1.ModelManager.PortalModel = new PortalModel_1.PortalModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PortalModel);
+    ModelManager_1.ModelManager.PayGiftModel = new PayGiftModel_1.PayGiftModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PayGiftModel);
+    ModelManager_1.ModelManager.PhonographModel = new PhonographModel_1.PhonographModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhonographModel);
+    ModelManager_1.ModelManager.BossRushModel = new BossRushModel_1.BossRushModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BossRushModel);
+    ModelManager_1.ModelManager.TowerDefenseModel = new TowerDefenceModel_1.TowerDefenseModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TowerDefenseModel);
+    ModelManager_1.ModelManager.MoonChasingModel = new MoonChasingModel_1.MoonChasingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingModel);
+    ModelManager_1.ModelManager.MoonChasingBusinessModel = new MoonChasingBusinessModel_1.MoonChasingBusinessModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingBusinessModel);
+    ModelManager_1.ModelManager.MoonChasingBuildingModel = new MoonChasingBuildingModel_1.MoonChasingBuildingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingBuildingModel);
+    ModelManager_1.ModelManager.MoonChasingTaskModel = new MoonChasingTaskModel_1.MoonChasingTaskModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingTaskModel);
+    ModelManager_1.ModelManager.MoonChasingRewardModel = new MoonChasingRewardModel_1.MoonChasingRewardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoonChasingRewardModel);
+    ModelManager_1.ModelManager.MowingRiskModel = new MowingRiskModel_1.MowingRiskModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MowingRiskModel);
+    ModelManager_1.ModelManager.VersionPreheatModel = new VersionPreheatModel_1.VersionPreheatModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VersionPreheatModel);
+    ModelManager_1.ModelManager.Spring25Model = new Spring25Model_1.Spring25Model();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.Spring25Model);
+    ModelManager_1.ModelManager.SolarSpeedModel = new SolarSpeedModel_1.SolarSpeedModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SolarSpeedModel);
+    ModelManager_1.ModelManager.AlertMarkModel = new AlertMarksModel_1.AlertMarkModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AlertMarkModel);
+    ModelManager_1.ModelManager.ActivityRegressModel = new ActivityRegressModel_1.ActivityRegressModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityRegressModel);
+    ModelManager_1.ModelManager.ActivityScratchTicketModel = new ActivityScratchTicketModel_1.ActivityScratchTicketModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityScratchTicketModel);
+    ModelManager_1.ModelManager.RacingBetsModel = new RacingBetsModel_1.RacingBetsModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RacingBetsModel);
+    ModelManager_1.ModelManager.ConnectGamePlayModel = new ConnectGamePlayModel_1.ConnectGamePlayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ConnectGamePlayModel);
+    ModelManager_1.ModelManager.DigitalScreenModel = new DigitalScreenModel_1.DigitalScreenModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DigitalScreenModel);
+    ModelManager_1.ModelManager.ScreenEffectModel = new ScreenEffectModel_1.ScreenEffectModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ScreenEffectModel);
+    ModelManager_1.ModelManager.GameAudioModel = new GameAudioModel_1.GameAudioModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GameAudioModel);
+    ModelManager_1.ModelManager.WeaponSkinModel = new WeaponSkinModel_1.WeaponSkinModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.WeaponSkinModel);
+    ModelManager_1.ModelManager.FlySkinModel = new FlySkinModel_1.FlySkinModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FlySkinModel);
+    ModelManager_1.ModelManager.RecommendQualityModel = new RecommendQualityModel_1.RecommendQualityModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RecommendQualityModel);
+    ModelManager_1.ModelManager.MowingTowerModel = new MowingTowerModel_1.MowingTowerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MowingTowerModel);
+    ModelManager_1.ModelManager.VehicleModel = new VehicleModel_1.VehicleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VehicleModel);
+    ModelManager_1.ModelManager.MonsterGroupPatrolModel = new MonsterGroupPatrolModel_1.MonsterGroupPatrolModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MonsterGroupPatrolModel);
+    ModelManager_1.ModelManager.AlertAreaModel = new AlertAreaModel_1.AlertAreaModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AlertAreaModel);
+    ModelManager_1.ModelManager.BigStuffedDollModel = new BigStuffedDollModel_1.BigStuffedDollModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BigStuffedDollModel);
+    ModelManager_1.ModelManager.RoleSkinModel = new RoleSkinModel_1.RoleSkinModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleSkinModel);
+    ModelManager_1.ModelManager.LevelPlayReportModel = new LevelPlayReportModel_1.LevelPlayReportModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelPlayReportModel);
+    ModelManager_1.ModelManager.LifePointModel = new LifePointModel_1.LifePointModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LifePointModel);
+    ModelManager_1.ModelManager.FishingModel = new FishingModel_1.FishingModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FishingModel);
+    ModelManager_1.ModelManager.DockyardModel = new DockyardModel_1.DockyardModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DockyardModel);
+    ModelManager_1.ModelManager.ActivityDirectTrainModel = new ActivityDirectTrainModel_1.ActivityDirectTrainModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityDirectTrainModel);
+    ModelManager_1.ModelManager.ShipTogetherModel = new ShipTogetherModel_1.ShipTogetherModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShipTogetherModel);
+    ModelManager_1.ModelManager.TreasureHuntModel = new TreasureHuntModel_1.TreasureHuntModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TreasureHuntModel);
+    ModelManager_1.ModelManager.FishingQteModel = new FishingQteModel_1.FishingQteModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FishingQteModel);
+    ModelManager_1.ModelManager.FishingQuestModel = new FishingQuestModel_1.FishingQuestModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FishingQuestModel);
+    ModelManager_1.ModelManager.VisionRecommendModel = new VisionRecommendModel_1.VisionRecommendModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VisionRecommendModel);
+    ModelManager_1.ModelManager.VisionEquipGroupModel = new VisionEquipGroupModel_1.VisionEquipGroupModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VisionEquipGroupModel);
+    ModelManager_1.ModelManager.ShipTowerModel = new ShipTowerModel_1.ShipTowerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShipTowerModel);
+    ModelManager_1.ModelManager.MoraleModel = new MoraleModel_1.MoraleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MoraleModel);
+    ModelManager_1.ModelManager.MapRogueModel = new MapRogueModel_1.MapRogueModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.MapRogueModel);
+    ModelManager_1.ModelManager.SoundAreaPlayTipsModel = new SoundAreaPlayTipsModel_1.SoundAreaPlayTipsModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SoundAreaPlayTipsModel);
+    ModelManager_1.ModelManager.SubLevelModel = new SubLevelModel_1.SubLevelModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SubLevelModel);
+    ModelManager_1.ModelManager.GravityFlipModel = new GravityFlipModel_1.GravityFlipModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GravityFlipModel);
+    ModelManager_1.ModelManager.BabelTowerModel = new BabelTowerModel_1.BabelTowerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BabelTowerModel);
+    ModelManager_1.ModelManager.NetworkDetectionModel = new NetworkDetectionModel_1.NetworkDetectionModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.NetworkDetectionModel);
+    ModelManager_1.ModelManager.AvignonModel = new AvignonModel_1.AvignonModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AvignonModel);
+    ModelManager_1.ModelManager.PreDownloadModel = new PreDownloadModel_1.PreDownloadModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PreDownloadModel);
+    ModelManager_1.ModelManager.BirthdayModel = new BirthdayModel_1.BirthdayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.BirthdayModel);
+    ModelManager_1.ModelManager.GongduolaSummonModel = new GongduolaSummonModel_1.GongduolaSummonModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GongduolaSummonModel);
+    ModelManager_1.ModelManager.ChessModel = new ChessModel_1.ChessModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ChessModel);
+    ModelManager_1.ModelManager.DangoAbyssModel = new DangoAbyssModel_1.DangoAbyssModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DangoAbyssModel);
+    ModelManager_1.ModelManager.FloroRanchModel = new FloroRanchModel_1.FloroRanchModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FloroRanchModel);
+    ModelManager_1.ModelManager.FloroRanchGamePlayModel = new FloroRanchGamePlayModel_1.FloroRanchGamePlayModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.FloroRanchGamePlayModel);
+    ModelManager_1.ModelManager.CiacconaGalModel = new CiacconaGalModel_1.CiacconaGalModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CiacconaGalModel);
+    ModelManager_1.ModelManager.ActivityPermanentRogueModel = new ActivityPermanentRogueModel_1.ActivityPermanentRogueModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityPermanentRogueModel);
+    ModelManager_1.ModelManager.InviteNewbieModel = new InviteNewbieModel_1.InviteNewbieModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InviteNewbieModel);
+    ModelManager_1.ModelManager.SceneBattleInteractModel = new SceneBattleInteractModel_1.SceneBattleInteractModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SceneBattleInteractModel);
+    ModelManager_1.ModelManager.InstanceGameplayModeModel = new InstanceGameplayModeModel_1.InstanceGameplayModeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.InstanceGameplayModeModel);
+    ModelManager_1.ModelManager.DangoGlobalModel = new DangoGlobalModel_1.DangoGlobalModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.DangoGlobalModel);
+    ModelManager_1.ModelManager.ResDownLoadModel = new ResDownLoadModel_1.ResDownLoadModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ResDownLoadModel);
+    ModelManager_1.ModelManager.PhantomArenaModel = new PhantomArenaModel_1.PhantomArenaModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhantomArenaModel);
+    ModelManager_1.ModelManager.PhantomArenaBattleModel = new PhantomArenaBattleModel_1.PhantomArenaBattleModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.PhantomArenaBattleModel);
+    ModelManager_1.ModelManager.TuningStandModel = new TuningStandModel_1.TuningStandModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.TuningStandModel);
+    ModelManager_1.ModelManager.ShowerModel = new ShowerModel_1.ShowerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ShowerModel);
+    ModelManager_1.ModelManager.QuestReviewModel = new QuestReviewModel_1.QuestReviewModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestReviewModel);
+    ModelManager_1.ModelManager.LevelPrefabConfigModel = new LevelPrefabConfigModel_1.LevelPrefabConfigModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LevelPrefabConfigModel);
+    ModelManager_1.ModelManager.LifePointDrawModel = new LifePointDrawModel_1.LifePointDrawModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.LifePointDrawModel);
+    ModelManager_1.ModelManager.Init();
+    if (Info_1.Info.IsPlayInEditor) {
+      TestModuleBridge_1.TestModuleBridge.TryGetTestModuleExports().then(e => {
+        if (e && e.KuroDemoInteractModel) {
+          ModelManager_1.ModelManager.KuroDemoInteractModel = new e.KuroDemoInteractModel();
+          ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.KuroDemoInteractModel);
+          ModelManager_1.ModelManager.KuroDemoInteractModel.Init();
+        }
+      });
+    }
+    return true;
   }
   static Clear() {
-    return ModelManager_1.ModelManager.Clear(), ModelManager_1.ModelManager.CharacterModel = void 0, ModelManager_1.ModelManager.CreatureModel = void 0, ModelManager_1.ModelManager.WorldModel = void 0, ModelManager_1.ModelManager.AttachToActorModel = void 0, ModelManager_1.ModelManager.SubLevelLoadingModel = void 0, ModelManager_1.ModelManager.WorldDebugModel = void 0, ModelManager_1.ModelManager.AoiModel = void 0, ModelManager_1.ModelManager.PreloadModel = void 0, ModelManager_1.ModelManager.PreloadModelNew = void 0, ModelManager_1.ModelManager.BlackboardModel = void 0, ModelManager_1.ModelManager.GameModeModel = void 0, ModelManager_1.ModelManager.AreaModel = void 0, ModelManager_1.ModelManager.MailModel = void 0, ModelManager_1.ModelManager.LoginModel = void 0, ModelManager_1.ModelManager.ItemModel = void 0, ModelManager_1.ModelManager.GuideModel = void 0, ModelManager_1.ModelManager.PlayerInfoModel = void 0, ModelManager_1.ModelManager.CipherModel = void 0, ModelManager_1.ModelManager.EditBattleTeamModel = void 0, ModelManager_1.ModelManager.MapModel = void 0, ModelManager_1.ModelManager.SkillCdModel = void 0, ModelManager_1.ModelManager.BattleInputModel = void 0, ModelManager_1.ModelManager.BattleUiModel = void 0, ModelManager_1.ModelManager.BattleScoreModel = void 0, ModelManager_1.ModelManager.BattleLinkModel = void 0, ModelManager_1.ModelManager.InventoryModel = void 0, ModelManager_1.ModelManager.ReConnectModel = void 0, ModelManager_1.ModelManager.PhonographModel = void 0, ModelManager_1.ModelManager.CooperationModel = void 0, ModelManager_1.ModelManager.SceneTeamModel = void 0, ModelManager_1.ModelManager.ChannelModel = void 0, ModelManager_1.ModelManager.MingSuModel = void 0, ModelManager_1.ModelManager.ShopModel = void 0, ModelManager_1.ModelManager.WeaponModel = void 0, ModelManager_1.ModelManager.InstanceDungeonModel = void 0, ModelManager_1.ModelManager.InstanceDungeonEntranceModel = void 0, ModelManager_1.ModelManager.RoleModel = void 0, ModelManager_1.ModelManager.WorldMapModel = void 0, ModelManager_1.ModelManager.ItemHintModel = void 0, ModelManager_1.ModelManager.SequenceModel = void 0, ModelManager_1.ModelManager.LoadingModel = void 0, ModelManager_1.ModelManager.AttributeModel = void 0, ModelManager_1.ModelManager.RewardModel = void 0, ModelManager_1.ModelManager.FunctionModel = void 0, ModelManager_1.ModelManager.LevelFuncFlagModel = void 0, ModelManager_1.ModelManager.LevelGeneralModel = void 0, ModelManager_1.ModelManager.PlatformModel = void 0, ModelManager_1.ModelManager.CameraModel = void 0, ModelManager_1.ModelManager.BulletModel = void 0, ModelManager_1.ModelManager.BuffModel = void 0, ModelManager_1.ModelManager.PowerModel = void 0, ModelManager_1.ModelManager.LevelUpModel = void 0, ModelManager_1.ModelManager.InputDistributeModel = void 0, ModelManager_1.ModelManager.TimeOfDayModel = void 0, ModelManager_1.ModelManager.DeadReviveModel = void 0, ModelManager_1.ModelManager.PlotModel = void 0, ModelManager_1.ModelManager.AiModel = void 0, ModelManager_1.ModelManager.AiWeaponModel = void 0, ModelManager_1.ModelManager.CalabashModel = void 0, ModelManager_1.ModelManager.JoinTeamModel = void 0, ModelManager_1.ModelManager.ControlScreenModel = void 0, ModelManager_1.ModelManager.WuYinAreaModel = void 0, ModelManager_1.ModelManager.BuffItemModel = void 0, ModelManager_1.ModelManager.MarqueeModel = void 0, ModelManager_1.ModelManager.ShootTargetModel = void 0, ModelManager_1.ModelManager.RedDotModel = void 0, ModelManager_1.ModelManager.TriggerVolumeModel = void 0, ModelManager_1.ModelManager.SceneInteractionModel = void 0, ModelManager_1.ModelManager.MenuModel = void 0, ModelManager_1.ModelManager.GenericPromptModel = void 0, ModelManager_1.ModelManager.InteractionModel = void 0, ModelManager_1.ModelManager.LevelGamePlayModel = void 0, ModelManager_1.ModelManager.CombatMessageModel = void 0, ModelManager_1.ModelManager.RenderModuleModel = void 0, ModelManager_1.ModelManager.FriendModel = void 0, ModelManager_1.ModelManager.UiNavigationModel = void 0, ModelManager_1.ModelManager.ParkourModel = void 0, ModelManager_1.ModelManager.ChatModel = void 0, ModelManager_1.ModelManager.PayItemModel = void 0, ModelManager_1.ModelManager.NpcConfigModel = void 0, ModelManager_1.ModelManager.PayShopModel = void 0, ModelManager_1.ModelManager.GachaModel = void 0, ModelManager_1.ModelManager.ItemExchangeModel = void 0, ModelManager_1.ModelManager.PhantomBattleModel = void 0, ModelManager_1.ModelManager.AdventureGuideModel = void 0, ModelManager_1.ModelManager.SkillButtonUiModel = void 0, ModelManager_1.ModelManager.TutorialModel = void 0, ModelManager_1.ModelManager.WeatherModel = void 0, ModelManager_1.ModelManager.InfoDisplayModel = void 0, ModelManager_1.ModelManager.AudioModel = void 0, ModelManager_1.ModelManager.DailyTaskModel = void 0, ModelManager_1.ModelManager.InfluenceModel = void 0, ModelManager_1.ModelManager.MonthCardModel = void 0, ModelManager_1.ModelManager.RangeItemModel = void 0, ModelManager_1.ModelManager.ManipulaterModel = void 0, ModelManager_1.ModelManager.ManipulateInteractModel = void 0, ModelManager_1.ModelManager.SceneItemBuffModel = void 0, ModelManager_1.ModelManager.InfluenceReputationModel = void 0, ModelManager_1.ModelManager.RoleFavorConditionModel = void 0, ModelManager_1.ModelManager.ExploreResultModel = void 0, ModelManager_1.ModelManager.TowerDetailModel = void 0, ModelManager_1.ModelManager.BattlePassModel = void 0, ModelManager_1.ModelManager.ComposeModel = void 0, ModelManager_1.ModelManager.ForgingModel = void 0, ModelManager_1.ModelManager.ScoreModel = void 0, ModelManager_1.ModelManager.AdviceModel = void 0, ModelManager_1.ModelManager.ScoreModel = void 0, ModelManager_1.ModelManager.MotionModel = void 0, ModelManager_1.ModelManager.HandBookModel = void 0, ModelManager_1.ModelManager.AntiCheatModel = void 0, ModelManager_1.ModelManager.TraceElementModel = void 0, ModelManager_1.ModelManager.TimeTrackControlModel = void 0, ModelManager_1.ModelManager.TurntableControlModel = void 0, ModelManager_1.ModelManager.AchievementModel = void 0, ModelManager_1.ModelManager.NewFlagModel = void 0, ModelManager_1.ModelManager.WaitEntityTaskModel = void 0, ModelManager_1.ModelManager.QuestNewModel = void 0, ModelManager_1.ModelManager.QuestResourceModel = void 0, ModelManager_1.ModelManager.ComboTeachingModel = void 0, ModelManager_1.ModelManager.PersonalModel = void 0, ModelManager_1.ModelManager.ActivityModel = void 0, ModelManager_1.ModelManager.ActivityRunModel = void 0, ModelManager_1.ModelManager.TeleportModel = void 0, ModelManager_1.ModelManager.StaticSceneModel = void 0, ModelManager_1.ModelManager.ItemRewardModel = void 0, ModelManager_1.ModelManager.SeamlessTravelModel = void 0, ModelManager_1.ModelManager.LoginServerModel = void 0, ModelManager_1.ModelManager.FilterModel = void 0, ModelManager_1.ModelManager.SortModel = void 0, ModelManager_1.ModelManager.ExchangeRewardModel = void 0, ModelManager_1.ModelManager.InstanceDungeonGuideModel = void 0, ModelManager_1.ModelManager.DailyActivityModel = void 0, ModelManager_1.ModelManager.MediumItemGridModel = void 0, ModelManager_1.ModelManager.RouletteModel = void 0, ModelManager_1.ModelManager.MapExploreToolModel = void 0, ModelManager_1.ModelManager.SundryModel = void 0, ModelManager_1.ModelManager.AutoRunModel = void 0, ModelManager_1.ModelManager.KuroDemoInteractModel = void 0, ModelManager_1.ModelManager.GamePingModel = void 0, ModelManager_1.ModelManager.ItemTipsModel = void 0, ModelManager_1.ModelManager.SkipInterfaceModel = void 0, ModelManager_1.ModelManager.PanelQteModel = void 0, ModelManager_1.ModelManager.TowerModel = void 0, ModelManager_1.ModelManager.LordGymModel = void 0, ModelManager_1.ModelManager.ExploreProgressModel = void 0, ModelManager_1.ModelManager.ExploreLevelModel = void 0, ModelManager_1.ModelManager.SignalDecodeModel = void 0, ModelManager_1.ModelManager.ItemDeliverModel = void 0, ModelManager_1.ModelManager.KuroSdkModel = void 0, ModelManager_1.ModelManager.VisionCaptureModel = void 0, ModelManager_1.ModelManager.FragmentMemoryModel = void 0, ModelManager_1.ModelManager.RoleSelectModel = void 0, ModelManager_1.ModelManager.RechargeModel = void 0, ModelManager_1.ModelManager.PortalModel = void 0, ModelManager_1.ModelManager.BossRushModel = void 0, ModelManager_1.ModelManager.TowerDefenseModel = void 0, ModelManager_1.ModelManager.AlertMarkModel = void 0, ModelManager_1.ModelManager.ActivityRegressModel = void 0, ModelManager_1.ModelManager.ScreenEffectModel = void 0, ModelManager_1.ModelManager.WeaponSkinModel = void 0, ModelManager_1.ModelManager.MonsterGroupPatrolModel = void 0, ModelManager_1.ModelManager.LevelPlayReportModel = void 0, ModelManager_1.ModelManager.ActivityDirectTrainModel = void 0, ModelManager_1.ModelManager.VisionRecommendModel = void 0, ModelManager_1.ModelManager.FishingQteModel = void 0, ModelManager_1.ModelManager.ShipTowerModel = void 0, ModelManager_1.ModelManager.MoraleModel = void 0, ModelManager_1.ModelManager.VisionEquipGroupModel = void 0, ModelManager_1.ModelManager.SoundAreaPlayTipsModel = void 0, ModelManager_1.ModelManager.GravityFlipModel = void 0, ModelManager_1.ModelManager.BabelTowerModel = void 0, ModelManager_1.ModelManager.PreDownloadModel = void 0, ModelManager_1.ModelManager.DangoAbyssModel = void 0, ModelManager_1.ModelManager.CiacconaGalModel = void 0, ModelManager_1.ModelManager.SceneBattleInteractModel = void 0, ModelManager_1.ModelManager.QuestReviewModel = void 0, !(ModelManager_1.ModelManager.LevelPrefabConfigModel = void 0)
+    ModelManager_1.ModelManager.Clear();
+    ModelManager_1.ModelManager.CharacterModel = undefined;
+    ModelManager_1.ModelManager.CreatureModel = undefined;
+    ModelManager_1.ModelManager.WorldModel = undefined;
+    ModelManager_1.ModelManager.AttachToActorModel = undefined;
+    ModelManager_1.ModelManager.SubLevelLoadingModel = undefined;
+    ModelManager_1.ModelManager.WorldDebugModel = undefined;
+    ModelManager_1.ModelManager.AoiModel = undefined;
+    ModelManager_1.ModelManager.PreloadModel = undefined;
+    ModelManager_1.ModelManager.PreloadModelNew = undefined;
+    ModelManager_1.ModelManager.BlackboardModel = undefined;
+    ModelManager_1.ModelManager.GameModeModel = undefined;
+    ModelManager_1.ModelManager.AreaModel = undefined;
+    ModelManager_1.ModelManager.MailModel = undefined;
+    ModelManager_1.ModelManager.LoginModel = undefined;
+    ModelManager_1.ModelManager.ItemModel = undefined;
+    ModelManager_1.ModelManager.GuideModel = undefined;
+    ModelManager_1.ModelManager.PlayerInfoModel = undefined;
+    ModelManager_1.ModelManager.CipherModel = undefined;
+    ModelManager_1.ModelManager.EditBattleTeamModel = undefined;
+    ModelManager_1.ModelManager.MapModel = undefined;
+    ModelManager_1.ModelManager.SkillCdModel = undefined;
+    ModelManager_1.ModelManager.BattleInputModel = undefined;
+    ModelManager_1.ModelManager.BattleUiModel = undefined;
+    ModelManager_1.ModelManager.BattleScoreModel = undefined;
+    ModelManager_1.ModelManager.BattleLinkModel = undefined;
+    ModelManager_1.ModelManager.InventoryModel = undefined;
+    ModelManager_1.ModelManager.ReConnectModel = undefined;
+    ModelManager_1.ModelManager.PhonographModel = undefined;
+    ModelManager_1.ModelManager.CooperationModel = undefined;
+    ModelManager_1.ModelManager.SceneTeamModel = undefined;
+    ModelManager_1.ModelManager.ChannelModel = undefined;
+    ModelManager_1.ModelManager.MingSuModel = undefined;
+    ModelManager_1.ModelManager.ShopModel = undefined;
+    ModelManager_1.ModelManager.WeaponModel = undefined;
+    ModelManager_1.ModelManager.InstanceDungeonModel = undefined;
+    ModelManager_1.ModelManager.InstanceDungeonEntranceModel = undefined;
+    ModelManager_1.ModelManager.RoleModel = undefined;
+    ModelManager_1.ModelManager.WorldMapModel = undefined;
+    ModelManager_1.ModelManager.ItemHintModel = undefined;
+    ModelManager_1.ModelManager.SequenceModel = undefined;
+    ModelManager_1.ModelManager.LoadingModel = undefined;
+    ModelManager_1.ModelManager.AttributeModel = undefined;
+    ModelManager_1.ModelManager.RewardModel = undefined;
+    ModelManager_1.ModelManager.FunctionModel = undefined;
+    ModelManager_1.ModelManager.LevelFuncFlagModel = undefined;
+    ModelManager_1.ModelManager.LevelGeneralModel = undefined;
+    ModelManager_1.ModelManager.PlatformModel = undefined;
+    ModelManager_1.ModelManager.CameraModel = undefined;
+    ModelManager_1.ModelManager.BulletModel = undefined;
+    ModelManager_1.ModelManager.BuffModel = undefined;
+    ModelManager_1.ModelManager.PowerModel = undefined;
+    ModelManager_1.ModelManager.LevelUpModel = undefined;
+    ModelManager_1.ModelManager.InputDistributeModel = undefined;
+    ModelManager_1.ModelManager.TimeOfDayModel = undefined;
+    ModelManager_1.ModelManager.DeadReviveModel = undefined;
+    ModelManager_1.ModelManager.PlotModel = undefined;
+    ModelManager_1.ModelManager.AiModel = undefined;
+    ModelManager_1.ModelManager.AiWeaponModel = undefined;
+    ModelManager_1.ModelManager.CalabashModel = undefined;
+    ModelManager_1.ModelManager.JoinTeamModel = undefined;
+    ModelManager_1.ModelManager.ControlScreenModel = undefined;
+    ModelManager_1.ModelManager.WuYinAreaModel = undefined;
+    ModelManager_1.ModelManager.BuffItemModel = undefined;
+    ModelManager_1.ModelManager.MarqueeModel = undefined;
+    ModelManager_1.ModelManager.ShootTargetModel = undefined;
+    ModelManager_1.ModelManager.RedDotModel = undefined;
+    ModelManager_1.ModelManager.TriggerVolumeModel = undefined;
+    ModelManager_1.ModelManager.SceneInteractionModel = undefined;
+    ModelManager_1.ModelManager.MenuModel = undefined;
+    ModelManager_1.ModelManager.GenericPromptModel = undefined;
+    ModelManager_1.ModelManager.InteractionModel = undefined;
+    ModelManager_1.ModelManager.LevelGamePlayModel = undefined;
+    ModelManager_1.ModelManager.CombatMessageModel = undefined;
+    ModelManager_1.ModelManager.RenderModuleModel = undefined;
+    ModelManager_1.ModelManager.FriendModel = undefined;
+    ModelManager_1.ModelManager.UiNavigationModel = undefined;
+    ModelManager_1.ModelManager.ParkourModel = undefined;
+    ModelManager_1.ModelManager.ChatModel = undefined;
+    ModelManager_1.ModelManager.PayItemModel = undefined;
+    ModelManager_1.ModelManager.NpcConfigModel = undefined;
+    ModelManager_1.ModelManager.PayShopModel = undefined;
+    ModelManager_1.ModelManager.GachaModel = undefined;
+    ModelManager_1.ModelManager.ItemExchangeModel = undefined;
+    ModelManager_1.ModelManager.PhantomBattleModel = undefined;
+    ModelManager_1.ModelManager.AdventureGuideModel = undefined;
+    ModelManager_1.ModelManager.SkillButtonUiModel = undefined;
+    ModelManager_1.ModelManager.TutorialModel = undefined;
+    ModelManager_1.ModelManager.WeatherModel = undefined;
+    ModelManager_1.ModelManager.InfoDisplayModel = undefined;
+    ModelManager_1.ModelManager.AudioModel = undefined;
+    ModelManager_1.ModelManager.DailyTaskModel = undefined;
+    ModelManager_1.ModelManager.InfluenceModel = undefined;
+    ModelManager_1.ModelManager.MonthCardModel = undefined;
+    ModelManager_1.ModelManager.RangeItemModel = undefined;
+    ModelManager_1.ModelManager.ManipulaterModel = undefined;
+    ModelManager_1.ModelManager.ManipulateInteractModel = undefined;
+    ModelManager_1.ModelManager.SceneItemBuffModel = undefined;
+    ModelManager_1.ModelManager.InfluenceReputationModel = undefined;
+    ModelManager_1.ModelManager.RoleFavorConditionModel = undefined;
+    ModelManager_1.ModelManager.ExploreResultModel = undefined;
+    ModelManager_1.ModelManager.TowerDetailModel = undefined;
+    ModelManager_1.ModelManager.BattlePassModel = undefined;
+    ModelManager_1.ModelManager.ComposeModel = undefined;
+    ModelManager_1.ModelManager.ForgingModel = undefined;
+    ModelManager_1.ModelManager.ScoreModel = undefined;
+    ModelManager_1.ModelManager.AdviceModel = undefined;
+    ModelManager_1.ModelManager.ScoreModel = undefined;
+    ModelManager_1.ModelManager.MotionModel = undefined;
+    ModelManager_1.ModelManager.HandBookModel = undefined;
+    ModelManager_1.ModelManager.AntiCheatModel = undefined;
+    ModelManager_1.ModelManager.TraceElementModel = undefined;
+    ModelManager_1.ModelManager.TimeTrackControlModel = undefined;
+    ModelManager_1.ModelManager.TurntableControlModel = undefined;
+    ModelManager_1.ModelManager.AchievementModel = undefined;
+    ModelManager_1.ModelManager.NewFlagModel = undefined;
+    ModelManager_1.ModelManager.WaitEntityTaskModel = undefined;
+    ModelManager_1.ModelManager.QuestNewModel = undefined;
+    ModelManager_1.ModelManager.QuestResourceModel = undefined;
+    ModelManager_1.ModelManager.ComboTeachingModel = undefined;
+    ModelManager_1.ModelManager.PersonalModel = undefined;
+    ModelManager_1.ModelManager.ActivityModel = undefined;
+    ModelManager_1.ModelManager.ActivityRunModel = undefined;
+    ModelManager_1.ModelManager.TeleportModel = undefined;
+    ModelManager_1.ModelManager.StaticSceneModel = undefined;
+    ModelManager_1.ModelManager.ItemRewardModel = undefined;
+    ModelManager_1.ModelManager.SeamlessTravelModel = undefined;
+    ModelManager_1.ModelManager.LoginServerModel = undefined;
+    ModelManager_1.ModelManager.FilterModel = undefined;
+    ModelManager_1.ModelManager.SortModel = undefined;
+    ModelManager_1.ModelManager.ExchangeRewardModel = undefined;
+    ModelManager_1.ModelManager.InstanceDungeonGuideModel = undefined;
+    ModelManager_1.ModelManager.DailyActivityModel = undefined;
+    ModelManager_1.ModelManager.MediumItemGridModel = undefined;
+    ModelManager_1.ModelManager.RouletteModel = undefined;
+    ModelManager_1.ModelManager.MapExploreToolModel = undefined;
+    ModelManager_1.ModelManager.SundryModel = undefined;
+    ModelManager_1.ModelManager.AutoRunModel = undefined;
+    ModelManager_1.ModelManager.KuroDemoInteractModel = undefined;
+    ModelManager_1.ModelManager.GamePingModel = undefined;
+    ModelManager_1.ModelManager.ItemTipsModel = undefined;
+    ModelManager_1.ModelManager.SkipInterfaceModel = undefined;
+    ModelManager_1.ModelManager.PanelQteModel = undefined;
+    ModelManager_1.ModelManager.TowerModel = undefined;
+    ModelManager_1.ModelManager.LordGymModel = undefined;
+    ModelManager_1.ModelManager.ExploreProgressModel = undefined;
+    ModelManager_1.ModelManager.ExploreLevelModel = undefined;
+    ModelManager_1.ModelManager.SignalDecodeModel = undefined;
+    ModelManager_1.ModelManager.ItemDeliverModel = undefined;
+    ModelManager_1.ModelManager.KuroSdkModel = undefined;
+    ModelManager_1.ModelManager.VisionCaptureModel = undefined;
+    ModelManager_1.ModelManager.FragmentMemoryModel = undefined;
+    ModelManager_1.ModelManager.RoleSelectModel = undefined;
+    ModelManager_1.ModelManager.RechargeModel = undefined;
+    ModelManager_1.ModelManager.PortalModel = undefined;
+    ModelManager_1.ModelManager.BossRushModel = undefined;
+    ModelManager_1.ModelManager.TowerDefenseModel = undefined;
+    ModelManager_1.ModelManager.AlertMarkModel = undefined;
+    ModelManager_1.ModelManager.ActivityRegressModel = undefined;
+    ModelManager_1.ModelManager.ScreenEffectModel = undefined;
+    ModelManager_1.ModelManager.WeaponSkinModel = undefined;
+    ModelManager_1.ModelManager.MonsterGroupPatrolModel = undefined;
+    ModelManager_1.ModelManager.LevelPlayReportModel = undefined;
+    ModelManager_1.ModelManager.ActivityDirectTrainModel = undefined;
+    ModelManager_1.ModelManager.VisionRecommendModel = undefined;
+    ModelManager_1.ModelManager.FishingQteModel = undefined;
+    ModelManager_1.ModelManager.ShipTowerModel = undefined;
+    ModelManager_1.ModelManager.MoraleModel = undefined;
+    ModelManager_1.ModelManager.VisionEquipGroupModel = undefined;
+    ModelManager_1.ModelManager.SoundAreaPlayTipsModel = undefined;
+    ModelManager_1.ModelManager.GravityFlipModel = undefined;
+    ModelManager_1.ModelManager.BabelTowerModel = undefined;
+    ModelManager_1.ModelManager.PreDownloadModel = undefined;
+    ModelManager_1.ModelManager.DangoAbyssModel = undefined;
+    ModelManager_1.ModelManager.CiacconaGalModel = undefined;
+    ModelManager_1.ModelManager.SceneBattleInteractModel = undefined;
+    ModelManager_1.ModelManager.QuestReviewModel = undefined;
+    return !(ModelManager_1.ModelManager.LevelPrefabConfigModel = undefined);
   }
 }
 exports.ModelManagerCreator = ModelManagerCreator;

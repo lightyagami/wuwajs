@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckCollectionShopState = void 0;
+  value: true
+});
+exports.FbCheckCollectionShopState = undefined;
 class FbCheckCollectionShopState {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.dJh = !1, this.mJh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.dJh = false;
+    this.mJh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckCollectionShopState(t)
+    if (t) {
+      return new FbCheckCollectionShopState(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ShopType() {
-    return this.dJh || (this.dJh = !0, this.mJh = this.FbDataInternal.shopType()), this.mJh
+    if (!this.dJh) {
+      this.dJh = true;
+      this.mJh = this.FbDataInternal.shopType();
+    }
+    return this.mJh;
   }
 }
 exports.FbCheckCollectionShopState = FbCheckCollectionShopState;

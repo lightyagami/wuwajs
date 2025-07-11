@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DurationInteract = void 0;
+  value: true
+});
+exports.DurationInteract = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class DurationInteract {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, r) {
-    return this.bb_pos = t, this.bb = r, this
+    this.bb_pos = t;
+    this.bb = r;
+    return this;
   }
   static getRootAsDurationInteract(t, r) {
-    return (r || new DurationInteract).__init(t.readInt32(t.position()) + t.position(), t)
+    return (r || new DurationInteract()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsDurationInteract(t, r) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (r || new DurationInteract).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (r || new DurationInteract()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   duration() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.readFloat32(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readFloat32(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   static startDurationInteract(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addDuration(t, r) {
-    t.addFieldFloat32(0, r, 0)
+    t.addFieldFloat32(0, r, 0);
   }
   static endDurationInteract(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createDurationInteract(t, r) {
-    return DurationInteract.startDurationInteract(t), DurationInteract.addDuration(t, r), DurationInteract.endDurationInteract(t)
+    DurationInteract.startDurationInteract(t);
+    DurationInteract.addDuration(t, r);
+    return DurationInteract.endDurationInteract(t);
   }
 }
 exports.DurationInteract = DurationInteract;

@@ -1,52 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionQuestStepState = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionQuestStepState = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionQuestStepState extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, r) {
-    if (0 === e.LimitParams.size) return Log_1.Log.CheckError() && Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不应该为空", ["inConditionInfo.Id", e.Id]), !1;
-    var o = Number(e.LimitParams.get("任务Id")),
-      a = Number(e.LimitParams.get("步骤Id")),
-      n = Number(e.LimitParams.get("状态"));
-    if (isNaN(o) || isNaN(n) || isNaN(a)) return Log_1.Log.CheckError() && Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不合法", ["inConditionInfo.Id", e.Id]), !1;
+    if (e.LimitParams.size === 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不应该为空", ["inConditionInfo.Id", e.Id]);
+      }
+      return false;
+    }
+    var o = Number(e.LimitParams.get("任务Id"));
+    var a = Number(e.LimitParams.get("步骤Id"));
+    var n = Number(e.LimitParams.get("状态"));
+    if (isNaN(o) || isNaN(n) || isNaN(a)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不合法", ["inConditionInfo.Id", e.Id]);
+      }
+      return false;
+    }
     switch (n) {
       case 0:
         var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(o);
-        return 3 === t ? !1 : t <= 2 || ((t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(o)) ? !(t = t.GetNode(a)) || t.Status < Protocol_1.Aki.Protocol.BNs._5n : (Log_1.Log.CheckError() && Log_1.Log.Error("Quest", 18, "任务步骤条件检测：找不到进行中的任务"), !1));
+        if (t === 3) {
+          return false;
+        } else {
+          return t <= 2 || ((t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(o)) ? !(t = t.GetNode(a)) || t.Status < Protocol_1.Aki.Protocol.BNs._5n : (Log_1.Log.CheckError() && Log_1.Log.Error("Quest", 18, "任务步骤条件检测：找不到进行中的任务"), false));
+        }
       case 1:
-        return !1;
+        return false;
       case 2:
         var t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(o);
-        return t?.IsProgressing ? !!(t = t.GetNode(a)) && t.IsProcessing : !1;
+        if (t?.IsProgressing) {
+          return !!(t = t.GetNode(a)) && t.IsProcessing;
+        } else {
+          return false;
+        }
       case 3:
-        return !1;
+        return false;
       case 4:
         return ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(o);
       default:
-        return !1
+        return false;
     }
   }
   CheckNew(e, r) {
     var o = e;
-    if (!o) return !1;
-    let a = !1;
+    if (!o) {
+      return false;
+    }
+    let a = false;
     switch (ModelManager_1.ModelManager.QuestNewModel.GetQuestState(o.QuestId)) {
       case 0:
       case 1:
-        a = !1;
+        a = false;
         break;
       case 3:
-        a = !0;
+        a = true;
         break;
       case 2:
         var n = ModelManager_1.ModelManager.QuestNewModel.GetQuest(o.QuestId)?.GetNode(o.ChildQuestId);
-        a = n?.IsSuccess ?? !1
+        a = n?.IsSuccess ?? false;
     }
-    return "Eq" === (o.Compare ?? "Eq") ? a : !a
+    if ((o.Compare ?? "Eq") === "Eq") {
+      return a;
+    } else {
+      return !a;
+    }
   }
 }
 exports.LevelConditionQuestStepState = LevelConditionQuestStepState;

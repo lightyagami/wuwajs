@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbOpenSkiConfig = void 0;
+  value: true
+});
+exports.FbOpenSkiConfig = undefined;
 const UnionTargetEntityHelper_1 = require("./UnionTargetEntityHelper");
 class FbOpenSkiConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.ldh = !1, this.NHo = void 0, this.Qbh = !1, this.Kbh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.ldh = false;
+    this.NHo = undefined;
+    this.Qbh = false;
+    this.Kbh = undefined;
   }
   static Create(t) {
-    if (t) return new FbOpenSkiConfig(t)
+    if (t) {
+      return new FbOpenSkiConfig(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Target() {
-    var t, i;
-    return !this.ldh && (this.ldh = !0, t = this.FbDataInternal.targetType(), i = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t)) && (this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(i))), this.NHo
+    var t;
+    var i;
+    if (!this.ldh && (this.ldh = true, t = this.FbDataInternal.targetType(), i = UnionTargetEntityHelper_1.UnionTargetEntityHelper.GetUnionTargetEntityObject(t))) {
+      this.NHo = UnionTargetEntityHelper_1.UnionTargetEntityHelper.ReadUnionTargetEntity(t, this.FbDataInternal.target(i));
+    }
+    return this.NHo;
   }
   get SkiConfig() {
-    return this.Qbh || (this.Qbh = !0, this.Kbh = this.FbDataInternal.skiConfig()), this.Kbh
+    if (!this.Qbh) {
+      this.Qbh = true;
+      this.Kbh = this.FbDataInternal.skiConfig();
+    }
+    return this.Kbh;
   }
 }
 exports.FbOpenSkiConfig = FbOpenSkiConfig;

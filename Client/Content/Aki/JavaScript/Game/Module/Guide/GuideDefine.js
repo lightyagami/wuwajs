@@ -1,9 +1,10 @@
 "use strict";
 
 function isCustomTabViewForGuide(e) {
-  return void 0 !== e.GetViewName
+  return e.GetViewName !== undefined;
 }
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.isCustomTabViewForGuide = void 0, exports.isCustomTabViewForGuide = isCustomTabViewForGuide;
-//# sourceMappingURL=GuideDefine.js.map
+  value: true
+});
+exports.isCustomTabViewForGuide = undefined;
+exports.isCustomTabViewForGuide = isCustomTabViewForGuide; //# sourceMappingURL=GuideDefine.js.map

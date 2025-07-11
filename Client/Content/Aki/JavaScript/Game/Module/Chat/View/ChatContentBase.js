@@ -1,13 +1,20 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChatContentBase = void 0;
+  value: true
+});
+exports.ChatContentBase = undefined;
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class ChatContentBase extends UiPanelBase_1.UiPanelBase {
   constructor(e, s, t, a) {
-    super(), this.ChatContentData = t, this.aSt = a, this.CreateThenShowByResourceIdAsync(e, s, !0).then(() => {
-      this.aSt && this.aSt(this)
-    }, () => {})
+    super();
+    this.ChatContentData = t;
+    this.aSt = a;
+    this.CreateThenShowByResourceIdAsync(e, s, true).then(() => {
+      if (this.aSt) {
+        this.aSt(this);
+      }
+    }, () => {});
   }
 }
 exports.ChatContentBase = ChatContentBase;

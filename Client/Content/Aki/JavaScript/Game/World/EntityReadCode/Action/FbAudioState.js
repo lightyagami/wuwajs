@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAudioState = void 0;
+  value: true
+});
+exports.FbAudioState = undefined;
 class FbAudioState {
   constructor(t) {
-    this.FbDataInternal = t, this.XAh = !1, this.p$a = void 0, this.Bch = !1, this.Cbo = void 0
+    this.FbDataInternal = t;
+    this.XAh = false;
+    this.p$a = undefined;
+    this.Bch = false;
+    this.Cbo = undefined;
   }
   static Create(t) {
-    if (t) return new FbAudioState(t)
+    if (t) {
+      return new FbAudioState(t);
+    }
   }
   get Group() {
-    return this.XAh || (this.XAh = !0, this.p$a = this.FbDataInternal.group()), this.p$a
+    if (!this.XAh) {
+      this.XAh = true;
+      this.p$a = this.FbDataInternal.group();
+    }
+    return this.p$a;
   }
   get State() {
-    return this.Bch || (this.Bch = !0, this.Cbo = this.FbDataInternal.state()), this.Cbo
+    if (!this.Bch) {
+      this.Bch = true;
+      this.Cbo = this.FbDataInternal.state();
+    }
+    return this.Cbo;
   }
 }
 exports.FbAudioState = FbAudioState;

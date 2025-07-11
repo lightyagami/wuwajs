@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TeamChatRoom = void 0;
+  value: true
+});
+exports.TeamChatRoom = undefined;
 const TeamChatRoomBase_1 = require("./TeamChatRoomBase");
 class TeamChatRoom extends TeamChatRoomBase_1.TeamChatRoomBase {
   constructor(e) {
-    super(2, e)
+    super(2, e);
   }
   GetUniqueId() {
-    return 2
+    return 2;
   }
 }
 exports.TeamChatRoom = TeamChatRoom;

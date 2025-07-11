@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSequenceTrackControlPoint = void 0;
+  value: true
+});
+exports.FbSequenceTrackControlPoint = undefined;
 class FbSequenceTrackControlPoint {
   constructor(t) {
-    this.FbDataInternal = t, this.eLh = !1, this.tLh = void 0
+    this.FbDataInternal = t;
+    this.eLh = false;
+    this.tLh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSequenceTrackControlPoint(t)
+    if (t) {
+      return new FbSequenceTrackControlPoint(t);
+    }
   }
   get Mark() {
-    return this.eLh || (this.eLh = !0, this.tLh = this.FbDataInternal.mark()), this.tLh
+    if (!this.eLh) {
+      this.eLh = true;
+      this.tLh = this.FbDataInternal.mark();
+    }
+    return this.tLh;
   }
 }
 exports.FbSequenceTrackControlPoint = FbSequenceTrackControlPoint;

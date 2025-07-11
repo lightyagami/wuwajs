@@ -1,14 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DailyQuest = void 0;
+  value: true
+});
+exports.DailyQuest = undefined;
 const Quest_1 = require("./Quest");
 class DailyQuest extends Quest_1.Quest {
   constructor() {
-    super(...arguments), this.TriggerQuestTips = !1
+    super(...arguments);
+    this.TriggerQuestTips = false;
   }
   SetUpBehaviorTree(e) {
-    super.SetUpBehaviorTree(e), e.SetMapMarkResident(!0)
+    super.SetUpBehaviorTree(e);
+    e.SetMapMarkResident(true);
   }
 }
 exports.DailyQuest = DailyQuest;

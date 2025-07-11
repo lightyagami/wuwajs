@@ -1,82 +1,136 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LoadingShowData = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.LoadingShowData = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class LoadingShowData {
   constructor() {
-    this.uvi = [], this.cvi = 0, this.mvi = 0, this.dvi = [], this.hLt = 0, this.PGc = 0, this._Ui = 0, this.L9e = 0
+    this.uvi = [];
+    this.cvi = 0;
+    this.mvi = 0;
+    this.dvi = [];
+    this.hLt = 0;
+    this.PGc = 0;
+    this._Ui = 0;
+    this.L9e = 0;
   }
   Initialize() {
-    this.Cvi(), this.dvi = [...this.uvi], this.mvi = this.dvi.reduce((t, e) => t + e.Weight, 0)
+    this.Cvi();
+    this.dvi = [...this.uvi];
+    this.mvi = this.dvi.reduce((t, e) => t + e.Weight, 0);
   }
   gvi(t) {
-    var e = new Set;
-    for (const i of t) e.add(i.ImageId);
-    var t = Array.from(e.values()),
-      r = Math.random();
-    return t[Math.round(r * (t.length - 1))]
+    var e = new Set();
+    for (const i of t) {
+      e.add(i.ImageId);
+    }
+    var t = Array.from(e.values());
+    var r = Math.random();
+    return t[Math.round(r * (t.length - 1))];
   }
   Cvi() {
     this.DGc();
-    var t = [],
-      e = this.xGc(),
-      r = (e && 0 !== e.length ? t.push(...e) : t.push(...this.UGc()), []);
-    for (const i of t) r.push(...ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTextList(i));
-    this.cvi = this.gvi(r), this.uvi = [];
-    for (const a of r) a.ImageId === this.cvi && this.uvi.push(a)
+    var t = [];
+    var e = this.xGc();
+    if (e && e.length !== 0) {
+      t.push(...e);
+    } else {
+      t.push(...this.UGc());
+    }
+    var r = [];
+    for (const i of t) {
+      r.push(...ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTextList(i));
+    }
+    this.cvi = this.gvi(r);
+    this.uvi = [];
+    for (const a of r) {
+      if (a.ImageId === this.cvi) {
+        this.uvi.push(a);
+      }
+    }
   }
   xGc() {
     var t = ModelManager_1.ModelManager.LoadingModel.GetLoadingConfigId();
-    if (t && 0 !== t.length) {
-      var e, r, i = [];
-      for (const a of ConfigManager_1.ConfigManager.LoadingConfig.GetLevelArea()) 1 === a.Type && (e = this.PGc >= a.LevelRange[0] && this.PGc <= a.LevelRange[1], r = t.includes(a.Id), e && r) && i.push(a.Id);
-      return i
+    if (t && t.length !== 0) {
+      var e;
+      var r;
+      var i = [];
+      for (const a of ConfigManager_1.ConfigManager.LoadingConfig.GetLevelArea()) {
+        if (a.Type === 1 && (e = this.PGc >= a.LevelRange[0] && this.PGc <= a.LevelRange[1], r = t.includes(a.Id), e && r)) {
+          i.push(a.Id);
+        }
+      }
+      return i;
     }
   }
   DGc() {
     var t;
-    this.PGc = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerLevel(), this._Ui = ModelManager_1.ModelManager.GameModeModel.MapId, this.L9e = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(), 0 !== ModelManager_1.ModelManager.LoadingModel.TargetTeleportId && void 0 !== ModelManager_1.ModelManager.LoadingModel.TargetTeleportId && (t = ConfigManager_1.ConfigManager.MapConfig.GetTeleportConfigById(ModelManager_1.ModelManager.LoadingModel.TargetTeleportId), ModelManager_1.ModelManager.LoadingModel.TargetTeleportId = 0, t) && void 0 !== (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(t.TeleportEntityConfigId, t.MapId)) && (this.L9e = t.AreaId)
+    this.PGc = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerLevel();
+    this._Ui = ModelManager_1.ModelManager.GameModeModel.MapId;
+    this.L9e = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
+    if (ModelManager_1.ModelManager.LoadingModel.TargetTeleportId !== 0 && ModelManager_1.ModelManager.LoadingModel.TargetTeleportId !== undefined && (t = ConfigManager_1.ConfigManager.MapConfig.GetTeleportConfigById(ModelManager_1.ModelManager.LoadingModel.TargetTeleportId), ModelManager_1.ModelManager.LoadingModel.TargetTeleportId = 0, t) && (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(t.TeleportEntityConfigId, t.MapId)) !== undefined) {
+      this.L9e = t.AreaId;
+    }
   }
   UGc() {
-    var t, e, r, i, a = ConfigManager_1.ConfigManager.LoadingConfig.GetLevelArea(),
-      o = [],
-      s = [];
-    for (const M of a) 1 !== M.Id && 0 === M.Type && (t = this.PGc >= M.LevelRange[0] && this.PGc <= M.LevelRange[1], e = M.MapId.includes(this._Ui), r = M.AreaId.includes(this.L9e), i = 0 === M.ConditionGroup || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(M.ConditionGroup.toString(), void 0), t && e && i && o.push(M), t && r && i) && s.push(M);
-    var n = 0 < o.length ? o : s,
-      h = n.filter(t => t.IsLimitShow),
-      n = n.filter(t => !t.IsLimitShow);
-    if (0 < h.length && 0 < h.filter(t => {
-        t = ModelManager_1.ModelManager.ActivityModel?.GetActivityById(t.ActivityId);
-        return void 0 !== t && t.CheckIfInOpenTime()
-      }).length) return h.map(t => t.Id);
-    return 0 === n.length ? [a[0].Id] : n.map(t => t.Id)
+    var t;
+    var e;
+    var r;
+    var i;
+    var a = ConfigManager_1.ConfigManager.LoadingConfig.GetLevelArea();
+    var o = [];
+    var s = [];
+    for (const M of a) {
+      if (M.Id !== 1 && M.Type === 0 && (t = this.PGc >= M.LevelRange[0] && this.PGc <= M.LevelRange[1], e = M.MapId.includes(this._Ui), r = M.AreaId.includes(this.L9e), i = M.ConditionGroup === 0 || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(M.ConditionGroup.toString(), undefined), t && e && i && o.push(M), t && r && i)) {
+        s.push(M);
+      }
+    }
+    var n = o.length > 0 ? o : s;
+    var h = n.filter(t => t.IsLimitShow);
+    var n = n.filter(t => !t.IsLimitShow);
+    if (h.length > 0 && h.filter(t => {
+      t = ModelManager_1.ModelManager.ActivityModel?.GetActivityById(t.ActivityId);
+      return t !== undefined && t.CheckIfInOpenTime();
+    }).length > 0) {
+      return h.map(t => t.Id);
+    }
+    if (n.length === 0) {
+      return [a[0].Id];
+    } else {
+      return n.map(t => t.Id);
+    }
   }
   pvi() {
     let e = this.mvi * Math.random();
     for (let t = 0; t < this.dvi.length; ++t) {
       var r = this.dvi[t];
-      if (!(e > r.Weight)) return t;
-      e -= r.Weight
+      if (!(e > r.Weight)) {
+        return t;
+      }
+      e -= r.Weight;
     }
-    return 0
+    return 0;
   }
   GetNextTip() {
-    if (0 !== this.uvi.length) {
-      if (1 === this.uvi.length) return this.uvi[0];
+    if (this.uvi.length !== 0) {
+      if (this.uvi.length === 1) {
+        return this.uvi[0];
+      }
       let t = -1;
-      for (;
-        (t = this.pvi()) === this.hLt;);
-      return this.hLt = t, this.uvi[this.hLt]
+      while ((t = this.pvi()) === this.hLt);
+      this.hLt = t;
+      return this.uvi[this.hLt];
     }
   }
   GetImageId() {
-    return this.cvi
+    return this.cvi;
   }
   GetTipCount() {
-    return this.uvi.length
+    return this.uvi.length;
   }
 }
 exports.LoadingShowData = LoadingShowData;

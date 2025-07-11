@@ -1,56 +1,82 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivitySubMapExploreItem = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  SmallItemGrid_1 = require("../../../Common/SmallItemGrid/SmallItemGrid"),
-  GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
+  value: true
+});
+exports.ActivitySubMapExploreItem = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const SmallItemGrid_1 = require("../../../Common/SmallItemGrid/SmallItemGrid");
+const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 class ActivitySubMapExploreItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super(...arguments), this.fGt = void 0, this.ClickCallBack = void 0, this.qsi = void 0, this.GetRewardCallBack = void 0, this.hoc = () => {
+    super(...arguments);
+    this.fGt = undefined;
+    this.ClickCallBack = undefined;
+    this.qsi = undefined;
+    this.GetRewardCallBack = undefined;
+    this.hoc = () => {
       var t;
-      this.fGt.IsCanGet ? this.rJs() : (t = this.fGt.RewardItemId, ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t))
-    }, this.rJs = () => {
-      this.fGt.IsComplete || (this.qA_()?.SetToggleStateForce(1), this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, !1), this.fGt.IsCanGet && this.GetRewardCallBack?.(this.fGt))
-    }
+      if (this.fGt.IsCanGet) {
+        this.rJs();
+      } else {
+        t = this.fGt.RewardItemId;
+        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t);
+      }
+    };
+    this.rJs = () => {
+      if (!this.fGt.IsComplete) {
+        this.qA_()?.SetToggleStateForce(1);
+        this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
+        if (this.fGt.IsCanGet) {
+          this.GetRewardCallBack?.(this.fGt);
+        }
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIItem],
-      [2, UE.UITexture],
-      [3, UE.UIText],
-      [4, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.rJs]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.rJs]];
   }
   async OnBeforeStartAsync() {
-    await super.OnBeforeStartAsync(), this.qsi = new SmallItemGrid_1.SmallItemGrid, this.qsi.Initialize(this.GetItem(1).GetOwner()), this.qsi.BindOnExtendToggleClicked(this.hoc), this.qsi.BindOnCanExecuteChange(() => !1)
+    await super.OnBeforeStartAsync();
+    this.qsi = new SmallItemGrid_1.SmallItemGrid();
+    this.qsi.Initialize(this.GetItem(1).GetOwner());
+    this.qsi.BindOnExtendToggleClicked(this.hoc);
+    this.qsi.BindOnCanExecuteChange(() => false);
   }
   Refresh(t) {
     this.fGt = t;
-    t = this.fGt.RewardDesc, t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t), this.GetText(3).SetText(t), this.qsi.Apply({
+    t = this.fGt.RewardDesc;
+    t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t);
+    this.GetText(3).SetText(t);
+    this.qsi.Apply({
       Data: this.fGt,
       Type: 4,
       ItemConfigId: this.fGt.RewardItemId,
       BottomText: this.fGt.RewardItemCount?.toString() ?? "",
       IsReceivedVisible: this.fGt.IsComplete,
       IsReceivableVisible: this.fGt.IsCanGet
-    }), this.GetTexture(2).SetUIActive(this.fGt.IsCanGet), this.GetItem(4).SetUIActive(this.fGt.IsCanGet), t = this.fGt.IsComplete, t = t ? 2 : 0;
-    this.qA_()?.SetToggleStateForce(t), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "", ["", this.fGt])
+    });
+    this.GetTexture(2).SetUIActive(this.fGt.IsCanGet);
+    this.GetItem(4).SetUIActive(this.fGt.IsCanGet);
+    t = this.fGt.IsComplete;
+    t = t ? 2 : 0;
+    this.qA_()?.SetToggleStateForce(t);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ExploreProgress", 69, "", ["", this.fGt]);
+    }
   }
   qA_() {
-    return this.GetExtendToggle(0)
+    return this.GetExtendToggle(0);
   }
   OnSelected(t) {
-    this.qA_()?.SetToggleStateForce(1)
+    this.qA_()?.SetToggleStateForce(1);
   }
   OnDeselected(t) {
-    this.qA_()?.SetToggleStateForce(0)
+    this.qA_()?.SetToggleStateForce(0);
   }
 }
 exports.ActivitySubMapExploreItem = ActivitySubMapExploreItem;

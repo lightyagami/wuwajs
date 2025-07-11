@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbAddOrSubAlertValueChangeSpeed = void 0;
+  value: true
+});
+exports.FbAddOrSubAlertValueChangeSpeed = undefined;
 class FbAddOrSubAlertValueChangeSpeed {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.zSh = !1, this.JSh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.zSh = false;
+    this.JSh = 0;
   }
   static Create(t) {
-    if (t) return new FbAddOrSubAlertValueChangeSpeed(t)
+    if (t) {
+      return new FbAddOrSubAlertValueChangeSpeed(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get DeltaValue() {
-    return this.zSh || (this.zSh = !0, this.JSh = this.FbDataInternal.deltaValue()), this.JSh
+    if (!this.zSh) {
+      this.zSh = true;
+      this.JSh = this.FbDataInternal.deltaValue();
+    }
+    return this.JSh;
   }
 }
 exports.FbAddOrSubAlertValueChangeSpeed = FbAddOrSubAlertValueChangeSpeed;

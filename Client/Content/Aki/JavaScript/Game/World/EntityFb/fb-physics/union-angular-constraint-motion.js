@@ -1,41 +1,46 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.unionListToUnionAngularConstraintMotion = exports.unionToUnionAngularConstraintMotion = exports.UnionAngularConstraintMotion = void 0;
-const acm_free_js_1 = require("../fb-physics/acm-free.js"),
-  acm_limited_js_1 = require("../fb-physics/acm-limited.js"),
-  acm_locked_js_1 = require("../fb-physics/acm-locked.js");
-var UnionAngularConstraintMotion;
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.unionListToUnionAngularConstraintMotion = exports.unionToUnionAngularConstraintMotion = exports.UnionAngularConstraintMotion = undefined;
+const acm_free_js_1 = require("../fb-physics/acm-free.js");
+const acm_limited_js_1 = require("../fb-physics/acm-limited.js");
+const acm_locked_js_1 = require("../fb-physics/acm-locked.js");
+var UnionAngularConstraintMotion;
 function unionToUnionAngularConstraintMotion(n, e) {
   switch (UnionAngularConstraintMotion[n]) {
     case "NONE":
       return;
     case "AcmFree":
-      return e(new acm_free_js_1.AcmFree);
+      return e(new acm_free_js_1.AcmFree());
     case "AcmLimited":
-      return e(new acm_limited_js_1.AcmLimited);
+      return e(new acm_limited_js_1.AcmLimited());
     case "AcmLocked":
-      return e(new acm_locked_js_1.AcmLocked);
+      return e(new acm_locked_js_1.AcmLocked());
     default:
-      return
+      return;
   }
 }
-
 function unionListToUnionAngularConstraintMotion(n, e, t) {
   switch (UnionAngularConstraintMotion[n]) {
     case "NONE":
       return;
     case "AcmFree":
-      return e(t, new acm_free_js_1.AcmFree);
+      return e(t, new acm_free_js_1.AcmFree());
     case "AcmLimited":
-      return e(t, new acm_limited_js_1.AcmLimited);
+      return e(t, new acm_limited_js_1.AcmLimited());
     case "AcmLocked":
-      return e(t, new acm_locked_js_1.AcmLocked);
+      return e(t, new acm_locked_js_1.AcmLocked());
     default:
-      return
+      return;
   }
-}! function(n) {
-  n[n.NONE = 0] = "NONE", n[n.AcmFree = 1] = "AcmFree", n[n.AcmLimited = 2] = "AcmLimited", n[n.AcmLocked = 3] = "AcmLocked"
-}(UnionAngularConstraintMotion = exports.UnionAngularConstraintMotion || (exports.UnionAngularConstraintMotion = {})), exports.unionToUnionAngularConstraintMotion = unionToUnionAngularConstraintMotion, exports.unionListToUnionAngularConstraintMotion = unionListToUnionAngularConstraintMotion;
-//# sourceMappingURL=union-angular-constraint-motion.js.map
+}
+(function (n) {
+  n[n.NONE = 0] = "NONE";
+  n[n.AcmFree = 1] = "AcmFree";
+  n[n.AcmLimited = 2] = "AcmLimited";
+  n[n.AcmLocked = 3] = "AcmLocked";
+})(UnionAngularConstraintMotion = exports.UnionAngularConstraintMotion ||= {});
+exports.unionToUnionAngularConstraintMotion = unionToUnionAngularConstraintMotion;
+exports.unionListToUnionAngularConstraintMotion = unionListToUnionAngularConstraintMotion; //# sourceMappingURL=union-angular-constraint-motion.js.map

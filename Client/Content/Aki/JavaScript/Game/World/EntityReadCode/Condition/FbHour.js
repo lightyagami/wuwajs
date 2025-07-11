@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHour = void 0;
+  value: true
+});
+exports.FbHour = undefined;
 class FbHour {
   constructor(t) {
-    this.FbDataInternal = t, this.q1h = !1, this.k1h = 0, this.G1h = !1, this.O1h = 0
+    this.FbDataInternal = t;
+    this.q1h = false;
+    this.k1h = 0;
+    this.G1h = false;
+    this.O1h = 0;
   }
   static Create(t) {
-    if (t) return new FbHour(t)
+    if (t) {
+      return new FbHour(t);
+    }
   }
   get Hour() {
-    return this.q1h || (this.q1h = !0, this.k1h = this.FbDataInternal.hour()), this.k1h
+    if (!this.q1h) {
+      this.q1h = true;
+      this.k1h = this.FbDataInternal.hour();
+    }
+    return this.k1h;
   }
   get Min() {
-    return this.G1h || (this.G1h = !0, this.O1h = this.FbDataInternal.min()), this.O1h
+    if (!this.G1h) {
+      this.G1h = true;
+      this.O1h = this.FbDataInternal.min();
+    }
+    return this.O1h;
   }
 }
 exports.FbHour = FbHour;

@@ -1,58 +1,110 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  AudioSystem_1 = require("../../Core/Audio/AudioSystem"),
-  Info_1 = require("../../Core/Common/Info"),
-  Log_1 = require("../../Core/Common/Log"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter"),
-  GlobalData_1 = require("../GlobalData"),
-  ControllerHolder_1 = require("../Manager/ControllerHolder"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  EffectUtil_1 = require("../Utils/EffectUtil"),
-  DEFAULT_FADE_DURATION = 500;
+const UE = require("ue");
+const AudioSystem_1 = require("../../Core/Audio/AudioSystem");
+const Info_1 = require("../../Core/Common/Info");
+const Log_1 = require("../../Core/Common/Log");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const GlobalData_1 = require("../GlobalData");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
+const ModelManager_1 = require("../Manager/ModelManager");
+const EffectUtil_1 = require("../Utils/EffectUtil");
+const DEFAULT_FADE_DURATION = 500;
 class TsAnimNotifyStateAudioEvent extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.AudioEvent = void 0, this.SocketName = void 0, this.Follow = !0, this.KeepAlive = !1, this.FadeDuration = DEFAULT_FADE_DURATION, this.FadeCurve = 4, this.TrailingAudioEvent = void 0, this.TagProbabilityInfo = void 0, this.NotifyDuration = 0, this.HandleMap = new UE.TMap
+    super(...arguments);
+    this.AudioEvent = undefined;
+    this.SocketName = undefined;
+    this.Follow = true;
+    this.KeepAlive = false;
+    this.FadeDuration = DEFAULT_FADE_DURATION;
+    this.FadeCurve = 4;
+    this.TrailingAudioEvent = undefined;
+    this.TagProbabilityInfo = undefined;
+    this.NotifyDuration = 0;
+    this.HandleMap = new UE.TMap();
   }
   Constructor() {
-    this.NotifyDuration = 0
+    this.NotifyDuration = 0;
   }
   GetNotifyName() {
-    return this.AudioEvent ? "AudioEvent: " + (0, AudioSystem_1.parseAudioEventPath)(this.AudioEvent) : "AudioEvent"
+    if (this.AudioEvent) {
+      return "AudioEvent: " + (0, AudioSystem_1.parseAudioEventPath)(this.AudioEvent);
+    } else {
+      return "AudioEvent";
+    }
   }
   K2_NotifyBegin(e, i, o) {
-    if (this.NotifyDuration = o, !this.AudioEvent) return Log_1.Log.CheckWarn() && Log_1.Log.Warn("Audio", 56, "[Game.AnimNotifyState] 无效的 AudioEvent", ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(i)]), !1;
+    this.NotifyDuration = o;
+    if (!this.AudioEvent) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Audio", 56, "[Game.AnimNotifyState] 无效的 AudioEvent", ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(i)]);
+      }
+      return false;
+    }
     let t = this.AudioEvent.ToAssetPathName();
     o = e.GetOuter();
     if (Info_1.Info.IsGameRunning()) {
       if (o instanceof TsBaseCharacter_1.default) {
-        if ((o.GetEntityNoBlueprint()?.GetComponent(205))?.HasTag(1654452863)) return !1;
+        if (o.GetEntityNoBlueprint()?.GetComponent(205)?.HasTag(1654452863)) {
+          return false;
+        }
         o = o.CharacterActorComponent?.GetReplaceEffect(t);
-        t = o ?? t
+        t = o ?? t;
       }
-    } else t = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(t);
-    var s, o = this.AudioEvent && (0, AudioSystem_1.parseAudioEventPath)(t);
-    if (o) {
-      let t = !0;
-      if (!(t = e.GetOwner()?.IsA(UE.TsBaseCharacter_C.StaticClass()) && (s = e.GetOwner().CharacterActorComponent?.Entity) ? ModelManager_1.ModelManager.GameAudioModel?.CheckAudioProbabilityInfo(s.Id, o, this.TagProbabilityInfo) ?? !1 : t)) return !0;
-      this.PostAudioEvent(o, e, i)
+    } else {
+      t = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(t);
     }
-    return !0
+    var r;
+    var o = this.AudioEvent && (0, AudioSystem_1.parseAudioEventPath)(t);
+    if (o) {
+      let t = true;
+      if (!(t = e.GetOwner()?.IsA(UE.TsBaseCharacter_C.StaticClass()) && (r = e.GetOwner().CharacterActorComponent?.Entity) ? ModelManager_1.ModelManager.GameAudioModel?.CheckAudioProbabilityInfo(r.Id, o, this.TagProbabilityInfo) ?? false : t)) {
+        return true;
+      }
+      this.PostAudioEvent(o, e, i);
+    }
+    return true;
   }
   K2_NotifyEnd(t, e) {
-    var i, o;
-    return !(this.KeepAlive && this.GetCurrentTriggerOffsetInThisNotifyTick() > this.NotifyDuration || ((i = (o = t.GetOwner()) && this.HandleMap.Get(o)) && (AudioSystem_1.AudioSystem.ExecuteAction(i, 0, {
+    var i;
+    var o;
+    return (!this.KeepAlive || !(this.GetCurrentTriggerOffsetInThisNotifyTick() > this.NotifyDuration)) && !((i = (o = t.GetOwner()) && this.HandleMap.Get(o)) && (AudioSystem_1.AudioSystem.ExecuteAction(i, 0, {
       TransitionDuration: this.FadeDuration,
       TransitionFadeCurve: this.FadeCurve
-    }), this.HandleMap.Remove(o), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 56, "[Game.AnimNotifyState] StopEvent", ["Handle", i], ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(e)], ["Owner", t.GetOwner()?.GetName()]), o = this.TrailingAudioEvent && (0, AudioSystem_1.parseAudioEventPath)(this.TrailingAudioEvent)) && this.PostAudioEvent(o, t, e), 0))
+    }), this.HandleMap.Remove(o), ControllerHolder_1.ControllerHolder.GameAudioController.RemoveEvent(o, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 56, "[Game.AnimNotifyState] StopEvent", ["Handle", i], ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(e)], ["Owner", t.GetOwner()?.GetName()]), o = this.TrailingAudioEvent && (0, AudioSystem_1.parseAudioEventPath)(this.TrailingAudioEvent)) && this.PostAudioEvent(o, t, e), 0);
   }
   PostAudioEvent(t, e, i) {
-    var o, s = e.GetOwner();
-    if (s?.IsValid()) return GlobalData_1.GlobalData.GameInstance ? void(this.Follow ? (o = ControllerHolder_1.ControllerHolder.GameAudioController.GetAkComponent(s, this.SocketName))?.IsValid() && (o = AudioSystem_1.AudioSystem.PostEvent(t, o), this.HandleMap.Set(s, o), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("Audio", 56, "[Game.AnimNotifyState] PostEvent", ["EventName", t], ["Handle", o], ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(i)], ["Owner", e.GetOwner()?.GetName()]) : (o = e.D_GetSocketTransform(this.SocketName), o = AudioSystem_1.AudioSystem.PostEvent(t, o), this.HandleMap.Set(s, o), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 56, "[Game.AnimNotifyState] PostEvent", ["EventName", t], ["Handle", o], ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(i)], ["Owner", e.GetOwner()?.GetName()]))) : (o = AudioSystem_1.AudioSystem.GetAkComponent(s, {
-      SocketName: this.SocketName
-    }))?.IsValid() ? (i = AudioSystem_1.AudioSystem.PostEvent(t, o), void this.HandleMap.Set(s, i)) : void 0
+    var o;
+    var r = e.GetOwner();
+    if (r?.IsValid()) {
+      if (GlobalData_1.GlobalData.GameInstance) {
+        if (this.Follow) {
+          if ((o = ControllerHolder_1.ControllerHolder.GameAudioController.PostEvent(r, t, this.SocketName)) && (this.HandleMap.Set(r, o), Log_1.Log.CheckDebug())) {
+            Log_1.Log.Debug("Audio", 56, "[Game.AnimNotifyState] PostEvent", ["EventName", t], ["Handle", o], ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(i)], ["Owner", e.GetOwner()?.GetName()]);
+          }
+        } else {
+          o = e.D_GetSocketTransform(this.SocketName);
+          o = AudioSystem_1.AudioSystem.PostEvent(t, o);
+          this.HandleMap.Set(r, o);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Audio", 56, "[Game.AnimNotifyState] PostEvent", ["EventName", t], ["Handle", o], ["AnimNotify", this.GetName()], ["AnimSequence", UE.KismetSystemLibrary.GetPathName(i)], ["Owner", e.GetOwner()?.GetName()]);
+          }
+        }
+        return;
+      } else if ((o = AudioSystem_1.AudioSystem.GetAkComponent(r, {
+        SocketName: this.SocketName
+      }))?.IsValid()) {
+        i = AudioSystem_1.AudioSystem.PostEvent(t, o);
+        this.HandleMap.Set(r, i);
+        return;
+      } else {
+        return undefined;
+      }
+    }
   }
 }
 exports.default = TsAnimNotifyStateAudioEvent;

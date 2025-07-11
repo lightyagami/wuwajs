@@ -1,173 +1,256 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaHandCardProxy = void 0;
-const CustomPromise_1 = require("../../../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../../../Core/Common/Log"),
-  TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem"),
-  PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
+  value: true
+});
+exports.PhantomArenaHandCardProxy = undefined;
+const CustomPromise_1 = require("../../../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
+const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaHandCardProxy {
   constructor() {
-    this.li1 = void 0, this.AreaItem = void 0, this.Area = void 0, this.WD_ = !1, this.Jfu = -1, this.IsInit = !1
+    this.wi1 = undefined;
+    this.AreaItem = undefined;
+    this.Area = undefined;
+    this.WD_ = false;
+    this.T2u = -1;
+    this.IsInit = false;
   }
   Init(t, i, s) {
-    this.li1 = t, this.AreaItem = i, this.li1.SetCardProxy(this), this.Area = s, this.IsInit = !0
+    this.wi1 = t;
+    this.AreaItem = i;
+    this.wi1.SetCardProxy(this);
+    this.Area = s;
+    this.IsInit = true;
   }
   PointerClickCard(t, i) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "点击手牌"), this.Area.CardClick(t)
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "点击手牌");
+    }
+    this.Area.CardClick(t);
   }
   PointerEnterCard(t) {}
   PointerDownCard(t, i) {
-    this.WD_ = this.Area.IsCanDragCard(), this.WD_ && (Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "按下手牌"), this.li1.RecordLastDragPos(i.pointerPosition))
+    this.WD_ = this.Area.IsCanDragCard();
+    if (this.WD_) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 10, "按下手牌");
+      }
+      this.wi1.RecordLastDragPos(i.pointerPosition);
+    }
   }
   PointerBeginDrag(t, i) {
-    this.WD_ && (Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "开始拖动手牌"), this.Area.CardBeginDragByHand(this.li1), this.li1.PlaySequence("DragUpHandtoTable"), this.LK1())
+    if (this.WD_) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 10, "开始拖动手牌");
+      }
+      this.Area.CardBeginDragByHand(this.wi1);
+      this.wi1.PlaySequence("DragUpHandtoTable");
+      this.SX1();
+    }
   }
   PointerDragCard(t, i) {
-    this.WD_ && (i = i.pointerPosition, this.li1.MoveCard(i), this.Area.CardDraggingByHand(this.li1))
+    if (this.WD_) {
+      i = i.pointerPosition;
+      this.wi1.MoveCard(i);
+      this.Area.CardDraggingByHand(this.wi1);
+    }
   }
   PointerEndDrag(t, i) {
-    this.WD_ && (Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "结束拖动手牌"), i = i.pointerPosition, this.li1.RecordLastDragPos(i), this.Area.CardEndDragByHand(this.li1))
+    if (this.WD_) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 10, "结束拖动手牌");
+      }
+      i = i.pointerPosition;
+      this.wi1.RecordLastDragPos(i);
+      this.Area.CardEndDragByHand(this.wi1);
+    }
   }
   async Remove() {
-    await this.AreaItem.DestroyAsync()
+    await this.AreaItem.DestroyAsync();
   }
   async Clear() {
-    await Promise.all([this.li1.DestroyAsync(), this.AreaItem.DestroyAsync()])
+    await Promise.all([this.wi1.DestroyAsync(), this.AreaItem.DestroyAsync()]);
   }
   async RemoveBySequence() {
-    await this.AreaItem.PlayMoveOutSequence()
+    await this.AreaItem.PlayMoveOutSequence();
   }
   async DissolveByLibrary() {
-    this.li1.PlayStateSequence("SeleClose"), await Promise.all([this.li1.Dissolve(), this.RemoveBySequence()])
+    this.wi1.PlayStateSequence("SeleClose");
+    this.wi1.SetCardProxy(undefined);
+    await Promise.all([this.wi1.Dissolve(), this.RemoveBySequence()]);
   }
   PlayInHandSequence() {
-    this.Area.FunctionalArea.CheckSettingCardPosition(this.li1) ? this.li1.PlayStateSequence("UseStart") : this.li1.PlayStateSequence("UseClose")
+    if (this.Area.FunctionalArea.CheckSettingCardPosition(this.wi1)) {
+      this.wi1.PlayStateSequence("UseStart");
+    } else {
+      this.wi1.PlayStateSequence("UseClose");
+    }
   }
-  RK1() {
-    this.Area.FunctionalArea.CheckSettingCardPosition(this.li1) ? this.li1.PlayStateSequence("SeleToUse") : this.li1.PlayStateSequence("SeleClose")
+  yX1() {
+    if (this.Area.FunctionalArea.CheckSettingCardPosition(this.wi1)) {
+      this.wi1.PlayStateSequence("SeleToUse");
+    } else {
+      this.wi1.PlayStateSequence("SeleClose");
+    }
   }
-  LK1() {
-    this.Area.FunctionalArea.CheckSettingCardPosition(this.li1) && this.li1.PlayStateSequence("UseToSele")
+  SX1() {
+    if (this.Area.FunctionalArea.CheckSettingCardPosition(this.wi1)) {
+      this.wi1.PlayStateSequence("UseToSele");
+    }
   }
   CheckCardOutHandArea() {
-    return !!this.Area.FunctionalArea.GetNearlyAreaItemProxyByCard(this.li1) || !!this.Area.ViewProxy.CardRecycle.CheckCardInRecycleArea(this.li1)
+    return !!this.Area.FunctionalArea.GetNearlyAreaItemProxyByCard(this.wi1) || !!this.Area.ViewProxy.CardRecycle.CheckCardInRecycleArea(this.wi1);
   }
   async PlayStartTimeLocationTween(t, i) {
-    await TimerSystem_1.TimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise;
+    await TimerSystem_1.GameplayTimerSystem.Wait(i);
+    const s = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
-        this.li1.SetActive(!0)
+        this.wi1.SetActive(true);
       },
       CompleteCallback: () => {
-        this.li1.SetUiParent(this.AreaItem.GetRootItem(), !0), s.SetResult()
+        this.wi1.SetUiParent(this.AreaItem.GetRootItem(), true);
+        s.SetResult();
       },
       LocationCurveX: this.Area.DrawCardCurveX,
       LocationCurveY: this.Area.DrawCardCurveY
     };
-    this.li1.PlayLocationByItem(t, this.AreaItem.GetRootItem(), i), this.li1.PlaySequenceWithoutStop("Rotation"), this.PlayInHandSequence(), await s.Promise
+    this.wi1.PlayLocationByItem(t, this.AreaItem.GetRootItem(), i);
+    this.wi1.PlaySequenceWithoutStop("Rotation");
+    this.PlayInHandSequence();
+    await s.Promise;
   }
   async PlayEndTimeLocationTween(t, i) {
-    await TimerSystem_1.TimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise;
+    await TimerSystem_1.GameplayTimerSystem.Wait(i);
+    const s = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
-        this.li1?.SetUiParent(this.Area.ViewProxy.GetDragRootItem())
+        this.wi1?.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
-        this.li1.DestroyAsync().finally(() => {
-          s.SetResult()
-        })
+        this.wi1.DestroyAsync().finally(() => {
+          s.SetResult();
+        });
       },
       LocationCurveX: this.Area.DiscardCardCurveX,
       LocationCurveY: this.Area.DiscardCardCurveY
     };
-    this.li1.PlayLocationByItem(this.AreaItem.GetRootItem(), t, i), this.li1.PlaySequenceWithoutStop("Rotation", !0), await s.Promise
+    this.wi1.PlayLocationByItem(this.AreaItem.GetRootItem(), t, i);
+    this.wi1.PlaySequenceWithoutStop("Rotation", true);
+    await s.Promise;
   }
   async PlayDiscardCardTween(t, i) {
-    await TimerSystem_1.TimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise;
+    await TimerSystem_1.GameplayTimerSystem.Wait(i);
+    const s = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
-        this.li1.SetUiParent(this.Area.ViewProxy.GetDragRootItem())
+        this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
-        this.li1.DestroyAsync().finally(() => {
-          s.SetResult()
-        })
+        this.wi1.DestroyAsync().finally(() => {
+          s.SetResult();
+        });
       },
       LocationCurveX: this.Area.DiscardCardCurveX,
       LocationCurveY: this.Area.DiscardCardCurveY
     };
-    this.li1.PlayLocationByItem(this.AreaItem.GetRootItem(), t, i), this.li1.PlaySequenceWithoutStop("Rotation", !0), await s.Promise
+    this.wi1.PlayLocationByItem(this.AreaItem.GetRootItem(), t, i);
+    this.wi1.PlaySequenceWithoutStop("Rotation", true);
+    await s.Promise;
   }
   async PlayHandRecycleCardTween(t, i) {
-    await TimerSystem_1.TimerSystem.Wait(i);
-    const s = new CustomPromise_1.CustomPromise;
+    await TimerSystem_1.GameplayTimerSystem.Wait(i);
+    const s = new CustomPromise_1.CustomPromise();
     i = {
       StartCallback: () => {
-        this.li1.SetUiParent(this.Area.ViewProxy.GetDragRootItem())
+        this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
         this.DissolveByLibrary().finally(() => {
-          s.SetResult()
-        })
+          s.SetResult();
+        });
       },
       LocationCurveX: this.Area.RecycleCurve,
       LocationCurveY: this.Area.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_MOVE_DURATION
     };
-    this.li1.PlayLocationByItem(this.li1.GetOriginalItem(), t, i), this.li1.PlaySequence("DragUpHandtoTable"), await s.Promise
+    this.wi1.PlayLocationByItem(this.wi1.GetOriginalItem(), t, i);
+    this.wi1.PlaySequence("DragUpHandtoTable");
+    await s.Promise;
   }
   async PlayResetPositionTween() {
-    const t = new CustomPromise_1.CustomPromise;
+    const t = new CustomPromise_1.CustomPromise();
     var i = {
       StartCallback: () => {
-        this.li1.SetUiParent(this.Area.ViewProxy.GetDragRootItem())
+        this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
-        this.li1.SetUiParent(this.AreaItem.GetRootItem(), !0), this.RK1(), t.SetResult()
+        this.wi1.SetUiParent(this.AreaItem.GetRootItem(), true);
+        this.yX1();
+        t.SetResult();
       },
       LocationCurveX: this.Area.RecycleCurve,
       LocationCurveY: this.Area.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_RESET_POS_TWEEN_DURATION
     };
-    this.li1.PlayLocationByItem(this.li1.GetOriginalItem(), this.AreaItem.GetRootItem(), i), this.li1.PlaySequence("DragUpHandtoTable", !0), await t.Promise
+    this.wi1.PlayLocationByItem(this.wi1.GetOriginalItem(), this.AreaItem.GetRootItem(), i);
+    this.wi1.PlaySequence("DragUpHandtoTable", true);
+    await t.Promise;
   }
   async PlayHandToFunctionalTopTween(t, i) {
-    const s = new CustomPromise_1.CustomPromise;
+    const s = new CustomPromise_1.CustomPromise();
     var e = {
       StartCallback: () => {
-        this.li1.SetUiParent(this.Area.ViewProxy.GetDragRootItem())
+        this.wi1.SetUiParent(this.Area.ViewProxy.GetDragRootItem());
       },
       CompleteCallback: () => {
-        s.SetResult()
+        s.SetResult();
       },
       LocationCurveX: this.Area.RecycleCurve,
       LocationCurveY: this.Area.RecycleCurve,
       DurationTime: PhantomArenaDefine_1.PLAY_RESET_POS_TWEEN_DURATION
     };
-    this.li1.PlayLocationByItem(this.li1.GetOriginalItem(), t, e), i && (this.li1.PlaySequence("DragUpHandtoTable"), this.LK1()), await s.Promise
+    this.wi1.PlayLocationByItem(this.wi1.GetOriginalItem(), t, e);
+    if (i) {
+      this.wi1.PlaySequence("DragUpHandtoTable");
+      this.SX1();
+    }
+    await s.Promise;
   }
   SetCardSelectedState(t) {
-    t ? (this.Jfu = this.AreaItem.GetOriginalItem().GetHierarchyIndex(), this.AreaItem.GetOriginalItem().SetAsLastHierarchy(), this.li1.SetSelectedState(!0)) : (-1 !== this.Jfu && (this.AreaItem.GetOriginalItem().SetHierarchyIndex(this.Jfu), this.Jfu = -1), this.li1.SetSelectedState(!1))
+    if (t) {
+      this.T2u = this.AreaItem.GetOriginalItem().GetHierarchyIndex();
+      this.AreaItem.GetOriginalItem().SetAsLastHierarchy();
+      this.wi1.SetSelectedState(true);
+    } else {
+      if (this.T2u !== -1) {
+        this.AreaItem.GetOriginalItem().SetHierarchyIndex(this.T2u);
+        this.T2u = -1;
+      }
+      this.wi1.SetSelectedState(false);
+    }
   }
   IsFourCost() {
-    return this.li1.Data.IsFourCost
+    return this.wi1.Data.IsFourCost;
   }
   GetCard() {
-    return this.li1
+    return this.wi1;
   }
   async RefreshCardData(t) {
-    await this.li1.RefreshAsync(t)
+    await this.wi1.RefreshAsync(t);
   }
   SetHierarchyIndex(t) {
-    this.AreaItem.GetOriginalItem()?.SetHierarchyIndex(t)
+    this.AreaItem.GetOriginalItem()?.SetHierarchyIndex(t);
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
     var i;
-    return t && 0 !== t.length && ("HandCard" === (i = t[0]) || "HandArea" === i) ? this.li1.GetGuideUiItemAndUiItemForShowEx(t) : void 0
+    if (t && t.length !== 0 && ((i = t[0]) === "HandCard" || i === "HandArea")) {
+      return this.wi1.GetGuideUiItemAndUiItemForShowEx(t);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.PhantomArenaHandCardProxy = PhantomArenaHandCardProxy;

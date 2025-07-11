@@ -1,16 +1,11 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.inputControllerMainTypeMap = exports.showTypeAndInputControllerMap = exports.defaultPlatformAndInputControllerMap = void 0, exports.defaultPlatformAndInputControllerMap = new Map([
-  [2, 5],
-  [1, 5],
-  [3, 1],
-  [4, 1],
-  [5, 1],
-  [6, 2],
-  [7, 3],
-  [8, 4]
-]), exports.showTypeAndInputControllerMap = {
+  value: true
+});
+exports.inputControllerMainTypeMap = exports.showTypeAndInputControllerMap = exports.defaultPlatformAndInputControllerMap = undefined;
+exports.defaultPlatformAndInputControllerMap = new Map([[2, 5], [1, 5], [3, 1], [4, 1], [5, 1], [6, 2], [7, 3], [8, 4]]);
+exports.showTypeAndInputControllerMap = {
   [0]: 0,
   1: 2,
   2: 2,
@@ -18,7 +13,8 @@ Object.defineProperty(exports, "__esModule", {
   4: 2,
   5: 1,
   6: 2
-}, exports.inputControllerMainTypeMap = {
+};
+exports.inputControllerMainTypeMap = {
   [0]: 0,
   1: 1,
   2: 2,
@@ -26,5 +22,4 @@ Object.defineProperty(exports, "__esModule", {
   4: 2,
   5: 3,
   6: 2
-};
-//# sourceMappingURL=InfoDefine.js.map
+}; //# sourceMappingURL=InfoDefine.js.map

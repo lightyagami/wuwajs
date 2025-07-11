@@ -1,14 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PerformModel = void 0;
-const Log_1 = require("../../../../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../../../../Core/Framework/ModelBase"),
-  Vector_1 = require("../../../../../../Core/Utils/Math/Vector"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager");
+  value: true
+});
+exports.PerformModel = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
+const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
+const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 class PerformModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.iX_ = new Map
+    super(...arguments);
+    this.iX_ = new Map();
   }
   SetSightTarget(e) {
     var r = e.s6n;
@@ -36,32 +39,38 @@ class PerformModel extends ModelBase_1.ModelBase {
         });
         break;
       case 4:
-        this.iX_.delete(e.F4n)
+        this.iX_.delete(e.F4n);
     }
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("BasePerform", 26, "NPC行为设置看向", ["pbDataId", e.F4n], ["type", r])
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("BasePerform", 26, "NPC行为设置看向", ["pbDataId", e.F4n], ["type", r]);
+    }
   }
   HasSightTarget(e) {
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
-    return !!e && this.iX_.has(e.PbDataId)
+    return !!e && this.iX_.has(e.PbDataId);
   }
   GetSightTarget(e) {
-    var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e),
-      r = this.iX_.get(e.PbDataId);
-    let a = void 0;
+    var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
+    var r = this.iX_.get(e.PbDataId);
+    let a = undefined;
     switch (r.Type) {
       case 2:
         a = r.Pos;
         break;
       case 1:
-        var t = r,
-          t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity?.GetComponent(1);
-        t?.Valid && (a = t.GetWatchedPoint());
+        var t = r;
+        var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity?.GetComponent(1);
+        if (t?.Valid) {
+          a = t.GetWatchedPoint();
+        }
         break;
       case 3:
         t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(1);
-        t?.Valid && (a = t.GetWatchedPoint())
+        if (t?.Valid) {
+          a = t.GetWatchedPoint();
+        }
     }
-    return a
+    return a;
   }
 }
 exports.PerformModel = PerformModel;

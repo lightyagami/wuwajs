@@ -1,42 +1,58 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelAiTask = void 0;
+  value: true
+});
+exports.LevelAiTask = undefined;
 const LevelAiStandaloneNode_1 = require("./LevelAiStandaloneNode");
 class LevelAiTask extends LevelAiStandaloneNode_1.LevelAiStandaloneNode {
   constructor() {
-    super(...arguments), this.NotifyTick = !1, this.NotifyTaskFinished = !1, this.Params = void 0
+    super(...arguments);
+    this.NotifyTick = false;
+    this.NotifyTaskFinished = false;
+    this.Params = undefined;
   }
   Serialize(e, s, t, i) {
-    super.Serialize(e, s, t), this.Params = i
+    super.Serialize(e, s, t);
+    this.Params = i;
   }
   MakePlanExpansions(e, s) {
-    this.PrintDescription("Task Make Plan Expansions", ["LevelIndex", e.CurrentLevelIndex], ["StepIndex", e.CurrentStepIndex]), this.CreatePlanSteps(e, s.MakeCopy())
+    this.PrintDescription("Task Make Plan Expansions", ["LevelIndex", e.CurrentLevelIndex], ["StepIndex", e.CurrentStepIndex]);
+    this.CreatePlanSteps(e, s.MakeCopy());
   }
   WrappedExecuteTask() {
-    return this.PrintDescription("Execute Task"), this.ExecuteTask()
+    this.PrintDescription("Execute Task");
+    return this.ExecuteTask();
   }
   WrappedAbortTask() {
-    return this.PrintDescription("Abort Task"), this.AbortTask()
+    this.PrintDescription("Abort Task");
+    return this.AbortTask();
   }
   WrappedTickTask(e) {
-    this.NotifyTick && this.TickTask(e)
+    if (this.NotifyTick) {
+      this.TickTask(e);
+    }
   }
   WrappedOnTaskFinished(e) {
-    this.NotifyTaskFinished && (this.PrintDescription("Task Finished", ["Result", e]), this.OnTaskFinished(e))
+    if (this.NotifyTaskFinished) {
+      this.PrintDescription("Task Finished", ["Result", e]);
+      this.OnTaskFinished(e);
+    }
   }
   CreatePlanSteps(e, s) {
-    e.SubmitCandidatePlanStep(this, s, 0)
+    e.SubmitCandidatePlanStep(this, s, 0);
   }
   FinishLatentTask(e) {
     var s = this.CharacterPlanComponent.FindActiveTaskInfo(this);
-    s && s.PlanInstance.OnTaskFinished(this, s.PlanStepId, e)
+    if (s) {
+      s.PlanInstance.OnTaskFinished(this, s.PlanStepId, e);
+    }
   }
   ExecuteTask() {
-    return 0
+    return 0;
   }
   AbortTask() {
-    return 2
+    return 2;
   }
   TickTask(e) {}
   OnTaskFinished(e) {}

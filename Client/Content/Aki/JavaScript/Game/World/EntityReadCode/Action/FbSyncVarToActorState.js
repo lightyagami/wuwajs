@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSyncVarToActorState = void 0;
+  value: true
+});
+exports.FbSyncVarToActorState = undefined;
 class FbSyncVarToActorState {
   constructor(t) {
-    this.FbDataInternal = t, this.qph = !1, this.kph = void 0, this.Gph = !1, this.Oph = void 0
+    this.FbDataInternal = t;
+    this.qph = false;
+    this.kph = undefined;
+    this.Gph = false;
+    this.Oph = undefined;
   }
   static Create(t) {
-    if (t) return new FbSyncVarToActorState(t)
+    if (t) {
+      return new FbSyncVarToActorState(t);
+    }
   }
   get VarName() {
-    return this.qph || (this.qph = !0, this.kph = this.FbDataInternal.varName()), this.kph
+    if (!this.qph) {
+      this.qph = true;
+      this.kph = this.FbDataInternal.varName();
+    }
+    return this.kph;
   }
   get StateKey() {
-    return this.Gph || (this.Gph = !0, this.Oph = this.FbDataInternal.stateKey()), this.Oph
+    if (!this.Gph) {
+      this.Gph = true;
+      this.Oph = this.FbDataInternal.stateKey();
+    }
+    return this.Oph;
   }
 }
 exports.FbSyncVarToActorState = FbSyncVarToActorState;

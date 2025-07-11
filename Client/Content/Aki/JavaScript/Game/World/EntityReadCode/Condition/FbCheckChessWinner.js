@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckChessWinner = void 0;
+  value: true
+});
+exports.FbCheckChessWinner = undefined;
 class FbCheckChessWinner {
   constructor(s) {
-    this.FbDataInternal = s, this.u_h = !1, this.f8o = void 0, this.NJh = !1, this.VJh = 0, this.jJh = !1, this.HJh = void 0
+    this.FbDataInternal = s;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.NJh = false;
+    this.VJh = 0;
+    this.jJh = false;
+    this.HJh = undefined;
   }
   static Create(s) {
-    if (s) return new FbCheckChessWinner(s)
+    if (s) {
+      return new FbCheckChessWinner(s);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ChessboardId() {
-    return this.NJh || (this.NJh = !0, this.VJh = this.FbDataInternal.chessboardId()), this.VJh
+    if (!this.NJh) {
+      this.NJh = true;
+      this.VJh = this.FbDataInternal.chessboardId();
+    }
+    return this.VJh;
   }
   get Winner() {
-    return this.jJh || (this.jJh = !0, this.HJh = this.FbDataInternal.winner()), this.HJh
+    if (!this.jJh) {
+      this.jJh = true;
+      this.HJh = this.FbDataInternal.winner();
+    }
+    return this.HJh;
   }
 }
 exports.FbCheckChessWinner = FbCheckChessWinner;

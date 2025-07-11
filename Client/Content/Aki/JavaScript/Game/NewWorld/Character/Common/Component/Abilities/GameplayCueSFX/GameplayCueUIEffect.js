@@ -1,22 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameplayCueUIEffect = void 0;
-const EventDefine_1 = require("../../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../../Common/Event/EventSystem"),
-  GameplayCueBase_1 = require("./GameplayCueBase");
+  value: true
+});
+exports.GameplayCueUIEffect = undefined;
+const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
+const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueUIEffect extends GameplayCueBase_1.GameplayCueBase {
-  OnInit() {}
-  OnTick(e) {}
   OnCreate() {
-    this.CYo(!0)
+    this.CYo(true);
   }
   OnDestroy() {
-    this.CYo(!1)
+    this.CYo(false);
   }
   CYo(e) {
     var t = this.gYo(this.CueConfig.CueType);
-    t && EventSystem_1.EventSystem.Emit(t, this.EntityHandle.Id, this.CueConfig, e, this.ActiveHandleId)
+    if (t) {
+      EventSystem_1.EventSystem.Emit(t, this.EntityHandle.Id, this.CueConfig, e, this.BuffHandleId);
+    }
   }
   gYo(e) {
     switch (e) {
@@ -32,8 +34,11 @@ class GameplayCueUIEffect extends GameplayCueBase_1.GameplayCueBase {
       case 22:
         return EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips;
       default:
-        return
+        return;
     }
+  }
+  static IsSingleInstance() {
+    return false;
   }
 }
 exports.GameplayCueUIEffect = GameplayCueUIEffect;

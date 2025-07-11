@@ -1,368 +1,846 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WorldController = void 0;
-const cpp_1 = require("cpp"),
-  puerts_1 = require("puerts"),
-  UE = require("ue"),
-  ActorSystem_1 = require("../../../Core/Actor/ActorSystem"),
-  CustomPromise_1 = require("../../../Core/Common/CustomPromise"),
-  Info_1 = require("../../../Core/Common/Info"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Time_1 = require("../../../Core/Common/Time"),
-  EntityVoxelInfoByMapIdAndEntityId_1 = require("../../../Core/Define/ConfigQuery/EntityVoxelInfoByMapIdAndEntityId"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  EntityHelper_1 = require("../../../Core/Entity/EntityHelper"),
-  EntitySystem_1 = require("../../../Core/Entity/EntitySystem"),
-  ControllerBase_1 = require("../../../Core/Framework/ControllerBase"),
-  GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController"),
-  Net_1 = require("../../../Core/Net/Net"),
-  PerformanceController_1 = require("../../../Core/Performance/PerformanceController"),
-  PerfSight_1 = require("../../../Core/PerfSight/PerfSight"),
-  ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem"),
-  TickSystem_1 = require("../../../Core/Tick/TickSystem"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  FNameUtil_1 = require("../../../Core/Utils/FNameUtil"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  Platform_1 = require("../../../Launcher/Platform/Platform"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender"),
-  Global_1 = require("../../Global"),
-  GlobalData_1 = require("../../GlobalData"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  FormationDataController_1 = require("../../Module/Abilities/FormationDataController"),
-  PhantomUtil_1 = require("../../Module/Phantom/PhantomUtil"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  ActorUtils_1 = require("../../Utils/ActorUtils"),
-  VoxelUtils_1 = require("../../Utils/VoxelUtils"),
-  CreatureModel_1 = require("../Model/CreatureModel"),
-  WorldModel_1 = require("../Model/WorldModel"),
-  AttachToActorController_1 = require("./AttachToActorController"),
-  DELTA_TIME_LIMIT_LOW = 20,
-  DELTA_TIME_LIMIT_HIGH = 25,
-  MIN_DELTA = 0,
-  MAX_DELTA = 0,
-  SCHEDULER_MINUS_FRAME_COUNT = 5,
-  DEFAULT_ENVIRONMENTTYPE = 255,
-  WP_WORLD_ID = 8,
-  IOS_STREAMING_POOL_SIZE = 250,
-  IOS_STREAMING_POOL_SIZE_FOR_MESHES = 250,
-  IOS_STREAMING_POOL_SIZE_IN_LOADING = 90,
-  IOS_STREAMING_POOL_SIZE_FOR_MESHES_IN_LOADING = 90,
-  HIGH_SPEED_REMOVE_INTERVAL = 10;
+  value: true
+});
+exports.WorldController = undefined;
+const cpp_1 = require("cpp");
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
+const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
+const Time_1 = require("../../../Core/Common/Time");
+const EntityVoxelInfoByMapIdAndEntityId_1 = require("../../../Core/Define/ConfigQuery/EntityVoxelInfoByMapIdAndEntityId");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const EntityHelper_1 = require("../../../Core/Entity/EntityHelper");
+const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
+const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
+const Net_1 = require("../../../Core/Net/Net");
+const PerformanceController_1 = require("../../../Core/Performance/PerformanceController");
+const PerfSight_1 = require("../../../Core/PerfSight/PerfSight");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const TickSystem_1 = require("../../../Core/Tick/TickSystem");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const Platform_1 = require("../../../Launcher/Platform/Platform");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
+const Global_1 = require("../../Global");
+const GlobalData_1 = require("../../GlobalData");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const FormationDataController_1 = require("../../Module/Abilities/FormationDataController");
+const PhantomUtil_1 = require("../../Module/Phantom/PhantomUtil");
+const UiManager_1 = require("../../Ui/UiManager");
+const ActorUtils_1 = require("../../Utils/ActorUtils");
+const VoxelUtils_1 = require("../../Utils/VoxelUtils");
+const CreatureModel_1 = require("../Model/CreatureModel");
+const WorldModel_1 = require("../Model/WorldModel");
+const AttachToActorController_1 = require("./AttachToActorController");
+const DELTA_TIME_LIMIT_LOW = 20;
+const DELTA_TIME_LIMIT_HIGH = 25;
+const MIN_DELTA = 0;
+const MAX_DELTA = 0;
+const SCHEDULER_MINUS_FRAME_COUNT = 5;
+const DEFAULT_ENVIRONMENTTYPE = 255;
+const WP_WORLD_ID = 8;
+const IOS_STREAMING_POOL_SIZE = 250;
+const IOS_STREAMING_POOL_SIZE_FOR_MESHES = 250;
+const IOS_STREAMING_POOL_SIZE_IN_LOADING = 90;
+const IOS_STREAMING_POOL_SIZE_FOR_MESHES_IN_LOADING = 90;
+const HIGH_SPEED_REMOVE_INTERVAL = 10;
 class WorldController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     var e;
-    return ModelManager_1.ModelManager.WorldModel.CurrentSchedulerDelta = MAX_DELTA, GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen && (e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.FrameRate, GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetMaximumFrameRate(e)), PerformanceController_1.PerformanceController.IsOpenCatchWorldEntity = !Info_1.Info.IsBuildShipping, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SettingFrameRateChanged, this.zfi), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Bpr), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.Mze), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangePerformanceLimitMode, this.Zfi), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye), Net_1.Net.Register(17058, WorldController.RBn), TickSystem_1.TickSystem.Add(this.k1r.bind(this), "WorldController", 2), TickSystem_1.TickSystem.Add(this.Bbl.bind(this), "WorldController", 5, !0), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wo.ParallelOffset 1"), this.qpr = TimerSystem_1.TimerSystem.Forever(this.Gpr, 18e5, 1, void 0, "WorldController.OnInit.MemoryGcCheck", !1), this.LTl = TimerSystem_1.TimerSystem.Forever(this.RTl, 5e3), !0
+    ModelManager_1.ModelManager.WorldModel.CurrentSchedulerDelta = MAX_DELTA;
+    if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen) {
+      e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.FrameRate;
+      GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetMaximumFrameRate(e);
+    }
+    PerformanceController_1.PerformanceController.IsOpenCatchWorldEntity = !Info_1.Info.IsBuildShipping;
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SettingFrameRateChanged, this.zfi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Bpr);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.Mze);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangePerformanceLimitMode, this.Zfi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    Net_1.Net.Register(18689, WorldController.RBn);
+    TickSystem_1.TickSystem.Add(this.k1r.bind(this), "WorldController", 2);
+    TickSystem_1.TickSystem.Add(this.Bbl.bind(this), "WorldController", 5, true);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wo.ParallelOffset 1");
+    this.qpr = TimerSystem_1.GameplayTimerSystem.Forever(this.Gpr, 1800000, 1, undefined, "WorldController.OnInit.MemoryGcCheck", false);
+    this.LTl = TimerSystem_1.GameplayTimerSystem.Forever(this.RTl, 5000);
+    return true;
   }
   static OnClear() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SettingFrameRateChanged, this.zfi), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Bpr), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.Mze), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangePerformanceLimitMode, this.Zfi), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye), Net_1.Net.UnRegister(17058), ModelManager_1.ModelManager.WorldModel.ControlPlayerLastLocation = void 0, this.LTl && (TimerSystem_1.TimerSystem.Remove(this.LTl), this.LTl = void 0), !0
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SettingFrameRateChanged, this.zfi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Bpr);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveOnlineWorld, this.Mze);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangePerformanceLimitMode, this.Zfi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    Net_1.Net.UnRegister(18689);
+    ModelManager_1.ModelManager.WorldModel.ControlPlayerLastLocation = undefined;
+    if (this.LTl) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.LTl);
+      this.LTl = undefined;
+    }
+    return true;
   }
   static moh() {
-    2 === ResourceSystem_1.ResourceSystem.GetLoadMode() && (this.Kpr ? UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.MaxLoadingStreamingCells 1") : UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.MaxLoadingStreamingCells 4"))
+    if (ResourceSystem_1.ResourceSystem.GetLoadMode() === 2) {
+      if (this.Kpr) {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.MaxLoadingStreamingCells 1");
+      } else {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.MaxLoadingStreamingCells 4");
+      }
+    }
   }
   static ForceGarbageCollection(e) {
-    var t = cpp_1.KuroTime.GetMilliseconds64(),
-      e = (UE.KuroStaticLibrary.ForceGarbageCollection(e), cpp_1.KuroTime.GetMilliseconds64() - t);
-    PerfSight_1.PerfSight.IsEnable && cpp_1.FKuroPerfSightHelper.PostValueFloat1("CustomPerformance", "ForceGarbageCollection", e)
+    var t = cpp_1.KuroTime.GetMilliseconds64();
+    UE.KuroStaticLibrary.ForceGarbageCollection(e);
+    var e = cpp_1.KuroTime.GetMilliseconds64() - t;
+    if (PerfSight_1.PerfSight.IsEnable) {
+      cpp_1.FKuroPerfSightHelper.PostValueFloat1("CustomPerformance", "ForceGarbageCollection", e);
+    }
   }
   static ManuallyGarbageCollection(e) {
     var t;
-    0 === this.mea && (this.mea = 1, Platform_1.Platform.IsAndroidPlatform()) && (t = UE.KuroStaticLibrary.GetDeviceCPU()).includes("SDM660") && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 30, "Disable ManuallyGarbageCollection", ["cpu", t]), this.mea = 2), 1 === this.mea && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 24, "ManuallyGarbageCollection", ["Reason: ", e]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TestManuallyGarbageCollection), t = cpp_1.KuroTime.GetMilliseconds64(), global.memoryPressureNotification(0 === e ? 1 : 2), e = cpp_1.KuroTime.GetMilliseconds64() - t, PerfSight_1.PerfSight.IsEnable) && cpp_1.FKuroPerfSightHelper.PostValueFloat1("CustomPerformance", "ManuallyGarbageCollection", e)
+    if (this.mea === 0 && (this.mea = 1, Platform_1.Platform.IsAndroidPlatform()) && (t = UE.KuroStaticLibrary.GetDeviceCPU()).includes("SDM660")) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 30, "Disable ManuallyGarbageCollection", ["cpu", t]);
+      }
+      this.mea = 2;
+    }
+    if (this.mea === 1 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 24, "ManuallyGarbageCollection", ["Reason: ", e]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TestManuallyGarbageCollection), t = cpp_1.KuroTime.GetMilliseconds64(), global.memoryPressureNotification(e === 0 ? 1 : 2), e = cpp_1.KuroTime.GetMilliseconds64() - t, PerfSight_1.PerfSight.IsEnable)) {
+      cpp_1.FKuroPerfSightHelper.PostValueFloat1("CustomPerformance", "ManuallyGarbageCollection", e);
+    }
   }
   static ManuallyClearStreamingPool() {
-    1 === Info_1.Info.PlatformType && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 36, "ManuallyClearStreamingPool In IOS"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSize " + IOS_STREAMING_POOL_SIZE_IN_LOADING), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSizeForMeshes " + IOS_STREAMING_POOL_SIZE_FOR_MESHES_IN_LOADING))
+    if (Info_1.Info.PlatformType === 1) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 36, "ManuallyClearStreamingPool In IOS");
+      }
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSize " + IOS_STREAMING_POOL_SIZE_IN_LOADING);
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSizeForMeshes " + IOS_STREAMING_POOL_SIZE_FOR_MESHES_IN_LOADING);
+    }
   }
   static ManuallyResetStreamingPool() {
-    1 === Info_1.Info.PlatformType && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 36, "ManuallyResetStreamingPool In IOS"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSize " + IOS_STREAMING_POOL_SIZE), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSizeForMeshes " + IOS_STREAMING_POOL_SIZE_FOR_MESHES))
+    if (Info_1.Info.PlatformType === 1) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 36, "ManuallyResetStreamingPool In IOS");
+      }
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSize " + IOS_STREAMING_POOL_SIZE);
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSizeForMeshes " + IOS_STREAMING_POOL_SIZE_FOR_MESHES);
+    }
   }
   static k1r() {
     if (!GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen) {
       var e = ModelManager_1.ModelManager.WorldModel;
-      if (Time_1.Time.DeltaTime <= DELTA_TIME_LIMIT_HIGH && Time_1.Time.DeltaTime >= DELTA_TIME_LIMIT_LOW) e.ChangeSchedulerLastType = 0;
-      else if (Time_1.Time.DeltaTime > DELTA_TIME_LIMIT_HIGH && e.CurrentSchedulerDelta > MIN_DELTA) {
-        if (1 !== e.ChangeSchedulerLastType) e.ChangeSchedulerLastType = 1, e.ChangeSchedulerDeltaFrameCount = 0;
-        else if (++e.ChangeSchedulerDeltaFrameCount >= SCHEDULER_MINUS_FRAME_COUNT) {
-          --e.CurrentSchedulerDelta, e.ChangeSchedulerDeltaFrameCount = 0;
-          for (const t of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) t.SetCountDelta(e.CurrentSchedulerDelta);
-          Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 6, "Decrease max tick count", ["Delta", e.CurrentSchedulerDelta])
+      if (Time_1.Time.DeltaTime <= DELTA_TIME_LIMIT_HIGH && Time_1.Time.DeltaTime >= DELTA_TIME_LIMIT_LOW) {
+        e.ChangeSchedulerLastType = 0;
+      } else if (Time_1.Time.DeltaTime > DELTA_TIME_LIMIT_HIGH && e.CurrentSchedulerDelta > MIN_DELTA) {
+        if (e.ChangeSchedulerLastType !== 1) {
+          e.ChangeSchedulerLastType = 1;
+          e.ChangeSchedulerDeltaFrameCount = 0;
+        } else if (++e.ChangeSchedulerDeltaFrameCount >= SCHEDULER_MINUS_FRAME_COUNT) {
+          --e.CurrentSchedulerDelta;
+          e.ChangeSchedulerDeltaFrameCount = 0;
+          for (const t of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) {
+            t.SetCountDelta(e.CurrentSchedulerDelta);
+          }
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("World", 6, "Decrease max tick count", ["Delta", e.CurrentSchedulerDelta]);
+          }
         }
-      } else if (Time_1.Time.DeltaTime < DELTA_TIME_LIMIT_LOW && e.CurrentSchedulerDelta < MAX_DELTA)
-        if (2 !== e.ChangeSchedulerLastType) e.ChangeSchedulerLastType = 2, e.ChangeSchedulerDeltaFrameCount = 0;
-        else if (10 <= ++e.ChangeSchedulerDeltaFrameCount) {
-        ++e.CurrentSchedulerDelta, e.ChangeSchedulerDeltaFrameCount = 0;
-        for (const r of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) r.SetCountDelta(e.CurrentSchedulerDelta);
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 6, "Increase max tick count", ["Delta", e.CurrentSchedulerDelta])
+      } else if (Time_1.Time.DeltaTime < DELTA_TIME_LIMIT_LOW && e.CurrentSchedulerDelta < MAX_DELTA) {
+        if (e.ChangeSchedulerLastType !== 2) {
+          e.ChangeSchedulerLastType = 2;
+          e.ChangeSchedulerDeltaFrameCount = 0;
+        } else if (++e.ChangeSchedulerDeltaFrameCount >= 10) {
+          ++e.CurrentSchedulerDelta;
+          e.ChangeSchedulerDeltaFrameCount = 0;
+          for (const r of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) {
+            r.SetCountDelta(e.CurrentSchedulerDelta);
+          }
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("World", 6, "Increase max tick count", ["Delta", e.CurrentSchedulerDelta]);
+          }
+        }
       }
-      for (const o of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) o.Schedule()
+      for (const o of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) {
+        o.Schedule();
+      }
     }
-    this.Kr_() && (this.$r_ = 0, this.Npr(), this.Opr())
+    if (this.Kr_()) {
+      this.$r_ = 0;
+      this.Npr();
+      this.Opr();
+    }
   }
   static Kr_() {
-    return this.$r_++, ControllerHolder_1.ControllerHolder.PlayerVelocityController.IsHighSpeedMode() || ControllerHolder_1.ControllerHolder.PlayerSoarMonitorController.IsPlayerSoar ? this.Xr_ = HIGH_SPEED_REMOVE_INTERVAL : this.Xr_ = 0, this.$r_ >= this.Xr_
+    this.$r_++;
+    if (ControllerHolder_1.ControllerHolder.PlayerVelocityController.IsHighSpeedMode() || ControllerHolder_1.ControllerHolder.PlayerSoarMonitorController.IsPlayerSoar) {
+      this.Xr_ = HIGH_SPEED_REMOVE_INTERVAL;
+    } else {
+      this.Xr_ = 0;
+    }
+    return this.$r_ >= this.Xr_;
   }
   static Bbl() {
-    this.EnableWorldOriginTickCheck && void 0 !== Global_1.Global.BaseCharacter && this.FixWorldOriginTickCheck(Global_1.Global.BaseCharacter.D_K2_GetActorLocation())
+    if (this.EnableWorldOriginTickCheck && Global_1.Global.BaseCharacter !== undefined) {
+      this.FixWorldOriginTickCheck(Global_1.Global.BaseCharacter.D_K2_GetActorLocation());
+    }
   }
   static Npr() {
     var e = ModelManager_1.ModelManager.CreatureModel;
-    e.PendingRemoveEntitySize() && e.PeekPendingRemoveEntity().AllowDestroy && this.kpr(e.PopPendingRemoveEntity())
+    if (e.PendingRemoveEntitySize() && e.PeekPendingRemoveEntity().AllowDestroy) {
+      this.kpr(e.PopPendingRemoveEntity());
+    }
   }
   static kpr(e) {
-    var t, r, o, i, l;
-    e ? Global_1.Global.WorldEntityHelper ? e.Valid ? (t = AttachToActorController_1.AttachToActorController.DetachActorsBeforeDestroyEntity(e), r = e.Entity.GetComponent(1)?.Owner, o = e.Entity.GetComponent(0).GetCreatureDataId(), i = Global_1.Global.WorldEntityHelper.Destroy(e), l = AttachToActorController_1.AttachToActorController.DetachActorsAfterDestroyEntity(e.Id), i ? ModelManager_1.ModelManager.WorldModel.AddDestroyActor(o, e.Id, r) : this.DestroyEntityActor(o, e.Id, r, !1), ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(e) && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 3, "[实体生命周期:删除实体] DestroyEntity结束", ["CreatureDataId", o], ["EntityId", e.Id], ["EntitySystem.DestroyEntity结果", i], ["BeforDetachActors", t], ["AfterDetachActors", l])) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Entity", 3, "[WorldController.DestroyEntity] 重复删除Entity", ["CreatureDataId", e.CreatureDataId]) : Log_1.Log.CheckError() && Log_1.Log.Error("Entity", 3, "[WorldController.DestroyEntity] WorldEntityHelper无效") : Log_1.Log.CheckError() && Log_1.Log.Error("Entity", 3, "[WorldController.DestroyEntity] handle参数无效")
+    var t;
+    var r;
+    var o;
+    var i;
+    var l;
+    if (e) {
+      if (Global_1.Global.WorldEntityHelper) {
+        if (e.Valid) {
+          t = AttachToActorController_1.AttachToActorController.DetachActorsBeforeDestroyEntity(e);
+          r = e.Entity.GetComponent(1)?.Owner;
+          o = e.Entity.GetComponent(0).GetCreatureDataId();
+          i = Global_1.Global.WorldEntityHelper.Destroy(e);
+          l = AttachToActorController_1.AttachToActorController.DetachActorsAfterDestroyEntity(e.Id);
+          if (i) {
+            ModelManager_1.ModelManager.WorldModel.AddDestroyActor(o, e.Id, r);
+          } else {
+            this.DestroyEntityActor(o, e.Id, r, false);
+          }
+          if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(e) && Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Entity", 3, "[实体生命周期:删除实体] DestroyEntity结束", ["CreatureDataId", o], ["EntityId", e.Id], ["EntitySystem.DestroyEntity结果", i], ["BeforDetachActors", t], ["AfterDetachActors", l]);
+          }
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Entity", 3, "[WorldController.DestroyEntity] 重复删除Entity", ["CreatureDataId", e.CreatureDataId]);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Entity", 3, "[WorldController.DestroyEntity] WorldEntityHelper无效");
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Entity", 3, "[WorldController.DestroyEntity] handle参数无效");
+    }
   }
   static Opr() {
     var e = ModelManager_1.ModelManager.WorldModel;
-    0 !== e.DestroyActorQueue.Size && (e = e.PopDestroyActor(), GlobalData_1.GlobalData.World?.IsValid()) && (ModelManager_1.ModelManager.WorldModel.RemoveIgnore(e[2]), this.DestroyEntityActor(e[0], e[1], e[2]))
+    if (e.DestroyActorQueue.Size !== 0 && (e = e.PopDestroyActor(), GlobalData_1.GlobalData.World?.IsValid())) {
+      ModelManager_1.ModelManager.WorldModel.RemoveIgnore(e[2]);
+      this.DestroyEntityActor(e[0], e[1], e[2]);
+    }
   }
   static DoLeaveLevel() {
     if (GlobalData_1.GlobalData.World?.IsValid()) {
-      for (var e = ModelManager_1.ModelManager.CreatureModel; e.PendingRemoveEntitySize();) this.kpr(e.PopPendingRemoveEntity());
+      for (var e = ModelManager_1.ModelManager.CreatureModel; e.PendingRemoveEntitySize();) {
+        this.kpr(e.PopPendingRemoveEntity());
+      }
       for (var t = ModelManager_1.ModelManager.WorldModel; t.DestroyActorQueue.Size;) {
         var r = t.PopDestroyActor();
-        this.DestroyEntityActor(r[0], r[1], r[2])
+        this.DestroyEntityActor(r[0], r[1], r[2]);
       }
-      t.ClearIgnore()
+      t.ClearIgnore();
     }
   }
   static SetActorDataByCreature(e, t) {
-    this.Fpr(e), this.SetActorGravityDirection(e, t), this.SetActorLocationAndRotation(e, t), this.Vpr(e, t)
+    this.Fpr(e);
+    this.SetActorGravityDirection(e, t);
+    this.SetActorLocationAndRotation(e, t);
+    this.Vpr(e, t);
   }
   static Fpr(e) {
-    var t = e.Entity,
-      r = e.GetEntityType();
-    (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(222)) && (e = e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId() || r === Protocol_1.Aki.Protocol.kks.Proto_Npc, r = (r = t.GetComponent(158)) ? r.HasMoveAuthority() : e, t.GetComponent(1).SetAutonomous(e, r))
+    var t = e.Entity;
+    var r = e.GetEntityType();
+    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(222)) {
+      e = e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId() || r === Protocol_1.Aki.Protocol.kks.Proto_Npc;
+      r = (r = t.GetComponent(158)) ? r.HasMoveAuthority() : e;
+      t.GetComponent(1).SetAutonomous(e, r);
+    }
   }
   static SetActorGravityDirection(e, t) {
-    t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(236)) && t.SetGravityDirect(e)
+    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(236))) {
+      t.SetGravityDirect(e);
+    }
   }
   static SetActorLocationAndRotation(e, t) {
     var r;
-    t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, !1, void 0, !0), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(178)?.CharacterMovement) && ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(178).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0)
+    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(178)?.CharacterMovement)) {
+      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(178).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
+    }
   }
   static Vpr(e, t) {
     if (t) {
       e = e.GetPublicTags();
-      if (void 0 !== e)
+      if (e !== undefined) {
         for (const o of e) {
           var r = FNameUtil_1.FNameUtil.GetDynamicFName(o);
-          t.Tags.Add(r)
+          t.Tags.Add(r);
         }
+      }
     }
   }
-  static DestroyEntityActor(e, t, r, o = !0) {
+  static DestroyEntityActor(e, t, r, o = true) {
     r = this.DestroyActor(r, e, t, o);
-    return ModelManager_1.ModelManager.CreatureModel.EnableEntityLog && (o = AttachToActorController_1.AttachToActorController.CheckAttachError(t), Log_1.Log.CheckInfo()) && Log_1.Log.Info("Entity", 3, "[实体生命周期:删除实体] 删除实体Actor", ["CreatureDataId", e], ["EntityId", t], ["Result", r], ["AttachSuccess", o]), r
-  }
-  static DestroyActor(e, t, r, o = !0) {
-    if (!e?.IsValid()) return !1;
-    if (!e.GetWorld()?.IsValid()) return !1;
-    let i = void 0;
-    for (e.IsA(UE.Pawn.StaticClass()) && (i = e.Controller), this.Hpr.length = 0, this.jpr(e, this.Hpr, !0); this.Hpr.length;) {
-      var l = this.Hpr.pop();
-      l?.IsValid() && l.GetWorld()?.IsValid() && l !== i && !ModelManager_1.ModelManager.AttachToActorModel.GetEntityIdByActor(l) && (l.K2_DetachFromActor(1, 1, 1), l.IsA(UE.TsEffectActor_C.StaticClass()) ? l.StopEffect("[WorldController.DestroyActor] 销毁entity的actor前先停止所有附加的特效", !0) : (l.IsA(UE.EffectSystemActor.StaticClass()) && l && l.StopEffect(FNameUtil_1.FNameUtil.GetDynamicFName("[WorldController.DestroyActor] 销毁entity的actor前先停止所有附加的特效"), !0, !1), l.IsA(UE.KuroEntityActor.StaticClass()) || Log_1.Log.CheckError() && Log_1.Log.Error("World", 3, "存在未Detach的Actor", ["CreatureDataId", t], ["EntityId", r], ["父Actor", e.GetName()], ["子Actor", l.GetName()])))
+    if (ModelManager_1.ModelManager.CreatureModel.EnableEntityLog && (o = AttachToActorController_1.AttachToActorController.CheckAttachError(t), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Entity", 3, "[实体生命周期:删除实体] 删除实体Actor", ["CreatureDataId", e], ["EntityId", t], ["Result", r], ["AttachSuccess", o]);
     }
-    return o ? ActorSystem_1.ActorSystem.Put("WorldController.DestroyActor " + t, e) : e.K2_DestroyActor(), !0
+    return r;
+  }
+  static DestroyActor(e, t, r, o = true) {
+    if (!e?.IsValid()) {
+      return false;
+    }
+    if (!e.GetWorld()?.IsValid()) {
+      return false;
+    }
+    let i = undefined;
+    if (e.IsA(UE.Pawn.StaticClass())) {
+      i = e.Controller;
+    }
+    this.Hpr.length = 0;
+    this.jpr(e, this.Hpr, true);
+    while (this.Hpr.length) {
+      var l = this.Hpr.pop();
+      if (l?.IsValid() && l.GetWorld()?.IsValid() && l !== i && !ModelManager_1.ModelManager.AttachToActorModel.GetEntityIdByActor(l)) {
+        l.K2_DetachFromActor(1, 1, 1);
+        if (l.IsA(UE.TsEffectActor_C.StaticClass())) {
+          l.StopEffect("[WorldController.DestroyActor] 销毁entity的actor前先停止所有附加的特效", true);
+        } else if (l.IsA(UE.EffectSystemActor.StaticClass())) {
+          if (l) {
+            l.StopEffect(FNameUtil_1.FNameUtil.GetDynamicFName("[WorldController.DestroyActor] 销毁entity的actor前先停止所有附加的特效"), true, false);
+          }
+        } else if (!l.IsA(UE.KuroEntityActor.StaticClass())) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("World", 3, "存在未Detach的Actor", ["CreatureDataId", t], ["EntityId", r], ["父Actor", e.GetName()], ["子Actor", l.GetName()]);
+          }
+        }
+      }
+    }
+    if (o) {
+      ActorSystem_1.ActorSystem.Put("WorldController.DestroyActor " + t, e);
+    } else {
+      e.K2_DestroyActor();
+    }
+    return true;
   }
   static jpr(e, t, r) {
     if (e?.IsValid()) {
-      r || t.push(e);
-      var r = (0, puerts_1.$ref)(UE.NewArray(UE.Actor)),
-        o = (e.GetAttachedActors(r, !0), (0, puerts_1.$unref)(r));
-      for (let e = 0; e < o.Num(); ++e) this.jpr(o.Get(e), t, !1)
+      if (!r) {
+        t.push(e);
+      }
+      var r = (0, puerts_1.$ref)(UE.NewArray(UE.Actor));
+      e.GetAttachedActors(r, true);
+      var o = (0, puerts_1.$unref)(r);
+      for (let e = 0; e < o.Num(); ++e) {
+        this.jpr(o.Get(e), t, false);
+      }
     }
   }
-  static EnvironmentInfoUpdate(e, t, r = !1) {
+  static EnvironmentInfoUpdate(e, t, r = false) {
     if (ModelManager_1.ModelManager.WorldModel.IsEnableEnvironmentDetecting && t && ModelManager_1.ModelManager.GameModeModel.UseWorldPartition) {
       t = GlobalData_1.GlobalData.World;
       if (t?.IsValid()) {
-        var o = (0, puerts_1.$ref)(void 0);
-        if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(t, e, o)) return o = (0, puerts_1.$unref)(o), o = ModelManager_1.ModelManager.WorldModel.HandleEnvironmentUpdate(o), r || o ? this.Nd_(t, e, r) : void 0;
-        Log_1.Log.CheckWarn() && Log_1.Log.Warn("LevelEvent", 60, "[WorldController]Streaming:获取体素信息失败", ["Location", e])
+        var o = (0, puerts_1.$ref)(undefined);
+        if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(t, e, o)) {
+          o = (0, puerts_1.$unref)(o);
+          o = ModelManager_1.ModelManager.WorldModel.HandleEnvironmentUpdate(o);
+          if (r || o) {
+            return this.Nd_(t, e, r);
+          } else {
+            return undefined;
+          }
+        }
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("LevelEvent", 60, "[WorldController]Streaming:获取体素信息失败", ["Location", e]);
+        }
       }
     }
   }
   static Nd_(e, t, r) {
     var o = ModelManager_1.ModelManager.WorldModel.ApplyEnvironmentUpdate();
-    if (0 !== o) {
-      var i = ModelManager_1.ModelManager.WorldModel.GetCachedVoxelInfo(),
-        l = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.DataLayerType),
-        n = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.SubDataLayerType);
-      switch (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEncloseSpaceTypeChange, o), Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 60, "[WorldController]Streaming:体素参数", ["LoadAdjustValue", i.LoadAdjustValue], ["StreamingType", i.StreamingType], ["DataLayer", l], ["SubDatalayer", n]), o) {
+    if (o !== 0) {
+      var i = ModelManager_1.ModelManager.WorldModel.GetCachedVoxelInfo();
+      var l = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.DataLayerType);
+      var n = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.SubDataLayerType);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEncloseSpaceTypeChange, o);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("LevelEvent", 60, "[WorldController]Streaming:体素参数", ["LoadAdjustValue", i.LoadAdjustValue], ["StreamingType", i.StreamingType], ["DataLayer", l], ["SubDatalayer", n]);
+      }
+      switch (o) {
         case 5:
-          return UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, l, n), UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginAdjustLoadRange(e, i.LoadAdjustValue, i.StreamingType), UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, !0, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, !0), cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(2), r ? Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:进入封闭空间[传送]") : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("LevelEvent", 7, "[WorldController]Streaming:非传送下,无过渡区域进入封闭空间", ["Location", t]), this.RequestToNearestTeleport()), l;
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, l, n);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginAdjustLoadRange(e, i.LoadAdjustValue, i.StreamingType);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, true, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, true);
+          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(2);
+          if (r) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:进入封闭空间[传送]");
+            }
+          } else {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("LevelEvent", 7, "[WorldController]Streaming:非传送下,无过渡区域进入封闭空间", ["Location", t]);
+            }
+            this.RequestToNearestTeleport();
+          }
+          return l;
         case 1:
-          return UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, l, n), Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:进入封闭空间"), cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(3), l;
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, l, n);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:进入封闭空间");
+          }
+          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(3);
+          return l;
         case 6:
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpCancelAdjustLoadRange(e), UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, l, n), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, !1), cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(1), r ? Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:退出封闭空间[传送]") : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("LevelEvent", 7, "[WorldController]Streaming:非传送下,无过渡区域退出封闭空间", ["Location", t]), this.RequestToNearestTeleport()), UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, !1, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpCancelAdjustLoadRange(e);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, l, n);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, false);
+          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(1);
+          if (r) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:退出封闭空间[传送]");
+            }
+          } else {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("LevelEvent", 7, "[WorldController]Streaming:非传送下,无过渡区域退出封闭空间", ["Location", t]);
+            }
+            this.RequestToNearestTeleport();
+          }
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, false, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
           break;
         case 2:
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpCancelAdjustLoadRange(e), UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, !1, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE), cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(3), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, !1), Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:退出封闭空间");
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpCancelAdjustLoadRange(e);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, false, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
+          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(3);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, false);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:退出封闭空间");
+          }
           break;
         case 4:
-          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(1), UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, l, n), Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:完成退出封闭空间");
+          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(1);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, l, n);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:完成退出封闭空间");
+          }
           break;
         case 3:
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginAdjustLoadRange(e, i.LoadAdjustValue, i.StreamingType), UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, !0, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE), Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:完成进入封闭空间"), cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(2), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, !0)
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginAdjustLoadRange(e, i.LoadAdjustValue, i.StreamingType);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, true, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:完成进入封闭空间");
+          }
+          cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(2);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, true);
       }
     }
   }
-  static IsEncloseSpace(e, t, r, o, i = !1) {
-    if (!ModelManager_1.ModelManager.GameModeModel.UseWorldPartition || !e) return !1;
+  static IsEncloseSpace(e, t, r, o, i = false) {
+    if (!ModelManager_1.ModelManager.GameModeModel.UseWorldPartition || !e) {
+      return false;
+    }
     var l = GlobalData_1.GlobalData.World;
-    if (!l?.IsValid()) return !1;
-    if (ModelManager_1.ModelManager.GameModeModel.MapId !== WP_WORLD_ID) return !1;
-    if (r === Protocol_1.Aki.Protocol.kks.Proto_Player || r === Protocol_1.Aki.Protocol.kks.Proto_Vision || i) return !1;
-    let n = void 0;
-    if (!(n = o === Protocol_1.Aki.Protocol.rLs.F6n ? EntityVoxelInfoByMapIdAndEntityId_1.configEntityVoxelInfoByMapIdAndEntityId.GetConfig(ModelManager_1.ModelManager.GameModeModel.MapId, e) : n)) switch (VoxelUtils_1.VoxelUtils.GetVoxelInfo(l, t).EnvType) {
-      case 0:
-      case 1:
-        return !0;
-      default:
-        DEFAULT_ENVIRONMENTTYPE;
-        return !1
+    if (!l?.IsValid()) {
+      return false;
+    }
+    if (ModelManager_1.ModelManager.GameModeModel.MapId !== WP_WORLD_ID) {
+      return false;
+    }
+    if (r === Protocol_1.Aki.Protocol.kks.Proto_Player || r === Protocol_1.Aki.Protocol.kks.Proto_Vision || i) {
+      return false;
+    }
+    let n = undefined;
+    if (!(n = o === Protocol_1.Aki.Protocol.rLs.F6n ? EntityVoxelInfoByMapIdAndEntityId_1.configEntityVoxelInfoByMapIdAndEntityId.GetConfig(ModelManager_1.ModelManager.GameModeModel.MapId, e) : n)) {
+      switch (VoxelUtils_1.VoxelUtils.GetVoxelInfo(l, t).EnvType) {
+        case 0:
+        case 1:
+          return true;
+        default:
+          DEFAULT_ENVIRONMENTTYPE;
+          return false;
+      }
     }
     switch (n.EnvType) {
       case 0:
       case 1:
-        return !0;
+        return true;
       default:
         DEFAULT_ENVIRONMENTTYPE;
-        return !1
+        return false;
     }
   }
   static RequestToNearestTeleport() {
-    Net_1.Net.Call(16437, Protocol_1.Aki.Protocol.ECs.create(), e => {
-      e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26433)
-    })
+    Net_1.Net.Call(26186, Protocol_1.Aki.Protocol.ECs.create(), e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29587);
+      }
+    });
   }
   static GetEntitiesInRangeWithLocation(t, r, o, i, e) {
-    var l, n = i instanceof Set,
-      a = (e && (n ? i.clear() : i.length = 0), []);
-    for (let e = 0; e < 6; e++)
+    var l;
+    var n = i instanceof Set;
+    if (e) {
+      if (n) {
+        i.clear();
+      } else {
+        i.length = 0;
+      }
+    }
+    var a = [];
+    for (let e = 0; e < 6; e++) {
       if (o & 1 << e) {
-        cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName(EntityHelper_1.globalEntityTypeQueryName[e]), a), 1 & o && (l = [], cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"), l), a.push(...l));
+        cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName(EntityHelper_1.globalEntityTypeQueryName[e]), a);
+        if (o & 1) {
+          l = [];
+          cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"), l);
+          a.push(...l);
+        }
         for (const s of a) {
           var _ = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s);
-          _ && (n ? i.add(_) : i.push(_))
+          if (_) {
+            if (n) {
+              i.add(_);
+            } else {
+              i.push(_);
+            }
+          }
         }
-        a.length = 0
+        a.length = 0;
       }
+    }
   }
   static GetEntitiesInRange(e, t, r, o, i) {
-    var l, n = r instanceof Set,
-      o = (o && (n ? r.clear() : r.length = 0), []);
+    var l;
+    var n = r instanceof Set;
+    if (o) {
+      if (n) {
+        r.clear();
+      } else {
+        r.length = 0;
+      }
+    }
+    var o = [];
     let a = 0;
-    for (let e = 0; e < 6; e++) t & 1 << e && 4 !== (l = CreatureModel_1.globalEntityTypePerceptionType[e]) && (a |= l);
-    if (32 & t && i) {
+    for (let e = 0; e < 6; e++) {
+      if (t & 1 << e && (l = CreatureModel_1.globalEntityTypePerceptionType[e]) !== 4) {
+        a |= l;
+      }
+    }
+    if (t & 32 && i) {
       i = [];
       cpp_1.FKuroGameBudgetAllocatorInterface.GetAllPlayerEntities(i);
       for (const d of i) {
         var _ = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(d);
-        _ && (n ? r.add(_) : r.push(_))
+        if (_) {
+          if (n) {
+            r.add(_);
+          } else {
+            r.push(_);
+          }
+        }
       }
     }
     cpp_1.FKuroPerceptionInterface.GetEntitiesInRange(e, a, o);
     for (const c of o) {
       var s = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(c);
-      s && (n ? r.add(s) : r.push(s))
+      if (s) {
+        if (n) {
+          r.add(s);
+        } else {
+          r.push(s);
+        }
+      }
     }
   }
   static GetCustomEntityId(e, t) {
     var r = EntitySystem_1.EntitySystem.Get(e);
     if (r) {
       r = PhantomUtil_1.PhantomUtil.GetSummonedEntity(r, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, t);
-      if (r) return r.Id
-    } else Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 4, "无法找到伴生物拥有者实体", ["ownerEntityId", e]);
-    return 0
+      if (r) {
+        return r.Id;
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Battle", 4, "无法找到伴生物拥有者实体", ["ownerEntityId", e]);
+    }
+    return 0;
   }
   static async StartWorldOriginInUiMode() {
-    const e = new CustomPromise_1.CustomPromise;
-    this.C8l ? (Log_1.Log.CheckError() && Log_1.Log.Error("World", 38, "IsWorldOriginInUiMode 开关不成对"), e.SetResult()) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 38, "StartWorldOriginInUiMode"), this.qbl.DeepCopy(this.Gbl), this.kbl("UI Disable", Vector_1.Vector.ZeroVector), this.C8l = !0, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWorldOriginInUiMode, !0), this.X5_ = 0, this.Y5_ = TimerSystem_1.TimerSystem.Forever(() => {
-      this.z5_() ? this.Y5_ && (TimerSystem_1.TimerSystem.Remove(this.Y5_), this.Y5_ = void 0, e.SetResult()) : (this.X5_++, this.X5_ > this.J5_ && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "StartWorldOriginInUiMode 超过循环次数"), this.Y5_) && (TimerSystem_1.TimerSystem.Remove(this.Y5_), this.Y5_ = void 0, e.SetResult()))
-    }, 50)), await e.Promise
+    const e = new CustomPromise_1.CustomPromise();
+    if (this.C8l) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("World", 38, "IsWorldOriginInUiMode 开关不成对");
+      }
+      e.SetResult();
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("World", 38, "StartWorldOriginInUiMode");
+      }
+      this.qbl.DeepCopy(this.Gbl);
+      this.kbl("UI Disable", Vector_1.Vector.ZeroVector);
+      this.C8l = true;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWorldOriginInUiMode, true);
+      this.X5_ = 0;
+      this.Y5_ = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+        if (this.z5_()) {
+          if (this.Y5_) {
+            TimerSystem_1.GameplayTimerSystem.Remove(this.Y5_);
+            this.Y5_ = undefined;
+            e.SetResult();
+          }
+        } else {
+          this.X5_++;
+          if (this.X5_ > this.J5_ && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "StartWorldOriginInUiMode 超过循环次数"), this.Y5_)) {
+            TimerSystem_1.GameplayTimerSystem.Remove(this.Y5_);
+            this.Y5_ = undefined;
+            e.SetResult();
+          }
+        }
+      }, 50);
+    }
+    await e.Promise;
   }
   static async EndWorldOriginInUiMode() {
-    const e = new CustomPromise_1.CustomPromise;
-    this.C8l ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 38, "EnableWorldOriginByUi"), this.kbl("UI Enable", this.qbl), this.X5_ = 0, this.Y5_ = TimerSystem_1.TimerSystem.Forever(() => {
-      this.z5_() ? (this.C8l = !1, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWorldOriginInUiMode, !1), this.Y5_ && (TimerSystem_1.TimerSystem.Remove(this.Y5_), this.Y5_ = void 0, e.SetResult())) : (this.X5_++, this.X5_ > this.J5_ && (this.C8l = !1, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWorldOriginInUiMode, !1), Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "StartWorldOriginInUiMode 超过循环次数"), this.Y5_) && (TimerSystem_1.TimerSystem.Remove(this.Y5_), this.Y5_ = void 0, e.SetResult()))
-    }, 50)) : (Log_1.Log.CheckError() && Log_1.Log.Error("World", 38, "EnableWorldOriginByUi 开关不成对"), e.SetResult()), await e.Promise
+    const e = new CustomPromise_1.CustomPromise();
+    if (this.C8l) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("World", 38, "EnableWorldOriginByUi");
+      }
+      this.kbl("UI Enable", this.qbl);
+      this.X5_ = 0;
+      this.Y5_ = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+        if (this.z5_()) {
+          this.C8l = false;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWorldOriginInUiMode, false);
+          if (this.Y5_) {
+            TimerSystem_1.GameplayTimerSystem.Remove(this.Y5_);
+            this.Y5_ = undefined;
+            e.SetResult();
+          }
+        } else {
+          this.X5_++;
+          if (this.X5_ > this.J5_ && (this.C8l = false, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnWorldOriginInUiMode, false), Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "StartWorldOriginInUiMode 超过循环次数"), this.Y5_)) {
+            TimerSystem_1.GameplayTimerSystem.Remove(this.Y5_);
+            this.Y5_ = undefined;
+            e.SetResult();
+          }
+        }
+      }, 50);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("World", 38, "EnableWorldOriginByUi 开关不成对");
+      }
+      e.SetResult();
+    }
+    await e.Promise;
   }
   static GetIsWorldOriginInUiMode() {
-    return this.C8l
+    return this.C8l;
   }
   static StartWorldOriginInLoadingMode(e) {
-    this.g8l ? Log_1.Log.CheckError() && Log_1.Log.Error("World", 38, "IsWorldOriginInLoadingMode 开关不成对") : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 38, "StartWorldOriginInLoadingMode", ["reason", e]), this.g8l = !0)
+    if (this.g8l) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("World", 38, "IsWorldOriginInLoadingMode 开关不成对");
+      }
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("World", 38, "StartWorldOriginInLoadingMode", ["reason", e]);
+      }
+      this.g8l = true;
+    }
   }
   static EndWorldOriginInLoadingMode(e, t) {
-    this.g8l ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 38, "EndWorldOriginInLoadingMode", ["reason", e]), this.C8l ? (this.qbl.DeepCopy(t), Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 38, "EndWorldOriginInLoadingMode,UI模式优先级更高，忽略本次偏移行为,延迟到UI模式结束后执行", ["reason", e])) : this.kbl(e, t), this.g8l = !1) : Log_1.Log.CheckError() && Log_1.Log.Error("World", 38, "IsWorldOriginInLoadingMode 开关不成对")
+    if (this.g8l) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("World", 38, "EndWorldOriginInLoadingMode", ["reason", e]);
+      }
+      if (this.C8l) {
+        this.qbl.DeepCopy(t);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("World", 38, "EndWorldOriginInLoadingMode,UI模式优先级更高，忽略本次偏移行为,延迟到UI模式结束后执行", ["reason", e]);
+        }
+      } else {
+        this.kbl(e, t);
+      }
+      this.g8l = false;
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("World", 38, "IsWorldOriginInLoadingMode 开关不成对");
+    }
   }
   static SetEnableWorldOriginTickCheck(e, t) {
-    this.EnableWorldOriginTickCheck === t ? Log_1.Log.CheckWarn() && Log_1.Log.Warn("World", 38, "SetEnableWorldOriginTickCheck 调用不成对") : (this.EnableWorldOriginTickCheck = t, Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "SetEnableWorldOriginTickCheck", ["reason", e]))
+    if (this.EnableWorldOriginTickCheck === t) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("World", 38, "SetEnableWorldOriginTickCheck 调用不成对");
+      }
+    } else {
+      this.EnableWorldOriginTickCheck = t;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 38, "SetEnableWorldOriginTickCheck", ["reason", e]);
+      }
+    }
   }
   static FixWorldOriginTickCheck(e) {
-    this.f8l() && this.Fbl(e) && this.kbl("Tick", e)
+    if (this.f8l() && this.Fbl(e)) {
+      this.kbl("Tick", e);
+    }
   }
   static FixWorldOriginGm(e) {
-    return !!this.f8l() && (this.kbl("GM", e), !0)
+    return !!this.f8l() && (this.kbl("GM", e), true);
   }
   static z5_() {
     if (GlobalData_1.GlobalData.World) {
-      if (UE.KuroRenderingRuntimeBPPluginBPLibrary.IsWorldOriginFinish(GlobalData_1.GlobalData.World)) return !0;
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "IsWorldOriginFinish false")
-    } else Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "IsWorldOriginFinish false No World");
-    return !1
+      if (UE.KuroRenderingRuntimeBPPluginBPLibrary.IsWorldOriginFinish(GlobalData_1.GlobalData.World)) {
+        return true;
+      }
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 38, "IsWorldOriginFinish false");
+      }
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("World", 38, "IsWorldOriginFinish false No World");
+    }
+    return false;
   }
   static f8l() {
-    return !this.C8l && !this.g8l
+    return !this.C8l && !this.g8l;
   }
   static Fbl(e) {
-    return this.p8l++, !(this.p8l < this.CheckRateMax || (this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) || this.mTl === Time_1.Time.Frame || ModelManager_1.ModelManager.PlotModel?.IsInPlot || !UiManager_1.UiManager.IsViewOpen("BattleView") || FormationDataController_1.FormationDataController.GlobalIsInFight || (e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(205))) || e.HasTag(-1371021686) || e.HasTag(1491611589) || e.HasTag(504239013))
+    this.p8l++;
+    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(205))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
   }
   static kbl(e, t) {
-    this.mTl !== Time_1.Time.Frame && (this.Obl.DeepCopy(this.Gbl), this.mTl = Time_1.Time.Frame);
-    var r = new UE.VectorDouble;
-    r.X = Math.trunc(t.X), r.Y = Math.trunc(t.Y), r.Z = 0, this.Gbl.X = r.X, this.Gbl.Y = r.Y, this.Gbl.Z = 0, UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldOrigin(GlobalData_1.GlobalData.World, r), Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 38, "SetWorldOrigin", ["Origin", r], ["reason", e]), TimerSystem_1.TimerSystem.Next(() => {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.ForceUpdateCSMOnce 1")
-    })
+    if (this.mTl !== Time_1.Time.Frame) {
+      this.Obl.DeepCopy(this.Gbl);
+      this.mTl = Time_1.Time.Frame;
+    }
+    var r = new UE.VectorDouble();
+    r.X = Math.trunc(t.X);
+    r.Y = Math.trunc(t.Y);
+    r.Z = 0;
+    this.Gbl.X = r.X;
+    this.Gbl.Y = r.Y;
+    this.Gbl.Z = 0;
+    UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldOrigin(GlobalData_1.GlobalData.World, r);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("World", 38, "SetWorldOrigin", ["Origin", r], ["reason", e]);
+    }
+    TimerSystem_1.GameplayTimerSystem.Next(() => {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.ForceUpdateCSMOnce 1");
+    });
   }
 }
-exports.WorldController = WorldController, (_a = WorldController).Kpr = !1, WorldController.qpr = void 0, WorldController.LTl = void 0, WorldController.Qpr = !1, WorldController.mea = 0, WorldController.AK = !1, WorldController.Xr_ = 0, WorldController.$r_ = 0, WorldController.RBn = e => {
-  cpp_1.FuncOpenLibrary.TryOpen(e.KEs)
-}, WorldController.Gpr = () => {
-  _a.Kpr ? (TimerSystem_1.TimerSystem.Pause(_a.qpr), _a.Qpr = !0) : (_a.ManuallyGarbageCollection(1), _a.Qpr = !1)
-}, WorldController.bpr = () => {
-  _a.AK && _a.Zfi(!0, !0)
-}, WorldController.Ilt = () => {
-  _a.AK && _a.Zfi(!0, !1)
-}, WorldController.nye = () => {
-  ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.ServerCaveMode = 0
-}, WorldController.Zfi = (e, t) => {
-  _a.AK = e, GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetPerformanceLimitMode(e && !t);
+exports.WorldController = WorldController;
+(_a = WorldController).Kpr = false;
+WorldController.qpr = undefined;
+WorldController.LTl = undefined;
+WorldController.Qpr = false;
+WorldController.mea = 0;
+WorldController.AK = false;
+WorldController.Xr_ = 0;
+WorldController.$r_ = 0;
+WorldController.RBn = e => {
+  cpp_1.FuncOpenLibrary.TryOpen(e.KEs);
+};
+WorldController.Gpr = () => {
+  if (_a.Kpr) {
+    TimerSystem_1.GameplayTimerSystem.Pause(_a.qpr);
+    _a.Qpr = true;
+  } else {
+    _a.ManuallyGarbageCollection(1);
+    _a.Qpr = false;
+  }
+};
+WorldController.bpr = () => {
+  if (_a.AK) {
+    _a.Zfi(true, true);
+  }
+};
+WorldController.Ilt = () => {
+  if (_a.AK) {
+    _a.Zfi(true, false);
+  }
+};
+WorldController.nye = () => {
+  ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.ServerCaveMode = 0;
+};
+WorldController.Zfi = (e, t) => {
+  _a.AK = e;
+  GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetPerformanceLimitMode(e && !t);
   var r = UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld()).GetKuroGlobalGIActor();
-  r.EnableImposterUpdate = !(e && !t)
-}, WorldController.Zpe = e => {
-  (_a.Kpr = e) ? GameSettingsDeviceRender_1.GameSettingsDeviceRender.TryReduceCsmUpdateFrequency("Battle"): GameSettingsDeviceRender_1.GameSettingsDeviceRender.TryRestoreCsmUpdateFrequency("Battle"), _a.moh(), !e && _a.Qpr && (_a.ManuallyGarbageCollection(2), _a.Qpr = !1, TimerSystem_1.TimerSystem.Resume(_a.qpr)), UE.KuroStaticLibrary.SetGameThreadAffinity(e)
-}, WorldController.RTl = () => {
+  r.EnableImposterUpdate = !e || !!t;
+};
+WorldController.Zpe = e => {
+  if (_a.Kpr = e) {
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.TryReduceCsmUpdateFrequency("Battle");
+  } else {
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.TryRestoreCsmUpdateFrequency("Battle");
+  }
+  _a.moh();
+  if (!e && _a.Qpr) {
+    _a.ManuallyGarbageCollection(2);
+    _a.Qpr = false;
+    TimerSystem_1.GameplayTimerSystem.Resume(_a.qpr);
+  }
+  UE.KuroStaticLibrary.SetGameThreadAffinity(e);
+};
+WorldController.RTl = () => {
   var e = ModelManager_1.ModelManager.WorldModel;
-  e && e.CurEnvironmentInfo.RequestUpdateVoxelEnv()
-}, WorldController.zfi = e => {
-  if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen) GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetMaximumFrameRate(e);
-  else if (ModelManager_1.ModelManager.WorldModel?.TickIntervalSchedulers)
-    for (const t of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) t.ChangeTickFramePeriodByFrameRate(e)
-}, WorldController.Hpr = new Array, WorldController.Mze = () => {
-  cpp_1.FKuroGameBudgetAllocatorInterface.ClearAssistantActors()
-}, WorldController.Bpr = () => {
+  if (e) {
+    e.CurEnvironmentInfo.RequestUpdateVoxelEnv();
+  }
+};
+WorldController.zfi = e => {
+  if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen) {
+    GameBudgetInterfaceController_1.GameBudgetInterfaceController.SetMaximumFrameRate(e);
+  } else if (ModelManager_1.ModelManager.WorldModel?.TickIntervalSchedulers) {
+    for (const t of ModelManager_1.ModelManager.WorldModel.TickIntervalSchedulers) {
+      t.ChangeTickFramePeriodByFrameRate(e);
+    }
+  }
+};
+WorldController.Hpr = new Array();
+WorldController.Mze = () => {
+  cpp_1.FKuroGameBudgetAllocatorInterface.ClearAssistantActors();
+};
+WorldController.Bpr = () => {
   if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
     cpp_1.FKuroGameBudgetAllocatorInterface.ClearAssistantActors();
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
       var e;
-      t.IsMyRole() || (e = t.EntityHandle?.Entity?.GetComponent(3)?.Actor) && cpp_1.FKuroGameBudgetAllocatorInterface.AddAssistantActor(e)
+      if (!t.IsMyRole()) {
+        if (e = t.EntityHandle?.Entity?.GetComponent(3)?.Actor) {
+          cpp_1.FKuroGameBudgetAllocatorInterface.AddAssistantActor(e);
+        }
+      }
     }
   }
-}, WorldController.Gbl = Vector_1.Vector.Create(0, 0, 0), WorldController.Obl = Vector_1.Vector.Create(0, 0, 0), WorldController.mTl = 0, WorldController.EnableWorldOriginLoadingCheck = !0, WorldController.EnableWorldOriginTickCheck = !0, WorldController.OriginNeedChangeMax = 25e4, WorldController.CheckRateMax = 30, WorldController.p8l = 0, WorldController.C8l = !1, WorldController.g8l = !1, WorldController.qbl = Vector_1.Vector.Create(0, 0, 0), WorldController.Y5_ = void 0, WorldController.X5_ = 0, WorldController.J5_ = 10;
-//# sourceMappingURL=WorldController.js.map
+};
+WorldController.Gbl = Vector_1.Vector.Create(0, 0, 0);
+WorldController.Obl = Vector_1.Vector.Create(0, 0, 0);
+WorldController.mTl = 0;
+WorldController.EnableWorldOriginLoadingCheck = true;
+WorldController.EnableWorldOriginTickCheck = true;
+WorldController.OriginNeedChangeMax = 250000;
+WorldController.CheckRateMax = 30;
+WorldController.p8l = 0;
+WorldController.C8l = false;
+WorldController.g8l = false;
+WorldController.qbl = Vector_1.Vector.Create(0, 0, 0);
+WorldController.Y5_ = undefined;
+WorldController.X5_ = 0;
+WorldController.J5_ = 10; //# sourceMappingURL=WorldController.js.map

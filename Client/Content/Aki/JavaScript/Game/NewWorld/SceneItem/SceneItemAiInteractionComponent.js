@@ -1,64 +1,103 @@
 "use strict";
-var __decorate = this && this.__decorate || function(e, t, n, i) {
-  var r, s = arguments.length,
-    o = s < 3 ? t : null === i ? i = Object.getOwnPropertyDescriptor(t, n) : i;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) o = Reflect.decorate(e, t, n, i);
-  else
-    for (var h = e.length - 1; 0 <= h; h--)(r = e[h]) && (o = (s < 3 ? r(o) : 3 < s ? r(t, n, o) : r(t, n)) || o);
-  return 3 < s && o && Object.defineProperty(t, n, o), o
+
+var __decorate = this && this.__decorate || function (e, t, n, i) {
+  var r;
+  var s = arguments.length;
+  var o = s < 3 ? t : i === null ? i = Object.getOwnPropertyDescriptor(t, n) : i;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    o = Reflect.decorate(e, t, n, i);
+  } else {
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (r = e[h]) {
+        o = (s < 3 ? r(o) : s > 3 ? r(t, n, o) : r(t, n)) || o;
+      }
+    }
+  }
+  if (s > 3 && o) {
+    Object.defineProperty(t, n, o);
+  }
+  return o;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneItemAiInteractionComponent = void 0;
-const Time_1 = require("../../../Core/Common/Time"),
-  EntityComponent_1 = require("../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  AiInteractionItemQueryManager_1 = require("./AiInteraction/AiInteractionItemQueryManager"),
-  AI_USED_COLD_DOWN = 2e3;
+  value: true
+});
+exports.SceneItemAiInteractionComponent = undefined;
+const Time_1 = require("../../../Core/Common/Time");
+const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const AiInteractionItemQueryManager_1 = require("./AiInteraction/AiInteractionItemQueryManager");
+const AI_USED_COLD_DOWN = 2000;
 let SceneItemAiInteractionComponent = class SceneItemAiInteractionComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.IsSearchByAi = void 0, this.SearchEntity = void 0, this.IsUsingByAi = void 0, this.LastUsedTime = -AI_USED_COLD_DOWN, this.EnableHandler = void 0, this.MoveComp = void 0, this.OnEntityDeadEvent = void 0
+    super(...arguments);
+    this.IsSearchByAi = undefined;
+    this.SearchEntity = undefined;
+    this.IsUsingByAi = undefined;
+    this.LastUsedTime = -AI_USED_COLD_DOWN;
+    this.EnableHandler = undefined;
+    this.MoveComp = undefined;
+    this.OnEntityDeadEvent = undefined;
   }
   static get Dependencies() {
-    return [202]
+    return [202];
   }
   OnStart() {
-    this.LastUsedTime = -AI_USED_COLD_DOWN, this.IsUsingByAi = !1, this.Emn(), this.OnEntityDeadEvent = () => {
-      this.OnEntityDead()
+    this.LastUsedTime = -AI_USED_COLD_DOWN;
+    this.IsUsingByAi = false;
+    this.Emn();
+    this.OnEntityDeadEvent = () => {
+      this.OnEntityDead();
     };
     var e = this.Entity.GetComponent(0).GetVisible();
-    return this.EnableHandler = e ? -1 : this.Entity.Disable("[SceneItemAiInteractionComponent.OnStart] visible为false"), this.MoveComp = this.Entity.GetComponent(123), AiInteractionItemQueryManager_1.AiInteractionItemQueryManager.Get().RegisterItem(this.Entity), !0
+    this.EnableHandler = e ? -1 : this.Entity.Disable("[SceneItemAiInteractionComponent.OnStart] visible为false");
+    this.MoveComp = this.Entity.GetComponent(123);
+    AiInteractionItemQueryManager_1.AiInteractionItemQueryManager.Get().RegisterItem(this.Entity);
+    return true;
   }
   OnEnd() {
-    return AiInteractionItemQueryManager_1.AiInteractionItemQueryManager.Get().UnRegisterItem(this.Entity), !0
+    AiInteractionItemQueryManager_1.AiInteractionItemQueryManager.Get().UnRegisterItem(this.Entity);
+    return true;
   }
   Emn() {
-    this.IsSearchByAi = !1, this.SearchEntity = void 0
+    this.IsSearchByAi = false;
+    this.SearchEntity = undefined;
   }
   OnEntityDead() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.SearchEntity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.OnEntityDeadEvent), this.Emn()
+    EventSystem_1.EventSystem.RemoveWithTarget(this.SearchEntity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.OnEntityDeadEvent);
+    this.Emn();
   }
   SetSearched(e) {
-    this.IsSearchByAi || (this.IsSearchByAi = !0, this.SearchEntity = e, EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.OnEntityDeadEvent))
+    if (!this.IsSearchByAi) {
+      this.IsSearchByAi = true;
+      this.SearchEntity = e;
+      EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.OnEntityDeadEvent);
+    }
   }
   SetUnSearched() {
-    this.IsSearchByAi && this.OnEntityDead()
+    if (this.IsSearchByAi) {
+      this.OnEntityDead();
+    }
   }
   OnLastUsed() {
-    this.SetUnSearched(), this.LastUsedTime = Time_1.Time.WorldTime
+    this.SetUnSearched();
+    this.LastUsedTime = Time_1.Time.WorldTime;
   }
   CanBeUsed() {
-    return this.MoveComp ? !this.MoveComp.EnableMovement : Time_1.Time.WorldTime - this.LastUsedTime > AI_USED_COLD_DOWN
+    if (this.MoveComp) {
+      return !this.MoveComp.EnableMovement;
+    } else {
+      return Time_1.Time.WorldTime - this.LastUsedTime > AI_USED_COLD_DOWN;
+    }
   }
   HiddenItem(e) {
-    return e !== (-1 !== this.EnableHandler) && (e ? this.EnableHandler = this.Entity.Disable("[SceneItemAiInteractionComponent.HiddenItem] bHidden为true") : (this.Entity.Enable(this.EnableHandler, "[SceneItemAiInteractionComponent.HiddenItem] bHidden为false"), this.EnableHandler = -1), !0)
+    return e !== (this.EnableHandler !== -1) && (e ? this.EnableHandler = this.Entity.Disable("[SceneItemAiInteractionComponent.HiddenItem] bHidden为true") : (this.Entity.Enable(this.EnableHandler, "[SceneItemAiInteractionComponent.HiddenItem] bHidden为false"), this.EnableHandler = -1), true);
   }
   ItemAttachEntity(e) {}
   IsSearchByOther(e) {
-    return !!this.IsSearchByAi && this.SearchEntity.Id !== e
+    return !!this.IsSearchByAi && this.SearchEntity.Id !== e;
   }
 };
-SceneItemAiInteractionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(144)], SceneItemAiInteractionComponent), exports.SceneItemAiInteractionComponent = SceneItemAiInteractionComponent;
-//# sourceMappingURL=SceneItemAiInteractionComponent.js.map
+SceneItemAiInteractionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(144)], SceneItemAiInteractionComponent);
+exports.SceneItemAiInteractionComponent = SceneItemAiInteractionComponent; //# sourceMappingURL=SceneItemAiInteractionComponent.js.map

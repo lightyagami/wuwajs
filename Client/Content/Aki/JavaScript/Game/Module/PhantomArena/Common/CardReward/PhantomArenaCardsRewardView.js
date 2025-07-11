@@ -1,46 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RewardGridCardItem = exports.PhantomArenaCardsRewardView = void 0;
-const UE = require("ue"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../../Ui/Base/UiViewBase"),
-  GenericLayout_1 = require("../../../Util/Layout/GenericLayout"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  CommonGridCardItem_1 = require("../CardItem/Item/CommonGridCardItem");
+  value: true
+});
+exports.RewardGridCardItem = exports.PhantomArenaCardsRewardView = undefined;
+const UE = require("ue");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
+const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const CommonGridCardItem_1 = require("../CardItem/Item/CommonGridCardItem");
 class PhantomArenaCardsRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.Sru = void 0, this.eiu = void 0, this.Y5i = () => new RewardGridCardItem, this.k41 = () => {
-      this.CloseMe(this.eiu)
-    }
+    super(...arguments);
+    this.lau = undefined;
+    this.gnu = undefined;
+    this.Y5i = () => new RewardGridCardItem();
+    this.dV1 = () => {
+      this.CloseMe(this.gnu);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIButtonComponent],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIHorizontalLayout]
-    ], this.BtnBindInfo = [
-      [1, this.k41]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIHorizontalLayout]];
+    this.BtnBindInfo = [[1, this.dV1]];
   }
   OnStart() {
-    var e = this.OpenParam,
-      e = (this.eiu = e.CallbackOnClose, e.CardIdList),
-      e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataListByIdList(e);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "PhantomBattle_1089"), this.GetItem(3).SetUIActive(!1), this.GetHorizontalLayout(4).RootUIComp.SetUIActive(!0), this.Sru = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.Y5i), this.Sru.RefreshByData(e)
+    var e = this.OpenParam;
+    this.gnu = e.CallbackOnClose;
+    var e = e.CardIdList;
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataListByIdList(e);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "PhantomBattle_1089");
+    this.GetItem(3).SetUIActive(false);
+    this.GetHorizontalLayout(4).RootUIComp.SetUIActive(true);
+    this.lau = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.Y5i);
+    this.lau.RefreshByData(e);
   }
 }
 exports.PhantomArenaCardsRewardView = PhantomArenaCardsRewardView;
 class RewardGridCardItem extends CommonGridCardItem_1.CommonGridCardItem {
   constructor() {
-    super(...arguments), this.Data = void 0, this.Bpt = () => !1
+    super(...arguments);
+    this.Data = undefined;
+    this.Bpt = () => false;
   }
   OnRegisterCardComponent() {
-    this.ComponentsRegisterInfoByItem = [
-      [0, this.GetRootItem()]
-    ]
+    this.ComponentsRegisterInfoByItem = [[0, this.GetRootItem()]];
   }
   Refresh(e) {
     e = {
@@ -49,15 +53,15 @@ class RewardGridCardItem extends CommonGridCardItem_1.CommonGridCardItem {
       Life: e.Life,
       Element: e.Element,
       CardFaceTexturePath: e.CardFaceTexturePath,
-      ShowCardFaceTexture: 0 === e.CardFaceType,
+      ShowCardFaceTexture: e.CardFaceType === 0,
       Cost: e.Cost,
       CanToggleExecuteChange: this.Bpt,
       OutlookUnlocked: e.OutlookUnlocked
     };
-    this.GetComponent(0)?.Refresh(e)
+    this.GetComponent(0)?.Refresh(e);
   }
   GetKey(e, t) {
-    return e.CardId
+    return e.CardId;
   }
 }
 exports.RewardGridCardItem = RewardGridCardItem;

@@ -1,41 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LongPressKeyItemBase = void 0;
+  value: true
+});
+exports.LongPressKeyItemBase = undefined;
 const KeyItemBase_1 = require("./KeyItemBase");
 class LongPressKeyItemBase extends KeyItemBase_1.KeyItemBase {
   constructor() {
-    super(...arguments), this.xut = -0, this.rut = -0, this.wut = !1
+    super(...arguments);
+    this.xut = -0;
+    this.rut = -0;
+    this.wut = false;
   }
   RefreshActionLongPress(s, t = 0) {
-    this.ActionName !== s && (this.xut = t, this.RefreshAction(s), this.But(0 < t), this.but(0))
+    if (this.ActionName !== s) {
+      this.xut = t;
+      this.RefreshAction(s);
+      this.But(t > 0);
+      this.but(0);
+    }
   }
   ForceShowLongPress() {
-    this.xut = 0, this.But(!0), this.but(100)
+    this.xut = 0;
+    this.But(true);
+    this.but(100);
   }
   RefreshAxis(s) {
-    this.AxisName !== s && (this.xut = 0, this.But(!1), super.RefreshAxis(s))
+    if (this.AxisName !== s) {
+      this.xut = 0;
+      this.But(false);
+      super.RefreshAxis(s);
+    }
   }
   OnBeforeDestroy() {
-    this.qut()
+    this.qut();
   }
   OnInputAction(s, t) {
-    this.IsEnable && 0 === t ? this.Gut() : this.qut()
+    if (this.IsEnable && t === 0) {
+      this.Gut();
+    } else {
+      this.qut();
+    }
   }
   Tick(s) {
-    this.wut && (!this.IsEnable || (this.rut += s, this.but(this.rut / this.xut), this.rut >= this.xut)) && this.qut()
+    if (this.wut && (!this.IsEnable || (this.rut += s, this.but(this.rut / this.xut), this.rut >= this.xut))) {
+      this.qut();
+    }
   }
   Gut() {
-    this.rut = 0, this.but(0), this.wut = !0
+    this.rut = 0;
+    this.but(0);
+    this.wut = true;
   }
   qut() {
-    this.rut = 0, this.but(0), this.wut = !1
+    this.rut = 0;
+    this.but(0);
+    this.wut = false;
   }
   But(s) {
-    this.GetLongPressItem()?.SetUIActive(s)
+    this.GetLongPressItem()?.SetUIActive(s);
   }
   but(s) {
-    this.GetLongPressTexture()?.SetFillAmount(s)
+    this.GetLongPressTexture()?.SetFillAmount(s);
   }
 }
 exports.LongPressKeyItemBase = LongPressKeyItemBase;

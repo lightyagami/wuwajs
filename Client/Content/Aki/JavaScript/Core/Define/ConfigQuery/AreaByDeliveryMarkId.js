@@ -1,50 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configAreaByDeliveryMarkId = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  Area_1 = require("../Config/Area"),
-  DB = "db_area.db",
-  FILE = "q.区域.xlsx",
-  TABLE = "Area",
-  COMMAND = "select BinData from `Area` where DeliveryMarkId=?",
-  KEY_PREFIX = "AreaByDeliveryMarkId",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configAreaByDeliveryMarkId = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const Area_1 = require("../Config/Area");
+const DB = "db_area.db";
+const FILE = "q.区域.xlsx";
+const TABLE = "Area";
+const COMMAND = "select BinData from `Area` where DeliveryMarkId=?";
+const KEY_PREFIX = "AreaByDeliveryMarkId";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configAreaByDeliveryMarkId.Init"),
-  getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configAreaByDeliveryMarkId.GetConfig"),
-  CONFIG_STAT_PREFIX = "configAreaByDeliveryMarkId.GetConfig(";
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configAreaByDeliveryMarkId.Init");
+const getConfigStat = Stats_1.Stat.CreateNoFlameGraph("configAreaByDeliveryMarkId.GetConfig");
+const CONFIG_STAT_PREFIX = "configAreaByDeliveryMarkId.GetConfig(";
 exports.configAreaByDeliveryMarkId = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfig: (o, e = !0) => {
-    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigStat?.Start();
-    var n = Stats_1.Stat.CreateNoFlameGraph(CONFIG_STAT_PREFIX + `#${o})`),
-      i = (n?.Start(), ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair));
+  GetConfig: (o, e = true) => {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigStat?.Start();
+    var n = Stats_1.Stat.CreateNoFlameGraph(`${CONFIG_STAT_PREFIX}#${o})`);
+    n?.Start();
+    var i = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair);
     if (i) {
       if (e) {
-        var t = KEY_PREFIX + `#${o})`;
+        var t = `${KEY_PREFIX}#${o})`;
         const r = ConfigCommon_1.ConfigCommon.GetConfig(t);
-        if (r) return n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), r
-      }
-      if (i = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && 0 < ConfigCommon_1.ConfigCommon.Step(handleId, !0, ...logPair, ["DeliveryMarkId", o])) {
-        t = void 0;
-        if ([i, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["DeliveryMarkId", o]), i) {
-          const r = Area_1.Area.getRootAsArea(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
-          return e && (i = KEY_PREFIX + `#${o})`, ConfigCommon_1.ConfigCommon.SaveConfig(i, r)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), r
+        if (r) {
+          n?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return r;
         }
       }
-      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair)
+      if (i = ConfigCommon_1.ConfigCommon.BindInt(handleId, 1, o, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["DeliveryMarkId", o]) > 0) {
+        t = undefined;
+        [i, t] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["DeliveryMarkId", o]);
+        if (i) {
+          const r = Area_1.Area.getRootAsArea(new byte_buffer_1.ByteBuffer(new Uint8Array(t.buffer)));
+          if (e) {
+            i = `${KEY_PREFIX}#${o})`;
+            ConfigCommon_1.ConfigCommon.SaveConfig(i, r);
+          }
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          n?.Stop();
+          getConfigStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return r;
+        }
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
     }
-    n?.Stop(), getConfigStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    n?.Stop();
+    getConfigStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=AreaByDeliveryMarkId.js.map

@@ -1,16 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenRouletteSetViewComponent = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  HotKeyComponent_1 = require("./HotKeyComponent");
+  value: true
+});
+exports.OpenRouletteSetViewComponent = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const HotKeyComponent_1 = require("./HotKeyComponent");
 class OpenRouletteSetViewComponent extends HotKeyComponent_1.HotKeyComponent {
   OnRefreshSelfHotKeyState(e) {
-    this.SetVisibleMode(2, !0)
+    this.SetVisibleMode(2, true);
   }
   OnPress() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenRouletteSetView)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenRouletteSetView);
   }
 }
 exports.OpenRouletteSetViewComponent = OpenRouletteSetViewComponent;

@@ -1,167 +1,178 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleTeamEditView = void 0;
-const UE = require("ue"),
-  UiResourceById_1 = require("../../../../Core/Define/ConfigQuery/UiResourceById"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer"),
-  CommonTabComponentData_1 = require("../../Common/TabComponent/CommonTabComponentData"),
-  CommonTabData_1 = require("../../Common/TabComponent/CommonTabData"),
-  CommonTabTitleData_1 = require("../../Common/TabComponent/CommonTabTitleData"),
-  TabComponentWithCaptionItem_1 = require("../../Common/TabComponent/TabComponentWithCaptionItem"),
-  EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine"),
-  QuickRoleSelectView_1 = require("../../RoleSelect/QuickRoleSelectView"),
-  TeamRoleSelectView_1 = require("../../RoleSelect/TeamRoleSelectView"),
-  RoleController_1 = require("../../RoleUi/RoleController"),
-  RoleDefine_1 = require("../../RoleUi/RoleDefine"),
-  ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  RogueBattleTeamEditSlot_1 = require("../Component/RogueBattleTeamEditSlot"),
-  RogueBattleTeamEditTab_1 = require("../Component/RogueBattleTeamEditTab"),
-  MAX_FORMATION_NUM = 3;
+  value: true
+});
+exports.RogueBattleTeamEditView = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../Ui/Base/UiAsyncTask");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
+const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
+const CommonTabComponentData_1 = require("../../Common/TabComponent/CommonTabComponentData");
+const CommonTabData_1 = require("../../Common/TabComponent/CommonTabData");
+const CommonTabTitleData_1 = require("../../Common/TabComponent/CommonTabTitleData");
+const TabComponentWithCaptionItem_1 = require("../../Common/TabComponent/TabComponentWithCaptionItem");
+const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine");
+const MapRoguePanelFetter_1 = require("../../MapRogue/View/Components/MapRoguePanelFetter");
+const RogueBattleLinkItem_1 = require("../Component/RogueBattleLinkItem");
+const RogueBattleTeamEditSlot_1 = require("../Component/RogueBattleTeamEditSlot");
+const RogueBattleTeamEditTab_1 = require("../Component/RogueBattleTeamEditTab");
+const RogueBattleTeamRoleSelectView_1 = require("./RogueBattleTeamRoleSelectView");
+const MAX_FORMATION_NUM = 1;
 class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.RoleSlotList = [], this.TabComponent = void 0, this.u5t = -1, this.su1 = !1, this.PS1 = void 0, this._T1 = () => {
+    super(...arguments);
+    this.CLu = undefined;
+    this.Tpu = undefined;
+    this.pLu = [];
+    this.Ivt = undefined;
+    this.wu1 = false;
+    this.tM1 = undefined;
+    this.BT1 = () => {
       var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this.OpenParam);
-      e && UiManager_1.UiManager.OpenView("RogueBattleEnvironmentBuffView", e.Data.Ar1?.Vy_)
-    }, this.uT1 = () => {
-      var e;
-      this.su1 || (e = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex())) && (e = e.Cn1, ControllerHolder_1.ControllerHolder.MapRogueController.OpenRogueFetterView(e))
-    }, this.L1i = () => {
-      if (!this.su1) {
-        this.GetItem(10).SetUIActive(!0), this.PS1?.PlaySequencePurely("Progressing");
-        const t = this.OpenParam;
-        var e = new UiAsyncTask_1.UiAsyncTask("RogueBattleTeamEditView.OnClickBtnConfirm", async () => {
-          this.su1 = !0, await ControllerHolder_1.ControllerHolder.RogueBattleController.SwitchFormationRequest(this.TabComponent.GetSelectedIndex()), await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise, ModelManager_1.ModelManager.MapRogueModel.ExecuteOpData(t)
-        });
-        this.RunAsyncTask(e)
+      if (e) {
+        UiManager_1.UiManager.OpenView("RogueBattleEnvironmentBuffView", e.Data.Yr1?.Vy_);
       }
-    }, this.yqe = e => {
-      var t = EditFormationDefine_1.FORMATION_SPRITES[e],
-        t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t),
-        e = e + 1,
-        i = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("TeamText"),
-        t = new CommonTabData_1.CommonTabData(t, new CommonTabTitleData_1.CommonTabTitleData(i, e));
-      return t.SetSmallIcon(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamTitle")), t
-    }, this.l6c = e => {
-      const i = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(e);
-      i && this.RoleSlotList.forEach((e, t) => {
-        t >= i.Q6n.length ? e.UpdateRoleInfo(0) : e.UpdateRoleInfo(i.Q6n[t])
-      }), this.Og()
-    }, this.Ao1 = () => {
-      var e, t;
-      this.su1 || UiManager_1.UiManager.IsViewOpen("QuickRoleSelectView") || (t = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex()), e = ModelManager_1.ModelManager.RogueBattleModel.GetRoleList(), (t = new QuickRoleSelectView_1.QuickRoleSelectViewData(4, t.Q6n, e)).OnConfirm = this.N4t, t.CanConfirm = this.gv1, UiManager_1.UiManager.OpenView("QuickRoleSelectView", t))
-    }, this.gv1 = e => {
-      if (0 === e.length) return ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("RogueBattle_TeamEmpty_QuickSelect"), !1;
-      let t = !0;
-      for (const i of e)
-        if (0 !== i) {
-          t = !1;
-          break
-        } return !t
-    }, this.N4t = e => {
-      const i = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex());
-      i.Q6n = e, ControllerHolder_1.ControllerHolder.RogueBattleController.ChangeFormationAllListRequest(this.TabComponent.GetSelectedIndex()).finally(() => {
-        if (i) {
-          let t = 0;
-          for (let e = 0; e < i.Q6n.length; e++) 0 !== i.Q6n[e] && (this.RoleSlotList[t].UpdateRoleInfo(i.Q6n[e]), t++);
-          for (let e = t; e < this.RoleSlotList.length; e++) this.RoleSlotList[e].UpdateRoleInfo(0)
+    };
+    this.kT1 = () => {
+      var e;
+      if (!this.wu1) {
+        e = new RogueBattleTeamRoleSelectView_1.RogueBattleTeamEditData(this.Ivt.GetSelectedIndex(), this.vLu);
+        UiManager_1.UiManager.OpenView("RogueBattleTeamRoleSelectView", e);
+      }
+    };
+    this.zo1 = e => {
+      var t;
+      if (!this.wu1) {
+        t = new RogueBattleTeamRoleSelectView_1.RogueBattleTeamEditData(this.Ivt.GetSelectedIndex(), this.vLu);
+        UiManager_1.UiManager.OpenView("RogueBattleTeamRoleSelectView", t);
+      }
+    };
+    this.L1i = () => {
+      var e = () => {
+        if (!this.wu1) {
+          this.GetItem(9).SetUIActive(true);
+          this.tM1?.PlaySequencePurely("Progressing");
+          const t = this.OpenParam;
+          var e = new UiAsyncTask_1.UiAsyncTask("RogueBattleTeamEditView.OnClickBtnConfirm", async () => {
+            this.wu1 = true;
+            await ControllerHolder_1.ControllerHolder.RogueBattleController.SwitchFormationRequest(this.Ivt.GetSelectedIndex());
+            await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise;
+            ModelManager_1.ModelManager.MapRogueModel.ExecuteOpData(t);
+          });
+          this.RunAsyncTask(e);
         }
-        this.Og()
-      })
-    }, this.Po1 = e => {
-      UiManager_1.UiManager.OpenView("TeamRoleSelectView", this.D5t(e))
-    }, this.VS1 = e => {
-      e >= RoleDefine_1.ROBOT_DATA_MIN_ID ? RoleController_1.RoleController.OpenRoleMainView(1, 0, [e]) : (e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(e)) && RoleController_1.RoleController.OpenRoleMainView(1, 0, [e.TrialRoleId])
-    }, this.Q4t = e => {
-      var t = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex());
-      return t && t.Q6n[this.u5t] === e ? "GoDownText" : "JoinText"
-    }, this.S4t = e => {
-      var t, i = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex());
-      return !i || !(1 === (t = i.Q6n.filter(e => 0 !== e)).length && t[0] === e || i.Q6n.includes(e) && i.Q6n[this.u5t] !== e)
-    }, this.v4t = e => {
-      var t = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex());
-      return !t || !t.Q6n.includes(e) || t.Q6n[this.u5t] === e
-    }, this.X4t = e => {
-      const i = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex());
-      ControllerHolder_1.ControllerHolder.RogueBattleController.ChangeFormationRequest(this.TabComponent.GetSelectedIndex(), this.u5t, e).finally(() => {
-        if (i) {
-          let t = 0;
-          for (let e = 0; e < i.Q6n.length; e++) 0 !== i.Q6n[e] && (this.RoleSlotList[t].UpdateRoleInfo(i.Q6n[e]), t++);
-          for (let e = t; e < this.RoleSlotList.length; e++) this.RoleSlotList[e].UpdateRoleInfo(0)
+      };
+      const t = ModelManager_1.ModelManager.MapRogueModel.GameInfo;
+      var i = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(this.Ivt.GetSelectedIndex());
+      if (!t.NotTipsInactiveLink && i.On1 === 0 && ModelManager_1.ModelManager.RogueBattleModel.IsAnyBondLinkCanActivate()) {
+        (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(348)).HasToggle = true;
+        i.ToggleTextKey = "RogueRes_LvlHint_Desc";
+        i.FunctionMap.set(1, this.kT1);
+        i.FunctionMap.set(2, e);
+        i.SetToggleFunction(e => {
+          t.NotTipsInactiveLink = e;
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+      } else {
+        e();
+      }
+    };
+    this.WPu = () => !this.wu1;
+    this.yqe = e => {
+      e = EditFormationDefine_1.FORMATION_SPRITES[e];
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      e = new CommonTabData_1.CommonTabData(e, new CommonTabTitleData_1.CommonTabTitleData("RogueRes_TeamName"));
+      e.SetSmallIcon(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamTitle"));
+      return e;
+    };
+    this.l6c = i => {
+      const a = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(i);
+      if (a) {
+        this.pLu.forEach((e, t) => {
+          if (t >= a.Q6n.length) {
+            e.UpdateRoleInfo(0, i);
+          } else {
+            e.UpdateRoleInfo(a.Q6n[t], i);
+          }
+        });
+      }
+      this.Og();
+    };
+    this.vLu = async e => {
+      var i = this.Ivt.GetSelectedIndex();
+      var t = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(i);
+      if (t.Q6n !== e) {
+        await ControllerHolder_1.ControllerHolder.RogueBattleController.ChangeFormationAllListRequest(i, e);
+        var a = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(i);
+        let t = 0;
+        for (let e = 0; e < a.Q6n.length; e++) {
+          if (a.Q6n[e] !== 0) {
+            this.pLu[t].UpdateRoleInfo(a.Q6n[e], i);
+            t++;
+          }
         }
-        this.Og()
-      })
-    }, this.y5t = () => {}
+        for (let e = t; e < this.pLu.length; e++) {
+          this.pLu[e].UpdateRoleInfo(0, i);
+        }
+        this.Og();
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UIItem],
-      [3, UE.UIButtonComponent],
-      [4, UE.UIText],
-      [5, UE.UIButtonComponent],
-      [6, UE.UIItem],
-      [7, UE.UIButtonComponent],
-      [8, UE.UIButtonComponent],
-      [9, UE.UISprite],
-      [10, UE.UIItem],
-      [11, UE.UITexture],
-      [12, UE.UIText]
-    ], this.BtnBindInfo = [
-      [3, this.L1i],
-      [5, this.Ao1],
-      [7, this._T1],
-      [8, this.uT1]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UISprite], [9, UE.UIItem], [10, UE.UIItem]];
+    this.BtnBindInfo = [[3, this.L1i], [6, this.BT1]];
   }
   async OnBeforeStartAsync() {
-    this.RoleSlotList = [new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(0), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(1), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(2)], this.RoleSlotList.forEach(e => {
-      e.OnClickCallBack = this.Po1
+    this.pLu = [new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(0), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(1), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(2)];
+    this.pLu.forEach(e => {
+      e.OnClickCallBack = this.zo1;
     });
-    var e = new CommonTabComponentData_1.CommonTabComponentData(() => new RogueBattleTeamEditTab_1.RogueBattleTeamEditTab, this.l6c, this.yqe);
-    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(6), e, () => {
-      this.CloseMe()
-    }), this.PS1 = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(10)), await Promise.all([this.RoleSlotList[0].CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.RoleSlotList[1].CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.RoleSlotList[2].CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.TabComponent.RefreshTabItemByLengthAsync(MAX_FORMATION_NUM)]), this.TabComponent.SelectToggleByIndex(0), this.TabComponent.SetCloseBtnShowState(!1)
+    var e = new CommonTabComponentData_1.CommonTabComponentData(() => new RogueBattleTeamEditTab_1.RogueBattleTeamEditTab(), this.l6c, this.yqe);
+    this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(5), e, () => {});
+    this.tM1 = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(9));
+    this.CLu = new RogueBattleLinkItem_1.RogueBattleLinkItem();
+    this.CLu.OnClickCallBack = this.kT1;
+    this.Tpu = new MapRoguePanelFetter_1.MapRoguePanelFetter();
+    this.Tpu.CheckCanOpenMenu = this.WPu;
+    await Promise.all([this.pLu[0].CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.pLu[1].CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.pLu[2].CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.CLu.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.Tpu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.Ivt.RefreshTabItemByLengthAsync(MAX_FORMATION_NUM)]);
+    this.Ivt.SetCloseBtnShowState(false);
+    this.Ivt.SelectToggleByIndex(0, true);
   }
   OnBeforeDestroy() {
-    this.PS1?.StopPlayingSequence(), this.PS1?.Clear(), this.PS1 = void 0
-  }
-  D5t(e) {
-    var t = ModelManager_1.ModelManager.RogueBattleModel.GetRoleList(),
-      i = this.TabComponent.GetSelectedIndex(),
-      i = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(i),
-      o = i?.Q6n[e],
-      o = new TeamRoleSelectView_1.TeamRoleSelectViewData(5, o, t, this.X4t, this.y5t, e);
-    return o.SetGetConfirmButtonEnableFunction(this.S4t), o.SetGetConfirmButtonTextFunction(this.Q4t), o.SetConfirmCheckFunction(this.S4t), o.CanJoinTeam = this.v4t, o.DetailCallback = this.VS1, o.FormationRoleList = i?.Q6n, this.u5t = e, o
+    this.tM1?.StopPlayingSequence();
+    this.tM1?.Clear();
+    this.tM1 = undefined;
   }
   Og() {
-    this.cT1(), this.M3e(), this.wG1()
+    this.sjc();
+    this.M3e();
+    this.sF1();
   }
-  wG1() {
+  sjc() {
+    this.CLu?.RefreshLinkInfo(this.Ivt.GetSelectedIndex());
+  }
+  sF1() {
     var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this.OpenParam);
-    e && (e = 0 !== (e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRoomPoolConfig(e.Data.Ar1.Vy_))?.EnvDesc.length || 0 !== e?.MonsterDesc.length, this.GetButton(7).RootUIComp.SetUIActive(e))
+    if (e) {
+      e = (e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRoomPoolConfig(e.Data.Yr1.Vy_))?.EnvDesc.length !== 0 || e?.MonsterDesc.length !== 0;
+      this.GetButton(6).RootUIComp.SetUIActive(e);
+    }
   }
   M3e() {
-    let e = !0;
-    for (const t of (ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex())).Q6n)
-      if (0 !== t) {
-        e = !1;
-        break
-      } this.GetButton(3).SetSelfInteractive(!e)
-  }
-  cT1() {
-    var e, t = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.TabComponent.GetSelectedIndex());
-    t && (0 === (t = t.Cn1) ? (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), "RogueBattle_TeamEdit_LinkLock"), e = UiResourceById_1.configUiResourceById.GetConfig("T_TeamRoleSkillNone"), this.SetTextureShowUntilLoaded(e.Path, this.GetTexture(11))) : (e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBond(t), this.SetTextureShowUntilLoaded(e.Icon, this.GetTexture(11)), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), "RogueBattle_TeamEdit_LinkUnlock", ConfigManager_1.ConfigManager.TextConfig.GetMultiText(e.Name))), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueTeamEditViewLinkBtnRefresh, 0 !== t))
+    let e = true;
+    for (const t of (ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(this.Ivt.GetSelectedIndex())).Q6n) {
+      if (t !== 0) {
+        e = false;
+        break;
+      }
+    }
+    this.GetButton(3).SetSelfInteractive(!e);
   }
 }
 exports.RogueBattleTeamEditView = RogueBattleTeamEditView;

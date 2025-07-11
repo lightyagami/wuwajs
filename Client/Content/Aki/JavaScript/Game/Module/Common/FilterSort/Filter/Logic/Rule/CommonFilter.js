@@ -1,19 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonFilter = void 0;
+  value: true
+});
+exports.CommonFilter = undefined;
 class CommonFilter {
   constructor() {
-    this.gU = !1, this.FilterMap = new Map
+    this.gU = false;
+    this.FilterMap = new Map();
   }
   InitFilterMap() {
-    this.gU || (this.gU = !0, this.OnInitFilterMap())
+    if (!this.gU) {
+      this.gU = true;
+      this.OnInitFilterMap();
+    }
   }
   GetFilterFunction(t) {
-    return this.FilterMap.get(t)
+    return this.FilterMap.get(t);
   }
   DefaultFilterList() {
-    return []
+    return [];
   }
 }
 exports.CommonFilter = CommonFilter;

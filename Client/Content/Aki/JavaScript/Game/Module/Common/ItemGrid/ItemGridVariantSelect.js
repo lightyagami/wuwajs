@@ -1,117 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemGridVariantSelect = void 0;
-const UE = require("ue"),
-  ItemGridAbstract_1 = require("./ItemGridAbstract"),
-  ItemGridVariantOne_1 = require("./ItemGridVariantOne");
+  value: true
+});
+exports.ItemGridVariantSelect = undefined;
+const UE = require("ue");
+const ItemGridAbstract_1 = require("./ItemGridAbstract");
+const ItemGridVariantOne_1 = require("./ItemGridVariantOne");
 class ItemGridVariantSelect extends ItemGridAbstract_1.ItemGridAbstract {
   constructor() {
-    super(...arguments), this.IsItemGridVariantOne = !0, this.IsItemGrid = !0, this.IsItemGridVariantSelect = !0, this._Pt = void 0, this.uPt = void 0, this.cPt = void 0, this.sMt = () => {
-      this._Pt?.()
-    }
+    super(...arguments);
+    this.IsItemGridVariantOne = true;
+    this.IsItemGrid = true;
+    this.IsItemGridVariantSelect = true;
+    this._Pt = undefined;
+    this.uPt = undefined;
+    this.cPt = undefined;
+    this.sMt = () => {
+      this._Pt?.();
+    };
   }
   RefreshItemShowState(t) {
-    this.GetItem(0).SetUIActive(t)
+    this.GetItem(0).SetUIActive(t);
   }
   RefreshReduceButtonShowState(t) {
-    this.GetButton(4).RootUIComp.SetUIActive(t)
+    this.GetButton(4).RootUIComp.SetUIActive(t);
   }
   GetFinishSelectItem() {
-    return this.GetItem(1)
+    return this.GetItem(1);
   }
   GetFinishMiddleItem() {
-    return this.GetItem(2)
+    return this.GetItem(2);
   }
   GetControlItem() {
-    return this.GetItem(3)
+    return this.GetItem(3);
   }
   GetReduceButton() {
-    return this.GetButton(4)
+    return this.GetButton(4);
   }
   GetAddButton() {
-    return this.GetButton(5)
+    return this.GetButton(5);
   }
   SetAddButtonCallBack(t) {
-    this._Pt = t
+    this._Pt = t;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIButtonComponent],
-      [5, UE.UIButtonComponent]
-    ];
-    this.BtnBindInfo = [
-      [5, () => {
-        this.sMt()
-      }],
-      [4, () => {
-        this.uPt?.()
-      }]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[5, () => {
+      this.sMt();
+    }], [4, () => {
+      this.uPt?.();
+    }]];
   }
   OnStart() {
-    this.cPt = new ItemGridVariantOne_1.ItemGridVariantOne(this.GetItem(0).GetOwner(), this, this.GetBelongView()), this.RefreshReduceButtonShowState(!1)
+    this.cPt = new ItemGridVariantOne_1.ItemGridVariantOne(this.GetItem(0).GetOwner(), this, this.GetBelongView());
+    this.RefreshReduceButtonShowState(false);
   }
   RefreshQualitySprite() {
-    this.cPt.RefreshQualitySprite()
+    this.cPt.RefreshQualitySprite();
   }
   RefreshTextureIcon() {
-    this.cPt.RefreshTextureIcon()
+    this.cPt.RefreshTextureIcon();
   }
   RefreshTextDown(t, e) {
-    this.cPt.RefreshTextDown(t, e)
+    this.cPt.RefreshTextDown(t, e);
   }
   RefreshTextDownByTextId(t, e, ...i) {
-    this.cPt.RefreshTextDownByTextId(t, e, ...i)
+    this.cPt.RefreshTextDownByTextId(t, e, ...i);
   }
   SetReduceClickEvent(t) {
-    this.uPt = t
+    this.uPt = t;
   }
   SetToggleClickEvent(t) {
-    this.cPt.SetToggleClickEvent(t)
+    this.cPt.SetToggleClickEvent(t);
   }
   SetToggleClickStateEvent(t) {
-    this.cPt.SetToggleClickStateEvent(t)
+    this.cPt.SetToggleClickStateEvent(t);
   }
   BindRedPointWithKeyAndId(t, e) {
-    this.cPt.BindRedPointWithKeyAndId(t, e)
+    this.cPt.BindRedPointWithKeyAndId(t, e);
   }
   RefreshCdPanel(t, e, i) {
-    this.cPt.RefreshCdPanel(t, e, i)
+    this.cPt.RefreshCdPanel(t, e, i);
   }
   RefreshDarkSprite(t) {
-    this.cPt.RefreshDarkSprite(t)
+    this.cPt.RefreshDarkSprite(t);
   }
   RefreshLockSprite(t) {
-    this.cPt.RefreshLockSprite(t)
+    this.cPt.RefreshLockSprite(t);
   }
   RefreshStar(t) {
-    this.cPt.RefreshStar(t)
+    this.cPt.RefreshStar(t);
   }
   RefreshRecoverSprite(t) {
-    this.cPt.RefreshRecoverSprite(t)
+    this.cPt.RefreshRecoverSprite(t);
   }
   RefreshRightDownLockSprite(t) {
-    this.cPt.RefreshRightDownLockSprite(t)
+    this.cPt.RefreshRightDownLockSprite(t);
   }
   RefreshUpgradePanel(t, e) {
-    this.cPt.RefreshUpgradePanel(t, e)
+    this.cPt.RefreshUpgradePanel(t, e);
   }
   GetClickToggle() {
-    return this.cPt.GetClickToggle()
+    return this.cPt.GetClickToggle();
   }
   GetDownText() {
-    return this.cPt.GetDownText()
+    return this.cPt.GetDownText();
   }
   GetConfigId() {
-    return this.GetItemId()
+    return this.GetItemId();
   }
   OnBeforeDestroy() {
-    this.cPt.Destroy()
+    this.cPt.Destroy();
   }
 }
 exports.ItemGridVariantSelect = ItemGridVariantSelect;

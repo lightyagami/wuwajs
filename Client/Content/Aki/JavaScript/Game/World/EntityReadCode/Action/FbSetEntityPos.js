@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetEntityPos = void 0;
+  value: true
+});
+exports.FbSetEntityPos = undefined;
 const FbPosA_1 = require("./FbPosA");
 class FbSetEntityPos {
   constructor(t) {
-    this.FbDataInternal = t, this.a_h = !1, this.I9o = 0, this.uch = !1, this.dch = void 0
+    this.FbDataInternal = t;
+    this.a_h = false;
+    this.I9o = 0;
+    this.uch = false;
+    this.dch = undefined;
   }
   static Create(t) {
-    if (t) return new FbSetEntityPos(t)
+    if (t) {
+      return new FbSetEntityPos(t);
+    }
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get Pos() {
-    return this.uch || (this.uch = !0, this.dch = FbPosA_1.FbPosA.Create(this.FbDataInternal.pos())), this.dch
+    if (!this.uch) {
+      this.uch = true;
+      this.dch = FbPosA_1.FbPosA.Create(this.FbDataInternal.pos());
+    }
+    return this.dch;
   }
 }
 exports.FbSetEntityPos = FbSetEntityPos;

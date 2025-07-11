@@ -1,43 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PayShopSecondTabItem = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.PayShopSecondTabItem = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 class PayShopSecondTabItem extends UiPanelBase_1.UiPanelBase {
   constructor(t) {
-    super(), this.TabId = 0, this.IsSelected = !1, this.ToggleFunction = void 0, this.Toggle = void 0, this.Bke = t => {
-      1 === t && (this.IsSelected = !0, this.ToggleFunction?.(this.TabId))
-    }, this.Lke = () => {
+    super();
+    this.TabId = 0;
+    this.IsSelected = false;
+    this.ToggleFunction = undefined;
+    this.Toggle = undefined;
+    this.Bke = t => {
+      if (t === 1) {
+        this.IsSelected = true;
+        this.ToggleFunction?.(this.TabId);
+      }
+    };
+    this.Lke = () => {
       var t = this.Toggle.GetToggleState();
-      return !this.IsSelected || 1 !== t
-    }, this.CreateThenShowByActor(t.GetOwner())
+      return !this.IsSelected || t !== 1;
+    };
+    this.CreateThenShowByActor(t.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [2, UE.UIExtendToggle],
-      [0, UE.UIText]
-    ], this.BtnBindInfo = [
-      [2, this.Bke]
-    ]
+    this.ComponentRegisterInfos = [[2, UE.UIExtendToggle], [0, UE.UIText]];
+    this.BtnBindInfo = [[2, this.Bke]];
   }
   OnStart() {
-    this.Toggle = this.GetExtendToggle(2), this.Toggle.CanExecuteChange.Bind(this.Lke), this.SetToggleState(!1)
+    this.Toggle = this.GetExtendToggle(2);
+    this.Toggle.CanExecuteChange.Bind(this.Lke);
+    this.SetToggleState(false);
   }
   OnBeforeDestroy() {
-    this.SetToggleState(!1), this.Toggle.CanExecuteChange.Unbind()
+    this.SetToggleState(false);
+    this.Toggle.CanExecuteChange.Unbind();
   }
   SetName(t, e) {
     this.TabId = e;
     t = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(t, e);
-    this.GetText(0).ShowTextNew(t.Name)
+    this.GetText(0).ShowTextNew(t.Name);
   }
   SetToggleFunction(t) {
-    this.ToggleFunction = t
+    this.ToggleFunction = t;
   }
   SetToggleState(t) {
-    this.IsSelected = t, this.Toggle.SetToggleState(t ? 1 : 0, !1)
+    this.IsSelected = t;
+    this.Toggle.SetToggleState(t ? 1 : 0, false);
   }
 }
 exports.PayShopSecondTabItem = PayShopSecondTabItem;

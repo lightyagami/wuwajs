@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbActorRef = void 0;
+  value: true
+});
+exports.FbActorRef = undefined;
 class FbActorRef {
   constructor(t) {
-    this.FbDataInternal = t, this.uRh = !1, this.dRh = void 0, this.mRh = !1, this.CRh = void 0, this.gRh = !1, this.fRh = void 0
+    this.FbDataInternal = t;
+    this.uRh = false;
+    this.dRh = undefined;
+    this.mRh = false;
+    this.CRh = undefined;
+    this.gRh = false;
+    this.fRh = undefined;
   }
   static Create(t) {
-    if (t) return new FbActorRef(t)
+    if (t) {
+      return new FbActorRef(t);
+    }
   }
   get ActorName() {
-    return this.uRh || (this.uRh = !0, this.dRh = this.FbDataInternal.actorName()), this.dRh
+    if (!this.uRh) {
+      this.uRh = true;
+      this.dRh = this.FbDataInternal.actorName();
+    }
+    return this.dRh;
   }
   get PathName() {
-    return this.mRh || (this.mRh = !0, this.CRh = this.FbDataInternal.pathName()), this.CRh
+    if (!this.mRh) {
+      this.mRh = true;
+      this.CRh = this.FbDataInternal.pathName();
+    }
+    return this.CRh;
   }
   get Platform() {
-    return this.gRh || (this.gRh = !0, this.fRh = this.FbDataInternal.platform()), this.fRh
+    if (!this.gRh) {
+      this.gRh = true;
+      this.fRh = this.FbDataInternal.platform();
+    }
+    return this.fRh;
   }
 }
 exports.FbActorRef = FbActorRef;

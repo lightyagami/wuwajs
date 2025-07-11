@@ -1,31 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GenericPromptModel = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Queue_1 = require("../../../Core/Container/Queue"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../Manager/ModelManager");
+  value: true
+});
+exports.GenericPromptModel = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../Manager/ModelManager");
 class GenericPromptModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.jYt = new Queue_1.Queue, this.WYt = () => {
-      for (let e = 0, t = this.jYt.Size; e < t; ++e) this.ApplyPromptParamHub(this.jYt.Pop());
-      this.jYt.Empty || Log_1.Log.CheckError() && Log_1.Log.Error("GenericPrompt", 10, "播放队列飘字异常,存在从队列中取出又被放回队列的情况")
-    }
+    super(...arguments);
+    this.qTu = new Array();
+    this.WYt = () => {
+      for (let e = 0, t = this.qTu.length; e < t; ++e) {
+        this.ApplyPromptParamHub(this.qTu.shift());
+      }
+      if (this.qTu.length > 0 && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("GenericPrompt", 10, "播放队列飘字异常,存在从队列中取出又被放回队列的情况");
+      }
+    };
   }
   OnInit() {
-    return EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFinishLoadingState, this.WYt), !0
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFinishLoadingState, this.WYt);
+    return true;
   }
   OnClear() {
-    return EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFinishLoadingState, this.WYt), this.jYt.Clear(), !0
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFinishLoadingState, this.WYt);
+    return !(this.qTu.length = 0);
   }
   KYt() {
-    return ModelManager_1.ModelManager.LoadingModel.IsLoading || ModelManager_1.ModelManager.LoginModel.HasLoginPromise()
+    return ModelManager_1.ModelManager.LoadingModel.IsLoading || ModelManager_1.ModelManager.LoginModel.HasLoginPromise();
   }
   ApplyPromptParamHub(e) {
-    this.KYt() ? this.jYt.Push(e) : EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InsertFloatTips, e)
+    if (this.KYt()) {
+      this.qTu.push(e);
+    } else {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InsertFloatTips, e);
+    }
+  }
+  RemovePromptParamHubByKey(r) {
+    for (let e = 0, t = this.qTu.length; e < t; ++e) {
+      var n = this.qTu[e];
+      if (n?.PromptKey && n?.PromptKey === r) {
+        this.qTu.splice(e, 1);
+        return;
+      }
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemoveFloatTips, r);
   }
 }
 exports.GenericPromptModel = GenericPromptModel;

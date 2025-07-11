@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbUsePhantomSkill = void 0;
+  value: true
+});
+exports.FbUsePhantomSkill = undefined;
 const FbSkillBlackboardVector_1 = require("./FbSkillBlackboardVector");
 class FbUsePhantomSkill {
   constructor(t) {
-    this.FbDataInternal = t, this.sbh = !1, this.abh = void 0, this.hbh = !1, this.lbh = void 0, this._bh = !1, this.cbh = void 0
+    this.FbDataInternal = t;
+    this.sbh = false;
+    this.abh = undefined;
+    this.hbh = false;
+    this.lbh = undefined;
+    this._bh = false;
+    this.cbh = undefined;
   }
   static Create(t) {
-    if (t) return new FbUsePhantomSkill(t)
+    if (t) {
+      return new FbUsePhantomSkill(t);
+    }
   }
   get SkillType() {
-    return this.sbh || (this.sbh = !0, this.abh = this.FbDataInternal.skillType()), this.abh
+    if (!this.sbh) {
+      this.sbh = true;
+      this.abh = this.FbDataInternal.skillType();
+    }
+    return this.abh;
   }
   get BlackboardPos() {
-    return this.hbh || (this.hbh = !0, this.lbh = FbSkillBlackboardVector_1.FbSkillBlackboardVector.Create(this.FbDataInternal.blackboardPos())), this.lbh
+    if (!this.hbh) {
+      this.hbh = true;
+      this.lbh = FbSkillBlackboardVector_1.FbSkillBlackboardVector.Create(this.FbDataInternal.blackboardPos());
+    }
+    return this.lbh;
   }
   get BlackboardRot() {
-    return this._bh || (this._bh = !0, this.cbh = FbSkillBlackboardVector_1.FbSkillBlackboardVector.Create(this.FbDataInternal.blackboardRot())), this.cbh
+    if (!this._bh) {
+      this._bh = true;
+      this.cbh = FbSkillBlackboardVector_1.FbSkillBlackboardVector.Create(this.FbDataInternal.blackboardRot());
+    }
+    return this.cbh;
   }
 }
 exports.FbUsePhantomSkill = FbUsePhantomSkill;

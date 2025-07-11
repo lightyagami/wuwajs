@@ -1,46 +1,116 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTimedStrikeDevice = void 0;
+  value: true
+});
+exports.FbTimedStrikeDevice = undefined;
 class FbTimedStrikeDevice {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.nWh = !1, this.Fke = 0, this.sWh = !1, this.aWh = 0, this.hWh = !1, this.lWh = 0, this.cCc = !1, this.uCc = 0, this.Tuh = !1, this.buh = 0, this.Jgc = !1, this.Zgc = 0, this.eCc = !1, this.tCc = 0, this.Yc1 = !1, this.zc1 = 0, this.UB1 = !1, this.BB1 = 0, this.kB1 = !1, this.OB1 = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.nWh = false;
+    this.Fke = 0;
+    this.sWh = false;
+    this.aWh = 0;
+    this.hWh = false;
+    this.lWh = 0;
+    this.cCc = false;
+    this.uCc = 0;
+    this.Tuh = false;
+    this.buh = 0;
+    this.Jgc = false;
+    this.Zgc = 0;
+    this.eCc = false;
+    this.tCc = 0;
+    this.Su1 = false;
+    this.Mu1 = 0;
+    this.uk1 = false;
+    this.ck1 = 0;
+    this.dk1 = false;
+    this.mk1 = 0;
   }
   static Create(t) {
-    if (t) return new FbTimedStrikeDevice(t)
+    if (t) {
+      return new FbTimedStrikeDevice(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MaxValue() {
-    return this.nWh || (this.nWh = !0, this.Fke = this.FbDataInternal.maxValue()), this.Fke
+    if (!this.nWh) {
+      this.nWh = true;
+      this.Fke = this.FbDataInternal.maxValue();
+    }
+    return this.Fke;
   }
   get InitValue() {
-    return this.sWh || (this.sWh = !0, this.aWh = this.FbDataInternal.initValue()), this.aWh
+    if (!this.sWh) {
+      this.sWh = true;
+      this.aWh = this.FbDataInternal.initValue();
+    }
+    return this.aWh;
   }
   get ProgressPerformanceAttribute() {
-    return this.hWh || (this.hWh = !0, this.lWh = this.FbDataInternal.progressPerformanceAttribute()), this.lWh
+    if (!this.hWh) {
+      this.hWh = true;
+      this.lWh = this.FbDataInternal.progressPerformanceAttribute();
+    }
+    return this.lWh;
   }
   get AddValue() {
-    return this.cCc || (this.cCc = !0, this.uCc = this.FbDataInternal.addValue()), this.uCc
+    if (!this.cCc) {
+      this.cCc = true;
+      this.uCc = this.FbDataInternal.addValue();
+    }
+    return this.uCc;
   }
   get Timeout() {
-    return this.Tuh || (this.Tuh = !0, this.buh = this.FbDataInternal.timeout()), this.buh
+    if (!this.Tuh) {
+      this.Tuh = true;
+      this.buh = this.FbDataInternal.timeout();
+    }
+    return this.buh;
   }
   get FallbackValue() {
-    return this.Jgc || (this.Jgc = !0, this.Zgc = this.FbDataInternal.fallbackValue()), this.Zgc
+    if (!this.Jgc) {
+      this.Jgc = true;
+      this.Zgc = this.FbDataInternal.fallbackValue();
+    }
+    return this.Zgc;
   }
   get FallbackInterval() {
-    return this.eCc || (this.eCc = !0, this.tCc = this.FbDataInternal.fallbackInterval()), this.tCc
+    if (!this.eCc) {
+      this.eCc = true;
+      this.tCc = this.FbDataInternal.fallbackInterval();
+    }
+    return this.tCc;
   }
   get ZeroValuePerformanceAttribute() {
-    return this.Yc1 || (this.Yc1 = !0, this.zc1 = this.FbDataInternal.zeroValuePerformanceAttribute()), this.zc1
+    if (!this.Su1) {
+      this.Su1 = true;
+      this.Mu1 = this.FbDataInternal.zeroValuePerformanceAttribute();
+    }
+    return this.Mu1;
   }
   get AscendPerformanceAttribute() {
-    return this.UB1 || (this.UB1 = !0, this.BB1 = this.FbDataInternal.ascendPerformanceAttribute()), this.BB1
+    if (!this.uk1) {
+      this.uk1 = true;
+      this.ck1 = this.FbDataInternal.ascendPerformanceAttribute();
+    }
+    return this.ck1;
   }
   get DescendPerformanceAttribute() {
-    return this.kB1 || (this.kB1 = !0, this.OB1 = this.FbDataInternal.descendPerformanceAttribute()), this.OB1
+    if (!this.dk1) {
+      this.dk1 = true;
+      this.mk1 = this.FbDataInternal.descendPerformanceAttribute();
+    }
+    return this.mk1;
   }
 }
 exports.FbTimedStrikeDevice = FbTimedStrikeDevice;

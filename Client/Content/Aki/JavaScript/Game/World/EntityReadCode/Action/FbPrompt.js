@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPrompt = void 0;
+  value: true
+});
+exports.FbPrompt = undefined;
 class FbPrompt {
   constructor(t) {
-    this.FbDataInternal = t, this.dmh = !1, this.mmh = 0
+    this.FbDataInternal = t;
+    this.dmh = false;
+    this.mmh = 0;
   }
   static Create(t) {
-    if (t) return new FbPrompt(t)
+    if (t) {
+      return new FbPrompt(t);
+    }
   }
   get GeneralTextId() {
-    return this.dmh || (this.dmh = !0, this.mmh = this.FbDataInternal.generalTextId()), this.mmh
+    if (!this.dmh) {
+      this.dmh = true;
+      this.mmh = this.FbDataInternal.generalTextId();
+    }
+    return this.mmh;
   }
 }
 exports.FbPrompt = FbPrompt;

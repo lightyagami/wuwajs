@@ -1,30 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRotatorComponent2 = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbStateRotationConfig_1 = require("./FbStateRotationConfig");
+  value: true
+});
+exports.FbRotatorComponent2 = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbStateRotationConfig_1 = require("./FbStateRotationConfig");
 class FbRotatorComponent2 {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.bSh = !1, this.TAe = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.bSh = false;
+    this.TAe = undefined;
   }
   static Create(t) {
-    if (t) return new FbRotatorComponent2(t)
+    if (t) {
+      return new FbRotatorComponent2(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Config() {
     if (!this.bSh) {
-      this.bSh = !0, this.TAe = new Array;
+      this.bSh = true;
+      this.TAe = new Array();
       var o = this.FbDataInternal.configLength();
-      if (o)
+      if (o) {
         for (let t = 0; t < o; ++t) {
-          var i = this.FbDataInternal.config(t, new fb_component_1.StateRotationConfig);
-          this.TAe.push(FbStateRotationConfig_1.FbStateRotationConfig.Create(i))
+          var i = this.FbDataInternal.config(t, new fb_component_1.StateRotationConfig());
+          this.TAe.push(FbStateRotationConfig_1.FbStateRotationConfig.Create(i));
         }
+      }
     }
-    return this.TAe
+    return this.TAe;
   }
 }
 exports.FbRotatorComponent2 = FbRotatorComponent2;

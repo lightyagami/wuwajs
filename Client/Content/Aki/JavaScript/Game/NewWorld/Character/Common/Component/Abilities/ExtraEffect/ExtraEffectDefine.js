@@ -1,36 +1,37 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.getBuffExecutionClass = exports.getBuffEffectClass = void 0;
-const ExtraEffectAbnormal_1 = require("./ExtraEffectAbnormal"),
-  ExtraEffectAddBattleFlag_1 = require("./ExtraEffectAddBattleFlag"),
-  ExtraEffectAddBuffOnChangeTeam_1 = require("./ExtraEffectAddBuffOnChangeTeam"),
-  ExtraEffectAddBuffTrigger_1 = require("./ExtraEffectAddBuffTrigger"),
-  ExtraEffectAddBulletTrigger_1 = require("./ExtraEffectAddBulletTrigger"),
-  ExtraEffectAddSkillLimitCount_1 = require("./ExtraEffectAddSkillLimitCount"),
-  ExtraEffectAttributeEvent_1 = require("./ExtraEffectAttributeEvent"),
-  ExtraEffectBehaviorControl_1 = require("./ExtraEffectBehaviorControl"),
-  ExtraEffectBuffCopy_1 = require("./ExtraEffectBuffCopy"),
-  ExtraEffectBuffTransfer_1 = require("./ExtraEffectBuffTransfer"),
-  ExtraEffectDamageAccumulation_1 = require("./ExtraEffectDamageAccumulation"),
-  ExtraEffectDamageAugment_1 = require("./ExtraEffectDamageAugment"),
-  ExtraEffectDamageFilter_1 = require("./ExtraEffectDamageFilter"),
-  ExtraEffectDamageImmune_1 = require("./ExtraEffectDamageImmune"),
-  ExtraEffectDamageModifier_1 = require("./ExtraEffectDamageModifier"),
-  ExtraEffectDamageShare_1 = require("./ExtraEffectDamageShare"),
-  ExtraEffectDamageTransferRecipients_1 = require("./ExtraEffectDamageTransferRecipients"),
-  ExtraEffectDestroyBullet_1 = require("./ExtraEffectDestroyBullet"),
-  ExtraEffectFormationAttribute_1 = require("./ExtraEffectFormationAttribute"),
-  ExtraEffectLevelBuff_1 = require("./ExtraEffectLevelBuff"),
-  ExtraEffectMisc_1 = require("./ExtraEffectMisc"),
-  ExtraEffectModifyCd_1 = require("./ExtraEffectModifyCd"),
-  ExtraEffectRemoveBuff_1 = require("./ExtraEffectRemoveBuff"),
-  ExtraEffectShieldToAttribute_1 = require("./ExtraEffectShieldToAttribute"),
-  ExtraEffectSkillLimitCount_1 = require("./ExtraEffectSkillLimitCount"),
-  ExtraEffectSnapModifier_1 = require("./ExtraEffectSnapModifier"),
-  ExtraEffectSnapReplacer_1 = require("./ExtraEffectSnapReplacer"),
-  ExtraExecutionEffect_1 = require("./ExtraExecutionEffect");
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getBuffExecutionClass = exports.getBuffEffectClass = undefined;
+const ExtraEffectAbnormal_1 = require("./ExtraEffectAbnormal");
+const ExtraEffectAddBattleFlag_1 = require("./ExtraEffectAddBattleFlag");
+const ExtraEffectAddBuffOnChangeTeam_1 = require("./ExtraEffectAddBuffOnChangeTeam");
+const ExtraEffectAddBuffTrigger_1 = require("./ExtraEffectAddBuffTrigger");
+const ExtraEffectAddBulletTrigger_1 = require("./ExtraEffectAddBulletTrigger");
+const ExtraEffectAddSkillLimitCount_1 = require("./ExtraEffectAddSkillLimitCount");
+const ExtraEffectAttributeEvent_1 = require("./ExtraEffectAttributeEvent");
+const ExtraEffectBehaviorControl_1 = require("./ExtraEffectBehaviorControl");
+const ExtraEffectBuffCopy_1 = require("./ExtraEffectBuffCopy");
+const ExtraEffectBuffTransfer_1 = require("./ExtraEffectBuffTransfer");
+const ExtraEffectDamageAccumulation_1 = require("./ExtraEffectDamageAccumulation");
+const ExtraEffectDamageAugment_1 = require("./ExtraEffectDamageAugment");
+const ExtraEffectDamageFilter_1 = require("./ExtraEffectDamageFilter");
+const ExtraEffectDamageImmune_1 = require("./ExtraEffectDamageImmune");
+const ExtraEffectDamageModifier_1 = require("./ExtraEffectDamageModifier");
+const ExtraEffectDamageShare_1 = require("./ExtraEffectDamageShare");
+const ExtraEffectDamageTransferRecipients_1 = require("./ExtraEffectDamageTransferRecipients");
+const ExtraEffectDestroyBullet_1 = require("./ExtraEffectDestroyBullet");
+const ExtraEffectFormationAttribute_1 = require("./ExtraEffectFormationAttribute");
+const ExtraEffectLevelBuff_1 = require("./ExtraEffectLevelBuff");
+const ExtraEffectMisc_1 = require("./ExtraEffectMisc");
+const ExtraEffectModifyCd_1 = require("./ExtraEffectModifyCd");
+const ExtraEffectRemoveBuff_1 = require("./ExtraEffectRemoveBuff");
+const ExtraEffectShieldToAttribute_1 = require("./ExtraEffectShieldToAttribute");
+const ExtraEffectSkillLimitCount_1 = require("./ExtraEffectSkillLimitCount");
+const ExtraEffectSnapModifier_1 = require("./ExtraEffectSnapModifier");
+const ExtraEffectSnapReplacer_1 = require("./ExtraEffectSnapReplacer");
+const ExtraExecutionEffect_1 = require("./ExtraExecutionEffect");
 function getBuffEffectClass(e) {
   switch (e) {
     case 1:
@@ -149,11 +150,12 @@ function getBuffEffectClass(e) {
       return ExtraEffectBuffTransfer_1.ExtraEffectBuffTransfer;
     case 103:
       return ExtraEffectMisc_1.ModifyBuffTimeScale;
+    case 83:
+      return ExtraEffectMisc_1.ForeverTimeScaleEffect;
     default:
-      return
+      return;
   }
 }
-
 function getBuffExecutionClass(e) {
   switch (e) {
     case 4:
@@ -198,9 +200,11 @@ function getBuffExecutionClass(e) {
       return ExtraEffectAbnormal_1.AbnormalLight;
     case 79:
       return ExtraExecutionEffect_1.ChangeBuffStackCount;
+    case 84:
+      return ExtraExecutionEffect_1.ModifyFuLuoLuoSpecialEnergy;
     default:
-      return
+      return;
   }
 }
-exports.getBuffEffectClass = getBuffEffectClass, exports.getBuffExecutionClass = getBuffExecutionClass;
-//# sourceMappingURL=ExtraEffectDefine.js.map
+exports.getBuffEffectClass = getBuffEffectClass;
+exports.getBuffExecutionClass = getBuffExecutionClass; //# sourceMappingURL=ExtraEffectDefine.js.map

@@ -1,26 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVehicleMoveWithPathLine = void 0;
-const UnionTargetVehicleHelper_1 = require("./UnionTargetVehicleHelper"),
-  UnionVehicleControlTypeHelper_1 = require("./UnionVehicleControlTypeHelper");
+  value: true
+});
+exports.FbVehicleMoveWithPathLine = undefined;
+const UnionTargetVehicleHelper_1 = require("./UnionTargetVehicleHelper");
+const UnionVehicleControlTypeHelper_1 = require("./UnionVehicleControlTypeHelper");
 class FbVehicleMoveWithPathLine {
   constructor(e) {
-    this.FbDataInternal = e, this._Mh = !1, this.cMh = void 0, this.kuh = !1, this.Guh = 0, this.byh = !1, this.Lyh = void 0
+    this.FbDataInternal = e;
+    this._Mh = false;
+    this.cMh = undefined;
+    this.kuh = false;
+    this.Guh = 0;
+    this.byh = false;
+    this.Lyh = undefined;
   }
   static Create(e) {
-    if (e) return new FbVehicleMoveWithPathLine(e)
+    if (e) {
+      return new FbVehicleMoveWithPathLine(e);
+    }
   }
   get TargetVehicle() {
-    var e, t;
-    return !this._Mh && (this._Mh = !0, e = this.FbDataInternal.targetVehicleType(), t = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.GetUnionTargetVehicleObject(e)) && (this.cMh = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.ReadUnionTargetVehicle(e, this.FbDataInternal.targetVehicle(t))), this.cMh
+    var e;
+    var t;
+    if (!this._Mh && (this._Mh = true, e = this.FbDataInternal.targetVehicleType(), t = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.GetUnionTargetVehicleObject(e))) {
+      this.cMh = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.ReadUnionTargetVehicle(e, this.FbDataInternal.targetVehicle(t));
+    }
+    return this.cMh;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get ControlType() {
-    var e, t;
-    return !this.byh && (this.byh = !0, e = this.FbDataInternal.controlTypeType(), t = UnionVehicleControlTypeHelper_1.UnionVehicleControlTypeHelper.GetUnionVehicleControlTypeObject(e)) && (this.Lyh = UnionVehicleControlTypeHelper_1.UnionVehicleControlTypeHelper.ReadUnionVehicleControlType(e, this.FbDataInternal.controlType(t))), this.Lyh
+    var e;
+    var t;
+    if (!this.byh && (this.byh = true, e = this.FbDataInternal.controlTypeType(), t = UnionVehicleControlTypeHelper_1.UnionVehicleControlTypeHelper.GetUnionVehicleControlTypeObject(e))) {
+      this.Lyh = UnionVehicleControlTypeHelper_1.UnionVehicleControlTypeHelper.ReadUnionVehicleControlType(e, this.FbDataInternal.controlType(t));
+    }
+    return this.Lyh;
   }
 }
 exports.FbVehicleMoveWithPathLine = FbVehicleMoveWithPathLine;

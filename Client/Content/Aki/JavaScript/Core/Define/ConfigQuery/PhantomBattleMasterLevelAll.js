@@ -1,48 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configPhantomBattleMasterLevelAll = void 0;
-const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer"),
-  Stats_1 = require("../../Common/Stats"),
-  ConfigCommon_1 = require("../../Config/ConfigCommon"),
-  PhantomBattleMasterLevel_1 = require("../Config/PhantomBattleMasterLevel"),
-  DB = "db_phantombattle.db",
-  FILE = "s.声骸大作战外围.xlsx",
-  TABLE = "PhantomBattleMasterLevel",
-  COMMAND = "select BinData from `PhantomBattleMasterLevel`",
-  KEY_PREFIX = "PhantomBattleMasterLevelAll",
-  logPair = [
-    ["数据库", DB],
-    ["文件", FILE],
-    ["表名", TABLE],
-    ["语句", COMMAND]
-  ];
+  value: true
+});
+exports.configPhantomBattleMasterLevelAll = undefined;
+const byte_buffer_1 = require("../../../RunTimeLibs/FlatBuffers/byte-buffer");
+const Stats_1 = require("../../Common/Stats");
+const ConfigCommon_1 = require("../../Config/ConfigCommon");
+const PhantomBattleMasterLevel_1 = require("../Config/PhantomBattleMasterLevel");
+const DB = "db_phantombattle.db";
+const FILE = "s.声骸大作战外围.xlsx";
+const TABLE = "PhantomBattleMasterLevel";
+const COMMAND = "select BinData from `PhantomBattleMasterLevel`";
+const KEY_PREFIX = "PhantomBattleMasterLevelAll";
+const logPair = [["数据库", DB], ["文件", FILE], ["表名", TABLE], ["语句", COMMAND]];
 let handleId = 0;
-const initStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleMasterLevelAll.Init"),
-  getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleMasterLevelAll.GetConfigList");
+const initStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleMasterLevelAll.Init");
+const getConfigListStat = Stats_1.Stat.CreateNoFlameGraph("configPhantomBattleMasterLevelAll.GetConfigList");
 exports.configPhantomBattleMasterLevelAll = {
   Init: () => {
-    initStat?.Start(), handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND), initStat?.Stop()
+    initStat?.Start();
+    handleId = ConfigCommon_1.ConfigCommon.InitDataStatement(handleId, DB, COMMAND);
+    initStat?.Stop();
   },
-  GetConfigList: (t = !0) => {
+  GetConfigList: (t = true) => {
     var o;
-    if (ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start(), getConfigListStat?.Start(), o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
+    getConfigListStat?.Start();
+    if (o = ConfigCommon_1.ConfigCommon.CheckStatement(handleId, ...logPair)) {
       if (t) {
         var e = KEY_PREFIX + ")";
         const i = ConfigCommon_1.ConfigCommon.GetConfig(e);
-        if (i) return getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), i
+        if (i) {
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return i;
+        }
       }
-      const i = new Array;
-      for (;;) {
-        if (1 !== ConfigCommon_1.ConfigCommon.Step(handleId, !1, ...logPair)) break;
-        var n = void 0;
-        if ([o, n] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair), !o) return ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), void ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      const i = new Array();
+      while (true) {
+        if (ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair) !== 1) {
+          break;
+        }
+        var n = undefined;
+        [o, n] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair);
+        if (!o) {
+          ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+          getConfigListStat?.Stop();
+          ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+          return;
+        }
         n = PhantomBattleMasterLevel_1.PhantomBattleMasterLevel.getRootAsPhantomBattleMasterLevel(new byte_buffer_1.ByteBuffer(new Uint8Array(n.buffer)));
-        i.push(n)
+        i.push(n);
       }
-      return t && (e = KEY_PREFIX + ")", ConfigCommon_1.ConfigCommon.SaveConfig(e, i, i.length)), ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair), getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop(), i
+      if (t) {
+        e = KEY_PREFIX + ")";
+        ConfigCommon_1.ConfigCommon.SaveConfig(e, i, i.length);
+      }
+      ConfigCommon_1.ConfigCommon.Reset(handleId, ...logPair);
+      getConfigListStat?.Stop();
+      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
+      return i;
     }
-    getConfigListStat?.Stop(), ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop()
+    getConfigListStat?.Stop();
+    ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
 //# sourceMappingURL=PhantomBattleMasterLevelAll.js.map

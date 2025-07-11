@@ -1,91 +1,119 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RewardData = void 0;
+  value: true
+});
+exports.RewardData = undefined;
 class RewardData {
   constructor(t, e) {
-    this.G0i = void 0, this.N0i = void 0, this.O0i = new Map, this.k0i = new Map, t && (this.G0i = t), this.N0i = e || {
-      ItemList: []
+    this.G0i = undefined;
+    this.N0i = undefined;
+    this.O0i = new Map();
+    this.k0i = new Map();
+    if (t) {
+      this.G0i = t;
     }
+    this.N0i = e || {
+      ItemList: []
+    };
   }
   SetItemList(t) {
-    if (t)
+    if (t) {
       for (const i of this.N0i.ItemList = t) {
         var e = i.UniqueId;
-        if (void 0 !== e && 0 < e) this.k0i.set(e, i);
-        else {
+        if (e !== undefined && e > 0) {
+          this.k0i.set(e, i);
+        } else {
           e = i.ConfigId;
-          if (void 0 !== e && 0 < e) {
+          if (e !== undefined && e > 0) {
             var s = this.O0i.get(e);
-            if (!s) return void this.O0i.set(e, i);
-            s.Count += i.Count
+            if (!s) {
+              this.O0i.set(e, i);
+              return;
+            }
+            s.Count += i.Count;
           }
         }
       }
+    }
   }
   AddItem(t) {
     let e = this.GetItemList();
     e = e || [];
-    var s, i = t.UniqueId;
-    void 0 !== i && 0 < i ? (e.push(t), this.k0i.set(i, t)) : void 0 !== (i = t.ConfigId) && 0 < i && ((s = this.O0i.get(i)) ? s.Count += t.Count : (e.push(t), this.O0i.set(i, t)))
+    var s;
+    var i = t.UniqueId;
+    if (i !== undefined && i > 0) {
+      e.push(t);
+      this.k0i.set(i, t);
+    } else if ((i = t.ConfigId) !== undefined && i > 0) {
+      if (s = this.O0i.get(i)) {
+        s.Count += t.Count;
+      } else {
+        e.push(t);
+        this.O0i.set(i, t);
+      }
+    }
   }
   AddItemList(t) {
-    if (t)
-      for (const e of t) this.AddItem(e)
+    if (t) {
+      for (const e of t) {
+        this.AddItem(e);
+      }
+    }
   }
   SetProgressQueue(t) {
-    this.N0i.ProgressQueue = t
+    this.N0i.ProgressQueue = t;
   }
   SetExploreRecordInfo(t) {
-    this.N0i.ExploreRecordInfo = t
+    this.N0i.ExploreRecordInfo = t;
   }
   SetExploreBarDataList(t) {
-    this.N0i.ExploreBarDataList = t
+    this.N0i.ExploreBarDataList = t;
   }
   SetButtonInfoList(t) {
-    this.N0i.ButtonInfoList = t
+    this.N0i.ButtonInfoList = t;
   }
   SetExploreFriendDataList(t) {
-    this.N0i.ExploreFriendDataList = t
+    this.N0i.ExploreFriendDataList = t;
   }
   SetTargetReached(t) {
-    this.N0i.TargetReached = t
+    this.N0i.TargetReached = t;
   }
   SetHalfAreaData(t) {
-    this.N0i.ScoreHalfArea = t
+    this.N0i.ScoreHalfArea = t;
   }
   SetStateToggle(t) {
-    this.N0i.StateToggle = t
+    this.N0i.StateToggle = t;
   }
   SetAccumulatedScoreData(t) {
-    this.N0i.AccumulatedScoreData = t
+    this.N0i.AccumulatedScoreData = t;
   }
   SetBabelTowerSuccessData(t) {
-    this.N0i.BabelTowerSuccessData = t
+    this.N0i.BabelTowerSuccessData = t;
   }
   SetDangoAbyssSuccessData(t) {
-    this.N0i.DangoAbyssSuccessData = t
+    this.N0i.DangoAbyssSuccessData = t;
   }
   SetScoreReached(t) {
-    this.N0i.ScoreReached = t
+    this.N0i.ScoreReached = t;
   }
   SetRewardInfo(t) {
-    this.G0i = t
+    this.G0i = t;
   }
   GetRewardInfo() {
-    return this.G0i
+    return this.G0i;
   }
   GetExtendRewardInfo() {
-    return this.N0i
+    return this.N0i;
   }
   GetItemList() {
-    return this.N0i.ItemList
+    return this.N0i.ItemList;
   }
   GetItemByConfigId(t) {
-    return this.O0i.get(t)
+    return this.O0i.get(t);
   }
   GetItemByUniqueId(t) {
-    return this.k0i.get(t)
+    return this.k0i.get(t);
   }
 }
 exports.RewardData = RewardData;

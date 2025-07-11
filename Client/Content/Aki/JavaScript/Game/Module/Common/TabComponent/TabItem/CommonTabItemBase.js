@@ -1,52 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonTabItemBase = exports.CommonTabItemData = void 0;
+  value: true
+});
+exports.CommonTabItemBase = exports.CommonTabItemData = undefined;
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 class CommonTabItemData {
   constructor() {
-    this.Index = 0, this.Data = void 0, this.RedDotName = void 0, this.RedDotUid = void 0
+    this.Index = 0;
+    this.Data = undefined;
+    this.RedDotName = undefined;
+    this.RedDotUid = undefined;
   }
 }
 exports.CommonTabItemData = CommonTabItemData;
 class CommonTabItemBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.ScrollViewDelegate = void 0, this.GridIndex = 0, this.DisplayIndex = 0, this.CurrentData = void 0, this.Fbt = !1, this.SelectedCallBack = void 0, this.Vbt = void 0, this.Lke = () => {
+    super(...arguments);
+    this.ScrollViewDelegate = undefined;
+    this.GridIndex = 0;
+    this.DisplayIndex = 0;
+    this.CurrentData = undefined;
+    this.Fbt = false;
+    this.SelectedCallBack = undefined;
+    this.Vbt = undefined;
+    this.Lke = () => {
       var t;
-      return !this.Vbt || (t = this.Vbt(this.GridIndex, this.Fbt), this.Fbt = !1, t)
-    }
+      return !this.Vbt || (t = this.Vbt(this.GridIndex, this.Fbt), this.Fbt = false, t);
+    };
   }
   Refresh(t, e, s) {
-    this.CurrentData = t, this.OnRefresh(t, e, s)
+    this.CurrentData = t;
+    this.OnRefresh(t, e, s);
   }
   OnRefresh(t, e, s) {}
   Clear() {
-    this.OnClear()
+    this.OnClear();
   }
   OnClear() {}
   OnSelected(t) {}
   OnDeselected(t) {}
   GetKey(t, e) {
-    return this.GridIndex
+    return this.GridIndex;
   }
   InitTabItem() {}
   OnStart() {
-    this.GetTabToggle().CanExecuteChange.Bind(this.Lke)
+    this.GetTabToggle().CanExecuteChange.Bind(this.Lke);
   }
   SetSelectedCallBack(t) {
-    this.SelectedCallBack = t
+    this.SelectedCallBack = t;
   }
   SetCanExecuteChange(t) {
-    this.Vbt = t
+    this.Vbt = t;
   }
   UpdateTabIcon(t) {
-    this.OnUpdateTabIcon(t)
+    this.OnUpdateTabIcon(t);
   }
-  SetForceSwitch(t, e = !1) {
-    this.Fbt = !0, this.SetToggleState(t, e)
+  SetForceSwitch(t, e = false) {
+    this.Fbt = true;
+    this.SetToggleState(t, e);
   }
-  SetToggleState(t, e = !1) {
-    this.OnSetToggleState(t, e)
+  SetToggleState(t, e = false) {
+    this.OnSetToggleState(t, e);
   }
 }
 exports.CommonTabItemBase = CommonTabItemBase;

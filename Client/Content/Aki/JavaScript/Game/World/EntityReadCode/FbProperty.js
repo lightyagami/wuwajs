@@ -2,22 +2,40 @@
 
 function fbCreate(r, e, t) {
   const o = t.value;
-  return t.value = function(...e) {
+  t.value = function (...e) {
     var t = r.name;
-    return exports.createClassSet.add(t), o?.apply(this, e)
-  }, t
+    exports.createClassSet.add(t);
+    return o?.apply(this, e);
+  };
+  return t;
 }
-
 function fbProperty(t, r, e) {
   const o = e.get;
   var s = t.constructor.name;
-  let p = void 0;
-  return exports.allPropertySet.has(s) ? p = exports.allPropertySet.get(s) : (p = new Set, exports.allPropertySet.set(s, p)), p?.add(r), exports.initPropertySet.has(s) || exports.initPropertySet.set(s, new Set), e.get = function() {
+  let p = undefined;
+  if (exports.allPropertySet.has(s)) {
+    p = exports.allPropertySet.get(s);
+  } else {
+    p = new Set();
+    exports.allPropertySet.set(s, p);
+  }
+  p?.add(r);
+  if (!exports.initPropertySet.has(s)) {
+    exports.initPropertySet.set(s, new Set());
+  }
+  e.get = function () {
     var e = t.constructor.name;
-    return exports.initPropertySet.get(e)?.add(r), o?.apply(this)
-  }, e
+    exports.initPropertySet.get(e)?.add(r);
+    return o?.apply(this);
+  };
+  return e;
 }
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.fbProperty = exports.fbCreate = exports.createClassSet = exports.initPropertySet = exports.allPropertySet = void 0, exports.allPropertySet = new Map, exports.initPropertySet = new Map, exports.createClassSet = new Set, exports.fbCreate = fbCreate, exports.fbProperty = fbProperty;
-//# sourceMappingURL=FbProperty.js.map
+  value: true
+});
+exports.fbProperty = exports.fbCreate = exports.createClassSet = exports.initPropertySet = exports.allPropertySet = undefined;
+exports.allPropertySet = new Map();
+exports.initPropertySet = new Map();
+exports.createClassSet = new Set();
+exports.fbCreate = fbCreate;
+exports.fbProperty = fbProperty; //# sourceMappingURL=FbProperty.js.map

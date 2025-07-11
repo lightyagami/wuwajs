@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPointAttachTarget = void 0;
+  value: true
+});
+exports.FbPointAttachTarget = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbPointAttachTarget {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.s$h = !1, this.a$h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.s$h = false;
+    this.a$h = undefined;
   }
   static Create(t) {
-    if (t) return new FbPointAttachTarget(t)
+    if (t) {
+      return new FbPointAttachTarget(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get RelativePoint() {
-    return this.s$h || (this.s$h = !0, this.a$h = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.relativePoint())), this.a$h
+    if (!this.s$h) {
+      this.s$h = true;
+      this.a$h = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.relativePoint());
+    }
+    return this.a$h;
   }
 }
 exports.FbPointAttachTarget = FbPointAttachTarget;

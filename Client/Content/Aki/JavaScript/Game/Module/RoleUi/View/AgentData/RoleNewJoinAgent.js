@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleNewJoinAgent = void 0;
+  value: true
+});
+exports.RoleNewJoinAgent = undefined;
 const RoleViewAgent_1 = require("./RoleViewAgent");
 class RoleNewJoinAgent extends RoleViewAgent_1.RoleViewAgent {
   GetRoleSystemMode() {
-    return 3
+    return 3;
   }
 }
 exports.RoleNewJoinAgent = RoleNewJoinAgent;

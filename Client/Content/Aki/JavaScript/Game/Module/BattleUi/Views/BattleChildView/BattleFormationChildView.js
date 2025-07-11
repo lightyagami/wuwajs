@@ -1,27 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleFormationChildView = void 0;
-const ModelManager_1 = require("../../../../Manager/ModelManager"),
-  BattleEntityChildView_1 = require("./BattleEntityChildView");
+  value: true
+});
+exports.BattleFormationChildView = undefined;
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const BattleEntityChildView_1 = require("./BattleEntityChildView");
 class BattleFormationChildView extends BattleEntityChildView_1.BattleEntityChildView {
   constructor() {
-    super(...arguments), this.FormationInstance = void 0
+    super(...arguments);
+    this.FormationInstance = undefined;
   }
   OnActivate() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(this.GetEntityId(), {
       ParamType: 1
     });
-    this.FormationInstance = t
+    this.FormationInstance = t;
   }
   OnDeactivate() {
-    this.FormationInstance = void 0
+    this.FormationInstance = undefined;
   }
   GetFormationInstance() {
-    return this.FormationInstance
+    return this.FormationInstance;
   }
   IsValid() {
-    return !!super.IsValid() && void 0 !== this.FormationInstance
+    return !!super.IsValid() && this.FormationInstance !== undefined;
   }
 }
 exports.BattleFormationChildView = BattleFormationChildView;

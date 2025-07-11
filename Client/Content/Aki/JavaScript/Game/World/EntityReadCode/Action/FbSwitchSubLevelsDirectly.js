@@ -1,37 +1,65 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSwitchSubLevelsDirectly = void 0;
+  value: true
+});
+exports.FbSwitchSubLevelsDirectly = undefined;
 class FbSwitchSubLevelsDirectly {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.HTh = !1, this.WTh = void 0, this.QTh = !1, this.KTh = void 0, this.$Th = !1, this.XTh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.HTh = false;
+    this.WTh = undefined;
+    this.QTh = false;
+    this.KTh = undefined;
+    this.$Th = false;
+    this.XTh = 0;
   }
   static Create(t) {
-    if (t) return new FbSwitchSubLevelsDirectly(t)
+    if (t) {
+      return new FbSwitchSubLevelsDirectly(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get LoadLevels() {
     if (!this.HTh) {
-      this.HTh = !0, this.WTh = new Array;
+      this.HTh = true;
+      this.WTh = new Array();
       var i = this.FbDataInternal.loadLevelsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.WTh.push(this.FbDataInternal.loadLevels(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.WTh.push(this.FbDataInternal.loadLevels(t));
+        }
+      }
     }
-    return this.WTh
+    return this.WTh;
   }
   get UnloadLevels() {
     if (!this.QTh) {
-      this.QTh = !0, this.KTh = new Array;
+      this.QTh = true;
+      this.KTh = new Array();
       var i = this.FbDataInternal.unloadLevelsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.KTh.push(this.FbDataInternal.unloadLevels(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.KTh.push(this.FbDataInternal.unloadLevels(t));
+        }
+      }
     }
-    return this.KTh
+    return this.KTh;
   }
   get TeleportEntityId() {
-    return this.$Th || (this.$Th = !0, this.XTh = this.FbDataInternal.teleportEntityId()), this.XTh
+    if (!this.$Th) {
+      this.$Th = true;
+      this.XTh = this.FbDataInternal.teleportEntityId();
+    }
+    return this.XTh;
   }
 }
 exports.FbSwitchSubLevelsDirectly = FbSwitchSubLevelsDirectly;

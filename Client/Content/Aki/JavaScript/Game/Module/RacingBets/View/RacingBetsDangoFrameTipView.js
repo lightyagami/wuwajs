@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsDangoFrameTipView = void 0;
+  value: true
+});
+exports.RacingBetsDangoFrameTipView = undefined;
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 class RacingBetsDangoFrameTipView extends UiViewBase_1.UiViewBase {}
 exports.RacingBetsDangoFrameTipView = RacingBetsDangoFrameTipView;

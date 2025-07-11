@@ -1,21 +1,72 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineConditionCheckState = void 0;
+  value: true
+});
+exports.AiStateMachineConditionCheckState = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const AiStateMachineCondition_1 = require("./AiStateMachineCondition");
 class AiStateMachineConditionCheckState extends AiStateMachineCondition_1.AiStateMachineCondition {
   constructor() {
-    super(...arguments), this._ne = void 0, this.une = void 0, this.cne = void 0
+    super(...arguments);
+    this._ne = undefined;
+    this.une = undefined;
+    this.cne = undefined;
+    this.pwu = t => {
+      this.ResultSelf = t;
+      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckState", this.Node?.Name);
+    };
+  }
+  RegisterEvents() {
+    if (super.RegisterEvents()) {
+      var t = this.vwu();
+      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu);
+        return true;
+      }
+    }
+    return false;
+  }
+  UnregisterEvents() {
+    if (super.UnregisterEvents()) {
+      var t = this.vwu();
+      if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu);
+        return true;
+      }
+    }
+    return false;
   }
   OnInit(t) {
-    return t.CondCheckState ? this.une = t.CondCheckState.TargetState : t.CondCheckStateByName && (this._ne = t.CondCheckStateByName.TargetStateName), !0
+    if (t.CondCheckState) {
+      this.une = t.CondCheckState.TargetState;
+    } else if (t.CondCheckStateByName) {
+      this._ne = t.CondCheckStateByName.TargetStateName;
+    }
+    return true;
+  }
+  vwu() {
+    let t = undefined;
+    if (this.une !== undefined) {
+      t = this.Node.Owner.GetNodeByUuid(this.une);
+    } else if (this._ne !== undefined) {
+      t = this.Node.Owner.GetNodeByName(this._ne);
+    }
+    return t;
   }
   OnTick() {
-    this.cne || (void 0 !== this.une ? this.cne = this.Node.Owner.GetNodeByUuid(this.une) : void 0 !== this._ne && (this.cne = this.Node.Owner.GetNodeByName(this._ne))), this.ResultSelf = this.cne?.Activated ?? !1
+    this.cne ||= this.vwu();
+    this.ResultSelf = this.cne?.Activated ?? false;
   }
-  ToString(t, i = 0) {
-    super.ToString(t, i), this.cne ? t.Append(`检查节点状态 [${this.cne.Name}]
-`) : t.Append(`检查节点状态 [${this._ne}] 目标节点不存在`)
+  ToString(t, e = 0) {
+    super.ToString(t, e);
+    if (this.cne) {
+      t.Append(`检查节点状态 [${this.cne.Name}]
+`);
+    } else {
+      t.Append(`检查节点状态 [${this._ne}] 目标节点不存在`);
+    }
   }
 }
 exports.AiStateMachineConditionCheckState = AiStateMachineConditionCheckState;

@@ -1,45 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TouchFingerData = void 0;
-const UE = require("ue"),
-  LguiEventSystemManager_1 = require("../LguiEventSystem/LguiEventSystemManager");
+  value: true
+});
+exports.TouchFingerData = undefined;
+const UE = require("ue");
+const LguiEventSystemManager_1 = require("../LguiEventSystem/LguiEventSystemManager");
 class TouchFingerData {
   constructor(t) {
-    this.Fdr = void 0, this.Vdr = void 0, this.Hdr = !1, this.OOn = BigInt(0), this.jdr = t
+    this.Fdr = undefined;
+    this.Vdr = undefined;
+    this.Hdr = false;
+    this.OOn = BigInt(0);
+    this.jdr = t;
   }
   StartTouch(t) {
-    this.Fdr = t, this.Vdr = t, this.Hdr = !0
+    this.Fdr = t;
+    this.Vdr = t;
+    this.Hdr = true;
   }
   EndTouch() {
-    this.Fdr = void 0, this.Vdr = void 0, this.Hdr = !1
+    this.Fdr = undefined;
+    this.Vdr = undefined;
+    this.Hdr = false;
   }
   MoveTouch(t) {
-    this.OOn !== UE.KismetSystemLibrary.GetFrameCount() && (this.Vdr = this.Fdr, this.OOn = UE.KismetSystemLibrary.GetFrameCount()), this.Fdr = t
+    if (this.OOn !== UE.KismetSystemLibrary.GetFrameCount()) {
+      this.Vdr = this.Fdr;
+      this.OOn = UE.KismetSystemLibrary.GetFrameCount();
+    }
+    this.Fdr = t;
   }
   GetFingerIndex() {
-    return this.jdr
+    return this.jdr;
   }
   GetTouchPosition() {
-    return this.Fdr
+    return this.Fdr;
   }
   GetLastTouchPosition() {
-    return this.Vdr
+    return this.Vdr;
   }
   IsInTouch() {
-    return this.Hdr
+    return this.Hdr;
   }
   IsTouchEmpty() {
-    return !LguiEventSystemManager_1.LguiEventSystemManager.IsPressComponentIsValid(this.jdr)
+    return !LguiEventSystemManager_1.LguiEventSystemManager.IsPressComponentIsValid(this.jdr);
   }
   GetPointerEventData() {
-    return LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(this.jdr)
+    return LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(this.jdr);
   }
   IsTouchComponentContainTag(t) {
-    var e = this.GetPointerEventData(),
-      i = e.pressComponent,
-      e = e.enterComponent;
-    return i?.IsValid() ? i.ComponentHasTag(t) : !!e?.IsValid() && e.ComponentHasTag(t)
+    var e = this.GetPointerEventData();
+    var i = e.pressComponent;
+    var e = e.enterComponent;
+    if (i?.IsValid()) {
+      return i.ComponentHasTag(t);
+    } else {
+      return !!e?.IsValid() && e.ComponentHasTag(t);
+    }
   }
 }
 exports.TouchFingerData = TouchFingerData;

@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.StackValue = void 0;
+exports.StackValue = undefined;
 const bit_width_js_1 = require("./bit-width");
 const bit_width_util_js_1 = require("./bit-width-util");
 const value_type_js_1 = require("./value-type");
@@ -16,8 +17,9 @@ class StackValue {
     this.offset = offset;
   }
   elementWidth(size, index) {
-    if ((0, value_type_util_js_1.isInline)(this.type))
+    if ((0, value_type_util_js_1.isInline)(this.type)) {
       return this.width;
+    }
     for (let i = 0; i < 4; i++) {
       const width = 1 << i;
       const offsetLoc = size + (0, bit_width_util_js_1.paddingSize)(size, width) + index * width;
@@ -53,7 +55,11 @@ class StackValue {
     this.offset = newOffset;
   }
   storedWidth(width = bit_width_js_1.BitWidth.WIDTH8) {
-    return (0, value_type_util_js_1.isInline)(this.type) ? Math.max(width, this.width) : this.width;
+    if ((0, value_type_util_js_1.isInline)(this.type)) {
+      return Math.max(width, this.width);
+    } else {
+      return this.width;
+    }
   }
   storedPackedType(width = bit_width_js_1.BitWidth.WIDTH8) {
     return (0, value_type_util_js_1.packedType)(this.type, this.storedWidth(width));

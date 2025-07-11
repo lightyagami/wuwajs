@@ -1,42 +1,58 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityRegressTaskDynamicScrollItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../../../../Ui/Base/UiPanelBase"),
-  ActivityRegressTaskScrollItemPanel_1 = require("./ActivityRegressTaskScrollItemPanel"),
-  ActivityRegressTaskTitlePanel_1 = require("./ActivityRegressTaskTitlePanel");
+  value: true
+});
+exports.ActivityRegressTaskDynamicScrollItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../../../../Ui/Base/UiPanelBase");
+const ActivityRegressTaskScrollItemPanel_1 = require("./ActivityRegressTaskScrollItemPanel");
+const ActivityRegressTaskTitlePanel_1 = require("./ActivityRegressTaskTitlePanel");
 class ActivityRegressTaskDynamicScrollItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.uma = void 0, this.gLt = void 0
+    super(...arguments);
+    this.uma = undefined;
+    this.gLt = undefined;
   }
   async Init(e) {
-    await super.CreateByActorAsync(e.GetOwner(), void 0, !0)
+    await super.CreateByActorAsync(e.GetOwner(), undefined, true);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.uma = new ActivityRegressTaskScrollItemPanel_1.ActivityRegressTaskScrollItemPanel;
-    var e = this.GetItem(0).GetOwner(),
-      e = (await this.uma.CreateThenShowByActorAsync(e, void 0, !0), this.gLt = new ActivityRegressTaskTitlePanel_1.ActivityRegressTaskTitlePanel, this.GetItem(1).GetOwner());
-    await this.gLt.CreateThenShowByActorAsync(e, void 0, !0)
+    this.uma = new ActivityRegressTaskScrollItemPanel_1.ActivityRegressTaskScrollItemPanel();
+    var e = this.GetItem(0).GetOwner();
+    await this.uma.CreateThenShowByActorAsync(e, undefined, true);
+    this.gLt = new ActivityRegressTaskTitlePanel_1.ActivityRegressTaskTitlePanel();
+    var e = this.GetItem(1).GetOwner();
+    await this.gLt.CreateThenShowByActorAsync(e, undefined, true);
   }
   GetUsingItem(e) {
-    return 0 === e.ItemType ? this.cma(1) : 1 === e.ItemType ? this.cma(0) : void 0
+    if (e.ItemType === 0) {
+      return this.cma(1);
+    } else if (e.ItemType === 1) {
+      return this.cma(0);
+    } else {
+      return undefined;
+    }
   }
   cma(e) {
-    return this.GetItem(e).GetOwner()
+    return this.GetItem(e).GetOwner();
   }
   Update(e, t) {
-    var s = 0 === e.ItemType;
-    this.gLt.SetUiActive(s), this.uma.SetUiActive(!s), s ? this.gLt.RefreshByData(e) : s || (this.uma.GetRootItem().SetAnchorOffsetY(0), this.uma.RefreshByData(e))
+    var s = e.ItemType === 0;
+    this.gLt.SetUiActive(s);
+    this.uma.SetUiActive(!s);
+    if (s) {
+      this.gLt.RefreshByData(e);
+    } else if (!s) {
+      this.uma.GetRootItem().SetAnchorOffsetY(0);
+      this.uma.RefreshByData(e);
+    }
   }
   ClearItem() {
-    this.Destroy()
+    this.Destroy();
   }
 }
 exports.ActivityRegressTaskDynamicScrollItem = ActivityRegressTaskDynamicScrollItem;

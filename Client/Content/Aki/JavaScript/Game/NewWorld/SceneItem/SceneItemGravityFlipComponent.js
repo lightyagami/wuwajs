@@ -1,167 +1,289 @@
 "use strict";
-var SceneItemGravityFlipComponent_1, __decorate = this && this.__decorate || function(t, e, i, s) {
-  var n, o = arguments.length,
-    r = o < 3 ? e : null === s ? s = Object.getOwnPropertyDescriptor(e, i) : s;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) r = Reflect.decorate(t, e, i, s);
-  else
-    for (var a = t.length - 1; 0 <= a; a--)(n = t[a]) && (r = (o < 3 ? n(r) : 3 < o ? n(e, i, r) : n(e, i)) || r);
-  return 3 < o && r && Object.defineProperty(e, i, r), r
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SceneItemGravityFlipComponent = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../Core/Actor/ActorSystem"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  EntityComponent_1 = require("../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent"),
-  ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  Transform_1 = require("../../../Core/Utils/Math/Transform"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  Global_1 = require("../../Global"),
-  CodeDefineLevelConditionInfo_1 = require("../../LevelGamePlay/LevelConditions/CodeDefineLevelConditionInfo"),
-  LevelGameplayActionsDefine_1 = require("../../LevelGamePlay/LevelGameplayActionsDefine"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  FlowController_1 = require("../../Module/Plot/Flow/FlowController"),
-  BINDING_TAG = new UE.FName("Obj"),
-  POINT_LIGHT_DOWN = "HaloYellow",
-  POINT_LIGHT_UP = "HaloBlue",
-  POINT_LIGHT_LEFT_RIGHT = "HaloGreen",
-  SEQ_ROTATE_LEFT_90 = "/Game/Aki/Scene/InteractionLevel/Animation/2_2/GravitySwitch/Gravity_L_90.Gravity_L_90",
-  SEQ_ROTATE_RIGHT_90 = "/Game/Aki/Scene/InteractionLevel/Animation/2_2/GravitySwitch/Gravity_R_90.Gravity_R_90",
-  SEQ_ROTATE_LEFT_180 = "/Game/Aki/Scene/InteractionLevel/Animation/2_2/GravitySwitch/Gravity_L_180.Gravity_L_180",
-  interactEffectTagMap = new Map([
-    [0, 122403501],
-    [180, -1277883221],
-    [90, 1745511332],
-    [270, -1597014724]
-  ]),
-  enterEffectTagMap = new Map([
-    [0, -1768442878],
-    [180, -1745523076],
-    [90, -355027021],
-    [270, 504823315]
-  ]),
-  notInteractEffectTagMap = new Map([
-    [0, -1112012100],
-    [180, 414541970],
-    [90, 539102901],
-    [270, -2085310779]
-  ]),
-  notInteractStateMap = new Map([
-    [0, 4],
-    [180, 5],
-    [90, 6],
-    [270, 7]
-  ]),
-  interactingStateMap = new Map([
-    [0, 0],
-    [180, 1],
-    [90, 2],
-    [270, 3]
-  ]),
-  lockStateMap = 8;
-let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class SceneItemGravityFlipComponent extends EntityComponent_1.EntityComponent {
-  constructor() {
-    super(...arguments), this.Lo = void 0, this.EIe = void 0, this.Hte = void 0, this.Lie = void 0, this._un = void 0, this.JK_ = !1, this.CurGravityDirection = 0, this.upn = void 0, this.qZ_ = -1, this.IsInteracting = !1, this.i1c = !1, this.Rjt = !1, this.Tqc = !1, this.bFc = void 0, this.LFc = void 0, this.wFc = void 0, this.Rnn = () => {
-      this.Rtn(), this.RemoveInteractTag(), this.UpdatePrefabState(!0)
-    }, this.F0n = t => {
-      this.Rjt = t, this.Rjt ? (this.Lie?.RemoveTag(-674731505), this.Lie?.RemoveTag(1272257853)) : (this.Lie?.AddTag(notInteractEffectTagMap.get(this.CurGravityDirection)), this._Ac(), this.Tqc && this.bqc()), this.UpdatePrefabState(!0)
-    }, this.Etn = t => {
-      this.Tqc = t, this.Rjt || this.i1c || (t ? this.bqc() : this.Lie?.RemoveTag(this.qZ_))
-    }, this.RFc = (t, e) => {
-      if (e) switch (t) {
-        case 1586172671:
-          this.PlayRotateSequence(90);
-          break;
-        case 887665186:
-          this.PlayRotateSequence(270);
-          break;
-        case -1670724542:
-          this.PlayRotateSequence(180)
+
+var SceneItemGravityFlipComponent_1;
+var __decorate = this && this.__decorate || function (t, e, i, s) {
+  var n;
+  var o = arguments.length;
+  var r = o < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    r = Reflect.decorate(t, e, i, s);
+  } else {
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (n = t[a]) {
+        r = (o < 3 ? n(r) : o > 3 ? n(e, i, r) : n(e, i)) || r;
       }
     }
   }
+  if (o > 3 && r) {
+    Object.defineProperty(e, i, r);
+  }
+  return r;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SceneItemGravityFlipComponent = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const Transform_1 = require("../../../Core/Utils/Math/Transform");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const Global_1 = require("../../Global");
+const CodeDefineLevelConditionInfo_1 = require("../../LevelGamePlay/LevelConditions/CodeDefineLevelConditionInfo");
+const LevelGameplayActionsDefine_1 = require("../../LevelGamePlay/LevelGameplayActionsDefine");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const FlowController_1 = require("../../Module/Plot/Flow/FlowController");
+const BINDING_TAG = new UE.FName("Obj");
+const POINT_LIGHT_DOWN = "HaloYellow";
+const POINT_LIGHT_UP = "HaloBlue";
+const POINT_LIGHT_LEFT_RIGHT = "HaloGreen";
+const SEQ_ROTATE_LEFT_90 = "/Game/Aki/Scene/InteractionLevel/Animation/2_2/GravitySwitch/Gravity_L_90.Gravity_L_90";
+const SEQ_ROTATE_RIGHT_90 = "/Game/Aki/Scene/InteractionLevel/Animation/2_2/GravitySwitch/Gravity_R_90.Gravity_R_90";
+const SEQ_ROTATE_LEFT_180 = "/Game/Aki/Scene/InteractionLevel/Animation/2_2/GravitySwitch/Gravity_L_180.Gravity_L_180";
+const interactEffectTagMap = new Map([[0, 122403501], [180, -1277883221], [90, 1745511332], [270, -1597014724]]);
+const enterEffectTagMap = new Map([[0, -1768442878], [180, -1745523076], [90, -355027021], [270, 504823315]]);
+const notInteractEffectTagMap = new Map([[0, -1112012100], [180, 414541970], [90, 539102901], [270, -2085310779]]);
+const notInteractStateMap = new Map([[0, 4], [180, 5], [90, 6], [270, 7]]);
+const interactingStateMap = new Map([[0, 0], [180, 1], [90, 2], [270, 3]]);
+const lockStateMap = 8;
+let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class SceneItemGravityFlipComponent extends EntityComponent_1.EntityComponent {
+  constructor() {
+    super(...arguments);
+    this.Lo = undefined;
+    this.EIe = undefined;
+    this.Hte = undefined;
+    this.Lie = undefined;
+    this._un = undefined;
+    this.JK_ = false;
+    this.CurGravityDirection = 0;
+    this.upn = undefined;
+    this.qZ_ = -1;
+    this.IsInteracting = false;
+    this.i1c = false;
+    this.Rjt = false;
+    this.Tqc = false;
+    this.bFc = undefined;
+    this.LFc = undefined;
+    this.wFc = undefined;
+    this.Rnn = () => {
+      this.Rtn();
+      this.RemoveInteractTag();
+      this.UpdatePrefabState(true);
+    };
+    this.F0n = t => {
+      this.Rjt = t;
+      if (this.Rjt) {
+        this.Lie?.RemoveTag(-674731505);
+        this.Lie?.RemoveTag(1272257853);
+      } else {
+        this.Lie?.AddTag(notInteractEffectTagMap.get(this.CurGravityDirection));
+        this._Ac();
+        if (this.Tqc) {
+          this.bqc();
+        }
+      }
+      this.UpdatePrefabState(true);
+    };
+    this.Etn = t => {
+      this.Tqc = t;
+      if (!this.Rjt && !this.i1c) {
+        if (t) {
+          this.bqc();
+        } else {
+          this.Lie?.RemoveTag(this.qZ_);
+        }
+      }
+    };
+    this.RFc = (t, e) => {
+      if (e) {
+        switch (t) {
+          case 1586172671:
+            this.PlayRotateSequence(90);
+            break;
+          case 887665186:
+            this.PlayRotateSequence(270);
+            break;
+          case -1670724542:
+            this.PlayRotateSequence(180);
+        }
+      }
+    };
+  }
   OnInitData(t) {
     t = t.GetParam(SceneItemGravityFlipComponent_1)[0];
-    return this.Lo = t, !0
+    this.Lo = t;
+    return true;
   }
   OnStart() {
-    this.EIe = this.Entity.GetComponent(0), this.Hte = this.Entity.GetComponent(202), this.Lie = this.Entity.GetComponent(196), this._un = this.Entity.GetComponent(130);
+    this.EIe = this.Entity.GetComponent(0);
+    this.Hte = this.Entity.GetComponent(202);
+    this.Lie = this.Entity.GetComponent(196);
+    this._un = this.Entity.GetComponent(130);
     var t = this.EIe?.PbGravityFlipDirection;
-    return this.SetGravityDirection(t) || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] InitGravityDirection Failed", ["Id", this.EIe?.GetPbDataId()], ["index", this.EIe?.PbGravityFlipDirection]), this.CurGravityDirection = 0), this.Rjt = this._un?.IsLocked ?? !1, this.AFc(), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemLockPropChange, this.F0n), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn), this.Lie?.AddTagAddOrRemoveListener(1586172671, this.RFc), this.Lie?.AddTagAddOrRemoveListener(887665186, this.RFc), this.Lie?.AddTagAddOrRemoveListener(-1670724542, this.RFc), !0
+    if (!this.SetGravityDirection(t)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] InitGravityDirection Failed", ["Id", this.EIe?.GetPbDataId()], ["index", this.EIe?.PbGravityFlipDirection]);
+      }
+      this.CurGravityDirection = 0;
+    }
+    this.Rjt = this._un?.IsLocked ?? false;
+    this.AFc();
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemLockPropChange, this.F0n);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn);
+    this.Lie?.AddTagAddOrRemoveListener(1586172671, this.RFc);
+    this.Lie?.AddTagAddOrRemoveListener(887665186, this.RFc);
+    this.Lie?.AddTagAddOrRemoveListener(-1670724542, this.RFc);
+    return true;
   }
   OnEnd() {
     if (this.upn) {
       const t = this.upn;
       TimerSystem_1.TimerSystem.Next(() => {
-        ActorSystem_1.ActorSystem.Put("SceneItemGravityFlipComponent.OnEnd", t)
-      })
+        ActorSystem_1.ActorSystem.Put("SceneItemGravityFlipComponent.OnEnd", t);
+      });
     }
-    return EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemLockPropChange, this.F0n), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn), this.Lie?.RemoveTagAddOrRemoveListener(1586172671, this.RFc), this.Lie?.RemoveTagAddOrRemoveListener(887665186, this.RFc), this.Lie?.RemoveTagAddOrRemoveListener(-1670724542, this.RFc), !0
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemLockPropChange, this.F0n);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Etn);
+    this.Lie?.RemoveTagAddOrRemoveListener(1586172671, this.RFc);
+    this.Lie?.RemoveTagAddOrRemoveListener(887665186, this.RFc);
+    this.Lie?.RemoveTagAddOrRemoveListener(-1670724542, this.RFc);
+    return true;
   }
   SetGravityDirection(t) {
-    return void 0 !== t && (this.CurGravityDirection = this.FZ_(t), this.UpdatePrefabState(!0), !0)
+    return t !== undefined && (this.CurGravityDirection = this.FZ_(t), this.UpdatePrefabState(true), true);
   }
   AFc() {
     ResourceSystem_1.ResourceSystem.LoadAsync(SEQ_ROTATE_LEFT_90, UE.LevelSequence, t => {
-      t ? this.bFc = t : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] LoadRotateSequence Failed", ["path", SEQ_ROTATE_LEFT_90])
-    }), ResourceSystem_1.ResourceSystem.LoadAsync(SEQ_ROTATE_RIGHT_90, UE.LevelSequence, t => {
-      t ? this.LFc = t : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] LoadRotateSequence Failed", ["path", SEQ_ROTATE_RIGHT_90])
-    }), ResourceSystem_1.ResourceSystem.LoadAsync(SEQ_ROTATE_LEFT_180, UE.LevelSequence, t => {
-      t ? this.wFc = t : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] LoadRotateSequence Failed", ["path", SEQ_ROTATE_LEFT_180])
-    })
+      if (t) {
+        this.bFc = t;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] LoadRotateSequence Failed", ["path", SEQ_ROTATE_LEFT_90]);
+      }
+    });
+    ResourceSystem_1.ResourceSystem.LoadAsync(SEQ_ROTATE_RIGHT_90, UE.LevelSequence, t => {
+      if (t) {
+        this.LFc = t;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] LoadRotateSequence Failed", ["path", SEQ_ROTATE_RIGHT_90]);
+      }
+    });
+    ResourceSystem_1.ResourceSystem.LoadAsync(SEQ_ROTATE_LEFT_180, UE.LevelSequence, t => {
+      if (t) {
+        this.wFc = t;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 31, "[SceneItemGravityFlipComponent] LoadRotateSequence Failed", ["path", SEQ_ROTATE_LEFT_180]);
+      }
+    });
   }
   Rtn() {
-    var t, e, i, s;
-    this.JK_ || (t = this.EIe?.GetPbDataId(), Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 31, "[SceneItemGravityFlipComponent] CreateInteractOption", ["PbDataId", t]), (e = this.Entity.GetComponent(197)) ? ((e = e.GetInteractController()) || Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 31, "[SceneItemGravityFlipComponent]CreateInteractOption Failed_1", ["EntityId", t]), i = new CodeDefineLevelConditionInfo_1.LevelConditionGroup, (s = new CodeDefineLevelConditionInfo_1.LevelConditionCheckGravityFlipEntityDirectionSameAsPlayerInfo).EntityId = this.Entity.Id, i.Conditions?.push(s), (s = new LevelGameplayActionsDefine_1.ActionInteractGravityFlip).EntityId = this.Entity.Id, e.AddClientInteractOption(s, i, "Direct"), this.JK_ = !0) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 31, "[SceneItemGravityFlipComponent]CreateInteractOption Failed_0", ["pbDataId", t]))
+    var t;
+    var e;
+    var i;
+    var s;
+    if (!this.JK_) {
+      t = this.EIe?.GetPbDataId();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SceneItem", 31, "[SceneItemGravityFlipComponent] CreateInteractOption", ["PbDataId", t]);
+      }
+      if (e = this.Entity.GetComponent(197)) {
+        if (!(e = e.GetInteractController())) {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("SceneItem", 31, "[SceneItemGravityFlipComponent]CreateInteractOption Failed_1", ["EntityId", t]);
+          }
+        }
+        i = new CodeDefineLevelConditionInfo_1.LevelConditionGroup();
+        (s = new CodeDefineLevelConditionInfo_1.LevelConditionCheckGravityFlipEntityDirectionSameAsPlayerInfo()).EntityId = this.Entity.Id;
+        i.Conditions?.push(s);
+        (s = new LevelGameplayActionsDefine_1.ActionInteractGravityFlip()).EntityId = this.Entity.Id;
+        e.AddClientInteractOption(s, i, "Direct");
+        this.JK_ = true;
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("SceneItem", 31, "[SceneItemGravityFlipComponent]CreateInteractOption Failed_0", ["pbDataId", t]);
+      }
+    }
   }
   ExecuteInteract() {
     ModelManager_1.ModelManager.GravityFlipModel.InitGravityFlipParams(this);
     FlowController_1.FlowController.StartFlowForView("剧情_2_2_重力机关交互表现", 1, 1, {
-      HideAllUi: !0
-    })
+      HideAllUi: true
+    });
   }
   GetGravityFlipDirection() {
-    return this.Lo?.Config
+    return this.Lo?.Config;
   }
   Qpn() {
-    void 0 === this.upn && (this.upn = ActorSystem_1.ActorSystem.Get(UE.LevelSequenceActor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, void 0, !1), this.upn.bOverrideInstanceData = !0)
+    if (this.upn === undefined) {
+      this.upn = ActorSystem_1.ActorSystem.Get(UE.LevelSequenceActor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, undefined, false);
+      this.upn.bOverrideInstanceData = true;
+    }
   }
   PlayRotateSequence(t, e) {
-    let i = "",
-      s = void 0;
+    let i = "";
+    let s = undefined;
     switch (t) {
       case 90:
-        i = SEQ_ROTATE_LEFT_90, s = this.bFc;
+        i = SEQ_ROTATE_LEFT_90;
+        s = this.bFc;
         break;
       case 270:
-        i = SEQ_ROTATE_RIGHT_90, s = this.LFc;
+        i = SEQ_ROTATE_RIGHT_90;
+        s = this.LFc;
         break;
       case 180:
-        i = SEQ_ROTATE_LEFT_180, s = this.wFc
+        i = SEQ_ROTATE_LEFT_180;
+        s = this.wFc;
     }
-    var n, o;
-    s || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GravityFlipModel] 未找到对应的Sequence", ["path", i]), s = ResourceSystem_1.ResourceSystem.Load(i, UE.LevelSequence)) ? (void 0 === this.upn && this.Qpn(), t = this.upn.DefaultInstanceData, n = this.Hte.ActorLocationProxy, o = this.Hte.ActorRotationProxy, o = Transform_1.Transform.Create(o.Quaternion(void 0), n, Vector_1.Vector.OneVectorProxy), t.TransformOrigin = o.ToUeTransformOld(), t.TransformOriginActor = this.Hte.Owner, this.upn && (this.upn.SetActorTickEnabled(!0), this.upn.SetSequence(s), this.upn.SequencePlayer.OnFinished.Clear(), this.upn.AddBindingByTag(BINDING_TAG, this.Hte.Owner), this.upn.SequencePlayer.IsValid()) && (this.upn.SequencePlayer.SetPlayRate(1), this.upn.SequencePlayer.Play(), this.upn.SequencePlayer.OnFinished.Add(() => {
-      this.upn.RemoveBindingByTag(BINDING_TAG, this.Hte.Owner), e?.()
-    }))) : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GravityFlipModel] 尝试重新同步加载后仍未找到Sequence", ["path", i])
+    var n;
+    var o;
+    if (s || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GravityFlipModel] 未找到对应的Sequence", ["path", i]), s = ResourceSystem_1.ResourceSystem.Load(i, UE.LevelSequence))) {
+      if (this.upn === undefined) {
+        this.Qpn();
+      }
+      t = this.upn.DefaultInstanceData;
+      n = this.Hte.ActorLocationProxy;
+      o = this.Hte.ActorRotationProxy;
+      o = Transform_1.Transform.Create(o.Quaternion(undefined), n, Vector_1.Vector.OneVectorProxy);
+      t.TransformOrigin = o.ToUeTransformOld();
+      t.TransformOriginActor = this.Hte.Owner;
+      if (this.upn && (this.upn.SetActorTickEnabled(true), this.upn.SetSequence(s), this.upn.SequencePlayer.OnFinished.Clear(), this.upn.AddBindingByTag(BINDING_TAG, this.Hte.Owner), this.upn.SequencePlayer.IsValid())) {
+        this.upn.SequencePlayer.SetPlayRate(1);
+        this.upn.SequencePlayer.Play();
+        this.upn.SequencePlayer.OnFinished.Add(() => {
+          this.upn.RemoveBindingByTag(BINDING_TAG, this.Hte.Owner);
+          e?.();
+        });
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SceneItem", 31, "[GravityFlipModel] 尝试重新同步加载后仍未找到Sequence", ["path", i]);
+    }
   }
   CheckPlayerGravityDirectionAsSelf() {
-    var t, e;
-    return !!(this.bFc && this.LFc && this.wFc) && ((t = Vector_1.Vector.Create(this.Hte?.ActorUp)).MultiplyEqual(-1), (e = Global_1.Global.BaseCharacter?.CharacterActorComponent) ? .99 < Vector_1.Vector.Create(e.ActorGravityDirectProxy).DotProduct(t) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GravityFlipModel] 未找到角色"), !1))
+    var t;
+    var e;
+    return !!this.bFc && !!this.LFc && !!this.wFc && ((t = Vector_1.Vector.Create(this.Hte?.ActorUp)).MultiplyEqual(-1), (e = Global_1.Global.BaseCharacter?.CharacterActorComponent) ? Vector_1.Vector.Create(e.ActorGravityDirectProxy).DotProduct(t) > 0.99 : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[GravityFlipModel] 未找到角色"), false));
   }
   OnNotifyUpdateGravityDirection(t) {
-    this.i1c = !0, this.Lie?.RemoveTag(this.qZ_), this.Lie?.RemoveTag(notInteractEffectTagMap.get(this.CurGravityDirection));
-    var t = this.FZ_(t),
-      e = (e = t - this.CurGravityDirection) < 0 ? 360 + e : e,
-      i = (this.CurGravityDirection = t, () => {
-        this.OnExitInteract(!0), this.RemoveInteractTag(), this.i1c = !1
-      });
+    this.i1c = true;
+    this.Lie?.RemoveTag(this.qZ_);
+    this.Lie?.RemoveTag(notInteractEffectTagMap.get(this.CurGravityDirection));
+    var t = this.FZ_(t);
+    var e = (e = t - this.CurGravityDirection) < 0 ? 360 + e : e;
+    this.CurGravityDirection = t;
+    var i = () => {
+      this.OnExitInteract(true);
+      this.RemoveInteractTag();
+      this.i1c = false;
+    };
     switch (e) {
       case 90:
         this.PlayRotateSequence(90, i);
@@ -170,11 +292,11 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
         this.PlayRotateSequence(180, i);
         break;
       case 270:
-        this.PlayRotateSequence(270, i)
+        this.PlayRotateSequence(270, i);
     }
     this.Lie?.RemoveTag(this.qZ_);
     e = notInteractStateMap.get(t);
-    this.Hte.SwitchToState(e, !0, !1)
+    this.Hte.SwitchToState(e, true, false);
   }
   FZ_(t) {
     switch (t) {
@@ -185,32 +307,61 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
       case Protocol_1.Aki.Protocol.AY_.Proto_GravityUp:
         return 180;
       case Protocol_1.Aki.Protocol.AY_.Proto_GravityDown:
-        return 0
+        return 0;
     }
-    return 0
+    return 0;
   }
   AddInteractTag() {
     var t = interactEffectTagMap.get(this.CurGravityDirection);
-    this.Lie?.HasTag(t) || this.Lie?.AddTag(t), this.Lie?.RemoveTag(-674731505), this.UpdatePrefabState()
+    if (!this.Lie?.HasTag(t)) {
+      this.Lie?.AddTag(t);
+    }
+    this.Lie?.RemoveTag(-674731505);
+    this.UpdatePrefabState();
   }
   RemoveInteractTag() {
     this.Lie?.RemoveTag(589539912);
     var t = notInteractEffectTagMap.get(this.CurGravityDirection);
-    this.Lie?.HasTag(t) || this.Rjt || this.Lie?.AddTag(t)
+    if (!this.Lie?.HasTag(t) && !this.Rjt) {
+      this.Lie?.AddTag(t);
+    }
   }
   OnEnterInteract() {
-    this.Lie?.RemoveTag(this.qZ_), this.IsInteracting = !0
+    this.Lie?.RemoveTag(this.qZ_);
+    this.IsInteracting = true;
   }
-  OnExitInteract(t = !1) {
+  OnExitInteract(t = false) {
     var e = t ? this.CurGravityDirection : ModelManager_1.ModelManager.GravityFlipModel.CurrentGravityDirection;
-    this.Tqc && (e = enterEffectTagMap.get(e), this.Lie?.HasTag(e) || this.Lie?.AddTag(e), this.qZ_ = e), this.IsInteracting = !1, this.UpdatePrefabState(t)
+    if (this.Tqc) {
+      e = enterEffectTagMap.get(e);
+      if (!this.Lie?.HasTag(e)) {
+        this.Lie?.AddTag(e);
+      }
+      this.qZ_ = e;
+    }
+    this.IsInteracting = false;
+    this.UpdatePrefabState(t);
   }
-  UpdatePrefabState(t = !1) {
-    this.Rjt ? (this.Hte.SwitchToState(lockStateMap, !0, !1), this.Lie?.RemoveTag(this.qZ_), this.cAc()) : (t = t ? this.CurGravityDirection : ModelManager_1.ModelManager.GravityFlipModel.CurrentGravityDirection, t = (this.IsInteracting ? interactingStateMap : notInteractStateMap).get(t), this.Hte.SwitchToState(t, !0, !1))
+  UpdatePrefabState(t = false) {
+    if (this.Rjt) {
+      this.Hte.SwitchToState(lockStateMap, true, false);
+      this.Lie?.RemoveTag(this.qZ_);
+      this.cAc();
+    } else {
+      t = t ? this.CurGravityDirection : ModelManager_1.ModelManager.GravityFlipModel.CurrentGravityDirection;
+      t = (this.IsInteracting ? interactingStateMap : notInteractStateMap).get(t);
+      this.Hte.SwitchToState(t, true, false);
+    }
   }
   cAc() {
     var t = this.Hte?.GetInteractionMainActor();
-    t ? (t.GetActorByKey(POINT_LIGHT_DOWN)?.SetActorHiddenInGame(!0), t.GetActorByKey(POINT_LIGHT_UP)?.SetActorHiddenInGame(!0), t.GetActorByKey(POINT_LIGHT_LEFT_RIGHT)?.SetActorHiddenInGame(!0)) : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[HideAllHalo] 找不到sceneInteractionActor")
+    if (t) {
+      t.GetActorByKey(POINT_LIGHT_DOWN)?.SetActorHiddenInGame(true);
+      t.GetActorByKey(POINT_LIGHT_UP)?.SetActorHiddenInGame(true);
+      t.GetActorByKey(POINT_LIGHT_LEFT_RIGHT)?.SetActorHiddenInGame(true);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SceneItem", 31, "[HideAllHalo] 找不到sceneInteractionActor");
+    }
   }
   _Ac() {
     let t = "";
@@ -223,15 +374,22 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
         break;
       case 90:
       case 270:
-        t = POINT_LIGHT_LEFT_RIGHT
+        t = POINT_LIGHT_LEFT_RIGHT;
     }
     var e = this.Hte?.GetInteractionMainActor();
-    e ? e.GetActorByKey(t)?.SetActorHiddenInGame(!1) : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 31, "[ShowDirectionHalo] 找不到sceneInteractionActor")
+    if (e) {
+      e.GetActorByKey(t)?.SetActorHiddenInGame(false);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SceneItem", 31, "[ShowDirectionHalo] 找不到sceneInteractionActor");
+    }
   }
   bqc() {
     var t = enterEffectTagMap.get(this.CurGravityDirection);
-    this.Lie?.HasTag(t) || this.Lie?.AddTag(t), this.qZ_ = t
+    if (!this.Lie?.HasTag(t)) {
+      this.Lie?.AddTag(t);
+    }
+    this.qZ_ = t;
   }
 };
-SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], SceneItemGravityFlipComponent), exports.SceneItemGravityFlipComponent = SceneItemGravityFlipComponent;
-//# sourceMappingURL=SceneItemGravityFlipComponent.js.map
+SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], SceneItemGravityFlipComponent);
+exports.SceneItemGravityFlipComponent = SceneItemGravityFlipComponent; //# sourceMappingURL=SceneItemGravityFlipComponent.js.map

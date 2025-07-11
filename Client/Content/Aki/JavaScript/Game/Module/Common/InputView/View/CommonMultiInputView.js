@@ -1,15 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonMultiInputView = void 0;
-const CommonInputViewDefine_1 = require("../Model/CommonInputViewDefine"),
-  CommonInputViewBase_1 = require("./CommonInputViewBase");
+  value: true
+});
+exports.CommonMultiInputView = undefined;
+const CommonInputViewDefine_1 = require("../Model/CommonInputViewDefine");
+const CommonInputViewBase_1 = require("./CommonInputViewBase");
 class CommonMultiInputView extends CommonInputViewBase_1.CommonInputViewBase {
   GetMaxLimit() {
-    return CommonInputViewDefine_1.MAX_MULTI_LENGTH
+    return CommonInputViewDefine_1.MAX_MULTI_LENGTH;
   }
   IsAllowMultiLine() {
-    return !0
+    return true;
   }
 }
 exports.CommonMultiInputView = CommonMultiInputView;

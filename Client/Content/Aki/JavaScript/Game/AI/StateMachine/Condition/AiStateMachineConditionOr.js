@@ -1,50 +1,78 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AiStateMachineConditionOr = void 0;
-const ModelManager_1 = require("../../../Manager/ModelManager"),
-  AiStateMachineCondition_1 = require("./AiStateMachineCondition");
+  value: true
+});
+exports.AiStateMachineConditionOr = undefined;
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const AiStateMachineCondition_1 = require("./AiStateMachineCondition");
 class AiStateMachineConditionOr extends AiStateMachineCondition_1.AiStateMachineCondition {
   constructor() {
-    super(...arguments), this.Conditions = void 0
+    super(...arguments);
+    this.Conditions = undefined;
   }
   OnInit(i) {
-    var e = i.CondOr.Conditions.length;
-    if (0 < e) {
+    var s = i.CondOr.Conditions.length;
+    if (s > 0) {
       this.Conditions = [];
-      for (let t = 0; t < e; t++) {
-        var o = i.CondOr.Conditions[t],
-          n = this.Transition.ConditionDatas[o],
-          n = ModelManager_1.ModelManager.AiStateMachineModel.AiStateMachineFactory.CreateCondition(this.Transition, n, o);
-        this.HasTaskFinishCondition ||= n.HasTaskFinishCondition, this.Conditions.push(n)
+      for (let t = 0; t < s; t++) {
+        var e = i.CondOr.Conditions[t];
+        var o = this.Transition.ConditionDatas[e];
+        var o = ModelManager_1.ModelManager.AiStateMachineModel.AiStateMachineFactory.CreateCondition(this.Transition, o, e, this);
+        this.HasTaskFinishCondition ||= o.HasTaskFinishCondition;
+        this.Conditions.push(o);
       }
     }
-    return !0
+    return true;
   }
   OnEnter() {
-    for (const t of this.Conditions) t.Enter()
+    this.HasSignaled = false;
+    for (const t of this.Conditions) {
+      t.Enter();
+    }
   }
   OnExit() {
-    for (const t of this.Conditions) t.Exit()
+    this.HasSignaled = false;
+    for (const t of this.Conditions) {
+      t.Exit();
+    }
   }
   OnTick() {
-    this.ResultSelf = !1;
-    for (const t of this.Conditions) t.Tick(), this.ResultSelf ||= t.Result
+    this.ResultSelf = false;
+    for (const t of this.Conditions) {
+      t.Tick();
+      this.ResultSelf ||= t.Result;
+    }
   }
   OnClear() {
-    for (const t of this.Conditions) t.Clear();
-    this.Conditions.length = 0
+    this.HasSignaled = false;
+    for (const t of this.Conditions) {
+      t.Clear();
+    }
+    this.Conditions.length = 0;
   }
   HandleServerDebugInfo(i) {
     this.ResultServer = i[this.Index];
-    var e = this.Conditions.length;
-    for (let t = 0; t < e; t++) this.Conditions[t].HandleServerDebugInfo(i)
+    var s = this.Conditions.length;
+    for (let t = 0; t < s; t++) {
+      this.Conditions[t].HandleServerDebugInfo(i);
+    }
   }
-  ToString(i, e = 0) {
-    super.ToString(i, e), i.Append(`或
+  OnSignaled() {
+    this.ResultSelf = false;
+    for (const t of this.Conditions) {
+      this.ResultSelf ||= t.Result;
+    }
+    this.Signaled();
+  }
+  ToString(i, s = 0) {
+    super.ToString(i, s);
+    i.Append(`或
 `);
-    var o = this.Conditions.length;
-    for (let t = 0; t < o; t++) this.Conditions[t].ToString(i, e + 1)
+    var e = this.Conditions.length;
+    for (let t = 0; t < e; t++) {
+      this.Conditions[t].ToString(i, s + 1);
+    }
   }
 }
 exports.AiStateMachineConditionOr = AiStateMachineConditionOr;

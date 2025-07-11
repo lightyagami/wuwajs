@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbReboundComponent = void 0;
+  value: true
+});
+exports.FbReboundComponent = undefined;
 const UnionReboundOptionHelper_1 = require("./UnionReboundOptionHelper");
 class FbReboundComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.p0h = !1, this.nXs = 0, this.s_h = !1, this.Hye = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.p0h = false;
+    this.nXs = 0;
+    this.s_h = false;
+    this.Hye = undefined;
   }
   static Create(t) {
-    if (t) return new FbReboundComponent(t)
+    if (t) {
+      return new FbReboundComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get BulletId() {
-    return this.p0h || (this.p0h = !0, this.nXs = Number(this.FbDataInternal.bulletId())), this.nXs
+    if (!this.p0h) {
+      this.p0h = true;
+      this.nXs = Number(this.FbDataInternal.bulletId());
+    }
+    return this.nXs;
   }
   get Option() {
-    var t, e;
-    return !this.s_h && (this.s_h = !0, t = this.FbDataInternal.optionType(), e = UnionReboundOptionHelper_1.UnionReboundOptionHelper.GetUnionReboundOptionObject(t)) && (this.Hye = UnionReboundOptionHelper_1.UnionReboundOptionHelper.ReadUnionReboundOption(t, this.FbDataInternal.option(e))), this.Hye
+    var t;
+    var e;
+    if (!this.s_h && (this.s_h = true, t = this.FbDataInternal.optionType(), e = UnionReboundOptionHelper_1.UnionReboundOptionHelper.GetUnionReboundOptionObject(t))) {
+      this.Hye = UnionReboundOptionHelper_1.UnionReboundOptionHelper.ReadUnionReboundOption(t, this.FbDataInternal.option(e));
+    }
+    return this.Hye;
   }
 }
 exports.FbReboundComponent = FbReboundComponent;

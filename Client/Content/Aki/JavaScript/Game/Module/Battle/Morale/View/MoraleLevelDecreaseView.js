@@ -1,49 +1,96 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MoraleLevelDecreaseView = void 0;
-const UE = require("ue"),
-  Stats_1 = require("../../../../../Core/Common/Stats"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  LEVEL_ANIM_DURATION = 500,
-  LEVEL_ANIM_EXPIRED_TIME = 5e3;
+  value: true
+});
+exports.MoraleLevelDecreaseView = undefined;
+const UE = require("ue");
+const Stats_1 = require("../../../../../Core/Common/Stats");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const LEVEL_ANIM_DURATION = 500;
+const LEVEL_ANIM_EXPIRED_TIME = 5000;
 class MoraleLevelDecreaseView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
-    super(...arguments), this.tL1 = void 0, this.S1u = 1, this.M1u = 1, this.Wft = 1, this.Sdu = 1, this.E1u = 0, this.dHl = !1, this.I1u = !1, this.f$a = 0, this.T1u = () => {
-      this.E1u < 0 ? this.dHl = !0 : this.svi()
-    }, this.b1u = () => {
-      this.I1u && 1 < ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel() && UiManager_1.UiManager.OpenView("MoraleIndomitableLevelView")
-    }, this.AMe = () => {
-      this.svi()
-    }
+    super(...arguments);
+    this.RL1 = undefined;
+    this.bvu = 1;
+    this.Rvu = 1;
+    this.Wft = 1;
+    this.GRu = 1;
+    this.wvu = 0;
+    this.dHl = false;
+    this.Lvu = false;
+    this.f$a = 0;
+    this.Avu = () => {
+      if (this.wvu < 0) {
+        this.dHl = true;
+      } else {
+        this.svi();
+      }
+    };
+    this.Pvu = () => {
+      if (this.Lvu && ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel() > 1) {
+        UiManager_1.UiManager.OpenView("MoraleIndomitableLevelView");
+      }
+    };
+    this.AMe = () => {
+      this.svi();
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIArtText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIArtText]];
   }
   OnStart() {
-    this.tL1 = this.GetArtText(0), this.S1u = ModelManager_1.ModelManager.MoraleBattleModel.GetLastMoraleLevel(), this.M1u = 1, this.tL1?.SetText(this.S1u.toString()), this.Wft = this.S1u, this.Sdu = this.Wft;
-    var e = this.M1u - this.S1u;
-    0 != e && (this.E1u = e / LEVEL_ANIM_DURATION)
+    this.RL1 = this.GetArtText(0);
+    this.bvu = ModelManager_1.ModelManager.MoraleBattleModel.GetLastMoraleLevel();
+    this.Rvu = 1;
+    this.RL1?.SetText(this.bvu.toString());
+    this.Wft = this.bvu;
+    this.GRu = this.Wft;
+    var e = this.Rvu - this.bvu;
+    if (e != 0) {
+      this.wvu = e / LEVEL_ANIM_DURATION;
+    }
   }
   OnBeforeDestroy() {}
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.AMe), this.UiViewSequence?.AddSequenceFinishEvent("Start", this.T1u), this.UiViewSequence?.AddSequenceFinishEvent("Close", this.b1u)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
+    this.UiViewSequence?.AddSequenceFinishEvent("Start", this.Avu);
+    this.UiViewSequence?.AddSequenceFinishEvent("Close", this.Pvu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.AMe), this.UiViewSequence.RemoveSequenceFinishEvent("Start", this.T1u), this.UiViewSequence?.RemoveSequenceFinishEvent("Close", this.b1u)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
+    this.UiViewSequence.RemoveSequenceFinishEvent("Start", this.Avu);
+    this.UiViewSequence?.RemoveSequenceFinishEvent("Close", this.Pvu);
   }
   OnTick(e) {
     var t;
-    this.dHl && (MoraleLevelDecreaseView.Ult.Start(), t = e * this.E1u, this.f$a += e, this.Sdu += t, this.Wft = Math.max(this.M1u, Math.round(this.Sdu)), this.tL1?.SetText(this.Wft.toString()), (this.Wft === this.M1u || this.f$a > LEVEL_ANIM_EXPIRED_TIME) && (this.E1u = 0, this.dHl = !1, this.I1u = !0, this.svi()), MoraleLevelDecreaseView.Ult.Stop())
+    if (this.dHl) {
+      MoraleLevelDecreaseView.Ult.Start();
+      t = e * this.wvu;
+      this.f$a += e;
+      this.GRu += t;
+      this.Wft = Math.max(this.Rvu, Math.round(this.GRu));
+      this.RL1?.SetText(this.Wft.toString());
+      if (this.Wft === this.Rvu || this.f$a > LEVEL_ANIM_EXPIRED_TIME) {
+        this.wvu = 0;
+        this.dHl = false;
+        this.Lvu = true;
+        this.svi();
+      }
+      MoraleLevelDecreaseView.Ult.Stop();
+    }
   }
   svi() {
-    this.dHl = !1, this.IsHideOrHiding || this.CloseMe()
+    this.dHl = false;
+    if (!this.IsHideOrHiding) {
+      this.CloseMe();
+    }
   }
-}(exports.MoraleLevelDecreaseView = MoraleLevelDecreaseView).Ult = Stats_1.Stat.Create("[MoraleLevelDecreaseView]OnTick");
+}
+(exports.MoraleLevelDecreaseView = MoraleLevelDecreaseView).Ult = Stats_1.Stat.Create("[MoraleLevelDecreaseView]OnTick");
 //# sourceMappingURL=MoraleLevelDecreaseView.js.map

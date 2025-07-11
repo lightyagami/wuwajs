@@ -1,32 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotController = void 0;
-const ControllerBase_1 = require("../../Core/Framework/ControllerBase"),
-  ModelManager_1 = require("../Manager/ModelManager");
+  value: true
+});
+exports.RedDotController = undefined;
+const ControllerBase_1 = require("../../Core/Framework/ControllerBase");
+const ModelManager_1 = require("../Manager/ModelManager");
 class RedDotController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return !0
+    return true;
   }
   static BindRedDot(e, t, a, r = 0) {
     e = ModelManager_1.ModelManager.RedDotModel.GetRedDot(e);
-    e && e.BindUi(r, t, a)
+    if (e) {
+      e.BindUi(r, t, a);
+    }
   }
   static UnBindRedDot(e) {
     e = ModelManager_1.ModelManager.RedDotModel.GetRedDot(e);
-    e && e.UnBindUi()
+    if (e) {
+      e.UnBindUi();
+    }
   }
   static UnBindRedDotAndClearData(e) {
     e = ModelManager_1.ModelManager.RedDotModel.GetRedDot(e);
-    e && e.UnBindUiAndClearData()
+    if (e) {
+      e.UnBindUiAndClearData();
+    }
   }
   static UnBindGivenUi(e, t, a = 0) {
     e = ModelManager_1.ModelManager.RedDotModel.GetRedDot(e);
-    e && e.UnBindGivenUi(a, t)
+    if (e) {
+      e.UnBindGivenUi(a, t);
+    }
   }
   static UnBindGivenUiAndDeleteData(e, t, a = 0) {
     e = ModelManager_1.ModelManager.RedDotModel.GetRedDot(e);
-    e && e.UnBindGivenUiAndDeleteData(a, t)
+    if (e) {
+      e.UnBindGivenUiAndDeleteData(a, t);
+    }
   }
 }
 exports.RedDotController = RedDotController;

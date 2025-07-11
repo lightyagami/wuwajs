@@ -1,86 +1,89 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameplayAbilityVisionBase = void 0;
+  value: true
+});
+exports.GameplayAbilityVisionBase = undefined;
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 class GameplayAbilityVisionBase {
   constructor(t) {
-    this.VisionComponent = t
+    this.VisionComponent = t;
   }
   static Spawn(t) {
     t = new this(t);
-    return t.Create(), t
+    t.Create();
+    return t;
   }
   Create() {
-    this.OnCreate()
+    this.OnCreate();
   }
   Destroy() {
-    this.OnDestroy()
+    this.OnDestroy();
   }
   Tick(t) {
-    this.OnTick(t)
+    this.OnTick(t);
   }
   ActivateAbility() {
-    return this.OnActivateAbility()
+    return this.OnActivateAbility();
   }
   EndAbility() {
-    return this.OnEndAbility()
+    return this.OnEndAbility();
   }
   ChangeVision() {
-    this.OnChangeVision()
+    this.OnChangeVision();
   }
   HandlePress(t, e) {
-    return !1
+    return false;
   }
   TeleportStart() {
-    this.OnTeleportStart()
+    this.OnTeleportStart();
   }
   OnCreate() {}
   OnDestroy() {}
   OnTick(t) {}
   OnActivateAbility() {
-    return !0
+    return true;
   }
   OnEndAbility() {
-    return !0
+    return true;
   }
   OnChangeVision() {}
   OnTeleportStart() {}
   get Entity() {
-    return this.VisionComponent.Entity
+    return this.VisionComponent.Entity;
   }
   get EntityHandle() {
-    return ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.VisionComponent.Entity.Id)
+    return ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.VisionComponent.Entity.Id);
   }
   get CreatureDataComponent() {
-    return this.Entity.GetComponent(0)
+    return this.Entity.GetComponent(0);
   }
   get ActorComponent() {
-    return this.Entity.GetComponent(3)
+    return this.Entity.GetComponent(3);
   }
   get AttributeComponent() {
-    return this.Entity.GetComponent(173)
+    return this.Entity.GetComponent(173);
   }
   get GameplayTagComponent() {
-    return this.Entity.GetComponent(205)
+    return this.Entity.GetComponent(205);
   }
   get SkillComponent() {
-    return this.Entity.GetComponent(40)
+    return this.Entity.GetComponent(40);
   }
   get BuffComponent() {
-    return this.Entity.GetComponent(174)
+    return this.Entity.GetComponent(174);
   }
   get MoveComponent() {
-    return this.Entity.GetComponent(178)
+    return this.Entity.GetComponent(178);
   }
   get AudioComponent() {
-    return this.Entity.GetComponent(51)
+    return this.Entity.GetComponent(51);
   }
   get TeamComponent() {
-    return this.Entity.GetComponent(93)
+    return this.Entity.GetComponent(93);
   }
   get CueComponent() {
-    return this.Entity.GetComponent(21)
+    return this.Entity.GetComponent(21);
   }
 }
 exports.GameplayAbilityVisionBase = GameplayAbilityVisionBase;

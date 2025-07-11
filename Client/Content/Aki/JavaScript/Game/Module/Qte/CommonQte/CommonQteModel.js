@@ -1,83 +1,133 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonQteModel = void 0;
-const UE = require("ue"),
-  CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil"),
-  CommonQteContinuousClickContext_1 = require("./CommonQteContinuousClickContext"),
-  CommonQteSingleClickContext_1 = require("./CommonQteSingleClickContext"),
-  DT_COMMON_QTE_PATH = "/Game/Aki/Data/Qte/DT_CommonQte.DT_CommonQte";
+  value: true
+});
+exports.CommonQteModel = undefined;
+const UE = require("ue");
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../Core/Common/Log");
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil");
+const CommonQteContinuousClickContext_1 = require("./CommonQteContinuousClickContext");
+const CommonQteSingleClickContext_1 = require("./CommonQteSingleClickContext");
+const DT_COMMON_QTE_PATH = "/Game/Aki/Data/Qte/DT_CommonQte.DT_CommonQte";
 class CommonQteModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.hJ = -1, this.ZEl = 0, this.tlc = void 0, this.tIl = void 0, this.Pfc = void 0, this.IsRefreshMode = !1
+    super(...arguments);
+    this.hJ = -1;
+    this.ZEl = 0;
+    this.tlc = undefined;
+    this.tIl = undefined;
+    this.Pfc = undefined;
+    this.IsRefreshMode = false;
   }
   OnLeaveLevel() {
-    return this.tIl?.clear(), this.Pfc?.clear(), !(this.tlc = void 0)
+    this.tIl?.clear();
+    this.Pfc?.clear();
+    return !(this.tlc = undefined);
   }
-  CreateQteContext(t, o = void 0, i = void 0, r = 0) {
+  CreateQteContext(t, o = undefined, i = undefined, r = 0) {
     var n = this.GetCommonQteConfig(t);
     if (n) {
-      let e = void 0;
+      let e = undefined;
       switch (n.BaseConfig.QteType) {
         case 0:
-          e = new CommonQteSingleClickContext_1.CommonQteSingleClickContext;
+          e = new CommonQteSingleClickContext_1.CommonQteSingleClickContext();
           break;
         case 1:
-          e = new CommonQteContinuousClickContext_1.CommonQteContinuousClickContext;
+          e = new CommonQteContinuousClickContext_1.CommonQteContinuousClickContext();
           break;
         default:
-          return
+          return;
       }
-      return e.QteId = t, e.Source = r, e.HandleId = this.ZEl++, e.SetConfig(n), e.SuccessCallback = o, e.FailCallback = i, e
+      e.QteId = t;
+      e.Source = r;
+      e.HandleId = this.ZEl++;
+      e.SetConfig(n);
+      e.SuccessCallback = o;
+      e.FailCallback = i;
+      return e;
     }
   }
   SetCurrentCommonQte(e) {
-    this.hJ = e.HandleId, this.tIl || (this.tIl = new Map), this.tIl.set(e.HandleId, e)
+    this.hJ = e.HandleId;
+    this.tIl ||= new Map();
+    this.tIl.set(e.HandleId, e);
   }
   GetCommonQteConfig(e) {
-    this.tlc || (this.tlc = ResourceSystem_1.ResourceSystem.GetLoadedAsset(DT_COMMON_QTE_PATH, UE.DataTable));
+    this.tlc ||= ResourceSystem_1.ResourceSystem.GetLoadedAsset(DT_COMMON_QTE_PATH, UE.DataTable);
     var t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.tlc, e.toString());
-    return t || Log_1.Log.CheckError() && Log_1.Log.Error("CommonQte", 67, "找不到通用QTE配置", ["QteId", e]), t
+    if (!t) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("CommonQte", 67, "找不到通用QTE配置", ["QteId", e]);
+      }
+    }
+    return t;
   }
   GetCommonQteViewName(e) {
     e = this.GetCommonQteConfig(e);
-    if (e)
-      if (0 === e.BaseConfig.QteType) {
-        if (0 === e.BaseConfig.SingleClickConfig.ViewType) return "CommonQteView"
-      } else if (1 === e.BaseConfig.QteType)
-      if (0 === e.BaseConfig.ContinuousClickConfig.ViewType) return "CommonQteContinuousClickView"
+    if (e) {
+      if (e.BaseConfig.QteType === 0) {
+        if (e.BaseConfig.SingleClickConfig.ViewType === 0) {
+          return "CommonQteView";
+        }
+      } else if (e.BaseConfig.QteType === 1) {
+        if (e.BaseConfig.ContinuousClickConfig.ViewType === 0) {
+          return "CommonQteContinuousClickView";
+        }
+      }
+    }
   }
   GetQteHandleId() {
-    return this.hJ
+    return this.hJ;
   }
   ClearQteHandleId() {
-    this.hJ = -1
+    this.hJ = -1;
   }
   GetQteContext(e) {
-    return this.tIl?.get(e)
+    return this.tIl?.get(e);
   }
   GetQteIcon(e) {
-    return this.Pfc?.get(e)
+    return this.Pfc?.get(e);
   }
   async LoadQteIcon(t, o) {
-    const i = new CustomPromise_1.CustomPromise;
-    return ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.LGUITexturePackerSpriteData, e => {
-      e ? (void 0 === this.Pfc && (this.Pfc = new Map), this.Pfc.set(t, e), i.SetResult(!0)) : (Log_1.Log.CheckError() && Log_1.Log.Error("CommonQte", 67, "QTE加载图标失败", ["iconPath", o]), i.SetResult(!1))
-    }, 100), i.Promise
+    const i = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.LGUITexturePackerSpriteData, e => {
+      if (e) {
+        if (this.Pfc === undefined) {
+          this.Pfc = new Map();
+        }
+        this.Pfc.set(t, e);
+        i.SetResult(true);
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("CommonQte", 67, "QTE加载图标失败", ["iconPath", o]);
+        }
+        i.SetResult(false);
+      }
+    }, 100);
+    return i.Promise;
   }
   GetQteIconPath(t) {
     t = this.GetCommonQteConfig(t);
     if (t) {
-      let e = void 0;
-      return 0 === t.BaseConfig.QteType ? e = t.BaseConfig.SingleClickConfig.UIConfig.Icon.ToAssetPathName() : 1 === t.BaseConfig.QteType && (e = t.BaseConfig.ContinuousClickConfig.UIConfig.Icon.ToAssetPathName()), e?.length && "None" !== e ? e : void 0
+      let e = undefined;
+      if (t.BaseConfig.QteType === 0) {
+        e = t.BaseConfig.SingleClickConfig.UIConfig.Icon.ToAssetPathName();
+      } else if (t.BaseConfig.QteType === 1) {
+        e = t.BaseConfig.ContinuousClickConfig.UIConfig.Icon.ToAssetPathName();
+      }
+      if (e?.length && e !== "None") {
+        return e;
+      } else {
+        return undefined;
+      }
     }
   }
   ClearPreloadCache() {
-    this.Pfc?.clear()
+    this.Pfc?.clear();
   }
 }
 exports.CommonQteModel = CommonQteModel;

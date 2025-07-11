@@ -1,89 +1,147 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityRegressData = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  CommonDefine_1 = require("../../../../../Core/Define/CommonDefine"),
-  CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById"),
-  Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  LocalStorage_1 = require("../../../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine"),
-  TimeUtil_1 = require("../../../../Common/TimeUtil"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  ActivityData_1 = require("../../ActivityData"),
-  RegressDefine_1 = require("./Base/RegressDefine");
+  value: true
+});
+exports.ActivityRegressData = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const ActivityData_1 = require("../../ActivityData");
+const RegressDefine_1 = require("./Base/RegressDefine");
 class ActivityRegressData extends ActivityData_1.ActivityBaseData {
   constructor() {
-    super(...arguments), this.cl1 = void 0, this.tda = new Map, this.ida = new Map, this.yfa = 0, this.G01 = [RegressDefine_1.ERegressQuestionnaireType.Type1, RegressDefine_1.ERegressQuestionnaireType.Type2], this.ul1 = new Map
+    super(...arguments);
+    this.zl1 = undefined;
+    this.tda = new Map();
+    this.ida = new Map();
+    this.yfa = 0;
+    this.lp1 = [RegressDefine_1.ERegressQuestionnaireType.Type1, RegressDefine_1.ERegressQuestionnaireType.Type2];
+    this.Jl1 = new Map();
   }
   PhraseEx(e) {
-    this.cl1 = e.Ah1, Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["收到回流活动数据, data::", this.cl1]), this.cl1 ? (this.cl1.$ca || Log_1.Log.CheckWarn() && Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有签到数据, data:", this.cl1.$ca]), this.cl1.E$s || Log_1.Log.CheckWarn() && Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有任务数据, data:", this.cl1.E$s]), this.cl1.Hca || Log_1.Log.CheckWarn() && Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有已经领取的积分奖励, data:", this.cl1.Hca]), this.EndOpenTimeInternal = MathUtils_1.MathUtils.LongToNumber(this.cl1.dps), this.EndShowTimeInternal = this.EndOpenTimeInternal, this.yfa = MathUtils_1.MathUtils.LongToNumber(this.cl1.yDs), this.tda.clear(), this.cl1.E$s.forEach(e => {
-      this.tda.set(e.s5n, e)
-    }), this.oda(), this.RefreshRegressTaskMapping(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["开启状态, IsOpen:", this.IsActivityOpen()], ["leftTime, 剩余开启时间:", this.GetActivityOpenTimeLeft()]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.ActivityRegressModel.ActivityId)) : Log_1.Log.CheckError() && Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的活动数据没有回流活动相关的, data:", this.cl1])
+    this.zl1 = e.Zh1;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["收到回流活动数据, data::", this.zl1]);
+    }
+    if (this.zl1) {
+      if (!this.zl1.$ca) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有签到数据, data:", this.zl1.$ca]);
+        }
+      }
+      if (!this.zl1.E$s) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有任务数据, data:", this.zl1.E$s]);
+        }
+      }
+      if (!this.zl1.Hca) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的回流活动数据没有已经领取的积分奖励, data:", this.zl1.Hca]);
+        }
+      }
+      this.EndOpenTimeInternal = MathUtils_1.MathUtils.LongToNumber(this.zl1.dps);
+      this.EndShowTimeInternal = this.EndOpenTimeInternal;
+      this.yfa = MathUtils_1.MathUtils.LongToNumber(this.zl1.yDs);
+      this.tda.clear();
+      this.zl1.E$s.forEach(e => {
+        this.tda.set(e.s5n, e);
+      });
+      this.oda();
+      this.RefreshRegressTaskMapping();
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["开启状态, IsOpen:", this.IsActivityOpen()], ["leftTime, 剩余开启时间:", this.GetActivityOpenTimeLeft()]);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.ActivityRegressModel.ActivityId);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("ActivityRecall", 63, "回流活动-ActivityRegressData.PhraseEx()->", ["协议下发的活动数据没有回流活动相关的, data:", this.zl1]);
+    }
   }
   GetActivityState() {
-    return this.IsUnLock() && this.CheckIfInOpenTime() ? 1 : 0
+    if (this.IsUnLock() && this.CheckIfInOpenTime()) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
   get Grade() {
-    return this.cl1.Ph1
+    return this.zl1.el1;
   }
   set Grade(e) {
-    this.cl1.Ph1 = e
+    this.zl1.el1 = e;
   }
   CheckIfInOpenTime() {
-    return this.CheckIfInTimeInterval(this.BeginOpenTime, this.EndOpenTime)
+    return this.CheckIfInTimeInterval(this.BeginOpenTime, this.EndOpenTime);
   }
   GetActivityOpenTimeLeft() {
     var e = this.EndOpenTime;
-    return Math.round(Math.max(0, e - TimeUtil_1.TimeUtil.GetServerTime()))
+    return Math.round(Math.max(0, e - TimeUtil_1.TimeUtil.GetServerTime()));
   }
   IsActivityOpen() {
-    return 1 === this.GetActivityState()
+    return this.GetActivityState() === 1;
   }
   GetSignRewardState(e) {
     e = this.sda(e);
-    if (void 0 !== e) switch (e.H6n) {
-      case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning:
-        return 0;
-      case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish:
-        return 1;
-      case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken:
-        return 2
+    if (e !== undefined) {
+      switch (e.H6n) {
+        case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning:
+          return 0;
+        case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish:
+          return 1;
+        case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken:
+          return 2;
+      }
     }
-    return 0
+    return 0;
   }
   HasSignRewardCanClaimed() {
-    for (const e of this.cl1.$ca)
-      if (e.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) return !0;
-    return !1
+    for (const e of this.zl1.$ca) {
+      if (e.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
+        return true;
+      }
+    }
+    return false;
   }
   sda(e) {
-    return this.cl1.$ca[e - 1]
+    return this.zl1.$ca[e - 1];
   }
   CheckHaveTaskRewardCanGet() {
     var e = this.GetRegressTaskProgressFloat01();
-    if (!(1 <= e))
-      for (const t of this.cl1.E$s)
-        if (t.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) return !0;
-    return !1
+    if (!(e >= 1)) {
+      for (const t of this.zl1.E$s) {
+        if (t.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   GetSignRewardEntityId(e) {
-    return this.sda(e).s5n
+    return this.sda(e).s5n;
   }
   ada(e) {
-    return void 0 === this.tda.get(e) && Log_1.Log.CheckError() && Log_1.Log.Error("ActivityRecall", 63, "[回流活动]ActivityRegressData.GetRawTaskData->", ["获取回流任务数据失败, 服务器没下发该任务数据 taskId:", e]), this.tda.get(e)
+    if (this.tda.get(e) === undefined && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("ActivityRecall", 63, "[回流活动]ActivityRegressData.GetRawTaskData->", ["获取回流任务数据失败, 服务器没下发该任务数据 taskId:", e]);
+    }
+    return this.tda.get(e);
   }
   IsRegressTaskScoreOverExp() {
-    return 1 <= this.GetRegressTaskProgressFloat01()
+    return this.GetRegressTaskProgressFloat01() >= 1;
   }
   GetTaskProgressTuple(e) {
-    var e = this.ada(e),
-      [e, t] = [e.lMs, e.j6n];
-    return [e, t]
+    var e = this.ada(e);
+    var [e, t] = [e.lMs, e.j6n];
+    return [e, t];
   }
   GetTaskRewardState(e) {
     switch (this.ada(e).H6n) {
@@ -94,24 +152,33 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken:
         return 2;
       default:
-        return 0
+        return 0;
     }
   }
   GetNextRefreshTime() {
-    var e, t, r = this.yfa ?? 0;
-    return 0 === r ? "" : (e = TimeUtil_1.TimeUtil.GetServerTime(), e = (r = Math.max(r - e, TimeUtil_1.TimeUtil.TimeDeviation)) >= CommonDefine_1.SECOND_PER_HOUR ? 2 : 1, t = r >= CommonDefine_1.SECOND_PER_HOUR ? 1 : 0, TimeUtil_1.TimeUtil.GetCountDownDataFormat2(r, e, t).CountDownText ?? "")
+    var e;
+    var t;
+    var r = this.yfa ?? 0;
+    if (r === 0) {
+      return "";
+    } else {
+      e = TimeUtil_1.TimeUtil.GetServerTime();
+      e = (r = Math.max(r - e, TimeUtil_1.TimeUtil.TimeDeviation)) >= CommonDefine_1.SECOND_PER_HOUR ? 2 : 1;
+      t = r >= CommonDefine_1.SECOND_PER_HOUR ? 1 : 0;
+      return TimeUtil_1.TimeUtil.GetCountDownDataFormat2(r, e, t).CountDownText ?? "";
+    }
   }
   GetExDataRedPointShowState() {
-    return !!this.IsActivityOpen() && (this.HasSignRewardCanClaimed() || this.CheckHaveTaskRewardCanGet() || this.CheckRegressScoreRewardReached() || this.CheckShowQuestionnaireRedDot() || this.CheckShopRedDot() || ModelManager_1.ModelManager.ActivityRegressModel.ShouldShowDoubleDropRedDot() || this.HasReachableCultivateTask())
+    return !!this.IsActivityOpen() && (this.HasSignRewardCanClaimed() || this.CheckHaveTaskRewardCanGet() || this.CheckRegressScoreRewardReached() || this.CheckShowQuestionnaireRedDot() || this.CheckShopRedDot() || ModelManager_1.ModelManager.ActivityRegressModel.ShouldShowDoubleDropRedDot() || this.HasReachableCultivateTask());
   }
   GetBossDoubleDropCount() {
-    return this.cl1.xh1
+    return this.zl1.tl1;
   }
   GetWeekDoubleDropCount() {
-    return this.cl1.Dh1
+    return this.zl1.il1;
   }
   GetQuestionnaireRewardState(t) {
-    switch (this.cl1.XE1.find(e => e.s5n === t)?.H6n) {
+    switch (this.zl1.yI1.find(e => e.s5n === t)?.H6n) {
       case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning:
         return 0;
       case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish:
@@ -119,104 +186,139 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken:
         return 2;
       default:
-        return 0
+        return 0;
     }
   }
   CheckShowQuestionnaireRedDot() {
-    if (!this.IsActivityOpen()) return !1;
-    for (const t of this.G01) {
-      var e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestionnaireConfig(t);
-      if (void 0 !== e && this.IsQuestionnaireUnlock(t) && 1 === this.GetQuestionnaireRewardState(e.Id)) return !0
+    if (!this.IsActivityOpen()) {
+      return false;
     }
-    return this.CheckQuestionnaireFirstRedDot() || this.CheckSecondQuestionnaireFirstRedDot()
+    for (const t of this.lp1) {
+      var e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestionnaireConfig(t);
+      if (e !== undefined && this.IsQuestionnaireUnlock(t) && this.GetQuestionnaireRewardState(e.Id) === 1) {
+        return true;
+      }
+    }
+    return this.CheckQuestionnaireFirstRedDot() || this.CheckSecondQuestionnaireFirstRedDot();
   }
   CheckQuestionnaireFirstRedDot() {
-    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, !1)
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, false);
   }
   CheckSecondQuestionnaireFirstRedDot() {
     var e;
-    return !!this.IsActivityOpen() && (e = this.IsQuestionnaireUnlock(RegressDefine_1.ERegressQuestionnaireType.Type2), !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, !1)) && e
+    return !!this.IsActivityOpen() && (e = this.IsQuestionnaireUnlock(RegressDefine_1.ERegressQuestionnaireType.Type2), !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, false)) && e;
   }
   ResetQuestionnaireRedDot() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, !1), LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, !1)
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, false);
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, false);
   }
   SetQuestionnaireRedDotChecked() {
-    this.CheckQuestionnaireFirstRedDot() && LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, !0), this.CheckSecondQuestionnaireFirstRedDot() && LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, !0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id)
+    if (this.CheckQuestionnaireFirstRedDot()) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressQuestionnaireRedDotCheckedInPeriod, true);
+    }
+    if (this.CheckSecondQuestionnaireFirstRedDot()) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressSecondQuestionnaireRedDotCheckedInPeriod, true);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   CheckShopRedDot() {
-    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, !1)
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, false);
   }
   ResetShopRemindRedDot() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, !1)
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, false);
   }
   SetShopRedDotChecked() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, !0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id)
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressShopRedDotCheckedInPeriod, true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   GetShopIdAndTabIndex() {
-    var e = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(RegressDefine_1.REGRESS_SKIP_SHOPID),
-      t = e?.Val1,
-      e = e?.Val2;
-    return [t ? Number(t) : 0, e ? Number(e) : 0]
+    var e = ConfigManager_1.ConfigManager.SkipInterfaceConfig.GetAccessPathConfig(RegressDefine_1.REGRESS_SKIP_SHOPID);
+    var t = e?.Val1;
+    var e = e?.Val2;
+    return [t ? Number(t) : 0, e ? Number(e) : 0];
   }
   IsQuestionnaireUnlock(e) {
-    return !!this.IsActivityOpen() && (e === RegressDefine_1.ERegressQuestionnaireType.Type1 || void 0 !== (e = CommonParamById_1.configCommonParamById.GetIntConfig("RegressSecondAskSignDay")) && 2 === this.GetSignRewardState(e))
+    return !!this.IsActivityOpen() && (e === RegressDefine_1.ERegressQuestionnaireType.Type1 || (e = CommonParamById_1.configCommonParamById.GetIntConfig("RegressSecondAskSignDay")) !== undefined && this.GetSignRewardState(e) === 2);
   }
   SetQuestionnaireReached(t) {
-    var e = this.cl1.XE1.find(e => e.s5n === t);
-    e?.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning && (e.H6n = Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish)
+    var e = this.zl1.yI1.find(e => e.s5n === t);
+    if (e?.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning) {
+      e.H6n = Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish;
+    }
   }
   RefreshRegressTaskMapping() {
-    this.ul1.clear();
-    for (const r of this.cl1.E$s) {
-      var e = r.s5n,
-        e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestConfig(e),
-        t = this.ul1.get(e.TaskType) ?? [];
-      t.push(e), this.ul1.set(e.TaskType, t)
+    this.Jl1.clear();
+    for (const r of this.zl1.E$s) {
+      var e = r.s5n;
+      var e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestConfig(e);
+      var t = this.Jl1.get(e.TaskType) ?? [];
+      t.push(e);
+      this.Jl1.set(e.TaskType, t);
     }
   }
   GetRegressTaskListByType(e) {
-    return this.ul1.get(e)
+    return this.Jl1.get(e);
   }
   HasReachableTask(e) {
-    return this.GetRegressTaskListByType(e)?.some(e => 1 === this.GetTaskRewardState(e.Id)) ?? !1
+    return this.GetRegressTaskListByType(e)?.some(e => this.GetTaskRewardState(e.Id) === 1) ?? false;
   }
   HasReachableConstantTask() {
-    return !(1 <= this.GetRegressTaskProgressFloat01()) && (this.HasReachableTask(0) || this.HasReachableTask(1))
+    return !(this.GetRegressTaskProgressFloat01() >= 1) && (this.HasReachableTask(0) || this.HasReachableTask(1));
   }
   HasReachableCultivateTask() {
-    return this.HasReachableTask(2)
+    return this.HasReachableTask(2);
   }
   GetRegressTaskProgressFloat01() {
     var [e, t] = this.GetRegressTaskProgressTuple();
-    return 0 === t ? 0 : (e = Math.min(1, e / t), Math.trunc(100 * e) / 100)
+    if (t === 0) {
+      return 0;
+    } else {
+      e = Math.min(1, e / t);
+      return Math.trunc(e * 100) / 100;
+    }
   }
   GetRegressTaskScore() {
     var [e] = this.GetRegressTaskProgressTuple();
-    return e
+    return e;
   }
   hda(e) {
-    return this.cl1.Hca.includes(e)
+    return this.zl1.Hca.includes(e);
   }
   GetRegressTaskScoreRewardState(e) {
-    return this.hda(e.Id) ? 2 : this.GetRegressTaskScore() >= e.NeedScore ? 1 : 0
+    if (this.hda(e.Id)) {
+      return 2;
+    } else if (this.GetRegressTaskScore() >= e.NeedScore) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
   CheckRegressScoreRewardReached() {
-    for (const e of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? [])
-      if (1 === this.GetRegressTaskScoreRewardState(e)) return !0;
-    return !1
+    for (const e of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
+      if (this.GetRegressTaskScoreRewardState(e) === 1) {
+        return true;
+      }
+    }
+    return false;
   }
   SetRegressScoreRewardReached(e) {
-    this.cl1.Hca = this.cl1.Hca.concat(e)
+    this.zl1.Hca = this.zl1.Hca.concat(e);
   }
   GetRegressTaskProgressTuple() {
     var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(20);
     let t = 0;
-    for (const r of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) t = Math.max(r.NeedScore, t);
-    return [e, t]
+    for (const r of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
+      t = Math.max(r.NeedScore, t);
+    }
+    return [e, t];
   }
   oda() {
     this.ida.clear();
-    for (const e of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) this.ida.set(e.Id, e.NeedScore)
+    for (const e of ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBonusRewardConfigList(this.Grade) ?? []) {
+      this.ida.set(e.Id, e.NeedScore);
+    }
   }
   GetTaskSortPriority(e) {
     switch (this.ada(e).H6n) {
@@ -227,29 +329,38 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       case Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskTaken:
         return 2;
       default:
-        return 1
+        return 1;
     }
   }
   GetRegressTaskRelativeScore(e) {
-    var t = this.GetRegressTaskScore(),
-      r = e.Id - 1;
+    var t = this.GetRegressTaskScore();
+    var r = e.Id - 1;
     let i = 0;
-    this.ida.has(r) && (i = this.ida.get(r) ?? 0);
-    r = this.ida.get(e.Id), e = r - i;
+    if (this.ida.has(r)) {
+      i = this.ida.get(r) ?? 0;
+    }
+    r = this.ida.get(e.Id);
+    e = r - i;
     let s = 0;
-    return [s = t > i ? t < r ? t - i : e : s, e]
+    return [s = t > i ? t < r ? t - i : e : s, e];
   }
   IsDoubleDropUnlock(e) {
-    return 1 === e ? this.cl1?.qd1 ?? !1 : 2 === e && (this.cl1?.Gd1 ?? !1)
+    if (e === 1) {
+      return this.zl1?.am1 ?? false;
+    } else {
+      return e === 2 && (this.zl1?.hm1 ?? false);
+    }
   }
   ResetDoubleDropFirstRedDot() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, !1)
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, false);
   }
   MarkDoubleDropFirstRedDotShown() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, !0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id)
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, true);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   CheckDoubleDropFirstRedDot() {
-    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, !1)
+    return !!this.IsActivityOpen() && !LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ActivityRegressDoubleDropFirstRedDotCheckedInPeriod, false);
   }
 }
 exports.ActivityRegressData = ActivityRegressData;

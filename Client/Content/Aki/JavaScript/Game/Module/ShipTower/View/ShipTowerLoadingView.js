@@ -1,18 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerLoadingView = void 0;
-const UE = require("ue"),
-  LoadingViewBase_1 = require("../../Loading/View/LoadingViewBase");
+  value: true
+});
+exports.ShipTowerLoadingView = undefined;
+const UE = require("ue");
+const LoadingViewBase_1 = require("../../Loading/View/LoadingViewBase");
 class ShipTowerLoadingView extends LoadingViewBase_1.LoadingViewBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   UpdateProgressRate(e) {}
   UpdateProgressValue(e) {
-    this.SetTextProgressValue(0, e, "%")
+    this.SetTextProgressValue(0, e, "%");
   }
 }
 exports.ShipTowerLoadingView = ShipTowerLoadingView;

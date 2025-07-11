@@ -1,27 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsUiNavigationPlatformChangeListener = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../../Core/Common/Info"),
-  GlobalData_1 = require("../../../GlobalData"),
-  ModelManager_1 = require("../../../Manager/ModelManager");
+  value: true
+});
+exports.TsUiNavigationPlatformChangeListener = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
+const GlobalData_1 = require("../../../GlobalData");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class TsUiNavigationPlatformChangeListener extends UE.LGUIBehaviour {
   constructor() {
-    super(...arguments), this.IsChangeAlpha = !1
+    super(...arguments);
+    this.IsChangeAlpha = false;
   }
   Constructor() {
-    this.IsChangeAlpha = !1
+    this.IsChangeAlpha = false;
   }
   AwakeBP() {
-    GlobalData_1.GlobalData.GameInstance && (this.ChangeAlpha(), ModelManager_1.ModelManager.UiNavigationModel?.AddPlatformListener(this))
+    if (GlobalData_1.GlobalData.GameInstance) {
+      this.ChangeAlpha();
+      ModelManager_1.ModelManager.UiNavigationModel?.AddPlatformListener(this);
+    }
   }
   OnDestroyBP() {
-    GlobalData_1.GlobalData.GameInstance && ModelManager_1.ModelManager.UiNavigationModel?.RemovePlatformListener(this)
+    if (GlobalData_1.GlobalData.GameInstance) {
+      ModelManager_1.ModelManager.UiNavigationModel?.RemovePlatformListener(this);
+    }
   }
   ChangeAlpha() {
-    Info_1.Info.IsInGamepad() ? (this.IsChangeAlpha = !0, this.GetRootComponent()?.SetAlpha(0)) : this.IsChangeAlpha && (this.IsChangeAlpha = !1, this.GetRootComponent()?.SetAlpha(1))
+    if (Info_1.Info.IsInGamepad()) {
+      this.IsChangeAlpha = true;
+      this.GetRootComponent()?.SetAlpha(0);
+    } else if (this.IsChangeAlpha) {
+      this.IsChangeAlpha = false;
+      this.GetRootComponent()?.SetAlpha(1);
+    }
   }
 }
-exports.TsUiNavigationPlatformChangeListener = TsUiNavigationPlatformChangeListener, exports.default = TsUiNavigationPlatformChangeListener;
-//# sourceMappingURL=TsUiNavigationPlatformChangeListener.js.map
+exports.TsUiNavigationPlatformChangeListener = TsUiNavigationPlatformChangeListener;
+exports.default = TsUiNavigationPlatformChangeListener; //# sourceMappingURL=TsUiNavigationPlatformChangeListener.js.map

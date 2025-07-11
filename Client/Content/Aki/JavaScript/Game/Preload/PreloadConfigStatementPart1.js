@@ -1,114 +1,133 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.configAdventureTaskAll = exports.configActivitySignById = exports.configActivityById = exports.configActionMappingByActionType = exports.configActionMappingByActionName = exports.configActionMappingAll = exports.configAchievementStarLevelByLevel = exports.configAchievementGroupById = exports.configAchievementGroupByCategory = exports.configAchievementCategoryById = exports.configAchievementCategoryAll = exports.configAchievementById = exports.configAchievementByGroupId = exports.configAccessPathById = exports.configAbpMontageDataById = exports.configAbnormalDamageConfigByLevel = exports.configCommonParamLang = exports.configCommonParamById = void 0;
-var CommonParamById_1 = require("../../Core/Define/ConfigCommon/CommonParamById"),
-  CommonParamLang_1 = (Object.defineProperty(exports, "configCommonParamById", {
-    enumerable: !0,
-    get: function() {
-      return CommonParamById_1.configCommonParamById
-    }
-  }), require("../../Core/Define/ConfigCommon/CommonParamLang")),
-  AbnormalDamageConfigByLevel_1 = (Object.defineProperty(exports, "configCommonParamLang", {
-    enumerable: !0,
-    get: function() {
-      return CommonParamLang_1.configCommonParamLang
-    }
-  }), require("../../Core/Define/ConfigQuery/AbnormalDamageConfigByLevel")),
-  AbpMontageDataById_1 = (Object.defineProperty(exports, "configAbnormalDamageConfigByLevel", {
-    enumerable: !0,
-    get: function() {
-      return AbnormalDamageConfigByLevel_1.configAbnormalDamageConfigByLevel
-    }
-  }), require("../../Core/Define/ConfigQuery/AbpMontageDataById")),
-  AccessPathById_1 = (Object.defineProperty(exports, "configAbpMontageDataById", {
-    enumerable: !0,
-    get: function() {
-      return AbpMontageDataById_1.configAbpMontageDataById
-    }
-  }), require("../../Core/Define/ConfigQuery/AccessPathById")),
-  AchievementByGroupId_1 = (Object.defineProperty(exports, "configAccessPathById", {
-    enumerable: !0,
-    get: function() {
-      return AccessPathById_1.configAccessPathById
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementByGroupId")),
-  AchievementById_1 = (Object.defineProperty(exports, "configAchievementByGroupId", {
-    enumerable: !0,
-    get: function() {
-      return AchievementByGroupId_1.configAchievementByGroupId
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementById")),
-  AchievementCategoryAll_1 = (Object.defineProperty(exports, "configAchievementById", {
-    enumerable: !0,
-    get: function() {
-      return AchievementById_1.configAchievementById
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementCategoryAll")),
-  AchievementCategoryById_1 = (Object.defineProperty(exports, "configAchievementCategoryAll", {
-    enumerable: !0,
-    get: function() {
-      return AchievementCategoryAll_1.configAchievementCategoryAll
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementCategoryById")),
-  AchievementGroupByCategory_1 = (Object.defineProperty(exports, "configAchievementCategoryById", {
-    enumerable: !0,
-    get: function() {
-      return AchievementCategoryById_1.configAchievementCategoryById
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementGroupByCategory")),
-  AchievementGroupById_1 = (Object.defineProperty(exports, "configAchievementGroupByCategory", {
-    enumerable: !0,
-    get: function() {
-      return AchievementGroupByCategory_1.configAchievementGroupByCategory
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementGroupById")),
-  AchievementStarLevelByLevel_1 = (Object.defineProperty(exports, "configAchievementGroupById", {
-    enumerable: !0,
-    get: function() {
-      return AchievementGroupById_1.configAchievementGroupById
-    }
-  }), require("../../Core/Define/ConfigQuery/AchievementStarLevelByLevel")),
-  ActionMappingAll_1 = (Object.defineProperty(exports, "configAchievementStarLevelByLevel", {
-    enumerable: !0,
-    get: function() {
-      return AchievementStarLevelByLevel_1.configAchievementStarLevelByLevel
-    }
-  }), require("../../Core/Define/ConfigQuery/ActionMappingAll")),
-  ActionMappingByActionName_1 = (Object.defineProperty(exports, "configActionMappingAll", {
-    enumerable: !0,
-    get: function() {
-      return ActionMappingAll_1.configActionMappingAll
-    }
-  }), require("../../Core/Define/ConfigQuery/ActionMappingByActionName")),
-  ActionMappingByActionType_1 = (Object.defineProperty(exports, "configActionMappingByActionName", {
-    enumerable: !0,
-    get: function() {
-      return ActionMappingByActionName_1.configActionMappingByActionName
-    }
-  }), require("../../Core/Define/ConfigQuery/ActionMappingByActionType")),
-  ActivityById_1 = (Object.defineProperty(exports, "configActionMappingByActionType", {
-    enumerable: !0,
-    get: function() {
-      return ActionMappingByActionType_1.configActionMappingByActionType
-    }
-  }), require("../../Core/Define/ConfigQuery/ActivityById")),
-  ActivitySignById_1 = (Object.defineProperty(exports, "configActivityById", {
-    enumerable: !0,
-    get: function() {
-      return ActivityById_1.configActivityById
-    }
-  }), require("../../Core/Define/ConfigQuery/ActivitySignById")),
-  AdventureTaskAll_1 = (Object.defineProperty(exports, "configActivitySignById", {
-    enumerable: !0,
-    get: function() {
-      return ActivitySignById_1.configActivitySignById
-    }
-  }), require("../../Core/Define/ConfigQuery/AdventureTaskAll"));
+  value: true
+});
+exports.configAdventureTaskAll = exports.configActivitySignById = exports.configActivityById = exports.configActionMappingByActionType = exports.configActionMappingByActionName = exports.configActionMappingAll = exports.configAchievementStarLevelByLevel = exports.configAchievementGroupById = exports.configAchievementGroupByCategory = exports.configAchievementCategoryById = exports.configAchievementCategoryAll = exports.configAchievementById = exports.configAchievementByGroupId = exports.configAccessPathById = exports.configAbpMontageDataById = exports.configAbnormalDamageConfigByLevel = exports.configCommonParamLang = exports.configCommonParamById = undefined;
+var CommonParamById_1 = require("../../Core/Define/ConfigCommon/CommonParamById");
+Object.defineProperty(exports, "configCommonParamById", {
+  enumerable: true,
+  get: function () {
+    return CommonParamById_1.configCommonParamById;
+  }
+});
+var CommonParamLang_1 = require("../../Core/Define/ConfigCommon/CommonParamLang");
+Object.defineProperty(exports, "configCommonParamLang", {
+  enumerable: true,
+  get: function () {
+    return CommonParamLang_1.configCommonParamLang;
+  }
+});
+var AbnormalDamageConfigByLevel_1 = require("../../Core/Define/ConfigQuery/AbnormalDamageConfigByLevel");
+Object.defineProperty(exports, "configAbnormalDamageConfigByLevel", {
+  enumerable: true,
+  get: function () {
+    return AbnormalDamageConfigByLevel_1.configAbnormalDamageConfigByLevel;
+  }
+});
+var AbpMontageDataById_1 = require("../../Core/Define/ConfigQuery/AbpMontageDataById");
+Object.defineProperty(exports, "configAbpMontageDataById", {
+  enumerable: true,
+  get: function () {
+    return AbpMontageDataById_1.configAbpMontageDataById;
+  }
+});
+var AccessPathById_1 = require("../../Core/Define/ConfigQuery/AccessPathById");
+Object.defineProperty(exports, "configAccessPathById", {
+  enumerable: true,
+  get: function () {
+    return AccessPathById_1.configAccessPathById;
+  }
+});
+var AchievementByGroupId_1 = require("../../Core/Define/ConfigQuery/AchievementByGroupId");
+Object.defineProperty(exports, "configAchievementByGroupId", {
+  enumerable: true,
+  get: function () {
+    return AchievementByGroupId_1.configAchievementByGroupId;
+  }
+});
+var AchievementById_1 = require("../../Core/Define/ConfigQuery/AchievementById");
+Object.defineProperty(exports, "configAchievementById", {
+  enumerable: true,
+  get: function () {
+    return AchievementById_1.configAchievementById;
+  }
+});
+var AchievementCategoryAll_1 = require("../../Core/Define/ConfigQuery/AchievementCategoryAll");
+Object.defineProperty(exports, "configAchievementCategoryAll", {
+  enumerable: true,
+  get: function () {
+    return AchievementCategoryAll_1.configAchievementCategoryAll;
+  }
+});
+var AchievementCategoryById_1 = require("../../Core/Define/ConfigQuery/AchievementCategoryById");
+Object.defineProperty(exports, "configAchievementCategoryById", {
+  enumerable: true,
+  get: function () {
+    return AchievementCategoryById_1.configAchievementCategoryById;
+  }
+});
+var AchievementGroupByCategory_1 = require("../../Core/Define/ConfigQuery/AchievementGroupByCategory");
+Object.defineProperty(exports, "configAchievementGroupByCategory", {
+  enumerable: true,
+  get: function () {
+    return AchievementGroupByCategory_1.configAchievementGroupByCategory;
+  }
+});
+var AchievementGroupById_1 = require("../../Core/Define/ConfigQuery/AchievementGroupById");
+Object.defineProperty(exports, "configAchievementGroupById", {
+  enumerable: true,
+  get: function () {
+    return AchievementGroupById_1.configAchievementGroupById;
+  }
+});
+var AchievementStarLevelByLevel_1 = require("../../Core/Define/ConfigQuery/AchievementStarLevelByLevel");
+Object.defineProperty(exports, "configAchievementStarLevelByLevel", {
+  enumerable: true,
+  get: function () {
+    return AchievementStarLevelByLevel_1.configAchievementStarLevelByLevel;
+  }
+});
+var ActionMappingAll_1 = require("../../Core/Define/ConfigQuery/ActionMappingAll");
+Object.defineProperty(exports, "configActionMappingAll", {
+  enumerable: true,
+  get: function () {
+    return ActionMappingAll_1.configActionMappingAll;
+  }
+});
+var ActionMappingByActionName_1 = require("../../Core/Define/ConfigQuery/ActionMappingByActionName");
+Object.defineProperty(exports, "configActionMappingByActionName", {
+  enumerable: true,
+  get: function () {
+    return ActionMappingByActionName_1.configActionMappingByActionName;
+  }
+});
+var ActionMappingByActionType_1 = require("../../Core/Define/ConfigQuery/ActionMappingByActionType");
+Object.defineProperty(exports, "configActionMappingByActionType", {
+  enumerable: true,
+  get: function () {
+    return ActionMappingByActionType_1.configActionMappingByActionType;
+  }
+});
+var ActivityById_1 = require("../../Core/Define/ConfigQuery/ActivityById");
+Object.defineProperty(exports, "configActivityById", {
+  enumerable: true,
+  get: function () {
+    return ActivityById_1.configActivityById;
+  }
+});
+var ActivitySignById_1 = require("../../Core/Define/ConfigQuery/ActivitySignById");
+Object.defineProperty(exports, "configActivitySignById", {
+  enumerable: true,
+  get: function () {
+    return ActivitySignById_1.configActivitySignById;
+  }
+});
+var AdventureTaskAll_1 = require("../../Core/Define/ConfigQuery/AdventureTaskAll");
 Object.defineProperty(exports, "configAdventureTaskAll", {
-  enumerable: !0,
-  get: function() {
-    return AdventureTaskAll_1.configAdventureTaskAll
+  enumerable: true,
+  get: function () {
+    return AdventureTaskAll_1.configAdventureTaskAll;
   }
 });
 //# sourceMappingURL=PreloadConfigStatementPart1.js.map

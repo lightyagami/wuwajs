@@ -1,16 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationRoguelikeGridToggle = void 0;
-const UiNavigationNewController_1 = require("../../UiNavigationNewController"),
-  NavigationToggle_1 = require("../NavigationToggle");
+  value: true
+});
+exports.NavigationRoguelikeGridToggle = undefined;
+const UiNavigationNewController_1 = require("../../UiNavigationNewController");
+const NavigationToggle_1 = require("../NavigationToggle");
 class NavigationRoguelikeGridToggle extends NavigationToggle_1.NavigationToggle {
   OnHandlePointerSelect(e) {
     var i = this.Selectable;
-    return 0 === i.ToggleState && e && 1 === e.inputType && i.bToggleOnSelect && UiNavigationNewController_1.UiNavigationNewController.InteractClickByListener(this.Listener), this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(i), !!this.IsAllowNavigationByGroup()
+    if (i.ToggleState === 0 && e && e.inputType === 1 && i.bToggleOnSelect) {
+      UiNavigationNewController_1.UiNavigationNewController.InteractClickByListener(this.Listener);
+    }
+    if (this.Listener.ScrollView) {
+      this.Listener.ScrollView.ScrollToSelectableComponent(i);
+    }
+    return !!this.IsAllowNavigationByGroup();
   }
   OnIsIgnoreScrollOrLayoutCheck() {
-    return !0
+    return true;
   }
 }
 exports.NavigationRoguelikeGridToggle = NavigationRoguelikeGridToggle;

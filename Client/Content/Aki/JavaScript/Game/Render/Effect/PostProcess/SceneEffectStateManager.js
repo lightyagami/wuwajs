@@ -1,12 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../../Core/Actor/ActorSystem");
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../Core/Actor/ActorSystem");
 class SceneEffectStateManager {
   static GetPostProcessVolume() {
-    return void 0 === this.PostProcessVolume && (this.PostProcessVolume = ActorSystem_1.ActorSystem.Get(UE.SceneEffectStatePostVolume_C.StaticClass(), void 0)), this.PostProcessVolume
+    if (this.PostProcessVolume === undefined) {
+      this.PostProcessVolume = ActorSystem_1.ActorSystem.Get(UE.SceneEffectStatePostVolume_C.StaticClass(), undefined);
+    }
+    return this.PostProcessVolume;
   }
   static SetSceneEffectState(e, t) {
     switch (e) {
@@ -14,15 +18,19 @@ class SceneEffectStateManager {
         SceneEffectStateManager.SetAirWall(t);
         break;
       case 1:
-        SceneEffectStateManager.SetToxicFog(t)
+        SceneEffectStateManager.SetToxicFog(t);
     }
   }
   static SetAirWall(e) {
-    SceneEffectStateManager.GetPostProcessVolume()?.IsValid() && SceneEffectStateManager.GetPostProcessVolume().SetAirWall(e)
+    if (SceneEffectStateManager.GetPostProcessVolume()?.IsValid()) {
+      SceneEffectStateManager.GetPostProcessVolume().SetAirWall(e);
+    }
   }
   static SetToxicFog(e) {
-    SceneEffectStateManager.GetPostProcessVolume()?.IsValid() && SceneEffectStateManager.GetPostProcessVolume().SetToxicFog(e)
+    if (SceneEffectStateManager.GetPostProcessVolume()?.IsValid()) {
+      SceneEffectStateManager.GetPostProcessVolume().SetToxicFog(e);
+    }
   }
 }
-SceneEffectStateManager.PostProcessVolume = void 0, exports.default = SceneEffectStateManager;
-//# sourceMappingURL=SceneEffectStateManager.js.map
+SceneEffectStateManager.PostProcessVolume = undefined;
+exports.default = SceneEffectStateManager; //# sourceMappingURL=SceneEffectStateManager.js.map

@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbClearFishingCabinInSaleItems = void 0;
+  value: true
+});
+exports.FbClearFishingCabinInSaleItems = undefined;
 class FbClearFishingCabinInSaleItems {
   constructor(e) {
-    this.FbDataInternal = e
+    this.FbDataInternal = e;
   }
   static Create(e) {
-    if (e) return new FbClearFishingCabinInSaleItems(e)
+    if (e) {
+      return new FbClearFishingCabinInSaleItems(e);
+    }
   }
 }
 exports.FbClearFishingCabinInSaleItems = FbClearFishingCabinInSaleItems;

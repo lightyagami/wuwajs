@@ -1,43 +1,61 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbActiveRenjuPiece = void 0;
-const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component"),
-  FbJigsawItemMatchedConfig_1 = require("./FbJigsawItemMatchedConfig"),
-  FbRenjuConfig_1 = require("./FbRenjuConfig");
+  value: true
+});
+exports.FbActiveRenjuPiece = undefined;
+const fb_component_1 = require("../../../../Game/World/EntityFb/fb-component");
+const FbJigsawItemMatchedConfig_1 = require("./FbJigsawItemMatchedConfig");
+const FbRenjuConfig_1 = require("./FbRenjuConfig");
 class FbActiveRenjuPiece {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.INh = !1, this.TNh = void 0, this.Y6l = !1, this.z6l = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.INh = false;
+    this.TNh = undefined;
+    this.Y6l = false;
+    this.z6l = undefined;
   }
   static Create(t) {
-    if (t) return new FbActiveRenjuPiece(t)
+    if (t) {
+      return new FbActiveRenjuPiece(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get RenjuConfig() {
     if (!this.INh) {
-      this.INh = !0, this.TNh = new Array;
+      this.INh = true;
+      this.TNh = new Array();
       var e = this.FbDataInternal.renjuConfigLength();
-      if (e)
+      if (e) {
         for (let t = 0; t < e; ++t) {
-          var i = this.FbDataInternal.renjuConfig(t, new fb_component_1.RenjuConfig);
-          this.TNh.push(FbRenjuConfig_1.FbRenjuConfig.Create(i))
+          var i = this.FbDataInternal.renjuConfig(t, new fb_component_1.RenjuConfig());
+          this.TNh.push(FbRenjuConfig_1.FbRenjuConfig.Create(i));
         }
+      }
     }
-    return this.TNh
+    return this.TNh;
   }
   get ExitMatchedConfig() {
     if (!this.Y6l) {
-      this.Y6l = !0, this.z6l = new Array;
+      this.Y6l = true;
+      this.z6l = new Array();
       var e = this.FbDataInternal.exitMatchedConfigLength();
-      if (e)
+      if (e) {
         for (let t = 0; t < e; ++t) {
-          var i = this.FbDataInternal.exitMatchedConfig(t, new fb_component_1.JigsawItemMatchedConfig);
-          this.z6l.push(FbJigsawItemMatchedConfig_1.FbJigsawItemMatchedConfig.Create(i))
+          var i = this.FbDataInternal.exitMatchedConfig(t, new fb_component_1.JigsawItemMatchedConfig());
+          this.z6l.push(FbJigsawItemMatchedConfig_1.FbJigsawItemMatchedConfig.Create(i));
         }
+      }
     }
-    return this.z6l
+    return this.z6l;
   }
 }
 exports.FbActiveRenjuPiece = FbActiveRenjuPiece;

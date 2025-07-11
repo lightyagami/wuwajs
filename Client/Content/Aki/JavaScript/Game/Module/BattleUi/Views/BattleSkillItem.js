@@ -1,479 +1,1250 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleSkillItem = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../../Core/Common/Info"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Stats_1 = require("../../../../Core/Common/Stats"),
-  Time_1 = require("../../../../Core/Common/Time"),
-  ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  TimeUtil_1 = require("../../../Common/TimeUtil"),
-  InputController_1 = require("../../../Input/InputController"),
-  InputEnums_1 = require("../../../Input/InputEnums"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController"),
-  InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine"),
-  TouchFingerManager_1 = require("../../../Ui/TouchFinger/TouchFingerManager"),
-  BattleLinkDefine_1 = require("../../Battle/Link/BattleLinkDefine"),
-  SkillCdController_1 = require("../../Battle/SkillCdController"),
-  InputMultiKeyItem_1 = require("../../Common/InputKey/InputMultiKeyItem"),
-  ControlScreenController_1 = require("../../ControlScreen/ControlScreenController"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  BattleUiDefine_1 = require("../BattleUiDefine"),
-  BattleChildView_1 = require("./BattleChildView/BattleChildView"),
-  BattleSkillConfigLongPressItem_1 = require("./BattleSkillConfigLongPressItem"),
-  BattleSkillLongPressItem_1 = require("./BattleSkillLongPressItem"),
-  BattleSkillNumItem_1 = require("./BattleSkillNumItem"),
-  BattleSkillSwitchComponent_1 = require("./BattleSkillSwitchComponent"),
-  BattleSkillUltraItem_1 = require("./BattleSkillUltraItem"),
-  BattleUiNiagaraItem_1 = require("./BattleUiNiagaraItem"),
-  EQUIP_EFFECT_TIME = 500;
+  value: true
+});
+exports.BattleSkillItem = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
+const Log_1 = require("../../../../Core/Common/Log");
+const Stats_1 = require("../../../../Core/Common/Stats");
+const Time_1 = require("../../../../Core/Common/Time");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const InputController_1 = require("../../../Input/InputController");
+const InputEnums_1 = require("../../../Input/InputEnums");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
+const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
+const TouchFingerManager_1 = require("../../../Ui/TouchFinger/TouchFingerManager");
+const BattleLinkDefine_1 = require("../../Battle/Link/BattleLinkDefine");
+const SkillCdController_1 = require("../../Battle/SkillCdController");
+const InputMultiKeyItem_1 = require("../../Common/InputKey/InputMultiKeyItem");
+const ControlScreenController_1 = require("../../ControlScreen/ControlScreenController");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const BattleUiDefine_1 = require("../BattleUiDefine");
+const BattleChildView_1 = require("./BattleChildView/BattleChildView");
+const BattleSkillConfigLongPressItem_1 = require("./BattleSkillConfigLongPressItem");
+const BattleSkillLongPressItem_1 = require("./BattleSkillLongPressItem");
+const BattleSkillNumItem_1 = require("./BattleSkillNumItem");
+const BattleSkillSwitchComponent_1 = require("./BattleSkillSwitchComponent");
+const BattleSkillUltraItem_1 = require("./BattleSkillUltraItem");
+const BattleUiNiagaraItem_1 = require("./BattleUiNiagaraItem");
+const EQUIP_EFFECT_TIME = 500;
 class BattleSkillItem extends BattleChildView_1.BattleChildView {
   constructor() {
-    super(...arguments), this.sit = void 0, this.DraggableComponent = void 0, this.SkillButtonData = void 0, this.ait = void 0, this.hit = void 0, this.lit = void 0, this.CoolDownUiText = void 0, this.uit = void 0, this.cit = -0, this.mit = -0, this.dit = -0, this.OnCoolDownFinishedCallback = void 0, this.Cit = !1, this.git = void 0, this.IsLongPress = !1, this.fit = !1, this.pit = "", this.jtt = void 0, this.vit = 0, this.zQ_ = void 0, this.Wtt = void 0, this.Mit = void 0, this.Eit = 0, this.yit = void 0, this.Iit = void 0, this.KeyItem = void 0, this.SetTextureHandleId = 0, this.Ktt = 0, this.Tit = 0, this.KeyActionName = void 0, this.KeyOperationType = void 0, this.ClickEffect = void 0, this.CombinePressTipSprite = void 0, this.PressActionType = InputEnums_1.EInputAction.None, this.ZKa = 0, this.Qel = !1, this.jW1 = !1, this.Lit = void 0, this.Dit = void 0, this.Rit = void 0, this.Uit = void 0, this.Ait = void 0, this.Pit = void 0, this.xit = !1, this.wit = !1, this.Bit = !1, this.HideCdText = !1, this.CdFixedPoint = 1, this.IsHideNumComp = !1, this.qit = 1, this.Git = 1, this.SkillNameText = void 0, this.UltraComponent = void 0, this.NumComponent = void 0, this.SwitchComponent = void 0, this.LongPressComponent = void 0, this.ConfigLongPressComponent = void 0, this.AlphaTweenComp = void 0, this.OnBattleLinkStatusChanged = t => {
-      this.RefreshLinkStatus(t)
-    }, this.OnTouch = (t, i) => {
+    super(...arguments);
+    this.sit = undefined;
+    this.DraggableComponent = undefined;
+    this.SkillButtonData = undefined;
+    this.ait = undefined;
+    this.hit = undefined;
+    this.lit = undefined;
+    this.CoolDownUiText = undefined;
+    this.uit = undefined;
+    this.cit = -0;
+    this.mit = -0;
+    this.dit = -0;
+    this.OnCoolDownFinishedCallback = undefined;
+    this.Cit = false;
+    this.git = undefined;
+    this.IsLongPress = false;
+    this.fit = false;
+    this.pit = "";
+    this.jtt = undefined;
+    this.vit = 0;
+    this.zQ_ = undefined;
+    this.Wtt = undefined;
+    this.Mit = undefined;
+    this.Eit = 0;
+    this.yit = undefined;
+    this.Iit = undefined;
+    this.KeyItem = undefined;
+    this.SetTextureHandleId = 0;
+    this.Ktt = 0;
+    this.Tit = 0;
+    this.KeyActionName = undefined;
+    this.KeyOperationType = undefined;
+    this.ClickEffect = undefined;
+    this.CombinePressTipSprite = undefined;
+    this.PressActionType = InputEnums_1.EInputAction.None;
+    this.ZKa = 0;
+    this.Qel = false;
+    this.bQ1 = false;
+    this.Lit = undefined;
+    this.Dit = undefined;
+    this.Rit = undefined;
+    this.Uit = undefined;
+    this.Ait = undefined;
+    this.Pit = undefined;
+    this.xit = false;
+    this.wit = false;
+    this.Bit = false;
+    this.HideCdText = false;
+    this.CdFixedPoint = 1;
+    this.IsHideNumComp = false;
+    this.qit = 1;
+    this.Git = 1;
+    this.SkillNameText = undefined;
+    this.UltraComponent = undefined;
+    this.NumComponent = undefined;
+    this.SwitchComponent = undefined;
+    this.LongPressComponent = undefined;
+    this.ConfigLongPressComponent = undefined;
+    this.AlphaTweenComp = undefined;
+    this.OnSelfCenteredMode = t => {
+      if (TimerSystem_1.TimerSystem.Has(this.hit)) {
+        TimerSystem_1.TimerSystem.ChangeDilation(this.hit, 1 / t);
+      }
+    };
+    this.OnBattleLinkStatusChanged = t => {
+      this.RefreshLinkStatus(t);
+    };
+    this.OnTouch = (t, i) => {
       var s;
-      this.IsLongPress && (i = i.TouchType, t = Number(t), s = TouchFingerManager_1.TouchFingerManager.GetTouchFingerData(t)?.GetPointerEventData()?.pressComponent) && 2 === i && s.GetOwner() === this.ait.GetOwner() && ControlScreenController_1.ControlScreenController.ExecuteCameraRotation(t)
-    }, this.Oit = () => {
-      this.IsLongPress = !0, this.OnLongPressButton()
-    }, this.kit = t => {
-      this.cit -= BattleUiDefine_1.SKILL_COOLDOWN_LOOP_INTERVAL, this.cit = Math.round(10 * this.cit) / 10, 0 < this.cit ? this.HideCdText || this.CoolDownUiText.SetText(this.cit.toFixed(this.CdFixedPoint)) : this.FinishSkillCoolDown()
-    }
+      if (this.IsLongPress && (i = i.TouchType, t = Number(t), s = TouchFingerManager_1.TouchFingerManager.GetTouchFingerData(t)?.GetPointerEventData()?.pressComponent) && i === 2 && s.GetOwner() === this.ait.GetOwner()) {
+        ControlScreenController_1.ControlScreenController.ExecuteCameraRotation(t);
+      }
+    };
+    this.Oit = () => {
+      this.IsLongPress = true;
+      this.OnLongPressButton();
+    };
+    this.kit = t => {
+      this.cit -= BattleUiDefine_1.SKILL_COOLDOWN_LOOP_INTERVAL;
+      this.cit = Math.round(this.cit * 10) / 10;
+      if (this.cit > 0) {
+        if (!this.HideCdText) {
+          this.CoolDownUiText.SetText(this.cit.toFixed(this.CdFixedPoint));
+        }
+      } else {
+        this.FinishSkillCoolDown();
+      }
+    };
   }
   get GetUltraComponent() {
     var t;
-    return this.UltraComponent || (t = this.GetItem(8), this.UltraComponent = new BattleSkillUltraItem_1.BattleSkillUltraItem(t)), this.UltraComponent
+    if (!this.UltraComponent) {
+      t = this.GetItem(8);
+      this.UltraComponent = new BattleSkillUltraItem_1.BattleSkillUltraItem(t);
+    }
+    return this.UltraComponent;
   }
   get GetNumComponent() {
     var t;
-    if (!this.IsHideNumComp) return this.NumComponent || (t = this.GetItem(8), this.NumComponent = new BattleSkillNumItem_1.BattleSkillNumItem(t)), this.NumComponent
+    if (!this.IsHideNumComp) {
+      if (!this.NumComponent) {
+        t = this.GetItem(8);
+        this.NumComponent = new BattleSkillNumItem_1.BattleSkillNumItem(t);
+      }
+      return this.NumComponent;
+    }
   }
   get GetSwitchComponent() {
     var t;
-    return this.SwitchComponent || (t = this.GetItem(8), this.SwitchComponent = new BattleSkillSwitchComponent_1.BattleSkillSwitchComponent, this.SwitchComponent.CreateByResourceIdAsync("UiItem_BattleSkillSwitchItem", t)), this.SwitchComponent
+    if (!this.SwitchComponent) {
+      t = this.GetItem(8);
+      this.SwitchComponent = new BattleSkillSwitchComponent_1.BattleSkillSwitchComponent();
+      this.SwitchComponent.CreateByResourceIdAsync("UiItem_BattleSkillSwitchItem", t);
+    }
+    return this.SwitchComponent;
   }
   get GetLongPressComponent() {
     var t;
-    return this.LongPressComponent || (t = this.GetItem(8), this.LongPressComponent = new BattleSkillLongPressItem_1.BattleSkillLongPressItem, this.LongPressComponent.CreateByResourceIdAsync("UiItem_BattleSkillLongPressItem", t)), this.LongPressComponent
+    if (!this.LongPressComponent) {
+      t = this.GetItem(8);
+      this.LongPressComponent = new BattleSkillLongPressItem_1.BattleSkillLongPressItem();
+      this.LongPressComponent.CreateByResourceIdAsync("UiItem_BattleSkillLongPressItem", t);
+    }
+    return this.LongPressComponent;
   }
   get GetConfigLongPressComponent() {
     var t;
-    return this.ConfigLongPressComponent || (t = this.GetItem(8), this.ConfigLongPressComponent = new BattleSkillConfigLongPressItem_1.BattleSkillConfigLongPressItem, this.ConfigLongPressComponent.CreateByResourceIdAsync("UiItem_BattleSkillLongPressItem", t)), this.ConfigLongPressComponent
+    if (!this.ConfigLongPressComponent) {
+      t = this.GetItem(8);
+      this.ConfigLongPressComponent = new BattleSkillConfigLongPressItem_1.BattleSkillConfigLongPressItem();
+      this.ConfigLongPressComponent.CreateByResourceIdAsync("UiItem_BattleSkillLongPressItem", t);
+    }
+    return this.ConfigLongPressComponent;
   }
   GetExtraContainer() {
-    return this.GetItem(8)
+    return this.GetItem(8);
   }
   GetPointEventButton() {
-    return this.ait
+    return this.ait;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UISprite],
-      [2, UE.UIText],
-      [3, UE.UISprite],
-      [4, UE.UITexture],
-      [5, UE.UIButtonComponent],
-      [6, UE.UINiagara],
-      [7, UE.UINiagara],
-      [8, UE.UIItem],
-      [9, UE.UIItem],
-      [10, UE.UINiagara],
-      [11, UE.UIText],
-      [12, UE.UINiagara]
-    ], Info_1.Info.IsInTouch() || (this.ComponentRegisterInfos.push([13, UE.UISprite]), this.ComponentRegisterInfos.push([14, UE.UIItem]))
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIText], [3, UE.UISprite], [4, UE.UITexture], [5, UE.UIButtonComponent], [6, UE.UINiagara], [7, UE.UINiagara], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UINiagara], [11, UE.UIText], [12, UE.UINiagara]];
+    if (!Info_1.Info.IsInTouch()) {
+      this.ComponentRegisterInfos.push([13, UE.UISprite]);
+      this.ComponentRegisterInfos.push([14, UE.UIItem]);
+    }
   }
   Initialize(t) {
-    super.Initialize(), this.Eit = t, this.ait = this.GetButton(5), this.lit = this.GetItem(0), this.CoolDownUiText = this.GetText(2), this.uit = this.GetSprite(1), this.Lit = this.GetTexture(4), this.Dit = this.GetSprite(3), this.Rit = this.Lit.GetOwner().GetComponentByClass(UE.UITextureTransitionComponent.StaticClass()), this.Uit = this.Dit.GetOwner().GetComponentByClass(UE.UISpriteTransition.StaticClass()), this.Ait = this.Lit.GetTexture(), this.Pit = this.Dit.GetSprite(), this.xit = !0, this.wit = !0, this.SkillNameText = this.GetText(11), this.ClickEffect = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(10)), this.GetUiNiagara(6).SetNiagaraUIActive(!1, !1), this.GetUiNiagara(7).SetNiagaraUIActive(!1, !0), this.AddEvents()
+    super.Initialize();
+    this.Eit = t;
+    this.ait = this.GetButton(5);
+    this.lit = this.GetItem(0);
+    this.CoolDownUiText = this.GetText(2);
+    this.uit = this.GetSprite(1);
+    this.Lit = this.GetTexture(4);
+    this.Dit = this.GetSprite(3);
+    this.Rit = this.Lit.GetOwner().GetComponentByClass(UE.UITextureTransitionComponent.StaticClass());
+    this.Uit = this.Dit.GetOwner().GetComponentByClass(UE.UISpriteTransition.StaticClass());
+    this.Ait = this.Lit.GetTexture();
+    this.Pit = this.Dit.GetSprite();
+    this.xit = true;
+    this.wit = true;
+    this.SkillNameText = this.GetText(11);
+    this.ClickEffect = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(10));
+    this.GetUiNiagara(6).SetNiagaraUIActive(false, false);
+    this.GetUiNiagara(7).SetNiagaraUIActive(false, true);
+    this.AddEvents();
   }
   async InitializeAsync() {
     var t;
-    Info_1.Info.IsInTouch() || (this.CombinePressTipSprite = this.GetSprite(13), t = this.GetItem(14), this.KeyItem = new InputMultiKeyItem_1.InputMultiKeyItem(!0), this.sit = this.RootItem.GetParentAsUIItem(), await this.KeyItem.CreateByActorAsync(t.GetOwner()))
+    if (!Info_1.Info.IsInTouch()) {
+      this.CombinePressTipSprite = this.GetSprite(13);
+      t = this.GetItem(14);
+      this.KeyItem = new InputMultiKeyItem_1.InputMultiKeyItem(true);
+      this.sit = this.RootItem.GetParentAsUIItem();
+      await this.KeyItem.CreateByActorAsync(t.GetOwner());
+    }
   }
   Refresh(t) {
-    this.SkillButtonData !== t && this.TryReleaseButton(), t && (this.SkillButtonData = t, this.InitVehicleHandle(), this.RefreshVisible(), this.RefreshSkillIcon(), this.RefreshSkillName(), this.RefreshCdCompletedEffect(), this.RefreshDynamicEffect(), this.RefreshKey(), this.RefreshTimeDilation(), this.RefreshSkillCoolDown(), this.RefreshLimitCount(!0), this.RefreshAttribute(!1), this.Fit() && this.RefreshEquipExplore(), this.RefreshSkillButtonLongPress(), this.RefreshConfigLongPress(), this.Qel) && this.RefreshLinkStatus(this.ZKa)
+    if (this.SkillButtonData !== t) {
+      this.TryReleaseButton();
+    }
+    if (t && (this.SkillButtonData = t, this.InitVehicleHandle(), this.RefreshVisible(), this.RefreshSkillIcon(), this.RefreshSkillName(), this.RefreshCdCompletedEffect(), this.RefreshDynamicEffect(), this.RefreshKey(), this.RefreshTimeDilation(), this.RefreshSkillCoolDown(), this.RefreshLimitCount(true), this.RefreshAttribute(false), this.Fit() && this.RefreshEquipExplore(), this.RefreshSkillButtonLongPress(), this.RefreshConfigLongPress(), this.Qel)) {
+      this.RefreshLinkStatus(this.ZKa);
+    }
   }
   Deactivate() {
-    this.TryReleaseButton(), this.ResetSkillCoolDown(), this.Vit(), this.jit(), this.SkillButtonData = void 0, this.SetTextureHandleId = 0, this.OnCoolDownFinishedCallback = void 0, this.KeyItem?.SetActive(!1), this.KeyItem?.ResetLongPress(), this.KeyActionName = void 0, this.KeyOperationType = void 0, this.PressActionType = InputEnums_1.EInputAction.None, this.ClickEffect.Stop(), this.ZKa = 0, this.CancelLoadDynamicEffectNiagara(), this.CancelLoadCdCompletedNiagara(), this.HideAndClearSkillSprite("休眠技能按钮"), this.HideAndClearSkillTexture(), this.Mit = void 0, 0 === this.vit && void 0 === this.zQ_ || (this.GetUiNiagara(7)?.ResetOverrideParameters(), this.vit = 0, this.zQ_ = void 0), this.UltraComponent && (this.UltraComponent.Destroy(), this.UltraComponent = void 0), this.NumComponent && (this.NumComponent.Destroy(), this.NumComponent = void 0), this.SwitchComponent && (this.SwitchComponent.Destroy(), this.SwitchComponent = void 0), this.LongPressComponent && (this.LongPressComponent.Destroy(), this.LongPressComponent = void 0), this.OnRefreshVisible(!1)
+    this.TryReleaseButton();
+    this.ResetSkillCoolDown();
+    this.Vit();
+    this.jit();
+    this.SkillButtonData = undefined;
+    this.SetTextureHandleId = 0;
+    this.OnCoolDownFinishedCallback = undefined;
+    this.KeyItem?.SetActive(false);
+    this.KeyItem?.ResetLongPress();
+    this.KeyActionName = undefined;
+    this.KeyOperationType = undefined;
+    this.PressActionType = InputEnums_1.EInputAction.None;
+    this.ClickEffect.Stop();
+    this.ZKa = 0;
+    this.CancelLoadDynamicEffectNiagara();
+    this.CancelLoadCdCompletedNiagara();
+    this.HideAndClearSkillSprite("休眠技能按钮");
+    this.HideAndClearSkillTexture();
+    this.Mit = undefined;
+    if (this.vit !== 0 || this.zQ_ !== undefined) {
+      this.GetUiNiagara(7)?.ResetOverrideParameters();
+      this.vit = 0;
+      this.zQ_ = undefined;
+    }
+    if (this.UltraComponent) {
+      this.UltraComponent.Destroy();
+      this.UltraComponent = undefined;
+    }
+    if (this.NumComponent) {
+      this.NumComponent.Destroy();
+      this.NumComponent = undefined;
+    }
+    if (this.SwitchComponent) {
+      this.SwitchComponent.Destroy();
+      this.SwitchComponent = undefined;
+    }
+    if (this.LongPressComponent) {
+      this.LongPressComponent.Destroy();
+      this.LongPressComponent = undefined;
+    }
+    this.OnRefreshVisible(false);
   }
   OnShowBattleChildView() {
-    this.sit?.SetUIActive(!0)
+    this.sit?.SetUIActive(true);
   }
   OnHideBattleChildView() {
-    this.sit?.SetUIActive(!1)
+    this.sit?.SetUIActive(false);
   }
   UpdateAlpha() {
-    this.Git = this.RootItem.GetAlpha(), this.Git > this.qit ? this.RootItem.SetAlpha(this.qit) : this.qit = this.Git
+    this.Git = this.RootItem.GetAlpha();
+    if (this.Git > this.qit) {
+      this.RootItem.SetAlpha(this.qit);
+    } else {
+      this.qit = this.Git;
+    }
   }
   Reset() {
-    this.RemoveEvents(), this.Deactivate(), this.ait = void 0, this.KeyItem = void 0, this.ClickEffect = void 0, this.Mit = void 0, this.AlphaTweenComp = void 0, this.Lit = void 0, this.Dit = void 0, this.Rit = void 0, this.Uit = void 0, this.Ait = void 0, this.Pit = void 0, super.Reset()
+    this.RemoveEvents();
+    this.Deactivate();
+    this.ait = undefined;
+    this.KeyItem = undefined;
+    this.ClickEffect = undefined;
+    this.Mit = undefined;
+    this.AlphaTweenComp = undefined;
+    this.Lit = undefined;
+    this.Dit = undefined;
+    this.Rit = undefined;
+    this.Uit = undefined;
+    this.Ait = undefined;
+    this.Pit = undefined;
+    super.Reset();
   }
   Tick(t) {
-    this.Wit(t), this.ConfigLongPressComponent?.Tick(t)
+    this.Wit(t);
+    this.ConfigLongPressComponent?.Tick(t);
   }
   AddEvents() {
-    this.fit || (this.GetPointEventButton().OnPointDownCallBack.Bind(() => {
-      this.OnSkillButtonPressed()
-    }), this.GetPointEventButton().OnPointUpCallBack.Bind(() => {
-      this.OnSkillButtonReleased()
-    }), this.GetPointEventButton().OnPointCancelCallBack.Bind(() => {
-      this.OnSkillButtonCancel()
-    }), this.DraggableComponent = this.GetPointEventButton().GetOwner().GetComponentByClass(UE.UIDraggableComponent.StaticClass()), InputDistributeController_1.InputDistributeController.BindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2, InputMappingsDefine_1.touchIdMappings.Touch3, InputMappingsDefine_1.touchIdMappings.Touch4, InputMappingsDefine_1.touchIdMappings.Touch5, InputMappingsDefine_1.touchIdMappings.Touch6, InputMappingsDefine_1.touchIdMappings.Touch7, InputMappingsDefine_1.touchIdMappings.Touch8, InputMappingsDefine_1.touchIdMappings.Touch9, InputMappingsDefine_1.touchIdMappings.Touch10], this.OnTouch), ModelManager_1.ModelManager.BattleLinkModel?.CheckInBattleLink() && (this.Qel = !0, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleLinkStatusChanged, this.OnBattleLinkStatusChanged)), this.fit = !0)
+    if (!this.fit) {
+      this.GetPointEventButton().OnPointDownCallBack.Bind(() => {
+        this.OnSkillButtonPressed();
+      });
+      this.GetPointEventButton().OnPointUpCallBack.Bind(() => {
+        this.OnSkillButtonReleased();
+      });
+      this.GetPointEventButton().OnPointCancelCallBack.Bind(() => {
+        this.OnSkillButtonCancel();
+      });
+      this.DraggableComponent = this.GetPointEventButton().GetOwner().GetComponentByClass(UE.UIDraggableComponent.StaticClass());
+      InputDistributeController_1.InputDistributeController.BindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2, InputMappingsDefine_1.touchIdMappings.Touch3, InputMappingsDefine_1.touchIdMappings.Touch4, InputMappingsDefine_1.touchIdMappings.Touch5, InputMappingsDefine_1.touchIdMappings.Touch6, InputMappingsDefine_1.touchIdMappings.Touch7, InputMappingsDefine_1.touchIdMappings.Touch8, InputMappingsDefine_1.touchIdMappings.Touch9, InputMappingsDefine_1.touchIdMappings.Touch10], this.OnTouch);
+      if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInBattleLink()) {
+        this.Qel = true;
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleLinkStatusChanged, this.OnBattleLinkStatusChanged);
+      }
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.OnSelfCenteredMode);
+      this.fit = true;
+    }
   }
   RemoveEvents() {
-    this.fit && (this.GetPointEventButton() && (this.GetPointEventButton().OnPointDownCallBack.Unbind(), this.GetPointEventButton().OnPointUpCallBack.Unbind(), this.GetPointEventButton().OnPointCancelCallBack.Unbind()), InputDistributeController_1.InputDistributeController.UnBindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2, InputMappingsDefine_1.touchIdMappings.Touch3, InputMappingsDefine_1.touchIdMappings.Touch4, InputMappingsDefine_1.touchIdMappings.Touch5, InputMappingsDefine_1.touchIdMappings.Touch6, InputMappingsDefine_1.touchIdMappings.Touch7, InputMappingsDefine_1.touchIdMappings.Touch8, InputMappingsDefine_1.touchIdMappings.Touch9, InputMappingsDefine_1.touchIdMappings.Touch10], this.OnTouch), this.Qel && (this.Qel = !1, EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleLinkStatusChanged, this.OnBattleLinkStatusChanged)), this.fit = !1)
+    if (this.fit) {
+      if (this.GetPointEventButton()) {
+        this.GetPointEventButton().OnPointDownCallBack.Unbind();
+        this.GetPointEventButton().OnPointUpCallBack.Unbind();
+        this.GetPointEventButton().OnPointCancelCallBack.Unbind();
+      }
+      InputDistributeController_1.InputDistributeController.UnBindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2, InputMappingsDefine_1.touchIdMappings.Touch3, InputMappingsDefine_1.touchIdMappings.Touch4, InputMappingsDefine_1.touchIdMappings.Touch5, InputMappingsDefine_1.touchIdMappings.Touch6, InputMappingsDefine_1.touchIdMappings.Touch7, InputMappingsDefine_1.touchIdMappings.Touch8, InputMappingsDefine_1.touchIdMappings.Touch9, InputMappingsDefine_1.touchIdMappings.Touch10], this.OnTouch);
+      if (this.Qel) {
+        this.Qel = false;
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleLinkStatusChanged, this.OnBattleLinkStatusChanged);
+      }
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.OnSelfCenteredMode);
+      this.fit = false;
+    }
   }
   RefreshLinkStatus(t) {
-    var i, t = t ?? this.ZKa;
-    this.ZKa = t, this.SkillButtonData && ((i = this.SkillButtonData.GetActionType()) !== InputEnums_1.EInputAction.大招 && i !== InputEnums_1.EInputAction.技能1 && i !== InputEnums_1.EInputAction.攻击 && i !== InputEnums_1.EInputAction.幻象2 ? this.jW1 && (this.GetUiNiagara(12).SetNiagaraUIActive(!1, !0), this.jW1 = !1) : (i === InputEnums_1.EInputAction.大招 && this.GetUltraComponent.SetUiActive(4 !== t), 4 === t ? (this.GetUiNiagara(12).SetNiagaraUIActive(!0, !0), this.jW1 = !0) : (this.GetUiNiagara(12).SetNiagaraUIActive(!1, !0), this.jW1 = !1)))
+    var i;
+    var t = t ?? this.ZKa;
+    this.ZKa = t;
+    if (this.SkillButtonData) {
+      if ((i = this.SkillButtonData.GetActionType()) !== InputEnums_1.EInputAction.大招 && i !== InputEnums_1.EInputAction.技能1 && i !== InputEnums_1.EInputAction.攻击 && i !== InputEnums_1.EInputAction.幻象2) {
+        if (this.bQ1) {
+          this.GetUiNiagara(12).SetNiagaraUIActive(false, true);
+          this.bQ1 = false;
+        }
+      } else {
+        if (i === InputEnums_1.EInputAction.大招) {
+          this.GetUltraComponent.SetUiActive(t !== 4);
+        }
+        if (t === 4) {
+          this.GetUiNiagara(12).SetNiagaraUIActive(true, true);
+          this.bQ1 = true;
+        } else {
+          this.GetUiNiagara(12).SetNiagaraUIActive(false, true);
+          this.bQ1 = false;
+        }
+      }
+    }
   }
   OnSkillButtonPressed() {
-    var t, i;
-    if (this.SkillButtonData && (this.SkillButtonData.IsEnable() && 0 !== this.qit && (i = t = this.SkillButtonData.GetActionType(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮按下时", ["inputActionType", t]), this.OnInputAction(), this.PressActionType = t, 1 === Info_1.Info.OperationType ? InputDistributeController_1.InputDistributeController.InputAction(InputEnums_1.EInputAction[i], !0) : InputController_1.InputController.InputAction(i, 1)), this.IsNeedLongPress())) {
+    var t;
+    var i;
+    if (this.SkillButtonData && (this.SkillButtonData.IsEnableInput() && this.qit !== 0 && (i = t = this.SkillButtonData.GetActionType(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮按下时", ["inputActionType", t]), this.OnInputAction(), this.PressActionType = t, Info_1.Info.OperationType === 1 ? InputDistributeController_1.InputDistributeController.InputAction(InputEnums_1.EInputAction[i], true) : InputController_1.InputController.InputAction(i, 1)), this.IsNeedLongPress())) {
       let t = this.SkillButtonData.GetLongPressTime();
-      t <= 0 && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "重新获取技能按钮长按时长", ["inputActionType", this.SkillButtonData.GetActionType()]), this.SkillButtonData.RefreshLongPressTime(), t = this.SkillButtonData.GetLongPressTime()), t <= 0 || (this.git = TimerSystem_1.TimerSystem.Delay(this.Oit, t * TimeUtil_1.TimeUtil.InverseMillisecond))
+      if (t <= 0) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "重新获取技能按钮长按时长", ["inputActionType", this.SkillButtonData.GetActionType()]);
+        }
+        this.SkillButtonData.RefreshLongPressTime();
+        t = this.SkillButtonData.GetLongPressTime();
+      }
+      if (!(t <= 0)) {
+        this.git = TimerSystem_1.TimerSystem.Delay(this.Oit, t * TimeUtil_1.TimeUtil.InverseMillisecond);
+      }
     }
   }
   IsNeedLongPress() {
-    return this.SkillButtonData.GetIsLongPressControlCamera()
+    return this.SkillButtonData.GetIsLongPressControlCamera();
   }
   OnSkillButtonReleased() {
     var t;
-    this.SkillButtonData && (this.PressActionType !== InputEnums_1.EInputAction.None && (t = this.SkillButtonData.GetActionType(), this.PressActionType === t ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮抬起时", ["inputActionType", t]), 1 === Info_1.Info.OperationType ? InputDistributeController_1.InputDistributeController.InputAction(InputEnums_1.EInputAction[t], !1) : InputController_1.InputController.InputAction(t, 2)) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮抬起时,技能按钮对应的ActionType已经变化，会执行按下时候的Action抬起", ["inputActionType", t], ["PressActionType", this.PressActionType]), 1 === Info_1.Info.OperationType ? InputDistributeController_1.InputDistributeController.InputAction(InputEnums_1.EInputAction[this.PressActionType], !1) : InputController_1.InputController.InputAction(this.PressActionType, 2))), this.PressActionType = InputEnums_1.EInputAction.None, this.Vit(), this.IsLongPress = !1)
+    if (this.SkillButtonData) {
+      if (this.PressActionType !== InputEnums_1.EInputAction.None) {
+        t = this.SkillButtonData.GetActionType();
+        if (this.PressActionType === t) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮抬起时", ["inputActionType", t]);
+          }
+          if (Info_1.Info.OperationType === 1) {
+            InputDistributeController_1.InputDistributeController.InputAction(InputEnums_1.EInputAction[t], false);
+          } else {
+            InputController_1.InputController.InputAction(t, 2);
+          }
+        } else {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮抬起时,技能按钮对应的ActionType已经变化，会执行按下时候的Action抬起", ["inputActionType", t], ["PressActionType", this.PressActionType]);
+          }
+          if (Info_1.Info.OperationType === 1) {
+            InputDistributeController_1.InputDistributeController.InputAction(InputEnums_1.EInputAction[this.PressActionType], false);
+          } else {
+            InputController_1.InputController.InputAction(this.PressActionType, 2);
+          }
+        }
+      }
+      this.PressActionType = InputEnums_1.EInputAction.None;
+      this.Vit();
+      this.IsLongPress = false;
+    }
   }
   OnSkillButtonCancel() {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮取消时,执行抬起流程", ["inputActionType", this.SkillButtonData?.GetActionType()]), this.OnSkillButtonReleased()
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 17, "[SkillButton]当技能按钮取消时,执行抬起流程", ["inputActionType", this.SkillButtonData?.GetActionType()]);
+    }
+    this.OnSkillButtonReleased();
   }
   TryReleaseButton() {
-    this.PressActionType !== InputEnums_1.EInputAction.None && this.OnSkillButtonReleased()
+    if (this.PressActionType !== InputEnums_1.EInputAction.None) {
+      this.OnSkillButtonReleased();
+    }
   }
   OnLongPressButton() {}
   SetSkillIcon(i) {
     if (!StringUtils_1.StringUtils.IsEmpty(i) && this.Mit !== i) {
-      0 !== this.SetTextureHandleId && ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.SetTextureHandleId), this.Bit = !0;
-      const s = this.Lit,
-        e = this.Dit;
-      this.Mit = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载开始", ["", this.Eit], ["", i]), this.CheckSkillIconIsTexture(i) ? (e && this.HideAndClearSkillSprite("资源类型是Texture"), this.SetTextureHandleId = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.Texture, t => {
-        this.Bit = !1, s && this.Mit === i ? t ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载成功", ["", this.Eit], ["", i]), this.ShowAndSetSkillTexture(t)) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载完成，但是资源为空", ["", this.Eit], ["", i]), this.HideAndClearSkillTexture()) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载完成, 但是已过期", ["", this.Eit], ["", i])
-      }, 103), this.Mit = i, this.Bit && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载中，隐藏图片", ["", this.Eit], ["", i]), s.SetUIActive(!1))) : (this.HideAndClearSkillTexture(), this.SetTextureHandleId = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.LGUISpriteData_BaseObject, t => {
-        this.Bit = !1, e && this.Mit === i ? t ? (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载成功", ["", this.Eit], ["", i]), this.ShowAndSetSkillSprite(t)) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载完成，但是资源为空", ["", this.Eit], ["", i]), this.HideAndClearSkillSprite("技能图标加载资源失败")) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标加载完成, 但是已过期", ["", this.Eit], ["", i])
-      }, 103), this.Bit && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标隐藏Sprite, 加载中", ["", this.Eit], ["", i]), e.SetUIActive(!1)))
+      if (this.SetTextureHandleId !== 0) {
+        ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.SetTextureHandleId);
+      }
+      this.Bit = true;
+      const s = this.Lit;
+      const e = this.Dit;
+      this.Mit = i;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "技能图标加载开始", ["", this.Eit], ["", i]);
+      }
+      if (this.CheckSkillIconIsTexture(i)) {
+        if (e) {
+          this.HideAndClearSkillSprite("资源类型是Texture");
+        }
+        this.SetTextureHandleId = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.Texture, t => {
+          this.Bit = false;
+          if (s && this.Mit === i) {
+            if (t) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Battle", 17, "技能图标加载成功", ["", this.Eit], ["", i]);
+              }
+              this.ShowAndSetSkillTexture(t);
+            } else {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Battle", 17, "技能图标加载完成，但是资源为空", ["", this.Eit], ["", i]);
+              }
+              this.HideAndClearSkillTexture();
+            }
+          } else if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "技能图标加载完成, 但是已过期", ["", this.Eit], ["", i]);
+          }
+        }, 103);
+        this.Mit = i;
+        if (this.Bit) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "技能图标加载中，隐藏图片", ["", this.Eit], ["", i]);
+          }
+          s.SetUIActive(false);
+        }
+      } else {
+        this.HideAndClearSkillTexture();
+        this.SetTextureHandleId = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.LGUISpriteData_BaseObject, t => {
+          this.Bit = false;
+          if (e && this.Mit === i) {
+            if (t) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Battle", 17, "技能图标加载成功", ["", this.Eit], ["", i]);
+              }
+              this.ShowAndSetSkillSprite(t);
+            } else {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Battle", 17, "技能图标加载完成，但是资源为空", ["", this.Eit], ["", i]);
+              }
+              this.HideAndClearSkillSprite("技能图标加载资源失败");
+            }
+          } else if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "技能图标加载完成, 但是已过期", ["", this.Eit], ["", i]);
+          }
+        }, 103);
+        if (this.Bit) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "技能图标隐藏Sprite, 加载中", ["", this.Eit], ["", i]);
+          }
+          e.SetUIActive(false);
+        }
+      }
     }
   }
   CheckSkillIconIsTexture(t) {
-    return 0 < t.search("Image/")
+    return t.search("Image/") > 0;
   }
   HideAndClearSkillTexture() {
-    this.Lit && (this.xit || (this.Lit.SetTexture(this.Ait), this.Rit?.SetAllStateTexture(this.Ait), this.xit = !0), this.Lit.SetUIActive(!1))
+    if (this.Lit) {
+      if (!this.xit) {
+        this.Lit.SetTexture(this.Ait);
+        this.Rit?.SetAllStateTexture(this.Ait);
+        this.xit = true;
+      }
+      this.Lit.SetUIActive(false);
+    }
   }
   ShowAndSetSkillTexture(t) {
-    this.Lit.SetTexture(t), this.Rit?.SetAllStateTexture(t), this.xit = !1, this.Lit.SetUIActive(!0)
+    this.Lit.SetTexture(t);
+    this.Rit?.SetAllStateTexture(t);
+    this.xit = false;
+    this.Lit.SetUIActive(true);
   }
   HideAndClearSkillSprite(t) {
-    this.Dit && (this.wit || (this.Dit.SetSprite(this.Pit), this.Uit?.SetAllTransitionSprite(this.Pit), this.wit = !0), this.Dit.SetUIActive(!1), Log_1.Log.CheckDebug()) && Log_1.Log.Debug("Battle", 17, "技能图标隐藏Sprite", ["", this.Eit], ["", t], ["", this.Mit])
+    if (this.Dit && (this.wit || (this.Dit.SetSprite(this.Pit), this.Uit?.SetAllTransitionSprite(this.Pit), this.wit = true), this.Dit.SetUIActive(false), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Battle", 17, "技能图标隐藏Sprite", ["", this.Eit], ["", t], ["", this.Mit]);
+    }
   }
   ShowAndSetSkillSprite(t) {
-    this.Dit.SetSprite(t), this.Uit?.SetAllTransitionSprite(t), this.wit = !1, this.Dit.SetUIActive(!0), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "技能图标显示Sprite", ["", this.Eit], ["", this.Mit])
+    this.Dit.SetSprite(t);
+    this.Uit?.SetAllTransitionSprite(t);
+    this.wit = false;
+    this.Dit.SetUIActive(true);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 17, "技能图标显示Sprite", ["", this.Eit], ["", this.Mit]);
+    }
   }
   RefreshSkillIcon() {
-    if (this.SkillButtonData)
+    if (this.SkillButtonData) {
       if (this.SkillButtonData.IsMultiStageSkill()) {
         const t = this.SkillButtonData.GetMultiSkillTexturePath();
-        void this.SetSkillIcon(t)
+        this.SetSkillIcon(t);
       } else {
         const t = this.SkillButtonData.GetSkillTexturePath();
-        this.SetSkillIcon(t)
+        this.SetSkillIcon(t);
       }
+    }
   }
   RefreshSkillName() {
-    var t, i = this.SkillButtonData?.GetSkillId();
-    i ? (t = this.SkillButtonData.SkillIconName, StringUtils_1.StringUtils.IsEmpty(t) ? (i = ModelManager_1.ModelManager.SkillButtonUiModel.GetSkillNameBySkillId(i)) ? (LguiUtil_1.LguiUtil.SetLocalTextNew(this.SkillNameText, i), this.SkillNameText.SetUIActive(!0)) : this.SkillNameText.SetUIActive(!1) : (LguiUtil_1.LguiUtil.SetLocalTextNew(this.SkillNameText, t), this.SkillNameText.SetUIActive(!0))) : this.SkillNameText.SetUIActive(!1)
+    var t;
+    var i = this.SkillButtonData?.GetSkillId();
+    if (i) {
+      t = this.SkillButtonData.SkillIconName;
+      if (StringUtils_1.StringUtils.IsEmpty(t)) {
+        if (i = ModelManager_1.ModelManager.SkillButtonUiModel.GetSkillNameBySkillId(i)) {
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.SkillNameText, i);
+          this.SkillNameText.SetUIActive(true);
+        } else {
+          this.SkillNameText.SetUIActive(false);
+        }
+      } else {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.SkillNameText, t);
+        this.SkillNameText.SetUIActive(true);
+      }
+    } else {
+      this.SkillNameText.SetUIActive(false);
+    }
   }
-  SetSkillItemEnable(t, i = !1) {
-    this.ait && (i || this.ait.GetSelfInteractive() !== t) && this.ait.SetSelfInteractive(t)
+  SetSkillItemEnable(t, i = false) {
+    if (this.ait && (i || this.ait.GetSelfInteractive() !== t)) {
+      this.ait.SetSelfInteractive(t);
+    }
   }
   RefreshKey() {
-    var t, i = Info_1.Info.OperationType;
-    2 === i && (t = this.SkillButtonData.GetActionName(), this.KeyActionName === t && this.KeyOperationType === i ? Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[KeyItem]刷新技能按钮按键图标时，平台和行为名称与上一次刷新一致，因此不刷新", ["actionName", t], ["operationType", i]) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[KeyItem]刷新技能按钮按键图标", ["actionName", t]), this.KeyItem && (this.KeyItem.RefreshByActionOrAxis({
-      ActionOrAxisName: t
-    }), this.KeyItem.SetActive(!0)), this.KeyOperationType = i, this.KeyActionName = t))
+    var t;
+    var i = Info_1.Info.OperationType;
+    if (i === 2) {
+      t = this.SkillButtonData.GetActionName();
+      if (this.KeyActionName === t && this.KeyOperationType === i) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "[KeyItem]刷新技能按钮按键图标时，平台和行为名称与上一次刷新一致，因此不刷新", ["actionName", t], ["operationType", i]);
+        }
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "[KeyItem]刷新技能按钮按键图标", ["actionName", t]);
+        }
+        if (this.KeyItem) {
+          this.KeyItem.RefreshByActionOrAxis({
+            ActionOrAxisName: t
+          });
+          this.KeyItem.SetActive(true);
+        }
+        this.KeyOperationType = i;
+        this.KeyActionName = t;
+      }
+    }
   }
   PauseGame(t) {
-    1 === t ? (TimerSystem_1.TimerSystem.Has(this.hit) && !TimerSystem_1.TimerSystem.IsPause(this.hit) && TimerSystem_1.TimerSystem.Pause(this.hit), TimerSystem_1.TimerSystem.Has(this.yit) && !TimerSystem_1.TimerSystem.IsPause(this.yit) && TimerSystem_1.TimerSystem.Pause(this.yit)) : 0 === t && (TimerSystem_1.TimerSystem.Has(this.hit) && TimerSystem_1.TimerSystem.IsPause(this.hit) && TimerSystem_1.TimerSystem.Resume(this.hit), TimerSystem_1.TimerSystem.Has(this.yit)) && TimerSystem_1.TimerSystem.IsPause(this.yit) && TimerSystem_1.TimerSystem.Resume(this.yit)
+    if (t === 1) {
+      if (TimerSystem_1.TimerSystem.Has(this.hit) && !TimerSystem_1.TimerSystem.IsPause(this.hit)) {
+        TimerSystem_1.TimerSystem.Pause(this.hit);
+      }
+      if (TimerSystem_1.TimerSystem.Has(this.yit) && !TimerSystem_1.TimerSystem.IsPause(this.yit)) {
+        TimerSystem_1.TimerSystem.Pause(this.yit);
+      }
+    } else if (t === 0 && (TimerSystem_1.TimerSystem.Has(this.hit) && TimerSystem_1.TimerSystem.IsPause(this.hit) && TimerSystem_1.TimerSystem.Resume(this.hit), TimerSystem_1.TimerSystem.Has(this.yit)) && TimerSystem_1.TimerSystem.IsPause(this.yit)) {
+      TimerSystem_1.TimerSystem.Resume(this.yit);
+    }
   }
   RefreshSkillCoolDownOnShow() {
-    this.cit <= 0 || this.mit <= 0 || !this.uit || this.RefreshSkillCoolDown()
+    if (!(this.cit <= 0) && !(this.mit <= 0) && !!this.uit) {
+      this.RefreshSkillCoolDown();
+    }
   }
   RefreshSkillCoolDown() {
-    this.SkillButtonData && (0 < this.SkillButtonData.TotalCoolDownCustom ? (this.RefreshLimitCount(!0), this.Jit(this.SkillButtonData.GetRemainingCoolDownCustom(), this.SkillButtonData.TotalCoolDownCustom, this.SkillButtonData.HideCoolDownTextCustom)) : this.Kit() && this.Qit() || this.Xit() && this.$it() || this.SkillButtonData.IsMultiStageSkill() && this.TryRefreshMultiSkillCoolDown() || (this.V6l() && this.j6l() ? this.RefreshLimitCount() : (this.RefreshLimitCount(), this.Yit())), this.RefreshEnable())
+    if (this.SkillButtonData) {
+      if (this.SkillButtonData.TotalCoolDownCustom > 0) {
+        this.RefreshLimitCount(true);
+        this.Jit(this.SkillButtonData.GetRemainingCoolDownCustom(), this.SkillButtonData.TotalCoolDownCustom, this.SkillButtonData.HideCoolDownTextCustom);
+      } else if ((!this.Kit() || !this.Qit()) && (!this.Xit() || !this.$it()) && (!this.SkillButtonData.IsMultiStageSkill() || !this.TryRefreshMultiSkillCoolDown())) {
+        if (this.V6l() && this.j6l()) {
+          this.RefreshLimitCount();
+        } else {
+          this.RefreshLimitCount();
+          this.Yit();
+        }
+      }
+      this.RefreshEnable();
+    }
   }
   TryRefreshMultiSkillCoolDown() {
-    var t, i, s = this.SkillButtonData.GetMultiSkillInfo();
-    return !(!s || 0 === s.NextSkillId || (t = s.RemainingStartTime, i = s.StartTime, 0 < t ? this.Jit(t, i) : this.Jit(s.RemainingStopTime, s.StopTime - i, !0), 0))
+    var t;
+    var i;
+    var s = this.SkillButtonData.GetMultiSkillInfo();
+    return !!s && s.NextSkillId !== 0 && !(t = s.RemainingStartTime, i = s.StartTime, t > 0 ? this.Jit(t, i) : this.Jit(s.RemainingStopTime, s.StopTime - i, true), 0);
   }
   Yit() {
-    var t, i = this.SkillButtonData.GetGroupSkillCdInfo();
-    i ? this.IsHideNumComp && 0 < i.RemainingCount ? this.Jit(0, 0) : (t = i.CurRemainingCd, i = i.CurMaxCd, this.Jit(t, i)) : this.SkillButtonData.HasCdComponent() || this.Jit(0, 0)
+    var t;
+    var i = this.SkillButtonData.GetGroupSkillCdInfo();
+    if (i) {
+      if (this.IsHideNumComp && i.RemainingCount > 0) {
+        this.Jit(0, 0);
+      } else {
+        t = i.CurRemainingCd;
+        i = i.CurMaxCd;
+        this.Jit(t, i);
+      }
+    } else if (!this.SkillButtonData.HasCdComponent()) {
+      this.Jit(0, 0);
+    }
   }
-  Jit(t, i, s = !1) {
-    BattleSkillItem.zit.Start(), this.HideCdText = s, 0 < t && 0 < i ? this.SkillButtonData.IsCdVisible() ? this.Zit(t, i) : this.eot(t) : this.FinishSkillCoolDown(), BattleSkillItem.zit.Stop()
+  Jit(t, i, s = false) {
+    BattleSkillItem.zit.Start();
+    this.HideCdText = s;
+    if (t > 0 && i > 0) {
+      if (this.SkillButtonData.IsCdVisible()) {
+        this.Zit(t, i);
+      } else {
+        this.eot(t);
+      }
+    } else {
+      this.FinishSkillCoolDown();
+    }
+    BattleSkillItem.zit.Stop();
   }
   Zit(t, i, s) {
     const e = this.SkillButtonData?.GetSkillId();
-    this.HasListenAttribute() && this.tot(!0, void 0, !0), this.PlaySkillTimeDown(t, i, () => {
-      this.SkillButtonData.IsMultiStageSkill() && this.TryRefreshMultiSkillCoolDown();
+    if (this.HasListenAttribute()) {
+      this.tot(true, undefined, true);
+    }
+    this.PlaySkillTimeDown(t, i, () => {
+      if (this.SkillButtonData.IsMultiStageSkill()) {
+        this.TryRefreshMultiSkillCoolDown();
+      }
       var t = e === this.SkillButtonData?.GetSkillId();
-      this.SkillButtonData.RefreshIsEnable(), this.HasListenAttribute() ? (this.oot(!1), this.tot(t, void 0, !1)) : t && this.rot(), this.SkillButtonData.IsVehicleSkillInCd() && this.j6l(), s?.()
-    })
+      this.SkillButtonData.RefreshIsEnable();
+      if (this.HasListenAttribute()) {
+        this.oot(false);
+        this.tot(t, undefined, false);
+      } else if (t) {
+        this.rot();
+      }
+      if (this.SkillButtonData.IsVehicleSkillInCd()) {
+        this.j6l();
+      }
+      s?.();
+    });
   }
   eot(t) {
     this.ResetSkillCoolDown();
     this.yit = TimerSystem_1.TimerSystem.Delay(() => {
-      this.SkillButtonData.RefreshIsEnable(), this.FinishSkillCoolDown()
-    }, t * TimeUtil_1.TimeUtil.InverseMillisecond), this.not(this.yit)
+      this.SkillButtonData.RefreshIsEnable();
+      this.FinishSkillCoolDown();
+    }, t * TimeUtil_1.TimeUtil.InverseMillisecond);
+    this.not(this.yit);
   }
   rot() {
     var t;
-    !this.SkillButtonData || this.SkillButtonData.GetCdCompletedEffectId() < 0 || 0 !== this.qit && ((t = this.GetUiNiagara(6)).bIsUIActive || t.SetUIActive(!0), t.ActivateSystem(!0))
+    if (!!this.SkillButtonData && !(this.SkillButtonData.GetCdCompletedEffectId() < 0)) {
+      if (this.qit !== 0) {
+        if (!(t = this.GetUiNiagara(6)).bIsUIActive) {
+          t.SetUIActive(true);
+        }
+        t.ActivateSystem(true);
+      }
+    }
   }
   PlaySkillTimeDown(t, i, s) {
-    this.sot(), t <= (this.cit = 0) ? this.lit.SetUIActive(!1) : (this.cit = t, this.mit = i, this.dit = Time_1.Time.WorldTimeSeconds - (i - t), this.OnCoolDownFinishedCallback = s, this.HideCdText ? this.CoolDownUiText.SetText("") : this.CoolDownUiText.SetText(this.cit.toFixed(this.CdFixedPoint)), this.hit = TimerSystem_1.TimerSystem.Forever(this.kit, BattleUiDefine_1.SKILL_COOLDOWN_INTERVAL), this.not(this.hit), this.lit.SetUIActive(!0), SkillCdController_1.SkillCdController.IsPause() && this.uit?.SetFillAmount((i - t) / i))
+    this.sot();
+    if (t <= (this.cit = 0)) {
+      this.lit.SetUIActive(false);
+    } else {
+      this.cit = t;
+      this.mit = i;
+      this.dit = Time_1.Time.FlowTime * TimeUtil_1.TimeUtil.Millisecond - (i - t);
+      this.OnCoolDownFinishedCallback = s;
+      if (this.HideCdText) {
+        this.CoolDownUiText.SetText("");
+      } else {
+        this.CoolDownUiText.SetText(this.cit.toFixed(this.CdFixedPoint));
+      }
+      this.hit = TimerSystem_1.TimerSystem.Forever(this.kit, BattleUiDefine_1.SKILL_COOLDOWN_INTERVAL, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+      this.not(this.hit);
+      this.lit.SetUIActive(true);
+      if (SkillCdController_1.SkillCdController.IsPause()) {
+        this.uit?.SetFillAmount((i - t) / i);
+      }
+    }
   }
   FinishSkillCoolDown() {
     var t;
-    this.ResetSkillCoolDown(), this.OnCoolDownFinishedCallback && (t = this.OnCoolDownFinishedCallback, this.OnCoolDownFinishedCallback = void 0, t())
+    this.ResetSkillCoolDown();
+    if (this.OnCoolDownFinishedCallback) {
+      t = this.OnCoolDownFinishedCallback;
+      this.OnCoolDownFinishedCallback = undefined;
+      t();
+    }
   }
   Wit(t) {
-    this.cit <= 0 || this.mit <= 0 || !this.uit || (SkillCdController_1.SkillCdController.IsPause() ? this.dit += t * Time_1.Time.TimeDilation * TimeUtil_1.TimeUtil.Millisecond : (t = (Time_1.Time.WorldTimeSeconds - this.dit) / this.mit, this.uit.SetFillAmount(t)))
+    var i;
+    if (!(this.cit <= 0) && !(this.mit <= 0) && !!this.uit) {
+      i = (Time_1.Time.FlowTime * TimeUtil_1.TimeUtil.Millisecond - this.dit) / this.mit;
+      this.uit.SetFillAmount(i);
+    }
   }
   ResetSkillCoolDown() {
-    this.lit.SetUIActive(!1), this.sot(), this.cit = 0
+    this.lit.SetUIActive(false);
+    this.sot();
+    this.cit = 0;
   }
   sot() {
-    TimerSystem_1.TimerSystem.Has(this.hit) && TimerSystem_1.TimerSystem.Remove(this.hit), TimerSystem_1.TimerSystem.Has(this.yit) && TimerSystem_1.TimerSystem.Remove(this.yit)
+    if (TimerSystem_1.TimerSystem.Has(this.hit)) {
+      TimerSystem_1.TimerSystem.Remove(this.hit);
+    }
+    if (TimerSystem_1.TimerSystem.Has(this.yit)) {
+      TimerSystem_1.TimerSystem.Remove(this.yit);
+    }
   }
-  RefreshEnable(t = !1) {
+  RefreshEnable(t = false) {
     var i;
-    this.SkillButtonData && (i = this.aot(), this.SetSkillItemEnable(i, t))
+    if (this.SkillButtonData) {
+      i = this.aot();
+      this.SetSkillItemEnable(i, t);
+    }
   }
   DisableButton() {
-    this.SetSkillItemEnable(!1, !0)
+    this.SetSkillItemEnable(false, true);
   }
   RefreshVisible() {
     var t;
-    this.RootItem?.IsValid() && ((t = this.IsVisible()) !== this.RootItem.bIsUIActive || this.sit && t !== this.sit.bIsUIActive) && this.OnRefreshVisible(t)
+    if (this.RootItem?.IsValid() && ((t = this.IsVisible()) !== this.RootItem.bIsUIActive || this.sit && t !== this.sit.bIsUIActive)) {
+      this.OnRefreshVisible(t);
+    }
   }
   OnRefreshVisible(t) {
-    t ? this.IsShowOrShowing || (this.Show(), this.RefreshEnable(!0)) : this.IsHideOrHiding || (this.TryReleaseButton(), this.Hide())
+    if (t) {
+      if (!this.IsShowOrShowing) {
+        this.Show();
+        this.RefreshEnable(true);
+      }
+    } else if (!this.IsHideOrHiding) {
+      this.TryReleaseButton();
+      this.Hide();
+    }
   }
   GetGuideItem() {
     if (!this.IsCreateOrCreating) {
       let t = this.GetTexture(4);
-      return void 0 === t ? void 0 : ObjectUtils_1.ObjectUtils.IsValid(t) && t.IsUIActiveInHierarchy() || void 0 !== (t = this.GetSprite(3)) ? [this.RootItem, t] : void 0
+      if (t === undefined) {
+        return undefined;
+      } else if (ObjectUtils_1.ObjectUtils.IsValid(t) && t.IsUIActiveInHierarchy() || (t = this.GetSprite(3)) !== undefined) {
+        return [this.RootItem, t];
+      } else {
+        return undefined;
+      }
     }
   }
   RefreshCdCompletedEffect() {
     var t;
-    !this.SkillButtonData || this.SkillButtonData.GetCdCompletedEffectId() <= 0 || 0 < this.SkillButtonData.AttributeId || (t = this.SkillButtonData.GetCdCompletedEffectConfig()) && (t = t.NiagaraPath, StringUtils_1.StringUtils.IsEmpty(t) || !StringUtils_1.StringUtils.IsEmpty(this.pit) && this.pit === t || (this.CancelLoadCdCompletedNiagara(), this.Tit = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.NiagaraSystem, t => {
-      t?.IsValid() && this.GetUiNiagara(6)?.SetNiagaraSystem(t)
-    }), this.pit = t))
+    if (!!this.SkillButtonData && !(this.SkillButtonData.GetCdCompletedEffectId() <= 0) && !(this.SkillButtonData.AttributeId > 0)) {
+      if (t = this.SkillButtonData.GetCdCompletedEffectConfig()) {
+        t = t.NiagaraPath;
+        if (!StringUtils_1.StringUtils.IsEmpty(t) && (!!StringUtils_1.StringUtils.IsEmpty(this.pit) || this.pit !== t)) {
+          this.CancelLoadCdCompletedNiagara();
+          this.Tit = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.NiagaraSystem, t => {
+            if (t?.IsValid()) {
+              this.GetUiNiagara(6)?.SetNiagaraSystem(t);
+            }
+          });
+          this.pit = t;
+        }
+      }
+    }
   }
   CancelLoadCdCompletedNiagara() {
-    this.Tit && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Tit), this.Tit = void 0)
+    if (this.Tit) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Tit);
+      this.Tit = undefined;
+    }
   }
   GetDynamicEffectConfig() {
-    if (this.SkillButtonData) return this.SkillButtonData.GetDynamicEffectConfig()
+    if (this.SkillButtonData) {
+      return this.SkillButtonData.GetDynamicEffectConfig();
+    }
   }
   GetDynamicEffectPath(t) {
     t = t.NiagaraPath;
-    if (!StringUtils_1.StringUtils.IsEmpty(t)) return t
+    if (!StringUtils_1.StringUtils.IsEmpty(t)) {
+      return t;
+    }
   }
   CancelLoadDynamicEffectNiagara() {
-    this.Ktt && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Ktt), this.Ktt = void 0, this.Wtt = void 0)
+    if (this.Ktt) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Ktt);
+      this.Ktt = undefined;
+      this.Wtt = undefined;
+    }
   }
   RefreshDynamicEffect() {
     var t = this.GetDynamicEffectConfig();
-    let i = void 0;
-    t && (i = this.GetDynamicEffectPath(t)), this.jtt === i ? this.Wtt || this.JQ_(t, !0) : (this.CancelLoadDynamicEffectNiagara(), this.jtt = i, this.jtt ? (this.Wtt = this.jtt, this.Ktt = ResourceSystem_1.ResourceSystem.LoadAsync(this.Wtt, UE.NiagaraSystem, t => {
-      var i;
-      this.Wtt = void 0, t?.IsValid() && (i = this.GetUiNiagara(7)) && (i.SetNiagaraSystem(t), i = this.GetDynamicEffectConfig(), this.JQ_(i), this.SetDynamicEffectVisible(!0))
-    })) : this.SetDynamicEffectVisible(!1))
+    let i = undefined;
+    if (t) {
+      i = this.GetDynamicEffectPath(t);
+    }
+    if (this.jtt === i) {
+      if (!this.Wtt) {
+        this.JQ_(t, true);
+      }
+    } else {
+      this.CancelLoadDynamicEffectNiagara();
+      this.jtt = i;
+      if (this.jtt) {
+        this.Wtt = this.jtt;
+        this.Ktt = ResourceSystem_1.ResourceSystem.LoadAsync(this.Wtt, UE.NiagaraSystem, t => {
+          var i;
+          this.Wtt = undefined;
+          if (t?.IsValid() && (i = this.GetUiNiagara(7))) {
+            i.SetNiagaraSystem(t);
+            i = this.GetDynamicEffectConfig();
+            this.JQ_(i);
+            this.SetDynamicEffectVisible(true);
+          }
+        });
+      } else {
+        this.SetDynamicEffectVisible(false);
+      }
+    }
   }
-  JQ_(i, s = !1) {
+  JQ_(i, s = false) {
     if (i && (i.ElementId !== this.vit || i.Color !== this.zQ_)) {
-      let t = void 0;
-      this.zQ_ = i.Color, StringUtils_1.StringUtils.IsEmpty(this.zQ_) ? (this.vit = i.ElementId, 0 < this.vit && (i = ConfigManager_1.ConfigManager.ElementInfoConfig.GetElementInfo(this.vit), t = new UE.LinearColor(UE.Color.FromHex(i.SkillEffectColor)))) : (this.vit = 0, t = new UE.LinearColor(UE.Color.FromHex(this.zQ_)));
+      let t = undefined;
+      this.zQ_ = i.Color;
+      if (StringUtils_1.StringUtils.IsEmpty(this.zQ_)) {
+        this.vit = i.ElementId;
+        if (this.vit > 0) {
+          i = ConfigManager_1.ConfigManager.ElementInfoConfig.GetElementInfo(this.vit);
+          t = new UE.LinearColor(UE.Color.FromHex(i.SkillEffectColor));
+        }
+      } else {
+        this.vit = 0;
+        t = new UE.LinearColor(UE.Color.FromHex(this.zQ_));
+      }
       i = this.GetUiNiagara(7);
-      t ? i.SetNiagaraVarLinearColor("Color", t) : (i.ResetOverrideParameters(), s && i.NiagaraComponent && i.NiagaraComponent.ResetOverrideParametersAndActivate())
+      if (t) {
+        i.SetNiagaraVarLinearColor("Color", t);
+      } else {
+        i.ResetOverrideParameters();
+        if (s && i.NiagaraComponent) {
+          i.NiagaraComponent.ResetOverrideParametersAndActivate();
+        }
+      }
     }
   }
   SetDynamicEffectVisible(t) {
     var i = this.GetUiNiagara(7);
-    i && (t ? (i.bIsUIActive || i.SetUIActive(!0), i.ActivateSystem(!0)) : i.bIsUIActive && i.SetUIActive(!1))
+    if (i) {
+      if (t) {
+        if (!i.bIsUIActive) {
+          i.SetUIActive(true);
+        }
+        i.ActivateSystem(true);
+      } else if (i.bIsUIActive) {
+        i.SetUIActive(false);
+      }
+    }
   }
   RefreshTimeDilation() {
-    this.hot(this.lot())
+    this.hot(this.lot());
   }
   lot() {
-    return SkillCdController_1.SkillCdController.IsPause() ? 0 : Time_1.Time.TimeDilation
+    if (SkillCdController_1.SkillCdController.IsPause()) {
+      return 0;
+    } else {
+      return Time_1.Time.TimeDilation;
+    }
   }
   not(t) {
     var i = this.lot();
-    1 !== i && (0 < i ? TimerSystem_1.TimerSystem.ChangeDilation(t, i) : TimerSystem_1.TimerSystem.Pause(t))
+    if (i !== 1) {
+      if (i > 0) {
+        TimerSystem_1.TimerSystem.ChangeDilation(t, i);
+      } else {
+        TimerSystem_1.TimerSystem.Pause(t);
+      }
+    }
   }
   hot(t) {
-    TimerSystem_1.TimerSystem.Has(this.hit) && (0 < t ? (TimerSystem_1.TimerSystem.IsPause(this.hit) && TimerSystem_1.TimerSystem.Resume(this.hit), TimerSystem_1.TimerSystem.ChangeDilation(this.hit, t)) : TimerSystem_1.TimerSystem.IsPause(this.hit) || TimerSystem_1.TimerSystem.Pause(this.hit)), TimerSystem_1.TimerSystem.Has(this.yit) && (0 < t ? (TimerSystem_1.TimerSystem.IsPause(this.yit) && TimerSystem_1.TimerSystem.Resume(this.yit), TimerSystem_1.TimerSystem.ChangeDilation(this.yit, t)) : TimerSystem_1.TimerSystem.IsPause(this.yit) || TimerSystem_1.TimerSystem.Pause(this.yit))
+    if (TimerSystem_1.TimerSystem.Has(this.hit)) {
+      if (t > 0) {
+        if (TimerSystem_1.TimerSystem.IsPause(this.hit)) {
+          TimerSystem_1.TimerSystem.Resume(this.hit);
+        }
+        TimerSystem_1.TimerSystem.ChangeDilation(this.hit, t * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+      } else if (!TimerSystem_1.TimerSystem.IsPause(this.hit)) {
+        TimerSystem_1.TimerSystem.Pause(this.hit);
+      }
+    }
+    if (TimerSystem_1.TimerSystem.Has(this.yit)) {
+      if (t > 0) {
+        if (TimerSystem_1.TimerSystem.IsPause(this.yit)) {
+          TimerSystem_1.TimerSystem.Resume(this.yit);
+        }
+        TimerSystem_1.TimerSystem.ChangeDilation(this.yit, t);
+      } else if (!TimerSystem_1.TimerSystem.IsPause(this.yit)) {
+        TimerSystem_1.TimerSystem.Pause(this.yit);
+      }
+    }
   }
   Vit() {
-    this.git && TimerSystem_1.TimerSystem.Has(this.git) && (TimerSystem_1.TimerSystem.Remove(this.git), this.git = void 0)
+    if (this.git && TimerSystem_1.TimerSystem.Has(this.git)) {
+      TimerSystem_1.TimerSystem.Remove(this.git);
+      this.git = undefined;
+    }
   }
   Fit() {
-    var t = 7 === this.SkillButtonData?.GetButtonType() && !this.SkillButtonData.ConfigFollower;
-    return (this.SwitchComponent || t) && this.GetSwitchComponent.SetComponentActive(t), t
+    var t = this.SkillButtonData?.GetButtonType() === 7 && !this.SkillButtonData.ConfigFollower;
+    if (this.SwitchComponent || t) {
+      this.GetSwitchComponent.SetComponentActive(t);
+    }
+    return t;
   }
-  RefreshAttribute(t = !0) {
-    var i = this.HasListenAttribute(),
-      s = this.UltraComponent?.Visible;
-    s !== i && (this._ot(i), s) && this.uot(), i && (this.RefreshFrameSprite(), this.cot(), this.mot(), this.oot(t)), this.RefreshEnable()
+  RefreshAttribute(t = true) {
+    var i = this.HasListenAttribute();
+    var s = this.UltraComponent?.Visible;
+    if (s !== i && (this._ot(i), s)) {
+      this.uot();
+    }
+    if (i) {
+      this.RefreshFrameSprite();
+      this.cot();
+      this.mot();
+      this.oot(t);
+    }
+    this.RefreshEnable();
   }
   _ot(t) {
-    (this.UltraComponent || t) && this.GetUltraComponent.SetComponentActive(t)
+    if (this.UltraComponent || t) {
+      this.GetUltraComponent.SetComponentActive(t);
+    }
   }
   RefreshFrameSprite() {
     var t;
-    this.HasListenAttribute() && (t = this.SkillButtonData.GetFrameSpriteColor(), this.GetUltraComponent.SetFrameSprite(t))
+    if (this.HasListenAttribute()) {
+      t = this.SkillButtonData.GetFrameSpriteColor();
+      this.GetUltraComponent.SetFrameSprite(t);
+    }
   }
-  oot(t = !0) {
-    var i = this.SkillButtonData.GetAttribute(),
-      s = this.SkillButtonData.GetMaxAttribute();
-    0 === s ? (this.SetEnergyPercent(1, t), this.tot(t, !1, void 0)) : (this.SetEnergyPercent(i / s, t), this.tot(t, i < s, void 0))
+  oot(t = true) {
+    var i = this.SkillButtonData.GetAttribute();
+    var s = this.SkillButtonData.GetMaxAttribute();
+    if (s === 0) {
+      this.SetEnergyPercent(1, t);
+      this.tot(t, false, undefined);
+    } else {
+      this.SetEnergyPercent(i / s, t);
+      this.tot(t, i < s, undefined);
+    }
   }
   tot(t, i, s) {
-    let e = i,
-      h = s;
-    e || h || (void 0 === i && (s = this.SkillButtonData.GetAttribute(), i = this.SkillButtonData.GetMaxAttribute(), e = s < i), void 0 === h && (h = 0 < this.SkillButtonData.GetSkillRemainingCoolDown()));
+    let e = i;
+    let h = s;
+    if (!e && !h) {
+      if (i === undefined) {
+        s = this.SkillButtonData.GetAttribute();
+        i = this.SkillButtonData.GetMaxAttribute();
+        e = s < i;
+      }
+      if (h === undefined) {
+        h = this.SkillButtonData.GetSkillRemainingCoolDown() > 0;
+      }
+    }
     s = !e && !h;
-    this.SetMaxEnergyEffectEnable(s), t && this.dot(s)
+    this.SetMaxEnergyEffectEnable(s);
+    if (t) {
+      this.dot(s);
+    }
   }
   Kit() {
-    return 7 === this.SkillButtonData?.GetButtonType() && this.SkillButtonData.IsSkillInItemUseBuffCd()
+    return this.SkillButtonData?.GetButtonType() === 7 && this.SkillButtonData.IsSkillInItemUseBuffCd();
   }
   Qit() {
     var [t, i] = this.SkillButtonData.GetEquippedItemUsingBuffCd();
-    return 0 < t && (this.Zit(t, i, () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeSelectedExploreId), this.RefreshEnable()
-    }), !0)
+    return t > 0 && (this.Zit(t, i, () => {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeSelectedExploreId);
+      this.RefreshEnable();
+    }), true);
   }
   Xit() {
-    return 7 === this.SkillButtonData?.GetButtonType() && this.SkillButtonData.IsSkillInItemUseSkillCd()
+    return this.SkillButtonData?.GetButtonType() === 7 && this.SkillButtonData.IsSkillInItemUseSkillCd();
   }
   $it() {
     var [t, i] = this.SkillButtonData.GetEquippedItemUsingSkillCd();
-    return 0 < t && (this.Zit(t, i, () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeSelectedExploreId), this.RefreshEnable()
-    }), !0)
+    return t > 0 && (this.Zit(t, i, () => {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeSelectedExploreId);
+      this.RefreshEnable();
+    }), true);
   }
   V6l() {
-    return 5 === this.SkillButtonData?.GetButtonType() && this.SkillButtonData.IsVehicleSkillInCd()
+    return this.SkillButtonData?.GetButtonType() === 5 && this.SkillButtonData.IsVehicleSkillInCd();
   }
   j6l() {
     var [t, i] = this.SkillButtonData.GetVehicleSkillCd();
-    return 0 < t && (this.Zit(t, i, () => {
-      this.RefreshEnable()
-    }), !0)
+    return t > 0 && (this.Zit(t, i, () => {
+      this.RefreshEnable();
+    }), true);
   }
   RefreshEquipExplore() {
     const t = this.GetItem(9);
-    var i, s, e;
-    t.IsUIActiveSelf() && t.SetUIActive(!1), this.SkillButtonData.GetExploreSkillChange() && (t.SetUIActive(!0), this.SkillButtonData.SetExploreSkillChange(!1), this.jit(), this.Iit = TimerSystem_1.TimerSystem.Delay(() => {
-      this.Iit = void 0, t.SetUIActive(!1)
-    }, EQUIP_EFFECT_TIME)), this.GetSwitchComponent.RefreshSwitch(), this.SkillButtonData?.IsExploreAsFight ? (this.GetSwitchComponent.UpdateNumPanel(!1), this.GetSwitchComponent.UpdatePointPanel(!1)) : ((i = ModelManager_1.ModelManager.RouletteModel.IsExploreSkillHasNum()) ? (s = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowNum(), this.GetSwitchComponent.UpdateNumPanel(i, s)) : this.GetSwitchComponent.UpdateNumPanel(i), s = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId, (i = ModelManager_1.ModelManager.RouletteModel.IsExploreSkillHasSetNum(s)) ? ([s, e] = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowSetNumById(s), this.GetSwitchComponent.UpdatePointPanel(i, e, s)) : this.GetSwitchComponent.UpdatePointPanel(i))
+    var i;
+    var s;
+    var e;
+    if (t.IsUIActiveSelf()) {
+      t.SetUIActive(false);
+    }
+    if (this.SkillButtonData.GetExploreSkillChange()) {
+      t.SetUIActive(true);
+      this.SkillButtonData.SetExploreSkillChange(false);
+      this.jit();
+      this.Iit = TimerSystem_1.TimerSystem.Delay(() => {
+        this.Iit = undefined;
+        t.SetUIActive(false);
+      }, EQUIP_EFFECT_TIME);
+    }
+    this.GetSwitchComponent.RefreshSwitch();
+    if (this.SkillButtonData?.IsExploreAsFight) {
+      this.GetSwitchComponent.UpdateNumPanel(false);
+      this.GetSwitchComponent.UpdatePointPanel(false);
+    } else {
+      if (i = ModelManager_1.ModelManager.RouletteModel.IsExploreSkillHasNum()) {
+        s = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowNum();
+        this.GetSwitchComponent.UpdateNumPanel(i, s);
+      } else {
+        this.GetSwitchComponent.UpdateNumPanel(i);
+      }
+      s = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
+      if (i = ModelManager_1.ModelManager.RouletteModel.IsExploreSkillHasSetNum(s)) {
+        [s, e] = ModelManager_1.ModelManager.RouletteModel.GetExploreSkillShowSetNumById(s);
+        this.GetSwitchComponent.UpdatePointPanel(i, e, s);
+      } else {
+        this.GetSwitchComponent.UpdatePointPanel(i);
+      }
+    }
   }
   jit() {
-    this.Iit && (TimerSystem_1.TimerSystem.Remove(this.Iit), this.Iit = void 0)
+    if (this.Iit) {
+      TimerSystem_1.TimerSystem.Remove(this.Iit);
+      this.Iit = undefined;
+    }
   }
   SetMaxEnergyEffectEnable(t) {
-    this.GetUltraComponent.SetUltraEffectEnable(t)
+    this.GetUltraComponent.SetUltraEffectEnable(t);
   }
   Cot(t) {}
   got(t) {
-    this.GetUltraComponent.SetUltraUpEffectEnable(t)
+    this.GetUltraComponent.SetUltraUpEffectEnable(t);
   }
   SetEnergyPercent(t, i) {
-    this.GetUltraComponent.SetBarPercent(t, i)
+    this.GetUltraComponent.SetBarPercent(t, i);
   }
   dot(t) {
-    this.Cit !== t && ((this.Cit = t) ? this.fot() : this.uot())
+    if (this.Cit !== t) {
+      if (this.Cit = t) {
+        this.fot();
+      } else {
+        this.uot();
+      }
+    }
   }
   fot() {
-    this.Cot(!0)
+    this.Cot(true);
   }
   uot() {
-    this.UltraComponent && (this.Cot(!1), this.SetMaxEnergyEffectEnable(!1), this.got(!1))
+    if (this.UltraComponent) {
+      this.Cot(false);
+      this.SetMaxEnergyEffectEnable(false);
+      this.got(false);
+    }
   }
   cot() {
     var t;
-    this.HasListenAttribute() && (t = this.SkillButtonData.GetMaxAttributeEffectPath(), StringUtils_1.StringUtils.IsEmpty(t) || this.GetUltraComponent.RefreshUltraEffect(t, this.SkillButtonData.GetMaxAttributeColor()), ModelManager_1.ModelManager.BattleLinkModel?.CheckInDreamLink() ? this.GetUltraComponent.RefreshUltraDynamicEffect(BattleLinkDefine_1.SKILL_BUTTON_EFFECT_PATH) : this.GetUltraComponent.StopUltraDynamicEffect())
+    if (this.HasListenAttribute()) {
+      t = this.SkillButtonData.GetMaxAttributeEffectPath();
+      if (!StringUtils_1.StringUtils.IsEmpty(t)) {
+        this.GetUltraComponent.RefreshUltraEffect(t, this.SkillButtonData.GetMaxAttributeColor());
+      }
+      if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInDreamLink()) {
+        this.GetUltraComponent.RefreshUltraDynamicEffect(BattleLinkDefine_1.SKILL_BUTTON_EFFECT_PATH);
+      } else {
+        this.GetUltraComponent.StopUltraDynamicEffect();
+      }
+    }
   }
   mot() {
     var t;
-    !this.SkillButtonData || this.SkillButtonData.GetMaxAttributeBurstEffectId() <= 0 || (t = this.SkillButtonData.GetMaxAttributeBurstEffectConfig()) && (t = t.NiagaraPath, StringUtils_1.StringUtils.IsEmpty(t) || this.GetUltraComponent.RefreshUltraTipsEffect(t))
+    if (!!this.SkillButtonData && !(this.SkillButtonData.GetMaxAttributeBurstEffectId() <= 0)) {
+      if (t = this.SkillButtonData.GetMaxAttributeBurstEffectConfig()) {
+        t = t.NiagaraPath;
+        if (!StringUtils_1.StringUtils.IsEmpty(t)) {
+          this.GetUltraComponent.RefreshUltraTipsEffect(t);
+        }
+      }
+    }
   }
   SetLimitUseSkillCount(t) {
-    this.GetNumComponent?.SetRemainingCount(t)
+    this.GetNumComponent?.SetRemainingCount(t);
   }
-  RefreshLimitCount(s = !1) {
+  RefreshLimitCount(s = false) {
     if (this.SkillButtonData) {
-      let t = !1,
-        i = 0;
-      this.SkillButtonData.IsLimitCountCustom ? (t = !0, i = this.SkillButtonData.RemainingCountCustom) : this.SkillButtonData.IsLimitCountVehicleSkill ? (t = !0, i = this.SkillButtonData.RemainingCountVehicleSkill) : (e = this.SkillButtonData.GetGroupSkillCdInfo(), (t = void 0 !== e && 1 < e.LimitCount) && (i = e.RemainingCount));
-      var e = this.NumComponent?.TargetActive ?? !1;
-      e === t && !s || !this.NumComponent && !t || this.GetNumComponent?.SetComponentActive(t), t && this.SetLimitUseSkillCount(i)
+      let t = false;
+      let i = 0;
+      if (this.SkillButtonData.IsLimitCountCustom) {
+        t = true;
+        i = this.SkillButtonData.RemainingCountCustom;
+      } else if (this.SkillButtonData.IsLimitCountVehicleSkill) {
+        t = true;
+        i = this.SkillButtonData.RemainingCountVehicleSkill;
+      } else {
+        e = this.SkillButtonData.GetGroupSkillCdInfo();
+        if (t = e !== undefined && e.LimitCount > 1) {
+          i = e.RemainingCount;
+        }
+      }
+      var e = this.NumComponent?.TargetActive ?? false;
+      if ((e !== t || !!s) && (!!this.NumComponent || !!t)) {
+        this.GetNumComponent?.SetComponentActive(t);
+      }
+      if (t) {
+        this.SetLimitUseSkillCount(i);
+      }
     }
   }
   RefreshSkillButtonLongPress() {
-    var t, i;
-    this.SkillButtonData && (1 === this.SkillButtonData.GetButtonType() && (t = this.SkillButtonData.IsShowLongPress()) ? ((i = this.GetLongPressComponent).SetComponentActive(t), i.SetAction(this.SkillButtonData.GetActionType()), this.SkillButtonData.RefreshLongPressDuration(), i.SetDuration(this.SkillButtonData.GetLongPressDuration()), this.SkillButtonData.GetIsLongPressing() && i.StartProgress()) : this.LongPressComponent?.SetComponentActive(!1))
+    var t;
+    var i;
+    if (this.SkillButtonData) {
+      if (this.SkillButtonData.GetButtonType() === 1 && (t = this.SkillButtonData.IsShowLongPress())) {
+        (i = this.GetLongPressComponent).SetComponentActive(t);
+        i.SetAction(this.SkillButtonData.GetActionType());
+        this.SkillButtonData.RefreshLongPressDuration();
+        i.SetDuration(this.SkillButtonData.GetLongPressDuration());
+        if (this.SkillButtonData.GetIsLongPressing()) {
+          i.StartProgress();
+        }
+      } else {
+        this.LongPressComponent?.SetComponentActive(false);
+      }
+    }
   }
   InitVehicleHandle() {
-    this.SkillButtonData?.InitVehicleHandle()
+    this.SkillButtonData?.InitVehicleHandle();
   }
   RefreshConfigLongPress() {
     var t;
-    this.SkillButtonData && (this.SkillButtonData.GetIsConfigShowLongPress() ? ((t = this.GetConfigLongPressComponent).SetComponentActive(!0), t.SetAction(this.SkillButtonData.GetActionType()), t.SetDuration(this.SkillButtonData.GetLongPressTime())) : this.ConfigLongPressComponent?.SetComponentActive(!1))
+    if (this.SkillButtonData) {
+      if (this.SkillButtonData.GetIsConfigShowLongPress()) {
+        (t = this.GetConfigLongPressComponent).SetComponentActive(true);
+        t.SetAction(this.SkillButtonData.GetActionType());
+        t.SetDuration(this.SkillButtonData.GetLongPressTime());
+      } else {
+        this.ConfigLongPressComponent?.SetComponentActive(false);
+      }
+    }
   }
   aot() {
-    return !!this.SkillButtonData && this.SkillButtonData.IsEnable()
+    return !!this.SkillButtonData && this.SkillButtonData.IsEnable();
   }
   IsVisible() {
-    return !!this.SkillButtonData && this.SkillButtonData.IsVisible()
+    return !!this.SkillButtonData && this.SkillButtonData.IsVisible();
   }
   GetAttributeId() {
-    return this.SkillButtonData.AttributeId
+    return this.SkillButtonData.AttributeId;
   }
   HasListenAttribute() {
-    return !!this.SkillButtonData && this.SkillButtonData.HasAttribute()
+    return !!this.SkillButtonData && this.SkillButtonData.HasAttribute();
   }
   GetSkillButtonData() {
-    return this.SkillButtonData
+    return this.SkillButtonData;
   }
   GetInputIndex() {
-    return this.Eit
+    return this.Eit;
   }
-  OnInputAction(t = !1) {
-    (t || this.SkillButtonData && this.SkillButtonData.IsEnable() && this.SkillButtonData.IsVisible()) && this.ClickEffect?.Play()
+  OnInputAction(t = false) {
+    if (t || this.SkillButtonData && this.SkillButtonData.IsEnable() && this.SkillButtonData.IsVisible()) {
+      this.ClickEffect?.Play();
+    }
   }
-  SetVisibleByExploreMode(t, i = !1) {
-    let s = !1;
-    t ? (this.qit = this.Git, s = !0) : this.qit = 0, this.RootItem && (this.RootItem.SetRaycastTarget(s), this.GetItem(8).SetUIActive(t), i ? (this.AlphaTweenComp ? this.AlphaTweenComp.Stop() : this.AlphaTweenComp = this.RootActor.GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass()), (t = this.AlphaTweenComp.GetPlayTween()).from = this.RootItem.GetAlpha(), t.to = this.qit, this.AlphaTweenComp.Play()) : (this.AlphaTweenComp && this.AlphaTweenComp.Stop(), this.RootItem.SetAlpha(this.qit)))
+  SetVisibleByExploreMode(t, i = false) {
+    let s = false;
+    if (t) {
+      this.qit = this.Git;
+      s = true;
+    } else {
+      this.qit = 0;
+    }
+    if (this.RootItem) {
+      this.RootItem.SetRaycastTarget(s);
+      this.GetItem(8).SetUIActive(t);
+      if (i) {
+        if (this.AlphaTweenComp) {
+          this.AlphaTweenComp.Stop();
+        } else {
+          this.AlphaTweenComp = this.RootActor.GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
+        }
+        (t = this.AlphaTweenComp.GetPlayTween()).from = this.RootItem.GetAlpha();
+        t.to = this.qit;
+        this.AlphaTweenComp.Play();
+      } else {
+        if (this.AlphaTweenComp) {
+          this.AlphaTweenComp.Stop();
+        }
+        this.RootItem.SetAlpha(this.qit);
+      }
+    }
   }
-}(exports.BattleSkillItem = BattleSkillItem).zit = Stats_1.Stat.Create("[SkillButton]PlaySkillCd");
+}
+(exports.BattleSkillItem = BattleSkillItem).zit = Stats_1.Stat.Create("[SkillButton]PlaySkillCd");
 //# sourceMappingURL=BattleSkillItem.js.map

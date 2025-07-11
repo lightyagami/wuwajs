@@ -1,93 +1,130 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattleUiHoverTipsC = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer"),
-  GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract"),
-  GenericLayout_1 = require("../../../Util/Layout/GenericLayout"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  BattleChildView_1 = require("../BattleChildView/BattleChildView");
+  value: true
+});
+exports.BattleUiHoverTipsC = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
+const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const BattleChildView_1 = require("../BattleChildView/BattleChildView");
 class BattleUiHoverTipsC extends BattleChildView_1.BattleChildView {
   constructor() {
-    super(...arguments), this.Hmt = !1, this.TDe = void 0, this.SPe = void 0, this.LAe = void 0, this.xKt = void 0, this.EndShow = () => {
-      this.TDe && (TimerSystem_1.TimerSystem.Remove(this.TDe), this.TDe = void 0), this.SPe?.StopCurrentSequence(), this.SPe?.PlayLevelSequenceByName("Close")
-    }, this.eRe = () => {
-      this.TDe && (this.EndShow(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo))
-    }
+    super(...arguments);
+    this.Hmt = false;
+    this.TDe = undefined;
+    this.SPe = undefined;
+    this.LAe = undefined;
+    this.xKt = undefined;
+    this.EndShow = () => {
+      if (this.TDe) {
+        TimerSystem_1.TimerSystem.Remove(this.TDe);
+        this.TDe = undefined;
+      }
+      this.SPe?.StopCurrentSequence();
+      this.SPe?.PlayLevelSequenceByName("Close");
+    };
+    this.eRe = () => {
+      if (this.TDe) {
+        this.EndShow();
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo);
+      }
+    };
   }
   Initialize(e) {
-    super.Initialize(e)
+    super.Initialize(e);
   }
   async InitializeAsync() {
     var e = this.GetItem(1);
-    this.xKt = new BattleUiInfoItem, await this.xKt.CreateThenShowByActorAsync(e.GetOwner())
+    this.xKt = new BattleUiInfoItem();
+    await this.xKt.CreateThenShowByActorAsync(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   OnStart() {
-    this.RootItem?.SetAnchorHAlign(2), this.RootItem?.SetAnchorVAlign(1), this.RootItem?.SetAnchorOffsetX(0), this.RootItem?.SetAnchorOffsetY(0), this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem), this.SPe.BindSequenceCloseEvent(e => {
-      "Close" === e && this.SetActive(!1)
-    })
+    this.RootItem?.SetAnchorHAlign(2);
+    this.RootItem?.SetAnchorVAlign(1);
+    this.RootItem?.SetAnchorOffsetX(0);
+    this.RootItem?.SetAnchorOffsetY(0);
+    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.SPe.BindSequenceCloseEvent(e => {
+      if (e === "Close") {
+        this.SetActive(false);
+      }
+    });
   }
   CreateAndShow(e, t) {
-    this.Hmt ? (this.UpdateInfo(t), this.SetActive(!0), this.Wmt()) : this.NewByResourceId(e, "UiItem_HoverTipsC").finally(() => {
-      this.Hmt = !0, this.UpdateInfo(t), this.Wmt()
-    })
+    if (this.Hmt) {
+      this.UpdateInfo(t);
+      this.SetActive(true);
+      this.Wmt();
+    } else {
+      this.NewByResourceId(e, "UiItem_HoverTipsC").finally(() => {
+        this.Hmt = true;
+        this.UpdateInfo(t);
+        this.Wmt();
+      });
+    }
   }
   OnShowBattleChildView() {
-    this.SPe.StopCurrentSequence(), this.SPe.PlaySequencePurely("Start")
+    this.SPe.StopCurrentSequence();
+    this.SPe.PlaySequencePurely("Start");
   }
   UpdateInfo(e) {
-    this.LAe = e, this.Hmt && this.xKt?.Refresh(this.LAe)
+    this.LAe = e;
+    if (this.Hmt) {
+      this.xKt?.Refresh(this.LAe);
+    }
   }
   Wmt() {
-    this.TDe = TimerSystem_1.TimerSystem.Delay(this.eRe, 8e3)
+    this.TDe = TimerSystem_1.TimerSystem.Delay(this.eRe, 8000);
   }
   OnBeforeDestroy() {
-    this.eRe()
+    this.eRe();
   }
 }
 exports.BattleUiHoverTipsC = BattleUiHoverTipsC;
 class BattleUiInfoItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.AZs = void 0, this.Bqe = () => new BattleUiDescInfoItem
+    super(...arguments);
+    this.AZs = undefined;
+    this.Bqe = () => new BattleUiDescInfoItem();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [2, UE.UILayoutBase],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [2, UE.UILayoutBase], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    await super.OnBeforeStartAsync(), this.AZs = new GenericLayout_1.GenericLayout(this.GetLayoutBase(2), this.Bqe)
+    await super.OnBeforeStartAsync();
+    this.AZs = new GenericLayout_1.GenericLayout(this.GetLayoutBase(2), this.Bqe);
   }
   Refresh(e) {
     this.AZs.RefreshByData(e.DescInfoList);
     var t = this.GetText(0);
-    t?.SetUIActive(!!e.TitleKey), e.TitleKey && LguiUtil_1.LguiUtil.SetLocalTextNew(t, e.TitleKey)
+    t?.SetUIActive(!!e.TitleKey);
+    if (e.TitleKey) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, e.TitleKey);
+    }
   }
 }
 class BattleUiDescInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText]];
   }
   Refresh(e) {
-    var t = this.GetText(1),
-      i = this.GetText(0);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(t, e.DescKey), i?.SetUIActive(!!e.TitleKey), e.TitleKey && LguiUtil_1.LguiUtil.SetLocalTextNew(i, e.TitleKey)
+    var t = this.GetText(1);
+    var i = this.GetText(0);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(t, e.DescKey);
+    i?.SetUIActive(!!e.TitleKey);
+    if (e.TitleKey) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(i, e.TitleKey);
+    }
   }
 }
 //# sourceMappingURL=BattleUiHoverTipsC.js.map

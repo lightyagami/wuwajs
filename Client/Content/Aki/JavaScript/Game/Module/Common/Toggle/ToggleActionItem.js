@@ -1,109 +1,212 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ToggleActionItem = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  TickSystem_1 = require("../../../../Core/Tick/TickSystem"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  Global_1 = require("../../../Global"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  LevelSequencePlayer_1 = require("../LevelSequencePlayer"),
-  DELAY_REFRESH_TIME = 100,
-  FONT_SIZE = 38,
-  TRACKING_ICON_SIZE = 1.2;
+  value: true
+});
+exports.ToggleActionItem = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../Core/Common/Log");
+const TickSystem_1 = require("../../../../Core/Tick/TickSystem");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const Global_1 = require("../../../Global");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LevelSequencePlayer_1 = require("../LevelSequencePlayer");
+const DELAY_REFRESH_TIME = 100;
+const FONT_SIZE = 38;
+const TRACKING_ICON_SIZE = 1.2;
 class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Toggle = void 0, this.S1a = void 0, this.eZi = void 0, this.Text = void 0, this.ToggleIndexInline = 0, this.LevelSequencePlayer = void 0, this.j5e = void 0, this.$Js = 0, this.DefaultToggleItemHeight = 0, this.Qoa = void 0, this.Rqe = void 0, this.hMa = void 0, this.E1a = !0, this.lMa = void 0, this.IsPlayingReleaseSequence = !1, this.J_ = () => {
+    super(...arguments);
+    this.Toggle = undefined;
+    this.S1a = undefined;
+    this.eZi = undefined;
+    this.Text = undefined;
+    this.ToggleIndexInline = 0;
+    this.LevelSequencePlayer = undefined;
+    this.j5e = undefined;
+    this.$Js = 0;
+    this.DefaultToggleItemHeight = 0;
+    this.Qoa = undefined;
+    this.Rqe = undefined;
+    this.hMa = undefined;
+    this.E1a = true;
+    this.lMa = undefined;
+    this.IsPlayingReleaseSequence = false;
+    this.J_ = () => {
       var t = this.dua();
-      this.hMa?.X === t.X && this.hMa?.Y === t.Y || (this.hMa = t, this.y1a())
-    }, this.dua = () => {
-      var t = Global_1.Global.CharacterController,
-        i = (0, puerts_1.$ref)(0),
-        e = (0, puerts_1.$ref)(0),
-        t = (t.GetViewportSize(i, e), (0, puerts_1.$unref)(i)),
-        i = (0, puerts_1.$unref)(e);
-      return new UE.IntPoint(t, i)
-    }, this.ToggleClick = t => {
-      this.IsPlayingReleaseSequence || this.j5e && this.j5e(t)
-    }
+      if (this.hMa?.X !== t.X || this.hMa?.Y !== t.Y) {
+        this.hMa = t;
+        this.y1a();
+      }
+    };
+    this.dua = () => {
+      var t = Global_1.Global.CharacterController;
+      var i = (0, puerts_1.$ref)(0);
+      var e = (0, puerts_1.$ref)(0);
+      t.GetViewportSize(i, e);
+      var t = (0, puerts_1.$unref)(i);
+      var i = (0, puerts_1.$unref)(e);
+      return new UE.IntPoint(t, i);
+    };
+    this.ToggleClick = t => {
+      if (!this.IsPlayingReleaseSequence) {
+        if (this.j5e) {
+          this.j5e(t);
+        }
+      }
+    };
   }
   get ToggleIndex() {
-    return this.ToggleIndexInline
+    return this.ToggleIndexInline;
   }
   set ToggleIndex(t) {
-    this.ToggleIndexInline = t
+    this.ToggleIndexInline = t;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIExtendToggle],
-      [2, UE.UITexture],
-      [3, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [1, this.ToggleClick]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIExtendToggle], [2, UE.UITexture], [3, UE.UIItem]];
+    this.BtnBindInfo = [[1, this.ToggleClick]];
   }
   OnStart() {
     this.Toggle = this.GetExtendToggle(1);
-    var t = this.Toggle.GetOwner(),
-      t = (this.S1a = t.GetUIItem(), this.eZi = this.GetText(0), this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem), this.Toggle.SetToggleStateForce(0, !1, !0), this.Qoa = this.GetRootActor().GetComponentByClass(UE.UISizeControlByOther.StaticClass()), this.GetText(0));
-    this.$Js = t.GetSize(), this.DefaultToggleItemHeight = this.S1a.GetHeight(), this.Rqe = TickSystem_1.TickSystem.Add(this.J_, "ToggleActionItemTick"), this.hMa = this.dua()
+    var t = this.Toggle.GetOwner();
+    this.S1a = t.GetUIItem();
+    this.eZi = this.GetText(0);
+    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.Toggle.SetToggleStateForce(0, false, true);
+    this.Qoa = this.GetRootActor().GetComponentByClass(UE.UISizeControlByOther.StaticClass());
+    var t = this.GetText(0);
+    this.$Js = t.GetSize();
+    this.DefaultToggleItemHeight = this.S1a.GetHeight();
+    this.Rqe = TickSystem_1.TickSystem.Add(this.J_, "ToggleActionItemTick", undefined, true, undefined, true);
+    this.hMa = this.dua();
   }
   OnBeforeDestroy() {
-    this.Toggle = void 0, this.Text = void 0, this.eZi = void 0, this.S1a = void 0, this.IsPlayingReleaseSequence = !1, this.LevelSequencePlayer && this.LevelSequencePlayer.Clear(), this.LevelSequencePlayer = void 0, this.Qoa = void 0, this.Rqe && (TickSystem_1.TickSystem.Remove(this.Rqe.Id), this.Rqe = void 0), this.lMa && TimerSystem_1.TimerSystem.Has(this.lMa) && (TimerSystem_1.TimerSystem.Remove(this.lMa), this.lMa = void 0)
+    this.Toggle = undefined;
+    this.Text = undefined;
+    this.eZi = undefined;
+    this.S1a = undefined;
+    this.IsPlayingReleaseSequence = false;
+    if (this.LevelSequencePlayer) {
+      this.LevelSequencePlayer.Clear();
+    }
+    this.LevelSequencePlayer = undefined;
+    this.Qoa = undefined;
+    if (this.Rqe) {
+      TickSystem_1.TickSystem.Remove(this.Rqe.Id);
+      this.Rqe = undefined;
+    }
+    if (this.lMa && TimerSystem_1.GameplayTimerSystem.Has(this.lMa)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.lMa);
+      this.lMa = undefined;
+    }
   }
   ShowSequenceOnBegin() {
-    this.LevelSequencePlayer.PlayLevelSequenceByName("show")
+    this.LevelSequencePlayer.PlayLevelSequenceByName("show");
   }
   async PlayReleaseSequence() {
-    this.IsPlayingReleaseSequence = !0, this.SetRaycastTarget(!1), await this.LevelSequencePlayer.PlaySequenceAsync("Select", new CustomPromise_1.CustomPromise), this.SetRaycastTarget(!0), this.IsPlayingReleaseSequence = !1
+    this.IsPlayingReleaseSequence = true;
+    this.SetRaycastTarget(false);
+    await this.LevelSequencePlayer.PlaySequenceAsync("Select", new CustomPromise_1.CustomPromise());
+    this.SetRaycastTarget(true);
+    this.IsPlayingReleaseSequence = false;
   }
   SetRaycastTarget(t) {
-    this.GetRootItem().SetRaycastTarget(t)
+    this.GetRootItem().SetRaycastTarget(t);
   }
   PlayAppearSequence() {
-    this.LevelSequencePlayer.PlayLevelSequenceByName("Start")
+    this.LevelSequencePlayer.PlayLevelSequenceByName("Start");
   }
   SetPanelAlpha(t) {
-    this.GetItem(3)?.SetAlpha(t)
+    this.GetItem(3)?.SetAlpha(t);
   }
   async PlayDisappearSequence() {
-    await this.LevelSequencePlayer.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise)
+    await this.LevelSequencePlayer.PlaySequenceAsync("Close", new CustomPromise_1.CustomPromise());
   }
   SetFunction(t) {
-    this.j5e = t
+    this.j5e = t;
   }
   GetToggleItem() {
-    return this.Toggle
+    return this.Toggle;
   }
   SetToggleText(t) {
-    this.Text = t, this.GetText(0).SetText(t), this.eZi && (this.eZi.SetText(t), this.lMa || (this.lMa = TimerSystem_1.TimerSystem.Delay(() => {
-      this.y1a(), this.lMa = void 0
-    }, DELAY_REFRESH_TIME)))
+    this.Text = t;
+    this.GetText(0).SetText(t);
+    if (this.eZi) {
+      this.eZi.SetText(t);
+      this.lMa ||= TimerSystem_1.GameplayTimerSystem.Delay(() => {
+        this.y1a();
+        this.lMa = undefined;
+      }, DELAY_REFRESH_TIME);
+    }
   }
   y1a() {
     var t;
-    this.eZi && this.S1a ? (this.eZi.GetRealSize(), t = this.eZi.GetRenderLineNum() < 2, Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] IsSingleRow", ["isSingleRow", t], ["this.IsSingleRow", this.E1a], ["text", this.Text]), this.E1a !== t && (this.E1a = t, this.E1a ? (this.Qoa?.SetControlHeight(!1), this.eZi.SetFontSize(this.$Js), this.eZi.GetRealSize(), this.eZi.GetRenderLineNum() < 2 || (this.eZi.SetFontSize(FONT_SIZE), Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Enlarge fail", ["text", this.Text])), this.S1a?.SetHeight(this.DefaultToggleItemHeight), Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single height set", ["text", this.Text])) : (this.eZi.SetFontSize(FONT_SIZE), this.Qoa?.SetControlHeight(!0), this.eZi.SetFontSize(FONT_SIZE), this.eZi.GetRealSize(), this.eZi.GetRenderLineNum() < 2 ? (this.Qoa?.SetControlHeight(!1), this.E1a = !0, Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single after reduce size", ["text", this.Text])) : (this.Qoa?.SetControlHeight(!0), Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Not single after reduce size", ["text", this.Text]))))) : Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Refresh Invalid", ["text", this.Text])
+    if (this.eZi && this.S1a) {
+      this.eZi.GetRealSize();
+      t = this.eZi.GetRenderLineNum() < 2;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] IsSingleRow", ["isSingleRow", t], ["this.IsSingleRow", this.E1a], ["text", this.Text]);
+      }
+      if (this.E1a !== t) {
+        this.E1a = t;
+        if (this.E1a) {
+          this.Qoa?.SetControlHeight(false);
+          this.eZi.SetFontSize(this.$Js);
+          this.eZi.GetRealSize();
+          if (!(this.eZi.GetRenderLineNum() < 2)) {
+            this.eZi.SetFontSize(FONT_SIZE);
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Enlarge fail", ["text", this.Text]);
+            }
+          }
+          this.S1a?.SetHeight(this.DefaultToggleItemHeight);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single height set", ["text", this.Text]);
+          }
+        } else {
+          this.eZi.SetFontSize(FONT_SIZE);
+          this.Qoa?.SetControlHeight(true);
+          this.eZi.SetFontSize(FONT_SIZE);
+          this.eZi.GetRealSize();
+          if (this.eZi.GetRenderLineNum() < 2) {
+            this.Qoa?.SetControlHeight(false);
+            this.E1a = true;
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single after reduce size", ["text", this.Text]);
+            }
+          } else {
+            this.Qoa?.SetControlHeight(true);
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Not single after reduce size", ["text", this.Text]);
+            }
+          }
+        }
+      }
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Refresh Invalid", ["text", this.Text]);
+    }
   }
-  SetToggleTexture(i, e = !1) {
+  SetToggleTexture(i, e = false) {
     const s = this.GetTexture(2);
     if (s) {
       s.SetUIItemScale(new UE.Vector(e ? TRACKING_ICON_SIZE : 1));
       const h = this.GetTexture(2).GetOwner()?.GetComponentByClass(UE.UIExtendToggleTextureTransition.StaticClass());
-      let t = void 0;
-      h && (t = () => {
-        h?.SetAllTransitionStateTexture(s.GetTexture())
-      }), this.SetTextureByPath(i, s, void 0, t)
+      let t = undefined;
+      if (h) {
+        t = () => {
+          h?.SetAllTransitionStateTexture(s.GetTexture());
+        };
+      }
+      this.SetTextureByPath(i, s, undefined, t);
     }
   }
   SetToggleTextGray(t) {
-    this.GetText(0).SetIsGray(t)
+    this.GetText(0).SetIsGray(t);
   }
   GetToggleText() {
-    return this.GetText(0)
+    return this.GetText(0);
   }
 }
 exports.ToggleActionItem = ToggleActionItem;

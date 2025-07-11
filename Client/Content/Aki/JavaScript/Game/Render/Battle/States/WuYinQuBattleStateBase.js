@@ -1,6 +1,7 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const StateBase_1 = require("../../../../Core/Utils/StateMachine/StateBase");
 class WuYinQuBattleStateBase extends StateBase_1.StateBase {

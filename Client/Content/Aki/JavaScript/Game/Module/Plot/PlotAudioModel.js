@@ -1,21 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlotAudioModel = void 0;
-const LanguageSystem_1 = require("../../../Core/Common/LanguageSystem"),
-  CommonDefine_1 = require("../../../Core/Define/CommonDefine"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  StringBuilder_1 = require("../../../Core/Utils/StringBuilder"),
-  StringUtils_1 = require("../../../Core/Utils/StringUtils"),
-  LauncherLanguageLib_1 = require("../../../Launcher/Util/LauncherLanguageLib"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  GLOBAL = "gl";
+  value: true
+});
+exports.PlotAudioModel = undefined;
+const LanguageSystem_1 = require("../../../Core/Common/LanguageSystem");
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const StringBuilder_1 = require("../../../Core/Utils/StringBuilder");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
+const LauncherLanguageLib_1 = require("../../../Launcher/Util/LauncherLanguageLib");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const GLOBAL = "gl";
 class PlotAudioModel extends ModelBase_1.ModelBase {
   static GetExternalSourcesMediaName(e) {
-    var a = new StringBuilder_1.StringBuilder;
-    let r = !1,
-      n = "";
-    var t = PlotAudioModel.pL1(e.VarParams, e.FileName);
+    var a = new StringBuilder_1.StringBuilder();
+    let r = false;
+    let n = "";
+    var t = PlotAudioModel.HL1(e.VarParams, e.FileName);
     switch (LanguageSystem_1.LanguageSystem.PackageAudio) {
       case CommonDefine_1.CHINESE_ISO639_1:
         r = e.CheckGenderZh;
@@ -27,16 +29,23 @@ class PlotAudioModel extends ModelBase_1.ModelBase {
         r = e.CheckGenderJa;
         break;
       case LauncherLanguageLib_1.KOREAN_ISO639_1:
-        r = e.CheckGenderKo
+        r = e.CheckGenderKo;
     }
     let i = LanguageSystem_1.LanguageSystem.PackageAudio;
-    return e.GlobalLanguage && (i = GLOBAL), r && (n = 0 === ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() ? "_F" : "_M"), a.Append(i, "_", t, n, ".wem"), a.ToString()
+    if (e.GlobalLanguage) {
+      i = GLOBAL;
+    }
+    if (r) {
+      n = ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 0 ? "_F" : "_M";
+    }
+    a.Append(i, "_", t, n, ".wem");
+    return a.ToString();
   }
   static GetAudioMouthAnimName(e) {
-    var a = new StringBuilder_1.StringBuilder;
-    let r = !1,
-      n = "";
-    var t = PlotAudioModel.pL1(e.VarParams, e.FileName);
+    var a = new StringBuilder_1.StringBuilder();
+    let r = false;
+    let n = "";
+    var t = PlotAudioModel.HL1(e.VarParams, e.FileName);
     switch (LanguageSystem_1.LanguageSystem.PackageAudio) {
       case CommonDefine_1.CHINESE_ISO639_1:
         r = e.CheckGenderZh;
@@ -48,17 +57,25 @@ class PlotAudioModel extends ModelBase_1.ModelBase {
         r = e.CheckGenderJa;
         break;
       case LauncherLanguageLib_1.KOREAN_ISO639_1:
-        r = e.CheckGenderKo
+        r = e.CheckGenderKo;
     }
     let i = LanguageSystem_1.LanguageSystem.PackageAudio;
-    e.GlobalLanguage && (i = GLOBAL), r && (n = 0 === ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() ? "_F" : "_M"), a.Append(i, "_", t, n);
+    if (e.GlobalLanguage) {
+      i = GLOBAL;
+    }
+    if (r) {
+      n = ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 0 ? "_F" : "_M";
+    }
+    a.Append(i, "_", t, n);
     t = a.ToString();
-    return a.Clear(), a.Append("/Game/Aki/Sequence/SequenceAnim/VoiceMouth/", LanguageSystem_1.LanguageSystem.PackageAudio, "/", t, ".", t), a.ToString()
+    a.Clear();
+    a.Append("/Game/Aki/Sequence/SequenceAnim/VoiceMouth/", LanguageSystem_1.LanguageSystem.PackageAudio, "/", t, ".", t);
+    return a.ToString();
   }
   static GetExternalSourcesMediaNameForEditor(e, a) {
-    let r = !1,
-      n = "";
-    var t = PlotAudioModel.pL1(e.VarParams, e.FileName);
+    let r = false;
+    let n = "";
+    var t = PlotAudioModel.HL1(e.VarParams, e.FileName);
     switch (LanguageSystem_1.LanguageSystem.PackageAudio) {
       case CommonDefine_1.CHINESE_ISO639_1:
         r = e.CheckGenderZh;
@@ -70,23 +87,30 @@ class PlotAudioModel extends ModelBase_1.ModelBase {
         r = e.CheckGenderJa;
         break;
       case LauncherLanguageLib_1.KOREAN_ISO639_1:
-        r = e.CheckGenderKo
+        r = e.CheckGenderKo;
     }
-    r && (n = a ? "_F" : "_M");
+    if (r) {
+      n = a ? "_F" : "_M";
+    }
     a = LanguageSystem_1.LanguageSystem.PackageAudio;
-    return new StringBuilder_1.StringBuilder(a, "_", t, n, ".wem").ToString()
+    return new StringBuilder_1.StringBuilder(a, "_", t, n, ".wem").ToString();
   }
   static Vih(e) {
     e = e.split(" ");
     const r = {};
-    return e.forEach(e => {
+    e.forEach(e => {
       var [e, a] = e.split("=");
-      r[e] = a
-    }), r
+      r[e] = a;
+    });
+    return r;
   }
-  static pL1(e, a) {
+  static HL1(e, a) {
     let r = "";
-    return StringUtils_1.StringUtils.IsBlank(e) || ("Global" === (e = PlotAudioModel.Vih(e)).VarType && (r = ModelManager_1.ModelManager.WorldModel?.GetWorldStateGeneric(e.Key) ?? ""), StringUtils_1.StringUtils.IsBlank(r)) ? a : a.replace(/\{VarParams\}/g, r)
+    if (StringUtils_1.StringUtils.IsBlank(e) || ((e = PlotAudioModel.Vih(e)).VarType === "Global" && (r = ModelManager_1.ModelManager.WorldModel?.GetWorldStateGeneric(e.Key) ?? ""), StringUtils_1.StringUtils.IsBlank(r))) {
+      return a;
+    } else {
+      return a.replace(/\{VarParams\}/g, r);
+    }
   }
 }
 exports.PlotAudioModel = PlotAudioModel;

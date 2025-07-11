@@ -1,32 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SpecialEnergyBarZanniSlot = void 0;
+  value: true
+});
+exports.SpecialEnergyBarZanniSlot = undefined;
 const SpecialEnergyBarSlot_1 = require("../SpecialEnergyBarSlot");
 class SpecialEnergyBarZanniSlot extends SpecialEnergyBarSlot_1.SpecialEnergyBarSlot {
   constructor() {
-    super(...arguments), this.BottomLineLight = void 0, this.DarkItemList = [], this.FullEffectWhenEnable = !1, this.ac = 0
+    super(...arguments);
+    this.BottomLineLight = undefined;
+    this.DarkItemList = [];
+    this.FullEffectWhenEnable = false;
+    this.ac = 0;
   }
-  RefreshBarPercent(e = !1) {
+  RefreshBarPercent(e = false) {
     var s = this.PercentMachine.GetCurPercent();
     if (this.FullEffectWhenEnable) {
       var i = this.GetKeyEnable();
       for (let t = 0; t < this.SlotItemList.length; t++) {
-        var r = this.SlotItemList[t],
-          a = s * this.SlotNum - t;
-        r.UpdatePercentWithFullEffectEnable(a, i, e)
+        var r = this.SlotItemList[t];
+        var a = s * this.SlotNum - t;
+        r.UpdatePercentWithFullEffectEnable(a, i, e);
       }
-      this.KeyItem?.RefreshKeyEnable(i, e)
+      this.KeyItem?.RefreshKeyEnable(i, e);
     } else {
       super.RefreshBarPercent(e);
       let t = 0;
-      s <= 0 ? t = -1 : 1 <= s && (t = 1), this.Owt(t, e)
+      if (s <= 0) {
+        t = -1;
+      } else if (s >= 1) {
+        t = 1;
+      }
+      this.Owt(t, e);
     }
   }
-  Owt(t, e = !1) {
+  Owt(t, e = false) {
     if (this.ac !== t || e) {
-      this.ac = t, this.BottomLineLight?.SetUIActive(1 === this.ac);
-      for (const s of this.DarkItemList) s.SetUIActive(-1 !== this.ac)
+      this.ac = t;
+      this.BottomLineLight?.SetUIActive(this.ac === 1);
+      for (const s of this.DarkItemList) {
+        s.SetUIActive(this.ac !== -1);
+      }
     }
   }
 }

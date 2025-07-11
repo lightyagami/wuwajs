@@ -1,16 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LeaveSlotOperation = void 0;
-const ModelManager_1 = require("../../../../Manager/ModelManager"),
-  NpcAiOperation_1 = require("./NpcAiOperation");
+  value: true
+});
+exports.LeaveSlotOperation = undefined;
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const NpcAiOperation_1 = require("./NpcAiOperation");
 class LeaveSlotOperation extends NpcAiOperation_1.NpcAiOperation {
   constructor(e) {
-    super(), this.Info = e
+    super();
+    this.Info = e;
   }
   async ExecuteAiOperation(e) {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData;
-    t.RefreshHandCardNum(this.Info.Sg1), t.RemoveBattleCardDataByIndex(this.Info.Ig1), await e.OpponentArea.FunctionalArea.DestroyCardByIndex(this.Info.Ig1)
+    t.RefreshHandCardNum(this.Info.Hg1);
+    t.RemoveBattleCardDataByIndex(this.Info.Qg1);
+    await e.OpponentArea.FunctionalArea.DestroyCardByIndex(this.Info.Qg1);
   }
 }
 exports.LeaveSlotOperation = LeaveSlotOperation;

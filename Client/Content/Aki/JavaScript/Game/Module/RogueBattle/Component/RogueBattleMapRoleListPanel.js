@@ -1,109 +1,158 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueBattleMapRoleListPanel = exports.RogueBattleMapRoleLayoutItem = void 0;
-const UE = require("ue"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  RoleController_1 = require("../../RoleUi/RoleController"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew"),
-  RogueBattleMapRoleListGrid_1 = require("./RogueBattleMapRoleListGrid");
+  value: true
+});
+exports.RogueBattleMapRoleListPanel = exports.RogueBattleMapRoleLayoutItem = undefined;
+const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const RoleController_1 = require("../../RoleUi/RoleController");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
+const RogueBattleMapRoleListGrid_1 = require("./RogueBattleMapRoleListGrid");
 class RogueBattleMapRoleLayoutItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super(...arguments), this.tFe = void 0, this.Vlo = [], this.ly1 = void 0, this.uyi = () => {
-      var e = new RogueBattleMapRoleListGrid_1.RogueBattleMapRoleLayoutGrid;
-      return e.BindOnCanExecuteChange(this.CanExecuteChangeFunction), e
-    }, this.CanExecuteChangeFunction = (e, t, i) => {
-      return 1 !== i || this.ly1 !== e.ConfigId
-    }, this._y1 = e => {
-      var t = this.ly1;
-      this.ly1 = this.Vlo.includes(e) ? e : void 0, void 0 !== t && this.tFe.GetSelectedProxy()?.SetSelected(!1), this.ly1 && (this.tFe.SelectGridProxy(this.Vlo.indexOf(e)), this.tFe.GetSelectedProxy()?.SetSelected(!0), t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e), RoleController_1.RoleController.OnSelectedRoleChange(e, t.SkinId))
-    }, this.hB1 = () => {
+    super(...arguments);
+    this.tFe = undefined;
+    this.Vlo = [];
+    this.Uy1 = undefined;
+    this.uyi = () => {
+      var e = new RogueBattleMapRoleListGrid_1.RogueBattleMapRoleLayoutGrid();
+      e.BindOnCanExecuteChange(this.CanExecuteChangeFunction);
+      return e;
+    };
+    this.CanExecuteChangeFunction = (e, t, i) => {
+      return i !== 1 || this.Uy1 !== e.ConfigId;
+    };
+    this.Dy1 = e => {
+      var t = this.Uy1;
+      this.Uy1 = this.Vlo.includes(e) ? e : undefined;
+      if (t !== undefined) {
+        this.tFe.GetSelectedProxy()?.SetSelected(false);
+      }
+      if (this.Uy1) {
+        this.tFe.SelectGridProxy(this.Vlo.indexOf(e));
+        this.tFe.GetSelectedProxy()?.SetSelected(true);
+        t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+        RoleController_1.RoleController.OnSelectedRoleChangeByConfig(e, t.SkinId);
+      }
+    };
+    this.GB1 = () => {
       var e;
-      this.ly1 && (e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.ly1), RoleController_1.RoleController.OnSelectedRoleChange(this.ly1, e.SkinId))
-    }
+      if (this.Uy1) {
+        e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.Uy1);
+        RoleController_1.RoleController.OnSelectedRoleChangeByConfig(this.Uy1, e.SkinId);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIText],
-      [2, UE.UIGridLayout],
-      [3, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIGridLayout], [3, UE.UIItem]];
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this._y1), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMapSummaryTeamShowAgain, this.hB1), this.tFe = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.uyi)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.Dy1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMapSummaryTeamShowAgain, this.GB1);
+    this.tFe = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.uyi);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this._y1), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMapSummaryTeamShowAgain, this.hB1)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.Dy1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMapSummaryTeamShowAgain, this.GB1);
   }
   Refresh(e, t, i) {
     this.Vlo = e;
-    var r = ModelManager_1.ModelManager.RogueBattleModel.IsRoleGot(e[0]),
-      s = r ? "RogueRes_Overall_Role_8" : "RogueRes_Overall_Role_9",
-      n = (LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), s), new Array);
+    var r = ModelManager_1.ModelManager.RogueBattleModel.IsRoleGot(e[0]);
+    var s = r ? "RogueRes_Overall_Role_8" : "RogueRes_Overall_Role_9";
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), s);
+    var n = new Array();
     for (const a of e) {
       var o = {
         ConfigId: a,
         IsGain: r,
-        NeedLevel: !0
+        NeedLevel: true
       };
-      n.push(o)
+      n.push(o);
     }
     this.tFe.RefreshByData(n, () => {
-      this.ly1 && this._y1(this.ly1)
-    })
+      if (this.Uy1) {
+        this.Dy1(this.Uy1);
+      }
+    });
   }
 }
 exports.RogueBattleMapRoleLayoutItem = RogueBattleMapRoleLayoutItem;
 class RogueBattleMapRoleListPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.xqe = void 0, this.cy1 = 0, this.I2i = () => {
-      return new RogueBattleMapRoleLayoutItem
-    }, this.GIl = e => {
-      this.cy1 = e
-    }
+    super(...arguments);
+    this.xqe = undefined;
+    this.By1 = 0;
+    this.I2i = () => {
+      return new RogueBattleMapRoleLayoutItem();
+    };
+    this.GIl = e => {
+      this.By1 = e;
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIScrollViewWithScrollbarComponent],
-      [1, UE.UIItem],
-      [2, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent], [1, UE.UIItem], [2, UE.UIItem]];
   }
   OnStart() {
-    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.I2i), this.GetItem(2)?.SetUIActive(!1)
+    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.I2i);
+    this.GetItem(2)?.SetUIActive(false);
   }
   BindEvent() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.GIl)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.GIl);
   }
   UnbindEvent() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.GIl)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.GIl);
   }
   OnBeforeShow() {
-    var e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetAllRogueResBondRole(),
-      t = [],
-      i = [],
-      r = [],
-      s = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetNewSeasonId(),
-      n = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRole(s, 0),
-      o = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRole(s, 1);
+    var e = ConfigManager_1.ConfigManager.RogueBattleConfig.GetAllRogueResBondRole();
+    var t = [];
+    var i = [];
+    var r = [];
+    var s = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetNewSeasonId();
+    var n = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRole(s, 0);
+    var o = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRole(s, 1);
     for (const h of e) {
-      var a, l = h.RoleId;
-      ModelManager_1.ModelManager.RogueBattleModel.IsRoleGot(l) ? i.push(l) : ModelManager_1.ModelManager.RogueBattleModel.IsRoleGot(h.TrialRoleId) ? i.push(h.TrialRoleId) : (a = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(h.TrialRoleId), ModelManager_1.ModelManager.RoleModel.IsMainRole(a) || (n.includes(h.TrialRoleId) || o.includes(h.TrialRoleId) ? r.push(h.TrialRoleId) : r.push(l)))
+      var a;
+      var l = h.RoleId;
+      if (ModelManager_1.ModelManager.RogueBattleModel.IsRoleGot(l)) {
+        i.push(l);
+      } else if (ModelManager_1.ModelManager.RogueBattleModel.IsRoleGot(h.TrialRoleId)) {
+        i.push(h.TrialRoleId);
+      } else {
+        a = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(h.TrialRoleId);
+        if (!ModelManager_1.ModelManager.RoleModel.IsMainRole(a)) {
+          if (n.includes(h.TrialRoleId) || o.includes(h.TrialRoleId)) {
+            r.push(h.TrialRoleId);
+          } else {
+            r.push(l);
+          }
+        }
+      }
     }
-    0 < i.length && (this.cy1 = 0 !== this.cy1 ? this.cy1 : i[0], t.push(i)), ModelManager_1.ModelManager.RogueBattleModel.SummaryRoleList = i, 0 < r.length && (this.cy1 = 0 !== this.cy1 ? this.cy1 : r[0], t.push(r)), this.xqe.RefreshByData(t, () => {
-      this.cy1 && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.cy1)
-    })
+    if (i.length > 0) {
+      this.By1 = this.By1 !== 0 ? this.By1 : i[0];
+      t.push(i);
+    }
+    ModelManager_1.ModelManager.RogueBattleModel.SummaryRoleList = i;
+    if (r.length > 0) {
+      this.By1 = this.By1 !== 0 ? this.By1 : r[0];
+      t.push(r);
+    }
+    this.xqe.RefreshByData(t, () => {
+      if (this.By1) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueResMapSummaryTeamUpdate, this.By1);
+      }
+    });
   }
   OnBeforeDestroy() {
-    this.xqe = void 0
+    this.xqe = undefined;
   }
 }
 exports.RogueBattleMapRoleListPanel = RogueBattleMapRoleListPanel;

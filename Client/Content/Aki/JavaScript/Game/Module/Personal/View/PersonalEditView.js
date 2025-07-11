@@ -1,60 +1,106 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PersonalEditView = void 0;
-const UE = require("ue"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  ButtonItem_1 = require("../../Common/Button/ButtonItem"),
-  GenericLayout_1 = require("../../Util/Layout/GenericLayout"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  PersonalCardComponent_1 = require("./PersonalCardComponent"),
-  PersonalEditTabItem_1 = require("./PersonalEditTabItem"),
-  PersonalHeadPhotoComponent_1 = require("./PersonalHeadPhotoComponent"),
-  PersonalPlayerTitleComponent_1 = require("./PersonalPlayerTitleComponent");
+  value: true
+});
+exports.PersonalEditView = undefined;
+const UE = require("ue");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const ButtonItem_1 = require("../../Common/Button/ButtonItem");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const PersonalCardComponent_1 = require("./PersonalCardComponent");
+const PersonalEditTabItem_1 = require("./PersonalEditTabItem");
+const PersonalHeadPhotoComponent_1 = require("./PersonalHeadPhotoComponent");
+const PersonalPlayerTitleComponent_1 = require("./PersonalPlayerTitleComponent");
 class PersonalEditView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.tVi = 0, this.B7t = void 0, this.z5i = void 0, this.Z5i = void 0, this.Yac = void 0, this.p5i = void 0, this.m8t = void 0, this.zac = () => {
-      var t = new PersonalEditTabItem_1.PersonalEditTabItem;
-      return t.SetToggleCallBack(this.TabItemToggleClick), t
-    }, this.TabItemToggleClick = (t, e) => {
-      this.B7t.SelectGridProxy(t), this.ShowContent(e)
-    }, this.RefreshBtnConfirm = (t, e) => {
+    super(...arguments);
+    this.tVi = 0;
+    this.B7t = undefined;
+    this.z5i = undefined;
+    this.Z5i = undefined;
+    this.Yac = undefined;
+    this.p5i = undefined;
+    this.m8t = undefined;
+    this.zac = () => {
+      var t = new PersonalEditTabItem_1.PersonalEditTabItem();
+      t.SetToggleCallBack(this.TabItemToggleClick);
+      return t;
+    };
+    this.TabItemToggleClick = (t, e) => {
+      this.B7t.SelectGridProxy(t);
+      this.ShowContent(e);
+    };
+    this.RefreshBtnConfirm = (t, e) => {
       this.GetInteractionGroup(5).SetInteractable(t);
       let i = "";
-      i = 2 === this.tVi ? e ? "Text_PhantomTakeOff_Text" : "ConfirmBox_173_ButtonText_1" : e ? "Text_InUse_Text" : "ConfirmBox_173_ButtonText_1", this.m8t.SetLocalTextNew(i)
-    }
+      i = this.tVi === 2 ? e ? "Text_PhantomTakeOff_Text" : "ConfirmBox_173_ButtonText_1" : e ? "Text_InUse_Text" : "ConfirmBox_173_ButtonText_1";
+      this.m8t.SetLocalTextNew(i);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIHorizontalLayout],
-      [1, UE.UIItem],
-      [2, UE.UIText],
-      [3, UE.UIButtonComponent],
-      [4, UE.UIItem],
-      [5, UE.UIInteractionGroup]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIInteractionGroup]];
   }
   async OnBeforeStartAsync() {
-    this.tVi = this.OpenParam, this.p5i = ModelManager_1.ModelManager.PersonalModel.GetPersonalInfoData(), this.m8t = new ButtonItem_1.ButtonItem(this.GetButton(3).RootUIComp), this.B7t = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.zac);
-    var t = [],
-      e = (t.push(0), ModelManager_1.ModelManager.FunctionModel.IsOpen(10061)),
-      e = (e && t.push(1), ModelManager_1.ModelManager.FunctionModel.IsOpen(10082)),
-      e = (e && t.push(2), await this.B7t.RefreshByDataAsync(t), t.findIndex(t => t === this.tVi));
-    this.B7t.SelectGridProxy(e = e < 0 ? 0 : e), await this.ShowContent(this.tVi)
+    this.tVi = this.OpenParam;
+    this.p5i = ModelManager_1.ModelManager.PersonalModel.GetPersonalInfoData();
+    this.m8t = new ButtonItem_1.ButtonItem(this.GetButton(3).RootUIComp);
+    this.B7t = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.zac);
+    var t = [];
+    t.push(0);
+    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10061);
+    if (e) {
+      t.push(1);
+    }
+    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10082);
+    if (e) {
+      t.push(2);
+    }
+    await this.B7t.RefreshByDataAsync(t);
+    var e = t.findIndex(t => t === this.tVi);
+    this.B7t.SelectGridProxy(e = e < 0 ? 0 : e);
+    await this.ShowContent(this.tVi);
   }
   async ShowContent(t) {
-    switch (this.tVi = t, this.Z5i?.SetActive(!1), this.z5i?.SetActive(!1), this.Yac?.SetActive(!1), t) {
+    this.tVi = t;
+    this.Z5i?.SetActive(false);
+    this.z5i?.SetActive(false);
+    this.Yac?.SetActive(false);
+    switch (t) {
       case 0:
-        this.Z5i ? this.Z5i.SetActive(!0) : (this.Z5i = new PersonalHeadPhotoComponent_1.PersonalHeadPhotoComponent, this.Z5i.SetRefreshConfirmBtn(this.RefreshBtnConfirm), await this.Z5i.CreateThenShowByResourceIdAsync("UiItem_EditHead", this.GetItem(4))), this.m8t?.SetFunction(this.Z5i.OnClickConfirm);
+        if (this.Z5i) {
+          this.Z5i.SetActive(true);
+        } else {
+          this.Z5i = new PersonalHeadPhotoComponent_1.PersonalHeadPhotoComponent();
+          this.Z5i.SetRefreshConfirmBtn(this.RefreshBtnConfirm);
+          await this.Z5i.CreateThenShowByResourceIdAsync("UiItem_EditHead", this.GetItem(4));
+        }
+        this.m8t?.SetFunction(this.Z5i.OnClickConfirm);
         break;
       case 1:
-        this.z5i ? this.z5i.SetActive(!0) : (this.z5i = new PersonalCardComponent_1.PersonalCardComponent(void 0, !1, this.p5i), this.z5i.SetRefreshConfirmBtn(this.RefreshBtnConfirm), await this.z5i.CreateThenShowByResourceIdAsync("UiItem_EditCard", this.GetItem(4))), this.m8t?.SetFunction(this.z5i.OnClickConfirm);
+        if (this.z5i) {
+          this.z5i.SetActive(true);
+        } else {
+          this.z5i = new PersonalCardComponent_1.PersonalCardComponent(undefined, false, this.p5i);
+          this.z5i.SetRefreshConfirmBtn(this.RefreshBtnConfirm);
+          await this.z5i.CreateThenShowByResourceIdAsync("UiItem_EditCard", this.GetItem(4));
+        }
+        this.m8t?.SetFunction(this.z5i.OnClickConfirm);
         break;
       case 2:
-        this.Yac ? this.Yac.SetActive(!0) : (this.Yac = new PersonalPlayerTitleComponent_1.PersonalPlayerTitleComponent, this.Yac.SetPersonalInfoData(this.p5i), this.Yac.SetRefreshConfirmBtn(this.RefreshBtnConfirm), await this.Yac.CreateThenShowByResourceIdAsync("UiItem_EditTitles", this.GetItem(4))), this.m8t?.SetFunction(this.Yac.OnClickConfirm)
+        if (this.Yac) {
+          this.Yac.SetActive(true);
+        } else {
+          this.Yac = new PersonalPlayerTitleComponent_1.PersonalPlayerTitleComponent();
+          this.Yac.SetPersonalInfoData(this.p5i);
+          this.Yac.SetRefreshConfirmBtn(this.RefreshBtnConfirm);
+          await this.Yac.CreateThenShowByResourceIdAsync("UiItem_EditTitles", this.GetItem(4));
+        }
+        this.m8t?.SetFunction(this.Yac.OnClickConfirm);
     }
-    this.UpdateCollectNum()
+    this.UpdateCollectNum();
   }
   UpdateCollectNum() {
     let t = 0;
@@ -66,13 +112,18 @@ class PersonalEditView extends UiViewBase_1.UiViewBase {
         t = this.p5i.GetUnlockCardDataCount();
         break;
       case 2:
-        t = ModelManager_1.ModelManager.PersonalModel.GetUnlockTitleDataCount()
+        t = ModelManager_1.ModelManager.PersonalModel.GetUnlockTitleDataCount();
     }
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "Collected", t)
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "Collected", t);
   }
   OnClickedConfirm() {}
   OnBeforeDestroy() {
-    this.Z5i?.Destroy(), this.Z5i = void 0, this.z5i?.Destroy(), this.z5i = void 0, this.Yac?.Destroy(), this.Yac = void 0
+    this.Z5i?.Destroy();
+    this.Z5i = undefined;
+    this.z5i?.Destroy();
+    this.z5i = undefined;
+    this.Yac?.Destroy();
+    this.Yac = undefined;
   }
 }
 exports.PersonalEditView = PersonalEditView;

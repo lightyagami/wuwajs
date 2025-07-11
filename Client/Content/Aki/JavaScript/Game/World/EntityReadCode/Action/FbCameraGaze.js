@@ -1,31 +1,71 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCameraGaze = void 0;
+  value: true
+});
+exports.FbCameraGaze = undefined;
 class FbCameraGaze {
   constructor(t) {
-    this.FbDataInternal = t, this.mch = !1, this.Cch = 0, this.gch = !1, this.fch = 0, this.pch = !1, this.vch = 0, this.ych = !1, this.Sch = !1, this.Yxh = !1, this.zxh = 0, this.Jxh = !1, this.Zxh = !1
+    this.FbDataInternal = t;
+    this.mch = false;
+    this.Cch = 0;
+    this.gch = false;
+    this.fch = 0;
+    this.pch = false;
+    this.vch = 0;
+    this.ych = false;
+    this.Sch = false;
+    this.Yxh = false;
+    this.zxh = 0;
+    this.Jxh = false;
+    this.Zxh = false;
   }
   static Create(t) {
-    if (t) return new FbCameraGaze(t)
+    if (t) {
+      return new FbCameraGaze(t);
+    }
   }
   get FadeInTime() {
-    return this.mch || (this.mch = !0, this.Cch = this.FbDataInternal.fadeInTime()), this.Cch
+    if (!this.mch) {
+      this.mch = true;
+      this.Cch = this.FbDataInternal.fadeInTime();
+    }
+    return this.Cch;
   }
   get StayTime() {
-    return this.gch || (this.gch = !0, this.fch = this.FbDataInternal.stayTime()), this.fch
+    if (!this.gch) {
+      this.gch = true;
+      this.fch = this.FbDataInternal.stayTime();
+    }
+    return this.fch;
   }
   get FadeOutTime() {
-    return this.pch || (this.pch = !0, this.vch = this.FbDataInternal.fadeOutTime()), this.vch
+    if (!this.pch) {
+      this.pch = true;
+      this.vch = this.FbDataInternal.fadeOutTime();
+    }
+    return this.vch;
   }
   get LockCamera() {
-    return this.ych || (this.ych = !0, this.Sch = this.FbDataInternal.lockCamera()), this.Sch
+    if (!this.ych) {
+      this.ych = true;
+      this.Sch = this.FbDataInternal.lockCamera();
+    }
+    return this.Sch;
   }
   get LockPriority() {
-    return this.Yxh || (this.Yxh = !0, this.zxh = this.FbDataInternal.lockPriority()), this.zxh
+    if (!this.Yxh) {
+      this.Yxh = true;
+      this.zxh = this.FbDataInternal.lockPriority();
+    }
+    return this.zxh;
   }
   get GazeInHook() {
-    return this.Jxh || (this.Jxh = !0, this.Zxh = this.FbDataInternal.gazeInHook()), this.Zxh
+    if (!this.Jxh) {
+      this.Jxh = true;
+      this.Zxh = this.FbDataInternal.gazeInHook();
+    }
+    return this.Zxh;
   }
 }
 exports.FbCameraGaze = FbCameraGaze;

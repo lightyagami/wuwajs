@@ -1,28 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetEntityTag = void 0;
+  value: true
+});
+exports.FbSetEntityTag = undefined;
 class FbSetEntityTag {
   constructor(t) {
-    this.FbDataInternal = t, this.a_h = !1, this.I9o = 0, this.Rvh = !1, this.wvh = void 0, this.Pvh = !1, this.Uvh = void 0, this.Gfh = !1, this.Ofh = 0, this.Dvh = !1, this.Bvh = !1
+    this.FbDataInternal = t;
+    this.a_h = false;
+    this.I9o = 0;
+    this.Rvh = false;
+    this.wvh = undefined;
+    this.Pvh = false;
+    this.Uvh = undefined;
+    this.Gfh = false;
+    this.Ofh = 0;
+    this.Dvh = false;
+    this.Bvh = false;
   }
   static Create(t) {
-    if (t) return new FbSetEntityTag(t)
+    if (t) {
+      return new FbSetEntityTag(t);
+    }
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get GameplayTag() {
-    return this.Rvh || (this.Rvh = !0, this.wvh = this.FbDataInternal.gameplayTag()), this.wvh
+    if (!this.Rvh) {
+      this.Rvh = true;
+      this.wvh = this.FbDataInternal.gameplayTag();
+    }
+    return this.wvh;
   }
   get SetType() {
-    return this.Pvh || (this.Pvh = !0, this.Uvh = this.FbDataInternal.setType()), this.Uvh
+    if (!this.Pvh) {
+      this.Pvh = true;
+      this.Uvh = this.FbDataInternal.setType();
+    }
+    return this.Uvh;
   }
   get DelayTime() {
-    return this.Gfh || (this.Gfh = !0, this.Ofh = this.FbDataInternal.delayTime()), this.Ofh
+    if (!this.Gfh) {
+      this.Gfh = true;
+      this.Ofh = this.FbDataInternal.delayTime();
+    }
+    return this.Ofh;
   }
   get BeforeHide() {
-    return this.Dvh || (this.Dvh = !0, this.Bvh = this.FbDataInternal.beforeHide()), this.Bvh
+    if (!this.Dvh) {
+      this.Dvh = true;
+      this.Bvh = this.FbDataInternal.beforeHide();
+    }
+    return this.Bvh;
   }
 }
 exports.FbSetEntityTag = FbSetEntityTag;

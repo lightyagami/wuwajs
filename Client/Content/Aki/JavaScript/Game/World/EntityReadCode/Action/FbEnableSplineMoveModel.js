@@ -1,18 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableSplineMoveModel = void 0;
+  value: true
+});
+exports.FbEnableSplineMoveModel = undefined;
 const UnionSplineMoveModelHelper_1 = require("./UnionSplineMoveModelHelper");
 class FbEnableSplineMoveModel {
   constructor(e) {
-    this.FbDataInternal = e, this.bSh = !1, this.TAe = void 0
+    this.FbDataInternal = e;
+    this.bSh = false;
+    this.TAe = undefined;
   }
   static Create(e) {
-    if (e) return new FbEnableSplineMoveModel(e)
+    if (e) {
+      return new FbEnableSplineMoveModel(e);
+    }
   }
   get Config() {
-    var e, o;
-    return !this.bSh && (this.bSh = !0, e = this.FbDataInternal.configType(), o = UnionSplineMoveModelHelper_1.UnionSplineMoveModelHelper.GetUnionSplineMoveModelObject(e)) && (this.TAe = UnionSplineMoveModelHelper_1.UnionSplineMoveModelHelper.ReadUnionSplineMoveModel(e, this.FbDataInternal.config(o))), this.TAe
+    var e;
+    var o;
+    if (!this.bSh && (this.bSh = true, e = this.FbDataInternal.configType(), o = UnionSplineMoveModelHelper_1.UnionSplineMoveModelHelper.GetUnionSplineMoveModelObject(e))) {
+      this.TAe = UnionSplineMoveModelHelper_1.UnionSplineMoveModelHelper.ReadUnionSplineMoveModel(e, this.FbDataInternal.config(o));
+    }
+    return this.TAe;
   }
 }
 exports.FbEnableSplineMoveModel = FbEnableSplineMoveModel;

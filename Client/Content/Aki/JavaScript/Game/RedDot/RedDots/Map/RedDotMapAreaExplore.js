@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotMapAreaExplore = void 0;
+  value: true
+});
+exports.RedDotMapAreaExplore = undefined;
 const RedDotBase_1 = require("../../RedDotBase");
 class RedDotMapAreaExplore extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
-    return "FunctionMap"
+    return "FunctionMap";
   }
 }
 exports.RedDotMapAreaExplore = RedDotMapAreaExplore;

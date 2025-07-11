@@ -1,103 +1,167 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Log_1 = require("../../Core/Common/Log"),
-  FNameUtil_1 = require("../../Core/Utils/FNameUtil"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  BulletUtil_1 = require("../NewWorld/Bullet/BulletUtil"),
-  BaseSkillComponent_1 = require("../NewWorld/Character/Common/Component/Skill/BaseSkillComponent");
+const UE = require("ue");
+const Log_1 = require("../../Core/Common/Log");
+const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
+const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const ModelManager_1 = require("../Manager/ModelManager");
+const BulletUtil_1 = require("../NewWorld/Bullet/BulletUtil");
+const BaseSkillComponent_1 = require("../NewWorld/Character/Common/Component/Skill/BaseSkillComponent");
 class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.子弹数据名 = void 0, this.子弹出生位置偏移 = void 0, this.子弹初速度偏移 = void 0, this.子弹id数组 = void 0, this.子弹出生位置偏移数组 = void 0, this.子弹初速度偏移数组 = void 0, this.使用子弹id数组 = !1, this.使用召唤者子弹 = !1, this.随机子弹权重数组 = void 0, this.传入当前实体位置 = !1, this.骨骼名字 = void 0
+    super(...arguments);
+    this.子弹数据名 = undefined;
+    this.子弹出生位置偏移 = undefined;
+    this.子弹初速度偏移 = undefined;
+    this.子弹id数组 = undefined;
+    this.子弹出生位置偏移数组 = undefined;
+    this.子弹初速度偏移数组 = undefined;
+    this.使用子弹id数组 = false;
+    this.使用召唤者子弹 = false;
+    this.随机子弹权重数组 = undefined;
+    this.传入当前实体位置 = false;
+    this.骨骼名字 = undefined;
   }
   Constructor() {}
-  K2_Notify(i, r) {
-    let s = i.GetOwner(),
-      t = void 0;
-    if (s instanceof TsBaseCharacter_1.default) {
-      if (!(t = s.CharacterActorComponent?.Entity)?.Valid) return !1;
-      var o = t.GetComponent(209)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex),
-        l = this.GetInitTransform(s);
+  K2_Notify(r, s) {
+    let o = r.GetOwner();
+    let e = undefined;
+    if (o instanceof TsBaseCharacter_1.default) {
+      if (!(e = o.CharacterActorComponent?.Entity)?.Valid) {
+        return false;
+      }
+      var l = e.GetComponent(209)?.CreateAnimNotifyContent(s.GetName(), this.exportIndex);
+      var h = this.GetInitTransform(o);
       if (this.使用召唤者子弹) {
-        var e = t.GetComponent(0).GetSummonerId();
-        if (!(0 < e)) return !1;
-        if (t = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity, s = t.GetComponent(3).Actor, !t?.Valid) return !1;
-        if (!(s instanceof TsBaseCharacter_1.default)) return !1
+        var t = e.GetComponent(0).GetSummonerId();
+        if (!(t > 0)) {
+          return false;
+        }
+        e = ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity;
+        o = e.GetComponent(3).Actor;
+        if (!e?.Valid) {
+          return false;
+        }
+        if (!(o instanceof TsBaseCharacter_1.default)) {
+          return false;
+        }
       }
-      e = t.GetComponent(40);
-      if (!e?.Valid) return !1;
-      var h = e.GetCurrentMontageCorrespondingSkillId(),
-        a = 0 !== h ? h : e.GetSkillIdWithGroupId(BaseSkillComponent_1.SKILL_GROUP_MAIN);
+      t = e.GetComponent(40);
+      if (!t?.Valid) {
+        return false;
+      }
+      var i = t.GetCurrentMontageCorrespondingSkillId();
+      var n = i !== 0 ? i : t.GetSkillIdWithGroupId(BaseSkillComponent_1.SKILL_GROUP_MAIN);
       if (this.使用子弹id数组) {
-        var n = this.子弹id数组.Num(),
-          h = this.GetRandomIndex(),
-          u = this.子弹出生位置偏移数组.Num(),
-          f = this.子弹初速度偏移数组.Num();
-        if (0 <= h && h < n) {
-          if (!this.CanCreateBullet(s, r, h)) return !1;
-          let t = void 0,
-            i = void 0;
-          h < u && (t = this.子弹出生位置偏移数组.Get(h)), h < f && (i = this.子弹初速度偏移数组.Get(h)), BulletUtil_1.BulletUtil.CreateBulletFromAN(s, this.子弹id数组.Get(h), l, a, !1, o, void 0, t, i)
-        } else
-          for (let e = 0; e < n; e++)
-            if (this.CanCreateBullet(s, r, e)) {
-              let t = void 0,
-                i = void 0;
-              u > e && (t = this.子弹出生位置偏移数组.Get(e)), f > e && (i = this.子弹初速度偏移数组.Get(e)), BulletUtil_1.BulletUtil.CreateBulletFromAN(s, this.子弹id数组.Get(e), l, a, !1, o, void 0, t, i)
+        var a = this.子弹id数组.Num();
+        var i = this.GetRandomIndex();
+        var u = this.子弹出生位置偏移数组.Num();
+        var f = this.子弹初速度偏移数组.Num();
+        if (i >= 0 && i < a) {
+          if (!this.CanCreateBullet(o, s, i)) {
+            return false;
+          }
+          let e = undefined;
+          let t = undefined;
+          if (i < u) {
+            e = this.子弹出生位置偏移数组.Get(i);
+          }
+          if (i < f) {
+            t = this.子弹初速度偏移数组.Get(i);
+          }
+          BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹id数组.Get(i), h, n, false, l, undefined, e, t);
+        } else {
+          for (let i = 0; i < a; i++) {
+            if (this.CanCreateBullet(o, s, i)) {
+              let e = undefined;
+              let t = undefined;
+              if (u > i) {
+                e = this.子弹出生位置偏移数组.Get(i);
+              }
+              if (f > i) {
+                t = this.子弹初速度偏移数组.Get(i);
+              }
+              BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹id数组.Get(i), h, n, false, l, undefined, e, t);
             }
+          }
+        }
       } else {
-        if (!this.CanCreateBullet(s, r, 0)) return !1;
-        BulletUtil_1.BulletUtil.CreateBulletFromAN(s, this.子弹数据名.toString(), l, a, !1, o, void 0, this.子弹出生位置偏移, this.子弹初速度偏移)
+        if (!this.CanCreateBullet(o, s, 0)) {
+          return false;
+        }
+        BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹数据名.toString(), h, n, false, l, undefined, this.子弹出生位置偏移, this.子弹初速度偏移);
       }
-      return !0
+      return true;
     }
     if (!(this.使用子弹id数组 ? this.子弹id数组.Num() <= 0 : FNameUtil_1.FNameUtil.IsNothing(this.子弹数据名))) {
-      e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldType(s.GetWorld());
-      if (2 === e || 4 === e) {
-        var h = UE.KismetSystemLibrary.GetOuterObject(this),
-          v = UE.KismetSystemLibrary.GetPathName(h);
-        if (this.使用子弹id数组) {
-          var d = this.子弹id数组,
-            U = d.Num(),
-            e = this.GetRandomIndex();
-          if (0 <= e && e < U) UE.BPL_BulletPreview_C.ShowBulletPreview(v, new UE.FName(d.Get(e)), s, i, s.GetWorld(), void 0);
-          else
-            for (let t = 0; t < U; t++) UE.BPL_BulletPreview_C.ShowBulletPreview(v, new UE.FName(d.Get(t)), s, i, s.GetWorld(), void 0)
-        } else UE.BPL_BulletPreview_C.ShowBulletPreview(v, this.子弹数据名, s, i, s.GetWorld(), void 0)
+      t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldType(o.GetWorld());
+      if (t === 2 || t === 4) {
+        i = UE.KismetSystemLibrary.GetOuterObject(this);
+        const v = UE.KismetSystemLibrary.GetPathName(i);
+        ResourceSystem_1.ResourceSystem.LoadTypeAsync("BPL_BulletPreview_C", () => {
+          if (this.使用子弹id数组) {
+            var t = this.子弹id数组;
+            var i = t.Num();
+            var e = this.GetRandomIndex();
+            if (e >= 0 && e < i) {
+              UE.BPL_BulletPreview_C.ShowBulletPreview(v, new UE.FName(t.Get(e)), o, r, o.GetWorld(), undefined);
+            } else {
+              for (let e = 0; e < i; e++) {
+                UE.BPL_BulletPreview_C.ShowBulletPreview(v, new UE.FName(t.Get(e)), o, r, o.GetWorld(), undefined);
+              }
+            }
+          } else {
+            UE.BPL_BulletPreview_C.ShowBulletPreview(v, this.子弹数据名, o, r, o.GetWorld(), undefined);
+          }
+        });
       }
     }
-    return !1
+    return false;
   }
   GetNotifyName() {
-    return "添加子弹"
+    return "添加子弹";
   }
-  GetInitTransform(t) {
-    if (!this.传入当前实体位置) return new UE.TransformDouble;
-    if (!FNameUtil_1.FNameUtil.IsNothing(this.骨骼名字) && t.Mesh.DoesSocketExist(this.骨骼名字)) return t.Mesh.D_GetSocketTransform(this.骨骼名字, 0);
-    return t.D_GetTransform()
+  GetInitTransform(e) {
+    if (!this.传入当前实体位置) {
+      return new UE.TransformDouble();
+    }
+    if (!FNameUtil_1.FNameUtil.IsNothing(this.骨骼名字) && e.Mesh.DoesSocketExist(this.骨骼名字)) {
+      return e.Mesh.D_GetSocketTransform(this.骨骼名字, 0);
+    }
+    return e.D_GetTransform();
   }
   GetRandomIndex() {
     var r = this.随机子弹权重数组.Num();
-    if (!(r <= 0))
-      if (r !== this.子弹id数组.Num()) Log_1.Log.CheckError() && Log_1.Log.Error("Bullet", 28, "随机子弹权重数量对不上！");
-      else {
-        let i = 0;
-        for (let t = 0; t < r; t++) {
-          var s = this.随机子弹权重数组.Get(t);
-          0 < s && (i += s)
+    if (!(r <= 0)) {
+      if (r !== this.子弹id数组.Num()) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 28, "随机子弹权重数量对不上！");
         }
-        let e = Math.random() * i;
-        for (let t = 0; t < r; t++) {
-          var o = this.随机子弹权重数组.Get(t);
-          if (!(o <= 0) && (e -= o) <= 0) return t
+      } else {
+        let t = 0;
+        for (let e = 0; e < r; e++) {
+          var s = this.随机子弹权重数组.Get(e);
+          if (s > 0) {
+            t += s;
+          }
         }
-      } return -1
+        let i = Math.random() * t;
+        for (let e = 0; e < r; e++) {
+          var o = this.随机子弹权重数组.Get(e);
+          if (!(o <= 0) && (i -= o) <= 0) {
+            return e;
+          }
+        }
+      }
+    }
+    return -1;
   }
-  CanCreateBullet(t, i, e) {
-    return !0
+  CanCreateBullet(e, t, i) {
+    return true;
   }
 }
 exports.default = TsAnimNotifyReSkillEvent;

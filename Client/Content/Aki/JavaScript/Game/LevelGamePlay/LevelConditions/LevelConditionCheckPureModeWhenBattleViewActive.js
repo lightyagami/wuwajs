@@ -1,12 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckPureModeWhenBattleViewActive = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckPureModeWhenBattleViewActive = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiManager_1 = require("../../Ui/UiManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckPureModeWhenBattleViewActive extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, r) {
-    return ModelManager_1.ModelManager.BattleUiModel.PureModeData?.IsOpen ?? !1
+  Check(e, a) {
+    var r = ModelManager_1.ModelManager.BattleUiModel.PureModeData?.IsOpen ?? false;
+    var n = UiManager_1.UiManager.IsViewShow("BattleView");
+    return r && n;
   }
 }
 exports.LevelConditionCheckPureModeWhenBattleViewActive = LevelConditionCheckPureModeWhenBattleViewActive;

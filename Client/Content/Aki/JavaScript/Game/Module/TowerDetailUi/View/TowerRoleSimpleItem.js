@@ -1,22 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TowerRoleSimpleItem = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+  value: true
+});
+exports.TowerRoleSimpleItem = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 class TowerRoleSimpleItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super()
+    super();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UITexture]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UITexture]];
   }
   Refresh(e, r, t) {
     var s;
-    e ? (this.GetTexture(0).SetUIActive(!0), s = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e), this.SetRoleIcon(s.RoleHeadIcon, this.GetTexture(0), e)) : this.GetTexture(0).SetUIActive(!1)
+    if (e) {
+      this.GetTexture(0).SetUIActive(true);
+      s = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      this.SetRoleIcon(s.RoleHeadIcon, this.GetTexture(0), e);
+    } else {
+      this.GetTexture(0).SetUIActive(false);
+    }
   }
 }
 exports.TowerRoleSimpleItem = TowerRoleSimpleItem;

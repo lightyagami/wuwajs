@@ -1,7 +1,10 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.genericPromptView = void 0, exports.genericPromptView = {
+  value: true
+});
+exports.genericPromptView = undefined;
+exports.genericPromptView = {
   [0]: "EventConditionFloatTips",
   1: "DungeonClearanceFloatTips",
   2: "DungeonAutoExitFloatTips",
@@ -34,6 +37,7 @@ Object.defineProperty(exports, "__esModule", {
   29: "DangoAbyssNpcTips",
   30: "RogueResOpenTips",
   31: "MoralePrompt",
+  32: "NightmareLordFloatTips",
+  33: "NightmareSpawnPointFloatTips",
   34: "PhantomArenaActivityOpen"
-};
-//# sourceMappingURL=GenericPromptDefine.js.map
+}; //# sourceMappingURL=GenericPromptDefine.js.map

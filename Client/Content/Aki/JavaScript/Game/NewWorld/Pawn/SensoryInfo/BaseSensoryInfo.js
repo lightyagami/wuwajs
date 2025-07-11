@@ -1,22 +1,31 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BaseSensoryInfo = void 0;
+  value: true
+});
+exports.BaseSensoryInfo = undefined;
 class BaseSensoryInfo {
   constructor() {
-    this.RangePerceptionType = 1, this.SensoryInfoType = 1, this.SensoryRange = 0, this.InRange = !1
+    this.RangePerceptionType = 1;
+    this.SensoryInfoType = 1;
+    this.SensoryRange = 0;
+    this.InRange = false;
   }
   Init(...s) {
-    this.OnInit(s)
+    this.OnInit(s);
   }
   Tick(s) {
-    2 & this.SensoryInfoType && this.OnTick(s)
+    if (this.SensoryInfoType & 2) {
+      this.OnTick(s);
+    }
   }
   Clear() {
-    this.InRange = !1, this.SensoryRange = 0, this.OnClear()
+    this.InRange = false;
+    this.SensoryRange = 0;
+    this.OnClear();
   }
   CheckInRange() {
-    return this.InRange
+    return this.InRange;
   }
   ClearCacheList() {}
 }

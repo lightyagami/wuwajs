@@ -1,46 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleSkillTreeSkillItemBase = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  RoleSkillIconItem_1 = require("./RoleSkillIconItem");
+  value: true
+});
+exports.RoleSkillTreeSkillItemBase = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const RoleSkillIconItem_1 = require("./RoleSkillIconItem");
 class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.pdo = void 0, this.ac = void 0, this.N8e = () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillTreeNodeToggleClick, this)
-    }
+    super(...arguments);
+    this.pdo = undefined;
+    this.ac = undefined;
+    this.N8e = () => {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillTreeNodeToggleClick, this);
+    };
   }
   OnStart() {
-    this.pdo = new RoleSkillIconItem_1.RoleSkillIconItem(this.GetSkillIconItem(), this.IsIconTexture()), this.SetToggleCallBack(this.N8e)
+    this.pdo = new RoleSkillIconItem_1.RoleSkillIconItem(this.GetSkillIconItem(), this.IsIconTexture());
+    this.SetToggleCallBack(this.N8e);
   }
   Update(e, t) {
-    this.pdo.SetId(e, t), this.Refresh()
+    this.pdo.SetId(e, t);
+    this.Refresh();
   }
   GetRoleId() {
-    return this.pdo.GetRoleId()
+    return this.pdo.GetRoleId();
   }
   GetSkillNodeId() {
-    return this.pdo.GetSkillNodeId()
+    return this.pdo.GetSkillNodeId();
   }
   GetSkillId() {
-    return this.pdo.GetSkillId()
+    return this.pdo.GetSkillId();
   }
   GetUpgradeSkillId() {
-    return this.pdo.GetUpgradeSkillId()
+    return this.pdo.GetUpgradeSkillId();
   }
   GetSkillTreeNodeConfig() {
-    return this.pdo.GetSkillTreeNodeConfig()
+    return this.pdo.GetSkillTreeNodeConfig();
   }
   GetSkillConfig() {
-    return this.pdo.GetSkillConfig()
+    return this.pdo.GetSkillConfig();
   }
   GetUpgradeSkillConfig() {
-    return this.pdo.GetUpgradeSkillConfig()
+    return this.pdo.GetUpgradeSkillConfig();
   }
   GetSkillIconItem() {}
   GetLevelText() {}
@@ -48,45 +55,76 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   GetLockItem() {}
   GetStrongArrowUpItem() {}
   Refresh() {
-    this.pdo.Refresh(), this.RefreshName(), this.RefreshLevel(), this.RefreshState()
+    this.pdo.Refresh();
+    this.RefreshName();
+    this.RefreshLevel();
+    this.RefreshState();
   }
   RefreshName() {
-    var e, t, i = this.GetNameText();
-    i && (e = this.GetUpgradeSkillConfig(), t = this.GetSkillConfig(), e = e || t, t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTypeNameLocalText(e.SkillType)) && i.SetText(t)
+    var e;
+    var t;
+    var i = this.GetNameText();
+    if (i && (e = this.GetUpgradeSkillConfig(), t = this.GetSkillConfig(), e = e || t, t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTypeNameLocalText(e.SkillType))) {
+      i.SetText(t);
+    }
   }
   RefreshLevel() {
-    var e = this.GetRoleId(),
-      t = this.GetSkillNodeId(),
-      e = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(e, t),
-      i = this.GetLevelText();
-    i && (t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillMaxLevelBySkillNodeId(t), LguiUtil_1.LguiUtil.SetLocalText(i, "LevelRichText", e, t))
+    var e = this.GetRoleId();
+    var t = this.GetSkillNodeId();
+    var e = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(e, t);
+    var i = this.GetLevelText();
+    if (i) {
+      t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillMaxLevelBySkillNodeId(t);
+      LguiUtil_1.LguiUtil.SetLocalText(i, "LevelRichText", e, t);
+    }
   }
   SetToggleCallBack(e) {
-    this.pdo.SetToggleCallBack(e)
+    this.pdo.SetToggleCallBack(e);
   }
   SetToggleState(e) {
-    this.pdo.SetToggleState(e)
+    this.pdo.SetToggleState(e);
   }
   RefreshState() {
-    var e, t = this.GetLockItem(),
-      i = this.GetStrongArrowUpItem();
-    this.ac = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeState(this.GetRoleId(), this.GetSkillNodeId()), 1 === this.ac ? (t?.SetUIActive(!0), i?.SetUIActive(!1)) : 3 === this.ac ? (t?.SetUIActive(!1), i?.SetUIActive(!1)) : 2 === this.ac && (e = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeConsumeSatisfied(this.GetRoleId(), this.GetSkillNodeId()), t?.SetUIActive(!1), i?.SetUIActive(e))
+    var e;
+    var t = this.GetLockItem();
+    var i = this.GetStrongArrowUpItem();
+    this.ac = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeState(this.GetRoleId(), this.GetSkillNodeId());
+    if (this.ac === 1) {
+      t?.SetUIActive(true);
+      i?.SetUIActive(false);
+    } else if (this.ac === 3) {
+      t?.SetUIActive(false);
+      i?.SetUIActive(false);
+    } else if (this.ac === 2) {
+      e = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeConsumeSatisfied(this.GetRoleId(), this.GetSkillNodeId());
+      t?.SetUIActive(false);
+      i?.SetUIActive(e);
+    }
   }
   OnOtherNodeLevelChange() {
-    3 !== this.ac && (this.pdo.RefreshState(), this.RefreshState())
+    if (this.ac !== 3) {
+      this.pdo.RefreshState();
+      this.RefreshState();
+    }
   }
   OnSelfNodeLevelChange() {
-    this.pdo.RefreshState(), this.RefreshLevel(), this.RefreshState()
+    this.pdo.RefreshState();
+    this.RefreshLevel();
+    this.RefreshState();
   }
   OnNodeLevelChange(e) {
-    e === this.GetSkillNodeId() ? this.OnSelfNodeLevelChange() : this.OnOtherNodeLevelChange()
+    if (e === this.GetSkillNodeId()) {
+      this.OnSelfNodeLevelChange();
+    } else {
+      this.OnOtherNodeLevelChange();
+    }
   }
   GetType() {}
   IsIconTexture() {
-    return !1
+    return false;
   }
   GetState() {
-    return this.ac
+    return this.ac;
   }
 }
 exports.RoleSkillTreeSkillItemBase = RoleSkillTreeSkillItemBase;

@@ -1,12 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoManager = void 0;
+  value: true
+});
+exports.DangoManager = undefined;
 const DangoData_1 = require("./DangoData");
 class DangoManager {
   static GetDangoData(a) {
     var t;
-    return this.zTc.has(a) ? this.zTc.get(a) : (t = DangoData_1.DangoData.Create(a), this.zTc.set(a, t), t)
+    if (this.zTc.has(a)) {
+      return this.zTc.get(a);
+    } else {
+      t = DangoData_1.DangoData.Create(a);
+      this.zTc.set(a, t);
+      return t;
+    }
   }
-}(exports.DangoManager = DangoManager).zTc = new Map;
+}
+(exports.DangoManager = DangoManager).zTc = new Map();
 //# sourceMappingURL=DangoManager.js.map

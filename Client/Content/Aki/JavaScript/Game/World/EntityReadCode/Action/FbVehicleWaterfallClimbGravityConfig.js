@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVehicleWaterfallClimbGravityConfig = void 0;
+  value: true
+});
+exports.FbVehicleWaterfallClimbGravityConfig = undefined;
 class FbVehicleWaterfallClimbGravityConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.tic = !1, this.iic = 0, this.yUh = !1, this.SUh = void 0
+    this.FbDataInternal = t;
+    this.tic = false;
+    this.iic = 0;
+    this.yUh = false;
+    this.SUh = undefined;
   }
   static Create(t) {
-    if (t) return new FbVehicleWaterfallClimbGravityConfig(t)
+    if (t) {
+      return new FbVehicleWaterfallClimbGravityConfig(t);
+    }
   }
   get SafePositionEntityId() {
-    return this.tic || (this.tic = !0, this.iic = this.FbDataInternal.safePositionEntityId()), this.iic
+    if (!this.tic) {
+      this.tic = true;
+      this.iic = this.FbDataInternal.safePositionEntityId();
+    }
+    return this.iic;
   }
   get GravityDirection() {
-    return this.yUh || (this.yUh = !0, this.SUh = this.FbDataInternal.gravityDirection()), this.SUh
+    if (!this.yUh) {
+      this.yUh = true;
+      this.SUh = this.FbDataInternal.gravityDirection();
+    }
+    return this.SUh;
   }
 }
 exports.FbVehicleWaterfallClimbGravityConfig = FbVehicleWaterfallClimbGravityConfig;

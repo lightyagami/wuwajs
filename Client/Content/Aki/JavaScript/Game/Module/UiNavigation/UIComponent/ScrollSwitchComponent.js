@@ -1,23 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ScrollSwitchComponent = void 0;
-const UiNavigationNewController_1 = require("../New/UiNavigationNewController"),
-  HotKeyComponent_1 = require("./HotKeyComponent"),
-  THRESHOLD = .6;
+  value: true
+});
+exports.ScrollSwitchComponent = undefined;
+const UiNavigationNewController_1 = require("../New/UiNavigationNewController");
+const HotKeyComponent_1 = require("./HotKeyComponent");
+const THRESHOLD = 0.6;
 class ScrollSwitchComponent extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
-    super(...arguments), this.Uqo = !1
+    super(...arguments);
+    this.Uqo = false;
   }
   OnPress(e) {
-    UiNavigationNewController_1.UiNavigationNewController.FindScrollbar(!0)
+    UiNavigationNewController_1.UiNavigationNewController.FindScrollbar(true);
   }
   OnInputAxis(e, t) {
-    this.Uqo ? 0 === t && (this.Uqo = !1) : Math.abs(t) <= THRESHOLD || (UiNavigationNewController_1.UiNavigationNewController.FindScrollbar(t < 0), this.Uqo = !0)
+    if (this.Uqo) {
+      if (t === 0) {
+        this.Uqo = false;
+      }
+    } else if (!(Math.abs(t) <= THRESHOLD)) {
+      UiNavigationNewController_1.UiNavigationNewController.FindScrollbar(t < 0);
+      this.Uqo = true;
+    }
   }
   OnRefreshSelfHotKeyState(e) {
     e = e.GetScrollbarData();
-    this.SetVisibleMode(2, e.HasActiveScrollbarList())
+    this.SetVisibleMode(2, e.HasActiveScrollbarList());
   }
 }
 exports.ScrollSwitchComponent = ScrollSwitchComponent;

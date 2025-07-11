@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbTalkSequenceTransition = void 0;
+  value: true
+});
+exports.FbTalkSequenceTransition = undefined;
 class FbTalkSequenceTransition {
   constructor(t) {
-    this.FbDataInternal = t, this.gph = !1, this.fph = void 0, this.pph = !1, this.vph = void 0, this.yph = !1, this.Sph = 0
+    this.FbDataInternal = t;
+    this.gph = false;
+    this.fph = undefined;
+    this.pph = false;
+    this.vph = undefined;
+    this.yph = false;
+    this.Sph = 0;
   }
   static Create(t) {
-    if (t) return new FbTalkSequenceTransition(t)
+    if (t) {
+      return new FbTalkSequenceTransition(t);
+    }
   }
   get OptionText() {
-    return this.gph || (this.gph = !0, this.fph = this.FbDataInternal.optionText()), this.fph
+    if (!this.gph) {
+      this.gph = true;
+      this.fph = this.FbDataInternal.optionText();
+    }
+    return this.fph;
   }
   get OptionTextKey() {
-    return this.pph || (this.pph = !0, this.vph = this.FbDataInternal.optionTextKey()), this.vph
+    if (!this.pph) {
+      this.pph = true;
+      this.vph = this.FbDataInternal.optionTextKey();
+    }
+    return this.vph;
   }
   get NextSequenceIndex() {
-    return this.yph || (this.yph = !0, this.Sph = this.FbDataInternal.nextSequenceIndex()), this.Sph
+    if (!this.yph) {
+      this.yph = true;
+      this.Sph = this.FbDataInternal.nextSequenceIndex();
+    }
+    return this.Sph;
   }
 }
 exports.FbTalkSequenceTransition = FbTalkSequenceTransition;

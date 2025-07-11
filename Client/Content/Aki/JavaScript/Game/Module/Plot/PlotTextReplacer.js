@@ -1,23 +1,41 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PlotTextReplacer = void 0;
-const ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  TA = "{TA}",
-  PLAYER_NAME = "{PlayerName}";
+  value: true
+});
+exports.PlotTextReplacer = undefined;
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const TA = "{TA}";
+const PLAYER_NAME = "{PlayerName}";
 class PlotTextReplacer {
   constructor() {
-    this.gU = !1, this.azi = !1, this.B9e = "", this.hzi = "", this.lzi = /\{(?:Male=(.*?);Female=(.*?)|TA|PlayerName)\}/g, this.Dde = (e, t, i) => void 0 !== t && void 0 !== i ? this.azi ? t : i : e === TA ? this.hzi : e === PLAYER_NAME ? this.B9e : e
+    this.gU = false;
+    this.azi = false;
+    this.B9e = "";
+    this.hzi = "";
+    this.lzi = /\{(?:Male=(.*?);Female=(.*?)|TA|PlayerName)\}/g;
+    this.Dde = (e, t, i) => t !== undefined && i !== undefined ? this.azi ? t : i : e === TA ? this.hzi : e === PLAYER_NAME ? this.B9e : e;
   }
   Init() {
-    this.gU || (this.azi = 1 === ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender(), this.B9e = ModelManager_1.ModelManager.FunctionModel.GetPlayerName(), this.hzi = this.azi ? ConfigManager_1.ConfigManager.TextConfig.GetTextById("He") : ConfigManager_1.ConfigManager.TextConfig.GetTextById("She"), this.gU = !0)
+    if (!this.gU) {
+      this.azi = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 1;
+      this.B9e = ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
+      this.hzi = this.azi ? ConfigManager_1.ConfigManager.TextConfig.GetTextById("He") : ConfigManager_1.ConfigManager.TextConfig.GetTextById("She");
+      this.gU = true;
+    }
   }
   Clear() {
-    this.gU = !1
+    this.gU = false;
   }
-  Replace(e, t = !1) {
-    if (void 0 !== e) return t && this.Clear(), this.Init(), e.replace(this.lzi, this.Dde)
+  Replace(e, t = false) {
+    if (e !== undefined) {
+      if (t) {
+        this.Clear();
+      }
+      this.Init();
+      return e.replace(this.lzi, this.Dde);
+    }
   }
 }
 exports.PlotTextReplacer = PlotTextReplacer;

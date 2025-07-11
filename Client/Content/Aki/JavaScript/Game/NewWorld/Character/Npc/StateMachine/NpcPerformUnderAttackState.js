@@ -1,36 +1,57 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcPerformUnderAttackState = void 0;
-const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  Vector_1 = require("../../../../../Core/Utils/Math/Vector"),
-  NpcPerceptionReactionUtil_1 = require("./Common/NpcPerceptionReactionUtil"),
-  NpcPerformBaseState_1 = require("./NpcPerformBaseState"),
-  BUBBLE_TIME = 3;
+  value: true
+});
+exports.NpcPerformUnderAttackState = undefined;
+const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const NpcPerceptionReactionUtil_1 = require("./Common/NpcPerceptionReactionUtil");
+const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
+const BUBBLE_TIME = 3;
 class NpcPerformUnderAttackState extends NpcPerformBaseState_1.NpcPerformBaseState {
   constructor() {
-    super(...arguments), this.pir = !1, this.btr = 0, this.qtr = void 0, this.vir = Vector_1.Vector.Create(), this.Gtr = void 0
+    super(...arguments);
+    this.pir = false;
+    this.btr = 0;
+    this.qtr = undefined;
+    this.vir = Vector_1.Vector.Create();
+    this.Gtr = undefined;
   }
   CanChangeFrom(e) {
     var t = this.Owner.Entity.GetComponent(187);
-    return this.pir && 1 === e && !t.IsInPlot
+    return this.pir && e === 1 && !t.IsInPlot;
   }
   SetDefaultDirect(e) {
-    this.vir.DeepCopy(e)
+    this.vir.DeepCopy(e);
   }
   OnCreate(e) {
-    super.OnCreate(e), e?.NpcHitShow ? (this.pir = !0, this.btr = e.NpcHitShow.BubbleRate, this.qtr = e.NpcHitShow.HitBubble) : this.pir = !1
+    super.OnCreate(e);
+    if (e?.NpcHitShow) {
+      this.pir = true;
+      this.btr = e.NpcHitShow.BubbleRate;
+      this.qtr = e.NpcHitShow.HitBubble;
+    } else {
+      this.pir = false;
+    }
   }
   OnEnter(e) {
     this.Gtr = e;
     e = this.Owner.Entity.GetComponent(187);
-    e?.HasBrain && this.Owner.Entity.GetComponent(45)?.StopMove(!1), e?.StopPerformMontage(3, {
+    if (e?.HasBrain) {
+      this.Owner.Entity.GetComponent(45)?.StopMove(false);
+    }
+    e?.StopPerformMontage(3, {
       Method: 0,
       BlendOutTime: 0
-    }), this.pir || TimerSystem_1.TimerSystem.Delay(() => {
-      this.StateMachine.Switch(this.Gtr)
-    }, BUBBLE_TIME * CommonDefine_1.MILLIONSECOND_PER_SECOND), NpcPerceptionReactionUtil_1.NpcPerceptionReactionUtil.ShowHeadDialog(this.Owner.Entity, this.btr, this.qtr)
+    });
+    if (!this.pir) {
+      TimerSystem_1.TimerSystem.Delay(() => {
+        this.StateMachine.Switch(this.Gtr);
+      }, BUBBLE_TIME * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+    }
+    NpcPerceptionReactionUtil_1.NpcPerceptionReactionUtil.ShowHeadDialog(this.Owner.Entity, this.btr, this.qtr);
   }
   OnExit(e) {}
   OnDestroy() {}

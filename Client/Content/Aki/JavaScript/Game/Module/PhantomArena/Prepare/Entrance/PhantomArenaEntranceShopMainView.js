@@ -1,191 +1,262 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaEntranceShopMainView = exports.PhantomArenaEntranceShopTabItem = exports.PhantomArenaEntranceShopTabData = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../../../Core/Common/Info"),
-  Time_1 = require("../../../../../Core/Common/Time"),
-  CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById"),
-  ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  RedDotController_1 = require("../../../../RedDot/RedDotController"),
-  UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase"),
-  CommonTabComponentData_1 = require("../../../Common/TabComponent/CommonTabComponentData"),
-  CommonTabData_1 = require("../../../Common/TabComponent/CommonTabData"),
-  CommonTabTitleData_1 = require("../../../Common/TabComponent/CommonTabTitleData"),
-  TabComponentWithCaptionItem_1 = require("../../../Common/TabComponent/TabComponentWithCaptionItem"),
-  CommonTabItemBase_1 = require("../../../Common/TabComponent/TabItem/CommonTabItemBase"),
-  TabViewComponent_1 = require("../../../Common/TabComponent/TabViewComponent"),
-  HelpController_1 = require("../../../Help/HelpController"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
+  value: true
+});
+exports.PhantomArenaEntranceShopMainView = exports.PhantomArenaEntranceShopTabItem = exports.PhantomArenaEntranceShopTabData = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../../../Core/Common/Info");
+const Time_1 = require("../../../../../Core/Common/Time");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const RedDotController_1 = require("../../../../RedDot/RedDotController");
+const UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase");
+const CommonTabComponentData_1 = require("../../../Common/TabComponent/CommonTabComponentData");
+const CommonTabData_1 = require("../../../Common/TabComponent/CommonTabData");
+const CommonTabTitleData_1 = require("../../../Common/TabComponent/CommonTabTitleData");
+const TabComponentWithCaptionItem_1 = require("../../../Common/TabComponent/TabComponentWithCaptionItem");
+const CommonTabItemBase_1 = require("../../../Common/TabComponent/TabItem/CommonTabItemBase");
+const TabViewComponent_1 = require("../../../Common/TabComponent/TabViewComponent");
+const HelpController_1 = require("../../../Help/HelpController");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaEntranceShopTabData extends CommonTabData_1.CommonTabData {
   constructor(e, t, i, n) {
-    super(e, t), this.aou = i, this._ur = n
+    super(e, t);
+    this.Xau = i;
+    this._ur = n;
   }
   GetRealTitle() {
-    return this.aou
+    return this.Xau;
   }
   GetTabViewName() {
-    return this._ur
+    return this._ur;
   }
 }
 exports.PhantomArenaEntranceShopTabData = PhantomArenaEntranceShopTabData;
 class PhantomArenaEntranceShopTabItem extends CommonTabItemBase_1.CommonTabItemBase {
   constructor() {
-    super(...arguments), this.kbt = void 0, this.RedDotName = void 0, this.Bke = e => {
-      1 === e && this.SelectedCallBack(this.GridIndex)
-    }, this.SetOnUndeterminedClick = e => {
-      this.kbt = e
-    }
+    super(...arguments);
+    this.kbt = undefined;
+    this.RedDotName = undefined;
+    this.Bke = e => {
+      if (e === 1) {
+        this.SelectedCallBack(this.GridIndex);
+      }
+    };
+    this.SetOnUndeterminedClick = e => {
+      this.kbt = e;
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIText],
-      [2, UE.UIExtendToggleSpriteTransition],
-      [3, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.Bke]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIExtendToggleSpriteTransition], [3, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.Bke]];
   }
   OnStart() {
-    super.OnStart(), this.GetExtendToggle(0).SetToggleState(0);
+    super.OnStart();
+    this.GetExtendToggle(0).SetToggleState(0);
     this.GetExtendToggle(0).OnUndeterminedClicked.Add(() => {
-      this.kbt?.()
-    }), this.GetItem(3).SetUIActive(!1)
+      this.kbt?.();
+    });
+    this.GetItem(3).SetUIActive(false);
   }
   OnBeforeDestroy() {
-    this.UnBindRedDot()
+    this.UnBindRedDot();
   }
   OnRefresh(e, t, i) {
     var n = e.Data;
-    this.UpdateIcon(n), this.UpdateTabTitle(n.GetRealTitle()), this.UnBindRedDot(), e.RedDotName && this.BindRedDot(e.RedDotName, e.RedDotUid)
+    this.UpdateIcon(n);
+    this.UpdateTabTitle(n.GetRealTitle());
+    this.UnBindRedDot();
+    if (e.RedDotName) {
+      this.BindRedDot(e.RedDotName, e.RedDotUid);
+    }
   }
   OnSelected(e) {
-    this.SelectedCallBack(this.GridIndex)
+    this.SelectedCallBack(this.GridIndex);
   }
   OnUpdateTabIcon(e) {}
   UpdateIcon(e) {
-    var t, e = e.GetTabViewName(),
-      e = PhantomArenaDefine_1.phantomArenaEntranceShopTabIconMap.get(e);
-    e && (t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e[0]), e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e[1]), ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.LGUISpriteData_BaseObject, e => {
-      e && (this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(0, e), this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(1, e), this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(2, e))
-    }), ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, e => {
-      e && (this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(3, e), this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(4, e), this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(5, e))
-    }))
+    var t;
+    var e = e.GetTabViewName();
+    var e = PhantomArenaDefine_1.phantomArenaEntranceShopTabIconMap.get(e);
+    if (e) {
+      t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e[0]);
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e[1]);
+      ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.LGUISpriteData_BaseObject, e => {
+        if (e) {
+          this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(0, e);
+          this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(1, e);
+          this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(2, e);
+        }
+      });
+      ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, e => {
+        if (e) {
+          this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(3, e);
+          this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(4, e);
+          this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(5, e);
+        }
+      });
+    }
   }
   UpdateTabTitle(e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e)
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e);
   }
   SetToggleStateForce(e, t) {
-    this.GetExtendToggle(0).SetToggleStateForce(e, t)
+    this.GetExtendToggle(0).SetToggleStateForce(e, t);
   }
   SetCanClickWhenDisable(e) {
-    this.GetExtendToggle(0).SetCanClickWhenDisable(e)
+    this.GetExtendToggle(0).SetCanClickWhenDisable(e);
   }
   OnSetToggleState(e, t) {
-    this.GetExtendToggle(0).SetToggleState(e, t)
+    this.GetExtendToggle(0).SetToggleState(e, t);
   }
   GetTabToggle() {
-    return this.GetExtendToggle(0)
+    return this.GetExtendToggle(0);
   }
   BindRedDot(e, t = 0) {
-    this.RedDotName = e, this.RedDotName && RedDotController_1.RedDotController.BindRedDot(e, this.GetItem(3), void 0, t)
+    this.RedDotName = e;
+    if (this.RedDotName) {
+      RedDotController_1.RedDotController.BindRedDot(e, this.GetItem(3), undefined, t);
+    }
   }
   UnBindRedDot() {
-    this.RedDotName && (RedDotController_1.RedDotController.UnBindRedDot(this.RedDotName), this.RedDotName = void 0)
+    if (this.RedDotName) {
+      RedDotController_1.RedDotController.UnBindRedDot(this.RedDotName);
+      this.RedDotName = undefined;
+    }
   }
   UnBindGivenUid(e = 0) {
-    this.RedDotName && (RedDotController_1.RedDotController.UnBindGivenUi(this.RedDotName, this.GetItem(3), e), this.RedDotName = void 0)
+    if (this.RedDotName) {
+      RedDotController_1.RedDotController.UnBindGivenUi(this.RedDotName, this.GetItem(3), e);
+      this.RedDotName = undefined;
+    }
   }
   SetRedDotState(e) {
-    this.GetItem(3)?.SetUIActive(e)
+    this.GetItem(3)?.SetUIActive(e);
   }
   GetIconSprite() {
-    return this.GetSprite(2)
+    return this.GetSprite(2);
   }
   OnClear() {
-    this.UnBindRedDot()
+    this.UnBindRedDot();
   }
 }
 exports.PhantomArenaEntranceShopTabItem = PhantomArenaEntranceShopTabItem;
 class PhantomArenaEntranceShopMainView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
-    super(...arguments), this.TabComponent = void 0, this.TabViewComponent = void 0, this.L6e = void 0, this.TabDataList = [], this.rmo = void 0, this.hA1 = 0, this.Ftl = "", this.TIc = () => {
-      this.CloseMe()
-    }, this.yqe = e => {
+    super(...arguments);
+    this.TabComponent = undefined;
+    this.TabViewComponent = undefined;
+    this.L6e = undefined;
+    this.TabDataList = [];
+    this.rmo = undefined;
+    this.kA1 = 0;
+    this.Ftl = "";
+    this.TIc = () => {
+      this.CloseMe();
+    };
+    this.yqe = e => {
       e = this.TabDataList[e];
-      return new PhantomArenaEntranceShopTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(PhantomArenaDefine_1.ENTRANCE_MAINSHOP_ID), e.TabName, e.ChildViewName)
-    }, this.CanToggleChange = e => {
+      return new PhantomArenaEntranceShopTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(PhantomArenaDefine_1.ENTRANCE_MAINSHOP_ID), e.TabName, e.ChildViewName);
+    };
+    this.CanToggleChange = e => {
       var t;
-      return !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t
-    }, this.R6e = (e, t) => {
-      return new PhantomArenaEntranceShopTabItem
-    }, this.pqe = e => {
+      return !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t;
+    };
+    this.R6e = (e, t) => {
+      return new PhantomArenaEntranceShopTabItem();
+    };
+    this.pqe = e => {
       this.L6e = Time_1.Time.Now;
-      var t = this.TabDataList[e],
-        i = t.ChildViewName,
-        e = this.TabComponent.GetTabItemByIndex(e);
-      this.TabViewComponent.ToggleCallBack(t, i, e), this.rmo = i
-    }, this.EL1 = () => {
-      HelpController_1.HelpController.OpenHelpById(PhantomArenaDefine_1.HELP_ID_SHOP)
-    }
+      var t = this.TabDataList[e];
+      var i = t.ChildViewName;
+      var e = this.TabComponent.GetTabItemByIndex(e);
+      this.TabViewComponent.ToggleCallBack(t, i, e);
+      this.rmo = i;
+    };
+    this.XL1 = () => {
+      HelpController_1.HelpController.OpenHelpById(PhantomArenaDefine_1.HELP_ID_SHOP);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText]];
   }
   OnStart() {
-    this.rmo = this.OpenParam, this.GetText(2)?.SetUIActive(!0), this.InitTabComponent(), this.hA1 = ModelManager_1.ModelManager.PhantomArenaModel.GetCurrencyId(), this.hA1 && this.TabComponent?.SetCurrencyItemList([this.hA1]), this.Ftl = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("ActivityRemainingTime") ?? "", this.u3e()
+    this.rmo = this.OpenParam;
+    this.GetText(2)?.SetUIActive(true);
+    this.InitTabComponent();
+    this.kA1 = ModelManager_1.ModelManager.PhantomArenaModel.GetCurrencyId();
+    if (this.kA1) {
+      this.TabComponent?.SetCurrencyItemList([this.kA1]);
+    }
+    this.Ftl = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("ActivityRemainingTime") ?? "";
+    this.u3e();
   }
   async OnBeforeShowAsyncImplementImplement() {
-    await this.RIc()
+    await this.RIc();
   }
   OnTick(e) {
-    this.u3e()
+    this.u3e();
   }
   OnBeforeDestroy() {
-    this.TabComponent && (this.TabComponent.Destroy(), this.TabComponent = void 0)
+    if (this.TabComponent) {
+      this.TabComponent.Destroy();
+      this.TabComponent = undefined;
+    }
   }
   InitTabComponent() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
-    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.TIc), this.TabComponent.SetHelpButtonShowState(!0), this.TabComponent.SetHelpButtonCallBack(this.EL1), this.L6e = void 0, this.TabComponent.SetCanChange(this.CanToggleChange), this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1))
+    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.TIc);
+    this.TabComponent.SetHelpButtonShowState(true);
+    this.TabComponent.SetHelpButtonCallBack(this.XL1);
+    this.L6e = undefined;
+    this.TabComponent.SetCanChange(this.CanToggleChange);
+    this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1));
   }
   async RIc() {
     var e = [];
-    for (const n of ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("PhantomArenaEntranceShopMainView")) "PhantomArenaEntranceShopTabView" === n.ChildViewName && !ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime() || e.push(n);
-    var t = this.TabDataList.toString() !== e.toString(),
-      i = (this.TabDataList = e, this.TabDataList.length),
-      i = this.TabComponent.CreateTabItemDataByLength(i);
-    for (const o of i) o.RedDotName = this.ytu(this.TabDataList[o.Index].ChildViewName);
-    if (await this.TabComponent.RefreshTabItemAsync(i, t), t) {
+    for (const n of ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("PhantomArenaEntranceShopMainView")) {
+      if (n.ChildViewName !== "PhantomArenaEntranceShopTabView" || !!ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime()) {
+        e.push(n);
+      }
+    }
+    var t = this.TabDataList.toString() !== e.toString();
+    this.TabDataList = e;
+    var i = this.TabDataList.length;
+    var i = this.TabComponent.CreateTabItemDataByLength(i);
+    for (const o of i) {
+      o.RedDotName = this.sou(this.TabDataList[o.Index].ChildViewName);
+    }
+    await this.TabComponent.RefreshTabItemAsync(i, t);
+    if (t) {
       let t = 0;
-      for (let e = 0; e < this.TabDataList.length; e++)
+      for (let e = 0; e < this.TabDataList.length; e++) {
         if (this.TabDataList[e].ChildViewName === this.rmo) {
           t = e;
-          break
-        } this.TabComponent.SelectToggleByIndex(t, !0)
+          break;
+        }
+      }
+      this.TabComponent.SelectToggleByIndex(t, true);
     }
   }
-  ytu(e) {
-    let t = void 0;
+  sou(e) {
+    let t = undefined;
     switch (e) {
       case "PhantomArenaEntranceTaskTabView":
         t = "RedDotPhantomArenaTaskReward";
         break;
       case "PhantomArenaEntranceShopTabView":
-        t = "RedDotPhantomArenaShopUpdate"
+        t = "RedDotPhantomArenaShopUpdate";
     }
-    return t
+    return t;
   }
   u3e() {
     var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime(this.Ftl);
-    this.GetText(2)?.SetUIActive(e), this.GetText(2)?.SetText(t)
+    this.GetText(2)?.SetUIActive(e);
+    this.GetText(2)?.SetText(t);
   }
 }
 exports.PhantomArenaEntranceShopMainView = PhantomArenaEntranceShopMainView;

@@ -1,27 +1,34 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LguiEventSystemController = void 0;
-const ControllerBase_1 = require("../../../Core/Framework/ControllerBase"),
-  InputDistributeController_1 = require("../InputDistribute/InputDistributeController"),
-  InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine"),
-  LguiEventSystemManager_1 = require("./LguiEventSystemManager");
+  value: true
+});
+exports.LguiEventSystemController = undefined;
+const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const InputDistributeController_1 = require("../InputDistribute/InputDistributeController");
+const InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine");
+const LguiEventSystemManager_1 = require("./LguiEventSystemManager");
 class LguiEventSystemController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return this.Ore(), !0
+    this.Ore();
+    return true;
   }
   static OnClear() {
-    return this.kre(), !0
+    this.kre();
+    return true;
   }
   static Ore() {
-    InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.Ui左键点击, InputMappingsDefine_1.actionMappings.Ui右键点击], this.Ndr), InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.WheelAxis, this.cci)
+    InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.Ui左键点击, InputMappingsDefine_1.actionMappings.Ui右键点击], this.Ndr);
+    InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.WheelAxis, this.cci);
   }
   static kre() {
-    InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.Ui左键点击, InputMappingsDefine_1.actionMappings.Ui右键点击], this.Ndr), InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.WheelAxis, this.cci)
+    InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.Ui左键点击, InputMappingsDefine_1.actionMappings.Ui右键点击], this.Ndr);
+    InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.WheelAxis, this.cci);
   }
-}(exports.LguiEventSystemController = LguiEventSystemController).Ndr = (t, e) => {
-  LguiEventSystemManager_1.LguiEventSystemManager.ClickedMouse(t, e)
-}, LguiEventSystemController.cci = (t, e) => {
-  LguiEventSystemManager_1.LguiEventSystemManager.InputWheelAxis(t, e)
+}
+(exports.LguiEventSystemController = LguiEventSystemController).Ndr = (t, e) => {
+  LguiEventSystemManager_1.LguiEventSystemManager.ClickedMouse(t, e);
 };
-//# sourceMappingURL=LguiEventSystemController.js.map
+LguiEventSystemController.cci = (t, e) => {
+  LguiEventSystemManager_1.LguiEventSystemManager.InputWheelAxis(t, e);
+}; //# sourceMappingURL=LguiEventSystemController.js.map

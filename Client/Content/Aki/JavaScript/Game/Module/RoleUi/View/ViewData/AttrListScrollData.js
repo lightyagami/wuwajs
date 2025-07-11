@@ -1,11 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AttrListScrollData = void 0;
+  value: true
+});
+exports.AttrListScrollData = undefined;
 const ScrollViewDataBase_1 = require("../../../Util/ScrollView/ScrollViewDataBase");
 class AttrListScrollData extends ScrollViewDataBase_1.ScrollViewDataBase {
   constructor(t, s, e, i, r, l) {
-    super(), this.IsRatio = !1, this.IsUnknown = !1, this.CombineNum = 0, this.NeedHighLight = !1, this.Id = t, this.BaseValue = s, this.AddValue = e, this.Priority = i, this.IsRatio = r, this.AttributeType = l
+    super();
+    this.IsRatio = false;
+    this.IsUnknown = false;
+    this.CombineNum = 0;
+    this.NeedHighLight = false;
+    this.Id = t;
+    this.BaseValue = s;
+    this.AddValue = e;
+    this.Priority = i;
+    this.IsRatio = r;
+    this.AttributeType = l;
   }
 }
 exports.AttrListScrollData = AttrListScrollData;

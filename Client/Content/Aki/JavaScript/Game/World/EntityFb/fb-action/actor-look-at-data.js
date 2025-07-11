@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActorLookAtData = void 0;
+  value: true
+});
+exports.ActorLookAtData = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ActorLookAtData {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, o) {
-    return this.bb_pos = t, this.bb = o, this
+    this.bb_pos = t;
+    this.bb = o;
+    return this;
   }
   static getRootAsActorLookAtData(t, o) {
-    return (o || new ActorLookAtData).__init(t.readInt32(t.position()) + t.position(), t)
+    return (o || new ActorLookAtData()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsActorLookAtData(t, o) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (o || new ActorLookAtData).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (o || new ActorLookAtData()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type() {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.readUint8(this.bb_pos + t) : 0
+    if (t) {
+      return this.bb.readUint8(this.bb_pos + t);
+    } else {
+      return 0;
+    }
   }
   static startActorLookAtData(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addType(t, o) {
-    t.addFieldInt8(0, o, 0)
+    t.addFieldInt8(0, o, 0);
   }
   static endActorLookAtData(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createActorLookAtData(t, o) {
-    return ActorLookAtData.startActorLookAtData(t), ActorLookAtData.addType(t, o), ActorLookAtData.endActorLookAtData(t)
+    ActorLookAtData.startActorLookAtData(t);
+    ActorLookAtData.addType(t, o);
+    return ActorLookAtData.endActorLookAtData(t);
   }
 }
 exports.ActorLookAtData = ActorLookAtData;

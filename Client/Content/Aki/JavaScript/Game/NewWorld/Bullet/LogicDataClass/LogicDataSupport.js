@@ -1,14 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
 const LogicDataBase_1 = require("./LogicDataBase");
 class LogicDataSupport extends LogicDataBase_1.default {
   constructor() {
-    super(...arguments), this.Tag = void 0, this.Camp = 0, this.Effect = void 0
+    super(...arguments);
+    this.Tag = undefined;
+    this.Camp = 0;
+    this.Effect = undefined;
   }
   Constructor() {
-    super.Constructor()
+    super.Constructor();
   }
 }
 exports.default = LogicDataSupport;

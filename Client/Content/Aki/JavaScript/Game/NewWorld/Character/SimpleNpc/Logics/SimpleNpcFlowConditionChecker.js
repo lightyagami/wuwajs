@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SimpleNpcFlowConditionChecker = void 0;
+  value: true
+});
+exports.SimpleNpcFlowConditionChecker = undefined;
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 class SimpleNpcFlowConditionChecker {
   static GetFlowActorIndex(e) {
@@ -25,9 +27,9 @@ class SimpleNpcFlowConditionChecker {
       case 148:
         return 8;
       case 149:
-        return 9
+        return 9;
     }
-    return -1
+    return -1;
   }
   static CheckCondition(e) {
     switch (e.CheckType) {
@@ -46,30 +48,31 @@ class SimpleNpcFlowConditionChecker {
       case 7:
         return this.oor(e.CheckValue);
       case 8:
-        return this.ror(e.CheckValue)
+        return this.ror(e.CheckValue);
     }
-    return !0
+    return true;
   }
   static eor(e) {
-    return !0
+    return true;
   }
   static tor(e) {
-    return !0
+    return true;
   }
   static ior(e) {
-    return ModelManager_1.ModelManager.TimeOfDayModel.GameTime.DayState === e
+    return ModelManager_1.ModelManager.TimeOfDayModel.GameTime.DayState === e;
   }
   static oor(e) {
-    return 0 === e || 2 === ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e)
+    return e === 0 || ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 2;
   }
   static ror(e) {
-    return 0 === e || ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e)
+    return e === 0 || ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e);
   }
   static CheckFirstEnter(e) {
-    return !this.nor.has(e)
+    return !this.nor.has(e);
   }
   static SetFirstEnter(e) {
-    this.nor.add(e)
+    this.nor.add(e);
   }
-}(exports.SimpleNpcFlowConditionChecker = SimpleNpcFlowConditionChecker).nor = new Set;
+}
+(exports.SimpleNpcFlowConditionChecker = SimpleNpcFlowConditionChecker).nor = new Set();
 //# sourceMappingURL=SimpleNpcFlowConditionChecker.js.map

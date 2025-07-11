@@ -1,31 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PropertyMap = void 0;
+  value: true
+});
+exports.PropertyMap = undefined;
 class PropertyMap extends Map {
   constructor() {
-    super(...arguments), this.pYa = new Map
+    super(...arguments);
+    this.pYa = new Map();
   }
   set(t, s) {
-    return super.get(t) === s ? this : (this.setDirty(t), super.set(t, s))
+    if (super.get(t) === s) {
+      return this;
+    } else {
+      this.setDirty(t);
+      return super.set(t, s);
+    }
   }
   get(t) {
-    return this.cleanDirty(t), super.get(t)
+    this.cleanDirty(t);
+    return super.get(t);
   }
-  tryGet(t, s, r = !0) {
-    return r && this.cleanDirty(t), super.get(t) ?? s
+  tryGet(t, s, r = true) {
+    if (r) {
+      this.cleanDirty(t);
+    }
+    return super.get(t) ?? s;
   }
   cleanDirty(t) {
-    this.pYa.set(t, !1)
+    this.pYa.set(t, false);
   }
   setDirty(t) {
-    this.pYa.set(t, !0)
+    this.pYa.set(t, true);
   }
   setAllDirty() {
-    for (const t of this.pYa.keys()) this.pYa.set(t, !0)
+    for (const t of this.pYa.keys()) {
+      this.pYa.set(t, true);
+    }
   }
   isDirty(t) {
-    return this.pYa.get(t) ?? !1
+    return this.pYa.get(t) ?? false;
   }
 }
 exports.PropertyMap = PropertyMap;

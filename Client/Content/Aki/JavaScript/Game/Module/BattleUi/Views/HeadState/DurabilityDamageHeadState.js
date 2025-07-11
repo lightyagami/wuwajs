@@ -1,79 +1,138 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DurabilityDamageHeadState = void 0;
-const UE = require("ue"),
-  LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer"),
-  HeadStateViewBase_1 = require("./HeadStateViewBase");
+  value: true
+});
+exports.DurabilityDamageHeadState = undefined;
+const UE = require("ue");
+const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const HeadStateViewBase_1 = require("./HeadStateViewBase");
 class DurabilityDamageHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   constructor() {
-    super(...arguments), this.Wlt = -0, this.Klt = !1, this.SPe = void 0, this.Qlt = t => {
-      this.Xlt(this.$lt(), !0)
-    }, this.Ylt = () => {
+    super(...arguments);
+    this.Wlt = -0;
+    this.Klt = false;
+    this.SPe = undefined;
+    this.Qlt = t => {
+      this.Xlt(this.$lt(), true);
+    };
+    this.Ylt = () => {
       var t = this.GetUiNiagara(5);
-      this.Klt && t && !t.NiagaraComponent?.IsActive() && (t.SetNiagaraUIActive(!0, !0), t.ActivateSystem(!0))
-    }
+      if (this.Klt && t && !t.NiagaraComponent?.IsActive()) {
+        t.SetNiagaraUIActive(true, true);
+        t.ActivateSystem(true);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UISprite],
-      [2, UE.UISprite],
-      [3, UE.UISprite],
-      [4, UE.UISprite],
-      [5, UE.UINiagara],
-      [6, UE.UINiagara]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UINiagara], [6, UE.UINiagara]];
   }
   GetResourceId() {
-    return "UiItem_BarSandBag"
+    return "UiItem_BarSandBag";
   }
   ActiveBattleHeadState(t) {
-    super.ActiveBattleHeadState(t), this.GetSprite(0).SetUIActive(!0), this.GetSprite(1).SetUIActive(!1), this.GetSprite(3).SetUIActive(!1), this.GetSprite(4).SetUIActive(!1), this.GetUiNiagara(5).SetNiagaraUIActive(!1, !0), this.GetUiNiagara(6).SetNiagaraUIActive(!1, !0), this.Klt = !1, this.Wlt = this.GetSprite(2).GetParentAsUIItem().GetWidth(), t.OriginalHp ? (this.CurrentBarPercent = t.OriginalHp / this.GetMaxHp(), this.Jlt(this.CurrentBarPercent)) : this.Jlt(1), this.Xlt(this.$lt(), !0)
+    super.ActiveBattleHeadState(t);
+    this.GetSprite(0).SetUIActive(true);
+    this.GetSprite(1).SetUIActive(false);
+    this.GetSprite(3).SetUIActive(false);
+    this.GetSprite(4).SetUIActive(false);
+    this.GetUiNiagara(5).SetNiagaraUIActive(false, true);
+    this.GetUiNiagara(6).SetNiagaraUIActive(false, true);
+    this.Klt = false;
+    this.Wlt = this.GetSprite(2).GetParentAsUIItem().GetWidth();
+    if (t.OriginalHp) {
+      this.CurrentBarPercent = t.OriginalHp / this.GetMaxHp();
+      this.Jlt(this.CurrentBarPercent);
+    } else {
+      this.Jlt(1);
+    }
+    this.Xlt(this.$lt(), true);
   }
   OnStart() {
-    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem)
+    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   BindCallback() {
-    super.BindCallback(), this.HeadStateData.BindOnSceneItemDurabilityChange(this.Qlt), this.HeadStateData.BindOnSceneItemEntityHit(this.Ylt)
+    super.BindCallback();
+    this.HeadStateData.BindOnSceneItemDurabilityChange(this.Qlt);
+    this.HeadStateData.BindOnSceneItemEntityHit(this.Ylt);
   }
-  Xlt(t, e = !1) {
+  Xlt(t, e = false) {
     var i;
-    t <= 0 ? (i = 0 < this.CurrentBarPercent, this.Jlt(t), this.zlt(i)) : e ? (this.Zlt(t), this.PlayBarAnimation(t), this.SPe?.StopCurrentSequence(!0, !0), this.SPe?.PlayLevelSequenceByName("Increase")) : this.Jlt(t), this.HeadStateData?.SetOriginalHp(this.GetHp())
+    if (t <= 0) {
+      i = this.CurrentBarPercent > 0;
+      this.Jlt(t);
+      this.zlt(i);
+    } else if (e) {
+      this.Zlt(t);
+      this.PlayBarAnimation(t);
+      this.SPe?.StopCurrentSequence(true, true);
+      this.SPe?.PlayLevelSequenceByName("Increase");
+    } else {
+      this.Jlt(t);
+    }
+    this.HeadStateData?.SetOriginalHp(this.GetHp());
   }
   StopBarLerpAnimation() {
-    super.StopBarLerpAnimation(), this.GetSprite(1).SetUIActive(!1), this.SPe?.StopSequenceByKey("Increase", !0, !0)
+    super.StopBarLerpAnimation();
+    this.GetSprite(1).SetUIActive(false);
+    this.SPe?.StopSequenceByKey("Increase", true, true);
   }
   OnLerpBarBufferPercent(t) {
-    this.e1t(t)
+    this.e1t(t);
   }
   Jlt(t) {
-    this.Zlt(t), this.e1t(t), this.StopBarLerpAnimation()
+    this.Zlt(t);
+    this.e1t(t);
+    this.StopBarLerpAnimation();
   }
   Zlt(t) {
-    var e = 1 - t,
-      i = this.GetSprite(1),
-      s = this.GetSprite(2);
-    i.SetFillAmount(e), s.SetStretchRight(this.Wlt * t - 2), i.IsUIActiveSelf() || i.SetUIActive(!0)
+    var e = 1 - t;
+    var i = this.GetSprite(1);
+    var s = this.GetSprite(2);
+    i.SetFillAmount(e);
+    s.SetStretchRight(this.Wlt * t - 2);
+    if (!i.IsUIActiveSelf()) {
+      i.SetUIActive(true);
+    }
   }
   e1t(t) {
-    var t = 1 - t,
-      e = this.GetSprite(1),
-      i = this.GetSprite(2),
-      s = this.GetSprite(3);
-    i.SetStretchLeft(this.Wlt * t - 2), s.SetFillAmount(t), e.IsUIActiveSelf() || e.SetUIActive(!0), s.IsUIActiveSelf() || s.SetUIActive(!0)
+    var t = 1 - t;
+    var e = this.GetSprite(1);
+    var i = this.GetSprite(2);
+    var s = this.GetSprite(3);
+    i.SetStretchLeft(this.Wlt * t - 2);
+    s.SetFillAmount(t);
+    if (!e.IsUIActiveSelf()) {
+      e.SetUIActive(true);
+    }
+    if (!s.IsUIActiveSelf()) {
+      s.SetUIActive(true);
+    }
   }
   zlt(t) {
-    7 === this.HeadStateType ? (t && this.GetUiNiagara(6).SetNiagaraUIActive(!0, !0), this.GetSprite(0).SetUIActive(!1), this.GetSprite(3).SetUIActive(!1), this.GetSprite(1).SetUIActive(!1), this.GetSprite(4).SetUIActive(!1)) : 8 === this.HeadStateType && ((t = this.GetSprite(4)).IsUIActiveSelf() || t.SetUIActive(!0), this.Klt = !0)
+    if (this.HeadStateType === 7) {
+      if (t) {
+        this.GetUiNiagara(6).SetNiagaraUIActive(true, true);
+      }
+      this.GetSprite(0).SetUIActive(false);
+      this.GetSprite(3).SetUIActive(false);
+      this.GetSprite(1).SetUIActive(false);
+      this.GetSprite(4).SetUIActive(false);
+    } else if (this.HeadStateType === 8) {
+      if (!(t = this.GetSprite(4)).IsUIActiveSelf()) {
+        t.SetUIActive(true);
+      }
+      this.Klt = true;
+    }
   }
   $lt() {
-    return this.GetHp() / this.GetMaxHp()
+    return this.GetHp() / this.GetMaxHp();
   }
   GetMaxHp() {
-    return this.HeadStateData.GetMaxDurable()
+    return this.HeadStateData.GetMaxDurable();
   }
   GetHp() {
-    return this.HeadStateData.GetDurable()
+    return this.HeadStateData.GetDurable();
   }
 }
 exports.DurabilityDamageHeadState = DurabilityDamageHeadState;

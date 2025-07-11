@@ -1,51 +1,64 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BcView = exports.Code12 = exports.Code54 = exports.Code64 = exports.Converter = void 0;
-const cpp_1 = require("cpp"),
-  UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  UiLayer_1 = require("../../../Ui/UiLayer"),
-  LguiUtil_1 = require("../../Util/LguiUtil");
+  value: true
+});
+exports.BcView = exports.Code12 = exports.Code54 = exports.Code64 = exports.Converter = undefined;
+const cpp_1 = require("cpp");
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiLayer_1 = require("../../../Ui/UiLayer");
+const LguiUtil_1 = require("../../Util/LguiUtil");
 class Converter {
   static Convert(e, t, r) {
-    if (t === r) return e;
-    if (r < 2 || 62 < r || t < 2 || 62 < t) return "";
-    let o = this.mml(e, t),
-      s = "";
-    for (; 0 < o;) s = this.dml[o % r] + s, o = Math.floor(o / r);
-    return s
+    if (t === r) {
+      return e;
+    }
+    if (r < 2 || r > 62 || t < 2 || t > 62) {
+      return "";
+    }
+    let o = this.mml(e, t);
+    let s = "";
+    while (o > 0) {
+      s = this.dml[o % r] + s;
+      o = Math.floor(o / r);
+    }
+    return s;
   }
   static mml(t, r) {
     let o = 0;
-    for (let e = 0; e < t.length; e++) o += this.dml.indexOf(t[e]) * Math.pow(r, t.length - e - 1);
-    return o
+    for (let e = 0; e < t.length; e++) {
+      o += this.dml.indexOf(t[e]) * Math.pow(r, t.length - e - 1);
+    }
+    return o;
   }
-}(exports.Converter = Converter).dml = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+}
+(exports.Converter = Converter).dml = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 class CodeNBase {
   GetCodeTable() {
-    return {}
+    return {};
   }
   SingleCodeLength() {
-    return 0
+    return 0;
   }
   SupportCharCount() {
-    return Object.keys(this.GetCodeTable()).length
+    return Object.keys(this.GetCodeTable()).length;
   }
 }
 class Code64 extends CodeNBase {
   GetCodeTable() {
-    return Code64.CodeTable
+    return Code64.CodeTable;
   }
   SingleCodeLength() {
-    return 8
+    return 8;
   }
   SupportCharCount() {
-    return 62
+    return 62;
   }
-}(exports.Code64 = Code64).CodeTable = {
+}
+(exports.Code64 = Code64).CodeTable = {
   "+": [1, 0, 0, 0, 0, 0, 0],
   "-": [1, 0, 0, 0, 0, 0, 1],
   0: [1, 0, 0, 0, 0, 1, 0],
@@ -113,15 +126,16 @@ class Code64 extends CodeNBase {
 };
 class Code54 extends CodeNBase {
   GetCodeTable() {
-    return Code54.CodeTable
+    return Code54.CodeTable;
   }
   SingleCodeLength() {
-    return 5
+    return 5;
   }
   SupportCharCount() {
-    return 52
+    return 52;
   }
-}(exports.Code54 = Code54).CodeTable = {
+}
+(exports.Code54 = Code54).CodeTable = {
   "+": [1, 0, 0, 0],
   "-": [1, 0, 0, 1],
   0: [1, 0, 0, 2],
@@ -179,15 +193,16 @@ class Code54 extends CodeNBase {
 };
 class Code12 extends CodeNBase {
   GetCodeTable() {
-    return Code12.CodeTable
+    return Code12.CodeTable;
   }
   SingleCodeLength() {
-    return 4
+    return 4;
   }
   SupportCharCount() {
-    return 10
+    return 10;
   }
-}(exports.Code12 = Code12).CodeTable = {
+}
+(exports.Code12 = Code12).CodeTable = {
   "+": [2, 0, 0, 0],
   "-": [2, 0, 0, 1],
   0: [2, 0, 1, 0],
@@ -201,80 +216,97 @@ class Code12 extends CodeNBase {
   8: [2, 1, 2, 0],
   9: [2, 1, 2, 1]
 };
-const ITEM_WIDTH_MIN = 10,
-  ITEM_WIDTH_MAX = 14,
-  ITEM_HEIGHT_1 = 5,
-  ITEM_HEIGHT_2 = 7;
+const ITEM_WIDTH_MIN = 10;
+const ITEM_WIDTH_MAX = 14;
+const ITEM_HEIGHT_1 = 5;
+const ITEM_HEIGHT_2 = 7;
 class BcView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.gdl = new Code54
+    super(...arguments);
+    this.gdl = new Code54();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UIItem],
-      [6, UE.UIItem],
-      [7, UE.UIItem]
-    ], this.gdl = new Code12
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
+    this.gdl = new Code12();
   }
   OnStart() {
-    if (!(cpp_1.KuroApplication.IsBuildShipping() && "Product" === cpp_1.KuroApplication.GetAppReleaseType() || "Marketing" === UE.KuroLauncherLibrary.GetAppInternalUseType())) {
+    if ((!cpp_1.KuroApplication.IsBuildShipping() || cpp_1.KuroApplication.GetAppReleaseType() !== "Product") && UE.KuroLauncherLibrary.GetAppInternalUseType() !== "Marketing") {
       let e = ModelManager_1.ModelManager.LoginModel.GetLoginUid();
-      var t = Number(e),
-        t = e = (Number.isNaN(t) || t.toString() !== e) && (e = "1", ModelManager_1.ModelManager.FunctionModel.PlayerId) ? ModelManager_1.ModelManager.FunctionModel.PlayerId.toString() : e,
-        r = this.GetItem(0),
-        o = this.GetItem(1),
-        r = (this.Ovi(r, o, t, 0), this.GetItem(2)),
-        o = this.GetItem(3),
-        r = (this.Ovi(r, o, t, 0), this.GetItem(4)),
-        o = this.GetItem(5),
-        r = (this.Ovi(r, o, t, 1), this.GetItem(6)),
-        o = this.GetItem(7);
-      this.Ovi(r, o, t, 1)
+      var t = Number(e);
+      var t = e = (Number.isNaN(t) || t.toString() !== e) && (e = "1", ModelManager_1.ModelManager.FunctionModel.PlayerId) ? ModelManager_1.ModelManager.FunctionModel.PlayerId.toString() : e;
+      var r = this.GetItem(0);
+      var o = this.GetItem(1);
+      this.Ovi(r, o, t, 0);
+      var r = this.GetItem(2);
+      var o = this.GetItem(3);
+      this.Ovi(r, o, t, 0);
+      var r = this.GetItem(4);
+      var o = this.GetItem(5);
+      this.Ovi(r, o, t, 1);
+      var r = this.GetItem(6);
+      var o = this.GetItem(7);
+      this.Ovi(r, o, t, 1);
     }
   }
   Ovi(t, r, e, o) {
-    t?.SetAlpha(.4);
-    var s, i, a = 0 === o ? UiLayer_1.UiLayer.UiRootItem.GetWidth() : UiLayer_1.UiLayer.UiRootItem.GetHeight(),
-      n = "+" + e + "-",
-      u = this.gdl.SingleCodeLength(),
-      _ = n.length * u,
-      e = _ * ITEM_WIDTH_MAX,
-      e = Math.floor(a / e);
-    let C = ITEM_WIDTH_MAX,
-      M = 1;
-    1 < e ? (s = Math.floor(a / (_ * ITEM_WIDTH_MIN)), M = 1 < s ? (i = Math.floor(a / (_ * s)), C = Math.max(ITEM_WIDTH_MIN, i), s) : (C = ITEM_WIDTH_MAX, e)) : C = Math.floor(a / _), 0 === o ? r?.SetWidth(C) : r?.SetHeight(C);
-    var h = M * _,
-      d = (Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCommon", 30, "" + h, ["repeatCount", M]), []);
+    t?.SetAlpha(0.4);
+    var s;
+    var i;
+    var a = o === 0 ? UiLayer_1.UiLayer.UiRootItem.GetWidth() : UiLayer_1.UiLayer.UiRootItem.GetHeight();
+    var n = "+" + e + "-";
+    var u = this.gdl.SingleCodeLength();
+    var _ = n.length * u;
+    var e = _ * ITEM_WIDTH_MAX;
+    var e = Math.floor(a / e);
+    let C = ITEM_WIDTH_MAX;
+    let M = 1;
+    if (e > 1) {
+      s = Math.floor(a / (_ * ITEM_WIDTH_MIN));
+      M = s > 1 ? (i = Math.floor(a / (_ * s)), C = Math.max(ITEM_WIDTH_MIN, i), s) : (C = ITEM_WIDTH_MAX, e);
+    } else {
+      C = Math.floor(a / _);
+    }
+    if (o === 0) {
+      r?.SetWidth(C);
+    } else {
+      r?.SetHeight(C);
+    }
+    var h = M * _;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("UiCommon", 30, "" + h, ["repeatCount", M]);
+    }
+    var d = [];
     d.push(r);
     for (let e = 1; e < h; e++) {
       var l = LguiUtil_1.LguiUtil.DuplicateActor(r.GetOwner(), t);
-      d.push(l.GetComponentByClass(UE.UIItem.StaticClass()))
+      d.push(l.GetComponentByClass(UE.UIItem.StaticClass()));
     }
-    var p = [],
-      c = this.gdl.GetCodeTable();
-    for (let r = 0; r < M; r++)
+    var p = [];
+    var c = this.gdl.GetCodeTable();
+    for (let r = 0; r < M; r++) {
       for (let t = 0; t < _; t++) {
-        var E = d[t + r * _],
-          I = n[Math.floor(t / u)],
-          T = t % u,
-          I = c[I],
-          I = u - 1 < T ? 0 : I[T];
-        p.push(I), E.SetAlpha(0 < I ? 1 : 0);
+        var E = d[t + r * _];
+        var I = n[Math.floor(t / u)];
+        var T = t % u;
+        var I = c[I];
+        var I = u - 1 < T ? 0 : I[T];
+        p.push(I);
+        E.SetAlpha(I > 0 ? 1 : 0);
         let e = 0;
         switch (I) {
           case 1:
             e = ITEM_HEIGHT_1;
             break;
           case 2:
-            e = ITEM_HEIGHT_2
+            e = ITEM_HEIGHT_2;
         }
-        0 === o ? E.SetHeight(e) : E.SetWidth(e)
+        if (o === 0) {
+          E.SetHeight(e);
+        } else {
+          E.SetWidth(e);
+        }
       }
+    }
   }
 }
 exports.BcView = BcView;

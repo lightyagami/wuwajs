@@ -1,52 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActionMode = exports.EcologyMode = exports.PlotMode = exports.PerformModeBase = void 0;
+  value: true
+});
+exports.ActionMode = exports.EcologyMode = exports.PlotMode = exports.PerformModeBase = undefined;
 const Deque_1 = require("../../../../../../Core/Container/Deque");
 class PerformModeBase {
   constructor(e, t, s) {
-    this.Mode = e, this.PerformComp = t, this.Machine = s, this.CachePerformAction = new Deque_1.Deque
+    this.Mode = e;
+    this.PerformComp = t;
+    this.Machine = s;
+    this.CachePerformAction = new Deque_1.Deque();
   }
   PushAction(e, t) {
-    t ? this.CachePerformAction.AddFront(e) : this.CachePerformAction.AddRear(e)
+    if (t) {
+      this.CachePerformAction.AddFront(e);
+    } else {
+      this.CachePerformAction.AddRear(e);
+    }
   }
   PopAction() {
-    if (!this.CachePerformAction.Empty) return this.CachePerformAction.RemoveFront()
+    if (!this.CachePerformAction.Empty) {
+      return this.CachePerformAction.RemoveFront();
+    }
   }
   CheckEnter() {
-    return !1
+    return false;
   }
   CheckExit() {
-    return !1
+    return false;
   }
   Clear() {
-    this.CachePerformAction.Clear()
+    this.CachePerformAction.Clear();
   }
 }
-class PlotMode extends(exports.PerformModeBase = PerformModeBase) {
+class PlotMode extends (exports.PerformModeBase = PerformModeBase) {
   CheckEnter() {
-    return this.PerformComp.IsInPlot
+    return this.PerformComp.IsInPlot;
   }
   CheckExit() {
-    return !this.PerformComp.IsInPlot && this.CachePerformAction.Empty
+    return !this.PerformComp.IsInPlot && this.CachePerformAction.Empty;
   }
 }
 exports.PlotMode = PlotMode;
 class EcologyMode extends PerformModeBase {
   CheckEnter() {
-    return !this.CachePerformAction.Empty
+    return !this.CachePerformAction.Empty;
   }
   CheckExit() {
-    return this.Machine.Modes.get(1).CheckEnter() || this.Machine.Modes.get(2).CheckEnter() || this.CachePerformAction.Empty
+    return this.Machine.Modes.get(1).CheckEnter() || this.Machine.Modes.get(2).CheckEnter() || this.CachePerformAction.Empty;
   }
 }
 exports.EcologyMode = EcologyMode;
 class ActionMode extends PerformModeBase {
   CheckEnter() {
-    return !this.CachePerformAction.Empty
+    return !this.CachePerformAction.Empty;
   }
   CheckExit() {
-    return this.Machine.Modes.get(1).CheckEnter() || !this.Machine.CurrentAction
+    return this.Machine.Modes.get(1).CheckEnter() || !this.Machine.CurrentAction;
   }
 }
 exports.ActionMode = ActionMode;

@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbLimitPlayerMove = void 0;
+  value: true
+});
+exports.FbLimitPlayerMove = undefined;
 class FbLimitPlayerMove {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Pyh = !1, this.Uyh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Pyh = false;
+    this.Uyh = false;
   }
   static Create(t) {
-    if (t) return new FbLimitPlayerMove(t)
+    if (t) {
+      return new FbLimitPlayerMove(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get IsOnlyForward() {
-    return this.Pyh || (this.Pyh = !0, this.Uyh = this.FbDataInternal.isOnlyForward()), this.Uyh
+    if (!this.Pyh) {
+      this.Pyh = true;
+      this.Uyh = this.FbDataInternal.isOnlyForward();
+    }
+    return this.Uyh;
   }
 }
 exports.FbLimitPlayerMove = FbLimitPlayerMove;

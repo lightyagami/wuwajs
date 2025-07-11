@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbComparePlayerNumInDungeon = void 0;
+  value: true
+});
+exports.FbComparePlayerNumInDungeon = undefined;
 const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbComparePlayerNumInDungeon {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.OJh = !1, this.FJh = void 0, this.KJh = !1, this.$Jh = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.OJh = false;
+    this.FJh = undefined;
+    this.KJh = false;
+    this.$Jh = undefined;
   }
   static Create(e) {
-    if (e) return new FbComparePlayerNumInDungeon(e)
+    if (e) {
+      return new FbComparePlayerNumInDungeon(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get CompareType() {
-    return this.OJh || (this.OJh = !0, this.FJh = this.FbDataInternal.compareType()), this.FJh
+    if (!this.OJh) {
+      this.OJh = true;
+      this.FJh = this.FbDataInternal.compareType();
+    }
+    return this.FJh;
   }
   get CompareValue() {
-    var e, t;
-    return !this.KJh && (this.KJh = !0, e = this.FbDataInternal.compareValueType(), t = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(e)) && (this.$Jh = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(e, this.FbDataInternal.compareValue(t))), this.$Jh
+    var e;
+    var t;
+    if (!this.KJh && (this.KJh = true, e = this.FbDataInternal.compareValueType(), t = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(e))) {
+      this.$Jh = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(e, this.FbDataInternal.compareValue(t));
+    }
+    return this.$Jh;
   }
 }
 exports.FbComparePlayerNumInDungeon = FbComparePlayerNumInDungeon;

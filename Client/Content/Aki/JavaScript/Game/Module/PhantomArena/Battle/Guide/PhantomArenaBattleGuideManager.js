@@ -1,35 +1,51 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaBattleGuideManager = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController"),
-  PhantomArenaBattleGuideFactory_1 = require("./PhantomArenaBattleGuideFactory");
+  value: true
+});
+exports.PhantomArenaBattleGuideManager = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
+const PhantomArenaBattleGuideFactory_1 = require("./PhantomArenaBattleGuideFactory");
 class PhantomArenaBattleGuideManager {
   constructor(t) {
-    this.Proxy = t, this.Anu = void 0, this.Pnu = void 0, this.Gmu = !1
+    this.Proxy = t;
+    this.F_u = undefined;
+    this.N_u = undefined;
+    this.HDu = false;
   }
   RegisterGuideInterface(t) {
-    this.Pnu = t
+    this.N_u = t;
   }
   RegisterBehaviorTreeGuideData(t) {
     var i = t.EnableOperation.Type;
-    this.Anu = PhantomArenaBattleGuideFactory_1.PhantomArenaBattleGuideFactory.GetGuideData(i, t), this.Gmu = !t.IsTheLast, Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "行为引导操作限制", ["Type", i], ["HasNextGuide", this.Gmu])
+    this.F_u = PhantomArenaBattleGuideFactory_1.PhantomArenaBattleGuideFactory.GetGuideData(i, t);
+    this.HDu = !t.IsTheLast;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "行为引导操作限制", ["Type", i], ["HasNextGuide", this.HDu]);
+    }
   }
   CheckCanExecuteAndShowFailTips(t, ...i) {
-    return !this.Anu && !this.Gmu || (this.Anu || !this.Gmu) && this.Anu.Type === t && !!this.Anu.CheckCanExecute(...i) || (this.ShowGuideTips(), !1)
+    return !this.F_u && !this.HDu || (this.F_u || !this.HDu) && this.F_u.Type === t && !!this.F_u.CheckCanExecute(...i) || (this.ShowGuideTips(), false);
   }
   CheckInGuideAndShowTips() {
-    return !!this.InGuiding && (this.ShowGuideTips(), !0)
+    return !!this.InGuiding && (this.ShowGuideTips(), true);
   }
   FinishCurrentGuide() {
-    this.Anu && (this.Anu = void 0, this.Pnu) && (this.Pnu.FinishCurrentGuide(), this.Pnu = void 0)
+    if (this.F_u && (this.F_u = undefined, this.N_u)) {
+      this.N_u.FinishCurrentGuide();
+      this.N_u = undefined;
+    }
   }
   get InGuiding() {
-    return void 0 !== this.Anu || this.Gmu
+    return this.F_u !== undefined || this.HDu;
   }
   ShowGuideTips() {
-    this.Anu ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(this.Anu.Tips) : this.Gmu && ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_BvBPlayerOperationForbidden_Text")
+    if (this.F_u) {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(this.F_u.Tips);
+    } else if (this.HDu) {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_BvBPlayerOperationForbidden_Text");
+    }
   }
 }
 exports.PhantomArenaBattleGuideManager = PhantomArenaBattleGuideManager;

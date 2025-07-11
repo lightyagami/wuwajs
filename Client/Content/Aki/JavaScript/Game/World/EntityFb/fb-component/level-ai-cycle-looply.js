@@ -1,43 +1,56 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelAiCycleLooply = void 0;
+  value: true
+});
+exports.LevelAiCycleLooply = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class LevelAiCycleLooply {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsLevelAiCycleLooply(e, t) {
-    return (t || new LevelAiCycleLooply).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new LevelAiCycleLooply()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsLevelAiCycleLooply(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new LevelAiCycleLooply).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new LevelAiCycleLooply()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   type(e) {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__string(this.bb_pos + t, e) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, e);
+    } else {
+      return undefined;
+    }
   }
   isCircle() {
     var e = this.bb.__offset(this.bb_pos, 6);
-    return !!e && !!this.bb.readInt8(this.bb_pos + e)
+    return !!e && !!this.bb.readInt8(this.bb_pos + e);
   }
   static startLevelAiCycleLooply(e) {
-    e.startObject(2)
+    e.startObject(2);
   }
   static addType(e, t) {
-    e.addFieldOffset(0, t, 0)
+    e.addFieldOffset(0, t, 0);
   }
   static addIsCircle(e, t) {
-    e.addFieldInt8(1, +t, 0)
+    e.addFieldInt8(1, +t, 0);
   }
   static endLevelAiCycleLooply(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createLevelAiCycleLooply(e, t, l) {
-    return LevelAiCycleLooply.startLevelAiCycleLooply(e), LevelAiCycleLooply.addType(e, t), LevelAiCycleLooply.addIsCircle(e, l), LevelAiCycleLooply.endLevelAiCycleLooply(e)
+    LevelAiCycleLooply.startLevelAiCycleLooply(e);
+    LevelAiCycleLooply.addType(e, t);
+    LevelAiCycleLooply.addIsCircle(e, l);
+    return LevelAiCycleLooply.endLevelAiCycleLooply(e);
   }
 }
 exports.LevelAiCycleLooply = LevelAiCycleLooply;

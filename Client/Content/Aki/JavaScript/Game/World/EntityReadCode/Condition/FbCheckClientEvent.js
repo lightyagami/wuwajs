@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckClientEvent = void 0;
+  value: true
+});
+exports.FbCheckClientEvent = undefined;
 class FbCheckClientEvent {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Nuc = !1, this.Vuc = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Nuc = false;
+    this.Vuc = undefined;
   }
   static Create(t) {
-    if (t) return new FbCheckClientEvent(t)
+    if (t) {
+      return new FbCheckClientEvent(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EventName() {
-    return this.Nuc || (this.Nuc = !0, this.Vuc = this.FbDataInternal.eventName()), this.Vuc
+    if (!this.Nuc) {
+      this.Nuc = true;
+      this.Vuc = this.FbDataInternal.eventName();
+    }
+    return this.Vuc;
   }
 }
 exports.FbCheckClientEvent = FbCheckClientEvent;

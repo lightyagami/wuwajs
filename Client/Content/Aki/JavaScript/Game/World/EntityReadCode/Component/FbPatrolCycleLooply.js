@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbPatrolCycleLooply = void 0;
+  value: true
+});
+exports.FbPatrolCycleLooply = undefined;
 class FbPatrolCycleLooply {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.QRh = !1, this.KRh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.QRh = false;
+    this.KRh = false;
   }
   static Create(t) {
-    if (t) return new FbPatrolCycleLooply(t)
+    if (t) {
+      return new FbPatrolCycleLooply(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get IsCircle() {
-    return this.QRh || (this.QRh = !0, this.KRh = this.FbDataInternal.isCircle()), this.KRh
+    if (!this.QRh) {
+      this.QRh = true;
+      this.KRh = this.FbDataInternal.isCircle();
+    }
+    return this.KRh;
   }
 }
 exports.FbPatrolCycleLooply = FbPatrolCycleLooply;

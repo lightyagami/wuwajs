@@ -1,13 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSettlementDungeon = void 0;
+  value: true
+});
+exports.FbSettlementDungeon = undefined;
 class FbSettlementDungeon {
   constructor(e) {
-    this.FbDataInternal = e
+    this.FbDataInternal = e;
   }
   static Create(e) {
-    if (e) return new FbSettlementDungeon(e)
+    if (e) {
+      return new FbSettlementDungeon(e);
+    }
   }
 }
 exports.FbSettlementDungeon = FbSettlementDungeon;

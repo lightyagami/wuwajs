@@ -1,37 +1,61 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcPerformMonsterNearbyState = void 0;
-const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  NpcPerceptionReactionUtil_1 = require("./Common/NpcPerceptionReactionUtil"),
-  NpcPerformBaseState_1 = require("./NpcPerformBaseState"),
-  BUBBLE_TIME = 3;
+  value: true
+});
+exports.NpcPerformMonsterNearbyState = undefined;
+const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const NpcPerceptionReactionUtil_1 = require("./Common/NpcPerceptionReactionUtil");
+const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
+const BUBBLE_TIME = 3;
 class NpcPerformMonsterNearbyState extends NpcPerformBaseState_1.NpcPerformBaseState {
   constructor() {
-    super(...arguments), this.bTe = 0, this.wtr = !1, this.Btr = void 0, this.btr = 0, this.qtr = void 0, this.Gtr = void 0
+    super(...arguments);
+    this.bTe = 0;
+    this.wtr = false;
+    this.Btr = undefined;
+    this.btr = 0;
+    this.qtr = undefined;
+    this.Gtr = undefined;
   }
   CanChangeFrom(e) {
     var t = this.Owner.Entity.GetComponent(187);
-    return this.wtr && 1 === e && !t.IsInPlot
+    return this.wtr && e === 1 && !t.IsInPlot;
   }
   OnCreate(e) {
-    super.OnCreate(e), e?.NpcMonsterClosePerform ? (this.wtr = !0, this.Btr = e.NpcMonsterClosePerform.Montage, this.btr = e.NpcMonsterClosePerform.BubbleRate, this.qtr = e.NpcMonsterClosePerform.Bubble) : this.wtr = !1
+    super.OnCreate(e);
+    if (e?.NpcMonsterClosePerform) {
+      this.wtr = true;
+      this.Btr = e.NpcMonsterClosePerform.Montage;
+      this.btr = e.NpcMonsterClosePerform.BubbleRate;
+      this.qtr = e.NpcMonsterClosePerform.Bubble;
+    } else {
+      this.wtr = false;
+    }
   }
   OnEnter(e) {
     this.Gtr = e;
-    e = this.Owner.Entity.GetComponent(187), e?.HasBrain && this.Owner.Entity.GetComponent(45)?.StopMove(!1), e = e?.GetMontagePath(this.Btr);
+    e = this.Owner.Entity.GetComponent(187);
+    if (e?.HasBrain) {
+      this.Owner.Entity.GetComponent(45)?.StopMove(false);
+    }
+    e = e?.GetMontagePath(this.Btr);
     this.PlayMontage({
       MontagePath: e,
-      IsLoop: !0
-    }), this.bTe < 0 && TimerSystem_1.TimerSystem.Delay(() => {
-      this.StateMachine.Switch(this.Gtr)
-    }, BUBBLE_TIME * CommonDefine_1.MILLIONSECOND_PER_SECOND), NpcPerceptionReactionUtil_1.NpcPerceptionReactionUtil.ShowHeadDialog(this.Owner.Entity, this.btr, this.qtr)
+      IsLoop: true
+    });
+    if (this.bTe < 0) {
+      TimerSystem_1.TimerSystem.Delay(() => {
+        this.StateMachine.Switch(this.Gtr);
+      }, BUBBLE_TIME * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+    }
+    NpcPerceptionReactionUtil_1.NpcPerceptionReactionUtil.ShowHeadDialog(this.Owner.Entity, this.btr, this.qtr);
   }
   OnExit(e) {
     this.StopMontage({
       Method: 0
-    })
+    });
   }
   OnDestroy() {}
 }

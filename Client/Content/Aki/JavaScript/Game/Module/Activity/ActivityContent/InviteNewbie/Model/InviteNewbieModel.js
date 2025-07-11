@@ -1,74 +1,115 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InviteNewbieModel = void 0;
-const LanguageSystem_1 = require("../../../../../../Core/Common/LanguageSystem"),
-  Log_1 = require("../../../../../../Core/Common/Log"),
-  CommonDefine_1 = require("../../../../../../Core/Define/CommonDefine"),
-  H5CircumUrlById_1 = require("../../../../../../Core/Define/ConfigQuery/H5CircumUrlById"),
-  ModelBase_1 = require("../../../../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../Common/Event/EventSystem"),
-  LocalStorage_1 = require("../../../../../Common/LocalStorage"),
-  LocalStorageDefine_1 = require("../../../../../Common/LocalStorageDefine"),
-  ControllerHolder_1 = require("../../../../../Manager/ControllerHolder"),
-  InviteNewbieProtocolContext_1 = require("./InviteNewbieProtocolContext");
+  value: true
+});
+exports.InviteNewbieModel = undefined;
+const LanguageSystem_1 = require("../../../../../../Core/Common/LanguageSystem");
+const Log_1 = require("../../../../../../Core/Common/Log");
+const CommonDefine_1 = require("../../../../../../Core/Define/CommonDefine");
+const H5CircumUrlById_1 = require("../../../../../../Core/Define/ConfigQuery/H5CircumUrlById");
+const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../../../Common/LocalStorageDefine");
+const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
+const InviteNewbieProtocolContext_1 = require("./InviteNewbieProtocolContext");
 class InviteNewbieModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.xVa = void 0
+    super(...arguments);
+    this.xVa = undefined;
   }
   OnInit() {
-    return this.xVa = new InviteNewbieProtocolContext_1.InviteNewbieProtocolContext(this), !0
+    this.xVa = new InviteNewbieProtocolContext_1.InviteNewbieProtocolContext(this);
+    return true;
   }
   OnClear() {
-    return this.xVa?.Dispose(), !(this.xVa = void 0)
+    this.xVa?.Dispose();
+    return !(this.xVa = undefined);
   }
   get ActivityData() {
-    return void 0 === this.xVa && (this.xVa = new InviteNewbieProtocolContext_1.InviteNewbieProtocolContext(this)), this.xVa
+    if (this.xVa === undefined) {
+      this.xVa = new InviteNewbieProtocolContext_1.InviteNewbieProtocolContext(this);
+    }
+    return this.xVa;
   }
   get CurrentActivityId() {
-    return this.xVa?.Id ?? 0
+    return this.xVa?.Id ?? 0;
   }
   get HasRedDot() {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.InviteNewbieEntered);
-    return void 0 === e || !e
+    return e === undefined || !e;
   }
   get HelpId() {
-    return this.xVa?.GetHelpId() ?? 0
+    return this.xVa?.GetHelpId() ?? 0;
   }
   get InviteCode() {
-    return this.xVa?.InviteCode ?? ""
+    return this.xVa?.InviteCode ?? "";
   }
   get ScoreTextId() {
     var e;
-    return void 0 === this.xVa ? "" : (e = this.xVa.Id, H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e)?.ScoreText ?? " ")
+    if (this.xVa === undefined) {
+      return "";
+    } else {
+      e = this.xVa.Id;
+      return H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e)?.ScoreText ?? " ";
+    }
   }
   get Score() {
-    return this.xVa?.Score ?? 0
+    return this.xVa?.Score ?? 0;
   }
   get RootUrl() {
     var e;
-    if (void 0 !== this.xVa) return e = this.xVa.Id, e = H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e), ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? e?.OverseaRootUrl : e?.RootUrl
+    if (this.xVa !== undefined) {
+      e = this.xVa.Id;
+      e = H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e);
+      if (ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk()) {
+        return e?.OverseaRootUrl;
+      } else {
+        return e?.RootUrl;
+      }
+    }
   }
   get QrCodeUrl() {
-    if (void 0 !== this.xVa) {
-      var t = this.xVa.Id,
-        t = H5CircumUrlById_1.configH5CircumUrlById.GetConfig(t)?.Ps5RootUrl;
-      if (void 0 !== t) {
-        let e = void 0;
-        var r = LanguageSystem_1.LanguageSystem.PackageLanguage,
-          r = (r === CommonDefine_1.CHT ? e = "zh-tw" : r === CommonDefine_1.JAPANESE_ISO639_1 ? e = "jp" : r === CommonDefine_1.KOREAN_ISO639_1 ? e = "kr" : r === CommonDefine_1.FRANCE_ISO639_1 ? e = "fr" : r === CommonDefine_1.GERMANY_ISO639_1 ? e = "de" : r === CommonDefine_1.SPAIN_ISO639_1 && (e = "es"), void 0 === e ? t : t + "?lang=" + e);
-        return Log_1.Log.CheckInfo() && Log_1.Log.Info("InviteNewbie", 64, "获取二维码链接", ["url", r]), r
+    if (this.xVa !== undefined) {
+      var t = this.xVa.Id;
+      var t = H5CircumUrlById_1.configH5CircumUrlById.GetConfig(t)?.Ps5RootUrl;
+      if (t !== undefined) {
+        let e = undefined;
+        var r = LanguageSystem_1.LanguageSystem.PackageLanguage;
+        if (r === CommonDefine_1.CHT) {
+          e = "zh-tw";
+        } else if (r === CommonDefine_1.JAPANESE_ISO639_1) {
+          e = "jp";
+        } else if (r === CommonDefine_1.KOREAN_ISO639_1) {
+          e = "kr";
+        } else if (r === CommonDefine_1.FRANCE_ISO639_1) {
+          e = "fr";
+        } else if (r === CommonDefine_1.GERMANY_ISO639_1) {
+          e = "de";
+        } else if (r === CommonDefine_1.SPAIN_ISO639_1) {
+          e = "es";
+        }
+        var r = e === undefined ? t : t + "?lang=" + e;
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("InviteNewbie", 64, "获取二维码链接", ["url", r]);
+        }
+        return r;
       }
     }
   }
   get IsInternalBrowser() {
     var e;
-    return void 0 !== this.xVa && (e = this.xVa.Id, H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e)?.IsInternalBrowser ?? !1)
+    return this.xVa !== undefined && (e = this.xVa.Id, H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e)?.IsInternalBrowser ?? false);
   }
   SyncActivityNotify(e) {
     e = e.fks;
-    this.xVa && (this.xVa.InviteCode = e?.XRc ?? void 0, this.xVa.Score = e?.SMs ?? 0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.CurrentActivityId)
+    if (this.xVa) {
+      this.xVa.InviteCode = e?.XRc ?? undefined;
+      this.xVa.Score = e?.SMs ?? 0;
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.CurrentActivityId);
   }
 }
 exports.InviteNewbieModel = InviteNewbieModel;

@@ -1,203 +1,355 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaOpponentData = void 0;
-const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  PhantomArenaAiOperationFactory_1 = require("../Ai/PhantomArenaAiOperationFactory"),
-  PhantomArenaCardTaskData_1 = require("./PhantomArenaCardTaskData"),
-  PhantomCardData_1 = require("./PhantomCardData");
+  value: true
+});
+exports.PhantomArenaOpponentData = undefined;
+const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const PhantomArenaAiOperationFactory_1 = require("../Ai/PhantomArenaAiOperationFactory");
+const PhantomArenaCardTaskData_1 = require("./PhantomArenaCardTaskData");
+const PhantomCardData_1 = require("./PhantomCardData");
 class PhantomArenaOpponentData {
   constructor() {
-    this.RoleId = 0, this.FightId = 0, this.CardLibraryNum = 0, this.LastHandCardNum = 0, this.HandCardNum = 0, this.Otu = new Map, this.qtu = new Map, this.CanEvolveNum = 0, this.TaskData = void 0, this.InitPromise = void 0, this.jx1 = new Map, this.Hx1 = new Map, this.$x1 = [], this.PrevShowLifeInternal = 0
+    this.RoleId = 0;
+    this.FightId = 0;
+    this.CardLibraryNum = 0;
+    this.LastHandCardNum = 0;
+    this.HandCardNum = 0;
+    this.Eou = new Map();
+    this.Iou = new Map();
+    this.CanEvolveNum = 0;
+    this.TaskData = undefined;
+    this.InitPromise = undefined;
+    this.pD1 = new Map();
+    this.vD1 = new Map();
+    this.yD1 = [];
+    this.PrevShowLifeInternal = 0;
   }
   CreateInitPromise() {
-    this.InitPromise = new CustomPromise_1.CustomPromise
+    this.InitPromise = new CustomPromise_1.CustomPromise();
   }
   InitPlayerData(t) {
-    this.Otu.clear(), this.qtu.clear(), this.RoleId = t.pg1, this.HandCardNum = t.Sg1, this.RefreshLibraryNum(t.yg1), this.RefreshCanEvolveNum(t.Pg1), this.h1u(t.vg1)
+    this.Eou.clear();
+    this.Iou.clear();
+    this.RoleId = t.Ng1;
+    this.HandCardNum = t.Hg1;
+    this.RefreshLibraryNum(t.jg1);
+    this.RefreshCanEvolveNum(t.eC1);
+    this.Hpu(t.Vg1);
   }
   InitNpcAiOperationData(t) {
-    this.$x1 = [];
-    for (const a of t) this.Wx1(a.Yg1), this.Qx1(a.zg1), this.Kx1(a.AM1), this.Xx1(a.Xg1), this.Yx1(a.PM1), this.zx1(a.xM1), this.Jx1(a.UM1), this.Zx1(a.DM1), this.eD1(a.BM1), this.tD1(a.kM1), this.P21(a.S21), this.x21(a.M21), this.a81(a.s81), this.Dtu(a.Ptu), this.rou(a.Bru), this.hsu(a.znu);
-    this.InitPromise?.SetResult(void 0), this.InitPromise = void 0
+    this.yD1 = [];
+    for (const a of t) {
+      this.SD1(a.vC1);
+      this.MD1(a.yC1);
+      this.ED1(a.eE1);
+      this.ID1(a.pC1);
+      this.TD1(a.tE1);
+      this.bD1(a.iE1);
+      this.RD1(a.rE1);
+      this.LD1(a.oE1);
+      this.wD1(a.nE1);
+      this.AD1(a.sE1);
+      this.hG1(a.J21);
+      this.lG1(a.Z21);
+      this.V81(a.N81);
+      this.you(a.pou);
+      this.$au(a.Mau);
+      this._uu(a.X1u);
+    }
+    this.InitPromise?.SetResult(undefined);
+    this.InitPromise = undefined;
   }
   GetNpcAiOperationList() {
-    return this.$x1
+    return this.yD1;
   }
-  RefreshHandCardNum(t, a = !0) {
-    this.LastHandCardNum = this.HandCardNum, this.HandCardNum = t, a && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentHandCardChange)
+  RefreshHandCardNum(t, a = true) {
+    this.LastHandCardNum = this.HandCardNum;
+    this.HandCardNum = t;
+    if (a) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentHandCardChange);
+    }
   }
   RefreshLibraryNum(t) {
-    this.CardLibraryNum = t, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentCardLibraryChange)
+    this.CardLibraryNum = t;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentCardLibraryChange);
   }
   RefreshCanEvolveNum(t) {
-    this.CanEvolveNum = t
+    this.CanEvolveNum = t;
   }
-  h1u(t) {
+  Hpu(t) {
     var a = [];
     for (const r of Object.keys(t)) {
       var e = Number(r);
-      this.Otu.set(e, t[r]), a.push(e)
+      this.Eou.set(e, t[r]);
+      a.push(e);
     }
   }
   RefreshBattleStatus(t) {
     var a = [];
     for (const r of Object.keys(t)) {
       var e = Number(r);
-      this.Otu.set(e, t[r]), a.push(e)
+      this.Eou.set(e, t[r]);
+      a.push(e);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleStatusChange, a)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleStatusChange, a);
   }
   RefreshBattleAttr(t) {
     var a = [];
     for (const r of Object.keys(t)) {
       var e = Number(r);
-      this.qtu.set(e, t[r]), a.push(e)
+      this.Iou.set(e, t[r]);
+      a.push(e);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleAttrChange, a)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleAttrChange, a);
   }
   GetBattleStatusValue(t) {
-    return this.Otu.get(t) ?? 0
+    return this.Eou.get(t) ?? 0;
   }
   RefreshCardAttr(t, a) {
-    for (const e of this.jx1.values()) e.FightId === t && e.RefreshFightAttr(a)
+    for (const e of this.pD1.values()) {
+      if (e.FightId === t) {
+        e.RefreshFightAttr(a);
+      }
+    }
   }
   RemoveBattleCardDataByIndex(t) {
-    t = this.Hx1.get(t);
-    return !!t && this.nD1(t)
+    t = this.vD1.get(t);
+    return !!t && this.UD1(t);
   }
-  nD1(t) {
-    var a = this.jx1.delete(t.CardId),
-      t = this.Hx1.delete(t.Index);
-    return a && t
+  UD1(t) {
+    var a = this.pD1.delete(t.CardId);
+    var t = this.vD1.delete(t.Index);
+    return a && t;
   }
   SetBattleCardData(t) {
-    var a = new PhantomCardData_1.PhantomCardData;
-    a.RefreshFightData(t), this.RemoveBattleCardDataByIndex(a.Index), this.jx1.set(a.CardId, a), this.Hx1.set(a.Index, a)
+    var a = new PhantomCardData_1.PhantomCardData(true);
+    a.RefreshFightData(t);
+    this.RemoveBattleCardDataByIndex(a.Index);
+    this.pD1.set(a.CardId, a);
+    this.vD1.set(a.Index, a);
   }
   NotifyExchangeBattleCard(t) {
-    var a, e = this.GetCardDataByFightId(t[0].gK1);
-    e && (e && e.Index !== t[1]?.CK1 ? Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 10, "卡牌A位置不正确,不满足交换条件", ["AfterPos", t[0].CK1], ["Index", e.Index]) : (a = this.Hx1.get(t[0].CK1)) && a.FightId !== t[1]?.gK1 ? Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 10, "卡牌B位置不正确,不满足交换条件", ["AfterPos", t[1].CK1], ["Index", a.Index]) : (this.ExchangeBattleCard(e.Index, t[0].CK1), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBattleCardChange, !1, e.Index, t[1].CK1)))
+    var a;
+    var e = this.GetCardDataByFightId(t[0].lX1);
+    if (e) {
+      if (e && e.Index !== t[1]?._X1) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("PhantomArena", 10, "卡牌A位置不正确,不满足交换条件", ["AfterPos", t[0]._X1], ["Index", e.Index]);
+        }
+      } else if ((a = this.vD1.get(t[0]._X1)) && a.FightId !== t[1]?.lX1) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("PhantomArena", 10, "卡牌B位置不正确,不满足交换条件", ["AfterPos", t[1]._X1], ["Index", a.Index]);
+        }
+      } else {
+        this.ExchangeBattleCard(e.Index, t[0]._X1);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBattleCardChange, false, e.Index, t[1]._X1);
+      }
+    }
   }
   ExchangeBattleCard(t, a) {
-    var e = this.Hx1.get(t),
-      r = this.Hx1.get(a);
-    this.Hx1.delete(t), this.Hx1.delete(a), e && (e.Index = a, this.Hx1.set(e.Index, e)), r && (r.Index = t, this.Hx1.set(r.Index, r))
+    var e = this.vD1.get(t);
+    var r = this.vD1.get(a);
+    this.vD1.delete(t);
+    this.vD1.delete(a);
+    if (e) {
+      e.Index = a;
+      this.vD1.set(e.Index, e);
+    }
+    if (r) {
+      r.Index = t;
+      this.vD1.set(r.Index, r);
+    }
   }
   BackToLibrary(t) {
-    this.RefreshLibraryNum(t.OM1), this.RefreshHandCardNum(t.Sg1)
+    this.RefreshLibraryNum(t.aE1);
+    this.RefreshHandCardNum(t.Hg1);
   }
   BackSlotCardToLibrary(t, a) {
-    this.RemoveBattleCardDataByIndex(t), this.RefreshLibraryNum(a)
+    this.RemoveBattleCardDataByIndex(t);
+    this.RefreshLibraryNum(a);
   }
   ReverseCard(t) {
-    this.RefreshLibraryNum(t.OM1), this.RefreshHandCardNum(t.Sg1)
+    this.RefreshLibraryNum(t.aE1);
+    this.RefreshHandCardNum(t.Hg1);
   }
   GetBattleCardIndexByCardId(t) {
-    t = this.jx1.get(t);
-    return t ? t.Index : -1
+    t = this.pD1.get(t);
+    if (t) {
+      return t.Index;
+    } else {
+      return -1;
+    }
   }
   GetBattleCardIndexList(t) {
     var a = [];
-    for (const e of this.jx1.values()) t.includes(e.FightId) && a.push(e.Index);
-    return a
+    for (const e of this.pD1.values()) {
+      if (t.includes(e.FightId)) {
+        a.push(e.Index);
+      }
+    }
+    return a;
   }
   GetCardDataByCardId(t) {
-    return this.jx1.get(t)
+    return this.pD1.get(t);
   }
   GetFightIdList(t) {
     var a = [];
     for (const r of t) {
-      var e = this.jx1.get(r);
-      e && a.push(e.FightId)
+      var e = this.pD1.get(r);
+      if (e) {
+        a.push(e.FightId);
+      }
     }
-    return a
+    return a;
   }
   GetCardDataByFightId(t) {
-    for (const a of this.jx1.values())
-      if (a.FightId === t) return a
+    for (const a of this.pD1.values()) {
+      if (a.FightId === t) {
+        return a;
+      }
+    }
   }
   GetCardDataByIndex(t) {
-    return this.Hx1.get(t)
+    return this.vD1.get(t);
   }
   GetCardDataList() {
-    return Array.from(this.jx1.values())
+    return Array.from(this.pD1.values());
   }
   ClearHandData() {
-    this.HandCardNum = 0
+    this.HandCardNum = 0;
   }
   InitTaskData(t) {
-    this.TaskData = new PhantomArenaCardTaskData_1.PhantomArenaCardTaskData(!1), this.TaskData.SetTaskData(t)
+    this.TaskData = new PhantomArenaCardTaskData_1.PhantomArenaCardTaskData(false);
+    this.TaskData.SetTaskData(t);
   }
   RefreshTaskData(t) {
-    this.TaskData ? this.TaskData.SetTaskData(t) : Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 10, "任务数据为空")
+    if (this.TaskData) {
+      this.TaskData.SetTaskData(t);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("PhantomArena", 10, "任务数据为空");
+    }
   }
   CreatePhantomCardData(t, a) {
-    var e = new PhantomCardData_1.PhantomCardData;
-    return e.InitDataByNpc(t, a), e
+    var e = new PhantomCardData_1.PhantomCardData(true);
+    e.InitDataByNpc(t, a);
+    return e;
   }
   HasFourCostInHand() {
-    if (!this.TaskData || !this.TaskData.IsAllFinish || !this.TaskData.IsExecuteFourCostLogic) return !1;
-    for (const t of this.jx1.values())
-      if (t.IsFourCost) return !1;
-    return !0
+    if (!this.TaskData || !this.TaskData.IsAllFinish || !this.TaskData.IsExecuteFourCostLogic) {
+      return false;
+    }
+    for (const t of this.pD1.values()) {
+      if (t.IsFourCost) {
+        return false;
+      }
+    }
+    return true;
   }
-  Wx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(1, t), this.$x1.push(t))
+  SD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(1, t);
+      this.yD1.push(t);
+    }
   }
-  Qx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(2, t), this.$x1.push(t))
+  MD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(2, t);
+      this.yD1.push(t);
+    }
   }
-  Kx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(7, t), this.$x1.push(t))
+  ED1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(7, t);
+      this.yD1.push(t);
+    }
   }
-  Xx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(5, t), this.$x1.push(t))
+  ID1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(5, t);
+      this.yD1.push(t);
+    }
   }
-  Yx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(4, t), this.$x1.push(t))
+  TD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(4, t);
+      this.yD1.push(t);
+    }
   }
-  zx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(3, t), this.$x1.push(t))
+  bD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(3, t);
+      this.yD1.push(t);
+    }
   }
-  Jx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(8, t), this.$x1.push(t))
+  RD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(8, t);
+      this.yD1.push(t);
+    }
   }
-  Zx1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(9, t), this.$x1.push(t))
+  LD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(9, t);
+      this.yD1.push(t);
+    }
   }
-  eD1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(0, t), this.$x1.push(t))
+  wD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(0, t);
+      this.yD1.push(t);
+    }
   }
-  tD1(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(6, t), this.$x1.push(t))
+  AD1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(6, t);
+      this.yD1.push(t);
+    }
   }
-  P21(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(10, t), this.$x1.push(t))
+  hG1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(10, t);
+      this.yD1.push(t);
+    }
   }
-  x21(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(11, t), this.$x1.push(t))
+  lG1(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(11, t);
+      this.yD1.push(t);
+    }
   }
-  a81(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(12, t), this.$x1.push(t))
+  V81(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(12, t);
+      this.yD1.push(t);
+    }
   }
-  Dtu(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(13, t), this.$x1.push(t))
+  you(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(13, t);
+      this.yD1.push(t);
+    }
   }
-  rou(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(14, t), this.$x1.push(t))
+  $au(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(14, t);
+      this.yD1.push(t);
+    }
   }
-  hsu(t) {
-    t && (t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(15, t), this.$x1.push(t))
+  _uu(t) {
+    if (t) {
+      t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(15, t);
+      this.yD1.push(t);
+    }
   }
   SetPrevShowLife(t) {
-    this.PrevShowLifeInternal = t
+    this.PrevShowLifeInternal = t;
   }
   get PrevShowLife() {
-    return this.PrevShowLifeInternal
+    return this.PrevShowLifeInternal;
   }
 }
 exports.PhantomArenaOpponentData = PhantomArenaOpponentData;

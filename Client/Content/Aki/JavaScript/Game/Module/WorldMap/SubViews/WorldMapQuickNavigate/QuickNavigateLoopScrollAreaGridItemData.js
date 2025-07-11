@@ -1,10 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.QuickNavigateLoopScrollAreaGridItemData = void 0;
+  value: true
+});
+exports.QuickNavigateLoopScrollAreaGridItemData = undefined;
 class QuickNavigateLoopScrollAreaGridItemData {
   constructor() {
-    this.Index = 0, this.AreaNavigateInfo = void 0, this.IsSelected = !1, this.RefreshType = 0
+    this.Index = 0;
+    this.AreaNavigateInfo = undefined;
+    this.IsSelected = false;
+    this.RefreshType = 0;
   }
 }
 exports.QuickNavigateLoopScrollAreaGridItemData = QuickNavigateLoopScrollAreaGridItemData;

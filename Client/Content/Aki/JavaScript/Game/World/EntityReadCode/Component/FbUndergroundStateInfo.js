@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbUndergroundStateInfo = void 0;
+  value: true
+});
+exports.FbUndergroundStateInfo = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbUndergroundStateInfo {
   constructor(t) {
-    this.FbDataInternal = t, this.Q_h = !1, this.K_h = 0, this.wkh = !1, this.Pkh = void 0
+    this.FbDataInternal = t;
+    this.Q_h = false;
+    this.K_h = 0;
+    this.wkh = false;
+    this.Pkh = undefined;
   }
   static Create(t) {
-    if (t) return new FbUndergroundStateInfo(t)
+    if (t) {
+      return new FbUndergroundStateInfo(t);
+    }
   }
   get StateId() {
-    return this.Q_h || (this.Q_h = !0, this.K_h = this.FbDataInternal.stateId()), this.K_h
+    if (!this.Q_h) {
+      this.Q_h = true;
+      this.K_h = this.FbDataInternal.stateId();
+    }
+    return this.K_h;
   }
   get RestartPos() {
-    return this.wkh || (this.wkh = !0, this.Pkh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.restartPos())), this.Pkh
+    if (!this.wkh) {
+      this.wkh = true;
+      this.Pkh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.restartPos());
+    }
+    return this.Pkh;
   }
 }
 exports.FbUndergroundStateInfo = FbUndergroundStateInfo;

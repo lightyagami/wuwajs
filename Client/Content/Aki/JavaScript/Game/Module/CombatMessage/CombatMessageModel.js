@@ -1,72 +1,134 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CombatMessageModel = void 0;
-const Info_1 = require("../../../Core/Common/Info"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Time_1 = require("../../../Core/Common/Time"),
-  Queue_1 = require("../../../Core/Container/Queue"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  Macro_1 = require("../../../Core/Preprocessor/Macro"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  CombatDebugController_1 = require("../../Utils/CombatDebugController"),
-  CombatLog_1 = require("../../Utils/CombatLog"),
-  CombatMessageController_1 = require("./CombatMessageController"),
-  BUFFER_TIME_RATE = 1.05,
-  TIME_BUFFER_SIZE = 20,
-  TIME_OFFSET_LERP_RATE = .1,
-  FIX_BUFFER_TIME = .08,
-  TIME_BUFFER_CHECK_COUNT_MIN = 5,
-  TIME_BUFFER_CHECK_TIME_MAX = 3,
-  MAX_FLUCTUATE = .5,
-  RECORD_UDP_MESSAGE_INTERNAL = .2,
-  MESSAGE_ID_MASK = 60n;
+  value: true
+});
+exports.CombatMessageModel = undefined;
+const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
+const Time_1 = require("../../../Core/Common/Time");
+const Queue_1 = require("../../../Core/Container/Queue");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const Macro_1 = require("../../../Core/Preprocessor/Macro");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const CombatDebugController_1 = require("../../Utils/CombatDebugController");
+const CombatLog_1 = require("../../Utils/CombatLog");
+const CombatMessageController_1 = require("./CombatMessageController");
+const BUFFER_TIME_RATE = 1.05;
+const TIME_BUFFER_SIZE = 20;
+const TIME_OFFSET_LERP_RATE = 0.1;
+const FIX_BUFFER_TIME = 0.08;
+const TIME_BUFFER_CHECK_COUNT_MIN = 5;
+const TIME_BUFFER_CHECK_TIME_MAX = 3;
+const MAX_FLUCTUATE = 0.5;
+const RECORD_UDP_MESSAGE_INTERNAL = 0.2;
+const MESSAGE_ID_MASK = 60n;
 class CombatMessageBuffer {
   constructor(e) {
-    this.CreatureDataId = e, this.TimelineOffsetBase = 0, this.DesiredBuffer = 0, this.Buffer = 0, this.LastNotifyExecuteTime = 0, this.lwl = 0, this.yIt = new Queue_1.Queue
+    this.CreatureDataId = e;
+    this.TimelineOffsetBase = 0;
+    this.DesiredBuffer = 0;
+    this.Buffer = 0;
+    this.LastNotifyExecuteTime = 0;
+    this.lwl = 0;
+    this.yIt = new Queue_1.Queue();
   }
   get TimelineOffset() {
-    return this.TimelineOffsetBase + this.Buffer
+    return this.TimelineOffsetBase + this.Buffer;
   }
   get RemainBufferTime() {
-    return this.LastNotifyExecuteTime - Time_1.Time.NowSeconds
+    return this.LastNotifyExecuteTime - Time_1.Time.NowSeconds;
   }
   AddToQueue(e, t, s, i) {
-    var r, o, a;
-    t ? (r = t?.GetComponent(53)) ? e ? (o = s.J8n) ? (a = t?.GetComponent(0), this.RecordMessageTime(o, a.GetPbDataId()), a = o + this.TimelineOffset, r.AddToQueue(e, s, i, a)) : (Log_1.Log.CheckWarn() && Log_1.Log.Warn("MultiplayerCombat", 14, "[CombatMessageModel.Push]失败, messageTime非法", ["CreatureDataId", this.CreatureDataId], ["id", e], ["messageTime", o]), CombatMessageController_1.CombatMessageController.Process(e, t, i, s)) : Log_1.Log.CheckError() && Log_1.Log.Error("MultiplayerCombat", 14, "[CombatMessageModel.Push]失败, id非法", ["CreatureDataId", this.CreatureDataId], ["id", e]) : CombatMessageController_1.CombatMessageController.Process(e, t, i, s) : Log_1.Log.CheckError() && Log_1.Log.Error("MultiplayerCombat", 19, "[CombatMessageModel.Push]失败, entity非法", ["CreatureDataId", this.CreatureDataId], ["id", e])
+    var r;
+    var o;
+    var a;
+    if (t) {
+      if (r = t?.GetComponent(53)) {
+        if (e) {
+          if (o = s.J8n) {
+            a = t?.GetComponent(0);
+            this.RecordMessageTime(o, a.GetPbDataId());
+            a = o + this.TimelineOffset;
+            r.AddToQueue(e, s, i, a);
+          } else {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("MultiplayerCombat", 14, "[CombatMessageModel.Push]失败, messageTime非法", ["CreatureDataId", this.CreatureDataId], ["id", e], ["messageTime", o]);
+            }
+            CombatMessageController_1.CombatMessageController.Process(e, t, i, s);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("MultiplayerCombat", 14, "[CombatMessageModel.Push]失败, id非法", ["CreatureDataId", this.CreatureDataId], ["id", e]);
+        }
+      } else {
+        CombatMessageController_1.CombatMessageController.Process(e, t, i, s);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("MultiplayerCombat", 19, "[CombatMessageModel.Push]失败, entity非法", ["CreatureDataId", this.CreatureDataId], ["id", e]);
+    }
   }
-  RecordMessageTime(e, t, s = !1) {
-    var i = Time_1.Time.NowSeconds,
-      r = ((!s || i - this.lwl > RECORD_UDP_MESSAGE_INTERNAL) && (this.yIt.Push([e, i]), this.yIt.Size >= TIME_BUFFER_SIZE && this.yIt.Pop(), this.lwl = i), this.IIt(), e + this.TimelineOffset);
-    r > this.LastNotifyExecuteTime && (this.LastNotifyExecuteTime = r), this.ReportMoveDataReceiveInfo(i - e, t, s)
+  RecordMessageTime(e, t, s = false) {
+    var i = Time_1.Time.NowSeconds;
+    if (!s || i - this.lwl > RECORD_UDP_MESSAGE_INTERNAL) {
+      this.yIt.Push([e, i]);
+      if (this.yIt.Size >= TIME_BUFFER_SIZE) {
+        this.yIt.Pop();
+      }
+      this.lwl = i;
+    }
+    this.IIt();
+    var r = e + this.TimelineOffset;
+    if (r > this.LastNotifyExecuteTime) {
+      this.LastNotifyExecuteTime = r;
+    }
+    this.ReportMoveDataReceiveInfo(i - e, t, s);
   }
   IIt() {
-    if (0 !== this.yIt.Size) {
+    if (this.yIt.Size !== 0) {
       let e = this.yIt.Size - 1;
       var r = this.yIt.Get(e);
-      let t = r[1] - r[0],
-        s = t;
+      let t = r[1] - r[0];
+      let s = t;
       var o = r[0];
       let i = 0;
-      for (; 0 < e; e--) {
+      for (; e > 0; e--) {
         i++;
         var [a, h] = this.yIt.Get(e);
-        if (i > TIME_BUFFER_CHECK_TIME_MAX && o - a > TIME_BUFFER_CHECK_COUNT_MIN) break;
+        if (i > TIME_BUFFER_CHECK_TIME_MAX && o - a > TIME_BUFFER_CHECK_COUNT_MIN) {
+          break;
+        }
         h = h - a;
-        t > h ? t = h : s < h && (s = h)
+        if (t > h) {
+          t = h;
+        } else if (s < h) {
+          s = h;
+        }
       }
-      r = s - t, r = MathUtils_1.MathUtils.Clamp(r, r, MAX_FLUCTUATE);
-      this.TimelineOffsetBase = t, ModelManager_1.ModelManager.CombatMessageModel.MoveSyncUdpMode ? this.DesiredBuffer = r * BUFFER_TIME_RATE + ModelManager_1.ModelManager.CombatMessageModel.MoveSyncUdpSendInterval : this.DesiredBuffer = r * BUFFER_TIME_RATE + FIX_BUFFER_TIME, this.TIt(0)
+      r = s - t;
+      r = MathUtils_1.MathUtils.Clamp(r, r, MAX_FLUCTUATE);
+      this.TimelineOffsetBase = t;
+      if (ModelManager_1.ModelManager.CombatMessageModel.MoveSyncUdpMode) {
+        this.DesiredBuffer = r * BUFFER_TIME_RATE + ModelManager_1.ModelManager.CombatMessageModel.MoveSyncUdpSendInterval;
+      } else {
+        this.DesiredBuffer = r * BUFFER_TIME_RATE + FIX_BUFFER_TIME;
+      }
+      this.TIt(0);
     }
   }
   TIt(e = 0) {
-    this.DesiredBuffer < this.Buffer ? this.Buffer = Math.max(this.DesiredBuffer, this.Buffer - e) : this.RemainBufferTime > e ? this.Buffer = Math.min(this.DesiredBuffer, this.Buffer + e) : this.Buffer = this.DesiredBuffer
+    if (this.DesiredBuffer < this.Buffer) {
+      this.Buffer = Math.max(this.DesiredBuffer, this.Buffer - e);
+    } else if (this.RemainBufferTime > e) {
+      this.Buffer = Math.min(this.DesiredBuffer, this.Buffer + e);
+    } else {
+      this.Buffer = this.DesiredBuffer;
+    }
   }
   OnTick(e) {
-    this.TIt(e * TIME_OFFSET_LERP_RATE)
+    this.TIt(e * TIME_OFFSET_LERP_RATE);
   }
   ReportMoveDataReceiveInfo(e, t, s) {
     t = {
@@ -79,91 +141,147 @@ class CombatMessageBuffer {
       desired_buffer: this.DesiredBuffer,
       remain_buffer: this.RemainBufferTime,
       udp_message: s
-    }, e = JSON.stringify(t);
-    CombatDebugController_1.CombatDebugController.DataReport("MOVE_SYNC_RECEIVE_INFO", e)
+    };
+    e = JSON.stringify(t);
+    CombatDebugController_1.CombatDebugController.DataReport("MOVE_SYNC_RECEIVE_INFO", e);
   }
 }
 const COUNT_CONTEXT_REMOVE_DELAY = 500;
 class CombatMessageModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.MoveSyncUdpMode = !0, this.MoveSyncUdpSendInterval = .03, this.MoveSyncUdpFullSampling = !1, this.CombatMessageSendPackMode = !0, this.CombatMessageSendInterval = .04, this.CombatMessageSendIntervalMulti = .03, this.CombatMessageSendPendingTime = 0, this.zoh = 1, this.LIt = 0n, this.CombatMessageBufferMap = new Map, this.CombatMessageBufferMapByEntity = new Map, this.NeedPushMove = !1, this.MoveSyncSet = new Set, this.AnyEntityInFight = !1, this.AnyHateChange = !1, this.MessagePack = Protocol_1.Aki.Protocol.CombatMessage.sZn.create(), this.Gul = !1, this.go_ = new Map, this.po_ = new Map, this.fo_ = new Map, this.vo_ = new Map, this.SkillDirtySet = new Set, this.yo_ = new Map, this.So_ = new Map
+    super(...arguments);
+    this.MoveSyncUdpMode = true;
+    this.MoveSyncUdpSendInterval = 0.03;
+    this.MoveSyncUdpFullSampling = false;
+    this.CombatMessageSendPackMode = true;
+    this.CombatMessageSendInterval = 0.04;
+    this.CombatMessageSendIntervalMulti = 0.03;
+    this.CombatMessageSendPendingTime = 0;
+    this.zoh = 1;
+    this.LIt = 0n;
+    this.CombatMessageBufferMap = new Map();
+    this.CombatMessageBufferMapByEntity = new Map();
+    this.NeedPushMove = false;
+    this.MoveSyncSet = new Set();
+    this.AnyEntityInFight = false;
+    this.AnyHateChange = false;
+    this.MessagePack = Protocol_1.Aki.Protocol.CombatMessage.sZn.create();
+    this.Gul = false;
+    this.go_ = new Map();
+    this.po_ = new Map();
+    this.fo_ = new Map();
+    this.vo_ = new Map();
+    this.SkillDirtySet = new Set();
+    this.yo_ = new Map();
+    this.So_ = new Map();
   }
   OnLeaveLevel() {
-    return !(this.AnyEntityInFight = !1)
+    return !(this.AnyEntityInFight = false);
   }
   OnChangeMode() {
-    return !(this.AnyEntityInFight = !1)
+    return !(this.AnyEntityInFight = false);
   }
   AddMoveSync(e) {
-    return !this.MoveSyncSet.has(e) && (this.MoveSyncSet.add(e), !0)
+    return !this.MoveSyncSet.has(e) && (this.MoveSyncSet.add(e), true);
   }
   DeleteMoveSync(e) {
-    return !!this.MoveSyncSet.delete(e)
+    return !!this.MoveSyncSet.delete(e);
   }
   SetCombatMessageSwitch(e) {
-    this.Gul = e
+    this.Gul = e;
   }
   GenMessageId() {
     var e = ++this.LIt | BigInt(this.zoh) << MESSAGE_ID_MASK;
-    return this.Gul && Log_1.Log.CheckError() && Log_1.Log.Error("CombatInfo", 35, "[GenMessageId]Debug", ["messageId", e]), e
+    if (this.Gul && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("CombatInfo", 35, "[GenMessageId]Debug", ["messageId", e]);
+    }
+    return e;
   }
   SetLastPrefix(e) {
-    this.zoh = e
+    this.zoh = e;
   }
   SetLastMessageId(e) {
-    this.LIt = e
+    this.LIt = e;
   }
   GetMessageBuffer(t) {
-    if (0 !== t) {
+    if (t !== 0) {
       let e = this.CombatMessageBufferMap.get(t);
-      return e || (e = new CombatMessageBuffer(t), this.CombatMessageBufferMap.set(t, e)), e
+      if (!e) {
+        e = new CombatMessageBuffer(t);
+        this.CombatMessageBufferMap.set(t, e);
+      }
+      return e;
     }
   }
   GetMessageBufferByEntityId(e) {
-    return this.CombatMessageBufferMapByEntity.get(e)
+    return this.CombatMessageBufferMapByEntity.get(e);
   }
   SetEntityMap(e, t) {
     t = this.CombatMessageBufferMap.get(t);
-    this.CombatMessageBufferMapByEntity.set(e, t)
+    this.CombatMessageBufferMapByEntity.set(e, t);
   }
   TryClearSkillCount(e) {
-    0 === (this.go_.get(e) ?? 0) && (this.go_.delete(e), this.po_.delete(e), this.fo_.delete(e))
+    if ((this.go_.get(e) ?? 0) === 0) {
+      this.go_.delete(e);
+      this.po_.delete(e);
+      this.fo_.delete(e);
+    }
   }
   AddSkillRefCount(e) {
     var t;
-    e && 0 < e && (t = this.go_.get(e) ?? 0, this.go_.set(e, t + 1), 0 === t) && (this.po_.set(e, 0), this.fo_.set(e, 0))
+    if (e && e > 0 && (t = this.go_.get(e) ?? 0, this.go_.set(e, t + 1), t === 0)) {
+      this.po_.set(e, 0);
+      this.fo_.set(e, 0);
+    }
   }
   RemoveSkillRefCount(e) {
     var t;
-    e && 0 < e && void 0 !== (t = this.go_.get(e)) && (this.go_.set(e, --t), t <= 0) && this.SkillDirtySet.add(e)
+    if (e && e > 0 && (t = this.go_.get(e)) !== undefined && (this.go_.set(e, --t), t <= 0)) {
+      this.SkillDirtySet.add(e);
+    }
   }
   OnBulletAdded(e, t, s) {
-    this.AddSkillRefCount(e), t && 0 < t && this.vo_.set(t, 0)
+    this.AddSkillRefCount(e);
+    if (t && t > 0) {
+      this.vo_.set(t, 0);
+    }
   }
   OnBulletRemoved(e, t) {
-    this.RemoveSkillRefCount(e), t && 0 < t && TimerSystem_1.TimerSystem.Delay(() => {
-      this.vo_.delete(t)
-    }, COUNT_CONTEXT_REMOVE_DELAY)
+    this.RemoveSkillRefCount(e);
+    if (t && t > 0) {
+      TimerSystem_1.TimerSystem.Delay(() => {
+        this.vo_.delete(t);
+      }, COUNT_CONTEXT_REMOVE_DELAY);
+    }
   }
   AddSkillHitCount(e) {
     if (e && !(e <= 0)) {
       var t = this.po_.get(e);
-      if (void 0 !== t) return this.po_.set(e, t + 1), t + 1;
-      CombatLog_1.CombatLog.Warn("Message", void 0, "技能命中计数器不存在", ["skillContextId", e])
+      if (t !== undefined) {
+        this.po_.set(e, t + 1);
+        return t + 1;
+      }
+      CombatLog_1.CombatLog.Warn("Message", undefined, "技能命中计数器不存在", ["skillContextId", e]);
     }
   }
   AddSkillDamageCount(e) {
     if (e && !(e <= 0)) {
       var t = this.fo_.get(e);
-      if (void 0 !== t) return this.fo_.set(e, t + 1), t + 1;
-      CombatLog_1.CombatLog.Warn("Message", void 0, "技能伤害计数器不存在", ["skillContextId", e])
+      if (t !== undefined) {
+        this.fo_.set(e, t + 1);
+        return t + 1;
+      }
+      CombatLog_1.CombatLog.Warn("Message", undefined, "技能伤害计数器不存在", ["skillContextId", e]);
     }
   }
   AddBulletDamageCount(e) {
     if (e && !(e <= 0)) {
       var t = this.vo_.get(e);
-      if (void 0 !== t) return this.vo_.set(e, t + 1), t + 1;
-      CombatLog_1.CombatLog.Warn("Message", void 0, "子弹命中计数器不存在", ["bulletContextId", e])
+      if (t !== undefined) {
+        this.vo_.set(e, t + 1);
+        return t + 1;
+      }
+      CombatLog_1.CombatLog.Warn("Message", undefined, "子弹命中计数器不存在", ["bulletContextId", e]);
     }
   }
 }

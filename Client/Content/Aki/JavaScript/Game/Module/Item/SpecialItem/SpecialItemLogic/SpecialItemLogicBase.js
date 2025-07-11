@@ -1,15 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SpecialItemLogicBase = void 0;
+  value: true
+});
+exports.SpecialItemLogicBase = undefined;
 class SpecialItemLogicBase {
   constructor(e) {
-    this.ConfigId = 0, this.ConfigId = e
+    this.ConfigId = 0;
+    this.ConfigId = e;
   }
   Init() {}
   Destroy() {}
   CheckUseCondition() {
-    return !0
+    return true;
   }
   OnUse() {}
 }

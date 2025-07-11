@@ -1,167 +1,241 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PayShopGoods = void 0;
+  value: true
+});
+exports.PayShopGoods = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class PayShopGoods {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get ShopId() {
-    return this.shopid()
+    return this.shopid();
   }
   get TabId() {
-    return this.tabid()
+    return this.tabid();
   }
   get ItemId() {
-    return this.itemid()
+    return this.itemid();
   }
   get Sort() {
-    return this.sort()
+    return this.sort();
   }
   get ItemCount() {
-    return this.itemcount()
+    return this.itemcount();
   }
   get ConditionId() {
-    return this.conditionid()
+    return this.conditionid();
   }
   get BuyConditionId() {
-    return this.buyconditionid()
+    return this.buyconditionid();
   }
   get BuyLimit() {
-    return this.buylimit()
+    return this.buylimit();
   }
   get SellTimeText() {
-    return this.selltimetext()
+    return this.selltimetext();
   }
   get MoneyId() {
-    return this.moneyid()
+    return this.moneyid();
   }
   get Price() {
-    return this.price()
+    return this.price();
   }
   get PromotionPrice() {
-    return this.promotionprice()
+    return this.promotionprice();
   }
   get PromotionShow() {
-    return this.promotionshow()
+    return this.promotionshow();
   }
   get PromotionTimeText() {
-    return this.promotiontimetext()
+    return this.promotiontimetext();
   }
   get Banner() {
-    return this.banner()
+    return this.banner();
   }
   get Enable() {
-    return this.enable()
+    return this.enable();
   }
   get Show() {
-    return this.show()
+    return this.show();
   }
   get SoldoutShowInShop() {
-    return this.soldoutshowinshop()
+    return this.soldoutshowinshop();
   }
   get Tag() {
-    return this.tag()
+    return this.tag();
   }
   get ActivityId() {
-    return this.activityid()
+    return this.activityid();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsPayShopGoods(t, i) {
-    return (i || new PayShopGoods).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new PayShopGoods()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   shopid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tabid() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   itemid() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   sort() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 10
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 10;
+    }
   }
   itemcount() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   conditionid() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   buyconditionid() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   buylimit() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   selltimetext(t) {
-    var i = this.J7.__offset(this.z7, 22),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   moneyid() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   price() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   promotionprice() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   promotionshow() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   promotiontimetext(t) {
-    var i = this.J7.__offset(this.z7, 32),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 32);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   banner(t) {
-    var i = this.J7.__offset(this.z7, 34),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 34);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   enable() {
     var t = this.J7.__offset(this.z7, 36);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   show() {
     var t = this.J7.__offset(this.z7, 38);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   soldoutshowinshop() {
     var t = this.J7.__offset(this.z7, 40);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   tag() {
     var t = this.J7.__offset(this.z7, 42);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   activityid() {
     var t = this.J7.__offset(this.z7, 44);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.PayShopGoods = PayShopGoods;

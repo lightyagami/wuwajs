@@ -1,15 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BulletEffectInfo = void 0;
-const EffectSystem_1 = require("../../../Effect/EffectSystem"),
-  BulletStaticFunction_1 = require("../BulletStaticMethod/BulletStaticFunction");
+  value: true
+});
+exports.BulletEffectInfo = undefined;
+const EffectSystem_1 = require("../../../Effect/EffectSystem");
 class BulletEffectInfo {
   constructor() {
-    this.EffectData = void 0, this.Effect = 0, this.EffectExtremity = 0, this.EffectBlock = 0, this.HandOver = !1, this.IsFinishAuto = !1, this.EffectOriginSize = -0, this.IsEffectDestroy = !1, this.DisablePostProcess = !1
+    this.EffectData = undefined;
+    this.Effect = 0;
+    this.EffectExtremity = 0;
+    this.EffectBlock = 0;
+    this.HandOver = false;
+    this.IsFinishAuto = false;
+    this.EffectOriginSize = -0;
+    this.IsEffectDestroy = false;
+    this.DisablePostProcess = false;
   }
   Clear() {
-    BulletStaticFunction_1.BulletStaticFunction.DestroyEffect(this), EffectSystem_1.EffectSystem.IsValid(this.EffectExtremity) && EffectSystem_1.EffectSystem.StopEffectById(this.EffectExtremity, "[BulletEffectInfo.Clear]", !0), EffectSystem_1.EffectSystem.IsValid(this.EffectBlock) && EffectSystem_1.EffectSystem.StopEffectById(this.EffectBlock, "[BulletEffectInfo.Clear]", !0), this.EffectData = void 0, this.Effect = 0, this.EffectExtremity = 0, this.EffectBlock = 0, this.HandOver = !1, this.IsFinishAuto = !1, this.EffectOriginSize = 0, this.IsEffectDestroy = !1, this.DisablePostProcess = !1
+    if (EffectSystem_1.EffectSystem.IsValid(this.EffectExtremity)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.EffectExtremity, "[BulletEffectInfo.Clear]", true);
+    }
+    if (EffectSystem_1.EffectSystem.IsValid(this.EffectBlock)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.EffectBlock, "[BulletEffectInfo.Clear]", true);
+    }
+    this.EffectData = undefined;
+    this.Effect = 0;
+    this.EffectExtremity = 0;
+    this.EffectBlock = 0;
+    this.HandOver = false;
+    this.IsFinishAuto = false;
+    this.EffectOriginSize = 0;
+    this.IsEffectDestroy = false;
+    this.DisablePostProcess = false;
   }
 }
 exports.BulletEffectInfo = BulletEffectInfo;

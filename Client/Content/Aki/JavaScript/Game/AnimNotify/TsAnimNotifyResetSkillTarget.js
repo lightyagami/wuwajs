@@ -1,20 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyResetSkillTarget extends UE.KuroAnimNotify {
   constructor() {
-    super(...arguments), this.技能目标配置 = void 0
+    super(...arguments);
+    this.技能目标配置 = undefined;
   }
   Constructor() {}
   K2_Notify(e, t) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity.GetComponent(40)) && (e.LockOnTargetAndSetShow(this.技能目标配置), !0)
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity.GetComponent(40)) && (e.LockOnTargetAndSetShow(this.技能目标配置), true);
   }
   GetNotifyName() {
-    return "重置技能目标"
+    return "重置技能目标";
   }
 }
 exports.default = TsAnimNotifyResetSkillTarget;

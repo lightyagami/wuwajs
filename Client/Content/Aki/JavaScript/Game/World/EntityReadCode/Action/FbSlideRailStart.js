@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSlideRailStart = void 0;
+  value: true
+});
+exports.FbSlideRailStart = undefined;
 class FbSlideRailStart {
   constructor(t) {
-    this.FbDataInternal = t, this.Xqc = !1, this.Yqc = 0
+    this.FbDataInternal = t;
+    this.Xqc = false;
+    this.Yqc = 0;
   }
   static Create(t) {
-    if (t) return new FbSlideRailStart(t)
+    if (t) {
+      return new FbSlideRailStart(t);
+    }
   }
   get RailEntityId() {
-    return this.Xqc || (this.Xqc = !0, this.Yqc = this.FbDataInternal.railEntityId()), this.Yqc
+    if (!this.Xqc) {
+      this.Xqc = true;
+      this.Yqc = this.FbDataInternal.railEntityId();
+    }
+    return this.Yqc;
   }
 }
 exports.FbSlideRailStart = FbSlideRailStart;

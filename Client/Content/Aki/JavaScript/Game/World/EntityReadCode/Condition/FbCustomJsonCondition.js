@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCustomJsonCondition = void 0;
+  value: true
+});
+exports.FbCustomJsonCondition = undefined;
 class FbCustomJsonCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.x_h = !1, this.FGi = void 0, this.NAh = !1, this.VAh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.x_h = false;
+    this.FGi = undefined;
+    this.NAh = false;
+    this.VAh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCustomJsonCondition(t)
+    if (t) {
+      return new FbCustomJsonCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Name() {
-    return this.x_h || (this.x_h = !0, this.FGi = this.FbDataInternal.name()), this.FGi
+    if (!this.x_h) {
+      this.x_h = true;
+      this.FGi = this.FbDataInternal.name();
+    }
+    return this.FGi;
   }
   get JsonString() {
-    return this.NAh || (this.NAh = !0, this.VAh = this.FbDataInternal.jsonString()), this.VAh
+    if (!this.NAh) {
+      this.NAh = true;
+      this.VAh = this.FbDataInternal.jsonString();
+    }
+    return this.VAh;
   }
 }
 exports.FbCustomJsonCondition = FbCustomJsonCondition;

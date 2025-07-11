@@ -1,17 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const UE = require("ue");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 class TsAnimNotifyCatapult extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, t) {
     e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && (e.CharacterActorComponent.Entity?.GetComponent(33)).StartCatapult(), !0
+    if (e instanceof TsBaseCharacter_1.default) {
+      (e.CharacterActorComponent.Entity?.GetComponent(33)).StartCatapult();
+    }
+    return true;
   }
   GetNotifyName() {
-    return "轨迹运动"
+    return "轨迹运动";
   }
 }
 exports.default = TsAnimNotifyCatapult;

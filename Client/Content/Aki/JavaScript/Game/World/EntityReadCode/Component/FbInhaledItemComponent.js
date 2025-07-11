@@ -1,31 +1,65 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInhaledItemComponent = void 0;
-const FbInhaledPerformance_1 = require("./FbInhaledPerformance"),
-  UnionInhaledPerResultTypeHelper_1 = require("./UnionInhaledPerResultTypeHelper");
+  value: true
+});
+exports.FbInhaledItemComponent = undefined;
+const FbInhaledPerformance_1 = require("./FbInhaledPerformance");
+const UnionInhaledPerResultTypeHelper_1 = require("./UnionInhaledPerResultTypeHelper");
 class FbInhaledItemComponent {
   constructor(e) {
-    this.FbDataInternal = e, this.q_h = !1, this.k_h = !1, this.sYh = !1, this.aYh = 0, this.hYh = !1, this.lYh = 0, this._Yh = !1, this.cYh = void 0, this.uYh = !1, this.dYh = void 0
+    this.FbDataInternal = e;
+    this.q_h = false;
+    this.k_h = false;
+    this.sYh = false;
+    this.aYh = 0;
+    this.hYh = false;
+    this.lYh = 0;
+    this._Yh = false;
+    this.cYh = undefined;
+    this.uYh = false;
+    this.dYh = undefined;
   }
   static Create(e) {
-    if (e) return new FbInhaledItemComponent(e)
+    if (e) {
+      return new FbInhaledItemComponent(e);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get InhaledStrength() {
-    return this.sYh || (this.sYh = !0, this.aYh = this.FbDataInternal.inhaledStrength()), this.aYh
+    if (!this.sYh) {
+      this.sYh = true;
+      this.aYh = this.FbDataInternal.inhaledStrength();
+    }
+    return this.aYh;
   }
   get InhaledInterruptionRecoveryTime() {
-    return this.hYh || (this.hYh = !0, this.lYh = this.FbDataInternal.inhaledInterruptionRecoveryTime()), this.lYh
+    if (!this.hYh) {
+      this.hYh = true;
+      this.lYh = this.FbDataInternal.inhaledInterruptionRecoveryTime();
+    }
+    return this.lYh;
   }
   get InhaledPerformance() {
-    return this._Yh || (this._Yh = !0, this.cYh = FbInhaledPerformance_1.FbInhaledPerformance.Create(this.FbDataInternal.inhaledPerformance())), this.cYh
+    if (!this._Yh) {
+      this._Yh = true;
+      this.cYh = FbInhaledPerformance_1.FbInhaledPerformance.Create(this.FbDataInternal.inhaledPerformance());
+    }
+    return this.cYh;
   }
   get InhaledPerResult() {
-    var e, t;
-    return !this.uYh && (this.uYh = !0, e = this.FbDataInternal.inhaledPerResultType(), t = UnionInhaledPerResultTypeHelper_1.UnionInhaledPerResultTypeHelper.GetUnionInhaledPerResultTypeObject(e)) && (this.dYh = UnionInhaledPerResultTypeHelper_1.UnionInhaledPerResultTypeHelper.ReadUnionInhaledPerResultType(e, this.FbDataInternal.inhaledPerResult(t))), this.dYh
+    var e;
+    var t;
+    if (!this.uYh && (this.uYh = true, e = this.FbDataInternal.inhaledPerResultType(), t = UnionInhaledPerResultTypeHelper_1.UnionInhaledPerResultTypeHelper.GetUnionInhaledPerResultTypeObject(e))) {
+      this.dYh = UnionInhaledPerResultTypeHelper_1.UnionInhaledPerResultTypeHelper.ReadUnionInhaledPerResultType(e, this.FbDataInternal.inhaledPerResult(t));
+    }
+    return this.dYh;
   }
 }
 exports.FbInhaledItemComponent = FbInhaledItemComponent;

@@ -1,23 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InstanceGameplayModeModel = void 0;
+  value: true
+});
+exports.InstanceGameplayModeModel = undefined;
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 class InstanceGameplayModeModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.DefaultCameraMode = 0, this.DisabledCreatureSet = new Set
+    super(...arguments);
+    this.DefaultCameraMode = 0;
+    this.DisabledCreatureSet = new Set();
   }
   OnClear() {
-    return this.qFt(), !0
+    this.qFt();
+    return true;
   }
   OnLeaveLevel() {
-    return this.qFt(), !0
+    this.qFt();
+    return true;
   }
   OnChangeMode() {
-    return this.qFt(), !0
+    this.qFt();
+    return true;
   }
   qFt() {
-    this.DisabledCreatureSet.clear()
+    this.DisabledCreatureSet.clear();
   }
 }
 exports.InstanceGameplayModeModel = InstanceGameplayModeModel;

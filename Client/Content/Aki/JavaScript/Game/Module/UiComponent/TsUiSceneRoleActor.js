@@ -1,38 +1,58 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../Core/Actor/ActorSystem"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  UiModelSystem_1 = require("../UiModel/UiModel/UiModelSystem");
+const UE = require("ue");
+const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiModelSystem_1 = require("../UiModel/UiModel/UiModelSystem");
 class TsUiSceneRoleActor extends UE.Actor {
   constructor() {
-    super(...arguments), this.Model = void 0, this.RoleActorIndex = 0, this.BeforeMoveOutPos = Vector_1.Vector.ZeroVectorDouble
+    super(...arguments);
+    this.Model = undefined;
+    this.RoleActorIndex = 0;
+    this.BeforeMoveOutPos = Vector_1.Vector.ZeroVectorDouble;
   }
   Constructor() {
-    this.Model = void 0, this.RoleActorIndex = 0, this.BeforeMoveOutPos = Vector_1.Vector.ZeroVectorDouble
+    this.Model = undefined;
+    this.RoleActorIndex = 0;
+    this.BeforeMoveOutPos = Vector_1.Vector.ZeroVectorDouble;
   }
   Init(t, e) {
-    this.RoleActorIndex = t, this.SetTickableWhenPaused(!0), this.SetActorTickEnabled(!0), UE.KuroRenderingRuntimeBPPluginBPLibrary.SetActorUISceneRendering(this, !0), this.Model = UiModelSystem_1.UiModelSystem.CreateUiModelByUseWay(e, this), this.Model?.Init(), this.Model?.Start(), this.SetPrimitiveEntityType(1)
+    this.RoleActorIndex = t;
+    this.SetTickableWhenPaused(true);
+    this.SetActorTickEnabled(true);
+    this.CustomTimeDilation = ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+    UE.KuroRenderingRuntimeBPPluginBPLibrary.SetActorUISceneRendering(this, true);
+    this.Model = UiModelSystem_1.UiModelSystem.CreateUiModelByUseWay(e, this);
+    this.Model?.Init();
+    this.Model?.Start();
+    this.SetPrimitiveEntityType(1);
   }
   ReceiveTick(t) {
-    this.Model?.Tick(t)
+    this.Model?.Tick(t);
   }
   GetRoleActorIndex() {
-    return this.RoleActorIndex
+    return this.RoleActorIndex;
   }
   Destroy() {
-    this.Model?.End(), this.Model?.Clear(), this.Model = void 0, this.RoleActorIndex = 0, ActorSystem_1.ActorSystem.Put("TsUiSceneRoleActor.Destroy", this)
+    this.Model?.End();
+    this.Model?.Clear();
+    this.Model = undefined;
+    this.RoleActorIndex = 0;
+    ActorSystem_1.ActorSystem.Put("TsUiSceneRoleActor.Destroy", this);
   }
   IsShowUiWepaonEffect() {
-    return !0
+    return true;
   }
   SetMoveOutActor() {
-    this.BeforeMoveOutPos = this.D_K2_GetActorLocation(), this.D_K2_SetActorLocation(Vector_1.Vector.ZeroVectorDouble, !1, void 0, !1)
+    this.BeforeMoveOutPos = this.D_K2_GetActorLocation();
+    this.D_K2_SetActorLocation(Vector_1.Vector.ZeroVectorDouble, false, undefined, false);
   }
   SetMoveInActor() {
-    this.D_K2_SetActorLocation(this.BeforeMoveOutPos, !1, void 0, !1)
+    this.D_K2_SetActorLocation(this.BeforeMoveOutPos, false, undefined, false);
   }
 }
 exports.default = TsUiSceneRoleActor;

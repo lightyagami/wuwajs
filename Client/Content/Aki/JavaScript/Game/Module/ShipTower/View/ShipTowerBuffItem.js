@@ -1,53 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerBuffItem = void 0;
+  value: true
+});
+exports.ShipTowerBuffItem = undefined;
 const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
 class ShipTowerBuffItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
-    super(...arguments), this.BuffData = void 0, this.OnItemClickCallback = void 0, this.GetStageIdCallback = void 0, this.pZ_ = void 0
+    super(...arguments);
+    this.BuffData = undefined;
+    this.OnItemClickCallback = undefined;
+    this.GetStageIdCallback = undefined;
+    this.pZ_ = undefined;
   }
   OnRefresh(e) {
-    this.BuffData = e, this.UpdateBuffInfo(), this.UpdateBuffSelected(), e.IsSelected && this.OnExtendToggleStateChanged(1)
+    this.BuffData = e;
+    this.UpdateBuffInfo();
+    this.UpdateBuffSelected();
+    if (e.IsSelected) {
+      this.OnExtendToggleStateChanged(1);
+    }
   }
   UpdateBuffInfo() {
-    var e = this.BuffData,
-      t = this.GetStageIdCallback?.(),
-      t = {
-        Type: 4,
-        ItemConfigId: e.ItemId,
-        IsLockVisible: !e.IsUnlock,
-        IsDisable: !e.IsCanUse(t),
-        Level: e.CanUseCountStr(t),
-        BottomTextId: e.ItemNameKey,
-        IsNewVisible: e.IsFirstGet(),
-        Data: e
-      };
-    this.Apply(t)
+    var e = this.BuffData;
+    var t = this.GetStageIdCallback?.();
+    var t = {
+      Type: 4,
+      ItemConfigId: e.ItemId,
+      IsLockVisible: !e.IsUnlock,
+      IsDisable: !e.IsCanUse(t),
+      Level: e.CanUseCountStr(t),
+      BottomTextId: e.ItemNameKey,
+      IsNewVisible: e.IsFirstGet(),
+      Data: e
+    };
+    this.Apply(t);
   }
   OnForceSelected() {
-    this.SetSelected(!0, !0)
+    this.SetSelected(true, true);
   }
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
   OnBeforeDestroy() {
-    this.BuffData?.ClearSelected()
+    this.BuffData?.ClearSelected();
   }
   OnExtendToggleStateChanged(e) {
-    this.BuffData?.SetSelected(!0), this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, !1), this.OnItemClickCallback?.(this.BuffData)
+    this.BuffData?.SetSelected(true);
+    this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
+    this.OnItemClickCallback?.(this.BuffData);
   }
   OnCanExecuteChange() {
-    return !this.BuffData?.IsSelected
+    return !this.BuffData?.IsSelected;
   }
   UpdateBuffState() {
-    this.UpdateBuffInfo()
+    this.UpdateBuffInfo();
   }
   UpdateBuffSelected() {
-    this.BuffData?.IsSelected !== this.pZ_ && (this.SetSelected(!!this.BuffData?.IsSelected, !0), this.pZ_ = this.BuffData?.IsSelected)
+    if (this.BuffData?.IsSelected !== this.pZ_) {
+      this.SetSelected(!!this.BuffData?.IsSelected, true);
+      this.pZ_ = this.BuffData?.IsSelected;
+    }
   }
 }
 exports.ShipTowerBuffItem = ShipTowerBuffItem;

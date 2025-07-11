@@ -1,69 +1,86 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InventoryConfig = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Stats_1 = require("../../../Core/Common/Stats"),
-  Lru_1 = require("../../../Core/Container/Lru"),
-  CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById"),
-  AbyssItemById_1 = require("../../../Core/Define/ConfigQuery/AbyssItemById"),
-  AccessPathById_1 = require("../../../Core/Define/ConfigQuery/AccessPathById"),
-  BackgroundCardById_1 = require("../../../Core/Define/ConfigQuery/BackgroundCardById"),
-  FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById"),
-  ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById"),
-  ItemMainTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeAll"),
-  ItemMainTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeById"),
-  ItemShowTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemShowTypeById"),
-  PackageCapacityAll_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityAll"),
-  PackageCapacityByPackageId_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityByPackageId"),
-  PhantomBattleBadgeById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleBadgeById"),
-  PhantomBattleCardById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardById"),
-  PhantomCustomizeItemByItemId_1 = require("../../../Core/Define/ConfigQuery/PhantomCustomizeItemByItemId"),
-  PhantomItemByItemId_1 = require("../../../Core/Define/ConfigQuery/PhantomItemByItemId"),
-  PhantomItemByMonsterId_1 = require("../../../Core/Define/ConfigQuery/PhantomItemByMonsterId"),
-  PlayerHeadReById_1 = require("../../../Core/Define/ConfigQuery/PlayerHeadReById"),
-  PlayerTitleById_1 = require("../../../Core/Define/ConfigQuery/PlayerTitleById"),
-  PreviewItemById_1 = require("../../../Core/Define/ConfigQuery/PreviewItemById"),
-  QualityInfoById_1 = require("../../../Core/Define/ConfigQuery/QualityInfoById"),
-  RogueCurrencyById_1 = require("../../../Core/Define/ConfigQuery/RogueCurrencyById"),
-  RogueResCurrencyById_1 = require("../../../Core/Define/ConfigQuery/RogueResCurrencyById"),
-  RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById"),
-  TypeInfoById_1 = require("../../../Core/Define/ConfigQuery/TypeInfoById"),
-  WeaponConfByItemId_1 = require("../../../Core/Define/ConfigQuery/WeaponConfByItemId"),
-  WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  InventoryDefine_1 = require("./InventoryDefine"),
-  ItemConfig_1 = require("./ItemConfig"),
-  ITEM_LRU_SIZE = 20;
+  value: true
+});
+exports.InventoryConfig = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Stats_1 = require("../../../Core/Common/Stats");
+const Lru_1 = require("../../../Core/Container/Lru");
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const AbyssItemById_1 = require("../../../Core/Define/ConfigQuery/AbyssItemById");
+const AccessPathById_1 = require("../../../Core/Define/ConfigQuery/AccessPathById");
+const BackgroundCardById_1 = require("../../../Core/Define/ConfigQuery/BackgroundCardById");
+const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
+const ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById");
+const ItemMainTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeAll");
+const ItemMainTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeById");
+const ItemShowTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemShowTypeById");
+const PackageCapacityAll_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityAll");
+const PackageCapacityByPackageId_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityByPackageId");
+const PhantomBattleBadgeById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleBadgeById");
+const PhantomBattleCardById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardById");
+const PhantomCustomizeItemByItemId_1 = require("../../../Core/Define/ConfigQuery/PhantomCustomizeItemByItemId");
+const PhantomItemByItemId_1 = require("../../../Core/Define/ConfigQuery/PhantomItemByItemId");
+const PhantomItemByMonsterId_1 = require("../../../Core/Define/ConfigQuery/PhantomItemByMonsterId");
+const PlayerHeadReById_1 = require("../../../Core/Define/ConfigQuery/PlayerHeadReById");
+const PlayerTitleById_1 = require("../../../Core/Define/ConfigQuery/PlayerTitleById");
+const PreviewItemById_1 = require("../../../Core/Define/ConfigQuery/PreviewItemById");
+const QualityInfoById_1 = require("../../../Core/Define/ConfigQuery/QualityInfoById");
+const RogueCurrencyById_1 = require("../../../Core/Define/ConfigQuery/RogueCurrencyById");
+const RogueResCurrencyById_1 = require("../../../Core/Define/ConfigQuery/RogueResCurrencyById");
+const RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById");
+const TypeInfoById_1 = require("../../../Core/Define/ConfigQuery/TypeInfoById");
+const WeaponConfByItemId_1 = require("../../../Core/Define/ConfigQuery/WeaponConfByItemId");
+const WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const InventoryDefine_1 = require("./InventoryDefine");
+const ItemConfig_1 = require("./ItemConfig");
+const ITEM_LRU_SIZE = 20;
 class InventoryConfig extends ConfigBase_1.ConfigBase {
   constructor() {
-    super(...arguments), this.Eci = new Map, this.Sci = new Map, this.yci = new Map, this.G9 = new Lru_1.Lru(ITEM_LRU_SIZE, e => this.jBa(e))
+    super(...arguments);
+    this.Eci = new Map();
+    this.Sci = new Map();
+    this.yci = new Map();
+    this.G9 = new Lru_1.Lru(ITEM_LRU_SIZE, e => this.jBa(e));
   }
   GetAllMainTypeConfig() {
-    return ItemMainTypeAll_1.configItemMainTypeAll.GetConfigList()
+    return ItemMainTypeAll_1.configItemMainTypeAll.GetConfigList();
   }
   GetItemMainTypeConfig(e) {
-    return ItemMainTypeById_1.configItemMainTypeById.GetConfig(e)
+    return ItemMainTypeById_1.configItemMainTypeById.GetConfig(e);
   }
   GetItemMainTypeFilterSortUseWayId(e) {
     e = this.GetItemMainTypeConfig(e);
-    if (e) return e.UseWayId
+    if (e) {
+      return e.UseWayId;
+    }
   }
   GetAccessPathConfig(e) {
-    return AccessPathById_1.configAccessPathById.GetConfig(e)
+    return AccessPathById_1.configAccessPathById.GetConfig(e);
   }
   GetItemQualityConfig(e) {
-    return QualityInfoById_1.configQualityInfoById.GetConfig(e)
+    return QualityInfoById_1.configQualityInfoById.GetConfig(e);
   }
   GetItemConfigData(e) {
     InventoryConfig.Ici.Start();
     var n = this.G9.Get(e);
-    return n ? (this.G9.Put(n), InventoryConfig.Ici.Stop()) : (n = this.G9.Create(e), this.G9.Put(n), InventoryConfig.Ici.Stop()), n
+    if (n) {
+      this.G9.Put(n);
+      InventoryConfig.Ici.Stop();
+    } else {
+      n = this.G9.Create(e);
+      this.G9.Put(n);
+      InventoryConfig.Ici.Stop();
+    }
+    return n;
   }
   jBa(e) {
-    let n = void 0;
-    var r, t = this.GetItemDataTypeByConfigId(e);
+    let n = undefined;
+    var r;
+    var t = this.GetItemDataTypeByConfigId(e);
     switch (t) {
       case 2:
         n = this.GetWeaponItemConfig(e);
@@ -73,7 +90,9 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
         break;
       case 4:
         var i = this.GetPhantomCustomizeItemConfig(e);
-        i && (n = 0 < i.SkinItemId ? this.GetPhantomItemConfig(i.SkinItemId) : this.GetPhantomItemConfig(i.PhantomId));
+        if (i) {
+          n = i.SkinItemId > 0 ? this.GetPhantomItemConfig(i.SkinItemId) : this.GetPhantomItemConfig(i.PhantomId);
+        }
         break;
       case 0:
       case 5:
@@ -113,58 +132,114 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
         n = PhantomBattleCardById_1.configPhantomBattleCardById.GetConfig(e);
         break;
       case 16:
-        n = PhantomBattleBadgeById_1.configPhantomBattleBadgeById.GetConfig(e)
+        n = PhantomBattleBadgeById_1.configPhantomBattleBadgeById.GetConfig(e);
     }
-    if (n) return (r = new ItemConfig_1.ItemConfig).Refresh(n, t), r
+    if (n) {
+      (r = new ItemConfig_1.ItemConfig()).Refresh(n, t);
+      return r;
+    }
   }
   GetItemDataTypeByConfigId(e) {
-    return void 0 === InventoryConfig._bc && (InventoryConfig._bc = ConfigManager_1.ConfigManager.InventoryConfig.GetErrorPhantomSpecialIdList()), void 0 !== InventoryConfig._bc && InventoryConfig._bc.includes(e) ? 4 : e >= InventoryDefine_1.weaponIdRange[0] && e <= InventoryDefine_1.weaponIdRange[1] ? 2 : e >= InventoryDefine_1.phantomIdRange[0] && e <= InventoryDefine_1.phantomIdRange[1] ? 3 : e >= InventoryDefine_1.phantomSpecificIdRange[0] && e <= InventoryDefine_1.phantomSpecificIdRange[1] ? 4 : e >= InventoryDefine_1.roleIdRange[0] && e <= InventoryDefine_1.roleIdRange[1] ? 1 : e >= InventoryDefine_1.virtualIdRange[0] && e <= InventoryDefine_1.virtualIdRange[1] ? 5 : e >= InventoryDefine_1.cardIdRange[0] && e <= InventoryDefine_1.cardIdRange[1] ? 6 : e >= InventoryDefine_1.previewItemIdRange[0] && e <= InventoryDefine_1.previewItemIdRange[1] ? 7 : e >= InventoryDefine_1.rogueCurrencyIdRange[0] && e <= InventoryDefine_1.rogueCurrencyIdRange[1] ? 8 : e >= InventoryDefine_1.rogueResCurrencyIdRange[0] && e <= InventoryDefine_1.rogueResCurrencyIdRange[1] ? 9 : e >= InventoryDefine_1.weaponSkinIdRange[0] && e < InventoryDefine_1.weaponSkinIdRange[1] ? 10 : e >= InventoryDefine_1.roleSkinIdRange[0] && e < InventoryDefine_1.roleSkinIdRange[1] ? 11 : e >= InventoryDefine_1.playerHeadRange[0] && e < InventoryDefine_1.playerHeadRange[1] ? 12 : e >= InventoryDefine_1.DangoAbyssItemRange[0] && e < InventoryDefine_1.DangoAbyssItemRange[1] ? 13 : e >= InventoryDefine_1.flySkinIdRange[0] && e < InventoryDefine_1.flySkinIdRange[1] ? 14 : e >= InventoryDefine_1.PhantomArenaCardItemRange[0] && e < InventoryDefine_1.PhantomArenaCardItemRange[1] ? 15 : e >= InventoryDefine_1.PhantomArenaBadgeItemRange[0] && e < InventoryDefine_1.PhantomArenaBadgeItemRange[1] ? 16 : 0
+    if (InventoryConfig._bc === undefined) {
+      InventoryConfig._bc = ConfigManager_1.ConfigManager.InventoryConfig.GetErrorPhantomSpecialIdList();
+    }
+    if (InventoryConfig._bc !== undefined && InventoryConfig._bc.includes(e)) {
+      return 4;
+    } else if (e >= InventoryDefine_1.weaponIdRange[0] && e <= InventoryDefine_1.weaponIdRange[1]) {
+      return 2;
+    } else if (e >= InventoryDefine_1.phantomIdRange[0] && e <= InventoryDefine_1.phantomIdRange[1]) {
+      return 3;
+    } else if (e >= InventoryDefine_1.phantomSpecificIdRange[0] && e <= InventoryDefine_1.phantomSpecificIdRange[1]) {
+      return 4;
+    } else if (e >= InventoryDefine_1.roleIdRange[0] && e <= InventoryDefine_1.roleIdRange[1]) {
+      return 1;
+    } else if (e >= InventoryDefine_1.virtualIdRange[0] && e <= InventoryDefine_1.virtualIdRange[1]) {
+      return 5;
+    } else if (e >= InventoryDefine_1.cardIdRange[0] && e <= InventoryDefine_1.cardIdRange[1]) {
+      return 6;
+    } else if (e >= InventoryDefine_1.previewItemIdRange[0] && e <= InventoryDefine_1.previewItemIdRange[1]) {
+      return 7;
+    } else if (e >= InventoryDefine_1.rogueCurrencyIdRange[0] && e <= InventoryDefine_1.rogueCurrencyIdRange[1]) {
+      return 8;
+    } else if (e >= InventoryDefine_1.rogueResCurrencyIdRange[0] && e <= InventoryDefine_1.rogueResCurrencyIdRange[1]) {
+      return 9;
+    } else if (e >= InventoryDefine_1.weaponSkinIdRange[0] && e < InventoryDefine_1.weaponSkinIdRange[1]) {
+      return 10;
+    } else if (e >= InventoryDefine_1.roleSkinIdRange[0] && e < InventoryDefine_1.roleSkinIdRange[1]) {
+      return 11;
+    } else if (e >= InventoryDefine_1.playerHeadRange[0] && e < InventoryDefine_1.playerHeadRange[1]) {
+      return 12;
+    } else if (e >= InventoryDefine_1.DangoAbyssItemRange[0] && e < InventoryDefine_1.DangoAbyssItemRange[1]) {
+      return 13;
+    } else if (e >= InventoryDefine_1.flySkinIdRange[0] && e < InventoryDefine_1.flySkinIdRange[1]) {
+      return 14;
+    } else if (e >= InventoryDefine_1.PhantomArenaCardItemRange[0] && e < InventoryDefine_1.PhantomArenaCardItemRange[1]) {
+      return 15;
+    } else if (e >= InventoryDefine_1.PhantomArenaBadgeItemRange[0] && e < InventoryDefine_1.PhantomArenaBadgeItemRange[1]) {
+      return 16;
+    } else {
+      return 0;
+    }
   }
   GetItemConfig(e) {
-    return ItemInfoById_1.configItemInfoById.GetConfig(e)
+    return ItemInfoById_1.configItemInfoById.GetConfig(e);
   }
   GetPreviewItemConfig(e) {
-    return PreviewItemById_1.configPreviewItemById.GetConfig(e)
+    return PreviewItemById_1.configPreviewItemById.GetConfig(e);
   }
   GetWeaponItemConfig(e) {
-    return WeaponConfByItemId_1.configWeaponConfByItemId.GetConfig(e)
+    return WeaponConfByItemId_1.configWeaponConfByItemId.GetConfig(e);
   }
   GetPhantomItemConfig(e) {
-    return PhantomItemByItemId_1.configPhantomItemByItemId.GetConfig(e)
+    return PhantomItemByItemId_1.configPhantomItemByItemId.GetConfig(e);
   }
   GetPhantomCustomizeItemConfig(e) {
-    return PhantomCustomizeItemByItemId_1.configPhantomCustomizeItemByItemId.GetConfig(e)
+    return PhantomCustomizeItemByItemId_1.configPhantomCustomizeItemByItemId.GetConfig(e);
   }
   GetPhantomItemConfigListByMonsterId(e) {
     var n = PhantomItemByMonsterId_1.configPhantomItemByMonsterId.GetConfigList(e);
-    return n || Log_1.Log.CheckError() && Log_1.Log.Error("Config", 8, "表格查询不到配置ID", ["MonsterId", e]), n
+    if (!n) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Config", 8, "表格查询不到配置ID", ["MonsterId", e]);
+      }
+    }
+    return n;
   }
   GetCardItemConfig(e) {
-    return BackgroundCardById_1.configBackgroundCardById.GetConfig(e)
+    return BackgroundCardById_1.configBackgroundCardById.GetConfig(e);
   }
   GetErrorPhantomSpecialIdList() {
-    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("SpecialPhantomCustomizeItem")
+    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("SpecialPhantomCustomizeItem");
   }
   GetAllPackageConfig() {
-    return PackageCapacityAll_1.configPackageCapacityAll.GetConfigList()
+    return PackageCapacityAll_1.configPackageCapacityAll.GetConfigList();
   }
   GetPackageConfig(e) {
-    return PackageCapacityByPackageId_1.configPackageCapacityByPackageId.GetConfig(e)
+    return PackageCapacityByPackageId_1.configPackageCapacityByPackageId.GetConfig(e);
   }
   GetItemTypeConfig(e) {
-    return TypeInfoById_1.configTypeInfoById.GetConfig(e)
+    return TypeInfoById_1.configTypeInfoById.GetConfig(e);
   }
   GetItemShowTypeConfig(e) {
-    return ItemShowTypeById_1.configItemShowTypeById.GetConfig(e)
+    return ItemShowTypeById_1.configItemShowTypeById.GetConfig(e);
   }
   GetPlayerTitleItemConfig(e) {
-    return PlayerTitleById_1.configPlayerTitleById.GetConfig(e)
+    return PlayerTitleById_1.configPlayerTitleById.GetConfig(e);
   }
   GetItemQualityByItemIdAndQuality(e, n) {
-    return void 0 !== e && 13 === this.GetItemDataTypeByConfigId(e) ? ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(n) : ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityConfig(n)
+    if (e !== undefined && this.GetItemDataTypeByConfigId(e) === 13) {
+      return ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(n);
+    } else {
+      return ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityConfig(n);
+    }
   }
   OnClear() {
-    return this.Eci.clear(), this.Sci.clear(), this.yci.clear(), this.G9.Clear(), !0
+    this.Eci.clear();
+    this.Sci.clear();
+    this.yci.clear();
+    this.G9.Clear();
+    return true;
   }
-}(exports.InventoryConfig = InventoryConfig).Ici = Stats_1.Stat.Create("GetItemConfigData");
+}
+(exports.InventoryConfig = InventoryConfig).Ici = Stats_1.Stat.Create("GetItemConfigData");
 //# sourceMappingURL=InventoryConfig.js.map

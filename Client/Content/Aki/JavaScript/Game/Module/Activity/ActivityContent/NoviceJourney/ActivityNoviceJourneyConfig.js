@@ -1,13 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityNoviceJourneyConfig = void 0;
-const NewbieCourseAll_1 = require("../../../../../Core/Define/ConfigQuery/NewbieCourseAll"),
-  ConfigBase_1 = require("../../../../../Core/Framework/ConfigBase"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager");
+  value: true
+});
+exports.ActivityNoviceJourneyConfig = undefined;
+const NewbieCourseAll_1 = require("../../../../../Core/Define/ConfigQuery/NewbieCourseAll");
+const ConfigBase_1 = require("../../../../../Core/Framework/ConfigBase");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 class ActivityNoviceJourneyConfig extends ConfigBase_1.ConfigBase {
   GetNoticeJourneyConfigList() {
-    return NewbieCourseAll_1.configNewbieCourseAll.GetConfigList()
+    return NewbieCourseAll_1.configNewbieCourseAll.GetConfigList();
   }
   GetRewardList(e) {
     var r = [];
@@ -16,9 +18,9 @@ class ActivityNoviceJourneyConfig extends ConfigBase_1.ConfigBase {
         ItemId: i[0],
         Count: i[1]
       };
-      r.push(o)
+      r.push(o);
     }
-    return r
+    return r;
   }
 }
 exports.ActivityNoviceJourneyConfig = ActivityNoviceJourneyConfig;

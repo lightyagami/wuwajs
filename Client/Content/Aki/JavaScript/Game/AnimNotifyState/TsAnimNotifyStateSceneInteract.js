@@ -1,48 +1,110 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ResourceSystem_1 = require("../../Core/Resource/ResourceSystem"),
-  FNameUtil_1 = require("../../Core/Utils/FNameUtil"),
-  TsBaseCharacter_1 = require("../Character/TsBaseCharacter"),
-  GameSettingsDefine_1 = require("../GameSettings/GameSettingsDefine"),
-  GameSettingsManager_1 = require("../GameSettings/GameSettingsManager"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  MAX_ENABLE_TIME = 2e4;
+const UE = require("ue");
+const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
+const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
+const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const GameSettingsDefine_1 = require("../GameSettings/GameSettingsDefine");
+const GameSettingsManager_1 = require("../GameSettings/GameSettingsManager");
+const ModelManager_1 = require("../Manager/ModelManager");
+const MAX_ENABLE_TIME = 20000;
 class TsAnimNotifyStateSceneInteract extends UE.KuroAnimNotifyState {
   constructor() {
-    super(...arguments), this.SocketName = void 0, this.DataAssetRef = void 0, this.QualityRequire = 0, this.IgnoreCommonWeapon = !1, this.HandleMap = new Map
+    super(...arguments);
+    this.SocketName = undefined;
+    this.DataAssetRef = undefined;
+    this.QualityRequire = 0;
+    this.IgnoreCommonWeapon = false;
+    this.ShieldWaterMoveEffect = false;
+    this.HandleMap = new Map();
   }
   Constructor() {
-    this.HandleMap = new Map
+    this.HandleMap = new Map();
   }
   K2_NotifyBegin(e, t, r) {
     if (this.DataAssetRef) {
-      var a = e.GetOwner();
-      if (a instanceof TsBaseCharacter_1.default) {
-        if (!ModelManager_1.ModelManager.SceneBattleInteractModel?.Open) return !1;
-        if (0 < this.QualityRequire) {
-          var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
-          if (!i || i < 3) return !1
+      var i = e.GetOwner();
+      if (i instanceof TsBaseCharacter_1.default) {
+        if (!ModelManager_1.ModelManager.SceneBattleInteractModel?.Open) {
+          return false;
         }
-        i = ResourceSystem_1.ResourceSystem.Load(this.DataAssetRef.ToAssetPathName(), UE.BP_SceneBattleInteract_C);
-        if (!i) return !1;
-        var s, n = ModelManager_1.ModelManager.SceneBattleInteractModel.CreateSceneBattleInteract(i);
-        if (n) return s = n.Id, n.SetDispatchWeaponEventEnable(!0), n.SetUpdateLocationSocket(e, this.SocketName ?? FNameUtil_1.FNameUtil.EMPTY), n.SetEnable(!0, MAX_ENABLE_TIME), n.SetIgnoreCommonWeapon(this.IgnoreCommonWeapon), 0 !== (i = i.EntityType) && 1 !== i || (a = a.CharacterActorComponent?.Entity)?.Valid && (1 === i ? (i = a.GetComponent(0)?.GetSummonerId()) && (i = ModelManager_1.ModelManager.CreatureModel.GetEntityId(i), n.BindEntityId(i)) : n.BindEntityId(a.Id)), this.HandleMap.set(e, s), !0
+        if (this.QualityRequire > 0) {
+          var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
+          if (!a || a < 3) {
+            return false;
+          }
+        }
+        a = ResourceSystem_1.ResourceSystem.Load(this.DataAssetRef.ToAssetPathName(), UE.BP_SceneBattleInteract_C);
+        if (!a) {
+          return false;
+        }
+        var s = ModelManager_1.ModelManager.SceneBattleInteractModel.CreateSceneBattleInteract(a);
+        if (s) {
+          var n;
+          var o = s.Id;
+          s.SetDispatchWeaponEventEnable(true);
+          s.SetUpdateLocationSocket(e, this.SocketName ?? FNameUtil_1.FNameUtil.EMPTY);
+          s.SetEnable(true, MAX_ENABLE_TIME);
+          s.SetIgnoreCommonWeapon(this.IgnoreCommonWeapon);
+          var a = a.EntityType;
+          if (a === 0 || a === 1) {
+            if ((n = i.CharacterActorComponent?.Entity)?.Valid) {
+              if (a === 1) {
+                if (a = n.GetComponent(0)?.GetSummonerId()) {
+                  a = ModelManager_1.ModelManager.CreatureModel.GetEntityId(a);
+                  s.BindEntityId(a);
+                }
+              } else {
+                s.BindEntityId(n.Id);
+              }
+            }
+          }
+          this.HandleMap.set(e, o);
+          if (this.ShieldWaterMoveEffect) {
+            a = i.CharacterActorComponent?.Entity;
+            if (a?.Valid) {
+              s = a.GetComponent(205);
+              if (s) {
+                s.TagContainer.UpdateExactTag(4, -1921814084, 1);
+              }
+            }
+          }
+          return true;
+        }
       }
     }
-    return !1
+    return false;
   }
   K2_NotifyEnd(e, t) {
-    if (this.DataAssetRef && e.GetOwner() instanceof TsBaseCharacter_1.default) {
-      var r = this.HandleMap.get(e);
-      if (r) return ModelManager_1.ModelManager.SceneBattleInteractModel?.Open && ModelManager_1.ModelManager.SceneBattleInteractModel.DestroySceneBattleInteract(r), this.HandleMap.delete(e), !0
+    if (this.DataAssetRef) {
+      var r = e.GetOwner();
+      if (r instanceof TsBaseCharacter_1.default) {
+        var i = this.HandleMap.get(e);
+        if (i) {
+          if (ModelManager_1.ModelManager.SceneBattleInteractModel?.Open) {
+            ModelManager_1.ModelManager.SceneBattleInteractModel.DestroySceneBattleInteract(i);
+          }
+          this.HandleMap.delete(e);
+          if (this.ShieldWaterMoveEffect) {
+            i = r.CharacterActorComponent?.Entity;
+            if (i?.Valid) {
+              e = i.GetComponent(205);
+              if (e) {
+                e.TagContainer.UpdateExactTag(4, -1921814084, -1);
+              }
+            }
+          }
+          return true;
+        }
+      }
     }
-    return !1
+    return false;
   }
   GetNotifyName() {
-    return "场景物件交互"
+    return "场景物件交互";
   }
 }
 exports.default = TsAnimNotifyStateSceneInteract;

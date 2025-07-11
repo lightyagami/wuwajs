@@ -1,128 +1,254 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GuideGroupInfo = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  Info_1 = require("../../../../Core/Common/Info"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  StateBase_1 = require("../../../../Core/Utils/StateMachine/StateBase"),
-  StateMachine_1 = require("../../../../Core/Utils/StateMachine/StateMachine"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  GuideConfig_1 = require("../GuideConfig"),
-  GuideController_1 = require("../GuideController"),
-  GuideStepInfo_1 = require("./GuideStepInfo"),
-  stateDesc = ["Init", "Opening", "Executing", "Pending", "Finishing"];
+  value: true
+});
+exports.GuideGroupInfo = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../../Core/Common/Info");
+const Log_1 = require("../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const StateBase_1 = require("../../../../Core/Utils/StateMachine/StateBase");
+const StateMachine_1 = require("../../../../Core/Utils/StateMachine/StateMachine");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const GuideConfig_1 = require("../GuideConfig");
+const GuideController_1 = require("../GuideController");
+const GuideStepInfo_1 = require("./GuideStepInfo");
+const stateDesc = ["Init", "Opening", "Executing", "Pending", "Finishing"];
 class InitState extends StateBase_1.StateBase {
   OnStart() {
     this.Owner.StepInfoList.length = 0;
-    for (const e of ConfigManager_1.ConfigManager.GuideConfig.GetOrderedStepIdsOfGroup(this.Owner.Id, Info_1.Info.InputControllerMainType)) this.Owner.StepInfoList.push(new GuideStepInfo_1.GuideStepInfo(e, this.Owner));
-    this.Owner.CurrentStepIndex = -1, this.Owner.IsFake = !1, this.Owner.FinishPromise && (this.Owner.FinishPromise.SetResult(), this.Owner.FinishPromise = void 0)
+    for (const e of ConfigManager_1.ConfigManager.GuideConfig.GetOrderedStepIdsOfGroup(this.Owner.Id, Info_1.Info.InputControllerMainType)) {
+      this.Owner.StepInfoList.push(new GuideStepInfo_1.GuideStepInfo(e, this.Owner));
+    }
+    this.Owner.CurrentStepIndex = -1;
+    this.Owner.IsFake = false;
+    if (this.Owner.FinishPromise) {
+      this.Owner.FinishPromise.SetResult();
+      this.Owner.FinishPromise = undefined;
+    }
   }
   OnEnter() {
-    this.Owner.CurrentStepIndex = -1, this.Owner.IsFake = !1
+    this.Owner.CurrentStepIndex = -1;
+    this.Owner.IsFake = false;
   }
 }
 class OpeningState extends StateBase_1.StateBase {
   constructor() {
-    super(...arguments), this.PJt = !1
+    super(...arguments);
+    this.PJt = false;
   }
   OnEnter() {
     var e;
-    this.PJt || (this.PJt = !0, this.Owner.FinishPromise && (this.Owner.FinishPromise.SetResult(), this.Owner.FinishPromise = void 0), this.Owner.FinishPromise = new CustomPromise_1.CustomPromise, (e = this.Owner.GetIfPreExecute()) && this.Owner.SwitchState(2), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideGroupOpening, this.Owner.Id, e))
+    if (!this.PJt) {
+      this.PJt = true;
+      if (this.Owner.FinishPromise) {
+        this.Owner.FinishPromise.SetResult();
+        this.Owner.FinishPromise = undefined;
+      }
+      this.Owner.FinishPromise = new CustomPromise_1.CustomPromise();
+      if (e = this.Owner.GetIfPreExecute()) {
+        this.Owner.SwitchState(2);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideGroupOpening, this.Owner.Id, e);
+    }
   }
   OnExit() {
-    this.PJt = !1
+    this.PJt = false;
   }
 }
 class ExecutingState extends StateBase_1.StateBase {
   OnEnter() {
-    this.Owner.PumpStep()
+    this.Owner.PumpStep();
   }
 }
 class PendingState extends StateBase_1.StateBase {
   constructor() {
-    super(...arguments), this.xJt = void 0
+    super(...arguments);
+    this.xJt = undefined;
   }
   jm() {
-    void 0 !== this.xJt && (TimerSystem_1.TimerSystem.Remove(this.xJt), this.xJt = void 0)
+    if (this.xJt !== undefined) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.xJt);
+      this.xJt = undefined;
+    }
   }
   OnEnter() {
-    this.jm(), this.xJt = TimerSystem_1.TimerSystem.Forever(() => {
-      this.Owner.CanEnterExecuting() && (this.jm(), this.Owner.StateMachine.Switch(2))
-    }, 1e3)
+    this.jm();
+    this.xJt = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      if (this.Owner.CanEnterExecuting()) {
+        this.jm();
+        this.Owner.StateMachine.Switch(2);
+      }
+    }, 1000);
   }
   OnExit() {
-    this.jm()
+    this.jm();
   }
 }
 class FinishingState extends StateBase_1.StateBase {
   OnEnter() {
     var e = this.Owner.IsFake;
-    GuideController_1.GuideController.FinishGuide(this.Owner.Id, e), this.Owner.FinishPromise && (this.Owner.FinishPromise.SetResult(), this.Owner.FinishPromise = void 0)
+    GuideController_1.GuideController.FinishGuide(this.Owner.Id, e);
+    if (this.Owner.FinishPromise) {
+      this.Owner.FinishPromise.SetResult();
+      this.Owner.FinishPromise = undefined;
+    }
   }
 }
 class GuideGroupInfo {
   constructor(e) {
-    this.Id = 0, this.StateMachine = void 0, this.StepInfoList = [], this.IsFake = !1, this.CurrentStepIndex = -1, this.FinishPromise = void 0, this.Id = e, this.StateMachine = new StateMachine_1.StateMachine(this), this.StateMachine.AddState(0, InitState), this.StateMachine.AddState(1, OpeningState), this.StateMachine.AddState(2, ExecutingState), this.StateMachine.AddState(3, PendingState), this.StateMachine.AddState(4, FinishingState), this.StateMachine.Start(0)
+    this.Id = 0;
+    this.StateMachine = undefined;
+    this.StepInfoList = [];
+    this.IsFake = false;
+    this.CurrentStepIndex = -1;
+    this.FinishPromise = undefined;
+    this.Id = e;
+    this.StateMachine = new StateMachine_1.StateMachine(this);
+    this.StateMachine.AddState(0, InitState);
+    this.StateMachine.AddState(1, OpeningState);
+    this.StateMachine.AddState(2, ExecutingState);
+    this.StateMachine.AddState(3, PendingState);
+    this.StateMachine.AddState(4, FinishingState);
+    this.StateMachine.Start(0);
   }
   get CurrentGuideStep() {
-    if (!(this.CurrentStepIndex >= this.StepInfoList.length)) return this.StepInfoList[this.CurrentStepIndex]
+    if (!(this.CurrentStepIndex >= this.StepInfoList.length)) {
+      return this.StepInfoList[this.CurrentStepIndex];
+    }
   }
   GetIfPreExecute() {
-    return 0 !== this.StepInfoList.length && 1 !== this.StepInfoList[0].Config.TimeScale
+    return this.StepInfoList.length !== 0 && this.StepInfoList[0].Config.TimeScale !== 1;
   }
   SwitchState(e) {
     let t = e;
     var i;
-    1 === e && 0 !== this.StateMachine.CurrentState ? Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "引导组正在执行中, 不再重复执行") : (2 !== e || this.CanEnterExecuting() || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "引导组暂时无法执行, 挂起"), t = 3), 4 === e && (this.IsFake ? Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导组是通过GM调用的, 跳过服务端完成步骤") : (e = ModelManager_1.ModelManager.GuideModel.IsGroupFinished(this.Id), i = ModelManager_1.ModelManager.GuideModel.IsGroupCanRepeat(this.Id), e && !i && (Log_1.Log.CheckError() && Log_1.Log.Error("Guide", 16, "引导组未配置为可重复完成但重复请求完成, 跳过服务端完成步骤", ["GroupId", this.Id], ["isFinish", e], ["canRepeat", i]), t = 0))), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "[引导状态切换:引导组]", ["组Id", this.Id], ["当前状态", stateDesc[this.StateMachine.CurrentState]], ["切换到的状态", stateDesc[t]]), this.StateMachine.Switch(t))
+    if (e === 1 && this.StateMachine.CurrentState !== 0) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Guide", 16, "引导组正在执行中, 不再重复执行");
+      }
+    } else {
+      if (e === 2 && !this.CanEnterExecuting()) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Guide", 16, "引导组暂时无法执行, 挂起");
+        }
+        t = 3;
+      }
+      if (e === 4) {
+        if (this.IsFake) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Guide", 16, "引导组是通过GM调用的, 跳过服务端完成步骤");
+          }
+        } else {
+          e = ModelManager_1.ModelManager.GuideModel.IsGroupFinished(this.Id);
+          i = ModelManager_1.ModelManager.GuideModel.IsGroupCanRepeat(this.Id);
+          if (e && !i) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Guide", 16, "引导组未配置为可重复完成但重复请求完成, 跳过服务端完成步骤", ["GroupId", this.Id], ["isFinish", e], ["canRepeat", i]);
+            }
+            t = 0;
+          }
+        }
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "[引导状态切换:引导组]", ["组Id", this.Id], ["当前状态", stateDesc[this.StateMachine.CurrentState]], ["切换到的状态", stateDesc[t]]);
+      }
+      this.StateMachine.Switch(t);
+    }
   }
   PumpStep() {
-    if (0 === this.StepInfoList.length) Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "引导组未配置当前平台的步骤, 执行失败, 中断当前引导组", ["组Id", this.Id]), this.Break();
-    else {
+    if (this.StepInfoList.length === 0) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Guide", 16, "引导组未配置当前平台的步骤, 执行失败, 中断当前引导组", ["组Id", this.Id]);
+      }
+      this.Break();
+    } else {
       this.wJt();
       var e = this.CurrentStepIndex + 1;
-      if (e >= this.StepInfoList.length) this.SwitchState(4);
-      else {
+      if (e >= this.StepInfoList.length) {
+        this.SwitchState(4);
+      } else {
         this.CurrentStepIndex = e;
         e = this.StepInfoList[e];
-        if (GuideConfig_1.GuideConfig.GmMuteTutorial && 3 === e.Config.ContentType) e.SwitchState(4);
-        else {
-          if (e.Config.BreakCondition)
-            if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.Config.BreakCondition.toString(), void 0, !1)) return Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 74, "引导步骤中断条件达成，中断当前引导", ["组Id", this.Id], ["步骤Id", e.Id], ["中断条件", e.Config.BreakCondition]), void e.SwitchState(3);
-          if (e.Config.SkipCondition)
-            if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.Config.SkipCondition.toString(), void 0, !1)) return Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 74, "引导步骤跳过条件达成，跳过当前步骤", ["组Id", this.Id], ["步骤Id", e.Id], ["跳过条件", e.Config.SkipCondition]), void e.SwitchState(4);
-          e.SwitchState(0), e.TryEnterExecuting()
+        if (GuideConfig_1.GuideConfig.GmMuteTutorial && e.Config.ContentType === 3) {
+          e.SwitchState(4);
+        } else {
+          if (e.Config.BreakCondition) {
+            if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.Config.BreakCondition.toString(), undefined, false)) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Guide", 74, "引导步骤中断条件达成，中断当前引导", ["组Id", this.Id], ["步骤Id", e.Id], ["中断条件", e.Config.BreakCondition]);
+              }
+              e.SwitchState(3);
+              return;
+            }
+          }
+          if (e.Config.SkipCondition) {
+            if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.Config.SkipCondition.toString(), undefined, false)) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Guide", 74, "引导步骤跳过条件达成，跳过当前步骤", ["组Id", this.Id], ["步骤Id", e.Id], ["跳过条件", e.Config.SkipCondition]);
+              }
+              e.SwitchState(4);
+              return;
+            }
+          }
+          e.SwitchState(0);
+          e.TryEnterExecuting();
         }
       }
     }
   }
   wJt() {
     var e = this.CurrentStepIndex;
-    0 <= e && e < this.StepInfoList.length && this.StepInfoList[e].SwitchState(5)
+    if (e >= 0 && e < this.StepInfoList.length) {
+      this.StepInfoList[e].SwitchState(5);
+    }
   }
   Reset() {
-    this.wJt(), this.CurrentStepIndex = -1, this.SwitchState(0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideGroupRest, this.Id)
+    this.wJt();
+    this.CurrentStepIndex = -1;
+    this.SwitchState(0);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideGroupRest, this.Id);
   }
   HasAnyFinishedStep(t) {
     for (let e = 0; e < this.CurrentStepIndex; ++e) {
       var i = this.StepInfoList[e].Id;
-      if (t.has(i)) return !0
+      if (t.has(i)) {
+        return true;
+      }
     }
-    return !1
+    return false;
   }
   Break() {
-    Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导组中断", ["组Id", this.Id]), 0 === this.StateMachine.CurrentState ? Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导组已被外部终止, 中断时不做处理", ["组Id", this.Id]) : ModelManager_1.ModelManager.GuideModel.IsGroupCanRepeat(this.Id) ? (this.SwitchState(0), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideGroupBreak, this.Id), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导组中断后状态切换为未完成", ["组Id", this.Id])) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "引导组中断时, 配置为不可重复触发, 引导组算作完成", ["组Id", this.Id]), this.SwitchState(4))
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Guide", 16, "引导组中断", ["组Id", this.Id]);
+    }
+    if (this.StateMachine.CurrentState === 0) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "引导组已被外部终止, 中断时不做处理", ["组Id", this.Id]);
+      }
+    } else if (ModelManager_1.ModelManager.GuideModel.IsGroupCanRepeat(this.Id)) {
+      this.SwitchState(0);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideGroupBreak, this.Id);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "引导组中断后状态切换为未完成", ["组Id", this.Id]);
+      }
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Guide", 16, "引导组中断时, 配置为不可重复触发, 引导组算作完成", ["组Id", this.Id]);
+      }
+      this.SwitchState(4);
+    }
   }
   CanEnterExecuting() {
-    return !ModelManager_1.ModelManager.LoadingModel.IsLoading && !ModelManager_1.ModelManager.LoadingModel.IsLoadingView || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "引导组不能打开, 因为loading还没完成", ["组Id", this.Id]), !1)
+    return !ModelManager_1.ModelManager.LoadingModel.IsLoading && !ModelManager_1.ModelManager.LoadingModel.IsLoadingView || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "引导组不能打开, 因为loading还没完成", ["组Id", this.Id]), false);
   }
   CheckIsGuideRunning() {
-    return 0 !== this.StateMachine.CurrentState
+    return this.StateMachine.CurrentState !== 0;
   }
 }
 exports.GuideGroupInfo = GuideGroupInfo;

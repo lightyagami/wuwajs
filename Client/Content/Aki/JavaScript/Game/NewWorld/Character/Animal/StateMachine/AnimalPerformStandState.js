@@ -1,14 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.AnimalPerformStandState = void 0;
+  value: true
+});
+exports.AnimalPerformStandState = undefined;
 const AnimalPerformStateBase_1 = require("./AnimalPerformStateBase");
 class AnimalPerformStandState extends AnimalPerformStateBase_1.AnimalPerformStateBase {
   OnEnter(t) {
-    this.EcologicalInterface?.IsValid() && (0 === t && this.AnimalEcologicalInterface.StateMachineInitializationComplete(), this.EcologicalInterface.NoneStateStart())
+    if (this.EcologicalInterface?.IsValid()) {
+      if (t === 0) {
+        this.AnimalEcologicalInterface.StateMachineInitializationComplete();
+      }
+      this.EcologicalInterface.NoneStateStart();
+    }
   }
   OnExit(t) {
-    this.EcologicalInterface?.IsValid() && (this.Owner.GetComponent(197)?.SetInteractionState(!1, "AnimalPerformStandState OnExit"), this.EcologicalInterface.NoneStateEnd())
+    if (this.EcologicalInterface?.IsValid()) {
+      this.Owner.GetComponent(197)?.SetInteractionState(false, "AnimalPerformStandState OnExit");
+      this.EcologicalInterface.NoneStateEnd();
+    }
   }
 }
 exports.AnimalPerformStandState = AnimalPerformStandState;

@@ -1,24 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRangeComponent = void 0;
+  value: true
+});
+exports.FbRangeComponent = undefined;
 const UnionTriggerShapeHelper_1 = require("../Shape/UnionTriggerShapeHelper");
 class FbRangeComponent {
   constructor(e) {
-    this.FbDataInternal = e, this.q_h = !1, this.k_h = !1, this.nRh = !1, this.c6o = void 0, this.Zkh = !1, this.eGh = 0
+    this.FbDataInternal = e;
+    this.q_h = false;
+    this.k_h = false;
+    this.nRh = false;
+    this.c6o = undefined;
+    this.Zkh = false;
+    this.eGh = 0;
   }
   static Create(e) {
-    if (e) return new FbRangeComponent(e)
+    if (e) {
+      return new FbRangeComponent(e);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Shape() {
-    var e, t;
-    return !this.nRh && (this.nRh = !0, e = this.FbDataInternal.shapeType(), t = UnionTriggerShapeHelper_1.UnionTriggerShapeHelper.GetUnionTriggerShapeObject(e)) && (this.c6o = UnionTriggerShapeHelper_1.UnionTriggerShapeHelper.ReadUnionTriggerShape(e, this.FbDataInternal.shape(t))), this.c6o
+    var e;
+    var t;
+    if (!this.nRh && (this.nRh = true, e = this.FbDataInternal.shapeType(), t = UnionTriggerShapeHelper_1.UnionTriggerShapeHelper.GetUnionTriggerShapeObject(e))) {
+      this.c6o = UnionTriggerShapeHelper_1.UnionTriggerShapeHelper.ReadUnionTriggerShape(e, this.FbDataInternal.shape(t));
+    }
+    return this.c6o;
   }
   get ExtraRange() {
-    return this.Zkh || (this.Zkh = !0, this.eGh = this.FbDataInternal.extraRange()), this.eGh
+    if (!this.Zkh) {
+      this.Zkh = true;
+      this.eGh = this.FbDataInternal.extraRange();
+    }
+    return this.eGh;
   }
 }
 exports.FbRangeComponent = FbRangeComponent;

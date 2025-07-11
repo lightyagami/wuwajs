@@ -1,15 +1,23 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiControllerBase = void 0;
+  value: true
+});
+exports.UiControllerBase = undefined;
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 class UiControllerBase extends ControllerBase_1.ControllerBase {
   static Init() {
     var e = super.Init();
-    return this.OnRegisterNetEvent(), this.OnAddEvents(), this.OnAddOpenViewCheckFunction(), e
+    this.OnRegisterNetEvent();
+    this.OnAddEvents();
+    this.OnAddOpenViewCheckFunction();
+    return e;
   }
   static Clear() {
-    return this.OnUnRegisterNetEvent(), this.OnRemoveEvents(), this.OnRemoveOpenViewCheckFunction(), super.Clear()
+    this.OnUnRegisterNetEvent();
+    this.OnRemoveEvents();
+    this.OnRemoveOpenViewCheckFunction();
+    return super.Clear();
   }
   static OnRegisterNetEvent() {}
   static OnUnRegisterNetEvent() {}

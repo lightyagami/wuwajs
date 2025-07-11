@@ -1,66 +1,92 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleListComponent = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  RedDotController_1 = require("../../../RedDot/RedDotController"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  UiCameraAnimationManager_1 = require("../../UiCameraAnimation/UiCameraAnimationManager"),
-  GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew"),
-  RoleController_1 = require("../RoleController"),
-  RoleListItem_1 = require("./RoleListItem");
+  value: true
+});
+exports.RoleListComponent = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const RedDotController_1 = require("../../../RedDot/RedDotController");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const UiCameraAnimationManager_1 = require("../../UiCameraAnimation/UiCameraAnimationManager");
+const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
+const RoleController_1 = require("../RoleController");
+const RoleListItem_1 = require("./RoleListItem");
 class RoleListComponent extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.ScrollView = void 0, this.RoleViewAgent = void 0, this.DataList = void 0, this.RoleSystemUiParams = void 0, this.nFe = () => {
-      var e = new RoleListItem_1.RoleListItem;
-      return e.ToggleCallBack = this.n1o, e.CanToggleExecuteChange = this.A5e, e
-    }, this.A5e = e => this.ScrollView.GetGenericLayout().GetSelectedGridIndex() !== e && !UiCameraAnimationManager_1.UiCameraAnimationManager.IsPlayingAnimation(), this.n1o = e => {
-      this.ScrollView.GetGenericLayout().SelectGridProxy(e), this.RoleViewAgent.SetCurSelectRoleId(this.CurSelectDataId);
+    super(...arguments);
+    this.ScrollView = undefined;
+    this.RoleViewAgent = undefined;
+    this.DataList = undefined;
+    this.RoleSystemUiParams = undefined;
+    this.nFe = () => {
+      var e = new RoleListItem_1.RoleListItem();
+      e.ToggleCallBack = this.n1o;
+      e.CanToggleExecuteChange = this.A5e;
+      return e;
+    };
+    this.A5e = e => this.ScrollView.GetGenericLayout().GetSelectedGridIndex() !== e && !UiCameraAnimationManager_1.UiCameraAnimationManager.IsPlayingAnimation();
+    this.n1o = e => {
+      this.ScrollView.GetGenericLayout().SelectGridProxy(e);
+      this.RoleViewAgent.SetCurSelectRoleId(this.CurSelectDataId);
       e = this.RoleViewAgent.GetCurSelectRoleData();
-      RoleController_1.RoleController.OnSelectedRoleChange(this.CurSelectDataId, e.GetRoleSkinId()), this.N1l(this.CurSelectDataId), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleSystemChangeRole, this.CurSelectDataId)
-    }
+      RoleController_1.RoleController.OnSelectedRoleChange(this.CurSelectDataId, e.GetRoleSkinId());
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleSystemChangeRole, this.CurSelectDataId);
+    };
   }
   get CurSelectDataId() {
     var e = this.ScrollView.GetGenericLayout().GetSelectedGridIndex();
-    return !this.DataList || e < 0 || e >= this.DataList.length ? 0 : this.DataList[e].RoleDataId
+    if (!this.DataList || e < 0 || e >= this.DataList.length) {
+      return 0;
+    } else {
+      return this.DataList[e].RoleDataId;
+    }
   }
   GetSelfScrollView() {
-    return this.ScrollView
+    return this.ScrollView;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIScrollViewWithScrollbarComponent]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent]];
   }
   OnStart() {
-    this.RoleViewAgent = this.OpenParam, void 0 === this.RoleViewAgent ? Log_1.Log.CheckError() && Log_1.Log.Error("Role", 58, "RoleViewAgent为空", ["界面名称", "RoleListComponent"]) : this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.nFe)
-  }
-  N1l(e) {
-    e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);
-    void 0 !== e && e.TryRemoveNewFlag() && (ModelManager_1.ModelManager.NewFlagModel.SaveNewFlagConfig(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleDataItem), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleSelectionListUpdate))
+    this.RoleViewAgent = this.OpenParam;
+    if (this.RoleViewAgent === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Role", 58, "RoleViewAgent为空", ["界面名称", "RoleListComponent"]);
+      }
+    } else {
+      this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.nFe);
+    }
   }
   UnBindRedDot() {
-    RedDotController_1.RedDotController.UnBindRedDot("RoleSystemRoleList")
+    RedDotController_1.RedDotController.UnBindRedDot("RoleSystemRoleList");
   }
   SetRoleSystemUiParams(e) {
-    this.RoleSystemUiParams = e
+    this.RoleSystemUiParams = e;
   }
   async UpdateComponent(e) {
     var t = [];
     for (const o of e) {
-      var i = new RoleListItem_1.RoleListItemData;
-      i.RoleDataId = o, i.NeedShowTrial = this.RoleSystemUiParams?.RoleListNeedTrial ?? !0, i.NeedRedDot = this.RoleSystemUiParams?.RoleListRedDot ?? !1, i.TeamPositionType = this.RoleViewAgent?.TeamPositionType ?? 0, t.push(i)
+      var i = new RoleListItem_1.RoleListItemData();
+      i.RoleDataId = o;
+      i.NeedShowTrial = this.RoleSystemUiParams?.RoleListNeedTrial ?? true;
+      i.NeedRedDot = this.RoleSystemUiParams?.RoleListRedDot ?? false;
+      i.TeamPositionType = this.RoleViewAgent?.TeamPositionType ?? 0;
+      t.push(i);
     }
-    this.DataList = t, await this.ScrollView.RefreshByDataAsync(t)
+    this.DataList = t;
+    await this.ScrollView.RefreshByDataAsync(t);
   }
   SetCurSelection(t) {
     var e = this.DataList.findIndex(e => e.RoleDataId === t);
-    e < 0 || e >= this.DataList.length || (this.n1o(e), (e = this.ScrollView.GetItemByIndex(e)) && this.ScrollView.ScrollTo(e))
+    if (!(e < 0) && !(e >= this.DataList.length)) {
+      this.n1o(e);
+      if (e = this.ScrollView.GetItemByIndex(e)) {
+        this.ScrollView.ScrollTo(e);
+      }
+    }
   }
 }
 exports.RoleListComponent = RoleListComponent;

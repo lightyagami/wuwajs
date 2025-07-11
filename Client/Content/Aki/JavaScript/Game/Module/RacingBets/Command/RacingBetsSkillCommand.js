@@ -1,25 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsSkillCommand = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  UiManager_1 = require("../../../Ui/UiManager"),
-  ChessController_1 = require("../../Activity/ActivityContent/ChessGameplay/ChessController"),
-  DangoManager_1 = require("../../Dango/DangoLogic/DangoManager"),
-  RacingBetsCommandBase_1 = require("./RacingBetsCommandBase");
+  value: true
+});
+exports.RacingBetsSkillCommand = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const UiManager_1 = require("../../../Ui/UiManager");
+const ChessController_1 = require("../../Activity/ActivityContent/ChessGameplay/ChessController");
+const DangoManager_1 = require("../../Dango/DangoLogic/DangoManager");
+const RacingBetsCommandBase_1 = require("./RacingBetsCommandBase");
 class RacingBetsSkillCommand extends RacingBetsCommandBase_1.RacingBetsCommandBase {
   constructor() {
-    super(...arguments), this.CommandType = 5, this.zFc = void 0
+    super(...arguments);
+    this.CommandType = 5;
+    this.zFc = undefined;
   }
   Init(e) {
-    this.zFc = e
+    this.zFc = e;
   }
   async OnExecute() {
-    var e = new CustomPromise_1.CustomPromise;
-    UiManager_1.UiManager.OpenView("RacingBetsDangoSkillTip", [this.zFc.Kz_, e]), 2 !== DangoManager_1.DangoManager.GetDangoData(this.zFc.Kz_).GetSkillEffectConfig()?.TrigggerPerformance && await ChessController_1.ChessController.ChessItemPerformAsync(this.zFc.Kz_, 2), await e.Promise
+    var e = new CustomPromise_1.CustomPromise();
+    UiManager_1.UiManager.OpenView("RacingBetsDangoSkillTip", [this.zFc.Kz_, e]);
+    if (DangoManager_1.DangoManager.GetDangoData(this.zFc.Kz_).GetSkillEffectConfig()?.TrigggerPerformance !== 2) {
+      await ChessController_1.ChessController.ChessItemPerformAsync(this.zFc.Kz_, 2);
+    }
+    await e.Promise;
   }
   LogInfo() {
-    return "RacingBetsSkillCommand"
+    return "RacingBetsSkillCommand";
   }
 }
 exports.RacingBetsSkillCommand = RacingBetsSkillCommand;

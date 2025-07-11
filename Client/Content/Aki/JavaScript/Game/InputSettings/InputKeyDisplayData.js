@@ -1,39 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InputKeyDisplayData = void 0;
+  value: true
+});
+exports.InputKeyDisplayData = undefined;
 const InputSettings_1 = require("./InputSettings");
 class InputKeyDisplayData {
   constructor() {
-    this.ActionOrAxisName = void 0, this.KeyNameList = [], this.KeyNameMap = new Map, this.IsCombination = !1
+    this.ActionOrAxisName = undefined;
+    this.KeyNameList = [];
+    this.KeyNameMap = new Map();
+    this.IsCombination = false;
   }
   RefreshInput(t, s) {
-    this.ActionOrAxisName = t, this.KeyNameList = s, this.IsCombination = !1
+    this.ActionOrAxisName = t;
+    this.KeyNameList = s;
+    this.IsCombination = false;
   }
   RefreshCombinationInput(t, s) {
-    this.ActionOrAxisName = t, this.KeyNameMap = s, this.IsCombination = !0
+    this.ActionOrAxisName = t;
+    this.KeyNameMap = s;
+    this.IsCombination = true;
   }
   GetDisplayKeyNameList(t = 0) {
-    if (0 < this.KeyNameMap.size)
-      for (var [s, i] of this.KeyNameMap) return [s, i];
-    if (0 < this.KeyNameList.length) return [this.KeyNameList[t]]
+    if (this.KeyNameMap.size > 0) {
+      for (var [s, i] of this.KeyNameMap) {
+        return [s, i];
+      }
+    }
+    if (this.KeyNameList.length > 0) {
+      return [this.KeyNameList[t]];
+    }
   }
   GetDisplayKeyIconPathList(t = 0) {
     t = this.GetDisplayKeyNameList(t);
-    if (void 0 !== t) {
+    if (t !== undefined) {
       var s = [];
       for (const e of t) {
         var i = InputSettings_1.InputSettings.GetKey(e);
-        s.push(i?.GetKeyIconPath() ?? "")
+        s.push(i?.GetKeyIconPath() ?? "");
       }
-      return s
+      return s;
     }
   }
   IsValid() {
-    return void 0 !== this.ActionOrAxisName
+    return this.ActionOrAxisName !== undefined;
   }
   Reset() {
-    this.ActionOrAxisName = void 0, this.KeyNameList = [], this.KeyNameMap.clear()
+    this.ActionOrAxisName = undefined;
+    this.KeyNameList = [];
+    this.KeyNameMap.clear();
   }
 }
 exports.InputKeyDisplayData = InputKeyDisplayData;

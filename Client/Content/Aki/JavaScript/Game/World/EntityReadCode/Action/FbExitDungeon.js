@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbExitDungeon = void 0;
+  value: true
+});
+exports.FbExitDungeon = undefined;
 class FbExitDungeon {
   constructor(t) {
-    this.FbDataInternal = t, this.AMh = !1, this.xMh = !1
+    this.FbDataInternal = t;
+    this.AMh = false;
+    this.xMh = false;
   }
   static Create(t) {
-    if (t) return new FbExitDungeon(t)
+    if (t) {
+      return new FbExitDungeon(t);
+    }
   }
   get IsNeedSecondaryConfirmation() {
-    return this.AMh || (this.AMh = !0, this.xMh = this.FbDataInternal.isNeedSecondaryConfirmation()), this.xMh
+    if (!this.AMh) {
+      this.AMh = true;
+      this.xMh = this.FbDataInternal.isNeedSecondaryConfirmation();
+    }
+    return this.xMh;
   }
 }
 exports.FbExitDungeon = FbExitDungeon;

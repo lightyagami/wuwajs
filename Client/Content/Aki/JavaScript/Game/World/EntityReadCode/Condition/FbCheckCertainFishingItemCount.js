@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckCertainFishingItemCount = void 0;
+  value: true
+});
+exports.FbCheckCertainFishingItemCount = undefined;
 class FbCheckCertainFishingItemCount {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.tgh = !1, this.FFe = 0, this._ch = !1, this.cch = void 0, this.luh = !1, this.v4i = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.tgh = false;
+    this.FFe = 0;
+    this._ch = false;
+    this.cch = undefined;
+    this.luh = false;
+    this.v4i = 0;
   }
   static Create(t) {
-    if (t) return new FbCheckCertainFishingItemCount(t)
+    if (t) {
+      return new FbCheckCertainFishingItemCount(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Id() {
-    return this.tgh || (this.tgh = !0, this.FFe = this.FbDataInternal.id()), this.FFe
+    if (!this.tgh) {
+      this.tgh = true;
+      this.FFe = this.FbDataInternal.id();
+    }
+    return this.FFe;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get Count() {
-    return this.luh || (this.luh = !0, this.v4i = this.FbDataInternal.count()), this.v4i
+    if (!this.luh) {
+      this.luh = true;
+      this.v4i = this.FbDataInternal.count();
+    }
+    return this.v4i;
   }
 }
 exports.FbCheckCertainFishingItemCount = FbCheckCertainFishingItemCount;

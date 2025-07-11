@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckRogueTerm = void 0;
+  value: true
+});
+exports.LevelConditionCheckRogueTerm = undefined;
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckRogueTerm extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, r) {
-    return !0
+    return true;
   }
 }
 exports.LevelConditionCheckRogueTerm = LevelConditionCheckRogueTerm;

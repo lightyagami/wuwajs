@@ -1,136 +1,192 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CharMaterialContainerV2 = void 0;
-const UE = require("ue"),
-  Stats_1 = require("../../../../../Core/Common/Stats"),
-  RenderConfig_1 = require("../../../Config/RenderConfig"),
-  CharRenderBase_1 = require("../../Manager/CharRenderBase"),
-  charMeshName = new UE.FName("CharacterMesh0");
+  value: true
+});
+exports.CharMaterialContainerV2 = undefined;
+const UE = require("ue");
+const Stats_1 = require("../../../../../Core/Common/Stats");
+const RenderConfig_1 = require("../../../Config/RenderConfig");
+const CharRenderBase_1 = require("../../Manager/CharRenderBase");
+const charMeshName = new UE.FName("CharacterMesh0");
 class CharMaterialContainerV2 extends CharRenderBase_1.CharRenderBase {
   constructor() {
-    super(...arguments), this.gel = void 0, this.xW = void 0, this.NB1 = void 0, this.IdentifyName = "", this.x71 = void 0, this.pel = void 0
+    super(...arguments);
+    this.gel = undefined;
+    this.xW = undefined;
+    this.pk1 = undefined;
+    this.IdentifyName = "";
+    this.d91 = undefined;
+    this.pel = undefined;
   }
   Start() {
-    var t = this.GetRenderingComponent().GetCachedOwner(),
-      e = this.GetRenderingComponent().RenderType;
-    t && (this.gel = t.GetComponentByClass(UE.KuroMaterialControllerComponent.StaticClass()), this.gel || (this.gel = t.AddComponentByClass(UE.KuroMaterialControllerComponent.StaticClass(), !1, void 0, !1), 6 === e || 7 === e ? this.gel.SetInitTakeOver(!1) : this.gel.SetInitTakeOver(!0), this.gel.InitFromOwner()), 0 === e && this.gel.SetToonCustomStencilValue(1), this.IdentifyName = t.GetClass().GetName(), (e = this.gel.GetRegisteredSkeletalMeshComponent(charMeshName)?.SkeletalMesh) && (this.IdentifyName = this.IdentifyName + "_" + e.GetName()), this.x71 = this.GetRenderingComponent().GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect), this.xW = Stats_1.Stat.CreateNoFlameGraph("CharMaterialContainerV2_Tick_" + this.IdentifyName), this.NB1 = Stats_1.Stat.CreateNoFlameGraph("CharMaterialContainerV2_UpdateEffectOnly_" + this.IdentifyName), this.OnInitSuccess())
+    var t = this.GetRenderingComponent().GetCachedOwner();
+    var e = this.GetRenderingComponent().RenderType;
+    if (t) {
+      this.gel = t.GetComponentByClass(UE.KuroMaterialControllerComponent.StaticClass());
+      if (!this.gel) {
+        this.gel = t.AddComponentByClass(UE.KuroMaterialControllerComponent.StaticClass(), false, undefined, false);
+        if (e === 6 || e === 7) {
+          this.gel.SetInitTakeOver(false);
+        } else {
+          this.gel.SetInitTakeOver(true);
+        }
+        this.gel.InitFromOwner();
+      }
+      if (e === 0) {
+        this.gel.SetToonCustomStencilValue(1);
+      }
+      this.IdentifyName = t.GetClass().GetName();
+      if (e = this.gel.GetRegisteredSkeletalMeshComponent(charMeshName)?.SkeletalMesh) {
+        this.IdentifyName = this.IdentifyName + "_" + e.GetName();
+      }
+      this.d91 = this.GetRenderingComponent().GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect);
+      this.xW = Stats_1.Stat.CreateNoFlameGraph("CharMaterialContainerV2_Tick_" + this.IdentifyName);
+      this.pk1 = Stats_1.Stat.CreateNoFlameGraph("CharMaterialContainerV2_UpdateEffectOnly_" + this.IdentifyName);
+      this.OnInitSuccess();
+    }
   }
   Update() {
     this.xW?.Start();
-    var t = this.RenderComponent.GetTimeDilation(),
-      i = (this.gel.ManualTick(this.GetDeltaTime() * t, !1, !1), this.gel.UpdateEffects(), this.gel.SetUpdateForce(!1), this.gel.RemoveDeadEffects());
-    if (this.pel)
-      for (let t = 0, e = i.Num(); t < e; ++t)
-        for (const s of this.pel) s(i.Get(t));
-    this.x71 && (t = this.gel.GetBodyOpacity(), this.x71.SetOpacity(t, !0)), this.xW?.Stop()
+    var t = this.RenderComponent.GetTimeDilation();
+    this.gel.ManualTick(this.GetDeltaTime() * t, false, false);
+    this.gel.UpdateEffects();
+    this.gel.SetUpdateForce(false);
+    var i = this.gel.RemoveDeadEffects();
+    if (this.pel) {
+      for (let t = 0, e = i.Num(); t < e; ++t) {
+        for (const s of this.pel) {
+          s(i.Get(t));
+        }
+      }
+    }
+    if (this.d91) {
+      t = this.gel.GetBodyOpacity();
+      this.d91.SetOpacity(t, true);
+    }
+    this.xW?.Stop();
   }
   UpdateEffectsOnly() {
-    this.NB1?.Start(), this.gel.UpdateEffects(), this.NB1?.Stop()
+    this.pk1?.Start();
+    this.gel.UpdateEffects();
+    this.pk1?.Stop();
   }
   ForceUpdateOnce() {
-    this.gel?.MarkForceUpdateAllOnce(), this.gel?.SetUpdateForce(!0)
+    this.gel?.MarkForceUpdateAllOnce();
+    this.gel?.SetUpdateForce(true);
   }
-  AddSkeletalComponent(t, e, i = !1) {
-    this.gel.AddSkeletalMeshComponent(t, new UE.FName(e), i)
+  AddSkeletalComponent(t, e, i = false) {
+    this.gel.AddSkeletalMeshComponent(t, new UE.FName(e), i);
   }
   GetSkeletalComponent(t) {
-    return this.gel.GetRegisteredSkeletalMeshComponent(new UE.FName(t))
+    return this.gel.GetRegisteredSkeletalMeshComponent(new UE.FName(t));
   }
   GetSkeletalMeshComponentBodyName(t) {
-    return this.gel.GetSkeletalMeshComponentBodyName(t)
+    return this.gel.GetSkeletalMeshComponentBodyName(t);
   }
   RemoveSkeletalComponent(t) {
-    this.gel.RemoveSkeletalMeshComponent(new UE.FName(t))
+    this.gel.RemoveSkeletalMeshComponent(new UE.FName(t));
   }
-  AddEffect(t, e, i, s, a = !1) {
-    return this.gel.AddEffect_Ex(t, e, i, s, a)
+  AddEffect(t, e, i, s, a = false) {
+    return this.gel.AddEffect_Ex(t, e, i, s, a);
   }
   SetEffectLoop(t, e) {
-    this.gel.SetHandleLoop(t, e, !0)
+    this.gel.SetHandleLoop(t, e, true);
   }
   SetEffectPause(t, e) {
-    this.gel.SetHandlePause(t, e)
+    this.gel.SetHandlePause(t, e);
   }
   SetEffectProgress(t, e) {
-    this.gel.SeekHandleFactor(t, e)
+    this.gel.SeekHandleFactor(t, e);
   }
   RemoveEffect(t) {
-    if (this.gel.RemoveEffect(t), this.pel)
-      for (const e of this.pel) e(t)
+    this.gel.RemoveEffect(t);
+    if (this.pel) {
+      for (const e of this.pel) {
+        e(t);
+      }
+    }
   }
   OnResetRenderState() {
-    this.gel.RemoveAllEffects(), this.gel.UpdateEffects()
+    this.gel.RemoveAllEffects();
+    this.gel.UpdateEffects();
   }
   SetFloatUpdateParamPermanent(t, e, i, s, a) {
-    this.gel.AddFloatUpdateParamPermanent(t, e, i, s, a ?? 17)
+    this.gel.AddFloatUpdateParamPermanent(t, e, i, s, a ?? 17);
   }
   AddFloatUpdateParamPermanentByIndex(t, e, i, s) {
-    this.gel.AddFloatUpdateParamPermanentByIndex(t, e, i, s)
+    this.gel.AddFloatUpdateParamPermanentByIndex(t, e, i, s);
   }
   SetColorUpdateParamPermanent(t, e, i, s, a) {
-    this.gel.AddColorUpdateParamPermanent(t, e, i, s, a ?? 17)
+    this.gel.AddColorUpdateParamPermanent(t, e, i, s, a ?? 17);
   }
   SetTextureUpdateParamPermanent(t, e, i, s, a) {
-    this.gel.AddTextureUpdateParamPermanent(t, e, i, s, a ?? 17)
+    this.gel.AddTextureUpdateParamPermanent(t, e, i, s, a ?? 17);
   }
   RemoveFloatUpdateParamPermanent(t, e, i, s) {
-    this.gel.RemoveFloatUpdateParamPermanent(t, e, i, s ?? 17)
+    this.gel.RemoveFloatUpdateParamPermanent(t, e, i, s ?? 17);
   }
   RemoveColorUpdateParamPermanent(t, e, i, s) {
-    this.gel.RemoveColorUpdateParamPermanent(t, e, i, s ?? 17)
+    this.gel.RemoveColorUpdateParamPermanent(t, e, i, s ?? 17);
   }
   RemoveTextureUpdateParamPermanent(t, e, i, s) {
-    this.gel.RemoveTextureUpdateParamPermanent(t, e, i, s ?? 17)
+    this.gel.RemoveTextureUpdateParamPermanent(t, e, i, s ?? 17);
   }
   SetExternalMaterialReplace(t, e, i, s) {
-    this.gel.SetExternalMaterialReplace(t, e, i, s ?? 17)
+    this.gel.SetExternalMaterialReplace(t, e, i, s ?? 17);
   }
   RemoveExternalMaterialReplace(t, e, i) {
-    this.gel.RemoveExternalMaterialReplace(t, e, i ?? 17)
+    this.gel.RemoveExternalMaterialReplace(t, e, i ?? 17);
   }
   AddAlphaTestCount(t) {
-    this.gel.AddExternalAlphaTestRefCount(t)
+    this.gel.AddExternalAlphaTestRefCount(t);
   }
   AddOutlineStencilTestCount(t) {
-    this.gel.AddExternalOutlineStencilTestRefCount(t)
+    this.gel.AddExternalOutlineStencilTestRefCount(t);
   }
   AddBattleCount(t) {
-    this.gel.AddExternalBattleRefCount(t)
+    this.gel.AddExternalBattleRefCount(t);
   }
   AddBattleMaskCount(t) {
-    this.gel.AddExternalBattleMaskRefCount(t)
+    this.gel.AddExternalBattleMaskRefCount(t);
   }
   RemoveAlphaTestCount(t) {
-    this.gel.RemoveExternalAlphaTestRefCount(t)
+    this.gel.RemoveExternalAlphaTestRefCount(t);
   }
   RemoveOutlineStencilTestCount(t) {
-    this.gel.RemoveExternalOutlineStencilTestRefCount(t)
+    this.gel.RemoveExternalOutlineStencilTestRefCount(t);
   }
   RemoveBattleCount(t) {
-    this.gel.RemoveExternalBattleRefCount(t)
+    this.gel.RemoveExternalBattleRefCount(t);
   }
   RemoveBattleMaskCount(t) {
-    this.gel.RemoveExternalBattleMaskRefCount(t)
+    this.gel.RemoveExternalBattleMaskRefCount(t);
   }
   SetNoWater(t) {
-    this.gel.SetAllBodyNoWater(t)
+    this.gel.SetAllBodyNoWater(t);
   }
   AddEffectFinishCallback(t) {
-    t && (this.pel || (this.pel = new Set), this.pel.has(t) || this.pel.add(t))
+    if (t) {
+      this.pel ||= new Set();
+      if (!this.pel.has(t)) {
+        this.pel.add(t);
+      }
+    }
   }
   RemoveEffectFinishCallback(t) {
-    t && this.pel && this.pel.delete(t)
+    if (t && this.pel) {
+      this.pel.delete(t);
+    }
   }
   GetAnyUnloopEffect() {
-    return this.gel.GetAnyUnloopEffect()
+    return this.gel.GetAnyUnloopEffect();
   }
   Destroy() {}
   GetStatName() {
-    return "CharMaterialContainerV2"
+    return "CharMaterialContainerV2";
   }
   GetComponentId() {
-    return RenderConfig_1.RenderConfig.IdMaterialContainerV2
+    return RenderConfig_1.RenderConfig.IdMaterialContainerV2;
   }
 }
 exports.CharMaterialContainerV2 = CharMaterialContainerV2;

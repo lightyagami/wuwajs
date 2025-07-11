@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ChallengeFailedFloatTips = void 0;
+  value: true
+});
+exports.ChallengeFailedFloatTips = undefined;
 const GenericPromptFloatTipsBase_1 = require("./GenericPromptFloatTipsBase");
 class ChallengeFailedFloatTips extends GenericPromptFloatTipsBase_1.GenericPromptFloatTipsBase {
   SetExtraText() {}

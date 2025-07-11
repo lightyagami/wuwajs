@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCylinderTriggerShape = void 0;
+  value: true
+});
+exports.FbCylinderTriggerShape = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbCylinderTriggerShape {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.nIh = !1, this.n9o = void 0, this.sIh = !1, this.s9o = 0, this.mSh = !1, this.CSh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.nIh = false;
+    this.n9o = undefined;
+    this.sIh = false;
+    this.s9o = 0;
+    this.mSh = false;
+    this.CSh = 0;
   }
   static Create(t) {
-    if (t) return new FbCylinderTriggerShape(t)
+    if (t) {
+      return new FbCylinderTriggerShape(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Center() {
-    return this.nIh || (this.nIh = !0, this.n9o = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.center())), this.n9o
+    if (!this.nIh) {
+      this.nIh = true;
+      this.n9o = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.center());
+    }
+    return this.n9o;
   }
   get Radius() {
-    return this.sIh || (this.sIh = !0, this.s9o = this.FbDataInternal.radius()), this.s9o
+    if (!this.sIh) {
+      this.sIh = true;
+      this.s9o = this.FbDataInternal.radius();
+    }
+    return this.s9o;
   }
   get Height() {
-    return this.mSh || (this.mSh = !0, this.CSh = this.FbDataInternal.height()), this.CSh
+    if (!this.mSh) {
+      this.mSh = true;
+      this.CSh = this.FbDataInternal.height();
+    }
+    return this.CSh;
   }
 }
 exports.FbCylinderTriggerShape = FbCylinderTriggerShape;

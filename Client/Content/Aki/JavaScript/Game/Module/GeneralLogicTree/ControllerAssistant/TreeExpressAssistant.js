@@ -1,193 +1,289 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TreeExpressAssistant = void 0;
-const Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  PublicUtil_1 = require("../../../Common/PublicUtil"),
-  LevelGamePlayUtils_1 = require("../../../LevelGamePlay/LevelGamePlayUtils"),
-  LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  InteractBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/InteractBehaviorNode"),
-  ControllerAssistantBase_1 = require("./ControllerAssistantBase"),
-  ONE_HUNDRED = 100;
+  value: true
+});
+exports.TreeExpressAssistant = undefined;
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../../Common/PublicUtil");
+const LevelGamePlayUtils_1 = require("../../../LevelGamePlay/LevelGamePlayUtils");
+const LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const InteractBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/InteractBehaviorNode");
+const ControllerAssistantBase_1 = require("./ControllerAssistantBase");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
+const ONE_HUNDRED = 100;
 class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   constructor() {
-    super(...arguments), this.eet = (e, t) => {
-      e && this.ApplyOccupyTreeExpression(e.BtType, e.Id, e.IsInChallenge)
-    }, this.aYt = e => {
-      e && this.ApplyOccupyTreeExpression(e.BtType, e.Id, e.IsInChallenge)
-    }
+    super(...arguments);
+    this.eet = (e, t) => {
+      if (e) {
+        TreeExpressAssistant.HBu(e.BtType, e.Id, e.IsInChallenge);
+      }
+    };
+    this.aYt = e => {
+      if (e) {
+        TreeExpressAssistant.HBu(e.BtType, e.Id, e.IsInChallenge);
+      }
+    };
   }
   OnDestroy() {}
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeUpdateShowTrackText, this.aYt)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeUpdateShowTrackText, this.aYt);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeUpdateShowTrackText, this.aYt)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeUpdateShowTrackText, this.aYt);
   }
-  IsShowNodeStatus(e) {
-    let t = !1;
+  static IsShowNodeStatus(e) {
+    let t = false;
     switch (e.Type) {
       case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
         t = e.ShowComplete;
         break;
       case IQuest_1.EQuestScheduleType.TimeLeft:
       case IQuest_1.EQuestScheduleType.Condition:
-        t = !0
+        t = true;
     }
-    return t
+    return t;
   }
-  GetTitleTrackNodeId(e) {
+  static GetTitleTrackNodeId(e) {
     let t = 0;
-    return t = e && e.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted ? e.ChildQuestId : t
+    return t = e && e.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted ? e.ChildQuestId : t;
   }
-  IsShowTrackDistance(e, t) {
-    let r = !1;
-    return r = t && t.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted ? !!this.IsShowNodeTrackDistance(e, t.ChildQuestId) && t.ShowTracking : r
+  static IsShowTrackDistance(e, t) {
+    let r = false;
+    return r = t && t.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted ? !!this.IsShowNodeTrackDistance(e, t.ChildQuestId) && t.ShowTracking : r;
   }
-  IsShowNodeTrackDistance(e, t) {
+  static IsShowNodeTrackDistance(e, t) {
     e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
-    return !!e && (e.GetNode(t)?.ContainTag(0) ?? !1)
+    return !!e && (e.GetNode(t)?.ContainTag(0) ?? false);
   }
-  GetTitleText(t, r, e, a) {
+  static GetQCount(e, t) {
+    let r = 0;
+    var a = t;
+    if (a) {
+      const n = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
+      switch (a.Type) {
+        case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
+          {
+            var s = a;
+            const n = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
+            s = n?.GetNode(s.ChildQuestId);
+            if (!s) {
+              break;
+            }
+            if (s.TrackTextRule === 1) {
+              r = MathUtils_1.MathUtils.StringToNumber(s.GetProgress()) ?? 0;
+            }
+            break;
+          }
+        case IQuest_1.EQuestScheduleType.TimeLeft:
+          if (a.ShowTime) {
+            r = Math.floor(n.GetChallengeRemainTime(a.TimerType));
+          }
+          break;
+        case IQuest_1.EQuestScheduleType.EntityHP:
+          var i;
+          var s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId);
+          if (s &&= s.Entity.GetComponent(173)) {
+            i = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
+            s = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n);
+            r = Math.floor(i / s * ONE_HUNDRED);
+          }
+      }
+    }
+    return r;
+  }
+  static GetTitleText(t, r, e, a) {
     let s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
     var i = e;
     if (i) {
-      const c = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
       switch (i.Type) {
         case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
-          var o = i;
-          s = o.TitlePreState && a ? this.GetNodeTrackText(t, o.ChildQuestId, o.TitlePreState?.TidPreStateTitle, o.Vars, o.OnlyShowWhileRunning) : this.GetNodeTrackText(t, o.ChildQuestId, r, o.Vars, o.OnlyShowWhileRunning);
+          var n = i;
+          s = n.TitlePreState && a ? this.GetNodeTrackText(t, n.ChildQuestId, n.TitlePreState?.TidPreStateTitle, n.Vars, n.OnlyShowWhileRunning) : this.GetNodeTrackText(t, n.ChildQuestId, r, n.Vars, n.OnlyShowWhileRunning);
           break;
         case IQuest_1.EQuestScheduleType.TimeLeft:
-          s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r), i.ShowTime && (o = Math.floor(c.GetChallengeRemainTime(i.TimerType)), s = s.replace("{q_count}", "" + o));
+          s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+          if (i.ShowTime) {
+            n = this.GetQCount(t, e);
+            s = s.replace("{q_count}", "" + n);
+          }
           break;
         case IQuest_1.EQuestScheduleType.EntityHP:
-          var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i.EntityId);
-          o ? (o = o.Entity.GetComponent(173), s = o ? (n = o.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life), o = o.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n), n = Math.floor(n / o * ONE_HUNDRED), (s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r)).replace("{q_count}", n + "%")) : "") : s = "";
+          s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+          n = this.GetQCount(t, e);
+          s = s.replace("{q_count}", n + "%");
           break;
-        case IQuest_1.EQuestScheduleType.ChildQuestCompletedCount: {
-          const c = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-          if (!c) break;
-          var o = PublicUtil_1.PublicUtil.GetConfigTextByKey(r),
-            n = i.AssociatedChildQuestIds,
-            l = n.length;
-          let e = 0;
-          for (const u of n) c.GetNode(u)?.IsSuccess && e++;
-          s = `${o}(${e}/${l})`;
-          break
-        }
+        case IQuest_1.EQuestScheduleType.ChildQuestCompletedCount:
+          {
+            var o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+            if (!o) {
+              break;
+            }
+            var n = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+            var l = i.AssociatedChildQuestIds;
+            var c = l.length;
+            let e = 0;
+            for (const v of l) {
+              if (o.GetNode(v)?.IsSuccess) {
+                e++;
+              }
+            }
+            s = `${n}(${e}/${c})`;
+            break;
+          }
         case IQuest_1.EQuestScheduleType.Score:
           s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
-          n = this.ConvertStringToScoreTexture(ModelManager_1.ModelManager.ScoreModel.GetCurrentScore()?.toString());
-          s = (s = s.replace("{currentScore}", "" + n)).replace("{targetScore}", "" + ModelManager_1.ModelManager.ScoreModel.GetTargetScore());
+          l = this.Okn(ModelManager_1.ModelManager.ScoreModel.GetCurrentScore()?.toString());
+          s = (s = s.replace("{currentScore}", "" + l)).replace("{targetScore}", "" + ModelManager_1.ModelManager.ScoreModel.GetTargetScore());
           break;
         case IQuest_1.EQuestScheduleType.TowerChallengeTitle:
-          ModelManager_1.ModelManager.TowerModel.CheckInTower() && (s = ModelManager_1.ModelManager.TowerModel.GetCurrentFloorName());
+          if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+            s = ModelManager_1.ModelManager.TowerModel.GetCurrentFloorName();
+          }
           break;
-        case IQuest_1.EQuestScheduleType.Var: {
-          const c = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-          if (!c) break;
-          s = this.Oi1(r, i.Var, void 0 !== i.ShowAsWordArt, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(c.BtType, c.TreeIncId, c.TreeConfigId));
-          break
-        }
+        case IQuest_1.EQuestScheduleType.Var:
+          n = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+          if (n) {
+            s = this.rr1(r, i.Var, i.ShowAsWordArt !== undefined, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(n.BtType, n.TreeIncId, n.TreeConfigId));
+          }
+          break;
         case IQuest_1.EQuestScheduleType.MultiVar:
-        case IQuest_1.EQuestScheduleType.Condition: {
-          const c = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-          if (!c) break;
-          o = i.Vars;
-          if (s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r), !o || 0 === o.length) break;
-          var _ = i?.ShowAsWordArt;
-          for (const v of o) s = this.p2_(s, v, void 0 !== _, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(c.BtType, c.TreeIncId, c.TreeConfigId));
-          break
-        }
+        case IQuest_1.EQuestScheduleType.Condition:
+          var _ = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+          if (_) {
+            c = i.Vars;
+            s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r);
+            if (c && c.length !== 0) {
+              var u = i?.ShowAsWordArt;
+              for (const M of c) {
+                s = this.p2_(s, M, u !== undefined, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(_.BtType, _.TreeIncId, _.TreeConfigId));
+              }
+            }
+          }
+          break;
         case IQuest_1.EQuestScheduleType.ProgressValue:
           var l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i.TargetProgressEntity);
-          l ? (n = l.Entity.GetComponent(129), s = n ? (o = n.GetProgressData()?.CurrentValue ?? 0, n = 0 === (l = n.GetProgressData()?.MaxValue ?? 0) ? 0 : Math.round(o / l * 100), l = Math.round(o), (s = (s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r)).replace("{percent}", n + "%")).replace("{real_progress}", "" + l)) : "") : s = ""
+          if (l) {
+            n = l.Entity.GetComponent(129);
+            s = n ? (c = n.GetProgressData()?.CurrentValue ?? 0, n = (l = n.GetProgressData()?.MaxValue ?? 0) === 0 ? 0 : Math.round(c / l * 100), l = Math.round(c), (s = (s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r)).replace("{percent}", n + "%")).replace("{real_progress}", "" + l)) : "";
+          } else {
+            s = "";
+          }
       }
     }
-    return s
+    return s;
   }
-  Oi1(e, t, r, a) {
+  static rr1(e, t, r, a) {
     a = LevelGamePlayUtils_1.LevelGamePlayUtils.GetVarValue(t, a);
-    return void 0 === a ? "" : this.FormatStepTextByVarValueByKey(e, t, a, r)
+    if (a === undefined) {
+      return "";
+    } else {
+      return this.FormatStepTextByVarValueByKey(e, t, a, r);
+    }
   }
-  p2_(e, t, r, a) {
+  static p2_(e, t, r, a) {
     a = LevelGamePlayUtils_1.LevelGamePlayUtils.GetVarValue(t, a);
-    return void 0 === a ? "" : this.qi1(e, t, a, r)
+    if (a === undefined) {
+      return "";
+    } else {
+      return this.or1(e, t, a, r);
+    }
   }
-  GetNodeTrackText(e, t, r, a, s) {
+  static GetNodeTrackText(e, t, r, a, s) {
     var i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
-    if (!i) return "";
-    var o = i.GetNode(t);
-    if (!o) return "";
-    if (s && !o.IsProcessing) return "";
-    var n = r ?? o.TrackTextConfig;
-    if (void 0 === n || 0 === n.length) return "";
-    let l = void 0;
-    switch (o.TrackTextRule) {
+    if (!i) {
+      return "";
+    }
+    var n = i.GetNode(t);
+    if (!n) {
+      return "";
+    }
+    if (s && !n.IsProcessing) {
+      return "";
+    }
+    var o = r ?? n.TrackTextConfig;
+    if (o === undefined || o.length === 0) {
+      return "";
+    }
+    let l = undefined;
+    switch (n.TrackTextRule) {
       case 0:
-        l = PublicUtil_1.PublicUtil.GetConfigTextByKey(n);
+        l = PublicUtil_1.PublicUtil.GetConfigTextByKey(o);
         break;
       case 1:
-        var _ = PublicUtil_1.PublicUtil.GetConfigTextByKey(n),
-          c = o.GetProgress() ?? "0",
-          u = o.GetProgressMax() ?? "0";
-        l = _.replace("{q_count}", c).replace("{q_countMax}", u);
+        var c = PublicUtil_1.PublicUtil.GetConfigTextByKey(o);
+        var _ = n.GetProgress() ?? "0";
+        var u = n.GetProgressMax() ?? "0";
+        l = c.replace("{q_count}", _).replace("{q_countMax}", u);
         break;
       case 2:
-        _ = PublicUtil_1.PublicUtil.GetConfigTextByKey(n);
-        l = o.GetCustomTrackText(_)
+        c = PublicUtil_1.PublicUtil.GetConfigTextByKey(o);
+        l = n.GetCustomTrackText(c);
     }
-    if (!(l = "ChildQuest" === o.NodeType && o instanceof InteractBehaviorNode_1.InteractBehaviorNode && o.AlwaysFalseChildNode ? o.OccupationInfo ?? l : l)) return "";
-    if (a && 0 !== a.length)
-      for (const v of a) l = this.p2_(l, v, !1, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(i.BtType, i.TreeIncId, i.TreeConfigId));
-    return l
+    if (!(l = n.NodeType === "ChildQuest" && n instanceof InteractBehaviorNode_1.InteractBehaviorNode && n.AlwaysFalseChildNode ? n.OccupationInfo ?? l : l)) {
+      return "";
+    }
+    if (a && a.length !== 0) {
+      for (const v of a) {
+        l = this.p2_(l, v, false, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(i.BtType, i.TreeIncId, i.TreeConfigId));
+      }
+    }
+    return l;
   }
-  FormatStepTextByVarValueByKey(e, t, r, a) {
+  static FormatStepTextByVarValueByKey(e, t, r, a) {
     e = PublicUtil_1.PublicUtil.GetConfigTextByKey(e);
-    return this.qi1(e, t, r, a)
+    return this.or1(e, t, r, a);
   }
-  qi1(e, t, r, a) {
-    let s = e,
-      i = r.toString();
-    switch (a && "number" == typeof r && (i = this.ConvertStringToScoreTexture(r.toString())), t.Source) {
+  static or1(e, t, r, a) {
+    let s = e;
+    let i = r.toString();
+    if (a && typeof r == "number") {
+      i = this.Okn(r.toString());
+    }
+    switch (t.Source) {
       case "Global":
         s = s.replace(`{${t.Keyword}}`, i);
         break;
       case "Other":
       case "Self":
-        s = s.replace(`{${t.Name}}`, i)
+        s = s.replace(`{${t.Name}}`, i);
     }
-    return s = s.replace("{q_count}", i)
+    return s = s.replace("{q_count}", i);
   }
-  ConvertStringToScoreTexture(e) {
+  static Okn(e) {
     let t = "";
-    if (e)
+    if (e) {
       for (const a of e) {
         var r = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_Num" + a);
-        t += `<texture=${r}/>`
+        t += `<texture=${r}/>`;
       }
-    return t
+    }
+    return t;
   }
-  ApplyOccupyTreeExpression(e, t, r) {
+  static HBu(e, t, r) {
     switch (e) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
         break;
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeInst:
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay:
-        r && this._Yt(t)
+        if (r) {
+          this._Yt(t);
+        }
     }
   }
-  _Yt(e) {
-    ModelManager_1.ModelManager.GeneralLogicTreeModel.ApplyExpressionOccupation(e)
+  static _Yt(e) {
+    ModelManager_1.ModelManager.GeneralLogicTreeModel.ApplyExpressionOccupation(e);
   }
-  TryReleaseExpressionOccupation(e) {
-    ModelManager_1.ModelManager.GeneralLogicTreeModel.TryReleaseExpressionOccupation(e)
+  static TryReleaseExpressionOccupation(e) {
+    ModelManager_1.ModelManager.GeneralLogicTreeModel.TryReleaseExpressionOccupation(e);
   }
 }
 exports.TreeExpressAssistant = TreeExpressAssistant;

@@ -1,40 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameplayCueFixHook = void 0;
-const FNameUtil_1 = require("../../../../../../../Core/Utils/FNameUtil"),
-  GameplayCueHookCommonItem_1 = require("./CommonItem/GameplayCueHookCommonItem"),
-  GameplayCueBase_1 = require("./GameplayCueBase");
+  value: true
+});
+exports.GameplayCueFixHook = undefined;
+const FNameUtil_1 = require("../../../../../../../Core/Utils/FNameUtil");
+const GameplayCueHookCommonItem_1 = require("./CommonItem/GameplayCueHookCommonItem");
+const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueFixHook extends GameplayCueBase_1.GameplayCueBase {
   constructor() {
-    super(...arguments), this.$$o = void 0, this.VWs = void 0, this._1n = () => {
+    super(...arguments);
+    this.$$o = undefined;
+    this.VWs = undefined;
+    this._1n = () => {
       var t;
-      this.IsActive && this.VWs && (this.$$o && (this.$$o.Destroy(), this.$$o = void 0), t = this.MTl(), this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), t, this.CueConfig.Resources))
-    }
+      if (this.VWs) {
+        if (this.$$o) {
+          this.$$o.Destroy();
+          this.$$o = undefined;
+        }
+        t = this.MTl();
+        this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), t, this.CueConfig.Resources);
+      }
+    };
   }
   OnInit() {}
   OnTick(t) {
-    this.$$o && this.$$o.Tick(this.STl())
+    if (this.$$o) {
+      this.$$o.Tick(this.STl());
+    }
   }
   OnCreate() {
-    var t = this.EntityHandle.Entity?.GetComponent(1)?.IsAutonomousProxy,
-      e = t ? this.MTl() : this.STl();
-    this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), e, this.CueConfig.Resources), t && !this.yTl() && (this.VWs = this.ETl(), this.VWs) && this.VWs.RoleTeleport.Add(this._1n)
+    var t = this.EntityHandle.Entity?.GetComponent(1)?.IsAutonomousProxy;
+    var e = t ? this.MTl() : this.STl();
+    this.$$o = GameplayCueHookCommonItem_1.GameplayCueHookCommonItem.Spawn(this.ActorInternal, FNameUtil_1.FNameUtil.GetDynamicFName(this.CueConfig.Socket), e, this.CueConfig.Resources);
+    if (t && !this.yTl() && (this.VWs = this.ETl(), this.VWs)) {
+      this.VWs.RoleTeleport.Add(this._1n);
+    }
   }
   OnDestroy() {
-    this.$$o && (this.$$o.Destroy(), this.$$o = void 0), this.VWs?.RoleTeleport.Remove(this._1n), this.VWs = void 0
+    if (this.$$o) {
+      this.$$o.Destroy();
+      this.$$o = undefined;
+    }
+    this.VWs?.RoleTeleport.Remove(this._1n);
+    this.VWs = undefined;
   }
   STl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetCurrentTargetLocation().ToUeVector()
+    return this.EntityHandle.Entity.GetComponent(99).GetCurrentTargetLocation().ToUeVector();
   }
   MTl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetCurrentPathwayEndLocation().ToUeVector()
+    return this.EntityHandle.Entity.GetComponent(99).GetCurrentPathwayEndLocation().ToUeVector();
   }
   yTl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetIsInLastPathway()
+    return this.EntityHandle.Entity.GetComponent(99).GetIsInLastPathway();
   }
   ETl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetCurrentTargetEnterPortalCapture()
+    return this.EntityHandle.Entity.GetComponent(99).GetCurrentTargetEnterPortalCapture();
   }
 }
 exports.GameplayCueFixHook = GameplayCueFixHook;

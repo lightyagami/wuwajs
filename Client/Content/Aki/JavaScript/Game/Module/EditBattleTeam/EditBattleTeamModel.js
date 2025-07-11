@@ -1,449 +1,663 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EditBattleTeamModel = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  InstOnlineType_1 = require("../../../Core/Define/Config/SubType/InstOnlineType"),
-  ModelBase_1 = require("../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  RoleDefine_1 = require("../RoleUi/RoleDefine"),
-  SceneTeamDefine_1 = require("../SceneTeam/SceneTeamDefine"),
-  EditBattleRoleData_1 = require("./EditBattleRoleData"),
-  EditBattleRoleSlotData_1 = require("./EditBattleRoleSlotData"),
-  EditBattleTeamController_1 = require("./EditBattleTeamController"),
-  LIMIT_COUNT_MAX_LENGTH = 3;
+  value: true
+});
+exports.EditBattleTeamModel = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const InstOnlineType_1 = require("../../../Core/Define/Config/SubType/InstOnlineType");
+const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const RoleDefine_1 = require("../RoleUi/RoleDefine");
+const SceneTeamDefine_1 = require("../SceneTeam/SceneTeamDefine");
+const EditBattleRoleData_1 = require("./EditBattleRoleData");
+const EditBattleRoleSlotData_1 = require("./EditBattleRoleSlotData");
+const EditBattleTeamController_1 = require("./EditBattleTeamController");
+const LIMIT_COUNT_MAX_LENGTH = 3;
 class EditBattleTeamModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Y3t = new Map, this.J3t = void 0, this.z3t = void 0, this.Z3t = void 0, this.e4t = new Map, this.t4t = void 0, this.i4t = !0, this.IsFormTeleportAction = !1, this.o4t = !1
+    super(...arguments);
+    this.Y3t = new Map();
+    this.J3t = undefined;
+    this.z3t = undefined;
+    this.Z3t = undefined;
+    this.e4t = new Map();
+    this.t4t = undefined;
+    this.i4t = true;
+    this.IsFormTeleportAction = false;
+    this.o4t = false;
   }
   get NeedEntrance() {
-    return this.i4t
+    return this.i4t;
   }
   set NeedEntrance(e) {
-    this.i4t = e
+    this.i4t = e;
   }
   get InstanceMultiEnter() {
-    return this.o4t
+    return this.o4t;
   }
   set InstanceMultiEnter(e) {
-    this.o4t = e
+    this.o4t = e;
   }
   SetInstanceDungeonId(e) {
-    this.z3t = e
+    this.z3t = e;
   }
   get GetInstanceDungeonId() {
-    return this.z3t
+    return this.z3t;
   }
   get GetAllRoleConfigIdList() {
     var t = [];
     for (let e = 1; e <= SceneTeamDefine_1.SCENE_TEAM_MAX_NUM; e++) {
       var r = this.GetRoleSlotData(e);
-      r && r.HasRole && (r = r.GetRoleData.ConfigId, t.push(r))
+      if (r && r.HasRole) {
+        r = r.GetRoleData.ConfigId;
+        t.push(r);
+      }
     }
-    return t
+    return t;
   }
   get IsAllRoleDie() {
-    for (const t of this.GetAllRoleSlotData)
+    for (const t of this.GetAllRoleSlotData) {
       if (t.HasRole) {
         var e = t.GetRoleData.ConfigId;
-        if (this.IsTrialRole(e)) return !1;
-        if (!ModelManager_1.ModelManager.EditFormationModel.IsRoleDead(e)) return !1
-      } return !0
+        if (this.IsTrialRole(e)) {
+          return false;
+        }
+        if (!ModelManager_1.ModelManager.EditFormationModel.IsRoleDead(e)) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
   get GetOwnRoleConfigIdList() {
-    var t = new Array,
-      r = new Array,
-      a = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    var t = new Array();
+    var r = new Array();
+    var a = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
     for (let e = 1; e <= SceneTeamDefine_1.SCENE_TEAM_MAX_NUM; e++) {
       var o = this.GetRoleSlotData(e);
-      o && o.HasRole && a === (o = o.GetRoleData).PlayerId && (o = o.ConfigId, t.push(o), r.push(e - 1))
+      if (o && o.HasRole && a === (o = o.GetRoleData).PlayerId) {
+        o = o.ConfigId;
+        t.push(o);
+        r.push(e - 1);
+      }
     }
-    return [t, r]
+    return [t, r];
   }
   get IsMultiInstanceDungeon() {
     var e = this.GetCurrentDungeonConfig;
-    return (!e || e.OnlineType !== InstOnlineType_1.InstOnlineType.Single) && this.InstanceMultiEnter
+    return (!e || e.OnlineType !== InstOnlineType_1.InstOnlineType.Single) && this.InstanceMultiEnter;
   }
   SetLeaderPlayerId(e) {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]设置队长", ["PlayerId", e]), this.Z3t = e
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Formation", 48, "[EditBattleTeam]设置队长", ["PlayerId", e]);
+    }
+    this.Z3t = e;
   }
   get GetLeaderPlayerId() {
-    return this.Z3t
+    return this.Z3t;
   }
   get GetLeaderIsSelf() {
-    return !!this.GetLeaderPlayerId && ModelManager_1.ModelManager.PlayerInfoModel.GetId() === this.GetLeaderPlayerId
+    return !!this.GetLeaderPlayerId && ModelManager_1.ModelManager.PlayerInfoModel.GetId() === this.GetLeaderPlayerId;
   }
   get IsInInstanceDungeon() {
-    return ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()
+    return ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance();
   }
   get IsMatchingTeamLackConfirmBoxCanEnterInstance() {
-    return void 0 !== this.GetInstanceDungeonId && 9e3 !== ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig?.GetEntranceIdByInstanceId(this.GetInstanceDungeonId)
+    return this.GetInstanceDungeonId !== undefined && ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig?.GetEntranceIdByInstanceId(this.GetInstanceDungeonId) !== 9000;
   }
   GetAllRoleCanAddToTeam() {
-    for (const e of this.GetAllRoleConfigIdList)
-      if (!this.CanAddRoleToEditTeam(e)) return {
-        CanAdd: !1,
-        LimitRoleId: e
-      };
-    return {
-      CanAdd: !0,
-      LimitRoleId: 0
+    for (const e of this.GetAllRoleConfigIdList) {
+      if (!this.CanAddRoleToEditTeam(e)) {
+        return {
+          CanAdd: false,
+          LimitRoleId: e
+        };
+      }
     }
+    return {
+      CanAdd: true,
+      LimitRoleId: 0
+    };
   }
   InitTrailRoleInstance() {
     this.e4t.clear();
-    var e, t = this.GetCurrentFightFormation.TrialRole,
-      r = ModelManager_1.ModelManager.RoleModel;
-    for (const a of t) this.e4t.has(a) || (e = r.GetRoleDataById(ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleIdConfigByGroupId(a)), this.e4t.set(a, e))
+    var e;
+    var t = this.GetCurrentFightFormation.TrialRole;
+    var r = ModelManager_1.ModelManager.RoleModel;
+    for (const a of t) {
+      if (!this.e4t.has(a)) {
+        e = r.GetRoleDataById(ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleIdConfigByGroupId(a));
+        this.e4t.set(a, e);
+      }
+    }
   }
   GetRoleList() {
-    var t = ModelManager_1.ModelManager.RoleModel,
-      r = [],
-      e = t.GetRoleMap();
-    if (this.r4t())
+    var t = ModelManager_1.ModelManager.RoleModel;
+    var r = [];
+    var e = t.GetRoleMap();
+    if (this.r4t()) {
       for (const l of this.n4t()) {
-        var a, o = t.GetRoleDataById(l);
-        o && (a = o.GetDataId(), this.CanAddRoleToEditTeam(a)) && r.push(o)
-      } else {
-        for (const s of e.values()) {
-          var i = s.GetDataId();
-          this.CanAddRoleToEditTeam(i) && r.push(s)
+        var a;
+        var o = t.GetRoleDataById(l);
+        if (o && (a = o.GetDataId(), this.CanAddRoleToEditTeam(a))) {
+          r.push(o);
         }
-        for (const f of this.e4t.values()) r.push(f)
       }
+    } else {
+      for (const s of e.values()) {
+        var i = s.GetDataId();
+        if (this.CanAddRoleToEditTeam(i)) {
+          r.push(s);
+        }
+      }
+      for (const f of this.e4t.values()) {
+        r.push(f);
+      }
+    }
     if (!this.t4t) {
-      this.t4t = new Array;
-      e = ModelManager_1.ModelManager.WorldLevelModel.Sex, e = ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleByGender(e);
-      if (e)
-        for (const d of e) this.t4t.push(d.Id)
+      this.t4t = new Array();
+      e = ModelManager_1.ModelManager.WorldLevelModel.Sex;
+      e = ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleByGender(e);
+      if (e) {
+        for (const d of e) {
+          this.t4t.push(d.Id);
+        }
+      }
     }
     for (let e = 0; e < r.length;) {
       var n = r[e].GetRoleId();
-      t.IsMainRole(n) && !this.t4t.includes(n) ? r.splice(e, 1) : e++
+      if (t.IsMainRole(n) && !this.t4t.includes(n)) {
+        r.splice(e, 1);
+      } else {
+        e++;
+      }
     }
-    return r
+    return r;
   }
   HasAnyLimit() {
-    return !!(this.r4t() || this.s4t() || this.a4t() || this.h4t())
+    return !!this.r4t() || !!this.s4t() || !!this.a4t() || !!this.h4t();
   }
   n4t() {
     var e = this.GetCurrentFightFormation;
-    if (e) return e.LimitRole
+    if (e) {
+      return e.LimitRole;
+    }
   }
   r4t() {
     var e = this.n4t();
-    return !!e && 0 < e.length
+    return !!e && e.length > 0;
   }
   s4t() {
     var e = this.GetCurrentFightFormation;
-    return !!e && (e = e.LimitCount.length) !== LIMIT_COUNT_MAX_LENGTH && 0 < e
+    return !!e && (e = e.LimitCount.length) !== LIMIT_COUNT_MAX_LENGTH && e > 0;
   }
   a4t() {
     var e = this.GetCurrentFightFormation;
-    return !!e && 0 < e.LitmitElement.length
+    return !!e && e.LitmitElement.length > 0;
   }
   h4t() {
-    return !!this.IsEditBattleTeamForMowingInstance()
+    return !!this.IsEditBattleTeamForMowingInstance();
   }
   IsEditBattleTeamForMowingInstance() {
-    return !!this.z3t && 19 === ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.z3t)?.InstSubType
+    return !!this.z3t && ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.z3t)?.InstSubType === 19;
   }
   CanAddRoleToEditTeam(e) {
     var t;
-    return !!this.IsTrialRole(e) || (t = this.IsInLimitRole(e), e = this.IsInLimitElement(e), t && e)
+    return !!this.IsTrialRole(e) || (t = this.IsInLimitRole(e), e = this.IsInLimitElement(e), t && e);
   }
   IsInLimitRoleCount(e) {
     var t = this.GetLimitRoleCountList();
-    return !t || t.includes(e)
+    return !t || t.includes(e);
   }
   IsInLimitRole(e) {
     var t = this.GetCurrentFightFormation;
-    return !t || (t = t.LimitRole).length <= 0 || t.includes(e)
+    return !t || (t = t.LimitRole).length <= 0 || t.includes(e);
   }
   IsInLimitElement(e) {
     var t = this.GetCurrentFightFormation;
-    return !t || !!(e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e)) && (e = e.ElementId, (t = t.LitmitElement).length <= 0 || t.includes(e))
+    return !t || !!(e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e)) && (e = e.ElementId, (t = t.LitmitElement).length <= 0 || t.includes(e));
   }
   GetLimitRoleCountList() {
     var e = this.GetCurrentFightFormation;
     if (e) {
-      var e = e.LimitCount,
-        t = e.length;
-      if (0 !== t) return e
+      var e = e.LimitCount;
+      var t = e.length;
+      if (t !== 0) {
+        return e;
+      }
     }
   }
   GetMaxLimitRoleCount() {
     var e = this.GetLimitRoleCountList();
-    return e ? e[e.length - 1] : 0
+    if (e) {
+      return e[e.length - 1];
+    } else {
+      return 0;
+    }
   }
   get GetCurrentDungeonConfig() {
-    if (this.GetInstanceDungeonId) return ConfigManager_1.ConfigManager.EditBattleTeamConfig.GetDungeonConfig(this.GetInstanceDungeonId)
+    if (this.GetInstanceDungeonId) {
+      return ConfigManager_1.ConfigManager.EditBattleTeamConfig.GetDungeonConfig(this.GetInstanceDungeonId);
+    }
   }
   get GetCurrentFightFormation() {
     var e = this.GetCurrentDungeonConfig;
     if (e) {
       e = e.FightFormationId;
-      if (0 !== e) return ConfigManager_1.ConfigManager.EditBattleTeamConfig.GetFightFormationConfig(e)
+      if (e !== 0) {
+        return ConfigManager_1.ConfigManager.EditBattleTeamConfig.GetFightFormationConfig(e);
+      }
     }
   }
   CreateAllRoleSlotData() {
     for (let e = 1; e <= SceneTeamDefine_1.SCENE_TEAM_MAX_NUM; e++) {
       var t = new EditBattleRoleSlotData_1.EditBattleRoleSlotData(e);
-      this.Y3t.set(e, t)
+      this.Y3t.set(e, t);
     }
   }
   ResetAllRoleSlotData() {
-    for (const e of this.Y3t.values()) e.ResetRoleData();
-    this.e4t.clear(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]还原所有战前编队数据")
+    for (const e of this.Y3t.values()) {
+      e.ResetRoleData();
+    }
+    this.e4t.clear();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Formation", 48, "[EditBattleTeam]还原所有战前编队数据");
+    }
   }
   HasSameConfigIdInAnyOwnRoleSlot(e) {
     for (const r of this.Y3t.values()) {
       var t = r.GetRoleData;
-      if (t && (t.IsSelf && r.GetRoleConfigId === e)) return !0
+      if (t && t.IsSelf && r.GetRoleConfigId === e) {
+        return true;
+      }
     }
-    return !1
+    return false;
   }
   GetPlayerRoleNumber(e) {
     let t = 0;
-    for (var [, r] of this.Y3t) e === r.GetRoleData?.PlayerId && t++;
-    return t
+    for (var [, r] of this.Y3t) {
+      if (e === r.GetRoleData?.PlayerId) {
+        t++;
+      }
+    }
+    return t;
   }
   GetParentRolePositionInEditBattleTeam(e) {
     var t;
-    if (this.IsTrialRole(e)) return t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e).Id, (t = this.GetSlotDataByConfigId(t)) ? t.GetPosition : -1;
+    if (this.IsTrialRole(e)) {
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e).Id;
+      if (t = this.GetSlotDataByConfigId(t)) {
+        return t.GetPosition;
+      } else {
+        return -1;
+      }
+    }
     for (const a of this.GetAllRoleSlotData) {
       var r = a.GetRoleData;
       if (r) {
         r = r.GetTrialRoleConfig;
-        if (r)
-          if (r.ParentId === e) return a.GetPosition
+        if (r) {
+          if (r.ParentId === e) {
+            return a.GetPosition;
+          }
+        }
       }
     }
-    return -1
+    return -1;
   }
   get GetOwnRoleCountInRoleSlot() {
     let e = 0;
     for (const r of this.Y3t.values()) {
       var t = r.GetRoleData;
-      t && t.IsSelf && e++
+      if (t && t.IsSelf) {
+        e++;
+      }
     }
-    return e
+    return e;
   }
   GetRoleCountInRoleSlot() {
     let e = 0;
-    for (const t of this.Y3t.values()) t.GetRoleData && e++;
-    return e
+    for (const t of this.Y3t.values()) {
+      if (t.GetRoleData) {
+        e++;
+      }
+    }
+    return e;
   }
   PrintRoleSlotsDebugString() {
     for (let e = 1; e <= SceneTeamDefine_1.SCENE_TEAM_MAX_NUM; e++) {
       var t = this.GetRoleSlotData(e);
-      t.HasRole ? (t = t.GetRoleData, Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]战前编队 Position 号位的角色信息: RoleData ", ["Position", e], ["RoleData", t])) : Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]战前编队 Position 号位没有角色", ["Position", e])
+      if (t.HasRole) {
+        t = t.GetRoleData;
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Formation", 48, "[EditBattleTeam]战前编队 Position 号位的角色信息: RoleData ", ["Position", e], ["RoleData", t]);
+        }
+      } else if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Formation", 48, "[EditBattleTeam]战前编队 Position 号位没有角色", ["Position", e]);
+      }
     }
   }
   SetCurrentEditPosition(e) {
-    this.J3t = e
+    this.J3t = e;
   }
   get GetCurrentEditRoleSlotData() {
-    if (this.J3t) return this.GetRoleSlotData(this.J3t)
+    if (this.J3t) {
+      return this.GetRoleSlotData(this.J3t);
+    }
   }
-  IsInEditBattleTeam(e, t = !1) {
+  IsInEditBattleTeam(e, t = false) {
     var r = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
     for (const o of this.Y3t.values()) {
       var a = o.GetRoleData;
-      if (a && ((!t || r === a.PlayerId) && a.ConfigId === e)) return !0
+      if (a && (!t || r === a.PlayerId) && a.ConfigId === e) {
+        return true;
+      }
     }
-    return !1
+    return false;
   }
   GetEditBattleTeamPositionByConfigId(e) {
     e = this.GetSlotDataByConfigId(e);
-    return e ? e.GetPosition : -1
+    if (e) {
+      return e.GetPosition;
+    } else {
+      return -1;
+    }
   }
   GetSlotDataByConfigId(e) {
     for (const r of this.Y3t.values()) {
       var t = r.GetRoleData;
-      if (t && t.ConfigId === e) return r
+      if (t && t.ConfigId === e) {
+        return r;
+      }
     }
   }
   InitAllRoleSlotData() {
     var e;
-    this.IsMultiInstanceDungeon ? (ModelManager_1.ModelManager.InstanceDungeonModel.SetPrewarFormationDataList(), e = ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarFormationDataList(), this.InitAllMultiRoleData(e)) : this.InitAllSingleRoleData()
+    if (this.IsMultiInstanceDungeon) {
+      ModelManager_1.ModelManager.InstanceDungeonModel.SetPrewarFormationDataList();
+      e = ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarFormationDataList();
+      this.InitAllMultiRoleData(e);
+    } else {
+      this.InitAllSingleRoleData();
+    }
   }
   GetRoleSlotData(e) {
-    return this.Y3t.get(e)
+    return this.Y3t.get(e);
   }
   RefreshAllEmptySlotData() {
     for (let t = 1; t <= this.Y3t.size; t++) {
       var r = this.Y3t.get(t);
       if (r) {
         var e = r.GetRoleData;
-        if (!e)
+        if (!e) {
           for (let e = t + 1; e <= this.Y3t.size; e++) {
             var a = this.Y3t.get(e);
             if (a) {
               var o = a.GetRoleData;
               if (o) {
-                r.SetRoleData(o), a.ResetRoleData();
-                break
+                r.SetRoleData(o);
+                a.ResetRoleData();
+                break;
               }
             }
           }
+        }
       }
     }
   }
   get GetAllRoleSlotData() {
     var e = [];
-    for (const t of this.Y3t.values()) e.push(t);
-    return e
+    for (const t of this.Y3t.values()) {
+      e.push(t);
+    }
+    return e;
   }
   get SelfRoleSlotDataRoleIdList() {
     var e = [];
     for (const r of this.Y3t.values()) {
       var t = r.GetRoleData;
-      t && t.IsSelf && r.GetRoleConfigId && e.push(r.GetRoleConfigId)
+      if (t && t.IsSelf && r.GetRoleConfigId) {
+        e.push(r.GetRoleConfigId);
+      }
     }
-    return e
+    return e;
   }
   SetPlayerReady(e, t) {
     for (var [, r] of this.Y3t) {
       var a;
-      r.HasRole && (a = r.GetRoleData).PlayerId === e && (a.SetReady(t), a = r.GetPosition, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleReady, a, t))
+      if (r.HasRole && (a = r.GetRoleData).PlayerId === e) {
+        a.SetReady(t);
+        a = r.GetPosition;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleReady, a, t);
+      }
     }
   }
   get GetIsAllReady() {
-    var e = this.GetAllRoleSlotData,
-      t = ModelManager_1.ModelManager.PlayerInfoModel.GetId(),
-      r = this.GetLeaderIsSelf;
-    for (const o of e)
+    var e = this.GetAllRoleSlotData;
+    var t = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    var r = this.GetLeaderIsSelf;
+    for (const o of e) {
       if (o.HasRole) {
         var a = o.GetRoleData;
-        if (r)
-          if (t === a.PlayerId) continue;
-        if (!a.IsReady) return !1
-      } return !0
+        if (r) {
+          if (t === a.PlayerId) {
+            continue;
+          }
+        }
+        if (!a.IsReady) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
   get HasSameRole() {
     var e = this.GetAllRoleSlotData;
-    for (const o of e)
+    for (const o of e) {
       if (o.HasRole && o.GetRoleData.IsSelf) {
         var r = o.GetRoleData;
         let t = r.ConfigId;
-        this.IsTrialRole(t) && (t = r.GetTrialRoleConfig.ParentId);
-        for (const i of e)
+        if (this.IsTrialRole(t)) {
+          t = r.GetTrialRoleConfig.ParentId;
+        }
+        for (const i of e) {
           if (i.HasRole && o.GetPosition !== i.GetPosition) {
             var a = i.GetRoleData;
             let e = a.ConfigId;
-            if (this.IsTrialRole(e) && (e = a.GetTrialRoleConfig.ParentId), t === e) return !0
+            if (this.IsTrialRole(e)) {
+              e = a.GetTrialRoleConfig.ParentId;
+            }
+            if (t === e) {
+              return true;
+            }
           }
-      } return !1
+        }
+      }
+    }
+    return false;
   }
   IsRoleConflict(e, t) {
-    for (var [, r] of this.Y3t)
-      if (r && r.GetRoleData?.PlayerId !== e && r.GetRoleConfigId === t) return !0;
-    return !1
+    for (var [, r] of this.Y3t) {
+      if (r && r.GetRoleData?.PlayerId !== e && r.GetRoleConfigId === t) {
+        return true;
+      }
+    }
+    return false;
   }
   get GetSelfIsReady() {
     var e = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
-    return ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarPlayerReadyState(e)
+    return ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarPlayerReadyState(e);
   }
   RefreshAllMultiRoleData() {
-    var t = ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarFormationDataList(),
-      r = t.length;
+    var t = ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarFormationDataList();
+    var r = t.length;
     for (let e = 0; e < LIMIT_COUNT_MAX_LENGTH; e++) {
       var a = this.Y3t.get(e + 1);
-      e + 1 > r ? a.ResetRoleData() : a.SetRoleDataByPrewarInfo(t[e])
+      if (e + 1 > r) {
+        a.ResetRoleData();
+      } else {
+        a.SetRoleDataByPrewarInfo(t[e]);
+      }
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "刷新所有多人联机的战前编队角色数据")
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "刷新所有多人联机的战前编队角色数据");
   }
   InitAllMultiRoleData(e) {
     this.ResetAllRoleSlotData();
     for (const a of e) {
-      var t = a.GetIndex(),
-        r = this.GetRoleSlotData(t);
-      r && (a.IsEmpty() && a.IsLeader() ? Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]此位置没有角色:{Position}", ["{Position}", t]) : a.IsEmpty() || (t = this.CreateRoleDataFromPrewarData(a), r.SetRoleData(t), Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有联机战前编队数据时,玩家在线索引:OnlineIndex,玩家信息:PrewarFormation", ["OnlineIndex", a.GetOnlineNumber()], ["PrewarFormation", a]), a.IsLeader() && (r = a.GetPlayerId(), this.SetLeaderPlayerId(r))))
+      var t = a.GetIndex();
+      var r = this.GetRoleSlotData(t);
+      if (r) {
+        if (a.IsEmpty() && a.IsLeader()) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Formation", 48, "[EditBattleTeam]此位置没有角色:{Position}", ["{Position}", t]);
+          }
+        } else if (!a.IsEmpty()) {
+          t = this.CreateRoleDataFromPrewarData(a);
+          r.SetRoleData(t);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有联机战前编队数据时,玩家在线索引:OnlineIndex,玩家信息:PrewarFormation", ["OnlineIndex", a.GetOnlineNumber()], ["PrewarFormation", a]);
+          }
+          if (a.IsLeader()) {
+            r = a.GetPlayerId();
+            this.SetLeaderPlayerId(r);
+          }
+        }
+      }
     }
-    void 0 === this.GetLeaderPlayerId && (e = ModelManager_1.ModelManager.PlayerInfoModel.GetId(), this.SetLeaderPlayerId(e)), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "初始化所有多人联机的战前编队角色数据"), this.PrintRoleSlotsDebugString()
+    if (this.GetLeaderPlayerId === undefined) {
+      e = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+      this.SetLeaderPlayerId(e);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "初始化所有多人联机的战前编队角色数据");
+    this.PrintRoleSlotsDebugString();
   }
   InitAllSingleRoleData() {
     this.ResetAllRoleSlotData();
     const r = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
-    this.SetLeaderPlayerId(r), this.InitTrailRoleInstance();
+    this.SetLeaderPlayerId(r);
+    this.InitTrailRoleInstance();
     var a = this.GetCurrentFightFormation.AutoRole;
-    if (a && 0 < a.length) {
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有单人战前编队数据时,此编队填写了自动上阵角色", ["autoRoleGroupIdList", a]);
+    if (a && a.length > 0) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有单人战前编队数据时,此编队填写了自动上阵角色", ["autoRoleGroupIdList", a]);
+      }
       let e = 1;
       for (const _ of a) {
-        var t, o = this.GetRoleSlotData(e);
-        o && ((t = this.e4t.get(_)) ? (t = this.CreateRoleDataFromRoleInstance(t), o.SetRoleData(t), e++) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("Formation", 48, "[EditBattleTeam]自动上阵角色配置的角色Id不在试用角色列表中", ["autoRoleGroupConfigId", _]))
+        var t;
+        var o = this.GetRoleSlotData(e);
+        if (o) {
+          if (t = this.e4t.get(_)) {
+            t = this.CreateRoleDataFromRoleInstance(t);
+            o.SetRoleData(t);
+            e++;
+          } else if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("Formation", 48, "[EditBattleTeam]自动上阵角色配置的角色Id不在试用角色列表中", ["autoRoleGroupConfigId", _]);
+          }
+        }
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "自动上阵指定临时角色"), void this.PrintRoleSlotsDebugString()
-    } else if (this.HasAnyLimit()) Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]单人战前编队存在编队限制,将不会读取编队数据初始化");
-    else {
-      let t = void 0;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "自动上阵指定临时角色");
+      this.PrintRoleSlotsDebugString();
+    } else if (this.HasAnyLimit()) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Formation", 48, "[EditBattleTeam]单人战前编队存在编队限制,将不会读取编队数据初始化");
+      }
+    } else {
+      let t = undefined;
       if (ModelManager_1.ModelManager.DangoAbyssModel?.GetInAbyssFlow()) {
         let e = [];
-        0 !== ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId).length ? e = ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId) : 0 !== ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId - 1).length && (e = ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId - 1));
+        if (ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId).length !== 0) {
+          e = ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId);
+        } else if (ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId - 1).length !== 0) {
+          e = ModelManager_1.ModelManager.DangoAbyssModel.GetFormationSelectRoleList(ModelManager_1.ModelManager.DangoAbyssModel.CurrentSelectChallengeId - 1);
+        }
         var i = ModelManager_1.ModelManager.EditBattleTeamModel?.GetRoleList();
         t = [];
-        for (const M of e) i?.find(e => e.GetDataId() === M) && t.push(M)
+        for (const M of e) {
+          if (i?.find(e => e.GetDataId() === M)) {
+            t.push(M);
+          }
+        }
       }
       if (ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation()) {
         a = ModelManager_1.ModelManager.TowerModel.GetFloorFormation(ModelManager_1.ModelManager.TowerModel.CurrentSelectFloor);
-        let e = void 0;
-        e = !ModelManager_1.ModelManager.TowerModel.CheckInTower() || 0 < a?.length ? a : ModelManager_1.ModelManager.TowerModel.CurrentTowerFormation, EditBattleTeamController_1.EditBattleTeamController.ResetSlotDataThenSetEditBattleTeamByRoleId(e)
-      } else if (ModelManager_1.ModelManager.DangoAbyssModel?.GetInAbyssFlow() && t && 0 < t?.length) EditBattleTeamController_1.EditBattleTeamController.SetEditBattleTeamByRoleId(t);
-      else {
+        let e = undefined;
+        e = !ModelManager_1.ModelManager.TowerModel.CheckInTower() || a?.length > 0 ? a : ModelManager_1.ModelManager.TowerModel.CurrentTowerFormation;
+        EditBattleTeamController_1.EditBattleTeamController.ResetSlotDataThenSetEditBattleTeamByRoleId(e);
+      } else if (ModelManager_1.ModelManager.DangoAbyssModel?.GetInAbyssFlow() && t && t?.length > 0) {
+        EditBattleTeamController_1.EditBattleTeamController.SetEditBattleTeamByRoleId(t);
+      } else {
         let e = 1;
         var n = ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
         const r = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
         var l = ModelManager_1.ModelManager.RoleModel;
         for (const u of ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData.GetRoleDataMap().values()) {
-          var s, f, d, g = u.ConfigId,
-            h = u.RoleSkinId;
-          g <= 0 || r !== u.PlayerId || (Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有单人战前编队数据时,编队位置:{Position},角色Id:{ConfigId},玩家Id:{PlayerId}", ["{Position}", e], ["{ConfigId}", g], ["{PlayerId}", u.PlayerId]), 0 < (s = this.GetMaxLimitRoleCount()) && e > s) || (s = this.GetRoleSlotData(e), this.CanAddRoleToEditTeam(g) && (f = new EditBattleRoleData_1.EditBattleRoleData, d = l.GetRoleDataById(g)?.GetLevelData().GetLevel() ?? 0, f.Init(r, g, h, 1, n, d, !0, !0), s.SetRoleData(f), e++))
+          var s;
+          var f;
+          var d;
+          var g = u.ConfigId;
+          var h = u.RoleSkinId;
+          if (!(g <= 0) && r === u.PlayerId && !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有单人战前编队数据时,编队位置:{Position},角色Id:{ConfigId},玩家Id:{PlayerId}", ["{Position}", e], ["{ConfigId}", g], ["{PlayerId}", u.PlayerId]), (s = this.GetMaxLimitRoleCount()) > 0 && e > s)) {
+            s = this.GetRoleSlotData(e);
+            if (this.CanAddRoleToEditTeam(g)) {
+              f = new EditBattleRoleData_1.EditBattleRoleData();
+              d = l.GetRoleDataById(g)?.GetLevelData().GetLevel() ?? 0;
+              f.Init(r, g, h, 1, n, d, true, true);
+              s.SetRoleData(f);
+              e++;
+            }
+          }
         }
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "初始化所有单人的战前编队角色数据"), this.PrintRoleSlotsDebugString()
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "初始化所有单人的战前编队角色数据");
+      this.PrintRoleSlotsDebugString();
     }
   }
   CreateRoleDataFromPrewarData(e) {
-    var t = e.GetConfigId(),
-      r = e.GetSkinId(),
-      a = e.GetOnlineNumber(),
-      o = e.GetPlayerName(),
-      i = e.GetPlayerId(),
-      n = e.GetLevel(),
-      l = e.IsSelf(),
-      s = e.GetIsReady(),
-      f = new EditBattleRoleData_1.EditBattleRoleData;
-    return f.Init(i, t, r, a, o, n, l, s), f.ThirdPartyOnlineId = e.GetPlayerOnlineId(), f
+    var t = e.GetConfigId();
+    var r = e.GetSkinId();
+    var a = e.GetOnlineNumber();
+    var o = e.GetPlayerName();
+    var i = e.GetPlayerId();
+    var n = e.GetLevel();
+    var l = e.IsSelf();
+    var s = e.GetIsReady();
+    var f = new EditBattleRoleData_1.EditBattleRoleData();
+    f.Init(i, t, r, a, o, n, l, s);
+    f.ThirdPartyOnlineId = e.GetPlayerOnlineId();
+    return f;
   }
   CreateRoleDataFromRoleInstance(e) {
-    var t = e.GetDataId(),
-      r = e.GetLevelData(),
-      e = e.GetRoleSkinId(),
-      a = ModelManager_1.ModelManager.PlayerInfoModel.GetId(),
-      o = ModelManager_1.ModelManager.PlayerInfoModel.GetAccountName(),
-      r = r.GetLevel(),
-      i = this.GetSelfIsReady,
-      n = new EditBattleRoleData_1.EditBattleRoleData;
-    return n.Init(a, t, e, 1, o, r, !0, i), n
+    var t = e.GetDataId();
+    var r = e.GetLevelData();
+    var e = e.GetRoleSkinId();
+    var a = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    var o = ModelManager_1.ModelManager.PlayerInfoModel.GetAccountName();
+    var r = r.GetLevel();
+    var i = this.GetSelfIsReady;
+    var n = new EditBattleRoleData_1.EditBattleRoleData();
+    n.Init(a, t, e, 1, o, r, true, i);
+    return n;
   }
   IsTrialRole(e) {
-    return e > RoleDefine_1.ROBOT_DATA_MIN_ID
+    return e > RoleDefine_1.ROBOT_DATA_MIN_ID;
   }
   ChangeMainRoleData() {
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       var e = ModelManager_1.ModelManager.RoleModel;
       for (const o of this.Y3t.values()) {
-        var t, r = o.GetRoleData,
-          a = r?.ConfigId;
-        a && !this.IsTrialRole(a) && e.IsMainRole(a) && (t = e.GetNewMainRoleId(a)) && a !== t && (r.ConfigId = t)
+        var t;
+        var r = o.GetRoleData;
+        var a = r?.ConfigId;
+        if (a && !this.IsTrialRole(a) && e.IsMainRole(a) && (t = e.GetNewMainRoleId(a)) && a !== t) {
+          r.ConfigId = t;
+        }
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "单机更换主角色")
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, "单机更换主角色");
     }
   }
 }

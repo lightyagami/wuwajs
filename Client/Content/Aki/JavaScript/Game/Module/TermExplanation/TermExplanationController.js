@@ -1,198 +1,546 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TermExplanationController = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Pool_1 = require("../../../Core/Container/Pool"),
-  TermById_1 = require("../../../Core/Define/ConfigQuery/TermById"),
-  ControllerBase_1 = require("../../../Core/Framework/ControllerBase"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  TermExplanationDefine_1 = require("./TermExplanationDefine"),
-  POOL_CAPACITY = 5;
+  value: true
+});
+exports.TermExplanationController = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
+const Pool_1 = require("../../../Core/Container/Pool");
+const TermConfigById_1 = require("../../../Core/Define/ConfigQuery/TermConfigById");
+const TermExplanationViewStyleById_1 = require("../../../Core/Define/ConfigQuery/TermExplanationViewStyleById");
+const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const UiManager_1 = require("../../Ui/UiManager");
+const LogReportDefine_1 = require("../LogReport/LogReportDefine");
+const TermExplanationDefine_1 = require("./TermExplanationDefine");
+const POOL_CAPACITY = 5;
 class TermTextRegistryHandle {
   constructor() {
-    this.FFe = 0, this.ur1 = void 0, this.l7 = !0, this.f8o = 0, this.ViewId = 0, this.AttachDir = 0, this.AttachItem = void 0, this.OnDisableClick = void 0, this.Offset = [0, 0], this.NeedHighlight = !0, this.LastText = "", this.Group = 0, this.Priority = 0, this.IsEnableStateDirty = !1
-  }
-  get Id() {
-    return this.FFe
+    this.Id = 0;
+    this.xr1 = undefined;
+    this.l7 = true;
+    this.f8o = 0;
+    this.ViewId = 0;
+    this.AttachDir = 0;
+    this.AttachItem = undefined;
+    this.OnDisableClick = undefined;
+    this.Offset = [0, 0];
+    this.NeedHighlight = true;
+    this.LastText = "";
+    this.Group = 0;
+    this.Priority = 0;
+    this.IsEnableStateDirty = false;
+    this.Style = 1;
+    this.ReportType = undefined;
   }
   get UiText() {
-    return this.ur1
+    return this.xr1;
   }
   get Enable() {
-    return this.l7
+    return this.l7;
   }
   get Type() {
-    return this.f8o
+    return this.f8o;
   }
   SetEnable(t) {
-    this.l7 = t, this.IsEnableStateDirty = !0
+    this.l7 = t;
+    this.IsEnableStateDirty = true;
   }
   SetUiText(t) {
-    this.ur1 = t
+    this.xr1 = t;
   }
   SetType(t) {
-    this.f8o = t
+    this.f8o = t;
   }
   Clear() {
-    this.UiText?.GetOwner()?.OnDestroyed?.Clear(), this.UiText?.IsValid() && this.UiText.OnHyperLinkClickCallBack.Unbind(), this.SetEnable(!0), this.SetUiText(void 0), this.SetType(0), this.OnDisableClick = void 0, this.ViewId = 0, this.AttachDir = 0, this.AttachItem = void 0, this.Offset = [0, 0], this.NeedHighlight = !0, this.Group = 0, this.Priority = 0, this.IsEnableStateDirty = !1
+    this.UiText?.GetOwner()?.OnDestroyed?.Clear();
+    if (this.UiText?.IsValid()) {
+      this.UiText.OnHyperLinkClickCallBack.Unbind();
+    }
+    this.SetEnable(true);
+    this.SetUiText(undefined);
+    this.SetType(0);
+    this.OnDisableClick = undefined;
+    this.ViewId = 0;
+    this.AttachDir = 0;
+    this.AttachItem = undefined;
+    this.Offset = [0, 0];
+    this.NeedHighlight = true;
+    this.Group = 0;
+    this.Priority = 0;
+    this.IsEnableStateDirty = false;
+    this.Style = 1;
+    this.ReportType = undefined;
+    this.Id = 0;
   }
 }
 class TermExplanationController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    return EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.ZC1), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewBeforeStart, this.jS1), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToBattleView, this.Gto), !0
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.M01);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewBeforeStart, this.dM1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToBattleView, this.Gto);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, this.ePt);
+    return true;
   }
   static OnClear() {
-    for (var [, t] of this.dr1.entries()) this.mr1.Put(t);
-    return this.fr1 = 0, this.HS1 = void 0, this.dr1.clear(), this.mr1.Clear(), this.T$1.length = 0, this.U81 = 0, EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.ZC1), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewBeforeStart, this.jS1), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetToBattleView, this.Gto), !0
+    for (var [, t] of this.Dr1.entries()) {
+      this.Ur1.Put(t);
+    }
+    this.Br1 = 0;
+    this.mM1 = undefined;
+    this.Dr1.clear();
+    this.Ur1.Clear();
+    this.hW1.length = 0;
+    this.cj1 = 0;
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.M01);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewBeforeStart, this.dM1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetToBattleView, this.Gto);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, this.ePt);
+    return true;
   }
   static OnTick(t) {
-    let e = !1,
-      i = !1;
-    for (var [, r] of this.dr1.entries()) r.UiText && r.UiText.IsValid() && r.UiText.IsUIActiveInHierarchy() && (r.LastText !== r.UiText.text && (r.LastText = r.UiText.text, e = !0), r.IsEnableStateDirty) && (r.IsEnableStateDirty = !1, i = !0);
-    (e || i) && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange)
+    let e = false;
+    let i = false;
+    var r;
+    var n = [];
+    for ([, r] of this.Dr1.entries()) {
+      if (r.UiText && r.UiText.IsValid() && r.UiText.IsUIActiveInHierarchy() && (r.LastText !== r.UiText.text && (r.LastText = r.UiText.text, e = true, n.push(r.Id)), r.IsEnableStateDirty)) {
+        r.IsEnableStateDirty = false;
+        i = true;
+        n.push(r.Id);
+      }
+    }
+    if (e || i) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, n);
+    }
   }
   static RegisterTextHyperlinkByParam(t) {
-    return this.RegisterTextHyperlink(t.UiText, t.ViewType, t.AttachDirection, t.AttachItem, t.OnDisableClick, t.CustomOffset, t.Group, t.Priority)
+    return this.RegisterTextHyperlink(t.UiText, t.ViewType, t.ReportType, t.AttachDirection, t.AttachItem, t.OnDisableClick, t.CustomOffset, t.Group, t.Priority, t.Style);
   }
-  static RegisterTextHyperlink(t, e, i = 0, r, n, s, a = 0, o = 0) {
-    if (this.gr1(t)) return Log_1.Log.CheckWarn() && Log_1.Log.Warn("TermExplanation", 74, "术语解释文本控件注册失败: 控件重复注册"), 0;
-    this.b$1(a), this.U81 !== a && this.R$1(a);
-    const h = this.mr1.Get() ?? this.mr1.Create();
-    h.SetUiText(t), h.SetType(e), h.OnDisableClick = n, h.AttachDir = i, h.AttachItem = r ?? t, h.Group = a, h.Priority = o, s && (h.Offset = s), this.dr1.set(++this.fr1, h);
-    return t.OnHyperLinkClickCallBack.Bind(t => this.Cr1(h, t)), t.SetEnableHyperLinksHighlight(!0), t.HyperLinksHoverColor = UE.Color.FromHex(TermExplanationDefine_1.DEFAULT_HYPERLINK_HOVER_COLOR_HEX), t.bFilterHyperLinks = !1, t.GetOwner().OnDestroyed.Add(() => {
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("TermExplanation", 74, "存在文本控件销毁前未解注册!"), this.UnRegisterTextHyperlink(t)
-    }), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange), this.fr1
+  static RegisterTextHyperlink(t, e, i, r = 0, n, o, a, s = 0, _ = 0, h = 1) {
+    if (this.kr1(t)) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("TermExplanation", 74, "术语解释文本控件注册失败: 控件重复注册");
+      }
+      return 0;
+    }
+    this.lW1(s);
+    if (this.cj1 !== s) {
+      this._W1(s);
+    }
+    const l = this.Ur1.Get() ?? this.Ur1.Create();
+    l.SetUiText(t);
+    l.SetType(e);
+    l.OnDisableClick = o;
+    l.AttachDir = r;
+    l.AttachItem = n ?? t;
+    l.Group = s;
+    l.Priority = _;
+    l.Style = h;
+    l.ReportType = i;
+    if (a) {
+      l.Offset = a;
+    }
+    this.Dr1.set(++this.Br1, l);
+    l.Id = this.Br1;
+    t.OnHyperLinkClickCallBack.Bind(t => this.Or1(l, t));
+    t.SetRichText(true);
+    t.SetEnableHyperLinksHighlight(true);
+    t.HyperLinksHoverColor = UE.Color.FromHex(TermExplanationDefine_1.DEFAULT_HYPERLINK_HOVER_COLOR_HEX);
+    t.bFilterHyperLinks = false;
+    t.GetOwner().OnDestroyed.Add(() => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("TermExplanation", 74, "存在文本控件销毁前未解注册!");
+      }
+      this.UnRegisterTextHyperlink(t);
+    });
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, [l.Id]);
+    return this.Br1;
   }
   static UnRegisterTextHyperlink(t) {
-    t = this.gr1(t);
-    t ? this.UnRegisterTextHyperlinkById(t) : Log_1.Log.CheckInfo() && Log_1.Log.Info("TermExplanation", 74, "解注册失败: 未注册的text控件")
+    t = this.kr1(t);
+    if (t) {
+      this.UnRegisterTextHyperlinkById(t);
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("TermExplanation", 74, "解注册失败: 未注册的text控件");
+    }
   }
   static UnRegisterTextHyperlinkById(t) {
-    var e = this.dr1.get(t);
-    e ? (this.L$1(e.Group), e.Clear(), this.dr1.delete(t), this.mr1.Put(e)) : Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "解注册失败: 不存在此id", ["id", t])
+    var e = this.Dr1.get(t);
+    if (e) {
+      this.uW1(e.Group);
+      e.Clear();
+      this.Dr1.delete(t);
+      this.Ur1.Put(e);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("TermExplanation", 74, "解注册失败: 不存在此id", ["id", t]);
+    }
   }
   static SetEnableHyperLink(t, e) {
-    t = this.gr1(t);
-    t ? this.SetEnableHyperLinkById(t, e) : Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "设置启禁用失败: 未注册的text控件")
+    t = this.kr1(t);
+    if (t) {
+      this.SetEnableHyperLinkById(t, e);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("TermExplanation", 74, "设置启禁用失败: 未注册的text控件");
+    }
   }
   static SetEnableHyperLinkById(t, e) {
-    var i = this.dr1.get(t);
-    i ? i.Enable !== e && i.SetEnable(e) : Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "设置启禁用失败: 不存在此id", ["id", t])
+    var i = this.Dr1.get(t);
+    if (i) {
+      if (i.Enable !== e) {
+        i.SetEnable(e);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("TermExplanation", 74, "设置启禁用失败: 不存在此id", ["id", t]);
+    }
   }
   static OpenTermExplanationView(t) {
-    var e, i = this.gr1(t);
-    return i ? (e = this.dr1.get(i)) ? 0 === (t = this.pr1(t.text)).length ? (Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 文本中无超链接", ["id", i]), !1) : this.Cr1(e, t[0]) : (Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 不存在此id", ["id", i]), !1) : (Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 未注册的text控件"), !1)
+    var e;
+    var i = this.kr1(t);
+    if (i) {
+      if (e = this.Dr1.get(i)) {
+        if ((t = this.qr1(t.text)).length === 0) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 文本中无超链接", ["id", i]);
+          }
+          return false;
+        } else {
+          return this.Or1(e, t[0]);
+        }
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 不存在此id", ["id", i]);
+        }
+        return false;
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 未注册的text控件");
+      }
+      return false;
+    }
   }
   static OpenTermExplanationViewDirectly() {
-    var t, e, i = [];
-    let r = void 0;
-    for (const s of this.B81(this.U81)) {
-      var n = this.pr1(s.UiText.text, !1);
-      for (const a of n) i.push(a);
-      0 < n.length && !r && (r = s)
+    var t;
+    var e;
+    var i = [];
+    let r = undefined;
+    for (const o of this.dj1(this.cj1)) {
+      var n = this.qr1(o.UiText.text, false);
+      for (const a of n) {
+        i.push(a);
+      }
+      if (n.length > 0 && !r) {
+        r = o;
+      }
     }
-    0 !== i.length && r ? r.Enable ? (r.NeedHighlight = !1, this.HS1 = r, t = {
-      HyperLinkList: Array.from(new Set(i))
-    }, e = this.vr1[r.Type], EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationViewOpening, r.Type), UiManager_1.UiManager.OpenView(e, t)) : Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 当前文本术语功能已被手动设为失效") : Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 当前文本中无超链接")
+    if (i.length !== 0 && r) {
+      if (r.Enable) {
+        r.NeedHighlight = false;
+        if (r.ReportType) {
+          this.r7c(r.ReportType);
+        }
+        this.mM1 = r;
+        t = {
+          HyperLinkList: Array.from(new Set(i))
+        };
+        e = this.cbu(r);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationViewOpening, r.Type);
+        UiManager_1.UiManager.OpenView(e, t);
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 当前文本术语功能已被手动设为失效");
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 当前文本中无超链接");
+    }
   }
   static HasAnyTermInCurrentTexts() {
-    for (var [, t] of this.dr1.entries())
-      if (t.UiText && t.UiText.IsValid() && t.UiText.IsUIActiveInHierarchy() && t.Enable)
-        if (0 < this.pr1(t.UiText.text).length) return !0;
-    return !1
+    for (var [, t] of this.Dr1.entries()) {
+      if (t.UiText && t.UiText.IsValid() && t.UiText.IsUIActiveInHierarchy() && t.Enable) {
+        if (this.qr1(t.UiText.text).length > 0) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   static IsUiTextRegistered(t) {
-    return 0 !== this.gr1(t)
+    return this.kr1(t) !== 0;
   }
-  static b$1(e) {
+  static lW1(e) {
     let i = -1;
-    for (let t = 0; t < this.T$1.length; ++t)
-      if (this.T$1[t][0] === e) {
+    for (let t = 0; t < this.hW1.length; ++t) {
+      if (this.hW1[t][0] === e) {
         i = t;
-        break
-      } var t; - 1 === i ? this.T$1.push([e, 0]) : (t = this.T$1[i][1] + 1, this.T$1.splice(i), this.T$1.push([e, t]))
+        break;
+      }
+    }
+    var t;
+    if (i === -1) {
+      this.hW1.push([e, 0]);
+    } else {
+      t = this.hW1[i][1] + 1;
+      this.hW1.splice(i);
+      this.hW1.push([e, t]);
+    }
   }
-  static L$1(e) {
+  static uW1(e) {
     let i = -1;
-    for (let t = 0; t < this.T$1.length; ++t)
-      if (this.T$1[t][0] === e) {
+    for (let t = 0; t < this.hW1.length; ++t) {
+      if (this.hW1[t][0] === e) {
         i = t;
-        break
-      } var t; - 1 !== i && ((t = this.T$1[i][1] - 1) <= 0 ? (this.T$1.splice(i), this.U81 === e && (0 === this.T$1.length ? this.U81 = 0 : this.R$1(this.T$1[this.T$1.length - 1][0]))) : this.T$1[i][1] = t)
+        break;
+      }
+    }
+    var t;
+    if (i !== -1) {
+      if ((t = this.hW1[i][1] - 1) <= 0) {
+        this.hW1.splice(i);
+        if (this.cj1 === e) {
+          if (this.hW1.length === 0) {
+            this.cj1 = 0;
+          } else {
+            this._W1(this.hW1[this.hW1.length - 1][0]);
+          }
+        }
+      } else {
+        this.hW1[i][1] = t;
+      }
+    }
   }
-  static R$1(e) {
+  static _W1(e) {
     let i = -1;
-    for (let t = 0; t < this.T$1.length; ++t)
-      if (this.T$1[t][0] === e) {
+    for (let t = 0; t < this.hW1.length; ++t) {
+      if (this.hW1[t][0] === e) {
         i = t;
-        break
-      } var t; - 1 === i ? Log_1.Log.CheckWarn() && Log_1.Log.Warn("TermExplanation", 74, "术语解释组不存在: ", ["Group", e]) : (this.U81 = e, t = this.T$1[i], this.T$1.splice(i), this.T$1.push(t))
+        break;
+      }
+    }
+    var t;
+    if (i === -1) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("TermExplanation", 74, "术语解释组不存在: ", ["Group", e]);
+      }
+    } else {
+      this.cj1 = e;
+      t = this.hW1[i];
+      this.hW1.splice(i);
+      this.hW1.push(t);
+    }
   }
-  static B81(t, e = !0) {
-    var i, r = [];
-    for ([, i] of this.dr1.entries()) i.Group === t && i.UiText && i.UiText.IsValid() && (e && !i.UiText.IsUIActiveInHierarchy() || r.push(i));
-    return r.sort((t, e) => t.Priority - e.Priority), r
+  static dj1(t, e = true) {
+    var i;
+    var r = [];
+    for ([, i] of this.Dr1.entries()) {
+      if (i.Group === t && i.UiText && i.UiText.IsValid()) {
+        if (!e || !!i.UiText.IsUIActiveInHierarchy()) {
+          r.push(i);
+        }
+      }
+    }
+    r.sort((t, e) => t.Priority - e.Priority);
+    return r;
   }
-  static gr1(t) {
-    for (var [e, i] of this.dr1.entries())
-      if (i.UiText === t) return e;
-    return 0
+  static kr1(t) {
+    for (var [e, i] of this.Dr1.entries()) {
+      if (i.UiText === t) {
+        return e;
+      }
+    }
+    return 0;
   }
-  static Cr1(t, e) {
+  static Or1(t, e) {
+    if (t.ReportType) {
+      this.r7c(t.ReportType);
+    }
     if (t.Enable) {
-      var i = Number(e);
-      if (void 0 === i || isNaN(i)) Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 超链接id无法转换为数字id", ["Id", e]);
-      else if (TermById_1.configTermById.GetConfig(i)) {
-        t.NeedHighlight = !0, this.R$1(t.Group), this.HS1 = t;
-        var i = this.vr1[t.Type],
-          r = [];
-        for (const t of this.B81(this.U81))
-          for (const s of this.pr1(t.UiText.text, !1)) r.push(s);
-        var n = {
+      if (this.nHc(e)) {
+        t.NeedHighlight = true;
+        this._W1(t.Group);
+        this.mM1 = t;
+        var i = this.cbu(t);
+        var r = [];
+        for (const t of this.dj1(this.cj1)) {
+          for (const n of this.qr1(t.UiText.text, false)) {
+            if (!!this.nHc(n) || !Info_1.Info.IsBuildShipping) {
+              r.push(n);
+            }
+          }
+        }
+        e = {
           HyperLinkList: Array.from(new Set(r)),
           FocusedHyperLink: e
         };
-        UiManager_1.UiManager.OpenView(i, n), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationViewOpening, t.Type)
-      } else Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "术语解释打开失败: 该文本未在表s.术语中注册", ["文本", e])
-    } else t.OnDisableClick && t.OnDisableClick();
-    return !0
+        UiManager_1.UiManager.OpenView(i, e);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationViewOpening, t.Type);
+      }
+    } else if (t.OnDisableClick) {
+      t.OnDisableClick();
+    }
+    return true;
   }
-  static pr1(t, e = !0) {
+  static qr1(t, e = true) {
     var i = [];
-    for (const r of Array.from(t.matchAll(/href\s*=\s*(["']?)([^"'\s>]+)\1/gi))) r[2] && i.push(r[2]);
-    return e ? Array.from(new Set(i)) : i
+    for (const r of Array.from(t.matchAll(/href\s*=\s*(["']?)([^"'\s>]+)\1/gi))) {
+      if (r[2]) {
+        i.push(r[2]);
+      }
+    }
+    if (e) {
+      return Array.from(new Set(i));
+    } else {
+      return i;
+    }
   }
-  static yr1(t) {
-    0 !== t.AttachDir && (1 === t.Type ? this.Sr1(t) : 0 === t.Type && this.Mr1(t), this.Ed1(t))
+  static Fr1(t) {
+    if (t.AttachDir !== 0) {
+      if (t.Type === 1) {
+        this.Nr1(t);
+      } else if (t.Type === 0) {
+        this.Vr1(t);
+      }
+      this.Xd1(t);
+    }
   }
-  static Sr1(t) {
-    var e, i, r, n = UiManager_1.UiManager.GetView(t.ViewId);
-    n && (1 !== t.AttachDir && 2 !== t.AttachDir ? Log_1.Log.CheckWarn() && Log_1.Log.Warn("TermExplanation", 74, "界面吸附失败: 吸附方向与界面类型不匹配") : (e = 1 === t.AttachDir ? -1 : 1, i = (n = n.GetTipItem()).GetLGUISpaceAbsolutePosition(), r = (t = t.AttachItem).GetLGUISpaceAbsolutePosition().X, r += (.5 - t.GetPivot().X) * t.Width, n.SetLGUISpaceAbsolutePosition(new UE.Vector(r + e * ((t.Width + n.Width) / 2), i.Y, i.Z))))
+  static nHc(t) {
+    var e = Number(t);
+    if (isNaN(e)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("TermExplanation", 74, "超链接id无法转换为数字id", ["Id", t]);
+      }
+      return false;
+    } else {
+      return !!TermConfigById_1.configTermConfigById.GetConfig(e) || (Log_1.Log.CheckError() && Log_1.Log.Error("TermExplanation", 74, "词条未在表s.术语中注册", ["词条", t]), false);
+    }
   }
-  static Mr1(t) {
-    var e, i, r, n, s = UiManager_1.UiManager.GetView(t.ViewId);
-    s && (3 !== t.AttachDir && 4 !== t.AttachDir ? Log_1.Log.CheckWarn() && Log_1.Log.Warn("TermExplanation", 74, "界面吸附失败: 吸附方向与界面类型不匹配") : (e = 3 === t.AttachDir ? 1 : -1, r = (i = (s = s.GetTipItem()).GetParentAsUIItem()).GetLGUISpaceAbsolutePosition(), n = (t = t.AttachItem).GetLGUISpaceAbsolutePosition().Y, n += (.5 - t.GetPivot().Y) * t.Height, i.SetLGUISpaceAbsolutePosition(new UE.Vector(r.X, n + e * ((t.Height + s.Height) / 2), r.Z))))
+  static Nr1(t) {
+    var e;
+    var i;
+    var r;
+    var n = UiManager_1.UiManager.GetView(t.ViewId);
+    if (n) {
+      if (t.AttachDir !== 1 && t.AttachDir !== 2) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("TermExplanation", 74, "界面吸附失败: 吸附方向与界面类型不匹配");
+        }
+      } else {
+        e = t.AttachDir === 1 ? -1 : 1;
+        i = (n = n.GetTipItem()).GetLGUISpaceAbsolutePosition();
+        r = (t = t.AttachItem).GetLGUISpaceAbsolutePosition().X;
+        r += (0.5 - t.GetPivot().X) * t.Width;
+        n.SetLGUISpaceAbsolutePosition(new UE.Vector(r + e * ((t.Width + n.Width) / 2), i.Y, i.Z));
+      }
+    }
   }
-  static Ed1(t) {
-    var e, i = UiManager_1.UiManager.GetView(t.ViewId);
-    i && (e = (i = i.GetTipItem()).GetLGUISpaceAbsolutePosition(), i.SetLGUISpaceAbsolutePosition(new UE.Vector(e.X + t.Offset[0], e.Y + t.Offset[1], e.Z)))
+  static Vr1(t) {
+    var e;
+    var i;
+    var r;
+    var n;
+    var o = UiManager_1.UiManager.GetView(t.ViewId);
+    if (o) {
+      if (t.AttachDir !== 3 && t.AttachDir !== 4) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("TermExplanation", 74, "界面吸附失败: 吸附方向与界面类型不匹配");
+        }
+      } else {
+        e = t.AttachDir === 3 ? 1 : -1;
+        r = (i = (o = o.GetTipItem()).GetParentAsUIItem()).GetLGUISpaceAbsolutePosition();
+        n = (t = t.AttachItem).GetLGUISpaceAbsolutePosition().Y;
+        n += (0.5 - t.GetPivot().Y) * t.Height;
+        i.SetLGUISpaceAbsolutePosition(new UE.Vector(r.X, n + e * ((t.Height + o.Height) / 2), r.Z));
+      }
+    }
+  }
+  static Xd1(t) {
+    var e;
+    var i = UiManager_1.UiManager.GetView(t.ViewId);
+    if (i) {
+      e = (i = i.GetTipItem()).GetLGUISpaceAbsolutePosition();
+      i.SetLGUISpaceAbsolutePosition(new UE.Vector(e.X + t.Offset[0], e.Y + t.Offset[1], e.Z));
+    }
+  }
+  static cbu(t) {
+    var e = t.Type;
+    var t = t.Style;
+    var i = TermExplanationViewStyleById_1.configTermExplanationViewStyleById.GetConfig(t);
+    if (i) {
+      if (e === 0) {
+        return i.CenterView;
+      } else {
+        return i.SideView;
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("TermExplanation", 74, "术语解释风格化配置不存在: ", ["id", t]);
+      }
+      return this.Gr1[e];
+    }
+  }
+  static o7c(t) {
+    var e = new LogReportDefine_1.EnterViewWithTermsEvent();
+    e.i_scene = t;
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("TermExplanation", 74, "术语解释埋点: 进入带有术语的界面", ["场景类型", t]);
+    }
+  }
+  static r7c(t) {
+    var e = new LogReportDefine_1.ClickTermExplanationEvent();
+    e.i_scene = t;
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("TermExplanation", 74, "术语解释埋点: 点击超链接", ["场景类型", t]);
+    }
   }
 }
-exports.TermExplanationController = TermExplanationController, (_a = TermExplanationController).IsTickEvenPausedInternal = !0, TermExplanationController.fr1 = 0, TermExplanationController.HS1 = void 0, TermExplanationController.U81 = 0, TermExplanationController.T$1 = [], TermExplanationController.vr1 = {
+exports.TermExplanationController = TermExplanationController;
+(_a = TermExplanationController).IsTickEvenPausedInternal = true;
+TermExplanationController.Br1 = 0;
+TermExplanationController.mM1 = undefined;
+TermExplanationController.cj1 = 0;
+TermExplanationController.hW1 = [];
+TermExplanationController.Gr1 = {
   [0]: "TermExplanationCenterView",
   1: "TermExplanationSideView"
-}, TermExplanationController.dr1 = new Map, TermExplanationController.mr1 = new Pool_1.Pool(POOL_CAPACITY, () => new TermTextRegistryHandle, t => {
-  t.Clear()
-}), TermExplanationController.ZC1 = () => {
-  for (var [, t] of _a.dr1.entries()) t.UiText && t.UiText.IsValid() && (t.UiText.SetHyperLinksHoverSpiteActive(!1), t.UiText.SetEnableHyperLinksHighlight(!0))
-}, TermExplanationController.jS1 = t => {
-  _a.HS1 && (_a.HS1.ViewId = t, _a.HS1.NeedHighlight && (_a.HS1.UiText?.SetEnableHyperLinksHighlight(!1), _a.HS1.UiText?.SetHyperLinksHoverSpiteActive(!0)), _a.yr1(_a.HS1))
-}, TermExplanationController.Gto = () => {
-  UiManager_1.UiManager.CloseView("TermExplanationSideView")
 };
-//# sourceMappingURL=TermExplanationController.js.map
+TermExplanationController.Dr1 = new Map();
+TermExplanationController.Ur1 = new Pool_1.Pool(POOL_CAPACITY, () => new TermTextRegistryHandle(), t => {
+  t.Clear();
+});
+TermExplanationController.ePt = t => {
+  for (const i of t) {
+    var e = _a.Dr1.get(i);
+    if (e && _a.qr1(e.UiText.text).length > 0) {
+      _a.o7c(e.ReportType);
+    }
+  }
+};
+TermExplanationController.M01 = () => {
+  for (var [, t] of _a.Dr1.entries()) {
+    if (t.UiText && t.UiText.IsValid()) {
+      t.UiText.SetHyperLinksHoverSpiteActive(false);
+      t.UiText.SetEnableHyperLinksHighlight(true);
+    }
+  }
+};
+TermExplanationController.dM1 = t => {
+  if (_a.mM1) {
+    _a.mM1.ViewId = t;
+    if (_a.mM1.NeedHighlight) {
+      _a.mM1.UiText?.SetEnableHyperLinksHighlight(false);
+      _a.mM1.UiText?.SetHyperLinksHoverSpiteActive(true);
+    }
+    _a.Fr1(_a.mM1);
+  }
+};
+TermExplanationController.Gto = () => {
+  UiManager_1.UiManager.CloseView("TermExplanationSideView");
+  UiManager_1.UiManager.CloseView("TermExplanationCenterView");
+  UiManager_1.UiManager.CloseView("FloroRanchTermExplanationCenterView");
+}; //# sourceMappingURL=TermExplanationController.js.map

@@ -1,209 +1,324 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotBase = exports.RedDotData = void 0;
-const Log_1 = require("../../Core/Common/Log"),
-  Stats_1 = require("../../Core/Common/Stats"),
-  StringBuilder_1 = require("../../Core/Utils/StringBuilder"),
-  EventSystem_1 = require("../Common/Event/EventSystem"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  RedDotSystem_1 = require("./RedDotSystem");
+  value: true
+});
+exports.RedDotBase = exports.RedDotData = undefined;
+const Log_1 = require("../../Core/Common/Log");
+const Stats_1 = require("../../Core/Common/Stats");
+const StringBuilder_1 = require("../../Core/Utils/StringBuilder");
+const EventSystem_1 = require("../Common/Event/EventSystem");
+const ModelManager_1 = require("../Manager/ModelManager");
+const RedDotSystem_1 = require("./RedDotSystem");
 class RedDotData {
   constructor() {
-    this.Tar = 0, this.Lar = new Set
+    this.Tar = 0;
+    this.Lar = new Set();
   }
   get State() {
-    return RedDotData.StateByGm && 0 < this.Tar
+    return RedDotData.StateByGm && this.Tar > 0;
   }
   get StateCount() {
-    return this.Tar
+    return this.Tar;
   }
   set StateCount(t) {
-    this.Tar = t < 0 ? 0 : t
+    this.Tar = t < 0 ? 0 : t;
   }
   GetUiItemSet() {
-    return this.Lar
+    return this.Lar;
   }
   ClearUiItem() {
-    this.Lar.clear()
+    this.Lar.clear();
   }
   SetUiItem(t) {
-    this.Lar.add(t)
+    this.Lar.add(t);
   }
   DeleteUiItem(t) {
-    this.Lar.delete(t)
+    this.Lar.delete(t);
   }
   TryChangeState(t) {
-    return t !== this.State && (this.StateCount += t ? 1 : -1, this.UpdateRedDotUIActive(), !0)
+    return t !== this.State && (this.StateCount += t ? 1 : -1, this.UpdateRedDotUIActive(), true);
   }
   UpdateRedDotUIActive() {
-    this.SetUIItemActive(this.State)
+    this.SetUIItemActive(this.State);
   }
   SetUIItemActive(t) {
-    for (const e of this.Lar) e.IsValid() && e.SetUIActive(t)
+    for (const e of this.Lar) {
+      if (e.IsValid()) {
+        e.SetUIActive(t);
+      }
+    }
   }
   OnChildrenStateChange(t) {
     var e = this.State;
-    return this.StateCount += t ? 1 : -1, e !== this.State && (this.UpdateRedDotUIActive(), !0)
+    this.StateCount += t ? 1 : -1;
+    return e !== this.State && (this.UpdateRedDotUIActive(), true);
   }
-}(exports.RedDotData = RedDotData).StateByGm = !0;
+}
+(exports.RedDotData = RedDotData).StateByGm = true;
 class RedDotBase {
   constructor() {
-    this.Name = void 0, this.dce = !0, this.NQ = new Map, this.Dar = void 0, this.fbo = void 0, this.Rar = () => {
-      this.Uar(!0)
-    }, this.Aar = () => {
-      this.Uar(!1)
-    }, this.Par = (...t) => {
+    this.Name = undefined;
+    this.dce = true;
+    this.NQ = new Map();
+    this.Dar = undefined;
+    this.fbo = undefined;
+    this.Rar = () => {
+      this.Uar(true);
+    };
+    this.Aar = () => {
+      this.Uar(false);
+    };
+    this.Par = (...t) => {
       let e = 0;
-      t && "number" == typeof t[0] && this.IsAllEventParamAsUId() ? (e = t[0], this.xar(e), this.Arl(e)) : this.IsMultiple() ? this.NQ.forEach((t, e) => {
-        this.Arl(e)
-      }) : (this.xar(e), this.Arl(e))
-    }, this.war = (t = 0) => {
+      if (t && typeof t[0] == "number" && this.IsAllEventParamAsUId()) {
+        e = t[0];
+        this.xar(e);
+        this.Arl(e);
+      } else if (this.IsMultiple()) {
+        this.NQ.forEach((t, e) => {
+          this.Arl(e);
+        });
+      } else {
+        this.xar(e);
+        this.Arl(e);
+      }
+    };
+    this.war = (t = 0) => {
       this.fbo?.Start();
-      var e = this.OnCheck(t),
-        i = this.ANo(t);
-      i ? (i.TryChangeState(e) && (this.Dar && this.Dar(i.State, t), this.bar(e, t)), this.fbo?.Stop()) : Log_1.Log.CheckError() && Log_1.Log.Error("RedDot", 16, "Check失败，红点数据未绑定到事件上！", ["Name", this.Name], ["uId", t])
-    }
+      var e = this.OnCheck(t);
+      var i = this.ANo(t);
+      if (i) {
+        if (i.TryChangeState(e)) {
+          if (this.Dar) {
+            this.Dar(i.State, t);
+          }
+          this.bar(e, t);
+        }
+        this.fbo?.Stop();
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RedDot", 16, "Check失败，红点数据未绑定到事件上！", ["Name", this.Name], ["uId", t]);
+      }
+    };
   }
   get Gar() {
-    return ModelManager_1.ModelManager.RedDotModel.GetRedDotTree(this.Name)
+    return ModelManager_1.ModelManager.RedDotModel.GetRedDotTree(this.Name);
   }
   qar() {
-    for (const t of this.Nar()) EventSystem_1.EventSystem.Add(t, this.Par)
+    for (const t of this.Nar()) {
+      EventSystem_1.EventSystem.Add(t, this.Par);
+    }
   }
   SetRedDotActiveByGm(t) {
-    this.Uar(t)
+    this.Uar(t);
   }
   Oar(t) {
-    if (this.dce = t) this.qar();
-    else {
+    if (this.dce = t) {
+      this.qar();
+    } else {
       var e;
-      for (const s of this.Nar()) EventSystem_1.EventSystem.Remove(s, this.Par);
-      for ([, e] of this.NQ) e.SetUIItemActive(!1)
+      for (const s of this.Nar()) {
+        EventSystem_1.EventSystem.Remove(s, this.Par);
+      }
+      for ([, e] of this.NQ) {
+        e.SetUIItemActive(false);
+      }
     }
     var i;
-    for ([i] of this.Gar.ChildMap) i.Oar(t)
+    for ([i] of this.Gar.ChildMap) {
+      i.Oar(t);
+    }
   }
   kar(t) {
-    if (void 0 !== this.Gar.Parent && (!this.Gar.Parent.Element.dce && t)) return !1;
-    return !0
+    if (this.Gar.Parent !== undefined && !this.Gar.Parent.Element.dce && t) {
+      return false;
+    }
+    return true;
   }
   Uar(t) {
-    t !== this.dce && this.kar(t) && (this.Oar(t), t && this.Far(), void 0 !== this.Gar.Parent) && this.Gar.Parent.Element.Har(this, t)
+    if (t !== this.dce && this.kar(t) && (this.Oar(t), t && this.Far(), this.Gar.Parent !== undefined)) {
+      this.Gar.Parent.Element.Har(this, t);
+    }
   }
   Init(t) {
-    this.Name = t, this.qar();
+    this.Name = t;
+    this.qar();
     var e = this.GetActiveEvents();
-    if (e)
-      for (const i of e) EventSystem_1.EventSystem.Add(i, this.Rar);
+    if (e) {
+      for (const i of e) {
+        EventSystem_1.EventSystem.Add(i, this.Rar);
+      }
+    }
     e = this.GetDisActiveEvents();
-    if (e)
-      for (const s of e) EventSystem_1.EventSystem.Add(s, this.Aar);
-    this.fbo = Stats_1.Stat.CreateNoFlameGraph("RedDot" + t)
+    if (e) {
+      for (const s of e) {
+        EventSystem_1.EventSystem.Add(s, this.Aar);
+      }
+    }
+    this.fbo = Stats_1.Stat.CreateNoFlameGraph("RedDot" + t);
   }
   Arl(t = 0) {
-    RedDotSystem_1.RedDotSystem.PushToEventQueue(this.war, t, this.Name)
+    RedDotSystem_1.RedDotSystem.PushToEventQueue(this.war, t, this.Name);
   }
   Har(t, e) {
     for (var [i, s] of t.NQ) {
       i = this.NQ.get(i);
-      i && (e ? i.StateCount += s.StateCount : i.StateCount -= s.StateCount, i.UpdateRedDotUIActive())
+      if (i) {
+        if (e) {
+          i.StateCount += s.StateCount;
+        } else {
+          i.StateCount -= s.StateCount;
+        }
+        i.UpdateRedDotUIActive();
+      }
     }
-    void 0 !== this.Gar.Parent && this.Gar.Parent.Element.Har(t, e)
+    if (this.Gar.Parent !== undefined) {
+      this.Gar.Parent.Element.Har(t, e);
+    }
   }
   Far() {
     for (var [t, e] of this.NQ) {
       var i = this.OnCheck(t);
-      e.StateCount = i ? 1 : 0, i && (e.SetUIItemActive(!0), this.bar(i, t))
+      e.StateCount = i ? 1 : 0;
+      if (i) {
+        e.SetUIItemActive(true);
+        this.bar(i, t);
+      }
     }
     var s;
-    for ([s] of this.Gar.ChildMap) s.Far()
+    for ([s] of this.Gar.ChildMap) {
+      s.Far();
+    }
   }
   bar(t, e = 0) {
-    var i, s = this.Gar.Parent?.Element;
-    s && (e = s.IsMultiple() ? e : 0, s.xar(e), (i = s.ANo(e)).OnChildrenStateChange(t)) && (s.Dar && s.Dar(i.State, e), s.bar(t, e))
+    var i;
+    var s = this.Gar.Parent?.Element;
+    if (s && (e = s.IsMultiple() ? e : 0, s.xar(e), (i = s.ANo(e)).OnChildrenStateChange(t))) {
+      if (s.Dar) {
+        s.Dar(i.State, e);
+      }
+      s.bar(t, e);
+    }
   }
   ANo(t) {
-    return this.NQ.get(t)
+    return this.NQ.get(t);
   }
   xar(t = 0) {
     let e = this.NQ.get(t);
-    return e || (e = new RedDotData, this.NQ.set(t, e), this.war(t)), e
+    if (!e) {
+      e = new RedDotData();
+      this.NQ.set(t, e);
+      this.war(t);
+    }
+    return e;
   }
   Nar() {
-    return this.OnGetEvents() ?? []
+    return this.OnGetEvents() ?? [];
   }
   BindUi(t = 0, e, i) {
-    this.xar(t), this.ANo(t).SetUiItem(e), this.Dar = i, this.UpdateState(t)
+    this.xar(t);
+    this.ANo(t).SetUiItem(e);
+    this.Dar = i;
+    this.UpdateState(t);
   }
   UnBindGivenUi(t = 0, e) {
     t = this.ANo(t);
-    t && t.DeleteUiItem(e)
+    if (t) {
+      t.DeleteUiItem(e);
+    }
   }
   UnBindUi() {
     this.NQ.forEach(t => {
-      t.ClearUiItem()
-    }), this.Dar = void 0
+      t.ClearUiItem();
+    });
+    this.Dar = undefined;
   }
   UnBindGivenUiAndDeleteData(t = 0, e) {
     var i = this.ANo(t);
-    void 0 === i || (i.DeleteUiItem(e), 0 < i.GetUiItemSet().size) || this.NQ.delete(t)
+    if (i !== undefined && !(i.DeleteUiItem(e), i.GetUiItemSet().size > 0)) {
+      this.NQ.delete(t);
+    }
   }
   UnBindUiAndClearData() {
-    this.UnBindUi(), this.NQ.clear()
+    this.UnBindUi();
+    this.NQ.clear();
   }
   UpdateState(t = 0) {
     var e = this.ANo(t);
-    e.UpdateRedDotUIActive(), this.Dar && this.Dar(e.State, t)
+    e.UpdateRedDotUIActive();
+    if (this.Dar) {
+      this.Dar(e.State, t);
+    }
   }
   IsRedDotActive() {
-    for (const t of this.NQ.values())
-      if (t.State) return !0;
-    return !1
+    for (const t of this.NQ.values()) {
+      if (t.State) {
+        return true;
+      }
+    }
+    return false;
   }
   GetParentName() {
-    return this.OnGetParentName()
+    return this.OnGetParentName();
   }
   OnGetEvents() {}
   GetActiveEvents() {}
   GetDisActiveEvents() {}
   OnCheck(t = 0) {
-    return !1
+    return false;
   }
   IsMultiple() {
-    return !1
+    return false;
   }
   OnGetParentName() {}
   IsAllEventParamAsUId() {
-    return !0
+    return true;
   }
   ToRedDotString() {
-    var t, e, i = new StringBuilder_1.StringBuilder,
-      s = new StringBuilder_1.StringBuilder,
-      r = new StringBuilder_1.StringBuilder;
+    var t;
+    var e;
+    var i = new StringBuilder_1.StringBuilder();
+    var s = new StringBuilder_1.StringBuilder();
+    var r = new StringBuilder_1.StringBuilder();
     for ([t, e] of this.NQ) {
       r.Clear();
-      for (const n of e.GetUiItemSet()) r.Append(n.GetDisplayName() + ", ");
-      s.Append(`{uid:${t}, stateCount:${e.StateCount} uiItem:[${r.ToString()}] }`)
+      for (const n of e.GetUiItemSet()) {
+        r.Append(n.GetDisplayName() + ", ");
+      }
+      s.Append(`{uid:${t}, stateCount:${e.StateCount} uiItem:[${r.ToString()}] }`);
     }
-    var h, o = new StringBuilder_1.StringBuilder;
-    for ([h] of this.Gar.ChildMap) o.Append(h.Name + ", ");
-    return i.Append(`[红点:${this.Name} 父红点:${this.Gar.Parent?.Element.Name} 子红点:{${o.ToString()}}  数据:{ ${s.ToString()} }]
-`), i.ToString()
+    var h;
+    var o = new StringBuilder_1.StringBuilder();
+    for ([h] of this.Gar.ChildMap) {
+      o.Append(h.Name + ", ");
+    }
+    i.Append(`[红点:${this.Name} 父红点:${this.Gar.Parent?.Element.Name} 子红点:{${o.ToString()}}  数据:{ ${s.ToString()} }]
+`);
+    return i.ToString();
   }
   PrintStateDebugString() {
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("RedDot", 69, "=======子红点状态打印开始=======：", ["Name", this.Name]);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("RedDot", 69, "=======子红点状态打印开始=======：", ["Name", this.Name]);
+    }
     for (var [t, e] of this.NQ) {
       var i = e.GetUiItemSet();
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("RedDot", 69, "红点状态数据：", ["Uid", t], ["State", e.State], ["StateCount", e.StateCount], ["UiItemSize", i.size]);
-      for (const s of i) Log_1.Log.CheckInfo() && Log_1.Log.Info("RedDot", 69, "受控制的UI对象", ["UiItem", s.GetDisplayName()])
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("RedDot", 69, "红点状态数据：", ["Uid", t], ["State", e.State], ["StateCount", e.StateCount], ["UiItemSize", i.size]);
+      }
+      for (const s of i) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("RedDot", 69, "受控制的UI对象", ["UiItem", s.GetDisplayName()]);
+        }
+      }
     }
-    Log_1.Log.CheckInfo() && Log_1.Log.Info("RedDot", 69, "=======子红点状态打印结束=======：", ["Name", this.Name])
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("RedDot", 69, "=======子红点状态打印结束=======：", ["Name", this.Name]);
+    }
   }
   UpdateAllRedDotData() {
     this.NQ.forEach((t, e) => {
-      this.Arl(e)
-    })
+      this.Arl(e);
+    });
   }
 }
 exports.RedDotBase = RedDotBase;

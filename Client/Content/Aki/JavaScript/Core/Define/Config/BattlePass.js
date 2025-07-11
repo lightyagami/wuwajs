@@ -1,129 +1,185 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattlePass = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.BattlePass = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class BattlePass {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get InitialLevel() {
-    return this.initiallevel()
+    return this.initiallevel();
   }
   get LevelLimit() {
-    return this.levellimit()
+    return this.levellimit();
   }
   get LevelUpExp() {
-    return this.levelupexp()
+    return this.levelupexp();
   }
   get ConsumeId() {
-    return this.consumeid()
+    return this.consumeid();
   }
   get ConsumeCount() {
-    return this.consumecount()
+    return this.consumecount();
   }
   get IsRecurringLevel() {
-    return this.isrecurringlevel()
+    return this.isrecurringlevel();
   }
   get FreeRecurringReward() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.freerecurringrewardLength(), this.freerecurringrewardKey, this.freerecurringrewardValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.freerecurringrewardLength(), this.freerecurringrewardKey, this.freerecurringrewardValue, this);
   }
   freerecurringrewardKey(t) {
-    return this.freerecurringreward(t)?.key()
+    return this.freerecurringreward(t)?.key();
   }
   freerecurringrewardValue(t) {
-    return this.freerecurringreward(t)?.value()
+    return this.freerecurringreward(t)?.value();
   }
   get PayRecurringReward() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.payrecurringrewardLength(), this.payrecurringrewardKey, this.payrecurringrewardValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.payrecurringrewardLength(), this.payrecurringrewardKey, this.payrecurringrewardValue, this);
   }
   payrecurringrewardKey(t) {
-    return this.payrecurringreward(t)?.key()
+    return this.payrecurringreward(t)?.key();
   }
   payrecurringrewardValue(t) {
-    return this.payrecurringreward(t)?.value()
+    return this.payrecurringreward(t)?.value();
   }
   get RecurringLevelExp() {
-    return this.recurringlevelexp()
+    return this.recurringlevelexp();
   }
   get WeekExpLimit() {
-    return this.weekexplimit()
+    return this.weekexplimit();
   }
   get ExclusiveRewardPath() {
-    return this.exclusiverewardpath()
+    return this.exclusiverewardpath();
   }
   __init(t, r) {
-    return this.z7 = t, this.J7 = r, this
+    this.z7 = t;
+    this.J7 = r;
+    return this;
   }
   static getRootAsBattlePass(t, r) {
-    return (r || new BattlePass).__init(t.readInt32(t.position()) + t.position(), t)
+    return (r || new BattlePass()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   initiallevel() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levellimit() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levelupexp() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   consumeid() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   consumecount() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   isrecurringlevel() {
     var t = this.J7.__offset(this.z7, 16);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetFreerecurringrewardAt(t, r) {
-    return this.freerecurringreward(t)
+    return this.freerecurringreward(t);
   }
   freerecurringreward(t, r) {
     var e = this.J7.__offset(this.z7, 18);
-    return e ? (r || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + 4 * t), this.J7) : null
+    if (e) {
+      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   freerecurringrewardLength() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPayrecurringrewardAt(t, r) {
-    return this.payrecurringreward(t)
+    return this.payrecurringreward(t);
   }
   payrecurringreward(t, r) {
     var e = this.J7.__offset(this.z7, 20);
-    return e ? (r || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + 4 * t), this.J7) : null
+    if (e) {
+      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   payrecurringrewardLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   recurringlevelexp() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   weekexplimit() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   exclusiverewardpath(t) {
-    var r = this.J7.__offset(this.z7, 26),
-      r = r ? this.J7.__string(this.z7 + r, t) : null;
-    return "string" == typeof r && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(r), r
+    var r = this.J7.__offset(this.z7, 26);
+    var r = r ? this.J7.__string(this.z7 + r, t) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
   }
 }
 exports.BattlePass = BattlePass;

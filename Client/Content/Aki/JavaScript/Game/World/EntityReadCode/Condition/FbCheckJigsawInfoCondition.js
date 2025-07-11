@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckJigsawInfoCondition = void 0;
+  value: true
+});
+exports.FbCheckJigsawInfoCondition = undefined;
 const UnionCheckJigsawInfoHelper_1 = require("./UnionCheckJigsawInfoHelper");
 class FbCheckJigsawInfoCondition {
   constructor(i) {
-    this.FbDataInternal = i, this.u_h = !1, this.f8o = void 0, this.Zzh = !1, this.eJh = void 0
+    this.FbDataInternal = i;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Zzh = false;
+    this.eJh = undefined;
   }
   static Create(i) {
-    if (i) return new FbCheckJigsawInfoCondition(i)
+    if (i) {
+      return new FbCheckJigsawInfoCondition(i);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get JigsawCondition() {
-    var i, t;
-    return !this.Zzh && (this.Zzh = !0, i = this.FbDataInternal.jigsawConditionType(), t = UnionCheckJigsawInfoHelper_1.UnionCheckJigsawInfoHelper.GetUnionCheckJigsawInfoObject(i)) && (this.eJh = UnionCheckJigsawInfoHelper_1.UnionCheckJigsawInfoHelper.ReadUnionCheckJigsawInfo(i, this.FbDataInternal.jigsawCondition(t))), this.eJh
+    var i;
+    var t;
+    if (!this.Zzh && (this.Zzh = true, i = this.FbDataInternal.jigsawConditionType(), t = UnionCheckJigsawInfoHelper_1.UnionCheckJigsawInfoHelper.GetUnionCheckJigsawInfoObject(i))) {
+      this.eJh = UnionCheckJigsawInfoHelper_1.UnionCheckJigsawInfoHelper.ReadUnionCheckJigsawInfo(i, this.FbDataInternal.jigsawCondition(t));
+    }
+    return this.eJh;
   }
 }
 exports.FbCheckJigsawInfoCondition = FbCheckJigsawInfoCondition;

@@ -1,26 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbBoxRange = void 0;
+  value: true
+});
+exports.FbBoxRange = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbBoxRange {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.uch = !1, this.dch = void 0, this.oRh = !1, this.n6 = void 0, this.EZh = !1, this.kJ = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.uch = false;
+    this.dch = undefined;
+    this.oRh = false;
+    this.n6 = undefined;
+    this.EZh = false;
+    this.kJ = undefined;
   }
   static Create(t) {
-    if (t) return new FbBoxRange(t)
+    if (t) {
+      return new FbBoxRange(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Pos() {
-    return this.uch || (this.uch = !0, this.dch = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.pos())), this.dch
+    if (!this.uch) {
+      this.uch = true;
+      this.dch = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.pos());
+    }
+    return this.dch;
   }
   get Size() {
-    return this.oRh || (this.oRh = !0, this.n6 = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.size())), this.n6
+    if (!this.oRh) {
+      this.oRh = true;
+      this.n6 = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.size());
+    }
+    return this.n6;
   }
   get Rotator() {
-    return this.EZh || (this.EZh = !0, this.kJ = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rotator())), this.kJ
+    if (!this.EZh) {
+      this.EZh = true;
+      this.kJ = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.rotator());
+    }
+    return this.kJ;
   }
 }
 exports.FbBoxRange = FbBoxRange;

@@ -1,16 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbSetTimeLockState = void 0;
+  value: true
+});
+exports.FbSetTimeLockState = undefined;
 class FbSetTimeLockState {
   constructor(t) {
-    this.FbDataInternal = t, this.ibh = !1, this.rbh = void 0
+    this.FbDataInternal = t;
+    this.ibh = false;
+    this.rbh = undefined;
   }
   static Create(t) {
-    if (t) return new FbSetTimeLockState(t)
+    if (t) {
+      return new FbSetTimeLockState(t);
+    }
   }
   get LockState() {
-    return this.ibh || (this.ibh = !0, this.rbh = this.FbDataInternal.lockState()), this.rbh
+    if (!this.ibh) {
+      this.ibh = true;
+      this.rbh = this.FbDataInternal.lockState();
+    }
+    return this.rbh;
   }
 }
 exports.FbSetTimeLockState = FbSetTimeLockState;

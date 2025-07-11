@@ -1,39 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FunctionConfig = void 0;
-const FunctionConditionByFunctionId_1 = require("../../../Core/Define/ConfigQuery/FunctionConditionByFunctionId"),
-  FunctionMenuAll_1 = require("../../../Core/Define/ConfigQuery/FunctionMenuAll"),
-  FunctionMenuByFunctionId_1 = require("../../../Core/Define/ConfigQuery/FunctionMenuByFunctionId"),
-  PlayerExpByPlayerLevel_1 = require("../../../Core/Define/ConfigQuery/PlayerExpByPlayerLevel"),
-  PlayerExpByPlayerLevelArea_1 = require("../../../Core/Define/ConfigQuery/PlayerExpByPlayerLevelArea"),
-  ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.FunctionConfig = undefined;
+const FunctionConditionByFunctionId_1 = require("../../../Core/Define/ConfigQuery/FunctionConditionByFunctionId");
+const FunctionMenuAll_1 = require("../../../Core/Define/ConfigQuery/FunctionMenuAll");
+const FunctionMenuByFunctionId_1 = require("../../../Core/Define/ConfigQuery/FunctionMenuByFunctionId");
+const PlayerExpByPlayerLevel_1 = require("../../../Core/Define/ConfigQuery/PlayerExpByPlayerLevel");
+const PlayerExpByPlayerLevelArea_1 = require("../../../Core/Define/ConfigQuery/PlayerExpByPlayerLevelArea");
+const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class FunctionConfig extends ConfigBase_1.ConfigBase {
   OnInit() {
-    return !0
+    return true;
   }
   OnClear() {
-    return !0
+    return true;
   }
   GetRangePlayerExpConfig(e, n) {
-    return PlayerExpByPlayerLevelArea_1.configPlayerExpByPlayerLevelArea.GetConfigList(e, n)
+    return PlayerExpByPlayerLevelArea_1.configPlayerExpByPlayerLevelArea.GetConfigList(e, n);
   }
   GetPlayerLevelConfig(e) {
-    return PlayerExpByPlayerLevel_1.configPlayerExpByPlayerLevel.GetConfig(e)
+    return PlayerExpByPlayerLevel_1.configPlayerExpByPlayerLevel.GetConfig(e);
   }
   GetAllFunctionList() {
-    return FunctionMenuAll_1.configFunctionMenuAll.GetConfigList()
+    return FunctionMenuAll_1.configFunctionMenuAll.GetConfigList();
   }
   GetFunctionConfig(e) {
-    return FunctionMenuByFunctionId_1.configFunctionMenuByFunctionId.GetConfig(e)
+    return FunctionMenuByFunctionId_1.configFunctionMenuByFunctionId.GetConfig(e);
   }
   GetFunctionCondition(e) {
-    return FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(e)
+    return FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(e);
   }
   GetDifferenceExp(e, n, r, i) {
     let o = 0;
-    for (const t of PlayerExpByPlayerLevelArea_1.configPlayerExpByPlayerLevelArea.GetConfigList(e, r)) o += t.PlayerExp;
-    return o - n + i
+    for (const t of PlayerExpByPlayerLevelArea_1.configPlayerExpByPlayerLevelArea.GetConfigList(e, r)) {
+      o += t.LevelExp;
+    }
+    return o - n + i;
   }
 }
 exports.FunctionConfig = FunctionConfig;

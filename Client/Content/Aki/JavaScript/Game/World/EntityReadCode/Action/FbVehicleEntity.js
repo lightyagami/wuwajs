@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbVehicleEntity = void 0;
+  value: true
+});
+exports.FbVehicleEntity = undefined;
 const UnionTargetVehicleHelper_1 = require("./UnionTargetVehicleHelper");
 class FbVehicleEntity {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.Tic = !1, this.bic = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Tic = false;
+    this.bic = undefined;
   }
   static Create(e) {
-    if (e) return new FbVehicleEntity(e)
+    if (e) {
+      return new FbVehicleEntity(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Vehicle() {
-    var e, t;
-    return !this.Tic && (this.Tic = !0, e = this.FbDataInternal.vehicleType(), t = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.GetUnionTargetVehicleObject(e)) && (this.bic = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.ReadUnionTargetVehicle(e, this.FbDataInternal.vehicle(t))), this.bic
+    var e;
+    var t;
+    if (!this.Tic && (this.Tic = true, e = this.FbDataInternal.vehicleType(), t = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.GetUnionTargetVehicleObject(e))) {
+      this.bic = UnionTargetVehicleHelper_1.UnionTargetVehicleHelper.ReadUnionTargetVehicle(e, this.FbDataInternal.vehicle(t));
+    }
+    return this.bic;
   }
 }
 exports.FbVehicleEntity = FbVehicleEntity;

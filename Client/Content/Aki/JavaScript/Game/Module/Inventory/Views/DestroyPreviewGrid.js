@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DestroyPreviewGrid = void 0;
+  value: true
+});
+exports.DestroyPreviewGrid = undefined;
 const LoopScrollSmallItemGrid_1 = require("../../Common/SmallItemGrid/LoopScrollSmallItemGrid");
 class DestroyPreviewGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGrid {
   OnRefresh(e, t, o) {
@@ -11,10 +13,11 @@ class DestroyPreviewGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGr
       BottomText: e[1].toString(),
       ItemConfigId: e[0].ItemId
     };
-    this.Apply(e), this.SetSelected(!1)
+    this.Apply(e);
+    this.SetSelected(false);
   }
   OnStart() {
-    this.BindOnCanExecuteChange(() => !1)
+    this.BindOnCanExecuteChange(() => false);
   }
   OnSelected(e) {}
   OnDeselected(e) {}

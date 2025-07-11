@@ -1,87 +1,99 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ShipTowerMediumItem = void 0;
-const ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid"),
-  ShipTowerDefine_1 = require("../ShipTowerDefine");
+  value: true
+});
+exports.ShipTowerMediumItem = undefined;
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
+const ShipTowerDefine_1 = require("../ShipTowerDefine");
 class ShipTowerMediumItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
-    super(...arguments), this.RefreshCallBack = void 0, this.GetStageIdCallback = void 0
+    super(...arguments);
+    this.RefreshCallBack = undefined;
+    this.GetStageIdCallback = undefined;
   }
   OnStart() {
-    this.SetToggleInteractive(!1)
+    this.SetToggleInteractive(false);
   }
   OnRefresh(e, t, o) {
-    this.RefreshCallBack?.(e)
+    this.RefreshCallBack?.(e);
   }
   Z8_(e) {
-    return 1 === ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.Id)
+    return ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.Id) === 1;
   }
   RefreshRecommend(e) {
-    this.Z8_(e) ? this.RefreshRecommendRole(e) : this.RefreshRecommendBuff(e)
+    if (this.Z8_(e)) {
+      this.RefreshRecommendRole(e);
+    } else {
+      this.RefreshRecommendBuff(e);
+    }
   }
   RefreshRecommendRole(e) {
-    var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.Id),
-      o = t?.GetRoleConfig() ?? ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.Id),
-      e = {
-        Type: 2,
-        ItemConfigId: e.Id,
-        SkinId: o.SkinId,
-        BottomTextId: o.Name,
-        IsDisable: !(void 0 !== t),
-        ElementId: o.ElementId
-      };
-    this.Apply(e)
+    var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.Id);
+    var o = t?.GetRoleConfig() ?? ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.Id);
+    var e = {
+      Type: 2,
+      ItemConfigId: e.Id,
+      SkinId: o.SkinId,
+      BottomTextId: o.Name,
+      IsDisable: t === undefined,
+      ElementId: o.ElementId
+    };
+    this.Apply(e);
   }
   RefreshRecommendBuff(e) {
-    var t = ModelManager_1.ModelManager.ShipTowerModel?.GetBuffDataByBuffId(e.Id),
-      o = ConfigManager_1.ConfigManager.ShipTowerConfig?.GetBuffCfgById(e.Id),
-      o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(o?.ItemId ?? 1),
-      e = {
-        Data: e,
-        Type: 4,
-        ItemConfigId: o.Id,
-        BottomTextId: o.Name,
-        IsDisable: !t?.IsCanUse(this.GetStageIdCallback?.())
-      };
-    this.Apply(e)
+    var t = ModelManager_1.ModelManager.ShipTowerModel?.GetBuffDataByBuffId(e.Id);
+    var o = ConfigManager_1.ConfigManager.ShipTowerConfig?.GetBuffCfgById(e.Id);
+    var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(o?.ItemId ?? 1);
+    var e = {
+      Data: e,
+      Type: 4,
+      ItemConfigId: o.Id,
+      BottomTextId: o.Name,
+      IsDisable: !t?.IsCanUse(this.GetStageIdCallback?.())
+    };
+    this.Apply(e);
   }
   RefreshRecord(e) {
-    this.Z8_(e) ? this.RefreshRecordRole(e) : this.RefreshRecordBuff(e)
+    if (this.Z8_(e)) {
+      this.RefreshRecordRole(e);
+    } else {
+      this.RefreshRecordBuff(e);
+    }
   }
   RefreshRecordRole(e) {
-    var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.Id),
-      e = {
-        Type: 2,
-        ItemConfigId: e.Id,
-        SkinId: t.SkinId,
-        BottomTextId: ShipTowerDefine_1.shipTowerTextKey.LevelShow,
-        BottomTextParameter: [e.Count],
-        ElementId: t.ElementId
-      };
-    this.Apply(e)
+    var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.Id);
+    var e = {
+      Type: 2,
+      ItemConfigId: e.Id,
+      SkinId: t.SkinId,
+      BottomTextId: ShipTowerDefine_1.shipTowerTextKey.LevelShow,
+      BottomTextParameter: [e.Count],
+      ElementId: t.ElementId
+    };
+    this.Apply(e);
   }
   RefreshRecordBuff(e) {
-    var t = ConfigManager_1.ConfigManager.ShipTowerConfig?.GetBuffCfgById(e.Id),
-      t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t?.ItemId ?? 1),
-      e = {
-        Data: e,
-        Type: 4,
-        ItemConfigId: t.Id,
-        BottomTextId: t.Name
-      };
-    this.Apply(e)
+    var t = ConfigManager_1.ConfigManager.ShipTowerConfig?.GetBuffCfgById(e.Id);
+    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t?.ItemId ?? 1);
+    var e = {
+      Data: e,
+      Type: 4,
+      ItemConfigId: t.Id,
+      BottomTextId: t.Name
+    };
+    this.Apply(e);
   }
   OnForceSelected() {
-    this.SetSelected(!0, !0)
+    this.SetSelected(true, true);
   }
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
 }
 exports.ShipTowerMediumItem = ShipTowerMediumItem;

@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityTowerGuideRewardGrid = void 0;
+  value: true
+});
+exports.ActivityTowerGuideRewardGrid = undefined;
 const LoopScrollSmallItemGrid_1 = require("../../../Common/SmallItemGrid/LoopScrollSmallItemGrid");
 class ActivityTowerGuideRewardGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGrid {
   OnRefresh(e, t, i) {
@@ -14,13 +16,15 @@ class ActivityTowerGuideRewardGrid extends LoopScrollSmallItemGrid_1.LoopScrollS
       IsDisable: e.IsLock,
       IsReceivableVisible: e.IsReceivableVisible
     };
-    this.Apply(l), this.SetDisableComponentColor("365988", e.IsLock), this.SetSelected(!1)
+    this.Apply(l);
+    this.SetDisableComponentColor("365988", e.IsLock);
+    this.SetSelected(false);
   }
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
 }
 exports.ActivityTowerGuideRewardGrid = ActivityTowerGuideRewardGrid;

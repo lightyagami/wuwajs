@@ -1,10 +1,63 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameQualityData = void 0;
+  value: true
+});
+exports.GameQualityData = undefined;
 class GameQualityData {
   constructor() {
-    this.KeyQualityLevel = void 0, this.KeyCustomFrameRate = void 0, this.KeyNewShadowQuality = void 0, this.KeyNiagaraQuality = void 0, this.KeyImageDetail = void 0, this.KeyAntiAliasing = void 0, this.KeySceneAo = void 0, this.KeyVolumeFog = void 0, this.KeyVolumeLight = void 0, this.KeyMotionBlur = void 0, this.KeyStreamLevel = void 0, this.KeyPcVsync = void 0, this.KeyMobileResolution = void 0, this.KeySuperResolution = void 0, this.KeyPcResolutionWidth = void 0, this.KeyPcResolutionHeight = void 0, this.KeyBrightness = void 0, this.KeyPcWindowMode = void 0, this.KeyNvidiaSuperSamplingEnable = void 0, this.KeyNvidiaSuperSamplingFrameGenerate = void 0, this.KeyNvidiaSuperSamplingMode = void 0, this.KeyNvidiaSuperSamplingSharpness = void 0, this.KeyNvidiaReflex = void 0, this.KeyFsrEnable = void 0, this.KeyXessEnable = void 0, this.KeyXessQuality = void 0, this.KeyMetalFxEnable = void 0, this.KeyIrxEnable = void 0, this.KeyBloomEnable = void 0, this.KeyNpcDensity = void 0, this.HorizontalViewSensitivity = void 0, this.VerticalViewSensitivity = void 0, this.AimHorizontalViewSensitivity = void 0, this.AimVerticalViewSensitivity = void 0, this.CameraShakeStrength = void 0, this.MobileHorizontalViewSensitivity = void 0, this.MobileVerticalViewSensitivity = void 0, this.MobileAimHorizontalViewSensitivity = void 0, this.MobileAimVerticalViewSensitivity = void 0, this.CommonSpringArmLength = void 0, this.FightSpringArmLength = void 0, this.IsResetFocusEnable = void 0, this.IsSidestepCameraEnable = void 0, this.IsSoftLockCameraEnable = void 0, this.JoystickShakeStrength = void 0, this.JoystickShakeType = void 0, this.WalkOrRunRate = void 0, this.JoystickMode = void 0, this.IsAutoSwitchSkillButtonMode = void 0, this.AimAssistEnable = void 0, this.HorizontalViewRevert = void 0, this.VerticalViewRevert = void 0
+    this.KeyQualityLevel = undefined;
+    this.KeyCustomFrameRate = undefined;
+    this.KeyNewShadowQuality = undefined;
+    this.KeyNiagaraQuality = undefined;
+    this.KeyImageDetail = undefined;
+    this.KeyAntiAliasing = undefined;
+    this.KeySceneAo = undefined;
+    this.KeyVolumeFog = undefined;
+    this.KeyVolumeLight = undefined;
+    this.KeyMotionBlur = undefined;
+    this.KeyStreamLevel = undefined;
+    this.KeyPcVsync = undefined;
+    this.KeyMobileResolution = undefined;
+    this.KeySuperResolution = undefined;
+    this.KeyPcResolutionWidth = undefined;
+    this.KeyPcResolutionHeight = undefined;
+    this.KeyBrightness = undefined;
+    this.KeyPcWindowMode = undefined;
+    this.KeyNvidiaSuperSamplingEnable = undefined;
+    this.KeyNvidiaSuperSamplingFrameGenerate = undefined;
+    this.KeyNvidiaSuperSamplingMode = undefined;
+    this.KeyNvidiaSuperSamplingSharpness = undefined;
+    this.KeyNvidiaReflex = undefined;
+    this.KeyFsrEnable = undefined;
+    this.KeyXessEnable = undefined;
+    this.KeyXessQuality = undefined;
+    this.KeyMetalFxEnable = undefined;
+    this.KeyIrxEnable = undefined;
+    this.KeyBloomEnable = undefined;
+    this.KeyNpcDensity = undefined;
+    this.HorizontalViewSensitivity = undefined;
+    this.VerticalViewSensitivity = undefined;
+    this.AimHorizontalViewSensitivity = undefined;
+    this.AimVerticalViewSensitivity = undefined;
+    this.CameraShakeStrength = undefined;
+    this.MobileHorizontalViewSensitivity = undefined;
+    this.MobileVerticalViewSensitivity = undefined;
+    this.MobileAimHorizontalViewSensitivity = undefined;
+    this.MobileAimVerticalViewSensitivity = undefined;
+    this.CommonSpringArmLength = undefined;
+    this.FightSpringArmLength = undefined;
+    this.IsResetFocusEnable = undefined;
+    this.IsSidestepCameraEnable = undefined;
+    this.IsSoftLockCameraEnable = undefined;
+    this.JoystickShakeStrength = undefined;
+    this.JoystickShakeType = undefined;
+    this.WalkOrRunRate = undefined;
+    this.JoystickMode = undefined;
+    this.IsAutoSwitchSkillButtonMode = undefined;
+    this.AimAssistEnable = undefined;
+    this.HorizontalViewRevert = undefined;
+    this.VerticalViewRevert = undefined;
   }
 }
 exports.GameQualityData = GameQualityData;

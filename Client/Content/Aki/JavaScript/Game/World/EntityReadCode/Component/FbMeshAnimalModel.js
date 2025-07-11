@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMeshAnimalModel = void 0;
+  value: true
+});
+exports.FbMeshAnimalModel = undefined;
 class FbMeshAnimalModel {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.IKh = !1, this.TKh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.IKh = false;
+    this.TKh = undefined;
   }
   static Create(t) {
-    if (t) return new FbMeshAnimalModel(t)
+    if (t) {
+      return new FbMeshAnimalModel(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Mesh() {
-    return this.IKh || (this.IKh = !0, this.TKh = this.FbDataInternal.mesh()), this.TKh
+    if (!this.IKh) {
+      this.IKh = true;
+      this.TKh = this.FbDataInternal.mesh();
+    }
+    return this.TKh;
   }
 }
 exports.FbMeshAnimalModel = FbMeshAnimalModel;

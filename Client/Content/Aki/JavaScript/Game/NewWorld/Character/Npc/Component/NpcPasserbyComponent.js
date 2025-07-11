@@ -1,107 +1,220 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, e, i, o) {
-  var r, s = arguments.length,
-    n = s < 3 ? e : null === o ? o = Object.getOwnPropertyDescriptor(e, i) : o;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) n = Reflect.decorate(t, e, i, o);
-  else
-    for (var h = t.length - 1; 0 <= h; h--)(r = t[h]) && (n = (s < 3 ? r(n) : 3 < s ? r(e, i, n) : r(e, i)) || n);
-  return 3 < s && n && Object.defineProperty(e, i, n), n
+
+var __decorate = this && this.__decorate || function (t, e, i, o) {
+  var s;
+  var r = arguments.length;
+  var n = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    n = Reflect.decorate(t, e, i, o);
+  } else {
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (s = t[h]) {
+        n = (r < 3 ? s(n) : r > 3 ? s(e, i, n) : s(e, i)) || n;
+      }
+    }
+  }
+  if (r > 3 && n) {
+    Object.defineProperty(e, i, n);
+  }
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NpcPasserbyComponent = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../../../Core/Common/Log"),
-  Protocol_1 = require("../../../../../Core/Define/Net/Protocol"),
-  EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent"),
-  RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent"),
-  Net_1 = require("../../../../../Core/Net/Net"),
-  Vector_1 = require("../../../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent"),
-  GameSplineComponent_1 = require("../../../../LevelGamePlay/Common/GameSplineComponent"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  NPC_PB = "Gys",
-  END_DISTANCE = 30,
-  ENTITY_REMOVE_DELAY = 3,
-  DEFAULT_MOVE_SPEED = 100,
-  DEFAULT_EXCEPTION_COUNTER_TIME = 5e3,
-  MIN_MOVE_SPEED = 20;
+  value: true
+});
+exports.NpcPasserbyComponent = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const Net_1 = require("../../../../../Core/Net/Net");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
+const GameSplineComponent_1 = require("../../../../LevelGamePlay/Common/GameSplineComponent");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const NPC_PB = "Gys";
+const END_DISTANCE = 30;
+const ENTITY_REMOVE_DELAY = 3;
+const DEFAULT_MOVE_SPEED = 100;
+const DEFAULT_EXCEPTION_COUNTER_TIME = 5000;
+const MIN_MOVE_SPEED = 20;
 let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.EntityComponent {
   constructor() {
-    super(...arguments), this.Hte = void 0, this.Gce = void 0, this.Htn = 0, this.jtn = 0, this.szo = !1, this.E91 = !1, this.tu = void 0, this.jnr = void 0, this.JLe = void 0, this.Fm1 = !1, this.Ktn = Vector_1.Vector.Create(), this.Nm1 = DEFAULT_EXCEPTION_COUNTER_TIME, this.Vm1 = !1
+    super(...arguments);
+    this.Hte = undefined;
+    this.Gce = undefined;
+    this.Htn = 0;
+    this.jtn = 0;
+    this.szo = false;
+    this.sH1 = false;
+    this.tu = undefined;
+    this.jnr = undefined;
+    this.JLe = undefined;
+    this.jDu = undefined;
+    this.lf1 = false;
+    this.Ktn = Vector_1.Vector.Create();
+    this._f1 = DEFAULT_EXCEPTION_COUNTER_TIME;
+    this.cf1 = false;
   }
   OnCreate(t) {
-    return this.Fm1 = !1, this.Hte = this.Entity.CheckGetComponent(2), this.Gce = this.Entity.GetComponent(45), !(!this.Hte || !this.Gce)
+    this.lf1 = false;
+    this.Hte = this.Entity.CheckGetComponent(2);
+    this.Gce = this.Entity.GetComponent(45);
+    return !!this.Hte && !!this.Gce;
   }
   OnStart() {
-    var t = this.Hte.CreatureData,
-      e = t.ComponentDataMap.get(NPC_PB)?.Gys;
-    if (!e) return Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 42, "特效NPC没有NpcPb相关配置数据", ["PbDataId", t.GetPbDataId()]), !1;
-    this.Htn = e.dTs, this.jtn = e.Ejn;
+    var t = this.Hte.CreatureData;
+    var e = t.ComponentDataMap.get(NPC_PB)?.Gys;
+    if (!e) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 42, "特效NPC没有NpcPb相关配置数据", ["PbDataId", t.GetPbDataId()]);
+      }
+      return false;
+    }
+    this.Htn = e.dTs;
+    this.jtn = e.Ejn;
     e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.jtn);
-    if (!e) return Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 50, "特效NPC没有行人生成器相关配置数据", ["GeneratorEntityId", this.jtn]), !1;
+    if (!e) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 50, "特效NPC没有行人生成器相关配置数据", ["GeneratorEntityId", this.jtn]);
+      }
+      return false;
+    }
     var i = (0, IComponent_1.getComponent)(e.ComponentsData, "PasserbyNpcSpawnComponent");
-    if (!i) return Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 50, "获取行人NPC生成器配置失败", ["PbDataId", t.GetPbDataId()], ["GeneratorId", e?.Id]), !1;
-    for (const o of i.MoveConfig.Routes)
+    if (!i) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 50, "获取行人NPC生成器配置失败", ["PbDataId", t.GetPbDataId()], ["GeneratorId", e?.Id]);
+      }
+      return false;
+    }
+    for (const o of i.MoveConfig.Routes) {
       if (this.Htn === o.SplineEntityId) {
-        this.szo = !!o.IsLoop, this.E91 = !!o.IsIkEnabled, o.MoveState && (this.tu = o.MoveState.MoveState, this.jnr = o.MoveState.MoveSpeed);
-        break
-      } this.E91 && this.Hte?.Actor.IsA(UE.BP_BaseNPC_C.StaticClass()) && (this.Hte.Owner.IsEnableIK = !0);
+        this.szo = !!o.IsLoop;
+        this.sH1 = !!o.IsIkEnabled;
+        if (o.MoveState) {
+          this.tu = o.MoveState.MoveState;
+          this.jnr = o.MoveState.MoveSpeed;
+        }
+        break;
+      }
+    }
+    if (this.sH1 && this.Hte?.Actor.IsA(UE.BP_BaseNPC_C.StaticClass())) {
+      this.Hte.Owner.IsEnableIK = true;
+    }
+    this.jDu = i.NpcMaterialDa;
     t = this.Hte.Actor.CharacterMovement;
-    return t.KuroSetPredictionDataMaxMoveDeltaTime(1), t.MaxSimulationTimeStep = 1, !0
+    t.KuroSetPredictionDataMaxMoveDeltaTime(1);
+    t.MaxSimulationTimeStep = 1;
+    return true;
   }
   OnActivate() {
-    this.HC(this.Htn) && this.JLe && this.Gce.MoveAlongPath(this.JLe)
+    this.InitMatFromGenerator();
+    this.TryMoveAlongPath();
   }
   OnTick(t) {
     var e;
-    !this.szo && this.Fm1 && ((e = Vector_1.Vector.Dist(this.Ktn, this.Hte.ActorLocationProxy)) < this.Gce.Speed * ENTITY_REMOVE_DELAY || e <= END_DISTANCE) && this.SendMessage(), this.CheckMoveException(t) && this.Nm1 <= 0 && this.SendMessage()
+    if (!this.szo && this.lf1 && ((e = Vector_1.Vector.Dist(this.Ktn, this.Hte.ActorLocationProxy)) < this.Gce.Speed * ENTITY_REMOVE_DELAY || e <= END_DISTANCE)) {
+      this.SendMessage();
+    }
+    if (this.CheckMoveException(t) && this._f1 <= 0) {
+      this.SendMessage();
+    }
   }
   HC(t) {
     var e = new GameSplineComponent_1.GameSplineComponent(t);
-    if (!e.InitializeWithSubPoints(this.Hte.CreatureData.GetPbDataId())) return Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 42, "特效NPC找不到对应的样条实体或实体上没有样条组件", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["SplineId", t]), !1;
+    if (!e.InitializeWithSubPoints(this.Hte.CreatureData.GetPbDataId())) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 42, "特效NPC找不到对应的样条实体或实体上没有样条组件", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["SplineId", t]);
+      }
+      return false;
+    }
     var i = e.PathPoint;
-    if (i.length < 2) return Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 42, "特效NPC样条点数量小于2", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["SplineId", t]), !1;
-    var o = [],
-      r = e.GetNumberOfSplinePoints();
-    let s = 0;
+    if (i.length < 2) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 42, "特效NPC样条点数量小于2", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["SplineId", t]);
+      }
+      return false;
+    }
+    var o = [];
+    var s = e.GetNumberOfSplinePoints();
+    let r = 0;
     for (const h of i) {
       var n = {
-        Index: h.IsMain ? s : -1,
+        Index: h.IsMain ? r : -1,
         Position: h.Point,
         MoveState: this.tu ?? IComponent_1.EPatrolMoveState.Walk,
         MoveSpeed: this.jnr ?? this.Gce?.CurrentMovementSettings?.WalkSpeed ?? DEFAULT_MOVE_SPEED
       };
-      h.IsMain && (this.szo || s !== r - 2 || (n.Callback = () => {
-        this.Fm1 = !0
-      }), s++), o.push(n)
+      if (h.IsMain) {
+        if (!this.szo && r === s - 2) {
+          n.Callback = () => {
+            this.lf1 = true;
+          };
+        }
+        r++;
+      }
+      o.push(n);
     }
     t = o[o.length - 1].Position;
-    return this.Ktn.Set(t.X, t.Y, t.Z), this.JLe = {
+    this.Ktn.Set(t.X, t.Y, t.Z);
+    this.JLe = {
       Points: o,
-      Navigation: !1,
-      IsFly: !1,
-      DebugMode: !0,
+      Navigation: false,
+      IsFly: false,
+      DebugMode: true,
       Loop: this.szo,
       CircleMove: this.szo,
-      UsePreviousIndex: !0,
-      UseNearestPoint: !0,
-      ReturnFalseWhenNavigationFailed: !1
-    }, this.szo || (this.JLe.Callback = t => {
-      this.Fm1 && this.SendMessage()
-    }), !0
+      UsePreviousIndex: true,
+      UseNearestPoint: true,
+      ReturnFalseWhenNavigationFailed: false
+    };
+    if (!this.szo) {
+      this.JLe.Callback = t => {
+        if (this.lf1) {
+          this.SendMessage();
+        }
+      };
+    }
+    return true;
   }
   CheckMoveException(t) {
-    return this.Hte ? Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this.Hte.LastActorLocation) < MIN_MOVE_SPEED * t * MathUtils_1.MathUtils.MillisecondToSecond ? (this.Nm1 -= t, !0) : (this.Nm1 = DEFAULT_EXCEPTION_COUNTER_TIME, !1) : !(this.Nm1 = 0)
+    if (this.Hte) {
+      if (Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this.Hte.LastActorLocation) < MIN_MOVE_SPEED * t * MathUtils_1.MathUtils.MillisecondToSecond) {
+        this._f1 -= t;
+        return true;
+      } else {
+        this._f1 = DEFAULT_EXCEPTION_COUNTER_TIME;
+        return false;
+      }
+    } else {
+      return !(this._f1 = 0);
+    }
   }
   SendMessage() {
     var t;
-    this.Fm1 = !1, this.Vm1 || (this.Vm1 = !0, (t = Protocol_1.Aki.Protocol.Zes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId()), Net_1.Net.Call(22398, t, t => {
-      t && t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 19959)
-    }))
+    this.lf1 = false;
+    if (!this.cf1) {
+      this.cf1 = true;
+      (t = Protocol_1.Aki.Protocol.Zes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
+      Net_1.Net.Call(20040, t, t => {
+        if (t && t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 15568);
+        }
+      });
+    }
+  }
+  TryMoveAlongPath() {
+    if (this.HC(this.Htn) && this.JLe) {
+      this.Gce.MoveAlongPath(this.JLe);
+    }
+  }
+  InitMatFromGenerator() {
+    if (this.jDu) {
+      this.Entity.GetComponent(186)?.MaterialController?.ApplyMaterialEffect(this.jDu);
+    }
   }
 };
-NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(90)], NpcPasserbyComponent), exports.NpcPasserbyComponent = NpcPasserbyComponent;
-//# sourceMappingURL=NpcPasserbyComponent.js.map
+NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(90)], NpcPasserbyComponent);
+exports.NpcPasserbyComponent = NpcPasserbyComponent; //# sourceMappingURL=NpcPasserbyComponent.js.map

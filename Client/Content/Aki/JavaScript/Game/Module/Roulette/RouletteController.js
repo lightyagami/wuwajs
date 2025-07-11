@@ -1,170 +1,330 @@
 "use strict";
+
 var _a;
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RouletteController = void 0;
-const Info_1 = require("../../../Core/Common/Info"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ConfigManager_1 = require("../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  UiControllerBase_1 = require("../../Ui/Base/UiControllerBase"),
-  InputManager_1 = require("../../Ui/Input/InputManager"),
-  UiManager_1 = require("../../Ui/UiManager"),
-  AdviceController_1 = require("../Advice/AdviceController"),
-  ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine"),
-  FunctionController_1 = require("../Functional/FunctionController"),
-  ItemUseLogic_1 = require("../Inventory/ItemUseLogic"),
-  SpecialItemController_1 = require("../Item/SpecialItem/SpecialItemController"),
-  MapExploreToolController_1 = require("../MapExploreTool/MapExploreToolController"),
-  PhotographController_1 = require("../Photograph/PhotographController"),
-  ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController"),
-  RouletteDefine_1 = require("./Data/RouletteDefine"),
-  RouletteFunctionOpenController_1 = require("./RouletteFunctionOpenController");
+  value: true
+});
+exports.RouletteController = undefined;
+const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const InputManager_1 = require("../../Ui/Input/InputManager");
+const UiManager_1 = require("../../Ui/UiManager");
+const AdviceController_1 = require("../Advice/AdviceController");
+const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
+const FunctionController_1 = require("../Functional/FunctionController");
+const ItemUseLogic_1 = require("../Inventory/ItemUseLogic");
+const SpecialItemController_1 = require("../Item/SpecialItem/SpecialItemController");
+const MapExploreToolController_1 = require("../MapExploreTool/MapExploreToolController");
+const PhotographController_1 = require("../Photograph/PhotographController");
+const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
+const RouletteDefine_1 = require("./Data/RouletteDefine");
+const RouletteFunctionOpenController_1 = require("./RouletteFunctionOpenController");
 class RouletteController extends UiControllerBase_1.UiControllerBase {
   static OnInit() {
-    return InputManager_1.InputManager.RegisterOpenViewFunc("PhantomExploreSetView", RouletteController.YHt), !0
+    InputManager_1.InputManager.RegisterOpenViewFunc("PhantomExploreSetView", RouletteController.YHt);
+    return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(17973, e => {
-      e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "推送探索技能设置更新信息"), e = e.$Ps, ModelManager_1.ModelManager.ExploreModel.SetDefaultExploreSkillId(e), ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e)
-    }), Net_1.Net.Register(15986, e => {
-      e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "推送当前轮盘保存的数据"), ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.HPs))
-    }), Net_1.Net.Register(24974, e => {
-      e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "推送探索技能解锁", ["Id", e.r5n]), ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkill(e.r5n))
-    }), Net_1.Net.Register(16541, e => {
+    Net_1.Net.Register(20429, e => {
       if (e) {
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "推送所有已解锁的探索技能及当前装备的探索技能"), ModelManager_1.ModelManager.RouletteModel.CreateAllUnlockExploreSkill(e.VPs), ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e.$Ps;
-        e = e.Sna;
-        Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "新解锁探索技能", ["NewUnlock", e]);
-        for (const o of e) ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkill(o)
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Phantom", 37, "推送探索技能设置更新信息");
+        }
+        e = e.$Ps;
+        ModelManager_1.ModelManager.ExploreModel.SetDefaultExploreSkillId(e);
+        ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e;
       }
-    })
+    });
+    Net_1.Net.Register(26144, e => {
+      if (e) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Phantom", 37, "推送当前轮盘保存的数据");
+        }
+        ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.HPs);
+      }
+    });
+    Net_1.Net.Register(21299, e => {
+      if (e) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Phantom", 37, "推送探索技能解锁", ["Id", e.r5n]);
+        }
+        ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkill(e.r5n);
+      }
+    });
+    Net_1.Net.Register(19663, e => {
+      if (e) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Phantom", 37, "推送所有已解锁的探索技能及当前装备的探索技能");
+        }
+        ModelManager_1.ModelManager.RouletteModel.CreateAllUnlockExploreSkill(e.VPs);
+        ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e.$Ps;
+        e = e.Sna;
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Phantom", 37, "新解锁探索技能", ["NewUnlock", e]);
+        }
+        for (const o of e) {
+          ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkill(o);
+        }
+      }
+    });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17973), Net_1.Net.UnRegister(15986), Net_1.Net.UnRegister(24974), Net_1.Net.UnRegister(16541)
+    Net_1.Net.UnRegister(20429);
+    Net_1.Net.UnRegister(26144);
+    Net_1.Net.UnRegister(21299);
+    Net_1.Net.UnRegister(19663);
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.T0o), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemUse, this.L0o), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUseBuffItem, this.L0o), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMapExploreToolPlaceNumUpdated, this.D0o), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshTempFishingPointNum, this.p8_), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye)
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.T0o);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemUse, this.L0o);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUseBuffItem, this.L0o);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMapExploreToolPlaceNumUpdated, this.D0o);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshTempFishingPointNum, this.p8_);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.T0o), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemUse, this.L0o), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUseBuffItem, this.L0o), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMapExploreToolPlaceNumUpdated, this.D0o), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshTempFishingPointNum, this.p8_), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye)
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.T0o);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemUse, this.L0o);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUseBuffItem, this.L0o);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMapExploreToolPlaceNumUpdated, this.D0o);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshTempFishingPointNum, this.p8_);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
   }
-  static ExploreSkillSetRequest(e, o, t = !1) {
+  static ExploreSkillSetRequest(e, o, t = false) {
     var r;
-    !this.CheckCanExploreSkillEquip(e) || void 0 === (r = ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.at(-1)) && ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === e || r === e ? o?.(!1) : (ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.push(e), (r = new Protocol_1.Aki.Protocol.Cts).r5n = e, r.T0a = t, Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "请求设置探索技能", ["skillId", e]), Net_1.Net.Call(26867, Protocol_1.Aki.Protocol.Cts.create(r), e => {
-      ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.shift(), e ? e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs ? (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e.r5n, o?.(!0)) : (o?.(!1), ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25083)) : o?.(!1)
-    }))
+    if (!this.CheckCanExploreSkillEquip(e) || (r = ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.at(-1)) === undefined && ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === e || r === e) {
+      o?.(false);
+    } else {
+      ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.push(e);
+      (r = new Protocol_1.Aki.Protocol.Cts()).r5n = e;
+      r.T0a = t;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 37, "请求设置探索技能", ["skillId", e]);
+      }
+      Net_1.Net.Call(25461, Protocol_1.Aki.Protocol.Cts.create(r), e => {
+        ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.shift();
+        if (e) {
+          if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e.r5n;
+            o?.(true);
+          } else {
+            o?.(false);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27524);
+          }
+        } else {
+          o?.(false);
+        }
+      });
+    }
   }
   static SetLastSkillId() {
     var e = ModelManager_1.ModelManager.RouletteModel.GetLastSkillId();
-    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e), RouletteController.ExploreSkillSetRequest(e)
+    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e);
+    RouletteController.ExploreSkillSetRequest(e);
   }
-  static lB_(e, o, t, r = !1, n) {
-    var l = new Protocol_1.Aki.Protocol.vts,
-      a = new Array,
-      i = new Protocol_1.Aki.Protocol.s6s,
-      e = (i.KHn = e, i.QHn = t, a.push(i), new Protocol_1.Aki.Protocol.s6s);
-    e.KHn = o, a.push(e), l.XHn = a, Net_1.Net.Call(15340, Protocol_1.Aki.Protocol.vts.create(l), e => {
-      e ? e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs ? (r && ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("SaveChangeSuccess"), ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.XHn), n?.(!0)) : (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 18777), n?.(!1)) : n?.(!1)
-    })
+  static lB_(e, o, t, r = false, n) {
+    var l = new Protocol_1.Aki.Protocol.vts();
+    var a = new Array();
+    var i = new Protocol_1.Aki.Protocol.s6s();
+    i.KHn = e;
+    i.QHn = t;
+    a.push(i);
+    var e = new Protocol_1.Aki.Protocol.s6s();
+    e.KHn = o;
+    a.push(e);
+    l.XHn = a;
+    Net_1.Net.Call(28955, Protocol_1.Aki.Protocol.vts.create(l), e => {
+      if (e) {
+        if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
+          if (r) {
+            ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("SaveChangeSuccess");
+          }
+          ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.XHn);
+          n?.(true);
+        } else {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29159);
+          n?.(false);
+        }
+      } else {
+        n?.(false);
+      }
+    });
   }
-  static SaveCurrentRouletteData(e, o, t, r = !1, n) {
+  static SaveCurrentRouletteData(e, o, t, r = false, n) {
     var l = ModelManager_1.ModelManager.RouletteModel;
-    this.lB_(e ?? l.ExploreSkillIdListServer, o ?? l.FunctionIdListServer, t ?? l.CurrentEquipItemId, r, n)
+    this.lB_(e ?? l.ExploreSkillIdListServer, o ?? l.FunctionIdListServer, t ?? l.CurrentEquipItemId, r, n);
   }
   static FunctionOpenRequest(e) {
-    0 !== e && void 0 !== e && (e = ModelManager_1.ModelManager.RouletteModel.GetFuncDataByFuncId(e)) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "轮盘请求打开界面", ["Function Id", e.UnlockCondition]), e.UnlockCondition ? FunctionController_1.FunctionController.OpenFunctionRelateView(e.UnlockCondition) : RouletteFunctionOpenController_1.RouletteFunctionOpenController.OpenRelateView(e.FuncId))
+    if (e !== 0 && e !== undefined && (e = ModelManager_1.ModelManager.RouletteModel.GetFuncDataByFuncId(e))) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 37, "轮盘请求打开界面", ["Function Id", e.UnlockCondition]);
+      }
+      if (e.UnlockCondition) {
+        FunctionController_1.FunctionController.OpenFunctionRelateView(e.UnlockCondition);
+      } else {
+        RouletteFunctionOpenController_1.RouletteFunctionOpenController.OpenRelateView(e.FuncId);
+      }
+    }
   }
   static EquipItemSetRequest(e, o, t = 0) {
-    ModelManager_1.ModelManager.RouletteModel.IsEquipItemSelectOn ? RouletteController.RefreshExploreSkillButton() : (ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(3001, t), RouletteController.ExploreSkillSetRequest(3001, o))
+    if (ModelManager_1.ModelManager.RouletteModel.IsEquipItemSelectOn) {
+      RouletteController.RefreshExploreSkillButton();
+    } else {
+      ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(3001, t);
+      RouletteController.ExploreSkillSetRequest(3001, o);
+    }
   }
   static RefreshExploreSkillButton() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeSelectedExploreId), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonSkillIdRefresh, 7), Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "刷新探索技能按钮表现")
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeSelectedExploreId);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonSkillIdRefresh, 7);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Phantom", 37, "刷新探索技能按钮表现");
+    }
   }
   static OnUseEquipItem() {
     var e = ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId;
     if (ModelManager_1.ModelManager.RouletteModel.IsEquipItemSelectOn) {
-      if (SpecialItemController_1.SpecialItemController.IsSpecialItem(e)) return o = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(e), ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !o.UseInstance ? void ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CanNotUseInstance") : (ControllerHolder_1.ControllerHolder.InventoryController.RequestItemUse(e, 1), Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "请求使用特殊道具", ["道具Id", e]), void ModelManager_1.ModelManager.RouletteModel.SendExploreToolItemUseLogData(e));
+      if (SpecialItemController_1.SpecialItemController.IsSpecialItem(e)) {
+        o = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(e);
+        if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !o.UseInstance) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CanNotUseInstance");
+          return;
+        } else {
+          ControllerHolder_1.ControllerHolder.InventoryController.RequestItemUse(e, 1);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Phantom", 37, "请求使用特殊道具", ["道具Id", e]);
+          }
+          ModelManager_1.ModelManager.RouletteModel.SendExploreToolItemUseLogData(e);
+          return;
+        }
+      }
       if (ConfigManager_1.ConfigManager.BuffItemConfig.IsBuffItem(e)) {
         var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
-        if (!o) return;
-        ItemUseLogic_1.ItemUseLogic.TryUseBuffItem(e, 1, !0, o.GetConfigId)
-      } else ControllerHolder_1.ControllerHolder.InventoryController.TryUseItem(e, 1);
-      Log_1.Log.CheckInfo() && Log_1.Log.Info("Phantom", 37, "请求使用普通道具", ["道具Id", e]), ModelManager_1.ModelManager.RouletteModel.SendExploreToolItemUseLogData(e)
+        if (!o) {
+          return;
+        }
+        ItemUseLogic_1.ItemUseLogic.TryUseBuffItem(e, 1, true, o.GetConfigId);
+      } else {
+        ControllerHolder_1.ControllerHolder.InventoryController.TryUseItem(e, 1);
+      }
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 37, "请求使用普通道具", ["道具Id", e]);
+      }
+      ModelManager_1.ModelManager.RouletteModel.SendExploreToolItemUseLogData(e);
     }
   }
   static OpenEmptyTips() {
     var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(143);
     e.FunctionMap.set(2, () => {
-      RouletteController.OpenAssemblyView(0, RouletteDefine_1.DEFAULT_ITEM_ROULETTE_GRID_INDEX, 3001)
-    }), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e)
+      RouletteController.OpenAssemblyView(0, RouletteDefine_1.DEFAULT_ITEM_ROULETTE_GRID_INDEX, 3001);
+    });
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
   static OnAddOpenViewCheckFunction() {
-    UiManager_1.UiManager.AddOpenViewCheckFunction("PhantomExploreView", RouletteController.iVe, "RouletteController.CanOpenView"), UiManager_1.UiManager.AddOpenViewCheckFunction("PhantomExploreSetView", RouletteController.U0o, "RouletteController.CanOpenSetView")
+    UiManager_1.UiManager.AddOpenViewCheckFunction("PhantomExploreView", RouletteController.iVe, "RouletteController.CanOpenView");
+    UiManager_1.UiManager.AddOpenViewCheckFunction("PhantomExploreSetView", RouletteController.U0o, "RouletteController.CanOpenSetView");
   }
   static OnRemoveOpenViewCheckFunction() {
-    UiManager_1.UiManager.RemoveOpenViewCheckFunction("PhantomExploreView", RouletteController.iVe), UiManager_1.UiManager.RemoveOpenViewCheckFunction("PhantomExploreSetView", RouletteController.U0o)
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("PhantomExploreView", RouletteController.iVe);
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("PhantomExploreSetView", RouletteController.U0o);
   }
   static OpenAssemblyView(e = 0, o, t) {
-    var r = ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(),
-      n = ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen(),
-      r = 0 === e ? r : n;
-    return !(UiManager_1.UiManager.IsViewOpen("PhantomExploreSetView") || !r || (n = {
+    var r = ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen();
+    var n = ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen();
+    var r = e === 0 ? r : n;
+    return !UiManager_1.UiManager.IsViewOpen("PhantomExploreSetView") && !!r && !(n = {
       RouletteType: e,
       SelectGridIndex: o,
       EndSwitchSkillId: t
-    }, UiManager_1.UiManager.OpenView("PhantomExploreSetView", n), 0))
+    }, UiManager_1.UiManager.OpenView("PhantomExploreSetView", n), 0);
   }
   static CheckCanExploreSkillEquip(e) {
     e = ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(e);
-    return !!e && e.CanEquip
+    return !!e && e.CanEquip;
   }
   static ListenRelatedTags(e) {
-    var o = e?.Entity?.GetComponent(193),
-      t = (this.StopListenRelatedTags(), ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList),
-      r = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdExistPriorityList;
+    var o = e?.Entity?.GetComponent(193);
+    this.StopListenRelatedTags();
+    var t = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList;
+    var r = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdExistPriorityList;
     for (let e = 0; e < t.length; e++) {
       var n = t[e];
-      o?.AddTagAddOrRemoveListener(n, this._B_), r[e] = o?.HasTag(n) ?? !1
+      o?.AddTagAddOrRemoveListener(n, this._B_);
+      r[e] = o?.HasTag(n) ?? false;
     }
-    ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle = e, this.L5_(t, r)
+    ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle = e;
+    this.L5_(t, r);
   }
   static StopListenRelatedTags() {
     var e = ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle;
     if (e) {
       var o = e.Entity?.GetComponent(193);
-      if (o)
-        for (const t of ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList) o.RemoveTagAddOrRemoveListener(t, this._B_);
-      ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle = void 0
+      if (o) {
+        for (const t of ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList) {
+          o.RemoveTagAddOrRemoveListener(t, this._B_);
+        }
+      }
+      ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle = undefined;
     }
   }
   static L5_(o, t) {
     for (let e = 0; e < t.length; e++) {
       var r;
-      if (t[e]) return r = o[e], void ModelManager_1.ModelManager.RouletteModel.ActiveReplaceConfig(r)
+      if (t[e]) {
+        r = o[e];
+        ModelManager_1.ModelManager.RouletteModel.ActiveReplaceConfig(r);
+        return;
+      }
     }
-    ModelManager_1.ModelManager.RouletteModel.DisActiveReplaceConfig()
+    ModelManager_1.ModelManager.RouletteModel.DisActiveReplaceConfig();
   }
 }
-exports.RouletteController = RouletteController, (_a = RouletteController).YHt = () => {
-  RouletteController.OpenAssemblyView()
-}, RouletteController.D0o = (e, o) => {
-  ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === e && RouletteController.RefreshExploreSkillButton()
-}, RouletteController.p8_ = () => {
-  1018 === ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId && RouletteController.RefreshExploreSkillButton()
-}, RouletteController.qdi = (e, o) => {
+exports.RouletteController = RouletteController;
+(_a = RouletteController).YHt = () => {
+  RouletteController.OpenAssemblyView();
+};
+RouletteController.D0o = (e, o) => {
+  if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === e) {
+    RouletteController.RefreshExploreSkillButton();
+  }
+};
+RouletteController.p8_ = () => {
+  if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1018) {
+    RouletteController.RefreshExploreSkillButton();
+  }
+};
+RouletteController.qdi = (e, o) => {
   RouletteController.L0o(e);
-  var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId,
-    t = ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.get(t);
-  t && (t = t.Cost) && 0 < t.size && ([t] = t.keys(), t === e) && RouletteController.RefreshExploreSkillButton()
-}, RouletteController.L0o = e => {
-  e === ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId && (0 === ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) ? (_a.SaveCurrentRouletteData(void 0, void 0, 0), ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(3002), RouletteController.ExploreSkillSetRequest(3002)) : RouletteController.RefreshExploreSkillButton())
-}, RouletteController.T0o = (e, o, t) => {
+  var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
+  var t = ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.get(t);
+  if ((t &&= t.Cost) && t.size > 0 && ([t] = t.keys(), t === e)) {
+    RouletteController.RefreshExploreSkillButton();
+  }
+};
+RouletteController.L0o = e => {
+  if (e === ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId) {
+    if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) === 0) {
+      _a.SaveCurrentRouletteData(undefined, undefined, 0);
+      ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(3002);
+      RouletteController.ExploreSkillSetRequest(3002);
+    } else {
+      RouletteController.RefreshExploreSkillButton();
+    }
+  }
+};
+RouletteController.T0o = (e, o, t) => {
   switch (o) {
     case 210013:
       RouletteController.OnUseEquipItem();
@@ -181,21 +341,38 @@ exports.RouletteController = RouletteController, (_a = RouletteController).YHt =
       AdviceController_1.AdviceController.OpenAdviceCreateView();
       break;
     case 210012:
-      PhotographController_1.PhotographController.PhotographFastScreenShot()
+      PhotographController_1.PhotographController.PhotographFastScreenShot();
   }
-}, RouletteController.iVe = (e, o) => {
-  var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-  return !(!t || !t.Entity) && (Info_1.Info.IsInGamepad() ? ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(!0) || ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen() : (o = 0 < (t = o ?? []).length ? Number(t[0]) : 1, 0 === ModelManager_1.ModelManager.RouletteModel.GetRouletteActionOpenConfig(o) ? ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(!0) : ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen()))
-}, RouletteController.U0o = e => {
-  var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-  return !(!o || !o.Entity) && (ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen() || ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen())
-}, RouletteController.xie = (e, o) => {
-  _a.StopListenRelatedTags(), _a.ListenRelatedTags(e)
-}, RouletteController._B_ = (e, o) => {
-  var t, r;
-  ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle?.Entity?.GetComponent(193) && (t = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList, (r = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdExistPriorityList)[t.indexOf(e)] = o, _a.L5_(t, r))
-}, RouletteController.nye = () => {
-  var e;
-  ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() ? (e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), (e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)) && ModelManager_1.ModelManager.RouletteModel.TryActiveFunctionRouletteReplaceConfig(e.InstSubType)) : ModelManager_1.ModelManager.RouletteModel.DisActiveFunctionRouletteReplaceConfig()
 };
-//# sourceMappingURL=RouletteController.js.map
+RouletteController.iVe = (e, o) => {
+  var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+  return !!t && !!t.Entity && (Info_1.Info.IsInGamepad() ? ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(true) || ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen() : (o = (t = o ?? []).length > 0 ? Number(t[0]) : 1, ModelManager_1.ModelManager.RouletteModel.GetRouletteActionOpenConfig(o) === 0 ? ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(true) : ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen()));
+};
+RouletteController.U0o = e => {
+  var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+  return !!o && !!o.Entity && (ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen() || ModelManager_1.ModelManager.RouletteModel.IsFunctionRouletteOpen());
+};
+RouletteController.xie = (e, o) => {
+  _a.StopListenRelatedTags();
+  _a.ListenRelatedTags(e);
+};
+RouletteController._B_ = (e, o) => {
+  var t;
+  var r;
+  if (ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle?.Entity?.GetComponent(193)) {
+    t = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList;
+    (r = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdExistPriorityList)[t.indexOf(e)] = o;
+    _a.L5_(t, r);
+  }
+};
+RouletteController.nye = () => {
+  var e;
+  if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+    e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    if (e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)) {
+      ModelManager_1.ModelManager.RouletteModel.TryActiveFunctionRouletteReplaceConfig(e.InstSubType);
+    }
+  } else {
+    ModelManager_1.ModelManager.RouletteModel.DisActiveFunctionRouletteReplaceConfig();
+  }
+}; //# sourceMappingURL=RouletteController.js.map

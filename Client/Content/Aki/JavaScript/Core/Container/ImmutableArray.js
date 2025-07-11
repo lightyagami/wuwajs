@@ -1,62 +1,75 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ImmutableArray = void 0;
+  value: true
+});
+exports.ImmutableArray = undefined;
 const Log_1 = require("../Common/Log");
 class ImmutableArray extends Array {
   constructor() {
-    super(...arguments), this.cJa = void 0
+    super(...arguments);
+    this.cJa = undefined;
   }
   get JYa() {
-    return this.cJa || (this.cJa = Array.from(this)), this.cJa
+    this.cJa ||= Array.from(this);
+    return this.cJa;
   }
   push() {
-    return this.ZYa("push"), NaN
+    this.ZYa("push");
+    return NaN;
   }
   pop() {
-    this.ZYa("pop")
+    this.ZYa("pop");
   }
   shift() {
-    this.ZYa("shift")
+    this.ZYa("shift");
   }
   unshift() {
-    return this.ZYa("unshift"), NaN
+    this.ZYa("unshift");
+    return NaN;
   }
   splice(t, r) {
-    return this.ZYa("splice"), new Array
+    this.ZYa("splice");
+    return new Array();
   }
   sort(t) {
-    return this.ZYa("sort"), this
+    this.ZYa("sort");
+    return this;
   }
   reverse() {
-    return this.ZYa("reverse"), this
+    this.ZYa("reverse");
+    return this;
   }
   fill(t, r, e) {
-    return this.ZYa("fill"), this
+    this.ZYa("fill");
+    return this;
   }
   copyWithin(t, r, e) {
-    return this.ZYa("copyWithin"), this
+    this.ZYa("copyWithin");
+    return this;
   }
   set length(t) {
-    this.ZYa("set length")
+    this.ZYa("set length");
   }
   get length() {
-    return super.length
+    return super.length;
   }
   concat(...t) {
-    return this.JYa.concat(...t)
+    return this.JYa.concat(...t);
   }
   map(t, r) {
-    return this.JYa.map(t, r)
+    return this.JYa.map(t, r);
   }
   slice(t, r) {
-    return this.JYa.slice(t, r)
+    return this.JYa.slice(t, r);
   }
   filter(t, r) {
-    return this.JYa.filter(t, r)
+    return this.JYa.filter(t, r);
   }
   ZYa(t) {
-    Log_1.Log.CheckError() && Log_1.Log.Error("Core", 62, "ImmutableArray 不允许修改", ["函数名", t])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Core", 62, "ImmutableArray 不允许修改", ["函数名", t]);
+    }
   }
 }
 exports.ImmutableArray = ImmutableArray;

@@ -1,33 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCompareEntityGroupState = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCompareEntityGroupState = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCompareEntityGroupState extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r) {
-    if (!e) return !1;
+    if (!e) {
+      return false;
+    }
     var t = e.GroupCondition.Count;
     const o = e.GroupCondition.Compare;
     let i = 0;
-    return e.GroupCondition.Conditions?.forEach(e => {
+    e.GroupCondition.Conditions?.forEach(e => {
       var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId);
-      let t = !0;
-      if (void 0 !== e.State) {
+      let t = true;
+      if (e.State !== undefined) {
         var a = r?.Entity?.GetComponent(196);
-        if (!a) return;
+        if (!a) {
+          return;
+        }
         a = a.ContainsTagByName(e.State);
-        t = "Eq" === o ? a : !a
+        t = o === "Eq" ? a : !a;
       }
-      let n = !0;
-      if (void 0 !== e.IsLocked) {
+      let n = true;
+      if (e.IsLocked !== undefined) {
         a = r?.Entity?.GetComponent(130);
-        if (!a) return;
+        if (!a) {
+          return;
+        }
         r = e.IsLocked === a.IsLocked;
-        n = "Eq" === o ? r : !r
+        n = o === "Eq" ? r : !r;
       }
-      t && n && ++i
-    }), i === t
+      if (t && n) {
+        ++i;
+      }
+    });
+    return i === t;
   }
 }
 exports.LevelConditionCompareEntityGroupState = LevelConditionCompareEntityGroupState;

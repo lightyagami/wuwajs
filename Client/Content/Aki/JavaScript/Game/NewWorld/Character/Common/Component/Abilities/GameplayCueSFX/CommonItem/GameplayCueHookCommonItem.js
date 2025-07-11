@@ -1,45 +1,80 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GameplayCueHookCommonItem = void 0;
-const UE = require("ue"),
-  ActorSystem_1 = require("../../../../../../../../Core/Actor/ActorSystem"),
-  ResourceSystem_1 = require("../../../../../../../../Core/Resource/ResourceSystem"),
-  TimerSystem_1 = require("../../../../../../../../Core/Timer/TimerSystem"),
-  MathUtils_1 = require("../../../../../../../../Core/Utils/MathUtils"),
-  EffectContext_1 = require("../../../../../../../Effect/EffectContext/EffectContext"),
-  EffectSystem_1 = require("../../../../../../../Effect/EffectSystem"),
-  GlobalData_1 = require("../../../../../../../GlobalData"),
-  RecorderBlueprintFunctionLibrary_1 = require("../../../../../../../Recorder/RecorderBlueprintFunctionLibrary");
+  value: true
+});
+exports.GameplayCueHookCommonItem = undefined;
+const UE = require("ue");
+const ActorSystem_1 = require("../../../../../../../../Core/Actor/ActorSystem");
+const ResourceSystem_1 = require("../../../../../../../../Core/Resource/ResourceSystem");
+const TimerSystem_1 = require("../../../../../../../../Core/Timer/TimerSystem");
+const MathUtils_1 = require("../../../../../../../../Core/Utils/MathUtils");
+const EffectContext_1 = require("../../../../../../../Effect/EffectContext/EffectContext");
+const EffectSystem_1 = require("../../../../../../../Effect/EffectSystem");
+const GlobalData_1 = require("../../../../../../../GlobalData");
+const ModelManager_1 = require("../../../../../../../Manager/ModelManager");
+const RecorderBlueprintFunctionLibrary_1 = require("../../../../../../../Recorder/RecorderBlueprintFunctionLibrary");
+const EffectUtil_1 = require("../../../../../../../Utils/EffectUtil");
 class GameplayCueHookCommonItem {
-  constructor(t, e, r, i) {
-    this.OQt = t, this.u$o = e, this.TargetPosition = r, this.Paths = i, this.c$o = void 0, this.m$o = 0, this.dce = !1, this.nfn = void 0
+  constructor(e, t, r, i) {
+    this.OQt = e;
+    this.u$o = t;
+    this.TargetPosition = r;
+    this.Paths = i;
+    this.c$o = undefined;
+    this.m$o = 0;
+    this.dce = false;
+    this.nfn = undefined;
   }
-  static Spawn(t, e, r, i) {
-    t = new this(t, e, r, i);
-    return t.dce = !0, t.c$o = t.d$o(), t.m$o = t.C$o(), t
+  static Spawn(e, t, r, i) {
+    e = new this(e, t, r, i);
+    e.dce = true;
+    e.c$o = e.d$o();
+    e.m$o = e.C$o();
+    return e;
   }
   Destroy() {
-    RecorderBlueprintFunctionLibrary_1.default.Recording && RecorderBlueprintFunctionLibrary_1.default.StopRecordGameplayCueHook(this), this.dce = !1, this.nfn = void 0, ActorSystem_1.ActorSystem.Put("GameplayCueHookCommonItem.Destroy", this.c$o), EffectSystem_1.EffectSystem.IsValid(this.m$o) && EffectSystem_1.EffectSystem.StopEffectById(this.m$o, "[GameplayCueHookCommonItem.Destroy]", !0), this.g$o()
+    if (RecorderBlueprintFunctionLibrary_1.default.Recording) {
+      RecorderBlueprintFunctionLibrary_1.default.StopRecordGameplayCueHook(this);
+    }
+    this.dce = false;
+    this.nfn = undefined;
+    ActorSystem_1.ActorSystem.Put("GameplayCueHookCommonItem.Destroy", this.c$o);
+    if (EffectSystem_1.EffectSystem.IsValid(this.m$o)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.m$o, "[GameplayCueHookCommonItem.Destroy]", true);
+    }
+    this.g$o();
   }
-  Tick(t) {
-    this.TargetPosition.Set(t.X, t.Y, t.Z), EffectSystem_1.EffectSystem.IsValid(this.m$o) && EffectSystem_1.EffectSystem.GetEffectActor(this.m$o)?.D_K2_SetActorLocation(t, !1, void 0, !0);
-    t = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, t);
-    this.nfn?.SetNiagaraVariableVec3("end", t)
+  Tick(e) {
+    this.TargetPosition.Set(e.X, e.Y, e.Z);
+    if (EffectSystem_1.EffectSystem.IsValid(this.m$o)) {
+      EffectSystem_1.EffectSystem.GetEffectActor(this.m$o)?.D_K2_SetActorLocation(e, false, undefined, true);
+    }
+    e = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, e);
+    this.nfn?.SetNiagaraVariableVec3("end", e);
   }
   d$o() {
-    const e = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), this.OQt.D_GetTransform());
-    return GlobalData_1.GlobalData.IsPlayInEditor && e.SetActorLabel(this.OQt.GetActorLabel() + ":" + GameplayCueHookCommonItem.name), ResourceSystem_1.ResourceSystem.LoadAsync(this.Paths[0], UE.NiagaraSystem, t => {
-      this.dce && t?.IsValid() && e?.IsValid() && (this.nfn = e.AddComponentByClass(UE.NiagaraComponent.StaticClass(), !1, MathUtils_1.MathUtils.DefaultTransform, !1), this.nfn.SetAsset(t), t = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, this.TargetPosition), this.nfn.SetNiagaraVariableVec3("end", t), TimerSystem_1.TimerSystem.Next(() => {
-        UE.KuroEffectLibrary.SetNiagaraSimulationMinDeltaTime(this.nfn, -1)
-      }), e.K2_AttachToComponent(this.OQt.Mesh, this.u$o, 2, 2, 2, !1), RecorderBlueprintFunctionLibrary_1.default.Recording) && RecorderBlueprintFunctionLibrary_1.default.StartRecordGameplayCueHook(e, this)
-    }), e
+    const t = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), this.OQt.D_GetTransform());
+    if (GlobalData_1.GlobalData.IsPlayInEditor) {
+      t.SetActorLabel(this.OQt.GetActorLabel() + ":" + GameplayCueHookCommonItem.name);
+    }
+    ResourceSystem_1.ResourceSystem.LoadAsync(this.Paths[0], UE.NiagaraSystem, e => {
+      if (this.dce && e?.IsValid() && t?.IsValid() && (this.nfn = t.AddComponentByClass(UE.NiagaraComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false), this.nfn.SetAsset(e), e = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, this.TargetPosition), this.nfn.SetNiagaraVariableVec3("end", e), TimerSystem_1.TimerSystem.Next(() => {
+        UE.KuroEffectLibrary.SetNiagaraSimulationMinDeltaTime(this.nfn, -1);
+      }), t.K2_AttachToComponent(this.OQt.Mesh, this.u$o, 2, 2, 2, false), RecorderBlueprintFunctionLibrary_1.default.Recording)) {
+        RecorderBlueprintFunctionLibrary_1.default.StartRecordGameplayCueHook(t, this);
+      }
+    });
+    return t;
   }
   C$o() {
-    return EffectSystem_1.EffectSystem.SpawnEffect(this.OQt, new UE.TransformDouble(this.TargetPosition), this.Paths[1], "[GameplayCueHookCommonItem.CreateBallEffect]", new EffectContext_1.EffectContext(this.OQt.EntityId), 0)
+    var e = EffectSystem_1.EffectSystem.SpawnEffect(this.OQt, new UE.TransformDouble(this.TargetPosition), this.Paths[1], "[GameplayCueHookCommonItem.CreateBallEffect]", new EffectContext_1.EffectContext(this.OQt.EntityId), 0);
+    EffectUtil_1.EffectUtil.SetAdditionalEffectTimeScaleByEntity(ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.OQt.EntityId), e);
+    return e;
   }
   g$o() {
-    EffectSystem_1.EffectSystem.SpawnEffect(this.OQt, new UE.TransformDouble(this.TargetPosition), this.Paths[2], "[GameplayCueHookCommonItem.DestroyBallEffect]", new EffectContext_1.EffectContext(this.OQt.EntityId), 0)
+    var e = EffectSystem_1.EffectSystem.SpawnEffect(this.OQt, new UE.TransformDouble(this.TargetPosition), this.Paths[2], "[GameplayCueHookCommonItem.DestroyBallEffect]", new EffectContext_1.EffectContext(this.OQt.EntityId), 0);
+    EffectUtil_1.EffectUtil.SetAdditionalEffectTimeScaleByEntity(ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.OQt.EntityId), e);
   }
 }
 exports.GameplayCueHookCommonItem = GameplayCueHookCommonItem;

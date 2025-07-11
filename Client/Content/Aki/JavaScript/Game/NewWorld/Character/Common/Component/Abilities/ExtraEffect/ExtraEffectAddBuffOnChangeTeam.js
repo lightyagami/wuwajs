@@ -1,79 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BindBuffToTeam = exports.AddBuffOnChangeTeam = void 0;
-const RegisterComponent_1 = require("../../../../../../../Core/Entity/RegisterComponent"),
-  EventDefine_1 = require("../../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../../../../Manager/ModelManager"),
-  CombatLog_1 = require("../../../../../../Utils/CombatLog"),
-  ExtraEffectBase_1 = require("./ExtraEffectBase");
+  value: true
+});
+exports.BindBuffToTeam = exports.AddBuffOnChangeTeam = undefined;
+const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const CharacterBuffController_1 = require("../CharacterBuffController");
+const ExtraEffectBase_1 = require("./ExtraEffectBase");
 class AddBuffOnChangeTeam extends ExtraEffectBase_1.BuffEffect {
   constructor() {
-    super(...arguments), this.jQo = [], this.WQo = void 0, this.yvi = () => {
+    super(...arguments);
+    this.jQo = [];
+    this.WQo = undefined;
+    this.yvi = () => {
       const i = this.OwnerBuffComponent.GetBuffByHandle(this.ActiveHandleId);
       var t;
-      i?.IsValid() && ((t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()).forEach(t => {
-        if (!this.WQo.includes(t.Id)) {
-          var e = t.Entity.GetComponent(174);
-          for (const s of this.jQo) e?.AddIterativeBuff(s, i, void 0, !1, `新入队角色加Buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`)
-        }
-      }), this.WQo = t.map(t => t.Id))
-    }
+      if (i?.IsValid()) {
+        (t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()).forEach(t => {
+          if (!this.WQo.includes(t.Id)) {
+            var e = t.Entity.GetComponent(174);
+            for (const s of this.jQo) {
+              e?.AddIterativeBuff(s, i, undefined, false, `新入队角色加Buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`);
+            }
+          }
+        });
+        this.WQo = t.map(t => t.Id);
+      }
+    };
   }
   InitParameters(t) {
     t = t.ExtraEffectParameters;
-    this.jQo = t[0].split("#").map(t => Number(t)), this.WQo = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities().map(t => t.Id)
+    this.jQo = t[0].split("#").map(t => Number(t));
+    this.WQo = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities().map(t => t.Id);
   }
   OnCreated() {
-    this.OwnerBuffComponent.HasBuffAuthority() && EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi)
+    if (this.OwnerBuffComponent.HasBuffAuthority()) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
+    }
   }
   OnRemoved() {
-    this.OwnerBuffComponent?.HasBuffAuthority() && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi)
+    if (this.OwnerBuffComponent?.HasBuffAuthority()) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
+    }
   }
   OnExecute() {}
 }
 exports.AddBuffOnChangeTeam = AddBuffOnChangeTeam;
 class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
   constructor() {
-    super(...arguments), this.jQo = [], this.WQo = [], this.aFl = "BindBuffToTeam", this.qie = "BindBuffToTeam", this.yvi = () => {
+    super(...arguments);
+    this.jQo = [];
+    this.WQo = [];
+    this.aFl = "BindBuffToTeam";
+    this.qie = "BindBuffToTeam";
+    this.BHc = false;
+    this.yvi = () => {
       if (this.PendingBuff) {
-        var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
-        for (const i of t) {
-          var e = i.Entity?.GetComponent(209);
-          if (e && !this.WQo.includes(i.Id))
-            for (const n of this.jQo) e.AddIterativeBuff(n, this.PendingBuff, void 0, !1, this.aFl)
+        var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(this.BHc);
+        for (const r of t) {
+          var e = r.Entity?.GetComponent(209);
+          if (e && !this.WQo.includes(r.Id)) {
+            for (const f of this.jQo) {
+              e.AddIterativeBuff(f, this.PendingBuff, undefined, false, this.aFl);
+            }
+          }
         }
-        for (const f of this.WQo) {
-          var s = ModelManager_1.ModelManager.CharacterModel?.GetHandle(f)?.Entity?.GetComponent(209);
-          if (s && !t.some(t => t.Id === f))
-            for (const o of this.jQo) s.RemoveBuff(o, -1, this.qie, this.PendingBuff.MessageId)
+        for (const n of this.WQo) {
+          var s = ModelManager_1.ModelManager.CharacterModel?.GetHandle(n)?.Entity?.GetComponent(209);
+          if (s && !t.some(t => t.Id === n)) {
+            for (const h of this.jQo) {
+              var i = CharacterBuffController_1.default.GetBuffDefinition(h)?.DefaultStackCount ?? -1;
+              s.RemoveBuff(h, i, this.qie, this.PendingBuff.MessageId);
+            }
+          }
         }
-        this.WQo = t.map(t => t.Id)
+        this.WQo = t.map(t => t.Id);
       }
-    }
+    };
   }
   InitParameters(t) {
     t = t.ExtraEffectParameters;
-    this.jQo = t[0].split("#").map(t => Number(t))
+    this.jQo = t[0].split("#").map(t => Number(t));
+    this.BHc = Number(t[1] ?? 0) === 1;
   }
   OnCreated() {
-    (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 199) ? this.OwnerBuffComponent.HasBuffAuthority() && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi), this.aFl = `额外效果为进入小队角色附加buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`, this.qie = `额外效果为退出小队角色移除buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`, this.WQo = [], this.yvi()): CombatLog_1.CombatLog.Error("Buff", this.ExactOwnerEntity, "小队附加buff的额外效果只能附加在玩家编队实体上", ["buffId", this.BuffId], ["handle", this.ActiveHandleId])
+    if (this.OwnerBuffComponent?.HasBuffAuthority()) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
+      this.aFl = `额外效果为进入小队角色附加buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`;
+      this.qie = `额外效果为退出小队角色移除buff（前置buff Id=${this.BuffId}, handle=${this.ActiveHandleId}）`;
+      this.WQo = [];
+      this.yvi();
+    }
   }
   OnRemoved() {
     if (this.OwnerBuffComponent?.HasBuffAuthority()) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
-      for (const e of this.WQo) {
-        var t = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e)?.Entity?.GetComponent(209);
-        if (t)
-          for (const s of this.jQo) t.RemoveBuff(s, -1, this.qie, this.PendingBuff?.MessageId)
+      for (const s of this.WQo) {
+        var t = ModelManager_1.ModelManager.CharacterModel?.GetHandle(s)?.Entity?.GetComponent(209);
+        if (t) {
+          for (const i of this.jQo) {
+            var e = CharacterBuffController_1.default.GetBuffDefinition(i)?.DefaultStackCount ?? -1;
+            t.RemoveBuff(i, e, this.qie, this.PendingBuff?.MessageId);
+          }
+        }
       }
-      this.WQo = []
+      this.WQo = [];
     }
   }
   OnExecute() {}
   GetDebugEffectString() {
-    return "为小队绑定buff" + this.jQo.join("、")
+    return `为${this.BHc ? "小队" : "全队"}绑定buff${this.jQo.join("、")}`;
   }
 }
 exports.BindBuffToTeam = BindBuffToTeam;

@@ -1,55 +1,85 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleSkillData = exports.ERoleSkillReferenceType = void 0;
-const Log_1 = require("../../../../../Core/Common/Log"),
-  ConfigCommon_1 = require("../../../../../Core/Config/ConfigCommon"),
-  EventDefine_1 = require("../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../Common/Event/EventSystem"),
-  LevelGeneralCommons_1 = require("../../../../LevelGamePlay/LevelGeneralCommons"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../../../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  BaseAbilityComponent_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/BaseAbilityComponent"),
-  RoleModuleDataBase_1 = require("./RoleModuleDataBase");
+  value: true
+});
+exports.RoleSkillData = exports.ERoleSkillReferenceType = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
+const ConfigCommon_1 = require("../../../../../Core/Config/ConfigCommon");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const LevelGeneralCommons_1 = require("../../../../LevelGamePlay/LevelGeneralCommons");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const BaseAbilityComponent_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/BaseAbilityComponent");
+const RoleModuleDataBase_1 = require("./RoleModuleDataBase");
 var ERoleSkillReferenceType;
-! function(e) {
-  e[e.SkillInfo = 0] = "SkillInfo", e[e.Buff = 1] = "Buff", e[e.Damage = 2] = "Damage"
-}(ERoleSkillReferenceType = exports.ERoleSkillReferenceType || (exports.ERoleSkillReferenceType = {}));
+(function (e) {
+  e[e.SkillInfo = 0] = "SkillInfo";
+  e[e.Buff = 1] = "Buff";
+  e[e.Damage = 2] = "Damage";
+})(ERoleSkillReferenceType = exports.ERoleSkillReferenceType ||= {});
 class RoleSkillData extends RoleModuleDataBase_1.RoleModuleDataBase {
   constructor() {
-    super(...arguments), this.RoleSkillMap = new Map, this.RoleUpgradeSkillMap = new Map, this.RoleSkillReferenceMap = new Map, this.SkillNodeState = [], this.z1o = new Map, this.Z1o = []
+    super(...arguments);
+    this.RoleSkillMap = new Map();
+    this.RoleUpgradeSkillMap = new Map();
+    this.RoleSkillReferenceMap = new Map();
+    this.SkillNodeState = [];
+    this.z1o = new Map();
+    this.Z1o = [];
   }
   GetSkillNodeLevel(e) {
     let r = 0;
     var t = e.NodeType;
-    return 2 === t || 1 === t ? (t = e.SkillId, r = this.GetSkillLevel(t)) : this.IsSkillTreeNodeActive(e.Id) && (r = 1), r
+    if (t === 2 || t === 1) {
+      t = e.SkillId;
+      r = this.GetSkillLevel(t);
+    } else if (this.IsSkillTreeNodeActive(e.Id)) {
+      r = 1;
+    }
+    return r;
   }
   GetSkillLevel(e) {
-    return this.RoleSkillMap.get(e) ?? 0
+    return this.RoleSkillMap.get(e) ?? 0;
   }
   SetSkillLevel(e, r) {
-    this.RoleSkillMap.set(e, r), 0 < r && 0 < (r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(e).UpgradeSkillId) && this.RoleUpgradeSkillMap.set(r, e)
+    this.RoleSkillMap.set(e, r);
+    if (r > 0 && (r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(e).UpgradeSkillId) > 0) {
+      this.RoleUpgradeSkillMap.set(r, e);
+    }
   }
   GetAllSkillLevel() {
-    return Array.from(this.RoleSkillMap.values())
+    return Array.from(this.RoleSkillMap.values());
   }
   GetSkillList() {
     var e;
-    return 0 < this.Z1o.length ? this.Z1o : (e = this.GetRoleConfig().SkillId, (e = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(e))).sort((e, r) => e.SortIndex - r.SortIndex), this.e_o(e), e)
+    if (this.Z1o.length > 0) {
+      return this.Z1o;
+    } else {
+      e = this.GetRoleConfig().SkillId;
+      (e = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(e))).sort((e, r) => e.SortIndex - r.SortIndex);
+      this.e_o(e);
+      return e;
+    }
   }
   e_o(r) {
     var t = r.length;
     for (let e = 0; e < t; e++) {
       var i = r[e];
-      this.Z1o.push(i), this.z1o.set(i.Id, i)
+      this.Z1o.push(i);
+      this.z1o.set(i.Id, i);
     }
   }
   GetSkillConfigFromCache(e) {
-    return 0 === this.z1o.size && this.GetSkillList(), this.z1o.get(e)
+    if (this.z1o.size === 0) {
+      this.GetSkillList();
+    }
+    return this.z1o.get(e);
   }
   IsHasSkill(e) {
-    return this.RoleSkillMap.has(e)
+    return this.RoleSkillMap.has(e);
   }
   GetReferenceList(e, r) {
     var t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(e);
@@ -61,7 +91,7 @@ class RoleSkillData extends RoleModuleDataBase_1.RoleModuleDataBase {
       case ERoleSkillReferenceType.Damage:
         return t.DamageList;
       default:
-        return []
+        return [];
     }
   }
   GetDefaultSkillLevel(e) {
@@ -71,99 +101,153 @@ class RoleSkillData extends RoleModuleDataBase_1.RoleModuleDataBase {
       case ERoleSkillReferenceType.Buff:
       case ERoleSkillReferenceType.Damage:
       default:
-        return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND
+        return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
     }
   }
   SetSkillReferenceMapBySkillId(r) {
-    for (const i in ERoleSkillReferenceType)
+    for (const i in ERoleSkillReferenceType) {
       if (!isNaN(Number(i))) {
         let e = this.RoleSkillReferenceMap.get(Number(i));
-        e || (e = new Map, this.RoleSkillReferenceMap.set(Number(i), e));
+        if (!e) {
+          e = new Map();
+          this.RoleSkillReferenceMap.set(Number(i), e);
+        }
         for (const l of this.GetReferenceList(r, Number(i))) {
           var t = e.get(l);
-          t ? t !== r && Log_1.Log.CheckError() && Log_1.Log.Error("Role", 43, "技能表里的这个ID不能对应多个技能", ["ID", l]) : e.set(l, r)
+          if (t) {
+            if (t !== r && Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Role", 43, "技能表里的这个ID不能对应多个技能", ["ID", l]);
+            }
+          } else {
+            e.set(l, r);
+          }
         }
       }
+    }
   }
   GetReferencedSkillLevel(e, r) {
     e = this.RoleSkillReferenceMap.get(r)?.get(e);
-    return e ? this.GetSkillLevel(e) : this.GetDefaultSkillLevel(r)
+    if (e) {
+      return this.GetSkillLevel(e);
+    } else {
+      return this.GetDefaultSkillLevel(r);
+    }
   }
   SetSkillNodeStateData(e) {
-    this.SkillNodeState = e, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillTreeRefresh)
+    this.SkillNodeState = e;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SkillTreeRefresh);
   }
   GetSkillNodeStateData() {
-    return this.SkillNodeState
+    return this.SkillNodeState;
   }
   GetSkillTreeNodeState(e, r) {
     var t = e.SkillId;
-    return t && 0 < t && 3 !== e.NodeType ? this.GetSkillTreeSkillNodeState(e, r) : this.GetSkillTreeAttributeNodeState(e, r)
+    if (t && t > 0 && e.NodeType !== 3) {
+      return this.GetSkillTreeSkillNodeState(e, r);
+    } else {
+      return this.GetSkillTreeAttributeNodeState(e, r);
+    }
   }
   GetSkillTreeSkillNodeState(e, r) {
-    var t = e.SkillId,
-      i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(t);
-    return this.GetSkillLevel(t) === i.MaxSkillLevel ? 3 : !this.GetSkillTreeUnsatisfiedCondition(e) && (t = this.GetRoleSkillTreeNodeUnlockConditionId(e), ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(t.toString(), void 0, !0, r)) ? 2 : 1
+    var t = e.SkillId;
+    var i = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(t);
+    if (this.GetSkillLevel(t) === i.MaxSkillLevel) {
+      return 3;
+    } else if (!this.GetSkillTreeUnsatisfiedCondition(e) && (t = this.GetRoleSkillTreeNodeUnlockConditionId(e), ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(t.toString(), undefined, true, r))) {
+      return 2;
+    } else {
+      return 1;
+    }
   }
   GetSkillTreeAttributeNodeState(e, r) {
-    return this.IsSkillTreeNodeActive(e.Id) ? 3 : this.GetSkillTreeUnsatisfiedCondition(e) || 0 < (e = this.GetRoleSkillTreeNodeUnlockConditionId(e)) && !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.toString(), void 0, !0, r) ? 1 : 2
+    if (this.IsSkillTreeNodeActive(e.Id)) {
+      return 3;
+    } else if (this.GetSkillTreeUnsatisfiedCondition(e) || (e = this.GetRoleSkillTreeNodeUnlockConditionId(e)) > 0 && !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.toString(), undefined, true, r)) {
+      return 1;
+    } else {
+      return 2;
+    }
   }
   GetUnlockConditionTextId(e) {
     var r = this.GetSkillTreeUnsatisfiedCondition(e);
-    return r ? r.Description : (r = this.GetRoleSkillTreeNodeUnlockConditionId(e)) && 0 < r ? LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(r) : void 0
+    if (r) {
+      return r.Description;
+    } else if ((r = this.GetRoleSkillTreeNodeUnlockConditionId(e)) && r > 0) {
+      return LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(r);
+    } else {
+      return undefined;
+    }
   }
   GetRoleSkillTreeNodeUnlockConditionId(e) {
-    var r, t = e.SkillId;
-    return t && 0 < t ? (r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(t), t = this.GetSkillLevel(t), ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillLevelConfigByGroupIdAndLevel(r.SkillLevelGroupId, t + 1).Condition) : e.UnLockCondition
+    var r;
+    var t = e.SkillId;
+    if (t && t > 0) {
+      r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(t);
+      t = this.GetSkillLevel(t);
+      return ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillLevelConfigByGroupIdAndLevel(r.SkillLevelGroupId, t + 1).Condition;
+    } else {
+      return e.UnLockCondition;
+    }
   }
   IsSkillTreeNodeActive(r) {
-    let t = !1;
-    var i = this.GetSkillNodeStateData(),
-      l = i.length;
+    let t = false;
+    var i = this.GetSkillNodeStateData();
+    var l = i.length;
     for (let e = 0; e < l; e++) {
       var n = i[e];
       if (n.SkillNodeId === r && n.IsActive) {
-        t = !0;
-        break
+        t = true;
+        break;
       }
     }
-    return t
+    return t;
   }
   GetSkillTreeUnsatisfiedCondition(r) {
-    var t = r.Condition,
-      i = t.length;
+    var t = r.Condition;
+    var i = t.length;
     for (let e = 0; e < i; e++) {
-      var l = t[e],
-        n = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConditionById(l),
-        o = r.NodeGroup;
-      if (n)
-        if (1 === n.ConditionType)
+      var l = t[e];
+      var n = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConditionById(l);
+      var o = r.NodeGroup;
+      if (n) {
+        if (n.ConditionType === 1) {
           for (var [a, s] of n.ConditionParam) {
             a = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(o, a);
-            if (this.GetSkillNodeLevel(a) < s) return n
-          } else if (2 === n.ConditionType) {
-            var f = r.ParentNodes.length;
-            for (let e = 0; e < f; e++) {
-              var u = r.ParentNodes[e],
-                u = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(o, u);
-              if (0 === this.GetSkillNodeLevel(u)) return n
+            if (this.GetSkillNodeLevel(a) < s) {
+              return n;
             }
           }
+        } else if (n.ConditionType === 2) {
+          var f = r.ParentNodes.length;
+          for (let e = 0; e < f; e++) {
+            var u = r.ParentNodes[e];
+            var u = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(o, u);
+            if (this.GetSkillNodeLevel(u) === 0) {
+              return n;
+            }
+          }
+        }
+      }
     }
   }
   IsSkillTreeNodeConsumeSatisfied(e) {
-    var r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(e),
-      r = this.GetSkillNodeLevel(r),
-      e = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(e, r + 1);
-    if (e)
-      for (var [t, i] of e)
-        if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) < i) return !1;
-    return !0
+    var r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(e);
+    var r = this.GetSkillNodeLevel(r);
+    var e = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillTreeConsume(e, r + 1);
+    if (e) {
+      for (var [t, i] of e) {
+        if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) < i) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
   GetSkillIdAfterUpgrade(e) {
-    return this.RoleUpgradeSkillMap.get(e) ?? 0
+    return this.RoleUpgradeSkillMap.get(e) ?? 0;
   }
   HasAnySkillUpgrade() {
-    return 0 < this.RoleUpgradeSkillMap.size
+    return this.RoleUpgradeSkillMap.size > 0;
   }
 }
 exports.RoleSkillData = RoleSkillData;

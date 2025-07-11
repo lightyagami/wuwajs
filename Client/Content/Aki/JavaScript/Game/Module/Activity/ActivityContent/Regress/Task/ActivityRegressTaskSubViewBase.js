@@ -1,11 +1,13 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityRegressTaskSubViewBase = void 0;
+  value: true
+});
+exports.ActivityRegressTaskSubViewBase = undefined;
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 class ActivityRegressTaskSubViewBase extends UiPanelBase_1.UiPanelBase {
   Update() {
-    this.OnUpdate()
+    this.OnUpdate();
   }
   OnUpdate() {}
 }

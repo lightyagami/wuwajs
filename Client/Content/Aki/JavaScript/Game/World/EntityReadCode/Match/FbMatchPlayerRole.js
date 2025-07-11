@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMatchPlayerRole = void 0;
+  value: true
+});
+exports.FbMatchPlayerRole = undefined;
 class FbMatchPlayerRole {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.cZh = !1, this.uZh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.cZh = false;
+    this.uZh = false;
   }
   static Create(t) {
-    if (t) return new FbMatchPlayerRole(t)
+    if (t) {
+      return new FbMatchPlayerRole(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MatchPhantomSkill() {
-    return this.cZh || (this.cZh = !0, this.uZh = this.FbDataInternal.matchPhantomSkill()), this.uZh
+    if (!this.cZh) {
+      this.cZh = true;
+      this.uZh = this.FbDataInternal.matchPhantomSkill();
+    }
+    return this.uZh;
   }
 }
 exports.FbMatchPlayerRole = FbMatchPlayerRole;

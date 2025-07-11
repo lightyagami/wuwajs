@@ -1,28 +1,50 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckEntitiesExist = void 0;
+  value: true
+});
+exports.FbCheckEntitiesExist = undefined;
 class FbCheckEntitiesExist {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.V1h = !1, this.j1h = void 0, this.Bzh = !1, this.qzh = !1
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.V1h = false;
+    this.j1h = undefined;
+    this.Bzh = false;
+    this.qzh = false;
   }
   static Create(t) {
-    if (t) return new FbCheckEntitiesExist(t)
+    if (t) {
+      return new FbCheckEntitiesExist(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get EntityIds() {
     if (!this.V1h) {
-      this.V1h = !0, this.j1h = new Array;
+      this.V1h = true;
+      this.j1h = new Array();
       var i = this.FbDataInternal.entityIdsLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.j1h.push(this.FbDataInternal.entityIds(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.j1h.push(this.FbDataInternal.entityIds(t));
+        }
+      }
     }
-    return this.j1h
+    return this.j1h;
   }
   get IsExist() {
-    return this.Bzh || (this.Bzh = !0, this.qzh = this.FbDataInternal.isExist()), this.qzh
+    if (!this.Bzh) {
+      this.Bzh = true;
+      this.qzh = this.FbDataInternal.isExist();
+    }
+    return this.qzh;
   }
 }
 exports.FbCheckEntitiesExist = FbCheckEntitiesExist;

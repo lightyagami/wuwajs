@@ -1,17 +1,27 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbServerSetPlayerPos = void 0;
+  value: true
+});
+exports.FbServerSetPlayerPos = undefined;
 const FbPosA_1 = require("./FbPosA");
 class FbServerSetPlayerPos {
   constructor(e) {
-    this.FbDataInternal = e, this.uch = !1, this.dch = void 0
+    this.FbDataInternal = e;
+    this.uch = false;
+    this.dch = undefined;
   }
   static Create(e) {
-    if (e) return new FbServerSetPlayerPos(e)
+    if (e) {
+      return new FbServerSetPlayerPos(e);
+    }
   }
   get Pos() {
-    return this.uch || (this.uch = !0, this.dch = FbPosA_1.FbPosA.Create(this.FbDataInternal.pos())), this.dch
+    if (!this.uch) {
+      this.uch = true;
+      this.dch = FbPosA_1.FbPosA.Create(this.FbDataInternal.pos());
+    }
+    return this.dch;
   }
 }
 exports.FbServerSetPlayerPos = FbServerSetPlayerPos;

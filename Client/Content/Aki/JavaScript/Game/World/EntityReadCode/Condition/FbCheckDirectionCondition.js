@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckDirectionCondition = void 0;
+  value: true
+});
+exports.FbCheckDirectionCondition = undefined;
 const FbVectorInfo_1 = require("../Var/FbVectorInfo");
 class FbCheckDirectionCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.tdh = !1, this.idh = void 0, this.aJh = !1, this.hJh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.tdh = false;
+    this.idh = undefined;
+    this.aJh = false;
+    this.hJh = 0;
   }
   static Create(t) {
-    if (t) return new FbCheckDirectionCondition(t)
+    if (t) {
+      return new FbCheckDirectionCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Direction() {
-    return this.tdh || (this.tdh = !0, this.idh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.direction())), this.idh
+    if (!this.tdh) {
+      this.tdh = true;
+      this.idh = FbVectorInfo_1.FbVectorInfo.Create(this.FbDataInternal.direction());
+    }
+    return this.idh;
   }
   get AngleInterval() {
-    return this.aJh || (this.aJh = !0, this.hJh = this.FbDataInternal.angleInterval()), this.hJh
+    if (!this.aJh) {
+      this.aJh = true;
+      this.hJh = this.FbDataInternal.angleInterval();
+    }
+    return this.hJh;
   }
 }
 exports.FbCheckDirectionCondition = FbCheckDirectionCondition;

@@ -1,26 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueFloatTipsView = void 0;
-const UE = require("ue"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil");
+  value: true
+});
+exports.MapRogueFloatTipsView = undefined;
+const UE = require("ue");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
 class MapRogueFloatTipsView extends UiViewBase_1.UiViewBase {
   constructor() {
-    super(...arguments), this.Data = void 0
+    super(...arguments);
+    this.Data = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
   OnStart() {
-    this.Data = this.OpenParam, this.Data && LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), this.Data.TextId, ...this.Data.TextParam)
+    this.Data = this.OpenParam;
+    if (this.Data) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), this.Data.TextId, ...this.Data.TextParam);
+    }
   }
   OnAfterShow() {
     this.CloseMe(() => {
-      this.Data?.FinishCallback?.()
-    })
+      this.Data?.FinishCallback?.();
+    });
   }
 }
 exports.MapRogueFloatTipsView = MapRogueFloatTipsView;

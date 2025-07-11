@@ -1,46 +1,74 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RouletteAssemblyGridItem = void 0;
-const ModelManager_1 = require("../../../Manager/ModelManager"),
-  LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
+  value: true
+});
+exports.RouletteAssemblyGridItem = undefined;
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const LoopScrollMediumItemGrid_1 = require("../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
 class RouletteAssemblyGridItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
-    super(...arguments), this.Data = void 0
+    super(...arguments);
+    this.Data = undefined;
   }
   OnRefresh(e, t, r) {
     var s = {
-        Type: 4,
-        QualityType: "MediumItemGridQualitySpritePath",
-        Data: e,
-        IsOmitBottomText: !1
-      },
-      i = (2 === e.GridType ? s.QualityId = e.QualityId : s.QualityId = 1, 0 !== e.RelativeIndex);
-    switch (i && (s.SortIndex = e.RelativeIndex), e.GridType) {
+      Type: 4,
+      QualityType: "MediumItemGridQualitySpritePath",
+      Data: e,
+      IsOmitBottomText: false
+    };
+    if (e.GridType === 2) {
+      s.QualityId = e.QualityId;
+    } else {
+      s.QualityId = 1;
+    }
+    var i = e.RelativeIndex !== 0;
+    if (i) {
+      s.SortIndex = e.RelativeIndex;
+    }
+    switch (e.GridType) {
       case 0:
         var o = e;
-        s.SpriteIconPath = o.IconPath, s.BottomTextId = o.Name, s.IsNewVisible = o.HasRedDot;
+        s.SpriteIconPath = o.IconPath;
+        s.BottomTextId = o.Name;
+        s.IsNewVisible = o.HasRedDot;
         break;
       case 1:
         o = e;
-        o.IconPath.includes("Atlas") ? s.SpriteIconPath = o.IconPath : s.IconPath = o.IconPath, s.BottomTextId = e.Name;
+        if (o.IconPath.includes("Atlas")) {
+          s.SpriteIconPath = o.IconPath;
+        } else {
+          s.IconPath = o.IconPath;
+        }
+        s.BottomTextId = e.Name;
         break;
       case 2:
-        var o = e,
-          o = (s.ItemConfigId = o.Id, s.BottomText = o.ItemNum.toString(), ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e.Id));
-        o && (o = o.GetConfig(), s.BuffIconType = o.ItemBuffType)
+        var o = e;
+        s.ItemConfigId = o.Id;
+        s.BottomText = o.ItemNum.toString();
+        var o = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e.Id);
+        if (o) {
+          o = o.GetConfig();
+          s.BuffIconType = o.ItemBuffType;
+        }
     }
-    this.Apply(s), this.Data.Index = r, this.SetSelected(t)
+    this.Apply(s);
+    this.Data.Index = r;
+    this.SetSelected(t);
   }
   RefreshRedDot() {
     var e;
-    0 === this.Data.GridType && (e = this.Data, this.SetNewVisible(e.HasRedDot))
+    if (this.Data.GridType === 0) {
+      e = this.Data;
+      this.SetNewVisible(e.HasRedDot);
+    }
   }
   OnSelected(e) {
-    this.GetItemGridExtendToggle().SetToggleState(1, e)
+    this.GetItemGridExtendToggle().SetToggleState(1, e);
   }
   OnDeselected(e) {
-    this.GetItemGridExtendToggle().SetToggleState(0, e)
+    this.GetItemGridExtendToggle().SetToggleState(0, e);
   }
 }
 exports.RouletteAssemblyGridItem = RouletteAssemblyGridItem;

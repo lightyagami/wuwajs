@@ -1,35 +1,46 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.InputActionHandle = void 0;
+  value: true
+});
+exports.InputActionHandle = undefined;
 const InputDistributeHandle_1 = require("./InputDistributeHandle");
 class InputActionHandle extends InputDistributeHandle_1.InputDistributeHandle {
   constructor() {
-    super(...arguments), this.wut = !1
+    super(...arguments);
+    this.wut = false;
   }
   SetIsPress(t) {
-    this.wut = t
+    this.wut = t;
   }
   GetIsPress() {
-    return this.wut
+    return this.wut;
   }
   BindAction(t) {
-    this.Bind(t)
+    this.Bind(t);
   }
   UnBindAction(t) {
-    this.UnBind(t)
+    this.UnBind(t);
   }
   BindActionIgnoreLimit(t) {
-    this.BindIgnoreLimit(t)
+    this.BindIgnoreLimit(t);
   }
   UnBindActionIgnoreLimit(t) {
-    this.UnBindIgnoreLimit(t)
+    this.UnBindIgnoreLimit(t);
   }
   InputAction(t) {
-    t ? this.Call(0) : this.Call(1)
+    if (t) {
+      this.Call(0);
+    } else {
+      this.Call(1);
+    }
   }
   InputActionIgnoreLimit(t) {
-    t ? this.CallIgnoreLimit(0) : this.CallIgnoreLimit(1)
+    if (t) {
+      this.CallIgnoreLimit(0);
+    } else {
+      this.CallIgnoreLimit(1);
+    }
   }
 }
 exports.InputActionHandle = InputActionHandle;

@@ -1,7 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.logicModeLogString = exports.ID_SEGMENT = exports.EXIT_TAG = exports.ANY_KEY = exports.SPECIAL_TEXT = void 0, exports.SPECIAL_TEXT = "Hide", exports.ANY_KEY = "AnyKey", exports.EXIT_TAG = "tag1", exports.ID_SEGMENT = 1e4, exports.logicModeLogString = {
+  value: true
+});
+exports.logicModeLogString = exports.ID_SEGMENT = exports.EXIT_TAG = exports.ANY_KEY = exports.SPECIAL_TEXT = undefined;
+exports.SPECIAL_TEXT = "Hide";
+exports.ANY_KEY = "AnyKey";
+exports.EXIT_TAG = "tag1";
+exports.ID_SEGMENT = 10000;
+exports.logicModeLogString = {
   [0]: "None",
   1: "自身显隐状态",
   2: "监听组件控制显隐",
@@ -11,5 +18,4 @@ Object.defineProperty(exports, "__esModule", {
   32: "文本屏蔽",
   64: "表格配置操作类型屏蔽",
   65: "None"
-};
-//# sourceMappingURL=HotKeyViewDefine.js.map
+}; //# sourceMappingURL=HotKeyViewDefine.js.map

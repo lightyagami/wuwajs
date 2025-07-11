@@ -1,23 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckEntityLocked = void 0;
-const ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckEntityLocked = undefined;
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckEntityLocked extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r) {
-    if (!e) return !1;
+    if (!e) {
+      return false;
+    }
     var n = e;
     for (const a of n.Entities) {
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a);
-      if (!t?.Valid) return !1;
+      if (!t?.Valid) {
+        return false;
+      }
       t = t.Entity.GetComponent(196);
-      if (!t) return !1;
+      if (!t) {
+        return false;
+      }
       if (t.HasTag(-662723379)) {
-        if (!n.IsLocked) return !1
-      } else if (n.IsLocked) return !1
+        if (!n.IsLocked) {
+          return false;
+        }
+      } else if (n.IsLocked) {
+        return false;
+      }
     }
-    return !0
+    return true;
   }
 }
 exports.LevelConditionCheckEntityLocked = LevelConditionCheckEntityLocked;

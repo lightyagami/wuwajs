@@ -1,112 +1,129 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CommonConfig = void 0;
-const Info_1 = require("../../../../Core/Common/Info"),
-  ConfigCommon_1 = require("../../../../Core/Config/ConfigCommon"),
-  CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById"),
-  ElementInfoById_1 = require("../../../../Core/Define/ConfigQuery/ElementInfoById"),
-  LongPressConfigById_1 = require("../../../../Core/Define/ConfigQuery/LongPressConfigById"),
-  QualityInfoAll_1 = require("../../../../Core/Define/ConfigQuery/QualityInfoAll"),
-  QualityInfoById_1 = require("../../../../Core/Define/ConfigQuery/QualityInfoById"),
-  ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
+  value: true
+});
+exports.CommonConfig = undefined;
+const Info_1 = require("../../../../Core/Common/Info");
+const ConfigCommon_1 = require("../../../../Core/Config/ConfigCommon");
+const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
+const ElementInfoById_1 = require("../../../../Core/Define/ConfigQuery/ElementInfoById");
+const LongPressConfigById_1 = require("../../../../Core/Define/ConfigQuery/LongPressConfigById");
+const QualityInfoAll_1 = require("../../../../Core/Define/ConfigQuery/QualityInfoAll");
+const QualityInfoById_1 = require("../../../../Core/Define/ConfigQuery/QualityInfoById");
+const ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
 class CommonConfig extends ConfigBase_1.ConfigBase {
   GetSelectablePropItemTickMaxTime() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("additem_accumulate_initialtime")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("additem_accumulate_initialtime");
   }
   GetSelectablePropItemTickMinTime() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("additem_accumulate_mintime")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("additem_accumulate_mintime");
   }
   GetSelectablePropItemTickIntervalTime() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("additem_accumulate_deltaspeed")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("additem_accumulate_deltaspeed");
   }
   GetAutoAttachVelocityTime() {
-    return CommonParamById_1.configCommonParamById.GetFloatConfig("AutoAttachVelocityTime")
+    return CommonParamById_1.configCommonParamById.GetFloatConfig("AutoAttachVelocityTime");
   }
   GetAutoAttachInertiaTime() {
-    return CommonParamById_1.configCommonParamById.GetFloatConfig("AutoAttachInertiaTime")
+    return CommonParamById_1.configCommonParamById.GetFloatConfig("AutoAttachInertiaTime");
   }
   GetNetGoodSprite() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("NetGood")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("NetGood");
   }
   GetNetMiddleSprite() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("NetMiddle")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("NetMiddle");
   }
   GetNetBadSprite() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("NetBad")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("NetBad");
   }
   GetNetGoodSpriteMobile() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("NetGoodMobile")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("NetGoodMobile");
   }
   GetNetMiddleSpriteMobile() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("NetMiddleMobile")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("NetMiddleMobile");
   }
   GetNetBadSpriteMobile() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("NetBadMobile")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("NetBadMobile");
   }
   GetItemQualityList() {
     var e = ConfigCommon_1.ConfigCommon.ToList(QualityInfoAll_1.configQualityInfoAll.GetConfigList());
-    return e.sort((e, o) => e.Id - o.Id), e
+    e.sort((e, o) => e.Id - o.Id);
+    return e;
   }
   GetItemQualityById(e) {
-    return QualityInfoById_1.configQualityInfoById.GetConfig(e)
+    return QualityInfoById_1.configQualityInfoById.GetConfig(e);
   }
   GetElementConfig(e) {
-    return ElementInfoById_1.configElementInfoById.GetConfig(e)
+    return ElementInfoById_1.configElementInfoById.GetConfig(e);
   }
   GetLongPressConfig(e) {
-    return LongPressConfigById_1.configLongPressConfigById.GetConfig(e)
+    return LongPressConfigById_1.configLongPressConfigById.GetConfig(e);
   }
   GetDebugGmViewPath(e) {
-    return "GmView" === e ? Info_1.Info.IsInTouch() ? CommonParamById_1.configCommonParamById.GetStringConfig("GmViewPath") : CommonParamById_1.configCommonParamById.GetStringConfig("GmPcViewPath") : "LoginDebugView" === e ? Info_1.Info.IsInTouch() ? CommonParamById_1.configCommonParamById.GetStringConfig("GmLoginViewPath") : CommonParamById_1.configCommonParamById.GetStringConfig("GmPcLoginViewPath") : void 0
+    if (e === "GmView") {
+      if (Info_1.Info.IsInTouch()) {
+        return CommonParamById_1.configCommonParamById.GetStringConfig("GmViewPath");
+      } else {
+        return CommonParamById_1.configCommonParamById.GetStringConfig("GmPcViewPath");
+      }
+    } else if (e === "LoginDebugView") {
+      if (Info_1.Info.IsInTouch()) {
+        return CommonParamById_1.configCommonParamById.GetStringConfig("GmLoginViewPath");
+      } else {
+        return CommonParamById_1.configCommonParamById.GetStringConfig("GmPcLoginViewPath");
+      }
+    } else {
+      return undefined;
+    }
   }
   GetNewMailGap() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("NewMailGap")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("NewMailGap");
   }
   GetPingUnChangeValue() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("PingUnChangeValue")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("PingUnChangeValue");
   }
   GetBetaBlockRecharge() {
-    return CommonParamById_1.configCommonParamById.GetBoolConfig("BlockPay")
+    return CommonParamById_1.configCommonParamById.GetBoolConfig("BlockPay");
   }
   GetPioneerFlag() {
-    return CommonParamById_1.configCommonParamById.GetBoolConfig("PioneerFlag")
+    return CommonParamById_1.configCommonParamById.GetBoolConfig("PioneerFlag");
   }
   GetShareGap() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("ShareGap")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("ShareGap");
   }
   GetIosReviewShieldMenuArray() {
-    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("BlockOnIosCheckServer")
+    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("BlockOnIosCheckServer");
   }
   GetKoShopRuleUrl() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("KoShopRuleUrl")
+    return CommonParamById_1.configCommonParamById.GetStringConfig("KoShopRuleUrl");
   }
   GetReviewCd() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("ReviewCd")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("ReviewCd");
   }
   OpenReviewDelay() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("OpenReviewDelay")
+    return CommonParamById_1.configCommonParamById.GetIntConfig("OpenReviewDelay");
   }
   GetPlayPointTrackRange() {
-    return CommonParamById_1.configCommonParamById.GetFloatConfig("PlayPointTrackExtraRadius") ?? 0
+    return CommonParamById_1.configCommonParamById.GetFloatConfig("PlayPointTrackExtraRadius") ?? 0;
   }
   GetDiceItemId() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("DangoMonopolyDiceItemId") ?? 0
+    return CommonParamById_1.configCommonParamById.GetIntConfig("DangoMonopolyDiceItemId") ?? 0;
   }
   GetDangoMonopolyRangeSpeed() {
-    return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("DangoMonopolySpeed") ?? [1, 2]
+    return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("DangoMonopolySpeed") ?? [1, 2];
   }
   GetAutoOpenNoticePatchSize() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("AutoOpenNotifyPatchSize") ?? 0
+    return CommonParamById_1.configCommonParamById.GetIntConfig("AutoOpenNotifyPatchSize") ?? 0;
   }
   GetGameIntroductionUrl() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("GameIntroductionUrl") ?? ""
+    return CommonParamById_1.configCommonParamById.GetStringConfig("GameIntroductionUrl") ?? "";
   }
   GetGameIntroductionGlobalUrl() {
-    return CommonParamById_1.configCommonParamById.GetStringConfig("GameIntroductionGlobalUrl") ?? ""
+    return CommonParamById_1.configCommonParamById.GetStringConfig("GameIntroductionGlobalUrl") ?? "";
   }
   GetPhantomArenaBattleSpeed() {
-    return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("PhantomArenaBattleSpeed") ?? [1, 1.5, 2]
+    return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("PhantomArenaBattleSpeed") ?? [1, 1.5, 2];
   }
 }
 exports.CommonConfig = CommonConfig;

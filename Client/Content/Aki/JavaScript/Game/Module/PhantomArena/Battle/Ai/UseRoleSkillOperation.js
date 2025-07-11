@@ -1,11 +1,14 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UseRoleSkillOperation = void 0;
+  value: true
+});
+exports.UseRoleSkillOperation = undefined;
 const NpcAiOperation_1 = require("./NpcAiOperation");
 class UseRoleSkillOperation extends NpcAiOperation_1.NpcAiOperation {
   constructor(e) {
-    super(), this.Info = e
+    super();
+    this.Info = e;
   }
   ExecuteAiOperation(e) {}
 }

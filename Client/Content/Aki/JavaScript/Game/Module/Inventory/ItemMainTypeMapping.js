@@ -1,24 +1,30 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemMainTypeMapping = void 0;
+  value: true
+});
+exports.ItemMainTypeMapping = undefined;
 class ItemMainTypeMapping {
   constructor(t) {
-    this.ymi = new Set, this.MainType = t
+    this.ymi = new Set();
+    this.MainType = t;
   }
   Add(t) {
-    this.ymi.add(t)
+    this.ymi.add(t);
   }
   Remove(t) {
-    this.ymi.delete(t)
+    this.ymi.delete(t);
   }
   GetSet() {
-    return this.ymi
+    return this.ymi;
   }
   HasRedDot() {
-    for (const t of this.ymi)
-      if (t.HasRedDot()) return !0;
-    return !1
+    for (const t of this.ymi) {
+      if (t.HasRedDot()) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 exports.ItemMainTypeMapping = ItemMainTypeMapping;

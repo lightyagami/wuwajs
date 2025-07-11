@@ -1,646 +1,915 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = void 0;
-const AudioDefine_1 = require("../../Core/Audio/AudioDefine"),
-  Info_1 = require("../../Core/Common/Info"),
-  EffectEnvironment_1 = require("../../Core/Effect/EffectEnvironment"),
-  Platform_1 = require("../../Launcher/Platform/Platform"),
-  EventDefine_1 = require("../Common/Event/EventDefine"),
-  EventSystem_1 = require("../Common/Event/EventSystem"),
-  LocalStorageDefine_1 = require("../Common/LocalStorageDefine"),
-  ConfigManager_1 = require("../Manager/ConfigManager"),
-  ControllerHolder_1 = require("../Manager/ControllerHolder"),
-  ModelManager_1 = require("../Manager/ModelManager"),
-  GameSettingsDumpUtils_1 = require("./GameSettingsDumpUtils"),
-  GameSettingsUtils_1 = require("./GameSettingsUtils");
+  value: true
+});
+exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
+const AudioDefine_1 = require("../../Core/Audio/AudioDefine");
+const Info_1 = require("../../Core/Common/Info");
+const EffectEnvironment_1 = require("../../Core/Effect/EffectEnvironment");
+const Platform_1 = require("../../Launcher/Platform/Platform");
+const EventDefine_1 = require("../Common/Event/EventDefine");
+const EventSystem_1 = require("../Common/Event/EventSystem");
+const LocalStorageDefine_1 = require("../Common/LocalStorageDefine");
+const ConfigManager_1 = require("../Manager/ConfigManager");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
+const ModelManager_1 = require("../Manager/ModelManager");
+const GameSettingsDumpUtils_1 = require("./GameSettingsDumpUtils");
+const GameSettingsUtils_1 = require("./GameSettingsUtils");
 var EFunction;
-! function(e) {
-  e[e.MASTERVOLUMEFUNCTION = 1] = "MASTERVOLUMEFUNCTION", e[e.VOICEVOLUMEFUNCTION = 2] = "VOICEVOLUMEFUNCTION", e[e.MUSICVOLUMEFUNCTION = 3] = "MUSICVOLUMEFUNCTION", e[e.SFXVOLUMEFUNCTION = 4] = "SFXVOLUMEFUNCTION", e[e.AMBVOLUMEFUNCTION = 69] = "AMBVOLUMEFUNCTION", e[e.UIVOLUMEFUNCTION = 70] = "UIVOLUMEFUNCTION", e[e.DOLBYATOMS = 76] = "DOLBYATOMS", e[e.IMAGEQUALITY = 10] = "IMAGEQUALITY", e[e.DISPLAYMODE = 5] = "DISPLAYMODE", e[e.RESOLUTION = 6] = "RESOLUTION", e[e.BRIGHTNESS = 7] = "BRIGHTNESS", e[e.HIGHESTFPS = 11] = "HIGHESTFPS", e[e.SHADOWQUALITY = 54] = "SHADOWQUALITY", e[e.NIAGARAQUALITY = 55] = "NIAGARAQUALITY", e[e.IMAGEDETAIL = 56] = "IMAGEDETAIL", e[e.ANTIALISING = 57] = "ANTIALISING", e[e.SCENEAO = 58] = "SCENEAO", e[e.NPCDENSITY = 79] = "NPCDENSITY", e[e.NVIDIADLSS = 81] = "NVIDIADLSS", e[e.NVIDIADLSSFG = 82] = "NVIDIADLSSFG", e[e.NVIDIADLSSQUALITY = 831] = "NVIDIADLSSQUALITY", e[e.NVIDIADLSSSHARPNESS = 84] = "NVIDIADLSSSHARPNESS", e[e.NVIDIAREFLEX = 85] = "NVIDIAREFLEX", e[e.FSR = 87] = "FSR", e[e.XESS = 125] = "XESS", e[e.XESS_QUALITY = 126] = "XESS_QUALITY", e[e.METALFX = 127] = "METALFX", e[e.IRX = 128] = "IRX", e[e.BLOOM = 132] = "BLOOM", e[e.VOLUMEFOG = 63] = "VOLUMEFOG", e[e.VOLUMELIGHT = 64] = "VOLUMELIGHT", e[e.MOTIONBLUR = 65] = "MOTIONBLUR", e[e.PCVSYNC = 66] = "PCVSYNC", e[e.MOBILERESOLUTION = 67] = "MOBILERESOLUTION", e[e.TEXTLANGUAGE = 51] = "TEXTLANGUAGE", e[e.VOICELANGUAGE = 52] = "VOICELANGUAGE", e[e.VOICEPACKMANAGER = 53] = "VOICEPACKMANAGER", e[e.ADVICESETTING = 59] = "ADVICESETTING", e[e.GENDERSETTING = 88] = "GENDERSETTING", e[e.HorizontalViewSensitivity = 89] = "HorizontalViewSensitivity", e[e.VerticalViewSensitivity = 90] = "VerticalViewSensitivity", e[e.AimHorizontalViewSensitivity = 91] = "AimHorizontalViewSensitivity", e[e.AimVerticalViewSensitivity = 92] = "AimVerticalViewSensitivity", e[e.CameraShakeStrength = 93] = "CameraShakeStrength", e[e.MobileHorizontalViewSensitivity = 94] = "MobileHorizontalViewSensitivity", e[e.MobileVerticalViewSensitivity = 95] = "MobileVerticalViewSensitivity", e[e.MobileAimHorizontalViewSensitivity = 96] = "MobileAimHorizontalViewSensitivity", e[e.MobileAimVerticalViewSensitivity = 97] = "MobileAimVerticalViewSensitivity", e[e.CommonSpringArmLength = 99] = "CommonSpringArmLength", e[e.FightSpringArmLength = 100] = "FightSpringArmLength", e[e.ResetFocusEnable = 101] = "ResetFocusEnable", e[e.IsSidestepCameraEnable = 102] = "IsSidestepCameraEnable", e[e.IsSoftLockCameraEnable = 103] = "IsSoftLockCameraEnable", e[e.JoystickShakeStrength = 104] = "JoystickShakeStrength", e[e.JoystickShakeType = 105] = "JoystickShakeType", e[e.WalkOrRunRate = 106] = "WalkOrRunRate", e[e.LogUpload = 107] = "LogUpload", e[e.JoystickMode = 108] = "JoystickMode", e[e.MobileButtonCustom = 86] = "MobileButtonCustom", e[e.SkillButtonMode = 109] = "SkillButtonMode", e[e.CdKey = 112] = "CdKey", e[e.UserCenterDomestic = 113] = "UserCenterDomestic", e[e.TermsOfUseDomestic = 114] = "TermsOfUseDomestic", e[e.PrivacyPolicyDomestic = 115] = "PrivacyPolicyDomestic", e[e.ChildrenPrivacy = 116] = "ChildrenPrivacy", e[e.ThirdPartyInfo = 117] = "ThirdPartyInfo", e[e.TermsOfUseOverSeas = 118] = "TermsOfUseOverSeas", e[e.PrivacyPolicyOverSeas = 119] = "PrivacyPolicyOverSeas", e[e.PrivacyPolicySetting = 120] = "PrivacyPolicySetting", e[e.License = 146] = "License", e[e.UserCenterOverseas = 123] = "UserCenterOverseas", e[e.PushMode = 121] = "PushMode", e[e.AimAssist = 122] = "AimAssist", e[e.KeyboardLockEnemyMode = 129] = "KeyboardLockEnemyMode", e[e.HorizontalViewRevert = 130] = "HorizontalViewRevert", e[e.VerticalViewRevert = 131] = "VerticalViewRevert", e[e.SkillLockEnemyMode = 133] = "SkillLockEnemyMode", e[e.GamepadLockEnemyMode = 134] = "GamepadLockEnemyMode", e[e.EnemyHitDisplayMode = 135] = "EnemyHitDisplayMode", e[e.PlayStationOnly = 136] = "PlayStationOnly", e[e.MobileGamepadMode = 137] = "MobileGamepadMode", e[e.SkinDamageMode = 20031] = "SkinDamageMode", e[e.AutoAdjustImageQuality = 145] = "AutoAdjustImageQuality", e[e.ShowDamage = 20023] = "ShowDamage", e[e.DynamicBones = 20024] = "DynamicBones", e[e.FlowAdaptation = 20025] = "FlowAdaptation", e[e.UIPureMode = 51101] = "UIPureMode", e[e.FlyControlMode = 60207] = "FlyControlMode", e[e.RayTracing = 20026] = "RayTracing", e[e.RayTracedReflection = 20027] = "RayTracedReflection", e[e.RayTracedGI = 20028] = "RayTracedGI", e[e.RayTracedShadow = 20029] = "RayTracedShadow", e[e.TeammateFx = 20030] = "TeammateFx", e[e.Saturation = 20204] = "Saturation", e[e.Contrast = 20205] = "Contrast", e[e.Filter = 20206] = "Filter", e[e.AdrenoFME = 20032] = "AdrenoFME", e[e.BasicGraphicSetting = 20203] = "BasicGraphicSetting", e[e.Vulkan = 20360] = "Vulkan", e[e.ResDownLoad = 55113] = "ResDownLoad", e[e.AutoRun = 60208] = "AutoRun", e[e.AutoSprint = 60209] = "AutoSprint", e[e.ShowOtherName = 51102] = "ShowOtherName", e[e.WaterInteract = 20033] = "WaterInteract"
-}(EFunction = exports.EFunction || (exports.EFunction = {}));
+(function (e) {
+  e[e.MASTERVOLUMEFUNCTION = 1] = "MASTERVOLUMEFUNCTION";
+  e[e.VOICEVOLUMEFUNCTION = 2] = "VOICEVOLUMEFUNCTION";
+  e[e.MUSICVOLUMEFUNCTION = 3] = "MUSICVOLUMEFUNCTION";
+  e[e.SFXVOLUMEFUNCTION = 4] = "SFXVOLUMEFUNCTION";
+  e[e.AMBVOLUMEFUNCTION = 69] = "AMBVOLUMEFUNCTION";
+  e[e.UIVOLUMEFUNCTION = 70] = "UIVOLUMEFUNCTION";
+  e[e.DOLBYATOMS = 76] = "DOLBYATOMS";
+  e[e.IMAGEQUALITY = 10] = "IMAGEQUALITY";
+  e[e.DISPLAYMODE = 5] = "DISPLAYMODE";
+  e[e.RESOLUTION = 6] = "RESOLUTION";
+  e[e.BRIGHTNESS = 7] = "BRIGHTNESS";
+  e[e.HIGHESTFPS = 11] = "HIGHESTFPS";
+  e[e.SHADOWQUALITY = 54] = "SHADOWQUALITY";
+  e[e.NIAGARAQUALITY = 55] = "NIAGARAQUALITY";
+  e[e.IMAGEDETAIL = 56] = "IMAGEDETAIL";
+  e[e.ANTIALISING = 57] = "ANTIALISING";
+  e[e.SCENEAO = 58] = "SCENEAO";
+  e[e.NPCDENSITY = 79] = "NPCDENSITY";
+  e[e.NVIDIADLSS = 81] = "NVIDIADLSS";
+  e[e.NVIDIADLSSFG = 82] = "NVIDIADLSSFG";
+  e[e.NVIDIADLSSQUALITY = 831] = "NVIDIADLSSQUALITY";
+  e[e.NVIDIADLSSSHARPNESS = 84] = "NVIDIADLSSSHARPNESS";
+  e[e.NVIDIAREFLEX = 85] = "NVIDIAREFLEX";
+  e[e.FSR = 87] = "FSR";
+  e[e.XESS = 125] = "XESS";
+  e[e.XESS_QUALITY = 126] = "XESS_QUALITY";
+  e[e.XESS2 = 20310] = "XESS2";
+  e[e.XESS2_FG = 20341] = "XESS2_FG";
+  e[e.XESS2_QUALITY = 20340] = "XESS2_QUALITY";
+  e[e.FSR3 = 20350] = "FSR3";
+  e[e.FSR3_FG = 20352] = "FSR3_FG";
+  e[e.FSR3_QUALITY = 20351] = "FSR3_QUALITY";
+  e[e.METALFX = 127] = "METALFX";
+  e[e.IRX = 128] = "IRX";
+  e[e.BLOOM = 132] = "BLOOM";
+  e[e.VOLUMEFOG = 63] = "VOLUMEFOG";
+  e[e.VOLUMELIGHT = 64] = "VOLUMELIGHT";
+  e[e.MOTIONBLUR = 65] = "MOTIONBLUR";
+  e[e.PCVSYNC = 66] = "PCVSYNC";
+  e[e.MOBILERESOLUTION = 67] = "MOBILERESOLUTION";
+  e[e.TEXTLANGUAGE = 51] = "TEXTLANGUAGE";
+  e[e.VOICELANGUAGE = 52] = "VOICELANGUAGE";
+  e[e.VOICEPACKMANAGER = 53] = "VOICEPACKMANAGER";
+  e[e.ADVICESETTING = 59] = "ADVICESETTING";
+  e[e.GENDERSETTING = 88] = "GENDERSETTING";
+  e[e.HorizontalViewSensitivity = 89] = "HorizontalViewSensitivity";
+  e[e.VerticalViewSensitivity = 90] = "VerticalViewSensitivity";
+  e[e.AimHorizontalViewSensitivity = 91] = "AimHorizontalViewSensitivity";
+  e[e.AimVerticalViewSensitivity = 92] = "AimVerticalViewSensitivity";
+  e[e.CameraShakeStrength = 93] = "CameraShakeStrength";
+  e[e.MobileHorizontalViewSensitivity = 94] = "MobileHorizontalViewSensitivity";
+  e[e.MobileVerticalViewSensitivity = 95] = "MobileVerticalViewSensitivity";
+  e[e.MobileAimHorizontalViewSensitivity = 96] = "MobileAimHorizontalViewSensitivity";
+  e[e.MobileAimVerticalViewSensitivity = 97] = "MobileAimVerticalViewSensitivity";
+  e[e.CommonSpringArmLength = 99] = "CommonSpringArmLength";
+  e[e.FightSpringArmLength = 100] = "FightSpringArmLength";
+  e[e.ResetFocusEnable = 101] = "ResetFocusEnable";
+  e[e.IsSidestepCameraEnable = 102] = "IsSidestepCameraEnable";
+  e[e.IsSoftLockCameraEnable = 103] = "IsSoftLockCameraEnable";
+  e[e.JoystickShakeStrength = 104] = "JoystickShakeStrength";
+  e[e.JoystickShakeType = 105] = "JoystickShakeType";
+  e[e.WalkOrRunRate = 106] = "WalkOrRunRate";
+  e[e.LogUpload = 107] = "LogUpload";
+  e[e.JoystickMode = 108] = "JoystickMode";
+  e[e.MobileButtonCustom = 86] = "MobileButtonCustom";
+  e[e.SkillButtonMode = 109] = "SkillButtonMode";
+  e[e.CdKey = 112] = "CdKey";
+  e[e.UserCenterDomestic = 113] = "UserCenterDomestic";
+  e[e.TermsOfUseDomestic = 114] = "TermsOfUseDomestic";
+  e[e.PrivacyPolicyDomestic = 115] = "PrivacyPolicyDomestic";
+  e[e.ChildrenPrivacy = 116] = "ChildrenPrivacy";
+  e[e.ThirdPartyInfo = 117] = "ThirdPartyInfo";
+  e[e.TermsOfUseOverSeas = 118] = "TermsOfUseOverSeas";
+  e[e.PrivacyPolicyOverSeas = 119] = "PrivacyPolicyOverSeas";
+  e[e.PrivacyPolicySetting = 120] = "PrivacyPolicySetting";
+  e[e.License = 146] = "License";
+  e[e.UserCenterOverseas = 123] = "UserCenterOverseas";
+  e[e.PushMode = 121] = "PushMode";
+  e[e.AimAssist = 122] = "AimAssist";
+  e[e.KeyboardLockEnemyMode = 129] = "KeyboardLockEnemyMode";
+  e[e.HorizontalViewRevert = 130] = "HorizontalViewRevert";
+  e[e.VerticalViewRevert = 131] = "VerticalViewRevert";
+  e[e.SkillLockEnemyMode = 133] = "SkillLockEnemyMode";
+  e[e.GamepadLockEnemyMode = 134] = "GamepadLockEnemyMode";
+  e[e.EnemyHitDisplayMode = 135] = "EnemyHitDisplayMode";
+  e[e.PlayStationOnly = 136] = "PlayStationOnly";
+  e[e.MobileGamepadMode = 137] = "MobileGamepadMode";
+  e[e.SkinDamageMode = 20031] = "SkinDamageMode";
+  e[e.AutoAdjustImageQuality = 145] = "AutoAdjustImageQuality";
+  e[e.ShowDamage = 20023] = "ShowDamage";
+  e[e.DynamicBones = 20024] = "DynamicBones";
+  e[e.FlowAdaptation = 20025] = "FlowAdaptation";
+  e[e.UIPureMode = 51101] = "UIPureMode";
+  e[e.FlyControlMode = 60207] = "FlyControlMode";
+  e[e.RayTracing = 20026] = "RayTracing";
+  e[e.RayTracedReflection = 20027] = "RayTracedReflection";
+  e[e.RayTracedGI = 20028] = "RayTracedGI";
+  e[e.RayTracedShadow = 20029] = "RayTracedShadow";
+  e[e.TeammateFx = 20030] = "TeammateFx";
+  e[e.Saturation = 20204] = "Saturation";
+  e[e.Contrast = 20205] = "Contrast";
+  e[e.Filter = 20206] = "Filter";
+  e[e.AdrenoFME = 20032] = "AdrenoFME";
+  e[e.BasicGraphicSetting = 20203] = "BasicGraphicSetting";
+  e[e.Vulkan = 20360] = "Vulkan";
+  e[e.ResDownLoad = 55113] = "ResDownLoad";
+  e[e.AutoRun = 60208] = "AutoRun";
+  e[e.AutoSprint = 60209] = "AutoSprint";
+  e[e.ShowOtherName = 51102] = "ShowOtherName";
+  e[e.WaterInteract = 20033] = "WaterInteract";
+})(EFunction = exports.EFunction ||= {});
 const masterVolume = {
-    GameSettingId: EFunction.MASTERVOLUMEFUNCTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MasterVolume,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_master"),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_master")
+  GameSettingId: EFunction.MASTERVOLUMEFUNCTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MasterVolume,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_master"),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_master")
+};
+const voiceVolume = {
+  GameSettingId: EFunction.VOICEVOLUMEFUNCTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VoiceVolume,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_voice"),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_voice")
+};
+const musicVolume = {
+  GameSettingId: EFunction.MUSICVOLUMEFUNCTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MusicVolume,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_music"),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_music")
+};
+const sfxVolume = {
+  GameSettingId: EFunction.SFXVOLUMEFUNCTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SFXVolume,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx"),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx")
+};
+const uiVolume = {
+  GameSettingId: EFunction.UIVOLUMEFUNCTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.UIVolume,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx_ui"),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx_ui")
+};
+const ambVolume = {
+  GameSettingId: EFunction.AMBVOLUMEFUNCTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AMBVolume,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx_amb"),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx_amb")
+};
+const imageQuality = {
+  GameSettingId: EFunction.IMAGEQUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ImageQuality,
+  ApplyCallback: (e, t) => {
+    var a = GameSettingsUtils_1.GameSettingsUtils.ApplyImageQualityOnly(e);
+    GameSettingsUtils_1.GameSettingsUtils.ApplySceneLightQuality(e);
+    return a;
   },
-  voiceVolume = {
-    GameSettingId: EFunction.VOICEVOLUMEFUNCTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VoiceVolume,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_voice"),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_voice")
+  HandleDoneCallback: (e, t) => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetImageQualityWithValue, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetImageQuality);
   },
-  musicVolume = {
-    GameSettingId: EFunction.MUSICVOLUMEFUNCTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MusicVolume,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_music"),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_music")
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpImageQuality()
+};
+const displayMode = {
+  GameSettingId: EFunction.DISPLAYMODE,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PcWindowMode,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyDisplayMode(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpDisplayMode()
+};
+const resolution = {
+  GameSettingId: EFunction.RESOLUTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PcResolutionIndex,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyResolution(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpResolution()
+};
+const brightness = {
+  GameSettingId: EFunction.BRIGHTNESS,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Brightness,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyBrightness(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpBrightness()
+};
+const highestFps = {
+  GameSettingId: EFunction.HIGHESTFPS,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.CustomFrameRate,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyHighestFps(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHighestFps()
+};
+const shadowQuality = {
+  GameSettingId: EFunction.SHADOWQUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ShadowQuality,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyShadowQuality(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpShadowQuality()
+};
+const niagaraQuality = {
+  GameSettingId: EFunction.NIAGARAQUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NiagaraQuality,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNiagaraQuality(e),
+  HandleDoneCallback: (e, t) => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetNiagaraQuality);
   },
-  sfxVolume = {
-    GameSettingId: EFunction.SFXVOLUMEFUNCTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SFXVolume,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx"),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx")
-  },
-  uiVolume = {
-    GameSettingId: EFunction.UIVOLUMEFUNCTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.UIVolume,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx_ui"),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx_ui")
-  },
-  ambVolume = {
-    GameSettingId: EFunction.AMBVOLUMEFUNCTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AMBVolume,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx_amb"),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx_amb")
-  },
-  imageQuality = {
-    GameSettingId: EFunction.IMAGEQUALITY,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ImageQuality,
-    ApplyCallback: (e, t) => {
-      var a = GameSettingsUtils_1.GameSettingsUtils.ApplyImageQualityOnly(e);
-      return GameSettingsUtils_1.GameSettingsUtils.ApplySceneLightQuality(e), a
-    },
-    HandleDoneCallback: (e, t) => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetImageQualityWithValue, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetImageQuality)
-    },
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpImageQuality()
-  },
-  displayMode = {
-    GameSettingId: EFunction.DISPLAYMODE,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PcWindowMode,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyDisplayMode(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpDisplayMode()
-  },
-  resolution = {
-    GameSettingId: EFunction.RESOLUTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PcResolutionIndex,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyResolution(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpResolution()
-  },
-  brightness = {
-    GameSettingId: EFunction.BRIGHTNESS,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Brightness,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyBrightness(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpBrightness()
-  },
-  highestFps = {
-    GameSettingId: EFunction.HIGHESTFPS,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.CustomFrameRate,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyHighestFps(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHighestFps()
-  },
-  shadowQuality = {
-    GameSettingId: EFunction.SHADOWQUALITY,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ShadowQuality,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyShadowQuality(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpShadowQuality()
-  },
-  niagaraQuality = {
-    GameSettingId: EFunction.NIAGARAQUALITY,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NiagaraQuality,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNiagaraQuality(e),
-    HandleDoneCallback: (e, t) => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetNiagaraQuality)
-    },
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNiagaraQuality()
-  },
-  imageDetail = {
-    GameSettingId: EFunction.IMAGEDETAIL,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ImageDetail,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyImageDetail(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpImageDetail()
-  },
-  antiAliasing = {
-    GameSettingId: EFunction.ANTIALISING,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AntiAliasing,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAntiAliasing(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAntiAliasing()
-  },
-  sceneAo = {
-    GameSettingId: EFunction.SCENEAO,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SceneAo,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplySceneAo(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSceneAo()
-  },
-  npcDensity = {
-    GameSettingId: EFunction.NPCDENSITY,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NpcDensity,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNpcDensity(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNpcDensity()
-  },
-  nvidiaDlss = {
-    GameSettingId: EFunction.NVIDIADLSS,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingEnable,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingEnable(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlss()
-  },
-  nvidiaDlssFg = {
-    GameSettingId: EFunction.NVIDIADLSSFG,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingFrameGenerate,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingFrameGenerate(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlssFg(),
-    HandleDoneCallback: (e, t) => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetDLSSFGWithValue, e)
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNiagaraQuality()
+};
+const imageDetail = {
+  GameSettingId: EFunction.IMAGEDETAIL,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ImageDetail,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyImageDetail(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpImageDetail()
+};
+const antiAliasing = {
+  GameSettingId: EFunction.ANTIALISING,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AntiAliasing,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAntiAliasing(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAntiAliasing()
+};
+const sceneAo = {
+  GameSettingId: EFunction.SCENEAO,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SceneAo,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplySceneAo(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSceneAo()
+};
+const npcDensity = {
+  GameSettingId: EFunction.NPCDENSITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NpcDensity,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNpcDensity(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNpcDensity()
+};
+const nvidiaDlss = {
+  GameSettingId: EFunction.NVIDIADLSS,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingEnable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlss()
+};
+const nvidiaDlssFg = {
+  GameSettingId: EFunction.NVIDIADLSSFG,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingFrameGenerate,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingFrameGenerate(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlssFg(),
+  HandleDoneCallback: (e, t) => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetDLSSFGWithValue, e);
+  }
+};
+const nvidiaDlssQuality = {
+  GameSettingId: EFunction.NVIDIADLSSQUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingQuality,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingQuality(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlssQuality()
+};
+const nvidiaDlssSharpness = {
+  GameSettingId: EFunction.NVIDIADLSSSHARPNESS,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingSharpness,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingSharpness(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlssSharpness()
+};
+const nvidiaReflex = {
+  GameSettingId: EFunction.NVIDIAREFLEX,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaReflex,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaReflex(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaReflex()
+};
+const fsr = {
+  GameSettingId: EFunction.FSR,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FsrEnable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsrEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFsr()
+};
+const xess = {
+  GameSettingId: EFunction.XESS,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.XessEnable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXessEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXess()
+};
+const xessQuality = {
+  GameSettingId: EFunction.XESS_QUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.XessQuality,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXessQuality(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXessQuality()
+};
+const xess2 = {
+  GameSettingId: EFunction.XESS2,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Xess2Enable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXess2Enable(e),
+  DumpCallback: () => "todo"
+};
+const xess2Fg = {
+  GameSettingId: EFunction.XESS2_FG,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Xess2Fg,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXess2Fg(e),
+  DumpCallback: () => "todo"
+};
+const xess2Quality = {
+  GameSettingId: EFunction.XESS2_QUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Xess2Quality,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXess2Quality(e),
+  DumpCallback: () => "todo"
+};
+const fsr3 = {
+  GameSettingId: EFunction.FSR3,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Enable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Enable(e),
+  DumpCallback: () => "todo"
+};
+const fsr3Fg = {
+  GameSettingId: EFunction.FSR3_FG,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Fg,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(e),
+  DumpCallback: () => "todo"
+};
+const fsr3Quality = {
+  GameSettingId: EFunction.FSR3_QUALITY,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Quality,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Quality(e),
+  DumpCallback: () => "todo"
+};
+const metalFxEnable = {
+  GameSettingId: EFunction.METALFX,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MetalFxEnable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMetalFxEnable()
+};
+const irx = {
+  GameSettingId: EFunction.IRX,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IrxEnable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyIrxEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpIrx()
+};
+const bloom = {
+  GameSettingId: EFunction.BLOOM,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.BloomEnable,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyBloomEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpBloom()
+};
+const volumeFog = {
+  GameSettingId: EFunction.VOLUMEFOG,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VolumeFog,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeFog(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolumeFog()
+};
+const volumeLight = {
+  GameSettingId: EFunction.VOLUMELIGHT,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VolumeLight,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeLight(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolumeLight()
+};
+const motionBlur = {
+  GameSettingId: EFunction.MOTIONBLUR,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotionBlur,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMotionBlur(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMotionBlur()
+};
+const pcvSync = {
+  GameSettingId: EFunction.PCVSYNC,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PcVsync,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyPcVsync(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpPcVsync()
+};
+const mobileResolution = {
+  GameSettingId: EFunction.MOBILERESOLUTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileResolution,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMobileResolution(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMobileResolution()
+};
+const textLanguage = {
+  GameSettingId: EFunction.TEXTLANGUAGE,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.TextLanguage,
+  ApplyCallback: (e, t) => t === 2 ? GameSettingsUtils_1.GameSettingsUtils.ApplyTextLanguageOnGameStart(e) : GameSettingsUtils_1.GameSettingsUtils.ApplyTextLanguage(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpTextLanguage()
+};
+const voiceLanguage = {
+  GameSettingId: EFunction.VOICELANGUAGE,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VoiceLanguage,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyLanguageAudio(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVoiceLanguage()
+};
+const voicePackManager = {
+  GameSettingId: EFunction.VOICEPACKMANAGER,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[DumpVoicePackManager]this is just a switch entry"
+};
+const adviceSetting = {
+  GameSettingId: EFunction.ADVICESETTING,
+  GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.AdviceModel.GetAdviceShowSetting() ? 1 : 0,
+  ApplyCallback: (e, t) => {
+    if (t === 1) {
+      ControllerHolder_1.ControllerHolder.AdviceController.RequestSetAdviceShowState(e === 1);
     }
+    return false;
   },
-  nvidiaDlssQuality = {
-    GameSettingId: EFunction.NVIDIADLSSQUALITY,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingQuality,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingQuality(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlssQuality()
+  DumpCallback: () => "[DumpAdviceSetting]same to getter"
+};
+const genderSetting = {
+  GameSettingId: EFunction.GENDERSETTING,
+  GetCallbackOrGlobalKey: () => {
+    var e = ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleId();
+    return ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleById(e).Gender;
   },
-  nvidiaDlssSharpness = {
-    GameSettingId: EFunction.NVIDIADLSSSHARPNESS,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingSharpness,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingSharpness(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlssSharpness()
-  },
-  nvidiaReflex = {
-    GameSettingId: EFunction.NVIDIAREFLEX,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaReflex,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaReflex(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaReflex()
-  },
-  fsr = {
-    GameSettingId: EFunction.FSR,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FsrEnable,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsrEnable(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFsr()
-  },
-  xess = {
-    GameSettingId: EFunction.XESS,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.XessEnable,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXessEnable(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXess()
-  },
-  xessQuality = {
-    GameSettingId: EFunction.XESS_QUALITY,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.XessQuality,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXessQuality(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXessQuality()
-  },
-  metalFxEnable = {
-    GameSettingId: EFunction.METALFX,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MetalFxEnable,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMetalFxEnable()
-  },
-  irx = {
-    GameSettingId: EFunction.IRX,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IrxEnable,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyIrxEnable(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpIrx()
-  },
-  bloom = {
-    GameSettingId: EFunction.BLOOM,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.BloomEnable,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyBloomEnable(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpBloom()
-  },
-  volumeFog = {
-    GameSettingId: EFunction.VOLUMEFOG,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VolumeFog,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeFog(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolumeFog()
-  },
-  volumeLight = {
-    GameSettingId: EFunction.VOLUMELIGHT,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VolumeLight,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeLight(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolumeLight()
-  },
-  motionBlur = {
-    GameSettingId: EFunction.MOTIONBLUR,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotionBlur,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMotionBlur(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMotionBlur()
-  },
-  pcvSync = {
-    GameSettingId: EFunction.PCVSYNC,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.PcVsync,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyPcVsync(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpPcVsync()
-  },
-  mobileResolution = {
-    GameSettingId: EFunction.MOBILERESOLUTION,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileResolution,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMobileResolution(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMobileResolution()
-  },
-  textLanguage = {
-    GameSettingId: EFunction.TEXTLANGUAGE,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.TextLanguage,
-    ApplyCallback: (e, t) => 2 === t ? GameSettingsUtils_1.GameSettingsUtils.ApplyTextLanguageOnGameStart(e) : GameSettingsUtils_1.GameSettingsUtils.ApplyTextLanguage(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpTextLanguage()
-  },
-  voiceLanguage = {
-    GameSettingId: EFunction.VOICELANGUAGE,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VoiceLanguage,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyLanguageAudio(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVoiceLanguage()
-  },
-  voicePackManager = {
-    GameSettingId: EFunction.VOICEPACKMANAGER,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[DumpVoicePackManager]this is just a switch entry"
-  },
-  adviceSetting = {
-    GameSettingId: EFunction.ADVICESETTING,
-    GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.AdviceModel.GetAdviceShowSetting() ? 1 : 0,
-    ApplyCallback: (e, t) => (1 === t && ControllerHolder_1.ControllerHolder.AdviceController.RequestSetAdviceShowState(1 === e), !1),
-    DumpCallback: () => "[DumpAdviceSetting]same to getter"
-  },
-  genderSetting = {
-    GameSettingId: EFunction.GENDERSETTING,
-    GetCallbackOrGlobalKey: () => {
-      var e = ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleId();
-      return ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleById(e).Gender
-    },
-    DumpCallback: () => "[DumpGenderSetting]same to getter"
-  },
-  horizontalViewSensitivity = {
-    GameSettingId: EFunction.HorizontalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.HorizontalViewSensitivity,
-    ApplyCallback: (e, t) => (Platform_1.Platform.IsCloudGame() ? GameSettingsUtils_1.GameSettingsUtils.ApplyMobileHorizontalViewSensitivity(e) : GameSettingsUtils_1.GameSettingsUtils.ApplyHorizontalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHorizontalViewSensitivity()
-  },
-  verticalViewSensitivity = {
-    GameSettingId: EFunction.VerticalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VerticalViewSensitivity,
-    ApplyCallback: (e, t) => (Platform_1.Platform.IsCloudGame() ? GameSettingsUtils_1.GameSettingsUtils.ApplyMobileVerticalViewSensitivity(e) : GameSettingsUtils_1.GameSettingsUtils.ApplyVerticalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVerticalViewSensitivity()
-  },
-  aimHorizontalViewSensitivity = {
-    GameSettingId: EFunction.AimHorizontalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AimHorizontalViewSensitivity,
-    ApplyCallback: (e, t) => (Platform_1.Platform.IsCloudGame() ? GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimHorizontalViewSensitivity(e) : GameSettingsUtils_1.GameSettingsUtils.ApplyAimHorizontalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimHorizontalViewSensitivity()
-  },
-  aimVerticalViewSensitivity = {
-    GameSettingId: EFunction.AimVerticalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AimVerticalViewSensitivity,
-    ApplyCallback: (e, t) => (Platform_1.Platform.IsCloudGame() ? GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimVerticalViewSensitivity(e) : GameSettingsUtils_1.GameSettingsUtils.ApplyAimVerticalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimVerticalViewSensitivity()
-  },
-  cameraShakeStrength = {
-    GameSettingId: EFunction.CameraShakeStrength,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.CameraShakeStrength,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyCameraShakeStrength(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpCameraShakeStrength()
-  },
-  mobileHorizontalViewSensitivity = {
-    GameSettingId: EFunction.MobileHorizontalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileHorizontalViewSensitivity,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyMobileHorizontalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHorizontalViewSensitivity()
-  },
-  mobileVerticalViewSensitivity = {
-    GameSettingId: EFunction.MobileVerticalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileVerticalViewSensitivity,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyMobileVerticalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVerticalViewSensitivity()
-  },
-  mobileAimHorizontalViewSensitivity = {
-    GameSettingId: EFunction.MobileAimHorizontalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileAimHorizontalViewSensitivity,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimHorizontalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimHorizontalViewSensitivity()
-  },
-  mobileAimVerticalViewSensitivity = {
-    GameSettingId: EFunction.MobileAimVerticalViewSensitivity,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileAimVerticalViewSensitivity,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimVerticalViewSensitivity(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimVerticalViewSensitivity()
-  },
-  commonSpringArmLength = {
-    GameSettingId: EFunction.CommonSpringArmLength,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.CommonSpringArmLength,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyCommonSpringArmLength(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpCommonSpringArmLength()
-  },
-  fightSpringArmLength = {
-    GameSettingId: EFunction.FightSpringArmLength,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FightSpringArmLength,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyFightSpringArmLength(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFightSpringArmLength()
-  },
-  resetFocusEnable = {
-    GameSettingId: EFunction.ResetFocusEnable,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsResetFocusEnable,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyResetFocusEnable(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpResetFocusEnable()
-  },
-  isSidestepCameraEnable = {
-    GameSettingId: EFunction.IsSidestepCameraEnable,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsSidestepCameraEnable,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyIsSidestepCameraEnable(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpIsSidestepCameraEnable()
-  },
-  isSoftLockCameraEnable = {
-    GameSettingId: EFunction.IsSoftLockCameraEnable,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsSoftLockCameraEnable,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyIsSoftLockCameraEnable(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpIsSoftLockCameraEnable()
-  },
-  joystickShakeStrength = {
-    GameSettingId: EFunction.JoystickShakeStrength,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickShakeStrength,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyJoystickShakeStrength(e),
-    DumpCallback: () => "[DumpJoystickShakeStrength]no way to dump"
-  },
-  joystickShakeType = {
-    GameSettingId: EFunction.JoystickShakeType,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickShakeType,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyJoystickShakeType(e),
-    DumpCallback: () => "[DumpJoystickShakeType]no way to dump"
-  },
-  walkOrRunRate = {
-    GameSettingId: EFunction.WalkOrRunRate,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.WalkOrRunRate,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyWalkOrRunRate(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpWalkOrRunRate()
-  },
-  joystickMode = {
-    GameSettingId: EFunction.JoystickMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickMode,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyJoystickMode(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpJoystickMode()
-  },
-  mobileButtonCustom = {
-    GameSettingId: EFunction.MobileButtonCustom,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[mobileButtonCustom]this is just a switch entry"
-  },
-  skillButtonMode = {
-    GameSettingId: EFunction.SkillButtonMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsAutoSwitchSkillButtonMode,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyAutoSwitchSkillButtonMode(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSkillButtonMode()
-  },
-  cdKey = {
-    GameSettingId: EFunction.CdKey,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[DumpCdKey]this is just a switch entry"
-  },
-  resDownLoad = {
-    GameSettingId: EFunction.CdKey,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[resDownLoad]this is just a switch entry"
-  },
-  pushMode = {
-    GameSettingId: EFunction.PushMode,
-    GetCallbackOrGlobalKey: () => ControllerHolder_1.ControllerHolder.KuroPushController.GetPushState() ? 1 : 0,
-    ApplyCallback: (e, t) => 1 === t && (GameSettingsUtils_1.GameSettingsUtils.ApplyPushEnableState(e, t), !0),
-    DumpCallback: () => "[DumpPushMode]same to getter"
-  },
-  aimAssist = {
-    GameSettingId: EFunction.AimAssist,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AimAssistEnable,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyAimAssistEnable(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimAssist()
-  },
-  keyboardLockEnemyMode = {
-    GameSettingId: EFunction.KeyboardLockEnemyMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.KeyboardLockEnemyMode,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyKeyboardLockEnemyMode(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpKeyboardLockEnemyMode()
-  },
-  horizontalViewRevert = {
-    GameSettingId: EFunction.HorizontalViewRevert,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.HorizontalViewRevert,
-    ApplyCallback: (e, t) => (Info_1.Info.IsInGamepad() && GameSettingsUtils_1.GameSettingsUtils.ApplyHorizontalViewRevert(e), !0),
-    DumpCallback: () => "[DumpHorizontalViewRevert]no way to dump"
-  },
-  verticalViewRevert = {
-    GameSettingId: EFunction.VerticalViewRevert,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VerticalViewRevert,
-    ApplyCallback: (e, t) => (Info_1.Info.IsInGamepad() && GameSettingsUtils_1.GameSettingsUtils.ApplyVerticalViewRevert(e), !0),
-    DumpCallback: () => "[DumpVerticalViewRevert]no way to dump"
-  },
-  skillLockEnemyMode = {
-    GameSettingId: EFunction.SkillLockEnemyMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SkillLockEnemyMode,
-    DumpCallback: () => "[DumpSkillLockEnemyMode]same to getter"
-  },
-  gamepadLockEnemyMode = {
-    GameSettingId: EFunction.GamepadLockEnemyMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.GamepadLockEnemyMode,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyGamepadLockEnemyMode(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpGamepadLockEnemyMode()
-  },
-  enemyHitDisplayMode = {
-    GameSettingId: EFunction.EnemyHitDisplayMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EnemyHitDisplayMode,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyEnemyHitDisplayMode(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEnemyHitDisplayMode()
-  },
-  mobileGamepadMode = {
-    GameSettingId: EFunction.MobileGamepadMode,
-    GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.PlatformModel.IsGamepadAttached() ? 1 : 0,
-    DumpCallback: () => "[DumpMobileGamepadMode]same to getter"
-  },
-  autoAdjustImageQuality = {
-    GameSettingId: EFunction.AutoAdjustImageQuality,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoAdjustImageQuality,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyAutoAdjustImageQuality(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoAdjustImageQuality()
-  },
-  showDamage = {
-    GameSettingId: EFunction.ShowDamage,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ShowDamage,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyShowDamage(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpShowDamage()
-  },
-  dynamicBones = {
-    GameSettingId: EFunction.DynamicBones,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.DynamicBones,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyDynamicBones(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpDynamicBones()
-  },
-  uiPureMode = {
-    GameSettingId: EFunction.UIPureMode,
-    GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.BattleUiModel?.PureModeData?.IsOpen ? 1 : 0,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyUiPureMode(e),
-    DumpCallback: () => "[DumpUiPureMode]same to getter"
-  },
-  flyControlMode = {
-    GameSettingId: EFunction.FlyControlMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FlyControlMode,
-    ApplyCallback: (e, t) => !0,
-    DumpCallback: () => "[DumpFlyControlMode]same to getter"
-  },
-  dolbyAtmos = {
-    GameSettingId: EFunction.DOLBYATOMS,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.DolbyAtmos,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyDolbyAtmos(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume(AudioDefine_1.RTPC_DOLBY_ATMOS)
-  },
-  flowAdaptation = {
-    GameSettingId: EFunction.FlowAdaptation,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FlowAdaptation,
-    DumpCallback: () => "[DumpFlowAdaptation]same to getter"
-  },
-  rayTracing = {
-    GameSettingId: EFunction.RayTracing,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracing,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracing(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpRayTracing(),
-    HandleDoneCallback: (e, t) => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetRayTracingWithValue, e)
+  DumpCallback: () => "[DumpGenderSetting]same to getter"
+};
+const horizontalViewSensitivity = {
+  GameSettingId: EFunction.HorizontalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.HorizontalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    if (Platform_1.Platform.IsCloudGame()) {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyMobileHorizontalViewSensitivity(e);
+    } else {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyHorizontalViewSensitivity(e);
     }
+    return true;
   },
-  rayTracedReflection = {
-    GameSettingId: EFunction.RayTracedReflection,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracedReflection,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracedReflection(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpRayTracedReflection()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHorizontalViewSensitivity()
+};
+const verticalViewSensitivity = {
+  GameSettingId: EFunction.VerticalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VerticalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    if (Platform_1.Platform.IsCloudGame()) {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyMobileVerticalViewSensitivity(e);
+    } else {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyVerticalViewSensitivity(e);
+    }
+    return true;
   },
-  rayTracedGI = {
-    GameSettingId: EFunction.RayTracedGI,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracedGI,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracedGI(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpRayTracedGI()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVerticalViewSensitivity()
+};
+const aimHorizontalViewSensitivity = {
+  GameSettingId: EFunction.AimHorizontalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AimHorizontalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    if (Platform_1.Platform.IsCloudGame()) {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimHorizontalViewSensitivity(e);
+    } else {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyAimHorizontalViewSensitivity(e);
+    }
+    return true;
   },
-  rayTracedShadow = {
-    GameSettingId: EFunction.RayTracedShadow,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracedShadow,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracedShadow(e),
-    DumpCallback: () => "[DumpRayTracedShadow]not implemented"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimHorizontalViewSensitivity()
+};
+const aimVerticalViewSensitivity = {
+  GameSettingId: EFunction.AimVerticalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AimVerticalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    if (Platform_1.Platform.IsCloudGame()) {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimVerticalViewSensitivity(e);
+    } else {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyAimVerticalViewSensitivity(e);
+    }
+    return true;
   },
-  teammateFx = {
-    GameSettingId: EFunction.TeammateFx,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.TeammateFx,
-    ApplyCallback: (e, t) => (EffectEnvironment_1.EffectEnvironment.DisableOtherEffect = 0 === e, !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpTeammateFx()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimVerticalViewSensitivity()
+};
+const cameraShakeStrength = {
+  GameSettingId: EFunction.CameraShakeStrength,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.CameraShakeStrength,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyCameraShakeStrength(e);
+    return true;
   },
-  saturation = {
-    GameSettingId: EFunction.Saturation,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SaturationNew,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplySaturationClient(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSaturation()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpCameraShakeStrength()
+};
+const mobileHorizontalViewSensitivity = {
+  GameSettingId: EFunction.MobileHorizontalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileHorizontalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMobileHorizontalViewSensitivity(e);
+    return true;
   },
-  contrast = {
-    GameSettingId: EFunction.Contrast,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ContrastNew,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyContrastClient(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpContrast()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHorizontalViewSensitivity()
+};
+const mobileVerticalViewSensitivity = {
+  GameSettingId: EFunction.MobileVerticalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileVerticalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMobileVerticalViewSensitivity(e);
+    return true;
   },
-  filter = {
-    GameSettingId: EFunction.Filter,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFilter()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVerticalViewSensitivity()
+};
+const mobileAimHorizontalViewSensitivity = {
+  GameSettingId: EFunction.MobileAimHorizontalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileAimHorizontalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimHorizontalViewSensitivity(e);
+    return true;
   },
-  skinDamageMode = {
-    GameSettingId: EFunction.SkinDamageMode,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SkinDamageMode,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplySkinDamageMode(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSkinDamageMode()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimHorizontalViewSensitivity()
+};
+const mobileAimVerticalViewSensitivity = {
+  GameSettingId: EFunction.MobileAimVerticalViewSensitivity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileAimVerticalViewSensitivity,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMobileAimVerticalViewSensitivity(e);
+    return true;
   },
-  playStationOnly = {
-    GameSettingId: EFunction.PlayStationOnly,
-    GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.KuroSdkModel.PlayStationPlayOnlyState ? 1 : 0,
-    ApplyCallback: (e, t) => (1 === t && ControllerHolder_1.ControllerHolder.KuroSdkController.RequestChangeServerPlayStationPlayOnlyState(1 === e), !1),
-    DumpCallback: () => "[DumpPlayStationOnly]same to getter"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimVerticalViewSensitivity()
+};
+const commonSpringArmLength = {
+  GameSettingId: EFunction.CommonSpringArmLength,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.CommonSpringArmLength,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyCommonSpringArmLength(e);
+    return true;
   },
-  adrenoFME = {
-    GameSettingId: EFunction.AdrenoFME,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AfmeSince2Dot3,
-    ApplyCallback: (e, t) => (GameSettingsUtils_1.GameSettingsUtils.ApplyAFMEOption(e), !0),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAdrenoFME()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpCommonSpringArmLength()
+};
+const fightSpringArmLength = {
+  GameSettingId: EFunction.FightSpringArmLength,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FightSpringArmLength,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyFightSpringArmLength(e);
+    return true;
   },
-  userCenterDomestic = {
-    GameSettingId: EFunction.UserCenterDomestic,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[DumpUserCenterDomestic]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFightSpringArmLength()
+};
+const resetFocusEnable = {
+  GameSettingId: EFunction.ResetFocusEnable,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsResetFocusEnable,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyResetFocusEnable(e);
+    return true;
   },
-  userCenterOverseas = {
-    GameSettingId: EFunction.UserCenterOverseas,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[userCenterOverseas]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpResetFocusEnable()
+};
+const isSidestepCameraEnable = {
+  GameSettingId: EFunction.IsSidestepCameraEnable,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsSidestepCameraEnable,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyIsSidestepCameraEnable(e);
+    return true;
   },
-  privacyPolicyDomestic = {
-    GameSettingId: EFunction.PrivacyPolicyDomestic,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[privacyPolicyDomestic]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpIsSidestepCameraEnable()
+};
+const isSoftLockCameraEnable = {
+  GameSettingId: EFunction.IsSoftLockCameraEnable,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsSoftLockCameraEnable,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyIsSoftLockCameraEnable(e);
+    return true;
   },
-  privacyPolicyOverSeas = {
-    GameSettingId: EFunction.PrivacyPolicyOverSeas,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[privacyPolicyOverSeas]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpIsSoftLockCameraEnable()
+};
+const joystickShakeStrength = {
+  GameSettingId: EFunction.JoystickShakeStrength,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickShakeStrength,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyJoystickShakeStrength(e),
+  DumpCallback: () => "[DumpJoystickShakeStrength]no way to dump"
+};
+const joystickShakeType = {
+  GameSettingId: EFunction.JoystickShakeType,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickShakeType,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyJoystickShakeType(e),
+  DumpCallback: () => "[DumpJoystickShakeType]no way to dump"
+};
+const walkOrRunRate = {
+  GameSettingId: EFunction.WalkOrRunRate,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.WalkOrRunRate,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyWalkOrRunRate(e);
+    return true;
   },
-  termsOfUseDomestic = {
-    GameSettingId: EFunction.TermsOfUseDomestic,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[termsOfUseDomestic]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpWalkOrRunRate()
+};
+const joystickMode = {
+  GameSettingId: EFunction.JoystickMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickMode,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyJoystickMode(e);
+    return true;
   },
-  termsOfUseOverSeas = {
-    GameSettingId: EFunction.TermsOfUseOverSeas,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[termsOfUseOverSeas]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpJoystickMode()
+};
+const mobileButtonCustom = {
+  GameSettingId: EFunction.MobileButtonCustom,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[mobileButtonCustom]this is just a switch entry"
+};
+const skillButtonMode = {
+  GameSettingId: EFunction.SkillButtonMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.IsAutoSwitchSkillButtonMode,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyAutoSwitchSkillButtonMode(e);
+    return true;
   },
-  childrenPrivacy = {
-    GameSettingId: EFunction.ChildrenPrivacy,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[childrenPrivacy]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSkillButtonMode()
+};
+const cdKey = {
+  GameSettingId: EFunction.CdKey,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[DumpCdKey]this is just a switch entry"
+};
+const resDownLoad = {
+  GameSettingId: EFunction.CdKey,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[resDownLoad]this is just a switch entry"
+};
+const pushMode = {
+  GameSettingId: EFunction.PushMode,
+  GetCallbackOrGlobalKey: () => ControllerHolder_1.ControllerHolder.KuroPushController.GetPushState() ? 1 : 0,
+  ApplyCallback: (e, t) => t === 1 && (GameSettingsUtils_1.GameSettingsUtils.ApplyPushEnableState(e, t), true),
+  DumpCallback: () => "[DumpPushMode]same to getter"
+};
+const aimAssist = {
+  GameSettingId: EFunction.AimAssist,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AimAssistEnable,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyAimAssistEnable(e);
+    return true;
   },
-  thirdPartyInfo = {
-    GameSettingId: EFunction.ThirdPartyInfo,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[thirdPartyInfo]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAimAssist()
+};
+const keyboardLockEnemyMode = {
+  GameSettingId: EFunction.KeyboardLockEnemyMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.KeyboardLockEnemyMode,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyKeyboardLockEnemyMode(e);
+    return true;
   },
-  privacyPolicySetting = {
-    GameSettingId: EFunction.PrivacyPolicySetting,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[privacyPolicySetting]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpKeyboardLockEnemyMode()
+};
+const horizontalViewRevert = {
+  GameSettingId: EFunction.HorizontalViewRevert,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.HorizontalViewRevert,
+  ApplyCallback: (e, t) => {
+    if (Info_1.Info.IsInGamepad()) {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyHorizontalViewRevert(e);
+    }
+    return true;
   },
-  license = {
-    GameSettingId: EFunction.License,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[license]this is just a switch entry"
+  DumpCallback: () => "[DumpHorizontalViewRevert]no way to dump"
+};
+const verticalViewRevert = {
+  GameSettingId: EFunction.VerticalViewRevert,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VerticalViewRevert,
+  ApplyCallback: (e, t) => {
+    if (Info_1.Info.IsInGamepad()) {
+      GameSettingsUtils_1.GameSettingsUtils.ApplyVerticalViewRevert(e);
+    }
+    return true;
   },
-  logUpload = {
-    GameSettingId: EFunction.LogUpload,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[logUpload]this is just a switch entry"
+  DumpCallback: () => "[DumpVerticalViewRevert]no way to dump"
+};
+const skillLockEnemyMode = {
+  GameSettingId: EFunction.SkillLockEnemyMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SkillLockEnemyMode,
+  DumpCallback: () => "[DumpSkillLockEnemyMode]same to getter"
+};
+const gamepadLockEnemyMode = {
+  GameSettingId: EFunction.GamepadLockEnemyMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.GamepadLockEnemyMode,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyGamepadLockEnemyMode(e);
+    return true;
   },
-  basicGraphicSetting = {
-    GameSettingId: EFunction.BasicGraphicSetting,
-    GetCallbackOrGlobalKey: () => 0,
-    DumpCallback: () => "[basicGraphicSetting]this is just a switch entry"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpGamepadLockEnemyMode()
+};
+const enemyHitDisplayMode = {
+  GameSettingId: EFunction.EnemyHitDisplayMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EnemyHitDisplayMode,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyEnemyHitDisplayMode(e);
+    return true;
   },
-  autoRun = {
-    GameSettingId: EFunction.AutoRun,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoRun,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoRun(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoRun()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEnemyHitDisplayMode()
+};
+const mobileGamepadMode = {
+  GameSettingId: EFunction.MobileGamepadMode,
+  GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.PlatformModel.IsGamepadAttached() ? 1 : 0,
+  DumpCallback: () => "[DumpMobileGamepadMode]same to getter"
+};
+const autoAdjustImageQuality = {
+  GameSettingId: EFunction.AutoAdjustImageQuality,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoAdjustImageQuality,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyAutoAdjustImageQuality(e);
+    return true;
   },
-  autoSprint = {
-    GameSettingId: EFunction.AutoSprint,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoSprint,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoSprint(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoSprint()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoAdjustImageQuality()
+};
+const showDamage = {
+  GameSettingId: EFunction.ShowDamage,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ShowDamage,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyShowDamage(e);
+    return true;
   },
-  vulkan = {
-    GameSettingId: EFunction.Vulkan,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Vulkan,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVulkan(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVulkan()
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpShowDamage()
+};
+const dynamicBones = {
+  GameSettingId: EFunction.DynamicBones,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.DynamicBones,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyDynamicBones(e);
+    return true;
   },
-  showOtherName = {
-    GameSettingId: EFunction.ShowOtherName,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ShowOtherName,
-    HandleDoneCallback: (e, t) => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshPlayerInfoVisible)
-    },
-    DumpCallback: () => "[DumpAdviceSetting]same to getter"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpDynamicBones()
+};
+const uiPureMode = {
+  GameSettingId: EFunction.UIPureMode,
+  GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.BattleUiModel?.PureModeData?.IsOpen ? 1 : 0,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyUiPureMode(e),
+  DumpCallback: () => "[DumpUiPureMode]same to getter"
+};
+const flyControlMode = {
+  GameSettingId: EFunction.FlyControlMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FlyControlMode,
+  ApplyCallback: (e, t) => true,
+  DumpCallback: () => "[DumpFlyControlMode]same to getter"
+};
+const dolbyAtmos = {
+  GameSettingId: EFunction.DOLBYATOMS,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.DolbyAtmos,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyDolbyAtmos(e);
+    return true;
   },
-  waterInteract = {
-    GameSettingId: EFunction.WaterInteract,
-    GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.WaterInteract,
-    ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyWaterInteract(e),
-    DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpWaterInteract()
-  };
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume(AudioDefine_1.RTPC_DOLBY_ATMOS)
+};
+const flowAdaptation = {
+  GameSettingId: EFunction.FlowAdaptation,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.FlowAdaptation,
+  DumpCallback: () => "[DumpFlowAdaptation]same to getter"
+};
+const rayTracing = {
+  GameSettingId: EFunction.RayTracing,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracing,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracing(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpRayTracing(),
+  HandleDoneCallback: (e, t) => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetRayTracingWithValue, e);
+  }
+};
+const rayTracedReflection = {
+  GameSettingId: EFunction.RayTracedReflection,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracedReflection,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracedReflection(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpRayTracedReflection()
+};
+const rayTracedGI = {
+  GameSettingId: EFunction.RayTracedGI,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracedGI,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracedGI(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpRayTracedGI()
+};
+const rayTracedShadow = {
+  GameSettingId: EFunction.RayTracedShadow,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.RayTracedShadow,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyRayTracedShadow(e),
+  DumpCallback: () => "[DumpRayTracedShadow]not implemented"
+};
+const teammateFx = {
+  GameSettingId: EFunction.TeammateFx,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.TeammateFx,
+  ApplyCallback: (e, t) => {
+    EffectEnvironment_1.EffectEnvironment.DisableOtherEffect = e === 0;
+    return true;
+  },
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpTeammateFx()
+};
+const saturation = {
+  GameSettingId: EFunction.Saturation,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SaturationNew,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplySaturationClient(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSaturation()
+};
+const contrast = {
+  GameSettingId: EFunction.Contrast,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ContrastNew,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyContrastClient(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpContrast()
+};
+const filter = {
+  GameSettingId: EFunction.Filter,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFilter()
+};
+const skinDamageMode = {
+  GameSettingId: EFunction.SkinDamageMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SkinDamageMode,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplySkinDamageMode(e);
+    return true;
+  },
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpSkinDamageMode()
+};
+const playStationOnly = {
+  GameSettingId: EFunction.PlayStationOnly,
+  GetCallbackOrGlobalKey: () => ModelManager_1.ModelManager.KuroSdkModel.PlayStationPlayOnlyState ? 1 : 0,
+  ApplyCallback: (e, t) => {
+    if (t === 1) {
+      ControllerHolder_1.ControllerHolder.KuroSdkController.RequestChangeServerPlayStationPlayOnlyState(e === 1);
+    }
+    return false;
+  },
+  DumpCallback: () => "[DumpPlayStationOnly]same to getter"
+};
+const adrenoFME = {
+  GameSettingId: EFunction.AdrenoFME,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AfmeSince2Dot3,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyAFMEOption(e);
+    return true;
+  },
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAdrenoFME()
+};
+const userCenterDomestic = {
+  GameSettingId: EFunction.UserCenterDomestic,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[DumpUserCenterDomestic]this is just a switch entry"
+};
+const userCenterOverseas = {
+  GameSettingId: EFunction.UserCenterOverseas,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[userCenterOverseas]this is just a switch entry"
+};
+const privacyPolicyDomestic = {
+  GameSettingId: EFunction.PrivacyPolicyDomestic,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[privacyPolicyDomestic]this is just a switch entry"
+};
+const privacyPolicyOverSeas = {
+  GameSettingId: EFunction.PrivacyPolicyOverSeas,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[privacyPolicyOverSeas]this is just a switch entry"
+};
+const termsOfUseDomestic = {
+  GameSettingId: EFunction.TermsOfUseDomestic,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[termsOfUseDomestic]this is just a switch entry"
+};
+const termsOfUseOverSeas = {
+  GameSettingId: EFunction.TermsOfUseOverSeas,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[termsOfUseOverSeas]this is just a switch entry"
+};
+const childrenPrivacy = {
+  GameSettingId: EFunction.ChildrenPrivacy,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[childrenPrivacy]this is just a switch entry"
+};
+const thirdPartyInfo = {
+  GameSettingId: EFunction.ThirdPartyInfo,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[thirdPartyInfo]this is just a switch entry"
+};
+const privacyPolicySetting = {
+  GameSettingId: EFunction.PrivacyPolicySetting,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[privacyPolicySetting]this is just a switch entry"
+};
+const license = {
+  GameSettingId: EFunction.License,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[license]this is just a switch entry"
+};
+const logUpload = {
+  GameSettingId: EFunction.LogUpload,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[logUpload]this is just a switch entry"
+};
+const basicGraphicSetting = {
+  GameSettingId: EFunction.BasicGraphicSetting,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[basicGraphicSetting]this is just a switch entry"
+};
+const autoRun = {
+  GameSettingId: EFunction.AutoRun,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoRun,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoRun(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoRun()
+};
+const autoSprint = {
+  GameSettingId: EFunction.AutoSprint,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoSprint,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoSprint(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoSprint()
+};
+const vulkan = {
+  GameSettingId: EFunction.Vulkan,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Vulkan,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVulkan(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVulkan()
+};
+const showOtherName = {
+  GameSettingId: EFunction.ShowOtherName,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ShowOtherName,
+  HandleDoneCallback: (e, t) => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshPlayerInfoVisible);
+  },
+  DumpCallback: () => "[DumpAdviceSetting]same to getter"
+};
+const waterInteract = {
+  GameSettingId: EFunction.WaterInteract,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.WaterInteract,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyWaterInteract(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpWaterInteract()
+};
 exports.function2GameSettings = {
   [EFunction.MASTERVOLUMEFUNCTION]: masterVolume,
   [EFunction.VOICEVOLUMEFUNCTION]: voiceVolume,
@@ -667,6 +936,12 @@ exports.function2GameSettings = {
   [EFunction.FSR]: fsr,
   [EFunction.XESS]: xess,
   [EFunction.XESS_QUALITY]: xessQuality,
+  [EFunction.XESS2]: xess2,
+  [EFunction.XESS2_FG]: xess2Fg,
+  [EFunction.XESS2_QUALITY]: xess2Quality,
+  [EFunction.FSR3]: fsr3,
+  [EFunction.FSR3_FG]: fsr3Fg,
+  [EFunction.FSR3_QUALITY]: fsr3Quality,
   [EFunction.METALFX]: metalFxEnable,
   [EFunction.IRX]: irx,
   [EFunction.BLOOM]: bloom,
@@ -746,5 +1021,11 @@ exports.function2GameSettings = {
   [EFunction.AutoSprint]: autoSprint,
   [EFunction.ShowOtherName]: showOtherName,
   [EFunction.WaterInteract]: waterInteract
-}, exports.WINDOWS_RESOLUTION_INDEX = 2, exports.NPC_DENSITY_THRESHOLD = 1, exports.MAIN_TYPE_OF_KEY_SETTING = 3, exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 9, 8];
-//# sourceMappingURL=GameSettingsDefine.js.map
+};
+exports.WINDOWS_RESOLUTION_INDEX = 2;
+exports.NPC_DENSITY_THRESHOLD = 1;
+exports.NPC_DENSITY_PC_THRESHOLD = 1;
+exports.HEAVY_SCENEVULUME_INDEX_START = 20;
+exports.HEAVY_SCENEVULUME_INDEX_END = 24;
+exports.MAIN_TYPE_OF_KEY_SETTING = 3;
+exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 9, 8]; //# sourceMappingURL=GameSettingsDefine.js.map

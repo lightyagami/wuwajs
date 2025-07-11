@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LimitPlayerBlockAll = void 0;
+  value: true
+});
+exports.LimitPlayerBlockAll = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class LimitPlayerBlockAll {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, l) {
-    return this.bb_pos = t, this.bb = l, this
+    this.bb_pos = t;
+    this.bb = l;
+    return this;
   }
   static getRootAsLimitPlayerBlockAll(t, l) {
-    return (l || new LimitPlayerBlockAll).__init(t.readInt32(t.position()) + t.position(), t)
+    return (l || new LimitPlayerBlockAll()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsLimitPlayerBlockAll(t, l) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (l || new LimitPlayerBlockAll).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (l || new LimitPlayerBlockAll()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type(t) {
     var l = this.bb.__offset(this.bb_pos, 4);
-    return l ? this.bb.__string(this.bb_pos + l, t) : void 0
+    if (l) {
+      return this.bb.__string(this.bb_pos + l, t);
+    } else {
+      return undefined;
+    }
   }
   static startLimitPlayerBlockAll(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addType(t, l) {
-    t.addFieldOffset(0, l, 0)
+    t.addFieldOffset(0, l, 0);
   }
   static endLimitPlayerBlockAll(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createLimitPlayerBlockAll(t, l) {
-    return LimitPlayerBlockAll.startLimitPlayerBlockAll(t), LimitPlayerBlockAll.addType(t, l), LimitPlayerBlockAll.endLimitPlayerBlockAll(t)
+    LimitPlayerBlockAll.startLimitPlayerBlockAll(t);
+    LimitPlayerBlockAll.addType(t, l);
+    return LimitPlayerBlockAll.endLimitPlayerBlockAll(t);
   }
 }
 exports.LimitPlayerBlockAll = LimitPlayerBlockAll;

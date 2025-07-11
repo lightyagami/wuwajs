@@ -1,40 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelAiTaskMoveAlong = void 0;
+  value: true
+});
+exports.LevelAiTaskMoveAlong = undefined;
 const LevelAiTask_1 = require("../LevelAiTask");
 class LevelAiTaskMoveAlong extends LevelAiTask_1.LevelAiTask {
   constructor() {
-    super(...arguments), this.PathPoint = void 0, this.Navigation = !0, this.ResetAllPoints = !1, this.Gce = void 0
+    super(...arguments);
+    this.PathPoint = undefined;
+    this.Navigation = true;
+    this.ResetAllPoints = false;
+    this.Gce = undefined;
   }
   ExecuteTask() {
     var s;
-    return this.Gce = this.CreatureDataComponent.Entity.GetComponent(45), this.Gce ? (s = {
-      Points: this.PathPoint,
-      Navigation: this.Navigation,
-      IsFly: !1,
-      DebugMode: !0,
-      Loop: !1,
-      Callback: s => {
-        this.wTe(s)
-      },
-      UsePreviousIndex: !0,
-      UseNearestPoint: !0,
-      ReturnFalseWhenNavigationFailed: !1,
-      ResetAllPoints: this.ResetAllPoints
-    }, this.Gce.MoveAlongPath(s), 3) : 1
+    this.Gce = this.CreatureDataComponent.Entity.GetComponent(45);
+    if (this.Gce) {
+      s = {
+        Points: this.PathPoint,
+        Navigation: this.Navigation,
+        IsFly: false,
+        DebugMode: true,
+        Loop: false,
+        Callback: s => {
+          this.wTe(s);
+        },
+        UsePreviousIndex: true,
+        UseNearestPoint: true,
+        ReturnFalseWhenNavigationFailed: false,
+        ResetAllPoints: this.ResetAllPoints
+      };
+      this.Gce.MoveAlongPath(s);
+      return 3;
+    } else {
+      return 1;
+    }
   }
   AbortTask() {
-    return this.Gce.StopMoveNew(), 2
+    this.Gce.StopMoveNew();
+    return 2;
   }
   wTe(s) {
-    switch (this.Gce.StopMoveNew(), s) {
+    this.Gce.StopMoveNew();
+    switch (s) {
       case 1:
         this.FinishLatentTask(0);
         break;
       case 2:
       case 3:
-        this.FinishLatentTask(1)
+        this.FinishLatentTask(1);
     }
   }
 }

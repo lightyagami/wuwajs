@@ -1,8 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AsyncAiPerception = void 0;
+exports.AsyncAiPerception = undefined;
 const cpp_1 = require("cpp");
 const Log_1 = require("../../Core/Common/Log");
 const Stats_1 = require("../../Core/Common/Stats");
@@ -12,7 +13,7 @@ const Vector_1 = require("../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const TraceElementCommon_1 = require("../../Core/Utils/TraceElementCommon");
 const AsyncCommon_1 = require("../AsyncCommon");
-const PROFILE_KEY = 'AsyncAiPerception_IsActorInSense';
+const PROFILE_KEY = "AsyncAiPerception_IsActorInSense";
 class AsyncAiPerception {
   constructor() {
     this._private_PerceptionData = undefined;
@@ -45,7 +46,7 @@ class AsyncAiPerception {
     const isInGameThread = global.checkInGameThread();
     if (isInGameThread) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Test", 36, '[AsyncAiPerceptionTask::Tick] Execute in gameTherad. Error!!!!');
+        Log_1.Log.Info("Test", 36, "[AsyncAiPerceptionTask::Tick] Execute in gameTherad. Error!!!!");
       }
     }
     this._private_LineTrace = lineTrace;
@@ -143,8 +144,7 @@ class AsyncAiPerception {
     }
     for (const entityId of this._private_EntitiesToRemove) {
       if (!this._private_EntitiesRemoveTime.has(entityId)) {
-        this._private_EntitiesRemoveTime.set(entityId, Time_1.Time.Now +
-          MathUtils_1.MathUtils.GetRandomRange(this._private_PerceptionData.AiSenseGroupLoseDelayRange.X, this._private_PerceptionData.AiSenseGroupLoseDelayRange.Y));
+        this._private_EntitiesRemoveTime.set(entityId, Time_1.Time.Now + MathUtils_1.MathUtils.GetRandomRange(this._private_PerceptionData.AiSenseGroupLoseDelayRange.X, this._private_PerceptionData.AiSenseGroupLoseDelayRange.Y));
         this._private_IsEntitiesRemoveTimeDirty = true;
       }
     }
@@ -188,7 +188,7 @@ class AsyncAiPerception {
       }
       if (debugLogAndRole) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("AI", 6, 'Mingzhongzhigui Ai InArea', ['actor', otherActor?.GetName()], ['CantBeBlock', aiSenseObject.AiSenseCantBeBlock]);
+          Log_1.Log.Info("AI", 6, "Mingzhongzhigui Ai InArea", ["actor", otherActor?.GetName()], ["CantBeBlock", aiSenseObject.AiSenseCantBeBlock]);
         }
       }
       if (!aiSenseObject.AiSenseCantBeBlock) {
@@ -203,7 +203,7 @@ class AsyncAiPerception {
           if (hitResult.bBlockingHit && actors.Get(0) !== otherActor) {
             if (debugLogAndRole) {
               if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("AI", 6, 'Mingzhongzhigui Ai Hit', ['actor', actors.Get(0)?.GetName()], ['Comp', hitResult.Components.Get(0)?.GetName()]);
+                Log_1.Log.Info("AI", 6, "Mingzhongzhigui Ai Hit", ["actor", actors.Get(0)?.GetName()], ["Comp", hitResult.Components.Get(0)?.GetName()]);
               }
             }
             this._private_TmpCheckedTraceType.add(aiSenseObject.AiSenseBlockType);
@@ -219,42 +219,31 @@ class AsyncAiPerception {
   }
   _private_InArea(aiSenseObject, squaredDist, angleHorizontal, angleVertical, positionState, moveState, inSenseBefore) {
     if (aiSenseObject.WithAngleHorizontal) {
-      if (!MathUtils_1.MathUtils.InRangeArray(angleHorizontal, [
-          aiSenseObject.AiSenseHorizontalAngle.X,
-          aiSenseObject.AiSenseHorizontalAngle.Y,
-        ])) {
+      if (!MathUtils_1.MathUtils.InRangeArray(angleHorizontal, [aiSenseObject.AiSenseHorizontalAngle.X, aiSenseObject.AiSenseHorizontalAngle.Y])) {
         return false;
       }
     }
     if (aiSenseObject.WithAngleVertical) {
-      if (!MathUtils_1.MathUtils.InRangeArray(angleVertical, [
-          aiSenseObject.AiSenseVerticalAngle.X,
-          aiSenseObject.AiSenseVerticalAngle.Y,
-        ])) {
+      if (!MathUtils_1.MathUtils.InRangeArray(angleVertical, [aiSenseObject.AiSenseVerticalAngle.X, aiSenseObject.AiSenseVerticalAngle.Y])) {
         return false;
       }
     }
     let realSquaredDist = squaredDist;
     if (positionState === 0) {
-      if (moveState === 0 ||
-        moveState === 1 ||
-        moveState === 2 ||
-        moveState === 3) {
+      if (moveState === 0 || moveState === 1 || moveState === 2 || moveState === 3) {
         realSquaredDist /= aiSenseObject.SquaredWalkSenseRate;
       }
     } else if (moveState === 16) {
       realSquaredDist /= aiSenseObject.SquaredAirSenseRate;
     }
-    if (inSenseBefore ?
-      realSquaredDist > aiSenseObject.SenseDistanceRangeMax * aiSenseObject.SenseDistanceRangeMax :
-      realSquaredDist > aiSenseObject.SenseDistanceRangeMin * aiSenseObject.SenseDistanceRangeMin) {
+    if (inSenseBefore ? realSquaredDist > aiSenseObject.SenseDistanceRangeMax * aiSenseObject.SenseDistanceRangeMax : realSquaredDist > aiSenseObject.SenseDistanceRangeMin * aiSenseObject.SenseDistanceRangeMin) {
       return false;
     }
     return true;
   }
 }
 exports.AsyncAiPerception = AsyncAiPerception;
-AsyncAiPerception._private_FindNewInSenseActorStat = Stats_1.Stat.Create('AsyncAiPerception.FindNewInSenseActor');
-AsyncAiPerception._private_FindOutSenseActorStat = Stats_1.Stat.Create('AsyncAiPerception.FindOutSenseActor');
-AsyncAiPerception._private_IsActorInSenseStat = Stats_1.Stat.Create('AsyncAiPerception.IsActorInSense');
+AsyncAiPerception._private_FindNewInSenseActorStat = Stats_1.Stat.Create("AsyncAiPerception.FindNewInSenseActor");
+AsyncAiPerception._private_FindOutSenseActorStat = Stats_1.Stat.Create("AsyncAiPerception.FindOutSenseActor");
+AsyncAiPerception._private_IsActorInSenseStat = Stats_1.Stat.Create("AsyncAiPerception.IsActorInSense");
 //# sourceMappingURL=AsyncAiPerception.js.map

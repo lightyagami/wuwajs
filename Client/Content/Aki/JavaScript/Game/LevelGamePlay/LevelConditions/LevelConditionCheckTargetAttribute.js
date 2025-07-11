@@ -1,32 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCheckTargetAttribute = void 0;
-const Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  ICondition_1 = require("../../../UniverseEditor/Interface/ICondition"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCheckTargetAttribute = undefined;
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const ICondition_1 = require("../../../UniverseEditor/Interface/ICondition");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r) {
     e = e.Option;
-    return e.Type === ICondition_1.ETargetType.Player && this.iLe(e)
+    return e.Type === ICondition_1.ETargetType.Player && this.iLe(e);
   }
   iLe(e) {
-    return e.Option === ICondition_1.EPlayerCheckType.AnyRole && this.oLe(ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(), e.AttributeTypes)
+    return e.Option === ICondition_1.EPlayerCheckType.AnyRole && this.oLe(ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(), e.AttributeTypes);
   }
   oLe(e, r) {
-    let t = !1;
+    let t = false;
     for (const o of e) {
-      let e = !0;
-      for (const n of r)
-        if (n.Type === ICondition_1.EPlayerAttributeType.Health && (e &&= this.rLe(o, n)), !e) break;
-      if (t ||= e) return !0
+      let e = true;
+      for (const n of r) {
+        if (n.Type === ICondition_1.EPlayerAttributeType.Health) {
+          e &&= this.rLe(o, n);
+        }
+        if (!e) {
+          break;
+        }
+      }
+      if (t ||= e) {
+        return true;
+      }
     }
-    return t
+    return t;
   }
   rLe(e, r) {
     e = e.Entity?.GetComponent(173);
-    if (!e) return !1;
+    if (!e) {
+      return false;
+    }
     var t = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life) / e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n) * 100;
     switch (r.Compare) {
       case "Eq":
@@ -42,7 +54,7 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
       case "Lt":
         return t < r.Value;
       default:
-        return !1
+        return false;
     }
   }
 }

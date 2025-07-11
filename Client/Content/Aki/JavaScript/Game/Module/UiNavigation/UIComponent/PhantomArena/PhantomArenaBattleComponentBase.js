@@ -1,25 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaBattleComponentBase = void 0;
-const UiManager_1 = require("../../../../Ui/UiManager"),
-  HotKeyComponent_1 = require("../HotKeyComponent");
+  value: true
+});
+exports.PhantomArenaBattleComponentBase = undefined;
+const UiManager_1 = require("../../../../Ui/UiManager");
+const HotKeyComponent_1 = require("../HotKeyComponent");
 class PhantomArenaBattleComponentBase extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
-    super(...arguments), this.ProxyInternal = void 0
+    super(...arguments);
+    this.ProxyInternal = undefined;
   }
   get Proxy() {
     var e;
-    return this.ProxyInternal || (e = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView"), this.ProxyInternal = e?.OpenParam), this.ProxyInternal
+    if (!this.ProxyInternal) {
+      e = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView");
+      this.ProxyInternal = e?.OpenParam;
+    }
+    return this.ProxyInternal;
   }
   OnRefreshSelfHotKeyState(e) {
-    this.Proxy ? this.Proxy.IsInPanelInteract ? this.Proxy.IsMainInVisible ? this.OnRefreshSelfHotKeyStateIsMainInVisible() : this.SetVisibleMode(2, !1) : this.OnRefreshSelfHotKeyStateImplement() : this.SetVisibleMode(2, !1)
+    if (this.Proxy) {
+      if (this.Proxy.IsInPanelInteract) {
+        if (this.Proxy.IsMainInVisible) {
+          this.OnRefreshSelfHotKeyStateIsMainInVisible();
+        } else {
+          this.SetVisibleMode(2, false);
+        }
+      } else {
+        this.OnRefreshSelfHotKeyStateImplement();
+      }
+    } else {
+      this.SetVisibleMode(2, false);
+    }
   }
   OnRefreshSelfHotKeyStateImplement() {
-    this.SetVisibleMode(2, !0)
+    this.SetVisibleMode(2, true);
   }
   OnRefreshSelfHotKeyStateIsMainInVisible() {
-    this.SetVisibleMode(2, !1)
+    this.SetVisibleMode(2, false);
   }
 }
 exports.PhantomArenaBattleComponentBase = PhantomArenaBattleComponentBase;

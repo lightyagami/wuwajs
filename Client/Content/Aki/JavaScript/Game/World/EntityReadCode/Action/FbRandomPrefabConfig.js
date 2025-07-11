@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRandomPrefabConfig = void 0;
+  value: true
+});
+exports.FbRandomPrefabConfig = undefined;
 class FbRandomPrefabConfig {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.hAh = !1, this.lAh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.hAh = false;
+    this.lAh = 0;
   }
   static Create(t) {
-    if (t) return new FbRandomPrefabConfig(t)
+    if (t) {
+      return new FbRandomPrefabConfig(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get RandomPrefabId() {
-    return this.hAh || (this.hAh = !0, this.lAh = this.FbDataInternal.randomPrefabId()), this.lAh
+    if (!this.hAh) {
+      this.hAh = true;
+      this.lAh = this.FbDataInternal.randomPrefabId();
+    }
+    return this.lAh;
   }
 }
 exports.FbRandomPrefabConfig = FbRandomPrefabConfig;

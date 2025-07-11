@@ -1,67 +1,112 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.UiTabViewBase = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  TickSystem_1 = require("../../../Core/Tick/TickSystem"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  UiPanelBase_1 = require("./UiPanelBase"),
-  UiViewSequence_1 = require("./UiViewSequence");
+  value: true
+});
+exports.UiTabViewBase = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const TickSystem_1 = require("../../../Core/Tick/TickSystem");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const UiPanelBase_1 = require("./UiPanelBase");
+const UiViewSequence_1 = require("./UiViewSequence");
 class UiTabViewBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.sKe = TickSystem_1.TickSystem.InvalidId, this.Params = void 0, this.lur = new Map, this.OperationList = [], this.ExtraParams = void 0, this.UiViewSequence = void 0, this._ur = void 0, this.uur = e => {
-      this.OnTickUiTabViewBase(e)
-    }
+    super(...arguments);
+    this.sKe = TickSystem_1.TickSystem.InvalidId;
+    this.Params = undefined;
+    this.lur = new Map();
+    this.OperationList = [];
+    this.ExtraParams = undefined;
+    this.UiViewSequence = undefined;
+    this._ur = undefined;
+    this.uur = e => {
+      this.OnTickUiTabViewBase(e);
+    };
   }
   SetTabViewName(e) {
-    this._ur = e
+    this._ur = e;
   }
   OnBeforeShowImplement() {
-    this.sKe === TickSystem_1.TickSystem.InvalidId && (this.sKe = TickSystem_1.TickSystem.Add(this.uur, "TabViewTick", 0, !0).Id), this.AddEventListener()
+    if (this.sKe === TickSystem_1.TickSystem.InvalidId) {
+      this.sKe = TickSystem_1.TickSystem.Add(this.uur, "TabViewTick", 0, true, undefined, true).Id;
+    }
+    this.AddEventListener();
   }
   OnAfterHideImplement() {
-    this.sKe !== TickSystem_1.TickSystem.InvalidId && (TickSystem_1.TickSystem.Remove(this.sKe), this.sKe = TickSystem_1.TickSystem.InvalidId), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseTabView, this._ur), this.RemoveEventListener()
+    if (this.sKe !== TickSystem_1.TickSystem.InvalidId) {
+      TickSystem_1.TickSystem.Remove(this.sKe);
+      this.sKe = TickSystem_1.TickSystem.InvalidId;
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseTabView, this._ur);
+    this.RemoveEventListener();
   }
   AddEventListener() {}
   RemoveEventListener() {}
   OnBeforeCreateImplement() {
-    this.UiViewSequence = new UiViewSequence_1.UiBehaviorLevelSequence(this), this.AddUiBehavior(this.UiViewSequence)
+    this.UiViewSequence = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.UiViewSequence);
   }
   OnStartImplement() {
-    this.cur(), this.OnInitBehaviour();
+    this.cur();
+    this.OnInitBehaviour();
     var i = this.OperationList.length;
-    for (let e = 0; e < i; e++)(0, this.OperationList[e])();
-    this.OperationList = [], this.mur()
+    for (let e = 0; e < i; e++) {
+      (0, this.OperationList[e])();
+    }
+    this.OperationList = [];
+    this.mur();
   }
   AddUiTabViewBehavior(e) {
     let i = this.lur.get(e);
-    return i ? Log_1.Log.CheckError() && Log_1.Log.Error("UiTabModule", 10, "功能模块添加重复,查看是否重复添加") : (i = new e, this.lur.set(e, i)), i
+    if (i) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("UiTabModule", 10, "功能模块添加重复,查看是否重复添加");
+      }
+    } else {
+      i = new e();
+      this.lur.set(e, i);
+    }
+    return i;
   }
   GetTabBehavior(e) {
     e = this.lur.get(e);
-    if (e) return e
+    if (e) {
+      return e;
+    }
   }
   OnAfterShowImplement() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTabView, this._ur, this)
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTabView, this._ur, this);
   }
   cur() {
-    for (const e of this.lur.values()) e.Init()
+    for (const e of this.lur.values()) {
+      e.Init();
+    }
   }
   mur() {
-    for (const e of this.lur.values()) e.Begin()
+    for (const e of this.lur.values()) {
+      e.Begin();
+    }
   }
   dur() {
-    for (const e of this.lur.values()) e.ShowFromView()
+    for (const e of this.lur.values()) {
+      e.ShowFromView();
+    }
   }
   Cur() {
-    for (const e of this.lur.values()) e.ShowFromToggle()
+    for (const e of this.lur.values()) {
+      e.ShowFromToggle();
+    }
   }
   gur() {
-    for (const e of this.lur.values()) e.Hide()
+    for (const e of this.lur.values()) {
+      e.Hide();
+    }
   }
   fur() {
-    for (const e of this.lur.values()) e.Destroy()
+    for (const e of this.lur.values()) {
+      e.Destroy();
+    }
   }
   OnInitBehaviour() {}
   OnHideUiTabViewBase(e) {}
@@ -69,28 +114,34 @@ class UiTabViewBase extends UiPanelBase_1.UiPanelBase {
   OnShowUiTabViewFromToggle() {}
   OnShowUiTabViewFromView() {}
   ShowUiTabViewFromToggle() {
-    this.Show(), this.OnShowUiTabViewFromToggle(), this.Cur()
+    this.Show();
+    this.OnShowUiTabViewFromToggle();
+    this.Cur();
   }
   ShowUiTabViewFromView() {
-    this.Show(), this.OnShowUiTabViewFromView(), this.dur()
+    this.Show();
+    this.OnShowUiTabViewFromView();
+    this.dur();
   }
   HideUiTabView(e) {
-    this.Hide(), this.OnHideUiTabViewBase(e), this.gur()
+    this.Hide();
+    this.OnHideUiTabViewBase(e);
+    this.gur();
   }
   OnBeforeDestroyImplement() {
-    this.fur()
+    this.fur();
   }
   SetParams(e) {
-    this.Params = e
+    this.Params = e;
   }
   SetExtraParams(e) {
-    this.ExtraParams = e
+    this.ExtraParams = e;
   }
   GetViewName() {
-    return this._ur
+    return this._ur;
   }
   CancelAsyncLoad() {
-    this.ClearUiPrefabLoadModule()
+    this.ClearUiPrefabLoadModule();
   }
 }
 exports.UiTabViewBase = UiTabViewBase;

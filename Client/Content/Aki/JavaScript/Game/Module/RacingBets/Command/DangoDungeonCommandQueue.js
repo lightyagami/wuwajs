@@ -1,43 +1,79 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DangoDungeonCommandQueue = void 0;
-const cpp_1 = require("cpp"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  Macro_1 = require("../../../../Core/Preprocessor/Macro");
+  value: true
+});
+exports.DangoDungeonCommandQueue = undefined;
+const cpp_1 = require("cpp");
+const Log_1 = require("../../../../Core/Common/Log");
+const Macro_1 = require("../../../../Core/Preprocessor/Macro");
 class DangoDungeonCommandQueue {
   constructor() {
-    this.CurCommandActionIndex = 0, this.ckc = !1, this._kc = [], this.HFc = void 0, this.Wb1 = new Map, this.nG1 = void 0, this.oUe = 0
+    this.CurCommandActionIndex = 0;
+    this.ckc = false;
+    this._kc = [];
+    this.HFc = undefined;
+    this.pR1 = new Map();
+    this.kG1 = undefined;
+    this.oUe = 0;
   }
   Init() {
-    this.av()
+    this.av();
   }
   AddCommand(t) {
-    this.ckc || this._kc.push(t)
+    if (!this.ckc) {
+      this._kc.push(t);
+    }
   }
   Abort() {
-    this.nG1 && (this.nG1.IsAborted = !0), this.ckc = !0
+    if (this.kG1) {
+      this.kG1.IsAborted = true;
+    }
+    this.ckc = true;
   }
   async Execute() {
-    for (; 0 < this._kc.length && !this.ckc;) try {
-      var t = cpp_1.KuroTime.GetMicroseconds64(),
-        i = (this.nG1 = this._kc.shift(), 0 < this.nG1.ActionIndex && (this.CurCommandActionIndex = this.nG1.ActionIndex), await this.nG1.Execute(), cpp_1.KuroTime.GetMicroseconds64());
-      this.oUe += i - t, this.Qb1(this.nG1.CommandType, i - t)
-    } catch (t) {
-      t instanceof Error ? Log_1.Log.CheckError() && Log_1.Log.ErrorWithStack("RacingBetsDungeon", 58, "DangoDungeonCommandQueue Execute异常", t, ["error", t.message]) : Log_1.Log.CheckError() && Log_1.Log.Error("RacingBetsDungeon", 58, "DangoDungeonCommandQueue Execute异常", ["error", t])
+    while (this._kc.length > 0 && !this.ckc) {
+      try {
+        var t = cpp_1.KuroTime.GetMicroseconds64();
+        this.kG1 = this._kc.shift();
+        if (this.kG1.ActionIndex > 0) {
+          this.CurCommandActionIndex = this.kG1.ActionIndex;
+        }
+        await this.kG1.Execute();
+        var i = cpp_1.KuroTime.GetMicroseconds64();
+        this.oUe += i - t;
+        this.vR1(this.kG1.CommandType, i - t);
+      } catch (t) {
+        if (t instanceof Error) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.ErrorWithStack("RacingBetsDungeon", 58, "DangoDungeonCommandQueue Execute异常", t, ["error", t.message]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("RacingBetsDungeon", 58, "DangoDungeonCommandQueue Execute异常", ["error", t]);
+        }
+      }
     }
-    this.Kb1(), this.OnEnd(this.ckc)
+    this.yR1();
+    this.OnEnd(this.ckc);
   }
-  Qb1(t, i) {}
-  Kb1() {}
+  vR1(t, i) {}
+  yR1() {}
   OnEnd(t) {
-    this.HFc && this.HFc(t), this.av()
+    if (this.HFc) {
+      this.HFc(t);
+    }
+    this.av();
   }
   av() {
-    this.oUe = 0, this.CurCommandActionIndex = 0, this.Wb1.clear(), this.ckc = !1, this._kc = [], this.HFc = void 0
+    this.oUe = 0;
+    this.CurCommandActionIndex = 0;
+    this.pR1.clear();
+    this.ckc = false;
+    this._kc = [];
+    this.HFc = undefined;
   }
   BindCommandQueueEndCallBack(t) {
-    this.HFc = t
+    this.HFc = t;
   }
 }
 exports.DangoDungeonCommandQueue = DangoDungeonCommandQueue;

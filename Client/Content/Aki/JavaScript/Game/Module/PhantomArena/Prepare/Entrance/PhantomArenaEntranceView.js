@@ -1,124 +1,184 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomArenaEntranceView = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem"),
-  StringUtils_1 = require("../../../../../Core/Utils/StringUtils"),
-  TimeUtil_1 = require("../../../../Common/TimeUtil"),
-  ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  ActivityButtonItem_1 = require("../../../Activity/ActivityContent/UniversalComponents/Functional/ActivityButtonItem"),
-  CommonTabComponentData_1 = require("../../../Common/TabComponent/CommonTabComponentData"),
-  CommonTabData_1 = require("../../../Common/TabComponent/CommonTabData"),
-  TabComponentWithCaptionItem_1 = require("../../../Common/TabComponent/TabComponentWithCaptionItem"),
-  CommonTabItem_1 = require("../../../Common/TabComponent/TabItem/CommonTabItem"),
-  TabViewComponent_1 = require("../../../Common/TabComponent/TabViewComponent"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  PhantomArenaDefine_1 = require("../../PhantomArenaDefine"),
-  PhantomArenaRootViewBase_1 = require("../PhantomArenaRootViewBase"),
-  PhantomArenaEntranceViewModel_1 = require("./PhantomArenaEntranceViewModel");
+  value: true
+});
+exports.PhantomArenaEntranceView = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
+const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const ActivityButtonItem_1 = require("../../../Activity/ActivityContent/UniversalComponents/Functional/ActivityButtonItem");
+const CommonTabComponentData_1 = require("../../../Common/TabComponent/CommonTabComponentData");
+const CommonTabData_1 = require("../../../Common/TabComponent/CommonTabData");
+const TabComponentWithCaptionItem_1 = require("../../../Common/TabComponent/TabComponentWithCaptionItem");
+const CommonTabItem_1 = require("../../../Common/TabComponent/TabItem/CommonTabItem");
+const TabViewComponent_1 = require("../../../Common/TabComponent/TabViewComponent");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
+const PhantomArenaRootViewBase_1 = require("../PhantomArenaRootViewBase");
+const PhantomArenaEntranceViewModel_1 = require("./PhantomArenaEntranceViewModel");
 class PhantomArenaEntranceView extends PhantomArenaRootViewBase_1.PhantomArenaRootViewBase {
   constructor() {
-    super(...arguments), this.TabViewComponent = void 0, this.TabComponent = void 0, this.Wnu = void 0, this.$_u = void 0, this.Xbe = void 0, this.Qnu = () => {
+    super(...arguments);
+    this.TabViewComponent = undefined;
+    this.TabComponent = undefined;
+    this.G1u = undefined;
+    this.Z0u = undefined;
+    this.Xbe = undefined;
+    this.F1u = () => {
       var t = {
         ChallengeId: this.ViewModel.GetRepeatChallenge(),
         OpenView: "PhantomArenaChallengeDetailTabView"
       };
       UiManager_1.UiManager.OpenView("PhantomArenaMainView", t, () => {
-        this.GetItem(8).SetUIActive(!1)
-      })
-    }, this.Sj1 = () => {
-      this.Back()
-    }, this.Rtu = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaEntranceShopMainView", "PhantomArenaEntranceTaskTabView")
-    }, this.bau = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView")
-    }, this.EL1 = () => {
-      UiManager_1.UiManager.OpenView("PhantomArenaHelpView", PhantomArenaDefine_1.HELP_ID_ENTRANCE)
-    }, this.Gcu = t => {
+        this.GetItem(8).SetUIActive(false);
+      });
+    };
+    this.i71 = () => {
+      this.Back();
+    };
+    this.dou = () => {
+      UiManager_1.UiManager.OpenView("PhantomArenaEntranceShopMainView", "PhantomArenaEntranceTaskTabView");
+    };
+    this.Pdu = () => {
+      UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView");
+    };
+    this.XL1 = () => {
+      UiManager_1.UiManager.OpenView("PhantomArenaHelpView", PhantomArenaDefine_1.HELP_ID_ENTRANCE);
+    };
+    this.rTu = t => {
       var e;
-      0 === t ? (e = this.ViewModel.GetTabView(), this.OpenChildView(e)) : 1 === t && this.K5t()
-    }, this.fqe = (t, e) => {
-      return new CommonTabItem_1.CommonTabItem
-    }, this.pqe = t => {}, this.yqe = t => new CommonTabData_1.CommonTabData("", void 0), this.kOe = t => {
+      if (t === 0) {
+        e = this.ViewModel.GetTabView();
+        this.OpenChildView(e);
+      } else if (t === 1) {
+        this.K5t();
+      }
+    };
+    this.fqe = (t, e) => {
+      return new CommonTabItem_1.CommonTabItem();
+    };
+    this.pqe = t => {};
+    this.yqe = t => new CommonTabData_1.CommonTabData("", undefined);
+    this.kOe = t => {
       var [e, i] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime();
-      this.Wnu?.SetUiActive(e), e && this.Wnu?.SetText(i)
-    }
+      this.G1u?.SetUiActive(e);
+      if (e) {
+        this.G1u?.SetText(i);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIText],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIText],
-      [5, UE.UIText],
-      [6, UE.UISprite],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIItem],
-      [10, UE.UITexture],
-      [11, UE.UITexture],
-      [12, UE.UIText],
-      [13, UE.UIButtonComponent]
-    ], this.BtnBindInfo = [
-      [13, this.bau]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UISprite], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UITexture], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[13, this.Pdu]];
   }
   OnRegisterDefaultChildView() {
-    this.DefaultChildViewName = "PhantomArenaEntranceGymTabView"
+    this.DefaultChildViewName = "PhantomArenaEntranceGymTabView";
   }
   OnRegisterContentItem() {
-    this.ContentItem = this.GetItem(7)
+    this.ContentItem = this.GetItem(7);
   }
   OnRegisterViewData() {
-    this.ViewModel = new PhantomArenaEntranceViewModel_1.PhantomArenaEntranceViewModel, this.ViewModel.Bind(this.Gcu)
+    this.ViewModel = new PhantomArenaEntranceViewModel_1.PhantomArenaEntranceViewModel();
+    this.ViewModel.Bind(this.rTu);
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();
-    var t = [],
-      e = (this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(7)), t.push(this._yn()), this.GetItem(2)),
-      e = (this.Wnu = new ActivityButtonItem_1.ActivityButtonItem, this.Wnu.SetFunction(this.Rtu), t.push(this.Wnu.CreateThenShowByActorAsync(e.GetOwner())), this.GetItem(3));
-    this.$_u = new ActivityButtonItem_1.ActivityButtonItem, this.$_u.SetFunction(this.bau), t.push(this.$_u.CreateThenShowByActorAsync(e.GetOwner())), await Promise.all(t)
+    var t = [];
+    this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(7));
+    t.push(this._yn());
+    var e = this.GetItem(2);
+    this.G1u = new ActivityButtonItem_1.ActivityButtonItem();
+    this.G1u.SetFunction(this.dou);
+    t.push(this.G1u.CreateThenShowByActorAsync(e.GetOwner()));
+    var e = this.GetItem(3);
+    this.Z0u = new ActivityButtonItem_1.ActivityButtonItem();
+    this.Z0u.SetFunction(this.Pdu);
+    t.push(this.Z0u.CreateThenShowByActorAsync(e.GetOwner()));
+    await Promise.all(t);
   }
   async _yn() {
     var t = new CommonTabComponentData_1.CommonTabComponentData(this.fqe, this.pqe, this.yqe);
-    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), t, this.Sj1, !0), await this.TabComponent.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.TabComponent.SetScrollViewVisible(!1), this.TabComponent.NeedCaptionSwitchWithToggle = !1, this.TabComponent.SetHelpButtonShowState(!0), this.TabComponent.SetHelpButtonCallBack(this.EL1), this.TabComponent.SetTitleByTextIdAndArgNew("Activity_100805001_Title"), await this.TabComponent.RefreshTabItemByLengthAsync(0)
+    this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), t, this.i71, true);
+    await this.TabComponent.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.TabComponent.SetScrollViewVisible(false);
+    this.TabComponent.NeedCaptionSwitchWithToggle = false;
+    this.TabComponent.SetHelpButtonShowState(true);
+    this.TabComponent.SetHelpButtonCallBack(this.XL1);
+    this.TabComponent.SetTitleByTextIdAndArgNew("Activity_100805001_Title");
+    await this.TabComponent.RefreshTabItemByLengthAsync(0);
   }
   OnStart() {
-    this.GetItem(8).SetUIActive(!1), this.UiViewSequence.AddSequenceFinishEvent("MatchStart", this.Qnu)
+    this.GetItem(8).SetUIActive(false);
+    this.UiViewSequence.AddSequenceFinishEvent("MatchStart", this.F1u);
   }
   OnBeforeShow() {
-    this.nOe(), this.K8e()
+    this.nOe();
+    this.K8e();
   }
   OnBeforeHide() {
-    this.W8e()
+    this.W8e();
   }
   OnBeforeDestroy() {
-    this.ViewModel.UnBind(this.Gcu), this.TabViewComponent?.DestroyTabViewComponent(), this.TabViewComponent = void 0, this.Xbe && (TimerSystem_1.RealTimeTimerSystem.Has(this.Xbe) && TimerSystem_1.RealTimeTimerSystem.Remove(this.Xbe), this.Xbe = void 0)
+    this.ViewModel.UnBind(this.rTu);
+    this.TabViewComponent?.DestroyTabViewComponent();
+    this.TabViewComponent = undefined;
+    if (this.Xbe) {
+      if (TimerSystem_1.RealTimeTimerSystem.Has(this.Xbe)) {
+        TimerSystem_1.RealTimeTimerSystem.Remove(this.Xbe);
+      }
+      this.Xbe = undefined;
+    }
   }
   nOe() {
-    var t, e = ModelManager_1.ModelManager.PhantomArenaModel,
-      i = e.GetMasterLevel(),
-      n = (this.GetText(1).SetText(i.toString()), e.GetMasterExpNextNeed()),
-      n = StringUtils_1.StringUtils.Format("/{0}", n.toString()),
-      n = (this.GetText(5).SetText(n), e.GetMasterExpNow()),
-      a = (this.GetText(4).SetText(n.toString()), e.GetMasterLevelConfig(i));
-    a && (t = a.TitleId, t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(t), this.SetTextureByPath(t.Icon, this.GetTexture(10)), this.SetTextureByPath(t.IconBg, this.GetTexture(11)), n = (n - a.ExpNeed) / a.ExpNext, [a, n] = (this.GetSprite(6).SetFillAmount(n), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), t.Name), ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime()), this.Wnu?.SetUiActive(a), a && (this.Xbe = TimerSystem_1.RealTimeTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond), this.Wnu?.SetText(n)), t = e.GetMasterLevelMax(), this.$_u?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, i, t))
+    var t;
+    var e = ModelManager_1.ModelManager.PhantomArenaModel;
+    var i = e.GetMasterLevel();
+    this.GetText(1).SetText(i.toString());
+    var n = e.GetMasterExpNextNeed();
+    var n = StringUtils_1.StringUtils.Format("/{0}", n.toString());
+    this.GetText(5).SetText(n);
+    var n = e.GetMasterExpNow();
+    this.GetText(4).SetText(n.toString());
+    var a = e.GetMasterLevelConfig(i);
+    if (a) {
+      t = a.TitleId;
+      t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterTitleById(t);
+      this.SetTextureByPath(t.Icon, this.GetTexture(10));
+      this.SetTextureByPath(t.IconBg, this.GetTexture(11));
+      n = (n - a.ExpNeed) / a.ExpNext;
+      [a, n] = (this.GetSprite(6).SetFillAmount(n), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(12), t.Name), ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime());
+      this.G1u?.SetUiActive(a);
+      if (a) {
+        this.Xbe = TimerSystem_1.RealTimeTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond);
+        this.G1u?.SetText(n);
+      }
+      t = e.GetMasterLevelMax();
+      this.Z0u?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, i, t);
+    }
   }
   K5t() {
-    this.GetItem(8).SetUIActive(!0), this.UiViewSequence.PlaySequence("MatchStart")
+    this.GetItem(8).SetUIActive(true);
+    this.UiViewSequence.PlaySequence("MatchStart");
   }
   K8e() {
-    this.Wnu?.BindRedDot("RedDotPhantomArenaLimitReward"), this.$_u?.BindRedDot("RedDotPhantomArenaLevelReward")
+    this.G1u?.BindRedDot("RedDotPhantomArenaLimitReward");
+    this.Z0u?.BindRedDot("RedDotPhantomArenaLevelReward");
   }
   W8e() {
-    this.Wnu?.UnBindRedDot(), this.$_u?.UnBindRedDot()
+    this.G1u?.UnBindRedDot();
+    this.Z0u?.UnBindRedDot();
   }
   GetGuideUiItemAndUiItemForShowEx(t) {
-    return !t || 0 === t.length || "GuideHook" !== t[0] || t.length < 2 ? void 0 : this.GetCurChildView()?.GetGuideUiItemAndUiItemForShowEx(t)
+    if (!t || t.length === 0 || t[0] !== "GuideHook" || t.length < 2) {
+      return undefined;
+    } else {
+      return this.GetCurChildView()?.GetGuideUiItemAndUiItemForShowEx(t);
+    }
   }
 }
 exports.PhantomArenaEntranceView = PhantomArenaEntranceView;

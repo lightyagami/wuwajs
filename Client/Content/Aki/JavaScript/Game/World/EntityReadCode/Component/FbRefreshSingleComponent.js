@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbRefreshSingleComponent = void 0;
+  value: true
+});
+exports.FbRefreshSingleComponent = undefined;
 class FbRefreshSingleComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.xBh = !1, this.RBh = 0, this.wBh = !1, this.PBh = !1, this.Iph = !1, this.Tph = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.xBh = false;
+    this.RBh = 0;
+    this.wBh = false;
+    this.PBh = false;
+    this.Iph = false;
+    this.Tph = undefined;
   }
   static Create(t) {
-    if (t) return new FbRefreshSingleComponent(t)
+    if (t) {
+      return new FbRefreshSingleComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get RefreshInterval() {
-    return this.xBh || (this.xBh = !0, this.RBh = this.FbDataInternal.refreshInterval()), this.RBh
+    if (!this.xBh) {
+      this.xBh = true;
+      this.RBh = this.FbDataInternal.refreshInterval();
+    }
+    return this.RBh;
   }
   get DelayRefresh() {
-    return this.wBh || (this.wBh = !0, this.PBh = this.FbDataInternal.delayRefresh()), this.PBh
+    if (!this.wBh) {
+      this.wBh = true;
+      this.PBh = this.FbDataInternal.delayRefresh();
+    }
+    return this.PBh;
   }
   get TemplateGuid() {
-    return this.Iph || (this.Iph = !0, this.Tph = this.FbDataInternal.templateGuid()), this.Tph
+    if (!this.Iph) {
+      this.Iph = true;
+      this.Tph = this.FbDataInternal.templateGuid();
+    }
+    return this.Tph;
   }
 }
 exports.FbRefreshSingleComponent = FbRefreshSingleComponent;

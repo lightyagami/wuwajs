@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueRoleSelectRoom = void 0;
+  value: true
+});
+exports.RogueRoleSelectRoom = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class RogueRoleSelectRoom {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, o) {
-    return this.bb_pos = e, this.bb = o, this
+    this.bb_pos = e;
+    this.bb = o;
+    return this;
   }
   static getRootAsRogueRoleSelectRoom(e, o) {
-    return (o || new RogueRoleSelectRoom).__init(e.readInt32(e.position()) + e.position(), e)
+    return (o || new RogueRoleSelectRoom()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsRogueRoleSelectRoom(e, o) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (o || new RogueRoleSelectRoom).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (o || new RogueRoleSelectRoom()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   type(e) {
     var o = this.bb.__offset(this.bb_pos, 4);
-    return o ? this.bb.__string(this.bb_pos + o, e) : void 0
+    if (o) {
+      return this.bb.__string(this.bb_pos + o, e);
+    } else {
+      return undefined;
+    }
   }
   static startRogueRoleSelectRoom(e) {
-    e.startObject(1)
+    e.startObject(1);
   }
   static addType(e, o) {
-    e.addFieldOffset(0, o, 0)
+    e.addFieldOffset(0, o, 0);
   }
   static endRogueRoleSelectRoom(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createRogueRoleSelectRoom(e, o) {
-    return RogueRoleSelectRoom.startRogueRoleSelectRoom(e), RogueRoleSelectRoom.addType(e, o), RogueRoleSelectRoom.endRogueRoleSelectRoom(e)
+    RogueRoleSelectRoom.startRogueRoleSelectRoom(e);
+    RogueRoleSelectRoom.addType(e, o);
+    return RogueRoleSelectRoom.endRogueRoleSelectRoom(e);
   }
 }
 exports.RogueRoleSelectRoom = RogueRoleSelectRoom;

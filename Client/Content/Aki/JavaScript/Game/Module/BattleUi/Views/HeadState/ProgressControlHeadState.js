@@ -1,51 +1,57 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ProgressControlHeadState = void 0;
-const UE = require("ue"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  HeadStateViewBase_1 = require("./HeadStateViewBase");
+  value: true
+});
+exports.ProgressControlHeadState = undefined;
+const UE = require("ue");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const HeadStateViewBase_1 = require("./HeadStateViewBase");
 class ProgressControlHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   constructor() {
-    super(...arguments), this.Wlt = 0, this.OnProgressControlDataChange = t => {
+    super(...arguments);
+    this.Wlt = 0;
+    this.OnProgressControlDataChange = t => {
       switch (t.ProgressCtrlType) {
         case "CaptureStrategicPoint":
         case "CaptureStrategicPoint2":
         case "ChargingDevice":
-          this.x_t(t.CurrentValue / t.MaxValue)
+          this.x_t(t.CurrentValue / t.MaxValue);
       }
-    }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UISprite],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText]];
   }
   GetResourceId() {
-    return "UiItem_BarInteractive"
+    return "UiItem_BarInteractive";
   }
   ActiveBattleHeadState(t) {
     super.ActiveBattleHeadState(t);
-    var e = this.GetSprite(0),
-      s = this.GetText(1),
-      a = e.GetStretchLeft(),
-      i = e.GetParentAsUIItem().GetWidth(),
-      r = (this.Wlt = i - 2 * a, e.SetUIActive(!0), s.SetUIActive(!0), t.GetProgressControlData());
+    var e = this.GetSprite(0);
+    var s = this.GetText(1);
+    var a = e.GetStretchLeft();
+    var i = e.GetParentAsUIItem().GetWidth();
+    this.Wlt = i - a * 2;
+    e.SetUIActive(true);
+    s.SetUIActive(true);
+    var r = t.GetProgressControlData();
     switch (r.ProgressCtrlType) {
       case "CaptureStrategicPoint":
       case "CaptureStrategicPoint2":
       case "ChargingDevice":
-        this.x_t(r.CurrentValue / r.MaxValue)
+        this.x_t(r.CurrentValue / r.MaxValue);
     }
   }
   BindCallback() {
-    super.BindCallback(), this.HeadStateData.BindOnProgressControlDataChange(this.OnProgressControlDataChange)
+    super.BindCallback();
+    this.HeadStateData.BindOnProgressControlDataChange(this.OnProgressControlDataChange);
   }
   x_t(t) {
-    var e = MathUtils_1.MathUtils.Clamp(t, 0, 1) * this.Wlt,
-      e = (this.GetSprite(0).SetWidth(e), Math.round(MathUtils_1.MathUtils.RangeClamp(t, 0, 1, 0, 100)));
-    this.GetText(1).SetText(e + "%")
+    var e = MathUtils_1.MathUtils.Clamp(t, 0, 1) * this.Wlt;
+    this.GetSprite(0).SetWidth(e);
+    var e = Math.round(MathUtils_1.MathUtils.RangeClamp(t, 0, 1, 0, 100));
+    this.GetText(1).SetText(e + "%");
   }
 }
 exports.ProgressControlHeadState = ProgressControlHeadState;

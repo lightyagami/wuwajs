@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbQuantityRefillCondition = void 0;
+  value: true
+});
+exports.FbQuantityRefillCondition = undefined;
 class FbQuantityRefillCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Zqh = !1, this.ekh = 0, this.h1_ = !1, this.l1_ = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Zqh = false;
+    this.ekh = 0;
+    this.h1_ = false;
+    this.l1_ = 0;
   }
   static Create(t) {
-    if (t) return new FbQuantityRefillCondition(t)
+    if (t) {
+      return new FbQuantityRefillCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Quantity() {
-    return this.Zqh || (this.Zqh = !0, this.ekh = this.FbDataInternal.quantity()), this.ekh
+    if (!this.Zqh) {
+      this.Zqh = true;
+      this.ekh = this.FbDataInternal.quantity();
+    }
+    return this.ekh;
   }
   get DelayRefill() {
-    return this.h1_ || (this.h1_ = !0, this.l1_ = this.FbDataInternal.delayRefill()), this.l1_
+    if (!this.h1_) {
+      this.h1_ = true;
+      this.l1_ = this.FbDataInternal.delayRefill();
+    }
+    return this.l1_;
   }
 }
 exports.FbQuantityRefillCondition = FbQuantityRefillCondition;

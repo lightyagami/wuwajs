@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMoveSceneItem = void 0;
+  value: true
+});
+exports.FbMoveSceneItem = undefined;
 const UnionMoveSceneItemHelper_1 = require("./UnionMoveSceneItemHelper");
 class FbMoveSceneItem {
   constructor(e) {
-    this.FbDataInternal = e, this.a_h = !1, this.I9o = 0, this.kEh = !1, this.GEh = !1, this.OEh = !1, this.FEh = void 0, this.oi_ = !1, this.ni_ = !1
+    this.FbDataInternal = e;
+    this.a_h = false;
+    this.I9o = 0;
+    this.kEh = false;
+    this.GEh = false;
+    this.OEh = false;
+    this.FEh = undefined;
+    this.oi_ = false;
+    this.ni_ = false;
   }
   static Create(e) {
-    if (e) return new FbMoveSceneItem(e)
+    if (e) {
+      return new FbMoveSceneItem(e);
+    }
   }
   get EntityId() {
-    return this.a_h || (this.a_h = !0, this.I9o = this.FbDataInternal.entityId()), this.I9o
+    if (!this.a_h) {
+      this.a_h = true;
+      this.I9o = this.FbDataInternal.entityId();
+    }
+    return this.I9o;
   }
   get StopBeforeMove() {
-    return this.kEh || (this.kEh = !0, this.GEh = this.FbDataInternal.stopBeforeMove()), this.GEh
+    if (!this.kEh) {
+      this.kEh = true;
+      this.GEh = this.FbDataInternal.stopBeforeMove();
+    }
+    return this.GEh;
   }
   get MoveConfig() {
-    var e, t;
-    return !this.OEh && (this.OEh = !0, e = this.FbDataInternal.moveConfigType(), t = UnionMoveSceneItemHelper_1.UnionMoveSceneItemHelper.GetUnionMoveSceneItemObject(e)) && (this.FEh = UnionMoveSceneItemHelper_1.UnionMoveSceneItemHelper.ReadUnionMoveSceneItem(e, this.FbDataInternal.moveConfig(t))), this.FEh
+    var e;
+    var t;
+    if (!this.OEh && (this.OEh = true, e = this.FbDataInternal.moveConfigType(), t = UnionMoveSceneItemHelper_1.UnionMoveSceneItemHelper.GetUnionMoveSceneItemObject(e))) {
+      this.FEh = UnionMoveSceneItemHelper_1.UnionMoveSceneItemHelper.ReadUnionMoveSceneItem(e, this.FbDataInternal.moveConfig(t));
+    }
+    return this.FEh;
   }
   get BypassClientResponse() {
-    return this.oi_ || (this.oi_ = !0, this.ni_ = this.FbDataInternal.bypassClientResponse()), this.ni_
+    if (!this.oi_) {
+      this.oi_ = true;
+      this.ni_ = this.FbDataInternal.bypassClientResponse();
+    }
+    return this.ni_;
   }
 }
 exports.FbMoveSceneItem = FbMoveSceneItem;

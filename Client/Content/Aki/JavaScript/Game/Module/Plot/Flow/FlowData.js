@@ -1,33 +1,115 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlowContext = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  Pool_1 = require("../../../../Core/Container/Pool"),
-  StringUtils_1 = require("../../../../Core/Utils/StringUtils"),
-  CAPACITY = 20;
+  value: true
+});
+exports.FlowContext = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const Pool_1 = require("../../../../Core/Container/Pool");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const CAPACITY = 20;
 class FlowContext {
   constructor() {
-    this.IsServerNotify = !1, this.FlowListName = "", this.FlowId = 0, this.FlowStateId = 0, this.Context = void 0, this.CurActionId = 0, this.IsWaitRenderData = !0, this.CurSubActionId = 0, this.CurShowTalk = void 0, this.CurShowTalkActionId = 0, this.CurTalkId = -1, this.CurOptionId = -1, this.IsBackground = !1, this.IsFadeSkip = !1, this.IsBreakdown = !1, this.IsServerEnd = !1, this.IsAsync = !1, this.FlowIncId = 0, this.HasAdjustCamera = !1, this.CanSkip = !1, this.TalkHistory = new Array, this.OptionsHistory = new Map, this.OptionsCollection = [], this.UiParam = void 0, this.FormatIdInner = void 0, this.Pos = void 0, this.RollbackRecord = [], this.KeepMainRolePose = !1, this.SeamlessPlot = !1, this.EndSeamlessShowTalkId = 0, this.NeedPreloadUiSequenceData = void 0
+    this.IsServerNotify = false;
+    this.FlowListName = "";
+    this.FlowId = 0;
+    this.FlowStateId = 0;
+    this.Context = undefined;
+    this.CurActionId = 0;
+    this.IsWaitRenderData = true;
+    this.CurSubActionId = 0;
+    this.CurShowTalk = undefined;
+    this.CurShowTalkActionId = 0;
+    this.CurTalkId = -1;
+    this.CurOptionId = -1;
+    this.IsBackground = false;
+    this.IsFadeSkip = false;
+    this.IsBreakdown = false;
+    this.IsServerEnd = false;
+    this.IsAsync = false;
+    this.FlowIncId = 0;
+    this.HasAdjustCamera = false;
+    this.CanSkip = false;
+    this.TalkHistory = new Array();
+    this.OptionsHistory = new Map();
+    this.OptionsCollection = [];
+    this.UiParam = undefined;
+    this.FormatIdInner = undefined;
+    this.Pos = undefined;
+    this.RollbackRecord = [];
+    this.KeepMainRolePose = false;
+    this.SeamlessPlot = false;
+    this.EndSeamlessShowTalkId = 0;
+    this.NeedPreloadUiSequenceData = undefined;
   }
-  Init(t, i, s, h, o, e, r, n, l = !1, d = void 0, C, v = !1, c = !1, _ = 0, a) {
-    this.ht(), this.IsServerNotify = t, this.FlowIncId = s, this.FlowListName = i, this.FlowId = h, this.IsBackground = e, this.IsBreakdown = r, this.Context = n, this.IsAsync = l, this.UiParam = d, this.FlowStateId = o, this.Pos = C, this.KeepMainRolePose = v, this.SeamlessPlot = c, this.EndSeamlessShowTalkId = _, a && (this.NeedPreloadUiSequenceData = [...a])
+  Init(t, i, s, h, o, e, r, n, l = false, d = undefined, C, v = false, c = false, _ = 0, a) {
+    this.ht();
+    this.IsServerNotify = t;
+    this.FlowIncId = s;
+    this.FlowListName = i;
+    this.FlowId = h;
+    this.IsBackground = e;
+    this.IsBreakdown = r;
+    this.Context = n;
+    this.IsAsync = l;
+    this.UiParam = d;
+    this.FlowStateId = o;
+    this.Pos = C;
+    this.KeepMainRolePose = v;
+    this.SeamlessPlot = c;
+    this.EndSeamlessShowTalkId = _;
+    if (a) {
+      this.NeedPreloadUiSequenceData = [...a];
+    }
   }
   ht() {
-    this.FlowIncId = -1, this.Context = void 0, this.CurActionId = 0, this.CurSubActionId = 0, this.IsAsync = !1, this.CurShowTalk = void 0, this.CurTalkId = -1, this.CurOptionId = -1, this.IsBackground = !1, this.IsBreakdown = !1, this.IsServerEnd = !1, this.HasAdjustCamera = !1, this.TalkHistory.length = 0, this.OptionsHistory.clear(), this.OptionsCollection.length = 0, this.UiParam = void 0, this.FlowListName = "", this.FlowId = 0, this.FlowStateId = 0, this.FormatIdInner = void 0, this.CanSkip = !1, this.CurShowTalkActionId = 0, this.IsFadeSkip = !1, this.Pos = void 0, this.RollbackRecord.length = 0, this.KeepMainRolePose = !1, this.SeamlessPlot = !1, this.EndSeamlessShowTalkId = 0, this.NeedPreloadUiSequenceData = void 0
+    this.FlowIncId = -1;
+    this.Context = undefined;
+    this.CurActionId = 0;
+    this.CurSubActionId = 0;
+    this.IsAsync = false;
+    this.CurShowTalk = undefined;
+    this.CurTalkId = -1;
+    this.CurOptionId = -1;
+    this.IsBackground = false;
+    this.IsBreakdown = false;
+    this.IsServerEnd = false;
+    this.HasAdjustCamera = false;
+    this.TalkHistory.length = 0;
+    this.OptionsHistory.clear();
+    this.OptionsCollection.length = 0;
+    this.UiParam = undefined;
+    this.FlowListName = "";
+    this.FlowId = 0;
+    this.FlowStateId = 0;
+    this.FormatIdInner = undefined;
+    this.CanSkip = false;
+    this.CurShowTalkActionId = 0;
+    this.IsFadeSkip = false;
+    this.Pos = undefined;
+    this.RollbackRecord.length = 0;
+    this.KeepMainRolePose = false;
+    this.SeamlessPlot = false;
+    this.EndSeamlessShowTalkId = 0;
+    this.NeedPreloadUiSequenceData = undefined;
   }
   static Create() {
     let t = FlowContext.Pool.Get();
-    return t = t || FlowContext.Pool.Create()
+    return t = t || FlowContext.Pool.Create();
   }
   Recycle() {
-    this.ht(), FlowContext.Pool.Put(this)
+    this.ht();
+    FlowContext.Pool.Put(this);
   }
   get FormatId() {
-    return this.FormatIdInner || (this.FormatIdInner = StringUtils_1.StringUtils.Format("{0},{1},{2}", this.FlowListName, this.FlowId.toString(), this.FlowStateId.toString())), this.FormatIdInner
+    this.FormatIdInner ||= StringUtils_1.StringUtils.Format("{0},{1},{2}", this.FlowListName, this.FlowId.toString(), this.FlowStateId.toString());
+    return this.FormatIdInner;
   }
   LogError(t, ...i) {
-    Log_1.Log.CheckError() && Log_1.Log.Error("Plot", 26, StringUtils_1.StringUtils.Format("[Flow] {0}", t), ...i, ["IncId", this.FlowIncId], ["Id", this.FormatId], ["ActionId", this.CurActionId], ["SubActionId", this.CurSubActionId], ["TalkId", this.CurTalkId])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Plot", 26, StringUtils_1.StringUtils.Format("[Flow] {0}", t), ...i, ["IncId", this.FlowIncId], ["Id", this.FormatId], ["ActionId", this.CurActionId], ["SubActionId", this.CurSubActionId], ["TalkId", this.CurTalkId]);
+    }
   }
-}(exports.FlowContext = FlowContext).Pool = new Pool_1.Pool(CAPACITY, () => new FlowContext);
+}
+(exports.FlowContext = FlowContext).Pool = new Pool_1.Pool(CAPACITY, () => new FlowContext());
 //# sourceMappingURL=FlowData.js.map

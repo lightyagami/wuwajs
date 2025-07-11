@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInteractFlow = void 0;
+  value: true
+});
+exports.FbInteractFlow = undefined;
 const FbPlayFlow_1 = require("./FbPlayFlow");
 class FbInteractFlow {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.F_h = !1, this.N_h = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.F_h = false;
+    this.N_h = undefined;
   }
   static Create(t) {
-    if (t) return new FbInteractFlow(t)
+    if (t) {
+      return new FbInteractFlow(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Flow() {
-    return this.F_h || (this.F_h = !0, this.N_h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.flow())), this.N_h
+    if (!this.F_h) {
+      this.F_h = true;
+      this.N_h = FbPlayFlow_1.FbPlayFlow.Create(this.FbDataInternal.flow());
+    }
+    return this.N_h;
   }
 }
 exports.FbInteractFlow = FbInteractFlow;

@@ -1,11 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemTipsParam = void 0;
+  value: true
+});
+exports.ItemTipsParam = undefined;
 const UiPopViewData_1 = require("../../Ui/Define/UiPopViewData");
 class ItemTipsParam extends UiPopViewData_1.UiPopViewData {
   constructor() {
-    super(...arguments), this.ItemId = 0, this.ItemUid = 0, this.ExtraParam = void 0, this.CanSkip = !0
+    super(...arguments);
+    this.ItemId = 0;
+    this.ItemUid = 0;
+    this.ExtraParam = undefined;
+    this.CanSkip = true;
   }
 }
 exports.ItemTipsParam = ItemTipsParam;

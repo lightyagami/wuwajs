@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ClaimDungeonReward = void 0;
+  value: true
+});
+exports.ClaimDungeonReward = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class ClaimDungeonReward {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(e, t) {
-    return this.bb_pos = e, this.bb = t, this
+    this.bb_pos = e;
+    this.bb = t;
+    return this;
   }
   static getRootAsClaimDungeonReward(e, t) {
-    return (t || new ClaimDungeonReward).__init(e.readInt32(e.position()) + e.position(), e)
+    return (t || new ClaimDungeonReward()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static getSizePrefixedRootAsClaimDungeonReward(e, t) {
-    return e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new ClaimDungeonReward).__init(e.readInt32(e.position()) + e.position(), e)
+    e.setPosition(e.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new ClaimDungeonReward()).__init(e.readInt32(e.position()) + e.position(), e);
   }
   static startClaimDungeonReward(e) {
-    e.startObject(0)
+    e.startObject(0);
   }
   static endClaimDungeonReward(e) {
-    return e.endObject()
+    return e.endObject();
   }
   static createClaimDungeonReward(e) {
-    return ClaimDungeonReward.startClaimDungeonReward(e), ClaimDungeonReward.endClaimDungeonReward(e)
+    ClaimDungeonReward.startClaimDungeonReward(e);
+    return ClaimDungeonReward.endClaimDungeonReward(e);
   }
 }
 exports.ClaimDungeonReward = ClaimDungeonReward;

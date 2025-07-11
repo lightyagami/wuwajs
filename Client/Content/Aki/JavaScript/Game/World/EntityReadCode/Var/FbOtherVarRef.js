@@ -1,28 +1,62 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbOtherVarRef = void 0;
+  value: true
+});
+exports.FbOtherVarRef = undefined;
 class FbOtherVarRef {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.bZh = !1, this.LZh = void 0, this.RZh = !1, this.wZh = void 0, this.PZh = !1, this.UZh = 0, this.x_h = !1, this.FGi = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.bZh = false;
+    this.LZh = undefined;
+    this.RZh = false;
+    this.wZh = undefined;
+    this.PZh = false;
+    this.UZh = 0;
+    this.x_h = false;
+    this.FGi = undefined;
   }
   static Create(t) {
-    if (t) return new FbOtherVarRef(t)
+    if (t) {
+      return new FbOtherVarRef(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Source() {
-    return this.bZh || (this.bZh = !0, this.LZh = this.FbDataInternal.source()), this.LZh
+    if (!this.bZh) {
+      this.bZh = true;
+      this.LZh = this.FbDataInternal.source();
+    }
+    return this.LZh;
   }
   get RefType() {
-    return this.RZh || (this.RZh = !0, this.wZh = this.FbDataInternal.refType()), this.wZh
+    if (!this.RZh) {
+      this.RZh = true;
+      this.wZh = this.FbDataInternal.refType();
+    }
+    return this.wZh;
   }
   get RefId() {
-    return this.PZh || (this.PZh = !0, this.UZh = this.FbDataInternal.refId()), this.UZh
+    if (!this.PZh) {
+      this.PZh = true;
+      this.UZh = this.FbDataInternal.refId();
+    }
+    return this.UZh;
   }
   get Name() {
-    return this.x_h || (this.x_h = !0, this.FGi = this.FbDataInternal.name()), this.FGi
+    if (!this.x_h) {
+      this.x_h = true;
+      this.FGi = this.FbDataInternal.name();
+    }
+    return this.FGi;
   }
 }
 exports.FbOtherVarRef = FbOtherVarRef;

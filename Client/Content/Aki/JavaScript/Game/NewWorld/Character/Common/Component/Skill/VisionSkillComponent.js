@@ -1,105 +1,206 @@
 "use strict";
-var __decorate = this && this.__decorate || function(t, i, s, e) {
-  var h, n = arguments.length,
-    r = n < 3 ? i : null === e ? e = Object.getOwnPropertyDescriptor(i, s) : e;
-  if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) r = Reflect.decorate(t, i, s, e);
-  else
-    for (var l = t.length - 1; 0 <= l; l--)(h = t[l]) && (r = (n < 3 ? h(r) : 3 < n ? h(i, s, r) : h(i, s)) || r);
-  return 3 < n && r && Object.defineProperty(i, s, r), r
-};
-Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VisionSkillComponent = void 0;
-const Log_1 = require("../../../../../../Core/Common/Log"),
-  RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent"),
-  GameplayTagUtils_1 = require("../../../../../../Core/Utils/GameplayTagUtils"),
-  EventDefine_1 = require("../../../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../../../Common/Event/EventSystem"),
-  InputEnums_1 = require("../../../../../Input/InputEnums"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager"),
-  CombatLog_1 = require("../../../../../Utils/CombatLog"),
-  CharacterSkillComponent_1 = require("./CharacterSkillComponent"),
-  useNextSkillTagId = 718290459;
-let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComponent_1.CharacterSkillComponent {
-  constructor() {
-    super(...arguments), this.fZo = void 0, this.vZo = void 0, this.EZo = void 0, this.SZo = 0, this.GJa = 0, this.Ujs = !1, this.yZo = !1, this.IZo = !1, this.TZo = !1, this.UGn = !0, this.Ghh = !1, this.xjs = () => {
-      this.TZo || this.RZo()
+
+var __decorate = this && this.__decorate || function (t, i, s, e) {
+  var h;
+  var n = arguments.length;
+  var r = n < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    r = Reflect.decorate(t, i, s, e);
+  } else {
+    for (var l = t.length - 1; l >= 0; l--) {
+      if (h = t[l]) {
+        r = (n < 3 ? h(r) : n > 3 ? h(i, s, r) : h(i, s)) || r;
+      }
     }
   }
-  InitVisionSkill(t, i = !1) {
-    this.vZo !== t && (this.Pjs(!0, !0), this.vZo = t, this.fZo = ModelManager_1.ModelManager.SkillCdModel.GetCurWorldSkillCdData(), t = this.Entity.Id, this.EZo || (this.EZo = this.fZo.InitMultiSkill(t), this.EZo.Init(this.vZo.Id, t), this.EZo.InitMultiSkillInfo(this.LoadedSkills))), this.Ujs = i, this.IZo = !1, this.TZo = !1, this.UGn = !0
+  if (n > 3 && r) {
+    Object.defineProperty(i, s, r);
+  }
+  return r;
+};
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.VisionSkillComponent = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
+const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const GameplayTagUtils_1 = require("../../../../../../Core/Utils/GameplayTagUtils");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const InputEnums_1 = require("../../../../../Input/InputEnums");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const CombatLog_1 = require("../../../../../Utils/CombatLog");
+const CharacterSkillComponent_1 = require("./CharacterSkillComponent");
+const useNextSkillTagId = 718290459;
+let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComponent_1.CharacterSkillComponent {
+  constructor() {
+    super(...arguments);
+    this.fZo = undefined;
+    this.vZo = undefined;
+    this.EZo = undefined;
+    this.SZo = 0;
+    this.GJa = 0;
+    this.Ujs = false;
+    this.yZo = false;
+    this.IZo = false;
+    this.TZo = false;
+    this.UGn = true;
+    this.Ghh = false;
+    this.xjs = () => {
+      if (!this.TZo) {
+        this.RZo();
+      }
+    };
+  }
+  InitVisionSkill(t, i = false) {
+    if (this.vZo !== t) {
+      this.Pjs(true, true);
+      this.vZo = t;
+      this.fZo = ModelManager_1.ModelManager.SkillCdModel.GetCurWorldSkillCdData();
+      t = this.Entity.Id;
+      if (!this.EZo) {
+        this.EZo = this.fZo.InitMultiSkill(t);
+        this.EZo.Init(this.vZo.Id, t);
+        this.EZo.InitMultiSkillInfo(this.LoadedSkills);
+      }
+    }
+    this.Ujs = i;
+    this.IZo = false;
+    this.TZo = false;
+    this.UGn = true;
   }
   BeginSkill(t, i = {}) {
-    if (!this.Ujs) return super.BeginSkill(t, i);
+    if (!this.Ujs) {
+      return super.BeginSkill(t, i);
+    }
     let s = t;
-    i.CheckMultiSkill && 0 !== this.SZo && (t = this.EZo.GetMultiSkillInfo(this.SZo)).NextSkillId && t.NextSkillId !== t.FirstSkillId && (s = t.NextSkillId);
-    var e, t = this.GetSkill(s);
-    return t ? ((e = this.EZo.IsMultiSkill(t.SkillInfo)) && (this.GJa = s), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "使用幻象技能", ["skillId", s]), super.BeginSkill(s, i) ? (e && this.GJa === s && (this.Bjs(!0, !0), this.EZo.StartMultiSkill(t, !1)) && (this.SZo = s), this.yZo = !0) : (CombatLog_1.CombatLog.Warn("Skill", this.vZo?.Entity, "角色开始幻象变身技能失败", ["技能Id", t?.SkillId], ["技能名", t?.SkillName]), !1)) : (Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", s]), !1)
+    if (i.CheckMultiSkill && this.SZo !== 0 && (t = this.EZo.GetMultiSkillInfo(this.SZo)).NextSkillId && t.NextSkillId !== t.FirstSkillId) {
+      s = t.NextSkillId;
+    }
+    var e;
+    var t = this.GetSkill(s);
+    if (t) {
+      if (e = this.EZo.IsMultiSkill(t.SkillInfo)) {
+        this.GJa = s;
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "使用幻象技能", ["skillId", s]);
+      }
+      if (super.BeginSkill(s, i)) {
+        if (e && this.GJa === s && (this.Bjs(true, true), this.EZo.StartMultiSkill(t, false))) {
+          this.SZo = s;
+        }
+        return this.yZo = true;
+      } else {
+        CombatLog_1.CombatLog.Warn("Skill", this.vZo?.Entity, "角色开始幻象变身技能失败", ["技能Id", t?.SkillId], ["技能名", t?.SkillName]);
+        return false;
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", s]);
+      }
+      return false;
+    }
   }
   OnMorphEnd() {
-    this.IZo || this.RZo(), this.yZo = !1
+    if (!this.IZo) {
+      this.RZo();
+    }
+    this.yZo = false;
   }
   ExitMultiSkillState() {
-    this.RZo()
+    this.RZo();
   }
   SetKeepMultiSkillState(t, i) {
-    this.IZo = t, this.TZo = i
+    this.IZo = t;
+    this.TZo = i;
   }
   SetEnableAttackInputAction(t) {
-    this.UGn = t
+    this.UGn = t;
   }
   CanSummonerStartNextMultiSkill() {
-    var t, i;
-    return !(this.SZo <= 0 || this.yZo || !(t = this.EZo.GetMultiSkillInfo(this.SZo))?.NextSkillId || (t = t.NextSkillId, (i = this.GetSkill(t)) ? !this.EZo.CanStartMultiSkill(i) : (Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", t]), 1)))
+    var t;
+    var i;
+    return !(this.SZo <= 0) && !this.yZo && !!(t = this.EZo.GetMultiSkillInfo(this.SZo))?.NextSkillId && !(t = t.NextSkillId, (i = this.GetSkill(t)) ? !this.EZo.CanStartMultiSkill(i) : (Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", t]), 1));
   }
   IsInMultiSkill() {
-    return !(this.SZo <= 0 || !this.EZo.GetMultiSkillInfo(this.SZo)?.NextSkillId)
+    return !(this.SZo <= 0) && !!this.EZo.GetMultiSkillInfo(this.SZo)?.NextSkillId;
   }
   OnVisionAbilityDestroy() {
-    this.fZo && (this.fZo.RemoveMultiSkill(this.Entity.Id), this.EZo?.ClearAllSkill()), this.vZo && (this.Pjs(!0, !0), this.vZo = void 0), this.fZo = void 0, this.EZo = void 0, this.SZo = 0
+    if (this.fZo) {
+      this.fZo.RemoveMultiSkill(this.Entity.Id);
+      this.EZo?.ClearAllSkill();
+    }
+    if (this.vZo) {
+      this.Pjs(true, true);
+      this.vZo = undefined;
+    }
+    this.fZo = undefined;
+    this.EZo = undefined;
+    this.SZo = 0;
   }
   OnEnd() {
-    return this.OnVisionAbilityDestroy(), super.OnEnd()
+    this.OnVisionAbilityDestroy();
+    return super.OnEnd();
   }
   RZo() {
-    0 !== this.SZo && (this.EZo.ResetMultiSkills(this.SZo, !0), this.SZo = 0), this.GJa = 0, this.Pjs(!0, !1)
+    if (this.SZo !== 0) {
+      this.EZo.ResetMultiSkills(this.SZo, true);
+      this.SZo = 0;
+    }
+    this.GJa = 0;
+    this.Pjs(true, false);
   }
   Bjs(t, i) {
     var s;
-    this.vZo?.Valid && (this.Ghh = !0, s = this.vZo.Entity, i) && !EventSystem_1.EventSystem.HasWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs) && EventSystem_1.EventSystem.AddWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs)
+    if (this.vZo?.Valid && (this.Ghh = true, s = this.vZo.Entity, i) && !EventSystem_1.EventSystem.HasWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs)) {
+      EventSystem_1.EventSystem.AddWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs);
+    }
   }
   Pjs(t, i) {
     var s;
-    this.vZo?.Valid && (this.Ghh = !1, s = this.vZo.Entity, i) && EventSystem_1.EventSystem.HasWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs) && EventSystem_1.EventSystem.RemoveWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs)
+    if (this.vZo?.Valid && (this.Ghh = false, s = this.vZo.Entity, i) && EventSystem_1.EventSystem.HasWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(s, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.xjs);
+    }
   }
   LZo(t, i) {
     if ((t === InputEnums_1.EInputAction.幻象2 || t === InputEnums_1.EInputAction.攻击 && this.UGn) && !(this.SZo <= 0)) {
       t = this.EZo.GetMultiSkillInfo(this.SZo);
       if (t?.NextSkillId) {
-        var s = t.NextSkillId,
-          e = this.GetSkill(s);
+        var s = t.NextSkillId;
+        var e = this.GetSkill(s);
         if (e) {
           if (this.EZo.CanStartMultiSkill(e)) {
             var h = this.vZo;
             if (h?.Valid && this.yZo) {
-              CombatLog_1.CombatLog.Info("Skill", this.Entity, "使用幻象技能（输入触发下一段）", ["skillId", t.NextSkillId]), this.AbilityComp.SendGameplayEventToActor(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(useNextSkillTagId));
+              CombatLog_1.CombatLog.Info("Skill", this.Entity, "使用幻象技能（输入触发下一段）", ["skillId", t.NextSkillId]);
+              this.AbilityComp.SendGameplayEventToActor(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(useNextSkillTagId));
               h = h.Entity.CheckGetComponent(40);
               if (!super.BeginSkill(s, {
-                  Target: h.SkillTarget?.Entity,
-                  SocketName: h.SkillTargetSocket,
-                  Reason: "VisionSkill.OnCharInputPress"
-                })) return CombatLog_1.CombatLog.Warn("Skill", this.Entity, "角色幻象变身中使用下一段技能失败", ["技能Id", e?.SkillId], ["技能名", e?.SkillName]), !1;
-              if (CombatLog_1.CombatLog.Info("Skill", this.Entity, "角色幻象变身中使用下一段技能成功", ["skillId", t.NextSkillId]), this.EZo.StartMultiSkill(e, !0)) return this.SZo = s, !0
+                Target: h.SkillTarget?.Entity,
+                SocketName: h.SkillTargetSocket,
+                Reason: "VisionSkill.OnCharInputPress"
+              })) {
+                CombatLog_1.CombatLog.Warn("Skill", this.Entity, "角色幻象变身中使用下一段技能失败", ["技能Id", e?.SkillId], ["技能名", e?.SkillName]);
+                return false;
+              }
+              CombatLog_1.CombatLog.Info("Skill", this.Entity, "角色幻象变身中使用下一段技能成功", ["skillId", t.NextSkillId]);
+              if (this.EZo.StartMultiSkill(e, true)) {
+                this.SZo = s;
+                return true;
+              }
             }
           }
-        } else Log_1.Log.CheckError() && Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", s])
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Battle", 17, "幻象缺少技能", ["skillId", s]);
+        }
       }
     }
-    return !1
+    return false;
   }
   HandlePress(t, i) {
-    return !!this.Ghh && this.LZo(t, i)
+    return !!this.Ghh && this.LZo(t, i);
   }
 };
-VisionSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(42)], VisionSkillComponent), exports.VisionSkillComponent = VisionSkillComponent;
-//# sourceMappingURL=VisionSkillComponent.js.map
+VisionSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(42)], VisionSkillComponent);
+exports.VisionSkillComponent = VisionSkillComponent; //# sourceMappingURL=VisionSkillComponent.js.map

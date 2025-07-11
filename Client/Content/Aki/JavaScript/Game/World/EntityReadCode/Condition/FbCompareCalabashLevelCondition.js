@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompareCalabashLevelCondition = void 0;
+  value: true
+});
+exports.FbCompareCalabashLevelCondition = undefined;
 class FbCompareCalabashLevelCondition {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._ch = !1, this.cch = void 0, this.nzh = !1, this.szh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._ch = false;
+    this.cch = undefined;
+    this.nzh = false;
+    this.szh = 0;
   }
   static Create(t) {
-    if (t) return new FbCompareCalabashLevelCondition(t)
+    if (t) {
+      return new FbCompareCalabashLevelCondition(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get CalabashLevel() {
-    return this.nzh || (this.nzh = !0, this.szh = this.FbDataInternal.calabashLevel()), this.szh
+    if (!this.nzh) {
+      this.nzh = true;
+      this.szh = this.FbDataInternal.calabashLevel();
+    }
+    return this.szh;
   }
 }
 exports.FbCompareCalabashLevelCondition = FbCompareCalabashLevelCondition;

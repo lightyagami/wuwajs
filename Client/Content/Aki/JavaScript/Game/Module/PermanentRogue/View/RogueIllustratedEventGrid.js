@@ -1,50 +1,76 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RogueIllustratedEventItem = void 0;
-const UE = require("ue"),
-  RogueResCollectionByIdKey_1 = require("../../../../Core/Define/ConfigQuery/RogueResCollectionByIdKey"),
-  RogueResGridEventById_1 = require("../../../../Core/Define/ConfigQuery/RogueResGridEventById"),
-  Protocol_1 = require("../../../../Core/Define/Net/Protocol"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract"),
-  LguiUtil_1 = require("../../Util/LguiUtil");
+  value: true
+});
+exports.RogueIllustratedEventItem = undefined;
+const UE = require("ue");
+const RogueResCollectionByIdKey_1 = require("../../../../Core/Define/ConfigQuery/RogueResCollectionByIdKey");
+const RogueResGridEventById_1 = require("../../../../Core/Define/ConfigQuery/RogueResGridEventById");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const LguiUtil_1 = require("../../Util/LguiUtil");
 class RogueIllustratedEventItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super(...arguments), this.vs1 = 0, this.ac = Protocol_1.Aki.Protocol.zps.Z6n, this.ndi = void 0, this.PPt = e => {
-      this.ndi && this.ndi(this.vs1, this.ac)
-    }
+    super(...arguments);
+    this.Ns1 = 0;
+    this.ac = Protocol_1.Aki.Protocol.zps.Z6n;
+    this.ndi = undefined;
+    this.PPt = e => {
+      if (this.ndi) {
+        this.ndi(this.Ns1, this.ac);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIText],
-      [2, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIItem]];
   }
   OnStartImplement() {
-    this.GetExtendToggle(0)?.OnStateChange.Add(this.PPt)
+    this.GetExtendToggle(0)?.OnStateChange.Add(this.PPt);
   }
   OnBeforeDestroyImplement() {
-    this.GetExtendToggle(0)?.OnStateChange.Remove(this.PPt)
+    this.GetExtendToggle(0)?.OnStateChange.Remove(this.PPt);
   }
   Refresh(e, t, i) {
-    this.vs1 = e;
-    var o, e = RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.GetConfig(e);
-    this.ac = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetCollectItemState(this.vs1), this.GetItem(2).SetUIActive(this.ac === Protocol_1.Aki.Protocol.zps.CMs), this.ac === Protocol_1.Aki.Protocol.zps.Z6n ? LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "RogueRes_CollectionEventLock") : 1 === e.Type ? (o = RogueResGridEventById_1.configRogueResGridEventById.GetConfig(e.Id), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), o.Title)) : 2 === e.Type && (o = RogueResGridEventById_1.configRogueResGridEventById.GetConfig(e.Id), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), o.Title)), this.SetSelected(t)
+    this.Ns1 = e;
+    var o;
+    var e = RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.GetConfig(e);
+    this.ac = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetCollectItemState(this.Ns1);
+    this.GetItem(2).SetUIActive(this.ac === Protocol_1.Aki.Protocol.zps.CMs);
+    if (this.ac === Protocol_1.Aki.Protocol.zps.Z6n) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "RogueRes_CollectionEventLock");
+    } else if (e.Type === 1) {
+      o = RogueResGridEventById_1.configRogueResGridEventById.GetConfig(e.Id);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), o.Title);
+    } else if (e.Type === 2) {
+      o = RogueResGridEventById_1.configRogueResGridEventById.GetConfig(e.Id);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), o.Title);
+    }
+    this.SetSelected(t);
   }
   OnSelected(e) {
-    this.SetSelected(!0)
+    this.SetSelected(true);
   }
   OnDeselected(e) {
-    this.SetSelected(!1)
+    this.SetSelected(false);
   }
-  SetSelected(e, t = !1) {
+  SetSelected(e, t = false) {
     var i = this.GetExtendToggle(0);
-    e ? t ? i.SetToggleStateForce(1, !1) : i.SetToggleState(1, !1) : t ? i.SetToggleStateForce(0, !1) : i.SetToggleState(0, !1)
+    if (e) {
+      if (t) {
+        i.SetToggleStateForce(1, false);
+      } else {
+        i.SetToggleState(1, false);
+      }
+    } else if (t) {
+      i.SetToggleStateForce(0, false);
+    } else {
+      i.SetToggleState(0, false);
+    }
   }
   BindOnItemButtonClickedCallback(e) {
-    this.ndi = e
+    this.ndi = e;
   }
 }
 exports.RogueIllustratedEventItem = RogueIllustratedEventItem;

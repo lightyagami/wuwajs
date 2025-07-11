@@ -1,79 +1,118 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsLegMatches = void 0;
+  value: true
+});
+exports.RacingBetsLegMatches = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class RacingBetsLegMatches {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get MatchId() {
-    return this.matchid()
+    return this.matchid();
   }
   get Name() {
-    return this.name()
+    return this.name();
   }
   get Type() {
-    return this.type()
+    return this.type();
   }
   get EndPoint() {
-    return this.endpoint()
+    return this.endpoint();
   }
   get DiceTypeList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.dicetypelistLength(), this.dicetypelist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.dicetypelistLength(), this.dicetypelist, this);
   }
   get BtnBgPath() {
-    return this.btnbgpath()
+    return this.btnbgpath();
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsRacingBetsLegMatches(t, s) {
-    return (s || new RacingBetsLegMatches).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new RacingBetsLegMatches()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   matchid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   name(t) {
-    var s = this.J7.__offset(this.z7, 8),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 8);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   type() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   endpoint() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetDicetypelistAt(t) {
-    return this.dicetypelist(t)
+    return this.dicetypelist(t);
   }
   dicetypelist(t) {
     var s = this.J7.__offset(this.z7, 14);
-    return s ? this.J7.readInt32(this.J7.__vector(this.z7 + s) + 4 * t) : 0
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    } else {
+      return 0;
+    }
   }
   dicetypelistLength() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   dicetypelistArray() {
     var t = this.J7.__offset(this.z7, 14);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   btnbgpath(t) {
-    var s = this.J7.__offset(this.z7, 16),
-      s = s ? this.J7.__string(this.z7 + s, t) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.RacingBetsLegMatches = RacingBetsLegMatches;

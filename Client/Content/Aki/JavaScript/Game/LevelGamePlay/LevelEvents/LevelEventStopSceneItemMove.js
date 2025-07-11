@@ -1,63 +1,96 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventStopSceneItemMove = void 0;
-const Log_1 = require("../../../Core/Common/Log"),
-  Protocol_1 = require("../../../Core/Define/Net/Protocol"),
-  Net_1 = require("../../../Core/Net/Net"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  MathUtils_1 = require("../../../Core/Utils/MathUtils"),
-  IAction_1 = require("../../../UniverseEditor/Interface/IAction"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  SceneItemMoveComponent_1 = require("../../NewWorld/SceneItem/Common/Component/SceneItemMoveComponent"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventStopSceneItemMove = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Protocol_1 = require("../../../Core/Define/Net/Protocol");
+const Net_1 = require("../../../Core/Net/Net");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const SceneItemMoveComponent_1 = require("../../NewWorld/SceneItem/Common/Component/SceneItemMoveComponent");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventStopSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.OPt = void 0
+    super(...arguments);
+    this.OPt = undefined;
   }
-  ExecuteNew(e, t) {
-    e ? (this.OPt = e, e = this.OPt.EntityIds, this.CreateWaitEntityTask(e)) : (Log_1.Log.CheckError() && Log_1.Log.Error("Event", 31, "参数配置错误"), this.FinishExecute(!1))
+  ExecuteNew(e, o) {
+    if (e) {
+      this.OPt = e;
+      e = this.OPt.EntityIds;
+      this.CreateWaitEntityTask(e);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Event", 31, "参数配置错误");
+      }
+      this.FinishExecute(false);
+    }
   }
   ExecuteWhenEntitiesReady() {
     if (this.OPt) {
-      var e = this.OPt.EntityIds,
-        t = [],
-        o = Protocol_1.Aki.Protocol.hta.create(),
-        r = (o.uta = [], this.OPt.StopType === IAction_1.EStopSceneItemMoveType.StopAtNextPos);
-      for (const a of e) {
-        var n = Protocol_1.Aki.Protocol.Sta.create(),
-          i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a);
+      var e = this.OPt.EntityIds;
+      var o = [];
+      var t = Protocol_1.Aki.Protocol.hta.create();
+      t.uta = [];
+      var r = this.OPt.StopType === IAction_1.EStopSceneItemMoveType.StopAtNextPos;
+      for (const v of e) {
+        var n = Protocol_1.Aki.Protocol.Sta.create();
+        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(v);
         if (i?.Valid) {
-          var s = i.Entity.GetComponent(128);
-          if (s?.Valid) {
-            let e = void 0;
-            r && (e = s.GetNextTarget());
-            var l = i.Entity.GetComponent(0),
-              v = i.Entity.GetComponent(1),
-              l = (n.F4n = MathUtils_1.MathUtils.NumberToLong(l.GetCreatureDataId()), n.P5n = v.ActorLocationProxy, {
-                Entity: i.Entity,
-                Location: Vector_1.Vector.Create(v.ActorLocationProxy),
-                Velocity: e?.HasTarget ? e?.Velocity : void 0
-              });
-            r && e.HasTarget && (n.P5n = e.Target, l.Location = Vector_1.Vector.Create(e.Target), l.Velocity = e.Velocity), s.IsMoving && o.uta.push(n), t.push(l)
-          } else Log_1.Log.CheckError() && Log_1.Log.Error("Event", 31, "Entity找不到SceneItemMoveComponent", ["entityId", a])
-        } else Log_1.Log.CheckError() && Log_1.Log.Error("Event", 31, "实体不合法", ["entityId", a])
+          var l = i.Entity.GetComponent(128);
+          if (l?.Valid) {
+            let e = undefined;
+            if (r) {
+              e = l.GetNextTarget();
+            }
+            var s = i.Entity.GetComponent(0);
+            var c = i.Entity.GetComponent(1);
+            n.F4n = MathUtils_1.MathUtils.NumberToLong(s.GetCreatureDataId());
+            n.P5n = c.ActorLocationProxy;
+            var s = {
+              Entity: i.Entity,
+              Location: Vector_1.Vector.Create(c.ActorLocationProxy),
+              Velocity: e?.HasTarget ? e?.Velocity : undefined
+            };
+            if (r && e.HasTarget) {
+              n.P5n = e.Target;
+              s.Location = Vector_1.Vector.Create(e.Target);
+              s.Velocity = e.Velocity;
+            }
+            if (l.IsMoving) {
+              t.uta.push(n);
+            }
+            o.push(s);
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Event", 31, "Entity找不到SceneItemMoveComponent", ["entityId", v]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 31, "实体不合法", ["entityId", v]);
+        }
       }
-      Net_1.Net.Call(23742, o, e => {
-        e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16562)
+      Net_1.Net.Call(27808, t, e => {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29525);
+        }
       });
-      for (const m of t) {
-        var _ = m.Entity.GetComponent(128),
-          c = (_.StopMove(), EventSystem_1.EventSystem.EmitWithTarget(m.Entity, EventDefine_1.EEventName.OnSceneItemMoveEventBroken, m.Entity), Vector_1.Vector.Create(m.Entity.GetComponent(1)?.ActorLocationProxy));
-        m.Velocity && (c = Vector_1.Vector.Distance(c, m.Location) / m.Velocity.Size(), _.AddMoveTarget(new SceneItemMoveComponent_1.MoveTarget(m.Location, c)))
+      for (const M of o) {
+        var _ = M.Entity.GetComponent(128);
+        _.StopMove();
+        var a = Vector_1.Vector.Create(M.Entity.GetComponent(1)?.ActorLocationProxy);
+        if (M.Velocity) {
+          a = Vector_1.Vector.Distance(a, M.Location) / M.Velocity.Size();
+          _.AddMoveTarget(new SceneItemMoveComponent_1.MoveTarget(M.Location, a));
+        }
       }
     }
   }
   OnReset() {
-    this.OPt = void 0
+    this.OPt = undefined;
   }
 }
 exports.LevelEventStopSceneItemMove = LevelEventStopSceneItemMove;

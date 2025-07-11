@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbEnableSubLevelTransitionWithSceneCapture = void 0;
+  value: true
+});
+exports.FbEnableSubLevelTransitionWithSceneCapture = undefined;
 class FbEnableSubLevelTransitionWithSceneCapture {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.U8_ = !1, this.D8_ = void 0, this.B8_ = !1, this.LIo = void 0, this.lu1 = !1, this._u1 = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.U8_ = false;
+    this.D8_ = undefined;
+    this.B8_ = false;
+    this.LIo = undefined;
+    this.xu1 = false;
+    this.Uu1 = undefined;
   }
   static Create(t) {
-    if (t) return new FbEnableSubLevelTransitionWithSceneCapture(t)
+    if (t) {
+      return new FbEnableSubLevelTransitionWithSceneCapture(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get SceneCaptureEffect() {
-    return this.U8_ || (this.U8_ = !0, this.D8_ = this.FbDataInternal.sceneCaptureEffect()), this.D8_
+    if (!this.U8_) {
+      this.U8_ = true;
+      this.D8_ = this.FbDataInternal.sceneCaptureEffect();
+    }
+    return this.D8_;
   }
   get ScreenEffect() {
-    return this.B8_ || (this.B8_ = !0, this.LIo = this.FbDataInternal.screenEffect()), this.LIo
+    if (!this.B8_) {
+      this.B8_ = true;
+      this.LIo = this.FbDataInternal.screenEffect();
+    }
+    return this.LIo;
   }
   get ScreenEffectLoop() {
-    return this.lu1 || (this.lu1 = !0, this._u1 = this.FbDataInternal.screenEffectLoop()), this._u1
+    if (!this.xu1) {
+      this.xu1 = true;
+      this.Uu1 = this.FbDataInternal.screenEffectLoop();
+    }
+    return this.Uu1;
   }
 }
 exports.FbEnableSubLevelTransitionWithSceneCapture = FbEnableSubLevelTransitionWithSceneCapture;

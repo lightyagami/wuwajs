@@ -1,14 +1,19 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  ModelManager_1 = require("../../../../../Manager/ModelManager");
+const UE = require("ue");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 class TsBattleUiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static GetBattleScoreStr() {
     var e = ModelManager_1.ModelManager.BattleScoreModel?.GetCurScoreId();
-    return e ? `Id:${e},Score:` + (ModelManager_1.ModelManager.BattleScoreModel?.GetScore(e) ?? 0) : ""
+    if (e) {
+      return `Id:${e},Score:${ModelManager_1.ModelManager.BattleScoreModel?.GetScore(e) ?? 0}`;
+    } else {
+      return "";
+    }
   }
 }
 exports.default = TsBattleUiBlueprintFunctionLibrary;

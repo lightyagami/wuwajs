@@ -1,15 +1,18 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MultiTextCsvModule = void 0;
-const puerts_1 = require("puerts"),
-  UE = require("ue"),
-  LanguageSystem_1 = require("../../../Core/Common/LanguageSystem"),
-  StringUtils_1 = require("../../../Core/Utils/StringUtils"),
-  MultiTextDefine_1 = require("./MultiTextDefine");
+  value: true
+});
+exports.MultiTextCsvModule = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
+const LanguageSystem_1 = require("../../../Core/Common/LanguageSystem");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
+const MultiTextDefine_1 = require("./MultiTextDefine");
 class MultiTextCsvModule {
   constructor() {
-    this.Ude = new Set, this.Ade = new Map
+    this.Ude = new Set();
+    this.Ade = new Map();
   }
   Pde(e) {
     var t = StringUtils_1.StringUtils.ParseCsvContent(e);
@@ -19,22 +22,36 @@ class MultiTextCsvModule {
       if (!(r.length < 2)) {
         var s = r[1];
         if (!StringUtils_1.StringUtils.IsBlank(s)) {
-          const o = new Map;
+          const o = new Map();
           r.forEach((e, t) => {
-            1 < t && (e = e.replace(/\\n/g, "\n"), o.set(i[t], e ?? "test/NoLocalTextNoLocalTextNoLocalText"))
-          }), this.Ade.set(s, o)
+            if (t > 1) {
+              e = e.replace(/\\n/g, "\n");
+              o.set(i[t], e ?? "test/NoLocalTextNoLocalTextNoLocalText");
+            }
+          });
+          this.Ade.set(s, o);
         }
       }
     }
   }
-  RegisterTextLocalConfig(e, t = !1) {
+  RegisterTextLocalConfig(e, t = false) {
     var i;
-    !t && this.Ude.has(e) || (this.Ude.add(e), i = (t = void 0, puerts_1.$ref)(void 0), UE.KuroStaticLibrary.LoadFileToString(i, e), t = (0, puerts_1.$unref)(i), this.Pde(t))
+    if (!!t || !this.Ude.has(e)) {
+      this.Ude.add(e);
+      i = (t = undefined, puerts_1.$ref)(undefined);
+      UE.KuroStaticLibrary.LoadFileToString(i, e);
+      t = (0, puerts_1.$unref)(i);
+      this.Pde(t);
+    }
   }
   GetLocalText(e) {
-    var t = LanguageSystem_1.LanguageSystem.PackageLanguage,
-      i = this.Ade.get(e);
-    return i && 0 < i.size ? i.get(t) : e
+    var t = LanguageSystem_1.LanguageSystem.PackageLanguage;
+    var i = this.Ade.get(e);
+    if (i && i.size > 0) {
+      return i.get(t);
+    } else {
+      return e;
+    }
   }
 }
 exports.MultiTextCsvModule = MultiTextCsvModule;

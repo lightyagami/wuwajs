@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCheckPlayerGender = void 0;
+  value: true
+});
+exports.FbCheckPlayerGender = undefined;
 class FbCheckPlayerGender {
   constructor(e) {
-    this.FbDataInternal = e, this.u_h = !1, this.f8o = void 0, this.Azh = !1, this.xzh = void 0
+    this.FbDataInternal = e;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Azh = false;
+    this.xzh = undefined;
   }
   static Create(e) {
-    if (e) return new FbCheckPlayerGender(e)
+    if (e) {
+      return new FbCheckPlayerGender(e);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Gender() {
-    return this.Azh || (this.Azh = !0, this.xzh = this.FbDataInternal.gender()), this.xzh
+    if (!this.Azh) {
+      this.Azh = true;
+      this.xzh = this.FbDataInternal.gender();
+    }
+    return this.xzh;
   }
 }
 exports.FbCheckPlayerGender = FbCheckPlayerGender;

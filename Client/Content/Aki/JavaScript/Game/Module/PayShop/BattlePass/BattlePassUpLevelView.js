@@ -1,30 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattlePassUpLevelView = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../../Core/Timer/TimerSystem"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem"),
-  ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiViewBase_1 = require("../../../Ui/Base/UiViewBase"),
-  UiManager_1 = require("../../../Ui/UiManager");
+  value: true
+});
+exports.BattlePassUpLevelView = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
 class BattlePassUpLevelView extends UiViewBase_1.UiViewBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText]];
   }
   OnStart() {
-    var e = ModelManager_1.ModelManager.BattlePassModel.BattlePassLevel,
-      i = this.OpenParam.IncreasedLevel;
-    this.GetText(1).SetText(e.toString()), this.GetText(0).SetText((e - i).toString()), TimerSystem_1.TimerSystem.Delay(() => {
-      UiManager_1.UiManager.CloseView(this.Info.Name)
-    }, 2e3)
+    var e = ModelManager_1.ModelManager.BattlePassModel.BattlePassLevel;
+    var i = this.OpenParam.IncreasedLevel;
+    this.GetText(1).SetText(e.toString());
+    this.GetText(0).SetText((e - i).toString());
+    TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      UiManager_1.UiManager.CloseView(this.Info.Name);
+    }, 2000);
   }
   OnAfterHide() {
-    this.OpenParam.FirstUnlockPass && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattlePassFirstUnlockAnime)
+    if (this.OpenParam.FirstUnlockPass) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattlePassFirstUnlockAnime);
+    }
   }
 }
 exports.BattlePassUpLevelView = BattlePassUpLevelView;

@@ -1,27 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TsUiBlur = void 0;
-const UE = require("ue"),
-  GlobalData_1 = require("../../../GlobalData");
+  value: true
+});
+exports.TsUiBlur = undefined;
+const UE = require("ue");
+const GlobalData_1 = require("../../../GlobalData");
 class TsUiBlur extends UE.LGUIBehaviour {
   constructor() {
-    super(...arguments), this.OverrideItem = void 0, this.EnableUiBlur = !0, this.ApplyItem = void 0
+    super(...arguments);
+    this.OverrideItem = undefined;
+    this.EnableUiBlur = true;
+    this.ApplyItem = undefined;
   }
   Constructor() {}
   GetUiBlurComponent() {
-    return void 0 === this.OverrideItem ? this.ApplyItem : this.OverrideItem.RootComponent
+    if (this.OverrideItem === undefined) {
+      return this.ApplyItem;
+    } else {
+      return this.OverrideItem.RootComponent;
+    }
   }
   SetGlobalBlurUiItem() {
     var t;
-    this.ApplyItem && (t = this.GetUiBlurComponent(), UE.LGUIBPLibrary.SetGlobalBlurUIItem(t, this.ApplyItem.GetWorld()))
+    if (this.ApplyItem) {
+      t = this.GetUiBlurComponent();
+      UE.LGUIBPLibrary.SetGlobalBlurUIItem(t, this.ApplyItem.GetWorld());
+    }
   }
   ResetGlobalBlurUiItem() {
-    UE.LGUIBPLibrary.ResetGlobalBlurUIItem(GlobalData_1.GlobalData.GameInstance.GetWorld())
+    UE.LGUIBPLibrary.ResetGlobalBlurUIItem(GlobalData_1.GlobalData.GameInstance.GetWorld());
   }
   SetEnableUiBlur(t) {
-    (this.EnableUiBlur = t) ? this.SetGlobalBlurUiItem(): this.ResetGlobalBlurUiItem()
+    if (this.EnableUiBlur = t) {
+      this.SetGlobalBlurUiItem();
+    } else {
+      this.ResetGlobalBlurUiItem();
+    }
   }
 }
-exports.TsUiBlur = TsUiBlur, exports.default = TsUiBlur;
-//# sourceMappingURL=TsUiBlur.js.map
+exports.TsUiBlur = TsUiBlur;
+exports.default = TsUiBlur; //# sourceMappingURL=TsUiBlur.js.map

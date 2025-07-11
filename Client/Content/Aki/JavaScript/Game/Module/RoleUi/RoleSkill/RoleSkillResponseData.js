@@ -1,22 +1,28 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleSkillResponseData = void 0;
+  value: true
+});
+exports.RoleSkillResponseData = undefined;
 class RoleSkillResponseData {
   constructor() {
-    this.Pmo = void 0, this.xmo = void 0, this.wmo = 0
+    this.Pmo = undefined;
+    this.xmo = undefined;
+    this.wmo = 0;
   }
   UpdateRoleSkillViewResponse(e, t, s) {
-    this.Pmo = e, this.xmo = t, this.wmo = s
+    this.Pmo = e;
+    this.xmo = t;
+    this.wmo = s;
   }
   GetSkillId() {
-    return this.wmo
+    return this.wmo;
   }
   GetSkillEffect() {
-    return this.Pmo
+    return this.Pmo;
   }
   GetNextLevelSkillEffect() {
-    return this.xmo
+    return this.xmo;
   }
 }
 exports.RoleSkillResponseData = RoleSkillResponseData;

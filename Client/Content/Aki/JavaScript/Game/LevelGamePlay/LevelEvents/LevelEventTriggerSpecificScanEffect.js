@@ -1,25 +1,51 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventTriggerSpecificScanEffect = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../../Core/Common/Log"),
-  Vector_1 = require("../../../Core/Utils/Math/Vector"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventTriggerSpecificScanEffect = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventTriggerSpecificScanEffect extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.vW1 = void 0
+    super(...arguments);
+    this.iQ1 = undefined;
   }
   ExecuteNew(e, r, o) {
-    e ? (1 === e.ScanEffect.Type && (this.vW1 = this.yW1(e.ScanEffect)), void 0 === this.vW1 ? Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 31, "获取ChargeSlash扫描特效的触发位置失败") : ((e = new UE.TransformDouble).SetLocation(this.vW1.ToUeVector()), ControllerHolder_1.ControllerHolder.ChargeSlashGameplayController.StartChargeSlashScanEffect(e))) : this.Finish()
+    if (e) {
+      if (e.ScanEffect.Type === 1) {
+        this.iQ1 = this.rQ1(e.ScanEffect);
+      }
+      if (this.iQ1 === undefined) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelEvent", 31, "获取ChargeSlash扫描特效的触发位置失败");
+        }
+      } else {
+        (e = new UE.TransformDouble()).SetLocation(this.iQ1.ToUeVector());
+        ControllerHolder_1.ControllerHolder.ChargeSlashGameplayController.StartChargeSlashScanEffect(e);
+      }
+    } else {
+      this.Finish();
+    }
   }
-  yW1(e) {
-    var r, e = e.TriggerPosEntityId,
-      o = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e);
-    if (o) return r = Vector_1.Vector.Create(), (o = o.Transform?.Pos) && r.FromConfigVector(o), r;
-    Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 31, "获取ChargeSlash扫描特效的触发位置实体数据失败", ["pbDataId", e])
+  rQ1(e) {
+    var r;
+    var e = e.TriggerPosEntityId;
+    var o = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e);
+    if (o) {
+      r = Vector_1.Vector.Create();
+      if (o = o.Transform?.Pos) {
+        r.FromConfigVector(o);
+      }
+      return r;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("LevelEvent", 31, "获取ChargeSlash扫描特效的触发位置实体数据失败", ["pbDataId", e]);
+    }
   }
 }
 exports.LevelEventTriggerSpecificScanEffect = LevelEventTriggerSpecificScanEffect;

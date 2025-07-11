@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCollectComponent = void 0;
+  value: true
+});
+exports.FbCollectComponent = undefined;
 class FbCollectComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.HNh = !1, this.WNh = !1
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.HNh = false;
+    this.WNh = false;
   }
   static Create(t) {
-    if (t) return new FbCollectComponent(t)
+    if (t) {
+      return new FbCollectComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get IsDisableOneClickCollection() {
-    return this.HNh || (this.HNh = !0, this.WNh = this.FbDataInternal.isDisableOneClickCollection()), this.WNh
+    if (!this.HNh) {
+      this.HNh = true;
+      this.WNh = this.FbDataInternal.isDisableOneClickCollection();
+    }
+    return this.WNh;
   }
 }
 exports.FbCollectComponent = FbCollectComponent;

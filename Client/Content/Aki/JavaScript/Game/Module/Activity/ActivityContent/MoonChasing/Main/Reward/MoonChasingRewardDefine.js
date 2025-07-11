@@ -1,10 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RewardTabData = void 0;
+  value: true
+});
+exports.RewardTabData = undefined;
 class RewardTabData {
   constructor() {
-    this.NameTextId = void 0, this.Index = -1, this.ClickedCallback = void 0, this.RefreshRedDot = void 0
+    this.NameTextId = undefined;
+    this.Index = -1;
+    this.ClickedCallback = undefined;
+    this.RefreshRedDot = undefined;
   }
 }
 exports.RewardTabData = RewardTabData;

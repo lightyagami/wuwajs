@@ -1,56 +1,77 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GlobalData = void 0;
-const UE = require("ue"),
-  Info_1 = require("../Core/Common/Info"),
-  Platform_1 = require("../Launcher/Platform/Platform"),
-  EventDefine_1 = require("./Common/Event/EventDefine"),
-  EventSystem_1 = require("./Common/Event/EventSystem");
+  value: true
+});
+exports.GlobalData = undefined;
+const UE = require("ue");
+const Info_1 = require("../Core/Common/Info");
+const Platform_1 = require("../Launcher/Platform/Platform");
+const EventDefine_1 = require("./Common/Event/EventDefine");
+const EventSystem_1 = require("./Common/Event/EventSystem");
 class GlobalData {
   constructor() {}
   static Init(t) {
-    this.f8 = t, this.IMe = UE.KuroStaticLibrary.IsEditor(t.GetWorld()), this.TMe = UE.NewObject(UE.BP_EventManager_C.StaticClass()), this.LMe = UE.NewObject(UE.BP_FightManager_C.StaticClass())
+    this.f8 = t;
+    this.IMe = UE.KuroStaticLibrary.IsEditor(t.GetWorld());
+    this.TMe = UE.NewObject(UE.BP_EventManager_C.StaticClass());
+    this.LMe = UE.NewObject(UE.BP_FightManager_C.StaticClass());
   }
   static SetUiState(t) {
-    this.DMe !== t && (this.DMe = t, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGlobalUiSceneStateChanged, t))
+    if (this.DMe !== t) {
+      this.DMe = t;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGlobalUiSceneStateChanged, t);
+    }
   }
   static get IsUiSceneLoading() {
-    return 1 === this.DMe
+    return this.DMe === 1;
   }
   static get IsUiSceneOpen() {
-    return 2 === this.DMe
+    return this.DMe === 2;
   }
   static get IsPlayInEditor() {
-    return this.IMe
+    return this.IMe;
   }
   static get GameInstance() {
-    return this.f8
+    return this.f8;
   }
   static get World() {
-    return this.f8?.GetWorld()
+    return this.f8?.GetWorld();
   }
   static get BpEventManager() {
-    return this.TMe
+    return this.TMe;
   }
   static get BpFightManager() {
-    return this.LMe
+    return this.LMe;
   }
   static get IsEs3() {
-    return 0 === UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(this.World)
+    return UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(this.World) === 0;
   }
   static get IsSm5() {
-    return 1 === UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(this.World)
+    return UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(this.World) === 1;
   }
   static Networking() {
-    return void 0 === this.RMe && (this.RMe = 1 === UE.Actor.GetKuroNetMode()), this.RMe
+    if (this.RMe === undefined) {
+      this.RMe = UE.Actor.GetKuroNetMode() === 1;
+    }
+    return this.RMe;
   }
   static IsRunWithEditorStartConfig() {
     var t;
-    return void 0 === this.UMe && (this.IsPlayInEditor || Info_1.Info.IsBuildShipping || !Platform_1.Platform.IsWindowsPlatform() ? this.UMe = !1 : (t = UE.BlueprintPathsLibrary.ProjectDir() + "../Config/Raw/Tables/k.可视化编辑/__Temp__/EditorStartConfig.json", this.UMe = (0 <= UE.KismetSystemLibrary.GetCommandLine().search("-StartWithEditorConfig") || 0 <= UE.KismetSystemLibrary.GetCommandLine().search('-SessionName="Play in Standalone Game"')) && UE.BlueprintPathsLibrary.FileExists(t))), this.UMe
+    if (this.UMe === undefined) {
+      if (this.IsPlayInEditor || Info_1.Info.IsBuildShipping || !Platform_1.Platform.IsWindowsPlatform()) {
+        this.UMe = false;
+      } else {
+        t = UE.BlueprintPathsLibrary.ProjectDir() + "../Config/Raw/Tables/k.可视化编辑/__Temp__/EditorStartConfig.json";
+        this.UMe = (UE.KismetSystemLibrary.GetCommandLine().search("-StartWithEditorConfig") >= 0 || UE.KismetSystemLibrary.GetCommandLine().search("-SessionName=\"Play in Standalone Game\"") >= 0) && UE.BlueprintPathsLibrary.FileExists(t);
+      }
+    }
+    return this.UMe;
   }
   static get IsSceneClearing() {
-    return void 0 !== GlobalData.ClearSceneDone
+    return GlobalData.ClearSceneDone !== undefined;
   }
-}(exports.GlobalData = GlobalData).RMe = void 0, GlobalData.UMe = void 0, GlobalData.ClearSceneDone = void 0;
-//# sourceMappingURL=GlobalData.js.map
+}
+(exports.GlobalData = GlobalData).RMe = undefined;
+GlobalData.UMe = undefined;
+GlobalData.ClearSceneDone = undefined; //# sourceMappingURL=GlobalData.js.map

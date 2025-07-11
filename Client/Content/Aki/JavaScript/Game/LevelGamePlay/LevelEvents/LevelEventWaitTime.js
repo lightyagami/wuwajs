@@ -1,28 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelEventWaitTime = void 0;
-const CommonDefine_1 = require("../../../Core/Define/CommonDefine"),
-  EventDefine_1 = require("../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../Common/Event/EventSystem"),
-  ControllerHolder_1 = require("../../Manager/ControllerHolder"),
-  ModelManager_1 = require("../../Manager/ModelManager"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelEventWaitTime = undefined;
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventWaitTime extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
-    super(...arguments), this.oUe = -0, this.yRn = !1
+    super(...arguments);
+    this.oUe = -0;
+    this.yRn = false;
   }
   ExecuteInGm(e, t) {
-    this.FinishExecute(!0)
+    this.FinishExecute(true);
   }
   ExecuteNew(e, t) {
-    this.oUe = e.Time * CommonDefine_1.MILLIONSECOND_PER_SECOND, e.BanInput && (this.yRn = !0, ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = !0, ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag()), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "LevelEventWait"), this.oUe || (this.yRn && (ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = !1, ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag(), this.yRn = !1), this.FinishExecute(!1))
+    this.oUe = e.Time * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+    if (e.BanInput) {
+      this.yRn = true;
+      ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = true;
+      ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "LevelEventWait");
+    if (!this.oUe) {
+      if (this.yRn) {
+        ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = false;
+        ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
+        this.yRn = false;
+      }
+      this.FinishExecute(false);
+    }
   }
   OnTick(e) {
-    this.oUe -= e, this.oUe < 0 && (this.yRn && (ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = !1, ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag(), this.yRn = !1), this.FinishExecute(!0))
+    this.oUe -= e;
+    if (this.oUe < 0) {
+      if (this.yRn) {
+        ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = false;
+        ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
+        this.yRn = false;
+      }
+      this.FinishExecute(true);
+    }
   }
   OnReset() {
-    this.yRn = !1, this.oUe = 0
+    this.yRn = false;
+    this.oUe = 0;
   }
 }
 exports.LevelEventWaitTime = LevelEventWaitTime;

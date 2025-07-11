@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbMoveComponent = void 0;
+  value: true
+});
+exports.FbMoveComponent = undefined;
 class FbMoveComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.WDh = !1, this.QDh = 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.WDh = false;
+    this.QDh = 0;
   }
   static Create(t) {
-    if (t) return new FbMoveComponent(t)
+    if (t) {
+      return new FbMoveComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get InitSpeed() {
-    return this.WDh || (this.WDh = !0, this.QDh = this.FbDataInternal.initSpeed()), this.QDh
+    if (!this.WDh) {
+      this.WDh = true;
+      this.QDh = this.FbDataInternal.initSpeed();
+    }
+    return this.QDh;
   }
 }
 exports.FbMoveComponent = FbMoveComponent;

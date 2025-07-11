@@ -1,19 +1,25 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PhantomBattleFettersTabView = void 0;
-const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase"),
-  PhantomBattleFettersViewItem_1 = require("../../../Phantom/PhantomBattle/View/PhantomBattleFettersViewItem");
+  value: true
+});
+exports.PhantomBattleFettersTabView = undefined;
+const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
+const PhantomBattleFettersViewItem_1 = require("../../../Phantom/PhantomBattle/View/PhantomBattleFettersViewItem");
 class PhantomBattleFettersTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
-    super(...arguments), this.kvt = void 0
+    super(...arguments);
+    this.kvt = undefined;
   }
   async OnBeforeStartAsync() {
-    this.kvt = new PhantomBattleFettersViewItem_1.PhantomBattleFettersViewItem, await this.kvt.CreateThenShowByActorAsync(this.GetRootItem().GetOwner())
+    this.kvt = new PhantomBattleFettersViewItem_1.PhantomBattleFettersViewItem();
+    await this.kvt.CreateThenShowByActorAsync(this.GetRootItem().GetOwner());
   }
   OnBeforeShow() {
     var e = this.ExtraParams;
-    0 < e && this.kvt.SelectByFetterId(e)
+    if (e > 0) {
+      this.kvt.SelectByFetterId(e);
+    }
   }
 }
 exports.PhantomBattleFettersTabView = PhantomBattleFettersTabView;

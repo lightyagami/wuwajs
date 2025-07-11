@@ -1,40 +1,73 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MarkItemVerticalPointerHandle = void 0;
-const MarkVerticalPointerComponent_1 = require("../Components/MarkVerticalPointerComponent"),
-  MarkItemComponentHandle_1 = require("./MarkItemComponentHandle"),
-  POINTER_RANGE = 2e3;
+  value: true
+});
+exports.MarkItemVerticalPointerHandle = undefined;
+const MarkVerticalPointerComponent_1 = require("../Components/MarkVerticalPointerComponent");
+const MarkItemComponentHandle_1 = require("./MarkItemComponentHandle");
+const POINTER_RANGE = 2000;
 class MarkItemVerticalPointerHandle extends MarkItemComponentHandle_1.MarkItemComponentHandle {
   constructor() {
-    super(...arguments), this.ComponentInternal = void 0
+    super(...arguments);
+    this.ComponentInternal = undefined;
   }
   UpdateVerticalPointerType(t, e) {
-    this.Context.MarkItemEntity.ViewLifeCircle.EnableVerticalPointer ? (t = this.qRi(t, e), this.Context.MarkItemEntity.ViewLifeCircle.VerticalPointerType = t, this.SetVisible(0 !== t)) : this.SetVisible(!1)
+    if (this.Context.MarkItemEntity.ViewLifeCircle.EnableVerticalPointer) {
+      t = this.qRi(t, e);
+      this.Context.MarkItemEntity.ViewLifeCircle.VerticalPointerType = t;
+      this.SetVisible(t !== 0);
+    } else {
+      this.SetVisible(false);
+    }
   }
   qRi(t, e) {
-    return 2 === this.Context.MarkItem.MapType || (t = t.Z - e.Z, Math.abs(t) < POINTER_RANGE) ? 0 : t < 0 ? 1 : 2
+    if (this.Context.MarkItem.MapType === 2 || (t = t.Z - e.Z, Math.abs(t) < POINTER_RANGE)) {
+      return 0;
+    } else if (t < 0) {
+      return 1;
+    } else {
+      return 2;
+    }
   }
   async LoadComponentAsync() {
-    return void 0 === this.ComponentInternal && (this.ComponentInternal = new MarkVerticalPointerComponent_1.MarkVerticalPointerComponent, await this.ComponentInternal.CreateByPoolResourceIdAsync("UiItem_MarkArrow_Prefab", this.Context.MarkRootItem)), this.ComponentInternal
+    if (this.ComponentInternal === undefined) {
+      this.ComponentInternal = new MarkVerticalPointerComponent_1.MarkVerticalPointerComponent();
+      await this.ComponentInternal.CreateByPoolResourceIdAsync("UiItem_MarkArrow_Prefab", this.Context.MarkRootItem);
+    }
+    return this.ComponentInternal;
   }
   GetOrCreateComponent() {
-    return void 0 === this.ComponentInternal && this.LoadComponentAsync().then(() => {
-      var t;
-      void 0 !== this.ComponentInternal && (t = this.Context.MarkItem, this.ComponentInternal.GetRootItem().SetUIRelativeScale3D(t.CornerScaleVector), this.ApplyModified())
-    }), this.ComponentInternal
+    if (this.ComponentInternal === undefined) {
+      this.LoadComponentAsync().then(() => {
+        var t;
+        if (this.ComponentInternal !== undefined) {
+          t = this.Context.MarkItem;
+          this.ComponentInternal.GetRootItem().SetUIRelativeScale3D(t.CornerScaleVector);
+          this.ApplyModified();
+        }
+      });
+    }
+    return this.ComponentInternal;
   }
   OnSetVisible(t) {
-    this.Context.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(8, t)
+    this.Context.MarkItemEntity.ViewLifeCircle.SetChildViewVisibility(8, t);
   }
   OnApplyModified() {
-    var t = this.Context.MarkItemEntity.ViewLifeCircle,
-      e = t.IsChildViewStateDirty(8),
-      i = t.IsVerticalPointerTypeDirty;
-    (e || i) && (e = this.GetOrCreateComponent(), this.IsComponentValid(e)) && (i = t.IsChildViewVisible(8), t.SetChildViewVisibleClean(8), t.SetVerticalPointerTypeClean(), e.SetPointerType(t.VerticalPointerType), e.SetActive(i))
+    var t = this.Context.MarkItemEntity.ViewLifeCircle;
+    var e = t.IsChildViewStateDirty(8);
+    var i = t.IsVerticalPointerTypeDirty;
+    if ((e || i) && (e = this.GetOrCreateComponent(), this.IsComponentValid(e))) {
+      i = t.IsChildViewVisible(8);
+      t.SetChildViewVisibleClean(8);
+      t.SetVerticalPointerTypeClean();
+      e.SetPointerType(t.VerticalPointerType);
+      e.SetActive(i);
+    }
   }
   OnDispose() {
-    this.DestroyComponent(), super.OnDispose()
+    this.DestroyComponent();
+    super.OnDispose();
   }
 }
 exports.MarkItemVerticalPointerHandle = MarkItemVerticalPointerHandle;

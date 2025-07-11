@@ -1,128 +1,255 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FilterSettingViewModel = void 0;
-const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine"),
-  CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById"),
-  FilterSettingAll_1 = require("../../../../../Core/Define/ConfigQuery/FilterSettingAll"),
-  MathUtils_1 = require("../../../../../Core/Utils/MathUtils"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  UiManager_1 = require("../../../../Ui/UiManager"),
-  MenuDefine_1 = require("../../MenuDefine");
+  value: true
+});
+exports.FilterSettingViewModel = undefined;
+const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const FilterSettingAll_1 = require("../../../../../Core/Define/ConfigQuery/FilterSettingAll");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiManager_1 = require("../../../../Ui/UiManager");
+const MenuDefine_1 = require("../../MenuDefine");
 class FilterSettingViewModel {
   constructor() {
-    this.Reu = 0, this.jsu = void 0, this.Leu = void 0, this.weu = void 0, this.Aeu = void 0, this.llu = void 0, this._lu = void 0, this.Jiu = void 0, this.Ziu = void 0, this.Hsu = !1, this.$su = !1, this.ulu = !0, this.IsApplyClicked = !1, this.Wmu = !1, this.IsLeftStickHorizontalMoved = !1, this.IsLeftStickVerticalMoved = !1, this.LastMoveVector = void 0, this.UpLeftPos = void 0, this.UpRightPos = void 0, this.DownLeftPos = void 0, this.UiCameraPhotographerStructure = void 0, this.PhotographOptionMap = new Map, this.EntityDisableId = 0, this.SetDisableEntity = void 0, this.CameraRotationLock = !1, this.PadLock = !1, this.InitFilterIndex = 0, this.E_u = void 0, this.OnHideClick = void 0, this.OnResetClick = void 0, this.OnConfirmClick = void 0, this.OnCloseClick = void 0, this.OnPadChanged = void 0, this.OnPadChangeStop = void 0, this.OnSliderChanged = void 0, this.OnViewBeforeCreate = void 0, this.OnViewBeforeStart = void 0, this.OnViewBeforeShow = void 0, this.OnViewAfterHide = void 0, this.OnViewDestroy = void 0, this.OnDragMoved = void 0, this.OnDragBegin = void 0, this.OnDragEnded = void 0, this.OnInputUiLookUp = void 0, this.OnInputUiTurn = void 0, this.OnInputUiMoveForward = void 0, this.OnInputUiMoveRight = void 0, this.OnIndexChanged = void 0, this.OnLeftArrowClick = void 0, this.OnRightArrowClick = void 0
+    this.Stu = 0;
+    this.dcu = undefined;
+    this.Mtu = undefined;
+    this.Etu = undefined;
+    this.Itu = undefined;
+    this.igu = undefined;
+    this.rgu = undefined;
+    this.fsu = undefined;
+    this.gsu = undefined;
+    this.mcu = false;
+    this.fcu = false;
+    this.ogu = true;
+    this.IsApplyClicked = false;
+    this.zDu = false;
+    this.IsLeftStickHorizontalMoved = false;
+    this.IsLeftStickVerticalMoved = false;
+    this.LastMoveVector = undefined;
+    this.UpLeftPos = undefined;
+    this.UpRightPos = undefined;
+    this.DownLeftPos = undefined;
+    this.UiCameraPhotographerStructure = undefined;
+    this.PhotographOptionMap = new Map();
+    this.EntityDisableId = 0;
+    this.SetDisableEntity = undefined;
+    this.CameraRotationLock = false;
+    this.PadLock = false;
+    this.InitFilterIndex = 0;
+    this.v0u = undefined;
+    this.OnHideClick = undefined;
+    this.OnResetClick = undefined;
+    this.OnConfirmClick = undefined;
+    this.OnCloseClick = undefined;
+    this.OnPadChanged = undefined;
+    this.OnPadChangeStop = undefined;
+    this.OnSliderChanged = undefined;
+    this.OnViewBeforeCreate = undefined;
+    this.OnViewBeforeStart = undefined;
+    this.OnViewBeforeShow = undefined;
+    this.OnViewAfterHide = undefined;
+    this.OnViewDestroy = undefined;
+    this.OnDragMoved = undefined;
+    this.OnDragBegin = undefined;
+    this.OnDragEnded = undefined;
+    this.OnInputUiLookUp = undefined;
+    this.OnInputUiTurn = undefined;
+    this.OnInputUiMoveForward = undefined;
+    this.OnInputUiMoveRight = undefined;
+    this.OnIndexChanged = undefined;
+    this.OnLeftArrowClick = undefined;
+    this.OnRightArrowClick = undefined;
   }
   get ControlCameraRate() {
-    return void 0 === this.jsu && (this.jsu = CommonParamById_1.configCommonParamById.GetIntConfig("ControlCameraRate") / CommonDefine_1.PERCENTAGE_FACTOR), this.jsu
+    if (this.dcu === undefined) {
+      this.dcu = CommonParamById_1.configCommonParamById.GetIntConfig("ControlCameraRate") / CommonDefine_1.PERCENTAGE_FACTOR;
+    }
+    return this.dcu;
   }
   get CoordinateTextId() {
-    return MenuDefine_1.FILTER_SETTING_COORDINATE_TEXT_ID
+    return MenuDefine_1.FILTER_SETTING_COORDINATE_TEXT_ID;
   }
   get IntensityNormalized() {
-    return this.Leu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE
+    return this.Mtu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
   }
   set IntensityNormalized(i) {
-    this.Leu !== i && (this.Leu = i, this.Reu |= FilterSettingViewModel.Flags.IntensityNormalized)
+    if (this.Mtu !== i) {
+      this.Mtu = i;
+      this.Stu |= FilterSettingViewModel.Flags.IntensityNormalized;
+    }
   }
   get IntensityString() {
-    return Math.round(100 * this.IntensityNormalized).toString()
+    return Math.round(this.IntensityNormalized * 100).toString();
   }
   get HorizontalNormalized() {
-    return this.weu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE
+    return this.Etu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
   }
   set HorizontalNormalized(i) {
-    var t, e, i = MathUtils_1.MathUtils.Clamp(i, 0, 1);
-    this.clu(i), void 0 !== this.UpLeftPos && void 0 !== this.UpRightPos && (t = this.UpLeftPos.X, e = this.UpRightPos.X, this.llu = MathUtils_1.MathUtils.Lerp(t, e, i))
+    var t;
+    var e;
+    var i = MathUtils_1.MathUtils.Clamp(i, 0, 1);
+    this.ngu(i);
+    if (this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
+      t = this.UpLeftPos.X;
+      e = this.UpRightPos.X;
+      this.igu = MathUtils_1.MathUtils.Lerp(t, e, i);
+    }
   }
-  clu(i) {
-    this.weu !== i && (this.weu = MathUtils_1.MathUtils.Clamp(i, 0, 1), this.Reu |= FilterSettingViewModel.Flags.HorizontalNormalized)
+  ngu(i) {
+    if (this.Etu !== i) {
+      this.Etu = MathUtils_1.MathUtils.Clamp(i, 0, 1);
+      this.Stu |= FilterSettingViewModel.Flags.HorizontalNormalized;
+    }
   }
   get HorizontalString() {
-    return Math.round(MathUtils_1.MathUtils.Lerp(-5, 5, this.HorizontalNormalized)).toString()
+    return Math.round(MathUtils_1.MathUtils.Lerp(-5, 5, this.HorizontalNormalized)).toString();
   }
   get VerticalNormalized() {
-    return this.Aeu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE
+    return this.Itu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
   }
   set VerticalNormalized(i) {
-    var t, e, i = MathUtils_1.MathUtils.Clamp(i, 0, 1);
-    this.dlu(i), void 0 !== this.DownLeftPos && void 0 !== this.UpLeftPos && (t = this.DownLeftPos.Z, e = this.UpLeftPos.Z, this._lu = MathUtils_1.MathUtils.Lerp(t, e, i))
+    var t;
+    var e;
+    var i = MathUtils_1.MathUtils.Clamp(i, 0, 1);
+    this.sgu(i);
+    if (this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
+      t = this.DownLeftPos.Z;
+      e = this.UpLeftPos.Z;
+      this.rgu = MathUtils_1.MathUtils.Lerp(t, e, i);
+    }
   }
-  dlu(i) {
-    this.Aeu !== i && (this.Aeu = MathUtils_1.MathUtils.Clamp(i, 0, 1), this.Reu |= FilterSettingViewModel.Flags.VerticalNormalized)
+  sgu(i) {
+    if (this.Itu !== i) {
+      this.Itu = MathUtils_1.MathUtils.Clamp(i, 0, 1);
+      this.Stu |= FilterSettingViewModel.Flags.VerticalNormalized;
+    }
   }
   get VerticalString() {
-    return Math.round(MathUtils_1.MathUtils.Lerp(-5, 5, this.VerticalNormalized)).toString()
+    return Math.round(MathUtils_1.MathUtils.Lerp(-5, 5, this.VerticalNormalized)).toString();
   }
   get HorizontalReal() {
-    var i, t;
-    return void 0 === this.llu && void 0 !== this.UpLeftPos && void 0 !== this.UpRightPos && (i = this.UpLeftPos.X, t = this.UpRightPos.X, this.llu = MathUtils_1.MathUtils.Lerp(i, t, this.HorizontalNormalized)), this.llu
+    var i;
+    var t;
+    if (this.igu === undefined && this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
+      i = this.UpLeftPos.X;
+      t = this.UpRightPos.X;
+      this.igu = MathUtils_1.MathUtils.Lerp(i, t, this.HorizontalNormalized);
+    }
+    return this.igu;
   }
   set HorizontalReal(i) {
-    var t, e;
-    void 0 !== i && void 0 !== this.UpLeftPos && void 0 !== this.UpRightPos && (t = this.UpLeftPos.X, e = this.UpRightPos.X, this.llu = MathUtils_1.MathUtils.Clamp(i, t, e), i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.llu, t, e), 1), this.clu(i))
+    var t;
+    var e;
+    if (i !== undefined && this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
+      t = this.UpLeftPos.X;
+      e = this.UpRightPos.X;
+      this.igu = MathUtils_1.MathUtils.Clamp(i, t, e);
+      i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.igu, t, e), 1);
+      this.ngu(i);
+    }
   }
   get VerticalReal() {
-    var i, t;
-    return void 0 === this._lu && void 0 !== this.DownLeftPos && void 0 !== this.UpLeftPos && (i = this.DownLeftPos.Z, t = this.UpLeftPos.Z, this._lu = MathUtils_1.MathUtils.Lerp(i, t, this.VerticalNormalized)), this._lu
+    var i;
+    var t;
+    if (this.rgu === undefined && this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
+      i = this.DownLeftPos.Z;
+      t = this.UpLeftPos.Z;
+      this.rgu = MathUtils_1.MathUtils.Lerp(i, t, this.VerticalNormalized);
+    }
+    return this.rgu;
   }
   set VerticalReal(i) {
-    var t, e;
-    void 0 !== i && void 0 !== this.DownLeftPos && void 0 !== this.UpLeftPos && (t = this.DownLeftPos.Z, e = this.UpLeftPos.Z, this._lu = MathUtils_1.MathUtils.Clamp(i, t, e), i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this._lu, t, e), 1), this.dlu(i))
+    var t;
+    var e;
+    if (i !== undefined && this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
+      t = this.DownLeftPos.Z;
+      e = this.UpLeftPos.Z;
+      this.rgu = MathUtils_1.MathUtils.Clamp(i, t, e);
+      i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.rgu, t, e), 1);
+      this.sgu(i);
+    }
   }
   get FilterNameTextId() {
-    return this.Jiu
+    return this.fsu;
   }
   set FilterNameTextId(i) {
-    this.Jiu !== i && (this.Jiu = i, this.Reu |= FilterSettingViewModel.Flags.FilterNameTextId)
+    if (this.fsu !== i) {
+      this.fsu = i;
+      this.Stu |= FilterSettingViewModel.Flags.FilterNameTextId;
+    }
   }
   get FilterPadTexturePath() {
-    return this.Ziu
+    return this.gsu;
   }
   set FilterPadTexturePath(i) {
-    this.Ziu !== i && (this.Ziu = i, this.Reu |= FilterSettingViewModel.Flags.FilterPadTexturePath)
+    if (this.gsu !== i) {
+      this.gsu = i;
+      this.Stu |= FilterSettingViewModel.Flags.FilterPadTexturePath;
+    }
   }
   get IsHideByPad() {
-    return this.Hsu
+    return this.mcu;
   }
   set IsHideByPad(i) {
-    this.Hsu !== i && (this.Hsu = i, this.Reu |= FilterSettingViewModel.Flags.IsHideByPad, ModelManager_1.ModelManager.LoadingModel.IsShowUidView = !i)
+    if (this.mcu !== i) {
+      this.mcu = i;
+      this.Stu |= FilterSettingViewModel.Flags.IsHideByPad;
+      ModelManager_1.ModelManager.LoadingModel.IsShowUidView = !i;
+    }
   }
   get IsHideByClick() {
-    return this.$su
+    return this.fcu;
   }
   set IsHideByClick(i) {
-    this.$su !== i && (this.$su = i, this.Reu |= FilterSettingViewModel.Flags.IsHideByClick, ModelManager_1.ModelManager.LoadingModel.IsShowUidView = !i)
+    if (this.fcu !== i) {
+      this.fcu = i;
+      this.Stu |= FilterSettingViewModel.Flags.IsHideByClick;
+      ModelManager_1.ModelManager.LoadingModel.IsShowUidView = !i;
+    }
   }
   get IsSliderActive() {
-    return this.ulu
+    return this.ogu;
   }
   set IsSliderActive(i) {
-    this.ulu !== i && (this.ulu = i, this.Reu |= FilterSettingViewModel.Flags.IsSliderActive)
+    if (this.ogu !== i) {
+      this.ogu = i;
+      this.Stu |= FilterSettingViewModel.Flags.IsSliderActive;
+    }
   }
   get IsFilterChanged() {
-    return this.Wmu
+    return this.zDu;
   }
   set IsFilterChanged(i) {
-    (this.Wmu = i) && (this.IsApplyClicked = !1)
+    if (this.zDu = i) {
+      this.IsApplyClicked = false;
+    }
   }
   get IsOtherViewOpen() {
-    return UiManager_1.UiManager.IsViewOpen("HelpView")
+    return UiManager_1.UiManager.IsViewOpen("HelpView");
   }
   get TexturePathList() {
     var i;
-    return void 0 === this.E_u && (i = FilterSettingAll_1.configFilterSettingAll.GetConfigList(), this.E_u = void 0 === i ? [] : i.map(i => i.SpritePath)), this.E_u
+    if (this.v0u === undefined) {
+      i = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
+      this.v0u = i === undefined ? [] : i.map(i => i.SpritePath);
+    }
+    return this.v0u;
   }
   get IsDirty() {
-    return 0 !== this.Reu
+    return this.Stu !== 0;
   }
   IsPropertyDirty(i) {
-    return 0 != (this.Reu & i)
+    return (this.Stu & i) != 0;
   }
   CleanDirty() {
-    this.Reu = 0
+    this.Stu = 0;
   }
-}(exports.FilterSettingViewModel = FilterSettingViewModel).Flags = {
+}
+(exports.FilterSettingViewModel = FilterSettingViewModel).Flags = {
   PointTexturePosition: 1,
   IntensityNormalized: 2,
   HorizontalNormalized: 4,

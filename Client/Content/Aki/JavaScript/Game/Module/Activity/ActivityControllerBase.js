@@ -1,58 +1,67 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivityControllerBase = void 0;
-const ConfigManager_1 = require("../../Manager/ConfigManager"),
-  UiManager_1 = require("../../Ui/UiManager");
+  value: true
+});
+exports.ActivityControllerBase = undefined;
+const ConfigManager_1 = require("../../Manager/ConfigManager");
+const UiManager_1 = require("../../Ui/UiManager");
 class ActivityControllerBase {
   Init() {
     var e = this.OnInit();
-    return this.OnRegisterNetEvent(), this.OnAddEvents(), e
+    this.OnRegisterNetEvent();
+    this.OnAddEvents();
+    return e;
   }
   Clear() {
-    return this.OnUnRegisterNetEvent(), this.OnRemoveEvents(), this.OnClear()
+    this.OnUnRegisterNetEvent();
+    this.OnRemoveEvents();
+    return this.OnClear();
   }
   GetActivityResource(e) {
     e = this.OnGetActivityResource(e);
-    return ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e)
+    return ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
   }
   CreateSubPageComponent(e) {
-    return this.OnCreateSubPageComponent(e)
+    return this.OnCreateSubPageComponent(e);
   }
   OpenView(e) {
-    this.OnOpenView(e)
+    this.OnOpenView(e);
   }
   async OpenViewByViewName(e) {
-    return await this.OnOpenSubView(e)
+    return await this.OnOpenSubView(e);
   }
   CreateActivityData(e) {
     var t = this.OnCreateActivityData(e);
-    return t.Init(e), t
+    t.Init(e);
+    return t;
   }
   GetIsOpeningActivityRelativeView() {
-    return this.OnGetIsOpeningActivityRelativeView()
+    return this.OnGetIsOpeningActivityRelativeView();
   }
   OnRegisterNetEvent() {}
   OnUnRegisterNetEvent() {}
   OnAddEvents() {}
   OnRemoveEvents() {}
   OnInit() {
-    return !0
+    return true;
   }
   OnClear() {
-    return !0
+    return true;
   }
   async OnOpenSubView(e) {
-    return Promise.resolve(!1)
+    return Promise.resolve(false);
   }
   GetActivityLevelUnlockState(e) {
-    return !0
+    return true;
   }
   GetActivityMapMarkState(e) {
-    return !1
+    return false;
   }
   OnActivityFirstUnlock(e) {
-    e.LocalConfig && e.LocalConfig.ShowUnlockTip && UiManager_1.UiManager.OpenView("ActivityUnlockTipView", e)
+    if (e.LocalConfig && e.LocalConfig.ShowUnlockTip) {
+      UiManager_1.UiManager.OpenView("ActivityUnlockTipView", e);
+    }
   }
 }
 exports.ActivityControllerBase = ActivityControllerBase;

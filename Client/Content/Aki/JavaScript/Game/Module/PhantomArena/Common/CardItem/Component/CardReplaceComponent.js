@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CardReplaceComponent = void 0;
+  value: true
+});
+exports.CardReplaceComponent = undefined;
 const CardComponentBase_1 = require("../CardComponentBase");
 class CardReplaceComponent extends CardComponentBase_1.CardComponentBase {
   Refresh(e) {}

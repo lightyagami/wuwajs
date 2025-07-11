@@ -1,25 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NavigationScrollbarData = void 0;
-const Log_1 = require("../../../../Core/Common/Log"),
-  UiNavigationViewManager_1 = require("./UiNavigationViewManager");
+  value: true
+});
+exports.NavigationScrollbarData = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const UiNavigationViewManager_1 = require("./UiNavigationViewManager");
 class NavigationScrollbarData {
   constructor() {
-    this.Wwo = [], this.Kwo = void 0, this.Qwo = void 0, this.Xwo = void 0
+    this.Wwo = [];
+    this.Kwo = undefined;
+    this.Qwo = undefined;
+    this.Xwo = undefined;
   }
   $wo() {
     if (!this.Kwo?.IsListenerActive()) {
-      let i = void 0;
-      for (const t of this.Wwo)
+      let i = undefined;
+      for (const t of this.Wwo) {
         if (t.IsListenerActive()) {
           i = t;
-          break
-        } this.Ywo(i)
+          break;
+        }
+      }
+      this.Ywo(i);
     }
   }
   Ywo(i) {
-    this.Kwo && (this.Kwo.IsFocusScrollbar = !1), i && (i.IsFocusScrollbar = !0), this.Xwo = this.Kwo, this.Kwo = i, this.Qwo = i?.GetBehaviorComponent(), Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiNavigation", 10, "设置当前的滚动区域对象", ["名字", i?.RootUIComp.displayName])
+    if (this.Kwo) {
+      this.Kwo.IsFocusScrollbar = false;
+    }
+    if (i) {
+      i.IsFocusScrollbar = true;
+    }
+    this.Xwo = this.Kwo;
+    this.Kwo = i;
+    this.Qwo = i?.GetBehaviorComponent();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("UiNavigation", 10, "设置当前的滚动区域对象", ["名字", i?.RootUIComp.displayName]);
+    }
   }
   AddScrollbar(r) {
     this.Wwo = [];
@@ -27,68 +45,85 @@ class NavigationScrollbarData {
       var s = r[i].ListenerList;
       for (let i = 0, t = s.length; i < t; ++i) {
         var e = s[i];
-        this.Wwo.push(e)
+        this.Wwo.push(e);
       }
     }
-    this.Wwo.sort((i, t) => i.ScrollbarIndex - t.ScrollbarIndex), this.$wo()
+    this.Wwo.sort((i, t) => i.ScrollbarIndex - t.ScrollbarIndex);
+    this.$wo();
   }
   DeleteScrollbar(i) {
     var r = i.ListenerList;
     if (r) {
       for (let i = 0, t = r.length; i < t; ++i) {
-        var s = r[i],
-          e = this.Wwo.indexOf(s);
-        this.Wwo.splice(e, 1), this.Kwo === s && this.Ywo(void 0)
+        var s = r[i];
+        var e = this.Wwo.indexOf(s);
+        this.Wwo.splice(e, 1);
+        if (this.Kwo === s) {
+          this.Ywo(undefined);
+        }
       }
-      this.$wo()
+      this.$wo();
     }
   }
   ResumeLastListener() {
-    this.Xwo?.IsValid() && this.Xwo.IsListenerActive() ? this.Ywo(this.Xwo) : this.$wo()
+    if (this.Xwo?.IsValid() && this.Xwo.IsListenerActive()) {
+      this.Ywo(this.Xwo);
+    } else {
+      this.$wo();
+    }
   }
   GetCurrentListener() {
-    return this.Kwo
+    return this.Kwo;
   }
   GetCurrentScrollbar() {
-    return this.Qwo
+    return this.Qwo;
   }
   HasActiveScrollbarList() {
-    return 1 < this.Wwo.filter(i => i.IsListenerActive()).length
+    return this.Wwo.filter(i => i.IsListenerActive()).length > 1;
   }
   FindNextScrollbar() {
     if (this.Kwo) {
       var t = this.Wwo.length;
-      if (1 === t) return void this.Ywo(void 0);
+      if (t === 1) {
+        this.Ywo(undefined);
+        return;
+      }
       var r = this.Wwo.indexOf(this.Kwo);
       let i = r + 1 < t ? r + 1 : 0;
-      for (; r !== i;) {
+      while (r !== i) {
         if (this.Wwo[i].IsListenerActive()) {
           this.Ywo(this.Wwo[i]);
-          break
+          break;
         }
-        i = i + 1 < t ? i + 1 : 0
+        i = i + 1 < t ? i + 1 : 0;
       }
-    } else this.$wo();
-    UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey()
+    } else {
+      this.$wo();
+    }
+    UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
   }
   FindPrevScrollbar() {
     if (this.Kwo) {
       var t = this.Wwo.length;
-      if (1 === t) return;
+      if (t === 1) {
+        return;
+      }
       var r = this.Wwo.indexOf(this.Kwo);
-      let i = 0 <= r - 1 ? r - 1 : t - 1;
-      for (; r !== i;) {
+      let i = r - 1 >= 0 ? r - 1 : t - 1;
+      while (r !== i) {
         if (this.Wwo[i].IsListenerActive()) {
           this.Ywo(this.Wwo[i]);
-          break
+          break;
         }
-        i = 0 <= i - 1 ? i - 1 : t - 1
+        i = i - 1 >= 0 ? i - 1 : t - 1;
       }
-    } else this.$wo();
-    UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey()
+    } else {
+      this.$wo();
+    }
+    UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
   }
   TryFindScrollbar() {
-    this.$wo()
+    this.$wo();
   }
 }
 exports.NavigationScrollbarData = NavigationScrollbarData;

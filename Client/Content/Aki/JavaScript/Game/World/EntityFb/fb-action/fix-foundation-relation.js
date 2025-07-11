@@ -1,29 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FixFoundationRelation = void 0;
+  value: true
+});
+exports.FixFoundationRelation = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class FixFoundationRelation {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, i) {
-    return this.bb_pos = t, this.bb = i, this
+    this.bb_pos = t;
+    this.bb = i;
+    return this;
   }
   static getRootAsFixFoundationRelation(t, i) {
-    return (i || new FixFoundationRelation).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new FixFoundationRelation()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsFixFoundationRelation(t, i) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (i || new FixFoundationRelation).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (i || new FixFoundationRelation()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static startFixFoundationRelation(t) {
-    t.startObject(0)
+    t.startObject(0);
   }
   static endFixFoundationRelation(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createFixFoundationRelation(t) {
-    return FixFoundationRelation.startFixFoundationRelation(t), FixFoundationRelation.endFixFoundationRelation(t)
+    FixFoundationRelation.startFixFoundationRelation(t);
+    return FixFoundationRelation.endFixFoundationRelation(t);
   }
 }
 exports.FixFoundationRelation = FixFoundationRelation;

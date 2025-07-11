@@ -1,14 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotTest = void 0;
+  value: true
+});
+exports.RedDotTest = undefined;
 const RedDotBase_1 = require("../RedDotBase");
 class RedDotTest extends RedDotBase_1.RedDotBase {
   OnGetEvents() {
-    return []
+    return [];
   }
   OnCheck() {
-    return !0
+    return true;
   }
 }
 exports.RedDotTest = RedDotTest;

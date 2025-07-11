@@ -1,102 +1,119 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.VolumeTriggerShape = exports.UnionTriggerShape = exports.UnionRange = exports.UnionCombinationTriggerShape = exports.SphereTriggerShape = exports.HollowSphereTriggerShape = exports.HollowCylinderTriggerShape = exports.CylinderTriggerShape = exports.Cylinder = exports.ConeTriggerShape = exports.CombinationTriggerShape = exports.CircleRange = exports.BoxTriggerShape = exports.BoxRange = exports.ActorRefVolume = exports.ActorCollisionTriggerShape = void 0;
-var actor_collision_trigger_shape_js_1 = require("./fb-shape/actor-collision-trigger-shape.js"),
-  actor_ref_volume_js_1 = (Object.defineProperty(exports, "ActorCollisionTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return actor_collision_trigger_shape_js_1.ActorCollisionTriggerShape
-    }
-  }), require("./fb-shape/actor-ref-volume.js")),
-  box_range_js_1 = (Object.defineProperty(exports, "ActorRefVolume", {
-    enumerable: !0,
-    get: function() {
-      return actor_ref_volume_js_1.ActorRefVolume
-    }
-  }), require("./fb-shape/box-range.js")),
-  box_trigger_shape_js_1 = (Object.defineProperty(exports, "BoxRange", {
-    enumerable: !0,
-    get: function() {
-      return box_range_js_1.BoxRange
-    }
-  }), require("./fb-shape/box-trigger-shape.js")),
-  circle_range_js_1 = (Object.defineProperty(exports, "BoxTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return box_trigger_shape_js_1.BoxTriggerShape
-    }
-  }), require("./fb-shape/circle-range.js")),
-  combination_trigger_shape_js_1 = (Object.defineProperty(exports, "CircleRange", {
-    enumerable: !0,
-    get: function() {
-      return circle_range_js_1.CircleRange
-    }
-  }), require("./fb-shape/combination-trigger-shape.js")),
-  cone_trigger_shape_js_1 = (Object.defineProperty(exports, "CombinationTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return combination_trigger_shape_js_1.CombinationTriggerShape
-    }
-  }), require("./fb-shape/cone-trigger-shape.js")),
-  cylinder_js_1 = (Object.defineProperty(exports, "ConeTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return cone_trigger_shape_js_1.ConeTriggerShape
-    }
-  }), require("./fb-shape/cylinder.js")),
-  cylinder_trigger_shape_js_1 = (Object.defineProperty(exports, "Cylinder", {
-    enumerable: !0,
-    get: function() {
-      return cylinder_js_1.Cylinder
-    }
-  }), require("./fb-shape/cylinder-trigger-shape.js")),
-  hollow_cylinder_trigger_shape_js_1 = (Object.defineProperty(exports, "CylinderTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return cylinder_trigger_shape_js_1.CylinderTriggerShape
-    }
-  }), require("./fb-shape/hollow-cylinder-trigger-shape.js")),
-  hollow_sphere_trigger_shape_js_1 = (Object.defineProperty(exports, "HollowCylinderTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return hollow_cylinder_trigger_shape_js_1.HollowCylinderTriggerShape
-    }
-  }), require("./fb-shape/hollow-sphere-trigger-shape.js")),
-  sphere_trigger_shape_js_1 = (Object.defineProperty(exports, "HollowSphereTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return hollow_sphere_trigger_shape_js_1.HollowSphereTriggerShape
-    }
-  }), require("./fb-shape/sphere-trigger-shape.js")),
-  union_combination_trigger_shape_js_1 = (Object.defineProperty(exports, "SphereTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return sphere_trigger_shape_js_1.SphereTriggerShape
-    }
-  }), require("./fb-shape/union-combination-trigger-shape.js")),
-  union_range_js_1 = (Object.defineProperty(exports, "UnionCombinationTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return union_combination_trigger_shape_js_1.UnionCombinationTriggerShape
-    }
-  }), require("./fb-shape/union-range.js")),
-  union_trigger_shape_js_1 = (Object.defineProperty(exports, "UnionRange", {
-    enumerable: !0,
-    get: function() {
-      return union_range_js_1.UnionRange
-    }
-  }), require("./fb-shape/union-trigger-shape.js")),
-  volume_trigger_shape_js_1 = (Object.defineProperty(exports, "UnionTriggerShape", {
-    enumerable: !0,
-    get: function() {
-      return union_trigger_shape_js_1.UnionTriggerShape
-    }
-  }), require("./fb-shape/volume-trigger-shape.js"));
+  value: true
+});
+exports.VolumeTriggerShape = exports.UnionTriggerShape = exports.UnionRange = exports.UnionCombinationTriggerShape = exports.SphereTriggerShape = exports.HollowSphereTriggerShape = exports.HollowCylinderTriggerShape = exports.CylinderTriggerShape = exports.Cylinder = exports.ConeTriggerShape = exports.CombinationTriggerShape = exports.CircleRange = exports.BoxTriggerShape = exports.BoxRange = exports.ActorRefVolume = exports.ActorCollisionTriggerShape = undefined;
+var actor_collision_trigger_shape_js_1 = require("./fb-shape/actor-collision-trigger-shape.js");
+Object.defineProperty(exports, "ActorCollisionTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return actor_collision_trigger_shape_js_1.ActorCollisionTriggerShape;
+  }
+});
+var actor_ref_volume_js_1 = require("./fb-shape/actor-ref-volume.js");
+Object.defineProperty(exports, "ActorRefVolume", {
+  enumerable: true,
+  get: function () {
+    return actor_ref_volume_js_1.ActorRefVolume;
+  }
+});
+var box_range_js_1 = require("./fb-shape/box-range.js");
+Object.defineProperty(exports, "BoxRange", {
+  enumerable: true,
+  get: function () {
+    return box_range_js_1.BoxRange;
+  }
+});
+var box_trigger_shape_js_1 = require("./fb-shape/box-trigger-shape.js");
+Object.defineProperty(exports, "BoxTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return box_trigger_shape_js_1.BoxTriggerShape;
+  }
+});
+var circle_range_js_1 = require("./fb-shape/circle-range.js");
+Object.defineProperty(exports, "CircleRange", {
+  enumerable: true,
+  get: function () {
+    return circle_range_js_1.CircleRange;
+  }
+});
+var combination_trigger_shape_js_1 = require("./fb-shape/combination-trigger-shape.js");
+Object.defineProperty(exports, "CombinationTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return combination_trigger_shape_js_1.CombinationTriggerShape;
+  }
+});
+var cone_trigger_shape_js_1 = require("./fb-shape/cone-trigger-shape.js");
+Object.defineProperty(exports, "ConeTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return cone_trigger_shape_js_1.ConeTriggerShape;
+  }
+});
+var cylinder_js_1 = require("./fb-shape/cylinder.js");
+Object.defineProperty(exports, "Cylinder", {
+  enumerable: true,
+  get: function () {
+    return cylinder_js_1.Cylinder;
+  }
+});
+var cylinder_trigger_shape_js_1 = require("./fb-shape/cylinder-trigger-shape.js");
+Object.defineProperty(exports, "CylinderTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return cylinder_trigger_shape_js_1.CylinderTriggerShape;
+  }
+});
+var hollow_cylinder_trigger_shape_js_1 = require("./fb-shape/hollow-cylinder-trigger-shape.js");
+Object.defineProperty(exports, "HollowCylinderTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return hollow_cylinder_trigger_shape_js_1.HollowCylinderTriggerShape;
+  }
+});
+var hollow_sphere_trigger_shape_js_1 = require("./fb-shape/hollow-sphere-trigger-shape.js");
+Object.defineProperty(exports, "HollowSphereTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return hollow_sphere_trigger_shape_js_1.HollowSphereTriggerShape;
+  }
+});
+var sphere_trigger_shape_js_1 = require("./fb-shape/sphere-trigger-shape.js");
+Object.defineProperty(exports, "SphereTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return sphere_trigger_shape_js_1.SphereTriggerShape;
+  }
+});
+var union_combination_trigger_shape_js_1 = require("./fb-shape/union-combination-trigger-shape.js");
+Object.defineProperty(exports, "UnionCombinationTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return union_combination_trigger_shape_js_1.UnionCombinationTriggerShape;
+  }
+});
+var union_range_js_1 = require("./fb-shape/union-range.js");
+Object.defineProperty(exports, "UnionRange", {
+  enumerable: true,
+  get: function () {
+    return union_range_js_1.UnionRange;
+  }
+});
+var union_trigger_shape_js_1 = require("./fb-shape/union-trigger-shape.js");
+Object.defineProperty(exports, "UnionTriggerShape", {
+  enumerable: true,
+  get: function () {
+    return union_trigger_shape_js_1.UnionTriggerShape;
+  }
+});
+var volume_trigger_shape_js_1 = require("./fb-shape/volume-trigger-shape.js");
 Object.defineProperty(exports, "VolumeTriggerShape", {
-  enumerable: !0,
-  get: function() {
-    return volume_trigger_shape_js_1.VolumeTriggerShape
+  enumerable: true,
+  get: function () {
+    return volume_trigger_shape_js_1.VolumeTriggerShape;
   }
 });
 //# sourceMappingURL=fb-shape.js.map

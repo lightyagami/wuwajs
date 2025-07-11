@@ -1,15 +1,24 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FlowActionChangeState = void 0;
+  value: true
+});
+exports.FlowActionChangeState = undefined;
 const FlowActionBase_1 = require("./FlowActionBase");
 class FlowActionChangeState extends FlowActionBase_1.FlowActionBase {
   OnExecute() {
     var t;
-    this.Context.IsBreakdown = !0, this.Context.CurShowTalk ? (t = this.Runner, this.FinishExecute(!0, !1), t.FinishTalk()) : this.FinishExecute(!0)
+    this.Context.IsBreakdown = true;
+    if (this.Context.CurShowTalk) {
+      t = this.Runner;
+      this.FinishExecute(true, false);
+      t.FinishTalk();
+    } else {
+      this.FinishExecute(true);
+    }
   }
   OnBackgroundExecute() {
-    this.OnExecute()
+    this.OnExecute();
   }
 }
 exports.FlowActionChangeState = FlowActionChangeState;

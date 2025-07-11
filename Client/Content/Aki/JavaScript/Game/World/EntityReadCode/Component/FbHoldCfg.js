@@ -1,17 +1,27 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHoldCfg = void 0;
+  value: true
+});
+exports.FbHoldCfg = undefined;
 const FbHoldingTrackTarget_1 = require("./FbHoldingTrackTarget");
 class FbHoldCfg {
   constructor(t) {
-    this.FbDataInternal = t, this.I2h = !1, this.$8o = void 0
+    this.FbDataInternal = t;
+    this.I2h = false;
+    this.$8o = undefined;
   }
   static Create(t) {
-    if (t) return new FbHoldCfg(t)
+    if (t) {
+      return new FbHoldCfg(t);
+    }
   }
   get TrackTarget() {
-    return this.I2h || (this.I2h = !0, this.$8o = FbHoldingTrackTarget_1.FbHoldingTrackTarget.Create(this.FbDataInternal.trackTarget())), this.$8o
+    if (!this.I2h) {
+      this.I2h = true;
+      this.$8o = FbHoldingTrackTarget_1.FbHoldingTrackTarget.Create(this.FbDataInternal.trackTarget());
+    }
+    return this.$8o;
   }
 }
 exports.FbHoldCfg = FbHoldCfg;

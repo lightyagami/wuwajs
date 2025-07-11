@@ -1,22 +1,44 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbInteractiveComponent = void 0;
+  value: true
+});
+exports.FbInteractiveComponent = undefined;
 class FbInteractiveComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.Euh = !1, this.Iuh = void 0, this.d_h = !1, this.m_h = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.Euh = false;
+    this.Iuh = undefined;
+    this.d_h = false;
+    this.m_h = undefined;
   }
   static Create(t) {
-    if (t) return new FbInteractiveComponent(t)
+    if (t) {
+      return new FbInteractiveComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get Content() {
-    return this.Euh || (this.Euh = !0, this.Iuh = this.FbDataInternal.content()), this.Iuh
+    if (!this.Euh) {
+      this.Euh = true;
+      this.Iuh = this.FbDataInternal.content();
+    }
+    return this.Iuh;
   }
   get Icon() {
-    return this.d_h || (this.d_h = !0, this.m_h = this.FbDataInternal.icon()), this.m_h
+    if (!this.d_h) {
+      this.d_h = true;
+      this.m_h = this.FbDataInternal.icon();
+    }
+    return this.m_h;
   }
 }
 exports.FbInteractiveComponent = FbInteractiveComponent;

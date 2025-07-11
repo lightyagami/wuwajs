@@ -1,32 +1,43 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.isComponentInstance = exports.RegisterComponent = exports.RegisterComponentFinish = void 0;
-const Log_1 = require("../Common/Log"),
-  EntityComponent_1 = require("./EntityComponent");
-let finish = !1;
-
+  value: true
+});
+exports.isComponentInstance = exports.RegisterComponent = exports.RegisterComponentFinish = undefined;
+const Log_1 = require("../Common/Log");
+const EntityComponent_1 = require("./EntityComponent");
+let finish = false;
 function RegisterComponentFinish() {
-  finish = !0
+  finish = true;
 }
-
 function RegisterComponent(t) {
-  return function(n) {
-    return finish ? Log_1.Log.CheckError() && Log_1.Log.Error("Entity", 3, "调用RegisterComponentFinish函数后不再允许注册组件", ["Type", n.name], ["id", t]) : n.Id = t, n
-  }
+  return function (n) {
+    if (finish) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Entity", 3, "调用RegisterComponentFinish函数后不再允许注册组件", ["Type", n.name], ["id", t]);
+      }
+    } else {
+      n.Id = t;
+    }
+    return n;
+  };
 }
-
 function isComponentInstance(t, e) {
   if (t) {
     let n = t?.__proto__;
-    for (; n?.constructor && n instanceof EntityComponent_1.EntityComponent && n.constructor !== EntityComponent_1.EntityComponent;) {
+    while (n?.constructor && n instanceof EntityComponent_1.EntityComponent && n.constructor !== EntityComponent_1.EntityComponent) {
       var o = n.constructor.Id;
-      if (void 0 === o) return !1;
-      if (o === e) return !0;
-      n = n?.__proto__
+      if (o === undefined) {
+        return false;
+      }
+      if (o === e) {
+        return true;
+      }
+      n = n?.__proto__;
     }
   }
-  return !1
+  return false;
 }
-exports.RegisterComponentFinish = RegisterComponentFinish, exports.RegisterComponent = RegisterComponent, exports.isComponentInstance = isComponentInstance;
-//# sourceMappingURL=RegisterComponent.js.map
+exports.RegisterComponentFinish = RegisterComponentFinish;
+exports.RegisterComponent = RegisterComponent;
+exports.isComponentInstance = isComponentInstance; //# sourceMappingURL=RegisterComponent.js.map

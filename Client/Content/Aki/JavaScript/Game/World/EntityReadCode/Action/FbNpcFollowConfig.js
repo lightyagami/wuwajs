@@ -1,20 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbNpcFollowConfig = void 0;
+  value: true
+});
+exports.FbNpcFollowConfig = undefined;
 const FbPerformerRangeBoundaryActionTrigger_1 = require("./FbPerformerRangeBoundaryActionTrigger");
 class FbNpcFollowConfig {
   constructor(r) {
-    this.FbDataInternal = r, this.ndh = !1, this.sdh = void 0, this.adh = !1, this.hdh = void 0
+    this.FbDataInternal = r;
+    this.ndh = false;
+    this.sdh = undefined;
+    this.adh = false;
+    this.hdh = undefined;
   }
   static Create(r) {
-    if (r) return new FbNpcFollowConfig(r)
+    if (r) {
+      return new FbNpcFollowConfig(r);
+    }
   }
   get PerformerWhenEnter() {
-    return this.ndh || (this.ndh = !0, this.sdh = FbPerformerRangeBoundaryActionTrigger_1.FbPerformerRangeBoundaryActionTrigger.Create(this.FbDataInternal.performerWhenEnter())), this.sdh
+    if (!this.ndh) {
+      this.ndh = true;
+      this.sdh = FbPerformerRangeBoundaryActionTrigger_1.FbPerformerRangeBoundaryActionTrigger.Create(this.FbDataInternal.performerWhenEnter());
+    }
+    return this.sdh;
   }
   get PerformerWhenExit() {
-    return this.adh || (this.adh = !0, this.hdh = FbPerformerRangeBoundaryActionTrigger_1.FbPerformerRangeBoundaryActionTrigger.Create(this.FbDataInternal.performerWhenExit())), this.hdh
+    if (!this.adh) {
+      this.adh = true;
+      this.hdh = FbPerformerRangeBoundaryActionTrigger_1.FbPerformerRangeBoundaryActionTrigger.Create(this.FbDataInternal.performerWhenExit());
+    }
+    return this.hdh;
   }
 }
 exports.FbNpcFollowConfig = FbNpcFollowConfig;

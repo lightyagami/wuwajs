@@ -1,86 +1,115 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.BattlePassReward = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.BattlePassReward = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class BattlePassReward {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get BattlePassId() {
-    return this.battlepassid()
+    return this.battlepassid();
   }
   get Level() {
-    return this.level()
+    return this.level();
   }
   get FreeReward() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.freerewardLength(), this.freerewardKey, this.freerewardValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.freerewardLength(), this.freerewardKey, this.freerewardValue, this);
   }
   freerewardKey(t) {
-    return this.freereward(t)?.key()
+    return this.freereward(t)?.key();
   }
   freerewardValue(t) {
-    return this.freereward(t)?.value()
+    return this.freereward(t)?.value();
   }
   get PayReward() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.payrewardLength(), this.payrewardKey, this.payrewardValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.payrewardLength(), this.payrewardKey, this.payrewardValue, this);
   }
   payrewardKey(t) {
-    return this.payreward(t)?.key()
+    return this.payreward(t)?.key();
   }
   payrewardValue(t) {
-    return this.payreward(t)?.value()
+    return this.payreward(t)?.value();
   }
   get IsMilestone() {
-    return this.ismilestone()
+    return this.ismilestone();
   }
   get IsRemind() {
-    return this.isremind()
+    return this.isremind();
   }
   __init(t, e) {
-    return this.z7 = t, this.J7 = e, this
+    this.z7 = t;
+    this.J7 = e;
+    return this;
   }
   static getRootAsBattlePassReward(t, e) {
-    return (e || new BattlePassReward).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new BattlePassReward()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   battlepassid() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   level() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetFreerewardAt(t, e) {
-    return this.freereward(t)
+    return this.freereward(t);
   }
   freereward(t, e) {
     var r = this.J7.__offset(this.z7, 8);
-    return r ? (e || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + 4 * t), this.J7) : null
+    if (r) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   freerewardLength() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPayrewardAt(t, e) {
-    return this.payreward(t)
+    return this.payreward(t);
   }
   payreward(t, e) {
     var r = this.J7.__offset(this.z7, 10);
-    return r ? (e || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + 4 * t), this.J7) : null
+    if (r) {
+      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   payrewardLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   ismilestone() {
     var t = this.J7.__offset(this.z7, 12);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   isremind() {
     var t = this.J7.__offset(this.z7, 14);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.BattlePassReward = BattlePassReward;

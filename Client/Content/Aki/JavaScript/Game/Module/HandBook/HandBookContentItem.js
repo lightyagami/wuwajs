@@ -1,22 +1,38 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.HandBookContentItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.HandBookContentItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 class HandBookContentItem extends UiPanelBase_1.UiPanelBase {
   constructor(e, t) {
-    super(), this.HandBookContentItemData = e, this.CreateThenShowByActor(t.GetOwner())
+    super();
+    this.HandBookContentItemData = e;
+    this.CreateThenShowByActor(t.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText]];
   }
   OnStart() {
     var e;
-    this.HandBookContentItemData && (e = this.GetText(0), this.HandBookContentItemData.Title ? (e.SetUIActive(!0), e.SetText(this.HandBookContentItemData.Title)) : e.SetUIActive(!1), e = this.GetText(1), this.HandBookContentItemData.Desc ? (e.SetUIActive(!0), e.SetText(this.HandBookContentItemData.Desc)) : e.SetUIActive(!1))
+    if (this.HandBookContentItemData) {
+      e = this.GetText(0);
+      if (this.HandBookContentItemData.Title) {
+        e.SetUIActive(true);
+        e.SetText(this.HandBookContentItemData.Title);
+      } else {
+        e.SetUIActive(false);
+      }
+      e = this.GetText(1);
+      if (this.HandBookContentItemData.Desc) {
+        e.SetUIActive(true);
+        e.SetText(this.HandBookContentItemData.Desc);
+      } else {
+        e.SetUIActive(false);
+      }
+    }
   }
   OnBeforeDestroy() {}
 }

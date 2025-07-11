@@ -1,25 +1,53 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbWeather = void 0;
+  value: true
+});
+exports.FbWeather = undefined;
 class FbWeather {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this._ch = !1, this.cch = void 0, this.Szh = !1, this.Mzh = void 0, this.ebh = !1, this.tbh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this._ch = false;
+    this.cch = undefined;
+    this.Szh = false;
+    this.Mzh = undefined;
+    this.ebh = false;
+    this.tbh = 0;
   }
   static Create(t) {
-    if (t) return new FbWeather(t)
+    if (t) {
+      return new FbWeather(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get Compare() {
-    return this._ch || (this._ch = !0, this.cch = this.FbDataInternal.compare()), this.cch
+    if (!this._ch) {
+      this._ch = true;
+      this.cch = this.FbDataInternal.compare();
+    }
+    return this.cch;
   }
   get Weather() {
-    return this.Szh || (this.Szh = !0, this.Mzh = this.FbDataInternal.weather()), this.Mzh
+    if (!this.Szh) {
+      this.Szh = true;
+      this.Mzh = this.FbDataInternal.weather();
+    }
+    return this.Mzh;
   }
   get WeatherId() {
-    return this.ebh || (this.ebh = !0, this.tbh = this.FbDataInternal.weatherId()), this.tbh
+    if (!this.ebh) {
+      this.ebh = true;
+      this.tbh = this.FbDataInternal.weatherId();
+    }
+    return this.tbh;
   }
 }
 exports.FbWeather = FbWeather;

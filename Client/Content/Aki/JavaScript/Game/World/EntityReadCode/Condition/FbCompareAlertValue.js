@@ -1,27 +1,55 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompareAlertValue = void 0;
+  value: true
+});
+exports.FbCompareAlertValue = undefined;
 const UnionComparedAlertValueHelper_1 = require("./UnionComparedAlertValueHelper");
 class FbCompareAlertValue {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Yph = !1, this.zph = 0, this.OJh = !1, this.FJh = void 0, this.KJh = !1, this.$Jh = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Yph = false;
+    this.zph = 0;
+    this.OJh = false;
+    this.FJh = undefined;
+    this.KJh = false;
+    this.$Jh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCompareAlertValue(t)
+    if (t) {
+      return new FbCompareAlertValue(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get AreaId() {
-    return this.Yph || (this.Yph = !0, this.zph = this.FbDataInternal.areaId()), this.zph
+    if (!this.Yph) {
+      this.Yph = true;
+      this.zph = this.FbDataInternal.areaId();
+    }
+    return this.zph;
   }
   get CompareType() {
-    return this.OJh || (this.OJh = !0, this.FJh = this.FbDataInternal.compareType()), this.FJh
+    if (!this.OJh) {
+      this.OJh = true;
+      this.FJh = this.FbDataInternal.compareType();
+    }
+    return this.FJh;
   }
   get CompareValue() {
-    var t, e;
-    return !this.KJh && (this.KJh = !0, t = this.FbDataInternal.compareValueType(), e = UnionComparedAlertValueHelper_1.UnionComparedAlertValueHelper.GetUnionComparedAlertValueObject(t)) && (this.$Jh = UnionComparedAlertValueHelper_1.UnionComparedAlertValueHelper.ReadUnionComparedAlertValue(t, this.FbDataInternal.compareValue(e))), this.$Jh
+    var t;
+    var e;
+    if (!this.KJh && (this.KJh = true, t = this.FbDataInternal.compareValueType(), e = UnionComparedAlertValueHelper_1.UnionComparedAlertValueHelper.GetUnionComparedAlertValueObject(t))) {
+      this.$Jh = UnionComparedAlertValueHelper_1.UnionComparedAlertValueHelper.ReadUnionComparedAlertValue(t, this.FbDataInternal.compareValue(e));
+    }
+    return this.$Jh;
   }
 }
 exports.FbCompareAlertValue = FbCompareAlertValue;

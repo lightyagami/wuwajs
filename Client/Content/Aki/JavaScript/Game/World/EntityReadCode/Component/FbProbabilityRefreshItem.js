@@ -1,23 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbProbabilityRefreshItem = void 0;
+  value: true
+});
+exports.FbProbabilityRefreshItem = undefined;
 const FbConditionGroup_1 = require("../Condition/FbConditionGroup");
 class FbProbabilityRefreshItem {
   constructor(t) {
-    this.FbDataInternal = t, this.CBh = !1, this.gBh = 0, this.fBh = !1, this.pBh = 0, this.vBh = !1, this.yBh = void 0
+    this.FbDataInternal = t;
+    this.CBh = false;
+    this.gBh = 0;
+    this.fBh = false;
+    this.pBh = 0;
+    this.vBh = false;
+    this.yBh = undefined;
   }
   static Create(t) {
-    if (t) return new FbProbabilityRefreshItem(t)
+    if (t) {
+      return new FbProbabilityRefreshItem(t);
+    }
   }
   get Probability() {
-    return this.CBh || (this.CBh = !0, this.gBh = this.FbDataInternal.probability()), this.gBh
+    if (!this.CBh) {
+      this.CBh = true;
+      this.gBh = this.FbDataInternal.probability();
+    }
+    return this.gBh;
   }
   get RefreshEntityId() {
-    return this.fBh || (this.fBh = !0, this.pBh = this.FbDataInternal.refreshEntityId()), this.pBh
+    if (!this.fBh) {
+      this.fBh = true;
+      this.pBh = this.FbDataInternal.refreshEntityId();
+    }
+    return this.pBh;
   }
   get AdditionalCondition() {
-    return this.vBh || (this.vBh = !0, this.yBh = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.additionalCondition())), this.yBh
+    if (!this.vBh) {
+      this.vBh = true;
+      this.yBh = FbConditionGroup_1.FbConditionGroup.Create(this.FbDataInternal.additionalCondition());
+    }
+    return this.yBh;
   }
 }
 exports.FbProbabilityRefreshItem = FbProbabilityRefreshItem;

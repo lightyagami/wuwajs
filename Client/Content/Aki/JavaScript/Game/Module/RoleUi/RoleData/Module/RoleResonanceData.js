@@ -1,63 +1,80 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RoleResonanceData = void 0;
-const ConfigManager_1 = require("../../../../Manager/ConfigManager"),
-  ModelManager_1 = require("../../../../Manager/ModelManager"),
-  RoleModuleDataBase_1 = require("./RoleModuleDataBase");
+  value: true
+});
+exports.RoleResonanceData = undefined;
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const RoleModuleDataBase_1 = require("./RoleModuleDataBase");
 class RoleResonanceData extends RoleModuleDataBase_1.RoleModuleDataBase {
   constructor() {
-    super(...arguments), this.ResonantChainGroupIndex = 0, this.ResonanceInfoMap = new Map, this.ResonanceLockSet = new Set
+    super(...arguments);
+    this.ResonantChainGroupIndex = 0;
+    this.ResonanceInfoMap = new Map();
+    this.ResonanceLockSet = new Set();
   }
   SetResonance(e) {
-    this.ResonanceInfoMap.set(e.ResonId, e)
+    this.ResonanceInfoMap.set(e.ResonId, e);
   }
   GetResonance(e) {
-    return this.ResonanceInfoMap.get(e)
+    return this.ResonanceInfoMap.get(e);
   }
   SetResonanceLock(e) {
-    this.ResonanceLockSet.add(e)
+    this.ResonanceLockSet.add(e);
   }
   SetResonantChainGroupIndex(e) {
-    this.ResonantChainGroupIndex = e
+    this.ResonantChainGroupIndex = e;
   }
   GetResonantChainGroupIndex() {
-    return this.ResonantChainGroupIndex
+    return this.ResonantChainGroupIndex;
   }
   CheckFrontResonanceOpen(e, n) {
-    return !0
+    return true;
   }
   IsEnoughResonanceActive(e) {
     e = ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceById(e);
     if (e) {
-      if (!this.CheckFrontResonanceOpen(e.Id, e.GroupId)) return !1;
-      for (const n of e.ActivateConsume)
-        if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(n[0]) < n[1]) return !1;
-      return !0
+      if (!this.CheckFrontResonanceOpen(e.Id, e.GroupId)) {
+        return false;
+      }
+      for (const n of e.ActivateConsume) {
+        if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(n[0]) < n[1]) {
+          return false;
+        }
+      }
+      return true;
     }
-    return !1
+    return false;
   }
   GetResonanceLevel() {
     let e = 0;
     for (const n of this.ResonanceInfoMap.values()) {
-      if (!n.IsOpen) break;
-      e += 1
+      if (!n.IsOpen) {
+        break;
+      }
+      e += 1;
     }
-    return e
+    return e;
   }
   GetResonanceIncreaseLevel() {
     let e = 0;
     for (const n of this.ResonanceInfoMap.values()) {
-      if (!n.IsOpen) break;
-      e += n.Increase
+      if (!n.IsOpen) {
+        break;
+      }
+      e += n.Increase;
     }
-    return e
+    return e;
   }
   IsResonanceFullyUnLock() {
     var e = this.GetRoleConfig().ResonanceId;
-    for (const n of ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceList(e))
-      if (!this.GetResonance(n.Id)?.IsOpen) return !1;
-    return !0
+    for (const n of ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceList(e)) {
+      if (!this.GetResonance(n.Id)?.IsOpen) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 exports.RoleResonanceData = RoleResonanceData;

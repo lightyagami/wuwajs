@@ -1,72 +1,107 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.WeaponVisibleConfig = void 0;
+  value: true
+});
+exports.WeaponVisibleConfig = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class WeaponVisibleConfig {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get BaseType() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.basetypeLength(), this.basetype, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.basetypeLength(), this.basetype, this);
   }
   get VisibleTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.visibletagsLength(), this.visibletags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.visibletagsLength(), this.visibletags, this);
   }
   get HiddenTags() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.hiddentagsLength(), this.hiddentags, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.hiddentagsLength(), this.hiddentags, this);
   }
   __init(t, s) {
-    return this.z7 = t, this.J7 = s, this
+    this.z7 = t;
+    this.J7 = s;
+    return this;
   }
   static getRootAsWeaponVisibleConfig(t, s) {
-    return (s || new WeaponVisibleConfig).__init(t.readInt32(t.position()) + t.position(), t)
+    return (s || new WeaponVisibleConfig()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetBasetypeAt(t) {
-    return this.basetype(t)
+    return this.basetype(t);
   }
   basetype(t) {
     var s = this.J7.__offset(this.z7, 6);
-    return s ? this.J7.readInt32(this.J7.__vector(this.z7 + s) + 4 * t) : 0
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    } else {
+      return 0;
+    }
   }
   basetypeLength() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   basetypeArray() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   GetVisibletagsAt(t) {
-    return this.visibletags(t)
+    return this.visibletags(t);
   }
   visibletags(t, s) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + 4 * t, s) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   visibletagsLength() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetHiddentagsAt(t) {
-    return this.hiddentags(t)
+    return this.hiddentags(t);
   }
   hiddentags(t, s) {
-    var i = this.J7.__offset(this.z7, 10),
-      i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + 4 * t, s) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   hiddentagsLength() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.WeaponVisibleConfig = WeaponVisibleConfig;

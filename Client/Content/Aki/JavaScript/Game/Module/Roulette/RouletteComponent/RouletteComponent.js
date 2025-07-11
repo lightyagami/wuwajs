@@ -1,196 +1,216 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RouletteComponentBase = exports.exploreRouletteMap = exports.functionRouletteMap = void 0;
-const UE = require("ue"),
-  Info_1 = require("../../../../Core/Common/Info"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../Util/LguiUtil"),
-  RouletteDefine_1 = require("../Data/RouletteDefine"),
-  RouletteGridData_1 = require("../RouletteGrid/RouletteGridData");
-exports.functionRouletteMap = [
-  [
-    [1], 4, 1
-  ],
-  [
-    [2], 5, 1
-  ],
-  [
-    [3], 6, 1
-  ],
-  [
-    [4], 7, 1
-  ],
-  [
-    [5], 8, 1
-  ],
-  [
-    [6], 9, 1
-  ],
-  [
-    [7], 10, 1
-  ],
-  [
-    [8], 11, 1
-  ]
-], exports.exploreRouletteMap = [
-  [
-    [1], 4, 0
-  ],
-  [
-    [2], 5, 0
-  ],
-  [
-    [3], 6, 0
-  ],
-  [
-    [4], 7, 0
-  ],
-  [
-    [5], 8, 0
-  ],
-  [
-    [6], 9, 0
-  ],
-  [
-    [7], 10, 0
-  ],
-  [
-    [8], 11, 2
-  ]
-];
+  value: true
+});
+exports.RouletteComponentBase = exports.exploreRouletteMap = exports.functionRouletteMap = undefined;
+const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const RouletteDefine_1 = require("../Data/RouletteDefine");
+const RouletteGridData_1 = require("../RouletteGrid/RouletteGridData");
+exports.functionRouletteMap = [[[1], 4, 1], [[2], 5, 1], [[3], 6, 1], [[4], 7, 1], [[5], 8, 1], [[6], 9, 1], [[7], 10, 1], [[8], 11, 1]];
+exports.exploreRouletteMap = [[[1], 4, 0], [[2], 5, 0], [[3], 6, 0], [[4], 7, 0], [[5], 8, 0], [[6], 9, 0], [[7], 10, 0], [[8], 11, 2]];
 class RouletteComponentBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.v0o = void 0, this.Angle = -1, this.AreaIndex = 0, this.cie = new UE.Rotator(0, 0, 0), this.CurrentGridIndex = -1, this.CurrentEquipGridIndex = -1, this.IsEmptyChoose = !0, this.RouletteGridList = [], this.AreaIndexToGridIndex = new Map, this.ToggleEventList = []
+    super(...arguments);
+    this.v0o = undefined;
+    this.Angle = -1;
+    this.AreaIndex = 0;
+    this.cie = new UE.Rotator(0, 0, 0);
+    this.CurrentGridIndex = -1;
+    this.CurrentEquipGridIndex = -1;
+    this.IsEmptyChoose = true;
+    this.RouletteGridList = [];
+    this.AreaIndexToGridIndex = new Map();
+    this.ToggleEventList = [];
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIText],
-      [2, UE.UIItem],
-      [3, UE.UIItem],
-      [4, UE.UIItem],
-      [5, UE.UIItem],
-      [6, UE.UIItem],
-      [7, UE.UIItem],
-      [8, UE.UIItem],
-      [9, UE.UIItem],
-      [10, UE.UIItem],
-      [11, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
   }
   OnStart() {
-    this.GetItem(2).SetUIActive(!1), this.GetItem(3).SetUIActive(!1), this.v0o = this.GetItem(2)
+    this.GetItem(2).SetUIActive(false);
+    this.GetItem(3).SetUIActive(false);
+    this.v0o = this.GetItem(2);
   }
   OnBeforeDestroy() {
-    this.v0o = void 0, this.cie = void 0, this.M0o(), this.AreaIndexToGridIndex.clear(), this.AreaIndexToGridIndex = void 0, this.ToggleEventList = []
+    this.v0o = undefined;
+    this.cie = undefined;
+    this.M0o();
+    this.AreaIndexToGridIndex.clear();
+    this.AreaIndexToGridIndex = undefined;
+    this.ToggleEventList = [];
   }
   Reset() {
-    this.AreaIndex = 0, this.Angle = -1, this.RefreshRouletteComponent()
+    this.AreaIndex = 0;
+    this.Angle = -1;
+    this.RefreshRouletteComponent();
   }
   E0o() {
     this.M0o();
     var t = this.GetRouletteInfoMap();
     let e = 0;
-    var i = new Map([
-      [0, 0],
-      [1, 0],
-      [2, 0]
-    ]);
+    var i = new Map([[0, 0], [1, 0], [2, 0]]);
     for (const a of t) {
-      for (const u of a[0]) this.AreaIndexToGridIndex.set(u, e);
-      var s = a[1],
-        h = a[2],
-        r = i.get(h),
-        o = new RouletteGridData_1.RouletteData,
-        s = (o.Id = this.GetGridId(r, h), o.GridIndex = e, o.DataIndex = r, o.GridType = h, this.GetItem(s)),
-        n = new RouletteGridData_1.rouletteGridGenerator[h],
-        s = (n.SetRootActor(s.GetOwner(), !0), this.GridDataDecorator(o), n.RefreshGrid(o), this.IsCurrentEquippedId(o));
-      s && (this.CurrentEquipGridIndex = o.GridIndex), n.SetGridEquipped(s), this.InitGridEvent(n), this.RouletteGridList.push(n), i.set(h, r + 1), e++
+      for (const u of a[0]) {
+        this.AreaIndexToGridIndex.set(u, e);
+      }
+      var s = a[1];
+      var h = a[2];
+      var r = i.get(h);
+      var o = new RouletteGridData_1.RouletteData();
+      o.Id = this.GetGridId(r, h);
+      o.GridIndex = e;
+      o.DataIndex = r;
+      o.GridType = h;
+      var s = this.GetItem(s);
+      var n = new RouletteGridData_1.rouletteGridGenerator[h]();
+      n.SetRootActor(s.GetOwner(), true);
+      this.GridDataDecorator(o);
+      n.RefreshGrid(o);
+      var s = this.IsCurrentEquippedId(o);
+      if (s) {
+        this.CurrentEquipGridIndex = o.GridIndex;
+      }
+      n.SetGridEquipped(s);
+      this.InitGridEvent(n);
+      this.RouletteGridList.push(n);
+      i.set(h, r + 1);
+      e++;
     }
   }
   GetGridId(t, e) {
-    return 0
+    return 0;
   }
   GetRouletteInfoMap() {}
   InitGridEvent(t) {
-    for (const e of this.ToggleEventList) t.AddToggleStateChangeEvent(e)
+    for (const e of this.ToggleEventList) {
+      t.AddToggleStateChangeEvent(e);
+    }
   }
   GridDataDecorator(t) {
-    return t.State = this.JudgeGridStateByData(t.Id, t.GridType), t
+    t.State = this.JudgeGridStateByData(t.Id, t.GridType);
+    return t;
   }
   AddAllGridToggleEvent(t) {
-    this.ToggleEventList.push(t)
+    this.ToggleEventList.push(t);
   }
   AddAllGridToggleCanExecuteChangeEvent(t) {
-    for (const e of this.RouletteGridList) e.BindOnCanToggleExecuteChange(t)
+    for (const e of this.RouletteGridList) {
+      e.BindOnCanToggleExecuteChange(t);
+    }
   }
   IsCurrentEquippedId(t) {
-    return !1
+    return false;
   }
   JudgeGridStateByData(t, e) {
-    return 1
+    return 1;
   }
   M0o() {
-    for (const t of this.RouletteGridList) t.SetGridEquipped(!1), t.SetGridToggleState(!1);
-    this.RouletteGridList = []
+    for (const t of this.RouletteGridList) {
+      t.SetGridEquipped(false);
+      t.SetGridToggleState(false);
+    }
+    this.RouletteGridList = [];
   }
   GamepadReturnEmptyGrid() {}
   RefreshCurrentGridIndex(t) {
     this.AreaIndex = t;
     t = this.AreaIndexToGridIndex.get(this.AreaIndex);
-    void 0 !== t ? (this.CurrentGridIndex = t, this.IsEmptyChoose = !1) : Info_1.Info.IsInGamepad() ? this.GamepadReturnEmptyGrid() : (this.CurrentGridIndex = -1, this.IsEmptyChoose = !0)
+    if (t !== undefined) {
+      this.CurrentGridIndex = t;
+      this.IsEmptyChoose = false;
+    } else if (Info_1.Info.IsInGamepad()) {
+      this.GamepadReturnEmptyGrid();
+    } else {
+      this.CurrentGridIndex = -1;
+      this.IsEmptyChoose = true;
+    }
   }
   GetCurrentGrid() {
-    if (-1 !== this.CurrentGridIndex) return this.RouletteGridList[this.CurrentGridIndex]
+    if (this.CurrentGridIndex !== -1) {
+      return this.RouletteGridList[this.CurrentGridIndex];
+    }
   }
   SetAllGridToggleSelfInteractive(t) {
-    for (const e of this.RouletteGridList) e.SetToggleSelfInteractive(t)
+    for (const e of this.RouletteGridList) {
+      e.SetToggleSelfInteractive(t);
+    }
   }
   GetCurrentIndexAndAngle() {
-    return [this.AreaIndex, this.Angle]
+    return [this.AreaIndex, this.Angle];
   }
   RefreshRouletteComponent() {
-    this.RefreshCurrentShowName(), this.RefreshTips()
+    this.RefreshCurrentShowName();
+    this.RefreshTips();
   }
   Refresh(t, e) {
-    var i, s;
-    void 0 !== t && this.AreaIndex !== t && (i = 0 === this.AreaIndex, s = (this.AreaIndexToGridIndex.get(this.AreaIndex) ?? -1) !== (this.AreaIndexToGridIndex.get(t) ?? -1), !i && s && this.SetCurrentToggleState(!1), this.RefreshCurrentGridIndex(t), !this.IsEmptyChoose && s && this.SetCurrentToggleState(!0), this.RefreshCurrentShowName(), (i || this.IsEmptyChoose) && this.SetRingVisible(!this.IsEmptyChoose), this.RefreshTips()), void 0 !== e && this.Angle !== e && (this.Angle = e, this.IsEmptyChoose || this.S0o(this.Angle))
+    var i;
+    var s;
+    if (t !== undefined && this.AreaIndex !== t) {
+      i = this.AreaIndex === 0;
+      s = (this.AreaIndexToGridIndex.get(this.AreaIndex) ?? -1) !== (this.AreaIndexToGridIndex.get(t) ?? -1);
+      if (!i && s) {
+        this.SetCurrentToggleState(false);
+      }
+      this.RefreshCurrentGridIndex(t);
+      if (!this.IsEmptyChoose && s) {
+        this.SetCurrentToggleState(true);
+      }
+      this.RefreshCurrentShowName();
+      if (i || this.IsEmptyChoose) {
+        this.SetRingVisible(!this.IsEmptyChoose);
+      }
+      this.RefreshTips();
+    }
+    if (e !== undefined && this.Angle !== e) {
+      this.Angle = e;
+      if (!this.IsEmptyChoose) {
+        this.S0o(this.Angle);
+      }
+    }
   }
   SetCurrentToggleState(t) {}
   S0o(t) {
-    this.cie.Yaw = t, this.v0o.SetUIRelativeRotation(this.cie)
+    this.cie.Yaw = t;
+    this.v0o.SetUIRelativeRotation(this.cie);
   }
   SetRingVisible(t) {
-    this.v0o.SetUIActive(t)
+    this.v0o.SetUIActive(t);
   }
   RefreshCurrentShowName() {
     var t = this.GetCurrentGrid()?.Data?.Name ?? RouletteDefine_1.ROULETTE_TEXT_EMPTY;
-    this.RefreshName(t)
+    this.RefreshName(t);
   }
   RefreshName(t) {
-    this.GetText(0).ShowTextNew(t)
+    this.GetText(0).ShowTextNew(t);
   }
   SetNameVisible(t) {
-    this.GetText(0).SetUIActive(t)
+    this.GetText(0).SetUIActive(t);
   }
   RefreshTips() {}
   RefreshTipsByText(t, e = 0) {
     var i;
-    void 0 !== t && (i = this.GetText(1), LguiUtil_1.LguiUtil.SetLocalTextNew(i, t))
+    if (t !== undefined) {
+      i = this.GetText(1);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(i, t);
+    }
   }
   SetTipsActive(t) {
-    this.GetText(1).SetUIActive(t)
+    this.GetText(1).SetUIActive(t);
   }
   RefreshRouletteType() {
-    this.RefreshRouletteItem(), this.Reset(), this.E0o()
+    this.RefreshRouletteItem();
+    this.Reset();
+    this.E0o();
   }
   RefreshRouletteItem() {}
   RefreshRoulettePlatformType() {
-    this.Reset()
+    this.Reset();
   }
   RefreshRouletteInputType() {
-    this.Reset()
+    this.Reset();
   }
 }
 exports.RouletteComponentBase = RouletteComponentBase;

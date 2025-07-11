@@ -1,265 +1,349 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.GuideFocusNew = void 0;
+  value: true
+});
+exports.GuideFocusNew = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 class GuideFocusNew {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get GuideId() {
-    return this.guideid()
+    return this.guideid();
   }
   get ViewName() {
-    return this.viewname()
+    return this.viewname();
   }
   get DynamicTabName() {
-    return this.dynamictabname()
+    return this.dynamictabname();
   }
   get Platform() {
-    return this.platform()
+    return this.platform();
   }
   get HookName() {
-    return this.hookname()
+    return this.hookname();
   }
   get HookNameForShow() {
-    return this.hooknameforshow()
+    return this.hooknameforshow();
   }
   get ExtraParam() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.extraparamLength(), this.extraparam, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.extraparamLength(), this.extraparam, this);
   }
   get ExtraParamDesc() {
-    return this.extraparamdesc()
+    return this.extraparamdesc();
   }
   get ContentDirection() {
-    return this.contentdirection()
+    return this.contentdirection();
   }
   get ShowArrow() {
-    return this.showarrow()
+    return this.showarrow();
   }
   get Content() {
-    return this.content()
+    return this.content();
   }
   get Button() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.buttonLength(), this.button, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.buttonLength(), this.button, this);
   }
   get InputEnums() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.inputenumsLength(), this.inputenums, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.inputenumsLength(), this.inputenums, this);
   }
   get LimitInputEnums() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.limitinputenumsLength(), this.limitinputenums, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.limitinputenumsLength(), this.limitinputenums, this);
   }
   get ShowMouse() {
-    return this.showmouse()
+    return this.showmouse();
   }
   get UseMask() {
-    return this.usemask()
+    return this.usemask();
   }
   get UseClick() {
-    return this.useclick()
+    return this.useclick();
   }
   get ClickAnywhere() {
-    return this.clickanywhere()
+    return this.clickanywhere();
   }
   get ClickAnywhereShowTime() {
-    return this.clickanywhereshowtime()
+    return this.clickanywhereshowtime();
   }
   get EnableHover() {
-    return this.enablehover()
+    return this.enablehover();
   }
   get EnableAllToggleState() {
-    return this.enablealltogglestate()
+    return this.enablealltogglestate();
   }
   get ExpandClickArea() {
-    return this.expandclickarea()
+    return this.expandclickarea();
   }
   get OnlyFrame() {
-    return this.onlyframe()
+    return this.onlyframe();
   }
   get OnlyText() {
-    return this.onlytext()
+    return this.onlytext();
   }
   get RoleHeadId() {
-    return this.roleheadid()
+    return this.roleheadid();
   }
   get HeadImgPath() {
-    return this.headimgpath()
+    return this.headimgpath();
   }
   get TextOffset() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.textoffsetLength(), this.textoffset, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.textoffsetLength(), this.textoffset, this);
   }
   get TextInScreen() {
-    return this.textinscreen()
+    return this.textinscreen();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsGuideFocusNew(t, i) {
-    return (i || new GuideFocusNew).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new GuideFocusNew()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   guideid() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   viewname(t) {
-    var i = this.J7.__offset(this.z7, 6),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   dynamictabname(t) {
-    var i = this.J7.__offset(this.z7, 8),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   platform(t) {
-    var i = this.J7.__offset(this.z7, 10),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   hookname(t) {
-    var i = this.J7.__offset(this.z7, 12),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   hooknameforshow(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetExtraparamAt(t) {
-    return this.extraparam(t)
+    return this.extraparam(t);
   }
   extraparam(t, i) {
-    var s = this.J7.__offset(this.z7, 16),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   extraparamLength() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   extraparamdesc(t) {
-    var i = this.J7.__offset(this.z7, 18),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   contentdirection(t) {
-    var i = this.J7.__offset(this.z7, 20),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   showarrow() {
     var t = this.J7.__offset(this.z7, 22);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   content(t) {
-    var i = this.J7.__offset(this.z7, 24),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 24);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetButtonAt(t) {
-    return this.button(t)
+    return this.button(t);
   }
   button(t, i) {
-    var s = this.J7.__offset(this.z7, 26),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 26);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   buttonLength() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetInputenumsAt(t) {
-    return this.inputenums(t)
+    return this.inputenums(t);
   }
   inputenums(t, i) {
-    var s = this.J7.__offset(this.z7, 28),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 28);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   inputenumsLength() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetLimitinputenumsAt(t) {
-    return this.limitinputenums(t)
+    return this.limitinputenums(t);
   }
   limitinputenums(t, i) {
-    var s = this.J7.__offset(this.z7, 30),
-      s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + 4 * t, i) : null;
-    return "string" == typeof s && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(s), s
+    var s = this.J7.__offset(this.z7, 30);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   limitinputenumsLength() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   showmouse() {
     var t = this.J7.__offset(this.z7, 32);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   usemask() {
     var t = this.J7.__offset(this.z7, 34);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   useclick() {
     var t = this.J7.__offset(this.z7, 36);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   clickanywhere() {
     var t = this.J7.__offset(this.z7, 38);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   clickanywhereshowtime() {
     var t = this.J7.__offset(this.z7, 40);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   enablehover() {
     var t = this.J7.__offset(this.z7, 42);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   enablealltogglestate() {
     var t = this.J7.__offset(this.z7, 44);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   expandclickarea() {
     var t = this.J7.__offset(this.z7, 46);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   onlyframe() {
     var t = this.J7.__offset(this.z7, 48);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   onlytext() {
     var t = this.J7.__offset(this.z7, 50);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   roleheadid() {
     var t = this.J7.__offset(this.z7, 52);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   headimgpath(t) {
-    var i = this.J7.__offset(this.z7, 54),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 54);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetTextoffsetAt(t) {
-    return this.textoffset(t)
+    return this.textoffset(t);
   }
   textoffset(t) {
     var i = this.J7.__offset(this.z7, 56);
-    return i ? this.J7.readFloat32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   textoffsetLength() {
     var t = this.J7.__offset(this.z7, 56);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   textoffsetArray() {
     var t = this.J7.__offset(this.z7, 56);
-    return t ? new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   textinscreen() {
     var t = this.J7.__offset(this.z7, 58);
-    return !t || !!this.J7.readInt8(this.z7 + t)
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.GuideFocusNew = GuideFocusNew;

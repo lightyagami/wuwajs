@@ -1,25 +1,36 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EntityHeadIconItem = void 0;
-const ModelManager_1 = require("../../../Manager/ModelManager"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.EntityHeadIconItem = undefined;
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class EntityHeadIconItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.EntityId = 0, this.EntityHandle = void 0, this.PawnHeadInfoComponent = void 0, this.HeadDialogVisible = !1
+    super(...arguments);
+    this.EntityId = 0;
+    this.EntityHandle = undefined;
+    this.PawnHeadInfoComponent = undefined;
+    this.HeadDialogVisible = false;
   }
   InitEntityId(e) {
-    this.EntityId = e, this.EntityHandle = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e), this.PawnHeadInfoComponent = this.EntityHandle?.Entity?.GetComponent(82)
+    this.EntityId = e;
+    this.EntityHandle = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
+    this.PawnHeadInfoComponent = this.EntityHandle?.Entity?.GetComponent(82);
   }
   Update() {
-    this.RefreshAlpha()
+    this.RefreshAlpha();
   }
   RefreshAlpha() {
     var e;
-    this.RootItem && (e = this.GetHeadDialogVisible()) !== this.HeadDialogVisible && (this.HeadDialogVisible = e, this.RootItem.SetAlpha(e ? .2 : 1))
+    if (this.RootItem && (e = this.GetHeadDialogVisible()) !== this.HeadDialogVisible) {
+      this.HeadDialogVisible = e;
+      this.RootItem.SetAlpha(e ? 0.2 : 1);
+    }
   }
   GetHeadDialogVisible() {
-    return !!this.EntityHandle?.Valid && (this.PawnHeadInfoComponent?.IsDialogTextActive() ?? !1)
+    return !!this.EntityHandle?.Valid && (this.PawnHeadInfoComponent?.IsDialogTextActive() ?? false);
   }
 }
 exports.EntityHeadIconItem = EntityHeadIconItem;

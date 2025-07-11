@@ -1,33 +1,73 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbWalkingPatternComponent = void 0;
+  value: true
+});
+exports.FbWalkingPatternComponent = undefined;
 const UnionVarRefHelper_1 = require("../Var/UnionVarRefHelper");
 class FbWalkingPatternComponent {
   constructor(t) {
-    this.FbDataInternal = t, this.q_h = !1, this.k_h = !1, this.kuh = !1, this.Guh = 0, this.zYh = !1, this.JYh = 0, this.ZYh = !1, this.ezh = void 0, this.tzh = !1, this.izh = 0, this.rzh = !1, this.ozh = void 0
+    this.FbDataInternal = t;
+    this.q_h = false;
+    this.k_h = false;
+    this.kuh = false;
+    this.Guh = 0;
+    this.zYh = false;
+    this.JYh = 0;
+    this.ZYh = false;
+    this.ezh = undefined;
+    this.tzh = false;
+    this.izh = 0;
+    this.rzh = false;
+    this.ozh = undefined;
   }
   static Create(t) {
-    if (t) return new FbWalkingPatternComponent(t)
+    if (t) {
+      return new FbWalkingPatternComponent(t);
+    }
   }
   get Disabled() {
-    return this.q_h || (this.q_h = !0, this.k_h = this.FbDataInternal.disabled()), this.k_h
+    if (!this.q_h) {
+      this.q_h = true;
+      this.k_h = this.FbDataInternal.disabled();
+    }
+    return this.k_h;
   }
   get SplineEntityId() {
-    return this.kuh || (this.kuh = !0, this.Guh = this.FbDataInternal.splineEntityId()), this.Guh
+    if (!this.kuh) {
+      this.kuh = true;
+      this.Guh = this.FbDataInternal.splineEntityId();
+    }
+    return this.Guh;
   }
   get EndEntityId() {
-    return this.zYh || (this.zYh = !0, this.JYh = this.FbDataInternal.endEntityId()), this.JYh
+    if (!this.zYh) {
+      this.zYh = true;
+      this.JYh = this.FbDataInternal.endEntityId();
+    }
+    return this.JYh;
   }
   get ScoreVar() {
-    var t, i;
-    return !this.ZYh && (this.ZYh = !0, t = this.FbDataInternal.scoreVarType(), i = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t)) && (this.ezh = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.scoreVar(i))), this.ezh
+    var t;
+    var i;
+    if (!this.ZYh && (this.ZYh = true, t = this.FbDataInternal.scoreVarType(), i = UnionVarRefHelper_1.UnionVarRefHelper.GetUnionVarRefObject(t))) {
+      this.ezh = UnionVarRefHelper_1.UnionVarRefHelper.ReadUnionVarRef(t, this.FbDataInternal.scoreVar(i));
+    }
+    return this.ezh;
   }
   get SpineEffectExistDuration() {
-    return this.tzh || (this.tzh = !0, this.izh = this.FbDataInternal.spineEffectExistDuration()), this.izh
+    if (!this.tzh) {
+      this.tzh = true;
+      this.izh = this.FbDataInternal.spineEffectExistDuration();
+    }
+    return this.izh;
   }
   get ReplaySpineEffect() {
-    return this.rzh || (this.rzh = !0, this.ozh = this.FbDataInternal.replaySpineEffect()), this.ozh
+    if (!this.rzh) {
+      this.rzh = true;
+      this.ozh = this.FbDataInternal.replaySpineEffect();
+    }
+    return this.ozh;
   }
 }
 exports.FbWalkingPatternComponent = FbWalkingPatternComponent;

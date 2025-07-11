@@ -1,36 +1,48 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LimitPlayerMouse = void 0;
+  value: true
+});
+exports.LimitPlayerMouse = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class LimitPlayerMouse {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(t, e) {
-    return this.bb_pos = t, this.bb = e, this
+    this.bb_pos = t;
+    this.bb = e;
+    return this;
   }
   static getRootAsLimitPlayerMouse(t, e) {
-    return (e || new LimitPlayerMouse).__init(t.readInt32(t.position()) + t.position(), t)
+    return (e || new LimitPlayerMouse()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   static getSizePrefixedRootAsLimitPlayerMouse(t, e) {
-    return t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH), (e || new LimitPlayerMouse).__init(t.readInt32(t.position()) + t.position(), t)
+    t.setPosition(t.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (e || new LimitPlayerMouse()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   type(t) {
     var e = this.bb.__offset(this.bb_pos, 4);
-    return e ? this.bb.__string(this.bb_pos + e, t) : void 0
+    if (e) {
+      return this.bb.__string(this.bb_pos + e, t);
+    } else {
+      return undefined;
+    }
   }
   static startLimitPlayerMouse(t) {
-    t.startObject(1)
+    t.startObject(1);
   }
   static addType(t, e) {
-    t.addFieldOffset(0, e, 0)
+    t.addFieldOffset(0, e, 0);
   }
   static endLimitPlayerMouse(t) {
-    return t.endObject()
+    return t.endObject();
   }
   static createLimitPlayerMouse(t, e) {
-    return LimitPlayerMouse.startLimitPlayerMouse(t), LimitPlayerMouse.addType(t, e), LimitPlayerMouse.endLimitPlayerMouse(t)
+    LimitPlayerMouse.startLimitPlayerMouse(t);
+    LimitPlayerMouse.addType(t, e);
+    return LimitPlayerMouse.endLimitPlayerMouse(t);
   }
 }
 exports.LimitPlayerMouse = LimitPlayerMouse;

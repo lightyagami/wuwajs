@@ -1,134 +1,199 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.TrialRoleInfo = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  IntPair_1 = require("./SubType/IntPair");
+  value: true
+});
+exports.TrialRoleInfo = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const IntPair_1 = require("./SubType/IntPair");
 class TrialRoleInfo {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Id() {
-    return this.id()
+    return this.id();
   }
   get GroupId() {
-    return this.groupid()
+    return this.groupid();
   }
   get WorldLevel() {
-    return this.worldlevel()
+    return this.worldlevel();
   }
   get Gender() {
-    return this.gender()
+    return this.gender();
   }
   get OnlyTrial() {
-    return this.onlytrial()
+    return this.onlytrial();
   }
   get HideTrialLabel() {
-    return this.hidetriallabel()
+    return this.hidetriallabel();
   }
   get ParentId() {
-    return this.parentid()
+    return this.parentid();
   }
   get Level() {
-    return this.level()
+    return this.level();
   }
   get ResonanceLevel() {
-    return this.resonancelevel()
+    return this.resonancelevel();
   }
   get UnlockSkillLevel() {
-    return this.unlockskilllevel()
+    return this.unlockskilllevel();
   }
   get UnlockSkillNodeList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.unlockskillnodelistLength(), this.unlockskillnodelist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.unlockskillnodelistLength(), this.unlockskillnodelist, this);
   }
   get RoleSkin() {
-    return this.roleskin()
+    return this.roleskin();
   }
   get TrailWeapon() {
-    return this.trailweapon()
+    return this.trailweapon();
   }
   get PhantomEquipList() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.phantomequiplistLength(), this.phantomequiplist, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.phantomequiplistLength(), this.phantomequiplist, this);
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsTrialRoleInfo(t, i) {
-    return (i || new TrialRoleInfo).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new TrialRoleInfo()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   groupid() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   worldlevel() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   gender() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : -1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
   }
   onlytrial() {
     var t = this.J7.__offset(this.z7, 12);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   hidetriallabel() {
     var t = this.J7.__offset(this.z7, 14);
-    return !!t && !!this.J7.readInt8(this.z7 + t)
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   parentid() {
     var t = this.J7.__offset(this.z7, 16);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   level() {
     var t = this.J7.__offset(this.z7, 18);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   resonancelevel() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   unlockskilllevel() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 1
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
   GetUnlockskillnodelistAt(t) {
-    return this.unlockskillnodelist(t)
+    return this.unlockskillnodelist(t);
   }
   unlockskillnodelist(t) {
     var i = this.J7.__offset(this.z7, 24);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   unlockskillnodelistLength() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   unlockskillnodelistArray() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   roleskin() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   trailweapon() {
     var t = this.J7.__offset(this.z7, 28);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetPhantomequiplistAt(t, i) {
-    return this.phantomequiplist(t)
+    return this.phantomequiplist(t);
   }
   phantomequiplist(t, i) {
     var s = this.J7.__offset(this.z7, 30);
-    return s ? (i || new IntPair_1.IntPair).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new IntPair_1.IntPair()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   phantomequiplistLength() {
     var t = this.J7.__offset(this.z7, 30);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.TrialRoleInfo = TrialRoleInfo;

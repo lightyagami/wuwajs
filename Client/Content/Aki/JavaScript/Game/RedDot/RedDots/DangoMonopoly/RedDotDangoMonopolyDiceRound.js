@@ -1,19 +1,21 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RedDotDangoMonopolyRound = void 0;
-const EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  ActivityDangoMonopolyController_1 = require("../../../Module/Activity/ActivityContent/DangoMonopoly/ActivityDangoMonopolyController"),
-  RedDotBase_1 = require("../../RedDotBase");
+  value: true
+});
+exports.RedDotDangoMonopolyRound = undefined;
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const ActivityDangoMonopolyController_1 = require("../../../Module/Activity/ActivityContent/DangoMonopoly/ActivityDangoMonopolyController");
+const RedDotBase_1 = require("../../RedDotBase");
 class RedDotDangoMonopolyRound extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
-    return "DangoMonopoly"
+    return "DangoMonopoly";
   }
   OnGetEvents() {
-    return [EventDefine_1.EEventName.RedDotUpdateDangoMonopolyRound]
+    return [EventDefine_1.EEventName.RedDotUpdateDangoMonopolyRound];
   }
   OnCheck() {
-    return ActivityDangoMonopolyController_1.ActivityDangoMonopolyController.GetData()?.IsRoundReward() ?? !1
+    return ActivityDangoMonopolyController_1.ActivityDangoMonopolyController.GetData()?.IsRoundReward() ?? false;
   }
 }
 exports.RedDotDangoMonopolyRound = RedDotDangoMonopolyRound;

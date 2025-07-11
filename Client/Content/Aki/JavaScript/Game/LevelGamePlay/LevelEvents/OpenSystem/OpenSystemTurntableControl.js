@@ -1,15 +1,17 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.OpenSystemTurntableControl = void 0;
-const ControllerHolder_1 = require("../../../Manager/ControllerHolder"),
-  OpenSystemBase_1 = require("./OpenSystemBase");
+  value: true
+});
+exports.OpenSystemTurntableControl = undefined;
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const OpenSystemBase_1 = require("./OpenSystemBase");
 class OpenSystemTurntableControl extends OpenSystemBase_1.OpenSystemBase {
   async ExecuteOpenView(e, r) {
-    return 1 === r.Type && ControllerHolder_1.ControllerHolder.TurntableControlController.OpenTurntableControlView(r.EntityId)
+    return r.Type === 1 && ControllerHolder_1.ControllerHolder.TurntableControlController.OpenTurntableControlView(r.EntityId);
   }
   GetViewName(e, r) {
-    return "TurntableControlView"
+    return "TurntableControlView";
   }
 }
 exports.OpenSystemTurntableControl = OpenSystemTurntableControl;

@@ -1,23 +1,22 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MapRogueFloatTipsItem = void 0;
-const UE = require("ue"),
-  UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase"),
-  LguiUtil_1 = require("../../../Util/LguiUtil"),
-  TIPS_OFFSET_Y = -80;
+  value: true
+});
+exports.MapRogueFloatTipsItem = undefined;
+const UE = require("ue");
+const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const TIPS_OFFSET_Y = -80;
 class MapRogueFloatTipsItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem]];
   }
   OnStart() {
-    this.GetItem(1).SetAnchorOffsetY(TIPS_OFFSET_Y)
+    this.GetItem(1).SetAnchorOffsetY(TIPS_OFFSET_Y);
   }
   SetText(e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e)
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e);
   }
 }
 exports.MapRogueFloatTipsItem = MapRogueFloatTipsItem;

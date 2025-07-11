@@ -1,142 +1,208 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CalabashLevel = void 0;
-const GameUtils_1 = require("../../../Game/GameUtils"),
-  DicIntInt_1 = require("./SubType/DicIntInt");
+  value: true
+});
+exports.CalabashLevel = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 class CalabashLevel {
   constructor() {
-    this.J7 = null, this.z7 = 0
+    this.J7 = null;
+    this.z7 = 0;
   }
   get Level() {
-    return this.level()
+    return this.level();
   }
   get LevelUpExp() {
-    return this.levelupexp()
+    return this.levelupexp();
   }
   get LevelUpCondition() {
-    return this.levelupcondition()
+    return this.levelupcondition();
   }
   get TempCatchGain() {
-    return this.tempcatchgain()
+    return this.tempcatchgain();
   }
   get BuffIds() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.buffidsLength(), this.buffids, this)
+    return GameUtils_1.GameUtils.ConvertToArray(this.buffidsLength(), this.buffids, this);
   }
   get BuffDescription() {
-    return this.buffdescription()
+    return this.buffdescription();
   }
   get LevelUpDescription() {
-    return this.levelupdescription()
+    return this.levelupdescription();
   }
   get QualityDescription() {
-    return this.qualitydescription()
+    return this.qualitydescription();
   }
   get BuffDescriptionMap() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.buffdescriptionmapLength(), this.buffdescriptionmapKey, this.buffdescriptionmapValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.buffdescriptionmapLength(), this.buffdescriptionmapKey, this.buffdescriptionmapValue, this);
   }
   buffdescriptionmapKey(t) {
-    return this.buffdescriptionmap(t)?.key()
+    return this.buffdescriptionmap(t)?.key();
   }
   buffdescriptionmapValue(t) {
-    return this.buffdescriptionmap(t)?.value()
+    return this.buffdescriptionmap(t)?.value();
   }
   get Cost() {
-    return this.cost()
+    return this.cost();
   }
   get RewardId() {
-    return this.rewardid()
+    return this.rewardid();
   }
   get QualityDropWeight() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.qualitydropweightLength(), this.qualitydropweightKey, this.qualitydropweightValue, this)
+    return GameUtils_1.GameUtils.ConvertToMap(this.qualitydropweightLength(), this.qualitydropweightKey, this.qualitydropweightValue, this);
   }
   qualitydropweightKey(t) {
-    return this.qualitydropweight(t)?.key()
+    return this.qualitydropweight(t)?.key();
   }
   qualitydropweightValue(t) {
-    return this.qualitydropweight(t)?.value()
+    return this.qualitydropweight(t)?.value();
   }
   __init(t, i) {
-    return this.z7 = t, this.J7 = i, this
+    this.z7 = t;
+    this.J7 = i;
+    return this;
   }
   static getRootAsCalabashLevel(t, i) {
-    return (i || new CalabashLevel).__init(t.readInt32(t.position()) + t.position(), t)
+    return (i || new CalabashLevel()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   level() {
     var t = this.J7.__offset(this.z7, 4);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levelupexp() {
     var t = this.J7.__offset(this.z7, 6);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   levelupcondition() {
     var t = this.J7.__offset(this.z7, 8);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   tempcatchgain() {
     var t = this.J7.__offset(this.z7, 10);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   GetBuffidsAt(t) {
-    return this.buffids(t)
+    return this.buffids(t);
   }
   buffids(t) {
     var i = this.J7.__offset(this.z7, 12);
-    return i ? this.J7.readInt32(this.J7.__vector(this.z7 + i) + 4 * t) : 0
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
   }
   buffidsLength() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   buffidsArray() {
     var t = this.J7.__offset(this.z7, 12);
-    return t ? new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t)) : null
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   buffdescription(t) {
-    var i = this.J7.__offset(this.z7, 14),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   levelupdescription(t) {
-    var i = this.J7.__offset(this.z7, 16),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   qualitydescription(t) {
-    var i = this.J7.__offset(this.z7, 18),
-      i = i ? this.J7.__string(this.z7 + i, t) : null;
-    return "string" == typeof i && GameUtils_1.GameUtils.IsOptimizeDbString && GameUtils_1.GameUtils.InternalizedString(i), i
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
   GetBuffdescriptionmapAt(t, i) {
-    return this.buffdescriptionmap(t)
+    return this.buffdescriptionmap(t);
   }
   buffdescriptionmap(t, i) {
     var s = this.J7.__offset(this.z7, 20);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   buffdescriptionmapLength() {
     var t = this.J7.__offset(this.z7, 20);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   cost() {
     var t = this.J7.__offset(this.z7, 22);
-    return t ? this.J7.readInt32(this.z7 + t) : 0
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
   rewardid() {
     var t = this.J7.__offset(this.z7, 24);
-    return t ? this.J7.readInt32(this.z7 + t) : 4301
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 4301;
+    }
   }
   GetQualitydropweightAt(t, i) {
-    return this.qualitydropweight(t)
+    return this.qualitydropweight(t);
   }
   qualitydropweight(t, i) {
     var s = this.J7.__offset(this.z7, 26);
-    return s ? (i || new DicIntInt_1.DicIntInt).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + 4 * t), this.J7) : null
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
   }
   qualitydropweightLength() {
     var t = this.J7.__offset(this.z7, 26);
-    return t ? this.J7.__vector_len(this.z7 + t) : 0
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.CalabashLevel = CalabashLevel;

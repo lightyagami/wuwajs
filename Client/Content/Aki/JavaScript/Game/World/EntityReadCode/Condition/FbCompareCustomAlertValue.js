@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompareCustomAlertValue = void 0;
+  value: true
+});
+exports.FbCompareCustomAlertValue = undefined;
 class FbCompareCustomAlertValue {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.KJh = !1, this.$Jh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.KJh = false;
+    this.$Jh = 0;
   }
   static Create(t) {
-    if (t) return new FbCompareCustomAlertValue(t)
+    if (t) {
+      return new FbCompareCustomAlertValue(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get CompareValue() {
-    return this.KJh || (this.KJh = !0, this.$Jh = this.FbDataInternal.compareValue()), this.$Jh
+    if (!this.KJh) {
+      this.KJh = true;
+      this.$Jh = this.FbDataInternal.compareValue();
+    }
+    return this.$Jh;
   }
 }
 exports.FbCompareCustomAlertValue = FbCompareCustomAlertValue;

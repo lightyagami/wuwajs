@@ -1,35 +1,69 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCompassTracking = void 0;
+  value: true
+});
+exports.FbCompassTracking = undefined;
 const FbIconNearByTrackingConfig_1 = require("./FbIconNearByTrackingConfig");
 class FbCompassTracking {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.Rjh = !1, this.wjh = 0, this.Pjh = !1, this.Ujh = 0, this.nJl = !1, this.sJl = void 0, this.t5_ = !1, this.i5_ = void 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.Rjh = false;
+    this.wjh = 0;
+    this.Pjh = false;
+    this.Ujh = 0;
+    this.nJl = false;
+    this.sJl = undefined;
+    this.t5_ = false;
+    this.i5_ = undefined;
   }
   static Create(t) {
-    if (t) return new FbCompassTracking(t)
+    if (t) {
+      return new FbCompassTracking(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get ShowRange() {
-    return this.Rjh || (this.Rjh = !0, this.wjh = this.FbDataInternal.showRange()), this.wjh
+    if (!this.Rjh) {
+      this.Rjh = true;
+      this.wjh = this.FbDataInternal.showRange();
+    }
+    return this.wjh;
   }
   get HideRange() {
-    return this.Pjh || (this.Pjh = !0, this.Ujh = this.FbDataInternal.hideRange()), this.Ujh
+    if (!this.Pjh) {
+      this.Pjh = true;
+      this.Ujh = this.FbDataInternal.hideRange();
+    }
+    return this.Ujh;
   }
   get IconTrackingConfig() {
-    return this.nJl || (this.nJl = !0, this.sJl = FbIconNearByTrackingConfig_1.FbIconNearByTrackingConfig.Create(this.FbDataInternal.iconTrackingConfig())), this.sJl
+    if (!this.nJl) {
+      this.nJl = true;
+      this.sJl = FbIconNearByTrackingConfig_1.FbIconNearByTrackingConfig.Create(this.FbDataInternal.iconTrackingConfig());
+    }
+    return this.sJl;
   }
   get VehicleTypes() {
     if (!this.t5_) {
-      this.t5_ = !0, this.i5_ = new Array;
+      this.t5_ = true;
+      this.i5_ = new Array();
       var i = this.FbDataInternal.vehicleTypesLength();
-      if (i)
-        for (let t = 0; t < i; ++t) this.i5_.push(this.FbDataInternal.vehicleTypes(t))
+      if (i) {
+        for (let t = 0; t < i; ++t) {
+          this.i5_.push(this.FbDataInternal.vehicleTypes(t));
+        }
+      }
     }
-    return this.i5_
+    return this.i5_;
   }
 }
 exports.FbCompassTracking = FbCompassTracking;

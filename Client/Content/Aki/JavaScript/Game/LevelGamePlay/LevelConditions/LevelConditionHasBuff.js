@@ -1,22 +1,39 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionHasBuff = void 0;
-const Global_1 = require("../../Global"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionHasBuff = undefined;
+const Global_1 = require("../../Global");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionHasBuff extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r) {
-    if (!e) return !1;
-    if (!e) return !1;
-    var l = e.BuffId,
-      t = Global_1.Global.BaseCharacter;
-    if (!t) return !1;
-    var t = t.CharacterActorComponent.Entity,
-      a = t.CheckGetComponent(174);
-    if (!a) return !1;
-    let s = 0 < a.GetBuffTotalStackById(l);
+    if (!e) {
+      return false;
+    }
+    if (!e) {
+      return false;
+    }
+    var l = e.BuffId;
+    var t = Global_1.Global.BaseCharacter;
+    if (!t) {
+      return false;
+    }
+    var t = t.CharacterActorComponent.Entity;
+    var a = t.CheckGetComponent(174);
+    if (!a) {
+      return false;
+    }
+    let s = a.GetBuffTotalStackById(l) > 0;
     a = t.CheckGetComponent(190);
-    return a && (s ||= 0 < (a.GetFormationBuffComp()?.GetBuffTotalStackById(l) ?? 0)), "Eq" === e.Compare ? s : !s
+    if (a) {
+      s ||= (a.GetFormationBuffComp()?.GetBuffTotalStackById(l) ?? 0) > 0;
+    }
+    if (e.Compare === "Eq") {
+      return s;
+    } else {
+      return !s;
+    }
   }
 }
 exports.LevelConditionHasBuff = LevelConditionHasBuff;

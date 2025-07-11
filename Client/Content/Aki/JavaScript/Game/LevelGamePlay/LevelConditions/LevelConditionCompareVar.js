@@ -1,18 +1,26 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.LevelConditionCompareVar = void 0;
-const LevelGamePlayUtils_1 = require("../LevelGamePlayUtils"),
-  LevelGeneralBase_1 = require("../LevelGeneralBase");
+  value: true
+});
+exports.LevelConditionCompareVar = undefined;
+const LevelGamePlayUtils_1 = require("../LevelGamePlayUtils");
+const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCompareVar extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r, a) {
-    if (!e) return !1;
-    var t = e.Var1,
-      l = e.Var2;
-    if (t.Type !== l.Type) return !1;
-    var s = LevelGamePlayUtils_1.LevelGamePlayUtils.GetVarValue(t, a),
-      n = LevelGamePlayUtils_1.LevelGamePlayUtils.GetVarValue(l, a);
-    if (void 0 === s || void 0 === n) return !1;
+    if (!e) {
+      return false;
+    }
+    var t = e.Var1;
+    var l = e.Var2;
+    if (t.Type !== l.Type) {
+      return false;
+    }
+    var s = LevelGamePlayUtils_1.LevelGamePlayUtils.GetVarValue(t, a);
+    var n = LevelGamePlayUtils_1.LevelGamePlayUtils.GetVarValue(l, a);
+    if (s === undefined || n === undefined) {
+      return false;
+    }
     switch (e.Compare) {
       case "Eq":
         return s === n;
@@ -27,7 +35,7 @@ class LevelConditionCompareVar extends LevelGeneralBase_1.LevelConditionBase {
       case "Lt":
         return s < n;
       default:
-        return !1
+        return false;
     }
   }
 }

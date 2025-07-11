@@ -1,48 +1,54 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.NetworkDetectionTips = void 0;
-const UE = require("ue"),
-  TimerSystem_1 = require("../../../Core/Timer/TimerSystem"),
-  TimeUtil_1 = require("../../Common/TimeUtil"),
-  UiPanelBase_1 = require("../../Ui/Base/UiPanelBase"),
-  UiSequencePlayer_1 = require("../../Ui/Base/UiSequencePlayer"),
-  LguiUtil_1 = require("../Util/LguiUtil");
+  value: true
+});
+exports.NetworkDetectionTips = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
+const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
+const UiSequencePlayer_1 = require("../../Ui/Base/UiSequencePlayer");
+const LguiUtil_1 = require("../Util/LguiUtil");
 class NetworkDetectionTips extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.Uic = void 0, this.$pt = void 0
+    super(...arguments);
+    this.Uic = undefined;
+    this.$pt = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIText],
-      [1, UE.UITexture]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture]];
   }
   OnStart() {
-    this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem)
+    this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
   }
   OnAfterShow() {
-    this.$pt?.PlaySequence("Loop")
+    this.$pt?.PlaySequence("Loop");
   }
   SetTextureIconActive(e) {
-    this.GetTexture(1)?.SetUIActive(e)
+    this.GetTexture(1)?.SetUIActive(e);
   }
   SetTipsText(e) {
-    this.GetText(0)?.SetText(e)
+    this.GetText(0)?.SetText(e);
   }
   SetTipsLocalText(e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e)
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e);
   }
   OnAfterHide() {
-    this.Dic()
+    this.Dic();
   }
   ShowTip(e) {
-    this.SetTipsLocalText(e), this.Show(), this.Dic(), this.Uic = TimerSystem_1.TimerSystem.Delay(() => {
-      this.Hide()
-    }, +TimeUtil_1.TimeUtil.InverseMillisecond)
+    this.SetTipsLocalText(e);
+    this.Show();
+    this.Dic();
+    this.Uic = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      this.Hide();
+    }, +TimeUtil_1.TimeUtil.InverseMillisecond);
   }
   Dic() {
-    this.Uic && TimerSystem_1.TimerSystem.Has(this.Uic) && TimerSystem_1.TimerSystem.Remove(this.Uic)
+    if (this.Uic && TimerSystem_1.GameplayTimerSystem.Has(this.Uic)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.Uic);
+    }
   }
 }
 exports.NetworkDetectionTips = NetworkDetectionTips;

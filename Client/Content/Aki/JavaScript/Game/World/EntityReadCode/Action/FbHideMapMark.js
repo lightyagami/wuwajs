@@ -1,19 +1,35 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbHideMapMark = void 0;
+  value: true
+});
+exports.FbHideMapMark = undefined;
 class FbHideMapMark {
   constructor(t) {
-    this.FbDataInternal = t, this.u_h = !1, this.f8o = void 0, this.yLh = !1, this.SLh = 0
+    this.FbDataInternal = t;
+    this.u_h = false;
+    this.f8o = undefined;
+    this.yLh = false;
+    this.SLh = 0;
   }
   static Create(t) {
-    if (t) return new FbHideMapMark(t)
+    if (t) {
+      return new FbHideMapMark(t);
+    }
   }
   get Type() {
-    return this.u_h || (this.u_h = !0, this.f8o = this.FbDataInternal.type()), this.f8o
+    if (!this.u_h) {
+      this.u_h = true;
+      this.f8o = this.FbDataInternal.type();
+    }
+    return this.f8o;
   }
   get MarkId() {
-    return this.yLh || (this.yLh = !0, this.SLh = this.FbDataInternal.markId()), this.SLh
+    if (!this.yLh) {
+      this.yLh = true;
+      this.SLh = this.FbDataInternal.markId();
+    }
+    return this.SLh;
   }
 }
 exports.FbHideMapMark = FbHideMapMark;

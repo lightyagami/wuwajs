@@ -1,11 +1,16 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SelectablePropComponentBase = void 0;
+  value: true
+});
+exports.SelectablePropComponentBase = undefined;
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 class SelectablePropComponentBase extends UiPanelBase_1.UiPanelBase {
-  constructor(e = void 0) {
-    super(), e && this.CreateThenShowByActor(e.GetOwner())
+  constructor(e = undefined) {
+    super();
+    if (e) {
+      this.CreateThenShowByActor(e.GetOwner());
+    }
   }
 }
 exports.SelectablePropComponentBase = SelectablePropComponentBase;

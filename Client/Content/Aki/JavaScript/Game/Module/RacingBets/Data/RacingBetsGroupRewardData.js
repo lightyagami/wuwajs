@@ -1,21 +1,31 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.RacingBetsGroupRewardData = void 0;
+  value: true
+});
+exports.RacingBetsGroupRewardData = undefined;
 class RacingBetsGroupRewardData {
   constructor(t) {
-    this.Id = 0, this.avt = [], this.Id = t
+    this.Id = 0;
+    this.avt = [];
+    this.Id = t;
   }
   AddRewardData(e) {
-    this.avt.find(t => t.Id === e.Id) || this.avt.push(e)
+    if (!this.avt.find(t => t.Id === e.Id)) {
+      this.avt.push(e);
+    }
   }
   GetRewardDataList() {
-    return this.avt.sort((t, e) => t.CanReceiveReward() && !e.CanReceiveReward() ? -1 : !t.CanReceiveReward() && e.CanReceiveReward() ? 1 : !t.IsTaskReceived() && e.IsTaskReceived() ? -1 : t.IsTaskReceived() && !e.IsTaskReceived() ? 1 : t.Id - e.Id), this.avt
+    this.avt.sort((t, e) => t.CanReceiveReward() && !e.CanReceiveReward() ? -1 : !t.CanReceiveReward() && e.CanReceiveReward() ? 1 : !t.IsTaskReceived() && e.IsTaskReceived() ? -1 : t.IsTaskReceived() && !e.IsTaskReceived() ? 1 : t.Id - e.Id);
+    return this.avt;
   }
   CanReceiveRewards() {
-    for (const t of this.avt)
-      if (t.CanReceiveReward()) return !0;
-    return !1
+    for (const t of this.avt) {
+      if (t.CanReceiveReward()) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 exports.RacingBetsGroupRewardData = RacingBetsGroupRewardData;

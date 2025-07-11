@@ -1,17 +1,20 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.HotKeyTypeBase = void 0;
+  value: true
+});
+exports.HotKeyTypeBase = undefined;
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 class HotKeyTypeBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.IsMultiKeyItem = !1
+    super(...arguments);
+    this.IsMultiKeyItem = false;
   }
   SetIsMultiKeyItem(e) {
-    this.IsMultiKeyItem = e
+    this.IsMultiKeyItem = e;
   }
   Clear() {
-    this.OnClear()
+    this.OnClear();
   }
   OnClear() {}
 }

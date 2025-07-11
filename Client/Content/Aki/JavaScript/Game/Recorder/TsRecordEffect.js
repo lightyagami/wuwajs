@@ -1,44 +1,83 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
+  value: true
 });
-const UE = require("ue"),
-  Info_1 = require("../../Core/Common/Info"),
-  Log_1 = require("../../Core/Common/Log"),
-  EffectContext_1 = require("../Effect/EffectContext/EffectContext"),
-  EffectSystem_1 = require("../Effect/EffectSystem"),
-  RecorderBlueprintFunctionLibrary_1 = require("./RecorderBlueprintFunctionLibrary");
+const UE = require("ue");
+const Info_1 = require("../../Core/Common/Info");
+const Log_1 = require("../../Core/Common/Log");
+const EffectContext_1 = require("../Effect/EffectContext/EffectContext");
+const EffectSystem_1 = require("../Effect/EffectSystem");
+const RecorderBlueprintFunctionLibrary_1 = require("./RecorderBlueprintFunctionLibrary");
 class TsRecordEffect extends UE.KuroRecordEffect {
   constructor() {
-    super(...arguments), this.EffectModelDataPath = "", this.EffectModelData = void 0, this.LifeTimeType = 0, this.ManualProcessTime = 0, this.EffectHandle = 0, this.Playing = !1, this.LastHidden = !1
+    super(...arguments);
+    this.EffectModelDataPath = "";
+    this.EffectModelData = undefined;
+    this.LifeTimeType = 0;
+    this.ManualProcessTime = 0;
+    this.EffectHandle = 0;
+    this.Playing = false;
+    this.LastHidden = false;
   }
   Constructor() {
-    this.EffectHandle = 0, this.Playing = !1, this.LastHidden = !1
+    this.EffectHandle = 0;
+    this.Playing = false;
+    this.LastHidden = false;
   }
   ReceiveBeginPlay() {
-    RecorderBlueprintFunctionLibrary_1.default.RecorderPlayerInitializeTs(), this.SetActorTickEnabled(!0)
+    RecorderBlueprintFunctionLibrary_1.default.RecorderPlayerInitializeTs();
+    this.SetActorTickEnabled(true);
   }
   ReceiveEndPlay(t) {
-    EffectSystem_1.EffectSystem.IsValid(this.EffectHandle) && EffectSystem_1.EffectSystem.StopEffectById(this.EffectHandle, "[TsRecordEffect.ReceiveEndPlay]", !0)
+    if (EffectSystem_1.EffectSystem.IsValid(this.EffectHandle)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.EffectHandle, "[TsRecordEffect.ReceiveEndPlay]", true);
+    }
   }
   ReceiveTick(t) {
-    this.Playing && !this.EffectModelData && this.EffectModelDataPath && this.TryAddEffectView(), this.EffectHandle && (Info_1.Info.IsGameRunning() || EffectSystem_1.EffectSystem.TickHandleInEditor(this.EffectHandle, t), 3 === this.LifeTimeType && -1 < this.ManualProcessTime && EffectSystem_1.EffectSystem.HandleSeekToTimeWithProcess(this.EffectHandle, this.ManualProcessTime, !0, t), this.LastHidden !== this.bHidden) && (this.LastHidden = this.bHidden, EffectSystem_1.EffectSystem.SetEffectHidden(this.EffectHandle, this.bHidden))
+    if (this.Playing && !this.EffectModelData && this.EffectModelDataPath) {
+      this.TryAddEffectView();
+    }
+    if (this.EffectHandle && (Info_1.Info.IsGameRunning() || EffectSystem_1.EffectSystem.TickHandleInEditor(this.EffectHandle, t), this.LifeTimeType === 3 && this.ManualProcessTime > -1 && EffectSystem_1.EffectSystem.HandleSeekToTimeWithProcess(this.EffectHandle, this.ManualProcessTime, true, t), this.LastHidden !== this.bHidden)) {
+      this.LastHidden = this.bHidden;
+      EffectSystem_1.EffectSystem.SetEffectHidden(this.EffectHandle, this.bHidden);
+    }
   }
   OnPlay() {
-    this.Playing = !0, this.TryAddEffectView()
+    this.Playing = true;
+    this.TryAddEffectView();
   }
   OnStop() {
-    this.Playing = !1, EffectSystem_1.EffectSystem.IsValid(this.EffectHandle) && EffectSystem_1.EffectSystem.StopEffectById(this.EffectHandle, "[TsRecordEffect.OnStop]", !1)
+    this.Playing = false;
+    if (EffectSystem_1.EffectSystem.IsValid(this.EffectHandle)) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.EffectHandle, "[TsRecordEffect.OnStop]", false);
+    }
   }
   TryAddEffectView() {
     if (!this.EffectModelData) {
-      if (!this.EffectModelDataPath) return void(Log_1.Log.CheckError() && Log_1.Log.Error("Recorder", 6, "No EffectModelData", ["Actor", this.GetName()]));
-      Log_1.Log.CheckWarn() && Log_1.Log.Warn("Recorder", 6, "No EffectModelData but TryLoad", ["Actor", this.GetName()], ["Path", this.EffectModelDataPath]), this.EffectModelData = UE.Object.Load(this.EffectModelDataPath)
+      if (!this.EffectModelDataPath) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Recorder", 6, "No EffectModelData", ["Actor", this.GetName()]);
+        }
+        return;
+      }
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Recorder", 6, "No EffectModelData but TryLoad", ["Actor", this.GetName()], ["Path", this.EffectModelDataPath]);
+      }
+      this.EffectModelData = UE.Object.Load(this.EffectModelDataPath);
     }
     var t;
-    this.EffectHandle || (t = UE.KismetSystemLibrary.GetPathName(this.EffectModelData), this.EffectHandle = EffectSystem_1.EffectSystem.SpawnEffect(this, this.D_GetTransform(), t, "[TsRecordEffect.TryAddEffectView]", new EffectContext_1.EffectContext(void 0, this), 0, t => {
-      3 === this.LifeTimeType && EffectSystem_1.EffectSystem.FreezeHandle(t, !0)
-    }), EffectSystem_1.EffectSystem.IsValid(this.EffectHandle) && EffectSystem_1.EffectSystem.GetEffectActor(this.EffectHandle).K2_AttachToActor(this, void 0, 2, 2, 2, !1))
+    if (!this.EffectHandle) {
+      t = UE.KismetSystemLibrary.GetPathName(this.EffectModelData);
+      this.EffectHandle = EffectSystem_1.EffectSystem.SpawnEffect(this, this.D_GetTransform(), t, "[TsRecordEffect.TryAddEffectView]", new EffectContext_1.EffectContext(undefined, this), 0, t => {
+        if (this.LifeTimeType === 3) {
+          EffectSystem_1.EffectSystem.FreezeHandle(t, true);
+        }
+      });
+      if (EffectSystem_1.EffectSystem.IsValid(this.EffectHandle)) {
+        EffectSystem_1.EffectSystem.GetEffectActor(this.EffectHandle).K2_AttachToActor(this, undefined, 2, 2, 2, false);
+      }
+    }
   }
 }
 exports.default = TsRecordEffect;

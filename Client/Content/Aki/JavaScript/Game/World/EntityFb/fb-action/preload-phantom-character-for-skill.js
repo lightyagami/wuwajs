@@ -1,43 +1,60 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.PreloadPhantomCharacterForSkill = void 0;
+  value: true
+});
+exports.PreloadPhantomCharacterForSkill = undefined;
 const flatbuffers = require("../../../../RunTimeLibs/FlatBuffers/flatbuffers");
 class PreloadPhantomCharacterForSkill {
   constructor() {
-    this.bb = void 0, this.bb_pos = 0
+    this.bb = undefined;
+    this.bb_pos = 0;
   }
   __init(r, t) {
-    return this.bb_pos = r, this.bb = t, this
+    this.bb_pos = r;
+    this.bb = t;
+    return this;
   }
   static getRootAsPreloadPhantomCharacterForSkill(r, t) {
-    return (t || new PreloadPhantomCharacterForSkill).__init(r.readInt32(r.position()) + r.position(), r)
+    return (t || new PreloadPhantomCharacterForSkill()).__init(r.readInt32(r.position()) + r.position(), r);
   }
   static getSizePrefixedRootAsPreloadPhantomCharacterForSkill(r, t) {
-    return r.setPosition(r.position() + flatbuffers.SIZE_PREFIX_LENGTH), (t || new PreloadPhantomCharacterForSkill).__init(r.readInt32(r.position()) + r.position(), r)
+    r.setPosition(r.position() + flatbuffers.SIZE_PREFIX_LENGTH);
+    return (t || new PreloadPhantomCharacterForSkill()).__init(r.readInt32(r.position()) + r.position(), r);
   }
   type(r) {
     var t = this.bb.__offset(this.bb_pos, 4);
-    return t ? this.bb.__string(this.bb_pos + t, r) : void 0
+    if (t) {
+      return this.bb.__string(this.bb_pos + t, r);
+    } else {
+      return undefined;
+    }
   }
   id() {
     var r = this.bb.__offset(this.bb_pos, 6);
-    return r ? this.bb.readInt32(this.bb_pos + r) : 0
+    if (r) {
+      return this.bb.readInt32(this.bb_pos + r);
+    } else {
+      return 0;
+    }
   }
   static startPreloadPhantomCharacterForSkill(r) {
-    r.startObject(2)
+    r.startObject(2);
   }
   static addType(r, t) {
-    r.addFieldOffset(0, t, 0)
+    r.addFieldOffset(0, t, 0);
   }
   static addId(r, t) {
-    r.addFieldInt32(1, t, 0)
+    r.addFieldInt32(1, t, 0);
   }
   static endPreloadPhantomCharacterForSkill(r) {
-    return r.endObject()
+    return r.endObject();
   }
   static createPreloadPhantomCharacterForSkill(r, t, a) {
-    return PreloadPhantomCharacterForSkill.startPreloadPhantomCharacterForSkill(r), PreloadPhantomCharacterForSkill.addType(r, t), PreloadPhantomCharacterForSkill.addId(r, a), PreloadPhantomCharacterForSkill.endPreloadPhantomCharacterForSkill(r)
+    PreloadPhantomCharacterForSkill.startPreloadPhantomCharacterForSkill(r);
+    PreloadPhantomCharacterForSkill.addType(r, t);
+    PreloadPhantomCharacterForSkill.addId(r, a);
+    return PreloadPhantomCharacterForSkill.endPreloadPhantomCharacterForSkill(r);
   }
 }
 exports.PreloadPhantomCharacterForSkill = PreloadPhantomCharacterForSkill;

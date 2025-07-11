@@ -1,30 +1,33 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.CookRoleItem = void 0;
-const UE = require("ue"),
-  ConfigManager_1 = require("../../../Manager/ConfigManager"),
-  SmallItemGrid_1 = require("../../Common/SmallItemGrid/SmallItemGrid"),
-  GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract"),
-  CookController_1 = require("../CookController");
+  value: true
+});
+exports.CookRoleItem = undefined;
+const UE = require("ue");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const SmallItemGrid_1 = require("../../Common/SmallItemGrid/SmallItemGrid");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const CookController_1 = require("../CookController");
 class CookRoleItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
-    super(...arguments), this.fGt = void 0, this.oft = void 0, this.sft = void 0, this.eTt = t => {
-      this.oft && this.oft(this.fGt.RoleId)
-    }
+    super(...arguments);
+    this.fGt = undefined;
+    this.oft = undefined;
+    this.sft = undefined;
+    this.eTt = t => {
+      if (this.oft) {
+        this.oft(this.fGt.RoleId);
+      }
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIExtendToggle],
-      [1, UE.UIText],
-      [2, UE.UIText],
-      [3, UE.UIItem]
-    ], this.BtnBindInfo = [
-      [0, this.eTt]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.eTt]];
   }
   OnStart() {
-    this.sft = new SmallItemGrid_1.SmallItemGrid, this.sft.Initialize(this.GetItem(3).GetOwner())
+    this.sft = new SmallItemGrid_1.SmallItemGrid();
+    this.sft.Initialize(this.GetItem(3).GetOwner());
   }
   Refresh(t, e, i) {
     t = {
@@ -33,35 +36,50 @@ class CookRoleItem extends GridProxyAbstract_1.GridProxyAbstract {
       ItemConfigId: t.RoleId,
       IsCookUp: t.IsBuff
     };
-    this.sft.Apply(t), this.qWe(), this.aNt(), this.N6e(e, !1), this.GetText(2).OnSelfLanguageChange.Bind(() => {
-      this.aNt()
-    })
+    this.sft.Apply(t);
+    this.qWe();
+    this.aNt();
+    this.N6e(e, false);
+    this.GetText(2).OnSelfLanguageChange.Bind(() => {
+      this.aNt();
+    });
   }
   Clear() {
-    this.GetText(2).OnSelfLanguageChange.Unbind()
+    this.GetText(2).OnSelfLanguageChange.Unbind();
   }
   OnBeforeDestroy() {
-    this.sft.Destroy(), this.sft = void 0
+    this.sft.Destroy();
+    this.sft = undefined;
   }
   aNt() {
     var t;
-    CookController_1.CookController.CheckIsBuff(this.fGt.RoleId, this.fGt.ItemId) ? (t = CookController_1.CookController.GetCookInfoText(this.fGt.RoleId), this.GetText(2).SetText(t)) : (t = ConfigManager_1.ConfigManager.TextConfig.GetTextById("DefaultHelperText"), this.GetText(2).SetText(t))
+    if (CookController_1.CookController.CheckIsBuff(this.fGt.RoleId, this.fGt.ItemId)) {
+      t = CookController_1.CookController.GetCookInfoText(this.fGt.RoleId);
+      this.GetText(2).SetText(t);
+    } else {
+      t = ConfigManager_1.ConfigManager.TextConfig.GetTextById("DefaultHelperText");
+      this.GetText(2).SetText(t);
+    }
   }
   qWe() {
-    this.GetText(1).SetText(this.fGt.RoleName)
+    this.GetText(1).SetText(this.fGt.RoleName);
   }
   BindOnClickedCallback(t) {
-    this.oft = t
+    this.oft = t;
   }
   OnSelected(t) {
-    this.N6e(!0)
+    this.N6e(true);
   }
   OnDeselected(t) {
-    this.N6e(!1)
+    this.N6e(false);
   }
-  N6e(t, e = !0) {
+  N6e(t, e = true) {
     var i = this.GetExtendToggle(0);
-    t ? i.SetToggleState(1, e) : i.SetToggleState(0, !1)
+    if (t) {
+      i.SetToggleState(1, e);
+    } else {
+      i.SetToggleState(0, false);
+    }
   }
 }
 exports.CookRoleItem = CookRoleItem;

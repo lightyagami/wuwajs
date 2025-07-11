@@ -1,7 +1,9 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.MissionPanelControllerBase = void 0;
+  value: true
+});
+exports.MissionPanelControllerBase = undefined;
 class MissionPanelControllerBase {}
 exports.MissionPanelControllerBase = MissionPanelControllerBase;
 //# sourceMappingURL=MissionPanelControllerBase.js.map

@@ -1,49 +1,99 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ItemGridComponent = void 0;
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise"),
-  Log_1 = require("../../../../Core/Common/Log"),
-  UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+  value: true
+});
+exports.ItemGridComponent = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../Core/Common/Log");
+const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class ItemGridComponent extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super(...arguments), this.sit = void 0, this.NPt = void 0, this.OPt = void 0, this.kPt = !1, this.FPt = !1, this.VPt = void 0
+    super(...arguments);
+    this.sit = undefined;
+    this.NPt = undefined;
+    this.OPt = undefined;
+    this.kPt = false;
+    this.FPt = false;
+    this.VPt = undefined;
+    this.OnComponentVisibleChanged = undefined;
+    this.$Hc = false;
   }
-  Initialize(t) {
-    this.kPt || (this.sit = t, this.NPt = this.GetResourceId(), this.OnInitialize(), this.kPt = !0)
+  Initialize(t, i) {
+    if (!this.kPt) {
+      this.sit = t;
+      this.NPt = this.GetResourceId();
+      this.$Hc = i;
+      this.OnInitialize();
+      this.kPt = true;
+    }
   }
   async Load() {
-    return this.VPt = new CustomPromise_1.CustomPromise, await this.CreateThenShowByResourceIdAsync(this.NPt, this.sit), this.VPt.SetResult(this), this
+    this.VPt = new CustomPromise_1.CustomPromise();
+    if (this.$Hc) {
+      await this.CreateByResourceIdAsync(this.NPt, this.sit);
+    } else {
+      await this.CreateThenShowByResourceIdAsync(this.NPt, this.sit);
+    }
+    this.VPt.SetResult(this);
+    return this;
   }
   async GetAsync() {
-    return this.IsCreating ? this.VPt.Promise : this
+    if (this.IsCreating) {
+      return this.VPt.Promise;
+    } else {
+      return this;
+    }
   }
   OnStartImplement() {
-    this.FPt = !0, this.OnActivate(), void 0 !== this.OPt && this.OnRefresh(this.OPt)
+    this.FPt = true;
+    this.OnActivate();
+    if (this.OPt !== undefined) {
+      this.OnRefresh(this.OPt);
+    }
   }
   Refresh(t) {
-    this.OPt = t, this.InAsyncLoading() || this.OnRefresh(t)
+    this.OPt = t;
+    if (!this.InAsyncLoading()) {
+      this.OnRefresh(t);
+    }
   }
   OnBeforeDestroyImplement() {
-    this.FPt && this.OnDeactivate(), this.FPt = !1, this.kPt = !1, this.OPt = void 0
+    if (this.FPt) {
+      this.OnDeactivate();
+    }
+    this.FPt = false;
+    this.kPt = false;
+    this.OPt = undefined;
   }
   OnInitialize() {}
   OnActivate() {}
   OnDeactivate() {}
   OnRefresh(t) {
-    Log_1.Log.CheckError() && Log_1.Log.Error("Inventory", 37, "没有实现 OnRefresh", ["ComponentName", this.constructor.name])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Inventory", 37, "没有实现 OnRefresh", ["ComponentName", this.constructor.name]);
+    }
   }
   GetResourceId() {
-    Log_1.Log.CheckError() && Log_1.Log.Error("Inventory", 37, "没有实现 GetResourceId", ["ComponentName", this.constructor.name])
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Inventory", 37, "没有实现 GetResourceId", ["ComponentName", this.constructor.name]);
+    }
   }
   GetLayoutLevel() {
-    return 0
+    return 0;
   }
   SetActive(t) {
-    t && this.IsShowOrShowing || super.SetActive(t)
+    if (this.$Hc) {
+      super.SetActive(t);
+      this.OnComponentVisibleChanged?.(this, t);
+    } else if (!t || !this.IsShowOrShowing) {
+      super.SetActive(t);
+    }
   }
   SetHierarchyIndex(t) {
-    this.RootItem.GetHierarchyIndex() !== t && this.RootItem.SetHierarchyIndex(t)
+    if (this.RootItem.GetHierarchyIndex() !== t) {
+      this.RootItem.SetHierarchyIndex(t);
+    }
   }
 }
 exports.ItemGridComponent = ItemGridComponent;

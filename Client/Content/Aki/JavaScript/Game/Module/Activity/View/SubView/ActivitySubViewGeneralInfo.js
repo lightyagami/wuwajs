@@ -1,74 +1,117 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.ActivitySubViewGeneralInfo = void 0;
-const UE = require("ue"),
-  StringUtils_1 = require("../../../../../Core/Utils/StringUtils"),
-  ActivityDescriptionTypeA_1 = require("../../ActivityContent/UniversalComponents/Content/ActivityDescriptionTypeA"),
-  ActivityRewardList_1 = require("../../ActivityContent/UniversalComponents/Content/ActivityRewardList"),
-  ActivityFunctionalTypeA_1 = require("../../ActivityContent/UniversalComponents/Functional/ActivityFunctionalTypeA"),
-  ActivityTitleTypeA_1 = require("../../ActivityContent/UniversalComponents/Title/ActivityTitleTypeA"),
-  ActivitySubViewBase_1 = require("./ActivitySubViewBase");
+  value: true
+});
+exports.ActivitySubViewGeneralInfo = undefined;
+const UE = require("ue");
+const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const ActivityDescriptionTypeA_1 = require("../../ActivityContent/UniversalComponents/Content/ActivityDescriptionTypeA");
+const ActivityRewardList_1 = require("../../ActivityContent/UniversalComponents/Content/ActivityRewardList");
+const ActivityFunctionalTypeA_1 = require("../../ActivityContent/UniversalComponents/Functional/ActivityFunctionalTypeA");
+const ActivityTitleTypeA_1 = require("../../ActivityContent/UniversalComponents/Title/ActivityTitleTypeA");
+const ActivitySubViewBase_1 = require("./ActivitySubViewBase");
 class ActivitySubViewGeneralInfo extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
-    super(...arguments), this.ActivityBaseData = void 0, this.LNe = void 0, this.DNe = void 0, this.UNe = void 0, this.ANe = void 0, this.k5e = void 0, this.WH1 = !1, this.DFe = () => {
-      this.k5e?.(this.ActivityBaseData)
-    }
+    super(...arguments);
+    this.ActivityBaseData = undefined;
+    this.LNe = undefined;
+    this.DNe = undefined;
+    this.UNe = undefined;
+    this.ANe = undefined;
+    this.k5e = undefined;
+    this.w$1 = false;
+    this.DFe = () => {
+      this.k5e?.(this.ActivityBaseData);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [
-      [0, UE.UIItem],
-      [1, UE.UIItem],
-      [2, UE.UIItem],
-      [3, UE.UIItem]
-    ]
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
   }
   OnSetData() {}
   async OnBeforeStartAsync() {
-    var t = this.GetItem(0),
-      i = (this.LNe = new ActivityTitleTypeA_1.ActivityTitleTypeA, this.GetItem(1)),
-      e = (this.DNe = new ActivityDescriptionTypeA_1.ActivityDescriptionTypeA, this.GetItem(2)),
-      s = (this.UNe = new ActivityRewardList_1.ActivityRewardList, this.GetItem(3));
-    this.ANe = new ActivityFunctionalTypeA_1.ActivityFunctionalTypeA(this.ActivityBaseData), await Promise.all([this.LNe.CreateThenShowByActorAsync(t.GetOwner()), this.DNe.CreateThenShowByActorAsync(i.GetOwner()), this.UNe.CreateThenShowByActorAsync(e.GetOwner()), this.ANe.CreateThenShowByActorAsync(s.GetOwner())])
+    var t = this.GetItem(0);
+    this.LNe = new ActivityTitleTypeA_1.ActivityTitleTypeA();
+    var i = this.GetItem(1);
+    this.DNe = new ActivityDescriptionTypeA_1.ActivityDescriptionTypeA();
+    var e = this.GetItem(2);
+    this.UNe = new ActivityRewardList_1.ActivityRewardList();
+    var s = this.GetItem(3);
+    this.ANe = new ActivityFunctionalTypeA_1.ActivityFunctionalTypeA(this.ActivityBaseData);
+    await Promise.all([this.LNe.CreateThenShowByActorAsync(t.GetOwner()), this.DNe.CreateThenShowByActorAsync(i.GetOwner()), this.UNe.CreateThenShowByActorAsync(e.GetOwner()), this.ANe.CreateThenShowByActorAsync(s.GetOwner())]);
   }
   OnStart() {
-    var t, i, e = this.ActivityBaseData.LocalConfig;
-    e && (t = e.DescTheme, i = !StringUtils_1.StringUtils.IsEmpty(t), this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle()), this.LNe.SetSubTitleVisible(i), i && (i = e.DescThemeIcon, this.LNe.SetSubTitleByTextId(t), i) && this.LNe?.SetSubTitleIconByPath(i), t = e.Desc, this.DNe.SetContentByTextId(t), i = this.ActivityBaseData.GetPreviewReward(), this.UNe.SetTitleByTextId("CollectActivity_reward"), this.UNe.InitGridLayout(this.UNe.InitCommonGridItem), this.UNe.RefreshItemLayout(i), this.ANe.FunctionButton.SetFunction(this.DFe), this.ANe.FunctionButton.SetLocalTextNew("CollectActivity_reward"), this.OnRefreshView())
+    var t;
+    var i;
+    var e = this.ActivityBaseData.LocalConfig;
+    if (e) {
+      t = e.DescTheme;
+      i = !StringUtils_1.StringUtils.IsEmpty(t);
+      this.LNe.SetTitleByText(this.ActivityBaseData.GetTitle());
+      this.LNe.SetSubTitleVisible(i);
+      if (i && (i = e.DescThemeIcon, this.LNe.SetSubTitleByTextId(t), i)) {
+        this.LNe?.SetSubTitleIconByPath(i);
+      }
+      t = e.Desc;
+      this.DNe.SetContentByTextId(t);
+      i = this.ActivityBaseData.GetPreviewReward();
+      this.UNe.SetTitleByTextId("CollectActivity_reward");
+      this.UNe.InitGridLayout(this.UNe.InitCommonGridItem);
+      this.UNe.RefreshItemLayout(i);
+      this.ANe.FunctionButton.SetFunction(this.DFe);
+      this.ANe.FunctionButton.SetLocalTextNew("CollectActivity_reward");
+      this.OnRefreshView();
+    }
   }
   OnRefreshView() {
-    this.RefreshFunction(), this.RefreshTimerText()
+    this.RefreshFunction();
+    this.RefreshTimerText();
   }
   OnTimer(t) {
-    this.RefreshTimerText()
+    this.RefreshTimerText();
   }
   RefreshFunction() {
     var t = this.ActivityBaseData.IsUnLock();
-    this.ANe?.FunctionButton?.SetUiActive(t), this.ANe?.SetPanelConditionVisible(!t), t || this.ANe.SetPerformanceConditionLock(this.ActivityBaseData.ConditionGroupId, this.ActivityBaseData.Id)
+    this.ANe?.FunctionButton?.SetUiActive(t);
+    this.ANe?.SetPanelConditionVisible(!t);
+    if (!t) {
+      this.ANe.SetPerformanceConditionLock(this.ActivityBaseData.ConditionGroupId, this.ActivityBaseData.Id);
+    }
   }
   RefreshTimerText() {
-    var t, i;
-    this.WH1 ? this.LNe.SetTimeTextVisible(!1) : ([t, i] = this.GetTimeVisibleAndRemainTime(), this.LNe.SetTimeTextVisible(t), t && this.LNe.SetTimeTextByText(i))
+    var t;
+    var i;
+    if (this.w$1) {
+      this.LNe.SetTimeTextVisible(false);
+    } else {
+      [t, i] = this.GetTimeVisibleAndRemainTime();
+      this.LNe.SetTimeTextVisible(t);
+      if (t) {
+        this.LNe.SetTimeTextByText(i);
+      }
+    }
   }
   HideRemainTime() {
-    this.WH1 = !0
+    this.w$1 = true;
   }
   SetBtnText(t, ...i) {
-    this.ANe?.FunctionButton?.SetLocalTextNew(t, i)
+    this.ANe?.FunctionButton?.SetLocalTextNew(t, i);
   }
   SetClickFunc(t) {
-    this.k5e = t
+    this.k5e = t;
   }
   SetFunctionRedDotVisible(t) {
-    this.ANe?.SetFunctionRedDotVisible(t)
+    this.ANe?.SetFunctionRedDotVisible(t);
   }
   SetRewardButtonFunction(t) {
-    this.ANe?.SetRewardButtonFunction(t)
+    this.ANe?.SetRewardButtonFunction(t);
   }
   SetSubTitleTextById(t) {
-    this.LNe.SetSubTitleVisible(!0), this.LNe.SetSubTitleByTextId(t)
+    this.LNe.SetSubTitleVisible(true);
+    this.LNe.SetSubTitleByTextId(t);
   }
   GetFunctional() {
-    return this.ANe
+    return this.ANe;
   }
 }
 exports.ActivitySubViewGeneralInfo = ActivitySubViewGeneralInfo;

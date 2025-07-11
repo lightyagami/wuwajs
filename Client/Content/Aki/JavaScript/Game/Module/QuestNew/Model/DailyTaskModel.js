@@ -1,35 +1,45 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.DailyTaskModel = void 0;
-const ModelBase_1 = require("../../../../Core/Framework/ModelBase"),
-  EventDefine_1 = require("../../../Common/Event/EventDefine"),
-  EventSystem_1 = require("../../../Common/Event/EventSystem");
+  value: true
+});
+exports.DailyTaskModel = undefined;
+const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 class DailyTaskModel extends ModelBase_1.ModelBase {
   constructor() {
-    super(...arguments), this.Wro = void 0
+    super(...arguments);
+    this.Wro = undefined;
   }
   OnInit() {
-    return this.Wro = new Map, !0
+    this.Wro = new Map();
+    return true;
   }
   OnClear() {
-    return this.Wro?.clear(), !(this.Wro = void 0)
+    this.Wro?.clear();
+    return !(this.Wro = undefined);
   }
   GetAllDailyQuest() {
-    return this.Wro
+    return this.Wro;
   }
   GetDailyTaskCorrelativeEntities() {
-    const t = new Array;
-    for (var [, e] of this.Wro) e.GetCurrentCorrelativeEntities()?.forEach(e => {
-      t.push(e)
-    });
-    return t
+    const t = new Array();
+    for (var [, e] of this.Wro) {
+      e.GetCurrentCorrelativeEntities()?.forEach(e => {
+        t.push(e);
+      });
+    }
+    return t;
   }
   AddDailyQuest(e) {
-    e && (this.Wro.set(e.Id, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DailyTaskChange))
+    if (e) {
+      this.Wro.set(e.Id, e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DailyTaskChange);
+    }
   }
   RemoveDailyQuest(e) {
-    this.Wro.delete(e)
+    this.Wro.delete(e);
   }
 }
 exports.DailyTaskModel = DailyTaskModel;

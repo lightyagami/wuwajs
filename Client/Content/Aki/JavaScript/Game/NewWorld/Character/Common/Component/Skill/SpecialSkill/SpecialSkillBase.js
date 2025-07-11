@@ -1,13 +1,15 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.SpecialSkillBase = void 0;
+  value: true
+});
+exports.SpecialSkillBase = undefined;
 class SpecialSkillBase {
   constructor(e) {
-    this.SpecialSkillComponent = e
+    this.SpecialSkillComponent = e;
   }
   static Spawn(e) {
-    return new this(e)
+    return new this(e);
   }
   OnStart() {}
   OnActivate() {}

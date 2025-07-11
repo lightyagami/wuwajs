@@ -1,34 +1,83 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.EffectUtil = void 0;
-const UE = require("ue"),
-  Log_1 = require("../../Core/Common/Log"),
-  EffectConfigById_1 = require("../../Core/Define/ConfigQuery/EffectConfigById"),
-  DataTableUtil_1 = require("../../Core/Utils/DataTableUtil"),
-  EffectSystem_1 = require("../Effect/EffectSystem"),
-  GlobalData_1 = require("../GlobalData");
+  value: true
+});
+exports.EffectUtil = undefined;
+const UE = require("ue");
+const Log_1 = require("../../Core/Common/Log");
+const EffectConfigById_1 = require("../../Core/Define/ConfigQuery/EffectConfigById");
+const DataTableUtil_1 = require("../../Core/Utils/DataTableUtil");
+const EventDefine_1 = require("../Common/Event/EventDefine");
+const EventSystem_1 = require("../Common/Event/EventSystem");
+const EffectSystem_1 = require("../Effect/EffectSystem");
+const GlobalData_1 = require("../GlobalData");
+const ModelManager_1 = require("../Manager/ModelManager");
 class EffectUtil {
   static GetEffectPath(e) {
-    return EffectConfigById_1.configEffectConfigById.GetConfig(e).Path
+    return EffectConfigById_1.configEffectConfigById.GetConfig(e).Path;
   }
-  static SpawnUiEffect(e, t, f = new UE.TransformDouble, i) {
+  static SpawnUiEffect(e, t, f = new UE.TransformDouble(), i) {
     e = EffectUtil.GetEffectPath(e);
-    return EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, f, e, t, void 0, 1)
+    return EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, f, e, t, undefined, 1);
   }
   static GetPreviewReplaceEffectPath(e) {
-    var t = e,
-      f = (UE.KuroEditorUtilityLibrary.GetAssetViewerSettings()?.Profiles.Get(0))?.EffectReplaceDataTable;
+    var t = e;
+    var f = UE.KuroEditorUtilityLibrary.GetAssetViewerSettings()?.Profiles.Get(0)?.EffectReplaceDataTable;
     if (f) {
       f = DataTableUtil_1.DataTableUtil.GetDataTableAllRowFromTable(f);
-      if (f.length)
-        for (const r of f) {
-          var i = r.NewEffect?.ToAssetPathName();
-          if (i?.length && "None" !== i)
-            if (r.OldEffect?.ToAssetPathName() === t) return Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 4, "[Game.AnimNotify]预览找到替换列表的资源，替换为", ["NewPath", i]), i
+      if (f.length) {
+        for (const a of f) {
+          var i = a.NewEffect?.ToAssetPathName();
+          if (i?.length && i !== "None") {
+            if (a.OldEffect?.ToAssetPathName() === t) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("Audio", 4, "[Game.AnimNotify]预览找到替换列表的资源，替换为", ["NewPath", i]);
+              }
+              return i;
+            }
+          }
         }
+      }
     }
-    return e
+    return e;
+  }
+  static RefreshAdditionTimeScale(e, t) {
+    if (t?.Valid && (t = t.GetTopForeverTimeScaleConfig(1))) {
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(t.SourceType, e, t.TimeDilation);
+    }
+  }
+  static SetEffectTimeScale(e, t, f, i = 0) {
+    var a = t.FreezeTimeScale;
+    EffectSystem_1.EffectSystem.SetTimeScale(e, a * f, true);
+    if (i === 0) {
+      EffectUtil.RefreshAdditionTimeScale(e, t);
+    } else {
+      a = ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1;
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, e, a);
+    }
+  }
+  static SetAdditionalEffectTimeScaleByEntity(e, t) {
+    var f;
+    if (e?.Valid && (f = e.Entity.GetComponent(122))?.Valid) {
+      EffectUtil.SetEffectTimeScale(t, f, e.Entity.TimeDilation);
+    }
+  }
+  static ListenForeverTimeScale(e, t) {
+    const f = () => {
+      if (EffectSystem_1.EffectSystem.IsValid(e)) {
+        EffectUtil.RefreshAdditionTimeScale(e, t);
+      }
+    };
+    const i = t.Entity;
+    EventSystem_1.EventSystem.AddWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationAdd, f);
+    EventSystem_1.EventSystem.AddWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationRemove, f);
+    EffectSystem_1.EffectSystem.AddFinishCallback(e, e => {
+      if (i.Valid) {
+        EventSystem_1.EventSystem.RemoveWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationAdd, f);
+        EventSystem_1.EventSystem.RemoveWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationRemove, f);
+      }
+    });
   }
 }
 exports.EffectUtil = EffectUtil;

@@ -1,21 +1,37 @@
 "use strict";
+
 Object.defineProperty(exports, "__esModule", {
-  value: !0
-}), exports.FbCameraData = void 0;
-const FbFlowTemplateMode_1 = require("./FbFlowTemplateMode"),
-  FbSetCameraAnim_1 = require("./FbSetCameraAnim");
+  value: true
+});
+exports.FbCameraData = undefined;
+const FbFlowTemplateMode_1 = require("./FbFlowTemplateMode");
+const FbSetCameraAnim_1 = require("./FbSetCameraAnim");
 class FbCameraData {
   constructor(t) {
-    this.FbDataInternal = t, this.Ygh = !1, this.zgh = void 0, this.Jgh = !1, this.Zgh = void 0
+    this.FbDataInternal = t;
+    this.Ygh = false;
+    this.zgh = undefined;
+    this.Jgh = false;
+    this.Zgh = undefined;
   }
   static Create(t) {
-    if (t) return new FbCameraData(t)
+    if (t) {
+      return new FbCameraData(t);
+    }
   }
   get Camera() {
-    return this.Ygh || (this.Ygh = !0, this.zgh = FbFlowTemplateMode_1.FbFlowTemplateMode.Create(this.FbDataInternal.camera())), this.zgh
+    if (!this.Ygh) {
+      this.Ygh = true;
+      this.zgh = FbFlowTemplateMode_1.FbFlowTemplateMode.Create(this.FbDataInternal.camera());
+    }
+    return this.zgh;
   }
   get CameraAnim() {
-    return this.Jgh || (this.Jgh = !0, this.Zgh = FbSetCameraAnim_1.FbSetCameraAnim.Create(this.FbDataInternal.cameraAnim())), this.Zgh
+    if (!this.Jgh) {
+      this.Jgh = true;
+      this.Zgh = FbSetCameraAnim_1.FbSetCameraAnim.Create(this.FbDataInternal.cameraAnim());
+    }
+    return this.Zgh;
   }
 }
 exports.FbCameraData = FbCameraData;
