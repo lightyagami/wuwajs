@@ -61,8 +61,8 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
     n = new HideMeshParams(r);
     h.set(this, n);
     if (s instanceof TsBaseCharacter_1.default) {
-      s.CharacterActorComponent?.Entity?.GetComponent(177)?.StartForceDisableAnimOptimization(2, false);
-      t = s.GetEntityNoBlueprint()?.GetComponent(223);
+      s.CharacterActorComponent?.Entity?.GetComponent(178)?.StartForceDisableAnimOptimization(2, false);
+      t = s.GetEntityNoBlueprint()?.GetComponent(224);
       if (t) {
         n.HideKey = t.SetHideMesh(n.MeshComp, !this.Hide, this.HideChildren, this.HideChildrenActors, 0);
         if (Log_1.Log.CheckDebug()) {
@@ -114,8 +114,8 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
     if (!s) {
       return false;
     }
-    if ((i.delete(this), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Test", 6, "HideMesh End", ["Animation", e?.GetName()], ["Hide", this.Hide], ["HideKey", s.HideKey]), t instanceof TsBaseCharacter_1.default) && (t.GetEntityNoBlueprint()?.GetComponent(177)?.CancelForceDisableAnimOptimization(2), s.HideKey)) {
-      e = t.GetEntityNoBlueprint()?.GetComponent(223);
+    if ((i.delete(this), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Test", 6, "HideMesh End", ["Animation", e?.GetName()], ["Hide", this.Hide], ["HideKey", s.HideKey]), t instanceof TsBaseCharacter_1.default) && (t.GetEntityNoBlueprint()?.GetComponent(178)?.CancelForceDisableAnimOptimization(2), s.HideKey)) {
+      e = t.GetEntityNoBlueprint()?.GetComponent(224);
       if (e) {
         e.SetHideMesh(s.MeshComp, this.Hide, this.HideChildren, this.HideChildrenActors, s.HideKey);
         return true;

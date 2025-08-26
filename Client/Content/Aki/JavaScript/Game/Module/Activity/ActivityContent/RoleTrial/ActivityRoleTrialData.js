@@ -40,13 +40,13 @@ class ActivityRoleTrialData extends ActivityData_1.ActivityBaseData {
     this.RoleTrialIdList.length = 0;
     t = t.Vps;
     if (t) {
-      for (const o of t.Rps) {
-        var e = exports.stateResolver[o.Lps];
-        var r = ConfigManager_1.ConfigManager.ActivityRoleTrialConfig.GetRoleTrialInfoConfigByRoleId(o.Q6n);
+      for (const i of t.Rps) {
+        var e = exports.stateResolver[i.Lps];
+        var r = ConfigManager_1.ConfigManager.ActivityRoleTrialConfig.GetRoleTrialInfoConfigByRoleId(i.Q6n);
         this.RoleTrialIdList.push(r.TrialRoleId);
-        this.RoleIdList.push(o.Q6n);
-        this.TrialToIdMap.set(r.TrialRoleId, o.Q6n);
-        this.Z2e.set(o.Q6n, e);
+        this.RoleIdList.push(i.Q6n);
+        this.TrialToIdMap.set(r.TrialRoleId, i.Q6n);
+        this.Z2e.set(i.Q6n, e);
       }
     }
   }
@@ -63,25 +63,25 @@ class ActivityRoleTrialData extends ActivityData_1.ActivityBaseData {
     var e = ConfigManager_1.ConfigManager.ActivityRoleTrialConfig.GetRoleTrialInfoConfigByRoleId(t);
     if (e && e.RewardItem) {
       var r;
-      var o;
-      var i = this.GetRewardStateByRoleId(t);
+      var i;
+      var o = this.GetRewardStateByRoleId(t);
       var a = [];
-      for ([r, o] of e.RewardItem) {
+      for ([r, i] of e.RewardItem) {
         var n = [{
           IncId: 0,
           ItemId: r
-        }, o];
+        }, i];
         a.push({
           Item: n,
-          HasClaimed: i === 2
+          HasClaimed: o === 2
         });
       }
       return a;
     }
   }
   GetConfigByRoleAndInstance(t, e) {
-    for (const o of this.RoleIdList) {
-      var r = ConfigManager_1.ConfigManager.ActivityRoleTrialConfig.GetRoleTrialInfoConfigByRoleId(o);
+    for (const i of this.RoleIdList) {
+      var r = ConfigManager_1.ConfigManager.ActivityRoleTrialConfig.GetRoleTrialInfoConfigByRoleId(i);
       if (r && r.RoleId === t && r.InstanceId === e) {
         return r;
       }
@@ -97,6 +97,17 @@ class ActivityRoleTrialData extends ActivityData_1.ActivityBaseData {
       }
     }
     return false;
+  }
+  GetExDataFinishShowState() {
+    if (this.Z2e.size === 0) {
+      return false;
+    }
+    for (var [, t] of this.Z2e) {
+      if (t !== 2) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 exports.ActivityRoleTrialData = ActivityRoleTrialData;

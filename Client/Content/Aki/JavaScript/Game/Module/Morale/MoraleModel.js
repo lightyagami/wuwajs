@@ -59,14 +59,14 @@ class MoraleModel extends ModelBase_1.ModelBase {
   InitData() {
     if (!this.IsInitData) {
       this.IsInitData = true;
-      this.Mlu();
+      this.n_u();
       this.O$1();
       this.q$1();
-      this.Zz1();
+      this.TJ1();
       this.CheckCacheAreaBuffIdList();
     }
   }
-  Mlu() {
+  n_u() {
     this.UnlockFlagSet = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MoraleAreaUnlockFlagSet) ?? new Set();
     this.ActiveAreaBuffSet = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MoraleActiveAreaBuff) ?? new Set();
     this.TipsAreaBuffSet = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MoraleTipsAreaBuff) ?? new Set();
@@ -114,9 +114,9 @@ class MoraleModel extends ModelBase_1.ModelBase {
       this.ProgressRewardMap.set(e.Id, e);
     });
     this.ProgressRewardList.sort((e, t) => e.Id - t.Id);
-    this.Elu(o);
+    this.s_u(o);
   }
-  Zz1() {
+  TJ1() {
     ConfigManager_1.ConfigManager.MoraleConfig.GetAllMoraleLvPowerConfigList().forEach(e => {
       e = MoraleBuffData_1.MoraleBuffData.Create(e);
       this.BuffMap.set(e.Id, e);
@@ -156,7 +156,7 @@ class MoraleModel extends ModelBase_1.ModelBase {
     ActivityMoraleController_1.ActivityMoraleController.RefreshActivityRedDot();
   }
   ProtoMoralePosResponse(e) {
-    this.PlayerMoraleAreaId = e?.B1u ?? 0;
+    this.PlayerMoraleAreaId = e?.puu ?? 0;
   }
   GetProgressTotalScore() {
     var e = this.ProgressRewardList;
@@ -228,15 +228,15 @@ class MoraleModel extends ModelBase_1.ModelBase {
       e.SetActiveState(false);
       e.SetBoxReceivedCount(0);
     });
-    e.Usu.forEach(e => {
-      var t = this.FlagMap.get(e.Psu);
+    e.sau.forEach(e => {
+      var t = this.FlagMap.get(e.oau);
       if (t) {
         if (!this.UnlockFlagSet.has(t.Id)) {
           t.SetNewUnlockState(true);
         }
         this.UnlockFlagSet.add(t.Id);
         t.SetActiveState(true);
-        t.SetBoxReceivedCount(e.xsu);
+        t.SetBoxReceivedCount(e.nau);
       }
     });
     e.H91.forEach(e => {
@@ -246,10 +246,10 @@ class MoraleModel extends ModelBase_1.ModelBase {
         e.IsReceived = true;
       }
     });
-    e.D1u.forEach(e => {
-      var t = this.AreaDataMap.get(e.x1u);
+    e.Cuu.forEach(e => {
+      var t = this.AreaDataMap.get(e.fuu);
       if (t) {
-        t.UpdateExploreBoxReceived(e.U1u);
+        t.UpdateExploreBoxReceived(e.guu);
       }
     });
   }
@@ -275,12 +275,12 @@ class MoraleModel extends ModelBase_1.ModelBase {
         }
       }
     });
-    this.Elu(t);
+    this.s_u(t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MoraleProgressScoreUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotUpdateMoraleScoreBox);
     ActivityMoraleController_1.ActivityMoraleController.RefreshActivityRedDot();
   }
-  Elu(e) {
+  s_u(e) {
     var t = this.ProgressRewardList.length;
     var t = this.ProgressRewardList[t - 1];
     if (t && t.TargetScore <= e) {
@@ -288,12 +288,12 @@ class MoraleModel extends ModelBase_1.ModelBase {
     }
   }
   UpdateProgressScoreByFlag(e, t) {
-    this.Ilu("Morale_title_27", e, t);
+    this.a_u("Morale_title_27", e, t);
   }
   UpdateProgressScoreByBox(e, t) {
-    this.Ilu("Morale_title_28", e, t);
+    this.a_u("Morale_title_28", e, t);
   }
-  Ilu(e, t, r) {
+  a_u(e, t, r) {
     if (!(this.ProgressRewardList.length <= 0)) {
       const a = (r ?? this.GetCurrentProgressScore()) - t;
       UiManager_1.UiManager.OpenView("MoraleAreaProgressTips", {
@@ -381,7 +381,7 @@ class MoraleModel extends ModelBase_1.ModelBase {
     };
   }
   GetBattleIsShowBuff() {
-    return !!FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(199)?.HasBuff(this.GamePlayFinishTeamBuffId);
+    return !!FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(200)?.HasBuff(this.GamePlayFinishTeamBuffId);
   }
   CheckSumLevelChanged(e, t) {
     e = this.GetBuffActiveTipsInfoListByLv(e, t);

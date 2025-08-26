@@ -10,8 +10,10 @@ const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const PublicUtil_1 = require("../../../Common/PublicUtil");
 const KuroSdkReport_1 = require("../../../KuroSdk/KuroSdkReport");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -74,7 +76,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
         this.QTn.delete(t);
         if (i !== Protocol_1.Aki.Protocol.Q4n.KRs && i) {
           if (i === Protocol_1.Aki.Protocol.Q4n.Proto_ErrFlowNotExist) {
-            this.LogError("ErrFlowNotExist");
+            this.LogError("ErrFlowNotExist", ["response flowIncId", t]);
           } else {
             this.CVa(this.QTn.get(t));
             FlowNetworks_1.FlowNetworks.RequestFlowRestart(t);
@@ -129,7 +131,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
   GetInteractPoint() {
     let t = undefined;
     if (t = this.nx?.Context && this.nx.Context.Type === 1 ? EntitySystem_1.EntitySystem.Get(this.nx.Context.EntityId) : t) {
-      var i = t.GetComponent(197);
+      var i = t.GetComponent(198);
       if (i) {
         return i.GetInteractController()?.GetInteractPoint();
       }
@@ -138,7 +140,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
   GetCameraOffsetConfig() {
     let t = undefined;
     if (t = this.nx?.Context && this.nx.Context.Type === 1 ? EntitySystem_1.EntitySystem.Get(this.nx.Context.EntityId) : t) {
-      var i = t.GetComponent(197);
+      var i = t.GetComponent(198);
       if (i) {
         return i.GetInteractController()?.GetCameraOffsetConfig();
       }
@@ -441,7 +443,8 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
     }
   }
   RecordTalkItem(t) {
-    if (t.Type === "Talk") {
+    var i;
+    if (t.Type === "Talk" && (i = t.TidTalk) && (i = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(i)) !== undefined && !StringUtils_1.StringUtils.IsBlank(i)) {
       this.nx?.TalkHistory.push({
         TalkItem: t,
         IsOption: false
@@ -548,12 +551,14 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
     }
     return true;
   }
-  GetNextNameAction(i) {
-    for (let t = this.TXi.length - 1; t >= 0; t--) {
-      if (this.TXi[t].Name === i) {
-        return this.TXi[t];
+  GetNameAction(t) {
+    var i = [];
+    for (const e of this.TXi) {
+      if (e.Name === t) {
+        i.push(e);
       }
     }
+    return i;
   }
   GetFlowName() {
     return this.nx?.FormatId ?? "";

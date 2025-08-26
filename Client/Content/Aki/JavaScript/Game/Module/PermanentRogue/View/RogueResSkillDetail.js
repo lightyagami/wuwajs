@@ -46,7 +46,16 @@ class RogueResSkillDetail extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [3, UE.UIText], [4, UE.UIText], [6, UE.UIText], [7, UE.UIText], [9, UE.UIButtonComponent], [8, UE.UIText], [1, UE.UISprite], [2, UE.UIItem], [5, UE.UIItem], [10, UE.UIText], [11, UE.UIItem], [12, UE.UITexture], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIItem]];
     this.BtnBindInfo = [[9, this.Ilo]];
   }
-  OnStart() {}
+  OnStart() {
+    this.GetItem(2)?.SetUIActive(false);
+    this.GetItem(5)?.SetUIActive(false);
+    this.GetText(0)?.SetText("");
+    this.GetText(3)?.SetText("");
+    this.GetText(4)?.SetText("");
+    this.GetText(6)?.SetText("");
+    this.GetText(7)?.SetText("");
+    this.GetText(8)?.SetText("");
+  }
   Refresh(e) {
     this.Data = e;
     var i = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetSkillLevelById(e.Id);

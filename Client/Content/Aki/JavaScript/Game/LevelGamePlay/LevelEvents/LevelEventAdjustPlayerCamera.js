@@ -180,14 +180,14 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
         }
         if (e.Option.Type === IAction_1.EAdjustPlayerCamera.Basic || e.Option.Type === IAction_1.EAdjustPlayerCamera.FirstPerson) {
           if (e.Option.YawLimitMax !== undefined) {
-            r.DefaultConfig.set(61, e.Option.YawLimitMax);
+            r.DefaultConfig.set(34, e.Option.YawLimitMax);
           } else {
-            r.DefaultConfig.delete(61);
+            r.DefaultConfig.delete(34);
           }
           if (e.Option.YawLimitMin !== undefined) {
-            r.DefaultConfig.set(60, e.Option.YawLimitMin);
+            r.DefaultConfig.set(33, e.Option.YawLimitMin);
           } else {
-            r.DefaultConfig.delete(60);
+            r.DefaultConfig.delete(33);
           }
           if (e.Option.PitchLimitMax !== undefined) {
             r.DefaultConfig.set(46, e.Option.PitchLimitMax);

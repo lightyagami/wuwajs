@@ -73,16 +73,16 @@ class FriendController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoadTestFriendsByGm, FriendController.B6t);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25528, FriendController.b6t);
-    Net_1.Net.Register(16089, FriendController.q6t);
-    Net_1.Net.Register(23587, FriendController.G6t);
-    Net_1.Net.Register(22155, FriendController.N6t);
+    Net_1.Net.Register(16918, FriendController.b6t);
+    Net_1.Net.Register(23266, FriendController.q6t);
+    Net_1.Net.Register(22204, FriendController.G6t);
+    Net_1.Net.Register(24353, FriendController.N6t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25528);
-    Net_1.Net.UnRegister(16089);
-    Net_1.Net.UnRegister(23587);
-    Net_1.Net.UnRegister(22155);
+    Net_1.Net.UnRegister(16918);
+    Net_1.Net.UnRegister(23266);
+    Net_1.Net.UnRegister(22204);
+    Net_1.Net.UnRegister(24353);
   }
   static async Fxa(e) {
     if (e === undefined) {
@@ -155,7 +155,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
     const n = new Protocol_1.Aki.Protocol.xrs();
     n.s5n = e;
     n.XVn = r;
-    Net_1.Net.Call(26610, n, e => {
+    Net_1.Net.Call(28691, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrReceiverApplyListCountMax) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("RecipientFriendListFull");
@@ -187,7 +187,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("AlreadyOnFriendList");
           return;
         }
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17309);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29612);
       }
       ModelManager_1.ModelManager.FriendModel.AddPlayerToApplyFriendList(n.s5n);
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("FriendApplicationSent");
@@ -202,7 +202,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
     } else {
       v.BVn = d;
       v.$Vn = s;
-      Net_1.Net.Call(20495, v, e => {
+      Net_1.Net.Call(25826, v, e => {
         let r = FriendController.k6t(e.Q4n);
         var n = v.BVn.length > 1;
         let o = 0;
@@ -267,14 +267,14 @@ class FriendController extends ControllerBase_1.ControllerBase {
   static RequestFriendDelete(r) {
     var e = new Protocol_1.Aki.Protocol.krs();
     e.s5n = r;
-    Net_1.Net.Call(29026, e, e => {
+    Net_1.Net.Call(23049, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrNotOnFriendList) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotOnFriendList");
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateFriendViewShow);
           return;
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17359);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23687);
           return;
         }
       }
@@ -314,7 +314,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
   static RequestSearchPlayerBasicInfoBySdkId(e) {
     var r = new Protocol_1.Aki.Protocol.Rm_();
     r.Qxa = e;
-    Net_1.Net.Call(21383, r, e => {
+    Net_1.Net.Call(18739, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_InvalidUserId) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("InvalidUserId");
@@ -323,7 +323,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("CanNotSearchSelf");
           return;
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20640);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20938);
           return;
         }
       }
@@ -333,7 +333,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
   static RequestSearchPlayerBasicInfo(e) {
     var r = new Protocol_1.Aki.Protocol.pYn();
     r.s5n = e;
-    Net_1.Net.Call(18347, r, e => {
+    Net_1.Net.Call(21605, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_InvalidUserId) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("InvalidUserId");
@@ -342,7 +342,7 @@ class FriendController extends ControllerBase_1.ControllerBase {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("CanNotSearchSelf");
           return;
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17079);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19217);
           return;
         }
       }
@@ -417,12 +417,12 @@ class FriendController extends ControllerBase_1.ControllerBase {
   }
   static RequestFriendRecentlyTeam() {
     var e = Protocol_1.Aki.Protocol.Frs.create();
-    Net_1.Net.Call(16701, e, e => {
+    Net_1.Net.Call(15314, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.FriendModel.InitRecentlyTeamDataByResponse(e.OUs);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17634);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25308);
         }
       }
     });
@@ -489,7 +489,7 @@ FriendController.RequestAllFriend = (e = false, r = undefined) => {
       FriendController.F6t = TimeUtil_1.TimeUtil.GetServerTime() + FriendDefine_1.FRIEND_ALL_UPDATE_INTERVAL_MINUTES * CommonDefine_1.SECOND_PER_MINUTE;
       FriendController.V6t = TimeUtil_1.TimeUtil.GetServerTime();
       if (Net_1.Net.IsServerConnected()) {
-        Net_1.Net.Call(26398, n, e => {
+        Net_1.Net.Call(28028, n, e => {
           r?.();
           FriendController.Fxa(e);
         });
@@ -516,8 +516,8 @@ FriendController.RequestFriendRemarkChange = async (e, r) => {
   if (e) {
     (n = new Protocol_1.Aki.Protocol.Grs()).s5n = e;
     n.JVn = r;
-    if ((e = await Net_1.Net.CallAsync(16775, n)).Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17309);
+    if ((e = await Net_1.Net.CallAsync(15933, n)).Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29612);
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrFriendRemarkLengthLimit) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FriendRemarkLengthLimit);
       } else if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ContainsDirtyWord) {
@@ -539,9 +539,9 @@ FriendController.RequestFriendRemarkChange = async (e, r) => {
 };
 FriendController.RequestBlackList = () => {
   var e = new Protocol_1.Aki.Protocol.HJn();
-  Net_1.Net.Call(20546, e, e => {
+  Net_1.Net.Call(24843, e, e => {
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28224);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17191);
     } else {
       FriendController.jxa(e);
     }
@@ -550,7 +550,7 @@ FriendController.RequestBlackList = () => {
 FriendController.RequestBlockPlayer = r => {
   var e = new Protocol_1.Aki.Protocol.WJn();
   e.s5n = r;
-  Net_1.Net.Call(20858, e, e => {
+  Net_1.Net.Call(17025, e, e => {
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrIsBlockedPlayer) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("IsBlockedPlayer");
@@ -561,7 +561,7 @@ FriendController.RequestBlockPlayer = r => {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateBlackListShow);
         return;
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25729);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20722);
         return;
       }
     }
@@ -571,14 +571,14 @@ FriendController.RequestBlockPlayer = r => {
 FriendController.RequestUnBlockPlayer = r => {
   var e = new Protocol_1.Aki.Protocol.QJn();
   e.s5n = r;
-  Net_1.Net.Call(26700, e, e => {
+  Net_1.Net.Call(16965, e, e => {
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrIsNotBlockedPlayer) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("IsNotBlockedPlayer");
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateBlackListShow);
         return;
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24178);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25020);
         return;
       }
     }

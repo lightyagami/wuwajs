@@ -16,15 +16,15 @@ const PhantomArenaController_1 = require("../../PhantomArenaController");
 class CollectCardDetailPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.UX1 = -1;
+    this.nY1 = -1;
     this.bs_ = undefined;
-    this.keu = undefined;
+    this.htu = undefined;
     this.eVi = undefined;
     this.Ept = undefined;
-    this.Oeu = undefined;
+    this.ltu = undefined;
     this.$pt = undefined;
-    this.qeu = () => {
-      PhantomArenaController_1.PhantomArenaController.CardUnlockRequest(this.UX1);
+    this._tu = () => {
+      PhantomArenaController_1.PhantomArenaController.CardUnlockRequest(this.nY1);
     };
   }
   OnRegisterComponent() {
@@ -32,43 +32,43 @@ class CollectCardDetailPanel extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     this.bs_ = new ButtonItem_1.ButtonItem();
-    this.keu = new ButtonItem_1.ButtonItem();
+    this.htu = new ButtonItem_1.ButtonItem();
     this.eVi = new DetailViewCardItem_1.DetailViewCardItem();
     this.Ept = new CardDetailItem_1.CardDetailItem();
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
-    this.Oeu = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(2));
-    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Ept.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.bs_.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.keu.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())]);
+    this.ltu = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(2));
+    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Ept.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.bs_.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.htu.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())]);
   }
   OnStart() {
-    this.keu.SetFunction(this.qeu);
+    this.htu.SetFunction(this._tu);
   }
   Refresh(e) {
-    this.UX1 = e;
+    this.nY1 = e;
     this.cHt();
     this.Wjt();
-    this.Geu();
+    this.utu();
     this.zao();
   }
   cHt() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewCardData(this.UX1);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewCardData(this.nY1);
     this.eVi.Refresh(e);
   }
   Wjt() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewDetailItemData(this.UX1);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewDetailItemData(this.nY1);
     this.Ept.Refresh(e);
   }
-  Geu() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewEntryData(this.UX1);
-    this.Oeu.Refresh(e);
+  utu() {
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewEntryData(this.nY1);
+    this.ltu.Refresh(e);
   }
   zao() {
     var e = {
-      CardId: this.UX1,
+      CardId: this.nY1,
       LockTipItem: this.GetItem(6),
       LockTipText: this.GetText(7),
       TipText: this.GetText(5),
-      UnlockBtnItem: this.keu,
-      IsUnLocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(this.UX1),
+      UnlockBtnItem: this.htu,
+      IsUnLocked: ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(this.nY1),
       ShowUnlockRedDotWhenCanUnlock: false
     };
     PhantomArenaController_1.PhantomArenaController.UpdateCardDetailLockState(e);

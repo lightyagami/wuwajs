@@ -48,27 +48,27 @@ class LoopScrollView {
         });
       }
     };
-    this.MNo = (e, r) => {
-      if (!(this.mNo.length > 0) && (this.Iei !== e || this.NCi !== r)) {
-        var h;
+    this.MNo = (e, h) => {
+      if (!(this.mNo.length > 0) && (this.Iei !== e || this.NCi !== h)) {
+        var r;
         var o;
-        var a;
         var n;
+        var a;
         var d = this.Iei;
         var l = this.NCi;
         var G = this.IGo;
-        var p = r - e + 1;
+        var p = h - e + 1;
         for (let i = d; i <= l; ++i) {
-          if (!(i < 0) && !(i >= this.dNo) && !(h = i % G, o = i % p, i >= e && i <= r && i <= l && h == o)) {
+          if (!(i < 0) && !(i >= this.dNo) && !(r = i % G, o = i % p, i >= e && i <= h && i <= l && r == o)) {
             this.uGo.ClearGridProxy(i, this.ENo(i));
           }
         }
         this.Iei = e;
-        this.NCi = r;
+        this.NCi = h;
         let t = -1;
         let s = -1;
-        for (let i = e; i <= r; ++i) {
-          if (!(i < 0) && !(i >= this.dNo) && !(a = i % G, n = i % p, d >= 0 && i >= d && i <= l && a == n)) {
+        for (let i = e; i <= h; ++i) {
+          if (!(i < 0) && !(i >= this.dNo) && !(n = i % G, a = i % p, d >= 0 && i >= d && i <= l && n == a)) {
             this.SNo(i);
             if (IS_DEBUG) {
               if (t < 0) {
@@ -95,6 +95,7 @@ class LoopScrollView {
       }
       this.uGo.Destroy();
     };
+    this.BZi = -1;
     if (t) {
       t.GetUIItem().SetUIActive(false);
       i.SetTickableWhenPaused(true);
@@ -304,10 +305,10 @@ class LoopScrollView {
     }
   }
   RefreshByData(i, t = false, s, e = false) {
-    var r;
+    var h;
     if (this.Rjt) {
-      r = new OperationParam(i, t, s);
-      this.gWt.Push(r);
+      h = new OperationParam(i, t, s);
+      this.gWt.Push(h);
     } else {
       this.Ujt();
       this.RefreshByDataAsync(i, t, e).finally(() => {
@@ -390,12 +391,12 @@ class LoopScrollView {
   BindOnScrollValueChanged(i) {
     this.cNo.OnScrollValueChange.Bind(i);
   }
-  GetGridAndScrollToByJudge(s, e, r = true) {
+  GetGridAndScrollToByJudge(s, e, h = true) {
     if (this.DataInited) {
       let i = 0;
       let t = false;
-      for (const h of this.uGo.GetDatas()) {
-        if (e(s, h)) {
+      for (const r of this.uGo.GetDatas()) {
+        if (e(s, r)) {
           t = true;
           break;
         }
@@ -404,7 +405,7 @@ class LoopScrollView {
       if (!t) {
         i = 0;
       }
-      this.ScrollToGridIndex(i, r);
+      this.ScrollToGridIndex(i, h);
       return this.GetGrid(i);
     }
   }
@@ -419,8 +420,24 @@ class LoopScrollView {
       this.cGo.PlayGridAnim(this.IGo, true);
     }
   }
+  ScrollToDisplayingIndex(i) {
+    i = this.GetGridByDisplayIndex(i);
+    if (i) {
+      this.cNo.ScrollTo(i);
+    }
+  }
   GetUiAnimController() {
     return this.cNo?.GetContent()?.GetComponentByClass(UE.UIInturnAnimController.StaticClass());
+  }
+  GetDisplayGridEndIndexPurely() {
+    var i;
+    var t;
+    var s;
+    var e;
+    if (this.BZi === -1 && (i = this.cNo?.GetViewport()?.GetUIItem()?.GetHeight() ?? 0, t = this.cNo?.PaddingVertical ?? 0, s = this.cNo?.SpacingVertical ?? 0, (e = this.cNo?.TemplateGrid?.GetUIItem()?.GetHeight() ?? 0) + s !== 0)) {
+      this.BZi = Math.ceil((i - t * 2 + s) / (e + s));
+    }
+    return this.Iei + this.BZi - 1;
   }
 }
 exports.LoopScrollView = LoopScrollView;

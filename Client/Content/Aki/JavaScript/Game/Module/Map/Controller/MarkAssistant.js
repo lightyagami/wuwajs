@@ -16,6 +16,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const ExploreProgressDefine_1 = require("../../ExploreProgress/ExploreProgressDefine");
 const ControllerAssistantBase_1 = require("../../GeneralLogicTree/ControllerAssistant/ControllerAssistantBase");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const TeleportController_1 = require("../../Teleport/TeleportController");
@@ -27,13 +28,15 @@ const MarkItemDataUtil_1 = require("../Marks/MarkItemDataUtil");
 class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   constructor() {
     super(...arguments);
-    this.Jpe = (e, r, o) => {
-      var a = r.Entity.GetComponent(0);
-      var t = a.GetPbEntityInitData();
-      if (a.GetEntityConfigType() !== Protocol_1.Aki.Protocol.rLs.Proto_Character && !MapUtil_1.MapUtil.IsTemporaryTeleportEntity(t)) {
-        if ((t = a.GetBaseInfo())?.MapIcon) {
+    this.Jpe = (e, r, a) => {
+      var o = r.Entity.GetComponent(0);
+      var t = o.GetPbEntityInitData();
+      if (o.GetEntityConfigType() !== Protocol_1.Aki.Protocol.rLs.Proto_Character && !MapUtil_1.MapUtil.IsTemporaryTeleportEntity(t)) {
+        if ((t = o.GetBaseInfo())?.MapIcon) {
           ModelManager_1.ModelManager.MapModel.AddEntityIdToPendingList(r.Id, t.MapIcon);
           EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+        } else {
+          this.ngd(t?.Category.ExploratoryDegree, r);
         }
       }
     };
@@ -41,6 +44,27 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       ModelManager_1.ModelManager.MapModel.RemoveEntityIdToPendingList(r.Id);
       if (ModelManager_1.ModelManager.MapModel.GetEntityPendingList()?.has(r.Id)) {
         EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+      }
+    };
+    this.sgd = (e, r) => {
+      EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.sgd);
+      var a = ModelManager_1.ModelManager.MapModel.GetEntityIdToMarkType(r.PbDataId);
+      ModelManager_1.ModelManager.MapModel.RemoveEntityIdToMarkType(r.PbDataId);
+      if (a !== undefined && e !== Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeForce) {
+        e = ModelManager_1.ModelManager.MapModel.GetMarkByType(a);
+        if (e !== undefined && e.size !== 0) {
+          for (const o of e.values()) {
+            if (o.EntityConfigId === r.PbDataId) {
+              ControllerHolder_1.ControllerHolder.MapController.RequestTrackMapMark({
+                MarkType: a,
+                MarkId: o.MarkId,
+                Track: false,
+                TrackMode: 0
+              });
+              break;
+            }
+          }
+        }
       }
     };
     this.VLi = e => {
@@ -53,24 +77,24 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     };
     this.jLi = e => {
       ModelManager_1.ModelManager.MapModel.ResetDynamicMarkData();
-      for (const o of e.cbs) {
-        var r = o.L7n === 0 ? Vector2D_1.Vector2D.Create(o.D7n, o.A7n) : Vector_1.Vector.Create(o.D7n, o.A7n, o.L7n);
+      for (const a of e.cbs) {
+        var r = a.L7n === 0 ? Vector2D_1.Vector2D.Create(a.D7n, a.A7n) : Vector_1.Vector.Create(a.D7n, a.A7n, a.L7n);
         var r = new MapDefine_1.DynamicMarkCreateInfo({
           TrackTarget: r,
-          MarkConfigId: o.v9n,
-          MarkType: MarkItemDataUtil_1.MarkItemDataUtil.TransformMarkTypeToClient(o.U7n),
-          MarkId: o.T7n,
+          MarkConfigId: a.v9n,
+          MarkType: MarkItemDataUtil_1.MarkItemDataUtil.TransformMarkTypeToClient(a.U7n),
+          MarkId: a.T7n,
           DestroyOnUnTrack: false,
-          EntityConfigId: o.A5n,
-          IsServerDisable: o.Kb_,
+          EntityConfigId: a.A5n,
+          IsServerDisable: a.Kb_,
           MapAndDungeonInfo: {
-            MapConfigId: o.w7n
+            MapConfigId: a.w7n
           }
         });
         ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(r);
       }
-      for (const a of e.dbs) {
-        ModelManager_1.ModelManager.MapModel.SetMarkExtraShowState(a.T7n, a.q5n, false, a.Cbs);
+      for (const o of e.dbs) {
+        ModelManager_1.ModelManager.MapModel.SetMarkExtraShowState(o.T7n, o.q5n, false, o.Cbs);
       }
       for (const t of e.vbs) {
         ModelManager_1.ModelManager.MapModel.SetMarkServerOpenState(t, true);
@@ -99,9 +123,9 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     this.tYa = e => {
       var r = e.T7n;
       var e = e.Kb_;
-      var o = ModelManager_1.ModelManager.MapModel.GetDynamicMark(r);
-      if (o) {
-        o.IsServerDisable = e;
+      var a = ModelManager_1.ModelManager.MapModel.GetDynamicMark(r);
+      if (a) {
+        a.IsServerDisable = e;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Map", 63, "[地图系统]->MarkAssistant动态标记状态更新失败，没找到标记", ["markId", r], ["isDisable", e]);
       }
@@ -118,8 +142,8 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
         r = e.Ika[0];
         this.cza(r);
       }
-      for (const o of e.Ika) {
-        ModelManager_1.ModelManager.MapModel?.RemoveDynamicMapMark(MathUtils_1.MathUtils.LongToNumber(o));
+      for (const a of e.Ika) {
+        ModelManager_1.ModelManager.MapModel?.RemoveDynamicMapMark(MathUtils_1.MathUtils.LongToNumber(a));
       }
     };
     this.YLi = e => {
@@ -163,20 +187,20 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     };
     this.KFa = false;
   }
-  nDi(e, r, o, a) {
+  nDi(e, r, a, o) {
     var t = Protocol_1.Aki.Protocol.x7n.create();
     t.D7n = e.X;
     t.A7n = e.Y;
     t.L7n = e.Z;
-    t.v9n = o;
+    t.v9n = a;
     t.U7n = r;
     t.P7n = false;
-    t.w7n = a;
+    t.w7n = o;
     return t;
   }
-  sDi(e, r, o, a) {
+  sDi(e, r, a, o) {
     var t = Protocol_1.Aki.Protocol.Jss.create();
-    var e = this.nDi(e, r, o, a);
+    var e = this.nDi(e, r, a, o);
     t.x7n = e;
     return t;
   }
@@ -200,38 +224,38 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     MapOperationQueue_1.MapOperationQueue.Clear();
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(29486, this.VLi);
-    Net_1.Net.Register(16933, this.HLi);
-    Net_1.Net.Register(16713, this.jLi);
-    Net_1.Net.Register(16796, this.rf1);
-    Net_1.Net.Register(16929, this.WLi);
-    Net_1.Net.Register(15544, this.tYa);
-    Net_1.Net.Register(18275, this.XLi);
-    Net_1.Net.Register(27908, this.$Li);
-    Net_1.Net.Register(15124, this.JLi);
-    Net_1.Net.Register(21553, this.ZLi);
-    Net_1.Net.Register(16112, this.jcl);
-    Net_1.Net.Register(27352, this.YLi);
-    Net_1.Net.Register(24678, this.tDi);
-    Net_1.Net.Register(20462, this.iDi);
-    Net_1.Net.Register(20155, this.oDi);
+    Net_1.Net.Register(27147, this.VLi);
+    Net_1.Net.Register(28213, this.HLi);
+    Net_1.Net.Register(28723, this.jLi);
+    Net_1.Net.Register(15753, this.rf1);
+    Net_1.Net.Register(29056, this.WLi);
+    Net_1.Net.Register(24846, this.tYa);
+    Net_1.Net.Register(16929, this.XLi);
+    Net_1.Net.Register(26705, this.$Li);
+    Net_1.Net.Register(26083, this.JLi);
+    Net_1.Net.Register(27933, this.ZLi);
+    Net_1.Net.Register(22241, this.jcl);
+    Net_1.Net.Register(23031, this.YLi);
+    Net_1.Net.Register(19707, this.tDi);
+    Net_1.Net.Register(24107, this.iDi);
+    Net_1.Net.Register(21859, this.oDi);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29486);
-    Net_1.Net.UnRegister(16933);
-    Net_1.Net.UnRegister(16713);
+    Net_1.Net.UnRegister(27147);
+    Net_1.Net.UnRegister(28213);
+    Net_1.Net.UnRegister(28723);
+    Net_1.Net.UnRegister(29056);
+    Net_1.Net.UnRegister(15753);
+    Net_1.Net.UnRegister(24846);
     Net_1.Net.UnRegister(16929);
-    Net_1.Net.UnRegister(16796);
-    Net_1.Net.UnRegister(15544);
-    Net_1.Net.UnRegister(18275);
-    Net_1.Net.UnRegister(27908);
-    Net_1.Net.UnRegister(15124);
-    Net_1.Net.UnRegister(21553);
-    Net_1.Net.UnRegister(16112);
-    Net_1.Net.UnRegister(27352);
-    Net_1.Net.UnRegister(24678);
-    Net_1.Net.UnRegister(20462);
-    Net_1.Net.UnRegister(20155);
+    Net_1.Net.UnRegister(26705);
+    Net_1.Net.UnRegister(26083);
+    Net_1.Net.UnRegister(27933);
+    Net_1.Net.UnRegister(22241);
+    Net_1.Net.UnRegister(23031);
+    Net_1.Net.UnRegister(19707);
+    Net_1.Net.UnRegister(24107);
+    Net_1.Net.UnRegister(21859);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.Jpe);
@@ -242,19 +266,25 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUseMapExploreToolSuccess, this.rDi);
   }
+  ngd(e, r) {
+    if (e !== undefined && (e = ExploreProgressDefine_1.exploratoryDegree2MarkType.get(e)) !== undefined) {
+      ModelManager_1.ModelManager.MapModel.AddEntityIdToMarkType(r.PbDataId, e);
+      EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.sgd);
+    }
+  }
   Wcc(e) {
     ModelManager_1.ModelManager.MapModel.CacheMapFishingShipMark(e.Vcc);
   }
   cNa(e, r) {
-    var o = this.KLi(e);
-    ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(o);
+    var a = this.KLi(e);
+    ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(a);
     if (e.U7n === Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TreasureBoxPoint && r !== undefined) {
       for (const n of r.ubs) {
-        var a = this.KLi(n);
+        var o = this.KLi(n);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Map", 63, "添加物资箱标记", ["pointInfo.Proto_MarkId", n.T7n], ["pointInfo.Proto_ConfigId", n.v9n]);
         }
-        ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(a);
+        ModelManager_1.ModelManager.MapModel.CreateServerSaveMark(o);
       }
     }
     var t = MarkItemDataUtil_1.MarkItemDataUtil.TransformMarkTypeToClient(e.U7n);
@@ -280,35 +310,35 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       }
     }
   }
-  OpenMapViewAndFocus(e, r, o, a = true, t = 1, n = false) {
+  OpenMapViewAndFocus(e, r, a, o = true, t = 1, n = false) {
     if (!!n || !ModelManager_1.ModelManager.OnlineModel.GetIsTeamModel() || !!ModelManager_1.ModelManager.OnlineModel.GetIsMyTeam()) {
       n = {
         MarkId: r,
         MarkType: e,
         OpenAreaId: 0,
-        IsNotFocusTween: !a,
+        IsNotFocusTween: !o,
         StartScale: t
       };
-      WorldMapController_1.WorldMapController.OpenView(2, false, n, o);
+      WorldMapController_1.WorldMapController.OpenView(2, false, n, a);
     }
   }
   async RequestTrackInfo() {
     var e = Protocol_1.Aki.Protocol.ias.create();
-    var e = await Net_1.Net.CallAsync(23128, e);
+    var e = await Net_1.Net.CallAsync(29999, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15189);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27485);
       } else {
         for (const t of e.fbs) {
           var r;
-          var o = ConfigManager_1.ConfigManager.MapConfig.SearchMarkConfig(t);
-          if (o instanceof MapMark_1.MapMark && o.EnableQuickTransfer === 1) {
-            this.RequestCancelTrackMapMark(o.ObjectType, t);
+          var a = ConfigManager_1.ConfigManager.MapConfig.SearchMarkConfig(t);
+          if (a instanceof MapMark_1.MapMark && a.EnableQuickTransfer === 1) {
+            this.RequestCancelTrackMapMark(a.ObjectType, t);
           } else {
             r = this.lDi(t);
-            o = {
+            a = {
               TrackSource: 1,
-              MarkType: o?.ObjectType,
+              MarkType: a?.ObjectType,
               Id: t,
               IconPath: r.Icon,
               TrackTarget: r.TrackTarget,
@@ -316,27 +346,27 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
               TrackHudEnable: r.TrackHudEnable,
               TrackAutoCancelDistance: r.TrackAutoCancelDistance
             };
-            ControllerHolder_1.ControllerHolder.TrackController.StartTrack(o);
+            ControllerHolder_1.ControllerHolder.TrackController.StartTrack(a);
             ModelManager_1.ModelManager.MapModel.AddTrackMarkId(t);
           }
         }
-        var a;
+        var o;
         var e = ModelManager_1.ModelManager.MapModel.GetCurTrackMark();
         if (e?.TrackMode === 0) {
-          a = e.MarkId;
-          if ((a = ModelManager_1.ModelManager.TrackModel.GetTrackData(1, a)) !== undefined) {
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrackMark, a);
+          o = e.MarkId;
+          if ((o = ModelManager_1.ModelManager.TrackModel.GetTrackData(1, o)) !== undefined) {
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrackMark, o);
           } else {
-            a = this.lDi(e.MarkId);
+            o = this.lDi(e.MarkId);
             e = {
               TrackSource: 1,
               MarkType: e.MarkType,
               Id: e.MarkId,
-              IconPath: a.Icon,
-              TrackTarget: a.TrackTarget,
-              TrackInstanceId: a.TargetInstanceOrMapId,
-              TrackHudEnable: a.TrackHudEnable,
-              TrackAutoCancelDistance: a.TrackAutoCancelDistance
+              IconPath: o.Icon,
+              TrackTarget: o.TrackTarget,
+              TrackInstanceId: o.TargetInstanceOrMapId,
+              TrackHudEnable: o.TrackHudEnable,
+              TrackAutoCancelDistance: o.TrackAutoCancelDistance
             };
             ControllerHolder_1.ControllerHolder.TrackController.StartTrack(e);
           }
@@ -345,31 +375,31 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     }
   }
   lDi(r) {
-    var o = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(r);
-    if (o) {
+    var a = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(r);
+    if (a) {
       return {
         Icon: MarkItemDataUtil_1.MarkItemDataUtil.GetMarkIcon(r) ?? "",
-        TrackTarget: o.EntityConfigId ?? Vector_1.Vector.Create(o.MarkVector),
-        TargetInstanceOrMapId: o.RelativeDungeonId,
-        TrackHudEnable: o.TrackHudEnable === 1,
-        TrackAutoCancelDistance: o.TrackAutoCancelDistance
+        TrackTarget: a.EntityConfigId ?? Vector_1.Vector.Create(a.MarkVector),
+        TargetInstanceOrMapId: a.RelativeDungeonId,
+        TrackHudEnable: a.TrackHudEnable === 1,
+        TrackAutoCancelDistance: a.TrackAutoCancelDistance
       };
     }
-    o = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(r);
-    if (o) {
-      var r = ConfigManager_1.ConfigManager.MapConfig.GetCustomMarkConfig(o.MarkConfigId);
-      var a = o.TrackTarget;
+    a = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(r);
+    if (a) {
+      var r = ConfigManager_1.ConfigManager.MapConfig.GetCustomMarkConfig(a.MarkConfigId);
+      var o = a.TrackTarget;
       let e = undefined;
-      if (a instanceof Vector_1.Vector) {
-        e = MapUtil_1.MapUtil.UiPosition2WorldPosition(a);
-      } else if (a instanceof Vector2D_1.Vector2D) {
-        a = Vector_1.Vector.Create(a.X, -a.Y, 0);
-        e = MapUtil_1.MapUtil.UiPosition2WorldPosition(a);
+      if (o instanceof Vector_1.Vector) {
+        e = MapUtil_1.MapUtil.UiPosition2WorldPosition(o);
+      } else if (o instanceof Vector2D_1.Vector2D) {
+        o = Vector_1.Vector.Create(o.X, -o.Y, 0);
+        e = MapUtil_1.MapUtil.UiPosition2WorldPosition(o);
       }
       return {
         Icon: r.MarkPic,
         TrackTarget: e,
-        TargetInstanceOrMapId: o.MapId,
+        TargetInstanceOrMapId: a.MapId,
         TrackHudEnable: r?.TrackHudEnable === 1,
         TrackAutoCancelDistance: r?.TrackAutoCancelDistance
       };
@@ -380,31 +410,47 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       TargetInstanceOrMapId: 0
     };
   }
-  RequestMapMarkReplace(e, r) {
-    if (ModelManager_1.ModelManager.MapModel.IsMarkIdExist(9, e)) {
-      r = Protocol_1.Aki.Protocol.las.create({
-        T7n: e,
-        v9n: r
-      });
-      Net_1.Net.Call(21654, r, e => {
-        ModelManager_1.ModelManager.MapModel.ReplaceCustomMarkIcon(e.T7n, e.v9n);
-      });
-    } else if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Map", 63, "试图更换不存在的自定义标记样式", ["MarkId", e]);
-    }
+  RequestMapMarkReplace(r, a) {
+    var e = {
+      Type: 4,
+      MarkType: 9,
+      MarkId: r,
+      IsValidate: () => {
+        var e = ModelManager_1.ModelManager.MapModel.IsMarkIdExist(9, r);
+        if (!e) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Map", 86, "试图更换不存在的自定义标记样式", ["MarkId", r]);
+          }
+        }
+        return e;
+      },
+      Execute: async () => {
+        var e = Protocol_1.Aki.Protocol.las.create({
+          T7n: r,
+          v9n: a
+        });
+        var e = await Net_1.Net.CallAsync(15427, e);
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17101);
+        } else {
+          ModelManager_1.ModelManager.MapModel.ReplaceCustomMarkIcon(e.T7n, e.v9n);
+        }
+      }
+    };
+    MapOperationQueue_1.MapOperationQueue.RunMapMark(e);
   }
   RequestCreateCustomMark(e, r) {
-    var o;
+    var a;
     if (e) {
       if (!(ModelManager_1.ModelManager.MapModel.GetMarkCountByType(9) >= ModelManager_1.ModelManager.WorldMapModel.CustomMarkSize)) {
-        o = e instanceof Vector_1.Vector ? e.Z : 0;
-        o = this.sDi(Vector_1.Vector.Create(e.X, e.Y, o), Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_Custom, r, ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId);
+        a = e instanceof Vector_1.Vector ? e.Z : 0;
+        a = this.sDi(Vector_1.Vector.Create(e.X, e.Y, a), Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_Custom, r, ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.RequestCreateCustomMark->", ["trackPosition", e], ["configId", r], ["request", o]);
+          Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.RequestCreateCustomMark->", ["trackPosition", e], ["configId", r], ["request", a]);
         }
-        Net_1.Net.Call(21512, o, e => {
+        Net_1.Net.Call(28502, a, e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22858);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29199);
           }
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Map", 63, "[CustomMarkItem Debug]MarkAssistant.response->", ["response.Info", e?.YVn]);
@@ -416,18 +462,18 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
     }
   }
   RequestTrackEnrichmentArea(e, r) {
-    var o;
+    var a;
     if (this.KFa) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Map", 63, "[地图系统]->过滤本次请求富集区信息,未收到上次返回", ["锁定状态：", this.KFa]);
       }
     } else {
-      (o = Protocol_1.Aki.Protocol.Jm_.create()).L8n = e ?? 0;
+      (a = Protocol_1.Aki.Protocol.Jm_.create()).L8n = e ?? 0;
       this.KFa = true;
-      Net_1.Net.Call(27465, o, e => {
+      Net_1.Net.Call(26185, a, e => {
         this.KFa = false;
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24344);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23194);
         }
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           r?.();
@@ -449,145 +495,156 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       }
     }
   }
-  RequestRemoveMapMarks(o, e) {
-    e = Protocol_1.Aki.Protocol.Zss.create({
-      Ika: e
-    });
-    Net_1.Net.Call(25881, e, e => {
-      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23262);
-      } else {
-        for (const r of e.Ika) {
-          ModelManager_1.ModelManager.MapModel.RemoveMapMark(o, r);
+  RequestRemoveMapMarks(a, o) {
+    var e = {
+      OpName: "RequestRemoveMapMarks",
+      Type: 2,
+      MarkType: a,
+      IsValidate: () => true,
+      Execute: async () => {
+        var e = o.filter(e => ModelManager_1.ModelManager.MapModel.IsMarkIdExist(a, e));
+        if (e.length !== 0) {
+          e = Protocol_1.Aki.Protocol.Zss.create({
+            Ika: e
+          });
+          e = await Net_1.Net.CallAsync(23658, e);
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16334);
+          } else {
+            for (const r of e.Ika) {
+              ModelManager_1.ModelManager.MapModel.RemoveMapMark(a, r);
+            }
+          }
         }
       }
-    });
+    };
+    MapOperationQueue_1.MapOperationQueue.RunMapMark(e);
   }
-  RequestTrackMapMark(r, o, a) {
+  RequestTrackMapMark(r, a, o) {
     var e;
-    if (o < 0) {
+    if (a < 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Map", 63, "markId小于0, 请求追踪信息未发给后端");
       }
-      ModelManager_1.ModelManager.MapModel.SetTrackMark(r, o, true);
-      a?.(0, true);
+      ModelManager_1.ModelManager.MapModel.SetTrackMark(r, a, true);
+      o?.(0, true);
     } else {
       e = {
         Type: 0,
         MarkType: r,
-        MarkId: o,
+        MarkId: a,
         IsValidate: () => {
-          if (ModelManager_1.ModelManager.MapModel.IsMarkIdExist(r, o)) {
-            return !ModelManager_1.ModelManager.MapModel.IsMarkTracking(o) || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Map", 63, "试图重复追踪标记", ["MarkId", o]), false);
+          if (ModelManager_1.ModelManager.MapModel.IsMarkIdExist(r, a)) {
+            return !ModelManager_1.ModelManager.MapModel.IsMarkTracking(a) || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Map", 63, "试图重复追踪标记", ["MarkId", a]), false);
           } else {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Map", 63, "试图追踪不存在的标记", ["MarkId", o]);
+              Log_1.Log.Debug("Map", 63, "试图追踪不存在的标记", ["MarkId", a]);
             }
             return false;
           }
         },
         Execute: async () => {
           var e = Protocol_1.Aki.Protocol.oas.create({
-            T7n: o
+            T7n: a
           });
-          var e = await Net_1.Net.CallAsync(18875, e);
+          var e = await Net_1.Net.CallAsync(27855, e);
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Map", 63, "向服务端请求追踪标记: 标记id:", ["markId", o]);
+            Log_1.Log.Debug("Map", 63, "向服务端请求追踪标记: 标记id:", ["markId", a]);
           }
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23912);
-            a?.(1, true);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15461);
+            o?.(1, true);
           } else {
             ModelManager_1.ModelManager.MapModel.SetTrackMark(r, e.T7n, true);
             ModelManager_1.ModelManager.MapModel.AddTrackMarkId(e.T7n);
-            a?.(0, true);
+            o?.(0, true);
           }
         }
       };
       MapOperationQueue_1.MapOperationQueue.RunMapMark(e);
     }
   }
-  RequestCancelTrackMapMark(r, o, a) {
+  RequestCancelTrackMapMark(r, a, o) {
     var e;
-    if (o < 0) {
+    if (a < 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Map", 63, "markId小于0, 请求取消追踪信息未发给后端");
       }
-      ModelManager_1.ModelManager.MapModel.SetTrackMark(r, o, false);
-      a?.(0, false);
+      ModelManager_1.ModelManager.MapModel.SetTrackMark(r, a, false);
+      o?.(0, false);
     } else {
       e = {
         Type: 1,
         MarkType: r,
-        MarkId: o,
+        MarkId: a,
         IsValidate: () => {
-          if (ModelManager_1.ModelManager.MapModel.IsMarkIdExist(r, o)) {
-            return !!ModelManager_1.ModelManager.MapModel.IsMarkTracking(o) || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Map", 63, "试图重复取消追踪标记", ["MarkId", o]), false);
+          if (ModelManager_1.ModelManager.MapModel.IsMarkIdExist(r, a)) {
+            return !!ModelManager_1.ModelManager.MapModel.IsMarkTracking(a) || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Map", 63, "试图重复取消追踪标记", ["MarkId", a]), false);
           } else {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Map", 63, "试图取消追踪不存在的标记", ["MarkId", o]);
+              Log_1.Log.Debug("Map", 63, "试图取消追踪不存在的标记", ["MarkId", a]);
             }
             return false;
           }
         },
         Execute: async () => {
           var e = Protocol_1.Aki.Protocol.sas.create({
-            T7n: o
+            T7n: a
           });
-          var e = await Net_1.Net.CallAsync(27217, e);
+          var e = await Net_1.Net.CallAsync(24869, e);
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Map", 63, "向服务端请求取消追踪标记: 标记id:", ["markId", o]);
+            Log_1.Log.Debug("Map", 63, "向服务端请求取消追踪标记: 标记id:", ["markId", a]);
           }
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Map", 63, "取消追踪标记失败: ", ["标记id:", o], ["错误码:", e.Q4n]);
+              Log_1.Log.Warn("Map", 63, "取消追踪标记失败: ", ["标记id:", a], ["错误码:", e.Q4n]);
             }
-            a?.(1, false);
+            o?.(1, false);
           } else {
             ModelManager_1.ModelManager.MapModel.SetTrackMark(r, e.T7n, false);
             ModelManager_1.ModelManager.MapModel.RemoveTrackMarkId(e.T7n);
-            a?.(0, false);
+            o?.(0, false);
           }
         }
       };
       MapOperationQueue_1.MapOperationQueue.RunMapMark(e);
     }
   }
-  RequestTeleportToTargetByTemporaryTeleport(e, r, o) {
+  RequestTeleportToTargetByTemporaryTeleport(e, r, a) {
     if (TeleportController_1.TeleportController.CheckCanTeleport()) {
       if (!ControllerHolder_1.ControllerHolder.TeleportController.ShowTeleportConfirmBox(() => {
         ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
-        this.$Mc(e, r, o);
+        this.$Mc(e, r, a);
       })) {
-        this.$Mc(e, r, o);
+        this.$Mc(e, r, a);
       }
     } else {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrialRoleTransmitLimit");
     }
   }
-  $Mc(e, r, o) {
-    var a = Protocol_1.Aki.Protocol.wCs.create();
+  $Mc(e, r, a) {
+    var o = Protocol_1.Aki.Protocol.wCs.create();
     var t = Protocol_1.Aki.Protocol.D2s.create();
     t.Pitch = r.Pitch;
     t.Roll = r.Roll;
     t.Yaw = r.Yaw;
-    a.R7n = e;
-    a._8n = t;
-    Net_1.Net.Call(18841, a, e => {
+    o.R7n = e;
+    o._8n = t;
+    Net_1.Net.Call(25005, o, e => {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24553);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 16294);
       }
     });
-    o?.();
+    a?.();
   }
   UpdateCustomMapMarkPosition(e, r) {
     e = Protocol_1.Aki.Protocol.vas.create({
       T7n: e,
       l8n: r
     });
-    Net_1.Net.Call(18259, e, e => {
+    Net_1.Net.Call(23521, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16992);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22877);
       }
     });
   }

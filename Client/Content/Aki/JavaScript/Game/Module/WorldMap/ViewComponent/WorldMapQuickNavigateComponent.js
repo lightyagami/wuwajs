@@ -11,21 +11,22 @@ const MapComponent_1 = require("../../Map/Base/MapComponent");
 class WorldMapQuickNavigateComponent extends MapComponent_1.MapComponent {
   constructor() {
     super(...arguments);
-    this.YNl = e => this.NavigateTo(e.MarkId, e.MarkType, e.Focal, e.FocusTween);
-    this.NavigateTo = (e, t, n = false, a = true) => {
-      var o = this.GetNavigateMarkIsNeedChangeMap(e, t);
-      if (o.MapId !== undefined) {
+    this.YNl = e => this.NavigateTo(e.MarkId, e.MarkType, e.Focal, e.FocusTween, e.NeedTempShow);
+    this.NavigateTo = (e, t, n = false, a = true, o = false) => {
+      var r = this.GetNavigateMarkIsNeedChangeMap(e, t);
+      if (r.MapId !== undefined) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeWorldMap, {
           MarkId: e,
           MarkType: t,
-          MapId: o.MapId,
+          MapId: r.MapId,
           Focal: n,
           FocusTween: a,
-          Gravity: o.Gravity
+          Gravity: r.Gravity,
+          NeedTempShow: o
         });
         return true;
       } else {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapFocalMarkItem, e, t, n, a);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapFocalMarkItem, e, t, n, a, o);
         return false;
       }
     };

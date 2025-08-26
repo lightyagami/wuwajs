@@ -29,10 +29,11 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(22304, e => {
+    Net_1.Net.Register(21586, e => {
       ModelManager_1.ModelManager.HandBookModel.UpdateHandBookActiveStateMap(e.h5n, e.cws);
-      if (e.dws) {
-        this.Aei(e.h5n, e.cws);
+      if (e.dws && (this.Aei(e.h5n, e.cws), e.h5n === ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(2))) {
+        e = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(e.cws.s5n);
+        this.Pei(e);
       }
     });
   }
@@ -74,18 +75,17 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     };
     UiManager_1.UiManager.OpenView("PhotoSaveView", i);
   }
-  static SendIllustratedRedDotRequest() {
+  static async SendIllustratedRedDotRequest() {
     var e = Protocol_1.Aki.Protocol.pos.create();
-    Net_1.Net.Call(16844, e, e => {
-      if (e) {
-        ModelManager_1.ModelManager.HandBookModel.InitHandBookRedDotList(e._ws);
-      }
-    });
+    var e = await Net_1.Net.CallAsync(18488, e);
+    if (e) {
+      ModelManager_1.ModelManager.HandBookModel.InitHandBookRedDotList(e._ws);
+    }
   }
   static async SendIllustratedInfoRequestAsync(e) {
     var t = Protocol_1.Aki.Protocol.Sos.create();
     t.E9n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookTypeList(e);
-    var a = await Net_1.Net.CallAsync(28780, t);
+    var a = await Net_1.Net.CallAsync(16362, t);
     if (a) {
       ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
       var o = a.uws.length;
@@ -96,110 +96,93 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
       await Promise.resolve();
     }
   }
-  static SendIllustratedInfoRequest(e) {
+  static async SendIllustratedInfoRequest(e) {
     var t = Protocol_1.Aki.Protocol.Sos.create();
     t.E9n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookTypeList(e);
-    Net_1.Net.Call(28780, t, t => {
-      if (t) {
-        ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
-        var a = t.uws.length;
-        for (let e = 0; e < a; e++) {
-          var o = t.uws[e];
-          ModelManager_1.ModelManager.HandBookModel.InitHandBookActiveStateMap(o.h5n, o.lws);
-        }
+    var a = await Net_1.Net.CallAsync(16362, t);
+    if (a) {
+      ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
+      var o = a.uws.length;
+      for (let e = 0; e < o; e++) {
+        var r = a.uws[e];
+        ModelManager_1.ModelManager.HandBookModel.InitHandBookActiveStateMap(r.h5n, r.lws);
       }
-    });
+    }
   }
   static SendIllustratedReadRequest(t, e) {
     const a = Protocol_1.Aki.Protocol.Los.create();
     a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(t);
     a.s5n = e;
-    Net_1.Net.Call(21159, a, e => {
+    Net_1.Net.Call(21018, a, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24734, e.lvs);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28437, e.lvs);
         } else {
           ModelManager_1.ModelManager.HandBookModel.UpdateRedDot(t, a.s5n);
         }
       }
     });
   }
-  static SendIllustratedUnlockRequest(t, e) {
-    const a = Protocol_1.Aki.Protocol.yos.create();
-    a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(t);
-    a.s5n = e;
-    Net_1.Net.Call(22230, a, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26342, e.lvs);
-        } else {
-          ModelManager_1.ModelManager.HandBookModel.UpdateHandBookActiveStateMap(a.h5n, e.cws);
-          this.Aei(a.h5n, e.cws);
-          if (t === 2) {
-            e = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(e.cws.s5n);
-            this.Pei(e);
-          }
-        }
+  static SendIllustratedUnlockRequest(e, t) {
+    var a = Protocol_1.Aki.Protocol.yos.create();
+    a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(e);
+    a.s5n = t;
+    Net_1.Net.Call(27867, a, e => {
+      if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18215, e.lvs);
       }
     });
   }
   static GetCollectProgress(e) {
-    var t = [];
-    let a = 0;
-    let o = undefined;
+    var t;
+    if (e === 7) {
+      return ModelManager_1.ModelManager.HandBookModel.GetQuestCount();
+    } else if (e === 10) {
+      return ModelManager_1.ModelManager.HandBookModel.GetRoleHandBookCount();
+    } else if (e === 3) {
+      return [t = ModelManager_1.ModelManager.HandBookModel.GetAllHandBookWeaponIdList().length + ModelManager_1.ModelManager.HandBookModel.GetAllHandBookWeaponSkinIdList().length, t];
+    } else {
+      return [ModelManager_1.ModelManager.HandBookModel.GetCollectCount(e), this.GetCollectProgressMax(e)];
+    }
+  }
+  static GetCollectProgressMax(e) {
+    let t = this.jod.get(e);
+    if (t) {
+      return t;
+    }
     switch (e) {
       case 0:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(0);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetMonsterHandBookConfigList();
+        var a = ConfigManager_1.ConfigManager.HandBookConfig.GetMonsterHandBookConfigList() ?? [];
+        t = 0;
+        for (const o of a) {
+          if (!o.IsSkin && !(o.OriginalFormInfoId > 0)) {
+            t++;
+          }
+        }
         break;
       case 1:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(1);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetPhantomHandBookConfig();
+        t = ConfigManager_1.ConfigManager.HandBookConfig.GetPhantomHandBookConfig().length;
         break;
       case 2:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(2);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetAllGeographyHandBookConfig();
-        break;
-      case 3:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(3);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetWeaponHandBookConfigList();
+        t = ConfigManager_1.ConfigManager.HandBookConfig.GetAllGeographyHandBookConfig().length;
         break;
       case 4:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(4);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetAnimalHandBookConfigList();
+        t = ConfigManager_1.ConfigManager.HandBookConfig.GetAnimalHandBookConfigList().length;
         break;
       case 5:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(5);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetItemHandBookConfigList();
+        t = ConfigManager_1.ConfigManager.HandBookConfig.GetItemHandBookConfigList().length;
         break;
       case 6:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(6);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetAllChipHandBookConfig();
+        t = ConfigManager_1.ConfigManager.HandBookConfig.GetAllChipHandBookConfig().length;
         break;
-      case 7:
-        a = ModelManager_1.ModelManager.HandBookModel.GetCollectCount(7);
-        o = ConfigManager_1.ConfigManager.HandBookConfig.GetAllPlotHandBookConfig();
+      case 11:
+        t = ConfigManager_1.ConfigManager.HandBookConfig.GetNounTypeConfigAll().length;
         break;
       default:
-        return [0, 0];
+        return 0;
     }
-    t[0] = a;
-    t[1] = o.length;
-    return t;
-  }
-  static GetAllCollectProgress() {
-    var e = [];
-    var t = this.GetCollectProgress(0);
-    var a = this.GetCollectProgress(1);
-    var o = this.GetCollectProgress(2);
-    var r = this.GetCollectProgress(3);
-    var n = this.GetCollectProgress(4);
-    var i = this.GetCollectProgress(5);
-    var l = this.GetCollectProgress(6);
-    var s = this.GetCollectProgress(7);
-    e[0] = t[0] + a[0] + o[0] + r[0] + n[0] + i[0] + l[0] + s[0];
-    e[1] = t[1] + a[1] + o[1] + r[1] + n[1] + i[1] + l[1] + s[1];
-    return e;
+    this.jod.set(e, t ?? 0);
+    return t ?? 0;
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlayerSenseTargetEnter, this.xei);
@@ -211,8 +194,17 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     e = ConfigManager_1.ConfigManager.HandBookConfig.GetAnimalHandBookConfigByMeshId(e);
     return !!e && !ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(4, e.Id);
   }
+  static async RoleIllustratedInfoRequest() {
+    var e = Protocol_1.Aki.Protocol.Rod.create();
+    var e = await Net_1.Net.CallAsync(16893, e);
+    if (e) {
+      ModelManager_1.ModelManager.HandBookModel.RefreshRoleHandBookOpenTime(e.Lod);
+      ModelManager_1.ModelManager.HandBookModel.RefreshWeaponHandBookOpenTime(e.Aod);
+    }
+  }
 }
 (exports.HandBookController = HandBookController).Uei = 0;
+HandBookController.jod = new Map();
 HandBookController.xei = e => {
   var e = EntitySystem_1.EntitySystem.Get(e);
   if ((e &&= e.GetComponent(0)) && e.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Animal && (e = e.GetModelId(), HandBookController.wei(e))) {

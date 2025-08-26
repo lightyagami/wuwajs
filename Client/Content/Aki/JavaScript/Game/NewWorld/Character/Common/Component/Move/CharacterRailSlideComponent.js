@@ -298,9 +298,9 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.Lie = undefined;
     this.mBe = undefined;
     this.oRe = undefined;
-    this.BZ1 = undefined;
+    this.aeu = undefined;
     this.Tb1 = false;
-    this.Csu = false;
+    this.jsu = false;
     this.bb1 = false;
     this.Rb1 = false;
     this.Uj1 = undefined;
@@ -317,13 +317,13 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.Gue = Rotator_1.Rotator.Create();
     this.EPn = Rotator_1.Rotator.Create();
     this.xb1 = 0;
-    this.xmu = 0;
+    this.ffu = 0;
     this.w91 = 0;
-    this.h0u = new Map();
+    this.spu = new Map();
     this.ero = (t, i, e) => {
       var s = this.Uj1?.InterruptSkillList.includes(i);
       if (t === this.Entity.Id && s) {
-        this.psu("使用了技能" + i);
+        this.Hsu("使用了技能" + i);
       } else if (!s) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("AI", 42, "[RailSlide] 使用了技能，但不在打断列表中，不打断滑轨，如有需要请手动添加到BP_RailSlideConfig", ["SkillId", i]);
@@ -331,23 +331,23 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     };
     this.OnTeleportStart = () => {
-      this.psu("触发传送");
+      this.Hsu("触发传送");
     };
     this.hJl = () => {
-      this.psu("角色死亡");
+      this.Hsu("角色死亡");
     };
-    this.kZ1 = false;
-    this.OZ1 = 0;
+    this.heu = false;
+    this.leu = 0;
   }
   static get Dependencies() {
-    return [3, 178, 175];
+    return [3, 179, 176];
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(205);
-    this.mBe = this.Entity.GetComponent(175);
-    this.oRe = this.Entity.GetComponent(177);
-    this.BZ1 = this.Entity.GetComponent(225);
+    this.Lie = this.Entity.GetComponent(206);
+    this.mBe = this.Entity.GetComponent(176);
+    this.oRe = this.Entity.GetComponent(178);
+    this.aeu = this.Entity.GetComponent(226);
     return true;
   }
   OnEnd() {
@@ -356,13 +356,13 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
   }
   OnTick(t) {
     if (t !== 0 && this.Tb1) {
-      if (!this.Csu) {
+      if (!this.jsu) {
         t = Math.min(t * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation, TEN_MS);
         this.sRc(t);
         this.Db1(t);
         this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
       }
-      if (this.Csu) {
+      if (this.jsu) {
         Vector_1.Vector.VectorPlaneProject(this.Hte.ActorForwardProxy, this.Hte.ActorGravityDirectProxy, this.Lz);
         this.Hte?.SetInputDirect(this.Lz);
         this.Hte?.SetInputFacing(this.Lz);
@@ -379,12 +379,16 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     } else {
       this.Uj1 = this.Bj1(i);
-      if (this.Uj1 && (this.Bb1(this.OY1(t), "进入轨道滑行"), this.Ab1)) {
+      if (this.Uj1 && (this.Bb1(this.lz1(t), "进入轨道滑行"), this.Ab1)) {
+        this.Hte?.Actor.KuroSetMovementMode({
+          Mode: 3,
+          Context: "[CharacterRailSlideComponent.StartRailSlide] Reset MovementMode"
+        });
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "CharacterRailSlideComponent.StartRailSlide");
-        this.Csu = false;
+        this.jsu = false;
         this.Tb1 = true;
         this.xb1 = 0;
-        this.ggu();
+        this.mCu();
         this.Lie.AddTag(-1697149502);
         this.Entity.GetComponent(45)?.SetLockedRotation(true);
         this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
@@ -404,15 +408,15 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     }
   }
-  psu(t) {
-    this.Csu = true;
+  Hsu(t) {
+    this.jsu = true;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Movement", 42, "[RailSlide] 退出轨道滑行", ["Context", t]);
     }
   }
   Ob1() {
     if (this.Tb1) {
-      this.qZ1(true);
+      this._eu(true);
       if (this.Uj1?.TagList) {
         for (const t of this.Uj1.TagList) {
           this.Lie?.RemoveTag(t);
@@ -423,7 +427,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       this.bb1 = false;
       this.Tb1 = false;
       this.xb1 = 0;
-      this.ggu();
+      this.mCu();
       this.Lie?.RemoveTag(-1697149502);
       this.Entity?.GetComponent(45)?.SetLockedRotation(false);
       this.Lie?.RemoveTag(-1254507003);
@@ -449,7 +453,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.ero);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.hJl);
-      this.Csu = false;
+      this.jsu = false;
     }
   }
   qb1() {
@@ -479,7 +483,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     }
   }
-  OY1(t) {
+  lz1(t) {
     var i = this.Gb1(t);
     if (i) {
       var e = this.Fb1(i.RailSplineEntityId);
@@ -510,7 +514,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       Log_1.Log.Error("Movement", 42, "[RailSlide] 没有轨道配置", ["railId", t]);
     }
   }
-  qY1(t) {
+  _z1(t) {
     var i = this.Gb1(t);
     if (i) {
       var e = this.Fb1(i.RailSplineEntityId);
@@ -569,7 +573,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Movement", 42, "[RailSlide] 进入样条轨道", ["railId", t], ["Speed", s], ["startDist", i]);
         }
-        this.l0u(e.RailSplineEntityId);
+        this.apu(e.RailSplineEntityId);
         return a;
       }
       if (Log_1.Log.CheckError()) {
@@ -581,14 +585,14 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
   }
   Bb1(t, i) {
     if (t?.Params?.RailType === 0) {
-      this.GZ1();
-      this.qZ1();
+      this.ueu();
+      this._eu();
     } else if (this.Ab1?.Params?.RailType === 0) {
-      this.FZ1();
-      this.qZ1(true);
+      this.ceu();
+      this._eu(true);
     }
     this.Ab1 = t;
-    this.ggu();
+    this.mCu();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Movement", 42, "[RailSlide] " + i);
     }
@@ -602,7 +606,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
           return;
         }
       }
-      if (t.Params?.RailType !== 0 || !t.Params.DefaultNextRailId || !(this.Bb1(this.qY1(t.Params.DefaultNextRailId), "切换轨道"), this.Ab1)) {
+      if (t.Params?.RailType !== 0 || !t.Params.DefaultNextRailId || !(this.Bb1(this._z1(t.Params.DefaultNextRailId), "切换轨道"), this.Ab1)) {
         this.Ab1 = undefined;
       }
     }
@@ -612,10 +616,10 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       this.xb1 -= t;
     } else if (this.Ab1?.AllowInputChangeRail && !this.Ab1?.InChangeJumpState && this.Ab1?.RailInfo?.ExchangeRailConfigs && this.Ab1?.Params?.RailType === 0) {
       var i = this.Ab1.Params;
-      if (Time_1.Time.Now - this.xmu > CHECK_RAIL_INTERNAL_TIME) {
-        this.xmu = Time_1.Time.Now;
+      if (Time_1.Time.Now - this.ffu > CHECK_RAIL_INTERNAL_TIME) {
+        this.ffu = Time_1.Time.Now;
         for (const h of this.Ab1.RailInfo.ExchangeRailConfigs) {
-          this.Tou(h);
+          this.zou(h);
         }
       }
       t = ModelManager_1.ModelManager.InputModel?.GetAxisValues()?.get(InputEnums_1.EInputAxis.MoveRight);
@@ -634,7 +638,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     }
   }
-  Tou(t) {
+  zou(t) {
     if (t.NextRails.length !== 0) {
       let i = 0;
       i = t.MaxExchangeDistance ? t.MaxExchangeDistance * t.MaxExchangeDistance : this.Uj1.ChangeRailDistance * this.Uj1.ChangeRailDistance;
@@ -653,17 +657,17 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
             var l = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Tz) - GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Lz);
             var n = r < i && Math.abs(l) < e;
             let t = n;
-            if (!!n && !(this.fHo.FromUeVector(a.D_GetDirectionAtSplineInputKey(o, 1)), o = a.GetDistanceAlongSplineAtSplineInputKey(o), o = this.Rou(o, this.Ab1.Speed, this.Tz, this.Lz, this.fHo, true), t = this.bou(o[0], o[1], a))) {
+            if (!!n && !(this.fHo.FromUeVector(a.D_GetDirectionAtSplineInputKey(o, 1)), o = a.GetDistanceAlongSplineAtSplineInputKey(o), o = this.Zou(o, this.Ab1.Speed, this.Tz, this.Lz, this.fHo, true), t = this.Jou(o[0], o[1], a))) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Movement", 42, "[RailSlide] 轨道切入点在身后", ["NextRailId", s], ["SplineId", h.RailSplineEntityId]);
               }
             }
             o = this.Pb1.has(s);
-            if (!o && n && t && (this.Cgu(s, _.TriggerKey, false, h.RailSplineEntityId), Log_1.Log.CheckDebug())) {
+            if (!o && n && t && (this.fCu(s, _.TriggerKey, false, h.RailSplineEntityId), Log_1.Log.CheckDebug())) {
               Log_1.Log.Debug("Movement", 42, "[RailSlide] 进入切换轨道范围内", ["NextRailId", s], ["SplineId", h.RailSplineEntityId], ["在范围内", n], ["目标点在前方", t], ["DistSquared", r], ["height", l], ["ExchangeDistanceSquared", i], ["ExchangeHeight", e]);
             }
             if (!!o && (!n || !t)) {
-              this.Cgu(s, _.TriggerKey, true, h.RailSplineEntityId);
+              this.fCu(s, _.TriggerKey, true, h.RailSplineEntityId);
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Movement", 42, "[RailSlide] 离开切换轨道范围", ["NextRailId", s], ["SplineId", h.RailSplineEntityId], ["在范围内", n], ["目标点在前方", t], ["DistSquared", r], ["height", l], ["ExchangeDistanceSquared", i], ["ExchangeHeight", e]);
               }
@@ -673,7 +677,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     }
   }
-  ggu() {
+  mCu() {
     for (const t of this.Pb1) {
       if (t[1][0] === "Left") {
         this.Lie?.RemoveTag(1819726244);
@@ -686,13 +690,13 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
           Log_1.Log.Debug("Movement", 42, "[RailSlide] 移除Tag能够右跳");
         }
       }
-      this.l0u(t[1][1]);
+      this.apu(t[1][1]);
     }
     this.Pb1.clear();
   }
-  Cgu(t, i, e, s) {
+  fCu(t, i, e, s) {
     if (e) {
-      this.l0u(s);
+      this.apu(s);
       this.Pb1.delete(t);
       if (i === "Left") {
         this.Lie?.RemoveTag(1819726244);
@@ -720,7 +724,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       }
     }
   }
-  bou(t, i, e) {
+  Jou(t, i, e) {
     var s = e.GetSplineLength();
     if (s < t + i) {
       if (Log_1.Log.CheckDebug()) {
@@ -739,7 +743,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.Tz.SubtractionEqual(this.pHo);
     return this.Tz.DotProduct(this.fHo) > 0;
   }
-  Lou(t, i, e, s, h, a, o) {
+  enu(t, i, e, s, h, a, o) {
     var r = Vector_1.Vector.PointPlaneDist(a, h, this.Hte.ActorGravityDirectProxy);
     var l = Math.max(r, this.Hte.ScaledHalfHeight);
     var i = i * GRAVITY_ACCELERATION_RECIPROCAL;
@@ -782,7 +786,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       Log_1.Log.Debug("Movement", 42, "[RailSlide] 进入平抛轨道", ["EnterSpeed", h], ["VerticalSpeed", o], ["nearestInput", s], ["ActorLocation", this.Hte.ActorLocation], ["ClosestPoint", this.pHo], ["HEIGHT_LIMIT", HEIGHT_LIMIT]);
     }
     var s = t.GetDistanceAlongSplineAtSplineInputKey(s);
-    var [s, r] = this.Lou(h, o, s, t.GetSplineLength(), this.Lz, this.pHo, this.Tz);
+    var [s, r] = this.enu(h, o, s, t.GetSplineLength(), this.Lz, this.pHo, this.Tz);
     this.Lz.FromUeVector(t.D_GetLocationAtDistanceAlongSpline(s, 1));
     var l = new SplineCurve_1.InterpCurvePointVector(5);
     l.InVal = 1;
@@ -802,7 +806,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     }
     return [t, s, a];
   }
-  Rou(t, i, e, s, h, a) {
+  Zou(t, i, e, s, h, a) {
     var o = this.Uj1.JumpAcceleration;
     var r = this.Uj1.TargetSpeedForJump;
     var l = Math.abs((r - i) / o);
@@ -839,7 +843,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.fHo.FromUeVector(t.D_GetDirectionAtSplineInputKey(h, 1));
     var h = Vector_1.Vector.Dist(this.Lz, this.Tz);
     var o = t.GetSplineLength();
-    let r = this.Rou(a, i, this.Tz, this.Lz, this.fHo, false)[0];
+    let r = this.Zou(a, i, this.Tz, this.Lz, this.fHo, false)[0];
     if (r >= o) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Movement", 42, "[RailSlide] 进入轨道的点是最末尾的点", ["ActorLocation", this.Hte.ActorLocation], ["ClosestPoint", this.Lz], ["HEIGHT_LIMIT", HEIGHT_LIMIT]);
@@ -920,7 +924,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
         }
       }
     } else {
-      this.psu("MoveToTargetAlongSpline 结束轨道滑行");
+      this.Hsu("MoveToTargetAlongSpline 结束轨道滑行");
     }
   }
   P91(t, i, e, s) {
@@ -1015,7 +1019,7 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("AI", 42, "[RailSlide] 提前切换起跳状态", ["remainingTime", i], ["JumpBlendTime", this.Uj1.JumpBlendTime], ["cd", this.Uj1.ChangeRailCooldownTime]);
             }
-            this.ggu();
+            this.mCu();
             this.xb1 = this.Uj1.ChangeRailCooldownTime;
           }
           break;
@@ -1074,19 +1078,19 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     }
   }
   Fb1(t) {
-    if (this.h0u.has(t)) {
-      return this.h0u.get(t);
+    if (this.spu.has(t)) {
+      return this.spu.get(t);
     }
     var i = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t);
     if (i) {
       var e = (0, IComponent_1.getComponent)(i.ComponentsData, "SplineComponent");
       if (e && e.Option.Points) {
         if (!(e.Option.Points.length < 2)) {
-          this.h0u.set(t, [ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(t, this.Entity.Id, 1), i.Transform]);
+          this.spu.set(t, [ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(t, this.Entity.Id, 1), i.Transform]);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("AI", 42, "[RailSlide] LoadAndGetSplineAsset", ["SplineEntityId", t]);
           }
-          return this.h0u.get(t);
+          return this.spu.get(t);
         }
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("AI", 42, "[RailSlide] 群组巡逻样条点数量小于2", ["SplineEntityId", t]);
@@ -1098,8 +1102,8 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
       Log_1.Log.Error("AI", 42, "[RailSlide] 无法找到SplineEntityData", ["SplineEntityId", t]);
     }
   }
-  l0u(t) {
-    if (this.h0u.has(t) && (this.h0u.delete(t), ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(t, this.Entity.Id, 1), Log_1.Log.CheckDebug())) {
+  apu(t) {
+    if (this.spu.has(t) && (this.spu.delete(t), ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(t, this.Entity.Id, 1), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("AI", 42, "[RailSlide] ReleaseSplineAsset", ["SplineEntityId", t]);
     }
   }
@@ -1137,43 +1141,43 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     if (e?.IsValid()) {
       i = this.Hte.CreatureData.GetPbDataId();
       i = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i);
-      this.kZ1 = i === KATIXIYA_ROLE_ID;
-      return new RailSlideParams(e, this.kZ1);
+      this.heu = i === KATIXIYA_ROLE_ID;
+      return new RailSlideParams(e, this.heu);
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Movement", 42, "获取滑轨参数DA失败", ["DaPath", t], ["PbDataId", this.Hte?.CreatureData.GetPbDataId()]);
     }
   }
-  qZ1(t = false) {
-    if (this.BZ1) {
+  _eu(t = false) {
+    if (this.aeu) {
       if (t) {
-        if (this.OZ1) {
+        if (this.leu) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Movement", 42, "[RailSlide] 移除滑轨移动特效Buff", ["Handle", this.OZ1], ["ID", keepRailSlideCue[this.kZ1 ? 1 : 0]]);
+            Log_1.Log.Debug("Movement", 42, "[RailSlide] 移除滑轨移动特效Buff", ["Handle", this.leu], ["ID", keepRailSlideCue[this.heu ? 1 : 0]]);
           }
-          this.BZ1.RemoveCueByHandle(this.OZ1);
-          this.OZ1 = 0;
+          this.aeu.RemoveCueByHandle(this.leu);
+          this.leu = 0;
         }
       } else {
-        this.OZ1 = this.BZ1.AddCue(keepRailSlideCue[this.kZ1 ? 1 : 0]);
+        this.leu = this.aeu.AddCue(keepRailSlideCue[this.heu ? 1 : 0]);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Movement", 42, "[RailSlide] 添加滑轨移动特效Buff", ["Handle", this.OZ1], ["ID", keepRailSlideCue[this.kZ1 ? 1 : 0]]);
+          Log_1.Log.Debug("Movement", 42, "[RailSlide] 添加滑轨移动特效Buff", ["Handle", this.leu], ["ID", keepRailSlideCue[this.heu ? 1 : 0]]);
         }
       }
     }
   }
-  GZ1() {
-    if (this.BZ1 && (this.BZ1.AddCue(landRailSlideCue[this.kZ1 ? 1 : 0], {
+  ueu() {
+    if (this.aeu && (this.aeu.AddCue(landRailSlideCue[this.heu ? 1 : 0], {
       Instant: true
     }), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("Movement", 42, "[RailSlide] 触发滑轨落地特效Buff", ["ID", landRailSlideCue[this.kZ1 ? 1 : 0]]);
+      Log_1.Log.Debug("Movement", 42, "[RailSlide] 触发滑轨落地特效Buff", ["ID", landRailSlideCue[this.heu ? 1 : 0]]);
     }
   }
-  FZ1() {
-    if (this.BZ1 && (this.BZ1.AddCue(leaveRailSlideCue[this.kZ1 ? 1 : 0], {
+  ceu() {
+    if (this.aeu && (this.aeu.AddCue(leaveRailSlideCue[this.heu ? 1 : 0], {
       Instant: true
     }), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("Movement", 42, "[RailSlide] 触发离开滑轨特效Buff", ["ID", leaveRailSlideCue[this.kZ1 ? 1 : 0]]);
+      Log_1.Log.Debug("Movement", 42, "[RailSlide] 触发离开滑轨特效Buff", ["ID", leaveRailSlideCue[this.heu ? 1 : 0]]);
     }
   }
 };

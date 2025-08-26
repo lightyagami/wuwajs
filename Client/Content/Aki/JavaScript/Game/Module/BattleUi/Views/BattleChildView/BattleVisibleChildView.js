@@ -22,7 +22,7 @@ class BattleVisibleChildView extends BattleChildView_1.BattleChildView {
   }
   InitChildType(i = 0) {
     this.ChildType = i;
-    if (this.ChildType === 26) {
+    if (this.ChildType === 37) {
       this.BaseVisible = true;
       this.InnerVisibleState = 1;
     } else {
@@ -32,12 +32,15 @@ class BattleVisibleChildView extends BattleChildView_1.BattleChildView {
       this.ChildViewData.AddCallback(i, this.iJe);
     }
   }
-  ShowBattleVisibleChildView() {
+  ShowBattleVisibleChildView(i = false) {
     this.IsEnable = true;
     this.rJe(0, true);
-    var i = this.GetVisible();
-    this.SetActive(i);
-    if (i) {
+    var t = this.GetVisible();
+    if (!!t || !i) {
+      this.SetActive(t);
+    }
+    if (t) {
+      this.SetActive(true);
       this.OnShowBattleChildView();
     }
   }

@@ -30,26 +30,26 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(21035, this.Fft);
-    Net_1.Net.Register(25845, this.Vft);
-    Net_1.Net.Register(22562, this.Hft);
-    Net_1.Net.Register(29632, this.jft);
+    Net_1.Net.Register(25135, this.Fft);
+    Net_1.Net.Register(21306, this.Vft);
+    Net_1.Net.Register(26257, this.Hft);
+    Net_1.Net.Register(17206, this.jft);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21035);
-    Net_1.Net.UnRegister(25845);
-    Net_1.Net.UnRegister(22562);
-    Net_1.Net.UnRegister(29632);
+    Net_1.Net.UnRegister(25135);
+    Net_1.Net.UnRegister(21306);
+    Net_1.Net.UnRegister(26257);
+    Net_1.Net.UnRegister(17206);
   }
-  static RequestCalabashLevelReward(e) {
+  static RequestMultiCalabashLevelReward(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Calabash", 10, "请求领取幻象等级奖励");
     }
-    var a = Protocol_1.Aki.Protocol.xzn.create();
+    var a = Protocol_1.Aki.Protocol.i6u.create();
     a.F6n = e;
-    Net_1.Net.Call(27473, a, e => {
+    Net_1.Net.Call(29553, a, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15571);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29618);
       }
     });
   }
@@ -60,10 +60,10 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     });
     e = Protocol_1.Aki.Protocol.Gls.create();
     e.A8n = a;
-    Net_1.Net.Call(19467, e, e => {
+    Net_1.Net.Call(17462, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29349);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28221);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRecoveryResult, e);
         }
@@ -77,10 +77,10 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     });
     e = Protocol_1.Aki.Protocol.$m_.create();
     e.A8n = a;
-    Net_1.Net.Call(24321, e, e => {
+    Net_1.Net.Call(17298, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16040);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15143);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRecoveryBatchResult, e);
         }
@@ -91,11 +91,21 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     this.JumpToCalabashRootView("CalabashCollectTabView", e);
   }
   static JumpToCalabashRootView(e, a) {
-    e = {
-      TabViewName: e,
-      Param: a
-    };
-    UiManager_1.UiManager.OpenView("CalabashRootView", e);
+    let o = 10003;
+    if (e === "VisionRecoveryTabView") {
+      o = 10024001;
+    } else if (e === "VisionRefineTabView") {
+      o = 10083;
+    }
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(o)) {
+      e = {
+        TabViewName: e,
+        Param: a
+      };
+      UiManager_1.UiManager.OpenView("CalabashRootView", e);
+    } else {
+      ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Text_UnlockNotice_Text");
+    }
   }
   static RequestPhantomPolishRequest(e, a) {
     var o = Protocol_1.Aki.Protocol.Jrc.create();
@@ -104,10 +114,10 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Calabash", 75, "RequestPhantomPolishRequest", ["id", e], ["propItemId", a]);
     }
-    Net_1.Net.Call(24562, o, e => {
+    Net_1.Net.Call(23072, o, e => {
       if (e && e.xPs) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24748);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16854);
         } else {
           ModelManager_1.ModelManager.InventoryModel.UpdatePhantomItemData(e.xPs);
           ModelManager_1.ModelManager.PhantomBattleModel.UpdatePhantomBattleData(e.xPs);

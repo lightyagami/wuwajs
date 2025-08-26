@@ -22,74 +22,74 @@ const LEVEL_DIFF_COLOR_HARD = "#ff1e18cc";
 class MoraleMonsterLevelItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.ieu = undefined;
-    this.reu = undefined;
-    this.oeu = undefined;
+    this.Leu = undefined;
+    this.weu = undefined;
+    this.Aeu = undefined;
     this.yL1 = 1;
-    this.ujc = undefined;
+    this.vQu = undefined;
     this.SPe = undefined;
-    this.Dfu = (e, t, s, i) => {
-      this.seu(this.yL1);
+    this.wgu = (e, t, s, i) => {
+      this.xeu(this.yL1);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UITexture], [2, UE.UITexture]];
   }
   async OnCreateAsync() {
-    await this.neu(LEVEL_DIFF_SPRITE_EASY, 0);
-    await this.neu(LEVEL_DIFF_SPRITE_NORMAL, 1);
-    await this.neu(LEVEL_DIFF_SPRITE_HARD, 2);
+    await this.Peu(LEVEL_DIFF_SPRITE_EASY, 0);
+    await this.Peu(LEVEL_DIFF_SPRITE_NORMAL, 1);
+    await this.Peu(LEVEL_DIFF_SPRITE_HARD, 2);
   }
   OnStart() {
     super.OnStart();
-    this.reu = this.GetTexture(1);
-    this.oeu = this.GetTexture(2);
+    this.weu = this.GetTexture(1);
+    this.Aeu = this.GetTexture(2);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.Dfu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.wgu);
   }
   OnBeforeDestroy() {
-    this.ieu?.clear();
+    this.Leu?.clear();
     this.SPe?.Clear();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.Dfu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.wgu);
     super.OnBeforeDestroy();
   }
   SetMoraleLevel(e) {
     this.yL1 = e;
     this.GetArtText(0)?.SetText(e.toString());
-    this.seu(e);
+    this.xeu(e);
   }
-  seu(e) {
+  xeu(e) {
     e = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleLevelDiffType(e);
-    if (e !== this.ujc) {
-      this.ujc = e;
-      var t = this.ieu?.get(e);
+    if (e !== this.vQu) {
+      this.vQu = e;
+      var t = this.Leu?.get(e);
       if (t) {
-        this.reu?.SetTexture(t);
+        this.weu?.SetTexture(t);
       }
       this.SPe?.StopCurrentSequence(false, true);
       switch (e) {
         case 0:
-          this.oeu?.SetColor(UE.Color.FromHex(LEVEL_DIFF_COLOR_EASY));
+          this.Aeu?.SetColor(UE.Color.FromHex(LEVEL_DIFF_COLOR_EASY));
           this.SPe?.PlaySequencePurely("Start01");
           break;
         case 1:
-          this.oeu?.SetColor(UE.Color.FromHex(LEVEL_DIFF_COLOR_NORMAL));
+          this.Aeu?.SetColor(UE.Color.FromHex(LEVEL_DIFF_COLOR_NORMAL));
           this.SPe?.PlaySequencePurely("Start03");
           break;
         case 2:
-          this.oeu?.SetColor(UE.Color.FromHex(LEVEL_DIFF_COLOR_HARD));
+          this.Aeu?.SetColor(UE.Color.FromHex(LEVEL_DIFF_COLOR_HARD));
           this.SPe?.PlaySequencePurely("Start02");
       }
     }
   }
-  async neu(t, s) {
+  async Peu(t, s) {
     const i = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Texture, e => {
       if (e) {
-        if (this.ieu === undefined) {
-          this.ieu = new Map();
+        if (this.Leu === undefined) {
+          this.Leu = new Map();
         }
-        this.ieu.set(s, e);
+        this.Leu.set(s, e);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 67, "怪物士气等级差图标加载失败", ["path", t]);
       }

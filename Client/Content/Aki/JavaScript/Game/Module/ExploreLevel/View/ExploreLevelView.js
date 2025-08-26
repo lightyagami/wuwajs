@@ -85,9 +85,14 @@ class ExploreLevelView extends UiTickViewBase_1.UiTickViewBase {
       return e;
     };
     this.CVt = e => {
-      var t = e.AreaId;
-      var i = e.Progress;
-      ExploreLevelController_1.ExploreLevelController.ExploreScoreRewardRequest(t, i);
+      var t = this.fVt.GetVisibleExploreScoreDataList();
+      const i = {};
+      t.forEach(e => {
+        if (e.CanReceive()) {
+          i[e.AreaId] = e.Progress;
+        }
+      });
+      ExploreLevelController_1.ExploreLevelController.MultiExploreScoreRewardRequest(i);
       ExploreLevelController_1.ExploreLevelController.CountryExploreScoreInfoRequest(e.CountryId, () => {
         if (!e.GetIsReceived()) {
           this.PHs = this.fVt.GetExploreScore();

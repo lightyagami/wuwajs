@@ -67,15 +67,15 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     this.Hte = undefined;
     this.Gce = undefined;
     this.Lie = undefined;
-    this.PIu = undefined;
-    this.xIu = false;
-    this.UIu = undefined;
+    this.HIu = undefined;
+    this.$Iu = false;
+    this.WIu = undefined;
     this.Aia = undefined;
-    this.X2u = false;
+    this.f4u = false;
     this.cz = undefined;
-    this.NGu = 0;
-    this.VGu = 0;
-    this.DIu = (t, e) => {
+    this.g4u = 0;
+    this.C4u = 0;
+    this.QIu = (t, e) => {
       if (e) {
         this.SetMorphType(1);
       } else {
@@ -88,17 +88,17 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
-    this.C6_ = this.Entity.GetComponent(219);
+    this.C6_ = this.Entity.GetComponent(220);
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(178);
-    this.Lie = this.Entity.GetComponent(205);
+    this.Gce = this.Entity.GetComponent(179);
+    this.Lie = this.Entity.GetComponent(206);
     this.p6_();
     if (this.qQ_) {
       if (this.Lie) {
-        this.PIu = this.Lie.ListenForTagAddOrRemove(-1867735064, this.DIu);
+        this.HIu = this.Lie.ListenForTagAddOrRemove(-1867735064, this.QIu);
       }
       if (this.Hte?.IsRoleAndCtrlByMe) {
-        this.Y2u();
+        this.p4u();
       }
       this.cz = Vector_1.Vector.Create();
     }
@@ -110,8 +110,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       if (this.m6_ !== 0 && (t = this.GetMorphCameraConfig())) {
         CameraController_1.CameraController.UnloadCharacterCameraConfig(t);
       }
-      this.PIu?.EndTask();
-      this.PIu = undefined;
+      this.HIu?.EndTask();
+      this.HIu = undefined;
       this.f6_ = undefined;
       this.g6_ = undefined;
       this.gRc = undefined;
@@ -119,7 +119,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       this.pRc = undefined;
       this.vRc = undefined;
       this.Aia = undefined;
-      this.X2u = false;
+      this.f4u = false;
       this.cz = undefined;
       this.qQ_ = false;
     }
@@ -354,8 +354,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     return this.pRc?.get(this.m6_)?.get(t);
   }
   GetCenterActorLocationOffset() {
-    if (this.IsMorphing() && this.UIu) {
-      return this.UIu.ToUeVector();
+    if (this.IsMorphing() && this.WIu) {
+      return this.WIu.ToUeVector();
     }
   }
   SetMorphType(t) {
@@ -365,8 +365,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       if (this.v6_(t)) {
         if (e = this.f6_?.get(t)) {
           if (e.SkeletalMesh && e.AnimClass) {
-            CharacterMorphComponent_1.BIu.Start();
-            this.kIu();
+            CharacterMorphComponent_1.KIu.Start();
+            this.XIu();
             CombatLog_1.CombatLog.Info("Skill", this.Entity, "设置形态成功, 开始切换", ["MorphType", t]);
             i = this.m6_;
             this.m6_ = t;
@@ -376,13 +376,13 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
             this.EIe?.SetModelConfig(e.ModelId);
             this.Hte?.UpdateModelResPath();
             this.pW_();
-            this.OIu();
+            this.YIu();
             this.vW_();
             this.OQ_();
             this.gZ_();
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this.Entity, t, i);
             EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this.Entity, t, i);
-            CharacterMorphComponent_1.BIu.Stop();
+            CharacterMorphComponent_1.KIu.Stop();
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Battle", 67, "[CharacterMorphComponent]设置形态失败, 对应形态数据有误", ["MorphType", t], ["SkeletalMesh", e.SkeletalMesh], ["AnimClass", e.AnimClass]);
           }
@@ -403,7 +403,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       }
     }
   }
-  OIu() {
+  YIu() {
     var t;
     var e;
     var i;
@@ -430,10 +430,10 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       var h;
       var s = e.IsRoleAndCtrlByMe;
       if (this.m6_ === 0) {
-        t = this.VGu - e.HalfHeight;
-        e.SetDefaultRadiusAndHalfHeight(this.NGu, this.VGu);
+        t = this.C4u - e.HalfHeight;
+        e.SetDefaultRadiusAndHalfHeight(this.g4u, this.C4u);
         if (IS_ENABLE_OPTIMIZE) {
-          e.SetRadiusAndHalfHeight(this.NGu, this.VGu, false, false);
+          e.SetRadiusAndHalfHeight(this.g4u, this.C4u, false, false);
         } else {
           e.ResetCapsuleRadiusAndHeight(true);
         }
@@ -454,11 +454,11 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
               e.SetRadiusAndHalfHeight(r, o, true, true);
             }
             if (s && (h = e.DefaultHalfHeight, i = e.DefaultRadius, h > 0) && i > 0) {
-              this.UIu ||= Vector_1.Vector.Create(0, 0, -(o + r - h - i));
-              ControllerHolder_1.ControllerHolder.GameBudgetInterfaceController.SetCenterActorLocationOffset(this.UIu.ToUeVector());
+              this.WIu ||= Vector_1.Vector.Create(0, 0, -(o + r - h - i));
+              ControllerHolder_1.ControllerHolder.GameBudgetInterfaceController.SetCenterActorLocationOffset(this.WIu.ToUeVector());
             }
-            this.VGu = e.DefaultHalfHeight;
-            this.NGu = e.DefaultRadius;
+            this.C4u = e.DefaultHalfHeight;
+            this.g4u = e.DefaultRadius;
             e.SetDefaultRadiusAndHalfHeight(r, o);
           } else if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 67, "[CharacterMorphComponent]更新胶囊体失败, 参数非法", ["Radius", r], ["HalfHeight", o]);
@@ -486,11 +486,11 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       }
     }
   }
-  kIu() {
+  XIu() {
     var t;
     var e;
-    if (this.m6_ === 0 && !this.xIu) {
-      this.xIu = true;
+    if (this.m6_ === 0 && !this.$Iu) {
+      this.$Iu = true;
       if ((t = this.Gce?.CharacterMovement) && (this.HasComponentFloatParam(1, MOVE_COMPONENT, MOVE_MAINTAIN_HORIZONTAL_GROUND_VELOCITY) && this.SetComponentFloatParam(0, MOVE_COMPONENT, MOVE_MAINTAIN_HORIZONTAL_GROUND_VELOCITY, Number(t.bMaintainHorizontalGroundVelocity)), this.HasComponentFloatParam(1, MOVE_COMPONENT, MOVE_DEFAULT_WATER_MOVEMENT_MODE))) {
         this.SetComponentFloatParam(0, MOVE_COMPONENT, MOVE_DEFAULT_WATER_MOVEMENT_MODE, Number(t.DefaultWaterMovementMode));
       }
@@ -500,22 +500,22 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       }
     }
   }
-  Y2u() {
+  p4u() {
     var t;
-    if (!this.Aia && !this.X2u) {
+    if (!this.Aia && !this.f4u) {
       if (t = this.GetMorphData(1)?.InputComponentClass?.AssetPathName.toString()) {
-        this.X2u = true;
+        this.f4u = true;
         ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
           var e = this.Hte?.Actor;
           if (e && ((t = e.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false)).OwnerActor = e, this.Aia = t, this.m6_ === 1) && this.Entity.GetComponent(62)) {
             ControllerHolder_1.ControllerHolder.InputController.GetInputLayer(this.Entity.Id, 1)?.SetBpInputComp(t);
           }
-          this.X2u = false;
+          this.f4u = false;
         });
       }
     }
   }
 };
-CharacterMorphComponent.BIu = Stats_1.Stat.Create("[CharacterMorphComponent]SetMorphType");
-CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(279)], CharacterMorphComponent);
+CharacterMorphComponent.KIu = Stats_1.Stat.Create("[CharacterMorphComponent]SetMorphType");
+CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(282)], CharacterMorphComponent);
 exports.CharacterMorphComponent = CharacterMorphComponent; //# sourceMappingURL=CharacterMorphComponent.js.map

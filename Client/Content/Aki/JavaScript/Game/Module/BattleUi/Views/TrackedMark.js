@@ -192,7 +192,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
         this.IsForceHideDirection = true;
         this.jCt = true;
         this.HCt = true;
-        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(160);
+        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(161);
         this.KCt = (i?.AudioPointNearRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.QCt = (i?.AudioPointMiddleRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.XCt = (i?.AudioPointFarRadius ?? 0) * MapDefine_1.FLOAT_0_01;
@@ -439,6 +439,9 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
     return new Vector2D_1.Vector2D(t.X + s * Math.cos(i), t.Y + s * Math.sin(i));
   }
   tgt() {
+    if (this.TempTrackPosition?.IsNearlyZero()) {
+      return false;
+    }
     if (this.pCt || this.Xq1) {
       return false;
     }

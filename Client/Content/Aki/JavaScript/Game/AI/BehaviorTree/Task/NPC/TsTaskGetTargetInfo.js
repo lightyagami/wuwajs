@@ -51,7 +51,7 @@ class TsTaskGetTargetInfo extends TsTaskAbortImmediatelyBase_1.default {
       if (t) {
         e = t.ActorLocation;
         ControllerHolder_1.ControllerHolder.BlackboardController.SetVectorValueByGlobal(this.TsPositionKey, e.X, e.Y, e.Z);
-        if (e = t.Entity.GetComponent(172)) {
+        if (e = t.Entity.GetComponent(173)) {
           e = e.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
           ControllerHolder_1.ControllerHolder.BlackboardController.SetIntValueByWorld(this.TsHpKey, e);
         }

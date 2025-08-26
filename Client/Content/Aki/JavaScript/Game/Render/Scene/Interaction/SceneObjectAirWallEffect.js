@@ -12,7 +12,7 @@ const TraceElementCommon_1 = require("../../../../Core/Utils/TraceElementCommon"
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../GlobalData");
-const SceneItemReferenceComponent_1 = require("../../../NewWorld/SceneItem/SceneItemReferenceComponent");
+const RefCompAirWallController_1 = require("../../../NewWorld/SceneItem/RefCompController/RefCompAirWallController");
 const ColorUtils_1 = require("../../../Utils/ColorUtils");
 const EffectGlobal_1 = require("../../Effect/EffectGlobal");
 const PROFILE_KEY = "SceneObjectAirWallEffect_Update";
@@ -72,20 +72,20 @@ class SceneObjectAirWallEffect {
       TraceElementCommon_1.TraceElementCommon.SetStartLocation(t, this.BKs);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(t, this.wKs);
       var r = TraceElementCommon_1.TraceElementCommon.SphereTrace(t, PROFILE_KEY);
-      const c = t.HitResult;
-      if (r && c?.bBlockingHit) {
-        const c = t.HitResult;
-        var o = c.GetHitCount();
+      const n = t.HitResult;
+      if (r && n?.bBlockingHit) {
+        const n = t.HitResult;
+        var o = n.GetHitCount();
         for (let e = 0; e < o; e++) {
           var i;
-          var n;
-          var s = c.Actors.Get(e);
-          if (s.Tags.FindIndex(SceneItemReferenceComponent_1.AIR_WALL) !== -1) {
+          var l;
+          var s = n.Actors.Get(e);
+          if (s.Tags.FindIndex(RefCompAirWallController_1.AIR_WALL) !== -1) {
             i = Vector_1.Vector.Create();
-            TraceElementCommon_1.TraceElementCommon.GetImpactPoint(c, e, i);
-            n = Vector_1.Vector.Create();
-            TraceElementCommon_1.TraceElementCommon.GetImpactNormal(c, e, n);
-            EventSystem_1.EventSystem.EmitWithTarget(s, EventDefine_1.EEventName.BulletHitAirWall, s, i, n);
+            TraceElementCommon_1.TraceElementCommon.GetImpactPoint(n, e, i);
+            l = Vector_1.Vector.Create();
+            TraceElementCommon_1.TraceElementCommon.GetImpactNormal(n, e, l);
+            EventSystem_1.EventSystem.EmitWithTarget(s, EventDefine_1.EEventName.BulletHitAirWall, s, i, l);
           }
         }
       }

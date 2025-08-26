@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.NavigationToggle = undefined;
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiNavigationViewManager_1 = require("../UiNavigationViewManager");
 const NavigationSelectableBase_1 = require("./NavigationSelectableBase");
@@ -48,6 +49,17 @@ class NavigationToggle extends NavigationSelectableBase_1.NavigationSelectableBa
     }
   }
   OnToggleClick(e) {}
+  ScrollToSelectableComponent(e) {
+    if (this.Listener.HasDynamicScrollView()) {
+      TimerSystem_1.GameplayTimerSystem.Next(() => {
+        if (this.Listener.ScrollView) {
+          this.Listener.ScrollView.ScrollToSelectableComponent(e);
+        }
+      });
+    } else if (this.Listener.ScrollView) {
+      this.Listener.ScrollView.ScrollToSelectableComponent(e);
+    }
+  }
   NeedAddToggleClick() {
     return this.GetType() !== "Toggle";
   }
@@ -67,7 +79,7 @@ class NavigationToggle extends NavigationSelectableBase_1.NavigationSelectableBa
   }
   OnHandlePointerSelect(e) {
     var t;
-    return !!this.OnHandlePointerSelectInheritance(e) && ((t = this.Selectable).ToggleState === 0 ? (e && e.inputType === 1 && t.bToggleOnSelect && t.SetToggleState(1, true), this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t)) : t.ToggleState === 2 ? (this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t), e && e.inputType === 1 && t.bToggleOnSelect && ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulateClickItem(t.RootUIComp)) : this.Listener.ScrollView && this.Listener.ScrollView.ScrollToSelectableComponent(t), !!this.IsAllowNavigationByGroup());
+    return !!this.OnHandlePointerSelectInheritance(e) && ((t = this.Selectable).ToggleState === 0 ? (e && e.inputType === 1 && t.bToggleOnSelect && t.SetToggleState(1, true), this.ScrollToSelectableComponent(t)) : t.ToggleState === 2 ? (this.ScrollToSelectableComponent(t), e && e.inputType === 1 && t.bToggleOnSelect && ControllerHolder_1.ControllerHolder.UiNavigationNewController.SimulateClickItem(t.RootUIComp)) : this.ScrollToSelectableComponent(t), !!this.IsAllowNavigationByGroup());
   }
   OnHandlePointerSelectInheritance(e) {
     return true;

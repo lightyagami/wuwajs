@@ -69,9 +69,9 @@ class SceneItemManipulableLevitateCastState extends SceneItemManipulableCastStat
   _Qs() {
     var t = Protocol_1.Aki.Protocol._$s.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.SceneItem.ActorComp.CreatureData.GetCreatureDataId());
-    Net_1.Net.Call(20820, t, t => {
+    Net_1.Net.Call(16219, t, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20805);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18223);
       }
     });
   }

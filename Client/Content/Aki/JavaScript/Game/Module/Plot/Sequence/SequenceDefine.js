@@ -62,40 +62,40 @@ class PlotSubtitleConfig {
 exports.PlotSubtitleConfig = PlotSubtitleConfig;
 class SequenceRenderSettings {
   static SetupSequenceSetting() {
-    this.Rnu.set(0, true);
-    this.Rnu.set(1, true);
-    this.Rnu.set(2, true);
-    this.Rnu.set(3, true);
-    this.Rnu.set(4, true);
-    this.Lnu.set(0, false);
-    this.Lnu.set(1, true);
-    this.Lnu.set(2, true);
-    this.Lnu.set(3, true);
-    this.Lnu.set(4, true);
-    this.wnu.set(0, false);
-    this.wnu.set(1, true);
-    this.wnu.set(2, true);
-    this.wnu.set(3, true);
-    this.wnu.set(4, true);
-    this.Anu.set(0, true);
-    this.Anu.set(1, true);
-    this.Anu.set(2, true);
-    this.Anu.set(3, true);
-    this.Anu.set(4, true);
+    this.Znu.set(0, true);
+    this.Znu.set(1, true);
+    this.Znu.set(2, true);
+    this.Znu.set(3, true);
+    this.Znu.set(4, true);
+    this.esu.set(0, false);
+    this.esu.set(1, true);
+    this.esu.set(2, true);
+    this.esu.set(3, true);
+    this.esu.set(4, true);
+    this.tsu.set(0, false);
+    this.tsu.set(1, true);
+    this.tsu.set(2, true);
+    this.tsu.set(3, true);
+    this.tsu.set(4, true);
+    this.isu.set(0, true);
+    this.isu.set(1, true);
+    this.isu.set(2, true);
+    this.isu.set(3, true);
+    this.isu.set(4, true);
   }
   static GetTexureStreamingEnable(t) {
     if (Info_1.Info.IsPcPlatform()) {
-      return this.Lnu.get(t) ?? true;
+      return this.esu.get(t) ?? true;
     } else if (Info_1.Info.IsAndroidPlatform()) {
-      return !UE.KuroStaticLibrary.IsLowMemoryDevice() && (this.Rnu.get(t) ?? true);
+      return !UE.KuroStaticLibrary.IsLowMemoryDevice() && (this.Znu.get(t) ?? true);
     } else if (Info_1.Info.IsIosPlatform()) {
-      return !UE.KuroStaticLibrary.IsLowMemoryDevice() && (this.wnu.get(t) ?? true);
+      return !UE.KuroStaticLibrary.IsLowMemoryDevice() && (this.tsu.get(t) ?? true);
     } else {
-      return !Info_1.Info.IsGamepadPlatform() || (this.Anu.get(t) ?? true);
+      return !Info_1.Info.IsGamepadPlatform() || (this.isu.get(t) ?? true);
     }
   }
 }
-(exports.SequenceRenderSettings = SequenceRenderSettings).Lnu = new Map();
-SequenceRenderSettings.Rnu = new Map();
-SequenceRenderSettings.wnu = new Map();
-SequenceRenderSettings.Anu = new Map(); //# sourceMappingURL=SequenceDefine.js.map
+(exports.SequenceRenderSettings = SequenceRenderSettings).esu = new Map();
+SequenceRenderSettings.Znu = new Map();
+SequenceRenderSettings.tsu = new Map();
+SequenceRenderSettings.isu = new Map(); //# sourceMappingURL=SequenceDefine.js.map

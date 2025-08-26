@@ -107,6 +107,9 @@ class UiShow {
   get AllowAutoMoving() {
     return this.allowautomoving();
   }
+  get FunctionCondition() {
+    return this.functioncondition();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -147,12 +150,12 @@ class UiShow {
     return this.obstructui(t);
   }
   obstructui(t, i) {
-    var e = this.J7.__offset(this.z7, 12);
-    var e = e ? this.J7.__string(this.J7.__vector(this.z7 + e) + t * 4, i) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var s = this.J7.__offset(this.z7, 12);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return e;
+    return s;
   }
   obstructuiLength() {
     var t = this.J7.__offset(this.z7, 12);
@@ -337,6 +340,14 @@ class UiShow {
   allowautomoving() {
     var t = this.J7.__offset(this.z7, 66);
     return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  functioncondition() {
+    var t = this.J7.__offset(this.z7, 68);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.UiShow = UiShow;

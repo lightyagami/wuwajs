@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.RenderModuleConfig = exports.RenderStats = undefined;
 const Info_1 = require("../../../Core/Common/Info");
 const Stats_1 = require("../../../Core/Common/Stats");
+const LevelCustomPrimitiveDataAll_1 = require("../../../Core/Define/ConfigQuery/LevelCustomPrimitiveDataAll");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class RenderStats {
   static Init() {
@@ -114,6 +115,28 @@ RenderStats.StatCharMaterialControllerUpdateCustomMaterialEffect = undefined;
 RenderStats.StatCharMaterialControllerUpdateHairReplace = undefined;
 RenderStats.StatCharMaterialControllerUpdateMaterialReplace = undefined;
 RenderStats.StatSceneInteractionActor = undefined;
-class RenderModuleConfig extends ConfigBase_1.ConfigBase {}
+class RenderModuleConfig extends ConfigBase_1.ConfigBase {
+  constructor() {
+    super(...arguments);
+    this.LevelCustomPrimitiveData = undefined;
+  }
+  OnInit() {
+    this.Kdd();
+    return true;
+  }
+  OnClear() {
+    this.LevelCustomPrimitiveData?.clear();
+    return !(this.LevelCustomPrimitiveData = undefined);
+  }
+  Kdd() {
+    this.LevelCustomPrimitiveData = new Map();
+    var t = LevelCustomPrimitiveDataAll_1.configLevelCustomPrimitiveDataAll.GetConfigList();
+    if (t) {
+      for (const e of t) {
+        this.LevelCustomPrimitiveData.set(e.PbDataId, e);
+      }
+    }
+  }
+}
 exports.RenderModuleConfig = RenderModuleConfig;
 //# sourceMappingURL=RenderModuleConfig.js.map

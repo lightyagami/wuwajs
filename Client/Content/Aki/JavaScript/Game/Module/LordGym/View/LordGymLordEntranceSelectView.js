@@ -79,11 +79,21 @@ class LordGymLordEntranceSelectView extends UiViewBase_1.UiViewBase {
         this.lqe.SetCloseCallBack(this.AMo);
         this.lqe.SetTitleByTextIdAndArgNew(e.Title);
         this.lqe.SetHelpCallBack(this.dpt);
-        this.SelectLordEntranceByIndex(0);
+        let t = 0;
+        var r = ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId;
+        if (r > 0) {
+          for (let e = 0; e < this.Kxl.length; e++) {
+            if (this.Kxl[e] === r) {
+              t = e;
+              break;
+            }
+          }
+        }
+        this.SelectLordEntranceByIndex(t);
         this.RefreshLordGymCurrency();
-        var t = ModelManager_1.ModelManager.LordGymModel;
-        for (const r of this.Kxl) {
-          t.RecordNewLordGymEntrance(r);
+        var i = ModelManager_1.ModelManager.LordGymModel;
+        for (const o of this.Kxl) {
+          i.RecordNewLordGymEntrance(o);
         }
       }
     }

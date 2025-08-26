@@ -16,14 +16,14 @@ class DailyActivityController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(27517, DailyActivityController.Ukt);
-    Net_1.Net.Register(15004, DailyActivityController.Akt);
-    Net_1.Net.Register(24402, DailyActivityController.Pkt);
+    Net_1.Net.Register(21059, DailyActivityController.Ukt);
+    Net_1.Net.Register(26268, DailyActivityController.Akt);
+    Net_1.Net.Register(27209, DailyActivityController.Pkt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27517);
-    Net_1.Net.UnRegister(15004);
-    Net_1.Net.UnRegister(24402);
+    Net_1.Net.UnRegister(21059);
+    Net_1.Net.UnRegister(26268);
+    Net_1.Net.UnRegister(27209);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLoadingNetDataDone, this.xkt);
@@ -35,27 +35,27 @@ class DailyActivityController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestDailyActivityData() {
     var e = Protocol_1.Aki.Protocol.tss.create();
-    var e = await Net_1.Net.CallAsync(18811, e);
+    var e = await Net_1.Net.CallAsync(19860, e);
     return !!e && (ModelManager_1.ModelManager.DailyActivityModel.RefreshDailyActivityData(e.Bxs), true);
   }
   static RequestDailyActivityTaskReward(e) {
     var t = Protocol_1.Aki.Protocol.sss.create();
     t.B6n = e;
-    Net_1.Net.Call(20001, t, e => {
+    Net_1.Net.Call(16824, t, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21266);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24777);
       }
     });
   }
   static RequestDailyActivityReward(e) {
     var t = Protocol_1.Aki.Protocol.hss.create();
     t.BVn = e;
-    Net_1.Net.Call(16665, t, e => {
+    Net_1.Net.Call(22091, t, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.DailyActivityModel.RefreshActivityInfo(e.BVn);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23999);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29421);
         }
       }
     });

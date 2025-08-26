@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, o, i, e) {
   var a;
-  var n = arguments.length;
-  var s = n < 3 ? o : e === null ? e = Object.getOwnPropertyDescriptor(o, i) : e;
+  var s = arguments.length;
+  var n = s < 3 ? o : e === null ? e = Object.getOwnPropertyDescriptor(o, i) : e;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, o, i, e);
+    n = Reflect.decorate(t, o, i, e);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
       if (a = t[h]) {
-        s = (n < 3 ? a(s) : n > 3 ? a(o, i, s) : a(o, i)) || s;
+        n = (s < 3 ? a(n) : s > 3 ? a(o, i, n) : a(o, i)) || n;
       }
     }
   }
-  if (n > 3 && s) {
-    Object.defineProperty(o, i, s);
+  if (s > 3 && n) {
+    Object.defineProperty(o, i, n);
   }
-  return s;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -42,32 +42,32 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
     this.StartDay = 0;
     this.TagId = 0;
     this.Count = 1;
-    this.IsRemove = false;
     this.Income = 0;
     this.DailySaleData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(3);
     this.TipShowBuffList = [];
-    this.x9c = [];
+    this.MKu = [];
     this.BuffMap = new Map();
     this.TagData = new FloroRanchTagData_1.FloroRanchTagData();
+    this.Qnd = false;
   }
   RefreshEntityData(t) {
-    this.EntityId = t.Ziu;
+    this.EntityId = t.Tru;
     this.EntityType = t.h5n;
     this.LastPoint = this.Point;
     this.Point = t.Eps;
     this.ConfigId = t.s5n;
-    this.StartStage = t.eru;
-    this.StartDay = t.tru;
+    this.StartStage = t.bru;
+    this.StartDay = t.Rru;
     this.TagId = t.m5n;
     this.TagData.SetTagId(this.TagId);
-    this.lJ1(t.sru);
+    this.BJ1(t.Uru);
     this.Count = t.D8n;
-    this.DailySaleData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.Sjc)));
+    this.DailySaleData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.u7u)));
   }
-  lJ1(t) {
+  BJ1(t) {
     this.BuffMap.clear();
     this.TipShowBuffList.length = 0;
-    this.x9c.length = 0;
+    this.MKu.length = 0;
     for (const i of t) {
       var o = new FloroRanchBuffData_1.FloroRanchBuffData();
       o.RefreshBuffData(i);
@@ -76,19 +76,19 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
     }
   }
   UpdateBuff(t) {
-    if (t.h5n === Protocol_1.Aki.Protocol.jyu.Proto_BuffOpAdd) {
-      this.AddBuff(t.gSu);
-    } else if (t.h5n === Protocol_1.Aki.Protocol.jyu.Proto_BuffOpRemove) {
-      this.RemoveBuff(t.gSu);
+    if (t.h5n === Protocol_1.Aki.Protocol.GSu.Proto_BuffOpAdd) {
+      this.AddBuff(t.C7c);
+    } else if (t.h5n === Protocol_1.Aki.Protocol.GSu.Proto_BuffOpRemove) {
+      this.RemoveBuff(t.C7c);
     } else {
-      this.RefreshBuff(t.gSu);
+      this.RefreshBuff(t.C7c);
     }
   }
   AddBuff(t) {
-    var o = this.BuffMap.get(t.Ziu);
+    var o = this.BuffMap.get(t.Tru);
     if (o) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is already exist!", ["Entity", this.Info()], ["BuffId", o.GetConfigId()], ["BuffInstanceId", o.GetInstanceId()], ["AddBuffInstanceId", t.Ziu]);
+        Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is already exist!", ["Entity", this.Info()], ["BuffId", o.GetConfigId()], ["BuffInstanceId", o.GetInstanceId()], ["AddBuffInstanceId", t.Tru]);
       }
     } else {
       (o = new FloroRanchBuffData_1.FloroRanchBuffData()).RefreshBuffData(t);
@@ -97,25 +97,25 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
     }
   }
   RemoveBuff(t) {
-    var o = this.BuffMap.get(t.Ziu);
+    var o = this.BuffMap.get(t.Tru);
     if (o) {
       this.BuffMap.delete(o.GetInstanceId());
       if (o.IsShowOnTip) {
         this.TipShowBuffList.splice(this.TipShowBuffList.indexOf(o), 1);
       }
       if (o.IsShowEffect) {
-        this.x9c.splice(this.x9c.indexOf(o), 1);
+        this.MKu.splice(this.MKu.indexOf(o), 1);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is not exist!", ["Entity", this.Info()], ["BuffId", t.s5n], ["BuffInstanceId", t.Ziu]);
+      Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is not exist!", ["Entity", this.Info()], ["BuffId", t.s5n], ["BuffInstanceId", t.Tru]);
     }
   }
   RefreshBuff(t) {
-    var o = this.BuffMap.get(t.Ziu);
+    var o = this.BuffMap.get(t.Tru);
     if (o) {
       o.RefreshBuffData(t);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is not exist!", ["Entity", this.Info()], ["BuffId", t.s5n], ["BuffInstanceId", t.Ziu]);
+      Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is not exist!", ["Entity", this.Info()], ["BuffId", t.s5n], ["BuffInstanceId", t.Tru]);
     }
   }
   AddBuffDataToShowList(t) {
@@ -123,12 +123,12 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
       this.TipShowBuffList.push(t);
     }
     if (t.IsShowEffect) {
-      this.x9c.push(t);
+      this.MKu.push(t);
     }
   }
   GetMinRemindDayBuff() {
-    if (this.x9c.length !== 0) {
-      return this.x9c.reduce((t, o) => o.RemindDay < t.RemindDay ? o : t, this.x9c[0]);
+    if (this.MKu.length !== 0) {
+      return this.MKu.reduce((t, o) => o.RemindDay < t.RemindDay ? o : t, this.MKu[0]);
     }
   }
   Info() {
@@ -137,8 +137,11 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
   DebugInfo() {
     return "EntityId: " + this.EntityId;
   }
+  Remove() {
+    this.Qnd = true;
+  }
   get IsValid() {
-    return !this.IsRemove;
+    return !this.Qnd;
   }
 };
 FloroRanchEntityDataComponent = __decorate([(0, FloroRanchComponentDefine_1.RegisterFloroRanchEntityComponent)(0)], FloroRanchEntityDataComponent);

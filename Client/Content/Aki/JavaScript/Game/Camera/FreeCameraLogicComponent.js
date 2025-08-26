@@ -74,7 +74,7 @@ let FreeCameraLogicComponent = FreeCameraLogicComponent_1 = class FreeCameraLogi
     return this.ZPr?.CameraActor;
   }
   OnInit() {
-    this.ZPr = this.Entity.GetComponent(287);
+    this.ZPr = this.Entity.GetComponent(291);
     return true;
   }
   InitConfig(t) {
@@ -285,5 +285,5 @@ let FreeCameraLogicComponent = FreeCameraLogicComponent_1 = class FreeCameraLogi
     return MathUtils_1.MathUtils.Clamp(t, i, s);
   }
 };
-FreeCameraLogicComponent = FreeCameraLogicComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(288)], FreeCameraLogicComponent);
+FreeCameraLogicComponent = FreeCameraLogicComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(292)], FreeCameraLogicComponent);
 exports.FreeCameraLogicComponent = FreeCameraLogicComponent; //# sourceMappingURL=FreeCameraLogicComponent.js.map

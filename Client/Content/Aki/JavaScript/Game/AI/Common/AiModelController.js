@@ -29,6 +29,7 @@ class AiModelController extends ControllerBase_1.ControllerBase {
       }
     }
     this.Dte();
+    this.Model.UpdateEntityLookAt();
   }
   static Dte() {
     for (var [, o] of this.Model.HatredGroups) {

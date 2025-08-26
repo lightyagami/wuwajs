@@ -64,6 +64,9 @@ class MonsterDetection {
   get MonsterInfoId() {
     return this.monsterinfoid();
   }
+  get NightMareDetectionId() {
+    return this.nightmaredetectionid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -221,6 +224,14 @@ class MonsterDetection {
   }
   monsterinfoid() {
     var t = this.J7.__offset(this.z7, 38);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  nightmaredetectionid() {
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

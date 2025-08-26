@@ -172,6 +172,9 @@ class TabComponentWithCaptionItem extends UiPanelBase_1.UiPanelBase {
   SetTitleIconVisible(t) {
     this.lqe?.SetTitleIconVisible(t);
   }
+  GetCostContent() {
+    return this.lqe?.GetCostContent();
+  }
   SetScrollViewVisible(t) {
     this.GetScrollViewWithScrollbar(1).RootUIComp.SetUIActive(t);
   }

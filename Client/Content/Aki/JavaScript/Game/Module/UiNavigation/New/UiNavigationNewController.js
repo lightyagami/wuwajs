@@ -119,7 +119,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     return !!e && e.SimulateClickButton(UiNavigationDefine_1.GAMEPAD_POINT_ID, i, t);
   }
   static Dje(i) {
-    if (!UiLayer_1.UiLayer.IsInMask()) {
+    if (!this.Mud()) {
       if (this.SimulateClickItem(i.GetBehaviorComponent().RootUIComp, i.ClickPivot)) {
         UiNavigationLogic_1.UiNavigationLogic.ExecuteInterfaceMethod(i.GetNavigationComponent(), "InteractClickHandle");
         ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
@@ -323,23 +323,30 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       return UiNavigationNewController.UWs(i, t);
     }
   }
-  static RWs(i, t) {
+  static Ddd(i, t) {
     var e = UE.LGUIBPLibrary.GetComponentsInChildren(i, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
+    var a = [];
     for (let i = e.Num() - 1; i >= 0; --i) {
-      var a = e.Get(i);
-      if (a.GroupName === t.GroupName && a.IsCanFocus()) {
-        return a;
+      var n = e.Get(i);
+      if (n.GroupName === t.GroupName && n.IsCanFocus()) {
+        a.push(n);
       }
     }
+    return a;
   }
   static AWs(e, i) {
     let a = undefined;
     var n = i.ScrollView.DisplayItemArray;
     for (let i = 0, t = n.Num(); i < t; ++i) {
       var r = n.Get(i);
-      var r = UiNavigationNewController.RWs(r, e);
-      if (r && r.IsInDynScrollDisplay() && r.IsScrollOrLayoutActor() && (!a && r.IsCanFocus() && (a = r), r.IsInScrollOrLayoutCanFocus())) {
-        return r;
+      var o = UiNavigationNewController.Ddd(r, e);
+      if (o.length !== 0) {
+        for (let i = 0, t = o.length; i < t; ++i) {
+          var s = o[i];
+          if (s.IsInDynScrollDisplay() && s.IsScrollOrLayoutActor() && (!a && s.IsCanFocus() && (a = s), s.IsInScrollOrLayoutCanFocus())) {
+            return s;
+          }
+        }
       }
     }
     return a;
@@ -417,7 +424,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   }
   static zBo(i, t) {
     var e;
-    return !UiLayer_1.UiLayer.IsInMask() && !!(e = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor) && e.SimulationPointerDownUp(UiNavigationDefine_1.GAMEPAD_POINT_ID, i.RootUIComp, t);
+    return !this.Mud() && !!(e = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor) && e.SimulationPointerDownUp(UiNavigationDefine_1.GAMEPAD_POINT_ID, i.RootUIComp, t);
   }
   static SimulationPointDown(i) {
     i = this.GetCurrentNavigationActiveListenerByTag(i, true);
@@ -718,6 +725,9 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     if (Info_1.Info.IsInGamepad()) {
       ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
     }
+  }
+  static Mud() {
+    return UiLayer_1.UiLayer.IsInMask() || !ModelManager_1.ModelManager.ReConnectModel.IsRpcEmpty();
   }
 }
 exports.UiNavigationNewController = UiNavigationNewController;

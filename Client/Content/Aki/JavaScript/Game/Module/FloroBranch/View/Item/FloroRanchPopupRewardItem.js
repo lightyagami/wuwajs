@@ -19,19 +19,19 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.IsPlayingBezier = false;
-    this.oRu = false;
+    this.RRu = false;
     this.ST1 = undefined;
     this.dYi = Vector_1.Vector.Create();
     this.fDe = Vector_1.Vector.Create();
     this.cz = Vector_1.Vector.Create();
-    this.Syu = new BezierCurve_1.BeizerQuadraticCurve();
+    this.vSu = new BezierCurve_1.BeizerQuadraticCurve();
     this.ae = 0;
     this.r1t = 0;
     this.c_e = 0;
-    this.QOu = undefined;
-    this.KOu = undefined;
+    this.Iqu = undefined;
+    this.Tqu = undefined;
     this.SPe = undefined;
-    this.pQc = undefined;
+    this.YKu = undefined;
     this.Nqa = undefined;
     this.Fqa = undefined;
   }
@@ -40,7 +40,7 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     var e = this.GetArtText(2);
-    this.pQc = e.GetArtTextData();
+    this.YKu = e.GetArtTextData();
     var e = [];
     var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("TextData_NumH2");
     e.push(ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.LGUIArtTextData, (e, i) => {
@@ -67,20 +67,20 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
   }
   Tick(e) {
     var i;
-    if (this.oRu) {
+    if (this.RRu) {
       this.ae += e;
       i = this.ST1.GetFloatValue(this.ae / this.r1t);
       Vector_1.Vector.Lerp(this.dYi, this.fDe, i, this.cz);
       this.GetRootItem().SetUIWorldLocation(this.cz.ToUeVectorOld());
       if (this.ae >= this.r1t + this.c_e || ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
         this.GetRootItem().SetUIWorldLocation(this.fDe.ToUeVectorOld());
-        this.sRu();
-        this.KOu?.();
+        this.wRu();
+        this.Tqu?.();
       }
-    } else if (this.IsPlayingBezier && (i = this.ae / this.r1t, i = this.Syu.GetPos((i *= i) > 1 ? 1 : i), this.GetRootItem().SetUIWorldLocation(i.ToUeVectorOld()), this.ae += e, this.ae >= this.r1t || ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip)) {
+    } else if (this.IsPlayingBezier && (i = this.ae / this.r1t, i = this.vSu.GetPos((i *= i) > 1 ? 1 : i), this.GetRootItem().SetUIWorldLocation(i.ToUeVectorOld()), this.ae += e, this.ae >= this.r1t || ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip)) {
       this.GetRootItem().SetUIWorldLocation(this.fDe.ToUeVectorOld());
-      this.QOu?.();
-      this.Myu();
+      this.Iqu?.();
+      this.ySu();
     }
   }
   PopupReward(e, i, t) {
@@ -91,11 +91,11 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
       this.fDe = i;
       this.ae = 0;
       this.r1t = FloroRanchDefine_1.FLORO_RANCH_REWARD_POPUP_TIME;
-      this.c_e = FloroRanchDefine_1.FLORO_RANCH_REWARD_POPUP_STAY_TIME;
+      this.c_e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetPopupRewardStayTime();
       this.GetArtText(2).SetUIActive(true);
-      this.oRu = true;
+      this.RRu = true;
       this.GetRootItem().SetUIWorldLocation(e.ToUeVectorOld());
-      this.KOu = t;
+      this.Tqu = t;
     }
   }
   PlayBezierCurve(e, i, t) {
@@ -105,12 +105,12 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
       this.dYi = e;
       this.fDe = i;
       this.ae = 0;
-      this.r1t = FloroRanchDefine_1.FLORO_RANCH_REWARD_COIN_BEZIER_TIME;
+      this.r1t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetBezierCurveTime();
       this.GetArtText(2).SetUIActive(false);
       e = this.fDe.X > this.dYi.X ? FloroRanchDefine_1.floroRanchRewardRightDirection : FloroRanchDefine_1.floroRanchRewardLeftDirection;
-      this.Syu.InitByFactor(this.dYi, this.fDe, e, FloroRanchDefine_1.FLORO_RANCH_BEZIER_FACTOR, FloroRanchDefine_1.FLORO_RANCH_BEZIER_CENTER_FACTOR);
+      this.vSu.InitByFactor(this.dYi, this.fDe, e, FloroRanchDefine_1.FLORO_RANCH_BEZIER_FACTOR, FloroRanchDefine_1.FLORO_RANCH_BEZIER_CENTER_FACTOR);
       this.IsPlayingBezier = true;
-      this.QOu = t;
+      this.Iqu = t;
     }
   }
   Refresh(e, i) {
@@ -122,7 +122,7 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
     } else if (e >= FloroRanchDefine_1.FLORO_RANCH_POPUP_REWARD_YELLOW_COIN_COUNT) {
       t.SetArtTextData(this.Nqa);
     } else {
-      t.SetArtTextData(this.pQc);
+      t.SetArtTextData(this.YKu);
     }
     this.GetTexture(0).SetUIActive(false);
     this.SetTextureByPath(i, this.GetTexture(1));
@@ -148,19 +148,19 @@ class FloroRanchPopupRewardItem extends UiPanelBase_1.UiPanelBase {
     this.GetRootItem().SetUIWorldLocation(e.ToUeVectorOld());
   }
   OnBeforeDestroy() {
-    this.Myu();
-    this.sRu();
+    this.ySu();
+    this.wRu();
   }
-  Myu() {
+  ySu() {
     this.ae = 0;
     this.r1t = 0;
-    this.QOu = undefined;
+    this.Iqu = undefined;
     this.IsPlayingBezier = false;
   }
-  sRu() {
+  wRu() {
     this.ae = 0;
     this.r1t = 0;
-    this.oRu = false;
+    this.RRu = false;
   }
 }
 exports.FloroRanchPopupRewardItem = FloroRanchPopupRewardItem;

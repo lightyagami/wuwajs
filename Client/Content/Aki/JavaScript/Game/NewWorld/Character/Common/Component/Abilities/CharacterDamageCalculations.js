@@ -255,20 +255,20 @@ class Calculation {
   static ToughCalculation(t, e, r) {
     return r * (t.CurrentValues.Proto_ToughChange * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND) * (e.CurrentValues.Proto_ToughReduce * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND) * (e.CurrentValues.Proto_SkillToughRatio * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND);
   }
-  static LandingDamageCalculationRole(t, e, r, a) {
-    var A = CommonParamById_1.configCommonParamById.GetIntArrayConfig("landing_damage_args_role");
-    var s = t / A[0] - 1;
-    var s = s > 0 ? s : 0;
-    var i = A[2] / DAMAGE_FALLING_10000;
-    var _ = A[3] / DAMAGE_FALLING_10000;
-    var i = Math.pow(r, i) * _;
-    var _ = s + i;
-    var u = Math.floor(_ * a);
-    if (u > 0) {
+  static LandingDamageCalculationRole(t, e, r) {
+    var a = CommonParamById_1.configCommonParamById.GetIntArrayConfig("landing_damage_args_role");
+    var A = t / a[0] - 1;
+    var A = A > 0 ? A : 0;
+    var s = a[2] / DAMAGE_FALLING_10000;
+    var i = a[3] / DAMAGE_FALLING_10000;
+    var s = Math.pow(e, s) * i;
+    var i = A + s;
+    var _ = Math.floor(i * r);
+    if (_ > 0) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Battle", 28, "角色跌落伤害", ["上一帧速度", t], ["这一帧速度", e], ["damage", u], ["time", r], ["lifeMax", a], ["landing_damage_args_role", A], ["rateBase", s], ["rateT", i], ["rate", _]);
+        Log_1.Log.Info("Battle", 28, "角色跌落伤害", ["上一帧速度", t], ["damage", _], ["time", e], ["lifeMax", r], ["landing_damage_args_role", a], ["rateBase", A], ["rateT", s], ["rate", i]);
       }
-      return u;
+      return _;
     } else {
       return 0;
     }

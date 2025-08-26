@@ -5,16 +5,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.InviteNewbieProtocolContext = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
+const H5CircumUrlById_1 = require("../../../../../../Core/Define/ConfigQuery/H5CircumUrlById");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const ActivityData_1 = require("../../../ActivityData");
+const CLICKKEY = 1;
 class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
   constructor(e) {
     super();
     this.Kk1 = undefined;
+    this.wer = false;
+    this.iQu = false;
     this.Score = 0;
-    this.i5l = undefined;
-    this.i5l = e;
+    this.AttachedModel = undefined;
+    this.AttachedModel = e;
   }
   get InviteCode() {
     return this.Kk1;
@@ -35,10 +40,27 @@ class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
     if (e !== undefined) {
       this.InviteCode = e.XRc;
       this.Score = e.SMs;
+      this.ChangeServerRedDotState(e.e7u);
     }
   }
+  get BgPath() {
+    var e = this.Id;
+    return H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e)?.BgPath;
+  }
+  SetCurrentLoginClickState(e) {
+    this.iQu = e;
+  }
+  GetClickRedDotState() {
+    return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, CLICKKEY, 0, 0) === 0;
+  }
+  SaveClickRedDotState() {
+    ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, CLICKKEY, 0, 0, 1);
+  }
+  ChangeServerRedDotState(e) {
+    this.wer = e;
+  }
   GetExDataRedPointShowState() {
-    return this.i5l.HasRedDot;
+    return this.GetClickRedDotState() || this.wer && !this.iQu;
   }
 }
 exports.InviteNewbieProtocolContext = InviteNewbieProtocolContext;

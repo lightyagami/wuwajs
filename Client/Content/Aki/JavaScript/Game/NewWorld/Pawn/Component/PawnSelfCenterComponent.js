@@ -38,7 +38,7 @@ let PawnSelfCenterComponent = class PawnSelfCenterComponent extends EntityCompon
     this.FinalTimeDilationInSelfCenteredMode = 1;
     this.ExtraTimeDilationInSelfCenteredModeInternal = 1;
     this.ForeverTimeScaleIdInSelfCenteredMode = 0;
-    this.wyu = (e, t) => {
+    this.MEu = (e, t) => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Pawn", 39, "OnSwitchSelfCenterTimeDilation", ["EntityId", this.Entity.Id], ["SelfCenterMode", e], ["TimeDilation", t]);
       }
@@ -70,22 +70,22 @@ let PawnSelfCenterComponent = class PawnSelfCenterComponent extends EntityCompon
     return !!e && (e = (0, IComponent_1.getComponent)(e, "BaseInfoComponent"), this.SeparatelyHandleSelfCenteredMode = !!e?.TimeScaleConfig?.IgnoreGlobalTimeScale, true);
   }
   OnStart() {
-    this.TimeScaleComp = this.Entity.GetComponent(122);
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.wyu)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.wyu);
+    this.TimeScaleComp = this.Entity.GetComponent(123);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
     }
     var e = ModelManager_1.ModelManager.CharacterModel;
     if (e?.EnabledSelfCentered) {
-      this.wyu(e.SelfCenteredMode, e.SelfCenteredTimeDilation);
+      this.MEu(e.SelfCenteredMode, e.SelfCenteredTimeDilation);
     }
     return true;
   }
   OnEnd() {
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.wyu)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.wyu);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
     }
     return true;
   }
 };
-PawnSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(284)], PawnSelfCenterComponent);
+PawnSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(287)], PawnSelfCenterComponent);
 exports.PawnSelfCenterComponent = PawnSelfCenterComponent; //# sourceMappingURL=PawnSelfCenterComponent.js.map

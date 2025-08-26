@@ -24,6 +24,7 @@ const InputMappingsDefine_1 = require("../../Ui/InputDistribute/InputMappingsDef
 const UiManager_1 = require("../../Ui/UiManager");
 const WorldGlobal_1 = require("../../World/WorldGlobal");
 const BabelTowerController_1 = require("../Activity/ActivityContent/BabelTower/BabelTowerController");
+const ActivityRoleTrialController_1 = require("../Activity/ActivityContent/RoleTrial/ActivityRoleTrialController");
 const BlackScreenController_1 = require("../BlackScreen/BlackScreenController");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const ReconnectDefine_1 = require("../ReConnect/ReconnectDefine");
@@ -48,18 +49,18 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.Hsl);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26323, InstanceDungeonController.shi);
-    Net_1.Net.Register(25596, InstanceDungeonController.nhi);
-    Net_1.Net.Register(21277, InstanceDungeonController.Xoh);
-    Net_1.Net.Register(15677, InstanceDungeonController.pMl);
-    Net_1.Net.Register(29886, InstanceDungeonController.IR1);
+    Net_1.Net.Register(29743, InstanceDungeonController.shi);
+    Net_1.Net.Register(16569, InstanceDungeonController.nhi);
+    Net_1.Net.Register(18220, InstanceDungeonController.Xoh);
+    Net_1.Net.Register(24426, InstanceDungeonController.pMl);
+    Net_1.Net.Register(15431, InstanceDungeonController.IR1);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26323);
-    Net_1.Net.UnRegister(25596);
-    Net_1.Net.UnRegister(21277);
-    Net_1.Net.UnRegister(15677);
-    Net_1.Net.UnRegister(29886);
+    Net_1.Net.UnRegister(29743);
+    Net_1.Net.UnRegister(16569);
+    Net_1.Net.UnRegister(18220);
+    Net_1.Net.UnRegister(24426);
+    Net_1.Net.UnRegister(15431);
   }
   static GetBeInviteOverdueTime(e) {
     if (e) {
@@ -71,7 +72,7 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
   static GetInstExchangeRewardRequest(e) {
     var n = new Protocol_1.Aki.Protocol.Kos();
     n.Cal = e;
-    Net_1.Net.Call(17367, n, e => {
+    Net_1.Net.Call(18584, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeScrollingTipsView(e.Q4n, []);
       }
@@ -116,6 +117,10 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
         }
         if (ModelManager_1.ModelManager.BabelTowerModel.CheckInBattleBabelTower()) {
           BabelTowerController_1.BabelTowerController.OnClickInstanceDungeonExitButton();
+          return;
+        }
+        if (ActivityRoleTrialController_1.ActivityRoleTrialController.CheckInRoleTrail()) {
+          this.KZc(e, n);
           return;
         }
         var l = ModelManager_1.ModelManager.InstanceDungeonModel.GetCurrentDungeonExitConfirmId();
@@ -178,6 +183,20 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
     });
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
   }
+  static KZc(e, n) {
+    var r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(352);
+    r.IsEscViewTriggerCallBack = false;
+    r.FunctionMap.set(0, n);
+    r.FunctionMap.set(1, () => {
+      InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.RestartInstanceDungeon();
+      n?.();
+    });
+    r.FunctionMap.set(2, () => {
+      InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
+      e?.();
+    });
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
+  }
   static NeedOpenReChallengeConfirmBox() {
     return ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.CreatureModel.GetInstanceId()).InstSubType === 4 && !ModelManager_1.ModelManager.GameModeModel.IsMulti;
   }
@@ -223,13 +242,13 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
     i.eUc = ModelManager_1.ModelManager.InstanceDungeonModel.InstanceContinue;
     BlackScreenController_1.BlackScreenController.AddBlackScreen("None", "PreWarLeaveScene");
     InstanceDungeonController.jsl = true;
-    var e = await Net_1.Net.CallAsync(23112, i).finally(() => {
+    var e = await Net_1.Net.CallAsync(18016, i).finally(() => {
       BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "PreWarLeaveScene");
     });
     ModelManager_1.ModelManager.InstanceDungeonModel.InstanceContinue = false;
     ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceEnterContentText();
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27718, undefined, true, InstanceDungeonController.Stc(e.Q4n));
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26821, undefined, true, InstanceDungeonController.Stc(e.Q4n));
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EnterInstanceDungeonFail, e.Q4n);
       return false;
     } else {
@@ -249,11 +268,11 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
     r.Tzs = ModelManager_1.ModelManager.TowerDefenseModel.GetProtocolPhantomIdList(e) ?? [];
     r.$ah = n;
     BlackScreenController_1.BlackScreenController.AddBlackScreen("None", "SingleInstReChallengeRequest");
-    var n = await Net_1.Net.CallAsync(20871, r).finally(() => {
+    var n = await Net_1.Net.CallAsync(23827, r).finally(() => {
       BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "SingleInstReChallengeRequest");
     });
     if (n.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(n.Q4n, 18468);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(n.Q4n, 16914);
       return false;
     } else {
       ModelManager_1.ModelManager.InstanceDungeonModel.LastEnterRoleList = e;
@@ -268,9 +287,9 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
     r.C5n = e;
     r.ybs = n;
     r.eUc = this.TeleportDungeonContinueLastInst;
-    Net_1.Net.Call(18853, r, e => {
+    Net_1.Net.Call(28714, r, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 27718);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 26821);
       }
     });
     this.TeleportDungeonContinueLastInst = false;

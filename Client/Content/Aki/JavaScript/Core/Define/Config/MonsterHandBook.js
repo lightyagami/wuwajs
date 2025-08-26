@@ -13,6 +13,9 @@ class MonsterHandBook {
   get Id() {
     return this.id();
   }
+  get MonsterId() {
+    return this.monsterid();
+  }
   get Type() {
     return this.type();
   }
@@ -22,37 +25,40 @@ class MonsterHandBook {
   get MeshId() {
     return this.meshid();
   }
-  get Scale() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.scaleLength(), this.scale, this);
-  }
-  get Position() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.positionLength(), this.position, this);
-  }
-  get Rotator() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.rotatorLength(), this.rotator, this);
-  }
-  get StandAnim() {
-    return this.standanim();
-  }
-  get TypeDescrtption() {
-    return this.typedescrtption();
-  }
   get Descrtption() {
     return this.descrtption();
   }
-  get FightSkillDescrtption() {
-    return this.fightskilldescrtption();
+  get HandBookBp() {
+    return this.handbookbp();
   }
-  get PhantomItem() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.phantomitemLength(), this.phantomitem, this);
+  get MonsterBodyType() {
+    return this.monsterbodytype();
   }
-  __init(t, i) {
+  get HandBookCamera() {
+    return this.handbookcamera();
+  }
+  get ResistanceElement() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.resistanceelementLength(), this.resistanceelement, this);
+  }
+  get SortId() {
+    return this.sortid();
+  }
+  get IsSkin() {
+    return this.isskin();
+  }
+  get OriginalFormInfoId() {
+    return this.originalforminfoid();
+  }
+  get DefaultUnlock() {
+    return this.defaultunlock();
+  }
+  __init(t, s) {
     this.z7 = t;
-    this.J7 = i;
+    this.J7 = s;
     return this;
   }
-  static getRootAsMonsterHandBook(t, i) {
-    return (i || new MonsterHandBook()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsMonsterHandBook(t, s) {
+    return (s || new MonsterHandBook()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -62,7 +68,7 @@ class MonsterHandBook {
       return 0;
     }
   }
-  type() {
+  monsterid() {
     var t = this.J7.__offset(this.z7, 6);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -70,161 +76,112 @@ class MonsterHandBook {
       return 0;
     }
   }
-  name(t) {
-    var i = this.J7.__offset(this.z7, 8);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  meshid() {
-    var t = this.J7.__offset(this.z7, 10);
+  type() {
+    var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
-  GetScaleAt(t) {
-    return this.scale(t);
-  }
-  scale(t) {
-    var i = this.J7.__offset(this.z7, 12);
-    if (i) {
-      return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
-    } else {
-      return 0;
+  name(t) {
+    var s = this.J7.__offset(this.z7, 10);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
+    return s;
   }
-  scaleLength() {
+  meshid() {
     var t = this.J7.__offset(this.z7, 12);
     if (t) {
-      return this.J7.__vector_len(this.z7 + t);
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
-  }
-  scaleArray() {
-    var t = this.J7.__offset(this.z7, 12);
-    if (t) {
-      return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
-    } else {
-      return null;
-    }
-  }
-  GetPositionAt(t) {
-    return this.position(t);
-  }
-  position(t) {
-    var i = this.J7.__offset(this.z7, 14);
-    if (i) {
-      return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
-    } else {
-      return 0;
-    }
-  }
-  positionLength() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.__vector_len(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  positionArray() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
-    } else {
-      return null;
-    }
-  }
-  GetRotatorAt(t) {
-    return this.rotator(t);
-  }
-  rotator(t) {
-    var i = this.J7.__offset(this.z7, 16);
-    if (i) {
-      return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
-    } else {
-      return 0;
-    }
-  }
-  rotatorLength() {
-    var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return this.J7.__vector_len(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  rotatorArray() {
-    var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
-    } else {
-      return null;
-    }
-  }
-  standanim(t) {
-    var i = this.J7.__offset(this.z7, 18);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  typedescrtption(t) {
-    var i = this.J7.__offset(this.z7, 20);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
   }
   descrtption(t) {
-    var i = this.J7.__offset(this.z7, 22);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 14);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
-  fightskilldescrtption(t) {
-    var i = this.J7.__offset(this.z7, 24);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+  handbookbp(t) {
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
-  GetPhantomitemAt(t) {
-    return this.phantomitem(t);
+  monsterbodytype() {
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
-  phantomitem(t) {
-    var i = this.J7.__offset(this.z7, 26);
-    if (i) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+  handbookcamera(t) {
+    var s = this.J7.__offset(this.z7, 20);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  GetResistanceelementAt(t) {
+    return this.resistanceelement(t);
+  }
+  resistanceelement(t) {
+    var s = this.J7.__offset(this.z7, 22);
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
       return 0;
     }
   }
-  phantomitemLength() {
-    var t = this.J7.__offset(this.z7, 26);
+  resistanceelementLength() {
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }
   }
-  phantomitemArray() {
-    var t = this.J7.__offset(this.z7, 26);
+  resistanceelementArray() {
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
     }
+  }
+  sortid() {
+    var t = this.J7.__offset(this.z7, 24);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  isskin() {
+    var t = this.J7.__offset(this.z7, 26);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  originalforminfoid() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  defaultunlock() {
+    var t = this.J7.__offset(this.z7, 30);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.MonsterHandBook = MonsterHandBook;

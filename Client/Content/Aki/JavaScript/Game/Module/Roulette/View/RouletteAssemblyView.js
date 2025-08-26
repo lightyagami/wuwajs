@@ -22,7 +22,6 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const RouletteDefine_1 = require("../Data/RouletteDefine");
 const RouletteComponentAssembly_1 = require("../RouletteComponent/RouletteComponentAssembly");
-const RouletteController_1 = require("../RouletteController");
 const RouletteInputManager_1 = require("../RouletteInputManager");
 const RouletteAssemblyGridItem_1 = require("./RouletteAssemblyGridItem");
 const RouletteAssemblyTips_1 = require("./RouletteAssemblyTips");
@@ -185,7 +184,7 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
       var t = this.Tfo.get(0);
       var e = this.Tfo.get(1);
       var i = this.Tfo.get(2);
-      RouletteController_1.RouletteController.SaveCurrentRouletteData(t, e, i[0], false);
+      ControllerHolder_1.ControllerHolder.RouletteController.SaveCurrentRouletteData(t, e, i[0], false);
     };
     this._Ia = t => {
       t = t === 1 ? 1 : 0;
@@ -580,10 +579,10 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
     var i = this.OpenParam;
     if (e === 3002 && t) {
       ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(3001);
-      RouletteController_1.RouletteController.ExploreSkillSetRequest(3001);
+      ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(3001);
     } else if ((e = i.EndSwitchSkillId) !== undefined && (e !== 3001 || !!t)) {
       ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(e);
-      RouletteController_1.RouletteController.ExploreSkillSetRequest(e);
+      ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(e);
     }
   }
 }

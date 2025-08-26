@@ -48,6 +48,8 @@ exports.DEBUG_SPHERE_DEFAULT_DURATION = 3;
   e[e.ShipTowerEntrancePanel = 28] = "ShipTowerEntrancePanel";
   e[e.WeeklyRoguePanel = 29] = "WeeklyRoguePanel";
   e[e.RogueResPanel = 30] = "RogueResPanel";
+  e[e.TraceExploreEntityPanel = 31] = "TraceExploreEntityPanel";
+  e[e.GreatSwordChallengePanel = 32] = "GreatSwordChallengePanel";
 })(ESecondaryPanel = exports.ESecondaryPanel ||= {});
 exports.secondaryUiPanelComponentsRegisterInfoA = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIText], [5, UE.UIVerticalLayout], [6, UE.UIItem], [7, UE.UIVerticalLayout], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIVerticalLayout], [17, UE.UIItem], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIText], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UISprite], [24, UE.UISprite], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIButtonComponent], [29, UE.UIButtonComponent], [30, UE.UIText], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UISprite], [35, UE.UIItem], [36, UE.UIText], [37, UE.UIItem], [38, UE.UIText], [39, UE.UIButtonComponent], [40, UE.UIVerticalLayout], [41, UE.UIItem], [42, UE.UIText], [43, UE.UIItem], [44, UE.UIItem], [45, UE.UIItem], [46, UE.UIText]];
 exports.secondaryUiPanelComponentsRegisterInfoB = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UIButtonComponent], [11, UE.UISprite], [12, UE.UIButtonComponent]];
@@ -64,22 +66,22 @@ class MarkPriority2HierarchyIndexHelper {
     this.d3o = [];
   }
   C3o(e, r = 0) {
-    let t = 0;
-    return t = e === 11 ? 3000 : r;
+    let a = 0;
+    return a = e === 11 ? 3000 : r;
   }
   AddMarkItem(e, r) {
-    var t = this.C3o(e, r);
-    var a = this.d3o.length;
+    var a = this.C3o(e, r);
+    var t = this.d3o.length;
     let o = 0;
-    if (a === 0) {
-      this.d3o.push(new PriorityHierarchyIndexNode(t));
+    if (t === 0) {
+      this.d3o.push(new PriorityHierarchyIndexNode(a));
     } else {
       let r = -1;
-      for (let e = 0; e < a; ++e) {
+      for (let e = 0; e < t; ++e) {
         var n = this.d3o[e];
         var s = n.Priority;
-        if (!(s < t)) {
-          if (s === t) {
+        if (!(s < a)) {
+          if (s === a) {
             o += n.MaxHierarchyIndex;
             ++n.MaxHierarchyIndex;
             break;
@@ -88,20 +90,20 @@ class MarkPriority2HierarchyIndexHelper {
           break;
         }
         o += n.MaxHierarchyIndex;
-        if (e === a - 1) {
-          r = a;
+        if (e === t - 1) {
+          r = t;
           break;
         }
       }
       if (r >= 0) {
-        this.d3o.splice(r, 0, new PriorityHierarchyIndexNode(t));
+        this.d3o.splice(r, 0, new PriorityHierarchyIndexNode(a));
       }
     }
     return o;
   }
   RemoveMarkItem(e, r) {
-    const t = this.C3o(e, r);
-    this.d3o.filter(e => e.Priority === t).every(e => {
+    const a = this.C3o(e, r);
+    this.d3o.filter(e => e.Priority === a).every(e => {
       if (e.MaxHierarchyIndex > 0) {
         --e.MaxHierarchyIndex;
       }

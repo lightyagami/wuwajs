@@ -144,6 +144,7 @@ class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
   y1a() {
     var t;
     if (this.eZi && this.S1a) {
+      this.eZi.SetFontSize(this.$Js);
       this.eZi.GetRealSize();
       t = this.eZi.GetRenderLineNum() < 2;
       if (Log_1.Log.CheckInfo()) {

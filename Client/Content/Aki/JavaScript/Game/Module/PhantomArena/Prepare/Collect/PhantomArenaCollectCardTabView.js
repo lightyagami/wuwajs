@@ -27,7 +27,7 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.H3e = undefined;
     this.Mli = undefined;
     this.S2t = undefined;
-    this.XAu = undefined;
+    this.MPu = undefined;
     this.hoc = (e, t) => {
       if (ModelManager_1.ModelManager.PhantomArenaModel.GetCardRewardStateById(e) === 2) {
         this.hOe();
@@ -43,21 +43,21 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ZW1 = e => {
       e = {
         CardId: e,
-        CallbackOnClose: this.Kfu
+        CallbackOnClose: this.jgu
       };
       UiManager_1.UiManager.OpenView("CollectCardDetailView", e);
     };
-    this.fnu = () => {
+    this.Nnu = () => {
       this.jqe();
     };
-    this.Xfu = e => {
+    this.Hgu = e => {
       this.cHt();
       this.jqe();
     };
-    this.Kfu = e => {
-      this.CardScrollView.GetGridAndScrollToByJudge(e, this.Yfu, false);
+    this.jgu = e => {
+      this.CardScrollView.GetGridAndScrollToByJudge(e, this.$gu, false);
     };
-    this.Yfu = (e, t) => {
+    this.$gu = (e, t) => {
       return e === t.CardId;
     };
     this.Y5i = () => {
@@ -86,7 +86,7 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
     this.CardScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(4), this.GetItem(5).GetOwner(), this.Y5i);
     this.H3e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.rOe);
     this.Mli = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(6), this.jli);
-    this.XAu = this.GetLoopScrollViewComponent(4).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
+    this.MPu = this.GetLoopScrollViewComponent(4).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
   }
   OnBeforeShow() {
     this.cHt();
@@ -94,17 +94,17 @@ class PhantomArenaCollectCardTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnAfterShow() {
     this.UiViewSequence.PlaySequence("Start");
-    this.XAu?.Play();
+    this.MPu?.Play();
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardRewardUpdate, this.fnu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Xfu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Xfu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardRewardUpdate, this.Nnu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Hgu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Hgu);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardRewardUpdate, this.fnu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Xfu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Xfu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardRewardUpdate, this.Nnu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Hgu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Hgu);
   }
   cHt() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList();

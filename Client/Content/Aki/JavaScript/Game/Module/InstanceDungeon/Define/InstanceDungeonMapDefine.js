@@ -13,6 +13,7 @@ exports.instanceDetectItemGetterDataMap = {
   9: undefined,
   10: undefined,
   11: undefined,
+  37: undefined,
   15: undefined,
   19: undefined,
   20: undefined,
@@ -39,7 +40,8 @@ exports.instanceDetectItemGetterDataMap = {
   31: undefined,
   35: undefined,
   34: undefined,
-  36: undefined
+  36: undefined,
+  40: undefined
 };
 exports.instanceDungeonEntranceViewGetterDataMap = {
   [1]: undefined,
@@ -57,5 +59,6 @@ exports.instanceDungeonEntranceViewGetterDataMap = {
     DefaultSelectDataGetter: ActivityMowingRiskController_1.ActivityMowingRiskController.GetEntranceViewDefaultSelectData
   },
   13: undefined,
-  14: undefined
+  14: undefined,
+  15: undefined
 }; //# sourceMappingURL=InstanceDungeonMapDefine.js.map

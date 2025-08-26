@@ -45,10 +45,10 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
   }
   OnStart() {
     super.OnStart();
-    if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 234)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 235)) {
       this.CharActorComp = this.ActorComp;
     }
-    this.PerformComp = this.Entity.GetComponent(237);
+    this.PerformComp = this.Entity.GetComponent(238);
     return true;
   }
   OnTick(e) {
@@ -95,11 +95,13 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
     this.PerformComp?.ResetVehicleConfig(true);
   }
   OnSplineMoveEnable(e, t) {
+    super.OnSplineMoveEnable(e, t);
     this.ApplySplineMoveDaConfig();
     ControllerHolder_1.ControllerHolder.VehicleController.SetRideSharingEnable(false);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnVehicleBeenLeaved);
   }
   OnSplineMoveDisable() {
+    super.OnSplineMoveDisable();
     this.ResetSplineMoveDaConfig();
     ControllerHolder_1.ControllerHolder.VehicleController.SetRideSharingEnable(true);
     if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnVehicleBeenLeaved)) {
@@ -111,5 +113,5 @@ let VehicleSplineMoveComponent = class VehicleSplineMoveComponent extends BaseSp
     this.LastLocation.DeepCopy(this.ActorComp.ActorLocationProxy);
   }
 };
-VehicleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(109)], VehicleSplineMoveComponent);
+VehicleSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(110)], VehicleSplineMoveComponent);
 exports.VehicleSplineMoveComponent = VehicleSplineMoveComponent; //# sourceMappingURL=VehicleSplineMoveComponent.js.map

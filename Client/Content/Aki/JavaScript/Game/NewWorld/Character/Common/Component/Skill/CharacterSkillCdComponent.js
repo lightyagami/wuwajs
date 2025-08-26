@@ -50,7 +50,7 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
   OnInit() {
     super.OnInit();
     this.cBe = this.Entity.CheckGetComponent(39);
-    this.Bzr = this.Entity.CheckGetComponent(172);
+    this.Bzr = this.Entity.CheckGetComponent(173);
     this.fZo = ModelManager_1.ModelManager.SkillCdModel.GetCurWorldSkillCdData();
     this.qzr = new Map();
     this.TGn = new Map();
@@ -222,8 +222,8 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
       }
     }
     var s = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId());
-    if (s?.GetComponent(206)?.HasModifyCdEffect) {
-      s = s?.GetComponent(209);
+    if (s?.GetComponent(207)?.HasModifyCdEffect) {
+      s = s?.GetComponent(210);
       if (s) {
         for (const l of s.BuffEffectManager.FilterById(49)) {
           if (this.Hoa(l, e, i)) {
@@ -274,7 +274,7 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
     if (e) {
       if (e.ResetDelayCd()) {
         (e = Protocol_1.Aki.Protocol.qe_.create()).r5n = t;
-        CombatMessage_1.CombatNet.Send(19407, this.Entity, e);
+        CombatMessage_1.CombatNet.Send(16053, this.Entity, e);
         this.EZo?.ResetMultiSkills(t, true);
       }
       return true;
@@ -286,5 +286,5 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
     }
   }
 };
-CharacterSkillCdComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(207)], CharacterSkillCdComponent);
+CharacterSkillCdComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(208)], CharacterSkillCdComponent);
 exports.CharacterSkillCdComponent = CharacterSkillCdComponent; //# sourceMappingURL=CharacterSkillCdComponent.js.map

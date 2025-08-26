@@ -53,17 +53,20 @@ class RoleGrowingTaskView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[5, this.KOe], [6, this.QOe]];
   }
   async OnBeforeStartAsync() {
-    this.ActivityBaseData = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-    this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
-    this.CaptionItem.SetCloseCallBack(() => {
-      this.CloseMe();
-    });
-    this.CaptionItem.SetTitle(this.ActivityBaseData.GetTitle());
-    var e = this.ActivityBaseData.StageIds;
-    this.CurrentIndex = e.indexOf(this.OpenParam);
-    this.PageDotLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.HOe);
-    await this.PageDotLayout.RefreshByDataAsync(e);
-    this.TaskScroll = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.VOe);
+    var [e, i] = this.OpenParam;
+    if (e && i) {
+      this.ActivityBaseData = e;
+      this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
+      this.CaptionItem.SetCloseCallBack(() => {
+        this.CloseMe();
+      });
+      this.CaptionItem.SetTitle(this.ActivityBaseData.GetTitle());
+      e = this.ActivityBaseData.StageIds;
+      this.CurrentIndex = e.indexOf(i);
+      this.PageDotLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.HOe);
+      await this.PageDotLayout.RefreshByDataAsync(e);
+      this.TaskScroll = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.VOe);
+    }
   }
   OnBeforeShow() {
     ControllerHolder_1.ControllerHolder.ActivityController.CheckIsActivityClose(undefined, this.ActivityBaseData.Id);

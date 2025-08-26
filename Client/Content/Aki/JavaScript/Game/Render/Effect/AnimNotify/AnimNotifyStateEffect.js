@@ -13,6 +13,7 @@ const SkeletalMeshEffectContext_1 = require("../../../Effect/EffectContext/Skele
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
 const TsEffectActor_1 = require("../../../Effect/TsEffectActor");
 const GlobalData_1 = require("../../../GlobalData");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiEffectAnsContext_1 = require("../../../Module/UiModel/UiModelComponent/Common/UiModelAns/UiAnimNotifyStateContext/UiEffectAnsContext");
 const EffectUtil_1 = require("../../../Utils/EffectUtil");
 const RenderConfig_1 = require("../../Config/RenderConfig");
@@ -81,7 +82,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
         r.CreateFromType = 1;
         r.AnsSlotName = this.EffectSlotName;
         var f = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.Location);
-        var f = new UiEffectAnsContext_1.UiEffectAnsContext(this.EffectDataAssetRef.ToAssetPathName(), e, this.SocketName, this.Attached, this.AttachLocationOnly, f, this.Rotation, new UE.VectorDouble(this.Scale), this.PlayOnEnd, r, (t, e) => {
+        var f = new UiEffectAnsContext_1.UiEffectAnsContext(this.EffectDataAssetRef.ToAssetPathName(), e, this.SocketName, this.Attached, this.AttachLocationOnly, f, this.Rotation, new UE.VectorDouble(this.Scale), this.PlayOnEnd, this.FasterStop, r, (t, e) => {
           if (EffectSystem_1.EffectSystem.IsValid(e) && this.ParamsMap.has(t)) {
             if (this.SyncEventTimeToEffectTime) {
               EffectSystem_1.EffectSystem.FreezeHandle(e, true, true);
@@ -121,9 +122,9 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     if (s instanceof TsBaseCharacter_1.default && s.CharacterActorComponent?.Entity) {
       f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(s.CharacterActorComponent?.Entity.Id);
     } else if (s.IsA(UE.TsEffectActor_C.StaticClass())) {
-      (f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(s.OwnerEntityId)).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale;
+      (f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(s.OwnerEntityId)).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
     } else if (s.IsA(UE.EffectSystemActor.StaticClass())) {
-      (f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(s.GetOwnerEntityId())).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale;
+      (f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(s.GetOwnerEntityId())).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
     } else {
       f = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(undefined);
     }
@@ -153,15 +154,16 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     } else {
       n = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(e);
     }
-    let h = 0;
-    h = i ? EffectSystem_1.EffectSystem.SpawnUnloopedEffect(s, new UE.TransformDouble(), n || e, "[AnimNotifyStateEffect.SpawnEffectInternal]", f, r) : EffectSystem_1.EffectSystem.SpawnEffect(s, new UE.TransformDouble(), n || e, "[AnimNotifyStateEffect.SpawnEffectInternal]", f, r);
-    EffectSystem_1.EffectSystem.SetEffectNotRecord(h, true);
-    if (h && EffectSystem_1.EffectSystem.IsValid(h)) {
-      this.AttachEffectToSkill(s, h);
-      this.AttachEffectToWeapon(t, s, h);
-      this.SetupTransform(EffectSystem_1.EffectSystem.GetEffectActor(h), t);
-      EffectSystem_1.EffectSystem.ForceCheckPendingInit(h);
-      return h;
+    let a = 0;
+    a = i ? EffectSystem_1.EffectSystem.SpawnUnloopedEffect(s, new UE.TransformDouble(), n || e, "[AnimNotifyStateEffect.SpawnEffectInternal]", f, r) : EffectSystem_1.EffectSystem.SpawnEffect(s, new UE.TransformDouble(), n || e, "[AnimNotifyStateEffect.SpawnEffectInternal]", f, r);
+    EffectSystem_1.EffectSystem.SetEffectNotRecord(a, true);
+    if (a && EffectSystem_1.EffectSystem.IsValid(a)) {
+      this.AttachEffectToSkill(s, a);
+      this.AttachEffectToSelfCentered(s, a);
+      this.AttachEffectToWeapon(t, s, a);
+      this.SetupTransform(EffectSystem_1.EffectSystem.GetEffectActor(a), t);
+      EffectSystem_1.EffectSystem.ForceCheckPendingInit(a);
+      return a;
     } else {
       return 0;
     }
@@ -194,6 +196,16 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
       }
     }
   }
+  AttachEffectToSelfCentered(t, e) {
+    var i;
+    if (t instanceof TsBaseCharacter_1.default) {
+      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(39)) || !i.CurrentSkill) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(288))?.Valid) {
+          i.AddEffect(e);
+        }
+      }
+    }
+  }
   AttachEffectToWeapon(t, e, i) {
     if (this.IsWeaponEffect && e instanceof TsBaseCharacter_1.default) {
       e = e.CharacterActorComponent?.Entity?.GetComponent(81);
@@ -207,38 +219,11 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     }
   }
   K2_NotifyTick(t, e, i) {
-    if (this.Attached && this.AttachLocationOnly && this.SocketName !== AnimNotifyStateEffect.NameNone) {
-      var s = this.ParamsMap.get(t);
-      if (!s) {
-        return false;
-      }
-      s = s.EffectHandle;
-      if (!s || !EffectSystem_1.EffectSystem.IsValid(s)) {
-        return false;
-      }
-      var s = EffectSystem_1.EffectSystem.GetEffectActor(s);
-      var f = t.D_GetSocketTransform(this.SocketName, 0);
-      var r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.Location);
-      s.D_K2_SetActorLocation(f.TransformPosition(r), false, undefined, false);
-    }
-    if (this.SyncEventTimeToEffectTime) {
-      s = this.ParamsMap.get(t);
-      if (!s) {
-        return false;
-      }
-      f = s.EffectHandle;
-      if (!f || !EffectSystem_1.EffectSystem.IsValid(f)) {
-        return false;
-      }
-      if (s.HasSeekTo) {
-        s.HasSeekTo = false;
-        EffectSystem_1.EffectSystem.FreezeHandle(f, false, true);
-      }
-      if (EffectSystem_1.EffectSystem.IsHandleFreeze(f) && EffectSystem_1.EffectSystem.HandleSeekToTime(f, this.CurrentTimeLength, false, true)) {
-        s.HasSeekTo = true;
-      }
-    }
-    return true;
+    var s;
+    var f;
+    var r;
+    var n = this.ParamsMap.get(t);
+    return !!n && !!(s = n.EffectHandle) && !!EffectSystem_1.EffectSystem.IsValid(s) && !(this.Attached && this.AttachLocationOnly && this.SocketName !== AnimNotifyStateEffect.NameNone && (f = EffectSystem_1.EffectSystem.GetEffectActor(s), t = t.D_GetSocketTransform(this.SocketName, 0), r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(this.Location), f.D_K2_SetActorLocation(t.TransformPosition(r), false, undefined, false)), this.SyncEventTimeToEffectTime && (n.HasSeekTo && (n.HasSeekTo = false, EffectSystem_1.EffectSystem.FreezeHandle(s, false, true)), EffectSystem_1.EffectSystem.IsHandleFreeze(s)) && EffectSystem_1.EffectSystem.HandleSeekToTime(s, this.CurrentTimeLength, false, true) && (n.HasSeekTo = true), 0);
   }
   K2_NotifyEnd(t, e) {
     var i = t.GetOwner();
@@ -265,7 +250,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
         return false;
       }
       if (i instanceof TsBaseCharacter_1.default) {
-        if (!i.CharacterActorComponent?.Entity?.GetComponent(205)?.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(this.WithOutTag))) {
+        if (!i.CharacterActorComponent?.Entity?.GetComponent(206)?.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(this.WithOutTag))) {
           return this.SpawnEffectInternal(t, e, true) !== 0;
         }
       }
@@ -274,7 +259,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     return !!f && (this.ParamsMap.delete(t), f.EffectHandle && EffectSystem_1.EffectSystem.StopEffectById(f.EffectHandle, `[动画:${e.GetName()}，AnimNotifyStateEffect.K2_NotifyEnd]`, this.FasterStop), true);
   }
   GameplayTagsCheck(t) {
-    var e = t.CharacterActorComponent?.Entity?.GetComponent(205);
+    var e = t.CharacterActorComponent?.Entity?.GetComponent(206);
     if (e) {
       var i = this.PlayNeedTags.Num();
       if (this.NeedAnyTag) {

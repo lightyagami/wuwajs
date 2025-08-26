@@ -122,12 +122,12 @@ class LevelAimLineController extends ControllerBase_1.ControllerBase {
     this.mye = [];
     this.Cye.filter(e => !this.gye.includes(e)).forEach(e => {
       if (e?.Valid) {
-        e.Entity.GetComponent(130).SetIsBeingTargeted(false);
+        e.Entity.GetComponent(131).SetIsBeingTargeted(false);
       }
     });
     this.gye.filter(e => !this.Cye.includes(e)).forEach(e => {
       if (e?.Valid) {
-        e.Entity.GetComponent(130).SetIsBeingTargeted(true);
+        e.Entity.GetComponent(131).SetIsBeingTargeted(true);
       }
     });
     this.Cye = this.gye;
@@ -136,7 +136,7 @@ class LevelAimLineController extends ControllerBase_1.ControllerBase {
   static lye() {
     this.Cye.forEach(e => {
       if (e?.Valid) {
-        e.Entity.GetComponent(130).SetIsBeingTargeted(false);
+        e.Entity.GetComponent(131).SetIsBeingTargeted(false);
       }
     });
     this.cye.forEach(e => {
@@ -163,7 +163,7 @@ LevelAimLineController.oye = (e, t) => {
     if (!_a.mye.includes(t)) {
       _a.mye.push(t);
     }
-  } else if ((t = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByActor(t)) && t.Entity.GetComponent(154)?.Valid && !_a.gye.includes(t)) {
+  } else if ((t = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByActor(t)) && t.Entity.GetComponent(155)?.Valid && !_a.gye.includes(t)) {
     _a.gye.push(t);
   }
 };

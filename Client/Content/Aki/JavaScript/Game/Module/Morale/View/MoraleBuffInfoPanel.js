@@ -41,38 +41,38 @@ class MoraleBuffInfoPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetStateActive() {
-    this.eJ1("Morale_title_11");
-    this.tJ1("SP_FrameActivated");
+    this.bJ1("Morale_title_11");
+    this.RJ1("SP_FrameActivated");
     this.Ost(this.BuffData.Config.IconPathActive);
     this.vOe(true);
-    this.iJ1("T_MoraleBuffBgActivate");
-    this.rJ1(7);
-    this.oJ1();
+    this.LJ1("T_MoraleBuffBgActivate");
+    this.wJ1(7);
+    this.AJ1();
   }
   SetStateTempActive() {
-    this.eJ1("Morale_title_10");
-    this.tJ1("SP_FrameActivated");
+    this.bJ1("Morale_title_10");
+    this.RJ1("SP_FrameActivated");
     this.Ost(this.BuffData.Config.IconPathActive);
     this.vOe(true);
-    this.iJ1("T_MoraleBuffBgActivateTemp");
-    this.rJ1(8);
-    this.oJ1(9);
+    this.LJ1("T_MoraleBuffBgActivateTemp");
+    this.wJ1(8);
+    this.AJ1(9);
   }
   SetStateNotActive() {
-    this.eJ1("Morale_title_12", true);
-    this.tJ1("SP_FrameUnactivated");
+    this.bJ1("Morale_title_12", true);
+    this.RJ1("SP_FrameUnactivated");
     this.Ost(this.BuffData.Config.IconPathNormal);
     this.vOe(false);
-    this.iJ1("T_MoraleBuffBgUnactivated");
-    this.rJ1(5);
-    this.oJ1(6);
+    this.LJ1("T_MoraleBuffBgUnactivated");
+    this.wJ1(5);
+    this.AJ1(6);
   }
-  eJ1(t, e = false) {
+  bJ1(t, e = false) {
     var i = this.GetText(12);
     i?.ShowTextNew(t);
     i?.SetChangeColor(e, i.changeColor);
   }
-  tJ1(t) {
+  RJ1(t) {
     var e = this.GetSprite(11);
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
     this.SetSpriteByPath(t, e, false);
@@ -85,17 +85,17 @@ class MoraleBuffInfoPanel extends UiPanelBase_1.UiPanelBase {
     var e = this.GetTexture(4);
     e.SetChangeColor(t, e.changeColor);
   }
-  iJ1(t) {
+  LJ1(t) {
     var e = this.GetTexture(1);
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
     this.SetTextureByPath(t, e);
   }
-  rJ1(t) {
+  wJ1(t) {
     for (const e of [7, 8, 5]) {
       this.GetUiNiagara(e)?.SetUIActive(t === e);
     }
   }
-  oJ1(t) {
+  AJ1(t) {
     for (const e of [9, 6]) {
       this.GetItem(e)?.SetUIActive(t === e);
     }

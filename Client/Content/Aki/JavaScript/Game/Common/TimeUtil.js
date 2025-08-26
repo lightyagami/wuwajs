@@ -277,6 +277,13 @@ class TimeUtil {
       return TimeUtil.Vde(t, 1, e[0], e[1]);
     }
   }
+  static GetRemainTimeDataFormat5(t) {
+    var t = Math.max(0, t);
+    var e = Math.floor(t % TimeUtil.Hour / TimeUtil.Minute);
+    var i = Math.floor(t % TimeUtil.Minute);
+    var t = Math.floor((t - Math.floor(t)) * 100);
+    return `${e.toString().padStart(2, "0")}:${i.toString().padStart(2, "0")}:${t.toString().padStart(2, "0")}`;
+  }
   static IsInTimeSpan(t, e) {
     var i = TimeUtil.GetServerTime();
     return t <= i && i <= e;

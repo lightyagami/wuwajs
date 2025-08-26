@@ -16,7 +16,7 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     this.ViewModel = undefined;
     this.ContentItem = undefined;
     this.DefaultChildViewName = undefined;
-    this.Ggu = new Stack_1.Stack();
+    this.OCu = new Stack_1.Stack();
     this.ViewMask = new UiMask_1.UiMask();
   }
   OnBeforeCreate() {
@@ -28,8 +28,8 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     this.OnRegisterContentItem();
     if (this.DefaultChildViewName) {
       if (this.ContentItem) {
-        e = await this.Fgu(this.DefaultChildViewName);
-        this.Ggu.Push(e);
+        e = await this.qCu(this.DefaultChildViewName);
+        this.OCu.Push(e);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 43, "未注册内容节点");
       }
@@ -38,20 +38,20 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     }
   }
   async OnShowAsyncImplementImplement() {
-    await Promise.all([super.OnShowAsyncImplementImplement(), this.Ggu.Peek().ShowAsync()]);
+    await Promise.all([super.OnShowAsyncImplementImplement(), this.OCu.Peek().ShowAsync()]);
   }
   async OnHideAsyncImplementImplement() {
-    await Promise.all([super.OnHideAsyncImplementImplement(), this.Ggu.Peek().HideAsync()]);
+    await Promise.all([super.OnHideAsyncImplementImplement(), this.OCu.Peek().HideAsync()]);
   }
   async OnDestroyAsyncImplementImplement() {
     var e = [];
-    for (; this.Ggu.Size > 0;) {
-      e.push(this.Ggu.Pop().DestroyAsync());
+    for (; this.OCu.Size > 0;) {
+      e.push(this.OCu.Pop().DestroyAsync());
     }
     await Promise.all(e);
     await super.OnDestroyAsyncImplementImplement();
   }
-  async Fgu(e) {
+  async qCu(e) {
     var i = PhantomArenaViewManager_1.phantomArenaChildViewCreateInfo[e];
     var s = new i[0]();
     s.ViewModel = this.ViewModel;
@@ -67,15 +67,15 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     this.RunAsyncTask(i);
   }
   async OpenChildViewAsync(e) {
-    for (const t of this.Ggu) {
+    for (const t of this.OCu) {
       if (t.ViewName === e) {
         return;
       }
     }
     this.ViewMask.SetMask("PhantomArenaOpenChildView", true);
-    var i = this.Ggu.Peek();
-    var s = await this.Fgu(e);
-    this.Ggu.Push(s);
+    var i = this.OCu.Peek();
+    var s = await this.qCu(e);
+    this.OCu.Push(s);
     await Promise.all([s.ShowAsync(), i?.HideAsync()]).finally(() => {
       this.ViewMask.SetMask("PhantomArenaOpenChildView", false);
     });
@@ -87,12 +87,12 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     this.RunAsyncTask(e);
   }
   async CloseCurChildViewAsync() {
-    if (this.Ggu.Size < 2) {
+    if (this.OCu.Size < 2) {
       return false;
     }
     this.ViewMask.SetMask("PhantomArenaCloseChildView", true);
-    var e = this.Ggu.Pop();
-    var i = this.Ggu.Peek();
+    var e = this.OCu.Pop();
+    var i = this.OCu.Peek();
     await Promise.all([e.DestroyAsync(), i.ShowAsync()]).finally(() => {
       this.ViewMask.SetMask("PhantomArenaCloseChildView", false);
     });
@@ -105,7 +105,7 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     this.RunAsyncTask(i);
   }
   async CloseChildViewAsync(e) {
-    if (e !== this.Ggu.Peek()) {
+    if (e !== this.OCu.Peek()) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("PhantomArena", 43, "要关闭的界面不是当前界面");
       }
@@ -115,10 +115,10 @@ class PhantomArenaRootViewBase extends UiViewBase_1.UiViewBase {
     }
   }
   GetCurChildView() {
-    return this.Ggu.Peek();
+    return this.OCu.Peek();
   }
   Back() {
-    if (this.Ggu.Size > 1) {
+    if (this.OCu.Size > 1) {
       this.CloseCurChildView();
     } else {
       this.CloseMe();

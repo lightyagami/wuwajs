@@ -33,12 +33,12 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     this.DetailPanelData = undefined;
     this.OutlookUnlockPanelData = undefined;
     this.cs1 = undefined;
-    this.niu = undefined;
+    this.Piu = undefined;
     this.B7t = undefined;
     this.lqe = undefined;
     this.Hwn = () => new DeckBuilderCardInfoTabItem_1.DeckBuilderCardInfoTabItem();
     this.XA1 = i => {
-      this.Sou(i, true);
+      this.Qou(i, true);
     };
     this.YA1 = () => {};
     this.zA1 = () => {};
@@ -68,7 +68,7 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
         this.RefreshView();
       }
     };
-    this.siu = i => {
+    this.xiu = i => {
       if (i === this.Data.CurCardId) {
         this.RefreshView();
       }
@@ -84,7 +84,7 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.lqe.SetCloseCallBack(this.AMo);
     this.cs1 = new DeckBuilderCardDetailPanel_1.DeckBuilderCardDetailPanel();
-    this.niu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
+    this.Piu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
     this.B7t = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.Hwn);
     this.TabDataList = [];
     var t = new TabData();
@@ -95,8 +95,8 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
     this.TabDataList.push(t);
     if (i.NeedOutlookTab) {
       (t = new TabData()).TabNameTextId = "PhantomBattle_1014";
-      t.Panel = this.niu;
-      t.SequencePlayer = this.niu;
+      t.Panel = this.Piu;
+      t.SequencePlayer = this.Piu;
       t.OnShow = this.zA1;
       this.TabDataList.push(t);
     }
@@ -110,7 +110,7 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
       s.OnSelect = this.XA1;
       this.TabItemDataList[i] = s;
     }
-    await Promise.all([this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)), this.niu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.B7t.RefreshByDataAsync(this.TabItemDataList), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
+    await Promise.all([this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)), this.Piu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.B7t.RefreshByDataAsync(this.TabItemDataList), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
     if (i.CurrencyId) {
       await this.lqe.SetCurrencyItemList([i.CurrencyId]);
     }
@@ -120,15 +120,15 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.RefreshView();
-    this.Sou(0, false);
+    this.Qou(0, false);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.PV1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.siu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.xiu);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.PV1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.siu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.xiu);
   }
   OnBeforeShow() {
     var i = this.Data.SelectedTabIndex;
@@ -180,11 +180,11 @@ class DeckBuilderCardInfoView extends UiViewBase_1.UiViewBase {
           CardId: i
         };
         this.OutlookUnlockPanelData = e;
-        this.niu?.Refresh(e);
+        this.Piu?.Refresh(e);
       }
     }
   }
-  Sou(i, t) {
+  Qou(i, t) {
     var e = this.Data.SelectedTabIndex;
     if (e !== undefined && e >= 0) {
       this.TabDataList[e].Panel?.SetActive(false);

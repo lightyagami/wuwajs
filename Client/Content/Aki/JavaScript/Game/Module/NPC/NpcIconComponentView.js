@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.NpcIconComponentView = undefined;
 const UE = require("ue");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EffectSystem_1 = require("../../Effect/EffectSystem");
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
@@ -42,11 +43,11 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     this.lGi = undefined;
     this._Gi = false;
     this.uGi = undefined;
-    this.aeu = false;
+    this.Ueu = false;
     this.cGi = t => {
       if (t === "DialogueClose") {
         this.uGi();
-      } else if (t === "NameClose" && this.aeu && (this.aeu = false, this.iGi.SetUIActive(false), this.I91 !== undefined)) {
+      } else if (t === "NameClose" && this.Ueu && (this.Ueu = false, this.iGi.SetUIActive(false), this.I91 !== undefined)) {
         this.SetQuestTrackCellState(this.I91);
         this.I91 = undefined;
       }
@@ -161,9 +162,9 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     if (this.Qqi !== t) {
       if (this.Qqi = t) {
         this.iGi.SetUIActive(true);
-        if (this.aeu) {
+        if (this.Ueu) {
           this.CRi.StopPlayingSequence();
-          this.aeu = false;
+          this.Ueu = false;
         }
         this.CRi.PlayLevelSequenceByName("NameStart");
         if (this.$qi && !this.hGi && this.lGi === 0) {
@@ -173,7 +174,7 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
       } else {
         this.CRi.PlayLevelSequenceByName("IconClose");
         this.CRi.PlayLevelSequenceByName("NameClose");
-        this.aeu = true;
+        this.Ueu = true;
       }
     }
   }
@@ -262,7 +263,7 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     this.zqi?.SetSizeFromTexture();
   }
   SetHeadWorldScale3D(t) {
-    if (this.Qqi && this.tGi !== t) {
+    if (!!this.Qqi && !MathUtils_1.MathUtils.IsNearlyEqual(this.tGi, t, 0.01)) {
       this.tGi = t;
       this.eGi.X = t;
       this.eGi.Y = t;

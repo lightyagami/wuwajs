@@ -67,5 +67,5 @@ let GongduolaAudioComponent = class GongduolaAudioComponent extends VehicleAudio
     }
   }
 };
-GongduolaAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(270)], GongduolaAudioComponent);
+GongduolaAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(273)], GongduolaAudioComponent);
 exports.GongduolaAudioComponent = GongduolaAudioComponent; //# sourceMappingURL=GongduolaAudioComponent.js.map

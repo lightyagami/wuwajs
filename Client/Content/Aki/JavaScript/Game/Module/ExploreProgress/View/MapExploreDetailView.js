@@ -85,7 +85,7 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.lNl = () => {
       if (UiManager_1.UiManager.IsViewShow("WorldMapView")) {
-        this.eNl?.TrackPlayPoint();
+        this.eNl?.TrackPoint();
       } else {
         ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(this.eNl);
       }

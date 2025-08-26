@@ -21,14 +21,14 @@ const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.SRu = 0;
+    this.HRu = 0;
     this.yvt = [];
     this.Ivt = undefined;
     this.Tvt = undefined;
     this.i71 = () => {
       this.CloseMe();
     };
-    this.Xgu = () => {
+    this.QCu = () => {
       HelpController_1.HelpController.OpenHelpById(PhantomArenaDefine_1.HELP_ID_COLLECT);
     };
     this.fqe = e => new CommonTabItem_1.CommonTabItem();
@@ -36,7 +36,7 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
       var t = this.yvt[e];
       var n = t.ChildViewName;
       var o = this.Ivt.GetTabItemByIndex(e);
-      this.SRu = e;
+      this.HRu = e;
       this.Tvt.ToggleCallBack(t, n, o);
       this.d7s(n);
     };
@@ -44,8 +44,8 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
       e = this.yvt[e];
       return new CommonTabData_1.CommonTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(e.TabName));
     };
-    this.Xfu = e => {
-      var t = this.yvt[this.SRu].ChildViewName;
+    this.Hgu = e => {
+      var t = this.yvt[this.HRu].ChildViewName;
       this.d7s(t);
     };
   }
@@ -57,26 +57,26 @@ class PhantomArenaCollectView extends UiViewBase_1.UiViewBase {
     this.Tvt = new TabViewComponent_1.TabViewComponent(this.GetItem(2));
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.i71);
     this.Ivt.SetHelpButtonShowState(true);
-    this.Ivt.SetHelpButtonCallBack(this.Xgu);
+    this.Ivt.SetHelpButtonCallBack(this.QCu);
     this.yvt = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectTabDataList();
     var e = this.yvt.length;
     var e = this.Ivt.CreateTabItemDataByLength(e);
     await this.Ivt.RefreshTabItemAsync(e);
   }
   OnBeforeShow() {
-    this.Ivt.SelectToggleByIndex(this.SRu);
+    this.Ivt.SelectToggleByIndex(this.HRu);
     this.K8e();
   }
   OnBeforeHide() {
     this.Ovt();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Xfu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Xfu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Hgu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Hgu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Xfu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Xfu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.Hgu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.Hgu);
   }
   d7s(e) {
     let t = 0;

@@ -118,6 +118,9 @@ class QualityInfo {
   get SkinQuality() {
     return this.skinquality();
   }
+  get SkinQualityItemA() {
+    return this.skinqualityitema();
+  }
   get SkinItemColor() {
     return this.skinitemcolor();
   }
@@ -432,7 +435,7 @@ class QualityInfo {
     }
     return i;
   }
-  skinitemcolor(t) {
+  skinqualityitema(t) {
     var i = this.J7.__offset(this.z7, 76);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -440,7 +443,7 @@ class QualityInfo {
     }
     return i;
   }
-  skinitembg(t) {
+  skinitemcolor(t) {
     var i = this.J7.__offset(this.z7, 78);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -448,7 +451,7 @@ class QualityInfo {
     }
     return i;
   }
-  roleskinqualitybg(t) {
+  skinitembg(t) {
     var i = this.J7.__offset(this.z7, 80);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -456,7 +459,7 @@ class QualityInfo {
     }
     return i;
   }
-  weaponskinqualitybg(t) {
+  roleskinqualitybg(t) {
     var i = this.J7.__offset(this.z7, 82);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -464,7 +467,7 @@ class QualityInfo {
     }
     return i;
   }
-  composequalitybg(t) {
+  weaponskinqualitybg(t) {
     var i = this.J7.__offset(this.z7, 84);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -472,8 +475,16 @@ class QualityInfo {
     }
     return i;
   }
-  payshopqualitytexture(t) {
+  composequalitybg(t) {
     var i = this.J7.__offset(this.z7, 86);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  payshopqualitytexture(t) {
+    var i = this.J7.__offset(this.z7, 88);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

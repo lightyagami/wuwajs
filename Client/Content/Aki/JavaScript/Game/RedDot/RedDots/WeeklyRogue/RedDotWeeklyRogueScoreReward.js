@@ -12,7 +12,7 @@ class RedDotWeeklyRogueScoreReward extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot];
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityData.HasScoreRewardEnable() ?? false;
+    return ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityDataNew?.HasScoreRewardEnable() ?? false;
   }
 }
 exports.RedDotWeeklyRogueScoreReward = RedDotWeeklyRogueScoreReward;

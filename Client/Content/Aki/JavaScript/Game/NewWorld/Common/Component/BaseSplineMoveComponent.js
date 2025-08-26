@@ -41,7 +41,8 @@ class SplineMoveParams {
   constructor(t, i, s) {
     this.Id = t;
     this.Config = i;
-    this.Spline = s;
+    this.Entity = s;
+    this.Spline = undefined;
     this.CurrentMaxOffsetSquared = 0;
     this.CurrentMaxOffset = 0;
     this.InputLimitCos = 0;
@@ -60,6 +61,7 @@ class SplineMoveParams {
     this.SplineAnalyzeData = undefined;
     this.AdjustFacingType = undefined;
     this.AdjustFacingYaw = 0;
+    this.AllowInherit = false;
     this.Type = i.Type;
     this.MaxOffsetDist = i.MaxOffsetDistance ?? 0;
     this.OnlyForward = i.IsOneWay ?? false;
@@ -82,7 +84,7 @@ class SplineMoveParams {
             this.AdjustFacingYaw = i.FacingConfig.Yaw ?? 0;
         }
       }
-    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(260)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
+    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(263)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
       this.InputLimitAngle = i.Limit.DirectionAngleLimit;
       this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.Limit.EdgeLimitCurveFactor);
     }
@@ -90,9 +92,18 @@ class SplineMoveParams {
     this.CurrentMaxOffsetSquared = this.CurrentMaxOffset * this.CurrentMaxOffset;
     if (this.Type === "AirPassage") {
       this.EarliestLeaveTime = Time_1.Time.NowSeconds + 1;
-      this.SplineAnalyzeData = ModelManager_1.ModelManager.GameSplineModel?.GetSplineAnalyzeData(t);
     } else {
       this.EarliestLeaveTime = Time_1.Time.NowSeconds;
+    }
+  }
+  EnableParams(t) {
+    if (!this.Spline && t) {
+      this.Spline = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(this.Id, this.Entity.Id, 1);
+      this.SplineAnalyzeData = ModelManager_1.ModelManager.GameSplineModel?.GetSplineAnalyzeData(this.Id);
+    } else if (this.Spline && !t) {
+      ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(this.Id, this.Entity.Id, 1);
+      this.Spline = undefined;
+      this.SplineAnalyzeData = undefined;
     }
   }
 }
@@ -113,6 +124,8 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.LastTimeKey = INVALID_TIME_KEY;
     this.LastSplineLocation = Vector_1.Vector.Create();
     this.LastSplineDirection = Vector_1.Vector.Create();
+    this.AllowInherit = false;
+    this.InheritThisFrame = false;
     this.LastLocation = Vector_1.Vector.Create();
     this.TargetLocation = Vector_1.Vector.Create();
     this.OffsetVector = Vector_1.Vector.Create();
@@ -135,7 +148,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
   OnStart() {
     this.DisableKey = this.Disable("[SplineMoveComponent.OnStart] 默认Disable");
     this.ActorComp = this.Entity.GetComponent(1);
-    this.TagComp = this.Entity.GetComponent(205);
+    this.TagComp = this.Entity.GetComponent(206);
     return true;
   }
   OnTick(t) {
@@ -219,8 +232,9 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.TargetLocation.AdditionEqual(this.TmpVector);
     return true;
   }
-  StartSplineMove(t, i) {
+  StartSplineMove(t, i, s = false) {
     if (this.StartMoveConditionCheck(t, i)) {
+      (i = new SplineMoveParams(t, i, this.Entity)).AllowInherit = s;
       this.StartSplineMoveInternal(t, i);
     }
   }
@@ -281,17 +295,14 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     return !!this.CurrentSplineMoveParams;
   }
   AddSplineMoveParams(t, i) {
-    var s;
-    var e = this.SplineMoveParamsMap.get(t);
-    if (!e) {
-      s = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(t, this.Entity.Id, 1);
-      e = new SplineMoveParams(t, i, s);
-      this.SplineMoveParamsMap.set(t, e);
+    if (!this.SplineMoveParamsMap.get(t)) {
+      i.EnableParams(true);
+      this.SplineMoveParamsMap.set(t, i);
     }
     this.SplineStack.push(t);
   }
   RemoveSplineMoveParams(t) {
-    ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(t, this.Entity.Id, 1);
+    this.SplineMoveParamsMap.get(t)?.EnableParams(false);
     this.SplineMoveParamsMap.delete(t);
     while (this.SplineStack.length && !this.SplineMoveParamsMap.has(this.SplineStack[this.SplineStack.length - 1])) {
       this.SplineStack.length = this.SplineStack.length - 1;
@@ -339,5 +350,5 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     }
   }
 };
-BaseSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(107)], BaseSplineMoveComponent);
+BaseSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(108)], BaseSplineMoveComponent);
 exports.BaseSplineMoveComponent = BaseSplineMoveComponent; //# sourceMappingURL=BaseSplineMoveComponent.js.map

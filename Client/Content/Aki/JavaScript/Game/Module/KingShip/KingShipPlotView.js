@@ -5,48 +5,54 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.KingShipPlotView = undefined;
 const UE = require("ue");
-const SpeakerById_1 = require("../../../Core/Define/ConfigQuery/SpeakerById");
-const PublicUtil_1 = require("../../Common/PublicUtil");
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../Ui/UiManager");
 const DynamicMaskButton_1 = require("../DynamicMask/DynamicMaskButton");
+const PlotTextLogic_1 = require("../Plot/PlotView/PlotTextLogic");
+const CLICK_AUDIO_EVENT = "play_ui_ia_com_confirm";
 class KingShipPlotView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.k2u = undefined;
+    this.RFu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.k2u = new KingShipPlotItem();
-    await this.k2u.CreateThenShowByResourceIdAsync("UiView_PlotD_Prefab", this.GetItem(1));
+    this.RFu = new KingShipPlotItem();
+    await this.RFu.CreateThenShowByResourceIdAsync("UiView_PlotD_Prefab", this.GetItem(1));
   }
   OnStart() {
     var i = this.OpenParam;
-    this.k2u?.RefreshPlot(i.FlowId);
+    this.RFu?.RefreshPlot(i.FlowId);
     this.SetTextureByPath(i.Path, this.GetTexture(0));
   }
   OnBeforeDestroy() {
     this.OpenParam.OnCloseCallBack();
+  }
+  async OnPlayingCloseSequenceAsync() {
+    await this.RFu.DestroyPortraitItem();
   }
 }
 exports.KingShipPlotView = KingShipPlotView;
 class KingShipPlotItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.O2u = [];
-    this.q2u = 0;
+    this.wFu = [];
+    this.LFu = 0;
     this.lLt = undefined;
+    this.geo = undefined;
     this.XTt = () => {
-      this.q2u++;
+      this.LFu++;
       this.ShowPlot();
+      AudioSystem_1.AudioSystem.PostEvent(CLICK_AUDIO_EVENT);
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewComponent]];
   }
   async OnBeforeStartAsync() {
     this.lLt = new DynamicMaskButton_1.DynamicMaskButton();
@@ -54,42 +60,39 @@ class KingShipPlotItem extends UiPanelBase_1.UiPanelBase {
     await this.lLt.Init();
     this.lLt.GetRootItem().SetAsFirstHierarchy();
     this.lLt.SetUiActive(true);
+    var i = this.GetScrollView(8);
+    i?.SetCanScroll(false);
+    i?.SetRayCastTargetForScrollView(false);
+    this.geo = new PlotTextLogic_1.PlotTextCommonLogic(this.GetItem(4), this.GetText(0), this.GetText(1), this.GetText(2), this.GetItem(3), i);
   }
   RefreshPlot(i) {
-    this.O2u = [];
-    this.q2u = 0;
-    for (const e of ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateActions(i[0], Number(i[1]), Number(i[2]))) {
-      if (e.Name === "ShowTalk") {
-        for (const t of e.Params.TalkItems) {
-          this.O2u.push([t.WhoId ?? 0, t.TidTalk ?? ""]);
+    this.wFu = [];
+    this.LFu = 0;
+    for (const t of ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateActions(i[0], Number(i[1]), Number(i[2]))) {
+      if (t.Name === "ShowTalk") {
+        for (const e of t.Params.TalkItems) {
+          this.wFu.push(e);
         }
       }
     }
     this.ShowPlot();
   }
   ShowPlot() {
-    var i;
-    var e = this.O2u.length;
-    if (this.q2u >= e) {
+    var i = this.wFu.length;
+    if (this.LFu >= i) {
       this.lLt?.SetUiActive(false);
       UiManager_1.UiManager.CloseView("KingShipPlotView");
     } else {
-      e = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(this.O2u[this.q2u][1]) ?? "";
-      this.GetText(2).SetText(e);
-      if (e = (e = this.O2u[this.q2u][0]) ? SpeakerById_1.configSpeakerById.GetConfig(e) : undefined) {
-        i = PublicUtil_1.PublicUtil.GetConfigTextByTable(0, e.Id) ?? "";
-        this.GetText(0)?.SetText(i);
-        if (!e.Title) {
-          this.GetText(1)?.SetUIActive(false);
-        }
-        this.GetText(0)?.SetUIActive(true);
-        i = PublicUtil_1.PublicUtil.GetConfigTextByTable(1, e.Id) ?? "";
-        this.GetText(1)?.SetText(i);
-      }
+      i = this.wFu[this.LFu];
+      this.geo?.UpdatePlotSubtitle(i);
     }
   }
   OnBeforeDestroy() {
     this.lLt?.Destroy();
+    this.geo?.Clear();
+  }
+  async DestroyPortraitItem() {
+    await this.geo.DestroyPortraitItem();
   }
 }
 //# sourceMappingURL=KingShipPlotView.js.map

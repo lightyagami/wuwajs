@@ -21,7 +21,7 @@ class CooperationController {
       var r = o.GetCurrentTeamItem;
       var a = r?.EntityHandle;
       if (a && r.GetCreatureDataId() !== e) {
-        var a = a.Entity.CheckGetComponent(205);
+        var a = a.Entity.CheckGetComponent(206);
         var n = o.GetTeamItem(e, {
           ParamType: 3
         });

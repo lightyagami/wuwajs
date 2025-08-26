@@ -139,7 +139,7 @@ let AnimalPerformComponent = AnimalPerformComponent_1 = class AnimalPerformCompo
   }
   HandlePendingDestroy() {
     if (this.PendingDestroy) {
-      this.Entity.GetComponent(205).AddTag(-1000614969);
+      this.Entity.GetComponent(206).AddTag(-1000614969);
     } else {
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     }
@@ -169,7 +169,7 @@ let AnimalPerformComponent = AnimalPerformComponent_1 = class AnimalPerformCompo
       }
       return false;
     }
-    this.AnimComp = this.Entity.GetComponent(177);
+    this.AnimComp = this.Entity.GetComponent(178);
     if (!this.AnimComp) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Animal", 29, "[AnimalPerformComponent] 初始化失败 Animation Component Undefined", ["CreatureDataId", this.Hte.CreatureData.GetCreatureDataId()], ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["PlayerId", this.Hte.CreatureData.GetPlayerId()]);
@@ -192,7 +192,7 @@ let AnimalPerformComponent = AnimalPerformComponent_1 = class AnimalPerformCompo
         }
       }
     }
-    this.jBr = this.Entity.GetComponent(119);
+    this.jBr = this.Entity.GetComponent(120);
     if (!this.jBr) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Animal", 29, "[AnimalPerformComponent] 初始化失败 Perception Component Undefined", ["CreatureDataId", this.Hte.CreatureData.GetCreatureDataId()], ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["PlayerId", this.Hte.CreatureData.GetPlayerId()]);
@@ -200,7 +200,7 @@ let AnimalPerformComponent = AnimalPerformComponent_1 = class AnimalPerformCompo
       return false;
     }
     this.jBr.SetSightRange(DEFAULT_SIGHT_RANGE);
-    this.WBr = this.Entity.GetComponent(205);
+    this.WBr = this.Entity.GetComponent(206);
     if (!this.WBr) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Animal", 29, "[AnimalPerformComponent] 初始化失败 GameplayTag Component Undefined", ["CreatureDataId", this.Hte.CreatureData.GetCreatureDataId()], ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["PlayerId", this.Hte.CreatureData.GetPlayerId()]);
@@ -361,5 +361,5 @@ let AnimalPerformComponent = AnimalPerformComponent_1 = class AnimalPerformCompo
     }
   }
 };
-AnimalPerformComponent = AnimalPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(171)], AnimalPerformComponent);
+AnimalPerformComponent = AnimalPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(172)], AnimalPerformComponent);
 exports.AnimalPerformComponent = AnimalPerformComponent; //# sourceMappingURL=AnimalPerformComponent.js.map

@@ -41,11 +41,11 @@ class TrackController extends ControllerBase_1.ControllerBase {
 }
 (exports.TrackController = TrackController).gRo = r => {
   if (r) {
-    var t = r.GetComponent(160);
+    var t = r.GetComponent(161);
     if (t?.Valid && t.TrackConfigType !== "Compass") {
       var n = r.GetComponent(1).CreatureData.GetPbEntityInitData();
       var o = (0, IComponent_1.getComponent)(n.ComponentsData, "InteractComponent");
-      var e = r.GetComponent(196);
+      var e = r.GetComponent(197);
       if (!e || !e.HasTag(1196894179)) {
         let e = 3;
         if (o) {

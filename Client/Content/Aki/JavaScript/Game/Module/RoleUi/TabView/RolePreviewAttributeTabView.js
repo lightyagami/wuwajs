@@ -12,16 +12,20 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const GenericLayoutNew_1 = require("../../Util/Layout/GenericLayoutNew");
 const RoleController_1 = require("../RoleController");
 const RoleFavorUtil_1 = require("../RoleFavor/RoleFavorUtil");
 const RoleLevelUpSuccessAttributeView_1 = require("../RoleLevel/RoleLevelUpSuccessAttributeView");
+const RoleTagSmallIconItem_1 = require("../RoleTag/RoleTagSmallIconItem");
 class RolePreviewAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
     this.RoleViewAgent = undefined;
     this.RoleInstance = undefined;
     this.nvt = undefined;
+    this.Klo = undefined;
     this.Kco = e => {
       this.PlayMontageStartWithReLoop();
       this.VC(e);
@@ -35,9 +39,16 @@ class RolePreviewAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
         Value: r
       };
     };
+    this.qdo = () => new RoleTagSmallIconItem_1.RoleTagSmallIconItem();
+    this.RoleTagClick = () => {
+      var e = this.RoleInstance.GetRoleConfig();
+      var e = ModelManager_1.ModelManager.RoleModel.GetRoleTagByRoleInfo(e);
+      UiManager_1.UiManager.OpenView("RoleTagDetailView", e);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIVerticalLayout], [4, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIVerticalLayout], [4, UE.UIText], [5, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[7, this.RoleTagClick]];
   }
   OnStart() {
     this.RoleViewAgent = this.ExtraParams;
@@ -47,6 +58,7 @@ class RolePreviewAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
       }
     } else {
       this.nvt = new GenericLayoutNew_1.GenericLayoutNew(this.GetVerticalLayout(3), this.iCo);
+      this.Klo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.qdo);
     }
   }
   AddEventListener() {
@@ -77,6 +89,7 @@ class RolePreviewAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
     this.rCo();
     this.nCo();
     this.sCo();
+    this.Jdo();
   }
   rCo() {
     var e = this.RoleInstance.GetElementInfo();
@@ -120,11 +133,15 @@ class RolePreviewAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
       CurText: t
     });
     let r = true;
-    for (const o of i) {
-      o.ShowArrow = false;
-      r = !(o.InnerShowBg = r);
+    for (const a of i) {
+      a.ShowArrow = false;
+      r = !(a.InnerShowBg = r);
     }
     this.nvt?.RebuildLayoutByDataNew(i);
+  }
+  Jdo() {
+    var e = ModelManager_1.ModelManager.RoleModel.GetRoleTagByRoleInfo(this.RoleInstance.GetRoleConfig());
+    this.Klo.RefreshByData(e);
   }
   sCo() {
     var e = this.RoleInstance.GetRoleConfig();

@@ -181,7 +181,7 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
     }
   }
   SceneItemMoveAlongPath(e, t) {
-    var i = this.sDe?.Entity?.GetComponent(128);
+    var i = this.sDe?.Entity?.GetComponent(129);
     if (i) {
       switch (t?.Type) {
         case IComponent_1.ESplineType.Patrol:
@@ -253,7 +253,7 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
   VehicleMoveAlongPath(e, t) {
     var i = this.gLe?.SplineEntityId;
     var o = this.sDe?.Entity;
-    if (i && (o = o && o.GetComponent(236))) {
+    if (i && (o = o && o.GetComponent(237))) {
       o.MoveAlongPath({
         SplineId: i,
         ForceToFirstPoint: !!this.gLe?.IsForceToFirstPoint,
@@ -278,9 +278,9 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
     var t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataIdByPbDataId(this.E0);
     if (!this.YLe && t) {
       (e = Protocol_1.Aki.Protocol.f1s.create()).F4n = MathUtils_1.MathUtils.NumberToLong(t);
-      Net_1.Net.Call(15335, e, e => {
+      Net_1.Net.Call(23281, e, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 26006);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 27131);
         }
       });
     }

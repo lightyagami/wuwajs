@@ -11,11 +11,12 @@ const Net_1 = require("../../../Core/Net/Net");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24882, e => {
+    Net_1.Net.Register(20619, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ExploreProgress", 69, "服务端推送所有已经获取的区域探索度奖励ExploreProgressRewardIdsNotify", ["list", e.cOl]);
       }
@@ -23,7 +24,7 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24882);
+    Net_1.Net.UnRegister(20619);
   }
   static OnAddEvents() {
     super.OnAddEvents();
@@ -42,7 +43,7 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ExploreProgress", 63, "客户端请求区域探索度ExploreProgressRequest", ["request", r]);
     }
-    var e = await Net_1.Net.CallAsync(17347, r);
+    var e = await Net_1.Net.CallAsync(28025, r);
     this.$Vt(e);
   }
   static async ReceiveAreaStageRewardAsyncRequest(e) {
@@ -51,7 +52,7 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
     }
     var r = new Protocol_1.Aki.Protocol.jp_();
     r.cOl = e;
-    var e = await Net_1.Net.CallAsync(25510, r);
+    var e = await Net_1.Net.CallAsync(15206, r);
     this.LOl(e);
   }
   static async QueryOnlinePlayersAreaAsyncRequest() {
@@ -59,8 +60,23 @@ class ExploreProgressController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Debug("Map", 69, "ExploreProgressController.QueryOnlinePlayersAreaAsyncRequest Proto_QueryOnlinePlayersAreaRequest");
     }
     var e = new Protocol_1.Aki.Protocol.R0_();
-    var e = await Net_1.Net.CallAsync(17869, e);
+    var e = await Net_1.Net.CallAsync(20305, e);
     this.UOl(e);
+  }
+  static async ExploreEntityTraceRequest(e, r) {
+    var o = Protocol_1.Aki.Protocol.s8u.create();
+    o.Bju = e;
+    o.p6n = r;
+    var o = await Net_1.Net.CallAsync(19547, o);
+    if (o) {
+      if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 28146);
+      } else if (o.PSs.length === 0) {
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Explore_EntityNull_Text");
+      } else {
+        ModelManager_1.ModelManager.ExploreProgressModel.UpdateTraceEntities(r, e, o.PSs);
+      }
+    }
   }
 }
 exports.ExploreProgressController = ExploreProgressController;

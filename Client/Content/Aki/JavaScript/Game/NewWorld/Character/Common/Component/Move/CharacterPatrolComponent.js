@@ -443,14 +443,14 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
     if (this.CreatureData.IsMonster() && !this.pKl) {
       (t = Protocol_1.Aki.Protocol.Kes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureData.GetCreatureDataId());
       t.V4n = this.CurrentPatrol.LastPointIndex < this.CurrentSplineInfo.SplineComp.PathPoint.length - 1;
-      Net_1.Net.Call(28609, t, () => {});
+      Net_1.Net.Call(21065, t, () => {});
     }
   }
   PatrolEndRequest() {
     var t;
     if (this.CreatureData.IsMonster() && !this.pKl) {
       (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureData.GetCreatureDataId());
-      Net_1.Net.Call(24335, t, () => {});
+      Net_1.Net.Call(20200, t, () => {});
     }
   }
   DirectionChangeRequest(t) {
@@ -462,14 +462,14 @@ let CharacterPatrolComponent = class CharacterPatrolComponent extends EntityComp
         }
         (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureData.GetCreatureDataId());
         i.V4n = true;
-        Net_1.Net.Call(26851, i, () => {});
+        Net_1.Net.Call(22528, i, () => {});
       } else if (t === this.CurrentSplineInfo.SplineComp.PathPoint.length - 1) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("AI", 50, "往返式巡逻：走到终点", ["PbDataID", this.ActorComp.CreatureData.GetPbDataId()]);
         }
         (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
         i.V4n = false;
-        Net_1.Net.Call(26851, i, () => {});
+        Net_1.Net.Call(22528, i, () => {});
       }
     }
   }

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.NavigationSelectableBase = undefined;
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
+const TsUiNavigationBehaviorListener_1 = require("../TsUiNavigationBehaviorListener");
 const UiNavigationGlobalData_1 = require("../UiNavigationGlobalData");
 class NavigationSelectableBase {
   constructor(t, i, e) {
@@ -55,8 +56,8 @@ class NavigationSelectableBase {
   CheckFindNavigationBefore() {
     return !UiLayer_1.UiLayer.IsInMask() && this.OnCheckFindNavigationBefore();
   }
-  CheckFindOpposite(t) {
-    return this.Listener !== t && !!this.Listener.IsCanFocus() && this.OnCheckFindOpposite(t);
+  CheckFindOpposite() {
+    return !!this.Listener.IsCanFocus() && this.OnCheckFindOpposite();
   }
   CheckFindNavigationAfter(t) {
     return this.OnCheckFindNavigationAfter(t);
@@ -86,7 +87,7 @@ class NavigationSelectableBase {
   OnCheckFindNavigationBefore() {
     return true;
   }
-  OnCheckFindOpposite(t) {
+  OnCheckFindOpposite() {
     return true;
   }
   OnCheckFindNavigationAfter(t) {
@@ -104,9 +105,14 @@ class NavigationSelectableBase {
   OnIsIgnoreScrollOrLayoutCheck() {
     return false;
   }
-  OnFindLoopScrollViewNavigationComponent(t, i) {
-    let e = undefined;
-    return e = this.Listener.HasLoopScrollView() ? this.Listener.ScrollView.FindNavigationComponent(this.Listener.GetSelectableComponent(), t, i) : e;
+  OnFindLoopScrollViewNavigationComponent(e, r) {
+    let n = undefined;
+    if (this.Listener.HasLoopScrollView()) {
+      let t = 0;
+      let i = this.Listener;
+      while (t < 20 && (n = this.Listener.ScrollView.FindNavigationComponent(i.GetSelectableComponent(), e, r)) !== undefined && (i = n?.GetOwner()?.GetComponentByClass(TsUiNavigationBehaviorListener_1.default.StaticClass()), t++, !i?.IsCanFocus()));
+    }
+    return n;
   }
   cBo() {
     var t;

@@ -24,7 +24,7 @@ class RogueBattleMapSummaryFettersTabView extends UiTabViewBase_1.UiTabViewBase 
     this.Ny1 = undefined;
     this.SE1 = undefined;
     this.l01 = undefined;
-    this.Spu = undefined;
+    this.yvu = undefined;
     this.ypt = [];
     this.C5e = () => {
       return new RogueBattleMapFetterTabItem_1.RogueBattleMapFetterTabItem();
@@ -35,7 +35,7 @@ class RogueBattleMapSummaryFettersTabView extends UiTabViewBase_1.UiTabViewBase 
     this.EE1 = () => {
       return new RogueBattleMapFetterItem_1.RogueBattleMapFetterInfoItem();
     };
-    this.Apu = () => {
+    this.wvu = () => {
       return new MapRogueFetterStarLvItem_1.MapRogueFetterStarLvItem();
     };
     this.IE1 = e => {
@@ -90,7 +90,7 @@ class RogueBattleMapSummaryFettersTabView extends UiTabViewBase_1.UiTabViewBase 
     this.Ny1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.C5e);
     this.SE1 = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(8), this.ME1);
     this.l01 = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(10), this.EE1);
-    this.Spu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(15), this.Apu);
+    this.yvu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(15), this.wvu);
     this.GetItem(13)?.SetUIActive(false);
     this.GetItem(2)?.SetUIActive(false);
   }
@@ -128,7 +128,16 @@ class RogueBattleMapSummaryFettersTabView extends UiTabViewBase_1.UiTabViewBase 
       if (n && n.length !== 0) {
         (n = [...i.get(g.Id)]).sort((e, t) => {
           e = ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(e);
-          return ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(t).F6n - e.F6n;
+          t = ModelManager_1.ModelManager.RogueBattleModel.GetRoleBondDataById(t);
+          if (e.F6n === t.F6n) {
+            if (e.Whc === t.Whc) {
+              return e.v9n - t.v9n;
+            } else {
+              return t.Whc - e.Whc;
+            }
+          } else {
+            return t.F6n - e.F6n;
+          }
         });
         if (ModelManager_1.ModelManager.RogueBattleModel.CurrentMapSummaryBond === 0 && n.length > 0) {
           ModelManager_1.ModelManager.RogueBattleModel.CurrentMapSummaryBond = n[0];
@@ -192,12 +201,12 @@ class RogueBattleMapSummaryFettersTabView extends UiTabViewBase_1.UiTabViewBase 
         };
         r.push(h);
       }
-      this.Spu.SetActive(true);
+      this.yvu.SetActive(true);
       this.l01.SetActive(true);
-      this.Spu.RefreshByData(a, undefined, true);
+      this.yvu.RefreshByData(a, undefined, true);
       this.l01.RefreshByData(r);
     } else {
-      this.Spu.SetActive(false);
+      this.yvu.SetActive(false);
       this.l01.SetActive(false);
     }
   }

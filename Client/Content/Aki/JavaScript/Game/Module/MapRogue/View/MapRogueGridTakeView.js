@@ -74,7 +74,7 @@ class MapRogueGridTakeView extends UiViewBase_1.UiViewBase {
     var i = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this.OpIncId);
     if (i &&= i.Data.FEc?.XEc) {
       e = ModelManager_1.ModelManager.MapRogueModel.GameInfo.Mood;
-      i = i.vxu;
+      i = i.Xxu;
       this.BgItem?.MoodBar?.SetCurrentValue(e - i);
       this.BgItem?.MoodBar?.ShowPreviewValue(i, e);
     }

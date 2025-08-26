@@ -30,8 +30,8 @@ class MapRogueModel extends ModelBase_1.ModelBase {
     this.v01 = 0;
     this.Zvc = 0;
     this.Yb1 = 0;
-    this.sWc = (e, t) => t.Priority - e.Priority;
-    this.wdu = false;
+    this.nZu = (e, t) => t.Priority - e.Priority;
+    this.mmu = false;
   }
   RefreshGameInfo(e) {
     this.GameInfo ||= new MapRogueDefine_1.MapRogueGameInfo();
@@ -50,7 +50,7 @@ class MapRogueModel extends ModelBase_1.ModelBase {
     for (const t of e) {
       this.AddOpData(t, false);
     }
-    this.GameOpList.sort(this.sWc);
+    this.GameOpList.sort(this.nZu);
     this.PrintAllOpList();
   }
   PrintAllOpList() {
@@ -97,7 +97,7 @@ class MapRogueModel extends ModelBase_1.ModelBase {
       case Protocol_1.Aki.Protocol.OEc.Proto_ChangeEventByPos:
         o = new MapRogueOpChangeEvent_1.MapRogueOpChangeEvent();
     }
-    if (o && (o.Update(e, this.GameInfo), this.GameOpList.push(o), this.GameOpMap.set(e.w5n, o), t && this.GameOpList.sort(this.sWc), Log_1.Log.CheckInfo())) {
+    if (o && (o.Update(e, this.GameInfo), this.GameOpList.push(o), this.GameOpMap.set(e.w5n, o), t && this.GameOpList.sort(this.nZu), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("RogueBattle", 37, "[MapRogue] 新增指令", ["Index", this.GameOpList.length - 1], ["Data", o.ToString()]);
     }
   }
@@ -207,7 +207,7 @@ class MapRogueModel extends ModelBase_1.ModelBase {
     return e;
   }
   SetDebugMode(e) {
-    this.wdu = e;
+    this.mmu = e;
   }
 }
 exports.MapRogueModel = MapRogueModel;

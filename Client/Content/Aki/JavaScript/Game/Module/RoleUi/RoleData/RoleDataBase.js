@@ -23,7 +23,7 @@ class RoleDataBase {
     this.t_o = new Map();
     this.i_o = [RoleLevelData_1.RoleLevelData, RoleAttributeData_1.RoleAttributeData, RoleSkillData_1.RoleSkillData, RoleResonanceData_1.RoleResonanceData, RolePhantomData_1.RolePhantomData, RoleAudioData_1.RoleAudioData, RoleFavorData_1.RoleFavorData];
     this.BIl = -1;
-    this.$Wc = true;
+    this.vjc = true;
     this.SortAttrList = (e, t) => {
       var a = e.Priority !== 0;
       var r = t.Priority !== 0;
@@ -79,10 +79,10 @@ class RoleDataBase {
     }
   }
   SetBackgroundMusicEnabled(e) {
-    this.$Wc = e;
+    this.vjc = e;
   }
   GetBackgroundMusicEnabled() {
-    return this.$Wc;
+    return this.vjc;
   }
   GetElementInfo() {
     var e = this.GetRoleConfig();
@@ -112,7 +112,7 @@ class RoleDataBase {
         ParamType: 0,
         OnlyMyRole: true
       });
-      var r = t ? t.EntityHandle.Entity.GetComponent(173) : undefined;
+      var r = t ? t.EntityHandle.Entity.GetComponent(174) : undefined;
       for (const i of e) {
         if (i.IsShow) {
           let e = 0;
@@ -150,7 +150,7 @@ class RoleDataBase {
       ParamType: 0,
       OnlyMyRole: true
     });
-    var a = a ? a.EntityHandle?.Entity?.GetComponent(173) : undefined;
+    var a = a ? a.EntityHandle?.Entity?.GetComponent(174) : undefined;
     let r = 0;
     if (a) {
       if ((r = a.GetCurrentValue(e)) === 0 && Log_1.Log.CheckWarn()) {
@@ -170,7 +170,7 @@ class RoleDataBase {
       ParamType: 0,
       OnlyMyRole: true
     });
-    var t = t ? t.EntityHandle.Entity.GetComponent(173) : undefined;
+    var t = t ? t.EntityHandle.Entity.GetComponent(174) : undefined;
     let a = 0;
     return a = t ? t.GetBaseValue(e) : this.GetAttributeData().GetRoleBaseAttr(e);
   }

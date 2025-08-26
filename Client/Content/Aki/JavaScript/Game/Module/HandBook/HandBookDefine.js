@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.HandBookNounDynamicData = exports.HandBookChipDynamicData = exports.noSelectColor = exports.selectColor = exports.HandBookQuestViewOpenParam = exports.HandBookPlotDynamicData = exports.HandBookQuestDynamicData = exports.HandBookQuestNode = exports.HandBookPhotoData = exports.HandBookCommonItemData = exports.HandBookDropItemData = exports.HandBookContentItemData = exports.HandBookEntry = undefined;
+exports.WeaponHandBookDynamicLayoutItemData = exports.WeaponHandBookDynamicData = exports.MonsterHandBookDynamicData = exports.HandBookNounDynamicData = exports.HandBookChipDynamicData = exports.noSelectColor = exports.selectColor = exports.HandBookQuestViewOpenParam = exports.HandBookPlotDynamicData = exports.HandBookQuestDynamicData = exports.HandBookQuestNode = exports.HandBookPhotoData = exports.HandBookCommonItemData = exports.HandBookDropItemData = exports.HandBookContentItemData = exports.HandBookEntry = undefined;
 const UE = require("ue");
 class HandBookEntry {
   constructor(t, o, s, a) {
@@ -110,4 +110,25 @@ class HandBookNounDynamicData {
   }
 }
 exports.HandBookNounDynamicData = HandBookNounDynamicData;
+class MonsterHandBookDynamicData {
+  constructor() {
+    this.TitleId = undefined;
+    this.MonsterList = undefined;
+  }
+}
+exports.MonsterHandBookDynamicData = MonsterHandBookDynamicData;
+class WeaponHandBookDynamicData {
+  constructor() {
+    this.TitleId = undefined;
+    this.ItemData = undefined;
+  }
+}
+exports.WeaponHandBookDynamicData = WeaponHandBookDynamicData;
+class WeaponHandBookDynamicLayoutItemData {
+  constructor() {
+    this.IsSkin = false;
+    this.ItemId = undefined;
+  }
+}
+exports.WeaponHandBookDynamicLayoutItemData = WeaponHandBookDynamicLayoutItemData;
 //# sourceMappingURL=HandBookDefine.js.map

@@ -95,10 +95,10 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     var t = Protocol_1.Aki.Protocol.Xh1.create();
     t.BVn = r;
     t.w6n = e;
-    Net_1.Net.Call(24377, t, e => {
+    Net_1.Net.Call(27888, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25749);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28827);
         } else {
           ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetRegressScoreRewardReached(r);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);
@@ -116,19 +116,19 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     i.w6n = t;
     i.k6n = r;
     i.gps = e;
-    Net_1.Net.Call(15872, i, e => {
+    Net_1.Net.Call(17446, i, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17200);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16557);
       }
     });
   }
   async RequestGachaInfo() {
     var e = Protocol_1.Aki.Protocol.Xrs.create();
     e.r9n = LanguageSystem_1.LanguageSystem.GetLanguageDefineByCode(LanguageSystem_1.LanguageSystem.PackageLanguage).LanguageType;
-    var e = await Net_1.Net.CallAsync(26586, e);
+    var e = await Net_1.Net.CallAsync(19949, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23891);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18597);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Gacha", 63, "抽卡服务端数据:", ["Result", JSON.stringify(e)]);
@@ -182,10 +182,10 @@ class ActivityRegressController extends ActivityControllerBase_1.ActivityControl
     const r = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressQuestionnaireConfig(e);
     e = Protocol_1.Aki.Protocol.pI1.create();
     e.SI1 = r.Id;
-    Net_1.Net.Call(22467, e, e => {
+    Net_1.Net.Call(24976, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23878);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24065);
         }
         ModelManager_1.ModelManager.ActivityRegressModel.ActivityData.SetQuestionnaireReached(r.Id);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RecallActivityInfoUpdate);

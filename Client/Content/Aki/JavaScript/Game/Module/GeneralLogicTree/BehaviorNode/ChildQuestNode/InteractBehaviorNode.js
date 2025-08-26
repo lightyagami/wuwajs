@@ -8,6 +8,7 @@ const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent
 const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GeneralLogicTreeConfigUtil_1 = require("../../GeneralLogicTreeConfigUtil");
 const ChildQuestNodeBase_1 = require("./ChildQuestNodeBase");
@@ -43,13 +44,17 @@ class InteractBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
     if (!t.AddOptions) {
       return false;
     }
+    var r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.Blackboard.DungeonId);
+    if (!r) {
+      return false;
+    }
     this.TrackTextRuleInner = 1;
     this.PXt = [];
-    for (const i of t.AddOptions) {
-      this.PXt.push(i.EntityId);
-      var r = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(i.EntityId, this.Blackboard.DungeonId);
-      if ((r &&= (0, IComponent_1.getComponent)(r.ComponentsData, "BaseInfoComponent")) && r.Occupation) {
-        this.fKs.push(r.Occupation);
+    for (const s of t.AddOptions) {
+      this.PXt.push(s.EntityId);
+      var i = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(s.EntityId, r.MapConfigId);
+      if ((i &&= (0, IComponent_1.getComponent)(i.ComponentsData, "BaseInfoComponent")) && i.Occupation) {
+        this.fKs.push(i.Occupation);
       }
     }
     return true;

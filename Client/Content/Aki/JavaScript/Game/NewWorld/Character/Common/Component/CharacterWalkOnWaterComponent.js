@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var h;
   var r = arguments.length;
-  var _ = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var a = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    _ = Reflect.decorate(t, e, i, s);
+    a = Reflect.decorate(t, e, i, s);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (h = t[a]) {
-        _ = (r < 3 ? h(_) : r > 3 ? h(e, i, _) : h(e, i)) || _;
+    for (var _ = t.length - 1; _ >= 0; _--) {
+      if (h = t[_]) {
+        a = (r < 3 ? h(a) : r > 3 ? h(e, i, a) : h(e, i)) || a;
       }
     }
   }
-  if (r > 3 && _) {
-    Object.defineProperty(e, i, _);
+  if (r > 3 && a) {
+    Object.defineProperty(e, i, a);
   }
-  return _;
+  return a;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -83,10 +83,11 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     this.WalkOnWaterStage = 0;
     this.WaterDepthType = 0;
     this.IKr = undefined;
-    this.mwu = false;
-    this.fwu = undefined;
-    this.zUu = 0;
+    this.Iwu = false;
+    this.Twu = undefined;
+    this.wDu = 0;
     this.d6a = new Set();
+    this.sxr = 0;
     this.XOr = (t, e) => {
       if (this.WalkOnWaterStage === 1 && this.TKr(e) > 0) {
         this.Gce.CharacterMovement.MaxCustomMovementSpeed = this.TKr(e);
@@ -105,6 +106,14 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       }
     };
     this.RKr = (t, e) => {
+      if (e) {
+        if (this.sxr) {
+          this.Enable(this.sxr, "不会入水Tag");
+          this.sxr = 0;
+        }
+      } else {
+        this.sxr ||= this.Disable("不会入水Tag");
+      }
       if (!(this.IsActive = e)) {
         this.DKr(0);
         this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.None);
@@ -122,7 +131,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
         }
       }
     };
-    this.V_u = (t, e, i) => {
+    this.T1u = (t, e, i) => {
       this.vWr = i + WALK_ON_WATER_HALF_HEIGHT_OFFSET;
     };
     this.Ilt = (t, e) => {
@@ -136,26 +145,31 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    var t = this.Entity.GetComponent(205);
+    var t = this.Entity.GetComponent(206);
     if (!t?.Valid) {
       return false;
     }
     this.Lie = t;
-    t = this.Entity.GetComponent(178);
-    return !!t?.Valid && (this.WalkOnWaterStage = 0, this.Gce = t, this.mBe = this.Entity.GetComponent(175), this.vWr = this.Hte.HalfHeight + WALK_ON_WATER_HALF_HEIGHT_OFFSET, this.qWr(), this.k_(), this.ewr(), this.IKr = this.Hte.Actor.CapsuleComponent.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater), true);
+    t = this.Entity.GetComponent(179);
+    return !!t?.Valid && (this.WalkOnWaterStage = 0, this.Gce = t, this.mBe = this.Entity.GetComponent(176), this.vWr = this.Hte.HalfHeight + WALK_ON_WATER_HALF_HEIGHT_OFFSET, this.qWr(), this.k_(), this.ewr(), this.IKr = this.Hte.Actor.CapsuleComponent.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater), true);
   }
   OnEnd() {
     this.BKr();
     this.$Wr();
     return true;
   }
+  OnDisable(t) {
+    this.DKr(0);
+    this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.None);
+  }
   k_() {
+    this.RKr(-1523054094, this.Lie.HasTag(-1523054094));
     this.vKr = this.Lie.ListenForTagAddOrRemove(-1523054094, this.RKr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.XOr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveWalkOnWater, this.LKr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.V_u);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.T1u);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
   }
   BKr() {
@@ -164,7 +178,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveWalkOnWater, this.LKr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.XOr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.V_u);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.T1u);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
   }
   qWr() {
@@ -183,7 +197,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     this.yKr = undefined;
   }
   static get Dependencies() {
-    return [3, 178, 205];
+    return [3, 179, 206];
   }
   ewr() {
     this.Mao = UE.NewObject(UE.TraceSphereElement.StaticClass());
@@ -260,7 +274,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       t = TraceElementCommon_1.TraceElementCommon.LineTrace(this.Pq1, PROFILE_DETECT_WATER_UP_BLOCK);
       if (t && this.Pq1.HitResult.bBlockingHit) {
         TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Pq1.HitResult, 0, e);
-        this.zUu = e.Z;
+        this.wDu = e.Z;
         if (e.Z - (this.Hte.ActorLocationProxy.Z - this.Hte.HalfHeight) < this.MKr) {
           return false;
         }
@@ -306,7 +320,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
   YWr(t, e) {
     var t = this.tKr(t, e);
     var e = this.cz;
-    if (t && this.Mao.HitResult.bBlockingHit && (TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Mao.HitResult, 0, e), this.zUu = e.Z, (t = e.Z - (this.Hte.ActorLocationProxy.Z - this.Hte.HalfHeight)) > 0)) {
+    if (t && this.Mao.HitResult.bBlockingHit && (TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Mao.HitResult, 0, e), this.wDu = e.Z, (t = e.Z - (this.Hte.ActorLocationProxy.Z - this.Hte.HalfHeight)) > 0)) {
       return t;
     } else {
       return 0;
@@ -375,12 +389,12 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     return TraceElementCommon_1.TraceElementCommon.SphereTrace(this.pKr, PROFILE_DETECT_WATER_DEPTH) && this.pKr.HitResult.bBlockingHit;
   }
   DKr(t) {
-    if (this.mwu) {
-      this.fwu = t;
-    } else if (this.WalkOnWaterStage !== t && this.FKr(t) && (this.mwu = true, this.VKr(this.WalkOnWaterStage), this.HKr(t), this.mwu = false, this.fwu !== undefined) && this.fwu !== this.WalkOnWaterStage) {
+    if (this.Iwu) {
+      this.Twu = t;
+    } else if (this.WalkOnWaterStage !== t && this.FKr(t) && (this.Iwu = true, this.VKr(this.WalkOnWaterStage), this.HKr(t), this.Iwu = false, this.Twu !== undefined) && this.Twu !== this.WalkOnWaterStage) {
       this.VKr(t);
-      this.HKr(this.fwu);
-      this.fwu = undefined;
+      this.HKr(this.Twu);
+      this.Twu = undefined;
     }
   }
   FKr(t) {
@@ -398,8 +412,8 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Movement", 36, "[WalkOnWater] EnterNone");
         }
-        this.JUu(0);
-        if (this.Gce.CharacterMovement.MovementMode !== 5 && (this.Gce.CharacterMovement.MovementMode !== 6 || this.Gce.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_LEISURE)) {
+        this.ADu(0);
+        if (this.Gce.CharacterMovement.MovementMode !== 5 && (this.Gce.CharacterMovement.MovementMode !== 6 || this.Gce.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_LEISURE) && !this.Hte?.Actor.OnMovementModeChanged) {
           this.Hte?.Actor.KuroSetMovementMode({
             Mode: 3,
             Context: "[CharacterWalkOnWaterComponent.EnterStage]"
@@ -428,7 +442,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     }
   }
   OnTick(e) {
-    if (this.Hte.IsRoleAndCtrlByMe && this.IsActive) {
+    if (this.IsActive) {
       let t = 0;
       if (this.UKr()) {
         t = this.MKr < ENTER_WALK_ON_WATER_DEPTH ? 2 : 1;
@@ -447,15 +461,15 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
           Log_1.Log.Debug("Movement", 36, "[WalkOnWater] EnterGround");
         }
       } else {
-        this.ZUu();
+        this.PDu();
       }
     }
   }
-  ZUu() {
+  PDu() {
     var t = this.UWr;
     t.DeepCopy(this.Hte.ActorLocationProxy);
-    if (this.zUu > t.Z - this.Hte.HalfHeight) {
-      t.Z = this.zUu;
+    if (this.wDu > t.Z - this.Hte.HalfHeight) {
+      t.Z = this.wDu;
     } else {
       t.Z = t.Z - this.Hte.HalfHeight;
     }
@@ -472,27 +486,27 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       let i = Number.NEGATIVE_INFINITY;
       var h = this.vao.HitResult.Actors;
       var r = this.vao.HitResult.Components;
-      var _ = this.vao.HitResult.LocationZ_Array;
+      var a = this.vao.HitResult.LocationZ_Array;
       for (let t = 0; t < s; t++) {
-        var a = h.Get(t);
+        var _ = h.Get(t);
         var n = r.Get(t);
-        if (!!a && (!a.bHidden || !!n.bCanCharacterStandOn)) {
+        if (!!_ && (!_.bHidden || !!n.bCanCharacterStandOn)) {
           e = true;
-          if (_.Get(t) > i) {
-            i = _.Get(t);
+          if (a.Get(t) > i) {
+            i = a.Get(t);
           }
         }
       }
       if (e) {
-        this.JUu(i > this.zUu ? 0 : 1);
+        this.ADu(i > this.wDu ? 0 : 1);
       } else {
-        this.JUu(2);
+        this.ADu(2);
       }
     } else {
-      this.JUu(2);
+      this.ADu(2);
     }
   }
-  eDu(t, e) {
+  xDu(t, e) {
     let i = undefined;
     if (t === 1) {
       i = -1686770584;
@@ -507,21 +521,21 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       }
     }
   }
-  JUu(t) {
+  ADu(t) {
     if (this.WaterDepthType !== t) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Movement", 36, "[WalkOnWater] SetWaterDepthType", ["preType", this.WaterDepthType], ["newType", t]);
       }
-      this.eDu(this.WaterDepthType, false);
+      this.xDu(this.WaterDepthType, false);
       this.WaterDepthType = t;
-      this.eDu(t, true);
+      this.xDu(t, true);
     }
   }
   EnableOrDisableWalkOnWater(t, e, i = false) {
     if (t) {
       if (!this.d6a.has(e)) {
         if (this.d6a.size === 0 && (this.Hte.Actor.CapsuleComponent?.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater, 2), i) && ([t, i] = this.Hte.FixActorLocation(0, true, this.Hte.ActorLocationProxy, "WalkOnWater", true, false), t)) {
-          if (t = this.Entity.GetComponent(177)) {
+          if (t = this.Entity.GetComponent(178)) {
             t.SetLocationAndRotatorWithModelBuffer(i.ToUeVector(), this.Hte.ActorRotation, MODEL_BUFFER_TIME_LENGTH, "WalkOnWater.FixLocation", 2, false);
           } else {
             this.Hte.SetActorLocation(i.ToUeVector(), "WalkOnWater.FixLocation", false);

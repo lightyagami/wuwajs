@@ -24,6 +24,7 @@ class GameplayCueUIEffect extends GameplayCueBase_1.GameplayCueBase {
     switch (e) {
       case 2:
       case 14:
+      case 24:
         return EventDefine_1.EEventName.CharOnBuffAddUITexture;
       case 4:
         return EventDefine_1.EEventName.CharOnBuffAddUIPrefab;

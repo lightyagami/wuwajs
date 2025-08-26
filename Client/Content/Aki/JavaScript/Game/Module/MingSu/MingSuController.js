@@ -62,7 +62,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
   static SendOpenDragonPoolRequest(e, o) {
     var n = new Protocol_1.Aki.Protocol.Chs();
     n.k7n = e;
-    Net_1.Net.Call(20468, Protocol_1.Aki.Protocol.Chs.create(n), e => {
+    Net_1.Net.Call(16386, Protocol_1.Aki.Protocol.Chs.create(n), e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.MingSuModel.RefreshDragonPoolDropItems(e.jE_);
@@ -70,7 +70,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
             o();
           }
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27278);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17096);
         }
       }
     });
@@ -78,7 +78,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
   static SendOpenDarkCoastDeliveryRequest(o, n) {
     var e = new Protocol_1.Aki.Protocol.Nf_();
     e.k7n = o;
-    Net_1.Net.Call(27857, Protocol_1.Aki.Protocol.Nf_.create(e), e => {
+    Net_1.Net.Call(21873, Protocol_1.Aki.Protocol.Nf_.create(e), e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.MingSuModel.RefreshDragonPoolDropItems(e.jE_);
@@ -88,7 +88,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
             n();
           }
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25691);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29996);
         }
       }
     });
@@ -96,7 +96,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
   static async SendDarkCoastDeliveryRequestAsync() {
     var e = new Protocol_1.Aki.Protocol.Nf_();
     e.k7n = MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID;
-    var e = await Net_1.Net.CallAsync(27857, Protocol_1.Aki.Protocol.Nf_.create(e));
+    var e = await Net_1.Net.CallAsync(21873, Protocol_1.Aki.Protocol.Nf_.create(e));
     if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
       ModelManager_1.ModelManager.MingSuModel.RefreshDragonPoolDropItems(e.jE_);
       ModelManager_1.ModelManager.MingSuModel.RefreshDarkCoastGuardInfo(MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID, e.$E_, e.WE_);
@@ -110,7 +110,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
     var e = new Protocol_1.Aki.Protocol.uhs();
     e.k7n = t;
     e.AVn = ModelManager_1.ModelManager.MingSuModel.CurrentInteractCreatureDataLongId;
-    Net_1.Net.Call(17800, Protocol_1.Aki.Protocol.uhs.create(e), e => {
+    Net_1.Net.Call(28368, Protocol_1.Aki.Protocol.uhs.create(e), e => {
       var o;
       var n;
       var r;
@@ -148,7 +148,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
           ModelManager_1.ModelManager.MingSuModel.RefreshDragonPoolHadCoreCount(e.k7n, e.KSs);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateDragonPoolView);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16515);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20917);
           ItemRewardController_1.ItemRewardController.Close();
         }
       }
@@ -158,7 +158,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
     var e = new Protocol_1.Aki.Protocol.Lf_();
     e.k7n = n;
     e.AVn = ModelManager_1.ModelManager.MingSuModel.CurrentInteractCreatureDataLongId;
-    Net_1.Net.Call(21135, Protocol_1.Aki.Protocol.Lf_.create(e), e => {
+    Net_1.Net.Call(20808, Protocol_1.Aki.Protocol.Lf_.create(e), e => {
       var o;
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -166,7 +166,7 @@ class MingSuController extends UiControllerBase_1.UiControllerBase {
           o = ModelManager_1.ModelManager.MingSuModel.GetDragonPoolInstanceById(n).GetActivityRewardViewData();
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, o);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29543);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28264);
         }
       }
     });

@@ -134,8 +134,8 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
     };
     this.Eoh = t => {
-      var i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
-      if (i && i.Id === this.EntityId && t !== 4) {
+      var i;
+      if (ModelManager_1.ModelManager.WeeklyRogueModel?.CheckIsInWeeklyRogue() || (i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity) && i.Id === this.EntityId && t !== 4) {
         this.RefreshLinkActive(false);
       } else if (t === 2) {
         this.RefreshLinkActive(true);
@@ -267,11 +267,11 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     var i;
     EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.qat);
     if (this.IsMyRole) {
-      i = t.GetComponent(205);
+      i = t.GetComponent(206);
       this.d$e(i, 1414093614, this.jat);
       this.d$e(i, -2107968822, this.f51);
     } else {
-      i = t.GetComponent(205);
+      i = t.GetComponent(206);
       this.d$e(i, 166024319, this.Vat);
     }
   }
@@ -363,7 +363,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       var i = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()?.EntityHandle;
       var e = this.RoleData.EntityHandle;
       if (i && e?.IsInit) {
-        t = i.Entity.GetComponent(98).IsQteReady(e);
+        t = i.Entity.GetComponent(99).IsQteReady(e);
       }
       this.hht(t, false);
     }
@@ -387,7 +387,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this._ht();
   }
   tht() {
-    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(93);
+    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(94);
     if (!!t && !((t = t.GetChangeRoleCoolDown()) <= 0)) {
       this.Gat(t, t);
     }
@@ -700,9 +700,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     }
   }
   ght() {
-    var t;
-    var i = this.RoleData?.AttributeComponent;
-    return !!i && (t = i.GetCurrentValue(EAttributeId.Proto_Energy), i.GetCurrentValue(EAttributeId.Proto_EnergyMax) <= t);
+    return this.RoleData?.CanUseUltraSkill() ?? false;
   }
   zat() {
     if (this.RoleData) {

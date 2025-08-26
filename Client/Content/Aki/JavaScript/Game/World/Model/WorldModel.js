@@ -27,7 +27,6 @@ class WorldEnvironmentInfo {
     this.E9 = DEFAULT_ENVIRONMENTTYPE;
     this.NEr = "";
     this.OEr = "";
-    this.un = 6;
     this.UTl = 1;
     this.ServerCaveMode = 1;
     this.pk = 0;
@@ -37,9 +36,6 @@ class WorldEnvironmentInfo {
   }
   get SubDataLayerType() {
     return this.OEr;
-  }
-  get LoadType() {
-    return this.un;
   }
   get jNn() {
     return this.UTl;
@@ -54,10 +50,10 @@ class WorldEnvironmentInfo {
     var e;
     if (this.UTl !== this.ServerCaveMode && !(Time_1.Time.Now - this.pk < VOXEL_ENV_REQUEST_INTERVAL)) {
       (e = Protocol_1.Aki.Protocol.Rp_.create()).DTl = this.UTl;
-      Net_1.Net.Call(27370, e, e => {
+      Net_1.Net.Call(17107, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25071);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24173);
           } else {
             this.ServerCaveMode = e.DTl;
           }
@@ -95,7 +91,6 @@ class WorldEnvironmentInfo {
       default:
         this.jNn = 1;
     }
-    this.un = e.StreamingType;
     this.E9 = e.EnvType;
   }
   ResetInfo() {

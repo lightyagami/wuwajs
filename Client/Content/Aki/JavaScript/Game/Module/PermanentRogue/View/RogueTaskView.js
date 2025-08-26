@@ -12,10 +12,12 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
+const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
@@ -36,6 +38,7 @@ class RogueTaskView extends UiViewBase_1.UiViewBase {
     this.GOe = undefined;
     this.Ftl = "";
     this.qKs = [];
+    this.aud = false;
     this.fqe = () => new RogueTaskTabItem_1.RogueTaskTabItem();
     this.ou_ = () => new RogueTaskItem_1.RogueTaskItem();
     this.l6c = i => {
@@ -154,6 +157,15 @@ class RogueTaskView extends UiViewBase_1.UiViewBase {
     var i = this.GetText(10);
     i?.SetUIActive(e !== undefined);
     i?.SetText(e ?? "0");
+    if (ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTaskIsEnd() && !this.aud) {
+      this.aud = true;
+      i = () => {
+        UiManager_1.UiManager.ResetToBattleView();
+      };
+      (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115)).FunctionMap.set(1, i);
+      e.FunctionMap.set(0, i);
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+    }
   }
 }
 exports.RogueTaskView = RogueTaskView;

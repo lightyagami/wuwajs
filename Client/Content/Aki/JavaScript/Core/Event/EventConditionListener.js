@@ -7,7 +7,7 @@ exports.ConditionListener = undefined;
 class ConditionListener {
   constructor() {
     this.nK = new Map();
-    this.Ogu = new Map();
+    this.BCu = new Map();
     this.sK = undefined;
     this.aK = undefined;
   }
@@ -37,7 +37,7 @@ class ConditionListener {
     return this.nK.delete(e);
   }
   GetHandleListenCount(e) {
-    return this.Ogu.get(e) ?? 0;
+    return this.BCu.get(e) ?? 0;
   }
   Add(e, t, n) {
     let s = this.nK.get(e);
@@ -49,14 +49,14 @@ class ConditionListener {
       return false;
     }
     s.set(t, n);
-    e = this.Ogu.get(t) ?? 0;
-    this.Ogu.set(t, ++e);
+    e = this.BCu.get(t) ?? 0;
+    this.BCu.set(t, ++e);
     return true;
   }
   Remove(e, t) {
     var n;
     var e = this.nK.get(e);
-    return !!e && (e = e.delete(t), (n = this.Ogu.get(t)) && (--n > 0 ? this.Ogu.set(t, n) : this.Ogu.delete(t)), e);
+    return !!e && (e = e.delete(t), (n = this.BCu.get(t)) && (--n > 0 ? this.BCu.set(t, n) : this.BCu.delete(t)), e);
   }
   AddToPendingAddHandles(e, t, n) {
     this.sK ||= new Map();

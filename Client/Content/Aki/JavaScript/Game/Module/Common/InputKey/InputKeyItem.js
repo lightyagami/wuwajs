@@ -18,7 +18,7 @@ class InputKeyItem extends UiPanelBase_1.UiPanelBase {
     super();
     this.HEe = undefined;
     this.XUt = undefined;
-    this.D_u = undefined;
+    this.C1u = undefined;
     this.xut = undefined;
     this.$Ut = undefined;
     this.YUt = false;
@@ -127,9 +127,9 @@ class InputKeyItem extends UiPanelBase_1.UiPanelBase {
   }
   SetKeyTexture(t) {
     var i = InputSettings_1.InputSettings.GetKeyIconPath(t);
-    if (this.XUt !== t || this.D_u !== i) {
+    if (this.XUt !== t || this.C1u !== i) {
       this.XUt = t;
-      this.D_u = i;
+      this.C1u = i;
       const s = this.GetTexture(0);
       if (i) {
         this.SetTextureByPath(i, s, undefined, () => {

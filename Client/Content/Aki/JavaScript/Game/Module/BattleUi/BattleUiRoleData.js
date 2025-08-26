@@ -11,6 +11,7 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
+const Log_1 = require("../../../Core/Common/Log");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class BattleUiRoleData {
@@ -42,12 +43,20 @@ class BattleUiRoleData {
     this.SpecialStateMap = new Map();
     this.MorphShowSpecialEnergyBar = true;
     this.OnlyBattleInput = false;
+    this.HasEnergyTag = false;
+    this.CheckEnergyTag = false;
     this.i$e = [];
     this.o$e = (t, i, s) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiElementEnergyChanged, this.EntityHandle.Id);
     };
     this.Trc = (t, i, s) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
+    };
+    this.Mld = (t, i) => {
+      if (this.HasEnergyTag !== i) {
+        this.HasEnergyTag = i;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
+      }
     };
     this.r$e = (t, i) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiElementHideTagChanged, this.EntityHandle.Id, t, i);
@@ -77,7 +86,7 @@ class BattleUiRoleData {
         ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(5);
       }
     };
-    this.Qz1 = (t, i) => {
+    this.vJ1 = (t, i) => {
       t = BattleUiRoleData.SpecialStateTagMap.get(t);
       if (t !== undefined && (this.SpecialStateMap.set(t, i), this.IsCurEntity)) {
         ModelManager_1.ModelManager.BattleUiModel.RefreshRoleSpecialState(t);
@@ -104,12 +113,12 @@ class BattleUiRoleData {
   Init(t, i) {
     this.EntityHandle = t;
     this.IsCurEntity = i;
-    this.AttributeComponent = t.Entity.GetComponent(173);
-    this.GameplayTagComponent = t.Entity.GetComponent(205);
-    this.RoleElementComponent = t.Entity.GetComponent(91);
-    this.BuffComponent = t.Entity.GetComponent(174);
+    this.AttributeComponent = t.Entity.GetComponent(174);
+    this.GameplayTagComponent = t.Entity.GetComponent(206);
+    this.RoleElementComponent = t.Entity.GetComponent(92);
+    this.BuffComponent = t.Entity.GetComponent(175);
     this.ShieldComponent = t.Entity.GetComponent(75);
-    this.RoleQteComponent = t.Entity.GetComponent(98);
+    this.RoleQteComponent = t.Entity.GetComponent(99);
     this.CreatureDataComponent = t.Entity.GetComponent(0);
     this.BaseDeathComponent = t.Entity.GetComponent(15);
     this.ActorComp = t.Entity.GetComponent(3);
@@ -130,6 +139,10 @@ class BattleUiRoleData {
     }
     if (this.ActorComp?.IsAutonomousProxy && this.CreatureRoleId === 1207) {
       ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(6);
+    }
+    if (this.CreatureRoleId === 1608) {
+      this.CheckEnergyTag = true;
+      this.d$e(414280119, this.Mld, true);
     }
     this.c$e();
   }
@@ -165,6 +178,8 @@ class BattleUiRoleData {
     this.RoleBattleViewInfo = undefined;
     this.HeadIconEnergyBarConfig = undefined;
     this.QteCdTagId = 0;
+    this.CheckEnergyTag = false;
+    this.HasEnergyTag = false;
   }
   c$e() {
     for (const i of BattleUiRoleData.HideElementTagList) {
@@ -177,7 +192,7 @@ class BattleUiRoleData {
     this.d$e(-640833006, this.wGa, true);
     this.d$e(913890514, this.NQ_, true);
     for (const s of BattleUiRoleData.SpecialStateTagMap.keys()) {
-      this.d$e(s, this.Qz1, true);
+      this.d$e(s, this.vJ1, true);
     }
     EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this._$e);
     EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e);
@@ -196,20 +211,24 @@ class BattleUiRoleData {
     for (const i of this.i$e) {
       i?.EndTask();
     }
+    var t;
     this.i$e.length = 0;
     if (this.boa) {
       this.boa.EndTask();
       this.boa = undefined;
     }
-    EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this._$e);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharQteTagRowNameChanged, this.qoa);
-    var t = this.AttributeComponent;
-    t.RemoveListener(EAttributeId.Proto_Life, this.hXe);
-    t.RemoveListener(EAttributeId.l5n, this.hXe);
-    t.RemoveListener(EAttributeId.Proto_Lv, this.m2);
-    t.RemoveListener(EAttributeId.Proto_ElementEnergy, this.o$e);
-    t.RemoveListener(EAttributeId.Proto_ElementEnergyMax, this.o$e);
+    if (this.EntityHandle?.Valid) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this._$e);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharQteTagRowNameChanged, this.qoa);
+      (t = this.AttributeComponent).RemoveListener(EAttributeId.Proto_Life, this.hXe);
+      t.RemoveListener(EAttributeId.l5n, this.hXe);
+      t.RemoveListener(EAttributeId.Proto_Lv, this.m2);
+      t.RemoveListener(EAttributeId.Proto_ElementEnergy, this.o$e);
+      t.RemoveListener(EAttributeId.Proto_ElementEnergyMax, this.o$e);
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Battle", 17, "BattelUi清理RoleData时，Entity不合法");
+    }
   }
   d$e(t, i, s = false) {
     if (s && this.GameplayTagComponent?.HasTag(t)) {
@@ -240,6 +259,15 @@ class BattleUiRoleData {
   }
   IsPhantom() {
     return this.RoleConfig?.RoleType === 2;
+  }
+  CanUseUltraSkill() {
+    var t;
+    var i;
+    if (this.CheckEnergyTag) {
+      return this.HasEnergyTag;
+    } else {
+      return !!(t = this.AttributeComponent) && (i = t.GetCurrentValue(EAttributeId.Proto_Energy), t.GetCurrentValue(EAttributeId.Proto_EnergyMax) <= i);
+    }
   }
 }
 (exports.BattleUiRoleData = BattleUiRoleData).HideElementTagList = [-1623647531, 666997186, -1987078323, -1751370752, 1522720219, 33752370];

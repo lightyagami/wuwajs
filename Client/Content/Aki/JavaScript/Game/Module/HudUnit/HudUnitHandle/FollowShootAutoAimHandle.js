@@ -74,7 +74,7 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       if (t?.Valid) {
         this.sDe = t;
         this.n$t = this.sDe.Entity?.GetComponent(1);
-        this.BPl = this.sDe.Entity?.GetComponent(222);
+        this.BPl = this.sDe.Entity?.GetComponent(223);
         this.c$e();
         this.HGa();
       } else {
@@ -175,7 +175,7 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   Yhc(i, e, o, s, r, n, h, _) {
     var t = [];
-    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(e, 63, t);
+    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(e, 255, t);
     let a = Number.MIN_VALUE;
     let l = undefined;
     var v = i.D_K2_GetActorLocation();
@@ -188,7 +188,7 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
           case Protocol_1.Aki.Protocol.kks.Proto_Npc:
             continue;
           case Protocol_1.Aki.Protocol.kks.Proto_SceneItem:
-            if (C.Entity.GetComponent(154) === undefined || u.GetBaseInfo().Camp !== 7) {
+            if (C.Entity.GetComponent(155) === undefined || u.GetBaseInfo().Camp !== 7) {
               continue;
             }
             t = h;
@@ -241,7 +241,7 @@ class FollowShootAutoAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   zhc(t) {
     let i = undefined;
-    var e = t.Entity.GetComponent(202);
+    var e = t.Entity.GetComponent(203);
     return i = (i = (e &&= e.GetInteractionMainActor()) && (e = e.GetActorByKey(SCENE_ITEM_ACTOR_KEY)) ? e.D_K2_GetActorLocation() : i) || t.Entity.GetComponent(1).ActorLocation;
   }
 }

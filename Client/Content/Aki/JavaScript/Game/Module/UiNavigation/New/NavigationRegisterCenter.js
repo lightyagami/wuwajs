@@ -10,6 +10,7 @@ const FunctionViewPanelHandle_1 = require("./PanelHandle/FunctionViewPanelHandle
 const InventoryViewPanelHandle_1 = require("./PanelHandle/InventoryViewPanelHandle");
 const NavigationPanelHandleCreator_1 = require("./PanelHandle/NavigationPanelHandleCreator");
 const PhantomArenaBattlePanelHandle_1 = require("./PanelHandle/PhantomArenaBattlePanelHandle");
+const PhantomManageConfigPanelHandle_1 = require("./PanelHandle/PhantomManageConfigPanelHandle");
 const RoleResonancePanelHandle_1 = require("./PanelHandle/RoleResonancePanelHandle");
 const RoleSkillPanelHandle_1 = require("./PanelHandle/RoleSkillPanelHandle");
 const RouletteViewPanelHandle_1 = require("./PanelHandle/RouletteViewPanelHandle");
@@ -31,12 +32,14 @@ const NavigationSelectableCreator_1 = require("./Selectable/NavigationSelectable
 const NavigationSlider_1 = require("./Selectable/NavigationSlider");
 const NavigationToggle_1 = require("./Selectable/NavigationToggle");
 const NavigationPhantomArenaCardToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaCardToggle");
+const NavigationPhantomArenaEmptyButton_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaEmptyButton");
 const NavigationPhantomArenaOpponentBattleToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaOpponentBattleToggle");
 const NavigationPhantomArenaOpponentFunctionalToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaOpponentFunctionalToggle");
 const NavigationPhantomArenaOwnBattleToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaOwnBattleToggle");
 const NavigationPhantomArenaOwnFunctionalToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaOwnFunctionalToggle");
 const NavigationPhantomArenaOwnHandToggle_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaOwnHandToggle");
 const NavigationPhantomArenaVisionButton_1 = require("./Selectable/PhantomArena/NavigationPhantomArenaVisionButton");
+const NavigationPhantomManageConfigGridBig_1 = require("./Selectable/PhantomManage/NavigationPhantomManageConfigGridBig");
 const NavigationQuestTitleToggle_1 = require("./Selectable/Quest/NavigationQuestTitleToggle");
 const NavigationRoguelikeGridToggle_1 = require("./Selectable/Roguelike/NavigationRoguelikeGridToggle");
 const NavigationRoleResonanceExitButton_1 = require("./Selectable/RoleRootView/Resonance/NavigationRoleResonanceExitButton");
@@ -90,7 +93,9 @@ const selectableCtorMap = {
   PhantomArenaOpponentBattleToggle: NavigationPhantomArenaOpponentBattleToggle_1.NavigationPhantomArenaOpponentBattleToggle,
   PhantomArenaOpponentFunctionalToggle: NavigationPhantomArenaOpponentFunctionalToggle_1.NavigationPhantomArenaOpponentFunctionalToggle,
   PhantomArenaVisionButton: NavigationPhantomArenaVisionButton_1.NavigationPhantomArenaVisionButton,
-  PhantomArenaCardToggle: NavigationPhantomArenaCardToggle_1.NavigationPhantomArenaCardToggle
+  PhantomArenaEmptyButton: NavigationPhantomArenaEmptyButton_1.NavigationPhantomArenaEmptyButton,
+  PhantomArenaCardToggle: NavigationPhantomArenaCardToggle_1.NavigationPhantomArenaCardToggle,
+  PhantomManageConfigGridBig: NavigationPhantomManageConfigGridBig_1.NavigationPhantomManageConfigGridBig
 };
 const panelHandleCtorMap = {
   Default: BasePanelHandle_1.BasePanelHandle,
@@ -102,7 +107,8 @@ const panelHandleCtorMap = {
   Roulette: RouletteViewPanelHandle_1.RouletteViewPanelHandle,
   ExploreReward: ExploreRewardPanelHandle_1.ExploreRewardPanelHandle,
   VisionAssemble: VisionAssemblePanelHandle_1.VisionAssemblePanelHandle,
-  PhantomArenaBattle: PhantomArenaBattlePanelHandle_1.PhantomArenaBattlePanelHandle
+  PhantomArenaBattle: PhantomArenaBattlePanelHandle_1.PhantomArenaBattlePanelHandle,
+  PhantomManageConfig: PhantomManageConfigPanelHandle_1.PhantomManageConfigPanelHandle
 };
 class NavigationRegisterCenter {
   static Init() {

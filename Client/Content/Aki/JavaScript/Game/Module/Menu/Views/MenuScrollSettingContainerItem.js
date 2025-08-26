@@ -53,7 +53,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.Vulkan) {
         this.E91(e);
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.HIGHESTFPS) {
-        this.DBu(e);
+        this.JFu(e);
       } else {
         ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
       }
@@ -289,7 +289,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     }
     ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
   }
-  DBu(e) {
+  JFu(e) {
     var t;
     if (ControllerHolder_1.ControllerHolder.MenuController.NeedRedMagicFpsConfirmBox(e)) {
       t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(330);

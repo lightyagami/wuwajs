@@ -14,6 +14,7 @@ const ActivitySubViewBase_1 = require("../../Activity/View/SubView/ActivitySubVi
 const ActivitySubViewGeneralInfo_1 = require("../../Activity/View/SubView/ActivitySubViewGeneralInfo");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 class FloroRanchActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
@@ -21,19 +22,21 @@ class FloroRanchActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.CommonInfoPanel = undefined;
     this.cxl = undefined;
     this.fs1 = undefined;
-    this.gmu = undefined;
+    this.Zmu = undefined;
     this.TDe = undefined;
     this.tWt = () => {
-      if (this.ActivityBaseData.GetIsReadComic()) {
+      if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ConnectBan");
+      } else if (this.ActivityBaseData.GetIsReadComic()) {
         UiManager_1.UiManager.OpenView("FloroRanchMainView", this.ActivityBaseData);
       } else {
         UiManager_1.UiManager.OpenView("FloroRanchComicView");
       }
     };
-    this.Cmu = () => {
+    this.efu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchLimitRewardView");
     };
-    this.pmu = () => {
+    this.tfu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchPermanentRewardView");
     };
     this.mxl = () => {
@@ -44,7 +47,7 @@ class FloroRanchActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
     };
-    this.Nxu = i => {
+    this.CUu = i => {
       if (i && i.getAnimationName() === "star") {
         this.GetSpine(3)?.SetAnimation(0, "idle", true);
       }
@@ -65,12 +68,13 @@ class FloroRanchActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
     await Promise.all(i);
     this.CommonInfoPanel?.SetBtnText("LongShanStage_Join01");
     this.CommonInfoPanel?.SetClickFunc(this.tWt);
+    this.CommonInfoPanel?.HideRemainTime();
     this.fs1 = new ButtonItem_1.ButtonItem(this.GetItem(1));
-    this.fs1.SetFunction(this.Cmu);
+    this.fs1.SetFunction(this.efu);
     this.GetItem(1)?.SetUIActive(this.ActivityBaseData.IsInLimitTime());
-    this.gmu = new ButtonItem_1.ButtonItem(this.GetItem(2));
-    this.gmu.SetFunction(this.pmu);
-    this.GetSpine(3).AnimationComplete.Add(this.Nxu);
+    this.Zmu = new ButtonItem_1.ButtonItem(this.GetItem(2));
+    this.Zmu.SetFunction(this.tfu);
+    this.GetSpine(3).AnimationComplete.Add(this.CUu);
   }
   OnBeforeShow() {
     this.sSt();
@@ -81,15 +85,16 @@ class FloroRanchActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
   OnRefreshView() {
     this._Fe();
     this.CommonInfoPanel?.SetFunctionRedDotVisible(this.ActivityBaseData.CheckRedDot());
-    this.gmu?.SetRedDotVisible(this.ActivityBaseData.IsPermanentTaskHasRedDot());
+    this.Zmu?.SetRedDotVisible(this.ActivityBaseData.IsPermanentTaskHasRedDot());
     this.fs1?.SetRedDotVisible(this.ActivityBaseData.IsLimitTaskHasRedDot());
     var i = this.ActivityBaseData.GetPermanentRewardProgress();
-    this.gmu?.SetText(i);
+    this.Zmu?.SetText(i);
     this.Cxl();
     this.GetSpine(3)?.SetAnimation(0, "star", false);
   }
   sSt() {
     if (!this.ActivityBaseData.IsInLimitTime() && this.TDe) {
+      this.GetItem(1)?.SetUIActive(this.ActivityBaseData.IsInLimitTime());
       TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }
@@ -119,7 +124,7 @@ class FloroRanchActivityView extends ActivitySubViewBase_1.ActivitySubViewBase {
     }
   }
   OnBeforeDestroy() {
-    this.GetSpine(3)?.AnimationComplete.Remove(this.Nxu);
+    this.GetSpine(3)?.AnimationComplete.Remove(this.CUu);
   }
 }
 exports.FloroRanchActivityView = FloroRanchActivityView;

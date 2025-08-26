@@ -61,48 +61,48 @@ class MoraleBuffActiveTips extends UiTickViewBase_1.UiTickViewBase {
   }
   SetStateActive() {
     this.rWi(false);
-    this.qtu("Morale_title_24");
-    this.Gtu("SP_ItemNewBg");
-    this.Ftu(9);
-    this.Ntu(false);
-    this.Vtu(false);
+    this._iu("Morale_title_24");
+    this.uiu("SP_ItemNewBg");
+    this.ciu(9);
+    this.diu(false);
+    this.miu(false);
   }
   SetStateTempActive() {
     this.rWi(true);
-    this.qtu("Morale_title_25");
-    this.Gtu("SP_ItemNewBg");
-    this.Ftu(9);
-    this.Ntu(false);
-    this.Vtu(false);
+    this._iu("Morale_title_25");
+    this.uiu("SP_ItemNewBg");
+    this.ciu(9);
+    this.diu(false);
+    this.miu(false);
   }
   SetStateNotActive() {
     this.rWi(false);
-    this.qtu("Morale_title_26");
-    this.Gtu("SP_InvalidationBg");
-    this.Ftu(10);
-    this.Ntu(true);
-    this.Vtu(true);
+    this._iu("Morale_title_26");
+    this.uiu("SP_InvalidationBg");
+    this.ciu(10);
+    this.diu(true);
+    this.miu(true);
   }
   rWi(t) {
     this.GetItem(7).SetUIActive(t);
   }
-  qtu(t) {
+  _iu(t) {
     this.GetText(8)?.ShowTextNew(t);
   }
-  Gtu(t) {
+  uiu(t) {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
     var i = this.GetSprite(6);
     this.SetSpriteByPath(t, i, false);
   }
-  Ftu(t) {
+  ciu(t) {
     for (const i of [9, 10]) {
       this.GetItem(i).SetUIActive(i === t);
     }
   }
-  Ntu(t) {
+  diu(t) {
     this.GetItem(11).SetUIActive(t);
   }
-  Vtu(t) {
+  miu(t) {
     var i = this.GetText(1);
     i?.SetChangeColor(t, i.changeColor);
   }
@@ -110,11 +110,11 @@ class MoraleBuffActiveTips extends UiTickViewBase_1.UiTickViewBase {
     if (!(this.TipCountDown <= 0)) {
       this.TipCountDown -= t;
       if (this.TipCountDown <= 0) {
-        this.jtu();
+        this.fiu();
       }
     }
   }
-  jtu() {
+  fiu() {
     if (this.ShowBuffList.length > 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Morale", 69, "刷新下个Buff数据");

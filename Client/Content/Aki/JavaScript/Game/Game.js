@@ -26,6 +26,7 @@ const MathUtils_1 = require("../Core/Utils/MathUtils");
 const UiTextTranslationUtils_1 = require("../Core/Utils/UiTextTranslationUtils");
 const LauncherLogUpload_1 = require("../Launcher/LogUpload/LauncherLogUpload");
 const CloudGameManagerLauncher_1 = require("../Launcher/Platform/CloudGameManagerLauncher");
+const SoPatchStatic_1 = require("../Launcher/SoPatch/SoPatchStatic");
 const TestModuleBridge_1 = require("./Bridge/TestModuleBridge");
 const AsyncUtil_1 = require("./Common/AsyncUtil");
 const EventDefine_1 = require("./Common/Event/EventDefine");
@@ -56,11 +57,14 @@ const UiPopFrameViewRegisterCenter_1 = require("./Manager/UiPopFrameViewRegister
 const UiTabViewManager_1 = require("./Manager/UiTabViewManager");
 const UiViewManager_1 = require("./Manager/UiViewManager");
 const CombatMessageController_1 = require("./Module/CombatMessage/CombatMessageController");
+const GameMainViewRegisterCenter_1 = require("./Module/GameMainView/GameMainViewRegisterCenter");
+const HoldingHandsController_1 = require("./Module/HoldHands/HoldingHandsController");
 const HudUnitController_1 = require("./Module/HudUnit/HudUnitController");
 const HudUnitHandleManager_1 = require("./Module/HudUnit/HudUnitHandleManager");
 const Heartbeat_1 = require("./Module/Login/Heartbeat");
 const ThinkingAnalyticsReporter_1 = require("./Module/LogReport/ThinkingAnalyticsReporter");
 const LogUploadHelper_1 = require("./Module/LogUpload/LogUploadHelper");
+const PlotController_1 = require("./Module/Plot/PlotController");
 const UiCameraAnimationManager_1 = require("./Module/UiCameraAnimation/UiCameraAnimationManager");
 const UiSceneManager_1 = require("./Module/UiComponent/UiSceneManager");
 const NavigationRegisterCenter_1 = require("./Module/UiNavigation/New/NavigationRegisterCenter");
@@ -80,6 +84,7 @@ const ComponentForceTickController_1 = require("./World/Controller/ComponentForc
 const GameBudgetAllocatorConfigCreator_1 = require("./World/Define/GameBudgetAllocatorConfigCreator");
 const EnvironmentalPerceptionController_1 = require("./World/Enviroment/EnvironmentalPerceptionController");
 const TaskSystem_1 = require("./World/Task/TaskSystem");
+const cpp_1 = require("cpp");
 class Game {
   static *Start(e) {
     if (Log_1.Log.CheckInfo()) {
@@ -149,6 +154,7 @@ class Game {
     ControllerRegisterManager_1.ControllerRegisterManager.Init();
     ControllerManager_1.ControllerManager.Init();
     UiViewManager_1.UiViewManager.Init();
+    GameMainViewRegisterCenter_1.GameMainViewRegisterCenter.Init();
     UiPopFrameViewRegisterCenter_1.UiPopFrameViewRegisterCenter.Init();
     UiTabViewManager_1.UiTabViewManager.Init();
     HudUnitHandleManager_1.HudUnitHandleManager.Init();
@@ -289,16 +295,16 @@ class Game {
       }
     }
   }
-  static Cve(a, ...e) {
+  static Cve(r, ...e) {
     try {
-      a.Tick(...e);
+      r.Tick(...e);
     } catch (e) {
       if (e instanceof Error) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.ErrorWithStack("Game", 19, "Error when execute", e, ["this type", a.constructor.name], ["error", e.message]);
+          Log_1.Log.ErrorWithStack("Game", 19, "Error when execute", e, ["this type", r.constructor.name], ["error", e.message]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Game", 19, "Error when execute", ["this type", a.constructor.name], ["error", e]);
+        Log_1.Log.Error("Game", 19, "Error when execute", ["this type", r.constructor.name], ["error", e]);
       }
     }
   }
@@ -410,6 +416,8 @@ Game.ora = async () => {
 };
 Game.TickPriority2 = e => {
   if (!Core_1.Core.ForbiddenTickPriority && !TickSystem_1.TickSystem.IsPaused) {
+    PlotController_1.PlotController.TickPriority2(e);
+    HoldingHandsController_1.HoldingHandsController.TickPriority2(e);
     if (UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming) {
       UeSkeletalTickManageComponent_1.UeSkeletalTickController.TickManagers(e * MathUtils_1.MathUtils.MillisecondToSecond);
     }
@@ -456,6 +464,9 @@ Game.r6 = e => {
   Game.pve.Start();
   Game.Cve(AudioSystem_1.AudioSystem, e);
   Game.pve.Stop();
+  if (cpp_1.KuroApplication.IniPlatformNameIncludeEditor() === "Android") {
+    Game.Cve(SoPatchStatic_1.SoPatchStatic, e);
+  }
   if (!TickSystem_1.TickSystem.IsPaused) {
     Game.vve.Start();
     Game.Cve(TickScoreController_1.TickScoreController, e);
@@ -475,6 +486,7 @@ Game.AfterTick = e => {
   }
   EffectSystem_1.EffectSystem.AfterTick(e);
   CombatMessageController_1.CombatMessageController.AfterTick(e);
+  PlotController_1.PlotController.AfterTick(e);
 };
 Game.AfterCameraTick = e => {
   UiManager_1.UiManager.AfterTick(e);

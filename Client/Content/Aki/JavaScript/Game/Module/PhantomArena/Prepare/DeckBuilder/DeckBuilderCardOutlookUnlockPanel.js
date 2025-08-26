@@ -18,9 +18,9 @@ class DeckBuilderCardOutlookUnlockPanel extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Pe = undefined;
     this.eVi = undefined;
-    this.xX1 = undefined;
+    this.oY1 = undefined;
     this.$pt = undefined;
-    this.aiu = () => {
+    this.Uiu = () => {
       PhantomArenaController_1.PhantomArenaController.CardOutLookUpRequest(this.Pe.CardId);
     };
   }
@@ -29,10 +29,10 @@ class DeckBuilderCardOutlookUnlockPanel extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     this.eVi = new CardOutlookPreviewItem_1.CardOutlookPreviewItem();
-    this.xX1 = new ButtonItem_1.ButtonItem();
+    this.oY1 = new ButtonItem_1.ButtonItem();
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
-    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.xX1.CreateThenShowByActorAsync(this.GetItem(2).GetOwner())]);
-    this.xX1.SetFunction(this.aiu);
+    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.oY1.CreateThenShowByActorAsync(this.GetItem(2).GetOwner())]);
+    this.oY1.SetFunction(this.Uiu);
   }
   Refresh(e) {
     this.Pe = e;
@@ -45,7 +45,7 @@ class DeckBuilderCardOutlookUnlockPanel extends UiPanelBase_1.UiPanelBase {
     var i;
     var r;
     var o = ModelManager_1.ModelManager.PhantomArenaModel.IsCardOutlookUnlock(this.Pe.CardId);
-    this.xX1.SetActive(!o);
+    this.oY1.SetActive(!o);
     this.GetText(1).SetUIActive(!o);
     if (!o) {
       r = (o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Pe.CardId)).UpOutLookConsumeItems[0].ItemId;
@@ -60,8 +60,8 @@ class DeckBuilderCardOutlookUnlockPanel extends UiPanelBase_1.UiPanelBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), r, i, o);
       this.GetText(1).SetUIActive(e);
       r = e ? "PhantomBattle_1131" : "GenericPrompt_Unlocked_TipsText";
-      this.xX1.SetEnableClick(e && t);
-      this.xX1.SetLocalTextNew(r);
+      this.oY1.SetEnableClick(e && t);
+      this.oY1.SetLocalTextNew(r);
     }
   }
   PlaySwitchSequence() {

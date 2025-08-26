@@ -153,9 +153,9 @@ class MissionPanelChildStep extends StepWithStatusItem_1.StepWithStatusItem {
     this.bh_();
     super.UpdateStepInfo();
     this.YQ_();
-    this.VBu();
+    this.q2u();
   }
-  VBu() {}
+  q2u() {}
   YQ_() {
     this.GetItem(5)?.SetUIActive(this.IsDescribeTextVisible);
   }

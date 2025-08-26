@@ -44,8 +44,8 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     this.rzr = undefined;
     this.ConfigId = -0;
     this.Ihn = undefined;
-    this.hBu = new Map();
-    this.lBu = new Set();
+    this._Vu = new Map();
+    this.uVu = new Set();
     this.Thn = undefined;
     this.Lhn = undefined;
     this.vzr = () => {
@@ -63,7 +63,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     return this.vhn;
   }
   get InAnyOptionWithOffsetRange() {
-    return this.lBu.size > 0;
+    return this.uVu.size > 0;
   }
   get IsInAdsorbRange() {
     return this.Mhn;
@@ -93,8 +93,8 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   }
   SetOffsetOptionInteractRange(t, e, i = 0, n = undefined, s = undefined, h = undefined) {
     this.rzr.SetLogicRange(Math.max(e + INTERACT_LOGIC_OFFSET, i) + (n ? n.Size() : 0));
-    if (this.hBu.has(t)) {
-      const o = this.hBu.get(t);
+    if (this._Vu.has(t)) {
+      const o = this._Vu.get(t);
       o.UpdateDistance(e, i === 0 ? e : i);
     }
     const o = this.rzr.CreatePerceptionEvent(e, this.Entity?.GameBudgetManagedToken, () => {
@@ -104,7 +104,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
       if (s) {
         s();
       }
-      this.lBu.add(t);
+      this.uVu.add(t);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInEntityInteractRangeChange, true);
     }, () => {
       if (Log_1.Log.CheckDebug()) {
@@ -113,10 +113,10 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
       if (h) {
         h();
       }
-      this.lBu.delete(t);
+      this.uVu.delete(t);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInEntityInteractRangeChange, false);
     }, undefined, undefined, i, n);
-    this.hBu.set(t, o);
+    this._Vu.set(t, o);
   }
   SetSightRange(t) {
     this.rzr.SetLogicRange(t);
@@ -146,7 +146,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     return true;
   }
   OnInit() {
-    this.rzr = this.Entity.GetComponent(121);
+    this.rzr = this.Entity.GetComponent(122);
     return true;
   }
   OnStart() {
@@ -167,7 +167,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   OnActivate() {
     var t;
     var e;
-    var i = this.Entity.GetComponent(160);
+    var i = this.Entity.GetComponent(161);
     if (i) {
       t = i.ShowRange;
       e = i.HideRange;
@@ -205,14 +205,14 @@ InteractRangeInfo:
     if (this.Ihn) {
       t += cpp_1.FKuroPerceptionInterface.GetPlayerPerceptionDebugString(this.Ihn.EventToken);
     }
-    if (this.hBu.size > 0) {
+    if (this._Vu.size > 0) {
       t += "\nOptionInteractRangeInfo:\n";
-      for (const e of this.hBu.values()) {
+      for (const e of this._Vu.values()) {
         t += cpp_1.FKuroPerceptionInterface.GetPlayerPerceptionDebugString(e.EventToken) + "\n";
       }
     }
     return t;
   }
 };
-PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(119)], PawnPerceptionComponent);
+PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(120)], PawnPerceptionComponent);
 exports.PawnPerceptionComponent = PawnPerceptionComponent; //# sourceMappingURL=PawnPerceptionComponent.js.map

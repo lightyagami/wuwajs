@@ -39,34 +39,20 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     this.TCl = undefined;
     this.enh = undefined;
     this.B7 = undefined;
-    this.OHc = 0;
-    this.qHc = false;
+    this.VWu = 0;
+    this.jWu = false;
     this.fi1 = 0;
     this.gi1 = () => {
-      this.OHc = 5;
-      this.qHc = true;
-      EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
-      if (this.IsEnableSplineMoveSync) {
-        if (this.EntityHandle.Entity?.GetComponent(128)?.ActorComp?.IsMoveAutonomousProxy) {
-          this.GHc();
-          this.EndTask(!this.qHc);
-        }
-      } else {
-        this.EndTask(!this.qHc);
-      }
+      this.VWu = 5;
+      this.jWu = true;
     };
     this.Ci1 = () => {
-      this.OHc = 5;
-      this.qHc = false;
+      this.VWu = 5;
       EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
-      if (this.IsEnableSplineMoveSync) {
-        if (this.EntityHandle.Entity?.GetComponent(128)?.ActorComp?.IsMoveAutonomousProxy) {
-          this.GHc();
-          this.EndTask(!this.qHc);
-        }
-      } else {
-        this.EndTask(!this.qHc);
+      if (this.IsEnableSplineMoveSync && this.EntityHandle.Entity?.GetComponent(129)?.ActorComp?.IsMoveAutonomousProxy) {
+        this.HWu();
       }
+      this.EndTask(!this.jWu);
     };
     this.Kd_ = false;
     this.$d_ = e => {
@@ -127,8 +113,8 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     return (0, IUtil_1.deepEquals)(t, e);
   }
   OnStartTask() {
-    this.OHc = 1;
-    var e = this.EntityHandle.Entity?.GetComponent(128);
+    this.VWu = 1;
+    var e = this.EntityHandle.Entity?.GetComponent(129);
     if (e?.Valid) {
       if (this.Oih() && this.pi1() && this.vi1()) {
         if (this.IsEnableSplineMoveSync && e.ActorComp?.IsMoveAutonomousProxy) {
@@ -146,7 +132,7 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     }
   }
   OnEndTask(e) {
-    this.OHc = 6;
+    this.VWu = 6;
     if (this.enh) {
       for (var [, t] of this.enh) {
         if (t !== ResourceSystem_1.ResourceSystem.InvalidId) {
@@ -156,37 +142,32 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     }
     this.enh?.clear();
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
-    var i = this.EntityHandle.Entity?.GetComponent(128);
+    var i = this.EntityHandle.Entity?.GetComponent(129);
     i?.StopMove();
     i?.RemoveOnArrivePointCallback(this.$d_);
     this.B7?.(e);
   }
   OnTickTask(e) {
-    if (this.IsEnableSplineMoveSync && this.EntityHandle.Entity?.GetComponent(1)?.IsMoveAutonomousProxy) {
-      if (this.OHc === 4) {
-        this.fi1 += e;
-        if (!(this.fi1 < MIN_SYNC_INTERVAL)) {
-          this.fi1 = 0;
-          this.FHc();
-        }
-      } else if (this.OHc === 5) {
-        this.GHc();
-        this.EndTask(!this.qHc);
+    if (this.IsEnableSplineMoveSync && this.EntityHandle.Entity?.GetComponent(1)?.IsMoveAutonomousProxy && this.VWu === 4) {
+      this.fi1 += e;
+      if (!(this.fi1 < MIN_SYNC_INTERVAL)) {
+        this.fi1 = 0;
+        this.$Wu();
       }
     }
   }
-  GHc() {
+  HWu() {
     var e;
     var t = this.EntityHandle.Entity?.GetComponent(1);
     if (t?.IsMoveAutonomousProxy) {
       e = t.ActorLocationProxy;
       t = t.ActorRotationProxy;
-      ControllerHolder_1.ControllerHolder.SyncSplineMoveController.SendSyncSceneItemSplineMoveEnd(this.EntityHandle.CreatureDataId, this.SplineId, undefined, e, t, this.qHc);
+      ControllerHolder_1.ControllerHolder.SyncSplineMoveController.SendSyncSceneItemSplineMoveEnd(this.EntityHandle.CreatureDataId, this.SplineId, undefined, e, t, this.jWu);
     }
   }
-  FHc() {
+  $Wu() {
     var e;
-    var t = this.EntityHandle.Entity?.GetComponent(128);
+    var t = this.EntityHandle.Entity?.GetComponent(129);
     var i = this.EntityHandle.Entity?.GetComponent(1);
     if (i?.IsMoveAutonomousProxy && t?.IsSplineMoving() && this.ui1) {
       t = t.GetDistanceAloneSpline();
@@ -251,9 +232,9 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     return !!this.SplineComp && (this.ui1 ||= {}, this.ui1.DistanceAloneSpline === undefined || this.ui1.CurPos ? this.ui1.CurPos && this.ui1.DistanceAloneSpline === undefined ? (e = this.SplineComp.D_FindInputKeyClosestToWorldLocation(this.ui1.CurPos.ToUeVector()), this.ui1.DistanceAloneSpline = this.SplineComp.GetDistanceAlongSplineAtSplineInputKey(e)) : (this.ui1.DistanceAloneSpline = 0, this.ui1.CurPos = Vector_1.Vector.Create(this.SplineComp.D_GetLocationAtDistanceAlongSpline(0, 1))) : this.ui1.CurPos = Vector_1.Vector.Create(this.SplineComp.D_GetLocationAtDistanceAlongSpline(this.ui1.DistanceAloneSpline, 1)), true);
   }
   yi1() {
-    this.OHc = 2;
+    this.VWu = 2;
     if (this.EntityHandle?.Valid) {
-      const n = this.EntityHandle.Entity.GetComponent(128);
+      const n = this.EntityHandle.Entity.GetComponent(129);
       if (n?.Valid) {
         if (this.ICl) {
           this.enh = new Map();
@@ -312,9 +293,9 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     }
   }
   Mi1() {
-    this.OHc = 4;
+    this.VWu = 4;
     var e;
-    var t = this.EntityHandle.Entity.GetComponent(128);
+    var t = this.EntityHandle.Entity.GetComponent(129);
     if (t?.Valid) {
       if (e = this.Ei1(this.SplineComp, this.ci1, this.ui1)) {
         if (t.IsMoving) {

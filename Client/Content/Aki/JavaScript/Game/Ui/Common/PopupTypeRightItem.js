@@ -26,13 +26,13 @@ class PopupTypeRightItem extends CommonPopViewBehaviourBase_1.CommonPopViewBase 
   OnSetTitleByTextIdAndArg(e) {}
   OnRefreshCost(e) {}
   ShowMoraleBg(e) {
-    this.Sdu(e);
-    this.Mdu(!e);
+    this.omu(e);
+    this.nmu(!e);
   }
-  Sdu(e) {
+  omu(e) {
     this.GetTexture(4)?.SetUIActive(e);
   }
-  Mdu(e) {
+  nmu(e) {
     this.GetTexture(3)?.SetUIActive(e);
   }
 }

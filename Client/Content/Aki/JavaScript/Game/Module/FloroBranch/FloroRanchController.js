@@ -20,38 +20,33 @@ const FloroRanchActivityData_1 = require("./Data/FloroRanchActivityData");
 const FloroRanchEntityActionSystem_1 = require("./Entity/FloroRanchEntityActionSystem");
 const FloroRanchActivityView_1 = require("./View/FloroRanchActivityView");
 class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBase {
-  OnOpenView(e) {
+  OnOpenView(o) {
     throw new Error("Method not implemented.");
   }
-  OnGetActivityResource(e) {
+  OnGetActivityResource(o) {
     return "UiItem_ActivityPastureGuide";
   }
-  OnCreateSubPageComponent(e) {
+  OnCreateSubPageComponent(o) {
     return new FloroRanchActivityView_1.FloroRanchActivityView();
   }
-  OnCreateActivityData(e) {
-    var o = new FloroRanchActivityData_1.FloroRanchActivityData();
-    ModelManager_1.ModelManager.FloroRanchModel.SetActivityData(o);
-    return o;
+  OnCreateActivityData(o) {
+    var e = new FloroRanchActivityData_1.FloroRanchActivityData();
+    ModelManager_1.ModelManager.FloroRanchModel.SetActivityData(e);
+    return e;
   }
   OnGetIsOpeningActivityRelativeView() {
-    for (const e of ["FloroRanchMainView", "FloroRanchLimitRewardView", "FloroRanchPermanentRewardView", "FloroRanchDungeonSelectView"]) {
-      if (UiManager_1.UiManager.IsViewOpen(e)) {
-        return true;
-      }
-    }
     return false;
   }
-  OnActivityFirstUnlock(e) {
+  OnActivityFirstUnlock(o) {
     UiManager_1.UiManager.OpenView("FloroRanchUnlockTipView");
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(29126, FloroRanchController.enu);
-    Net_1.Net.Register(27176, FloroRanchController.JFu);
+    Net_1.Net.Register(18154, FloroRanchController.bnu);
+    Net_1.Net.Register(20193, FloroRanchController.cOu);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29126);
-    Net_1.Net.UnRegister(27176);
+    Net_1.Net.UnRegister(18154);
+    Net_1.Net.UnRegister(20193);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, FloroRanchController.qdi);
@@ -59,154 +54,161 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, FloroRanchController.qdi);
   }
-  static SendFloroRanchStartPlayRequest(o, t, e, r, l) {
-    var n = Protocol_1.Aki.Protocol.viu.create();
-    n.w6n = o;
-    n.Qiu = t;
-    if (e && r) {
-      n.Tru = e;
-      n.r5n = r;
+  static SendFloroRanchStartPlayRequest(e, t, o, r, l) {
+    var a = Protocol_1.Aki.Protocol.$iu.create();
+    a.w6n = e;
+    a.vru = t;
+    if (o && r) {
+      a.Jru = o;
+      a.r5n = r;
     }
-    Net_1.Net.Call(16687, n, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21119);
+    Net_1.Net.Call(28713, a, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 28456);
+          l?.(undefined);
         } else {
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.InitGame(o, e.bru.Tru, e.bru.RUs.sku.r5n);
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.EnterGame(e);
-          l?.(e);
-          if (e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()) {
-            e.SetUnFinishedSubDungeonId(t);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("FloroRanchGamePlay", 78, "弗洛洛牧场 游戏开始", ["SubInsId", o.Zru.vru], ["SkillId", o.Zru.RUs.qBu.r5n], ["Races", o.Zru.Jru.join(",")], ["Stage", o.Zru.Gru], ["Day", o.Zru.Fru]);
           }
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.InitGame(e, o.Zru.Jru, o.Zru.RUs.qBu.r5n, o.Zru.Wud);
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.EnterGame(o);
+          l?.(o);
+          ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().SetUnFinishedSubDungeonId(t);
         }
+      } else {
+        l?.(undefined);
       }
     });
   }
-  static SendFloroRanchPlayNextDayRequest(e, o, t) {
-    var r = Protocol_1.Aki.Protocol.Iiu.create();
-    r.w6n = e;
-    r.Qiu = o;
-    Net_1.Net.Call(15818, r, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26567);
+  static SendFloroRanchPlayNextDayRequest(o, e, t) {
+    var r = Protocol_1.Aki.Protocol.Yiu.create();
+    r.w6n = o;
+    r.vru = e;
+    Net_1.Net.Call(21863, r, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 15822);
           t(undefined);
         } else {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, e.Whu);
-          t(e);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, o.vlu);
+          t(o);
         }
       } else {
         t(undefined);
       }
     });
   }
-  static FloroRanchPlayGachaRequest(e, o, t, r, l) {
-    var n = Protocol_1.Aki.Protocol.biu.create();
-    n.w6n = e;
-    n.Qiu = o;
-    n.J7n = t;
-    n.w5n = r;
-    Net_1.Net.Call(15819, n, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22324);
+  static FloroRanchPlayGachaRequest(o, e, t, r, l) {
+    var a = Protocol_1.Aki.Protocol.Jiu.create();
+    a.w6n = o;
+    a.vru = e;
+    a.J7n = t;
+    a.w5n = r;
+    Net_1.Net.Call(15253, a, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17598);
           l(undefined);
         } else {
-          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntity(e.b6s);
-          l(e);
+          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntities(o.b6s).then(() => {
+            l(o);
+          });
         }
       } else {
         l(undefined);
       }
     });
   }
-  static FloroRanchPlayRefreshGachaRequest(e, o, t, r) {
-    var l = Protocol_1.Aki.Protocol.Gku.create();
-    l.w6n = e;
-    l.Qiu = o;
+  static FloroRanchPlayRefreshGachaRequest(o, e, t, r) {
+    var l = Protocol_1.Aki.Protocol.MBu.create();
+    l.w6n = o;
+    l.vru = e;
     l.w5n = t;
-    Net_1.Net.Call(28935, l, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28357);
+    Net_1.Net.Call(15197, l, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 16136);
           r(undefined);
         } else {
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(e.xhu)), Number(MathUtils_1.MathUtils.LongToBigInt(e.Uhu)));
-          r(e);
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(o.nlu)), Number(MathUtils_1.MathUtils.LongToBigInt(o.slu)));
+          r(o);
         }
       } else {
         r(undefined);
       }
     });
   }
-  static SendFloroRanchPlayShopBuyRequest(e, o, t, r, l, n) {
-    var a = Protocol_1.Aki.Protocol.Liu.create();
-    a.w6n = e;
-    a.Qiu = o;
-    a.Pru = t;
-    a.h5n = r;
-    a.w5n = l;
-    Net_1.Net.Call(22436, a, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28012);
+  static SendFloroRanchPlayShopBuyRequest(o, e, t, r, l, a, n) {
+    var _ = Protocol_1.Aki.Protocol.eru.create();
+    _.w6n = o;
+    _.vru = e;
+    _.rou = r;
+    _.h5n = l;
+    _.w5n = t;
+    _.Xxs = a;
+    Net_1.Net.Call(22868, _, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23896);
           n(undefined);
         } else {
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnShopItemPurchased(e);
-          n(e);
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnShopItemPurchased(o);
+          n(o);
         }
       } else {
         n(undefined);
       }
     });
   }
-  static SendFloroRanchPlayRefreshShopRequest(e, o, t, r) {
-    var l = Protocol_1.Aki.Protocol.Q_u.create();
-    l.w6n = e;
-    l.Qiu = o;
+  static SendFloroRanchPlayRefreshShopRequest(o, e, t, r) {
+    var l = Protocol_1.Aki.Protocol.A1u.create();
+    l.w6n = o;
+    l.vru = e;
     l.w5n = t;
-    Net_1.Net.Call(15559, l, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19561);
+    Net_1.Net.Call(25184, l, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23013);
           r(undefined);
         } else {
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(e.xhu)), Number(MathUtils_1.MathUtils.LongToBigInt(e.Uhu)));
-          r(e);
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(o.nlu)), Number(MathUtils_1.MathUtils.LongToBigInt(o.slu)));
+          r(o);
         }
       } else {
         r(undefined);
       }
     });
   }
-  static SendFloroRanchPlaySelectCardGroupRequest(e, o, t, r) {
-    var l = Protocol_1.Aki.Protocol.Kbu.create();
-    l.w6n = e;
-    l.Qiu = o;
+  static SendFloroRanchPlaySelectCardGroupRequest(o, e, t, r) {
+    var l = Protocol_1.Aki.Protocol.CRu.create();
+    l.w6n = o;
+    l.vru = e;
     l.J7n = t;
-    Net_1.Net.Call(28301, l, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23949);
+    Net_1.Net.Call(17303, l, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22234);
           r(undefined);
         } else {
-          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntity(e.Ocu);
-          r(e);
+          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntities(o.vdu).then(() => {
+            r(o);
+          });
         }
       }
     });
   }
-  static SendFloroRanchExecuteSkillPlayRequest(e, o, t) {
-    var r = Protocol_1.Aki.Protocol.Nku.create();
-    r.w6n = e;
-    r.Qiu = o;
-    Net_1.Net.Call(29245, r, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16298);
+  static SendFloroRanchExecuteSkillPlayRequest(o, e, t) {
+    var r = Protocol_1.Aki.Protocol.TBu.create();
+    r.w6n = o;
+    r.vru = e;
+    Net_1.Net.Call(18993, r, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17022);
           t(false);
         } else {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchInsertTask, e.Whu);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, o.vlu);
           t(true);
         }
       } else {
@@ -214,265 +216,282 @@ class FloroRanchController extends ActivityControllerBase_1.ActivityControllerBa
       }
     });
   }
-  static SendFloroRanchPlayEventChoiceRequest(e, o, t, r, l) {
-    var n = Protocol_1.Aki.Protocol.Aiu.create();
-    n.w6n = e;
-    n.Qiu = o;
-    n.J2s = t;
-    n.l4c = r;
-    Net_1.Net.Call(27121, n, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23552);
+  static SendFloroRanchPlayEventChoiceRequest(o, e, t, r, l) {
+    var a = Protocol_1.Aki.Protocol.iru.create();
+    a.w6n = o;
+    a.vru = e;
+    a.J2s = t;
+    a.l4c = r;
+    Net_1.Net.Call(27829, a, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17357);
           l(undefined);
         } else {
-          l(e);
+          l(o);
         }
       } else {
         l(undefined);
       }
     });
   }
-  static SendFloroRanchPlayTributeRequest(e, o, t) {
-    var r = Protocol_1.Aki.Protocol.xiu.create();
-    r.w6n = e;
-    r.Qiu = o;
-    Net_1.Net.Call(15513, r, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28223);
+  static SendFloroRanchPlayTributeRequest(o, e, t) {
+    var r = Protocol_1.Aki.Protocol.oru.create();
+    r.w6n = o;
+    r.vru = e;
+    Net_1.Net.Call(21761, r, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 24642);
           t(undefined);
         } else {
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnTributeResult(e);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchInsertTask, e.Whu);
-          t(e);
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnTributeResult(o);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, o.vlu);
+          t(o);
         }
       } else {
         t(undefined);
       }
     });
   }
-  static SendFloroRanchPlayUnlimitedModeRequest(e, o, t) {
-    var r = Protocol_1.Aki.Protocol.Diu.create();
-    r.w6n = e;
-    r.Qiu = o;
-    Net_1.Net.Call(28111, r, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25104);
+  static SendFloroRanchPlayUnlimitedModeRequest(o, e, t) {
+    var r = Protocol_1.Aki.Protocol.sru.create();
+    r.w6n = o;
+    r.vru = e;
+    Net_1.Net.Call(21255, r, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19856);
           t?.(undefined);
         } else {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchInsertTask, e.Whu);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchInsertTask, o.vlu);
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsEndlessMode = true;
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.CurStage = e._Uu;
+          ModelManager_1.ModelManager.FloroRanchGamePlayModel.CurStage = o.tDu;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchStageInfoRefresh);
-          t?.(e);
+          t?.(o);
         }
       } else {
         t?.(undefined);
       }
     });
   }
-  static SendFloroRanchPlayRemoveUnitRequest(e, o, t, r) {
-    var l = Protocol_1.Aki.Protocol.Ahu.create();
-    l.w6n = e;
-    l.Qiu = o;
-    l.Khu = t;
-    Net_1.Net.Call(25704, l, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15537);
+  static SendFloroRanchPlayRemoveUnitRequest(o, e, t, r) {
+    var l = Protocol_1.Aki.Protocol.rlu.create();
+    l.w6n = o;
+    l.vru = e;
+    l.Slu = t;
+    Net_1.Net.Call(28642, l, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 19199);
           r(undefined);
         } else {
-          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.RemoveEntity(t);
-          ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(e.xhu)), Number(MathUtils_1.MathUtils.LongToBigInt(e.Uhu)));
-          r(e);
+          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.RemoveEntity(t).then(() => {
+            ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(o.nlu)), Number(MathUtils_1.MathUtils.LongToBigInt(o.slu)));
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchInsertTask, o.vlu);
+            r(o);
+          });
         }
       } else {
         r(undefined);
       }
     });
   }
-  static SendFloroRanchSettleDataRequest(e, o, t) {
-    var r = Protocol_1.Aki.Protocol.bFu.create();
-    r.w6n = e;
-    r.Qiu = o;
-    Net_1.Net.Call(17381, r, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20937);
+  static SendFloroRanchSettleDataRequest(o, e, t) {
+    var r = Protocol_1.Aki.Protocol.ABu.create();
+    r.w6n = o;
+    r.vru = e;
+    Net_1.Net.Call(24331, r, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27358);
           t(undefined);
         } else {
-          t(e);
+          t(o);
         }
       } else {
         t(undefined);
       }
     });
   }
-  static SendFloroRanchSettleRequest(e, t, o, r) {
-    var l = Protocol_1.Aki.Protocol.Siu.create();
-    l.w6n = e;
-    l.Qiu = t;
-    l.Rru = o;
-    Net_1.Net.Call(25018, l, e => {
-      var o;
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25097);
+  static SendFloroRanchSettleRequest(o, t, e, r) {
+    var l = Protocol_1.Aki.Protocol.Qiu.create();
+    l.w6n = o;
+    l.vru = t;
+    l.eou = e;
+    Net_1.Net.Call(28598, l, o => {
+      var e;
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 28671);
           r(undefined);
         } else {
-          r(e);
-          if (o = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()) {
-            if (e.qhu) {
-              o.UpdateFloroRanchSubDungeonPass(t);
-            }
-            o.ClearUnFinishedSubDungeonId();
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FloroRanchSettlement);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("FloroRanch", 71, "副本结算", ["isWin", o.ulu], ["subInstanceId", t]);
           }
+          r(o);
+          e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+          if (o.ulu) {
+            e.UpdateFloroRanchSubDungeonPass(t);
+          }
+          e.ClearUnFinishedSubDungeonId();
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FloroRanchSettlement);
         }
       } else {
         r(undefined);
       }
     });
   }
-  static async SendFloroRanchReStartRequest(e, o, t, r) {
-    var l = Protocol_1.Aki.Protocol.Siu.create();
-    l.w6n = e;
-    l.Qiu = o;
-    l.Rru = true;
-    var l = await Net_1.Net.CallAsync(25018, l);
-    if (l) {
-      if (l.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(l.Q4n, 25097);
+  static async SendFloroRanchReStartRequest(o, e, t, r) {
+    var l;
+    var a = Protocol_1.Aki.Protocol.Qiu.create();
+    a.w6n = o;
+    a.vru = e;
+    a.eou = true;
+    var a = await Net_1.Net.CallAsync(28598, a);
+    if (a) {
+      if (a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 28671);
       } else {
-        this.SendFloroRanchStartPlayRequest(e, o, t, r);
+        l = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+        if (a.ulu) {
+          l.UpdateFloroRanchSubDungeonPass(e);
+        }
+        this.SendFloroRanchStartPlayRequest(o, e, t, r);
         await TimerSystem_1.GameplayTimerSystem.Wait(1000);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanchGamePlay", 58, "SendFloroRanchReStartRequest 失败");
     }
   }
-  static RequestTaskReward(o) {
-    const t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    var e;
-    if (t) {
-      (e = new Protocol_1.Aki.Protocol.fiu()).B6n = o;
-      e.w6n = t.Id;
-      Net_1.Net.Call(17576, e, e => {
-        if (e) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20885);
-          } else {
-            t.UpdateTaskRewardStatus(o);
-          }
+  static SendFloroRanchCloseTaskRequest(o, e, t, r) {
+    var l = Protocol_1.Aki.Protocol.O_d.create();
+    l.w6n = o;
+    l.vru = e;
+    l.G_d = t;
+    Net_1.Net.Call(25473, l, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 29040);
+          r?.(undefined);
+        } else {
+          r?.(o);
         }
-      });
-    }
+      } else {
+        r?.(undefined);
+      }
+    });
   }
-  static RequestMilestoneReward(o) {
+  static RequestTaskReward(e) {
     const t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    var e;
-    if (t) {
-      (e = Protocol_1.Aki.Protocol.Ciu.create()).w6n = t.Id;
-      e.Jiu = o;
-      Net_1.Net.Call(19890, e, e => {
-        if (e) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24637);
-          }
-          t.UpdateFloroRanchMilestoneDataList(o);
+    var o = new Protocol_1.Aki.Protocol.Niu();
+    o.B6n = e;
+    o.w6n = t.Id;
+    Net_1.Net.Call(15835, o, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22583);
+        } else {
+          t.UpdateTaskRewardStatus(e);
         }
-      });
-    }
+      }
+    });
   }
-  static RequestUnlockTechPoint(o, t) {
+  static RequestMilestoneReward(e) {
+    const t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    var o = Protocol_1.Aki.Protocol.jiu.create();
+    o.w6n = t.Id;
+    o.Iru = e;
+    Net_1.Net.Call(26100, o, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 24240);
+        }
+        t.UpdateFloroRanchMilestoneDataList(e);
+      }
+    });
+  }
+  static RequestUnlockTechPoint(e, t) {
     const r = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    var e;
-    if (r) {
-      (e = Protocol_1.Aki.Protocol.diu.create()).w6n = r.Id;
-      e.ziu = o;
-      Net_1.Net.Call(24895, e, e => {
-        if (e) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18737);
-          } else {
-            r.UpdateFloroRanchTechnologyData(o);
-            t(e);
-          }
+    var o = Protocol_1.Aki.Protocol.Giu.create();
+    o.w6n = r.Id;
+    o.Eru = e;
+    Net_1.Net.Call(28822, o, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22589);
+        } else {
+          r.UpdateFloroRanchTechnologyData(e);
+          t(o);
         }
-      });
-    }
+      }
+    });
   }
   static RequestComicRead() {
-    const o = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    var e;
-    if (o) {
-      (e = new Protocol_1.Aki.Protocol.k$c()).w6n = o.Id;
-      Net_1.Net.Call(20941, e, e => {
-        if (e) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24205);
+    const e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    var o;
+    if (!e.GetIsReadComic()) {
+      (o = new Protocol_1.Aki.Protocol.T8u()).w6n = e.Id;
+      Net_1.Net.Call(28083, o, o => {
+        if (o) {
+          if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22035);
           } else {
-            o.ReadComic();
+            e.ReadComic();
           }
         }
       });
     }
   }
-  static RequestSubDungeonRead(o) {
+  static RequestSubDungeonRead(e) {
     const t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    var e;
-    if (t) {
-      (e = new Protocol_1.Aki.Protocol.D$c()).w6n = t.Id;
-      e.Qiu = o;
-      Net_1.Net.Call(21464, e, e => {
-        if (e) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23012);
-          } else {
-            t.UpdateFloroRanchSubDungeonRedDot([o]);
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
-          }
+    var o = new Protocol_1.Aki.Protocol.E8u();
+    o.w6n = t.Id;
+    o.vru = e;
+    Net_1.Net.Call(16601, o, o => {
+      if (o) {
+        if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 28162);
+        } else {
+          t.UpdateFloroRanchSubDungeonRedDot([e]);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
         }
-      });
-    }
+      }
+    });
   }
 }
-(exports.FloroRanchController = FloroRanchController).enu = e => {
-  var o = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-  if (o) {
-    switch (e.oEu) {
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroCard:
-        o.UpdateFloroRanchCardData(e.nEu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroToy:
-        o.UpdateFloroRanchToyData(e.sEu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroSkill:
-        o.UpdateFloroRanchSkillData(e.aEu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroTask:
-        o.UpdateFloroRanchTaskData(e.Iwu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroRace:
-        o.UpdateFloroRanchRaceData(e.rEu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroIns:
-        o.UpdateFloroRanchDungeonUnLock(e.Viu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.Proto_FloroSubIns:
-        o.UpdateFloroRanchSubDungeon(e.qwu);
-        break;
-      case Protocol_1.Aki.Protocol.hEu.m9c:
-        o.UpdateFloroRanchSubDungeonHistoryData(e.f9c);
-    }
+(exports.FloroRanchController = FloroRanchController).bnu = o => {
+  var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+  switch (o.fEu) {
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroCard:
+      e.UpdateFloroRanchCardData(o.gEu);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroToy:
+      e.UpdateFloroRanchToyData(o.CEu);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroSkill:
+      e.UpdateFloroRanchSkillData(o.pEu);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroTask:
+      e.UpdateFloroRanchTaskData(o.Dwu);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroRace:
+      e.UpdateFloroRanchRaceData(o.mEu);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroIns:
+      e.UpdateFloroRanchDungeonUnLock(o.hsd);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.Proto_FloroSubIns:
+      e.UpdateFloroRanchSubDungeon(o.oAu);
+      break;
+    case Protocol_1.Aki.Protocol.vEu.n7u:
+      e.UpdateFloroRanchSubDungeonHistoryData(o._7u);
   }
 };
-FloroRanchController.JFu = e => {};
-FloroRanchController.qdi = (e, o) => {
-  var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-  if (t && (t.GetFloroRanchParamConfig().MilestoneItemId === e && t.UpdateFloroRanchMilestoneItemCount(), t.GetFloroRanchParamConfig().TechPointItem === e)) {
+FloroRanchController.cOu = o => {};
+FloroRanchController.qdi = (o, e) => {
+  var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData(false);
+  if (t && (t.GetFloroRanchParamConfig().MilestoneItemId === o && t.UpdateFloroRanchMilestoneItemCount(), t.GetFloroRanchParamConfig().TechPointItem === o)) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FloroRanchDataRedDot);
   }
 }; //# sourceMappingURL=FloroRanchController.js.map

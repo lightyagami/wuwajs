@@ -13,24 +13,24 @@ class PhantomArenaSkillTriggerMask extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.x31 = undefined;
     this.ts1 = undefined;
-    this.jSu = false;
-    this.ptu = () => {
+    this.V7c = false;
+    this.Htu = () => {
       this.x31?.ReceiveClickData(1);
     };
-    this.Bcu = () => {
+    this.Ldu = () => {
       this.x31?.ReceiveClickData(0);
     };
   }
   get IsInSkillInteract() {
-    return this.jSu;
+    return this.V7c;
   }
   set IsInSkillInteract(e) {
-    this.jSu = e;
+    this.V7c = e;
     ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.ptu], [6, this.Bcu]];
+    this.BtnBindInfo = [[0, this.Htu], [6, this.Ldu]];
   }
   OnStart() {
     this.ts1.CanvasManager.AddAreaCanvas(this);

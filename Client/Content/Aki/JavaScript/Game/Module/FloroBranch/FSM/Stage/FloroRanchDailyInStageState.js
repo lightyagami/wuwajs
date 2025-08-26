@@ -25,37 +25,41 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
     super(...arguments);
     this.P2i = [];
     this.dlh = undefined;
-    this.hgu = a => {
+    this.nCu = (a, e) => {
       if (this.dlh) {
         if (this.dlh.TaskId !== a) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("FloroRanchGamePlay", 78, "OnTaskFinish 任务id不匹配");
           }
         } else {
+          this.P2i.shift();
           this.dlh = undefined;
-          this.Ulu();
+          if (e) {
+            e();
+          }
+          this.g_u();
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 78, "OnTaskFinish 当前任务不存在");
       }
     };
-    this.xlu = a => {
+    this.f_u = a => {
       this.coc(a);
-      this.Ulu();
+      this.g_u();
     };
-    this.GOu = a => {
-      this.FOu(a);
-      this.Ulu();
+    this._Ou = a => {
+      this.uOu(a);
+      this.g_u();
     };
   }
   OnEnter() {
     var a = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetDailyTaskList();
     this.coc(a);
-    this.Ulu();
+    this.g_u();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, this.xlu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchInsertTask, this.GOu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, this.f_u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchInsertTask, this._Ou);
   }
   coc(a) {
     for (const t of a) {
@@ -63,67 +67,80 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
       this.P2i.push(e);
     }
   }
-  FOu(a) {
+  uOu(a) {
     var e = [];
     for (const o of a) {
       var t = this.mZ(o);
       e.push(t);
     }
     this.P2i.unshift(...e);
+    if (e.length > 0) {
+      if (this.dlh && !this.dlh.IsPause) {
+        this.dlh.Pause();
+      }
+      this.dlh = undefined;
+    }
   }
-  Ulu() {
-    if (!!this.IsActive && !this.dlh) {
-      this.dlh = this.P2i.shift();
+  g_u() {
+    var a;
+    if (this.IsActive && !this.dlh) {
+      a = this.P2i.length;
+      this.dlh = a > 0 ? this.P2i[0] : undefined;
       if (this.dlh) {
-        this.dlh.Execute();
+        if (this.dlh.IsPause) {
+          this.dlh.Resume();
+        } else if (!this.dlh.IsExecuting) {
+          this.dlh.Execute();
+        }
       } else {
-        this.Fvu();
+        this.qyu();
       }
     }
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, this.xlu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchInsertTask, this.GOu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, this.f_u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchInsertTask, this._Ou);
   }
   OnExit() {
     if (this.dlh) {
       this.dlh.ForceFinish();
+      this.dlh = undefined;
     }
   }
-  Fvu() {
+  qyu() {
     FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.DayEnd();
   }
   mZ(a) {
     let e = undefined;
-    switch (a.Ghu) {
-      case Protocol_1.Aki.Protocol.Xhu.Fhu:
-        e = new FloroRanchDayStartTask_1.FloroRanchDayStartTask(a.Fhu);
+    switch (a.clu) {
+      case Protocol_1.Aki.Protocol.Mlu.dlu:
+        e = new FloroRanchDayStartTask_1.FloroRanchDayStartTask(a.dlu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.Proto_DaySettleActions:
-        e = new FloroRanchDayActionSettleTask_1.FloroRanchDayActionSettleTask(a.qyu);
+      case Protocol_1.Aki.Protocol.Mlu.Proto_DaySettleActions:
+        e = new FloroRanchDayActionSettleTask_1.FloroRanchDayActionSettleTask(a.DSu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.Nhu:
-        e = new FloroRanchRandomEventTask_1.FloroRanchRandomEventTask(a.Nhu);
+      case Protocol_1.Aki.Protocol.Mlu.mlu:
+        e = new FloroRanchRandomEventTask_1.FloroRanchRandomEventTask(a.mlu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.jhu:
-        e = new FloroRanchGachaTask_1.FloroRanchGachaTask(a.jhu);
+      case Protocol_1.Aki.Protocol.Mlu.glu:
+        e = new FloroRanchGachaTask_1.FloroRanchGachaTask(a.glu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.Vhu:
-        e = new FloroRanchShopTask_1.FloroRanchShopTask(a.Vhu);
+      case Protocol_1.Aki.Protocol.Mlu.flu:
+        e = new FloroRanchShopTask_1.FloroRanchShopTask(a.flu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.Hhu:
-        e = new FloroRanchStageStartTask_1.FloroRanchStageStartTask(a.Hhu);
+      case Protocol_1.Aki.Protocol.Mlu.Clu:
+        e = new FloroRanchStageStartTask_1.FloroRanchStageStartTask(a.Clu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.$hu:
-        e = new FloroRanchStageEndTask_1.FloroRanchStageEndTask(a.$hu);
+      case Protocol_1.Aki.Protocol.Mlu.plu:
+        e = new FloroRanchStageEndTask_1.FloroRanchStageEndTask(a.plu);
         break;
-      case Protocol_1.Aki.Protocol.Xhu.rGu:
-        e = new FloroRanchDaySalarySettleTask_1.FloroRanchDaySalarySettleTask(a.rGu);
+      case Protocol_1.Aki.Protocol.Mlu.QBu:
+        e = new FloroRanchDaySalarySettleTask_1.FloroRanchDaySalarySettleTask(a.QBu);
         break;
       default:
         e = new FloroRanchDailyTaskBase_1.FloroRanchDailyTaskBase();
     }
-    e.BindCompleteCallBack(this.hgu);
+    e.BindCompleteCallBack(this.nCu);
     return e;
   }
   IsExecutingTask() {

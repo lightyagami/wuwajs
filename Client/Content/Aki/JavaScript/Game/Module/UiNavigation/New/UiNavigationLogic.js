@@ -16,6 +16,7 @@ const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDi
 const LguiEventSystemManager_1 = require("../../../Ui/LguiEventSystem/LguiEventSystemManager");
 const TsUiNavigationBehaviorListener_1 = require("./TsUiNavigationBehaviorListener");
 const UiNavigationGlobalData_1 = require("./UiNavigationGlobalData");
+const UiNavigationModeModule_1 = require("./UiNavigationModeModule");
 const UiNavigationViewManager_1 = require("./UiNavigationViewManager");
 class UiNavigationLogic {
   static InitNavigationDelegate(i) {
@@ -48,8 +49,9 @@ class UiNavigationLogic {
     if (e?.HasDynamicScrollView()) {
       i = e.GetNavigationGroup();
       a = e.ScrollView.Horizontal ? i.HorizontalWrapMode : i.VerticalWrapMode;
-      n = t !== 2 && t !== 4;
-      e.ScrollView.NavigateScrollToUIItem(e?.GetRootComponent(), n, a);
+      n = e.ScrollView;
+      i = (t === 2 || t === 4) !== UiNavigationModeModule_1.UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive;
+      n.NavigateScrollToUIItem(e?.GetRootComponent(), i, a);
     }
   }
   static LBo(i) {
@@ -182,28 +184,26 @@ class UiNavigationLogic {
   }
   static HandleInputControllerTypeChange() {
     var i;
-    var e;
-    var t = Info_1.Info.IsInGamepad();
-    var a = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor;
-    if (a && (i = a.GetPointerEventData(0))) {
-      e = !(e = UiNavigationViewManager_1.UiNavigationViewManager.GetCurrentViewHandle()) || e.GetCurrentPanel()?.AllowNavigateInKeyBoard;
-      if (t) {
-        a.SetIsUseMouse(false);
-        a.SwitchToNavigationInputType();
-        a.UpdateNavigationListener(undefined);
+    var e = Info_1.Info.IsInGamepad();
+    var t = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor;
+    if (t && t.GetPointerEventData(0)) {
+      i = !(i = UiNavigationViewManager_1.UiNavigationViewManager.GetCurrentViewHandle()) || i.GetCurrentPanel()?.AllowNavigateInKeyBoard;
+      if (e) {
+        t.SetIsUseMouse(false);
+        t.SwitchToNavigationInputType();
+        t.UpdateNavigationListener(undefined);
         ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(false);
-        if (!e) {
+        if (!i) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetNavigationListener);
         }
-      } else if (e) {
-        a = i.inputType === 0;
-        ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(a);
+      } else if (i) {
+        ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(!e);
       } else {
         ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(true);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetNavigationListener);
       }
     } else {
-      ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(!t);
+      ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(!e);
     }
   }
   static ForceChangeInputType() {

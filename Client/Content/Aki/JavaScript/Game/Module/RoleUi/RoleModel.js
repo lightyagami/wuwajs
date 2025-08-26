@@ -68,9 +68,9 @@ class RoleModel extends ModelBase_1.ModelBase {
     this.zyn = false;
     this.xie = (e, t) => {
       if (t) {
-        (t.Entity?.GetComponent(193)).RemoveTagAddOrRemoveListener(1733479717, this.Zyn);
+        (t.Entity?.GetComponent(194)).RemoveTagAddOrRemoveListener(1733479717, this.Zyn);
       }
-      if (e && ((t = e.Entity?.GetComponent(193)).AddTagAddOrRemoveListener(1733479717, this.Zyn), this.zyn !== t.HasTag(1733479717))) {
+      if (e && ((t = e.Entity?.GetComponent(194)).AddTagAddOrRemoveListener(1733479717, this.Zyn), this.zyn !== t.HasTag(1733479717))) {
         this.zyn = !this.zyn;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.zyn);
       }
@@ -716,15 +716,8 @@ class RoleModel extends ModelBase_1.ModelBase {
     }
   }
   GetRoleBackgroundMusicEnabled(e) {
-    var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e);
-    if (t === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Role", 43, "GetRoleBackgroundMusicEnabled 无效roleId", ["roleId", e]);
-      }
-      return false;
-    } else {
-      return t.GetBackgroundMusicEnabled();
-    }
+    e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e);
+    return e === undefined || e.GetBackgroundMusicEnabled();
   }
   GetRoleSystemRoleList() {
     if (!ModelManager_1.ModelManager.DangoAbyssModel.CheckIfInSmallWorldInstance() && !ModelManager_1.ModelManager.GameModeModel.IsMulti) {

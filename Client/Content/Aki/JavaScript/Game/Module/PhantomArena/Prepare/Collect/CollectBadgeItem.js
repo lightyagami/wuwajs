@@ -12,28 +12,28 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class CollectBadgeItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.Beu = 0;
+    this.atu = 0;
     this.CallbackClickBadge = undefined;
     this.CallbackCanChange = undefined;
-    this.Ueu = () => {
-      if (this.CallbackClickBadge && this.Beu > 0) {
-        this.CallbackClickBadge(this.Beu);
+    this.ntu = () => {
+      if (this.CallbackClickBadge && this.atu > 0) {
+        this.CallbackClickBadge(this.atu);
       }
     };
-    this.Deu = () => {
+    this.stu = () => {
       var t;
-      return !!this.CallbackCanChange && !!(this.Beu > 0) && (t = this.GetExtendToggle(0).GetToggleState(), this.CallbackCanChange(this.Beu, t));
+      return !!this.CallbackCanChange && !!(this.atu > 0) && (t = this.GetExtendToggle(0).GetToggleState(), this.CallbackCanChange(this.atu, t));
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UISprite], [5, UE.UIText]];
-    this.BtnBindInfo = [[0, this.Ueu]];
+    this.BtnBindInfo = [[0, this.ntu]];
   }
   OnStart() {
-    this.GetExtendToggle(0).CanExecuteChange.Bind(this.Deu);
+    this.GetExtendToggle(0).CanExecuteChange.Bind(this.stu);
   }
   Refresh(t, e, i) {
-    var t = this.Beu = t;
+    var t = this.atu = t;
     var s = ModelManager_1.ModelManager.PhantomArenaModel.IsBadgeUnlock(t);
     this.GetItem(1).SetUIActive(!s);
     this.GetItem(3).SetUIActive(s);
@@ -57,7 +57,7 @@ class CollectBadgeItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetExtendToggle(0).SetToggleState(0);
   }
   GetKey(t, e) {
-    return this.Beu;
+    return this.atu;
   }
 }
 exports.CollectBadgeItem = CollectBadgeItem;

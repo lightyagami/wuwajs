@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelEventOpenSystem = undefined;
+const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -13,6 +14,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const TsInteractionUtils_1 = require("../../Module/Interaction/TsInteractionUtils");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 const OpenSystemActivity_1 = require("./OpenSystem/OpenSystemActivity");
+const OpenSystemActivityFunPlay_1 = require("./OpenSystem/OpenSystemActivityFunPlay");
 const OpenSystemActivitySubView_1 = require("./OpenSystem/OpenSystemActivitySubView");
 const OpenSystemBossRushBuff_1 = require("./OpenSystem/OpenSystemBossRushBuff");
 const OpenSystemChasingMoonMain_1 = require("./OpenSystem/OpenSystemChasingMoonMain");
@@ -33,6 +35,7 @@ const OpenSystemFixCook_1 = require("./OpenSystem/OpenSystemFixCook");
 const OpenSystemForging_1 = require("./OpenSystem/OpenSystemForging");
 const OpenSystemFragmentMemory_1 = require("./OpenSystem/OpenSystemFragmentMemory");
 const OpenSystemGameSysOpen_1 = require("./OpenSystem/OpenSystemGameSysOpen");
+const OpenSystemGreatSwordSelectView_1 = require("./OpenSystem/OpenSystemGreatSwordSelectView");
 const OpenSystemHiddenBossWindow_1 = require("./OpenSystem/OpenSystemHiddenBossWindow");
 const OpenSystemInformationView_1 = require("./OpenSystem/OpenSystemInformationView");
 const OpenSystemInstanceEntrance_1 = require("./OpenSystem/OpenSystemInstanceEntrance");
@@ -62,6 +65,7 @@ const OpenSystemShopView_1 = require("./OpenSystem/OpenSystemShopView");
 const OpenSystemShower_1 = require("./OpenSystem/OpenSystemShower");
 const OpenSystemSoundAreaPlayInfo_1 = require("./OpenSystem/OpenSystemSoundAreaPlayInfo");
 const OpenSystemSynthetic_1 = require("./OpenSystem/OpenSystemSynthetic");
+const OpenSystemTrapDefenseMapChange_1 = require("./OpenSystem/OpenSystemTrapDefenseMapChange");
 const OpenSystemTrialRoleDescription_1 = require("./OpenSystem/OpenSystemTrialRoleDescription");
 const OpenSystemTurntableControl_1 = require("./OpenSystem/OpenSystemTurntableControl");
 const OpenSystemVersionPreheat_1 = require("./OpenSystem/OpenSystemVersionPreheat");
@@ -71,6 +75,13 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
     super(e);
     this.WDe = undefined;
     this.KDe = new Map();
+    this.Sjl = undefined;
+    this.FWe = () => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]设置LoadingPromise结果");
+      }
+      this.Sjl?.SetResult();
+    };
     this.QDe = e => {
       if (e === this.WDe) {
         this.FinishExecute(true);
@@ -137,81 +148,95 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
     this.KDe.set("PlotReviewJumpTips", new OpenSystemQuestReview_1.OpenSystemQuestReviewTipsView(this));
     this.KDe.set("MoraleSystem", new OpenSystemMoraleAreaSum_1.OpenSystemMoraleAreaSum(this));
     this.KDe.set("LifePointChallenge", new OpenSystemLifePointDraw_1.OpenSystemLifePointDraw(this));
+    this.KDe.set("GreatSwordChallenge", new OpenSystemGreatSwordSelectView_1.OpenSystemGreatSwordSelectView(this));
+    this.KDe.set("TrapDefenseMapChange", new OpenSystemTrapDefenseMapChange_1.OpenSystemTrapDefenseMapChange(this));
+    this.KDe.set("FindBug", new OpenSystemActivityFunPlay_1.OpenSystemActivityFunPlay(this));
   }
   OnReset() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CloseView, this.QDe)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.QDe);
     }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
+    }
+    this.Sjl = undefined;
   }
   async d2n(t, n) {
     var s = this.KDe.get(t.SystemType);
     if (s) {
-      if (ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
-        var i = s.GetViewName(t, n);
-        let e = false;
-        var o = n;
-        if (o?.EntityId && i) {
-          if (!EntitySystem_1.EntitySystem.GetComponent(o.EntityId, 197)?.CanInteraction) {
-            TsInteractionUtils_1.TsInteractionUtils.RegisterWaitOpenViewName(i);
-            e = true;
+      if (!ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
+        if (!t.WaitLoading) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 还未WorldDoneAndLoadingClosed算直接完成", ["OpenSystemType", t.SystemType]);
           }
+          this.FinishExecute(true);
+          return;
         }
-        if (this.IsAsync) {
-          s.ExecuteOpenView(t, n);
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,异步", ["SystemType", t.SystemType]);
-          }
-        } else {
-          o = await s.ExecuteOpenView(t, n);
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,同步", ["SystemType", t.SystemType], ["IsSuccess", o]);
-          }
-          if (!o) {
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 执行打开界面失败算直接完成", ["OpenSystemType", t.SystemType]);
-            }
-            if (e) {
-              TsInteractionUtils_1.TsInteractionUtils.ClearCurrentOpenViewName();
-            }
-            ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
-            this.FinishExecute(true);
-            return;
-          }
+        this.Mcd();
+        await this.Sjl.Promise;
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]Loading完成继续往下执行");
         }
-        this.WDe = i;
-        if (this.WDe) {
-          this.XDe(t, s, n);
-          if (this.IsAsync) {
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 节点行为配置为异步算直接完成", ["OpenSystemType", t.SystemType]);
-            }
-            if (e) {
-              TsInteractionUtils_1.TsInteractionUtils.ClearCurrentOpenViewName();
-            }
-            ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
-            this.FinishExecute(true);
-          } else {
-            ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
-            if (t.SyncOpenSystemBoardFinishTiming === "OpenFinished") {
-              this.FinishExecute(true);
-            } else {
-              EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.QDe);
-            }
-          }
-        } else {
+      }
+      var i = s.GetViewName(t, n);
+      let e = false;
+      var r = n;
+      if (r?.EntityId && i) {
+        if (!EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 198)?.CanInteraction) {
+          TsInteractionUtils_1.TsInteractionUtils.RegisterWaitOpenViewName(i);
+          e = true;
+        }
+      }
+      if (this.IsAsync) {
+        s.ExecuteOpenView(t, n);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,异步", ["SystemType", t.SystemType]);
+        }
+      } else {
+        r = await s.ExecuteOpenView(t, n);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,同步", ["SystemType", t.SystemType], ["IsSuccess", r]);
+        }
+        if (!r) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 没有对应界面名算直接完成", ["OpenSystemType", t.SystemType]);
+            Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 执行打开界面失败算直接完成", ["OpenSystemType", t.SystemType]);
           }
           if (e) {
             TsInteractionUtils_1.TsInteractionUtils.ClearCurrentOpenViewName();
           }
           ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
           this.FinishExecute(true);
+          return;
+        }
+      }
+      this.WDe = i;
+      if (this.WDe) {
+        this.XDe(t, s, n);
+        if (this.IsAsync) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 节点行为配置为异步算直接完成", ["OpenSystemType", t.SystemType]);
+          }
+          if (e) {
+            TsInteractionUtils_1.TsInteractionUtils.ClearCurrentOpenViewName();
+          }
+          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
+          this.FinishExecute(true);
+        } else {
+          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
+          if (t.SyncOpenSystemBoardFinishTiming === "OpenFinished") {
+            this.FinishExecute(true);
+          } else {
+            EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.QDe);
+          }
         }
       } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 还未WorldDoneAndLoadingClosed算直接完成", ["OpenSystemType", t.SystemType]);
+          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 没有对应界面名算直接完成", ["OpenSystemType", t.SystemType]);
         }
+        if (e) {
+          TsInteractionUtils_1.TsInteractionUtils.ClearCurrentOpenViewName();
+        }
+        ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
         this.FinishExecute(true);
       }
     } else if (Log_1.Log.CheckError()) {
@@ -228,6 +253,15 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       Log_1.Log.Error("LevelEvent", 36, "[LevelEventOpenSystem]参数类型出错");
     }
   }
+  Mcd() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]创建LoadingPromise");
+    }
+    this.Sjl = new CustomPromise_1.CustomPromise();
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
+    }
+  }
   XDe(t, n, s) {
     n = n.GetViewName(t, s);
     if (n) {
@@ -236,7 +270,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       } else {
         let e = undefined;
         s = s?.EntityId;
-        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(187) : e) {
+        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(188) : e) {
           TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName(n);
           e.SetUiOpenPerformance(n, t.BoardId);
         }

@@ -101,26 +101,26 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     CharacterStatisticsComponent_1.CharacterStatisticsComponent.HalfLengthRecordSquared = Math.pow(t, 2);
   }
   static SetCombatStarted(t, e, r, a, i, n, o, c, s) {
-    var C = new Array();
+    var l = new Array();
     if (a) {
-      C.push(0);
+      l.push(0);
     }
     if (i) {
-      C.push(1);
+      l.push(1);
     }
     if (n) {
-      C.push(2);
+      l.push(2);
     }
     if (o) {
-      C.push(3);
+      l.push(3);
     }
     if (c) {
-      C.push(4);
+      l.push(4);
     }
     if (s) {
-      C.push(5);
+      l.push(5);
     }
-    CharacterStatisticsComponent_1.CharacterStatisticsComponent.SetCombatStarted(t, C, e, r);
+    CharacterStatisticsComponent_1.CharacterStatisticsComponent.SetCombatStarted(t, l, e, r);
   }
   static SetTypeOpen(t, e, r, a, i, n) {
     var o = new Array();
@@ -169,7 +169,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return CharacterStatisticsComponent_1.CharacterStatisticsComponent.GetItemListViewCount();
   }
   static TestLeaveSplineMove(t) {
-    t.GetEntityNoBlueprint().GetComponent(108).EndSplineMove(1);
+    t.GetEntityNoBlueprint().GetComponent(109).EndSplineMove(1);
     CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraSpline();
   }
   static GetBaseCharacterTransform() {
@@ -191,7 +191,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static DetachFromHost(t, e, r) {
     var t = EntitySystem_1.EntitySystem.Get(t);
-    if (t?.Valid && (t = t.GetComponent(180))?.Valid) {
+    if (t?.Valid && (t = t.GetComponent(181))?.Valid) {
       t.DetachFromHost(e, r, true);
     }
   }
@@ -203,7 +203,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static SetGravityDirect(t, e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t);
-    if (t?.Valid && (t = t.Entity.GetComponent(178))?.Valid) {
+    if (t?.Valid && (t = t.Entity.GetComponent(179))?.Valid) {
       t.SetGravityDirectByNumber(e.X, e.Y, e.Z);
     }
   }
@@ -246,7 +246,7 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetEntityForeverTimeDilation(t) {
     CharacterBlueprintFunctionLibrary.EntityTimeDilation ||= new UE.SEntityTimeDilation();
     CharacterBlueprintFunctionLibrary.EntityTimeDilation.SourceType = -1;
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 122);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 123);
     if (t?.Valid && (t = t.GetTopForeverTimeScaleConfig())) {
       CharacterBlueprintFunctionLibrary.EntityTimeDilation.SourceType = t.SourceType;
       CharacterBlueprintFunctionLibrary.EntityTimeDilation.TimeDilation = t.TimeDilation;
@@ -261,6 +261,14 @@ class CharacterBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static GetInverseSelfCenteredTimeDilation() {
     return ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+  }
+  static SetPlanarReflectionShowPlayers(t) {
+    for (const r of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
+      var e = r.EntityHandle?.Entity?.GetComponent(3)?.Owner;
+      if (e) {
+        t.ShowOnlyActors.Add(e);
+      }
+    }
   }
 }
 CharacterBlueprintFunctionLibrary.ResumeTimeHandle = undefined;

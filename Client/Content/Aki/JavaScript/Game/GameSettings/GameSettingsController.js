@@ -27,19 +27,38 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Info("Render", 40, "GameSettingsController-OnInit");
     }
     this.Ore();
+    this.lmd = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetEngineSubsystem(UE.KuroRenderQualityVolumeManager.StaticClass());
+    this._md();
     return true;
   }
   static OnClear() {
     this.kre();
+    this.umd();
     return true;
   }
-  static OnTick(e) {
-    this.XFt -= e;
-    if (this.XFt <= 0) {
-      GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
-      GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
-      this.XFt = 3000;
-    }
+  static cmd() {
+    GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
+    GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
+  }
+  static _md() {
+    this.lmd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {
+      this.KuroRenderQualityLocalIndex = e;
+      this.cmd();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 92, "进入局部性能盒子，应用索引", ["LocalIndex:", e]);
+      }
+    });
+    this.lmd.OnLeaveVolumeBlueprintEvent.Add(() => {
+      this.KuroRenderQualityLocalIndex = -1;
+      this.cmd();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 92, "离开局部性能盒子");
+      }
+    });
+  }
+  static umd() {
+    this.lmd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Clear();
+    this.lmd.OnLeaveVolumeBlueprintEvent.Clear();
   }
   static Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnStartLoadingState, this.hMe);
@@ -70,7 +89,8 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
 exports.GameSettingsController = GameSettingsController;
 (_a = GameSettingsController).IRe = undefined;
 GameSettingsController.IsGameSettingsAppliedOnOpenLoading = false;
-GameSettingsController.XFt = 0;
+GameSettingsController.lmd = undefined;
+GameSettingsController.KuroRenderQualityLocalIndex = -1;
 GameSettingsController.hMe = () => {
   var e;
   if (_a.IsGameSettingsAppliedOnOpenLoading) {
@@ -114,7 +134,7 @@ GameSettingsController.hMe = () => {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.ViewDistanceQuality 2");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.AntiAliasingQuality 2");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.PostProcessQuality 2");
-        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.TextureQuality 2");
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.TextureQuality 3");
         if (Info_1.Info.IsMacPlatform()) {
           UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.EffectsQuality 1");
         } else {

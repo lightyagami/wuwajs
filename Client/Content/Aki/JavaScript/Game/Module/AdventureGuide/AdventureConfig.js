@@ -31,7 +31,7 @@ class AdventureGuideConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
     this.KQl = new Map();
-    this.tDu = new Map();
+    this.UDu = new Map();
   }
   OnInit() {
     var e = this.GetPreOpenDetectionConfAll();
@@ -47,8 +47,8 @@ class AdventureGuideConfig extends ConfigBase_1.ConfigBase {
     var e = LevelPlayInfoMappingConfigAll_1.configLevelPlayInfoMappingConfigAll.GetConfigList();
     if (e) {
       for (const t of e) {
-        if (t.Type === ILevelPlay_1.ELevelPlayInfoMappingType.NightmareSpawnPoint && !(n = JSON.parse(t.Data), this.tDu.has(n.LevelPlayId))) {
-          this.tDu.set(n.LevelPlayId, n);
+        if (t.Type === ILevelPlay_1.ELevelPlayInfoMappingType.NightmareSpawnPoint && !(n = JSON.parse(t.Data), this.UDu.has(n.LevelPlayId))) {
+          this.UDu.set(n.LevelPlayId, n);
         }
       }
     }
@@ -115,6 +115,30 @@ class AdventureGuideConfig extends ConfigBase_1.ConfigBase {
     const e = DropPackageById_1.configDropPackageById.GetConfig(n.get(1));
     return e.DropPreview;
   }
+  GetNightMareShowReward(r) {
+    if (r && !(r.size <= 0)) {
+      var t = ModelManager_1.ModelManager.CalabashModel.GetCalabashLevel();
+      let n = 0;
+      if (r.has(t)) {
+        n = r.get(t);
+      } else {
+        for (let e = t - 1; e >= 0; e--) {
+          if (r.has(e)) {
+            n = r.get(e);
+            break;
+          }
+        }
+      }
+      if (n > 0) {
+        const e = DropPackageById_1.configDropPackageById.GetConfig(n);
+        if (e) {
+          return e.DropPreview;
+        }
+      }
+      const e = DropPackageById_1.configDropPackageById.GetConfig(r.get(1));
+      return e.DropPreview;
+    }
+  }
   GetChapterAdventureConfig(e) {
     return AdventureTaskChapterById_1.configAdventureTaskChapterById.GetConfig(e);
   }
@@ -172,7 +196,7 @@ class AdventureGuideConfig extends ConfigBase_1.ConfigBase {
     return DetectionDropDownTypeById_1.configDetectionDropDownTypeById.GetConfig(e);
   }
   GetLevelPlayNightMareConfig(e) {
-    return this.tDu.get(e);
+    return this.UDu.get(e);
   }
 }
 exports.AdventureGuideConfig = AdventureGuideConfig;

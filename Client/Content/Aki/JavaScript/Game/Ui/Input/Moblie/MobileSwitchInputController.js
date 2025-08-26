@@ -21,11 +21,12 @@ const UiManager_1 = require("../../UiManager");
 const UiModel_1 = require("../../UiModel");
 class MobileSwitchInputController {
   static async CWa() {
-    await UiManager_1.UiManager.NormalResetToViewAsync("BattleView");
+    var e = UiModel_1.UiModel.MainViewName;
+    await UiManager_1.UiManager.NormalResetToViewAsync(e);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("MobileInputSwitch", 10, "重置回主界面成功");
     }
-    await Promise.all([UiManager_1.UiManager.CloseViewAsync("PingView"), UiManager_1.UiManager.CloseViewAsync("BattleView")]);
+    await Promise.all([UiManager_1.UiManager.CloseViewAsync("PingView"), UiManager_1.UiManager.CloseViewAsync(e)]);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("MobileInputSwitch", 10, "关闭主界面成功");
     }
@@ -130,7 +131,7 @@ MobileSwitchInputController.Ck_ = (e, t) => e === "MobileSwitchInputView" || (_a
 }), Log_1.Log.CheckInfo() && Log_1.Log.Info("MobileInputSwitch", 10, "缓存切换期间打开的界面数据", ["viewName", e]), false);
 MobileSwitchInputController.ReOpenBattleView = () => {
   UiManager_1.UiManager.RemoveOpenViewCheckFunction("All", MobileSwitchInputController.Ck_);
-  UiManager_1.UiManager.OpenView("BattleView");
+  ControllerHolder_1.ControllerHolder.BattleUiControl.OpenMainView();
   if (!CloudGameManager_1.CloudGameManager.IsCloudGame) {
     UiManager_1.UiManager.OpenView("PingView");
   }

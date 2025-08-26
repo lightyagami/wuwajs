@@ -14,7 +14,7 @@ class FloroRanchCardData {
   constructor(e) {
     this.Lo = undefined;
     this.P4e = true;
-    this._mu = 0;
+    this.Qmu = 0;
     this.TagData = new FloroRanchTagData_1.FloroRanchTagData();
     this.Lo = e;
     this.TagData.SetTagId(this.Lo.Tag);
@@ -26,14 +26,14 @@ class FloroRanchCardData {
     return this.P4e;
   }
   set ConditionId(e) {
-    this._mu = e;
+    this.Qmu = e;
   }
   get ConditionId() {
-    return this._mu;
+    return this.Qmu;
   }
   get IsDefaultUnlock() {
     var e = this.Lo.Race;
-    return ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetFloroRanchRaceData(e).ConditionId === 0 && this._mu === 0;
+    return ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetFloroRanchRaceData(e).ConditionId === 0 && this.Qmu === 0;
   }
   get ConditionText() {
     var e = this.Lo.Race;
@@ -77,10 +77,10 @@ class FloroRanchCardData {
   GetBasicSalary() {
     return this.Lo.Salary;
   }
-  GetCardRace() {
+  GetRace() {
     return this.Lo.Race;
   }
-  GetCardRarity() {
+  GetRarity() {
     return this.Lo.RarityId;
   }
   GetCardSalary() {

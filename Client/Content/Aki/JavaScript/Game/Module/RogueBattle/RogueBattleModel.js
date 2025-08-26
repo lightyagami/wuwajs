@@ -162,10 +162,17 @@ class RogueBattleModel extends ModelBase_1.ModelBase {
     return e;
   }
   GetLinkIdByRoleList(t) {
+    var e = [];
+    for (const o of t) {
+      e.push(o.GetRoleId());
+    }
+    return this.GetLinkIdByRoleIdList(e);
+  }
+  GetLinkIdByRoleIdList(t) {
     var e = new Map();
     var o = new Set();
     for (const s of t) {
-      for (const f of ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(s.GetRoleId()).BondIds) {
+      for (const f of ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBondRole(s).BondIds) {
         o.add(f);
         var r = e.get(f) ?? 0;
         e.set(f, r + 1);

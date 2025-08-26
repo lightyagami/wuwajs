@@ -21,6 +21,9 @@ class MowingRiskProtocolContext extends ActivityData_1.ActivityBaseData {
     this.zVa = new Set();
     this.JVa = 0;
   }
+  OnInit(t) {
+    ModelManager_1.ModelManager.MowingRiskModel.InitContext();
+  }
   Dispose() {}
   PhraseEx(t) {
     t = t.NS_;

@@ -116,10 +116,10 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.n9_);
   }
   OnBeforeShow() {
-    this.tyu();
+    this.Zyu();
     this.UpdateData();
   }
-  tyu() {
+  Zyu() {
     this.AreaMapPanelList.forEach(e => {
       e.AreaPlotPanel.PlotList.forEach(e => {
         e.LoopTickPromise?.Stop();
@@ -176,7 +176,7 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
       t = t ?? this.Model.GetAllNewUnlockPlotList();
       await this.PlayAreaPanelEnterEffectTimes(Math.min(e.length, i), e);
       await this.PlayAreaPanelNewUnlockEffect(t);
-      this.iyu([...e, ...t]);
+      this.eSu([...e, ...t]);
       this.IsPlayingEnterEffect = false;
     }
   }
@@ -210,7 +210,7 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
   }
   async PlayAreaPanelEnterEffect(t, e) {
     if (!(t.length <= 0)) {
-      await this.Tlu(e ?? 0);
+      await this.h_u(e ?? 0);
       const i = [];
       this.AreaMapPanelList.forEach(e => {
         i.push(e.PlayEnterEffect(t));
@@ -220,7 +220,7 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
   }
   async PlayAreaPanelLoopEffect(t, e) {
     if (!(t.length <= 0)) {
-      await this.Tlu(e ?? 0);
+      await this.h_u(e ?? 0);
       const i = [];
       this.AreaMapPanelList.forEach(e => {
         i.push(e.PlayLoopEffect(t));
@@ -231,7 +231,7 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
   async PlayAreaPanelNewUnlockEffect(t) {
     if (!(t.length <= 0)) {
       await this.PlayHighMonsterKillEffect();
-      await this.Tlu(this.EnterConfig.解锁新格子播放前间隔时间);
+      await this.h_u(this.EnterConfig.解锁新格子播放前间隔时间);
       const i = [];
       this.AreaMapPanelList.forEach(e => {
         i.push(e.PlayNewUnlockEffect(t));
@@ -248,11 +248,11 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
       await Promise.all(t);
     }
   }
-  async Tlu(e) {
+  async h_u(e) {
     if (!this.IsDestroyOrDestroying && !(e < TimerSystem_1.MIN_TIME)) {
       if (e > TimerSystem_1.MAX_TIME) {
         await TimerSystem_1.TimerSystem.Wait(TimerSystem_1.MAX_TIME);
-        await this.Tlu(e - TimerSystem_1.MAX_TIME);
+        await this.h_u(e - TimerSystem_1.MAX_TIME);
       } else {
         await TimerSystem_1.TimerSystem.Wait(e);
       }
@@ -295,16 +295,16 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
       });
     });
   }
-  iyu(e) {
+  eSu(e) {
     var t;
     if (!(e.length <= 0)) {
       this.StopLoopEffect();
       t = Math.min(e.length, this.LoopConfig.格子入场批次);
       this.LoopFlagNum++;
-      this.ryu(t, e, this.LoopFlagNum);
+      this.tSu(t, e, this.LoopFlagNum);
     }
   }
-  async ryu(t, i, e) {
+  async tSu(t, i, e) {
     if (!this.IsDestroyOrDestroying && !(t <= 0) && this.LoopFlagNum === e) {
       var s = [];
       var a = this.LoopConfig.格子入场批次间隔时间;
@@ -315,7 +315,7 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
         s.push(this.PlayAreaPanelLoopEffect(r, a * e));
       }
       await Promise.all(s);
-      await this.ryu(t, i, e);
+      await this.tSu(t, i, e);
     }
   }
   OnAfterDestroy() {

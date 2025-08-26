@@ -117,7 +117,7 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(1);
     this.vtn = this.Entity.GetComponent(86);
-    this.Gce = this.Entity.GetComponent(128);
+    this.Gce = this.Entity.GetComponent(129);
     if (this.Hte && (t = this.Hte.CreatureData?.GetPbEntityInitData()?.ComponentsData) && (this.k_n = (0, IComponent_1.getComponent)(t, "AiAlertNotifyComponent"), this.k_n && this.Q_n(), this.aEl = (0, IComponent_1.getComponent)(t, "SceneItemAiComponent"), this.aEl)) {
       this.pEl();
     }
@@ -253,14 +253,17 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
         l.push(0);
       }
       TimerSystem_1.TimerSystem.Next(() => {
-        var t = new SceneItemMoveComponent_1.SceneItemSplineMoveAtConstantTimeParam(this.cEl);
-        SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseOldConfigToSplineMoveParam(this.cEl, v, l, false, false, true, l[0] ?? 0, t);
-        t.StartDis = this.cka;
-        t.EndDis = m;
-        this.Gce.StartSplineMoveAtConstantTimeImplement(t, () => {
-          this.Gce.StopMove();
-          this.CEl(true);
-        });
+        var t;
+        if (this.cEl?.IsValid() && !this.EIe?.GetRemoveState()) {
+          t = new SceneItemMoveComponent_1.SceneItemSplineMoveAtConstantTimeParam(this.cEl);
+          SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseOldConfigToSplineMoveParam(this.cEl, v, l, false, false, true, l[0] ?? 0, t);
+          t.StartDis = this.cka;
+          t.EndDis = m;
+          this.Gce.StartSplineMoveAtConstantTimeImplement(t, () => {
+            this.Gce.StopMove();
+            this.CEl(true);
+          });
+        }
       });
     }
   }
@@ -278,5 +281,5 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.mEl = t;
   }
 };
-SmartObjectComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(136)], SmartObjectComponent);
+SmartObjectComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(137)], SmartObjectComponent);
 exports.SmartObjectComponent = SmartObjectComponent; //# sourceMappingURL=SmartObjectComponent.js.map

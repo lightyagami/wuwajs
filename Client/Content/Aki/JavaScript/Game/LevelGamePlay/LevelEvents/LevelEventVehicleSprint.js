@@ -52,12 +52,12 @@ class LevelEventVehicleSprint extends LevelGeneralBase_1.LevelEventBase {
   }
   guc() {
     if (Global_1.Global.BaseCharacter) {
-      return Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(229)?.VehicleEntity;
+      return Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(230)?.VehicleEntity;
     }
   }
   vuc() {
     if (this.Jh) {
-      var e = this.Jh?.GetComponent(233);
+      var e = this.Jh?.GetComponent(234);
       if (e) {
         switch (e.VehicleType) {
           case "Gongduola":

@@ -178,8 +178,8 @@ GeneralLogicTreeController.mYt = e => {
     case Protocol_1.Aki.Protocol.TOs.$vs:
       o = s.$vs.ups;
       break;
-    case Protocol_1.Aki.Protocol.TOs.xGu:
-      o = s.xGu.ups;
+    case Protocol_1.Aki.Protocol.TOs.BBu:
+      o = s.BBu.ups;
   }
   if (o) {
     t = MathUtils_1.MathUtils.LongToBigInt(o.w5n);

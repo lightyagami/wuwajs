@@ -11,18 +11,18 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 class RogueBattleFetterLvUpItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.vpu = undefined;
-    this.ypu = undefined;
+    this.pvu = undefined;
+    this.vvu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
     var t = [];
-    this.vpu = new FetterItem();
-    t.push(this.vpu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
-    this.ypu = new FetterItem();
-    t.push(this.ypu.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
+    this.pvu = new FetterItem();
+    t.push(this.pvu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    this.vvu = new FetterItem();
+    t.push(this.vvu.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     await Promise.all(t);
   }
   Refresh(t, e, r) {
@@ -39,14 +39,14 @@ class RogueBattleFetterLvUpItem extends GridProxyAbstract_1.GridProxyAbstract {
       Star: i.Whc,
       IsLevelUp: false
     };
-    this.vpu.Refresh(o);
+    this.pvu.Refresh(o);
     var o = {
       Id: a,
       Lv: s.F6n,
       Star: i.Whc + t.AddStar,
       IsLevelUp: s.F6n > i.F6n
     };
-    this.ypu.Refresh(o);
+    this.vvu.Refresh(o);
   }
 }
 exports.RogueBattleFetterLvUpItem = RogueBattleFetterLvUpItem;

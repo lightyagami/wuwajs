@@ -30,7 +30,7 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
     this.cBe = undefined;
     this.rqo = undefined;
     this.eMc = false;
-    this.q0u = undefined;
+    this.Opu = undefined;
     this.HFt = 0;
     this.soi = Vector_1.Vector.Create();
     this.jma = new Vector2D_1.Vector2D();
@@ -42,11 +42,11 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
     this.Hte = this.SpecialSkillComponent.Entity.GetComponent(3);
     this.EIe = this.SpecialSkillComponent.Entity.GetComponent(0);
     this.cBe = this.SpecialSkillComponent.Entity.GetComponent(40);
-    var i = this.SpecialSkillComponent.Entity.GetComponent(205);
+    var i = this.SpecialSkillComponent.Entity.GetComponent(206);
     this.hBa = this.cBe?.GetSkill(SPECIAL_SKILL_ID);
     if (this.Hte?.IsAutonomousProxy) {
       this.rqo = i.ListenForTagAddOrRemove(-307383857, (i, t) => {
-        this.G0u();
+        this.qpu();
         this.eMc = t;
         this.HFt = 0;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SpecialSkillLuPaSwitchLockTarget, undefined);
@@ -66,7 +66,7 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
   }
   Yhc(i, t) {
     var e = [];
-    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(i, 62, e);
+    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(i, 248, e);
     var s = this.Hte.Actor.Camp;
     this.soi.FromUeVector(Global_1.Global.CharacterCameraManager.D_GetCameraLocation());
     var r = this.soi;
@@ -74,7 +74,7 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
     let h = undefined;
     for (const _ of e) {
       if (LockOnUtils_1.LockOnUtils.IsValidLockOnTarget(_)) {
-        if (_.Entity.GetComponent(174)) {
+        if (_.Entity.GetComponent(175)) {
           var l = _.Entity.GetComponent(2);
           if (l) {
             l = CampUtils_1.CampUtils.GetCampRelationship(l.Actor.Camp, s);
@@ -105,8 +105,8 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
         }
       }
     }
-    if (h !== this.q0u) {
-      this.G0u();
+    if (h !== this.Opu) {
+      this.qpu();
       if (h) {
         this.NEn(h);
       }
@@ -127,17 +127,17 @@ class SpecialSkillLuPa extends SpecialSkillBase_1.SpecialSkillBase {
     }
   }
   NEn(i) {
-    i.Entity.GetComponent(174).AddBuff(this.jk1, {
+    i.Entity.GetComponent(175).AddBuff(this.jk1, {
       InstigatorId: this.EIe.GetCreatureDataId(),
       Reason: "露帕特殊技能瞄准目标加Buff",
       PreMessageId: this.hBa?.MNc
     });
-    this.q0u = i;
+    this.Opu = i;
   }
-  G0u() {
-    if (this.q0u?.Valid) {
-      this.q0u.Entity.GetComponent(174)?.RemoveBuff(this.jk1, -1, "露帕特殊技能瞄准目标移除Buff", this.hBa?.MNc);
-      this.q0u = undefined;
+  qpu() {
+    if (this.Opu?.Valid) {
+      this.Opu.Entity.GetComponent(175)?.RemoveBuff(this.jk1, -1, "露帕特殊技能瞄准目标移除Buff", this.hBa?.MNc);
+      this.Opu = undefined;
     }
   }
 }

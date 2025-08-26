@@ -57,21 +57,21 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.GF1 = new Map();
     this.FF1 = new Map();
-    this.HQ1 = false;
-    this.x_u = 0;
+    this.KQ1 = false;
+    this.f1u = 0;
     this.UserClickPromise = undefined;
     this.UserDownloadSucPromise = undefined;
     this.UserClickOutOfMemoryViewPromise = undefined;
     this.UserClickNetWorkErrorPromise = undefined;
     this.Aa1 = new Set();
-    this.Seu = undefined;
-    this.Meu = false;
-    this.Y0u = undefined;
+    this.Qeu = undefined;
+    this.Keu = false;
+    this.Ypu = undefined;
     this.Gro = () => {
-      this.U_u();
+      this.g1u();
       this.UpdateToServerResState();
     };
-    this.U_u = () => {
+    this.g1u = () => {
       var e = new Map();
       var o = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
       for (const s of this.FF1) {
@@ -140,18 +140,18 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       VideoResUpdate_1.VideoResUpdate.SetAllSpecialVideoResPak(3, [...r]);
       VideoResUpdate_1.VideoResUpdate.SetAllSpecialVideoResPak(4, [...t]);
       VideoResUpdate_1.VideoResUpdate.CheckVideoManifestsData();
-      this.x_u = LauncherStorageLib_1.LauncherStorageLib.GetDeviceSaved(LauncherStorageLib_1.ELauncherStorageDeviceKey.UserFirstSelectedVideoUpdate, 0);
+      this.f1u = LauncherStorageLib_1.LauncherStorageLib.GetDeviceSaved(LauncherStorageLib_1.ELauncherStorageDeviceKey.UserFirstSelectedVideoUpdate, 0);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("QuestResource", 38, "用户最初选择任务资源状态", ["state", this.x_u]);
+        Log_1.Log.Info("QuestResource", 38, "用户最初选择任务资源状态", ["state", this.f1u]);
       }
-      if (this.x_u === 2) {
+      if (this.f1u === 2) {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
       }
     }
     return true;
   }
   OnClear() {
-    if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo() && this.x_u === 2) {
+    if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo() && this.f1u === 2) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
     }
     return true;
@@ -233,10 +233,10 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
     }
   }
   SetIsDownloadNotEnoughSpaceError(e) {
-    this.Meu = e;
+    this.Keu = e;
   }
   SetIsReportDownloadNotEnoughSpace(e) {
-    this.Y0u = e;
+    this.Ypu = e;
   }
   async CheckQuestResource() {
     if (Log_1.Log.CheckInfo()) {
@@ -256,15 +256,15 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
   UpdateServerQuestState() {
     var e;
     if (this.Aa1.size !== 0) {
-      e = Protocol_1.Aki.Protocol.qsu.create({
+      e = Protocol_1.Aki.Protocol.uau.create({
         a2s: [...this.Aa1]
       });
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("QuestResource", 38, "通知服务器登录任务下载完成", ["LoginQuests", this.Aa1]);
       }
-      Net_1.Net.Call(21904, e, e => {
+      Net_1.Net.Call(23114, e, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 25384);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 22110);
         }
       });
     }
@@ -291,8 +291,8 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "开始 下载缺失视频");
         }
-        if (this.Seu === undefined) {
-          this.Seu = new QuestResourceUpdateProxy();
+        if (this.Qeu === undefined) {
+          this.Qeu = new QuestResourceUpdateProxy();
         }
         this.SetIsDownloadNotEnoughSpaceError(false);
         await (0, ProcedureUtil_1.whetherRepeatDoOnFailedAsync)(async () => {
@@ -300,10 +300,10 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
           VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(5).SetDownLoadProgress(o, e);
           VideoResUpdate_1.VideoResUpdate.SetVideoResSize(5, e);
           this.SetIsReportDownloadNotEnoughSpace(false);
-          var o = await a.Update(5, this.Seu);
+          var o = await a.Update(5, this.Qeu);
           var e = new LogReportDefine_1.DownloadVideoResLogData();
           e.i_task_id = 0;
-          e.b_if_storage_alert = this.Y0u || false;
+          e.b_if_storage_alert = this.Ypu || false;
           if (d === 0) {
             e.i_role_id = 2;
             e.i_resource_type = 2;
@@ -326,7 +326,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             Success: o
           };
         }, async (e, o) => {
-          if (this.Meu) {
+          if (this.Keu) {
             this.SetIsDownloadNotEnoughSpaceError(false);
             return o();
           }
@@ -353,7 +353,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
             };
           }
         });
-        this.Seu = undefined;
+        this.Qeu = undefined;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "结束 下载缺失视频");
         }
@@ -363,7 +363,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
   CalcPrepareResource() {
     if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo()) {
       var e = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-      if (!this.HQ1) {
+      if (!this.KQ1) {
         var o = new Set();
         for (const _ of this.FF1) {
           var t = ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(_[0]);
@@ -404,12 +404,12 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "VideoDown CalcPrepareRes Male", ["needSize", s], ["savedSize", i]);
         }
-        this.HQ1 = true;
+        this.KQ1 = true;
       }
     }
   }
   RefreshCachePrepareResourceSize() {
-    this.HQ1 = false;
+    this.KQ1 = false;
   }
   UpdateToServerResState() {
     this.RefreshCachePrepareResourceSize();
@@ -434,7 +434,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       e = Protocol_1.Aki.Protocol.Y61.create({
         l31: s
       });
-      Net_1.Net.Call(18849, e, e => {
+      Net_1.Net.Call(17531, e, e => {
         if (e && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "计算出新状态后通知服务器任务资源状态改变", ["新状态", s]);
         }

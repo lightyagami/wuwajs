@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.WorldMapController = undefined;
-const UE = require("ue");
-const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
@@ -15,13 +13,13 @@ const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../Core/Utils/Math/Vector2D");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
-const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 const InputManager_1 = require("../../Ui/Input/InputManager");
 const UiManager_1 = require("../../Ui/UiManager");
+const WorldNavigation_1 = require("../Common/WorldNavigation");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const MapLogger_1 = require("../Map/Misc/MapLogger");
 const QuestController_1 = require("../QuestNew/Controller/QuestController");
@@ -43,17 +41,11 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
-    if (!Info_1.Info.IsBuildShipping) {
-      Net_1.Net.Register(16793, this.F61);
-    }
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-    if (!Info_1.Info.IsBuildShipping) {
-      Net_1.Net.UnRegister(16793);
-    }
   }
   static TryTeleport(e, r) {
     var o;
@@ -80,7 +72,7 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   static MapOpenPush(e) {
     var r = new Protocol_1.Aki.Protocol.fas();
     r.vjn = e;
-    Net_1.Net.Send(19222, r);
+    Net_1.Net.Send(28250, r);
   }
   static OpenView(o, e, r, t) {
     if (ModelManager_1.ModelManager.WorldMapModel.PendingOpenWorldMapQuestId !== undefined) {
@@ -177,9 +169,9 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   }
   static Mdl(r) {
     var e = Protocol_1.Aki.Protocol.wg_.create();
-    Net_1.Net.Call(28024, e, e => {
+    Net_1.Net.Call(19714, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 26812);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16591);
       }
       e = {
         InstanceDungeonId: r,
@@ -207,13 +199,27 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AfterLogicTreeChildQuestNodeStatusChange, this.Uct);
     }
   }
-  static RequestNavigationFindPath() {
-    var e = Protocol_1.Aki.Protocol.JU1.create();
-    Net_1.Net.Call(25634, e, e => {
+  static RequestNavigationFindPath(e, r, o) {
+    var t = Protocol_1.Aki.Protocol.JU1.create();
+    t.R71 = {
+      X: e.X,
+      Y: e.Y,
+      Z: e.Z
+    };
+    t.L71 = {
+      X: r.X,
+      Y: r.Y,
+      Z: r.Z
+    };
+    t.w7n = o;
+    Net_1.Net.Call(18320, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25673);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20566);
       }
     });
+  }
+  static EnableWorldNavigationDebug(e) {
+    WorldNavigation_1.WorldNavigation.SetEnableDebug(e);
   }
 }
 exports.WorldMapController = WorldMapController;
@@ -297,22 +303,5 @@ WorldMapController.Uct = e => {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapOpenedForQuestMapFocus, r);
       });
     }
-  }
-};
-WorldMapController.F61 = e => {
-  if (Log_1.Log.CheckDebug()) {
-    Log_1.Log.Debug("Map", 61, "服务端通知绘制寻路点->世界场景");
-  }
-  let r = WorldMapDefine_1.DEBUG_SPHERE_DEFAULT_RADIUS;
-  let o = WorldMapDefine_1.DEBUG_SPHERE_DEFAULT_DURATION;
-  if (e.jw1 && e.jw1 > 0) {
-    r = e.jw1;
-  }
-  if (e.n5n && e.n5n > 0) {
-    o = e.n5n;
-  }
-  for (const n of e.rS_) {
-    var t = Vector_1.Vector.Create(n);
-    UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, t.ToUeVector(true), r, WorldMapDefine_1.DEBUG_SPHERE_DEFAULT_SEGMENTS, new UE.LinearColor(1, 0, 0, 0), o);
   }
 }; //# sourceMappingURL=WorldMapController.js.map

@@ -7,9 +7,10 @@ exports.BattleSkillExploreItem = undefined;
 const UE = require("ue");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const TouchFingerManager_1 = require("../../../Ui/TouchFinger/TouchFingerManager");
-const UiManager_1 = require("../../../Ui/UiManager");
+const RouletteMainViewProxy_1 = require("../../Roulette/ViewProxy/RouletteMainViewProxy");
 const BattleSkillItem_1 = require("./BattleSkillItem");
 class BattleSkillExploreItem extends BattleSkillItem_1.BattleSkillItem {
   constructor() {
@@ -67,9 +68,14 @@ class BattleSkillExploreItem extends BattleSkillItem_1.BattleSkillItem {
     super.OnLongPressButton();
     ModelManager_1.ModelManager.BattleUiModel.IsLongPressExploreButton = true;
     if (this.ztt !== undefined) {
-      UiManager_1.UiManager.OpenView("PhantomExploreView", [1, this.ztt]);
+      this.OpenRouletteMainView(this.ztt);
       this.ztt = undefined;
     }
+  }
+  OpenRouletteMainView(e) {
+    var t = new RouletteMainViewProxy_1.RouletteMainViewProxy();
+    t.TouchId = e;
+    ControllerHolder_1.ControllerHolder.RouletteController.OpenRouletteMainView(t);
   }
 }
 exports.BattleSkillExploreItem = BattleSkillExploreItem;

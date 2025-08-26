@@ -27,7 +27,7 @@ class DeckBuilderCardDeleteView extends UiViewBase_1.UiViewBase {
         this.Pe.DeleteFunc(this.EV1);
       }
     };
-    this.sIu = e => {
+    this.vIu = e => {
       if (e === 1) {
         this.EV1.add(0);
       } else {
@@ -50,7 +50,7 @@ class DeckBuilderCardDeleteView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIExtendToggle], [3, UE.UILayoutBase], [4, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.p1l], [1, this.xco], [2, this.sIu]];
+    this.BtnBindInfo = [[0, this.p1l], [1, this.xco], [2, this.vIu]];
   }
   async OnBeforeStartAsync() {
     this.Pe = this.OpenParam;

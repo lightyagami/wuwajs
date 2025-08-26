@@ -26,48 +26,55 @@ class NetInfo {
     NetInfo.CEi = t;
   }
   static get Token() {
-    return NetInfo.spu;
+    return NetInfo.svu;
   }
   static set Token(t) {
-    NetInfo.spu = t;
+    NetInfo.svu = t;
   }
   static get TcpPort() {
-    return NetInfo.apu;
+    return NetInfo.avu;
   }
   static set TcpPort(t) {
-    NetInfo.apu = t;
+    NetInfo.avu = t;
   }
   static get DeviceId() {
-    return NetInfo.hpu;
+    return NetInfo.hvu;
   }
   static set DeviceId(t) {
-    NetInfo.hpu = t;
+    NetInfo.hvu = t;
   }
   static get UdpPort() {
-    return NetInfo.lpu;
+    return NetInfo.lvu;
   }
   static set UdpPort(t) {
-    NetInfo.lpu = t;
+    NetInfo.lvu = t;
   }
   static get TcpRatio() {
-    return NetInfo._pu;
+    return NetInfo._vu;
   }
   static set TcpRatio(t) {
-    NetInfo._pu = t;
+    NetInfo._vu = t;
   }
   static get TcpRetry() {
-    return NetInfo.upu;
+    return NetInfo.uvu;
   }
   static set TcpRetry(t) {
-    NetInfo.upu = t;
+    NetInfo.uvu = t;
+  }
+  static get DisableCrc() {
+    return NetInfo.smd;
+  }
+  static set DisableCrc(t) {
+    this.smd = t;
   }
 }
 (exports.NetInfo = NetInfo).iY = 0;
 NetInfo.CEi = undefined;
-NetInfo.spu = undefined;
-NetInfo.apu = 0;
-NetInfo.hpu = undefined;
-NetInfo.lpu = 0;
-NetInfo._pu = 0;
-NetInfo.upu = 0;
+NetInfo.svu = undefined;
+NetInfo.avu = 0;
+NetInfo.hvu = undefined;
+NetInfo.lvu = 0;
+NetInfo._vu = 0;
+NetInfo.uvu = 0;
+NetInfo.smd = false;
 NetInfo.TcpMaxRetry = 1; //# sourceMappingURL=NetInfo.js.map

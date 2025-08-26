@@ -38,7 +38,7 @@ class LevelConditionCheckSceneItemDirection extends LevelGeneralBase_1.LevelCond
         }
     }
     if (l?.Valid) {
-      if ((a = l.Entity?.GetComponent(202))?.Valid) {
+      if ((a = l.Entity?.GetComponent(203))?.Valid) {
         if ((i = e.RotatePoint ? a.GetReferenceActor(e.RotatePoint) : a.GetInteractionMainActor())?.IsValid()) {
           r = e.Direction;
           MathUtils_1.MathUtils.CommonTempRotator.Set(r.Y ?? 0, r.Z ?? 0, r.X ?? 0);
@@ -46,20 +46,20 @@ class LevelConditionCheckSceneItemDirection extends LevelGeneralBase_1.LevelCond
           a = i.K2_GetActorQuaternion().AngularDistance(r) * MathUtils_1.MathUtils.RadToDeg;
           return Math.abs(a) <= e.AngleInterval;
         } else {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 39, "[LevelConditionCheckSceneItemDirection] 获取指定实体的指定旋转点Actor失败", ["Target", n], ["RotatePoint", e.RotatePoint]);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("LevelCondition", 39, "[LevelConditionCheckSceneItemDirection] 获取指定实体的指定旋转点Actor失败", ["Target", n], ["RotatePoint", e.RotatePoint]);
           }
           return false;
         }
       } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("LevelCondition", 39, "[LevelConditionCheckSceneItemDirection] 获取指定实体的SceneItemActorComponent失败", ["Target", n]);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("LevelCondition", 39, "[LevelConditionCheckSceneItemDirection] 获取指定实体的SceneItemActorComponent失败", ["Target", n]);
         }
         return false;
       }
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelCondition", 39, "[LevelConditionCheckSceneItemDirection] 获取指定实体失败", ["Target", n]);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("LevelCondition", 39, "[LevelConditionCheckSceneItemDirection] 获取指定实体失败", ["Target", n]);
       }
       return false;
     }

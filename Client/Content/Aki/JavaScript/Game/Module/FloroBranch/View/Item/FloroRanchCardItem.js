@@ -13,72 +13,89 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.UX1 = 0;
+    this.nY1 = 0;
     this.CardType = 0;
     this.CardData = undefined;
     this.UnlockConditionText = "";
     this.OverrideTermViewType = 0;
     this.OnToggleCallBack = undefined;
-    this.QAu = undefined;
+    this.yPu = undefined;
     this.SPe = undefined;
     this.kqe = () => {
       if (this.OnToggleCallBack) {
-        this.OnToggleCallBack(this.GridIndex, this.UX1);
+        this.OnToggleCallBack(this.GridIndex, this.nY1);
       }
     };
-    this.gke = () => !this.QAu || this.QAu(this.GridIndex);
+    this.gke = () => !this.yPu || this.yPu(this.GridIndex);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UIText], [6, UE.UIText], [4, UE.UITexture], [5, UE.UITexture], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIText], [10, UE.UIItem], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UITexture], [17, UE.UIItem], [18, UE.UITexture], [19, UE.UIItem], [20, UE.UITexture], [21, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UIText], [6, UE.UIText], [4, UE.UITexture], [5, UE.UITexture], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIText], [10, UE.UIItem], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UITexture], [17, UE.UIItem], [18, UE.UITexture], [19, UE.UIItem], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UITexture]];
     this.BtnBindInfo = [[0, this.kqe]];
   }
   OnStart() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(this.gke);
-    this.Oku();
+    this.pqu();
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   OnBeforeDestroy() {
-    this.qku();
+    this.vqu();
   }
-  Refresh(t, i, e) {
+  Refresh(t, i, s) {
     this.GetItem(19).SetAlpha(0);
-    this.UX1 = t;
-    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    this.nY1 = t;
     if (this.CardType === 0) {
-      this.CardData = t.GetFloroRanchCardData(this.UX1);
-      this.GetText(12)?.SetText(this.CardData.GetBasicSalary().toString());
-      s = t.GetFloroRanchRaceData(this.CardData.GetCardRace());
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), s.GetRaceName());
-      this.SetTextureShowUntilLoaded(s.SmallIcon, this.GetTexture(8));
-      this.GetItem(14)?.SetUIActive(this.CardData.IsSpecialPhantom);
-      this.GetItem(15)?.SetUIActive(this.CardData.HasNewLabel);
-      this.GetText(6)?.ShowTextNew("Farm_CardType1");
+      this.RefreshPhantomCardData();
     } else {
-      this.CardData = t.GetFloroRanchToyData(this.UX1);
-      this.GetItem(7)?.SetUIActive(false);
-      this.GetItem(10)?.SetUIActive(false);
-      this.GetItem(14)?.SetUIActive(false);
-      this.GetItem(15)?.SetUIActive(false);
-      this.GetText(6)?.ShowTextNew("Farm_CardType2");
+      this.RefreshToyCardData();
     }
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), this.CardData.GetName());
     this.GetText(13).SetText(this.CardData.Desc);
-    var s = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchRarity(this.CardData.GetCardRarity());
+    this.GetText(13).bBestFit = false;
+    t = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchRarity(this.CardData.GetRarity());
     this.GetTexture(5)?.SetUIActive(true);
     this.SetTextureShowUntilLoaded(this.CardData.GetIcon(), this.GetTexture(5));
     this.SetTextureShowUntilLoaded(this.CardData.GetIcon(), this.GetTexture(18));
-    this.SetTextureShowUntilLoaded(s.GetRarityDetailCardBigBg(), this.GetTexture(1));
-    this.SetTextureShowUntilLoaded(s.GetRarityDetailCardSmallBg(), this.GetTexture(2));
-    this.SetTextureShowUntilLoaded(s.GetSelectTexture(), this.GetTexture(16));
-    var t = s.IsGoldRarity();
+    this.SetTextureShowUntilLoaded(t.GetRarityDetailCardBigBg(), this.GetTexture(1));
+    this.SetTextureShowUntilLoaded(t.GetRarityDetailCardSmallBg(), this.GetTexture(2));
+    this.SetTextureShowUntilLoaded(t.GetSelectTexture(), this.GetTexture(16));
+    t = t.IsGoldRarity();
     this.GetTexture(20)?.SetUIActive(false);
     this.GetTexture(21)?.SetUIActive(t);
     this.GetTexture(1)?.SetIsGray(false);
     this.GetTexture(2)?.SetIsGray(false);
-    var s = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(3);
-    this.SetTextureShowUntilLoaded(s.GetIcon(), this.GetTexture(11));
+    t = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(3);
+    this.SetTextureShowUntilLoaded(t.GetIcon(), this.GetTexture(11));
     this.GetItem(17)?.SetUIActive(false);
     this.UnlockConditionText = this.CardData.ConditionText;
+  }
+  RefreshPhantomCardData() {
+    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    this.CardData = t.GetFloroRanchCardData(this.nY1);
+    this.GetText(12)?.SetText(this.CardData.GetBasicSalary().toString());
+    var t = t.GetFloroRanchRaceData(this.CardData.GetRace());
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.GetRaceName());
+    this.SetTextureShowUntilLoaded(t.SmallIcon, this.GetTexture(8));
+    this.GetItem(14)?.SetUIActive(this.CardData.IsSpecialPhantom);
+    this.GetItem(15)?.SetUIActive(this.CardData.HasNewLabel);
+    this.GetText(6)?.ShowTextNew("Farm_CardType1");
+    this.GetItem(22)?.SetUIActive(false);
+  }
+  RefreshToyCardData() {
+    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    this.CardData = t.GetFloroRanchToyData(this.nY1);
+    this.GetItem(7)?.SetUIActive(false);
+    this.GetItem(10)?.SetUIActive(false);
+    this.GetItem(14)?.SetUIActive(false);
+    this.GetItem(15)?.SetUIActive(false);
+    this.GetText(6)?.ShowTextNew("Farm_CardType2");
+    this.GetItem(22)?.SetUIActive(true);
+    var t = this.CardData.GetToyRaceData();
+    if (t) {
+      this.GetItem(22)?.SetUIActive(true);
+      this.SetTextureShowUntilLoaded(t.SmallIcon, this.GetTexture(23));
+    } else {
+      this.GetItem(22)?.SetUIActive(false);
+    }
   }
   HideNewLabel() {
     this.GetItem(15)?.SetUIActive(false);
@@ -87,6 +104,7 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(3)?.SetText("??");
     this.GetText(12)?.SetText("+?");
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(13), this.UnlockConditionText);
+    this.GetText(13).bBestFit = false;
     this.GetItem(17)?.SetUIActive(true);
     this.GetTexture(5)?.SetUIActive(false);
   }
@@ -97,7 +115,7 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.OnToggleCallBack = t;
   }
   SetCanToggleExecuteFunction(t) {
-    this.QAu = t;
+    this.yPu = t;
   }
   OnSelected(t) {
     this.SetToggleState(true);
@@ -108,7 +126,7 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   SetToggleState(t) {
     this.GetExtendToggle(0).SetToggleStateForce(t ? 1 : 0);
   }
-  Oku() {
+  pqu() {
     var t = this.OverrideTermViewType ?? 0;
     var t = {
       UiText: this.GetText(13),
@@ -121,11 +139,11 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(t);
   }
-  qku() {
+  vqu() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(13));
   }
   PlayAppearAnim() {
-    if (ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchRarity(this.CardData.GetCardRarity()).IsGoldRarity()) {
+    if (ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchRarity(this.CardData.GetRarity()).IsGoldRarity()) {
       this.SPe.PlayLevelSequenceByName("GoldCard");
     } else {
       this.SPe.PlayLevelSequenceByName("Start");

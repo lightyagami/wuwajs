@@ -15,6 +15,8 @@ const Platform_1 = require("../../Launcher/Platform/Platform");
 const PlatformSdkManagerNew_1 = require("../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
+const LocalStorage_1 = require("../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../Common/LocalStorageDefine");
 const PublicUtil_1 = require("../Common/PublicUtil");
 const TimeUtil_1 = require("../Common/TimeUtil");
 const GameSettingsDefine_1 = require("../GameSettings/GameSettingsDefine");
@@ -54,8 +56,11 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     this.NeedReviewConfirmBox = false;
     this.QueryPromise = undefined;
     this.W3l = undefined;
+    this.Ptd = undefined;
     this.NoticeRedDotState = false;
     this.NoticeSign = "1";
+    this.GmIntroductionLink = "";
+    this.IntroductionNoticeState = false;
   }
   OnInit() {
     this.CanUseSdk = UE.KuroStaticLibrary.IsModuleLoaded("KuroSDK") && BaseConfigController_1.BaseConfigController.GetPublicValue("UseSDK") === KuroSdkDefine_1.USESDK;
@@ -114,14 +119,14 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
       }
       if (!(this.OFa >= this.kFa.length - 1)) {
         var i = this.kFa.length;
-        var a = ModelManager_1.ModelManager.QuestNewModel;
+        var o = ModelManager_1.ModelManager.QuestNewModel;
         for (let e = this.OFa, t = e + 1; t < i; e++, t++) {
-          var o = this.kFa[e];
+          var a = this.kFa[e];
           var n = this.kFa[t];
-          if (n.QuestId !== 0 && !a.CheckQuestFinished(n.QuestId)) {
+          if (n.QuestId !== 0 && !o.CheckQuestFinished(n.QuestId)) {
             break;
           }
-          r.EndActivity(o.ActivityStringId);
+          r.EndActivity(a.ActivityStringId);
           r.StartActivity(n.ActivityStringId);
           this.OFa = t;
         }
@@ -306,6 +311,30 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
   GetEntryPointData() {
     return this.W3l;
   }
+  SetIntroductionData(e) {
+    this.Ptd = e;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "SetIntroductionData", ["data", e]);
+    }
+    this.Dtd();
+  }
+  GetIntroductionData() {
+    return this.Ptd;
+  }
+  Dtd() {
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion) ?? "";
+    if (this.Ptd && this.Ptd.version !== e) {
+      this.IntroductionNoticeState = true;
+    } else {
+      this.IntroductionNoticeState = false;
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkIntroductionRedPointRefresh);
+  }
+  SaveCurrentClickIntroductionVersion() {
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion, this.Ptd ? this.Ptd.version : "");
+    this.IntroductionNoticeState = false;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkIntroductionRedPointRefresh);
+  }
   GetNoticePlatformId() {
     if (Platform_1.Platform.IsAndroidPlatform()) {
       return 2;
@@ -322,13 +351,13 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
   FilterCurrentNeedShowNoticeContent(e, t) {
     var r = [];
     var i = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
-    var a = e.game;
+    var o = e.game;
     var e = e.activity;
-    var a = a.concat(e);
-    var o = this.GetNoticePlatformId();
-    for (const s of a) {
+    var o = o.concat(e);
+    var a = this.GetNoticePlatformId();
+    for (const s of o) {
       var n = t !== "0";
-      if (this.Q3l(s) && this.K3l(s, t) && (s.permanent !== 0 || n) && this.$3l(s, i) && this.X3l(s, o)) {
+      if (this.Q3l(s) && this.K3l(s, t) && (s.permanent !== 0 || n) && this.$3l(s, i) && this.X3l(s, a)) {
         r.push(s);
       }
     }
@@ -429,16 +458,25 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     var t = ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId();
     var r = LanguageSystem_1.LanguageSystem.PackageLanguage;
     var i = ControllerHolder_1.ControllerHolder.KuroSdkController.GetDeviceDid();
-    var a = ModelManager_1.ModelManager.PlayerInfoModel;
-    var a = a.GetId() === undefined ? "0" : a.GetId().toString();
-    var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn";
+    var o = ModelManager_1.ModelManager.PlayerInfoModel;
+    var o = o.GetId() === undefined ? "0" : o.GetId().toString();
+    var a = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn";
     var n = PublicUtil_1.PublicUtil.GetGameId();
     var s = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
     var l = this.GetPlatformStr();
     var u = ModelManager_1.ModelManager.LoginModel.GetSdkLoginInfo()?.Uid;
-    var d = ModelManager_1.ModelManager.KuroSdkModel.NoticeSign;
-    var _ = PublicUtil_1.PublicUtil.GetPublicInfo();
-    return `${e}?server_id=${t}&lang=${r}&did=${i}&role_id=${a}&svr_area=${o}&game_id=${n}&channel=${s}&platform=${l}&user_id=${u}&sign=${d}&login_info=${UE.KuroStaticLibrary.Base64Encode(_)}`;
+    var _ = ModelManager_1.ModelManager.KuroSdkModel.NoticeSign;
+    var h = PublicUtil_1.PublicUtil.GetPublicInfo();
+    return `${e}?server_id=${t}&lang=${r}&did=${i}&role_id=${o}&svr_area=${a}&game_id=${n}&channel=${s}&platform=${l}&user_id=${u}&sign=${_}&login_info=${UE.KuroStaticLibrary.Base64Encode(h)}`;
+  }
+  GetIntroductionVersionUrl() {
+    let e = "";
+    var t;
+    if ((e = this.GmIntroductionLink !== "" ? this.GmIntroductionLink : e) === "") {
+      t = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk();
+      e = t ? ConfigManager_1.ConfigManager.CommonConfig.GetGuideOverseaLinkUrl() : ConfigManager_1.ConfigManager.CommonConfig.GetGuideMainlandLinkUrl();
+    }
+    return e + "/introduction/redot.json";
   }
 }
 exports.KuroSdkModel = KuroSdkModel;

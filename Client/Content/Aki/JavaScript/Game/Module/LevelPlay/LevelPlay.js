@@ -22,6 +22,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     this.Lpi = false;
     this.Dpi = 0;
     this.ac = 0;
+    this.CYc = 0;
     this.Rpi = false;
     this.TrackRadiusSquared = 0;
     this.CacheDistanceSquared = 0;
@@ -43,7 +44,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     this.bpi = undefined;
     this.Children = undefined;
     this.RangeAbsorbPhantom = undefined;
-    this.$Bu = undefined;
+    this.AFu = undefined;
     this.u1i = t;
     this.Lpi = false;
     this.Dpi = 0;
@@ -157,10 +158,10 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     }
   }
   get RangeAbsorbPbDataIds() {
-    if (this.$Bu === undefined) {
-      this.$Bu = new Set();
+    if (this.AFu === undefined) {
+      this.AFu = new Set();
     }
-    return this.$Bu;
+    return this.AFu;
   }
   InitConfig() {
     var t = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(this.u1i);
@@ -204,6 +205,10 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
   UpdateState(t) {
     this.ac = t ?? 0;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLevelPlayStateChange, this.u1i, this.ac);
+  }
+  UpdateCompleteNumber(t) {
+    this.CYc = t;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLevelPlayCompleteNumberChange, this.u1i, this.ac, this.CYc);
   }
   UpdateRefreshTime(t) {
     this.Dpi = Number(MathUtils_1.MathUtils.LongToBigInt(t));

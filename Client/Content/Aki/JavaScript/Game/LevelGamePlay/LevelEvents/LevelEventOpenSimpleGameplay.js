@@ -71,8 +71,8 @@ class LevelEventOpenSimpleGameplay extends LevelGeneralBase_1.LevelEventBase {
               Callback: this.HDe
             };
             this.VDe = t.FinishSendSelfEvent;
-            var a = EntitySystem_1.EntitySystem.Get(n.EntityId);
-            this.E0 = a.GetComponent(0).GetCreatureDataId();
+            var s = EntitySystem_1.EntitySystem.Get(n.EntityId);
+            this.E0 = s.GetComponent(0).GetCreatureDataId();
             TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName("LifePointView");
             UiManager_1.UiManager.OpenView("LifePointView", r);
             break;
@@ -89,9 +89,9 @@ class LevelEventOpenSimpleGameplay extends LevelGeneralBase_1.LevelEventBase {
             break;
           case "FishingRoulette":
             this.VDe = t.FinishSendSelfEvent;
-            a = EntitySystem_1.EntitySystem.Get(n.EntityId);
-            this.E0 = a.GetComponent(0).GetCreatureDataId();
-            FishingQteController_1.FishingQteController.OpenGameplay(a, e => {
+            s = EntitySystem_1.EntitySystem.Get(n.EntityId);
+            this.E0 = s.GetComponent(0).GetCreatureDataId();
+            FishingQteController_1.FishingQteController.OpenGameplay(s, e => {
               if (e) {
                 TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName("FishingQteView");
               }
@@ -108,14 +108,37 @@ class LevelEventOpenSimpleGameplay extends LevelGeneralBase_1.LevelEventBase {
             break;
           case "TuningStand":
             this.VDe = t.FinishSendSelfEvent;
-            a = EntitySystem_1.EntitySystem.Get(n.EntityId);
-            this.E0 = a.GetComponent(0).GetCreatureDataId();
+            s = EntitySystem_1.EntitySystem.Get(n.EntityId);
+            this.E0 = s.GetComponent(0).GetCreatureDataId();
             TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName("TuningStandView");
             r = {
               Config: t.GameplayConfig,
               Cb: this.HDe
             };
             UiManager_1.UiManager.OpenView("TuningStandView", r);
+            break;
+          case "ItemInspection":
+            this.VDe = t.FinishSendSelfEvent;
+            s = EntitySystem_1.EntitySystem.Get(n.EntityId);
+            this.E0 = s.GetComponent(0).GetCreatureDataId();
+            ControllerHolder_1.ControllerHolder.ItemInspectController.OpenItemInspect(t.GameplayConfig, e => {
+              TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName(e);
+            }, e => {
+              if (e) {
+                this.HDe();
+              }
+            });
+            break;
+          case "TraceTracing":
+            this.VDe = t.FinishSendSelfEvent;
+            r = EntitySystem_1.EntitySystem.Get(n.EntityId);
+            this.E0 = r.GetComponent(0).GetCreatureDataId();
+            TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName("SeekTraceView");
+            ControllerHolder_1.ControllerHolder.SeekTraceController.OpenSeekTrace(t.GameplayConfig, n.EntityId, e => {
+              if (e) {
+                this.HDe();
+              }
+            });
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Event", 29, "上下文不合法");

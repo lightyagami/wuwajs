@@ -44,14 +44,14 @@ class MainRoleController extends UiControllerBase_1.UiControllerBase {
   static SendRoleSexChangeRequest(e) {
     var r = Protocol_1.Aki.Protocol.Lus.create();
     r.v7n = e;
-    Net_1.Net.Call(24053, r, e => {
+    Net_1.Net.Call(17733, r, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WorldLevelModel.Sex = e.v7n;
           this.U1o();
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleChangeEnd);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16348);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24901);
         }
       }
     });
@@ -59,10 +59,10 @@ class MainRoleController extends UiControllerBase_1.UiControllerBase {
   static SendRoleElementChangeRequest(e) {
     var r = Protocol_1.Aki.Protocol.Dus.create();
     r.wHn = e;
-    Net_1.Net.Call(29178, r, e => {
+    Net_1.Net.Call(19313, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28490);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17284);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleChangeEnd);
           this.U1o();
@@ -75,7 +75,7 @@ class MainRoleController extends UiControllerBase_1.UiControllerBase {
     EditBattleTeamController_1.EditBattleTeamController.RefreshMainRoleInfo();
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26703, e => {
+    Net_1.Net.Register(20542, e => {
       var r = e.Mxs;
       var e = e.J6n;
       ModelManager_1.ModelManager.PhantomBattleModel.DeleteBattleData(r);
@@ -84,7 +84,7 @@ class MainRoleController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Debug("Role", 43, "角色转换成功: ", ["sourceRoleId", r], ["roleInfo!.Proto_RoleId", e.Q6n]);
       }
     });
-    Net_1.Net.Register(29763, e => {
+    Net_1.Net.Register(24565, e => {
       if (e) {
         ModelManager_1.ModelManager.RoleModel.UpdateCanChangeRoleIdList(e.Sxs);
         ModelManager_1.ModelManager.MainRoleModel.UpdateCanChangeSexTime(Number(MathUtils_1.MathUtils.LongToBigInt(e.Db_)));
@@ -92,12 +92,12 @@ class MainRoleController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26703);
-    Net_1.Net.UnRegister(29763);
+    Net_1.Net.UnRegister(20542);
+    Net_1.Net.UnRegister(24565);
   }
 }
 (exports.MainRoleController = MainRoleController).iVe = e => {
-  var r = Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(205)?.HasTag(1996802261);
+  var r = Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(206)?.HasTag(1996802261);
   var o = ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance();
   if (r) {
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(ConfigManager_1.ConfigManager.TextConfig.GetTextById("CanNotTransferInFight"));

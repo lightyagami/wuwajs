@@ -16,7 +16,7 @@ class ResDownLoadModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.CurrentDownLoadVideo = -1;
-    this.fau = undefined;
+    this.Vau = undefined;
     this.OnDownLoadStateChange = e => {
       var a;
       if (e === 3) {
@@ -49,27 +49,27 @@ class ResDownLoadModel extends ModelBase_1.ModelBase {
     return true;
   }
   OnClear() {
-    return !(this.fau = undefined);
+    return !(this.Vau = undefined);
   }
   DownLoadPercentage() {
     var e;
     var a = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(3).GetDownLoadState();
     var o = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(4).GetDownLoadState();
     if (a === 1) {
-      this.fau = 3;
+      this.Vau = 3;
     } else if (o === 1) {
-      this.fau = 4;
-    } else if (this.fau === undefined) {
+      this.Vau = 4;
+    } else if (this.Vau === undefined) {
       a = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-      this.fau = a === 1 ? 4 : 3;
+      this.Vau = a === 1 ? 4 : 3;
     }
-    var o = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.fau);
+    var o = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Vau);
     var a = o.GetDownLoadProgress();
     if (a[2] && a[1] > 0) {
       return [Number(a[1]) / Number(a[2]), o.GetDownLoadState()];
     } else {
-      a = VideoResUpdate_1.VideoResUpdate.GetVideoResSavedSize(this.fau);
-      e = VideoResUpdate_1.VideoResUpdate.GetVideoResSize(this.fau);
+      a = VideoResUpdate_1.VideoResUpdate.GetVideoResSavedSize(this.Vau);
+      e = VideoResUpdate_1.VideoResUpdate.GetVideoResSize(this.Vau);
       return [Number(a) / Number(e), o.GetDownLoadState()];
     }
   }

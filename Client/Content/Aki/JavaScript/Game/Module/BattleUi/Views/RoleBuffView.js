@@ -5,44 +5,54 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleBuffView = undefined;
 const UE = require("ue");
+const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const BattleUiControl_1 = require("../BattleUiControl");
 const BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView");
+const BuffItem_1 = require("./BuffItem");
 const BuffItemContainer_1 = require("./BuffItemContainer");
 const EnvironmentItem_1 = require("./EnvironmentItem");
 class RoleBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
     super(...arguments);
-    this.Wst = undefined;
     this.E0 = undefined;
     this.lmt = new Map();
     this.mkn = new BuffItemContainer_1.BuffItemContainer();
+    this.v2u = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   OnStart() {
     super.OnStart();
-    this.InitChildType(26);
-    this.mkn.Init(this.GetItem(1), undefined, false, true);
+    this.InitChildType(37);
+    this.V2u();
+    var e = CommonParamById_1.configCommonParamById.GetIntConfig("RoleBuffItemCount");
+    this.mkn.Init(this.GetItem(1), e, false, true, false, this.v2u.GetRootItem());
   }
   OnBeforeDestroy() {
     this.Refresh(undefined);
     this._mt();
+    this.j2u();
+  }
+  V2u() {
+    this.v2u = new BuffItem_1.BuffItem(this.GetItem(1));
+    this.v2u.ActivateExceedTip();
+  }
+  j2u() {
+    if (this.v2u) {
+      this.v2u.DestroyCompatible();
+      this.v2u = undefined;
+    }
   }
   Refresh(e) {
     if (e) {
-      this.Wst = e;
       this.E0 = e?.EntityHandle?.Id;
       this.mkn.RefreshBuff(e?.EntityHandle);
     } else {
-      this.Wst = undefined;
       this.E0 = undefined;
       this.mkn.ClearAll();
     }
-  }
-  IsValid() {
-    return this.Wst?.EntityHandle !== undefined;
   }
   GetEntityId() {
     return this.E0;
@@ -59,26 +69,26 @@ class RoleBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
   }
   umt() {
     let t = 0;
-    for (const s of ModelManager_1.ModelManager.BattleUiModel.FormationData.EnvironmentPropertyList) {
+    for (const n of ModelManager_1.ModelManager.BattleUiModel.FormationData.EnvironmentPropertyList) {
       var i;
       var r;
-      var o = ModelManager_1.ModelManager.FormationAttributeModel.GetValue(s);
+      var o = ModelManager_1.ModelManager.FormationAttributeModel.GetValue(n);
       if (o > t) {
         t = o;
       }
-      let e = this.lmt.get(s);
+      let e = this.lmt.get(n);
       if (e === undefined) {
         if (!(o <= 0)) {
           i = this.GetItem(0);
           i = BattleUiControl_1.BattleUiControl.Pool.GetEnvironmentItem(i);
-          (e = new EnvironmentItem_1.EnvironmentItem()).InitPropertyId(s);
-          r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(s);
+          (e = new EnvironmentItem_1.EnvironmentItem()).InitPropertyId(n);
+          r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(n);
           e.SetPercent(o, r);
           e.CreateThenShowByActorAsync(i).catch(() => {});
-          this.lmt.set(s, e);
+          this.lmt.set(n, e);
         }
       } else {
-        r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(s);
+        r = ModelManager_1.ModelManager.FormationAttributeModel.GetMax(n);
         e.SetPercent(o, r);
       }
     }

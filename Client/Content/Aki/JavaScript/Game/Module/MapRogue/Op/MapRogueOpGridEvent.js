@@ -13,7 +13,7 @@ class MapRogueOpGridEvent extends MapRogueOp_1.MapRogueOp {
     super(...arguments);
     this.InEventView = false;
     this.StepSize = 2;
-    this.NX1 = new Set();
+    this.dY1 = new Set();
     this.EventStepUpdateFunc = undefined;
   }
   ToString() {
@@ -70,12 +70,12 @@ class MapRogueOpGridEvent extends MapRogueOp_1.MapRogueOp {
     }
   }
   ExecuteStep(t, e) {
-    if (this.CurrentStepId === t && !this.NX1.has(t)) {
+    if (this.CurrentStepId === t && !this.dY1.has(t)) {
       if (this.Data.qEc.wl1.eo1 === Protocol_1.Aki.Protocol.eo1.Proto_WaitConfirm) {
-        this.NX1.add(t);
+        this.dY1.add(t);
         this.OpExecuteClientId = e;
         this.ExecuteOp(() => {
-          this.NX1.delete(t);
+          this.dY1.delete(t);
         });
       }
     }

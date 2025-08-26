@@ -14,7 +14,7 @@ class GameplayCueFixHook extends GameplayCueBase_1.GameplayCueBase {
     this.VWs = undefined;
     this._1n = () => {
       var t;
-      if (this.VWs) {
+      if (this.IsActive && this.VWs) {
         if (this.$$o) {
           this.$$o.Destroy();
           this.$$o = undefined;
@@ -47,16 +47,16 @@ class GameplayCueFixHook extends GameplayCueBase_1.GameplayCueBase {
     this.VWs = undefined;
   }
   STl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetCurrentTargetLocation().ToUeVector();
+    return this.EntityHandle.Entity.GetComponent(100).GetCurrentTargetLocation().ToUeVector();
   }
   MTl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetCurrentPathwayEndLocation().ToUeVector();
+    return this.EntityHandle.Entity.GetComponent(100).GetCurrentPathwayEndLocation().ToUeVector();
   }
   yTl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetIsInLastPathway();
+    return this.EntityHandle.Entity.GetComponent(100).GetIsInLastPathway();
   }
   ETl() {
-    return this.EntityHandle.Entity.GetComponent(99).GetCurrentTargetEnterPortalCapture();
+    return this.EntityHandle.Entity.GetComponent(100).GetCurrentTargetEnterPortalCapture();
   }
 }
 exports.GameplayCueFixHook = GameplayCueFixHook;

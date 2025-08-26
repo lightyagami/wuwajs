@@ -34,14 +34,14 @@ class MoraleIndomitableLevelView extends UiViewBase_1.UiViewBase {
     }
   }
   OnBeforeShow() {
-    this.Ivu();
+    this.Lyu();
   }
   OnAfterShow() {
     this.Rbt();
   }
   OnBeforeDestroy() {
     this.YN1();
-    this.Tvu();
+    this.wyu();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
@@ -61,8 +61,8 @@ class MoraleIndomitableLevelView extends UiViewBase_1.UiViewBase {
       this.svi();
     }, DELAY_CLOSE_TIME);
   }
-  Ivu() {
-    this.Tvu();
+  Lyu() {
+    this.wyu();
     this.GOe = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       this.GOe = undefined;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim);
@@ -74,7 +74,7 @@ class MoraleIndomitableLevelView extends UiViewBase_1.UiViewBase {
       this.xOi = undefined;
     }
   }
-  Tvu() {
+  wyu() {
     if (this.GOe) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
       this.GOe = undefined;

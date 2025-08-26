@@ -18,37 +18,37 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.tnu = new Map();
-    this.rnu = new Map();
-    this.mmu = new Map();
-    this.uRu = new Map();
-    this.NUu = new Map();
-    this.VUu = new Map();
-    this.IWc = 100000;
+    this.Rnu = new Map();
+    this.wnu = new Map();
+    this.zmu = new Map();
+    this.DRu = new Map();
+    this.vDu = new Map();
+    this.yDu = new Map();
+    this.bKu = 100000;
   }
   SetActivityData(a) {
     this.CNe = a;
   }
-  GetActivityData() {
-    if (this.CNe) {
+  GetActivityData(a = true) {
+    if (this.CNe || !a) {
       return this.CNe;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 58, "FloroRanchActivityData is undefined");
     }
   }
-  onu() {
-    this.tnu.clear();
+  Anu() {
+    this.Rnu.clear();
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchRarityConfigList()) {
       var a = new FloroRanchRarityData_1.FloroRanchRarityData(o);
-      this.tnu.set(o.Id, a);
+      this.Rnu.set(o.Id, a);
     }
   }
   GetFloroRanchRarity(a) {
-    if (this.tnu.size <= 0) {
-      this.onu();
+    if (this.Rnu.size <= 0) {
+      this.Anu();
     }
-    var o = this.tnu.get(a);
+    var o = this.Rnu.get(a);
     if (o !== undefined) {
       return o;
     }
@@ -56,18 +56,18 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
       Log_1.Log.Error("FloroRanch", 58, "Invalid FloroRanchRarity", ["id", a]);
     }
   }
-  snu() {
-    this.rnu.clear();
+  xnu() {
+    this.wnu.clear();
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchTerrainConfigList()) {
       var a = new FloroRanchTerrainData_1.FloroRanchTerrainData(o);
-      this.rnu.set(o.Id, a);
+      this.wnu.set(o.Id, a);
     }
   }
   GetFloroRanchTerrain(a) {
-    if (this.rnu.size <= 0) {
-      this.snu();
+    if (this.wnu.size <= 0) {
+      this.xnu();
     }
-    var o = this.rnu.get(a);
+    var o = this.wnu.get(a);
     if (o !== undefined) {
       return o;
     }
@@ -75,20 +75,20 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
       Log_1.Log.Error("FloroRanch", 58, "Invalid FloroRanchTerrain", ["id", a]);
     }
   }
-  fmu() {
-    this.mmu.clear();
+  Jmu() {
+    this.zmu.clear();
     for (const r of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchAudioConfigList()) {
       var a = new FloroRanchAudioData_1.FloroRanchAudioData(r);
-      var o = this.mmu.get(r.Type) ?? [];
+      var o = this.zmu.get(r.Type) ?? [];
       o.push(a);
-      this.mmu.set(r.Type, o);
+      this.zmu.set(r.Type, o);
     }
   }
   GetFloroRanchRandomAudioDataByType(a) {
-    if (this.mmu.size <= 0) {
-      this.fmu();
+    if (this.zmu.size <= 0) {
+      this.Jmu();
     }
-    var o = this.mmu.get(a);
+    var o = this.zmu.get(a);
     if (o !== undefined) {
       return ObjectUtils_1.ObjectUtils.GetRandomArrayItem(o);
     }
@@ -96,52 +96,52 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
       Log_1.Log.Error("FloroRanch", 58, "Invalid FloroRanchAudioType", ["type", a]);
     }
   }
-  cRu() {
-    this.uRu.clear();
+  BRu() {
+    this.DRu.clear();
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchCardGroupConfigList()) {
       var a = new FloroRanchCardGroupData_1.FloroRanchCardGroupData(o);
-      this.uRu.set(o.Id, a);
+      this.DRu.set(o.Id, a);
     }
   }
   GetFloroRanchCardGroup(a) {
-    if (this.uRu.size <= 0) {
-      this.cRu();
+    if (this.DRu.size <= 0) {
+      this.BRu();
     }
-    var o = this.uRu.get(a);
+    var o = this.DRu.get(a);
     if (o === undefined && Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 58, "Invalid FloroRanchCardGroup", ["id", a]);
     }
     return o;
   }
-  jUu() {
-    this.NUu.clear();
+  SDu() {
+    this.vDu.clear();
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchEventConfigList()) {
       var a = new FloroRanchRandomEventData_1.FloroRanchRandomEventData(o);
-      this.NUu.set(o.Id, a);
+      this.vDu.set(o.Id, a);
     }
   }
   GetFloroRanchRandomEvent(a) {
-    if (this.NUu.size <= 0) {
-      this.jUu();
+    if (this.vDu.size <= 0) {
+      this.SDu();
     }
-    var o = this.NUu.get(a);
+    var o = this.vDu.get(a);
     if (o === undefined && Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 78, "Invalid FloroRanchRandomEvent", ["id", a]);
     }
     return o;
   }
-  HUu() {
-    this.VUu.clear();
+  MDu() {
+    this.yDu.clear();
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchCurrencyConfigList()) {
       var a = new FloroRanchCurrencyConfigData_1.FloroRanchCurrencyConfigData(o);
-      this.VUu.set(o.Id, a);
+      this.yDu.set(o.Id, a);
     }
   }
   GetFloroRanchCurrencyConfig(a) {
-    if (this.VUu.size <= 0) {
-      this.HUu();
+    if (this.yDu.size <= 0) {
+      this.MDu();
     }
-    var o = this.VUu.get(a);
+    var o = this.yDu.get(a);
     if (o === undefined && Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 78, "Invalid FloroRanchCurrency", ["currencyType", a]);
     }
@@ -153,7 +153,7 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
     return a;
   }
   GetCoinText(a) {
-    if (a > this.IWc) {
+    if (a > this.bKu) {
       return a.toExponential(2);
     } else {
       return a.toString();

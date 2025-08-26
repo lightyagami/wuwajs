@@ -51,6 +51,11 @@ class CombatDebugController extends ControllerBase_1.ControllerBase {
     try {
       const preProcess = `
             const ModelManager = require('../Manager/ModelManager')?.ModelManager;
+            const ControllerHolder = require('../Manager/ControllerHolder')?.ControllerHolder;
+            const UiManager = require('../Ui/UiManager')?.UiManager;
+            const LocalStorage = require('../Common/LocalStorage')?.LocalStorage;
+            const ELocalStoragePlayerKey = require('../Common/LocalStorageDefine')?.ELocalStoragePlayerKey;
+            const ELocalStorageGlobalKey = require('../Common/LocalStorageDefine')?.ELocalStorageGlobalKey;
             const EntitySystem = require('../../Core/Entity/EntitySystem')?.EntitySystem;
             const EventSystem = require('../Common/Event/EventSystem')?.EventSystem;
             const EEventName = require('../Common/Event/EventDefine')?.EEventName;
@@ -102,7 +107,7 @@ ${error.stack}`;
   }
   static ir1() {
     var e;
-    if (this.DebugEntityId && (e = EntitySystem_1.EntitySystem.Get(this.DebugEntityId)?.GetComponent(190))) {
+    if (this.DebugEntityId && (e = EntitySystem_1.EntitySystem.Get(this.DebugEntityId)?.GetComponent(191))) {
       e.GetFormationBuffComp()?.Entity.GetComponent(22)?.ServerDebugInfoRequest();
     }
   }

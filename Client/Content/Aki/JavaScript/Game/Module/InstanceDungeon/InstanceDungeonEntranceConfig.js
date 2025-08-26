@@ -16,6 +16,7 @@ const InstanceDungeonEntranceFlowNormal_1 = require("./Define/InstanceDungeonEnt
 const InstanceDungeonEntranceFlowRoguelike_1 = require("./Define/InstanceDungeonEntranceFlowRoguelike");
 const InstanceDungeonEntranceFlowSkipEditFormation_1 = require("./Define/InstanceDungeonEntranceFlowSkipEditFormation");
 const InstanceDungeonEntranceFlowTowerDefence_1 = require("./Define/InstanceDungeonEntranceFlowTowerDefence");
+const InstanceDungeonEntranceFlowTrapDefense_1 = require("./Define/InstanceDungeonEntranceFlowTrapDefense");
 class InstanceDungeonEntranceConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
@@ -43,6 +44,7 @@ class InstanceDungeonEntranceConfig extends ConfigBase_1.ConfigBase {
     this.hhi.set(10, new InstanceDungeonEntranceFlowFarmGold_1.InstanceDungeonEntranceFlowFarmGold());
     this.hhi.set(12, new InstanceDungeonEntranceFlowMowingRisk_1.InstanceDungeonEntranceFlowMowingRisk());
     this.hhi.set(13, new InstanceDungeonEntranceFlowAbyss_1.InstanceDungeonEntranceFlowAbyss());
+    this.hhi.set(15, new InstanceDungeonEntranceFlowTrapDefense_1.InstanceDungeonEntranceFlowTrapDefense());
     return true;
   }
   GetConfig(n) {

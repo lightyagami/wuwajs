@@ -22,7 +22,7 @@ class BulletLogicFreezeController extends BulletLogicController_1.BulletLogicCon
     var r = this.h7o.Tags.GameplayTags.Num();
     if (l || !(r > 0)) {
       for (let t = 0; t < r; ++t) {
-        if (!l.GetComponent(205).HasTag(this.h7o.Tags.GameplayTags.Get(t)?.TagId)) {
+        if (!l.GetComponent(206).HasTag(this.h7o.Tags.GameplayTags.Get(t)?.TagId)) {
           return;
         }
       }

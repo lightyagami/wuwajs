@@ -54,6 +54,7 @@ class SkillButtonUiGamepadData {
     this.Fyo = undefined;
     this.Vyo = undefined;
     this.Hyo = undefined;
+    this.Bfd = undefined;
     this.jyo = false;
     this.IsShowCombineButton = false;
     this.VRn = false;
@@ -130,12 +131,12 @@ class SkillButtonUiGamepadData {
       this.ButtonKeyList[t] = o;
       t++;
     }
-    for (const p of subKeys) {
-      if (p !== this.CombineButtonKey) {
-        if (p === "Gamepad_RightTrigger") {
+    for (const _ of subKeys) {
+      if (_ !== this.CombineButtonKey) {
+        if (_ === "Gamepad_RightTrigger") {
           this.Nyo = t - MAIN_HALF_NUM - DPAD_KEY_NUM;
         }
-        this.ButtonKeyList[t] = p;
+        this.ButtonKeyList[t] = _;
         t++;
       }
     }
@@ -145,21 +146,21 @@ class SkillButtonUiGamepadData {
     this.Vyo = undefined;
     this.Hyo = undefined;
     this.qyo.clear();
-    for (const _ of initActionNames) {
-      var i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(_);
+    for (const f of initActionNames) {
+      var i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(f);
       if (i) {
         var e = [];
         i.GetKeyNameList(e);
         if (e) {
           for (const u of e) {
-            if (this.ButtonKeyList.includes(u) && (this.qyo.set(u, _), u === "Gamepad_RightTrigger")) {
-              this.Oyo = _;
+            if (this.ButtonKeyList.includes(u) && (this.qyo.set(u, f), u === "Gamepad_RightTrigger")) {
+              this.Oyo = f;
               this.Fyo = e.concat();
               this.Fyo.splice(this.Fyo.indexOf(u), 1);
               this.Fyo.push("Gamepad_RightThumbstick");
             }
           }
-          if (_ === InputMappingsDefine_1.actionMappings.攻击) {
+          if (f === InputMappingsDefine_1.actionMappings.攻击) {
             this.Vyo = e.concat();
             this.Hyo = this.Vyo.concat();
             this.Hyo.push("Gamepad_RightTrigger");
@@ -167,17 +168,25 @@ class SkillButtonUiGamepadData {
         }
       }
     }
+    var s;
+    if (this.Oyo === InputMappingsDefine_1.actionMappings.攻击) {
+      s = [];
+      InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.攀爬)?.GetKeyNameList(s);
+      this.Bfd = s;
+    } else {
+      this.Bfd = undefined;
+    }
     this.Gyo.clear();
-    for (const f of initActionNames) {
-      var s = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(f);
-      if (s) {
-        var n;
+    for (const g of initActionNames) {
+      var n = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(g);
+      if (n) {
         var a;
-        var h = new Map();
-        s.GetKeyMap(h);
-        for ([n, a] of h) {
-          if (n === this.CombineButtonKey && this.ButtonKeyList.includes(a)) {
-            this.Gyo.set(a, f);
+        var h;
+        var p = new Map();
+        n.GetKeyMap(p);
+        for ([a, h] of p) {
+          if (a === this.CombineButtonKey && this.ButtonKeyList.includes(h)) {
+            this.Gyo.set(h, g);
           }
         }
       }
@@ -238,8 +247,8 @@ class SkillButtonUiGamepadData {
         }
       }
       if (s) {
-        for (var [h, r] of s) {
-          InputSettingsManager_1.InputSettingsManager.AddCombinationActionKeyMap(InputMappingsDefine_1.actionMappings.手柄主攻击, h, r);
+        for (var [h, p] of s) {
+          InputSettingsManager_1.InputSettingsManager.AddCombinationActionKeyMap(InputMappingsDefine_1.actionMappings.手柄主攻击, h, p);
         }
       }
     }
@@ -418,7 +427,7 @@ class SkillButtonUiGamepadData {
   rIo() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t?.Valid) {
-      var i = t.Entity.CheckGetComponent(205);
+      var i = t.Entity.CheckGetComponent(206);
       this.Climbing = i.HasTag(504239013);
       this.CurStateTagId = 0;
       this.StateButtonTypeList = undefined;
@@ -482,7 +491,7 @@ class SkillButtonUiGamepadData {
     var t;
     var i;
     var e = this.GetBehaviorButtonDataByButtonType(101);
-    return !!e && !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && (t = t.Entity.GetComponent(175).DirectionState, i = e.State, t === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? e.State = 1 : e.State = 0, i !== e.State);
+    return !!e && !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && (t = t.Entity.GetComponent(176).DirectionState, i = e.State, t === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? e.State = 1 : e.State = 0, i !== e.State);
   }
   vEa() {
     var t = ModelManager_1.ModelManager.BattleUiModel.FormationData.GetFollowerAiming();
@@ -510,32 +519,67 @@ class SkillButtonUiGamepadData {
       this.Wyo = !this.Wyo;
       var t = Global_1.Global.CharacterController;
       if (this.Wyo) {
-        if (this.Oyo) {
-          t.SetActionEnable(this.Oyo, false);
-          for (const i of this.Fyo.concat()) {
-            t.SetCustomAction(i, this.Oyo);
+        if (this.Oyo === InputMappingsDefine_1.actionMappings.攻击) {
+          if (this.Hyo) {
+            t.SetActionEnable(InputMappingsDefine_1.actionMappings.攻击, false);
+            for (const i of this.Hyo) {
+              t.SetCustomAction(i, InputMappingsDefine_1.actionMappings.攻击);
+            }
+            t.SetCustomAction("Gamepad_RightThumbstick", InputMappingsDefine_1.actionMappings.攻击);
+            t.SetActionEnable(InputMappingsDefine_1.actionMappings.攀爬, false);
+            if (this.Bfd) {
+              for (const e of this.Bfd) {
+                if (e !== "Gamepad_RightTrigger") {
+                  t.SetCustomAction(e, InputMappingsDefine_1.actionMappings.攀爬);
+                }
+              }
+            }
+            t.SetCustomAction("Gamepad_RightThumbstick", InputMappingsDefine_1.actionMappings.攀爬);
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Battle", 17, "攻击输入没有绑定任何按键，瞄准时使RT键生效");
           }
-        } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Battle", 17, "手柄RT没有绑定任何输入，瞄准时不需要更换原有按键绑定");
-        }
-        if (this.Hyo) {
-          t.SetActionEnable(InputMappingsDefine_1.actionMappings.攻击, false);
-          for (const e of this.Hyo.concat()) {
-            t.SetCustomAction(e, InputMappingsDefine_1.actionMappings.攻击);
+        } else {
+          if (this.Oyo) {
+            t.SetActionEnable(this.Oyo, false);
+            for (const s of this.Fyo) {
+              t.SetCustomAction(s, this.Oyo);
+            }
+          } else if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Battle", 17, "手柄RT没有绑定任何输入，瞄准时不需要更换原有按键绑定");
           }
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Battle", 17, "攻击输入没有绑定任何按键，瞄准时使RT键生效");
+          if (this.Hyo) {
+            t.SetActionEnable(InputMappingsDefine_1.actionMappings.攻击, false);
+            for (const n of this.Hyo) {
+              t.SetCustomAction(n, InputMappingsDefine_1.actionMappings.攻击);
+            }
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Battle", 17, "攻击输入没有绑定任何按键，瞄准时使RT键生效");
+          }
         }
+      } else if (this.Oyo === InputMappingsDefine_1.actionMappings.攻击) {
+        t.SetActionEnable(InputMappingsDefine_1.actionMappings.攀爬, true);
+        t.SetActionEnable(InputMappingsDefine_1.actionMappings.攻击, true);
+        for (const a of this.Hyo) {
+          t.ResetAllCustomAction(a);
+        }
+        if (this.Bfd) {
+          for (const h of this.Bfd) {
+            if (h !== "Gamepad_RightTrigger") {
+              t.ResetAllCustomAction(h);
+            }
+          }
+        }
+        t.ResetAllCustomAction("Gamepad_RightThumbstick");
       } else {
         if (this.Oyo) {
           t.SetActionEnable(this.Oyo, true);
-          for (const s of this.Fyo.concat()) {
-            t.ResetAllCustomAction(s);
+          for (const p of this.Fyo) {
+            t.ResetAllCustomAction(p);
           }
         }
         t.SetActionEnable(InputMappingsDefine_1.actionMappings.攻击, true);
-        for (const n of this.Hyo.concat()) {
-          t.ResetAllCustomAction(n);
+        for (const r of this.Hyo) {
+          t.ResetAllCustomAction(r);
         }
       }
       this.Xyo = false;

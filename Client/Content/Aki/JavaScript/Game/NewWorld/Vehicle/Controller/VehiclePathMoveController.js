@@ -149,10 +149,10 @@ class VehiclePathMoveTask {
     this.VehicleEntity = t;
     this.CurveInfo = e;
     this.StateInfo = i;
-    this.ActorComp = this.VehicleEntity.GetComponent(234);
-    this.PerformComp = this.VehicleEntity.GetComponent(237);
-    this.AnimComp = this.VehicleEntity.GetComponent(235);
-    this.AudioComp = this.VehicleEntity.GetComponent(242);
+    this.ActorComp = this.VehicleEntity.GetComponent(235);
+    this.PerformComp = this.VehicleEntity.GetComponent(238);
+    this.AnimComp = this.VehicleEntity.GetComponent(236);
+    this.AudioComp = this.VehicleEntity.GetComponent(243);
   }
   IsValid() {
     return !!this.CurveInfo?.IsValid() && !!this.VehicleEntity?.Valid;
@@ -218,24 +218,24 @@ class VehiclePathMoveTask {
     }
   }
   CalcOffsetBeforeMove() {
-    var t = this.VehicleEntity?.GetComponent(233);
+    var t = this.VehicleEntity?.GetComponent(234);
     if (t) {
       switch (t.VehicleType) {
         case "Gongduola":
         case "AutoMoveGongduola":
-          this.VehicleEntity.GetComponent(245)?.GetNormalizedBuoyancyBalanceOffset(this.MoveOffset);
+          this.VehicleEntity.GetComponent(246)?.GetNormalizedBuoyancyBalanceOffset(this.MoveOffset);
           this.MoveOffset.X = 0;
           this.MoveOffset.Y = 0;
       }
     }
   }
   AdjustMoveOffsetForGravity(t) {
-    var e = this.VehicleEntity?.GetComponent(233);
+    var e = this.VehicleEntity?.GetComponent(234);
     if (e) {
       switch (e.VehicleType) {
         case "Gongduola":
         case "AutoMoveGongduola":
-          this.VehicleEntity.GetComponent(234)?.ActorGravityDirectProxy.Multiply(-this.MoveOffset.Z, t);
+          this.VehicleEntity.GetComponent(235)?.ActorGravityDirectProxy.Multiply(-this.MoveOffset.Z, t);
       }
     }
   }
@@ -300,20 +300,20 @@ class VehiclePathMoveController extends ControllerBase_1.ControllerBase {
   }
   static RemoveSplineMoveTask(t) {
     var e;
-    if (t.GetComponent(234) && (e = this.SplineMoveTaskMap.get(t)) && (this.SplineMoveTaskMap.delete(t), this.PendingEndTaskSet.delete(e), this.PostRemoveMoveTask(e), e.OnMoveEndHandle)) {
+    if (t.GetComponent(235) && (e = this.SplineMoveTaskMap.get(t)) && (this.SplineMoveTaskMap.delete(t), this.PendingEndTaskSet.delete(e), this.PostRemoveMoveTask(e), e.OnMoveEndHandle)) {
       e.OnMoveEndHandle(e.StateInfo.IsFinish);
     }
   }
   static PreAddMoveTask(t) {
     var e;
     var t = t.VehicleEntity;
-    if (t && !this.VehicleMoveDisableHandleMap.has(t) && (e = t.GetComponent(244).Disable("VehiclePathMoveController.PreAddMoveTask"), this.VehicleMoveDisableHandleMap.set(t, e), e = t.GetComponent(236))) {
+    if (t && !this.VehicleMoveDisableHandleMap.has(t) && (e = t.GetComponent(245).Disable("VehiclePathMoveController.PreAddMoveTask"), this.VehicleMoveDisableHandleMap.set(t, e), e = t.GetComponent(237))) {
       e.IsMovePath = true;
     }
   }
   static PostRemoveMoveTask(t) {
     var e = t.VehicleEntity;
-    if (e && (t.ActorComp.SimulatedVelocity.Reset(), t = this.VehicleMoveDisableHandleMap.get(e), e.GetComponent(244).Enable(t, "VehiclePathMoveController.PostRemoveMoveTask"), this.VehicleMoveDisableHandleMap.delete(e), t = e.GetComponent(236))) {
+    if (e && (t.ActorComp.SimulatedVelocity.Reset(), t = this.VehicleMoveDisableHandleMap.get(e), e.GetComponent(245).Enable(t, "VehiclePathMoveController.PostRemoveMoveTask"), this.VehicleMoveDisableHandleMap.delete(e), t = e.GetComponent(237))) {
       t.IsMovePath = false;
     }
   }
@@ -362,14 +362,14 @@ class VehiclePathMoveController extends ControllerBase_1.ControllerBase {
       }
       s.AnimComp.SetLocationAndRotatorWithKeepingModelBuffer(this.TmpTrans.GetLocation().ToUeVector(), this.TmpTrans.GetRotation().Rotator().ToUeRotator(), h * MathUtils_1.MathUtils.SecondToMillisecond, "SyncEntityPathRatio");
     } else {
-      e = t.GetComponent(234);
+      e = t.GetComponent(235);
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Vehicle", 50, "样条移动同步失败,当前Entity无样条移动任务", ["PbDataId", e?.CreatureData.GetPbDataId()], ["CreatureId", e?.CreatureData.GetCreatureDataId()]);
       }
     }
   }
   static AddLoopTask(t) {
-    var e = t.VehicleEntity?.GetComponent(236);
+    var e = t.VehicleEntity?.GetComponent(237);
     if (t.CurveInfo?.IsCircle) {
       e?.MoveAlongPath({
         SplineId: t.CurveInfo.SplineId
@@ -385,7 +385,7 @@ class VehiclePathMoveController extends ControllerBase_1.ControllerBase {
   }
   static MoveToTaskPositionAdjusted(t, e, i) {
     var s = t.GetComponent(1);
-    var t = t.GetComponent(235);
+    var t = t.GetComponent(236);
     if (s && t) {
       i.Subtraction(e, this.TmpVector1);
       i = GravityUtils_1.GravityUtils.GetZnInGravityForActor(s, this.TmpVector1);
@@ -396,7 +396,7 @@ class VehiclePathMoveController extends ControllerBase_1.ControllerBase {
     }
   }
   static CreateMoveToTask(t, e, i) {
-    var s = t.GetComponent(234);
+    var s = t.GetComponent(235);
     if (s && i) {
       var h;
       var o = Vector_1.Vector.Create();

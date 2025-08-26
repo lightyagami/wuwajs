@@ -22,18 +22,17 @@ class WeeklyRogueScoreItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem]];
     this.BtnBindInfo = [[0, this.rV_]];
   }
   OnBeforeShow() {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData;
     var r = e.GetCycleConfig();
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "PrefabTextItem_1382682910_Text", e.Score.toString(), r.MaxScore);
-    this.GetSprite(1).SetFillAmount(e.Score / r.MaxScore);
-    RedDotController_1.RedDotController.BindRedDot("WeeklyRogueScoreReward", this.GetItem(4));
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "PrefabTextItem_1382682910_Text", e.Score.toString(), r.MaxScore);
+    RedDotController_1.RedDotController.BindRedDot("WeeklyRogueScoreReward", this.GetItem(3));
   }
   OnBeforeHide() {
-    RedDotController_1.RedDotController.UnBindGivenUi("WeeklyRogueScoreReward", this.GetItem(4));
+    RedDotController_1.RedDotController.UnBindGivenUi("WeeklyRogueScoreReward", this.GetItem(3));
   }
 }
 exports.WeeklyRogueScoreItem = WeeklyRogueScoreItem;

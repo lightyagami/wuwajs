@@ -48,7 +48,7 @@ class InstanceDungeonVictoryView extends CommonResultView_1.CommonResultView {
           } else if (ModelManager_1.ModelManager.OnlineModel.GetContinuingChallengeConfirmState(ModelManager_1.ModelManager.PlayerInfoModel.GetId()) !== 2 && e) {
             OnlineController_1.OnlineController.InviteRechallengeRequest();
           } else {
-            OnlineController_1.OnlineController.ApplyRechallengeRequest(Protocol_1.Aki.Protocol.o8s.Rru);
+            OnlineController_1.OnlineController.ApplyRechallengeRequest(Protocol_1.Aki.Protocol.o8s.eou);
           }
         } else {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotInvite");

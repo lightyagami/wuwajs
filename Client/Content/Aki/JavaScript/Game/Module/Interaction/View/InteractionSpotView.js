@@ -23,7 +23,7 @@ class InteractionSpotView extends UiPanelBase_1.UiPanelBase {
     this.Wai = false;
     this.I21 = false;
     this.T21 = false;
-    this.Vdu = false;
+    this.Tmu = false;
     this.Hea = undefined;
     this.MF1 = undefined;
     this.EF1 = false;
@@ -116,7 +116,7 @@ class InteractionSpotView extends UiPanelBase_1.UiPanelBase {
     this.b21();
   }
   SetIsObstruct(t) {
-    this.Vdu = t;
+    this.Tmu = t;
     this.b21();
   }
   SetOffset(t) {
@@ -135,8 +135,8 @@ class InteractionSpotView extends UiPanelBase_1.UiPanelBase {
       this.RF1(t);
       this.MF1 = t;
     }
-    this.p21.SetAlpha(this.Vdu ? 0.3 : 1);
-    this.v21.SetAlpha(this.Vdu ? 0.3 : 1);
+    this.p21.SetAlpha(this.Tmu ? 0.3 : 1);
+    this.v21.SetAlpha(this.Tmu ? 0.3 : 1);
   }
   RF1(t) {
     this.EF1 = false;

@@ -28,14 +28,8 @@ class RogueResSkillDesc extends UiPanelBase_1.UiPanelBase {
   Refresh() {
     var e;
     var i;
-    if (this.Data) {
-      e = RogueResTalentTreeDescById_1.configRogueResTalentTreeDescById.GetConfig(this.Data.Describe);
-      i = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetSkillLevelById(this.Data.Id);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.TalentDesc, e.Args[i - 1]);
-      if (this.Index % 2 == 1) {
-        this.GetSprite(2).useChangeColor = true;
-      }
-      this.SetTextureByPath(e.TalentIcon, this.GetTexture(0));
+    if (this.Data && (e = RogueResTalentTreeDescById_1.configRogueResTalentTreeDescById.GetConfig(this.Data.Describe), i = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetSkillLevelById(this.Data.Id), LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.TalentDesc, e.Args[i - 1]), this.Index % 2 == 1)) {
+      this.GetSprite(2).useChangeColor = true;
     }
   }
 }

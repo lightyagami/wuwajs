@@ -11,9 +11,9 @@ class NavigationFunctionPageButton extends NavigationButton_1.NavigationButton {
       this.PanelHandle.AddNavigationListener(this.Listener);
     }
   }
-  OnCheckFindOpposite(t) {
-    var i = this.Selectable?.GetRootComponent();
-    return !!i?.GetRenderCanvas()?.IsUIVisible(i);
+  OnCheckFindOpposite() {
+    var t = this.Selectable?.GetRootComponent();
+    return !!t?.GetRenderCanvas()?.IsUIVisible(t);
   }
 }
 exports.NavigationFunctionPageButton = NavigationFunctionPageButton;

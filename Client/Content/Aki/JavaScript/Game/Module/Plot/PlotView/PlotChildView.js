@@ -63,9 +63,13 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Info("Plot", 45, "Ui预览图:预加载Ui预览图，但Ui预制体名称为空", ["uiName", i]);
     }
   }
-  async OpenAsync(e, i, t, s = true) {
+  async OpenAsync(e, i, t, s = true, o = false) {
     if (i) {
-      await this.CreateThenShowByResourceIdAsync(i, e, false);
+      if (o) {
+        await this.ShowAsync();
+      } else {
+        await this.CreateThenShowByResourceIdAsync(i, e, false);
+      }
       this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
       this.LevelSequencePlayer?.PlayLevelSequenceByName("Start", false);
       this.LevelSequencePlayer?.PlayLevelSequenceByName("Loop", false);
@@ -74,8 +78,13 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Error("Plot", 45, "Ui预览图:打开Ui预览图，但Ui预制体名称为空", ["uiName", i]);
     }
   }
-  async OpenAsyncInArray(e, i, t) {
+  async OpenAsyncInArray(e, i, t, s = false) {
     if (i) {
+      if (s) {
+        await this.ShowAsync();
+      } else {
+        await this.CreateThenShowByResourceIdAsync(i, e, false);
+      }
       await this.CreateThenShowByResourceIdAsync(i, e, false);
       this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
       this.LevelSequencePlayer?.PlayLevelSequenceByName("Start", false);

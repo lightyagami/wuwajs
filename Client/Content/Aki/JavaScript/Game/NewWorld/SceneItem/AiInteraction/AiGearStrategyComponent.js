@@ -87,7 +87,7 @@ let AiGearStrategyComponent = AiGearStrategyComponent_1 = class AiGearStrategyCo
     }
   }
   x5a(e) {
-    this.A5a = EntitySystem_1.EntitySystem.GetComponent(e.Id, 137);
+    this.A5a = EntitySystem_1.EntitySystem.GetComponent(e.Id, 138);
     if (this.A5a) {
       ResourceSystem_1.ResourceSystem.LoadAsync(this.R5a, UE.BP_AIGearStrategy_C, e => {
         this.A5a?.RegisterAiInfo(e);
@@ -95,7 +95,7 @@ let AiGearStrategyComponent = AiGearStrategyComponent_1 = class AiGearStrategyCo
     }
   }
   uK_(e) {
-    this._K_ = this.Entity.GetComponent(280);
+    this._K_ = this.Entity.GetComponent(283);
     if (this._K_) {
       ResourceSystem_1.ResourceSystem.LoadAsync(this.R5a, UE.BP_AIRaceStrategy_C, e => {
         this._K_?.RegisterAiInfo(e, this.cK_);
@@ -125,5 +125,5 @@ let AiGearStrategyComponent = AiGearStrategyComponent_1 = class AiGearStrategyCo
     }
   }
 };
-AiGearStrategyComponent = AiGearStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(256)], AiGearStrategyComponent);
+AiGearStrategyComponent = AiGearStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(259)], AiGearStrategyComponent);
 exports.AiGearStrategyComponent = AiGearStrategyComponent; //# sourceMappingURL=AiGearStrategyComponent.js.map

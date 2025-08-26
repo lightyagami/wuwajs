@@ -55,7 +55,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Wet = undefined;
     this.Ket = undefined;
     this.ZB1 = undefined;
-    this.Fsu = undefined;
+    this.dau = undefined;
     this.Qet = undefined;
     this.Xet = undefined;
     this.$et = undefined;
@@ -64,7 +64,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.zet = undefined;
     this.pCa = undefined;
     this.bG_ = undefined;
-    this.Xz1 = undefined;
+    this.SJ1 = undefined;
     this.H9a = undefined;
     this.w_c = undefined;
     this.wF1 = undefined;
@@ -153,6 +153,10 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       if (i) {
         this.Xet.SetOtherHide(true);
       }
+      var i = ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower();
+      if (i) {
+        this.Xet.SetOtherHide(true);
+      }
       ModelManager_1.ModelManager.BattleUiModel.EnvironmentKeyData.SetEnvironmentKeyVisible(3, t && !e);
     };
     this.xie = () => {
@@ -180,14 +184,14 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     this.h$1 = t => {
       this.VL1();
-      this.Yz1();
-      this.Fsu?.SetOtherHide(!t);
+      this.MJ1();
+      this.dau?.SetOtherHide(!t);
       ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.SetEnvironmentKeyVisible(9, t);
     };
-    this.x7c = (t, e, i, s) => {
+    this.l2u = (t, e, i, s) => {
       var n;
       if (e.Parameters[0] === "1" && (n = Number(e.Parameters[1]), ModelManager_1.ModelManager.MoraleModel?.GamePlayFinishTeamBuffId === n)) {
-        this.Yz1();
+        this.MJ1();
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Morale", 69, "TopPanel - OnCharOnBuffAddShowMoraleBuffTips", ["cue", e.Parameters], ["isAdd", i]);
@@ -252,7 +256,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.pDn = () => {
       FunctionController_1.FunctionController.OpenFunctionRelateView(10019);
     };
-    this.vDn = () => ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike();
+    this.vDn = () => ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() && !ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue();
     this.Mtt = () => {
       FunctionController_1.FunctionController.OpenFunctionRelateView(10007);
     };
@@ -280,12 +284,12 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.ik1 = t => {
       this.ZB1?.SetOtherHide(!t);
     };
-    this.Nsu = () => {
+    this.mau = () => {
       if (ModelManager_1.ModelManager.MoraleModel?.IsInitData) {
         UiManager_1.UiManager.OpenView("MoraleAreaSumView");
       }
     };
-    this.Vsu = () => !ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive();
+    this.fau = () => !ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive();
     this.Gd_ = t => {
       this.pO_?.SetDriveFishingShipVisible(t);
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData?.SetChildVisible(7, 7, !t);
@@ -306,7 +310,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   async InitializeAsync() {
     this.Het = [];
-    await Promise.all([this.Stt(), this.ytt(), this.Itt(), this.Ttt(), this.Ltt(), this.Dtt(), this.jsu(), this.v2c(), this.Rtt(), this.Utt(), this.Att(), this.Ptt(), this.xtt(), this.wtt(), this.Btt(), this.MDn(), this.u8c(), this.btt(), this.rk1(), this.qtt(), this.Gtt(), this.MCa(), this.LG_(), this.zz1(), this.R_c(), this.xF1(), this.W9a(), this.yml(), this.qMl(), this.vO_(), this.jL1(), this.art()]);
+    await Promise.all([this.Stt(), this.ytt(), this.Itt(), this.Ttt(), this.Ltt(), this.Dtt(), this.gau(), this.v2c(), this.Rtt(), this.Utt(), this.Att(), this.Ptt(), this.xtt(), this.wtt(), this.Btt(), this.MDn(), this.u8c(), this.btt(), this.rk1(), this.qtt(), this.Gtt(), this.MCa(), this.LG_(), this.EJ1(), this.R_c(), this.xF1(), this.W9a(), this.yml(), this.qMl(), this.vO_(), this.jL1(), this.art()]);
     this.Ntt();
   }
   OnSeamlessTravelFinish() {
@@ -323,7 +327,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.Zet.ShowBattleVisibleChildView();
     this.pCa.ShowBattleVisibleChildView();
     this.bG_.ShowBattleVisibleChildView();
-    this.Xz1.ShowBattleVisibleChildView();
+    this.SJ1.ShowBattleVisibleChildView();
     this.H9a.ShowBattleVisibleChildView();
     this.w_c.ShowBattleVisibleChildView();
     this.wF1.ShowBattleVisibleChildView();
@@ -344,7 +348,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.zet.HideBattleVisibleChildView();
     this.pCa.HideBattleVisibleChildView();
     this.bG_.HideBattleVisibleChildView();
-    this.Xz1.HideBattleVisibleChildView();
+    this.SJ1.HideBattleVisibleChildView();
     this.H9a.HideBattleVisibleChildView();
     this.w_c.HideBattleVisibleChildView();
     this.wF1.HideBattleVisibleChildView();
@@ -360,12 +364,13 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
     this.Ott();
     this.ott();
-    this.Npu();
+    this.Gvu();
     this.ktt();
     this.SCa();
     this.wG_();
-    this.Yz1();
+    this.MJ1();
     this.A_c();
+    this.EQu();
     this.PF1();
     this.Q9a();
     this.v7a();
@@ -417,7 +422,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.x7c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.l2u);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityDirectTrainProSetActive, this.ik1);
   }
   RemoveEvents() {
@@ -437,7 +442,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.x7c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.l2u);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityDirectTrainProSetActive, this.ik1);
   }
   ln_() {
@@ -492,7 +497,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.Ket.SetOtherHide(!ModelManager_1.ModelManager.ActivityModel.GetIfShowActivity());
     }
   }
-  Npu() {
+  Gvu() {
     this.ZB1?.SetOtherHide(!ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen || !ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsInValidInstance);
   }
   ktt() {
@@ -506,17 +511,19 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
   }
   wG_() {
-    if (ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower()) {
+    var t = ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower();
+    var e = ModelManager_1.ModelManager.ShipTowerModel.CheckIsScoreBattle();
+    if (t && !e) {
       this.bG_?.StartShow();
     } else {
       this.bG_?.EndShow();
     }
   }
-  Yz1() {
+  MJ1() {
     if (ModelManager_1.ModelManager.MoraleModel.GetBattleIsShowBuff()) {
-      this.Xz1?.StartShow();
+      this.SJ1?.StartShow();
     } else {
-      this.Xz1?.EndShow();
+      this.SJ1?.EndShow();
     }
   }
   A_c() {
@@ -525,6 +532,18 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     } else {
       this.w_c?.EndShow();
     }
+  }
+  EQu() {
+    var t = ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower();
+    var e = ModelManager_1.ModelManager.ShipTowerModel.CheckIsScoreBattle();
+    var i = !t || !e;
+    if (t && !e) {
+      this.Het.forEach(t => {
+        t.SetOtherHide(true);
+      });
+      this.jet.SetOtherHide(false);
+    }
+    this.Vet.SetShipTowerVisible(i);
   }
   PF1() {
     if (ModelManager_1.ModelManager.ResDownLoadModel.NeedShowBattleViewButton()) {
@@ -637,9 +656,9 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var t = this.GetItem(27);
     this.bG_ = await this.NewDynamicChildViewAsync(t.GetOwner(), ShipTowerBuffBattleView_1.ShipTowerBuffBattleView);
   }
-  async zz1() {
+  async EJ1() {
     var t = this.GetItem(33);
-    this.Xz1 = await this.NewDynamicChildViewAsync(t.GetOwner(), MoraleBuffBattleView_1.MoraleBuffBattleView);
+    this.SJ1 = await this.NewDynamicChildViewAsync(t.GetOwner(), MoraleBuffBattleView_1.MoraleBuffBattleView);
   }
   async R_c() {
     var t = this.GetItem(28);
@@ -744,13 +763,13 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     t.SetGetOtherHideCallCall(this.tk1);
     this.ZB1 = t;
   }
-  async jsu() {
+  async gau() {
     var t = this.GetItem(34);
     var t = await this.Vtt(t, "Morale", undefined);
-    t.BindOnClicked(this.Nsu);
-    t.SetGetOtherHideCallCall(this.Vsu);
-    t.SetOtherHide(this.Vsu());
-    this.Fsu = t;
+    t.BindOnClicked(this.mau);
+    t.SetGetOtherHideCallCall(this.fau);
+    t.SetOtherHide(this.fau());
+    this.dau = t;
   }
   async yml() {
     this.Sml = await this.NewStaticChildViewAsync(this.GetItem(23).GetOwner(), TopPanelWavePlateTip_1.TopPanelWavePlateTip);

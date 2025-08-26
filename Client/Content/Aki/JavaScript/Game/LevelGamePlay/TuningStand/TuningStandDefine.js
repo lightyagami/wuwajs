@@ -13,7 +13,7 @@ exports.gridMainTypeMap = new Map([[IAction_1.ETuningStandGridType.Start1, 1], [
 exports.gridSpriteMap = new Map([[IAction_1.ETuningStandGridType.Number1, ["SP_DigitalMazeNum01Nml", "SP_DigitalMazeNum01Red", "SP_DigitalMazeNum01Blue"]], [IAction_1.ETuningStandGridType.Number2, ["SP_DigitalMazeNum02Nml", "SP_DigitalMazeNum02Red", "SP_DigitalMazeNum02Blue"]], [IAction_1.ETuningStandGridType.Number3, ["SP_DigitalMazeNum03Nml", "SP_DigitalMazeNum03Red", "SP_DigitalMazeNum03Blue"]], [IAction_1.ETuningStandGridType.Number4, ["SP_DigitalMazeNum04Nml", "SP_DigitalMazeNum04Red", "SP_DigitalMazeNum04Blue"]], [IAction_1.ETuningStandGridType.End1, ["SP_DigitalMazeNum05Nml", "SP_DigitalMazeNum05Red", "SP_DigitalMazeNum05Blue"]], [IAction_1.ETuningStandGridType.End2, ["SP_DigitalMazeNum05Nml", "SP_DigitalMazeNum05Red", "SP_DigitalMazeNum05Blue"]]]);
 class TuningGridData {
   constructor() {
-    this.Pbu = 0;
+    this.zbu = 0;
     this.IsStatic = true;
     this.GridLoc = [-1, -1];
     this.GridType = IAction_1.ETuningStandGridType.Empty;
@@ -27,12 +27,12 @@ class TuningGridData {
     };
   }
   set Index(t) {
-    this.Pbu = t;
+    this.zbu = t;
     this.GridLoc[0] = Math.floor(this.Index / exports.MAX_LINE);
     this.GridLoc[1] = this.Index % exports.MAX_LINE;
   }
   get Index() {
-    return this.Pbu;
+    return this.zbu;
   }
   GetCurGridState() {
     if (this.IsStatic) {

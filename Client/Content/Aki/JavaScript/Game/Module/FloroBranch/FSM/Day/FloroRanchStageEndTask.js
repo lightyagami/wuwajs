@@ -10,21 +10,22 @@ const FloroRanchDailyTaskBase_1 = require("./FloroRanchDailyTaskBase");
 class FloroRanchStageEndTask extends FloroRanchDailyTaskBase_1.FloroRanchDailyTaskBase {
   constructor(a) {
     super();
-    this.cmu = undefined;
-    this.cmu = a;
+    this.Xmu = undefined;
+    this.Xmu = a;
   }
   OnExecute() {
     UiManager_1.UiManager.OpenView("FloroRanchPhaseSettleView", {
-      StageEndData: this.cmu,
+      StageEndData: this.Xmu,
       CloseCallback: a => {
-        if (a) {
-          if (this.cmu.qhu || this.cmu.rNu) {
-            ModelManager_1.ModelManager.FloroRanchGamePlayModel.ChangeState(4);
-          } else {
-            ModelManager_1.ModelManager.FloroRanchGamePlayModel.ChangeState(3);
+        this.Complete(() => {
+          if (a) {
+            if (this.Xmu.ulu || this.Xmu.$Bu) {
+              ModelManager_1.ModelManager.FloroRanchGamePlayModel.ChangeState(4);
+            } else {
+              ModelManager_1.ModelManager.FloroRanchGamePlayModel.ChangeState(3);
+            }
           }
-        }
-        this.Complete();
+        });
       }
     });
   }

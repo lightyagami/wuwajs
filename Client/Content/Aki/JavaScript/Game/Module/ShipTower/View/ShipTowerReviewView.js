@@ -22,7 +22,7 @@ class ShipTowerReviewView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UILoopScrollViewComponent], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIText]];
     this.BtnBindInfo = [[1, this.CloseMe.bind(this)]];
   }
   Es_() {
@@ -44,6 +44,8 @@ class ShipTowerReviewView extends UiViewBase_1.UiViewBase {
   UpdateData() {
     var e = ModelManager_1.ModelManager.ShipTowerModel.ReviewList;
     this.RD_?.RefreshByData(e);
+    var e = e.some(e => e.IsQuickPass);
+    this.GetText(4)?.SetUIActive(e);
     var e = ModelManager_1.ModelManager.ShipTowerModel.ReviewProgressList;
     var i = ShipTowerDefine_1.shipTowerTextKey.LastReviewProgress;
     var r = this.GetText(3);

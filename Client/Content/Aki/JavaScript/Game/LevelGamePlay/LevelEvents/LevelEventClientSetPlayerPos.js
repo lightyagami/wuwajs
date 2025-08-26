@@ -76,7 +76,7 @@ class LevelEventClientSetPlayerPos extends LevelGeneralBase_1.LevelEventBase {
         this.yJi = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MotionBlur.Amount");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.InvalidSeveralFrameOcculusion 30");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
-        TimerSystem_1.TimerSystem.Delay(() => {
+        TimerSystem_1.GameplayTimerSystem.Delay(() => {
           this._pl(t);
         }, 100);
       }

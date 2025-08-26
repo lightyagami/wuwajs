@@ -15,14 +15,14 @@ const FloroRanchSkillCardItem_1 = require("./Item/FloroRanchSkillCardItem");
 class FloroRanchSkillView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.jEu = 0;
+    this.iIu = 0;
     this.jlo = undefined;
-    this.gke = e => this.jEu !== e;
+    this.gke = e => this.iIu !== e;
     this.GZt = e => {
-      this.jEu = e;
+      this.iIu = e;
       this.jlo.SelectGridProxyByKey(e);
     };
-    this.HEu = () => {
+    this.rIu = () => {
       var e = new FloroRanchSkillCardItem_1.FloroRanchSkillCardItem();
       e.OnCanExecuteChangeFunc = this.gke;
       e.OnToggleCallBack = this.GZt;
@@ -30,11 +30,11 @@ class FloroRanchSkillView extends UiViewBase_1.UiViewBase {
       return e;
     };
     this.tWt = () => {
-      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchSkillId, this.jEu);
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchSkillId, this.iIu);
       ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().SaveSkillRedDot();
       var e = UiManager_1.UiManager.GetViewByName("FloroRanchDungeonSelectView");
       if (e?.IsShowOrShowing) {
-        e.RefreshSkillItem(this.jEu);
+        e.RefreshSkillItem(this.iIu);
       }
       this.CloseMe();
     };
@@ -48,20 +48,22 @@ class FloroRanchSkillView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[2, UE.SpineSkeletonAnimationComponent], [4, UE.UIHorizontalLayout], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[2, UE.SpineSkeletonAnimationComponent], [4, UE.UIHorizontalLayout], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIItem]];
     this.BtnBindInfo = [[6, this.tWt], [7, this.AMo]];
   }
   async OnBeforeStartAsync() {
     this.GetButton(6)?.RootUIComp.SetUIActive(this.OpenParam);
     this.GetSpine(2)?.SetAnimation(0, "idle", true);
-    this.jlo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.HEu);
+    this.jlo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.rIu);
     var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetFloroRanchSkillDataList();
     await this.jlo.RefreshByDataAsync(e, true);
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchSkillId);
     if (e) {
-      this.jEu = e;
+      this.iIu = e;
       this.jlo.SelectGridProxyByKey(e);
     }
+    var e = this.OpenParam;
+    this.GetItem(8)?.SetUIActive(!e);
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (!(e.length <= 0) && e[0] === "SkillCard" && !(e.length < 2) && (e = parseInt(e[1]), e = this.jlo?.GetItemByIndex(e))) {

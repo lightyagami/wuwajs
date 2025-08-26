@@ -24,19 +24,19 @@ class PhantomArenaBattlePanelHandle extends SpecialPanelHandleBase_1.SpecialPane
   OnGetSuitableNavigationListenerList(e) {
     if (this.Proxy) {
       if (this.Proxy.SkillTriggerMask.IsInSkillInteract) {
-        return this.ISu();
+        return this.T7c();
       } else if (this.Proxy.IsInPanelInteract) {
-        return this.$Su();
+        return this.H7c();
       } else if (ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetHandCardIdList().length === 0) {
-        return this.TSu();
+        return this.b7c();
       } else {
-        return this.bSu();
+        return this.R7c();
       }
     } else {
       return [];
     }
   }
-  ISu() {
+  T7c() {
     var e = this.GetNavigationListenerListByTypeList(["PhantomArenaOpponentBattleToggle", "PhantomArenaOwnBattleToggle"], PhantomArenaGamepadDefine_1.GROUP_TARGET);
     if (!e) {
       return [];
@@ -54,17 +54,17 @@ class PhantomArenaBattlePanelHandle extends SpecialPanelHandleBase_1.SpecialPane
     }
     return t;
   }
-  $Su() {
+  H7c() {
     if (this.Proxy && this.Proxy.IsMainInVisible) {
       return this.GetNavigationListenerListByType("PhantomArenaOwnBattleToggle");
     } else {
       return [];
     }
   }
-  TSu() {
+  b7c() {
     return this.GetNavigationListenerListByType("PhantomArenaOwnBattleToggle");
   }
-  bSu() {
+  R7c() {
     return this.GetNavigationListenerListByType("PhantomArenaOwnHandToggle");
   }
   GetNavigationListenerListByType(e, t = PhantomArenaGamepadDefine_1.GROUP_NORMAL) {

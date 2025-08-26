@@ -48,7 +48,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
               i.push(a.EntityId);
               var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId);
               if (a.BeforeHide) {
-                o?.Entity?.GetComponent(205)?.AddTag(447365096);
+                o?.Entity?.GetComponent(206)?.AddTag(447365096);
               }
             }
             this.CreateWaitEntityTask(i);
@@ -95,7 +95,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
         switch (i.SetType) {
           case IAction_1.ESetEntityTagType.Add:
             if (e && e > 0) {
-              this.MRe.push(TimerSystem_1.TimerSystem.Delay(() => {
+              this.MRe.push(TimerSystem_1.GameplayTimerSystem.Delay(() => {
                 this.URe(i.EntityId, o, a);
               }, e * TimeUtil_1.TimeUtil.InverseMillisecond));
             } else {
@@ -104,7 +104,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
             break;
           case IAction_1.ESetEntityTagType.Remove:
             if (e && e > 0) {
-              this.MRe.push(TimerSystem_1.TimerSystem.Delay(() => {
+              this.MRe.push(TimerSystem_1.GameplayTimerSystem.Delay(() => {
                 this.ARe(i.EntityId, o, a);
               }, e * TimeUtil_1.TimeUtil.InverseMillisecond));
             } else {
@@ -123,7 +123,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 33, "LevelEventSetBattleState AddTag", ["EntityId", t], ["TagName", i]);
     }
-    e = e.Entity.GetComponent(205);
+    e = e.Entity.GetComponent(206);
     if (e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 33, "LevelEventSetBattleState AddTagByName", ["EntityId", t], ["TagName", i]);
@@ -141,7 +141,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 33, "LevelEventSetBattleState RemoveTag", ["EntityId", t], ["TagName", i]);
     }
-    e = e.Entity.GetComponent(205);
+    e = e.Entity.GetComponent(206);
     if (e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 33, "LevelEventSetBattleState RemoveTagByName", ["EntityId", t], ["TagName", i]);
@@ -222,7 +222,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
       Log_1.Log.Error("LevelEvent", 31, "[NotifyGatherToEntity] 获取不到BaseCharacter的CharacterActorComponent，无法通知怪物靠近");
     }
     let o = 0;
-    this.IRe = TimerSystem_1.TimerSystem.Loop(() => {
+    this.IRe = TimerSystem_1.GameplayTimerSystem.Loop(() => {
       t.Entities[o++].AiPerceptionEvents.ForceTriggerSceneItemDestroyEvent(t.Target.Owner);
     }, e, t.Entities.length);
   }
@@ -239,7 +239,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
           a.u5n = e.GetCurrentPatrolSplineId();
           a.c5n = e.GetLastPointRawIndex();
           a.m5n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.StandbyTags[i]);
-          Net_1.Net.Call(25867, a, t => {
+          Net_1.Net.Call(18567, a, t => {
             if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("AI", 50, "请求状态机切换生态表演失败", ["CreatureId", a.F4n], ["PbDataId", o.CreatureData.GetPbDataId()], ["SplineId", a.u5n], ["Index", a.c5n], ["Tag", a.m5n]);
             }
@@ -253,12 +253,12 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
   }
   OnReset() {
     for (const t of this.MRe) {
-      if (TimerSystem_1.TimerSystem.Has(t)) {
-        TimerSystem_1.TimerSystem.Remove(t);
+      if (TimerSystem_1.GameplayTimerSystem.Has(t)) {
+        TimerSystem_1.GameplayTimerSystem.Remove(t);
       }
     }
     if (this.IRe !== undefined) {
-      TimerSystem_1.TimerSystem.Remove(this.IRe);
+      TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
     }
     this.MRe.length = 0;
     this.ERe = 0;

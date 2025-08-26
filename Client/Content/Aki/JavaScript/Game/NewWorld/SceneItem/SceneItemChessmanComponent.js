@@ -26,6 +26,8 @@ exports.SceneItemChessmanComponent = undefined;
 const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LevelGeneralContextDefine_1 = require("../../LevelGamePlay/LevelGeneralContextDefine");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const SceneItemMoveComponent_1 = require("./Common/Component/SceneItemMoveComponent");
@@ -39,6 +41,12 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     this.n$t = undefined;
     this.Xte = undefined;
     this.Lo = undefined;
+    this.SJc = undefined;
+    this.Rnn = () => {
+      if (this.SJc) {
+        this.SJc();
+      }
+    };
     this.AGa = undefined;
     this.RGa = () => {
       var e;
@@ -81,16 +89,21 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     return true;
   }
   OnStart() {
-    this.DGa = this.Entity.GetComponent(138);
-    this.o4o = this.Entity.GetComponent(128);
-    this.n$t = this.Entity.GetComponent(202);
-    this.Xte = this.Entity.GetComponent(196);
+    this.DGa = this.Entity.GetComponent(139);
+    this.o4o = this.Entity.GetComponent(129);
+    this.n$t = this.Entity.GetComponent(203);
+    this.Xte = this.Entity.GetComponent(197);
     this.o4o?.AddStopMoveCallback(this.RGa);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     return true;
   }
   OnEnd() {
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     this.o4o?.RemoveStopMoveCallback(this.RGa);
     return true;
+  }
+  RegisterOnSceneInteractionLoadCompleted(e) {
+    return !this.n$t?.GetIsSceneInteractionLoadCompleted() && (this.SJc = e, true);
   }
   UGa() {
     var e;
@@ -149,5 +162,5 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     }
   }
 };
-SceneItemChessmanComponent = SceneItemChessmanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(255)], SceneItemChessmanComponent);
+SceneItemChessmanComponent = SceneItemChessmanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(258)], SceneItemChessmanComponent);
 exports.SceneItemChessmanComponent = SceneItemChessmanComponent; //# sourceMappingURL=SceneItemChessmanComponent.js.map

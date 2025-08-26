@@ -20,12 +20,12 @@ class LuPaAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.m1t = undefined;
     this.bst = undefined;
     this.p2a = 0;
-    this.dSu = undefined;
+    this.m7c = undefined;
     this.xie = () => {
       this.uoi();
     };
-    this.mSu = t => {
-      this.dSu = t;
+    this.f7c = t => {
+      this.m7c = t;
       this.wke();
     };
     this.xp1 = (t, i) => {
@@ -43,11 +43,11 @@ class LuPaAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.xie);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SpecialSkillLuPaSwitchLockTarget, this.mSu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SpecialSkillLuPaSwitchLockTarget, this.f7c);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.xie);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SpecialSkillLuPaSwitchLockTarget, this.mSu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SpecialSkillLuPaSwitchLockTarget, this.f7c);
   }
   Up1() {
     if (this.noi) {
@@ -56,7 +56,7 @@ class LuPaAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   wke() {
     if (this.noi) {
-      if (this.dSu?.Valid) {
+      if (this.m7c?.Valid) {
         this.noi.SetLockState(true);
       } else {
         this.noi.SetLockState(false);
@@ -97,7 +97,7 @@ class LuPaAimHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     }
     this.m1t = undefined;
     this.oXe = false;
-    this.dSu = undefined;
+    this.m7c = undefined;
     this.Up1();
   }
   OnTick(t) {

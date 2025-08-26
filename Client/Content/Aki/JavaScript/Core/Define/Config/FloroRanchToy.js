@@ -28,8 +28,8 @@ class FloroRanchToy {
   get Tag() {
     return this.tag();
   }
-  get EnableNum() {
-    return this.enablenum();
+  get EuicklyEffectTag() {
+    return this.euicklyeffecttag();
   }
   get Price() {
     return this.price();
@@ -121,13 +121,9 @@ class FloroRanchToy {
       return 0;
     }
   }
-  enablenum() {
+  euicklyeffecttag() {
     var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 1;
-    }
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   price() {
     var t = this.J7.__offset(this.z7, 18);

@@ -130,7 +130,7 @@ let CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = class Ch
     };
   }
   static get Dependencies() {
-    return [3, 205, 177];
+    return [3, 206, 178];
   }
   OnInitData() {
     this.Tjr = new PhysicsState();
@@ -143,8 +143,8 @@ let CharacterPhysicsAssetComponent = CharacterPhysicsAssetComponent_1 = class Ch
       this.Ijr = false;
       return !(this.Hte = undefined);
     }
-    this.Lie = this.Entity.GetComponent(205);
-    this.oRe = this.Entity.GetComponent(177);
+    this.Lie = this.Entity.GetComponent(206);
+    this.oRe = this.Entity.GetComponent(178);
     var t = this.Hte.CreatureData.GetRoleConfig().RoleBody;
     var t = ConfigManager_1.ConfigManager.EntityPhysicsAssetConfig.GetPhysicsAssetConfigByRoleBody(t);
     for (const e of CharacterPhysicsAssetComponent_1.Ajr) {

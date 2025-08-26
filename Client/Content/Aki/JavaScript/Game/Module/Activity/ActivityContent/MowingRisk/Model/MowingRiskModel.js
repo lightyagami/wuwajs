@@ -26,22 +26,25 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     this.UVa = undefined;
     this.xVa = undefined;
     this.PVa = undefined;
+    this.Nmd = false;
     this.wVa = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, this.BuildActivityRewardViewData());
     };
+    this.oth = (t, e) => t.BuffType === e.BuffType ? t.Id - e.Id : e.BuffType - t.BuffType;
     this.InstanceSubViewResourceId = "UiItem_CheckpointsMowing";
   }
-  OnInit() {
-    this.UVa = new MowingRiskConfigContext_1.MowingRiskConfigContext();
-    this.UVa.Init();
-    this.xVa = new MowingRiskProtocolContext_1.MowingRiskProtocolContext();
-    this.PVa = new MowingRiskUiContext_1.MowingRiskUiContext(this);
-    return true;
+  InitContext() {
+    if (!this.Nmd) {
+      this.Nmd = true;
+      this.UVa = new MowingRiskConfigContext_1.MowingRiskConfigContext();
+      this.xVa = new MowingRiskProtocolContext_1.MowingRiskProtocolContext();
+      this.PVa = new MowingRiskUiContext_1.MowingRiskUiContext(this);
+    }
   }
   OnClear() {
-    this.UVa.Dispose();
-    this.xVa.Dispose();
-    this.PVa.Dispose();
+    this.UVa?.Dispose();
+    this.xVa?.Dispose();
+    this.PVa?.Dispose();
     return true;
   }
   SyncProtocolRiskHarvestEndNotify(t) {
@@ -67,8 +70,6 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     this.CurrentBuffViewType = 0;
     this.CurrentChosenOverviewBuffId = undefined;
     this.CurrentChosenProgressIndex = undefined;
-    this.PVa.CurrentBasicBuffConfigs.length = 0;
-    this.PVa.CurrentSuperBuffConfigs.length = 0;
   }
   ResetCacheInBattle() {
     this.xVa.ResetCacheInBattle();
@@ -151,27 +152,26 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
       LevelContent: this.wZa(t)
     };
   }
-  BuildSuperBuffUnitDataListById(t) {
-    var e = this.xVa.ArtifactBasicBuffTotalCount;
-    var i = this.UVa;
-    var r = i.GetThresholdDataByArtifactId(t);
-    var s = [];
-    if (r !== undefined) {
-      for (var [n, a] of r.entries()) {
-        var o = i.GetBuffThresholdByArtifactIdAndIndex(t, n);
-        var n = {
-          Index: a.Index,
-          BuffId: a.BuffId,
-          IsChosen: n === this.CurrentChosenProgressIndex,
-          IsActive: o <= e,
-          IconPath: i.GetBuffIconPathById(a.BuffId),
-          NameTextId: i.GetBuffNameTextIdById(a.BuffId),
-          ThresholdCount: o
-        };
-        s.push(n);
-      }
+  BuildSuperBuffUnitDataListById(e) {
+    var i = this.xVa.ArtifactBasicBuffTotalCount;
+    var r = this.UVa;
+    var s = r.GetArtifactConfig(e).BuffGroup;
+    var n = [];
+    for (let t = 0; t < s.length; t++) {
+      var a = s[t];
+      var o = r.GetBuffThresholdByArtifactIdAndIndex(e, t);
+      var a = {
+        Index: t,
+        BuffId: a,
+        IsChosen: t === this.CurrentChosenProgressIndex,
+        IsActive: o <= i,
+        IconPath: r.GetBuffIconPathById(t),
+        NameTextId: r.GetBuffNameTextIdById(a),
+        ThresholdCount: o
+      };
+      n.push(a);
     }
-    return s;
+    return n;
   }
   sbc(t) {
     var e = [];
@@ -184,24 +184,21 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     var t;
     var e;
     var i;
-    var r;
     if (this.CurrentChosenOverviewBuffId !== undefined) {
       t = [];
-      e = (i = this.PVa).CurrentBasicBuffConfigs;
-      i = i.CurrentSuperBuffConfigs;
-      r = this.CurrentBuffViewUsage === 0;
-      if (i.length > 0) {
+      e = this.CurrentBuffViewUsage === 0;
+      if ((i = this.GetSuperBuffConfigsAfterSort()).length > 0) {
         t.push({
           GroupNameTextId: "riskharvest_superbuff",
           BuffItemList: this.sbc(i),
-          ShowUnlockText: r
+          ShowUnlockText: e
         });
       }
-      if (e.length > 0) {
+      if ((i = this.GetBasicBuffConfigsAfterSort()).length > 0) {
         t.push({
           GroupNameTextId: "riskharvest_normalbuff",
-          BuffItemList: this.sbc(e),
-          ShowUnlockText: r
+          BuffItemList: this.sbc(i),
+          ShowUnlockText: e
         });
       }
       return {
@@ -367,14 +364,12 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     var t = this.xVa;
     var e = this.UVa;
     var i = [];
-    var r = e.GetThresholdDataByArtifactId(t.ArtifactId);
-    if (r) {
-      var s;
-      var n = t.ArtifactBasicBuffTotalCount;
-      for (const a of r) {
-        if (n >= a.Threshold && (s = e.GetBuffConfigById(a.BuffId))) {
-          i.push(s);
-        }
+    var r = e.GetArtifactConfig(t.ArtifactId);
+    var s = t.ArtifactBasicBuffTotalCount;
+    for (let t = 0; t < r.BuffGroup.length; t++) {
+      var n = r.BuffGroup[t];
+      if (r.BasicBuffGroup[t] <= s && (n = e.GetBuffConfigById(n))) {
+        i.push(n);
       }
     }
     return i;
@@ -679,7 +674,6 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
   }
   set CurrentBuffViewUsage(t) {
     this.PVa.CurrentBuffViewUsage = t;
-    this.PVa.SyncCurrentShowingBuffConfigs();
   }
   get CurrentBuffViewType() {
     return this.PVa.CurrentBuffViewType;
@@ -687,26 +681,45 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
   set CurrentBuffViewType(t) {
     this.PVa.CurrentBuffViewType = t;
   }
-  get EntireBasicBuffConfig() {
-    return this.UVa.BasicBuffConfigs;
-  }
-  get EntireSuperBuffConfig() {
-    return this.UVa.SuperBuffConfigs;
-  }
   get CurrentChosenOverviewBuffId() {
-    let e = this.PVa.CurrentChosenOverviewBuffId;
-    if (e === undefined) {
-      let t = this.PVa.CurrentSuperBuffConfigs;
-      if (t.length === 0) {
-        t = this.PVa.CurrentBasicBuffConfigs;
-      }
-      e = t.length > 0 ? t[0].Id : undefined;
-      this.PVa.CurrentChosenOverviewBuffId = e;
+    let t = this.PVa.CurrentChosenOverviewBuffId;
+    if (t === undefined) {
+      t = this.GetDefaultChosenOverviewBuffId();
+      this.PVa.CurrentChosenOverviewBuffId = t;
     }
-    return e;
+    return t;
   }
   set CurrentChosenOverviewBuffId(t) {
     this.PVa.CurrentChosenOverviewBuffId = t;
+  }
+  GetDefaultChosenOverviewBuffId() {
+    var t = this.GetBasicBuffConfigListBeforeBattle();
+    if (!t || !(t.length > 0)) {
+      t = this.GetSuperBuffConfigsAfterSort();
+    }
+    return this.Vmd(t);
+  }
+  GetBasicBuffConfigsAfterSort() {
+    var t = this.CurrentBuffViewUsage === 1 ? this.GetBasicBuffConfigListInBattle() : this.GetBasicBuffConfigListBeforeBattle();
+    t.sort(this.oth);
+    return t;
+  }
+  GetSuperBuffConfigsAfterSort() {
+    var t = this.CurrentBuffViewUsage === 1 ? this.GetSuperBuffConfigListInBattle() : this.GetSuperBuffConfigListBeforeBattle();
+    t.sort(this.oth);
+    return t;
+  }
+  Vmd(t) {
+    if (t.length === 0) {
+      return 0;
+    }
+    let e = t[0];
+    for (const i of t) {
+      if (i.BuffType > e.BuffType || i.BuffType === e.BuffType && i.Id < e.Id) {
+        e = i;
+      }
+    }
+    return e.Id;
   }
   get CurrentChosenProgressIndex() {
     let t = this.PVa.CurrentChosenProgressIndex;

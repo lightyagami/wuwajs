@@ -44,26 +44,28 @@ const LockOnDebug_1 = require("../../Component/LockOn/LockOnDebug");
 const SkillBehaviorAction_1 = require("../../Component/Skill/SkillBehavior/SkillBehaviorAction");
 const SkillBehaviorCondition_1 = require("../../Component/Skill/SkillBehavior/SkillBehaviorCondition");
 const SkillBehaviorMisc_1 = require("../../Component/Skill/SkillBehavior/SkillBehaviorMisc");
+const SkillUtils_1 = require("../../Component/Skill/SkillUtils");
+const CampUtils_1 = require("./CampUtils");
 class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static ContainsTag(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 205);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 206);
     return !!t?.Valid && !!e && t.HasTag(e.TagId);
   }
   static AddTag(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 205);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 206);
     if (t?.Valid && e) {
       t.AddTag(e.TagId);
     }
   }
   static AddTagWithDuration(t, e, i) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 174);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 175);
     if (!!t?.Valid && !!i && !(e <= 0)) {
       t.AddTagWithReturnHandle([i.TagId], e);
     }
   }
   static AddTagByName(t, e) {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t, 205);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t, 206);
     if (i?.Valid && (e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)) !== undefined) {
       i.AddTag(e);
       i = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(t);
@@ -72,13 +74,13 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static RemoveTag(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 205);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 206);
     if (t?.Valid && e) {
       t.RemoveTag(e.TagId);
     }
   }
   static RemoveTagByName(t, e) {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t, 205);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t, 206);
     if (i?.Valid && (e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)) !== undefined) {
       i.RemoveTag(e);
       i = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(t);
@@ -105,11 +107,11 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return EntitySystem_1.EntitySystem.GetComponent(t, 3)?.IsAutonomousProxy ?? false;
   }
   static RemoveActiveGameplayEffect(t, e, i = -1) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 174);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 175);
     return !!t?.Valid && t.RemoveBuffByHandle(e.Handle, i) > 0;
   }
   static RemoveBuffByTag(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 174);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 175);
     if (t?.Valid && e) {
       t.RemoveBuffByTag(e.TagId, "蓝图通过Tag移除Buff");
     }
@@ -130,7 +132,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var r;
     var t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(t);
     if (t) {
-      if (r = EntitySystem_1.EntitySystem.GetComponent(e, 174)) {
+      if (r = EntitySystem_1.EntitySystem.GetComponent(e, 175)) {
         r.AddBuffForDebug(Number(i), {
           InstigatorId: t,
           Reason: "AddBuffForDebug"
@@ -173,7 +175,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
           e = (y > 0 ? (y = ModelManager_1.ModelManager.CreatureModel.GetEntity(y)?.Entity?.GetComponent(39), t = y?.GetSkill(Number(a))?.MNc, y?.GetSkill(Number(a))) : (y = TsGameplayBlueprintFunctionLibrary.TryGetSummonedEntitySkill(i, Number(a)), t = y?.MNc, y))?.AbilityClass?.GetName();
         }
         if (r instanceof TsBaseCharacter_1.default) {
-          if (i = r.CharacterActorComponent.Entity.CheckGetComponent(174)) {
+          if (i = r.CharacterActorComponent.Entity.CheckGetComponent(175)) {
             i.AddBuff(Number(n), {
               InstigatorId: o,
               Reason: `技能${a}GA${e}的buff添加`,
@@ -188,13 +190,13 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static RemoveBuffById(t, e, i) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 174);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 175);
     if (t?.Valid) {
       t.RemoveBuff(Number(e), i, "从蓝图移除Buff");
     }
   }
   static GetBuffCountById(t, e, i) {
-    t = EntitySystem_1.EntitySystem.Get(t).GetComponent(209);
+    t = EntitySystem_1.EntitySystem.Get(t).GetComponent(210);
     if (t?.Valid) {
       return t.GetBuffTotalStackById(Number(e), i);
     } else {
@@ -202,7 +204,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static AddGameplayCueLocal(t, e, i) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 209);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 210);
     if (t?.Valid) {
       i = [Number(i)];
       t.AddGameplayCue(i, e, "蓝图AddGameplayCueLocal");
@@ -227,7 +229,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return EntitySystem_1.EntitySystem.GetComponent(t, 75)?.GetShieldValue(e) ?? 0;
   }
   static GetBuffDebugStringsNoBlueprint(t, e = "") {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t, 174);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t, 175);
     var t = EntitySystem_1.EntitySystem.GetComponent(t, 22);
     return (i?.GetDebugBuffString(e) ?? "未找到buff组件") + "\n" + t?.GetShieldDebugString();
   }
@@ -330,7 +332,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       if (!n.has(o?.Id)) {
         if (i = (t = o?.Entity)?.GetComponent(3)?.Actor?.GetName()) {
           e.AddOption(i + "_" + o.Id);
-        } else if ((i = t?.GetComponent(233)) && i.VehicleFeatures.has(2)) {
+        } else if ((i = t?.GetComponent(234)) && i.VehicleFeatures.has(2)) {
           i = t?.GetComponent(1)?.Owner?.GetName();
           e.AddOption(i + "_" + o.Id);
         }
@@ -360,7 +362,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static RefreshBuffListView(t, e, i = "") {
     var r = [...i.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
-    var n = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(209);
+    var n = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(210);
     if (n) {
       var a;
       var s;
@@ -381,7 +383,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
           e.AddItem(a);
         }
       }
-      if ((0, RegisterComponent_1.isComponentInstance)(n, 190) && n.GetFormationBuffComp()) {
+      if ((0, RegisterComponent_1.isComponentInstance)(n, 191) && n.GetFormationBuffComp()) {
         for (const u of n.GetFormationBuffComp().GetAllBuffs()) {
           if (!y.has(u.Handle) && (!(r.length > 0) || !!r.some(t => String(u.Id).startsWith(t)))) {
             s = new UE.Layer(e, t + "," + u.Handle);
@@ -394,9 +396,9 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static GetDebugBuff(t, e) {
-    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(209);
+    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(210);
     var i = t?.GetBuffByHandle(e);
-    return i || (!i && (0, RegisterComponent_1.isComponentInstance)(t, 190) ? t.GetFormationBuffComp().GetBuffByHandle(e) : undefined);
+    return i || (!i && (0, RegisterComponent_1.isComponentInstance)(t, 191) ? t.GetFormationBuffComp().GetBuffByHandle(e) : undefined);
   }
   static GetBuffIdByHandle(t, e) {
     t = TsGameplayBlueprintFunctionLibrary.GetDebugBuff(t, e);
@@ -408,7 +410,7 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetBuffDescByHandle(t, e) {
     t = TsGameplayBlueprintFunctionLibrary.GetDebugBuff(t, e);
     e = t?.Config?.Desc ?? "Invalid";
-    if ((0, RegisterComponent_1.isComponentInstance)(t?.GetOwnerBuffComponent(), 199)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(t?.GetOwnerBuffComponent(), 200)) {
       return `【编队buff】
 ${e}`;
     } else {
@@ -475,7 +477,7 @@ ${e}`;
 `;
     });
     for (const s of i.BuffEffectManager?.GetEffectsByHandle(a.Handle) ?? []) {
-      n += `持续效果 ${""}(cd:${(i.GetBuffEffectCd(s.BuffId, s.Index) / CommonDefine_1.MILLIONSECOND_PER_SECOND).toFixed(1)}s)
+      n += `持续效果 (cd:${(i.GetBuffEffectCd(s.BuffId, s.Index) / CommonDefine_1.MILLIONSECOND_PER_SECOND).toFixed(1)}s)
 `;
     }
     for (const o of a.Config.EffectInfos) {
@@ -535,10 +537,10 @@ ${e}`;
     EntitySystem_1.EntitySystem.GetComponent(t, 22)?.DebugResetBaseValue(e, i);
   }
   static GetAttributeCurrentValue(t, e) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 173)?.GetCurrentValue(e);
+    return EntitySystem_1.EntitySystem.GetComponent(t, 174)?.GetCurrentValue(e);
   }
   static GetAttributeBaseValue(t, e) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 173)?.GetBaseValue(e);
+    return EntitySystem_1.EntitySystem.GetComponent(t, 174)?.GetBaseValue(e);
   }
   static SetRageModeId(t, e) {
     EntitySystem_1.EntitySystem.GetComponent(t, 61)?.SetRageModeId(e);
@@ -746,7 +748,7 @@ ${e}`;
     }
   }
   static SetQtePosition(t, e, i, r, n, a, s, o = 0) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 98)?.SetQtePosition({
+    EntitySystem_1.EntitySystem.GetComponent(t, 99)?.SetQtePosition({
       Rotate: e,
       Length: i,
       Height: r,
@@ -755,7 +757,7 @@ ${e}`;
     });
   }
   static GetGoBattleActor(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 98)?.GoBattleActor;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 99)?.GoBattleActor;
   }
   static GetDtSkillInfo(t) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 39);
@@ -1138,29 +1140,41 @@ ${e}`;
     }
   }
   static BeginAddMoveByInputDirect(t, e, i, r, n) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 252)?.SpecialSkill;
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 255)?.SpecialSkill;
     if (t) {
       t.BeginAddMoveByInputDirect?.(e, i, r, n);
     }
   }
+  static BeginAbsoluteTimeStop(t, e, i = true) {
+    SkillUtils_1.SkillUtils.BeginAbsoluteTimeStop(t, e, i);
+  }
+  static EndAbsoluteTimeStop(t) {
+    SkillUtils_1.SkillUtils.EndAbsoluteTimeStop(t);
+  }
+  static BeginTimeStopRequest(t, e) {
+    SkillUtils_1.SkillUtils.BeginTimeStopRequest(t, e);
+  }
+  static EndTimeStopRequest(t) {
+    SkillUtils_1.SkillUtils.EndTimeStopRequest(t);
+  }
   static EndAddMoveByInputDirect(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 252)?.SpecialSkill;
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 255)?.SpecialSkill;
     if (t) {
       t.EndAddMoveByInputDirect?.();
     }
   }
   static CanActivateFixHook(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && t.CanActivateFixHook();
   }
   static FixHookTargetLocation(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return t.GetCurrentTargetLocation().ToUeVector();
     }
   }
   static FixHookTargetPathways(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       t = t.GetCurrentPathways();
       if (t) {
@@ -1174,23 +1188,23 @@ ${e}`;
     }
   }
   static FixHookTargetEnterPortalCapture(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return t.GetCurrentTargetEnterPortalCapture();
     }
   }
   static FixHookTargetActor(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return t.GetCurrentTargetActor();
     }
   }
   static FixHookTargetIsSuiGuangType(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && t.GetTargetIsSuiGuangType();
   }
   static GetHookTargetType(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return t.GetTargetType();
     } else {
@@ -1198,45 +1212,45 @@ ${e}`;
     }
   }
   static FixHookTargetForward(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return t.GetCurrentTargetForward();
     }
   }
   static NextFixHookTargetLocation(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return t.GetNextTargetLocation();
     }
   }
   static FixHookTargetInheritSpeed(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && t.GetInheritSpeed();
   }
   static FixHookTargetIsClimb(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && t.GetIsClimb();
   }
   static SetIsHookEndByInterrupt(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       t.SetIsHookEndByInterrupt(e);
     }
   }
   static FixHookIsSummitPoint(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && (t.GetCurrentTarget()?.IsSummitPoint ?? false);
   }
   static FixHookIsNormalPoint(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && (t.GetCurrentTarget()?.IsNormalHookPoint ?? false);
   }
   static SlashHookPointHasLookAtConfig(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && t.GetCurrentTarget()?.GetSlashHookCharacterLookAtPoint() !== undefined;
   }
   static SlashHookPointCharacterLookAtPoint(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     if (t?.Valid) {
       return (t.GetCurrentTarget()?.GetSlashHookCharacterLookAtPoint() ?? Vector_1.Vector.ZeroVectorProxy).ToUeVector();
     } else {
@@ -1244,14 +1258,14 @@ ${e}`;
     }
   }
   static SlashHookPointIsTakeOverCamera(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t?.Valid && (t.GetCurrentTarget()?.GetLevelPlayTakeOverCamera() ?? false);
   }
   static SlashHookPointSafePointLoc(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 99)?.GetCurrentTarget()?.GetSafePointLocation().ToUeVector() ?? Vector_1.Vector.ZeroVectorDouble;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 100)?.GetCurrentTarget()?.GetSafePointLocation().ToUeVector() ?? Vector_1.Vector.ZeroVectorDouble;
   }
   static SlashHookPointSafePointRot(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 99)?.GetCurrentTarget()?.GetSafePointRotation().ToUeRotator() ?? Rotator_1.Rotator.ZeroRotator;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 100)?.GetCurrentTarget()?.GetSafePointRotation().ToUeRotator() ?? Rotator_1.Rotator.ZeroRotator;
   }
   static StartChargeSlash(t) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 85);
@@ -1301,62 +1315,62 @@ ${e}`;
     }
   }
   static GetCharUnifiedMoveState(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 101)?.MoveState;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 102)?.MoveState;
   }
   static GetCharUnifiedPositionState(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 101)?.PositionState;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 102)?.PositionState;
   }
   static ExitHitState(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.ExitHitState();
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.ExitHitState();
   }
   static SetDirectionState(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 101)?.SetDirectionState(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 102)?.SetDirectionState(e);
   }
   static GetDirectionState(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 101)?.DirectionState;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 102)?.DirectionState;
   }
   static GetIsInGame(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 101)?.IsInGame ?? false;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 102)?.IsInGame ?? false;
   }
   static SprintPress(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.SprintPress();
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.SprintPress();
   }
   static SprintRelease(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.SprintRelease();
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.SprintRelease();
   }
   static StandPress(t) {
-    var e = EntitySystem_1.EntitySystem.GetComponent(t, 101);
+    var e = EntitySystem_1.EntitySystem.GetComponent(t, 102);
     if (e && e.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && EntitySystem_1.EntitySystem.GetComponent(t, 3)?.CreatureData.IsRole()) {
       e.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Stand);
     }
   }
   static SwingPress(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.SwingPress();
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.SwingPress();
   }
   static SwingRelease(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.SwingRelease();
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.SwingRelease();
   }
   static CustomSetWalkOrRun(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.CustomSetWalkOrRun(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.CustomSetWalkOrRun(e);
   }
   static EnterAimStatus(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.EnterAimStatus(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.EnterAimStatus(e);
   }
   static ExitAimStatus(t) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 175)?.ExitAimStatus();
+    EntitySystem_1.EntitySystem.GetComponent(t, 176)?.ExitAimStatus();
   }
   static EnableEntity(t, e) {}
   static UpdateAnimInfoHit(t, e) {
     var i;
     var r;
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 177);
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 178);
     if (n?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 61)) && (e = e, n = n.AnimLogicParamsSetter, i = t.GetAcceptedNewBeHitAndReset(), n.AcceptedNewBeHit !== i && (n.AcceptedNewBeHit = i, e.AcceptedNewBeHitRef = i), r = t.BeHitAnim, n.BeHitAnim !== r && (n.BeHitAnim = r, e.BeHitAnimRef = r), i = t.GetEnterFkAndReset(), n.EnterFk !== i && (n.EnterFk = i, e.EnterFkRef = i), i = t.GetDoubleHitInAir(), n.DoubleHitInAir !== i)) {
       n.DoubleHitInAir = i;
       e.DoubleHitInAirRef = i;
     }
   }
   static UpdateAnimInfoFk(e, i) {
-    var r = EntitySystem_1.EntitySystem.GetComponent(e, 177);
+    var r = EntitySystem_1.EntitySystem.GetComponent(e, 178);
     if (r?.Valid) {
       e = EntitySystem_1.EntitySystem.GetComponent(e, 61);
       if (e) {
@@ -1376,15 +1390,15 @@ ${e}`;
   }
   static UpdateAnimInfoUnifiedState(t, e) {
     var i;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 177);
-    if (r?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 101)) && (e = e, r = r.AnimLogicParamsSetter, i = t.MoveState, r.CharMoveState !== i && (r.CharMoveState = i, e.CharMoveStateRef = i), i = t.PositionState, r.CharPositionState !== i && (r.CharPositionState = i, e.CharPositionStateRef = i), i = t.DirectionState, r.CharCameraState !== i)) {
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
+    if (r?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 102)) && (e = e, r = r.AnimLogicParamsSetter, i = t.MoveState, r.CharMoveState !== i && (r.CharMoveState = i, e.CharMoveStateRef = i), i = t.PositionState, r.CharPositionState !== i && (r.CharPositionState = i, e.CharPositionStateRef = i), i = t.DirectionState, r.CharCameraState !== i)) {
       r.CharCameraState = i;
       e.CharCameraStateRef = i;
     }
   }
   static UpdateAnimInfoUnifiedStateRoleNpc(t, e) {
-    var i = EntitySystem_1.EntitySystem.GetComponent(t, 177);
-    if (i?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 101)) && (e = e, i = i.AnimLogicParamsSetter, t = t.MoveState, i.CharMoveState !== t)) {
+    var i = EntitySystem_1.EntitySystem.GetComponent(t, 178);
+    if (i?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 102)) && (e = e, i = i.AnimLogicParamsSetter, t = t.MoveState, i.CharMoveState !== t)) {
       i.CharMoveState = t;
       e.CharMoveStateRef = t;
     }
@@ -1398,7 +1412,7 @@ ${e}`;
     return !!t?.Valid && t.IsUseCatapultUpAnim;
   }
   static GetNextMultiSkillId(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 207);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 208);
     if (t?.Valid) {
       return t.GetNextMultiSkillId(e);
     } else {
@@ -1406,7 +1420,7 @@ ${e}`;
     }
   }
   static GetNextMultiSkillIdNew(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 207);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 208);
     if (t?.Valid) {
       return t.GetNextMultiSkillId(e);
     } else {
@@ -1418,11 +1432,11 @@ ${e}`;
     return !t || t.CheckCurrentTargetCanInteract();
   }
   static GetHookInteractTargetCanInteract(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !t || t.CheckNextTargetCanInteract();
   }
   static GetHookInteractTargetIsIgnorePlayerCollision(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!t && t.GetNextTargetIsIgnorePlayerCollision();
   }
   static StartManipulateInteract(t) {
@@ -1475,7 +1489,7 @@ ${e}`;
     }
   }
   static IsSkillInCd(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 207);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 208);
     return !!t?.Valid && t.IsSkillInCd(e);
   }
   static SendHookSkillUseLogData(t, e) {
@@ -1513,7 +1527,7 @@ ${e}`;
   }
   static DynamicAttachEntityToActor(e, i, r) {
     var n = EntitySystem_1.EntitySystem.Get(e);
-    var e = EntitySystem_1.EntitySystem.GetComponent(e, 125);
+    var e = EntitySystem_1.EntitySystem.GetComponent(e, 126);
     if (n && e) {
       let t = new UE.TransformDouble();
       var a;
@@ -1560,7 +1574,7 @@ ${e}`;
     return t;
   }
   static StartInhalation(t, e, i, r, n, a) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 263);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 266);
     if (t?.Valid) {
       var s = [];
       var o = (0, puerts_1.$unref)(a);
@@ -1571,7 +1585,7 @@ ${e}`;
     }
   }
   static StopInhalation(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 263);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 266);
     if (t?.Valid) {
       t.StopInhalation();
     }
@@ -1636,7 +1650,7 @@ ${e}`;
       ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(e, t);
       if (t.length !== 0) {
         if (t[0]?.Entity?.GetComponent(0)?.IsVehicle()) {
-          const i = t[0]?.Entity?.GetComponent(234)?.DebugMovementComp;
+          const i = t[0]?.Entity?.GetComponent(235)?.DebugMovementComp;
           i?.SetDebug(true);
           return i?.UeDebugComp;
         }
@@ -1677,7 +1691,7 @@ ${e}`;
   static GetEntityDeltaMillisecond(t) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t) {
-      return Time_1.Time.DeltaTime * t.TimeDilation * (t.GetComponent(122)?.CurrentTimeScale ?? 1);
+      return Time_1.Time.DeltaTime * t.TimeDilation * (t.GetComponent(123)?.CurrentTimeScale ?? 1);
     } else {
       return 1;
     }
@@ -1696,7 +1710,7 @@ ${e}`;
     }
   }
   static FishingBoatSprint(t, e, i, r) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 274);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 277);
     if (t?.Valid) {
       t.FishingBoatEnterSprint(e, i, r);
     }
@@ -1705,10 +1719,10 @@ ${e}`;
     ControllerHolder_1.ControllerHolder.FishingController.BeginFishingSkill(t);
   }
   static GetCharacterMorphType(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 279)?.GetMorphType() ?? 0;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 282)?.GetMorphType() ?? 0;
   }
   static SetCharacterMorphType(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 279)?.SetMorphType(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 282)?.SetMorphType(e);
   }
   static SetSpecialEnergyAttrValue(t, e, i) {
     AbilityUtils_1.AbilityUtils.SetSpecialEnergyAttrValue(t, e, i);
@@ -1739,6 +1753,16 @@ ${e}`;
   }
   static GetCurrentPlayer() {
     return Global_1.Global.BaseCharacter;
+  }
+  static IsEnemy(t, e) {
+    var e = e.GetEntityNoBlueprint();
+    return t instanceof TsBaseCharacter_1.default && !e?.GetComponent(206)?.HasTag(-149285150) && !!(t = t.GetEntityNoBlueprint()?.GetComponent(0)) && !!(e = e?.GetComponent(0)) && (t = t.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Player ? t.GetEntityCamp() : 0, e = e.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Player ? e.GetEntityCamp() : 0, CampUtils_1.CampUtils.GetCampRelationship(t, e) * 2 == 4);
+  }
+  static SetWalkOffLedge(t, e) {
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 45);
+    if (t?.Valid) {
+      t.SetWalkOffLedgeRecord(e);
+    }
   }
 }
 exports.default = TsGameplayBlueprintFunctionLibrary;

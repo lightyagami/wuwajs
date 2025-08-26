@@ -124,8 +124,8 @@ class EffectHandle {
     this.pge = undefined;
     this.Zga = undefined;
     this.Wk_ = false;
-    this.cvu = new Set();
-    this.dvu = 0;
+    this._yu = new Set();
+    this.uyu = 0;
     this.Rgl = t => {
       let i = true;
       if (i = this.tge instanceof EffectModelGroupSpec_1.EffectModelGroupSpec ? this.tge.TickDelayPlay(t) : i) {
@@ -429,8 +429,8 @@ class EffectHandle {
     this.tOn = false;
     this.Wk_ = false;
     this.vF_ = false;
-    this.dvu = 0;
-    this.cvu.clear();
+    this.uyu = 0;
+    this._yu.clear();
   }
   AfterLeavePool() {
     this.Ipa = false;
@@ -1098,35 +1098,35 @@ class EffectHandle {
         t = i.GetHandle();
       }
       if (EffectSystem_1.EffectSystem.RegisterSyncTimeScaleHandle(t, this.Id)) {
-        this.dvu = t;
+        this.uyu = t;
       }
     }
   }
   OnTimeScaleChange(t, i) {
-    for (const e of this.cvu) {
+    for (const e of this._yu) {
       EffectSystem_1.EffectSystem.SetTimeScale(e, t, i);
     }
   }
   RegisterSyncTimeScaleHandle(t) {
-    return !this.cvu.has(t) && (this.cvu.add(t), true);
+    return !this._yu.has(t) && (this._yu.add(t), true);
   }
   UnregisterSyncTimeScaleHandle(t) {
-    return !!this.cvu.has(t) && (this.cvu.delete(t), true);
+    return !!this._yu.has(t) && (this._yu.delete(t), true);
   }
   ClearOwnerEffectHandle(t = false) {
-    if (this.dvu !== 0) {
+    if (this.uyu !== 0) {
       if (!t) {
-        EffectSystem_1.EffectSystem.UnregisterSyncTimeScaleHandle(this.dvu, this.Id);
+        EffectSystem_1.EffectSystem.UnregisterSyncTimeScaleHandle(this.uyu, this.Id);
       }
-      this.dvu = 0;
+      this.uyu = 0;
     }
   }
   ClearOwnedEffectHandles() {
-    if (!(this.cvu.size < 1)) {
-      for (const t of this.cvu) {
+    if (!(this._yu.size < 1)) {
+      for (const t of this._yu) {
         EffectSystem_1.EffectSystem.ClearOwnerEffectHandle(t, true);
       }
-      this.cvu.clear();
+      this._yu.clear();
     }
   }
   GetDebugErrorCode() {

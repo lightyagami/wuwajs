@@ -31,28 +31,35 @@ class UiViewFloatContainer extends UiViewContainer_1.UiViewContainer {
     }
   }
   async CloseViewAsync(e) {
-    var i = e.Info.Name;
-    var t = ConfigManager_1.ConfigManager.UiViewConfig.GetUiFloatConfig(i);
-    var r = StringUtils_1.StringUtils.IsEmpty(t.Area) ? i : t.Area;
-    var o = e.GetViewId();
-    if (!(await this.Tcr(r, t.OnlyShowInMain, i, o)) && !this.Lcr(r, i, o)) {
-      if (this.Ecr.get(r)?.Delete(i, o)) {
-        e.ClosePromise?.SetResult(undefined);
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("UiFloatContainer", 10, "界面关闭成功,队列中关闭", ["区域", r], ["当前界面", i]);
+    var i;
+    var t = e.Info.Name;
+    var o = ConfigManager_1.ConfigManager.UiViewConfig.GetUiFloatConfig(t);
+    var r = StringUtils_1.StringUtils.IsEmpty(o.Area) ? t : o.Area;
+    if (e.IsDestroyByClear) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiFloatContainer", 10, "界面无需再次关闭,界面被ClearAsync销毁", ["区域", r], ["当前界面", t]);
+      }
+    } else {
+      i = e.GetViewId();
+      if (!(await this.Tcr(r, o.OnlyShowInMain, t, i)) && !this.Lcr(r, t, i)) {
+        if (this.Ecr.get(r)?.Delete(t, i)) {
+          e.ClosePromise?.SetResult(undefined);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("UiFloatContainer", 10, "界面关闭成功,队列中关闭", ["区域", r], ["当前界面", t]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("UiFloatContainer", 10, "界面关闭失败", ["区域", r], ["当前界面", t]);
         }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("UiFloatContainer", 10, "界面关闭失败", ["区域", r], ["当前界面", i]);
       }
     }
   }
-  async Tcr(e, i, t, r) {
-    var o = this.Scr.get(e);
-    return !!o && !!this.Dcr(o, t, r) && ((await this.$Oe(e, o)) && (this.Rcr(i) ? this.ycr.get(e)?.GetViewId() === r ? this.ycr.delete(e) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("UiFloatContainer", 10, "[HideViewMap.delete]可能存在同个界面执行多次关闭,业务需要关注", ["区域", e], ["界面", t]) : this.Scr.get(e)?.GetViewId() === r ? this.Ucr(e) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("UiFloatContainer", 10, "[HandleNextViewFromQueue]可能存在同个界面执行多次关闭,业务需要关注", ["区域", e], ["界面", t])), true);
+  async Tcr(e, i, t, o) {
+    var r = this.Scr.get(e);
+    return !!r && !!this.Dcr(r, t, o) && ((await this.$Oe(e, r)) && (this.Rcr(i) ? this.ycr.get(e)?.GetViewId() === o ? this.ycr.delete(e) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("UiFloatContainer", 10, "[HideViewMap.delete]可能存在同个界面执行多次关闭,业务需要关注", ["区域", e], ["界面", t]) : this.Scr.get(e)?.GetViewId() === o ? this.Ucr(e) : Log_1.Log.CheckWarn() && Log_1.Log.Warn("UiFloatContainer", 10, "[HandleNextViewFromQueue]可能存在同个界面执行多次关闭,业务需要关注", ["区域", e], ["界面", t])), true);
   }
   Lcr(e, i, t) {
-    var r = this.ycr.get(e);
-    return !!r && !!this.Dcr(r, i, t) && (r.Destroy(), this.ycr.delete(e), Log_1.Log.CheckInfo() && Log_1.Log.Info("UiFloatContainer", 10, "界面关闭成功,隐藏中关闭", ["区域", e], ["当前界面", i]), true);
+    var o = this.ycr.get(e);
+    return !!o && !!this.Dcr(o, i, t) && (o.Destroy(), this.ycr.delete(e), Log_1.Log.CheckInfo() && Log_1.Log.Info("UiFloatContainer", 10, "界面关闭成功,隐藏中关闭", ["区域", e], ["当前界面", i]), true);
   }
   Dcr(e, i, t) {
     return e.Info.Name === i && (!t || e.GetViewId() === t) || (Log_1.Log.CheckError() && Log_1.Log.Error("UiFloatContainer", 10, "界面检查失败", ["view.Info.Name", e.Info.Name], ["name", i], ["view.GetViewId()", e.GetViewId()], ["viewId", t]), false);
@@ -91,23 +98,23 @@ class UiViewFloatContainer extends UiViewContainer_1.UiViewContainer {
     this.Scr.delete(e);
   }
   Icr(i, t) {
-    var r = StringUtils_1.StringUtils.IsEmpty(i.Area) ? t.Info.Name : i.Area;
-    if (this.Scr.has(r) || this.Rcr(i.OnlyShowInMain) || this.Acr(i)) {
-      let e = this.Ecr.get(r);
+    var o = StringUtils_1.StringUtils.IsEmpty(i.Area) ? t.Info.Name : i.Area;
+    if (this.Scr.has(o) || this.Rcr(i.OnlyShowInMain) || this.Acr(i)) {
+      let e = this.Ecr.get(o);
       if (!e) {
         e = new FloatQueue_1.FloatViewQueue();
-        this.Ecr.set(r, e);
+        this.Ecr.set(o, e);
       }
       e.Push(t, i.Priority, i.OnlyShowInMain);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("UiFloatContainer", 10, "界面添加到区域队列中", ["区域", r], ["界面", t.Info.Name]);
+        Log_1.Log.Info("UiFloatContainer", 10, "界面添加到区域队列中", ["区域", o], ["界面", t.Info.Name]);
       }
       return true;
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("UiFloatContainer", 10, "界面直接在区域中显示", ["区域", r], ["界面", t.Info.Name]);
+      Log_1.Log.Info("UiFloatContainer", 10, "界面直接在区域中显示", ["区域", o], ["界面", t.Info.Name]);
     }
-    this.Scr.set(r, t);
+    this.Scr.set(o, t);
     return false;
   }
   ClearContainer() {
@@ -117,27 +124,27 @@ class UiViewFloatContainer extends UiViewContainer_1.UiViewContainer {
     var e;
     var i;
     var t;
-    var r;
-    var o = [];
+    var o;
+    var r = [];
     for ([e, i] of this.Scr) {
       i.IsExistInLeaveLevel = true;
       if (!i.Info.IsPermanent) {
         this.TryCatchViewDestroyCompatible(i);
-        o.push(e);
+        r.push(e);
       }
     }
-    for (const n of o) {
+    for (const n of r) {
       this.Scr.delete(n);
     }
-    o.length = 0;
-    for ([t, r] of this.ycr) {
-      r.IsExistInLeaveLevel = true;
-      if (!r.Info.IsPermanent) {
-        this.TryCatchViewDestroyCompatible(r);
-        o.push(t);
+    r.length = 0;
+    for ([t, o] of this.ycr) {
+      o.IsExistInLeaveLevel = true;
+      if (!o.Info.IsPermanent) {
+        this.TryCatchViewDestroyCompatible(o);
+        r.push(t);
       }
     }
-    for (const s of o) {
+    for (const s of r) {
       this.ycr.delete(s);
     }
   }

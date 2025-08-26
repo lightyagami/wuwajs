@@ -18,42 +18,45 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Data = undefined;
     this.aho = undefined;
     this.$pt = undefined;
-    this._lu = 0;
+    this.Olu = 0;
     this.UYi = TickSystem_1.TickSystem.InvalidId;
     this.CanToggleChange = undefined;
     this.LongPressCallback = undefined;
     this.ShortClickCallback = undefined;
     this.OnToggleStateChange = undefined;
     this.CanToggleExecuteChangeInternal = () => !this.CanToggleChange || this.CanToggleChange(this);
-    this.ulu = () => {
+    this.qlu = () => {
       if (this.UYi !== TickSystem_1.TickSystem.InvalidId) {
         TickSystem_1.TickSystem.Remove(this.UYi);
         this.UYi = TickSystem_1.TickSystem.InvalidId;
       }
-      this._lu = 0;
-      this.UYi = TickSystem_1.TickSystem.Add(this.clu, "DeckBuilderCardSlotItem", undefined, true, undefined, true)?.Id ?? TickSystem_1.TickSystem.InvalidId;
+      this.Olu = 0;
+      this.UYi = TickSystem_1.TickSystem.Add(this.Glu, "DeckBuilderCardSlotItem", undefined, true, undefined, true)?.Id ?? TickSystem_1.TickSystem.InvalidId;
     };
-    this.dlu = (t, i) => {
+    this.Flu = (t, i) => {
       i = i?.dragComponent;
       if (!i || !i.IsValid()) {
-        TickSystem_1.TickSystem.Remove(this.UYi);
+        if (this.UYi !== TickSystem_1.TickSystem.InvalidId) {
+          TickSystem_1.TickSystem.Remove(this.UYi);
+          this.UYi = TickSystem_1.TickSystem.InvalidId;
+        }
         this.UYi = TickSystem_1.TickSystem.InvalidId;
         this.ShortClickCallback?.(this);
-        this._lu = 0;
+        this.Olu = 0;
       }
     };
-    this.LX1 = t => {
+    this.eY1 = t => {
       this.OnToggleStateChange?.(this, t);
     };
-    this.clu = t => {
-      this._lu += t;
-      if (this._lu > 1000) {
+    this.Glu = t => {
+      this.Olu += t;
+      if (this.Olu > 1000) {
         TickSystem_1.TickSystem.Remove(this.UYi);
         this.UYi = TickSystem_1.TickSystem.InvalidId;
         this.LongPressCallback?.(this);
       }
     };
-    this.mlu = () => {
+    this.Nlu = () => {
       TickSystem_1.TickSystem.Remove(this.UYi);
       this.UYi = TickSystem_1.TickSystem.InvalidId;
       return true;
@@ -67,10 +70,10 @@ class DeckBuilderCardSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
     await this.aho.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
     var t = this.GetExtendToggle(0);
     t.CanExecuteChange.Bind(this.CanToggleExecuteChangeInternal);
-    t.OnPointDownCallBack.Bind(this.ulu);
-    t.OnStateChange.Add(this.LX1);
-    t.OnPointUpCallBackWithEventData.Bind(this.dlu);
-    t.OnPointerBeginDragCallBack.Bind(this.mlu);
+    t.OnPointDownCallBack.Bind(this.qlu);
+    t.OnStateChange.Add(this.eY1);
+    t.OnPointUpCallBackWithEventData.Bind(this.Flu);
+    t.OnPointerBeginDragCallBack.Bind(this.Nlu);
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   Refresh(t, i, e) {

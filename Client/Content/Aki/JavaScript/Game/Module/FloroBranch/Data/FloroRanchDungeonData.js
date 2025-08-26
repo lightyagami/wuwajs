@@ -4,30 +4,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FloroRanchDungeonData = undefined;
-const TimeUtil_1 = require("../../../Common/TimeUtil");
 class FloroRanchDungeonData {
   constructor(t) {
     this.Lo = undefined;
-    this.Kou = [];
-    this.dAu = false;
-    this.mAu = 0;
+    this.ynu = [];
+    this.P4e = false;
+    this.Qmu = 0;
     this.Lo = t;
   }
   PushSubDungeonData(t) {
-    this.Kou.push(t);
+    this.ynu.push(t);
   }
   UpdateUnLockState(t) {
-    this.dAu = t;
-    for (const e of this.Kou) {
+    this.P4e = t;
+    for (const e of this.ynu) {
       e.IsInstanceUnlock = true;
     }
   }
-  IsReachUnlockTime() {
-    var t = TimeUtil_1.TimeUtil.GetServerTime();
-    return this.mAu === 0 || this.UnlockTime < t;
-  }
   get IsUnLock() {
-    return this.IsReachUnlockTime() && this.dAu;
+    return this.P4e;
+  }
+  set ConditionId(t) {
+    this.Qmu = t;
+  }
+  get ConditionId() {
+    return this.Qmu;
   }
   get Id() {
     return this.Lo.Id;
@@ -42,13 +43,17 @@ class FloroRanchDungeonData {
     return this.Lo.Name;
   }
   GetSubDungeonData() {
-    return this.Kou;
+    return this.ynu;
   }
-  set UnlockTime(t) {
-    this.mAu = t;
-  }
-  get UnlockTime() {
-    return this.mAu;
+  GetLatestSubDungeonData() {
+    let t = this.ynu[0];
+    for (const e of this.ynu) {
+      if (!e.IsUnLock) {
+        return t;
+      }
+      t = e;
+    }
+    return t;
   }
   get IsDifficulty() {
     return this.Lo.Difficulty === 1;
@@ -58,7 +63,7 @@ class FloroRanchDungeonData {
   }
   get HasRedDot() {
     if (this.IsUnLock) {
-      for (const t of this.Kou) {
+      for (const t of this.ynu) {
         if (t.HasRedDot) {
           return true;
         }

@@ -53,8 +53,8 @@ class AutoAttachBaseView {
     this.jD_ = undefined;
     this.AttachDirection = undefined;
     this.CurrentSelectState = false;
-    this.oKe = 0;
-    this.rKe = 0;
+    this.CurrentSelectItemIndex = 0;
+    this.CurrentRunningElasticTime = 0;
     this.nKe = 1;
     this.sKe = TickSystem_1.TickSystem.InvalidId;
     this.aKe = MOVEMULFACTOR;
@@ -68,7 +68,7 @@ class AutoAttachBaseView {
     this.v9e = () => {
       this.Clear();
     };
-    this.r6 = t => {
+    this.Tick = t => {
       var i = UE.LGUIManagerActor.GetSequencerManager(GlobalData_1.GlobalData.World);
       var t = t * (i ? i.GetGlobalPlayRate() : 1);
       if (this.Kj_ !== undefined) {
@@ -84,11 +84,11 @@ class AutoAttachBaseView {
         this.dKe(this.CKe);
       }
       if (this.DragState || !this.InertiaState && !this.VelocityMoveState) {
-        if (this.jWe && (this.jWe = false, this.rKe = 0, !this.CurrentSelectState) && this.nKe === 1) {
+        if (this.jWe && (this.jWe = false, this.CurrentRunningElasticTime = 0, !this.CurrentSelectState) && this.nKe === 1) {
           var s = this.Items.length;
           for (let t = 0; t < s; t++) {
             var h = this.Items[t];
-            if (h.GetCurrentShowItemIndex() === this.oKe && !h.GetSelectedState()) {
+            if (h.GetCurrentShowItemIndex() === this.CurrentSelectItemIndex && !h.GetSelectedState()) {
               h.Select();
               this.CurrentSelectState = true;
             }
@@ -97,7 +97,7 @@ class AutoAttachBaseView {
         this.VelocityMoveState = false;
       } else if (this.VelocityMoveState) {
         this.gKe(t);
-      } else if (this.rKe < this.zWe) {
+      } else if (this.CurrentRunningElasticTime < this.zWe) {
         this.fKe(t);
       } else {
         this.jWe = true;
@@ -150,7 +150,7 @@ class AutoAttachBaseView {
         this.Items[t].OnControllerDragEnd();
       }
       this.DragState = false;
-      this.rKe = 0;
+      this.CurrentRunningElasticTime = 0;
       this.eKe = 0;
       this.ZWe = 0;
       if (this.QWe) {
@@ -162,7 +162,7 @@ class AutoAttachBaseView {
         if (Math.abs(t) < this.tKe) {
           i = this.FindAutoAttachItem();
           this.AttachToIndex(i.GetCurrentShowItemIndex());
-        } else if (this.uR1 && Math.abs(t) > this.cR1()) {
+        } else if (this.uR1 && Math.abs(t) > this.GetItemGapSize()) {
           i = t > 0 ? -1 : 1;
           this.AttachToNextItem(i);
         } else {
@@ -182,7 +182,7 @@ class AutoAttachBaseView {
     this.ControllerWidth = this.ControllerItem.Width;
     this.iKe.set(0, 0);
     this.iKe.set(1, 0);
-    this.sKe = TickSystem_1.TickSystem.Add(this.r6, "AutoAttachBaseView", 0, true, undefined, true).Id;
+    this.sKe = TickSystem_1.TickSystem.Add(this.Tick, "AutoAttachBaseView", 0, true, undefined, true).Id;
     this.$We = ResourceSystem_1.ResourceSystem.GetLoadedAsset(AutoAttachDefine_1.VELOCITY_CURVE_PATH, UE.CurveFloat);
     this.YWe = ResourceSystem_1.ResourceSystem.GetLoadedAsset(AutoAttachDefine_1.INERTIA_CURVE_PATH, UE.CurveFloat);
     this.BoundaryCurve = ResourceSystem_1.ResourceSystem.GetLoadedAsset(AutoAttachDefine_1.BOUNDARY_CURVE_PATH, UE.CurveFloat);
@@ -191,6 +191,9 @@ class AutoAttachBaseView {
     this._Ke = false;
     this.ControllerItem.GetOwner()?.OnDestroyed.Add(this.v9e);
     this.cW1 = i;
+  }
+  GetTrueBoundary() {
+    return 0;
   }
   SetItemSelectMode(t) {
     this.nKe = t;
@@ -220,7 +223,7 @@ class AutoAttachBaseView {
     this.SourceItemHeight = this.SourceItem.Height;
     this.SourceItemWidth = this.SourceItem.Width;
     this.ShowItemNum = this.yKe();
-    this.tKe = this.cR1() / 2;
+    this.tKe = this.GetItemGapSize() / 2;
     this.IKe();
   }
   SetMoveBoundary(t) {
@@ -235,13 +238,13 @@ class AutoAttachBaseView {
   SetBoundDistance(t) {
     this.MoveBoundary = t;
   }
-  cR1() {
+  GetItemGapSize() {
     return this.GetItemSize() + this.Gap;
   }
   yKe() {
     let t = 0;
     t = this.AttachDirection === 0 ? this.ControllerWidth : this.ControllerHeight;
-    var i = this.cR1();
+    var i = this.GetItemGapSize();
     var i = Math.ceil(t / i);
     if (i % 2 == 0) {
       return i - 1;
@@ -320,8 +323,8 @@ class AutoAttachBaseView {
   fKe(t) {
     var i = this.GetMoveTypeOffset(1);
     var s = i / this.zWe;
-    this.rKe = this.rKe + t;
-    var h = this.rKe / this.zWe;
+    this.CurrentRunningElasticTime = this.CurrentRunningElasticTime + t;
+    var h = this.CurrentRunningElasticTime / this.zWe;
     let e = s * this.GetCurveValue(this.YWe, h = h > 1 ? 1 : h) * t;
     s = this.ZWe + e;
     if (Math.abs(s) > Math.abs(i)) {
@@ -330,7 +333,7 @@ class AutoAttachBaseView {
     this.EKe(e);
     this.ZWe += e;
     if (h >= 1 && Math.abs(this.ZWe) < Math.abs(i)) {
-      this.rKe -= t;
+      this.CurrentRunningElasticTime -= t;
     }
   }
   GetCurveValue(t, i) {
@@ -411,11 +414,11 @@ class AutoAttachBaseView {
       s = t.GetCurrentPosition();
       this.SetMoveTypeOffset(1, -s);
       this.ForceUnSelectItems();
-      this.oKe = t.GetCurrentShowItemIndex();
+      this.CurrentSelectItemIndex = t.GetCurrentShowItemIndex();
       if (i) {
         this.jD_ = t;
       } else {
-        this.rKe = 0;
+        this.CurrentRunningElasticTime = 0;
         this.InertiaState = true;
       }
     }
@@ -424,7 +427,7 @@ class AutoAttachBaseView {
     var i = this.FindNearestMiddleItem();
     if (i) {
       t = t - i.GetCurrentShowItemIndex();
-      t = this.LKe() * this.cR1() * t + i.GetCurrentPosition();
+      t = this.GetAutoAttachMoveMinusOffsetDirection() * this.GetItemGapSize() * t + i.GetCurrentPosition();
       this.SetMoveTypeOffset(1, -t);
       i = this.RecalculateMoveOffset(-t);
       this.EKe(i, true);
@@ -441,10 +444,17 @@ class AutoAttachBaseView {
     this.VelocityMoveState = false;
   }
   AttachToNextItem(t) {
-    t = this.FindNextDirectionItem(t);
-    if (t) {
-      this.AttachToIndex(t.GetCurrentShowItemIndex());
+    var i;
+    var t = this.FindNextDirectionItem(t);
+    if (!t) {
+      if (i = this.FindNearestMiddleItem()) {
+        this.AttachToIndex(i.GetCurrentShowItemIndex());
+        return;
+      } else {
+        return undefined;
+      }
     }
+    this.AttachToIndex(t.GetCurrentShowItemIndex());
   }
   AttachToIndex(t, i = false) {
     if (!this.InertiaState || i) {
@@ -453,7 +463,7 @@ class AutoAttachBaseView {
         this.ScrollToItem(s, i);
       } else {
         this.ForceUnSelectItems();
-        this.oKe = t;
+        this.CurrentSelectItemIndex = t;
         s = this.FindNearestMiddleItem();
         if (!s) {
           return;
@@ -462,16 +472,16 @@ class AutoAttachBaseView {
           this.Kj_ = t;
         } else {
           i = t - s.GetCurrentShowItemIndex();
-          t = this.LKe() * this.cR1() * i - s.GetCurrentPosition();
+          t = this.GetAutoAttachMoveMinusOffsetDirection() * this.GetItemGapSize() * i - s.GetCurrentPosition();
           this.SetMoveTypeOffset(1, -t);
-          this.rKe = 0;
+          this.CurrentRunningElasticTime = 0;
           this.InertiaState = true;
         }
       }
-      this.r6(0);
+      this.Tick(0);
     }
   }
-  LKe() {
+  GetAutoAttachMoveMinusOffsetDirection() {
     if (this.AttachDirection === 0) {
       return 1;
     } else {
@@ -479,7 +489,7 @@ class AutoAttachBaseView {
     }
   }
   GetCurrentSelectIndex() {
-    return this.oKe;
+    return this.CurrentSelectItemIndex;
   }
   MovingState() {
     return this.DragState || this.InertiaState;
@@ -510,7 +520,7 @@ class AutoAttachBaseView {
     for (let t = 0; t < r; t++) {
       var o = this.Items[t];
       o.MoveItem(i);
-      if ((!this.CurrentSelectState && this.nKe === 0 || !!s) && o.GetCurrentShowItemIndex() === this.oKe && !o.GetSelectedState()) {
+      if ((!this.CurrentSelectState && this.nKe === 0 || !!s) && o.GetCurrentShowItemIndex() === this.CurrentSelectItemIndex && !o.GetSelectedState()) {
         o.Select();
         this.CurrentSelectState = true;
       }

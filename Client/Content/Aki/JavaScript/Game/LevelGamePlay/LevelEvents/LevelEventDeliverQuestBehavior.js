@@ -13,7 +13,7 @@ class LevelEventDeliverQuestBehavior extends LevelGeneralBase_1.LevelEventBase {
       var l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r.EntityId);
       let e = "";
       if (l) {
-        e = l.Entity.GetComponent(117)?.PawnName ?? "";
+        e = l.Entity.GetComponent(118)?.PawnName ?? "";
       }
       ControllerHolder_1.ControllerHolder.ItemDeliverController.OpenItemDeliverViewByHandInItem(r.Items, e, undefined, r.DescText);
     }

@@ -22,7 +22,7 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
   constructor() {
     super(...arguments);
     this.HFo = false;
-    this.Tmu = false;
+    this.hfu = false;
     this.F9l = undefined;
     this.jFo = undefined;
     this.WFo = undefined;
@@ -42,13 +42,13 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
       this.SetMapPosition(t, true, 1, 2, CommonParamById_1.configCommonParamById.GetFloatConfig("MapDragInertiaTime"));
     };
     this.Ngo = () => {
-      if (!this.Tmu) {
+      if (!this.hfu) {
         this.r3o(true);
       }
     };
     this.zFo = () => {};
     this.vKe = t => {
-      if (!this.Tmu) {
+      if (!this.hfu) {
         this.ZFo(t);
       }
     };
@@ -128,7 +128,7 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
     this.HFo = false;
   }
   get IsDragMoveDisabled() {
-    return this.Tmu;
+    return this.hfu;
   }
   get MapScale() {
     return ModelManager_1.ModelManager.WorldMapModel.MapScale;
@@ -238,14 +238,14 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
             a();
           } else {
             this.r3o();
-            this.Tmu = o;
+            this.hfu = o;
             this.HFo = true;
             this.F9l = t;
             this.jFo = UE.LTweenBPLibrary.Vector2To(GlobalData_1.GlobalData.World, this.WFo, e, s, r, 0, h);
             this.jFo.OnCompleteCallBack.Bind(() => {
               this.F9l = undefined;
               this.HFo = false;
-              this.Tmu = false;
+              this.hfu = false;
               a();
             });
           }
@@ -319,7 +319,7 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
     }
     this.F9l = undefined;
     this.HFo = false;
-    this.Tmu = false;
+    this.hfu = false;
   }
   ZFo(t) {
     var e = Vector2D_1.Vector2D.Create(this.MapUiPosition);

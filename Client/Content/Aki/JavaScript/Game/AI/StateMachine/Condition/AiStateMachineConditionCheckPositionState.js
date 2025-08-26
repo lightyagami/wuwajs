@@ -14,7 +14,9 @@ class AiStateMachineConditionCheckPositionState extends AiStateMachineCondition_
     this.ftl = CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
     this.PVr = (t, e) => {
       this.ResultSelf = this.Node.UnifiedStateComponent.PositionState === this.ftl;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckPositionState", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckPositionState", this.Node.Name);
+      }
     };
   }
   RegisterEvents() {

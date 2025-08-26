@@ -24,10 +24,10 @@ const PhantomArenaChildViewBase_1 = require("../PhantomArenaChildViewBase");
 class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.PhantomArenaChildViewBase {
   constructor() {
     super(...arguments);
-    this.O1u = undefined;
+    this.yuu = undefined;
     this.a71 = undefined;
-    this.Shu = undefined;
-    this.Mhu = undefined;
+    this.Khu = undefined;
+    this.Xhu = undefined;
     this.bs_ = undefined;
     this.ZW1 = () => {
       UiManager_1.UiManager.OpenView("PhantomArenaMainView", {
@@ -45,11 +45,11 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
     this.rOe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
-    this.dwu = (e, t) => {
+    this.Ewu = (e, t) => {
       return e !== t && ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL)[t].State !== 0;
     };
     this.f_i = (e, t) => {
-      this.O1u = t;
+      this.yuu = t;
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex, e);
       this.nOe();
     };
@@ -59,29 +59,29 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.Mhu = new ButtonItem_1.ButtonItem();
-    this.Mhu.SetFunction(this.ZW1);
-    await this.Mhu.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
+    this.Xhu = new ButtonItem_1.ButtonItem();
+    this.Xhu.SetFunction(this.ZW1);
+    await this.Xhu.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
     this.bs_ = new ButtonItem_1.ButtonItem();
     this.bs_.SetFunction(this.p5t);
     await this.bs_.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
-    this.Shu = new CommonDropDown_1.CommonDropDown(this.GetItem(7), e => new DropDownItem(e), e => new DropDownTitle(e));
-    this.Shu.SetOnCanChangeCall(this.dwu);
-    await this.Shu.Init();
+    this.Khu = new CommonDropDown_1.CommonDropDown(this.GetItem(7), e => new DropDownItem(e), e => new DropDownTitle(e));
+    this.Khu.SetOnCanChangeCall(this.Ewu);
+    await this.Khu.Init();
   }
   OnStart() {
     this.a71 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.rOe, this.GetItem(5).GetOwner());
     ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(PhantomArenaDefine_1.GYM_MAX_LEVEL);
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PhantomArenaRepeatLastIndex) ?? 0;
     var t = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(PhantomArenaDefine_1.GYM_MAX_LEVEL);
-    this.O1u = t[e];
-    this.Shu.InitScroll(t, this.g_i, e);
-    this.Shu.SetShowType(1);
-    this.Shu.SetOnSelectCall(this.f_i);
+    this.yuu = t[e];
+    this.Khu.InitScroll(t, this.g_i, e);
+    this.Khu.SetShowType(1);
+    this.Khu.SetOnSelectCall(this.f_i);
   }
   OnBeforeShow() {
     this.nOe();
-    this.Ehu();
+    this.Yhu();
     this.cy1();
   }
   nOe() {
@@ -100,7 +100,7 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
       Log_1.Log.Error("PhantomArena", 75, "获取挑战信息失败", ["ChallengeId", this.hyc]);
     }
   }
-  Ehu() {
+  Yhu() {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), PhantomArenaDefine_1.POINTS_NAME_TEXT);
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId();
     var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(e);
@@ -108,10 +108,10 @@ class PhantomArenaEntranceRepeatTabView extends PhantomArenaChildViewBase_1.Phan
   }
   cy1() {
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10090);
-    this.Mhu.SetUiActive(e);
+    this.Xhu.SetUiActive(e);
   }
   get hyc() {
-    return this.O1u?.Id ?? -1;
+    return this.yuu?.Id ?? -1;
   }
 }
 exports.PhantomArenaEntranceRepeatTabView = PhantomArenaEntranceRepeatTabView;
@@ -119,7 +119,7 @@ class DropDownItem extends DropDownItemBase_1.DropDownItemBase {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.kxu = () => {
+    this.cUu = () => {
       if (this.Pe?.State === 0) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PhantomBattle_1112");
       }
@@ -136,7 +136,7 @@ class DropDownItem extends DropDownItemBase_1.DropDownItemBase {
     var t = this.Pe.IsLast ? "PhantomBattle_1115" : "PhantomBattle_1114";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t);
     if (e.State === 0) {
-      this.GetDropDownToggle().OnUndeterminedClicked.Add(this.kxu);
+      this.GetDropDownToggle().OnUndeterminedClicked.Add(this.cUu);
       this.GetDropDownToggle().SetToggleStateForce(2);
     }
   }

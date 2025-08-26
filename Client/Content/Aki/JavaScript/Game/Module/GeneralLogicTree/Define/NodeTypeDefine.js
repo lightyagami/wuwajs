@@ -27,6 +27,7 @@ const ReadMailBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadMailB
 const ServerAchieveChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/ServerAchieveChildQuestNode");
 const ShowUiBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ShowUiBehaviorNode");
 const UseItemBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/UseItemBehaviorNode");
+const WaitSceneReferenceEntityPlaySequenceNode_1 = require("../BehaviorNode/ChildQuestNode/WaitSceneReferenceEntityPlaySequenceNode");
 const WalkingPatternBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/WalkingPatternBehaviorNode");
 const ParallelSelectNode_1 = require("../BehaviorNode/LogicNode/ParallelSelectNode");
 const SequenceNode_1 = require("../BehaviorNode/LogicNode/SequenceNode");
@@ -98,7 +99,10 @@ exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.WalkingPattern]: new NodeTypeData(WalkingPatternBehaviorNode_1.WalkingPatternBehaviorNode),
   [IQuest_1.EChildQuest.DetectCombatState2]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
   [IQuest_1.EChildQuest.FinishBvbChallenge]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
+  [IQuest_1.EChildQuest.FinishTrapDefense]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
+  [IQuest_1.EChildQuest.CheckTrapDefenseEvent]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
   [IQuest_1.EChildQuest.CompareActorVar]: new NodeTypeData(CompareDemoActorVarChildQuestNode_1.CompareDemoActorVarChildQuestNode),
-  [IQuest_1.EChildQuest.ProgramSpecialProcess]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode)
+  [IQuest_1.EChildQuest.ProgramSpecialProcess]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
+  [IQuest_1.EChildQuest.WaitUntilLevelSequenceReachMark]: new NodeTypeData(WaitSceneReferenceEntityPlaySequenceNode_1.WaitSceneReferenceEntityPlaySequenceNode)
 };
 exports.newNodeObj = newNodeObj; //# sourceMappingURL=NodeTypeDefine.js.map

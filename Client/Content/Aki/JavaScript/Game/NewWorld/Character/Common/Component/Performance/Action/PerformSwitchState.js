@@ -16,14 +16,14 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
     this.Jh = undefined;
     this.Sj_ = undefined;
     this.Mj_ = undefined;
-    this.$du = () => {
+    this.Lmu = () => {
       this.Mj_ = undefined;
-      this.PerformComp.Entity.GetComponent(186)?.SwitchAnimState(this.Param);
+      this.PerformComp.Entity.GetComponent(187)?.SwitchAnimState(this.Param);
     };
-    this.Wdu = () => {
+    this.wmu = () => {
       if (this.Jh?.Valid) {
-        if (EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.Wdu)) {
-          EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.Wdu);
+        if (EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.wmu)) {
+          EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.wmu);
         }
         this.Sj_?.Remove();
         this.Sj_ = undefined;
@@ -34,26 +34,26 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
   }
   OnExecute() {
     var t;
-    if (this.PerformComp.Entity.GetComponent(2) && this.PerformComp.Entity.GetComponent(186)?.CanSwitchAnimState(this.Param.TargetStateName)) {
+    if (this.PerformComp.Entity.GetComponent(2) && this.PerformComp.Entity.GetComponent(187)?.CanSwitchAnimState(this.Param.TargetStateName)) {
       if ((t = this.PerformComp.Entity.GetComponent(44)).MontageManager.IsMontagePlaying()) {
         t.MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0.5
         });
-        this.Mj_ = TimerSystem_1.TimerSystem.Delay(this.$du, 250);
+        this.Mj_ = TimerSystem_1.TimerSystem.Delay(this.Lmu, 250);
       } else {
-        this.$du();
+        this.Lmu();
       }
       this.Jh = this.PerformComp.Entity;
-      EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.Wdu);
-      this.Sj_ = TimerSystem_1.TimerSystem.Delay(this.Wdu, SWITCH_STATE_MAX_TIME);
+      EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.wmu);
+      this.Sj_ = TimerSystem_1.TimerSystem.Delay(this.wmu, SWITCH_STATE_MAX_TIME);
     } else {
       this.FinishExecute();
     }
   }
   OnReset() {
-    if (this.Jh && EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.Wdu)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.Wdu);
+    if (this.Jh && EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.wmu)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.NpcAnimStateSwitchEnd, this.wmu);
     }
     this.Sj_?.Remove();
     this.Sj_ = undefined;

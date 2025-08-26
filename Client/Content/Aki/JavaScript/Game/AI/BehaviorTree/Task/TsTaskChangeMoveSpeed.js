@@ -36,7 +36,7 @@ class TsTaskChangeMoveSpeed extends TsTaskAbortImmediatelyBase_1.default {
     if (i) {
       if ((i = i.CharActorComp) && (i = ActorUtils_1.ActorUtils.GetEntityByActor(i.Actor)) && (e = i.Entity.GetComponent(45))) {
         if (this.TsResetDefault) {
-          i = i.Entity.GetComponent(175).MoveState;
+          i = i.Entity.GetComponent(176).MoveState;
           e.ResetMaxSpeed(i);
         } else {
           e.SetMaxSpeed(this.TsMoveSpeed);

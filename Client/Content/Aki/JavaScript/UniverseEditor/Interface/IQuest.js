@@ -8,6 +8,7 @@ var EInformationBoardType;
 var ESpecialGamePlayConfigType;
 var EEnableSystemType;
 var EGradingSystemVarType;
+var ETrapDefenseSystemVarType;
 var EQuestScheduleType;
 var EQuestScheduleUiType;
 var EProgressBarLeftType;
@@ -22,10 +23,12 @@ var ETargetBattleAttribute;
 var EAttributeToTarget;
 var EOperation;
 var ESpecialProcess;
+var ETrapDefenseConditionStep;
+var ECheckTrapDefenseEvent;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.repeatBanList = exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
+exports.repeatBanList = exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
 exports.nodeTips = {
   Start: "",
   QuestSucceed: "任务完成，终止行为树",
@@ -50,13 +53,27 @@ exports.getTipsByNodeType = getTipsByNodeType;
 })(EInformationViewType = exports.EInformationViewType ||= {});
 (EInformationBoardType = exports.EInformationBoardType ||= {}).DangoAbyss = "DangoAbyss";
 (ESpecialGamePlayConfigType = exports.ESpecialGamePlayConfigType ||= {}).Stalking = "Stalking";
-(EEnableSystemType = exports.EEnableSystemType ||= {}).GradingSystem = "GradingSystem";
+(function (e) {
+  e.GradingSystem = "GradingSystem";
+  e.TrapDefense = "TrapDefense";
+})(EEnableSystemType = exports.EEnableSystemType ||= {});
 (function (e) {
   e.Score = "Score";
   e.Grade = "Grade";
   e.Wave = "Wave";
   e.CustomVar = "CustomVar";
 })(EGradingSystemVarType = exports.EGradingSystemVarType ||= {});
+(function (e) {
+  e.Health = "Health";
+  e.Gold = "Gold";
+  e.MaxBatch = "MaxBatch";
+  e.Batch = "Batch";
+  e.TrapCount = "TrapCount";
+  e.MaxTrapCount = "MaxTrapCount";
+  e.EnemyRemain = "EnemyRemain";
+  e.MapChangeCount = "MapChangeCount";
+  e.SpawnMonsterStepCompleteCount = "SpawnMonsterStepCompleteCount";
+})(ETrapDefenseSystemVarType = exports.ETrapDefenseSystemVarType ||= {});
 (function (e) {
   e.None = "None";
   e.ChildQuestCompleted = "ChildQuestCompleted";
@@ -69,6 +86,7 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.TimeLeft = "TimeLeft";
   e.Condition = "Condition";
   e.ProgressValue = "ProgressValue";
+  e.DistanceValue = "DistanceValue";
 })(EQuestScheduleType = exports.EQuestScheduleType ||= {});
 (function (e) {
   e.Task = "Task";
@@ -138,7 +156,10 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.WalkingPattern = "WalkingPattern";
   e.DetectCombatState2 = "DetectCombatState2";
   e.FinishBvbChallenge = "FinishBvbChallenge";
+  e.FinishTrapDefense = "FinishTrapDefense";
+  e.CheckTrapDefenseEvent = "CheckTrapDefenseEvent";
   e.ProgramSpecialProcess = "ProgramSpecialProcess";
+  e.WaitUntilLevelSequenceReachMark = "WaitUntilLevelSequenceReachMark";
 })(EChildQuest = exports.EChildQuest ||= {});
 const childQuestAll = Object.values(EChildQuest);
 function createQuestTypeCnNameMap() {
@@ -198,7 +219,10 @@ exports.childQuestConfigs = {
   WalkingPattern: {},
   DetectCombatState2: {},
   FinishBvbChallenge: {},
-  ProgramSpecialProcess: {}
+  FinishTrapDefense: {},
+  CheckTrapDefenseEvent: {},
+  ProgramSpecialProcess: {},
+  WaitUntilLevelSequenceReachMark: {}
 };
 exports.childQuestsForTest = [];
 (function (e) {
@@ -282,6 +306,16 @@ exports.combatStateConfig = {
   e.AssignLoadingBackground = "AssignLoadingBackground";
 })(EOperation = exports.EOperation ||= {});
 (ESpecialProcess = exports.ESpecialProcess ||= {}).LowMemorySceneSwitch = "LowMemorySceneSwitch";
+(function (e) {
+  e.Reward = "Reward";
+  e.MapChange = "MapChange";
+  e.Preview = "Preview";
+  e.SpawnMonster = "SpawnMonster";
+})(ETrapDefenseConditionStep = exports.ETrapDefenseConditionStep ||= {});
+(function (e) {
+  e.MonsterKilled = "MonsterKilled";
+  e.BdBuffQualityUp = "BdBuffQualityUp";
+})(ECheckTrapDefenseEvent = exports.ECheckTrapDefenseEvent ||= {});
 exports.questFailedConfigs = {
   Timer: {},
   TimeRange: {},

@@ -52,12 +52,12 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ControllerConnectChange, MenuController.lWa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, MenuController.cbc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSdkFocusStateChange, this.sTu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSdkFocusStateChange, this.hTu);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ControllerConnectChange, MenuController.lWa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, MenuController.cbc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSdkFocusStateChange, this.sTu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSdkFocusStateChange, this.hTu);
   }
   static HandleFireSaveMenuChange(e, t) {
     var n = e.FunctionId;
@@ -91,7 +91,9 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
       if (n !== undefined) {
         for (const [t, i] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(n)) {
           if ((t !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || !!Info_1.Info.IsMobilePlatform()) && (t !== GameSettingsDefine_1.EFunction.PCVSYNC || !!Info_1.Info.IsPcOrGamepadPlatform()) && (t !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice())) {
-            GameSettingsManager_1.GameSettingsManager.HandleValueChange(t, i, 1);
+            if (t !== GameSettingsDefine_1.EFunction.RayTracing) {
+              GameSettingsManager_1.GameSettingsManager.HandleValueChange(t, i, 1);
+            }
           }
         }
       }
@@ -398,7 +400,7 @@ MenuController.cbc = () => {
     LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.LastGamepadEnum, Info_1.Info.InputControllerType);
   }
 };
-MenuController.sTu = e => {
+MenuController.hTu = e => {
   if (!e) {
     _a.RefreshGamepadConnect();
   }

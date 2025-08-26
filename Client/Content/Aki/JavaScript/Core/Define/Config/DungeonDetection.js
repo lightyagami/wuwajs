@@ -77,6 +77,15 @@ class DungeonDetection {
   showrewardmapValue(t) {
     return this.showrewardmap(t)?.value();
   }
+  get ShowRewardMapCalabash() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.showrewardmapcalabashLength(), this.showrewardmapcalabashKey, this.showrewardmapcalabashValue, this);
+  }
+  showrewardmapcalabashKey(t) {
+    return this.showrewardmapcalabash(t)?.key();
+  }
+  showrewardmapcalabashValue(t) {
+    return this.showrewardmapcalabash(t)?.value();
+  }
   get BeginTimeStamp() {
     return this.begintimestamp();
   }
@@ -100,6 +109,9 @@ class DungeonDetection {
   }
   get DetectionTabType() {
     return this.detectiontabtype();
+  }
+  get PhantomFetterGroup() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.phantomfettergroupLength(), this.phantomfettergroup, this);
   }
   __init(t, i) {
     this.z7 = t;
@@ -299,15 +311,26 @@ class DungeonDetection {
       return 0;
     }
   }
-  begintimestamp() {
+  GetShowrewardmapcalabashAt(t, i) {
+    return this.showrewardmapcalabash(t);
+  }
+  showrewardmapcalabash(t, i) {
+    var s = this.J7.__offset(this.z7, 44);
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  showrewardmapcalabashLength() {
     var t = this.J7.__offset(this.z7, 44);
     if (t) {
-      return this.J7.readInt32(this.z7 + t);
+      return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }
   }
-  preopenid() {
+  begintimestamp() {
     var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -315,8 +338,16 @@ class DungeonDetection {
       return 0;
     }
   }
-  lockcon() {
+  preopenid() {
     var t = this.J7.__offset(this.z7, 48);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  lockcon() {
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -327,7 +358,7 @@ class DungeonDetection {
     return this.phantomid(t);
   }
   phantomid(t) {
-    var i = this.J7.__offset(this.z7, 50);
+    var i = this.J7.__offset(this.z7, 52);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -335,7 +366,7 @@ class DungeonDetection {
     }
   }
   phantomidLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -343,7 +374,7 @@ class DungeonDetection {
     }
   }
   phantomidArray() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -351,14 +382,6 @@ class DungeonDetection {
     }
   }
   subdungeonid() {
-    var t = this.J7.__offset(this.z7, 52);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  sortid() {
     var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -366,8 +389,16 @@ class DungeonDetection {
       return 0;
     }
   }
+  sortid() {
+    var t = this.J7.__offset(this.z7, 56);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   newcontent(t) {
-    var i = this.J7.__offset(this.z7, 56);
+    var i = this.J7.__offset(this.z7, 58);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -375,11 +406,38 @@ class DungeonDetection {
     return i;
   }
   detectiontabtype() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  GetPhantomfettergroupAt(t) {
+    return this.phantomfettergroup(t);
+  }
+  phantomfettergroup(t) {
+    var i = this.J7.__offset(this.z7, 62);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  phantomfettergroupLength() {
+    var t = this.J7.__offset(this.z7, 62);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  phantomfettergroupArray() {
+    var t = this.J7.__offset(this.z7, 62);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
     }
   }
 }

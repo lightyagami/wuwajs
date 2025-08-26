@@ -60,12 +60,12 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
     this.MSr.TipsItem = new PhantomArenaBattleTips_1.PhantomArenaBattleTips();
     await this.MSr.TipsItem.CreateByResourceIdAsync("UiItem_CardTips", this.GetItem(14));
   }
-  async Eeu() {
+  async Xeu() {
     this.MSr.DetailsTipsItem = new PhantomArenaBattleDetailsTips_1.PhantomArenaBattleDetailsTips();
     this.MSr.DetailsTipsItem.SetMaskAttach(this.GetItem(21));
     await this.MSr.DetailsTipsItem.CreateByResourceIdAsync("PnlCardTips", this.GetItem(14));
   }
-  async rtu() {
+  async wtu() {
     this.MSr.SkillTipsItem = new PhantomArenaBattleSkillTips_1.PhantomArenaBattleSkillTips();
     await this.MSr.SkillTipsItem.CreateByResourceIdAsync("PnlSkillTips", this.GetItem(14));
   }
@@ -86,7 +86,7 @@ class PhantomArenaBattleView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.zDn();
-    await Promise.all([this.$i1(), this.Wi1(), this.lU1(), this.rU1(), this.Eeu(), this.rtu(), this.yG1(), this.J31(), this.K81()]);
+    await Promise.all([this.$i1(), this.Wi1(), this.lU1(), this.rU1(), this.Xeu(), this.wtu(), this.yG1(), this.J31(), this.K81()]);
     this.MSr.ProcessManager.InitStateMap();
   }
   OnStart() {

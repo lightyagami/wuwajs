@@ -16,7 +16,7 @@ class SpineRoleGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
   constructor() {
     super(...arguments);
     this.mWt = undefined;
-    this.F0u = undefined;
+    this.Fpu = undefined;
     this.rZi = () => {
       if (ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this.GachaViewInfo.TrialActivityId)) {
         ActivityController_1.ActivityController.CloseAndOpenActivityById("GachaMainView", this.GachaViewInfo.TrialActivityId, 4, this.GachaViewInfo.TrialRoleId);
@@ -29,17 +29,17 @@ class SpineRoleGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.SpineSkeletonAnimationComponent]];
   }
   async OnBeforeStartAsync() {
-    await this.N0u();
-    await this.V0u();
+    await this.Npu();
+    await this.Vpu();
   }
-  async N0u() {
+  async Npu() {
     this.mWt = new RoleDescribeComponent_1.RoleDescribeComponent();
     await this.mWt.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
-  async V0u() {
-    this.F0u = new ButtonFunctionComponent_1.ButtonFunctionComponent();
-    await this.F0u.CreateThenShowByResourceIdAsync("UiItem_BtnFunction", this.mWt?.GetJumpBtnRoot());
-    this.F0u.SetFunction(this.rZi);
+  async Vpu() {
+    this.Fpu = new ButtonFunctionComponent_1.ButtonFunctionComponent();
+    await this.Fpu.CreateThenShowByResourceIdAsync("UiItem_BtnFunction", this.mWt?.GetJumpBtnRoot());
+    this.Fpu.SetFunction(this.rZi);
   }
   Refresh() {
     var t;
@@ -51,7 +51,7 @@ class SpineRoleGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
       }
       this.GetSpine(2).SetAnimation(0, "idle", true);
       t = ModelManager_1.ModelManager.ActivityModel.IsActivityOpen(this.GachaViewInfo.TrialActivityId);
-      this.F0u?.SetUiActive(this.GachaViewInfo.TrialActivityId > 0 && t);
+      this.Fpu?.SetUiActive(this.GachaViewInfo.TrialActivityId > 0 && t);
     }
   }
   SetDescUiActive(t) {

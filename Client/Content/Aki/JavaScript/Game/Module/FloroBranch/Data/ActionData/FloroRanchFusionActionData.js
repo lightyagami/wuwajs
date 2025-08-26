@@ -10,8 +10,8 @@ const FloroRanchActionBase_1 = require("./FloroRanchActionBase");
 class FloroRanchFusionActionData extends FloroRanchActionBase_1.FloroRanchActionDataBase {
   constructor(o) {
     super(o);
-    this.ABu = undefined;
-    this.ABu = o.kUu;
+    this.eOu = undefined;
+    this.eOu = o.mDu;
   }
   async OnExecute() {
     if (!this.IsIgnoreCasterAnim) {
@@ -21,28 +21,28 @@ class FloroRanchFusionActionData extends FloroRanchActionBase_1.FloroRanchAction
     if (!this.IsExit()) {
       var o = this.CasterEntity.GetUiItemComponent();
       var a = [];
-      for (const s of this.ABu.BUu) {
+      for (const s of this.eOu.dDu) {
         var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(s);
         a.push(t.GetUiItemComponent().MoveToTarget(o.GetUiItem()));
       }
       await Promise.all(a);
       await this.WaitIfPause();
       if (!this.IsExit()) {
+        FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogFusionStartActionInfo(this.CasterEntity, this.eOu);
         a.length = 0;
-        for (const r of this.ABu.BUu) {
+        for (const r of this.eOu.dDu) {
           var i = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(r);
           a.push(i.GetUiItemComponent().PlayFusionHideAnim());
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.RemoveOwnEntityData(i);
         }
-        var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.ABu.DUu.Ziu);
+        var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.eOu.cDu.Tru);
         a.push(e.GetUiItemComponent().PlayFusionHideAnim());
-        FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogFusionStartActionInfo(this.CasterEntity, this.ABu);
         await Promise.all(a);
         await this.WaitIfPause();
         if (!this.IsExit()) {
-          e.RefreshEntityData(this.ABu.DUu);
+          e.RefreshEntityData(this.eOu.cDu);
           await e.GetUiItemComponent().PlayFusionShowAnim();
-          FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogFusionEndActionInfo(this.ABu);
+          FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogFusionEndActionInfo(this.eOu);
         }
       }
     }

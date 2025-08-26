@@ -9,12 +9,12 @@ const FloroRanchDailyTaskBase_1 = require("./FloroRanchDailyTaskBase");
 class FloroRanchDaySalarySettleTask extends FloroRanchDailyTaskBase_1.FloroRanchDailyTaskBase {
   constructor(t) {
     super();
-    this.aGu = undefined;
-    this.aGu = t;
+    this.iOu = undefined;
+    this.iOu = t;
   }
   OnExecute() {
-    FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.ExecuteWageSettleAction(this.aGu).then(() => {
-      this.Complete();
+    FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.ExecuteWageSettleAction(this.iOu).then(() => {
+      this.AsyncComplete();
     });
   }
 }

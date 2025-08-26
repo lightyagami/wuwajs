@@ -1,42 +1,48 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, o, i) {
+var __decorate = this && this.__decorate || function (e, o, t, i) {
   var n;
   var a = arguments.length;
-  var s = a < 3 ? t : i === null ? i = Object.getOwnPropertyDescriptor(t, o) : i;
+  var r = a < 3 ? o : i === null ? i = Object.getOwnPropertyDescriptor(o, t) : i;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(e, t, o, i);
+    r = Reflect.decorate(e, o, t, i);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (n = e[r]) {
-        s = (a < 3 ? n(s) : a > 3 ? n(t, o, s) : n(t, o)) || s;
+    for (var l = e.length - 1; l >= 0; l--) {
+      if (n = e[l]) {
+        r = (a < 3 ? n(r) : a > 3 ? n(o, t, r) : n(o, t)) || r;
       }
     }
   }
-  if (a > 3 && s) {
-    Object.defineProperty(t, o, s);
+  if (a > 3 && r) {
+    Object.defineProperty(o, t, r);
   }
-  return s;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FloroRanchUiRoleSkillComponent = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const FloroRanchComponentDefine_1 = require("../FloroRanchComponentDefine");
 const FloroRanchUiItemBaseComponent_1 = require("./FloroRanchUiItemBaseComponent");
 let FloroRanchUiRoleSkillComponent = class FloroRanchUiRoleSkillComponent extends FloroRanchUiItemBaseComponent_1.FloroRanchUiItemBaseComponent {
   constructor() {
     super(...arguments);
-    this.qOu = undefined;
+    this.hOu = undefined;
   }
   GetUiItem() {
-    return this.qOu;
+    if (!this.hOu) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanchUiRoleSkillComponent GetUiItem 实体不存在", ["entityId", this.OwnerEntity.EntityId]);
+      }
+    }
+    return this.hOu;
   }
   async PlayShowAnim() {
-    this.qOu ||= await this.CreateUiItem();
-    await this.qOu.PlayShowAnim();
-    return this.qOu;
+    this.hOu ||= await this.CreateUiItem();
+    await this.hOu.PlayShowAnim();
+    return this.hOu;
   }
   async CreateUiItem() {
     var e = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
@@ -45,30 +51,30 @@ let FloroRanchUiRoleSkillComponent = class FloroRanchUiRoleSkillComponent extend
     }
   }
   async PlayHideAnim() {
-    if (this.qOu) {
-      await this.qOu.PlayHideAnim();
-      this.qOu.UnbindData();
-      this.qOu = undefined;
+    if (this.hOu) {
+      await this.hOu.PlayHideAnim();
+      this.hOu.UnbindData();
+      this.hOu = undefined;
     }
   }
   async PlayNormalAnim() {
-    if (this.qOu) {
-      await this.qOu.PlayNormalAnim();
+    if (this.hOu) {
+      await this.hOu.PlayNormalAnim();
     }
   }
   async PlaySkillAnim() {
-    if (this.qOu) {
-      await this.qOu.PlaySkillAnim();
+    if (this.hOu) {
+      await this.hOu.PlaySkillAnim();
     }
   }
   Pause() {
-    if (this.qOu) {
-      this.qOu.Pause();
+    if (this.hOu) {
+      this.hOu.Pause();
     }
   }
   Resume() {
-    if (this.qOu) {
-      this.qOu.Resume();
+    if (this.hOu) {
+      this.hOu.Resume();
     }
   }
 };

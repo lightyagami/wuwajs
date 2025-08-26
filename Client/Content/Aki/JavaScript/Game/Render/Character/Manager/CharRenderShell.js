@@ -27,6 +27,18 @@ class CharRenderShell {
   constructor() {
     this.RenderingComponent = undefined;
     this.veh = false;
+    this.hen = 0;
+    this.sva = undefined;
+    this.pgd = e => {
+      var t;
+      var i;
+      if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(56)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(43)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.pgd);
+      }
+      if (this.hen === e) {
+        this.RenderingComponent?.ResetAllRenderingState();
+      }
+    };
     this.yW = undefined;
     this.s6a = undefined;
     this.P1h = false;
@@ -55,7 +67,7 @@ class CharRenderShell {
         this.A4i();
       }
     };
-    this.ojc = () => {
+    this.XQc = () => {
       if (this.RenderingComponent?.ShouldTickAfterGoDown()) {
         this.Mq_ = true;
       } else {
@@ -103,11 +115,11 @@ class CharRenderShell {
       var t = this.RenderingComponent.GetOwner();
       if (t instanceof TsBaseCharacter_1.default) {
         var i = t.EntityId;
-        var r = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(i);
-        var s = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
+        var s = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(i);
+        var r = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
         for (let e = 0; e < SceneTeamDefine_1.SCENE_TEAM_MAX_NUM; e++) {
-          var h = s[e];
-          if (h?.GetCreatureDataId() === r) {
+          var h = r[e];
+          if (h?.GetCreatureDataId() === s) {
             if (h.IsMyRole()) {
               if ((h = t.CharacterActorComponent?.Entity) && (this.RoleEntity = h, EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnRoleGoDownFinish, this.lSl), ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance())) {
                 EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharExecuteQte, this.OnExecuteQte);
@@ -119,7 +131,7 @@ class CharRenderShell {
               if (h.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player) {
                 this.OtherRoleEntityId = i;
                 EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
-                EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.ojc);
+                EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.XQc);
                 this.A4i();
                 return;
               }
@@ -127,6 +139,11 @@ class CharRenderShell {
           }
         }
       }
+      e = this.RenderingComponent.GetCachedOwnerEntity();
+      if (e?.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.pgd);
+      }
+      this.sva = e?.GetComponent(187);
       this.A4i();
     }
   }
@@ -146,35 +163,42 @@ class CharRenderShell {
     if (this.j4_) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
       if (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.OtherRoleEntityId)?.Entity) {
-        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.ojc);
+        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.XQc);
       }
       this.OtherRoleEntityId = 0;
     }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.pgd)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.pgd);
+    }
   }
   A4i() {
-    var e;
-    var t;
-    if (!!CharRenderShell.CharRenderShellGameBudgetOptimize && !!this.RenderingComponent && (!this.Mq_ || !(this.Mq_ = false, this.yW))) {
+    if (CharRenderShell.CharRenderShellGameBudgetOptimize && this.RenderingComponent && (!this.Mq_ || (this.Mq_ = false, !this.yW))) {
       if (this.yW) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("HudUnit", 36, "CharRenderShell RegisterTick: 重复注册Tick", ["Actor", UE.KismetSystemLibrary.GetPathName(this.RenderingComponent.GetCachedOwner())]);
         }
         this.o3a();
       }
+      let e = false;
+      var t = this.RenderingComponent.GetCachedOwnerEntity()?.GetComponent(0);
+      if (t?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc && ((t = t.GetSubEntityType()) === 0 || t === 1 || t === 2)) {
+        e = true;
+      }
       this.r3a = Time_1.Time.WorldTimeSeconds;
-      e = this.Xjt ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig : GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
-      this.yW = GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(e.GroupName, e.SignificanceGroup, this, this.RenderingComponent.GetCachedOwner());
-      if (t = this.RenderingComponent.GetOwner()) {
-        this.s6a = t;
+      var t = e ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsNpcRenderConfig : this.Xjt ? GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig : GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
+      this.yW = GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterTick(t.GroupName, t.SignificanceGroup, this, this.RenderingComponent.GetCachedOwner());
+      var i = this.RenderingComponent.GetOwner();
+      if (i) {
+        this.s6a = i;
         EventSystem_1.EventSystem.AddWithTarget(this.s6a, EventDefine_1.EEventName.OnMarkActorInFighting, this.a6a);
       }
       if (!this.P1h) {
         this.P1h = true;
         EventSystem_1.EventSystem.AddWithTarget(this.RenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
       }
-      if (t instanceof UE.BP_MaterialControllerRenderActor_C && t.RefActor) {
-        cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(e.GroupName, this.yW, t.RefActor);
-        this.i3a = t.RefActor.WasRecentlyRendered();
+      if (i instanceof UE.BP_MaterialControllerRenderActor_C && i.RefActor) {
+        cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(t.GroupName, this.yW, i.RefActor);
+        this.i3a = i.RefActor.WasRecentlyRendered();
       }
     }
   }
@@ -218,8 +242,8 @@ class CharRenderShell {
       this.r3a = Time_1.Time.WorldTimeSeconds;
     }
   }
-  Tick(i, r = false) {
-    if ((!CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || r || this.Mq_ || this.veh || this.i3a) && this.RenderingComponent) {
+  Tick(i, s = false) {
+    if ((!CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || s || this.Mq_ || this.sva?.IsInPlot || this.veh || this.i3a) && this.RenderingComponent) {
       if (this.Mq_ && !this.RenderingComponent.ShouldTickAfterGoDown()) {
         this.o3a();
       } else if (!TickSystem_1.TickSystem.IsPaused || this.veh) {
@@ -234,8 +258,8 @@ class CharRenderShell {
           t = cpp_1.KuroTime.GetMilliseconds64();
         }
         this.RenderingComponent.Tick(e);
-        if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (r = this.RenderingComponent.GetOwner()) instanceof TsBaseCharacter_1.default) {
-          PerformanceController_1.PerformanceController.CollectComponentTickPerformanceInfo(r.EntityId, "CharRenderingComponent", true, cpp_1.KuroTime.GetMilliseconds64() - t);
+        if (PerformanceController_1.PerformanceController.IsEntityTickPerformanceTest && (s = this.RenderingComponent.GetOwner()) instanceof TsBaseCharacter_1.default) {
+          PerformanceController_1.PerformanceController.CollectComponentTickPerformanceInfo(s.EntityId, "CharRenderingComponent", true, cpp_1.KuroTime.GetMilliseconds64() - t);
         }
         RenderModuleConfig_1.RenderStats.StatCharRenderShellTick.Stop();
       }

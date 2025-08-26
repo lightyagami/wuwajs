@@ -14,8 +14,6 @@ const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const LocalStorage_1 = require("../../../../Common/LocalStorage");
-const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
@@ -269,9 +267,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.L7i = () => {
       var i = LguiEventSystemManager_1.LguiEventSystemManager.IsPressComponentIsValid(0);
       var t = LguiEventSystemManager_1.LguiEventSystemManager.IsNowTriggerPressed(0);
-      var e = this.$9i.GetStayingItem();
+      var s = this.$9i.GetStayingItem();
       if (!i && !t) {
-        if (e?.length === 0) {
+        if (s?.length === 0) {
           this.v7i(undefined, undefined);
           AudioSystem_1.AudioSystem.PostEvent("ui_vision_item_drop");
         } else {
@@ -291,9 +289,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       this._7i(this.B9i.GetUniqueId());
       this.P7i();
     };
-    this.TryEquip = (i, t, e) => {
-      var s = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
-      switch (i ? ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipState(s.GetRoleId(), t, i.GetUniqueId()) : 1) {
+    this.TryEquip = (i, t, s) => {
+      var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
+      switch (i ? ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipState(e.GetRoleId(), t, i.GetUniqueId()) : 1) {
         case 0:
           if (t === -1) {
             return;
@@ -302,7 +300,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
           break;
         case 1:
         case 2:
-          this.w7i(i, t, e);
+          this.w7i(i, t, s);
       }
     };
     this.OnClickFailVision = i => {
@@ -353,11 +351,11 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.G7i = () => {
       var i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
       var t = ModelManager_1.ModelManager.PhantomBattleModel.GetCurrentViewShowPhantomList(i);
-      var e = this.x9i.length;
-      for (let i = 0; i < e; i++) {
-        var s = t.length > i ? t[i] : undefined;
-        this.x9i[i].UpdateItem(s, undefined);
-        this.X9i[i].Refresh(s, false);
+      var s = this.x9i.length;
+      for (let i = 0; i < s; i++) {
+        var e = t.length > i ? t[i] : undefined;
+        this.x9i[i].UpdateItem(e, undefined);
+        this.X9i[i].Refresh(e, false);
       }
       this.V7i();
     };
@@ -411,9 +409,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       this.X9i[i].ResetPosition();
       this.x9i[i].ResetPosition();
       this.GetItem(15).SetRaycastTarget(false);
-      const e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
+      const s = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
       this.c7i(t, i, () => {
-        ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomPutOnRequest(t.GetUniqueId(), e.GetRoleId(), i);
+        ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomPutOnRequest(t.GetUniqueId(), s.GetRoleId(), i);
       });
     };
     this.OnDragEndCallBack = (i, t) => {
@@ -421,40 +419,40 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
         this.I7i();
         AudioSystem_1.AudioSystem.PostEvent("ui_vision_item_drop");
       } else {
-        const e = VisionCommonDragItem_1.VisionCommonDragItem.GetOverlapIndex(i, t);
-        if (e === -1) {
+        const s = VisionCommonDragItem_1.VisionCommonDragItem.GetOverlapIndex(i, t);
+        if (s === -1) {
           this.I7i();
         } else {
           if (i.GetCurrentIndex() === -1) {
             this.I7i();
           }
-          const s = i.GetCurrentIndex();
+          const e = i.GetCurrentIndex();
           const h = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
-          const r = s !== -1;
-          this.c7i(i.GetCurrentData(), e, () => {
-            this.X7i(s, true);
+          const r = e !== -1;
+          this.c7i(i.GetCurrentData(), s, () => {
             this.X7i(e, true);
-            this.$7i(s, true);
+            this.X7i(s, true);
             this.$7i(e, true);
-            ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomPutOnRequest(i.GetCurrentData().GetUniqueId(), h.GetRoleId(), e, s, r);
+            this.$7i(s, true);
+            ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomPutOnRequest(i.GetCurrentData().GetUniqueId(), h.GetRoleId(), s, e, r);
           });
         }
       }
     };
-    this.Y7i = (i, t, e) => {
+    this.Y7i = (i, t, s) => {
       this.k9i = INVALIDINDEX;
       if (i >= 0) {
         this.X9i[i].SetActive(true);
         this.x9i[i].SetAniLightState(false);
       }
-      if (e && i !== -1) {
+      if (s && i !== -1) {
         UiLayer_1.UiLayer.SetShowMaskLayer("OnEquipVision", true);
         this.J7i();
         this.Uqe = 0;
-        e = this.X9i[t].GetAnimationTargetPos();
-        this.X9i[i].SetDragComponentToTargetPositionParam(e);
-        e = this.X9i[i].GetAnimationTargetPos();
-        this.X9i[t].SetDragComponentToTargetPositionParam(e);
+        s = this.X9i[t].GetAnimationTargetPos();
+        this.X9i[i].SetDragComponentToTargetPositionParam(s);
+        s = this.X9i[i].GetAnimationTargetPos();
+        this.X9i[t].SetDragComponentToTargetPositionParam(s);
         this.A9i = i;
         this.P9i = t;
         this.X7i(this.A9i, true);
@@ -498,17 +496,17 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.tHi = undefined;
-    this.Qvt = (i, t, e) => {
-      var s = i;
+    this.Qvt = (i, t, s) => {
+      var e = i;
       const h = new Array();
-      s.forEach(i => {
+      e.forEach(i => {
         h.push(ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i.Id));
       });
       this.w9i = h;
       this.F7i();
       i = i?.length > 0;
       this.GetLoopScrollViewComponent(6).RootUIComp.SetUIActive(i);
-      this.iHi(s, t, e);
+      this.iHi(e, t, s);
     };
   }
   OnRegisterComponent() {
@@ -635,18 +633,18 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupArray().forEach(i => {
       this.i7i.push(i.Id);
     });
-    this.i7i.sort((t, e) => {
+    this.i7i.sort((t, s) => {
       var i = h.find(i => i.GetRecommendFetterGroupId() === t);
-      var s = h.find(i => i.GetRecommendFetterGroupId() === e);
-      if (i && !s) {
+      var e = h.find(i => i.GetRecommendFetterGroupId() === s);
+      if (i && !e) {
         return -1;
-      } else if (!i && s) {
+      } else if (!i && e) {
         return 1;
-      } else if (i && s) {
+      } else if (i && e) {
         i = i.GetUsage();
-        return s.GetUsage() - i;
+        return e.GetUsage() - i;
       } else {
-        return t - e;
+        return t - s;
       }
     });
     this.i7i.unshift(0);
@@ -657,14 +655,14 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   sHi() {
     var t = new Array();
     for (let i = 23; i <= 26; i++) {
-      var e = this.GetItem(i);
-      t.push(e);
+      var s = this.GetItem(i);
+      t.push(s);
     }
     var i = this.GetItem(20);
     this.e7i = new StaticTabComponent_1.StaticTabComponent(this.fqe, this.pqe);
     this.e7i.Init(t);
-    var s = i.GetAttachUIChildren().Num();
-    for (let t = 0; t < s; t++) {
+    var e = i.GetAttachUIChildren().Num();
+    for (let t = 0; t < e; t++) {
       let i = t;
       if (t > 1) {
         i += 1;
@@ -708,29 +706,29 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   E7i(i) {
     this.GetItem(18).SetUIActive(i);
   }
-  c7i(i, t, e) {
+  c7i(i, t, s) {
     if (this.cHi(i, t)) {
-      this.TryEquip(i, t, e);
+      this.TryEquip(i, t, s);
     } else {
       this.I7i();
     }
   }
   cHi(i, t) {
-    var e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipRole(i.GetUniqueId());
-    var s = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
+    var s = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipRole(i.GetUniqueId());
+    var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
     var h = ModelManager_1.ModelManager.PhantomBattleModel;
-    var t = h.GetRoleIndexPhantomId(s.GetRoleId(), t);
+    var t = h.GetRoleIndexPhantomId(e.GetRoleId(), t);
     var t = h.GetPhantomBattleData(t) ? h.GetPhantomBattleData(t).GetCost() : 0;
-    var r = h.GetRoleCurrentPhantomCost(s.GetRoleId());
-    if (e && e !== s.GetRoleId()) {
-      var h = h.GetRoleCurrentPhantomCost(e) - i.GetCost() + t;
+    var r = h.GetRoleCurrentPhantomCost(e.GetRoleId());
+    if (s && s !== e.GetRoleId()) {
+      var h = h.GetRoleCurrentPhantomCost(s) - i.GetCost() + t;
       var n = r - t + i.GetCost();
       if (h > this.mHi() || n > this.mHi()) {
         this.dHi();
         return false;
       }
     } else {
-      if (e && e === s.GetRoleId()) {
+      if (s && s === e.GetRoleId()) {
         return true;
       }
       if (r - t + i.GetCost() > this.mHi()) {
@@ -762,13 +760,13 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   q7i() {
     var i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
     let t = ModelManager_1.ModelManager.PhantomBattleModel.GetRoleCurrentPhantomCost(i.GetRoleId());
-    var e = ModelManager_1.ModelManager.PhantomBattleModel?.GetRoleIndexPhantomId(i.GetRoleId(), this.b9i);
+    var s = ModelManager_1.ModelManager.PhantomBattleModel?.GetRoleIndexPhantomId(i.GetRoleId(), this.b9i);
     var i = ModelManager_1.ModelManager.PhantomBattleModel.GetBattleDataById(i.GetRoleId()).GetIncrIdList();
-    var s = this.B9i ? this.B9i.GetUniqueId() : 0;
-    var i = i.includes(s);
-    if (e && e > 0 && !i) {
-      s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(e);
-      t -= s.GetCost();
+    var e = this.B9i ? this.B9i.GetUniqueId() : 0;
+    var i = i.includes(e);
+    if (s && s > 0 && !i) {
+      e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(s);
+      t -= e.GetCost();
     }
     if (!i) {
       t += this.B9i ? this.B9i.GetCost() : 0;
@@ -847,9 +845,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     var i = Vector2D_1.Vector2D.Create(i.X, i.Y);
     i.FromUeVector2D(UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler().ConvertPositionFromViewportToLGUICanvas(i.ToUeVector2D(true)));
     var t = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionScrollerOffsetX() * ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionScrollerOffsetXDir();
-    var e = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionScrollerOffsetY() * ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionScrollerOffsetYDir();
+    var s = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionScrollerOffsetY() * ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionScrollerOffsetYDir();
     var t = i.X + t;
-    var i = i.Y + e;
+    var i = i.Y + s;
     this.GetItem(18).SetLGUISpaceAbsolutePosition(new UE.Vector(t, i, 0));
   }
   fHi() {
@@ -868,22 +866,22 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
     ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomPutOnRequest(0, t.GetRoleId(), i, i);
   }
-  w7i(i, t, e) {
+  w7i(i, t, s) {
     var i = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipRole(i.GetUniqueId());
-    var s = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
-    if (i && i !== s.GetRoleId()) {
-      s = new ConfirmBoxDefine_1.ConfirmBoxDataNew(31);
+    var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
+    if (i && i !== e.GetRoleId()) {
+      e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(31);
       i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(i);
-      s.SetTextArgs(i.GetName());
-      s.FunctionMap.set(1, () => {
+      e.SetTextArgs(i.GetName());
+      e.FunctionMap.set(1, () => {
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
       });
-      s.FunctionMap.set(2, () => {
-        e();
+      e.FunctionMap.set(2, () => {
+        s();
       });
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(s);
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
     } else {
-      e();
+      s();
     }
   }
   B7i(i) {
@@ -892,17 +890,17 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex = i;
     }
   }
-  b7i(i = false, t = true, e = true) {
-    this.pHi(t, e);
+  b7i(i = false, t = true, s = true) {
+    this.pHi(t, s);
     this.vHi(i);
   }
   pHi(i = true, t = true) {
-    var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
-    var e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipByIndex(e.GetRoleId(), this.b9i);
-    if (e !== 0) {
-      this.N7i(e, t);
-      e = this.A7i(this.b9i);
-      this.R7i(e);
+    var s = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
+    var s = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipByIndex(s.GetRoleId(), this.b9i);
+    if (s !== 0) {
+      this.N7i(s, t);
+      s = this.A7i(this.b9i);
+      this.R7i(s);
     } else if (i) {
       this.R7i(this.A7i(this.b9i));
       this.LoopScrollView.ResetGridController();
@@ -933,8 +931,8 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   A7i(i) {
     var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
     var t = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipByIndex(t.GetRoleId(), i);
-    let e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t);
-    return e = e || (this.w9i.length > 0 ? this.w9i[0] : undefined);
+    let s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t);
+    return s = s || (this.w9i.length > 0 ? this.w9i[0] : undefined);
   }
   U7i(i, t = 0) {
     if (i) {
@@ -946,23 +944,23 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   }
   N7i(i, t = true) {
     this.LoopScrollView.DeselectCurrentGridProxy();
-    let e = false;
-    let s = 0;
+    let s = false;
+    let e = 0;
     for (const h of this.w9i) {
       if (h.GetUniqueId() === i) {
-        e = true;
+        s = true;
         break;
       }
-      s++;
+      e++;
     }
-    if (!e) {
-      s = 0;
+    if (!s) {
+      e = 0;
     }
-    if (this.w9i.length > 0 && e) {
+    if (this.w9i.length > 0 && s) {
       if (t) {
-        this.LoopScrollView.ScrollToGridIndex(s, false);
+        this.LoopScrollView.ScrollToGridIndex(e, false);
       }
-      this.LoopScrollView.SelectGridProxy(s);
+      this.LoopScrollView.SelectGridProxy(e);
     }
   }
   OnBeforeShow() {
@@ -985,9 +983,6 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.PhantomBattleModel.CurrentSelectFetterGroupId = 0;
       this.h8e.SetSelectedIndex(this.Z9i);
     } else {
-      i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionSuitFilter) ?? new Map();
-      this.Z9i = i.get(this.dFe) ?? 0;
-      this.h8e.SetSelectedIndex(this.Z9i);
       this.a7i();
     }
     this.K7i();
@@ -1002,8 +997,8 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   a7i() {
     var i = this.i7i[this.Z9i];
     var i = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionSortUseDataList(i, this.O5t);
-    this.vpt.UpdateDataWithConfig(this.Z6i, 3, i, this.dFe.toString());
-    this.Mpt.UpdateDataWithConfig(this.Z6i, 3, i, this.dFe.toString());
+    this.vpt.UpdateDataWithConfig(this.Z6i, 3, i, this.dFe.toString(), this.dFe);
+    this.Mpt.UpdateDataWithConfig(this.Z6i, 3, i, this.dFe.toString(), this.dFe);
   }
   OnAfterShow() {
     this.X9i.forEach(i => {
@@ -1016,23 +1011,23 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     UiLayer_1.UiLayer.SetShowMaskLayer("OnEquipVision", false);
   }
   _7i(i, t = false) {
-    var e;
-    if (this.n7i && (e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(i)) && this.N9i !== e.GetUniqueId()) {
+    var s;
+    if (this.n7i && (s = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(i)) && this.N9i !== s.GetUniqueId()) {
       this.SHi();
-      ControllerHolder_1.ControllerHolder.PhantomBattleController.SetMeshShow(e.GetConfigId(true), () => {
+      ControllerHolder_1.ControllerHolder.PhantomBattleController.SetMeshShow(s.GetConfigId(true), () => {
         this.EHi(t);
       }, this.tHi);
       this.N9i = i;
     }
   }
-  EHi(e = false) {
+  EHi(s = false) {
     if (this.tHi) {
-      var s = this.tHi.Model;
+      var e = this.tHi.Model;
       let i = undefined;
       let t = undefined;
-      t = e ? (i = "VisionChangeEffect", "VisionChangeController") : (i = "VisionLevelUpEffect", "VisionStepupController");
-      UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(s, i);
-      UiModelUtil_1.UiModelUtil.SetRenderingMaterial(s, t);
+      t = s ? (i = "VisionChangeEffect", "VisionChangeController") : (i = "VisionLevelUpEffect", "VisionStepupController");
+      UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(e, i);
+      UiModelUtil_1.UiModelUtil.SetRenderingMaterial(e, t);
     }
   }
   gHi() {
@@ -1176,9 +1171,6 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeHide() {
     ModelManager_1.ModelManager.PhantomBattleModel?.ReduceNeedCameraFocusMethodDisableViewCount();
-    var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionSuitFilter) ?? new Map();
-    i.set(this.dFe, this.Z9i);
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionSuitFilter, i);
     this.Ko_.Hide();
     this.GetExtendToggle(34)?.SetToggleState(0);
   }
@@ -1196,26 +1188,27 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.J7i();
     this.W7i();
     this.e7i.Destroy();
+    this.h8e?.Destroy();
   }
-  iHi(e, i, s) {
-    if (e?.length > 0) {
+  iHi(s, i, e) {
+    if (s?.length > 0) {
       let t = 0;
-      if (s !== 1 || i) {
-        var h = e.length;
+      if (e !== 1 || i) {
+        var h = s.length;
         for (let i = 0; i < h; i++) {
-          if (e[i].Id === this.B9i?.GetUniqueId()) {
+          if (s[i].Id === this.B9i?.GetUniqueId()) {
             t = this.B9i?.GetUniqueId();
             break;
           }
         }
         if (t === 0) {
-          t = e[0].Id;
+          t = s[0].Id;
         }
       } else {
-        t = e[0].Id;
+        t = s[0].Id;
       }
-      s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t);
-      this.R7i(s);
+      e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t);
+      this.R7i(e);
       this.N7i(t);
       this.U7i(this.B9i);
       this.C7i();
@@ -1233,17 +1226,17 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
         }
       } else {
         if (i[0] === "txt") {
-          var e = this.q9i?.GetTxtItemByIndex(Number(i[1]));
-          if (e) {
-            return [e, e];
+          var s = this.q9i?.GetTxtItemByIndex(Number(i[1]));
+          if (s) {
+            return [s, s];
           }
         }
         if (i[0] === "item") {
-          const s = Number(i[1]);
-          if (s) {
-            e = t.findIndex(i => i.GetMonsterId(true) === s);
-            this.LoopScrollView.ScrollToGridIndex(e);
-            return [t = this.LoopScrollView.GetGrid(e), t];
+          const e = Number(i[1]);
+          if (e) {
+            s = t.findIndex(i => i.GetMonsterId(true) === e);
+            this.LoopScrollView.ScrollToGridIndex(s);
+            return [t = this.LoopScrollView.GetGrid(s), t];
           } else {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Guide", 16, "声骸聚焦引导extraParam字段配置错误", ["configParams", i]);

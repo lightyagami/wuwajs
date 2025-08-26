@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ShipTowerRewardView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -25,6 +26,7 @@ class ShipTowerRewardView extends UiViewBase_1.UiViewBase {
     this.uA_ = undefined;
     this.iJl = undefined;
     this.OW_ = true;
+    this.sma = undefined;
     this.n9_ = e => {
       if (e === "Start") {
         this.PA_?.SelectGridProxy(this.kA_());
@@ -46,8 +48,14 @@ class ShipTowerRewardView extends UiViewBase_1.UiViewBase {
       this.OW_ = true;
     };
     this.u6e = e => {
-      var t = this.iJl?.RewardList.filter(e => e.IsReceive)?.map(e => e.Id) ?? [];
-      ModelManager_1.ModelManager.ShipTowerModel.ReceiveAward(e.Id, t);
+      var i = this.iJl?.RewardList.filter(e => e.IsReceive)?.map(e => e.Id) ?? [];
+      ModelManager_1.ModelManager.ShipTowerModel.ReceiveAward(e.Id, i);
+    };
+    this.kOe = () => {
+      this.VG_();
+      if (ModelManager_1.ModelManager.ShipTowerModel.TimeIsOver()) {
+        this.jm();
+      }
     };
     this.BA_ = e => {
       if (this.iJl && (this.PA_?.RefreshByData(this.uA_, true, () => {
@@ -60,7 +68,7 @@ class ShipTowerRewardView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText]];
   }
   Es_() {
     this.uA_ = ModelManager_1.ModelManager.ShipTowerModel.GetAreaList();
@@ -92,14 +100,23 @@ class ShipTowerRewardView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ShipTowerRewardReceive, this.BA_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.n9_);
   }
-  OnBeforeShow() {}
+  OnBeforeShow() {
+    this.VG_();
+    this.sma = TimerSystem_1.RealTimeTimerSystem.Forever(this.kOe, 500);
+  }
   OnBeforeDestroy() {}
+  jm() {
+    if (TimerSystem_1.RealTimeTimerSystem.Has(this.sma)) {
+      TimerSystem_1.RealTimeTimerSystem.Remove(this.sma);
+      this.sma = undefined;
+    }
+  }
   kA_() {
     if (!this.OpenParam?.RewardId) {
       return this.dq_();
     }
-    const t = this.OpenParam.RewardId;
-    var e = this.uA_.findIndex(e => e.RewardList.some(e => e.Id === t));
+    const i = this.OpenParam.RewardId;
+    var e = this.uA_.findIndex(e => e.RewardList.some(e => e.Id === i));
     return this.mq_(e);
   }
   dq_() {
@@ -112,6 +129,10 @@ class ShipTowerRewardView extends UiViewBase_1.UiViewBase {
     } else {
       return e;
     }
+  }
+  VG_() {
+    var e = ModelManager_1.ModelManager.ShipTowerModel.GetRewardCountDownDesc();
+    this.GetText(5)?.SetText(e);
   }
 }
 exports.ShipTowerRewardView = ShipTowerRewardView;

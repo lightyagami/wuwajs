@@ -1,15 +1,15 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, i, n) {
-  var s;
+var __decorate = this && this.__decorate || function (e, t, i, s) {
+  var n;
   var o = arguments.length;
-  var r = o < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, i) : n;
+  var r = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, i, n);
+    r = Reflect.decorate(e, t, i, s);
   } else {
     for (var a = e.length - 1; a >= 0; a--) {
-      if (s = e[a]) {
-        r = (o < 3 ? s(r) : o > 3 ? s(t, i, r) : s(t, i)) || r;
+      if (n = e[a]) {
+        r = (o < 3 ? n(r) : o > 3 ? n(t, i, r) : n(t, i)) || r;
       }
     }
   }
@@ -23,7 +23,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SceneItemTimeScaleComponent = undefined;
 const AudioDefine_1 = require("../../../Core/Audio/AudioDefine");
-const Time_1 = require("../../../Core/Common/Time");
 const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
 const LevelGeneralNetworks_1 = require("../../LevelGamePlay/LevelGeneralNetworks");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -40,7 +39,7 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     return !!super.OnInit() && (this.EIe = this.Entity.GetComponent(0), true);
   }
   OnStart() {
-    return !!super.OnStart() && (this.TimeScaleList.Empty && this.SetTimeScaleTicking(false, "[SceneItemTimeScaleComponent] OnStart, 初始关闭时间缩放"), this.Xte = this.Entity.GetComponent(196), true);
+    return !!super.OnStart() && (this.TimeScaleList.Empty && this.SetTimeScaleTicking(false, "[SceneItemTimeScaleComponent] OnStart, 初始关闭时间缩放"), this.Xte = this.Entity.GetComponent(197), true);
   }
   SetTimeScaleTicking(e, t) {
     if (e && this.DisableHandle !== undefined) {
@@ -53,46 +52,45 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     }
   }
   OnTick(e) {
-    var t = Time_1.Time.WorldTimeSeconds;
+    let t = 1;
     let i = 1;
-    let n = 1;
     let s = false;
     while (!this.TimeScaleList.Empty) {
-      var o = this.TimeScaleList.Top;
-      if (!o) {
+      var n = this.TimeScaleList.Top;
+      if (!n) {
         break;
       }
-      if (o.EndTime > t && !o.MarkDelete) {
-        i = o.CalculateTimeScale();
-        s = o.NeedAddSceneItemTag;
-        if (o.EndTime - o.StartTime >= AudioDefine_1.ENTITY_TIMESCALE_ENABLE_THRESHOLD) {
-          n = i;
+      if (this.IsTimescaleValid(n)) {
+        t = n.CalculateTimeScale();
+        s = n.NeedAddSceneItemTag;
+        if (n.EndTime - n.StartTime >= AudioDefine_1.ENTITY_TIMESCALE_ENABLE_THRESHOLD) {
+          i = t;
         }
         break;
       }
-      this.TimeScaleMap.delete(o.Id);
+      this.TimeScaleMap.delete(n.Id);
       this.TimeScaleList.Pop();
     }
-    this.FreezeTimeScaleInternal = i;
-    var r = this.GetTopForeverTimeScale();
-    i *= r;
-    n *= r;
-    if (i !== this.TimeScaleInternal) {
+    this.FreezeTimeScaleInternal = t;
+    var o = this.GetTopForeverTimeScale();
+    t *= o;
+    i *= o;
+    if (t !== this.TimeScaleInternal) {
       this.bla();
-      if (s && i !== 1) {
-        this.Xte?.AddTag(i > 1 ? upsizeTag : downsizeTag);
+      if (s && t !== 1) {
+        this.Xte?.AddTag(t > 1 ? upsizeTag : downsizeTag);
       }
-      this.TimeScaleInternal = i;
+      this.TimeScaleInternal = t;
       this.Entity.SetTimeDilation(this.TimeDilation);
     }
-    n *= this.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1);
-    this.Entity.GetComponent(202)?.UpdateAkFinalTimeScale(n);
+    i *= this.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1);
+    this.Entity.GetComponent(203)?.UpdateAkFinalTimeScale(i);
     if (this.TimeScaleList.Empty) {
       this.SetTimeScaleTicking(false, "[PawnTimeScaleComponent] 时间缩放结束");
     }
   }
-  SetTimeScale(e, t, i, n, s, o = false) {
-    e = super.SetTimeScale(e, t, i, n, s, o);
+  SetTimeScale(e, t, i, s, n, o = false) {
+    e = super.SetTimeScale(e, t, i, s, n, o);
     if (e >= 0) {
       this.SetTimeScaleTicking(true);
     }
@@ -122,7 +120,7 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     super.OnChangeTimeDilation(t);
     if (this.EIe && LevelGeneralNetworks_1.LevelGeneralNetworks.CheckEntityCanPushTimeDilation(this.EIe.GetEntityTimeScaleModifyStrategy())) {
       let e = this.CurrentTimeScale * t;
-      t = this.Entity.GetComponent(284);
+      t = this.Entity.GetComponent(287);
       if (t && t?.ExtraTimeDilationInSelfCenteredMode !== 0) {
         e /= t.ExtraTimeDilationInSelfCenteredMode;
       }
@@ -130,5 +128,5 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     }
   }
 };
-SceneItemTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(204)], SceneItemTimeScaleComponent);
+SceneItemTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(205)], SceneItemTimeScaleComponent);
 exports.SceneItemTimeScaleComponent = SceneItemTimeScaleComponent; //# sourceMappingURL=SceneItemTimeScaleComponent.js.map

@@ -393,7 +393,7 @@ class AiPerceptionEvents {
   }
   OnSenseSceneItem(t) {
     var i;
-    if (this.dre && !this.gre.has(t.Entity.Id) && (i = t.Entity.GetComponent(102))?.Valid && i.IsDestroyed) {
+    if (this.dre && !this.gre.has(t.Entity.Id) && (i = t.Entity.GetComponent(103))?.Valid && i.IsDestroyed) {
       this.gre.add(t.Entity.Id);
       this.dre.Callback.Broadcast(t.Owner, true);
     }

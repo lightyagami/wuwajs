@@ -8,7 +8,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 class FloroRanchCurrencyData {
   constructor(t) {
     this.UGe = 0;
-    this.qUu = 0;
+    this.gDu = 0;
     this.ConfigData = undefined;
     this.ConfigData = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(t);
   }
@@ -19,13 +19,13 @@ class FloroRanchCurrencyData {
     this.UGe = t;
   }
   SetTotal(t) {
-    this.qUu = t;
+    this.gDu = t;
   }
   GetAmount() {
     return this.UGe;
   }
   GetTotalAmount() {
-    return this.qUu;
+    return this.gDu;
   }
   GetIconPath() {
     return this.ConfigData.GetSmallIcon();

@@ -55,7 +55,7 @@ class LevelPickInteractController extends ControllerBase_1.ControllerBase {
       this.zOa = true;
       this.A6l = 0;
       this.JOa = t;
-      if (EntitySystem_1.EntitySystem.GetComponent(r.Id, 0)?.GetPbModelConfig()?.EntityType === "Chessboard" && (r = EntitySystem_1.EntitySystem.GetComponent(r.Id, 137))) {
+      if (EntitySystem_1.EntitySystem.GetComponent(r.Id, 0)?.GetPbModelConfig()?.EntityType === "Chessboard" && (r = EntitySystem_1.EntitySystem.GetComponent(r.Id, 138))) {
         this.YOa(r);
       }
       if (UiModel_1.UiModel.IsInMainView) {
@@ -115,7 +115,7 @@ class LevelPickInteractController extends ControllerBase_1.ControllerBase {
     if (!this.zOa && this.A6l === 0) {
       if (e instanceof SceneItemJigsawBaseComponent_1.SceneItemJigsawBaseComponent && (t = new Protocol_1.Aki.Protocol.Mv_(), e = e.Entity?.GetComponent(0)?.GetCreatureDataId())) {
         t.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(24469, t, e => {
+        Net_1.Net.Call(22993, t, e => {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Level", 36, "CloseInteractionView RenjuExitMatchedActionResponse", ["ErrorCode", e.G9n]);
           }
@@ -157,7 +157,7 @@ class LevelPickInteractController extends ControllerBase_1.ControllerBase {
           }
           var r = i?.Chair;
           if (r) {
-            const n = r.GetComponent(197);
+            const n = r.GetComponent(198);
             if (n) {
               n.SetInteractionState(false, "ExitPickInteractModel.Close");
               TimerSystem_1.TimerSystem.Delay(() => {

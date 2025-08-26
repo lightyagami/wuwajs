@@ -25,31 +25,31 @@ class BeginnerCarnivalTaskView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.q8e = 0;
     this.lqe = undefined;
-    this.yhu = 0;
+    this.Qhu = 0;
     this.xqe = undefined;
     this.Bqe = () => {
       return new BeginnerCarnivalTaskItem_1.BeginnerCarnivalTaskItem();
     };
     this.wwe = () => {
-      if (!(TimeUtil_1.TimeUtil.GetServerTimeStamp() < this.yhu)) {
+      if (!(TimeUtil_1.TimeUtil.GetServerTimeStamp() < this.Qhu)) {
         this.q8e--;
         if (this.q8e < MIN_TYPE) {
           this.q8e = MAX_TYPE;
         }
         this._7e(this.q8e);
-        this.yhu = TimeUtil_1.TimeUtil.GetServerTimeStamp() + 100;
+        this.Qhu = TimeUtil_1.TimeUtil.GetServerTimeStamp() + 100;
         this.UiViewSequence?.StopSequenceByKey("Switch");
         this.UiViewSequence?.PlaySequence("Switch");
       }
     };
     this.Pwe = () => {
-      if (!(TimeUtil_1.TimeUtil.GetServerTimeStamp() < this.yhu)) {
+      if (!(TimeUtil_1.TimeUtil.GetServerTimeStamp() < this.Qhu)) {
         this.q8e++;
         if (this.q8e > MAX_TYPE) {
           this.q8e = MIN_TYPE;
         }
         this._7e(this.q8e);
-        this.yhu = TimeUtil_1.TimeUtil.GetServerTimeStamp() + 100;
+        this.Qhu = TimeUtil_1.TimeUtil.GetServerTimeStamp() + 100;
         this.UiViewSequence?.StopSequenceByKey("Switch");
         this.UiViewSequence?.PlaySequence("Switch");
       }

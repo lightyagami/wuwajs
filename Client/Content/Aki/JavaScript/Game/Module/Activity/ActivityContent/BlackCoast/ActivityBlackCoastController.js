@@ -25,10 +25,10 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17441, this.Pja);
+    Net_1.Net.Register(20408, this.Pja);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17441);
+    Net_1.Net.UnRegister(20408);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityBlackCoastController.qdi);
@@ -64,10 +64,10 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
     var r = new Protocol_1.Aki.Protocol.hf_();
     r.w6n = t;
     r.Bja = e;
-    Net_1.Net.Call(15319, r, t => {
+    Net_1.Net.Call(19882, r, t => {
       if (t) {
         if (t.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 23938);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 22006);
         } else {
           for (const e of this.wja()) {
             e.SetProgressRewardDataGot(t.rM_);
@@ -79,10 +79,10 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
   static RequestTaskReward(r, o) {
     var t = new Protocol_1.Aki.Protocol.sf_();
     t.gps = o;
-    Net_1.Net.Call(16051, t, t => {
+    Net_1.Net.Call(16088, t, t => {
       if (t) {
         if (t.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 22087);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 22450);
         } else {
           for (const e of this.wja()) {
             e.SetTaskRewardGot(r, o);

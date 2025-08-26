@@ -36,13 +36,13 @@ class PlotReviewView extends UiViewBase_1.UiViewBase {
     this.AZ_ = (i, t, e) => {
       var s = new PlotReviewDynamicScrollItem_1.PlotReviewDynamicScrollItem();
       s.SetTalkItemToggleClickCallBack(this.PZ_);
-      s.SetTalkItemCanToggleChangeCallBack(this.pY1);
+      s.SetTalkItemCanToggleChangeCallBack(this.$Y1);
       return s;
     };
     this.PZ_ = i => {
       this.xZ_(i);
     };
-    this.pY1 = i => this.vY1(i);
+    this.$Y1 = i => this.WY1(i);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIDynScrollViewComponent], [2, UE.UIItem]];
@@ -59,13 +59,13 @@ class PlotReviewView extends UiViewBase_1.UiViewBase {
     this.zMc = false;
     this.PlotReviewDynamicScrollView.BindLateUpdate(this.fze);
   }
-  vY1(i) {
+  WY1(i) {
     var t;
     return !!this.Pe && !(t = this.Pe.PlotReviewItemDataList.length, i < 0) && !(t <= i) && (t = this.Pe.PlotReviewItemDataList[i]).Type !== 1 && !!(t = (i = t.Data.TalkItem).PlayVoice ? i.TidTalk : undefined) && !!PlotAudioById_1.configPlotAudioById.GetConfig(t);
   }
   xZ_(e) {
     var i;
-    if (this.vY1(e)) {
+    if (this.WY1(e)) {
       i = this.Pe.PlotReviewItemDataList[e].Data.TalkItem.TidTalk;
       i = PlotAudioById_1.configPlotAudioById.GetConfig(i);
       if (this.RZ_ === e) {

@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (e, i, l, a) {
   var t;
-  var n = arguments.length;
-  var o = n < 3 ? i : a === null ? a = Object.getOwnPropertyDescriptor(i, l) : a;
+  var o = arguments.length;
+  var S = o < 3 ? i : a === null ? a = Object.getOwnPropertyDescriptor(i, l) : a;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(e, i, l, a);
+    S = Reflect.decorate(e, i, l, a);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (t = e[r]) {
-        o = (n < 3 ? t(o) : n > 3 ? t(i, l, o) : t(i, l)) || o;
+    for (var n = e.length - 1; n >= 0; n--) {
+      if (t = e[n]) {
+        S = (o < 3 ? t(S) : o > 3 ? t(i, l, S) : t(i, l)) || S;
       }
     }
   }
-  if (n > 3 && o) {
-    Object.defineProperty(i, l, o);
+  if (o > 3 && S) {
+    Object.defineProperty(i, l, S);
   }
-  return o;
+  return S;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -27,13 +27,14 @@ const EntityComponent_1 = require("../../../../../../Core/Entity/EntityComponent
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const RoleDefine_1 = require("../../../../../Module/RoleUi/RoleDefine");
+const SpecialSkillAogusita_1 = require("./SpecialSkill/SpecialSkillAogusita");
 const SpecialSkillFuLuoLuo_1 = require("./SpecialSkill/SpecialSkillFuLuoLuo");
 const SpecialSkillKanteleila_1 = require("./SpecialSkill/SpecialSkillKanteleila");
 const SpecialSkillKatixiya_1 = require("./SpecialSkill/SpecialSkillKatixiya");
 const SpecialSkillLuPa_1 = require("./SpecialSkill/SpecialSkillLuPa");
 const SpecialSkillXiaKong_1 = require("./SpecialSkill/SpecialSkillXiaKong");
 const SpecialSkillZheZhi_1 = require("./SpecialSkill/SpecialSkillZheZhi");
-const specialSkillTypes = new Map([[1105, SpecialSkillZheZhi_1.SpecialSkillZheZhi], [1607, SpecialSkillKanteleila_1.SpecialSkillKanteleila], [1407, SpecialSkillXiaKong_1.SpecialSkillXiaKong], [1207, SpecialSkillLuPa_1.SpecialSkillLuPa], [1409, SpecialSkillKatixiya_1.SpecialSkillKatixiya], [1608, SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo]]);
+const specialSkillTypes = new Map([[1105, SpecialSkillZheZhi_1.SpecialSkillZheZhi], [1607, SpecialSkillKanteleila_1.SpecialSkillKanteleila], [1407, SpecialSkillXiaKong_1.SpecialSkillXiaKong], [1207, SpecialSkillLuPa_1.SpecialSkillLuPa], [1409, SpecialSkillKatixiya_1.SpecialSkillKatixiya], [1608, SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo], [1306, SpecialSkillAogusita_1.SpecialSkillAogusita]]);
 let CharacterSpecialSkillComponent = class CharacterSpecialSkillComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -73,5 +74,5 @@ let CharacterSpecialSkillComponent = class CharacterSpecialSkillComponent extend
     this.SpecialSkill?.OnDisable();
   }
 };
-CharacterSpecialSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(252)], CharacterSpecialSkillComponent);
+CharacterSpecialSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(255)], CharacterSpecialSkillComponent);
 exports.CharacterSpecialSkillComponent = CharacterSpecialSkillComponent; //# sourceMappingURL=CharacterSpecialSkillComponent.js.map

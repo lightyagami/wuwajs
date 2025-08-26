@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (e, t, i, n) {
-  var o;
-  var s = arguments.length;
-  var h = s < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, i) : n;
+  var s;
+  var o = arguments.length;
+  var h = o < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, i) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(e, t, i, n);
   } else {
     for (var a = e.length - 1; a >= 0; a--) {
-      if (o = e[a]) {
-        h = (s < 3 ? o(h) : s > 3 ? o(t, i, h) : o(t, i)) || h;
+      if (s = e[a]) {
+        h = (o < 3 ? s(h) : o > 3 ? s(t, i, h) : s(t, i)) || h;
       }
     }
   }
-  if (s > 3 && h) {
+  if (o > 3 && h) {
     Object.defineProperty(t, i, h);
   }
   return h;
@@ -45,12 +45,12 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const SCENEITEM_MOVE_DEBUG_KEY = "SCENEITEM_MOVE_DEBUG";
 const OFFSET = 100;
 class MoveTarget {
-  constructor(e, t, i = 0, n = -1, o = -1) {
+  constructor(e, t, i = 0, n = -1, s = -1) {
     this.TargetPosData = e;
     this.MoveTime = t;
     this.StayTime = i;
-    this.MaxSpees = n;
-    this.Acceleration = o;
+    this.MaxSpeed = n;
+    this.Acceleration = s;
   }
 }
 exports.MoveTarget = MoveTarget;
@@ -106,8 +106,9 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.o4o = undefined;
     this.Nln = undefined;
     this.Oln = undefined;
-    this.vFu = undefined;
-    this.y$c = 0;
+    this.EIe = undefined;
+    this.IVu = undefined;
+    this.fQc = 0;
     this.kln = false;
     this.ZPl = false;
     this.Anr = Vector_1.Vector.Create();
@@ -119,42 +120,50 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.Hln = -0;
     this.jln = false;
     this.Wln = false;
-    this.h7c = false;
-    this.S$c = e => {
-      this.M$c(e);
-    };
-    this.Xd_ = [];
-    this.E$c = () => {
-      var e = this.y$c;
-      this.y$c = 0;
-      if (e === 1) {
-        this.I$c();
-      } else if (e === 2) {
-        this.T$c();
+    this.TVu = false;
+    this.sJc = () => {
+      if (this.o4o?.IsValid() && this.o4o.IsMoving(true)) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("SceneItem", 39, "当前SceneItem移动时被删除，保底停止移动", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
+        }
+        this.StopMove(true);
       }
     };
-    this.I$c = () => {
+    this.gQc = e => {
+      this.CQc(e);
+    };
+    this.Xd_ = [];
+    this.pQc = () => {
+      var e = this.fQc;
+      this.fQc = 0;
+      if (e === 1) {
+        this.vQc();
+      } else if (e === 2) {
+        this.yQc();
+      }
+    };
+    this.vQc = () => {
       this.ActorComp?.ResetAllCachedTime();
-      this.b$c();
-      this.R$c();
+      this.SQc();
+      this.MQc();
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemMoveStopped, this.Entity);
     };
-    this.T$c = () => {
+    this.yQc = () => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动停止", ["EntityId", this.Entity.Id]);
       }
       this.ActorComp?.ResetAllCachedTime();
       this.jln = false;
-      this.b$c();
-      this.R$c();
+      this.SQc();
+      this.MQc();
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemMoveStopped, this.Entity);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.Entity);
     };
-    this.Sbu = [];
-    this.ybu = [];
+    this.Nbu = [];
+    this.Fbu = [];
   }
   static get Dependencies() {
-    return [202, 0];
+    return [203, 0];
   }
   get IsMovingPrepareCompleted() {
     return this.Wln;
@@ -178,7 +187,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     }
   }
   IsSplineMoving() {
-    return !!this.IsMovingPrepareCompleted && this.o4o.GetSplineRunState() !== 0;
+    return !!this.IsMovingPrepareCompleted && !!this.o4o?.IsValid() && this.o4o.GetSplineRunState() !== 0;
   }
   GetDistanceAloneSpline() {
     if (this.IsMovingPrepareCompleted) {
@@ -187,16 +196,20 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       return 0;
     }
   }
+  OnInitData() {
+    this.EIe = this.Entity.GetComponent(0);
+    return true;
+  }
   OnStart() {
-    var e = this.Entity.GetComponent(0);
-    this.ActorComp = this.Entity.GetComponent(202);
-    this.Nln = this.Entity.GetComponent(158);
-    this.Oln = this.Entity.GetComponent(130);
-    this.vFu = this.Entity.GetComponent(293);
+    var e;
+    this.ActorComp = this.Entity.GetComponent(203);
+    this.Nln = this.Entity.GetComponent(159);
+    this.Oln = this.Entity.GetComponent(131);
+    this.IVu = this.Entity.GetComponent(298);
     this.Nln?.SetEnableMovementSync(false, "SceneItemMoveComponent OnStart");
-    if (e && e.GetPbEntityInitData()) {
+    if (this.EIe && this.EIe.GetPbEntityInitData()) {
       if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
-        this.h7c = true;
+        this.TVu = true;
       }
       if (!Info_1.Info.EnableForceTick) {
         this.o4o = this.ActorComp.Owner.GetComponentByClass(UE.KuroSceneItemMoveComponent.StaticClass());
@@ -205,10 +218,19 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
         }
         this.o4o.Kuro_SetGravityDirect(this.ActorComp.ActorGravityDirectProxy.ToUeVectorOld());
         this.o4o.SetTickingMoveEnable(false);
-        this.w$c(this.S$c);
-        this.Rbu(this.E$c);
-        if (this.h7c) {
+        this.EQc(this.gQc);
+        this.Qbu(this.pQc);
+        if (this.TVu) {
           this.o4o.SetKuroOnlyTickOutside(true);
+        }
+        if ((e = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id)) && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.sJc)) {
+          EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.sJc);
+        }
+        if (ModelManager_1.ModelManager.AvoidanceModel.UseRVOAvoidance) {
+          this.o4o.SetAvoidanceGroupMask(ModelManager_1.ModelManager.AvoidanceModel.SceneItemAvoidanceGroupMask);
+          this.o4o.SetGroupsToAvoidMask(ModelManager_1.ModelManager.AvoidanceModel.SceneItemGroupsToAvoidMask);
+          this.o4o.AvoidanceRadius = ModelManager_1.ModelManager.AvoidanceModel.SceneItemAvoidanceRadius;
+          this.o4o.SetAvoidanceEnabled(true);
         }
       }
     }
@@ -216,33 +238,33 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   }
   OnEnd() {
     if (this.o4o?.IsValid()) {
-      this.L$c(this.S$c);
-      this.Ebu(this.E$c);
+      this.IQc(this.gQc);
+      this.jbu(this.pQc);
     }
+    EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     return true;
   }
   OnActivate() {
     if (!Info_1.Info.EnableForceTick && this.Fln.length > 0) {
-      for (const t of this.Fln) {
-        this.o4o.AddMoveTarget(new UE.VectorDouble(t.TargetPosData.X ?? 0, t.TargetPosData.Y ?? 0, t.TargetPosData.Z ?? 0), t.MoveTime, t.StayTime);
+      for (const e of this.Fln) {
+        this.o4o.AddMoveTarget(new UE.VectorDouble(e.TargetPosData.X ?? 0, e.TargetPosData.Y ?? 0, e.TargetPosData.Z ?? 0), e.MoveTime, e.StayTime);
       }
-      this.y$c = 1;
+      this.fQc = 1;
       this.Fln = [];
       this.o4o.SetTickingMoveEnable(true);
       this.Oln.IsMoving = true;
     }
     this.Wln = true;
-    var e = this.Entity.GetComponent(0);
-    if (e?.PbMoveSplineId) {
-      this.OnRecvSyncSplineMoving(e.PbMoveSplineId, e.PbMoveSplineConfig, e.PbMoveSplineSceneItemRuntimeData);
+    if (this.EIe?.PbMoveSplineId) {
+      this.OnRecvSyncSplineMoving(this.EIe.PbMoveSplineId, this.EIe.PbMoveSplineConfig, this.EIe.PbMoveSplineSceneItemRuntimeData);
     }
   }
   Kln() {
     return Vector_1.Vector.DistSquared(this._ae, this.Vln) >= this.Hln;
   }
   OnTick(e) {
-    if (this.h7c) {
-      this.vFu?.TickMovement(e);
+    if (this.TVu) {
+      this.IVu?.TickMovement(e);
     }
     if (this.Oln.IsMoving) {
       if (!this.IsMoving || this.o4o.GetSimpleRunState() === 2) {
@@ -296,8 +318,8 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     var t;
     if (!Info_1.Info.EnableForceTick && this.IsMovingPrepareCompleted) {
       t = Vector_1.Vector.Create(e.TargetPosData.X ?? 0, e.TargetPosData.Y ?? 0, e.TargetPosData.Z ?? 0);
-      this.o4o.AddMoveTarget(t.ToUeVector(), e.MoveTime, e.StayTime, e.MaxSpees, e.Acceleration);
-      this.y$c = 1;
+      this.o4o.AddMoveTarget(t.ToUeVector(), e.MoveTime, e.StayTime, e.MaxSpeed, e.Acceleration);
+      this.fQc = 1;
       this.o4o.SetTickingMoveEnable(true);
       t = Vector_1.Vector.Dist(t, this.ActorComp.ActorLocationProxy);
       if (this.o4o.GetSimpleRunState() === 0 && t > OFFSET) {
@@ -313,7 +335,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   AddMoveTarget(t) {
     if (this.jln) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 31, "当前SceneItem正在巡逻中,不可再添加目标点", ["PbDataId", this.Entity.GetComponent(0).GetPbDataId()]);
+        Log_1.Log.Error("SceneItem", 31, "当前SceneItem正在巡逻中,不可再添加目标点", ["PbDataId", this.EIe?.GetPbDataId()]);
       }
     } else {
       let e = undefined;
@@ -338,7 +360,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       };
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 31, "SceneItemMoveComponent不存在", ["PbDataId", this.Entity.GetComponent(0).GetPbDataId()], ["IsEntityInit", this.Entity.IsInit]);
+        Log_1.Log.Error("SceneItem", 31, "SceneItemMoveComponent不存在", ["PbDataId", this.EIe?.GetPbDataId()], ["IsEntityInit", this.Entity.IsInit]);
       }
       return {
         HasTarget: false,
@@ -358,9 +380,9 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     };
     t.M0a.g0a = e.MoveTime;
     t.M0a.f0a = e.StayTime;
-    t.M0a.v0a = e.MaxSpees;
+    t.M0a.v0a = e.MaxSpeed;
     t.M0a.p0a = e.Acceleration;
-    Net_1.Net.Call(23476, t, e => {});
+    Net_1.Net.Call(21344, t, e => {});
   }
   HandleMoveToTarget(e) {
     e = new MoveTarget({
@@ -387,16 +409,22 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     }
   }
   StartSplineMoveAtConstantTimeImplement(e, t, i = true) {
+    if (this.EIe?.GetRemoveState()) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 样条移动(ConstantTime)开始失败，Entity已删除", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe.GetPbDataId()]);
+      }
+      return false;
+    }
     if (!this.o4o.StartMoveWithSplineAtConstantTime(e.Spline, e.IsRepeat, e.IsCycle, e.IsKeepLookAt, e.TimeSec, e.TimeDisCurve, e.StartTimeOffset, e.StartDis, e.EndDis)) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 样条移动(ConstantTime)开始失败", ["EntityId", this.Entity.Id]);
+        Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 样条移动(ConstantTime)开始失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
       }
       return false;
     }
     this.jln = true;
     this.kln = i;
     this.Nln?.SetEnableMovementSync(i, "SceneItemMoveComponent StartPatrolAtConstantTime");
-    this.y$c = 2;
+    this.fQc = 2;
     if (t) {
       const n = () => {
         this.RemoveStopMoveCallback(n);
@@ -405,22 +433,28 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       this.AddStopMoveCallback(n);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动(ConstantTime)开始", ["EntityId", this.Entity.Id]);
+      Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动(ConstantTime)开始", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
     }
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStarted, this.Entity);
     return true;
   }
   StartSplineMoveAtDynamicSpeedImplement(e, t, i = true) {
+    if (this.EIe?.GetRemoveState()) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 样条移动(DynamicSpeed)开始失败，Entity已删除", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe.GetPbDataId()]);
+      }
+      return false;
+    }
     if (!this.o4o.StartMoveWithSplineAtDynamicSpeed(e.Spline, e.MaxMoveTimes, e.IsCycle, e.IsKeepLookAt, e.InitSpeed, e.Acceleration, e.TargetSpeed, e.StartDis, e.EndDis)) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 样条移动(DynamicSpeed)开始失败", ["EntityId", this.Entity.Id]);
+        Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 样条移动(DynamicSpeed)开始失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
       }
       return false;
     }
     this.jln = true;
     this.kln = i;
     this.Nln?.SetEnableMovementSync(i, "SceneItemMoveComponent StartPatrolAtDynamicSpeed");
-    this.y$c = 2;
+    this.fQc = 2;
     if (t) {
       const n = () => {
         this.RemoveStopMoveCallback(n);
@@ -429,7 +463,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       this.AddStopMoveCallback(n);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动(DynamicSpeed)开始", ["EntityId", this.Entity.Id]);
+      Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动(DynamicSpeed)开始", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
     }
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStarted, this.Entity);
     return true;
@@ -438,7 +472,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     var t;
     var i;
     var n;
-    return !!this.IsSplineMoving() && !!this.o4o && (n = this.o4o.SplineMoveData.DynamicSpeedData, t = e.CurrentSpeed ?? n.CurrentSpeed, i = e.Acceleration ?? n.Acceleration, e = e.TargetSpeed ?? n.TargetSpeed, (n = this.o4o.UpdateDynamicSpeedSplineMoveParams(t, i, e)) ? (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(SCENEITEM_MOVE_DEBUG_KEY) && Log_1.Log.CheckDebug() && Log_1.Log.Debug("SceneItem", 39, "SceneItemMoveComponent 更新样条移动参数", ["EntityId", this.Entity.Id], ["当前速度", t], ["加速度", i], ["目标速度", e]), n) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 更新样条移动动态参数失败", ["EntityId", this.Entity.Id]), false));
+    return !!this.IsSplineMoving() && !!this.o4o && (n = this.o4o.SplineMoveData.DynamicSpeedData, t = e.CurrentSpeed ?? n.CurrentSpeed, i = e.Acceleration ?? n.Acceleration, e = e.TargetSpeed ?? n.TargetSpeed, (n = this.o4o.UpdateDynamicSpeedSplineMoveParams(t, i, e)) ? (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(SCENEITEM_MOVE_DEBUG_KEY) && Log_1.Log.CheckDebug() && Log_1.Log.Debug("SceneItem", 39, "SceneItemMoveComponent 更新样条移动参数", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["当前速度", t], ["加速度", i], ["目标速度", e]), n) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "SceneItemMoveComponent 更新样条移动动态参数失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]), false));
   }
   UpdateSplineMoveDistance(e) {
     return !!this.IsSplineMoving() && !!this.o4o && this.o4o.UpdateSplineMoveDistance(e);
@@ -451,12 +485,12 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       if (e.DistanceAloneSpline !== undefined && e.DistanceAloneSpline >= 0) {
         if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CheckSplineMoveDistanceNearlyEqual(e.DistanceAloneSpline, this.o4o.GetDistanceAlongSpline(), t)) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 样条移动进度相差过小，不更新", ["EntityId", this.Entity.Id], ["OldDistanceAlongSpline", this.o4o.GetDistanceAlongSpline()], ["NewDistanceAlongSpline", e.DistanceAloneSpline]);
+            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 样条移动进度相差过小，不更新", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["OldDistanceAlongSpline", this.o4o.GetDistanceAlongSpline()], ["NewDistanceAlongSpline", e.DistanceAloneSpline]);
           }
           return false;
         } else {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 更新样条移动进度", ["EntityId", this.Entity.Id], ["OldDistanceAlongSpline", this.o4o.GetDistanceAlongSpline()], ["NewDistanceAlongSpline", e.DistanceAloneSpline]);
+            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 更新样条移动进度", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["OldDistanceAlongSpline", this.o4o.GetDistanceAlongSpline()], ["NewDistanceAlongSpline", e.DistanceAloneSpline]);
           }
           this.UpdateSplineMoveDistance(e.DistanceAloneSpline);
           return true;
@@ -465,13 +499,13 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       if (e.CurPos) {
         if (!SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CheckSplineMoveLocationNearlyEqual(this.ActorComp.ActorLocationProxy, e.CurPos, t)) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 更新样条移动进度", ["EntityId", this.Entity.Id], ["OlPos", this.ActorComp.ActorLocationProxy], ["NewPos", e.CurPos]);
+            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 更新样条移动进度", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["OldPos", this.ActorComp.ActorLocationProxy], ["NewPos", e.CurPos]);
           }
           this.UpdateSplineMoveDistanceByPos(e.CurPos);
           return true;
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 样条移动进度相差过小，不更新", ["EntityId", this.Entity.Id], ["OldPos", this.ActorComp.ActorLocationProxy], ["NewPos", e.CurPos]);
+          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveDistanceByRuntimeData] 样条移动进度相差过小，不更新", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["OldPos", this.ActorComp.ActorLocationProxy], ["NewPos", e.CurPos]);
         }
       }
     }
@@ -482,13 +516,13 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       MathUtils_1.MathUtils.CommonTempRotator.DeepCopy(e.CurRot);
       if (!SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CheckSplineMoveRotatorNearlyEqual(MathUtils_1.MathUtils.CommonTempRotator, this.ActorComp.ActorRotationProxy, t)) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveRotationByRuntimeData] 更新样条移动旋转", ["EntityId", this.Entity.Id], ["OldRot", this.ActorComp.ActorRotationProxy], ["NewRot", e.CurRot]);
+          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveRotationByRuntimeData] 更新样条移动旋转", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["OldRot", this.ActorComp.ActorRotationProxy], ["NewRot", e.CurRot]);
         }
         this.o4o.GetOwner()?.K2_SetActorRotation(MathUtils_1.MathUtils.CommonTempRotator.ToUeRotator(), false);
         return true;
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveRotationByRuntimeData] 样条移动旋转相差过小，不更新", ["EntityId", this.Entity.Id], ["OldRot", this.ActorComp.ActorRotationProxy], ["NewRot", e.CurRot]);
+        Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.UpdateSplineMoveRotationByRuntimeData] 样条移动旋转相差过小，不更新", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["OldRot", this.ActorComp.ActorRotationProxy], ["NewRot", e.CurRot]);
       }
     }
     return false;
@@ -500,26 +534,45 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   }
   OnRecvSyncSplineMoving(e, t, i) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 更新样条移动task", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+      Log_1.Log.Debug("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 更新样条移动task", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
     }
     var n;
-    var o = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralConfig();
-    if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveConfigToGeneralConfig(e, t, o)) {
+    var s = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralConfig();
+    if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveConfigToGeneralConfig(e, t, s)) {
       t = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralRuntimeData();
       if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveRuntimeDataToGeneralRuntimeData(i, t)) {
         if (i = this.GetCurSplineMoveTask()) {
-          if (i.CheckSplineMoveConfigEqual(o)) {
-            if (this.o4o && this.IsSplineMoving() && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前样条移动task参数与同步信息相同，更新样条运行时数据", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]), n = false, n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t)) || this.UpdateSplineMoveRotationByRuntimeData(t))) {
-              this.vFu?.TickMovement(0, true);
+          if (i.CheckSplineMoveConfigEqual(s)) {
+            if (this.IsSplineMoving()) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前样条移动task参数与同步信息相同，更新样条运行时数据", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
+              }
+              n = false;
+              if (n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t)) || this.UpdateSplineMoveRotationByRuntimeData(t)) {
+                this.IVu?.TickMovement(0, true);
+              }
+            } else {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前样条移动task未在进行样条移动，中断并开始新的样条移动task", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
+              }
+              i.EndTask(false);
+              this.StartSplineMoveTask({
+                SplineId: e,
+                SplineMoveConfig: s,
+                EnableSplineMoveSync: true,
+                EnableMovementSync: false,
+                NeedMoveToStartPoint: false,
+                SplineMoveRuntimeData: t
+              });
             }
           } else {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前样条移动task参数与同步信息不同，中断并开始新的样条移动task", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]);
+              Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前样条移动task参数与同步信息不同，中断并开始新的样条移动task", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
             }
             i.EndTask(false);
             this.StartSplineMoveTask({
               SplineId: e,
-              SplineMoveConfig: o,
+              SplineMoveConfig: s,
               EnableSplineMoveSync: true,
               EnableMovementSync: false,
               NeedMoveToStartPoint: false,
@@ -528,11 +581,11 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
           }
         } else {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前没有样条移动task，直接开始新的样条移动task", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]);
+            Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 当前没有样条移动task，直接开始新的样条移动task", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
           }
           this.StartSplineMoveTask({
             SplineId: e,
-            SplineMoveConfig: o,
+            SplineMoveConfig: s,
             EnableSplineMoveSync: true,
             EnableMovementSync: false,
             NeedMoveToStartPoint: false,
@@ -540,66 +593,66 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
           });
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 解析样条移动协议中的样条移动运行时数据失败", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+        Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 解析样条移动协议中的样条移动运行时数据失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 解析样条移动协议中的样条移动配置失败", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+      Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineMoving] 解析样条移动协议中的样条移动配置失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
     }
   }
   OnRecvSyncSplineStop(e, t, i) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 停止样条移动task", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+      Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 停止样条移动task", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
     }
     var n;
-    var o = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralConfig();
-    if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveConfigToGeneralConfig(e, t, o)) {
+    var s = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralConfig();
+    if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveConfigToGeneralConfig(e, t, s)) {
       t = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralRuntimeData();
       if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveRuntimeDataToGeneralRuntimeData(i, t)) {
         if (i = this.GetCurSplineMoveTask()) {
-          if (i.CheckSplineMoveConfigEqual(o)) {
+          if (i.CheckSplineMoveConfigEqual(s)) {
             if (this.o4o && this.IsSplineMoving() && (n = false, n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t, 0)) || this.UpdateSplineMoveRotationByRuntimeData(t, 0))) {
-              this.vFu?.TickMovement(0, true);
+              this.IVu?.TickMovement(0, true);
             }
             i.EndTask(true);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 当前样条移动task参数与同步信息不同，不处理停止", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]);
+            Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 当前样条移动task参数与同步信息不同，不处理停止", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
           }
         } else if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 当前没有样条移动task，不需要处理停止", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]);
+          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 当前没有样条移动task，不需要处理停止", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 解析样条移动协议中的样条移动运行时数据失败", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+        Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 解析样条移动协议中的样条移动运行时数据失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 解析样条移动协议中的样条移动配置失败", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+      Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineStop] 解析样条移动协议中的样条移动配置失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
     }
   }
   OnRecvSyncSplineInterrupt(e, t, i) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 中断样条移动task", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+      Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 中断样条移动task", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
     }
     var n;
-    var o = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralConfig();
-    if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveConfigToGeneralConfig(e, t, o)) {
+    var s = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralConfig();
+    if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveConfigToGeneralConfig(e, t, s)) {
       t = SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.CreateDefaultGeneralRuntimeData();
       if (SceneItemSplineMoveTaskUtils_1.SceneItemSplineMoveTaskUtils.ParseProtoSplineMoveRuntimeDataToGeneralRuntimeData(i, t)) {
         if (i = this.GetCurSplineMoveTask()) {
-          if (i.CheckSplineMoveConfigEqual(o)) {
+          if (i.CheckSplineMoveConfigEqual(s)) {
             if (this.o4o && this.IsSplineMoving() && (n = false, n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t, 0)) || this.UpdateSplineMoveRotationByRuntimeData(t, 0))) {
-              this.vFu?.TickMovement(0, true);
+              this.IVu?.TickMovement(0, true);
             }
             i?.EndTask(false);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 当前样条移动task参数与同步信息不同，不处理中断", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]);
+            Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 当前样条移动task参数与同步信息不同，不处理中断", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
           }
         } else if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 当前没有样条移动task，不需要处理中断", ["EntityId", this.Entity.Id], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", o]);
+          Log_1.Log.Info("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 当前没有样条移动task，不需要处理中断", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e], ["SplineMoveRuntimeData", t], ["SplineMoveConfig", s]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 解析样条移动协议中的样条移动运行时数据失败", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+        Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 解析样条移动协议中的样条移动运行时数据失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 解析样条移动协议中的样条移动配置失败", ["EntityId", this.Entity.Id], ["SplineEntityId", e]);
+      Log_1.Log.Error("SceneItem", 39, "[SceneItemMoveComponent.OnRecvSyncSplineInterrupt] 解析样条移动协议中的样条移动配置失败", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()], ["SplineEntityId", e]);
     }
   }
   StopMove(e = true, t = true) {
@@ -613,12 +666,12 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       if (i) {
         if (n) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 简单移动中断", ["EntityId", this.Entity.Id]);
+            Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 简单移动中断", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
           }
           EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemMoveBroken, this.Entity);
         } else {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动中断", ["EntityId", this.Entity.Id]);
+            Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动中断", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
           }
           EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemMoveBroken, this.Entity);
           EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveBroken, this.Entity);
@@ -629,10 +682,10 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       this.Fln = [];
     }
   }
-  w$c(e) {
+  EQc(e) {
     this.o4o.OnArrivePointCallback.Add(e);
   }
-  L$c(e) {
+  IQc(e) {
     this.o4o.OnArrivePointCallback.Remove(e);
   }
   AddOnArrivePointCallback(e) {
@@ -649,52 +702,52 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   ClearOnArrivePointCallbacks() {
     this.Xd_.length = 0;
   }
-  M$c(e) {
+  CQc(e) {
     for (const t of Array.from(this.Xd_)) {
       t(e);
     }
   }
-  Rbu(e) {
+  Qbu(e) {
     this.o4o.OnMoveStopCallback.Add(e);
   }
-  Ebu(e) {
+  jbu(e) {
     this.o4o.OnMoveStopCallback.Remove(e);
   }
   AddStopMoveCallback(e) {
-    if (!this.Sbu.includes(e)) {
-      this.Sbu.push(e);
+    if (!this.Nbu.includes(e)) {
+      this.Nbu.push(e);
     }
   }
   RemoveStopMoveCallback(e) {
-    e = this.Sbu.indexOf(e);
+    e = this.Nbu.indexOf(e);
     if (e !== -1) {
-      this.Sbu.splice(e, 1);
+      this.Nbu.splice(e, 1);
     }
   }
   ClearStopMoveCallback() {
-    this.Sbu.length = 0;
+    this.Nbu.length = 0;
   }
-  R$c() {
-    for (const e of Array.from(this.Sbu)) {
+  MQc() {
+    for (const e of Array.from(this.Nbu)) {
       e();
     }
   }
   AddStopMoveCallbackWithEntity(e) {
-    if (!this.ybu.includes(e)) {
-      this.ybu.push(e);
+    if (!this.Fbu.includes(e)) {
+      this.Fbu.push(e);
     }
   }
   RemoveStopMoveCallbackWithEntity(e) {
-    e = this.ybu.indexOf(e);
+    e = this.Fbu.indexOf(e);
     if (e !== -1) {
-      this.ybu.splice(e, 1);
+      this.Fbu.splice(e, 1);
     }
   }
   ClearStopMoveCallbacksWithEntity() {
-    this.ybu.length = 0;
+    this.Fbu.length = 0;
   }
-  b$c() {
-    for (const e of Array.from(this.ybu)) {
+  SQc() {
+    for (const e of Array.from(this.Fbu)) {
       e(this.Entity);
     }
   }
@@ -720,5 +773,5 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     return e;
   }
 };
-SceneItemMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(128)], SceneItemMoveComponent);
+SceneItemMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(129)], SceneItemMoveComponent);
 exports.SceneItemMoveComponent = SceneItemMoveComponent; //# sourceMappingURL=SceneItemMoveComponent.js.map

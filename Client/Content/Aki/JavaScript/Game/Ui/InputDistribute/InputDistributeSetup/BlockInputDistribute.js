@@ -60,7 +60,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
-      } else if (this.gX1()) {
+      } else if (this.yX1()) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 45, "[InputDistribute]CG中，则设置输入分发tag为 UiInputRootTag");
         }
@@ -90,7 +90,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
-      } else if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(205)) && t.HasTag(191377386)) {
+      } else if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206)) && t.HasTag(191377386)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 10, "[InputDistribute]角色落水中，则设置输入分发tag为 MouseInputTag");
         }
@@ -131,7 +131,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
   oIa() {
     return ModelManager_1.ModelManager.KuroSdkModel.GetSdkFocusState();
   }
-  gX1() {
+  yX1() {
     return UiManager_1.UiManager.IsViewOpen("VideoView");
   }
   Pdr() {
@@ -141,7 +141,7 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
     return ModelManager_1.ModelManager.BattleUiModel.IsInBattleSettlement;
   }
   qc_() {
-    return !!Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(229)?.VehicleEntity?.GetComponent(245)?.IsWaterfallMove;
+    return !!Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(230)?.VehicleEntity?.GetComponent(246)?.IsWaterfallMove;
   }
   dgl() {
     return ControllerHolder_1.ControllerHolder.BattleLinkController?.GetIsInLinkExplosion();

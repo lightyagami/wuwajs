@@ -17,20 +17,20 @@ class ItemGridComponent extends UiPanelBase_1.UiPanelBase {
     this.FPt = false;
     this.VPt = undefined;
     this.OnComponentVisibleChanged = undefined;
-    this.$Hc = false;
+    this.aKu = false;
   }
   Initialize(t, i) {
     if (!this.kPt) {
       this.sit = t;
       this.NPt = this.GetResourceId();
-      this.$Hc = i;
+      this.aKu = i;
       this.OnInitialize();
       this.kPt = true;
     }
   }
   async Load() {
     this.VPt = new CustomPromise_1.CustomPromise();
-    if (this.$Hc) {
+    if (this.aKu) {
       await this.CreateByResourceIdAsync(this.NPt, this.sit);
     } else {
       await this.CreateThenShowByResourceIdAsync(this.NPt, this.sit);
@@ -83,7 +83,7 @@ class ItemGridComponent extends UiPanelBase_1.UiPanelBase {
     return 0;
   }
   SetActive(t) {
-    if (this.$Hc) {
+    if (this.aKu) {
       super.SetActive(t);
       this.OnComponentVisibleChanged?.(this, t);
     } else if (!t || !this.IsShowOrShowing) {

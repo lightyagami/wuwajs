@@ -13,6 +13,7 @@ const QualityInfoById_1 = require("../../../Core/Define/ConfigQuery/QualityInfoB
 const TrialWeaponInfoById_1 = require("../../../Core/Define/ConfigQuery/TrialWeaponInfoById");
 const WeaponBreachByBreachId_1 = require("../../../Core/Define/ConfigQuery/WeaponBreachByBreachId");
 const WeaponBreachByBreachIdAndLevel_1 = require("../../../Core/Define/ConfigQuery/WeaponBreachByBreachIdAndLevel");
+const WeaponConfByIsShow_1 = require("../../../Core/Define/ConfigQuery/WeaponConfByIsShow");
 const WeaponConfByItemId_1 = require("../../../Core/Define/ConfigQuery/WeaponConfByItemId");
 const WeaponExpItemById_1 = require("../../../Core/Define/ConfigQuery/WeaponExpItemById");
 const WeaponLevelByLevelId_1 = require("../../../Core/Define/ConfigQuery/WeaponLevelByLevelId");
@@ -21,6 +22,8 @@ const WeaponModelTransformById_1 = require("../../../Core/Define/ConfigQuery/Wea
 const WeaponPropertyGrowthByCurveIdLevelAndBreachLevel_1 = require("../../../Core/Define/ConfigQuery/WeaponPropertyGrowthByCurveIdLevelAndBreachLevel");
 const WeaponQualityInfoById_1 = require("../../../Core/Define/ConfigQuery/WeaponQualityInfoById");
 const WeaponResonByResonIdAndLevel_1 = require("../../../Core/Define/ConfigQuery/WeaponResonByResonIdAndLevel");
+const WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById");
+const WeaponSkinByIsShow_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinByIsShow");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class WeaponConfig extends ConfigBase_1.ConfigBase {
   constructor() {
@@ -120,6 +123,15 @@ class WeaponConfig extends ConfigBase_1.ConfigBase {
   }
   GetTrialWeaponConfig(e) {
     return TrialWeaponInfoById_1.configTrialWeaponInfoById.GetConfig(e);
+  }
+  GetWeaponForHandBook() {
+    return WeaponConfByIsShow_1.configWeaponConfByIsShow.GetConfigList(true);
+  }
+  GetWeaponSkinForHandBook() {
+    return WeaponSkinByIsShow_1.configWeaponSkinByIsShow.GetConfigList(true);
+  }
+  GetWeaponSkinConfig(e) {
+    return WeaponSkinById_1.configWeaponSkinById.GetConfig(e);
   }
   OnClear() {
     this.Cko.clear();

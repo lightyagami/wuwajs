@@ -12,9 +12,7 @@ class NavigationRoguelikeGridToggle extends NavigationToggle_1.NavigationToggle 
     if (i.ToggleState === 0 && e && e.inputType === 1 && i.bToggleOnSelect) {
       UiNavigationNewController_1.UiNavigationNewController.InteractClickByListener(this.Listener);
     }
-    if (this.Listener.ScrollView) {
-      this.Listener.ScrollView.ScrollToSelectableComponent(i);
-    }
+    this.ScrollToSelectableComponent(i);
     return !!this.IsAllowNavigationByGroup();
   }
   OnIsIgnoreScrollOrLayoutCheck() {

@@ -50,7 +50,7 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
     this.Hnr = undefined;
     this.zie = undefined;
     this.rvi = undefined;
-    this.sHc = false;
+    this.TQc = false;
     this.zln = Vector_1.Vector.Create();
     this.Zln = t => {
       if (this.Yln === undefined) {
@@ -79,9 +79,9 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     this.Qln = this.Hte.Owner?.GetComponentByClass(UE.StaticMeshComponent.StaticClass());
-    this.Xln = this.Entity.GetComponent(154);
+    this.Xln = this.Entity.GetComponent(155);
     this.Xln.RegisterComponent(this);
     this.mSe();
     return true;
@@ -126,10 +126,10 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
       e = new UE.VectorDouble(this.Lo.AttachTarget.RelativePoint.X ?? 0, this.Lo.AttachTarget.RelativePoint.Y ?? 0, this.Lo.AttachTarget.RelativePoint.Z ?? 0);
       t.SetTranslation(this.Hte.ActorLocation.op_Addition(e));
     }
-    if (this.Jln === undefined && !this.sHc) {
-      this.sHc = true;
+    if (this.Jln === undefined && !this.TQc) {
+      this.TQc = true;
       ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_PhysicsAttachedBase_C", () => {
-        this.sHc = false;
+        this.TQc = false;
         this.Jln = ActorSystem_1.ActorSystem.Get(UE.BP_PhysicsAttachedBase_C.StaticClass(), t);
       });
     }
@@ -204,5 +204,5 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
     }
   }
 };
-SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(221)], SceneItemPhysicalAttachComponent);
+SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(222)], SceneItemPhysicalAttachComponent);
 exports.SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent; //# sourceMappingURL=SceneItemPhysicalAttachComponent.js.map

@@ -15,20 +15,27 @@ class PlotFormation {
     ModelManager_1.ModelManager.PlotModel.InSeamlessFormation = true;
   }
   async CheckFormationPromise() {
-    if (ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise) {
-      ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(12, 3, undefined, 0);
-      await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise.Promise;
-    }
-    var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (o?.Entity?.IsInit) {
-      o.Entity.EnableByKey(1, true);
+    var o;
+    if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      ModelManager_1.ModelManager.PlotModel.InSeamlessFormation = false;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Plot", 26, "GM推进中，检查剧情编队完成通过");
+      }
     } else {
-      ControllerHolder_1.ControllerHolder.FlowController.LogError("编队准备好了，但当前出战角色却没了");
-    }
-    ModelManager_1.ModelManager.PlotModel.InSeamlessFormation = false;
-    ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(12);
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Plot", 26, "检查剧情编队完成通过");
+      if (ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise) {
+        ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(12, 3, undefined, 0);
+        await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise.Promise;
+      }
+      if ((o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Entity?.IsInit) {
+        o.Entity.EnableByKey(1, true);
+      } else {
+        ControllerHolder_1.ControllerHolder.FlowController.LogError("编队准备好了，但当前出战角色却没了");
+      }
+      ModelManager_1.ModelManager.PlotModel.InSeamlessFormation = false;
+      ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(12);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Plot", 26, "检查剧情编队完成通过");
+      }
     }
   }
 }

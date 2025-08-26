@@ -38,6 +38,7 @@ class TsStartupPlayerController extends TsBasePlayerController_1.TsBasePlayerCon
     this.AddActionHandle(InputMappingsDefine_1.actionMappings.UI键鼠F空格);
     this.AddActionHandle(InputMappingsDefine_1.actionMappings.UI手柄A方向右);
     this.AddActionHandle(InputMappingsDefine_1.actionMappings.UI手柄B方向左);
+    this.AddActionHandle(InputMappingsDefine_1.actionMappings.UI键盘空格);
   }
   BindAxisHandle() {
     super.BindAxisHandle();

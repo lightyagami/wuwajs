@@ -149,7 +149,7 @@ let SceneItemNearbyTrackingComponent = SceneItemNearbyTrackingComponent_1 = clas
   }
   OnStart() {
     if (this.Lo?.IsEnableWhileUnlock && !this.Lo?.IsEnable) {
-      this.Xte = this.Entity?.GetComponent(196);
+      this.Xte = this.Entity?.GetComponent(197);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemLockPropChange, this.w1n);
     }
     if (this.Lo?.IsEnbaleWhileHoming) {
@@ -202,5 +202,5 @@ let SceneItemNearbyTrackingComponent = SceneItemNearbyTrackingComponent_1 = clas
     this.EnableTracking = !e;
   }
 };
-SceneItemNearbyTrackingComponent = SceneItemNearbyTrackingComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(160)], SceneItemNearbyTrackingComponent);
+SceneItemNearbyTrackingComponent = SceneItemNearbyTrackingComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(161)], SceneItemNearbyTrackingComponent);
 exports.SceneItemNearbyTrackingComponent = SceneItemNearbyTrackingComponent; //# sourceMappingURL=SceneItemNearbyTrackingComponent.js.map

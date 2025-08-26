@@ -237,6 +237,9 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.PFc.SetVisible(0, true);
     }
   }
+  OnCheckBattleChildViewPanelShowCondition() {
+    return ModelManager_1.ModelManager.BattleUiModel.IsMissionPanelVisible;
+  }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e.length !== 0) {
       return this.PFc?.GetGuideUiItemAndUiItemForShowEx(e);

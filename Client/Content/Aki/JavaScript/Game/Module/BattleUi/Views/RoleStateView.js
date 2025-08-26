@@ -73,7 +73,7 @@ class RoleStateView extends BattleVisibleChildView_1.BattleVisibleChildView {
   }
   Initialize(t) {
     super.Initialize(t);
-    this.InitChildType(26);
+    this.InitChildType(37);
     this.Xrt = CommonParamById_1.configCommonParamById.GetIntConfig("PlayerHPAttenuateBufferSpeed");
     this.mmt = this.GetItem(8).GetOwner().GetComponentByClass(UE.LGUICanvas.StaticClass());
     this.Cmt = this.GetText(1).GetWidth();

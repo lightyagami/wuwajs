@@ -88,13 +88,13 @@ class AreaModel extends ModelBase_1.ModelBase {
     var t;
     var i = this.UWe?.AreaId;
     this.SetAreaInfo(e);
-    if (this.UWe.Tips && (this.AWe = this.UWe.Title, (t = this.wWe.get(e)) === undefined || r || Time_1.Time.Now - t > this.BWe)) {
+    if (this.UWe.Tips && (this.AWe = this.UWe.Title, (t = this.wWe.get(e)) === undefined || r || Time_1.Time.PlayerTime - t > this.BWe)) {
       if (UiManager_1.UiManager.IsViewOpen("AreaView")) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateAreaView);
       } else {
         UiManager_1.UiManager.OpenView("AreaView");
       }
-      this.wWe.set(e, Time_1.Time.Now);
+      this.wWe.set(e, Time_1.Time.PlayerTime);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, i, e);
   }

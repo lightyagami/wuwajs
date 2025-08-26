@@ -44,7 +44,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     this.aui = false;
     this.Fhc = false;
     this.wDe = 0;
-    this.Gmu = undefined;
+    this.Mfu = undefined;
     this.VT1 = undefined;
     this.XBo = () => {
       this.RefreshChangeInteractionAction();
@@ -64,7 +64,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
       var e;
       var i;
       if (this.Z_i) {
-        t = !!ModelManager_1.ModelManager.TrackModel.IsTargetTracking(this.wDe) && this.Gmu?.IsSpotViewShow();
+        t = !!ModelManager_1.ModelManager.TrackModel.IsTargetTracking(this.wDe) && this.Mfu?.IsSpotViewShow();
         e = this.fui();
         i = this.pui();
         if (Log_1.Log.CheckDebug()) {
@@ -153,10 +153,10 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
   }
   Refresh(t, e, i) {
     this.Y_i = this.GridIndex;
-    this.J_i = t.GetComponent(118);
-    this.z_i = t.GetComponent(117);
+    this.J_i = t.GetComponent(119);
+    this.z_i = t.GetComponent(118);
     this.wDe = t.GetComponent(0)?.GetPbDataId() ?? 0;
-    this.Gmu = t.GetComponent(292);
+    this.Mfu = t.GetComponent(296);
     if (this.z_i) {
       this.ETt = this.z_i.DropItemId;
       if (this.ETt) {
@@ -249,7 +249,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
       }
       return t;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 197)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 198)) {
       t = this.J_i.GetInteractController().DefaultShowOption;
       if (t) {
         if (Log_1.Log.CheckDebug()) {
@@ -279,7 +279,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     if (ModelManager_1.ModelManager.DangoAbyssModel.CheckIfInSmallWorldInstance()) {
       return t = this.vui("AbyssDialog");
     }
-    if (this.wDe !== 0 && this.Gmu?.IsSpotViewShow()) {
+    if (this.wDe !== 0 && this.Mfu?.IsSpotViewShow()) {
       var e = ModelManager_1.ModelManager.TrackModel.IsTargetTracking(this.wDe);
       if (e) {
         e = (t = e.IconPath).split(".")[1];
@@ -300,8 +300,8 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     if (t = ModelManager_1.ModelManager.InteractionModel.GetConditionIconPath(this.ActorIndex)) {
       return t;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 197)) {
-      e = this.J_i.GetInteractController().InteractIcon;
+    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 198)) {
+      e = this.J_i.GetInteractController().GetInteractIcon();
       if (e === "Collect") {
         var i = this.J_i.GetInteractController().CreatureData.GetPbEntityInitData();
         var s = (0, IComponent_1.getComponent)(i.ComponentsData, "CollectComponent");
@@ -416,7 +416,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     return this.cui;
   }
   UpdatePriority() {
-    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 197)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(this.J_i, 198)) {
       this.cui = this.J_i.GetInteractController().InteractEntity.Priority;
     }
   }

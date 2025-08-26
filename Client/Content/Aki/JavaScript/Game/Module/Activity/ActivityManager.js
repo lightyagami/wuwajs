@@ -32,14 +32,17 @@ const ActivityDirectTrainController_1 = require("./ActivityContent/DirectTrain/A
 const ActivityDoubleRewardController_1 = require("./ActivityContent/DoubleReward/ActivityDoubleRewardController");
 const FarmGoldController_1 = require("./ActivityContent/FarmGold/FarmGoldController");
 const ActivityFishingController_1 = require("./ActivityContent/Fishing/Activity/ActivityFishingController");
+const ActivityFunPlayController_1 = require("./ActivityContent/FunPlay/ActivityFunPlayController");
 const ActivityInviteNewbieController_1 = require("./ActivityContent/InviteNewbie/Controller/ActivityInviteNewbieController");
 const LifePointDrawActivityController_1 = require("./ActivityContent/LifePoint/LifePointDrawActivityController");
+const LineCrossActivityController_1 = require("./ActivityContent/LineCross/LineCrossActivityController");
 const ActivityLongShanController_1 = require("./ActivityContent/LongShan/ActivityLongShanController");
 const ActivityLoopTowerController_1 = require("./ActivityContent/LoopTower/ActivityLoopTowerController");
 const ActivityLordGymController_1 = require("./ActivityContent/LordGym/ActivityLordGymController");
 const ActivityMapExploreController_1 = require("./ActivityContent/MapExplore/ActivityMapExploreController");
 const ActivityMapTravelController_1 = require("./ActivityContent/MapTravel/ActivityMapTravelController");
 const ActivityMoonChasingController_1 = require("./ActivityContent/MoonChasing/Activity/ActivityMoonChasingController");
+const MoonSignInController_1 = require("./ActivityContent/MoonSignIn/MoonSignInController");
 const ActivityMoraleController_1 = require("./ActivityContent/Morale/ActivityMoraleController");
 const ActivityMowingController_1 = require("./ActivityContent/Mowing/ActivityMowingController");
 const ActivityMowingRiskController_1 = require("./ActivityContent/MowingRisk/Controller/ActivityMowingRiskController");
@@ -56,10 +59,12 @@ const ActivityRunController_1 = require("./ActivityContent/Run/ActivityRunContro
 const ActivityScratchTicketController_1 = require("./ActivityContent/ScratchTicket/ActivityScratchTicketController");
 const ActivitySevenDaySignController_1 = require("./ActivityContent/SevenDaySign/ActivitySevenDaySignController");
 const ActivityShipTowerController_1 = require("./ActivityContent/ShipTower/ActivityShipTowerController");
+const ActivitySoarController_1 = require("./ActivityContent/Soar/ActivitySoarController");
 const ActivitySolarSpeedController_1 = require("./ActivityContent/SolarisSpeed/Controller/ActivitySolarSpeedController");
 const ActivitySpring25Controller_1 = require("./ActivityContent/Spring25/Controller/ActivitySpring25Controller");
 const ActivityTimePointRewardController_1 = require("./ActivityContent/TimePointReward/ActivityTimePointRewardController");
 const ActivityTowerGuideController_1 = require("./ActivityContent/TowerGuide/ActivityTowerGuideController");
+const ActivityTrapDefenseController_1 = require("./ActivityContent/TrapDefense/ActivityTrapDefenseController");
 const ActivityTurntableController_1 = require("./ActivityContent/Turntable/ActivityTurntableController");
 const ActivityUniversalController_1 = require("./ActivityContent/UniversalActivity/ActivityUniversalController");
 const ActivityVersionPreheatController_1 = require("./ActivityContent/VersionPreheat/Controller/ActivityVersionPreheatController");
@@ -144,8 +149,21 @@ class ActivityManager {
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle, new PhantomArenaController_1.PhantomArenaController());
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityInviteNewbieController = t;
     var t = new LifePointDrawActivityController_1.LifePointDrawActivityController();
-    this.N4e.set(Protocol_1.Aki.Protocol.uks.kwu, t);
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.iAu, t);
     ActivityControllerHolder_1.ActivityControllerHolder.LifePointDrawActivityController = t;
+    var t = new ActivityTrapDefenseController_1.ActivityTrapDefenseController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_TrapDefense, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController = t;
+    var t = new ActivityFunPlayController_1.ActivityFunPlayController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_FunPlay, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.ActivityFunPlayController = t;
+    var t = new ActivitySoarController_1.ActivitySoarController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_JinzhouFlyActivity, t);
+    var t = new LineCrossActivityController_1.LineCrossActivityController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_LineCross, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.LineCrossActivityController = t;
+    var t = new MoonSignInController_1.MoonSignInController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_MoonPhase, t);
   }
   static O4e() {
     this.N4e.forEach((t, o) => {

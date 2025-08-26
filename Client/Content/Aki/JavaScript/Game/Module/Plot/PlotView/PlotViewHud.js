@@ -16,6 +16,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
 const PlotTextLogic_1 = require("./PlotTextLogic");
+const TRANSLUCENT_ALPHA = 0.6;
 class PlotViewHud extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -87,11 +88,11 @@ class PlotViewHud extends UiViewBase_1.UiViewBase {
   $eo() {
     this.Feo();
     var e = ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.EndWaitTimeLevelD * CommonDefine_1.MILLIONSECOND_PER_SECOND;
-    this.xOi = TimerSystem_1.TimerSystem.Delay(this.Jeo, this.geo.PlayDelayTime <= e ? e : this.geo.PlayDelayTime);
+    this.xOi = TimerSystem_1.GameplayTimerSystem.Delay(this.Jeo, this.geo.PlayDelayTime <= e ? e : this.geo.PlayDelayTime);
   }
   Feo() {
-    if (TimerSystem_1.TimerSystem.Has(this.xOi)) {
-      TimerSystem_1.TimerSystem.Remove(this.xOi);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.xOi)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.xOi);
     }
     this.xOi = undefined;
   }
@@ -118,6 +119,7 @@ class PlotViewHud extends UiViewBase_1.UiViewBase {
   OnAfterShow() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewChange, this.Info.Name, true);
     this.Eto(ModelManager_1.ModelManager.PlotModel?.HangViewHud, false);
+    this.SetEnableTranslucent(ModelManager_1.ModelManager.PlotModel.TranslucentHud);
   }
   OnBeforeHide() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewChange, this.Info.Name, false);
@@ -185,6 +187,13 @@ class PlotViewHud extends UiViewBase_1.UiViewBase {
       } else {
         this.Mto(ModelManager_1.ModelManager.PlotModel.CurTalkItem);
       }
+    }
+  }
+  SetEnableTranslucent(e) {
+    if (e) {
+      this.GetRootItem().SetAlpha(TRANSLUCENT_ALPHA);
+    } else {
+      this.GetRootItem().SetAlpha(1);
     }
   }
 }

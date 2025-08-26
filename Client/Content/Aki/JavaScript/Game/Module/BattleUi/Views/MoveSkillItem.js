@@ -15,13 +15,13 @@ class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
     this.wut = false;
     this.$ct = InputEnums_1.EInputAxis.None;
     this.jce = 0;
-    this.dfu = 0;
-    this.I2u = true;
+    this.hgu = 0;
+    this.F2u = true;
   }
   RefreshByMoveType(t, e, i = true) {
     this.$ct = t;
     this.jce = e;
-    this.I2u = i;
+    this.F2u = i;
     if (!this.IsShowOrShowing) {
       this.Show();
     }
@@ -46,15 +46,15 @@ class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
   OnSkillButtonPressed() {
     this.wut = true;
     this.ClickEffect?.Play();
-    InputController_1.InputController.InputAxis(this.$ct, this.jce, this.I2u);
+    InputController_1.InputController.InputAxis(this.$ct, this.jce, this.F2u);
   }
   OnSkillButtonReleased() {
     this.wut = false;
-    InputController_1.InputController.InputAxis(this.$ct, 0, this.I2u);
+    InputController_1.InputController.InputAxis(this.$ct, 0, this.F2u);
   }
   Tick(t) {
     super.Tick(t);
-    if (this.wut && this.I2u) {
+    if (this.wut && this.F2u) {
       InputController_1.InputController.InputAxis(this.$ct, this.jce);
     }
   }
@@ -65,12 +65,12 @@ class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
     this.ClickEffect?.Play();
   }
   SetCustomDynamicEffectId(t) {
-    this.dfu = t;
+    this.hgu = t;
     this.RefreshDynamicEffect();
   }
   GetDynamicEffectConfig() {
-    if (this.dfu !== 0) {
-      return ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillButtonEffectConfig(this.dfu);
+    if (this.hgu !== 0) {
+      return ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillButtonEffectConfig(this.hgu);
     }
   }
 }

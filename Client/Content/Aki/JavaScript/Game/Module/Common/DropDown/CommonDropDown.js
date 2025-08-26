@@ -26,7 +26,7 @@ class CommonDropDown extends UiPanelBase_1.UiPanelBase {
     this.hLt = CommonDefine_1.INVALID_VALUE;
     this.lLt = undefined;
     this._Lt = undefined;
-    this.uwu = undefined;
+    this.Swu = undefined;
     this.uLt = 2;
     this.cLt = false;
     this.mLt = Transform_1.Transform.Create();
@@ -64,7 +64,7 @@ class CommonDropDown extends UiPanelBase_1.UiPanelBase {
       this.ILt();
       this._Lt?.(this.hLt, this.ypt[this.hLt]);
     };
-    this.SLt = t => this.uwu !== undefined ? this.uwu(this.hLt, t) : this.hLt !== t;
+    this.SLt = t => this.Swu !== undefined ? this.Swu(this.hLt, t) : this.hLt !== t;
     this.vLt = () => {
       this.GetItem(1).SetUIActive(false);
       this.TLt();
@@ -99,7 +99,7 @@ class CommonDropDown extends UiPanelBase_1.UiPanelBase {
     this.gLt = this.CreateTitleItem(this.GetItem(4));
   }
   SetOnCanChangeCall(t) {
-    this.uwu = t;
+    this.Swu = t;
   }
   OnBeforeDestroy() {
     this.eGe.UnBindLateUpdate();

@@ -29,13 +29,13 @@ class TsAnimNotifyStateRotateBonesToTarget extends UE.KuroAnimNotifyState {
     var i;
     var r;
     var t = t.GetOwner();
-    return !!t.CharacterActorComponent && !!(i = t.GetEntityNoBlueprint()?.GetComponent(177)?.RotateBonesToTargetMgr) && ((r = this.HandleMap.get(t)) && i.StopBoneToTarget(r, 0.1), tmpVector.FromUeVector(this.DefaultOffset), tmpVector.Z += t.CharacterActorComponent.DefaultHalfHeight, i.SetDefaultTarget(tmpVector, this.LerpSpeed, this.TargetUpdateThreshold), this.HandleMap.set(t, i.SetBoneToTarget(this.BoneNames, this.StartLerpTime)), true);
+    return !!t.CharacterActorComponent && !!(i = t.GetEntityNoBlueprint()?.GetComponent(178)?.RotateBonesToTargetMgr) && ((r = this.HandleMap.get(t)) && i.StopBoneToTarget(r, 0.1), tmpVector.FromUeVector(this.DefaultOffset), tmpVector.Z += t.CharacterActorComponent.DefaultHalfHeight, i.SetDefaultTarget(tmpVector, this.LerpSpeed, this.TargetUpdateThreshold), this.HandleMap.set(t, i.SetBoneToTarget(this.BoneNames, this.StartLerpTime)), true);
   }
   K2_NotifyEnd(t, e) {
     var s;
     var i;
     var t = t.GetOwner();
-    return !!t.CharacterActorComponent && !!(s = t.GetEntityNoBlueprint()?.GetComponent(177)?.RotateBonesToTargetMgr) && ((i = this.HandleMap.get(t)) && (s.StopBoneToTarget(i, this.EndLerpTime), this.HandleMap.delete(t)), true);
+    return !!t.CharacterActorComponent && !!(s = t.GetEntityNoBlueprint()?.GetComponent(178)?.RotateBonesToTargetMgr) && ((i = this.HandleMap.get(t)) && (s.StopBoneToTarget(i, this.EndLerpTime), this.HandleMap.delete(t)), true);
   }
   GetNotifyName() {
     return "控制多根骨骼朝向目标";

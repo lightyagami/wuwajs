@@ -25,7 +25,7 @@ class NpcPerformBaseState extends StateBase_1.StateBase {
   OnCreate(t) {
     this.CreatureDataComp = this.Owner.Entity.GetComponent(0);
     this.ActorComp = this.Owner.Entity.GetComponent(2);
-    this.PerformComp = this.Owner.Entity.GetComponent(187);
+    this.PerformComp = this.Owner.Entity.GetComponent(188);
     this.ConfigId = this.CreatureDataComp.GetPbDataId();
     this.AnimComp = this.Owner.Entity.GetComponent(44);
   }

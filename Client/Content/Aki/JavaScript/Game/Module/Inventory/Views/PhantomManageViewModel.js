@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomManageViewModel = undefined;
+const ModelManager_1 = require("../../../Manager/ModelManager");
 class ViewModelBase {
   constructor() {
     this.DataMap = new Map();
@@ -52,7 +53,7 @@ class PhantomManageViewModel extends ViewModelBase {
     } else if (!e && i.has(t)) {
       i.delete(t);
     }
-    this.SetData(0, i, s);
+    this.Z1d(i, s);
   }
   SwitchSelectState(t, e) {
     var s = this.GetSelectSet();
@@ -61,13 +62,17 @@ class PhantomManageViewModel extends ViewModelBase {
     } else {
       s.add(t);
     }
-    this.SetData(0, s, e);
+    this.Z1d(s, e);
   }
   GetSelectSet() {
     return this.GetData(0);
   }
+  Z1d(t, e) {
+    this.SetData(0, t, e);
+    ModelManager_1.ModelManager.InventoryModel.SetPhantomManageSelectSet(t);
+  }
   ClearSelectSet() {
-    this.SetData(0, new Set());
+    this.Z1d(undefined);
   }
   SetItemDataList(t, e) {
     this.SetData(1, t, e);

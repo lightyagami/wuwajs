@@ -15,9 +15,9 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const UiConfig_1 = require("../Define/UiConfig");
 const UiLayerType_1 = require("../Define/UiLayerType");
-const InputDistributeController_1 = require("../InputDistribute/InputDistributeController");
 const InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine");
 const LguiEventSystemManager_1 = require("../LguiEventSystem/LguiEventSystemManager");
 const UiManager_1 = require("../UiManager");
@@ -26,42 +26,61 @@ const Input_1 = require("./Input");
 const InputExtraShowCursorCenter_1 = require("./InputExtraShowCursorCenter");
 const InputViewRecord_1 = require("./InputViewRecord");
 const ViewHotKeyHandleContainer_1 = require("./ViewHotKeyHandleContainer");
+const UiModel_1 = require("../UiModel");
 class InputManager {
   static Init() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiManagerInit, this.il);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiManagerDestroy, this.ht);
-    InputManager.Kya();
   }
-  static Kya() {
-    var e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetAllOpenAndCloseViewHotKeyConfig();
+  static qzc(e) {
+    var t;
+    if (!this.$ya.IsDataExist(e.Id)) {
+      t = {
+        ConfigId: e.Id,
+        ActionName: e.ActionName,
+        InputControllerType: e.InputControllerType,
+        ViewName: e.ViewName,
+        ViewParam: e.ViewParam,
+        IsPressTrigger: e.IsPressTrigger,
+        PressStartTime: e.PressStartTime,
+        PressTriggerTime: e.PressTriggerTime,
+        IsReleaseTrigger: e.IsReleaseTrigger,
+        ReleaseInvalidTime: e.ReleaseInvalidTime,
+        IsPressClose: e.IsPressClose,
+        IsReleaseClose: e.IsReleaseClose,
+        IsAllowOpenViewByShortcutKey: () => this.IsAllowOpenViewByShortcutKey(),
+        IsAllowCloseViewByShortcutKey: () => this.IsAllowCloseViewByShortcutKey()
+      };
+      (t = ViewHotKeyHandleDefine_1.ViewHotKeyHandleFactory.CreateViewHotKeyHandle(t, e.HandleType)).Bind();
+      this.$ya.Add(t);
+    }
+  }
+  static Gzc(e) {
+    e = this.$ya.Get(e.ViewName);
     if (e) {
-      for (const n of e) {
-        var t = {
-          ActionName: n.ActionName,
-          InputControllerType: n.InputControllerType,
-          ViewName: n.ViewName,
-          ViewParam: n.ViewParam,
-          IsPressTrigger: n.IsPressTrigger,
-          PressStartTime: n.PressStartTime,
-          PressTriggerTime: n.PressTriggerTime,
-          IsReleaseTrigger: n.IsReleaseTrigger,
-          ReleaseInvalidTime: n.ReleaseInvalidTime,
-          IsPressClose: n.IsPressClose,
-          IsReleaseClose: n.IsReleaseClose,
-          IsAllowOpenViewByShortcutKey: () => this.IsAllowOpenViewByShortcutKey(),
-          IsAllowCloseViewByShortcutKey: () => this.IsAllowCloseViewByShortcutKey()
-        };
-        var t = ViewHotKeyHandleDefine_1.ViewHotKeyHandleFactory.CreateViewHotKeyHandle(t, n.HandleType);
-        this.$ya.Add(t);
+      for (const t of e) {
+        this.$ya.Remove(t);
       }
     }
   }
-  static FIa() {
-    this.$ya.ForEach(e => {
-      e.Bind();
-    });
+  static AddViewHotKeyActionByType(e) {
+    e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetConfigListByEffectiveType(e);
+    if (e) {
+      for (const t of e) {
+        this.qzc(t);
+      }
+    }
+  }
+  static RemoveViewHotKeyActionByType(e) {
+    e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetConfigListByEffectiveType(e);
+    if (e) {
+      for (const t of e) {
+        this.Gzc(t);
+      }
+    }
   }
   static RegisterOpenViewFunc(e, t) {
+    this.$ya.RegisterOpenViewFunc(e, t);
     e = this.$ya.Get(e);
     if (e) {
       for (const n of e) {
@@ -70,6 +89,7 @@ class InputManager {
     }
   }
   static RegisterCloseViewFunc(e, t) {
+    this.$ya.RegisterCloseViewFunc(e, t);
     e = this.$ya.Get(e);
     if (e) {
       for (const n of e) {
@@ -84,25 +104,25 @@ class InputManager {
     return this.$ya.GetAll();
   }
   static smr() {
-    InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.Gm指令, this.amr);
-    InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.显示鼠标, this.hmr);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.Gm指令, this.amr);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.显示鼠标, this.hmr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.REt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCursor, this.umr);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MoveCursorToRightDown, this.iX1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MoveCursorToRightDown, this.sX1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.RefreshStateOnPlatformChanged);
   }
   static Bfe() {
-    InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.Gm指令, this.amr);
-    InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.显示鼠标, this.hmr);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.Gm指令, this.amr);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.显示鼠标, this.hmr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.REt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCursor, this.umr);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MoveCursorToRightDown, this.iX1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MoveCursorToRightDown, this.sX1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.RefreshStateOnPlatformChanged);
   }
   static mmr(e) {
@@ -147,11 +167,10 @@ class InputManager {
   }
   static dmr(e) {
     var t;
-    if (e === "BattleView") {
+    if (e === UiModel_1.UiModel.MainViewName) {
       InputManager.Tmr();
     } else if (InputManager.Lmr() && (t = InputManager.IsShowMouseCursor(), InputManager.Dmr(e)) && !t) {
       InputManager.MoveCursorToCenter();
-      InputManager.SetEventDataPrevPositionToCenter();
     }
   }
   static Cmr(e) {
@@ -278,10 +297,10 @@ class InputManager {
   static MoveCursorToCenter() {
     var e;
     if (this.IsAutoMoveCursorToCenter && (e = this.Bmr())) {
-      Global_1.Global.CharacterController.SetMouseLocation(e.X, e.Y);
+      InputManager.Fud(e);
     }
   }
-  static rX1() {
+  static aX1() {
     var e;
     var t;
     var n;
@@ -296,8 +315,7 @@ class InputManager {
       };
     }
   }
-  static SetEventDataPrevPositionToCenter() {
-    var e = this.Bmr();
+  static SetEventDataPrevPosition(e) {
     if (e) {
       LguiEventSystemManager_1.LguiEventSystemManager.SetEventDataPrevPosition(e.X, e.Y);
     }
@@ -308,6 +326,10 @@ class InputManager {
   static Lmr() {
     var e = Global_1.Global.CharacterController;
     return !!e && !!e.IsValid();
+  }
+  static Fud(e) {
+    Global_1.Global.CharacterController.SetMouseLocation(e.X, e.Y);
+    InputManager.SetEventDataPrevPosition(e);
   }
   static SetInputRespondToKey(e) {
     if (e !== "") {
@@ -331,6 +353,7 @@ InputManager.DisableCloseViewByShortcutKeyViewRecord = new InputViewRecord_1.Inp
 InputManager.m9s = undefined;
 InputManager.$ya = new ViewHotKeyHandleContainer_1.ViewHotKeyHandleContainer();
 InputManager.IsAutoMoveCursorToCenter = true;
+InputManager.IsAltPress = false;
 InputManager.il = () => {
   if (!InputManager.gU) {
     InputManager.smr();
@@ -338,7 +361,7 @@ InputManager.il = () => {
     InputManager.Umr.Clear();
     InputManager.DisableShortcutKeyViewRecord.Clear();
     InputManager.DisableCloseViewByShortcutKeyViewRecord.Clear();
-    InputManager.FIa();
+    InputManager.IsAltPress = false;
   }
   UE.KuroInputFunctionLibrary.ClearInputModeReply();
 };
@@ -350,6 +373,7 @@ InputManager.ht = () => {
     InputManager.DisableCloseViewByShortcutKeyViewRecord.Clear();
     InputManager.$ya?.Clear();
     InputManager.gU = false;
+    InputManager.IsAltPress = false;
   }
 };
 InputManager.amr = (e, t) => {
@@ -365,15 +389,20 @@ InputManager.hmr = (e, t) => {
   if (Log_1.Log.CheckDebug()) {
     Log_1.Log.Debug("InputManager", 10, "按Alt尝试显示鼠标", ["是否通过GM总是显示鼠标", InputManager.ymr], ["是否已经打开总是显示鼠标界面", InputManager.Amr], ["是否尝试显示鼠标", t === 0]);
   }
+  var n = t === 0;
+  if (n !== InputManager.IsAltPress) {
+    InputManager.IsAltPress = n;
+    ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
+  }
   if (InputManager.ymr !== 1) {
-    t = t === 0;
+    n = t === 0;
     if (InputManager.Amr) {
-      if (t) {
+      if (n) {
         InputManager.SetShowCursor(true);
       }
     } else {
       InputManager.MoveCursorToCenter();
-      InputManager.SetShowCursor(t);
+      InputManager.SetShowCursor(n);
     }
   }
 };
@@ -391,10 +420,10 @@ InputManager.REt = () => {
 InputManager.umr = () => {
   InputManager.Imr();
 };
-InputManager.iX1 = () => {
-  var e = _a.rX1();
+InputManager.sX1 = () => {
+  var e = _a.aX1();
   if (e) {
-    Global_1.Global.CharacterController.SetMouseLocation(e.X, e.Y);
+    InputManager.Fud(e);
   }
 };
 InputManager.nye = () => {

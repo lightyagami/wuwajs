@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LevelConditionCheckFloroRanchLevel = exports.LevelConditionOnFloroRanchSettleViewOpenWithEndlessMode = exports.LevelConditionCheckFloroRanchHasTechCanUnlock = exports.LevelConditionCheckFloroRanchRound = exports.LevelConditionOnFloroRanchCardCountReachTarget = undefined;
+exports.LevelConditionOnFloroRanchStageStartTaskFinish = exports.LevelConditionCheckFloroRanchLevel = exports.LevelConditionOnFloroRanchSettleViewOpenWithEndlessMode = exports.LevelConditionCheckFloroRanchHasTechCanUnlock = exports.LevelConditionCheckFloroRanchRound = exports.LevelConditionOnFloroRanchCardCountReachTarget = undefined;
 const ModelManager_1 = require("../../Manager/ModelManager");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionOnFloroRanchCardCountReachTarget extends LevelGeneralBase_1.LevelConditionBase {
@@ -41,4 +41,11 @@ class LevelConditionCheckFloroRanchLevel extends LevelGeneralBase_1.LevelConditi
   }
 }
 exports.LevelConditionCheckFloroRanchLevel = LevelConditionCheckFloroRanchLevel;
+class LevelConditionOnFloroRanchStageStartTaskFinish extends LevelGeneralBase_1.LevelConditionBase {
+  Check(e, n, ...o) {
+    var [o] = o;
+    return o;
+  }
+}
+exports.LevelConditionOnFloroRanchStageStartTaskFinish = LevelConditionOnFloroRanchStageStartTaskFinish;
 //# sourceMappingURL=LevelConditionFloroRanchGuide.js.map

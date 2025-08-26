@@ -4,9 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.MowingRiskConfigContext = undefined;
-const RiskHarvestArtifactAll_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestArtifactAll");
 const RiskHarvestArtifactById_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestArtifactById");
-const RiskHarvestBuffGroupAll_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestBuffGroupAll");
 const RiskHarvestBuffGroupByActivityId_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestBuffGroupByActivityId");
 const RiskHarvestBuffGroupById_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestBuffGroupById");
 const RiskHarvestInstAll_1 = require("../../../../../../Core/Define/ConfigQuery/RiskHarvestInstAll");
@@ -31,52 +29,6 @@ const type2QualityData = new Map([[1, {
   BackgroundResource: "T_MowingQualityGold"
 }]]);
 class MowingRiskConfigContext {
-  constructor() {
-    this.LVa = undefined;
-    this.AVa = undefined;
-    this.DVa = new Map();
-    this.Aja = new Map();
-    this.RVa = (e, r) => e.BuffType === r.BuffType ? e.Id - r.Id : e.BuffType - r.BuffType;
-  }
-  Init() {
-    var e = RiskHarvestArtifactAll_1.configRiskHarvestArtifactAll.GetConfigList();
-    if (e !== undefined) {
-      for (const n of e) {
-        var t;
-        var i;
-        var s = [];
-        var o = [];
-        var a = n.BasicBuffGroup;
-        let r = 0;
-        for ([t, i] of n.BuffGroup.entries()) {
-          var f = a[t];
-          s.push({
-            Index: t,
-            BuffId: i,
-            Threshold: f
-          });
-          for (let e = r; e < f; e++) {
-            var u = (e - r) / (f - r);
-            o.push({
-              Count: e,
-              SuperLevel: t,
-              Partial: u,
-              Overall: (u + t) / n.BuffGroup.length
-            });
-          }
-          r = f;
-        }
-        o.push({
-          Count: a.at(-1) ?? 0,
-          SuperLevel: a.length,
-          Partial: 1,
-          Overall: 1
-        });
-        this.DVa.set(n.Id, s);
-        this.Aja.set(n.Id, o);
-      }
-    }
-  }
   Dispose() {}
   GetBuffHexColorById(e) {
     e = RiskHarvestBuffGroupById_1.configRiskHarvestBuffGroupById.GetConfig(e);
@@ -151,54 +103,55 @@ class MowingRiskConfigContext {
   GetBuffMaxCountByArtifactId(e) {
     return RiskHarvestArtifactById_1.configRiskHarvestArtifactById.GetConfig(e)?.BasicBuffGroup.at(-1) ?? 0;
   }
+  GetProgressLevel(e, r) {
+    e = this.GetArtifactConfig(e);
+    if (e) {
+      var t = e.BasicBuffGroup;
+      if (t[t.length - 1] <= r) {
+        return t.length;
+      }
+      for (let e = 0; e < t.length; e++) {
+        if (r < t[e]) {
+          return e;
+        }
+      }
+    }
+    return 0;
+  }
   GetProgressOverallPercentage(e, r) {
-    e = this.Aja.get(e);
-    if (e === undefined) {
-      return 0;
-    } else if (r >= e.length) {
-      return 1;
+    var t = this.GetArtifactConfig(e);
+    if (t) {
+      if ((t = t.BasicBuffGroup)[t.length - 1] <= r) {
+        return 1;
+      } else {
+        return (r - (r = (e = this.GetProgressLevel(e, r)) > 0 ? t[e - 1] : 0)) / (t[e] - r);
+      }
     } else {
-      return e[r].Overall;
+      return 0;
     }
   }
   GetProgressPartialPercentage(e, r) {
-    e = this.Aja.get(e);
-    if (e === undefined) {
-      return 0;
-    } else if (r >= e.length) {
-      return 1;
+    var t;
+    var i = this.GetArtifactConfig(e);
+    if (i) {
+      if ((t = i.BasicBuffGroup)[t.length - 1] <= r) {
+        return 1;
+      } else {
+        t = this.GetProgressLevel(e, r);
+        return (this.GetProgressOverallPercentage(e, r) + t) / i.BuffGroup.length;
+      }
     } else {
-      return e[r].Partial;
+      return 0;
     }
   }
-  GetProgressLevel(e, r) {
-    e = this.Aja.get(e);
-    if (e === undefined) {
-      return 0;
-    } else if (r >= e.length) {
-      return e.at(-1)?.SuperLevel ?? 0;
-    } else {
-      return e[r].SuperLevel;
-    }
+  GetArtifactConfig(e) {
+    return RiskHarvestArtifactById_1.configRiskHarvestArtifactById.GetConfig(e);
   }
   GetBuffThresholdByArtifactIdAndIndex(e, r) {
-    e = this.DVa.get(e);
-    if (e === undefined || r >= e.length) {
-      return 0;
-    } else {
-      return e[r].Threshold;
-    }
+    return this.GetArtifactConfig(e).BasicBuffGroup[r];
   }
   GetBuffIdByArtifactIdAndIndex(e, r) {
-    e = this.DVa.get(e);
-    if (e === undefined || r >= e.length) {
-      return 0;
-    } else {
-      return e[r].BuffId;
-    }
-  }
-  GetThresholdDataByArtifactId(e) {
-    return this.DVa.get(e);
+    return this.GetArtifactConfig(e).BuffGroup[r];
   }
   GetBuffConfigById(e) {
     return RiskHarvestBuffGroupById_1.configRiskHarvestBuffGroupById.GetConfig(e);
@@ -231,42 +184,16 @@ class MowingRiskConfigContext {
   }
   IsSuperBuffAvailable(e, r, t) {
     if (this.IsSuperBuffByBuffId(r)) {
-      e = this.DVa.get(e);
-      if (e !== undefined) {
-        for (const i of e) {
-          if (i.BuffId === r && t >= i.Threshold) {
-            return true;
-          }
+      var e = this.GetArtifactConfig(e);
+      var i = e.BasicBuffGroup;
+      var s = e.BuffGroup;
+      for (let e = 0; e < i.length; e++) {
+        if (s[e] === r && t >= i[e]) {
+          return true;
         }
       }
     }
     return false;
-  }
-  get BasicBuffConfigs() {
-    if (this.LVa === undefined) {
-      var e = [];
-      for (const r of RiskHarvestBuffGroupAll_1.configRiskHarvestBuffGroupAll.GetConfigList()) {
-        if (r.BuffType < 3) {
-          e.push(r);
-        }
-      }
-      e.sort(this.RVa);
-      this.LVa = e;
-    }
-    return this.LVa;
-  }
-  get SuperBuffConfigs() {
-    if (this.AVa === undefined) {
-      var e = [];
-      for (const r of RiskHarvestBuffGroupAll_1.configRiskHarvestBuffGroupAll.GetConfigList()) {
-        if (r.BuffType === 3) {
-          e.push(r);
-        }
-      }
-      e.sort(this.RVa);
-      this.AVa = e;
-    }
-    return this.AVa;
   }
   get IsInstanceNewCache() {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.MowingRiskIsInstanceNew);

@@ -126,10 +126,10 @@ let SceneItemJigsawItemComponent = SceneItemJigsawItemComponent_1 = class SceneI
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     this.CreatureDataComp = this.Entity.GetComponent(0);
-    this.fcn = this.Entity.GetComponent(159);
-    this.Lie = this.Entity.GetComponent(196);
+    this.fcn = this.Entity.GetComponent(160);
+    this.Lie = this.Entity.GetComponent(197);
     this.Lie?.AddTagAddOrRemoveListener(793256493, this.gIe);
     this.Lie?.AddTagAddOrRemoveListener(741712776, this.gIe);
     this.Lie?.AddTagAddOrRemoveListener(1488947861, this.gIe);
@@ -252,5 +252,5 @@ let SceneItemJigsawItemComponent = SceneItemJigsawItemComponent_1 = class SceneI
     return t;
   }
 };
-SceneItemJigsawItemComponent = SceneItemJigsawItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(138)], SceneItemJigsawItemComponent);
+SceneItemJigsawItemComponent = SceneItemJigsawItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(139)], SceneItemJigsawItemComponent);
 exports.SceneItemJigsawItemComponent = SceneItemJigsawItemComponent; //# sourceMappingURL=SceneItemJigsawItemComponent.js.map

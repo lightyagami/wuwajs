@@ -48,6 +48,8 @@ class AiStateMachineGroup {
     this.Inited = false;
     this.StateMachinesActivated = false;
     this.AnyChange = false;
+    this.xmd = 0;
+    this.Umd = false;
     this.zre = undefined;
     this.ErrorMessage = undefined;
     this.OnDeath = () => {
@@ -90,6 +92,18 @@ class AiStateMachineGroup {
         }
       }
     };
+    this.Bmd = (t, i) => {
+      CombatLog_1.CombatLog.Info("StateMachineNew", this.Entity, "ConditionDrivenSmTickLock", ["isLock", t], ["count", this.xmd], ["needTick", this.Umd], ["reason", i]);
+      if (t) {
+        this.xmd = this.xmd + 1;
+      } else {
+        this.xmd = this.xmd - 1;
+        if (this.xmd <= 0 && this.Umd) {
+          this.Umd = false;
+          this.TickStateMachine(true, "SMTickUnlock");
+        }
+      }
+    };
     this.EF_ = new Set();
     this.tne = 0;
     this.zre = new Set();
@@ -104,6 +118,7 @@ class AiStateMachineGroup {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.Zre);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.OnTeleport);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeAttachVehicle, this.OnBeforeAttachVehicle);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.ConditionDrivenSMTickLock, this.Bmd);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.OnRoleGoDown);
     }
   }
@@ -309,6 +324,7 @@ class AiStateMachineGroup {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.Zre);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.OnTeleport);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeAttachVehicle, this.OnBeforeAttachVehicle);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.ConditionDrivenSMTickLock, this.Bmd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleGoDown, this.OnRoleGoDown);
     this.SwitchStateFrequencyMonitor = undefined;
     this.StateMachinesActivated = false;
@@ -347,8 +363,17 @@ class AiStateMachineGroup {
     }
   }
   TickStateMachine(t, i = "", e = "") {
-    if (CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn && (Log_1.Log.CheckInfo() && Log_1.Log.Info("StateMachine", 84, "AiStateMachineGroup TickStateMachine", ["entity", this.Entity], ["signal result", t], ["from condition", i], ["from node", e]), t)) {
-      this.OnTick(0);
+    if (CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn) {
+      if (this.xmd > 0) {
+        this.Umd = true;
+      } else {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("StateMachine", 84, "AiStateMachineGroup TickStateMachine", ["entity", this.Entity], ["signal result", t], ["from condition", i], ["from node", e]);
+        }
+        if (t) {
+          this.OnTick(0);
+        }
+      }
     }
   }
   OnTick(t) {
@@ -406,7 +431,7 @@ class AiStateMachineGroup {
   }
   RequestServerDebugInfo() {
     if (!(Time_1.Time.NowSeconds < this.tne + 1)) {
-      Net_1.Net.Call(18193, Protocol_1.Aki.Protocol.tes.create({
+      Net_1.Net.Call(16338, Protocol_1.Aki.Protocol.tes.create({
         F4n: this.ActorComp.CreatureData.GetCreatureDataId()
       }), t => {
         this.HandleEntityFsmGroupInfo(t);
@@ -478,7 +503,7 @@ ${this.ErrorMessage.ToString()}
         if (this.ActorComp.IsAutonomousProxy) {
           (s = Protocol_1.Aki.Protocol.xe_.create()).$4n = t;
           s.Y4n = i;
-          CombatMessage_1.CombatNet.Send(29436, this.Entity, s);
+          CombatMessage_1.CombatNet.Send(17827, this.Entity, s);
         }
       }
     } else {
@@ -507,7 +532,7 @@ ${this.ErrorMessage.ToString()}
         if (this.ActorComp.IsAutonomousProxy) {
           (s = Protocol_1.Aki.Protocol.xe_.create()).$4n = t;
           s.Y4n = e;
-          CombatMessage_1.CombatNet.Send(29436, this.Entity, s);
+          CombatMessage_1.CombatNet.Send(17827, this.Entity, s);
         }
       }
     } else {

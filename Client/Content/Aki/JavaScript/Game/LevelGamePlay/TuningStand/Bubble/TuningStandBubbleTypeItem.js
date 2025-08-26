@@ -134,13 +134,13 @@ class TuningStandBubbleTypeStartLink extends TuningStandBubbleTypeBase {
   constructor() {
     super(...arguments);
     this.BubbleType = IAction_1.ETuningStandBubbleTriggerType.StartLink;
-    this.qPu = false;
+    this.cxu = false;
   }
   TryStartBubble(t) {
     if (t) {
-      return !!this.PlayFlow && !this.qPu && (this.CurIndex = 0, this.UpdateBubble(), this.qPu = true);
+      return !!this.PlayFlow && !this.cxu && (this.CurIndex = 0, this.UpdateBubble(), this.cxu = true);
     } else {
-      return !(this.qPu = true);
+      return !(this.cxu = true);
     }
   }
 }
@@ -150,10 +150,10 @@ class TuningStandBubbleTypeInValidLink extends TuningStandBubbleTypeBase {
   constructor() {
     super(...arguments);
     this.BubbleType = IAction_1.ETuningStandBubbleTriggerType.InvalidLink;
-    this.GPu = 0;
+    this.dxu = 0;
   }
   TryStartBubble(t) {
-    return !!this.PlayFlow && !(Time_1.Time.Now - COOL_DOWN_TIME < this.GPu) && !(this.GPu = Time_1.Time.Now, this.CurIndex = 0, this.UpdateBubble(), 0);
+    return !!this.PlayFlow && !(Time_1.Time.Now - COOL_DOWN_TIME < this.dxu) && !(this.dxu = Time_1.Time.Now, this.CurIndex = 0, this.UpdateBubble(), 0);
   }
 }
 exports.TuningStandBubbleTypeInValidLink = TuningStandBubbleTypeInValidLink;

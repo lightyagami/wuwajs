@@ -12,12 +12,12 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 class GenericPromptModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.qTu = new Array();
+    this.obu = new Array();
     this.WYt = () => {
-      for (let e = 0, t = this.qTu.length; e < t; ++e) {
-        this.ApplyPromptParamHub(this.qTu.shift());
+      for (let e = 0, t = this.obu.length; e < t; ++e) {
+        this.ApplyPromptParamHub(this.obu.shift());
       }
-      if (this.qTu.length > 0 && Log_1.Log.CheckError()) {
+      if (this.obu.length > 0 && Log_1.Log.CheckError()) {
         Log_1.Log.Error("GenericPrompt", 10, "播放队列飘字异常,存在从队列中取出又被放回队列的情况");
       }
     };
@@ -28,23 +28,23 @@ class GenericPromptModel extends ModelBase_1.ModelBase {
   }
   OnClear() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFinishLoadingState, this.WYt);
-    return !(this.qTu.length = 0);
+    return !(this.obu.length = 0);
   }
   KYt() {
     return ModelManager_1.ModelManager.LoadingModel.IsLoading || ModelManager_1.ModelManager.LoginModel.HasLoginPromise();
   }
   ApplyPromptParamHub(e) {
     if (this.KYt()) {
-      this.qTu.push(e);
+      this.obu.push(e);
     } else {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InsertFloatTips, e);
     }
   }
   RemovePromptParamHubByKey(r) {
-    for (let e = 0, t = this.qTu.length; e < t; ++e) {
-      var n = this.qTu[e];
+    for (let e = 0, t = this.obu.length; e < t; ++e) {
+      var n = this.obu[e];
       if (n?.PromptKey && n?.PromptKey === r) {
-        this.qTu.splice(e, 1);
+        this.obu.splice(e, 1);
         return;
       }
     }

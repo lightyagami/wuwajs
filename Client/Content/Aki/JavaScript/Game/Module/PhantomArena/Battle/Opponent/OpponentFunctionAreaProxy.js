@@ -15,7 +15,7 @@ class OpponentFunctionAreaProxy {
     this.Card = undefined;
     this.Index = -1;
     this.x31 = undefined;
-    this.DHc = false;
+    this.bZu = false;
     this.IsInSkillInteract = false;
     this.Index = t;
     this.ParentArea = a;
@@ -150,13 +150,13 @@ class OpponentFunctionAreaProxy {
   PointerClickCard(t, a) {
     var i;
     if (this.x31) {
-      i = !this.DHc;
+      i = !this.bZu;
       if (this.x31.ReceiveClickData(2, t, this.Index, i)) {
         if (i) {
-          this.DHc = true;
+          this.bZu = true;
           this.Card?.PlaySequence("Point");
         } else {
-          this.DHc = false;
+          this.bZu = false;
           this.Card?.PlaySequence("PointClose");
         }
       } else {
@@ -186,10 +186,10 @@ class OpponentFunctionAreaProxy {
       if (this.Card.GetToggleState() === 1) {
         this.Card.SetToggleState(0, false);
       }
-      if (this.DHc) {
+      if (this.bZu) {
         this.Card.PlaySequence("PointClose");
       }
-      this.DHc = false;
+      this.bZu = false;
       this.IsInSkillInteract = false;
     }
   }

@@ -61,7 +61,7 @@ class UiConfig {
         }
       }
       a = UiLayerType_1.ELayerType[t.Type];
-      r = new UiViewInfo_1.UiViewInfo(n, a, o.Ctor, e, i, t.ObstructUi, t.AudioEvent, t.OpenAudioEvent, t.LoopAudioEvent, t.CloseAudioEvent, t.TimeDilation, t.ShowCursorType, t.CanOpenViewByShortcutKey, t.IsShortKeysExitView, o.SourceType, t.LoadAsync, t.NeedGC, t.IsFullScreen, UiLayerType_1.NORMAL_CONTAINER_TYPE & a ? ConfigManager_1.ConfigManager.UiViewConfig.GetUiNormalConfig(n).SortIndex : -1, t.CommonPopBg, t.CommonPopBgKey, t.ScenePath, t.IsPermanent, f, t.ScenePointTag);
+      r = new UiViewInfo_1.UiViewInfo(n, a, o.Ctor, e, i, t.ObstructUi, t.AudioEvent, t.OpenAudioEvent, t.LoopAudioEvent, t.CloseAudioEvent, t.TimeDilation, t.ShowCursorType, t.CanOpenViewByShortcutKey, t.IsShortKeysExitView, o.SourceType, t.LoadAsync, t.NeedGC, t.IsFullScreen, UiLayerType_1.NORMAL_CONTAINER_TYPE & a ? ConfigManager_1.ConfigManager.UiViewConfig.GetUiNormalConfig(n).SortIndex : -1, t.CommonPopBg, t.CommonPopBgKey, t.ScenePath, t.IsPermanent, f, t.FunctionCondition, t.ScenePointTag);
       UiConfig.Jcr.set(n, r);
     }
     return r;

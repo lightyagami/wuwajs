@@ -314,11 +314,11 @@ class BulletInfo {
     return this.BHo;
   }
   get AttackerBuffComp() {
-    this.bHo ||= this.Attacker?.GetComponent(174);
+    this.bHo ||= this.Attacker?.GetComponent(175);
     return this.bHo;
   }
   get AttackerMoveComp() {
-    this.qHo ||= this.Attacker?.GetComponent(178);
+    this.qHo ||= this.Attacker?.GetComponent(179);
     return this.qHo;
   }
   get AttackerAudioComponent() {

@@ -122,7 +122,7 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
     }
     this.AccelerationChangeMoveState = CharacterUnifiedStateTypes_1.ECharMoveState.Other;
     var t = this.Entity.GetComponent(3);
-    return !!t.Valid && (this.IsHidden = false, this.ActorComp = t, this.CharacterMovement = t.Actor.CharacterMovement, this.CharacterMovement.GravityScale = 2, this.CharacterMovement.bRotationFollowBaseMovement = true, this.AnimComp = this.Entity.GetComponent(177), this.UnifiedStateComponent = this.Entity.GetComponent(101), this.CapsuleOffset = Vector_1.Vector.Create(0, 0, this.ActorComp.Radius - this.ActorComp.HalfHeight), this.InitCreatureProperty(), this.MovementData = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.ActorComp.Actor.DtBaseMovementSetting, CharacterNameDefines_1.CharacterNameDefines.NORMAL.toString()), this.ActorComp.Actor.DtBaseMovementSetting && this.MovementData || Log_1.Log.CheckError() && Log_1.Log.Error("Character", 57, "以下BP_{Character}没有在蓝图中配置Dt_BaseMovementSetting找对应的蓝图负责人处理", ["Character", this.ActorComp.Actor.GetName()]), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this.OnDirectionStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.OnPositionStateChanged), this.IsStopInternal = false, this.InitBaseState(), this.InitTraceInfo(), true);
+    return !!t.Valid && (this.IsHidden = false, this.ActorComp = t, this.CharacterMovement = t.Actor.CharacterMovement, this.CharacterMovement.GravityScale = 2, this.CharacterMovement.bRotationFollowBaseMovement = true, this.AnimComp = this.Entity.GetComponent(178), this.UnifiedStateComponent = this.Entity.GetComponent(102), this.CapsuleOffset = Vector_1.Vector.Create(0, 0, this.ActorComp.Radius - this.ActorComp.HalfHeight), this.InitCreatureProperty(), this.MovementData = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.ActorComp.Actor.DtBaseMovementSetting, CharacterNameDefines_1.CharacterNameDefines.NORMAL.toString()), this.CharacterMovement?.SetWalkableFloorAngle(this.MovementData.WalkableFloorAngle), this.ActorComp.Actor.DtBaseMovementSetting && this.MovementData || Log_1.Log.CheckError() && Log_1.Log.Error("Character", 57, "以下BP_{Character}没有在蓝图中配置Dt_BaseMovementSetting找对应的蓝图负责人处理", ["Character", this.ActorComp.Actor.GetName()]), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this.OnDirectionStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.OnPositionStateChanged), this.IsStopInternal = false, this.InitBaseState(), this.InitTraceInfo(), true);
   }
   static get BaseMoveInheritCurve() {
     this.BaseMoveInheritCurveInternal ||= ResourceSystem_1.ResourceSystem.GetLoadedAsset(PreloadConstants_1.BASE_MOVE_INHERIT_CURVE_PATH, UE.CurveFloat);
@@ -185,7 +185,7 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
           this.HasMoveInput = false;
         }
         if (h && e) {
-          this.AnimComp.SetModelBuffer(t, i);
+          this.AnimComp.SetModelBuffer(t, i * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
         }
         this.OnTickGravityScale();
         if (this.HasBaseMovement) {
@@ -274,5 +274,5 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
     }
   }
 };
-NpcMoveComponent = NpcMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(181)], NpcMoveComponent);
+NpcMoveComponent = NpcMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(182)], NpcMoveComponent);
 exports.NpcMoveComponent = NpcMoveComponent; //# sourceMappingURL=NpcMoveComponent.js.map

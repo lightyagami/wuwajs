@@ -36,7 +36,7 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   }
   Initialize(e) {
     super.Initialize(e);
-    this.InitChildType(26);
+    this.InitChildType(37);
     this.Ore();
   }
   OnBeforeDestroy() {

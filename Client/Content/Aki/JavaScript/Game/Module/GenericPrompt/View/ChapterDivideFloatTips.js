@@ -8,7 +8,6 @@ const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const QuestChapterById_1 = require("../../../../Core/Define/ConfigQuery/QuestChapterById");
-const UiTimeDilation_1 = require("../../../Ui/Base/UiTimeDilation");
 const GenericPromptFloatTipsBase_1 = require("./GenericPromptFloatTipsBase");
 class ChapterDivideFloatTips extends GenericPromptFloatTipsBase_1.GenericPromptFloatTipsBase {
   constructor() {
@@ -61,18 +60,15 @@ class ChapterDivideFloatTips extends GenericPromptFloatTipsBase_1.GenericPromptF
   }
   OnBeforeShow() {
     var t;
-    var e;
     this.GetButton(4)?.RootUIComp.SetRaycastTarget(false);
     if (this.Info.Name === "ChapterEndFloatTips" || this.Info.Name === "FlowChapterEndTips") {
       (t = this.OpenParam).StartSequenceName = "Accomplish";
       this.UiViewSequence?.SetSequenceName(t);
-    } else if (this.Info.Name === "ChapterA" && ((t = this.OpenParam).ChapterState === 1 && ((e = this.OpenParam).StartSequenceName = "Accomplish", this.UiViewSequence?.SetSequenceName(e)), t.ResumeTimeDilation)) {
-      UiTimeDilation_1.UiTimeDilation.SetGameTimeDilation({
-        ViewId: this.GetViewId(),
-        TimeDilation: 1,
-        DebugName: "ChapterA",
-        Reason: "Plot"
-      });
+    } else if (this.Info.Name === "ChapterA" || this.Info.Name === "PlotChapterA") {
+      if (this.OpenParam.ChapterState === 1) {
+        (t = this.OpenParam).StartSequenceName = "Accomplish";
+        this.UiViewSequence?.SetSequenceName(t);
+      }
     }
   }
   CombineChapterExtraText(t) {

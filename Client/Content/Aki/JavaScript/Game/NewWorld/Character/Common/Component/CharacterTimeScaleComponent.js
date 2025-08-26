@@ -31,6 +31,7 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CombatLog_1 = require("../../../../Utils/CombatLog");
 const PawnTimeScaleComponent_1 = require("../../../Pawn/Component/PawnTimeScaleComponent");
 let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends PawnTimeScaleComponent_1.PawnTimeScaleComponent {
   constructor() {
@@ -45,7 +46,7 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
   OnStart() {
     return !!super.OnStart() && (this.J81 = ControllerHolder_1.ControllerHolder.EffectAudioController.CheckInSpecialInstanceDungeon(), true);
   }
-  IsTimescaleValid(e, t) {
+  IsTimescaleValid(e) {
     if (ModelManager_1.ModelManager.GameModeModel?.IsMulti) {
       switch (e.SourceType) {
         case 3:
@@ -58,70 +59,65 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
           return false;
       }
     }
-    return super.IsTimescaleValid(e, t);
+    return super.IsTimescaleValid(e);
   }
   OnTick(e) {
-    var t = Time_1.Time.WorldTimeSeconds;
-    let i = 1;
-    let o = 0;
-    let r = 1;
+    let t = 1;
+    let i = 0;
+    let o = 1;
     while (!this.TimeScaleList.Empty) {
-      var s = this.TimeScaleList.Top;
-      if (!s) {
+      var r = this.TimeScaleList.Top;
+      if (!r) {
         break;
       }
-      if (this.IsTimescaleValid(s, t)) {
-        i = s.CalculateTimeScale();
-        o = s.SourceType;
-        r = s.EndTime - s.StartTime >= AudioDefine_1.ENTITY_TIMESCALE_ENABLE_THRESHOLD ? i : this.CKr;
+      if (this.IsTimescaleValid(r)) {
+        t = r.CalculateTimeScale();
+        i = r.SourceType;
+        o = r.EndTime - r.StartTime >= AudioDefine_1.ENTITY_TIMESCALE_ENABLE_THRESHOLD ? t : this.CKr;
         break;
       }
-      this.TimeScaleMap.delete(s.Id);
+      this.TimeScaleMap.delete(r.Id);
       this.TimeScaleList.Pop();
     }
-    var n = this.Entity.GetComponent(15);
-    if (!!this.ActorComp && !this.ActorComp.IsMoveAutonomousProxy && (!n || !n.IsDead())) {
-      i = this.gKr;
-      r = this.gKr;
+    var s = this.Entity.GetComponent(15);
+    if (!!this.ActorComp && !this.ActorComp.IsMoveAutonomousProxy && (!s || !s.IsDead())) {
+      t = this.gKr;
+      o = this.gKr;
     }
     if (this.Ix1 >= 0) {
-      i = this.Ix1;
-      r = this.Ix1;
+      t = this.Ix1;
+      o = this.Ix1;
     }
-    this.FreezeTimeScaleInternal = i;
-    var n = this.GetTopForeverTimeScale();
-    i *= n;
+    this.FreezeTimeScaleInternal = t;
+    var s = this.GetTopForeverTimeScale();
+    t *= s;
     if (this.RemoveLockTimestamp > 0 && this.Entity.GetComponent(0)?.IsMonster()) {
-      if ((a = Time_1.Time.NowSeconds - this.RemoveLockTimestamp) > 2) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Character", 19, "大招时停恢复时间过长", ["gap time", a]);
-        }
-      } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 19, "大招时停恢复", ["gap time", a]);
+      if ((n = Time_1.Time.NowSeconds - this.RemoveLockTimestamp) > 2) {
+        CombatLog_1.CombatLog.Error("Skill", this.Entity, "大招时停恢复时间过长", ["gap time", n]);
       }
       this.RemoveLockTimestamp = -1;
     }
-    var a = r * this.Entity.TimeDilation * ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * n;
-    if (a !== this.dKr && (n = this.ActorComp?.Owner)) {
+    var n = o * this.Entity.TimeDilation * ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * s;
+    if (n !== this.dKr && (s = this.ActorComp?.Owner)) {
       if (!this.J81) {
-        AudioSystem_1.AudioSystem.SetRtpcValue("entity_time_scale_combat", a, {
-          Actor: n
+        AudioSystem_1.AudioSystem.SetRtpcValue("entity_time_scale_combat", n, {
+          Actor: s
         });
       }
-      if (a < AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD && this.dKr >= AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD) {
-        AudioSystem_1.AudioSystem.PostEvent("time_scale_pause", n);
-      } else if (a >= AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD && this.dKr < AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD) {
-        AudioSystem_1.AudioSystem.PostEvent("time_scale_resume", n);
+      if (n < AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD && this.dKr >= AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD) {
+        AudioSystem_1.AudioSystem.PostEvent("time_scale_pause", s);
+      } else if (n >= AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD && this.dKr < AudioDefine_1.ENTITY_TIMESCALE_PAUSE_THRESHOLD) {
+        AudioSystem_1.AudioSystem.PostEvent("time_scale_resume", s);
       }
     }
-    this.dKr = a;
-    this.CKr = r;
-    if (i !== this.TimeScaleInternal) {
+    this.dKr = n;
+    this.CKr = o;
+    if (t !== this.TimeScaleInternal) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 19, "实体流速变化", ["entityId", this.Entity.Id], ["newScale", i], ["oldScale", this.TimeScaleInternal], ["sourceType", o]);
+        Log_1.Log.Debug("Character", 19, "实体流速变化", ["entityId", this.Entity.Id], ["newScale", t], ["oldScale", this.TimeScaleInternal], ["sourceType", i]);
       }
-      this.TimeScaleInternal = i;
-      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, i, o);
+      this.TimeScaleInternal = t;
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, t, i);
       this.Entity.SetTimeDilation(this.TimeDilation);
     }
   }
@@ -140,6 +136,22 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
       this.OnTick(0);
     }
   }
+  SetTimeScale(e, t, i, o, r, s) {
+    var n = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85)?.Group;
+    if (n) {
+      return n.SetTimeScale(e, t, i, o, r, s);
+    } else {
+      return super.SetTimeScale(e, t, i, o, r, s);
+    }
+  }
+  RemoveTimeScale(e) {
+    var t = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85)?.Group;
+    if (t) {
+      t.RemoveTimeScale(e);
+    } else {
+      super.RemoveTimeScale(e);
+    }
+  }
 };
-CharacterTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(179)], CharacterTimeScaleComponent);
+CharacterTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(180)], CharacterTimeScaleComponent);
 exports.CharacterTimeScaleComponent = CharacterTimeScaleComponent; //# sourceMappingURL=CharacterTimeScaleComponent.js.map

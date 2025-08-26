@@ -35,8 +35,10 @@ class UiNavigationViewHandle {
     this.vbo = false;
     this.Mbo = false;
     this.Ebo = false;
+    this.t1d = 0;
     this.Gfa = undefined;
     this.bIa = undefined;
+    this.Tad = undefined;
     this.TagId = i;
     this.ViewName = t.ViewName;
     this.MainPanel = t;
@@ -222,7 +224,7 @@ class UiNavigationViewHandle {
   }
   SetCurrentAddPanel(i) {
     this._bo = i;
-    UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshCurrentPanel = true;
+    UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshPanelId = this.TagId;
   }
   HasAnyPanelActive() {
     let i = false;
@@ -387,12 +389,9 @@ class UiNavigationViewHandle {
       if (this.ubo = i) {
         this.lbo = i.PanelConfig;
       }
-      if (this.cbo) {
-        if (ModelManager_1.ModelManager.UiNavigationModel?.IsOpenLog && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("UiNavigation", 10, "设置当前的导航对象", ["DisplayName", i?.RootUIComp.displayName], ["ViewName", this.ViewName], ["Path", i ? UiNavigationUtil_1.UiNavigationUtil.GetFullPathOfActor(i.GetOwner()) : ""]);
-        }
-        UiNavigationLogic_1.UiNavigationLogic.UpdateNavigationListener(i);
-        i?.ActiveNavigationState(t);
+      if (this.cbo && (ModelManager_1.ModelManager.UiNavigationModel?.IsOpenLog && Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "设置当前的导航对象", ["DisplayName", i?.RootUIComp.displayName], ["ViewName", this.ViewName], ["Path", i ? UiNavigationUtil_1.UiNavigationUtil.GetFullPathOfActor(i.GetOwner()) : ""]), UiNavigationLogic_1.UiNavigationLogic.UpdateNavigationListener(i), i)) {
+        this.State = "HasNavigation";
+        i.ActiveNavigationState(t);
       }
       this.MarkRefreshHotKeyDirty();
     }
@@ -403,6 +402,9 @@ class UiNavigationViewHandle {
   }
   MarkResetCurrentPanelDirty() {
     this.Vgl = true;
+  }
+  get IsListenerCanFocusByPanelConfig() {
+    return UiNavigationViewManager_1.UiNavigationViewManager.CanFocusViewHandle(this);
   }
   UpdateHotKeyVisibleMode(i) {
     if (Log_1.Log.CheckDebug()) {
@@ -449,8 +451,14 @@ class UiNavigationViewHandle {
       this.FindSuitableNavigation(false);
     }
   }
-  MarkRefreshNavigationDirty() {
+  MarkRefreshNavigationDirty(i = 0) {
+    this.t1d = i;
     this.Ebo = true;
+  }
+  ResetNavigationDirty(i = 0) {
+    if (this.t1d === 0 || i === 0 || this.t1d === i) {
+      this.Ebo = false;
+    }
   }
   Ffa() {
     if (this.Gfa !== undefined) {
@@ -488,6 +496,18 @@ class UiNavigationViewHandle {
   }
   UpdateMousePositionByItem(i) {
     this.bIa?.UpdateMousePositionByItem(i);
+  }
+  SetDynamicScrollViewNavigationContext(i) {
+    this.Tad ||= i;
+  }
+  ClearDynamicScrollViewNavigationContext() {
+    this.Tad = undefined;
+  }
+  get IsWaitToFindDynamicGrid() {
+    return this.Tad !== undefined;
+  }
+  GetDynamicScrollViewNavigationContext() {
+    return this.Tad;
   }
   TickViewHandle(i) {
     this.fbo.Start();

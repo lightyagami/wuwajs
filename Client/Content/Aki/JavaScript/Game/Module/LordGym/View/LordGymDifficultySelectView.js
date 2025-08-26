@@ -58,6 +58,7 @@ class LordGymDifficultySelectView extends UiViewBase_1.UiViewBase {
         LordGymController_1.LordGymController.LordGymBeginRequest(e).then(e => {
           if (e) {
             UiManager_1.UiManager.ResetToBattleView();
+            ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId = this.jSi;
           }
         });
       } else {

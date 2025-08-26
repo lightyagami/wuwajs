@@ -79,7 +79,7 @@ let CharacterMovementSyncComponent = class CharacterMovementSyncComponent extend
     this.MHr = undefined;
     this.rJo = undefined;
     this.uwl = undefined;
-    this.LY1 = undefined;
+    this.ez1 = undefined;
     this.QHr = new FastMoveSample();
     this.XHr = new ReadOnlyFastMoveSample();
     this.$Hr = this.XHr;
@@ -110,7 +110,7 @@ let CharacterMovementSyncComponent = class CharacterMovementSyncComponent extend
   }
   CustomAfterTickInternal(t) {
     this.YHr(t);
-    var e = this.uwl && (this.uwl.Seat >= 0 || this.uwl.IsAttachToMoveSceneItem);
+    var e = this.uwl && this.uwl.Seat >= 0;
     if (this.CacheBaseEntityHandle && this.TransformFromRelativeMove(this.CacheBaseEntityHandle, this.CacheRelativeLocation, this.CacheRelativeRotator, this.CacheFinalLocation, this.CacheFinalRotator) && !this.ActorComp?.IsMoveAutonomousProxy && !e) {
       this.ActorComp.SetActorLocationAndRotation(this.CacheFinalLocation.ToUeVector(), this.CacheFinalRotator.ToUeRotator(), "角色移动同步.添加简单位移(帧末修正相对位置)", false);
       this.LastRelativeMove = true;
@@ -138,7 +138,7 @@ let CharacterMovementSyncComponent = class CharacterMovementSyncComponent extend
     }
   }
   OnStart() {
-    return !!super.OnStart() && (this.Nce = this.Entity.GetComponent(62), this.MHr = this.Entity.GetComponent(35), this.rJo = this.Entity.GetComponent(101), this.uwl = this.Entity.GetComponent(229), this.LY1 = this.Entity.GetComponent(47), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene), true);
+    return !!super.OnStart() && (this.Nce = this.Entity.GetComponent(62), this.MHr = this.Entity.GetComponent(35), this.rJo = this.Entity.GetComponent(102), this.uwl = this.Entity.GetComponent(230), this.ez1 = this.Entity.GetComponent(47), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene), true);
   }
   OnEnd() {
     return !!super.OnEnd() && (EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene), true);
@@ -309,7 +309,7 @@ let CharacterMovementSyncComponent = class CharacterMovementSyncComponent extend
     this.MoveComp?.SetForceSpeed(s);
     this.ControllerPlayerId = r;
     this.MHr?.SlideForward.DeepCopy(h);
-    if (this.LY1?.AiController?.IsWaitingReceiveControl()) {
+    if (this.ez1?.AiController?.IsWaitingReceiveControl()) {
       this.LastReceivedMovementMode = t;
     } else {
       this.isn?.Actor.KuroSetMovementMode({

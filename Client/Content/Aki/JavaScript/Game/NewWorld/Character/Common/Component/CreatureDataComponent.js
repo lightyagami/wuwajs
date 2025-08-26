@@ -133,6 +133,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.eM1 = 0;
     this.SpawnedEntityInfos = [];
     this.TemplateSpawnerType = Protocol_1.Aki.Protocol.TS1.Proto_TemplateDefault;
+    this.HoldHandTargetEntityId = 0;
+    this.HoldHandType = 0;
+    this.HoldHandIsFollow = false;
     this.wDe = 0;
     this.vH = 0;
     this.mXr = false;
@@ -168,6 +171,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.xm1 = undefined;
     this.Um1 = undefined;
     this.Dm1 = undefined;
+    this.TrapAuxiliaryConfigIds = undefined;
     this.ad1 = () => {
       var t = ModelManager_1.ModelManager.TraceElementModel.GetTraceTypeElement(UE.TraceSphereElement.StaticClass(), QueryTypeDefine_1.KuroTraceTypeQuery.IkGround, GlobalData_1.GlobalData.World);
       t.Radius = IK_GROUND_TRACE_RADIUS;
@@ -1000,135 +1004,145 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   wXr(t) {
     this.ComponentDataMap.clear();
-    for (const _ of t) {
-      var i = _.C3s;
-      this.ComponentDataMap.set(i, _);
+    for (const l of t) {
+      var i = l.C3s;
+      this.ComponentDataMap.set(i, l);
       switch (i) {
         case "sys":
-          this.SetHardnessModeId(_.sys.$Wn);
+          this.SetHardnessModeId(l.sys.$Wn);
           break;
         case "ays":
-          this.SetEntityCommonTags(_.ays.lIs);
+          this.SetEntityCommonTags(l.ays.lIs);
           break;
         case "dys":
-          this.SetBlackboardsByProtocol(_.dys.pIs);
+          this.SetBlackboardsByProtocol(l.dys.pIs);
           break;
         case "pys":
-          this.CXr = _.pys.yIs;
+          this.CXr = l.pys.yIs;
           break;
         case "lys":
-          this.SetSummonerId(MathUtils_1.MathUtils.LongToNumber(_.lys.YWn));
-          this.SetSummonerPlayerId(_.lys.W5n);
-          this.SummonType = _.lys.h5n;
-          this.SummonCfgId = _.lys.dIs;
+          this.SetSummonerId(MathUtils_1.MathUtils.LongToNumber(l.lys.YWn));
+          this.SetSummonerPlayerId(l.lys.W5n);
+          this.SummonType = l.lys.h5n;
+          this.SummonCfgId = l.lys.dIs;
           break;
         case "yys":
-          this.PXr(_.yys);
+          this.PXr(l.yys);
           break;
         case "Iys":
-          this.fXr = _.Iys.P5n ?? 1;
+          this.fXr = l.Iys.P5n ?? 1;
           break;
         case "Rys":
-          this.RelationId = _.Rys.bIs;
-          this.PbRelationMatchCfgIndex = _.Rys.BIs - 1;
-          this.ControllerId = MathUtils_1.MathUtils.LongToNumber(_.Rys.xIs);
-          this.IsShowingHandFx = _.Rys.q5n;
+          this.RelationId = l.Rys.bIs;
+          this.PbRelationMatchCfgIndex = l.Rys.BIs - 1;
+          this.ControllerId = MathUtils_1.MathUtils.LongToNumber(l.Rys.xIs);
+          this.IsShowingHandFx = l.Rys.q5n;
           break;
         case "Yys":
-          this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(_.Yys.wIs);
+          this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(l.Yys.wIs);
           break;
         case "Dys":
-          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(_.Dys.Z5n);
+          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(l.Dys.Z5n);
           this.RXr.length = 0;
-          for (const l of _.Dys.OIs) {
-            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(l));
+          for (const u of l.Dys.OIs) {
+            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(u));
           }
-          this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(_.Dys.kIs);
+          this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(l.Dys.kIs);
           break;
         case "wys":
-          for (const u of _.wys.FIs) {
-            this.OccupiedGridInfo.set(u.iLs, u);
+          for (const d of l.wys.FIs) {
+            this.OccupiedGridInfo.set(d.iLs, d);
           }
-          for (const d of _.wys.VIs) {
-            this.DynamicGridInfo.push(d);
+          for (const C of l.wys.VIs) {
+            this.DynamicGridInfo.push(C);
           }
-          this.BoardCanMove = _.wys.gI_;
+          this.BoardCanMove = l.wys.gI_;
           break;
         case "Nys":
-          this.PbInRangeEntityCreatureDataIds = _.Nys.rIs.flatMap(t => MathUtils_1.MathUtils.LongToNumber(t));
-          this.PbInRangePlayerIds = _.Nys.iIs;
+          this.PbInRangeEntityCreatureDataIds = l.Nys.rIs.flatMap(t => MathUtils_1.MathUtils.LongToNumber(t));
+          this.PbInRangePlayerIds = l.Nys.iIs;
           break;
         case "$ys":
-          var e = _.$ys;
+          var e = l.$ys;
           this.PbDynAttachEntityConfigId = e.qIs;
           this.PbDynAttachEntityActorKey = e.GIs;
           this.PbDynAttachRefActorKey = e._6n;
           this.PbDynAttachRelPos.Set(e.o6n?.X ?? 0, e.o6n?.Y ?? 0, e.o6n?.Z ?? 0);
           break;
         case "Hys":
-          e = _.Hys?.hEs;
+          e = l.Hys?.hEs;
           if (e) {
             this.sQt(e);
           }
           break;
         case "oI_":
-          this.zZa = _.oI_?.fI_ ?? false;
+          this.zZa = l.oI_?.fI_ ?? false;
           break;
         case "lI_":
-          var s = _.lI_;
+          var s = l.lI_;
           this.nxl = s.yI_;
           break;
         case "sI_":
-          s = _.sI_;
+          s = l.sI_;
           this.PbSceneItemAttributeIds = s.II_;
           break;
         case "aI_":
-          var o = _.aI_;
+          var o = l.aI_;
           this.PbPullingFoundationEntityId = o.bIs;
           break;
         case "cI_":
-          o = _.cI_;
+          o = l.cI_;
           this.PbSceneAiEnabled = o.tWn;
           this.PbPatrolInfoPb = o.tVn?.RI_;
           break;
         case "uI_":
-          var r = _.uI_;
+          var r = l.uI_;
           this.PbAnimalInitialPartIds = r.PI_;
           break;
         case "_I_":
-          r = _._I_;
+          r = l._I_;
           this.PbCombinePartInfoList = r.SI_;
           this.PbCombineTargetServerId = MathUtils_1.MathUtils.LongToNumber(r.TVn);
           break;
         case "mI_":
-          var n = _.mI_;
+          var n = l.mI_;
           this.PbHookLockPointDisabled = n.UI_;
           break;
         case "Tx_":
-          n = _.Tx_;
+          n = l.Tx_;
           this.PbHackingEntities = n.PSs;
           break;
         case "N7_":
-          var h = _.N7_;
+          var h = l.N7_;
           this.PbHackedByEntities = MathUtils_1.MathUtils.LongToNumber(h.V7_);
           break;
         case "TY_":
-          h = _.TY_;
+          h = l.TY_;
           this.PbGravityFlipDirection = h.RY_;
           break;
         case "pAc":
-          var a = _.pAc;
+          var a = l.pAc;
           this.PbMoveSplineId = a.dTs;
           this.PbMoveSplineConfig = a.vAc;
           this.PbMoveSplineSceneItemRuntimeData = a.yAc;
           break;
         case "Fp1":
-          this.UpdateRewardState(_.Fp1);
+          this.UpdateRewardState(l.Fp1);
           break;
         case "Av1":
-          a = _.Av1;
+          a = l.Av1;
           this.SpawnedEntityInfos = a.Pv1;
           this.TemplateSpawnerType = a.MS1;
+          break;
+        case "XBu":
+          var _ = l.XBu;
+          this.TrapAuxiliaryConfigIds = _.JBu?.GNc;
+          break;
+        case "_ju":
+          _ = l._ju;
+          this.HoldHandType = _.wju;
+          this.HoldHandTargetEntityId = MathUtils_1.MathUtils.LongToNumber(_.TVn);
+          this.HoldHandIsFollow = _.Aju;
       }
     }
   }
@@ -1232,7 +1246,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     var t = Protocol_1.Aki.Protocol.kes.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.Wpo);
     t.JWn = true;
-    Net_1.Net.Call(18730, t, () => {});
+    Net_1.Net.Call(29413, t, () => {});
   }
   IsRealMonster() {
     var t = this.fie === Protocol_1.Aki.Protocol.kks.Proto_Monster;

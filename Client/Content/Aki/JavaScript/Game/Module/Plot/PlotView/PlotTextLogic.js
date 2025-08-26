@@ -80,7 +80,7 @@ class PlotTextCommonLogic {
     this.CurrentContent = undefined;
     this.$bn = "";
     this.Nra = 0;
-    this.Tnu = undefined;
+    this.znu = undefined;
     this.PlayDelayTime = undefined;
     this.K2n = undefined;
     this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
@@ -126,18 +126,18 @@ class PlotTextCommonLogic {
               e = s - this.PlotContent.GetRenderLineCharNum(0);
             }
             this.Fbn = e / o * 1000;
-            this.jbn = TimerSystem_1.TimerSystem.Delay(this.Xbn, l);
+            this.jbn = TimerSystem_1.GameplayTimerSystem.Delay(this.Xbn, l);
           }
         }
       }
     };
     this.Xbn = () => {
       this.Vbn = 0;
-      this.Hbn = TimerSystem_1.TimerSystem.Forever(() => {
+      this.Hbn = TimerSystem_1.GameplayTimerSystem.Forever(() => {
         var t = this.Vbn / this.Fbn;
         this.TextScrollView?.SetScrollProgress(t);
-        if (t >= 1 && TimerSystem_1.TimerSystem.Has(this.Hbn)) {
-          TimerSystem_1.TimerSystem.Remove(this.Hbn);
+        if (t >= 1 && TimerSystem_1.GameplayTimerSystem.Has(this.Hbn)) {
+          TimerSystem_1.GameplayTimerSystem.Remove(this.Hbn);
         }
         this.Vbn += 100;
       }, 100);
@@ -177,8 +177,8 @@ class PlotTextCommonLogic {
     this.Y2n?.Remove();
     this.Y2n = undefined;
     this.Kbn();
-    this.j_u(false);
-    this.Tnu = undefined;
+    this.b1u(false);
+    this.znu = undefined;
   }
   UpdatePlotSubtitle(t) {
     let i = false;
@@ -189,7 +189,7 @@ class PlotTextCommonLogic {
     this.PlaySubtitle(t);
   }
   ClearPlotContent() {
-    this.j_u(false);
+    this.b1u(false);
     this.uZi = undefined;
     this.X2n = false;
     this.y$t = false;
@@ -219,13 +219,13 @@ class PlotTextCommonLogic {
     }
     return false;
   }
-  j_u(t) {
+  b1u(t) {
     if (t) {
       this.MZi(this.CurrentContent.TalkAkEvent);
-      this.Tnu = this.CurrentContent.TalkEndAkEvent;
+      this.znu = this.CurrentContent.TalkEndAkEvent;
     } else {
-      this.MZi(this.Tnu);
-      this.Tnu = undefined;
+      this.MZi(this.znu);
+      this.znu = undefined;
     }
   }
   MZi(t) {
@@ -313,7 +313,7 @@ class PlotTextCommonLogic {
           }
         }
       });
-      this.K2n = TimerSystem_1.TimerSystem.Delay(() => {
+      this.K2n = TimerSystem_1.GameplayTimerSystem.Delay(() => {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 26, "[PlotTextLogic] 加载剧情音频超时，直接显示剧情文本");
         }
@@ -368,7 +368,7 @@ class PlotTextCommonLogic {
           }
         });
         if (e) {
-          this.K2n = TimerSystem_1.TimerSystem.Delay(() => {
+          this.K2n = TimerSystem_1.GameplayTimerSystem.Delay(() => {
             if (Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("Plot", 17, "加载通用语气音频超时，直接显示剧情文本");
             }
@@ -389,15 +389,15 @@ class PlotTextCommonLogic {
     this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
   }
   aZi() {
-    if (TimerSystem_1.TimerSystem.Has(this.K2n)) {
-      TimerSystem_1.TimerSystem.Remove(this.K2n);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.K2n)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.K2n);
     }
     this.K2n = undefined;
   }
   PlaySubtitle(t) {
     var i;
     this.CurrentContent = t;
-    this.j_u(true);
+    this.b1u(true);
     if (this.CurrentContent.Type === "Option" || this.CurrentContent.Type === "SystemOption") {
       this.ClearCurPlayAudio();
       this.pZi(false);
@@ -448,7 +448,7 @@ class PlotTextCommonLogic {
     this.SZi();
     this.yZi();
     this.IZi(t, i);
-    this.Y2n = TimerSystem_1.TimerSystem.Next(this.Wbn);
+    this.Y2n = TimerSystem_1.GameplayTimerSystem.Next(this.Wbn);
   }
   SZi() {
     var t;
@@ -501,11 +501,11 @@ class PlotTextCommonLogic {
     }
   }
   Kbn() {
-    if (TimerSystem_1.TimerSystem.Has(this.Hbn)) {
-      TimerSystem_1.TimerSystem.Remove(this.Hbn);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.Hbn)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.Hbn);
     }
-    if (TimerSystem_1.TimerSystem.Has(this.jbn)) {
-      TimerSystem_1.TimerSystem.Remove(this.jbn);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.jbn)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.jbn);
     }
   }
   IZi(i, e) {
@@ -555,11 +555,11 @@ class PlotTextCommonLogic {
     }
     this.gZi();
     t = Math.max(t, TimerSystem_1.MIN_TIME);
-    this.SubtitleAnimationTimer = TimerSystem_1.TimerSystem.Delay(this.CZi, t);
+    this.SubtitleAnimationTimer = TimerSystem_1.GameplayTimerSystem.Delay(this.CZi, t);
   }
   gZi() {
-    if (TimerSystem_1.TimerSystem.Has(this.SubtitleAnimationTimer)) {
-      TimerSystem_1.TimerSystem.Remove(this.SubtitleAnimationTimer);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.SubtitleAnimationTimer)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.SubtitleAnimationTimer);
     }
     this.SubtitleAnimationTimer = undefined;
   }

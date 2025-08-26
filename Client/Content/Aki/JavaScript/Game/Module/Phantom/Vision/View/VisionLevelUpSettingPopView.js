@@ -12,11 +12,11 @@ class VisionLevelUpSettingPopView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.c1l = 0;
     this.tBt = 0;
-    this.pDu = 0;
-    this.vDu = () => {
+    this.JDu = 0;
+    this.ZDu = () => {
       this.SetIdentify(0);
     };
-    this.yDu = () => {
+    this.eBu = () => {
       this.SetIdentify(1);
     };
     this.m1l = () => {
@@ -41,13 +41,13 @@ class VisionLevelUpSettingPopView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIExtendToggle], [2, UE.UIExtendToggle], [3, UE.UIExtendToggle], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIExtendToggle], [7, UE.UIExtendToggle]];
-    this.BtnBindInfo = [[0, this.m1l], [1, this.d1l], [2, this.C1l], [3, this.g1l], [4, this.p1l], [5, this.xco], [6, this.vDu], [7, this.yDu]];
+    this.BtnBindInfo = [[0, this.m1l], [1, this.d1l], [2, this.C1l], [3, this.g1l], [4, this.p1l], [5, this.xco], [6, this.ZDu], [7, this.eBu]];
   }
   OnStart() {
     var i = ModelManager_1.ModelManager.PhantomBattleModel;
     this.c1l = i.GetVisionLevelUpMaterialPutInMode();
     this.tBt = i.GetVisionLevelUpMaterialUseType();
-    this.pDu = i.GetVisionLevelUpIdentify();
+    this.JDu = i.GetVisionLevelUpIdentify();
     this.Refresh();
   }
   Refresh() {
@@ -72,7 +72,7 @@ class VisionLevelUpSettingPopView extends UiViewBase_1.UiViewBase {
   RefreshIdentifyToggle() {
     let i = undefined;
     let t = undefined;
-    t = this.pDu === 0 ? (i = 1, 0) : (i = 0, 1);
+    t = this.JDu === 0 ? (i = 1, 0) : (i = 0, 1);
     this.GetExtendToggle(6)?.SetToggleState(i);
     this.GetExtendToggle(7)?.SetToggleState(t);
   }
@@ -85,14 +85,14 @@ class VisionLevelUpSettingPopView extends UiViewBase_1.UiViewBase {
     this.RefreshUseTypeToggle();
   }
   SetIdentify(i) {
-    this.pDu = i;
+    this.JDu = i;
     this.RefreshIdentifyToggle();
   }
   SaveSetting() {
     var i = ModelManager_1.ModelManager.PhantomBattleModel;
     i.SetVisionLevelUpMaterialPutInMode(this.c1l);
     i.SetVisionLevelUpMaterialUseType(this.tBt);
-    i.SetVisionLevelUpIdentify(this.pDu);
+    i.SetVisionLevelUpIdentify(this.JDu);
   }
 }
 exports.VisionLevelUpSettingPopView = VisionLevelUpSettingPopView;

@@ -35,7 +35,7 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestBattlePassDataForTask() {
     var e = Protocol_1.Aki.Protocol.bYn.create();
-    Net_1.Net.Call(25914, e, e => {
+    Net_1.Net.Call(17076, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.BattlePassModel.SetDataFromBattlePassResponse(e);
@@ -44,7 +44,7 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
           }
           this.mki();
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15390);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25333);
         }
       }
     });
@@ -59,22 +59,22 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   static async dki() {
     ModelManager_1.ModelManager.BattlePassModel.IsRequiringViewData = true;
     var e = Protocol_1.Aki.Protocol.bYn.create();
-    var e = await Net_1.Net.CallAsync(25914, e);
+    var e = await Net_1.Net.CallAsync(17076, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15390);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25333);
       } else {
         ModelManager_1.ModelManager.BattlePassModel.SetDataFromBattlePassResponse(e);
         if (ModelManager_1.ModelManager.BattlePassModel.GetInTimeRange()) {
           var t = Protocol_1.Aki.Protocol.HYn.create();
-          var t = await Net_1.Net.CallAsync(17484, t);
+          var t = await Net_1.Net.CallAsync(18855, t);
           if (t) {
             if (ModelManager_1.ModelManager.LoadingModel?.IsLoading) {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("Pay", 27, "[BattlePassController.DoOpenBattlePassView] 在Loading中,打开界面取消");
               }
             } else if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 23708);
+              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 15277);
             } else {
               ModelManager_1.ModelManager.BattlePassModel.BattlePassTaskMap.clear();
               for (const a of t.cMs) {
@@ -102,7 +102,7 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   }
   static SetBattlePassEnter() {
     var e = Protocol_1.Aki.Protocol.XYn.create();
-    Net_1.Net.Send(19761, e);
+    Net_1.Net.Send(29360, e);
     ModelManager_1.ModelManager.BattlePassModel.HadEnter = true;
   }
   static RequestTakeBattlePassReward(t, a, r, o) {
@@ -110,12 +110,12 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
     e.h5n = t;
     e.F6n = a;
     e.L8n = r;
-    Net_1.Net.Call(29504, e, e => {
+    Net_1.Net.Call(24584, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.BattlePassModel.OnResponseTakeReward(t, a, r, o);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23224);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20783);
         }
       }
     });
@@ -123,12 +123,12 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestTakeAllRewardResponse() {
     var e = Protocol_1.Aki.Protocol.FYn.create();
-    Net_1.Net.Call(28355, e, e => {
+    Net_1.Net.Call(17326, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.BattlePassModel.UpdateRewardDataFromBattlePassTakeAllRewardResponse(e);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15075);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17176);
         }
       }
     });
@@ -136,7 +136,7 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestBattlePassTask() {
     var e = Protocol_1.Aki.Protocol.HYn.create();
-    Net_1.Net.Call(17484, e, e => {
+    Net_1.Net.Call(18855, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.BattlePassModel.BattlePassTaskMap.clear();
@@ -148,7 +148,7 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
           ModelManager_1.ModelManager.BattlePassModel.SetDayEndTime(e.rEs);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ReceiveBattlePassTaskEvent, t);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23708);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15277);
         }
       }
     });
@@ -159,12 +159,12 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   static RequestBattlePassTaskTake(e) {
     var t = Protocol_1.Aki.Protocol.KYn.create();
     t.BVn = e;
-    Net_1.Net.Call(15451, t, e => {
+    Net_1.Net.Call(23762, t, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.BattlePassModel.UpdateTaskDataFromBattlePassTaskTakeResponse(e.BVn);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22335);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26040);
         }
       }
     });
@@ -172,17 +172,17 @@ class BattlePassController extends UiControllerBase_1.UiControllerBase {
   static RequestBuyBattlePassLevel(e) {
     var t = Protocol_1.Aki.Protocol.YYn.create();
     t.F6n = e;
-    Net_1.Net.Call(22736, t, () => {});
+    Net_1.Net.Call(22804, t, () => {});
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28988, BattlePassController.Cki);
-    Net_1.Net.Register(20046, BattlePassController.gki);
-    Net_1.Net.Register(16012, BattlePassController.fki);
+    Net_1.Net.Register(15123, BattlePassController.Cki);
+    Net_1.Net.Register(15374, BattlePassController.gki);
+    Net_1.Net.Register(29540, BattlePassController.fki);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28988);
-    Net_1.Net.UnRegister(20046);
-    Net_1.Net.UnRegister(16012);
+    Net_1.Net.UnRegister(15123);
+    Net_1.Net.UnRegister(15374);
+    Net_1.Net.UnRegister(29540);
   }
   static mki() {
     BattlePassController.pki ||= TimerSystem_1.GameplayTimerSystem.Forever(() => {

@@ -8,7 +8,7 @@ const Info_1 = require("../../../Core/Common/Info");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiLayerType_1 = require("./UiLayerType");
 class UiViewInfo {
-  constructor(e, i, t, o, s, a, h, n, R, r, V, w, l, c, u, p, g, y, f, C, _, M, S, U, I = "") {
+  constructor(e, i, t, o, s, a, h, n, R, r, V, w, l, c, u, p, g, y, f, C, _, M, S, U, I, W = "") {
     this.Name = e;
     this.Type = i;
     this.Ctor = t;
@@ -33,7 +33,8 @@ class UiViewInfo {
     this.ScenePathInternal = M;
     this.IsPermanent = S;
     this.SkipAnimActions = U;
-    this.ScenePointTag = I;
+    this.FunctionCondition = I;
+    this.ScenePointTag = W;
     this.CF_ = UiLayerType_1.ELayerType.Normal;
     this.CommonPopBg = 0;
     this.Path = "";

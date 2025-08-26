@@ -53,6 +53,7 @@ class TowerModel extends ModelBase_1.ModelBase {
     this.$Lo = undefined;
     this.NeedOpenReviveView = false;
     this.MaxUnlockDifficulty = 0;
+    this.QuickPassId = 0;
     this.IsWaitTowerStart = false;
     this.IsWaitTowerSettlement = false;
   }
@@ -60,7 +61,6 @@ class TowerModel extends ModelBase_1.ModelBase {
     this.HLo = CommonParamById_1.configCommonParamById.GetIntConfig("TowerRoleTotalCost");
     this.TowerGuideDelayTime = CommonParamById_1.configCommonParamById.GetIntConfig("TowerGuideDelayTime");
     this.TowerSettlementDelayTime = CommonParamById_1.configCommonParamById.GetIntConfig("TowerSettleDelayTime");
-    this.FGt();
     return true;
   }
   OnLeaveLevel() {
@@ -77,10 +77,12 @@ class TowerModel extends ModelBase_1.ModelBase {
     this.TowerBeginTime = t.cps;
     this.TowerEndTime = t.dps;
     this.MaxUnlockDifficulty = t.wGs;
+    this.QuickPassId = t.Aid;
     if (this.CurrentSeason !== t.EGs) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, exports.TOWER_LOOP_ACTIVITY_ID);
     }
     this.CurrentSeason = t.EGs;
+    this.FGt();
     this.DataSeason = t.yGs;
     this.RefreshTowerInfoByDifficulty(t.IGs);
   }
@@ -102,7 +104,7 @@ class TowerModel extends ModelBase_1.ModelBase {
         this.jLo.delete(t);
       }
     }
-    this.YLo(TowerData_1.VARIATION_RISK_DIFFICULTY, undefined);
+    this.QLo.delete(TowerData_1.VARIATION_RISK_DIFFICULTY);
     this.XLo.set(TowerData_1.VARIATION_RISK_DIFFICULTY, 0);
     for (var [, r] of this.RoleDifficultyFormationMap) {
       r.set(TowerData_1.VARIATION_RISK_DIFFICULTY, 0);
@@ -173,7 +175,8 @@ class TowerModel extends ModelBase_1.ModelBase {
         n.IsReceived = e?.includes(n.Index);
       }
     } else {
-      var i = ConfigManager_1.ConfigManager.TowerClimbConfig.GetDifficultyReward(t);
+      var r = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerSeason(this.CurrentSeason);
+      var i = ConfigManager_1.ConfigManager.TowerClimbConfig.GetDifficultyReward(t, r?.RewardGroup ?? 0);
       var o = i.length;
       var a = [];
       for (let t = 0; t < o; t++) {
@@ -197,12 +200,13 @@ class TowerModel extends ModelBase_1.ModelBase {
     if (e) {
       e.Star = t.rxs;
       e.StarIndex = t.AGs;
+      e.IsQuickPass = t.Wju;
       for (const r of e.Formation) {
         this.ReduceRoleFormationCost(r.Q6n, e.Difficulties, e.Cost);
       }
       e.Formation = t.ajn;
     } else {
-      e = new TowerData_1.TowerFloorInfo(t.hjn, t.rxs, t.ajn, t.AGs);
+      e = new TowerData_1.TowerFloorInfo(t.hjn, t.rxs, t.ajn, t.AGs, t.Wju);
       this.jLo.set(t.hjn, e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTowerRecordUpdate, t.hjn, e.Difficulties);
     }
@@ -273,6 +277,9 @@ class TowerModel extends ModelBase_1.ModelBase {
   GetDifficultyAreaAllFloor(t, e) {
     return ConfigManager_1.ConfigManager.TowerClimbConfig.GetDifficultyAreaAllFloor(this.CurrentSeason, t, e);
   }
+  GetDifficultyAllFloor(t) {
+    return ConfigManager_1.ConfigManager.TowerClimbConfig.GetDifficultyAllFloor(this.CurrentSeason, t);
+  }
   GetFloorIsUnlock(t) {
     return !!this.GetHaveChallengeFloor(t) || !(t = ConfigManager_1.ConfigManager.TowerClimbConfig.GetLastFloorInArea(t)) || this.GetHaveChallengeFloor(t);
   }
@@ -341,7 +348,7 @@ class TowerModel extends ModelBase_1.ModelBase {
   SaveHandleData() {
     this.WLo = new Map(this.jLo);
     this.$Lo = new Map(this.XLo);
-    this.KLo = this.CurrentSeason;
+    this.KLo = this.DataSeason;
   }
   ClearHandleData() {
     this.WLo?.clear();
@@ -396,6 +403,17 @@ class TowerModel extends ModelBase_1.ModelBase {
       }
     }
     return false;
+  }
+  IsRewardAllFinished(t = this.CurrentSelectDifficulties) {
+    t = this.GetDifficultyReward(t);
+    if (t) {
+      for (const e of t) {
+        if (!e.IsReceived) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
   IsRoleCostEnough(t) {
     return !!this.GetFloorIncludeRole(t, this.CurrentSelectFloor) || (t = this.GetRoleRemainCost(t, this.CurrentSelectDifficulties), ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerInfo(this.CurrentSelectFloor)?.Cost <= t);

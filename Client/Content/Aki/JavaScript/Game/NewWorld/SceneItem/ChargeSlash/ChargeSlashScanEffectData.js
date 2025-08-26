@@ -54,7 +54,7 @@ class ChargeSlashScanEffectData {
         var r = t.Get(e);
         if (r !== undefined && r !== a && !this.aQ1.has(r) && !(ControllerHolder_1.ControllerHolder.LevelGamePlayController.HandleScanResponse(r, 1) && this.aQ1.add(r), !r.IsA(TsBaseCharacter_1.default.StaticClass())) && (r = r).Camp !== 0 && !this.hQ1.has(r)) {
           this.hQ1.add(r);
-          if ((r = EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 205))?.Valid) {
+          if ((r = EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 206))?.Valid) {
             r.AddTag(184255089);
           }
         }

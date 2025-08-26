@@ -28,7 +28,7 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SequencePlayer.BindSequenceCloseEvent(this.Olc);
     this.Uan();
-    this.ssu();
+    this.xsu();
   }
   UpdateProgressRate(e) {}
   UpdateProgressValue(e) {
@@ -57,7 +57,7 @@ class PhantomArenaCardBattleLoadingView extends LoadingViewBase_1.LoadingViewBas
       Log_1.Log.Error("PhantomArena", 77, "Cant get Phantom fighter Config");
     }
   }
-  ssu() {
+  xsu() {
     var e;
     var a;
     var n = ModelManager_1.ModelManager.PhantomArenaBattleModel.LoadingConfig;

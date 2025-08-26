@@ -33,13 +33,13 @@ class BuffEffectBase {
     return this.InstigatorEntity?.Entity?.GetComponent(0)?.GetCreatureDataId() ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID;
   }
   get InstigatorBuffComponent() {
-    return this.InstigatorEntity?.Entity?.CheckGetComponent(174);
+    return this.InstigatorEntity?.Entity?.CheckGetComponent(175);
   }
   get OpponentEntity() {
     return EntitySystem_1.EntitySystem.Get(this.OpponentEntityId);
   }
   get OpponentBuffComponent() {
-    return this.OpponentEntity?.CheckGetComponent(174);
+    return this.OpponentEntity?.CheckGetComponent(175);
   }
   get OwnerEntity() {
     return this.OwnerBuffComponent?.GetEntity();
@@ -58,7 +58,7 @@ class BuffEffectBase {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
   IsPlayerBuff() {
-    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 199);
+    return (0, RegisterComponent_1.isComponentInstance)(this.OwnerBuffComponent, 200);
   }
   CheckLoop() {
     return !this.IsInLoop;
@@ -133,7 +133,7 @@ class BuffEffectBase {
         r = this.eXo(t.RequireTargetType);
         return (r && r.GetBuffTotalStackById(t.BuffId) >= t.MinStack && r.GetBuffTotalStackById(t.BuffId) <= t.MaxStack) ?? false;
       case 15:
-        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(t.RequireTargetType).GetEntity(), t.SummonType, t.SummonIndex)?.Entity?.CheckGetComponent(205)?.HasAnyTag(t.RequireTagContainer) === t.IsExist;
+        return PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.eXo(t.RequireTargetType).GetEntity(), t.SummonType, t.SummonIndex)?.Entity?.CheckGetComponent(206)?.HasAnyTag(t.RequireTagContainer) === t.IsExist;
       case 16:
         return t.CalculationTypes.includes(e.CalculateType ?? -1);
       case 18:

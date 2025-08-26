@@ -49,7 +49,7 @@ class FunctionAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     ModelManager_1.ModelManager.PlotModel.PlotWeather.StopAllWeather();
     ModelManager_1.ModelManager.PlotModel.PlotTimeOfDay.OnSeqEnd();
     this.Model.FrameEvents.clear();
-    this.Emu();
+    this.sfu();
   }
   _io(e) {
     var i = new Array();
@@ -210,7 +210,7 @@ class FunctionAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Plot", 45, "[额外Seq播放]AdditionSeqPlay:", ["levelSequence", e.GetName()], ["boneName", t], ["frame", o]);
     }
-    this.Imu(e, i, t, o);
+    this.afu(e, i, t, o);
   }
   AdditionSeqEnd() {
     if (Log_1.Log.CheckInfo()) {
@@ -226,10 +226,10 @@ class FunctionAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
           }
         }
       }
-      this.Emu();
+      this.sfu();
     }
   }
-  Emu() {
+  sfu() {
     var e = this.Model.AdditionSeqDirector;
     if (e && e.IsValid()) {
       if (Log_1.Log.CheckInfo()) {
@@ -239,7 +239,7 @@ class FunctionAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Model.AdditionSeqDirector = undefined;
     }
   }
-  Imu(e, t, o, i = 0) {
+  afu(e, t, o, i = 0) {
     var r = new UE.MovieSceneSequencePlaybackSettings();
     r.bDisableMovementInput = false;
     r.bDisableLookAtInput = false;

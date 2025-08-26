@@ -376,7 +376,7 @@ class AsyncAiPerception {
       var t;
       var i;
       var s = this.Bte.CharActorComp.ActorLocationProxy;
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(s, this.AiSenseGroup.ShareDis, 62, this.Ioe);
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(s, this.AiSenseGroup.ShareDis, 248, this.Ioe);
       this.voe.clear();
       this.voe.add(this.E0);
       var e = this.Bte.CharActorComp.Actor.Camp;

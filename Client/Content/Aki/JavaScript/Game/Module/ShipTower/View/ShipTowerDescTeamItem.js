@@ -43,7 +43,7 @@ class ShipTowerDescTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIVerticalLayout], [6, UE.UISprite], [7, UE.UISprite], [8, UE.UITexture], [9, UE.UIText], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [12, UE.UIExtendToggle], [14, UE.UIMultiTemplateLayout], [13, UE.UIText], [15, UE.UIItem], [16, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIVerticalLayout], [6, UE.UISprite], [7, UE.UISprite], [8, UE.UITexture], [9, UE.UIText], [10, UE.UIHorizontalLayout], [11, UE.UIItem], [12, UE.UIExtendToggle], [14, UE.UIMultiTemplateLayout], [13, UE.UIText], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIItem]];
     this.BtnBindInfo = [[4, this.ks_], [12, this.IA_]];
   }
   async OnBeforeStartAsync() {
@@ -75,8 +75,11 @@ class ShipTowerDescTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(3).ShowTextNew("GhostShipMonster_Text1");
     this.GetText(13).ShowTextNew(i.DungeonDesc);
     this.SetTextureByPath(i.DifficultyIcon, this.GetTexture(8));
-    var e = this.GetText(9);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(e, ShipTowerDefine_1.shipTowerTextKey.RecommendLevel, r);
+    var t = this.GetText(9);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(t, ShipTowerDefine_1.shipTowerTextKey.RecommendLevel, r);
+    var i = e.StageId;
+    var t = ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(i);
+    this.GetItem(17).SetUIActive(t.IsQuickPass);
     this.UpdateRoleList();
     this.UpdateBuff();
     if (Log_1.Log.CheckDebug()) {

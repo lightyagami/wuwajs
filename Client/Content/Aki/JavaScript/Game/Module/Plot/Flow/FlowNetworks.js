@@ -9,30 +9,30 @@ const Net_1 = require("../../../../Core/Net/Net");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 class FlowNetworks {
   static Register() {
-    Net_1.Net.Register(18823, this.m$i);
-    Net_1.Net.Register(21444, this.d$i);
-    Net_1.Net.Register(21386, this.C$i);
+    Net_1.Net.Register(19906, this.m$i);
+    Net_1.Net.Register(21188, this.d$i);
+    Net_1.Net.Register(26048, this.C$i);
   }
   static UnRegister() {
-    Net_1.Net.UnRegister(18823);
-    Net_1.Net.UnRegister(21444);
-    Net_1.Net.UnRegister(21386);
+    Net_1.Net.UnRegister(19906);
+    Net_1.Net.UnRegister(21188);
+    Net_1.Net.UnRegister(26048);
   }
   static RequestGmFinish() {
     var o = Protocol_1.Aki.Protocol.Gzn.create();
     o.VVn = 0;
     o.P8n = "@skipflow";
-    Net_1.Net.Call(23520, Protocol_1.Aki.Protocol.Gzn.create(o), o => {});
+    Net_1.Net.Call(27932, Protocol_1.Aki.Protocol.Gzn.create(o), o => {});
   }
   static RequestAction(o, t, e) {
     var r = Protocol_1.Aki.Protocol.trs.create();
     r._Hn = o;
     r.uHn = t;
-    Net_1.Net.Call(15997, r, o => {
+    Net_1.Net.Call(18781, r, o => {
       if (e) {
         e();
       }
-      FlowNetworks.g$i(o.Cvs, 16532);
+      FlowNetworks.g$i(o.Cvs, 19599);
     });
   }
   static RequestFlowEnd(t, o, e, r) {
@@ -56,9 +56,9 @@ class FlowNetworks {
       };
     }
     l.CHn = _;
-    Net_1.Net.Call(20763, l, o => {
+    Net_1.Net.Call(18446, l, o => {
       if (o) {
-        FlowNetworks.g$i(o.Cvs, 16532);
+        FlowNetworks.g$i(o.Cvs, 19599);
         r?.(t, o.Cvs);
       } else {
         ControllerHolder_1.ControllerHolder.FlowController.LogError("请求完成剧情时网络错误");
@@ -69,7 +69,7 @@ class FlowNetworks {
   static RequestFlowRestart(t) {
     var o = new Protocol_1.Aki.Protocol.Zis();
     o._Hn = t;
-    Net_1.Net.Call(16764, o, o => {
+    Net_1.Net.Call(16807, o, o => {
       if (o) {
         if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.FlowController.LogError("请求重启剧情失败", ["flowIncId", t]);
@@ -80,24 +80,26 @@ class FlowNetworks {
     });
   }
   static RequestSeqEndPosition(o, t, e) {
-    var r = Protocol_1.Aki.Protocol.m0_.create();
-    r._Hn = o.FlowIncId;
-    r.fql = o.CurShowTalkActionId;
-    r.mHn = o.CurTalkId;
-    r.iPs = t.X;
-    r.rPs = t.Y;
-    r.gqs = t.Z;
-    r.fqs = e.Yaw;
-    const l = o.FlowIncId;
-    Net_1.Net.Call(17429, r, o => {
-      if (o) {
-        if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.FlowController.LogError("请求Seq最终位置失败", ["flowIncId", l]);
+    if (o.IsServerNotify) {
+      var r = Protocol_1.Aki.Protocol.m0_.create();
+      r._Hn = o.FlowIncId;
+      r.fql = o.CurShowTalkActionId;
+      r.mHn = o.CurTalkId;
+      r.iPs = t.X;
+      r.rPs = t.Y;
+      r.gqs = t.Z;
+      r.fqs = e.Yaw;
+      const l = o.FlowIncId;
+      Net_1.Net.Call(25391, r, o => {
+        if (o) {
+          if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ControllerHolder_1.ControllerHolder.FlowController.LogError("请求Seq最终位置失败", ["flowIncId", l]);
+          }
+        } else {
+          ControllerHolder_1.ControllerHolder.FlowController.LogError("请求Seq最终位置时网络错误", ["flowIncId", l]);
         }
-      } else {
-        ControllerHolder_1.ControllerHolder.FlowController.LogError("请求Seq最终位置时网络错误", ["flowIncId", l]);
-      }
-    });
+      });
+    }
   }
   static g$i(o, t) {
     if (o === Protocol_1.Aki.Protocol.Q4n.Proto_ErrFinishFlowFail) {
@@ -110,7 +112,7 @@ class FlowNetworks {
   static RequestSafeTeleport(o, t) {
     var e = new Protocol_1.Aki.Protocol.G7s();
     e._Hn = o;
-    Net_1.Net.Call(25072, e, o => {
+    Net_1.Net.Call(17945, e, o => {
       if (o && o.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
         t(true);
       } else {

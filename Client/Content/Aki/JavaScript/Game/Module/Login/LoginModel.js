@@ -171,6 +171,7 @@ class LoginModel extends ModelBase_1.ModelBase {
     this.iEi = 0;
     this.oEi = new Map();
     this.rEi = undefined;
+    this.z1d = undefined;
     this.nEi = false;
     this.sEi = -0;
     this.aEi = 0;
@@ -702,18 +703,28 @@ class LoginModel extends ModelBase_1.ModelBase {
     }
   }
   SetSdkLoginConfig(t, e, i) {
-    var o = this.rEi?.Uid !== t;
     this.rEi = new SdkLoginConfig(t, e, i);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 27, "设置SDK登录配置", ["uId", t], ["userName", e]);
     }
-    var i = this.GetLoginStatus() >= LoginDefine_1.ELoginStatus.EnterGameRet;
-    if (o) {
-      if (i && o) {
+  }
+  CheckLoginToGameServerSdkConfigIfSame() {
+    if (this.rEi && this.z1d) {
+      if (this.rEi.Uid !== this.z1d.Uid || this.rEi.UserName !== this.z1d.UserName || this.rEi.Token !== this.z1d.Token) {
         this.SdkAccountChangeNeedExitFlag = true;
+      } else {
+        this.SdkAccountChangeNeedExitFlag = false;
       }
+    }
+  }
+  CacheCurrentSdkLoginConfig() {
+    if (this.rEi) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Login", 27, "缓存当前登录服务器SDK登录配置", ["uId", this.rEi.Uid], ["userName", this.rEi.UserName]);
+      }
+      this.z1d = new SdkLoginConfig(this.rEi.Uid, this.rEi.UserName, this.rEi.Token);
     } else {
-      this.SdkAccountChangeNeedExitFlag = false;
+      this.z1d = undefined;
     }
   }
   GetSdkLoginConfig() {

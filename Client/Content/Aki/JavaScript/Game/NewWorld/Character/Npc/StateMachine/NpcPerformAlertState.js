@@ -18,7 +18,7 @@ class NpcPerformAlertState extends NpcPerformBaseState_1.NpcPerformBaseState {
     };
   }
   CanChangeFrom(e) {
-    var t = this.Owner.Entity.GetComponent(187);
+    var t = this.Owner.Entity.GetComponent(188);
     return this.Owner.Entity.GetComponent(47)?.AiController?.AiAlert?.AiAlertConfig !== undefined && e === 1 && !t.IsInPlot;
   }
   OnEnter(e) {

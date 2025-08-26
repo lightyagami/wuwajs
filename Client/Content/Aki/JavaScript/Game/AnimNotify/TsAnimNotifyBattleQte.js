@@ -34,7 +34,7 @@ class TsAnimNotifyBattleQte extends UE.KuroAnimNotify {
     }
     t = e?.CharacterActorComponent?.Entity;
     e = ModelManager_1.ModelManager.CharacterModel?.GetHandleByEntity(t);
-    t = t?.GetComponent(209)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex);
+    t = t?.GetComponent(210)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex);
     if (e && t) {
       ControllerHolder_1.ControllerHolder.BattleQteController.StartBattleQte(this.BattleQteId, t, e, 0);
     }

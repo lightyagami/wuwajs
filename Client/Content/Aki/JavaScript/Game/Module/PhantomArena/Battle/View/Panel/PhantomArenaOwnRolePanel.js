@@ -22,13 +22,13 @@ class PhantomArenaSkill extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Bmo = undefined;
-    this.TX1 = false;
+    this.zX1 = false;
     this.ViewProxy = undefined;
     this.Sequence = undefined;
-    this.etu = () => {
+    this.btu = () => {
       this.ViewProxy.ShowSkillTips(this.Bmo, this.GetItem(4));
     };
-    this.ttu = () => {
+    this.Rtu = () => {
       this.ViewProxy.HideSkillTips();
     };
     this.eTt = () => {
@@ -52,8 +52,8 @@ class PhantomArenaSkill extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    this.GetButton(2).OnPointEnterCallBack.Bind(this.etu);
-    this.GetButton(2).OnPointExitCallBack.Bind(this.ttu);
+    this.GetButton(2).OnPointEnterCallBack.Bind(this.btu);
+    this.GetButton(2).OnPointExitCallBack.Bind(this.Rtu);
     this.ViewProxy.BanButtonClickModule.RegisterButton(this.GetButton(2));
   }
   async OnHandleRoleSkillClick() {
@@ -121,13 +121,15 @@ class PhantomArenaSkill extends UiPanelBase_1.UiPanelBase {
   }
   RefreshSkillEffect() {
     var e;
-    if (this.Bmo && !this.Bmo.IsPassive && (e = ModelManager_1.ModelManager.PhantomArenaBattleModel.CheckSkillEnoughCost(this.Bmo.SkillId)) !== this.TX1) {
+    if (this.Bmo && !this.Bmo.IsPassive && (e = ModelManager_1.ModelManager.PhantomArenaBattleModel.CheckSkillEnoughCost(this.Bmo.SkillId)) !== this.zX1) {
       if (e) {
+        this.Sequence.StopSequenceByKey("Use", false, true);
         this.Sequence.PlaySequencePurely("Activate");
       } else {
+        this.Sequence.StopSequenceByKey("Activate", false, true);
         this.Sequence.PlaySequencePurely("Use");
       }
-      this.TX1 = e;
+      this.zX1 = e;
     }
   }
   CheckCanvasSortOrder(e, t) {
@@ -205,17 +207,17 @@ class PhantomArenaOwnRolePanel extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.RoleHpTween.SetRoleItem(this.RoleItem);
     this.RoleItem.SetBarActive(true);
-    this.LCu();
+    this.b0u();
   }
   OnBeforeDestroy() {
     this.RoleHpTween.Clear();
   }
-  LCu() {
-    this.wCu();
+  b0u() {
+    this.R0u();
     this.RefreshTask();
     this.RefreshSkillEffect();
   }
-  wCu() {
+  R0u() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife);
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
     ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.SetPrevShowLife(e);

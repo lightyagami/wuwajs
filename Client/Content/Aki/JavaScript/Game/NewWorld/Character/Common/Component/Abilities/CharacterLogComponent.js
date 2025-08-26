@@ -62,7 +62,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
             a.add(r);
             CharacterLogComponent_1.kGr.set(r, this.FGr(r));
             if (!o.has(r)) {
-              (t = CharacterLogComponent_1.VGr(r)).i_monster_level = e.GetComponent(173)?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv) ?? 0;
+              (t = CharacterLogComponent_1.VGr(r)).i_monster_level = e.GetComponent(174)?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv) ?? 0;
               e = e.GetComponent(3)?.ActorLocationProxy;
               t.f_pos_x = e.X;
               t.f_pos_y = e.Y;
@@ -143,17 +143,17 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
       }
     };
     this.aNr = (t, e, r) => {
-      if (CharacterLogComponent_1.WGr() && t === CharacterAttributeTypes_1.EAttributeId.Proto_Energy && r < e && ((t = CharacterLogComponent_1.tNr(this.Entity.Id)).l_acc_energy += e - r, e >= this.Entity.GetComponent(173).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_EnergyMax) - Number.EPSILON)) {
+      if (CharacterLogComponent_1.WGr() && t === CharacterAttributeTypes_1.EAttributeId.Proto_Energy && r < e && ((t = CharacterLogComponent_1.tNr(this.Entity.Id)).l_acc_energy += e - r, e >= this.Entity.GetComponent(174).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_EnergyMax) - Number.EPSILON)) {
         t.i_full_energy_times++;
       }
     };
     this.hUe = () => {
-      if (this.Entity.GetComponent(175)?.IsInFightState()) {
+      if (this.Entity.GetComponent(176)?.IsInFightState()) {
         CharacterLogComponent_1.hNr();
       }
     };
     this.BJe = (t, e) => {
-      if (this.Entity.GetComponent(175)?.IsInFightState()) {
+      if (this.Entity.GetComponent(176)?.IsInFightState()) {
         CharacterLogComponent_1.hNr();
       }
     };
@@ -203,7 +203,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
   }
   yNr() {
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.AiHateAddOrRemove, this.OnAggroChanged);
-    this.qGr = this.Entity.CheckGetComponent(205).ListenForTagAddOrRemove(1922078392, this.cNr);
+    this.qGr = this.Entity.CheckGetComponent(206).ListenForTagAddOrRemove(1922078392, this.cNr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharRecordOperate, this.$Gr);
     var t = this.Entity.GetComponent(0);
     if (t.IsRole()) {
@@ -214,11 +214,11 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnElementEnergyChanged, this.sNr);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnEnergyChanged, this.aNr);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.hUe);
-      this.GGr.push(this.Entity.CheckGetComponent(205).ListenForTagAddOrRemove(-1371021686, this.BJe));
-      this.GGr.push(this.Entity.CheckGetComponent(205).ListenForTagAddOrRemove(-1800191060, this.BJe));
-      this.GGr.push(this.Entity.CheckGetComponent(205).ListenForTagAddOrRemove(-1221493771, this.BJe));
+      this.GGr.push(this.Entity.CheckGetComponent(206).ListenForTagAddOrRemove(-1371021686, this.BJe));
+      this.GGr.push(this.Entity.CheckGetComponent(206).ListenForTagAddOrRemove(-1800191060, this.BJe));
+      this.GGr.push(this.Entity.CheckGetComponent(206).ListenForTagAddOrRemove(-1221493771, this.BJe));
     } else if (t.IsMonster()) {
-      this.Entity.GetComponent(173)?.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_Rage, this.uNr);
+      this.Entity.GetComponent(174)?.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_Rage, this.uNr);
     }
   }
   INr() {
@@ -239,7 +239,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
       }
       this.GGr.length = 0;
     } else if (t.IsMonster()) {
-      this.Entity.GetComponent(173)?.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_Rage, this.uNr);
+      this.Entity.GetComponent(174)?.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_Rage, this.uNr);
       for (const r of this.GGr) {
         r.EndTask();
       }
@@ -269,7 +269,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
     return !!t && (t.GetComponent(3)?.CreatureData).GetBaseInfo()?.Category.MainType === "Monster";
   }
   LNr() {
-    var t = this.Entity.GetComponent(205);
+    var t = this.Entity.GetComponent(206);
     if (t.HasTag(-1800191060) || t.HasTag(-1221493771)) {
       return 7;
     } else if (t.HasTag(-1371021686)) {
@@ -279,7 +279,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
     }
   }
   DNr() {
-    switch (this.Entity.GetComponent(175).MoveState) {
+    switch (this.Entity.GetComponent(176).MoveState) {
       case CharacterUnifiedStateTypes_1.ECharMoveState.Walk:
       case CharacterUnifiedStateTypes_1.ECharMoveState.WalkStop:
       case CharacterUnifiedStateTypes_1.ECharMoveState.Run:
@@ -309,7 +309,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
   static RNr() {
     if (this.CurrentEntity === undefined) {
       for (const r of this.UNr.values()) {
-        if (r.Entity.GetComponent(175)?.IsInFightState()) {
+        if (r.Entity.GetComponent(176)?.IsInFightState()) {
           this.CurrentEntity = r;
           break;
         }
@@ -531,7 +531,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
       if (!e) {
         o = (a = EntitySystem_1.EntitySystem.Get(r)).GetComponent(0);
         (e = this.eOr() ? new LogReportDefine_1.InstMonsterSkillReportLog(o.GetPbDataId(), o.EntityPbModelConfigId, ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId, ModelManager_1.ModelManager.CreatureModel.GetSceneId()) : new LogReportDefine_1.MonsterSkillReportLog(o.GetPbDataId(), o.EntityPbModelConfigId)).s_battle_id = (ModelManager_1.ModelManager.PlayerInfoModel.GetId()?.toString() ?? "0") + "_" + String(this.c9);
-        e.i_monster_level = a.GetComponent(173)?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv) ?? 0;
+        e.i_monster_level = a.GetComponent(174)?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv) ?? 0;
         this.nOr.set(r, e);
       }
     }
@@ -553,7 +553,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
       var a = new Array();
       for (const i of t) {
         var o = this.tNr(i.Id);
-        var n = i.Entity.GetComponent(173);
+        var n = i.Entity.GetComponent(174);
         o.i_begin_hp = n.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
         o.i_hp_max = n.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
         o.i_enter_battle_score = this.hOr(i.Id);
@@ -755,8 +755,8 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
   static hOr(t) {
     var e = 0;
     var r = EntitySystem_1.EntitySystem.Get(t);
-    var a = r.GetComponent(173);
-    var r = r.GetComponent(91);
+    var a = r.GetComponent(174);
+    var r = r.GetComponent(92);
     var r = CharacterDamageCalculations_1.Calculation.GetElementDamageBonus(a.TakeSnapshot(), r.RoleElementType);
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(t, {
       ParamType: 1
@@ -813,7 +813,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
     }
   }
   static iOr(t) {
-    var t = EntitySystem_1.EntitySystem.Get(t).GetComponent(173);
+    var t = EntitySystem_1.EntitySystem.Get(t).GetComponent(174);
     var e = (t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistancePhys) + t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistanceElement1) + t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistanceElement2) + t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistanceElement3) + t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistanceElement4) + t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistanceElement5) + t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_DamageResistanceElement6)) / 7 / CharacterAttributeTypes_1.PER_TEN_THOUSAND;
     var t = t.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n) / (1 - e) / 0.5;
     let r = 0;
@@ -837,7 +837,7 @@ let CharacterLogComponent = CharacterLogComponent_1 = class CharacterLogComponen
     var r = new Array();
     for (const n of t) {
       var a = this.tNr(n.Id);
-      var o = n.Entity.GetComponent(173);
+      var o = n.Entity.GetComponent(174);
       a.i_end_hp = o.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
       a.i_hp_max = o.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.l5n);
       e.push(a.i_role_id);

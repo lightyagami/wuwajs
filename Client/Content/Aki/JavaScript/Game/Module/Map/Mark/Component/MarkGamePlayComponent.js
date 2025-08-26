@@ -31,16 +31,16 @@ class MarkGamePlayComponent extends MapComponent_1.MapComponent {
     return this.GamePlayState === 3;
   }
   get IsDisable() {
-    return ModelManager_1.ModelManager.MapModel.GetMarkExtraShowState(this.MarkId).ShowFlag === Protocol_1.Aki.Protocol.U5s.Proto_ShowDisable || this.IsHide;
+    return this.MarkId === 0 || ModelManager_1.ModelManager.MapModel.GetMarkExtraShowState(this.MarkId).ShowFlag === Protocol_1.Aki.Protocol.U5s.Proto_ShowDisable || this.IsHide;
   }
   get IsTeleportLocked() {
-    return ModelManager_1.ModelManager.MapModel.IsTeleportLocked(this.MarkId);
+    return this.MarkId === 0 || ModelManager_1.ModelManager.MapModel.IsTeleportLocked(this.MarkId);
   }
   get InGravityLayer() {
-    return this.Gravity === 0 || this.Gravity === ModelManager_1.ModelManager.WorldMapModel.WorldMapGravity;
+    return this.MarkId !== 0 && (this.Gravity === 0 || this.Gravity === ModelManager_1.ModelManager.WorldMapModel.WorldMapGravity);
   }
   get CanShowGravityChildIcon() {
-    return this.Gravity !== 0 && !this.InGravityLayer;
+    return this.MarkId !== 0 && this.Gravity !== 0 && !this.InGravityLayer;
   }
 }
 exports.MarkGamePlayComponent = MarkGamePlayComponent;

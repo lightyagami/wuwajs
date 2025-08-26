@@ -35,7 +35,7 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
     this.NpcPerformComp = undefined;
   }
   OnStart() {
-    return !!super.OnStart() && (this.NpcPerformComp = this.Entity.GetComponent(187), true);
+    return !!super.OnStart() && (this.NpcPerformComp = this.Entity.GetComponent(188), true);
   }
   OnActivate() {
     if (!this.NpcPerformComp?.IsBaseRoleNpc) {
@@ -62,5 +62,5 @@ let NpcDriveVehicleComponent = class NpcDriveVehicleComponent extends CharacterD
     super.LeaveVehiclePerform(e);
   }
 };
-NpcDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(231)], NpcDriveVehicleComponent);
+NpcDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(232)], NpcDriveVehicleComponent);
 exports.NpcDriveVehicleComponent = NpcDriveVehicleComponent; //# sourceMappingURL=NpcDriveVehicleComponent.js.map

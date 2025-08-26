@@ -35,11 +35,11 @@ let FloroRanchRoleSkillDataComponent = class FloroRanchRoleSkillDataComponent ex
   }
   RefreshEntityData(e) {
     var o;
-    if (e.sku) {
+    if (e.qBu) {
       o = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-      this.SkillData = o.GetFloroRanchSkillData(e.sku.r5n);
-      this.CanUseCount = e.sku.oku;
-      this.CurDayCanUseNum = e.sku.nku;
+      this.SkillData = o.GetFloroRanchSkillData(e.qBu.r5n);
+      this.CanUseCount = e.qBu.kBu;
+      this.CurDayCanUseNum = e.qBu.OBu;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanchGamePlay", 58, this.constructor.name + " RefreshEntityData failed, Proto_SkillData is undefined");
     }

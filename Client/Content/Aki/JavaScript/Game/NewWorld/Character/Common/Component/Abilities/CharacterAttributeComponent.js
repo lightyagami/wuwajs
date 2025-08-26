@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, e, r, i) {
   var s;
   var o = arguments.length;
-  var a = o < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, r) : i;
+  var n = o < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, r) : i;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, r, i);
+    n = Reflect.decorate(t, e, r, i);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (s = t[n]) {
-        a = (o < 3 ? s(a) : o > 3 ? s(e, r, a) : s(e, r)) || a;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (s = t[a]) {
+        n = (o < 3 ? s(n) : o > 3 ? s(e, r, n) : s(e, r)) || n;
       }
     }
   }
-  if (o > 3 && a) {
-    Object.defineProperty(e, r, a);
+  if (o > 3 && n) {
+    Object.defineProperty(e, r, n);
   }
-  return a;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -28,7 +28,6 @@ const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterCompo
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
-const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
 const BaseAttributeComponent_1 = require("./BaseAttributeComponent");
 const CharacterAttributeTypes_1 = require("./CharacterAttributeTypes");
@@ -69,17 +68,17 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
       var e = new Map();
       var r = [];
       var i = this.Init();
-      for (const n of t) {
-        var s = n.tSs;
-        var o = n.vna;
-        var a = n.pna ?? 0;
-        if (a !== 0) {
-          e.set(s, a);
+      for (const a of t) {
+        var s = a.tSs;
+        var o = a.vna;
+        var n = a.pna ?? 0;
+        if (n !== 0) {
+          e.set(s, n);
         } else {
           r.push(s);
         }
         this.BaseValues[s] = o;
-        this.CurrentValues[s] = o + a;
+        this.CurrentValues[s] = o + n;
       }
       if (i) {
         for (const h of r) {
@@ -89,34 +88,31 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     }
   }
   static AttributeChangedNotify(t, e) {
-    var r = MathUtils_1.MathUtils.LongToNumber(e.s5n);
-    var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(r);
-    var i = r?.Entity?.GetComponent(173);
-    if (r && i) {
-      for (const s of e.GSs) {
-        if (CharacterAttributeTypes_1.stateAttributeIds.has(s.tSs)) {
-          s.y6n = s.eSs;
+    var r = t?.GetComponent(174);
+    if (t && r) {
+      for (const i of e.GSs) {
+        if (CharacterAttributeTypes_1.stateAttributeIds.has(i.tSs)) {
+          i.y6n = i.eSs;
         }
-        if (s.tSs) {
-          i.SyncValueFromServer(s.tSs, s.eSs, s.y6n);
+        if (i.tSs) {
+          r.SyncValueFromServer(i.tSs, i.eSs, i.y6n);
         }
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnServerAttributeChange, r.Id, e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnServerAttributeChange, t.Id, e);
     }
   }
   static RecoverPropChangedNotify(t, e) {
-    var r = MathUtils_1.MathUtils.LongToNumber(e.s5n);
-    var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity?.GetComponent(173);
-    if (i) {
-      var s = Time_1.Time.ServerCombatStopTime - Number(MathUtils_1.MathUtils.LongToBigInt(e.S6n));
-      for (const o of e.GSs) {
-        i.SyncRecoverPropFromServer(o.E6n, o.y6n, o.I6n, o.L6n, Number(s));
+    var r = t?.GetComponent(174);
+    if (r) {
+      var i = Time_1.Time.ServerCombatStopTime - Number(MathUtils_1.MathUtils.LongToBigInt(e.S6n));
+      for (const s of e.GSs) {
+        r.SyncRecoverPropFromServer(s.E6n, s.y6n, s.I6n, s.L6n, Number(i));
       }
     }
   }
   OnInit() {
     super.OnInit();
-    this.BuffComponent = this.Entity.CheckGetComponent(174);
+    this.BuffComponent = this.Entity.CheckGetComponent(175);
     return true;
   }
   OnStart() {
@@ -153,5 +149,5 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
 };
 __decorate([CombatMessage_1.CombatNet.Listen("OFn", true)], CharacterAttributeComponent, "AttributeChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("v3n", true)], CharacterAttributeComponent, "RecoverPropChangedNotify", null);
-CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(173)], CharacterAttributeComponent);
+CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(174)], CharacterAttributeComponent);
 exports.CharacterAttributeComponent = CharacterAttributeComponent; //# sourceMappingURL=CharacterAttributeComponent.js.map

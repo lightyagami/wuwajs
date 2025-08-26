@@ -50,7 +50,7 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
-  ohu(t, e) {
+  Phu(t, e) {
     var i = this.Data.GetFightValueByAttr(t);
     var t = this.Data.ValueChangeTypeByBuff(t);
     if (t === 0) {
@@ -63,15 +63,15 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
   }
   mU1() {
     var t = this.GetText(1);
-    this.ohu(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility, t);
+    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_AttackAbility, t);
   }
   fU1() {
     var t = this.GetText(3);
-    this.ohu(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility, t);
+    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_LifeAbility, t);
   }
   RGt() {
     var t = this.GetText(4);
-    this.ohu(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility, t);
+    this.Phu(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility, t);
   }
   Hxt() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Data.ConfigId).Element;
@@ -81,18 +81,18 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.GetItem(13)?.SetUIActive(!this.Data.IsFourCost);
     this.GetItem(14)?.SetUIActive(this.Data.IsFourCost);
   }
-  nhu() {
+  xhu() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Data.ConfigId);
-    var e = this.LHc();
+    var e = this.LZu();
     this.GetItem(10).SetUIActive(t.Element !== 0 && !e);
     this.GetItem(17).SetUIActive(t.Element !== 0 && e);
   }
-  shu() {
-    var t = this.LHc();
+  Uhu() {
+    var t = this.LZu();
     this.GetItem(15).SetUIActive(!t);
     this.GetItem(16).SetUIActive(t);
   }
-  async Llu() {
+  async u_u() {
     var t;
     var e = this.GetTexture(8);
     if (this.SpineItem) {
@@ -104,7 +104,7 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
       await this.SetTextureAsync(t.CardFaceTexture, e);
     }
   }
-  async Mcu() {
+  async ndu() {
     var t = this.Data.EvolveNum;
     if (t !== 0 && !this.GoldEvolveItem) {
       this.GoldEvolveItem = new EvolveProxy();
@@ -113,7 +113,7 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.GoldEvolveItem?.SetEvolveNum(t);
     this.NormalEvolveItem?.SetEvolveNum(0);
   }
-  async Ecu() {
+  async sdu() {
     var t = this.Data.EvolveNum;
     if (t !== 0 && !this.NormalEvolveItem) {
       this.NormalEvolveItem = new EvolveProxy();
@@ -122,42 +122,42 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.NormalEvolveItem?.SetEvolveNum(t);
     this.GoldEvolveItem?.SetEvolveNum(0);
   }
-  Icu() {
+  adu() {
     this.GetItem(19)?.SetUIActive(this.Data.UseCost !== 0);
     this.GetItem(5)?.SetUIActive(this.Data.UseCost >= PhantomArenaDefine_1.COST_ONE);
     this.GetItem(6)?.SetUIActive(this.Data.UseCost >= PhantomArenaDefine_1.COST_THREE);
     this.GetItem(20)?.SetUIActive(this.Data.UseCost >= PhantomArenaDefine_1.COST_THREE);
   }
-  async Tcu() {
-    if (this.LHc()) {
-      await this.Mcu();
+  async hdu() {
+    if (this.LZu()) {
+      await this.ndu();
     } else {
-      await this.Ecu();
+      await this.sdu();
     }
   }
   SetCardData(t) {
     this.Data = t;
   }
-  LHc() {
+  LZu() {
     return !this.Data.IsNpcCard && ModelManager_1.ModelManager.PhantomArenaModel.IsCardOutlookUnlock(this.Data.ConfigId);
   }
-  async gxu() {
+  async Vxu() {
     this.LoopEffectItem = new BattleCardLoopEffectItem();
     this.LoopEffectItem.SetCardConfigId(this.Data.ConfigId);
     await this.LoopEffectItem.CreateThenShowByResourceIdAsync("UiItem_SoundRemnantItemLoopEffect", this.GetItem(18));
   }
-  async Cxu() {
+  async jxu() {
     this.EffectItem = new BattleCardEffectItem();
     this.EffectItem.SetCardConfigId(this.Data.ConfigId);
     await this.EffectItem.CreateByResourceIdAsync("UiItem_SoundRemnantItemEffect", this.GetItem(11));
   }
   async InitEffect() {
-    if (this.Data.IsFourCost && this.LHc()) {
-      await Promise.all([this.gxu(), this.Cxu()]);
+    if (this.Data.IsFourCost && this.LZu()) {
+      await Promise.all([this.Vxu(), this.jxu()]);
     }
   }
   async InitSpine() {
-    if (this.Data.IsFourCost && this.LHc()) {
+    if (this.Data.IsFourCost && this.LZu()) {
       this.SpineItem = new BattleCardSpineItem();
       this.SpineItem.SetCardConfigId(this.Data.ConfigId);
       await this.SpineItem.CreateThenShowByResourceIdAsync("UiItem_SoundRemnantItemSpine", this.GetItem(18));
@@ -195,10 +195,10 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.Hxt();
     this.SetDebugText();
     this.sbi();
-    this.nhu();
-    this.shu();
-    this.Icu();
-    await Promise.all([this.Tcu(), this.Llu(), this.LoopEffectItem?.RefreshEffectById(t.ConfigId), this.EffectItem?.RefreshEffectById(t.ConfigId)]);
+    this.xhu();
+    this.Uhu();
+    this.adu();
+    await Promise.all([this.hdu(), this.u_u(), this.LoopEffectItem?.RefreshEffectById(t.ConfigId), this.EffectItem?.RefreshEffectById(t.ConfigId)]);
   }
   GetCardToggle() {
     return this.GetExtendToggle(0);

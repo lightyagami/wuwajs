@@ -84,8 +84,8 @@ class PhantomArenaChallengeDetailTabView extends PhantomArenaChildViewBase_1.Pha
     var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(i);
     if (i.IsReChallenge) {
       if (e = await PhantomArenaController_1.PhantomArenaController.ReChallengeRequestAsync(this.ViewModel.GetChallengeId())) {
-        this.ViewModel.NpcId = e.O_u;
-        this.ViewModel.NpcDeckConfigId = e.q_u;
+        this.ViewModel.NpcId = e.y1u;
+        this.ViewModel.NpcDeckConfigId = e.S1u;
       }
     } else {
       e = i.NpcGroupId;
@@ -113,8 +113,8 @@ class PhantomArenaChallengeDetailTabView extends PhantomArenaChildViewBase_1.Pha
       this.ViewModel.ShowRoleTexture?.(true);
       this.ViewModel.RefreshRoleTexture?.();
     }
-    this.BSu();
-    this.kSu();
+    this.D7c();
+    this.B7c();
     this.RefreshView();
   }
   RefreshView() {
@@ -161,13 +161,13 @@ class PhantomArenaChallengeDetailTabView extends PhantomArenaChildViewBase_1.Pha
     }
     this.RewardLayout.RefreshByData(h);
   }
-  BSu() {
+  D7c() {
     if (this.ViewModel.RoleSelectedConfirmFlag) {
       this.x3_?.PlaySelectAnim();
       this.ViewModel.RoleSelectedConfirmFlag = false;
     }
   }
-  kSu() {
+  B7c() {
     if (this.ViewModel.DeckSelectedConfirmFlag) {
       this.M81?.PlaySelectAnim();
       this.ViewModel.DeckSelectedConfirmFlag = false;

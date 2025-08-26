@@ -23,14 +23,18 @@ const CommonSearchComponent_1 = require("../../Common/InputView/CommonSearchComp
 const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const HelpController_1 = require("../../Help/HelpController");
+const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const AdventureGuideController_1 = require("../AdventureGuideController");
+const GuideView_1 = require("./GuideView");
 const MonsterDetectItem_1 = require("./MonsterDetectItem");
 const MONSTER_HELP = 17;
 const LEFT_TIME_HELP = 72;
+const NIGHT_MARE_TYPE = 23;
+const NIGHT_MARE_TAG = 63;
 class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
@@ -51,7 +55,7 @@ class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
     this.Anl = false;
     this.xnl = 0;
     this.dqe = undefined;
-    this.oDu = undefined;
+    this.kDu = undefined;
     this.YVe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
@@ -116,21 +120,36 @@ class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
         i.push(t);
       }
       this.e8e(i);
-      this.oDu = i;
-      this.GetItem(18).SetUIActive(true);
-      this.GetItem(19).SetUIActive(false);
+      this.kDu = i;
+      this.GetItem(18).SetUIActive(i.length > 0);
+      this.GetItem(19).SetUIActive(i.length <= 0);
       this.dqe.ResetSearch(true);
     };
     this.t8e = () => {
-      var e;
       if (!(Time_1.Time.Now - this.L6e <= TimeUtil_1.TimeUtil.InverseMillisecond)) {
         this.L6e = Time_1.Time.Now;
         if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("DungeonDetection");
         } else {
-          e = this.GetCurrentId();
+          var e;
+          var i = this.GetCurrentId();
+          var t = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterDetectData(i);
+          if (t?.IsLock && t.Conf.TypeDescription2 === NIGHT_MARE_TYPE) {
+            if (ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(t.Conf.NightMareDetectionId)?.IsLock) {
+              if (ModelManager_1.ModelManager.AdventureGuideModel.CheckTargetDungeonTypeCanShow(63)) {
+                (e = new GuideView_1.AdventureGuideViewOpenData()).OpenTabViewName = "NewSoundAreaView";
+                e.OpenParam = NIGHT_MARE_TAG;
+                ModelManager_1.ModelManager.AdventureGuideModel.HandleShowNightMareParam = t.Conf.NightMareDetectionId;
+                ControllerHolder_1.ControllerHolder.AdventureGuideController.OpenGuideViewWithOpenData(e);
+                return;
+              } else {
+                ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ConditionGroup_12005113_HintText");
+                return;
+              }
+            }
+          }
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("AdventureGuide", 5, "手动探测怪物", ["探测Id", e]);
+            Log_1.Log.Info("AdventureGuide", 5, "手动探测怪物", ["探测Id", i]);
           }
           ModelManager_1.ModelManager.AdventureGuideModel.SetFromManualDetect(true);
           ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForDetection(Protocol_1.Aki.Protocol.r8n.Proto_NormalMonster, [], this.F6e);
@@ -151,7 +170,14 @@ class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
       this.O6e.RefreshByData(e);
     };
     this.Tqe = () => {
-      this.O6e.RefreshByData(this.oDu ?? []);
+      if (this.kDu) {
+        this.GetItem(18).SetUIActive(this.kDu.length > 0);
+        this.GetItem(19).SetUIActive(this.kDu.length <= 0);
+      } else {
+        this.GetItem(18).SetUIActive(false);
+        this.GetItem(19).SetUIActive(true);
+      }
+      this.O6e.RefreshByData(this.kDu ?? []);
     };
   }
   GetCurrentId() {

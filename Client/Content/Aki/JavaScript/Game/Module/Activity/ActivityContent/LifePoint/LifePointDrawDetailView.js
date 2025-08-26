@@ -19,16 +19,16 @@ const ActivityControllerHolder_1 = require("../../ActivityControllerHolder");
 class LifePointDrawDetailView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.rPu = undefined;
+    this.PPu = undefined;
     this.lqe = undefined;
-    this.oPu = undefined;
+    this.xPu = undefined;
     this.H3e = undefined;
     this.YP = () => {
-      ActivityControllerHolder_1.ActivityControllerHolder.LifePointDrawActivityController?.RequestStartChallenge(this.rPu.LifePointDrawActivityData.Id, this.rPu.GetCurrentChallengeId());
+      ActivityControllerHolder_1.ActivityControllerHolder.LifePointDrawActivityController?.RequestStartChallenge(this.PPu.LifePointDrawActivityData.Id, this.PPu.GetCurrentChallengeId());
     };
-    this.nPu = () => {
+    this.UPu = () => {
       var t = new LifePointDrawDetailItem();
-      t.SetModel(this.rPu);
+      t.SetModel(this.PPu);
       return t;
     };
     this.AMo = () => {
@@ -36,8 +36,8 @@ class LifePointDrawDetailView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.rPu = this.OpenParam;
-    this.rPu.RegisterView(this);
+    this.PPu = this.OpenParam;
+    this.PPu.RegisterView(this);
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIText], [5, UE.UIScrollViewWithScrollbarComponent], [6, UE.UIItem], [9, UE.UIButtonComponent], [7, UE.UITexture], [8, UE.UISprite]];
     this.BtnBindInfo = [[9, this.YP]];
   }
@@ -46,23 +46,23 @@ class LifePointDrawDetailView extends UiViewBase_1.UiViewBase {
     this.lqe.SetTitle(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Activity_105600001_Title") ?? "");
     this.lqe.SetHelpBtnActive(true);
     this.lqe.SetCloseCallBack(this.AMo);
-    this.oPu = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.nPu, this.GetItem(2).GetOwner());
+    this.xPu = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.UPu, this.GetItem(2).GetOwner());
     this.H3e = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(5), () => {
       var t = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      t.ShowReceivedCallBack = t => this.rPu.GetCurrentChallengeFinishRewardState();
+      t.ShowReceivedCallBack = t => this.PPu.GetCurrentChallengeFinishRewardState();
       return t;
     });
     await Promise.resolve();
   }
   RefreshLayout(t) {
-    this.oPu.RefreshByData(t);
+    this.xPu.RefreshByData(t);
     this.GetVerticalLayout(1).RootUIComp.SetUIActive(t.length > 1);
   }
   RefreshRewardLayout(t) {
     this.H3e.RefreshByData(t);
   }
   OnBeforeShow() {
-    this.rPu?.OnShowView();
+    this.PPu?.OnShowView();
   }
   ShowRightUpTitle(t) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t);
@@ -84,13 +84,13 @@ exports.LifePointDrawDetailView = LifePointDrawDetailView;
 class LifePointDrawDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.rPu = undefined;
+    this.PPu = undefined;
     this.Pe = undefined;
     this.gke = () => {
-      return !this.rPu?.GetChallengeLockState(this.Pe) || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Colorful_Locked"), false);
+      return !this.PPu?.GetChallengeLockState(this.Pe) || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Colorful_Locked"), false);
     };
     this.kqe = () => {
-      this.rPu?.OnSelectChallenge(this.Pe);
+      this.PPu?.OnSelectChallenge(this.Pe);
     };
   }
   OnRegisterComponent() {
@@ -102,17 +102,17 @@ class LifePointDrawDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetExtendToggle(0).CanExecuteChange.Bind(this.gke);
   }
   SetModel(t) {
-    this.rPu = t;
+    this.PPu = t;
   }
   Refresh(t, i, e) {
     this.Pe = t;
-    var r = this.rPu?.CheckChallengeIfSelect(t) ? 1 : 0;
+    var r = this.PPu?.CheckChallengeIfSelect(t) ? 1 : 0;
     this.GetExtendToggle(0)?.SetToggleState(r);
-    var r = this.rPu?.GetChallengeLockState(this.Pe);
+    var r = this.PPu?.GetChallengeLockState(this.Pe);
     this.GetItem(2)?.SetUIActive(!!r);
-    var r = this.rPu?.GetChallengeFinishState(t);
+    var r = this.PPu?.GetChallengeFinishState(t);
     this.GetItem(3)?.SetUIActive(!!r);
-    var r = this.rPu?.GetChallengeTitleId(t);
+    var r = this.PPu?.GetChallengeTitleId(t);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), r);
     RedDotController_1.RedDotController.UnBindGivenUi("LifePointDrawChallengeRedDot", this.GetItem(4), t);
     RedDotController_1.RedDotController.BindRedDot("LifePointDrawChallengeRedDot", this.GetItem(4), undefined, t);

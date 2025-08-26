@@ -216,12 +216,12 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
           this.fUa = false;
           var e = this.Camera.CurrentCamera.ArmRotation;
           let [t, i] = h.Entity.GetComponent(62).GetCameraInput();
-          t *= ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation;
-          i *= ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation;
           if (this.Nlh()) {
             t *= this.GamepadInputRate;
             i *= this.GamepadInputRate;
           } else if (Info_1.Info.IsInKeyBoard()) {
+            t *= ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation;
+            i *= ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation;
             t /= DEFAULT_FPS;
             i /= DEFAULT_FPS;
           } else if (this.eut()) {
@@ -403,7 +403,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
           this.Lz.DeepCopy(this.Camera.CameraForward);
           this.Lz.MultiplyEqual(i);
           this.Lz.AdditionEqual(this.Camera.PlayerLocation);
-          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.Lz, i, 63, this.eue);
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.Lz, i, 255, this.eue);
           this.Q_e = undefined;
           var _ = a.Camp;
           this.tue.length = 0;
@@ -415,7 +415,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
                   this.ega(n, s, e);
                 }
               }
-              o = l.Entity.GetComponent(154);
+              o = l.Entity.GetComponent(155);
               if (o) {
                 for (const M of o.AimParts) {
                   this.ega(M, s, e);

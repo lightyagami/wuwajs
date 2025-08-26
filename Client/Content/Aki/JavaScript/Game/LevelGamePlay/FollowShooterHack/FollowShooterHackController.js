@@ -14,8 +14,8 @@ class FollowShooterHackController extends ControllerBase_1.ControllerBase {
       this.TW_.set(e, new Set());
     }
     if (!this.TW_.get(e).has(o)) {
-      if ((r = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)) && r.Entity?.Valid && (r = r.Entity.GetComponent(209))) {
-        r = r.AddGameplayCue([GAMEPLAY_CUE_ID], -1, "AddHackEffect");
+      if ((r = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)) && r.Entity?.Valid && (r = r.Entity.GetComponent(226))) {
+        r = r.AddCue(GAMEPLAY_CUE_ID);
         this.bW_.set(o, r);
         this.TW_.get(e).add(o);
       }
@@ -26,16 +26,16 @@ class FollowShooterHackController extends ControllerBase_1.ControllerBase {
       if (this.bW_.has(o)) {
         var r = this.bW_.get(o);
         this.bW_.delete(o);
-        if (r !== undefined) {
+        if (r) {
           var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
           if (!t || !t.Entity?.Valid) {
             return;
           }
-          t = t.Entity.GetComponent(209);
+          t = t.Entity.GetComponent(226);
           if (!t) {
             return;
           }
-          t.RemoveBuffByHandle(r);
+          t.RemoveCueByHandle(r);
         }
       }
       this.TW_.get(e).delete(o);

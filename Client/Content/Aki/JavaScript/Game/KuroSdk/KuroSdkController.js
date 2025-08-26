@@ -74,6 +74,8 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
     this.zZh();
     KuroSdkController.CXn = (0, puerts_1.toManualReleaseDelegate)(KuroSdkController.gXn);
     UE.KuroStaticAndroidLibrary.AddAndroidScreenChangeDelegate(KuroSdkController.CXn);
+    KuroSdkController.wmd = (0, puerts_1.toManualReleaseDelegate)(KuroSdkController.Lmd);
+    UE.UITextInputComponent.SetShowKeyboardDelegate(KuroSdkController.wmd);
     this.JZh();
     return true;
   }
@@ -119,6 +121,10 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       (0, puerts_1.releaseManualReleaseDelegate)(KuroSdkController.gXn);
       KuroSdkController.CXn = undefined;
     }
+    if (KuroSdkController.wmd) {
+      (0, puerts_1.releaseManualReleaseDelegate)(KuroSdkController.Lmd);
+      KuroSdkController.wmd = undefined;
+    }
     this.yul();
     this.ZZh();
     UE.KuroStaticAndroidLibrary.ClearAndroidScreenChangeDelegate();
@@ -155,10 +161,10 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
     }
   }
   static Gpi() {
-    Net_1.Net.Register(18208, KuroSdkController._ja);
+    Net_1.Net.Register(20165, KuroSdkController._ja);
   }
   static Npi() {
-    Net_1.Net.UnRegister(18208);
+    Net_1.Net.UnRegister(20165);
   }
   static w3l() {
     var e = this.D3l();
@@ -507,13 +513,13 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("KuroSdk", 27, "RequestServerPlayStationPlayOnlyState");
     }
-    Net_1.Net.Call(21733, e, e => {
+    Net_1.Net.Call(22152, e, e => {
       ModelManager_1.ModelManager.KuroSdkModel.SetPlayStationPlayOnlyState(e.Oxa);
     });
   }
   static RequestWebSign() {
     var e = new Protocol_1.Aki.Protocol.yv_();
-    Net_1.Net.Call(29274, e, e => {
+    Net_1.Net.Call(22056, e, e => {
       ModelManager_1.ModelManager.KuroSdkModel.NoticeSign = e?.VE_ ?? "";
       this.q3l(0);
     });
@@ -534,7 +540,7 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("KuroSdk", 27, "RequestServerPlayStationPlayOnlyState");
     }
-    Net_1.Net.Call(29943, e, e => {
+    Net_1.Net.Call(24400, e, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("KuroSdk", 27, "RequestUpdatePlayStationBlockAccount");
       }
@@ -546,9 +552,9 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("KuroSdk", 27, "RequestChangeServerPlayStationPlayOnlyState", ["state", r]);
     }
-    Net_1.Net.Call(16383, e, e => {
+    Net_1.Net.Call(25705, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21113);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22756);
       } else {
         ModelManager_1.ModelManager.KuroSdkModel.SetPlayStationPlayOnlyState(r);
       }
@@ -693,20 +699,40 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static N3l(a, l = 0) {
-    var e = ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointUrl();
-    Http_1.Http.Get(e, undefined, (e, r, t) => {
+  static Ltd(a, l, n = 0) {
+    Http_1.Http.Get(a, undefined, (e, r, t) => {
       let o = false;
       if (o = e && r === 200 ? o : true) {
-        if ((e = l + 1) < 3) {
-          this.N3l(a, e);
+        if ((e = n + 1) < 3) {
+          this.Ltd(a, l, e);
         } else {
-          a(false, r, t);
+          l(false, r, t);
         }
       } else {
-        a(true, r, t);
+        l(true, r, t);
       }
     });
+  }
+  static TryInitIntroductionParam() {
+    var e;
+    if (!this.Atd) {
+      e = ModelManager_1.ModelManager.KuroSdkModel.GetIntroductionVersionUrl();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "TryInitIntroductionParam", ["url", e]);
+      }
+      this.Ltd(e, (e, r, t) => {
+        if (e) {
+          t = Json_1.Json.Parse(t);
+          ModelManager_1.ModelManager.KuroSdkModel.SetIntroductionData(t);
+        } else {
+          t = ModelManager_1.ModelManager.KuroSdkModel.GetIntroductionVersionUrl();
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("KuroSdk", 27, "TryInitIntroductionParam fail", ["state", e], ["code", r], ["url", t]);
+          }
+        }
+        this.Atd = false;
+      });
+    }
   }
   static JZh() {
     var e;
@@ -716,7 +742,7 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("KuroSdk", 27, "TryInitPostWebView", ["url", e]);
       }
-      this.N3l((e, r, t) => {
+      this.Ltd(e, (e, r, t) => {
         if (e) {
           t = Json_1.Json.Parse(t);
           ModelManager_1.ModelManager.KuroSdkModel.SetEntryPointData(t);
@@ -766,6 +792,7 @@ KuroSdkController.fSe = false;
 KuroSdkController.SSe = false;
 KuroSdkController.IsKick = false;
 KuroSdkController.CXn = undefined;
+KuroSdkController.wmd = undefined;
 KuroSdkController.ySe = undefined;
 KuroSdkController.Mhh = undefined;
 KuroSdkController.sSe = false;
@@ -792,6 +819,14 @@ KuroSdkController.gXn = () => {
     Log_1.Log.Info("KuroSdk", 27, "旋转后LguiCanvasViewPort", ["viewPortX", e.GetViewportSize().X], ["viewPortY", e.GetViewportSize().Y]);
   }
 };
+KuroSdkController.Lmd = e => {
+  if (KuroSdkController.CanUseSdk()) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("KuroSdk", 27, "ShowVirtualKeyboard", ["state", e]);
+    }
+    UE.KuroSDKStaticLibrary.ShowVirtualKeyboard(e);
+  }
+};
 KuroSdkController.Gro = () => {
   ModelManager_1.ModelManager.KuroSdkModel?.UpdateActivityProgress();
 };
@@ -808,6 +843,7 @@ KuroSdkController.xkt = () => {
   _a.RequestServerPlayStationPlayOnlyState();
   _a.RequestUpdatePlayStationBlockAccount();
   _a.RequestWebSign();
+  _a.TryInitIntroductionParam();
 };
 KuroSdkController.lqt = () => {
   if (_a.cSe) {
@@ -844,6 +880,7 @@ KuroSdkController._ja = e => {
     _a.TryOpenReview();
   }
 };
+KuroSdkController.Atd = false;
 KuroSdkController.V3l = false;
 KuroSdkController.q3l = e => {
   if (ModelManager_1.ModelManager.GameModeModel?.LoadingPhase === 1 && ModelManager_1.ModelManager.KuroSdkModel.NoticeSign !== "") {

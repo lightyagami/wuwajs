@@ -19,25 +19,19 @@ const PhantomTipsAttributeItem_1 = require("../SpecialItem/PhantomTipsAttributeI
 class PhantomTipsView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.wTt = 0;
     this.rgi = false;
     this.poh = undefined;
     this.voh = undefined;
     this.bxt = undefined;
-    this.M2u = undefined;
-    this.E2u = () => {
-      if (this.wTt > 0) {
-        UiManager_1.UiManager.OpenView("PhantomManageView", this.wTt);
-      }
-      this.CloseMe();
-    };
+    this.mFu = undefined;
     this.Moh = () => {
-      this.CloseMe();
+      if (!this.IsPendingDestroy) {
+        this.CloseMe();
+      }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UITexture], [3, UE.UITexture], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UINiagara], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIItem]];
-    this.BtnBindInfo = [[8, this.E2u]];
   }
   async OnBeforeStartAsync() {
     this.poh = new PhantomTipsAttributeItem_1.PhantomTipsAttributeItem();
@@ -47,9 +41,9 @@ class PhantomTipsView extends UiViewBase_1.UiViewBase {
     var i = this.GetItem(4);
     this.bxt = new VisionFetterSuitItem_1.VisionFetterSuitItem(i);
     await this.bxt.CreateThenShowByActorAsync(i.GetOwner());
-    this.M2u = new MediumItemGridLevelAndLockComponent_1.MediumItemGridLevelAndLockComponent();
-    await this.M2u.CreateThenShowByActorAsync(this.GetItem(10).GetOwner());
-    this.M2u.SetLevel(undefined);
+    this.mFu = new MediumItemGridLevelAndLockComponent_1.MediumItemGridLevelAndLockComponent();
+    await this.mFu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner());
+    this.mFu.SetLevel(undefined);
     this.GetButton(8).SetSelfInteractive(false);
   }
   OnStart() {
@@ -66,7 +60,6 @@ class PhantomTipsView extends UiViewBase_1.UiViewBase {
       }
       this.CloseMe();
     } else {
-      this.wTt = e;
       this.Hqe(i);
       this._Oe(i);
       e = this.rgi ? "Golden" : "Start01";
@@ -92,8 +85,8 @@ class PhantomTipsView extends UiViewBase_1.UiViewBase {
   _Oe(i) {
     var e = i.GetIsLock();
     var i = i.GetIsDeprecated();
-    this.M2u.SetLock(e);
-    this.M2u.SetDeprecate(i);
+    this.mFu.SetLock(e);
+    this.mFu.SetDeprecate(i);
     this.GetButton(8).SetSelfInteractive(true);
   }
   fvt(i) {

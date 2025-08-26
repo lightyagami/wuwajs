@@ -62,7 +62,7 @@ class RoleElementView extends UiViewBase_1.UiViewBase {
     };
     this.OnClickSwitch = () => {
       var e;
-      if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(205)?.HasTag(1996802261)) {
+      if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(206)?.HasTag(1996802261)) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(ConfigManager_1.ConfigManager.TextConfig.GetTextById("CanNotTransferInFight"));
       } else if (this.nVi && (e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.nVi))) {
         MainRoleController_1.MainRoleController.SendRoleElementChangeRequest(e.ElementId);

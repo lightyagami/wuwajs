@@ -16,20 +16,18 @@ const Macro_1 = require("../Preprocessor/Macro");
 class UiTextTranslationUtils {
   static Kz(e) {
     if (e.overflowType === 1) {
-      e.bBestFit = true;
+      e.bBestFit = e.verticalOverflowBestFitSwitch;
     }
   }
   static Xlc(e, t) {
-    var i = PrefabRichTextDataById_1.configPrefabRichTextDataById.GetConfig(e);
-    if (i) {
-      if (i.IsIncludeGameText) {
+    e = PrefabRichTextDataById_1.configPrefabRichTextDataById.GetConfig(e);
+    if (e) {
+      if (e.IsIncludeGameText) {
         t.SetGameRichText(true);
         t.SetRichText(true);
-      } else if (i.IsIncludeRichText) {
+      } else if (e.IsIncludeRichText) {
         t.SetRichText(true);
       }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("TextLanguageSearch", 10, "查询富文本信息异常", ["文本id", e]);
     }
   }
   static Initialize() {

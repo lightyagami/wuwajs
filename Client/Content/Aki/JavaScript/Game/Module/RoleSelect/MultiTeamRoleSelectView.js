@@ -30,7 +30,7 @@ class MultiTeamRoleGridData {
     this.kB_ = false;
     this.qB_ = false;
     this.Rjt = false;
-    this.VQ1 = false;
+    this.WQ1 = false;
   }
   GetRole() {
     return this.BB_;
@@ -45,7 +45,7 @@ class MultiTeamRoleGridData {
     return this.Rjt;
   }
   GetIsUnRecommend() {
-    return this.VQ1;
+    return this.WQ1;
   }
   static Phrase(t, e, i, s = false, r = false) {
     var h = new MultiTeamRoleGridData();
@@ -53,7 +53,7 @@ class MultiTeamRoleGridData {
     h.kB_ = e;
     h.qB_ = i;
     h.Rjt = s;
-    h.VQ1 = r;
+    h.WQ1 = r;
     return h;
   }
 }
@@ -186,7 +186,7 @@ class MultiTeamRoleSelectView extends UiViewBase_1.UiViewBase {
         this.Jlo(this.Wlo[t]);
       }
     };
-    this.OJ1 = () => {
+    this.lZ1 = () => {
       var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(320);
       t.FunctionMap.set(0, () => {
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
@@ -267,7 +267,7 @@ class MultiTeamRoleSelectView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIMultiTemplateLayout], [6, UE.UIItem], [7, UE.UIHorizontalLayout], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIText], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent], [16, UE.UIText], [17, UE.UIItem], [18, UE.UIExtendToggle], [19, UE.UIText], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIButtonComponent], [25, UE.UIText]];
-    this.BtnBindInfo = [[14, this.qAt], [15, this.$lo], [18, this.Acl], [24, this.OJ1]];
+    this.BtnBindInfo = [[14, this.qAt], [15, this.$lo], [18, this.Acl], [24, this.lZ1]];
   }
   async OnBeforeStartAsync() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -393,7 +393,7 @@ class MultiTeamRoleSelectView extends UiViewBase_1.UiViewBase {
     this.tje(t);
     this.tk_(t);
     this.ik_(t);
-    this.jQ1(t);
+    this.QQ1(t);
   }
   tje(t) {
     if (t !== 0) {
@@ -461,7 +461,7 @@ class MultiTeamRoleSelectView extends UiViewBase_1.UiViewBase {
       this.Klo?.RefreshByData(e);
     }
   }
-  jQ1(t) {
+  QQ1(t) {
     if (t !== 0) {
       this.GetItem(23).SetUIActive(this.Pe?.UnRecommendRole.includes(t) ?? false);
     }

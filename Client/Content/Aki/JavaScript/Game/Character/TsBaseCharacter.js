@@ -41,6 +41,7 @@ class TsBaseCharacter extends UE.BaseCharacter {
     this.PhysicsClothSimulateDisableOneFrame = false;
     this.CachePoseEnableOneFrame = false;
     this.CacheTime = 0.6;
+    this.OnMovementModeChanged = false;
     this.CharacterActorComponent = undefined;
     this.SimpleNpcActorComponent = undefined;
     this.DitherEffectControllerInternal = undefined;
@@ -51,6 +52,7 @@ class TsBaseCharacter extends UE.BaseCharacter {
     this.CurrentMovementParam = undefined;
   }
   Constructor() {
+    this.OnMovementModeChanged = false;
     this.CharacterActorComponent = undefined;
     this.SimpleNpcActorComponent = undefined;
     this.DitherEffectControllerInternal = undefined;
@@ -72,7 +74,9 @@ class TsBaseCharacter extends UE.BaseCharacter {
   }
   K2_OnMovementModeChanged(e, t, i, s) {
     if (this.CharacterActorComponent) {
+      this.OnMovementModeChanged = true;
       EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.CharacterActorComponent.Entity.Id, e, t, i, s);
+      this.OnMovementModeChanged = false;
     }
   }
   ReceivePossessed(e) {

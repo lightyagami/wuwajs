@@ -122,7 +122,7 @@ class GeneralLogicTreeUtil {
       n = new LguiUtil_1.TableTextArgNew(a.ChapterNum);
       i = 25;
     } else if (a?.PrefabName === "UiView_TasktipsA_Prefab") {
-      i = 26;
+      i = t ? 35 : 26;
       switch (s.ChapterState = e) {
         case 2:
           if (o) {

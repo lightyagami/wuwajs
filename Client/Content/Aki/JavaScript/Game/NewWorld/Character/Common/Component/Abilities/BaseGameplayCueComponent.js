@@ -27,7 +27,6 @@ const EntityComponent_1 = require("../../../../../../Core/Entity/EntityComponent
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const TimeUtil_1 = require("../../../../../Common/TimeUtil");
-const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
 const GameplayCueController_1 = require("./GameplayCueSFX/Controller/GameplayCueController");
@@ -66,6 +65,7 @@ function getGameplayCueClass(e, a) {
     case 14:
     case 20:
     case 22:
+    case 24:
       if (a) {
         return undefined;
       } else {
@@ -124,19 +124,14 @@ function getGameplayCueClass(e, a) {
 let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
-    this.Ksu = new Map();
-    this.m1t = undefined;
-    this.Ysu = new Map();
-  }
-  GetBuffComponent() {
-    return this.m1t;
+    this.Sau = new Map();
+    this.Eau = new Map();
   }
   OnStart() {
-    this.m1t = this.Entity.CheckGetComponent(209);
     return true;
   }
   OnEnd() {
-    for (const e of this.Ksu.keys()) {
+    for (const e of this.Sau.keys()) {
       this.RemoveCueByHandle(e);
     }
     return true;
@@ -149,14 +144,14 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   }
   AddCue(e, a = {}) {
     var t;
-    var e = this.zsu(e, a);
+    var e = this.Iau(e, a);
     if (e) {
       if (a.Instant) {
         return GameplayCueController_1.INSTANT_CUE_HANDLE;
       } else {
         t = GameplayCueController_1.GameplayCueController.GenerateHandle();
         e.Add(t, a.Buff?.Handle ?? 0);
-        this.Ksu.set(t, e);
+        this.Sau.set(t, e);
         return t;
       }
     } else {
@@ -164,28 +159,26 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
     }
   }
   RemoveCue(e) {
-    for (const a of this.tlu(e)) {
+    for (const a of this.Llu(e)) {
       this.RemoveCueByHandle(a);
     }
   }
   RemoveCueByHandle(e) {
-    var a = this.Ksu.get(e);
+    var a = this.Sau.get(e);
     if (a) {
       a.Remove(e);
       if (a.CueHandleIds.size === 0) {
         a.Destroy();
-        this.Zsu(a);
+        this.Rau(a);
       }
-      this.Ksu.delete(e);
-    } else {
-      CombatLog_1.CombatLog.Error("Cue", this.Entity, "Cue特效.移除Cue引用失败", ["CueHandleId", e]);
+      this.Sau.delete(e);
     }
   }
   AddCueEffectToSet(e, a) {}
   GetEntityHandle() {}
   *GetAllCurrentCueRef() {
     var e = new Set();
-    for (const a of this.Ksu.values()) {
+    for (const a of this.Sau.values()) {
       if (!e.has(a)) {
         e.add(a);
         yield a;
@@ -193,12 +186,12 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
     }
   }
   GetCueByHandle(e) {
-    return this.Ksu.get(e);
+    return this.Sau.get(e);
   }
   xJs(e) {
     var a = Protocol_1.Aki.Protocol.he_.create();
     a.TJs = MathUtils_1.MathUtils.NumberToLong(e);
-    CombatMessage_1.CombatNet.Send(27430, this.GetEntityHandle().Entity, a);
+    CombatMessage_1.CombatNet.Send(29861, this.GetEntityHandle().Entity, a);
   }
   static GameplayCueNotify(e, a) {
     e = e?.GetComponent(21);
@@ -207,33 +200,33 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
       Instant: true
     });
   }
-  tlu(e) {
+  Llu(e) {
     var a;
     var t;
     var r = [];
-    for ([a, t] of this.Ksu.entries()) {
+    for ([a, t] of this.Sau.entries()) {
       if (t.CueConfig.Id === e) {
         r.push(a);
       }
     }
     return r;
   }
-  ilu(e) {
-    for (const a of this.Ksu.values()) {
+  wlu(e) {
+    for (const a of this.Sau.values()) {
       if (a.CueConfig.Id === e) {
         return a;
       }
     }
   }
-  zsu(a, t = {}) {
+  Iau(a, t = {}) {
     var r = GameplayCueController_1.GameplayCueController.GetConfigById(a);
     if (r) {
-      if (this.eau(r)) {
+      if (this.Lau(r)) {
         var u = t.Buff;
         var l = t.Instant ?? false;
         var i = getGameplayCueClass(r, l);
         if (i) {
-          let e = this.ilu(a);
+          let e = this.wlu(a);
           if (!e || !i.IsSingleInstance()) {
             e = i.Spawn({
               CueConfig: r,
@@ -243,9 +236,9 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
               Instant: l,
               BeginCallback: t.BeginCallback,
               EndCallback: t.EndCallback,
-              Instigator: u?.GetInstigator() ? ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(u.GetInstigator()) : t.Instigator
+              Instigator: t.Instigator
             });
-            this.Jsu(r);
+            this.bau(r);
           }
           if (t.Sync) {
             this.xJs(a);
@@ -258,32 +251,32 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
       CombatLog_1.CombatLog.Error("Cue", this.Entity, "Cue特效表不存在CueId", ["CueId", a]);
     }
   }
-  eau(e) {
+  Lau(e) {
     var a;
-    return e.Group <= 0 || !(a = this.Ysu.get(e.Group)) || !(a = this.ilu(a)) || a.CueConfig.Priority <= e.Priority;
+    return e.Group <= 0 || !(a = this.Eau.get(e.Group)) || !(a = this.wlu(a)) || a.CueConfig.Priority <= e.Priority;
   }
-  Jsu(e) {
+  bau(e) {
     if (!(e.Group <= 0)) {
-      var a = this.Ysu.get(e.Group);
+      var a = this.Eau.get(e.Group);
       if (a) {
         if (a === e.Id) {
           return;
         }
-        var t = this.ilu(a);
+        var t = this.wlu(a);
         if (t && t.CueConfig.Priority > e.Priority) {
           return;
         }
         this.RemoveCue(a);
       }
-      this.Ysu.set(e.Group, e.Id);
+      this.Eau.set(e.Group, e.Id);
     }
   }
-  Zsu(e) {
+  Rau(e) {
     if (e && e.CueConfig.Group > 0) {
-      this.Ysu.delete(e.CueConfig.Group);
+      this.Eau.delete(e.CueConfig.Group);
     }
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("EJs", true)], BaseGameplayCueComponent, "GameplayCueNotify", null);
-BaseGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(225)], BaseGameplayCueComponent);
+BaseGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], BaseGameplayCueComponent);
 exports.BaseGameplayCueComponent = BaseGameplayCueComponent; //# sourceMappingURL=BaseGameplayCueComponent.js.map

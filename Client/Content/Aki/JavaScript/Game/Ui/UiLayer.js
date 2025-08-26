@@ -123,6 +123,18 @@ class UiLayer {
       Log_1.Log.Error("UiLayer", 10, "找不到对应的uiLayer：", ["type", i]);
     }
   }
+  static SetLayerRenderable(i, t, e) {
+    var a = this.GetLayerRootUiItem(i);
+    if (a) {
+      a = a;
+      UE.LGUIBPLibrary.SetUIRenderable(a, t);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiLayer", 10, "有操作设置层级的可渲染状态", ["层级类型", i], ["可渲染状态", t], ["reason", e]);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("UiLayer", 10, "找不到对应的uiLayer：", ["type", i]);
+    }
+  }
   static async Initialize() {
     if (!UiLayer.ZCe) {
       UiLayer.ZCe = true;

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.FriendSearchView = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const Platform_1 = require("../../../../Launcher/Platform/Platform");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -49,12 +50,25 @@ class FriendSearchView extends UiViewBase_1.UiViewBase {
       this.h9t();
     };
     this.QAt = () => {
-      var e = this.GetInputText(0);
-      var t = (0, puerts_1.$ref)("");
-      UE.LGUIBPLibrary.ClipBoardPaste(t);
-      t = (0, puerts_1.$unref)(t);
-      e.SetText(t);
-      this.h9t();
+      if (Platform_1.Platform.IsCloudGame()) {
+        const i = this.GetInputText(0);
+        let e;
+        const r = (0, puerts_1.$ref)("");
+        UE.KuroCloudGameWrapper.ClipBoardPaste();
+        TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          UE.LGUIBPLibrary.ClipBoardPaste(r);
+          e = (0, puerts_1.$unref)(r);
+          i.SetText(e);
+          this.h9t();
+        }, 200);
+      } else {
+        var e = this.GetInputText(0);
+        var t = (0, puerts_1.$ref)("");
+        UE.LGUIBPLibrary.ClipBoardPaste(t);
+        t = (0, puerts_1.$unref)(t);
+        e.SetText(t);
+        this.h9t();
+      }
     };
     this.l9t = () => {
       var e = ModelManager_1.ModelManager.FriendModel;
@@ -164,7 +178,7 @@ class FriendSearchView extends UiViewBase_1.UiViewBase {
   }
   u8t() {
     if (this.s9t.length > 0) {
-      this.n9t.ReloadData(this.s9t);
+      this.n9t.RefreshByData(this.s9t);
     }
     this.d9t();
     this.tPa();

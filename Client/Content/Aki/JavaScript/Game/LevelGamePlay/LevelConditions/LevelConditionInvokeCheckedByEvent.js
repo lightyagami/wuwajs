@@ -71,7 +71,7 @@ class LevelConditionHpLowerThan extends LevelGeneralBase_1.LevelConditionBase {
       }
       return false;
     } else if (o = Number(e.LimitParams.get("Hp"))) {
-      return !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && !(i = t.Entity.GetComponent(173)?.GetCurrentValue(EAttributeId.Proto_Life), r = t.Entity.GetComponent(173)?.GetCurrentValue(EAttributeId.l5n), !i) && !!r && i / r < o / CommonDefine_1.RATE_10000;
+      return !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && !(i = t.Entity.GetComponent(174)?.GetCurrentValue(EAttributeId.Proto_Life), r = t.Entity.GetComponent(174)?.GetCurrentValue(EAttributeId.l5n), !i) && !!r && i / r < o / CommonDefine_1.RATE_10000;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 16, `配置错误！条件${e.Id}的Hp参数不符合条件类型${LevelGeneralDefine_1.ELevelGeneralCondition.HpLowerThan}的定义`);
@@ -84,7 +84,7 @@ exports.LevelConditionHpLowerThan = LevelConditionHpLowerThan;
 class LevelConditionHarmonyQte extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, n, ...o) {
     var t;
-    return !!o?.length && (e.LimitParams.size === 0 ? (Log_1.Log.CheckError() && Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不应该为空", ["inConditionInfo.Id", e.Id]), false) : !(t = Number(e.LimitParams.get("ElementType"))) && t >= 7 ? (Log_1.Log.CheckError() && Log_1.Log.Error("LevelCondition", 16, `配置错误！条件${e.Id}的ElementType参数不符合条件类型${LevelGeneralDefine_1.ELevelGeneralCondition.HarmonyQte}的定义`), false) : (e = o[0], o = o[1], (e = e.GetComponent(91)?.RoleElementType) * 10 + (o = o.GetComponent(91)?.RoleElementType) === t || o * 10 + e === t));
+    return !!o?.length && (e.LimitParams.size === 0 ? (Log_1.Log.CheckError() && Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不应该为空", ["inConditionInfo.Id", e.Id]), false) : !(t = Number(e.LimitParams.get("ElementType"))) && t >= 7 ? (Log_1.Log.CheckError() && Log_1.Log.Error("LevelCondition", 16, `配置错误！条件${e.Id}的ElementType参数不符合条件类型${LevelGeneralDefine_1.ELevelGeneralCondition.HarmonyQte}的定义`), false) : (e = o[0], o = o[1], (e = e.GetComponent(92)?.RoleElementType) * 10 + (o = o.GetComponent(92)?.RoleElementType) === t || o * 10 + e === t));
   }
 }
 exports.LevelConditionHarmonyQte = LevelConditionHarmonyQte;

@@ -11,10 +11,11 @@ const MarkItemView_1 = require("./MarkItemView");
 class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
   constructor(e) {
     super(e);
-    this.MarkConfig = undefined;
     this.dRi = undefined;
     this.CRi = undefined;
-    this.MarkConfig = e.MarkConfig;
+  }
+  get MarkConfig() {
+    return this.Holder.MarkConfig;
   }
   OnInitialize() {
     super.OnInitialize();
@@ -23,9 +24,9 @@ class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
   async PlayUnlockSequence() {
     await this.LoadingPromise;
     if (!this.dRi) {
-      var i = await this.LoadPrefabAsync(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Prefab_Effect"), this.RootItem);
-      this.dRi = i.GetComponentByClass(UE.UIItem.StaticClass());
-      let e = i.GetComponentByClass(UE.UINiagara.StaticClass());
+      var t = await this.LoadPrefabAsync(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Prefab_Effect"), this.RootItem);
+      this.dRi = t.GetComponentByClass(UE.UIItem.StaticClass());
+      let e = t.GetComponentByClass(UE.UINiagara.StaticClass());
       if (e = e || this.dRi.GetAttachUIChild(0)?.GetOwner()?.GetComponentByClass(UE.UINiagara.StaticClass())) {
         if (this.Holder?.MapType === 2) {
           e.bAdaptPosAndSizeChanged = false;
@@ -43,10 +44,10 @@ class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
     super.OnBeforeDestroy();
   }
   OnIconPathChanged(e) {
-    var i;
+    var t;
     if (this.IsViewReady) {
-      i = this.GetSprite(1);
-      this.LoadIcon(i, e);
+      t = this.GetSprite(1);
+      this.LoadIcon(t, e);
       this.MarkItemChildIconHandle.Update();
       this.MarkItemChildIconHandle.ApplyModified();
     }

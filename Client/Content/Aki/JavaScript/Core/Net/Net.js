@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Net = exports.CallbackStatus = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../Common/Info");
 const Log_1 = require("../Common/Log");
@@ -68,7 +69,7 @@ class CallbackQueueItem {
   }
 }
 class SendMessageCache {
-  constructor(e, t, N, i, o) {
+  constructor(e, t, N, o, i) {
     this.RpcId = 0;
     this.SeqNo = 0;
     this.MessageId = undefined;
@@ -79,8 +80,8 @@ class SendMessageCache {
     this.RpcId = e;
     this.SeqNo = t;
     this.MessageId = N;
-    this.EncodeMessage = i;
-    this.Handle = o;
+    this.EncodeMessage = o;
+    this.Handle = i;
     this.SendTimeMs = Date.now();
     this.TimeoutHandle = undefined;
   }
@@ -168,7 +169,6 @@ class Net {
   static Initialize() {
     Net._X(0);
     var e = new UE.KuroKcpClient();
-    e.IsMultiThreaded = true;
     if (Info_1.Info.PlatformType === 1) {
       e.UseNewResolveIp = false;
     }
@@ -176,12 +176,15 @@ class Net {
     e.OnConnectSuccess.Add(Net.voa);
     e.OnRecResp.Bind(Net.iX);
     e.OnRecException.Bind(Net.oX);
-    e.OnRecTcpException.Bind(Net.tpu);
+    e.OnRecTcpException.Bind(Net.tvu);
     e.OnRecPush.Bind(Net.rX);
     e.OnError.Bind(Net.nX);
     e.SetEnType(2, 111);
     e.SetEnType(2, 112);
     Net.sX.clear();
+    var t = (0, puerts_1.$ref)(false);
+    UE.KuroVariableFunctionLibrary.GetBoolValue("DisableCrc", t);
+    NetInfo_1.NetInfo.DisableCrc = (0, puerts_1.$unref)(t);
     Net.aX = 0;
     Net.hX = 0;
     Net.lX = 0;
@@ -196,21 +199,21 @@ class Net {
     Net.CX(NetDefine_1.RequestMessageIds, "Net.Request", false);
     Net.CX(NetDefine_1.ResponseMessageIds, "Net.Response", true);
     Net.CX(NetDefine_1.NotifyMessageIds, "Net.Notify", true);
-    let t = 1000;
-    var N = ((t = e.RemoteMtu > 0 ? e.RemoteMtu : t) - 24) * 127;
-    e.SetKcpMtu(t);
-    e.SetKcpSegmentSize(N);
+    let N = 1000;
+    t = ((N = e.RemoteMtu > 0 ? e.RemoteMtu : N) - 24) * 127;
+    e.SetKcpMtu(N);
+    e.SetKcpSegmentSize(t);
     e.SetKcpWndSize(256, 256);
     e.SetKcpNoDelay(1, 10, 2, 1);
     e.SetKcpStream(true);
     Net.gX = e;
-    var N = {
+    t = {
       GroupId: new UE.FName("NetOnceTaskGroup"),
       Priority: 100,
       IsEmpty: this.fX,
       Consume: this.pX
     };
-    GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterOnceTaskCustomGroup(N);
+    GameBudgetInterfaceController_1.GameBudgetInterfaceController.RegisterOnceTaskCustomGroup(t);
   }
   static Tick(e) {
     if (Net.gX) {
@@ -226,14 +229,14 @@ class Net {
   static ipa() {
     return !!Net.rpa && (Net.rpa.DoCallback() && (Net.rpa = undefined), true);
   }
-  static Connect(e, t, N, i, o) {
+  static Connect(e, t, N, o, i) {
     if (Net.EX()) {
       Net.Moa = N;
-      Net.Soa = o;
+      Net.Soa = i;
       Net.Eoa = 0;
       Net.yoa = e;
       Net.Ioa = t;
-      Net.Toa = i;
+      Net.Toa = o;
       Net.Loa();
     } else {
       if (Log_1.Log.CheckError()) {
@@ -242,11 +245,11 @@ class Net {
       N(3);
     }
   }
-  static async ConnectAsync(e, N, i, o) {
+  static async ConnectAsync(e, N, o, i) {
     return new Promise(t => {
       Net.Connect(e, N, e => {
         t(e);
-      }, i, o);
+      }, o, i);
     });
   }
   static Disconnect(e) {
@@ -287,12 +290,12 @@ class Net {
       }
       t = t.Next;
     }
-    var i;
     var o;
+    var i;
     var a;
     if (N) {
-      [i, o,, a] = Net.gX.GetDebugString(N.EncodeMessage, ";", N.MessageId, N.SeqNo).split(";");
-      return [N.MessageId, Number(i), o, a];
+      [o, i,, a] = Net.gX.GetDebugString(N.EncodeMessage, ";", N.MessageId, N.SeqNo).split(";");
+      return [N.MessageId, Number(o), i, a];
     } else {
       return [0, 0, "", ""];
     }
@@ -304,39 +307,39 @@ class Net {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Net", 30, "重连流程,", ["lastReceived", N]);
     }
-    var i = Net.RX.Count;
-    if (i > 0) {
+    var o = Net.RX.Count;
+    if (o > 0) {
       let e = Net.RX.GetHeadNextNode();
       let t = false;
       while (e) {
-        var o = e.Element.SeqNo;
-        if (N <= o) {
-          t = o === N;
+        var i = e.Element.SeqNo;
+        if (N <= i) {
+          t = i === N;
           break;
         }
         e = e.Next;
       }
       if (e && (Net.RX.RemoveNodesBeforeThis(e, t), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Net", 30, "重连流程, 清理掉已经被服务器收到的缓存消息", ["beforeCount", i], ["afterCount", Net.RX.Count], ["find SeqNo", e.Element.SeqNo]);
+        Log_1.Log.Info("Net", 30, "重连流程, 清理掉已经被服务器收到的缓存消息", ["beforeCount", o], ["afterCount", Net.RX.Count], ["find SeqNo", e.Element.SeqNo]);
       }
     }
     if (Net.RX.Count > 0) {
       let e = 0;
       let t = 0;
       let N = 0;
-      let i = Net.RX.GetHeadNextNode();
-      while (i) {
+      let o = Net.RX.GetHeadNextNode();
+      while (o) {
         var a;
-        var s;
-        var r = i.Element;
-        var n = r.MessageId;
-        if ((NetDefine_1.protoConfig[n] & 3) != 0 && ((s = (a = r.RpcId) !== undefined ? 1 : 4) == 4 || !!r.Handle)) {
+        var r;
+        var s = o.Element;
+        var n = s.MessageId;
+        if ((NetDefine_1.protoConfig[n] & 3) != 0 && ((r = (a = s.RpcId) !== undefined ? 1 : 4) == 4 || !!s.Handle)) {
           e++;
-          t = r.SeqNo;
+          t = s.SeqNo;
           N = n;
-          Net.UX(s, r.SeqNo, a, n, r.EncodeMessage);
+          Net.UX(r, s.SeqNo, a, n, s.EncodeMessage);
         }
-        i = i.Next;
+        o = o.Next;
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Net", 30, "重连流程, 重发未被服务器确认的消息", ["Count", e], ["lastSeqNo", t], ["lastMsgId", N]);
@@ -365,19 +368,19 @@ class Net {
       Net.PX(4, e, t, undefined, undefined);
     }
   }
-  static Call(e, t, N, i = 0) {
-    var o;
+  static Call(e, t, N, o = 0) {
+    var i;
     if (!Net.xX(e) && Net.AX(e)) {
       Net.wX.Start();
-      o = Net.BX();
-      t = Net.PX(1, e, t, o, N);
+      i = Net.BX();
+      t = Net.PX(1, e, t, i, N);
       Net.bX(e, t);
-      if (i > 0) {
-        Net.qX(i, t.Element);
+      if (o > 0) {
+        Net.qX(o, t.Element);
       }
       if ((NetDefine_1.protoConfig[e] & 4) == 4) {
         Net.npa.Start();
-        Net.JK?.(o);
+        Net.JK?.(i);
         Net.npa.Stop();
       }
       Net.wX.Stop();
@@ -385,37 +388,37 @@ class Net {
       N(undefined, undefined);
     }
   }
-  static async CallAsync(e, t, i = 0) {
+  static async CallAsync(e, t, o = 0) {
     return new Promise(N => {
       Net.Call(e, t, (e, t) => {
         N(e);
-      }, i);
+      }, o);
     });
   }
-  static PX(e, t, N, i, o) {
+  static PX(e, t, N, o, i) {
     Net.NX.Start();
     var a = Net.OX();
     Net.kX.Start();
-    var s = NetDefine_1.messageDefine[t].encode(N).finish();
+    var r = NetDefine_1.messageDefine[t].encode(N).finish();
     Net.kX.Stop();
-    if (s.length > 30720 && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Net", 30, "消息过大", ["message", t], ["length", s.length]);
+    if (r.length > 30720 && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Net", 30, "消息过大", ["message", t], ["length", r.length]);
     }
-    var o = new SendMessageCache(i, a, t, s, o);
-    var o = Net.FX(o);
+    var i = new SendMessageCache(o, a, t, r, i);
+    var i = Net.FX(i);
     if (!Net.VX(t)) {
-      Net.UX(e, a, i, t, s, N);
+      Net.UX(e, a, o, t, r, N);
     }
     Net.NX.Stop();
-    return o;
+    return i;
   }
   static qX(e, N) {
-    const i = N.MessageId;
+    const o = N.MessageId;
     var t;
-    if (Net.MX.has(i)) {
+    if (Net.MX.has(o)) {
       t = TimerSystem_1.GameplayTimerSystem.Delay(() => {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Net", 30, "协议超时", ["message", i], ["timeout", e]);
+          Log_1.Log.Info("Net", 30, "协议超时", ["message", o], ["timeout", e]);
         }
         var t = N.Handle;
         N.ClearHandle();
@@ -424,16 +427,16 @@ class Net {
           let e = undefined;
           try {
             if (Net.cX) {
-              (e = Net.HX.get(i))?.Start();
+              (e = Net.HX.get(o))?.Start();
             }
             t(undefined, undefined);
           } catch (e) {
             if (e instanceof Error) {
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.ErrorWithStack("Net", 30, "callback执行异常", e, ["requestId", i], ["error", e.message]);
+                Log_1.Log.ErrorWithStack("Net", 30, "callback执行异常", e, ["requestId", o], ["error", e.message]);
               }
             } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Net", 30, "callback执行异常", ["requestId", i], ["error", e]);
+              Log_1.Log.Error("Net", 30, "callback执行异常", ["requestId", o], ["error", e]);
             }
           } finally {
             e?.Stop();
@@ -442,20 +445,20 @@ class Net {
       }, e);
       N.TimeoutHandle = t;
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Net", 30, "该协议未配置可超时", ["message", i]);
+      Log_1.Log.Error("Net", 30, "该协议未配置可超时", ["message", o]);
     }
   }
   static CX(e, t, N) {
     if (Net.uX || Net.cX) {
       for (const a of e) {
-        var i = a;
-        var o = `${t}.(${i})`;
+        var o = a;
+        var i = `${t}.(${o})`;
         if (Net.uX) {
-          Net.jX.set(i, o);
+          Net.jX.set(o, i);
         }
         if (N && Net.cX) {
-          o = Stats_1.Stat.CreateNoFlameGraph(o);
-          Net.HX.set(i, o);
+          i = Stats_1.Stat.CreateNoFlameGraph(i);
+          Net.HX.set(o, i);
         }
       }
     }
@@ -476,7 +479,7 @@ class Net {
       Net.Doa(1);
     }, Net.Toa);
     Net._X(1);
-    Net.gX.Connect(Net.yoa, Net.Ioa);
+    Net.gX.Connect(Net.yoa, Net.Ioa, NetInfo_1.NetInfo.DisableCrc);
   }
   static _ha(e) {
     return e === 111 || e === 107;
@@ -561,19 +564,28 @@ class Net {
   static YX(e) {
     return e === 111;
   }
-  static JX(t, N, i, o, a = undefined) {
-    var s;
+  static nmd(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Net", 63, "KcpRecvError", ["ErrorCode", e]);
+    }
+    if (e === -4) {
+      NetInfo_1.NetInfo.DisableCrc = true;
+      UE.KuroVariableFunctionLibrary.SetBoolValue("DisableCrc", true);
+    }
+  }
+  static JX(t, N, o, i, a = undefined) {
     var r;
-    var o = new Uint8Array(o);
-    var o = new Uint8Array(o);
+    var s;
+    var i = new Uint8Array(i);
+    var i = new Uint8Array(i);
     Net.QX(N);
     let n = undefined;
     let _ = undefined;
     let c = undefined;
-    const g = i;
+    const g = o;
     let d = undefined;
     if (g === 3729) {
-      this.ipu(g, o);
+      this.ivu(g, i);
     } else {
       let e = false;
       const u = Date.now();
@@ -581,19 +593,19 @@ class Net {
       if (a) {
         if (n = Net.XX.get(a)) {
           Net.spa(n);
-          s = n.Element;
-          r = u - s.SendTimeMs;
-          d = s.MessageId;
-          NetInfo_1.NetInfo.SetRttMs(r);
-          if (r > 300 && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Net", 30, "RTT过高", ["requestId", d], ["rpcId", a], ["seqNo", s.SeqNo], ["serverSeqNo", N], ["rtt", r], ["deltaTime", Time_1.Time.DeltaTime]);
+          r = n.Element;
+          s = u - r.SendTimeMs;
+          d = r.MessageId;
+          NetInfo_1.NetInfo.SetRttMs(s);
+          if (s > 300 && Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("Net", 30, "RTT过高", ["requestId", d], ["rpcId", a], ["seqNo", r.SeqNo], ["serverSeqNo", N], ["rtt", s], ["deltaTime", Time_1.Time.DeltaTime]);
           }
-          c = s.Handle;
-          if (s.TimeoutHandle) {
-            TimerSystem_1.GameplayTimerSystem.Remove(s.TimeoutHandle);
+          c = r.Handle;
+          if (r.TimeoutHandle) {
+            TimerSystem_1.GameplayTimerSystem.Remove(r.TimeoutHandle);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Net", 1, "网络 rpc 响应不存在", ["rpcId", a], ["messageId", i]);
+          Log_1.Log.Error("Net", 1, "网络 rpc 响应不存在", ["rpcId", a], ["messageId", o]);
         }
       } else {
         if (!(c = Net.sX.get(g))) {
@@ -604,13 +616,13 @@ class Net {
         e = true;
       }
       if (t === 3) {
-        const v = `[异常信息:${StringUtils_1.StringUtils.Uint8ArrayToString(o)}]`;
+        const v = `[异常信息:${StringUtils_1.StringUtils.Uint8ArrayToString(i)}]`;
         const f = c;
         c = () => {
-          Net.YK?.(a, i, d, n ? NetDefine_1.messageDefine[d].decode(n.Element.EncodeMessage) : undefined, v);
+          Net.YK?.(a, o, d, n ? NetDefine_1.messageDefine[d].decode(n.Element.EncodeMessage) : undefined, v);
           f?.(undefined, undefined);
         };
-      } else if (!(_ = NetDefine_1.messageDefine[g].decode(o))) {
+      } else if (!(_ = NetDefine_1.messageDefine[g].decode(i))) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Net", 1, "协议解析异常", ["messageId", g]);
         }
@@ -656,31 +668,36 @@ class Net {
     }
     return true;
   }
-  static UX(e, t, N, i, o, a = undefined) {
+  static UX(e, t, N, o, i, a = undefined) {
     if (Net.uX) {
-      a = a || NetDefine_1.messageDefine[i].decode(o);
-      Net.ZX(i, t, N, a);
+      a = a || NetDefine_1.messageDefine[o].decode(i);
+      Net.ZX(o, t, N, a);
     }
-    return Net.gX.SendM(e, t, N, i, o, (NetDefine_1.protoConfig[i] & 32) == 0);
+    return Net.gX.SendM(e, t, N, o, i, (NetDefine_1.protoConfig[o] & 32) == 0);
   }
   static LX() {
     Net.WX.clear();
     Net.XX.clear();
     Net.RX.RemoveAllNodeWithoutHead();
   }
-  static ZX(e, t, N, i) {
-    var o;
-    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 21224) && e !== 29722 && e !== 21062 && e !== 26737 && e !== 19982 && e !== 27240 && e !== 28584 && e !== 24160 && e !== 20630 && e !== 20456 && (Net.dX || e !== 26678 && e !== 18500 && e !== 23057 && e !== 18370 && e !== 16075 && e !== 15089 && e !== 18787 && e !== 17181 && e !== 27075) && (o = Object.keys(i).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Net", 22, Net.jX.get(e), ["SeqNo", t], ["RpcId", N], ["UpStreamSeqNo", Net.hX], ["DownStream", Net.lX], ["msg", o ? this.tY(i) : ""]);
+  static ZX(e, t, N, o) {
+    var i;
+    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 20578) && e !== 23287 && e !== 28783 && e !== 24484 && e !== 19242 && e !== 22444 && e !== 17028 && e !== 20887 && e !== 25190 && e !== 24020 && (Net.dX || e !== 23354 && e !== 27307 && e !== 19685 && e !== 15924 && e !== 19728 && e !== 18817 && e !== 23086 && e !== 28745 && e !== 29933) && (i = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Net", 22, Net.jX.get(e), ["SeqNo", t], ["RpcId", N], ["UpStreamSeqNo", Net.hX], ["DownStream", Net.lX], ["msg", i ? this.tY(o) : ""]);
     }
   }
   static tY(e) {
     return JSON.stringify(e, (e, t) => t instanceof Long ? MathUtils_1.MathUtils.LongToBigInt(t).toString() : t);
   }
-  static rpu(e) {
+  static rvu(e) {
     if (!e) {
-      e = Math.floor(Math.random() * 10000);
-      if (e < NetInfo_1.NetInfo.TcpRatio && NetInfo_1.NetInfo.TcpRetry < NetInfo_1.NetInfo.TcpMaxRetry) {
+      let e = 0;
+      let t = NetInfo_1.NetInfo.TcpRatio >= 10000;
+      if (NetInfo_1.NetInfo.TcpRatio < 10000 && NetInfo_1.NetInfo.TcpRatio > 0) {
+        e = Math.floor(Math.random() * 10000);
+        t = e < NetInfo_1.NetInfo.TcpRatio && NetInfo_1.NetInfo.TcpRetry < NetInfo_1.NetInfo.TcpMaxRetry;
+      }
+      if (t) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Net", 63, "kcp会话id使用Tcp获取:", ["TcpRatio", NetInfo_1.NetInfo.TcpRatio], ["RandomValue", e], ["RetryCount", Net.Eoa], ["TcpRetry", NetInfo_1.NetInfo.TcpRetry]);
         }
@@ -700,8 +717,8 @@ class Net {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Net", 63, "开始建立TCP连接:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
         }
-        Net.gX.OnTcpConnected.Add(Net.opu);
-        Net.gX.OnTcpConnectFailed.Add(Net.npu);
+        Net.gX.OnTcpConnected.Add(Net.ovu);
+        Net.gX.OnTcpConnectFailed.Add(Net.nvu);
         Net.gX.StartTcpConnect(NetInfo_1.NetInfo.TcpPort);
         Net.IX = TimerSystem_1.GameplayTimerSystem.Delay(e => {
           Net.Doa(5);
@@ -712,7 +729,7 @@ class Net {
       Log_1.Log.Error("Net", 63, "KCP未初始化,无法启动TCP连接");
     }
   }
-  static ipu(e, t) {
+  static ivu(e, t) {
     e = NetDefine_1.messageDefine[e].decode(t);
     if (e.Cvs !== 0) {
       if (Log_1.Log.CheckError()) {
@@ -722,8 +739,8 @@ class Net {
     } else {
       t = e.Dbs;
       Net.gX.CloseTcpConnect();
-      Net.gX.RemoteMtu = e.xfu;
-      Net.gX.HandleKcpConnect(e.Pfu, t);
+      Net.gX.RemoteMtu = e.Rgu;
+      Net.gX.HandleKcpConnect(e.bgu, t);
     }
   }
 }
@@ -796,7 +813,7 @@ Net.Doa = e => {
     TimerSystem_1.GameplayTimerSystem.Remove(Net.IX);
     Net.IX = undefined;
   }
-  if ((e !== 1 || !Net.rpu(false)) && (e !== 4 && e !== 5 || !Net.rpu(true))) {
+  if ((e !== 1 || !Net.rvu(false)) && (e !== 4 && e !== 5 || !Net.rvu(true))) {
     if (Net.Moa) {
       Net.Moa(e);
       Net.Moa = undefined;
@@ -804,11 +821,11 @@ Net.Doa = e => {
     Net._X(e === 0 ? 2 : 0);
   }
 };
-Net.nX = (e, t, N, i, o) => {
+Net.nX = (e, t, N, o, i) => {
   switch (e) {
     case 1:
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Net", 30, "SocketError", ["errorCode", t], ["Size", N], ["Read", i]);
+        Log_1.Log.Info("Net", 30, "SocketError", ["errorCode", t], ["Size", N], ["Read", o]);
       }
       if (t !== 0) {
         Net.$K?.(t);
@@ -816,17 +833,20 @@ Net.nX = (e, t, N, i, o) => {
       break;
     case 3:
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Net", 30, "DecryptError", ["Result", t], ["Type", N], ["RpcId", i], ["MessageId", o]);
+        Log_1.Log.Info("Net", 30, "DecryptError", ["Result", t], ["Type", N], ["RpcId", o], ["MessageId", i]);
       }
+      break;
+    case 4:
+      _a.nmd(t);
   }
 };
-Net.iX = (e, t, N, i) => {
-  Net.JX(2, e, N, i, t);
+Net.iX = (e, t, N, o) => {
+  Net.JX(2, e, N, o, t);
 };
-Net.oX = (e, t, N, i) => {
-  Net.JX(3, e, N, i, t);
+Net.oX = (e, t, N, o) => {
+  Net.JX(3, e, N, o, t);
 };
-Net.tpu = e => {
+Net.tvu = e => {
   if (Log_1.Log.CheckError()) {
     Log_1.Log.Error("Net", 63, "TCP连接建立失败:", ["TcpPort", NetInfo_1.NetInfo.TcpPort], ["ErrorCode", e]);
   }
@@ -835,23 +855,24 @@ Net.tpu = e => {
 Net.rX = (e, t, N) => {
   Net.JX(4, e, t, N);
 };
-Net.opu = () => {
+Net.ovu = () => {
   var e;
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Net", 63, "TCP连接建立成功:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
   }
   if (Net.gX) {
-    (e = Protocol_1.Aki.Protocol.Lfu.create()).a7n = NetInfo_1.NetInfo.LoginTraceId ?? "";
+    (e = Protocol_1.Aki.Protocol.Egu.create()).a7n = NetInfo_1.NetInfo.LoginTraceId ?? "";
     e.oHn = NetInfo_1.NetInfo.DeviceId ?? "";
-    e.Afu = NetInfo_1.NetInfo.UdpPort;
+    e.Tgu = NetInfo_1.NetInfo.UdpPort;
     e.$9n = NetInfo_1.NetInfo.Token ?? "";
+    e.emd = NetInfo_1.NetInfo.DisableCrc;
     e = NetDefine_1.messageDefine[3728].encode(e).finish();
     Net.gX.SendTcpMessage(0, 3728, e);
   } else if (Log_1.Log.CheckError()) {
     Log_1.Log.Error("Net", 63, "获取KCPConv失败,KCP实例不存在");
   }
 };
-Net.npu = () => {
+Net.nvu = () => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Net", 63, "TCP连接建立失败:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
   }

@@ -58,7 +58,7 @@ class MapRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     this.GameInfo = ModelManager_1.ModelManager.MapRogueModel.GameInfo;
     this.GameInfo.ActorPool?.Init();
     var e = [];
-    e.push(this.rU1());
+    await this.rU1();
     e.push(this.lFc());
     e.push(this.zDn());
     e.push(this._Fc());
@@ -149,7 +149,6 @@ class MapRogueMainView extends UiTickViewBase_1.UiTickViewBase {
   async rU1() {
     this.TipsItem = new MapRogueFloatTipsItem_1.MapRogueFloatTipsItem();
     await this.TipsItem.CreateByResourceIdAsync("UiView_RogueFloatA", this.GetRootItem());
-    this.SetTipsItem(true, "RogueRes_Map_Loading");
   }
   RefreshProgress() {
     var e = this.GameInfo.ExplorationCurrentProgress();

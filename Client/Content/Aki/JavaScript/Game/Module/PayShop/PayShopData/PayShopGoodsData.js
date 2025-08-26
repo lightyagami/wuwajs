@@ -52,7 +52,7 @@ class PayShopGoodsData {
     this.LimitBuyConditionId = 0;
     this.WZa = false;
     this.yhh = "";
-    this.cK1 = [];
+    this.gK1 = [];
     this.CloudGameTime = 0;
     this.CloudGameIcon = "";
     this.CloudGameDesc = "";
@@ -61,9 +61,8 @@ class PayShopGoodsData {
   }
   Phrase(t) {
     this.Id = t.s5n;
-    var i = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(t.s5n);
-    this.TabId = i.TabId;
-    this.ShopId = i.ShopId;
+    this.TabId = t.mBs;
+    this.ShopId = t.tjn;
     this.ItemId = t.L8n;
     this.ItemCount = t.n9n;
     this.Locked = t.pBs;
@@ -72,14 +71,15 @@ class PayShopGoodsData {
     this.LimitBuyConditionId = t.GH1;
     this.BoughtCount = t.X7n;
     this.Price.Phrase(t.MBs);
-    this.cK1 = t._51;
+    this.gK1 = t._51;
     this.BeginTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.cps));
     this.EndTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.dps));
-    if (i?.ActivityId) {
-      var e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(i.ActivityId);
+    var i = t.w6n;
+    if (i > 0) {
+      var e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(i);
       if (!e) {
         if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Shop", 71, "活动商品对应的活动数据为空", ["goodsId", this.Id], ["activityId", i.ActivityId]);
+          Log_1.Log.Warn("Shop", 71, "活动商品对应的活动数据为空", ["goodsId", this.Id], ["activityId", i]);
         }
         return;
       }
@@ -91,15 +91,16 @@ class PayShopGoodsData {
     this.UpdateType = Number(t.OAs);
     this.ShopItemType = Number(t.yBs);
     this.pk = Number(MathUtils_1.MathUtils.LongToBigInt(t.JT_));
-    this.LabelId = i.Tag;
+    this.LabelId = t.uLu;
     this.LabelBeginTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.IBs));
     this.LabelEndTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.TBs));
-    this.Sort = i.Sort;
-    this.PromotionShow = i.PromotionShow;
-    this.Kjs = i.SoldoutShowInShop;
+    this.Sort = t.cBs;
+    this.PromotionShow = t.cLu;
+    this.Kjs = t.Oju;
     this.WZa = t.zb_;
     this.StageImage = t._Bs;
-    this.ShowStageImage = t.Mku;
+    this.ShowStageImage = t.oku;
+    this.Show = t.dYc;
     this.MFi();
   }
   GetIfCanBuy() {
@@ -149,10 +150,8 @@ class PayShopGoodsData {
       } else {
         return 0;
       }
-    } else if (this.LimitBuyConditionId > 0) {
-      return this.LimitBuyConditionId;
     } else {
-      return ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(this.Id).BuyConditionId;
+      return this.LimitBuyConditionId;
     }
   }
   GetUnFinishConditionText() {
@@ -261,7 +260,7 @@ class PayShopGoodsData {
     return this.LabelId !== 0 && (this.LabelBeginTime > 0 && t >= Number(this.LabelBeginTime) && this.LabelEndTime === 0 || this.LabelBeginTime === 0 && this.LabelEndTime === 0 || Number(this.LabelEndTime) > t && t >= Number(this.LabelBeginTime));
   }
   GetSortValue() {
-    return (this.Sort === 0 ? ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(this.Id) : this).Sort;
+    return this.Sort;
   }
   IsWeeklyRefresh() {
     return this.UpdateType !== 0 && this.UpdateType !== 4;
@@ -318,34 +317,12 @@ class PayShopGoodsData {
       return this.Price.Count;
     }
   }
-  GetPromotionText() {
-    if (this.IFi === 0) {
-      var t = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(this.Id);
-      if (t.PromotionTimeText) {
-        return ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsLocalText(t.PromotionTimeText);
-      }
-    }
-    return "";
-  }
-  GetSellTimeText() {
-    if (this.IFi === 0) {
-      var t = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(this.Id);
-      if (t.SellTimeText) {
-        return ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsLocalText(t.SellTimeText);
-      }
-    }
-    return "";
-  }
   IsShowInShop() {
     if (this.IFi === 0) {
-      var t = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(this.Id);
-      if (t) {
-        return t.Show && !this.Locked;
-      }
-    } else if (this.IFi === 1) {
-      return !this.Locked;
+      return this.Show && !this.Locked;
+    } else {
+      return this.IFi !== 1 || !this.Locked;
     }
-    return true;
   }
   IfPayGift() {
     return this.IFi === 1;
@@ -399,7 +376,7 @@ class PayShopGoodsData {
   }
   GetCouponList() {
     var t = [];
-    for (const i of this.cK1) {
+    for (const i of this.gK1) {
       if (i > 0) {
         t.push(i);
       }

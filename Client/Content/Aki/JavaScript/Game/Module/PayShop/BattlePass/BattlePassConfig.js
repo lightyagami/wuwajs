@@ -12,7 +12,8 @@ const BattlePassUnlockPopByBattlePassTypeId_1 = require("../../../../Core/Define
 const ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
 class BattlePassConfig extends ConfigBase_1.ConfigBase {
   GetAllRewardData(e) {
-    return BattlePassRewardByBattlePassId_1.configBattlePassRewardByBattlePassId.GetConfigList(e).concat(BattlePassRewardByBattlePassId_1.configBattlePassRewardByBattlePassId.GetConfigList(0));
+    e = BattlePassRewardByBattlePassId_1.configBattlePassRewardByBattlePassId.GetConfigList(e);
+    return Array.from(e);
   }
   GetBattlePassData(e) {
     var a = BattlePassById_1.configBattlePassById.GetConfig(e);
@@ -45,11 +46,11 @@ class BattlePassConfig extends ConfigBase_1.ConfigBase {
     a.length = 0;
     var s = BattlePassUnlockPopByBattlePassTypeId_1.configBattlePassUnlockPopByBattlePassTypeId.GetConfig(e);
     if (s) {
-      for (var [t, B] of s.UnlockReward) {
+      for (var [t, r] of s.UnlockReward) {
         t = [{
           IncId: 0,
           ItemId: t
-        }, B];
+        }, r];
         a.push(t);
       }
     } else if (Log_1.Log.CheckError()) {

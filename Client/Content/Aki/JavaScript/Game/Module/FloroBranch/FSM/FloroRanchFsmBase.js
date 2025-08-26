@@ -30,7 +30,7 @@ class FloroRanchFsmBase {
   }
   ChangeState(t) {
     var e;
-    if (this.CheckCanChangeState(this.CurrentStateType, t) && (e = this.asu(t))) {
+    if (this.CheckCanChangeState(this.CurrentStateType, t) && (e = this.Usu(t))) {
       if (this.CurrentState) {
         this.CurrentState.Exit();
       }
@@ -39,7 +39,7 @@ class FloroRanchFsmBase {
       this.CurrentState.Enter();
     }
   }
-  asu(t) {
+  Usu(t) {
     if (this.StateMap.has(t)) {
       return this.StateMap.get(t);
     }

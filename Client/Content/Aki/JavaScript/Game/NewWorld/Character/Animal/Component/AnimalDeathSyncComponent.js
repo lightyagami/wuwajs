@@ -60,7 +60,7 @@ let AnimalDeathSyncComponent = class AnimalDeathSyncComponent extends BaseDeathC
     };
   }
   OnStart() {
-    return !!super.OnStart() && (this.Xte = this.Entity.CheckGetComponent(205), this.HBr = this.Entity.CheckGetComponent(101), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne), this.Entity.CheckGetComponent(0).GetLivingStatus() === Protocol_1.Aki.Protocol.JEs.Proto_Dead && TimerSystem_1.TimerSystem.Next(() => {
+    return !!super.OnStart() && (this.Xte = this.Entity.CheckGetComponent(206), this.HBr = this.Entity.CheckGetComponent(102), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitLocal, this.gne), this.Entity.CheckGetComponent(0).GetLivingStatus() === Protocol_1.Aki.Protocol.JEs.Proto_Dead && TimerSystem_1.TimerSystem.Next(() => {
       this.ExecuteDeath(undefined);
     }), true);
   }
@@ -72,5 +72,5 @@ let AnimalDeathSyncComponent = class AnimalDeathSyncComponent extends BaseDeathC
     return !!super.ExecuteDeath(e) && (this.Xte?.AddTag(1008164187), this.HBr?.ResetCharState(), this.PlayDieAnimation(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
   }
 };
-AnimalDeathSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(170)], AnimalDeathSyncComponent);
+AnimalDeathSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(171)], AnimalDeathSyncComponent);
 exports.AnimalDeathSyncComponent = AnimalDeathSyncComponent; //# sourceMappingURL=AnimalDeathSyncComponent.js.map

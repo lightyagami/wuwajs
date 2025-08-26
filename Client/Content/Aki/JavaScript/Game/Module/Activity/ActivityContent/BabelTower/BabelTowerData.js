@@ -93,7 +93,7 @@ class BabelTowerData extends ActivityData_1.ActivityBaseData {
   }
   GetBuffIsUse(t) {
     for (var [e, r] of this.HardLevelDataMap) {
-      if (r.Dks.includes(t)) {
+      if (r.Dt1.includes(t)) {
         return e;
       }
     }
@@ -101,7 +101,7 @@ class BabelTowerData extends ActivityData_1.ActivityBaseData {
   }
   GetBuffUseLevel(t) {
     for (var [e, r] of this.HardLevelDataMap) {
-      if (r.Dks.includes(t)) {
+      if (r.Dt1.includes(t)) {
         return e;
       }
     }

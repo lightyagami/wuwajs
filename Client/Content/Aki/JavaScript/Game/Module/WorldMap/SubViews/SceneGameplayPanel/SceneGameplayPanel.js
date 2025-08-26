@@ -46,10 +46,11 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.U2o = undefined;
     this.rFo = undefined;
     this.nFo = false;
+    this.Jsd = false;
     this.mji = () => {
       HelpController_1.HelpController.OpenHelpById(HELP_ID);
     };
-    this.qDu = () => {
+    this.XDu = () => {
       HelpController_1.HelpController.OpenHelpById(HELP_ID_2);
     };
     this.OnDetailBtnClick = () => {
@@ -127,10 +128,11 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     ModelManager_1.ModelManager.CalabashModel.ClearOnlyShowData();
   }
   SHe() {
-    this.F2o = this.Ymt.RewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.RewardId) : undefined;
-    this.V2o = this.Ymt.FirstRewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.FirstRewardId) : undefined;
     var e;
     var i;
+    var t = this.u2o?.MarkConfig?.RelativeSubType === 9;
+    this.F2o = t ? this.u2o?.MarkConfig?.Reward ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.u2o.MarkConfig.Reward) : undefined : this.Ymt.RewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.RewardId) : undefined;
+    this.V2o = this.Ymt.FirstRewardId ? ExchangeRewardById_1.configExchangeRewardById.GetConfig(this.Ymt.FirstRewardId) : undefined;
     var t = this.u2o.MarkConfigId;
     var r = MapMarkByMarkId_1.configMapMarkByMarkId.GetConfig(t);
     if (r) {
@@ -167,19 +169,22 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.rFo?.SetLeftText(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("LastTimeToRefresh") ?? "");
     this.rFo?.SetHelpButtonVisible(false);
     this.rFo?.SetActive(false);
-    if (this.u2o?.MarkConfig?.RelativeSubType === 9 && (r = this.u2o?.MarkConfig?.MapId, i = this.u2o?.MarkConfig?.RelativeId, ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(r, i))) {
+    var i;
+    var t;
+    var r = this.u2o?.MarkConfig?.RelativeSubType === 9;
+    if (r && (r = this.u2o?.MarkConfig?.MapId, i = this.u2o?.MarkConfig?.RelativeId, ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(r, i))) {
       ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(r, i).then(() => {
         var e;
         var i = ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(this.u2o.MarkConfig.MapId, this.u2o.MarkConfig.RelativeId);
         if (!(i[1] <= 0)) {
-          (e = this.U2o.AddItemByKey(REWARD_SHARE_COUNT)).SetClickHelpFunc(this.qDu);
-          e.SetLeftText(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RemainingCollectTimes") ?? "");
+          this.Jsd = i[0] > 0;
+          this.hFo();
+          (e = this.U2o.AddItemByKey(REWARD_SHARE_COUNT)).SetClickHelpFunc(this.XDu);
+          e.SetLeftText(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("NightMareSceneGameplayPanelTips") ?? "");
           e.SetRightText(StringUtils_1.StringUtils.Format("{0}/{1}", i[0].toString(), i[1].toString()));
         }
       });
     }
-    var i;
-    var t;
     var r = this.F2o?.SharedId ?? 0;
     if (r > 0 && (i = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetShareMaxCount(this.F2o.SharedId)) > 0) {
       r = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(r);
@@ -231,29 +236,21 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
   }
   K2o(e, r, a, i, s = false) {
     if (r) {
-      var o = r.PreviewReward;
+      var h = r.PreviewReward;
       let t = undefined;
-      if (o.has(a)) {
-        t = o.get(a).MapIntInt;
-      } else {
-        for (let e = a - 1; e >= 0; e--) {
-          if (o.has(e)) {
-            t = o.get(e).MapIntInt;
-            break;
-          }
+      for (let e = a; e >= 0; e--) {
+        if (h.has(e)) {
+          t = h.get(e).MapIntInt;
+          break;
         }
       }
       if (!t) {
-        var h = r.RewardId;
+        var o = r.RewardId;
         let i = 0;
-        if (h.has(a)) {
-          i = h.get(a);
-        } else {
-          for (let e = a - 1; e >= 0; e--) {
-            if (h.has(e)) {
-              i = h.get(e);
-              break;
-            }
+        for (let e = a; e >= 0; e--) {
+          if (o.has(e)) {
+            i = o.get(e);
+            break;
           }
         }
         if (i && i > 0) {
@@ -279,18 +276,20 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
         g.forEach(e => {
           t.delete(e);
         });
+      } else if (this.u2o.MarkConfig.RelativeSubType === 9) {
+        t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(r.RewardIdCalabash);
       }
       if (t) {
         e.Refresh(t, i, false, false, s);
-        e.SetActive(true);
+        e.SetUiActive(true);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("SceneGameplay", 17, "读取不到奖励配置", ["兑换奖励ID", r.Id], ["WorldLevel", a]);
         }
-        e.SetActive(false);
+        e.SetUiActive(false);
       }
     } else {
-      e.SetActive(false);
+      e.SetUiActive(false);
     }
   }
   _Fo(e) {
@@ -308,6 +307,8 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     var i = TimeUtil_1.TimeUtil.GetServerTime();
     var t = this.Ymt.RefreshTime;
     if (t < i) {
+      this.cG();
+    } else if (this.u2o?.MarkConfig?.RelativeSubType === 9 && !this.Jsd) {
       this.cG();
     } else {
       t = t - i;

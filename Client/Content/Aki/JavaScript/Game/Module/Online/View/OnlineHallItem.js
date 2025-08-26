@@ -95,7 +95,7 @@ class OnlineHallItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
     var r = ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(i.HeadId, false);
     if (r) {
-      this.SetTextureByPath(r.GetRoleHeadIconLarge(), this.GetTexture(3));
+      this.SetTextureByPath(r.GetRoleHeadIconCircle(), this.GetTexture(3));
     }
     var r = ModelManager_1.ModelManager.FriendModel.IsMyFriend(i.PlayerId);
     var s = this.GetText(0);

@@ -37,9 +37,9 @@ class ActivityRoleGiveController extends ActivityControllerBase_1.ActivityContro
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("MoonChasing", 34, "TrackMoonActivityRewardRequest", ["ActivityId:", ActivityRoleGiveController.CurrentActivityId]);
     }
-    Net_1.Net.Call(23014, e, e => {
+    Net_1.Net.Call(15989, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29916);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22962);
       } else if ((e = ActivityRoleGiveController.GetCurrentActivityData()) && (e.IsGetReward = true, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ActivityRoleGiveController.CurrentActivityId), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("MoonChasing", 34, "TrackMoonActivityRewardResponse", ["ActivityId:", ActivityRoleGiveController.CurrentActivityId]);
       }

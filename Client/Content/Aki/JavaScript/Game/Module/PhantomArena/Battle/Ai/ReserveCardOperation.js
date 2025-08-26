@@ -12,7 +12,7 @@ class ReserveCardOperation extends NpcAiOperation_1.NpcAiOperation {
     this.Info = e;
   }
   async ExecuteAiOperation(e) {
-    await e.OpponentArea.HandArea.BackToRecycle(this.Info.Eau);
+    await e.OpponentArea.HandArea.BackToRecycle(this.Info.Yau);
     ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.ReverseCard(this.Info);
   }
 }

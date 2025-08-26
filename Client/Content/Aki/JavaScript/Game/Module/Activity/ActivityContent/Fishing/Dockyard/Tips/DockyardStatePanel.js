@@ -54,7 +54,7 @@ class DockyardStatePanel extends UiPanelBase_1.UiPanelBase {
     this.GetText(3)?.SetText(e + "/" + t);
   }
   InitSpeedText() {
-    var e = ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity?.GetComponent(236)?.VehicleMovement?.MaxSpeed ?? 0;
+    var e = ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity?.GetComponent(237)?.VehicleMovement?.MaxSpeed ?? 0;
     this.GetText(4)?.SetText(e.toString());
   }
   async OnBeforeStartAsync() {

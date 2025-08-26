@@ -26,7 +26,7 @@ class PhantomArenaRoleItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UITexture]];
     this.BtnBindInfo = [[4, this.vG1]];
   }
-  async tZ1() {
+  async RZ1() {
     this.RoleHead = new PhantomArenaHeadItem_1.PhantomArenaHeadItem();
     this.RoleHead.IsOwn = this.IsOwn;
     this.RoleHead.NeedAddHpEffect = true;
@@ -39,7 +39,7 @@ class PhantomArenaRoleItem extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    await Promise.all([this.tZ1()]);
+    await Promise.all([this.RZ1()]);
   }
   OnStart() {
     this.ViewProxy.BanButtonClickModule.RegisterButton(this.GetButton(4));

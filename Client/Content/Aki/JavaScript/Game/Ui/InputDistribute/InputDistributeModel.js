@@ -113,6 +113,10 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
       }
       return false;
     }
+    var n = ModelManager_1.ModelManager.InputModel?.GetCurrentInputData();
+    if (n && !n.CheckActionInAllowFightActionNameList(i, t)) {
+      return false;
+    }
     t.SetIsPress(e);
     if (InputDistributeDelay_1.delayInput.includes(i)) {
       let t = undefined;
@@ -131,7 +135,7 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
         return false;
       }
     } else {
-      var n = t.GetInputDistributeTag();
+      n = t.GetInputDistributeTag();
       if (n && !this.IsTagMatchAnyCurrentInputTag(n)) {
         t.InputActionIgnoreLimit(e);
         return false;
@@ -170,34 +174,50 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
   InputAxis(t, i, e = false) {
     var n = this.ydr(t);
     if (n) {
-      if (this.HasActionLimitSet()) {
-        if (!this.IsActionInLimitSet(t)) {
-          if (Info_1.Info.AxisInputOptimize && (n.GetCacheAxisValue() !== 0 || e)) {
-            n.InputAxis(0);
+      var s = ModelManager_1.ModelManager.InputModel?.GetCurrentInputData();
+      if (!s || s.CheckAxisInAllowFightAxisNameList(t, n)) {
+        if (this.HasActionLimitSet()) {
+          if (!this.IsActionInLimitSet(t)) {
+            if (Info_1.Info.AxisInputOptimize && (n.GetCacheAxisValue() !== 0 || e)) {
+              n.InputAxis(0);
+              n.InputAxisIgnoreLimit(0);
+              return;
+            } else {
+              n.InputAxisIgnoreLimit(i);
+              return;
+            }
           }
-          return;
-        }
-      } else {
-        var s = n.GetInputDistributeTag();
-        if (s && !this.IsTagMatchAnyCurrentInputTag(s)) {
-          if (Info_1.Info.AxisInputOptimize && (n.GetCacheAxisValue() !== 0 || e)) {
-            n.InputAxis(0);
+        } else {
+          s = n.GetInputDistributeTag();
+          if (s && !this.IsTagMatchAnyCurrentInputTag(s)) {
+            if (Info_1.Info.AxisInputOptimize && (n.GetCacheAxisValue() !== 0 || e)) {
+              n.InputAxis(0);
+              n.InputAxisIgnoreLimit(0);
+              return;
+            } else {
+              n.InputAxisIgnoreLimit(i);
+              return;
+            }
           }
-          return;
-        }
-        if (!this.sNa(t, s)) {
-          if (Info_1.Info.AxisInputOptimize && (n.GetCacheAxisValue() !== 0 || e)) {
-            n.InputAxis(0);
+          if (!this.sNa(t, s)) {
+            if (Info_1.Info.AxisInputOptimize && (n.GetCacheAxisValue() !== 0 || e)) {
+              n.InputAxis(0);
+              n.InputAxisIgnoreLimit(0);
+              return;
+            } else {
+              n.InputAxisIgnoreLimit(i);
+              return;
+            }
           }
-          return;
         }
-      }
-      n.InputAxis(i);
-      this.Idr(t, i);
-      if (Math.abs(i) > 0) {
-        this.hdr = t;
-      } else {
-        this.hdr &&= undefined;
+        n.InputAxis(i);
+        n.InputAxisIgnoreLimit(i);
+        this.Idr(t, i);
+        if (Math.abs(i) > 0) {
+          this.hdr = t;
+        } else {
+          this.hdr &&= undefined;
+        }
       }
     }
   }
@@ -313,6 +333,22 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
   UnBindAxes(t, i) {
     for (const e of t) {
       this.UnBindAxis(e, i);
+    }
+  }
+  BindAxisIgnoreLimit(t, i) {
+    var e = this.ydr(t);
+    if (e) {
+      e.BindAxisIgnoreLimit(i);
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Input", 10, "绑定Axis回调时，没有对应的ActionHandle", ["axisName", t]);
+    }
+  }
+  UnBindAxisIgnoreLimit(t, i) {
+    var e = this.ydr(t);
+    if (e) {
+      e.UnBindAxisIgnoreLimit(i);
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Input", 10, "取消绑定Axis回调时，没有对应的ActionHandle", ["axisName", t]);
     }
   }
   BindTouch(t, i) {
@@ -441,6 +477,15 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
     var n = this.GetInputDistributeTag(t);
     for (const s of i) {
       if (n.MatchTag(s.TagName, e)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  IsTagMatchInputDistributeTags(t, i, e = false) {
+    var n = this.GetInputDistributeTag(t);
+    for (const s of i) {
+      if (n.MatchTag(s, e)) {
         return true;
       }
     }

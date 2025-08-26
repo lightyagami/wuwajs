@@ -48,12 +48,12 @@ class MoraleFlagMonsterInfoPanel extends UiPanelBase_1.UiPanelBase {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
       });
     };
-    this.Cdu = () => {
+    this.emu = () => {
       var e = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      e.ShowReceivedCallBack = this.pdu;
+      e.ShowReceivedCallBack = this.tmu;
       return e;
     };
-    this.pdu = e => this.FlagData.IsGetBox;
+    this.tmu = e => this.FlagData.IsGetBox;
   }
   async Init(e) {
     await this.CreateThenShowByActorAsync(e.GetOwner());
@@ -124,7 +124,7 @@ class MoraleFlagMonsterInfoPanel extends UiPanelBase_1.UiPanelBase {
     } else {
       this.RewardListComponent.SetActive(true);
       this.RewardListComponent.SetTitleByTextId("Morale_title_18");
-      this.RewardListComponent.InitGridLayout(this.Cdu);
+      this.RewardListComponent.InitGridLayout(this.emu);
       this.RewardListComponent.RefreshItemLayout(e);
     }
   }

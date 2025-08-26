@@ -204,24 +204,24 @@ class ExploreAreaData {
   GetShowRecommendExploreItemDataList() {
     const r = [];
     var e = this.GetRecommendExploreItemDataList();
-    const i = this.GetLocalAreaExplorePlayStateMap();
+    const o = this.GetLocalAreaExplorePlayStateMap();
     e.forEach(a => {
-      const o = i.get(a.ExploreType);
-      if (o) {
+      const i = o.get(a.ExploreType);
+      if (i) {
         a.PlayProgressDataList.forEach((e, t) => {
-          var t = o.PlayPointStateList[t];
+          var t = i.PlayPointStateList[t];
           var r = e.PlayPointState === 1;
           if (t === 0 && r) {
             e.LastPlayPointState = t;
           }
-          i.delete(a.ExploreType);
+          o.delete(a.ExploreType);
         });
       } else {
         a.IsNewRecommendPlay = true;
       }
       r.push(a);
     });
-    i.forEach((e, t) => {
+    o.forEach((e, t) => {
       t = this.HVt.get(t);
       if (t && t.IsFinishedPlayPoint) {
         r.push(t);
@@ -230,11 +230,11 @@ class ExploreAreaData {
     this.SortExploreAreaItemDataList(r);
     const a = [];
     var t = [];
-    for (const o of r) {
-      if (o.IsFinishedPlayPoint) {
-        a.push(o);
-      } else if (o.IsNewRecommendPlay) {
-        t.push(o);
+    for (const i of r) {
+      if (i.IsFinishedPlayPoint) {
+        a.push(i);
+      } else if (i.IsNewRecommendPlay) {
+        t.push(i);
       } else {
         t.forEach((e, t) => {
           if (a[t]) {
@@ -248,12 +248,12 @@ class ExploreAreaData {
     }
     return r.filter(e => !e.GetFlagSequenceDataAndClean());
   }
-  UpdatePlayPointData(o) {
-    this.P7l(o).forEach((e, t) => {
+  UpdatePlayPointData(i) {
+    this.P7l(i).forEach((e, t) => {
       const a = this.HVt.get(t);
       a.ClearPlayPointData();
       e.forEach(e => {
-        var t = o[e];
+        var t = i[e];
         var e = Number(e);
         var r = this.qx_(e, t, a);
         a.AddPlayPointData({
@@ -269,16 +269,32 @@ class ExploreAreaData {
     this.gOl = true;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AreaPlayPointUpdate, this.AreaId);
   }
+  UpdateTraceEntities(e, t) {
+    e = this.x7l.get(e);
+    if (e) {
+      this.HVt.get(e)?.SetEntityList(t);
+    }
+  }
   qx_(e, t, r) {
     var a = ExploreProgressDefine_1.serverPlayState2Client[t.xI_];
-    if (a !== 2 && !(t.Bb_ <= 0) && (r = r.GetMapMarkByPlayId(e))?.HistoryState === 1) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "玩法状态转换成已完成", ["PlayId", e], ["MarkId", r?.MarkId], ["MarkName", ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(r?.MarkTitle ?? "")], ["ToState", a], ["ProtoData", t]);
+    if (a !== 2) {
+      if (t.Bb_ > 0) {
+        var i = r.GetMapMarkByPlayId(e);
+        if (i?.HistoryState === 1) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("ExploreProgress", 69, "玩法状态转换成已完成", ["PlayId", e], ["MarkId", i?.MarkId], ["MarkName", ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(i?.MarkTitle ?? "")], ["ToState", a], ["ProtoData", t]);
+          }
+          return 2;
+        }
       }
-      return 2;
-    } else {
-      return a;
+      if (a === 0) {
+        i = r.GetMapMarkByPlayId(e);
+        if (i && ModelManager_1.ModelManager.MapModel.IsConfigMarkIdUnlock(i.MarkId)) {
+          return 1;
+        }
+      }
     }
+    return a;
   }
   P7l(e) {
     const a = new Map();
@@ -313,7 +329,7 @@ class ExploreAreaData {
     const r = this.GetProgress();
     const a = this.GetLocalAreaStoryProgress();
     var e = ConfigManager_1.ConfigManager.AreaConfig.GetStoryList(this.AreaId);
-    const o = [];
+    const i = [];
     e?.forEach(e => {
       var t = {
         IsOpen: r >= e.Unlock
@@ -324,9 +340,9 @@ class ExploreAreaData {
       }
       t.LockedDesc = e.LockText;
       t.IsNewOpen = t.IsOpen && e.Unlock > a;
-      o.push(t);
+      i.push(t);
     });
-    return o;
+    return i;
   }
   GetStoryProgress(e = false) {
     var t = ConfigManager_1.ConfigManager.AreaConfig.GetStoryList(this.AreaId);
@@ -339,14 +355,14 @@ class ExploreAreaData {
     var e = e ? 100 : 1;
     var r = this.GetProgress();
     var a = t[t?.length - 1]?.Unlock ?? this.MaxExploreProgress;
-    let o = a;
+    let i = a;
     for (let e = 0; e < t.length; e++) {
       if (t[e].Unlock > r) {
-        o = t[e - 1]?.Unlock ?? 0;
+        i = t[e - 1]?.Unlock ?? 0;
         break;
       }
     }
-    return o / a * e;
+    return i / a * e;
   }
   HasNewStoryUnlocked() {
     return !!ConfigManager_1.ConfigManager.AreaConfig.GetStoryList(this.AreaId) && this.GetLocalAreaStoryProgress() < this.GetStoryProgress(true) && (this.pOl = true);

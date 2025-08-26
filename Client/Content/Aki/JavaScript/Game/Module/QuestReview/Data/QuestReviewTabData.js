@@ -39,7 +39,7 @@ class QuestReviewTabData {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestReviewTabUnlockAnim, t);
   }
   UpdateByServerData(e) {
-    if (e.xz1) {
+    if (e.sJ1) {
       this.tVc = true;
     }
   }

@@ -29,11 +29,12 @@ const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
-const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -64,12 +65,13 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   constructor() {
     super(...arguments);
     this.ac = 0;
+    this.Hte = undefined;
     this.Igo = undefined;
     this.J_n = undefined;
-    this.l1u = undefined;
-    this._1u = undefined;
-    this.u1u = undefined;
-    this.c1u = false;
+    this.W1u = undefined;
+    this.Q1u = undefined;
+    this.K1u = undefined;
+    this.X1u = false;
     this.z_n = undefined;
     this.Z_n = undefined;
     this.eun = undefined;
@@ -92,13 +94,16 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.dun = 1;
     this.Cun = 1;
     this.u6a = 0;
-    this.d1u = "Default";
-    this.m1u = false;
-    this.f1u = false;
+    this.Y1u = "Default";
+    this.z1u = false;
+    this.J1u = false;
     this.QEo = 0;
-    this.g1u = 0;
-    this.C1u = 0;
-    this.p1u = false;
+    this.Z1u = 0;
+    this.euu = 0;
+    this.Led = undefined;
+    this.Aed = 0;
+    this.Ped = 0;
+    this.tuu = false;
     this.vun = false;
     this.Mun = false;
     this.Eun = false;
@@ -110,15 +115,15 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       if (!this.Tun()) {
         if (this.ac === 3) {
           this.Lun(t);
-        } else if ((this.ac === 1 || this.ac === 2) && (!this.p1u || !this.Dun())) {
-          this.v1u();
+        } else if ((this.ac === 1 || this.ac === 2) && (!this.tuu || !this.Dun())) {
+          this.iuu();
           this.Swr(t);
           this.Aun();
-          this.y1u(() => this.m1u, () => this.u1u, "关卡.事件.电梯.开始传送", t => {
-            this.m1u = t;
+          this.ruu(() => this.z1u, () => this.K1u, "关卡.事件.电梯.开始传送", t => {
+            this.z1u = t;
           });
-          this.y1u(() => this.f1u, () => this._1u, "关卡.事件.电梯.传送结束", t => {
-            this.f1u = t;
+          this.ruu(() => this.J1u, () => this.Q1u, "关卡.事件.电梯.传送结束", t => {
+            this.J1u = t;
           });
         }
       }
@@ -129,17 +134,17 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.xun = (t, i) => {
       var e;
       var i = i.Entity;
-      if (i.GetComponent(156) && (i = i.GetComponent(1), e = this.yun.indexOf(i.Owner), t ? e === -1 && this.yun.push(i.Owner) : e !== -1 && this.yun.splice(e, 1), (e = this.Sun.indexOf(i.Owner)) !== -1)) {
+      if (i.GetComponent(157) && (i = i.GetComponent(1), e = this.yun.indexOf(i.Owner), t ? e === -1 && this.yun.push(i.Owner) : e !== -1 && this.yun.splice(e, 1), (e = this.Sun.indexOf(i.Owner)) !== -1)) {
         this.Sun.splice(e, 1);
       }
     };
     this.wun = t => {
       var i;
       var e;
-      if (this.IsMovingOrTeleporting() && (e = undefined, i = Global_1.Global.BaseCharacter) && (e = i.CharacterActorComponent.Entity.GetComponent(174))) {
+      if (this.IsMovingOrTeleporting() && (e = undefined, i = Global_1.Global.BaseCharacter) && (e = i.CharacterActorComponent.Entity.GetComponent(175))) {
         if (t) {
           t = i.D_K2_GetActorLocation().Z;
-          if (this.Entity.GetComponent(1)?.ActorLocationProxy.Z < t) {
+          if (this.Hte.ActorLocationProxy.Z < t) {
             e.AddBuff(CharacterBuffIds_1.buffId.ElevatorBuff, {
               InstigatorId: e.CreatureDataId,
               Duration: this.Bun(),
@@ -154,7 +159,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     };
     this.bun = (t, i) => {
       var e = ActorUtils_1.ActorUtils.GetEntityByActor(i);
-      if (e && e.Entity.GetComponent(156) && this.Sun.indexOf(i) === -1) {
+      if (e && e.Entity.GetComponent(157) && this.Sun.indexOf(i) === -1) {
         if (this.IsMovingOrTeleporting() && this.yun.indexOf(i) !== -1) {
           this.qun(i);
         }
@@ -162,7 +167,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       }
     };
     this.OnSceneInteractionLoadCompleted = () => {
-      var t = this.Entity.GetComponent(202);
+      var t = this.Entity.GetComponent(203);
       var t = SceneInteractionManager_1.SceneInteractionManager.Get().GetMainCollisionActor(t.GetSceneInteractionLevelHandleId());
       this.Iun = t?.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
       if (this.Iun) {
@@ -206,10 +211,10 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.Cun = 0;
     this.Igo = Vector_1.Vector.Create(0, 0, 0);
     this.J_n = Vector_1.Vector.Create(0, 0, 0);
-    this.l1u = Vector_1.Vector.Create(0, 0, 0);
-    this._1u = Vector_1.Vector.Create(0, 0, 0);
-    this.u1u = Vector_1.Vector.Create(0, 0, 0);
-    this.p1u = false;
+    this.W1u = Vector_1.Vector.Create(0, 0, 0);
+    this.Q1u = Vector_1.Vector.Create(0, 0, 0);
+    this.K1u = Vector_1.Vector.Create(0, 0, 0);
+    this.tuu = false;
     this.vun = t.AutoConfig !== undefined;
     this.Mun = t.AutoConfig?.IsCircle ?? false;
     this.Eun = false;
@@ -218,6 +223,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     if (t.SafePoint) {
       this.aun = Vector_1.Vector.Create(t.SafePoint.X ?? 0, t.SafePoint.Y ?? 0, t.SafePoint.Z ?? 0);
     }
+    this.Hte = this.Entity.GetComponent(1);
     return true;
   }
   OnStart() {
@@ -227,7 +233,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       this.vtn.AddOnPlayerOverlapCallback(this.wun);
       this.vtn.AddOnEntityOverlapCallback(this.xun);
     }
-    this._un = this.Entity.GetComponent(130);
+    this._un = this.Entity.GetComponent(131);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.OnSceneInteractionLoadCompleted);
     return true;
   }
@@ -247,41 +253,41 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   OnForceTick(t) {
     this.KHr(t);
   }
-  S1u(t) {
+  ouu(t) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneItem", 79, "EnterState", ["Before", this.ac], ["After", t]);
     }
     const i = this.ac;
     switch (this.ac = t) {
       case 3:
-        this.M1u();
+        this.nuu();
         break;
       case 0:
-        this.M1u();
+        this.nuu();
         if (this.ac === 3) {
           this.SetTargetFloor(this.Hun());
         }
         break;
       case 1:
+        this.Aed = UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner);
+        this.Ded();
+        break;
       case 2:
-        this.p1u = this.dun > this.Cun;
-        this.E1u();
-        this.I1u();
-        this._un.IsMoving = true;
+        this.Ded();
         break;
       case 5:
-        this.S1u(6);
+        this.ouu(6);
         break;
       case 6:
-        TeleportController_1.TeleportController.TeleportElevator(this.Entity.Id, this.Kun(), this._1u.ToUeVector(), Rotator_1.Rotator.Create(0, 0, 0)).finally(() => {
-          this.S1u(2);
+        TeleportController_1.TeleportController.TeleportElevator(this.Entity.Id, this.Kun(), this.Q1u.ToUeVector()).finally(() => {
+          this.ouu(2);
           this.oFe(i, t);
         });
         return;
     }
     this.oFe(i, t);
   }
-  M1u() {
+  nuu() {
     if (this.u6a === 0) {
       this.Oun(this.Cun, false);
     }
@@ -296,19 +302,25 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
     this._un.IsMoving = false;
   }
+  Ded() {
+    this.tuu = this.dun > this.Cun;
+    this.suu();
+    this.auu();
+    this._un.IsMoving = true;
+  }
   oFe(t, i) {
     if (t !== i) {
       if (t !== 0 && t !== 3 || i !== 1 && i !== 2) {
         if ((t === 1 || t === 2) && (i === 0 || i === 3)) {
-          this.T1u(false);
+          this.huu(false);
         }
       } else {
-        this.T1u(true);
+        this.huu(true);
       }
     }
   }
-  T1u(t) {
-    var i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(174);
+  huu(t) {
+    var i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(175);
     if (i && this.Kun()) {
       if (t) {
         i.AddBuff(CharacterBuffIds_1.buffId.ElevatorBuff, {
@@ -349,17 +361,17 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
   Aun() {
-    var t = this.b1u();
-    var i = this.Entity.GetComponent(1).ActorLocationProxy;
+    var t = this.luu();
+    var i = this.Hte.ActorLocationProxy;
     t.Subtraction(i, this.cz);
-    this.cz.MultiplyEqual(this.iun);
-    if (!(this.cz.X >= 0) || !(this.cz.Y >= 0) || !(this.cz.Z >= 0)) {
+    var t = this.cz.DotProduct(this.iun);
+    if (!(t > 0)) {
       this.kun();
     }
   }
-  y1u(t, i, e, s) {
+  ruu(t, i, e, s) {
     if (t()) {
-      t = this.Entity.GetComponent(1);
+      t = this.Hte;
       i = i();
       t = t.ActorLocationProxy;
       i.Subtraction(t, this.cz);
@@ -373,37 +385,36 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
   kun() {
-    var t = this.b1u();
-    var i = this.Entity.GetComponent(1);
+    var t = this.luu();
     this.oun.DeepCopy(Vector_1.Vector.ZeroVectorProxy);
     this.run.DeepCopy(Vector_1.Vector.ZeroVectorProxy);
-    i.SetActorLocation(t.ToUeVector());
+    this.Hte.SetActorLocation(t.ToUeVector());
     this.lun = 0;
-    if (this.d1u !== "Teleport") {
+    if (this.Y1u !== "Teleport") {
       if (this.vun) {
-        this.S1u(3);
+        this.ouu(3);
       } else {
-        this.S1u(0);
+        this.ouu(0);
       }
-    } else if (this.d1u === "Teleport") {
+    } else if (this.Y1u === "Teleport") {
       if (this.ac === 1) {
-        this.S1u(5);
+        this.ouu(5);
       } else if (this.ac === 2) {
-        this.S1u(0);
+        this.ouu(0);
       }
     }
   }
-  b1u() {
-    if (this.d1u !== "Teleport" || this.ac !== 1) {
+  luu() {
+    if (this.Y1u !== "Teleport" || this.ac !== 1) {
       return this.J_n;
     } else {
-      return this.l1u;
+      return this.W1u;
     }
   }
-  R1u() {
+  _uu() {
     var t = this.Igo;
     var i = this.J_n;
-    var e = this.Entity.GetComponent(1).ActorLocationProxy;
+    var e = this.Hte.ActorLocationProxy;
     var s = this.sun;
     const h = Vector_1.Vector.DistSquared(e, t);
     t = MathUtils_1.MathUtils.Bisection(t => t * t > h, 0, h, 1);
@@ -416,39 +427,53 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       this.run.DeepCopy(this.jun().MultiplyEqual(NEGATIVEONE));
     }
   }
-  v1u() {
-    if (!this.eun) {
-      this.R1u();
+  iuu() {
+    if (!this.eun && this.Y1u !== "CustomSpeed") {
+      this._uu();
     }
   }
   Swr(t) {
     if (!this.lun || Math.abs(t - this.lun) > DELTATIMECHANGEVALUE) {
       this.lun = t;
     }
-    var t = this.Entity.GetComponent(1);
-    var i = this.lun * MathUtils_1.MathUtils.MillisecondToSecond;
-    this.cz.DeepCopy(this.run);
-    this.cz.MultiplyEqual(i);
-    this.oun.Addition(this.cz, this.kRe);
-    var e = this.kRe;
-    if (this.Z_n.SizeSquared() > e.SizeSquared() || e.DotProduct(this.oun) < 0) {
-      this.oun.DeepCopy(this.Z_n);
-    } else if (this.z_n.SizeSquared() < e.SizeSquared()) {
-      this.oun.DeepCopy(this.z_n);
+    var i;
+    var e;
+    var t = this.Hte;
+    var s = this.lun * MathUtils_1.MathUtils.MillisecondToSecond;
+    if (this.Y1u === "CustomSpeed") {
+      e = UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) - this.Aed;
+      e = MathUtils_1.MathUtils.Clamp(e / this.Ped, 0, 1);
+      i = this.Led ? this.Led.GetFloatValue(e) : e;
+      if (e >= 1) {
+        t.SetActorLocation(this.J_n.ToUeVector());
+      } else {
+        Vector_1.Vector.Lerp(this.Igo, this.J_n, i, this.kRe);
+        t.SetActorLocation(this.kRe.ToUeVector());
+      }
     } else {
-      this.oun.AdditionEqual(this.cz);
+      this.cz.DeepCopy(this.run);
+      this.cz.MultiplyEqual(s);
+      this.oun.Addition(this.cz, this.kRe);
+      e = this.kRe;
+      if (this.Z_n.SizeSquared() > e.SizeSquared() || e.DotProduct(this.oun) < 0) {
+        this.oun.DeepCopy(this.Z_n);
+      } else if (this.z_n.SizeSquared() < e.SizeSquared()) {
+        this.oun.DeepCopy(this.z_n);
+      } else {
+        this.oun.AdditionEqual(this.cz);
+      }
+      this.cz.DeepCopy(this.oun);
+      this.cz.MultiplyEqual(s);
+      this.kRe.DeepCopy(t.ActorLocationProxy);
+      this.kRe.AdditionEqual(this.cz);
+      t.SetActorLocation(this.kRe.ToUeVector());
     }
-    this.cz.DeepCopy(this.oun);
-    this.cz.MultiplyEqual(i);
-    this.kRe.DeepCopy(t.ActorLocationProxy);
-    this.kRe.AdditionEqual(this.cz);
-    t.SetActorLocation(this.kRe.ToUeVector());
   }
   Lun(t) {
     this.uun += t * MathUtils_1.MathUtils.MillisecondToSecond;
     if (this.uun > this.cun) {
       this.uun = 0;
-      this.S1u(0);
+      this.ouu(0);
     }
   }
   Wun() {
@@ -478,116 +503,108 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   SetTargetFloor(t) {
     var i;
     var e;
-    if (!this.Tun()) {
-      if (t < 1 || t > this.mun.length || this.Cun === t) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SceneItem", 35, "SetTargetFloor Wrong Floor", ["targetFloor", t]);
-        }
-      } else if (this.Cun !== 0) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SceneItem", 35, "Elevator Running");
-        }
-        this.u6a = t;
-      } else {
-        this.Cun = t;
-        this.d1u = "Default";
-        this.QEo = 0;
-        this.g1u = 0;
-        this.C1u = 0;
-        this.L1u();
-        if (this.vun) {
-          this.Oun(t, true);
-        }
-        if (!this.vun) {
-          if (i = Global_1.Global.BaseCharacter) {
-            i = i.CharacterActorComponent.ActorLocationProxy;
-            (e = new LogReportDefine_1.ElevatorUsedRecord()).i_config_id = this.Entity.GetComponent(0)?.GetPbDataId().toString() ?? "";
-            e.i_area_id = ModelManager_1.ModelManager.AreaModel.AreaInfo.AreaId.toString();
-            e.i_state_id = t.toString();
-            e.f_player_pos_x = i.X.toFixed(2);
-            e.f_player_pos_y = i.Y.toFixed(2);
-            e.f_player_pos_z = i.Z.toFixed(2);
-            LogController_1.LogController.LogElevatorUsedPush(e);
-          }
+    if (this.xed(t)) {
+      this.Ued(t, "Default");
+      this.uuu();
+      if (this.vun) {
+        this.Oun(t, true);
+      }
+      if (!this.vun) {
+        if (i = Global_1.Global.BaseCharacter) {
+          i = i.CharacterActorComponent.ActorLocationProxy;
+          (e = new LogReportDefine_1.ElevatorUsedRecord()).i_config_id = this.Entity.GetComponent(0)?.GetPbDataId().toString() ?? "";
+          e.i_area_id = ModelManager_1.ModelManager.AreaModel.AreaInfo.AreaId.toString();
+          e.i_state_id = t.toString();
+          e.f_player_pos_x = i.X.toFixed(2);
+          e.f_player_pos_y = i.Y.toFixed(2);
+          e.f_player_pos_z = i.Z.toFixed(2);
+          LogController_1.LogController.LogElevatorUsedPush(e);
         }
       }
     }
   }
-  SetTargetFloorTeleportType(t, i, e, s = false, h = 0) {
-    if (!this.Tun()) {
-      if (t < 1 || t > this.mun.length || this.Cun === t) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SceneItem", 79, "SetTargetFloorTeleportType Wrong Floor", ["targetFloor", t]);
-        }
-      } else if (this.Cun !== 0) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("SceneItem", 79, "Elevator Running");
-        }
-        this.u6a = t;
-      } else {
-        this.Cun = t;
-        this.d1u = "Teleport";
-        this.QEo = i;
-        this.g1u = e;
-        this.c1u = s;
-        this.m1u = s;
-        this.f1u = s;
-        this.C1u = h;
-        this.L1u();
-      }
+  SetTargetFloorTeleport(t, i, e, s = false, h = 0) {
+    if (this.xed(t)) {
+      this.Ued(t, "Teleport", s, i, e, h);
+      this.uuu();
     }
   }
-  L1u() {
+  SetTargetFloorPathMove(t, i, e) {
+    if (this.xed(t)) {
+      if (!StringUtils_1.StringUtils.IsBlank(i)) {
+        this.Led = ResourceSystem_1.ResourceSystem.Load(i, UE.CurveFloat);
+      }
+      this.Ped = e;
+      this.Ued(t, "CustomSpeed");
+      this.uuu();
+    }
+  }
+  xed(t) {
+    return !this.Tun() && (t < 1 || t > this.mun.length || this.Cun === t ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 79, "CheckTargetFloorValid Failed, Wrong Floor", ["CreatureId", ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id)], ["TargetFloor", t]), false) : this.Cun === 0 || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 79, "Elevator Running"), this.u6a = t, false));
+  }
+  Ued(t, i, e = false, s = 0, h = 0, r = 0) {
+    this.Cun = t;
+    this.Y1u = i;
+    this.X1u = e;
+    this.z1u = e;
+    this.J1u = e;
+    this.QEo = s;
+    this.Z1u = h;
+    this.euu = r;
+  }
+  uuu() {
     if (this.tun) {
       this.xOi = TimerSystem_1.TimerSystem.Delay(t => {
-        this.w1u();
+        this.cuu();
         this.xOi = undefined;
       }, this.tun * THOUSAND);
     } else {
-      this.w1u();
+      this.cuu();
     }
   }
-  w1u() {
+  cuu() {
     if (this.ac === 6) {
-      this.S1u(2);
+      this.ouu(2);
     } else {
-      this.S1u(1);
+      this.ouu(1);
     }
   }
-  E1u() {
+  suu() {
     this.Igo.DeepCopy(this.mun[this.dun - 1]);
     this.J_n.DeepCopy(this.mun[this.Cun - 1]);
     this.J_n.Subtraction(this.Igo, this.iun);
-    if (this.d1u === "Teleport" && this.ac !== 6) {
+    if (this.Y1u === "Teleport" && this.ac !== 6) {
       var t = this.iun.Size();
       var i = t / 2;
-      if (this.QEo > i || this.g1u > i) {
+      if (this.QEo > i || this.Z1u > i) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("SceneItem", 79, "传送电梯位置偏移配置非法, 偏移超过移动距离的一半", ["StartOffset", this.QEo], ["EndOffset", this.g1u], ["MoveLength", this.iun.Size()]);
+          Log_1.Log.Error("SceneItem", 79, "传送电梯位置偏移配置非法, 偏移超过移动距离的一半", ["StartOffset", this.QEo], ["EndOffset", this.Z1u], ["MoveLength", this.iun.Size()]);
         }
         return;
       }
-      this.iun.Multiply(this.QEo / t, this.l1u).AdditionEqual(this.Igo);
-      if (this.c1u) {
-        this.iun.Multiply(this.C1u / t, this.u1u).AdditionEqual(this.Igo);
+      this.iun.Multiply(this.QEo / t, this.W1u).AdditionEqual(this.Igo);
+      if (this.X1u) {
+        this.iun.Multiply(this.euu / t, this.K1u).AdditionEqual(this.Igo);
       }
-      this.iun.Multiply(this.g1u / t, this._1u).SubtractionEqual(this.J_n).MultiplyEqual(-1);
+      this.iun.Multiply(this.Z1u / t, this.Q1u).SubtractionEqual(this.J_n).MultiplyEqual(-1);
     }
     this.sun = this.iun.Size();
   }
-  I1u() {
-    this.cz.DeepCopy(this.iun);
-    this.cz.Normalize(NORMALIZE);
-    this.cz.Multiply(this.nun * MTOCM, this.z_n);
-    this.cz.Multiply(MIN_SPEED * MTOCM, this.Z_n);
-    if (this.eun) {
-      this.oun.DeepCopy(this.Wun());
-    } else {
-      this.run.DeepCopy(this.jun());
+  auu() {
+    if (this.Y1u !== "CustomSpeed") {
+      this.cz.DeepCopy(this.iun);
+      this.cz.Normalize(NORMALIZE);
+      this.cz.Multiply(this.nun * MTOCM, this.z_n);
+      this.cz.Multiply(MIN_SPEED * MTOCM, this.Z_n);
+      if (this.eun) {
+        this.oun.DeepCopy(this.Wun());
+      } else {
+        this.run.DeepCopy(this.jun());
+      }
     }
   }
   Tun() {
-    return this.Entity.GetComponent(196).HasTag(-662723379);
+    return this.Entity.GetComponent(197).HasTag(-662723379);
   }
   Dun() {
     if (!this.vtn) {
@@ -615,7 +632,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   }
   Yun(i) {
     var e = i.GetComponent(1)?.ActorLocationProxy;
-    var t = this.Entity.GetComponent(1).ActorLocationProxy;
+    var t = this.Hte.ActorLocationProxy;
     if (e && t) {
       if (this.aun) {
         const l = i.GetComponent(1);
@@ -651,7 +668,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
               a.TeleportAndFindStandLocation(o);
               l.EnableCollision(n);
             } else {
-              if (a = i.GetComponent(156)) {
+              if (a = i.GetComponent(157)) {
                 a.TryEnableTick(true);
               }
               l.SetActorLocation(o.ToUeVector(), this.constructor.name, false);
@@ -680,16 +697,10 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   Bun() {
     this.Igo.Subtraction(this.J_n, this.cz);
     var t = this.cz.Size();
-    if (this.eun) {
-      const i = t / MTOCM / this.nun;
-      if (i > THOUSAND) {
-        return THOUSAND;
-      } else {
-        return i;
-      }
-    }
-    const i = ACCELERATETIMERADIO * t / MTOCM / this.nun;
-    if (i > THOUSAND) {
+    let i = 0;
+    if ((i = this.Y1u === "CustomSpeed" ? this.Ped - UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) + this.Aed : this.eun ? t / MTOCM / this.nun : ACCELERATETIMERADIO * t / MTOCM / this.nun) < 0) {
+      return 0;
+    } else if (i > THOUSAND) {
       return THOUSAND;
     } else {
       return i;
@@ -712,16 +723,16 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   }
   qun(t) {
     var i = ActorUtils_1.ActorUtils.GetEntityByActor(t);
-    if (i &&= i.Entity.GetComponent(156)) {
+    if (i &&= i.Entity.GetComponent(157)) {
       i.TryDisableTick("[GamePlayElevator.AttachToElevator] 上电梯关闭Tick");
-      i = this.Entity.GetComponent(202);
+      i = this.Entity.GetComponent(203);
       ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToActor(t, i.Owner, 2, "GamePlayElevatorComponent.AttachToElevator", undefined, 1, 1, 1, false);
     }
   }
   Qun(t) {
     ControllerHolder_1.ControllerHolder.AttachToActorController.DetachActor(t, false, "GamePlayElevatorComponent.DetachFromElevator", 1, 1, 1);
     var t = ActorUtils_1.ActorUtils.GetEntityByActor(t);
-    if (t &&= t.Entity.GetComponent(156)) {
+    if (t &&= t.Entity.GetComponent(157)) {
       t.TryEnableTick(true);
     }
   }
@@ -747,5 +758,5 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
 };
-GamePlayElevatorComponent = GamePlayElevatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(139)], GamePlayElevatorComponent);
+GamePlayElevatorComponent = GamePlayElevatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], GamePlayElevatorComponent);
 exports.GamePlayElevatorComponent = GamePlayElevatorComponent; //# sourceMappingURL=GamePlayElevatorComponent.js.map

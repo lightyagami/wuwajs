@@ -21,6 +21,7 @@ const EntityMarkItem_1 = require("./MarkItem/EntityMarkItem");
 const FishingPointMarkItem_1 = require("./MarkItem/FishingPointMarkItem");
 const FishingShipMarkItem_1 = require("./MarkItem/FishingShipMarkItem");
 const FixedSceneGamePlayMarkItem_1 = require("./MarkItem/FixedSceneGamePlayMarkItem");
+const GreatSwordChallengeMarkItem_1 = require("./MarkItem/GreatSwordChallengeMarkItem");
 const LandscapeMark_1 = require("./MarkItem/LandscapeMark");
 const LevelPlayReportMarkItem_1 = require("./MarkItem/LevelPlayReportMarkItem");
 const MingSuNpcMarkItem_1 = require("./MarkItem/MingSuNpcMarkItem");
@@ -33,6 +34,7 @@ const SoundBoxMarkItem_1 = require("./MarkItem/SoundBoxMarkItem");
 const TaskMarkItem_1 = require("./MarkItem/TaskMarkItem");
 const TeleportMarkItem_1 = require("./MarkItem/TeleportMarkItem");
 const TemporaryTeleportMarkItem_1 = require("./MarkItem/TemporaryTeleportMarkItem");
+const TraceExploreEntityMarkItem_1 = require("./MarkItem/TraceExploreEntityMarkItem");
 const TreasureBoxDetectorMarkItem_1 = require("./MarkItem/TreasureBoxDetectorMarkItem");
 const TreasureBoxMarkItem_1 = require("./MarkItem/TreasureBoxMarkItem");
 class MarkItemUtil {
@@ -100,6 +102,9 @@ class MarkItemUtil {
         case 28:
           e = new LevelPlayReportMarkItem_1.LevelPlayReportMarkItem(r, a, i, t, k);
           break;
+        case 42:
+          e = new GreatSwordChallengeMarkItem_1.GreatSwordChallengeMarkItem(r, a, i, t, k);
+          break;
         default:
           e = new ConfigMarkItem_1.ConfigMarkItem(r, a, i, t, k);
       }
@@ -147,6 +152,11 @@ class MarkItemUtil {
         case 32:
           e = new FishingPointMarkItem_1.FishingPointMarkItem(r, k, a, t);
           break;
+        case 36:
+        case 37:
+        case 38:
+          e = new TraceExploreEntityMarkItem_1.TraceExploreEntityMarkItem(r, k, a, t);
+          break;
         default:
           e = new ServerMarkItem_1.ServerMarkItem(r, k, a, t);
       }
@@ -171,7 +181,7 @@ class MarkItemUtil {
       if (k = ModelManager_1.ModelManager.MapModel.GetMark(r.ObjectType, e)) {
         a.OverrideMapId = k.MapId;
       }
-      this.vHc(a, k?.MapGravity ?? 0, t);
+      this.eZu(a, k?.MapGravity ?? 0, t);
       return a;
     }
   }
@@ -233,7 +243,7 @@ class MarkItemUtil {
     });
     e.Initialize();
   }
-  static vHc(e, r, a) {
+  static eZu(e, r, a) {
     e.MarkItemEntity = MarkFactory_1.MarkFactory.CreateAndAssembleDynamicConfigMark({
       MarkId: e.MarkId,
       MarkType: e.MarkType,

@@ -43,7 +43,7 @@ class TsTaskDestroySelf extends TsTaskAbortImmediatelyBase_1.default {
             var t = r.CharActorComp.Entity;
             if (t.GetComponent(47)) {
               Global_1.Global.CharacterController.Possess(s.Actor);
-              if (s = t.GetComponent(178)) {
+              if (s = t.GetComponent(179)) {
                 s.StopMove(false);
               }
               (s = t.GetComponent(62)).ClearMoveVectorCache();

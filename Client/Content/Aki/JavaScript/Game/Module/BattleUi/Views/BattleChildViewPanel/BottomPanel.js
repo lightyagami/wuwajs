@@ -6,20 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 exports.BottomPanel = undefined;
 const UE = require("ue");
 const Stats_1 = require("../../../../../Core/Common/Stats");
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CharacterAttributeTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
 const MoraleTempExpView_1 = require("../../../Battle/Morale/View/MoraleTempExpView");
 const ConcertoResponseItem_1 = require("../ConcertoResponseItem");
 const FishingStateView_1 = require("../FishingStateView");
 const RoleBuffView_1 = require("../RoleBuffView");
 const RoleStateView_1 = require("../RoleStateView");
-const RoleTopBuffView_1 = require("../RoleTopBuffView");
+const RoleUniqueBuffView_1 = require("../RoleUniqueBuffView");
 const SpecialEnergyBarContainer_1 = require("../SpecialEnergy/SpecialEnergyBarContainer");
 const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
-var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
@@ -27,7 +26,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this._Je = undefined;
     this.uJe = undefined;
     this.cJe = undefined;
-    this.kXa = undefined;
+    this.a2u = undefined;
     this.DF_ = undefined;
     this.n$1 = undefined;
     this.s$1 = false;
@@ -45,13 +44,12 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           this.lJe.Refresh(e);
           this.uJe.Refresh(e);
         }
-        this._Je.Refresh(e);
         this.cJe.OnChangeRole(e.MorphShowSpecialEnergyBar ? e : undefined);
-        this.kXa.OnChangeRole(e);
+        this.h2u(e);
         BottomPanel.kQe.Stop();
       }
     };
-    this.llu = e => {
+    this.klu = e => {
       var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
       if (t) {
         BottomPanel.kQe.Start();
@@ -74,16 +72,16 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.uJe.Refresh(undefined);
       }
       if (this._Je.GetEntityId() === e.Id) {
-        this._Je.Refresh(undefined);
+        this.h2u(undefined);
       }
+      this.a2u.OnRemoveEntity(e.Id);
       this.cJe.OnRemoveEntity(e.Id);
-      this.kXa.OnRemoveEntity(e.Id);
     };
     this.dJe = (e, t) => {
       var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       if (i?.Valid && t && i.Id === e) {
         for (const s of t.GSs) {
-          if (s.tSs === EAttributeId.Proto_Life) {
+          if (s.tSs === CharacterAttributeTypes_1.EAttributeId.Proto_Life) {
             this.lJe.RefreshHpAndShield(true);
           }
         }
@@ -91,7 +89,13 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     this.AQe = (e, t, i, s) => {
       if (this._Je.GetEntityId() === e) {
-        if (i) {
+        if (t.CueType === 24) {
+          if (i) {
+            this.a2u.AddBuff(t, s);
+          } else {
+            this.a2u.RemoveBuff(t, s);
+          }
+        } else if (i) {
           this._Je.AddBuff(t, s);
         } else {
           this._Je.RemoveBuff(t, s);
@@ -125,19 +129,22 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
     this.lJe.Refresh(e);
     this.uJe.Refresh(e);
-    this._Je.Refresh(e);
     this.cJe.OnChangeRole(e);
-    this.kXa.OnChangeRole(e);
+    this.h2u(e);
     var e = ControllerHolder_1.ControllerHolder.FishingController.IsInFishingShip();
     this.BF_(2, !e);
     this.kF_(e);
+  }
+  h2u(e) {
+    this._Je.Refresh(e);
+    this.a2u.Refresh(e);
   }
   Reset() {
     this.lJe = undefined;
     this.uJe = undefined;
     this._Je = undefined;
     this.cJe = undefined;
-    this.kXa = undefined;
+    this.a2u = undefined;
     this.kF_(false);
     super.Reset();
   }
@@ -149,7 +156,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.lJe?.Tick(e);
     this._Je?.Tick(e);
     this.cJe?.Tick(e);
-    this.kXa?.Tick(e);
+    this.a2u?.Tick(e);
     BottomPanel.vJe.Stop();
   }
   async CJe() {
@@ -174,12 +181,12 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   async NXa() {
     var e = this.GetItem(5);
-    this.kXa = await this.NewStaticChildViewAsync(e.GetOwner(), RoleTopBuffView_1.RoleTopBuffView);
-    this.kXa.ShowBattleVisibleChildView();
+    this.a2u = await this.NewStaticChildViewAsync(e.GetOwner(), RoleUniqueBuffView_1.RoleUniqueBuffView);
+    this.a2u.ShowBattleVisibleChildView();
   }
   AddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiEnergyBarVisible, this.llu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiEnergyBarVisible, this.klu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRemoveRoleData, this.zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddUITexture, this.AQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnServerAttributeChange, this.dJe);
@@ -190,7 +197,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiEnergyBarVisible, this.llu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiEnergyBarVisible, this.klu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRemoveRoleData, this.zpe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnServerAttributeChange, this.dJe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddUITexture, this.AQe);
@@ -204,7 +211,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.uJe?.SetVisible(e, t);
     this._Je?.SetVisible(e, t);
     this.cJe?.SetVisible(e, t);
-    this.kXa?.SetVisible(e, t);
+    this.a2u?.SetVisible(e, t);
   }
   kF_(e) {
     if (e) {

@@ -14,20 +14,20 @@ class GameplayAbilityVisionPresent extends GameplayAbilityVisionMorph_1.Gameplay
     super(...arguments);
     this.Yd1 = Vector_1.Vector.Create();
     this.zd1 = Rotator_1.Rotator.Create();
-    this.MY1 = false;
+    this.jY1 = false;
   }
   SetVisionEnable(i) {
     if (i) {
-      this.MY1 = true;
+      this.jY1 = true;
       this.Yd1.DeepCopy(this.VisionActorComponent.ActorLocationProxy);
       this.zd1.DeepCopy(this.VisionActorComponent.ActorRotationProxy);
       PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, i, "GameplayAbilityVisionPresent.SetVisionEnable");
     } else {
       this.VisionSkillComponent.StopGroup1Skill("驻场声骸技能结束");
-      if (this.MY1) {
+      if (this.jY1) {
         this.VisionActorComponent.SetActorLocationAndRotation(this.Yd1.ToUeVector(), this.zd1.ToUeRotator(), "驻场声骸消失时恢复原来的位置", false);
       }
-      this.MY1 = true;
+      this.jY1 = true;
       this.VisionBuffComponent.AddBuff(GameplayAbilityVisionMisc_1.VISION_APPEAR_BUFF_ID, {
         InstigatorId: this.VisionBuffComponent.CreatureDataId,
         Reason: "驻场声骸归位时的材质和粒子"
@@ -41,7 +41,7 @@ class GameplayAbilityVisionPresent extends GameplayAbilityVisionMorph_1.Gameplay
     return false;
   }
   OnTeleportStart() {
-    this.MY1 = false;
+    this.jY1 = false;
   }
 }
 exports.GameplayAbilityVisionPresent = GameplayAbilityVisionPresent;

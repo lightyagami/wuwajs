@@ -16,7 +16,7 @@ class DeckBuilderQuicklyBuildItem extends GridProxyAbstract_1.GridProxyAbstract 
     this.Data = undefined;
     this.CardTextureList = [];
     this.OnToggleStateChange = undefined;
-    this.LX1 = () => {
+    this.eY1 = () => {
       if (this.OnToggleStateChange) {
         this.OnToggleStateChange(this.GridIndex);
       }
@@ -24,7 +24,7 @@ class DeckBuilderQuicklyBuildItem extends GridProxyAbstract_1.GridProxyAbstract 
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIText], [3, UE.UITexture], [4, UE.UITexture]];
-    this.BtnBindInfo = [[0, this.LX1]];
+    this.BtnBindInfo = [[0, this.eY1]];
   }
   OnStart() {
     for (let t = 3; t <= 4; t++) {

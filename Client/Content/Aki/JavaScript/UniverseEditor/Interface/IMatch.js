@@ -25,7 +25,12 @@ exports.entityPlotBindingConfig = {
   Seq_NPC2: "Seq_NPC2",
   Seq_NPC3: "Seq_NPC3",
   Seq_NPC4: "Seq_NPC4",
-  Seq_NPC5: "Seq_NPC5"
+  Seq_NPC5: "Seq_NPC5",
+  Perform_NPC1: "Perform_NPC1",
+  Perform_NPC2: "Perform_NPC2",
+  Perform_NPC3: "Perform_NPC3",
+  Perform_NPC4: "Perform_NPC4",
+  Perform_NPC5: "Perform_NPC5"
 };
 exports.controlMatchConfig = {
   "关卡.Common.被控物.电池": true,

@@ -262,7 +262,13 @@ class PhotoSaveView extends UiViewBase_1.UiViewBase {
     if (e.LogoConfigName) {
       this.QWi.LogoConfigName = e.LogoConfigName;
     }
-    if (e.DateText) {
+    if (e.LogoLeft) {
+      this.GetItem(21).SetUIActive(false);
+      if (e.DateText) {
+        this.QWi.DateText = e.DateText;
+      }
+      t.push(this.QWi.CreateThenShowByResourceIdAsync("UiItem_PlayerInfoLeft", this.GetTexture(0)));
+    } else if (e.DateText) {
       this.GetItem(21).SetUIActive(false);
       this.QWi.DateText = e.DateText;
       t.push(this.QWi.CreateThenShowByResourceIdAsync("UiItem_PhotoSharePlayerInfoNew", this.GetTexture(0)));

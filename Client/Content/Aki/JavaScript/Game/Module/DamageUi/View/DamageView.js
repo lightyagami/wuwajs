@@ -25,7 +25,7 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.uFt = Vector_1.Vector.Create();
-    this.cX1 = new UE.VectorDouble();
+    this.gX1 = new UE.VectorDouble();
     this.cFt = 0;
     this.mFt = 0;
     this.dFt = undefined;
@@ -78,7 +78,7 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
       this.gFt = a;
       this.DisableUpdatePos = n;
       this.uFt.FromUeVector(s);
-      this.cX1.Set(this.uFt.X, this.uFt.Y, this.uFt.Z);
+      this.gX1.Set(this.uFt.X, this.uFt.Y, this.uFt.Z);
       let i = a.GetRandomOffsetX();
       let t = a.GetRandomOffsetY();
       if (h) {
@@ -172,7 +172,7 @@ class DamageView extends UiPanelBase_1.UiPanelBase {
     }
   }
   EFt() {
-    var i = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.cX1);
+    var i = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
     if (i) {
       i.X = i.X + this.cFt;
       i.Y = i.Y + this.mFt;

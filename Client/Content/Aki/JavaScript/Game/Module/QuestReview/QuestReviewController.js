@@ -19,7 +19,7 @@ const UiManager_1 = require("../../Ui/UiManager");
 const QuestReviewDefine_1 = require("./QuestReviewDefine");
 class QuestReviewController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    this.bJ1();
+    this.JJ1();
     this.BurnFinishPromise = new CustomPromise_1.CustomPromise();
     this.FusionFinishPromise = new CustomPromise_1.CustomPromise();
     this.NewTabUnlockPromise = new CustomPromise_1.CustomPromise();
@@ -27,7 +27,7 @@ class QuestReviewController extends ControllerBase_1.ControllerBase {
   }
   static OnClear() {
     this.z51.length = 0;
-    this.RJ1();
+    this.ZJ1();
     return true;
   }
   static AddViewRefreshDelegate(e) {
@@ -67,19 +67,19 @@ class QuestReviewController extends ControllerBase_1.ControllerBase {
       UiManager_1.UiManager.OpenView("QuestReviewDetailView", e);
     }
   }
-  static bJ1() {
-    Net_1.Net.Register(29308, this.LJ1);
+  static JJ1() {
+    Net_1.Net.Register(26262, this.eZ1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnterGameSuccess, this.TJt);
   }
-  static RJ1() {
+  static ZJ1() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterGameSuccess, this.TJt);
-    Net_1.Net.UnRegister(29308);
+    Net_1.Net.UnRegister(26262);
   }
   static async RequestQuestReviewData() {
-    var e = new Protocol_1.Aki.Protocol.bz1();
-    var e = await Net_1.Net.CallAsync(27044, e);
+    var e = new Protocol_1.Aki.Protocol.eJ1();
+    var e = await Net_1.Net.CallAsync(18419, e);
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20904);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15066);
     }
   }
   static SetBurnFinish() {
@@ -123,11 +123,11 @@ exports.QuestReviewController = QuestReviewController;
 QuestReviewController.TJt = () => {
   _a.RequestQuestReviewData();
 };
-QuestReviewController.LJ1 = e => {
-  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewEntryData(e.Pz1);
-  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewTabData(e.Az1);
-  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewLineData(e.wz1);
-  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewNodeData(e.Lz1);
+QuestReviewController.eZ1 = e => {
+  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewEntryData(e.nJ1);
+  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewTabData(e.oJ1);
+  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewLineData(e.rJ1);
+  ModelManager_1.ModelManager.QuestReviewModel.UpdateAllQuestReviewNodeData(e.iJ1);
 };
 QuestReviewController.BurnFinishPromise = undefined;
 QuestReviewController.FusionFinishPromise = undefined;

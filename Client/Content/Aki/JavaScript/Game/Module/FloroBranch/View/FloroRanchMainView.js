@@ -16,6 +16,7 @@ const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const FloroRanchController_1 = require("../FloroRanchController");
 const FloroRanchDefine_1 = require("../FloroRanchDefine");
@@ -24,34 +25,36 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.CNe = undefined;
     this.fs1 = undefined;
-    this.gmu = undefined;
-    this.SOu = undefined;
-    this.LAu = undefined;
-    this.AAu = undefined;
+    this.Zmu = undefined;
+    this.uqu = undefined;
+    this.iPu = undefined;
+    this.rPu = undefined;
     this.TDe = undefined;
-    this.MOu = () => {
+    this.cqu = () => {
       this.bNe();
     };
-    this.djc = () => {
-      this.RefreshRecord();
+    this.JSi = () => {
+      this.RefreshView();
     };
-    this.Cmu = () => {
+    this.efu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchLimitRewardView");
     };
-    this.pmu = () => {
+    this.tfu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchPermanentRewardView");
     };
-    this.UEu = () => {
+    this.WEu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchSkillView", false);
     };
-    this.DEu = () => {
+    this.QEu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchHandBookView");
     };
-    this.BEu = () => {
+    this.KEu = () => {
       UiManager_1.UiManager.OpenView("FloroRanchTechnologyView");
     };
-    this.kEu = () => {
-      if (this.CNe.HasUnFinishedSubIns()) {
+    this.XEu = () => {
+      if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ConnectBan");
+      } else if (this.CNe.HasUnFinishedSubIns()) {
         const n = this.CNe.GetUnFinishedSubDungeonData();
         var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(334);
         var i = this.CNe.GetFloroRanchDungeonData(n.InstanceId);
@@ -62,12 +65,17 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
         e.SetTextArgs(i, t, s.toString());
         e.IsEscViewTriggerCallBack = false;
         e.FunctionMap.set(1, () => {
+          this.GetItem(10)?.SetUIActive(true);
           FloroRanchController_1.FloroRanchController.SendFloroRanchSettleRequest(this.CNe.Id, n.Id, true, () => {
             UiManager_1.UiManager.OpenView("FloroRanchDungeonSelectView");
+            this.GetItem(10)?.SetUIActive(false);
           });
         });
         e.FunctionMap.set(2, () => {
-          FloroRanchController_1.FloroRanchController.SendFloroRanchStartPlayRequest(this.CNe.Id, n.Id);
+          this.GetItem(10)?.SetUIActive(true);
+          FloroRanchController_1.FloroRanchController.SendFloroRanchStartPlayRequest(this.CNe.Id, n.Id, undefined, undefined, () => {
+            this.GetItem(10)?.SetUIActive(false);
+          });
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
       } else {
@@ -79,56 +87,58 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [8, UE.UIItem], [7, UE.UIText], [9, UE.UIItem]];
-    this.BtnBindInfo = [[6, this.kEu]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [8, UE.UIItem], [7, UE.UIText], [9, UE.UIItem], [10, UE.UIItem]];
+    this.BtnBindInfo = [[6, this.XEu]];
   }
   OnStart() {
     new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0)).SetCloseCallBack(this.AMo);
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     this.fs1 = new ButtonItem_1.ButtonItem(this.GetItem(1));
-    this.fs1.SetFunction(this.Cmu);
+    this.fs1.SetFunction(this.efu);
     this.GetItem(1)?.SetUIActive(this.CNe.IsInLimitTime());
-    this.gmu = new ButtonItem_1.ButtonItem(this.GetItem(2));
-    this.gmu.SetFunction(this.pmu);
-    this.SOu = new ButtonItem_1.ButtonItem(this.GetItem(3));
-    this.SOu.SetFunction(this.UEu);
-    this.LAu = new ButtonItem_1.ButtonItem(this.GetItem(4));
-    this.LAu.SetFunction(this.DEu);
-    this.AAu = new ButtonItem_1.ButtonItem(this.GetItem(5));
-    this.AAu.SetFunction(this.BEu);
+    this.Zmu = new ButtonItem_1.ButtonItem(this.GetItem(2));
+    this.Zmu.SetFunction(this.tfu);
+    this.uqu = new ButtonItem_1.ButtonItem(this.GetItem(3));
+    this.uqu.SetFunction(this.WEu);
+    this.iPu = new ButtonItem_1.ButtonItem(this.GetItem(4));
+    this.iPu.SetFunction(this.QEu);
+    this.rPu = new ButtonItem_1.ButtonItem(this.GetItem(5));
+    this.rPu.SetFunction(this.KEu);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchDataRedDot, this.MOu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchSettlement, this.djc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchDataRedDot, this.cqu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchSettlement, this.JSi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.JSi);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchDataRedDot, this.MOu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchSettlement, this.djc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchDataRedDot, this.cqu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchSettlement, this.JSi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.JSi);
   }
   OnBeforeShow() {
-    var e = this.CNe.GetPermanentRewardProgress();
-    this.gmu?.SetText(e);
-    this.gmu?.SetRedDotVisible(this.CNe.IsPermanentTaskHasRedDot());
-    this.fs1?.SetRedDotVisible(this.CNe.IsLimitTaskHasRedDot());
-    var e = this.CNe.GetHandBookProgress();
-    this.LAu?.SetText(e);
-    this.GetItem(9)?.SetUIActive(this.CNe.IsDungeonHasRedDot());
+    this.RefreshView();
     this.sSt();
     this.bNe();
     this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
       this.sSt();
     }, 1000);
-    this.RefreshRecord();
   }
   bNe() {
     var e = this.CNe.IsSkillHasRedDot();
-    this.SOu?.SetRedDotVisible(e);
-    this.LAu?.SetRedDotVisible(this.CNe.IsHandBookHasRedDot());
+    this.uqu?.SetRedDotVisible(e);
+    this.iPu?.SetRedDotVisible(this.CNe.IsHandBookHasRedDot());
     var e = this.CNe.GetTechnologyProgress();
-    this.AAu?.SetText(e);
-    this.AAu?.SetRedDotVisible(this.CNe.HasAnyTechPointCanUnlock());
+    this.rPu?.SetText(e);
+    this.rPu?.SetRedDotVisible(this.CNe.HasAnyTechPointCanUnlock());
   }
-  RefreshRecord() {
+  RefreshView() {
+    var e = this.CNe.GetPermanentRewardProgress();
+    this.Zmu?.SetText(e);
+    this.Zmu?.SetRedDotVisible(this.CNe.IsPermanentTaskHasRedDot());
+    this.fs1?.SetRedDotVisible(this.CNe.IsLimitTaskHasRedDot());
+    var e = this.CNe.GetHandBookProgress();
+    this.iPu?.SetText(e);
+    this.GetItem(9)?.SetUIActive(this.CNe.IsDungeonHasRedDot());
     var e = this.CNe.HasUnFinishedSubIns();
     var i = e ? "Farm_ContinueGame" : "Farm_NewGame";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), i);
@@ -136,6 +146,7 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
   }
   sSt() {
     if (!this.CNe.IsInLimitTime() && this.TDe) {
+      this.GetItem(1)?.SetUIActive(this.CNe.IsInLimitTime());
       TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }

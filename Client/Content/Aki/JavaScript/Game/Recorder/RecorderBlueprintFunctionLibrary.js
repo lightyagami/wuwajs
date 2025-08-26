@@ -20,6 +20,8 @@ const EffectSystem_1 = require("../Effect/EffectSystem");
 const Global_1 = require("../Global");
 const ModelManager_1 = require("../Manager/ModelManager");
 const GameplayCueHookCommonItem_1 = require("../NewWorld/Character/Common/Component/Abilities/GameplayCueSFX/CommonItem/GameplayCueHookCommonItem");
+const CharacterActorComponent_1 = require("../NewWorld/Character/Common/Component/CharacterActorComponent");
+const VehicleActorComponent_1 = require("../NewWorld/Vehicle/Common/VehicleActorComponent");
 const SceneInteractionManager_1 = require("../Render/Scene/Interaction/SceneInteractionManager");
 const GameplayCueRecorder_1 = require("./GameplayCueRecorder");
 const RecordCurveObject_1 = require("./RecordCurveObject");
@@ -49,20 +51,24 @@ class CameraRecorderObject {
     this.Recorder.TickRecorder(r);
   }
   StopRecorder() {
+    var r = RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Test", 6, "Stop Camera Recorder", ["Actor", this.OC?.GetName()], ["Time", RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint()]);
+      Log_1.Log.Info("Test", 6, "Stop Camera Recorder", ["Actor", this.OC?.GetName()], ["Time", r]);
     }
     this.Recorder.StopRecorder();
   }
 }
 class CharacterRecorderObject {
   constructor(r, e, t, i) {
-    var n;
     this.Tae = r;
+    this.QQc = e;
     this.ae = t;
+    this.n8 = i;
     this.E0 = 0;
     this.Recorder = undefined;
     this.far = new Map();
+    this.tfe = undefined;
+    this.KQc = r => {};
     this.par = (r, e, t) => {
       this.far.set(t, new MaterialControllerParam(r, e, RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint()));
     };
@@ -80,35 +86,66 @@ class CharacterRecorderObject {
         this.far.delete(r);
       }
     };
+    this.Z4u = () => {
+      var r = this.Tae.GetEntityNoBlueprint();
+      var e = r.GetComponent(123);
+      this.Recorder.TickRecorder(Time_1.Time.DeltaTimeSeconds * r.TimeDilation * (e ? e.CurrentTimeScale : 1));
+    };
     this.E0 = r.GetEntityIdNoBlueprint();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Test", 6, "Start Character Recorder", ["Actor", r.GetName()], ["EntityId", r.CharacterActorComponent.Entity.Id], ["Time", t]);
+      Log_1.Log.Info("Test", 6, "Start Character Recorder", ["Actor", r.GetName()], ["EntityId", this.E0], ["Time", t]);
     }
-    this.Recorder = UE.NewObject(UE.KuroCharacterRecorder.StaticClass());
-    this.Recorder.bUseClone = !CharacterRecorderObject.NotUseCloneType.has(r.CharacterActorComponent.CreatureData.GetEntityType());
-    if (!this.Recorder.bUseClone) {
-      n = (0, puerts_1.$ref)(undefined);
-      UE.KuroAnimEdLibrary.CreateNewBlueprint(i + r.GetName(), r, n, undefined);
-      this.Recorder.BaseBlueprint = (0, puerts_1.$unref)(n);
-    }
-    this.Recorder.SetRecordActor(r, exports.RECORD_INTERVAL, exports.RECORDER_MAX_SPEED);
-    this.Recorder.StartRecorder(e, t);
-    this.Recorder.SetNotifiesRecordConfigs(RecorderBlueprintFunctionLibrary.RecordNotifies, RecorderBlueprintFunctionLibrary.ReplaceNotifies);
+    e = r => {
+      var e;
+      this.tfe = this.Tae.Mesh?.SkeletalMesh;
+      this.Recorder = UE.NewObject(UE.KuroCharacterRecorder.StaticClass());
+      this.Recorder.bUseClone = !CharacterRecorderObject.NotUseCloneType.has(this.Tae.GetEntityNoBlueprint().GetComponent(1).CreatureData.GetEntityType());
+      if (!this.Recorder.bUseClone) {
+        e = (0, puerts_1.$ref)(undefined);
+        UE.KuroAnimEdLibrary.CreateNewBlueprint(this.n8 + this.Tae.GetName(), this.Tae, e, undefined);
+        this.Recorder.BaseBlueprint = (0, puerts_1.$unref)(e);
+      }
+      this.Recorder.SetRecordActor(this.Tae, exports.RECORD_INTERVAL, exports.RECORDER_MAX_SPEED);
+      this.Recorder.StartRecorder(this.QQc, r);
+      this.Recorder.SetNotifiesRecordConfigs(RecorderBlueprintFunctionLibrary.RecordNotifies, RecorderBlueprintFunctionLibrary.ReplaceNotifies);
+    };
+    e(t);
+    this.KQc = e;
     EventSystem_1.EventSystem.AddWithTarget(r.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
     EventSystem_1.EventSystem.AddWithTarget(r.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, this.var);
+    EventSystem_1.EventSystem.AddWithTarget(r.GetEntityNoBlueprint(), EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Z4u);
   }
   static get NotUseCloneType() {
     this.gAr ||= new Set([Protocol_1.Aki.Protocol.kks.Proto_Player]);
     return this.gAr;
   }
   TickRecorder(r) {
-    this.Recorder.TickRecorder(r);
+    var e;
+    var t;
+    var i;
+    if (this.tfe !== this.Tae.Mesh?.SkeletalMesh) {
+      e = RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Test", 6, "Change Character Mesh Recorder", ["Actor", this.Tae?.GetName()], ["EntityId", this.E0], ["Time", e]);
+      }
+      if (t = this.Recorder.AddNotify(UE.TsAnimNotifyStateAddCharRendering_C.StaticClass(), FNameUtil_1.FNameUtil.EMPTY, this.ae, e - this.ae)) {
+        t.RenderType = this.Tae.RenderType;
+      }
+      this.Recorder.StopRecorder();
+      t = this.Recorder.GetMainGuid();
+      this.KQc(e);
+      i = this.Recorder.GetMainGuid();
+      UE.KuroRecorderLibrary.ChangeAttachTrack(this.QQc, t, i, e);
+    } else {
+      this.Recorder.TickRecorder(r);
+    }
   }
   StopRecorder() {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Test", 6, "Stop Character Recorder", ["Actor", this.Tae?.GetName()], ["EntityId", this.Tae?.CharacterActorComponent?.Entity.Id], ["Time", RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint()]);
-    }
     var r;
+    var e = RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Test", 6, "Stop Character Recorder", ["Actor", this.Tae?.GetName()], ["EntityId", this.E0], ["Time", e]);
+    }
     var e = this.Recorder.AddNotify(UE.TsAnimNotifyStateAddCharRendering_C.StaticClass(), FNameUtil_1.FNameUtil.EMPTY, this.ae, RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint() - this.ae);
     if (e) {
       e.RenderType = this.Tae.RenderType;
@@ -116,6 +153,7 @@ class CharacterRecorderObject {
     if (EntitySystem_1.EntitySystem.Get(this.E0)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, this.var);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.GetEntityNoBlueprint(), EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Z4u);
     }
     for ([r] of this.far) {
       this.var(r);
@@ -295,7 +333,7 @@ exports.BpFxEffectRecorderObject = BpFxEffectRecorderObject;
 class RecorderBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static get CharacterTypes() {
-    RecorderBlueprintFunctionLibrary.CharacterTypesInternal ||= new Set([Protocol_1.Aki.Protocol.kks.Proto_Animal, Protocol_1.Aki.Protocol.kks.Proto_Monster, Protocol_1.Aki.Protocol.kks.Proto_Npc, Protocol_1.Aki.Protocol.kks.Proto_Player, Protocol_1.Aki.Protocol.kks.Proto_Vision]);
+    RecorderBlueprintFunctionLibrary.CharacterTypesInternal ||= new Set([Protocol_1.Aki.Protocol.kks.Proto_Animal, Protocol_1.Aki.Protocol.kks.Proto_Monster, Protocol_1.Aki.Protocol.kks.Proto_Npc, Protocol_1.Aki.Protocol.kks.Proto_Player, Protocol_1.Aki.Protocol.kks.Proto_Vision, Protocol_1.Aki.Protocol.kks.HI_]);
     return RecorderBlueprintFunctionLibrary.CharacterTypesInternal;
   }
   static get SceneItemTypes() {
@@ -512,25 +550,38 @@ class RecorderBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     let e = false;
     var t;
     var i;
-    var n;
-    var o;
     if (RecorderBlueprintFunctionLibrary.EnableCharacterRecord) {
-      for (const c of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
-        if (c.Valid && c.Entity && (t = c.Entity).Active && !RecorderBlueprintFunctionLibrary.CharacterRecorders.has(c.Entity.Id) && (i = t.GetComponent(0)) && RecorderBlueprintFunctionLibrary.CharacterTypes.has(i.GetEntityType()) && (i = t.GetComponent(3)) && i.Actor) {
-          if (!(Vector_1.Vector.DistSquared(i.ActorLocationProxy, r) > RecorderBlueprintFunctionLibrary.RecordDistSquared)) {
-            i = new CharacterRecorderObject(i.Actor, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal, RecorderBlueprintFunctionLibrary.OutPath);
-            RecorderBlueprintFunctionLibrary.CharacterRecorders.set(t.Id, i);
-            e = true;
+      for (const u of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
+        if (u.Valid && u.Entity) {
+          var n = u.Entity;
+          if (n.Active && !RecorderBlueprintFunctionLibrary.CharacterRecorders.has(u.Entity.Id)) {
+            var o = n.GetComponent(0);
+            if (o && RecorderBlueprintFunctionLibrary.CharacterTypes.has(o.GetEntityType())) {
+              o = n.GetComponent(1);
+              if (o && !(Vector_1.Vector.DistSquared(o.ActorLocationProxy, r) > RecorderBlueprintFunctionLibrary.RecordDistSquared)) {
+                if (o instanceof CharacterActorComponent_1.CharacterActorComponent) {
+                  var c = new CharacterRecorderObject(o.Actor, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal, RecorderBlueprintFunctionLibrary.OutPath);
+                  RecorderBlueprintFunctionLibrary.CharacterRecorders.set(n.Id, c);
+                } else {
+                  if (!(o instanceof VehicleActorComponent_1.VehicleActorComponent)) {
+                    continue;
+                  }
+                  c = new CharacterRecorderObject(o.Actor, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal, RecorderBlueprintFunctionLibrary.OutPath);
+                  RecorderBlueprintFunctionLibrary.CharacterRecorders.set(n.Id, c);
+                }
+                e = true;
+              }
+            }
           }
         }
       }
     }
     if (RecorderBlueprintFunctionLibrary.EnableSceneItemRecord) {
-      for (const u of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
-        if (u.Valid && u.Entity && (n = u.Entity).Active && !RecorderBlueprintFunctionLibrary.SceneItemRecorders.has(u.Entity.Id) && (o = n.GetComponent(0)) && RecorderBlueprintFunctionLibrary.SceneItemTypes.has(o.GetEntityType())) {
-          if (!!(o = n.GetComponent(202)).GetIsSceneInteractionLoadCompleted() && !(Vector_1.Vector.DistSquared(o.ActorLocationProxy, r) > RecorderBlueprintFunctionLibrary.RecordDistSquared)) {
-            o = new SceneItemRecorderObject(o, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal);
-            RecorderBlueprintFunctionLibrary.SceneItemRecorders.set(n.Id, o);
+      for (const a of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
+        if (a.Valid && a.Entity && (t = a.Entity).Active && !RecorderBlueprintFunctionLibrary.SceneItemRecorders.has(a.Entity.Id) && (i = t.GetComponent(0)) && RecorderBlueprintFunctionLibrary.SceneItemTypes.has(i.GetEntityType())) {
+          if (!!(i = t.GetComponent(203)).GetIsSceneInteractionLoadCompleted() && !(Vector_1.Vector.DistSquared(i.ActorLocationProxy, r) > RecorderBlueprintFunctionLibrary.RecordDistSquared)) {
+            i = new SceneItemRecorderObject(i, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal);
+            RecorderBlueprintFunctionLibrary.SceneItemRecorders.set(t.Id, i);
             e = true;
           }
         }
@@ -661,6 +712,9 @@ RecorderBlueprintFunctionLibrary.OnPlayCameraLevelSequence = (r, e, t, i) => {
   e = RecorderBlueprintFunctionLibrary.FindCharacterRecorder(e);
   if (e) {
     RecorderBlueprintFunctionLibrary.OverrideAttached.Set(new UE.FName("Role"), e.GetMainGuid());
+  }
+  if (RecorderBlueprintFunctionLibrary.SequenceCameraRecorder?.Recorder) {
+    RecorderBlueprintFunctionLibrary.OverrideAttached.Set(new UE.FName("SequenceCamera"), RecorderBlueprintFunctionLibrary.SequenceCameraRecorder.Recorder.GetMainGuid());
   }
   e = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(i);
   UE.KuroRecorderLibrary.CopyLevelSequence(r, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal, RecorderBlueprintFunctionLibrary.OverrideAttached, RecorderBlueprintFunctionLibrary.IgnoreClasses, e);

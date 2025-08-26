@@ -5,59 +5,45 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PersonalRootView = undefined;
 const UE = require("ue");
-const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
-const Info_1 = require("../../../../Core/Common/Info");
-const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const BackgroundCardById_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardById");
-const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
 const Platform_1 = require("../../../../Launcher/Platform/Platform");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const CameraController_1 = require("../../../Camera/CameraController");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../RedDot/RedDotController");
-const RenderModuleController_1 = require("../../../Render/Manager/RenderModuleController");
+const UiBehaviorGachaSequence_1 = require("../../../Ui/Base/UiBehaviorGachaSequence");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
-const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
 const CommonInputViewController_1 = require("../../Common/InputView/Controller/CommonInputViewController");
 const PlayerTitleItem_1 = require("../../Common/PlayerTitleItem");
-const GachaScanView_1 = require("../../Gacha/GachaResultView/GachaScanView");
 const QuickRoleSelectView_1 = require("../../RoleSelect/QuickRoleSelectView");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
-const UiModelResourcesManager_1 = require("../../UiComponent/UiModelResourcesManager");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const WorldLevelController_1 = require("../../WorldLevel/WorldLevelController");
 const PersonalController_1 = require("../Controller/PersonalController");
-const PersonalDefine_1 = require("../Model/PersonalDefine");
-const PersonalUtil_1 = require("../Model/PersonalUtil");
 const PersonalRoleDisplayMediumItem_1 = require("./PersonalRoleDisplayMediumItem");
 class PersonalRootView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.hVi = undefined;
-    this.lVi = undefined;
     this._Vi = [];
     this.nVi = 0;
-    this.cVi = new Map();
-    this.Vha = new Map();
     this.p5i = undefined;
     this.Qma = undefined;
     this.Kma = undefined;
     this.gKt = undefined;
     this.Hha = undefined;
     this.L6e = 0;
-    this.C4_ = false;
-    this.P9c = 0;
     this.gLt = undefined;
+    this.eQu = undefined;
     this.nFe = () => {
       var e = new PersonalRoleDisplayMediumItem_1.PersonalRoleDisplayMediumItem();
       e.BindClickItemCallBack(this.OnRoleItemClick);
@@ -142,7 +128,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     };
     this.OnWaitLoadingConfirmCallBack = async e => {
       if (await PersonalController_1.PersonalController.SendRoleShowListUpdateRequestAsync(e)) {
-        await this.Wha(e);
+        await this.eQu.PreloadLevelSequenceList(e);
         this.RefreshRoleShowList(e, false);
         this.BNe();
       }
@@ -156,7 +142,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
         this.nVi = t;
         e = this._Vi.findIndex(e => e === t);
         this.hVi.SelectGridProxy(e);
-        this.gVi(t, false);
+        this.eQu.PlayRoleSequence(t);
         this.L6e = Time_1.Time.Now;
       }
     };
@@ -188,34 +174,19 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CurWorldLevelChange, this.OnWorldLevelChange);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerTitleChange, this.OnPlayerTitleChange);
   }
+  OnBeforeCreate() {
+    this.eQu = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
+    this.AddUiBehavior(this.eQu);
+  }
   async OnBeforeStartAsync() {
-    this.C4_ = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.SkyBlending.AllowSettingLerpPerFrame") === 0;
-    if (this.C4_) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 1");
-    }
-    if (Info_1.Info.IsMacPlatform()) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 0");
-    }
-    if (Info_1.Info.IsLowMemoryDevice && (this.P9c = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.P9c !== 0)) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality 0");
-    }
     this.p5i = this.OpenParam;
     var e = [];
     for (const t of this.p5i.RoleShowList) {
       e.push(t.Q6n);
     }
-    await this.Wha(e);
+    await this.eQu.PreloadLevelSequenceList(e);
     this.gLt = new PlayerTitleItem_1.PlayerTitleItem();
     await this.gLt.CreateThenShowByActorAsync(this.GetItem(26).GetOwner());
-  }
-  async Wha(e) {
-    var t = [];
-    for (const i of e) {
-      if (i > 0 && !this.cVi.has(i)) {
-        t.push(PersonalUtil_1.PersonalUtil.PreloadRoleSequence(i, this.cVi, this.Vha));
-      }
-    }
-    await Promise.all(t);
   }
   OnStart() {
     this.hVi = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(10), this.nFe);
@@ -241,9 +212,12 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
   OnHandleLoadScene() {
     this.gKt = CameraController_1.CameraController.Model.CurrentCameraActor;
     this.Qma = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("SceneCamera1"), 0);
+    this.eQu.BindSceneSequenceCamera(this.Qma);
     this.Kma = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("personal"), 0);
+    this.eQu.BindEmptySequenceCamera(this.Kma);
     this.Hha = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("UpdateInteractBP"), 0);
     this.Hha.SetTickableWhenPaused(true);
+    this.eQu.BindUpdateInteractBp(this.Hha);
   }
   OnBeforeShow() {
     var e = [];
@@ -255,9 +229,9 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
   }
   RefreshRoleShowList(t, e) {
     var i;
-    var r = CommonParamById_1.configCommonParamById.GetIntConfig("role_show_list_max_count");
+    var s = CommonParamById_1.configCommonParamById.GetIntConfig("role_show_list_max_count");
     this._Vi = [];
-    for (let e = 0; e < r; e++) {
+    for (let e = 0; e < s; e++) {
       if (e < t.length) {
         i = t[e];
         this._Vi.push(i);
@@ -265,27 +239,21 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
         this._Vi.push(-1);
       }
     }
-    var s = [];
-    for (const a of this._Vi) {
-      var o = new PersonalRoleDisplayMediumItem_1.PersonalRoleDisplayContentData();
-      o.RoleId = a;
-      o.IfOtherData = this.p5i.IsOtherData;
-      s.push(o);
+    var r = [];
+    for (const o of this._Vi) {
+      var h = new PersonalRoleDisplayMediumItem_1.PersonalRoleDisplayContentData();
+      h.RoleId = o;
+      h.IfOtherData = this.p5i.IsOtherData;
+      r.push(h);
     }
-    this.hVi.RefreshByData(s, () => {
+    this.hVi.RefreshByData(r, () => {
       if (this._Vi.length > 0 && this._Vi[0] > 0) {
         this.nVi = this._Vi[0];
         this.hVi.SelectGridProxy(0);
-        this.gVi(this.nVi, e);
+        this.eQu.PlayRoleSequence(this.nVi);
         this.GetItem(15).SetUIActive(false);
       } else {
-        if (this.lVi) {
-          this.lVi.Pause();
-          this.lVi.GoToEndAndStop(0);
-          AudioSystem_1.AudioSystem.PostEvent(PersonalDefine_1.STOP_AUDIO_EVENT_NAME);
-        }
-        this.Hha?.UpdateGachaShowItem(3, 4);
-        CameraController_1.CameraController.SetViewTarget(this.Kma, "RoleNewJoinView.SceneEmptyCamera");
+        this.eQu.PlayEmptySequence();
         this.GetItem(15).SetUIActive(true);
       }
     });
@@ -294,87 +262,10 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     this.Ovt();
   }
   OnBeforeDestroy() {
-    if (this.lVi) {
-      this.lVi.Pause();
-      this.lVi.GoToEndAndStop(0);
-      AudioSystem_1.AudioSystem.PostEvent(PersonalDefine_1.STOP_AUDIO_EVENT_NAME);
-    }
-    this.Hha?.EndGachaScene();
-    CameraController_1.CameraController.SetViewTarget(this.gKt, "PersonalRootView.OnBeforeDestroy");
-    for (const e of this.cVi.values()) {
-      UE.KuroActorManager.DestroyActor(e);
-    }
-    this.cVi.clear();
-    for (const t of this.Vha.values()) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(t);
-    }
-    this.Vha.clear();
-    UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
-    if (this.C4_) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 0");
-    }
-    if (Info_1.Info.IsMacPlatform()) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 1");
-    }
-    if (Info_1.Info.IsLowMemoryDevice && this.P9c !== 0) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.P9c);
-    }
     this.gLt?.Destroy();
   }
-  gVi(t, e) {
-    if (t && !(t <= 0)) {
-      const i = this.cVi.get(t);
-      if (i) {
-        if (this.lVi) {
-          UiLayer_1.UiLayer.SetShowMaskLayer("RoleRootView", true);
-          AudioSystem_1.AudioSystem.PostEvent(PersonalDefine_1.STOP_AUDIO_EVENT_NAME, undefined, {
-            CallbackMask: 1,
-            CallbackHandler: e => {
-              if (e === 0) {
-                this.lVi?.Pause();
-                this.lVi?.GoToEndAndStop(0);
-                TimerSystem_1.GameplayTimerSystem.Next(() => {
-                  this.Kba(t, i);
-                  UiLayer_1.UiLayer.SetShowMaskLayer("RoleRootView", false);
-                });
-              }
-            }
-          });
-        } else {
-          this.Kba(t, i);
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Personal", 58, "PersonalRootView 未找到SequenceActor", ["roleId", t.toString()]);
-      }
-    }
-  }
-  Kba(e, t) {
-    var i = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(e);
-    if (i) {
-      var r = t.GetSequence();
-      UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
-      UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(r);
-      CameraController_1.CameraController.SetViewTarget(this.Qma, "RoleNewJoinView.SceneSequenceCamera");
-      t.bOverrideInstanceData = true;
-      t.SetTickableWhenPaused(!ModelManager_1.ModelManager.GameModeModel.IsMulti);
-      t.AddBindingByTag(GachaScanView_1.SCENE_CAMERA_TAG, this.Qma, false, true);
-      var r = t.DefaultInstanceData;
-      const s = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(RenderModuleController_1.RenderModuleController.GetKuroCurrentUiSceneTransform());
-      r.TransformOrigin = s;
-      if (i.BindPoint?.length > 0) {
-        r.TransformOriginActor = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(i.BindPoint), 1);
-      } else {
-        i = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("KuroUiSceneRoot"), 1);
-        const s = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(i.D_GetTransform());
-        r.TransformOrigin = s;
-      }
-      i = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(e);
-      this.Hha?.UpdateGachaShowItem(e, i.QualityId);
-      this.lVi = t.SequencePlayer;
-      r = this.lVi.GetStartTime().Time;
-      this.lVi.SetPlaybackPosition(new UE.MovieSceneSequencePlaybackParams(r, 0, "", 0, 1));
-      this.lVi.PlayTo(new UE.MovieSceneSequencePlaybackParams(r, 0, "A", 2, 0));
-    }
+  OnAfterDestroy() {
+    CameraController_1.CameraController.SetViewTarget(this.gKt, "PersonalRootView.OnBeforeDestroy");
   }
   yVi() {
     var e = this.p5i.IsOtherData ? this.p5i.WorldLevel : ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
@@ -392,11 +283,11 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     var e;
     var t;
     var i;
-    var r = this.GetText(7);
+    var s = this.GetText(7);
     if (this.p5i.IsOtherData && !this.p5i.IsBirthdayDisplay || (e = this.p5i.Birthday, t = Math.floor(e / 100), i = e % 100, e === 0)) {
-      LguiUtil_1.LguiUtil.SetLocalText(r, "BirthDay", "--", "--");
+      LguiUtil_1.LguiUtil.SetLocalText(s, "BirthDay", "--", "--");
     } else {
-      LguiUtil_1.LguiUtil.SetLocalText(r, "BirthDay", t, i);
+      LguiUtil_1.LguiUtil.SetLocalText(s, "BirthDay", t, i);
     }
   }
   vVi() {

@@ -14,6 +14,7 @@ const TraceElementCommon_1 = require("../../../../../../../Core/Utils/TraceEleme
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const BulletController_1 = require("../../../../../Bullet/BulletController");
@@ -89,7 +90,7 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
       Instant: true
     }), this.rta = TimerSystem_1.TimerSystem.Delay(() => {
       this.ier(true);
-    }, GameplayAbilityVisionMisc_1.CHARACTER_HIDDEN_DELAY), this.oer(), 0);
+    }, GameplayAbilityVisionMisc_1.CHARACTER_HIDDEN_DELAY * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1)), this.oer(), 0);
   }
   OnEndAbility() {
     if (this.pAr) {
@@ -109,7 +110,7 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
   }
   AU() {
     this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !!this.MZo.IsInit && (!this.NeedNoActive() || !this.MZo.Entity.Active) && !(this.NeedNoAi() && this.MZo.Entity.GetComponent(47)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.MZo.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.VisionActorComponent = this.MZo.Entity.GetComponent(3), this.g6c = this.MZo.Entity.GetComponent(205), this.VisionBuffComponent = this.MZo.Entity.GetComponent(174), this.fAr = this.MZo.Entity.GetComponent(21), this.TSa = this.MZo.Entity.GetComponent(178), this.VisionSkillComponent = this.MZo.Entity.GetComponent(42), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
+    return !!this.MZo.IsInit && (!this.NeedNoActive() || !this.MZo.Entity.Active) && !(this.NeedNoAi() && this.MZo.Entity.GetComponent(47)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.MZo.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.VisionActorComponent = this.MZo.Entity.GetComponent(3), this.g6c = this.MZo.Entity.GetComponent(206), this.VisionBuffComponent = this.MZo.Entity.GetComponent(175), this.fAr = this.MZo.Entity.GetComponent(21), this.TSa = this.MZo.Entity.GetComponent(179), this.VisionSkillComponent = this.MZo.Entity.GetComponent(42), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
   }
   aZo(i) {
     CollisionUtils_1.CollisionUtils.SetCollisionResponseToPawn(this.VisionActorComponent.Actor.CapsuleComponent, 2, i ? 2 : 0);
@@ -216,7 +217,7 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
         Log_1.Log.Warn("Battle", 28, "幻象消失材质没有正常结束，被保底");
       }
       this.iba();
-    }, GameplayAbilityVisionMisc_1.VISION_HIDDEN_DELAY);
+    }, GameplayAbilityVisionMisc_1.VISION_HIDDEN_DELAY * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1));
     this.fAr?.AddCue(GameplayAbilityVisionMisc_1.MORPH_PARTICLE_CUE_ID, {
       Sync: true,
       Instant: true

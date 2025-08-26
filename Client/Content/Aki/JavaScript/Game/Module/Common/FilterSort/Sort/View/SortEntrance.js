@@ -68,7 +68,7 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     this._Dt = 1;
     this.Mne = 0;
     this.$Fa = undefined;
-    this.lSu = "";
+    this._7c = "";
     this.vUt = 1;
     this.ypt = [];
     this.lDt = [];
@@ -133,14 +133,14 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     var t;
     if (this.$Fa && this._Dt !== 0) {
       t = this.hDt.ConvertToStorageData();
-      ModelManager_1.ModelManager.SortModel.SetSortConfigData(this.$Fa, this._Dt, t, this.lSu);
+      ModelManager_1.ModelManager.SortModel.SetSortConfigData(this.$Fa, this._Dt, t, this._7c);
     }
   }
   mDt(t, i, s) {
     this._Dt = t;
     this.Mne = ConfigManager_1.ConfigManager.SortConfig.GetSortId(t);
     this.$Fa = i ?? undefined;
-    this.lSu = s ?? "";
+    this._7c = s ?? "";
   }
   VUt() {
     var t = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(this.Mne);
@@ -267,20 +267,25 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     }
   }
   UpdateDataWithConfig(t, i, s, e = "", ...h) {
-    this.XFa();
-    this.mDt(t, i, e);
-    this.WUt();
-    if (!(this.Mne <= 0)) {
-      this.ypt = s;
-      this.lDt = h;
-      t = ModelManager_1.ModelManager.SortModel.GetSortConfigData(i, this._Dt, e);
-      this.VUt();
-      this.HUt();
-      this.dDt(t);
-      this.AUt();
-      this.jUt();
-      this.kUt();
-      this.qpt(true);
+    var a = ConfigManager_1.ConfigManager.SortConfig.GetSortFilterConfig(i);
+    if (a.SaveMode === 2 || a.SaveMode === 3) {
+      this.UpdateData(t, s, ...h);
+    } else {
+      this.XFa();
+      this.mDt(t, i, e);
+      this.WUt();
+      if (!(this.Mne <= 0)) {
+        this.ypt = s;
+        this.lDt = h;
+        a = ModelManager_1.ModelManager.SortModel.GetSortConfigData(i, this._Dt, e);
+        this.VUt();
+        this.HUt();
+        this.dDt(a);
+        this.AUt();
+        this.jUt();
+        this.kUt();
+        this.qpt(true);
+      }
     }
   }
   SetResultDataDirty() {

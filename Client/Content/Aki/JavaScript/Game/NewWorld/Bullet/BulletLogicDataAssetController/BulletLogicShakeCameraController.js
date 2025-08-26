@@ -18,7 +18,7 @@ class BulletLogicShakeCameraController extends BulletLogicController_1.BulletLog
     this.B7o = 0;
     this.b7o = undefined;
     this.NeedTick = true;
-    this.Hte = e.GetComponent(169);
+    this.Hte = e.GetComponent(170);
     this.q7o = t.Count;
     this.G7o = t.Interval * TimeUtil_1.TimeUtil.InverseMillisecond;
     if (CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(this.Bullet.GetBulletInfo().AttackerHandle)) {

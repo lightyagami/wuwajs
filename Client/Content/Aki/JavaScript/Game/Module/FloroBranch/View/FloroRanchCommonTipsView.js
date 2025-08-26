@@ -10,7 +10,7 @@ const FloroRanchCommonTipItem_1 = require("./Item/FloroRanchCommonTipItem");
 class FloroRanchCommonTipsView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.eOu = undefined;
+    this.pOu = undefined;
     this.dV1 = () => {
       this.CloseMe();
     };
@@ -20,13 +20,13 @@ class FloroRanchCommonTipsView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[1, this.dV1]];
   }
   async OnBeforeStartAsync() {
-    this.eOu = new FloroRanchCommonTipItem_1.FloroRanchCommonTipItem();
+    this.pOu = new FloroRanchCommonTipItem_1.FloroRanchCommonTipItem();
     var e = this.GetItem(0);
-    await this.eOu.CreateThenShowByActorAsync(e.GetOwner());
+    await this.pOu.CreateThenShowByActorAsync(e.GetOwner());
   }
   OnBeforeShow() {
     var e = this.OpenParam;
-    this.eOu.RefreshInfoTipByParam(e);
+    this.pOu.RefreshInfoTipByParam(e);
   }
 }
 exports.FloroRanchCommonTipsView = FloroRanchCommonTipsView;

@@ -96,7 +96,12 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
       } else {
-        WeaponController_1.WeaponController.SendPbEquipTakeOnRequest(n, WeaponDefine_1.WEAPON_EQUIPTYPE, e);
+        t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206);
+        if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem?.GetConfigId === n && t?.Valid && t.HasTag(202314845)) {
+          ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TagCantSwitchWeapon");
+        } else {
+          WeaponController_1.WeaponController.SendPbEquipTakeOnRequest(n, WeaponDefine_1.WEAPON_EQUIPTYPE, e);
+        }
       }
     };
     this.mko = () => {

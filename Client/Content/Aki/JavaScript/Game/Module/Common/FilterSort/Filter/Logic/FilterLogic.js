@@ -16,12 +16,15 @@ const FishingItemFilter_1 = require("./Rule/FishingItemFilter");
 const InventoryFilter_1 = require("./Rule/InventoryFilter");
 const ItemFilter_1 = require("./Rule/ItemFilter");
 const MonsterDetectFilter_1 = require("./Rule/MonsterDetectFilter");
+const MonsterHandBookFilter_1 = require("./Rule/MonsterHandBookFilter");
 const PhantomFetterFilter_1 = require("./Rule/PhantomFetterFilter");
 const PhantomFilter_1 = require("./Rule/PhantomFilter");
 const RoleFilter_1 = require("./Rule/RoleFilter");
 const SilentAreaDetectFilter_1 = require("./Rule/SilentAreaDetectFilter");
 const VisionAssembleFilter_1 = require("./Rule/VisionAssembleFilter");
 const VisionDestroyFilter_1 = require("./Rule/VisionDestroyFilter");
+const WeaponHandBookFilter_1 = require("./Rule/WeaponHandBookFilter");
+const WeaponSkinHandBookFilter_1 = require("./Rule/WeaponSkinHandBookFilter");
 class FilterLogic {
   constructor() {
     this.VLt = {
@@ -41,7 +44,10 @@ class FilterLogic {
       14: new VisionAssembleFilter_1.VisionAssembleFilter(),
       15: new FishingItemFilter_1.FishingItemFilter(),
       16: new RoleFilter_1.EditFormationRoleFilter(),
-      17: new DangoAbyssPluginFilter_1.DangoAbyssPluginFilter()
+      17: new DangoAbyssPluginFilter_1.DangoAbyssPluginFilter(),
+      18: new MonsterHandBookFilter_1.MonsterHandBookFilter(),
+      19: new WeaponHandBookFilter_1.WeaponHandBookFilter(),
+      20: new WeaponSkinHandBookFilter_1.WeaponSkinHandBookFilter()
     };
     this.HLt = {
       [1]: FilterTypeFunctionLibrary_1.FilterTypeFunctionLibrary.GetElementFilterData,
@@ -113,21 +119,21 @@ class FilterLogic {
     if (!n) {
       return e;
     }
-    var F = [];
-    for (const o of e) {
-      var l = n(o, t);
-      if (l instanceof Array) {
-        for (const a of l) {
+    var o = [];
+    for (const l of e) {
+      var F = n(l, t);
+      if (F instanceof Array) {
+        for (const a of F) {
           if (t.has(a)) {
-            F.push(o);
+            o.push(l);
             break;
           }
         }
-      } else if (t.has(l)) {
-        F.push(o);
+      } else if (t.has(F)) {
+        o.push(l);
       }
     }
-    return F;
+    return o;
   }
   QLt(e, r, i, t) {
     var n = this.WLt(r, i);
@@ -137,73 +143,73 @@ class FilterLogic {
         UnFindList: e
       };
     }
+    var o = [];
     var F = [];
-    var l = [];
     for (const a of e) {
-      var o = n(a, t);
-      if (o instanceof Array) {
+      var l = n(a, t);
+      if (l instanceof Array) {
         let e = false;
-        for (const u of o) {
+        for (const u of l) {
           if (t.has(u)) {
-            F.push(a);
+            o.push(a);
             e = true;
             break;
           }
         }
         if (!e) {
-          l.push(a);
+          F.push(a);
         }
       } else {
-        (t.has(o) ? F : l).push(a);
+        (t.has(l) ? o : F).push(a);
       }
     }
     return {
-      FindList: F,
-      UnFindList: l
+      FindList: o,
+      UnFindList: F
     };
   }
   GetFilterList(e, i, r, t, n) {
-    var F = [];
-    let l = [];
-    var o;
+    var o = [];
+    let F = [];
+    var l;
     var a;
     var u = this.jLt(i);
     if (u.length === 0) {
-      l = e;
+      F = e;
     }
-    for (const p of u) {
+    for (const L of u) {
       for (const b of e) {
-        (p(b) ? F : l).push(b);
+        (L(b) ? o : F).push(b);
       }
     }
     if (r && t) {
-      let e = l;
+      let e = F;
       var y;
       var _;
-      var c;
-      var s = [];
+      var s;
+      var c = [];
       let r = false;
       for ([y, _] of n) {
         if (!(_.size <= 0)) {
           r = true;
-          c = this.QLt(e, i, y, _);
-          e = c.UnFindList;
-          s.push(...c.FindList);
+          s = this.QLt(e, i, y, _);
+          e = s.UnFindList;
+          c.push(...s.FindList);
         }
       }
       if (r) {
-        return s.concat(F);
+        return c.concat(o);
       } else {
-        return e.concat(F);
+        return e.concat(o);
       }
     }
-    let L = l;
-    for ([o, a] of n) {
+    let p = F;
+    for ([l, a] of n) {
       if (!(a.size <= 0)) {
-        L = this.KLt(L, i, o, a);
+        p = this.KLt(p, i, l, a);
       }
     }
-    return L.concat(F);
+    return p.concat(o);
   }
   GetFilterItemDataList(e, r) {
     var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(e);
@@ -212,9 +218,9 @@ class FilterLogic {
     if (t) {
       var n = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(r);
       var r = t(i.IdList);
-      for (const F of r) {
-        F.SetIsShowIcon(n.IsShowIcon);
-        F.NeedChangeColor = i.NeedChangeColor;
+      for (const o of r) {
+        o.SetIsShowIcon(n.IsShowIcon);
+        o.NeedChangeColor = i.NeedChangeColor;
       }
       return r;
     }

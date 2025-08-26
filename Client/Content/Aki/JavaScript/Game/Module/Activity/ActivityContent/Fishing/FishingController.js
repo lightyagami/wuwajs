@@ -98,31 +98,31 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.v7t);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28091, e => {});
-    Net_1.Net.Register(21369, e => {
+    Net_1.Net.Register(29042, e => {});
+    Net_1.Net.Register(19778, e => {
       e = e.RT_;
       if (e) {
         ModelManager_1.ModelManager.DockyardModel.UpdateDockyardData(e.OT_);
         ModelManager_1.ModelManager.FishingModel.GetShipData().RefreshData(e);
       }
     });
-    Net_1.Net.Register(22881, e => {
+    Net_1.Net.Register(26361, e => {
       ModelManager_1.ModelManager.DockyardModel.SetTrawlDataListFromServer(e.QT_);
     });
-    Net_1.Net.Register(16819, e => {
+    Net_1.Net.Register(19185, e => {
       ModelManager_1.ModelManager.FishingModel.UpdateFishingTechData(e.rb_);
     });
-    Net_1.Net.Register(25770, e => {
+    Net_1.Net.Register(19929, e => {
       ModelManager_1.ModelManager.FishingModel.RefreshHandBookData(e.AT_);
       ModelManager_1.ModelManager.FishingModel.FishingItemHandBookUnlockTraceList.push(...e.WA_);
     });
-    Net_1.Net.Register(17370, e => {
+    Net_1.Net.Register(17940, e => {
       ModelManager_1.ModelManager.FishingModel.RefreshHandBookDataReward(e.ob_);
     });
-    Net_1.Net.Register(23924, e => {
+    Net_1.Net.Register(16514, e => {
       ModelManager_1.ModelManager.FishingModel.AddCageDataFromServer(e.nb_, e.sb_);
     });
-    Net_1.Net.Register(26174, e => {
+    Net_1.Net.Register(29726, e => {
       if (e.ab_) {
         if (e.eTs) {
           ModelManager_1.ModelManager.FishingModel.RemoveOneFishingPointData(e.nb_, e.ab_);
@@ -131,7 +131,7 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
         }
       }
     });
-    Net_1.Net.Register(28661, e => {
+    Net_1.Net.Register(29090, e => {
       if (e.ab_) {
         if (e.eTs) {
           ModelManager_1.ModelManager.FishingModel.RemoveTempFishingPointData(e.ab_);
@@ -141,8 +141,8 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshTempFishingPointNum);
       }
     });
-    Net_1.Net.Register(26306, e => {});
-    Net_1.Net.Register(22936, e => {
+    Net_1.Net.Register(27094, e => {});
+    Net_1.Net.Register(19581, e => {
       for (const o of e.lb_) {
         ModelManager_1.ModelManager.DockyardModel.SetTrawlData(o);
       }
@@ -150,13 +150,13 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.DockyardModel.SetWareHouseData(r);
       }
     });
-    Net_1.Net.Register(26197, e => {
+    Net_1.Net.Register(29186, e => {
       ModelManager_1.ModelManager.FishingModel.RoleTalkIds = e.UT_;
     });
-    Net_1.Net.Register(17621, e => {
+    Net_1.Net.Register(18735, e => {
       ModelManager_1.ModelManager.FishingModel.UpdateInteractData(e.DT_);
     });
-    Net_1.Net.Register(20115, e => {
+    Net_1.Net.Register(18473, e => {
       if (ModelManager_1.ModelManager.FishingQuestModel.CurrentTraceEntrust !== e.LT_) {
         ModelManager_1.ModelManager.FishingQuestModel.CurrentTraceEntrust = e.LT_;
         ModelManager_1.ModelManager.FishingQuestModel.TraceEntrust();
@@ -164,38 +164,38 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.FishingQuestModel.EntrustRefreshCostRatio = e.y$_;
       ModelManager_1.ModelManager.FishingQuestModel.UpdateEntrusts(e.bT_);
     });
-    Net_1.Net.Register(17997, this.Hx_);
-    Net_1.Net.Register(25965, e => {
+    Net_1.Net.Register(18594, this.Hx_);
+    Net_1.Net.Register(21102, e => {
       ModelManager_1.ModelManager.FishingModel.UnlockPort.push(...e.BT_);
     });
-    Net_1.Net.Register(18308, this.w4_);
-    Net_1.Net.Register(23704, e => {
+    Net_1.Net.Register(25598, this.w4_);
+    Net_1.Net.Register(16082, e => {
       ModelManager_1.ModelManager.FishingModel.UnlockShipSkin.push(...e.Nws);
     });
-    Net_1.Net.Register(29791, e => {
+    Net_1.Net.Register(19244, e => {
       var o = ModelManager_1.ModelManager.FishingModel.GetShipData();
       o.SetLastPortId(e.XP_);
       o.SetIsInPortInternal(e.GT_);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28091);
-    Net_1.Net.UnRegister(21369);
-    Net_1.Net.UnRegister(22881);
-    Net_1.Net.UnRegister(16819);
-    Net_1.Net.UnRegister(25770);
-    Net_1.Net.UnRegister(17370);
-    Net_1.Net.UnRegister(23924);
-    Net_1.Net.UnRegister(26174);
-    Net_1.Net.UnRegister(26306);
-    Net_1.Net.UnRegister(22936);
-    Net_1.Net.UnRegister(26197);
-    Net_1.Net.UnRegister(17621);
-    Net_1.Net.UnRegister(20115);
-    Net_1.Net.UnRegister(17997);
-    Net_1.Net.UnRegister(25965);
-    Net_1.Net.UnRegister(18308);
-    Net_1.Net.UnRegister(23704);
+    Net_1.Net.UnRegister(29042);
+    Net_1.Net.UnRegister(19778);
+    Net_1.Net.UnRegister(26361);
+    Net_1.Net.UnRegister(19185);
+    Net_1.Net.UnRegister(19929);
+    Net_1.Net.UnRegister(17940);
+    Net_1.Net.UnRegister(16514);
+    Net_1.Net.UnRegister(29726);
+    Net_1.Net.UnRegister(27094);
+    Net_1.Net.UnRegister(19581);
+    Net_1.Net.UnRegister(29186);
+    Net_1.Net.UnRegister(18735);
+    Net_1.Net.UnRegister(18473);
+    Net_1.Net.UnRegister(18594);
+    Net_1.Net.UnRegister(21102);
+    Net_1.Net.UnRegister(25598);
+    Net_1.Net.UnRegister(16082);
   }
   static dQ_() {
     var e;
@@ -205,12 +205,12 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
       UiManager_1.UiManager.OpenView("FishingLevelUpView", e);
     }
   }
-  static RequestFishingIllustratedReward(e) {
-    var o = Protocol_1.Aki.Protocol.$0_.create();
+  static RequestMultiFishingIllustratedRewardRequest(e) {
+    var o = Protocol_1.Aki.Protocol.s6u.create();
     o.N6n = e;
-    Net_1.Net.Call(21063, o, e => {
+    Net_1.Net.Call(28694, o, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24572);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18422);
       }
     });
   }
@@ -234,11 +234,11 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     e.ezl = r.RightDataList;
     e.tzl = r.RemoveIncId ?? 0;
     this.e8_(r.RightDataList, r.Type);
-    Net_1.Net.Call(20044, e, e => {
+    Net_1.Net.Call(15030, e, e => {
       var o;
       if (e) {
         if (!(o = e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs)) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24572);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24153);
         }
         r.Callback?.(o);
       }
@@ -246,11 +246,11 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestFishingQuickSell(r) {
     var e = Protocol_1.Aki.Protocol.z0_.create();
-    Net_1.Net.Call(28064, e, e => {
+    Net_1.Net.Call(28440, e, e => {
       var o;
       if (e) {
         if (!(o = e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs)) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20194);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17962);
         }
         r(o);
       }
@@ -266,11 +266,11 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   static RequestFishingSell(e, r) {
     var o = Protocol_1.Aki.Protocol.tv_.create();
     o.izl = e;
-    Net_1.Net.Call(27043, o, e => {
+    Net_1.Net.Call(24027, o, e => {
       var o;
       if (e) {
         if (!(o = e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs)) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29697);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15245);
         }
         r(o);
       }
@@ -280,10 +280,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var i = Protocol_1.Aki.Protocol.rv_.create();
     i.nZl = o;
     i.sZl = e;
-    Net_1.Net.Call(15591, i, e => {
+    Net_1.Net.Call(29734, i, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18957);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22454);
         } else {
           UiManager_1.UiManager.CloseView("SailingView");
           UiManager_1.UiManager.CloseView("FishingDockView");
@@ -300,9 +300,9 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestFishingShipFixRequest() {
     var e = Protocol_1.Aki.Protocol.uv_.create();
-    Net_1.Net.Call(24896, e, e => {
+    Net_1.Net.Call(20580, e, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29821);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19326);
       }
     });
   }
@@ -310,10 +310,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var r = Protocol_1.Aki.Protocol.nv_.create();
     r.X6n = e;
     r.k9n = o;
-    Net_1.Net.Call(19510, r, e => {
+    Net_1.Net.Call(20853, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19404);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21934);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingRefreshQuestView, false);
           ModelManager_1.ModelManager.FishingQuestModel.AutoTraceEntrust();
@@ -324,10 +324,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   static RequestFishingEntrustTrace(e) {
     var o = Protocol_1.Aki.Protocol.av_.create();
     o.X6n = e;
-    Net_1.Net.Call(28016, o, e => {
+    Net_1.Net.Call(19266, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16804);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26717);
           ModelManager_1.ModelManager.FishingQuestModel.TraceFormClick = false;
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingRefreshQuestView, true);
@@ -338,10 +338,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   static RequestFishingEntrustRefresh(e) {
     var o = Protocol_1.Aki.Protocol.lv_.create();
     o.X6n = e;
-    Net_1.Net.Call(28926, o, e => {
+    Net_1.Net.Call(22163, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20233);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24404);
         } else {
           e = e.X6n;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingRefreshQuestView, false, e);
@@ -353,10 +353,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var i = Protocol_1.Aki.Protocol.zv_.create();
     i.X6n = e;
     i.jc_ = o;
-    Net_1.Net.Call(22038, i, e => {
+    Net_1.Net.Call(17000, i, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21263);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19082);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingRefreshQuestView, true);
           r?.();
@@ -367,11 +367,11 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   static RequestFishingTechLevelUp(r) {
     var e = Protocol_1.Aki.Protocol.mv_.create();
     e.b5n = r;
-    Net_1.Net.Call(16920, e, e => {
+    Net_1.Net.Call(22328, e, e => {
       var o;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25398);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15116);
         } else {
           e = ConfigManager_1.ConfigManager.FishingConfig.GetFishingTechById(r);
           if ((o = ModelManager_1.ModelManager.FishingModel.GetTechNodeCurrentLevel(r)) && e) {
@@ -392,10 +392,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   static async RequestFishingPointInfo(e, o) {
     var r = Protocol_1.Aki.Protocol.oy_.create();
     r.s5n = o;
-    var o = await Net_1.Net.CallAsync(17015, r);
+    var o = await Net_1.Net.CallAsync(19141, r);
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27721);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26378);
       } else if (o.ub_) {
         ModelManager_1.ModelManager.FishingModel.RefreshFishingPointData(e, o.ub_);
       }
@@ -405,10 +405,10 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.iy_.create();
     e.Z7n = o;
     e.sZl = ModelManager_1.ModelManager.FishingModel.DockId;
-    Net_1.Net.Call(19937, e, e => {
+    Net_1.Net.Call(25904, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29676);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20005);
         } else {
           ModelManager_1.ModelManager.FishingModel.CurrentShipSkin = o;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingShipSkinChangeSuccess);
@@ -439,7 +439,7 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestFishingExit(o) {
     var e = Protocol_1.Aki.Protocol.Zv_.create();
-    Net_1.Net.Call(18475, e, e => {
+    Net_1.Net.Call(16517, e, e => {
       o?.(!!e);
     });
   }
@@ -455,7 +455,7 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var o;
     var e = ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortConfig(e);
     if (e &&= ConfigManager_1.ConfigManager.FishingConfig.GetFishingPortPosition(e.AshorePoint)) {
-      ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity?.GetComponent(233)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity, 1);
+      ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity?.GetComponent(234)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity, 1);
       o = e.Position;
       o = Vector_1.Vector.Create(o[0], o[1], o[2]);
       e = e.Rotation;
@@ -470,11 +470,11 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     e.ezl = r.RightDataList;
     e.tzl = r.RemoveIncId ?? 0;
     e.kr_ = r.ActionIncId;
-    Net_1.Net.Call(27812, e, e => {
+    Net_1.Net.Call(27528, e, e => {
       var o;
       if (e) {
         if (!(o = e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs)) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22605);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29997);
         }
         r.Callback?.(o, e.mb_);
       }
@@ -532,14 +532,14 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   }
   static E2_() {
     var e = new Protocol_1.Aki.Protocol.my_();
-    Net_1.Net.Call(25927, e, () => {});
+    Net_1.Net.Call(29463, e, () => {});
   }
   static I2_() {
     var e;
     var o = this.GetFishingSkillCostId();
     if (!(o <= 0)) {
       (e = new Protocol_1.Aki.Protocol._y_()).L8n = o;
-      Net_1.Net.Call(27046, e, e => {
+      Net_1.Net.Call(26339, e, e => {
         if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(FishingDefine_1.FISHING_SKILL_BOMB_SUCCESS);
           var o = [];
@@ -557,7 +557,7 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
     var o = this.GetFishingSkillCostId();
     if (!(o <= 0)) {
       (e = new Protocol_1.Aki.Protocol.uy_()).L8n = o;
-      Net_1.Net.Call(24624, e, e => {
+      Net_1.Net.Call(26255, e, e => {
         if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(FishingDefine_1.FISHING_SKILL_BAIT_SUCCESS);
         }
@@ -590,13 +590,11 @@ class FishingController extends UiControllerBase_1.UiControllerBase {
   }
   static h5_() {
     ModelManager_1.ModelManager.GameModeModel.IsTeleport = true;
-    ModelManager_1.ModelManager.GameModeModel.AddLoadMapHandle("RequestFishingTeleportToBoat");
     var e = new Protocol_1.Aki.Protocol.l6_();
-    Net_1.Net.Call(25842, e, e => {
+    Net_1.Net.Call(24003, e, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28547);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16751);
       }
-      ModelManager_1.ModelManager.GameModeModel.RemoveLoadMapHandle("RequestFishingTeleportToBoat");
       ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
     });
   }
@@ -693,7 +691,7 @@ FishingController.Hx_ = a => {
   if (l) {
     TimerSystem_1.GameplayTimerSystem.Delay(() => {
       var e = ModelManager_1.ModelManager.FishingModel.GetShipData();
-      e.GetEntityHandle()?.Entity?.GetComponent(276)?.ExecuteRevive();
+      e.GetEntityHandle()?.Entity?.GetComponent(279)?.ExecuteRevive();
       var o = e.GetCreatureDataId();
       var e = e.IsShipDriving();
       var r = new UE.VectorDouble(l.X, l.Y, l.Z);
@@ -714,7 +712,7 @@ FishingController.Hx_ = a => {
 FishingController.JYl = (e, o) => {
   if (e === 10073 && o) {
     e = Protocol_1.Aki.Protocol.k0_.create();
-    Net_1.Net.Call(25598, e, e => {
+    Net_1.Net.Call(18665, e, e => {
       if (e) {
         ModelManager_1.ModelManager.DockyardModel.SetFishingShipData(e.TT_.RT_);
         ModelManager_1.ModelManager.FishingQuestModel.CurrentTraceEntrust = e.TT_.LT_;

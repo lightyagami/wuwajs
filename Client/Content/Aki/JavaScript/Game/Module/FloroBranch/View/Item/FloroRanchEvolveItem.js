@@ -11,15 +11,15 @@ const LINE_ROTATOR_YAW_OFFSET = 180;
 class FloroRanchEvolveItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.KLu = undefined;
+    this.SAu = undefined;
     this.cco = [];
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [3, UE.UIItem], [2, UE.UIItem]];
   }
   OnStart() {
-    this.KLu = this.GetItem(2);
-    this.KLu.SetUIActive(false);
+    this.SAu = this.GetItem(2);
+    this.SAu.SetUIActive(false);
   }
   Refresh(e) {
     if (e) {
@@ -52,7 +52,7 @@ class FloroRanchEvolveItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   Bqe() {
-    return LguiUtil_1.LguiUtil.CopyItem(this.KLu, this.GetItem(3));
+    return LguiUtil_1.LguiUtil.CopyItem(this.SAu, this.GetItem(3));
   }
 }
 exports.FloroRanchEvolveItem = FloroRanchEvolveItem;

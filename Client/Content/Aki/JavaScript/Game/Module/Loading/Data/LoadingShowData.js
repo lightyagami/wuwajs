@@ -17,6 +17,7 @@ class LoadingShowData {
     this.PGc = 0;
     this._Ui = 0;
     this.L9e = 0;
+    this.XJc = 0;
   }
   Initialize() {
     this.Cvi();
@@ -35,21 +36,26 @@ class LoadingShowData {
   Cvi() {
     this.DGc();
     var t = [];
-    var e = this.xGc();
-    if (e && e.length !== 0) {
-      t.push(...e);
+    var e = ModelManager_1.ModelManager.LoadingModel.GetSpecifiedLoadingConfig();
+    var r = this.xGc();
+    if (e) {
+      t.push(e.Id);
+      ModelManager_1.ModelManager.LoadingModel.ClearSpecifiedLoadingConfig();
+      this.XJc = e.DuringTime;
+    } else if (r && r.length !== 0) {
+      t.push(...r);
     } else {
       t.push(...this.UGc());
     }
-    var r = [];
-    for (const i of t) {
-      r.push(...ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTextList(i));
+    var i = [];
+    for (const a of t) {
+      i.push(...ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTextList(a));
     }
-    this.cvi = this.gvi(r);
+    this.cvi = this.gvi(i);
     this.uvi = [];
-    for (const a of r) {
-      if (a.ImageId === this.cvi) {
-        this.uvi.push(a);
+    for (const o of i) {
+      if (o.ImageId === this.cvi) {
+        this.uvi.push(o);
       }
     }
   }
@@ -131,6 +137,9 @@ class LoadingShowData {
   }
   GetTipCount() {
     return this.uvi.length;
+  }
+  GetDuringTime() {
+    return this.XJc;
   }
 }
 exports.LoadingShowData = LoadingShowData;

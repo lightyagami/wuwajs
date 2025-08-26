@@ -61,8 +61,10 @@ class CameraController extends ControllerBase_1.ControllerBase {
     return super.OnInit();
   }
   static OnPossess(e) {
-    this.FightCamera.LogicComponent.SetPawn(e);
-    this.SequenceCamera.PlayerComponent.SetPawn(e);
+    if (this.Model) {
+      this.FightCamera.LogicComponent.SetPawn(e);
+      this.SequenceCamera.PlayerComponent.SetPawn(e);
+    }
   }
   static SetViewTarget(e, t, a = 0, r = 0, i = 0, s, o) {
     var n;
@@ -295,7 +297,7 @@ class CameraController extends ControllerBase_1.ControllerBase {
       this.Model.NextFindStartHideDistanceTime = Time_1.Time.Now + CameraParams_1.FIND_DITHER_START_HIDE_DISTANCE_PERIOD;
       var e;
       var t = [];
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(CameraParams_1.DITHER_START_HIDE_DISTANCE_THRESHOLD, 62, t);
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(CameraParams_1.DITHER_START_HIDE_DISTANCE_THRESHOLD, 248, t);
       this.Model.CameraDitherStartHideDistance = this.FightCamera.LogicComponent.StartHideDistance;
       for (const a of t) {
         if (a.Entity?.Active) {
@@ -333,10 +335,10 @@ class CameraController extends ControllerBase_1.ControllerBase {
 }
 (exports.CameraController = CameraController).IsInCameraModeBlending = false;
 CameraController.xie = (e, t) => {
-  if (t?.Valid && (t = t.Entity.GetComponent(205))?.Valid) {
+  if (t?.Valid && (t = t.Entity.GetComponent(206))?.Valid) {
     t.RemoveTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
   }
-  if (e?.Valid && (t = e.Entity.GetComponent(205))?.Valid) {
+  if (e?.Valid && (t = e.Entity.GetComponent(206))?.Valid) {
     t.AddTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
     CameraController.uml(t.HasTag(constrainAspectRatioGameplayTag));
   }

@@ -143,10 +143,10 @@ class BattlePassModel extends ModelBase_1.ModelBase {
   InitBattlePassConfigData() {
     var t = this.BattlePassId;
     this.RewardDataList.length = 0;
-    var e = ConfigManager_1.ConfigManager.BattlePassConfig.GetBattlePassData(t);
-    this.UQ = e.LevelLimit;
-    var t = ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(t);
-    for (const l of t) {
+    var t = ConfigManager_1.ConfigManager.BattlePassConfig.GetBattlePassData(t);
+    this.UQ = t.LevelLimit;
+    var e = ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(t.BattlePassRewardId);
+    for (const l of e) {
       if (!(l.Level > this.UQ)) {
         var a;
         var r;
@@ -173,8 +173,8 @@ class BattlePassModel extends ModelBase_1.ModelBase {
         this.RewardDataList.push(o);
       }
     }
-    this.Fki = e.WeekExpLimit;
-    this.Vki = e.LevelUpExp;
+    this.Fki = t.WeekExpLimit;
+    this.Vki = t.LevelUpExp;
     this.Hki();
   }
   Hki() {

@@ -88,7 +88,7 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreDownloadStateUpdate);
       PreDownloadManager_1.PreDownloadManager.Get().RemoveCompleteEvent(this.UCc);
     };
-    this.peu = () => {
+    this.Heu = () => {
       PreDownloadManager_1.PreDownloadManager.Get().TryRemoveTick();
       LauncherLog_1.LauncherLog.Info("OnPreDownloadEnable And RemoveTick");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate);
@@ -200,18 +200,17 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
     var o = (0, puerts_1.$ref)(0n);
     UE.KuroLauncherLibrary.GetTotalAndFreeSpace(r, o);
     var r = (0, puerts_1.$unref)(o);
-    return e.GetNeedSpace() + e.GetDownloadSize() + 10n * 1024n * 1024n <= r;
+    return e.GetNeedSpace() + 10n * 1024n * 1024n <= r;
   }
   kCc() {
     var e;
     var r;
-    var o;
-    var n = PreDownloadManager_1.PreDownloadManager.Get();
+    var o = PreDownloadManager_1.PreDownloadManager.Get();
     if (UiManager_1.UiManager.IsViewShow("PreDownloadView")) {
       e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(268);
-      o = ((r = n.GetDownloadSize()) / BigInt(1048576)).toString() + "MB";
-      n = ((n.GetNeedSpace() + r) / BigInt(1048576)).toString() + "MB";
-      e.SetTextArgs(o, n);
+      r = (o.GetDownloadSize() / BigInt(1048576)).toString() + "MB";
+      o = (o.GetNeedSpace() / BigInt(1048576)).toString() + "MB";
+      e.SetTextArgs(r, o);
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
     } else {
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PreDownload_NoSpace");
@@ -242,7 +241,7 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
     this.HCc = true;
   }
   AddEnableCheck() {
-    PreDownloadManager_1.PreDownloadManager.Get().AddEnabledEvent(this.peu);
+    PreDownloadManager_1.PreDownloadManager.Get().AddEnabledEvent(this.Heu);
     LauncherLog_1.LauncherLog.Info("On PreDownload AddEnabledEvent");
   }
 }

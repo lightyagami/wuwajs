@@ -232,7 +232,7 @@ class TsInteractionUtils {
       if (t) {
         t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a);
         if (t) {
-          t = t.Entity.GetComponent(197);
+          t = t.Entity.GetComponent(198);
           if (t) {
             t = t.GetInteractController();
             if (t) {

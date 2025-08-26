@@ -99,10 +99,10 @@ class TsAnimNotifyStateAttach extends UE.KuroAnimNotifyState {
     if (!h?.Valid) {
       return false;
     }
-    if (!s.GetComponent(180)?.Valid) {
+    if (!s.GetComponent(181)?.Valid) {
       return false;
     }
-    var o = t.GetEntityNoBlueprint()?.GetComponent(180);
+    var o = t.GetEntityNoBlueprint()?.GetComponent(181);
     if (!o?.Valid) {
       return false;
     }
@@ -130,7 +130,7 @@ class TsAnimNotifyStateAttach extends UE.KuroAnimNotifyState {
     var e;
     var s;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(e = t.CharacterActorComponent)?.Valid && !!e.IsAutonomousProxy && !!e.Entity.GetComponent(177)?.Valid && !!(s = e.Entity.GetComponent(40))?.Valid && !!s.SkillTarget?.Entity && !!(s = s.SkillTarget.Entity).GetComponent(180)?.Valid && !!(s = s.GetComponent(3))?.Valid && !!(t = TsAnimNotifyStateAttach.CacheMap.get(t)) && !(t.UpdateAttachLocation(e, this.GetAttachTargetLocation(s)), e.AddActorWorldOffset(t.StepFrameLocationOffset(e, a).ToUeVector(), "TsAnimNotifyStateAttach", false), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(e = t.CharacterActorComponent)?.Valid && !!e.IsAutonomousProxy && !!e.Entity.GetComponent(178)?.Valid && !!(s = e.Entity.GetComponent(40))?.Valid && !!s.SkillTarget?.Entity && !!(s = s.SkillTarget.Entity).GetComponent(181)?.Valid && !!(s = s.GetComponent(3))?.Valid && !!(t = TsAnimNotifyStateAttach.CacheMap.get(t)) && !(t.UpdateAttachLocation(e, this.GetAttachTargetLocation(s)), e.AddActorWorldOffset(t.StepFrameLocationOffset(e, a).ToUeVector(), "TsAnimNotifyStateAttach", false), 0);
   }
   K2_NotifyEnd(t, i) {
     var a;
@@ -139,7 +139,7 @@ class TsAnimNotifyStateAttach extends UE.KuroAnimNotifyState {
     var r;
     var h;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(a = t.CharacterActorComponent)?.Valid && !!a.IsAutonomousProxy && !!(e = a.Entity.GetComponent(40))?.Valid && !!e.SkillTarget?.Entity && !!(e = e.SkillTarget.Entity).GetComponent(180)?.Valid && !!(s = e.GetComponent(3))?.Valid && !!(r = t.GetEntityNoBlueprint()?.GetComponent(180))?.Valid && !!(h = TsAnimNotifyStateAttach.CacheMap.get(t)) && !(i = a.Entity.GetComponent(209).CreateAnimNotifyContent(i.GetName(), this.exportIndex), h.UpdateAttachLocation(a, this.GetAttachTargetLocation(s)), a.AddActorWorldOffset(h.StepFrameLocationOffset(a, MAX_ANIM_TIME).ToUeVector(), "TsAnimNotifyStateAttach", false), r.AttachToTarget(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(e), i, true), TsAnimNotifyStateAttach.CacheMap?.delete(t), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(a = t.CharacterActorComponent)?.Valid && !!a.IsAutonomousProxy && !!(e = a.Entity.GetComponent(40))?.Valid && !!e.SkillTarget?.Entity && !!(e = e.SkillTarget.Entity).GetComponent(181)?.Valid && !!(s = e.GetComponent(3))?.Valid && !!(r = t.GetEntityNoBlueprint()?.GetComponent(181))?.Valid && !!(h = TsAnimNotifyStateAttach.CacheMap.get(t)) && !(i = a.Entity.GetComponent(210).CreateAnimNotifyContent(i.GetName(), this.exportIndex), h.UpdateAttachLocation(a, this.GetAttachTargetLocation(s)), a.AddActorWorldOffset(h.StepFrameLocationOffset(a, MAX_ANIM_TIME).ToUeVector(), "TsAnimNotifyStateAttach", false), r.AttachToTarget(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(e), i, true), TsAnimNotifyStateAttach.CacheMap?.delete(t), 0);
   }
   GetAttachSocketName() {
     if (!this.AttachSocketName || StringUtils_1.StringUtils.IsNothing(this.AttachSocketName.toString())) {

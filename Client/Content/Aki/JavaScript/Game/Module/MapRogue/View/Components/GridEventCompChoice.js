@@ -23,7 +23,7 @@ class GridEventChoice extends UiPanelBase_1.UiPanelBase {
     this.ToggleLayout = undefined;
     this.ToggleDataMap = new Map();
     this.FinishItem = undefined;
-    this.njc = false;
+    this.lZu = false;
     this.Ao1 = () => {
       var i = new GridEventChoiceToggle();
       i.OnExtendToggleStateChanged = this.Jgt;
@@ -39,7 +39,7 @@ class GridEventChoice extends UiPanelBase_1.UiPanelBase {
         this.ExecuteStep?.(this.StepId, t);
       }
     };
-    this.TKi = (i, t) => this.njc;
+    this.TKi = (i, t) => this.lZu;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIText], [5, UE.UIVerticalLayout], [6, UE.UIItem], [7, UE.UIItem]];
@@ -52,7 +52,7 @@ class GridEventChoice extends UiPanelBase_1.UiPanelBase {
     this.ToggleLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(5), this.Ao1);
   }
   async Refresh(s) {
-    this.njc = false;
+    this.lZu = false;
     var i = ConfigManager_1.ConfigManager.MapRogueConfig.GetRogueEventStepById(this.StepId);
     if (i) {
       var e = !StringUtils_1.StringUtils.IsEmpty(i.TitleKey);
@@ -99,7 +99,7 @@ class GridEventChoice extends UiPanelBase_1.UiPanelBase {
       await this.ToggleLayout.RefreshByDataAsync(h, true);
       this.SetActive(true);
       TimerSystem_1.TimerSystem.Delay(() => {
-        this.njc = true;
+        this.lZu = true;
         this.CanInteractCallback?.(this.StepId, this.StepType);
       }, CommonParamById_1.configCommonParamById.GetIntConfig("MapRogueEventChoiceForbiddenDuration") ?? 100);
     }

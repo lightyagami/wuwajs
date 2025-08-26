@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.AdventureTargetView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons");
@@ -36,6 +37,7 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     this.l6e = 0;
     this._6e = false;
     this.SPe = undefined;
+    this.JVe = false;
     this.YVe = () => {
       var e = new AdventureTargetRewardItem_1.AdventureTargetRewardItem();
       e.BindOnExtendToggleClicked(this.u6e);
@@ -47,7 +49,19 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     };
     this.c6e = () => false;
     this.m6e = () => {
-      return new AdventureTargetItem_1.AdventureTargetItem();
+      var e = new AdventureTargetItem_1.AdventureTargetItem();
+      e.SetClickGetButtonCb(this.uQu);
+      return e;
+    };
+    this.uQu = e => {
+      var t;
+      if (!this.JVe) {
+        this.JVe = true;
+        t = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterTasks(this.n6e)?.filter(e => e.Status === Protocol_1.Aki.Protocol.Aks.a3_).map(e => e.AdventureTaskBase.Id) ?? [];
+        ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestMultiForAdventureReward(t).finally(() => {
+          this.JVe = false;
+        });
+      }
     };
     this.d6e = () => {
       var e;
@@ -87,7 +101,14 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
       }
     };
     this.p6e = e => {
-      if (ModelManager_1.ModelManager.AdventureGuideModel.IsTaskOfChapter(e, this.n6e)) {
+      let t = false;
+      for (const i of e) {
+        if (ModelManager_1.ModelManager.AdventureGuideModel.IsTaskOfChapter(i, this.n6e)) {
+          t = true;
+          break;
+        }
+      }
+      if (t) {
         this._6e = true;
         e = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterTasks(this.n6e);
         this.SetAdventureTargetInfoByChapter(this.n6e, false);
@@ -176,15 +197,15 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     var r = new Array();
     var s = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList();
     var n = ModelManager_1.ModelManager.AdventureGuideModel.GetUnLockChaptersList();
-    var a = this.GetItem(11);
-    var h = this.GetScrollViewWithScrollbar(12).GetRootComponent();
-    var o = this.GetItem(13);
+    var o = this.GetItem(11);
+    var a = this.GetScrollViewWithScrollbar(12).GetRootComponent();
+    var h = this.GetItem(13);
     var _ = this.GetText(10);
-    for (const g of i.keys()) {
+    for (const d of i.keys()) {
       var l = [{
         IncId: 0,
-        ItemId: g
-      }, i.get(g)];
+        ItemId: d
+      }, i.get(d)];
       r.push(l);
     }
     this.H3e.RefreshByData(r);
@@ -202,12 +223,12 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
           LguiUtil_1.LguiUtil.SetLocalText(_, AdventureGuideController_1.DOING);
         }
       }
-      a.SetUIActive(true);
-      h.SetUIActive(true);
-      o.SetUIActive(false);
-    } else {
-      h.SetUIActive(false);
       o.SetUIActive(true);
+      a.SetUIActive(true);
+      h.SetUIActive(false);
+    } else {
+      a.SetUIActive(false);
+      h.SetUIActive(true);
       n = LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(t.UnLockCondition) ?? "";
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), n);
     }

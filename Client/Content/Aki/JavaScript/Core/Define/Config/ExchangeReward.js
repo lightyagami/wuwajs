@@ -39,6 +39,15 @@ class ExchangeReward {
   rewardidValue(t) {
     return this.rewardid(t)?.value();
   }
+  get RewardIdCalabash() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.rewardidcalabashLength(), this.rewardidcalabashKey, this.rewardidcalabashValue, this);
+  }
+  rewardidcalabashKey(t) {
+    return this.rewardidcalabash(t)?.key();
+  }
+  rewardidcalabashValue(t) {
+    return this.rewardidcalabash(t)?.value();
+  }
   get PreviewReward() {
     return GameUtils_1.GameUtils.ConvertToMap(this.previewrewardLength(), this.previewrewardKey, this.previewrewardValue, this);
   }
@@ -84,9 +93,9 @@ class ExchangeReward {
     return this.cost(t);
   }
   cost(t, r) {
-    var e = this.J7.__offset(this.z7, 10);
-    if (e) {
-      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    var i = this.J7.__offset(this.z7, 10);
+    if (i) {
+      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -103,9 +112,9 @@ class ExchangeReward {
     return this.rewardid(t);
   }
   rewardid(t, r) {
-    var e = this.J7.__offset(this.z7, 12);
-    if (e) {
-      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    var i = this.J7.__offset(this.z7, 12);
+    if (i) {
+      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -118,19 +127,38 @@ class ExchangeReward {
       return 0;
     }
   }
+  GetRewardidcalabashAt(t, r) {
+    return this.rewardidcalabash(t);
+  }
+  rewardidcalabash(t, r) {
+    var i = this.J7.__offset(this.z7, 14);
+    if (i) {
+      return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  rewardidcalabashLength() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   GetPreviewrewardAt(t, r) {
     return this.previewreward(t);
   }
   previewreward(t, r) {
-    var e = this.J7.__offset(this.z7, 14);
-    if (e) {
-      return (r || new DicIntIntIntMap_1.DicIntIntIntMap()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    var i = this.J7.__offset(this.z7, 16);
+    if (i) {
+      return (r || new DicIntIntIntMap_1.DicIntIntIntMap()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
     } else {
       return null;
     }
   }
   previewrewardLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {

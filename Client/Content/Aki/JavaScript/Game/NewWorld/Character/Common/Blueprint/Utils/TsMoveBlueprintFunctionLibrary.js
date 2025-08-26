@@ -145,7 +145,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static HasMoveInputOrTickIntervalAndModelBuffer(t) {
     var e;
-    return !!EntitySystem_1.EntitySystem.GetComponent(t, 45)?.HasMoveInput || !!(e = EntitySystem_1.EntitySystem.Get(t)) && !(e.GetTickInterval() <= 1) && (EntitySystem_1.EntitySystem.GetComponent(t, 177)?.HasLocationModelBuffer() ?? false);
+    return !!EntitySystem_1.EntitySystem.GetComponent(t, 45)?.HasMoveInput || !!(e = EntitySystem_1.EntitySystem.Get(t)) && !(e.GetTickInterval() <= 1) && (EntitySystem_1.EntitySystem.GetComponent(t, 178)?.HasLocationModelBuffer() ?? false);
   }
   static HasRotatorInput(t) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
@@ -285,7 +285,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var n;
     var r = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (r && e instanceof TsBaseCharacter_1.default) {
-      if (n = EntitySystem_1.EntitySystem.GetComponent(t, 177)) {
+      if (n = EntitySystem_1.EntitySystem.GetComponent(t, 178)) {
         n.MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0
@@ -330,7 +330,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static GetRacingRightSpeed(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 108)?.LastRightSpeed ?? 0;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 109)?.LastRightSpeed ?? 0;
   }
   static SetPendulumData(t, e, i, n, r, o, s, a, m, y, c, _) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 71);
@@ -431,7 +431,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoMove(t, e) {
     var i;
     var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 177);
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
     if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (n = i.InputDirectProxy, r.InputDirect.Equals(n) || (r.InputDirect.DeepCopy(n), e.InputDirectRef = n.ToUeVectorOld()), n = i.InputRotatorProxy, r.InputRotator.Equals(n) || (r.InputRotator.DeepCopy(n), e.InputRotatorRef = n.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n && (r.Speed = n, e.SpeedRef = n), n = i.IsJump, r.IsJump !== n && (r.IsJump = n, e.IsJumpRef = n), n = i.GroundedTimeUe, r.GroundedTime !== n && (r.GroundedTime = n, e.GroundedTimeRef = n), n = i.IsFallingIntoWater, r.IsFallingIntoWater !== n && (r.IsFallingIntoWater = n, e.IsFallingIntoWaterRef = n), n = i.JumpUpRate, r.JumpUpRate !== n) && (r.JumpUpRate = n, e.JumpUpRateRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 34))?.Valid && (n = i.GetTsClimbInfo(), r.ClimbInfo.Equals(n) || (r.ClimbInfo.DeepCopy(n), e.ClimbInfoRef = i.GetClimbInfo()), n = i.GetTsClimbState(), r.ClimbState.Equals(n) || (r.ClimbState.DeepCopy(n), e.ClimbStateRef = i.GetClimbState()), n = i.GetClimbRadius(), r.ClimbRadius !== n && (r.ClimbRadius = n, e.ClimbRadiusRef = n), n = i.GetOnWallAngle(), r.ClimbOnWallAngle !== n) && (r.ClimbOnWallAngle = n, e.ClimbOnWallAngleRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 77))?.Valid && (n = i.SprintSwimOffset, r.SprintSwimOffset !== n && (r.SprintSwimOffset = n, e.SprintSwimOffsetRef = n), n = i.SprintSwimOffsetLerpSpeed, r.SprintSwimOffsetLerpSpeed !== n) && (r.SprintSwimOffsetLerpSpeed = n, e.SprintSwimOffsetLerpSpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 35))?.Valid) && (n = i.SlideForward, r.SlideForward.Equals(n) || (r.SlideForward.DeepCopy(n), e.SlideForwardRef = n.ToUeVectorOld()), t = i.SlideSwitchThisFrame, r.SlideSwitchThisFrame !== t && (r.SlideSwitchThisFrame = t, e.SlideSwitchThisFrameRef = t), n = i.StandMode, r.SlideStandMode !== n)) {
       r.SlideStandMode = n;
       e.SlideStandModeRef = n;
@@ -439,7 +439,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static UpdateAnimInfoMoveMonster(t, e) {
     var i;
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 177);
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 178);
     if (n?.Valid && (e = e, n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, n.InputDirect.Equals(i) || (n.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid) && (t = i.IsMoving, n.IsMoving !== t && (n.IsMoving = t, e.IsMovingRef = t), t = i.HasMoveInput, n.HasMoveInput !== t)) {
       n.HasMoveInput = t;
       e.HasMoveInputRef = t;
@@ -448,8 +448,8 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoMoveRoleNpc(t, e) {
     var i;
     var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 177);
-    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, r.InputDirect.Equals(i) || (r.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n) && (r.Speed = n, e.SpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 229))?.Valid) && (n = i.IsOnVehicle, r.IsOnVehicle !== n)) {
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
+    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, r.InputDirect.Equals(i) || (r.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n) && (r.Speed = n, e.SpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 230))?.Valid) && (n = i.IsOnVehicle, r.IsOnVehicle !== n)) {
       r.IsOnVehicle = n;
       e.IsOnVehicle = n;
     }
@@ -568,7 +568,7 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static EnterKite(t) {
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 38);
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 99);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!e?.Valid && !!t?.Valid && e.EnterKite(t.GetCurrentTarget());
   }
 }

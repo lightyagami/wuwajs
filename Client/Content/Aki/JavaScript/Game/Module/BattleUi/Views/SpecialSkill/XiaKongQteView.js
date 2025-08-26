@@ -21,7 +21,7 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.det = [];
     this.Vwc = undefined;
-    this.gY1 = [];
+    this.VY1 = [];
     this.Wst = undefined;
     this.hBa = undefined;
     this.Lrt = false;
@@ -75,7 +75,7 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
     var t = this.GetItem(t).GetOwner();
     var i = new XiaKongQteBar_1.XiaKongQteBar();
     await i.CreateThenShowByActorAsync(t);
-    this.gY1.push(i);
+    this.VY1.push(i);
   }
   async fet(t) {
     var t = this.GetItem(t).GetOwner();
@@ -96,7 +96,7 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiSpecialSkillEnableChanged, this.Dwc);
     for (let t = 0; t < this.det.length; t++) {
-      this.gY1[t].Init(this.det[t]);
+      this.VY1[t].Init(this.det[t]);
       this.det[t].SetPressCallback(this.f1c);
       this.det[t].RefreshType(inputTypeList[t]);
     }
@@ -114,17 +114,17 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
     if (t?.RoleConfig?.Id !== XIA_KONG_ROLE_ID) {
       this.Wst = undefined;
       this.hBa = undefined;
-      for (const i of this.gY1) {
+      for (const i of this.VY1) {
         i.Refresh(undefined);
       }
       this.CloseMe();
     } else {
       this.Wst = t;
-      t = this.Wst.EntityHandle?.Entity?.GetComponent(252);
+      t = this.Wst.EntityHandle?.Entity?.GetComponent(255);
       this.hBa = t?.SpecialSkill;
       if (this.hBa.GetIsUltraSkillState()) {
         this.ehr(true);
-        for (const e of this.gY1) {
+        for (const e of this.VY1) {
           e.Refresh(this.hBa);
         }
       } else {
@@ -147,10 +147,10 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.Kco);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSpecialSkillEnableChanged, this.Dwc);
-    for (const t of this.gY1) {
+    for (const t of this.VY1) {
       t.Destroy();
     }
-    this.gY1.length = 0;
+    this.VY1.length = 0;
     for (const i of this.det) {
       i.Destroy();
     }
@@ -162,7 +162,7 @@ class XiaKongQteView extends UiTickViewBase_1.UiTickViewBase {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData?.SetChildrenVisible(12, [9, 10, 17], true);
   }
   OnTick(t) {
-    for (const i of this.gY1) {
+    for (const i of this.VY1) {
       i.Tick(t);
     }
     for (const e of this.det) {

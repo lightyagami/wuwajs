@@ -39,7 +39,7 @@ class MapRoguePanelFetter extends UiPanelBase_1.UiPanelBase {
         this.GetButton(2).RootUIComp.SetUIActive(this.qo1);
       }
     };
-    this.cpu = () => {
+    this.cvu = () => {
       this.qo1 = !this.qo1;
       this.TE1();
       this.GetVerticalLayout(0).RootUIComp.SetUIActive(true);
@@ -58,7 +58,7 @@ class MapRoguePanelFetter extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIExtendToggle], [4, UE.UIText]];
-    this.BtnBindInfo = [[2, this.Tp1], [3, this.cpu]];
+    this.BtnBindInfo = [[2, this.Tp1], [3, this.cvu]];
   }
   OnStart() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);

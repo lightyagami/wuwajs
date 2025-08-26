@@ -11,21 +11,21 @@ const FloroRanchActionBase_1 = require("./FloroRanchActionBase");
 class FloroRanchEatActionData extends FloroRanchActionBase_1.FloroRanchActionDataBase {
   constructor(o) {
     super(o);
-    this._gu = undefined;
-    this._gu = o.kyu;
+    this.aCu = undefined;
+    this.aCu = o.xSu;
   }
   async OnExecute() {
     await this.CasterEntity.GetUiItemComponent().PlayEatAnim();
     await this.WaitIfPause();
     if (!this.IsExit()) {
       var o = [];
-      for (const r of this._gu.khu) {
-        if (r.nKn !== Protocol_1.Aki.Protocol.Wyu.Proto_UnitOpRemove) {
+      for (const r of this.aCu.llu) {
+        if (r.nKn !== Protocol_1.Aki.Protocol.VSu.Proto_UnitOpRemove) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("FloroRanchGamePlay", 58, "吞噬只能移除实体", ["data", r]);
           }
         } else {
-          var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(r.hxs.Ziu);
+          var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(r.hxs.Tru);
           var a = e.GetUiItemComponent();
           if (!a) {
             return;

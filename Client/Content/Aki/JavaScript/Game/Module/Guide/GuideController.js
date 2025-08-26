@@ -18,30 +18,30 @@ const UiManager_1 = require("../../Ui/UiManager");
 const GuidePrefabDefine_1 = require("./Views/GuidePrefabDefine");
 class GuideController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(23124, this.vJt);
+    Net_1.Net.Register(15917, this.vJt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23124);
+    Net_1.Net.UnRegister(15917);
   }
   static MJt() {
     for (const i of ConfigManager_1.ConfigManager.GuideConfig.GetAllGroup()) {
       var e;
-      var o;
-      var t = i.AutoOpenCondition;
-      if (t && (e = i.Id, ModelManager_1.ModelManager.GuideModel.CanGroupInvoke(e)) && !GuideController.EJt.has(e)) {
-        o = new LevelConditionRegistry_1.ConditionPassCallback(GuideController.SJt, [e]);
-        LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(t, o);
-        GuideController.EJt.set(e, o);
+      var t;
+      var o = i.AutoOpenCondition;
+      if (o && (e = i.Id, ModelManager_1.ModelManager.GuideModel.CanGroupInvoke(e)) && !GuideController.EJt.has(e)) {
+        t = new LevelConditionRegistry_1.ConditionPassCallback(GuideController.SJt, [e]);
+        LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(o, t);
+        GuideController.EJt.set(e, t);
       }
     }
   }
   static yJt() {
     for (const i of ConfigManager_1.ConfigManager.GuideConfig.GetAllGroup()) {
       var e;
-      var o;
-      var t = i.AutoOpenCondition;
-      if (t && (e = i.Id, o = this.EJt.get(e))) {
-        LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(t, o);
+      var t;
+      var o = i.AutoOpenCondition;
+      if (o && (e = i.Id, t = this.EJt.get(e))) {
+        LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(o, t);
         this.EJt.delete(e);
       }
     }
@@ -55,6 +55,7 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActiveBattleView, this.LJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBlackFadeScreenFinish, this.LJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleSettlementStateChanged, this.LJt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCameraSequenceSetUiVisible, this._hd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
@@ -65,27 +66,28 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActiveBattleView, this.LJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBlackFadeScreenFinish, this.LJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleSettlementStateChanged, this.LJt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCameraSequenceSetUiVisible, this._hd);
     this.yJt();
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("GuideTutorialView", GuideController.DJt, "GuideController.CanOpenTutorial");
     UiManager_1.UiManager.AddOpenViewCheckFunction("GuideTutorialPopView", GuideController.DJt, "GuideController.CanOpenTutorial");
   }
-  static InvokeGuideGroupByGm(e, o) {
+  static InvokeGuideGroupByGm(e, t) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Guide", 16, "通过GM指令调用引导组 ", ["groupId", e], ["是否触发服务端完成", !o]);
+      Log_1.Log.Debug("Guide", 16, "通过GM指令调用引导组 ", ["groupId", e], ["是否触发服务端完成", !t]);
     }
     ModelManager_1.ModelManager.GuideModel.IsGmInvoke = true;
-    var t = ModelManager_1.ModelManager.GuideModel.TryGetGuideGroup(e);
+    var o = ModelManager_1.ModelManager.GuideModel.TryGetGuideGroup(e);
     ModelManager_1.ModelManager.GuideModel.IsGmInvoke = false;
-    if (t) {
-      if (t.IsFake = o) {
-        if (t.StateMachine.CurrentState !== 0) {
+    if (o) {
+      if (o.IsFake = t) {
+        if (o.StateMachine.CurrentState !== 0) {
           if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Guide", 16, "(GM)引导组  正在执行中, 不再重复执行", ["group.Id", t.Id]);
+            Log_1.Log.Warn("Guide", 16, "(GM)引导组  正在执行中, 不再重复执行", ["group.Id", o.Id]);
           }
         } else {
-          t.SwitchState(2);
+          o.SwitchState(2);
         }
       } else {
         GuideController.TryStartGuide(e);
@@ -94,16 +96,16 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Error("Guide", 16, "引导组  数据创建失败！", ["groupId", e]);
     }
   }
-  static FinishGuide(o, e) {
+  static FinishGuide(t, e) {
     if (e) {
-      GuideController.RJt(o);
+      GuideController.RJt(t);
     } else {
-      (e = Protocol_1.Aki.Protocol.uos.create()).S9n = o;
-      Net_1.Net.Call(28598, e, e => {
+      (e = Protocol_1.Aki.Protocol.uos.create()).S9n = t;
+      Net_1.Net.Call(20573, e, e => {
         if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Guide", 16, "引导请求服务端完成失败", ["组Id", o]);
+          Log_1.Log.Error("Guide", 16, "引导请求服务端完成失败", ["组Id", t]);
         }
-        GuideController.RJt(o);
+        GuideController.RJt(t);
       });
     }
   }
@@ -161,21 +163,21 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static AJt(e) {
-    var o;
     var t;
+    var o;
     if (!GuideController.EJt.has(e)) {
-      if (ModelManager_1.ModelManager.GuideModel.CanGroupInvoke(e) && (o = ConfigManager_1.ConfigManager.GuideConfig.GetGroup(e).AutoOpenCondition)) {
-        t = new LevelConditionRegistry_1.ConditionPassCallback(GuideController.SJt, [e]);
-        LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(o, t);
-        GuideController.EJt.set(e, t);
+      if (ModelManager_1.ModelManager.GuideModel.CanGroupInvoke(e) && (t = ConfigManager_1.ConfigManager.GuideConfig.GetGroup(e).AutoOpenCondition)) {
+        o = new LevelConditionRegistry_1.ConditionPassCallback(GuideController.SJt, [e]);
+        LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(t, o);
+        GuideController.EJt.set(e, o);
       }
     }
   }
   static UJt(e) {
-    var o;
-    var t = GuideController.EJt.get(e);
-    if (t && !ModelManager_1.ModelManager.GuideModel.CanGroupInvoke(e) && (o = ConfigManager_1.ConfigManager.GuideConfig.GetGroup(e).AutoOpenCondition)) {
-      LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(o, t);
+    var t;
+    var o = GuideController.EJt.get(e);
+    if (o && !ModelManager_1.ModelManager.GuideModel.CanGroupInvoke(e) && (t = ConfigManager_1.ConfigManager.GuideConfig.GetGroup(e).AutoOpenCondition)) {
+      LevelConditionRegistry_1.LevelConditionRegistry.UnRegisterConditionGroup(t, o);
       GuideController.EJt.delete(e);
     }
   }
@@ -195,24 +197,24 @@ class GuideController extends UiControllerBase_1.UiControllerBase {
   static async WaitForCurrentTutorialFinish() {
     var e = ModelManager_1.ModelManager.GuideModel.CurrentGroupMap;
     if (e) {
-      var o = [];
-      for (const t of e.values()) {
-        for (const i of t.StepInfoList) {
-          if (i.Config.ContentType === 3 && t.FinishPromise) {
-            o.push(t.FinishPromise.Promise);
+      var t = [];
+      for (const o of e.values()) {
+        for (const i of o.StepInfoList) {
+          if (i.Config.ContentType === 3 && o.FinishPromise) {
+            t.push(o.FinishPromise.Promise);
           }
         }
       }
-      if (o.length > 0) {
-        await Promise.all(o);
+      if (t.length > 0) {
+        await Promise.all(t);
       }
     }
   }
   static get GmEnableFocusTextPosTick() {
-    return this.osu;
+    return this.Asu;
   }
   static set GmEnableFocusTextPosTick(e) {
-    this.osu = e;
+    this.Asu = e;
   }
 }
 (exports.GuideController = GuideController).vJt = e => {
@@ -231,15 +233,15 @@ GuideController.SJt = e => {
   GuideController.TryStartGuide(e[0]);
 };
 GuideController.DJt = () => !ModelManager_1.ModelManager.BattleUiModel.IsInBattleSettlement;
-GuideController.IJt = (o, t) => {
+GuideController.IJt = (t, o) => {
   var e = Protocol_1.Aki.Protocol.los.create();
-  e.S9n = o;
-  Net_1.Net.Call(27496, e, e => {
+  e.S9n = t;
+  Net_1.Net.Call(16254, e, e => {
     if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ModelManager_1.ModelManager.GuideModel.SwitchGroupState(o, 0);
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18812, e.lvs);
-    } else if (!t) {
-      ModelManager_1.ModelManager.GuideModel.SwitchGroupState(o, 2);
+      ModelManager_1.ModelManager.GuideModel.SwitchGroupState(t, 0);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27366, e.lvs);
+    } else if (!o) {
+      ModelManager_1.ModelManager.GuideModel.SwitchGroupState(t, 2);
     }
   });
 };
@@ -253,27 +255,27 @@ GuideController.jZs = [20013];
 GuideController.FWe = () => {
   var e = ModelManager_1.ModelManager.GuideModel.CurrentGroupMap;
   if (e) {
-    for (const t of GuideController.jZs) {
-      var o = e.get(t);
-      if (o) {
+    for (const o of GuideController.jZs) {
+      var t = e.get(o);
+      if (t) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Guide", 16, "引导组在场景加载完成（包括客户端加载和服务器交互确认）前被触发，强制终止引导", ["GuideGroupId", t]);
+          Log_1.Log.Info("Guide", 16, "引导组在场景加载完成（包括客户端加载和服务器交互确认）前被触发，强制终止引导", ["GuideGroupId", o]);
         }
-        o.Break();
-        e.delete(t);
+        t.Break();
+        e.delete(o);
       }
     }
   }
 };
 GuideController.TJt = () => {
   var e = Protocol_1.Aki.Protocol.aos.create();
-  Net_1.Net.Call(29209, e, e => {
+  Net_1.Net.Call(29155, e, e => {
     if (e) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Guide", 16, "初始化GuideInfoNotify发来的数据", ["FinishedList", e.sws]);
       }
-      for (const o of e.sws) {
-        ModelManager_1.ModelManager.GuideModel.FinishGroup(o);
+      for (const t of e.sws) {
+        ModelManager_1.ModelManager.GuideModel.FinishGroup(t);
       }
       GuideController.MJt();
     } else if (Log_1.Log.CheckError()) {
@@ -287,4 +289,7 @@ GuideController.XBo = () => {
   }
   ModelManager_1.ModelManager.GuideModel.ClearAllGroup();
 };
-GuideController.osu = true; //# sourceMappingURL=GuideController.js.map
+GuideController._hd = e => {
+  ModelManager_1.ModelManager.GuideModel.ShouldBlockGuideBecauseUiNotRender = !e;
+};
+GuideController.Asu = true; //# sourceMappingURL=GuideController.js.map

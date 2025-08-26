@@ -19,7 +19,7 @@ class RogueBattleFetterUpItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.TDe = undefined;
     this.LevelSequencePlayer = undefined;
     this.Pe = undefined;
-    this.Spu = undefined;
+    this.yvu = undefined;
     this.oWi = () => {
       return new MapRogueFetterStarLvItem_1.MapRogueFetterStarLvItem();
     };
@@ -33,7 +33,7 @@ class RogueBattleFetterUpItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[6, this.nlo]];
   }
   OnStart() {
-    this.Spu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.oWi);
+    this.yvu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.oWi);
   }
   Refresh(e, t, r) {
     var i = (this.Pe = e).NewRoleBondInfo;
@@ -65,9 +65,9 @@ class RogueBattleFetterUpItem extends GridProxyAbstract_1.GridProxyAbstract {
           };
           a.push(l);
         }
-        this.Spu.RefreshByData(a, undefined, true);
+        this.yvu.RefreshByData(a, undefined, true);
       } else {
-        this.Spu.SetActive(false);
+        this.yvu.SetActive(false);
       }
       this.GetItem(4).SetUIActive(false);
     }

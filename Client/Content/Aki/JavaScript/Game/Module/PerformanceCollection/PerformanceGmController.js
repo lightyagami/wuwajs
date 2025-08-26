@@ -70,12 +70,12 @@ class PerformanceGmController {
         o = o.Entity.GetComponent(0).GetCreatureDataId();
         (t = new Protocol_1.Aki.Protocol.Gzn()).VVn = 0;
         t.P8n = "@GmRemoveMonster " + o;
-        Net_1.Net.Call(23520, t, () => {});
+        Net_1.Net.Call(27932, t, () => {});
       }
     }
     return true;
   }
-  static pku(e) {
+  static ZFu(e) {
     switch (e) {
       case 0:
         return;
@@ -91,7 +91,7 @@ class PerformanceGmController {
   }
   static IgnoreBattle() {
     var e = Global_1.Global.BaseCharacter;
-    return !!e && !!(e = e.CharacterActorComponent.Entity.GetComponent(174)) && (e.AddBuff(CharacterBuffIds_1.buffId.IgnoreHateBuff, {
+    return !!e && !!(e = e.CharacterActorComponent.Entity.GetComponent(175)) && (e.AddBuff(CharacterBuffIds_1.buffId.IgnoreHateBuff, {
       InstigatorId: e.CreatureDataId,
       Reason: "IgnoreBattle"
     }), true);
@@ -146,7 +146,7 @@ class PerformanceGmController {
   }
   static async EntityPerformanceTestAll(e) {
     var e = Number(e[0]);
-    var r = this.pku(e);
+    var r = this.ZFu(e);
     if (!this.IgnoreBattle()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Performance", 35, "忽略战斗失效");
@@ -214,7 +214,7 @@ class PerformanceGmController {
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.SystemSimulation.AllowASync " + e);
     var r = ModelManager_1.ModelManager.CreatureModel.GetAllEntities();
     for (let e = r.length - 1; e >= 0; e--) {
-      r[e].Entity.GetComponent(114)?.SetTakeOverTick(true);
+      r[e].Entity.GetComponent(115)?.SetTakeOverTick(true);
     }
     return true;
   }

@@ -29,7 +29,6 @@ const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigC
 const VideoResUpdate_1 = require("../../../Launcher/DiffPatch/Update/VideoResUpdate");
 const HotPatchKuroSdk_1 = require("../../../Launcher/HotPatchKuroSdk/HotPatchKuroSdk");
 const HotPatchLogReport_1 = require("../../../Launcher/HotPatchLogReport");
-const LauncherNoticeUtils_1 = require("../../../Launcher/Notice/LauncherNoticeUtils");
 const CloudGameManagerLauncher_1 = require("../../../Launcher/Platform/CloudGameManagerLauncher");
 const Platform_1 = require("../../../Launcher/Platform/Platform");
 const PlatformSdkConfig_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkConfig");
@@ -86,7 +85,7 @@ const RPT_INTERVAL = 600000;
 const RENWE_ACCESS_TOKEN_CD = 600;
 const FOREVERTIME = 86313600;
 const HTTP_PREFIX_STRING = "http://";
-const LOGINURL_TIMEOUT = 5;
+const LOGINURL_TIMEOUT = 6;
 const LOGINURL_POLLING_COUNT = 3;
 class HttpResult extends Json_1.JsonObjBase {
   constructor() {
@@ -116,6 +115,7 @@ class RptInfo extends Json_1.JsonObjBase {
     this.Uid = "";
     this.PlayerId = "";
     this.Mac = "";
+    this.Plat = "";
     this.Extra = "";
     this.IpLocal = "";
     this.IpServer = "";
@@ -125,6 +125,15 @@ class RptInfo extends Json_1.JsonObjBase {
     this.DeviceId = "";
     this.DiskNo = "";
     this.SysUUID = "";
+  }
+}
+class RptExtra extends Json_1.JsonObjBase {
+  constructor() {
+    super(...arguments);
+    this.FailedTime = "";
+    this.LocalError = "";
+    this.RemoteError = "";
+    this.HttpCode = "";
   }
 }
 class ResultData {
@@ -176,7 +185,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       this.Vza = TimerSystem_1.GameplayTimerSystem.Forever(LoginController.Hza, PSN_TICK_INTERVAL);
     }
     this.rhh = TimerSystem_1.GameplayTimerSystem.Forever(LoginController.ohh, HEALTH_TIP_INTERVAL);
-    this.QLc = TimerSystem_1.GameplayTimerSystem.Forever(LoginController.Ibc, RPT_INTERVAL);
+    this.QLc = TimerSystem_1.GameplayTimerSystem.Forever(LoginController.Ibc, RPT_INTERVAL, 1, undefined, undefined, false);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiManagerInit, LoginController.MMi);
@@ -202,14 +211,14 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
     Net_1.Net.Register(110, LoginController.SMi);
     Net_1.Net.Register(115, LoginController.pla);
-    Net_1.Net.Register(16215, LoginController.Y3a);
-    Net_1.Net.Register(27379, LoginController.Ta1);
+    Net_1.Net.Register(22737, LoginController.Y3a);
+    Net_1.Net.Register(24697, LoginController.Ta1);
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(110);
     Net_1.Net.UnRegister(115);
-    Net_1.Net.UnRegister(16215);
-    Net_1.Net.UnRegister(27379);
+    Net_1.Net.UnRegister(22737);
+    Net_1.Net.UnRegister(24697);
   }
   static yMi(o) {
     Heartbeat_1.Heartbeat.StopHeartBeat(HeartbeatDefine_1.EStopHeartbeat.LogoutNotify);
@@ -342,7 +351,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
         }
         return "";
       }
-      n = LoginController.oWc();
+      n = LoginController.XJu();
       if (StringUtils_1.StringUtils.IsEmpty(n)) {
         t = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault(LoginModel_1.STREAM);
         if (Log_1.Log.CheckError()) {
@@ -391,7 +400,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     return `${_}/api/login?loginType=0&userId=${i}&userName=${i}&token=1&userData=${r}&loginTraceId=${ModelManager_1.ModelManager.LoginModel.LoginTraceId}`;
   }
   static DMi() {
-    var e = LoginController.oWc();
+    var e = LoginController.XJu();
     var o = ModelManager_1.ModelManager.LoginModel.SetRpcHttp(LoginController.LMi, 13000);
     var r = ModelManager_1.ModelManager.LoginModel.GetLoginUid();
     var n = ModelManager_1.ModelManager.LoginModel.GetLoginUserNameWithUriEncode();
@@ -405,9 +414,9 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
     return `${e}/api/login?loginType=1&userId=${r}&userName=${n}&token=${t}&userData=${o}&deviceId=${a}&loginTraceId=${ModelManager_1.ModelManager.LoginModel.LoginTraceId}`;
   }
-  static oWc() {
+  static XJu() {
     let e = ModelManager_1.ModelManager.LoginServerModel.GetCurrentSelectServerIp();
-    var o = ModelManager_1.ModelManager.LoginServerModel.GetCurrentServerLoginUrlByIndex(LoginController.nWc);
+    var o = ModelManager_1.ModelManager.LoginServerModel.GetCurrentServerLoginUrlByIndex(LoginController.YJu);
     return e = StringUtils_1.StringUtils.IsEmpty(o) ? e : o;
   }
   static IsSdkLoginMode() {
@@ -752,9 +761,9 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     o.ywa = _;
     o.$4l = l;
     o.z3a = BaseConfigController_1.BaseConfigController.GetPackageClientFightConfig();
-    o.k7c = UE.KuroStaticLibrary.IsLowMemoryDevice();
+    o.rku = UE.KuroStaticLibrary.IsLowMemoryDevice();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Login", 16, "LoginProcedure-LoginRequest-请求登录", ["account", o.X9n], ["token", o.$9n], ["AppVersion", o.Y9n], ["LauncherVersion", o.J9n], ["ResourceVersion", o.z9n], ["ClientBasicInfo", o.Z9n], ["ConfigMd5", NetDefine_1.CONFIG_MD5_VALUE], ["ConfigVersion", NetDefine_1.CONFIG_VERSION], ["ProtoMd5", NetDefine_1.PROTO_MD5_VALUE], ["ProtoSeedMd5", NetDefine_1.PROTO_SEED_MD5_VALUE], ["ProtoVersion", NetDefine_1.PROTO_VERSION], ["pQ_", o.pQ_], ["IsLowMemoryPlatform", o.k7c]);
+      Log_1.Log.Info("Login", 16, "LoginProcedure-LoginRequest-请求登录", ["account", o.X9n], ["token", o.$9n], ["AppVersion", o.Y9n], ["LauncherVersion", o.J9n], ["ResourceVersion", o.z9n], ["ClientBasicInfo", o.Z9n], ["ConfigMd5", NetDefine_1.CONFIG_MD5_VALUE], ["ConfigVersion", NetDefine_1.CONFIG_VERSION], ["ProtoMd5", NetDefine_1.PROTO_MD5_VALUE], ["ProtoSeedMd5", NetDefine_1.PROTO_SEED_MD5_VALUE], ["ProtoVersion", NetDefine_1.PROTO_VERSION], ["pQ_", o.pQ_], ["IsLowMemoryPlatform", o.rku]);
     }
     r = await LoginController.qMi(o);
     if (r?.Cvs === Protocol_1.Aki.Protocol.Q4n.Proto_ServerFullLoadGate) {
@@ -1258,10 +1267,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       }
     } else if (!this.IsLoginViewOpen()) {
       if (this.IsSdkLoginMode()) {
-        if (LauncherNoticeUtils_1.LauncherNoticeUtils.HasNoticeAutoOpened) {
-          ControllerHolder_1.ControllerHolder.KuroSdkController.CloseWebView();
-          LauncherNoticeUtils_1.LauncherNoticeUtils.HasNoticeAutoOpened = false;
-        }
+        ControllerHolder_1.ControllerHolder.KuroSdkController.CloseWebView();
         UiManager_1.UiManager.OpenView("LoginView");
       } else if (!this.KMi()) {
         UiManager_1.UiManager.OpenView("LoginDebugView");
@@ -1355,7 +1361,38 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
     this.Ibc();
   }
-  static YLc(_, l, g) {
+  static pmd() {
+    return cpp_1.KuroApplication.GetAppReleaseType() === "Prerelease";
+  }
+  static vmd() {
+    return this.pmd() || BaseConfigController_1.BaseConfigController.GetRptIsOpen();
+  }
+  static ymd() {
+    if (this.Smd === "") {
+      let e = "";
+      var o = BaseConfigController_1.BaseConfigController.GetCdnUrl();
+      if (o) {
+        for (const i of o) {
+          var r = i.url;
+          if (r.includes("qcloud")) {
+            e = r;
+            break;
+          }
+        }
+      } else {
+        e = "https://cdn-qcloud-cn-mc.aki-game.com/prod/client/";
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Game", 30, "UseDefaultPrefix", ["GetUrl2", e]);
+        }
+      }
+      var o = BaseConfigController_1.BaseConfigController.GetPublicValue("UrlPath");
+      var n = cpp_1.KuroApplication.IniPlatformNameIncludeEditor();
+      var t = UE.KuroLauncherLibrary.GetAppVersion();
+      this.Smd = e + o + "/" + n + "/" + t + "/ManifestLang_base.txt";
+    }
+    return this.Smd;
+  }
+  static YLc(_, e, l, g) {
     const L = (e, o, r, n, t) => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Game", 30, "Aliyun", ["result", e], ["localErrorCode", o], ["remoteErrorCode", r], ["httpResponseCode", n], ["connectedSuccess", t]);
@@ -1370,44 +1407,63 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
         }
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Game", 30, "RptFailed", ["localErrorCode", o], ["remoteErrorCode", r], ["httpResponseCode", n], ["connectedSuccess", t], ["data", _], ["result", e]);
+          Log_1.Log.Error("Game", 30, "RptFailed", ["localErrorCode", o], ["remoteErrorCode", r], ["httpResponseCode", n], ["connectedSuccess", t], ["result", e]);
         }
         if (!g && this.zLc + this.KLc.length < 100) {
           if (!UE.BlueprintPathsLibrary.DirectoryExists(i)) {
             UE.KuroLauncherLibrary.MakeDirectory(i);
           }
-          o = i + "/" + l;
-          r = UE.KuroStaticLibrary.Base64Encode(_);
-          UE.KuroStaticLibrary.WriteStringToFile(r, o, true, false);
+          t = i + "/" + l;
+          (e = new RptExtra()).FailedTime = Math.floor(TimeUtil_1.TimeUtil.GetServerTimeStamp()).toString();
+          e.LocalError = o.toString();
+          e.RemoteError = r.toString();
+          e.HttpCode = n.toString();
+          i = Json_1.Json.Stringify(e);
+          o = UE.KuroStaticLibrary.Base64Encode(_) + "," + UE.KuroStaticLibrary.Base64Encode(i);
+          UE.KuroStaticLibrary.WriteStringToFile(o, t, true, false);
           this.zLc++;
         }
       }
       this.IO_(a);
       (0, puerts_1.releaseManualReleaseDelegate)(L);
     };
-    UE.KuroHttp.PostRpt(_, PublicUtil_1.PublicUtil.GetIfGlobalSdk(), (0, puerts_1.toManualReleaseDelegate)(L), 10);
+    UE.KuroHttp.PostRpt1(_, e, PublicUtil_1.PublicUtil.GetIfGlobalSdk(), (0, puerts_1.toManualReleaseDelegate)(L), 10);
+    if (this.pmd()) {
+      this.Mmd(_, e);
+    }
+  }
+  static Mmd(e, o) {
+    const i = (e, o, r, n, t) => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Game", 30, "Aliyun2", ["localErrorCode", o], ["httpResponseCode", n], ["connectedSuccess", t]);
+      }
+      (0, puerts_1.releaseManualReleaseDelegate)(i);
+    };
+    var r = this.ymd();
+    UE.KuroHttp.PostRpt2(r, e, o, (0, puerts_1.toManualReleaseDelegate)(i), 10);
   }
   static XLc() {
-    var e;
-    var o;
-    var r;
-    var n = this.KLc.shift();
-    if (n) {
-      e = UE.KuroLauncherLibrary.GameSavedDir() + "Logs/Tmp";
-      o = (0, puerts_1.$ref)("");
-      e = e + "/" + n;
-      UE.KuroStaticLibrary.LoadFileToString(o, e);
-      o = (0, puerts_1.$unref)(o);
-      if ((r = UE.KuroStaticLibrary.Base64Decode(o)) === "") {
+    var o = this.KLc.shift();
+    if (o) {
+      var r = UE.KuroLauncherLibrary.GameSavedDir() + "Logs/Tmp";
+      var n = (0, puerts_1.$ref)("");
+      var r = r + "/" + o;
+      UE.KuroStaticLibrary.LoadFileToString(n, r);
+      var n = (0, puerts_1.$unref)(n)?.split(",");
+      var t = n[0];
+      var i = UE.KuroStaticLibrary.Base64Decode(t);
+      if (i === "") {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Game", 30, "Aliyun", ["path", n], ["rawData", o], ["base64Data", r]);
+          Log_1.Log.Error("Game", 30, "Aliyun", ["path", o], ["rawData", t], ["base64Data", i]);
         }
-        this.vM1(e);
+        this.vM1(r);
       } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Game", 30, "Aliyun", ["path", n], ["rawData", o], ["base64Data", r]);
+          Log_1.Log.Info("Game", 30, "Aliyun", ["path", o], ["rawData", t], ["base64Data", i]);
         }
-        this.YLc(r, n, true);
+        let e = "";
+        e = n.length > 1 ? UE.KuroStaticLibrary.Base64Decode(n[1]) : ((r = new RptExtra()).FailedTime = o.split(".")[0], Json_1.Json.Stringify(r));
+        this.YLc(i, e, o, true);
       }
     }
   }
@@ -1582,6 +1638,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
   }
   static wfa() {
     var e;
+    ModelManager_1.ModelManager.LoginModel.CheckLoginToGameServerSdkConfigIfSame();
     if (ModelManager_1.ModelManager.LoginModel.SdkAccountChangeNeedExitFlag && ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
       (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(38)).SetCloseFunction(() => {
         ControllerHolder_1.ControllerHolder.ReConnectController.Logout(ReconnectDefine_1.ELogoutReason.SdkLogoutAccount);
@@ -1600,7 +1657,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
 exports.LoginController = LoginController;
 (_a = LoginController).Vza = undefined;
 LoginController.rhh = undefined;
-LoginController.nWc = 0;
+LoginController.YJu = 0;
 LoginController.SMi = e => {
   cpp_1.FuncOpenLibrary.SetFirstTimestamp(0);
   ModelManager_1.ModelManager.LoginModel.LoginTimeStamp = 0;
@@ -1688,7 +1745,7 @@ LoginController.EMi = () => {
   LanguageUpdateManager_1.LanguageUpdateManager.StopAllDownload();
 };
 LoginController.GetHttp = (e = false, o = true) => {
-  LoginController.nWc = 0;
+  LoginController.YJu = 0;
   LoginController.GetHttpAsync(e, o);
 };
 LoginController.GetHttpAsync = async (e = false, o = true) => {
@@ -1735,17 +1792,18 @@ LoginController.GetHttpAsync = async (e = false, o = true) => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Login", 16, "LoginProcedure-Http-登录Http请求");
   }
+  ModelManager_1.ModelManager.LoginModel.CacheCurrentSdkLoginConfig();
   var n = await Http_1.Http.GetAsync(r, undefined, LOGINURL_TIMEOUT);
   if (Http_1.Http.IsConnectionInvalid(n)) {
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Login", 21, "LoginProcedure-Http-连接服务器失败!", ["httpCode", n.Code], ["index", LoginController.nWc]);
+      Log_1.Log.Error("Login", 21, "LoginProcedure-Http-连接服务器失败!", ["httpCode", n.Code], ["index", LoginController.YJu]);
     }
     var t = ModelManager_1.ModelManager.LoginServerModel.GetCurrentServerLoginUrl();
-    LoginController.nWc += 1;
-    var i = LoginController.nWc;
+    LoginController.YJu += 1;
+    var i = LoginController.YJu;
     if (t && t.length > i && i < LOGINURL_POLLING_COUNT) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Login", 21, "LoginProcedure-Http-切换服务器", ["index", LoginController.nWc]);
+        Log_1.Log.Info("Login", 21, "LoginProcedure-Http-切换服务器", ["index", LoginController.YJu]);
       }
       ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.Init);
       return await LoginController.GetHttpAsync(e, o);
@@ -1785,9 +1843,7 @@ LoginController.OnSdkLogin = e => {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 16, "LoginProcedure-OnSdkLogin-SDK登录成功");
     }
-    if (ModelManager_1.ModelManager.LoginModel.SdkAccountChangeNeedExitFlag) {
-      LoginController.wfa();
-    }
+    LoginController.wfa();
   } else {
     ModelManager_1.ModelManager.LoginModel.SetSdkLoginState(0);
     HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.SdkLogin, "sdk_login_failed");
@@ -1873,8 +1929,9 @@ LoginController.zLc = 0;
 LoginController.Oh1 = 0;
 LoginController.kh1 = undefined;
 LoginController.QLc = undefined;
+LoginController.Smd = "";
 LoginController.Ibc = () => {
-  if (BaseConfigController_1.BaseConfigController.GetRptIsOpen()) {
+  if (_a.vmd()) {
     let e = ModelManager_1.ModelManager.LoginModel.CurrentIdStr;
     if ((e = e === "" ? _a.bbc()[0] : e) === "") {
       e = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("BuildId", "");
@@ -1887,8 +1944,9 @@ LoginController.Ibc = () => {
     o.Uid = r.GetLoginUid();
     o.PlayerId = ModelManager_1.ModelManager.PlayerInfoModel?.GetId()?.toString() ?? "";
     o.Mac = UE.KuroStaticLibrary.GetMacAddress();
+    o.Plat = cpp_1.KuroApplication.IniPlatformNameIncludeEditor();
     o.IpLocal = PublicUtil_1.PublicUtil.GetLocalHost();
-    o.IpServer = LoginController.oWc() ?? "NoIpServer";
+    o.IpServer = LoginController.XJu() ?? "NoIpServer";
     o.Cpu = UE.KuroStaticLibrary.GetDeviceCPU();
     var r = UE.KuroStaticLibrary.GetProcessorId();
     if (r !== "") {
@@ -1907,7 +1965,7 @@ LoginController.Ibc = () => {
     }
     var r = Json_1.Json.Stringify(o);
     var o = Math.floor(TimeUtil_1.TimeUtil.GetServerTimeStamp());
-    _a.YLc(r, o + ".txt", false);
+    _a.YLc(r, "{}", o + ".txt", false);
   }
 };
 LoginController.doa = () => {

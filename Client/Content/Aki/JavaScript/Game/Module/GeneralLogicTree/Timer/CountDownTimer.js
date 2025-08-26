@@ -30,6 +30,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
     this.IYt = 0;
     this.I$t = 0;
     this.wqa = undefined;
+    this.Fgd = false;
     this.DYt = (e, i, t, r) => {
       if (e && e === this.TreeId && this.InnerTimerType === i) {
         var n = r * 1000;
@@ -71,17 +72,24 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
   }
   Destroy() {
     this.EndShowTimer();
+    this.Fgd = false;
     super.Destroy();
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeTimerInfoChanged, this.DYt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FailRangeTimerStartShow, this.GKa);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FailRangeTimerEndShow, this.kKa);
+    if (!this.Fgd) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeTimerInfoChanged, this.DYt);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FailRangeTimerStartShow, this.GKa);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FailRangeTimerEndShow, this.kKa);
+      this.Fgd = true;
+    }
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeTimerInfoChanged, this.DYt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FailRangeTimerStartShow, this.GKa);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FailRangeTimerEndShow, this.kKa);
+    if (this.Fgd) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeTimerInfoChanged, this.DYt);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FailRangeTimerStartShow, this.GKa);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FailRangeTimerEndShow, this.kKa);
+      this.Fgd = false;
+    }
   }
   TYt() {
     if (!this.yYt) {
@@ -127,6 +135,9 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
           break;
         case 3:
           this.Zk_(e);
+          break;
+        case 4:
+          this.YYu(e);
       }
     }
   }
@@ -161,6 +172,14 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
     }
     this.LYt(e);
   }
+  YYu(e) {
+    var i;
+    if (!UiManager_1.UiManager.GetViewByName("GreatSwordCountDownView") || !!ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing) {
+      i = new GeneralLogicTreeDefine_1.ChallengeCountDownViewParams(this.MYt, this.wqa);
+      UiManager_1.UiManager.OpenView("GreatSwordCountDownView", i);
+    }
+    this.LYt(e);
+  }
   GetRemainTime() {
     var e = (this.MYt - (this.EYt + this.SYt)) / 1000;
     var i = this.GP_ !== 0 ? (this.MYt - this.GP_) / 1000 : -1;
@@ -178,6 +197,9 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
           break;
         case 3:
           e = "ShipTowerCountDownView";
+          break;
+        case 4:
+          e = "GreatSwordCountDownView";
       }
       if (UiManager_1.UiManager.GetViewByName(e) && !ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing) {
         if (i) {

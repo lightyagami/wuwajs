@@ -20,7 +20,7 @@ class LevelConditionCheckEnemyTag extends LevelGeneralBase_1.LevelConditionBase 
         var t = e.LimitParams.get("Tag");
         if (t) {
           for (const o of n[0]) {
-            if (EntitySystem_1.EntitySystem.Get(o)?.GetComponent(205)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t))) {
+            if (EntitySystem_1.EntitySystem.Get(o)?.GetComponent(206)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t))) {
               return true;
             }
           }

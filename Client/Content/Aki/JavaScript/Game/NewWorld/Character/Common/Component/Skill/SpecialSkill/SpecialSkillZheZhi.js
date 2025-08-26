@@ -32,9 +32,9 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
     this.S2a = new Set();
     this.Xte = undefined;
     this.E2a = undefined;
-    this.iau = GameplayCueController_1.INVALID_CUE_HANDLE;
+    this.wau = GameplayCueController_1.INVALID_CUE_HANDLE;
     this.y2a = false;
-    this.rau = GameplayCueController_1.INVALID_CUE_HANDLE;
+    this.Aau = GameplayCueController_1.INVALID_CUE_HANDLE;
     this.T2a = 0;
     this.gU = false;
     this.fii = (0, puerts_1.$ref)(undefined);
@@ -49,7 +49,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
     this.n$t = this.f2a.GetComponent(3);
     var e = this.f2a.GetComponent(0);
     if (e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId()) {
-      this.Xte = this.f2a?.GetComponent(205);
+      this.Xte = this.f2a?.GetComponent(206);
       for (let t = 1; t < HE_MAX_COUNT + 1; t++) {
         const s = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.f2a, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, t);
         if (!s) {
@@ -59,7 +59,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
           return;
         }
         this.M2a.set(t, s);
-        var i = s.Entity.GetComponent(121);
+        var i = s.Entity.GetComponent(122);
         i.SetLogicRange(HE_ACTIVE_DIS);
         i.CreatePerceptionEvent(HE_ACTIVE_DIS, s.Entity?.GameBudgetManagedToken, () => {
           this.S2a.add(s);
@@ -89,7 +89,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
       this.V2a();
       this.M2a.forEach((t, e) => {
         var i = t.Entity;
-        var s = i?.GetComponent(205);
+        var s = i?.GetComponent(206);
         if (i && i.Active && this.S2a.has(t) && s?.HasTag(activeTag)) {
           t = i.GetComponent(3);
           s = UE.GameplayStatics.D_ProjectWorldToScreen(Global_1.Global.CharacterController, t.ActorLocationProxy.ToUeVector(), this.fii, true);
@@ -127,7 +127,7 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
   P2a(t) {
     var e = this.M2a.get(t);
     if (e) {
-      this.oau();
+      this.Pau();
       this.w2a(e);
       this.H2a(e);
       BlackboardController_1.BlackboardController.SetIntValueByEntity(this.f2a.Id, BLACKBOARD_KEY, e.Entity.Id);
@@ -147,18 +147,18 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
       if (this.Xte?.HasTag(activeTag)) {
         this.Xte?.RemoveTag(activeTag);
       }
-      this.oau();
+      this.Pau();
       this.T2a = 0;
     }
   }
   w2a(t) {
     t = t.Entity.GetComponent(21);
-    this.iau = t.AddCue(MARK_CUE_ID);
-    this.E2a = t.GetCueByHandle(this.iau);
+    this.wau = t.AddCue(MARK_CUE_ID);
+    this.E2a = t.GetCueByHandle(this.wau);
   }
   H2a(t) {
     var e = this.f2a.GetComponent(21);
-    this.rau = e.AddCue(LINE_CUE_ID, {
+    this.Aau = e.AddCue(LINE_CUE_ID, {
       Instigator: t
     });
   }
@@ -172,20 +172,20 @@ class SpecialSkillZheZhi extends SpecialSkillBase_1.SpecialSkillBase {
       this.y2a = t;
     }
   }
-  oau() {
+  Pau() {
     var t = this.M2a.get(this.T2a);
     if (t?.Valid) {
       t = t.Entity.GetComponent(21);
-      if (this.iau !== GameplayCueController_1.INVALID_CUE_HANDLE) {
-        t?.RemoveCueByHandle(this.iau);
+      if (this.wau !== GameplayCueController_1.INVALID_CUE_HANDLE) {
+        t?.RemoveCueByHandle(this.wau);
       }
-      this.iau = GameplayCueController_1.INVALID_CUE_HANDLE;
+      this.wau = GameplayCueController_1.INVALID_CUE_HANDLE;
     }
     var t = this.f2a.GetComponent(21);
-    if (this.rau !== GameplayCueController_1.INVALID_CUE_HANDLE) {
-      t?.RemoveCueByHandle(this.rau);
+    if (this.Aau !== GameplayCueController_1.INVALID_CUE_HANDLE) {
+      t?.RemoveCueByHandle(this.Aau);
     }
-    this.rau = GameplayCueController_1.INVALID_CUE_HANDLE;
+    this.Aau = GameplayCueController_1.INVALID_CUE_HANDLE;
   }
 }
 exports.SpecialSkillZheZhi = SpecialSkillZheZhi;

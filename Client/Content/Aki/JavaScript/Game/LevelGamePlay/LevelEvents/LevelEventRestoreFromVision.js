@@ -18,7 +18,7 @@ class LevelEventRestoreFromVision extends LevelGeneralBase_1.LevelEventBase {
           for (const i of o) {
             const r = EntitySystem_1.EntitySystem.Get(i);
             if (r) {
-              r.GetComponent(205)?.AddTag(-2042072030);
+              r.GetComponent(206)?.AddTag(-2042072030);
               return;
             }
           }

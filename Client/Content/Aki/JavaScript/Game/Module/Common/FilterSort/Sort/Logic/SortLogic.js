@@ -17,9 +17,12 @@ const DangoAbyssPluginItemSort_1 = require("./Rule/DangoAbyssPluginItemSort");
 const FishingItemSort_1 = require("./Rule/FishingItemSort");
 const ForgingSort_1 = require("./Rule/ForgingSort");
 const ItemSort_1 = require("./Rule/ItemSort");
+const MonsterHandBookSort_1 = require("./Rule/MonsterHandBookSort");
 const PhantomSort_1 = require("./Rule/PhantomSort");
 const RoleSort_1 = require("./Rule/RoleSort");
 const VisionFetterSort_1 = require("./Rule/VisionFetterSort");
+const WeaponHandBookSort_1 = require("./Rule/WeaponHandBookSort");
+const WeaponSkinHandBookSort_1 = require("./Rule/WeaponSkinHandBookSort");
 const WeaponSort_1 = require("./Rule/WeaponSort");
 class SortLogic {
   constructor() {
@@ -40,22 +43,25 @@ class SortLogic {
       14: new ComposeExchangeSort_1.ComposeExchangeSort(),
       15: new PhantomSort_1.PhantomSort(),
       16: new FishingItemSort_1.FishingItem(),
-      17: new DangoAbyssPluginItemSort_1.DangoAbyssPluginItemSort()
+      17: new DangoAbyssPluginItemSort_1.DangoAbyssPluginItemSort(),
+      18: new MonsterHandBookSort_1.MonsterHandBookSort(),
+      19: new WeaponHandBookSort_1.WeaponHandBookSort(),
+      20: new WeaponSkinHandBookSort_1.WeaponSkinHandBookSort()
     };
   }
-  SortDataList(e, o, r, ...t) {
-    var o = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(o);
-    var i = r.GetAllSelectRuleSet();
+  SortDataList(o, e, r, ...t) {
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(e);
+    var n = r.GetAllSelectRuleSet();
     var r = r.GetIsAscending();
-    var o = o.DataId;
-    this.SortDataByData(e, o, i, r, ...t);
+    var e = e.DataId;
+    this.SortDataByData(o, e, n, r, ...t);
   }
-  SortDataByData(e, o, i, n, ...u) {
-    const S = this.VLt[o];
-    S.InitSortMap();
-    e.sort((e, o) => {
-      for (const t of i.values()) {
-        var r = S.GetSortFunctionByRuleId(t)(e, o, n, ...u);
+  SortDataByData(o, e, n, i, ...S) {
+    const u = this.VLt[e];
+    u.InitSortMap();
+    o.sort((o, e) => {
+      for (const t of n.values()) {
+        var r = u.GetSortFunctionByRuleId(t)(o, e, i, ...S);
         if (r) {
           return r;
         }

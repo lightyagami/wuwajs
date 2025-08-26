@@ -18,8 +18,6 @@ const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const ObjectUtils_1 = require("../../../Core/Utils/ObjectUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
-const LocalStorage_1 = require("../../Common/LocalStorage");
-const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const EffectContext_1 = require("../../Effect/EffectContext/EffectContext");
 const EffectSystem_1 = require("../../Effect/EffectSystem");
 const GlobalData_1 = require("../../GlobalData");
@@ -102,14 +100,8 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       });
     };
     this.CanToggleChange = e => {
-      var t = this.d1o.GetCurSelectRoleId();
-      var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t);
-      if (this.d1o.GetRoleSystemMode() === 0 && t.RoleType === 5 && this.TabDataList[e].ChildViewName !== "RoleAttributeTabView" && this.TabDataList[e].ChildViewName !== "RolePhantomTabView" && this.TabDataList[e].ChildViewName !== "RolePreviewAttributeTabView") {
-        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Text_RoleInformalTrialTips_Text");
-        return false;
-      } else {
-        return !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t;
-      }
+      var t;
+      return !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t;
     };
     this.R6e = (e, t) => {
       return new RoleTabItem_1.RoleTabItem();
@@ -323,12 +315,19 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   async RefreshRoleListAsync() {
     UiLayer_1.UiLayer.SetShowMaskLayer("RefreshRoleListAsync", true);
-    var e = this.d1o.GetRoleIdList();
-    await this.RoleListComponent.UpdateComponent(e).finally(() => {
+    const i = this.d1o.GetRoleIdList();
+    const s = this.d1o.GetCurSelectRoleId();
+    await this.RoleListComponent.UpdateComponent(i).finally(() => {
       UiLayer_1.UiLayer.SetShowMaskLayer("RefreshRoleListAsync", false);
+      var e = i.indexOf(s);
+      const t = this.RoleListComponent?.GetSelfScrollView()?.GetScrollItemByIndex(e);
+      if (t) {
+        TimerSystem_1.TimerSystem.Next(() => {
+          this.RoleListComponent.GetSelfScrollView().ScrollTo(t.GetRootItem());
+        });
+      }
     });
-    var e = this.d1o.GetCurSelectRoleId();
-    this.RoleListComponent?.SetCurSelection(e);
+    this.RoleListComponent?.SetCurSelection(s);
   }
   RefreshTabList() {
     var e;
@@ -719,7 +718,6 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.SortModel.ClearSortConfigData(3, 10, e.toString());
       ModelManager_1.ModelManager.FilterModel.ClearFilterConfigData(3, 10, e.toString());
     });
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionSuitFilter, new Map());
   }
 }
 exports.RoleRootView = RoleRootView;

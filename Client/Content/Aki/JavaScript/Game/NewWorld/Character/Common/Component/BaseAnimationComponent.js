@@ -291,7 +291,7 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     }
   }
   RefreshAnimOptimization() {
-    var t = this.Entity.GetComponent(175)?.IsInFighting ?? false;
+    var t = this.Entity.GetComponent(176)?.IsInFighting ?? false;
     var e = this.ForceDisableAnimOptimizationSet.size > 0;
     var i = e || t;
     var s = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());

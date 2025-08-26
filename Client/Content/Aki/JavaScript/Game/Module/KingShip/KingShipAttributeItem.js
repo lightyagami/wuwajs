@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.KingShipAttributeItem = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -18,21 +19,22 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.ine = 0;
     this.$Xt = 0;
-    this.KSu = 0;
     this.XSu = 0;
-    this.PBu = 0;
+    this.YSu = 0;
+    this.gFu = 0;
     this.CurrentCount = 0;
     this.HaveRefresh = false;
-    this.w2u = false;
-    this.L2u = false;
+    this.CFu = false;
+    this.pFu = false;
     this.s2i = undefined;
     this.a2i = undefined;
-    this.YSu = undefined;
+    this.zSu = undefined;
     this.SPe = undefined;
     this.OnClickTipsCallBack = undefined;
-    this.XWc = false;
-    this.YWc = false;
-    this.zWc = new Map();
+    this.vJu = false;
+    this.yJu = false;
+    this.SJu = new Map();
+    this.IsShowByKingShip = false;
     this.nqe = () => {
       var t;
       if (this.ine) {
@@ -57,17 +59,17 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(2).SetUIActive(false);
     this.GetItem(3).SetUIActive(false);
     this.s2i = this.GetSprite(4);
-    this.YSu = this.GetSprite(1);
+    this.zSu = this.GetSprite(1);
     this.a2i = this.GetSprite(5);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SPe.BindSequenceCloseEvent(t => {
-      if (t === "ArrowOut" && (this.YWc && (this.GetItem(2).SetUIActive(false), this.YWc = false), this.XWc)) {
+      if (t === "ArrowOut" && (this.yJu && (this.GetItem(2).SetUIActive(false), this.yJu = false), this.vJu)) {
         this.GetItem(3).SetUIActive(false);
-        this.XWc = false;
+        this.vJu = false;
       }
     });
-    this.XSu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipStaticAttributeChangeMoveSpeed") ?? 0;
-    this.PBu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipValueUseBigEffect") ?? 0;
+    this.YSu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipStaticAttributeChangeMoveSpeed") ?? 0;
+    this.gFu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipValueUseBigEffect") ?? 0;
     this.GetItem(8).SetUIActive(false);
   }
   RefreshItem(t, i) {
@@ -77,13 +79,14 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     i = ConfigManager_1.ConfigManager.KingShipConfig.GetKingShipAttribute(t.AttributeId);
     this.SetSpriteByPath(i.Icon, this.GetSprite(0), false);
     this.$Xt = t.MaxCount;
-    this.KSu = t.MinCount;
+    this.XSu = t.MinCount;
     this.CurrentCount = t.Current;
-    this.YSu?.SetFillAmount(this.CurrentCount / this.$Xt);
+    this.zSu?.SetFillAmount(this.CurrentCount / this.$Xt);
     this.a2i?.SetFillAmount(0);
     this.s2i?.SetFillAmount(0);
   }
   SetIsShow(t) {
+    this.IsShowByKingShip = t;
     this.GetItem(10).SetUIActive(t);
     if (t) {
       this.SPe?.PlayLevelSequenceByName("Start");
@@ -92,35 +95,38 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
   }
   RefreshAttribute(t) {
     this.CurrentCount = this.CurrentCount + t;
-    this.CurrentCount = MathUtils_1.MathUtils.Clamp(this.CurrentCount, this.KSu, this.$Xt);
-    this.w2u = false;
-    this.L2u = false;
+    this.CurrentCount = MathUtils_1.MathUtils.Clamp(this.CurrentCount, this.XSu, this.$Xt);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KingShip", 5, "KingShip_Attribute", ["AttributeId:", this.ine], ["Value:", this.CurrentCount]);
+    }
+    this.CFu = false;
+    this.pFu = false;
     if (t < 0) {
-      this.s2i?.SetFillAmount(this.YSu?.fillAmount ?? 0);
-      this.YSu?.SetFillAmount(this.CurrentCount / this.$Xt);
-      this.YSu?.SetUIActive(false);
+      this.s2i?.SetFillAmount(this.zSu?.fillAmount ?? 0);
+      this.zSu?.SetFillAmount(this.CurrentCount / this.$Xt);
+      this.zSu?.SetUIActive(false);
       this.a2i?.SetFillAmount(0);
-      this.w2u = true;
+      this.CFu = true;
     } else {
-      this.a2i?.SetFillAmount(this.YSu?.fillAmount ?? 0);
-      this.YSu?.SetFillAmount(this.CurrentCount / this.$Xt);
-      this.YSu?.SetUIActive(false);
+      this.a2i?.SetFillAmount(this.zSu?.fillAmount ?? 0);
+      this.zSu?.SetFillAmount(this.CurrentCount / this.$Xt);
+      this.zSu?.SetUIActive(false);
       this.s2i?.SetFillAmount(0);
-      this.L2u = true;
+      this.pFu = true;
     }
   }
   RefreshBuffItem(t, i) {
     if (t) {
-      this.zWc.set(t, i);
+      this.SJu.set(t, i);
     }
   }
   RefreshUpDownItem() {
     let t = 0;
-    if (this.zWc.size <= 0) {
+    if (this.SJu.size <= 0) {
       this.SetDownItem(false);
       this.SetUpItem(false);
     } else {
-      for (var [i] of this.zWc) {
+      for (var [i] of this.SJu) {
         t += i;
       }
       if (t > 0) {
@@ -133,12 +139,12 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshBuffRounds() {
-    for (var [t, i] of this.zWc) {
+    for (var [t, i] of this.SJu) {
       i = i - 1;
       if (i <= 0) {
-        this.zWc.delete(t);
+        this.SJu.delete(t);
       } else {
-        this.zWc.set(t, i);
+        this.SJu.set(t, i);
       }
     }
   }
@@ -150,7 +156,7 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
         this.SPe?.PlayLevelSequenceByName("ArrowIn");
       } else {
         this.SPe?.PlayLevelSequenceByName("ArrowOut");
-        this.YWc = true;
+        this.yJu = true;
       }
     }
   }
@@ -162,29 +168,36 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
         this.SPe?.PlayLevelSequenceByName("ArrowIn");
       } else {
         this.SPe?.PlayLevelSequenceByName("ArrowOut");
-        this.XWc = true;
+        this.vJu = true;
       }
     }
   }
   SetAttributeItem(t, i = 0) {
     if (t && i) {
-      t = Math.abs(i) >= this.PBu;
+      t = Math.abs(i) >= this.gFu;
       this.GetItem(6).SetUIActive(t);
       this.GetItem(7).SetUIActive(!t);
+      if (t) {
+        this.SPe?.StopCurrentSequence();
+        this.SPe?.PlayLevelSequenceByName("GLoop");
+      } else {
+        this.SPe?.StopCurrentSequence();
+        this.SPe?.PlayLevelSequenceByName("Loop");
+      }
     } else {
       this.GetItem(6).SetUIActive(false);
       this.GetItem(7).SetUIActive(false);
     }
   }
   Update() {
-    if (this.a2i && this.YSu && this.s2i && (this.w2u || this.L2u) && (this.L2u && (this.a2i.fillAmount < this.YSu.fillAmount ? (this.a2i.SetUIActive(true), this.a2i.SetFillAmount(this.a2i?.fillAmount + this.XSu)) : (this.YSu.SetUIActive(true), this.a2i.SetUIActive(false), this.L2u = false)), this.w2u)) {
-      if (this.s2i.fillAmount > this.YSu.fillAmount) {
+    if (this.a2i && this.zSu && this.s2i && (this.CFu || this.pFu) && (this.pFu && (this.a2i.fillAmount < this.zSu.fillAmount ? (this.a2i.SetUIActive(true), this.a2i.SetFillAmount(this.a2i?.fillAmount + this.YSu)) : (this.zSu.SetUIActive(true), this.a2i.SetUIActive(false), this.pFu = false)), this.CFu)) {
+      if (this.s2i.fillAmount > this.zSu.fillAmount) {
         this.s2i.SetUIActive(true);
-        this.s2i.SetFillAmount(this.s2i?.fillAmount - this.XSu);
+        this.s2i.SetFillAmount(this.s2i?.fillAmount - this.YSu);
       } else {
-        this.YSu.SetUIActive(true);
+        this.zSu.SetUIActive(true);
         this.s2i.SetUIActive(false);
-        this.w2u = false;
+        this.CFu = false;
       }
     }
   }
@@ -193,6 +206,9 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     this.OnClickTipsCallBack?.(false);
     this.SPe?.StopCurrentSequence();
     this.SPe?.PlayOrReplaySequenceByName("InfoOut");
+  }
+  GetShowItem() {
+    return this.GetItem(10);
   }
 }
 exports.KingShipAttributeItem = KingShipAttributeItem;

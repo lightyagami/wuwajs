@@ -48,6 +48,10 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     this.MonsterUseBodyEffect = false;
     this.UseMaterialContainerV2 = true;
     this.CanUpdate = true;
+    this.IsAogusita = false;
+    this.IsYounuo = false;
+    this.ShadowProxy = undefined;
+    this.ShadowProxyRefs = new Array();
     this.DisableFightDither = false;
     this.FightDitherRateCache = 1;
     this.OnRoleGoDownFinishEventAdded = false;
@@ -76,6 +80,10 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     this.IsUiUpdate = false;
     this.UseMaterialContainerV2 = true;
     this.CanUpdate = true;
+    this.IsAogusita = false;
+    this.IsYounuo = false;
+    this.ShadowProxy = undefined;
+    this.ShadowProxyRefs = new Array();
     this.DisableFightDither = false;
     this.FightDitherRateCache = 1;
     this.OnRoleGoDownFinishEventAdded = false;
@@ -164,6 +172,9 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         if (t === 8) {
           this.IsUiUpdate = GlobalData_1.GlobalData.IsUiSceneOpen;
         }
+        if (t === 3 && this.CachedOwner instanceof TsBaseCharacter_1.default && this.CachedOwner.Mesh) {
+          this.CachedOwner.Mesh.IsSpecialForLocalLightShadow = true;
+        }
         this.DeltaTime = 0;
         this.IsOnMobile = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(GlobalData_1.GlobalData.World) === 0;
         this.AllRenderComps = new Array();
@@ -173,6 +184,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         this.RenderType = t;
         this.TempRemoveList = [];
         this.SequenceHandleIds = [];
+        this.ShadowProxyRefs = [];
         this.IsDebug = false;
         for (const i of this.GetRenderComps()) {
           if (this.AllRenderCompsMap.has(i.GetComponentId())) {
@@ -354,8 +366,8 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
           t = this.LogicOwner;
           e *= t.GetTimeScale();
         }
-      } else if (this.CachedOwnerEntity?.GetComponent(0)?.IsRole()) {
-        e *= ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+      } else if ((t = this.CachedOwnerEntity?.GetComponent(180)) && (t = this.CachedOwnerEntity.TimeDilation * t.CurrentTimeScale) > 1) {
+        e *= t;
       }
       return e;
     }
@@ -367,8 +379,8 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     return this.RenderType;
   }
   ResetAllRenderingState() {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("RenderCharacter", 25, "材质控制器 ResetAllRenderingState:", ["Actor", this.CachedOwnerName]);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("RenderCharacter", 25, "材质控制器 ResetAllRenderingState:", ["Actor", this.CachedOwnerName]);
     }
     for (const e of this.AllRenderComps) {
       if (e.GetIsInitSuc()) {
@@ -403,8 +415,8 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("RenderCharacter", 40, "添加材质控制器组", ["Actor", this.GetOwner().GetName()], ["添加的材质控制器名称", e.GetName()], ["ID", r]);
     }
-    if (i.CleanOriginEffect) {
-      this.ResetAllRenderingState();
+    if (i.CleanOriginEffect && (o = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialControllerV2))) {
+      o.CleanOriginEffectByOtherData();
     }
     var o = new CharRuntimeMaterialControllerGroupInfo_1.CharMaterialControlRuntimeDataGroup();
     o.Init(this, i, t);
@@ -438,15 +450,15 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       return -1;
     }
     RenderModuleConfig_1.RenderStats.StatCharRenderingComponentAddData?.Start();
-    if (e.CleanOriginEffect) {
-      this.ResetAllRenderingState();
+    if (e.CleanOriginEffect && (n = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialControllerV2))) {
+      n.CleanOriginEffectByOtherData();
     }
     let r = -1;
     if (this.UseMaterialContainerV2) {
       r = this.AddMaterialControllerDataInnerV2(e, t, i);
     } else {
-      i = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialController);
-      if (!i) {
+      var n = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialController);
+      if (!n) {
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentAddData?.Stop();
         return -1;
       }
@@ -458,14 +470,24 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         RenderModuleConfig_1.RenderStats.StatCharRenderingComponentAddData?.Stop();
         return -1;
       }
-      r = i.AddMaterialControllerData(e, t);
+      r = n.AddMaterialControllerData(e, t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器", ["Actor", this.GetOwner().GetName()], ["材质控制器", e.GetName()], ["handle", r], ["CleanOriginEffect", e.CleanOriginEffect]);
       }
     }
+    if (this.IsAogusita && e.GetName() === "DA_Fx_Aogusita_Hair" || this.IsYounuo && e.GetName().startsWith("DA_Fx_Younuo_MoonGod")) {
+      this.ShadowProxy?.SetVisibility(true);
+      this.ShadowProxyRefs.push(r);
+    }
     EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnAddMaterialController, e, t, r);
     RenderModuleConfig_1.RenderStats.StatCharRenderingComponentAddData?.Stop();
     return r;
+  }
+  OnRemoveMaterialController(t) {
+    var e;
+    if ((this.IsAogusita || this.IsYounuo) && (e = this.ShadowProxyRefs.findIndex(e => e === t)) >= 0 && (this.ShadowProxyRefs.splice(e, 1), this.ShadowProxyRefs.length === 0)) {
+      this.ShadowProxy?.SetVisibility(false);
+    }
   }
   AddMaterialControllerDataInnerV2(e, t, i) {
     var r = this.GetComponent(RenderConfig_1.RenderConfig.IdMaterialControllerV2);
@@ -581,6 +603,14 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
     var t = this.GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect);
     if (t) {
       t.SetOpacity(e);
+    }
+  }
+  GetOpacityConsiderVisibility() {
+    var e = this.GetComponent(RenderConfig_1.RenderConfig.IdBodyEffect);
+    if (e) {
+      return e.GetOpacityConsiderVisibility();
+    } else {
+      return 1;
     }
   }
   AddInteraction(e, t = 1) {
@@ -870,6 +900,35 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
       if (!this.IsRecord && Info_1.Info.IsGameRunning()) {
         RenderModuleController_1.RenderModuleController.AddCharRenderShell(this);
       }
+      if (this.CachedOwner instanceof TsBaseCharacter_1.default && this.CachedOwner.Mesh && (this.CachedOwner.Mesh.SkeletalMesh?.GetName() === "R2T1AogusitaMd10011" ? this.IsAogusita = true : this.CachedOwner.Mesh.SkeletalMesh?.GetName() === "R2T1YounuoMd10011" && (this.IsYounuo = true), this.IsAogusita || this.IsYounuo)) {
+        this.AddShadowProxy26(this.CachedOwner.Mesh);
+      }
+    }
+  }
+  AddShadowProxy26(e) {
+    if (this.CachedOwner) {
+      this.ShadowProxy = this.CachedOwner.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, undefined, false, new UE.FName("ShadowProxy"));
+      this.ShadowProxy.SetSkeletalMesh(e.SkeletalMesh);
+      this.ShadowProxy.SetMasterPoseComponent(e, false);
+      this.ShadowProxy.bUseBoundsFromMasterPoseComponent = true;
+      this.ShadowProxy.SetVisibility(false);
+      this.ShadowProxy.SetRenderInMainPass(false);
+      this.ShadowProxy.K2_AttachToComponent(e, undefined, 2, 2, 0, true);
+      ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/Character/M_ToonShadowProxy.M_ToonShadowProxy", UE.Material, e => {
+        if (this.IsAogusita) {
+          this.ShadowProxy.SetMaterial(0, e);
+        }
+        this.ShadowProxy.SetMaterial(1, e);
+      });
+      ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/Character/MI_Empty.MI_Empty", UE.MaterialInstance, t => {
+        var i = this.ShadowProxy.GetNumMaterials();
+        for (let e = 2; e < i; ++e) {
+          this.ShadowProxy.SetMaterial(e, t);
+        }
+        if (this.IsYounuo) {
+          this.ShadowProxy.SetMaterial(0, t);
+        }
+      });
     }
   }
   ShouldTickAfterGoDown() {

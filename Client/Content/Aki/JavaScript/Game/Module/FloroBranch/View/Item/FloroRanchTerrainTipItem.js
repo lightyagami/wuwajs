@@ -24,9 +24,9 @@ class FloroRanchTerrainTipItem extends UiPanelBase_1.UiPanelBase {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(1));
   }
   RefreshInfoTipByEntity(e) {
-    this.d_u(e);
+    this.Y_u(e);
   }
-  d_u(e) {
+  Y_u(e) {
     if (e = e && e.CheckGetComponent(2)?.TerrainData) {
       this.GetText(0)?.SetText(e.Name);
       this.GetText(1)?.SetText(e.Desc);

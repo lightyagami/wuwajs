@@ -9,6 +9,7 @@ const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const ItemGridBase_1 = require("../ItemGridBase/ItemGridBase");
+const MediumItemGridBranchUpgradeComponent_1 = require("./MediumItemGridComponent/MediumItemGridBranchUpgradeComponent");
 const MediumItemGridBuffIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridBuffIconComponent");
 const MediumItemGridChangeAbleComponent_1 = require("./MediumItemGridComponent/MediumItemGridChangeAbleComponent");
 const MediumItemGridCheckTickComponent_1 = require("./MediumItemGridComponent/MediumItemGridCheckTickComponent");
@@ -24,6 +25,7 @@ const MediumItemGridEmptyComponent_1 = require("./MediumItemGridComponent/Medium
 const MediumItemGridEmptySlotComponent_1 = require("./MediumItemGridComponent/MediumItemGridEmptySlotComponent");
 const MediumItemGridFrameEffectComponent_1 = require("./MediumItemGridComponent/MediumItemGridFrameEffectComponent");
 const MediumItemGridHalfAreaComponent_1 = require("./MediumItemGridComponent/MediumItemGridHalfAreaComponent");
+const MediumItemGridItemPriceComponent_1 = require("./MediumItemGridComponent/MediumItemGridItemPriceComponent");
 const MediumItemGridLevelAndLockComponent_1 = require("./MediumItemGridComponent/MediumItemGridLevelAndLockComponent");
 const MediumItemGridLvAndStarComponent_1 = require("./MediumItemGridComponent/MediumItemGridLvAndStarComponent");
 const MediumItemGridMainVisionComponent_1 = require("./MediumItemGridComponent/MediumItemGridMainVisionComponent");
@@ -34,13 +36,19 @@ const MediumItemGridReceivedComponent_1 = require("./MediumItemGridComponent/Med
 const MediumItemGridRecommendComponent_1 = require("./MediumItemGridComponent/MediumItemGridRecommendComponent");
 const MediumItemGridRedDotComponent_1 = require("./MediumItemGridComponent/MediumItemGridRedDotComponent");
 const MediumItemGridReduceButtonComponent_1 = require("./MediumItemGridComponent/MediumItemGridReduceButtonComponent");
+const MediumItemGridRightTopValueComponent_1 = require("./MediumItemGridComponent/MediumItemGridRightTopValueComponent");
+const MediumItemGridRogueFinishComponent_1 = require("./MediumItemGridComponent/MediumItemGridRogueFinishComponent");
 const MediumItemGridRoleHeadComponent_1 = require("./MediumItemGridComponent/MediumItemGridRoleHeadComponent");
+const MediumItemGridSkinComponent_1 = require("./MediumItemGridComponent/MediumItemGridSkinComponent");
 const MediumItemGridSortHighlightIndexComponent_1 = require("./MediumItemGridComponent/MediumItemGridSortHighlightIndexComponent");
 const MediumItemGridSortIndexComponent_1 = require("./MediumItemGridComponent/MediumItemGridSortIndexComponent");
 const MediumItemGridSpriteIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridSpriteIconComponent");
+const MediumItemGridSubIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridSubIconComponent");
+const MediumItemGridTagsComponent_1 = require("./MediumItemGridComponent/MediumItemGridTagsComponent");
 const MediumItemGridTeamIconComponent_1 = require("./MediumItemGridComponent/MediumItemGridTeamIconComponent");
 const MediumItemGridTimeFlagComponent_1 = require("./MediumItemGridComponent/MediumItemGridTimeFlagComponent");
 const MediumItemGridUnRecommendComponent_1 = require("./MediumItemGridComponent/MediumItemGridUnRecommendComponent");
+const MediumItemGridUpgradeComponent_1 = require("./MediumItemGridComponent/MediumItemGridUpgradeComponent");
 const MediumItemGridVisionFetterComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionFetterComponent");
 const MediumItemGridVisionGreenSelectComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionGreenSelectComponent");
 const MediumItemGridVisionRoleHeadComponent_1 = require("./MediumItemGridComponent/MediumItemGridVisionRoleHeadComponent");
@@ -82,7 +90,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIExtendToggle], [7, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture], [2, UE.UIText], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIExtendToggle], [7, UE.UIItem], [8, UE.UISprite]];
   }
   OnSetUnderTextAdditionItem() {
     return this.GetItem(7);
@@ -159,17 +167,25 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var l = e.RoleHeadInfo;
     var _ = e.SortIndex;
     var S = e.IsDisable;
-    var v = e.IsMainVisionVisible;
-    var g = e.VisionFetterGroupId;
+    var g = e.IsMainVisionVisible;
+    var v = e.VisionFetterGroupId;
     var c = e.VisionRoleHeadInfo;
     var R = e.DangoRoleHeadInfo;
     var q = e.ComposeIconTag;
-    var y = e.ChangeAble;
-    var T = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
+    var T = e.ChangeAble;
+    var U = e.IsUpGrade;
+    var y = e.TagPathList;
+    var b = e.SubIconPath;
+    var k = e.RightTopValue;
+    var B = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
+    var V = e.IsBranchUpgrade;
+    var f = e.IsRecommendVisible;
     this.SetStartLevel(i);
     this.SetBuffSprite(m);
     this.SetRedDotVisible(o);
-    this.SetLevelAndLock(r, n, s, T, d);
+    this.SetLevelAndLock(r, n, s, B, d);
+    this.SetRecommendVisible(f);
+    this.SetItemPrice(e.ItemPrice);
     this.SetCoolDown(u, h);
     this.SetIsProhibit(p);
     this.SetReduceButton(I);
@@ -180,13 +196,19 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetRoleHead(l);
     this.SetSortIndex(_);
     this.SetIsDisable(S);
-    this.SetIsMainVision(v);
+    this.SetRogueFinish(e.IsRogueFinish);
+    this.SetIsMainVision(g);
     this.SetNewVisible(!o && t);
-    this.SetVisionFetterGroup(g);
+    this.SetVisionFetterGroup(v);
     this.SetVisionRoleHead(c);
     this.SetComposeIcon(q);
-    this.SetComposeChangeAble(y);
+    this.SetComposeChangeAble(T);
     this.SetDangoRoleHead(R);
+    this.SetUpGradeVisible(U);
+    this.SetTagsInfo(y);
+    this.SetSubIconPath(b);
+    this.SetRightTopValueInfo(k);
+    this.SetIsBranchUpgrade(V);
     this.ApplyPropBaseDisplay(e);
   }
   cwt(e) {
@@ -235,6 +257,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   SetWeeklyRogueTag(e) {
     this.RefreshComponent(MediumItemGridWeeklyRogueTagComponent_1.MediumItemGridWeeklyRogueTagComponent, e, e);
   }
+  SetRogueFinish(e) {
+    this.RefreshComponent(MediumItemGridRogueFinishComponent_1.MediumItemGridRogueFinishComponent, e, e);
+  }
   SetGreenSelected(e) {
     this.RefreshComponent(MediumItemGridVisionGreenSelectComponent_1.MediumItemGridVisionGreenSelectComponent, e, e);
   }
@@ -265,6 +290,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetLevelAndStar(e) {
     this.RefreshComponent(MediumItemGridLvAndStarComponent_1.MediumItemGridLvAndStarComponent, e?.Level !== undefined || e?.Star !== undefined, e);
+  }
+  SetItemPrice(e) {
+    this.RefreshComponent(MediumItemGridItemPriceComponent_1.MediumItemGridItemPriceComponent, e !== undefined, e);
   }
   SetFrameEffectVisible(e) {
     this.RefreshComponent(MediumItemGridFrameEffectComponent_1.MediumItemGridFrameEffectComponent, e, e);
@@ -402,6 +430,11 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   SetIconSprite(e) {
     this.RefreshComponent(MediumItemGridSpriteIconComponent_1.MediumItemGridSpriteIconComponent, e !== undefined && e !== "", e);
   }
+  SetSkinIcon(e) {
+    if (e !== undefined) {
+      this.RefreshComponent(MediumItemGridSkinComponent_1.MediumItemGridSkinComponent, true, e);
+    }
+  }
   ApplyEmptyDisplay(e) {
     var i = e.BottomTextId;
     var t = e.BottomText;
@@ -432,9 +465,14 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     } else {
       this.UTt(i);
     }
+    if (r === 10) {
+      this.SetSkinIcon(i);
+    }
     this.SetIconSprite(n);
     if (e.QualityId) {
       this.SetQualityIconById(this.GetSprite(0), e.QualityId, undefined, e.QualityType);
+    } else if (e.QualityIcon) {
+      this.hKu(e.QualityIcon);
     } else {
       this.dwt(i);
     }
@@ -534,19 +572,25 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var i = this.GetSprite(0);
     if (e === undefined) {
       i.SetUIActive(false);
-    } else {
-      if (this.nwt !== e) {
-        this.nwt = e;
-        this.zO1(e);
+    } else if (this.nwt === e) {
+      if (ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(e) !== 10) {
+        i.SetUIActive(true);
       }
+    } else {
       i.SetUIActive(true);
+      this.zO1(e);
+      this.nwt = e;
     }
   }
   zO1(e) {
     var i = this.GetSprite(0);
-    if (ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(e) === 13) {
+    var t = ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(e);
+    if (t === 13) {
       this.JO1(e);
+    } else if (t === 10) {
+      this.SetSkinQuality(e);
     } else {
+      this.GetSprite(8)?.SetUIActive(false);
       this.SetItemQualityIcon(i, e, undefined, "MediumItemGridQualitySpritePath");
     }
   }
@@ -561,6 +605,29 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       i.SetUIActive(false);
     } else {
       this.SetSpriteByPath(e, i, true);
+      i.SetUIActive(true);
+    }
+  }
+  hKu(e) {
+    var i = this.GetSprite(0);
+    var t = !!e;
+    i.SetUIActive(t);
+    if (t) {
+      this.SetSpriteByPath(e, i, false);
+    }
+  }
+  SetSkinQuality(e) {
+    var i = this.GetSprite(8);
+    if (e === undefined) {
+      i.SetUIActive(false);
+    } else {
+      if (this.nwt !== e) {
+        this.GetSprite(0)?.SetUIActive(false);
+        this.nwt = e;
+        e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
+        e = ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityById(e.QualityId);
+        this.SetSpriteByPath(e.SkinQualityItemA, i, false);
+      }
       i.SetUIActive(true);
     }
   }
@@ -610,6 +677,23 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   SetHalfAreaInfo(e) {
     var i = !!e;
     this.RefreshComponent(MediumItemGridHalfAreaComponent_1.MediumItemGridHalfAreaComponent, i, e);
+  }
+  SetUpGradeVisible(e) {
+    this.RefreshComponent(MediumItemGridUpgradeComponent_1.MediumItemGridUpgradeComponent, e, e);
+  }
+  SetTagsInfo(e) {
+    var i = !!e?.length;
+    this.RefreshComponent(MediumItemGridTagsComponent_1.MediumItemGridTagsComponent, i, e);
+  }
+  SetRightTopValueInfo(e) {
+    var i = !!e;
+    this.RefreshComponent(MediumItemGridRightTopValueComponent_1.MediumItemGridRightTopValueComponent, i, e);
+  }
+  SetIsBranchUpgrade(e) {
+    this.RefreshComponent(MediumItemGridBranchUpgradeComponent_1.MediumItemGridBranchUpgradeComponent, e, e);
+  }
+  SetSubIconPath(e) {
+    this.RefreshComponent(MediumItemGridSubIconComponent_1.MediumItemGridSubIconComponent, !!e, e);
   }
 }
 exports.MediumItemGrid = MediumItemGrid;

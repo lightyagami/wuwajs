@@ -8,7 +8,9 @@ const GuaranteeActionBlackScreenFadeOut_1 = require("./GuaranteeActions/Guarante
 const GuaranteeActionDisableSplineMoveModel_1 = require("./GuaranteeActions/GuaranteeActionDisableSplineMoveModel");
 const GuaranteeActionEnablePlayerMoveControl_1 = require("./GuaranteeActions/GuaranteeActionEnablePlayerMoveControl");
 const GuaranteeActionExitOrbitalCamera_1 = require("./GuaranteeActions/GuaranteeActionExitOrbitalCamera");
+const GuaranteeActionPreload_1 = require("./GuaranteeActions/GuaranteeActionPreload");
 const GuaranteeActionRestorePlayerCameraAdjustment_1 = require("./GuaranteeActions/GuaranteeActionRestorePlayerCameraAdjustment");
+const GuaranteeActionStopEffect_1 = require("./GuaranteeActions/GuaranteeActionStopEffect");
 const GuaranteeActionUnLimitPlayerOperation_1 = require("./GuaranteeActions/GuaranteeActionUnLimitPlayerOperation");
 class GuaranteeActionCenter {
   static RegGuaranteeActions() {
@@ -19,6 +21,8 @@ class GuaranteeActionCenter {
     e("ExitOrbitalCamera", GuaranteeActionExitOrbitalCamera_1.GuaranteeActionExitOrbitalCamera);
     e("ActionBlackScreenFadeOut", GuaranteeActionBlackScreenFadeOut_1.GuaranteeActionBlackScreenFadeOut);
     e("DisableSplineMoveModel", GuaranteeActionDisableSplineMoveModel_1.GuaranteeActionDisableSplineMoveModel);
+    e("StopEffect", GuaranteeActionStopEffect_1.GuaranteeActionStopEffect, 2);
+    e("Preload", GuaranteeActionPreload_1.GuaranteeActionPreload);
   }
   static GetGuaranteeAction(e) {
     e = GuaranteeActionCenter.iIe.get(e);

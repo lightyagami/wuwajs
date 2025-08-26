@@ -22,6 +22,14 @@ class ActivityBeginnerBookData extends ActivityData_1.ActivityBaseData {
       this.AllBeginnerTargetList.push(i.Id);
     }
   }
+  GetExDataFinishShowState() {
+    for (const t of this.AllBeginnerTargetList) {
+      if (!this.GetFinishState(t)) {
+        return false;
+      }
+    }
+    return true;
+  }
   GetEnableJump(t) {
     return ConfigManager_1.ConfigManager.ActivityBeginnerBookConfig?.GetActivityBeginnerConfig(t).ConditionId === 0 || (this.UnLockBeginnerMap.get(t) ?? false);
   }

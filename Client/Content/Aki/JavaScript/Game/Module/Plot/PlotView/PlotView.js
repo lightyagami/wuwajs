@@ -88,10 +88,10 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.tu1 = () => {
-      this.qWc(true);
+      this.qZu(true);
     };
     this.EI1 = () => {
-      this.qWc(false);
+      this.qZu(false);
     };
     this.Dvo = t => {
       this.deo?.AddSummary(t.TalkOutline);
@@ -285,22 +285,22 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.zeo = () => {
-      this.qWc(true);
+      this.qZu(true);
       this.fha();
     };
     this.cCa = () => {
-      this.qWc(false);
+      this.qZu(false);
       this.pha();
     };
     this.Zeo = () => {
       this.fha();
       this.Lrt = false;
-      this.qWc(true);
+      this.qZu(true);
     };
     this.DZ_ = () => {
       if (ControllerHolder_1.ControllerHolder.FlowController.OpenPlotReviewView()) {
         this.fha();
-        this.qWc(true);
+        this.qZu(true);
       }
     };
     this.FQe = t => {
@@ -313,7 +313,7 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
         AudioSystem_1.AudioSystem.PostEvent(PlotDefine_1.PLOT_REVIEW_EXIT_AUDIO_EVENT);
         this.Lrt = true;
         this.pha();
-        this.qWc(false);
+        this.qZu(false);
       }
     };
     this.Qzi = t => {
@@ -323,7 +323,7 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
       if (!!t && !this.Lrt) {
         this.Lrt = true;
         this.pha();
-        this.qWc(true);
+        this.qZu(true);
       }
     };
     this.eto = (t, i) => {
@@ -659,7 +659,7 @@ class PlotView extends UiTickViewBase_1.UiTickViewBase {
     }
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(5));
   }
-  qWc(t) {
+  qZu(t) {
     if (t) {
       ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay = false;
       this.Feo();

@@ -40,7 +40,7 @@ class InteractionInputDistribute extends InputDistributeSetup_1.InputDistributeS
       return true;
     }
     var t = ModelManager_1.ModelManager.InteractionModel.CurrentInteractEntityId;
-    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(197);
+    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(198);
     if (t && !t.GetClientCanInteraction()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Input", 10, "[InputDistribute]刷新交互列表输入Tag时,当前交互实体在执行交互,禁用热键");

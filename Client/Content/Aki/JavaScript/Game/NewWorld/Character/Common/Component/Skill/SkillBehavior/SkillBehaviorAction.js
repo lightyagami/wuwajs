@@ -9,6 +9,7 @@ const UE = require("ue");
 const Stats_1 = require("../../../../../../../Core/Common/Stats");
 const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
 const EntitySystem_1 = require("../../../../../../../Core/Entity/EntitySystem");
+const FNameUtil_1 = require("../../../../../../../Core/Utils/FNameUtil");
 const MathCommon_1 = require("../../../../../../../Core/Utils/Math/MathCommon");
 const Quat_1 = require("../../../../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../../../../Core/Utils/Math/Rotator");
@@ -26,7 +27,7 @@ const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const WorldGlobal_1 = require("../../../../../../World/WorldGlobal");
 const SkillBehaviorBatchBulletTask_1 = require("../../../../../Bullet/BulletStaticMethod/SkillBehaviorBatchBulletTask");
 const BulletUtil_1 = require("../../../../../Bullet/BulletUtil");
-const SceneItemReferenceComponent_1 = require("../../../../../SceneItem/SceneItemReferenceComponent");
+const RefCompAirWallController_1 = require("../../../../../SceneItem/RefCompController/RefCompAirWallController");
 const SkillBehaviorMisc_1 = require("./SkillBehaviorMisc");
 const tmpVector = Vector_1.Vector.Create();
 const tmpQuat = Quat_1.Quat.Create();
@@ -126,6 +127,11 @@ class SkillBehaviorAction {
     let o = Vector_1.Vector.ZeroVectorDouble;
     switch (t.LocationType) {
       case 0:
+        if (!FNameUtil_1.FNameUtil.IsNothing(t.BoneName)) {
+          const n = i.GetSocketTransform(t.BoneName);
+          r = n.GetLocation();
+          e = n.GetRotation().GetForwardVectorDouble();
+        }
         break;
       case 1:
         if (a.SkillComponent.SkillTarget) {
@@ -163,7 +169,22 @@ class SkillBehaviorAction {
         l = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(a.Entity.Id, t.BlackboardKey);
         c = EntitySystem_1.EntitySystem.Get(l);
         if (c?.Valid) {
-          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.GetComponent(169).Owner);
+          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.GetComponent(170).Owner);
+        }
+        break;
+      case 8:
+        l = PhantomUtil_1.PhantomUtil.GetSummonedEntity(a.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, t.FollowIndex);
+        if (l?.Valid) {
+          c = l.Entity?.GetComponent(1);
+          if (c) {
+            if (FNameUtil_1.FNameUtil.IsNothing(t.BoneName)) {
+              [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.Owner);
+            } else {
+              const n = c.GetSocketTransform(t.BoneName);
+              r = n.GetLocation();
+              e = n.GetRotation().GetForwardVectorDouble();
+            }
+          }
         }
     }
     switch (t.LocationForwardType) {
@@ -184,20 +205,20 @@ class SkillBehaviorAction {
         (e = Global_1.Global.BaseCharacter.D_K2_GetActorLocation().op_Subtraction(r)).Set(e.X, e.Y, 0);
     }
     if (t.BestSpot && t.Strategy === 4) {
-      k = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
-      v = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(a.Entity);
-      if ((k = k.indexOf(v)) + 1 > t.AngleOffsets.Num()) {
-        CombatLog_1.CombatLog.Error("Skill", a.Entity, "SkillBehaviorAction.SetLocation当前施法者所处编队位置大于配置数组", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName], ["index", k]);
+      v = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
+      S = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(a.Entity);
+      if ((v = v.indexOf(S)) + 1 > t.AngleOffsets.Num()) {
+        CombatLog_1.CombatLog.Error("Skill", a.Entity, "SkillBehaviorAction.SetLocation当前施法者所处编队位置大于配置数组", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName], ["index", v]);
       } else {
-        v = t.AngleOffsets.Get(k);
-        e = e.RotateAngleAxis(v, Vector_1.Vector.UpVectorDouble);
+        S = t.AngleOffsets.Get(v);
+        e = e.RotateAngleAxis(S, Vector_1.Vector.UpVectorDouble);
       }
     }
-    var _;
-    var n = Vector_1.Vector.Create(r);
-    var k = new UE.TransformDouble(e.Rotation(), r, Vector_1.Vector.OneVectorDouble);
+    var _ = Vector_1.Vector.Create(r);
+    const n = new UE.TransformDouble(e.Rotation(), r, Vector_1.Vector.OneVectorDouble);
+    var k;
     var v = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.LocationOffset);
-    r = k.TransformPositionNoScale(v);
+    r = n.TransformPositionNoScale(v);
     if (t.Restrict) {
       let e = i.ActorLocation;
       switch (t.RestrictType) {
@@ -208,116 +229,116 @@ class SkillBehaviorAction {
           break;
         case 2:
           if (a.Entity.GetComponent(0).IsMonster()) {
-            _ = i.GetInitLocation();
-            e.Set(_.X, _.Y, _.Z);
+            k = i.GetInitLocation();
+            e.Set(k.X, k.Y, k.Z);
           }
       }
-      k = r.op_Subtraction(e).Size2D();
-      if (k > t.RestrictDistance) {
-        v = t.RestrictDistance / k;
+      var S = r.op_Subtraction(e).Size2D();
+      if (S > t.RestrictDistance) {
+        v = t.RestrictDistance / S;
         MathUtils_1.MathUtils.LerpVector(e, r, v, r);
       }
     }
-    let S = Vector_1.Vector.Create(r);
+    let h = Vector_1.Vector.Create(r);
     if (t.BestSpot) {
       if (t.Strategy === 3) {
         o = Global_1.Global.BaseCharacter.D_K2_GetActorLocation();
       }
-      if (!n.Equals(S)) {
+      if (!_.Equals(h)) {
         switch (t.Strategy) {
           case 4:
           case 0:
-            var h = (0, SkillBehaviorMisc_1.traceWall)(i, n, S, t.DebugTrace);
-            if (!h) {
+            var m = (0, SkillBehaviorMisc_1.traceWall)(i, _, h, t.DebugTrace);
+            if (!m) {
               CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation撞墙停止射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
               return o;
             }
-            S = h[1];
+            h = m[1];
             break;
           case 1:
           case 2:
           case 3:
             {
               let e = false;
-              var m = Vector_1.Vector.Create();
+              var b = Vector_1.Vector.Create();
               var u = Vector_1.Vector.Create();
-              S.Subtraction(n, m);
-              for (const f of SkillBehaviorMisc_1.angles) {
-                m.RotateAngleAxis(f, Vector_1.Vector.UpVectorProxy, u);
-                n.Addition(u, S);
-                var M = (0, SkillBehaviorMisc_1.traceWall)(i, n, S, t.DebugTrace);
+              h.Subtraction(_, b);
+              for (const g of SkillBehaviorMisc_1.angles) {
+                b.RotateAngleAxis(g, Vector_1.Vector.UpVectorProxy, u);
+                _.Addition(u, h);
+                var M = (0, SkillBehaviorMisc_1.traceWall)(i, _, h, t.DebugTrace);
                 if (!M) {
                   CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation四向查询射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
                   return o;
                 }
                 if (!M[0]) {
                   e = true;
-                  S = M[1];
+                  h = M[1];
                   break;
                 }
               }
-              if (!e) {
-                CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation四个方向都撞墙了，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-                return o;
+              if (e) {
+                break;
               }
-              {
-                let e = undefined;
-                if (t.Strategy === 2) {
-                  if (t.LocationType !== 0) {
-                    e = Vector_1.Vector.Create(i.ActorLocation);
-                  }
-                } else if (t.Strategy === 3) {
-                  e = Vector_1.Vector.Create(Global_1.Global.BaseCharacter.D_K2_GetActorLocation());
-                }
-                if (e) {
-                  var h = Vector_1.Vector.Create(S);
-                  var b = (0, SkillBehaviorMisc_1.traceWall)(i, e, h, t.DebugTrace);
-                  if (!b) {
-                    CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation检测空气墙射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-                    return o;
-                  }
-                  var d = b[0];
-                  if (d) {
-                    var B = d.GetHitCount();
-                    for (let e = 0; e < B; e++) {
-                      var C = d.Actors.Get(e);
-                      if (ObjectUtils_1.ObjectUtils.IsValid(C)) {
-                        if (C.Tags.FindIndex(SceneItemReferenceComponent_1.AIR_WALL) !== -1) {
-                          CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation检测到空气墙", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-                          S = b[1];
-                          break;
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              break;
+              CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation四个方向都撞墙了，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
+              return o;
             }
         }
       }
+      {
+        let e = undefined;
+        if (t.Strategy === 2) {
+          if (t.LocationType !== 0) {
+            e = Vector_1.Vector.Create(i.ActorLocation);
+          }
+        } else if (t.Strategy === 3) {
+          e = Vector_1.Vector.Create(Global_1.Global.BaseCharacter.D_K2_GetActorLocation());
+        }
+        if (e) {
+          var S = Vector_1.Vector.Create(h);
+          var d = (0, SkillBehaviorMisc_1.traceWall)(i, e, S, t.DebugTrace);
+          if (!d) {
+            CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation检测空气墙射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
+            return o;
+          }
+          var B = d[0];
+          if (B) {
+            var C = B.GetHitCount();
+            for (let e = 0; e < C; e++) {
+              var p = B.Actors.Get(e);
+              if (ObjectUtils_1.ObjectUtils.IsValid(p)) {
+                if (p.Tags.FindIndex(RefCompAirWallController_1.AIR_WALL) !== -1) {
+                  CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation检测到空气墙", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
+                  h = d[1];
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
       if (t.OnGround) {
-        k = (0, SkillBehaviorMisc_1.traceGroundWithGravity)(i, S, t.DebugTrace);
-        if (!k[0]) {
+        v = (0, SkillBehaviorMisc_1.traceGroundWithGravity)(i, h, t.DebugTrace);
+        if (!v[0]) {
           CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation贴地没有找到合法的落脚点，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
           return o;
         }
-        (S = k[1]).Z += t.GroundOffset;
+        (h = v[1]).Z += t.GroundOffset;
       }
     }
-    r = S.ToUeVector();
-    v = t.Navigation;
-    if (v > 0) {
-      var k = a.Entity.GetComponent(178);
-      var p = Vector_1.Vector.Create();
-      k.GravityUp.Multiply(v, p);
-      if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, p.ToUeVector(), v)) {
-        k = (0, puerts_1.$ref)(undefined);
-        if (!UE.NavigationSystemV1.D_K2_GetRandomLocationInNavigableRadius(GlobalData_1.GlobalData.World, r, k, v)) {
+    r = h.ToUeVector();
+    S = t.Navigation;
+    if (S > 0) {
+      var v = a.Entity.GetComponent(179);
+      var f = Vector_1.Vector.Create();
+      v.GravityUp.Multiply(S, f);
+      if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, f.ToUeVector(), S)) {
+        v = (0, puerts_1.$ref)(undefined);
+        if (!UE.NavigationSystemV1.D_K2_GetRandomLocationInNavigableRadius(GlobalData_1.GlobalData.World, r, v, S)) {
           CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation没有找到合法的导航网格落点，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
           return o;
         }
-        r = (0, puerts_1.$unref)(k);
+        r = (0, puerts_1.$unref)(v);
       }
     }
     return r;
@@ -354,6 +375,8 @@ class SkillBehaviorAction {
         } else {
           i = t.SkillComponent.SkillTarget;
         }
+        break;
+      case 5:
         break;
       default:
         i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t.Entity);
@@ -474,10 +497,10 @@ class SkillBehaviorAction {
     let a = undefined;
     switch (e.BuffTarget) {
       case 0:
-        a = t.Entity.GetComponent(174);
+        a = t.Entity.GetComponent(175);
         break;
       case 1:
-        a = t.SkillComponent.SkillTarget?.Entity?.GetComponent(174);
+        a = t.SkillComponent.SkillTarget?.Entity?.GetComponent(175);
     }
     var i;
     if (a) {
@@ -495,7 +518,7 @@ class SkillBehaviorAction {
     }
   }
   static lZo(e, t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 205);
+    t = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 206);
     if (t?.Valid && e.Tag.TagName !== "None") {
       if (e.Add) {
         t.AddTag(e.Tag.TagId);
@@ -517,7 +540,7 @@ class SkillBehaviorAction {
     }
   }
   static K4_(e, t) {
-    var a = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 278);
+    var a = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 281);
     if (a?.Valid) {
       var i = e.UpdateCustomValue.ValueName;
       var r = i.Num();

@@ -13,7 +13,9 @@ class AiStateMachineConditionAttribute extends AiStateMachineCondition_1.AiState
     this.rne = 0;
     this.oie = (t, i, s) => {
       this.ResultSelf = i >= this.one && i <= this.rne;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionAttribute", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionAttribute", this.Node.Name);
+      }
     };
   }
   OnInit(t) {

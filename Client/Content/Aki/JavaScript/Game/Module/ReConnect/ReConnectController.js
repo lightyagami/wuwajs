@@ -45,6 +45,7 @@ const LogReportController_1 = require("../LogReport/LogReportController");
 const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 const ReconnectDefine_1 = require("./ReconnectDefine");
 const ReConnectModel_1 = require("./ReConnectModel");
+const ConfigCommon_1 = require("../../../Core/Config/ConfigCommon");
 const ONE_THOUSAND = 1000;
 const TWO_THOUSAND = 2000;
 const RECONNECT_TIME_OUT = 20000;
@@ -436,7 +437,7 @@ ReConnectController.Cso = () => {
     ThirdPartySdkManager_1.ThirdPartySdkManager.Logout();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ReconnectClearData);
     UE.KuroLauncherLibrary.LogoutToLauncher();
-    UE.KuroPrepareStatementLib.CloseAllConnection();
+    ConfigCommon_1.ConfigCommon.CloseAllConnection();
     HotFixSceneManager_1.HotFixSceneManager.StopHotPatchBgm();
     LauncherProcedure_1.LauncherProcedure.Destroy();
     UE.GameplayStatics.OpenLevel(GlobalData_1.GlobalData.World, ReconnectDefine_1.reconnectMapName);

@@ -16,6 +16,7 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
     super(...arguments);
     this.hIa = true;
     this.bll = false;
+    this.ViewProxy = undefined;
   }
   OnStart() {
     var e;
@@ -43,6 +44,9 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
       }
     }
     this.IsEmptyChoose = true;
+  }
+  RegisterViewProxy(e) {
+    this.ViewProxy = e;
   }
   TryEmitCurrentGridSelectOn() {
     if (this.hIa) {
@@ -96,6 +100,7 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
     var o = this.GetCurrentGrid()?.Data.State !== 1;
     var t = this.GetRefreshTips(t || o);
     this.RefreshTipsByText(t, !e);
+    this.ViewProxy.RefreshTips();
   }
   GetRefreshTips(e) {}
   CloseRouletteMain() {
@@ -104,7 +109,7 @@ class RouletteComponentMain extends RouletteComponent_1.RouletteComponentBase {
 }
 class RouletteComponentMainExplore extends (exports.RouletteComponentMain = RouletteComponentMain) {
   GetRouletteInfoMap() {
-    return RouletteComponent_1.exploreRouletteMap;
+    return this.ViewProxy.GetExploreRouletteDataMap();
   }
   JudgeGridStateByData(e, t) {
     var o = e !== undefined && e !== 0;

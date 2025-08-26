@@ -20,11 +20,11 @@ class Event {
     this.AF_ = undefined;
     this.PF_ = new Set();
     this.unh = new Map();
-    this.wgu = (t, e) => {
+    this.RCu = (t, e) => {
       t = this._K.get(t);
       return t !== undefined && t.has(e);
     };
-    this.Agu = new Map();
+    this.LCu = new Map();
     this.AF_ = new Int8Array(Math.ceil(this.RF_));
   }
   cnh(t, e, i, n) {
@@ -59,7 +59,7 @@ class Event {
   Has(t, e) {
     var i;
     var e = Event.lK.get(e);
-    return !!e && ((i = this.nK.get(t)) && i.has(e) ? !this.wgu(t, e) : (i = this.uK.get(t)) !== undefined && i.has(e));
+    return !!e && ((i = this.nK.get(t)) && i.has(e) ? !this.RCu(t, e) : (i = this.uK.get(t)) !== undefined && i.has(e));
   }
   Add(t, e) {
     return this.YW(t, e, 0);
@@ -88,12 +88,12 @@ class Event {
       return false;
     }
     this.mK(t, true);
-    var i = this.Agu.get(t);
-    if (i && (r = i.GetHandlesByParam(e[0])) && (this.Pgu(t, r, i, ...e), r.size === 0)) {
+    var i = this.LCu.get(t);
+    if (i && (r = i.GetHandlesByParam(e[0])) && (this.wCu(t, r, i, ...e), r.size === 0)) {
       i.DeleteHandlesByParam(e[0]);
     }
     const n = this.nK.get(t);
-    if (n && (this.Pgu(t, n, undefined, ...e), n.size === 0)) {
+    if (n && (this.wCu(t, n, undefined, ...e), n.size === 0)) {
       this.nK.delete(t);
     }
     this.mK(t, false);
@@ -117,7 +117,7 @@ class Event {
       if (i.PendingRemoveHandles) {
         for (const [h, n] of i.PendingRemoveHandles) {
           for (const a of n) {
-            this.xgu(t, h, a);
+            this.ACu(t, h, a);
           }
         }
         i.PendingRemoveHandles.clear();
@@ -125,18 +125,18 @@ class Event {
       if (i.PendingAddHandles) {
         for (const [v, n] of i.PendingAddHandles) {
           for (const _ of n) {
-            this.Ugu(t, i, _[0], _[1], v);
+            this.PCu(t, i, _[0], _[1], v);
           }
         }
         i.PendingAddHandles.clear();
       }
       if (i.IsHandlesEmpty()) {
-        this.Agu.delete(t);
+        this.LCu.delete(t);
       }
     }
     return true;
   }
-  Pgu(e, t, i, ...n) {
+  wCu(e, t, i, ...n) {
     let r = undefined;
     var s;
     if (!!Stats_1.Stat.Enable && !(s = this.rK[e], r = Event.dK.get(s))) {
@@ -148,10 +148,10 @@ class Event {
       var o = v[0];
       var h = o.deref();
       if (h) {
-        if (i ? !i.IsInPendingRemove(o, n[0]) : !this.wgu(e, o)) {
+        if (i ? !i.IsInPendingRemove(o, n[0]) : !this.RCu(e, o)) {
           if (v[1] === 1) {
             if (i) {
-              this.Dgu(e, o, n[0]);
+              this.xCu(e, o, n[0]);
             } else {
               this.O7(e, o);
             }
@@ -187,7 +187,7 @@ class Event {
       }
       return false;
     }
-    e = this.Bgu(t, e);
+    e = this.UCu(t, e);
     if (!this.cK(t)) {
       return this.fK(t, e, i);
     }
@@ -219,7 +219,7 @@ class Event {
       return true;
     }
   }
-  Bgu(t, e) {
+  UCu(t, e) {
     let i = Event.lK.get(e);
     var n;
     if (!i) {
@@ -328,29 +328,29 @@ class Event {
   }
   HasWithCondition(t, e, i) {
     e = Event.lK.get(e);
-    return !!e && !!(t = this.Agu.get(t)) && (t.Has(i, e) ? !t.IsInPendingRemove(i, e) : t.IsInPendingAdd(i, e));
+    return !!e && !!(t = this.LCu.get(t)) && (t.Has(i, e) ? !t.IsInPendingRemove(i, e) : t.IsInPendingAdd(i, e));
   }
   AddWithCondition(t, e, i) {
-    return this.kgu(t, e, 0, i);
+    return this.DCu(t, e, 0, i);
   }
   OnceWithCondition(t, e, i) {
-    return this.kgu(t, e, 1, i);
+    return this.DCu(t, e, 1, i);
   }
-  kgu(t, e, i, n) {
+  DCu(t, e, i, n) {
     if (this.rK[t] === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Event", 18, "事件名不存在，请检查事件名是否正确", ["name", t]);
       }
       return false;
     }
-    e = this.Bgu(t, e);
-    let r = this.Agu.get(t);
+    e = this.UCu(t, e);
+    let r = this.LCu.get(t);
     if (!r) {
       r = new EventConditionListener_1.ConditionListener();
-      this.Agu.set(t, r);
+      this.LCu.set(t, r);
     }
     if (!this.cK(t)) {
-      return this.Ugu(t, r, e, i, n);
+      return this.PCu(t, r, e, i, n);
     }
     if (r.Has(n, e)) {
       const s = r.RemoveFromPendingMoveHandles(n, e);
@@ -369,7 +369,7 @@ class Event {
     }
     return s;
   }
-  Ugu(t, e, i, n, r) {
+  PCu(t, e, i, n, r) {
     if (e.Has(r, i)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Event", 18, "事件重复注册，请检查同一个事件名同一个处理函数的注册逻辑", ["name", this.rK[t]]);
@@ -382,13 +382,13 @@ class Event {
   }
   RemoveWithCondition(t, e, i) {
     e = Event.lK.get(e);
-    return !!e && this.Dgu(t, e, i);
+    return !!e && this.xCu(t, e, i);
   }
-  Dgu(t, e, i) {
+  xCu(t, e, i) {
     if (!this.cK(t)) {
-      return this.xgu(t, i, e);
+      return this.ACu(t, i, e);
     }
-    var n = this.Agu.get(t);
+    var n = this.LCu.get(t);
     if (!n) {
       return true;
     }
@@ -409,8 +409,8 @@ class Event {
     }
     return r;
   }
-  xgu(t, e, i) {
-    var n = this.Agu.get(t);
+  ACu(t, e, i) {
+    var n = this.LCu.get(t);
     if (n) {
       if (!(e = n.Remove(e, i))) {
         if (Log_1.Log.CheckError()) {

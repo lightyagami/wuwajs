@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.MapRogueOpMove = undefined;
+const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MapRogueOp_1 = require("./MapRogueOp");
 const THOUSANDTH_RATIO = 1000;
 const FOCUS_PLAYER_TWEEN_TIME = 0.25;
@@ -30,7 +32,7 @@ class MapRogueOpMove extends MapRogueOp_1.MapRogueOp {
     if (t) {
       this.n8 = t;
       this.StepSize = this.n8.length;
-      this.Pxu();
+      this.rUu();
     }
     if (s) {
       for (const i of s) {
@@ -45,12 +47,18 @@ class MapRogueOpMove extends MapRogueOp_1.MapRogueOp {
       t.SetMapGridBgStateProxy(t.CurSelectedIndex, false);
       t.SetMapGridBgStateProxy(s, true);
     }
-    t.FocusOnGrid(this.LastGridIndex, true, () => {
-      t.CreateGridPathAsync(this.xxu()).then(() => {
-        (t.CurOp = this).Uxu(t);
-        this.Execute(t);
-      });
-    }, FOCUS_PLAYER_TWEEN_TIME);
+    this.Bod(t);
+  }
+  async Bod(t) {
+    t.FocusOnGrid(this.LastGridIndex, true, undefined, FOCUS_PLAYER_TWEEN_TIME);
+    const s = new CustomPromise_1.CustomPromise();
+    TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      s.SetResult();
+    }, Math.max(FOCUS_PLAYER_TWEEN_TIME * THOUSANDTH_RATIO, TimerSystem_1.MIN_TIME));
+    await s.Promise;
+    await t.CreateGridPathAsync(this.oUu());
+    (t.CurOp = this).nUu(t);
+    this.Execute(t);
   }
   OnExecute(t) {
     var s = this.n8[this.CurrentStep - 1];
@@ -58,13 +66,13 @@ class MapRogueOpMove extends MapRogueOp_1.MapRogueOp {
       t.SetGridVisionProxy(i, true);
     }
     if (this.CurrentFocusGridIndex === s) {
-      this.Uxu(t);
+      this.nUu(t);
     }
     t.MoveOneStep(this.LastGridIndex, s);
     this.LastGridIndex = s;
     t.GameStage = 3;
   }
-  Uxu(t) {
+  nUu(t) {
     var s;
     if (this.CornerIndex.length !== 0) {
       this.CurrentFocusGridIndex = this.CornerIndex.shift();
@@ -72,22 +80,22 @@ class MapRogueOpMove extends MapRogueOp_1.MapRogueOp {
       t.FocusOnGrid(this.CurrentFocusGridIndex, true, undefined, t.MoveTimeGap * s / THOUSANDTH_RATIO);
     }
   }
-  xxu() {
+  oUu() {
     var t = [];
     t.push(this.LastGridIndex);
     t.push(...this.n8);
     return t;
   }
-  Pxu() {
+  rUu() {
     let s = 0;
-    var i = this.xxu();
+    var i = this.oUu();
     for (let t = 1; t < i.length - 1; t++) {
       s++;
-      var h = i[t];
-      var e = i[t - 1];
+      var e = i[t];
+      var h = i[t - 1];
       var r = i[t + 1];
-      if (s >= MIN_FOCUS_PATH_COUNT && this.IsShapeCorner(h, e, r)) {
-        this.CornerIndex.push(h);
+      if (s >= MIN_FOCUS_PATH_COUNT && this.IsShapeCorner(e, h, r)) {
+        this.CornerIndex.push(e);
         this.CornerSingleLength.push(s);
         s = 0;
       }
@@ -96,8 +104,8 @@ class MapRogueOpMove extends MapRogueOp_1.MapRogueOp {
     this.CornerSingleLength.push(s + 1);
   }
   IsShapeCorner(t, s, i) {
-    var h = (t, s) => t + 1 === s || t - 1 === s ? 0 : 1;
-    return h(t, s) !== h(t, i);
+    var e = (t, s) => t + 1 === s || t - 1 === s ? 0 : 1;
+    return e(t, s) !== e(t, i);
   }
   OnFinish(t) {
     t.SetInteractAvailable(3, false);

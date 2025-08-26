@@ -12,13 +12,13 @@ class FloroRanchSubDungeonData {
     this.Lo = undefined;
     this.P4e = false;
     this.jqc = false;
-    this.COu = false;
+    this.aOu = false;
     this.Ghi = 0;
-    this._mu = 0;
-    this.Xou = false;
-    this.zou = 0;
-    this.Jou = 0;
-    this.eWc = true;
+    this.Qmu = 0;
+    this.Snu = false;
+    this.Enu = 0;
+    this.Inu = 0;
+    this.SKu = true;
     this.Lo = t;
   }
   UpdateUnLockState(t) {
@@ -28,9 +28,9 @@ class FloroRanchSubDungeonData {
     return this.P4e;
   }
   UpdateHistoryData(t) {
-    this.Xou = true;
-    this.zou = t.Kiu;
-    this.Jou = Number(MathUtils_1.MathUtils.LongToBigInt(t.Xiu));
+    this.Snu = true;
+    this.Enu = t.yru;
+    this.Inu = Number(MathUtils_1.MathUtils.LongToBigInt(t.Sru));
   }
   set IsFinished(t) {
     this.jqc = t;
@@ -45,16 +45,16 @@ class FloroRanchSubDungeonData {
     return this.Ghi;
   }
   set IsInstanceUnlock(t) {
-    this.COu = t;
+    this.aOu = t;
   }
   get IsInstanceUnlock() {
-    return this.COu;
+    return this.aOu;
   }
   set ConditionId(t) {
-    this._mu = t;
+    this.Qmu = t;
   }
   get ConditionId() {
-    return this._mu;
+    return this.Qmu;
   }
   GetMaxStage() {
     return this.Lo.Stage;
@@ -84,11 +84,14 @@ class FloroRanchSubDungeonData {
   get Id() {
     return this.Lo.Id;
   }
+  get IsEndlessMode() {
+    return this.Lo.EndlessMode;
+  }
   set HasRedDot(t) {
-    this.eWc = t;
+    this.SKu = t;
   }
   get HasRedDot() {
-    return !!this.IsUnLock && !!this.COu && this.eWc;
+    return !!this.IsUnLock && !!this.aOu && this.SKu;
   }
   get SelectedRaceIds() {
     var t = this.RaceList;
@@ -108,13 +111,13 @@ class FloroRanchSubDungeonData {
     return t;
   }
   get HasHistory() {
-    return this.Xou;
+    return this.Snu;
   }
   get MaxDays() {
-    return this.zou;
+    return this.Enu;
   }
   get MaxCoin() {
-    return this.Jou;
+    return this.Inu;
   }
 }
 exports.FloroRanchSubDungeonData = FloroRanchSubDungeonData;

@@ -7,6 +7,7 @@ exports.ShipTowerReviewItem = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const ShipTowerDefine_1 = require("../ShipTowerDefine");
@@ -17,7 +18,7 @@ class ShipTowerReviewItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ClickCallBack = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIItem], [5, UE.UISprite]];
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();
@@ -34,6 +35,14 @@ class ShipTowerReviewItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (i) {
       i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(this.fGt.Grade);
       this.SetTextureByPath(i, e);
+    }
+    this.GetItem(4)?.SetUIActive(this.fGt.IsQuickPass);
+    var i = ModelManager_1.ModelManager.ShipTowerModel.GetStageIsEndlessById(this.fGt.StageId);
+    this.GetSprite(5)?.SetUIActive(i);
+    this.GetText(3)?.SetUIActive(!i);
+    if (!i) {
+      e = ModelManager_1.ModelManager.ShipTowerModel.GetStageOrderIndexById(this.fGt.StageId);
+      this.GetText(3)?.SetText(e.toString());
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "ShipTowerReviewItem", ["Refresh", this.fGt]);

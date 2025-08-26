@@ -138,6 +138,9 @@ let CharacterFlowComponent = class CharacterFlowComponent extends EntityComponen
       this.FlowLogic.StopFlow();
     }
   }
+  IsPlayingFlow() {
+    return this.FlowLogic?.IsShowDialogue() ?? false;
+  }
   PlayDynamicFlowBegin(t) {
     this.ForceStopFlow();
     this.IsPlayDynamicFlow = true;

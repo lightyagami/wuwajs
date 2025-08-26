@@ -21,7 +21,7 @@ class OpenSystemFeed extends OpenSystemBase_1.OpenSystemBase {
       HandInType: "ItemIds",
       ItemIds: new Array(),
       Count: 1
-    }).ItemIds = i.ItemIds.concat(n.ItemIds), r.push(i), i = "", i = o.GetComponent(117)?.PawnName ?? "", (o = o.GetComponent(171)) ? (o.InitFeedingAnimalConfig(n.ItemIds, n.GameplayTags), o.SetUiOpenPerformance(this.GetViewName(e), e.BoardId), ControllerHolder_1.ControllerHolder.ItemDeliverController.OpenItemDeliverViewByHandInItem(r, i, undefined, undefined, t)) : (Log_1.Log.CheckError() && Log_1.Log.Error("Animal", 50, "动物实体获取AnimalPerformComp失败", ["EntityId", t.EntityId]), false)) : (Log_1.Log.CheckError() && Log_1.Log.Error("Animal", 29, "无效的投喂动物对象", ["EntityId", t.EntityId]), false));
+    }).ItemIds = i.ItemIds.concat(n.ItemIds), r.push(i), i = "", i = o.GetComponent(118)?.PawnName ?? "", (o = o.GetComponent(172)) ? (o.InitFeedingAnimalConfig(n.ItemIds, n.GameplayTags), o.SetUiOpenPerformance(this.GetViewName(e), e.BoardId), ControllerHolder_1.ControllerHolder.ItemDeliverController.OpenItemDeliverViewByHandInItem(r, i, undefined, undefined, t)) : (Log_1.Log.CheckError() && Log_1.Log.Error("Animal", 50, "动物实体获取AnimalPerformComp失败", ["EntityId", t.EntityId]), false)) : (Log_1.Log.CheckError() && Log_1.Log.Error("Animal", 29, "无效的投喂动物对象", ["EntityId", t.EntityId]), false));
   }
   GetViewName(e) {
     return "ItemDeliverView";

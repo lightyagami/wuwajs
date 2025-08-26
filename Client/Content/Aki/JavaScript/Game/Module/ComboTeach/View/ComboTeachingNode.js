@@ -196,7 +196,7 @@ class ComboTeachingNode extends AutoAttachItem_1.AutoAttachItem {
     }
   }
   CheckSuccessCondition(t) {
-    return !!this.Pe.SuccessCondition.Check(this.Pe, t) && !this.Pe.IsEmit && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingNodeEnd, this, true), this.SPe.StopSequenceByKey("LongPress"), this.SPe.StopCurrentSequence(false, true), this.SPe.PlayLevelSequenceByName("ClickRigMIs"), this.GetItem(8).SetUIActive(false), this.Pe.IsEmit = true);
+    return !!this.Pe.SuccessCondition.Check(this.Pe, t) && !this.Pe.IsEmit && !!EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingNodeEnd, this, true) && (this.SPe.StopSequenceByKey("LongPress"), this.SPe.StopCurrentSequence(false, true), this.SPe.PlayLevelSequenceByName("ClickRigMIs"), this.GetItem(8).SetUIActive(false), this.Pe.IsEmit = true);
   }
   CheckFailCondition() {
     if (!this.Pe.IsEmit) {
@@ -204,8 +204,7 @@ class ComboTeachingNode extends AutoAttachItem_1.AutoAttachItem {
       this.Pe.FailUpdateCondition.forEach(t => {
         i = t.Check(this.Pe) || i;
       });
-      if (i) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingNodeEnd, this, false);
+      if (i && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingNodeEnd, this, false)) {
         this.SPe.StopCurrentSequence(false, true);
         this.SPe.PlayLevelSequenceByName("ClickRigMIs");
         this.Pe.IsEmit = true;
@@ -233,8 +232,7 @@ class ComboTeachingNode extends AutoAttachItem_1.AutoAttachItem {
       this.Pe.FailEventCondition.forEach(t => {
         i = t.Check(this.Pe, s) || i;
       });
-      if (i) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingNodeEnd, this, false);
+      if (i && EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingNodeEnd, this, false)) {
         this.SPe.StopCurrentSequence(false, true);
         this.SPe.PlayLevelSequenceByName("ClickRigMIs");
         this.Pe.IsEmit = true;

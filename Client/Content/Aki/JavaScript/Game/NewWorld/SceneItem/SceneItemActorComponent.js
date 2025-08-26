@@ -4,20 +4,20 @@ var SceneItemActorComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, n) {
   var s;
   var r = arguments.length;
-  var a = r < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
+  var o = r < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, i, n);
+    o = Reflect.decorate(t, e, i, n);
   } else {
-    for (var o = t.length - 1; o >= 0; o--) {
-      if (s = t[o]) {
-        a = (r < 3 ? s(a) : r > 3 ? s(e, i, a) : s(e, i)) || a;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (s = t[a]) {
+        o = (r < 3 ? s(o) : r > 3 ? s(e, i, o) : s(e, i)) || o;
       }
     }
   }
-  if (r > 3 && a) {
-    Object.defineProperty(e, i, a);
+  if (r > 3 && o) {
+    Object.defineProperty(e, i, o);
   }
-  return a;
+  return o;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -88,7 +88,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
         SceneInteractionManager_1.SceneInteractionManager.Get().PlayKuroSkeletalMeshDestruction(this.u9e, t.Actor);
       }
     };
-    this.tNu = t => {
+    this.RVu = t => {
       if (this.u9e === t && this.omn) {
         this.TryRefreshShowActor();
       }
@@ -135,7 +135,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.RefreshShowActor();
     };
     this.mmn = undefined;
-    this.WWc = 1;
+    this.LQc = 1;
   }
   get IsReadyForOverlap() {
     return this.YGa;
@@ -352,7 +352,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   OnStart() {
     var t;
-    if ((this.Entity.GetComponent(156) !== undefined || this.Entity.GetComponent(221) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
+    if ((this.Entity.GetComponent(157) !== undefined || this.Entity.GetComponent(222) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
       t.bLockXRotation = false;
       t.bLockYRotation = false;
       t.bLockZRotation = false;
@@ -371,7 +371,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   Vr() {
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHitByHitActorData, this.hxc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.tNu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.RVu);
   }
   pJl() {
     var t = this.CreatureDataInternal.GetPbDataId();
@@ -381,7 +381,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   sya() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHitByHitActorData, this.hxc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.tNu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.RVu);
   }
   OnEnd() {
     if (this.nmn !== undefined) {
@@ -501,7 +501,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.imn = t;
       this.u9e = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(i.AssetPathName?.toString(), this.imn, this.ActorLocation, this.ActorRotation, () => {
         this.Txe();
-      }, this.CreatureData.GetVisible(), e);
+      }, this.CreatureData.GetVisible(), e, this.CreatureData.GetPbDataId());
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Entity", 17, "生成场景交互物", ["initState", t], ["HandleId", this.u9e], ["ModelId", n.ID], ["ActorLocation", this.ActorLocation]);
       }
@@ -519,8 +519,8 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       SceneInteractionManager_1.SceneInteractionManager.Get().SetCollisionActorsOwner(this.u9e, this.ActorInternal);
       SceneInteractionManager_1.SceneInteractionManager.Get().AttachChildActor(this.u9e);
       var t;
-      var e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.CreatureData.GetPbDataId());
-      if (e && e.IsScaleEnabled && e.Transform) {
+      var e = this.CreatureData.GetEntityConfigType();
+      if (e !== Protocol_1.Aki.Protocol.rLs.lTs && e !== Protocol_1.Aki.Protocol.rLs.Proto_Template && (e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.CreatureData.GetPbDataId())) && e.IsScaleEnabled && e.Transform) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Temp", 31, "[CHTest]", ["Scale", e.Transform.Scale]);
         }
@@ -552,7 +552,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.fmn();
       this.RefreshShowActor();
       this.kMl();
-      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(204)?.CurrentTimeScale ?? 1);
+      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(205)?.CurrentTimeScale ?? 1);
       this.UpdateAkFinalTimeScale(e, true);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted);
       SceneInteractionManager_1.SceneInteractionManager.Get().EnableInteractionLevel(this.u9e);
@@ -895,7 +895,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     }
   }
   OnChangeTimeDilation(t) {
-    var t = t * (this.Entity.GetComponent(122)?.CurrentTimeScale ?? 1);
+    var t = t * (this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1);
     this.ActorInternal.CustomTimeDilation = t;
     var e = this.GetInteractionMainActor();
     if (e?.IsValid()) {
@@ -951,17 +951,17 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     }
   }
   UpdateAkFinalTimeScale(t, e = false) {
-    if (!!e || t !== this.WWc) {
+    if (!!e || t !== this.LQc) {
       if (e = this.Owner) {
-        this.QWc(e, t, this.WWc);
+        this.AQc(e, t, this.LQc);
       }
       if (e = this.GetInteractionMainActor()) {
-        this.QWc(e, t, this.WWc);
+        this.AQc(e, t, this.LQc);
       }
-      this.WWc = t;
+      this.LQc = t;
     }
   }
-  QWc(t, e, i) {
+  AQc(t, e, i) {
     AudioSystem_1.AudioSystem.SetRtpcValue("entity_time_scale_combat", e, {
       Actor: t
     });
@@ -973,5 +973,5 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
 };
 SceneItemActorComponent.Zsh = undefined;
-SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(202)], SceneItemActorComponent);
+SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], SceneItemActorComponent);
 exports.SceneItemActorComponent = SceneItemActorComponent; //# sourceMappingURL=SceneItemActorComponent.js.map

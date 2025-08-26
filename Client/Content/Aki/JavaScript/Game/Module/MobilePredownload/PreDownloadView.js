@@ -52,6 +52,7 @@ class PreDownloadView extends UiViewBase_1.UiViewBase {
       var o = o.IsDownloading();
       LauncherLog_1.LauncherLog.Info("get pre download state update", ["is complete", r], ["is downloading", o]);
       if (r) {
+        this.GetButton(1)?.RootUIComp.SetUIActive(true);
         const i = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(PreDownloadDefine_1.COMPLETE_TXT);
         n?.SetText(i);
         this.UpdatePatchDownProgress(false, this.Jn1, "", "0B/s", this.es1, this.es1).then(() => {
@@ -99,24 +100,26 @@ class PreDownloadView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PreDownloadStateUpdate, this.GCc);
   }
-  async UpdatePatchDownProgress(e, o, r, n, i, a) {
-    var t = PreDownloadManager_1.PreDownloadManager.Get().IsDownloading();
-    ModelManager_1.ModelManager.PreDownloadModel?.OnUpdateDownData(e, o, r, t ? n : "0B/s", i, a);
+  async UpdatePatchDownProgress(e, o, r, n, i, t) {
+    this.GetButton(1)?.RootUIComp.SetUIActive(true);
+    var a = PreDownloadManager_1.PreDownloadManager.Get().IsDownloading();
+    ModelManager_1.ModelManager.PreDownloadModel?.OnUpdateDownData(e, o, r, a ? n : "0B/s", i, t);
     this.Jn1 = o;
     this.Qz = r;
     this.Zn1 = i;
-    this.es1 = a;
-    var e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t ? "PreDownload_Downloading" : "PreDownload_IsPausing");
+    this.es1 = t;
+    var e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(a ? "PreDownload_Downloading" : "PreDownload_IsPausing");
     this.GetText(6)?.SetText(e);
     this.GetTexture(2)?.SetFillAmount(o);
     this.GetText(4)?.SetText(r);
-    e = `${t ? n : "0B/s"}(${i}/${a})  ${(o * 100).toFixed(2).toString()}%`;
+    e = `${a ? n : "0B/s"}(${i}/${t})  ${(o * 100).toFixed(2).toString()}%`;
     this.GetText(3)?.SetText(e);
     return new Promise(e => {
       e();
     });
   }
   async BinPatchProgress(e, o, r, ...n) {
+    this.GetButton(1)?.RootUIComp.SetUIActive(false);
     ModelManager_1.ModelManager.PreDownloadModel?.OnBinPatch(e, o, r, ...n);
     this.Jn1 = o;
     e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("PreDownload_BinPatch");
@@ -129,39 +132,39 @@ class PreDownloadView extends UiViewBase_1.UiViewBase {
       e();
     });
   }
-  async ShowDialog(e, o, r, n, i, a, ...t) {
+  async ShowDialog(e, o, r, n, i, t, ...a) {
     LauncherLog_1.LauncherLog.Info("PreDownload Get ShowDialog with ", ["contentId", r]);
-    LauncherLog_1.LauncherLog.Info("PreDownload Get ShowDialog with Args", ["contentId", t]);
+    LauncherLog_1.LauncherLog.Info("PreDownload Get ShowDialog with Args", ["contentId", a]);
     if (i === "HotFixUseNetworkDownload") {
       return PreDownloadManager_1.PreDownloadManager.Get().IsDownloading();
     }
     o = ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(o);
-    t = ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(r, ...t);
+    a = ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(r, ...a);
     const s = new CustomPromise_1.CustomPromise();
     var r = r === "HotFixNotEnoughSpace";
     ModelManager_1.ModelManager.PreDownloadModel.PausePreDownload(r ? 4 : 3);
-    if (a) {
+    if (t) {
       (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(274)).SetTitle(o);
-      r.SetTextArgs(t);
-      r.SetBtnText(0, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(a));
+      r.SetTextArgs(a);
+      r.SetBtnText(0, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(t));
       r.FunctionMap.set(1, () => {
         s.SetResult(true);
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
     } else {
-      (a = new ConfirmBoxDefine_1.ConfirmBoxDataNew(275)).SetTitle(o);
-      a.SetTextArgs(t);
-      a.SetBtnText(0, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(n));
-      a.SetBtnText(1, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(i));
-      a.FunctionMap.set(1, () => {
+      (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(275)).SetTitle(o);
+      t.SetTextArgs(a);
+      t.SetBtnText(0, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(n));
+      t.SetBtnText(1, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(i));
+      t.FunctionMap.set(1, () => {
         s.SetResult(false);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreDownloadStateUpdate);
       });
-      a.FunctionMap.set(2, () => {
+      t.FunctionMap.set(2, () => {
         s.SetResult(true);
         ModelManager_1.ModelManager.PreDownloadModel.ResumePreDownload();
       });
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(a);
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
     }
     return s.Promise;
   }
@@ -172,7 +175,8 @@ class PreDownloadView extends UiViewBase_1.UiViewBase {
     var r = this.GetText(6);
     var n = this.GetTexture(2);
     var i = this.GetText(4);
-    var a = this.GetText(3);
+    var t = this.GetText(3);
+    this.GetButton(1)?.RootUIComp.SetUIActive(!o);
     if (o && ModelManager_1.ModelManager.PreDownloadModel.BinPatch) {
       o = ModelManager_1.ModelManager.PreDownloadModel.BinPatch;
       e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("PreDownload_BinPatch");
@@ -180,7 +184,7 @@ class PreDownloadView extends UiViewBase_1.UiViewBase {
       n?.SetFillAmount(o.Rate);
       i?.SetText("");
       e = (o.Rate * 100).toFixed(2).toString() + "%";
-      a?.SetText(e);
+      t?.SetText(e);
     } else if (ModelManager_1.ModelManager.PreDownloadModel.UpdateData) {
       o = ModelManager_1.ModelManager.PreDownloadModel.UpdateData;
       this.UpdatePatchDownProgress(false, o.Rate, o.FileName, o.SpeedText, o.SizeCurrent, o.SizeTotal);
@@ -188,7 +192,7 @@ class PreDownloadView extends UiViewBase_1.UiViewBase {
       r?.SetText("");
       n?.SetFillAmount(0);
       i?.SetText("");
-      a?.SetText("");
+      t?.SetText("");
     }
   }
 }

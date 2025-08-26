@@ -13,7 +13,7 @@ class AsyncCommon {
       result.length = 0;
     }
     const entities = new Array();
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 8; i++) {
       if (entityType & 1 << i) {
         cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocationInMultiThread(location, distance, FNameUtil_1.FNameUtil.GetDynamicFName(EntityHelper_1.globalEntityTypeQueryName[i]), entities);
         for (const entityInfo of entities) {

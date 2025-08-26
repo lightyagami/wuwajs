@@ -32,6 +32,8 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const Quat_1 = require("../../../../../Core/Utils/Math/Quat");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GravityUtils_1 = require("../../../../Utils/GravityUtils");
 const CharacterNameDefines_1 = require("../../../Character/Common/CharacterNameDefines");
@@ -63,6 +65,33 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     this.LocalOffset = Vector_1.Vector.Create();
     this.LocalQuat = Quat_1.Quat.Create();
     this.DebugMode = false;
+    this.I3r = (t, i) => {
+      var s = t.GetComponent(109);
+      if (s?.Active) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Movement", 50, "[CharacterSplineMoveComp] 轨道模式继承", ["LastEntity", t.Id], ["CurEntity", this.Entity.Id]);
+        }
+        this.InheritThisFrame = true;
+        for (const e of s.SplineStack) {
+          var h = s.SplineMoveParamsMap.get(e);
+          if (h.AllowInherit) {
+            this.StartSplineMove(e, h.Config, true);
+          }
+        }
+        this.LastTimeKey = s.LastTimeKey;
+        this.LastSplineLocation = s.LastSplineLocation;
+        this.LastSplineDirection = s.LastSplineDirection;
+        this.LastLocation = s.LastLocation;
+        this.LastRightSpeed = s.LastRightSpeed;
+        this.LastForward = s.LastForward;
+        for (const a of s.SplineStack) {
+          if (s.SplineMoveParamsMap.get(a).AllowInherit) {
+            s.EndSplineMove(a);
+          }
+        }
+        this.InheritThisFrame = false;
+      }
+    };
   }
   static get SplineMoveConfig() {
     this.msn ||= ResourceSystem_1.ResourceSystem.GetLoadedAsset(this.DaPath, UE.Object);
@@ -73,10 +102,11 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 3)) {
       this.isn = this.ActorComp;
     }
-    this.Gce = this.Entity.GetComponent(178);
-    this.oRe = this.Entity.GetComponent(177);
-    this.rJo = this.Entity.GetComponent(175);
-    this.osn = this.Entity.GetComponent(173);
+    this.Gce = this.Entity.GetComponent(179);
+    this.oRe = this.Entity.GetComponent(178);
+    this.rJo = this.Entity.GetComponent(176);
+    this.osn = this.Entity.GetComponent(174);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     return true;
   }
   OnTick(t) {
@@ -97,6 +127,10 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
       }
       this.DisableKey = this.Disable("[SplineMoveComponent.OnTick] this.CurrentSplineMoveParams为false");
     }
+  }
+  OnEnd() {
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
+    return super.OnEnd();
   }
   PositionAdjust(t, i) {
     switch (this.CurrentSplineMoveType) {
@@ -406,14 +440,14 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     if (i.OnlyForward) {
       if (t.DotProduct(this.SplineDirection) < MAX_INPUT_COS) {
         this.isn.ClearInput(true);
-        this.eEu(i);
+        this.tEu(i);
         return;
       }
       h = 1;
     } else {
       if (Math.abs(s) < MAX_INPUT_COS) {
         this.isn.ClearInput(true);
-        this.eEu(i);
+        this.tEu(i);
         return;
       }
       h = Math.sign(s);
@@ -425,9 +459,9 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     this.TmpVector.Normalize();
     this.isn.SetInputDirect(this.TmpVector);
     this.isn.SetInputFacing(this.TmpVector, true);
-    this.eEu(i);
+    this.tEu(i);
   }
-  eEu(t) {
+  tEu(t) {
     switch (t.AdjustFacingType) {
       case 0:
         if (Math.abs(this.SplineDirection.DotProduct(this.Gce.GravityUp)) < 1 - MathUtils_1.MathUtils.KindaSmallNumber) {
@@ -510,14 +544,18 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     }
   }
   OnSplineMoveEnable(t, i) {
+    super.OnSplineMoveEnable(t, i);
     this.ApplySplineMoveDaConfig(i);
   }
   OnSplineMoveDisable() {
+    super.OnSplineMoveDisable();
     this.ResetSplineMoveDaConfig();
   }
   OnSelectNextSplineMoveEnd() {
-    this.isn?.ClearInput();
-    this.Wzl();
+    if (!this.InheritThisFrame) {
+      this.isn?.ClearInput();
+      this.Wzl();
+    }
     super.OnSelectNextSplineMoveEnd();
   }
   Wzl() {
@@ -529,5 +567,5 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
 };
 CharacterSplineMoveComponent.DaPath = "/Game/Aki/Data/Fight/DA_SplineMoveConfig.DA_SplineMoveConfig";
 CharacterSplineMoveComponent.msn = undefined;
-CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(108)], CharacterSplineMoveComponent);
+CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(109)], CharacterSplineMoveComponent);
 exports.CharacterSplineMoveComponent = CharacterSplineMoveComponent; //# sourceMappingURL=CharacterSplineMoveComponent.js.map

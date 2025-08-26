@@ -30,7 +30,7 @@ class CameraAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     var r;
     var a;
     var o;
-    if (this.Model.IsViewTargetControl && ((e = this.Model.SequenceData.相机过渡时间) > 0 && (r = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent(), this.Model.SequenceData.约束宽高比 ? r.bConstrainAspectRatio || (o = (0, puerts_1.$ref)(0), a = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController.GetViewportSize(o, a), o = (0, puerts_1.$unref)(o) / (0, puerts_1.$unref)(a), r.bConstrainAspectRatio = true, r.Filmback.SensorWidth = r.Filmback.SensorHeight * o) : r.bConstrainAspectRatio && ControllerHolder_1.ControllerHolder.PlotController.ManualAdaptAspectRatio(e * CommonDefine_1.MILLIONSECOND_PER_SECOND), CameraController_1.CameraController.ResetViewTarget(e)), a = this.Model.SequenceData.CameraBlendInTime, CameraController_1.CameraController.EnterCameraMode(1, a), this.aio = true, ModelManager_1.ModelManager.PlotModel.PlotConfig.IsPreStreaming)) {
+    if (this.Model.IsViewTargetControl && ((e = this.Model.SequenceData.相机过渡时间) > 0 && (o = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent(), this.Model.SequenceData.约束宽高比 ? o.bConstrainAspectRatio || (a = (0, puerts_1.$ref)(0), r = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController.GetViewportSize(a, r), a = (0, puerts_1.$unref)(a) / (0, puerts_1.$unref)(r), o.bConstrainAspectRatio = true, o.Filmback.SensorWidth = o.Filmback.SensorHeight * a) : o.bConstrainAspectRatio && ControllerHolder_1.ControllerHolder.PlotController.ManualAdaptAspectRatio(e * CommonDefine_1.MILLIONSECOND_PER_SECOND)), r = this.Model.SequenceData.CameraBlendInTime, (a = CameraController_1.CameraController.SequenceCamera.GetComponent(10))?.GetIsInCinematic() && a?.GetIfNeedWaitInPlot() && a.StopSequence(), CameraController_1.CameraController.EnterCameraMode(1, r), this.aio = true, ModelManager_1.ModelManager.PlotModel.PlotConfig.IsPreStreaming)) {
       this.dYs ||= ActorSystem_1.ActorSystem.Spawn(UE.BP_StreamingSourceActor_C.StaticClass(), new UE.TransformDouble(), undefined);
       if (!this.CYs) {
         this.CYs = ActorSystem_1.ActorSystem.Spawn(UE.BP_StreamingSourceActor_C.StaticClass(), new UE.TransformDouble(), undefined);
@@ -97,6 +97,7 @@ class CameraAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     }
   }
   End() {
+    CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
     if (this.dYs) {
       this.dYs.WorldPartitionStreamingSource?.DisableStreamingSource();
     }

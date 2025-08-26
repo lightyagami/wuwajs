@@ -15,7 +15,7 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
   constructor() {
     super(...arguments);
     this.Aia = undefined;
-    this.eBu = undefined;
+    this.h4u = undefined;
   }
   Init(s) {
     const t = s.Entity.GetComponent(3).Actor;
@@ -25,7 +25,7 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
         ResourceSystem_1.ResourceSystem.LoadAsync(s, UE.Class, s => {
           this.Aia = t.AddComponentByClass(s, false, MathUtils_1.MathUtils.DefaultTransform, false);
           this.Aia.OwnerActor = t;
-          this.eBu = this.Aia;
+          this.h4u = this.Aia;
         });
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Input", 67, "[CharacterInputLayer]加载BpInput失败", ["Role", t.GetName()]);
@@ -34,7 +34,7 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
   }
   Clear() {
     this.Aia = undefined;
-    this.eBu = undefined;
+    this.h4u = undefined;
   }
   GetLayerType() {
     return 1;
@@ -273,7 +273,7 @@ class CharacterInputLayer extends InputLayer_1.InputLayer {
     this.Aia = s;
   }
   ResetBpInputComp() {
-    this.Aia = this.eBu;
+    this.Aia = this.h4u;
   }
 }
 (exports.CharacterInputLayer = CharacterInputLayer).b0l = Stats_1.Stat.Create("CharacterInputLayer.HandlePress");

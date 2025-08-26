@@ -83,7 +83,7 @@ class SceneItemSplineMoveTaskUtils {
   static ParseProtoSplineMoveRuntimeDataToGeneralRuntimeData(e, t) {
     t.DistanceAloneSpline = e && e.RAc >= 0 ? e.RAc : undefined;
     t.CurPos = e?.AAc ? Vector_1.Vector.Create(e.AAc) : undefined;
-    t.CurRot = e?.PHc ? Rotator_1.Rotator.Create(e.PHc) : undefined;
+    t.CurRot = e?.cju ? Rotator_1.Rotator.Create(e.cju) : undefined;
     return true;
   }
   static ParseSplineDataToGeneralConfig(t, i) {

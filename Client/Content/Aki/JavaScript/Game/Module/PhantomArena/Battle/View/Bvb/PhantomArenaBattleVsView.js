@@ -16,32 +16,32 @@ class PhantomArenaBattleVsView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.SequencePlayer = undefined;
-    this.Amu = () => {
+    this.dfu = () => {
       var e = new PhantomArenaBattleDetailsViewProxy_1.PhantomArenaBattleDetailsViewProxy();
       UiManager_1.UiManager.OpenView("PhantomArenaBattleDetailsView", e, () => {
         ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestBvbLoadingFinish();
         this.CloseMe();
       });
     };
-    this.Quu = () => {
+    this.Acu = () => {
       this.SequencePlayer?.PlayLevelSequenceByName("Start01");
       AudioSystem_1.AudioSystem.SetState("arena_battle", "battle_3d");
     };
   }
   OnStart() {
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.SequencePlayer.BindSequenceCloseEvent(this.Amu);
+    this.SequencePlayer.BindSequenceCloseEvent(this.dfu);
   }
   OnAfterShow() {
     if (UiManager_1.UiManager.IsViewHide("PhantomArenaBattleLoading")) {
-      this.Quu();
+      this.Acu();
     }
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide, this.Quu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide, this.Acu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide, this.Quu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaBattleLoadingHide, this.Acu);
   }
 }
 exports.PhantomArenaBattleVsView = PhantomArenaBattleVsView;

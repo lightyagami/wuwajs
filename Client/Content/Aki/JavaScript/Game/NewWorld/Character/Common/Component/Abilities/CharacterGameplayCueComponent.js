@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (e, t, a, n) {
   var r;
-  var o = arguments.length;
-  var s = o < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, a) : n;
+  var s = arguments.length;
+  var o = s < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, a) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(e, t, a, n);
+    o = Reflect.decorate(e, t, a, n);
   } else {
     for (var i = e.length - 1; i >= 0; i--) {
       if (r = e[i]) {
-        s = (o < 3 ? r(s) : o > 3 ? r(t, a, s) : r(t, a)) || s;
+        o = (s < 3 ? r(o) : s > 3 ? r(t, a, o) : r(t, a)) || o;
       }
     }
   }
-  if (o > 3 && s) {
-    Object.defineProperty(t, a, s);
+  if (s > 3 && o) {
+    Object.defineProperty(t, a, o);
   }
-  return s;
+  return o;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -31,11 +31,11 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
   constructor() {
     super(...arguments);
     this.ybr = undefined;
-    this.wqr = new Map();
+    this.C$u = new Map();
   }
   OnStart() {
     super.OnStart();
-    this.ybr = this.Entity.CheckGetComponent(122);
+    this.ybr = this.Entity.GetComponent(123);
     return true;
   }
   OnEnable() {
@@ -45,11 +45,13 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
     this.SetHidden(true);
   }
   OnChangeTimeDilation(a) {
-    this.wqr.forEach((e, t) => {
+    this.C$u.forEach((e, t) => {
       if (EffectSystem_1.EffectSystem.IsValid(t)) {
-        EffectUtil_1.EffectUtil.SetEffectTimeScale(t, this.ybr, a, e);
+        if (this.ybr) {
+          EffectUtil_1.EffectUtil.SetEffectTimeScale(t, this.ybr, a, e);
+        }
       } else {
-        this.wqr.delete(t);
+        this.C$u.delete(t);
       }
     });
   }
@@ -57,28 +59,30 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
     return ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
   }
   AddCueEffectToSet(e, t) {
-    this.wqr.set(e, t);
+    this.C$u.set(e, t);
     EffectSystem_1.EffectSystem.AddFinishCallback(e, e => {
-      this.wqr.delete(e);
+      this.C$u.delete(e);
     });
-    EffectUtil_1.EffectUtil.SetEffectTimeScale(e, this.ybr, this.Entity.TimeDilation, t);
+    if (this.ybr) {
+      EffectUtil_1.EffectUtil.SetEffectTimeScale(e, this.ybr, this.Entity.TimeDilation, t);
+    }
     if (!this.Active) {
       EffectSystem_1.EffectSystem.SetEffectHidden(e, true, "CharacterGameplayCueComponent.AddCueEffectToSet");
     }
   }
-  SetHidden(t) {
+  SetHidden(a) {
     for (const e of this.GetAllCurrentCueRef()) {
-      if (t) {
+      if (a) {
         e.OnDisable();
       } else {
         e.OnEnable();
       }
     }
-    this.wqr.forEach(e => {
-      if (EffectSystem_1.EffectSystem.IsValid(e)) {
-        EffectSystem_1.EffectSystem.SetEffectHidden(e, t, "CharacterGameplayCueComponent.SetHidden");
+    this.C$u.forEach((e, t) => {
+      if (EffectSystem_1.EffectSystem.IsValid(t)) {
+        EffectSystem_1.EffectSystem.SetEffectHidden(t, a, "CharacterGameplayCueComponent.SetHidden");
       } else {
-        this.wqr.delete(e);
+        this.C$u.delete(t);
       }
     });
   }

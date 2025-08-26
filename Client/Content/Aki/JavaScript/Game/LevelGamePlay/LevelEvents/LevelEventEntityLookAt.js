@@ -60,7 +60,7 @@ class LevelEventEntityLookAt extends LevelGeneralBase_1.LevelEventBase {
         r.P5n = e.ActorLocationProxy;
         r.g8n = t;
         i.iVn = [r];
-        Net_1.Net.Send(27183, i);
+        Net_1.Net.Send(17569, i);
         if (this.IsAsync) {
           this.FinishExecute(true);
         } else {

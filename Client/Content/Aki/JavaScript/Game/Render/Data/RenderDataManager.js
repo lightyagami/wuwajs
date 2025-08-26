@@ -249,7 +249,7 @@ class RenderDataManager {
         this.CurrentCharacterPosition.FromUeVector(r);
         this.CurrentCharacterPositionWithOffset.FromUeVector(s);
         this.CurrentCharacterForward.FromUeVector(i);
-        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(175);
+        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(176);
         this.CurrentPlayerMoveState = r?.MoveState;
         s = this.CurrentPlayerMoveState && this.CurrentPlayerMoveState < CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb;
         UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterOnGround, s ? 1 : 0);

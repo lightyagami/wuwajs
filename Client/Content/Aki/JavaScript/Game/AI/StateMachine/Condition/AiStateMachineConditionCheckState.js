@@ -13,16 +13,18 @@ class AiStateMachineConditionCheckState extends AiStateMachineCondition_1.AiStat
     this._ne = undefined;
     this.une = undefined;
     this.cne = undefined;
-    this.pwu = t => {
+    this.wwu = t => {
       this.ResultSelf = t;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckState", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckState", this.Node.Name);
+      }
     };
   }
   RegisterEvents() {
     if (super.RegisterEvents()) {
-      var t = this.vwu();
-      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu)) {
-        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu);
+      var t = this.Lwu();
+      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.wwu)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.wwu);
         return true;
       }
     }
@@ -30,9 +32,9 @@ class AiStateMachineConditionCheckState extends AiStateMachineCondition_1.AiStat
   }
   UnregisterEvents() {
     if (super.UnregisterEvents()) {
-      var t = this.vwu();
-      if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.pwu);
+      var t = this.Lwu();
+      if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.wwu)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnStateActivated, this.wwu);
         return true;
       }
     }
@@ -46,7 +48,7 @@ class AiStateMachineConditionCheckState extends AiStateMachineCondition_1.AiStat
     }
     return true;
   }
-  vwu() {
+  Lwu() {
     let t = undefined;
     if (this.une !== undefined) {
       t = this.Node.Owner.GetNodeByUuid(this.une);
@@ -56,7 +58,7 @@ class AiStateMachineConditionCheckState extends AiStateMachineCondition_1.AiStat
     return t;
   }
   OnTick() {
-    this.cne ||= this.vwu();
+    this.cne ||= this.Lwu();
     this.ResultSelf = this.cne?.Activated ?? false;
   }
   ToString(t, e = 0) {

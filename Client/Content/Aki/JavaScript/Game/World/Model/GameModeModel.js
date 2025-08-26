@@ -59,8 +59,11 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.R3c = false;
     this.sIl = undefined;
     this.aIl = undefined;
-    this.x$c = undefined;
-    this.U$c = undefined;
+    this.Fmd = undefined;
+    this.mKc = undefined;
+    this.fKc = undefined;
+    this.ndd = undefined;
+    this.sdd = undefined;
     this.ForceDisableGamePaused = false;
     this.PreAwakeEntityDuringLoad = true;
     this.GamePausedReasons = new Set();
@@ -70,8 +73,8 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.TimeDilationMap = new Map();
     this.rEr = undefined;
     this.pr_ = false;
-    this.L7c = new Map();
-    this.q7c = new Set();
+    this.ZVu = new Map();
+    this.e5u = new Map();
     this.nEr = 0;
     this.LoadWorldProfiler = new LogProfiler_1.LogProfiler("加载世界");
     this.OpenLoadingProfiler = this.LoadWorldProfiler.CreateChild("打开Loading");
@@ -112,10 +115,10 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.MEr = undefined;
     this.U$_ = undefined;
     this.SEr = false;
-    this.BGu = GameMode_1.ELoadMapMode.ClientTravel;
-    this.H7c = false;
+    this.t5u = GameMode_1.ELoadMapMode.ClientTravel;
+    this.i5u = false;
     this.LoadMapControllerEnableWorldPartition = false;
-    this.UK1 = undefined;
+    this.OK1 = undefined;
   }
   get JoinSceneInfo() {
     return this.rEr;
@@ -319,11 +322,20 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.sIl?.SetResult(true);
     this.aIl?.SetResult(true);
   }
+  get ChangeSceneModePromise() {
+    return this.Fmd;
+  }
   get ChangeSceneModeVoxelPromise() {
-    return this.x$c;
+    return this.mKc;
   }
   get ChangeSceneModeStreamingPromise() {
-    return this.U$c;
+    return this.fKc;
+  }
+  get SwitchDataLayerWithSequencePromise() {
+    return this.sdd;
+  }
+  get LoadSwitchDataLayerSequencePromise() {
+    return this.ndd;
   }
   AddPlayerStart(e) {
     this.WMr.push(e);
@@ -387,26 +399,26 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   ScaleStreamingSource(e, t) {
     var i;
-    if (!!UE.KuroStaticLibrary.IsLowMemoryDevice() && (!(i = this.L7c.get(e)) || i !== t)) {
+    if (!!UE.KuroStaticLibrary.IsLowMemoryDevice() && (!(i = this.ZVu.get(e)) || i !== t)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "缩放流送源", ["Type", e], ["Scale", t]);
       }
-      this.L7c.set(e, t);
-      this.A7c();
+      this.ZVu.set(e, t);
+      this.r5u();
     }
   }
   CleanScaleStreamingSource(e) {
-    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && this.L7c.delete(e)) {
+    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && this.ZVu.delete(e)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "清理缩放流送源", ["Type", e]);
       }
-      this.A7c(true);
+      this.r5u(true);
     }
   }
-  P7c() {
+  o5u() {
     let i = 1;
     let s = undefined;
-    this.L7c.forEach((e, t) => {
+    this.ZVu.forEach((e, t) => {
       if (!s || !(t > s)) {
         i = e;
         s = t;
@@ -414,12 +426,12 @@ class GameModeModel extends ModelBase_1.ModelBase {
     });
     return i;
   }
-  A7c(i = false) {
-    if ((i || this.L7c.size !== 0) && this.KMr?.IsValid()) {
+  r5u(i = false) {
+    if ((i || this.ZVu.size !== 0) && this.KMr?.IsValid()) {
       i = this.KMr.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
       if (i?.IsValid()) {
-        if (this.L7c.size > 0) {
-          var s = this.P7c();
+        if (this.ZVu.size > 0) {
+          var s = this.o5u();
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 60, "更新流送源缩放", ["Scale", s]);
           }
@@ -451,24 +463,35 @@ class GameModeModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  DisableHLODStreaming(e) {
-    if (!this.q7c.has(e)) {
+  DisableHLODStreaming(e, t = 0) {
+    var i = this.e5u.get(e);
+    if (i === undefined || i !== t) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("GameMode", 60, "禁止流送HLOD", ["Type", e]);
+        Log_1.Log.Info("GameMode", 60, "禁用流送HLOD", ["Type", e], ["Level", t]);
       }
-      this.q7c.add(e);
-      if (this.q7c.size === 1) {
-        this.G7c();
-      }
+      this.e5u.set(e, t);
+      this.n5u();
     }
   }
   EnableHLODStreaming(e) {
-    if (this.q7c.has(e) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 60, "开启流送HLOD", ["Type", e]), this.q7c.delete(e), this.q7c.size === 0)) {
-      this.G7c(true);
+    if (this.e5u.delete(e)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 60, "开启流送HLOD", ["Type", e]);
+      }
+      this.n5u(true);
     }
   }
-  G7c(e = false) {
-    if ((e || this.q7c.size !== 0) && this.KMr?.IsValid()) {
+  zfd() {
+    let t = 2;
+    this.e5u.forEach(e => {
+      if (e < t) {
+        t = e;
+      }
+    });
+    return t;
+  }
+  n5u(e = false) {
+    if ((e || this.e5u.size !== 0) && this.KMr?.IsValid()) {
       var t = this.KMr.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
       if (t?.IsValid()) {
         var i = new Set();
@@ -476,21 +499,40 @@ class GameModeModel extends ModelBase_1.ModelBase {
           var s = t.TargetGrids.Get(e);
           i.add(FNameUtil_1.FNameUtil.GetDynamicFName(s.toString()));
         }
-        if (this.q7c.size > 0) {
-          for (const o of WorldDefine_1.allHLODGridNames) {
-            i.add(o);
+        e = this.zfd();
+        if (e > 1) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("GameMode", 60, "重置HLOD流送", ["Level", e]);
+          }
+          for (const o of WorldDefine_1.firstHLODGridNames) {
+            i.delete(o);
+          }
+          for (const r of WorldDefine_1.secondHLODGridNames) {
+            i.delete(r);
           }
         } else {
-          for (const r of WorldDefine_1.allHLODGridNames) {
-            i.delete(r);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("GameMode", 60, "更新HLOD流送", ["Level", e]);
+          }
+          for (const h of WorldDefine_1.secondHLODGridNames) {
+            i.add(h);
+          }
+          if (e === 1) {
+            for (const n of WorldDefine_1.firstHLODGridNames) {
+              i.delete(n);
+            }
+          } else {
+            for (const a of WorldDefine_1.firstHLODGridNames) {
+              i.add(a);
+            }
           }
         }
         t.TargetGrids.Empty();
-        for (const h of i) {
-          t.TargetGrids.Add(h);
+        for (const d of i) {
+          t.TargetGrids.Add(d);
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 60, "更新HLOD流送", ["Enabled", this.q7c.size === 0]);
+          Log_1.Log.Info("GameMode", 60, "更新HLOD流送", ["Enabled", this.e5u.size === 0]);
         }
       }
     }
@@ -510,8 +552,8 @@ class GameModeModel extends ModelBase_1.ModelBase {
       this.KMr?.D_K2_SetActorLocation(e.GetLocation(), false, undefined, false);
     } else {
       this.KMr = GameModeModel.nQs(e, 128, 1, t);
-      this.A7c();
-      this.G7c();
+      this.r5u();
+      this.n5u();
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 7, "StreamingSource出生信息", ["Location", this.BornLocation], ["Rotation", this.BornRotator], ["TargetGrids", t.join(", ")]);
@@ -642,33 +684,33 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.SEr = e;
   }
   get LoadMapMode() {
-    return this.BGu;
+    return this.t5u;
   }
   set LoadMapMode(e) {
     if (e >= GameMode_1.ELoadMapMode.Max || e < GameMode_1.ELoadMapMode.ClientTravel || !Number.isInteger(e)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("World", 72, "f.副本.xlsx表AkiMapSource Sheet 填错LoadMapMode值", ["loadMapMode", e], ["MapPath", this.MapPath]);
       }
-      this.BGu = GameMode_1.ELoadMapMode.ClientTravel;
+      this.t5u = GameMode_1.ELoadMapMode.ClientTravel;
     } else {
-      this.BGu = e;
+      this.t5u = e;
     }
   }
   get ForceClientTravel() {
-    return this.H7c;
+    return this.i5u;
   }
   set ForceClientTravel(e) {
-    var t = this.H7c;
-    this.H7c = e;
+    var t = this.i5u;
+    this.i5u = e;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceClientTravelModify, t, e);
   }
   get LoadMapControllerDynamicStreamingLevels() {
-    this.UK1 ||= new Map();
-    return this.UK1;
+    this.OK1 ||= new Map();
+    return this.OK1;
   }
   ClearLoadMapControllerData() {
-    if (this.UK1) {
-      this.UK1.clear();
+    if (this.OK1) {
+      this.OK1.clear();
     }
     this.LoadMapControllerEnableWorldPartition = false;
   }
@@ -697,13 +739,24 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   CreateChangeModePromise() {
     this.ETn = new GameModePromise_1.GameModePromise();
-    this.x$c = new CustomPromise_1.CustomPromise();
-    this.U$c = new CustomPromise_1.CustomPromise();
+    this.Fmd = new CustomPromise_1.CustomPromise();
+    this.mKc = new CustomPromise_1.CustomPromise();
+    this.fKc = new CustomPromise_1.CustomPromise();
   }
   ResetChangeModePromise() {
     this.ETn = undefined;
-    this.x$c = undefined;
-    this.U$c = undefined;
+    this.Fmd = undefined;
+    this.mKc = undefined;
+    this.fKc = undefined;
+  }
+  SkipChangeSceneModeWait() {
+    this.Fmd?.SetResult(true);
+    this.mKc?.SetResult(true);
+    this.fKc?.SetResult(true);
+  }
+  CreateSwitchDataLayerWithSequencePromise() {
+    this.ndd = new CustomPromise_1.CustomPromise();
+    this.sdd = new CustomPromise_1.CustomPromise();
   }
   OnLeaveLevel() {
     this.TempDataLayer.length = 0;

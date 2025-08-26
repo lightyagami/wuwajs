@@ -63,6 +63,9 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     };
     this.Rnn = () => {
       this.V0n("[SceneItemGravityComponent] 场景交互物加载完毕");
+      if (this.mBe.State !== 0) {
+        this.g_n();
+      }
     };
     this.ful = (t, e, i, s) => {
       if (s === Protocol_1.Aki.Protocol.Q4n.Proto_ErrOnlineInteractNotOpen || s === Protocol_1.Aki.Protocol.Q4n.Proto_ErrOnlineInteractNoPermission || s === Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractMultiGameMode) {
@@ -72,7 +75,7 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     this.H0n = (t, e) => {
       var e = e.Entity;
       if (!(e?.GetComponent(3) ?? !t)) {
-        if (this.R0n.StopTeleControlMove !== false && (t = e?.GetComponent(156), e = e?.GetComponent(202), t) && e?.IsAutonomousProxy) {
+        if (this.R0n.StopTeleControlMove !== false && (t = e?.GetComponent(157), e = e?.GetComponent(203), t) && e?.IsAutonomousProxy) {
           t.ForceStopDropping();
         }
       }
@@ -96,10 +99,10 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     return !!t && (this.EIe = this.Entity.CheckGetComponent(0), this.R0n = t, this.P0n = this.R0n.DownTime / MathUtils_1.MathUtils.MillisecondToSecond, this.R0n.ShowLandTipRadius && (this.q0n = this.R0n.ShowLandTipRadius.EnterRadius, this.G0n = this.R0n.ShowLandTipRadius.LeaveRadius), true);
   }
   OnStart() {
-    this.Hte = this.Entity.CheckGetComponent(202);
-    this.Lie = this.Entity.CheckGetComponent(196);
-    this.mBe = this.Entity.CheckGetComponent(133);
-    this._un = this.Entity.CheckGetComponent(130);
+    this.Hte = this.Entity.CheckGetComponent(203);
+    this.Lie = this.Entity.CheckGetComponent(197);
+    this.mBe = this.Entity.CheckGetComponent(134);
+    this._un = this.Entity.CheckGetComponent(131);
     if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n)) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n);
     }
@@ -116,14 +119,12 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     } else {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
     }
-    if (this.mBe.State !== 0) {
-      this.g_n();
-    }
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemLockPropChange, this.F0n);
+    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn)) {
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+    }
     if (this.Hte.GetIsSceneInteractionLoadCompleted()) {
-      this.V0n("[SceneItemGravityComponent] OnActivate:场景交互物加载完毕");
-    } else {
-      EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+      this.Rnn();
     }
     if (this.R0n?.ShowLandTipRadius) {
       this.O0n = TimerSystem_1.TimerSystem.Forever(this.j0n, CHECK_DISTANCE_INTERVAL);
@@ -156,7 +157,7 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     this.W0n(t * this.nxe);
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(122);
+    var e = this.Entity.GetComponent(123);
     this.nxe = e ? t * e.CurrentTimeScale : 1;
   }
   k0n() {
@@ -192,7 +193,7 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     }
   }
   vFn(t) {
-    if (this.U0n !== t) {
+    if (this.Q0n() && this.U0n !== t) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneItem", 39, "[SceneItemGravityComponent] ChangeAnimState", ["PbDataId", this.EIe?.GetPbDataId()], ["FromAnimState", this.U0n], ["ToAnimState", t]);
       }
@@ -355,5 +356,5 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     return this.R0n?.ExitActions;
   }
 };
-SceneItemGravityComponent = SceneItemGravityComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(152)], SceneItemGravityComponent);
+SceneItemGravityComponent = SceneItemGravityComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(153)], SceneItemGravityComponent);
 exports.SceneItemGravityComponent = SceneItemGravityComponent; //# sourceMappingURL=SceneItemGravityComponent.js.map

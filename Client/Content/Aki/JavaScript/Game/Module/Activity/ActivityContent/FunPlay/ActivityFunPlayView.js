@@ -1,0 +1,239 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ActivityFunPlayView = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../../Common/TimeUtil");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase");
+const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
+const HelpController_1 = require("../../../Help/HelpController");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView");
+const ActivityControllerHolder_1 = require("../../ActivityControllerHolder");
+const ActivityFunPlayPages_1 = require("./ActivityFunPlayPages");
+const ActivityFunPlayRewardView_1 = require("./ActivityFunPlayRewardView");
+const ActivityFunPlayTabItem_1 = require("./ActivityFunPlayTabItem");
+class ActivityFunPlayView extends UiTickViewBase_1.UiTickViewBase {
+  constructor() {
+    super(...arguments);
+    this.lqe = undefined;
+    this.m3e = undefined;
+    this.C3e = undefined;
+    this.Urd = undefined;
+    this.Brd = undefined;
+    this.krd = 0;
+    this.Ord = 0;
+    this.Qmd = [];
+    this.Bqe = () => new ActivityFunPlayTabItem_1.ActivityFunPlayTabItem();
+    this.L3e = () => {
+      var i = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData()?.GetChallengeId();
+      if (i) {
+        ActivityControllerHolder_1.ActivityControllerHolder.ActivityFunPlayController?.RequestEnterChallengeAsync(i);
+      }
+    };
+    this.qrd = () => {
+      var i = this.C3e.GetDisplayGridStartIndex();
+      let t = Math.max(i - 1, 0);
+      if (this.krd !== -1) {
+        t = this.krd;
+      }
+      this.C3e?.ScrollToGridIndex(t, true);
+    };
+    this.Grd = () => {
+      let i = this.C3e.GetDisplayGridStartIndex() + 1;
+      if (this.Ord !== -1) {
+        i = this.Ord;
+      }
+      this.C3e?.ScrollToGridIndex(i, true);
+    };
+    this.e11 = () => {
+      let t = false;
+      let e = false;
+      this.krd = -1;
+      this.Ord = -1;
+      var s = this.C3e.GetDisplayGridStartIndex();
+      var r = this.C3e.GetDisplayGridEndIndexPurely();
+      var h = ModelManager_1.ModelManager.ActivityFunPlayModel.GetAllChallengeData();
+      for (let i = 0; i < h.length; i++) {
+        var n = h[i];
+        if (!t && n.GetRedPoint() && i < s) {
+          t = true;
+          this.krd = i;
+        }
+        if (!e && n.GetRedPoint() && i > r) {
+          e = true;
+          this.Ord = i;
+        }
+      }
+      this.GetItem(5).SetUIActive(t);
+      this.GetItem(6).SetUIActive(e);
+      this.GetButton(3).RootUIComp.SetUIActive(s > 0);
+      this.GetButton(4).RootUIComp.SetUIActive(r < h.length - 1);
+    };
+    this.AMo = () => {
+      this.CloseMe();
+    };
+    this.dpt = () => {
+      var i = this.m3e.GetHelpId();
+      HelpController_1.HelpController.OpenHelpById(i);
+    };
+    this.Frd = () => {
+      this.Nrd();
+      this.Vrd(true);
+      this.jrd();
+      this.I3e();
+    };
+    this.Hrd = () => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("ActivityFunPlay", 87, "趣味活动页面信息刷新");
+      }
+      this.A3e(false);
+      this.Nrd();
+      this.Vrd(false);
+      this.jrd();
+    };
+    this.e8 = TimeUtil_1.TimeUtil.InverseMillisecond;
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIButtonComponent], [14, UE.UIItem]];
+    this.BtnBindInfo = [[3, this.qrd], [4, this.Grd], [13, this.L3e]];
+  }
+  async OnBeforeStartAsync() {
+    this.m3e = this.OpenParam;
+    this.U3e();
+    this.nOi();
+    this.Kmd();
+    await Promise.all([this.$rd(), this.Wrd()]);
+  }
+  async $rd() {
+    this.Urd = new ActivityFunPlayRewardView_1.ActivityFunPlayRewardView();
+    await this.Urd.CreateThenShowByActorAsync(this.GetItem(12).GetOwner());
+  }
+  async Wrd() {
+    this.Brd = new ActivityFunPlayPages_1.ActivityFunPlayPages();
+    this.Brd.SetParentSequence(this.UiViewSequence);
+    await this.Brd.CreateThenShowByActorAsync(this.GetItem(14).GetOwner());
+  }
+  nOi() {
+    var i = this.GetItem(1).GetOwner().GetComponentByClass(UE.UILoopScrollViewComponent.StaticClass());
+    this.C3e = new LoopScrollView_1.LoopScrollView(i, this.GetItem(2).GetOwner(), this.Bqe);
+    this.GetItem(2).SetUIActive(false);
+    this.C3e.BindOnScrollValueChanged(this.e11);
+  }
+  U3e() {
+    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
+    if (this.m3e) {
+      this.lqe.SetTitle(this.m3e.GetTitle());
+    }
+    this.lqe.SetHelpBtnActive(true);
+    this.lqe.SetCloseCallBack(this.AMo);
+    this.lqe.SetHelpCallBack(this.dpt);
+  }
+  A3e(t) {
+    var i = ModelManager_1.ModelManager.ActivityFunPlayModel.GetAllChallengeData();
+    this.C3e.RefreshByDataAsync(i).then(() => {
+      var i;
+      if (t) {
+        i = ModelManager_1.ModelManager.ActivityFunPlayModel.GetDefaultSelectIndex();
+        this.C3e.ScrollToGridIndex(i, true);
+        this.C3e.SelectGridProxy(i, true);
+      }
+    });
+  }
+  OnBeforeShow() {
+    ControllerHolder_1.ControllerHolder.ActivityController.CheckIsActivityClose(undefined, this.m3e.Id);
+    this.A3e(true);
+  }
+  OnAddEventListener() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSelectActivityFunPlayChallengeItem, this.Frd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityFunPlayInfoRefresh, this.Hrd);
+  }
+  Vrd(i) {
+    var t = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
+    if (t && (t = t.GetIsUnlock(), this.GetItem(14).SetUIActive(t), t)) {
+      this.Brd?.Refresh(i);
+    }
+  }
+  Nrd() {
+    var i;
+    var t = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
+    if (t) {
+      i = t.GetIsUnlock();
+      this.GetItem(7).SetUIActive(!i);
+      if (!i) {
+        i = t.GetLeftTimeText();
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "Activity_105900001_Locktime", i);
+      }
+    }
+  }
+  jrd() {
+    var i = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
+    if (i && (i = i.GetIsUnlock(), this.GetItem(9).SetUIActive(i), i)) {
+      this.Qrd();
+      this.Urd?.Refresh();
+    }
+  }
+  Qrd() {
+    var i;
+    var t = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
+    if (t) {
+      i = t.GetTitle();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), i);
+      i = t.GetDesc();
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(11), i);
+    }
+  }
+  OnRemoveEventListener() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSelectActivityFunPlayChallengeItem, this.Frd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityFunPlayInfoRefresh, this.Hrd);
+  }
+  I3e() {
+    if (this.UiViewSequence.HasSequenceNameInPlaying("Switch")) {
+      this.UiViewSequence.ReplaySequence("Switch");
+    } else {
+      this.UiViewSequence.PlaySequence("Switch");
+    }
+  }
+  OnTick(i) {
+    this.e8 += i;
+    if (this.e8 >= TimeUtil_1.TimeUtil.InverseMillisecond && void (this.e8 = 0) !== (i = this.GetNeedRefreshUnlock()) && (this.Hrd(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshActivityFunPlayRedDot, i), (i = this.m3e?.Id) !== undefined)) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, i);
+    }
+  }
+  GetNeedRefreshUnlock() {
+    var i;
+    if (this.Qmd.length !== 0) {
+      i = this.Qmd[0];
+      if (ModelManager_1.ModelManager.ActivityFunPlayModel.GetChallengeData(i)?.GetIsUnlock()) {
+        this.Qmd.shift();
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("ActivityFunPlay", 87, "解锁刷新的关卡id", ["ChallengeId", i]);
+        }
+        return i;
+      } else {
+        return undefined;
+      }
+    }
+  }
+  Kmd() {
+    var i;
+    for (const t of ModelManager_1.ModelManager.ActivityFunPlayModel.GetAllChallengeData()) {
+      if (!t.GetIsUnlock()) {
+        i = t.GetChallengeId();
+        this.Qmd.push(i);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("ActivityFunPlay", 87, "添加未解锁的关卡id", ["ChallengeId", i]);
+        }
+      }
+    }
+  }
+}
+exports.ActivityFunPlayView = ActivityFunPlayView;
+//# sourceMappingURL=ActivityFunPlayView.js.map

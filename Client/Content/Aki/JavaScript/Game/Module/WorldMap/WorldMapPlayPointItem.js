@@ -20,7 +20,7 @@ class WorldMapPlayPointItem extends UiPanelBase_1.UiPanelBase {
     this.lQl = new CustomPromise_1.CustomPromise();
     this.eTt = () => {
       if (this.ExploreData) {
-        this.ExploreData.TrackPlayPoint();
+        this.ExploreData.TrackPoint();
       }
     };
     this.I8l = e => {

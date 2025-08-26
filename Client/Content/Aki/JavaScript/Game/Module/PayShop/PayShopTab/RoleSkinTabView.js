@@ -95,7 +95,7 @@ class SkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
     this.JSl(s);
     this.nbl(s);
     this.f7l(s);
-    this.dK1(s);
+    this.CK1(s);
   }
   f7l(t) {
     t = t.GetRoleSkinData().GetSuitWeaponSkinId() > 0;
@@ -215,7 +215,7 @@ class SkinItemContent extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetTexture(15).SetUIActive(false);
     }
   }
-  dK1(t) {
+  CK1(t) {
     var e;
     if (!t || (e = t.GetCurrentGoodsData().GetAvailableCouponItem()) === undefined) {
       this.GetItem(18).SetUIActive(false);

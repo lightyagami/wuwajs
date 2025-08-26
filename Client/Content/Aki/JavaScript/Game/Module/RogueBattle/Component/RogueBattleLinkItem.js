@@ -28,7 +28,7 @@ class RogueBattleLinkItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
-  fLu() {
+  LLu() {
     for (const e of ModelManager_1.ModelManager.RogueBattleModel.GetAllOwnedRoleBondData()) {
       if (ModelManager_1.ModelManager.RogueBattleModel.IsBondLinkCanActivate(e.v9n)) {
         return true;
@@ -42,7 +42,7 @@ class RogueBattleLinkItem extends UiPanelBase_1.UiPanelBase {
     var e = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(e);
     if (e) {
       if ((e = e.On1) === 0) {
-        i = (t = this.fLu()) ? "RogueRes_LinkActHint_Desc" : "RogueBattle_TeamEdit_LinkLock";
+        i = (t = this.LLu()) ? "RogueRes_LinkActHint_Desc" : "RogueBattle_TeamEdit_LinkLock";
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), i);
         i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_TeamRoleSkillNone");
         this.SetTextureShowUntilLoaded(i, this.GetTexture(2));

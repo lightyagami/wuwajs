@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Damage = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
+const DicStringString_1 = require("./SubType/DicStringString");
 class Damage {
   constructor() {
     this.J7 = null;
@@ -12,6 +13,18 @@ class Damage {
   }
   get Id() {
     return this.id();
+  }
+  get Condition() {
+    return this.condition();
+  }
+  get ConstVariables() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.constvariablesLength(), this.constvariablesKey, this.constvariablesValue, this);
+  }
+  constvariablesKey(t) {
+    return this.constvariables(t)?.key();
+  }
+  constvariablesValue(t) {
+    return this.constvariables(t)?.value();
   }
   get CalculateType() {
     return this.calculatetype();
@@ -121,13 +134,13 @@ class Damage {
   get FluctuationUpper() {
     return GameUtils_1.GameUtils.ConvertToArray(this.fluctuationupperLength(), this.fluctuationupper, this);
   }
-  __init(t, r) {
+  __init(t, i) {
     this.z7 = t;
-    this.J7 = r;
+    this.J7 = i;
     return this;
   }
-  static getRootAsDamage(t, r) {
-    return (r || new Damage()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsDamage(t, i) {
+    return (i || new Damage()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -137,23 +150,34 @@ class Damage {
       return 0;
     }
   }
-  calculatetype() {
-    var t = this.J7.__offset(this.z7, 6);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
+  condition(t) {
+    var i = this.J7.__offset(this.z7, 6);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  GetConstvariablesAt(t, i) {
+    return this.constvariables(t);
+  }
+  constvariables(t, i) {
+    var r = this.J7.__offset(this.z7, 8);
+    if (r) {
+      return (i || new DicStringString_1.DicStringString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
     } else {
-      return 0;
+      return null;
     }
   }
-  element() {
+  constvariablesLength() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
-      return this.J7.readInt32(this.z7 + t);
+      return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }
   }
-  damagetexttype() {
+  calculatetype() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -161,8 +185,24 @@ class Damage {
       return 0;
     }
   }
-  payloadid() {
+  element() {
     var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  damagetexttype() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  payloadid() {
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readFloat64(this.z7 + t);
     } else {
@@ -170,7 +210,7 @@ class Damage {
     }
   }
   type() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -181,15 +221,15 @@ class Damage {
     return this.subtype(t);
   }
   subtype(t) {
-    var r = this.J7.__offset(this.z7, 16);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 20);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   subtypeLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -197,7 +237,7 @@ class Damage {
     }
   }
   subtypeArray() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -205,7 +245,7 @@ class Damage {
     }
   }
   smashtype() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -216,15 +256,15 @@ class Damage {
     return this.curebasevalue(t);
   }
   curebasevalue(t) {
-    var r = this.J7.__offset(this.z7, 20);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 24);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   curebasevalueLength() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -232,7 +272,7 @@ class Damage {
     }
   }
   curebasevalueArray() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -240,7 +280,7 @@ class Damage {
     }
   }
   relatedproperty() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -251,15 +291,15 @@ class Damage {
     return this.ratelv(t);
   }
   ratelv(t) {
-    var r = this.J7.__offset(this.z7, 24);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 28);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   ratelvLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -267,7 +307,7 @@ class Damage {
     }
   }
   ratelvArray() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -278,15 +318,15 @@ class Damage {
     return this.hardnesslv(t);
   }
   hardnesslv(t) {
-    var r = this.J7.__offset(this.z7, 26);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 30);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   hardnesslvLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -294,7 +334,7 @@ class Damage {
     }
   }
   hardnesslvArray() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -305,15 +345,15 @@ class Damage {
     return this.toughlv(t);
   }
   toughlv(t) {
-    var r = this.J7.__offset(this.z7, 28);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 32);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   toughlvLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -321,7 +361,7 @@ class Damage {
     }
   }
   toughlvArray() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -332,15 +372,15 @@ class Damage {
     return this.energy(t);
   }
   energy(t) {
-    var r = this.J7.__offset(this.z7, 30);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 34);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   energyLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -348,7 +388,7 @@ class Damage {
     }
   }
   energyArray() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -359,15 +399,15 @@ class Damage {
     return this.specialenergy1(t);
   }
   specialenergy1(t) {
-    var r = this.J7.__offset(this.z7, 32);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 36);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   specialenergy1Length() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -375,7 +415,7 @@ class Damage {
     }
   }
   specialenergy1Array() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -386,15 +426,15 @@ class Damage {
     return this.specialenergy2(t);
   }
   specialenergy2(t) {
-    var r = this.J7.__offset(this.z7, 34);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 38);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   specialenergy2Length() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -402,7 +442,7 @@ class Damage {
     }
   }
   specialenergy2Array() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -413,15 +453,15 @@ class Damage {
     return this.specialenergy3(t);
   }
   specialenergy3(t) {
-    var r = this.J7.__offset(this.z7, 36);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 40);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   specialenergy3Length() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -429,7 +469,7 @@ class Damage {
     }
   }
   specialenergy3Array() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -440,15 +480,15 @@ class Damage {
     return this.specialenergy4(t);
   }
   specialenergy4(t) {
-    var r = this.J7.__offset(this.z7, 38);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 42);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   specialenergy4Length() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -456,7 +496,7 @@ class Damage {
     }
   }
   specialenergy4Array() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -467,15 +507,15 @@ class Damage {
     return this.specialenergy5(t);
   }
   specialenergy5(t) {
-    var r = this.J7.__offset(this.z7, 40);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 44);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   specialenergy5Length() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -483,7 +523,7 @@ class Damage {
     }
   }
   specialenergy5Array() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -491,7 +531,7 @@ class Damage {
     }
   }
   elementpowertype() {
-    var t = this.J7.__offset(this.z7, 42);
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -502,15 +542,15 @@ class Damage {
     return this.elementpower(t);
   }
   elementpower(t) {
-    var r = this.J7.__offset(this.z7, 44);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 48);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   elementpowerLength() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -518,7 +558,7 @@ class Damage {
     }
   }
   elementpowerArray() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -526,7 +566,7 @@ class Damage {
     }
   }
   formulatype() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -537,15 +577,15 @@ class Damage {
     return this.formulaparam1(t);
   }
   formulaparam1(t) {
-    var r = this.J7.__offset(this.z7, 48);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 52);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam1Length() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -553,7 +593,7 @@ class Damage {
     }
   }
   formulaparam1Array() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -564,15 +604,15 @@ class Damage {
     return this.formulaparam2(t);
   }
   formulaparam2(t) {
-    var r = this.J7.__offset(this.z7, 50);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 54);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam2Length() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -580,7 +620,7 @@ class Damage {
     }
   }
   formulaparam2Array() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -591,15 +631,15 @@ class Damage {
     return this.formulaparam3(t);
   }
   formulaparam3(t) {
-    var r = this.J7.__offset(this.z7, 52);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 56);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam3Length() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -607,7 +647,7 @@ class Damage {
     }
   }
   formulaparam3Array() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -618,15 +658,15 @@ class Damage {
     return this.formulaparam4(t);
   }
   formulaparam4(t) {
-    var r = this.J7.__offset(this.z7, 54);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 58);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam4Length() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -634,7 +674,7 @@ class Damage {
     }
   }
   formulaparam4Array() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -645,15 +685,15 @@ class Damage {
     return this.formulaparam5(t);
   }
   formulaparam5(t) {
-    var r = this.J7.__offset(this.z7, 56);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 60);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam5Length() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -661,7 +701,7 @@ class Damage {
     }
   }
   formulaparam5Array() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -672,15 +712,15 @@ class Damage {
     return this.formulaparam6(t);
   }
   formulaparam6(t) {
-    var r = this.J7.__offset(this.z7, 58);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 62);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam6Length() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -688,7 +728,7 @@ class Damage {
     }
   }
   formulaparam6Array() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -699,15 +739,15 @@ class Damage {
     return this.formulaparam7(t);
   }
   formulaparam7(t) {
-    var r = this.J7.__offset(this.z7, 60);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 64);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam7Length() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -715,7 +755,7 @@ class Damage {
     }
   }
   formulaparam7Array() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -726,15 +766,15 @@ class Damage {
     return this.formulaparam8(t);
   }
   formulaparam8(t) {
-    var r = this.J7.__offset(this.z7, 62);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 66);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam8Length() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -742,7 +782,7 @@ class Damage {
     }
   }
   formulaparam8Array() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -753,15 +793,15 @@ class Damage {
     return this.formulaparam9(t);
   }
   formulaparam9(t) {
-    var r = this.J7.__offset(this.z7, 64);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 68);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam9Length() {
-    var t = this.J7.__offset(this.z7, 64);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -769,7 +809,7 @@ class Damage {
     }
   }
   formulaparam9Array() {
-    var t = this.J7.__offset(this.z7, 64);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -780,15 +820,15 @@ class Damage {
     return this.formulaparam10(t);
   }
   formulaparam10(t) {
-    var r = this.J7.__offset(this.z7, 66);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 70);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   formulaparam10Length() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 70);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -796,7 +836,7 @@ class Damage {
     }
   }
   formulaparam10Array() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 70);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -804,7 +844,7 @@ class Damage {
     }
   }
   immunetype() {
-    var t = this.J7.__offset(this.z7, 68);
+    var t = this.J7.__offset(this.z7, 72);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -815,15 +855,15 @@ class Damage {
     return this.percent0(t);
   }
   percent0(t) {
-    var r = this.J7.__offset(this.z7, 70);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 74);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   percent0Length() {
-    var t = this.J7.__offset(this.z7, 70);
+    var t = this.J7.__offset(this.z7, 74);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -831,7 +871,7 @@ class Damage {
     }
   }
   percent0Array() {
-    var t = this.J7.__offset(this.z7, 70);
+    var t = this.J7.__offset(this.z7, 74);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -842,15 +882,15 @@ class Damage {
     return this.percent1(t);
   }
   percent1(t) {
-    var r = this.J7.__offset(this.z7, 72);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 76);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   percent1Length() {
-    var t = this.J7.__offset(this.z7, 72);
+    var t = this.J7.__offset(this.z7, 76);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -858,7 +898,7 @@ class Damage {
     }
   }
   percent1Array() {
-    var t = this.J7.__offset(this.z7, 72);
+    var t = this.J7.__offset(this.z7, 76);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -869,15 +909,15 @@ class Damage {
     return this.fluctuationlower(t);
   }
   fluctuationlower(t) {
-    var r = this.J7.__offset(this.z7, 74);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 78);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   fluctuationlowerLength() {
-    var t = this.J7.__offset(this.z7, 74);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -885,7 +925,7 @@ class Damage {
     }
   }
   fluctuationlowerArray() {
-    var t = this.J7.__offset(this.z7, 74);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -896,15 +936,15 @@ class Damage {
     return this.fluctuationupper(t);
   }
   fluctuationupper(t) {
-    var r = this.J7.__offset(this.z7, 76);
-    if (r) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + r) + t * 4);
+    var i = this.J7.__offset(this.z7, 80);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   fluctuationupperLength() {
-    var t = this.J7.__offset(this.z7, 76);
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -912,7 +952,7 @@ class Damage {
     }
   }
   fluctuationupperArray() {
-    var t = this.J7.__offset(this.z7, 76);
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

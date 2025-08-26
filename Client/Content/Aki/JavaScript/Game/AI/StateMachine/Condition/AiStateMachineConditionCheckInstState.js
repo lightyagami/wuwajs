@@ -14,7 +14,9 @@ class AiStateMachineConditionCheckInstState extends AiStateMachineCondition_1.Ai
     this.vJ = undefined;
     this.lne = (t, i) => {
       this.ResultSelf = i;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckInstState", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionCheckInstState", this.Node.Name);
+      }
     };
   }
   OnInit(t) {

@@ -16,6 +16,7 @@ const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const GameSettingsDumpUtils_1 = require("./GameSettingsDumpUtils");
 const GameSettingsUtils_1 = require("./GameSettingsUtils");
+const GameSettingsUtils_2 = require("./GameSettingsUtils");
 var EFunction;
 (function (e) {
   e[e.MASTERVOLUMEFUNCTION = 1] = "MASTERVOLUMEFUNCTION";
@@ -58,6 +59,7 @@ var EFunction;
   e[e.MOTIONBLUR = 65] = "MOTIONBLUR";
   e[e.PCVSYNC = 66] = "PCVSYNC";
   e[e.MOBILERESOLUTION = 67] = "MOBILERESOLUTION";
+  e[e.SUPERRESOLUTION = 68] = "SUPERRESOLUTION";
   e[e.TEXTLANGUAGE = 51] = "TEXTLANGUAGE";
   e[e.VOICELANGUAGE = 52] = "VOICELANGUAGE";
   e[e.VOICEPACKMANAGER = 53] = "VOICEPACKMANAGER";
@@ -128,6 +130,12 @@ var EFunction;
   e[e.AutoSprint = 60209] = "AutoSprint";
   e[e.ShowOtherName = 51102] = "ShowOtherName";
   e[e.WaterInteract = 20033] = "WaterInteract";
+  e[e.VegetationDither = 20034] = "VegetationDither";
+  e[e.EyeProtection = 20510] = "EyeProtection";
+  e[e.EyeProtectionEnvironment = 20520] = "EyeProtectionEnvironment";
+  e[e.EyeProtectionStrength = 20530] = "EyeProtectionStrength";
+  e[e.EyeProtectionTexture = 20540] = "EyeProtectionTexture";
+  e[e.AutoExposure = 20610] = "AutoExposure";
 })(EFunction = exports.EFunction ||= {});
 const masterVolume = {
   GameSettingId: EFunction.MASTERVOLUMEFUNCTION,
@@ -297,37 +305,37 @@ const xess2 = {
   GameSettingId: EFunction.XESS2,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Xess2Enable,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXess2Enable(e),
-  DumpCallback: () => "todo"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXess2()
 };
 const xess2Fg = {
   GameSettingId: EFunction.XESS2_FG,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Xess2Fg,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXess2Fg(e),
-  DumpCallback: () => "todo"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXess2Fg()
 };
 const xess2Quality = {
   GameSettingId: EFunction.XESS2_QUALITY,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Xess2Quality,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyXess2Quality(e),
-  DumpCallback: () => "todo"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpXess2Quality()
 };
 const fsr3 = {
   GameSettingId: EFunction.FSR3,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Enable,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Enable(e),
-  DumpCallback: () => "todo"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFsr3()
 };
 const fsr3Fg = {
   GameSettingId: EFunction.FSR3_FG,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Fg,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(e),
-  DumpCallback: () => "todo"
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(e, GameSettingsUtils_2.EFFXFIApplyMode.Default),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFsr3Fg()
 };
 const fsr3Quality = {
   GameSettingId: EFunction.FSR3_QUALITY,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Quality,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Quality(e),
-  DumpCallback: () => "todo"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFsr3Quality()
 };
 const metalFxEnable = {
   GameSettingId: EFunction.METALFX,
@@ -376,6 +384,12 @@ const mobileResolution = {
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MobileResolution,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyMobileResolution(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpMobileResolution()
+};
+const superResolution = {
+  GameSettingId: EFunction.SUPERRESOLUTION,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.SuperResolution,
+  ApplyCallback: (e, t) => true,
+  DumpCallback: () => "[DumpVoicePackManager]this is just a null entry"
 };
 const textLanguage = {
   GameSettingId: EFunction.TEXTLANGUAGE,
@@ -910,6 +924,42 @@ const waterInteract = {
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyWaterInteract(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpWaterInteract()
 };
+const vegetationDither = {
+  GameSettingId: EFunction.VegetationDither,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VegetationDither,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVegetationDither(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVegetationDither()
+};
+const eyeProtection = {
+  GameSettingId: EFunction.EyeProtection,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtection,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtection(e),
+  DumpCallback: () => "todo"
+};
+const eyeProtectionEnvironment = {
+  GameSettingId: EFunction.EyeProtectionEnvironment,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionEnvironment,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionEnvironment(e),
+  DumpCallback: () => "todo"
+};
+const eyeProtectionStrength = {
+  GameSettingId: EFunction.EyeProtectionStrength,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionStrength,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionStrength(e),
+  DumpCallback: () => "todo"
+};
+const eyeProtectionTexture = {
+  GameSettingId: EFunction.EyeProtectionTexture,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionTexture,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionTexture(e),
+  DumpCallback: () => "todo"
+};
+const autoExposure = {
+  GameSettingId: EFunction.AutoExposure,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoExposure,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoExposure(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoExposure()
+};
 exports.function2GameSettings = {
   [EFunction.MASTERVOLUMEFUNCTION]: masterVolume,
   [EFunction.VOICEVOLUMEFUNCTION]: voiceVolume,
@@ -950,6 +1000,7 @@ exports.function2GameSettings = {
   [EFunction.MOTIONBLUR]: motionBlur,
   [EFunction.PCVSYNC]: pcvSync,
   [EFunction.MOBILERESOLUTION]: mobileResolution,
+  [EFunction.SUPERRESOLUTION]: superResolution,
   [EFunction.TEXTLANGUAGE]: textLanguage,
   [EFunction.VOICELANGUAGE]: voiceLanguage,
   [EFunction.VOICEPACKMANAGER]: voicePackManager,
@@ -1020,12 +1071,18 @@ exports.function2GameSettings = {
   [EFunction.ResDownLoad]: resDownLoad,
   [EFunction.AutoSprint]: autoSprint,
   [EFunction.ShowOtherName]: showOtherName,
-  [EFunction.WaterInteract]: waterInteract
+  [EFunction.WaterInteract]: waterInteract,
+  [EFunction.VegetationDither]: vegetationDither,
+  [EFunction.EyeProtection]: eyeProtection,
+  [EFunction.EyeProtectionEnvironment]: eyeProtectionEnvironment,
+  [EFunction.EyeProtectionStrength]: eyeProtectionStrength,
+  [EFunction.EyeProtectionTexture]: eyeProtectionTexture,
+  [EFunction.AutoExposure]: autoExposure
 };
 exports.WINDOWS_RESOLUTION_INDEX = 2;
 exports.NPC_DENSITY_THRESHOLD = 1;
 exports.NPC_DENSITY_PC_THRESHOLD = 1;
-exports.HEAVY_SCENEVULUME_INDEX_START = 20;
-exports.HEAVY_SCENEVULUME_INDEX_END = 24;
+exports.HEAVY_SCENEVULUME_INDEX_START = 5;
+exports.HEAVY_SCENEVULUME_INDEX_END = 9;
 exports.MAIN_TYPE_OF_KEY_SETTING = 3;
 exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 9, 8]; //# sourceMappingURL=GameSettingsDefine.js.map

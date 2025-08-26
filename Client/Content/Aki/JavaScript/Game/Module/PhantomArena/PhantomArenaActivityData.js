@@ -23,23 +23,23 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     this.fV1 = [];
     this.p81 = new Map();
     this.MA1 = [];
-    this.beu = new Map();
-    this.Reu = new Map();
+    this.Jeu = new Map();
+    this.Zeu = new Map();
     this.Kj1 = undefined;
     this.EA1 = new Map();
     this.Gdo = new Map();
-    this.Leu = new Map();
+    this.etu = new Map();
     this.IA1 = 0;
-    this.TTu = 0;
+    this.$Tu = 0;
     this.CV1 = 0;
     this.pV1 = 0;
     this.vV1 = 0;
-    this.tbu = new Map();
+    this.Sbu = new Map();
     this.QY = new Map();
-    this.oou = new Map();
+    this.Aou = new Map();
     this.fqt = 0;
     this.mMo = 0;
-    this.fyu = 0;
+    this.CSu = 0;
   }
   PhraseEx(t) {
     this.mV1.length = 0;
@@ -48,23 +48,23 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     this.MA1.length = 0;
     this.C81.clear();
     this.EA1.clear();
-    this.beu.clear();
-    this.Leu.clear();
-    this.Reu.clear();
+    this.Jeu.clear();
+    this.etu.clear();
+    this.Zeu.clear();
     this.Gdo.clear();
     var e;
     var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleActivityConfig(this.Id);
-    this.TTu = i.FourCostCardCount;
+    this.$Tu = i.FourCostCardCount;
     this.CV1 = i.NormalCardCount;
-    this.IA1 = this.TTu + this.CV1;
+    this.IA1 = this.$Tu + this.CV1;
     this.pV1 = i.DeckLimit;
     this.vV1 = i.ElementMax;
-    this.tbu = i.CardMaxLimit;
+    this.Sbu = i.CardMaxLimit;
     this.fqt = i.ShopItemId;
     this.mMo = i.ShopId;
     var i = t.cg1;
     if (i) {
-      this.fyu = MathUtils_1.MathUtils.LongToNumber(i.nyu ?? 0) * TimeUtil_1.TimeUtil.Millisecond;
+      this.CSu = MathUtils_1.MathUtils.LongToNumber(i.rSu ?? 0) * TimeUtil_1.TimeUtil.Millisecond;
       if (t = i.ug1) {
         this.UpdateChallengeInfoList(t);
       }
@@ -94,10 +94,10 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
       if (e = i.E$s) {
         this.UpdateTaskInfo(e);
       }
-      this.c7c();
+      this.gNu();
     }
   }
-  c7c() {
+  gNu() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaShopOpen);
   }
   UpdateChallengeInfoById(t, e, i) {
@@ -106,8 +106,8 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
       s.K6n = e;
       s.Sg1 = i;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate);
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("PhantomArena", 75, "挑战进度更新失败，此挑战未初始化", ["ChallengeId", t]);
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 75, "挑战进度更新失败，此挑战未初始化", ["ChallengeId", t]);
     }
   }
   UpdateChallengeInfoList(t) {
@@ -184,11 +184,11 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
   CreateClientDeckInfo() {
     var t = new DeckInfo_1.DeckInfo();
     t.SetNormalCardCountLimit(this.CV1);
-    t.SetCoreCardCountLimit(this.TTu);
+    t.SetCoreCardCountLimit(this.$Tu);
     t.SetElementCountLimit(this.vV1);
     t.SetIsCoreCardSlotLocked(!ModelManager_1.ModelManager.FunctionModel.IsOpen(10085));
     t.SetCoreCost(ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomArenaCardCoreCost());
-    t.SetCostToMaxCardLimitMap(this.tbu);
+    t.SetCostToMaxCardLimitMap(this.Sbu);
     return t;
   }
   ClearClientDeckInfoList() {
@@ -217,9 +217,9 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   UpdateBadgeList(t) {
-    this.Leu.clear();
+    this.etu.clear();
     for (const e of t) {
-      this.Leu.set(e.Ig1, e);
+      this.etu.set(e.Ig1, e);
     }
   }
   AddCardListByNotify(t) {
@@ -235,7 +235,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
   }
   AddBadgeListByNotify(t) {
     for (const e of t) {
-      this.Leu.set(e.Ig1, e);
+      this.etu.set(e.Ig1, e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate);
   }
@@ -246,7 +246,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     return this.EA1.get(t);
   }
   GetBadgeInfo(t) {
-    return this.Leu.get(t);
+    return this.etu.get(t);
   }
   IsCardUnlock(t) {
     t = this.GetCardInfo(t);
@@ -276,7 +276,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     return this.IA1;
   }
   GetMaxCoreCardCountInDeck() {
-    return this.TTu;
+    return this.$Tu;
   }
   GetMaxNormalCardCountInDeck() {
     return this.CV1;
@@ -301,7 +301,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     return this.C81.get(t);
   }
   GetIsInLimitTime(t) {
-    var e = this.fyu;
+    var e = this.CSu;
     if (e < TimeUtil_1.TimeUtil.GetServerTime()) {
       return [false, ""];
     } else {
@@ -337,22 +337,22 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     return ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityRedDot();
   }
   UpdateCardReward(t) {
-    this.beu.clear();
+    this.Jeu.clear();
     for (const e of t) {
-      this.beu.set(e.Pg1, e);
+      this.Jeu.set(e.Pg1, e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaCardRewardUpdate);
   }
   UpdateBadgeReward(t) {
-    this.Reu.clear();
+    this.Zeu.clear();
     for (const e of t) {
-      this.Reu.set(e.Tg1, e);
+      this.Zeu.set(e.Tg1, e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate);
   }
   UpdateBadgeRewardByIds(t) {
     for (const i of t) {
-      var e = this.Reu.get(i);
+      var e = this.Zeu.get(i);
       if (!e) {
         return;
       }
@@ -361,16 +361,16 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate);
   }
   GetCardRewardInfoById(t) {
-    if (!this.beu.get(t)) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 75, "获取卡牌奖励失败，奖励信息未初始化", ["奖励ID", t]);
+    if (!this.Jeu.get(t)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 75, "获取卡牌奖励失败，奖励信息未初始化", ["奖励ID", t]);
       }
     }
-    return this.beu.get(t);
+    return this.Jeu.get(t);
   }
   UpdateCardRewardByIds(t) {
     for (const i of t) {
-      var e = this.beu.get(i);
+      var e = this.Jeu.get(i);
       if (!e) {
         return;
       }
@@ -379,12 +379,12 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaCardRewardUpdate);
   }
   GetBadgeRewardInfoById(t) {
-    if (!this.Reu.get(t)) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 75, "获取徽章奖励失败，奖励信息未初始化", ["奖励ID", t]);
+    if (!this.Zeu.get(t)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 75, "获取徽章奖励失败，奖励信息未初始化", ["奖励ID", t]);
       }
     }
-    return this.Reu.get(t);
+    return this.Zeu.get(t);
   }
   UpdateMasterInfo(t) {
     this.Kj1 = t;
@@ -437,27 +437,27 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
   }
   SetLastUsedDeckServerId(t) {
     if (this.Kj1) {
-      this.Kj1.lK1 = t;
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("PhantomArena", 43, "设置召唤师上次使用的卡组失败，召唤师信息未初始化");
+      this.Kj1.dK1 = t;
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 43, "设置召唤师上次使用的卡组失败，召唤师信息未初始化");
     }
   }
   GetLastUsedDeckServerId() {
     if (this.Kj1) {
-      return this.Kj1.lK1;
+      return this.Kj1.dK1;
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 43, "获取召唤师上次使用的卡组失败，召唤师信息未初始化");
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 43, "获取召唤师上次使用的卡组失败，召唤师信息未初始化");
       }
       return -1;
     }
   }
   GetLastUsedCardRoleId() {
     if (this.Kj1) {
-      return this.Kj1._K1;
+      return this.Kj1.mK1;
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 43, "获取召唤师上次使用的角色失败，召唤师信息未初始化");
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 43, "获取召唤师上次使用的角色失败，召唤师信息未初始化");
       }
       return -1;
     }
@@ -467,23 +467,23 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
       var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetTaskConfigById(i.s5n);
       if (e) {
         this.QY.set(i.s5n, i);
-        if (!this.oou.has(e.TaskType)) {
-          this.oou.set(e.TaskType, []);
+        if (!this.Aou.has(e.TaskType)) {
+          this.Aou.set(e.TaskType, []);
         }
-        if (!this.oou.get(e.TaskType).includes(i.s5n)) {
-          this.oou.get(e.TaskType).push(i.s5n);
+        if (!this.Aou.get(e.TaskType).includes(i.s5n)) {
+          this.Aou.get(e.TaskType).push(i.s5n);
         }
       }
     }
-    for (const s of this.oou) {
+    for (const s of this.Aou) {
       this.aoc(s[0]);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaTaskAwardUpdate);
   }
   aoc(t) {
     var e;
-    if (this.oou.get(t)) {
-      (e = this.oou.get(t)).sort((t, e) => {
+    if (this.Aou.get(t)) {
+      (e = this.Aou.get(t)).sort((t, e) => {
         var i = this.QY.get(t);
         var s = this.QY.get(e);
         if (i.H6n === s.H6n) {
@@ -492,7 +492,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
           return (i?.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish ? 0 : i?.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning ? 1 : 2) - (s?.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish ? 0 : s?.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning ? 1 : 2);
         }
       });
-      this.oou.set(t, e);
+      this.Aou.set(t, e);
     }
   }
   UpdateTaskById(t) {
@@ -502,7 +502,7 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaTaskAwardUpdate);
   }
   GetTaskTabMap() {
-    return this.oou;
+    return this.Aou;
   }
   GetTaskMap() {
     return this.QY;

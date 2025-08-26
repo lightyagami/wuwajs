@@ -3,9 +3,10 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ENTITY_RESETPOINT_BP_TYPE = exports.ENTITY_RESETAREA_BP_TYPE = exports.EHideGroupObjectType = exports.EEffectConfigType = exports.EExploratoryBelongType = exports.decompressEntityData = exports.EDevelopmentStatus = exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = exports.editorBpTypes = exports.getRewardTypeConfig = exports.entityDescriptionConfig = exports.monsterEntityTypes = exports.isValidEntityType = exports.entityTypeConfig = exports.entityTypesAki = exports.entityTypesUe5 = exports.componentsByEntityAki = exports.componentsByEntityUe5 = exports.entityDetails = exports.entityDetailsAki = exports.entityDetailsUe5 = undefined;
+exports.ENTITY_RESETPOINT_BP_TYPE = exports.ENTITY_RESETAREA_BP_TYPE = exports.EHideGroupObjectType = exports.EMonsterDeathEffectEndRule = exports.EEffectConfigType = exports.EExploratoryBelongType = exports.decompressEntityData = exports.EDevelopmentStatus = exports.ENTITY_BUNDLE_MAIN_ENTITY_BP_TYPE = exports.editorBpTypes = exports.getRewardTypeConfig = exports.entityDescriptionConfig = exports.monsterEntityTypes = exports.isValidEntityType = exports.entityTypeConfig = exports.entityTypesAki = exports.entityTypesUe5 = exports.componentsByEntityAki = exports.componentsByEntityUe5 = exports.entityDetails = exports.entityDetailsAki = exports.entityDetailsUe5 = exports.npcEntityType = undefined;
 const IComponent_1 = require("./IComponent");
 const IUtil_1 = require("./IUtil");
+exports.npcEntityType = new Set(["Npc", "Npc2", "NpcMonster", "PasserbyNpc", "RewardNpc", "SimpleNPc", "TuanziNpc", "VehicleNpc"]);
 exports.entityDetailsUe5 = {
   Player: {
     Category: "",
@@ -371,6 +372,16 @@ exports.entityDetailsAki = {
     EntityType: "战斗动物2(CombatAnimal2)",
     Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "RefreshComponent", "RewardComponent", "CombatComponent", "AnimalComponent", "EntityVisibleComponent"]
   },
+  CombatAnimal3: {
+    Category: "怪物&生物&NPC类",
+    Owner: 11,
+    Status: "可使用",
+    Description: `
+    相比于CombatAnimal2类型增加了交互组件，可以通过交互发放奖励`,
+    EntityLogic: "Monster",
+    EntityType: "战斗动物3(CombatAnimal3)",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "InteractAudioComponent", "AiComponent", "AttributeComponent", "RefreshComponent", "RewardComponent", "CombatComponent", "AnimalComponent", "EntityVisibleComponent"]
+  },
   CollectAnimal: {
     Category: "怪物&生物&NPC类",
     Owner: 11,
@@ -585,6 +596,19 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     EntityType: "采集物(Collect3)",
     Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "TriggerComponent", "RangeComponent", "EntityStateComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent"]
+  },
+  CollectWithListener: {
+    Category: "场景交互物类",
+    Owner: 16,
+    Status: "可使用",
+    Description: `
+该类型的实体视为可采集物，可以通过”采集“交互获得道具。
+- 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
+- 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-OrAed7lhXoG53ZxTRxFcNgeonPe)组件设置采集后获得的道具ID。
+- 通过[RefreshComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-QD1BdiIyoo5hcIxROsScAkipnqg)组件设置采集后的再生规则。`,
+    EntityLogic: "Item",
+    EntityType: "采集物带监听(CollectWithListener)",
+    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent", "ConditionListenerComponent"]
   },
   TreasureBox: {
     Category: "场景交互物类",
@@ -927,6 +951,17 @@ exports.entityDetailsAki = {
     EntityType: "玩法中心实体(LevelPlay)",
     Components: ["BaseInfoComponent", "LevelPlayComponent"]
   },
+  LevelPlay2: {
+    Category: "其他类型",
+    Owner: 10,
+    Status: "开发中",
+    Description: `
+这个类型下仅有一种实体——玩法中心实体。这种实体的作用充当玩法中心实体，用于定位玩法的坐标。
+- 通过[LevelPlayComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-BQ68dKxU3onkRBxCeHGc9SqSngf)组件标识玩法中心实体。`,
+    EntityLogic: "ServerOnly",
+    EntityType: "玩法中心实体(LevelPlay2)",
+    Components: ["BaseInfoComponent", "LevelPlayComponent"]
+  },
   LevelPlayReward: {
     Category: "场景交互物类",
     Owner: 3,
@@ -1005,6 +1040,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TrampleComponent", "TriggerComponent", "HitComponent", "SceneItemMovementComponent"]
   },
+  EffectTrampleArea: {
+    Category: "机关玩法类",
+    Owner: 7,
+    Status: "可使用",
+    Description: "进入区域上Buff，利用TrampleComponent控制一段时间后触发传送等效果，期间离开触发区域可打断效果触发",
+    EntityType: "可打断式效果触发区域(EffectTrampleArea)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "EffectAreaComponent", "TriggerComponent", "TrampleComponent"]
+  },
   TrampleWithSceneItemAttribute: {
     Category: "机关玩法类",
     Owner: 11,
@@ -1025,7 +1069,18 @@ exports.entityDetailsAki = {
 - 通过[InteractGearComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-HHjCdQJJgoC0P4xIM2Xcrk1vnof)组件设置机关状态改变时Action触发的延时。`,
     EntityType: "交互机关(InteractGear)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "SceneItemLifeCycleComponent", "InteractGearComponent", "SceneItemMovementComponent", "AttachTargetComponent", "VarComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "SceneItemLifeCycleComponent", "InteractGearComponent", "SceneItemMovementComponent", "AttachTargetComponent", "VarComponent", "SceneItemEventListenerComponent"],
+    DefaultDisabledComponents: ["SceneItemEventListenerComponent"]
+  },
+  InteractGear2: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "可使用",
+    Description: "在交互机关基础上支持旋转",
+    EntityType: "交互机关2(InteractGear2)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "SceneItemLifeCycleComponent", "InteractGearComponent", "SceneItemMovementComponent", "RotatorComponent2", "AttachTargetComponent", "VarComponent", "SceneItemEventListenerComponent", "SceneItemAttributeComponent"],
+    DefaultDisabledComponents: ["SceneItemEventListenerComponent"]
   },
   Lift: {
     Category: "机关玩法类",
@@ -1057,6 +1112,24 @@ exports.entityDetailsAki = {
     EntityType: "刷怪器实体(SpawnMonster)",
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "SpawnMonsterComponent"]
+  },
+  DynamicSpawnMonsterPoint: {
+    Category: "组功能类",
+    Owner: 7,
+    Status: "开发中",
+    Description: "用于控制【动态刷怪器】刷出怪物的点位",
+    EntityType: "动态刷怪点(DynamicSpawnMonsterPoint)",
+    EntityLogic: "ClientOnly",
+    Components: ["BaseInfoComponent", "DynamicSpawnMonsterPointComponent"]
+  },
+  DynamicSpawnMonster: {
+    Category: "组功能类",
+    Owner: 7,
+    Status: "开发中",
+    Description: "动态刷怪器在玩家周围一定范围内动态刷出怪物",
+    EntityType: "动态刷怪器(DynamicSpawnMonster)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "DynamicSpawnMonsterComponent"]
   },
   TargetGear: {
     Category: "机关玩法类",
@@ -1513,7 +1586,7 @@ exports.entityDetailsAki = {
     Description: "带触发器的场景子弹，支持移动旋转",
     EntityType: "场景子弹触发器(SceneBulletTrigger)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "TriggerComponent", "RangeComponent", "SceneItemMovementComponent", "RotatorComponent2", "SceneBulletComponent", "SceneItemLifeCycleComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "HitComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemAttributeComponent", "TriggerComponent", "RangeComponent", "SceneItemMovementComponent", "RotatorComponent2", "SceneBulletComponent", "SceneItemLifeCycleComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "HitComponent", "AttachTargetComponent"]
   },
   TurntableController: {
     Category: "机关玩法类",
@@ -1533,7 +1606,7 @@ exports.entityDetailsAki = {
 该类型的实体用于监听外部事件并触发对应Action，详情点击跳转👉https://kurogame.feishu.cn/wiki/Qy4wwVEL0iY3V5kUvVkc2Ksgnqb。`,
     EntityType: "可交互条件监听器(InteractiveConditionListener)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "VarComponent", "ClientConditionListenerComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "ConditionListenerComponent", "VarComponent", "ClientConditionListenerComponent", "SceneItemLifeCycleComponent"]
   },
   TriggerConditionListener: {
     Category: "场景交互物类",
@@ -2137,7 +2210,7 @@ exports.entityDetailsAki = {
     Description: "宝箱，当转到指定图案时解锁",
     EntityType: "老虎机(Slots)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RewardComponent", "TargetGearComponent", "RotatorComponent2", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneItemAttributeComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "RotatorComponent2", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneItemAttributeComponent", "SceneItemLifeCycleComponent"]
   },
   TuningStand: {
     Category: "机关玩法类",
@@ -2175,6 +2248,24 @@ exports.entityDetailsAki = {
     EntityLogic: "SimpleCombat",
     Components: ["BaseInfoComponent", "SimpleCombatComponent"]
   },
+  TowerDefenseFollowShooter: {
+    Category: "辅助机类",
+    Owner: 10,
+    Status: "开发中",
+    Description: "塔防辅助机",
+    EntityLogic: "Monster",
+    EntityType: "塔防辅助机(FollowShooter)",
+    Components: ["BaseInfoComponent", "ModelComponent", "AiComponent", "AttributeComponent", "MonsterComponent", "CombatComponent", "FollowShooterComponent", "SimpleCombatComponent"]
+  },
+  GodKingFrequencyController: {
+    Category: "神王频率玩法控制器",
+    Owner: 10,
+    Status: "开发中",
+    Description: "神王频率玩法控制器",
+    EntityType: "神王频率玩法控制器(GodKingFrequencyController)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "GodKingFrequencyControllerComponent"]
+  },
   PerformanceOptimizer: {
     Category: "触发器类",
     Owner: 11,
@@ -2183,6 +2274,15 @@ exports.entityDetailsAki = {
     EntityType: "范围优化实体(PerformanceOptimizer)",
     EntityLogic: "Custom",
     Components: ["BaseInfoComponent", "RangeComponent", "PerformanceOptimizationComponent"]
+  },
+  TraceTrackingFootPrint: {
+    Category: "寻痕玩法脚印",
+    Owner: 10,
+    Status: "开发中",
+    Description: "寻痕玩法脚印",
+    EntityType: "寻痕玩法脚印(TraceTrackingFootPrint)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "LevelPrefabPerformComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneItemLifeCycleComponent", "VarComponent"]
   }
 };
 exports.entityDetails = {
@@ -2202,7 +2302,7 @@ exports.entityDescriptionConfig = Object.fromEntries(Object.entries(exports.enti
   Status: e.Status,
   Description: e.Description
 }]));
-const collectRewardEntityTypes = ["Collect", "Animal", "Animal2", "CombatAnimal", "CombatAnimal2", "CollectAnimal", "CollectAnimalPart", "TreasureBox"];
+const collectRewardEntityTypes = ["Collect", "CollectWithListener", "Animal", "Animal2", "CombatAnimal", "CombatAnimal2", "CollectAnimal", "CollectAnimalPart", "TreasureBox"];
 function getRewardTypeConfig(t) {
   if (collectRewardEntityTypes.includes(t)) {
     return IComponent_1.rewardTypeCollectConfig;
@@ -2213,6 +2313,7 @@ function getRewardTypeConfig(t) {
 var EDevelopmentStatus;
 var EExploratoryBelongType;
 var EEffectConfigType;
+var EMonsterDeathEffectEndRule;
 var EHideGroupObjectType;
 function decompressEntityData(t, e) {
   if (e === undefined) {
@@ -2230,13 +2331,14 @@ function decompressEntityData(t, e) {
       IsHidden: t.IsHidden,
       IsClientHidden: t.IsClientHidden,
       IsAlwaysLoad: t.IsAlwaysLoad,
-      ComponentsData: (0, IUtil_1.applyDiff)(t.ComponentsData, e.ComponentsData, IUtil_1.entityDataIgnoreFunc),
+      ComponentsData: (0, IUtil_1.applyDiff)(t.ComponentsData, e.ComponentsData, IUtil_1.entityDataSerializeIgnoreFunc),
       EdEntityTip: t.EdEntityTip,
       Children: t.Children,
       Reference: t.Reference,
       WeakReference: t.WeakReference,
       AreaId: t.AreaId,
-      EdBundleMainEntityId: t.EdBundleMainEntityId
+      EdBundleMainEntityId: t.EdBundleMainEntityId,
+      EdTextRef: t.EdTextRef
     };
   }
 }
@@ -2256,6 +2358,11 @@ exports.decompressEntityData = decompressEntityData;
 (function (t) {
   t[t.Death = 0] = "Death";
 })(EEffectConfigType = exports.EEffectConfigType ||= {});
+(function (t) {
+  t[t.Any = 0] = "Any";
+  t[t.Particle = 1] = "Particle";
+  t[t.Material = 2] = "Material";
+})(EMonsterDeathEffectEndRule = exports.EMonsterDeathEffectEndRule ||= {});
 (function (t) {
   t.Entity = "Entity";
   t.LevelPlay = "LevelPlay";

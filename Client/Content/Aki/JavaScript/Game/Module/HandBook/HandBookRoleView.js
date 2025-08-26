@@ -17,6 +17,7 @@ const RoleRobotData_1 = require("../RoleUi/RoleData/RoleRobotData");
 const RoleDefine_1 = require("../RoleUi/RoleDefine");
 const UiCameraAnimationManager_1 = require("../UiCameraAnimation/UiCameraAnimationManager");
 const UiSceneManager_1 = require("../UiComponent/UiSceneManager");
+const LguiUtil_1 = require("../Util/LguiUtil");
 const LoopScrollView_1 = require("../Util/ScrollView/LoopScrollView");
 const HandBookRoleMediumItemGird_1 = require("./HandBookRoleMediumItemGird");
 class HandBookRoleView extends UiViewBase_1.UiViewBase {
@@ -55,7 +56,7 @@ class HandBookRoleView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIText], [7, UE.UIText]];
     this.BtnBindInfo = [[5, this.$lo]];
   }
   OnBeforeCreate() {
@@ -70,13 +71,18 @@ class HandBookRoleView extends UiViewBase_1.UiViewBase {
     this.lqe.SetTitleLocalText("HandBookRoleTitle");
     this.adi = new FilterSortEntrance_1.FilterSortEntrance(this.GetItem(4), this.C0o);
     var e = [];
-    for (const t of (ConfigManager_1.ConfigManager.RoleConfig?.GetRoleList()).filter(e => e.RoleType === 1 && !ModelManager_1.ModelManager.RoleModel.IsMainRole(e.Id))) {
+    for (const t of (ConfigManager_1.ConfigManager.RoleConfig?.GetRoleList()).filter(e => e.RoleType === 1 && !ModelManager_1.ModelManager.RoleModel.IsMainRole(e.Id) && ModelManager_1.ModelManager.HandBookModel.GetRoleCanShowInHandBook(e.Id))) {
       var i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(t.Id);
       e.push(i || new RoleRobotData_1.RoleRobotData(t.TrialRole));
     }
     e.push(ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleInstance());
     this.adi.UpdateData(21, e);
     this.InitRole();
+    this.RefreshCollectText();
+  }
+  RefreshCollectText() {
+    var e = ControllerHolder_1.ControllerHolder.HandBookController.GetCollectProgress(10);
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(7), "RoleExp", e[0], e[1]);
   }
   OnHandleLoadScene() {
     this.InitRole();

@@ -46,6 +46,7 @@ class FloroRanchUiItemBase extends UiPanelBase_1.UiPanelBase {
   async MoveToItem(i) {}
   async MoveToOriginalPosition() {}
   MoveToOriginalPositionImmediate() {}
+  GetRewardPopTransform() {}
   async PlayEatAnim() {}
   async PlayBeEatAnim() {}
   async PlaySacrificeAnim() {}

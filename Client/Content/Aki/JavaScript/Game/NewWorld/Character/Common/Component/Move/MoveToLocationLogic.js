@@ -3,10 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MoveToPointConfig = exports.MoveToLocation = exports.MoveToLocationController = undefined;
+exports.MoveToPointConfig = exports.MoveToLocation = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../../Core/Common/Log");
-const Queue_1 = require("../../../../../../Core/Container/Queue");
 const CommonDefine_1 = require("../../../../../../Core/Define/CommonDefine");
 const MathCommon_1 = require("../../../../../../Core/Utils/Math/MathCommon");
 const Quat_1 = require("../../../../../../Core/Utils/Math/Quat");
@@ -14,167 +13,15 @@ const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const AiContollerLibrary_1 = require("../../../../../AI/Controller/AiContollerLibrary");
 const GlobalData_1 = require("../../../../../GlobalData");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const CharacterUnifiedStateTypes_1 = require("../Abilities/CharacterUnifiedStateTypes");
+const MoveToLocationController_1 = require("./MoveToLocationController");
 const MOVE_STATE_CHANGE_SECOND = 1;
 const END_DISTANCE = 30;
 const DEFAULT_TURN_SPEED = 360;
 const RESET_LOCATION_TOLERANCE = 10;
 const PER_TICK_MIN_MOVE_SPEED = 30;
-class MoveToLocationController {
-  constructor(t, i) {
-    this.Y2l = new Queue_1.Queue();
-    this.rqn = undefined;
-    this.oqn = undefined;
-    this.Hte = undefined;
-    this.mBe = undefined;
-    this.Hte = t.GetComponent(3);
-    this.mBe = t.GetComponent(101);
-    this.rqn = new MoveToLocation();
-    this.rqn.Init(t);
-    this.oqn = i;
-  }
-  UpdateMove(t) {
-    if (this.oqn?.IsRunning) {
-      this.oqn?.UpdateMove(t);
-    } else if (this.rqn?.GetCurrentMoveToLocation() !== undefined) {
-      this.rqn?.UpdateMove(t);
-    }
-  }
-  IsMoving() {
-    return this.oqn?.IsRunning || this.rqn?.GetCurrentMoveToLocation() !== undefined;
-  }
-  IsMovingToLocation() {
-    return this.rqn?.GetCurrentMoveToLocation() !== undefined;
-  }
-  MoveEnd(t) {
-    if (this.oqn?.IsRunning) {
-      this.oqn.MoveEnd(t);
-    }
-    if (this.rqn?.GetCurrentMoveToLocation() !== undefined) {
-      this.rqn.MoveEnd(t);
-    }
-  }
-  StopMove() {
-    if (this.oqn?.IsRunning) {
-      this.oqn.StopMove();
-    }
-    if (this.rqn?.GetCurrentMoveToLocation() !== undefined) {
-      this.rqn.StopMove();
-    }
-  }
-  StopMoveAlongPath() {
-    this.oqn?.StopMove();
-  }
-  StopMoveToLocation() {
-    this.rqn.StopMove();
-  }
-  Dispose() {
-    this.oqn?.Dispose();
-    this.rqn?.Dispose();
-  }
-  GetCurrentToLocation() {
-    if (this.oqn?.IsRunning) {
-      return this.oqn.CurrentToLocation;
-    } else if (this.rqn?.GetLastMoveToLocation() !== undefined) {
-      return this.rqn.GetLastMoveToLocation();
-    } else {
-      return undefined;
-    }
-  }
-  GetMoveToLocationLogic() {
-    if (this.rqn?.GetCurrentMoveToLocation()) {
-      return this.rqn;
-    }
-  }
-  MoveToLocation(t, i = true) {
-    if (!this.rqn) {
-      return false;
-    }
-    var o = this.Hte.ActorLocationProxy;
-    var s = t.Distance ?? MoveToPointConfig.DefaultDistance;
-    if (GravityUtils_1.GravityUtils.GetDistSquared2dForActor(this.Hte, o, t.Position) < s * s) {
-      if (t.CallbackList && t.CallbackList.length !== 0) {
-        for (const h of t.CallbackList) {
-          if (h) {
-            h(1);
-          }
-        }
-      }
-      return true;
-    }
-    if (i) {
-      this.nqn();
-    }
-    return this.rqn.SetMoveToLocation(t);
-  }
-  NavigateMoveToLocation(t, i, o = true) {
-    if (!this.rqn) {
-      return false;
-    }
-    if (this.Hte?.WanderDirectionType === 2) {
-      t.MoveState = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
-    }
-    var s = this.Hte.ActorLocationProxy;
-    var h = t.Distance ?? MoveToPointConfig.DefaultDistance;
-    if (GravityUtils_1.GravityUtils.GetDistSquared2dForActor(this.Hte, s, t.Position) < h * h) {
-      if (t.CallbackList && t.CallbackList.length !== 0) {
-        for (const e of t.CallbackList) {
-          if (e) {
-            e(1);
-          }
-        }
-      }
-      return true;
-    }
-    if (this.mBe?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
-      MoveToLocationController.jye.DeepCopy(this.Hte.FloorLocation);
-    } else {
-      MoveToLocationController.jye.DeepCopy(s);
-    }
-    s = MoveToLocationController.GetNavigateMoveToLocationQueue(this.Hte, MoveToLocationController.jye, t.Position, this.Y2l, h);
-    if (i && !s) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("AI", 42, "寻路失败或起点终点不在NavMesh上。", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["EntityId", this.Hte.Entity.Id]);
-      }
-      return false;
-    } else {
-      if (o) {
-        this.nqn();
-      }
-      if (!this.Y2l.Empty) {
-        t.Position.DeepCopy(this.Y2l.Pop());
-        t.NextMovePointConfig = this.Y2l;
-      }
-      return this.rqn.SetMoveToLocation(t);
-    }
-  }
-  nqn() {
-    if (this.rqn?.GetCurrentMoveToLocation() !== undefined && (this.rqn.StopMove(), Log_1.Log.CheckWarn())) {
-      Log_1.Log.Warn("AI", 42, "正在移动中，停止移动。", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["EntityId", this.Hte.Entity.Id]);
-    }
-  }
-  static GetNavigateMoveToLocationQueue(t, i, o, s, h) {
-    s.Clear();
-    MoveToLocationController.Zxl.length = 0;
-    var e = t.ActorLocationProxy;
-    if (!AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(t.Owner.GetWorld(), i.ToUeVector(), o.ToUeVector(), MoveToLocationController.Zxl, true, true) || MoveToLocationController.Zxl.length === 0) {
-      return false;
-    }
-    if (MoveToLocationController.Zxl.length > 0) {
-      if (Vector_1.Vector.Dist2D(MoveToLocationController.Zxl[0], e) > h) {
-        s.Push(MoveToLocationController.Zxl[0]);
-      }
-      for (let t = 1; t < MoveToLocationController.Zxl.length; t++) {
-        s.Push(MoveToLocationController.Zxl[t]);
-      }
-    }
-    return true;
-  }
-}
-(exports.MoveToLocationController = MoveToLocationController).DebugDraw = false;
-MoveToLocationController.jye = Vector_1.Vector.Create();
-MoveToLocationController.Zxl = [];
 class MoveToLocation {
   constructor() {
     this.Jh = undefined;
@@ -216,8 +63,8 @@ class MoveToLocation {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.mBe = this.Jh.GetComponent(101);
-    this.oRe = this.Jh.GetComponent(177);
+    this.mBe = this.Jh.GetComponent(102);
+    this.oRe = this.Jh.GetComponent(178);
     this.wDe = this.Hte.CreatureData.GetPbDataId();
   }
   SetMoveToLocation(t) {
@@ -225,7 +72,7 @@ class MoveToLocation {
   }
   UpdateMove(t) {
     if (this.hqn) {
-      if (MoveToLocationController.DebugDraw && GlobalData_1.GlobalData.IsPlayInEditor) {
+      if (MoveToLocationController_1.MoveToLocationController.DebugDraw && GlobalData_1.GlobalData.IsPlayInEditor) {
         this.IJo();
       }
       this.mie += t;
@@ -377,7 +224,7 @@ class MoveToLocation {
     if (this.oRe && this.Jh.GetTickInterval() > 1) {
       i = this.oRe.GetMeshTransform();
       this.rzo();
-      this.oRe.SetModelBuffer(i, t * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+      this.oRe.SetModelBuffer(i, t * CommonDefine_1.MILLIONSECOND_PER_SECOND * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
     } else {
       this.rzo();
     }

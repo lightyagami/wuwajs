@@ -19,32 +19,32 @@ class BulletActionTimeScale extends BulletActionBase_1.BulletActionBase {
     this.OVo = -0;
     this.kVo = undefined;
     this.FVo = -0;
-    this.aUu = 0;
+    this.zUu = 0;
   }
   OnExecute() {
     if (this.BulletInfo.BulletDataMain.TimeScale.TimeScaleWithAttacker) {
-      this.kVo = this.BulletInfo.Attacker.GetComponent(122);
+      this.kVo = this.BulletInfo.Attacker.GetComponent(123);
     } else {
       this.BulletInfo.TimeScaleList = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.PawnTimeScaleComponent.CompareScalePriority);
       this.BulletInfo.TimeScaleMap = new Map();
       this.BulletInfo.TimeScaleId = 1;
       var t = Time_1.Time.WorldTimeSeconds;
       var i = ModelManager_1.ModelManager.BulletModel.PersistentTimeScaleMap;
-      for (const h of i.values()) {
-        var e = t - h.StartTime;
-        if (e >= h.Duration) {
-          i.delete(h.TimeScaleId);
+      for (const r of i.values()) {
+        var e = t - r.StartTime;
+        if (e >= r.Duration) {
+          i.delete(r.TimeScaleId);
         } else {
-          if (h.CenterLocation) {
+          if (r.CenterLocation) {
             var s = this.BulletInfo.CollisionInfo.LastFramePosition;
             if (!s) {
               continue;
             }
-            if (Math.abs(s.X - h.CenterLocation.X) > h.Radius || Math.abs(s.Y - h.CenterLocation.Y) > h.Radius || Math.abs(s.Z - h.CenterLocation.Z) > h.Radius) {
+            if (Math.abs(s.X - r.CenterLocation.X) > r.Radius || Math.abs(s.Y - r.CenterLocation.Y) > r.Radius || Math.abs(s.Z - r.CenterLocation.Z) > r.Radius) {
               continue;
             }
           }
-          BulletUtil_1.BulletUtil.SetTimeScale(this.BulletInfo, h.Priority, h.TimeDilation, h.Curve, h.Duration, h.SourceType, e, h.TimeScaleId);
+          BulletUtil_1.BulletUtil.SetTimeScale(this.BulletInfo, r.Priority, r.TimeDilation, r.Curve, r.Duration, r.SourceType, e, r.TimeScaleId);
         }
       }
     }
@@ -52,14 +52,14 @@ class BulletActionTimeScale extends BulletActionBase_1.BulletActionBase {
   OnTick(t) {
     var i = this.BulletInfo.Entity.TimeDilation;
     if (this.BulletInfo.BulletDataMain.TimeScale.TimeScaleWithAttacker) {
-      h = this.kVo;
-      this.OVo = h.Active ? h.CurrentTimeScale : 1;
+      r = this.kVo;
+      this.OVo = r.Active ? r.CurrentTimeScale : 1;
       if (this.FVo === this.OVo) {
         return undefined;
       } else {
         this.FVo = this.OVo;
         this.BulletInfo.Actor.CustomTimeDilation = this.OVo;
-        EffectUtil_1.EffectUtil.SetEffectTimeScale(this.BulletInfo.EffectInfo.Effect, h, i);
+        EffectUtil_1.EffectUtil.SetEffectTimeScale(this.BulletInfo.EffectInfo.Effect, r, i);
         return;
       }
     }
@@ -73,14 +73,14 @@ class BulletActionTimeScale extends BulletActionBase_1.BulletActionBase {
       this.OVo = this.BulletInfo.TimeScaleList.Top.CalculateTimeScale();
     }
     i *= this.OVo;
-    var h = this.BulletInfo.Attacker?.GetComponent(122)?.GetTopForeverTimeScale(1) ?? 1;
-    this.OVo *= h;
-    if (this.FVo !== i || this.aUu !== h) {
+    var r = this.BulletInfo.Attacker?.GetComponent(123)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+    this.OVo *= r;
+    if (this.FVo !== i || this.zUu !== r) {
       this.FVo = i;
-      this.aUu = h;
+      this.zUu = r;
       this.BulletInfo.Actor.CustomTimeDilation = this.OVo;
       BulletStaticFunction_1.BulletStaticFunction.SetBulletEffectTimeScale(this.BulletInfo.EffectInfo, i, true);
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, this.BulletInfo.EffectInfo.Effect, h);
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, this.BulletInfo.EffectInfo.Effect, r);
     }
   }
   Clear() {
@@ -88,7 +88,7 @@ class BulletActionTimeScale extends BulletActionBase_1.BulletActionBase {
     this.OVo = 0;
     this.kVo = undefined;
     this.FVo = 0;
-    this.aUu = 0;
+    this.zUu = 0;
   }
 }
 exports.BulletActionTimeScale = BulletActionTimeScale;

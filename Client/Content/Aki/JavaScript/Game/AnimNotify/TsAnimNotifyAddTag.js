@@ -14,7 +14,7 @@ class TsAnimNotifyAddTag extends UE.KuroAnimNotify {
   K2_Notify(e, r) {
     var e = e.GetOwner();
     var t = this.Tag?.TagId;
-    if (e instanceof TsBaseCharacter_1.default && t && (e = e.CharacterActorComponent.Entity?.GetComponent(205))) {
+    if (e instanceof TsBaseCharacter_1.default && t && (e = e.CharacterActorComponent.Entity?.GetComponent(206))) {
       e.TagContainer.UpdateExactTag(4, t, 1);
     }
     return true;

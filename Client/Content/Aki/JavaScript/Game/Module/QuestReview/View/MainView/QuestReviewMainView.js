@@ -25,14 +25,14 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
     this.Z51 = undefined;
     this.Qyi = undefined;
     this.Pe = undefined;
-    this.ODu = false;
+    this.KDu = false;
     this.e81 = undefined;
     this.iha = e => {
       if (e && e > 0) {
         this.e81 = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewTabDataById(e);
       }
       if (e === QuestReviewDefine_1.REFRESH_TIMING_AFTER_BURN) {
-        this.olu();
+        this.Plu();
       } else if (e !== 3 || ModelManager_1.ModelManager.QuestReviewModel.HasQuestLineFused()) {
         if (e === QuestReviewDefine_1.REFRESH_TIMING_AFTER_FUSION) {
           this.e81 = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewTabDataById(3);
@@ -57,7 +57,7 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
         this.GetSpine(6).SetAnimation(0, e, false);
       }
     };
-    this.$Lu = () => {
+    this.pAu = () => {
       if (this.Pe?.IsFirstEntry) {
         this.Pe.IsFirstEntry = false;
       }
@@ -68,8 +68,8 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
-    this.nlu();
-    this.slu();
+    this.xlu();
+    this.Ulu();
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
@@ -84,7 +84,7 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
     this.Qyi.SetTitleByTextIdAndArgNew("StoryReview_TabName");
   }
   OnStart() {
-    [this.Pe, this.ODu] = this.OpenParam;
+    [this.Pe, this.KDu] = this.OpenParam;
     this.J51 = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.t81);
     this.Z51 = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.Hwn);
     var e = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewLineDataById(QuestReviewDefine_1.BURN_QUEST_LINE);
@@ -94,7 +94,7 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
     ControllerHolder_1.ControllerHolder.QuestReviewController.AddViewRefreshDelegate(this.iha);
     if (this.Pe.IsFirstEntry) {
       this.UiViewSequence.StartSequenceName = "FirstStart";
-      this.UiViewSequence.AddSequenceFinishEvent("FirstStart", this.$Lu);
+      this.UiViewSequence.AddSequenceFinishEvent("FirstStart", this.pAu);
     } else {
       this.UiViewSequence.StartSequenceName = "Start";
     }
@@ -105,7 +105,7 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
   OnBeforeDestroy() {
     var e;
     ControllerHolder_1.ControllerHolder.QuestReviewController.RemoveViewRefreshDelegate(this.iha);
-    this.UiViewSequence.RemoveSequenceFinishEvent("FirstStart", this.$Lu);
+    this.UiViewSequence.RemoveSequenceFinishEvent("FirstStart", this.pAu);
     if (this.e81?.Id === QuestReviewDefine_1.BURN_PLAY_TAB) {
       if (!ModelManager_1.ModelManager.QuestReviewModel.HasQuestLineFused()) {
         ControllerHolder_1.ControllerHolder.QuestReviewController.SetBurnFinish();
@@ -119,7 +119,7 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
     }
   }
   GetLoopAudioEventSwitch() {
-    return this.ODu;
+    return this.KDu;
   }
   Og() {
     this.Tfa(this.Pe);
@@ -139,7 +139,7 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
     t.sort((e, t) => e.DisplayOrder - t.DisplayOrder);
     this.J51.RefreshByData(t);
   }
-  olu() {
+  Plu() {
     var e = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewLineDataById(QuestReviewDefine_1.BURN_QUEST_LINE);
     e.IsFirstTimeDestroy = false;
     e.SkipAnim = true;
@@ -168,13 +168,13 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
     }
     this.Z51.RefreshByData(t);
   }
-  async nlu() {
+  async xlu() {
     var e = ControllerHolder_1.ControllerHolder.QuestReviewController.FusionFinishPromise;
     if (e) {
       await e.Promise;
     }
   }
-  async slu() {
+  async Ulu() {
     var e = ControllerHolder_1.ControllerHolder.QuestReviewController.NewTabUnlockPromise;
     if (e) {
       await e.Promise;
@@ -256,11 +256,11 @@ class QuestReviewTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Pe = undefined;
     this.Hea = undefined;
-    this.Pnu = false;
+    this.rsu = false;
     this.n81 = () => {
       ControllerHolder_1.ControllerHolder.QuestReviewController.TriggerViewRefresh(this.Pe.Id);
     };
-    this.alu = e => {
+    this.Dlu = e => {
       if (e === "Unlock" && this.Pe?.IsSelected) {
         this.GetExtendToggle(0).SetToggleStateForce(1, undefined, true);
       }
@@ -281,7 +281,7 @@ class QuestReviewTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnStart() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
-    this.Hea.BindSequenceCloseEvent(this.alu);
+    this.Hea.BindSequenceCloseEvent(this.Dlu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.BNe);
   }
@@ -296,11 +296,11 @@ class QuestReviewTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (this.Pe.IsFirstTimeShow) {
       this.Hea.PlayLevelSequenceByName("Unlock");
       this.Pe.IsFirstTimeShow = false;
-      this.Pnu = true;
+      this.rsu = true;
     } else {
-      if (!this.Pnu) {
+      if (!this.rsu) {
         this.Hea.PlayLevelSequenceByName(e.IsSelected ? "Start" : "UnStart");
-        this.Pnu = true;
+        this.rsu = true;
       }
       this.GetExtendToggle(0).SetToggleState(e.IsSelected ? 1 : 0);
     }

@@ -75,7 +75,7 @@ let SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = class Sc
     var r;
     if (this.nb1) {
       if (r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()) {
-        if (r = r.GetComponent(172)) {
+        if (r = r.GetComponent(173)) {
           e = r.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_SpecialEnergy2Max);
           o = r.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_SpecialEnergy1Max) / e * STEP_TIME;
           r = r.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_SpecialEnergy3Max) / e * STEP_TIME - o;
@@ -98,5 +98,5 @@ let SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = class Sc
     }
   }
 };
-SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(290)], SceneItemCurveControlComponent);
+SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(294)], SceneItemCurveControlComponent);
 exports.SceneItemCurveControlComponent = SceneItemCurveControlComponent; //# sourceMappingURL=SceneItemCurveControlComponent.js.map

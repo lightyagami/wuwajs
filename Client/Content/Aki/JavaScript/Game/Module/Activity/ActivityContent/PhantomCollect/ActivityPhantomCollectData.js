@@ -19,6 +19,9 @@ class ActivityPhantomCollectData extends ActivityData_1.ActivityBaseData {
       this.PhantomCollectRewardList = t?.$ps?.Aps;
     }
   }
+  GetExDataFinishShowState() {
+    return !this.PhantomCollectRewardList.some(t => t.Y4n !== Protocol_1.Aki.Protocol.zps.ovs);
+  }
   GetPhantomCollectRewardList() {
     return this.PhantomCollectRewardList ?? [];
   }

@@ -7,8 +7,6 @@ exports.MapRogueGridEvent = undefined;
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../../../Core/Common/CustomPromise");
 const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
-const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
@@ -29,22 +27,12 @@ class MapRogueGridEvent extends UiPanelBase_1.UiPanelBase {
     this.Pe = undefined;
     this.WN1 = -1;
     this.LevelSequencePlayer = undefined;
-    this.kvu = () => {
-      this.RefreshLv();
-    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UINiagara], [1, UE.UITexture], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIText]];
   }
   OnStart() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.OnAddEventListener();
-  }
-  OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RogueResTeamLvChange, this.kvu);
-  }
-  OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RogueResTeamLvChange, this.kvu);
   }
   async OnHideAsyncImplementImplement() {
     var e;
@@ -52,9 +40,6 @@ class MapRogueGridEvent extends UiPanelBase_1.UiPanelBase {
       e = new CustomPromise_1.CustomPromise();
       await this.LevelSequencePlayer.PlaySequenceAsync("EventComplete", e);
     }
-  }
-  OnBeforeDestroy() {
-    this.OnRemoveEventListener();
   }
   Refresh(e) {
     var t;
@@ -86,13 +71,13 @@ class MapRogueGridEvent extends UiPanelBase_1.UiPanelBase {
   s91(e, t) {
     var i = this.GetSprite(2);
     var s = this.GetSprite(3);
-    var r = this.GetUiNiagara(0);
+    var a = this.GetUiNiagara(0);
     var _ = !StringUtils_1.StringUtils.IsEmpty(e);
     if (_) {
-      this.SetNiagaraSystemByPath(NORMAL_NIAGARA_PATH, r);
-      r.ColorParameter.Get("Color").Constant = UE.LinearColor.FromSRGBColor(UE.Color.FromHex(e));
+      this.SetNiagaraSystemByPath(NORMAL_NIAGARA_PATH, a);
+      a.ColorParameter.Get("Color").Constant = UE.LinearColor.FromSRGBColor(UE.Color.FromHex(e));
     }
-    r.SetUIActive(_);
+    a.SetUIActive(_);
     var e = !StringUtils_1.StringUtils.IsEmpty(t);
     if (e) {
       this.SetSpriteByPath(NORMAL_SPRITE_PATH, i, false);
@@ -111,7 +96,7 @@ class MapRogueGridEvent extends UiPanelBase_1.UiPanelBase {
     }
     i.SetUIActive(e);
   }
-  Dxu(e, t, i, s) {
+  sUu(e, t, i, s) {
     this.GetItem(5).SetUIActive(e);
     if (e) {
       this.GetText(6).SetChangeColor(i, UE.Color.FromHex(s));
@@ -123,12 +108,12 @@ class MapRogueGridEvent extends UiPanelBase_1.UiPanelBase {
     if (this.Pe) {
       if ((t = ModelManager_1.ModelManager.MapRogueModel.GameInfo).IsOverEventRecommendLv(this.Pe.GridIndex)) {
         if (t.IsGridCanSkipBattle(this.Pe.GridIndex)) {
-          this.Dxu(this.Pe.Lv > 0 && e, this.Pe.Lv, true, SKIP_LEVEL_COLOR);
+          this.sUu(this.Pe.Lv > 0 && e, this.Pe.Lv, true, SKIP_LEVEL_COLOR);
         } else {
-          this.Dxu(this.Pe.Lv > 0 && e, this.Pe.Lv, false, SKIP_LEVEL_COLOR);
+          this.sUu(this.Pe.Lv > 0 && e, this.Pe.Lv, false, SKIP_LEVEL_COLOR);
         }
       } else {
-        this.Dxu(this.Pe.Lv > 0 && e, this.Pe.Lv, true, LOW_LEVEL_COLOR);
+        this.sUu(this.Pe.Lv > 0 && e, this.Pe.Lv, true, LOW_LEVEL_COLOR);
       }
     }
   }

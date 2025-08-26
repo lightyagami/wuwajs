@@ -179,7 +179,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
-    this.TimeScaleComp = this.Entity.GetComponent(179);
+    this.TimeScaleComp = this.Entity.GetComponent(180);
     this.MoveComp = this.Entity.GetComponent(45);
     this.CreatureDataComp = this.Entity.GetComponent(0);
     if (!ModelManager_1.ModelManager.CombatMessageModel.AddMoveSync(this)) {
@@ -267,7 +267,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   CustomPreTickInternal(t) {
     var e;
-    if (!this.ActorComp.IsMoveAutonomousProxy && !this.Entity.GetComponent(205).HasTag(-648310348)) {
+    if (!this.ActorComp.IsMoveAutonomousProxy && !this.Entity.GetComponent(206).HasTag(-648310348)) {
       this.IsPending = false;
       this.PendingMoveInfos.length = 0;
       this.TickReplaySamples();
@@ -369,12 +369,12 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
     if (t) {
       (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
       e.WRs.push(this.CollectPendingMoveInfos());
-      Net_1.Net.Send(29722, e);
+      Net_1.Net.Send(23287, e);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
         t = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 29722,
+          msg_id: 23287,
           immediately: true,
           sub_count: e.WRs.length,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
@@ -401,12 +401,12 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
       var t = Protocol_1.Aki.Protocol.zus.create();
       t.uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
       t.WRs.push(this.CollectPendingMoveInfos());
-      Net_1.Net.Send(26737, t);
+      Net_1.Net.Send(24484, t);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
         t = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 26737,
+          msg_id: 24484,
           immediately: true,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
           ed: IS_WITH_EDITOR,
@@ -541,37 +541,42 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
     return false;
   }
   TickReplaySamples() {
-    var t = Time_1.Time.NowSeconds;
-    for (this.LastApplyMoveSample && t - this.LastApplyMoveSample.J8n > 1 && (CombatLog_1.CombatLog.Info("Move", this.Entity, "不连贯的样条点丢弃", ["diff", t - this.LastApplyMoveSample.J8n]), this.LastApplyMoveSample = undefined); !this.ZHr.Empty;) {
-      var e = this.LastApplyMoveSample;
-      var i = this.ZHr.Front;
-      if (!(t >= i.J8n)) {
-        if (!e) {
+    var t;
+    var e;
+    var i = Time_1.Time.NowSeconds;
+    for (this.LastApplyMoveSample && i - this.LastApplyMoveSample.J8n > 1 && (CombatLog_1.CombatLog.Info("Move", this.Entity, "不连贯的样条点丢弃", ["diff", i - this.LastApplyMoveSample.J8n]), this.LastApplyMoveSample = undefined); !this.ZHr.Empty;) {
+      var s = this.LastApplyMoveSample;
+      var o = this.ZHr.Front;
+      if (!(i >= o.J8n)) {
+        if (!s) {
           break;
         }
-        var s = MathUtils_1.MathUtils.RangeClamp(t, e.J8n, i.J8n, 0, 1);
-        this.CacheBaseEntityHandle = this.CheckRelativeMove(e, i, s, this.CacheRelativeLocation, this.CacheRelativeRotator);
+        var h = MathUtils_1.MathUtils.RangeClamp(i, s.J8n, o.J8n, 0, 1);
+        this.CacheBaseEntityHandle = this.CheckRelativeMove(s, o, h, this.CacheRelativeLocation, this.CacheRelativeRotator);
         if (this.CacheBaseEntityHandle && this.TransformFromRelativeMove(this.CacheBaseEntityHandle, this.CacheRelativeLocation, this.CacheRelativeRotator, this.CacheFinalLocation, this.CacheFinalRotator)) {
           this.LastRelativeMove;
           this.LastRelativeMove = true;
         } else {
-          Vector_1.Vector.Lerp(e.P5n, i.P5n, s, this.CacheFinalLocation);
-          Rotator_1.Rotator.Lerp(e.g8n, i.g8n, s, this.CacheFinalRotator);
+          Vector_1.Vector.Lerp(s.P5n, o.P5n, h, this.CacheFinalLocation);
+          Rotator_1.Rotator.Lerp(s.g8n, o.g8n, h, this.CacheFinalRotator);
           this.LastRelativeMove;
           this.LastRelativeMove = false;
         }
-        Vector_1.Vector.Lerp(e.f8n, i.f8n, s, this.CacheVelocity);
-        var s = MathUtils_1.MathUtils.Lerp(MathCommon_1.MathCommon.WrapAngle(e.ControllerPitch), MathCommon_1.MathCommon.WrapAngle(i.ControllerPitch), s);
-        this.ApplyMoveSample(e.KVn, this.CacheFinalLocation, this.CacheFinalRotator, e.f8n, e.PWn, i.bWn, e.BWn, s, e.qWn, e.GWn, e.OWn);
+        Vector_1.Vector.Lerp(s.f8n, o.f8n, h, this.CacheVelocity);
+        var h = MathUtils_1.MathUtils.Lerp(MathCommon_1.MathCommon.WrapAngle(s.ControllerPitch), MathCommon_1.MathCommon.WrapAngle(o.ControllerPitch), h);
+        this.ApplyMoveSample(s.KVn, this.CacheFinalLocation, this.CacheFinalRotator, s.f8n, s.PWn, o.bWn, s.BWn, h, s.qWn, s.GWn, s.OWn);
         this.LastApplyMoveSampleUsed = true;
         break;
       }
-      this.LastApplyMoveSample = i;
+      this.LastApplyMoveSample = o;
       this.LastApplyMoveSampleUsed = false;
       this.ZHr.RemoveFront();
     }
     if (this.ZHr.Empty && !this.LastApplyMoveSampleUsed && this.LastApplyMoveSample) {
-      this.ApplyMoveSample(this.LastApplyMoveSample.KVn, this.LastApplyMoveSample.P5n, this.LastApplyMoveSample.g8n, this.LastApplyMoveSample.f8n, this.LastApplyMoveSample.PWn, this.LastApplyMoveSample.bWn, this.LastApplyMoveSample.BWn, this.LastApplyMoveSample.ControllerPitch, this.LastApplyMoveSample.qWn, this.LastApplyMoveSample.GWn, this.LastApplyMoveSample.OWn);
+      t = this.LastApplyMoveSample;
+      this.CacheBaseEntityHandle = this.CheckRelativeMove(t, t, 1, this.CacheRelativeLocation, this.CacheRelativeRotator);
+      e = this.CacheBaseEntityHandle && this.TransformFromRelativeMove(this.CacheBaseEntityHandle, this.CacheRelativeLocation, this.CacheRelativeRotator, this.CacheFinalLocation, this.CacheFinalRotator);
+      this.ApplyMoveSample(t.KVn, e ? this.CacheFinalLocation : t.P5n, e ? this.CacheFinalRotator : t.g8n, t.f8n, t.PWn, t.bWn, t.BWn, t.ControllerPitch, t.qWn, t.GWn, t.OWn);
       this.LastApplyMoveSampleUsed = true;
     }
   }

@@ -90,9 +90,6 @@ class TsTaskTurnToEntity extends TsTaskAbortImmediatelyBase_1.default {
       this.Finish(true);
     }
   }
-  OnAbort() {
-    this.Character?.ClearInput();
-  }
   OnClear() {
     this.Character = undefined;
     this.MovementMode = 0;

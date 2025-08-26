@@ -29,7 +29,7 @@ class Cursor {
     this.Fxo = false;
     this.Vxo = true;
     this.Hxo = false;
-    this.mX1 = false;
+    this.pX1 = false;
     this.IsMoveInstantly = false;
     this.jxo = 0;
     this.Wxo = undefined;
@@ -60,8 +60,8 @@ class Cursor {
           }
           this.qxo = LguiUtil_1.LguiUtil.CopyItem(this.bxo, this.Bxo);
           LguiUtil_1.LguiUtil.SetActorIsPermanent(this.qxo.GetOwner(), true, true);
-          this.mX1 = false;
-          this.fX1();
+          this.pX1 = false;
+          this.vX1();
           this.Kxo = this.qxo.IsUIActiveSelf();
           i = this.Gxo !== undefined;
           this.TrySetUseItemUiActive(i);
@@ -80,16 +80,16 @@ class Cursor {
     Cursor.kRe.DeepCopy(Cursor.Jxo);
     this.qxo.GetOwner().D_K2_SetActorLocation(Cursor.Jxo.ToUeVector(), false, undefined, false);
   }
-  fX1() {
+  vX1() {
     if (this.qxo) {
       if (UiManager_1.UiManager.IsViewOpen("VideoView") || UiManager_1.UiManager.IsViewOpen("NetWorkConfirmBoxView")) {
-        if (this.mX1) {
+        if (this.pX1) {
           this.qxo.SetUIParent(UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Mask));
-          this.mX1 = false;
+          this.pX1 = false;
         }
-      } else if (!this.mX1) {
+      } else if (!this.pX1) {
         this.qxo.SetUIParent(UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Float));
-        this.mX1 = true;
+        this.pX1 = true;
       }
     }
   }
@@ -109,7 +109,7 @@ class Cursor {
     } else {
       this.TrySetUseItemUiActive(false);
     }
-    this.fX1();
+    this.vX1();
   }
   RepeatMove() {
     this.Fxo = true;

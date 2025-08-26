@@ -99,7 +99,9 @@ class PawnInteractController {
     this.IsTurnAround = false;
     this.IsTurnRecoveryImmediately = false;
     this.IsWaitTurnComplete = false;
-    this.InteractIcon = "Dialog";
+    this.Isd = "Dialog";
+    this.Tsd = undefined;
+    this.bsd = undefined;
     this.PreTalkConfigs = undefined;
     this.PlayerInteractiveRange = undefined;
     this.IsPlayerTurnAround = false;
@@ -114,7 +116,7 @@ class PawnInteractController {
     this.PreDirectOptionInstances = new Array();
     this.OnInteractionUpdate = undefined;
     this.OnInteractActionEnd = undefined;
-    this.lBu = new Set();
+    this.uVu = new Set();
     this.InteractEntity = new InteractEntity(t.Entity);
     this.frr = t;
     this.Hte = t.Entity.GetComponent(1);
@@ -148,6 +150,13 @@ class PawnInteractController {
   }
   GetInteractType() {
     return this.Drr;
+  }
+  GetInteractIcon() {
+    if (this.Tsd && this.bsd) {
+      return this.bsd;
+    } else {
+      return this.Isd;
+    }
   }
   wrr() {
     var t = this.Hte.CreatureData;
@@ -269,7 +278,7 @@ class PawnInteractController {
         if (a.DoIntactType !== "Direct") {
           s = true;
         } else if (!r || a.Type.Type === "Flow") {
-          if (a.CustomOptionType !== 1 && this.Nrr(a) && this._Bu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t)) {
+          if (a.CustomOptionType !== 1 && this.Nrr(a) && this.cVu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t)) {
             this.TempDirectOptionInstances.push(a);
             this.InteractEntity.DirectOptionInstanceIds.push(a.InstanceId);
             if ((n = a.TidContent ? PublicUtil_1.PublicUtil.GetConfigTextByKey(a.TidContent) : undefined) && !a.ConditionCheck && a.LockTips?.TidAppendText) {
@@ -327,11 +336,11 @@ class PawnInteractController {
   }
   Brr(e) {
     if (e.InteractIcon) {
-      this.InteractIcon = e.InteractIcon;
+      this.Isd = e.InteractIcon;
     } else if (e.InteractDefaultIcon) {
-      this.InteractIcon = e.InteractDefaultIcon;
+      this.Isd = e.InteractDefaultIcon;
     } else {
-      this.InteractIcon = "Dialog";
+      this.Isd = "Dialog";
     }
     if (e.Options?.length > 0) {
       for (let t = 0, i = e.Options.length; t < i; t++) {
@@ -350,9 +359,9 @@ class PawnInteractController {
           var r = this.Trr === -1 ? e : this.Trr;
           var n = o.Offset;
           t(s, e, r, n, () => {
-            this.lBu.add(s);
+            this.uVu.add(s);
           }, () => {
-            this.lBu.delete(s);
+            this.uVu.delete(s);
           });
         }
       }
@@ -564,7 +573,7 @@ class PawnInteractController {
           var r = e[t];
           if (!r.Disabled && (!i || r.Type.Type === "Flow")) {
             var n = this.Nrr(r);
-            var o = this._Bu(r);
+            var o = this.cVu(r);
             if (n && o) {
               this.Arr = r;
               break;
@@ -604,23 +613,27 @@ class PawnInteractController {
         o = i.TreeConfigId;
       }
     }
-    t = this.Orr(t, 1, i, 0, s, r);
-    t.OptionContentId = o;
+    r = this.Orr(t, 1, i, 0, s, r);
+    r.OptionContentId = o;
     if (e !== undefined) {
-      t.TidContent = e;
+      r.TidContent = e;
+    }
+    if (t.DoIntactType === "Direct") {
+      this.Tsd = t.Guid;
+      this.bsd = t.Icon;
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Interaction", 36, "AddDynamicInteractOption success", ["PbDataId", this.GetPbDataId()]);
     }
-    this.prr.push(t);
-    this.Mrr.push(t);
+    this.prr.push(r);
+    this.Mrr.push(r);
     if (s === 1) {
-      this.Err.push(t);
+      this.Err.push(r);
       this.Vrr();
     }
     if (i) {
-      r = this.Hrr(t.Context);
-      this.ChangeOptionDisabled(t.InstanceId, !r);
+      e = this.Hrr(r.Context);
+      this.ChangeOptionDisabled(r.InstanceId, !e);
     }
     if (n) {
       this.Grr();
@@ -628,7 +641,7 @@ class PawnInteractController {
     if (this.frr?.Entity.Valid) {
       EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnAddDynamicOption);
     }
-    return t.InstanceId;
+    return r.InstanceId;
   }
   Vrr() {
     this.Err.sort((t, i) => {
@@ -681,6 +694,10 @@ class PawnInteractController {
     }
     if (this.frr?.Entity.Valid) {
       EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnRemoveDynamicOption);
+    }
+    if (this.Tsd === i) {
+      this.Tsd = undefined;
+      this.bsd = undefined;
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Interaction", 36, "RemoveDynamicInteractOption success", ["PbDataId", this.GetPbDataId()], ["IsMatch", n]);
@@ -875,11 +892,11 @@ class PawnInteractController {
     }
     return true;
   }
-  _Bu(t, i = true) {
-    return (!t.Offset || !!t.Offset.IsNearlyZero()) && !!i || !!this.lBu && !!this.lBu.has(t.InstanceId);
+  cVu(t, i = true) {
+    return (!t.Offset || !!t.Offset.IsNearlyZero()) && !!i || !!this.uVu && !!this.uVu.has(t.InstanceId);
   }
   InAnyOptionWithOffsetRange() {
-    return this.lBu.size > 0;
+    return this.uVu.size > 0;
   }
   jrr() {
     var t;
@@ -978,7 +995,7 @@ class PawnInteractController {
   HandleInteractRequest() {
     if (this.frr?.Valid) {
       if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(this.frr.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
-        this.frr.Entity.GetComponent(45)?.MoveToLocationLogic?.PushMoveInfo();
+        this.frr.Entity.GetComponent(45)?.MoveController?.PushMoveInfo();
       }
       this.frr.SetInteractionState(false, "发送交互请求");
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
@@ -998,13 +1015,13 @@ class PawnInteractController {
       }
       this.frr.SetServerLockInteract(false, "交互失败");
       if (t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractRange && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractCd && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPreCondition && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractOptionGuidInvalid && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractIsNotParticipant && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteracTreeSuspend && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrorBanInteractEntity) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 21946);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 25476);
       }
       if (!ModelManager_1.ModelManager.PlotModel.IsInPlot && UiManager_1.UiManager.IsViewShow("PlotView")) {
         PlotController_1.PlotController.EndInteraction(false, true);
       }
     } else {
-      if (i = this.Hte?.Entity?.GetComponent(141)) {
+      if (i = this.Hte?.Entity?.GetComponent(142)) {
         i.CloseAllCollisions();
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess);

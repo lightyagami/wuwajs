@@ -24,15 +24,15 @@ class PhantomArenaBattleDialog {
     this.TalkIndex = 0;
     this.OwnSpeakId = 0;
     this.OpponentSpeakId = 0;
-    this.JJ1 = t => t.WhoId === this.OwnSpeakId ? this.OwnDialogItem?.GetDialog() : t.WhoId === this.OpponentSpeakId ? this.OpponentDialogItem?.GetDialog() : void (Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 10, "说话人配置错误", ["编辑器配置ID", t.WhoId], ["己方说话人ID", this.OwnSpeakId], ["对方说话人ID", this.OpponentSpeakId]));
-    this.ZJ1 = t => {
+    this.IZ1 = t => t.WhoId === this.OwnSpeakId ? this.OwnDialogItem?.GetDialog() : t.WhoId === this.OpponentSpeakId ? this.OpponentDialogItem?.GetDialog() : void (Log_1.Log.CheckError() && Log_1.Log.Error("PhantomArena", 10, "说话人配置错误", ["编辑器配置ID", t.WhoId], ["己方说话人ID", this.OwnSpeakId], ["对方说话人ID", this.OpponentSpeakId]));
+    this.TZ1 = t => {
       if (t.WhoId === this.OwnSpeakId) {
         this.OwnDialogItem?.SetDialogActive(true);
       } else if (t.WhoId === this.OpponentSpeakId) {
         this.OpponentDialogItem?.SetDialogActive(true);
       }
     };
-    this.eZ1 = t => {
+    this.bZ1 = t => {
       if (t.WhoId === this.OwnSpeakId) {
         this.OwnDialogItem?.SetDialogActive(false);
       } else if (t.WhoId === this.OpponentSpeakId) {
@@ -52,9 +52,9 @@ class PhantomArenaBattleDialog {
   }
   InitLogic() {
     var t = {
-      GetTextComp: this.JJ1,
-      TextAnimStartDelegate: this.ZJ1,
-      TextAnimFinishDelegate: this.eZ1,
+      GetTextComp: this.IZ1,
+      TextAnimStartDelegate: this.TZ1,
+      TextAnimFinishDelegate: this.bZ1,
       ClearDelegate: this.DBi
     };
     this.Logic.InitData(t);

@@ -107,7 +107,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
         this.SetVehicleType(t.VehicleType);
         if (!t.IsDriver) {
           this.SetVehicleRelatedInputEnable(this.Entity, false);
-          (t = this.Entity.GetComponent(205))?.RemoveTag(-469423249);
+          (t = this.Entity.GetComponent(206))?.RemoveTag(-469423249);
           t?.RemoveTag(-1802431900);
         }
       }
@@ -139,10 +139,10 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     return true;
   }
   OnStart() {
-    this.PerformComp = this.Entity.GetComponent(233);
-    this.TagComp = this.Entity.GetComponent(205);
+    this.PerformComp = this.Entity.GetComponent(234);
+    this.TagComp = this.Entity.GetComponent(206);
     let t = undefined;
-    this.ActorComp = this.Entity.GetComponent(234);
+    this.ActorComp = this.Entity.GetComponent(235);
     if ((t = this.ActorComp ? this.ActorComp.Actor.InputComponentClass?.AssetPathName?.toString() : (this.ActorComp = this.Entity.GetComponent(3), NPC_VEHICLE_INPUT_CLASS_PATH)) && t !== "") {
       ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
         this.BpInputComp = this.ActorComp?.Actor.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false);
@@ -161,12 +161,12 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     }
   }
   OnTick(t) {
-    this.JOu(t);
+    this.t4u(t);
     if (this.NeedUpdateInputDirectAndFacing()) {
       this.UpdateVehicleInputDirectAndFacing();
     }
   }
-  JOu(t) {
+  t4u(t) {
     if (this.InputCaches.length !== 0) {
       var s = t * TimeUtil_1.TimeUtil.Millisecond * (ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1);
       for (const e of this.InputCaches) {
@@ -315,7 +315,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     VehicleInputComponent_1.HoldActionMap.clear();
   }
   SetVehicleRelatedInputEnable(t, s) {
-    const e = t?.GetComponent(205);
+    const e = t?.GetComponent(206);
     if (e) {
       if (s) {
         this.PassengerInputForbidTagArray.forEach(t => {
@@ -710,7 +710,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     }
   }
   ExecuteJump(t) {
-    this.Entity.GetComponent(233)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity);
+    this.Entity.GetComponent(234)?.TryLeave(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity);
   }
   ExecuteSprint(t) {}
   ExecuteSkill(t) {}
@@ -829,7 +829,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     this.IsEnableLongPressLeave = true;
   }
   CheckIfCanLeave() {
-    return this.VehicleType !== "Gongduola" || !!this.Entity.GetComponent(237)?.CheckIfCanLeave();
+    return this.VehicleType !== "Gongduola" || !!this.Entity.GetComponent(238)?.CheckIfCanLeave();
   }
   TestActionInput(t, s, e) {
     t = new CharacterInputComponent_1.InputEvent(t, s, e);
@@ -838,5 +838,5 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
 };
 VehicleInputComponent.HoldPressMap = new Map();
 VehicleInputComponent.HoldActionMap = new Map();
-VehicleInputComponent = VehicleInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(240)], VehicleInputComponent);
+VehicleInputComponent = VehicleInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(241)], VehicleInputComponent);
 exports.VehicleInputComponent = VehicleInputComponent; //# sourceMappingURL=VehicleInputComponent.js.map

@@ -67,7 +67,7 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIVerticalLayout], [3, UE.UIVerticalLayout], [4, UE.UIGridLayout], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UITexture], [9, UE.UIItem], [10, UE.UIItem], [12, UE.UIItem], [13, UE.UIHorizontalLayout], [14, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIVerticalLayout], [3, UE.UIVerticalLayout], [4, UE.UIGridLayout], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UITexture], [9, UE.UIItem], [10, UE.UIItem], [12, UE.UIItem], [13, UE.UIHorizontalLayout], [14, UE.UIItem], [15, UE.UIItem]];
     this.BtnBindInfo = [[6, this.ODo], [7, this.kDo]];
   }
   OnAddEventListener() {
@@ -155,9 +155,9 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
     var r = [];
     var o = ModelManager_1.ModelManager.TowerModel.GetFloorStarsIndex(e);
     for (let e = 0; e < TowerModel_1.FLOOR_STAR; e++) {
-      var a = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTargetConfig(i.TargetConfig[e]);
-      var a = [!!o && !!o.includes(e), a];
-      r.push(a);
+      var s = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTargetConfig(i.TargetConfig[e]);
+      var s = [!!o && !!o.includes(e), s];
+      r.push(s);
     }
     this.ADo.RefreshByData(r);
     this.GetText(5).SetText("" + i.Cost);
@@ -177,6 +177,7 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
       this.qDo.push(this.TDo);
     }
     this.SPe?.PlayLevelSequenceByName("Switch");
+    this.GetItem(15).SetUIActive(e?.IsQuickPass ?? false);
   }
 }
 exports.TowerFloorView = TowerFloorView;

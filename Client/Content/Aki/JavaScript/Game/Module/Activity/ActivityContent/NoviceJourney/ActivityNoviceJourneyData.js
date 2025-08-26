@@ -21,6 +21,14 @@ class ActivityNoviceJourneyData extends ActivityData_1.ActivityBaseData {
     e = e.kps;
     this.SetReceiveData(e.Tps);
   }
+  GetExDataFinishShowState() {
+    for (const e of ConfigManager_1.ConfigManager.ActivityNoviceJourneyConfig.GetNoticeJourneyConfigList()) {
+      if (this.GetRewardStateByLevel(e.Id) !== 3) {
+        return false;
+      }
+    }
+    return true;
+  }
   b2e() {
     for (const e of ConfigManager_1.ConfigManager.ActivityNoviceJourneyConfig.GetNoticeJourneyConfigList()) {
       if (this.GetRewardStateByLevel(e.Id) === 2) {

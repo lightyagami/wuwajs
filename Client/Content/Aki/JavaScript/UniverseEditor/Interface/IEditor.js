@@ -19,10 +19,10 @@ function getEntityActorLoadModeName(e) {
 function createDefaultDeployConfig() {
   return {
     IsShowDeploySettings: false,
-    DefaultEntityDeployFolderByLevelId: {},
+    DefaultEntityDeployConfigByLevelId: {},
     IsUseEntityDeployFolder: true,
     IsEnableInputDeployFolder: false,
-    DefaultActorDeployFolderByLevelId: {},
+    DefaultActorDeployConfigByLevelId: {},
     IsUseActorDeployFolder: true,
     IsUsePackId: true,
     DefaultEntityPackIdByLevelId: {},
@@ -93,7 +93,7 @@ exports.defaultEditorArgConfig = {
 (function (e) {
   e.PIE = "PIE";
   e.Attach = "Attach";
-  e.Package = "Package";
+  e.Package = "Package（不可用）";
 })(EEditorLaunchMode = exports.EEditorLaunchMode ||= {});
 (function (e) {
   e.Package = "Package";

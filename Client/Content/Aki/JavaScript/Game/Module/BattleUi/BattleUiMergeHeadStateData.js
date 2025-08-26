@@ -70,14 +70,14 @@ class MergeHeadStateMonsterInfo {
       }
       this.RemoveListener();
     }
-    var t = this.EntityHandle.Entity.GetComponent(205);
+    var t = this.EntityHandle.Entity.GetComponent(206);
     if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "[合并怪物血条]监听的实体不存在tagComponent", ["entityId", this.EntityHandle.Id]);
       }
       return false;
     }
-    this.AttributeComponent = this.EntityHandle.Entity.GetComponent(173);
+    this.AttributeComponent = this.EntityHandle.Entity.GetComponent(174);
     if (!this.AttributeComponent) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "[合并怪物血条]监听的实体不存在AttributeComponent", ["entityId", this.EntityHandle.Id]);

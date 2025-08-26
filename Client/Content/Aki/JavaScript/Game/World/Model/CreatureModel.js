@@ -39,11 +39,12 @@ const SeamlessTravelController_1 = require("../../Module/SeamlessTravel/Seamless
 const CreatureDensityContainer_1 = require("../Define/CreatureDensityContainer");
 const EntityContainer_1 = require("../Define/EntityContainer");
 const ComponentReadHelper_1 = require("../EntityReadCode/Component/ComponentReadHelper");
+const StaticSceneUtils_1 = require("../../LevelGamePlay/StaticScene/StaticSceneUtils");
 const zero = 0n;
 const ONE_HUNDRED = 100;
 exports.DISABLE_KAWAII_MASK = 1;
 exports.ENABLE_KAWAII_MASK = ~exports.DISABLE_KAWAII_MASK;
-exports.globalEntityTypePerceptionType = [1, 2, 2, 2, 2, 4, 1];
+exports.globalEntityTypePerceptionType = [1, 1, 1, 2, 2, 2, 2, 4];
 class CreatureModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -105,11 +106,11 @@ class CreatureModel extends ModelBase_1.ModelBase {
           var e;
           if ((!Global_1.Global.BaseCharacter?.IsValid() || Global_1.Global.BaseCharacter.EntityId !== i.Id) && i.Entity.GetComponent(0).GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_SceneItem && !this.dMr.has(i.Id) && !this.NCa.has(i.Id)) {
             if (i.IsInit) {
-              if (e = i.Entity.GetComponent(111)) {
+              if (e = i.Entity.GetComponent(112)) {
                 e = e.DisableTickWithLog("CreatureModel.OnTeleportStart");
                 this.NCa.set(i.Id, e);
               }
-              if (e = i.Entity.GetComponent(113)) {
+              if (e = i.Entity.GetComponent(114)) {
                 e.TeleportLock = true;
               }
             } else {
@@ -131,7 +132,7 @@ class CreatureModel extends ModelBase_1.ModelBase {
         }
         for (var [i, r] of this.NCa) {
           i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i);
-          if (i?.Valid && (i.Entity.GetComponent(111).EnableTickWithLog(r, "CreatureModel.OnTeleportComplete"), r = i.Entity.GetComponent(113))) {
+          if (i?.Valid && (i.Entity.GetComponent(112).EnableTickWithLog(r, "CreatureModel.OnTeleportComplete"), r = i.Entity.GetComponent(114))) {
             r.OnEntityBudgetTickEnableChange(true);
             r.TeleportLock = false;
           }
@@ -199,23 +200,19 @@ class CreatureModel extends ModelBase_1.ModelBase {
     var t = [];
     for (const e of this.hPr.GetAllEntities()) {
       if (function t(e) {
-        if (e.EntityType === Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
-          e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e.PbDataId);
-          if (e) {
-            var i = e.BlueprintType;
-            var i = BlueprintConfigByBlueprintType_1.configBlueprintConfigByBlueprintType.GetConfig(i);
+        if (e.EntityType === Protocol_1.Aki.Protocol.kks.Proto_SceneItem && e.ConfigType !== Protocol_1.Aki.Protocol.rLs.lTs && e.ConfigType !== Protocol_1.Aki.Protocol.rLs.Proto_Template) {
+          var i = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e.PbDataId);
+          if (i) {
+            i = i.BlueprintType;
+            i = BlueprintConfigByBlueprintType_1.configBlueprintConfigByBlueprintType.GetConfig(i);
             if (!i || i.EntityType !== "SceneAura".toString()) {
               return;
             }
-            i = (0, IComponent_1.getComponent)(e.ComponentsData, "SceneActorRefComponent");
+            i = StaticSceneUtils_1.StaticSceneUtils.GetActorRefByPbDataId(e.PbDataId);
             if (i) {
-              for (const r of i.ActorRefGroups ?? {}) {
-                for (const n of r.Actions ?? {}) {
-                  if (n.Name === "EnableActor") {
-                    if (n.Params.ActorType === "PPVolume") {
-                      return 1;
-                    }
-                  }
+              for (const r of i) {
+                if (r.ActorName?.startsWith("KuroPostProcessVolume")) {
+                  return 1;
                 }
               }
             }
@@ -775,40 +772,40 @@ class CreatureModel extends ModelBase_1.ModelBase {
       return (0, IEntity_1.decompressEntityData)(t, e);
     }
   }
-  GetEntityOwner(t, e) {
+  GetEntityOwner(e, i, r = false) {
     if (PublicUtil_1.PublicUtil.UseDbConfig()) {
       this.pMr ||= new Map();
-      if (!this.pMr.get(t)) {
-        this.pMr.set(t, new Map());
+      if (!this.pMr.get(e)) {
+        this.pMr.set(e, new Map());
       }
-      if (!this.pMr.get(t).get(e)) {
-        var i = t.toString() + "_" + e.toString();
-        const r = ConfigManager_1.ConfigManager.EntityOwnerConfig.GetEntityOwnerConfig(i);
-        if (!r) {
+      if (!this.pMr.get(e).get(i)) {
+        var n = e.toString() + "_" + i.toString();
+        let t = undefined;
+        if (!(t = r ? ConfigManager_1.ConfigManager.EntityOwnerConfig.CheckEntityOwnerConfig(n) : ConfigManager_1.ConfigManager.EntityOwnerConfig.GetEntityOwnerConfig(n))) {
           return;
         }
-        i = {
-          LevelId: t,
-          EntityId: e,
-          Owner: JSON.parse(r.Owner)
+        r = {
+          LevelId: e,
+          EntityId: i,
+          Owner: JSON.parse(t.Owner)
         };
-        this.pMr.get(t).set(e, i);
+        this.pMr.get(e).set(i, r);
       }
-      const r = this.pMr.get(t).get(e);
-      if (r.Owner.length === 0) {
+      const t = this.pMr.get(e).get(i);
+      if (t.Owner.length === 0) {
         return undefined;
       } else {
-        return r.Owner[0];
+        return t.Owner[0];
       }
     }
     if (!this.pMr) {
       this.bMr();
     }
-    i = this.pMr.get(t);
-    if (i) {
-      const r = i.get(e);
-      if (r && r.Owner.length !== 0) {
-        return r.Owner[0];
+    n = this.pMr.get(e);
+    if (n) {
+      const t = n.get(i);
+      if (t && t.Owner.length !== 0) {
+        return t.Owner[0];
       }
     }
   }
@@ -1032,10 +1029,6 @@ class CreatureModel extends ModelBase_1.ModelBase {
   }
   GetDensityLevelGroup(t) {
     return this.uYs.GetLevel(t);
-  }
-  IsAllowedOnThisPlatform(t, e) {
-    var e = ModelManager_1.ModelManager.CreatureModel.GetEntityData(e.v9n);
-    return !e || !e.ComponentsData || !(e = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityVisibleComponent")) || e.TargetPlatform !== 1 || !Info_1.Info.IsMobilePlatform() || !(Log_1.Log.CheckWarn() && Log_1.Log.Warn("Entity", 35, "当前平台拦截该实体", ["CreatureDataId", t], ["TargetPlatform", e.TargetPlatform], ["CurPlatform", Info_1.Info.PlatformType]), 1);
   }
   SetKawaiiMask(t) {
     if (t) {

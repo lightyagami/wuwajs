@@ -42,7 +42,7 @@ class CameraRotationZone {
   }
   SetCharacter(t) {
     this.e1h = t;
-    if (this.e1h?.Valid && (this.t1h = this.e1h.Entity.GetComponent(62), this.i1h = this.e1h.Entity.GetComponent(3), this.Whl = this.e1h.Entity.GetComponent(59), this.Qhl = this.e1h.Entity.GetComponent(177), Log_1.Log.CheckDebug())) {
+    if (this.e1h?.Valid && (this.t1h = this.e1h.Entity.GetComponent(62), this.i1h = this.e1h.Entity.GetComponent(3), this.Whl = this.e1h.Entity.GetComponent(59), this.Qhl = this.e1h.Entity.GetComponent(178), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Camera", 57, "CameraRotationZone init");
     }
   }

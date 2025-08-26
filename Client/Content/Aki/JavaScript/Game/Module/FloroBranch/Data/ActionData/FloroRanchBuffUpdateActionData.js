@@ -12,7 +12,7 @@ class FloroRanchBuffUpdateActionData extends FloroRanchActionBase_1.FloroRanchAc
   constructor(o) {
     super(o);
     this.dDo = undefined;
-    this.dDo = o.Byu;
+    this.dDo = o.PSu;
   }
   async OnExecute() {
     if (!this.IsIgnoreCasterAnim) {
@@ -20,9 +20,9 @@ class FloroRanchBuffUpdateActionData extends FloroRanchActionBase_1.FloroRanchAc
     }
     await this.WaitIfPause();
     if (!this.IsExit()) {
-      for (const a of this.dDo.khu) {
+      for (const a of this.dDo.llu) {
         var o;
-        var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(a.xyu);
+        var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(a.wSu);
         if (e) {
           if ((o = e.CheckGetComponent(0)).IsValid) {
             o.UpdateBuff(a);
@@ -32,7 +32,7 @@ class FloroRanchBuffUpdateActionData extends FloroRanchActionBase_1.FloroRanchAc
             Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchBuffUpdateActionData OnExecute 实体数据无效", ["entity", e.Info()]);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchBuffUpdateActionData OnExecute 实体不存在", ["entity", a.xyu], ["BuffType", a.h5n]);
+          Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchBuffUpdateActionData OnExecute 实体不存在", ["entity", a.wSu], ["BuffType", a.h5n]);
         }
       }
     }

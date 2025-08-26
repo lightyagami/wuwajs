@@ -11,7 +11,6 @@ const CommonQteContextBase_1 = require("./CommonQteContextBase");
 class CommonQteSingleClickContext extends CommonQteContextBase_1.CommonQteContextBase {
   constructor() {
     super();
-    this.PassTime = 0;
     this.ResponseCount = 0;
     this.TargetCount = -1;
     this.Type = 0;
@@ -25,42 +24,16 @@ class CommonQteSingleClickContext extends CommonQteContextBase_1.CommonQteContex
         if (this.IsPending()) {
           this.ResponseCount += 1;
         }
-        if (this.nS1()) {
-          if (this.PassTime < this.LeastDuration) {
-            this.QtePendingSuccess();
-          } else {
-            this.QteSuccess();
-          }
-        }
+        this.CheckQteConditionAndDoSuccess();
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "Qte无法接收响应", ["HandleId", this.HandleId], ["QteId", this.QteId], ["State", this.State]);
       }
     }
   }
-  OnQteSuccess() {
-    if (this.SuccessCallback) {
-      this.SuccessCallback(this);
-    }
-    this.SuccessCallback = undefined;
-    ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.HandleId);
-  }
-  OnQteFail() {
-    if (this.FailCallback) {
-      this.FailCallback(this);
-    }
-    this.FailCallback = undefined;
-    ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.HandleId);
-  }
   OnUpdateTime(t) {
     if (this.Config) {
       this.PassTime += t;
-      if (this.nS1()) {
-        if (this.PassTime < this.LeastDuration) {
-          this.QtePendingSuccess();
-        } else {
-          this.QteSuccess();
-        }
-      } else if (!this.IsPermanent && this.PassTime > this.Duration) {
+      if (!this.IsPermanent && this.PassTime > this.Duration) {
         this.QteFail();
       }
     } else {
@@ -83,11 +56,14 @@ class CommonQteSingleClickContext extends CommonQteContextBase_1.CommonQteContex
       return this.Config.BaseConfig.SingleClickConfig;
     }
   }
-  nS1() {
+  CheckQteConditionMatch() {
     return this.ResponseCount >= this.TargetCount;
   }
-  GetRemainingTime() {
-    return Math.max(0, this.Duration - this.PassTime);
+  IsAttachToActor() {
+    return !!this.Config?.BaseConfig.SingleClickConfig.IsAttachToActor;
+  }
+  GetAttachConfig() {
+    return this.Config?.BaseConfig.SingleClickConfig.AttachConfig;
   }
 }
 exports.CommonQteSingleClickContext = CommonQteSingleClickContext;

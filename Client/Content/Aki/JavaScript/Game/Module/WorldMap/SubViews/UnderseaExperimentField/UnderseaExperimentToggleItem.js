@@ -12,18 +12,18 @@ const ExploreProgressDefine_1 = require("../../../ExploreProgress/ExploreProgres
 class UnderseaExperimentToggleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.twu = 1;
+    this.awu = 1;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async Initialize(e, r) {
-    this.twu = e;
+    this.awu = e;
     await this.CreateThenShowByActorAsync(r.GetOwner());
     this.RefreshPlayerIcon();
   }
   RefreshPlayerIcon() {
-    var e = ConfigManager_1.ConfigManager.WorldMapConfig?.GetCustomizedThumbnailConfig(this.twu);
+    var e = ConfigManager_1.ConfigManager.WorldMapConfig?.GetCustomizedThumbnailConfig(this.awu);
     var r = ModelManager_1.ModelManager.AreaModel?.GetCurrentAreaId(ExploreProgressDefine_1.AREA_LEVEL) ?? 0;
     this.GetItem(1).SetUIActive(r === e?.AreaId);
   }

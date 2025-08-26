@@ -65,7 +65,7 @@ class BattleUiFormationData {
   AddFollower(e) {
     if (e !== this.ORn) {
       this.FRn();
-      var i = (this.ORn = e).Entity.GetComponent(222);
+      var i = (this.ORn = e).Entity.GetComponent(223);
       let t = i?.AimType;
       t = t || (followerMap.get(e.PbDataId) ?? 0);
       this.doh = t;
@@ -99,6 +99,11 @@ class BattleUiFormationData {
           ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(3);
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetFollowShootAutoAimVisible, t);
+      } else if (this.doh === 5) {
+        if (this.Coh) {
+          ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(8);
+        }
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetTDFollowShootAimVisible, t);
       }
     }
   }
@@ -125,6 +130,8 @@ class BattleUiFormationData {
       ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(2);
     } else if (this.doh === 4) {
       ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(3);
+    } else if (this.doh === 5) {
+      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(8);
     }
     this.doh = 0;
   }

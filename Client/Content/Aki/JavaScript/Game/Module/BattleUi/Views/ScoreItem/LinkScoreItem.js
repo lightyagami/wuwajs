@@ -38,12 +38,12 @@ class LinkScoreItem extends BaseScoreItem_1.BaseScoreItem {
     this.SBn = undefined;
     this.IBn = undefined;
     this.TBn = undefined;
-    this.RUu = false;
+    this.rDu = false;
     this.oEc = () => {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
       this.IsScoreEnable = true;
       var t = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
-      this.wUu(t);
+      this.oDu(t);
       this.ShowScore();
     };
   }
@@ -67,17 +67,17 @@ class LinkScoreItem extends BaseScoreItem_1.BaseScoreItem {
     if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()) {
       t = ModelManager_1.ModelManager.WeeklyRogueModel.CurrentActivityId !== 0;
       if (this.IsScoreEnable = t) {
-        this.wUu(ModelManager_1.ModelManager.WeeklyRogueModel.CycleId);
+        this.oDu(ModelManager_1.ModelManager.WeeklyRogueModel.CycleId);
         this.ShowScore();
       } else {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
       }
     } else {
-      this.wUu(LINK_SCORE_GROUP_ID);
+      this.oDu(LINK_SCORE_GROUP_ID);
     }
   }
-  wUu(t) {
-    this.RUu = true;
+  oDu(t) {
+    this.rDu = true;
     this.yBn = ConfigManager_1.ConfigManager.BattleScoreConfig.GetBattleScoreActionConfigByGroupId(t);
     this.rTn();
     for (var [e, i] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreMap()) {
@@ -103,7 +103,7 @@ class LinkScoreItem extends BaseScoreItem_1.BaseScoreItem {
     return e.Promise;
   }
   OnBattleScoreChanged(t, e) {
-    if (this.RUu) {
+    if (this.rDu) {
       if (this.IsHideOrHiding) {
         this.ShowScore();
       }

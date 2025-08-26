@@ -6,5 +6,6 @@ function isCustomTabViewForGuide(e) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isCustomTabViewForGuide = undefined;
-exports.isCustomTabViewForGuide = isCustomTabViewForGuide; //# sourceMappingURL=GuideDefine.js.map
+exports.guideTipsAllowedViews = exports.isCustomTabViewForGuide = undefined;
+exports.isCustomTabViewForGuide = isCustomTabViewForGuide;
+exports.guideTipsAllowedViews = ["BattleView", "CommonGameMainView"]; //# sourceMappingURL=GuideDefine.js.map

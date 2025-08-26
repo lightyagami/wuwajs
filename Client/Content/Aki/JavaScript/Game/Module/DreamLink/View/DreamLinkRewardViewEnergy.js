@@ -20,7 +20,12 @@ class DreamLinkRewardViewEnergy extends UiViewBase_1.UiViewBase {
     this.Otl = undefined;
     this.qoh = undefined;
     this.VOe = () => {
-      return new DreamLinkRewardEnergyItem_1.DreamLinkRewardEnergyItem();
+      var e = new DreamLinkRewardEnergyItem_1.DreamLinkRewardEnergyItem();
+      e.SetBtnClickCallback(() => {
+        var e = this.boh.GetEnergyRewardDataList();
+        DreamLinkController_1.DreamLinkController.MultiEnergyRewardRequest(e.filter(e => e.Status === 0).map(e => e.Id));
+      });
+      return e;
     };
     this.gcl = () => {
       this.v4e();

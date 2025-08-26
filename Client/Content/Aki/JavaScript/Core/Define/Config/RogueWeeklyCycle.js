@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.RogueWeeklyCycle = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
 const DicIntInt_1 = require("./SubType/DicIntInt");
+const DicIntLong54_1 = require("./SubType/DicIntLong54");
 class RogueWeeklyCycle {
   constructor() {
     this.J7 = null;
@@ -16,6 +17,9 @@ class RogueWeeklyCycle {
   }
   get ActivityId() {
     return this.activityid();
+  }
+  get LoopId() {
+    return this.loopid();
   }
   get TimeId() {
     return this.timeid();
@@ -89,8 +93,26 @@ class RogueWeeklyCycle {
   get BlackFlowerHelpId() {
     return this.blackflowerhelpid();
   }
+  get BaseScore() {
+    return this.basescore();
+  }
   get MaxScore() {
     return this.maxscore();
+  }
+  get LinkId() {
+    return this.linkid();
+  }
+  get BattleBuffIdMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.battlebuffidmapLength(), this.battlebuffidmapKey, this.battlebuffidmapValue, this);
+  }
+  battlebuffidmapKey(t) {
+    return this.battlebuffidmap(t)?.key();
+  }
+  battlebuffidmapValue(t) {
+    return this.battlebuffidmap(t)?.value();
+  }
+  get BattleBuffId() {
+    return this.battlebuffid();
   }
   __init(t, i) {
     this.z7 = t;
@@ -116,8 +138,16 @@ class RogueWeeklyCycle {
       return 0;
     }
   }
-  timeid() {
+  loopid() {
     var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  timeid() {
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -128,7 +158,7 @@ class RogueWeeklyCycle {
     return this.diff(t);
   }
   diff(t, i) {
-    var s = this.J7.__offset(this.z7, 10);
+    var s = this.J7.__offset(this.z7, 12);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -136,7 +166,7 @@ class RogueWeeklyCycle {
     }
   }
   diffLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -144,14 +174,6 @@ class RogueWeeklyCycle {
     }
   }
   mapmark() {
-    var t = this.J7.__offset(this.z7, 12);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  questid() {
     var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -159,7 +181,7 @@ class RogueWeeklyCycle {
       return 0;
     }
   }
-  entranceid() {
+  questid() {
     var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -167,8 +189,16 @@ class RogueWeeklyCycle {
       return 0;
     }
   }
-  instid() {
+  entranceid() {
     var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  instid() {
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -179,7 +209,7 @@ class RogueWeeklyCycle {
     return this.recommendedrole(t);
   }
   recommendedrole(t) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 22);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -187,7 +217,7 @@ class RogueWeeklyCycle {
     }
   }
   recommendedroleLength() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -195,7 +225,7 @@ class RogueWeeklyCycle {
     }
   }
   recommendedroleArray() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -203,7 +233,7 @@ class RogueWeeklyCycle {
     }
   }
   scorerate() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -211,7 +241,7 @@ class RogueWeeklyCycle {
     }
   }
   roguelikeroomfloattipsspecialicon(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -222,7 +252,7 @@ class RogueWeeklyCycle {
     return this.blackflowercost(t);
   }
   blackflowercost(t, i) {
-    var s = this.J7.__offset(this.z7, 26);
+    var s = this.J7.__offset(this.z7, 28);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -230,7 +260,7 @@ class RogueWeeklyCycle {
     }
   }
   blackflowercostLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -238,14 +268,6 @@ class RogueWeeklyCycle {
     }
   }
   blackfloweraward() {
-    var t = this.J7.__offset(this.z7, 28);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  golditemid() {
     var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -253,15 +275,15 @@ class RogueWeeklyCycle {
       return 0;
     }
   }
-  cyclename(t) {
-    var i = this.J7.__offset(this.z7, 32);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+  golditemid() {
+    var t = this.J7.__offset(this.z7, 32);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
-    return i;
   }
-  viewbackground(t) {
+  cyclename(t) {
     var i = this.J7.__offset(this.z7, 34);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -269,7 +291,7 @@ class RogueWeeklyCycle {
     }
     return i;
   }
-  bufficon(t) {
+  viewbackground(t) {
     var i = this.J7.__offset(this.z7, 36);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -277,8 +299,16 @@ class RogueWeeklyCycle {
     }
     return i;
   }
+  bufficon(t) {
+    var i = this.J7.__offset(this.z7, 38);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   buffpr() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -286,7 +316,7 @@ class RogueWeeklyCycle {
     }
   }
   buffdesc(t) {
-    var i = this.J7.__offset(this.z7, 40);
+    var i = this.J7.__offset(this.z7, 42);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -297,7 +327,7 @@ class RogueWeeklyCycle {
     return this.buffdescparam(t);
   }
   buffdescparam(t, i) {
-    var s = this.J7.__offset(this.z7, 42);
+    var s = this.J7.__offset(this.z7, 44);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -305,7 +335,7 @@ class RogueWeeklyCycle {
     return s;
   }
   buffdescparamLength() {
-    var t = this.J7.__offset(this.z7, 42);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -313,14 +343,6 @@ class RogueWeeklyCycle {
     }
   }
   helpid() {
-    var t = this.J7.__offset(this.z7, 44);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  blackflowerhelpid() {
     var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -328,10 +350,61 @@ class RogueWeeklyCycle {
       return 0;
     }
   }
-  maxscore() {
+  blackflowerhelpid() {
     var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  basescore() {
+    var t = this.J7.__offset(this.z7, 50);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 4000;
+    }
+  }
+  maxscore() {
+    var t = this.J7.__offset(this.z7, 52);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  linkid() {
+    var t = this.J7.__offset(this.z7, 54);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetBattlebuffidmapAt(t, i) {
+    return this.battlebuffidmap(t);
+  }
+  battlebuffidmap(t, i) {
+    var s = this.J7.__offset(this.z7, 56);
+    if (s) {
+      return (i || new DicIntLong54_1.DicIntLong54()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  battlebuffidmapLength() {
+    var t = this.J7.__offset(this.z7, 56);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  battlebuffid() {
+    var t = this.J7.__offset(this.z7, 58);
+    if (t) {
+      return this.J7.readFloat64(this.z7 + t);
     } else {
       return 0;
     }

@@ -99,7 +99,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     };
   }
   static get Dependencies() {
-    return [234, 0];
+    return [235, 0];
   }
   get MainAnimInstance() {
     return this.MainAnimInstanceInternal;
@@ -116,12 +116,12 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.CheckGetComponent(234);
+    this.ActorComp = this.Entity.CheckGetComponent(235);
     if (this.ActorComp.Actor?.Mesh) {
       this.Actor = this.ActorComp.Actor;
       this.Mesh = this.Actor.Mesh;
-      this.MoveComp = this.Entity.GetComponent(236);
-      this.PerformComp = this.Entity.GetComponent(237);
+      this.MoveComp = this.Entity.GetComponent(237);
+      this.PerformComp = this.Entity.GetComponent(238);
       if (!Info_1.Info.EnableForceTick) {
         this.AnimationComp = this.Actor.GetComponentByClass(UE.KuroCharacterAnimationComponent.StaticClass());
         if (!this.AnimationComp?.IsValid()) {
@@ -338,7 +338,7 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
     }
   }
   RefreshAnimOptimization() {
-    var i = this.Entity.GetComponent(175)?.IsInFighting ?? false;
+    var i = this.Entity.GetComponent(176)?.IsInFighting ?? false;
     var s = this.ForceDisableAnimOptimizationSet.size > 0;
     var h = s || i;
     var e = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
@@ -677,5 +677,5 @@ let VehicleAnimationComponent = VehicleAnimationComponent_1 = class VehicleAnima
 };
 VehicleAnimationComponent.CameraPosition = new UE.FName("CameraPosition");
 VehicleAnimationComponent.SeatProp01 = new UE.FName("SeatProp01");
-VehicleAnimationComponent = VehicleAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(235)], VehicleAnimationComponent);
+VehicleAnimationComponent = VehicleAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(236)], VehicleAnimationComponent);
 exports.VehicleAnimationComponent = VehicleAnimationComponent; //# sourceMappingURL=VehicleAnimationComponent.js.map

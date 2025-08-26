@@ -9,12 +9,12 @@ const FloroRanchDailyTaskBase_1 = require("./FloroRanchDailyTaskBase");
 class FloroRanchShopTask extends FloroRanchDailyTaskBase_1.FloroRanchDailyTaskBase {
   constructor(a) {
     super();
-    this.JLu = undefined;
-    this.JLu = a;
+    this.TAu = undefined;
+    this.TAu = a;
   }
   OnExecute() {
     var a = {
-      ShopData: this.JLu,
+      ShopData: this.TAu,
       CloseCallback: () => {
         this.Complete();
       }

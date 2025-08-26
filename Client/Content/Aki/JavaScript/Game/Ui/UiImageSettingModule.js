@@ -87,6 +87,25 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       await n.Promise;
     }
   }
+  async SetExtendToggleSpriteTransitionByPath(e, i, o = 9) {
+    if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
+      this.CancelResource(i);
+      const n = new CustomPromise_1.CustomPromise();
+      e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
+        n.SetResult();
+        this.DeleteResourceHandle(i);
+        if (i.IsValid()) {
+          if (o === 9) {
+            i.SetAllStateSprite(e);
+          } else {
+            i.SetStateSprite(o, e);
+          }
+        }
+      }, 102);
+      this.SetResourceId(i, e);
+      await n.Promise;
+    }
+  }
   SetItemQualityIconSync(e, t, i, o = "BackgroundSprite", n = undefined) {
     t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
     this.SetQualityIconByIdSync(e, t.QualityId, i, o, n);

@@ -18,53 +18,61 @@ class WorldEntity extends Entity_1.Entity {
     this.UsePool = true;
   }
   static StaticGameBudgetConfig(r) {
+    let o = -1;
     let t = -1;
     let e = -1;
-    let o = -1;
     let a = -1;
     if (r instanceof WorldEntity) {
-      var n = r.GetComponent(0);
-      t = n.GetEntityType();
-      e = n.GetSubEntityType();
-      o = n.GetSummonerId();
-      if (n.IsHighFrequencyUpdateStrategy()) {
+      var l = r.GetComponent(0);
+      o = l.GetEntityType();
+      t = l.GetSubEntityType();
+      e = l.GetSummonerId();
+      if (l.IsHighFrequencyUpdateStrategy()) {
+        switch (o) {
+          case Protocol_1.Aki.Protocol.kks.Proto_SceneItem:
+          case Protocol_1.Aki.Protocol.kks.Proto_Custom:
+          case Protocol_1.Aki.Protocol.kks.HI_:
+          case Protocol_1.Aki.Protocol.kks.Proto_SceneEntity:
+          case Protocol_1.Aki.Protocol.kks.Proto_ClientOnly:
+            return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsNormalEntityAlwaysTickConfig;
+        }
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsAlwaysTickHotFixConfig;
       }
-      if (n.IsLowFrequencyUpdateStrategy()) {
+      if (l.IsLowFrequencyUpdateStrategy()) {
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsStabilizeLowEntityGroupConfig;
       }
-      var l = r.GetComponent(128);
-      var i = r.GetComponent(271);
-      if (l && i) {
+      var n = r.GetComponent(129);
+      var i = r.GetComponent(274);
+      if (n && i) {
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig;
       }
-      l = n.GetBaseInfo();
-      if (l && l.Category.MonsterMatchType !== undefined) {
-        a = l?.Category.MonsterMatchType;
+      n = l.GetBaseInfo();
+      if (n && n.Category.MonsterMatchType !== undefined) {
+        a = n?.Category.MonsterMatchType;
       }
     }
-    switch (t) {
+    switch (o) {
       case Protocol_1.Aki.Protocol.kks.Proto_Player:
       case Protocol_1.Aki.Protocol.kks.Proto_PlayerEntity:
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig;
       case Protocol_1.Aki.Protocol.kks.Proto_Vision:
-        var u = r.GetComponent(0).GetVisionComponent();
-        if (u) {
-          if (PhantomUtil_1.PhantomUtil.GetVisionData(u.VisionId)?.类型 === 4) {
+        var c = r.GetComponent(0).GetVisionComponent();
+        if (c) {
+          if (PhantomUtil_1.PhantomUtil.GetVisionData(c.VisionId)?.类型 === 4) {
             return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterRenderConfig;
           }
         }
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig;
       case Protocol_1.Aki.Protocol.kks.Proto_Monster:
         if (r instanceof WorldEntity) {
-          if (o > 0) {
+          if (e > 0) {
             if (r.GetComponent(0).GetPbDataId() === 652000002) {
               return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsBossEntityGroupConfig;
             } else {
               return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig;
             }
           }
-          if (r.GetComponent(222)) {
+          if (r.GetComponent(223)) {
             return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig;
           }
         }
@@ -74,9 +82,9 @@ class WorldEntity extends Entity_1.Entity {
           return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterEntityGroupConfig;
         }
       case Protocol_1.Aki.Protocol.kks.Proto_Npc:
-        if (e === 2) {
+        if (t === 2) {
           return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsCharacterEntityGroupConfig;
-        } else if (e === 1) {
+        } else if (t === 1) {
           return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsSimpleNpcEntityGroupConfig;
         } else {
           return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsNormalNpcEntityGroupConfig;
@@ -91,25 +99,25 @@ class WorldEntity extends Entity_1.Entity {
     return true;
   }
   OnCreate(r) {
-    for (const e of r.Components) {
-      var t = WorldEntityHelper_1.WorldEntityHelper.ComponentPriority.get(e);
-      this.AddComponent(e, t);
+    for (const t of r.Components) {
+      var o = WorldEntityHelper_1.WorldEntityHelper.ComponentPriority.get(t);
+      this.AddComponent(t, o);
     }
     return true;
   }
   OnInitData(r) {
-    for (const o of this.Components) {
-      if (!o.InitData(r)) {
+    for (const e of this.Components) {
+      if (!e.InitData(r)) {
         return false;
       }
     }
+    var o;
     var t;
-    var e;
     if (r.RegisterToGameBudgetController) {
       this.RegisterToGameBudgetController(undefined, this);
     }
-    if (PerformanceController_1.PerformanceController.IsOpenCatchWorldEntity && (t = this.GetComponent(0)) && t.GetEntityConfigType() === Protocol_1.Aki.Protocol.rLs.F6n && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityData(t.GetPbDataId())) && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(e.BlueprintType))) {
-      this.TickStatTdType = Stats_1.Stat.CreateNoFlameGraph(`PbDataId: ${t.GetPbDataId()}, PrefabId: ${t.GetPrefabId()} ,BlueprintType: ${e.BlueprintType}`);
+    if (PerformanceController_1.PerformanceController.IsOpenCatchWorldEntity && (o = this.GetComponent(0)) && o.GetEntityConfigType() === Protocol_1.Aki.Protocol.rLs.F6n && (t = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o.GetPbDataId())) && (t = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(t.BlueprintType))) {
+      this.TickStatTdType = Stats_1.Stat.CreateNoFlameGraph(`PbDataId: ${o.GetPbDataId()}, PrefabId: ${o.GetPrefabId()} ,BlueprintType: ${t.BlueprintType}`);
       this.AfterTickStatTdType = this.TickStatTdType;
     }
     return true;

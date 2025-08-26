@@ -28,9 +28,9 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
     this.GetItemGridExtendToggle().FocusListenerDelegate.Unbind();
   }
   OnRefresh(e, t, i) {
-    this.Zbu(e);
+    this.MRu(e);
   }
-  Zbu(e) {
+  MRu(e) {
     var t;
     var i;
     var r = e.GetUniqueId();
@@ -57,10 +57,10 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
         i.BottomText = e.GetCount().toString();
       }
       this.Apply(i);
-      this.eRu(e);
+      this.ERu(e);
     }
   }
-  eRu(e) {
+  ERu(e) {
     var t;
     if (this.CheckSelectByView) {
       t = this.CheckSelectByView(this.fGt);
@@ -71,7 +71,7 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
     }
   }
   RefreshByView(e) {
-    this.Zbu(e);
+    this.MRu(e);
   }
   get fGt() {
     return this.Data;

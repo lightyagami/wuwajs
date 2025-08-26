@@ -260,7 +260,7 @@ class AiPerception {
     if ((this.Uoe || this.Aoe) && (this.Lz.FromUeVector(this.Bte.CharActorComp.ActorRotation.UnrotateVectorDouble(this.Lz.ToUeVector())), this.Uoe && (a = MathUtils_1.MathUtils.RadToDeg * Math.atan2(this.Lz.Y, this.Lz.X)), this.Aoe)) {
       f = MathUtils_1.MathUtils.RadToDeg * Math.asin(this.Lz.Z / Math.sqrt(o));
     }
-    var e = t.GetComponent(101);
+    var e = t.GetComponent(102);
     var _ = e?.Valid ? e.PositionState : CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
     var c = e?.Valid ? e.MoveState : CharacterUnifiedStateTypes_1.ECharMoveState.Other;
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.uoe, h);
@@ -307,9 +307,9 @@ class AiPerception {
           t = Math.max(t, h.AiSense.SenseDistanceRange.Min);
         }
         if (i === 0) {
-          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(e, t, 62, this.Ioe);
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(e, t, 248, this.Ioe);
         } else {
-          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(e, t, 1, this.Ioe);
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(e, t, 7, this.Ioe);
         }
         for (const r of this.Ioe) {
           if (r.Entity?.Valid && r.Entity.Active) {
@@ -411,7 +411,7 @@ class AiPerception {
       var t;
       var i;
       var s = this.Bte.CharActorComp.ActorLocationProxy;
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(s, this.AiSenseGroup.ShareDis, 62, this.Ioe);
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(s, this.AiSenseGroup.ShareDis, 248, this.Ioe);
       this.voe.clear();
       this.voe.add(this.E0);
       var e = this.Bte.CharActorComp.Actor.Camp;

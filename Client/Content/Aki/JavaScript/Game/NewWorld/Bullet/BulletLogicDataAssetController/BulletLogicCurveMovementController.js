@@ -35,7 +35,7 @@ class BulletLogicCurveMovementController extends BulletLogicController_1.BulletL
     this.uoe = undefined;
     this._7o = 0;
     this.u7o = 1;
-    this.Hte = this.Bullet.GetComponent(169);
+    this.Hte = this.Bullet.GetComponent(170);
     this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {
@@ -81,17 +81,8 @@ class BulletLogicCurveMovementController extends BulletLogicController_1.BulletL
   }
   BulletLogicAction(t) {
     var e;
-    var i = this._7o;
-    if (this.zie && !this.a7o.NeedDestroy) {
-      e = this.zie.D_GetLocationAtTime(i, 1, true);
-      this.Hte.SetActorLocation(e);
-      if (this.LogicController.IsForwardTangent) {
-        e = this.zie.GetRotationAtTime(i, 1, true);
-        this.Hte.SetActorRotation(e);
-      }
-      this._7o += t * this.Hte.TimeDilation;
-    }
-    if (i >= this.r1t && (ObjectUtils_1.ObjectUtils.SoftObjectReferenceValid(this.LogicController.EffectOnReach) && (e = this.Hte.Owner, t = EffectSystem_1.EffectSystem.SpawnEffect(e, e.D_GetTransform(), this.LogicController.EffectOnReach.ToAssetPathName(), "[BulletLogicCurveMovementController.BulletLogicAction]", new EffectContext_1.EffectContext(this.a7o.Attacker ? this.a7o.Attacker.Id : undefined)), EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation)), this.LogicController.IsDestroyReach)) {
+    var i;
+    if (this.zie && (e = this._7o, this.a7o.NeedDestroy || (i = this.zie.D_GetLocationAtTime(e, 1, true), this.Hte.SetActorLocation(i), this.LogicController.IsForwardTangent && (i = this.zie.GetRotationAtTime(e, 1, true), this.Hte.SetActorRotation(i)), this._7o += t * this.Hte.TimeDilation), e >= this.r1t) && (ObjectUtils_1.ObjectUtils.SoftObjectReferenceValid(this.LogicController.EffectOnReach) && (i = this.Hte.Owner, t = EffectSystem_1.EffectSystem.SpawnEffect(i, i.D_GetTransform(), this.LogicController.EffectOnReach.ToAssetPathName(), "[BulletLogicCurveMovementController.BulletLogicAction]", new EffectContext_1.EffectContext(this.a7o.Attacker ? this.a7o.Attacker.Id : undefined)), EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation)), this.LogicController.IsDestroyReach)) {
       BulletController_1.BulletController.DestroyBullet(this.Bullet.Id, this.LogicController.IsSummonOnReach);
     }
   }

@@ -37,32 +37,43 @@ class FlowActionAwakeEntity extends FlowActionServerAction_1.FlowActionServerAct
     };
   }
   OnExecute() {
-    if (this.ActionInfo.Params) {
+    if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      this.FinishExecute(true);
+    } else if (this.ActionInfo.Params) {
       var o = this.ActionInfo.Params;
       if (o.EntityIds?.length) {
         let t = false;
-        for (const e of o.EntityIds) {
-          if (!FlowActionUtils_1.FlowActionUtils.CheckEntityInAoi(e)) {
+        var e = [];
+        for (const i of o.EntityIds) {
+          if (FlowActionUtils_1.FlowActionUtils.CheckEntityInAoi(i)) {
+            e.push(i);
+          } else {
             if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Plot", 26, "剧情中唤醒实体过远，请检查配置", ["pbDataId", e], ["flow", this.Context.FormatId], ["id", this.ActionInfo.ActionId]);
+              Log_1.Log.Warn("Plot", 26, "剧情中唤醒实体过远，请检查配置", ["pbDataId", i], ["flow", this.Context.FormatId], ["id", this.ActionInfo.ActionId]);
             }
             t = true;
           }
         }
         if (t) {
+          this.wtd(e);
           this.RequestServerAction(false);
           this.FinishExecute(true);
         } else {
-          for (const i of o.EntityIds) {
-            ControllerHolder_1.ControllerHolder.CreatureController.RecoverDensityEntity(i, "Plot");
-          }
-          this.Task = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("FlowActionAwakeEntity.OnExecute", o.EntityIds, this.W$i, FlowActionUtils_1.WAIT_ENTITY_TIME, false);
+          this.wtd(o.EntityIds);
         }
       } else {
         this.FinishExecute(true);
       }
     } else {
       this.FinishExecute(true);
+    }
+  }
+  wtd(t) {
+    if (t) {
+      for (const o of t) {
+        ControllerHolder_1.ControllerHolder.CreatureController.RecoverDensityEntity(o, "Plot");
+      }
+      this.Task = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("FlowActionAwakeEntity.OnExecute", t, this.W$i, FlowActionUtils_1.WAIT_ENTITY_TIME, false);
     }
   }
   OnBackgroundExecute() {

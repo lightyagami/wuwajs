@@ -50,7 +50,7 @@ let SimpleNpcAnimationComponent = class SimpleNpcAnimationComponent extends Base
     this.p3r = -1;
   }
   static get Dependencies() {
-    return [194, 0];
+    return [195, 0];
   }
   x3r() {
     if (this.p3r > 0) {
@@ -73,7 +73,7 @@ let SimpleNpcAnimationComponent = class SimpleNpcAnimationComponent extends Base
     return !!this.SlopeStepPeriodicCurve && !!this.SlopeStepSizeCurve && !((t = this.Entity.GetComponent(0).GetModelConfig().注释时的抬升角度) && (this.s3r = Quat_1.Quat.Create(), Quat_1.Quat.FindBetween(Vector_1.Vector.ForwardVectorProxy, Vector_1.Vector.Create(Math.cos(t * MathUtils_1.MathUtils.DegToRad), 0, Math.sin(t * MathUtils_1.MathUtils.DegToRad)), this.s3r)), 0);
   }
   OnStart() {
-    this.ActorComp = this.Entity.CheckGetComponent(194);
+    this.ActorComp = this.Entity.CheckGetComponent(195);
     if (this.ActorComp.Actor?.Mesh) {
       this.Actor = this.ActorComp.Actor;
       this.Mesh = this.Actor.Mesh;
@@ -106,7 +106,7 @@ let SimpleNpcAnimationComponent = class SimpleNpcAnimationComponent extends Base
       Log_1.Log.Info("Character", 57, "人物上场隐藏一帧 【组件Disable 隐藏结束】", ["Entity:", this.Entity.Id]);
     }
     this.p3r = -1;
-    if (!this.Entity.GetComponent(187)?.AnyIdleLoopMontagePlaying) {
+    if (!this.Entity.GetComponent(188)?.AnyIdleLoopMontagePlaying) {
       if (this.MainAnimInstanceInternal?.IsValid()) {
         this.MontageManager.StopMontage({
           Method: 0,
@@ -195,5 +195,5 @@ let SimpleNpcAnimationComponent = class SimpleNpcAnimationComponent extends Base
     (0, puerts_1.$unref)(h);
   }
 };
-SimpleNpcAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(195)], SimpleNpcAnimationComponent);
+SimpleNpcAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(196)], SimpleNpcAnimationComponent);
 exports.SimpleNpcAnimationComponent = SimpleNpcAnimationComponent; //# sourceMappingURL=SimpleNpcAnimationComponent.js.map

@@ -41,15 +41,15 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     this.rRl = undefined;
     this.oRl = new Map();
     this.nRl = new Map();
-    this.d$c = new Array();
+    this.bQc = new Array();
     this.OnSequencePaused = () => {
-      for (const e of this.d$c) {
+      for (const e of this.bQc) {
         this.sRl(e.Key);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelPlay", 26, "[SceneItemReference][EventComp] 补做遗漏的帧事件", ["key", e.Key], ["id", this.wDe]);
         }
       }
-      this.d$c.length = 0;
+      this.bQc = [];
     };
   }
   OnInitData(e) {
@@ -92,7 +92,7 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     var t;
     var n = this.iRl.get(e);
     if (n) {
-      if (!(t = this.d$c.pop()) || t.Key !== e) {
+      if (!(t = this.bQc.pop()) || t.Key !== e) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 26, "[SceneItemReference][EventComp] 帧事件执行顺序有错误", ["key", e], ["id", this.wDe]);
         }
@@ -117,13 +117,14 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
       var i = r ? this.oRl : this.nRl;
       var s = r ? this.Lo.ForwardSections : [...this.Lo.BackWardSections].reverse();
       let t = undefined;
+      this.bQc = [];
       for (let e = i.get(this.rRl) - 1; e > i.get(o); e--) {
         if (s[e].Type !== "Mark") {
           if (r ? n > s[e].FrameId : n < s[e].FrameId) {
             t = s[e];
             break;
           }
-          this.d$c.push(s[e]);
+          this.bQc.push(s[e]);
         }
       }
       if (t) {
@@ -132,6 +133,9 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
         }
         this.sRl(t.Key);
       }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("LevelPlay", 26, "[SceneItemReference][EventComp] 切换状态，准备执行帧事件：", ["id", this.wDe], ["list", this.bQc]);
+      }
     }
   }
   sRl(e) {
@@ -139,8 +143,8 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     t.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
     t.F4n = this.Wpo;
     t.Z4n = e;
-    Net_1.Net.Call(19606, t, e => {});
+    Net_1.Net.Call(28214, t, e => {});
   }
 };
-LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(164)], LevelSequenceFrameEventComponent);
+LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(165)], LevelSequenceFrameEventComponent);
 exports.LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent; //# sourceMappingURL=LevelSequenceFrameEventComponent.js.map

@@ -17,7 +17,7 @@ const ConfirmBoxButton_1 = require("../ConfirmBoxButton");
 class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
   constructor(t, i) {
     super();
-    this.lbu = t;
+    this.wbu = t;
     this.oPn = i;
     this.ButtonList = [];
     this.Config = undefined;
@@ -46,18 +46,18 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   ConfirmBoxButtonClick() {
-    var t = this.lbu?.CanExecuteCloseFunc;
+    var t = this.wbu?.CanExecuteCloseFunc;
     if (t && !t(this.SelectedIndex)) {
-      if (t = this.lbu?.FunctionMap.get(this.SelectedIndex)) {
+      if (t = this.wbu?.FunctionMap.get(this.SelectedIndex)) {
         t();
       }
     } else {
-      this.oPn(this.lbu.GetCloseFunction());
+      this.oPn(this.wbu.GetCloseFunction());
     }
   }
   vqt() {
     if (this.SelectedIndex === -1) {
-      if (this.Config.ButtonText.length === 1 || this.lbu.IsEscViewTriggerCallBack) {
+      if (this.Config.ButtonText.length === 1 || this.wbu.IsEscViewTriggerCallBack) {
         this.SelectedIndex = 1;
       } else {
         this.SelectedIndex = 0;
@@ -67,12 +67,12 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
   async OnBeforeStartAsync() {
     this.ButtonComponentList.push(this.GetButton(4));
     this.ButtonComponentList.push(this.GetButton(5));
-    this.Config = ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(this.lbu.ConfigId);
-    var t = this.lbu.TextArgs || [];
+    this.Config = ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(this.wbu.ConfigId);
+    var t = this.wbu.TextArgs || [];
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), this.Config.Content, ...t);
     await this.InitButton();
     this.Mqt();
-    if (this.lbu.ShowPowerItem) {
+    if (this.wbu.ShowPowerItem) {
       this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
       await this.fea.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem");
       this.fea.ShowWithoutText(ItemDefines_1.EItemId.OverPower);
@@ -83,7 +83,7 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   InitPowerItem(t) {
-    if (this.lbu.ShowPowerItem) {
+    if (this.wbu.ShowPowerItem) {
       this.fea?.GetOriginalItem()?.SetUIParent(t?.PopItem?.GetCostParent());
       this.NXs?.GetOriginalItem()?.SetUIParent(t?.PopItem?.GetCostParent());
       this.NXs.ShowWithoutText(ItemDefines_1.EItemId.Power);
@@ -114,9 +114,9 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
     if (this.Config.ButtonText.length > i) {
       s.SetClickFunction(e);
       if (i + 1 === this.Config.DelayButtonIndex && this.Config.DelayTime > 0) {
-        s.SetTimer(this.Config.ButtonText[i], this.Config.DelayTime, this.lbu.CanClickDuringTimer);
+        s.SetTimer(this.Config.ButtonText[i], this.Config.DelayTime, this.wbu.CanClickDuringTimer);
       } else {
-        t = this.lbu.GetBtnText(i);
+        t = this.wbu.GetBtnText(i);
         if (StringUtils_1.StringUtils.IsBlank(t)) {
           s.SetTextById(this.Config.ButtonText[i]);
         } else {
@@ -124,8 +124,8 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
         }
       }
     }
-    if (this.lbu.InteractionMap.has(i)) {
-      e = this.lbu.InteractionMap.get(i);
+    if (this.wbu.InteractionMap.has(i)) {
+      e = this.wbu.InteractionMap.get(i);
       s.SetBtnCanClick(e);
     }
     if (this.Config.ButtonText.length >= i + 1) {
@@ -140,7 +140,7 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
     this.ButtonList = [];
   }
   Mqt() {
-    var t = this.lbu;
+    var t = this.wbu;
     var i = this.GetExtendToggle(1);
     var e = this.GetText(2);
     i.RootUIComp.SetUIActive(t.HasToggle);
@@ -161,11 +161,11 @@ class FloroRanchConfirmBoxContentPanel extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     this.dbt();
     this.vqt();
-    var t = this.lbu?.FunctionMap.get(this.SelectedIndex);
+    var t = this.wbu?.FunctionMap.get(this.SelectedIndex);
     if (t) {
       t();
     }
-    this.lbu?.DestroyFunction?.();
+    this.wbu?.DestroyFunction?.();
     this.NXs?.Destroy();
     this.fea?.Destroy();
   }

@@ -12,10 +12,10 @@ class RogueBattleRoleSelectFetterItem extends GridProxyAbstract_1.GridProxyAbstr
   constructor() {
     super(...arguments);
     this.OnToggleClick = undefined;
-    this.gLu = undefined;
+    this.ALu = undefined;
     this.XA1 = t => {
       if (t) {
-        this.OnToggleClick?.(this.gLu);
+        this.OnToggleClick?.(this.ALu);
       }
     };
   }
@@ -29,7 +29,7 @@ class RogueBattleRoleSelectFetterItem extends GridProxyAbstract_1.GridProxyAbstr
     var o;
     var h = t.v9n;
     var h = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBond(h);
-    var t = (this.gLu = t).F6n;
+    var t = (this.ALu = t).F6n;
     var a = ConfigManager_1.ConfigManager.RogueBattleConfig.GetBondLvConfigByLv(t);
     if (h && a) {
       o = this.GetTexture(2);
@@ -55,7 +55,7 @@ class RogueBattleRoleSelectFetterItem extends GridProxyAbstract_1.GridProxyAbstr
     this.GetExtendToggle(0).SetToggleState(1, t);
   }
   OnDeselected(t) {
-    var e = this.gLu?.F6n;
+    var e = this.ALu?.F6n;
     var i = this.GetSprite(1);
     var r = this.GetTexture(2);
     i.SetUIActive(e > 0);

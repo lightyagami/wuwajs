@@ -51,7 +51,7 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static ExecuteEntitySequenceEvents(e, r) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
     if (t?.IsInit) {
-      t.Entity?.GetComponent(164)?.ExecuteEvent(e);
+      t.Entity?.GetComponent(165)?.ExecuteEvent(e);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelPlay", 26, "场景引用Sequence帧事件找不到实体", ["key", e], ["id", r]);
     }
@@ -147,7 +147,7 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ModelManager_1.ModelManager.GravityFlipModel.GravityFlipComp?.RemoveInteractTag();
   }
   static TriggerTagToInteractingGravityMachine(e) {
-    var r = ModelManager_1.ModelManager.GravityFlipModel.GravityFlipEntity?.GetComponent(205);
+    var r = ModelManager_1.ModelManager.GravityFlipModel.GravityFlipEntity?.GetComponent(206);
     var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.TagName);
     if (r?.HasTag(e)) {
       r?.RemoveTag(e);
@@ -156,6 +156,12 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static ShowBgIcon(e, r, t) {
     UiManager_1.UiManager.GetViewByName("PlotSubtitleView")?.SetIconBySequence(e, r, t);
+  }
+  static BindItemInspectActor(e) {
+    var r = ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor;
+    if (r?.IsValid() && (r = r.SequencePlayer.GetSpawnedActorByGuid(e.Guid, true))?.IsValid()) {
+      ControllerHolder_1.ControllerHolder.ItemInspectController.BindItemInspectActor(r);
+    }
   }
 }
 exports.default = PlotBlueprintFunctionLibrary;

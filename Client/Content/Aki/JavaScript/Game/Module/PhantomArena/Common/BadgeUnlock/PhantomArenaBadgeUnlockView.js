@@ -27,7 +27,7 @@ class PhantomArenaBadgeUnlockView extends UiViewBase_1.UiViewBase {
         this.CloseMe();
       }
     };
-    this.vCu = e => {
+    this.C0u = e => {
       if (this.IsWaitingChange && e === "Change") {
         this.RefreshViewByBadgeId(this.BadgeId);
         this.IsWaitingChange = false;
@@ -49,10 +49,10 @@ class PhantomArenaBadgeUnlockView extends UiViewBase_1.UiViewBase {
     this.RefreshViewByBadgeId(this.BadgeId);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.vCu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.C0u);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.vCu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.C0u);
   }
   ShowNext() {
     var e = new UiAsyncTask_1.UiAsyncTask("PhantomArenaBadgeUnlockView", async () => {

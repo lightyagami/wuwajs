@@ -23,7 +23,7 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
       }
       const t = (0, InputFunctionVisionSkill1_1.getVisionSkill1SkillId)();
       if (t !== undefined) {
-        TimerSystem_1.TimerSystem.Next(() => {
+        TimerSystem_1.GameplayTimerSystem.Next(() => {
           var e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity?.GetComponent(40);
           if (e?.CurrentSkill?.SkillId !== t) {
             e?.BeginSkill(t, {
@@ -58,7 +58,7 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
       }
       this.FinishExecute(false);
     }
-    var n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(99);
+    var n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(100);
     if (!n) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 31, "[LevelEventExecClientBattleAction] 未找到角色场景交互组件");

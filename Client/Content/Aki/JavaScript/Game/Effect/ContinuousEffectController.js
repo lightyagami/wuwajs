@@ -11,10 +11,10 @@ const EffectSystem_1 = require("./EffectSystem");
 const MAX_WAIT_CONTINUOUS_EFFECT_FRAME = 3;
 class ContinuousEffectController {
   constructor() {
-    this.QQ1 = new Map();
-    this.KQ1 = new Map();
-    this.XQ1 = new Set();
-    this.YQ1 = new Set();
+    this.zQ1 = new Map();
+    this.JQ1 = new Map();
+    this.ZQ1 = new Set();
+    this.eK1 = new Set();
   }
   OnBeforeSpawnEffect(t) {
     var e;
@@ -24,11 +24,11 @@ class ContinuousEffectController {
       if (!FNameUtil_1.FNameUtil.IsNothing(e)) {
         if (t instanceof SkeletalMeshEffectContext_1.SkeletalMeshEffectContext) {
           if ((t = t.SkeletalMeshComp)?.IsValid()) {
-            if (this.QQ1.has(t) && (s = this.QQ1.get(t))?.has(e) && (s = s.get(e)) && this.KQ1.has(s)) {
-              this.KQ1.set(s, MAX_WAIT_CONTINUOUS_EFFECT_FRAME - 1);
+            if (this.zQ1.has(t) && (s = this.zQ1.get(t))?.has(e) && (s = s.get(e)) && this.JQ1.has(s)) {
+              this.JQ1.set(s, MAX_WAIT_CONTINUOUS_EFFECT_FRAME - 1);
             }
           } else if (t) {
-            this.QQ1.delete(t);
+            this.zQ1.delete(t);
           }
         }
       }
@@ -41,12 +41,12 @@ class ContinuousEffectController {
       e = s.AnsSlotName;
       if (!FNameUtil_1.FNameUtil.IsNothing(e)) {
         if (s instanceof SkeletalMeshEffectContext_1.SkeletalMeshEffectContext && (s = s.SkeletalMeshComp)?.IsValid()) {
-          if (!this.QQ1.has(s)) {
-            this.QQ1.set(s, new Map());
+          if (!this.zQ1.has(s)) {
+            this.zQ1.set(s, new Map());
           }
-          if (!this.QQ1.get(s)?.has(e)) {
+          if (!this.zQ1.get(s)?.has(e)) {
             if (EffectSystem_1.EffectSystem.IsValid(t.Id)) {
-              this.QQ1.get(s)?.set(e, t.Id);
+              this.zQ1.get(s)?.set(e, t.Id);
             }
           }
         }
@@ -58,14 +58,14 @@ class ContinuousEffectController {
       var e = t.GetContext();
       if (e) {
         var s = e.AnsSlotName;
-        if (!FNameUtil_1.FNameUtil.IsNothing(s) && !this.KQ1.has(t.Id) && e instanceof SkeletalMeshEffectContext_1.SkeletalMeshEffectContext) {
+        if (!FNameUtil_1.FNameUtil.IsNothing(s) && !this.JQ1.has(t.Id) && e instanceof SkeletalMeshEffectContext_1.SkeletalMeshEffectContext) {
           e = e.SkeletalMeshComp;
-          if (e?.IsValid() && this.QQ1.has(e)) {
-            e = this.QQ1.get(e);
+          if (e?.IsValid() && this.zQ1.has(e)) {
+            e = this.zQ1.get(e);
             if (e?.has(s)) {
               if (e.get(s) === t.Id) {
-                if (!this.KQ1.has(t.Id)) {
-                  this.KQ1.set(t.Id, 0);
+                if (!this.JQ1.has(t.Id)) {
+                  this.JQ1.set(t.Id, 0);
                 }
                 return true;
               }
@@ -77,38 +77,38 @@ class ContinuousEffectController {
     return false;
   }
   OnPostTick(t) {
-    for (const s of this.KQ1) {
+    for (const s of this.JQ1) {
       var e = s[1];
       if (++e > MAX_WAIT_CONTINUOUS_EFFECT_FRAME) {
-        this.XQ1.add(s[0]);
+        this.ZQ1.add(s[0]);
       } else {
-        this.KQ1.set(s[0], e);
+        this.JQ1.set(s[0], e);
       }
     }
-    for (const f of this.XQ1) {
+    for (const f of this.ZQ1) {
       EffectSystem_1.EffectSystem.StopEffectById(f, "[FContinuousEffectController]Wait Time Over", true);
     }
-    this.XQ1.clear();
-    for (const o of this.QQ1.keys()) {
+    this.ZQ1.clear();
+    for (const o of this.zQ1.keys()) {
       if (!o.IsValid()) {
-        this.YQ1.add(o);
+        this.eK1.add(o);
       }
     }
-    for (const i of this.YQ1) {
-      this.QQ1.delete(i);
+    for (const i of this.eK1) {
+      this.zQ1.delete(i);
     }
-    this.YQ1.clear();
+    this.eK1.clear();
   }
   Clear() {
-    for (const t of this.KQ1) {
-      this.XQ1.add(t[0]);
+    for (const t of this.JQ1) {
+      this.ZQ1.add(t[0]);
     }
-    for (const e of this.XQ1) {
+    for (const e of this.ZQ1) {
       EffectSystem_1.EffectSystem.StopEffectById(e, "[FContinuousEffectController]Clear", true);
     }
-    this.QQ1.clear();
-    this.KQ1.clear();
-    this.XQ1.clear();
+    this.zQ1.clear();
+    this.JQ1.clear();
+    this.ZQ1.clear();
   }
 }
 exports.ContinuousEffectController = ContinuousEffectController;

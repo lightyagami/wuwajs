@@ -30,7 +30,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.wL1 = undefined;
     this.AL1 = undefined;
     this.PL1 = undefined;
-    this.hCu = undefined;
+    this.s0u = undefined;
     this.Wft = 0;
     this.xL1 = 0;
     this.iki = 0;
@@ -39,9 +39,9 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.BL1 = true;
     this.WMt = false;
     this.UQ = 0;
-    this._Cu = false;
-    this.Svu = true;
-    this.Eku = false;
+    this.h0u = false;
+    this.Tyu = true;
+    this.n2u = false;
     this.SPe = undefined;
     this.kL1 = undefined;
     this._cr = t => {
@@ -52,7 +52,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.OL1 = (i, s, e, h) => {
       if (this.GetVisible()) {
         if (h < e || s < i) {
-          this._Cu = true;
+          this.h0u = true;
         } else {
           let t = h - e;
           if (t !== 0) {
@@ -69,18 +69,18 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
           this.iki = h;
           this.DL1 = a;
           this.BL1 = this.UL1 >= 0;
-          this.WMt = e < h && this.Svu;
+          this.WMt = e < h && this.Tyu;
           var _ = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleLevelUpExp(e);
           this.PL1?.SetText(i + " / " + _);
           var a = s - i;
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.AL1, "PrefabTextItem_147616326_Text", Math.abs(a));
-          this.wL1?.SetUIActive(this.Svu && this.UL1 !== 0);
-          this.hCu?.SetUiActive(false);
+          this.wL1?.SetUIActive(this.Tyu && this.UL1 !== 0);
+          this.s0u?.SetUiActive(false);
         }
       }
     };
     this.Zpe = t => {
-      if (this.Eku) {
+      if (this.n2u) {
         this.GetTexture(8)?.SetUIActive(!t);
         this.TL1?.SetChangeColor(t, this.TL1.changeColor);
         this.RL1?.SetChangeColor(t, this.RL1.changeColor);
@@ -90,24 +90,24 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
         this.GetSprite(12)?.SetChangeColor(t, this.GetSprite(12).changeColor);
       }
     };
-    this.fCu = () => {
-      this.gCu();
+    this.d0u = () => {
+      this.m0u();
     };
-    this.Mvu = () => {
-      if (this._Cu) {
+    this.byu = () => {
+      if (this.h0u) {
         this.GL1();
-        this._Cu = false;
+        this.h0u = false;
       }
     };
-    this.O7c = () => {
-      this._Cu = true;
+    this.s2u = () => {
+      this.h0u = true;
     };
-    this.Evu = () => {
+    this.Ryu = () => {
       var t = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel();
       if (t > 1 && this.iki < t) {
-        this.Svu = false;
+        this.Tyu = false;
         this.OL1(0, 0, 1, t);
-        this.Svu = true;
+        this.Tyu = true;
       }
     };
   }
@@ -119,7 +119,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     var i = this.GetItem(6);
     if (i) {
       await t.CreateByActorAsync(i.GetOwner());
-      this.hCu = t;
+      this.s0u = t;
     }
   }
   OnStart() {
@@ -134,7 +134,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.RL1?.SetText("1");
     this.wL1?.SetUIActive(false);
     this.XN1?.SetUIActive(false);
-    this.hCu?.SetUiActive(false);
+    this.s0u?.SetUiActive(false);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SPe?.BindSequenceCloseEvent(this._cr);
   }
@@ -147,48 +147,48 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
   Reset() {
     this.kre();
     this.SPe?.Clear();
-    this._Cu = false;
-    this.hCu?.Clear();
+    this.h0u = false;
+    this.s0u?.Clear();
     super.Reset();
   }
   Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleExpChanged, this.OL1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoralePromptShow, this.fCu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim, this.Evu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.Mvu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleBattleFail, this.O7c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoralePromptShow, this.d0u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim, this.Ryu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.byu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleBattleFail, this.s2u);
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleExpChanged, this.OL1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoralePromptShow, this.fCu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim, this.Evu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.Mvu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleBattleFail, this.O7c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoralePromptShow, this.d0u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim, this.Ryu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.byu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleBattleFail, this.s2u);
   }
   StartShow() {
-    this.Eku = true;
+    this.n2u = true;
     this.GL1();
     this.SetVisible(1, true);
-    this.gCu();
+    this.m0u();
     this.Zpe(FormationDataController_1.FormationDataController.GlobalIsInFight);
   }
   EndShow() {
-    this.Eku = false;
-    this.CCu();
+    this.n2u = false;
+    this.f0u();
   }
-  gCu() {
+  m0u() {
     this.SPe?.StopCurrentSequence();
     this.SPe?.PlaySequencePurely("Start");
-    this.hCu?.PlayStartShowAnim();
-    this.hCu?.SetUiActive(true);
+    this.s0u?.PlayStartShowAnim();
+    this.s0u?.SetUiActive(true);
   }
-  CCu() {
+  f0u() {
     this.SPe?.StopCurrentSequence();
     this.SPe?.PlaySequencePurely("Close");
-    this.hCu?.PlayEndShowAnim();
-    this.hCu?.SetUiActive(true);
+    this.s0u?.PlayEndShowAnim();
+    this.s0u?.SetUiActive(true);
   }
   FL1() {
     if (this.SPe?.IsPlayingSequence("Up")) {
@@ -226,7 +226,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
           if (this.Wft === this.iki) {
             if (this.Wft === this.UQ) {
               this.xL1 = 1;
-              this.teu();
+              this.Reu();
             } else {
               this.xL1 = Math.min(this.DL1, this.xL1 - 1);
             }
@@ -245,7 +245,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
         } else if (!this.BL1 && this.Wft === this.UQ) {
           this.Wft = Math.max(this.iki, this.Wft - 1);
           this.RL1?.SetText(this.Wft.toString());
-          this.teu();
+          this.Reu();
         }
       }
       i = MathUtils_1.MathUtils.RangeClamp(this.xL1, 0, 1, UI_BAR_MIN_PERCENT, UI_BAR_MAX_PERCENT);
@@ -266,7 +266,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
   GL1() {
     let t = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleLevel();
     let i = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleCurrentExpProgress();
-    var s = this._Cu && ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel() > 1;
+    var s = this.h0u && ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel() > 1;
     if (s) {
       t = 1;
       i = 0;
@@ -282,7 +282,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.TL1?.SetFillAmount(s);
     this.XN1?.SetUIActive(false);
     this.UQ = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleMaxLevel();
-    this.teu();
+    this.Reu();
   }
   qL1() {
     if (this.kL1) {
@@ -290,14 +290,14 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     }
     this.kL1 = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       if (this.WMt) {
-        this.hCu?.PlayLevelUpAnim();
-        this.hCu?.SetUiActive(true);
+        this.s0u?.PlayLevelUpAnim();
+        this.s0u?.SetUiActive(true);
       }
       this.wL1?.SetUIActive(false);
       this.kL1 = undefined;
     }, EXP_TEXT_STAY_DURATION);
   }
-  teu() {
+  Reu() {
     if (this.Wft === this.UQ) {
       this.GetItem(7)?.SetUIActive(true);
     } else {

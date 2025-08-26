@@ -7,6 +7,7 @@ exports.AchievementMainView = undefined;
 const UE = require("ue");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
@@ -30,6 +31,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
       this.$qe();
       this.aqe();
       this.Yqe();
+      this.ZWu();
     };
     this.Jqe = () => {
       return new AchievementSmallItem_1.AchievementSmallItem();
@@ -37,9 +39,32 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
     this.Awe = () => {
       this.CloseMe();
     };
+    this.JWu = () => {
+      const r = [];
+      const i = [];
+      const n = new Set();
+      ConfigManager_1.ConfigManager.RoguelikeConfig.GetRogueSeasonConfigList()?.forEach(e => {
+        n.add(e.Achievement);
+      });
+      var e = ModelManager_1.ModelManager.AchievementModel.GetAllAchievementData();
+      const s = ConfigManager_1.ConfigManager.AchievementConfig;
+      e.forEach((e, t) => {
+        var i = s.GetAchievementGroupCategory(s.GetAchievementConfig(t).GroupId);
+        if (e.GetFinishState() === 1 && !n.has(i)) {
+          r.push(t);
+        }
+      });
+      ModelManager_1.ModelManager.AchievementModel.GetAllAchievementGroupData().forEach((e, t) => {
+        if (e.GetFinishState() === 1 && !n.has(e.GetCategory()) && e.GetRewards().length > 0) {
+          i.push(t);
+        }
+      });
+      ControllerHolder_1.ControllerHolder.AchievementController.RequestGetMultiAchievementReward(r, i);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[7, this.JWu]];
   }
   async OnCreateAsync() {
     await ControllerHolder_1.ControllerHolder.AchievementController.RequestUpdateAchievementInfo();
@@ -60,6 +85,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
     this.$qe();
     this.zqe();
     this.aqe();
+    this.ZWu();
     this.Yqe();
   }
   OnRemoveEventListener() {
@@ -80,6 +106,17 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
   aqe() {
     var e = ModelManager_1.ModelManager.AchievementModel.GetAchievementFinishedStar();
     this.Kqe.SetText(e.toString());
+  }
+  ZWu() {
+    const t = new Set();
+    ConfigManager_1.ConfigManager.RoguelikeConfig.GetRogueSeasonConfigList()?.forEach(e => {
+      t.add(e.Achievement);
+    });
+    const i = ConfigManager_1.ConfigManager.AchievementConfig;
+    var e = ModelManager_1.ModelManager.AchievementModel.GetAllAchievementData();
+    var r = ModelManager_1.ModelManager.AchievementModel.GetAllAchievementGroupData();
+    var e = Array.from(e.values()).some(e => e.GetFinishState() === 1 && !t.has(i.GetAchievementGroupCategory(e.GetGroupId()))) || Array.from(r.values()).some(e => e.GetFinishState() === 1 && !t.has(i.GetAchievementGroupCategory(e.GetId())) && e.GetRewards().length > 0);
+    this.GetButton(7).RootUIComp.SetUIActive(e);
   }
   Yqe() {
     var e = ModelManager_1.ModelManager.AchievementModel.GetFinishedAchievementNum();

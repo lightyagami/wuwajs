@@ -25,16 +25,16 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
     this.n8i = () => {
       var t = new PhantomArenaBattleDetailsIconItem_1.PhantomArenaBattleDetailsMonsterItem();
       t.IsOwn = this.IsOwn;
-      t.OnClickCb = this.Iku;
+      t.OnClickCb = this._Nu;
       t.RegisterProxy(this.Proxy);
       return t;
     };
-    this.Iku = t => {
+    this._Nu = t => {
       t = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.GetCardDataByEntityId(t);
       this.DetailsTipsItem.SetUiActive(true);
       this.DetailsTipsItem.RefreshByCardData(t);
     };
-    this.Tku = () => {
+    this.uNu = () => {
       this.DetailsTipsItem.SetUiActive(false);
     };
   }
@@ -68,7 +68,7 @@ class PhantomArenaBattleDetailsAreaItem extends UiPanelBase_1.UiPanelBase {
       ShowType: t
     };
     this.DetailsTipsItem.SetTipsPosition(t);
-    this.DetailsTipsItem.SetBtnMaskCallback(this.Tku);
+    this.DetailsTipsItem.SetBtnMaskCallback(this.uNu);
   }
   RegisterProxy(t) {
     this.Proxy = t;

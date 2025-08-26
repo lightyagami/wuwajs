@@ -130,7 +130,7 @@ class MapUtil {
     }
     const n = t ?? Vector_1.Vector.Create();
     let o = undefined;
-    if (o = i ? ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapLocation(e, r) : ModelManager_1.ModelManager.MapModel.GetDungeonExitLocation(e, ModelManager_1.ModelManager.CreatureModel.GetInstanceId())) {
+    if (o = i ? ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapLocation(r) : ModelManager_1.ModelManager.MapModel.GetDungeonExitLocation(ModelManager_1.ModelManager.CreatureModel.GetInstanceId())) {
       n.FromUeVector(o);
     }
     n.Division(100, n);
@@ -396,7 +396,7 @@ class MapUtil {
     var e = ModelManager_1.ModelManager.WorldMapModel.LastBigSceneMiniMapInfo;
     if (e) {
       return e.Position;
-    } else if (e = ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapLocation(0, ModelManager_1.ModelManager.CreatureModel.GetInstanceId())) {
+    } else if (e = ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapLocation(ModelManager_1.ModelManager.CreatureModel.GetInstanceId())) {
       return e.Division(100, e);
     } else {
       return GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();

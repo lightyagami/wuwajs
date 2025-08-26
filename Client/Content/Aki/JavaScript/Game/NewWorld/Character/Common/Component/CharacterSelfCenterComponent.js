@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, i, o) {
-  var n;
+var __decorate = this && this.__decorate || function (t, e, i, s) {
+  var o;
   var r = arguments.length;
-  var s = r < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
+  var h = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(e, t, i, o);
+    h = Reflect.decorate(t, e, i, s);
   } else {
-    for (var h = e.length - 1; h >= 0; h--) {
-      if (n = e[h]) {
-        s = (r < 3 ? n(s) : r > 3 ? n(t, i, s) : n(t, i)) || s;
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (o = t[n]) {
+        h = (r < 3 ? o(h) : r > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
-  if (r > 3 && s) {
-    Object.defineProperty(t, i, s);
+  if (r > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return s;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -32,36 +32,43 @@ const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const EffectUtil_1 = require("../../../../Utils/EffectUtil");
 const DEFAULT_BE_HIT_SELF_CENTER_DURATION = 200;
 let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
+    this.EIe = undefined;
     this.Hte = undefined;
     this.vHr = undefined;
     this.uZr = undefined;
     this.H8c = undefined;
+    this.rJc = undefined;
+    this.oJc = undefined;
+    this.nJc = undefined;
     this.Cs1 = 1;
     this.$8c = false;
     this.TDe = undefined;
-    this.Ucu = 0;
-    this.Dcu = 0;
-    this.W8c = e => {
-      var e = EntitySystem_1.EntitySystem.GetComponent(e, 285);
-      if (e?.$8c) {
-        e = e.vHr?.GetForeverTimeScale(e.Ucu) ?? 1;
-        this.SetSelfCenterTimeDilation(e);
+    this.gdu = 0;
+    this.Cdu = 0;
+    this.tZ = false;
+    this.W8c = t => {
+      var t = EntitySystem_1.EntitySystem.GetComponent(t, 288);
+      if (t?.$8c) {
+        t = t.vHr?.GetForeverTimeScale(t.gdu) ?? 1;
+        this.SetSelfCenterTimeDilation(t);
       }
     };
-    this.InitEntityBornDilation = (t, i) => {
+    this.InitEntityBornDilation = (e, i) => {
       switch (this.Hte.CreatureData.GetEntityType()) {
         case Protocol_1.Aki.Protocol.kks.Proto_Monster:
           {
-            let e = 0;
-            if (t === 5) {
-              e = MathUtils_1.MathUtils.IsNearlyEqual(i, 1) ? 0 : CommonParamById_1.configCommonParamById.GetFloatConfig("MonsterSlowTimeDilation") ?? 0;
+            let t = 0;
+            if (e === 5) {
+              t = MathUtils_1.MathUtils.IsNearlyEqual(i, 1) ? 0 : CommonParamById_1.configCommonParamById.GetFloatConfig("MonsterSlowTimeDilation") ?? 0;
             }
-            this.uZr?.SetBuffBaseForeverTimeScale(e);
+            this.uZr?.SetBuffBaseForeverTimeScale(t);
             break;
           }
       }
@@ -71,10 +78,15 @@ let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends En
     return this.Cs1;
   }
   OnStart() {
+    this.tZ = true;
+    this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(3);
-    this.vHr = this.Entity.GetComponent(179);
+    this.vHr = this.Entity.GetComponent(180);
     this.H8c = this.Entity.GetComponent(56);
     this.uZr = this.Entity.GetComponent(16);
+    this.rJc = this.Entity.GetComponent(123);
+    this.oJc = new Set();
+    this.nJc = new Set();
     if (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered && ModelManager_1.ModelManager.CharacterModel.SelfCenteredMode === 5) {
       this.InitEntityBornDilation(ModelManager_1.ModelManager.CharacterModel.SelfCenteredMode, ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation);
     }
@@ -83,57 +95,107 @@ let CharacterSelfCenterComponent = class CharacterSelfCenterComponent extends En
     return true;
   }
   OnEnd() {
+    this.cTa();
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterSetMaster, this.W8c);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.InitEntityBornDilation);
     return true;
   }
-  SetSelfCenterTimeDilation(e, t = true) {
-    this.Cs1 = e;
+  SetSelfCenterTimeDilation(t, e = true) {
+    this.Cs1 = t;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Character", 6, "SetSelfCenterTimeDilation", ["Char", this.Hte?.Actor.GetName()], ["TimeDilation", e]);
+      Log_1.Log.Debug("Character", 6, "SetSelfCenterTimeDilation", ["Char", this.Hte?.Actor.GetName()], ["TimeDilation", t]);
     }
-    if (this.Ucu > 0) {
-      this.vHr?.RemoveForeverTimeScale(this.Ucu);
+    if (this.gdu > 0) {
+      this.vHr?.RemoveForeverTimeScale(this.gdu);
     }
-    this.Ucu = this.vHr?.SetForeverTimeScale(14, e, 0, true) ?? 0;
-    if (t) {
+    this.gdu = this.vHr?.SetForeverTimeScale(14, t, 0, true) ?? 0;
+    if (e) {
       var i = this.H8c?.FollowIds;
       if (i) {
+        for (const s of i) {
+          EntitySystem_1.EntitySystem.GetComponent(s, 288)?.SetSelfCenterTimeDilation(t, e);
+        }
+      }
+      i = this.EIe.CustomServerEntityIds;
+      if (i.length > 0) {
         for (const o of i) {
-          EntitySystem_1.EntitySystem.GetComponent(o, 285)?.SetSelfCenterTimeDilation(e, t);
+          EntitySystem_1.EntitySystem.GetComponent(ModelManager_1.ModelManager.CreatureModel.GetEntityId(o), 288)?.SetSelfCenterTimeDilation(t, e);
         }
       }
     }
-    this.$8c = e !== 1 && t;
+    this.$8c = t !== 1 && e;
   }
-  SetSelfBeHitTimeDilation(e) {
+  SetSelfBeHitTimeDilation(t) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Character", 57, "SetSelfBeHitTimeDilation", ["Char", this.Hte?.Actor.GetName()], ["TimeDilation", e]);
+      Log_1.Log.Debug("Character", 57, "SetSelfBeHitTimeDilation", ["Char", this.Hte?.Actor.GetName()], ["TimeDilation", t]);
     }
-    if (this.Dcu > 0) {
-      this.vHr?.RemoveForeverTimeScale(this.Dcu);
+    if (this.Cdu > 0) {
+      this.vHr?.RemoveForeverTimeScale(this.Cdu);
     }
-    this.Dcu = this.vHr?.SetForeverTimeScale(15, e) ?? 0;
+    this.Cdu = this.vHr?.SetForeverTimeScale(15, t) ?? 0;
   }
   RemoveSelfBeHitTimeDilation() {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 57, "RemoveSelfBeHitTimeDilation", ["Char", this.Hte?.Actor.GetName()]);
     }
-    this.vHr?.RemoveForeverTimeScale(this.Dcu);
-    this.Dcu = 0;
+    this.vHr?.RemoveForeverTimeScale(this.Cdu);
+    this.Cdu = 0;
   }
-  SetBeHitTimeDilation(e, t = DEFAULT_BE_HIT_SELF_CENTER_DURATION) {
+  SetBeHitTimeDilation(t, e = DEFAULT_BE_HIT_SELF_CENTER_DURATION) {
     if (MathUtils_1.MathUtils.IsNearlyEqual(this.Cs1, 1)) {
-      this.SetSelfBeHitTimeDilation(e);
+      this.SetSelfBeHitTimeDilation(t);
       if (this.TDe?.Valid()) {
         TimerSystem_1.TimerSystem.Remove(this.TDe);
         this.TDe = undefined;
       }
       this.TDe = TimerSystem_1.TimerSystem.Delay(() => {
         this.RemoveSelfBeHitTimeDilation();
-      }, t, undefined, undefined, true, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+      }, e, undefined, undefined, true, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
     }
   }
+  AddEffect(t) {
+    if (this.o1h() && this.Active && EffectSystem_1.EffectSystem.IsValid(t) && (this.oJc.add(t), this.rJc?.Valid)) {
+      EffectUtil_1.EffectUtil.SetEffectTimeScale(t, this.rJc, this.rJc.TimeDilation);
+    }
+  }
+  RemoveEffect(t) {
+    if (this.o1h()) {
+      this.nJc.add(t);
+    }
+  }
+  cTa() {
+    if (!!this.o1h() && !(this.oJc.size <= 0)) {
+      this.oJc.forEach(t => {
+        if (EffectSystem_1.EffectSystem.IsValid(t)) {
+          EffectSystem_1.EffectSystem.SetTimeScale(t, 1, true);
+        }
+      });
+      this.oJc.clear();
+      this.nJc.clear();
+    }
+  }
+  OnChangeTimeDilation(t) {
+    if (!!this.o1h() && !(this.oJc.size <= 0)) {
+      this.oJc.forEach(t => {
+        if (EffectSystem_1.EffectSystem.IsValid(t)) {
+          if (this.rJc?.Valid) {
+            EffectUtil_1.EffectUtil.SetEffectTimeScale(t, this.rJc, this.rJc.TimeDilation);
+          } else {
+            EffectSystem_1.EffectSystem.SetTimeScale(t, 1, true);
+          }
+        } else {
+          this.nJc.add(t);
+        }
+      });
+      this.nJc.forEach(t => {
+        this.oJc.delete(t);
+      });
+      this.nJc.clear();
+    }
+  }
+  o1h() {
+    return this.tZ;
+  }
 };
-CharacterSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(285)], CharacterSelfCenterComponent);
+CharacterSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(288)], CharacterSelfCenterComponent);
 exports.CharacterSelfCenterComponent = CharacterSelfCenterComponent; //# sourceMappingURL=CharacterSelfCenterComponent.js.map

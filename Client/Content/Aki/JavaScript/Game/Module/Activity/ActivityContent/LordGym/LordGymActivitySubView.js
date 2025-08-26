@@ -9,14 +9,17 @@ const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/Commo
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const ActivitySubViewBase_1 = require("../../View/SubView/ActivitySubViewBase");
 const ActivitySubViewGeneralInfo_1 = require("../../View/SubView/ActivitySubViewGeneralInfo");
+const LordGymBossCard_1 = require("./LordGymBossCard");
 class LordGymActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
     this.ActivityBaseData = undefined;
     this.CommonInfoPanel = undefined;
+    this.BossCard = undefined;
     this.tWt = () => {
       var e;
       this.ActivityBaseData.ReadRedDot();
@@ -32,12 +35,13 @@ class LordGymActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
     this.CommonInfoPanel = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.CommonInfoPanel.SetData(this.ActivityBaseData);
-    var e = [this.CommonInfoPanel.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())];
+    this.BossCard = new LordGymBossCard_1.LordGymBossCard();
+    var e = [this.CommonInfoPanel.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.BossCard.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())];
     await Promise.all(e);
     this.CommonInfoPanel?.SetBtnText("LongShanStage_Join01");
     this.CommonInfoPanel?.SetClickFunc(this.tWt);
@@ -46,6 +50,12 @@ class LordGymActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshActivityTab, this.ActivityBaseData.Id);
     this.CommonInfoPanel.SetFunctionRedDotVisible(this.ActivityBaseData.CheckRedDot());
     this.CommonInfoPanel?.OnRefreshView();
+    var e = ModelManager_1.ModelManager.LordGymModel.GetLordGymEntranceWithNewTag();
+    if (e.length === 0) {
+      this.GetItem(1).SetUIActive(false);
+    } else {
+      this.BossCard?.Refresh(e);
+    }
   }
 }
 exports.LordGymActivitySubView = LordGymActivitySubView;

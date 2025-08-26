@@ -25,7 +25,7 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.RL1 = undefined;
     this.jH1 = undefined;
     this.HH1 = undefined;
-    this.Bfu = undefined;
+    this.Agu = undefined;
     this.$H1 = [];
     this.SPe = undefined;
     this.Wft = 1;
@@ -36,9 +36,9 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.WH1 = -1;
     this.QH1 = undefined;
     this.U0n = 0;
-    this.kfu = false;
-    this.Ofu = EXP_UNIT_TWEEN_INTERVAL;
-    this.$bu = CROSS_LEVEL_DIFF;
+    this.Pgu = false;
+    this.xgu = EXP_UNIT_TWEEN_INTERVAL;
+    this.mRu = CROSS_LEVEL_DIFF;
     this.KH1 = (i, s, e, h) => {
       if (this.GetVisible() && (i !== s || e !== h)) {
         var r;
@@ -51,7 +51,7 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
         }
         if (this.BL1) {
           let t = false;
-          if (this.U0n !== 2 && h - e >= this.$bu) {
+          if (this.U0n !== 2 && h - e >= this.mRu) {
             t = true;
           }
           if (this.U0n !== 0 || t) {
@@ -60,7 +60,7 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
               this.Wft = h;
               this.iki = h;
               if (t) {
-                this.qfu();
+                this.Ugu();
               }
             } else if (this.U0n === 1) {
               this.DL1 = a.GetTempMoraleExpProgress();
@@ -68,7 +68,7 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
             } else if (this.U0n === 4 || this.U0n === 3) {
               this.DL1 = a.GetTempMoraleExpProgress();
               this.iki = h;
-              this.kfu = true;
+              this.Pgu = true;
             }
           } else {
             s = a.GetTempLevelExpRange(e);
@@ -88,9 +88,9 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
           this.XH1(this.DL1, 3);
           this.HW1(h);
           if (e === h) {
-            this.xvu();
+            this.kyu();
           } else {
-            this.Gfu();
+            this.Dgu();
           }
         }
       }
@@ -101,13 +101,13 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
         this.FL1();
         this.XH1(this.DL1);
         this.HW1(this.iki);
-        this.Bfu?.SetUIActive(false);
+        this.Agu?.SetUIActive(false);
         if (this.iki === this.UQ) {
-          this.Ffu();
+          this.Bgu();
         }
-      } else if ((t === "Decline" && this.U0n === 4 || t === "Decline01" && this.U0n === 3) && (this.U0n = 0, this.kfu)) {
+      } else if ((t === "Decline" && this.U0n === 4 || t === "Decline01" && this.U0n === 3) && (this.U0n = 0, this.Pgu)) {
         this.YH1();
-        this.kfu = false;
+        this.Pgu = false;
       }
     };
   }
@@ -126,15 +126,15 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.InitChildType(11);
     this.Ore();
     this.UQ = ModelManager_1.ModelManager.MoraleBattleModel.GetTempMoraleMaxLevel();
-    this.Ofu = Math.max(EXP_UNIT_TWEEN_INTERVAL, CommonParamById_1.configCommonParamById.GetIntConfig("MoraleTempExpUnitInterval") ?? EXP_UNIT_TWEEN_INTERVAL);
-    this.$bu = CommonParamById_1.configCommonParamById.GetIntConfig("MoraleTempExpCrossLevel") ?? CROSS_LEVEL_DIFF;
+    this.xgu = Math.max(EXP_UNIT_TWEEN_INTERVAL, CommonParamById_1.configCommonParamById.GetIntConfig("MoraleTempExpUnitInterval") ?? EXP_UNIT_TWEEN_INTERVAL);
+    this.mRu = CommonParamById_1.configCommonParamById.GetIntConfig("MoraleTempExpCrossLevel") ?? CROSS_LEVEL_DIFF;
     this.RL1 = this.GetArtText(0);
     this.jH1 = this.GetItem(2);
     this.HH1 = this.GetSprite(1);
     this.HH1?.SetUIActive(false);
     this.GetItem(3)?.SetUIActive(false);
-    this.Bfu = this.GetItem(4);
-    this.Bfu?.SetUIActive(false);
+    this.Agu = this.GetItem(4);
+    this.Agu?.SetUIActive(false);
     var i = new Rotator_1.Rotator(0, 180, 0);
     for (let t = 0; t < this.$H1.length; t++) {
       var s = this.$H1[t];
@@ -173,7 +173,7 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.GL1();
   }
   OnHideBattleChildView() {
-    this.Nfu();
+    this.kgu();
     this.U0n = 0;
   }
   GL1() {
@@ -185,7 +185,7 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.XH1(this.DL1);
     this.HW1(this.iki);
     var t = this.iki === this.UQ;
-    this.Bfu?.SetUIActive(t);
+    this.Agu?.SetUIActive(t);
     this.HH1?.SetUIActive(t);
   }
   HW1(t) {
@@ -195,36 +195,36 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
   FL1() {
     this.SPe?.PlaySequencePurely("Up");
   }
-  qfu() {
-    this.Nfu();
+  Ugu() {
+    this.kgu();
     this.SPe?.PlaySequencePurely("YJ");
-    this.Bfu?.SetUIActive(true);
+    this.Agu?.SetUIActive(true);
     this.U0n = 2;
   }
-  xvu() {
-    this.Nfu();
+  kyu() {
+    this.kgu();
     this.SPe?.PlaySequencePurely("Decline01");
     this.jH1?.SetUIActive(true);
-    this.Bfu?.SetUIActive(false);
+    this.Agu?.SetUIActive(false);
     this.HH1?.SetUIActive(false);
     this.U0n = 3;
   }
-  Gfu() {
-    this.Nfu();
+  Dgu() {
+    this.kgu();
     this.SPe?.PlaySequencePurely("Decline");
     this.jH1?.SetUIActive(true);
-    this.Bfu?.SetUIActive(false);
+    this.Agu?.SetUIActive(false);
     this.HH1?.SetUIActive(false);
     this.U0n = 4;
   }
-  Ffu() {
-    this.Nfu();
+  Bgu() {
+    this.kgu();
     this.SPe?.PlaySequencePurely("MaxStart");
-    this.Bfu?.SetUIActive(true);
+    this.Agu?.SetUIActive(true);
     this.HH1?.SetUIActive(true);
     this.U0n = 5;
   }
-  Nfu() {
+  kgu() {
     switch (this.U0n) {
       case 2:
         if (this.SPe?.IsPlayingSequence("YJ")) {
@@ -275,12 +275,12 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
         this.XH1(0);
         this.FL1();
         if (this.Wft === this.UQ) {
-          this.Ffu();
+          this.Bgu();
         } else {
           this.YH1();
         }
       } else if (this.Wft === this.UQ - 1 && this.DL1 === 1) {
-        this.Ffu();
+        this.Bgu();
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 67, "[MoraleTempExpView]进度动画播放有问题");
@@ -325,13 +325,13 @@ class MoraleTempExpView extends BattleVisibleChildView_1.BattleVisibleChildView 
     }
   }
   JH1() {
-    this.Vfu();
+    this.Ogu();
     this.QH1 = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       this.QH1 = undefined;
       this.YH1();
-    }, Math.max(TimerSystem_1.MIN_TIME, this.Ofu));
+    }, Math.max(TimerSystem_1.MIN_TIME, this.xgu));
   }
-  Vfu() {
+  Ogu() {
     if (this.QH1) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.QH1);
     }
@@ -352,13 +352,13 @@ class MoraleTempExpUnit extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.ZH1 = undefined;
     this.e$1 = undefined;
-    this.jfu = undefined;
+    this.qgu = undefined;
     this.$W1 = undefined;
     this.Index = 0;
     this.cvl = 0;
     this.t$1 = false;
     this.i$1 = false;
-    this.Hfu = false;
+    this.Ggu = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
@@ -386,8 +386,8 @@ class MoraleTempExpUnit extends UiPanelBase_1.UiPanelBase {
     if (r) {
       for (let t = 0; t < r?.Num(); t++) {
         var a = r.Get(t);
-        this.jfu ||= [];
-        this.jfu.push(a);
+        this.qgu ||= [];
+        this.qgu.push(a);
       }
     }
     this.$W1 = this.GetSprite(0);
@@ -411,10 +411,10 @@ class MoraleTempExpUnit extends UiPanelBase_1.UiPanelBase {
       this.StopTweenOut();
       this.$W1?.SetAlpha(1);
     }
-    this.Hfu;
+    this.Ggu;
     this.t$1 = false;
     this.i$1 = false;
-    this.Hfu = false;
+    this.Ggu = false;
   }
   ShowUnit() {
     this.SetUiActive(true);
@@ -439,9 +439,9 @@ class MoraleTempExpUnit extends UiPanelBase_1.UiPanelBase {
     }
   }
   PlayTweenRed() {
-    if (this.jfu) {
-      this.Hfu = true;
-      for (const t of this.jfu) {
+    if (this.qgu) {
+      this.Ggu = true;
+      for (const t of this.qgu) {
         t.Play();
       }
     }

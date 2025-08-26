@@ -179,7 +179,6 @@ class SequenceAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Model.CurLevelSeqActor.SequencePlayer.Play();
     }
     SequenceController_1.SequenceController.TriggerCutChange();
-    SequenceController_1.SequenceController.TempHideAllShouanren();
     this.Model.TalkNpcList = this.Model.CurLevelSeqActor?.GetBindingByTag(SequenceDefine_1.TALK_NPC_TAG, true);
     this.Model.NeedsQueueLatentAction = false;
     this.Model.RunLatentActions();
@@ -226,10 +225,10 @@ class SequenceAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     var e = this.Model.GetCurrentSequence();
     switch (ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(9)) {
       case LoginDefine_1.ELoginSex.Boy:
-        t.Add(SequenceDefine_1.FEMALE_TAG);
+        t.Add(SequenceDefine_1.MALE_TAG);
         break;
       case LoginDefine_1.ELoginSex.Girl:
-        t.Add(SequenceDefine_1.MALE_TAG);
+        t.Add(SequenceDefine_1.FEMALE_TAG);
         break;
       default:
         if (Log_1.Log.CheckWarn()) {

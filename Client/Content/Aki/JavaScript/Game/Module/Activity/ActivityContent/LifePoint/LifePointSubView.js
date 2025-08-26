@@ -14,7 +14,7 @@ const ActivitySubViewGeneralInfo_1 = require("../../View/SubView/ActivitySubView
 class LifePointSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
-    this.MPu = undefined;
+    this.YPu = undefined;
     this.Q6a = undefined;
     this.DFe = e => {
       var i = this.ActivityBaseData.GetUnFinishPreGuideQuestId();
@@ -30,7 +30,7 @@ class LifePointSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
       }
     };
     this.$R1 = () => {
-      var e = this.MPu.RedPointShowState;
+      var e = this.YPu.RedPointShowState;
       this.Q6a?.SetFunctionRedDotVisible(e);
     };
   }
@@ -44,7 +44,7 @@ class LifePointSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     await this.Q6a.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
-    this.MPu = this.ActivityBaseData;
+    this.YPu = this.ActivityBaseData;
   }
   OnBeforeShow() {
     if (this.ActivityBaseData.GetUnFinishPreGuideQuestId() > 0) {
@@ -56,7 +56,7 @@ class LifePointSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.$R1();
   }
   RefreshProgressText() {
-    var e = ModelManager_1.ModelManager.LifePointDrawModel.GetProgressByActivityId(this.MPu.Id, "Colorful_Finish_Progress_Activity");
+    var e = ModelManager_1.ModelManager.LifePointDrawModel.GetProgressByActivityId(this.YPu.Id, "Colorful_Finish_Progress_Activity");
     this.GetText(1)?.SetText(e);
   }
 }

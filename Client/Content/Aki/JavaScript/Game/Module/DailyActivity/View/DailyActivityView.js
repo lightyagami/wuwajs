@@ -48,7 +48,14 @@ class DailyActivityView extends UiTabViewBase_1.UiTabViewBase {
       this.P2t();
     };
     this.VOe = () => {
-      return new DailyActivityTaskItem_1.DailyActivityTaskItem();
+      var e = new DailyActivityTaskItem_1.DailyActivityTaskItem();
+      e.SetClickReceiveCb(() => {
+        var e = this.qkt?.filter(e => e.TaskState === 1).map(e => e.TaskId);
+        if (e !== undefined && e.length > 0) {
+          DailyActivityController_1.DailyActivityController.RequestDailyActivityTaskReward(e);
+        }
+      });
+      return e;
     };
     this.x2t = () => {
       var e = ModelManager_1.ModelManager.DailyActivityModel.RewardData;

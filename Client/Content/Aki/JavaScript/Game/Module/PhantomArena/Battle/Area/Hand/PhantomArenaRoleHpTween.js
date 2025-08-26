@@ -17,13 +17,13 @@ class PhantomArenaRoleHpTween {
     this.CurveDamage = undefined;
     this.Tweener = undefined;
     this.Delegate = undefined;
-    this.bgu = e => {
+    this.vCu = e => {
       this.RoleItem.RefreshLifeNumTween(e, this.MaxLifeNum);
     };
-    this.qdu = () => {
+    this.Mmu = () => {
       this.Tweener &&= undefined;
     };
-    this.Delegate = (0, puerts_1.toManualReleaseDelegate)(this.bgu);
+    this.Delegate = (0, puerts_1.toManualReleaseDelegate)(this.vCu);
   }
   SetRoleItem(e) {
     this.RoleItem = e;
@@ -41,11 +41,11 @@ class PhantomArenaRoleHpTween {
     if (this.Tweener) {
       this.Tweener.SetEase(28);
       this.Tweener.SetCurveFloat(this.CurveDamage);
-      this.Tweener.OnCompleteCallBack.Bind(this.qdu);
+      this.Tweener.OnCompleteCallBack.Bind(this.Mmu);
     }
   }
   Clear() {
-    (0, puerts_1.releaseManualReleaseDelegate)(this.bgu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.vCu);
     this.CurveDamage = undefined;
   }
 }

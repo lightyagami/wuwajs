@@ -14,7 +14,7 @@ const PhantomArenaBattleGuideRecycleCardFromMonster_1 = require("./PhantomArenaB
 const PhantomArenaBattleGuideSettingCard_1 = require("./PhantomArenaBattleGuideSettingCard");
 class PhantomArenaBattleGuideFactory {
   static GetGuideData(e, a) {
-    var t = this.G_u.get(e);
+    var t = this.M1u.get(e);
     if (t) {
       return new t(e, a);
     }
@@ -24,5 +24,5 @@ class PhantomArenaBattleGuideFactory {
     throw new Error("未注册的声骸竞技场定制类型: " + e);
   }
 }
-(exports.PhantomArenaBattleGuideFactory = PhantomArenaBattleGuideFactory).G_u = new Map([["BvbDeploy", PhantomArenaBattleGuideSettingCard_1.PhantomArenaBattleGuideSettingCard], ["BvbEvolution", PhantomArenaBattleGuideEvolveCard_1.PhantomArenaBattleGuideEvolveCard], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbChangeBoardCard", PhantomArenaBattleGuideMagicUseCardFromMonster_1.PhantomArenaBattleGuideMagicUseCardFromMonster], ["BvbRecycleHandCard", PhantomArenaBattleGuideRecycleCardFromHand_1.PhantomArenaBattleGuideRecycleCardFromHand], ["BvbRecycleBoardCard", PhantomArenaBattleGuideRecycleCardFromMonster_1.PhantomArenaBattleGuideRecycleCardFromMonster], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbEndTurn", PhantomArenaBattleGuideEndTime_1.PhantomArenaBattleGuideEndTime]]);
+(exports.PhantomArenaBattleGuideFactory = PhantomArenaBattleGuideFactory).M1u = new Map([["BvbDeploy", PhantomArenaBattleGuideSettingCard_1.PhantomArenaBattleGuideSettingCard], ["BvbEvolution", PhantomArenaBattleGuideEvolveCard_1.PhantomArenaBattleGuideEvolveCard], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbChangeBoardCard", PhantomArenaBattleGuideMagicUseCardFromMonster_1.PhantomArenaBattleGuideMagicUseCardFromMonster], ["BvbRecycleHandCard", PhantomArenaBattleGuideRecycleCardFromHand_1.PhantomArenaBattleGuideRecycleCardFromHand], ["BvbRecycleBoardCard", PhantomArenaBattleGuideRecycleCardFromMonster_1.PhantomArenaBattleGuideRecycleCardFromMonster], ["BvbChangeHandCard", PhantomArenaBattleGuideMagicUseCardFromHand_1.PhantomArenaBattleGuideMagicUseCardFromHand], ["BvbEndTurn", PhantomArenaBattleGuideEndTime_1.PhantomArenaBattleGuideEndTime]]);
 //# sourceMappingURL=PhantomArenaBattleGuideFactory.js.map

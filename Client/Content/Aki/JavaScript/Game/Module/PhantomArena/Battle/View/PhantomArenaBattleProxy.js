@@ -24,8 +24,8 @@ const PhantomArenaBattleServerActionQueue_1 = require("./PhantomArenaBattleServe
 class PhantomArenaBattleProxy {
   constructor() {
     this.Yzt = undefined;
-    this.RX1 = PhantomArenaDefine_1.INVALID_CARD_ID;
-    this.heu = 0;
+    this.ZX1 = PhantomArenaDefine_1.INVALID_CARD_ID;
+    this.Deu = 0;
     this.CaptionItem = undefined;
     this.OwnArea = undefined;
     this.OpponentArea = undefined;
@@ -123,7 +123,7 @@ class PhantomArenaBattleProxy {
       ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.OpenPhantomArenaBattleLoading();
     };
     this.HideLayoutClick = () => {
-      this.itu(0);
+      this.Ltu(0);
       this.OwnArea.HideCardList();
     };
     this.CloseClick = () => {
@@ -232,7 +232,7 @@ class PhantomArenaBattleProxy {
     this.DetailsTipsItem = undefined;
     this.SkillTipsItem = undefined;
     this.IsInPanelInteract = false;
-    this.HSu = false;
+    this.j7c = false;
   }
   RegisterView(t) {
     this.Yzt = t;
@@ -299,31 +299,31 @@ class PhantomArenaBattleProxy {
     return this.InCantDragStateSet.size > 0;
   }
   SetSelectedCardId(t, e) {
-    if (this.RX1 !== PhantomArenaDefine_1.INVALID_CARD_ID) {
-      this.leu(false);
+    if (this.ZX1 !== PhantomArenaDefine_1.INVALID_CARD_ID) {
+      this.Beu(false);
     }
-    this.RX1 = t;
-    this.heu = e;
-    this.leu(true);
+    this.ZX1 = t;
+    this.Deu = e;
+    this.Beu(true);
   }
   CancelSelectedCard() {
-    if (this.RX1 !== PhantomArenaDefine_1.INVALID_CARD_ID) {
-      this.leu(false);
+    if (this.ZX1 !== PhantomArenaDefine_1.INVALID_CARD_ID) {
+      this.Beu(false);
     }
-    this.RX1 = PhantomArenaDefine_1.INVALID_CARD_ID;
-    this.heu = 0;
+    this.ZX1 = PhantomArenaDefine_1.INVALID_CARD_ID;
+    this.Deu = 0;
   }
-  leu(t) {
+  Beu(t) {
     var e;
-    if (this.heu === 1) {
-      if (e = this.OwnArea.HandArea.GetCardProxy(this.RX1)) {
+    if (this.Deu === 1) {
+      if (e = this.OwnArea.HandArea.GetCardProxy(this.ZX1)) {
         e.SetCardSelectedState(t);
       }
-    } else if (this.heu === 2) {
-      if (e = this.OwnArea.FunctionalArea.GetCardProxyByCardId(this.RX1)) {
+    } else if (this.Deu === 2) {
+      if (e = this.OwnArea.FunctionalArea.GetCardProxyByCardId(this.ZX1)) {
         e.SetCardSelectedState(t);
       }
-    } else if (this.heu === 3 && (e = this.OpponentArea.FunctionalArea.GetCardProxyByCardId(this.RX1))) {
+    } else if (this.Deu === 3 && (e = this.OpponentArea.FunctionalArea.GetCardProxyByCardId(this.ZX1))) {
       e.SetCardSelectedState(t);
     }
   }
@@ -346,18 +346,18 @@ class PhantomArenaBattleProxy {
   GetOwnCardLibraryItem() {
     return this.Yzt.GetOwnCardLibraryItem();
   }
-  itu(t) {
+  Ltu(t) {
     this.TipsItem.SetTipsActive(t === 1);
     this.DetailsTipsItem.SetTipsActive(t === 2);
     this.SkillTipsItem.SetTipsActive(t === 3);
   }
   HideCardTips() {
-    this.itu(0);
+    this.Ltu(0);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaCardDetailShowHideChange, false);
   }
   ShowCardTips(t) {
     this.TipsItem.RefreshTips(t);
-    this.itu(1);
+    this.Ltu(1);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaCardDetailShowHideChange, true);
   }
   SwitchCardTips(t) {
@@ -370,7 +370,7 @@ class PhantomArenaBattleProxy {
   SwitchFourCostTips(t, e) {
     var i = t ? 1 : 2;
     if (this.DetailsTipsItem.IsInActive && i === this.DetailsTipsItem.ShowType) {
-      this.itu(0);
+      this.Ltu(0);
     } else {
       e = {
         AttachItem: e,
@@ -379,13 +379,13 @@ class PhantomArenaBattleProxy {
       i = (t ? ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData : ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData).TaskData;
       this.DetailsTipsItem.RefreshByTaskData(i);
       this.DetailsTipsItem.SetTipsPosition(e);
-      this.itu(2);
+      this.Ltu(2);
     }
   }
   ShowSkillTips(t, e) {
     this.SkillTipsItem.Refresh(t);
     this.SkillTipsItem.SetAttachItem(e);
-    this.itu(3);
+    this.Ltu(3);
   }
   HideSkillTips() {
     this.SkillTipsItem.SetTipsActive(false);
@@ -397,11 +397,11 @@ class PhantomArenaBattleProxy {
     await Promise.all([this.OwnArea.HandArea.EndTimeDiscardCard(this.Yzt.GetOwnCardLibraryItem()), this.OpponentArea.HandArea.EndTimeDiscardCard(this.Yzt.GetOpponentCardLibraryItem())]);
   }
   SetIsMainInVisible(t) {
-    this.HSu = t;
+    this.j7c = t;
     ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirtyByGroupItem(this.Yzt.GetRootItem());
   }
   get IsMainInVisible() {
-    return this.HSu;
+    return this.j7c;
   }
 }
 exports.PhantomArenaBattleProxy = PhantomArenaBattleProxy;

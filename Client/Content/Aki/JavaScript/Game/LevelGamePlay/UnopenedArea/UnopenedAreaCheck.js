@@ -77,14 +77,18 @@ class UnopenedAreaCheck {
         }
         t.add(s);
       } else {
-        if (this.Ywe.get(s).has(e) && (this.Ywe.get(s).delete(e), Log_1.Log.CheckInfo())) {
+        t = this.Ywe.get(s);
+        if (t?.has(e) && (t.delete(e), Log_1.Log.CheckInfo())) {
           Log_1.Log.Info("Map", 42, "AreaPathMap区域删除", ["AreaId", e], ["Path", s]);
         }
-        if (this.Ywe.get(s).size === 0 && this.$we.has(s) && (this.$we.delete(s), Log_1.Log.CheckInfo())) {
-          Log_1.Log.Info("Map", 42, "BinMap移除边界", ["Path", s]);
+        if ((!t || t.size === 0) && !!this.$we.has(s)) {
+          this.$we.delete(s);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Map", 42, "BinMap移除边界", ["Path", s]);
+          }
         }
-        t = this.Vj.get(i);
-        if (t && t.delete(s) && t.size === 0) {
+        r = this.Vj.get(i);
+        if (r && r.delete(s) && r.size === 0) {
           this.Vj.delete(i);
         }
       }

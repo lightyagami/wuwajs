@@ -73,10 +73,12 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   }
   OnRefresh(t, e, i) {
     super.OnRefresh(t, e, i);
-    this.klt();
-    this.Flt();
-    this.Vlt();
-    this.jlt(i);
+    if (this.IsActivated) {
+      this.klt();
+      this.Flt();
+      this.Vlt();
+      this.jlt(i);
+    }
   }
   tst() {
     var t;

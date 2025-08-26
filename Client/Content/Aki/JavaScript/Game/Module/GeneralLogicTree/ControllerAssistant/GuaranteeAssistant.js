@@ -8,6 +8,7 @@ const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const GuaranteeActionCenter_1 = require("../../../LevelGamePlay/Guarantee/GuaranteeActionCenter");
+const LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ControllerAssistantBase_1 = require("./ControllerAssistantBase");
@@ -15,11 +16,11 @@ class GuaranteeAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
   constructor() {
     super(...arguments);
     this.rIe = (e, t, n, r = 0) => {
-      var s;
       var o;
-      if (t && t.Type === 6 && t.TreeIncId && (s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t.TreeIncId))) {
-        o = GuaranteeActionCenter_1.GuaranteeActionCenter.GetActionFilterMode(n.Name);
-        s.AddGuaranteeActionInfo(e, t.NodeId, n, o);
+      var s;
+      if (t && t.Type === 6 && t.TreeIncId && (o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t.TreeIncId))) {
+        s = GuaranteeActionCenter_1.GuaranteeActionCenter.GetActionFilterMode(n.Name);
+        o.AddGuaranteeActionInfo(e, t.NodeId, n, s);
       }
     };
     this.nIe = (e, t, n, r = 0) => {
@@ -31,16 +32,16 @@ class GuaranteeAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
       if (e.Type === 6 && e.TreeIncId) {
         var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e.TreeIncId);
         if (r) {
-          var s = r.GetRollbackPoint();
+          var o = r.GetRollbackPoint();
           switch (n) {
             case Protocol_1.Aki.Protocol.BNs._5n:
-              if (s && e.NodeId === s) {
+              if (o && e.NodeId === o) {
                 r.ClearGuaranteeActions();
               }
               break;
             case Protocol_1.Aki.Protocol.BNs.Proto_CompletedSuccess:
             case Protocol_1.Aki.Protocol.BNs.Proto_CompletedFailed:
-              if (!s) {
+              if (!o) {
                 r.ClearGuaranteeActions(e.NodeId);
               }
           }
@@ -48,9 +49,9 @@ class GuaranteeAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
       }
     };
     this.HQe = e => {
-      e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
-      if (e) {
-        e.ExecuteTreeGuaranteeActions();
+      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
+      if (t && (t.ExecuteTreeGuaranteeActions(), ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove?.has(e)) && (t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove.get(e), ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove.delete(e), t) && t.length !== 0) {
+        ControllerHolder_1.ControllerHolder.GuaranteeController.ExecuteActions(t, LevelGeneralContextDefine_1.GuaranteeContext.Create());
       }
     };
     this.jro = (e, t, n) => {

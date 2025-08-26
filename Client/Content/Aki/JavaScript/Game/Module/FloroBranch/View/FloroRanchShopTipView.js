@@ -13,29 +13,30 @@ const FloroRanchToyGridItem_1 = require("./Item/FloroRanchToyGridItem");
 class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.eAu = [];
-    this.tAu = -1;
-    this.YUu = () => {};
-    this.cuu = undefined;
-    this.yuu = async () => {
+    this.RAu = [];
+    this.wAu = -1;
+    this.LDu = () => {};
+    this.uod = () => {};
+    this.Xuu = undefined;
+    this.rcu = async () => {
       var i = new FloroRanchToyGridItem_1.FloroRanchToyGridItem();
-      i.BindClickCallback(this.Zcu);
+      i.BindClickCallback(this.kdu);
       var t = this.GetItem(3);
       var e = this.GetItem(2);
       var t = LguiUtil_1.LguiUtil.CopyItem(t, e);
       await i.CreateThenShowByActorAsync(t.GetOwner());
-      this.eAu.push(i);
+      this.RAu.push(i);
     };
-    this.GBu = i => {
+    this.mqu = i => {
       this.CloseMe();
-      this.YUu?.(this.tAu);
+      this.LDu?.(this.wAu);
     };
-    this.Zcu = i => {
-      this.hdu(i);
+    this.kdu = i => {
+      this.$du(i);
     };
-    this.iAu = () => {
+    this.LAu = () => {
       var i;
-      if (this.tAu !== -1 && (i = this.eAu[this.tAu])) {
+      if (this.wAu !== -1 && (i = this.RAu[this.wAu])) {
         i.SetSelectState(false);
       }
     };
@@ -50,34 +51,39 @@ class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     var t = [];
-    this.eAu.length = 0;
-    this.tAu = -1;
+    this.RAu.length = 0;
+    this.wAu = -1;
     var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.EnableToyCount;
     for (let i = 0; i < e; i++) {
-      t.push(this.yuu());
+      t.push(this.rcu());
     }
     await Promise.all(t);
-    this.cuu = new FloroRanchCommonTipItem_1.FloroRanchCommonTipItem();
+    this.Xuu = new FloroRanchCommonTipItem_1.FloroRanchCommonTipItem();
+    this.Xuu.TermGroup = 4;
     var i = this.GetItem(1);
-    await this.cuu.CreateThenShowByActorAsync(i.GetOwner());
+    await this.Xuu.CreateThenShowByActorAsync(i.GetOwner());
   }
   OnBeforeShow() {
     var i;
     var t = this.OpenParam;
-    if (t && (i = t.ToyPoint, this.YUu = t.SellCallback, this.YUu)) {
-      this.oAu();
-      this.hdu(i);
+    if (t && (i = t.ToyPoint, this.LDu = t.SellCallback, this.uod = t.ShowToyListCallback, this.LDu) && this.uod) {
+      this.uod(false);
+      this.PAu();
+      this.$du(i);
     }
   }
-  oAu() {
+  OnBeforeHide() {
+    this.uod(true);
+  }
+  PAu() {
     var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.EnableToyCount;
     var e = [];
     for (let i = 0; i < t; i++) {
       var s = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetToyEntityByPoint(i);
       e.push(s || undefined);
     }
-    for (let i = 0; i < this.eAu.length; i++) {
-      var h = this.eAu[i];
+    for (let i = 0; i < this.RAu.length; i++) {
+      var h = this.RAu[i];
       if (e[i]) {
         h.RefreshItemGrid(e[i]);
       } else {
@@ -85,26 +91,26 @@ class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  hdu(i) {
-    this.iAu();
-    if (this.tAu !== i) {
-      this.tAu = i;
+  $du(i) {
+    this.LAu();
+    if (this.wAu !== i) {
+      this.wAu = i;
     }
-    var t = this.eAu[this.tAu];
+    var t = this.RAu[this.wAu];
     if (t) {
       t.SetSelectState(true);
     }
     var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetToyEntityByPoint(i);
     if (t) {
-      this.cuu.RefreshInfoTipByParam({
+      this.Xuu.RefreshInfoTipByParam({
         TipType: 0,
         EntityData: t,
-        RemoveCallback: this.GBu
+        RemoveCallback: this.mqu
       });
     }
   }
   gPe() {
-    this.tAu = -1;
+    this.wAu = -1;
   }
 }
 exports.FloroRanchShopTipView = FloroRanchShopTipView;

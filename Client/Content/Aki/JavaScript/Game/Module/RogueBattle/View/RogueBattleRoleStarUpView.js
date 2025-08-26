@@ -35,11 +35,7 @@ class RogueBattleRoleStarUpView extends UiViewBase_1.UiViewBase {
       }
     };
     this.ilo = () => {
-      ModelManager_1.ModelManager.MapRogueModel.ExecuteOpData(this.OpenParam, e => {
-        if (e) {
-          this.CloseMe();
-        }
-      });
+      ModelManager_1.ModelManager.MapRogueModel.ExecuteOpData(this.OpenParam);
     };
   }
   OnRegisterComponent() {

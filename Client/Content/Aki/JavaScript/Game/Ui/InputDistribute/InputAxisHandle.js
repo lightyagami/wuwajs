@@ -9,22 +9,39 @@ class InputAxisHandle extends InputDistributeHandle_1.InputDistributeHandle {
   constructor() {
     super(...arguments);
     this.qmr = 0;
+    this.ZQc = 0;
   }
-  BindAxis(t) {
-    this.Bind(t);
+  BindAxis(i) {
+    this.Bind(i);
   }
-  UnBindAxis(t) {
-    this.UnBind(t);
+  UnBindAxis(i) {
+    this.UnBind(i);
   }
-  InputAxis(t) {
-    this.InputCacheAxisValue(t);
-    this.Call(t);
+  BindAxisIgnoreLimit(i) {
+    this.BindIgnoreLimit(i);
   }
-  InputCacheAxisValue(t) {
-    this.qmr = t;
+  UnBindAxisIgnoreLimit(i) {
+    this.UnBindIgnoreLimit(i);
+  }
+  InputAxis(i) {
+    this.InputCacheAxisValue(i);
+    this.Call(i);
+  }
+  InputAxisIgnoreLimit(i) {
+    this.InputCacheAxisValueIgnoreLimit(i);
+    this.CallIgnoreLimit(i);
+  }
+  InputCacheAxisValue(i) {
+    this.qmr = i;
+  }
+  InputCacheAxisValueIgnoreLimit(i) {
+    this.ZQc = i;
   }
   GetCacheAxisValue() {
     return this.qmr;
+  }
+  GetCacheAxisValueIgnoreLimit() {
+    return this.ZQc;
   }
 }
 exports.InputAxisHandle = InputAxisHandle;

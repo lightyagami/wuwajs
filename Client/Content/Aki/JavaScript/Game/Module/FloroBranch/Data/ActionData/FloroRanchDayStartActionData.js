@@ -11,8 +11,8 @@ const FloroRanchAsyncActionBase_1 = require("./FloroRanchAsyncActionBase");
 class FloroRanchDayStartAction extends FloroRanchAsyncActionBase_1.FloroRanchAsyncActionBase {
   constructor(a) {
     super();
-    this.Plu = undefined;
-    this.Plu = a;
+    this.m_u = undefined;
+    this.m_u = a;
   }
   async OnExecute() {
     var a = [];
@@ -23,8 +23,8 @@ class FloroRanchDayStartAction extends FloroRanchAsyncActionBase_1.FloroRanchAsy
     await this.WaitIfPause();
     if (!this.IsExit()) {
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.ClearLastDayIncome();
-      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshEntityList(this.Plu.Bhu);
-      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshRemoveEntityList(this.Plu.zku);
+      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshEntityList(this.m_u.hlu);
+      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshRemoveEntityList(this.m_u.VBu);
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.ClearRemoveEntity();
       var e = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
       if (e) {

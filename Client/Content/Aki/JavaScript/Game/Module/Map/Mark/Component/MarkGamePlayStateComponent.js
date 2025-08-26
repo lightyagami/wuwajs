@@ -14,7 +14,7 @@ class MarkGamePlayStateComponent extends MapComponent_1.MapComponent {
   constructor() {
     super(...arguments);
     this.EventUpdateLevelPlayState = e => {
-      if (this.CHc() === e) {
+      if (this.zJu() === e) {
         this.UpdateLevelPlayState();
       }
     };
@@ -31,14 +31,14 @@ class MarkGamePlayStateComponent extends MapComponent_1.MapComponent {
   OnRemove() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelPlayStateChange, this.EventUpdateLevelPlayState);
   }
-  CHc() {
+  zJu() {
     var e = this.ParentEntity.GetComponent(15)?.Config;
     if (e && (e instanceof MapMark_1.MapMark || e instanceof DynamicMapMark_1.DynamicMapMark)) {
       return e.RelativeId;
     }
   }
   UpdateLevelPlayState() {
-    var t = this.CHc();
+    var t = this.zJu();
     if (t !== undefined) {
       t = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(t);
       if (t) {

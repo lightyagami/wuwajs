@@ -7,10 +7,10 @@ exports.FunctionModel = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const ConfigCommon_1 = require("../../../Core/Config/ConfigCommon");
 const FunctionConditionByFunctionId_1 = require("../../../Core/Define/ConfigQuery/FunctionConditionByFunctionId");
-const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const LevelGeneralCommons_1 = require("../../LevelGamePlay/LevelGeneralCommons");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -20,9 +20,6 @@ const FunctionInstance_1 = require("./View/FunctionInstance");
 class FunctionModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.PlayerAttributeNum = new Map();
-    this.PlayerAttributeString = new Map();
-    this.PlayerId = 0;
     this.I7t = new Map();
     this.T7t = [];
     this.L7t = new Map();
@@ -30,14 +27,14 @@ class FunctionModel extends ModelBase_1.ModelBase {
     this.R7t = () => ControllerHolder_1.ControllerHolder.KuroSdkController.NeedShowCustomerService();
     this.U7t = () => ChannelController_1.ChannelController.CheckKuroStreetOpen();
     this.Wtl = () => ModelManager_1.ModelManager.MailBindModel.CheckGlobalMailBindOpen();
-    this.jpu = () => ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen;
+    this.Nvu = () => ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen;
   }
   OnInit() {
     this.L7t.set(10053, this.D7t);
     this.L7t.set(10028, this.R7t);
     this.L7t.set(10058, this.U7t);
     this.L7t.set(10072, this.Wtl);
-    this.L7t.set(10095, this.jpu);
+    this.L7t.set(10095, this.Nvu);
     return true;
   }
   SetFunctionOpenInfo(e) {
@@ -52,16 +49,16 @@ class FunctionModel extends ModelBase_1.ModelBase {
     }
   }
   UpdateFunctionOpenInfo(e) {
-    for (const o of e.VUs) {
+    for (const r of e.VUs) {
       var n;
-      var t = this.I7t.get(o.s5n);
+      var t = this.I7t.get(r.s5n);
       if (t) {
-        t.SetFlag(o.o5n);
+        t.SetFlag(r.o5n);
         if ((t = t.GetIsOpen()) && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Functional", 10, "功能数据更新", ["Id", o.s5n]);
+          Log_1.Log.Info("Functional", 10, "功能数据更新", ["Id", r.s5n]);
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFunctionOpenUpdate, o.s5n, t);
-        n = FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(o.s5n);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFunctionOpenUpdate, r.s5n, t);
+        n = FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(r.s5n);
         if (!!t && n.ShowUIType === 1 && !ModelManager_1.ModelManager.SundryModel.IsBlockTips && !e.YU1) {
           this.T7t.push(n);
         }
@@ -69,7 +66,7 @@ class FunctionModel extends ModelBase_1.ModelBase {
           Log_1.Log.Info("Functional", 10, "[UpdateFunctionOpenInfo]用了GM屏蔽功能开启界面显示");
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Functional", 10, "当前刷新的功能id不在功能列表中", ["功能Id", o.s5n]);
+        Log_1.Log.Error("Functional", 10, "当前刷新的功能id不在功能列表中", ["功能Id", r.s5n]);
       }
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFunctionOpenUpdateNotify);
@@ -86,22 +83,22 @@ class FunctionModel extends ModelBase_1.ModelBase {
     }
   }
   RefreshInfoManualState(e) {
-    for (const o of e) {
+    for (const r of e) {
       var n;
-      var t = this.I7t.get(o);
+      var t = this.I7t.get(r);
       if (t) {
-        n = FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(o);
+        n = FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(r);
         if (t.GetIsOpen() && !ModelManager_1.ModelManager.SundryModel.IsBlockTips) {
           this.T7t.push(n);
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Functional", 10, "手动开启功能开启界面成功", ["FunctionId", o]);
+          Log_1.Log.Info("Functional", 10, "手动开启功能开启界面成功", ["FunctionId", r]);
         }
         if (ModelManager_1.ModelManager.SundryModel.IsBlockTips && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Functional", 10, "[RefreshInfoManualState]用了GM屏蔽功能开启界面显示");
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Functional", 10, "当前刷新的功能id不在功能列表中", ["功能Id", o]);
+        Log_1.Log.Error("Functional", 10, "当前刷新的功能id不在功能列表中", ["功能Id", r]);
       }
     }
   }
@@ -126,76 +123,48 @@ class FunctionModel extends ModelBase_1.ModelBase {
     }
     return e;
   }
-  UpdatePlayerAttributeNumberInfo(e) {
-    let n = 0;
-    let t = undefined;
-    if (e.has(Protocol_1.Aki.Protocol.LNs.F6n)) {
-      n = this.GetPlayerLevel();
-    }
-    if (e.has(Protocol_1.Aki.Protocol.LNs.U8n)) {
-      t = this.GetPlayerExp();
-    }
-    e.forEach((e, n) => {
-      this.PlayerAttributeNum.set(n, e);
-    });
-    var o;
-    var r;
-    var i;
-    var e = this.GetPlayerExp();
-    var a = this.GetPlayerLevel();
-    var s = ConfigManager_1.ConfigManager.FunctionConfig;
-    if (n > 0 && n < a && t !== undefined) {
-      if (!!(i = s.GetRangePlayerExpConfig(n, a)) && !(i.length < 1)) {
-        o = i[0];
-        r = i[i.length - 1];
-        o = o.LevelExp;
-        i = this.A7t(i, t, e);
-        r = r.LevelExp;
-        ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(4);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerLevelChanged, n, a, e, t, i, r, o);
-      }
-    } else if (t !== undefined && t < e) {
-      i = s.GetPlayerLevelConfig(a).LevelExp;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerExpChanged, e, t, i);
-    }
-  }
-  A7t(e, n, t) {
-    let o = 0;
-    for (const r of e) {
-      o += r.LevelExp;
-    }
-    return o - n + t;
-  }
-  SetPlayerId(e) {
-    this.PlayerId = e;
+  get PlayerId() {
+    return ModelManager_1.ModelManager.PlayerInfoModel.GetId();
   }
   GetPlayerName() {
-    return this.PlayerAttributeString.get(Protocol_1.Aki.Protocol.LNs.H8n);
-  }
-  SetPlayerName(e) {
-    this.PlayerAttributeString.set(Protocol_1.Aki.Protocol.LNs.H8n, e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNameChange);
+    return ModelManager_1.ModelManager.PlayerInfoModel.GetStringPropById(7);
   }
   GetPlayerLevel() {
-    return this.PlayerAttributeNum.get(Protocol_1.Aki.Protocol.LNs.F6n);
+    return ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(0);
   }
   GetPlayerExp() {
-    return this.PlayerAttributeNum.get(Protocol_1.Aki.Protocol.LNs.U8n);
+    return ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(1);
   }
   GetPlayerCashCoin() {
-    var e = this.PlayerAttributeString.get(Protocol_1.Aki.Protocol.LNs.Proto_CashCoin);
-    return e || "0";
+    var e = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(13);
+    if (e) {
+      return e.toString();
+    } else {
+      return "0";
+    }
   }
   GetWorldPermission() {
-    return this.PlayerAttributeNum.get(Protocol_1.Aki.Protocol.LNs.Proto_WorldPermission);
+    return ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(14);
   }
-  UpdatePlayerAttributeStringInfo(e) {
-    e.forEach((e, n) => {
-      this.PlayerAttributeString.set(n, e);
-    });
+  GetFunctionHitTextId(e) {
+    e = FunctionConditionByFunctionId_1.configFunctionConditionByFunctionId.GetConfig(e);
+    if (e) {
+      e = e.OpenConditionId;
+      if (e !== 0) {
+        return LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(e);
+      }
+    }
   }
   IsOpen(e) {
     return e === 0 || !!(e = this.I7t.get(e)) && e.GetIsOpen();
+  }
+  IsLimit(e) {
+    var n = this.I7t.get(e);
+    var t = ModelManager_1.ModelManager.CreatureModel?.GetInstanceId();
+    if (t && n && ConfigManager_1.ConfigManager.InstanceDungeonConfig?.GetConfig(t)?.FuncLimit?.includes(e)) {
+      return true;
+    }
+    return false;
   }
   IsShow(e) {
     e = this.I7t.get(e);
@@ -211,11 +180,11 @@ class FunctionModel extends ModelBase_1.ModelBase {
     var e = new Array();
     var n = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.FunctionConfig.GetAllFunctionList());
     n.sort((e, n) => e.SortIndex - n.SortIndex);
-    for (const r of n) {
+    for (const o of n) {
       var t;
-      var o = this.I7t.get(r.FunctionId);
-      if (o && (t = !(t = this.L7t.get(r.FunctionId)) || t(), o.GetIsOpen()) && t) {
-        e.push(r.FunctionId);
+      var r = this.I7t.get(o.FunctionId);
+      if (r && (t = !(t = this.L7t.get(o.FunctionId)) || t(), r.GetIsOpen()) && t) {
+        e.push(o.FunctionId);
       }
     }
     return e;
@@ -262,6 +231,8 @@ class FunctionModel extends ModelBase_1.ModelBase {
         return "FunctionMap";
       case 10095:
         return "ActivityDirectTrainPro";
+      case 10086:
+        return "Introduction";
     }
   }
   RedDotFunctionPhantomCondition() {

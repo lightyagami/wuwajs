@@ -37,17 +37,17 @@ class CheckPointEffectController {
     }
   }
   UpdateOnChildQuestNodeStatusChange(e, t, i) {
-    if (e.TrackTarget && e instanceof ReachAreaBehaviorNode_1.ReachAreaBehaviorNode && (t && (t = this.Yre.IsOccupied, e.EffectPathKey) && this.VX1(e.NodeId, e.EffectPathKey, e.GetTargetPosition(), t), i)) {
-      this.jX1(e.NodeId);
+    if (e.TrackTarget && e instanceof ReachAreaBehaviorNode_1.ReachAreaBehaviorNode && (t && (t = this.Yre.IsOccupied, e.EffectPathKey) && this.mY1(e.NodeId, e.EffectPathKey, e.GetTargetPosition(), t), i)) {
+      this.fY1(e.NodeId);
     }
   }
-  VX1(e, t, i, o) {
+  mY1(e, t, i, o) {
     var r = this.qQt.get(e);
     if (!r && !((r = new CheckPointEffectInfo()).EffectPathKey = t, r.EffectSpawnPosition = i, this.qQt.set(e, r), o)) {
       this.NQt(e, r);
     }
   }
-  jX1(e) {
+  fY1(e) {
     this.qQt.delete(e);
     this.StopEffect(e);
   }

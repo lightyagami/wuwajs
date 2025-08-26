@@ -72,6 +72,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     this.bJe = () => {
       this.MFr?.OnSkillEnd();
     };
+    this.dWc = undefined;
     this.UFr = undefined;
     this.Nza = (t, e) => {
       if (this.Fza(t, e)) {
@@ -311,15 +312,17 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     }
   }
   BFr() {
+    var t;
     CombatLog_1.CombatLog.Info("Ai", this.Entity, "CharacterAiComponent.StartUeController");
-    var t = BehaviorTreeDefines_1.BehaviorTreeDefines.GetLevelAiBehaviorTreeAssetPath(this.Entity);
-    if (t) {
+    if (this.dWc) {
+      this.ChangeAiBehaviorTree(this.dWc);
+    } else if (t = BehaviorTreeDefines_1.BehaviorTreeDefines.GetLevelAiBehaviorTreeAssetPath(this.Entity)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 50, "开始加载LevelAi行为树", ["PbDataId", this.Mne], ["CreatureId", this.Hte?.CreatureData?.GetCreatureDataId()]);
       }
-      this.OFr(t);
+      this.ChangeAiBehaviorTree(t);
     } else if (this.MFr.AiBase) {
-      this.OFr(this.MFr.AiBase.BehaviorTree);
+      this.ChangeAiBehaviorTree(this.MFr.AiBase.BehaviorTree);
     }
     CharacterAiComponent_1.kFr.Start();
     this.vFr.OnStart();
@@ -574,6 +577,20 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
       }
     }
     return false;
+  }
+  ChangeAiBehaviorTree(t) {
+    if (t && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("AI", 42, "切换AI行为树", ["Id", this.MFr?.CharActorComp?.CreatureData.GetPbDataId()], ["Path", t]), this.dWc = t, this.TsAiController)) {
+      this.OFr(t);
+    }
+  }
+  ResetAiBehaviorTree() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("AI", 42, "重置AI行为树", ["Id", this.MFr?.CharActorComp?.CreatureData.GetPbDataId()]);
+    }
+    this.dWc = undefined;
+    if (this.TsAiController) {
+      this.BFr();
+    }
   }
 };
 CharacterAiComponent.NFr = Stats_1.Stat.Create("SetUeController");

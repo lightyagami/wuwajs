@@ -34,10 +34,10 @@ class TagContainer {
   }
   BindTsTagContainer(t) {
     if (this.qQo = t) {
-      for (const e of this.xQo.keys()) {
-        var a = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(e);
+      for (const r of this.xQo.keys()) {
+        var a = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(r);
         if (a) {
-          t.UpdateTagMap(a, this.xQo.get(e) ?? 0);
+          t.UpdateTagMap(a, this.xQo.get(r) ?? 0);
         }
       }
       if (Log_1.Log.CheckDebug()) {
@@ -63,51 +63,51 @@ class TagContainer {
       return [];
     }
     TagContainer.w__.Start();
-    const e = this.xQo.get(t) ?? 0;
-    const i = Math.max(0, e + a);
-    a = i - e;
-    if (e === i) {
+    const r = this.xQo.get(t) ?? 0;
+    const e = Math.max(0, r + a);
+    a = e - r;
+    if (r === e) {
       TagContainer.w__.Stop();
       TagContainer.P__.Stop();
       return [];
     }
-    if (i <= 0) {
+    if (e <= 0) {
       this.xQo.delete(t);
     } else {
-      this.xQo.set(t, i);
+      this.xQo.set(t, e);
     }
-    let r = GameplayTagUtils_1.GameplayTagUtils.GetParentTag(t);
-    var n = [[t, i, e, true]];
-    for (; r;) {
-      const e = this.wQo.get(r) ?? 0;
-      var s = this.xQo.get(r) ?? 0;
-      const i = Math.max(0, e + a);
-      if (i <= 0) {
-        this.wQo.delete(r);
+    let n = GameplayTagUtils_1.GameplayTagUtils.GetParentTag(t);
+    var i = [[t, e, r, true, t]];
+    for (; n;) {
+      const r = this.wQo.get(n) ?? 0;
+      var s = this.xQo.get(n) ?? 0;
+      const e = Math.max(0, r + a);
+      if (e <= 0) {
+        this.wQo.delete(n);
       } else {
-        this.wQo.set(r, i);
+        this.wQo.set(n, e);
       }
-      n.push([r, i + s, e + s, false]);
-      r = GameplayTagUtils_1.GameplayTagUtils.GetParentTag(r);
+      i.push([n, e + s, r + s, false, t]);
+      n = GameplayTagUtils_1.GameplayTagUtils.GetParentTag(n);
     }
     TagContainer.w__.Stop();
     TagContainer.U__.Start();
-    t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t);
-    if (t) {
-      this.qQo?.UpdateTagMap(t, a);
+    var o = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t);
+    if (o) {
+      this.qQo?.UpdateTagMap(o, a);
     }
     TagContainer.U__.Stop();
     TagContainer.P__.Stop();
-    return n;
+    return i;
   }
   NQo(t) {
     if (t && !(t.length <= 0)) {
       TagContainer.D__.Start();
-      for (var [a, e, i, r] of t) {
-        if (r) {
-          for (const n of this.bQo) {
+      for (var [a, r, e, n, i] of t) {
+        if (n) {
+          for (const s of this.bQo) {
             try {
-              n(a, e, i);
+              s(a, r, e, i);
             } catch (t) {
               if (t instanceof Error) {
                 if (Log_1.Log.CheckError()) {
@@ -119,9 +119,9 @@ class TagContainer {
             }
           }
         }
-        for (const s of this.BQo) {
+        for (const o of this.BQo) {
           try {
-            s(a, e, i);
+            o(a, r, e, i);
           } catch (t) {
             if (t instanceof Error) {
               if (Log_1.Log.CheckError()) {
@@ -137,76 +137,76 @@ class TagContainer {
     }
   }
   AddExactTag(t, a) {
-    let e = this.PQo.get(t);
-    if (!e) {
-      this.PQo.set(t, e = new Map());
+    let r = this.PQo.get(t);
+    if (!r) {
+      this.PQo.set(t, r = new Map());
     }
-    e.set(a, (e.get(a) ?? 0) + 1);
+    r.set(a, (r.get(a) ?? 0) + 1);
     t = this.GQo(a, 1);
     this.NQo(t);
   }
   RemoveTag(t, a) {
-    var e = this.PQo.get(t);
-    if (e) {
-      const s = e.get(a) ?? 0;
-      e.delete(a);
-      var i = this.GQo(a, -s) ?? [];
+    var r = this.PQo.get(t);
+    if (r) {
+      const s = r.get(a) ?? 0;
+      r.delete(a);
+      var e = this.GQo(a, -s) ?? [];
       if (this.wQo.get(a) > 0) {
-        var r = [];
-        for (const o of e.keys()) {
+        var n = [];
+        for (const o of r.keys()) {
           if (GameplayTagUtils_1.GameplayTagUtils.IsChildTag(o, a)) {
-            r.push(o);
+            n.push(o);
           }
         }
-        for (const g of r) {
-          const s = e.get(g) ?? 0;
-          e.delete(g);
-          var n = this.GQo(g, -s);
-          if (n) {
-            i.push(...n);
+        for (const g of n) {
+          const s = r.get(g) ?? 0;
+          r.delete(g);
+          var i = this.GQo(g, -s);
+          if (i) {
+            e.push(...i);
           }
         }
       }
-      if (e.size === 0) {
+      if (r.size === 0) {
         this.PQo.delete(t);
       }
-      this.NQo(i);
+      this.NQo(e);
     }
   }
-  RemoveExactTag(a, e) {
-    var i = this.PQo.get(a);
-    if (i) {
-      var r = i.get(e) ?? 0;
+  RemoveExactTag(a, r) {
+    var e = this.PQo.get(a);
+    if (e) {
+      var n = e.get(r) ?? 0;
       let t = undefined;
-      if (r > 0) {
-        t = this.GQo(e, -r);
-        i.delete(e);
+      if (n > 0) {
+        t = this.GQo(r, -n);
+        e.delete(r);
       }
-      if (i.size === 0) {
+      if (e.size === 0) {
         this.PQo.delete(a);
       }
       this.NQo(t);
     }
   }
-  UpdateExactTag(t, a, e) {
+  UpdateExactTag(t, a, r) {
     TagContainer.B__.Start();
-    let i = this.PQo.get(t);
-    if (!i) {
-      if (!(e > 0)) {
+    let e = this.PQo.get(t);
+    if (!e) {
+      if (!(r > 0)) {
         TagContainer.B__.Stop();
         return;
       }
-      this.PQo.set(t, i = new Map());
+      this.PQo.set(t, e = new Map());
     }
-    var r = i.get(a) ?? 0;
-    var e = Math.max(0, r + e);
-    if (e > 0) {
-      i.set(a, e);
+    var n = e.get(a) ?? 0;
+    var r = Math.max(0, n + r);
+    if (r > 0) {
+      e.set(a, r);
     } else {
-      i.delete(a);
+      e.delete(a);
     }
-    var a = this.GQo(a, e - r);
-    if (i.size === 0) {
+    var a = this.GQo(a, r - n);
+    if (e.size === 0) {
       this.PQo.delete(t);
     }
     this.NQo(a);
@@ -246,15 +246,47 @@ class TagContainer {
   }
   GetExactTagsDebugString() {
     return [...this.xQo.entries()].map(([t, a]) => {
-      let e = `${GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)} x ${a}(`;
-      for (const r of this.PQo.keys()) {
-        var i = this.PQo.get(r)?.get(t);
-        if (i) {
-          e += exports.channelDebugName[r] + " x " + i;
+      let r = `${GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)} x ${a}(`;
+      for (const n of this.PQo.keys()) {
+        var e = this.PQo.get(n)?.get(t);
+        if (e) {
+          r += exports.channelDebugName[n] + " x " + e;
         }
       }
-      return e + ")\n";
+      return r + ")\n";
     }).sort((t, a) => t.localeCompare(a)).join("");
+  }
+  HasAnyTag(t) {
+    for (const a of t.GetAllExactTags()) {
+      if (this.ContainsTag(a)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  HasAllTag(t) {
+    for (const a of t.GetAllExactTags()) {
+      if (!this.ContainsTag(a)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  NotHasAnyTag(t) {
+    for (const a of t.GetAllExactTags()) {
+      if (!this.ContainsTag(a)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  NotHasAllTag(t) {
+    for (const a of t.GetAllExactTags()) {
+      if (this.ContainsTag(a)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 (exports.TagContainer = TagContainer).P__ = Stats_1.Stat.Create("TagContainer.ModifyTagInner", StatDefine_1.BATTLESTAT_GROUP);

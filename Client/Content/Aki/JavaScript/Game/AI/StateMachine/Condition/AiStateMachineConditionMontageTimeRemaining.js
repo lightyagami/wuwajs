@@ -12,18 +12,20 @@ class AiStateMachineConditionMontageTimeRemaining extends AiStateMachineConditio
     super(...arguments);
     this.Ql = -0;
     this.fne = undefined;
-    this.FTu = t => {
+    this.sbu = t => {
       this.ResultSelf = true;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionMontageTimeRemaining", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionMontageTimeRemaining", this.Node.Name);
+      }
     };
   }
   RegisterEvents() {
-    return !!super.RegisterEvents() && !!this.fne && !EventSystem_1.EventSystem.HasWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.FTu) && !(EventSystem_1.EventSystem.AddWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.FTu), 0);
+    return !!super.RegisterEvents() && !!this.fne && !EventSystem_1.EventSystem.HasWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.sbu) && !(EventSystem_1.EventSystem.AddWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.sbu), 0);
   }
   UnregisterEvents() {
-    return !!super.UnregisterEvents() && !!this.fne && !!EventSystem_1.EventSystem.HasWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.FTu) && (EventSystem_1.EventSystem.RemoveWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.FTu), true);
+    return !!super.UnregisterEvents() && !!this.fne && !!EventSystem_1.EventSystem.HasWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.sbu) && (EventSystem_1.EventSystem.RemoveWithTarget(this.fne, EventDefine_1.EEventName.OnMontageRemain, this.sbu), true);
   }
-  NTu() {
+  abu() {
     if (this.fne) {
       this.fne.RemainedTrigger = this.Ql;
       this.RegisterEvents();
@@ -36,7 +38,7 @@ class AiStateMachineConditionMontageTimeRemaining extends AiStateMachineConditio
       this.Node.Owner.PushErrorMessage(`初始化条件[动画剩余时间]失败，node[${this.Node.Name}|${this.Node.Uuid}], to:${this.Transition.To}`);
     } else {
       this.fne = this.Node.Task;
-      this.NTu();
+      this.abu();
     }
     return true;
   }

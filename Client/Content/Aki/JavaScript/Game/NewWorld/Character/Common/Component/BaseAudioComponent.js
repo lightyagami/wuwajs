@@ -95,5 +95,5 @@ let BaseAudioComponent = class BaseAudioComponent extends EntityComponent_1.Enti
     }
   }
 };
-BaseAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(267)], BaseAudioComponent);
+BaseAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(270)], BaseAudioComponent);
 exports.BaseAudioComponent = BaseAudioComponent; //# sourceMappingURL=BaseAudioComponent.js.map

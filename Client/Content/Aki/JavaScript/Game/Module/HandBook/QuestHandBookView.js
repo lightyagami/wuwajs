@@ -87,7 +87,6 @@ class QuestHandBookView extends UiViewBase_1.UiViewBase {
   RefreshCollectText() {
     var e = HandBookController_1.HandBookController.GetCollectProgress(7);
     LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "RoleExp", e[0], e[1]);
-    this.GetText(2)?.SetUIActive(false);
   }
   OnBeforeShow() {
     let e = true;

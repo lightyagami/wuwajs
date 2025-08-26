@@ -12,11 +12,17 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 class PlayerInfoModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
+    this.xe = 0;
+    this.fXi = [];
+    this.pXi = [];
+    this.vXi = new Map();
+    this.MXi = new Map();
     this.tMi = undefined;
     this.N3a = undefined;
     this.F3a = undefined;
@@ -57,6 +63,43 @@ class PlayerInfoModel extends ModelBase_1.ModelBase {
   SetStringProp(e) {
     this.MXi = e;
   }
+  SetPlayerName(e) {
+    this.ChangeStringProp(7, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNameChange);
+  }
+  UpdatePlayerAttributeNumberInfo(e) {
+    let t = 0;
+    let r = undefined;
+    if (e.has(0)) {
+      t = this.GetPlayerLevel();
+    }
+    if (e.has(1)) {
+      r = this.GetNumberPropById(1);
+    }
+    e.forEach((e, t) => {
+      this.ChangeNumberProp(t, e);
+    });
+    var i;
+    var n;
+    var o;
+    var e = this.GetNumberPropById(1);
+    var a = this.GetPlayerLevel();
+    var s = ConfigManager_1.ConfigManager.FunctionConfig;
+    if (t > 0 && t < a && r !== undefined) {
+      if (!!(o = s.GetRangePlayerExpConfig(t, a)) && !(o.length < 1)) {
+        i = o[0];
+        n = o[o.length - 1];
+        i = i.LevelExp;
+        o = this.A7t(o, r, e);
+        n = n.LevelExp;
+        ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(4);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerLevelChanged, t, a, e, r, o, n, i);
+      }
+    } else if (r !== undefined && r < e) {
+      o = s.GetPlayerLevelConfig(a).LevelExp;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerExpChanged, e, r, o);
+    }
+  }
   ChangeNumberProp(e, t) {
     if (this.vXi !== undefined) {
       this.vXi.set(e, t);
@@ -66,10 +109,22 @@ class PlayerInfoModel extends ModelBase_1.ModelBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerCurrencyChange, t);
     }
   }
+  UpdatePlayerAttributeStringInfo(e) {
+    e.forEach((e, t) => {
+      this.ChangeStringProp(t, e);
+    });
+  }
   ChangeStringProp(e, t) {
     if (this.MXi) {
       this.MXi.set(e, t);
     }
+  }
+  A7t(e, t, r) {
+    let i = 0;
+    for (const n of e) {
+      i += n.LevelExp;
+    }
+    return i - t + r;
   }
   GetNumberPropById(e) {
     if (this.vXi !== undefined) {
@@ -80,6 +135,9 @@ class PlayerInfoModel extends ModelBase_1.ModelBase {
     if (this.vXi !== undefined) {
       this.vXi.set(e, t);
     }
+  }
+  GetStringPropById(e) {
+    return this.MXi.get(e);
   }
   GetPlayerGender() {
     var e = this.GetNumberPropById(9);
@@ -118,7 +176,7 @@ class PlayerInfoModel extends ModelBase_1.ModelBase {
   GetAccountName(e = true) {
     if (this.MXi) {
       if (!e || ConfigManager_1.ConfigManager.PlayerInfoConfig.GetIsUseAccountName()) {
-        return ModelManager_1.ModelManager.FunctionModel.GetPlayerName();
+        return this.GetStringPropById(7);
       } else {
         e = this.GetPlayerRoleId();
         return ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e).GetRoleRealName();
@@ -176,6 +234,9 @@ class PlayerInfoModel extends ModelBase_1.ModelBase {
     } else {
       return undefined;
     }
+  }
+  GetPlayerName() {
+    return this.GetStringPropById(7);
   }
   GetPlayerLevel() {
     return this.GetNumberPropById(0);

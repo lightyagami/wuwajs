@@ -18,7 +18,7 @@ class BulletLogicSpeedReduceController extends BulletLogicController_1.BulletLog
     var l = (l = this.a7o.AttackerMoveComp.CharacterWeight) < MIN_WEIGHT ? MIN_WEIGHT : l;
     var o = this.a7o.CollisionInfo.GetFirstVictim([1]);
     if (o?.Valid) {
-      e = l - (o = (o = o?.GetComponent(178).CharacterWeight) < MIN_WEIGHT ? MIN_WEIGHT : o) * 0.1 * this.h7o.SpeedDampingRatio;
+      e = l - (o = (o = o?.GetComponent(179).CharacterWeight) < MIN_WEIGHT ? MIN_WEIGHT : o) * 0.1 * this.h7o.SpeedDampingRatio;
       o = (o = (o = (l = l + o * 0.1 * this.h7o.SpeedDampingRatio) < TOLERANCE || e < 0 ? 0 : this.a7o.MoveInfo.BulletSpeed * (e / l)) > 0 ? o : 0) < this.h7o.MinSpeed ? 0 : o;
       this.a7o.MoveInfo.BulletSpeed = o;
     }

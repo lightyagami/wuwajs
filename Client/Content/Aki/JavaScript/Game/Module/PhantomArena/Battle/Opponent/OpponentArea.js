@@ -46,52 +46,52 @@ class OpponentArea {
     e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallengeConfig(e);
     this.RoleItem.RefreshHeadIcon(e.NpcHead);
     this.RoleItem.SetBarActive(false);
-    this.LCu();
+    this.b0u();
   }
   async Ai1(e) {
     this.HandArea = new OpponentHandArea_1.OpponentHandArea();
     this.HandArea.RegisterBattleArea(this);
     await this.HandArea.CreateThenShowByActorAsync(e.GetOwner());
   }
-  async Ytu() {
+  async Miu() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleCurveX");
     var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat, 102);
     this.DrawCardCurveX = await e.Promise;
   }
-  async _iu() {
+  async kiu() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleNPCCurveY");
     var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat, 102);
     this.DrawCardCurveY = await e.Promise;
   }
-  async uiu() {
+  async Oiu() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleCurveX_1");
     var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat, 102);
     this.DiscardCardCurveX = await e.Promise;
   }
-  async ciu() {
+  async qiu() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleNPCCurveY_1");
     var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat, 102);
     this.DiscardCardCurveY = await e.Promise;
   }
-  async Bsu() {
+  async hau() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleNPCPlayCurve");
     var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat, 102);
     this.MoveLocationCurve = await e.Promise;
   }
-  async Hau() {
+  async Chu() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleNPCRecycle");
     var e = new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.CurveFloat, 102);
     this.RecycleCurve = await e.Promise;
   }
-  async Jtu() {
-    await Promise.all([this.Ytu(), this._iu(), this.uiu(), this.ciu(), this.Bsu(), this.Hau()]);
+  async Iiu() {
+    await Promise.all([this.Miu(), this.kiu(), this.Oiu(), this.qiu(), this.hau(), this.Chu()]);
   }
-  async Ppu() {
+  async Avu() {
     this.RoleHpTween = new PhantomArenaRoleHpTween_1.PhantomArenaRoleHpTween();
     await this.RoleHpTween.InitCurveDamage();
   }
   async InitArea(e, a, i) {
-    await Promise.all([this.Ai1(e), this.Pi1(a), this.nFe(i), this.Jtu(), this.Ppu()]);
+    await Promise.all([this.Ai1(e), this.Pi1(a), this.nFe(i), this.Iiu(), this.Avu()]);
     this.RoleHpTween.SetRoleItem(this.RoleItem);
   }
   RegisterViewProxy(e) {
@@ -113,11 +113,11 @@ class OpponentArea {
       await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleNpcShowOverRequest();
     }
   }
-  LCu() {
-    this.wCu();
+  b0u() {
+    this.R0u();
     this.RefreshTask();
   }
-  wCu() {
+  R0u() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleLife);
     var a = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetBattleStatusValue(Protocol_1.Aki.Protocol.qC1.Proto_PhantomBattleMaxLife);
     ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.SetPrevShowLife(e);

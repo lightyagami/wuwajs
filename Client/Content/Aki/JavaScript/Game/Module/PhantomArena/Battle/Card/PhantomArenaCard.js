@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaCard = undefined;
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../../Core/Common/Log");
 const TickSystem_1 = require("../../../../../Core/Tick/TickSystem");
 const Transform_1 = require("../../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
@@ -45,7 +46,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
         this.Bi1()?.PointerClickCard?.(this.Data.CardId, t);
       }
     };
-    this.fK1 = t => {
+    this.vK1 = t => {
       if (t === "Dissolve" || t === "MagicUse") {
         this.Destroy();
       }
@@ -115,7 +116,7 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
   }
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.GetCardRootItem());
-    this.Sequence.BindOnEndSequenceEvent(this.fK1);
+    this.Sequence.BindOnEndSequenceEvent(this.vK1);
     var t = this.GetComponent(2);
     t.CardClickCallback = this.Ui1;
     var t = t.GetCardToggle();
@@ -226,12 +227,24 @@ class PhantomArenaCard extends CommonBaseCardItem_1.CommonBaseCardItem {
     }
   }
   async Dissolve() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "Card Dissolve Start");
+    }
     var t = new CustomPromise_1.CustomPromise();
     await this.Sequence.PlaySequenceAsync("Dissolve", t);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "Card Dissolve End");
+    }
   }
   async MagicUse() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "Card Magic Use Start");
+    }
     var t = new CustomPromise_1.CustomPromise();
     await this.Sequence.PlaySequenceAsync("MagicUse", t);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("PhantomArena", 10, "Card Magic Use End");
+    }
   }
   PlayStateSequence(t) {
     this.GetComponent(2)?.PlaySequence(t);

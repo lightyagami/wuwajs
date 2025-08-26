@@ -19,7 +19,7 @@ class LevelEventAddBuffClientPrePerformance extends LevelGeneralBase_1.LevelEven
     return this.constructor.name;
   }
   GetPreMessageId(e) {
-    var t = e.Entity.GetComponent(249);
+    var t = e.Entity.GetComponent(252);
     if (t?.Valid) {
       return t.ClientPrePerformancePreMessageId;
     } else {
@@ -37,7 +37,7 @@ class LevelEventAddBuffClientPrePerformance extends LevelGeneralBase_1.LevelEven
         if (n?.Valid) {
           var o = this.GetPreMessageId(n);
           if (o) {
-            var i = r.Entity.GetComponent(209);
+            var i = r.Entity.GetComponent(210);
             if (i?.Valid) {
               for (const s of this.GetBuffIds(e)) {
                 i.AddBuff(s, {

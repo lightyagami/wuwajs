@@ -15,31 +15,38 @@ const CharacterAttributeTypes_1 = require("../../Abilities/CharacterAttributeTyp
 const SpecialSkillBase_1 = require("./SpecialSkillBase");
 const SPECIAL_ENERGY_COUNT = 6;
 const SPECIAL_SKILL_ID = 1608301;
-const DISTANCE = 3000;
+const DISTANCE_XY = 3000;
+const DISTANCE_Z = 1500;
+const DISTANCE_Z_DELTA = 200;
+const RESET_SKILL = 1608942;
 class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
   constructor() {
     super(...arguments);
     this.Jh = undefined;
     this.Gin = undefined;
-    this.RHc = false;
+    this.UWc = false;
     this.$te = undefined;
     this.Xte = undefined;
-    this.KRu = [];
+    this.n$t = undefined;
+    this.ewu = [];
     this.Lz = Vector_1.Vector.Create();
     this.aO1 = false;
     this._yo = (t, e, i) => {
-      if (e === 0 && this.KRu.length !== 0 && (this.KRu.length = 0, Log_1.Log.CheckDebug())) {
+      if (e === 0 && this.ewu.length !== 0 && (this.ewu.length = 0, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("Battle", 17, "SpecialSkillFuLuoLuo 弗洛洛特殊能量被清空");
       }
     };
+    this.Qin = (t, e, i) => {
+      this.RefreshStarScarMaterial();
+    };
     this.Zre = (t, e) => {
       if (SPECIAL_SKILL_ID === e) {
-        this.THc(true);
+        this.BWc(true);
       }
     };
     this.ene = (t, e) => {
       if (SPECIAL_SKILL_ID === e) {
-        this.THc(false);
+        this.BWc(false);
       }
     };
     this.lF1 = (t, e) => {
@@ -55,69 +62,92 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
   }
   OnStart() {
     this.Jh = this.SpecialSkillComponent.Entity;
-    this.$te = this.Jh.GetComponent(172);
-    this.Xte = this.Jh.GetComponent(193);
+    this.$te = this.Jh.GetComponent(173);
+    this.Xte = this.Jh.GetComponent(194);
+    this.n$t = this.Jh.CheckGetComponent(3);
+    this.Jh.GetComponent(93)?.SetEnableRefreshStarScarByEnergy(false);
     var t = this.Jh.GetComponent(0);
     this.aO1 = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === t.GetPlayerId();
-    this.lwu();
-    if (this.aO1 && (EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.CharUseSkill, this.Zre), EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.OnSkillEnd, this.ene), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBeforeChangeRole, this.lF1), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBeforeUpdateSceneTeam, this.uF1), this.$te)) {
-      this.$te.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1, this._yo);
+    this.fwu();
+    this.RefreshStarScarMaterial();
+    if (this.aO1) {
+      EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.CharUseSkill, this.Zre);
+      EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.OnSkillEnd, this.ene);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBeforeChangeRole, this.lF1);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBeforeUpdateSceneTeam, this.uF1);
+      if (this.$te) {
+        this.$te.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1, this._yo);
+        this.$te?.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2, this.Qin);
+      }
+    } else if (this.$te) {
+      this.$te?.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2, this.Qin);
     }
   }
   OnEnd() {
-    if (this.aO1 && (EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBeforeChangeRole, this.lF1), EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBeforeUpdateSceneTeam, this.uF1), this.Jh && (EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.CharUseSkill, this.Zre), EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.OnSkillEnd, this.ene), this.Jh = undefined), this.$te)) {
-      this.$te.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1, this._yo);
+    if (this.aO1) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBeforeChangeRole, this.lF1);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBeforeUpdateSceneTeam, this.uF1);
+      if (this.Jh) {
+        EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.CharUseSkill, this.Zre);
+        EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.OnSkillEnd, this.ene);
+        this.Jh = undefined;
+      }
+      if (this.$te) {
+        this.$te.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1, this._yo);
+        this.$te.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2, this.Qin);
+      }
+    } else if (this.$te) {
+      this.$te.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2, this.Qin);
     }
   }
-  lwu() {
-    this.KRu.length = 0;
+  fwu() {
+    this.ewu.length = 0;
     var e = this.$te?.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1) ?? 0;
     for (let t = 0; t < SPECIAL_ENERGY_COUNT; t++) {
       var i = (SPECIAL_ENERGY_COUNT - t - 1) * 2;
       var i = (e & 3 << i) >> i;
       if (i > 0) {
-        this.KRu.push(i);
+        this.ewu.push(i);
       }
     }
   }
   GetSpecialEnergyType(t) {
-    return this.KRu[t] ?? 0;
+    return this.ewu[t] ?? 0;
   }
   AddSpecialEnergy(t) {
-    if (this.KRu.length < SPECIAL_ENERGY_COUNT) {
-      this.KRu.push(t);
-      this._wu();
+    if (this.ewu.length < SPECIAL_ENERGY_COUNT) {
+      this.ewu.push(t);
+      this.gwu();
     } else if (!this.Xte?.HasTag(-686337478)) {
       let e = false;
       for (let t = 0; t < SPECIAL_ENERGY_COUNT; t++) {
         if (!e) {
-          if (this.KRu[t] !== 3) {
+          if (this.ewu[t] !== 3) {
             e = true;
           }
         }
         if (e && t !== SPECIAL_ENERGY_COUNT - 1) {
-          this.KRu[t] = this.KRu[t + 1];
+          this.ewu[t] = this.ewu[t + 1];
         }
       }
-      if (e) {
-        this.KRu[SPECIAL_ENERGY_COUNT - 1] = t;
-        this._wu();
+      if (e && (this.ewu[SPECIAL_ENERGY_COUNT - 1] = t, this.$te) && (t = this.$te.GetBaseValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1), this.gwu(), t === this.$te.GetBaseValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1))) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FuLuoLuoAddDuplicatedEnergy, this.Jh?.Id ?? 0);
       }
     }
   }
   RemoveSpecialEnergy() {
-    if (!(this.KRu.length <= 0)) {
-      this.KRu.shift();
-      this._wu();
+    if (!(this.ewu.length <= 0)) {
+      this.ewu.shift();
+      this.gwu();
     }
   }
-  _wu() {
+  gwu() {
     let t = 0;
-    for (const e of this.KRu) {
+    for (const e of this.ewu) {
       t = (t <<= 2) + e;
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 17, "SpecialSkillFuLuoLuo", ["弗洛洛特殊能量", this.KRu], ["", t]);
+      Log_1.Log.Debug("Battle", 17, "SpecialSkillFuLuoLuo", ["弗洛洛特殊能量", this.ewu], ["", t]);
     }
     this.$te?.SetBaseValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy1, t);
   }
@@ -125,29 +155,38 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
     var e;
     var i;
     var s;
-    if (this.RHc && this.Gin && this.Jh && (e = this.Jh.GetComponent(1).ActorLocationProxy, s = (i = this.Gin.GetComponent(1)).ActorLocationProxy, Vector_1.Vector.DistSquaredXY(e, s) > DISTANCE * DISTANCE)) {
-      s.Subtraction(e, this.Lz);
-      this.Lz.Normalize();
-      this.Lz.MultiplyEqual(DISTANCE);
-      this.Lz.AdditionEqual(e);
-      i?.SetActorLocation(this.Lz.ToUeVector(), "弗洛洛大招移动范围限制", false);
+    if (this.UWc && this.Gin && this.Jh && (e = this.Jh.GetComponent(1).ActorLocationProxy, s = (i = this.Gin.GetComponent(1)).ActorLocationProxy, Vector_1.Vector.DistSquaredXY(e, s) > DISTANCE_XY * DISTANCE_XY && (s.Subtraction(e, this.Lz), this.Lz.Normalize(), this.Lz.MultiplyEqual(DISTANCE_XY), this.Lz.AdditionEqual(e), i?.SetActorLocation(this.Lz.ToUeVector(), "弗洛洛大招移动范围限制", false)), Math.abs(e.Z - s.Z) > DISTANCE_Z)) {
+      this.Lz.X = e.X;
+      this.Lz.Y = e.Y;
+      this.Lz.Z = e.Z - DISTANCE_Z_DELTA;
+      i?.SetActorLocation(this.Lz.ToUeVector(), "弗洛洛大招Z超范围", false);
+      this.Gin.GetComponent(40)?.BeginSkill(RESET_SKILL);
     }
   }
-  THc(t) {
+  BWc(t) {
     var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Jh, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, 2)?.Entity;
     if (e) {
-      (this.Gin = e)?.GetComponent(178)?.SetWalkOffLedgeRecord(!t);
+      (this.Gin = e)?.GetComponent(179)?.SetWalkOffLedgeRecord(!t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Movement", 35, "弗洛洛大招边缘保护", ["开关", t]);
       }
-      this.RHc = t;
+      this.UWc = t;
     } else {
       this.Gin = undefined;
     }
   }
+  RefreshStarScarMaterial() {
+    var t;
+    var e;
+    if (this.$te) {
+      t = this.$te.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2);
+      e = this.$te.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy2Max);
+      this.n$t?.Actor?.CharRenderingComponent.SetStarScarEnergy(t / e);
+    }
+  }
   _F1(t) {
-    if (this.RHc && t?.Entity === this.Jh) {
-      this.Jh?.GetComponent(93)?.DisableRoleWithoutEffect();
+    if (this.UWc && t?.Entity === this.Jh) {
+      this.Jh?.GetComponent(94)?.DisableRoleWithoutEffect();
     }
   }
 }

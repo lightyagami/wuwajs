@@ -20,6 +20,9 @@ class ActivityMapExploreData extends ActivityData_1.ActivityBaseData {
   GetExDataRedPointShowState() {
     return !!this.IsFirstUnlockState(1) || this.IsCanGetReward();
   }
+  GetExDataFinishShowState() {
+    return !this.TaskList.some(t => !t.IsComplete);
+  }
   IsCanGetReward() {
     return this.TaskList.some(t => t.IsCanGet);
   }

@@ -82,7 +82,7 @@ let BatchBulletCasterComponent = BatchBulletCasterComponent_1 = class BatchBulle
     return true;
   }
   OnStart() {
-    this.mBe = this.Entity.GetComponent(133);
+    this.mBe = this.Entity.GetComponent(134);
     return true;
   }
   OnActivate() {
@@ -97,7 +97,7 @@ let BatchBulletCasterComponent = BatchBulletCasterComponent_1 = class BatchBulle
     return true;
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(122)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
     for (const o of this.gCl) {
       o.SetTimeDilation(t * e);
     }
@@ -125,5 +125,5 @@ let BatchBulletCasterComponent = BatchBulletCasterComponent_1 = class BatchBulle
     }
   }
 };
-BatchBulletCasterComponent = BatchBulletCasterComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(258)], BatchBulletCasterComponent);
+BatchBulletCasterComponent = BatchBulletCasterComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(261)], BatchBulletCasterComponent);
 exports.BatchBulletCasterComponent = BatchBulletCasterComponent; //# sourceMappingURL=BatchBulletCasterComponent.js.map

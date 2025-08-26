@@ -14,6 +14,7 @@ BulletConstant.OpenCollisionLog = false;
 BulletConstant.OpenMoveLog = false;
 BulletConstant.OpenCreateLog = false;
 BulletConstant.OpenHitActorLog = false;
+BulletConstant.OpenDestroyLog = false;
 BulletConstant.OpenActionStat = false;
 BulletConstant.OpenAllActionStat = false;
 BulletConstant.OpenPoolCheck = false;

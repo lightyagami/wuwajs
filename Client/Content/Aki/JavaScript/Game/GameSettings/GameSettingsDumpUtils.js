@@ -91,6 +91,12 @@ GameSettingsDumpUtils.DumpFsr = () => {
 };
 GameSettingsDumpUtils.DumpXess = () => _a.JMc("r.XeSS.Enabled");
 GameSettingsDumpUtils.DumpXessQuality = () => _a.JMc("r.XeSS.Enabled");
+GameSettingsDumpUtils.DumpXess2 = () => _a.JMc("r.XeSS.Enabled");
+GameSettingsDumpUtils.DumpXess2Fg = () => _a.JMc("r.XeFG.Enabled");
+GameSettingsDumpUtils.DumpXess2Quality = () => _a.JMc("r.XeSS.Quality");
+GameSettingsDumpUtils.DumpFsr3 = () => _a.JMc("r.FidelityFX.FSR3.Enabled");
+GameSettingsDumpUtils.DumpFsr3Fg = () => _a.JMc("r.FidelityFX.FI.Enabled");
+GameSettingsDumpUtils.DumpFsr3Quality = () => _a.JMc("r.FidelityFX.FSR3.QualityMode");
 GameSettingsDumpUtils.DumpMetalFxEnable = () => {
   var e = _a.JMc("r.MetalFxUpscale");
   return e += _a.JMc("r.TemporalAA.SharpenLimitDepth");
@@ -155,4 +161,6 @@ GameSettingsDumpUtils.DumpVulkan = () => {
   var e = "";
   return (e += _a.JMc("r.Android.DisableVulkanSupport")) + _a.JMc("r.Mobile.FlushSceneColorRendering");
 };
-GameSettingsDumpUtils.DumpWaterInteract = () => "SceneBattleInteractModel.Open: " + ModelManager_1.ModelManager.SceneBattleInteractModel.Open; //# sourceMappingURL=GameSettingsDumpUtils.js.map
+GameSettingsDumpUtils.DumpWaterInteract = () => "SceneBattleInteractModel.Open: " + ModelManager_1.ModelManager.SceneBattleInteractModel.Open;
+GameSettingsDumpUtils.DumpVegetationDither = () => "";
+GameSettingsDumpUtils.DumpAutoExposure = () => _a.JMc("r.Kuro.AutoExposurePlayerCustom"); //# sourceMappingURL=GameSettingsDumpUtils.js.map

@@ -4,11 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomManageConfigRenameInputView = undefined;
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const CommonInputViewBase_1 = require("./CommonInputViewBase");
 class PhantomManageConfigRenameInputView extends CommonInputViewBase_1.CommonInputViewBase {
   GetMaxLimit() {
-    return 10;
+    return CommonParamById_1.configCommonParamById.GetIntConfig("PhantomSettingNameLength") ?? 20;
   }
   InitExtraParam() {
     this.Hqe();

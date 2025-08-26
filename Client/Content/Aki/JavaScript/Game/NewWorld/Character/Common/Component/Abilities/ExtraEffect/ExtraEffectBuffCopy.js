@@ -76,7 +76,7 @@ class ExtraEffectBuffCopy extends ExtraEffectBase_1.BuffEffect {
     this.RemoveEvent();
     const t = [];
     this.EntityIds.forEach(e => {
-      e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(209);
+      e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(210);
       if (e) {
         t.push(e);
       }

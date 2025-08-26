@@ -8,6 +8,7 @@ const UE = require("ue");
 const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const TickSystem_1 = require("../../../Core/Tick/TickSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const CameraController_1 = require("../../Camera/CameraController");
@@ -25,6 +26,7 @@ const SceneInteractionManager_1 = require("../Scene/Interaction/SceneInteraction
 const ItemMaterialManager_1 = require("../Scene/Item/MaterialController/ItemMaterialManager");
 const ItemMaterialParameterCollectionController_1 = require("../Scene/Item/MaterialController/ItemMaterialParameterCollectionController");
 const RenderModuleConfig_1 = require("./RenderModuleConfig");
+const mpcForGameplayNameBurstTime = new UE.FName("BurstTime");
 class RenderModuleModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -36,6 +38,10 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     this.K1r = 5;
     this.Q1r = false;
     this.X1r = false;
+    this.pud = undefined;
+    this.vud = 16;
+    this.yud = -this.vud;
+    this.Sud = false;
     this.$1r = 0;
     this.Enl = () => {
       UE.KuroRenderingRuntimeBPPluginBPLibrary.StopSomeWeatherBeforeTeleport(GlobalData_1.GlobalData.World);
@@ -58,6 +64,8 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
           Global_1.Global.BaseCharacter?.CharRenderingComponent?.RefreshMaterialController();
         });
       }
+      this.Sud = e;
+      this.yud = 0;
     };
     this.BPr = e => {
       if (!e && this.cKl && (UE.KuroRenderingRuntimeBPPluginBPLibrary.SetDisableEffectPostProcessVolume(GlobalData_1.GlobalData.World, false, 1), this.cKl = false, Log_1.Log.CheckInfo())) {
@@ -67,6 +75,15 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
         TimerSystem_1.TimerSystem.Next(() => {
           Global_1.Global.BaseCharacter?.CharRenderingComponent?.RefreshMaterialController();
         });
+      }
+    };
+    this.cdu = (e, t) => {
+      if (e === 2) {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.DisableGlobalGITransition 1");
+      } else if (t === 2) {
+        TimerSystem_1.TimerSystem.Delay(() => {
+          UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.DisableGlobalGITransition 0");
+        }, 500);
       }
     };
   }
@@ -307,6 +324,16 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
         Log_1.Log.ErrorWithStack("Render", 25, "DebugDrawManager Tick执行异常", e, ["error", e.message]);
       }
     }
+    try {
+      if (Info_1.Info.IsGameRunning() && this.yud > -this.vud && this.yud < this.vud) {
+        this.yud += this.Sud ? t : -t;
+        UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, this.pud, mpcForGameplayNameBurstTime, this.yud);
+      }
+    } catch (e) {
+      if (e instanceof Error && Log_1.Log.CheckError()) {
+        Log_1.Log.ErrorWithStack("Render", 25, "MpcForGameplay设置异常", e, ["error", e.message]);
+      }
+    }
   }
   OnInit() {
     this.$1r = 0;
@@ -327,6 +354,10 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Inl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.Yyn);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSequenceCameraStatus, this.BPr);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraModeChanged, this.cdu);
+    ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/PostProcess/DistortionWave/MPC_ForGamePlay.MPC_ForGamePlay", UE.MaterialParameterCollection, e => {
+      this.pud = e;
+    });
     return true;
   }
   OnClear() {
@@ -345,6 +376,7 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Inl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.Yyn);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSequenceCameraStatus, this.BPr);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraModeChanged, this.cdu);
     return true;
   }
   OnLeaveLevel() {

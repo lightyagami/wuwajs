@@ -154,6 +154,9 @@ class ExploreProgressModel extends ModelBase_1.ModelBase {
   UpdatePlayPointState(e, t) {
     this.GetExploreAreaData(e)?.UpdatePlayPointData(t);
   }
+  UpdateTraceEntities(e, t, r) {
+    this.GetExploreAreaData(e)?.UpdateTraceEntities(t, r);
+  }
   UpdateOnlinePlayersArea(e) {
     this.OnlinePlayersAreaMap.clear();
     for (var [t, r] of Object.entries(e)) {
@@ -186,7 +189,7 @@ class ExploreProgressModel extends ModelBase_1.ModelBase {
   }
   CheckTrackExploreAreaItemData() {
     if (this.E8l) {
-      this.E8l.TrackPlayPoint();
+      this.E8l.TrackPoint();
       this.ClearTrackExploreAreaItemData();
     }
   }

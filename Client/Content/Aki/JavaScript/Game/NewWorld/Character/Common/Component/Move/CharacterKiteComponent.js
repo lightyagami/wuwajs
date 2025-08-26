@@ -53,7 +53,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     this.Cgl = 0;
     this.znr = Vector_1.Vector.Create();
     this.G91 = 0;
-    this.mau = 0;
+    this.Nau = 0;
     this.S1l = (0, puerts_1.$ref)(undefined);
     this.OnMoveStateChanged = (t, e) => {
       if (t === CharacterUnifiedStateTypes_1.ECharMoveState.Kite) {
@@ -62,7 +62,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     };
   }
   static get Dependencies() {
-    return [178];
+    return [179];
   }
   KiteMove(t) {
     var e;
@@ -70,11 +70,11 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     if (ModelManager_1.ModelManager.SeamlessTravelModel?.GetIsKeepingCurrentMovementMode() || ModelManager_1.ModelManager.TeleportModel?.GetIsKeepingCurrentMovementMode()) {
       this.znr.DeepCopy(this.Gce.ActorComp.ActorLocationProxy);
       this.G91 = 0;
-      this.mau = 0;
+      this.Nau = 0;
     } else if (this.Die?.Valid && this.Nul === this.Die.SplineMoveEndCount) {
       if (Vector_1.Vector.DistSquared(this.znr, this.Gce.ActorComp.ActorLocationProxy) < BLOCK_DIST_THRESHOLD_SQUARED) {
-        if (this.G91 > KITE_MAX_BLOCK && ++this.mau >= KITE_BLOCK_COUNT) {
-          this.Entity.GetComponent(99)?.SetIsHookEndByInterrupt(true);
+        if (this.G91 > KITE_MAX_BLOCK && ++this.Nau >= KITE_BLOCK_COUNT) {
+          this.Entity.GetComponent(100)?.SetIsHookEndByInterrupt(true);
           this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
             Mode: 3,
             Context: "[CharacterKiteComponent.KiteMove.Block]"
@@ -84,7 +84,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
       } else {
         this.znr.DeepCopy(this.Gce.ActorComp.ActorLocationProxy);
         this.G91 = 0;
-        this.mau = 0;
+        this.Nau = 0;
       }
       e = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, this.M1l.ToUeVector());
       i = UE.KismetMathLibrary.WD_WorldToLocal(GlobalData_1.GlobalData.World, this.Die.HookLocation.ToUeVector());
@@ -92,7 +92,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
       this.M1l.DeepCopy(this.Die.HookLocation);
     } else {
       if (this.Cgl !== this.Die?.SplineMoveBrokenCount) {
-        this.Entity.GetComponent(99)?.SetIsHookEndByInterrupt(true);
+        this.Entity.GetComponent(100)?.SetIsHookEndByInterrupt(true);
       }
       this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
         Mode: 3,
@@ -104,7 +104,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     return true;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(178);
+    this.Gce = this.Entity.GetComponent(179);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChanged);
     return true;
   }

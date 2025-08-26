@@ -4,20 +4,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.InviteNewbieModel = undefined;
-const LanguageSystem_1 = require("../../../../../../Core/Common/LanguageSystem");
-const Log_1 = require("../../../../../../Core/Common/Log");
-const CommonDefine_1 = require("../../../../../../Core/Define/CommonDefine");
 const H5CircumUrlById_1 = require("../../../../../../Core/Define/ConfigQuery/H5CircumUrlById");
 const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
-const LocalStorage_1 = require("../../../../../Common/LocalStorage");
-const LocalStorageDefine_1 = require("../../../../../Common/LocalStorageDefine");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const InviteNewbieProtocolContext_1 = require("./InviteNewbieProtocolContext");
 class InviteNewbieModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
+    this.GmUrl = undefined;
     this.xVa = undefined;
   }
   OnInit() {
@@ -38,8 +34,10 @@ class InviteNewbieModel extends ModelBase_1.ModelBase {
     return this.xVa?.Id ?? 0;
   }
   get HasRedDot() {
-    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.InviteNewbieEntered);
-    return e === undefined || !e;
+    return this.xVa?.RedPointShowState ?? false;
+  }
+  SaveClickState() {
+    this.xVa?.SaveClickRedDotState();
   }
   get HelpId() {
     return this.xVa?.GetHelpId() ?? 0;
@@ -61,7 +59,9 @@ class InviteNewbieModel extends ModelBase_1.ModelBase {
   }
   get RootUrl() {
     var e;
-    if (this.xVa !== undefined) {
+    if (this.GmUrl !== undefined && this.GmUrl !== "") {
+      return this.GmUrl;
+    } else if (this.xVa !== undefined) {
       e = this.xVa.Id;
       e = H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e);
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk()) {
@@ -69,34 +69,8 @@ class InviteNewbieModel extends ModelBase_1.ModelBase {
       } else {
         return e?.RootUrl;
       }
-    }
-  }
-  get QrCodeUrl() {
-    if (this.xVa !== undefined) {
-      var t = this.xVa.Id;
-      var t = H5CircumUrlById_1.configH5CircumUrlById.GetConfig(t)?.Ps5RootUrl;
-      if (t !== undefined) {
-        let e = undefined;
-        var r = LanguageSystem_1.LanguageSystem.PackageLanguage;
-        if (r === CommonDefine_1.CHT) {
-          e = "zh-tw";
-        } else if (r === CommonDefine_1.JAPANESE_ISO639_1) {
-          e = "jp";
-        } else if (r === CommonDefine_1.KOREAN_ISO639_1) {
-          e = "kr";
-        } else if (r === CommonDefine_1.FRANCE_ISO639_1) {
-          e = "fr";
-        } else if (r === CommonDefine_1.GERMANY_ISO639_1) {
-          e = "de";
-        } else if (r === CommonDefine_1.SPAIN_ISO639_1) {
-          e = "es";
-        }
-        var r = e === undefined ? t : t + "?lang=" + e;
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("InviteNewbie", 64, "获取二维码链接", ["url", r]);
-        }
-        return r;
-      }
+    } else {
+      return undefined;
     }
   }
   get IsInternalBrowser() {
@@ -108,6 +82,7 @@ class InviteNewbieModel extends ModelBase_1.ModelBase {
     if (this.xVa) {
       this.xVa.InviteCode = e?.XRc ?? undefined;
       this.xVa.Score = e?.SMs ?? 0;
+      this.xVa.ChangeServerRedDotState(e?.e7u ?? false);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.CurrentActivityId);
   }

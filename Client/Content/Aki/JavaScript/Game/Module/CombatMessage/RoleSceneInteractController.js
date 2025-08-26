@@ -30,7 +30,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CombatMessage_1 = require("./CombatMessage");
 class RoleSceneInteractController extends ControllerBase_1.ControllerBase {
   static OnHookMoveNotify(e, o) {
-    var t = e?.GetComponent(99);
+    var t = e?.GetComponent(100);
     if (t) {
       if (o.j6n === "CIl") {
         t.SimulateHookTargetEntity = undefined;
@@ -59,7 +59,7 @@ class RoleSceneInteractController extends ControllerBase_1.ControllerBase {
         t.CIl.Y = o.HookLocation.Y;
         t.CIl.Z = o.HookLocation.Z;
       }
-      CombatMessage_1.CombatNet.Send(19537, e, t);
+      CombatMessage_1.CombatNet.Send(21424, e, t);
     }
   }
 }

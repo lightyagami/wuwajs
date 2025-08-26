@@ -38,38 +38,38 @@ class HandBookQuestView extends UiViewBase_1.UiViewBase {
       this.RefreshLoopScrollView();
       this.RefreshCollectText();
     };
-    this.R6e = (t, e) => {
+    this.R6e = (e, t) => {
       return new CommonTabItem_1.CommonTabItem();
     };
-    this.pqe = t => {
+    this.pqe = e => {
       this.L6e = Time_1.Time.Now;
-      this.I6e = t;
+      this.I6e = e;
       this.Refresh();
       this.GetScrollViewWithScrollbar(1).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass()).Play();
     };
-    this.yqe = t => {
-      t = this.yvt[t];
-      return new CommonTabData_1.CommonTabData(t.Icon, new CommonTabTitleData_1.CommonTabTitleData(t.Name));
+    this.yqe = e => {
+      e = this.yvt[e];
+      return new CommonTabData_1.CommonTabData(e.Icon, new CommonTabTitleData_1.CommonTabTitleData(e.Name));
     };
     this.CanToggleChange = () => !!Info_1.Info.IsInGamepad() || !this.L6e || Time_1.Time.Now - this.L6e >= this.ZZt;
     this.KPn = () => {
-      var t = new HandBookQuestItem_1.HandBookQuestItem();
-      this.WPn.push(t);
-      return t;
+      var e = new HandBookQuestItem_1.HandBookQuestItem();
+      this.WPn.push(e);
+      return e;
     };
-    this.aei = (t, e) => t.Id - e.Id;
+    this.aei = (e, t) => e.Id - t.Id;
     this.lyt = () => {
       this.CloseMe();
     };
-    this.OnHandBookRead = (t, e) => {
-      if (t === this.yvt[this.I6e].Type) {
+    this.OnHandBookRead = (e, t) => {
+      if (e === this.yvt[this.I6e].Type) {
         var i = this.WPn.length;
-        for (let t = 0; t < i; t++) {
-          var o = this.WPn[t].GetChildItemList();
+        for (let e = 0; e < i; e++) {
+          var o = this.WPn[e].GetChildItemList();
           var n = o.length;
-          for (let t = 0; t < n; t++) {
-            var s = o[t];
-            if (s.GetData()?.ConfigId === e) {
+          for (let e = 0; e < n; e++) {
+            var s = o[e];
+            if (s.GetData()?.ConfigId === t) {
               s.SetNewState(false);
               return;
             }
@@ -77,9 +77,9 @@ class HandBookQuestView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.OnPhotoSelect = t => {
-      for (const e of this.WPn) {
-        for (const i of e.GetChildItemList()) {
+    this.OnPhotoSelect = e => {
+      for (const t of this.WPn) {
+        for (const i of t.GetChildItemList()) {
           i.GetTog().SetToggleStateForce(0, false, true);
         }
       }
@@ -110,15 +110,15 @@ class HandBookQuestView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhotoSelect, this.OnPhotoSelect);
   }
   OnBeforeShow() {
-    let t = true;
+    let e = true;
     for (const i of this.WPn) {
       for (const o of i.GetChildItemList()) {
-        var e = o.GetTog();
-        if (t && o.GetIsUnlock()) {
-          e.SetToggleStateForce(1, false, true);
-          t = false;
+        var t = o.GetTog();
+        if (e && o.GetIsUnlock()) {
+          t.SetToggleStateForce(1, false, true);
+          e = false;
         } else {
-          e.SetToggleStateForce(0, false, true);
+          t.SetToggleStateForce(0, false, true);
         }
       }
     }
@@ -126,53 +126,52 @@ class HandBookQuestView extends UiViewBase_1.UiViewBase {
   }
   async InitCommonTabTitle() {
     this.ZZt = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time");
-    var t = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
-    this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), t, this.lyt);
+    var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
+    this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.lyt);
     this.Ivt.SetCanChange(this.CanToggleChange);
-    var t = this.yvt.length;
-    var t = this.Ivt.CreateTabItemDataByLength(t);
-    await this.Ivt.RefreshTabItemAsync(t);
+    var e = this.yvt.length;
+    var e = this.Ivt.CreateTabItemDataByLength(e);
+    await this.Ivt.RefreshTabItemAsync(e);
   }
   RefreshLoopScrollView() {
     this.s8e ||= ConfigManager_1.ConfigManager.HandBookConfig.GetPlotTypeConfigList();
-    var e = [];
-    var t = this.yvt[this.I6e].Type;
+    var t = [];
+    var e = this.yvt[this.I6e].Type;
     for (const s of this.s8e) {
-      if (s.Type === t) {
+      if (s.Type === e) {
         var i = ConfigManager_1.ConfigManager.HandBookConfig.GetPlotHandBookConfigByType(s.Id);
         if (i) {
-          let t = true;
+          let e = true;
           for (const r of i) {
             var o = ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(s.Type, r.Id);
-            t = o === undefined && t;
+            e = o === undefined && e;
           }
-          if (!t) {
-            e.push(s);
+          if (!e) {
+            t.push(s);
           }
         }
       }
     }
-    e.sort(this.aei);
+    t.sort(this.aei);
     var n = this.GetScrollViewWithScrollbar(1);
     this.GenericScroll ||= new GenericScrollViewNew_1.GenericScrollViewNew(n, this.KPn, this.GetItem(3).GetOwner());
-    if (e.length <= 0) {
+    if (t.length <= 0) {
       this.GenericScroll.SetActive(false);
       this.GetItem(4)?.SetUIActive(true);
     } else {
       this.GenericScroll.SetActive(true);
       this.GetItem(4)?.SetUIActive(false);
-      this.GenericScroll.RefreshByData(e, () => {
-        var t = this.GenericScroll?.GetItemByIndex(0);
-        if (t) {
-          this.GenericScroll?.ScrollTo(t);
+      this.GenericScroll.RefreshByData(t, () => {
+        var e = this.GenericScroll?.GetItemByIndex(0);
+        if (e) {
+          this.GenericScroll?.ScrollTo(e);
         }
       });
     }
   }
   RefreshCollectText() {
-    var t = HandBookController_1.HandBookController.GetCollectProgress(this.yvt[this.I6e].Type);
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "RoleExp", t[0], t[1]);
-    this.GetText(2)?.SetUIActive(false);
+    var e = HandBookController_1.HandBookController.GetCollectProgress(7);
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "RoleExp", e[0], e[1]);
   }
   OnBeforeDestroy() {
     this.RoleRootUiCameraHandleData = undefined;

@@ -219,18 +219,18 @@ class MarkItem {
       t = this.GetMarkItemViewType();
       if ((t = MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Get(t + "_" + this.MapType)) !== undefined) {
         this.InnerView = t;
-        this._Qc();
+        this.ZJu();
       } else {
         this.InnerView = this.CreateView();
         this.InnerView.InitializeMarkItemViewAsync().then(() => {
-          this._Qc();
+          this.ZJu();
         });
       }
     } else {
-      this._Qc();
+      this.ZJu();
     }
   }
-  _Qc() {
+  ZJu() {
     if (this.InnerView !== undefined && !this.InnerView.LoadingPromise) {
       (this.InnerView.Holder = this).MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
       this.InnerView.Reset();

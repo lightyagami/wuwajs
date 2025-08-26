@@ -61,20 +61,20 @@ const SKIP_FALL_INJURE_TIME = 1000;
 const DELAYCLOSETIME = 1500;
 class TeleportController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(18307, this.AIo);
-    Net_1.Net.Register(25866, this.Nkl);
-    Net_1.Net.Register(23503, this.PIo);
-    Net_1.Net.Register(24601, this.S3l);
-    Net_1.Net.Register(25615, this.P$_);
+    Net_1.Net.Register(20659, this.AIo);
+    Net_1.Net.Register(22310, this.Nkl);
+    Net_1.Net.Register(21710, this.PIo);
+    Net_1.Net.Register(21667, this.S3l);
+    Net_1.Net.Register(18929, this.P$_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InitArea, this.Hlh);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(18307);
-    Net_1.Net.UnRegister(25866);
-    Net_1.Net.UnRegister(23503);
-    Net_1.Net.UnRegister(24601);
-    Net_1.Net.UnRegister(25615);
+    Net_1.Net.UnRegister(20659);
+    Net_1.Net.UnRegister(22310);
+    Net_1.Net.UnRegister(21710);
+    Net_1.Net.UnRegister(21667);
+    Net_1.Net.UnRegister(18929);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InitArea, this.Hlh);
     return true;
   }
@@ -192,17 +192,15 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   }
   static SendTeleportTransferRequestById(e) {
     ModelManager_1.ModelManager.GameModeModel.IsTeleport = true;
-    ModelManager_1.ModelManager.GameModeModel.AddLoadMapHandle("SendTeleportTransferRequestById");
     e = Protocol_1.Aki.Protocol.mCs.create({
       s5n: e
     });
-    Net_1.Net.Call(16855, e, e => {
-      ModelManager_1.ModelManager.GameModeModel.RemoveLoadMapHandle("SendTeleportTransferRequestById");
+    Net_1.Net.Call(21203, e, e => {
       if (GlobalData_1.GlobalData.World) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
           ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24657);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29079);
         }
       } else {
         ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
@@ -211,7 +209,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     });
   }
   static async wIo(e, o, r, t, l, a = true, _ = false, n = 0, i = true) {
-    if (!TeleportController.DGu(e, o, r, t, l, n)) {
+    if (!TeleportController.GNu(e, o, r, true, t, l, n)) {
       return false;
     }
     const g = ModelManager_1.ModelManager.TeleportModel;
@@ -324,7 +322,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     return t.Promise;
   }
   static async BIo(e, o, r, t, l, a = true, _ = 0) {
-    if (!TeleportController.DGu(e, o, r, t, l, _)) {
+    if (!TeleportController.GNu(e, o, r, false, t, l, _)) {
       return false;
     }
     const n = ModelManager_1.ModelManager.TeleportModel;
@@ -357,7 +355,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
               await this.FIo(l.Option.q$_.y5n, () => {
                 var e = Protocol_1.Aki.Protocol.D$_.create();
                 e.x$_ = l.Option.q$_.y5n;
-                Net_1.Net.Call(26138, e, e => {
+                Net_1.Net.Call(26476, e, e => {
                   if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
                     if (Log_1.Log.CheckInfo()) {
                       Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);
@@ -408,6 +406,13 @@ class TeleportController extends ControllerBase_1.ControllerBase {
                 Log_1.Log.Info("Teleport", 7, "TransitionType.RoleLoading开始");
               }
               ModelManager_1.ModelManager.LoadingModel?.SetRoleLoadingConfig(l.Option.Th1?.bh1);
+              await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(6, n.TeleportMode);
+              break;
+            case Protocol_1.Aki.Protocol.p5n.Proto_WithCustomLoading:
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("Teleport", 71, "TransitionType.CustomLoading开始", ["id", l.Option.$Jc?.v9n]);
+              }
+              ModelManager_1.ModelManager.LoadingModel?.SetSpecifiedLoadingConfigId(l.Option.$Jc?.v9n);
               await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(6, n.TeleportMode);
               break;
             default:
@@ -484,7 +489,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         await this.SeamlessTeleportStart();
       }
       ModelManager_1.ModelManager.GameModeModel.StartIndependentStreaming(n.TargetPosition.ToUeVector());
-      this.jGu();
+      this.FNu();
       ModelManager_1.ModelManager.GameModeModel.LoadingPhase = 11;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Teleport", 29, "传送:检测体素流送(开始)");
@@ -716,71 +721,71 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     TaskSystem_1.TaskSystem.Run();
     return r.Promise;
   }
-  static DGu(e, o, r, t, l, a = 0) {
-    var _ = ModelManager_1.ModelManager.TeleportModel;
-    if (_.IsTeleport) {
+  static GNu(e, o, r, t, l, a, _ = 0) {
+    var n = ModelManager_1.ModelManager.TeleportModel;
+    if (n.IsTeleport) {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Teleport", 29, "重复调用传送接口, 当前正在传送中", ["Reason", t]);
+        Log_1.Log.Warn("Teleport", 29, "重复调用传送接口, 当前正在传送中", ["Reason", l]);
       }
       return false;
     }
-    _.TeleportEntityCreatureDataId = a;
-    let n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    let i = undefined;
-    if (n = a !== 0 ? ModelManager_1.ModelManager.CreatureModel.GetEntity(a) : n) {
-      i = ControllerHolder_1.ControllerHolder.CharacterController.GetActorComponent(n);
+    n.TeleportEntityCreatureDataId = _;
+    let i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+    let g = undefined;
+    if (i = _ !== 0 ? ModelManager_1.ModelManager.CreatureModel.GetEntity(_) : i) {
+      g = ControllerHolder_1.ControllerHolder.CharacterController.GetActorComponent(i);
     }
-    _.CallSource = l.TeleportCallSource;
-    if (i?.Valid) {
-      _.StartPosition.DeepCopy(i.ActorLocationProxy);
-      _.StartRotation.DeepCopy(i.ActorRotationProxy);
-      _.StartGravityDirect.DeepCopy(i.ActorGravityDirectProxy);
+    n.CallSource = a.TeleportCallSource;
+    if (g?.Valid) {
+      n.StartPosition.DeepCopy(g.ActorLocationProxy);
+      n.StartRotation.DeepCopy(g.ActorRotationProxy);
+      n.StartGravityDirect.DeepCopy(g.ActorGravityDirectProxy);
     }
-    _.TargetPosition.DeepCopy(e);
+    n.TargetPosition.DeepCopy(e);
     if (r) {
-      _.TargetGravityDirect.DeepCopy(r);
+      n.TargetGravityDirect.DeepCopy(r);
     } else {
-      _.TargetGravityDirect.DeepCopy(i?.ActorGravityDirectProxy ?? Vector_1.Vector.DownVectorProxy);
+      n.TargetGravityDirect.DeepCopy(g?.ActorGravityDirectProxy ?? Vector_1.Vector.DownVectorProxy);
     }
-    if (!_.TargetGravityDirect.Normalize()) {
-      _.TargetGravityDirect.DeepCopy(Vector_1.Vector.DownVectorProxy);
+    if (!n.TargetGravityDirect.Normalize()) {
+      n.TargetGravityDirect.DeepCopy(Vector_1.Vector.DownVectorProxy);
     }
-    if (MathUtils_1.MathUtils.IsNearlyEqual(_.TargetGravityDirect.Z, -1) && _.TargetGravityDirect.Inequality(Vector_1.Vector.DownVectorProxy)) {
-      _.TargetGravityDirect.DeepCopy(Vector_1.Vector.DownVectorProxy);
+    if (MathUtils_1.MathUtils.IsNearlyEqual(n.TargetGravityDirect.Z, -1) && n.TargetGravityDirect.Inequality(Vector_1.Vector.DownVectorProxy)) {
+      n.TargetGravityDirect.DeepCopy(Vector_1.Vector.DownVectorProxy);
     }
     if (o) {
-      _.TargetRotation.DeepCopy(o);
-    } else if (i?.Valid) {
-      Quat_1.Quat.FindBetween(i.ActorGravityDirectProxy, _.TargetGravityDirect, MathUtils_1.MathUtils.CommonTempQuat);
-      a = Quat_1.Quat.Create();
-      MathUtils_1.MathUtils.CommonTempQuat.Multiply(i.ActorRotationProxy.Quaternion(), a);
-      a.Rotator(_.TargetRotation);
+      n.TargetRotation.DeepCopy(o);
+    } else if (g?.Valid) {
+      Quat_1.Quat.FindBetween(g.ActorGravityDirectProxy, n.TargetGravityDirect, MathUtils_1.MathUtils.CommonTempQuat);
+      _ = Quat_1.Quat.Create();
+      MathUtils_1.MathUtils.CommonTempQuat.Multiply(g.ActorRotationProxy.Quaternion(), _);
+      _.Rotator(n.TargetRotation);
     } else {
-      _.TargetRotation.Reset();
+      n.TargetRotation.Reset();
     }
-    r = _.TargetGravityDirect.Multiply(-1, Vector_1.Vector.Create());
-    _.TargetRotation.Quaternion().GetForwardVector(MathUtils_1.MathUtils.CommonTempVector);
-    MathUtils_1.MathUtils.LookRotationUpFirst(MathUtils_1.MathUtils.CommonTempVector, r, _.TargetRotation);
+    r = n.TargetGravityDirect.Multiply(-1, Vector_1.Vector.Create());
+    n.TargetRotation.Quaternion().GetForwardVector(MathUtils_1.MathUtils.CommonTempVector);
+    MathUtils_1.MathUtils.LookRotationUpFirst(MathUtils_1.MathUtils.CommonTempVector, r, n.TargetRotation);
     ModelManager_1.ModelManager.CharacterModel.ExitAllSelfCenteredMode();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Teleport", 57, "传送:慢放解除", ["Reason", t]);
+      Log_1.Log.Info("Teleport", 57, "传送:慢放解除", ["Reason", l]);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Teleport", 29, "传送:开始", ["传送实体", _.TeleportEntityCreatureDataId], ["开始位置", _.StartPosition], ["目标位置", _.TargetPosition], ["开始旋转", _.StartRotation], ["目标旋转", _.TargetRotation], ["开始重力方向", _.StartGravityDirect], ["目标重力方向", _.TargetGravityDirect], ["原因", l.TeleportReason], ["传送类型", l.CtxType], ["Reason", t]);
+      Log_1.Log.Info("Teleport", 29, "传送:开始", ["传送实体", n.TeleportEntityCreatureDataId], ["开始位置", n.StartPosition], ["目标位置", n.TargetPosition], ["开始旋转", n.StartRotation], ["目标旋转", n.TargetRotation], ["开始重力方向", n.StartGravityDirect], ["目标重力方向", n.TargetGravityDirect], ["原因", a.TeleportReason], ["传送类型", a.CtxType], ["Reason", l]);
     }
-    _.IsTeleport = true;
+    n.IsTeleport = true;
     ModelManager_1.ModelManager.GameModeModel.SetBornInfo(e, o);
     ModelManager_1.ModelManager.GameModeModel.IsTeleport = true;
     ModelManager_1.ModelManager.GameModeModel.LoadingPhase = 2;
     ModelManager_1.ModelManager.GameModeModel.AddLoadMapHandle("TeleportToPositionCommon");
-    ModelManager_1.ModelManager.GameModeModel.RenderAssetDone = false;
-    WorldController_1.WorldController.SetEnableWorldOriginTickCheck(t, false);
+    ModelManager_1.ModelManager.GameModeModel.RenderAssetDone = t;
+    WorldController_1.WorldController.SetEnableWorldOriginTickCheck(l, false);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Teleport", 29, "传送:处理开始事件(开始)", ["Reason", t]);
+      Log_1.Log.Info("Teleport", 29, "传送:处理开始事件(开始)", ["Reason", l]);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportStart, true);
-    if (i?.Valid) {
-      EventSystem_1.EventSystem.EmitWithTarget(n.Entity, EventDefine_1.EEventName.TeleportStartEntity, true);
+    if (g?.Valid) {
+      EventSystem_1.EventSystem.EmitWithTarget(i.Entity, EventDefine_1.EEventName.TeleportStartEntity, true);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 29, "传送:处理开始事件(完成)");
@@ -902,6 +907,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
             o.Add((0, puerts_1.$unref)(l));
           }
         }
+        ControllerHolder_1.ControllerHolder.GameModeController.AppendAllBaseDatalayers(o);
       }
       var t = e ? ModelManager_1.ModelManager.GameModeModel.VoxelStreamingSource : ModelManager_1.ModelManager.GameModeModel.StreamingSource;
       var a = e ? r.VoxelStreamingCompleted : r.StreamingCompleted;
@@ -913,7 +919,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       (e ? r.VoxelStreamingCompleted : r.StreamingCompleted).SetResult(true);
     }
   }
-  static jGu() {
+  static FNu() {
     var e;
     if (UE.KuroStaticLibrary.IsLowMemoryDevice() && (e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.WorldPartitionSubsystem.StaticClass())) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 60, "清理卸载流送单元(开始)", ["PhysicalMemory", GameSettingsDeviceRender_1.GameSettingsDeviceRender.PhysicalGBRam]), e.FlushUnloadingStreamingCells(), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Teleport", 60, "清理卸载流送单元(结束)");
@@ -921,7 +927,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   }
   static kIo() {
     var e = new Protocol_1.Aki.Protocol.pCs();
-    Net_1.Net.Call(16549, e, e => {
+    Net_1.Net.Call(26614, e, e => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Teleport", 29, "传送:TeleportFinishRequestSetResult(开始)");
       }
@@ -946,16 +952,16 @@ class TeleportController extends ControllerBase_1.ControllerBase {
               Context: "[TeleportController.SetCurrentEntityAction]"
             });
           }
-          o.Entity.GetComponent(177)?.MainAnimInstance?.SyncAnimStates(undefined);
+          o.Entity.GetComponent(178)?.MainAnimInstance?.SyncAnimStates(undefined);
           r.SetInputRotator(_.TargetRotation);
           r.SetActorRotation(_.TargetRotation.ToUeRotator(), "TeleportController", false);
           r.MoveComp?.SetGravityDirectWithoutRotate(_.TargetGravityDirect);
-          o.Entity.GetComponent(175)?.ResetCharState();
+          o.Entity.GetComponent(176)?.ResetCharState();
           r.TeleportAndFindStandLocation(_.TargetPosition);
           CameraController_1.CameraController.FightCamera.LogicComponent.SetRotation(CameraUtility_1.CameraUtility.GetCameraDefaultFocusUeRotator());
           CameraController_1.CameraController.FightCamera.LogicComponent.ResetFightCameraLogic(e);
         } else {
-          o?.Entity?.GetComponent(177)?.StopModelBuffer();
+          o?.Entity?.GetComponent(178)?.StopModelBuffer();
           e = Quat_1.Quat.Create();
           r.ActorQuatProxy.Inverse(MathUtils_1.MathUtils.CommonTempQuat);
           MathUtils_1.MathUtils.CommonTempQuat.Multiply(CameraController_1.CameraController.FightCamera.LogicComponent.CameraRotation.Quaternion(), e);
@@ -986,7 +992,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         if (_.CallSource === 1) {
           DeadReviveController_1.DeadReviveController.PlayerReviveEnded();
         }
-        o.Entity.GetComponent(191)?.ResetDrowning();
+        o.Entity.GetComponent(192)?.ResetDrowning();
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Teleport", 29, "传送:失败,找不到当前实体");
       }
@@ -1053,7 +1059,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     }
     let o = undefined;
     let t = undefined;
-    if (r.SeamlessConfig?.KeepMovementStateFeatures?.KeepKite && (l = e.GetComponent(99))?.GetIsHooking() && l.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
+    if (r.SeamlessConfig?.KeepMovementStateFeatures?.KeepKite && (l = e.GetComponent(100))?.GetIsHooking() && l.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
       r.UseTreadmill = false;
       r.UseKeepKite = true;
       r.UseKeepMovementMode = true;
@@ -1089,7 +1095,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       });
     }
     if (r.UseKeepKite) {
-      const a = e.GetComponent(99);
+      const a = e.GetComponent(100);
       var l = a.GetCurrentTargetEntity().Entity;
       r.KeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
       r.KeepKite.SetInitData(l, e);
@@ -1254,7 +1260,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
           t();
         });
         var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(3);
-        ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(177)?.StopModelBuffer();
+        ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(178)?.StopModelBuffer();
         var o = Vector_1.Vector.Create();
         r.Treadmill.GetLockOnLocation(o);
         if (Log_1.Log.CheckInfo()) {
@@ -1443,9 +1449,9 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       this.Fkl(e, r, t, Vector_1.Vector.DownVectorProxy);
     }
   }
-  static async TeleportElevator(e, o, r, t) {
+  static async TeleportElevator(e, o, r, t = undefined) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
-    return !!e && (e = e.CreatureDataId, o ? (o = new TeleportDefine_1.TeleportContext(undefined, undefined, 0), ModelManager_1.ModelManager.TeleportModel.TeleportMode = 4, TeleportController.wIo(r, t.ToUeRotator(), undefined, "TeleportElevator", o, true, false, e, false)) : (this.Fkl(e, r, t, Vector_1.Vector.DownVectorProxy), true));
+    return !!e && (e = e.CreatureDataId, o ? (o = new TeleportDefine_1.TeleportContext(undefined, undefined, 0), ModelManager_1.ModelManager.TeleportModel.TeleportMode = 4, TeleportController.wIo(r, t?.ToUeRotator(), undefined, "TeleportElevator", o, true, false, e, false)) : (this.Fkl(e, r, t ?? Rotator_1.Rotator.Create(0, 0, 0), Vector_1.Vector.DownVectorProxy), true));
   }
   static Fkl(e, o, r, t) {
     var l;
@@ -1484,6 +1490,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         ModelManager_1.ModelManager.TeleportModel.SeamlessConfig.ParseConfig(o.Option.R$s);
         break;
       case Protocol_1.Aki.Protocol.p5n.Proto_WithCharacterDisplay:
+      case Protocol_1.Aki.Protocol.p5n.Proto_WithCustomLoading:
         ModelManager_1.ModelManager.TeleportModel.TeleportMode = 1;
         break;
       default:
@@ -1601,7 +1608,7 @@ TeleportController.P$_ = o => {
   _a.FIo(o.x$_, () => {
     var e = Protocol_1.Aki.Protocol.D$_.create();
     e.x$_ = o.x$_;
-    Net_1.Net.Call(26138, e, e => {
+    Net_1.Net.Call(26476, e, e => {
       if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);

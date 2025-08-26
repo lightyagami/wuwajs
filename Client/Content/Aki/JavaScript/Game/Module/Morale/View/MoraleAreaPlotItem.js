@@ -49,37 +49,37 @@ class MoraleAreaPlotItem extends UiPanelBase_1.UiPanelBase {
   SetPlotNewUnlock(t) {
     this.GetUiNiagara(3)?.SetUIActive(t);
   }
-  Kvu() {
+  Wyu() {
     this.SetPlotActive(true);
     this.SetPlotLight(true);
-    this.Xvu(0);
+    this.Qyu(0);
     this.SetPlotNewUnlock(false);
   }
-  Xvu(t) {
-    t = this.Yvu(t, this.EnterConfig.格子入场曲线);
+  Qyu(t) {
+    t = this.Kyu(t, this.EnterConfig.格子入场曲线);
     this.SetPlotLightAlpha(t);
   }
-  zvu() {
+  Xyu() {
     this.SetPlotActive(true);
     this.SetPlotLight(true);
-    this.Jvu(0);
+    this.Yyu(0);
     this.SetPlotNewUnlock(false);
   }
-  Jvu(t) {
-    t = this.Yvu(t, this.LoopConfig.格子入场曲线);
+  Yyu(t) {
+    t = this.Kyu(t, this.LoopConfig.格子入场曲线);
     this.SetPlotLightAlpha(t);
   }
-  Zvu() {
+  zyu() {
     this.SetPlotActive(true);
     this.SetPlotLight(false);
     this.SetPlotLightAlpha(0);
     this.SetPlotNewUnlock(true);
   }
-  eyu(t) {
+  Jyu(t) {
     var i = t?.FloatCurve.Keys.Num() ?? 0;
     return (t?.FloatCurve.Keys.Get(i - 1).Time ?? 1) * 1000;
   }
-  Yvu(t, i) {
+  Kyu(t, i) {
     return i?.GetFloatValue(t / 1000) ?? 0;
   }
   OnTick(t) {
@@ -95,11 +95,11 @@ class MoraleAreaPlotItem extends UiPanelBase_1.UiPanelBase {
           return;
         }
         this.EnterTickPromise = MoraleTickPromise_1.MoraleTickPromise.Create({
-          StartCallback: this.Kvu.bind(this),
-          TickCallback: this.Xvu.bind(this)
+          StartCallback: this.Wyu.bind(this),
+          TickCallback: this.Qyu.bind(this)
         });
       }
-      await this.EnterTickPromise.PlayStart(this.eyu(this.EnterConfig.格子入场曲线));
+      await this.EnterTickPromise.PlayStart(this.Jyu(this.EnterConfig.格子入场曲线));
     }
   }
   async PlayNewUnlockEffect() {
@@ -110,7 +110,7 @@ class MoraleAreaPlotItem extends UiPanelBase_1.UiPanelBase {
           return;
         }
         this.NewUnlockTickPromise = MoraleTickPromise_1.MoraleTickPromise.Create({
-          StartCallback: this.Zvu.bind(this),
+          StartCallback: this.zyu.bind(this),
           EndCallback: this.SetPlotNewUnlock.bind(this, false)
         });
       }
@@ -125,12 +125,12 @@ class MoraleAreaPlotItem extends UiPanelBase_1.UiPanelBase {
           return;
         }
         this.LoopTickPromise = MoraleTickPromise_1.MoraleTickPromise.Create({
-          StartCallback: this.zvu.bind(this),
-          TickCallback: this.Jvu.bind(this),
-          EndCallback: this.Jvu.bind(this, 0)
+          StartCallback: this.Xyu.bind(this),
+          TickCallback: this.Yyu.bind(this),
+          EndCallback: this.Yyu.bind(this, 0)
         });
       }
-      await this.LoopTickPromise.PlayStart(this.eyu(this.LoopConfig.格子入场曲线));
+      await this.LoopTickPromise.PlayStart(this.Jyu(this.LoopConfig.格子入场曲线));
     }
   }
   OnBeforeDestroy() {

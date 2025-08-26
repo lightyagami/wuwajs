@@ -28,11 +28,11 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
       i.Parameters.get(ItemDefines_1.EItemFunctionType.AutoOpenGift);
     }
     const a = r.GetCount() - e;
-    Net_1.Net.Call(20912, n, e => {
+    Net_1.Net.Call(16612, n, e => {
       var r;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26201);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22240);
         } else {
           if (UiManager_1.UiManager.IsViewShow("InventoryGiftView")) {
             UiManager_1.UiManager.CloseView("InventoryGiftView");
@@ -54,7 +54,7 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
   static SendGiftPackPreviewRequest(o, _, l) {
     var e = new Protocol_1.Aki.Protocol.bg_();
     e.Igl = _.Id;
-    Net_1.Net.Call(28282, e, e => {
+    Net_1.Net.Call(19767, e, e => {
       if (e) {
         var r;
         var t;
@@ -102,10 +102,10 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26269, InventoryGiftController.ItemGiftUseNotify);
+    Net_1.Net.Register(19529, InventoryGiftController.ItemGiftUseNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26269);
+    Net_1.Net.UnRegister(19529);
   }
 }
 (exports.InventoryGiftController = InventoryGiftController).ItemGiftUseNotify = r => {

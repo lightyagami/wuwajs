@@ -80,6 +80,12 @@ class InputCombinationActionBinding {
       t.set(i, e);
     }
   }
+  GetPcKeyNameList(t) {
+    for (var [i, e] of this.hEe) {
+      t.push(i);
+      t.push(e);
+    }
+  }
   GetGamepadKeyNameMap(t) {
     for (var [i, e] of this.lEe) {
       t.set(i, e);
@@ -96,6 +102,13 @@ class InputCombinationActionBinding {
       this.GetPcKeyNameMap(t);
     } else if (Info_1.Info.IsInGamepad()) {
       this.GetGamepadKeyNameMap(t);
+    }
+  }
+  GetCurrentPlatformKeyNameList(t) {
+    if (Info_1.Info.IsInKeyBoard()) {
+      this.GetPcKeyNameList(t);
+    } else if (Info_1.Info.IsInGamepad()) {
+      this.GetGamepadKeyNameList(t);
     }
   }
   HasKey(t, i) {

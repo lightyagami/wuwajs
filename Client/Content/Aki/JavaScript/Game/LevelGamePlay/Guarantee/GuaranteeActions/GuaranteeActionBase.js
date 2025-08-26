@@ -15,7 +15,11 @@ class GuaranteeActionBase {
     this.Context = t;
     this.OnExecute(e.Params);
   }
+  Clear(e, t) {
+    this.OnClear(e, t);
+  }
   OnExecute(e) {}
+  OnClear(e, t) {}
 }
 exports.GuaranteeActionBase = GuaranteeActionBase;
 //# sourceMappingURL=GuaranteeActionBase.js.map

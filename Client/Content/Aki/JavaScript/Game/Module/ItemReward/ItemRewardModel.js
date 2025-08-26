@@ -45,6 +45,18 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
     this.q0i.SetItemList(s);
     return this.q0i;
   }
+  GetExploreLevelRewardData(e, t, i, s) {
+    e = {
+      Type: 0,
+      ViewName: e,
+      CurrentExploreLevel: t,
+      TargetExploreLevel: i
+    };
+    t = new RewardData_1.RewardData();
+    t.SetRewardInfo(e);
+    t.SetItemList(s);
+    return t;
+  }
   RefreshCommonRewardDataFromConfig(e, t, i, s) {
     e = ConfigManager_1.ConfigManager.ItemRewardConfig.GetCommonRewardViewDisplayConfig(e);
     if (e) {
@@ -92,7 +104,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
       return this.q0i;
     }
   }
-  RefreshExploreRewardDataFromConfig(e, t = true, i, s, r, a, o, h, n, l, d, I, u, m, w, C) {
+  RefreshExploreRewardDataFromConfig(e, t = true, i, s, r, a, o, h, n, l, d, u, w, I, p, m) {
     e = ConfigManager_1.ConfigManager.ItemRewardConfig.GetExploreRewardDisplayConfig(e);
     if (e) {
       t = {
@@ -100,7 +112,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
         ViewName: "ExploreRewardView",
         AudioId: e.AudioId,
         IsSuccess: t,
-        Title: C ?? e.Title,
+        Title: m ?? e.Title,
         TitleHexColor: e.TitleHexColor,
         TitleIconPath: e.TitleIconPath,
         TitleIconHexColor: e.TitleIconHexColor,
@@ -113,7 +125,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
         OnCloseCallback: n,
         Tip: l,
         IsShowOnlineChallengePlayer: d,
-        IsRewardMultiLine: m
+        IsRewardMultiLine: I
       };
       if (!this.q0i) {
         this.NewRewardData();
@@ -135,14 +147,14 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
       if (h) {
         this.q0i.SetStateToggle(h);
       }
-      if (I) {
-        this.q0i.SetExploreFriendDataList(I);
-      }
       if (u) {
-        this.q0i.SetScoreReached(u);
+        this.q0i.SetExploreFriendDataList(u);
       }
       if (w) {
-        this.q0i.SetAccumulatedScoreData(w);
+        this.q0i.SetScoreReached(w);
+      }
+      if (p) {
+        this.q0i.SetAccumulatedScoreData(p);
       }
       return this.q0i;
     }

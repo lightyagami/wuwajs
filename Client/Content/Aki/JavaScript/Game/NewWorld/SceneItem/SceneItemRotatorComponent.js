@@ -41,7 +41,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     this.Hte = undefined;
     this.mBe = undefined;
     this.Lie = undefined;
-    this.yFu = undefined;
+    this.DVu = undefined;
     this.wMn = undefined;
     this.BMn = undefined;
     this.bMn = undefined;
@@ -53,7 +53,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     this.W1n = 0;
     this.FMn = undefined;
     this.EQl = 0;
-    this.h7c = false;
+    this.TVu = false;
     this.VMn = (t, e) => {
       this.GMn.delete(e);
       if (t) {
@@ -105,8 +105,8 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
         this.WMn(t, false);
       }
     };
-    this.Lbu = () => {
-      this.wMn?.OnRotateStopCallback.Remove(this.Lbu);
+    this.Kbu = () => {
+      this.wMn?.OnRotateStopCallback.Remove(this.Kbu);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemRotateStopped);
     };
   }
@@ -137,7 +137,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     if (!this.Hte) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少SceneItemActorComponent", ["PbDataId", this.EIe?.GetPbDataId()]);
@@ -151,7 +151,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
       return false;
     }
     if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
-      this.h7c = true;
+      this.TVu = true;
     }
     this.wMn = this.Hte.Owner.GetComponentByClass(UE.KuroSceneItemMoveComponent.StaticClass());
     if (!this.wMn?.IsValid()) {
@@ -164,16 +164,16 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
       }
       this.wMn.Kuro_SetGravityDirect(this.Hte.ActorGravityDirectProxy.ToUeVectorOld());
       this.wMn.SetTickingMoveEnable(false);
-      if (this.h7c) {
+      if (this.TVu) {
         this.wMn.SetKuroOnlyTickOutside(true);
       }
     }
-    this.mBe = this.Entity.GetComponent(133);
+    this.mBe = this.Entity.GetComponent(134);
     if (this.mBe) {
-      this.Lie = this.Entity.GetComponent(196);
+      this.Lie = this.Entity.GetComponent(197);
       if (this.Lie) {
-        this.yFu = this.Entity.GetComponent(293);
-        return !!this.yFu || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少UeSceneItemMoveTickManagerComponent", ["PbDataId", this.EIe?.GetPbDataId()]), false);
+        this.DVu = this.Entity.GetComponent(298);
+        return !!this.DVu || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少UeSceneItemMoveTickManagerComponent", ["PbDataId", this.EIe?.GetPbDataId()]), false);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少LevelTagComponent", ["PbDataId", this.EIe?.GetPbDataId()]);
@@ -199,8 +199,8 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     return true;
   }
   OnTick(t) {
-    if (this.h7c) {
-      this.yFu?.TickMovement(t);
+    if (this.TVu) {
+      this.DVu?.TickMovement(t);
     }
   }
   OnDisable() {
@@ -357,7 +357,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
                 }
               }
               if (this.wMn.StartRotate()) {
-                this.wMn.OnRotateStopCallback.Add(this.Lbu);
+                this.wMn.OnRotateStopCallback.Add(this.Kbu);
               }
             }
           } else if (Log_1.Log.CheckError()) {
@@ -372,5 +372,5 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     }
   }
 };
-SceneItemRotatorComponent = SceneItemRotatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(167)], SceneItemRotatorComponent);
+SceneItemRotatorComponent = SceneItemRotatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(168)], SceneItemRotatorComponent);
 exports.SceneItemRotatorComponent = SceneItemRotatorComponent; //# sourceMappingURL=SceneItemRotatorComponent.js.map

@@ -13,20 +13,20 @@ const UiManager_1 = require("../../../../Ui/UiManager");
 const MenuDefine_1 = require("../../MenuDefine");
 class FilterSettingViewModel {
   constructor() {
-    this.Stu = 0;
-    this.dcu = undefined;
-    this.Mtu = undefined;
-    this.Etu = undefined;
-    this.Itu = undefined;
-    this.igu = undefined;
-    this.rgu = undefined;
-    this.fsu = undefined;
-    this.gsu = undefined;
-    this.mcu = false;
-    this.fcu = false;
-    this.ogu = true;
+    this.Qtu = 0;
+    this.Ycu = undefined;
+    this.Ktu = undefined;
+    this.Xtu = undefined;
+    this.Ytu = undefined;
+    this.zgu = undefined;
+    this.Jgu = undefined;
+    this.Nsu = undefined;
+    this.Vsu = undefined;
+    this.zcu = false;
+    this.Jcu = false;
+    this.Zgu = true;
     this.IsApplyClicked = false;
-    this.zDu = false;
+    this.zFu = false;
     this.IsLeftStickHorizontalMoved = false;
     this.IsLeftStickVerticalMoved = false;
     this.LastMoveVector = undefined;
@@ -40,7 +40,7 @@ class FilterSettingViewModel {
     this.CameraRotationLock = false;
     this.PadLock = false;
     this.InitFilterIndex = 0;
-    this.v0u = undefined;
+    this.ppu = undefined;
     this.OnHideClick = undefined;
     this.OnResetClick = undefined;
     this.OnConfirmClick = undefined;
@@ -65,67 +65,67 @@ class FilterSettingViewModel {
     this.OnRightArrowClick = undefined;
   }
   get ControlCameraRate() {
-    if (this.dcu === undefined) {
-      this.dcu = CommonParamById_1.configCommonParamById.GetIntConfig("ControlCameraRate") / CommonDefine_1.PERCENTAGE_FACTOR;
+    if (this.Ycu === undefined) {
+      this.Ycu = CommonParamById_1.configCommonParamById.GetIntConfig("ControlCameraRate") / CommonDefine_1.PERCENTAGE_FACTOR;
     }
-    return this.dcu;
+    return this.Ycu;
   }
   get CoordinateTextId() {
     return MenuDefine_1.FILTER_SETTING_COORDINATE_TEXT_ID;
   }
   get IntensityNormalized() {
-    return this.Mtu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
+    return this.Ktu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
   }
   set IntensityNormalized(i) {
-    if (this.Mtu !== i) {
-      this.Mtu = i;
-      this.Stu |= FilterSettingViewModel.Flags.IntensityNormalized;
+    if (this.Ktu !== i) {
+      this.Ktu = i;
+      this.Qtu |= FilterSettingViewModel.Flags.IntensityNormalized;
     }
   }
   get IntensityString() {
     return Math.round(this.IntensityNormalized * 100).toString();
   }
   get HorizontalNormalized() {
-    return this.Etu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
+    return this.Xtu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
   }
   set HorizontalNormalized(i) {
     var t;
     var e;
     var i = MathUtils_1.MathUtils.Clamp(i, 0, 1);
-    this.ngu(i);
+    this.eCu(i);
     if (this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
       t = this.UpLeftPos.X;
       e = this.UpRightPos.X;
-      this.igu = MathUtils_1.MathUtils.Lerp(t, e, i);
+      this.zgu = MathUtils_1.MathUtils.Lerp(t, e, i);
     }
   }
-  ngu(i) {
-    if (this.Etu !== i) {
-      this.Etu = MathUtils_1.MathUtils.Clamp(i, 0, 1);
-      this.Stu |= FilterSettingViewModel.Flags.HorizontalNormalized;
+  eCu(i) {
+    if (this.Xtu !== i) {
+      this.Xtu = MathUtils_1.MathUtils.Clamp(i, 0, 1);
+      this.Qtu |= FilterSettingViewModel.Flags.HorizontalNormalized;
     }
   }
   get HorizontalString() {
     return Math.round(MathUtils_1.MathUtils.Lerp(-5, 5, this.HorizontalNormalized)).toString();
   }
   get VerticalNormalized() {
-    return this.Itu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
+    return this.Ytu ?? MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
   }
   set VerticalNormalized(i) {
     var t;
     var e;
     var i = MathUtils_1.MathUtils.Clamp(i, 0, 1);
-    this.sgu(i);
+    this.tCu(i);
     if (this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
       t = this.DownLeftPos.Z;
       e = this.UpLeftPos.Z;
-      this.rgu = MathUtils_1.MathUtils.Lerp(t, e, i);
+      this.Jgu = MathUtils_1.MathUtils.Lerp(t, e, i);
     }
   }
-  sgu(i) {
-    if (this.Itu !== i) {
-      this.Itu = MathUtils_1.MathUtils.Clamp(i, 0, 1);
-      this.Stu |= FilterSettingViewModel.Flags.VerticalNormalized;
+  tCu(i) {
+    if (this.Ytu !== i) {
+      this.Ytu = MathUtils_1.MathUtils.Clamp(i, 0, 1);
+      this.Qtu |= FilterSettingViewModel.Flags.VerticalNormalized;
     }
   }
   get VerticalString() {
@@ -134,12 +134,12 @@ class FilterSettingViewModel {
   get HorizontalReal() {
     var i;
     var t;
-    if (this.igu === undefined && this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
+    if (this.zgu === undefined && this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
       i = this.UpLeftPos.X;
       t = this.UpRightPos.X;
-      this.igu = MathUtils_1.MathUtils.Lerp(i, t, this.HorizontalNormalized);
+      this.zgu = MathUtils_1.MathUtils.Lerp(i, t, this.HorizontalNormalized);
     }
-    return this.igu;
+    return this.zgu;
   }
   set HorizontalReal(i) {
     var t;
@@ -147,20 +147,20 @@ class FilterSettingViewModel {
     if (i !== undefined && this.UpLeftPos !== undefined && this.UpRightPos !== undefined) {
       t = this.UpLeftPos.X;
       e = this.UpRightPos.X;
-      this.igu = MathUtils_1.MathUtils.Clamp(i, t, e);
-      i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.igu, t, e), 1);
-      this.ngu(i);
+      this.zgu = MathUtils_1.MathUtils.Clamp(i, t, e);
+      i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.zgu, t, e), 1);
+      this.eCu(i);
     }
   }
   get VerticalReal() {
     var i;
     var t;
-    if (this.rgu === undefined && this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
+    if (this.Jgu === undefined && this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
       i = this.DownLeftPos.Z;
       t = this.UpLeftPos.Z;
-      this.rgu = MathUtils_1.MathUtils.Lerp(i, t, this.VerticalNormalized);
+      this.Jgu = MathUtils_1.MathUtils.Lerp(i, t, this.VerticalNormalized);
     }
-    return this.rgu;
+    return this.Jgu;
   }
   set VerticalReal(i) {
     var t;
@@ -168,63 +168,63 @@ class FilterSettingViewModel {
     if (i !== undefined && this.DownLeftPos !== undefined && this.UpLeftPos !== undefined) {
       t = this.DownLeftPos.Z;
       e = this.UpLeftPos.Z;
-      this.rgu = MathUtils_1.MathUtils.Clamp(i, t, e);
-      i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.rgu, t, e), 1);
-      this.sgu(i);
+      this.Jgu = MathUtils_1.MathUtils.Clamp(i, t, e);
+      i = MathUtils_1.MathUtils.GetRoundToNDecimalPlaces(MathUtils_1.MathUtils.InverseLerp(this.Jgu, t, e), 1);
+      this.tCu(i);
     }
   }
   get FilterNameTextId() {
-    return this.fsu;
+    return this.Nsu;
   }
   set FilterNameTextId(i) {
-    if (this.fsu !== i) {
-      this.fsu = i;
-      this.Stu |= FilterSettingViewModel.Flags.FilterNameTextId;
+    if (this.Nsu !== i) {
+      this.Nsu = i;
+      this.Qtu |= FilterSettingViewModel.Flags.FilterNameTextId;
     }
   }
   get FilterPadTexturePath() {
-    return this.gsu;
+    return this.Vsu;
   }
   set FilterPadTexturePath(i) {
-    if (this.gsu !== i) {
-      this.gsu = i;
-      this.Stu |= FilterSettingViewModel.Flags.FilterPadTexturePath;
+    if (this.Vsu !== i) {
+      this.Vsu = i;
+      this.Qtu |= FilterSettingViewModel.Flags.FilterPadTexturePath;
     }
   }
   get IsHideByPad() {
-    return this.mcu;
+    return this.zcu;
   }
   set IsHideByPad(i) {
-    if (this.mcu !== i) {
-      this.mcu = i;
-      this.Stu |= FilterSettingViewModel.Flags.IsHideByPad;
+    if (this.zcu !== i) {
+      this.zcu = i;
+      this.Qtu |= FilterSettingViewModel.Flags.IsHideByPad;
       ModelManager_1.ModelManager.LoadingModel.IsShowUidView = !i;
     }
   }
   get IsHideByClick() {
-    return this.fcu;
+    return this.Jcu;
   }
   set IsHideByClick(i) {
-    if (this.fcu !== i) {
-      this.fcu = i;
-      this.Stu |= FilterSettingViewModel.Flags.IsHideByClick;
+    if (this.Jcu !== i) {
+      this.Jcu = i;
+      this.Qtu |= FilterSettingViewModel.Flags.IsHideByClick;
       ModelManager_1.ModelManager.LoadingModel.IsShowUidView = !i;
     }
   }
   get IsSliderActive() {
-    return this.ogu;
+    return this.Zgu;
   }
   set IsSliderActive(i) {
-    if (this.ogu !== i) {
-      this.ogu = i;
-      this.Stu |= FilterSettingViewModel.Flags.IsSliderActive;
+    if (this.Zgu !== i) {
+      this.Zgu = i;
+      this.Qtu |= FilterSettingViewModel.Flags.IsSliderActive;
     }
   }
   get IsFilterChanged() {
-    return this.zDu;
+    return this.zFu;
   }
   set IsFilterChanged(i) {
-    if (this.zDu = i) {
+    if (this.zFu = i) {
       this.IsApplyClicked = false;
     }
   }
@@ -233,20 +233,20 @@ class FilterSettingViewModel {
   }
   get TexturePathList() {
     var i;
-    if (this.v0u === undefined) {
+    if (this.ppu === undefined) {
       i = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
-      this.v0u = i === undefined ? [] : i.map(i => i.SpritePath);
+      this.ppu = i === undefined ? [] : i.map(i => i.SpritePath);
     }
-    return this.v0u;
+    return this.ppu;
   }
   get IsDirty() {
-    return this.Stu !== 0;
+    return this.Qtu !== 0;
   }
   IsPropertyDirty(i) {
-    return (this.Stu & i) != 0;
+    return (this.Qtu & i) != 0;
   }
   CleanDirty() {
-    this.Stu = 0;
+    this.Qtu = 0;
   }
 }
 (exports.FilterSettingViewModel = FilterSettingViewModel).Flags = {

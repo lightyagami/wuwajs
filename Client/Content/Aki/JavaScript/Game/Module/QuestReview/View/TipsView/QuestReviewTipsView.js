@@ -13,21 +13,21 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class QuestReviewTipsView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
-    this.xJ1 = undefined;
-    this.UJ1 = 0;
-    this.DJ1 = false;
+    this.oZ1 = undefined;
+    this.nZ1 = 0;
+    this.sZ1 = false;
     this.eTt = () => {
-      if (this.xJ1) {
-        ControllerHolder_1.ControllerHolder.QuestReviewController.OpenQuestReview(this.xJ1.Id);
+      if (this.oZ1) {
+        ControllerHolder_1.ControllerHolder.QuestReviewController.OpenQuestReview(this.oZ1.Id);
         this.UiViewSequence.PlaySequence("CloseTips", true);
       }
     };
-    this.BJ1 = () => {
+    this.aZ1 = () => {
       this.UiViewSequence.PlaySequence("StartAtOnce");
-      this.DJ1 = true;
+      this.sZ1 = true;
     };
-    this.kJ1 = () => {
-      this.DJ1 = false;
+    this.hZ1 = () => {
+      this.sZ1 = false;
       this.CloseMe();
     };
   }
@@ -41,27 +41,27 @@ class QuestReviewTipsView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnStart() {
     var i = this.OpenParam.EntryId;
-    this.xJ1 = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewEntryDataById(i);
-    this.UJ1 = 0;
+    this.oZ1 = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewEntryDataById(i);
+    this.nZ1 = 0;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "StoryReview_Tips_Content");
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "StoryReview_Tips_Title");
-    this.UiViewSequence.AddSequenceFinishEvent("StartTips", this.BJ1);
-    this.UiViewSequence.AddSequenceFinishEvent("CloseTips", this.kJ1);
+    this.UiViewSequence.AddSequenceFinishEvent("StartTips", this.aZ1);
+    this.UiViewSequence.AddSequenceFinishEvent("CloseTips", this.hZ1);
   }
   OnAfterShow() {
     this.UiViewSequence.PlaySequence("StartTips");
   }
   OnTick(i) {
     var t;
-    if (this.xJ1 && this.DJ1) {
-      if (this.UJ1 >= this.xJ1.TimerDurationMs) {
+    if (this.oZ1 && this.sZ1) {
+      if (this.nZ1 >= this.oZ1.TimerDurationMs) {
         this.UiViewSequence.PlaySequence("CloseTips", true);
-        this.DJ1 = false;
+        this.sZ1 = false;
       } else {
         t = this.GetSprite(3);
-        this.UJ1 += i;
-        i = Math.max(this.xJ1.TimerDurationMs - this.UJ1, 0);
-        t?.SetFillAmount(i / this.xJ1.TimerDurationMs);
+        this.nZ1 += i;
+        i = Math.max(this.oZ1.TimerDurationMs - this.nZ1, 0);
+        t?.SetFillAmount(i / this.oZ1.TimerDurationMs);
       }
     }
   }

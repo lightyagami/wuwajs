@@ -149,6 +149,9 @@ class InstanceDungeon {
   get LimitViewName() {
     return GameUtils_1.GameUtils.ConvertToArray(this.limitviewnameLength(), this.limitviewname, this);
   }
+  get FuncLimit() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.funclimitLength(), this.funclimit, this);
+  }
   get CanUseItem() {
     return this.canuseitem();
   }
@@ -886,8 +889,35 @@ class InstanceDungeon {
       return 0;
     }
   }
-  canuseitem() {
+  GetFunclimitAt(t) {
+    return this.funclimit(t);
+  }
+  funclimit(t) {
+    var i = this.J7.__offset(this.z7, 90);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  funclimitLength() {
     var t = this.J7.__offset(this.z7, 90);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  funclimitArray() {
+    var t = this.J7.__offset(this.z7, 90);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  canuseitem() {
+    var t = this.J7.__offset(this.z7, 92);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -895,14 +925,6 @@ class InstanceDungeon {
     }
   }
   gameplaymode() {
-    var t = this.J7.__offset(this.z7, 92);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  guidetype() {
     var t = this.J7.__offset(this.z7, 94);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -910,7 +932,7 @@ class InstanceDungeon {
       return 0;
     }
   }
-  guidevalue() {
+  guidetype() {
     var t = this.J7.__offset(this.z7, 96);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -918,8 +940,16 @@ class InstanceDungeon {
       return 0;
     }
   }
-  settlebuttontype() {
+  guidevalue() {
     var t = this.J7.__offset(this.z7, 98);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  settlebuttontype() {
+    var t = this.J7.__offset(this.z7, 100);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -930,7 +960,7 @@ class InstanceDungeon {
     return this.subtitle(t);
   }
   subtitle(t, i) {
-    var s = this.J7.__offset(this.z7, 100);
+    var s = this.J7.__offset(this.z7, 102);
     if (s) {
       return (i || new DicIntString_1.DicIntString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -938,7 +968,7 @@ class InstanceDungeon {
     }
   }
   subtitleLength() {
-    var t = this.J7.__offset(this.z7, 100);
+    var t = this.J7.__offset(this.z7, 102);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -946,7 +976,7 @@ class InstanceDungeon {
     }
   }
   subinstancetitle(t) {
-    var i = this.J7.__offset(this.z7, 102);
+    var i = this.J7.__offset(this.z7, 104);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -954,7 +984,7 @@ class InstanceDungeon {
     return i;
   }
   autoleavetime() {
-    var t = this.J7.__offset(this.z7, 104);
+    var t = this.J7.__offset(this.z7, 106);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -962,14 +992,6 @@ class InstanceDungeon {
     }
   }
   limittime() {
-    var t = this.J7.__offset(this.z7, 106);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  leavewaittime() {
     var t = this.J7.__offset(this.z7, 108);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -977,8 +999,16 @@ class InstanceDungeon {
       return 0;
     }
   }
+  leavewaittime() {
+    var t = this.J7.__offset(this.z7, 110);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   failtips(t) {
-    var i = this.J7.__offset(this.z7, 110);
+    var i = this.J7.__offset(this.z7, 112);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -986,14 +1016,14 @@ class InstanceDungeon {
     return i;
   }
   verifycreaturegen() {
-    var t = this.J7.__offset(this.z7, 112);
+    var t = this.J7.__offset(this.z7, 114);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetDifficultylevelAt(t) {
     return this.difficultylevel(t);
   }
   difficultylevel(t) {
-    var i = this.J7.__offset(this.z7, 114);
+    var i = this.J7.__offset(this.z7, 116);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -1001,7 +1031,7 @@ class InstanceDungeon {
     }
   }
   difficultylevelLength() {
-    var t = this.J7.__offset(this.z7, 114);
+    var t = this.J7.__offset(this.z7, 116);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1009,7 +1039,7 @@ class InstanceDungeon {
     }
   }
   difficultylevelArray() {
-    var t = this.J7.__offset(this.z7, 114);
+    var t = this.J7.__offset(this.z7, 116);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -1020,7 +1050,7 @@ class InstanceDungeon {
     return this.difficultydesc(t);
   }
   difficultydesc(t, i) {
-    var s = this.J7.__offset(this.z7, 116);
+    var s = this.J7.__offset(this.z7, 118);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -1028,7 +1058,7 @@ class InstanceDungeon {
     return s;
   }
   difficultydescLength() {
-    var t = this.J7.__offset(this.z7, 116);
+    var t = this.J7.__offset(this.z7, 118);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1039,7 +1069,7 @@ class InstanceDungeon {
     return this.drop(t);
   }
   drop(t) {
-    var i = this.J7.__offset(this.z7, 118);
+    var i = this.J7.__offset(this.z7, 120);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -1047,7 +1077,7 @@ class InstanceDungeon {
     }
   }
   dropLength() {
-    var t = this.J7.__offset(this.z7, 118);
+    var t = this.J7.__offset(this.z7, 120);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1055,7 +1085,7 @@ class InstanceDungeon {
     }
   }
   dropArray() {
-    var t = this.J7.__offset(this.z7, 118);
+    var t = this.J7.__offset(this.z7, 120);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -1063,14 +1093,6 @@ class InstanceDungeon {
     }
   }
   entercount() {
-    var t = this.J7.__offset(this.z7, 120);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  enterconditiongroup() {
     var t = this.J7.__offset(this.z7, 122);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -1078,8 +1100,16 @@ class InstanceDungeon {
       return 0;
     }
   }
+  enterconditiongroup() {
+    var t = this.J7.__offset(this.z7, 124);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   icontagpath(t) {
-    var i = this.J7.__offset(this.z7, 124);
+    var i = this.J7.__offset(this.z7, 126);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -1087,7 +1117,7 @@ class InstanceDungeon {
     return i;
   }
   viewmapid() {
-    var t = this.J7.__offset(this.z7, 126);
+    var t = this.J7.__offset(this.z7, 128);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1098,7 +1128,7 @@ class InstanceDungeon {
     return this.rendersettings(t);
   }
   rendersettings(t, i) {
-    var s = this.J7.__offset(this.z7, 128);
+    var s = this.J7.__offset(this.z7, 130);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -1106,7 +1136,7 @@ class InstanceDungeon {
     }
   }
   rendersettingsLength() {
-    var t = this.J7.__offset(this.z7, 128);
+    var t = this.J7.__offset(this.z7, 130);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1114,7 +1144,7 @@ class InstanceDungeon {
     }
   }
   dropvisionlimit() {
-    var t = this.J7.__offset(this.z7, 130);
+    var t = this.J7.__offset(this.z7, 132);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

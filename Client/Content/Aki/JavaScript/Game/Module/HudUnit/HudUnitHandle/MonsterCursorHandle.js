@@ -101,7 +101,7 @@ class MonsterCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.CurrentEntity = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (this.CurrentEntity?.Valid) {
       this.dri = this.CurrentEntity.Entity.GetComponent(1);
-      t = this.CurrentEntity.Entity.GetComponent(205);
+      t = this.CurrentEntity.Entity.GetComponent(206);
       this.p7e = t.HasTag(1996802261);
       this.NewHudEntitySet();
       this.rni();
@@ -188,7 +188,7 @@ class MonsterCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     var t = this.HudEntitySet.Add(t);
     t.SetComponent(0);
     t.SetComponent(1);
-    t.SetComponent(205);
+    t.SetComponent(206);
     t.ListenForTagCountChanged(-1371021686, this.Yri);
     var s = t.GetMonsterMatchType();
     let e = this.Bri.get(s);
@@ -207,7 +207,7 @@ class MonsterCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   O7e(t) {
     this.N7e();
-    t = t.Entity.GetComponent(205);
+    t = t.Entity.GetComponent(206);
     this.f7e = t.ListenForTagAddOrRemove(1996802261, this.v7e, MonsterCursorHandle.SYe);
   }
   N7e() {
@@ -262,7 +262,7 @@ class MonsterCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     return false;
   }
   oni() {
-    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(this.PVs, 24, this.wal);
+    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(this.PVs, 96, this.wal);
     for (const s of this.wal) {
       var t = this.HudEntitySet.GetByEntityId(s.Id);
       if (t && this.lni(t, false) && this.Nri.size >= this.bri) {

@@ -145,7 +145,7 @@ class CommonQteSingleClickView extends CommonQteViewBase_1.CommonQteViewBase {
         this.IsQteInteractive = i.InteractiveTiming === 0;
         this._Mc = i.IsShowBorder;
       }
-      if (i = ModelManager_1.ModelManager.CommonQteModel?.GetQteIcon(t.QteId)) {
+      if (i = t.Resource?.Icon) {
         this.DOt?.SetSprite(i, false);
         this.DOt?.SetUIActive(true);
       } else if (Log_1.Log.CheckDebug()) {
@@ -239,7 +239,7 @@ class CommonQteSingleClickView extends CommonQteViewBase_1.CommonQteViewBase {
   FOi(t, i) {
     this.OOi.GetOwner().GetSequencePlayerByKey(t)?.SequencePlayer?.SetPlayRate(i);
   }
-  SY1() {
+  KY1() {
     var t;
     var i = this.OOi.GetOwner();
     if (this.NTe > 0) {
@@ -265,7 +265,7 @@ class CommonQteSingleClickView extends CommonQteViewBase_1.CommonQteViewBase {
     if (this.IsQtePlayStart) {
       if (this.IsQteStart) {
         if (this.NTe > 0) {
-          this.SY1();
+          this.KY1();
           this.FOi(LOOP_SEQUENCE, 1 / this.NTe);
         } else {
           this.FOi(LOOP_SEQUENCE, 0);
@@ -303,7 +303,8 @@ class CommonQteSingleClickView extends CommonQteViewBase_1.CommonQteViewBase {
   }
   Bfc() {
     var t;
-    if (this.fS1 && (t = this.fS1.GetUiConfig()?.UIConfig)) {
+    if (this.fS1 && (t = this.fS1.GetUiConfig())) {
+      t = t.UIConfig;
       this.OOi.SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign);
       this.OOi.SetAnchorOffset(t.AnchorOffset);
     }

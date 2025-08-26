@@ -17,7 +17,7 @@ class TsAnimNotifyAddBuff extends UE.KuroAnimNotify {
     if (r instanceof TsBaseCharacter_1.default) {
       var r = r?.CharacterActorComponent?.Entity;
       var t = r?.GetComponent(0);
-      var r = r.GetComponent(174);
+      var r = r.GetComponent(175);
       if (!r) {
         return true;
       }

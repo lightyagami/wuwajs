@@ -90,9 +90,9 @@ class MapGridData {
     this.OccupiedEffectIdList = t.fo1;
     this.RewardItemIdList = t.JI1;
     this.ConditionInfo = t.ZI1;
-    this.ToleranceLv = t.Sxu;
-    this.SkipBattleLv = t._$c;
-    this.CanSkipBattle = t.l$c;
+    this.ToleranceLv = t.zxu;
+    this.SkipBattleLv = t.Vju;
+    this.CanSkipBattle = t.Fju;
     t = ConfigManager_1.ConfigManager.MapRogueConfig.GetGridEventConfigById(this.GridEventId);
     this.EventType = t?.EventType ?? -1;
     this.GridEventType = t?.ShowType ?? 0;
@@ -149,8 +149,8 @@ class MapRogueGameInfo {
     this.ACr = new Set();
     this.IsEnd = false;
     this.EnterBattleFlag = false;
-    this.wxu = false;
-    this.m$c = false;
+    this.eUu = false;
+    this.iZu = false;
     this.IsSkipBattle = false;
     this.NotTipsInactiveLink = false;
     this.MapScale = 1;
@@ -186,6 +186,7 @@ class MapRogueGameInfo {
     var e = t - this.Lo1;
     this.Lo1 = t;
     this.Yzt?.RefreshTeamLv();
+    this.Yzt?.MapModule?.RefreshAllEventLv();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueResTeamLvChange, t);
     if (i && ConfigManager_1.ConfigManager.MapRogueConfig.GetGlobalParamConfig().ShowLvChangeEventType.includes(i)) {
       this.PushGetItemData(this.sv1, e);
@@ -245,9 +246,9 @@ class MapRogueGameInfo {
     this.IsEnd = false;
     this.Z71();
     this.e91();
-    this.MapScale = this.f$c();
+    this.MapScale = this.rZu();
   }
-  f$c() {
+  rZu() {
     var t;
     var i = ConfigManager_1.ConfigManager.MapRogueConfig.GetInsGridConfigByInstId(this.InstanceId);
     if (i) {
@@ -257,13 +258,13 @@ class MapRogueGameInfo {
       return 1;
     }
   }
-  g$c() {
+  oZu() {
     var t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RogueResMapScale) ?? new Map();
     t.set(this.InstanceId, this.MapScale);
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RogueResMapScale, t);
   }
   Clear() {
-    this.g$c();
+    this.oZu();
     this.CurHoverIndex = -1;
     this.CurSelectedIndex = -1;
     this.KGc = 0;
@@ -283,6 +284,8 @@ class MapRogueGameInfo {
       this.cL1(this.PlayerGridIndex);
     } else {
       this.e91();
+      this.uL1.clear();
+      this.Ak1.clear();
     }
   }
   get HasBindView() {
@@ -657,8 +660,8 @@ class MapRogueGameInfo {
       this.IsSkipBattle = true;
       e();
     };
-    if (this.wxu || this.IsOverEventRecommendLv(this.CurSelectedIndex)) {
-      if (!this.m$c && this.IsGridCanSkipBattle(this.CurSelectedIndex)) {
+    if (this.eUu || this.IsOverEventRecommendLv(this.CurSelectedIndex)) {
+      if (!this.iZu && this.IsGridCanSkipBattle(this.CurSelectedIndex)) {
         (s = new ConfirmBoxDefine_1.ConfirmBoxDataNew(349)).HasToggle = true;
         s.ToggleTextKey = "RogueRes_FightSweepConfirm_Hint";
         s.IsEscViewTriggerCallBack = false;
@@ -666,7 +669,7 @@ class MapRogueGameInfo {
         s.FunctionMap.set(1, h);
         s.FunctionMap.set(2, r);
         s.SetToggleFunction(t => {
-          this.m$c = t;
+          this.iZu = t;
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(s);
       } else {
@@ -678,7 +681,7 @@ class MapRogueGameInfo {
       h.FunctionMap.set(1, i);
       h.FunctionMap.set(2, e);
       h.SetToggleFunction(t => {
-        this.wxu = t;
+        this.eUu = t;
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(h);
     }

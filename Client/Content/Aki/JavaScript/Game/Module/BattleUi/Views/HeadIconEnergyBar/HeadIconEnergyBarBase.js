@@ -20,6 +20,8 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
     this.AttributeId = 0;
     this.MaxAttributeId = 0;
     this.AttributeComponent = undefined;
+    this.TagComponent = undefined;
+    this.TagTaskMap = undefined;
     this.TweenAnimPlayer = undefined;
     this.GYe = new Map();
     this.TargetPercentChanged = (t, i) => {
@@ -47,6 +49,7 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
     this.RoleData = t;
     this.Config = i;
     this.AttributeComponent = this.RoleData.AttributeComponent;
+    this.TagComponent = this.RoleData.GameplayTagComponent;
     this.AttributeId = i.AttributeId;
     this.MaxAttributeId = CharacterAttributeTypes_1.attributeIdsWithMax.get(this.AttributeId) ?? 0;
   }
@@ -83,6 +86,7 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeDestroy() {
     this.kYe();
+    this.thd();
     this.ClearAllTweenAnim();
   }
   AddEvents() {
@@ -130,6 +134,26 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
         t.RemoveListener(i, e);
       }
       this.GYe.clear();
+    }
+  }
+  ListenForTagAddOrRemoveChanged(t, i) {
+    var e = this.TagComponent;
+    if (e) {
+      e = e.ListenForTagAddOrRemove(t, i);
+      this.TagTaskMap ||= new Map();
+      this.TagTaskMap.set(t, e);
+    }
+  }
+  RemoveListenTagAddOrRemove(t) {
+    this.TagTaskMap?.get(t)?.EndTask();
+    this.TagTaskMap?.delete(t);
+  }
+  thd() {
+    if (this.TagTaskMap) {
+      for (const t of this.TagTaskMap.values()) {
+        t.EndTask();
+      }
+      this.TagTaskMap.clear();
     }
   }
   InitTweenAnim(t) {

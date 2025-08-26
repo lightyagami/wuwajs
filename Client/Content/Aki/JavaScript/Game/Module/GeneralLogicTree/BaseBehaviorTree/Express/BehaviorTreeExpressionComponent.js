@@ -24,9 +24,11 @@ class BehaviorTreeExpressionComponent {
     this.TQt = undefined;
     this.LQt = undefined;
     this.DQt = (e, t, i, s) => {
-      if (e.Type === 6 && (e = this.Yre.GetNode(e.NodeId)) && !e.ContainTag(1)) {
+      if (e.Type === 6 && (e = this.Yre.GetNode(e.NodeId))) {
         this.yQt?.UpdateOnNodeStatusChange(e, i, s);
-        this.TQt?.UpdateOnNodeStatusChange(this.Yre, e, i);
+        if (!e.ContainTag(1)) {
+          this.TQt?.UpdateOnNodeStatusChange(this.Yre, e, i);
+        }
       }
     };
     this.RSe = (t, e, i, s) => {

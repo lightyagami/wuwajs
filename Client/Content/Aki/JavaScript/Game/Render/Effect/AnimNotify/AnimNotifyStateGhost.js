@@ -7,8 +7,6 @@ const UE = require("ue");
 const TsBaseCharacter_1 = require("../../../Character/TsBaseCharacter");
 const EffectRuntimeGhostEffectContext_1 = require("../../../Effect/EffectContext/EffectRuntimeGhostEffectContext");
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
-const ModelManager_1 = require("../../../Manager/ModelManager");
-const EffectUtil_1 = require("../../../Utils/EffectUtil");
 class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
   constructor() {
     super(...arguments);
@@ -45,8 +43,8 @@ class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
     f.GhostLifeTime = this.GhostLifeTime;
     f.SourceObject = i;
     f = EffectSystem_1.EffectSystem.SpawnEffect(i, new UE.TransformDouble(new UE.Rotator(), i.D_K2_GetActorLocation(), new UE.VectorDouble(1, 1, 1)), r, "[AnimNotifyStateGhost.K2_NotifyBegin]", f, 0);
-    if (i instanceof TsBaseCharacter_1.default) {
-      EffectUtil_1.EffectUtil.SetAdditionalEffectTimeScaleByEntity(ModelManager_1.ModelManager.CreatureModel.GetEntityById(i.EntityId), f);
+    if (i instanceof TsBaseCharacter_1.default && (i = i.CharacterActorComponent?.Entity?.GetComponent(288))?.Valid) {
+      i.AddEffect(f);
     }
     if (f && EffectSystem_1.EffectSystem.IsValid(f)) {
       EffectSystem_1.EffectSystem.SetEffectNotRecord(f, true);

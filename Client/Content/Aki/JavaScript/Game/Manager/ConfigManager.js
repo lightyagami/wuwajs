@@ -180,6 +180,7 @@ ConfigManager.FarmGoldConfig = undefined;
 ConfigManager.RoleSkinTrialConfig = undefined;
 ConfigManager.ShipTowerConfig = undefined;
 ConfigManager.MoraleConfig = undefined;
+ConfigManager.TrapDefenseConfig = undefined;
 ConfigManager.BabelTowerConfig = undefined;
 ConfigManager.ActivityMapExploreConfig = undefined;
 ConfigManager.DangoAbyssConfig = undefined;
@@ -192,4 +193,10 @@ ConfigManager.PhantomArenaConfig = undefined;
 ConfigManager.BeginnerCarnivalConfig = undefined;
 ConfigManager.KingShipConfig = undefined;
 ConfigManager.LifePointDrawConfig = undefined;
-ConfigManager.TuningStandConfig = undefined; //# sourceMappingURL=ConfigManager.js.map
+ConfigManager.TuningStandConfig = undefined;
+ConfigManager.CommonTouchUiEditConfig = undefined;
+ConfigManager.ActivityFunPlayConfig = undefined;
+ConfigManager.AnsPerformConfig = undefined;
+ConfigManager.GamepadConfig = undefined;
+ConfigManager.LineCrossConfig = undefined;
+ConfigManager.MoonSignInConfig = undefined; //# sourceMappingURL=ConfigManager.js.map

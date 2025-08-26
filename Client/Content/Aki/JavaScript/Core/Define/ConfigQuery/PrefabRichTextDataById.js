@@ -41,7 +41,7 @@ exports.configPrefabRichTextDataById = {
           return a;
         }
       }
-      if (i = ConfigCommon_1.ConfigCommon.BindString(handleId, 1, t, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Id", t]) > 0) {
+      if (i = ConfigCommon_1.ConfigCommon.BindString(handleId, 1, t, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair, ["Id", t]) > 0) {
         n = undefined;
         [i, n] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Id", t]);
         if (i) {

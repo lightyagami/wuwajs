@@ -97,7 +97,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
       var t;
       var i;
       var n;
-      if (Platform_1.Platform.IsMobilePlatform()) {
+      if (Platform_1.Platform.IsMobilePlatform() || Platform_1.Platform.IsPcPlatform()) {
         if ((n = (i = (t = ModelManager_1.ModelManager.MenuModel).GetGameQualityLoadInfo()).Percentage) > 80 && e && (!t.IsOpenedImageOverloadConfirmBox || t.QualityInfoPercentage < 80)) {
           if (Platform_1.Platform.IsIOSPlatform()) {
             MenuController_1.MenuController.OpenImageQualityOverloadConfirmBox();
@@ -328,7 +328,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDropDownListVisibleChanged, this.Lja);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TextLanguageChange, this.kwi);
-    if (Platform_1.Platform.IsMobilePlatform()) {
+    if (Platform_1.Platform.IsMobilePlatform() || Platform_1.Platform.IsPcPlatform()) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ConfigLoadChange, this.Vwi);
     }
     UE.GameUserSettings.GetGameUserSettings()?.OnGameUserSettingsUINeedsUpdate.Add(GameSettingsController_1.GameSettingsController.OnGameUserSettingsUINeedsUpdate);
@@ -336,7 +336,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDropDownListVisibleChanged, this.Lja);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TextLanguageChange, this.kwi);
-    if (Platform_1.Platform.IsMobilePlatform()) {
+    if (Platform_1.Platform.IsMobilePlatform() || Platform_1.Platform.IsPcPlatform()) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ConfigLoadChange, this.Vwi);
     }
     UE.GameUserSettings.GetGameUserSettings()?.OnGameUserSettingsUINeedsUpdate.Remove(GameSettingsController_1.GameSettingsController.OnGameUserSettingsUINeedsUpdate);
@@ -397,7 +397,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
   }
   Fwi() {
     var e = MenuController_1.MenuController.GetTargetBaseConfigData(this.Gwi.MenuViewDataCurMainType);
-    if (this.Gwi.MenuViewDataCurMainType === 2 && Platform_1.Platform.IsMobilePlatform()) {
+    if (this.Gwi.MenuViewDataCurMainType === 2 && (Platform_1.Platform.IsMobilePlatform() || Platform_1.Platform.IsPcPlatform())) {
       this.GetItem(3)?.SetUIActive(true);
       this.Vwi();
     } else {

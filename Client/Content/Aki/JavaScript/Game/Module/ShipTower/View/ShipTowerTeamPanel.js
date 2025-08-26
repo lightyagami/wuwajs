@@ -13,6 +13,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const FilterSortEntrance_1 = require("../../Common/FilterSort/FilterSortEntrance");
 const TabComponent_1 = require("../../Common/TabComponent/TabComponent");
+const EditFormationController_1 = require("../../EditFormation/EditFormationController");
 const EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
@@ -79,25 +80,25 @@ class ShipTowerTeamPanel extends UiPanelBase_1.UiPanelBase {
       var e = e.State === 1;
       if (e) {
         for (let e = 1; e <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; e++) {
-          const s = this.e7_.GetRoleIndexInAllTeam(e);
-          if (!i.has(s)) {
-            i.set(s, r);
+          const o = this.e7_.GetRoleIndexInAllTeam(e);
+          if (!i.has(o)) {
+            i.set(o, r);
             t.add(r.GetDataId());
             break;
           }
         }
       } else {
-        for (const o of i) {
-          if (o[1] === r) {
-            i.delete(o[0]);
+        for (const s of i) {
+          if (s[1] === r) {
+            i.delete(s[0]);
             t.delete(r.GetDataId());
             break;
           }
         }
       }
-      const s = this.Vlo.indexOf(r);
+      const o = this.Vlo.indexOf(r);
       this.RoleSelectCallBack?.(r);
-      this.Flo.GetScrollItemByIndex(s)?.Refresh(r, e, s);
+      this.Flo.GetScrollItemByIndex(o)?.Refresh(r, e, o);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "ToggleFunction", ["", this.Ns_.Id]);
       }
@@ -105,13 +106,17 @@ class ShipTowerTeamPanel extends UiPanelBase_1.UiPanelBase {
     this.CanExecuteChangeFunction = (e, i, t) => {
       return !!ModelManager_1.ModelManager.ShipTowerModel.IsOtherTeamRoleData(e.GetDataId()) || t !== 0 || !this.t7_() || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleFull"), false);
     };
+    this.Mzc = () => {
+      EditFormationController_1.EditFormationController.OpenEditFormationView(false);
+    };
   }
   async Init(e, i) {
     this.Ns_ = i;
     await this.CreateByActorAsync(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[4, this.Mzc]];
   }
   async OnBeforeStartAsync() {
     this.Ivt = new TabComponent_1.TabComponent(this.GetItem(0), this.fqe, this.KOl, undefined);
@@ -159,6 +164,7 @@ class ShipTowerTeamPanel extends UiPanelBase_1.UiPanelBase {
     this.GetScrollViewWithScrollbar(2).RootUIComp.SetUIActive(true);
     this.GetScrollViewWithScrollbar(1).RootUIComp.SetUIActive(false);
     this.vNt?.SetActive(true);
+    this.GetButton(4).RootUIComp.SetUIActive(false);
     this.UpdateRoleListFilter();
   }
   UpdateRoleListFilter() {
@@ -169,7 +175,8 @@ class ShipTowerTeamPanel extends UiPanelBase_1.UiPanelBase {
     this.GetScrollViewWithScrollbar(2).RootUIComp.SetUIActive(false);
     this.GetScrollViewWithScrollbar(1).RootUIComp.SetUIActive(true);
     this.vNt?.SetActive(false);
-    this.Ia_ = this.Ia_ ?? ModelManager_1.ModelManager.ShipTowerModel.GetPlayerTeamList();
+    this.GetButton(4).RootUIComp.SetUIActive(true);
+    this.Ia_ = ModelManager_1.ModelManager.ShipTowerModel.GetPlayerTeamList();
     this.Ea_?.SelectGridProxy(-1);
     this.OnlyUpdateTeamList();
   }

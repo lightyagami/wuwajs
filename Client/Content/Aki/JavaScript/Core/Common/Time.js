@@ -75,10 +75,10 @@ class Time {
     return this.b9 * Time.w9;
   }
   static get PlayerTime() {
-    return this.Ljc;
+    return this.$5u;
   }
   static get PlayerTimeSeconds() {
-    return this.Ljc * Time.w9;
+    return this.$5u * Time.w9;
   }
   static get WorldTime() {
     return this.q9;
@@ -87,10 +87,10 @@ class Time {
     return this.q9 * Time.w9;
   }
   static get PlayerWorldTime() {
-    return this.sUu;
+    return this.kUu;
   }
   static get PlayerWorldTimeSeconds() {
-    return this.sUu * Time.w9;
+    return this.kUu * Time.w9;
   }
   static get FlowTime() {
     return this.uP_;
@@ -123,9 +123,9 @@ class Time {
     this.x9 = t;
     this.B9 += 1;
     this.b9 += t;
-    this.Ljc += t * this.V8c;
+    this.$5u += t * this.V8c;
     this.q9 += t * this.R9;
-    this.sUu += t * this.R9 * this.V8c;
+    this.kUu += t * this.R9 * this.V8c;
     this.uP_ += t * this.R9 * this.cP_;
     this.F8c = new Date().getTime() - this.N8c;
   }
@@ -133,9 +133,9 @@ class Time {
 (exports.Time = Time).w9 = 0.001;
 Time.B9 = 0;
 Time.b9 = 0;
-Time.Ljc = 0;
+Time.$5u = 0;
 Time.q9 = 0;
-Time.sUu = 0;
+Time.kUu = 0;
 Time.uP_ = 0;
 Time.x9 = 0;
 Time.F8c = 0;

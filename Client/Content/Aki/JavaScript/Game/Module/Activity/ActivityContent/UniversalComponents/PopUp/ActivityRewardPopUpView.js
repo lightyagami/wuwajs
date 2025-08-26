@@ -159,13 +159,17 @@ class ActivityRewardPopUpContent extends GridProxyAbstract_1.GridProxyAbstract {
             }
           });
         }
-        if (t.RewardButtonText !== undefined) {
+        if (t.RewardButtonTextId !== undefined) {
+          this.p4e?.SetLocalTextNew(t.RewardButtonTextId);
+        } else if (t.RewardButtonText !== undefined) {
           this.p4e?.SetText(t.RewardButtonText);
         }
         break;
       case 0:
         this.p4e?.SetRedDotVisible(false);
-        if (t.RewardButtonText !== undefined) {
+        if (t.RewardButtonTextId !== undefined) {
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), t.RewardButtonTextId);
+        } else if (t.RewardButtonText !== undefined) {
           this.GetText(5).SetText(t.RewardButtonText);
         }
     }

@@ -14,22 +14,22 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class FloroRanchRaceCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.$Eu = undefined;
+    this.oIu = undefined;
     this.IsFixedRace = undefined;
     this.OnToggleCallBack = undefined;
     this.kqe = () => {
       var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchRaceRedDot) ?? new Set();
-      if (!e.has(this.$Eu.Id)) {
-        e.add(this.$Eu.Id);
+      if (this.oIu.IsUnLock && !e.has(this.oIu.Id)) {
+        e.add(this.oIu.Id);
         LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchRaceRedDot, e);
       }
       this.GetItem(8).SetUIActive(false);
-      if (this.IsFixedRace?.(this.$Eu.Id)) {
+      if (this.IsFixedRace?.(this.oIu.Id)) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("FarmCannotBeModified");
         this.SetToggleState(true);
-      } else if (this.$Eu.IsUnLock) {
+      } else if (this.oIu.IsUnLock) {
         if (this.OnToggleCallBack) {
-          this.OnToggleCallBack(this.$Eu.Id);
+          this.OnToggleCallBack(this.oIu.Id);
         }
       } else {
         this.SetToggleState(false);
@@ -41,10 +41,11 @@ class FloroRanchRaceCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[9, this.kqe]];
   }
   Refresh(e, t, i) {
-    this.$Eu = e;
+    this.oIu = e;
     this.SetTextureByPath(e.Icon, this.GetTexture(3));
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.GetRaceName());
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.GetDesc());
+    this.GetText(5).bBestFit = false;
     var r = this.IsFixedRace(e.Id);
     var o = !e.IsUnLock;
     this.GetItem(1).SetUIActive(r);

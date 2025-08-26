@@ -58,7 +58,7 @@ class ResDownLoadView extends UiViewBase_1.UiViewBase {
     this.$F1 = undefined;
     this.ebl = undefined;
     this.TDe = undefined;
-    this.Seu = undefined;
+    this.Qeu = undefined;
     this.AF1 = e => {
       this.VF1 = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Z31).GetDownLoadState();
       this.WF1();
@@ -81,7 +81,7 @@ class ResDownLoadView extends UiViewBase_1.UiViewBase {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("DownLoadTips_NotEnough");
         } else {
           QuestController_1.QuestNewController.SetIsReportDownloadNotEnoughSpace(false);
-          VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Z31).Update(this.Z31, this.Seu);
+          VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Z31).Update(this.Z31, this.Qeu);
           ModelManager_1.ModelManager.ResDownLoadModel.CurrentDownLoadVideo = this.Z31;
         }
       } else if (this.VF1 === 1) {
@@ -90,7 +90,7 @@ class ResDownLoadView extends UiViewBase_1.UiViewBase {
         ModelManager_1.ModelManager.ResDownLoadModel.CurrentDownLoadVideo = -1;
       } else if (this.VF1 === 2) {
         QuestController_1.QuestNewController.SetIsReportDownloadNotEnoughSpace(false);
-        VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Z31).Update(this.Z31, this.Seu);
+        VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Z31).Update(this.Z31, this.Qeu);
         ModelManager_1.ModelManager.ResDownLoadModel.CurrentDownLoadVideo = this.Z31;
       }
     };
@@ -119,8 +119,8 @@ class ResDownLoadView extends UiViewBase_1.UiViewBase {
       return e;
     });
     this.VF1 = VideoUpdateManager_1.VideoUpdateManager.GetVideoUpdater(this.Z31).GetDownLoadState();
-    if (this.Seu === undefined) {
-      this.Seu = new VideoResourceUpdateProxy();
+    if (this.Qeu === undefined) {
+      this.Qeu = new VideoResourceUpdateProxy();
     }
     this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
       this.WF1();
@@ -132,7 +132,7 @@ class ResDownLoadView extends UiViewBase_1.UiViewBase {
       TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }
-    this.Seu &&= undefined;
+    this.Qeu &&= undefined;
   }
   OnBeforeShow() {
     ModelManager_1.ModelManager.QuestResourceModel?.CalcPrepareResource();

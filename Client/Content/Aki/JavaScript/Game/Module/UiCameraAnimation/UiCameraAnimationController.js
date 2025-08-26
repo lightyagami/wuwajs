@@ -13,6 +13,7 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiCameraAnimationManager_1 = require("./UiCameraAnimationManager");
+const UiModel_1 = require("../../Ui/UiModel");
 class UiCameraAnimationController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenTabView, this.GAo);
@@ -50,11 +51,11 @@ class UiCameraAnimationController extends ControllerBase_1.ControllerBase {
     UiCameraAnimationManager_1.UiCameraAnimationManager.ClearDisplay();
     return true;
   }
-  static HAo(e, a, n) {
+  static HAo(e, a, i) {
     if (UiCameraAnimationManager_1.UiCameraAnimationManager.CanPushCameraHandle(a)) {
       this.VAo();
       this.jAo = a;
-      this.WAo = n;
+      this.WAo = i;
       this.KAo = TimerSystem_1.GameplayTimerSystem.Delay(this.QAo, e);
     }
   }
@@ -71,8 +72,8 @@ exports.UiCameraAnimationController = UiCameraAnimationController;
 (_a = UiCameraAnimationController).jAo = "";
 UiCameraAnimationController.WAo = undefined;
 UiCameraAnimationController.KAo = undefined;
-UiCameraAnimationController.PushCameraHandle = (e, a, n = true) => {
-  if (e === "BattleView") {
+UiCameraAnimationController.PushCameraHandle = (e, a, i = true) => {
+  if (e === UiModel_1.UiModel.MainViewName) {
     if (UiCameraAnimationManager_1.UiCameraAnimationManager.IsActivate()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CameraAnimation", 58, "当打开主界面时，Ui镜头栈有未抛出的数据，检查是否没有关闭界面，或手动播放了Ui镜头但没有手动抛出");
@@ -85,17 +86,17 @@ UiCameraAnimationController.PushCameraHandle = (e, a, n = true) => {
       UiCameraAnimationManager_1.UiCameraAnimationManager.ClearDisplay();
     }
   } else {
-    var i = UiCameraAnimationManager_1.UiCameraAnimationManager.GetCameraMappingData(e);
-    if (i) {
-      i = i.GetUiCameraDelayTime();
+    var n = UiCameraAnimationManager_1.UiCameraAnimationManager.GetCameraMappingData(e);
+    if (n) {
+      n = n.GetUiCameraDelayTime();
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("CameraAnimation", 58, "当打开界面时", ["viewName", e], ["delayTime", i]);
+        Log_1.Log.Info("CameraAnimation", 58, "当打开界面时", ["viewName", e], ["delayTime", n]);
       }
-      if (i > 0) {
-        UiCameraAnimationController.HAo(i, e, a);
+      if (n > 0) {
+        UiCameraAnimationController.HAo(n, e, a);
       } else {
         UiCameraAnimationController.VAo();
-        UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByOpenView(e, a, n);
+        UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByOpenView(e, a, i);
       }
     }
   }
@@ -115,12 +116,12 @@ UiCameraAnimationController.GAo = e => {
     }
   }
 };
-UiCameraAnimationController.PopCameraHandle = (e, a, n, i = true) => {
+UiCameraAnimationController.PopCameraHandle = (e, a, i, n = true) => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("CameraAnimation", 58, "当隐藏界面时", ["viewName", e]);
   }
   UiCameraAnimationController.VAo();
-  UiCameraAnimationManager_1.UiCameraAnimationManager.PopCameraHandleByCloseView(e, a?.Name, n, i);
+  UiCameraAnimationManager_1.UiCameraAnimationManager.PopCameraHandleByCloseView(e, a?.Name, i, n);
 };
 UiCameraAnimationController.EnterUiCameraMode = () => {
   var e = UiCameraAnimationManager_1.UiCameraAnimationManager.UiCamera?.GetStructure();
@@ -175,14 +176,14 @@ UiCameraAnimationController.kAo = () => {
   CameraController_1.CameraController.ExitCameraMode(2);
 };
 UiCameraAnimationController.zpe = (e, a) => {
-  var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-  if (n && a.Id === n.Id) {
+  var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+  if (i && a.Id === i.Id) {
     UiCameraAnimationManager_1.UiCameraAnimationManager.DeactivateCurrentCameraHandle();
   }
 };
-UiCameraAnimationController.GUe = (e, a, n) => {
-  var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-  if (i && a.Id === i.Id) {
+UiCameraAnimationController.GUe = (e, a, i) => {
+  var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+  if (n && a.Id === n.Id) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("CameraAnimation", 58, "当玩家角色添加实体时,重新激活镜头状态");
     }

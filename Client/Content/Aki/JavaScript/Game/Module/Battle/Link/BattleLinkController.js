@@ -54,13 +54,13 @@ const seqCameraTag = new UE.FName("SequenceCamera");
 const characterTag = new UE.FName("Character");
 class BattleLinkController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(25383, this.JAl);
-    Net_1.Net.Register(20863, this.ZAl);
+    Net_1.Net.Register(17126, this.JAl);
+    Net_1.Net.Register(29274, this.ZAl);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(25383);
-    Net_1.Net.UnRegister(20863);
+    Net_1.Net.UnRegister(17126);
+    Net_1.Net.UnRegister(29274);
     this.Nmt();
     return true;
   }
@@ -102,7 +102,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     this.Ash.clear();
     this.Dsh = true;
     this.Mth = undefined;
-    return !(this.NDu = undefined);
+    return !(this.Zku = undefined);
   }
   static yWe() {
     if (!this.zHa) {
@@ -162,7 +162,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 67, "[BattleLink]触发队友大招成功", ["MessageId", this.Zqi], ["entityId", e.Id]);
           }
-          e = e.GetComponent(174);
+          e = e.GetComponent(175);
           t = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
           if (i = CommonParamById_1.configCommonParamById.GetLong54Config("LinkSkillNotifyBuff")) {
             e.AddBuff(i, {
@@ -220,7 +220,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
   static eJa() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
     if (e &&= e.GetComponent(21)) {
-      this.Qsu = e?.AddCue(BattleLinkDefine_1.LINK_BURST_POST_EFFECT);
+      this.yau = e?.AddCue(BattleLinkDefine_1.LINK_BURST_POST_EFFECT);
     }
     var e = BattleLinkDefine_1.LINK_POST_EFFECT_DURATION * TimeUtil_1.TimeUtil.InverseMillisecond;
     this.j3 = TimerSystem_1.TimerSystem.Delay(() => {
@@ -235,7 +235,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
   static eRe() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
     if (e &&= e.GetComponent(21)) {
-      e.RemoveCueByHandle(this.Qsu);
+      e.RemoveCueByHandle(this.yau);
     }
   }
   static t$a() {
@@ -311,7 +311,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
       var i;
       var a = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
       var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-      var o = n.GetComponent(174);
+      var o = n.GetComponent(175);
       let e = undefined;
       let t = undefined;
       if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInDreamLink()) {
@@ -329,8 +329,8 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
             Reason: "Link爆发结束增加buff",
             PreMessageId: a
           });
-          this.NDu ||= [];
-          this.NDu.push(r);
+          this.Zku ||= [];
+          this.Zku.push(r);
         }
       }
       if (t) {
@@ -340,22 +340,22 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static VDu() {
-    if (this.NDu && this.NDu.length !== 0) {
-      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(174);
+  static e2u() {
+    if (this.Zku && this.Zku.length !== 0) {
+      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(175);
       if (e) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 67, "[BattleLink]离开Link爆发状态, 开始移除Link爆发Buff");
         }
-        for (const t of this.NDu) {
+        for (const t of this.Zku) {
           e.RemoveBuff(t, -1, "离开Link爆发状态移除buff");
         }
       }
-      this.NDu.length = 0;
+      this.Zku.length = 0;
     }
   }
   static SetPlayerUltraSkillEnable(e) {
-    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(205);
+    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(206);
     if (t) {
       if (e) {
         t.RemoveTag(-732810197);
@@ -394,6 +394,9 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
   static SetMessageId(e) {
     this.Zqi = e;
   }
+  static GetMessageId() {
+    return this.Zqi;
+  }
   static OnNewLinkStateNotify(e, t, i) {
     var a = i?.$8n ?? 0;
     if (Log_1.Log.CheckDebug()) {
@@ -415,14 +418,14 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 42, "[BattleLink]Link音乐切出");
     }
-    this.VDu();
+    this.e2u();
   }
   static RequestNewLinkBurst() {
     var e;
     var t;
     if (this.Zqi !== undefined && (e = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity)) {
       t = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
-      CombatMessage_1.CombatNet.Send(26068, e, Protocol_1.Aki.Protocol.kn1.create(), t);
+      CombatMessage_1.CombatNet.Send(27310, e, Protocol_1.Aki.Protocol.kn1.create(), t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 67, "[BattleLink]Link爆发请求", ["msgId", t]);
       }
@@ -445,7 +448,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
 BattleLinkController.tJa = undefined;
 BattleLinkController.Zqi = undefined;
 BattleLinkController.Zza = false;
-BattleLinkController.Qsu = GameplayCueController_1.INVALID_CUE_HANDLE;
+BattleLinkController.yau = GameplayCueController_1.INVALID_CUE_HANDLE;
 BattleLinkController.awa = undefined;
 BattleLinkController.GPe = UE.NewArray(UE.Actor);
 BattleLinkController.Mth = undefined;
@@ -454,7 +457,7 @@ BattleLinkController.Ash = new Map();
 BattleLinkController.Dsh = true;
 BattleLinkController.dgl = false;
 BattleLinkController.Sr1 = [];
-BattleLinkController.NDu = undefined;
+BattleLinkController.Zku = undefined;
 BattleLinkController.w8c = false;
 BattleLinkController.BJe = (e, t, i) => {
   if (_a.Dsh && !_a.Ash.has(e)) {

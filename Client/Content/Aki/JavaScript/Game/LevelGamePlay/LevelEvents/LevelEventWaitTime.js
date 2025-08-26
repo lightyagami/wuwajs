@@ -9,6 +9,7 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGamePlayUtils_1 = require("../LevelGamePlayUtils");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventWaitTime extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
@@ -37,6 +38,7 @@ class LevelEventWaitTime extends LevelGeneralBase_1.LevelEventBase {
     }
   }
   OnTick(e) {
+    e = this.BaseContext ? e * (LevelGamePlayUtils_1.LevelGamePlayUtils.GetCustomTimeDilationByContext(this.BaseContext) ?? 1) : e;
     this.oUe -= e;
     if (this.oUe < 0) {
       if (this.yRn) {

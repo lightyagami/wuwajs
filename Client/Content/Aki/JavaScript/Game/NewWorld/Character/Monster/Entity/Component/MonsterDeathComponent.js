@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var o;
-  var h = arguments.length;
-  var n = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var n = arguments.length;
+  var h = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(t, e, i, s);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (o = t[r]) {
-        n = (h < 3 ? o(n) : h > 3 ? o(e, i, n) : o(e, i)) || n;
+        h = (n < 3 ? o(h) : n > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
-  if (h > 3 && n) {
-    Object.defineProperty(e, i, n);
+  if (n > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return n;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -30,8 +30,10 @@ const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
 const ResourceSystem_1 = require("../../../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
+const IEntity_1 = require("../../../../../../UniverseEditor/Interface/IEntity");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../../../Common/TimeUtil");
 const EffectContext_1 = require("../../../../../Effect/EffectContext/EffectContext");
 const EffectSystem_1 = require("../../../../../Effect/EffectSystem");
 const GlobalData_1 = require("../../../../../GlobalData");
@@ -43,18 +45,13 @@ const BaseDeathComponent_1 = require("../../../Common/Component/Abilities/BaseDe
 const CharacterUnifiedStateTypes_1 = require("../../../Common/Component/Abilities/CharacterUnifiedStateTypes");
 const DIE_IN_AIE_REMOVE_DELAY = 5000;
 const DEATH_EFFECT_MAX_TIME = 10000;
+const DEATH_MATERIAL_TOLERANCE_TIME = 500;
 let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathComponent_1.BaseDeathComponent {
   constructor() {
     super(...arguments);
     this.Xte = undefined;
     this.sDe = undefined;
     this.s7r = undefined;
-    this.Nql = 0;
-    this.Fql = -1;
-    this.Vql = 0;
-    this.Hql = undefined;
-    this.jql = undefined;
-    this.z4l = undefined;
     this.DeathTagTask = undefined;
     this.DeathTimerTask = undefined;
     this.OnDeathEnded = () => {
@@ -72,6 +69,13 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
         this.Bml();
       }
     };
+    this.Nql = 0;
+    this.Fql = -1;
+    this.Vql = 0;
+    this.Hql = undefined;
+    this.jql = undefined;
+    this.oud = undefined;
+    this.z4l = undefined;
     this.Wql = (t, e) => {
       if (t === this.Nql) {
         if (Log_1.Log.CheckDebug()) {
@@ -82,7 +86,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
         }
         this.OnDeathEnded();
         this.Qql();
-        this.Nql = -1;
+        this.Nql = 0;
       }
     };
     this.Kql = (t, e) => {
@@ -99,7 +103,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     };
   }
   OnInit() {
-    this.Xte = this.Entity.CheckGetComponent(205);
+    this.Xte = this.Entity.CheckGetComponent(206);
     return true;
   }
   OnStart() {
@@ -119,7 +123,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     return true;
   }
   ExecuteDeath(t) {
-    return !!super.ExecuteDeath(t) && (this.Entity.GetComponent(174)?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff"), this.Xte.AddTag(1008164187), this.Entity.GetComponent(180)?.DetachFromHost(true, false, false), this.Entity.GetComponent(40)?.StopAllSkills("MonsterDeathComponent.ExecuteDeath"), this.Entity.GetComponent(101)?.ResetCharState(), this.Entity.GetComponent(174)?.RemoveAllDurationBuffs("实体死亡清理持续型buff"), this.PlayDeathAnimation(t), this.Bml(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
+    return !!super.ExecuteDeath(t) && (this.Entity.GetComponent(175)?.RemoveBuffByEffectType(36, "实体死亡移除冰冻buff"), this.Xte.AddTag(1008164187), this.Entity.GetComponent(181)?.DetachFromHost(true, false, false), this.Entity.GetComponent(40)?.StopAllSkills("MonsterDeathComponent.ExecuteDeath"), this.Entity.GetComponent(102)?.ResetCharState(), this.Entity.GetComponent(175)?.RemoveAllDurationBuffs("实体死亡清理持续型buff"), this.PlayDeathAnimation(t), this.Bml(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDead, this.Entity.Id), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf), true);
   }
   PlayDeathAnimation(i) {
     if (!ModelManager_1.ModelManager.DeadReviveModel.SkipDeathAnim && !this.Xte?.HasTag(-1943786195) && this.MontageComponent?.Valid && this.Entity.IsInit && this.Entity.Active) {
@@ -135,12 +139,14 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
               e = [];
               if (t.ParticleEffect) {
                 e.push({
-                  Path: t.ParticleEffect
+                  Path: t.ParticleEffect,
+                  EndRule: t.EndRule ?? 0
                 });
               }
               if (t.MaterialEffect) {
                 e.push({
-                  Path: t.MaterialEffect
+                  Path: t.MaterialEffect,
+                  EndRule: t.EndRule ?? 0
                 });
               }
               if (Log_1.Log.CheckDebug()) {
@@ -152,7 +158,7 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
           }
         }
       }
-      t = this.Entity.GetComponent(101)?.PositionState;
+      t = this.Entity.GetComponent(102)?.PositionState;
       if (t === CharacterUnifiedStateTypes_1.ECharPositionState.Water) {
         this.PlayDeathMontageWithType(1, this.OnDeathEnded, i);
       } else {
@@ -208,15 +214,15 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     let s = false;
     if (this.z4l) {
       this.z4l.sort((t, e) => e.CallbackPriority - t.CallbackPriority);
-      for (const h of this.z4l) {
-        if (h.DataAsset instanceof UE.EffectModelGroup_C) {
-          i = this.Jql(h.Path, h.DataAsset, h.NeedCallback && !s) || i;
-        } else if (h.DataAsset instanceof UE.PD_CharacterControllerData_C || h.DataAsset instanceof UE.PD_CharacterControllerDataGroup_C) {
-          i = this.Zql(h.Path, h.DataAsset, h.NeedCallback && !s) || i;
+      for (const n of this.z4l) {
+        if (n.DataAsset instanceof UE.EffectModelGroup_C) {
+          i = this.Jql(n.Path, n.DataAsset, n.NeedCallback && !s) || i;
+        } else if (n.DataAsset instanceof UE.PD_CharacterControllerData_C || n.DataAsset instanceof UE.PD_CharacterControllerDataGroup_C) {
+          i = this.Zql(n.Path, n.DataAsset, n.NeedCallback && !s) || i;
         } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡特效播放失败, 请检查资源类型", ["path", h.Path], ["type", typeof h.DataAsset]);
+          Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡特效播放失败, 请检查资源类型", ["path", n.Path], ["type", typeof n.DataAsset]);
         }
-        if (i && h.NeedCallback) {
+        if (i && n.NeedCallback) {
           s = true;
         }
       }
@@ -228,41 +234,51 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
       this.OnDeathEnded();
     }
   }
-  async Yql(s) {
-    const t = new CustomPromise_1.CustomPromise();
-    ResourceSystem_1.ResourceSystem.LoadAsync(s.Path, UE.Object, i => {
-      if (i) {
-        let t = 0;
-        let e = false;
+  async Yql(e) {
+    const i = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadAsync(e.Path, UE.Object, t => {
+      if (t) {
+        this.nud(e, t);
         this.z4l ||= [];
-        if (i instanceof UE.EffectModelGroup_C) {
-          t = 2;
-          if (i.StartTime > 0 && i.LoopTime === 0) {
-            e = true;
-          }
-        } else if (i instanceof UE.PD_CharacterControllerData_C && (t = 1, i.DataType === 0)) {
-          e = true;
-        }
-        this.z4l.push({
-          Path: s.Path,
-          DataAsset: i,
-          CallbackPriority: t,
-          NeedCallback: e
-        });
+        this.z4l.push(e);
       } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡特效加载失败, 请检查资源路径", ["path", s.Path]);
+        Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡特效加载失败, 请检查资源路径", ["path", e.Path]);
       }
-      t.SetResult();
+      i.SetResult();
     });
-    return t.Promise;
+    return i.Promise;
+  }
+  nud(t, e) {
+    t.DataAsset = e;
+    t.CallbackPriority = 0;
+    t.NeedCallback = false;
+    if (t.EndRule === IEntity_1.EMonsterDeathEffectEndRule.Any) {
+      if (e instanceof UE.EffectModelGroup_C) {
+        t.CallbackPriority = 2;
+        if (e.StartTime > 0 && e.LoopTime === 0) {
+          t.NeedCallback = true;
+        }
+      } else if (e instanceof UE.PD_CharacterControllerData_C) {
+        t.CallbackPriority = 1;
+        if (e.LoopTime.Loop === 0) {
+          t.NeedCallback = true;
+        }
+      } else if (e instanceof UE.PD_CharacterControllerDataGroup_C) {
+        t.CallbackPriority = 1;
+        t.NeedCallback = true;
+      }
+    } else if (t.EndRule === IEntity_1.EMonsterDeathEffectEndRule.Particle && e instanceof UE.EffectModelGroup_C || t.EndRule === IEntity_1.EMonsterDeathEffectEndRule.Material && (e instanceof UE.PD_CharacterControllerData_C || e instanceof UE.PD_CharacterControllerDataGroup_C)) {
+      t.CallbackPriority = 10;
+      t.NeedCallback = true;
+    }
   }
   Jql(t, e, i) {
     var s = this.Entity.GetComponent(3);
     var o = s?.Owner;
-    var h = new EffectContext_1.EffectContext();
-    h.SourceObject = o;
-    h.EntityId = this.Entity.Id;
-    var o = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, o?.D_GetTransform(), t, "[MonsterDeathComponent.PlayDeathEffect]", h, 0);
+    var n = new EffectContext_1.EffectContext();
+    n.SourceObject = o;
+    n.EntityId = this.Entity.Id;
+    var o = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, o?.D_GetTransform(), t, "[MonsterDeathComponent.PlayDeathEffect]", n, 0);
     if (o !== 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡特效开始播放", ["handleId", o]);
@@ -280,26 +296,22 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
       return false;
     }
   }
-  Zql(e, i, s) {
-    var o = this.Entity.GetComponent(3)?.Actor.CharRenderingComponent;
-    if (o) {
-      this.Hql = o;
+  Zql(i, s, o) {
+    var n = this.Entity.GetComponent(3)?.Actor.CharRenderingComponent;
+    if (n) {
+      this.Hql = n;
       let t = -1;
-      if (i instanceof UE.PD_CharacterControllerData_C) {
-        t = o.AddMaterialControllerData(i);
-        if (s) {
-          if (i.DataType === 0) {
-            if (!this.iGl(1)) {
-              if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质设置回调失败", ["path", e]);
-              }
-            }
-          } else if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质只支持Timeline类型", ["path", e], ["dataType", i.DataType]);
-          }
-        }
-      } else if (i instanceof UE.PD_CharacterControllerDataGroup_C && (t = o.AddMaterialControllerDataGroup(i), s)) {
-        this.iGl(2);
+      if (s instanceof UE.PD_CharacterControllerData_C) {
+        t = n.AddMaterialControllerData(s);
+      } else if (s instanceof UE.PD_CharacterControllerDataGroup_C) {
+        t = n.AddMaterialControllerDataGroup(s);
+      }
+      let e = false;
+      if (o && t !== -1) {
+        e = this.iGl(s, t);
+      }
+      if (o && !e && Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质设置回调失败", ["path", i]);
       }
       if (t !== -1) {
         if (Log_1.Log.CheckDebug()) {
@@ -309,26 +321,56 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
         return true;
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质播放失败, 请检查资源类型", ["path", e], ["type", typeof i]);
+        Log_1.Log.Debug("Battle", 67, "[MonsterDeathComponent]怪物特殊死亡材质播放失败, 请检查资源类型", ["path", i], ["type", typeof s]);
       }
     } else {
       this.OnDeathEnded();
     }
     return false;
   }
-  iGl(t) {
+  iGl(s, t) {
     if (this.Hql) {
-      if (t === 1) {
+      if (s instanceof UE.PD_CharacterControllerData_C) {
         var e = this.Hql.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2);
         if (e) {
-          e.AddEffectFinishCallback(this.Kql);
-          this.Vql = 1;
+          if (s.DataType === 0) {
+            e.AddEffectFinishCallback(this.Kql);
+            this.Vql = 1;
+            return true;
+          }
+          e = s.LoopTime.Start + s.LoopTime.End;
+          if (e > 0) {
+            this.oud = TimerSystem_1.TimerSystem.Delay(() => {
+              this.Kql(t);
+            }, e * TimeUtil_1.TimeUtil.InverseMillisecond + DEATH_MATERIAL_TOLERANCE_TIME);
+            this.Vql = 3;
+            return true;
+          }
+        }
+      } else if (s instanceof UE.PD_CharacterControllerDataGroup_C) {
+        let e = 0;
+        let i = false;
+        for (let t = 0; t < s.DataMap.Num(); t++) {
+          var o = s.DataMap.GetKey(t);
+          if (o.DataType !== 0 || o.LoopTime.Loop > 0) {
+            i = true;
+          }
+          if (o.LoopTime.Loop === 0) {
+            e = Math.max(e, o.LoopTime.Start + o.LoopTime.End);
+          }
+        }
+        if (!i) {
+          EventSystem_1.EventSystem.AddWithTarget(this.Hql, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.Kql);
+          this.Vql = 2;
           return true;
         }
-      } else if (t === 2) {
-        EventSystem_1.EventSystem.AddWithTarget(this.Hql, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.Kql);
-        this.Vql = 2;
-        return true;
+        if (e > 0) {
+          this.oud = TimerSystem_1.TimerSystem.Delay(() => {
+            this.Kql(t);
+          }, e * TimeUtil_1.TimeUtil.InverseMillisecond + DEATH_MATERIAL_TOLERANCE_TIME);
+          this.Vql = 3;
+          return true;
+        }
       }
     }
     this.Vql = 0;
@@ -341,17 +383,19 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
         if (t = this.Hql.GetComponent(RenderConfig_1.RenderConfig.IdMaterialContainerV2)) {
           t.RemoveEffectFinishCallback(this.Kql);
         }
-      } else if (this.Vql === 2 && EventSystem_1.EventSystem.HasWithTarget(this.Hql, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.Kql)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(this.Hql, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.Kql);
+      } else if (this.Vql === 2) {
+        if (EventSystem_1.EventSystem.HasWithTarget(this.Hql, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.Kql)) {
+          EventSystem_1.EventSystem.RemoveWithTarget(this.Hql, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.Kql);
+        }
+      } else if (this.Vql === 3 && this.oud) {
+        TimerSystem_1.TimerSystem.Remove(this.oud);
+        this.oud = undefined;
       }
     }
     this.Vql = 0;
   }
   eGl() {
-    var t = this.Entity.GetComponent(122);
-    if (t) {
-      t.SetTimeScale(100, 0, undefined, DEATH_EFFECT_MAX_TIME, 12);
-    }
+    this.TimeScaleComponent?.SetTimeScale(100, 0, undefined, DEATH_EFFECT_MAX_TIME, 12);
   }
   tGl() {
     this.Qql();
@@ -389,5 +433,5 @@ let MonsterDeathComponent = class MonsterDeathComponent extends BaseDeathCompone
     this.Fql = -1;
   }
 };
-MonsterDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(183)], MonsterDeathComponent);
+MonsterDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(184)], MonsterDeathComponent);
 exports.MonsterDeathComponent = MonsterDeathComponent; //# sourceMappingURL=MonsterDeathComponent.js.map

@@ -33,20 +33,20 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
   constructor() {
     super(...arguments);
     this.vtn = undefined;
-    this.S7c = undefined;
+    this.gVu = undefined;
     this.Uai = false;
-    this.M7c = undefined;
+    this.CVu = undefined;
     this.Rnn = () => {
       this.Uai = true;
     };
-    this.E7c = t => {
+    this.pVu = t => {
       if (this.Uai) {
-        this.I7c(t);
+        this.vVu(t);
       }
     };
     this.H0n = (t, e) => {
       if (this.Uai) {
-        this.T7c(t, e);
+        this.yVu(t, e);
       }
     };
   }
@@ -58,7 +58,7 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
       }
       return false;
     } else if (t = t[0]) {
-      this.M7c = t.PerformanceOptimizationList;
+      this.CVu = t.PerformanceOptimizationList;
       return true;
     } else {
       if (Log_1.Log.CheckError()) {
@@ -70,11 +70,11 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
   OnStart() {
     this.vtn = this.Entity.GetComponent(86);
     if (this.vtn) {
-      this.S7c = new Array();
-      this.b7c();
-      this.R7c();
-      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.E7c)) {
-        EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.E7c);
+      this.gVu = new Array();
+      this.SVu();
+      this.MVu();
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu)) {
+        EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu);
       }
       if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n)) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n);
@@ -91,9 +91,9 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
       return false;
     }
   }
-  b7c() {
-    if (this.M7c && this.M7c.length !== 0) {
-      this.M7c.forEach(t => {
+  SVu() {
+    if (this.CVu && this.CVu.length !== 0) {
+      this.CVu.forEach(t => {
         this.AddOptimizationStrategy(t.Type);
       });
     }
@@ -102,7 +102,7 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
     var e = OptimizationStragyHelper_1.EPerformanceOptimizationMap[t];
     if (e) {
       e = new e();
-      this.S7c.push(e);
+      this.gVu.push(e);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Optimization", 57, "[OptimizationStrategyComponent] AddOptimizationStrategy", ["type", t]);
       }
@@ -110,32 +110,32 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
       Log_1.Log.Error("Optimization", 57, "[OptimizationStrategyComponent] 未找到对应的Profile", ["type", t]);
     }
   }
-  R7c() {
-    for (const t of this.S7c) {
+  MVu() {
+    for (const t of this.gVu) {
       t.Enable();
     }
   }
-  I7c(t) {
-    for (const e of this.S7c) {
+  vVu(t) {
+    for (const e of this.gVu) {
       e.MyPlayerEntityInOutRange(t);
     }
   }
-  T7c(t, e) {
-    for (const i of this.S7c) {
+  yVu(t, e) {
+    for (const i of this.gVu) {
       i.EntityInOutRange(t, e);
     }
   }
-  w7c() {
-    for (const t of this.S7c) {
+  EVu() {
+    for (const t of this.gVu) {
       t.Disable();
     }
   }
   OnEnd() {
-    this.w7c();
-    this.S7c = undefined;
+    this.EVu();
+    this.gVu = undefined;
     this.Uai = false;
-    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.E7c)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.E7c);
+    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu);
     }
     if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n);
@@ -149,5 +149,5 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
     return true;
   }
 };
-OptimizationStrategyComponent = OptimizationStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(218)], OptimizationStrategyComponent);
+OptimizationStrategyComponent = OptimizationStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(219)], OptimizationStrategyComponent);
 exports.OptimizationStrategyComponent = OptimizationStrategyComponent; //# sourceMappingURL=OptimizationStrategyComponent.js.map

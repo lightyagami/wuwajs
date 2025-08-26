@@ -20,14 +20,14 @@ class LongShanTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.BOe = 0;
-    this.zZ1 = undefined;
+    this.Eeu = undefined;
     this.bOe = undefined;
     this.wVl = undefined;
     this.JGe = () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-    this.JZ1 = () => {
-      if (!this.zZ1?.hZ1) {
+    this.Ieu = () => {
+      if (!this.Eeu?.DZ1) {
         var t = [];
-        for (const r of ConfigManager_1.ConfigManager.ConditionConfig.GetGroupConditionIds(this.zZ1.Wj1)) {
+        for (const r of ConfigManager_1.ConfigManager.ConditionConfig.GetGroupConditionIds(this.Eeu.Wj1)) {
           var e = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionConfig(r);
           let i = -1;
           if (e.AccessId) {
@@ -37,13 +37,13 @@ class LongShanTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
           var n = {
             ConditionId: r,
             ConditionTextId: e.Description,
-            IsFinished: this.ZZ1(r),
+            IsFinished: this.Teu(r),
             AccessId: e.AccessId,
             AccessType: i
           };
           t.push(n);
         }
-        var i = new ConditionGroupData_1.ConditionGroupData(this.zZ1.Wj1, t);
+        var i = new ConditionGroupData_1.ConditionGroupData(this.Eeu.Wj1, t);
         UiManager_1.UiManager.OpenView("CommonConditionView", i);
       }
     };
@@ -64,14 +64,14 @@ class LongShanTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.wVl = new ActivityFunctionalTypeA_1.FunctionalPanelConditionLock();
       await this.wVl.CreateByActorAsync(this.GetItem(7).GetOwner());
       this.wVl.ButtonCallBack = () => {
-        this.JZ1();
+        this.Ieu();
       };
       this.wVl.SetTextByTextId("QiqiuThemeUnlock");
     }
     this.bOe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this.JGe);
   }
   Refresh(i, t, e) {
-    this.zZ1 = i;
+    this.Eeu = i;
     this.BOe = i.s5n;
     var n = LongShanTaskById_1.configLongShanTaskById.GetConfig(this.BOe);
     var r = [];
@@ -86,13 +86,13 @@ class LongShanTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetButton(1).RootUIComp.SetUIActive(i.dMs && !i.mMs);
     this.GetItem(3).SetUIActive(i.mMs);
     this.GetItem(2).SetUIActive(!i.dMs && n.JumpId === 0);
-    this.GetButton(0).RootUIComp.SetUIActive(!i.dMs && i.hZ1 && n.JumpId > 0);
-    this.wVl?.SetUiActive(!i.dMs && !i.hZ1 && n.JumpId > 0);
+    this.GetButton(0).RootUIComp.SetUIActive(!i.dMs && i.DZ1 && n.JumpId > 0);
+    this.wVl?.SetUiActive(!i.dMs && !i.DZ1 && n.JumpId > 0);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), n.TaskName);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "LongShanStage_Progress", i.lMs, i.j6n);
   }
-  ZZ1(i) {
-    for (const t of this.zZ1.qS_) {
+  Teu(i) {
+    for (const t of this.Eeu.qS_) {
       if (i === t) {
         return true;
       }

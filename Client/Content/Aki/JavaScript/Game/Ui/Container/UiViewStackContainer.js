@@ -353,19 +353,19 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
             const s = o.Pop();
             this.Hcr(s);
           }
-          if ((e = this.v9.Peek()).Info.Name === "BattleView") {
+          if ((e = this.v9.Peek()).Info.Name === UiModel_1.UiModel.MainViewName) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetModuleByResetToBattleView);
           }
           await this.gpi(s, e);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("UiCore", 16, "重置回到界面成功", ["ViewName", e.Info.Name]);
           }
-          if (e.Info.Name === "BattleView") {
+          if (e.Info.Name === UiModel_1.UiModel.MainViewName) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetModuleAfterResetToBattleView);
           }
         } else {
           e = this.v9.Peek();
-          if (e.Info.Name === "BattleView") {
+          if (e.Info.Name === UiModel_1.UiModel.MainViewName) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetModuleByResetToBattleView);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetModuleAfterResetToBattleView);
           }

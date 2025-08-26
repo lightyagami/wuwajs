@@ -290,7 +290,7 @@ class FriendView extends UiViewBase_1.UiViewBase {
   bqe(e) {
     if (this.g9t && e.length > 0) {
       this.y9t?.SetUIActive(true);
-      this.g9t.ReloadData(e);
+      this.g9t.RefreshByData(e);
     } else {
       this.y9t?.SetUIActive(false);
     }

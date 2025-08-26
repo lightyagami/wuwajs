@@ -28,11 +28,11 @@ class FloroRanchIncomeItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(0).SetText(t.toString());
     var t = this.yR.CheckGetComponent(0);
     var s = t.EntityType;
-    var i = t.Income;
+    var i = ModelManager_1.ModelManager.FloroRanchModel.GetCoinText(t.Income);
     var e = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(1);
     this.SetTextureByPath(e.GetSmallIcon(), this.GetTexture(6));
-    this.GetText(7).SetText(i.toString());
-    this.GetItem(3).SetUIActive(t.IsRemove);
+    this.GetText(7).SetText(i);
+    this.GetItem(3).SetUIActive(!t.IsValid);
     var e = t.Point;
     var i = e !== -1;
     this.GetItem(5).SetUIActive(i);
@@ -42,10 +42,10 @@ class FloroRanchIncomeItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.cHt();
         break;
       case 0:
-        this.ZTu();
+        this.vbu();
         break;
       case 2:
-        this.ebu();
+        this.ybu();
     }
   }
   cHt() {
@@ -58,13 +58,13 @@ class FloroRanchIncomeItem extends GridProxyAbstract_1.GridProxyAbstract {
     var s = t.GetName();
     this.GetText(4).ShowTextNew(s);
   }
-  ZTu() {
+  vbu() {
     var t = this.yR.CheckGetComponent(2).TerrainData;
     this.GetSprite(1).SetUIActive(false);
     this.SetTextureByPath(t.Icon, this.GetTexture(2));
     this.GetText(4).SetText(t.Name);
   }
-  ebu() {
+  ybu() {
     var t = this.yR.CheckGetComponent(3).ToyData;
     var s = t.GetToyQualityData();
     this.SetSpriteByPath(s.GetRaritySmallBg(), this.GetSprite(1), true);

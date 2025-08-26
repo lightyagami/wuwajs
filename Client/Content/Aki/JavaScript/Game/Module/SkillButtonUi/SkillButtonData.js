@@ -19,6 +19,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 const PhantomUtil_1 = require("../Phantom/PhantomUtil");
 const SkillButtonCustomHandleFactory_1 = require("./Custom/SkillButtonCustomHandleFactory");
+const SkillButtonDataUtil_1 = require("./SkillButtonDataUtil");
 exports.controlVisionTagId = 1427742187;
 class SkillButtonData {
   constructor() {
@@ -70,6 +71,7 @@ class SkillButtonData {
     this.$te = undefined;
     this.USo = undefined;
     this.Cvl = undefined;
+    this.bjc = undefined;
     this.xut = 0;
     this.XMc = false;
     this.ConfigShowLongPressTagIds = [];
@@ -151,14 +153,15 @@ class SkillButtonData {
     }
     this.vSo = i.IsLongPressControlCamera;
     this.TSo = t.GetComponent(39);
-    this.LSo = t.GetComponent(207);
-    this.GameplayTagComponent = t.GetComponent(205);
-    this.BuffComponent = t.GetComponent(209);
+    this.LSo = t.GetComponent(208);
+    this.GameplayTagComponent = t.GetComponent(206);
+    this.BuffComponent = t.GetComponent(210);
     this.u1t = t.GetComponent(0);
     this.RSo = t.GetComponent(62);
-    this.$te = t.GetComponent(173);
+    this.$te = t.GetComponent(174);
     this.USo = t.GetComponent(43);
-    this.Cvl = t.GetComponent(229);
+    this.Cvl = t.GetComponent(230);
+    this.bjc = t.GetComponent(297);
     this.InitCustomHandle();
     this.InitVehicleHandle();
     this.qSo();
@@ -320,10 +323,10 @@ class SkillButtonData {
     }
   }
   static GetCommonDisableTagIdByButtonType(t) {
-    return SkillButtonData.kSo.get(t);
+    return SkillButtonDataUtil_1.SkillButtonDataUtil.DisableTagMap.get(t);
   }
   static GetCommonHiddenTagIdByButtonType(t) {
-    return SkillButtonData.FSo.get(t);
+    return SkillButtonDataUtil_1.SkillButtonDataUtil.HiddenTagMap.get(t);
   }
   GetEnableTagIds() {
     return this.gSo;
@@ -394,6 +397,10 @@ class SkillButtonData {
   GetActionType() {
     return this.RO;
   }
+  GetInputAction() {
+    var t = this.GetActionType();
+    return InputEnums_1.EInputAction[t];
+  }
   GetButtonType() {
     return this.CSo;
   }
@@ -411,6 +418,9 @@ class SkillButtonData {
   }
   GetSkillTexturePath() {
     return this.PSo;
+  }
+  GetSkillIconName() {
+    return this.SkillIconName;
   }
   GetActionName() {
     return this.ZMe;
@@ -572,9 +582,11 @@ class SkillButtonData {
   jSo(t) {
     if (!t && this.RO === InputEnums_1.EInputAction.幻象1 && (!!this.ConfigRole || !!this.ConfigVehicle)) {
       if (t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId) {
-        t = PhantomUtil_1.PhantomUtil.GetVisionData(t);
-        this.SetExploreSkillChange(this.wmo !== t.技能ID);
-        this.wmo = t.技能ID;
+        if (ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(t)?.SkillType !== 5) {
+          t = PhantomUtil_1.PhantomUtil.GetVisionData(t);
+          this.SetExploreSkillChange(this.wmo !== t.技能ID);
+          this.wmo = t.技能ID;
+        }
       } else if (this.wmo !== undefined) {
         this.SetExploreSkillChange(true);
         this.wmo = undefined;
@@ -884,14 +896,14 @@ class SkillButtonData {
     return [0, 0];
   }
   IsVehicleSkillInCd() {
-    if (this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && this.Cvl.VehicleEntity?.GetComponent(245)?.IsSprintSkillInCd()) {
+    if (this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && this.Cvl.VehicleEntity?.GetComponent(246)?.IsSprintSkillInCd()) {
       return true;
     }
     return false;
   }
   GetVehicleSkillCd() {
     if (this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola")) {
-      var t = this.Cvl.VehicleEntity?.GetComponent(245)?.GetSprintSkillRemainingCd();
+      var t = this.Cvl.VehicleEntity?.GetComponent(246)?.GetSprintSkillRemainingCd();
       if (t) {
         return t;
       }
@@ -914,7 +926,7 @@ class SkillButtonData {
     var t;
     this.IsLimitCountVehicleSkill = false;
     this.RemainingCountVehicleSkill = 0;
-    if (this.CSo === 5 && this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && (this.IsLimitCountVehicleSkill = true, t = this.Cvl.VehicleEntity?.GetComponent(245))) {
+    if (this.CSo === 5 && this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && (this.IsLimitCountVehicleSkill = true, t = this.Cvl.VehicleEntity?.GetComponent(246))) {
       this.RemainingCountVehicleSkill = t.GetSprintSkillUsableCount();
     }
   }
@@ -934,11 +946,25 @@ class SkillButtonData {
     return this.pvl;
   }
   RefreshIsShowLongPress() {
-    if (this.CSo === 1 && (this.ConfigVehicle?.ShowLongPress || this.Cvl?.IsOnVehicle && this.Cvl?.IsEnableLongPressLeave())) {
-      this.pvl = true;
-      this.RefreshLongPressDuration();
-    } else {
-      this.pvl = false;
+    switch (this.CSo) {
+      case 1:
+        if (this.ConfigVehicle?.ShowLongPress || this.Cvl?.IsOnVehicle && this.Cvl?.IsEnableLongPressLeave()) {
+          this.pvl = true;
+          this.RefreshLongPressDuration();
+        } else {
+          this.pvl = false;
+        }
+        break;
+      case 6:
+        if (this.bjc?.GetRoleState() !== 0) {
+          this.pvl = true;
+          this.RefreshLongPressDuration();
+        } else {
+          this.pvl = false;
+        }
+        break;
+      default:
+        this.pvl = false;
     }
   }
   RefreshLongPressDuration() {
@@ -950,8 +976,11 @@ class SkillButtonData {
       t = this.Cvl?.VehicleEntity;
     }
     if (t) {
-      i = t?.GetComponent(240)?.GetHoldConfig(this.RO);
+      i = t?.GetComponent(241)?.GetHoldConfig(this.RO);
       this.fvl = i ? i[1] : 0;
+    }
+    if (this.bjc && (i = this.bjc.GetLongPressDuration(this.RO)) > 0) {
+      this.fvl = i;
     }
   }
   GetLongPressDuration() {
@@ -979,8 +1008,13 @@ class SkillButtonData {
     } else if (this.Cvl?.IsOnVehicle) {
       t = this.Cvl?.VehicleEntity;
     }
-    return !!t?.GetComponent(240)?.IsHoldingAction(this.RO);
+    var i = !!t?.GetComponent(241)?.IsHoldingAction(this.RO);
+    var s = !!this.bjc?.IsHoldingAction(this.RO);
+    return i || s;
+  }
+  HasConfigFollower() {
+    return this.ConfigFollower !== undefined;
   }
 }
-(exports.SkillButtonData = SkillButtonData).kSo = new Map([[4, -542518289], [6, -541178966], [8, -732810197], [5, 581080458], [7, -1802431900], [1, -469423249], [2, 766688429], [9, -1752099043], [10, 581080458], [11, -542518289]]);
-SkillButtonData.FSo = new Map([[4, -1823030825], [6, -1949137153], [8, -800147974], [5, 1381320300], [7, -2112257652], [1, -571871026], [9, 1725229954], [10, 1381320300], [11, -1823030825]]); //# sourceMappingURL=SkillButtonData.js.map
+exports.SkillButtonData = SkillButtonData;
+//# sourceMappingURL=SkillButtonData.js.map

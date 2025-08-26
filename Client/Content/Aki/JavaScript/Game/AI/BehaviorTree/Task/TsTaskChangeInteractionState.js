@@ -29,7 +29,7 @@ class TsTaskChangeInteractionState extends TsTaskAbortImmediatelyBase_1.default 
     var s;
     var a = e.AiController;
     if (a) {
-      if (s = a.CharActorComp.Entity.GetComponent(197)) {
+      if (s = a.CharActorComp.Entity.GetComponent(198)) {
         s.SetInteractionState(this.TsInteractionState, "TsTaskChangeInteractionState ReceiveExecuteAI");
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BehaviorTree", 29, "实体交互组件无效", ["CreatureDataId", a.CharActorComp.CreatureData.GetCreatureDataId()], ["PbDataId", a.CharActorComp.CreatureData.GetPbDataId()]);

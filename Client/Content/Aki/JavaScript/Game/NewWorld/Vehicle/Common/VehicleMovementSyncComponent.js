@@ -39,7 +39,7 @@ let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class Vehicl
     this.Li_ = 0;
   }
   OnStart() {
-    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(240), this.VehicleMoveComp = this.Entity.GetComponent(236), true);
+    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(241), this.VehicleMoveComp = this.Entity.GetComponent(237), true);
   }
   DefaultEnableMovementSync() {
     return true;
@@ -76,7 +76,7 @@ let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class Vehicl
         };
         CombatLog_1.CombatLog.Info("Move", this.Entity, "SendSplineMove", ["Ratio", o.State.PathRatio]);
         this.Li_ = Time_1.Time.NowSeconds;
-        Net_1.Net.Call(26355, t, () => {});
+        Net_1.Net.Call(27194, t, () => {});
       }
     } else {
       super.CustomAfterTickInternal(e);
@@ -95,5 +95,5 @@ let VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = class Vehicl
   }
 };
 VehicleMovementSyncComponent.VehiclePathRatioSyncInterval = 2;
-VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(243)], VehicleMovementSyncComponent);
+VehicleMovementSyncComponent = VehicleMovementSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(244)], VehicleMovementSyncComponent);
 exports.VehicleMovementSyncComponent = VehicleMovementSyncComponent; //# sourceMappingURL=VehicleMovementSyncComponent.js.map

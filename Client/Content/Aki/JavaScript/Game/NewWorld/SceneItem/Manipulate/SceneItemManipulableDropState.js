@@ -37,8 +37,8 @@ class SceneItemManipulableDropState extends SceneItemManipulableBaseState_1.Scen
     var e = this.SceneItem.ActorComp.GetPrimitiveComponent();
     var t = this.SceneItem.Config.ThrowCfg.MotionConfig;
     if (t.Type === IComponent_1.EThrowMotion.FreeFall) {
-      this.MHc(e, t);
-      this.EHc(e, t);
+      this.RQc(e, t);
+      this.wQc(e, t);
     }
     this.SceneItem.NeedRemoveControllerId = true;
     LevelGamePlayController_1.LevelGamePlayController.ManipulatableBeCastOrDrop2Server(this.SceneItem.Entity.Id, Protocol_1.Aki.Protocol.Zw_.Proto_EControlStateLetGo);
@@ -49,13 +49,13 @@ class SceneItemManipulableDropState extends SceneItemManipulableBaseState_1.Scen
       this.EnterCallback();
     }
   }
-  MHc(e, t) {
+  RQc(e, t) {
     t = t?.Velocity;
     if (t) {
       e.SetPhysicsLinearVelocity(Vector_1.Vector.Create(t.X ?? 0, t.Y ?? 0, t.Z ?? 0).ToUeVectorOld());
     }
   }
-  EHc(e, t) {
+  wQc(e, t) {
     var t = t?.AngularVelocity;
     if (t) {
       t = Vector_1.Vector.Create(MathUtils_1.MathUtils.GetRandomRange(t.X?.Left ?? 0, t.X?.Right ?? 0), MathUtils_1.MathUtils.GetRandomRange(t.Y?.Left ?? 0, t.Y?.Right ?? 0), MathUtils_1.MathUtils.GetRandomRange(t.Z?.Left ?? 0, t.Z?.Right ?? 0));

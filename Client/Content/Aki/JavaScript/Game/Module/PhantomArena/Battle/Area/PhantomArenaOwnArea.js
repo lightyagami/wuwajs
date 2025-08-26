@@ -29,7 +29,7 @@ class PhantomArenaOwnArea {
     this.DiscardCardCurveY = undefined;
     this.MoveLocationCurve = undefined;
     this.RecycleCurve = undefined;
-    this.Dmu = false;
+    this.Cfu = false;
   }
   async Ai1(t) {
     this.HandArea = new PhantomArenaHandArea_1.PhantomArenaHandArea();
@@ -46,38 +46,38 @@ class PhantomArenaOwnArea {
     this.RolePanel.RegisterBattleArea(this);
     await this.RolePanel.CreateThenShowByActorAsync(t.GetOwner());
   }
-  async liu() {
+  async Biu() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleCurveX");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.DrawCardCurveX = await t.Promise;
   }
-  async _iu() {
+  async kiu() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleCurveY");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.DrawCardCurveY = await t.Promise;
   }
-  async uiu() {
+  async Oiu() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleCurveX_1");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.DiscardCardCurveX = await t.Promise;
   }
-  async ciu() {
+  async qiu() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleCurveY_1");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.DiscardCardCurveY = await t.Promise;
   }
-  async Bsu() {
+  async hau() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleNPCPlayCurve");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.MoveLocationCurve = await t.Promise;
   }
-  async Hau() {
+  async Chu() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("CardBattleNPCRecycle");
     var t = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat, 102);
     this.RecycleCurve = await t.Promise;
   }
-  async Jtu() {
-    await Promise.all([this.liu(), this._iu(), this.uiu(), this.ciu(), this.Bsu(), this.Hau()]);
+  async Iiu() {
+    await Promise.all([this.Biu(), this.kiu(), this.Oiu(), this.qiu(), this.hau(), this.Chu()]);
   }
   U41(t) {
     if (this.HandArea.CheckCardOutHandArea(t)) {
@@ -92,7 +92,7 @@ class PhantomArenaOwnArea {
     }
   }
   async InitArea(t, i, a) {
-    await Promise.all([this.Ai1(t), this.Pi1(i), this.nFe(a), this.Jtu()]);
+    await Promise.all([this.Ai1(t), this.Pi1(i), this.nFe(a), this.Iiu()]);
   }
   RegisterViewProxy(t) {
     this.ViewProxy = t;
@@ -117,23 +117,23 @@ class PhantomArenaOwnArea {
       this.HandArea.LowerLayout();
     }
   }
-  Bmu() {
-    this.Dmu = this.HandArea.IsLayoutHoist;
-    if (this.Dmu) {
+  pfu() {
+    this.Cfu = this.HandArea.IsLayoutHoist;
+    if (this.Cfu) {
       this.HandArea.LowerLayout();
     }
   }
-  kmu() {
-    if (this.Dmu) {
+  vfu() {
+    if (this.Cfu) {
       this.HandArea.HoistLayout();
     }
   }
-  Omu() {
-    if (this.Dmu) {
+  yfu() {
+    if (this.Cfu) {
       this.HandArea.HoistLayout();
     }
   }
-  Uku(t) {
+  rNu(t) {
     this.ViewProxy.CardRecycle.RefreshCardRecycleArea(t);
     this.ViewProxy.CardRecycle.SetEffectActive(0);
     this.ViewProxy.BanButtonClickModule.BanButtonList("Drag");
@@ -144,8 +144,8 @@ class PhantomArenaOwnArea {
     }
     t.SetUiParent(this.ViewProxy.GetDragRootItem());
     this.FunctionalArea.RefreshStateByDragCard(t);
-    this.Uku(t);
-    this.Bmu();
+    this.rNu(t);
+    this.pfu();
   }
   CardBeginDragByFunctional(t) {
     if (Log_1.Log.CheckInfo()) {
@@ -153,14 +153,14 @@ class PhantomArenaOwnArea {
     }
     t.SetUiParent(this.ViewProxy.GetDragRootItem());
     this.FunctionalArea.RefreshStateByDragCard(t);
-    this.Uku(t);
+    this.rNu(t);
   }
   async HandCardBeginDragByGamepad(t, i, a) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "手柄从手上拖动卡牌", ["Id", t.Data.CardId], ["SlotIndex", i]);
     }
     this.FunctionalArea.RefreshStateByGamepad(t, i);
-    this.Uku(t);
+    this.rNu(t);
     i = this.FunctionalArea.GetCardProxyByIndex(i);
     await this.HandArea.HandCardToFunctionalTop(t, i.AreaItem.GetRootItem(), a);
   }
@@ -169,7 +169,7 @@ class PhantomArenaOwnArea {
       Log_1.Log.Info("PhantomArena", 10, "手柄从场上拖动卡牌", ["Id", t.Data.CardId], ["Index", t.Data.Index], ["SlotIndex", i]);
     }
     this.FunctionalArea.RefreshStateByGamepad(t, i);
-    this.Uku(t);
+    this.rNu(t);
     await this.FunctionalArea.FunctionalCardToFunctionalTop(t, i, a);
   }
   CardDraggingByHand(t) {
@@ -191,7 +191,7 @@ class PhantomArenaOwnArea {
           Log_1.Log.Info("PhantomArena", 10, "卡牌从手上放置成功", ["Id", t.Data.CardId], ["Index", t.Data.Index]);
         }
         this.ViewProxy.RoundOverCheck.RepeatCheck();
-        this.kmu();
+        this.vfu();
         await this.HandArea.RemoveCard(t);
         this.ViewProxy.CardRecycle.SetEffectActive(1);
         return true;
@@ -209,7 +209,7 @@ class PhantomArenaOwnArea {
           Log_1.Log.Info("PhantomArena", 10, "卡牌从手上回收成功", ["Id", t.Data.CardId], ["Index", t.Data.Index]);
         }
         this.ViewProxy.RoundOverCheck.RepeatCheck();
-        this.kmu();
+        this.vfu();
         this.ViewProxy.CardRecycle.SetEffectActive(2);
         await this.HandArea.DestroyCardByLibrary(t.Data.CardId);
         return true;
@@ -224,7 +224,7 @@ class PhantomArenaOwnArea {
         Log_1.Log.Info("PhantomArena", 10, "卡牌拖拽失败,返回手上", ["Id", t.Data.CardId]);
       }
       await this.HandArea.ResetCardPosition(t);
-      this.Omu();
+      this.yfu();
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PhantomArena", 10, "引导拦截,卡牌回到手上", ["Id", t.Data.CardId]);
@@ -232,7 +232,7 @@ class PhantomArenaOwnArea {
       this.FunctionalArea.SetAllCardProxyUseActiveState(false, t);
       const i = this.FunctionalArea.GetNearlyAreaItemProxyByCard(t);
       i?.SetHoverStateActive(false);
-      this.Omu();
+      this.yfu();
       await this.HandArea.ResetCardPosition(t);
       this.ViewProxy.CardRecycle.SetEffectActive(1);
     }
@@ -326,7 +326,7 @@ class PhantomArenaOwnArea {
       await this.FunctionalArea.ResetCardPosition(i);
     }
   }
-  Wku(t, i) {
+  oNu(t, i) {
     this.FunctionalArea.GetCardProxyByIndex(i)?.SetHoverStateActive(false);
     this.FunctionalArea.SetAllCardProxyUseActiveState(false, t);
     this.ViewProxy.CardRecycle.SetEffectActive(1);
@@ -336,14 +336,14 @@ class PhantomArenaOwnArea {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "手柄重置卡牌到手上", ["Id", t.Data.CardId], ["Index", i]);
     }
-    this.Wku(t, i);
+    this.oNu(t, i);
     await this.HandArea.ResetCardPosition(t);
   }
   async ResetSelectCardToFunctional(t, i) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "手柄重置卡牌到场上", ["Id", t.Data.CardId], ["Index", i]);
     }
-    this.Wku(t, i);
+    this.oNu(t, i);
     await this.FunctionalArea.ResetCardPosition(t.Data.Index);
   }
   ResetFunctionalToHand(t, i) {

@@ -93,18 +93,18 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
     }
     var e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("FixHookSkillList");
     if (e) {
-      this.Isu = [];
-      this.Isu.push(...e);
+      this.Ysu = [];
+      this.Ysu.push(...e);
     }
     var e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("SuperSprintStartSkillList");
     if (e) {
-      this.Tsu = [];
-      this.Tsu.push(...e);
+      this.zsu = [];
+      this.zsu.push(...e);
     }
     var e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("SuperSprintEndSkillList");
     if (e) {
-      this.bsu = [];
-      this.bsu.push(...e);
+      this.Jsu = [];
+      this.Jsu.push(...e);
     }
   }
   static OnInit() {
@@ -172,7 +172,7 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
   }
   static PlayRoleAudio(e, o, t) {
     var i = e?.GetComponent(3);
-    var r = e?.GetComponent(189);
+    var r = e?.GetComponent(190);
     var a = r?.GetAkComponent();
     if (e && i && r && a && r.Config) {
       return this.xzs(i.CreatureData.GetPbDataId(), e.Id, a, o, RoleAudioController.GetRoleAudioConfig(r.Config, o), t);
@@ -264,42 +264,38 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
           this.PlayRoleAudio(o, 1001);
         });
     }
-    this.Rsu(e, o);
+    this.Zsu(e, o);
   }
   static OnPlayerDies(e) {
     var o = e?.GetComponent(3);
-    var t = e?.GetComponent(189);
+    var t = e?.GetComponent(190);
     var i = t?.GetAkComponent();
     if (e && o && t && i && t.Config && e.Id === Global_1.Global.BaseCharacter?.EntityId && (AudioSystem_1.AudioSystem.PostEvent(t.Config.DeathEvent, i), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 触发角色语音", ["RoleId", o.CreatureData.GetPbDataId()], ["Event", t.Config.DeathEvent], ["Owner", i.GetOwner()?.GetName()]);
     }
   }
-  static OnPlayAccelerateAudio(e, o, t) {
+  static OnPlayAccelerateAudio(e, o, t, i, r) {
     if (FormationDataController_1.FormationDataController.GlobalIsInFight) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Audio", 42, "[RoleAudio] 处于战斗状态，不触发加速语音", ["RoleId", e?.GetComponent(3)?.CreatureData.GetPbDataId()]);
       }
     } else {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[RoleAudio] 检查是否触发加速语音", ["MoveState", o], ["PositionState", t]);
+        Log_1.Log.Debug("Audio", 42, "[RoleAudio] 检查是否触发加速语音", ["MoveState", o], ["PositionState", t], ["movementMode", i], ["CustomMode", r]);
       }
-      if (o === CharacterUnifiedStateTypes_1.ECharMoveState.Sprint || t === CharacterUnifiedStateTypes_1.ECharPositionState.Air && o === CharacterUnifiedStateTypes_1.ECharMoveState.Other) {
-        this.wsu = RoleAudioController.PlayRoleAudio(e, 1008, () => {
-          this.wsu = 0;
+      if (o === CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) {
+        this.iau = RoleAudioController.PlayRoleAudio(e, 1008, () => {
+          this.iau = 0;
         });
       }
     }
   }
-  static Rsu(e, o) {
+  static Zsu(e, o) {
     var t;
-    if (this.wsu !== 0 && !(t = o.GetComponent(101).PositionState, e === CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) && (t !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground || e !== CharacterUnifiedStateTypes_1.ECharMoveState.Other)) {
-      AudioSystem_1.AudioSystem.ExecuteAction(this.wsu, 0, {
-        TransitionDuration: 1000
-      });
-      this.wsu = 0;
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 打断角色加速语音", ["RoleId", o?.GetComponent(3)?.CreatureData.GetPbDataId()], ["MoveState", e], ["PositionState", t]);
-      }
+    if (this.iau !== 0 && (t = o.GetComponent(102).PositionState, e !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) && (AudioSystem_1.AudioSystem.ExecuteAction(this.iau, 0, {
+      TransitionDuration: 1000
+    }), this.iau = 0, Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 打断角色加速语音", ["RoleId", o?.GetComponent(3)?.CreatureData.GetPbDataId()], ["MoveState", e], ["PositionState", t]);
     }
   }
   static GetRoleAudioConfig(e, o) {
@@ -380,11 +376,11 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.RoleAudioController = RoleAudioController;
-(_a = RoleAudioController).Isu = undefined;
-RoleAudioController.Tsu = undefined;
-RoleAudioController.bsu = undefined;
+(_a = RoleAudioController).Ysu = undefined;
+RoleAudioController.zsu = undefined;
+RoleAudioController.Jsu = undefined;
 RoleAudioController.n$t = undefined;
-RoleAudioController.Asu = undefined;
+RoleAudioController.rau = undefined;
 RoleAudioController.Sir = 0;
 RoleAudioController.aca = new Map();
 RoleAudioController.Phn = INTERVAL_TIME;
@@ -394,7 +390,7 @@ RoleAudioController.BKa = false;
 RoleAudioController.qKa = false;
 RoleAudioController.ero = (e, o, t) => {
   e = EntitySystem_1.EntitySystem.Get(e);
-  if (e && (!_a.Isu?.includes(o) && o !== 210001 || _a.PlayRoleAudio(e, 1005), _a.Tsu?.includes(o) && _a.OnPlayAccelerateAudio(e, CharacterUnifiedStateTypes_1.ECharMoveState.Sprint, CharacterUnifiedStateTypes_1.ECharPositionState.Ground), _a.bsu?.includes(o))) {
+  if (e && (!_a.Ysu?.includes(o) && o !== 210001 || _a.PlayRoleAudio(e, 1005), _a.zsu?.includes(o) && _a.OnPlayAccelerateAudio(e, CharacterUnifiedStateTypes_1.ECharMoveState.Sprint, CharacterUnifiedStateTypes_1.ECharPositionState.Ground), _a.Jsu?.includes(o))) {
     _a.RefreshPlayAudioCooldownTime(0, e.Id);
   }
 };
@@ -408,7 +404,7 @@ RoleAudioController.dLe = () => {
   _a.grl.push(..._a.Crl);
   _a.Crl.length = 0;
   for (const o of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
-    var e = o.Entity?.CheckGetComponent(189);
+    var e = o.Entity?.CheckGetComponent(190);
     if (e?.Config) {
       if (!_a.Crl.includes(e.Config.FootstepEvent)) {
         _a.Crl.push(e.Config.FootstepEvent);
@@ -431,11 +427,11 @@ RoleAudioController.dLe = () => {
 };
 RoleAudioController.xie = (e, o) => {
   _a.n$t = e.Entity?.CheckGetComponent(3);
-  _a.Asu = e.Entity?.CheckGetComponent(189);
-  if (_a.Asu?.Config) {
-    AudioSystem_1.AudioSystem.SetState("role_name", _a.Asu.Config.Name);
+  _a.rau = e.Entity?.CheckGetComponent(190);
+  if (_a.rau?.Config) {
+    AudioSystem_1.AudioSystem.SetState("role_name", _a.rau.Config.Name);
   }
-  e = _a.Asu?.GetAkComponent();
+  e = _a.rau?.GetAkComponent();
   if (e) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 角色进场语音事件", ["RoleId", _a.n$t?.CreatureData.GetPbDataId()], ["Event", ROLE_CHANGE_FRONT_EVENT], ["Owner", e.GetOwner()?.GetName()]);
@@ -452,8 +448,8 @@ RoleAudioController.Pni = (o, t, i) => {
   if (o === 1 && !(i < t) && !ModelManager_1.ModelManager.SceneTeamModel?.ChangingRole) {
     o = FormationAttributeController_1.FormationAttributeController.GetMax(1);
     if (!(t / o > _a.Sir)) {
-      var t = _a.Asu?.GetAkComponent();
-      var r = _a.Asu?.Config?.LowStrengthEvent;
+      var t = _a.rau?.GetAkComponent();
+      var r = _a.rau?.Config?.LowStrengthEvent;
       if (_a.n$t && t && r) {
         var a = _a.aca.get(10041);
         var n = _a.aca.get(10042);
@@ -471,4 +467,4 @@ RoleAudioController.Pni = (o, t, i) => {
     }
   }
 };
-RoleAudioController.wsu = 0; //# sourceMappingURL=RoleAudioController.js.map
+RoleAudioController.iau = 0; //# sourceMappingURL=RoleAudioController.js.map

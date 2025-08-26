@@ -14,6 +14,7 @@ function getGlobalConfig() {
       BlueprintConfigPath: "Content/Data/Json/Blueprint.json",
       EntityStateConfigPath: "Content/Data/Json/EntityState.json",
       EntityOwnerConfigPath: "Content/Data/Json/EntityOwner.json",
+      EntityFixProcessorPath: "Content/Data/Json/EntityFixProcessor.json",
       AlwaysLoadEntityConfigPath: "Content/Data/Json/AlwaysLoadEntity.json",
       LevelsConfigPath: "Content/Data/Json/Level.json",
       LevelsDir: "Content/Data/Levels",
@@ -65,7 +66,10 @@ function getGlobalConfig() {
       FishingRouletteConfig: "Content/Data/Json/FishingRouletteConfig.json",
       AreaQuestTracking: "Content/Data/Json/AreaQuestTracking.json",
       LevelBuildingGrids: "Content/Data/Json/LevelBuildingGrids.json",
-      TuningNoteConfigPath: "Content/Data/Json/TuningNoteConfig.json"
+      GlobalFixConfigPath: "Content/Data/Json/GlobalFixConfig.json",
+      DynamicSpawnMonsterRandomPoolConfigPath: "Content/Data/Json/DynamicSpawnMonsterRandomPoolConfig.json",
+      EntityCustomPrimitiveData: "Content/Data/Json/EntityCustomPrimitiveData.json",
+      AnsPerformDataPath: "Content/Data/Json/AnsPerformData.json"
     };
   } else {
     return {
@@ -87,6 +91,7 @@ function getGlobalConfig() {
       FunctionalTestDir: "Content/Aki/UniverseEditor/FunctionalTest",
       AreaQuestTracking: "../Config/Raw/Tables/k.可视化编辑/AreaQuestTracking.json",
       LevelBuildingGrids: "../Config/Raw/Tables/k.可视化编辑/LevelBuildingGrids.json",
+      EntityCustomPrimitiveData: "../Config/Raw/Tables/k.可视化编辑/EntityCustomPrimitiveData.json",
       LevelsConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Level.json",
       ActionConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Action.json",
       ComponentConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Component.json",
@@ -126,6 +131,7 @@ function getGlobalConfig() {
       OfflineComponentExportPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/OfflineComponentConfig.json",
       SummonGongduolaConfigExportPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/SummonGongduolaConfig.json",
       HideGroupFixConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/HideGroupFixConfig.json",
+      EntityFixProcessorPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/EntityFixProcessor.json",
       GravityAbnormalEntityListPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GravityAbnormalEntityList.json",
       ActorRefComponentsConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/ActorRefComponentsConfig.json",
       QuestRefMp4Path: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/QuestRefMp4Config.json",
@@ -134,7 +140,9 @@ function getGlobalConfig() {
       SystemVarConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/SystemVar.json",
       VehicleRidingRolesConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/VehicleRidingRoles.json",
       GridItemShapeConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GridItemShapeConfig.json",
-      TuningNoteConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/TuningNoteConfig.json"
+      GlobalFixConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GlobalFixConfig.json",
+      DynamicSpawnMonsterRandomPoolConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/DynamicSpawnMonsterRandomPoolConfig.json",
+      AnsPerformDataPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AnsPerformData.json"
     };
   }
 }
@@ -149,6 +157,7 @@ exports.globalConfigTemp = {
   BlueprintConfigPath: "Content/Aki/UniverseEditorConfig/Blueprint.json",
   EntityStateConfigPath: "Content/Aki/UniverseEditorConfig/EntityState.json",
   EntityOwnerConfigPath: "Content/Aki/UniverseEditorConfig/EntityOwner.json",
+  EntityFixProcessorPath: "Content/Aki/UniverseEditorConfig/EntityFixProcessor.json",
   AlwaysLoadEntityConfigPath: "Content/Aki/UniverseEditorConfig/AlwaysLoadEntity.json",
   LevelsConfigPath: "Content/Aki/UniverseEditorConfig/Level.json",
   FlowListDir: "Content/Aki/UniverseEditorConfig/FlowList",
@@ -204,5 +213,8 @@ exports.globalConfigTemp = {
   GravityAbnormalEntityListPath: "Content/Aki/UniverseEditorConfig/Json/GravityAbnormalEntityList.json",
   ActorRefComponentsConfigPath: "Content/Aki/UniverseEditorConfig/Json/ActorRefComponentsConfig.json",
   QuestRefMp4Path: "Content/Aki/UniverseEditorConfig/Json/QuestRefMp4Config.json",
-  TuningNoteConfigPath: "Content/Aki/UniverseEditorConfig/Json/TuningNoteConfig.json"
+  GlobalFixConfigPath: "Content/Aki/UniverseEditorConfig/Json/GlobalFixConfig.json",
+  DynamicSpawnMonsterRandomPoolConfigPath: "Content/Aki/UniverseEditorConfig/Json/DynamicSpawnMonsterRandomPoolConfig.json",
+  EntityCustomPrimitiveData: "Content/Aki/UniverseEditorConfig/Json/EntityCustomPrimitiveData.json",
+  AnsPerformDataPath: "Content/Aki/UniverseEditorConfig/Json/AnsPerformData.json"
 }; //# sourceMappingURL=IGlobal.js.map

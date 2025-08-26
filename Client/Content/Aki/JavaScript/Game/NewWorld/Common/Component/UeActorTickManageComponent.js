@@ -48,7 +48,7 @@ let UeActorTickManageComponent = class UeActorTickManageComponent extends Entity
     let t = undefined;
     if (PerformanceController_1.PerformanceController.IsOpenCatchWorldEntity) {
       let e = `DeltaSeconds: ${this.Entity.GetDeltaSeconds().toFixed(2)}, TickInterval: ${this.Entity.GetTickInterval()}, Distance: ${this.Entity.DistanceWithCamera.toFixed(2)}`;
-      var o = this.Entity.GetComponent(175);
+      var o = this.Entity.GetComponent(176);
       if (o) {
         o = o.IsInFighting;
         e += " IsInFight: " + o;
@@ -76,5 +76,5 @@ let UeActorTickManageComponent = class UeActorTickManageComponent extends Entity
     return this.DumpDisableInfo();
   }
 };
-UeActorTickManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(111)], UeActorTickManageComponent);
+UeActorTickManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(112)], UeActorTickManageComponent);
 exports.UeActorTickManageComponent = UeActorTickManageComponent; //# sourceMappingURL=UeActorTickManageComponent.js.map

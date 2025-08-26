@@ -37,19 +37,20 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.PlayRate = 1;
     this.SeqMainCharacter = undefined;
     this.BlendInCharacter = undefined;
+    this.BlendInCharacters = new Array();
     this.BlendOutCharacter = undefined;
+    this.BlendOutCharacters = new Array();
     this.NeedsQueueLatentAction = false;
     this.LatentActions = [];
     this.LastIndex = FlowSequence_1.INVALID_INDEX;
     this.NextIndex = FlowSequence_1.INVALID_INDEX;
-    this.HidePlayer = false;
+    this.HidePlayerEntityHandle = undefined;
     this.FinishCallback = undefined;
     this.Type = undefined;
     this.RelativeTransform = undefined;
     this.CurFinalPos = [];
     this.IsFadeEnd = [];
     this.CurLanguageAudio = 0;
-    this.NeedJumpWhenResume = false;
     this.CurLevelSeqActor = undefined;
     this.CurSubtitleStartFrames = [];
     this.CurSubtitleEndFrames = [];
@@ -60,7 +61,8 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.CurFrameRate = 0;
     this.SelectedOption = 0;
     this.CurSubtitle = new SequenceDefine_1.PlotSubtitleConfig();
-    this.$Pu = undefined;
+    this.NeedJumpWhenResume = false;
+    this._Du = undefined;
     this.IsSubtitleConfigInit = false;
     this.DefaultGuardTime = 0;
     this.DefaultAudioDelay = 0;
@@ -76,18 +78,21 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.BeginSwitchFrame = 0;
     this.TwiceAnimFlag = false;
     this.AdditionSeqDirector = undefined;
+    this.NpcGroupPerform = new Array();
+    this.NpcRelationMap = new Map();
+    this.NeedHideNpcSet = new Set();
   }
   get SeqMainCharacterModelConfig() {
-    if (!this.$Pu) {
+    if (!this._Du) {
       var t = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(9);
       let i = SequenceDefine_1.FEMALE_SEQ_MODEL_ID;
       if (t === LoginDefine_1.ELoginSex.Boy) {
         i = SequenceDefine_1.MALE_SEQ_MODEL_ID;
       }
       t = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, i.toString());
-      this.$Pu = t;
+      this._Du = t;
     }
-    return this.$Pu;
+    return this._Du;
   }
   Reset() {
     this.IsPaused = undefined;
@@ -111,7 +116,7 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.LatentActions.length = 0;
     this.LastIndex = FlowSequence_1.INVALID_INDEX;
     this.NextIndex = FlowSequence_1.INVALID_INDEX;
-    this.HidePlayer = false;
+    this.HidePlayerEntityHandle = undefined;
     this.CurSubtitleStartFrames.length = 0;
     this.CurSubtitleEndFrames.length = 0;
     this.CurShotStartFrames.length = 0;
@@ -128,6 +133,11 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.CurLanguageAudio = 0;
     this.NeedJumpWhenResume = false;
     this.AdditionSeqDirector = undefined;
+    this.BlendInCharacters = new Array();
+    this.BlendOutCharacters = new Array();
+    this.NpcGroupPerform.length = 0;
+    this.NpcRelationMap.clear();
+    this.NeedHideNpcSet.clear();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "清理引用数据-SequenceModel");
     }

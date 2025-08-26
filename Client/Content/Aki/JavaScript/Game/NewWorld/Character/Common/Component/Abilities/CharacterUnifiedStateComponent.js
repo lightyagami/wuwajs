@@ -55,7 +55,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     this.Nkr = (t, e) => {
       FormationDataController_1.FormationDataController.MarkAggroDirty();
       var i;
-      var a = t.CheckGetComponent(175);
+      var a = t.CheckGetComponent(176);
       this.Okr = a.Okr;
       if (e) {
         if (a.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Flying && a.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Roll && CharacterUnifiedStateTypes_1.legalMoveStates.get(this.PositionState).has(a.MoveState)) {
@@ -128,6 +128,10 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
           if (this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Captured) {
             this.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Flying);
           }
+          break;
+        case 7:
+          this.SetPositionState(CharacterUnifiedStateTypes_1.ECharPositionState.Air);
+          this.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.WalkOnAir);
           break;
         case 6:
           switch (s) {
@@ -209,7 +213,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     };
     this.OnInFight = t => {
       this.Vkr(t);
-      this.Entity.GetComponent(177)?.SetAnimParamsInFight(t);
+      this.Entity.GetComponent(178)?.SetAnimParamsInFight(t);
       ModelManager_1.ModelManager.CombatMessageModel.AnyHateChange = true;
     };
     this.OnUpdateSceneTeam = () => {
@@ -233,9 +237,9 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     this.ActorComponent = this.Entity.GetComponent(3);
     this.qkr = this.Entity.GetComponent(21);
     this.bkr = this.Entity.CheckGetComponent(18);
-    this.TagComponent = this.Entity.CheckGetComponent(205);
-    this.o4o = this.Entity.CheckGetComponent(178);
-    this.Gkr = this.Entity.GetComponent(94);
+    this.TagComponent = this.Entity.CheckGetComponent(206);
+    this.o4o = this.Entity.CheckGetComponent(179);
+    this.Gkr = this.Entity.GetComponent(95);
     this.IsInGameInternal = false;
     this.InitCharState();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.Nkr);
@@ -449,7 +453,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
   SprintPress() {
     if (this.Gkr?.EnableRoleGaitState(3)) {
       this.zkr();
-      RoleAudioController_1.RoleAudioController.OnPlayAccelerateAudio(this.Entity, this.MoveState, this.PositionState);
+      RoleAudioController_1.RoleAudioController.OnPlayAccelerateAudio(this.Entity, this.MoveState, this.PositionState, this.o4o?.CharacterMovement?.MovementMode, this.o4o?.CharacterMovement?.CustomMovementMode);
     }
   }
   SprintRelease() {
@@ -477,7 +481,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     }
     if (t) {
       this.zkr();
-      RoleAudioController_1.RoleAudioController.OnPlayAccelerateAudio(this.Entity, this.MoveState, this.PositionState);
+      RoleAudioController_1.RoleAudioController.OnPlayAccelerateAudio(this.Entity, this.MoveState, this.PositionState, this.o4o?.CharacterMovement?.MovementMode, this.o4o?.CharacterMovement?.CustomMovementMode);
     }
   }
   ExitHitState(t = "") {
@@ -558,7 +562,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
   static OnPlayerBattleStateChangeNotify(t, e) {
     CharacterUnifiedStateComponent_1.n2r.Start();
     for (const a of ModelManager_1.ModelManager.SceneTeamModel.GetAllGroupEntities(e.W5n)) {
-      var i = a.Entity?.GetComponent(175);
+      var i = a.Entity?.GetComponent(176);
       i?.RefreshFightState(e.iWn);
       i?.OnInFight(e.iWn);
     }
@@ -586,7 +590,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
   static Load() {
     if (this.s2r) {
       this.PositionTagList = [-1898186757, 504239013, 40422668, 855966206, 1888918118, 485336017];
-      this.MoveTagList = [-1867662364, 248240472, 498191540, -1625986130, 874657114, 316338736, 1781274524, -1756660346, 1453491643, -1515012024, -846247571, -1989694637, -1654460638, 2060652336, 2111364199, 756800494, 262865373, 31862857, -1973127492, -1504358738, -652371212, -648310348, 457513750, -1220068999, 84868970, 1785019708, 1502279607, 389944200, -2027866845, -959917199, 1552667325, 427266238, -1013665181];
+      this.MoveTagList = [-1867662364, 248240472, 498191540, -1625986130, 874657114, 316338736, 1781274524, -1756660346, 1453491643, -1515012024, -846247571, -1989694637, -1654460638, 2060652336, 2111364199, 756800494, 262865373, 31862857, -1973127492, -1504358738, -652371212, -648310348, 457513750, -1220068999, 84868970, 1785019708, 1502279607, 389944200, -2027866845, -959917199, 1552667325, 427266238, -1013665181, -158175522];
       this.DirectionTagList = [-1150819426, 428837378, -1462404775, 1260125908];
       this.PositionSubStateTagList = [-1162654169, 1950824539, 1949638808];
       this.PositionEnumToTag = new Map();
@@ -635,5 +639,5 @@ CharacterUnifiedStateComponent.DirectionEnumKeys = Object.values(CharacterUnifie
 CharacterUnifiedStateComponent.PositionSubStateEnumKeys = Object.values(CharacterUnifiedStateTypes_1.ECharPositionSubState).filter(t => typeof t == "number");
 CharacterUnifiedStateComponent.s2r = true;
 __decorate([CombatMessage_1.CombatNet.Listen("y3n", false)], CharacterUnifiedStateComponent, "OnPlayerBattleStateChangeNotify", null);
-CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(175)], CharacterUnifiedStateComponent);
+CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(176)], CharacterUnifiedStateComponent);
 exports.CharacterUnifiedStateComponent = CharacterUnifiedStateComponent; //# sourceMappingURL=CharacterUnifiedStateComponent.js.map

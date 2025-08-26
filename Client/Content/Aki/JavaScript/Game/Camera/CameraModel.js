@@ -137,9 +137,9 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.Nhe = undefined;
     this.Ohe = true;
     this.l6a = new Set();
-    this.aHc = 0;
-    this.hHc = new Map();
-    this.lHc = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
+    this.q9u = 0;
+    this.G9u = new Map();
+    this.F9u = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
     this.pwl = false;
   }
   get CameraBaseYawSensitivity() {
@@ -399,20 +399,20 @@ class CameraModel extends ModelBase_1.ModelBase {
     return this.h6a || this.l6a.size > 0;
   }
   EnableCameraSpecificLockEntity(t, e) {
-    t = new CameraSpecificLockEntity(t, e, ++this.aHc);
-    this.lHc.Push(t);
-    this.hHc.set(t.Id, t);
+    t = new CameraSpecificLockEntity(t, e, ++this.q9u);
+    this.F9u.Push(t);
+    this.G9u.set(t.Id, t);
     return t.Id;
   }
   DisableCameraSpecificLockEntity(t) {
-    t = this.hHc.get(t);
+    t = this.G9u.get(t);
     if (t) {
       t.MarkDelete = true;
     }
   }
   GetCameraSpecificLockEntity() {
-    while (!this.lHc.Empty) {
-      var t = this.lHc.Top;
+    while (!this.F9u.Empty) {
+      var t = this.F9u.Top;
       if (!t) {
         return;
       }
@@ -420,8 +420,8 @@ class CameraModel extends ModelBase_1.ModelBase {
       if (!t.MarkDelete && e?.Valid) {
         return t;
       }
-      this.lHc.Pop();
-      this.hHc.delete(t.Id);
+      this.F9u.Pop();
+      this.G9u.delete(t.Id);
     }
   }
   OnInit() {
@@ -475,8 +475,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     return this.dhe.Valid && this.Che.Valid && this.fhe.Valid && this.phe.Valid && this.vhe.Valid;
   }
   OnClear() {
-    this.lHc.Clear();
-    this.hHc.clear();
+    this.F9u.Clear();
+    this.G9u.clear();
     Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = 1;
     var t = EntitySystem_1.EntitySystem.Destroy(this.dhe);
     this.dhe = undefined;

@@ -113,7 +113,7 @@ let SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     var e = this.Hte.CreatureData.GetPbEntityInitData();
     if (e === undefined) {
       if (Log_1.Log.CheckError()) {
@@ -223,5 +223,5 @@ let SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = class Sc
     return e === 0 || e === this.Ygl.length - 1;
   }
 };
-SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(260)], SceneItemWindPipelineComponent);
+SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(263)], SceneItemWindPipelineComponent);
 exports.SceneItemWindPipelineComponent = SceneItemWindPipelineComponent; //# sourceMappingURL=SceneItemWindPipelineComponent.js.map

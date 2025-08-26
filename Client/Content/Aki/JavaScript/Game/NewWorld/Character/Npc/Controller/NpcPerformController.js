@@ -16,17 +16,17 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 class NpcPerformController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(24454, this.SetPerformStateNotify);
+    Net_1.Net.Register(28528, this.SetPerformStateNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMark, this.OnTrackMark);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UnTrackMark, this.OnUnTrackMark);
-    Net_1.Net.Register(15169, this.OnShopBuyNotify);
+    Net_1.Net.Register(15273, this.OnShopBuyNotify);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24454);
+    Net_1.Net.UnRegister(28528);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMark, this.OnTrackMark);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnTrackMark, this.OnUnTrackMark);
-    Net_1.Net.UnRegister(15169);
+    Net_1.Net.UnRegister(15273);
     return true;
   }
   static ForceSetNpcDitherVisible(e, r, t) {
@@ -39,7 +39,7 @@ class NpcPerformController extends ControllerBase_1.ControllerBase {
       } else {
         this.ForceNpcDitherVisibleMap.set(r, new Set([t]));
         if ((e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r))?.IsInit) {
-          e.Entity.GetComponent(186)?.SetForceInShowRange(true);
+          e.Entity.GetComponent(187)?.SetForceInShowRange(true);
         }
       }
     } else if (this.ForceNpcDitherVisibleMap.has(r)) {
@@ -53,7 +53,7 @@ class NpcPerformController extends ControllerBase_1.ControllerBase {
         }
         this.ForceNpcDitherVisibleMap.delete(r);
         if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r))?.IsInit) {
-          t.Entity.GetComponent(186)?.SetForceInShowRange(false);
+          t.Entity.GetComponent(187)?.SetForceInShowRange(false);
         }
       }
     }
@@ -64,7 +64,7 @@ exports.NpcPerformController = NpcPerformController;
 NpcPerformController.SetPerformStateNotify = e => {
   var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n));
   if (r?.Entity?.IsInit) {
-    r.Entity.GetComponent(187).PerformGroupController.SwitchPerformState(e.Y4n);
+    r.Entity.GetComponent(188).PerformGroupController.SwitchPerformState(e.Y4n);
   }
 };
 NpcPerformController.OnTrackMark = e => {

@@ -159,7 +159,7 @@ class WeeklyRogueEntrancePanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSeco
       this.U2o.AddItemToLayout([ROGUE_SCORE_KEY]);
       (e = this.U2o.GetLayoutItemByKey(ROGUE_SCORE_KEY)).SetIconVisible(false);
       e.SetStarVisible(false);
-      i = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_Weekly_Rogue_Score") ?? "{0}", i.Score.toString());
+      i = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("WeRogueMapScoreText") ?? "{0}", i.Score.toString(), i.GetCycleConfig().MaxScore.toString());
       e.SetRightText(i);
       i = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_Weekly_Rogue_Week_Score") ?? "", "");
       e.SetLeftText(i);

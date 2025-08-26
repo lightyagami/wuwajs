@@ -99,6 +99,9 @@ class UiSequencePlayer {
   ReplaySequence(e) {
     this.SPe.ReplaySequenceByKey(e);
   }
+  PlayOrReplaySequenceByName(e, t = false, i = undefined) {
+    this.SPe.PlayOrReplaySequenceByName(e, t, i);
+  }
   hur() {
     var e;
     if (this.IsInSequence()) {

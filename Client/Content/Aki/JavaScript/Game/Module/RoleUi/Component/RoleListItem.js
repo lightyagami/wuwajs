@@ -5,15 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleListItem = exports.RoleListItemData = undefined;
 const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../RedDot/RedDotController");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const EditFormationDefine_1 = require("../../EditFormation/EditFormationDefine");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
-const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
-const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const EventDefine_1 = require("../../../Common/Event/EventDefine");
 class RoleListItemData {
   constructor() {
     this.RoleDataId = 0;
@@ -64,10 +64,15 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   a1o(e) {
     var t = this.DataId;
-    if (e.TeamPositionType === 1) {
-      this.jH_(t);
-    } else {
-      this.HH_(t);
+    switch (e.TeamPositionType) {
+      case 1:
+        this.jH_(t);
+        break;
+      case 2:
+        this.UNu(t);
+        break;
+      default:
+        this.HH_(t);
     }
   }
   HH_(t) {
@@ -98,7 +103,15 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.$H_("SP_TeamEditFormation_" + e, true);
     }
   }
-  _Su() {
+  UNu(e) {
+    e = ModelManager_1.ModelManager.RoleSelectModel.GetRoleIndex(e);
+    if (e <= 0) {
+      this.$H_();
+    } else {
+      this.$H_("SP_RoleFormationPosition" + e, true);
+    }
+  }
+  c7c() {
     var e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.DataId);
     this.GetItem(7).SetUIActive(e.GetIsNew());
   }
@@ -127,7 +140,7 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
     var o = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.DataId);
     this.s1o(o, e.NeedShowTrial);
     this.a1o(e);
-    this._Su();
+    this.c7c();
     if (e.NeedRedDot) {
       RedDotController_1.RedDotController.BindRedDot("RoleSystemRoleList", this.GetRedDotItem(), undefined, this.DataId);
     } else {
@@ -142,7 +155,7 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnSelected(e) {
     this.SetToggleState(1, true);
     this.N1l(this.DataId);
-    this._Su();
+    this.c7c();
   }
   N1l(e) {
     e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);

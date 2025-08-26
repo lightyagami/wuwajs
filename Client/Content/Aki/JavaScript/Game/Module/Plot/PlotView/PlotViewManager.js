@@ -78,6 +78,15 @@ class PlotViewManager {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HangPlotViewHud, false);
       }
     };
+    this.Gud = e => {
+      if (this.GetCurrentViewName() === "PlotViewHUD") {
+        UiManager_1.UiManager.GetViewByName("PlotViewHUD")?.SetEnableTranslucent(e);
+      }
+      ModelManager_1.ModelManager.PlotModel.TranslucentHud = e;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Plot", 26, "[PlotView] 半透D级剧情剧情", ["visible", e]);
+      }
+    };
     this.Bto = t => {
       var e = this.Dto;
       this.Dto = new Set();
@@ -93,6 +102,7 @@ class PlotViewManager {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UpdatePlotSubtitle, this.OnUpdateSubtitle);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTutorialTipExistChanged, this.pea);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewFail, this.yj1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, this.Gud);
   }
   UnRegisterEvent() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotViewChange, this.wto);
@@ -101,6 +111,7 @@ class PlotViewManager {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UpdatePlotSubtitle, this.OnUpdateSubtitle);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTutorialTipExistChanged, this.pea);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenViewFail, this.yj1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, this.Gud);
   }
   GetCurrentViewName() {
     return this.Lto;

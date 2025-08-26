@@ -16,12 +16,12 @@ const CHECK_BASE_CHARACTER_INTERVAL = 500;
 class LevelEventEnableSplineMoveModel extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
     super(...arguments);
-    this.Wwu = undefined;
+    this.jwu = undefined;
     this.dea = undefined;
     this.Cea = new Array();
     this.gea = () => {
       if (Global_1.Global.BaseCharacter?.IsValid()) {
-        TimerSystem_1.TimerSystem.Remove(this.dea);
+        TimerSystem_1.GameplayTimerSystem.Remove(this.dea);
         this.dea = undefined;
         for (var [e, t] of this.Cea) {
           this.ExecuteNew(e, t);
@@ -30,50 +30,52 @@ class LevelEventEnableSplineMoveModel extends LevelGeneralBase_1.LevelEventBase 
       }
     };
   }
-  ExecuteNew(t, i) {
-    if (t) {
-      this.Wwu = t;
-      var n;
-      var s = this.Wwu.Config;
-      if (i instanceof LevelGeneralContextDefine_1.TriggerContext && (o = i.TriggerEntityId ? EntitySystem_1.EntitySystem.Get(i.TriggerEntityId) : undefined, n = i.OtherEntityId ? EntitySystem_1.EntitySystem.Get(i.OtherEntityId) : undefined, Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("LevelEvent", 39, "EnableSplineMoveModel: Trigger触发", ["TargetType", s.Target.Type], ["SplineMoveType", s.Type], ["SplineEntityId", s.SplineEntityId], ["TriggerEntity", o?.GetComponent(0)?.GetPbDataId()], ["OtherEntity", n?.GetComponent(0)?.GetPbDataId()]);
+  ExecuteNew(i, n) {
+    if (i) {
+      this.jwu = i;
+      var s;
+      var o = this.jwu.Config;
+      if (n instanceof LevelGeneralContextDefine_1.TriggerContext && (r = n.TriggerEntityId ? EntitySystem_1.EntitySystem.Get(n.TriggerEntityId) : undefined, s = n.OtherEntityId ? EntitySystem_1.EntitySystem.Get(n.OtherEntityId) : undefined, Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("LevelEvent", 39, "EnableSplineMoveModel: Trigger触发", ["TargetType", o.Target.Type], ["SplineMoveType", o.Type], ["SplineEntityId", o.SplineEntityId], ["TriggerEntity", r?.GetComponent(0)?.GetPbDataId()], ["OtherEntity", s?.GetComponent(0)?.GetPbDataId()]);
       }
       let e = undefined;
-      switch (s.Target.Type) {
+      let t = false;
+      switch (o.Target.Type) {
         case "Triggered":
-          if (i instanceof LevelGeneralContextDefine_1.TriggerContext) {
-            if ((e = EntitySystem_1.EntitySystem.Get(i.OtherEntityId))?.Valid) {
+          if (n instanceof LevelGeneralContextDefine_1.TriggerContext) {
+            if ((e = EntitySystem_1.EntitySystem.Get(n.OtherEntityId))?.Valid) {
               break;
             }
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("LevelEvent", 6, "EnableSplineMoveModel: 未找到合法的触发者实体", ["Type", s.Target.Type], ["ContextType", i.Type]);
+              Log_1.Log.Error("LevelEvent", 6, "EnableSplineMoveModel: 未找到合法的触发者实体", ["Type", o.Target.Type], ["ContextType", n.Type]);
             }
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelEvent", 6, "EnableSplineMoveModel: Triggered类型必须对应TriggerContext", ["Type", s.Target.Type], ["ContextType", i.Type]);
+            Log_1.Log.Error("LevelEvent", 6, "EnableSplineMoveModel: Triggered类型必须对应TriggerContext", ["Type", o.Target.Type], ["ContextType", n.Type]);
           }
           this.FinishExecute(false);
           return;
         case "Player":
           if (!Global_1.Global.BaseCharacter?.IsValid()) {
-            this.Cea.push([t, i]);
-            this.dea ||= TimerSystem_1.TimerSystem.Forever(this.gea, CHECK_BASE_CHARACTER_INTERVAL);
+            this.Cea.push([i, n]);
+            this.dea ||= TimerSystem_1.GameplayTimerSystem.Forever(this.gea, CHECK_BASE_CHARACTER_INTERVAL);
             return;
           }
           e = Global_1.Global.BaseCharacter.GetEntityNoBlueprint();
+          t = o.Target.PlayerTargetType === 1;
           break;
         default:
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelEvent", 6, "EnableSplineMoveModel不接受此对象类型", ["Type", s.Target.Type]);
+            Log_1.Log.Error("LevelEvent", 6, "EnableSplineMoveModel不接受此对象类型", ["Type", o.Target.Type]);
           }
           this.FinishExecute(false);
           return;
       }
-      var o = e?.GetComponent(107);
-      if (o?.Valid) {
-        if (s.Type === "Open") {
-          o.StartSplineMove(s.SplineEntityId, s.Pattern);
+      var r = e?.GetComponent(108);
+      if (r?.Valid) {
+        if (o.Type === "Open") {
+          r.StartSplineMove(o.SplineEntityId, o.Pattern, t);
         } else {
-          o.EndSplineMove(s.SplineEntityId);
+          r.EndSplineMove(o.SplineEntityId);
         }
         this.FinishExecute(true);
       } else {
@@ -84,21 +86,21 @@ class LevelEventEnableSplineMoveModel extends LevelGeneralBase_1.LevelEventBase 
     }
   }
   OnReset() {
-    this.Wwu = undefined;
+    this.jwu = undefined;
   }
   OnUpdateGuarantee() {
-    if (this.Wwu) {
+    if (this.jwu) {
       var e = {
         Name: "DisableSplineMoveModel",
         Params: {
           Config: {
             Type: "Close",
-            Target: this.Wwu.Config.Target,
-            SplineEntityId: this.Wwu.Config.SplineEntityId
+            Target: this.jwu.Config.Target,
+            SplineEntityId: this.jwu.Config.SplineEntityId
           }
         }
       };
-      switch (this.Wwu.Config.Type) {
+      switch (this.jwu.Config.Type) {
         case "Open":
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddGuaranteeAction, this.Type, this.BaseContext, e, true);
           break;

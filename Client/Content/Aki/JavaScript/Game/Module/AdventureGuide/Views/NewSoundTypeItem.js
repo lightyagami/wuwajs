@@ -71,7 +71,9 @@ class NewSoundTypeItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(4).SetUIActive(t);
   }
   RefreshRedDotState() {
-    this.D4l = ModelManager_1.ModelManager.AdventureGuideModel.CheckRedDotSecondary(this.q8e);
+    var t = ModelManager_1.ModelManager.AdventureGuideModel.CheckRedDotSecondary(this.q8e);
+    var e = ModelManager_1.ModelManager.AdventureGuideModel.CheckExtraRedDotSecondary(this.q8e);
+    this.D4l = t || e;
     this.GetItem(5)?.SetUIActive(this.D4l);
   }
   GetRedDotState() {

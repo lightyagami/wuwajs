@@ -38,7 +38,7 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
     this.CurrentHandle = 0;
   }
   OnStart() {
-    this.rJo = this.Entity.GetComponent(175);
+    this.rJo = this.Entity.GetComponent(176);
     return true;
   }
   PreSwitchRemoteFightState(t) {

@@ -23,7 +23,7 @@ class MoraleScoreProgressActivityPanel extends UiPanelBase_1.UiPanelBase {
       });
     };
     this.Q$1 = () => new MoraleScoreProgressPercentItem_1.MoraleScoreProgressPercentItem();
-    this.blu = () => {
+    this.l_u = () => {
       return new MoraleAreaProgressPointItem_1.MoraleAreaProgressPointItem();
     };
   }
@@ -40,7 +40,7 @@ class MoraleScoreProgressActivityPanel extends UiPanelBase_1.UiPanelBase {
     this.PercentLayout = new GenericLayout_1.GenericLayout(e, this.Q$1, r);
     var e = this.GetLayoutBase(4);
     var r = this.GetItem(5)?.GetOwner();
-    this.PointLayout = new GenericLayout_1.GenericLayout(e, this.blu, r);
+    this.PointLayout = new GenericLayout_1.GenericLayout(e, this.l_u, r);
   }
   UpdateData() {
     var e = ModelManager_1.ModelManager.MoraleModel;

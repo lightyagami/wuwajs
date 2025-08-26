@@ -15,8 +15,8 @@ class LevelEventPlayLevelSequence extends LevelGeneralBase_1.LevelEventBase {
       if (e.LevelSequencePath) {
         if (n = t) {
           if ((o = EntitySystem_1.EntitySystem.Get(n.EntityId))?.Valid) {
-            if (o.GetComponent(202)?.Owner) {
-              if (o = o.GetComponent(163)) {
+            if (o.GetComponent(203)?.Owner) {
+              if (o = o.GetComponent(164)) {
                 o.HandleSequence(e);
               }
             } else if (Log_1.Log.CheckError()) {

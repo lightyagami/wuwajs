@@ -39,7 +39,7 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     this.EIe = undefined;
     this.kHa = undefined;
     this.hb1 = [];
-    this.qJ1 = false;
+    this._Z1 = false;
     this.vQ1 = new Set();
     this.lb1 = new Map();
     this.yQ1 = new Set();
@@ -63,12 +63,14 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
               }
               this.lb1.get(a).add(o.Entity);
             }
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("TemplateEntitySpawner", 31, "[TemplateEntitySpawner] 未找到实体", ["id", r.w5n]);
           }
         }
         for (var [, i] of this.lb1) {
           ControllerHolder_1.ControllerHolder.SlashGameplayController.AddGroupEntities(i);
         }
-        if (this.qJ1) {
+        if (this._Z1) {
           this.SQ1();
         }
       } else if (Log_1.Log.CheckError()) {
@@ -77,7 +79,7 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     };
     this.MQ1 = () => {
       for (const t of this.vQ1) {
-        const e = t.GetComponent(205);
+        const e = t.GetComponent(206);
         if (e) {
           TimerSystem_1.TimerSystem.Next(() => {
             e.RemoveTag(1090344258);
@@ -88,7 +90,7 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
   }
   OnInitData(t) {
     t = t.GetParam(TemplateEntitySpawnerComponent_1)[0];
-    this.qJ1 = t.SpawnConfig.IsInitHide ?? false;
+    this._Z1 = t.SpawnConfig.IsInitHide ?? false;
     return true;
   }
   OnStart() {
@@ -100,7 +102,7 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     this.hb1 = this.EIe.SpawnedEntityInfos;
     this.vQ1.clear();
     if (t.length > 0) {
-      this.kHa = WaitEntityTask_1.WaitEntityTask.Create("TemplateEntitySpawnerComponent", t, this.cb1);
+      this.kHa = WaitEntityTask_1.WaitEntityTask.Create("TemplateEntitySpawnerComponent", t, this.cb1, -1, false, true);
     }
     return true;
   }
@@ -120,14 +122,14 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     }
     this.hb1 = t;
     if (e.length > 0) {
-      this.kHa = WaitEntityTask_1.WaitEntityTask.Create("TemplateEntitySpawnerComponent", e, this.cb1, -1);
+      this.kHa = WaitEntityTask_1.WaitEntityTask.Create("TemplateEntitySpawnerComponent", e, this.cb1, -1, false, true);
     }
   }
   SQ1() {
     for (const n of this.vQ1) {
-      var t = n.GetComponent(202);
+      var t = n.GetComponent(203);
       if (t) {
-        var e = n.GetComponent(205);
+        var e = n.GetComponent(206);
         if (e) {
           e.AddTag(1090344258);
           if (!t.GetIsSceneInteractionLoadCompleted()) {
@@ -142,12 +144,12 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
             EventSystem_1.EventSystem.AddWithTarget(n, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, o);
           }
           TimerSystem_1.TimerSystem.Next(() => {
-            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(n, true, "TemplateEntitySpawnerComponent", true);
+            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(n, true, "TemplateEntitySpawnerComponent");
           });
         }
       }
     }
   }
 };
-TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(291)], TemplateEntitySpawnerComponent);
+TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(295)], TemplateEntitySpawnerComponent);
 exports.TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent; //# sourceMappingURL=TemplateEntitySpawnerComponent.js.map

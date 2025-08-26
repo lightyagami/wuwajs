@@ -32,7 +32,7 @@ class SceneItemHitUtils {
   }
   static CheckHitDataMatchPlayerAttack(t) {
     var e;
-    return !!t.Attacker?.Valid && (!!(e = t.Attacker?.GetComponent(0))?.IsRole() || !!e?.IsVision() || !!ModelManager_1.ModelManager.CreatureModel.GetEntity(e.GetSummonerId())?.Entity?.GetComponent(0)?.IsRole() || !!t.Attacker?.GetComponent(222)?.Valid);
+    return !!t.Attacker?.Valid && (!!(e = t.Attacker?.GetComponent(0))?.IsRole() || !!e?.IsVision() || !!ModelManager_1.ModelManager.CreatureModel.GetEntity(e.GetSummonerId())?.Entity?.GetComponent(0)?.IsRole() || !!t.Attacker?.GetComponent(223)?.Valid);
   }
   static CheckHitDataMatchFixedBulletId(t, e) {
     return !!e.Attacker?.Valid && (!t.BulletId?.length || !!t.BulletId.includes(e.BulletId) || !!t.PlayerAttack && !!this.CheckHitDataMatchPlayerAttack(e));

@@ -13,7 +13,7 @@ class LevelEventSetTeleControl extends LevelGeneralBase_1.LevelEventBase {
     if (e.Config.Type !== "OpenGravity") {
       this.FinishExecute(true);
     } else {
-      l = (e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.Config.EntityId))?.Entity?.GetComponent(156);
+      l = (e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.Config.EntityId))?.Entity?.GetComponent(157);
       if (e?.Valid && l) {
         if (l.GetState() === 11) {
           this.FinishExecute(true);

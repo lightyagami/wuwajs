@@ -119,6 +119,8 @@ class Trigger {
         return DamageIdTrigger;
       case TriggerType_1.ETriggerEvent.BuffAddFailureTrigger:
         return BuffAddFailureTrigger;
+      case TriggerType_1.ETriggerEvent.ShieldTrigger:
+        return ShieldTrigger;
     }
   }
   EvaluateAndExecute(t) {
@@ -301,7 +303,7 @@ class AttributeChangedTrigger extends Trigger {
   OnActive() {
     var t;
     var e;
-    if (this.TargetType === 0 && (t = this.OwnerTriggerComp?.Entity.GetComponent(173))) {
+    if (this.TargetType === 0 && (t = this.OwnerTriggerComp?.Entity.GetComponent(174))) {
       e = t.GetCurrentValue(this.AttributeId);
       this.OnEvent(this.AttributeId, e, e);
       t.AddListener(this.AttributeId, this.OnEvent);
@@ -309,7 +311,7 @@ class AttributeChangedTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TargetType === 0) {
-      this.OwnerTriggerComp?.Entity.GetComponent(173)?.RemoveListener(this.AttributeId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(174)?.RemoveListener(this.AttributeId, this.OnEvent);
     }
   }
 }
@@ -366,7 +368,7 @@ class TagTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(205);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(206);
       if (t) {
         switch (this.InitBehavior) {
           case 1:
@@ -385,7 +387,7 @@ class TagTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(205)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(206)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -416,7 +418,7 @@ class TagStackTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(205);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(206);
       if (t) {
         var e = t.GetTagCount(this.TagId);
         switch (this.InitBehavior) {
@@ -437,7 +439,7 @@ class TagStackTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(205)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(206)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -511,8 +513,12 @@ class SkillTrigger extends Trigger {
   }
   OnInitParams(t) {
     this.TargetType = Number(t[0] ?? 0);
-    this.SkillIds = t[1]?.split("#").map(t => Number(t));
-    this.AllSKill = this.SkillIds.includes(-1);
+    if (t[1]) {
+      this.SkillIds = t[1].split("#").map(t => Number(t));
+      this.AllSKill = this.SkillIds.includes(-1);
+    } else {
+      this.AllSKill = true;
+    }
     this.CheckEnd = !!Number(t[2] ?? 0);
   }
   OnActive() {
@@ -573,7 +579,8 @@ class DamageTrigger extends Trigger {
             DamageValue: -r,
             IsCritical: i.IsCritical,
             SkillDamageCount: i?.SkillDamageCount ?? INVALID_HIT_COUNT,
-            BattleFlags: i.BattleFlags
+            BattleFlags: i.BattleFlags,
+            CounterType: i.CounterType ?? 0
           };
           this.EvaluateAndExecute(t);
         }
@@ -624,7 +631,8 @@ class GlobalDamageTrigger extends Trigger {
               IsCritical: i.IsCritical,
               SkillDamageCount: i?.SkillDamageCount ?? INVALID_HIT_COUNT,
               BulletDamageCount: i?.BulletDamageCount ?? INVALID_HIT_COUNT,
-              BattleFlags: i.BattleFlags
+              BattleFlags: i.BattleFlags,
+              CounterType: i.CounterType ?? 0
             };
             this.EvaluateAndExecute(a);
           }
@@ -668,7 +676,8 @@ class BeDamageTrigger extends Trigger {
             IsCritical: i.IsCritical,
             SkillDamageCount: i?.SkillDamageCount ?? INVALID_HIT_COUNT,
             BulletDamageCount: i?.BulletDamageCount ?? INVALID_HIT_COUNT,
-            BattleFlags: i.BattleFlags
+            BattleFlags: i.BattleFlags,
+            CounterType: i.CounterType ?? 0
           };
           this.EvaluateAndExecute(t);
         }
@@ -958,13 +967,13 @@ class BuffVictimTrigger extends Trigger {
     super(...arguments);
     this.TargetType = 0;
     this.ListenBuffIds = new Map();
-    this.OnEvent = (e, i, s) => {
+    this.OnEvent = (e, i, s, r) => {
       if (!this.Checker || this.Checker()) {
         let t = false;
-        var r = this.ListenBuffIds.get(e);
-        if (r) {
-          for (var [n, h] of r) {
-            if (n === 0 && s >= h && i < h || n === 1 && s <= h && i > h) {
+        var n = this.ListenBuffIds.get(e);
+        if (n) {
+          for (var [h, a] of n) {
+            if (h === 0 && s >= a && i < a || h === 1 && s <= a && i > a) {
               t = true;
               break;
             }
@@ -973,7 +982,8 @@ class BuffVictimTrigger extends Trigger {
             this.EvaluateAndExecute({
               BuffId: e,
               OldStack: i,
-              NewStack: s
+              NewStack: s,
+              Victim: r
             });
           }
         }
@@ -1168,4 +1178,36 @@ class BuffAddFailureTrigger extends Trigger {
   }
 }
 BuffAddFailureTrigger.ContextCapacity = 15;
+class ShieldTrigger extends Trigger {
+  constructor() {
+    super(...arguments);
+    this.TargetType = 0;
+    this.OnEvent = (t, e, i, s, r) => {
+      if (!this.Checker || !!this.Checker()) {
+        this.EvaluateAndExecute({
+          Victim: t,
+          OldShieldValue: e,
+          NewShieldValue: i,
+          UpdateType: s,
+          ShieldId: r
+        });
+      }
+    };
+  }
+  OnInitParams(t) {
+    this.TargetType = Number(t[0] ?? 0);
+  }
+  OnActive() {
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t) {
+      AbilityEvent_1.AbilityEvent.Add(t, 4, AbilityEvent_1.DEFAULT_KEY, this.OnEvent);
+    }
+  }
+  OnInactive() {
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t) {
+      AbilityEvent_1.AbilityEvent.Remove(t, 4, AbilityEvent_1.DEFAULT_KEY, this.OnEvent);
+    }
+  }
+}
 //# sourceMappingURL=Trigger.js.map

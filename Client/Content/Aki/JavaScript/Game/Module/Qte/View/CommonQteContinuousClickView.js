@@ -164,7 +164,7 @@ class CommonQteContinuousClickView extends CommonQteViewBase_1.CommonQteViewBase
           this.uS1 = -1;
         }
       }
-      if (i = ModelManager_1.ModelManager.CommonQteModel?.GetQteIcon(t.QteId)) {
+      if (i = t.Resource?.Icon) {
         this.DOt?.SetSprite(i, false);
         this.DOt?.SetUIActive(true);
       } else if (Log_1.Log.CheckDebug()) {
@@ -365,7 +365,8 @@ class CommonQteContinuousClickView extends CommonQteViewBase_1.CommonQteViewBase
   }
   Bfc() {
     var t;
-    if (this.fS1 && (t = this.fS1.GetUiConfig()?.UIConfig)) {
+    if (this.fS1 && (t = this.fS1.GetUiConfig())) {
+      t = t.UIConfig;
       this.OOi.SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign);
       this.OOi.SetAnchorOffset(t.AnchorOffset);
     }

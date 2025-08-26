@@ -72,11 +72,11 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
     this.D6i = undefined;
     this._1l = 0;
     this.u1l = 0;
-    this.gDu = 0;
+    this.YDu = 0;
     this.nye = () => {
       this._1l = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpMaterialPutInMode) ?? 0;
       this.u1l = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpMaterialUseType) ?? 0;
-      this.gDu = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpIdentify) ?? 0;
+      this.YDu = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpIdentify) ?? 0;
     };
     this.R6i = () => {
       ControllerHolder_1.ControllerHolder.PhantomBattleController.TryShowReceiveItem();
@@ -1296,11 +1296,11 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetVisionLevelUpIdentify() {
-    return this.gDu;
+    return this.YDu;
   }
   SetVisionLevelUpIdentify(t) {
-    if (this.gDu !== t) {
-      this.gDu = t;
+    if (this.YDu !== t) {
+      this.YDu = t;
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpIdentify, t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionLevelUpIdentifyChange);
     }

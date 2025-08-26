@@ -14,6 +14,7 @@ class LogicDataSpawnObstacles extends LogicDataBase_1.default {
     this.ShowModel = false;
     this.NeedAttach = false;
     this.CanStandOn = false;
+    this.IsAirWall = false;
   }
   Constructor() {
     super.Constructor();

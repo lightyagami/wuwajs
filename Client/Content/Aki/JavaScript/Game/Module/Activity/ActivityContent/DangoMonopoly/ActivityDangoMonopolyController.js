@@ -46,31 +46,31 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     return this.Data;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(25646, o => {
+    Net_1.Net.Register(15053, o => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("DangoMonopoly", 69, "$Uc", ["", o]);
       }
       this.Data?.ProtoTaskUpdateNotify(o.CJ_);
     });
-    Net_1.Net.Register(19901, o => {
+    Net_1.Net.Register(28521, o => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("DangoMonopoly", 69, "TBc", ["", o]);
       }
       this.Data?.ProtoSceneGridInfoNotify(o);
     });
-    Net_1.Net.Register(15456, o => {
+    Net_1.Net.Register(25178, o => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("DangoMonopoly", 69, "qa1", ["", o]);
       }
       this.Data?.ProtoTaskAddNotify(o.CJ_);
     });
-    Net_1.Net.Register(22510, o => {
+    Net_1.Net.Register(25782, o => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("DangoMonopoly", 69, "Ga1", ["", o]);
       }
       this.Data?.ProtoTaskRemoveNotify(o.B6n);
     });
-    Net_1.Net.Register(21822, o => {
+    Net_1.Net.Register(23516, o => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("DangoMonopoly", 69, "Yp1", ["", o]);
       }
@@ -78,11 +78,11 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     });
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25646);
-    Net_1.Net.UnRegister(19901);
-    Net_1.Net.UnRegister(15456);
-    Net_1.Net.UnRegister(22510);
-    Net_1.Net.UnRegister(21822);
+    Net_1.Net.UnRegister(15053);
+    Net_1.Net.UnRegister(28521);
+    Net_1.Net.UnRegister(25178);
+    Net_1.Net.UnRegister(25782);
+    Net_1.Net.UnRegister(23516);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.Jn_);
@@ -112,11 +112,11 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "lPc", ["", t]);
     }
-    var e = await Net_1.Net.CallAsync(24796, t);
+    var e = await Net_1.Net.CallAsync(24889, t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "_Pc", ["", e]);
     }
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 21649);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 25214);
   }
   async RequestReceiveBoardReward(o) {
     var e = this.Data;
@@ -126,11 +126,11 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "aPc", ["", t]);
     }
-    var t = await Net_1.Net.CallAsync(27483, t);
+    var t = await Net_1.Net.CallAsync(28547, t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "hPc", ["", t]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 26183)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 20671)) {
       e?.ProtoReceiveBoardRewardResponse(o);
       this.RefreshActivityRedDot();
     }
@@ -142,11 +142,11 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "nPc", ["", e]);
     }
-    var e = await Net_1.Net.CallAsync(21578, e);
+    var e = await Net_1.Net.CallAsync(29889, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "sPc", ["", e]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 28727)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17383)) {
       o?.ProtoReceiveGridRewardResponse();
     }
   }
@@ -157,11 +157,11 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "rPc", ["", e]);
     }
-    var e = await Net_1.Net.CallAsync(23990, e);
+    var e = await Net_1.Net.CallAsync(23425, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "oPc", ["", e]);
     }
-    if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17342, false)) {
+    if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15673, false)) {
       o?.SetIsDangoMoveProcess(false);
     } else {
       o?.ProtoDiceResponse(e);
@@ -175,11 +175,11 @@ class ActivityDangoMonopolyController extends ActivityControllerBase_1.ActivityC
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "bBc", ["", e]);
     }
-    var e = await Net_1.Net.CallAsync(28095, e);
+    var e = await Net_1.Net.CallAsync(26524, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("DangoMonopoly", 69, "LBc", ["", e]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 21313)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 28781)) {
       o?.ProtoEnterNextBoardResponse(e);
       this.RefreshActivityRedDot();
     }

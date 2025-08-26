@@ -31,10 +31,10 @@ class ActivitySubViewMorale extends ActivitySubViewBase_1.ActivitySubViewBase {
         UiManager_1.UiManager.OpenView("QuestView", e);
       }
     };
-    this.btu = () => {
+    this.Jtu = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(MoraleDefine_1.MORALE_ACTIVITY_CLOSE_HELP_ID);
     };
-    this.Rtu = e => {
+    this.Ztu = e => {
       if (e === "MoraleAreaSumView") {
         this.UpdateTipsFinishNeedGetReward();
       }
@@ -48,9 +48,9 @@ class ActivitySubViewMorale extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.CommonInfoPanel = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.CommonInfoPanel.SetData(this.ActivityBaseData);
     this.CommonInfoPanel.SetClickFunc(this.Jk_);
-    this.CommonInfoPanel.HideRemainTime();
     var e = this.GetItem(0).GetOwner();
     await this.CommonInfoPanel.CreateThenShowByActorAsync(e);
+    this.CommonInfoPanel.HideRemainTime();
     this.CommonInfoPanel.SetBtnText("Morale_title_19");
     this.ScoreProgressPanel = new MoraleScoreProgressActivityPanel_1.MoraleScoreProgressActivityPanel();
     await this.ScoreProgressPanel.Init(this.GetItem(4));
@@ -58,15 +58,15 @@ class ActivitySubViewMorale extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.FinishTipsSubPanel = new RecommendQuestTipsSubPanel_1.RecommendQuestTipsSubPanel();
     await this.FinishTipsSubPanel.CreateByActorAsync(e.GetOwner());
     this.FinishTipsSubPanel.SetTipsTxtByTextId("Morale_title_33");
-    this.FinishTipsSubPanel.BindClickBtnTipsCallBack(this.btu);
+    this.FinishTipsSubPanel.BindClickBtnTipsCallBack(this.Jtu);
   }
   OnStart() {}
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.Rtu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.Ztu);
     this.CommonInfoPanel?.GetFunctional()?.FunctionButton?.BindRedDot("Morale");
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.Rtu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.Ztu);
     this.CommonInfoPanel?.GetFunctional()?.FunctionButton?.UnBindGivenUid(0);
   }
   OnRefreshView() {
@@ -76,10 +76,10 @@ class ActivitySubViewMorale extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.UpdateGuideQuestState();
   }
   UpdateTipsFinishNeedGetReward() {
-    var e = this.YEu();
+    var e = this.lIu();
     this.FinishTipsSubPanel.SetActive(e);
   }
-  YEu() {
+  lIu() {
     return !!this.ActivityBaseData.IsUnLock() && !!this.ActivityBaseData.GetPreGuideQuestFinishState() && ModelManager_1.ModelManager.MoraleModel.IsProgressScoreReachTarget();
   }
   UpdateGuideQuestState() {

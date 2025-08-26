@@ -14,7 +14,7 @@ class MatchGymItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Level = -1;
     this.CallbackOnClick = undefined;
-    this.vlu = undefined;
+    this.i_u = undefined;
     this.zbe = () => {
       return new PhantomArenaGymStarItem_1.GymStarItem();
     };
@@ -32,7 +32,7 @@ class MatchGymItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnStart() {
     this.GetItem(11).SetUIActive(false);
-    this.vlu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.zbe);
+    this.i_u = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.zbe);
     this.GetExtendToggle(0).OnUndeterminedClicked.Add(this.kqe);
   }
   Refresh(t, e, i) {
@@ -51,8 +51,8 @@ class MatchGymItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.SetSpriteByPath(t.IconBg, this.GetSprite(3), false);
       this.Oei(e);
       r = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Level);
-      this.vlu.RefreshByData(r);
-      this.vlu.SetActive(!s);
+      this.i_u.RefreshByData(r);
+      this.i_u.SetActive(!s);
       this.RefreshRedDot();
     }
   }

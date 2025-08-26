@@ -47,7 +47,7 @@ class CharacterShadowController extends ControllerBase_1.ControllerBase {
   static async xqn() {
     var e;
     var t = new Date();
-    if ((t.getTime() - this.Uqn.getTime()) / 1000 / 60 >= 3 && (this.Uqn = t, t = UE.Guid.NewGuid(), cpp_1.KuroCharacterShadowLibrary.Set(t), (e = new Protocol_1.Aki.Protocol.CombatMessage.Vfs()).s5n = t.ToString(), t = await Net_1.Net.CallAsync(15646, e))) {
+    if ((t.getTime() - this.Uqn.getTime()) / 1000 / 60 >= 3 && (this.Uqn = t, t = UE.Guid.NewGuid(), cpp_1.KuroCharacterShadowLibrary.Set(t), (e = new Protocol_1.Aki.Protocol.CombatMessage.Vfs()).s5n = t.ToString(), t = await Net_1.Net.CallAsync(16120, e))) {
       cpp_1.KuroCharacterShadowLibrary.SetR(t.YLs);
     }
   }
@@ -61,7 +61,7 @@ class CharacterShadowController extends ControllerBase_1.ControllerBase {
       }
       this.IDa = Time_1.Time.Frame;
       if (!ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot() && this.TKo > 0) {
-        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(this.TKo, 62, this.DKo);
+        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(this.TKo, 248, this.DKo);
         let e = 0;
         this.gya.clear();
         this.fya.clear();

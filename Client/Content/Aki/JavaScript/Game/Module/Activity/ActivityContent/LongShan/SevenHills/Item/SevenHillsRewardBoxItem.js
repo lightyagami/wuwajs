@@ -15,6 +15,7 @@ class SevenHillsRewardBoxItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Pe = undefined;
     this._7s = undefined;
+    this.ActivityData = undefined;
     this.lRo = () => {
       switch (this._7s) {
         case 1:
@@ -28,9 +29,9 @@ class SevenHillsRewardBoxItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     };
     this.e2t = () => {
-      var t = ActivityLongShanController_1.ActivityLongShanController.GetActivityData().GetAllAvailableScoreRewardIds();
+      var t = this.ActivityData.GetAllAvailableScoreRewardIds();
       if (t.length > 0) {
-        ActivityLongShanController_1.ActivityLongShanController.RequestScoreReward(t);
+        ActivityLongShanController_1.ActivityLongShanController.RequestScoreReward(this.ActivityData.Id, t);
       }
     };
   }
@@ -43,47 +44,44 @@ class SevenHillsRewardBoxItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetUiNiagara(7).SetUIActive(true);
     this.GetUiNiagara(8).SetUIActive(false);
   }
-  Refresh(t, e, i) {
-    var s = (this.Pe = t).GetState();
+  Refresh(t, e, s) {
+    var i = (this.Pe = t).GetState();
     this.GetText(6).SetText(t.Goal.toString());
-    this.RefreshRewardState(s, this._7s === undefined);
+    this.RefreshRewardState(i);
   }
-  RefreshRewardState(t, e) {
-    var i;
-    var s = this.GetUiNiagara(8);
-    s.SetUIActive(false);
-    s.Deactivate();
-    if (!!e || this._7s !== t) {
-      this.GetSprite(2).SetUIActive(t === 1);
-      this.GetSprite(3).SetUIActive(t === 0);
-      this.GetSprite(4).SetUIActive(t === 2);
-      this.GetItem(5).SetUIActive(t === 0);
-      i = ActivityLongShanController_1.ActivityLongShanController.GetActivityData().GetScoreRewardRelativeProgress(this.Pe.Id);
-      this.GetSprite(0).SetFillAmount(i);
-      this.GetUiNiagara(7).SetAlpha(t === 0 ? 1 : 0);
-      if (t === 2 && !e) {
-        s.SetUIActive(true);
-        s.ActivateSystem(true);
-      }
-      this._7s = t;
+  RefreshRewardState(t) {
+    var e = this.GetUiNiagara(8);
+    e.SetUIActive(false);
+    e.Deactivate();
+    this.GetSprite(2).SetUIActive(t === 1);
+    this.GetSprite(3).SetUIActive(t === 0);
+    this.GetSprite(4).SetUIActive(t === 2);
+    this.GetItem(5).SetUIActive(t === 0);
+    var s = this.ActivityData.GetScoreRewardRelativeProgress(this.Pe.Id);
+    this.GetSprite(0).SetFillAmount(s);
+    this.GetUiNiagara(7).SetAlpha(t === 0 ? 1 : 0);
+    if (this._7s === 0 && t === 2) {
+      e.SetUIActive(true);
+      e.ActivateSystem(true);
     }
+    this._7s = t;
   }
   Zkt(t) {
     var e = [];
     for (const r of this.Pe.GetPreviewReward()) {
-      var i = {
+      var s = {
         Id: r[0].ItemId,
         Num: r[1],
         Received: t
       };
-      e.push(i);
+      e.push(s);
     }
-    var s = {
+    var i = {
       RewardLists: e,
       MountItem: this.GetButton(1).RootUIComp,
       PosBias: new UE.Vector(0, Y_BIAS, 0)
     };
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshRewardPopUp, s);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshRewardPopUp, i);
   }
 }
 exports.SevenHillsRewardBoxItem = SevenHillsRewardBoxItem;

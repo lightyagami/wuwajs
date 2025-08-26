@@ -68,5 +68,5 @@ let StackableChessComponent = class StackableChessComponent extends EntityCompon
   }
   GetAttachSocketName() {}
 };
-StackableChessComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(282)], StackableChessComponent);
+StackableChessComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(285)], StackableChessComponent);
 exports.StackableChessComponent = StackableChessComponent; //# sourceMappingURL=StackableChessComponent.js.map

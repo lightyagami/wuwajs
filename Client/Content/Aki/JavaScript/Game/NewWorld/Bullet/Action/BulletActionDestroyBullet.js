@@ -47,7 +47,7 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
     for ([e, l] of t.HitTimeScaleEntityMap.entries()) {
       var i = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
       if (i?.Valid) {
-        i.Entity.GetComponent(122)?.RemoveTimeScale(l);
+        i.Entity.GetComponent(123)?.RemoveTimeScale(l);
       }
     }
     t.HitTimeScaleEntityMap.clear();

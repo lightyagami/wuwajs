@@ -10,24 +10,24 @@ class FloroRanchBuffData {
     this.NUe = 0;
     this.Mne = 0;
     this.hma = 0;
-    this.Qcu = 0;
-    this.Kcu = undefined;
+    this.Adu = 0;
+    this.Pdu = undefined;
   }
   RefreshBuffData(t) {
-    this.NUe = t.Ziu;
+    this.NUe = t.Tru;
     this.Mne = t.s5n;
-    this.hma = t.dru;
-    this.Qcu = t.nru;
-    this.Kcu = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchBuffById(this.Mne);
+    this.hma = t.Fru;
+    this.Adu = t.xru;
+    this.Pdu = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchBuffById(this.Mne);
   }
   GetBuffName() {
-    return this.Kcu?.Name ?? "";
+    return this.Pdu?.Name ?? "";
   }
   get RemindDay() {
     return this.hma;
   }
   GetPlies() {
-    return this.Qcu;
+    return this.Adu;
   }
   GetInstanceId() {
     return this.NUe;
@@ -36,10 +36,10 @@ class FloroRanchBuffData {
     return this.Mne;
   }
   get IsShowOnTip() {
-    return this.Kcu.IsShowOnTip;
+    return this.Pdu.IsShowOnTip;
   }
   get IsShowEffect() {
-    return this.Kcu.IsShowEffect;
+    return this.Pdu.IsShowEffect;
   }
 }
 exports.FloroRanchBuffData = FloroRanchBuffData;

@@ -87,6 +87,9 @@ class ScratchTicketData extends ActivityData_1.ActivityBaseData {
     var t = this.GetRemainCount();
     return this.HasRoundInProgress() && t > 0;
   }
+  GetExDataFinishShowState() {
+    return !!this.GetPreGuideQuestFinishState() && this.IsAllRoundFinish();
+  }
   IsInit() {
     return this.xol.length > 0;
   }

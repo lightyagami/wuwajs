@@ -55,7 +55,7 @@ class BeginnerCarnivalSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
         UiManager_1.UiManager.OpenView("QuestView", i);
       }
     };
-    this.isu = () => {
+    this.Lsu = () => {
       var i;
       var e;
       var t;
@@ -77,7 +77,7 @@ class BeginnerCarnivalSubView extends ActivitySubViewBase_1.ActivitySubViewBase 
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [9, UE.UIText], [7, UE.UIItem], [6, UE.UITexture], [5, UE.UITexture], [14, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [13, UE.UIItem], [12, UE.UIButtonComponent], [8, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem]];
-    this.BtnBindInfo = [[4, this.S$1], [12, this.isu], [10, this.zDo]];
+    this.BtnBindInfo = [[4, this.S$1], [12, this.Lsu], [10, this.zDo]];
   }
   OnSetData() {
     this.E$1 = this.ActivityBaseData;

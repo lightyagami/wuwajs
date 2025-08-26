@@ -38,55 +38,62 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.$8i = undefined;
     this.r8e = undefined;
     this.n8e = undefined;
-    this.kX1 = undefined;
+    this.hY1 = undefined;
     this.s8e = [];
     this.a8e = 4;
     this.H6e = undefined;
-    this.nDu = undefined;
-    this.sDu = undefined;
-    this.aDu = 0;
+    this.ODu = undefined;
+    this.qDu = undefined;
+    this.GDu = 0;
     this.l8e = undefined;
     this._8e = undefined;
     this.u8e = 0;
     this.t5e = 0;
     this.i7i = new Array();
-    this.si_ = t => {
+    this.si_ = i => {
       if (this.s8e) {
         for (let e = 0; e < this.s8e.length; e++) {
-          if (this.s8e[e] === t) {
+          if (this.s8e[e] === i) {
             this.r8e?.UnsafeGetGridProxy(e)?.RefreshRedDotState();
           }
         }
       }
     };
-    this.hDu = e => new OneTextTitleItem_1.OneTextTitleItem(e);
-    this.lDu = e => new OneTextDropDownItem_1.OneTextDropDownItem(e);
-    this._Du = e => new NewSoundSuitDropDownTitle_1.NewSoundSuitDropDownTitle(e);
-    this.uDu = e => {
+    this.FDu = e => new OneTextTitleItem_1.OneTextTitleItem(e);
+    this.NDu = e => new OneTextDropDownItem_1.OneTextDropDownItem(e);
+    this.VDu = e => new NewSoundSuitDropDownTitle_1.NewSoundSuitDropDownTitle(e);
+    this.jDu = e => {
       return new NewSoundSuitDropDownItem_1.NewSoundSuitDropDownItem(e);
     };
-    this.d8e = e => {
-      if (this.aDu === 1) {
-        ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel = e;
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NewSoundAreaRefreshReward, e);
-      } else if (this.aDu === 2) {
-        ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex = e;
-        this.cDu();
-      }
+    this.Bed = e => {
+      ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel = e;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NewSoundAreaRefreshReward, e);
       if (this._8e?.GetCurrentSequence()) {
         this._8e?.ReplaySequenceByKey("Switch");
       } else {
         this._8e?.PlayLevelSequenceByName("Switch");
       }
     };
-    this.C8e = (e, t) => {
-      this.d8e(t);
+    this.ked = e => {
+      ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex = e;
+      this.HDu();
+      if (this._8e?.GetCurrentSequence()) {
+        this._8e?.ReplaySequenceByKey("Switch");
+      } else {
+        this._8e?.PlayLevelSequenceByName("Switch");
+      }
     };
-    this.dDu = e => {
-      var t = e === ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel ? "Text_WorldCurrentLevelTag_Text" : "Text_WorldLevelTag_Text";
-      return new LguiUtil_1.TableTextArgNew(t, e);
+    this.Oed = (e, i) => {
+      this.Bed(i);
     };
-    this.mDu = e => {
+    this.qed = (e, i) => {
+      this.ked(i);
+    };
+    this.$Du = e => {
+      var i = e === ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel ? "Text_WorldCurrentLevelTag_Text" : "Text_WorldLevelTag_Text";
+      return new LguiUtil_1.TableTextArgNew(i, e);
+    };
+    this.WDu = e => {
       return Number(e);
     };
     this.f8e = () => {
@@ -112,44 +119,50 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this._8e = undefined;
   }
   async OnBeforeStartAsync() {
-    this.nDu = new CommonDropDown_1.CommonDropDown(this.GetItem(17), this.lDu, this.hDu);
-    await this.nDu.Init();
+    this.ODu = new CommonDropDown_1.CommonDropDown(this.GetItem(17), this.NDu, this.FDu);
+    await this.ODu.Init();
     if (ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().RemainingTime < 2) {
       await ControllerHolder_1.ControllerHolder.TowerController.RefreshTower();
     }
-    this.sDu = new CommonDropDown_1.CommonDropDown(this.GetItem(29), this.uDu, this._Du);
-    await this.sDu.Init();
+    this.qDu = new CommonDropDown_1.CommonDropDown(this.GetItem(29), this.jDu, this.VDu);
+    await this.qDu.Init();
   }
   OnStart() {
-    const t = (e, t) => {
+    const i = (e, i) => {
       if (this.a8e === 6) {
-        var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
+        var t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
         var [, r] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
-        for (const s of r) {
-          i.set(s.Conf.Id, true);
+        for (const n of r) {
+          t.set(n.Conf.Id, true);
         }
-        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, i);
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, t);
       }
       this.a8e = e;
       var o;
-      var n;
+      var s;
       var r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(e);
-      this.aDu = r?.DropDownTypeId ?? 0;
-      this.fDu();
+      this.GDu = r?.DropDownTypeId ?? 0;
+      this.QDu();
       this.H6e?.SetToggleState(0, false);
-      this.H6e = t;
-      var t = this.s8e.indexOf(e);
-      if (t >= 0) {
-        this.r8e.SelectGridProxy(t, false);
+      this.H6e = i;
+      var i = this.s8e.indexOf(e);
+      if (i >= 0) {
+        this.r8e.SelectGridProxy(i, false);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AdventureHelpBtn, r.HelpGroupId);
       this.t5e = r.HelpGroupId;
       this.RefreshDungeonType();
-      this.p8e();
-      if (this.aDu === 1) {
-        this.d8e(ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel);
-      } else if (this.aDu === 2) {
-        this.d8e(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex);
+      if (this.GDu !== 2) {
+        this.p8e();
+      }
+      if (this.GDu === 1) {
+        this.Bed(ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel);
+      } else if (this.GDu === 2) {
+        if (ModelManager_1.ModelManager.AdventureGuideModel.HandleShowNightMareParam) {
+          ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex = 0;
+          this.qDu?.SetSelectedIndex(0);
+        }
+        this.ked(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex);
       }
       if (this._8e?.GetCurrentSequence()) {
         this._8e?.ReplaySequenceByKey("Switch");
@@ -159,157 +172,170 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
       var e = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetAdventureUpActivity(this.a8e);
       if (e) {
         this.GetItem(18).SetUIActive(true);
-        t = e.GetNumTxtAndParam();
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), t[1] > 0 ? "Reward_doubling_tips" : "Reward_doubling_end_tips", t[1], t[2]);
+        i = e.GetNumTxtAndParam();
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), i[1] > 0 ? "Reward_doubling_tips" : "Reward_doubling_end_tips", i[1], i[2]);
         this.GetText(19).SetUIActive(false);
       } else {
-        [r, e, t, o, n] = ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(this.a8e);
+        [r, e, i, o, s] = ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(this.a8e);
         if (r) {
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), o, e, t);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), n);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), o, e, i);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), s);
           this.GetText(19).SetUIActive(true);
         }
         this.GetItem(18).SetUIActive(r);
       }
     };
-    const i = e => this.a8e !== e;
+    const t = e => this.a8e !== e;
     this.r8e = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(4).GetOwner(), () => {
       var e = new NewSoundTypeItem_1.NewSoundTypeItem();
-      e.BindOnToggleFunc(t);
-      e.BindCanToggleExecuteChange(i);
+      e.BindOnToggleFunc(i);
+      e.BindCanToggleExecuteChange(t);
       return e;
     });
     this.n8e = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(3), this.GetItem(2).GetOwner(), () => new NewSoundDetectItem_1.NewSoundDetectItem(), true);
-    this.kX1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(26), () => new NewSoundDetectTabItem_1.NewSoundDetectTabItem());
+    this.hY1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(26), () => new NewSoundDetectTabItem_1.NewSoundDetectTabItem());
     ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupArray().forEach(e => {
       this.i7i.push(e.Id);
     });
-    this.i7i.sort((e, t) => e - t);
+    this.i7i.sort((e, i) => e - i);
     this.i7i.unshift(0);
-    this.sDu.SetOnSelectCall(this.C8e);
-    this.sDu.SetShowType(0);
-    this.sDu.InitScroll(this.i7i, this.mDu, ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex);
+    this.qDu.SetOnSelectCall(this.qed);
+    this.qDu.SetShowType(0);
+    this.qDu.InitScroll(this.i7i, this.WDu, this.i7i.indexOf(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex));
     this.u8e = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel - 1;
     var r = [];
     for (let e = AdventureDefine_1.WORLD_LEVEL_MIN; e <= AdventureDefine_1.WORLD_LEVEL_MAX; e++) {
       r.push(e);
     }
-    this.nDu.SetOnSelectCall(this.C8e);
-    this.nDu.SetShowType(0);
-    this.nDu.InitScroll(r, this.dDu, this.u8e);
+    this.ODu.SetOnSelectCall(this.Oed);
+    this.ODu.SetShowType(0);
+    this.ODu.InitScroll(r, this.$Du, this.u8e);
     var e = ModelManager_1.ModelManager.AdventureGuideModel.GetAllCanShowDungeonTypeList();
     this.s8e = e;
     this.l8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this._8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   p8e() {
-    var [e, t] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
+    var [e, i] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
     if (e) {
-      this.OX1(t);
+      this.lY1(i);
     } else {
-      this.qX1(t);
+      this._Y1(i);
     }
+    this.$8i = undefined;
   }
-  qX1(e) {
-    var t = e.length;
-    this.kX1?.SetActive(false);
+  _Y1(e) {
+    var i = e.length;
+    this.hY1?.SetActive(false);
     this.n8e.SetTargetRootComponentActive(true);
-    if (t) {
-      const s = this.$8i?.NewSoundDetectTracingIdList;
-      var i;
-      var r = e.sort((e, t) => {
-        e = s?.includes(e.Conf.Id);
-        t = s?.includes(t.Conf.Id);
-        if (e && !t) {
+    if (i) {
+      const n = this.$8i?.NewSoundDetectTracingIdList;
+      var t;
+      var r = e.sort((e, i) => {
+        e = n?.includes(e.Conf.Id);
+        i = n?.includes(i.Conf.Id);
+        if (e && !i) {
           return -1;
-        } else if (t && !e) {
+        } else if (i && !e) {
           return 1;
         } else {
           return 0;
         }
       });
       var o = new Array();
-      var n = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
-      for (let e = 0; e < t; e++) {
-        if (r[e]?.Conf?.Secondary !== 29 || n !== 0) {
-          (i = new NewSoundDetectItem_1.NewSoundDetectItemData()).DetectRecordData = r[e];
-          i.TracingList = s;
-          o.push(i);
+      var s = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
+      for (let e = 0; e < i; e++) {
+        if (r[e]?.Conf?.Secondary !== 29 || s !== 0) {
+          (t = new NewSoundDetectItem_1.NewSoundDetectItemData()).DetectRecordData = r[e];
+          t.TracingList = n;
+          o.push(t);
         }
       }
-      this.n8e.RefreshByData(o);
+      this.n8e.RefreshByData(o, false, () => {
+        this.n8e?.ScrollToGridIndex(0);
+      });
     }
   }
-  OX1(e) {
-    this.kX1?.SetActive(true);
+  lY1(e) {
+    this.hY1?.SetActive(true);
     this.n8e.SetTargetRootComponentActive(false);
-    var t = new Map();
-    const i = this.$8i?.NewSoundDetectTracingIdList;
-    for (const n of e.sort((e, t) => {
-      e = i?.includes(e.Conf.Id);
-      t = i?.includes(t.Conf.Id);
-      if (e && !t) {
+    var i = new Map();
+    const t = this.$8i?.NewSoundDetectTracingIdList;
+    var r = ModelManager_1.ModelManager.AdventureGuideModel.HandleShowNightMareParam;
+    ModelManager_1.ModelManager.AdventureGuideModel.HandleShowNightMareParam = 0;
+    var e = e.sort((e, i) => {
+      e = t?.includes(e.Conf.Id);
+      i = t?.includes(i.Conf.Id);
+      if (e && !i) {
         return -1;
-      } else if (t && !e) {
+      } else if (i && !e) {
         return 1;
       } else {
         return 0;
       }
-    })) {
-      var r = n.DungeonDetectionRecord ? n.DungeonDetectionRecord.Conf.DetectionTabType : n.SilentAreaDetectionRecord?.Conf.DetectionTabType ?? 0;
-      if (r) {
-        if (!t.has(r)) {
-          var o = DetectionTabTypeById_1.configDetectionTabTypeById.GetConfig(r);
-          if (!o) {
+    });
+    for (const n of e) {
+      var o = n.DungeonDetectionRecord ? n.DungeonDetectionRecord.Conf.DetectionTabType : n.SilentAreaDetectionRecord?.Conf.DetectionTabType ?? 0;
+      if (o) {
+        if (!i.has(o)) {
+          var s = DetectionTabTypeById_1.configDetectionTabTypeById.GetConfig(o);
+          if (!s) {
             continue;
           }
-          o = {
-            Id: r,
-            TabTextId: o.Text,
-            IconPath: o.Icon,
-            Sort: o.Order,
+          s = {
+            Id: o,
+            TabTextId: s.Text,
+            IconPath: s.Icon,
+            Sort: s.Order,
             DungeonList: [],
             IsVisible: true
           };
-          t.set(r, o);
+          i.set(o, s);
         }
-        o = new NewSoundDetectItem_1.NewSoundDetectItemData();
-        o.DetectRecordData = n;
-        o.TracingList = i;
-        t.get(r).DungeonList.push(o);
+        s = new NewSoundDetectItem_1.NewSoundDetectItemData();
+        s.DetectRecordData = n;
+        s.TracingList = t;
+        s.NightMareParam = r;
+        i.get(o).DungeonList.push(s);
       }
     }
-    e = Array.from(t.values()).sort((e, t) => t.Sort - e.Sort);
-    this.kX1?.RefreshByData(e);
+    e = Array.from(i.values()).sort((e, i) => i.Sort - e.Sort);
+    this.hY1?.RefreshByData(e, () => {
+      var e = this.hY1?.GetItemByIndex(0);
+      if (e) {
+        this.hY1?.LateScrollTo(e);
+      }
+    });
   }
   OnBeforeShow() {
     this.$8i = this.ExtraParams;
     var e = this.$8i;
-    var e = e.OpenTabViewName === "NewSoundAreaView" || e.OpenTabViewName === "DisposableChallengeView" ? Number(e.OpenParam) : this.a8e;
-    let t = 0;
+    var e = e?.OpenTabViewName === "NewSoundAreaView" || e?.OpenTabViewName === "DisposableChallengeView" ? Number(e?.OpenParam) : this.a8e;
+    let i = 0;
     if (e !== undefined && (e = this.s8e.indexOf(Number(e))) >= 0) {
-      t = e;
+      i = e;
     }
-    var i = this.GetViewName();
+    var t = this.GetViewName();
     var r = this.s8e.length;
     var o = new Array();
     for (let e = 0; e < r; e++) {
-      var n = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
-      if (this.s8e[e] !== 29 || n !== 0) {
-        n = {
-          FromTabViewName: i,
+      var s = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
+      if (this.s8e[e] !== 29 || s !== 0) {
+        s = {
+          FromTabViewName: t,
           TypeId: this.s8e[e]
         };
-        o.push(n);
+        o.push(s);
       }
     }
     this.r8e.RefreshByData(o, undefined, () => {
-      this.r8e.SelectGridProxy(t, true);
-      this.r8e.UnsafeGetGridProxy(t)?.SetSelectToggle();
+      this.r8e.SelectGridProxy(i, false);
+      this.r8e.ScrollToGridIndex(i);
+      this.r8e.UnsafeGetGridProxy(i)?.SetSelectToggle();
     });
     this.l8e?.PlayLevelSequenceByName("Start");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AdventureHelpBtn, this.t5e);
-    if (i === "NewSoundAreaView" && (e = ModelManager_1.ModelManager.RedDotModel.GetRedDot("AdventureNewSoundAreaTab")) && e.IsRedDotActive()) {
+    if (t === "NewSoundAreaView" && (e = ModelManager_1.ModelManager.RedDotModel.GetRedDot("AdventureNewSoundAreaTab")) && e.IsRedDotActive()) {
       AdventureGuideController_1.AdventureGuideController.RecordAdventureNewSoundAreaTabClick();
     }
   }
@@ -360,8 +386,8 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
   v8e() {
     this.GetItem(5).SetUIActive(true);
     var e = ModelManager_1.ModelManager.InventoryModel?.GetItemCountByConfigId(RoguelikeDefine_1.OUTSIDE_CURRENCY_ID) ?? 0;
-    var t = ModelManager_1.ModelManager.RoguelikeModel?.GetParamConfigBySeasonId();
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), "Roguelike_ActivityMain_Score", e, t);
+    var i = ModelManager_1.ModelManager.RoguelikeModel?.GetParamConfigBySeasonId();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), "Roguelike_ActivityMain_Score", e, i);
   }
   E8e() {
     this.GetItem(11).SetUIActive(true);
@@ -379,9 +405,9 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.SetTowerBg("T_DevelopmentTitle6");
   }
   SetTowerBg(e) {
-    var t = this.GetTexture(24);
+    var i = this.GetTexture(24);
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
-    this.SetTextureShowUntilLoaded(e, t);
+    this.SetTextureShowUntilLoaded(e, i);
   }
   S8e() {
     this.GetItem(11).SetUIActive(true);
@@ -396,59 +422,60 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.GetItem(16).SetUIActive(true);
   }
   M8e() {
-    var t = this.GetItem(8);
-    t?.SetUIActive(true);
-    var i = this.GetText(10);
+    var i = this.GetItem(8);
+    i?.SetUIActive(true);
+    var t = this.GetText(10);
     var r = this.GetText(9);
     if (this.a8e === 7) {
       r.SetUIActive(false);
       var o = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e)[1];
       let e = 0;
       if (o[0].Type === 1) {
-        var n = o[0].Conf.MarkId;
-        if (!n) {
-          t.SetUIActive(false);
+        var s = o[0].Conf.MarkId;
+        if (!s) {
+          i.SetUIActive(false);
           return;
         }
-        e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(n)?.Reward;
+        e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(s)?.Reward;
       } else {
         if (!o[0].Conf.DungeonId) {
-          t.SetUIActive(false);
+          i.SetUIActive(false);
           return;
         }
         e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o[0].Conf.SubDungeonId)?.RewardId;
       }
-      i.SetUIActive(true);
-      var n = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardConfig(e)?.SharedId;
-      if (n) {
-        o = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(n);
-        n = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(n);
-        n = (o = o.MaxCount) - n;
-        LguiUtil_1.LguiUtil.SetLocalText(i, AdventureGuideController_1.RECEIVED_COUNT, n + "/" + o);
+      t.SetUIActive(true);
+      var s = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardConfig(e)?.SharedId;
+      if (s) {
+        o = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(s);
+        s = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(s);
+        s = (o = o.MaxCount) - s;
+        LguiUtil_1.LguiUtil.SetLocalText(t, AdventureGuideController_1.RECEIVED_COUNT, s + "/" + o);
       } else {
-        t.SetUIActive(false);
+        i.SetUIActive(false);
       }
     } else if (this.a8e === 5) {
-      i?.SetUIActive(false);
+      t?.SetUIActive(false);
       r.SetUIActive(true);
-      n = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
-      r.SetText(n);
+      s = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
+      r.SetText(s);
     } else if (this.a8e === 28) {
-      i?.SetUIActive(false);
+      t?.SetUIActive(false);
       r.SetUIActive(true);
       o = ModelManager_1.ModelManager.ShipTowerModel.GetSeasonCountDownData().CountDownText;
       r.SetText(o);
     } else if (this.a8e === 29) {
-      i?.SetUIActive(false);
+      t?.SetUIActive(false);
       r.SetUIActive(true);
-      t = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleCountDownData().CountDownText;
-      r.SetText(t);
+      i = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleCountDownData().CountDownText;
+      r.SetText(i);
     }
   }
   OnBeforeHide() {
     if (UiManager_1.UiManager.IsViewShow("PowerView")) {
       UiManager_1.UiManager.CloseView("PowerView");
     }
+    this.SetExtraParams(undefined);
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e.length !== 1 || isNaN(Number(e[0]))) {
@@ -458,52 +485,53 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     } else {
       e = Number(e[0]);
       if (e === 0) {
-        if (t = this.n8e.GetGridByDisplayIndex(0)) {
-          return [t, t];
+        if (i = this.n8e.GetGridByDisplayIndex(0)) {
+          return [i, i];
         } else {
           return undefined;
         }
       }
-      var t = this.s8e.indexOf(e);
-      if (t >= 0) {
-        e = this.r8e?.UnsafeGetGridProxy(t);
+      var i = this.s8e.indexOf(e);
+      if (i >= 0) {
+        e = this.r8e?.UnsafeGetGridProxy(i);
         if (e) {
           e = e.GetButtonItem();
           if (e) {
-            this.r8e?.ScrollToGridIndexWithTween(t);
+            this.r8e?.ScrollToGridIndexWithTween(i);
             return [e, e];
           }
         }
       }
     }
   }
-  fDu() {
-    if (this.aDu === 0) {
+  QDu() {
+    if (this.GDu === 0) {
       this.GetItem(21).SetUIActive(false);
     } else {
       this.GetItem(21).SetUIActive(true);
-      this.GetItem(17)?.SetUIActive(this.aDu === 1);
-      this.GetItem(29)?.SetUIActive(this.aDu === 2);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(30), ConfigManager_1.ConfigManager.AdventureModuleConfig.GetDropDownConfig(this.aDu)?.Text ?? "");
+      this.GetItem(17)?.SetUIActive(this.GDu === 1);
+      this.GetItem(29)?.SetUIActive(this.GDu === 2);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(30), ConfigManager_1.ConfigManager.AdventureModuleConfig.GetDropDownConfig(this.GDu)?.Text ?? "");
     }
   }
-  cDu() {
-    var [e, t] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
-    let i = [];
+  HDu() {
+    var [e, i] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
+    let t = [];
     if (ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex) {
-      for (const r of t) {
-        if (r.SilentAreaDetectionRecord && r.SilentAreaDetectionRecord.Conf.PhantomFetterGroup.includes(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex)) {
-          i.push(r);
+      for (const r of i) {
+        if (r.Conf.PhantomFetterGroup.includes(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex)) {
+          t.push(r);
         }
       }
     } else {
-      i = t;
+      t = i;
     }
     if (e) {
-      this.OX1(i);
+      this.lY1(t);
     } else {
-      this.qX1(i);
+      this._Y1(t);
     }
+    this.$8i = undefined;
   }
 }
 exports.NewSoundAreaView = NewSoundAreaView;

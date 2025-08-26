@@ -78,6 +78,9 @@ let CharacterPlanComponent = class CharacterPlanComponent extends EntityComponen
   set WorldStateProxy(e) {
     this.Bjr = e;
   }
+  get IsNeedPlan() {
+    return this.bjr;
+  }
   get Paused() {
     return this.Gjr;
   }

@@ -31,7 +31,7 @@ class MarkFactory {
     return r;
   }
   static CreateAndAssembleDynamicConfigMark(t) {
-    var r = this.pHc(t);
+    var r = this.JJu(t);
     this.pn_(r, t);
     return r;
   }
@@ -56,9 +56,9 @@ MarkFactory.af1 = t => {
   r.AddComponent(18).EntityId = t.EntityId;
   return r;
 };
-MarkFactory.pHc = t => {
+MarkFactory.JJu = t => {
   var r = _a.sf1(t);
   r.AddComponent(15).DynamicConfig = t.DynamicConfig;
   return r;
 };
-MarkFactory.fn_ = new Map([[29, [14]], [28, [14]], [10, [13]], [32, [16, 15]], [31, [15]], [7, [14]]]); //# sourceMappingURL=MarkFactory.js.map
+MarkFactory.fn_ = new Map([[29, [14]], [28, [14]], [10, [13]], [32, [16, 15]], [31, [15]], [7, [14]], [36, [15]], [37, [15]], [38, [15]], [42, [14]]]); //# sourceMappingURL=MarkFactory.js.map

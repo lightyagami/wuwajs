@@ -73,15 +73,15 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
     this.Ac_ = new Map();
   }
   OnInit() {
-    this.TagContainer.AddAnyTagListener((e, t, a) => {
-      this.OnAnyTagChanged(e, t, a);
+    this.TagContainer.AddAnyTagListener((e, t, a, n) => {
+      this.OnAnyTagChanged(e, t, a, n);
     });
     return true;
   }
   OnStart() {
     var e = this.Entity.GetComponent(0);
     let t = undefined;
-    if ((t = (e?.IsVehicle() ? this.Entity.GetComponent(234) : this.Entity.GetComponent(3))?.Actor?.AbilitySystemComponent)?.IsValid()) {
+    if ((t = (e?.IsVehicle() ? this.Entity.GetComponent(235) : this.Entity.GetComponent(3))?.Actor?.AbilitySystemComponent)?.IsValid()) {
       this.TagContainer.BindTsTagContainer(t);
     }
     return true;
@@ -218,25 +218,25 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
   GetTagDebugStrings() {
     return this.TagContainer?.GetDebugString() ?? "";
   }
-  OnAnyTagChanged(e, t, a) {
-    var n;
+  OnAnyTagChanged(e, t, a, n) {
+    var o;
     BaseTagComponent_1.Pc_.Start();
     if (e !== undefined && a !== t) {
       BaseTagComponent_1.wc_.Start();
-      if (a > 0 != (n = t > 0)) {
-        this.Emit(e, this.TagSwitchedCallbacks.get(e), e, n);
+      if (a > 0 != (o = t > 0)) {
+        this.Emit(e, this.TagSwitchedCallbacks.get(e), e, o);
       }
-      this.Emit(e, this.TagChangedCallbacks.get(e), t, e);
+      this.Emit(e, this.TagChangedCallbacks.get(e), t, e, n, a);
       BaseTagComponent_1.wc_.Stop();
       BaseTagComponent_1.Uc_.Start();
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnGameplayTagChanged, e, a, t);
       BaseTagComponent_1.Uc_.Stop();
       BaseTagComponent_1.Dc_.Start();
-      if (n = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(e)) {
-        EventSystem_1.EventSystem.EmitWithTarget(n, EventDefine_1.EEventName.OnGlobalGameplayTagChanged, this.Entity.Id, e, a, t);
+      if (o = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(e)) {
+        EventSystem_1.EventSystem.EmitWithTarget(o, EventDefine_1.EEventName.OnGlobalGameplayTagChanged, this.Entity.Id, e, a, t);
       }
       BaseTagComponent_1.Dc_.Stop();
-      this.Entity.GetComponent(209)?.OnTagChanged(e);
+      this.Entity.GetComponent(210)?.OnTagChanged(e);
     }
     BaseTagComponent_1.Pc_.Stop();
   }
@@ -255,5 +255,5 @@ BaseTagComponent.Pc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged");
 BaseTagComponent.wc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.Callbacks");
 BaseTagComponent.Uc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.OnGameplayTagChanged");
 BaseTagComponent.Dc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.OnGlobalGameplayTagChanged");
-BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(205)], BaseTagComponent);
+BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(206)], BaseTagComponent);
 exports.BaseTagComponent = BaseTagComponent; //# sourceMappingURL=BaseTagComponent.js.map

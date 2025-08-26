@@ -10,16 +10,18 @@ const AiStateMachineCondition_1 = require("./AiStateMachineCondition");
 class AiStateMachineConditionTaskFinish extends AiStateMachineCondition_1.AiStateMachineCondition {
   constructor() {
     super(...arguments);
-    this.Ewu = t => {
+    this.Uwu = t => {
       this.ResultSelf = this.Node.CurrentLeafNode.TaskFinished;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionTaskFinish", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionTaskFinish", this.Node.Name);
+      }
     };
   }
   RegisterEvents() {
     if (super.RegisterEvents()) {
       var t = this.Node.CurrentLeafNode;
-      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Ewu)) {
-        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Ewu);
+      if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Uwu)) {
+        EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Uwu);
         return true;
       }
     }
@@ -28,8 +30,8 @@ class AiStateMachineConditionTaskFinish extends AiStateMachineCondition_1.AiStat
   UnregisterEvents() {
     if (super.UnregisterEvents()) {
       var t = this.Node.CurrentLeafNode;
-      if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Ewu)) {
-        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Ewu);
+      if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Uwu)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnStateTaskFinished, this.Uwu);
         return true;
       }
     }

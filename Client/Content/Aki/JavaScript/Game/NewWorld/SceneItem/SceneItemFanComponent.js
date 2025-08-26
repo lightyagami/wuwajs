@@ -208,7 +208,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     this.zCn = undefined;
     this.ZCn = false;
     this.egn = (i, s, t) => {
-      const h = i.GetComponent(151);
+      const h = i.GetComponent(152);
       if (s && !this.tgn && h) {
         h.ign();
       } else {
@@ -236,7 +236,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
         }
         var e;
         if (t) {
-          if (t = i.GetComponent(196)) {
+          if (t = i.GetComponent(197)) {
             if (s) {
               t.RemoveServerTagByIdLocal(-1152559349, "");
               if (!t.HasTag(-3775711)) {
@@ -277,7 +277,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       if (t === -3775711 && i) {
         if (this.QCn && (this.hgn || (this.hgn = true, this.tgn ? this.Tgn(undefined, true) : this.ngn = 5000, Log_1.Log.CheckInfo() && Log_1.Log.Info("Level", 36, "[SceneItemFanComponent] Root Active", ["EntityId", this.Entity.Id])), this.PCn)) {
           for (const s of this.PCn) {
-            s?.GetComponent(151)?.lgn(false, false);
+            s?.GetComponent(152)?.lgn(false, false);
           }
         }
         this.lgn(true);
@@ -287,7 +287,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       if (this.QCn && (t === -1152559349 || t === 1298716444) && i) {
         if (this.PCn) {
           for (const h of this.PCn) {
-            h?.GetComponent(151)?.agn();
+            h?.GetComponent(152)?.agn();
           }
         }
         if (t === 1298716444) {
@@ -358,7 +358,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
           this.ngn -= i;
           let t = true;
           for (const r of this.PCn) {
-            var h = r.GetComponent(151);
+            var h = r.GetComponent(152);
             if (h && !this.tgn && !h.dce()) {
               t = false;
               break;
@@ -383,7 +383,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
             var o = this.zCn[t];
             var n = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(o);
             if (n?.Valid && n.Entity) {
-              if (e = n.Entity.GetComponent(151)) {
+              if (e = n.Entity.GetComponent(152)) {
                 if (e.Valid && e.SceneInteractionLoadCompleted && (e.SetRoot(this), this.PCn.includes(n.Entity) || this.PCn.push(n.Entity), this.zCn.splice(t, 1), Log_1.Log.CheckInfo())) {
                   Log_1.Log.Info("Level", 36, "[Fan.WaitChild]Remove WaitChildId", ["ChildId", o]);
                 }
@@ -480,19 +480,19 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     return true;
   }
   OnStart() {
-    this.Entity.GetComponent(154).RegisterComponent(this);
+    this.Entity.GetComponent(155).RegisterComponent(this);
     if (!this.FCn) {
       EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.OnSceneItemHitByHitData, this.$dn);
     }
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
-    this.Entity.GetComponent(121)?.SetLogicRange(FAN_LOGIC_RANGE);
+    this.Entity.GetComponent(122)?.SetLogicRange(FAN_LOGIC_RANGE);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.EnterLogicRange, this.Jsn);
-    this.n$t = this.Entity.GetComponent(202);
+    this.n$t = this.Entity.GetComponent(203);
     if (!this.n$t) {
       return false;
     }
-    this.Xte = this.Entity.GetComponent(196);
-    this.kCn = this.Entity.GetComponent(161);
+    this.Xte = this.Entity.GetComponent(197);
+    this.kCn = this.Entity.GetComponent(162);
     this.jnn = this.Entity.GetComponent(86);
     if (this.TCn.size > 0) {
       for (const i of this.TCn) {
@@ -675,7 +675,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
         if (a !== this.RGn) {
           a = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByBaseItem(a);
           if (a?.Id !== this.Entity.Id) {
-            var f = a?.Entity?.GetComponent(151);
+            var f = a?.Entity?.GetComponent(152);
             if (f) {
               if (s) {
                 i = true;
@@ -717,7 +717,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       if (this._se !== 0) {
         var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this._se);
         if (t) {
-          t = t.Entity.GetComponent(202);
+          t = t.Entity.GetComponent(203);
           if (t) {
             t.ActorLocationProxy.Subtraction(this.n$t.ActorLocationProxy, this.cz);
             MathUtils_1.MathUtils.LookRotationUpFirst(this.cz, this.h0n(), this.wCn);
@@ -864,7 +864,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       let e = n.Y;
       let o = n.Z;
       for (const a of this.PCn) {
-        var r = a.GetComponent(202);
+        var r = a.GetComponent(203);
         if (r) {
           n = r.ActorLocationProxy;
           t = Math.min(t, n.X);
@@ -902,7 +902,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       this.hgn = this.Xte.HasTag(-3775711);
       if (this.hgn && this.PCn) {
         for (const f of this.PCn) {
-          f?.GetComponent(151)?.zYs();
+          f?.GetComponent(152)?.zYs();
         }
       }
       TimerSystem_1.TimerSystem.Next(() => {
@@ -913,7 +913,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       });
       this._gn();
       for (const v of this.PCn) {
-        var _ = v.GetComponent(151);
+        var _ = v.GetComponent(152);
         if (_) {
           _._gn();
         }
@@ -1007,7 +1007,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       this.mgn.length = 0;
     }
     for (const e of this.PCn) {
-      var t = e.GetComponent(151);
+      var t = e.GetComponent(152);
       if (t) {
         t.Zgn(0);
       }
@@ -1041,14 +1041,14 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     this.Xte?.RemoveTag(1174613996);
     this.Xte?.RemoveTag(942900915);
     this.Xte?.RemoveTag(-216276934);
-    var t = this.kCn?.EntityInSocket?.Entity?.GetComponent(196);
+    var t = this.kCn?.EntityInSocket?.Entity?.GetComponent(197);
     if (t) {
       t.RemoveTag(1174613996);
       t.RemoveTag(942900915);
       t.RemoveTag(-216276934);
     }
     if (this.ugn !== 0) {
-      if (t = EntitySystem_1.EntitySystem.GetComponent(this.ugn, 196)) {
+      if (t = EntitySystem_1.EntitySystem.GetComponent(this.ugn, 197)) {
         t.RemoveTag(1174613996);
         t.RemoveTag(942900915);
         t.RemoveTag(-216276934);
@@ -1064,7 +1064,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
   lgn(t, i = undefined) {
     var s;
     if (!this.a0n()) {
-      if (!this.ACn?.Xte?.HasTag(-1152559349) && !this.ACn?.Xte?.HasTag(1298716444) && (this.Xte && (t ? (this.Xte.RemoveTag(1174613996), this.Xte.HasTag(942900915) || this.Xte.AddTag(942900915), i ? this.Xte.HasTag(-216276934) || this.Xte.AddTag(-216276934) : i !== undefined && this.Xte.RemoveTag(-216276934)) : (this.Xte.HasTag(1174613996) || this.Xte.AddTag(1174613996), this.Xte.RemoveTag(942900915), this.Xte.RemoveTag(-216276934))), s = this.kCn?.EntityInSocket?.Entity?.GetComponent(196))) {
+      if (!this.ACn?.Xte?.HasTag(-1152559349) && !this.ACn?.Xte?.HasTag(1298716444) && (this.Xte && (t ? (this.Xte.RemoveTag(1174613996), this.Xte.HasTag(942900915) || this.Xte.AddTag(942900915), i ? this.Xte.HasTag(-216276934) || this.Xte.AddTag(-216276934) : i !== undefined && this.Xte.RemoveTag(-216276934)) : (this.Xte.HasTag(1174613996) || this.Xte.AddTag(1174613996), this.Xte.RemoveTag(942900915), this.Xte.RemoveTag(-216276934))), s = this.kCn?.EntityInSocket?.Entity?.GetComponent(197))) {
         this.ugn = this.kCn.EntityInSocket.Entity.Id;
         if (t) {
           s.RemoveTag(1174613996);
@@ -1254,13 +1254,13 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
           if (C?.Id !== this.Entity.Id) {
             if (C && o.has(C?.Id)) {
               if (C) {
-                var I = C.Entity.GetComponent(151);
+                var I = C.Entity.GetComponent(152);
                 if (!I || !I.a0n()) {
                   if (s) {
                     h = true;
                   }
                   if (I) {
-                    var p = I.Entity.GetComponent(202)?.ActorLocationProxy;
+                    var p = I.Entity.GetComponent(203)?.ActorLocationProxy;
                     if (p) {
                       this.pgn = Vector_1.Vector.Dist(p, this.n$t.ActorLocationProxy);
                     }
@@ -1284,7 +1284,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
           }
         }
       }
-      if (e && (n = e.Entity.GetComponent(202)?.ActorLocationProxy)) {
+      if (e && (n = e.Entity.GetComponent(203)?.ActorLocationProxy)) {
         this.fgn = Vector_1.Vector.Dist(n, this.n$t.ActorLocationProxy);
       }
       r.IsBlockInMiddle = h;
@@ -1309,7 +1309,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
       if (this.fgn > 0) {
         let t = 0;
         for (const L of d) {
-          if (L && o.has(L.Id) && (f = L.Entity.GetComponent(202)) && (f = Vector_1.Vector.Dist(this.n$t.ActorLocationProxy, f.ActorLocationProxy)) < this.fgn && (i && f > t && (t = f), o.delete(L.Id), _) && (v = L.Entity.GetComponent(0)?.GetCreatureDataId())) {
+          if (L && o.has(L.Id) && (f = L.Entity.GetComponent(203)) && (f = Vector_1.Vector.Dist(this.n$t.ActorLocationProxy, f.ActorLocationProxy)) < this.fgn && (i && f > t && (t = f), o.delete(L.Id), _) && (v = L.Entity.GetComponent(0)?.GetCreatureDataId())) {
             _.SporeEntityIds.push(v);
             _.SporeEntityLength.push(_.Length + f);
           }
@@ -1319,7 +1319,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
         }
       } else {
         for (const F of d) {
-          if (F && o.has(F.Id) && (o.delete(F.Id), c = F.Entity.GetComponent(202)) && ((c = Vector_1.Vector.Dist(c.ActorLocationProxy, this.n$t.ActorLocationProxy)) > this.fgn && (this.fgn = c), _) && (l = F.Entity.GetComponent(0)?.GetCreatureDataId())) {
+          if (F && o.has(F.Id) && (o.delete(F.Id), c = F.Entity.GetComponent(203)) && ((c = Vector_1.Vector.Dist(c.ActorLocationProxy, this.n$t.ActorLocationProxy)) > this.fgn && (this.fgn = c), _) && (l = F.Entity.GetComponent(0)?.GetCreatureDataId())) {
             _.SporeEntityIds.push(l);
             _.SporeEntityLength.push(_.Length + c);
           }
@@ -1340,7 +1340,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     }
     if (this.PCn) {
       for (const i of this.PCn) {
-        var t = i.GetComponent(151);
+        var t = i.GetComponent(152);
         if (t && t.Mgn > 0) {
           return true;
         }
@@ -1357,7 +1357,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     var t;
     var i;
     var s = this.Entity.GetComponent(0)?.GetPbDataId() ?? 0;
-    if (s !== 0 && (t = ModelManager_1.ModelManager.CreatureModel.GetOwnerEntity(s)) && (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)) && (i = t.Entity?.GetComponent(151))) {
+    if (s !== 0 && (t = ModelManager_1.ModelManager.CreatureModel.GetOwnerEntity(s)) && (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)) && (i = t.Entity?.GetComponent(152))) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneItem", 36, "[FanComponent] TryToResetRoot Successs", ["EntityId", this.Entity.Id]);
       }
@@ -1435,7 +1435,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
         this.o0n = false;
         var h = this.mgn.length;
         for (let t = i + 1; t < this._9r.length; t++) {
-          var e = EntitySystem_1.EntitySystem.GetComponent(this._9r[t].EntityId, 151);
+          var e = EntitySystem_1.EntitySystem.GetComponent(this._9r[t].EntityId, 152);
           if (e) {
             e.Zgn(0);
           }
@@ -1528,7 +1528,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
   T0n(t) {
     if (t > 0) {
       t = this._9r[t - 1];
-      if (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t.EntityId)?.Entity?.GetComponent(151)) {
+      if (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t.EntityId)?.Entity?.GetComponent(152)) {
         t.Zgn();
       }
     } else {
@@ -1576,7 +1576,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     var t;
     var i;
     var s;
-    var h = this.Entity.GetComponent(197);
+    var h = this.Entity.GetComponent(198);
     if (h) {
       if (h = h.GetInteractController()) {
         t = new CodeDefineLevelConditionInfo_1.LevelConditionGroup();
@@ -1604,7 +1604,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
   }
   l0n() {
     var t;
-    if (this.Itn && (t = this.Entity.GetComponent(197)) && (t = t.GetInteractController())) {
+    if (this.Itn && (t = this.Entity.GetComponent(198)) && (t = t.GetInteractController())) {
       t.RemoveClientInteractOption(this.Itn);
       this.Itn = undefined;
     }
@@ -1670,7 +1670,7 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
         this.lgn(true, true);
       } else {
         e = this._9r[this.xgn - 1].EntityId;
-        if ((e = EntitySystem_1.EntitySystem.GetComponent(e, 151)) && this.xgn < this._9r.length) {
+        if ((e = EntitySystem_1.EntitySystem.GetComponent(e, 152)) && this.xgn < this._9r.length) {
           if (this.xgn === this._9r.length - 1) {
             e.lgn(true, this._9r[this.xgn].IsBlockInMiddle);
           } else {
@@ -1905,22 +1905,22 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     var h = Protocol_1.Aki.Protocol.Tts.create();
     h.F4n = MathUtils_1.MathUtils.NumberToLong(t);
     h.aKn = i;
-    Net_1.Net.Call(15773, h, s);
+    Net_1.Net.Call(15055, h, s);
   }
   rgn(t, i, s, h) {
     var e = Protocol_1.Aki.Protocol.Rts.create();
     e.hKn = MathUtils_1.MathUtils.NumberToLong(t);
     e.lKn = MathUtils_1.MathUtils.NumberToLong(i);
     e.WHn = s ? 1 : 0;
-    Net_1.Net.Call(17039, e, h);
+    Net_1.Net.Call(23482, e, h);
   }
   f0n(t, i, s) {
     var h = Protocol_1.Aki.Protocol.Ats.create();
     h.hKn = MathUtils_1.MathUtils.NumberToLong(t);
     h.WHn = i ? 1 : 0;
-    Net_1.Net.Call(16095, h, s);
+    Net_1.Net.Call(26394, h, s);
   }
 };
 SceneItemFanComponent.C0n = new Array();
-SceneItemFanComponent = SceneItemFanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(151)], SceneItemFanComponent);
+SceneItemFanComponent = SceneItemFanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(152)], SceneItemFanComponent);
 exports.SceneItemFanComponent = SceneItemFanComponent; //# sourceMappingURL=SceneItemFanComponent.js.map

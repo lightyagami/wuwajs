@@ -88,11 +88,28 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
     return e;
   }
   Vqo(t, e) {
-    var i = [];
-    InputSettingsManager_1.InputSettingsManager.GetActionBinding(t).GetCurrentPlatformKeyNameList(i);
-    for (const r of i) {
-      if (e.has(r)) {
-        return r;
+    var i = new Set(e[0]);
+    var t = this.egd(t);
+    if (t) {
+      e = e[1];
+      if (e === t[1]) {
+        if (e) {
+          var r = new Set();
+          for (const o of t[0]) {
+            if (i.has(o)) {
+              r.add(o);
+            }
+          }
+          if (r.size === i.size) {
+            return Array.from(r);
+          }
+        } else {
+          for (const s of t[0]) {
+            if (i.has(s)) {
+              return [s];
+            }
+          }
+        }
       }
     }
   }
@@ -105,13 +122,13 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  Hqo(t) {
+  egd(t) {
     var e = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(t);
     if (e) {
       var i = [];
-      e.GetGamepadKeyNameList(i);
+      e.GetCurrentPlatformKeyNameList(i);
       if (i.length > 0) {
-        return i;
+        return [i, true];
       }
     }
     e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(t);
@@ -119,7 +136,7 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
       i = [];
       e.GetCurrentPlatformKeyNameList(i);
       if (i.length > 0) {
-        return i;
+        return [i, false];
       }
     }
   }
@@ -131,19 +148,16 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
     }
   }
   CheckActionNameListInNavigation(t) {
-    var e = this.Hqo(t);
+    var e = this.egd(t);
     if (e) {
-      var i;
-      var r;
-      var o = new Set(e);
-      for ([i, r] of this.Nqo) {
+      for (var [i, r] of this.Nqo) {
         if (t !== i) {
-          var n = this.Vqo(i, o);
-          if (n) {
+          var o = this.Vqo(i, e);
+          if (o) {
             for (const s of r) {
               if (s.IsHotKeyActive() && s.IsOccupancyFightInput()) {
                 if (Log_1.Log.CheckDebug()) {
-                  Log_1.Log.Debug("UiNavigation", 10, "非导航输入被导航输入占用", ["非导航输入", t], ["导航输入", i], ["交集的KeyName", n]);
+                  Log_1.Log.Debug("UiNavigation", 10, "非导航输入被导航输入占用", ["非导航输入", t], ["导航输入", i], ["交集的KeyName", o]);
                 }
                 return true;
               }
@@ -163,8 +177,8 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
       for ([i, r] of this.Oqo) {
         if (t !== i) {
           if (this.rNa(i, o)) {
-            for (const n of r) {
-              if (n.IsHotKeyActive() && n.GetHotKeyFunctionType() !== "ShowOnly") {
+            for (const s of r) {
+              if (s.IsHotKeyActive() && s.GetHotKeyFunctionType() !== "ShowOnly") {
                 return true;
               }
             }

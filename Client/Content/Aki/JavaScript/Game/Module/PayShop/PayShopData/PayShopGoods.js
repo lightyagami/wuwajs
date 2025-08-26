@@ -141,14 +141,8 @@ class PayShopGoods {
     return !this.EFi && TimeUtil_1.TimeUtil.GetServerTime() < Number(this.Pe.BeginTime);
   }
   GetDiscountTimeData() {
-    var t;
-    var e = this.Pe.GetPromotionText();
-    if (StringUtils_1.StringUtils.IsEmpty(e)) {
-      t = Number(this.Pe.EndPromotionTime);
-      return PayShopGoods.GetEndTimeShowText(t);
-    } else {
-      return e;
-    }
+    var t = Number(this.Pe.EndPromotionTime);
+    return PayShopGoods.GetEndTimeShowText(t);
   }
   GetDiscountRemainTime() {
     var t = Number(this.Pe.EndPromotionTime) - TimeUtil_1.TimeUtil.GetServerTime();
@@ -209,14 +203,8 @@ class PayShopGoods {
     };
   }
   GetEndTimeRemainData() {
-    var t;
-    var e = this.Pe.GetSellTimeText();
-    if (StringUtils_1.StringUtils.IsEmpty(e)) {
-      t = Number(this.Pe.EndTime);
-      return PayShopGoods.GetEndTimeShowText(t);
-    } else {
-      return e;
-    }
+    var t = Number(this.Pe.EndTime);
+    return PayShopGoods.GetEndTimeShowText(t);
   }
   GetDownTipsText() {
     if (this.CheckIfMonthCardItem()) {

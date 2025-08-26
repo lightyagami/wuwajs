@@ -143,9 +143,11 @@ class NumberSelectComponent extends UiPanelBase_1.UiPanelBase {
     this.BY = MathUtils_1.MathUtils.Clamp(t, this.bY, this.Kwt);
     this.Jwt();
   }
-  ChangeValue(t) {
-    this.Hwt.SetValue(t, false);
-    this.Xwt(t);
+  ChangeValue(t, i = true) {
+    if (!!i || this.Wwt !== t) {
+      this.Hwt.SetValue(t, false);
+      this.Xwt(t);
+    }
   }
 }
 exports.NumberSelectComponent = NumberSelectComponent;

@@ -28,7 +28,7 @@ class Info {
     this.v8 = cpp_1.KuroApplication.IsBuildShipping();
     this.M8 = cpp_1.KuroApplication.IsBuildTest();
     this.E8 = !this.v8 && !this.M8;
-    this.A9c = UE.KuroStaticLibrary.IsLowMemoryDevice();
+    this.H5u = UE.KuroStaticLibrary.IsLowMemoryDevice();
     this.S8 = this.p8 && UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCVarFloat("r.Kuro.Movie.EnableCGMovieRendering") > 0;
     if (Macro_1.NOT_SHIPPING_ENVIRONMENT && this.p8) {
       this.m6a = UE.KuroRenderingEditorBPPluginBPLibrary.IsSimulateInEditorInProgress();
@@ -66,7 +66,7 @@ class Info {
     return this.m6a || this.S8;
   }
   static get IsLowMemoryDevice() {
-    return this.A9c;
+    return this.H5u;
   }
   static get PlatformType() {
     return this.sXi;
@@ -197,8 +197,14 @@ class Info {
   static IsBackBoneGamepad() {
     return this.IsInGamepad() && this.InputControllerType === 6;
   }
+  static IsNsProGamepad() {
+    return this.IsInGamepad() && this.InputControllerType === 7;
+  }
   static CheckIsBackBoneGamepad(t) {
     return t === 6;
+  }
+  static CheckIsNsProGamepad(t) {
+    return t === 7;
   }
   static CheckIsPsGamepad(t) {
     return t === 3 || t === 4;
@@ -249,7 +255,7 @@ Info.S8 = false;
 Info.UseFastInputCallback = true;
 Info.AxisInputOptimize = true;
 Info.m6a = false;
-Info.A9c = false;
+Info.H5u = false;
 Info.sXi = 0;
 Info.rEa = 0;
 Info.oEa = 0;

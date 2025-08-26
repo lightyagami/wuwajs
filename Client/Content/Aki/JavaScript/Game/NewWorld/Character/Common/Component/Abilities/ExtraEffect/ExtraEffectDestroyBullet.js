@@ -74,11 +74,11 @@ class ExtraEffectDestroyBullet extends ExtraEffectBase_1.BuffEffect {
               }
             }
           }
-        } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Battle", 20, "无法获取子弹集合", ["Buff", this.BuffId]);
+        } else if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 20, "无法获取子弹集合", ["Buff", this.BuffId]);
         }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 20, "无法获取子弹拥有者", ["Buff", this.BuffId]);
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 20, "无法获取子弹拥有者", ["Buff", this.BuffId]);
       }
     }
   }

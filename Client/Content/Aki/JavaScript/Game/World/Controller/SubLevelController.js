@@ -64,12 +64,12 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   }
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(16766, SubLevelController.b0r);
-    Net_1.Net.Register(27169, SubLevelController.q0r);
+    Net_1.Net.Register(20041, SubLevelController.b0r);
+    Net_1.Net.Register(22329, SubLevelController.q0r);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16766);
-    Net_1.Net.UnRegister(27169);
+    Net_1.Net.UnRegister(20041);
+    Net_1.Net.UnRegister(22329);
     super.OnUnRegisterNetEvent();
   }
   static RegisterAssistant() {

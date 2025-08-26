@@ -44,12 +44,12 @@ class LevelConditionCheckIsUsingVehicle extends LevelGeneralBase_1.LevelConditio
         }
       }
     }
-    var r = s?.GetComponent(233);
+    var r = s?.GetComponent(234);
     return !!r && (r = r.IsVehicleInUse(e.Seat), e.CheckIsBeingUsed ? r : !r);
   }
   wi_(e, r) {
     var s = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    return !!s && !!(s = s.Entity.GetComponent(229)) && (s = s.VehicleType === e.VehicleType, e.CheckType ? s : !s);
+    return !!s && !!(s = s.Entity.GetComponent(230)) && (s = e.VehicleType === undefined ? s.VehicleType !== undefined : s.VehicleType === e.VehicleType, e.CheckType ? s : !s);
   }
 }
 exports.LevelConditionCheckIsUsingVehicle = LevelConditionCheckIsUsingVehicle;

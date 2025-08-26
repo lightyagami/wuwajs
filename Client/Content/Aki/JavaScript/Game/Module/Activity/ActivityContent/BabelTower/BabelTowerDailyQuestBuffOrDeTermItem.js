@@ -14,12 +14,12 @@ class BabelTowerDailyQuestBuffOrDeTermItem extends GridProxyAbstract_1.GridProxy
   constructor() {
     super(...arguments);
     this.Mne = 0;
-    this.GQ1 = false;
+    this.jQ1 = false;
     this.YP = () => {
       let e = false;
-      e = this.GQ1 ? BabelTowerController_1.BabelTowerController.GetBabelTowerData().GetDeTermIsLock(this.Mne) : BabelTowerController_1.BabelTowerController.GetBabelTowerData().GetBuffIsLock(this.Mne);
+      e = this.jQ1 ? BabelTowerController_1.BabelTowerController.GetBabelTowerData().GetDeTermIsLock(this.Mne) : BabelTowerController_1.BabelTowerController.GetBabelTowerData().GetBuffIsLock(this.Mne);
       var r = {
-        IsDeTerm: this.GQ1,
+        IsDeTerm: this.jQ1,
         ConfigId: this.Mne,
         ShowWays: e
       };
@@ -32,7 +32,7 @@ class BabelTowerDailyQuestBuffOrDeTermItem extends GridProxyAbstract_1.GridProxy
   }
   Refresh(e, r, t) {
     this.Mne = e.ConfigId;
-    this.GQ1 = e.IsDeTerm;
+    this.jQ1 = e.IsDeTerm;
     let i = undefined;
     i = (e.IsDeTerm ? BabelTowerDeTermById_1.configBabelTowerDeTermById : BabelTowerBuffById_1.configBabelTowerBuffById).GetConfig(this.Mne);
     this.SetTextureByPath(i.Texture, this.GetTexture(0));

@@ -46,7 +46,7 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
   }
   OnInit() {
     this.Ovr = this.Entity.GetComponent(0);
-    this.han = this.Entity.GetComponent(149);
+    this.han = this.Entity.GetComponent(150);
     return true;
   }
   get LockRange() {
@@ -105,7 +105,7 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     return this.Entity.Id;
   }
   get HasQuestOption() {
-    var t = this.Entity.GetComponent(197);
+    var t = this.Entity.GetComponent(198);
     return !!t && !!(t = t.GetInteractController()) && t.HasDynamicOption;
   }
   uan() {
@@ -142,5 +142,5 @@ let PawnInfoManageComponent = class PawnInfoManageComponent extends EntityCompon
     return t || ((t = this.Entity.GetComponent(0)?.GetModelConfig()) ? t.名字Z偏移 : 0);
   }
 };
-PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(117)], PawnInfoManageComponent);
+PawnInfoManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(118)], PawnInfoManageComponent);
 exports.PawnInfoManageComponent = PawnInfoManageComponent; //# sourceMappingURL=PawnInfoManageComponent.js.map

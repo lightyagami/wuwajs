@@ -21,14 +21,14 @@ const FloroRanchUiItemBase_1 = require("./FloroRanchUiItemBase");
 class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
   constructor() {
     super(...arguments);
-    this.XLu = undefined;
-    this.D9c = undefined;
+    this.MAu = undefined;
+    this.ZKu = undefined;
     this.UiLevelSequence = undefined;
     this.M$e = undefined;
-    this.V9c = undefined;
+    this.xKu = undefined;
     this.TDe = undefined;
     this.cAo = undefined;
-    this.AHc = undefined;
+    this.eXu = undefined;
     this.xsr = Vector_1.Vector.Create();
     this.Igo = Vector_1.Vector.Create();
     this.l$t = Vector_1.Vector.Create();
@@ -43,7 +43,7 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
         this._1o();
       } else {
         this.e8 += i;
-        this.xsr.Multiply(this.V9c.GetFloatValue(this.e8 / FloroRanchDefine_1.FLORO_RANCH_CARD_MOVE_TIME), this.cz);
+        this.xsr.Multiply(this.xKu.GetFloatValue(this.e8 / FloroRanchDefine_1.FLORO_RANCH_CARD_MOVE_TIME), this.cz);
         this.Igo.Addition(this.cz, this.fz);
         this.GetRootItem().SetUIWorldLocation(this.fz.ToUeVectorOld());
         if (this.e8 >= FloroRanchDefine_1.FLORO_RANCH_CARD_MOVE_TIME) {
@@ -53,13 +53,13 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
         }
       }
     };
-    this.j9c = i => {
+    this.tXu = i => {
       if (i && i.getAnimationName() === "eat") {
         (i = this.GetSpine(1)).SetAnimation(0, "idle", true);
         i.SetTimeScale(1);
       }
     };
-    this.H9c = i => {
+    this.iXu = i => {
       this.GetRootItem().SetUIWorldLocation(this.M$e);
       this.GetRootItem().SetUIActive(false);
       this.GetSpine(1).ClearTracks();
@@ -73,17 +73,17 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     this.AddUiBehavior(this.UiLevelSequence);
   }
   async OnBeforeStartAsync() {
-    this.GetSpine(1).AnimationComplete.Add(this.j9c);
-    this.UiLevelSequence.AddSequenceFinishEvent("Fushion2", this.H9c);
-    this.UiLevelSequence.AddSequenceFinishEvent("Swallowed", this.H9c);
-    this.UiLevelSequence.AddSequenceFinishEvent("Sacrifice", this.H9c);
-    this.UiLevelSequence.AddSequenceFinishEvent("Close", this.H9c);
-    this.XLu = new FloroRanchEvolveItem_1.FloroRanchEvolveItem();
-    await this.XLu.CreateByActorAsync(this.GetItem(2).GetOwner());
-    this.XLu.SetUiActive(false);
-    this.D9c = new FloroRanchBuffRemindDayItem_1.FloroRanchBuffRemindDayItem();
-    await this.D9c.CreateByActorAsync(this.GetItem(3).GetOwner());
-    this.D9c.SetUiActive(false);
+    this.GetSpine(1).AnimationComplete.Add(this.tXu);
+    this.UiLevelSequence.AddSequenceFinishEvent("Fushion2", this.iXu);
+    this.UiLevelSequence.AddSequenceFinishEvent("Swallowed", this.iXu);
+    this.UiLevelSequence.AddSequenceFinishEvent("Sacrifice", this.iXu);
+    this.UiLevelSequence.AddSequenceFinishEvent("Close", this.iXu);
+    this.MAu = new FloroRanchEvolveItem_1.FloroRanchEvolveItem();
+    await this.MAu.CreateByActorAsync(this.GetItem(2).GetOwner());
+    this.MAu.SetUiActive(false);
+    this.ZKu = new FloroRanchBuffRemindDayItem_1.FloroRanchBuffRemindDayItem();
+    await this.ZKu.CreateByActorAsync(this.GetItem(3).GetOwner());
+    this.ZKu.SetUiActive(false);
   }
   FollowPosition(i) {
     i = i.GetLocation();
@@ -101,12 +101,12 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
   }
   RefreshEvolveItem() {
     var i = this.Entity.CheckGetComponent(1);
-    this.XLu.Refresh(i.EvolveData);
-    this.XLu.GetRootItem().SetAnchorOffsetY(i.CardData.GetEvolveItemOffsetY());
+    this.MAu.Refresh(i.EvolveData);
+    this.MAu.GetRootItem().SetAnchorOffsetY(i.CardData.GetEvolveItemOffsetY());
   }
   RefreshRemainTimeItem() {
     var i = this.Entity.CheckGetComponent(0);
-    this.D9c.Refresh(i.GetMinRemindDayBuff());
+    this.ZKu.Refresh(i.GetMinRemindDayBuff());
   }
   RefreshSpecialEffect() {
     var i = this.Entity.CheckGetComponent(1).CardData.GetCardSpecialEffect();
@@ -195,7 +195,7 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     i.X += s ? e : -e;
     i.Subtraction(t, this.xsr);
     t.Addition(this.xsr, this.l$t);
-    var s = this._Gu(t, this.l$t);
+    var s = this.wqu(t, this.l$t);
     this.GetItem(0).SetUIRelativeRotation(s.ToUeRotator());
     this.Ele.DeepCopy(s);
     this.e8 = 0;
@@ -214,7 +214,7 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     this.Igo.DeepCopy(i);
     this.l$t = Vector_1.Vector.Create(this.M$e);
     this.l$t.Subtraction(i, this.xsr);
-    var i = this._Gu(i, this.l$t);
+    var i = this.wqu(i, this.l$t);
     this.GetItem(0).SetUIRelativeRotation(i.ToUeRotator());
     this.Ele.Set(0, 0, 0);
     this.e8 = 0;
@@ -225,6 +225,9 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     this.GetRootItem().SetUIWorldLocation(this.M$e);
     this.Ele.Set(0, 0, 0);
     this.GetItem(0).SetUIRelativeRotation(this.Ele.ToUeRotator());
+  }
+  GetRewardPopTransform() {
+    return this.GetRootActor().GetTransform();
   }
   async PlayEatAnim() {
     var i = this.GetSpine(1);
@@ -265,7 +268,7 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     this.UiLevelSequence.PlaySequence("Evolution", false, ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetTimeDilation());
     await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(FloroRanchDefine_1.FLORO_RANCH_CARD_EVOLVE_UP_TIME);
   }
-  _Gu(i, t) {
+  wqu(i, t) {
     this.cie.Set(0, 0, 0);
     var e = this.Entity.CheckGetComponent(1).CardData.GetCardDefaultDirection();
     if (e !== 0 && (t.Subtraction(i, this.cz), e !== (this.cz.X > 0 ? 2 : 1))) {
@@ -274,7 +277,7 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     return this.cie;
   }
   OnBeforeDestroy() {
-    this.GetSpine(1).AnimationComplete.Remove(this.j9c);
+    this.GetSpine(1).AnimationComplete.Remove(this.tXu);
     this._1o();
   }
   _1o() {
@@ -288,7 +291,7 @@ class FloroRanchUiCardItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     }
   }
   BindMoveCurve(i) {
-    this.V9c = i;
+    this.xKu = i;
   }
 }
 exports.FloroRanchUiCardItem = FloroRanchUiCardItem;

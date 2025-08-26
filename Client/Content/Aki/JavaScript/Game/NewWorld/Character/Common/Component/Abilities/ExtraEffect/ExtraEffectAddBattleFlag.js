@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.AddBattleFlag = undefined;
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
+const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const ExtraEffectBase_1 = require("./ExtraEffectBase");
 class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
   constructor() {
@@ -11,63 +13,86 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
     this.LNc = 1;
     this.KXo = [];
     this.wNc = [];
+    this.xzc = undefined;
+    this.Did = true;
     this.RNc = "";
   }
-  InitParameters(t) {
-    this.LNc = Number(t.ExtraEffectParameters[0]);
-    this.RNc = t.ExtraEffectParameters[2];
+  InitParameters(e) {
+    this.LNc = Number(e.ExtraEffectParameters[0]);
+    this.RNc = e.ExtraEffectParameters[2];
     switch (this.LNc) {
       case 2:
-        this.KXo = t.ExtraEffectParameters[1].split("#").map(t => Number(t));
+        this.KXo = e.ExtraEffectParameters[1].split("#").map(e => Number(e));
         break;
       case 3:
-        this.wNc = t.ExtraEffectParameters[1].split("#").map(t => Number(t));
+        this.wNc = e.ExtraEffectParameters[1].split("#").map(e => Number(e));
     }
+    var t = e.ExtraEffectParameters[3];
+    if (t) {
+      this.xzc = new Set(t.split("#").map(e => Number(e)));
+    }
+    this.Did = Number(e.ExtraEffectParameters[4] ?? 1) === 1;
   }
-  OnExecute() {
-    return this.RNc;
+  OnExecute(e) {
+    if (!e || this.Did) {
+      return this.RNc;
+    }
   }
   GetDebugEffectString() {
-    let t = "";
+    let e = "";
     switch (this.LNc) {
       case 1:
-        t = "所有技能";
+        e = "所有技能";
         break;
       case 2:
-        t = "技能Id " + this.KXo;
+        e = "技能Id " + this.KXo;
         break;
       case 3:
-        t = "技能类型 " + this.wNc;
+        e = "技能类型 " + this.wNc;
     }
-    return `添加战斗标记 ${this.RNc} 到 ${t}`;
+    return `添加战斗标记 ${this.RNc} 到 ${e}`;
   }
   CheckExecutable() {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
-  static ApplyEffects(t, e) {
-    e.BattleFlags = [];
-    var s = t.GetComponent(174);
-    var t = s?.BuffEffectManager;
-    if (t) {
-      for (const r of t.FilterById(76)) {
-        if (r.Check({}, s)) {
-          switch (r.LNc) {
+  static xid(e, t, s) {
+    var r = e.GetComponent(175);
+    var e = r?.BuffEffectManager;
+    if (e) {
+      for (const a of e.FilterById(76)) {
+        if (a.Check({}, r) && !a.xzc?.has(t.SkillId)) {
+          let e = undefined;
+          switch (a.LNc) {
             case 1:
-              e.BattleFlags.push(r.Execute());
+              e = a.Execute(s);
               break;
             case 2:
-              if (r.KXo.includes(e.SkillId)) {
-                e.BattleFlags.push(r.Execute());
+              if (a.KXo.includes(t.SkillId)) {
+                e = a.Execute(s);
               }
               break;
             case 3:
-              if (r.wNc.includes(e.SkillInfo.SkillGenre)) {
-                e.BattleFlags.push(r.Execute());
+              if (a.wNc.includes(t.SkillInfo.SkillGenre)) {
+                e = a.Execute(s);
               }
+          }
+          if (e) {
+            t.BattleFlags.push(e);
           }
         }
       }
     }
+  }
+  static ApplyEffects(e, t) {
+    t.BattleFlags = [];
+    this.xid(e, t, false);
+    var e = e.GetComponent(0);
+    var s = e?.IsVision();
+    var e = e?.GetSummonerId();
+    if (s && e && (s = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity)) {
+      this.xid(s, t, true);
+    }
+    t.BattleFlags.length;
   }
 }
 exports.AddBattleFlag = AddBattleFlag;

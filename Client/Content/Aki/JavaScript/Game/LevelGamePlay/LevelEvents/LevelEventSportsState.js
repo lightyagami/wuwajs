@@ -47,14 +47,16 @@ class LevelEventSportsState extends LevelGeneralBase_1.LevelEventBase {
         return;
     }
     let r = undefined;
-    var o = this.thh(t);
+    var o;
+    var a = this.thh(t);
     if (r = e.Target.Type === "Player" ? Global_1.Global.BaseCharacter?.GetEntityNoBlueprint() : r) {
+      o = a === "180700235";
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("LevelEvent", 50, "进入滑雪模式", ["Type", t.Type], ["ContextSource", o]);
+        Log_1.Log.Info("LevelEvent", 50, "进入滑雪模式", ["Type", t.Type], ["ContextSource", a], ["NeedSetBase", o]);
       }
-      r.GetComponent(35)?.EnterSkiMode(e);
+      r.GetComponent(35)?.EnterSkiMode(e, o);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("LevelEvent", 50, "目前仅Role支持触发滑雪模式", ["ContextType", t.Type], ["ContextSource", o]);
+      Log_1.Log.Error("LevelEvent", 50, "目前仅Role支持触发滑雪模式", ["ContextType", t.Type], ["ContextSource", a]);
     }
   }
   HRe(e, t) {

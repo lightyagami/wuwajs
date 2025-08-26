@@ -9,6 +9,7 @@ const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../../Ui/Base/UiAsyncTask");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const BattleUiDefine_1 = require("../../../BattleUi/BattleUiDefine");
 const TaskMarkItem_1 = require("../../Marks/MarkItem/TaskMarkItem");
@@ -17,7 +18,6 @@ const MapRangePanel_1 = require("../SubView/MapRangePanel");
 const MapMarkMgr_1 = require("./Assistant/MapMarkMgr");
 const MapSoundBoxSfxMgr_1 = require("./Assistant/MapSoundBoxSfxMgr");
 const MapTileMgr_1 = require("./Assistant/MapTileMgr");
-const UiAsyncTask_1 = require("../../../../Ui/Base/UiAsyncTask");
 class MiniMap extends UiPanelBase_1.UiPanelBase {
   constructor(e, t, i, s = 1, a) {
     super();
@@ -149,20 +149,20 @@ class MiniMap extends UiPanelBase_1.UiPanelBase {
           if (s.Size() > BattleUiDefine_1.CLAMP_RANGE && !e) {
             s.DivisionEqual(s.Size()).MultiplyEqual(BattleUiDefine_1.CLAMP_RANGE).SubtractionEqual(a).DivisionEqual(n);
             t.GetRootItemAsync().then(e => {
-              if (e?.IsValid()) {
+              if (e?.IsValid() && t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
                 e.SetAnchorOffset(s.ToUeVector2D(true));
               }
             });
           } else {
             t.GetRootItemAsync().then(e => {
-              if (e?.IsValid()) {
+              if (e?.IsValid() && t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
                 e.SetAnchorOffset(i.ToUeVector2D(true));
               }
             });
           }
         } else {
           t.GetRootItemAsync().then(e => {
-            if (e?.IsValid()) {
+            if (e?.IsValid() && t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0)) {
               e.SetAnchorOffset(i.ToUeVector2D(true));
             }
           });

@@ -19,7 +19,7 @@ class TsAnimNotifyHideBone extends UE.KuroAnimNotify {
     if (this.IgnoreTsBaseCharacter) {
       MeshComponentUtils_1.MeshComponentUtils.HideBone(e, this.BoneName, this.Hide);
     } else if ((e = e.GetOwner()) instanceof TsBaseCharacter_1.default && e.CharacterActorComponent) {
-      e.CharacterActorComponent.Entity.GetComponent(177)?.HideBone(FNameUtil_1.FNameUtil.GetDynamicFName(this.BoneName), this.Hide);
+      e.CharacterActorComponent.Entity.GetComponent(178)?.HideBone(FNameUtil_1.FNameUtil.GetDynamicFName(this.BoneName), this.Hide);
     }
     return true;
   }

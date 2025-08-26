@@ -7,10 +7,11 @@ exports.UiAsyncTask = undefined;
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 class UiAsyncTask {
-  constructor(s, i, t) {
+  constructor(s, i, t, o) {
     this.Name = s;
     this.jEr = i;
     this.Lk_ = t;
+    this.LogInfo = o;
     this.h0i = 0;
     this.wk_ = false;
     this.WEr = new CustomPromise_1.CustomPromise();

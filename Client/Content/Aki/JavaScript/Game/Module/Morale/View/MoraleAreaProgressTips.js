@@ -31,7 +31,7 @@ class MoraleAreaProgressTips extends UiTickViewBase_1.UiTickViewBase {
     this.DeltaNewProgressTime = 0;
     this.DeltaGridProgressTime = 0;
     this.Q$1 = () => new MoraleAreaProgressItem_1.MoraleAreaProgressItem();
-    this.Otu = () => new MoraleAreaProgressPointItem_1.MoraleAreaProgressPointItem();
+    this.liu = () => new MoraleAreaProgressPointItem_1.MoraleAreaProgressPointItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UISliderComponent], [4, UE.UILayoutBase], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText]];
@@ -50,7 +50,7 @@ class MoraleAreaProgressTips extends UiTickViewBase_1.UiTickViewBase {
     this.PercentLayout = new GenericLayout_1.GenericLayout(s, this.Q$1, t);
     var s = this.GetLayoutBase(4);
     var t = this.GetItem(5)?.GetOwner();
-    this.PointLayout = new GenericLayout_1.GenericLayout(s, this.Otu, t);
+    this.PointLayout = new GenericLayout_1.GenericLayout(s, this.liu, t);
   }
   OnStart() {
     this.UpdateData();

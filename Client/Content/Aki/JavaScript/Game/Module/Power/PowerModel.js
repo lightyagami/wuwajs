@@ -22,7 +22,6 @@ class PowerModel extends ModelBase_1.ModelBase {
     this.HXs = new Map();
     this.roo = undefined;
     this.v_l = true;
-    this.InnerConfirmBoxData = undefined;
   }
   get PowerItemInfoList() {
     if (this.roo === undefined) {
@@ -83,8 +82,10 @@ class PowerModel extends ModelBase_1.ModelBase {
   get PowerCount() {
     return this.GetPowerDataById(ItemDefines_1.EItemId.Power).GetCurrentPower();
   }
-  get ConfirmBoxData() {
-    return this.InnerConfirmBoxData;
+  get PowerWithConvertedCount() {
+    var e = this.GetPowerDataById(ItemDefines_1.EItemId.Power);
+    var r = this.GetPowerDataById(ItemDefines_1.EItemId.OverPower);
+    return e.GetCurrentPower() + r.GetCurrentPower();
   }
   OnInit() {
     this.VXs.set(10800, ItemDefines_1.EItemId.Power);
@@ -131,9 +132,6 @@ class PowerModel extends ModelBase_1.ModelBase {
     }
     return t;
   }
-  CreateConfirmBoxData(e, r) {
-    this.InnerConfirmBoxData = new PowerDefines_1.PowerConfirmBoxData(e, r);
-  }
   Eoo(e) {
     e = ModelManager_1.ModelManager.ShopModel.GetShopItemList(e);
     if (e && e.length !== 0) {
@@ -149,6 +147,9 @@ class PowerModel extends ModelBase_1.ModelBase {
   IsPowerEnough(e) {
     return !e || this.PowerCount >= e;
   }
+  IsPowerWithConvertedEnough(e) {
+    return !e || this.PowerWithConvertedCount >= e;
+  }
   GetCurrentNeedPower(e) {
     if (!this.IsPowerEnough(e) && e) {
       return e - this.PowerCount;
@@ -158,9 +159,6 @@ class PowerModel extends ModelBase_1.ModelBase {
   }
   GetOverPowerShopConfig() {
     return ConfigManager_1.ConfigManager.ShopConfig.GetShopFixedInfoByItemId(PowerDefines_1.EPowerShopType.BuyWithItem, OVERPOWERSHOPID);
-  }
-  ClearConfirmBoxData() {
-    this.InnerConfirmBoxData = undefined;
   }
   GetCanShowPowerTip() {
     return this.v_l;

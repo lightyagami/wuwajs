@@ -12,6 +12,7 @@ const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const ActivityData_1 = require("../../ActivityData");
+const CARNIVAL_SHOP_TAB_ID = 5;
 class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
@@ -34,8 +35,8 @@ class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
       }
     }
     this.JumpTaskMap.clear();
-    for (const r of e.N41._hu) {
-      this.JumpTaskMap.set(r.uhu, r.chu);
+    for (const r of e.N41.Ohu) {
+      this.JumpTaskMap.set(r.qhu, r.Ghu);
     }
     this.ChoseRoleId = e.N41.Q6n;
     const t = ConfigManager_1.ConfigManager.BeginnerCarnivalConfig.GetNewbieCarnivalParam(e.s5n);
@@ -76,15 +77,33 @@ class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
   }
   GetAnyRedDotShow() {
     for (var [, e] of this.TaskDataMap) {
-      for (const r of e) {
-        if (r.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
+      for (const a of e) {
+        if (a.H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
           return true;
         }
       }
     }
-    var t = ModelManager_1.ModelManager.FunctionModel.IsOpen(10009);
-    var o = ModelManager_1.ModelManager.FunctionModel.IsOpen(10010);
-    return !!t && !this.GetHaveGachaEnter() || !!o && !this.GetHaveShopEnter() || !this.ChoseRoleId;
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10009) && !this.GetHaveGachaEnter()) {
+      var t = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId[0]);
+      var o = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId[1]);
+      if (t || o) {
+        return true;
+      }
+    }
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10010) && !this.GetHaveShopEnter()) {
+      let e = false;
+      for (const n of ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(3, CARNIVAL_SHOP_TAB_ID)) {
+        var r = n.GetRemainingData();
+        if (r && r.Count > 0) {
+          e = true;
+          break;
+        }
+      }
+      if (e) {
+        return true;
+      }
+    }
+    return !this.ChoseRoleId;
   }
   GetAnyTaskRedDotShow() {
     for (var [, e] of this.TaskDataMap) {
@@ -135,7 +154,7 @@ class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetHaveShopEnter() {
-    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.BeginnerCarnivalShop) ?? "";
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.BeginnerCarnivalShop);
     return e || false;
   }
   SetShopEnter() {
@@ -143,7 +162,7 @@ class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   GetHaveGachaEnter() {
-    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.BeginnerCarnivalGacha) ?? "";
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.BeginnerCarnivalGacha);
     return e || false;
   }
   SetGachaEnter() {
@@ -151,7 +170,7 @@ class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   GetHaveChoseRoleViewEnter() {
-    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.BeginnerCarnivalChoseRoleView) ?? "";
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.BeginnerCarnivalChoseRoleView);
     return e || false;
   }
   SetChoseRoleViewEnter() {

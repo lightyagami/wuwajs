@@ -79,7 +79,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     };
     this.OnTeleportChangleLocation = () => {
       if (this.NeedLeaveVehicleWhenTeleport()) {
-        this.VehicleInfo.VehicleEntity?.GetComponent(233)?.Leave(this.Entity, 1);
+        this.VehicleInfo.VehicleEntity?.GetComponent(234)?.Leave(this.Entity, 1);
       }
     };
     this.OnMoveRide = e => {
@@ -114,13 +114,13 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     return this.VehicleInfo?.Seat ?? -1;
   }
   get CanLeave() {
-    return !!this.VehicleEntity?.GetComponent(237)?.CheckIfCanLeave();
+    return !!this.VehicleEntity?.GetComponent(238)?.CheckIfCanLeave();
   }
   get CanSprint() {
-    return !!this.VehicleEntity?.GetComponent(237)?.CheckIfCanSprint();
+    return !!this.VehicleEntity?.GetComponent(238)?.CheckIfCanSprint();
   }
   get CanRiderSharing() {
-    return !!this.VehicleEntity?.GetComponent(237)?.CheckIfCanRiderSharing();
+    return !!this.VehicleEntity?.GetComponent(238)?.CheckIfCanRiderSharing();
   }
   IsVehicleType(e) {
     return this.VehicleInfo?.VehicleType === e;
@@ -131,8 +131,8 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(3);
     this.MoveComp = this.Entity.GetComponent(45);
-    this.UnifiedStateComp = this.Entity.GetComponent(101);
-    this.TagComp = this.Entity.GetComponent(205);
+    this.UnifiedStateComp = this.Entity.GetComponent(102);
+    this.TagComp = this.Entity.GetComponent(206);
     this.EntityHandle = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id);
     this.InitEnterEffectAsset();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveRide, this.OnMoveRide);
@@ -147,7 +147,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicleWrapper);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicleWrapper);
     if (this.VehicleInfo) {
-      this.VehicleInfo.VehicleEntity?.GetComponent(233)?.Leave(this.Entity);
+      this.VehicleInfo.VehicleEntity?.GetComponent(234)?.Leave(this.Entity);
     }
     return true;
   }
@@ -217,7 +217,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
       this.AttachAndSetPassengerTransform();
     }
     this.ActorComp.Actor.K2_DetachFromActor(1, 1, 1);
-    if (this.IsAttachToMoveSceneItem && (e = e.VehicleEntity?.GetComponent(202)?.Owner)) {
+    if (this.IsAttachToMoveSceneItem && (e = e.VehicleEntity?.GetComponent(203)?.Owner)) {
       this.ActorComp.Actor.K2_AttachToActor(e, undefined, 1, 1, 1, true);
     }
     this.SeatReletiveTrans.Reset();
@@ -230,7 +230,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     this.ActorComp.ClearInput();
     this.MoveComp.StopMoveNew();
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeAttachVehicle);
-    this.Entity.GetComponent(177)?.ConsumeRootMotion();
+    this.Entity.GetComponent(178)?.ConsumeRootMotion();
     this.ActorComp.Actor.KuroSetMovementMode({
       Mode: 6,
       CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE,
@@ -245,13 +245,13 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
       switch (this.VehicleInfo.VehicleType) {
         case "SceneItemAutoMoveVehicle":
         case "CoBathingEmptyVehicle":
-          t.GetComponent(202).Owner?.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
+          t.GetComponent(203).Owner?.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
           break;
         case "NpcVehicle":
           t.GetComponent(3).Actor.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
           break;
         default:
-          var i = t.GetComponent(234);
+          var i = t.GetComponent(235);
           i.Actor.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
           i.Actor.PlatformActor?.IgnoreActorWhenMoving(this.ActorComp.Actor, e, true);
       }
@@ -293,7 +293,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
           break;
         case "SceneItemAutoMoveVehicle":
         case "CoBathingEmptyVehicle":
-          var s = this.VehicleInfo.VehicleEntity.GetComponent(271);
+          var s = this.VehicleInfo.VehicleEntity.GetComponent(274);
           if (s && !(e = s?.SkeletonMeshComponent)) {
             const o = VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat);
             e = s?.GetStaticMeshVehicleSeats(o.toString());
@@ -301,7 +301,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
           }
           break;
         default:
-          e = this.VehicleInfo.VehicleEntity.GetComponent(234)?.Actor?.Mesh;
+          e = this.VehicleInfo.VehicleEntity.GetComponent(235)?.Actor?.Mesh;
       }
       if (e && i) {
         const o = t ? VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat) : FNameUtil_1.FNameUtil.EMPTY;
@@ -327,7 +327,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
   GetSeatTransform(e) {
     var t;
     var i;
-    return !!this.VehicleInfo && (i = this.VehicleInfo.VehicleType !== "NpcVehicle" ? this.VehicleInfo.VehicleEntity.GetComponent(234) : this.VehicleInfo.VehicleEntity.GetComponent(3), t = VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat), i = i.Actor.Mesh.D_GetSocketTransform(t), e.FromUeTransform(i), true);
+    return !!this.VehicleInfo && (i = this.VehicleInfo.VehicleType !== "NpcVehicle" ? this.VehicleInfo.VehicleEntity.GetComponent(235) : this.VehicleInfo.VehicleEntity.GetComponent(3), t = VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat), i = i.Actor.Mesh.D_GetSocketTransform(t), e.FromUeTransform(i), true);
   }
   GetMoveStateFromVehicleType(e) {
     switch (e) {
@@ -343,5 +343,5 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
     return this.VehicleInfo?.ExitType === 3 || this.VehicleType === "NpcVehicle";
   }
 };
-CharacterDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(229)], CharacterDriveVehicleComponent);
+CharacterDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(230)], CharacterDriveVehicleComponent);
 exports.CharacterDriveVehicleComponent = CharacterDriveVehicleComponent; //# sourceMappingURL=CharacterDriveVehicleComponent.js.map

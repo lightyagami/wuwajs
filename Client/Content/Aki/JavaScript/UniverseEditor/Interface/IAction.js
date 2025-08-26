@@ -57,7 +57,10 @@ var EPieceColorType;
 var ETuningStandGridType;
 var ETuningStandBubbleTriggerType;
 var ETuningStandVisualType;
+var ETraceTracingGridType;
+var ETraceTracingImageType;
 var ESwitchSubLevelsType;
+var ESwitchDataLayersTransitionType;
 var ETeleportToLatestResetPointType;
 var EAdjustPlayerCamera;
 var EEnterOrbitalCameraType;
@@ -91,8 +94,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ESetBattleTagType = exports.ESetBattleStateType = exports.EFontSize = exports.ETextHorizontal = exports.ETextAlign = exports.ECenterTextShowAnim = exports.ERogueRewardReceiveType = exports.ERogueSelectRoomType = exports.EEnableSubLevelTransitionType = exports.EClientTeleportType = exports.ETeammateTeleportType = exports.ETeleportType = exports.EFireBulletType = exports.EAfterTeleportScreenColor = exports.EMp4BackgroundColor = exports.ETeleportTransitionType = exports.EWuYinQuState = exports.EChangeEntityState = exports.isPerformanceTypeContainTag = exports.getEntityPrefabPerformanceTag = exports.getEntityPrefabPerformanceKeyByTag = exports.getPerformanceListByType = exports.entityPrefabPerformanceTypes = exports.entityPrefabPerformanceConfig = exports.getEntityStateTag = exports.isStateTypeContainsState = exports.getEntityStateKeyByTag = exports.getStateValuesByType = exports.getStatesByType = exports.getEntityStateTypes = exports.entityStateConfig = exports.EGuideTriggerType = exports.EInteractUniqueness = exports.logicOpTypeConfig = exports.compareTypeConfig = exports.calOpTypeConfig = exports.defaultTransform = exports.cameraTypeConfig = exports.cameraBindModeConfig = exports.plotModeConfig = exports.cameraModeConfig = exports.actorStateConfig = exports.EShowTalkCameraMotionType = exports.isOptionItem = exports.logLevelConfig = exports.EFlowListAction = exports.EEntityVarMatchType = exports.EActionTargetEntity = exports.actionInterfaceRecordMap = exports.actionInterfaceMap = undefined;
-exports.EUiOperationType = exports.ESceneInteractionOperationType = exports.ECameraOperationType = exports.exploreSkillTypeMapper = exports.EExploreSkillType = exports.EDisplayModeInSkillOp = exports.ESkillOperationType = exports.EMoveOperationType = exports.EEnableFunctionType = exports.EDisplayModeInPlayerOp = exports.EPlayerOperationType = exports.EToggleAirWall = exports.EAirWallCollisionPreset = exports.EEnterOrbitalCameraType = exports.EAdjustPlayerCamera = exports.ETeleportToLatestResetPointType = exports.ESwitchSubLevelsType = exports.ETuningStandVisualType = exports.ETuningStandBubbleTriggerType = exports.ETuningStandGridType = exports.EPieceColorType = exports.EStopSceneItemMoveType = exports.EMoveMotion = exports.EMoveSceneItemType = exports.EPostAkEvent = exports.ENpcLeisureInteract = exports.ELeisureInteract = exports.ESystem = exports.ELimitPlayOperation = exports.EHideType = exports.EFadeUiOverride = exports.EMovieBackgroundType = exports.EFadeInScreenShowType = exports.EEaseType = exports.EPlayerType = exports.EAiEventType = exports.EControlTrackingType = exports.ECommonTip2Type = exports.ECommonTipType = exports.ETraceSplineOptionType = exports.ECharacterMoveToPointType = exports.EUnlockAtlasSystemType = exports.EUnlockCookSystemType = exports.EUnlockSystemItemType = exports.EDetectBattleTagType = exports.EDetectBattleConditionType = exports.EMoveEvent = exports.EExecBattleActionType = exports.ESetEntityTagType = exports.EBattleStatePerceptionBehavior = undefined;
-exports.EGondolaVoiceTriggeredType = exports.ESpecificVehicleRoleType = exports.ESetJigsawFoundationType = exports.ESetJigsawItemType = exports.EJigsawShape = exports.EJigsawPieceState = exports.ERegionConfigType = exports.EMapMarkType = exports.EMapMarkState = exports.EChangeEntityPrefabPerformanceType = exports.EUiElement = undefined;
+exports.exploreSkillTypeMapper = exports.EExploreSkillType = exports.EDisplayModeInSkillOp = exports.ESkillOperationType = exports.EMoveOperationType = exports.EEnableFunctionType = exports.EDisplayModeInPlayerOp = exports.EPlayerOperationType = exports.EToggleAirWall = exports.EAirWallCollisionPreset = exports.EEnterOrbitalCameraType = exports.EAdjustPlayerCamera = exports.ETeleportToLatestResetPointType = exports.ESwitchDataLayersTransitionType = exports.ESwitchSubLevelsType = exports.ETraceTracingImageType = exports.ETraceTracingGridType = exports.ETuningStandVisualType = exports.ETuningStandBubbleTriggerType = exports.ETuningStandGridType = exports.EPieceColorType = exports.EStopSceneItemMoveType = exports.EMoveMotion = exports.EMoveSceneItemType = exports.EPostAkEvent = exports.ENpcLeisureInteract = exports.ELeisureInteract = exports.ESystem = exports.ELimitPlayOperation = exports.EHideType = exports.EFadeUiOverride = exports.EMovieBackgroundType = exports.EFadeInScreenShowType = exports.EEaseType = exports.EPlayerType = exports.EAiEventType = exports.EControlTrackingType = exports.ECommonTip2Type = exports.ECommonTipType = exports.ETraceSplineOptionType = exports.ECharacterMoveToPointType = exports.EUnlockAtlasSystemType = exports.EUnlockCookSystemType = exports.EUnlockSystemItemType = exports.EDetectBattleTagType = exports.EDetectBattleConditionType = exports.EMoveEvent = exports.EExecBattleActionType = exports.ESetEntityTagType = exports.EBattleStatePerceptionBehavior = undefined;
+exports.EGondolaVoiceTriggeredType = exports.ESpecificVehicleRoleType = exports.ESetJigsawFoundationType = exports.ESetJigsawItemType = exports.EJigsawShape = exports.EJigsawPieceState = exports.ERegionConfigType = exports.EMapMarkType = exports.EMapMarkState = exports.EChangeEntityPrefabPerformanceType = exports.EUiElement = exports.EUiOperationType = exports.ESceneInteractionOperationType = exports.ECameraOperationType = undefined;
 exports.actionInterfaceMap = {
   Activate: undefined,
   AccpetCurrentQuest: undefined,
@@ -193,6 +196,7 @@ exports.actionInterfaceMap = {
   SetPlayerMoveControl: undefined,
   UnlockTeleportTrigger: undefined,
   ChangeTeamPosition: undefined,
+  ClientChangeTeamPosition: undefined,
   ClaimLevelPlayReward: undefined,
   SetReviveRegion: undefined,
   PromptQuestChapterUI: undefined,
@@ -235,6 +239,7 @@ exports.actionInterfaceMap = {
   ResetLevelPlay: undefined,
   GetRewardByInteract: undefined,
   TriggerSpecificScanEffect: undefined,
+  WaitUntilLevelSequenceReachMark: undefined,
   GuestOperateUiAnimation: undefined,
   VehicleEnter: undefined,
   VehicleEnterNpc: undefined,
@@ -377,6 +382,18 @@ exports.actionInterfaceMap = {
   ReignsTriggerGuide: undefined,
   ReignsAddBuff: undefined,
   ReignsCheckSettle: undefined,
+  TarkovInteractPickUp: undefined,
+  TrapDefenseChangeMiniMap: undefined,
+  TrapDefensePlayerOperationConstraint: undefined,
+  SetNpcGroupPerform: undefined,
+  RemoveNpcGroupPerform: undefined,
+  EnableEntityLookAt: undefined,
+  DisableEntityLookAt: undefined,
+  OverrideAiBehaviorTree: undefined,
+  RestoreAiBehaviorTree: undefined,
+  FlowDefineNpcGroupPerform: undefined,
+  SeqEventAddTagToSelf: undefined,
+  SeqEventFireBullet: undefined,
   ExecResurrection: undefined,
   OpenSystemBoardWithReturn: undefined,
   ExecRiskHarvestEffect: undefined,
@@ -385,7 +402,10 @@ exports.actionInterfaceMap = {
   SummonEntity: undefined,
   SetupMoraleSystem: undefined,
   RunActorCustomEvent: undefined,
-  RequestSystemFunction: undefined
+  RequestSystemFunction: undefined,
+  PlayWalkingOverlayMontage: undefined,
+  ChangeNpcAbpState: undefined,
+  CloseWalkingOverlayMontage: undefined
 };
 exports.actionInterfaceRecordMap = exports.actionInterfaceMap;
 (function (e) {
@@ -876,6 +896,7 @@ exports.isPerformanceTypeContainTag = isPerformanceTypeContainTag;
   e.FadeInScreen = "FadeInScreen";
   e.DigitalScreen = "DigitalScreen";
   e.CharacterDisplay = "CharacterDisplay";
+  e.CustomLoading = "CustomLoading";
 })(ETeleportTransitionType = exports.ETeleportTransitionType ||= {});
 (function (e) {
   e.Black = "Black";
@@ -1000,6 +1021,8 @@ exports.isPerformanceTypeContainTag = isPerformanceTypeContainTag;
   e[e.MoraleAreaTip = 21] = "MoraleAreaTip";
   e[e.NightmareLord = 22] = "NightmareLord";
   e[e.NightmareSpawnPoint = 23] = "NightmareSpawnPoint";
+  e[e.GreatSwordChallenge = 24] = "GreatSwordChallenge";
+  e[e.TrapDefenseTip = 25] = "TrapDefenseTip";
 })(ECommonTipType = exports.ECommonTipType ||= {});
 (function (e) {
   e[e.PrepareCountdown = 0] = "PrepareCountdown";
@@ -1042,6 +1065,7 @@ exports.isPerformanceTypeContainTag = isPerformanceTypeContainTag;
   e.WorldEntityAndLevelPlay = "WorldEntityAndLevelPlay";
   e.SpecifyEntity = "SpecifyEntity";
   e.SpecifyLevelPlay = "SpecifyLevelPlay";
+  e.SpecifyDataLayers = "SpecifyDataLayers";
 })(EHideType = exports.EHideType ||= {});
 (function (e) {
   e.AllowCamera = "AllowCamera";
@@ -1134,10 +1158,23 @@ exports.isPerformanceTypeContainTag = isPerformanceTypeContainTag;
   e.Challenge = "Challenge";
 })(ETuningStandVisualType = exports.ETuningStandVisualType ||= {});
 (function (e) {
+  e.Block = "Block";
+  e.Empty = "Empty";
+  e.Chess1 = "Chess1";
+  e.Chess2 = "Chess2";
+  e.Chess3 = "Chess3";
+})(ETraceTracingGridType = exports.ETraceTracingGridType ||= {});
+(function (e) {
+  e[e.Type1 = 1] = "Type1";
+  e[e.Type2 = 2] = "Type2";
+  e[e.Type3 = 3] = "Type3";
+})(ETraceTracingImageType = exports.ETraceTracingImageType ||= {});
+(function (e) {
   e.Directly = "Directly";
   e.Preload = "Preload";
   e.Permission = "Permission";
 })(ESwitchSubLevelsType = exports.ESwitchSubLevelsType ||= {});
+(ESwitchDataLayersTransitionType = exports.ESwitchDataLayersTransitionType ||= {}).Sequence = "Sequence";
 (ETeleportToLatestResetPointType = exports.ETeleportToLatestResetPointType ||= {}).Directly = "Directly";
 (function (e) {
   e.Basic = "关卡.Common.镜头调整";

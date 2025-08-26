@@ -37,9 +37,9 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
       var o = Protocol_1.Aki.Protocol.P$n.create();
       o.w6n = t;
       o.r6n = n;
-      Net_1.Net.Call(22944, o, e => {
+      Net_1.Net.Call(22246, o, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18108);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23711);
         } else {
           (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).SetLevelRewardStateToGot(n);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewRefreshCurrent, t);
@@ -63,7 +63,7 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
     this.g2e = e => {
       var t = e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs;
       if (t) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19110);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26032);
       }
       var n = {
         ButtonTextId: "ConfirmBox_133_ButtonText_0",
@@ -100,14 +100,14 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(28021, this.d2e);
-    Net_1.Net.Register(24642, this.C2e);
-    Net_1.Net.Register(19110, this.g2e);
+    Net_1.Net.Register(23304, this.d2e);
+    Net_1.Net.Register(28413, this.C2e);
+    Net_1.Net.Register(26032, this.g2e);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28021);
-    Net_1.Net.UnRegister(24642);
-    Net_1.Net.UnRegister(19110);
+    Net_1.Net.UnRegister(23304);
+    Net_1.Net.UnRegister(28413);
+    Net_1.Net.UnRegister(26032);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
@@ -135,9 +135,9 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
     var e = Protocol_1.Aki.Protocol.D$n.create();
     e.w6n = t;
     e.s5n = n;
-    Net_1.Net.Call(25218, e, e => {
+    Net_1.Net.Call(28321, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19226);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21514);
       } else {
         (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).SetPointRewardState(n);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewRefreshCurrent, t);
@@ -155,7 +155,7 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
   }
   static RequestExitDungeon() {
     var e = new Protocol_1.Aki.Protocol.q$n();
-    Net_1.Net.Call(19430, e, e => {
+    Net_1.Net.Call(28784, e, e => {
       if (!e) {
         InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
       }
@@ -177,10 +177,10 @@ ActivityMowingController.RequestSetDifficulty = (n, o) => {
   var e = Protocol_1.Aki.Protocol.w$n.create();
   e.w6n = n;
   e.z6n = o;
-  Net_1.Net.Call(27056, e, e => {
+  Net_1.Net.Call(17924, e, e => {
     var t;
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22729);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18425);
     }
     for ([, t] of ModelManager_1.ModelManager.ActivityModel.GetActivityById(n).MowingLevelInfoDict) {
       t.z6n = o;

@@ -1,0 +1,138 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RoleUniqueBuffView = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView");
+const BuffItem_1 = require("./BuffItem");
+const BuffItemContainer_1 = require("./BuffItemContainer");
+const TopBuffYouHu_1 = require("./TopBuff/TopBuffYouHu");
+const roleClassMap = new Map([[1106, TopBuffYouHu_1.TopBuffYouHu]]);
+class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
+  constructor() {
+    super(...arguments);
+    this.mkn = new BuffItemContainer_1.BuffItemContainer();
+    this.v2u = undefined;
+    this.E0 = undefined;
+    this.Edt = undefined;
+    this.Sdt = new Map();
+    this.FXa = new Set();
+    this.kpe = () => {
+      this.xld();
+      this.Uld();
+    };
+  }
+  OnStart() {
+    super.OnStart();
+    this.InitChildType(37);
+    this.V2u();
+    var e = CommonParamById_1.configCommonParamById.GetIntConfig("RoleUniqueBuffItemCount");
+    this.mkn.Init(this.RootItem, e, false, true, true, this.v2u.GetRootItem());
+    this.Ore();
+  }
+  OnBeforeDestroy() {
+    this.Refresh(undefined);
+    this.j2u();
+    this.Edt = undefined;
+    for (const e of this.Sdt.values()) {
+      e.Destroy();
+    }
+  }
+  Reset() {
+    this.kre();
+    super.Reset();
+  }
+  V2u() {
+    this.v2u = new BuffItem_1.BuffItem(this.RootItem);
+    this.v2u.ActivateExceedTip();
+  }
+  j2u() {
+    if (this.v2u) {
+      this.v2u.DestroyCompatible();
+      this.v2u = undefined;
+    }
+  }
+  Refresh(e) {
+    this.E0 = e?.EntityHandle?.Id ?? 0;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 17, "开始切换角色特殊buff条", ["entityId", this.E0]);
+    }
+    if (e) {
+      this.mkn.RefreshBuff(e?.EntityHandle);
+      this.Bld(e);
+    } else {
+      this.mkn.ClearAll();
+    }
+    this.Uld();
+  }
+  Tick(e) {
+    this.mkn.Tick(e);
+    for (const t of this.Sdt.values()) {
+      t.Tick(e);
+    }
+  }
+  AddBuff(e, t) {
+    this.mkn.AddBuffByCue(e, t, true);
+  }
+  RemoveBuff(e, t) {
+    this.mkn.RemoveBuffByCue(e, t, true);
+  }
+  OnRemoveEntity(e) {
+    var t = this.Sdt.get(e);
+    if (t) {
+      t.Destroy();
+      this.Sdt.delete(e);
+      if (this.Edt === t) {
+        this.Edt = undefined;
+      }
+    } else {
+      this.FXa.delete(e);
+    }
+  }
+  Ore() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
+  }
+  kre() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
+  }
+  xld() {
+    for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true)) {
+      var e = t.EntityHandle?.Id;
+      if (e &&= ModelManager_1.ModelManager.BattleUiModel.GetRoleData(e)) {
+        this.Bld(e);
+      }
+    }
+  }
+  async Bld(e) {
+    var t;
+    var i = e.EntityHandle?.Id;
+    if (!!i && !this.Sdt.has(i) && !this.FXa.has(i)) {
+      if ((t = e.CreatureRoleId) && (t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t), t = roleClassMap.get(t))) {
+        t = new t();
+        this.Sdt.set(i, t);
+        await t.InitAsync(this.RootItem, e);
+      } else {
+        this.FXa.add(i);
+      }
+    }
+  }
+  Uld() {
+    for (var [e, t] of this.Sdt) {
+      if (e === this.E0) {
+        t.SetVisible(true);
+        this.Edt = t;
+      } else {
+        t.SetVisible(false);
+      }
+    }
+  }
+}
+exports.RoleUniqueBuffView = RoleUniqueBuffView;
+//# sourceMappingURL=RoleUniqueBuffView.js.map

@@ -31,11 +31,11 @@ class BattlePassTaskLoopItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.U2i = undefined;
-    this.$tu = undefined;
+    this.Ciu = undefined;
     this.Dsc = undefined;
     this.BOe = 0;
     this.eZs = undefined;
-    this.Wtu = () => {
+    this.piu = () => {
       var t = this.eZs?.SkipId;
       if (t !== undefined) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBattlePassSkip, t);
@@ -47,7 +47,7 @@ class BattlePassTaskLoopItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UISprite], [3, UE.UIText], [4, UE.UIButtonComponent], [6, UE.UIButtonComponent], [5, UE.UIItem]];
-    this.BtnBindInfo = [[4, this.Wtu], [6, this.$kt]];
+    this.BtnBindInfo = [[4, this.piu], [6, this.$kt]];
   }
   OnStart() {
     this.U2i = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
@@ -59,15 +59,15 @@ class BattlePassTaskLoopItem extends GridProxyAbstract_1.GridProxyAbstract {
   async nv1(t) {
     this.eZs = t;
     this.U2i.Refresh(t.RewardItemList[0]);
-    if (this.$tu === undefined) {
-      this.$tu = new BattlePassTaskLoopItemButton();
-      await this.$tu.CreateByActorAsync(this.GetButton(4).GetOwner());
+    if (this.Ciu === undefined) {
+      this.Ciu = new BattlePassTaskLoopItemButton();
+      await this.Ciu.CreateByActorAsync(this.GetButton(4).GetOwner());
     }
     if (this.Dsc === undefined) {
       this.Dsc = new BattlePassTaskLoopItemButton();
       await this.Dsc.CreateByActorAsync(this.GetButton(6).GetOwner());
     }
-    this.$tu.RefreshTextByTextId(BattlePassDefine_1.BATTLE_PASS_BUTTON_JUMP_TEXT_ID);
+    this.Ciu.RefreshTextByTextId(BattlePassDefine_1.BATTLE_PASS_BUTTON_JUMP_TEXT_ID);
     this.Dsc.RefreshTextByTextId(BattlePassDefine_1.BATTLE_PASS_BUTTON_RECEIVE_TEXT_ID);
     this.GetButton(4).RootUIComp.SetUIActive(t.TaskState === 1 && t.SkipId !== undefined);
     this.GetButton(6).RootUIComp.SetUIActive(t.TaskState === 3);

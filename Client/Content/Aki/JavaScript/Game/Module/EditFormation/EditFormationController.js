@@ -29,10 +29,10 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26658, EditFormationController.i5t);
+    Net_1.Net.Register(20314, EditFormationController.i5t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26658);
+    Net_1.Net.UnRegister(20314);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("EditFormationView", EditFormationController.CanOpenView, EditFormationController.name);
@@ -48,7 +48,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "请求所有编队数据");
     }
     var o = new Protocol_1.Aki.Protocol.Wis();
-    Net_1.Net.Call(17680, o, o => {});
+    Net_1.Net.Call(15420, o, o => {});
   }
   static async EditFormationRequest(o) {
     var r;
@@ -59,11 +59,11 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       var i = r === o;
       if (!i || !(t.length <= 0)) {
         if (r === n.GetCurrentFormationId) {
-          var l = n.GetFormationData(r)?.GetRoleIdList;
-          if (l && l.length === t.length) {
+          var a = n.GetFormationData(r)?.GetRoleIdList;
+          if (a && a.length === t.length) {
             let r = true;
-            for (let o = 0; o < l.length; o++) {
-              if (l[o] !== t[o]) {
+            for (let o = 0; o < a.length; o++) {
+              if (a[o] !== t[o]) {
                 r = false;
                 break;
               }
@@ -78,9 +78,9 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
         }
         let o = t.length > 0 ? t[0] : 0;
         if (i) {
-          var a = n.GetCurrentFormationData;
-          var _ = a.GetCurrentRolePosition;
-          o = a.GetCurrentRoleConfigId;
+          var l = n.GetCurrentFormationData;
+          var _ = l.GetCurrentRolePosition;
+          o = l.GetCurrentRoleConfigId;
           if (!t.includes(o)) {
             o = _ <= t.length ? t[_ - 1] : t[0];
           }
@@ -93,12 +93,12 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
             }
           }
         }
-        a = new Protocol_1.Aki.Protocol.M6s();
-        a.GVn = r;
-        a.OVn = i;
-        a.C5n = t;
-        a.NVn = o;
-        e.push(a);
+        l = new Protocol_1.Aki.Protocol.M6s();
+        l.GVn = r;
+        l.OVn = i;
+        l.C5n = t;
+        l.NVn = o;
+        e.push(l);
       }
     }
     var g = new Protocol_1.Aki.Protocol.Nis();
@@ -107,7 +107,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formations", e]);
     }
-    var g = await Net_1.Net.CallAsync(17093, g);
+    var g = await Net_1.Net.CallAsync(21217, g);
     return g?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
   static async UpdateFormationRequest(o, r, t, e) {
@@ -122,7 +122,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formation", n]);
     }
-    var r = await Net_1.Net.CallAsync(17093, o);
+    var r = await Net_1.Net.CallAsync(21217, o);
     return r !== undefined;
   }
   static async UpdateFightRoleRequest() {
@@ -148,8 +148,8 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       return false;
     }
     var n = [];
-    for (const l of r) {
-      n.push(l);
+    for (const a of r) {
+      n.push(a);
     }
     t = new Protocol_1.Aki.Protocol.$is();
     t.FVn = e;
@@ -158,7 +158,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "更新联机编队", ["massage", t]);
     }
     ModelManager_1.ModelManager.SceneTeamModel.RefreshLastTransform();
-    r = await Net_1.Net.CallAsync(16470, t);
+    r = await Net_1.Net.CallAsync(26968, t);
     return r?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
 }
@@ -198,21 +198,21 @@ EditFormationController.CanOpenView = o => {
     }
     return false;
   }
-  r = t.Entity.GetComponent(205);
+  r = t.Entity.GetComponent(206);
   if (!r?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 TagComponent 不存在");
     }
     return false;
   }
-  e = t.Entity.GetComponent(174);
+  e = t.Entity.GetComponent(175);
   if (!e?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 CharacterBuffComponent 不存在");
     }
     return false;
   }
-  if (t.Entity.GetComponent(230)?.IsOnVehicle) {
+  if (t.Entity.GetComponent(231)?.IsOnVehicle) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色在载具上");
     }
@@ -271,7 +271,7 @@ EditFormationController.CanOpenView = o => {
   }
   if (r.HasTag(-2100129479)) {
     var r = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    if (r && r.Entity.GetComponent(205)?.HasTag(40422668)) {
+    if (r && r.Entity.GetComponent(206)?.HasTag(40422668)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色为声骸变身状态且处于空中");
       }
@@ -287,6 +287,11 @@ EditFormationController.CanOpenView = o => {
     return false;
   } else {
     return !(r = t.Entity.GetComponent(79)) || !(r.WalkOnWaterStage > 0) || !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 36, "打开编队按钮时，当前角色在水面上行走"), ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t), 1);
+  }
+};
+EditFormationController.OpenEditFormationView = (o = undefined) => {
+  if (EditFormationController.CanOpenView("EditFormationView") && !UiManager_1.UiManager.IsViewShow("EditFormationView")) {
+    UiManager_1.UiManager.OpenView("EditFormationView", o);
   }
 };
 EditFormationController.Q5e = () => {

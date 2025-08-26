@@ -68,18 +68,18 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
     let t = undefined;
     var i = this.Entity.GetComponent(40);
     if (i?.Valid) {
-      for (const e of i.GetAllActivatedSkill()) {
-        if (e.SkillInfo?.SkillGenre === 9) {
-          t = e.MNc;
+      for (const s of i.GetAllActivatedSkill()) {
+        if (s.SkillInfo?.SkillGenre === 9) {
+          t = s.MNc;
           break;
         }
       }
     }
     for (let i = 0; i < this.oMt.葫芦轨迹子弹列表.Num(); ++i) {
-      var s = this.oMt.葫芦轨迹子弹列表.Get(i);
-      var s = BulletController_1.BulletController.CreateBulletCustomTarget(this.Entity, s.toString(), this.ActorComponent.ActorTransform, {}, t);
-      if (s) {
-        this.ser = s.Id;
+      var e = this.oMt.葫芦轨迹子弹列表.Get(i);
+      var e = BulletController_1.BulletController.CreateBulletCustomTarget(this.Entity, e.toString(), this.ActorComponent.ActorTransform, {}, t);
+      if (e) {
+        this.ser = e.Id;
         break;
       }
     }
@@ -87,7 +87,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
   }
   HZo() {
     this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(40), this.aer = this.MZo.Entity.GetComponent(205), this.KZo = this.MZo.Entity.GetComponent(174), this.fAr = this.MZo.Entity.GetComponent(21), true);
+    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(40), this.aer = this.MZo.Entity.GetComponent(206), this.KZo = this.MZo.Entity.GetComponent(175), this.fAr = this.MZo.Entity.GetComponent(21), true);
   }
   her() {
     return this.oMt.空中能否释放 && this.GameplayTagComponent.HasTag(40422668);
@@ -162,6 +162,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
       PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, false, "GameplayAbilityVisionSummon.SetVisionEnable");
       this.fAr?.RemoveCueByHandle(this.kQo);
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EndVisionSkill, this.VisionComponent.GetVisionId());
   }
 }
 exports.GameplayAbilityVisionSummon = GameplayAbilityVisionSummon;

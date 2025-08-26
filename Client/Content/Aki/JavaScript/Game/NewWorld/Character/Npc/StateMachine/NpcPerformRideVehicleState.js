@@ -26,7 +26,7 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
         Log_1.Log.Info("NPC", 50, "[NpcPerformRideVehicleState.OnLoopMontageEndForTurning][交互转身] Montage播放完毕", ["PbDataID", this.ConfigId]);
       }
       this.AnimComp?.MainAnimInstance?.OnAllMontageInstancesEnded.Remove(this.OnLoopMontageEndForTurning);
-      if (this.Owner.Entity.GetComponent(187)?.GetCurrentState() !== 9) {
+      if (this.Owner.Entity.GetComponent(188)?.GetCurrentState() !== 9) {
         this.TurnActionController.TurnToInteractTarget();
       }
     };
@@ -56,7 +56,7 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
   }
   CKl() {
     if (!this.uKl && !this.uUl) {
-      const e = this.Owner?.Entity?.GetComponent(229);
+      const e = this.Owner?.Entity?.GetComponent(230);
       var t;
       if (e?.VehicleType) {
         if (t = this._Ul.get(e.VehicleType)) {
@@ -110,7 +110,7 @@ class NpcPerformRideVehicleState extends NpcPerformBaseState_1.NpcPerformBaseSta
       }
       this.Utr();
     }
-    const e = this.Owner.Entity.GetComponent(229);
+    const e = this.Owner.Entity.GetComponent(230);
     if (e?.GetSeatTransform(this.TmpTrans)) {
       this.TmpTrans.GetRotation().GetForwardVector(this.TmpVector);
       this.TurnActionController.UpdateDefaultDirect(this.TmpVector);

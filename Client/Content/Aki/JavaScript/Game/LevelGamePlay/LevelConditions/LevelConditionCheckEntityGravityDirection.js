@@ -29,7 +29,7 @@ class LevelConditionCheckEntityGravityDirection extends LevelGeneralBase_1.Level
   }
   $j_(e) {
     var t;
-    var i = e.Entity.GetComponent(178);
+    var i = e.Entity.GetComponent(179);
     if (i) {
       return i.GravityDirect;
     } else if (i = e.Entity.GetComponent(1)) {

@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, o, r) {
+var __decorate = this && this.__decorate || function (t, e, r, o) {
   var n;
   var i = arguments.length;
-  var s = i < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, o) : r;
+  var s = i < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, r) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, e, o, r);
+    s = Reflect.decorate(t, e, r, o);
   } else {
-    for (var c = t.length - 1; c >= 0; c--) {
-      if (n = t[c]) {
-        s = (i < 3 ? n(s) : i > 3 ? n(e, o, s) : n(e, o)) || s;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (n = t[h]) {
+        s = (i < 3 ? n(s) : i > 3 ? n(e, r, s) : n(e, r)) || s;
       }
     }
   }
   if (i > 3 && s) {
-    Object.defineProperty(e, o, s);
+    Object.defineProperty(e, r, s);
   }
   return s;
 };
@@ -32,13 +32,14 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
     super(...arguments);
     this.n$t = undefined;
     this.$te = undefined;
-    this.Qin = (t, e, o) => {
+    this.had = true;
+    this.Qin = (t, e, r) => {
       this.RefreshStarScarMaterial();
     };
   }
   OnStart() {
     this.n$t = this.Entity.CheckGetComponent(3);
-    this.$te = this.Entity.CheckGetComponent(173);
+    this.$te = this.Entity.CheckGetComponent(174);
     this.$te.AddListeners(energyAttrIds, this.Qin, "RoleEnergyComponent");
     this.Qin();
     return true;
@@ -48,10 +49,17 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
     return true;
   }
   RefreshStarScarMaterial() {
-    var t = this.$te.GetCurrentValue(EAttributeId.Proto_Energy);
-    var e = this.$te.GetCurrentValue(EAttributeId.Proto_EnergyMax);
-    this.n$t.Actor?.CharRenderingComponent.SetStarScarEnergy(t / e);
+    var t;
+    var e;
+    if (this.had) {
+      t = this.$te.GetCurrentValue(EAttributeId.Proto_Energy);
+      e = this.$te.GetCurrentValue(EAttributeId.Proto_EnergyMax);
+      this.n$t.Actor?.CharRenderingComponent.SetStarScarEnergy(t / e);
+    }
+  }
+  SetEnableRefreshStarScarByEnergy(t) {
+    this.had = t;
   }
 };
-RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(92)], RoleEnergyComponent);
+RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], RoleEnergyComponent);
 exports.RoleEnergyComponent = RoleEnergyComponent; //# sourceMappingURL=RoleEnergyComponent.js.map

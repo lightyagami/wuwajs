@@ -87,5 +87,5 @@ let CharacterSkillTriggerComponent = class CharacterSkillTriggerComponent extend
     this.pVs(e, t);
   }
 };
-CharacterSkillTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(208)], CharacterSkillTriggerComponent);
+CharacterSkillTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(209)], CharacterSkillTriggerComponent);
 exports.CharacterSkillTriggerComponent = CharacterSkillTriggerComponent; //# sourceMappingURL=CharacterSkillTriggerComponent.js.map

@@ -359,8 +359,8 @@ class KuroEffectSystem {
   }
   GetNiagaraComponent(t) {
     if (t !== 0) {
-      let e = this.GetSureNiagaraComponent(t);
-      if (!e) {
+      let e = undefined;
+      if (!(e = cpp_1.FEffectSystem.HasNiagaraComponentHandle(t) ? e : this.GetSureNiagaraComponent(t))) {
         if (this.xNc.Contains(t)) {
           e = this.xNc.Get(t);
         } else {

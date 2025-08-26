@@ -423,5 +423,5 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
   }
 };
 CharacterCustomValueComponent.Q4_ = new Map();
-CharacterCustomValueComponent = CharacterCustomValueComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(278)], CharacterCustomValueComponent);
+CharacterCustomValueComponent = CharacterCustomValueComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], CharacterCustomValueComponent);
 exports.CharacterCustomValueComponent = CharacterCustomValueComponent; //# sourceMappingURL=CharacterCustomValueComponent.js.map

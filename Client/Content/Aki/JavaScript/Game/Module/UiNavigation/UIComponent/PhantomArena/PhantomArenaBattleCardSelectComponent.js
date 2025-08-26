@@ -14,44 +14,44 @@ class PhantomArenaBattleCardSelectComponent extends PhantomArenaBattleComponentB
     var e;
     if (this.Proxy) {
       if (this.Proxy.GamepadLogic.IsInCardSelectState) {
-        this.dku();
+        this.E3u();
       } else if (e = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GetNavigationComponent()) {
         if (e.GetType() === "PhantomArenaOwnHandToggle") {
-          this.wSu(e);
+          this.L7c(e);
         } else if (e.GetType() === "PhantomArenaOwnBattleToggle") {
-          this.LSu(e);
+          this.A7c(e);
         }
       }
     }
   }
-  async dku() {
+  async E3u() {
     var e = this.Proxy.GamepadLogic.SelectedCard.Data.Index;
     var a = this.Proxy.GamepadLogic.HandIndex;
     var t = await this.Proxy.GamepadLogic.PutDownCardToFunctional();
     UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
     if (!t) {
       if (e !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-        t = this.cku(e);
+        t = this.S3u(e);
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SwitchNavigationFocus(t);
       } else if (a !== -1) {
-        e = this.Qku(a);
+        e = this.M3u(a);
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SwitchNavigationFocus(e);
       }
     }
   }
-  async wSu(e) {
+  async L7c(e) {
     ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
     if (await e.TriggerSelectCard()) {
-      e = this.cku(0);
+      e = this.S3u(0);
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.SwitchNavigationFocus(e);
     }
   }
-  async LSu(e) {
+  async A7c(e) {
     ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
     await e.TriggerSelectCard();
     UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
   }
-  cku(e) {
+  S3u(e) {
     var a = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GetNavigationGroup();
     if (a) {
       var t = [];
@@ -63,7 +63,7 @@ class PhantomArenaBattleCardSelectComponent extends PhantomArenaBattleComponentB
       return t[e];
     }
   }
-  Qku(e) {
+  M3u(e) {
     var a = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GetNavigationGroup();
     if (a) {
       var t = [];

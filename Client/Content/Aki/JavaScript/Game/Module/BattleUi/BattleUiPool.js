@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.BattleUiPool = undefined;
+const UE = require("ue");
 const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
 const Log_1 = require("../../../Core/Common/Log");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
@@ -54,8 +55,8 @@ class BattleUiPoolElement {
     this.Actor = undefined;
   }
   Clear() {
-    for (const t of this.ActorList) {
-      ActorSystem_1.ActorSystem.Put("BattleUiPool.Clear", t);
+    for (const e of this.ActorList) {
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.Clear", e);
     }
     this.ActorList.length = 0;
     this.Actor = undefined;
@@ -83,25 +84,25 @@ class BattleUiPool {
     return true;
   }
   zXe() {
-    var t = UiLayer_1.UiLayer.WorldSpaceUiRootItem;
-    if (!t?.IsValid()) {
+    var e = UiLayer_1.UiLayer.WorldSpaceUiRootItem;
+    if (!e?.IsValid()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "WorldSpaceUiRootItem为空");
       }
       return false;
     }
-    this.XXe = t;
-    t = UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Pool);
-    if (!t?.IsValid()) {
+    this.XXe = e;
+    e = UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Pool);
+    if (!e?.IsValid()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "PoolRoot为空");
       }
       return false;
     }
-    this.$Xe = t;
-    t = UiLayer_1.UiLayer.UiRootItem;
-    if (t?.IsValid()) {
-      this.YXe = t;
+    this.$Xe = e;
+    e = UiLayer_1.UiLayer.UiRootItem;
+    if (e?.IsValid()) {
+      this.YXe = e;
       this.JXe = UiLayer_1.UiLayer.GetBattleViewUnit(0);
       return true;
     } else {
@@ -112,237 +113,248 @@ class BattleUiPool {
     }
   }
   async ZXe() {
-    var t = [];
-    for (const e of headStateConfigList) {
-      t.push(this.e$e(e, this.XXe));
+    var e = [];
+    for (const t of headStateConfigList) {
+      e.push(this.e$e(t, this.XXe));
     }
-    t.push(this.e$e(bossHeadStateConfig, this.$Xe));
-    t.push(this.e$e(damageViewConfig, this.JXe));
-    t.push(this.e$e(simpleDamageViewConfig, this.JXe));
-    t.push(this.e$e(buffItemConfig, this.YXe));
-    t.push(this.e$e(environmentItemConfig, this.YXe));
-    await Promise.all(t);
+    e.push(this.e$e(bossHeadStateConfig, this.$Xe));
+    e.push(this.e$e(damageViewConfig, this.JXe));
+    e.push(this.e$e(simpleDamageViewConfig, this.JXe));
+    e.push(this.e$e(buffItemConfig, this.YXe));
+    e.push(this.e$e(environmentItemConfig, this.YXe));
+    await Promise.all(e);
     return true;
   }
-  async e$e(e, i) {
-    var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e.ResourceId);
-    var o = await this.QXe.LoadPrefabAsync(t, i);
+  async e$e(t, i) {
+    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t.ResourceId);
+    var o = await this.QXe.LoadPrefabAsync(e, i);
     if (!o?.IsValid()) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 17, "预加载Actor失败", ["resourceId", e.ResourceId]);
+        Log_1.Log.Error("Battle", 17, "预加载Actor失败", ["resourceId", t.ResourceId]);
       }
       return false;
     }
     o.RootComponent.SetUIActive(false);
-    var t = new BattleUiPoolElement();
-    t.ExistMulti = e.PreloadCount > 0;
+    var e = new BattleUiPoolElement();
+    e.ExistMulti = t.PreloadCount > 0;
     var r = new Array();
     r.push(o);
-    for (let t = 0; t < e.PreloadCount; t++) {
+    for (let e = 0; e < t.PreloadCount; e++) {
       var a = LguiUtil_1.LguiUtil.DuplicateActor(o, i);
       r.push(a);
     }
-    t.ActorList = r;
-    t.Actor = o;
-    this.WXe.set(e.ResourceId, t);
+    e.ActorList = r;
+    e.Actor = o;
+    this.WXe.set(t.ResourceId, e);
     return true;
   }
-  GetActor(t, e, i) {
+  GetActor(e, t, i) {
     var o;
-    var r = this.WXe.get(t);
+    var r = this.WXe.get(e);
     if (r && !(r.ActorList.length <= 0)) {
       if (r.ExistMulti) {
         if (r.ActorList.length > 1) {
           o = r.ActorList.pop();
           if (i) {
-            o.K2_AttachRootComponentTo(e);
+            o.K2_AttachRootComponentTo(t);
           }
           return o;
         } else {
-          return LguiUtil_1.LguiUtil.DuplicateActor(r.ActorList[0], e);
+          return LguiUtil_1.LguiUtil.DuplicateActor(r.ActorList[0], t);
         }
       } else if (o = r.ActorList.pop()) {
         if (i) {
-          o.K2_AttachRootComponentTo(e);
+          o.K2_AttachRootComponentTo(t);
         }
         return o;
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Battle", 17, "BattleUiPool重复获取单一预制体", ["resourceId", t]);
+          Log_1.Log.Error("Battle", 17, "BattleUiPool重复获取单一预制体", ["resourceId", e]);
         }
         return;
       }
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 17, "BattleUiPool没有缓存该预制体", ["resourceId", t]);
+      Log_1.Log.Debug("Battle", 17, "BattleUiPool没有缓存该预制体", ["resourceId", e]);
     }
   }
-  RecycleActor(t, e, i = false) {
-    var o = this.WXe.get(t);
+  RecycleActor(e, t, i = false) {
+    var o = this.WXe.get(e);
     if (o) {
-      e.RootComponent.SetUIActive(false);
+      t.RootComponent.SetUIActive(false);
       if (i) {
-        e.K2_AttachRootComponentTo(this.$Xe);
+        t.K2_AttachRootComponentTo(this.$Xe);
       }
-      if (!o.ExistMulti && o.ActorList.length !== 0) {
+      if (o.ExistMulti) {
+        o.ActorList.push(t);
+        return true;
+      } else if (o.Actor !== t) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Battle", 17, "BattleUiPool Recycle单一预制体时，传进来的Actor不是缓存的Actor", ["resourceId", e]);
+        }
+        if (t.IsValid()) {
+          UE.LGUIBPLibrary.DestroyActorWithHierarchy(t, true);
+        }
+        return false;
+      } else if (o.ActorList.length !== 0) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Battle", 17, "BattleUiPool重复Recycle单一预制体", ["resourceId", t]);
+          Log_1.Log.Error("Battle", 17, "BattleUiPool重复Recycle单一预制体", ["resourceId", e]);
         }
         return false;
       } else {
-        o.ActorList.push(e);
+        o.ActorList.push(t);
         return true;
       }
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 17, "BattleUiPool没有缓存该预制体", ["resourceId", t]);
+        Log_1.Log.Error("Battle", 17, "BattleUiPool没有缓存该预制体", ["resourceId", e]);
       }
       return false;
     }
   }
-  GetSrcActor(t) {
-    var e = this.WXe.get(t);
-    if (e?.Actor) {
-      return e.Actor;
+  GetSrcActor(e) {
+    var t = this.WXe.get(e);
+    if (t?.Actor) {
+      return t.Actor;
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 17, "BattleUiPool没有缓存该预制体", ["resourceId", t]);
+      Log_1.Log.Debug("Battle", 17, "BattleUiPool没有缓存该预制体", ["resourceId", e]);
     }
   }
-  GetHeadStateView(t) {
-    return this.GetActor(t, this.XXe, false);
+  GetHeadStateView(e) {
+    return this.GetActor(e, this.XXe, false);
   }
-  RecycleHeadStateView(t, e, i = false) {
-    return !this.tZ || this.RecycleActor(t, e, i);
+  RecycleHeadStateView(e, t, i = false) {
+    return !this.tZ || this.RecycleActor(e, t, i);
   }
   GetDamageView() {
     return this.GetActor(damageViewConfig.ResourceId, this.JXe, false);
   }
-  RecycleDamageView(t) {
+  RecycleDamageView(e) {
     if (this.tZ) {
-      return this.RecycleActor(damageViewConfig.ResourceId, t);
+      return this.RecycleActor(damageViewConfig.ResourceId, e);
     } else {
-      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleDamageView", t);
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleDamageView", e);
       return true;
     }
   }
   GetSimpleDamageView() {
     return this.GetActor(simpleDamageViewConfig.ResourceId, this.JXe, false);
   }
-  RecycleSimpleDamageView(t) {
+  RecycleSimpleDamageView(e) {
     if (this.tZ) {
-      return this.RecycleActor(simpleDamageViewConfig.ResourceId, t);
+      return this.RecycleActor(simpleDamageViewConfig.ResourceId, e);
     } else {
-      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleSimpleDamageView", t);
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleSimpleDamageView", e);
       return true;
     }
   }
-  GetBuffItem(t) {
-    return this.GetActor(buffItemConfig.ResourceId, t, true);
+  GetBuffItem(e) {
+    return this.GetActor(buffItemConfig.ResourceId, e, true);
   }
-  RecycleBuffItem(t) {
+  RecycleBuffItem(e) {
     if (this.tZ) {
-      return this.RecycleActor(buffItemConfig.ResourceId, t, true);
+      return this.RecycleActor(buffItemConfig.ResourceId, e, true);
     } else {
-      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleBuffItem", t);
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleBuffItem", e);
       return true;
     }
   }
-  GetEnvironmentItem(t) {
-    return this.GetActor(environmentItemConfig.ResourceId, t, true);
+  GetEnvironmentItem(e) {
+    return this.GetActor(environmentItemConfig.ResourceId, e, true);
   }
-  RecycleEnvironmentItem(t) {
+  RecycleEnvironmentItem(e) {
     if (this.tZ) {
-      return this.RecycleActor(environmentItemConfig.ResourceId, t, true);
+      return this.RecycleActor(environmentItemConfig.ResourceId, e, true);
     } else {
-      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleEnvironmentItem", t);
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleEnvironmentItem", e);
       return true;
     }
   }
-  async LoadActor(t, e) {
+  async LoadActor(e, t) {
     var i;
     var o = undefined;
-    let r = this.WXe.get(t);
+    let r = this.WXe.get(e);
     if (r) {
-      return this.t$e(r, e);
-    } else if ((o = await this.QXe.LoadPrefabAsync(t, this.$Xe))?.IsValid()) {
-      if (r = this.WXe.get(t)) {
+      return this.t$e(r, t);
+    } else if ((o = await this.QXe.LoadPrefabAsync(e, this.$Xe))?.IsValid()) {
+      if (r = this.WXe.get(e)) {
         ActorSystem_1.ActorSystem.Put("BattleUiPool.LoadActor", o);
       } else {
         r = new BattleUiPoolElement();
-        this.WXe.set(t, r);
+        this.WXe.set(e, r);
         (i = new Array()).push(o);
         r.ActorList = i;
         r.Actor = o;
-        this.WXe.set(t, r);
+        this.WXe.set(e, r);
       }
-      return this.t$e(r, e);
+      return this.t$e(r, t);
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 17, "加载Actor失败", ["", t]);
+        Log_1.Log.Error("Battle", 17, "加载Actor失败", ["", e]);
       }
       return;
     }
   }
-  t$e(t, e) {
+  t$e(e, t) {
     var i;
-    if (t.ActorList.length > 1) {
-      (i = t.ActorList.pop()).K2_AttachRootComponentTo(e);
+    if (e.ActorList.length > 1) {
+      (i = e.ActorList.pop()).K2_AttachRootComponentTo(t);
       return i;
     } else {
-      return LguiUtil_1.LguiUtil.DuplicateActor(t.Actor, e);
+      return LguiUtil_1.LguiUtil.DuplicateActor(e.Actor, t);
     }
   }
-  RecycleActorByPath(t, e, i = false) {
+  RecycleActorByPath(e, t, i = false) {
     if (this.tZ) {
-      if (t = this.WXe.get(t)) {
-        t.ActorList.push(e);
-        e.RootComponent.SetUIActive(false);
+      if (e = this.WXe.get(e)) {
+        e.ActorList.push(t);
+        t.RootComponent.SetUIActive(false);
         if (i) {
-          e.K2_AttachRootComponentTo(this.$Xe);
+          t.K2_AttachRootComponentTo(this.$Xe);
         }
       } else {
-        ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleActorByPath", e);
+        ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleActorByPath", t);
       }
     }
     return true;
   }
-  async LoadSingleActorByPath(t, e) {
-    let i = this.KXe.get(t);
+  async LoadSingleActorByPath(e, t) {
+    let i = this.KXe.get(e);
     if (i) {
-      i.K2_AttachRootComponentTo(e);
+      i.K2_AttachRootComponentTo(t);
       return i;
-    } else if ((i = await this.QXe.LoadPrefabAsync(t, e))?.IsValid()) {
-      this.KXe.set(t, i);
+    } else if ((i = await this.QXe.LoadPrefabAsync(e, t))?.IsValid()) {
+      this.KXe.set(e, i);
       return i;
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 17, "加载Actor失败", ["", t]);
+        Log_1.Log.Error("Battle", 17, "加载Actor失败", ["", e]);
       }
       return;
     }
   }
-  RecycleSingleActor(t, e = false) {
-    if (this.tZ && (t.RootComponent.SetUIActive(false), e)) {
-      t.K2_AttachRootComponentTo(this.$Xe);
+  RecycleSingleActor(e, t = false) {
+    if (this.tZ && (e.RootComponent.SetUIActive(false), t)) {
+      e.K2_AttachRootComponentTo(this.$Xe);
     }
     return true;
   }
-  async PreloadSingleActorByPath(t, e) {
-    t = await this.LoadSingleActorByPath(t, e);
-    if (t) {
-      this.RecycleSingleActor(t);
+  async PreloadSingleActorByPath(e, t) {
+    e = await this.LoadSingleActorByPath(e, t);
+    if (e) {
+      this.RecycleSingleActor(e);
     }
     return true;
   }
   Clear() {
     this.QXe.Clear();
-    for (const t of this.WXe.values()) {
-      t.Clear();
+    for (const e of this.WXe.values()) {
+      e.Clear();
     }
     this.WXe.clear();
-    for (const e of this.KXe.values()) {
-      ActorSystem_1.ActorSystem.Put("BattleUiPool.Clear", e);
+    for (const t of this.KXe.values()) {
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.Clear", t);
     }
     this.KXe.clear();
     this.tZ = false;

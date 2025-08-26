@@ -11,7 +11,7 @@ class QuestReviewLineData {
   constructor(e) {
     this.Lo = e;
     this.Cbo = 1;
-    this.rlu = false;
+    this.Alu = false;
     this.SkipAnim = false;
   }
   get Id() {
@@ -83,10 +83,10 @@ class QuestReviewLineData {
     return this.DestroySeqName === "Change";
   }
   get IsTempLine() {
-    return this.rlu;
+    return this.Alu;
   }
   set IsTempLine(e) {
-    this.rlu = e;
+    this.Alu = e;
   }
   get HasFused() {
     return LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestReviewNewLineHasFused) ?? false;
@@ -95,9 +95,9 @@ class QuestReviewLineData {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestReviewNewLineHasFused, e);
   }
   UpdateByServerData(e) {
-    if (e.Oz1) {
+    if (e.uJ1) {
       this.Cbo = 2;
-    } else if (e.kz1) {
+    } else if (e._J1) {
       this.Cbo = 1;
     } else {
       this.Cbo = 0;

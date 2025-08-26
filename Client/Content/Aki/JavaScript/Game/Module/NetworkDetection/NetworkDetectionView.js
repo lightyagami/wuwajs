@@ -35,7 +35,7 @@ class NetworkDetectionView extends UiViewBase_1.UiViewBase {
     this.Oic = undefined;
     this.Gic = undefined;
     this.Fic = "";
-    this.Ufu = "";
+    this.Lgu = "";
     this.Nic = () => {
       var e = new NetworkDetectionItem_1.NetworkDetectionItem();
       this.Bic.push(e);
@@ -197,7 +197,7 @@ ${e}`;
       case 2:
         var t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("NetworkDetection_Trace_Id");
         var i = LauncherNetworkDetectionModel_1.LauncherNetworkDetectionModel.GenerateTraceCode();
-        this.Ufu = i;
+        this.Lgu = i;
         this.Fic = t + " " + i;
         this.GetText(8).SetText(this.Fic);
         if (Log_1.Log.CheckInfo()) {
@@ -238,7 +238,7 @@ ${e}`;
       r.i_pocket_lossrt = (o?.Result?.Loss ?? 0) * 100;
       r.i_result_id = e < 0 ? 1 : 2;
       r.i_type = e + 1;
-      r.s_trace_id = this.Ufu;
+      r.s_trace_id = this.Lgu;
       LauncherNetworkDetectionController_1.LauncherNetworkDetectionController.ReportDetectionLog(r);
     }
   }

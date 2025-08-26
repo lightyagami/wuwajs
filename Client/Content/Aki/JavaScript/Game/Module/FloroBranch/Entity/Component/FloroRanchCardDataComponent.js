@@ -36,14 +36,14 @@ let FloroRanchCardDataComponent = class FloroRanchCardDataComponent extends Flor
   }
   RefreshEntityData(o) {
     var e;
-    if (o.h5n !== Protocol_1.Aki.Protocol.Nru.hxs) {
+    if (o.h5n !== Protocol_1.Aki.Protocol.dou.hxs) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchCardDataComponent刷新数据类型错误", ["EntityType", o.h5n]);
       }
     } else if ((e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()) !== undefined) {
       e = e.GetFloroRanchCardData(o.s5n);
       this.CardData = e;
-      this.RefreshEvolveData(o.Obu);
+      this.RefreshEvolveData(o.rRu);
     }
   }
   RefreshEvolveData(o) {

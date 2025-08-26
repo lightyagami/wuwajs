@@ -178,7 +178,6 @@ class NounHandBookView extends UiViewBase_1.UiViewBase {
   RefreshCollectText() {
     var i = HandBookController_1.HandBookController.GetCollectProgress(11);
     LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), "RoleExp", i[0], i[1]);
-    this.GetText(1)?.SetUIActive(false);
   }
   OnBeforeDestroy() {
     if (this.VZt) {

@@ -129,7 +129,7 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
     this.OnBossStateChange();
   }
   RefreshHardnessAttributeId() {
-    if (this.GetEntity().GetComponent(205).HasTag(-1838149281)) {
+    if (this.GetEntity().GetComponent(206).HasTag(-1838149281)) {
       this.HardnessAttributeId = EAttributeId.Proto_Rage;
       this.MaxHardnessAttributeId = EAttributeId.Proto_RageMax;
     } else {
@@ -145,7 +145,7 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
   OnBossHardnessChanged(t) {}
   OnBossLanguageChange() {}
   RefreshHiddenTagState() {
-    var t = this.GetEntity()?.GetComponent(205);
+    var t = this.GetEntity()?.GetComponent(206);
     this.HasHiddenTag = t?.HasTag(-13489149);
     this.HasFallDownTag = t?.HasTag(1922078392);
     this.HasFightTag = t?.HasTag(1996802261) ?? false;
@@ -185,7 +185,7 @@ class BossStateViewBase extends BattleEntityChildView_1.BattleEntityChildView {
     return [t / i, s];
   }
   GetAttributeComponent() {
-    return this.GetEntity().CheckGetComponent(173);
+    return this.GetEntity().CheckGetComponent(174);
   }
   GetCurrentAttributeValueById(t) {
     return this.GetAttributeComponent().GetCurrentValue(t);

@@ -7,6 +7,7 @@ exports.ShipTowerConfig = undefined;
 const SlashAndTowerCfgById_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerCfgById");
 const SlashAndTowerCfgBySeason_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerCfgBySeason");
 const SlashAndTowerRewardByBelongToSeason_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerRewardByBelongToSeason");
+const SlashAndTowerSeasonById_1 = require("../../../Core/Define/ConfigQuery/SlashAndTowerSeasonById");
 const SlashBuffToItemAll_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemAll");
 const SlashBuffToItemById_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemById");
 const SlashBuffToItemByItemId_1 = require("../../../Core/Define/ConfigQuery/SlashBuffToItemByItemId");
@@ -59,6 +60,9 @@ class ShipTowerConfig extends ConfigBase_1.ConfigBase {
   }
   GetWordInfoCfgById(e) {
     return SlashTowerTagInfoById_1.configSlashTowerTagInfoById.GetConfig(e);
+  }
+  GetSeasonCfgById(e) {
+    return SlashAndTowerSeasonById_1.configSlashAndTowerSeasonById.GetConfig(e);
   }
 }
 exports.ShipTowerConfig = ShipTowerConfig;

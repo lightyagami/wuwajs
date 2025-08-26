@@ -38,7 +38,7 @@ let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTag
       var e = this.Entity.GetComponent(0);
       var o = e.GetPlayerId();
       var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(o);
-      var o = FormationDataController_1.FormationDataController.GetPlayerEntity(o)?.GetComponent(205);
+      var o = FormationDataController_1.FormationDataController.GetPlayerEntity(o)?.GetComponent(206);
       if (o) {
         var n;
         var r;
@@ -76,26 +76,26 @@ let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTag
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.OnFormationLoaded);
     return true;
   }
-  OnAnyTagChanged(e, o, t) {
+  OnAnyTagChanged(e, o, t, n) {
     if (e !== undefined && t !== o) {
       switch (e) {
         case -1384309247:
         case -1207177910:
         case -1388400236:
-          var n;
+          var r;
           if (o > 0 && t <= 0 || o <= 0 && t > 0) {
-            (n = Protocol_1.Aki.Protocol.Ke_.create()).m5n = e;
-            n.iSs = o;
-            CombatMessage_1.CombatNet.Send(21446, this.Entity, n, undefined);
+            (r = Protocol_1.Aki.Protocol.Ke_.create()).m5n = e;
+            r.iSs = o;
+            CombatMessage_1.CombatNet.Send(26831, this.Entity, r, undefined);
           }
       }
-      super.OnAnyTagChanged(e, o, t);
-      var r = this.Entity.GetComponent(0)?.GetPlayerId();
-      if (r) {
-        FormationDataController_1.FormationDataController.GetPlayerEntity(r)?.GetComponent(199)?.OnTagChanged(e);
+      super.OnAnyTagChanged(e, o, t, n);
+      n = this.Entity.GetComponent(0)?.GetPlayerId();
+      if (n) {
+        FormationDataController_1.FormationDataController.GetPlayerEntity(n)?.GetComponent(200)?.OnTagChanged(e);
       }
     }
   }
 };
-RoleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(193)], RoleTagComponent);
+RoleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(194)], RoleTagComponent);
 exports.RoleTagComponent = RoleTagComponent; //# sourceMappingURL=RoleTagComponent.js.map

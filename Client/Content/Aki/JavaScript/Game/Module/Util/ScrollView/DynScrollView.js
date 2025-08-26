@@ -24,25 +24,28 @@ class DynamicScrollView {
     this.tNo = (i, s) => {
       const e = this.r7[i];
       var t = this.zGo.get(s);
-      let r = undefined;
+      let h = undefined;
       if (t) {
-        r = t;
+        h = t;
         this.iNo(e, i, s);
       } else {
-        r = this.QGo(e, s.GetUIItem(), i);
+        h = this.QGo(e, s.GetUIItem(), i);
         t = new Promise(t => {
-          r.Init(s.GetUIItem()).finally(() => {
-            r.Update(e, i);
+          h.Init(s.GetUIItem()).finally(() => {
+            h.Update(e, i);
+            if (this.XGo && this.XGo.IsValid()) {
+              this.XGo.SetScrollItemState(i, 2);
+            }
             t();
           });
         });
-        this.zGo.set(s, r);
+        this.zGo.set(s, h);
         this.ZGo.set(s, t);
       }
-      this.oNo(r, i);
-      r.SkipDestroyActor = true;
-      this.YGo.set(i, r);
-      return r.GetUsingItem(e);
+      this.oNo(h, i);
+      h.SkipDestroyActor = true;
+      this.YGo.set(i, h);
+      return h.GetUsingItem(e);
     };
     this.rNo = (t, i) => {
       this.YGo.delete(t);
@@ -149,9 +152,8 @@ class DynamicScrollView {
   }
   async iNo(t, i, s) {
     var e = this.ZGo.get(s);
-    if (e) {
-      await e;
-      this.zGo.get(s)?.Update(t, i);
+    if (e && (await e, this.zGo.get(s)?.Update(t, i), this.XGo) && this.XGo.IsValid()) {
+      this.XGo.SetScrollItemState(i, 2);
     }
   }
   oNo(t, i) {
@@ -213,9 +215,9 @@ class DynamicScrollView {
     if (s) {
       var e = (this.XGo?.GetContent()?.GetComponentByClass(UE.UIItem.StaticClass())).GetAttachUIChildren();
       for (let t = 0; t < e.Num(); t++) {
-        var r = e.Get(t);
-        if (r.IsValid()) {
-          r.SetAlpha(1);
+        var h = e.Get(t);
+        if (h.IsValid()) {
+          h.SetAlpha(1);
         }
       }
     }

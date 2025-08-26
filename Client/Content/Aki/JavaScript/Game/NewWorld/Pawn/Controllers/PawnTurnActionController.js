@@ -44,7 +44,7 @@ class PawnTurnActionController {
       var t;
       if (this.Gce?.Valid) {
         t = Global_1.Global.BaseCharacter.CharacterActorComponent;
-        this.Gce.Entity.GetComponent(177).SetSightTargetItem(t);
+        this.Gce.Entity.GetComponent(178).SetSightTargetItem(t);
         if (this.WaitTurnEnd && (this.Jrr(false), this.OnTurnToInteractTargetEndHandle)) {
           this.OnTurnToInteractTargetEndHandle();
         }
@@ -86,7 +86,7 @@ class PawnTurnActionController {
       if (this.Gce?.Valid) {
         if (this.Gce.CharacterMovement.MovementMode === 1 || this.Gce.CharacterMovement.MovementMode === 6 && this.Gce.CharacterMovement.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE) {
           t = Global_1.Global.BaseCharacter.CharacterActorComponent;
-          i = (e = this.Gce.Entity).GetComponent(177);
+          i = (e = this.Gce.Entity).GetComponent(178);
           if (e = e.GetComponent(3)) {
             (o = Vector_1.Vector.Create(t.ActorLocationProxy)).AdditionEqual(this.PlayerOffset);
             s = e.InputFacingProxy;
@@ -162,9 +162,9 @@ class PawnTurnActionController {
         if (this.Gce.CharacterMovement.MovementMode === 1 || this.Gce.CharacterMovement.MovementMode === 6 && this.Gce.CharacterMovement.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE) {
           var t;
           var i = this.Gce.Entity;
-          const e = i.GetComponent(187);
+          const e = i.GetComponent(188);
           if (!e?.OpenLookAt) {
-            if (t = i.GetComponent(177)) {
+            if (t = i.GetComponent(178)) {
               t.SetSightTargetItem(undefined);
             }
           }

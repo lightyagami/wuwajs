@@ -8,18 +8,20 @@ const UE = require("ue");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiSequencePlayer_1 = require("../../Ui/Base/UiSequencePlayer");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../Ui/UiManager");
 const FilterSortEntrance_1 = require("../Common/FilterSort/FilterSortEntrance");
 const EditFormationDefine_1 = require("../EditFormation/EditFormationDefine");
+const RoleDefine_1 = require("../RoleUi/RoleDefine");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const LoopScrollView_1 = require("../Util/ScrollView/LoopScrollView");
 const TeamRoleGrid_1 = require("./TeamRoleGrid");
 class QuickRoleSelectViewData {
-  constructor(i, e, t) {
+  constructor(e, i, t) {
     this.UseWay = undefined;
     this.SelectedRoleList = undefined;
     this.RoleList = undefined;
@@ -29,8 +31,8 @@ class QuickRoleSelectViewData {
     this.OnBack = undefined;
     this.OnHideFinish = undefined;
     this.OnRoleSelectFull = undefined;
-    this.UseWay = i;
-    this.SelectedRoleList = e;
+    this.UseWay = e;
+    this.SelectedRoleList = i;
     this.RoleList = t;
   }
 }
@@ -46,16 +48,16 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
     this.AutoCloseTimer = undefined;
     this.LoadingSequencePlayer = undefined;
     this.qAt = () => {
-      var e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
+      var i = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
       var t = new Array();
-      for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
-        var r = e.get(i);
+      for (let e = 1; e <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; e++) {
+        var r = i.get(e);
         if (r) {
           t.push(r.GetDataId());
         }
       }
-      var i = this.Data?.CanConfirm;
-      if (!i || !!i(t)) {
+      var e = this.Data?.CanConfirm;
+      if (!e || !!e(t)) {
         if (this.Data?.OnWaitLoadingConfirm) {
           this.E5t();
           this.Data?.OnWaitLoadingConfirm(t).finally(() => {
@@ -73,78 +75,97 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
       this.Data?.OnBack?.();
       UiManager_1.UiManager.CloseView(this.Info.Name);
     };
-    this.cHe = () => {
-      var i = new TeamRoleGrid_1.TeamRoleGrid();
-      i.BindOnExtendToggleStateChanged(this.ToggleFunction);
-      i.BindOnCanExecuteChange(this.CanExecuteChange);
-      return i;
+    this.$lo = () => {
+      let e = 0;
+      var i = Array.from(ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet);
+      var i = (e = i.length > 0 ? i[i.length - 1] : e) >= RoleDefine_1.ROBOT_DATA_MIN_ID ? [e] : ModelManager_1.ModelManager.RoleModel.GetRoleIdList();
+      ControllerHolder_1.ControllerHolder.RoleController.OpenRoleMainView(0, e, i, undefined, e => {
+        if (e) {
+          EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleChangeEnd, this.Ylo);
+          EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
+        }
+      });
     };
-    this.ToggleFunction = i => {
-      var e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
+    this.$Ge = e => {
+      if (e === "RoleRootView" && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CloseView, this.$Ge) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge), EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnRoleChangeEnd, this.Ylo))) {
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleChangeEnd, this.Ylo);
+      }
+    };
+    this.Ylo = () => {
+      this.CloseMe();
+    };
+    this.cHe = () => {
+      var e = new TeamRoleGrid_1.TeamRoleGrid();
+      e.BindOnExtendToggleStateChanged(this.ToggleFunction);
+      e.BindOnCanExecuteChange(this.CanExecuteChange);
+      return e;
+    };
+    this.ToggleFunction = e => {
+      var i = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
       var t = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet;
-      var r = i.Data;
-      if (i.State === 0) {
-        for (const s of e) {
+      var r = e.Data;
+      if (e.State === 0) {
+        for (const s of i) {
           if (s[1] === r) {
-            e.delete(s[0]);
+            i.delete(s[0]);
             t.delete(r.GetDataId());
             break;
           }
         }
-      } else if (i.State === 1) {
-        for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
-          if (!e.has(i)) {
-            e.set(i, r);
+      } else if (e.State === 1) {
+        for (let e = 1; e <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; e++) {
+          if (!i.has(e)) {
+            i.set(e, r);
             t.add(r.GetDataId());
             break;
           }
         }
       }
-      i = this.RoleList.indexOf(r);
-      this.RoleScrollView.RefreshGridProxy(i);
+      e = this.RoleList.indexOf(r);
+      this.RoleScrollView.RefreshGridProxy(e);
     };
-    this.CanExecuteChange = (i, e, t) => {
-      return t !== 0 || (t = i.GetRoleId(), ModelManager_1.ModelManager.MowingTowerModel.OtherHalfAreaRoleList?.includes(t) ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("EditBattleTeamCannotSwitchOtherArea"), false) : ((i = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap.size >= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM) && (this.Data?.OnRoleSelectFull ? this.Data?.OnRoleSelectFull() : ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleFull")), !i));
+    this.CanExecuteChange = (e, i, t) => {
+      return t !== 0 || (t = e.GetRoleId(), ModelManager_1.ModelManager.MowingTowerModel.OtherHalfAreaRoleList?.includes(t) ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("EditBattleTeamCannotSwitchOtherArea"), false) : ((e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap.size >= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM) && (this.Data?.OnRoleSelectFull ? this.Data?.OnRoleSelectFull() : ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleFull")), !e));
     };
-    this.Hlo = (i, e) => {
+    this.Hlo = (e, i) => {
       var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
       var r = new Array();
-      for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
-        if (t.has(i)) {
-          r.push(t.get(i));
+      for (let e = 1; e <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; e++) {
+        if (t.has(e)) {
+          r.push(t.get(e));
         }
       }
-      for (const n of i) {
-        if (!r.includes(n)) {
-          r.push(n);
+      for (const h of e) {
+        if (!r.includes(h)) {
+          r.push(h);
         }
       }
-      i = r.length > 0;
-      this.GetItem(11).SetUIActive(!i);
-      this.GetButton(3).RootUIComp.SetUIActive(i);
-      this.GetLoopScrollViewComponent(1).RootUIComp.SetUIActive(i);
-      if (i) {
+      e = r.length > 0;
+      this.GetItem(11).SetUIActive(!e);
+      this.GetButton(3).RootUIComp.SetUIActive(e);
+      this.GetLoopScrollViewComponent(1).RootUIComp.SetUIActive(e);
+      if (e) {
         this.RoleScrollView.RefreshByData(r);
         for (const a of t.values()) {
           var s = this.RoleList.indexOf(a);
           var o = r.indexOf(a);
-          if (this.RoleScrollView.Iei >= 0 && s !== o) {
+          if (this.RoleScrollView.Iei >= 0 && s !== o && s < this.RoleScrollView.GetDisplayGridEndIndex()) {
             ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.delete(a.GetDataId());
             this.RoleScrollView.UnsafeGetGridProxy(s)?.OnDeselected(false);
           }
         }
         for (const l of t.values()) {
-          var h = r.indexOf(l);
+          var n = r.indexOf(l);
           ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.add(l.GetDataId());
-          this.RoleScrollView.UnsafeGetGridProxy(h)?.OnForceSelected();
+          this.RoleScrollView.UnsafeGetGridProxy(n)?.OnForceSelected();
         }
         this.RoleList = r;
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIInteractionGroup], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [1, UE.UILoopScrollViewComponent], [2, UE.UIText], [5, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText]];
-    this.BtnBindInfo = [[3, this.qAt], [4, this.W7t]];
+    this.ComponentRegisterInfos = [[0, UE.UIInteractionGroup], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [1, UE.UILoopScrollViewComponent], [2, UE.UIText], [5, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText]];
+    this.BtnBindInfo = [[3, this.qAt], [4, this.W7t], [12, this.$lo]];
   }
   E5t() {
     if (!this.DelayLoadingTimer) {
@@ -164,8 +185,34 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
     this.RoleScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(10).GetOwner(), this.cHe);
     this.LoadingSequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.GetItem(13));
     this.GetText(15)?.SetUIActive(ModelManager_1.ModelManager.MowingTowerModel.CurrentOptionArea !== -1);
-    var i = ModelManager_1.ModelManager.MowingTowerModel.AddLevel[0];
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), "MowTower_LevelTips", i, i);
+    var e = ModelManager_1.ModelManager.MowingTowerModel.AddLevel[0];
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), "MowTower_LevelTips", e, e);
+    this.GetButton(12).RootUIComp.SetUIActive(true);
+    this.RefreshRoleList();
+  }
+  RefreshRoleList() {
+    this.RoleList = this.Data?.RoleList;
+    var i = this.Data?.SelectedRoleList;
+    ModelManager_1.ModelManager.RoleSelectModel.ClearData();
+    var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
+    if (i) {
+      for (let e = 1; e <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM && !(e > i.length); e++) {
+        var r = i[e - 1];
+        for (const s of this.RoleList) {
+          if (s.GetDataId() === r) {
+            t.set(e, s);
+            break;
+          }
+        }
+      }
+    }
+    var e = this.GetItem(8);
+    this.FilterSortEntrance = new FilterSortEntrance_1.FilterSortEntrance(e, this.Hlo);
+    this.RoleList.sort((e, i) => i.GetRoleConfig().Priority - e.GetRoleConfig().Priority);
+    this.FilterSortEntrance.UpdateData(this.Data.UseWay, this.RoleList);
+    this.GetItem(5).SetUIActive(false);
+    this.GetText(9).SetUIActive(false);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "FastFormation_Finish");
   }
   OnBeforeDestroy() {
     this.Data?.OnHideFinish?.();
@@ -188,30 +235,6 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
       }
       this.AutoCloseTimer = undefined;
     }
-  }
-  OnBeforeShow() {
-    this.RoleList = this.Data?.RoleList;
-    var e = this.Data?.SelectedRoleList;
-    ModelManager_1.ModelManager.RoleSelectModel.ClearData();
-    var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
-    if (e) {
-      for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM && !(i > e.length); i++) {
-        var r = e[i - 1];
-        for (const s of this.RoleList) {
-          if (s.GetDataId() === r) {
-            t.set(i, s);
-            break;
-          }
-        }
-      }
-    }
-    var i = this.GetItem(8);
-    this.FilterSortEntrance = new FilterSortEntrance_1.FilterSortEntrance(i, this.Hlo);
-    this.RoleList.sort((i, e) => e.GetRoleConfig().Priority - i.GetRoleConfig().Priority);
-    this.FilterSortEntrance.UpdateData(this.Data.UseWay, this.RoleList);
-    this.GetItem(5).SetUIActive(false);
-    this.GetText(9).SetUIActive(false);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "FastFormation_Finish");
   }
 }
 exports.QuickRoleSelectView = QuickRoleSelectView;

@@ -13,10 +13,10 @@ const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
   static async RequestSimpleTrackReportAsync() {
     var e = Protocol_1.Aki.Protocol.Lp_.create();
-    var e = await Net_1.Net.CallAsync(28984, e);
+    var e = await Net_1.Net.CallAsync(15671, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22483);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24612);
       } else {
         ModelManager_1.ModelManager.LevelPlayReportModel.UpdateSimpleReportMsg(e.Gb_);
       }
@@ -31,11 +31,11 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
     var t = Protocol_1.Aki.Protocol.Gp_.create();
     t.r6n = e;
     t._ps = o;
-    var t = await Net_1.Net.CallAsync(19512, t);
+    var t = await Net_1.Net.CallAsync(20116, t);
     if (t) {
       ModelManager_1.ModelManager.LevelPlayReportModel.SetRequestDetailFlag(e, o);
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17931);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27557);
       } else {
         ModelManager_1.ModelManager.LevelPlayReportModel.UpdateDetailReportMsg(e, o, t.hEs);
       }
@@ -51,13 +51,13 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Map", 69, "y0_", ["", t]);
     }
-    var o = await Net_1.Net.CallAsync(26097, t);
+    var o = await Net_1.Net.CallAsync(26041, t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Map", 69, "S0_", ["", o]);
     }
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21415);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 15676);
       } else {
         ModelManager_1.ModelManager.ExploreProgressModel.UpdatePlayPointState(e, o.qb_);
       }
@@ -72,7 +72,7 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
   static async RequestLevelPlayStateListAsync(e) {
     var o = Protocol_1.Aki.Protocol.Av_.create();
     o._Wl = e;
-    var o = await Net_1.Net.CallAsync(15374, o);
+    var o = await Net_1.Net.CallAsync(25643, o);
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckError()) {

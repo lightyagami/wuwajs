@@ -94,6 +94,9 @@ class GuideFocusNew {
   get TextInScreen() {
     return this.textinscreen();
   }
+  get HideWhenOtherPopViewOccur() {
+    return this.hidewhenotherpopviewoccur();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -344,6 +347,10 @@ class GuideFocusNew {
   textinscreen() {
     var t = this.J7.__offset(this.z7, 58);
     return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  hidewhenotherpopviewoccur() {
+    var t = this.J7.__offset(this.z7, 60);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.GuideFocusNew = GuideFocusNew;

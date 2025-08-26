@@ -16,9 +16,9 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     this.SPe = undefined;
     this.Pst = undefined;
     this.Gca = undefined;
-    this.CTu = undefined;
+    this.OTu = undefined;
     this.kG = new UE.Vector(1, 1, 1);
-    this.$9c = false;
+    this.Mzu = false;
     this.uat = undefined;
     this.j3 = undefined;
     this.Nml = false;
@@ -31,8 +31,8 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.Pst = this.GetSprite(2);
     this.Gca = this.GetItem(5);
-    this.CTu = this.GetItem(1);
-    this.SetTranslucence(this.$9c);
+    this.OTu = this.GetItem(1);
+    this.SetTranslucence(this.Mzu);
     this.InitTweenAnim(6);
   }
   OnBeforeDestroy() {
@@ -41,8 +41,8 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     this.SPe?.Clear();
     this.SPe = undefined;
     this.Pst = undefined;
-    this.CTu = undefined;
-    this._Hc();
+    this.OTu = undefined;
+    this.Ezu();
     this.BCe();
   }
   OnBeforeShow() {
@@ -51,16 +51,16 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
   async OnBeforeHideAsync() {
     this.SPe.StopCurrentSequence();
     this.SPe.PlaySequencePurely("Close");
-    this._Hc();
+    this.Ezu();
     this.BCe();
     this.uat = new CustomPromise_1.CustomPromise();
     this.j3 = TimerSystem_1.TimerSystem.Delay(() => {
       this.j3 = undefined;
-      this._Hc();
+      this.Ezu();
     }, CLOSE_ANIM_TIME);
     await this.uat.Promise;
   }
-  _Hc() {
+  Ezu() {
     if (this.uat) {
       this.uat.SetResult();
       this.uat = undefined;
@@ -73,17 +73,17 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     }
   }
   SetTranslucence(i) {
-    this.$9c = i;
-    if (this.CTu) {
+    this.Mzu = i;
+    if (this.OTu) {
       if (i) {
         this.bMc(false);
       }
-      this.P$c();
+      this.Izu();
       this.Pst?.SetUIActive(i);
     }
   }
-  P$c() {
-    this.CTu?.SetAlpha(this.$9c ? 0.5 : 1);
+  Izu() {
+    this.OTu?.SetAlpha(this.Mzu ? 0.5 : 1);
   }
   UpdateProgress(i, s) {
     if (this.Pst) {
@@ -92,9 +92,9 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
       this.Gca.SetUIItemScale(this.kG);
       this.GetUiNiagara(3).SetNiagaraVarFloat("Dissolve", i);
       this.GetUiNiagara(4).SetNiagaraVarFloat("Dissolve", i);
-      s = i != 0 && i != 1 && !this.$9c;
+      s = i != 0 && i != 1 && !this.Mzu;
       this.Gca.SetUIActive(s);
-      this.bMc(i < 0.3 && !this.$9c);
+      this.bMc(i < 0.3 && !this.Mzu);
     }
   }
   bMc(i) {
@@ -103,7 +103,7 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
         this.PlayTweenAnim(6);
       } else {
         this.StopTweenAnim(6);
-        this.P$c();
+        this.Izu();
       }
     }
   }

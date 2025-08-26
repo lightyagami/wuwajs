@@ -8,6 +8,7 @@ const UE = require("ue");
 const Time_1 = require("../../../../Core/Common/Time");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const GlobalData_1 = require("../../../GlobalData");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const ColorUtils_1 = require("../../../Utils/ColorUtils");
 const BattleUiControl_1 = require("../BattleUiControl");
@@ -16,7 +17,7 @@ const FADE_ANIM_PERCENT = 0.2;
 const BUFF = "1";
 const DEBUFF = "2";
 class BuffItem extends UiPanelBase_1.UiPanelBase {
-  constructor(t) {
+  constructor(i) {
     super();
     this.Hnt = undefined;
     this.Ust = undefined;
@@ -24,8 +25,14 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ast = undefined;
     this.Pst = undefined;
     this.i0o = undefined;
+    this.m2u = undefined;
+    this.f2u = undefined;
+    this.g2u = undefined;
+    this.Ald = undefined;
+    this.Dld = false;
     this.xst = "";
     this.fKl = 0;
+    this.C2u = false;
     this.wst = 0;
     this.Bst = -0;
     this.bst = undefined;
@@ -33,11 +40,11 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ega = undefined;
     this.Gst = 0;
     this.Nst = false;
-    t = BattleUiControl_1.BattleUiControl.Pool.GetBuffItem(t);
-    this.CreateThenShowByActor(t);
+    i = BattleUiControl_1.BattleUiControl.Pool.GetBuffItem(i);
+    this.CreateThenShowByActor(i);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [3, UE.UIText], [2, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UISprite], [9, UE.UISprite], [10, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [3, UE.UIText], [2, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UISprite], [9, UE.UISprite], [10, UE.UITexture], [12, UE.UISprite], [11, UE.UISprite], [13, UE.UIItem], [14, UE.UIItem]];
   }
   OnStart() {
     this.Ust = this.GetTexture(1);
@@ -45,45 +52,53 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ast = this.GetText(3);
     this.Pst = this.GetSprite(2);
     this.i0o = this.GetSprite(9);
+    this.m2u = this.GetSprite(12);
+    this.f2u = this.GetSprite(11);
+    this.Ald = this.GetItem(14);
     this.Est(5);
     this.Est(6);
     this.Est(7);
+    this.Est(13);
   }
-  Activate(t, i, s = false) {
+  Activate(i, t, s = false, h = 0) {
     if (GlobalData_1.GlobalData.IsPlayInEditor) {
-      this.RootActor?.SetActorLabel("buffItem_" + t.Id);
+      this.RootActor?.SetActorLabel("buffItem_" + i.Id);
     }
-    this.bst = i;
-    var h = t.Parameters.length;
-    let e = 0;
-    if (h > 3 && t.Parameters[3] !== "") {
-      e = Number(t.Parameters[3]);
+    this.bst = t;
+    var e = i.Parameters.length;
+    let o = 0;
+    if (e > 3 && i.Parameters[3] !== "") {
+      o = Number(i.Parameters[3]);
     }
-    this.Ost(t.Path, e);
-    if (i) {
-      this.kst(i.StackCount);
-      if (i.Duration <= 0) {
+    this.Ost(i.Path, o, t === undefined);
+    if (t) {
+      this.SetNum(t.StackCount);
+      if (t.Duration <= 0 || this.Dld) {
         this.Fst(1);
       } else {
-        this.Fst(i.GetRemainDuration() / i.Duration);
+        this.Fst(t.GetRemainDuration() / t.Duration);
       }
     } else {
-      this.kst(1);
+      if (h > 1) {
+        this.SetNum(h);
+      } else {
+        this.SetNum(1);
+      }
       this.Fst(1);
     }
-    let o = undefined;
-    if (h > 0) {
-      o = t.Parameters[0];
+    let r = undefined;
+    if (e > 0) {
+      r = i.Parameters[0];
     }
-    this.GetSprite(8)?.SetUIActive(o === BUFF);
-    this.GetSprite(4)?.SetUIActive(o === DEBUFF);
-    if (h > 1 && t.Parameters[1] !== "") {
-      this.Vst(t.Parameters[1]);
+    this.GetSprite(8)?.SetUIActive(r === BUFF);
+    this.GetSprite(4)?.SetUIActive(r === DEBUFF);
+    if (e > 1 && i.Parameters[1] !== "") {
+      this.Vst(i.Parameters[1]);
     } else {
       this.Vst();
     }
-    if (h > 2 && t.Parameters[2] !== "") {
-      this.yga(t.Parameters[2]);
+    if (e > 2 && i.Parameters[2] !== "") {
+      this.yga(i.Parameters[2]);
     } else {
       this.yga();
     }
@@ -96,53 +111,73 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
       this.RootItem?.SetUIItemScale(Vector_1.Vector.OneVector);
     }
   }
-  Ost(t, i) {
-    if (this.xst !== t || this.fKl !== i) {
-      this.xst = t;
-      this.fKl = i;
+  ActivateExceedTip() {
+    this.Ust.SetUIActive(false);
+    this.gKl.SetUIActive(false);
+    this.Ast.SetText("");
+    var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_IconpropertyEllipses_UI");
+    this.Ost(i, -1, false);
+    this.g2u?.SetFillAmount(0);
+  }
+  Ost(i, t, s) {
+    var h;
+    if (this.xst !== i || this.fKl !== t || this.C2u !== s) {
+      this.xst = i;
+      this.fKl = t;
+      this.C2u = s;
+      h = t === 3 || t === 4;
+      this.Dld = t === 2 || t === 4;
+      this.Ald.SetUIActive(h);
       this.Ust.SetUIActive(false);
       this.gKl.SetUIActive(false);
-      if (i === 1) {
+      if (t === 1) {
         this.i0o.SetUIActive(false);
         this.Pst.SetUIActive(false);
-        this.SetTextureByPath(t, this.gKl, undefined, t => {
-          if (t) {
+        this.f2u.SetUIActive(false);
+        this.m2u.SetUIActive(false);
+        this.SetTextureByPath(i, this.gKl, undefined, i => {
+          if (i) {
             this.gKl?.SetUIActive(true);
           }
         });
       } else {
-        this.i0o.SetUIActive(true);
-        this.Pst.SetUIActive(true);
-        this.SetTextureByPath(t, this.Ust, undefined, t => {
-          if (t) {
+        t = h;
+        this.i0o.SetUIActive(!s && !t);
+        this.Pst.SetUIActive(!s);
+        this.f2u.SetUIActive(s && !t);
+        this.m2u.SetUIActive(s);
+        this.SetTextureByPath(i, this.Ust, undefined, i => {
+          if (i) {
             this.Ust?.SetUIActive(true);
           }
         });
+        this.g2u = s ? this.m2u : this.Pst;
+        this.Bst = -1;
       }
     }
   }
-  kst(t) {
-    if (t !== this.wst) {
-      if (t > this.wst && this.wst > 0) {
+  SetNum(i) {
+    if (i !== this.wst) {
+      if (i > this.wst && this.wst > 0) {
         this.bnt(5);
       }
-      if ((this.wst = t) <= 1) {
+      if ((this.wst = i) <= 1) {
         this.Ast.SetText("");
       } else {
-        this.Ast.SetText(t.toString());
+        this.Ast.SetText(i.toString());
       }
     }
   }
-  Fst(t) {
-    if (t !== this.Bst) {
-      this.Bst = t;
-      this.Pst.SetFillAmount(t);
-      this.Hst(t <= FADE_ANIM_PERCENT);
+  Fst(i) {
+    if (i !== this.Bst) {
+      this.Bst = i;
+      this.g2u?.SetFillAmount(i);
+      this.Hst(i <= FADE_ANIM_PERCENT);
     }
   }
-  Hst(t) {
-    if (this.Nst !== t) {
-      if (this.Nst = t) {
+  Hst(i) {
+    if (this.Nst !== i) {
+      if (this.Nst = i) {
         this.bnt(7);
       } else {
         this.Gnt(7);
@@ -150,32 +185,32 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  Vst(t) {
-    if (t) {
-      this.Pst.SetColor(UE.Color.FromHex(t));
+  Vst(i) {
+    if (i) {
+      this.g2u?.SetColor(UE.Color.FromHex(i));
     } else {
       this.qst ||= UE.Color.FromHex("FFFFFF7F");
-      this.Pst.SetColor(this.qst);
+      this.g2u?.SetColor(this.qst);
     }
   }
-  yga(t) {
-    if (t !== this.Ega) {
-      if (this.Ega = t) {
-        this.Ust.SetColor(UE.Color.FromHex(t));
+  yga(i) {
+    if (i !== this.Ega) {
+      if (this.Ega = i) {
+        this.Ust.SetColor(UE.Color.FromHex(i));
       } else {
         this.Ust.SetColor(ColorUtils_1.ColorUtils.ColorWhile);
       }
     }
   }
-  Tick(t) {
+  Tick(i) {
     if (this.bst) {
-      if (this.bst.Duration > 0) {
+      if (this.bst.Duration > 0 && !this.Dld) {
         this.Fst(this.bst.GetRemainDuration() / this.bst.Duration);
       }
-      this.kst(this.bst.StackCount);
+      this.SetNum(this.bst.StackCount);
     }
   }
-  TickHiding(t) {
+  TickHiding(i) {
     return this.Gst > Time_1.Time.Now || (this.Gnt(6), this.SetUiActive(false), false);
   }
   Deactivate() {
@@ -192,6 +227,9 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.bnt(6);
     this.Gst = Time_1.Time.Now + CLOSE_ANIM_TIME;
   }
+  PlayAddBuffAnim() {
+    this.bnt(13);
+  }
   OnBeforeHide() {
     this.Hst(false);
   }
@@ -205,29 +243,29 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     }
     return true;
   }
-  Est(t) {
-    var i = [];
-    var s = this.GetItem(t).GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
+  Est(i) {
+    var t = [];
+    var s = this.GetItem(i).GetOwner().K2_GetComponentsByClass(UE.LGUIPlayTweenComponent.StaticClass());
     var h = s.Num();
-    for (let t = 0; t < h; t++) {
-      i.push(s.Get(t));
+    for (let i = 0; i < h; i++) {
+      t.push(s.Get(i));
     }
     this.Hnt ||= new Map();
-    this.Hnt.set(t, i);
+    this.Hnt.set(i, t);
   }
-  bnt(t) {
-    t = this.Hnt?.get(t);
-    if (t) {
-      for (const i of t) {
-        i.Play();
+  bnt(i) {
+    i = this.Hnt?.get(i);
+    if (i) {
+      for (const t of i) {
+        t.Play();
       }
     }
   }
-  Gnt(t) {
-    t = this.Hnt?.get(t);
-    if (t) {
-      for (const i of t) {
-        i.Stop();
+  Gnt(i) {
+    i = this.Hnt?.get(i);
+    if (i) {
+      for (const t of i) {
+        t.Stop();
       }
     }
   }

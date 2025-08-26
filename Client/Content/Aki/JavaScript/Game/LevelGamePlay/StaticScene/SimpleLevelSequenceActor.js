@@ -33,6 +33,7 @@ class SimpleLevelSequenceActor {
     this.QPe = false;
     this.XPe = false;
     this.$Pe = "";
+    this.QWu = "";
     this.rT1 = false;
     this.oT1 = -1;
     this.nT1 = 1;
@@ -48,7 +49,8 @@ class SimpleLevelSequenceActor {
     this.rxe = false;
     this.nxe = 1;
     this.sxe = false;
-    this.u$c = undefined;
+    this.KWu = undefined;
+    this.uIn = undefined;
     this.hT1 = () => {
       if (ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.GetComponent(10)?.GetIsInCinematic()) {
         if (Log_1.Log.CheckInfo()) {
@@ -99,13 +101,25 @@ class SimpleLevelSequenceActor {
     this.mxe();
   }
   AddOnPauseCallback(t) {
-    this.u$c = t;
+    this.KWu = t;
   }
   ClearOnPausedCallback() {
-    this.u$c = undefined;
+    this.KWu = undefined;
+  }
+  AddOnStopCallback(t) {
+    this.uIn = t;
+  }
+  ClearOnStopCallback() {
+    this.uIn = undefined;
   }
   UpdateSettings(t) {
     this.JPe = t ?? false;
+  }
+  GetPlayer() {
+    return this.qPe?.SequencePlayer;
+  }
+  IsPlaying() {
+    return this.GetPlayer()?.IsPlaying() ?? false;
   }
   ForceSwitchSceneCamera(t) {
     if (this.qPe?.IsValid()) {
@@ -153,17 +167,17 @@ class SimpleLevelSequenceActor {
       return false;
     }
   }
-  PlayToMarkOld(t, i, e, s) {
+  PlayToMarkOld(t, i, s, e) {
     if (this.Cxe(t)) {
       this.$Pe = t;
       this.NPe = i;
-      this.FPe = e;
-      this.XPe = s;
+      this.FPe = s;
+      this.XPe = e;
       this.zPe = 0;
       this.gxe();
     }
   }
-  PlayToMark(t, i, e, s, h) {
+  PlayToMark(t, i, s, e, h) {
     if (this.Cxe(t)) {
       this.$Pe = t;
       if (i) {
@@ -183,63 +197,105 @@ class SimpleLevelSequenceActor {
             this.ixe = i.Mask;
         }
       }
-      if (e) {
-        this.WPe = e.TransitType;
+      if (s) {
+        this.WPe = s.TransitType;
         switch (this.WPe) {
           case 0:
-            this.HPe = e.Duration ?? 0;
+            this.HPe = s.Duration ?? 0;
             this.kPe = 0;
-            this.FPe = e.Duration ?? 0;
-            this.QPe = e.IsValid ?? false;
+            this.FPe = s.Duration ?? 0;
+            this.QPe = s.IsValid ?? false;
             break;
           case 1:
-            this.HPe = e.Duration ?? 0;
-            this.kPe = e.TransitFadeIn ?? 0;
-            this.FPe = e.TransitFadeOut ?? 0;
-            this.QPe = e.IsValid ?? false;
-            this.oxe = e.Mask;
+            this.HPe = s.Duration ?? 0;
+            this.kPe = s.TransitFadeIn ?? 0;
+            this.FPe = s.TransitFadeOut ?? 0;
+            this.QPe = s.IsValid ?? false;
+            this.oxe = s.Mask;
         }
       }
       this.XPe = h;
-      this.sT1 = s;
+      this.sT1 = e;
       this.zPe = 0;
       this.gxe();
     }
   }
-  PlayLoop(t, i, e, s, h) {
-    this.$Pe = "";
-    if (e) {
-      this.jPe = e.TransitType;
+  PlayLoopBetweenMarks(t, i, s, e, h, r) {
+    this.QWu = i ? t.RightMark : t.LeftMark;
+    this.$Pe = i ? t.LeftMark : t.RightMark;
+    if (s) {
+      this.jPe = s.TransitType;
       switch (this.jPe) {
         case 0:
-          this.VPe = e.Duration ?? 0;
-          this.NPe = e.Duration ?? 0;
+          this.VPe = s.Duration ?? 0;
+          this.NPe = s.Duration ?? 0;
           this.OPe = 0;
-          this.KPe = e.IsValid ?? false;
+          this.KPe = s.IsValid ?? false;
           break;
         case 1:
-          this.VPe = e.Duration ?? 0;
-          this.NPe = e.TransitFadeIn ?? 0;
-          this.OPe = e.TransitFadeOut ?? 0;
-          this.KPe = e.IsValid ?? false;
-          this.ixe = e.Mask;
+          this.VPe = s.Duration ?? 0;
+          this.NPe = s.TransitFadeIn ?? 0;
+          this.OPe = s.TransitFadeOut ?? 0;
+          this.KPe = s.IsValid ?? false;
+          this.ixe = s.Mask;
       }
     }
-    if (s) {
-      this.WPe = s.TransitType;
+    if (e) {
+      this.WPe = e.TransitType;
       switch (this.WPe) {
         case 0:
-          this.HPe = s.Duration ?? 0;
+          this.HPe = e.Duration ?? 0;
           this.kPe = 0;
-          this.FPe = s.Duration ?? 0;
-          this.QPe = s.IsValid ?? false;
+          this.FPe = e.Duration ?? 0;
+          this.QPe = e.IsValid ?? false;
           break;
         case 1:
-          this.HPe = s.Duration ?? 0;
-          this.kPe = s.TransitFadeIn ?? 0;
-          this.FPe = s.TransitFadeOut ?? 0;
-          this.QPe = s.IsValid ?? false;
-          this.oxe = s.Mask;
+          this.HPe = e.Duration ?? 0;
+          this.kPe = e.TransitFadeIn ?? 0;
+          this.FPe = e.TransitFadeOut ?? 0;
+          this.QPe = e.IsValid ?? false;
+          this.oxe = e.Mask;
+      }
+    }
+    this.sT1 = h;
+    this.XPe = r;
+    this.zPe = 3;
+    this.gxe();
+  }
+  PlayLoop(t, i, s, e, h) {
+    this.$Pe = "";
+    if (s) {
+      this.jPe = s.TransitType;
+      switch (this.jPe) {
+        case 0:
+          this.VPe = s.Duration ?? 0;
+          this.NPe = s.Duration ?? 0;
+          this.OPe = 0;
+          this.KPe = s.IsValid ?? false;
+          break;
+        case 1:
+          this.VPe = s.Duration ?? 0;
+          this.NPe = s.TransitFadeIn ?? 0;
+          this.OPe = s.TransitFadeOut ?? 0;
+          this.KPe = s.IsValid ?? false;
+          this.ixe = s.Mask;
+      }
+    }
+    if (e) {
+      this.WPe = e.TransitType;
+      switch (this.WPe) {
+        case 0:
+          this.HPe = e.Duration ?? 0;
+          this.kPe = 0;
+          this.FPe = e.Duration ?? 0;
+          this.QPe = e.IsValid ?? false;
+          break;
+        case 1:
+          this.HPe = e.Duration ?? 0;
+          this.kPe = e.TransitFadeIn ?? 0;
+          this.FPe = e.TransitFadeOut ?? 0;
+          this.QPe = e.IsValid ?? false;
+          this.oxe = e.Mask;
       }
     }
     this.sT1 = h;
@@ -251,7 +307,7 @@ class SimpleLevelSequenceActor {
   gxe() {
     if (ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
       this.hT1();
-    } else {
+    } else if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.hT1)) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.hT1);
     }
   }
@@ -263,27 +319,30 @@ class SimpleLevelSequenceActor {
         break;
       case 2:
         this._T1(this.rT1, this.oT1);
+        break;
+      case 3:
+        this.XWu(this.XPe);
     }
   }
   lT1(t, i) {
     if (this.qPe?.IsValid()) {
       this.qPe.bOverrideInstanceData = true;
-      var e = this.qPe.SequencePlayer;
-      if (e?.IsValid()) {
+      var s = this.qPe.SequencePlayer;
+      if (s?.IsValid()) {
         if (this.aT1) {
           UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1);
           this.aT1 = 0;
         }
         if (i) {
-          e.Play();
-          e.SetPlaybackPosition(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 1));
+          s.Play();
+          s.SetPlaybackPosition(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 1));
           this.nT1 = this.sT1?.PlayRateAbs ?? 1;
           this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1);
-          e.Pause();
+          s.Pause();
         } else {
           switch (this.zPe) {
             case 0:
-              e.PlayTo(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 0));
+              s.PlayTo(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 0));
               this.nT1 = this.sT1?.PlayRateAbs ?? 1;
               if (this.sT1?.EaseDuration) {
                 this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent);
@@ -292,7 +351,7 @@ class SimpleLevelSequenceActor {
               }
               break;
             case 1:
-              e.PlayTo_Circle(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 0), true);
+              s.PlayTo_Circle(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 0), true);
               this.nT1 = this.sT1?.PlayRateAbs ?? 1;
               if (this.sT1?.EaseDuration) {
                 this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent);
@@ -308,9 +367,37 @@ class SimpleLevelSequenceActor {
     }
   }
   _T1(t, i) {
-    var e;
-    if (this.qPe?.IsValid() && (this.qPe.bOverrideInstanceData = true, (e = this.qPe.SequencePlayer)?.IsValid()) && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.zPe === 2 && (t ? e.PlayReverseLooping(i) : e.PlayLooping(i), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1)), Log_1.Log.CheckInfo())) {
+    var s;
+    if (this.qPe?.IsValid() && (this.qPe.bOverrideInstanceData = true, (s = this.qPe.SequencePlayer)?.IsValid()) && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.zPe === 2 && (t ? s.PlayReverseLooping(i) : s.PlayLooping(i), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1)), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Interaction", 39, "LevelSequence循环播放", ["levelSequence", this.bPe.GetName()], ["bReverse", t], ["numLoops", i]);
+    }
+  }
+  XWu(t) {
+    if (this.qPe?.IsValid()) {
+      this.qPe.bOverrideInstanceData = true;
+      const h = this.qPe.SequencePlayer;
+      var i;
+      var s;
+      var e;
+      if (h?.IsValid() && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1), e = this.GetMarkValue(this.QWu), i = this.GetMarkValue(this.$Pe), e !== undefined) && i !== undefined && e !== i) {
+        s = this.GetCurrentFrame();
+        if (this.XPe || e < i && i < s || i < e && s < i) {
+          this.AddOnPauseCallback(() => {
+            this.ClearOnPausedCallback();
+            h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.QWu);
+          });
+          e = new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.QWu, 2, 1);
+          if (this.XPe) {
+            h.Play();
+            h.SetPlaybackPosition(e);
+            h.Pause();
+          } else {
+            h.PlayTo(e);
+          }
+        } else {
+          h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.QWu);
+        }
+      }
     }
   }
   mxe() {
@@ -333,12 +420,13 @@ class SimpleLevelSequenceActor {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 33, "SimpleLevelSequenceActor OnSequenceStop", ["levelSequence", this.bPe.GetName()]);
     }
+    this.uIn?.();
   }
   pxe() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 33, "SimpleLevelSequenceActor OnSequencePause", ["levelSequence", this.bPe.GetName()]);
     }
-    this.u$c?.();
+    this.KWu?.();
     if (!this.XPe) {
       if (this.WPe !== 1 || this.sxe) {
         this.Exe();
@@ -374,17 +462,17 @@ class SimpleLevelSequenceActor {
     }
   }
   Cxe(i) {
-    var e = this.bPe.GetMovieScene();
-    let s = false;
-    if (e) {
-      for (let t = 0; t < e.MarkedFrames.Num(); t++) {
-        if (e.MarkedFrames.Get(t).Label === i) {
-          s = true;
+    var s = this.bPe.GetMovieScene();
+    let e = false;
+    if (s) {
+      for (let t = 0; t < s.MarkedFrames.Num(); t++) {
+        if (s.MarkedFrames.Get(t).Label === i) {
+          e = true;
           break;
         }
       }
     }
-    return !!s || (Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 33, "mark配置不合法", ["levelSequence", this.bPe.GetName()], ["mark", i]), false);
+    return !!e || (Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 33, "mark配置不合法", ["levelSequence", this.bPe.GetName()], ["mark", i]), false);
   }
   _xe(t = () => {}) {
     var i;
@@ -480,7 +568,7 @@ class SimpleLevelSequenceActor {
       this.B_e();
     }
   }
-  lxe(t, i, e, s, h = () => {}, r = () => {}) {
+  lxe(t, i, s, e, h = () => {}, r = () => {}) {
     ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.CameraInputController.Lock(this);
     this.rxe = true;
     ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(8, 3, () => {
@@ -491,16 +579,16 @@ class SimpleLevelSequenceActor {
         if (r) {
           r();
         }
-        ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, s ?? 0);
+        ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, e ?? 0);
       } else {
         TimerSystem_1.TimerSystem.Delay(() => {
           if (r) {
             r();
           }
-          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, s ?? 0);
+          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, e ?? 0);
         }, (i ?? 0) * 1000);
       }
-    }, e ?? 0, t === 0 ? IAction_1.EFadeInScreenShowType.Black : IAction_1.EFadeInScreenShowType.White);
+    }, s ?? 0, t === 0 ? IAction_1.EFadeInScreenShowType.Black : IAction_1.EFadeInScreenShowType.White);
   }
   SetSequenceData(t) {
     if (t !== this.bPe) {
@@ -539,7 +627,7 @@ class SimpleLevelSequenceActor {
     }
     this.ClearOnPausedCallback();
   }
-  PlayToMarkByCheckWay(t, i, e, s, h) {
+  PlayToMarkByCheckWay(t, i, s, e, h) {
     if (this.Cxe(t)) {
       this.$Pe = t;
       if (i) {
@@ -559,49 +647,49 @@ class SimpleLevelSequenceActor {
             this.ixe = i.Mask;
         }
       }
-      if (e) {
-        this.WPe = e.TransitType;
+      if (s) {
+        this.WPe = s.TransitType;
         switch (this.WPe) {
           case 0:
-            this.HPe = e.Duration ?? 0;
+            this.HPe = s.Duration ?? 0;
             this.kPe = 0;
-            this.FPe = e.Duration ?? 0;
-            this.QPe = e.IsValid ?? false;
+            this.FPe = s.Duration ?? 0;
+            this.QPe = s.IsValid ?? false;
             break;
           case 1:
-            this.HPe = e.Duration ?? 0;
-            this.kPe = e.TransitFadeIn ?? 0;
-            this.FPe = e.TransitFadeOut ?? 0;
-            this.QPe = e.IsValid ?? false;
-            this.oxe = e.Mask;
+            this.HPe = s.Duration ?? 0;
+            this.kPe = s.TransitFadeIn ?? 0;
+            this.FPe = s.TransitFadeOut ?? 0;
+            this.QPe = s.IsValid ?? false;
+            this.oxe = s.Mask;
         }
       }
       this.XPe = h;
-      this.sT1 = s;
+      this.sT1 = e;
       this.CheckLatestWay();
       this.gxe();
     }
   }
   GetMarkValue(i) {
-    var e = this.bPe.GetMovieScene();
-    for (let t = 0; t < e.MarkedFrames.Num(); t++) {
-      if (e.MarkedFrames.Get(t).Label === i) {
-        return this.Sxe(e.MarkedFrames.Get(t).FrameNumber.Value);
+    var s = this.bPe.GetMovieScene();
+    for (let t = 0; t < s.MarkedFrames.Num(); t++) {
+      if (s.MarkedFrames.Get(t).Label === i) {
+        return this.Sxe(s.MarkedFrames.Get(t).FrameNumber.Value);
       }
     }
   }
   CheckLatestWay() {
     var t;
     var i;
-    var e;
     var s;
+    var e;
     if (this.bPe.GetMovieScene()) {
-      s = this.qPe.SequencePlayer;
+      e = this.qPe.SequencePlayer;
       t = this.GetMarkValue(this.$Pe);
-      i = s.GetStartTime().Time.FrameNumber.Value;
-      e = s.GetEndTime().Time.FrameNumber.Value;
-      s = s.GetCurrentTime().Time.FrameNumber.Value;
-      if (Math.abs(t - s) > Math.abs(e - i - Math.abs(t - s))) {
+      i = e.GetStartTime().Time.FrameNumber.Value;
+      s = e.GetEndTime().Time.FrameNumber.Value;
+      e = e.GetCurrentTime().Time.FrameNumber.Value;
+      if (Math.abs(t - e) > Math.abs(s - i - Math.abs(t - e))) {
         this.zPe = 1;
       } else {
         this.zPe = 0;
@@ -633,6 +721,9 @@ class SimpleLevelSequenceActor {
     } else {
       return 0;
     }
+  }
+  IsReversePlay() {
+    return this.rT1;
   }
 }
 exports.default = SimpleLevelSequenceActor;

@@ -74,10 +74,10 @@ class RouletteGridForbiddenSettings {
 }
 exports.RouletteGridForbiddenSettings = RouletteGridForbiddenSettings;
 (_a = RouletteGridForbiddenSettings).w0o = () => {
-  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(205)?.HasTag(-1002623896) ?? false;
+  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206)?.HasTag(-1002623896) ?? false;
 };
 RouletteGridForbiddenSettings.vha = () => {
-  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(205)?.HasTag(-1488322179) ?? false;
+  return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206)?.HasTag(-1488322179) ?? false;
 };
 RouletteGridForbiddenSettings.qla = new Map([[1001, _a.w0o], [1013, _a.vha]]);
 RouletteGridForbiddenSettings.Gla = new Map([]); //# sourceMappingURL=RouletteGridForbiddenSettings.js.map

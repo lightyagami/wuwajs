@@ -18,8 +18,8 @@ class DragInteractComponent {
   constructor(t) {
     this.Zgt = undefined;
     this.Xj1 = undefined;
-    this.zIu = undefined;
-    this.JIu = undefined;
+    this.lTu = undefined;
+    this._Tu = undefined;
     this.SFo = false;
     this.yFo = false;
     this.IFo = -0;
@@ -34,8 +34,8 @@ class DragInteractComponent {
     this.UFo = Vector2D_1.Vector2D.Create();
     this.Ngo = t => {
       this.SFo = false;
-      if (t && !this.IsMultiFingerControl && (t = this.Yj1(t.pointerPosition.X, t.pointerPosition.Y), this.AFo.DeepCopy(t), this.xFo = Time_1.Time.NowSeconds, this.zIu)) {
-        this.zIu();
+      if (t && !this.IsMultiFingerControl && (t = this.Yj1(t.pointerPosition.X, t.pointerPosition.Y), this.AFo.DeepCopy(t), this.xFo = Time_1.Time.NowSeconds, this.lTu)) {
+        this.lTu();
       }
     };
     this.vKe = t => {
@@ -100,9 +100,9 @@ class DragInteractComponent {
       }
     };
     this.Zgt = t.Draggable;
-    this.zIu = t.CallbackOnDown;
+    this.lTu = t.CallbackOnDown;
     this.Xj1 = t.CallbackOnDrag;
-    this.JIu = t.CallbackOnInertia;
+    this._Tu = t.CallbackOnInertia;
     this.wFo = new Map();
     this.Zgt.OnPointerDownCallBack.Bind(this.Ngo);
     this.Zgt.OnPointerDragCallBack.Bind(this.vKe);
@@ -187,8 +187,8 @@ class DragInteractComponent {
       if (!this.zj1.IsNearlyZero()) {
         t = MathCommon_1.MathCommon.Clamp(t, 0, this.zj1.Size());
       }
-      if (this.PFo.Normalize(0) && (i = Vector2D_1.Vector2D.Create(), this.PFo.Multiply(t, i), this.JIu)) {
-        this.JIu(i);
+      if (this.PFo.Normalize(0) && (i = Vector2D_1.Vector2D.Create(), this.PFo.Multiply(t, i), this._Tu)) {
+        this._Tu(i);
       }
       this.PFo.Reset();
     }

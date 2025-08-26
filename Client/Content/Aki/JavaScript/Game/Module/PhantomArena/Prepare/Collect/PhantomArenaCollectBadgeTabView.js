@@ -23,31 +23,31 @@ const CollectRewardPopup_1 = require("./CollectRewardPopup");
 class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
-    this.Heu = 0;
+    this.gtu = 0;
     this.Gpo = undefined;
     this.jlo = undefined;
     this.H3e = undefined;
     this.S2t = undefined;
-    this.$eu = undefined;
+    this.Ctu = undefined;
     this.rOe = () => {
       var e = new CollectRewardItem_1.CollectRewardItem();
       e.RewardType = 0;
       e.CallbackClickReward = this.hoc;
       return e;
     };
-    this.Weu = () => {
+    this.ptu = () => {
       var e = new CollectBadgeGroupItem_1.CollectBadgeGroupItem();
-      e.CallbackClickBadge = this.Ueu;
-      e.CallbackCanChange = this.Deu;
+      e.CallbackClickBadge = this.ntu;
+      e.CallbackCanChange = this.stu;
       return e;
     };
-    this.Qeu = () => {
+    this.vtu = () => {
       return new CollectBadgeSkillItem_1.CollectBadgeSkillItem();
     };
-    this.wmu = () => {
+    this.cfu = () => {
       var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectBadgeGroupDataList()?.[0]?.BadgeIdList[0];
-      var t = this.$eu.GetScrollItemByIndex(0);
-      this.Heu = e;
+      var t = this.Ctu.GetScrollItemByIndex(0);
+      this.gtu = e;
       (this.Gpo = t).SetSelectByIndex(0);
       this.nOe();
     };
@@ -63,22 +63,22 @@ class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
         this.S2t.Refresh(e);
       }
     };
-    this.mnu = () => {
+    this.Fnu = () => {
       this.jqe();
     };
-    this.Ueu = (e, t) => {
-      if (this.Gpo && this.Heu !== e) {
+    this.ntu = (e, t) => {
+      if (this.Gpo && this.gtu !== e) {
         this.Gpo.SetDeselect();
       }
-      this.Heu = e;
+      this.gtu = e;
       this.Gpo = t;
-      this.Gpo.SetSelect(this.Heu);
+      this.Gpo.SetSelect(this.gtu);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("PhantomArena", 75, "当前选中徽章，" + e);
       }
       this.nOe();
     };
-    this.Deu = (e, t) => true;
+    this.stu = (e, t) => true;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UISprite], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIVerticalLayout], [9, UE.UIVerticalLayout], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIText]];
@@ -89,34 +89,34 @@ class PhantomArenaCollectBadgeTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnStart() {
     this.H3e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.rOe);
-    this.$eu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.Weu);
-    this.jlo = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(8), this.Qeu);
+    this.Ctu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.ptu);
+    this.jlo = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(8), this.vtu);
   }
   AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate, this.mnu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate, this.Fnu);
   }
   RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate, this.mnu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate, this.Fnu);
   }
   OnBeforeShow() {
-    this.Keu();
+    this.ytu();
     this.jqe();
   }
   OnAfterShow() {
     this.UiViewSequence.PlaySequence("Start");
   }
-  Keu() {
+  ytu() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectBadgeGroupDataList();
-    this.$eu.RefreshByData(e, this.wmu);
+    this.Ctu.RefreshByData(e, this.cfu);
   }
   nOe() {
-    if (!(this.Heu <= 0)) {
-      var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeGroupIdById(this.Heu);
+    if (!(this.gtu <= 0)) {
+      var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeGroupIdById(this.gtu);
       var i = ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeSkillByGroupId(t);
       this.jlo.RefreshByData(i);
-      var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(this.Heu);
+      var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(this.gtu);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), i.Name);
-      var r = ModelManager_1.ModelManager.PhantomArenaModel.IsBadgeUnlock(this.Heu);
+      var r = ModelManager_1.ModelManager.PhantomArenaModel.IsBadgeUnlock(this.gtu);
       this.GetItem(12).SetUIActive(!r);
       this.GetItem(11).SetUIActive(r);
       let e = i.Desc;

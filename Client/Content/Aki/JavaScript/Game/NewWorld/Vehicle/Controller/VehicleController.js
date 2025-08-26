@@ -22,9 +22,9 @@ const TRIAL_ROLE_ID = 10000;
 const CHECK_DRIVE_INFO_INTERVAL = 500;
 class VehicleController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(17158, this.VehicleUpdateNotify);
-    Net_1.Net.Register(19920, this.OnUpdateVehicleRideSharingNotify);
-    Net_1.Net.Register(24094, this.VehicleUpdateEntityNotify);
+    Net_1.Net.Register(20941, this.VehicleUpdateNotify);
+    Net_1.Net.Register(27000, this.OnUpdateVehicleRideSharingNotify);
+    Net_1.Net.Register(23075, this.VehicleUpdateEntityNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle);
@@ -39,9 +39,9 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnClear() {
-    Net_1.Net.UnRegister(17158);
-    Net_1.Net.UnRegister(19920);
-    Net_1.Net.UnRegister(24094);
+    Net_1.Net.UnRegister(20941);
+    Net_1.Net.UnRegister(27000);
+    Net_1.Net.UnRegister(23075);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle);
@@ -54,7 +54,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     this.RegisterWaitEntityTask(e);
   }
   static W5_(e, t, r, a = 0) {
-    if (e?.IsInit && t?.IsInit && (t = t.GetComponent(233))) {
+    if (e?.IsInit && t?.IsInit && (t = t.GetComponent(234))) {
       if (r !== -1) {
         t.Enter(e, r);
       } else {
@@ -134,7 +134,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     var r;
     if (this.CanResponseRideSharingModeChange(e)) {
       if (ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing) {
-        t = e.VehicleEntity?.GetComponent(234);
+        t = e.VehicleEntity?.GetComponent(235);
         r = e.PassengerEntity?.GetComponent(2);
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Vehicle", 50, "重复进入共乘玩法", ["VehicleId", t?.CreatureData.GetPbDataId()], ["PassengerId", r?.CreatureData.GetPbDataId()], ["Seat", e.Seat]);
@@ -156,7 +156,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     var r;
     if (this.CanResponseRideSharingModeChange(e)) {
       if (!ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing) {
-        t = e.VehicleEntity?.GetComponent(234);
+        t = e.VehicleEntity?.GetComponent(235);
         r = e.PassengerEntity?.GetComponent(2);
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Vehicle", 50, "离开载具前已退出共乘玩法", ["VehicleId", t?.CreatureData.GetPbDataId()], ["PassengerId", r?.CreatureData.GetPbDataId()], ["Seat", e.Seat]);
@@ -177,7 +177,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     }
   }
   static CanResponseRideSharingModeChange(e) {
-    return !!e.IsRolePassenger(true) && !(e.PassengerEntity.GetComponent(0).GetRoleId() > TRIAL_ROLE_ID) && !!e.VehicleEntity.GetComponent(233) && !!this.CheckVehicleTypeForRideSharing(e);
+    return !!e.IsRolePassenger(true) && !(e.PassengerEntity.GetComponent(0).GetRoleId() > TRIAL_ROLE_ID) && !!e.VehicleEntity.GetComponent(234) && !!this.CheckVehicleTypeForRideSharing(e);
   }
   static CheckVehicleTypeForRideSharing(e) {
     return true;
@@ -187,7 +187,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static SetRideSharingEnable(e) {
-    if (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing === e && (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing = !e, Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(229)?.VehicleEntity?.GetComponent(237)?.RefreshRideSharingSkillState(), !e)) {
+    if (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing === e && (ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing = !e, Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(230)?.VehicleEntity?.GetComponent(238)?.RefreshRideSharingSkillState(), !e)) {
       var t = ModelManager_1.ModelManager.VehicleModel.RideSharingInfoMap.size;
       for (let e = 0; e < t; e++) {
         this.OnRemoveVehicleRideSharing(-1, -1);
@@ -196,7 +196,7 @@ class VehicleController extends ControllerBase_1.ControllerBase {
   }
   static $bl(e) {
     if (e.IsDriver && e.IsRolePassenger(true) && e.VehicleEntity) {
-      this.Kbl = e.VehicleEntity.GetComponent(236);
+      this.Kbl = e.VehicleEntity.GetComponent(237);
       switch (e.VehicleType) {
         case "Gongduola":
           ModelManager_1.ModelManager.GameAudioModel.AddAllGondolaMusic(e.VehicleEntity);
@@ -287,8 +287,8 @@ VehicleController.OnLeaveVehicle = e => {
 };
 VehicleController.OnChangeVehicleRideSharing = (t, r) => {
   var e;
-  var a = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(230)?.VehicleEntity;
-  if (a && ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing && (a = a.GetComponent(233), (a = r !== -1 ? r : a.TryFindUsableSeat(false)) !== -1) && ((e = Protocol_1.Aki.Protocol.vp_.create()).Q6n = t, e.fhl = a, Net_1.Net.Call(19960, e, e => {
+  var a = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(231)?.VehicleEntity;
+  if (a && ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing && (a = a.GetComponent(234), (a = r !== -1 ? r : a.TryFindUsableSeat(false)) !== -1) && ((e = Protocol_1.Aki.Protocol.vp_.create()).Q6n = t, e.fhl = a, Net_1.Net.Call(24771, e, e => {
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Vehicle", 50, "共乘ChangeRole请求失败", ["ErrorCode", e.Q4n], ["RoleId", t], ["Seat", r]);
     }
@@ -302,7 +302,7 @@ VehicleController.OnRemoveVehicleRideSharing = (e, t) => {
     r = r.RideSharingInfoMap.values().next().value;
     const a = Protocol_1.Aki.Protocol.Sp_.create();
     a.Q6n = e === -1 ? r.RoleId : e;
-    Net_1.Net.Call(19156, a, e => {
+    Net_1.Net.Call(23584, a, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
         Log_1.Log.Error("Vehicle", 50, "共乘RemoveRole请求失败", ["ErrorCode", e.Q4n], ["RoleId", a.Q6n]);
       }

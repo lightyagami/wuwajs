@@ -10,11 +10,11 @@ const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const PerformActionCenter_1 = require("./Action/PerformActionCenter");
 class PerformController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(20519, this.tX_);
+    Net_1.Net.Register(18376, this.tX_);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(20519);
+    Net_1.Net.UnRegister(18376);
     return true;
   }
   static RecoverTreeInfo(e) {

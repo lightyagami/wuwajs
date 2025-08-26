@@ -16,6 +16,8 @@ class InputKeyUtils {
         return e.PsKeyIconPath;
       } else if (Info_1.Info.IsBackBoneGamepad()) {
         return e.BackBoneKeyIconPath;
+      } else if (Info_1.Info.IsNsProGamepad()) {
+        return e.NsKeyIconPath;
       } else {
         return e.KeyIconPath;
       }
@@ -30,6 +32,8 @@ class InputKeyUtils {
         return e.PsKeyIconPath;
       } else if (a === 6) {
         return e.BackBoneKeyIconPath;
+      } else if (a === 7) {
+        return e.NsKeyIconPath;
       } else if (a === 2) {
         return e.KeyIconPath;
       } else {

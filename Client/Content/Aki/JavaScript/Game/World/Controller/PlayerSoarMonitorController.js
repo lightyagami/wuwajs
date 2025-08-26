@@ -49,7 +49,7 @@ class PlayerSoarMonitorController extends ControllerBase_1.ControllerBase {
   static GA_() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e) {
-      e = e.Entity.GetComponent(175);
+      e = e.Entity.GetComponent(176);
       this.IsPlayerSoar = !!e && e.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar;
     } else {
       this.IsPlayerSoar = false;
@@ -64,7 +64,7 @@ class PlayerSoarMonitorController extends ControllerBase_1.ControllerBase {
   }
   static FJl() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!e && !!(e = e.Entity.GetComponent(178)) && !!(e.GetHeightAboveGround(this.HeightThreshould + 1) > this.HeightThreshould);
+    return !!e && !!(e = e.Entity.GetComponent(179)) && !!(e.GetHeightAboveGround(this.HeightThreshould + 1) > this.HeightThreshould);
   }
 }
 (exports.PlayerSoarMonitorController = PlayerSoarMonitorController).OJl = false;

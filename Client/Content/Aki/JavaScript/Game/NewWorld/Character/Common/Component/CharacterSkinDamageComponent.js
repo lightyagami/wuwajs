@@ -3,21 +3,21 @@
 var CharacterSkinDamageComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var n;
-  var r = arguments.length;
-  var a = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var a = arguments.length;
+  var h = a < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(t, e, i, s);
   } else {
-    for (var h = t.length - 1; h >= 0; h--) {
-      if (n = t[h]) {
-        a = (r < 3 ? n(a) : r > 3 ? n(e, i, a) : n(e, i)) || a;
+    for (var r = t.length - 1; r >= 0; r--) {
+      if (n = t[r]) {
+        h = (a < 3 ? n(h) : a > 3 ? n(e, i, h) : n(e, i)) || h;
       }
     }
   }
-  if (r > 3 && a) {
-    Object.defineProperty(e, i, a);
+  if (a > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return a;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -55,6 +55,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
     this.n8 = "";
     this.eWr = undefined;
     this.CuePath = "";
+    this.IsCueIgnoreEnableSetting = false;
     this.Zpe = t => {
       this.BCe();
       if (t) {
@@ -76,7 +77,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
           }
         }
         this.Zjr++;
-        this.Qbu();
+        this.gRu();
       }
     };
     this.UQe = () => {
@@ -93,8 +94,14 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
       }
     };
     this.Mi_ = () => {
-      if (CharacterSkinDamageComponent_1.EnableSkinDamage) {
-        this.Qbu();
+      if (this.CuePath && this.IsCueIgnoreEnableSetting) {
+        this.ApplySkinDamage(this.CuePath, true, "战损开关改变, 存在无视开关的Cue战损");
+      } else if (CharacterSkinDamageComponent_1.EnableSkinDamage) {
+        if (this.CuePath) {
+          this.ApplySkinDamage(this.CuePath, false, "战损开关设置为开启, Cue战损重新生效");
+        } else {
+          this.gRu();
+        }
       } else {
         this.ApplySkinDamageByType(0, true, "战损开关设置为关闭");
       }
@@ -103,7 +110,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   OnStart() {
     this.EIe = this.Entity.CheckGetComponent(0);
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Lie = this.Entity.CheckGetComponent(205);
+    this.Lie = this.Entity.CheckGetComponent(206);
     this.SkinDamageType = 0;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t);
@@ -129,7 +136,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
       this.Yjr = this.Hte.Actor.AddComponentByClass(UE.KuroChangeSkeletalMaterialsComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.CHANGE_SKELETAL_MATERIALS_COMP_NAME);
     }
   }
-  Qbu() {
+  gRu() {
     var t = Time_1.Time.WorldTimeSeconds - this.wNr;
     if (t > SKIN_DAMAGE_TIME) {
       if (this.Zjr > SKIN_DAMAGE_LEVEL2_COUNT) {
@@ -159,12 +166,9 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
     return (e = t ? this.Hte.GetReplaceEffect(t) : e) || t;
   }
   ApplySkinDamageByType(t, e, i, ...s) {
-    if (this.SkinDamageType !== t && (CharacterSkinDamageComponent_1.EnableSkinDamage || e)) {
-      this.SkinDamageType = t;
-      if (!this.CuePath || !!e) {
-        if (t = this.rWr(t)) {
-          this.ApplySkinDamage(t, e, i, ...s);
-        }
+    if ((this.SkinDamageType !== t || !!e) && (!!CharacterSkinDamageComponent_1.EnableSkinDamage || !!e) && !(this.SkinDamageType = t, this.CuePath && !e)) {
+      if (t = this.rWr(t)) {
+        this.ApplySkinDamage(t, e, i, ...s);
       }
     }
   }
@@ -187,6 +191,17 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
       });
     }
   }
+  ResetCueSkinDamage() {
+    if (this.CuePath) {
+      this.CuePath = "";
+      this.IsCueIgnoreEnableSetting = false;
+      if (CharacterSkinDamageComponent_1.EnableSkinDamage) {
+        this.ApplySkinDamageByType(this.SkinDamageType, true, "GameplayCueSkinDamage销毁");
+      } else {
+        this.ApplySkinDamageByType(0, true, "GameplayCueSkinDamage销毁");
+      }
+    }
+  }
   set SkinDamageType(t) {
     this.Lie.RemoveTag(skinDamageTagMap.get(this.tec));
     this.tec = t;
@@ -197,5 +212,5 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   }
 };
 CharacterSkinDamageComponent.EnableSkinDamage = true;
-CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(210)], CharacterSkinDamageComponent);
+CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(211)], CharacterSkinDamageComponent);
 exports.CharacterSkinDamageComponent = CharacterSkinDamageComponent; //# sourceMappingURL=CharacterSkinDamageComponent.js.map

@@ -26,7 +26,7 @@ class RoleGrowingMainView extends UiViewBase_1.UiViewBase {
     };
     this.wOe = e => {
       if (this.ActivityBaseData.GetStageInfoById(e)) {
-        UiManager_1.UiManager.OpenView("RoleGrowingTaskView", e);
+        UiManager_1.UiManager.OpenView("RoleGrowingTaskView", [this.ActivityBaseData, e]);
       } else {
         ActivityLongShanController_1.ActivityLongShanController.ShowUnlockTip(e);
       }
@@ -36,7 +36,7 @@ class RoleGrowingMainView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.ActivityBaseData = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
+    this.ActivityBaseData = this.OpenParam;
     var t = [];
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(() => {

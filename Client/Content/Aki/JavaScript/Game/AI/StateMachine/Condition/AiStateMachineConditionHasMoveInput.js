@@ -10,16 +10,18 @@ const AiStateMachineCondition_1 = require("./AiStateMachineCondition");
 class AiStateMachineConditionHasMoveInput extends AiStateMachineCondition_1.AiStateMachineCondition {
   constructor() {
     super(...arguments);
-    this.ywu = (t, e) => {
+    this.Awu = (t, e) => {
       this.ResultSelf = this.Node.MoveComponent.HasMoveInput;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHasMoveInput", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHasMoveInput", this.Node.Name);
+      }
     };
   }
   RegisterEvents() {
-    return !!super.RegisterEvents() && !!this.Node && !!this.Node.Entity && !EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.ywu) && !(EventSystem_1.EventSystem.AddWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.ywu), 0);
+    return !!super.RegisterEvents() && !!this.Node && !!this.Node.Entity && !EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu) && !(EventSystem_1.EventSystem.AddWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu), 0);
   }
   UnregisterEvents() {
-    return !!super.UnregisterEvents() && !!this.Node && !!this.Node.Entity && !!EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.ywu) && (EventSystem_1.EventSystem.RemoveWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.ywu), true);
+    return !!super.UnregisterEvents() && !!this.Node && !!this.Node.Entity && !!EventSystem_1.EventSystem.HasWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu) && (EventSystem_1.EventSystem.RemoveWithTarget(this.Node.Entity, EventDefine_1.EEventName.OnInputMoveChanged, this.Awu), true);
   }
   OnInit(t) {
     this.RegisterEvents();

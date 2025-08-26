@@ -23,7 +23,9 @@ class FishingHandBookRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.YDo = () => {
-      FishingController_1.FishingController.RequestFishingIllustratedReward(this.Jkt);
+      var e = ModelManager_1.ModelManager.FishingModel.FishingItemHandBookRewardMap;
+      var e = Array.from(e.values()).filter(e => e.IsFinished && !e.IsTaken).map(e => e.Id);
+      FishingController_1.FishingController.RequestMultiFishingIllustratedRewardRequest(e);
     };
     this.Ykt = () => {
       var e = ConfigManager_1.ConfigManager.FishingConfig.GetFishingIllustratedRewardById(this.Jkt);
@@ -56,12 +58,12 @@ class FishingHandBookRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.Desc);
     var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetDropShowInfo(e.DropId);
     var s = new Array();
-    for (const a of t.keys()) {
-      var n = [{
+    for (const n of t.keys()) {
+      var a = [{
         IncId: 0,
-        ItemId: a
-      }, t.get(a)];
-      s.push(n);
+        ItemId: n
+      }, t.get(n)];
+      s.push(a);
     }
     this.bOe?.RefreshByData(s);
   }

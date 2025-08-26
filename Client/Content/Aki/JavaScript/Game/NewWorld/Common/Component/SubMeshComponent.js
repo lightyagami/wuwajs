@@ -94,9 +94,9 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     this.CharRenderComp = undefined;
     this.SubMeshMap = new Map();
     this.SubMeshOrderMap = new Map();
-    this.j$c = 1;
-    this.H$c = new Map();
-    this.$$c = new Map();
+    this.cQc = 1;
+    this.dQc = new Map();
+    this.mQc = new Map();
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
@@ -105,8 +105,8 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     return true;
   }
   OnClear() {
-    this.H$c.clear();
-    this.$$c.clear();
+    this.dQc.clear();
+    this.mQc.clear();
     return true;
   }
   OnActivate() {
@@ -168,23 +168,23 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     this.SubMeshMap.get(t)?.ResetAttach();
   }
   SetHideMesh(t, e, s, i, h = 0) {
-    if (h && this.H$c.get(t) !== h) {
-      return this.H$c.get(t) ?? 0;
+    if (h && this.dQc.get(t) !== h) {
+      return this.dQc.get(t) ?? 0;
     }
-    var r = this.$$c.get(t);
+    var r = this.mQc.get(t);
     if (r) {
       for (const m of r[1]) {
         m.SetActorHiddenInGame(!r[0]);
       }
-      this.$$c.delete(t);
+      this.mQc.delete(t);
     }
-    h = this.j$c++;
-    this.H$c.set(t, h);
+    h = this.cQc++;
+    this.dQc.set(t, h);
     t.SetVisibility(e, s);
     if (i) {
       var o = !e;
       var n = new Array();
-      this.$$c.set(t, [o, n]);
+      this.mQc.set(t, [o, n]);
       var s = this.Entity.GetComponent(3);
       var a = new Array();
       if (s && s.Actor.Mesh === t) {
@@ -213,5 +213,5 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     return h;
   }
 };
-SubMeshComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(223)], SubMeshComponent);
+SubMeshComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(224)], SubMeshComponent);
 exports.SubMeshComponent = SubMeshComponent; //# sourceMappingURL=SubMeshComponent.js.map

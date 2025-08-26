@@ -13,9 +13,9 @@ const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 class FloroRanchRaceItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.CAu = undefined;
+    this.HAu = undefined;
     this.kqe = () => {
-      UiManager_1.UiManager.OpenView("FloroRanchRaceSelectView", this.CAu);
+      UiManager_1.UiManager.OpenView("FloroRanchRaceSelectView", this.HAu);
     };
   }
   OnRegisterComponent() {
@@ -23,9 +23,9 @@ class FloroRanchRaceItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[0, this.kqe]];
   }
   Refresh(e, r, t) {
-    this.CAu = e.SubDungeonData;
+    this.HAu = e.SubDungeonData;
     var a;
-    var i = this.CAu.RaceList;
+    var i = this.HAu.RaceList;
     var o = e.RaceId;
     this.GetSprite(1)?.SetUIActive(o === 0);
     if (o === 0) {

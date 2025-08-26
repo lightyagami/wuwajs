@@ -40,7 +40,7 @@ class BirthdayRoleSelectView extends UiViewBase_1.UiViewBase {
     };
     this.WI1 = () => {
       if (this.HI1) {
-        UiManager_1.UiManager.CloseAndOpenView(this.Info.Name, "BirthdaySelectConfirmView", new BirthdayDefine_1.BirthdayInfo(this.fL1, this.DI1, this.HI1));
+        UiManager_1.UiManager.OpenView("BirthdaySelectConfirmView", new BirthdayDefine_1.BirthdayInfo(this.fL1, this.DI1, this.HI1));
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("BirthdayUnSelectedRole");
       }

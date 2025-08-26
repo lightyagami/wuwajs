@@ -60,10 +60,10 @@ class PlatformSdkMac extends PlatformSdkBase_1.PlatformSdkBase {
     o.islogin = r.IsSdkLoggedIn() ? 1 : 0;
     o.from = e;
     o.RoleId = this.GetCustomServerRoleId();
-    o.RoleName = t.GetAccountName();
-    o.ServerId = r.GetServerId();
-    o.ServerName = r.GetServerName();
-    o.RoleLevel = t.GetPlayerLevel();
+    o.RoleName = t.GetAccountName() ?? "";
+    o.ServerId = r.GetServerId() ?? "";
+    o.ServerName = r.GetServerName() ?? "";
+    o.RoleLevel = t.GetPlayerLevel() ? t.GetPlayerLevel().toString() : "";
     o.ExtendsInfo = this.GetCustomServerExtendsInfo();
     var e = Json_1.Json.Stringify(o);
     if (Log_1.Log.CheckDebug()) {

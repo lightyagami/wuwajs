@@ -19,9 +19,6 @@ class FloroRanchIns {
   get Name() {
     return this.name();
   }
-  get PreIns() {
-    return this.preins();
-  }
   get DelayTime() {
     return this.delaytime();
   }
@@ -69,7 +66,7 @@ class FloroRanchIns {
     }
     return s;
   }
-  preins() {
+  delaytime() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -77,16 +74,8 @@ class FloroRanchIns {
       return 0;
     }
   }
-  delaytime() {
-    var t = this.J7.__offset(this.z7, 12);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   sortid() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -97,7 +86,7 @@ class FloroRanchIns {
     return this.subinslist(t);
   }
   subinslist(t) {
-    var s = this.J7.__offset(this.z7, 16);
+    var s = this.J7.__offset(this.z7, 14);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -105,7 +94,7 @@ class FloroRanchIns {
     }
   }
   subinslistLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -113,7 +102,7 @@ class FloroRanchIns {
     }
   }
   subinslistArray() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -121,7 +110,7 @@ class FloroRanchIns {
     }
   }
   difficulty() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -129,7 +118,7 @@ class FloroRanchIns {
     }
   }
   romeiconpath(t) {
-    var s = this.J7.__offset(this.z7, 20);
+    var s = this.J7.__offset(this.z7, 18);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);

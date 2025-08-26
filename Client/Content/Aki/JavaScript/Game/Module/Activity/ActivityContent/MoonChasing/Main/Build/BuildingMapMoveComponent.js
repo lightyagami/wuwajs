@@ -308,14 +308,13 @@ class BuildingMapMoveComponent {
       this.TCa = undefined;
     }
   }
-  OCa(t, i = 0, s = TWEEN_TIME, h) {
+  OCa(t, i = 0, s = TWEEN_TIME) {
     this.sRn(t);
     this.IsTweening = true;
     this.xCa();
     this.TCa = UE.LTweenBPLibrary.Vector2To(GlobalData_1.GlobalData.World, this.uGo, this.Jjs.GetAnchorOffset(), t.ToUeVector2D(true), s, 0, i);
     this.TCa.OnCompleteCallBack.Bind(() => {
       this.IsTweening = false;
-      h?.();
     });
   }
   wCa(t, i = 0) {
@@ -331,11 +330,11 @@ class BuildingMapMoveComponent {
     this.Q_t.X = -t * this.MapScale;
     this.Q_t.Y = -i * this.MapScale;
     if (h !== 0) {
-      this.OCa(this.Q_t, s, h, e);
+      this.OCa(this.Q_t, s, h);
     } else {
       this.wCa(this.Q_t);
-      e?.();
     }
+    e?.();
   }
   Zjs() {
     var t = Global_1.Global.CharacterController;

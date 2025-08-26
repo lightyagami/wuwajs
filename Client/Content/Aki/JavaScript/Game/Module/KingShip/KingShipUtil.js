@@ -11,7 +11,7 @@ class KingShipUtil {
       var i = a.Conditions.ConditionType === 1;
       let t = false;
       for (const s of a.Conditions.Conditions) {
-        let e = this.zMu(r.get(s.PropertyId) ?? 0, s.Target, s.Compare);
+        let e = this.JMu(r.get(s.PropertyId) ?? 0, s.Target, s.Compare);
         if (!a.IsSuccess && n.includes(s.PropertyId)) {
           e = false;
         }
@@ -28,7 +28,7 @@ class KingShipUtil {
       }
     }
   }
-  static zMu(e, t, r) {
+  static JMu(e, t, r) {
     switch (r) {
       case "Eq":
         return e === t;

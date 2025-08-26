@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.HitStaticFunction = exports.BulletStaticFunction = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
-const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
@@ -23,57 +22,58 @@ const GameSettingsDefine_1 = require("../../../GameSettings/GameSettingsDefine")
 const GameSettingsManager_1 = require("../../../GameSettings/GameSettingsManager");
 const GlobalData_1 = require("../../../GlobalData");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const BulletConstant_1 = require("../BulletConstant");
 const collisionColor = new UE.LinearColor(255, 80, 77, 1);
 const DRAW_SECTOR_ANGLE_PERIOD = 30;
 class BulletStaticFunction {
-  static CreateMultipleBoxToFan(e, i, o, a, s, l) {
-    let r = undefined;
-    r = o < MathCommon_1.MathCommon.FlatAngle ? BulletConstant_1.BulletConstant.FactorBoxSix : BulletConstant_1.BulletConstant.FactorBoxTwelve;
-    var c = new UE.Transform();
-    var n = new UE.Rotator(0);
-    let _ = o / r;
+  static CreateMultipleBoxToFan(e, i, o, a, l, r) {
+    let s = undefined;
+    s = o < MathCommon_1.MathCommon.FlatAngle ? BulletConstant_1.BulletConstant.FactorBoxSix : BulletConstant_1.BulletConstant.FactorBoxTwelve;
+    var n = new UE.Transform();
+    var c = new UE.Rotator(0);
+    let _ = o / s;
     var t = Vector_1.Vector.Create(i / 2, 0, 0);
     t.AdditionEqual(Vector_1.Vector.Create(a));
-    c.SetLocation(t.ToUeVectorOld());
-    var t = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, c, false);
+    n.SetLocation(t.ToUeVectorOld());
+    var t = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, n, false);
     t.LineThickness = 5;
     t.D_SetBoxExtent(Vector_1.Vector.OneVectorDouble, false);
-    t.SetCollisionProfileName(s);
-    l.add(t);
-    var u = Vector_1.Vector.Create(0, 0, 0);
-    for (let t = 0; t < r / 2; ++t) {
-      u.FromUeVector(Vector_1.Vector.ForwardVectorProxy);
-      u.RotateAngleAxis(_, Vector_1.Vector.UpVectorProxy, u);
-      u.MultiplyEqual(i / 2);
-      u.AdditionEqual(Vector_1.Vector.Create(a));
-      c.SetLocation(u.ToUeVectorOld());
-      u.Reset();
-      n.Yaw = _;
-      c.SetRotation(n.Quaternion());
-      var f = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, c, false);
-      f.LineThickness = 5;
-      f.D_SetBoxExtent(Vector_1.Vector.OneVectorDouble, false);
-      f.SetCollisionProfileName(s);
-      _ += o / r;
-      l.add(f);
+    t.SetCollisionProfileName(l);
+    r.add(t);
+    var f = Vector_1.Vector.Create(0, 0, 0);
+    for (let t = 0; t < s / 2; ++t) {
+      f.FromUeVector(Vector_1.Vector.ForwardVectorProxy);
+      f.RotateAngleAxis(_, Vector_1.Vector.UpVectorProxy, f);
+      f.MultiplyEqual(i / 2);
+      f.AdditionEqual(Vector_1.Vector.Create(a));
+      n.SetLocation(f.ToUeVectorOld());
+      f.Reset();
+      c.Yaw = _;
+      n.SetRotation(c.Quaternion());
+      var u = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, n, false);
+      u.LineThickness = 5;
+      u.D_SetBoxExtent(Vector_1.Vector.OneVectorDouble, false);
+      u.SetCollisionProfileName(l);
+      _ += o / s;
+      r.add(u);
     }
-    _ = -o / r;
-    for (let t = 0; t < r / 2; ++t) {
-      u.FromUeVector(Vector_1.Vector.ForwardVectorProxy);
-      u.RotateAngleAxis(_, Vector_1.Vector.UpVectorProxy, u);
-      u.MultiplyEqual(i / 2);
-      u.AdditionEqual(Vector_1.Vector.Create(a));
-      c.SetLocation(u.ToUeVectorOld());
-      u.Reset();
-      n.Yaw = _;
-      c.SetRotation(n.Quaternion());
-      var h = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, c, false);
+    _ = -o / s;
+    for (let t = 0; t < s / 2; ++t) {
+      f.FromUeVector(Vector_1.Vector.ForwardVectorProxy);
+      f.RotateAngleAxis(_, Vector_1.Vector.UpVectorProxy, f);
+      f.MultiplyEqual(i / 2);
+      f.AdditionEqual(Vector_1.Vector.Create(a));
+      n.SetLocation(f.ToUeVectorOld());
+      f.Reset();
+      c.Yaw = _;
+      n.SetRotation(c.Quaternion());
+      var h = e.AddComponentByClass(UE.BoxComponent.StaticClass(), false, n, false);
       h.LineThickness = 5;
       h.D_SetBoxExtent(Vector_1.Vector.OneVectorDouble, false);
-      h.SetCollisionProfileName(s);
-      _ -= o / r;
-      l.add(h);
+      h.SetCollisionProfileName(l);
+      _ -= o / s;
+      r.add(h);
     }
     return t;
   }
@@ -96,67 +96,67 @@ class BulletStaticFunction {
     return i.GetFloatValue(MathUtils_1.MathUtils.RangeClamp(t / e, 0, 1, a, o));
   }
   static DebugDrawRing(t, e, i, o, a) {
-    var s;
+    var l;
     if (!(i <= 0)) {
-      s = new UE.VectorDouble(o.X + a.X * t, o.Y + a.Y * t, o.Z + a.Z * t);
+      l = new UE.VectorDouble(o.X + a.X * t, o.Y + a.Y * t, o.Z + a.Z * t);
       o = new UE.VectorDouble(o.X - a.X * t, o.Y - a.Y * t, o.Z - a.Z * t);
       if (e > 0) {
-        UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, s, o, e, 32, collisionColor);
+        UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, l, o, e, 32, collisionColor);
       }
-      UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, s, o, i, 32, collisionColor);
+      UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, l, o, i, 32, collisionColor);
     }
   }
   static DebugDrawRingWithRotation(t, e, i, o, a) {
-    var s;
+    var l;
     if (!(i <= 0)) {
-      s = a.RotateVectorDouble(new UE.VectorDouble(0, 0, t)).op_Addition(o.ToUeVector());
+      l = a.RotateVectorDouble(new UE.VectorDouble(0, 0, t)).op_Addition(o.ToUeVector());
       a = a.RotateVectorDouble(new UE.VectorDouble(0, 0, -t)).op_Addition(o.ToUeVector());
       if (e > 0) {
-        UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, s, a, e, 32, collisionColor);
+        UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, l, a, e, 32, collisionColor);
       }
-      UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, s, a, i, 32, collisionColor);
+      UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.GameInstance, l, a, i, 32, collisionColor);
     }
   }
-  static DebugDrawSector(t, e, i, o, a, s, l, r) {
-    o.RotateVector(s, this.dHo);
+  static DebugDrawSector(t, e, i, o, a, l, r, s) {
+    o.RotateVector(l, this.dHo);
     this.dHo.Multiply(t, this.CHo);
     this.dHo.Multiply(-t, this.gHo);
     a.Addition(this.CHo, this.dHo);
     a.Addition(this.gHo, this.Tz);
-    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.Tz.ToUeVector(), l ?? collisionColor, r);
-    var c = i * MathUtils_1.MathUtils.DegToRad * 0.5;
-    this.fHo.Set(Math.cos(c) * e, Math.sin(c) * e, 0);
+    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.Tz.ToUeVector(), r ?? collisionColor, s);
+    var n = i * MathUtils_1.MathUtils.DegToRad * 0.5;
+    this.fHo.Set(Math.cos(n) * e, Math.sin(n) * e, 0);
     o.RotateVector(this.fHo, this.pHo);
     this.pHo.AdditionEqual(a);
     this.vHo.FromUeVector(this.pHo);
     this.pHo.AdditionEqual(this.CHo);
     this.vHo.AdditionEqual(this.gHo);
-    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.pHo.ToUeVector(), l ?? collisionColor, r);
-    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.Tz.ToUeVector(), this.vHo.ToUeVector(), l ?? collisionColor, r);
-    this.fHo.Set(Math.cos(-c) * e, Math.sin(-c) * e, 0);
+    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.pHo.ToUeVector(), r ?? collisionColor, s);
+    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.Tz.ToUeVector(), this.vHo.ToUeVector(), r ?? collisionColor, s);
+    this.fHo.Set(Math.cos(-n) * e, Math.sin(-n) * e, 0);
     o.RotateVector(this.fHo, this.pHo);
     this.pHo.AdditionEqual(a);
     this.vHo.FromUeVector(this.pHo);
     this.pHo.AdditionEqual(this.CHo);
     this.vHo.AdditionEqual(this.gHo);
-    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.pHo.ToUeVector(), this.vHo.ToUeVector(), l ?? collisionColor, r);
-    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.pHo.ToUeVector(), l ?? collisionColor, r);
-    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.Tz.ToUeVector(), this.vHo.ToUeVector(), l ?? collisionColor, r);
-    var n = Math.max(Math.ceil(i / DRAW_SECTOR_ANGLE_PERIOD), 2);
-    var _ = i / n * MathUtils_1.MathUtils.DegToRad;
-    for (let t = 1; t <= n; ++t) {
+    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.pHo.ToUeVector(), this.vHo.ToUeVector(), r ?? collisionColor, s);
+    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.pHo.ToUeVector(), r ?? collisionColor, s);
+    UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.Tz.ToUeVector(), this.vHo.ToUeVector(), r ?? collisionColor, s);
+    var c = Math.max(Math.ceil(i / DRAW_SECTOR_ANGLE_PERIOD), 2);
+    var _ = i / c * MathUtils_1.MathUtils.DegToRad;
+    for (let t = 1; t <= c; ++t) {
       this.dHo.FromUeVector(this.pHo);
       this.Tz.FromUeVector(this.vHo);
-      var u = -c + _ * t;
-      this.fHo.Set(Math.cos(u) * e, Math.sin(u) * e, 0);
+      var f = -n + _ * t;
+      this.fHo.Set(Math.cos(f) * e, Math.sin(f) * e, 0);
       o.RotateVector(this.fHo, this.pHo);
       this.pHo.AdditionEqual(a);
       this.vHo.FromUeVector(this.pHo);
       this.pHo.AdditionEqual(this.CHo);
       this.vHo.AdditionEqual(this.gHo);
-      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.pHo.ToUeVector(), this.vHo.ToUeVector(), l ?? collisionColor, r);
-      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.pHo.ToUeVector(), l ?? collisionColor, r);
-      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.Tz.ToUeVector(), this.vHo.ToUeVector(), l ?? collisionColor, r);
+      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.pHo.ToUeVector(), this.vHo.ToUeVector(), r ?? collisionColor, s);
+      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.dHo.ToUeVector(), this.pHo.ToUeVector(), r ?? collisionColor, s);
+      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.GameInstance, this.Tz.ToUeVector(), this.vHo.ToUeVector(), r ?? collisionColor, s);
     }
   }
   static SpawnHitEffect(t, e, i) {
@@ -174,20 +174,20 @@ class BulletStaticFunction {
     }
   }
   static PlayBulletEffect(t, e, i, o, a) {
-    let s = undefined;
-    if (o.AttackerActorComp?.Valid) {
-      (s = o.AttackerAudioComponent ? ((r = new EffectAudioContext_1.EffectAudioContext()).FromPrimaryRole = o.AttackerAudioComponent.CurrentPriority === 0, r) : new EffectContext_1.EffectContext()).EntityId = o.Attacker ? o.Attacker.Id : undefined;
-      s.SourceObject = o.AttackerActorComp.Owner;
-      s.DisablePostProcess = o.EffectInfo.DisablePostProcess;
-    }
     let l = undefined;
-    var r = o.BulletInitParams.Owner.GetComponent(3);
-    if (r) {
-      l = r.GetReplaceEffect(e);
+    if (o.AttackerActorComp?.Valid) {
+      (l = o.AttackerAudioComponent ? ((s = new EffectAudioContext_1.EffectAudioContext()).FromPrimaryRole = o.AttackerAudioComponent.CurrentPriority === 0, s) : new EffectContext_1.EffectContext()).EntityId = o.Attacker ? o.Attacker.Id : undefined;
+      l.SourceObject = o.AttackerActorComp.Owner;
+      l.DisablePostProcess = o.EffectInfo.DisablePostProcess;
     }
-    var r = EffectSystem_1.EffectSystem.SpawnEffect(t, i, l || e, a, s, 0);
-    EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, r, o.Attacker.GetComponent(122)?.GetTopForeverTimeScale(1) ?? 1);
-    var t = EffectSystem_1.EffectSystem.GetNiagaraComponent(r);
+    let r = undefined;
+    var s = o.BulletInitParams.Owner.GetComponent(3);
+    if (s) {
+      r = s.GetReplaceEffect(e);
+    }
+    var s = EffectSystem_1.EffectSystem.SpawnEffect(t, i, r || e, a, l, 0);
+    EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, s, o.Attacker?.GetComponent(123)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+    var t = EffectSystem_1.EffectSystem.GetNiagaraComponent(s);
     if (o.AttackerActorComp?.Valid && (i = o.AttackerActorComp.Owner, e = o.Attacker ? o.Attacker.Id : undefined, i) && e && (a = i.GetComponentByClass(UE.KuroEnviInteractionComponent.StaticClass())) && a.IsValid() && a.bUseSPModelShiftColor) {
       if (t instanceof UE.NiagaraComponent) {
         a.SetNiagaraCompShiftColor(t);
@@ -195,7 +195,7 @@ class BulletStaticFunction {
         t.SetEnviInteractionComp(a);
       }
     }
-    return r;
+    return s;
   }
   static DestroyEffect(t, e = true) {
     var i;
@@ -209,7 +209,7 @@ class BulletStaticFunction {
         if (o.IsFinishAuto) {
           if (e) {
             EffectSystem_1.EffectSystem.SetTimeScale(o.Effect, 1);
-            i = t.Attacker.GetComponent(122)?.GetTopForeverTimeScale(1) ?? 1;
+            i = t.Attacker?.GetComponent(123)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
             EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, o.Effect, i);
           }
           EffectSystem_1.EffectSystem.StopEffectById(o.Effect, "[BulletStaticFunction.DestroyEffect] IsFinishAuto=true", false);
@@ -271,12 +271,7 @@ class HitStaticFunction {
   }
   static PlayHitAudioByActor(t, e, i) {
     if (!!e && !StringUtils_1.StringUtils.IsBlank(e) && !ControllerHolder_1.ControllerHolder.EffectAudioController.CheckHitEffectCooldownTime(4, e)) {
-      t = AudioSystem_1.AudioSystem.GetAkComponent(t, {
-        OnCreated: t => {
-          ControllerHolder_1.ControllerHolder.GameAudioController.SetRolePriority(i ?? 2, t);
-        }
-      });
-      AudioSystem_1.AudioSystem.PostEvent(e, t);
+      ControllerHolder_1.ControllerHolder.EffectAudioController.AddPlayEffectAudio(e, t, 4, i === 0 ? 0 : 2);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Audio", 20, "播放子弹命中音效", ["Event", e]);
       }
@@ -286,10 +281,10 @@ class HitStaticFunction {
     if (e) {
       var o;
       var a = e.GetComponent(51);
-      var s = e.GetComponent(1);
+      var l = e.GetComponent(1);
       let t = undefined;
-      if (s?.Valid) {
-        (t = a ? ((o = new EffectAudioContext_1.EffectAudioContext()).FromPrimaryRole = a.CurrentPriority === 0, o) : new EffectContext_1.EffectContext()).SourceObject = s?.Owner;
+      if (l?.Valid) {
+        (t = a ? ((o = new EffectAudioContext_1.EffectAudioContext()).FromPrimaryRole = a.CurrentPriority === 0, o) : new EffectContext_1.EffectContext()).SourceObject = l?.Owner;
         t.EntityId = e.Id;
         t.DisablePostProcess = i;
       }

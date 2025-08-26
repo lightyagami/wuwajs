@@ -54,7 +54,7 @@ class PlotTransitionView extends UiViewBase_1.UiViewBase {
     this.qZi = undefined;
     this.GZi = undefined;
     this.NZi = undefined;
-    this.bnu = undefined;
+    this.Jnu = undefined;
     this.OZi = () => {
       var i;
       if (this.PZi !== 4 && this.PZi !== 3) {
@@ -83,7 +83,7 @@ class PlotTransitionView extends UiViewBase_1.UiViewBase {
         i = ModelManager_1.ModelManager.PlotModel.PlotTextReplacer.Replace(e.Text);
         (t = this.GetText(0)).SetText(i);
         t.SetUIActive(true);
-        this.QRu();
+        this.gLu();
         this.WZi();
         this.KZi();
         this.QZi(i.length);
@@ -124,7 +124,7 @@ class PlotTransitionView extends UiViewBase_1.UiViewBase {
           this.pZi();
         }
         this.MZi(this.AZi.TalkAkEvent);
-        this.bnu = this.AZi.TalkEndAkEvent;
+        this.Jnu = this.AZi.TalkEndAkEvent;
       }
       ModelManager_1.ModelManager.PlotModel.CenterText.Clear();
     };
@@ -270,7 +270,7 @@ class PlotTransitionView extends UiViewBase_1.UiViewBase {
     this.ExecuteCallBack();
     this.AZi = undefined;
     this.bZi = undefined;
-    this.bnu = undefined;
+    this.Jnu = undefined;
   }
   VZi(i, t) {
     var e = this.XYt.GetPlayTween();
@@ -323,8 +323,8 @@ class PlotTransitionView extends UiViewBase_1.UiViewBase {
     }
   }
   JZi() {
-    this.MZi(this.bnu);
-    this.bnu = undefined;
+    this.MZi(this.Jnu);
+    this.Jnu = undefined;
     AudioController_1.AudioController.StopEvent(this.lZi);
   }
   WZi() {
@@ -432,7 +432,7 @@ class PlotTransitionView extends UiViewBase_1.UiViewBase {
       this.QYt.SetSelectorOffset(0);
     }
   }
-  QRu() {
+  gLu() {
     var i = this.AZi.Config?.IsCancelAutoLine ?? false ? 0 : 1;
     var t = this.GetText(0);
     if (t) {

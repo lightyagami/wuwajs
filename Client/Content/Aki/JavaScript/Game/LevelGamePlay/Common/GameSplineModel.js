@@ -10,6 +10,7 @@ const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const GameSplineUtils_1 = require("./GameSplineUtils");
 const TsGameSplineActor_1 = require("./TsGameSplineActor");
@@ -47,23 +48,23 @@ class SplineAnalyzeData {
     } else {
       r = MathUtils_1.MathUtils.Lerp(this.Kdl[s], this.Kdl[s + 1], i - s);
     }
-    var h = r + t;
+    var o = r + t;
     if (t > 0) {
-      while (s < this.Kdl.length && this.Kdl[s] < h) {
+      while (s < this.Kdl.length && this.Kdl[s] < o) {
         ++s;
       }
       if (s === this.Kdl.length) {
         return this.xdt - 1;
       }
-      i = s - (this.Kdl[s] - h) / (this.Kdl[s] - this.Kdl[s - 1]);
+      i = s - (this.Kdl[s] - o) / (this.Kdl[s] - this.Kdl[s - 1]);
     } else {
-      while (s >= 0 && this.Kdl[s] > h) {
+      while (s >= 0 && this.Kdl[s] > o) {
         --s;
       }
       if (s < 0) {
         return 0;
       }
-      i = s + (h - this.Kdl[s]) / (this.Kdl[s + 1] - this.Kdl[s]);
+      i = s + (o - this.Kdl[s]) / (this.Kdl[s + 1] - this.Kdl[s]);
     }
     return i / this.Qdl;
   }
@@ -88,6 +89,16 @@ class GameSplineModel extends ModelBase_1.ModelBase {
               break;
             case 1:
               if (!EntitySystem_1.EntitySystem.Get(i.Id)) {
+                t[2].delete(i);
+              }
+              break;
+            case 2:
+              if (!ModelManager_1.ModelManager.TowerDefenseEventModel.GetEntity(i.Id)) {
+                t[2].delete(i);
+              }
+              break;
+            case 3:
+              if (!ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsInPreview()) {
                 t[2].delete(i);
               }
           }

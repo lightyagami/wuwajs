@@ -4,9 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LogicNodeBase = undefined;
+const UE = require("ue");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const PublicUtil_1 = require("../../../../Common/PublicUtil");
+const GlobalData_1 = require("../../../../GlobalData");
 const LevelGeneralController_1 = require("../../../../LevelGamePlay/LevelGeneralController");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const SneakController_1 = require("../../../../World/Controller/SneakController");
@@ -24,23 +26,26 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   get SilentAreaInfoViewConfig() {
     return this.Config?.InformationView?.InformationView;
   }
-  OnCreate(i) {
-    this.Config = i;
-    this.TrackTarget = i.UIConfig?.TrackTarget;
+  OnCreate(t) {
+    this.Config = t;
+    this.TrackTarget = t.UIConfig?.TrackTarget;
     return true;
   }
   OnNodeActive() {
-    var i;
-    var t = this.Config;
-    if (t.DungeonId) {
-      this.Blackboard.DungeonId = t.DungeonId;
+    var t;
+    var i = this.Config;
+    if (i.DungeonId) {
+      this.Blackboard.DungeonId = i.DungeonId;
       this.Blackboard.ChangeDungeonIdNodeId = this.InnerNodeId;
     }
-    if (t.DisableOnline) {
+    if (i.DisableOnline) {
       this.L$t(true);
     }
-    if (t.DisableTrackAnim && LevelGeneralController_1.LevelGeneralController.CheckConditionNew(t.DisableTrackAnim.Condition, undefined, this.Context)) {
+    if (i.DisableTrackAnim && LevelGeneralController_1.LevelGeneralController.CheckConditionNew(i.DisableTrackAnim.Condition, undefined, this.Context)) {
       this.Blackboard?.AddTag(16, this.NodeId.toString());
+    }
+    if (i.DisableSkeletalAnimationCheck) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck false");
     }
     if (this.CustomUiConfig) {
       this.AddTag(0);
@@ -48,12 +53,12 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.SilentAreaInfoViewConfig) {
       this.Blackboard?.AddSilentShowInfo(this.NodeId, this.SilentAreaInfoViewConfig);
     }
-    if (t.CompositeTrackViewMode) {
-      this.Blackboard.TrackViewModel = t.CompositeTrackViewMode;
+    if (i.CompositeTrackViewMode) {
+      this.Blackboard.TrackViewModel = i.CompositeTrackViewMode;
       this.AddTrackViewMode = true;
     }
-    if (this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (i = ModelManager_1.ModelManager.QuestNewModel, t.TidQuestAliasName && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidQuestAliasName)) && i.SetQuestStageName(this.TreeConfigId, t.TidQuestAliasName), t.TidQuestAliasDesc && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidQuestAliasDesc)) && i.SetQuestStageDesc(this.TreeConfigId, t.TidQuestAliasDesc), t = t.RewardConfig?.RewardId)) {
-      i.SetQuestStageReward(this.TreeConfigId, t);
+    if (this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (t = ModelManager_1.ModelManager.QuestNewModel, i.TidQuestAliasName && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(i.TidQuestAliasName)) && t.SetQuestStageName(this.TreeConfigId, i.TidQuestAliasName), i.TidQuestAliasDesc && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(i.TidQuestAliasDesc)) && t.SetQuestStageDesc(this.TreeConfigId, i.TidQuestAliasDesc), i = i.RewardConfig?.RewardId)) {
+      t.SetQuestStageReward(this.TreeConfigId, i);
     }
     if (this.Config?.SpecialGamePlayConfig) {
       SneakController_1.SneakController.StartSneaking();
@@ -62,15 +67,15 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
       this.Blackboard.RollbackPoint = this.NodeId;
     }
   }
-  OnNodeDeActive(i) {
-    var t;
+  OnNodeDeActive(t) {
+    var i;
     this.RemoveTag(0);
     this.Blackboard?.RemoveTag(16, this.NodeId.toString());
     if (this.SilentAreaInfoViewConfig) {
       this.Blackboard?.RemoveSilentShowInfo(this.NodeId);
     }
-    if (this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (t = ModelManager_1.ModelManager.QuestNewModel, this.Config.TidQuestAliasName && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(this.Config.TidQuestAliasName)) && t.SetQuestStageName(this.TreeConfigId, ""), this.Config.TidQuestAliasDesc && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(this.Config.TidQuestAliasDesc)) && t.SetQuestStageDesc(this.TreeConfigId, ""), this.Config.RewardConfig?.RewardId)) {
-      t.SetQuestStageReward(this.TreeConfigId, 0);
+    if (this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (i = ModelManager_1.ModelManager.QuestNewModel, this.Config.TidQuestAliasName && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(this.Config.TidQuestAliasName)) && i.SetQuestStageName(this.TreeConfigId, ""), this.Config.TidQuestAliasDesc && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(this.Config.TidQuestAliasDesc)) && i.SetQuestStageDesc(this.TreeConfigId, ""), this.Config.RewardConfig?.RewardId)) {
+      i.SetQuestStageReward(this.TreeConfigId, 0);
     }
     if (this.AddTrackViewMode) {
       this.Blackboard.TrackViewModel = "All";
@@ -91,15 +96,18 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.Config.DisableOnline) {
       this.L$t(false);
     }
-    super.OnNodeDeActive(i);
+    if (this.Config.DisableSkeletalAnimationCheck) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck true");
+    }
+    super.OnNodeDeActive(t);
   }
-  L$t(i) {
+  L$t(t) {
     switch (this.BtType) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
-        ModelManager_1.ModelManager.OnlineModel.DisableOnline(0, i, this.TreeConfigId, this.NodeId);
+        ModelManager_1.ModelManager.OnlineModel.DisableOnline(0, t, this.TreeConfigId, this.NodeId);
         break;
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay:
-        ModelManager_1.ModelManager.OnlineModel.DisableOnline(1, i, this.TreeConfigId, this.NodeId);
+        ModelManager_1.ModelManager.OnlineModel.DisableOnline(1, t, this.TreeConfigId, this.NodeId);
     }
   }
 }

@@ -3,27 +3,28 @@
 var CharacterGlideComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, h) {
   var s;
-  var a = arguments.length;
-  var o = a < 3 ? e : h === null ? h = Object.getOwnPropertyDescriptor(e, i) : h;
+  var o = arguments.length;
+  var a = o < 3 ? e : h === null ? h = Object.getOwnPropertyDescriptor(e, i) : h;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, e, i, h);
+    a = Reflect.decorate(t, e, i, h);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (s = t[r]) {
-        o = (a < 3 ? s(o) : a > 3 ? s(e, i, o) : s(e, i)) || o;
+        a = (o < 3 ? s(a) : o > 3 ? s(e, i, a) : s(e, i)) || a;
       }
     }
   }
-  if (a > 3 && o) {
-    Object.defineProperty(e, i, o);
+  if (o > 3 && a) {
+    Object.defineProperty(e, i, a);
   }
-  return o;
+  return a;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CharacterGlideComponent = exports.SoarConfigParams = exports.SOAR_CAMERA_SHAKE_SPEED_THRESHOLD_MAX = exports.SOAR_CAMERA_SHAKE_SPEED_THRESHOLD = exports.SOAR_AUTO_FLIGHT_PATH = exports.SOAR_CAMERA_SHAKE_CURVE_PATH = exports.SOAR_CAMERA_SHAKE_PATH = exports.SOAR_CONFIG_BASE_PATH = undefined;
 const cpp_1 = require("cpp");
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Time_1 = require("../../../../../Core/Common/Time");
@@ -39,8 +40,10 @@ const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../../GlobalData");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const FormationAttributeController_1 = require("../../../../Module/Abilities/FormationAttributeController");
 const ScrollingTipsController_1 = require("../../../../Module/ScrollingTips/ScrollingTipsController");
 const GravityUtils_1 = require("../../../../Utils/GravityUtils");
+const VoxelUtils_1 = require("../../../../Utils/VoxelUtils");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const CustomMovementDefine_1 = require("./Move/CustomMovementDefine");
 const FLYING_GRAVITY = 15;
@@ -50,6 +53,7 @@ const FLYING_ACCELERATOR = 55;
 const FLYING_MAX_SPEED = 650;
 const FLYING_MAX_FALLING_SPEED = 250;
 const ROAM_EFFECT_BUFF_ID = 613670000;
+const DETECT_VOXEL_DOWN_OFFSET = 2500;
 exports.SOAR_CONFIG_BASE_PATH = "/Game/Aki/Data/Fight/Movement/DA_SoarConfigBase.DA_SoarConfigBase";
 exports.SOAR_CAMERA_SHAKE_PATH = "/Game/Aki/Character/Role/Common/Data/CameraShake/Camera/NCS_Role_Soar.NCS_Role_Soar_C";
 exports.SOAR_CAMERA_SHAKE_CURVE_PATH = "/Game/Aki/Character/Role/Common/Data/CameraShake/Camera/CameraShake_Curve.CameraShake_Curve";
@@ -194,6 +198,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     this.DVr = () => {
       this.RefreshSoarBoost();
       this.Z5l();
+      this.vWc();
     };
     this.hUe = (t, e) => {
       if (e === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
@@ -206,13 +211,13 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
         this.p$l = 1;
         this.Ioh = 0;
         this.vTa = 0;
-        this.WSu();
+        this.$7c();
         this.Xte?.AddTag(410756488);
         cpp_1.FKuroPerfSightHelper.BeginExtTag("Soar");
       }
       if (t === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
         cpp_1.FKuroPerfSightHelper.EndExtTag("Soar");
-        this.WSu();
+        this.$7c();
       }
       this.RefreshSoarBoost();
       this.Z5l();
@@ -235,16 +240,10 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     };
     this.z5r = t => {
       if (!ModelManager_1.ModelManager.SeamlessTravelModel?.GetIsKeepingCurrentMovementMode() && !ModelManager_1.ModelManager.TeleportModel?.GetIsKeepingCurrentMovementMode()) {
-        if (!this.Xte?.HasTag(1151923109) || this.Xte?.HasTag(1226693610)) {
-          if (this.Xte?.HasTag(-8769906)) {
-            this.ExitSoarState();
-          } else {
-            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_001");
-            this.EnterGlideState();
-          }
-        } else {
+        var e = this.CheckSoarAllowed();
+        if (e[0]) {
           this.zdl = this.Xdl !== undefined && this.Xdl.Active && this.Xdl.CurrentSplineMoveType === "AirPassage";
-          if (this.Xte.HasTag(-1956426709)) {
+          if (this.Xte?.HasTag(-1956426709)) {
             let e = 0;
             let i = 0;
             if (t > SOAR_MAX_DELTA * SOAR_MAX_ITER) {
@@ -269,6 +268,16 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
           } else {
             this.p$l = 0;
           }
+        } else {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Movement", 39, "Soar not allowed", ["Reason", e[1]]);
+          }
+          if (this.Xte?.HasTag(-8769906) || FormationAttributeController_1.FormationAttributeController.GetValue(1) <= 10) {
+            this.ExitSoarState();
+          } else {
+            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_001");
+            this.EnterGlideState();
+          }
         }
       }
     };
@@ -281,6 +290,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
         this.Bnh = t.Bnh;
         this.CurrentSoarType = t.CurrentSoarType;
         t.CurrentSoarType = 0;
+        this.vWc();
       }
     };
     this.eVr = (t, e) => {
@@ -289,6 +299,17 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     this.o7l = (t, e) => {
       this.i7l = e;
       this.RefreshSoarBoost();
+    };
+    this.vWc = () => {
+      var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1015;
+      var e = this.Entity.GetComponent(176).PositionState;
+      if (t && e === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+        if (!this.Xte?.HasTag(1340982160)) {
+          this.Xte?.AddTag(1340982160);
+        }
+      } else {
+        this.Xte?.RemoveTag(1340982160);
+      }
     };
   }
   get SoarBoostOn() {
@@ -372,6 +393,31 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
       this.f$l = t;
     }
   }
+  CheckSoarAllowed() {
+    if (!ModelManager_1.ModelManager.FunctionModel?.IsOpen(10026010)) {
+      return [false, "翱翔功能未开启"];
+    }
+    if (ModelManager_1.ModelManager.FunctionModel?.IsLimit(10026010)) {
+      return [false, "翱翔功能被限制"];
+    }
+    if (!this.Xte?.HasTag(1151923109)) {
+      return [false, "缺少准用Tag"];
+    }
+    if (this.Xte?.HasTag(1226693610)) {
+      return [false, "持有禁用Tag"];
+    }
+    if (ModelManager_1.ModelManager.WorldModel?.IsEnableEnvironmentDetecting && ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition) {
+      var t = GlobalData_1.GlobalData.World;
+      var e = (0, puerts_1.$ref)(undefined);
+      if (t?.IsValid() && this.Hte && VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(t, this.Hte.ActorLocation, e, this.Hte.ScaledHalfHeight + DETECT_VOXEL_DOWN_OFFSET)) {
+        t = (0, puerts_1.$unref)(e).EnvType;
+        if (t === 0 || t === 2 || t === 1 || t === 3) {
+          return [false, "检测到封闭或过渡区域"];
+        }
+      }
+    }
+    return [true, undefined];
+  }
   E1l(e) {
     if (this.Hte && this.o4o) {
       if (this.Hkl.DebugDraw && Log_1.Log.CheckDebug()) {
@@ -400,16 +446,18 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.o4o = this.Entity.CheckGetComponent(178);
+    this.o4o = this.Entity.CheckGetComponent(179);
     this.H5r = this.Entity.CheckGetComponent(81);
-    this.Xte = this.Entity.CheckGetComponent(205);
-    this.oRe = this.Entity.CheckGetComponent(177);
-    this.Xdl = this.Entity.GetComponent(108);
+    this.Xte = this.Entity.CheckGetComponent(206);
+    this.oRe = this.Entity.CheckGetComponent(178);
+    this.Xdl = this.Entity.GetComponent(109);
     this.Hkl = SoarConfigParams.SoarConfigBase;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.hUe);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveGlide, this.J5r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSoar, this.z5r);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.vWc);
+    this.vWc();
     this.j5r = this.Xte.ListenForTagAddOrRemove(-1819043374, this.eVr);
     this.e7l = this.Xte.ListenForTagAddOrRemove(1317391447, this.o7l);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.OnStateInherit);
@@ -420,6 +468,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveGlide, this.J5r);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSoar, this.z5r);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.vWc);
     this.j5r.EndTask();
     this.j5r = undefined;
     this.e7l.EndTask();
@@ -427,31 +476,31 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.OnStateInherit);
     return true;
   }
-  EnterGlideState() {
+  EnterGlideState(t = "CharacterGlideComponent") {
     this.Hte.Actor.KuroSetMovementMode({
       Mode: 6,
       CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_GLIDE,
-      Context: "[CharacterDriveVehicleComponent.EnterGlideState]"
+      Context: t
     });
   }
-  ExitGlideState() {
+  ExitGlideState(t = "CharacterGlideComponent") {
     this.Hte.Actor.KuroSetMovementMode({
       Mode: 3,
       CustomMode: 0,
-      Context: "[CharacterDriveVehicleComponent.ExitGlideState]"
+      Context: t
     });
   }
-  EnterSoarState() {
+  EnterSoarState(t = "CharacterGlideComponent") {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Test", 6, "EnterSoarState", ["Entity", this.Entity.Id]);
     }
     this.Hte.Actor.KuroSetMovementMode({
       Mode: 6,
       CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SOAR,
-      Context: "[CharacterDriveVehicleComponent.EnterSoarState]"
+      Context: t
     });
   }
-  ExitSoarState(t = 3) {
+  ExitSoarState(t = 3, e = "CharacterGlideComponent") {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Test", 6, "ExitSoarState", ["Entity", this.Entity.Id], ["NewMovementMode", t]);
     }
@@ -459,7 +508,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     this.Hte.Actor.KuroSetMovementMode({
       Mode: t,
       CustomMode: 0,
-      Context: "[CharacterDriveVehicleComponent.ExitSoarState]"
+      Context: e
     });
   }
   CalculateSoarQuat() {
@@ -514,27 +563,27 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
       var h;
       var s = this.Hte.InputDirectProxy.X > this.Hkl.SoarBalanceInputThreshold;
       t = s ? (e = this.Hkl.SoarBalanceSpeed2, this.Hkl.SoarBalanceSpeedThreshold2) : (e = this.Hkl.SoarBalanceSpeed, this.Hkl.SoarBalanceSpeedThreshold);
-      var a = this.Hte.ActorVelocityProxy;
-      var o = a.SizeSquared();
-      if (!(o > t * t)) {
+      var o = this.Hte.ActorVelocityProxy;
+      var a = o.SizeSquared();
+      if (!(a > t * t)) {
         if (s) {
-          CharacterGlideComponent_1.Lz.DeepCopy(a);
-          CharacterGlideComponent_1.Lz.MultiplyEqual(e / Math.sqrt(o));
+          CharacterGlideComponent_1.Lz.DeepCopy(o);
+          CharacterGlideComponent_1.Lz.MultiplyEqual(e / Math.sqrt(a));
         } else {
           this.Hte.ActorQuatProxy.RotateVector(this.Hkl.SoarBalanceVelocity, CharacterGlideComponent_1.Lz);
         }
-        CharacterGlideComponent_1.Lz.SubtractionEqual(a);
+        CharacterGlideComponent_1.Lz.SubtractionEqual(o);
         s = CharacterGlideComponent_1.Lz.SizeSquared();
-        o = Math.abs(a.Size() - e);
-        h = MathUtils_1.MathUtils.RangeClamp(o, 0, this.Hkl.SoarBalanceAccelOffset, this.Hkl.SoarBalanceAccelMin, this.Hkl.SoarBalanceAccelMax);
+        a = Math.abs(o.Size() - e);
+        h = MathUtils_1.MathUtils.RangeClamp(a, 0, this.Hkl.SoarBalanceAccelOffset, this.Hkl.SoarBalanceAccelMin, this.Hkl.SoarBalanceAccelMax);
         this.SoarBalanceOn = true;
         if (this.Hkl.DebugDraw && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Movement", 6, "Soar BALANCE", ["OffsetVector", CharacterGlideComponent_1.Lz], ["speedOffset", o], ["accel", h]);
+          Log_1.Log.Debug("Movement", 6, "Soar BALANCE", ["OffsetVector", CharacterGlideComponent_1.Lz], ["speedOffset", a], ["accel", h]);
         }
         if (h * h * i * i < s) {
           CharacterGlideComponent_1.Lz.MultiplyEqual(h * i / Math.sqrt(s));
         }
-        CharacterGlideComponent_1.Lz.AdditionEqual(a);
+        CharacterGlideComponent_1.Lz.AdditionEqual(o);
         this.Hte.SetActorVelocity(CharacterGlideComponent_1.Lz);
       }
     }
@@ -572,8 +621,8 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   Zhh(t, e, i) {
     var h;
     var s;
-    var a;
-    if (this.Hte && (i = MathUtils_1.MathUtils.RangeClamp(i, this.Hkl.SoarSpeedThresholdMin, this.Hkl.SoarSpeedThresholdMax, this.Hkl.SoarInputNormalAngleMin, this.Hkl.SoarInputNormalAngleMax), this.Hte.ActorQuatProxy.Inverse(CharacterGlideComponent_1.az), CharacterGlideComponent_1.az.RotateVector(this.K5r, CharacterGlideComponent_1.Lz), h = Math.atan2(CharacterGlideComponent_1.Lz.Z, CharacterGlideComponent_1.Lz.X) * MathUtils_1.MathUtils.RadToDeg, this.Q5r.RotateVector(Vector_1.Vector.UpVectorProxy, CharacterGlideComponent_1.Tz), CharacterGlideComponent_1.az.RotateVector(CharacterGlideComponent_1.Tz, CharacterGlideComponent_1.Lz), a = Math.atan2(CharacterGlideComponent_1.Lz.Z, CharacterGlideComponent_1.Lz.X) * MathUtils_1.MathUtils.RadToDeg, s = -this.Ydl.X * i + a, this.Hkl.DebugDraw && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 6, "Soar Normal", ["InputAngle", i], ["currentAngle", h], ["baseAngle", a], ["OffsetNormalAngle", this.Ioh], ["targetAngle", s]), i = s - (h + this.Ioh), a = (this.t7l ? this.Hkl.SoarBoostNormalSpeed : this.Hkl.SoarNormalSpeed) * t, Math.abs(i) < a ? this.Ioh += i : this.Ioh += Math.sign(i) * a, s = Math.pow(1 - (this.t7l ? this.Hkl.SoarBoostNormalLerp : this.Hkl.SoarNormalLerp), t), i = MathUtils_1.MathUtils.Clamp(h + this.Ioh * (1 - s), this.Hkl.SoarPitchMin, this.Hkl.SoarPitchMax), this.Ioh *= s, a = i * MathUtils_1.MathUtils.DegToRad, CharacterGlideComponent_1.Lz.X = Math.cos(a), CharacterGlideComponent_1.Lz.Y = 0, CharacterGlideComponent_1.Lz.Z = Math.sin(a), this.Hte.ActorQuatProxy.RotateVector(CharacterGlideComponent_1.Lz, this.K5r), this.Hkl.DebugDraw)) {
+    var o;
+    if (this.Hte && (i = MathUtils_1.MathUtils.RangeClamp(i, this.Hkl.SoarSpeedThresholdMin, this.Hkl.SoarSpeedThresholdMax, this.Hkl.SoarInputNormalAngleMin, this.Hkl.SoarInputNormalAngleMax), this.Hte.ActorQuatProxy.Inverse(CharacterGlideComponent_1.az), CharacterGlideComponent_1.az.RotateVector(this.K5r, CharacterGlideComponent_1.Lz), h = Math.atan2(CharacterGlideComponent_1.Lz.Z, CharacterGlideComponent_1.Lz.X) * MathUtils_1.MathUtils.RadToDeg, this.Q5r.RotateVector(Vector_1.Vector.UpVectorProxy, CharacterGlideComponent_1.Tz), CharacterGlideComponent_1.az.RotateVector(CharacterGlideComponent_1.Tz, CharacterGlideComponent_1.Lz), o = Math.atan2(CharacterGlideComponent_1.Lz.Z, CharacterGlideComponent_1.Lz.X) * MathUtils_1.MathUtils.RadToDeg, s = -this.Ydl.X * i + o, this.Hkl.DebugDraw && Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 6, "Soar Normal", ["InputAngle", i], ["currentAngle", h], ["baseAngle", o], ["OffsetNormalAngle", this.Ioh], ["targetAngle", s]), i = s - (h + this.Ioh), o = (this.t7l ? this.Hkl.SoarBoostNormalSpeed : this.Hkl.SoarNormalSpeed) * t, Math.abs(i) < o ? this.Ioh += i : this.Ioh += Math.sign(i) * o, s = Math.pow(1 - (this.t7l ? this.Hkl.SoarBoostNormalLerp : this.Hkl.SoarNormalLerp), t), i = MathUtils_1.MathUtils.Clamp(h + this.Ioh * (1 - s), this.Hkl.SoarPitchMin, this.Hkl.SoarPitchMax), this.Ioh *= s, o = i * MathUtils_1.MathUtils.DegToRad, CharacterGlideComponent_1.Lz.X = Math.cos(o), CharacterGlideComponent_1.Lz.Y = 0, CharacterGlideComponent_1.Lz.Z = Math.sin(o), this.Hte.ActorQuatProxy.RotateVector(CharacterGlideComponent_1.Lz, this.K5r), this.Hkl.DebugDraw)) {
       CharacterGlideComponent_1.Lz.X = Math.cos((i + this.Ioh) * MathUtils_1.MathUtils.DegToRad) * 100;
       CharacterGlideComponent_1.Lz.Y = 0;
       CharacterGlideComponent_1.Lz.Z = Math.sin((i + this.Ioh) * MathUtils_1.MathUtils.DegToRad) * 100;
@@ -622,20 +671,20 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     var i = this.Hte;
     var h = this.Xdl;
     var s = this.oRe?.HasKuroRootMotion;
-    var a = !i.InputDirectProxy.IsNearlyZero();
-    const o = i.ActorVelocityProxy;
-    var r = o.Size();
+    var o = !i.InputDirectProxy.IsNearlyZero();
+    const a = i.ActorVelocityProxy;
+    var r = a.Size();
     var n = h.CurrentSplineMoveParams;
-    if (s || !a) {
-      s = h.SplineDirection.DotProduct(o) > 0;
-      a = n.SplineAnalyzeData.GetKeyTimeByLengthOffset(h.SplineTimeKey, Math.max(this.Hkl.SoarSplineMinSpeed, r) * (s ? 0.5 : -0.5));
+    if (s || !o) {
+      s = h.SplineDirection.DotProduct(a) > 0;
+      o = n.SplineAnalyzeData.GetKeyTimeByLengthOffset(h.SplineTimeKey, Math.max(this.Hkl.SoarSplineMinSpeed, r) * (s ? 0.5 : -0.5));
       if (this.Hkl.DebugDraw) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Test", 6, "Soar Spline", ["CurrentKeyTime", h.SplineTimeKey], ["Predict", a]);
+          Log_1.Log.Debug("Test", 6, "Soar Spline", ["CurrentKeyTime", h.SplineTimeKey], ["Predict", o]);
         }
         UE.KismetSystemLibrary.D_DrawDebugArrow(i.Actor, i.ActorLocation, CharacterGlideComponent_1.Lz.ToUeVector(), 100, greenColor, undefined, 10);
       }
-      CharacterGlideComponent_1.Lz.FromUeVector(n.Spline.GetDirectionAtSplineInputKey(a, 1));
+      CharacterGlideComponent_1.Lz.FromUeVector(n.Spline.GetDirectionAtSplineInputKey(o, 1));
       if (!s) {
         CharacterGlideComponent_1.Lz.MultiplyEqual(-1);
       }
@@ -648,45 +697,45 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
       CharacterGlideComponent_1.az.RotateVector(CharacterGlideComponent_1.Lz, CharacterGlideComponent_1.Tz);
       if (CharacterGlideComponent_1.Tz.X < this.Hkl.SoarSplineInputDirectMinX) {
         CharacterGlideComponent_1.Tz.X = this.Hkl.SoarSplineInputDirectMinX;
-        if ((a = CharacterGlideComponent_1.Tz.SizeSquared2D()) >= 1) {
+        if ((o = CharacterGlideComponent_1.Tz.SizeSquared2D()) >= 1) {
           CharacterGlideComponent_1.Tz.Y = Math.sign(CharacterGlideComponent_1.Tz.Y) * Math.sqrt(1 - CharacterGlideComponent_1.Tz.X * CharacterGlideComponent_1.Tz.X);
           CharacterGlideComponent_1.Tz.Z = 0;
         } else {
-          CharacterGlideComponent_1.Tz.Z = Math.sign(CharacterGlideComponent_1.Tz.Z) * Math.sqrt(1 - a);
+          CharacterGlideComponent_1.Tz.Z = Math.sign(CharacterGlideComponent_1.Tz.Z) * Math.sqrt(1 - o);
         }
         this.Hte.ActorQuatProxy.RotateVector(CharacterGlideComponent_1.Tz, CharacterGlideComponent_1.Lz);
       }
       MathUtils_1.MathUtils.SqInterpToVector(this.Zdl, CharacterGlideComponent_1.Lz, this.Hkl.SoarSplineRotateAngleSpeedWithInput * t, this.Zdl);
     }
-    MathUtils_1.MathUtils.SqLerpVector(o, this.Zdl, 1 - Math.pow(1 - this.Hkl.SoarSplineRotateLerp, t), CharacterGlideComponent_1.Lz);
+    MathUtils_1.MathUtils.SqLerpVector(a, this.Zdl, 1 - Math.pow(1 - this.Hkl.SoarSplineRotateLerp, t), CharacterGlideComponent_1.Lz);
     i.SetActorVelocity(CharacterGlideComponent_1.Lz);
     MathUtils_1.MathUtils.LookRotationUpFirst(CharacterGlideComponent_1.Lz, i.MoveComp.GravityUp, CharacterGlideComponent_1.KJ);
     CharacterGlideComponent_1.KJ.Rotator(CharacterGlideComponent_1.Gue);
     i.SetActorRotation(CharacterGlideComponent_1.Gue.ToUeRotator(), "SoarSpline", false);
-    o.Normalize();
-    var s = MathUtils_1.MathUtils.Clamp(h.SplineDirection.DotProduct(o), -1, 1);
-    var a = (1 - Math.acos(Math.abs(s)) * MathUtils_1.MathUtils.RadToDeg / 45) * this.Hkl.SoarSplineAccel;
-    var s = MathUtils_1.MathUtils.Clamp(r + a * t, this.Hkl.SoarSplineMinSpeed, this.SoarBoostOn && n.SoarSprintLimit > 0 ? n.SoarSprintLimit : n.MaxSoarSplineSpeed);
-    o.Multiply(s, CharacterGlideComponent_1.Lz);
+    a.Normalize();
+    var s = MathUtils_1.MathUtils.Clamp(h.SplineDirection.DotProduct(a), -1, 1);
+    var o = (1 - Math.acos(Math.abs(s)) * MathUtils_1.MathUtils.RadToDeg / 45) * this.Hkl.SoarSplineAccel;
+    var s = MathUtils_1.MathUtils.Clamp(r + o * t, this.Hkl.SoarSplineMinSpeed, this.SoarBoostOn && n.SoarSprintLimit > 0 ? n.SoarSprintLimit : n.MaxSoarSplineSpeed);
+    a.Multiply(s, CharacterGlideComponent_1.Lz);
     i.SetActorVelocity(CharacterGlideComponent_1.Lz);
     if (t > MathUtils_1.MathUtils.SmallNumber) {
       h.SplineLocation.Subtraction(i.ActorLocationProxy, CharacterGlideComponent_1.Lz);
       r = CharacterGlideComponent_1.Lz.Size();
-      a = MathUtils_1.MathUtils.RangeClamp(r, this.Hkl.SoarSplinePushCenterDistMin, this.Hkl.SoarSplinePushCenterDistMax, this.Hkl.SoarSplinePushCenterSpeedMin, this.Hkl.SoarSplinePushCenterSpeedMax);
-      CharacterGlideComponent_1.Lz.MultiplyEqual(Math.min(1, a * t / r));
+      o = MathUtils_1.MathUtils.RangeClamp(r, this.Hkl.SoarSplinePushCenterDistMin, this.Hkl.SoarSplinePushCenterDistMax, this.Hkl.SoarSplinePushCenterSpeedMin, this.Hkl.SoarSplinePushCenterSpeedMax);
+      CharacterGlideComponent_1.Lz.MultiplyEqual(Math.min(1, o * t / r));
       i.MoveComp.MoveCharacter(CharacterGlideComponent_1.Lz, t, "Soar.Spline.Push");
     }
     if (this.SoarBoostOn) {
       this.ija(e, t);
     }
     if (this.Hkl.DebugDraw) {
-      const o = i.ActorVelocityProxy;
-      i.ActorLocationProxy.Addition(o, CharacterGlideComponent_1.Lz);
+      const a = i.ActorVelocityProxy;
+      i.ActorLocationProxy.Addition(a, CharacterGlideComponent_1.Lz);
       UE.KismetSystemLibrary.D_DrawDebugArrow(i.Actor, i.ActorLocation, CharacterGlideComponent_1.Lz.ToUeVector(), 100, redColor, undefined, 10);
       this.Zdl.Multiply(100, CharacterGlideComponent_1.Lz);
       CharacterGlideComponent_1.Lz.AdditionEqual(i.ActorLocationProxy);
       UE.KismetSystemLibrary.D_DrawDebugArrow(i.Actor, i.ActorLocation, CharacterGlideComponent_1.Lz.ToUeVector(), 100, blueColor, undefined, 10);
-      s = o;
+      s = a;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Movement", 6, "Soar Spline", ["Speed", s.Size()], ["Planar", s.Size2D()], ["Z", s.Z]);
       }
@@ -696,14 +745,14 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   SwitchCurrentSoarType(t) {
     if (this.CurrentSoarType !== t) {
       this.CurrentSoarType = t;
-      this.WSu();
+      this.$7c();
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.SoarTypeChange);
     }
   }
-  WSu() {
+  $7c() {
     var t = this.Hte?.CreatureData.GetPbDataId();
-    var e = this.Entity.GetComponent(174);
-    if (this.Entity.GetComponent(175)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
+    var e = this.Entity.GetComponent(175);
+    if (this.Entity.GetComponent(176)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
       this.Xte?.AddTag(1850415886);
       e?.AddBuff(ROAM_EFFECT_BUFF_ID, {
         InstigatorId: e.CreatureDataId,

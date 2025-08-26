@@ -13,10 +13,10 @@ const FloroRanchHandBookSmallSlotItem_1 = require("./FloroRanchHandBookSmallSlot
 class FloroRanchHandBookItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.qAu = undefined;
+    this.uPu = undefined;
     this.OnClickCallback = t => {};
     this.IsSelectedItem = undefined;
-    this.GAu = () => {
+    this.cPu = () => {
       var t = new FloroRanchHandBookSmallSlotItem_1.FloroRanchHandBookSmallSlotItem();
       t.BindClickCallback(this.OnClickCallback);
       return t;
@@ -26,7 +26,7 @@ class FloroRanchHandBookItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIGridLayout], [4, UE.UIItem]];
   }
   OnStart() {
-    this.qAu = new GenericLayout_1.GenericLayout(this.GetGridLayout(3), this.GAu, undefined, true, false);
+    this.uPu = new GenericLayout_1.GenericLayout(this.GetGridLayout(3), this.cPu, undefined, true, false);
   }
   async RefreshAsync(t, e, i) {
     this.GetItem(1).SetUIActive(t !== 0);
@@ -34,23 +34,23 @@ class FloroRanchHandBookItem extends GridProxyAbstract_1.GridProxyAbstract {
     var o = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     if (t === 0) {
       r = o.GetFloroRanchToyDataList();
-      await this.qAu.RefreshByDataAsync(r, true);
+      await this.uPu.RefreshByDataAsync(r, true);
     } else {
       t = o.GetFloroRanchRaceData(r = t);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.GetRaceName());
       this.SetTextureByPath(t.SmallIcon, this.GetTexture(0));
       t = o.GetFloroRanchCardDataListByRace(r);
-      await this.qAu.RefreshByDataAsync(t, true);
+      await this.uPu.RefreshByDataAsync(t, true);
     }
     if (i === 0) {
-      this.FAu();
+      this.dPu();
     }
   }
-  FAu() {
-    var t = this.qAu.GetLayoutItemList()[0];
+  dPu() {
+    var t = this.uPu.GetLayoutItemList()[0];
     if (!this.IsSelectedItem?.() && t) {
       this.OnClickCallback(t);
-      this.qAu.SelectGridProxy(0);
+      this.uPu.SelectGridProxy(0);
     }
   }
 }

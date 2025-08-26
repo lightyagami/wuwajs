@@ -99,12 +99,12 @@ class AiStateMachineTaskBeHitMontage extends AiStateMachineTask_1.AiStateMachine
   ToString(t, i = 0) {
     (0, AiStateMachine_1.appendDepthSpace)(t, i);
   }
-  VTu(t) {
+  hbu(t) {
     return this.Node.MontageComponent.GetMontageTaskNameByHandle(t);
   }
   GetNameByCurrentHandle() {
     if (this.rse) {
-      return this.VTu(this.rse);
+      return this.hbu(this.rse);
     }
   }
 }

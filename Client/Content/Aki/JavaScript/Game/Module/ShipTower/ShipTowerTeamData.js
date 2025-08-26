@@ -149,6 +149,18 @@ class ShipTowerTeamData {
   IsSetBuffFinishEdit() {
     return this.BuffDataEdit !== undefined;
   }
+  TeamIsEmpty() {
+    return !this.IsSetBuffFinishEdit() && this.RoleList.every(e => e.RoleIdEdit === 0);
+  }
+  ExChangeTeamData(e) {
+    var t = this.BuffDataEdit?.Id;
+    this.vA_(e.BuffDataEdit);
+    e.UpdateBuffIdEdit(t);
+    var t = this.GetRoleIdListEdit();
+    this.CopyIdsToEdit(e.GetRoleIdListEdit());
+    e.CopyIdsToEdit(t);
+    this.UpdateRoleListToRoleSelectModel();
+  }
   ProtoSetRole(e, t) {
     var i = this.RoleList[t];
     if (i) {
@@ -283,13 +295,13 @@ class ShipTowerTeamData {
     var e = this.InstId;
     var t = this.GetShipTowerStageCfg();
     var o = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
-    const r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetRecommendLevel(e, o);
+    const a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetRecommendLevel(e, o);
     t?.MonsterId.forEach(e => {
       var t = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterInfoConfig(e);
       var e = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterIcon(e);
       var e = {
         Title: t?.Name ?? "",
-        Level: r,
+        Level: a,
         MonsterIcon: e,
         ElementList: t?.ElementIdArray ?? []
       };

@@ -30,23 +30,23 @@ class FlowActionDestroyEntity extends FlowActionServerAction_1.FlowActionServerA
         ControllerHolder_1.ControllerHolder.FlowController.LogError("加载实体失败");
       }
       let t = false;
-      var r = new Map();
+      var i = new Map();
       for (const s of o.EntityIds) {
-        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s);
-        if (i) {
-          var n = i.Entity.GetComponent(0).GetPbEntityInitData();
-          var l = i.Entity.GetComponent(133);
+        var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s);
+        if (r) {
+          var n = r.Entity.GetComponent(0).GetPbEntityInitData();
+          var l = r.Entity.GetComponent(134);
           let e = false;
           if (n) {
             n = (0, IComponent_1.getComponent)(n?.ComponentsData, "SceneItemLifeCycleComponent");
             e = Boolean(l && n?.DestroyStageConfig.PerformDuration);
           }
           if (e) {
-            r.set(s, l.StateTagId);
+            i.set(s, l.StateTagId);
             LevelGeneralCommons_1.LevelGeneralCommons.ChangeToDestroyState(s);
             l.HandleDestroyState();
           } else {
-            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(i.Entity, false, "FlowActionDestroyEntity.OnEntityReady");
+            ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(r.Entity, false, "FlowActionDestroyEntity.OnEntityReady");
           }
         } else {
           if (Log_1.Log.CheckWarn()) {
@@ -58,12 +58,14 @@ class FlowActionDestroyEntity extends FlowActionServerAction_1.FlowActionServerA
       if (t) {
         this.RequestServerAction(false);
       }
-      this.RecordAction(new DestroyEntityActionRecord(this.ActionInfo, r));
+      this.RecordAction(new DestroyEntityActionRecord(this.ActionInfo, i));
       this.FinishExecute(true);
     };
   }
   OnExecute() {
-    if (this.ActionInfo.Params) {
+    if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      this.FinishExecute(true);
+    } else if (this.ActionInfo.Params) {
       var o = this.ActionInfo.Params;
       if (o.EntityIds?.length) {
         let e = false;
@@ -99,8 +101,8 @@ class FlowActionDestroyEntity extends FlowActionServerAction_1.FlowActionServerA
   OnRollback(e, o) {
     var t = e?.EntityStateTagIdMap;
     if (t) {
-      for (var [r, i] of t) {
-        LevelGeneralCommons_1.LevelGeneralCommons.RollbackDestroyState(r, i);
+      for (var [i, r] of t) {
+        LevelGeneralCommons_1.LevelGeneralCommons.RollbackDestroyState(i, r);
       }
     }
     for (const l of e.ActionInfo.Params.EntityIds) {

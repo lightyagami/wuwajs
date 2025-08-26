@@ -10,12 +10,12 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 class FloroRanchTagData {
   constructor() {
     this.d6o = 0;
-    this.iRu = undefined;
+    this.TRu = undefined;
   }
   SetTagId(t) {
     if (t !== this.d6o) {
       this.d6o = t;
-      this.iRu = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchTagConfig(this.d6o);
+      this.TRu = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchTagConfig(this.d6o);
     }
   }
   get TagId() {
@@ -23,8 +23,8 @@ class FloroRanchTagData {
   }
   get Desc() {
     var t;
-    if (this.iRu && (t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.iRu.Name))) {
-      return StringUtils_1.StringUtils.Format(t, ...this.iRu.NameParam);
+    if (this.TRu && (t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.TRu.Name))) {
+      return StringUtils_1.StringUtils.Format(t, ...this.TRu.NameParam);
     } else {
       return "";
     }

@@ -26,6 +26,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
     this.MusicMap = new Map();
     this.CaptionComponent = undefined;
     this.SequencePlayer = undefined;
+    this.qgd = 0;
     this.OnCreateAlbumItem = () => {
       var e = new PhonographAlbumItem_1.PhonographAlbumItem();
       e.OnClickAlbumItem = this.OnClickAlbumItem;
@@ -86,7 +87,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId = e;
       if (ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(e)) {
         this.MusicGenericLayout.SelectGridProxy(r);
-        ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(e);
+        this.qgd = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(e);
         ModelManager_1.ModelManager.PhonographModel?.RemoveNewMusic(e);
         this.RefreshMusicInfo(e);
         this.SequencePlayer?.PlaySequencePurely("Single");
@@ -101,6 +102,12 @@ class PhonographView extends UiViewBase_1.UiViewBase {
       var e = ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId;
       var r = ModelManager_1.ModelManager.PhonographModel.RecordMusicId === e ? 0 : e;
       ModelManager_1.ModelManager.PhonographModel.RecordMusicId = r;
+      var t = ModelManager_1.ModelManager.PhonographModel?.EntityId;
+      if (r === 0) {
+        ModelManager_1.ModelManager.PhonographModel.RemovePlayIdRecord(t);
+      } else {
+        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(t, this.qgd);
+      }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographSetBgm, r);
       this.RefreshSwitchBtn(e);
       if (r !== 0) {
@@ -153,13 +160,15 @@ class PhonographView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {}
   OnBeforeDestroy() {
     var e;
+    var r;
     ModelManager_1.ModelManager.PhonographModel.NewMusicIds = [];
     ControllerHolder_1.ControllerHolder.PhonographController.ClearTimer();
     if (ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId !== ModelManager_1.ModelManager.PhonographModel.RecordMusicId) {
       ControllerHolder_1.ControllerHolder.PhonographController.StopMusic(false);
+      e = ModelManager_1.ModelManager.PhonographModel?.EntityId;
       if (ModelManager_1.ModelManager.PhonographModel.RecordMusicId !== 0) {
-        e = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(ModelManager_1.ModelManager.PhonographModel.RecordMusicId, false);
-        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(ModelManager_1.ModelManager.PhonographModel.CurrentPlayActorEntityId, e);
+        r = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(ModelManager_1.ModelManager.PhonographModel.RecordMusicId, false);
+        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(e, r);
       }
     } else {
       ControllerHolder_1.ControllerHolder.PhonographController.ClearTimer();

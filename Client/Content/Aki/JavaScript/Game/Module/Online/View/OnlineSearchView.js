@@ -16,6 +16,8 @@ const ButtonAndSpriteItem_1 = require("../../Common/Button/ButtonAndSpriteItem")
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const OnlineController_1 = require("../OnlineController");
 const OnlineHallItem_1 = require("./OnlineHallItem");
+const Platform_1 = require("../../../../Launcher/Platform/Platform");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 class OnlineSearchView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
@@ -26,16 +28,25 @@ class OnlineSearchView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.oOi = () => new OnlineHallItem_1.OnlineHallItem(this.Info.Name);
     this.aOi = () => {
-      var e;
-      var t;
-      var i = this.GetInputText(0);
-      if (i.GetText() === "") {
-        t = (e = "", puerts_1.$ref)("");
-        UE.LGUIBPLibrary.ClipBoardPaste(t);
-        e = (0, puerts_1.$unref)(t);
-        i.SetText(e);
+      const t = this.GetInputText(0);
+      if (t.GetText() === "") {
+        if (Platform_1.Platform.IsCloudGame()) {
+          let e;
+          const i = (0, puerts_1.$ref)("");
+          UE.KuroCloudGameWrapper.ClipBoardPaste();
+          TimerSystem_1.GameplayTimerSystem.Delay(() => {
+            UE.LGUIBPLibrary.ClipBoardPaste(i);
+            e = (0, puerts_1.$unref)(i);
+            t.SetText(e);
+          }, 200);
+        } else {
+          var e = (0, puerts_1.$ref)("");
+          UE.LGUIBPLibrary.ClipBoardPaste(e);
+          e = (0, puerts_1.$unref)(e);
+          t.SetText(e);
+        }
       } else {
-        i.SetText("");
+        t.SetText("");
       }
       this.h9t();
     };

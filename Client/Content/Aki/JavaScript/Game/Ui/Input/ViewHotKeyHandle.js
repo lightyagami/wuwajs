@@ -15,6 +15,7 @@ const InputDistributeController_1 = require("../InputDistribute/InputDistributeC
 const UiManager_1 = require("../UiManager");
 class ViewHotKeyHandle {
   constructor(i) {
+    this.ConfigId = undefined;
     this.ActionName = undefined;
     this.InputControllerType = 0;
     this.ViewName = undefined;
@@ -45,6 +46,7 @@ class ViewHotKeyHandle {
       this.eIa();
       this.xmr();
     };
+    this.ConfigId = i.ConfigId;
     this.ActionName = i.ActionName;
     this.InputControllerType = i.InputControllerType;
     this.ViewName = i.ViewName;
@@ -160,7 +162,7 @@ class ViewHotKeyHandle {
       if (this.uti) {
         this.uti();
       } else {
-        UiManager_1.UiManager.OpenView(this.ViewName, this.ViewParam.length > 0 ? this.ViewParam : undefined);
+        this.OnOpenViewImplement();
       }
     }
   }
@@ -182,6 +184,9 @@ class ViewHotKeyHandle {
   }
   SpecialConditionCheck() {
     return true;
+  }
+  OnOpenViewImplement() {
+    UiManager_1.UiManager.OpenView(this.ViewName, this.ViewParam.length > 0 ? this.ViewParam : undefined);
   }
 }
 exports.ViewHotKeyHandle = ViewHotKeyHandle;

@@ -22,7 +22,7 @@ class MoraleBuffBattleView extends BattleVisibleChildView_1.BattleVisibleChildVi
         this.Xmt.EndShow();
       }
     };
-    this.Jz1 = () => {
+    this.IJ1 = () => {
       var e = this.GetExtendToggle(0);
       if (e) {
         if (e.GetToggleState() === 1) {
@@ -49,10 +49,10 @@ class MoraleBuffBattleView extends BattleVisibleChildView_1.BattleVisibleChildVi
     this.BtnBindInfo = [[0, this.kqe]];
   }
   Ore() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo, this.Jz1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo, this.IJ1);
   }
   kre() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo, this.Jz1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo, this.IJ1);
   }
   StartShow() {
     this.Xmt.UpdateInfo(ModelManager_1.ModelManager.MoraleModel.GetInTheBattleBuffInfo());

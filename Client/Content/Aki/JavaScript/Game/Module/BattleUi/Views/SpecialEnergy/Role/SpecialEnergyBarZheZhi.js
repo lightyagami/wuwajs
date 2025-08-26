@@ -43,7 +43,7 @@ class SpecialEnergyBarZheZhi extends SpecialEnergyBarSlot_1.SpecialEnergyBarSlot
   AddEvents() {
     super.AddEvents();
     for (const t of this.wca) {
-      var e = t.Entity?.GetComponent(205);
+      var e = t.Entity?.GetComponent(206);
       if (e &&= e.ListenForTagAddOrRemove(-1285044114, this.bca)) {
         this.TagTaskList.push(e);
       }
@@ -52,7 +52,7 @@ class SpecialEnergyBarZheZhi extends SpecialEnergyBarSlot_1.SpecialEnergyBarSlot
   qca() {
     this.Bca = 0;
     for (const e of this.wca) {
-      if (e.Entity?.GetComponent(205)?.HasTag(-1285044114)) {
+      if (e.Entity?.GetComponent(206)?.HasTag(-1285044114)) {
         this.Bca++;
       }
     }

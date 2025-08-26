@@ -32,7 +32,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
     if (this.IsEnableRayTraceReflection) {
       this.TempEntities.length = 0;
       if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDisableNPCOptAsRayTracing(GlobalData_1.GlobalData.World)) {
-        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(RAYTRACING_URO_CHECK_DISTANCE, 62, this.TempEntities, true, false);
+        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(RAYTRACING_URO_CHECK_DISTANCE, 248, this.TempEntities, true, false);
       }
       this.EnableUpdateRateOptimizationForArray(false, this.TempEntities, t => {
         this.CurFrameValidEntityHandles.add(t);
@@ -78,7 +78,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
   static EnableUpdateRateOptimizationForArray(t, e, i) {
     if (e.length !== 0) {
       for (const r of e) {
-        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(235);
+        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(236);
         if (a) {
           if (t) {
             a.CancelForceDisableAnimOptimization(5);
@@ -93,7 +93,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
   static EnableUpdateRateOptimizationForSet(t, e, i) {
     if (e.size !== 0) {
       for (const r of e) {
-        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(235);
+        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(236);
         if (a) {
           if (t) {
             a.CancelForceDisableAnimOptimization(5);
@@ -108,7 +108,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
   static EnableUpdateRateOptimizationForMap(t, e, i) {
     if (e.size !== 0) {
       for (const r of e.keys()) {
-        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(235);
+        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(236);
         if (a) {
           if (t) {
             a.CancelForceDisableAnimOptimization(5);

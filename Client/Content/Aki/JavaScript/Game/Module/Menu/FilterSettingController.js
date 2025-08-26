@@ -38,10 +38,10 @@ const UiCameraPhotographerStructure_1 = require("../UiCamera/UiCameraStructure/U
 const MenuDefine_1 = require("./MenuDefine");
 const FilterSettingViewModel_1 = require("./SubViews/FilterSetting/FilterSettingViewModel");
 class FilterSettingController extends UiControllerBase_1.UiControllerBase {
-  static get zfu() {
+  static get Wgu() {
     return CommonParamById_1.configCommonParamById.GetFloatConfig("FilterSettingLeftStickDeadZone") ?? 0;
   }
-  static get Jfu() {
+  static get Qgu() {
     return CommonParamById_1.configCommonParamById.GetFloatConfig("FilterSettingLeftStickMoveFactor") ?? 1;
   }
   static Clear() {
@@ -50,33 +50,33 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
   }
   static OnLeaveLevel() {
     this.dWi();
-    this.$Du(true);
+    this.WFu(true);
     return true;
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.WDu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.QDu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.QFu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.KFu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.EUe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.XDu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.XFu);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.WDu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.QDu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.QFu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.KFu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.EUe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.XDu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.XFu);
     this.m$e();
   }
   static async TryOpenExternalPreparedAsync() {
-    return !!this.$ha() && this.ocu();
+    return !!this.$ha() && this.Ncu();
   }
   static $ha() {
     var e;
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!t?.Valid && !(ModelManager_1.ModelManager.PlotModel.IsInPlot ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在剧情中"), 1) : !(e = t.Entity.GetComponent(205)) || (e.HasTag(40422668) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在空中"), 1) : e.HasTag(855966206) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在水中"), 1) : e.HasTag(504239013) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在攀爬"), 1) : e.HasTag(1996802261) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在战斗中"), 1) : e.HasTag(-1371021686) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在技能中"), 1) : e.HasTag(525255941) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在驾驶载具"), 1) : UiManager_1.UiManager.IsViewOpen("FilterSettingView") ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:已经在滤镜界面"), 1) : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在声骸编队"), 1) : !t.Entity.GetComponent(177)?.MainAnimInstance && (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:实体状态机找不到"), 1)));
+    return !!t?.Valid && !(ModelManager_1.ModelManager.PlotModel.IsInPlot ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在剧情中"), 1) : !(e = t.Entity.GetComponent(206)) || (e.HasTag(40422668) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在空中"), 1) : e.HasTag(855966206) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在水中"), 1) : e.HasTag(504239013) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在攀爬"), 1) : e.HasTag(1996802261) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在战斗中"), 1) : e.HasTag(-1371021686) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在技能中"), 1) : e.HasTag(525255941) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在驾驶载具"), 1) : UiManager_1.UiManager.IsViewOpen("FilterSettingView") ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:已经在滤镜界面"), 1) : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:在声骸编队"), 1) : !t.Entity.GetComponent(178)?.MainAnimInstance && (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFliterOpenTips"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法设置滤镜:实体状态机找不到"), 1)));
   }
-  static ncu(e) {
+  static Vcu(e) {
     var t;
     var r;
     var i;
@@ -87,17 +87,17 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       (t = Global_1.Global.BaseCharacter)?.SetDitherEffect(1, 1);
       t = t?.Mesh.D_GetSocketLocation(PhotographDefine_1.SPAWN_SOCKET_NAME);
       r = this.IWi.D_GetTransform();
-      i = this.Zfu(t, r.GetRotation(), r.GetScale3D());
+      i = this.Kgu(t, r.GetRotation(), r.GetScale3D());
       this.TWi.FocusSettings.ManualFocusDistance = PhotographDefine_1.DEFAULT_MANUAL_FOCUS_DISTANCE;
       i?.SetPlayerSourceLocation(t);
       i?.SetCameraInitializeTransform(r);
       i?.SetFov(PhotographDefine_1.DEFAULT_FOV);
       e.UiCameraPhotographerStructure = i;
       UiCameraManager_1.UiCameraManager.Get().Enter(0.5);
-      this.scu(e);
+      this.jcu(e);
     }
   }
-  static scu(t) {
+  static jcu(t) {
     for (const i of ConfigManager_1.ConfigManager.PhotographConfig.GetAllPhotoSetupConfig()) {
       let e = -1;
       var r = i.Type;
@@ -106,10 +106,10 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       } else if (r === 1) {
         e = i.ValueRange[2];
       }
-      this.acu(t, i.ValueType, e);
+      this.Hcu(t, i.ValueType, e);
     }
   }
-  static acu(e, t, r) {
+  static Hcu(e, t, r) {
     e.PhotographOptionMap.set(t, r);
     switch (t) {
       case 3:
@@ -151,25 +151,25 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
           e.EntityDisableId = undefined;
           e.SetDisableEntity = undefined;
         } else {
-          this.egu(e);
+          this.Xgu(e);
         }
       } else {
         if (e.SetDisableEntity) {
-          this.egu(e);
+          this.Xgu(e);
         }
         e.SetDisableEntity = t;
         e.EntityDisableId = t.Entity.Disable("[FilterSetting.SetEntityEnable] bEnable为false");
       }
     }
   }
-  static egu(e) {
+  static Xgu(e) {
     if (e.SetDisableEntity) {
       e.SetDisableEntity.Entity?.Enable(e.EntityDisableId, "FilterSetting.ResetEntityEnable");
     }
     e.EntityDisableId = undefined;
     e.SetDisableEntity = undefined;
   }
-  static async ocu() {
+  static async Ncu() {
     this.EWi = this.yWi();
     if (!this.EWi) {
       return false;
@@ -181,16 +181,16 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     this.js1();
     this.c$e();
     await this.OMa();
-    var e = this.hcu();
+    var e = this.$cu();
     var e = await UiManager_1.UiManager.OpenViewAsync("FilterSettingView", e);
-    await this.lcu();
+    await this.Wcu();
     return e !== undefined;
   }
-  static hcu() {
+  static $cu() {
     var e = ModelManager_1.ModelManager.MenuModel.FilterSettingIdCache;
     const a = new FilterSettingViewModel_1.FilterSettingViewModel();
     a.InitFilterIndex = ModelManager_1.ModelManager.MenuModel.GetFilterIndexByConfigId(e);
-    this.ltu(e, a);
+    this.Btu(e, a);
     a.OnHideClick = () => {
       a.IsHideByClick = !a.IsHideByClick;
     };
@@ -205,7 +205,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       a.IntensityNormalized = this.GetFilterDefaultValue(i, 2);
       a.HorizontalNormalized = this.GetFilterDefaultValue(i, 0);
       a.VerticalNormalized = this.GetFilterDefaultValue(i, 1);
-      this.Fdu(a, i, a.HorizontalNormalized, a.VerticalNormalized, a.IntensityNormalized);
+      this.pmu(a, i, a.HorizontalNormalized, a.VerticalNormalized, a.IntensityNormalized);
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFilterFeatureResetTips");
       a.IsFilterChanged = true;
     };
@@ -233,7 +233,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       if (!a.PadLock && (e = ModelManager_1.ModelManager.MenuModel.FilterSettingIdCache, t = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(e))) {
         t[0] = a.HorizontalNormalized;
         t[1] = a.VerticalNormalized;
-        this.Fdu(a, e, t[0], t[1], t[2]);
+        this.pmu(a, e, t[0], t[1], t[2]);
         a.IsHideByPad = true;
         a.IsFilterChanged = true;
       }
@@ -248,12 +248,12 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       var t = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(e);
       if (t) {
         t[2] = a.IntensityNormalized;
-        this.Fdu(a, e, t[0], t[1], t[2]);
+        this.pmu(a, e, t[0], t[1], t[2]);
         a.IsFilterChanged = true;
       }
     };
     a.OnViewBeforeCreate = () => {
-      this.ncu(a);
+      this.Vcu(a);
     };
     a.OnViewBeforeStart = () => {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroScreenFilterFrame 5");
@@ -295,15 +295,15 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     };
     a.OnInputUiMoveForward = (e, t) => {
       var r;
-      if (!Info_1.Info.IsInGamepad() || MathUtils_1.MathUtils.InRangeArray(t, [-this.zfu, this.zfu]) || a.VerticalReal === undefined || a.IsHideByClick || a.IsOtherViewOpen) {
+      if (!Info_1.Info.IsInGamepad() || MathUtils_1.MathUtils.InRangeArray(t, [-this.Wgu, this.Wgu]) || a.VerticalReal === undefined || a.IsHideByClick || a.IsOtherViewOpen) {
         a.IsLeftStickVerticalMoved = false;
         a.IsHideByPad = a.IsLeftStickHorizontalMoved;
       } else {
-        a.VerticalReal += t * this.Jfu;
+        a.VerticalReal += t * this.Qgu;
         t = ModelManager_1.ModelManager.MenuModel.FilterSettingIdCache;
         if (r = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(t)) {
           r[1] = a.VerticalNormalized;
-          this.Fdu(a, t, r[0], r[1], r[2]);
+          this.pmu(a, t, r[0], r[1], r[2]);
           a.IsFilterChanged = true;
         }
         a.IsHideByPad = true;
@@ -312,15 +312,15 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     };
     a.OnInputUiMoveRight = (e, t) => {
       var r;
-      if (!Info_1.Info.IsInGamepad() || MathUtils_1.MathUtils.InRangeArray(t, [-this.zfu, this.zfu]) || a.HorizontalReal === undefined || a.IsHideByClick || a.IsOtherViewOpen) {
+      if (!Info_1.Info.IsInGamepad() || MathUtils_1.MathUtils.InRangeArray(t, [-this.Wgu, this.Wgu]) || a.HorizontalReal === undefined || a.IsHideByClick || a.IsOtherViewOpen) {
         a.IsLeftStickHorizontalMoved = false;
         a.IsHideByPad = a.IsLeftStickVerticalMoved;
       } else {
-        a.HorizontalReal += t * this.Jfu;
+        a.HorizontalReal += t * this.Qgu;
         t = ModelManager_1.ModelManager.MenuModel.FilterSettingIdCache;
         if (r = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(t)) {
           r[0] = a.HorizontalNormalized;
-          this.Fdu(a, t, r[0], r[1], r[2]);
+          this.pmu(a, t, r[0], r[1], r[2]);
           a.IsFilterChanged = true;
         }
         a.IsHideByPad = true;
@@ -343,7 +343,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     };
     a.OnIndexChanged = e => {
       e = ModelManager_1.ModelManager.MenuModel.GetFilterConfigIdByIndex(e);
-      this.ltu(e, a);
+      this.Btu(e, a);
     };
     a.OnLeftArrowClick = () => {
       a.IsFilterChanged = true;
@@ -353,7 +353,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     };
     return a;
   }
-  static ltu(e, t) {
+  static Btu(e, t) {
     ModelManager_1.ModelManager.MenuModel.FilterSettingIdCache = e;
     var r = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache;
     if (FilterSettingAll_1.configFilterSettingAll.GetConfigList() !== undefined) {
@@ -361,7 +361,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
         t.IntensityNormalized = r[2];
         t.HorizontalNormalized = r[0];
         t.VerticalNormalized = r[1];
-        this.Fdu(t, e, r[0], r[1], r[2]);
+        this.pmu(t, e, r[0], r[1], r[2]);
       }
       r = FilterSettingById_1.configFilterSettingById.GetConfig(e);
       t.FilterPadTexturePath = r?.PadTexturePath;
@@ -376,7 +376,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       UE.KuroGISystem.SetKuroScreenFilterInterpolation(GlobalData_1.GlobalData.World, FilterSettingById_1.configFilterSettingById.GetConfig(e).LogicIndex, t[0], t[1], t[2]);
     }
   }
-  static Fdu(e, t, r, i, a) {
+  static pmu(e, t, r, i, a) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("GameSettings", 64, "设置全局滤镜值", ["filterId", t], ["horizontalNormalized", r], ["verticalNormalized", i], ["intensityNormalized", a]);
     }
@@ -390,7 +390,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
   static async OMa() {
     await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(11, 3, 0.5);
   }
-  static async lcu() {
+  static async Wcu() {
     await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(11, 0.5);
     LevelLoadingController_1.LevelLoadingController.CloseLoading(0);
   }
@@ -408,7 +408,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       } else if (!UiManager_1.UiManager.GetViewByName("ReviveView")) {
         await UiManager_1.UiManager.NormalResetToViewAsync("BattleView");
       }
-      await this.lcu();
+      await this.Wcu();
     }
   }
   static x5_() {
@@ -419,8 +419,8 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
   static U5_() {
     var e = UiManager_1.UiManager.GetViewByName("FilterSettingView")?.VmCache;
     if (e) {
-      this.tgu(e);
-      this.egu(e);
+      this.Ygu(e);
+      this.Xgu(e);
       e.PhotographOptionMap.clear();
     }
     this.m$e();
@@ -430,7 +430,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       e?.SetDitherEffect(0, 1);
     }
   }
-  static tgu(e) {
+  static Ygu(e) {
     UiCameraManager_1.UiCameraManager.Destroy(PhotographDefine_1.PHOTOGRAPH_CAMERA_BLEND_OUT);
     e.UiCameraPhotographerStructure = undefined;
   }
@@ -448,7 +448,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
   static RWi(e, t) {
     var r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (r?.Valid && r.Entity?.Valid) {
-      r = r.Entity.GetComponent(205).ListenForTagAddOrRemove(e, t);
+      r = r.Entity.GetComponent(206).ListenForTagAddOrRemove(e, t);
       this.AWi.push(r);
     }
   }
@@ -489,7 +489,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       return MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE;
     }
   }
-  static Zfu(e, t, r) {
+  static Kgu(e, t, r) {
     var i = new UE.TransformDouble();
     i.SetLocation(e);
     i.SetRotation(t);
@@ -500,14 +500,14 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     e.GetUiCameraComponent(UiCameraPostEffectComponent_1.UiCameraPostEffectComponent).SetCameraFocalDistance(PhotographDefine_1.DEFAULT_MANUAL_FOCUS_DISTANCE);
     return t;
   }
-  static YDu(e) {
+  static YFu(e) {
     if (e) {
       UE.KuroSequencePerformanceManager.ExecuteCommandInPerformance("r.Kuro.KuroEnableScreenFilter 0");
     } else {
       UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     }
   }
-  static $Du(e) {
+  static WFu(e) {
     if (e) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroEnableScreenFilter 1");
     } else {
@@ -525,18 +525,18 @@ FilterSettingController.Jze = e => {
     _a.CloseFilterSettingView();
   }
 };
-FilterSettingController.WDu = () => {
-  _a.YDu(true);
+FilterSettingController.QFu = () => {
+  _a.YFu(true);
 };
-FilterSettingController.QDu = () => {
-  _a.YDu(false);
+FilterSettingController.KFu = () => {
+  _a.YFu(false);
 };
 FilterSettingController.EUe = () => {
   _a.ApplyFilterSetting();
-  _a.$Du(true);
+  _a.WFu(true);
 };
-FilterSettingController.XDu = () => {
-  _a.$Du(false);
+FilterSettingController.XFu = () => {
+  _a.WFu(false);
 };
 FilterSettingController.UWi = (e, t) => {
   if (t && UiManager_1.UiManager.IsViewOpen("FilterSettingView")) {

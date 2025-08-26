@@ -35,16 +35,16 @@ class RailSlideView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this.mfu = () => {
+    this.lgu = () => {
       this.Hwc();
     };
-    this.ffu = (t, e) => {
+    this._gu = (t, e) => {
       this.det[0].SetCustomDynamicEffectId(e ? EFFECT_ID : 0);
     };
-    this.gfu = (t, e) => {
+    this.ugu = (t, e) => {
       this.det[1].SetCustomDynamicEffectId(e ? EFFECT_ID : 0);
     };
-    this.nGu = (t, e) => {
+    this.N2u = (t, e) => {
       this.det[0].SetUiActive(!e);
       this.det[1].SetUiActive(!e);
     };
@@ -59,7 +59,7 @@ class RailSlideView extends UiTickViewBase_1.UiTickViewBase {
   OnStart() {
     super.OnStart();
     this.Hwc();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.mfu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.lgu);
   }
   OnBeforeShow() {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildVisible(13, 12, false);
@@ -99,7 +99,7 @@ class RailSlideView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.det.length = 0;
     this.m$e();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.mfu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.lgu);
   }
   Hwc() {
     var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
@@ -112,9 +112,9 @@ class RailSlideView extends UiTickViewBase_1.UiTickViewBase {
   c$e() {
     var t;
     if (this.Wst && (t = this.Wst.GameplayTagComponent)) {
-      this.mdt(t, tag1, this.ffu, true);
-      this.mdt(t, tag2, this.gfu, true);
-      this.mdt(t, forbidMoveTagId, this.nGu, true);
+      this.mdt(t, tag1, this._gu, true);
+      this.mdt(t, tag2, this.ugu, true);
+      this.mdt(t, forbidMoveTagId, this.N2u, true);
     }
   }
   m$e() {

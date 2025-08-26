@@ -25,7 +25,7 @@ class NavigationPhantomArenaOpponentFunctionalToggle extends NavigationButton_1.
       this.Proxy.GamepadLogic.HideCardTips();
     }
   }
-  OnCheckFindOpposite(t) {
+  OnCheckFindOpposite() {
     return !this.Proxy || !this.Proxy.GamepadLogic.IsInCardSelectState;
   }
 }

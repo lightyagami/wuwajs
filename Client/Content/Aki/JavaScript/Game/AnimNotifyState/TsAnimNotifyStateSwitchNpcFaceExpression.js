@@ -9,15 +9,18 @@ class TsAnimNotifyStateSwitchNpcFaceExpression extends UE.KuroAnimNotifyState {
   constructor() {
     super(...arguments);
     this.FaceExpressionId = -1;
+    this.PlayExpressionHandle = 0;
   }
-  Constructor() {}
-  K2_NotifyBegin(e, t, r) {
-    var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent?.Entity.GetComponent(187)) && (e.ExpressionController.ChangeFaceForExpressionFromAnimNotify(this.FaceExpressionId, this), true);
+  Constructor() {
+    this.PlayExpressionHandle = 0;
   }
-  K2_NotifyEnd(e, t) {
-    var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent?.Entity.GetComponent(187)) && (e.ExpressionController.ResetFaceForExpressionFromAnimNotify(this), true);
+  K2_NotifyBegin(t, e, s) {
+    var t = t.GetOwner();
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity.GetComponent(188)) && (this.PlayExpressionHandle ||= t.ExpressionController.ChangeFaceForExpressionFromAnimNotify(this.FaceExpressionId), true);
+  }
+  K2_NotifyEnd(t, e) {
+    var t = t.GetOwner();
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity.GetComponent(188)) && (this.PlayExpressionHandle && (t.ExpressionController.ResetFaceForExpressionFromAnimNotify(this.PlayExpressionHandle), this.PlayExpressionHandle = 0), true);
   }
   GetNotifyName() {
     return "切换Npc表情";

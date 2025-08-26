@@ -50,11 +50,11 @@ class StepProgressBarController extends StepControllerBase_1.StepControllerBase 
             }
           } else {
             s = LevelGeneralController_1.LevelGeneralController.CheckConditionNew(r, undefined, s);
-            this.jBu(i && s, e / o);
+            this.G2u(i && s, e / o);
           }
         }
       } else {
-        this.jBu(false, 0);
+        this.G2u(false, 0);
       }
     }
   }
@@ -63,13 +63,19 @@ class StepProgressBarController extends StepControllerBase_1.StepControllerBase 
     this.ComponentRegisterInfos = [[0, UE.UISliderComponent]];
   }
   OnStart() {
-    this.jBu(false, 0);
+    this.G2u(false, 0);
   }
-  jBu(e, t) {
-    this.UiParent.SetUIActive(e);
-    this.SetActive(e);
-    this.GetSlider(0)?.SetActive(e);
-    this.GetSlider(0)?.SetValue(t);
+  G2u(e, t) {
+    if (this.UiParent.IsUIActiveInHierarchy() !== e) {
+      this.UiParent.SetUIActive(e);
+    }
+    if (this.GetActive() !== e) {
+      this.SetActive(e);
+      this.GetSlider(0)?.SetActive(e);
+    }
+    if (e) {
+      this.GetSlider(0)?.SetValue(t);
+    }
   }
 }
 exports.StepProgressBarController = StepProgressBarController;

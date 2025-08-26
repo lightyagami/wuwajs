@@ -100,7 +100,7 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
     var h;
     var s;
     if (!(this.Lce < this.MoveDurationThreshold)) {
-      if ((i = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(177))?.Valid && (s = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(178))?.Valid) {
+      if ((i = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(178))?.Valid && (s = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(179))?.Valid) {
         if (this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle && this.Camera.VehicleAnimationComponent?.Valid) {
           this.y6l.FromUeVector(this.Camera.VehicleMoveComponent.GravityUp);
           this.S6l.FromUeVector(this.Camera.VehicleAnimationComponent.MovementNormal);
@@ -129,10 +129,10 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
   }
   IsCharacterMoving() {
     var t;
-    return !!this.Camera.Character && !this.Camera.ContainsTag(-1371021686) && !this.Camera.ContainsTag(1008164187) && (this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle && this.Camera.VehicleMoveComponent?.Valid ? this.Camera.VehicleMoveComponent.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD : !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(178))?.Valid && t.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD);
+    return !!this.Camera.Character && !this.Camera.ContainsTag(-1371021686) && !this.Camera.ContainsTag(1008164187) && (this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle && this.Camera.VehicleMoveComponent?.Valid ? this.Camera.VehicleMoveComponent.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD : !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(179))?.Valid && t.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD);
   }
   xce(i) {
-    if (this.Camera.Character?.CharacterActorComponent.Entity.GetComponent(178)?.HasMoveInput || !this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle || this.Camera.VehicleMoveComponent?.HasMoveInput) {
+    if (this.Camera.Character?.CharacterActorComponent.Entity.GetComponent(179)?.HasMoveInput || !this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle || this.Camera.VehicleMoveComponent?.HasMoveInput) {
       let t = 0;
       var h;
       var s = this.Camera.GetArmLengthWithSettingAndZoom(this.Camera.CurrentCamera);

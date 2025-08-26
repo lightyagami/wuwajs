@@ -192,13 +192,13 @@ class AutoAttachItem extends UiPanelBase_1.UiPanelBase {
     var i = this.SourceView.GetItemSize();
     var s = this.SourceView.GetGap();
     var h = this.SourceView.GetShowItemNum();
-    return !((i + s) * Math.ceil((h + 1) / 2) < t);
+    return !((i + s) * Math.ceil((h + 1) / 2) + this.SourceView.GetTrueBoundary() < t);
   }
   GKe(t) {
     var i = this.SourceView.GetItemSize();
     var s = this.SourceView.GetGap();
     var h = this.SourceView.GetShowItemNum();
-    return !(t < -(i + s) * Math.ceil(h / 2));
+    return !(t < -(i + s) * Math.ceil(h / 2) - this.SourceView.GetTrueBoundary());
   }
 }
 exports.AutoAttachItem = AutoAttachItem;

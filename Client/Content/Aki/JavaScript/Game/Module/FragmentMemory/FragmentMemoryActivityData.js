@@ -11,6 +11,11 @@ class FragmentMemoryActivityData extends ActivityData_1.ActivityBaseData {
   GetExDataRedPointShowState() {
     return this.EntranceRedDot();
   }
+  GetExDataFinishShowState() {
+    var e = ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryActivityById(this.Id).TopicId;
+    var e = ModelManager_1.ModelManager.FragmentMemoryModel.GetTopicDataById(e);
+    return !!e && !!e.GetCollectRewardDoneState();
+  }
   EntranceRedDot() {
     return ModelManager_1.ModelManager.FragmentMemoryModel.GetRedDotState();
   }

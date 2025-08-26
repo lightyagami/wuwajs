@@ -89,16 +89,16 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     } else if (t = t.ComponentDataMap.get("uys")?.uys?.CIs) {
       this.uen(t);
     }
-    const e = this.Entity.GetComponent(205);
-    if (e) {
-      this.YTc = e.ListenForTagAddOrRemove(visionTriggerTag, (t, i) => {
-        if (i &&= e.GetChildrenTags(t)[0]) {
-          SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, i);
+    var t = this.Entity.GetComponent(206);
+    if (t) {
+      this.YTc = t.ListenForTagAnyCountChanged(visionTriggerTag, (t, i, e, n) => {
+        if (n < t) {
+          SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, e);
         }
       });
     }
-    for (const n of Object.keys(visionTypes)) {
-      var i = Number(n);
+    for (const e of Object.keys(visionTypes)) {
+      var i = Number(e);
       if (i !== 5) {
         this.aen.set(i, visionTypes[i].Spawn(this));
       }
@@ -145,7 +145,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     this.sen.clear();
     this.hen = 0;
     if (t) {
-      var i = this.Entity.GetComponent(207);
+      var i = this.Entity.GetComponent(208);
       for (const n of t) {
         var e = PhantomUtil_1.PhantomUtil.GetVisionData(n.r5n);
         if (e && (e = e.类型, this.sen.set(e, n), [0, 1, 4].includes(e))) {

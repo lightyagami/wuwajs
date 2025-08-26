@@ -31,19 +31,19 @@ class CumulativeShopController extends ActivityControllerBase_1.ActivityControll
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21192, CumulativeShopController.ConsumptiveTaskInfoNotify);
+    Net_1.Net.Register(20467, CumulativeShopController.ConsumptiveTaskInfoNotify);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21192);
+    Net_1.Net.UnRegister(20467);
   }
   static ConsumptiveRewardRequest(e) {
     var t = Protocol_1.Aki.Protocol.Fm1.create();
     t.w6n = this.ActivityId;
     t.gps = e;
-    Net_1.Net.Call(15035, t, t => {
+    Net_1.Net.Call(28079, t, t => {
       if (t) {
         if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18541);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28510);
         }
         var r = this.GetCumulativeShopData();
         r.TaskDataMap.set(t.Wm1.s5n, t.Wm1);
@@ -64,7 +64,7 @@ class CumulativeShopController extends ActivityControllerBase_1.ActivityControll
   }
   static ConsumptiveActivityInfoRequest() {
     var e = Protocol_1.Aki.Protocol.bM1.create();
-    Net_1.Net.Call(22623, e, e => {
+    Net_1.Net.Call(21056, e, e => {
       var t = this.GetCumulativeShopData();
       t.TaskDataMap.clear();
       t.TaskTabMap.clear();

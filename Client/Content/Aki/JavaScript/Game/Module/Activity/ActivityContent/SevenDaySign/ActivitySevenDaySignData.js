@@ -22,6 +22,9 @@ class ActivitySevenDaySignData extends ActivityData_1.ActivityBaseData {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewRefreshCurrent, this.Id);
   }
+  GetExDataFinishShowState() {
+    return !this.B3e.some(t => t !== Protocol_1.Aki.Protocol.zps.ovs);
+  }
   GetExDataRedPointShowState() {
     for (const t of this.B3e) {
       if (t === Protocol_1.Aki.Protocol.zps.CMs) {

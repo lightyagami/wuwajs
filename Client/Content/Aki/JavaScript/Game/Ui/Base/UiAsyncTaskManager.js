@@ -4,21 +4,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.UiAsyncTaskManager = undefined;
+const Log_1 = require("../../../Core/Common/Log");
+const Macro_1 = require("../../../Core/Preprocessor/Macro");
 const UiAsyncTaskQueue_1 = require("./UiAsyncTaskQueue");
 class UiAsyncTaskManager {
-  constructor() {
+  constructor(s = false) {
+    this.ShowLogInfo = s;
     this.Rk_ = undefined;
   }
   async RunTask(s) {
     this.Rk_ ||= new Map();
     var e = s.Name;
-    let t = this.Rk_.get(e);
-    if (!t) {
-      t = new UiAsyncTaskQueue_1.UiAsyncTaskQueue();
-      this.Rk_.set(e, t);
+    let r = this.Rk_.get(e);
+    if (!r) {
+      (r = new UiAsyncTaskQueue_1.UiAsyncTaskQueue()).RunAfterCallback = this.Ufd.bind(this);
+      this.Rk_.set(e, r);
     }
-    t.EnQueue(s);
-    t.ProcessQueue();
+    r.EnQueue(s);
+    r.ProcessQueue();
     return await s.Promise;
   }
   CancelAllTask() {
@@ -29,6 +32,7 @@ class UiAsyncTaskManager {
       this.Rk_.clear();
     }
   }
+  Ufd() {}
 }
 exports.UiAsyncTaskManager = UiAsyncTaskManager;
 //# sourceMappingURL=UiAsyncTaskManager.js.map

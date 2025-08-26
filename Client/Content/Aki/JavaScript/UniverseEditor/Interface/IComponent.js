@@ -1,13 +1,13 @@
 "use strict";
 
-function getComponent(e, o) {
-  e = e[o];
-  if (e && !e.Disabled) {
-    return e;
+function getComponent(o, e) {
+  o = o[e];
+  if (o && !o.Disabled) {
+    return o;
   }
 }
-function getOriginalComponent(e, o) {
-  return e[o];
+function getOriginalComponent(o, e) {
+  return o[e];
 }
 var EInteractPlayerDiractionType;
 var EInteractTurnAround;
@@ -70,11 +70,14 @@ var EInhalationPerformanceType;
 var EInhaledPerResultType;
 var ERenderSpecifiedRangeType;
 var EWindSourceType;
+var EMonsterChooseType;
+var EPointChooseType;
+var ERangeConstraint;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.EColorChangeStrategyOfSplineEffect = exports.EReviveType = exports.runtimePlatformCnMap = exports.ETriggerMode = exports.EConveyorBeltMoveType = exports.EConveyorBeltFieldType = exports.ESpecialNpcType = exports.ENpcUiInteractType = exports.ENpcStandbyShowFinitelyPlayMode = exports.ENpcStandbyShowMode = exports.EGroupFinishConfig = exports.EGearHitAffectType = exports.ETargetGearGroupFailureCondition = exports.ETargetGearGroupSuccessCondition = exports.EHitBulletType = exports.EHitLogicType = exports.ESpawnMonsterConstraint = exports.ESpawnMonsterPreCondition = exports.ESpawnMonsterCompleteCondition = exports.ESpawnMonsterStartCondition = exports.EPullingFoundation = exports.EItemFoundation = exports.EDirection = exports.EThrowMotion = exports.ETeleControlDestroyCondition = exports.EAimPointType = exports.EScanMode = exports.EBulletCreateCondition = exports.EEntityGroupFailureCondition = exports.EAudioType = exports.EAkEventType = exports.EAudioRangeType = exports.rewardTypeCollectConfig = exports.rewardTypeCommonConfig = exports.rewardTypeCnMap = exports.aoizLayerValues = exports.aoiXyLayerValues = exports.AOI_EXITRANGE_INCREMENT = exports.entityCategoryConfig = exports.EFightMusicsSwitchType = exports.EWorldLevelBonus = exports.EAiWanderType = exports.EInteractTurnAround = exports.EInteractPlayerDiractionType = exports.DEFAULT_INIT_SPEED = exports.getOriginalComponent = exports.getComponent = exports.componentList = exports.componentInterfaceMap = exports.componentMap = undefined;
-exports.EWindSourceType = exports.ERenderSpecifiedRangeType = exports.EInhaledPerResultType = exports.EInhalationPerformanceType = exports.EGroupAiMode = exports.EBatchBulletMovementType = exports.EDetectionFrequency = exports.EPickInteraction = exports.EAiGearStrategy = exports.levelPrefabBpPathConfig = exports.EFanGearType = exports.EFanInteractType = exports.EExploreSkillSearchTargetCfg = exports.EExploreSkillInteractType = exports.EJigsawCompleteCondition = exports.EFillType = exports.EReboundOptionType = exports.EControllerType = exports.ELevelAiCycleMode = exports.EPatrolCycleMode = exports.patrolMoveStateNameByValue = exports.EPatrolMoveState = exports.EEffectSplineCreateMode = exports.EPointGroupGenerateType = exports.ESplineType = exports.ESplineLine = exports.EMonsterShowOnDeathType = undefined;
+exports.ERangeConstraint = exports.EPointChooseType = exports.EMonsterChooseType = exports.EWindSourceType = exports.ERenderSpecifiedRangeType = exports.EInhaledPerResultType = exports.EInhalationPerformanceType = exports.EGroupAiMode = exports.EBatchBulletMovementType = exports.EDetectionFrequency = exports.EPickInteraction = exports.EAiGearStrategy = exports.levelPrefabBpPathConfig = exports.EFanGearType = exports.EFanInteractType = exports.EExploreSkillSearchTargetCfg = exports.EExploreSkillInteractType = exports.EJigsawCompleteCondition = exports.EFillType = exports.EReboundOptionType = exports.EControllerType = exports.ELevelAiCycleMode = exports.EPatrolCycleMode = exports.patrolMoveStateNameByValue = exports.EPatrolMoveState = exports.EEffectSplineCreateMode = exports.EPointGroupGenerateType = exports.ESplineType = exports.ESplineLine = exports.EMonsterShowOnDeathType = undefined;
 exports.componentMap = {
   AirWallSpawnerComponent: undefined,
   ActorStateComponent: undefined,
@@ -233,33 +236,37 @@ exports.componentMap = {
   EntityBatchRefreshComponent: undefined,
   SimpleCombatComponent: undefined,
   GridObjectComponent: undefined,
-  PerformanceOptimizationComponent: undefined
+  GodKingFrequencyControllerComponent: undefined,
+  PerformanceOptimizationComponent: undefined,
+  SceneItemEventListenerComponent: undefined,
+  DynamicSpawnMonsterPointComponent: undefined,
+  DynamicSpawnMonsterComponent: undefined
 };
 exports.componentInterfaceMap = exports.componentMap;
 exports.componentList = Object.keys(exports.componentInterfaceMap).sort();
 exports.getComponent = getComponent;
 exports.getOriginalComponent = getOriginalComponent;
 exports.DEFAULT_INIT_SPEED = 150;
-(function (e) {
-  e.Npc = "Npc";
-  e.LeisureInteraction = "LeisureInteraction";
+(function (o) {
+  o.Npc = "Npc";
+  o.LeisureInteraction = "LeisureInteraction";
 })(EInteractPlayerDiractionType = exports.EInteractPlayerDiractionType ||= {});
-(function (e) {
-  e.FaceEachOther = "FaceEachOther";
-  e.FaceEachOtherWithRecoveryImmediately = "FaceEachOtherWithRecoveryImmediately";
-  e.PlayerTurnToInteractor = "PlayerTurnToInteractor";
+(function (o) {
+  o.FaceEachOther = "FaceEachOther";
+  o.FaceEachOtherWithRecoveryImmediately = "FaceEachOtherWithRecoveryImmediately";
+  o.PlayerTurnToInteractor = "PlayerTurnToInteractor";
 })(EInteractTurnAround = exports.EInteractTurnAround ||= {});
-(function (e) {
-  e[e.SmallRange = 300] = "SmallRange";
-  e[e.MiddleRange = 600] = "MiddleRange";
-  e[e.BigRange = 1000] = "BigRange";
-  e[e.SmallRangeLargeBody = 301] = "SmallRangeLargeBody";
-  e[e.MiddleRangeLargeBody = 601] = "MiddleRangeLargeBody";
-  e[e.BigRangeLargeBody = 1001] = "BigRangeLargeBody";
+(function (o) {
+  o[o.SmallRange = 300] = "SmallRange";
+  o[o.MiddleRange = 600] = "MiddleRange";
+  o[o.BigRange = 1000] = "BigRange";
+  o[o.SmallRangeLargeBody = 301] = "SmallRangeLargeBody";
+  o[o.MiddleRangeLargeBody = 601] = "MiddleRangeLargeBody";
+  o[o.BigRangeLargeBody = 1001] = "BigRangeLargeBody";
 })(EAiWanderType = exports.EAiWanderType ||= {});
-(function (e) {
-  e[e.WorldLevelTable = 0] = "WorldLevelTable";
-  e[e.AreaBouns = 1] = "AreaBouns";
+(function (o) {
+  o[o.WorldLevelTable = 0] = "WorldLevelTable";
+  o[o.AreaBouns = 1] = "AreaBouns";
 })(EWorldLevelBonus = exports.EWorldLevelBonus ||= {});
 (EFightMusicsSwitchType = exports.EFightMusicsSwitchType ||= {}).SwitchByTag = "SwitchByTag";
 exports.entityCategoryConfig = {
@@ -276,13 +283,15 @@ exports.aoiXyLayerValues = {
   3: 11000,
   6: 3000,
   7: 9000,
-  8: 15000
+  8: 15000,
+  9: 49000
 };
 exports.aoizLayerValues = {
   [0]: -1,
   1: 24000,
   2: 6000,
-  3: 3000
+  3: 3000,
+  4: 50000
 };
 exports.rewardTypeCnMap = {
   [0]: "附近掉落",
@@ -292,249 +301,253 @@ exports.rewardTypeCnMap = {
 };
 exports.rewardTypeCommonConfig = [0, 1, 3];
 exports.rewardTypeCollectConfig = [0, 1, 2];
-(function (e) {
-  e.SceneActorRefComp = "SceneActorRefComp";
-  e.RangeComp = "RangeComp";
-  e.AOI = "AOI";
+(function (o) {
+  o.SceneActorRefComp = "SceneActorRefComp";
+  o.RangeComp = "RangeComp";
+  o.AOI = "AOI";
 })(EAudioRangeType = exports.EAudioRangeType ||= {});
-(function (e) {
-  e.Point = "Point";
-  e.Box = "Box";
-  e.Default = "Default";
+(function (o) {
+  o.Point = "Point";
+  o.Box = "Box";
+  o.Default = "Default";
 })(EAkEventType = exports.EAkEventType ||= {});
-(function (e) {
-  e.AudioAMB = "AudioAMB";
-  e.AudioBGM = "AudioBGM";
+(function (o) {
+  o.AudioAMB = "AudioAMB";
+  o.AudioBGM = "AudioBGM";
 })(EAudioType = exports.EAudioType ||= {});
-(function (e) {
-  e.SequentialState = "SequentialState";
-  e.ArbitraryState = "ArbitraryState";
+(function (o) {
+  o.SequentialState = "SequentialState";
+  o.ArbitraryState = "ArbitraryState";
 })(EEntityGroupFailureCondition = exports.EEntityGroupFailureCondition ||= {});
-(function (e) {
-  e.OnHit = "OnHit";
-  e.OnMatching = "OnMatching";
-  e.OnCollision = "OnCollision";
-  e.OnThrowTriggerTime = "OnThrowDelayTime";
-  e.OpenGravityCollision = "OpenGravityCollision";
+(function (o) {
+  o.OnHit = "OnHit";
+  o.OnMatching = "OnMatching";
+  o.OnCollision = "OnCollision";
+  o.OnThrowTriggerTime = "OnThrowDelayTime";
+  o.OpenGravityCollision = "OpenGravityCollision";
 })(EBulletCreateCondition = exports.EBulletCreateCondition ||= {});
-(function (e) {
-  e[e.Camera = 0] = "Camera";
-  e[e.Surround = 1] = "Surround";
+(function (o) {
+  o[o.Camera = 0] = "Camera";
+  o[o.Surround = 1] = "Surround";
 })(EScanMode = exports.EScanMode ||= {});
-(function (e) {
-  e[e.Normal = 0] = "Normal";
-  e[e.Weakness = 1] = "Weakness";
+(function (o) {
+  o[o.Normal = 0] = "Normal";
+  o[o.Weakness = 1] = "Weakness";
 })(EAimPointType = exports.EAimPointType ||= {});
-(function (e) {
-  e.LetGo = "LetGo";
-  e.CreateBullet = "CreateBullet";
-  e.Throw = "Throw";
+(function (o) {
+  o.LetGo = "LetGo";
+  o.CreateBullet = "CreateBullet";
+  o.Throw = "Throw";
 })(ETeleControlDestroyCondition = exports.ETeleControlDestroyCondition ||= {});
-(function (e) {
-  e.Projectile = "Projectile";
-  e.Circumnutation = "Circumnutation";
-  e.TrackTarget = "TrackTarget";
-  e.Levitate = "Levitate";
-  e.FreeFall = "FreeFall";
+(function (o) {
+  o.Projectile = "Projectile";
+  o.Circumnutation = "Circumnutation";
+  o.TrackTarget = "TrackTarget";
+  o.Levitate = "Levitate";
+  o.FreeFall = "FreeFall";
 })(EThrowMotion = exports.EThrowMotion ||= {});
-(function (e) {
-  e.Right = "Right";
-  e.Left = "Left";
+(function (o) {
+  o.Right = "Right";
+  o.Left = "Left";
 })(EDirection = exports.EDirection ||= {});
-(function (e) {
-  e.CategoryMatching = "CategoryMatching";
-  e.BuildingBlock = "BuildingBlock";
-  e.PulseDevice = "PulseDevice";
-  e.RangeAdsorption = "RangeAdsorption";
+(function (o) {
+  o.CategoryMatching = "CategoryMatching";
+  o.BuildingBlock = "BuildingBlock";
+  o.PulseDevice = "PulseDevice";
+  o.RangeAdsorption = "RangeAdsorption";
 })(EItemFoundation = exports.EItemFoundation ||= {});
 (EPullingFoundation = exports.EPullingFoundation ||= {}).CategoryMatching = "CategoryMatching";
-(function (e) {
-  e[e.Immediate = 0] = "Immediate";
-  e[e.TriggerRange = 1] = "TriggerRange";
+(function (o) {
+  o[o.Immediate = 0] = "Immediate";
+  o[o.TriggerRange = 1] = "TriggerRange";
 })(ESpawnMonsterStartCondition = exports.ESpawnMonsterStartCondition ||= {});
-(function (e) {
-  e[e.AllKill = 0] = "AllKill";
-  e[e.Duration = 1] = "Duration";
-  e[e.QuantityRefill = 2] = "QuantityRefill";
+(function (o) {
+  o[o.AllKill = 0] = "AllKill";
+  o[o.Duration = 1] = "Duration";
+  o[o.QuantityRefill = 2] = "QuantityRefill";
 })(ESpawnMonsterCompleteCondition = exports.ESpawnMonsterCompleteCondition ||= {});
 (ESpawnMonsterPreCondition = exports.ESpawnMonsterPreCondition ||= {}).DependOnPreceding = "DependOnPreceding";
 (ESpawnMonsterConstraint = exports.ESpawnMonsterConstraint ||= {}).CharacterForwardAnnularSector = "CharacterForwardAnnularSector";
-(function (e) {
-  e.ChangeNextState = "ChangeNextState";
-  e.ChangeCountDownState = "ChangeCountDownState";
-  e.ChangeLockState = "ChangeLockState";
-  e.ChangeNextAndLockTargetState = "ChangeNextAndLockTargetState";
-  e.ChangeTargetState = "ChangeTargetState";
+(function (o) {
+  o.ChangeNextState = "ChangeNextState";
+  o.ChangeCountDownState = "ChangeCountDownState";
+  o.ChangeLockState = "ChangeLockState";
+  o.ChangeNextAndLockTargetState = "ChangeNextAndLockTargetState";
+  o.ChangeTargetState = "ChangeTargetState";
+  o.ChangeByPartHit = "ChangeByPartHit";
 })(EHitLogicType = exports.EHitLogicType ||= {});
-(function (e) {
-  e.OnlyDropAttack = "OnlyDropAttack";
-  e.CrystalAttack = "CrystalAttack";
-  e.PlayerAttack = "PlayerAttack";
-  e.FixedBulletId = "FixedBulletId";
-  e.AllCharacterAttack = "AllCharacterAttack";
+(function (o) {
+  o.OnlyDropAttack = "OnlyDropAttack";
+  o.CrystalAttack = "CrystalAttack";
+  o.PlayerAttack = "PlayerAttack";
+  o.FixedBulletId = "FixedBulletId";
+  o.AllCharacterAttack = "AllCharacterAttack";
 })(EHitBulletType = exports.EHitBulletType ||= {});
-(function (e) {
-  e.SameSpecificState = "SameSpecificState";
-  e.SameArbitraryState = "SameArbitraryState";
-  e.CountDownState = "CountDownState";
-  e.SpecificTargetState = "SpecificTargetState";
+(function (o) {
+  o.SameSpecificState = "SameSpecificState";
+  o.SameArbitraryState = "SameArbitraryState";
+  o.CountDownState = "CountDownState";
+  o.SpecificTargetState = "SpecificTargetState";
 })(ETargetGearGroupSuccessCondition = exports.ETargetGearGroupSuccessCondition ||= {});
-(function (e) {
-  e.ArbitraryState = "ArbitraryState";
-  e.SequentialState = "SequentialState";
-  e.HitTargetEntity = "HitTargetEntity";
+(function (o) {
+  o.ArbitraryState = "ArbitraryState";
+  o.SequentialState = "SequentialState";
+  o.HitTargetEntity = "HitTargetEntity";
 })(ETargetGearGroupFailureCondition = exports.ETargetGearGroupFailureCondition ||= {});
 (EGearHitAffectType = exports.EGearHitAffectType ||= {}).ChangeNextState = "ChangeNextState";
-(function (e) {
-  e.Silence = "Silence";
-  e.Destroy = "Destroy";
+(function (o) {
+  o.Silence = "Silence";
+  o.Destroy = "Destroy";
 })(EGroupFinishConfig = exports.EGroupFinishConfig ||= {});
-(function (e) {
-  e.Finite = "Finite";
-  e.Loop = "Loop";
-  e.Sit = "Sit";
+(function (o) {
+  o.Finite = "Finite";
+  o.Loop = "Loop";
+  o.Sit = "Sit";
 })(ENpcStandbyShowMode = exports.ENpcStandbyShowMode ||= {});
-(function (e) {
-  e.Randomly = "Randomly";
-  e.Orderly = "Orderly";
+(function (o) {
+  o.Randomly = "Randomly";
+  o.Orderly = "Orderly";
 })(ENpcStandbyShowFinitelyPlayMode = exports.ENpcStandbyShowFinitelyPlayMode ||= {});
-(function (e) {
-  e.HandInItem = "HandInItem";
-  e.Shop = "Shop";
-  e.AntiqueShop = "AntiqueShop";
-  e.ChengXiaoShanShop = "ChengXiaoShanShop";
-  e.Gramophone = "Gramophone";
+(function (o) {
+  o.HandInItem = "HandInItem";
+  o.Shop = "Shop";
+  o.AntiqueShop = "AntiqueShop";
+  o.ChengXiaoShanShop = "ChengXiaoShanShop";
+  o.Gramophone = "Gramophone";
 })(ENpcUiInteractType = exports.ENpcUiInteractType ||= {});
 (ESpecialNpcType = exports.ESpecialNpcType ||= {}).BaseRoleNpc = "BaseRoleNpc";
-(function (e) {
-  e.DirectionalField = "DirectionalField";
-  e.PointField = "PointField";
+(function (o) {
+  o.DirectionalField = "DirectionalField";
+  o.PointField = "PointField";
 })(EConveyorBeltFieldType = exports.EConveyorBeltFieldType ||= {});
 (EConveyorBeltMoveType = exports.EConveyorBeltMoveType ||= {}).FixSpeed = "FixSpeed";
-(function (e) {
-  e[e.Distance = 0] = "Distance";
-  e[e.Global = 1] = "Global";
+(function (o) {
+  o[o.Distance = 0] = "Distance";
+  o[o.Global = 1] = "Global";
 })(ETriggerMode = exports.ETriggerMode ||= {});
 exports.runtimePlatformCnMap = {
   [1]: "PC",
   2: "移动端"
 };
-(function (e) {
-  e[e.BigWorldDisableResurrectionItem = 12] = "BigWorldDisableResurrectionItem";
-  e[e.BigWorldEnableResurrectionItem = 13] = "BigWorldEnableResurrectionItem";
+(function (o) {
+  o[o.BigWorldDisableResurrectionItem = 12] = "BigWorldDisableResurrectionItem";
+  o[o.BigWorldEnableResurrectionItem = 13] = "BigWorldEnableResurrectionItem";
 })(EReviveType = exports.EReviveType ||= {});
 (EColorChangeStrategyOfSplineEffect = exports.EColorChangeStrategyOfSplineEffect ||= {}).RGB = "RGB";
-(function (e) {
-  e[e.Effect = 0] = "Effect";
+(function (o) {
+  o[o.Effect = 0] = "Effect";
 })(EMonsterShowOnDeathType = exports.EMonsterShowOnDeathType ||= {});
-(function (e) {
-  e.Linear = "Linear";
-  e.Curve = "Curve";
-  e.Constant = "Constant";
-  e.CurveCustomTangent = "CurveCustomTangent";
+(function (o) {
+  o.Linear = "Linear";
+  o.Curve = "Curve";
+  o.Constant = "Constant";
+  o.CurveCustomTangent = "CurveCustomTangent";
 })(ESplineLine = exports.ESplineLine ||= {});
-(function (e) {
-  e.Common = "Common";
-  e.Parkour = "Parkour";
-  e.Butterfly = "Butterfly";
-  e.Effect = "Effect";
-  e.Patrol = "Patrol";
-  e.LevelAI = "LevelAI";
-  e.AirPassage = "AirPassage";
-  e.ContinuesVariableSpeedMovement = "ContinuesVariableSpeedMovement";
-  e.TimePatrol = "TimePatrol";
-  e.Range = "Range";
+(function (o) {
+  o.Common = "Common";
+  o.Parkour = "Parkour";
+  o.Butterfly = "Butterfly";
+  o.Effect = "Effect";
+  o.Patrol = "Patrol";
+  o.LevelAI = "LevelAI";
+  o.AirPassage = "AirPassage";
+  o.ContinuesVariableSpeedMovement = "ContinuesVariableSpeedMovement";
+  o.TimePatrol = "TimePatrol";
+  o.Range = "Range";
 })(ESplineType = exports.ESplineType ||= {});
 (EPointGroupGenerateType = exports.EPointGroupGenerateType ||= {}).Layer = "Layer";
-(function (e) {
-  e.WholeLine = "WholeLine";
-  e.EquidistantPoint = "EquidistantPoint";
+(function (o) {
+  o.WholeLine = "WholeLine";
+  o.EquidistantPoint = "EquidistantPoint";
 })(EEffectSplineCreateMode = exports.EEffectSplineCreateMode ||= {});
-(function (e) {
-  e[e.Walk = 1] = "Walk";
-  e[e.Run = 2] = "Run";
-  e[e.Sprint = 3] = "Sprint";
+(function (o) {
+  o[o.Walk = 1] = "Walk";
+  o[o.Run = 2] = "Run";
+  o[o.Sprint = 3] = "Sprint";
 })(EPatrolMoveState = exports.EPatrolMoveState ||= {});
 exports.patrolMoveStateNameByValue = {
   [EPatrolMoveState.Walk]: "走",
   [EPatrolMoveState.Run]: "跑",
   [EPatrolMoveState.Sprint]: "冲刺"
 };
-(function (e) {
-  e.Loop = "Loop";
-  e.Once = "Once";
+(function (o) {
+  o.Loop = "Loop";
+  o.Once = "Once";
 })(EPatrolCycleMode = exports.EPatrolCycleMode ||= {});
 (ELevelAiCycleMode = exports.ELevelAiCycleMode ||= {}).Loop = "Loop";
-(function (e) {
-  e.FreeAngle = "FreeAngle";
-  e.FixedAngle = "FixedAngle";
+(function (o) {
+  o.FreeAngle = "FreeAngle";
+  o.FixedAngle = "FixedAngle";
 })(EControllerType = exports.EControllerType ||= {});
 (EReboundOptionType = exports.EReboundOptionType ||= {}).ForwardFront = "ForwardFront";
-(function (e) {
-  e.Fixed = "Fixed";
-  e.Direction = "Direction";
+(function (o) {
+  o.Fixed = "Fixed";
+  o.Direction = "Direction";
 })(EFillType = exports.EFillType ||= {});
-(function (e) {
-  e.ActivateAllCorrectPiece = "ActivateAllCorrectPiece";
-  e.ActivateSpecifiedPiece = "ActivateSpecifiedPiece";
-  e.PutInTheSpecifiedPiece = "PutInTheSpecifiedPiece";
-  e.ActivateRenjuPiece = "ActivateRenjuPiece";
+(function (o) {
+  o.ActivateAllCorrectPiece = "ActivateAllCorrectPiece";
+  o.ActivateSpecifiedPiece = "ActivateSpecifiedPiece";
+  o.PutInTheSpecifiedPiece = "PutInTheSpecifiedPiece";
+  o.ActivateRenjuPiece = "ActivateRenjuPiece";
 })(EJigsawCompleteCondition = exports.EJigsawCompleteCondition ||= {});
-(function (e) {
-  e.PullGiant = "PullGiant";
-  e.StatueInteractPoint = "StatueInteractPoint";
-  e.PullStatue = "PullStatue";
-  e.RagDollCrushingRock = "RagDollCrushingRock";
-  e.RagDollDestroySolidRock = "RagDollDestroySolidRock";
-  e.LonelyDollPollutant = "LonelyDollPollutant";
-  e.Custom = "Custom";
+(function (o) {
+  o.PullGiant = "PullGiant";
+  o.StatueInteractPoint = "StatueInteractPoint";
+  o.PullStatue = "PullStatue";
+  o.RagDollCrushingRock = "RagDollCrushingRock";
+  o.RagDollDestroySolidRock = "RagDollDestroySolidRock";
+  o.LonelyDollPollutant = "LonelyDollPollutant";
+  o.Custom = "Custom";
 })(EExploreSkillInteractType = exports.EExploreSkillInteractType ||= {});
-(function (e) {
-  e.AngleWeight = "AngleWeight";
-  e.EnterScreenWeight = "EnterScreenWeight";
+(function (o) {
+  o.AngleWeight = "AngleWeight";
+  o.EnterScreenWeight = "EnterScreenWeight";
 })(EExploreSkillSearchTargetCfg = exports.EExploreSkillSearchTargetCfg ||= {});
-(function (e) {
-  e.Hit = "Hit";
-  e.FKey = "FKey";
+(function (o) {
+  o.Hit = "Hit";
+  o.FKey = "FKey";
 })(EFanInteractType = exports.EFanInteractType ||= {});
-(function (e) {
-  e.ReboundPlateGear = "ReboundPlateGear";
-  e.LightDeliver = "LightDeliver ";
+(function (o) {
+  o.ReboundPlateGear = "ReboundPlateGear";
+  o.LightDeliver = "LightDeliver ";
 })(EFanGearType = exports.EFanGearType ||= {});
 exports.levelPrefabBpPathConfig = {
   Item: "/Game/Aki/Character/Item/BP_BaseItem.BP_BaseItem_C",
   InteractedBox: "/Game/Aki/GamePlay/InteractiveObject/BP_InteractedBox.BP_InteractedBox_C",
   PhysicsItem: "/Game/Aki/GamePlay/InteractiveObject/BP_PhysicsItem.BP_PhysicsItem_C"
 };
-(function (e) {
-  e.RenjuStrategy = "RenjuStrategy";
-  e.RaceStrategy = "RaceStrategy";
+(function (o) {
+  o.RenjuStrategy = "RenjuStrategy";
+  o.RaceStrategy = "RaceStrategy";
 })(EAiGearStrategy = exports.EAiGearStrategy ||= {});
 (EPickInteraction = exports.EPickInteraction ||= {}).ChessmanInteract = "ChessmanInteract";
-(function (e) {
-  e.Low = "Low";
-  e.Medium = "Medium";
-  e.High = "High";
-  e.SuperHigh = "SuperHigh";
+(function (o) {
+  o.Low = "Low";
+  o.Medium = "Medium";
+  o.High = "High";
+  o.SuperHigh = "SuperHigh";
 })(EDetectionFrequency = exports.EDetectionFrequency ||= {});
-(function (e) {
-  e[e.Sprint = 0] = "Sprint";
-  e[e.Stationary = 1] = "Stationary";
+(function (o) {
+  o[o.Sprint = 0] = "Sprint";
+  o[o.Stationary = 1] = "Stationary";
 })(EBatchBulletMovementType = exports.EBatchBulletMovementType ||= {});
 (EGroupAiMode = exports.EGroupAiMode ||= {}).Patrol = "Patrol";
-(function (e) {
-  e.Role = "Role";
-  e.SceneItem = "SceneItem";
+(function (o) {
+  o.Role = "Role";
+  o.SceneItem = "SceneItem";
 })(EInhalationPerformanceType = exports.EInhalationPerformanceType ||= {});
-(function (e) {
-  e.DestroySelf = "DestroySelf";
-  e.ChangeSelfState = "ChangeSelfState";
+(function (o) {
+  o.DestroySelf = "DestroySelf";
+  o.ChangeSelfState = "ChangeSelfState";
 })(EInhaledPerResultType = exports.EInhaledPerResultType ||= {});
-(function (e) {
-  e.FlowerBridge = "FlowerBridge";
-  e.BookPage = "BookPage";
-  e.FogBarrier = "FogBarrier";
+(function (o) {
+  o.FlowerBridge = "FlowerBridge";
+  o.BookPage = "BookPage";
+  o.FogBarrier = "FogBarrier";
 })(ERenderSpecifiedRangeType = exports.ERenderSpecifiedRangeType ||= {});
-(function (e) {
-  e[e.Directional = 0] = "Directional";
-})(EWindSourceType = exports.EWindSourceType ||= {}); //# sourceMappingURL=IComponent.js.map
+(function (o) {
+  o[o.Directional = 0] = "Directional";
+})(EWindSourceType = exports.EWindSourceType ||= {});
+(EMonsterChooseType = exports.EMonsterChooseType ||= {}).RandomPoolChoose = "RandomPoolChoose";
+(EPointChooseType = exports.EPointChooseType ||= {}).SpawnMonsterPoint = "SpawnMonsterPoint";
+(ERangeConstraint = exports.ERangeConstraint ||= {}).SearchSpawnMonsterPoint = "SearchSpawnMonsterPoint"; //# sourceMappingURL=IComponent.js.map

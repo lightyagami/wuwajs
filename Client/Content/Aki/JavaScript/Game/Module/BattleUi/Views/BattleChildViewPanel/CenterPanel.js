@@ -128,7 +128,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.fHe = () => {
       var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
       this.X9e = t.EntityHandle;
-      this.AJe = this.X9e.Entity.GetComponent(99);
+      this.AJe = this.X9e.Entity.GetComponent(100);
       this.jJe();
     };
   }
@@ -144,7 +144,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.kJe();
     this.X9e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (this.X9e?.Valid) {
-      this.AJe = this.X9e.Entity.GetComponent(99);
+      this.AJe = this.X9e.Entity.GetComponent(100);
     }
   }
   async InitializeAsync() {

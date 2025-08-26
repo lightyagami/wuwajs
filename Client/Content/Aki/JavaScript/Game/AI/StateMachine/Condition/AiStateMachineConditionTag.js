@@ -13,7 +13,9 @@ class AiStateMachineConditionTag extends AiStateMachineCondition_1.AiStateMachin
     this.vJ = undefined;
     this.lne = (t, i) => {
       this.ResultSelf = i;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionTag", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionTag", this.Node.Name);
+      }
     };
   }
   OnInit(t) {

@@ -94,13 +94,13 @@ class RogueBattleBuyRolePreviewPanel extends UiPanelBase_1.UiPanelBase {
           e.push(this.l01.RefreshByDataAsync(a));
         }
         await Promise.all(e);
-        this.ppu(true);
+        this.Cvu(true);
         this.SetActive(true);
       });
       this.RunAsyncTask(t);
     }
   }
-  ppu(t) {
+  Cvu(t) {
     if (this.Pe) {
       var i = ModelManager_1.ModelManager.RogueBattleModel.GetRoleInfoById(this.Pe.mIc.if1);
       var e = ModelManager_1.ModelManager.RogueBattleModel.MaxRoleStar;

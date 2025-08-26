@@ -62,7 +62,7 @@ class WorldLevelController extends UiControllerBase_1.UiControllerBase {
   }
   static SendWorldLevelDownRequest() {
     var e = Protocol_1.Aki.Protocol.q0s.create();
-    Net_1.Net.Call(28630, e, e => {
+    Net_1.Net.Call(21856, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WorldLevelModel.OriginWorldLevel = e.uSs;
@@ -70,14 +70,14 @@ class WorldLevelController extends UiControllerBase_1.UiControllerBase {
           ModelManager_1.ModelManager.WorldLevelModel.LastChangeWorldLevelTimeStamp = e.uOs;
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(WorldLevelController.GetLocalText("WorldLevelAdjustTo", ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel.toString()));
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26038);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18991);
         }
       }
     });
   }
   static SendWorldLevelRegainRequest() {
     var e = Protocol_1.Aki.Protocol.O0s.create();
-    Net_1.Net.Call(16755, e, e => {
+    Net_1.Net.Call(26189, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WorldLevelModel.OriginWorldLevel = e.uSs;
@@ -85,7 +85,7 @@ class WorldLevelController extends UiControllerBase_1.UiControllerBase {
           ModelManager_1.ModelManager.WorldLevelModel.LastChangeWorldLevelTimeStamp = e.uOs;
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(WorldLevelController.GetLocalText("WorldLevelAdjustTo", ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel.toString()));
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23301);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27512);
         }
       }
     });

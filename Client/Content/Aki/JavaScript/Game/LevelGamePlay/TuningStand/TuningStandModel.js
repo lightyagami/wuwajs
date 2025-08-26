@@ -147,7 +147,7 @@ class TuningStandModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TuningStandUpdate);
     if (this.CheckAllClear()) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TuningStandSuccess);
-      this.kFu();
+      this.kku();
     } else if (s !== undefined && (i = this.CheckEndCount(), this.GridData[s].GridMainType === 3) && e) {
       if (i[0] === i[1]) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TuningStandOnLinkMiss, true);
@@ -342,7 +342,7 @@ class TuningStandModel extends ModelBase_1.ModelBase {
       s.DynamicState.Prev = undefined;
     }
   }
-  kFu() {
+  kku() {
     var t = [];
     for (const i of this.GridData) {
       if (i.GridMainType === 1) {

@@ -11,20 +11,20 @@ class ActivitySubViewSevenHills extends ActivitySubViewGeneralInfo_1.ActivitySub
   constructor() {
     super(...arguments);
     this.ActivityBaseData = undefined;
-    this.tWt = () => {
-      UiManager_1.UiManager.OpenView("SevenHillsMainView");
+    this.OnConfirmBtnClick = () => {
+      UiManager_1.UiManager.OpenView("SevenHillsMainView", this.ActivityBaseData);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText]];
   }
   OnBeforeShow() {
-    this.SetClickFunc(this.tWt);
+    this.SetClickFunc(this.OnConfirmBtnClick);
     this.SetBtnText("LongShanStage_Join01");
     this.BNe();
-    this.bUu();
+    this.iDu();
   }
-  bUu() {
+  iDu() {
     var e = this.ActivityBaseData.GetScoreItemCount();
     this.GetText(4)?.SetText(e.toString());
     var e = this.ActivityBaseData.ScoreItemTotal;
@@ -34,7 +34,7 @@ class ActivitySubViewSevenHills extends ActivitySubViewGeneralInfo_1.ActivitySub
     this.RefreshFunction();
     this.RefreshTimerText();
     this.BNe();
-    this.bUu();
+    this.iDu();
   }
   BNe() {
     var e = this.ActivityBaseData.CheckAnyStageRed() || this.ActivityBaseData.CheckScoreRewardRedDot();

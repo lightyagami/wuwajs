@@ -17,7 +17,7 @@ class AiLibrary {
   }
   static SelectSkillWithTarget(e, o, r, t, l = false) {
     var i = e.CharActorComp;
-    var a = i.Entity.GetComponent(205);
+    var a = i.Entity.GetComponent(206);
     var _ = Vector_1.Vector.Create();
     MathUtils_1.MathUtils.InverseTransformPositionNoScale(r.FloorLocation, r.ActorRotationProxy, i.FloorLocation, _);
     var g = Vector_1.Vector.GetAngleByVector2D(_);
@@ -54,7 +54,7 @@ class AiLibrary {
   }
   static SelectSkillWithoutTarget(a, _, g) {
     var e = a.CharActorComp;
-    const s = e.Entity.GetComponent(205);
+    const s = e.Entity.GetComponent(206);
     let n = 0;
     let L = 0;
     let c = 0;

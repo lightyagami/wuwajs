@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ActivityPermanentRogueData = undefined;
-const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const RogueResCollectionByIdKey_1 = require("../../../Core/Define/ConfigQuery/RogueResCollectionByIdKey");
 const RogueResCollectionRuleById_1 = require("../../../Core/Define/ConfigQuery/RogueResCollectionRuleById");
 const RogueResEndAwardById_1 = require("../../../Core/Define/ConfigQuery/RogueResEndAwardById");
@@ -139,14 +138,14 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
     var t = RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.GetConfig(e);
     var o = RogueResCollectionRuleById_1.configRogueResCollectionRuleById.GetConfig(t.RuleId);
     var r = !o || o.Type === 2;
-    for (const s of this.B6c) {
-      var i = s[0];
+    for (const i of this.B6c) {
+      var s = i[0];
       if (r) {
-        if (!o || !o.Seasons.includes(i)) {
-          this.B6c.get(i).add(e);
+        if (!o || !o.Seasons.includes(s)) {
+          this.B6c.get(s).add(e);
         }
-      } else if (o && o.Seasons.includes(i)) {
-        this.B6c.get(i).add(e);
+      } else if (o && o.Seasons.includes(s)) {
+        this.B6c.get(s).add(e);
       }
     }
   }
@@ -155,14 +154,14 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
     var t = RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.GetConfig(e);
     var o = RogueResCollectionRuleById_1.configRogueResCollectionRuleById.GetConfig(t.RuleId);
     var r = !o || o.Type === 2;
-    for (const s of this.k6c) {
-      var i = s[0];
+    for (const i of this.k6c) {
+      var s = i[0];
       if (r) {
-        if (!o || !o.Seasons.includes(i)) {
-          this.k6c.get(i).add(e);
+        if (!o || !o.Seasons.includes(s)) {
+          this.k6c.get(s).add(e);
         }
-      } else if (o && o.Seasons.includes(i)) {
-        this.k6c.get(i).add(e);
+      } else if (o && o.Seasons.includes(s)) {
+        this.k6c.get(s).add(e);
       }
     }
   }
@@ -171,14 +170,14 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
     var t = RogueResCollectionByIdKey_1.configRogueResCollectionByIdKey.GetConfig(e);
     var o = RogueResCollectionRuleById_1.configRogueResCollectionRuleById.GetConfig(t.RuleId);
     var r = !o || o.Type === 2;
-    for (const s of this.O6c) {
-      var i = s[0];
+    for (const i of this.O6c) {
+      var s = i[0];
       if (r) {
-        if (!o || !o.Seasons.includes(i)) {
-          this.O6c.get(i).add(e);
+        if (!o || !o.Seasons.includes(s)) {
+          this.O6c.get(s).add(e);
         }
-      } else if (o && o.Seasons.includes(i)) {
-        this.O6c.get(i).add(e);
+      } else if (o && o.Seasons.includes(s)) {
+        this.O6c.get(s).add(e);
       }
     }
   }
@@ -260,14 +259,14 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
         for (const r of t.TabNames) {
           this.G6c.set(r[0], []);
         }
-        for (const i of e.ONc.Chc) {
-          var o = new RogueTaskData_1.RogueTaskData(i.s5n);
-          o.Current = i.lMs;
-          o.Target = i.j6n;
-          o.Status = i.H6n;
-          this.q6c.set(i.s5n, o);
-          var o = RogueResTaskById_1.configRogueResTaskById.GetConfig(i.s5n);
-          this.G6c.get(o.Type).push(i.s5n);
+        for (const s of e.ONc.Chc) {
+          var o = new RogueTaskData_1.RogueTaskData(s.s5n);
+          o.Current = s.lMs;
+          o.Target = s.j6n;
+          o.Status = s.H6n;
+          this.q6c.set(s.s5n, o);
+          var o = RogueResTaskById_1.configRogueResTaskById.GetConfig(s.s5n);
+          this.G6c.get(o.Type).push(s.s5n);
         }
       }
     }
@@ -334,23 +333,23 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
   }
   UpdateEndingNotify(e) {
     var t = new Set();
-    for (const i of e.dhc) {
-      var o = RogueResEndById_1.configRogueResEndById.GetConfig(i);
+    for (const s of e.dhc) {
+      var o = RogueResEndById_1.configRogueResEndById.GetConfig(s);
       if (!this.Ts1.get(o.SeasonId)) {
         this.Ts1.set(o.SeasonId, new Set());
       }
-      this.Ts1.get(o.SeasonId)?.add(i);
+      this.Ts1.get(o.SeasonId)?.add(s);
     }
-    for (const s of e.mhc) {
-      var r = RogueResEndAwardById_1.configRogueResEndAwardById.GetConfig(s.s5n);
+    for (const i of e.mhc) {
+      var r = RogueResEndAwardById_1.configRogueResEndAwardById.GetConfig(i.s5n);
       t.add(r.SeasonId);
       if (!this.tm1.get(r.SeasonId)) {
         this.tm1.set(r.SeasonId, []);
       }
-      if (!this.tm1.get(r.SeasonId).includes(s.s5n)) {
-        this.tm1.get(r.SeasonId)?.push(s.s5n);
+      if (!this.tm1.get(r.SeasonId).includes(i.s5n)) {
+        this.tm1.get(r.SeasonId)?.push(i.s5n);
       }
-      this.om1(s);
+      this.om1(i);
     }
     for (const n of t) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PermanentRogueSeasonRedDotUpdate, n);
@@ -358,11 +357,11 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
   }
   om1(e) {
     let t = this.im1.get(e.s5n);
-    var o = taskStateToRewardState.get(e.H6n) === 1 ? MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Moonfiesta_AwardGet") : MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Moonfiesta_Underway");
+    var o = taskStateToRewardState.get(e.H6n) === 1 ? "Moonfiesta_AwardGet" : "Moonfiesta_Underway";
     if (t) {
       t.NameTextArgs = [e.lMs + "/" + e.j6n];
       t.RewardState = taskStateToRewardState.get(e.H6n);
-      t.RewardButtonText = o;
+      t.RewardButtonTextId = o;
     } else {
       const r = RogueResEndAwardById_1.configRogueResEndAwardById.GetConfig(e.s5n);
       t = {
@@ -375,7 +374,7 @@ class ActivityPermanentRogueData extends ActivityData_1.ActivityBaseData {
         ClickFunction: () => {
           ActivityPermanentRogueController_1.ActivityPermanentRogueController.RequestRogueResEndingReward(r.SeasonId, e.s5n, r.Index);
         },
-        RewardButtonText: o
+        RewardButtonTextId: o
       };
     }
     this.im1.set(e.s5n, t);

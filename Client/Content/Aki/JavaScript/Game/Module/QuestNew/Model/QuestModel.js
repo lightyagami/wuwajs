@@ -33,7 +33,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.ino = undefined;
     this.nVa = undefined;
     this.OF1 = undefined;
-    this.wjc = new Set();
+    this.cjc = new Set();
     this.TH1 = undefined;
     this.ono = undefined;
     this.rno = undefined;
@@ -309,6 +309,15 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   GetQuest(e) {
     return this.eno.get(e);
   }
+  GetQuests() {
+    var e = [];
+    if (this.eno) {
+      for (var [, t] of this.eno) {
+        e.push(t);
+      }
+    }
+    return e;
+  }
   GetQuestState(e) {
     var t = this.GetQuest(e);
     if (t) {
@@ -411,10 +420,10 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   GetShowQuestConditionFromConfig(e) {
     e = this.GetQuestConfig(e);
-    if (e) {
-      return PublicUtil_1.PublicUtil.GetConfigTextByKey(e.PreShowInfo?.TidPreShowDesc ?? "");
-    } else {
+    if (!e || !e.PreShowInfo || StringUtils_1.StringUtils.IsBlank(e.PreShowInfo.TidPreShowDesc)) {
       return "";
+    } else {
+      return PublicUtil_1.PublicUtil.GetConfigTextByKey(e.PreShowInfo.TidPreShowDesc);
     }
   }
   GetDisplayRewardInfo(e) {
@@ -686,19 +695,19 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     }
   }
   AddQuestLockInfo(e) {
-    this.wjc.add(e.B5n);
-    switch (e.n0u) {
-      case Protocol_1.Aki.Protocol.a0u.Proto_QuestResource:
-      case Protocol_1.Aki.Protocol.a0u.Proto_QuestResourceShow:
+    this.cjc.add(e.B5n);
+    switch (e.rpu) {
+      case Protocol_1.Aki.Protocol.npu.Proto_QuestResource:
+      case Protocol_1.Aki.Protocol.npu.Proto_QuestResourceShow:
         this.AddLackResourceQuest(e.B5n);
         break;
-      case Protocol_1.Aki.Protocol.a0u.Proto_QuestFocus:
+      case Protocol_1.Aki.Protocol.npu.Proto_QuestFocus:
         this.AddPendingAcceptQuestOnFocusMode(e.B5n);
     }
-    this.LockQuestSuspendByOnline(e.B5n, e.o0u);
+    this.LockQuestSuspendByOnline(e.B5n, e.ipu);
   }
   GetAllLockQuests() {
-    return this.wjc;
+    return this.cjc;
   }
 }
 exports.QuestNewModel = QuestNewModel;

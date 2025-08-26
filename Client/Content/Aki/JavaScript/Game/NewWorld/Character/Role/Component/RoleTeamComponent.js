@@ -41,6 +41,7 @@ const EffectContext_1 = require("../../../../Effect/EffectContext/EffectContext"
 const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const Global_1 = require("../../../../Global");
 const GlobalData_1 = require("../../../../GlobalData");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController");
@@ -68,7 +69,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     this.cZr = undefined;
     this.xGl = undefined;
     this.wGl = undefined;
-    this.Rcu = undefined;
+    this._du = undefined;
     this.BGl = undefined;
     this._pn = undefined;
     this.uwl = undefined;
@@ -81,27 +82,27 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     this.Lrn = undefined;
     this.DSa = 0;
     this.Drn = undefined;
-    this.J7c = false;
+    this.lQc = false;
     this.cz = Vector_1.Vector.Create();
     this.cie = Rotator_1.Rotator.Create();
     this.e7o = Quat_1.Quat.Create();
   }
   OnInit(e) {
-    this.m1t = this.Entity.GetComponent(174);
-    this.Xte = this.Entity.GetComponent(205);
+    this.m1t = this.Entity.GetComponent(175);
+    this.Xte = this.Entity.GetComponent(206);
     this.Hte = this.Entity.GetComponent(3);
-    this.mBe = this.Entity.GetComponent(175);
-    this.Mrn = this.Entity.GetComponent(96);
+    this.mBe = this.Entity.GetComponent(176);
+    this.Mrn = this.Entity.GetComponent(97);
     this.cBe = this.Entity.GetComponent(40);
-    this.Ern = this.Entity.GetComponent(98);
-    this.Gce = this.Entity.GetComponent(178);
+    this.Ern = this.Entity.GetComponent(99);
+    this.Gce = this.Entity.GetComponent(179);
     this.Nce = this.Entity.GetComponent(62);
     this.cZr = this.Entity.GetComponent(32);
     this.xGl = this.Entity.GetComponent(65);
     this.wGl = this.Entity.GetComponent(66);
-    this.Rcu = this.Entity.GetComponent(54);
-    this.BGl = this.Entity.GetComponent(99);
-    this.uwl = this.Entity.GetComponent(229);
+    this._du = this.Entity.GetComponent(54);
+    this.BGl = this.Entity.GetComponent(100);
+    this.uwl = this.Entity.GetComponent(230);
     this._pn = this.Entity.GetComponent(68);
     return true;
   }
@@ -135,14 +136,14 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   NeedSyncTransform() {
-    return !this.J7c;
+    return !this.lQc;
   }
   static OnChangeRole(e, t, i, s, o, a, h) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneTeam", 48, "执行战斗换人", ["Last", e?.Id], ["New", t.Id]);
     }
-    var r = e?.Entity?.GetComponent(93);
-    var t = t.Entity.GetComponent(93);
+    var r = e?.Entity?.GetComponent(94);
+    var t = t.Entity.GetComponent(94);
     var n = ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 3;
     var _ = r?.cBe;
     if (o && _ && _.CurrentSkill && !_.IsMainSkillReadyEnd) {
@@ -180,7 +181,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
       }
       t.xGl?.SetDataFromOldRole(e);
       t.wGl?.SetDataFromOldRole(e);
-      t.Rcu?.SetDataFromOldRole(e);
+      t._du?.SetDataFromOldRole(e);
       t.BGl?.SetDataFromOldRole(e);
       r.wGl?.ClearTarget();
       r.ClearMovePlatformAttach();
@@ -209,7 +210,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   xrn(e, t, i, s) {
-    this.J7c = false;
+    this.lQc = false;
     var o = e === undefined;
     if (ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode()) {
       if (Log_1.Log.CheckInfo()) {
@@ -226,12 +227,12 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "人物上场，角色QTE中，不更新位置");
         }
-      } else if ((i = e?.Entity?.GetComponent(205))?.HasAnyTag([-1388400236, -2100129479, 1144073280, -2044964178])) {
+      } else if ((i = e?.Entity?.GetComponent(206))?.HasAnyTag([-1388400236, -2100129479, 1144073280, -2044964178])) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "人物上场，上个角色还在场，进行寻点");
         }
         s = !!t || !i.HasTag(1788158005) && i.HasTag(40422668);
-        this.Entity.GetComponent(98).SetQtePosition({
+        this.Entity.GetComponent(99).SetQtePosition({
           Rotate: s ? SceneTeamDefine_1.SPECIAL_CHANGE_ANGLE_AIR : SceneTeamDefine_1.SPECIAL_CHANGE_ANGLE_LAND,
           Length: s ? SceneTeamDefine_1.SPECIAL_CHANGE_DIS_AIR : SceneTeamDefine_1.SPECIAL_CHANGE_DIS_LAND,
           Height: s ? SceneTeamDefine_1.SPECIAL_CHANGE_HEIGHT_AIR : SceneTeamDefine_1.SPECIAL_CHANGE_HEIGHT_LAND,
@@ -253,7 +254,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   InheritTransform(e = false) {
-    this.J7c = true;
+    this.lQc = true;
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetSpawnTransform();
     if (!t) {
       if (Log_1.Log.CheckError()) {
@@ -328,6 +329,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     var t;
     if (ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 3) {
       t = this.Entity.GetComponent(0).GetRoleId();
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t);
       if ((e = ModelManager_1.ModelManager.PlotModel.GoBattleMaterial) && ModelManager_1.ModelManager.RoleModel.IsMainRole(t)) {
         this.Hte.Actor.CharRenderingComponent.AddMaterialControllerData(e);
       }
@@ -525,7 +527,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     var e = e.Entity;
     var t = t.Entity;
     if (t && e) {
-      t.GetComponent(93).SimulateGoBattle();
+      t.GetComponent(94).SimulateGoBattle();
       a = s && o;
       if (t.IsInit) {
         h = t.GetComponent(3);
@@ -533,14 +535,14 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
           h.SetActorLocationAndRotation(s.ToUeVector(), o.ToUeRotator(), "SwitchRoleNotify", false);
         } else {
           h.SetActorTransform(e.GetComponent(3).ActorTransform, "SwitchRoleNotify", false);
-          if (e.GetComponent(205).HasAnyTag(SceneTeamDefine_1.needFixLocationTagList)) {
+          if (e.GetComponent(206).HasAnyTag(SceneTeamDefine_1.needFixLocationTagList)) {
             h.FixSwitchLocation("模拟端换人地面修正", true, true);
           }
         }
         h.SetInputFacing(h.ActorForwardProxy);
       }
-      s = t.GetComponent(177).MainAnimInstance;
-      o = e.GetComponent(177).MainAnimInstance;
+      s = t.GetComponent(178).MainAnimInstance;
+      o = e.GetComponent(178).MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE) && UE.KuroStaticLibrary.IsObjectClassByName(o, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
         s.替换角色时同步动作数据(o);
       }
@@ -550,7 +552,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
         h.CloneMoveSampleInfos(s);
       }
       if (!i) {
-        e.GetComponent(93).SimulateGoDown(false);
+        e.GetComponent(94).SimulateGoDown(false);
       }
     }
   }
@@ -574,14 +576,14 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
         }
         this.Drn = TimerSystem_1.TimerSystem.Delay(() => {
           this.Drn = undefined;
-          this.Z7c();
+          this._Qc();
         }, SceneTeamDefine_1.EFFECT_DELAY_QUIT, undefined, undefined, true, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       }
     } else {
-      this.Z7c();
+      this._Qc();
     }
   }
-  Z7c() {
+  _Qc() {
     this.Entity.GetComponent(0)?.SetVisible(false);
     this.Entity.DisableByKey(1, true);
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnOtherRoleGoDownFinish);
@@ -594,5 +596,5 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     this._pn?.ClearBasePlatform();
   }
 };
-RoleTeamComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], RoleTeamComponent);
+RoleTeamComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(94)], RoleTeamComponent);
 exports.RoleTeamComponent = RoleTeamComponent; //# sourceMappingURL=RoleTeamComponent.js.map

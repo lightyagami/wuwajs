@@ -60,7 +60,7 @@ class AiHateList {
     this.Rie = Vector_1.Vector.Create();
     this.Uie = (t, i, e, s, h) => {
       var r;
-      if (s.DamageData.CalculateType === 0 && !(s = s.Damage, this.Lie?.Valid && this.Lie.HasTag(-893996770)) && (!(r = t.GetComponent(205))?.Valid || !r.HasTag(-1566015933))) {
+      if (s.DamageData.CalculateType === 0 && !(s = s.Damage, this.Lie?.Valid && this.Lie.HasTag(-893996770)) && (!(r = t.GetComponent(206))?.Valid || !r.HasTag(-1566015933))) {
         if ((r = t.CheckGetComponent(3))?.Valid && CampUtils_1.CampUtils.GetCampRelationship(this.Bte.CharActorComp.Actor.Camp, r.Actor.Camp) === 2) {
           if (r = this.Aie.get(t.Id)) {
             r.HatredValue += Math.max(MIN_HATE, r.InDecreasing ? -s * this.vie.IncreaseRateWhenDecreasing : -s);
@@ -100,7 +100,7 @@ class AiHateList {
   }
   set AiHate(t) {
     if (this.vie !== t) {
-      var i = this.Bte.CharActorComp.Entity.GetComponent(178);
+      var i = this.Bte.CharActorComp.Entity.GetComponent(179);
       if (i) {
         if (s = this.Fie()) {
           ControllerHolder_1.ControllerHolder.BlackboardController.SetVectorValueByEntity(this.Bte.CharActorComp.Entity.Id, "CenterLocation", s.X, s.Y, s.Z);
@@ -142,7 +142,7 @@ class AiHateList {
     }
   }
   RefreshAbilityComp() {
-    this.Lie = this.Bte.CharAiDesignComp?.Entity?.GetComponent(205);
+    this.Lie = this.Bte.CharAiDesignComp?.Entity?.GetComponent(206);
   }
   GetHatredMap() {
     return this.Aie;
@@ -441,11 +441,11 @@ class AiHateList {
     if (!t?.Active) {
       return 0;
     }
-    var e = t.GetComponent(175);
+    var e = t.GetComponent(176);
     if (e?.Valid && !e.IsInGame) {
       return 0;
     }
-    e = t.GetComponent(205);
+    e = t.GetComponent(206);
     if (e) {
       if (this.Mie && e.HasTag(this.Mie)) {
         return 1;

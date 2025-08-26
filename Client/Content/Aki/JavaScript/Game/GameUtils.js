@@ -37,6 +37,9 @@ class GameUtils {
     return s;
   }
   static InternalizedString(e) {}
+  static CreateFixedLengthTuple(e, t) {
+    return Array(e).fill(t);
+  }
 }
 (exports.GameUtils = GameUtils).u_i = new ImmutableArray_1.ImmutableArray();
 GameUtils.eza = new ImmutableMap_1.ImmutableMap();

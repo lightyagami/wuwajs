@@ -36,10 +36,10 @@ class TsPureAxisHandle {
     this.sEe = undefined;
     this.pDa = undefined;
   }
-  AddAxisBinding(i, t) {
-    if (t) {
+  AddAxisBinding(i, e) {
+    if (e) {
       this.sEe = i;
-      this.pDa = t;
+      this.pDa = e;
       if (TsPureAxisHandle.bDa.includes(i)) {
         cpp_1.FKuroInputInterface.RegisterAxisBinding(FNameUtil_1.FNameUtil.GetDynamicFName(i), this.R$e, this, this.ABo);
       } else {
@@ -50,5 +50,5 @@ class TsPureAxisHandle {
     }
   }
 }
-(exports.TsPureAxisHandle = TsPureAxisHandle).bDa = [InputMappingsDefine_1.axisMappings.LookUp, InputMappingsDefine_1.axisMappings.LookUpRate, InputMappingsDefine_1.axisMappings.MoveForward, InputMappingsDefine_1.axisMappings.MoveRight, InputMappingsDefine_1.axisMappings.Turn, InputMappingsDefine_1.axisMappings.Zoom, InputMappingsDefine_1.axisMappings.MouseMove, InputMappingsDefine_1.axisMappings.WheelAxis];
+(exports.TsPureAxisHandle = TsPureAxisHandle).bDa = [InputMappingsDefine_1.axisMappings.LookUp, InputMappingsDefine_1.axisMappings.LookUpRate, InputMappingsDefine_1.axisMappings.MoveForward, InputMappingsDefine_1.axisMappings.MoveRight, InputMappingsDefine_1.axisMappings.Turn, InputMappingsDefine_1.axisMappings.Zoom, InputMappingsDefine_1.axisMappings.MouseMove, InputMappingsDefine_1.axisMappings.WheelAxis, InputMappingsDefine_1.axisMappings.TrapDefenseMoveForward, InputMappingsDefine_1.axisMappings.TrapDefenseMoveRight, InputMappingsDefine_1.axisMappings.TrapDefenseZoom];
 //# sourceMappingURL=TsPureAxisHandle.js.map

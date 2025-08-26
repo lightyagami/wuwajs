@@ -71,6 +71,9 @@ class ActivityBaseData {
     if (!this.LocalConfig.ShowTabFinish) {
       return false;
     }
+    if (!this.IsUnLock()) {
+      return false;
+    }
     try {
       if (!this.GetExDataFinishShowState()) {
         return false;

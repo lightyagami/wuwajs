@@ -234,6 +234,44 @@ class InputSettingsManager {
     }
     InputSettingsManager.SetAxisKeys(t, r);
   }
+  static ResetActionKeyByName(t) {
+    var i = ConfigManager_1.ConfigManager.InputSettingsConfig.GetActionMappingConfigByActionName(t);
+    if (i) {
+      this.Ksh(t, i);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("InputSettings", 74, "Action按键配置不存在", ["ActionName", t]);
+    }
+  }
+  static ResetAxisKeyByName(t) {
+    var i = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAxisMappingConfigByAxisName(t);
+    if (i) {
+      this.$sh(t, i);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("InputSettings", 74, "Axis按键配置不存在", ["AxisName", t]);
+    }
+  }
+  static ResetCombinationActionKeyByName(t) {
+    var i;
+    var e;
+    var n;
+    var a;
+    var s;
+    var o;
+    var r = ConfigManager_1.ConfigManager.InputSettingsConfig.GetCombinationActionConfigByActionName(t);
+    if (r) {
+      for ([i, e] of [...(this.kEe.get(t) ?? [])]) {
+        this.RemoveCombinationActionKeyMap(t, i, e);
+      }
+      for ([n, a] of r.PcKeys) {
+        this.AddCombinationActionKeyMap(t, n, a)?.SetKeyboardVersion(r.KeyboardVersion);
+      }
+      for ([s, o] of r.GamepadKeys) {
+        this.AddCombinationActionKeyMap(t, s, o)?.SetGamepadVersion(r.GamepadVersion);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("InputSettings", 74, "组合Action按键配置不存在", ["ActionName", t]);
+    }
+  }
   static GetActionBinding(t) {
     return this.qEe.GetActionBinding(t);
   }

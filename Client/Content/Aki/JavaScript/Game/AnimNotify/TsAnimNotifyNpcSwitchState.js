@@ -14,7 +14,7 @@ class TsAnimNotifyNpcSwitchState extends UE.KuroAnimNotify {
   K2_Notify(t, e) {
     t = t.GetOwner();
     if (t?.IsA(UE.TsBaseCharacter_C.StaticClass()) && this.StateName !== "" && this.StateName !== "None") {
-      t.CharacterActorComponent?.Entity.GetComponent(186)?.SwitchAnimState({
+      t.CharacterActorComponent?.Entity.GetComponent(187)?.SwitchAnimState({
         TargetStateName: this.StateName,
         Context: e.GetName() + ": AN",
         IsNoTransition: !this.NeedTransition

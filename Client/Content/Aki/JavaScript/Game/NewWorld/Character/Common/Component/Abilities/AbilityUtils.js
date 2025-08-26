@@ -44,16 +44,16 @@ class AbilityUtils {
     }
   }
   static SetSpecialEnergyAttrValue(t, e, i) {
-    if (CharacterAttributeTypes_1.specialEnergyIds.includes(e) && (t = EntitySystem_1.EntitySystem.GetComponent(t, 172))?.Valid) {
+    if (CharacterAttributeTypes_1.specialEnergyIds.includes(e) && (t = EntitySystem_1.EntitySystem.GetComponent(t, 173))?.Valid) {
       t.SetBaseValue(e, i);
     }
   }
   static ModifyFuLuoLuoSpecialEnergy(t, e) {
-    t = t?.GetComponent(252)?.SpecialSkill;
+    t = t?.GetComponent(255)?.SpecialSkill;
     return !!t && t instanceof SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo && (e === 0 ? t.RemoveSpecialEnergy() : t.AddSpecialEnergy(e), true);
   }
   static GetFuLuoLuoSpecialEnergyType(t, e) {
-    t = t?.GetComponent(252)?.SpecialSkill;
+    t = t?.GetComponent(255)?.SpecialSkill;
     if (t && t instanceof SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo) {
       return t.GetSpecialEnergyType(e);
     } else {

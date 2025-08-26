@@ -704,9 +704,9 @@ class ModelAssetBulletManager {
   }
   AddAsset(t, s) {
     if (this._ar === undefined) {
-      ModelAssetBulletManager.FDu.Start();
+      ModelAssetBulletManager.pBu.Start();
       this._ar = UE.NewObject(UE.HoldPreloadObject.StaticClass(), GlobalData_1.GlobalData.GameInstance);
-      ModelAssetBulletManager.FDu.Stop();
+      ModelAssetBulletManager.pBu.Stop();
     }
     if (this.ValueMapping.has(t)) {
       if (Log_1.Log.CheckDebug()) {
@@ -739,7 +739,7 @@ class ModelAssetBulletManager {
     this._ar?.Clear();
   }
 }
-(exports.ModelAssetBulletManager = ModelAssetBulletManager).FDu = Stats_1.Stat.Create("Preload.AddStat1.NewObject");
+(exports.ModelAssetBulletManager = ModelAssetBulletManager).pBu = Stats_1.Stat.Create("Preload.AddStat1.NewObject");
 class ModelAssetElement {
   constructor() {
     this.Promise = undefined;

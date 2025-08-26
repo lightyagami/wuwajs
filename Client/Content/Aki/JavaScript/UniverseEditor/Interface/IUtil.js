@@ -18,6 +18,9 @@ function isTemplateOnly(e) {
 function entityDataIgnoreFunc(e) {
   return ignoreUnderScore(e) || isGuid(e) || isActionId(e) || isTemplateOnly(e);
 }
+function entityDataSerializeIgnoreFunc(e) {
+  return ignoreUnderScore(e) || isGuid(e) || isTemplateOnly(e);
+}
 function treeDataIgnoreFunc(e) {
   return ignoreUnderScore(e) || isGuid(e) || isActionId(e);
 }
@@ -118,22 +121,22 @@ function createDiff(e, r, t) {
       }
     }
   }
-  for (const l in r) {
-    if (!t?.(l)) {
-      i = e[l];
-      f = r[l];
+  for (const a in r) {
+    if (!t?.(a)) {
+      i = e[a];
+      f = r[a];
       if (i !== undefined) {
         if ((u = typeof i) == typeof f && u == "object") {
           u = createDiff(i, f, t);
-          if ((c[l] = u) !== undefined) {
+          if ((c[a] = u) !== undefined) {
             o++;
           }
         } else if (i !== f) {
-          c[l] = clearIgnoreField(i, t);
+          c[a] = clearIgnoreField(i, t);
           o++;
         }
       } else {
-        c[l] = null;
+        c[a] = null;
         o++;
       }
     }
@@ -298,24 +301,24 @@ function diffChars(n, i) {
     }
   };
   let s = undefined;
-  let l = 0;
-  e: for (; l <= f + u; l++) {
-    for (let o = -l; o <= l; o += 2) {
+  let a = 0;
+  e: for (; a <= f + u; a++) {
+    for (let o = -a; o <= a; o += 2) {
       let e = 0;
       let r = 0;
-      var a;
+      var l;
       var d = c[o] ?? {
         X: e
       };
-      if (l > 0) {
-        if (o === -l || o !== l && c[o - 1].X < c[o + 1].X) {
-          a = c[o + 1];
-          e = a.X;
-          d.Head = mergeOp(1, 1, a.Head);
+      if (a > 0) {
+        if (o === -a || o !== a && c[o - 1].X < c[o + 1].X) {
+          l = c[o + 1];
+          e = l.X;
+          d.Head = mergeOp(1, 1, l.Head);
         } else {
-          a = c[o - 1];
-          e = a.X + 1;
-          d.Head = mergeOp(2, 1, a.Head);
+          l = c[o - 1];
+          e = l.X + 1;
+          d.Head = mergeOp(2, 1, l.Head);
         }
         r = e - o;
       }
@@ -346,9 +349,9 @@ function diffChars(n, i) {
   var t = [];
   let o = 0;
   let p = 0;
-  for (const x of e) {
-    var v = x.Length;
-    switch (x.Type) {
+  for (const y of e) {
+    var v = y.Length;
+    switch (y.Type) {
       case 0:
         t.push({
           Value: i.slice(o, o + v),
@@ -377,13 +380,14 @@ function diffChars(n, i) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.diffChars = exports.isMatchCategory = exports.isEntitiyMatch = exports.matchCategory = exports.diffArrays = exports.applyDiff = exports.removeNullField = exports.containsNullField = exports.createDiff = exports.clearIgnoreField = exports.deepEquals = exports.editorFieldIgnoreFunc = exports.flowDataIgnoreFunc = exports.treeDataIgnoreFunc = exports.entityDataIgnoreFunc = exports.isTemplateOnly = exports.isActionId = exports.isTidText = exports.isGuid = exports.ignoreUnderScore = undefined;
+exports.diffChars = exports.isMatchCategory = exports.isEntitiyMatch = exports.matchCategory = exports.diffArrays = exports.applyDiff = exports.removeNullField = exports.containsNullField = exports.createDiff = exports.clearIgnoreField = exports.deepEquals = exports.editorFieldIgnoreFunc = exports.flowDataIgnoreFunc = exports.treeDataIgnoreFunc = exports.entityDataSerializeIgnoreFunc = exports.entityDataIgnoreFunc = exports.isTemplateOnly = exports.isActionId = exports.isTidText = exports.isGuid = exports.ignoreUnderScore = undefined;
 exports.ignoreUnderScore = ignoreUnderScore;
 exports.isGuid = isGuid;
 exports.isTidText = isTidText;
 exports.isActionId = isActionId;
 exports.isTemplateOnly = isTemplateOnly;
 exports.entityDataIgnoreFunc = entityDataIgnoreFunc;
+exports.entityDataSerializeIgnoreFunc = entityDataSerializeIgnoreFunc;
 exports.treeDataIgnoreFunc = treeDataIgnoreFunc;
 exports.flowDataIgnoreFunc = flowDataIgnoreFunc;
 exports.editorFieldIgnoreFunc = editorFieldIgnoreFunc;

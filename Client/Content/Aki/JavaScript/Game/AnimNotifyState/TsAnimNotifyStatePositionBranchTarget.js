@@ -30,31 +30,33 @@ class PositionBranchTargetParams {
     this.SocketName = "";
     this.LastLocation = Vector_1.Vector.Create();
   }
-  RefreshTarget(t, i, s) {
+  RefreshTarget(i, t, s) {
     if (!this.TargetBaseActorComp?.Entity?.Valid) {
       this.TargetBaseActorComp = undefined;
       this.TargetCharActorComp = undefined;
     }
-    if (t) {
-      switch (i) {
+    if (i) {
+      switch (t) {
         case 0:
-          var h = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(this.CharActorComp.Entity.Id, t);
-          if (!h) {
-            return false;
+          {
+            let t = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(this.CharActorComp.Entity.Id, i);
+            if (!t && !(t = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(this.CharActorComp.Entity.Id, i))) {
+              return false;
+            }
+            var h = EntitySystem_1.EntitySystem.Get(t);
+            if (!h?.Valid) {
+              return false;
+            }
+            if (this.TargetBaseActorComp?.Entity?.Valid && this.TargetBaseActorComp.Entity.Id === h.Id) {
+              return true;
+            }
+            this.TargetBaseActorComp = h.GetComponent(1);
+            this.TargetCharActorComp = h.GetComponent(3);
+            this.SocketName = s;
+            break;
           }
-          h = EntitySystem_1.EntitySystem.Get(h);
-          if (!h?.Valid) {
-            return false;
-          }
-          if (this.TargetBaseActorComp?.Entity?.Valid && this.TargetBaseActorComp.Entity.Id === h.Id) {
-            return true;
-          }
-          this.TargetBaseActorComp = h.GetComponent(1);
-          this.TargetCharActorComp = h.GetComponent(3);
-          this.SocketName = s;
-          break;
         case 1:
-          h = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(this.CharActorComp.Entity.Id, t);
+          h = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(this.CharActorComp.Entity.Id, i);
           if (!h) {
             return false;
           }
@@ -64,15 +66,15 @@ class PositionBranchTargetParams {
           return false;
       }
     } else {
-      i = this.CharSkillComp?.GetSkillTargetForAns();
-      if (!i?.Valid) {
+      t = this.CharSkillComp?.GetSkillTargetForAns();
+      if (!t?.Valid) {
         return false;
       }
-      if (this.TargetBaseActorComp?.Entity?.Valid && i.Id === this.TargetBaseActorComp.Entity.Id) {
+      if (this.TargetBaseActorComp?.Entity?.Valid && t.Id === this.TargetBaseActorComp.Entity.Id) {
         return true;
       }
-      this.TargetBaseActorComp = i.Entity.GetComponent(1);
-      this.TargetCharActorComp = i.Entity.GetComponent(3);
+      this.TargetBaseActorComp = t.Entity.GetComponent(1);
+      this.TargetCharActorComp = t.Entity.GetComponent(3);
       this.SocketName = this.CharSkillComp.SkillTargetSocket;
     }
     this.LastLocation.DeepCopy(this.CharActorComp.LastActorLocation);
@@ -210,7 +212,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     }
     let a = paramMap.get(t.Entity.Id);
     (a = a || (paramPool.length ? paramPool.pop() : new PositionBranchTargetParams())).CharActorComp = t;
-    a.CharUnifiedComp = t.Entity.GetComponent(175);
+    a.CharUnifiedComp = t.Entity.GetComponent(176);
     a.CharSkillComp = e;
     a.NowTime = 0;
     a.TotalTime = s;

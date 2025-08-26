@@ -10,20 +10,28 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const ControllerBase_1 = require("../../../../Core/Framework/ControllerBase");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const Transform_1 = require("../../../../Core/Utils/Math/Transform");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const EffectSystem_1 = require("../../../Effect/EffectSystem");
+const Global_1 = require("../../../Global");
+const GlobalData_1 = require("../../../GlobalData");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const ScreenEffectSystem_1 = require("../../../Render/Effect/ScreenEffectSystem/ScreenEffectSystem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const GameModeController_1 = require("../../../World/Controller/GameModeController");
+const CommonQteGroupContext_1 = require("./CommonQteGroupContext");
 const EXTRA_EXPIRED_TIME = 5000;
 const MAX_EXPIRED_TIME = 60000;
 class CommonQteController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportAfterComplete, this.QGu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportAfterComplete, this.LNu);
     return true;
   }
   static OnClear() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportAfterComplete, this.QGu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportAfterComplete, this.LNu);
     return true;
   }
   static OnLeaveLevel() {
@@ -41,19 +49,19 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
     this.ClearQte();
     this.ClearPreloadQteRes();
   }
-  static StartQte(t, e = undefined, i = undefined, o = 0) {
-    let s = undefined;
+  static StartQte(t, e = undefined, i = undefined, o = 0, s = undefined) {
+    let r = undefined;
     if (this.IsInQte()) {
-      s = "当前存在执行中的Qte, 无法开始新的Qte";
+      r = "当前存在执行中的Qte, 无法开始新的Qte";
     } else if (this.wfc) {
-      s = "Qte预加载中, 无法开始新的Qte";
+      r = "Qte预加载中, 无法开始新的Qte";
     }
-    if (s) {
+    if (r) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("CommonQte", 67, s, ["HandleId", this.nx?.HandleId], ["QteId", t], ["Source", o]);
+        Log_1.Log.Debug("CommonQte", 67, r, ["HandleId", this.nx?.HandleId], ["QteId", t], ["Source", o]);
       }
     } else {
-      e = ModelManager_1.ModelManager.CommonQteModel?.CreateQteContext(t, e, i, o);
+      e = ModelManager_1.ModelManager.CommonQteModel?.CreateQteContext(t, e, i, o, s);
       if (e) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("CommonQte", 67, "通用Qte开始", ["HandleId", e.HandleId], ["QteId", t], ["Source", o]);
@@ -71,47 +79,156 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
   }
   static elc(i) {
     ModelManager_1.ModelManager.CommonQteModel?.SetCurrentCommonQte(i);
-    var t = i.QteId;
+    const o = i.QteId;
     this.zEl = true;
     this.nx = i;
-    const o = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteViewName(t);
-    this.PreloadQteRes([t], i.HandleId).then(t => {
-      if (t && o) {
-        var e = this.sS1?.get(o);
-        if (e) {
-          e.SetQteContext(i);
-          e.PlayQteStart();
-          this.sS1?.delete(o);
-          return;
+    const s = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteViewName(o);
+    let r = undefined;
+    if (!s) {
+      r = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteItemName(o);
+    }
+    this.PreloadQteRes([o], i.HandleId).then(t => {
+      if (t) {
+        if (r) {
+          var e = this.VZu?.get(o);
+          if (e) {
+            i.Resource = ModelManager_1.ModelManager.CommonQteModel?.GetQteResource(o);
+            i.UiActor = e.GetRootActor();
+            e.SetQteContext(i);
+            e.PlayQteStart();
+            this.VZu?.delete(o);
+            return;
+          }
+        } else if (s) {
+          e = this.sS1?.get(s);
+          if (e) {
+            i.Resource = ModelManager_1.ModelManager.CommonQteModel?.GetQteResource(o);
+            e.SetQteContext(i);
+            e.PlayQteStart();
+            this.sS1?.delete(s);
+            return;
+          }
         }
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("CommonQte", 67, "打开Qte界面失败, 停止当前Qte", ["HandleId", i.HandleId], ["QteId", i.QteId], ["ViewName", "CommonQteView"], ["Success", t]);
+        Log_1.Log.Debug("CommonQte", 67, "Qte加载失败, 停止当前Qte", ["HandleId", i.HandleId], ["QteId", i.QteId], ["ViewName", s], ["ItemName", r], ["Success", t]);
       }
       this.JEl();
     });
-    if (o) {
-      this.kfc(o);
+    var t = i.Config;
+    if (t) {
+      if (t.ExtraConfig.IsBlockFightInput) {
+        this.kfc("CommonQteView");
+      }
+      this.PlayQteAudio(t.AudioConfig.AudioEventStart);
+      this.AddExtraEffect(t.ExtraConfig);
+      this.SetQteTimeDilation(t.BaseConfig.TimeDilation);
     }
-    this.PlayQteAudio(i.Config.AudioConfig.AudioEventStart);
-    this.AddExtraEffect(i.Config.ExtraConfig);
-    this.SetQteTimeDilation(i.Config.BaseConfig.TimeDilation);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteStart, this.nx.HandleId);
+    return true;
+  }
+  static StartQteGroup(t, e = undefined, i = undefined, o = 0, s = undefined) {
+    let r = undefined;
+    if (this.IsInQte()) {
+      r = "当前存在执行中的Qte, 无法开始新的Qte";
+    } else if (this.wfc) {
+      r = "Qte预加载中, 无法开始新的Qte";
+    }
+    if (r) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, r, ["HandleId", this.nx?.HandleId], ["QteGroupId", t], ["Source", o]);
+      }
+    } else {
+      e = ModelManager_1.ModelManager.CommonQteModel?.CreateQteGroupContext(t, e, i, o, s);
+      if (e) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("CommonQte", 67, "通用QteGroup开始", ["HandleId", e.HandleId], ["QteGroupId", e.QteGroupId], ["Source", o]);
+        }
+        if (this.Mod(e)) {
+          return e;
+        } else {
+          return undefined;
+        }
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, "通用QteGroup开始失败, 获取context为空", ["QteGroupId", t]);
+      }
+    }
+  }
+  static Mod(r) {
+    const a = r.ContextMap;
+    if (!a || a.size === 0) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, "QteGroup中不存在Context", ["HandleId", r.HandleId], ["QteGroupId", r.QteId]);
+      }
+      return false;
+    }
+    ModelManager_1.ModelManager.CommonQteModel?.SetCurrentCommonQte(r);
+    this.zEl = true;
+    this.nx = r;
+    this.PreloadQteRes([...a.keys()], r.HandleId, true).then(t => {
+      let e = true;
+      if (t) {
+        for (var [i, o] of a.entries()) {
+          var s;
+          if (ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteItemName(i)) {
+            if (s = this.VZu?.get(i)) {
+              o.Resource = ModelManager_1.ModelManager.CommonQteModel?.GetQteResource(i);
+              o.UiActor = s.GetRootActor();
+              s.SetQteContext(o);
+              s.PlayQteStart();
+              this.VZu?.delete(i);
+            } else {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("CommonQte", 67, "找不到对应的Item UI", ["QteId", i]);
+              }
+              e = false;
+            }
+          } else {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("CommonQte", 67, "找不到对应的ItemName", ["QteId", i]);
+            }
+            e = false;
+          }
+        }
+      } else {
+        e = false;
+      }
+      if (!e) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("CommonQte", 67, "Qte组预加载失败, 停止当前Qte", ["HandleId", r.HandleId], ["QteGroupId", r.QteId], ["Success", t]);
+        }
+        this.JEl();
+      }
+    });
+    var t = r.GetConfig();
+    if (t) {
+      if (t.ExtraConfig.IsBlockFightInput) {
+        this.kfc("CommonQteView");
+      }
+      this.PlayQteAudio(t.AudioConfig.AudioEventStart);
+      this.AddExtraEffect(t.ExtraConfig);
+    }
+    this.SetQteTimeDilation(r.GroupConfig.TimeDilation);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteStart, this.nx.HandleId);
     return true;
   }
   static SetExpiredTimer(t) {
-    this.Md_();
-    var e = t.IsPermanent ? MAX_EXPIRED_TIME : t.Duration + EXTRA_EXPIRED_TIME;
-    this.Ed_ = TimerSystem_1.TimerSystem.Delay(() => {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("CommonQte", 67, "通用Qte超时, 强制结束", ["HandleId", t.HandleId], ["QteId", t.QteId]);
-      }
-      if (t.IsFail()) {
-        this.JEl();
-      } else {
-        t.QteFail();
-      }
-    }, e);
+    var e;
+    if (t.Source !== 2 && t.Source !== 3) {
+      this.Md_();
+      e = t.IsPermanent ? MAX_EXPIRED_TIME : t.Duration + EXTRA_EXPIRED_TIME;
+      this.Ed_ = TimerSystem_1.TimerSystem.Delay(() => {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("CommonQte", 67, "通用Qte超时, 强制结束", ["HandleId", t.HandleId], ["QteId", t.QteId]);
+        }
+        if (t.IsFail()) {
+          this.JEl();
+        } else {
+          t.QteFail();
+        }
+      }, MathUtils_1.MathUtils.Clamp(e, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
+    }
   }
   static StopQte(t) {
     if (t === this.nx?.HandleId) {
@@ -132,10 +249,10 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "等待结束QTE", ["HandleId", this.nx?.HandleId], ["QteId", this.nx?.QteId]);
       }
-      this.whu();
+      this.ilu();
     }
   }
-  static whu() {
+  static ilu() {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("CommonQte", 39, "通用Qte等待结束", ["HandleId", this.nx?.HandleId], ["QteId", this.nx?.QteId], ["State", this.nx?.State]);
     }
@@ -148,15 +265,25 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Debug("CommonQte", 67, "通用Qte结束", ["HandleId", this.nx?.HandleId], ["QteId", this.nx?.QteId], ["State", this.nx?.State]);
     }
     this.ResetQteTimeDilation();
-    if (this.nx?.Config) {
-      if (this.nx.IsSuccess()) {
-        this.PlayQteAudio(this.nx.Config.AudioConfig.AudioEventSuccess);
-      } else if (this.nx.IsFail()) {
-        this.PlayQteAudio(this.nx.Config.AudioConfig.AudioEventFail);
+    var t = this.nx?.GetConfig();
+    if (t) {
+      if (this.nx?.IsSuccess()) {
+        this.PlayQteAudio(t.AudioConfig.AudioEventSuccess);
+      } else if (this.nx?.IsFail()) {
+        this.PlayQteAudio(t.AudioConfig.AudioEventFail);
       }
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteEnd, this.nx?.HandleId);
     ModelManager_1.ModelManager.CommonQteModel?.ClearQteHandleId();
+    if (this.nx instanceof CommonQteGroupContext_1.CommonQteGroupContext) {
+      t = this.nx.ContextMap;
+      if (t) {
+        for (const e of t.values()) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteEnd, e.HandleId);
+          ModelManager_1.ModelManager.CommonQteModel?.ClearQteHandleId(e.HandleId);
+        }
+      }
+    }
     this.ClearQte();
   }
   static PauseQte(t) {
@@ -170,7 +297,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
         this.Ed_.Resume();
       }
       this.SetQteTimeDilation(this.nx.Config.BaseConfig.TimeDilation);
-      this.yY1();
+      this.QY1();
     }
   }
   static IsInQte() {
@@ -185,10 +312,11 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
     this.Md_();
     this.zEl = false;
     this.wfc = false;
-    this.YFu = false;
+    this.ANu = false;
     this.nx?.Clear();
     this.nx = undefined;
     this.sS1?.clear();
+    this.VZu?.clear();
   }
   static Md_() {
     if (this.Ed_) {
@@ -207,14 +335,14 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
           Log_1.Log.Debug("CommonQte", 67, "当前处于传送状态, 无法设置Qte时停");
         }
       } else if (Time_1.Time.TimeDilation !== 0) {
-        this.YFu = true;
+        this.ANu = true;
         GameModeController_1.GameModeController.SetTimeDilation(t);
       }
     }
   }
   static ResetQteTimeDilation() {
-    if (this.YFu) {
-      this.YFu = false;
+    if (this.ANu) {
+      this.ANu = false;
       GameModeController_1.GameModeController.SetTimeDilation(1);
     }
   }
@@ -246,13 +374,115 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(6, t, true);
       this.yIl = undefined;
     }
+    this.fid();
+    this.gid();
   }
-  static PlayQteAudio(t) {
-    if (t &&= (0, AudioSystem_1.parseAudioEventPath)(t.ToAssetPathName())) {
-      AudioSystem_1.AudioSystem.PostEvent(t);
+  static fid() {
+    if (this.Cid) {
+      TimerSystem_1.TimerSystem.Remove(this.Cid);
+      this.Cid = undefined;
+    }
+    if (this.pid) {
+      ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().EndScreenEffect(this.pid);
+      this.pid = undefined;
+    }
+    if (this.vid !== -1) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.vid, "[CommonQteController.RemoveScreenEffect]", true);
+      this.vid = -1;
     }
   }
-  static async PreloadQteRes(t, e = -1) {
+  static gid(t = true) {
+    if (this.yid) {
+      TimerSystem_1.TimerSystem.Remove(this.yid);
+      this.yid = undefined;
+    }
+    if (this.pYi) {
+      Global_1.Global.CharacterCameraManager.StopCameraShake(this.pYi, t);
+      this.pYi = undefined;
+    }
+  }
+  static PlayScreenEffect() {
+    if (this.nx && !this.IsPlayingScreenEffect()) {
+      const i = this.nx.Resource?.ScreenEffect1;
+      var t;
+      var e;
+      if (i) {
+        this.Sid = 1;
+        this.pid = i;
+        ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(i);
+        if (i.Loop === 0) {
+          t = (i.Start + i.End) * TimeUtil_1.TimeUtil.InverseMillisecond;
+          this.Cid = TimerSystem_1.TimerSystem.Delay(() => {
+            ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().EndScreenEffect(i);
+            this.pid = undefined;
+            this.Cid = undefined;
+          }, MathUtils_1.MathUtils.Clamp(t, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
+        }
+      } else if ((t = this.nx.Resource?.ScreenEffect2) && (e = ModelManager_1.ModelManager.CommonQteModel?.GetQteScreenEffectPath(this.nx.QteId, 2)) && (this.Sid = 2, this.vid = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, Transform_1.Transform.Create().ToUeTransform(), e, "[CommonQteController.PlayScreenEffect]", undefined, 3, undefined), t.LoopTime === 0)) {
+        e = (t.StartTime + t.EndTime) * TimeUtil_1.TimeUtil.InverseMillisecond;
+        this.Cid = TimerSystem_1.TimerSystem.Delay(() => {
+          EffectSystem_1.EffectSystem.StopEffectById(this.vid, "[CommonQteController.ScreenEffectTimer]", true);
+          this.vid = -1;
+          this.Cid = undefined;
+        }, MathUtils_1.MathUtils.Clamp(e, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
+      }
+    }
+  }
+  static IsPlayingScreenEffect() {
+    if (this.Sid === 1) {
+      return this.pid !== undefined;
+    } else {
+      return this.Sid === 2 && this.vid !== -1;
+    }
+  }
+  static PlayCameraShake() {
+    var t;
+    if (this.nx && !this.pYi && (t = this.nx.Resource?.CameraShake) && (this.pYi = Global_1.Global.CharacterCameraManager.StartMatineeCameraShake(t), this.pYi)) {
+      t = this.pYi.OscillatorTimeRemaining * TimeUtil_1.TimeUtil.InverseMillisecond;
+      this.yid = TimerSystem_1.TimerSystem.Delay(() => {
+        Global_1.Global.CharacterCameraManager.StopCameraShake(this.pYi, false);
+        this.pYi = undefined;
+        this.yid = undefined;
+      }, MathUtils_1.MathUtils.Clamp(t, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
+    }
+  }
+  static PlayExtraEffect(t) {
+    if (this.nx && t === this.nx.HandleId) {
+      this.PlayScreenEffect();
+      this.PlayCameraShake();
+    }
+  }
+  static StopExtraEffect(t) {
+    if (this.nx && t === this.nx.HandleId) {
+      this.fid();
+      this.gid(false);
+    }
+  }
+  static PlayQteAudio(t, e) {
+    if (t = t && (0, AudioSystem_1.parseAudioEventPath)(t.ToAssetPathName())) {
+      if (e) {
+        return AudioSystem_1.AudioSystem.PostEvent(t, e);
+      } else {
+        return AudioSystem_1.AudioSystem.PostEvent(t);
+      }
+    } else {
+      return AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
+    }
+  }
+  static SeekAudio(t, e, i, o) {
+    if (e &&= (0, AudioSystem_1.parseAudioEventPath)(e.ToAssetPathName())) {
+      AudioSystem_1.AudioSystem.SeekOnEvent(e, t, {
+        Actor: i,
+        Handle: o
+      });
+    }
+  }
+  static StopQteAudio(t) {
+    if (t !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
+      AudioSystem_1.AudioSystem.ExecuteAction(t, 0);
+    }
+  }
+  static async PreloadQteRes(t, e = -1, i = false) {
     if (t.length === 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "通用Qte预加载列表为空, 不需要预加载");
@@ -269,47 +499,64 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       }
       this.wfc = true;
       this.sS1 ||= new Map();
-      var i = new Set();
-      for (const l of t) {
-        var o = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteViewName(l);
-        if (o) {
-          i.add(o);
+      this.VZu ||= new Map();
+      var o = new Set();
+      var s = new Map();
+      for (const f of t) {
+        var r = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteViewName(f);
+        let t = undefined;
+        if (!r) {
+          t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteItemName(f);
+        }
+        if (r && !i) {
+          o.add(r);
+        } else if (t) {
+          s.set(f, t);
         }
       }
-      var s = Array.from(i);
-      var r = [];
-      for (const Q of s) {
-        if (UiManager_1.UiManager.IsViewOpen(Q)) {
-          r.push(UiManager_1.UiManager.CloseViewAsync(Q));
+      var a = Array.from(o);
+      var n = [];
+      for (const g of a) {
+        if (UiManager_1.UiManager.IsViewOpen(g)) {
+          n.push(UiManager_1.UiManager.CloseViewAsync(g));
         }
       }
-      await Promise.allSettled(r);
-      var a = [];
-      for (const g of s) {
-        a.push(UiManager_1.UiManager.OpenViewAsync(g));
+      await Promise.allSettled(n);
+      var m = [];
+      for (const M of a) {
+        m.push(UiManager_1.UiManager.OpenViewAsync(M));
       }
-      var n = await Promise.allSettled(a);
-      for (let t = 0; t < n.length; t++) {
-        var _ = s[t];
-        var h = n[t];
-        if (h.status === "fulfilled" && h.value !== undefined && _ !== undefined) {
-          h = h.value;
-          this.sS1.set(_, UiManager_1.UiManager.GetView(h));
+      var h = await Promise.allSettled(m);
+      for (let t = 0; t < h.length; t++) {
+        var _ = a[t];
+        var l = h[t];
+        if (l.status === "fulfilled" && l.value !== undefined && _ !== undefined) {
+          l = l.value;
+          this.sS1.set(_, UiManager_1.UiManager.GetView(l));
         }
       }
+      var d;
+      var Q;
+      var v = [];
+      for ([d, Q] of s.entries()) {
+        var C = ModelManager_1.ModelManager.CommonQteModel?.CreateCommonQteItem(Q);
+        if (C) {
+          C.SetPreloadQte(d);
+          this.VZu.set(d, C);
+          v.push(C.CreateByResourceIdAsync(Q));
+        }
+      }
+      await Promise.allSettled(v);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "通用Qte预加载界面完成", ["HandleId", this.nx?.HandleId], ["qteIdList", t]);
       }
-      var m;
-      var d = [];
-      for (const v of t) {
-        if (!ModelManager_1.ModelManager.CommonQteModel?.GetQteIcon(v)) {
-          if (m = ModelManager_1.ModelManager.CommonQteModel?.GetQteIconPath(v)) {
-            d.push(ModelManager_1.ModelManager.CommonQteModel.LoadQteIcon(v, m));
-          }
+      var c = [];
+      for (const S of t) {
+        for (const u of ModelManager_1.ModelManager.CommonQteModel.LoadQteResource(S)) {
+          c.push(u);
         }
       }
-      await Promise.all(d);
+      await Promise.all(c);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "通用Qte预加载全部完成", ["HandleId", this.nx?.HandleId], ["qteIdList", t]);
       }
@@ -325,6 +572,15 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
     }
     this.sS1?.clear();
     this.sS1 = undefined;
+    if (this.VZu) {
+      for (const e of this.VZu.values()) {
+        if (!e.IsDestroyOrDestroying) {
+          e.Destroy();
+        }
+      }
+    }
+    this.VZu?.clear();
+    this.VZu = undefined;
     ModelManager_1.ModelManager.CommonQteModel?.ClearPreloadCache();
   }
   static kfc(t) {
@@ -341,7 +597,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       this.fk1 = undefined;
     }
   }
-  static yY1() {
+  static QY1() {
     if (!!this.fk1 && !ModelManager_1.ModelManager.InputDistributeModel?.HasNotAllowFightInputViewIsOpen(this.fk1)) {
       ModelManager_1.ModelManager.InputDistributeModel?.AddNotAllowFightInputViewName(this.fk1);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAddNotAllowFightInputViewName);
@@ -356,9 +612,16 @@ CommonQteController.yIl = undefined;
 CommonQteController.Ed_ = undefined;
 CommonQteController.wfc = false;
 CommonQteController.sS1 = undefined;
+CommonQteController.VZu = undefined;
 CommonQteController.fk1 = undefined;
-CommonQteController.YFu = false;
-CommonQteController.QGu = () => {
+CommonQteController.ANu = false;
+CommonQteController.Sid = 0;
+CommonQteController.pid = undefined;
+CommonQteController.vid = -1;
+CommonQteController.Cid = undefined;
+CommonQteController.pYi = undefined;
+CommonQteController.yid = undefined;
+CommonQteController.LNu = () => {
   if (_a.IsInQte() && _a.nx?.IsActive() && _a.nx?.IsPending()) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("CommonQte", 67, "传送状态结束, 尝试恢复Qte时停", ["QteId", _a.nx.QteId]);

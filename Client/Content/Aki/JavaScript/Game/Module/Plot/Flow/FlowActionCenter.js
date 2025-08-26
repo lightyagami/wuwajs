@@ -16,6 +16,7 @@ const FlowActionChangeEntityState_1 = require("../FlowActions/FlowActionChangeEn
 const FlowActionChangeFormation_1 = require("../FlowActions/FlowActionChangeFormation");
 const FlowActionChangeInteractOptionText_1 = require("../FlowActions/FlowActionChangeInteractOptionText");
 const FlowActionChangeState_1 = require("../FlowActions/FlowActionChangeState");
+const FlowActionChangeTrapDefenseMiniMap_1 = require("../FlowActions/FlowActionChangeTrapDefenseMiniMap");
 const FlowActionCloseFlowTemplate_1 = require("../FlowActions/FlowActionCloseFlowTemplate");
 const FlowActionDestroyEntity_1 = require("../FlowActions/FlowActionDestroyEntity");
 const FlowActionFadeInScreen_1 = require("../FlowActions/FlowActionFadeInScreen");
@@ -28,16 +29,19 @@ const FlowActionLeisureInteract_1 = require("../FlowActions/FlowActionLeisureInt
 const FlowActionLevelSyncAction_1 = require("../FlowActions/FlowActionLevelSyncAction");
 const FlowActionLockTodTime_1 = require("../FlowActions/FlowActionLockTodTime");
 const FlowActionOpenQuestChapterView_1 = require("../FlowActions/FlowActionOpenQuestChapterView");
+const FlowActionOpenSimpleGameplay_1 = require("../FlowActions/FlowActionOpenSimpleGameplay");
 const FlowActionOpenSystemBoard_1 = require("../FlowActions/FlowActionOpenSystemBoard");
 const FlowActionPlayMovie_1 = require("../FlowActions/FlowActionPlayMovie");
 const FlowActionPlaySequenceData_1 = require("../FlowActions/FlowActionPlaySequenceData");
 const FlowActionPlaySpine_1 = require("../FlowActions/FlowActionPlaySpine");
+const FlowActionPreEnableSubLevel_1 = require("../FlowActions/FlowActionPreEnableSubLevel");
 const FlowActionServerAction_1 = require("../FlowActions/FlowActionServerAction");
 const FlowActionSetAudioState_1 = require("../FlowActions/FlowActionSetAudioState");
 const FlowActionSetCameraAnim_1 = require("../FlowActions/FlowActionSetCameraAnim");
 const FlowActionSetEntityVisible_1 = require("../FlowActions/FlowActionSetEntityVisible");
 const FlowActionSetFlowTemplate_1 = require("../FlowActions/FlowActionSetFlowTemplate");
 const FlowActionSetHeadIconVisible_1 = require("../FlowActions/FlowActionSetHeadIconVisible");
+const FlowActionSetNpcGroupPerform_1 = require("../FlowActions/FlowActionSetNpcGroupPerform");
 const FlowActionSetPlayerPos_1 = require("../FlowActions/FlowActionSetPlayerPos");
 const FlowActionSetPlotMode_1 = require("../FlowActions/FlowActionSetPlotMode");
 const FlowActionSetTime_1 = require("../FlowActions/FlowActionSetTime");
@@ -113,6 +117,10 @@ class FlowActionCenter extends ControllerAssistantBase_1.ControllerAssistantBase
     this.SXi("SetSpineAnimation", FlowActionPlaySpine_1.FlowActionPlaySpine, true);
     this.SXi("SetAudioState", FlowActionSetAudioState_1.FlowActionSetAudioState, true);
     this.SXi("StopUiScreenEffect", FlowActionStopUiScreenEffect_1.FlowActionStopUiScreenEffect, true);
+    this.SXi("OpenSimpleGameplay", FlowActionOpenSimpleGameplay_1.FlowActionOpenSimpleGameplay);
+    this.SXi("FlowDefineNpcGroupPerform", FlowActionSetNpcGroupPerform_1.FlowActionSetNpcGroupPerform);
+    this.SXi("TrapDefenseChangeMiniMap", FlowActionChangeTrapDefenseMiniMap_1.FlowActionChangeTrapDefenseMiniMap, true);
+    this.SXi("ClientPreEnableSubLevels", FlowActionPreEnableSubLevel_1.FlowActionPreEnableSubLevel);
   }
   SXi(t, o, e = false) {
     var i;

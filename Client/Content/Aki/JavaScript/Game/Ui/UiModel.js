@@ -57,4 +57,5 @@ UiModel.ResetToViewWhiteSet = new Set(["ReviveView"]);
 UiModel.IsInMainView = false;
 UiModel.InNormalQueue = false;
 UiModel.SeamlessStackWhileList = new Set(["BattleView"]);
-UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView"]); //# sourceMappingURL=UiModel.js.map
+UiModel.MainViewName = "BattleView";
+UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView"]); //# sourceMappingURL=UiModel.js.map

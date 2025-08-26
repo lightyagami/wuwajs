@@ -16,6 +16,8 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.OpenParam = undefined;
     this.t9_ = undefined;
+    this.mzc = [];
+    this.fzc = false;
     this.aq_ = (e, t) => {
       var i = Math.floor(e % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute);
       var s = Math.floor(e % TimeUtil_1.TimeUtil.Minute);
@@ -26,14 +28,13 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
       this.GetText(0)?.SetText(`${i}:${s}:${e}`);
     };
     this.lq_ = e => {
-      this.GetItem(1)?.SetUIActive(true);
-      this.GetText(2)?.ShowTextNew(e);
-      this.i9_();
-      this.t9_ = TimerSystem_1.TimerSystem.Delay(this.r9_, 3000);
-      this.PlaySequence("WaveIn");
+      this.mzc.push(e);
+      this.gzc();
     };
     this._q_ = () => {
       this.GetItem(1)?.SetUIActive(false);
+      this.fzc = false;
+      this.gzc();
     };
     this.r9_ = () => {
       this.o9_();
@@ -62,12 +63,23 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGamePlayCdChanged, this.aq_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ShipTowerBattleTip, this.lq_);
   }
-  OnBeforeShow() {}
   OnBeforeDestroy() {
     this.i9_();
   }
   hq_(e) {
     return (e < 10 ? "0" : "") + e;
+  }
+  gzc() {
+    var e;
+    if (!this.fzc && this.mzc.length !== 0) {
+      e = this.mzc.shift();
+      this.fzc = true;
+      this.GetItem(1)?.SetUIActive(true);
+      this.GetText(2)?.ShowTextNew(e);
+      this.i9_();
+      this.t9_ = TimerSystem_1.TimerSystem.Delay(this.r9_, 3000);
+      this.PlaySequence("WaveIn");
+    }
   }
   async o9_() {
     await this.PlaySequenceAsync("WaveOut");

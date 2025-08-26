@@ -32,6 +32,7 @@ class TermTextRegistryHandle {
     this.Offset = [0, 0];
     this.NeedHighlight = true;
     this.LastText = "";
+    this.LastHierarchyActive = false;
     this.Group = 0;
     this.Priority = 0;
     this.IsEnableStateDirty = false;
@@ -105,24 +106,37 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
   }
   static OnTick(t) {
     let e = false;
-    let i = false;
-    var r;
-    var n = [];
-    for ([, r] of this.Dr1.entries()) {
-      if (r.UiText && r.UiText.IsValid() && r.UiText.IsUIActiveInHierarchy() && (r.LastText !== r.UiText.text && (r.LastText = r.UiText.text, e = true, n.push(r.Id)), r.IsEnableStateDirty)) {
-        r.IsEnableStateDirty = false;
-        i = true;
-        n.push(r.Id);
+    var i;
+    var r = [];
+    for ([, i] of this.Dr1.entries()) {
+      if (i.UiText && i.UiText.IsValid() && i.UiText.IsUIActiveInHierarchy()) {
+        if (i.LastText !== i.UiText.text) {
+          i.LastText = i.UiText.text;
+          e = true;
+          r.push(i.Id);
+        }
+        if (i.IsEnableStateDirty) {
+          i.IsEnableStateDirty = false;
+          e = true;
+          r.push(i.Id);
+        }
+        if (!i.LastHierarchyActive) {
+          i.LastHierarchyActive = true;
+          e = true;
+          this._W1(i.Group);
+          r.push(i.Id);
+        }
       }
+      i.LastHierarchyActive = i.UiText?.IsUIActiveInHierarchy() ?? false;
     }
-    if (e || i) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, n);
+    if (e) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, r);
     }
   }
   static RegisterTextHyperlinkByParam(t) {
     return this.RegisterTextHyperlink(t.UiText, t.ViewType, t.ReportType, t.AttachDirection, t.AttachItem, t.OnDisableClick, t.CustomOffset, t.Group, t.Priority, t.Style);
   }
-  static RegisterTextHyperlink(t, e, i, r = 0, n, o, a, s = 0, _ = 0, h = 1) {
+  static RegisterTextHyperlink(t, e, i, r = 0, n, o, a, s = 0, h = 0, _ = 1) {
     if (this.kr1(t)) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("TermExplanation", 74, "术语解释文本控件注册失败: 控件重复注册");
@@ -140,8 +154,8 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
     l.AttachDir = r;
     l.AttachItem = n ?? t;
     l.Group = s;
-    l.Priority = _;
-    l.Style = h;
+    l.Priority = h;
+    l.Style = _;
     l.ReportType = i;
     if (a) {
       l.Offset = a;
@@ -243,13 +257,13 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       if (r.Enable) {
         r.NeedHighlight = false;
         if (r.ReportType) {
-          this.r7c(r.ReportType);
+          this.NNu(r.ReportType);
         }
         this.mM1 = r;
         t = {
           HyperLinkList: Array.from(new Set(i))
         };
-        e = this.cbu(r);
+        e = this.xbu(r);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTermExplanationViewOpening, r.Type);
         UiManager_1.UiManager.OpenView(e, t);
       } else if (Log_1.Log.CheckError()) {
@@ -261,7 +275,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
   }
   static HasAnyTermInCurrentTexts() {
     for (var [, t] of this.Dr1.entries()) {
-      if (t.UiText && t.UiText.IsValid() && t.UiText.IsUIActiveInHierarchy() && t.Enable) {
+      if (t.UiText && t.UiText.IsValid() && t.UiText.IsUIActiveInHierarchy() && t.Enable && t.Group === this.cj1) {
         if (this.qr1(t.UiText.text).length > 0) {
           return true;
         }
@@ -282,10 +296,10 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
     }
     var t;
     if (i === -1) {
-      this.hW1.push([e, 0]);
+      this.hW1.push([e, 1]);
     } else {
       t = this.hW1[i][1] + 1;
-      this.hW1.splice(i);
+      this.hW1.splice(i, 1);
       this.hW1.push([e, t]);
     }
   }
@@ -300,7 +314,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
     var t;
     if (i !== -1) {
       if ((t = this.hW1[i][1] - 1) <= 0) {
-        this.hW1.splice(i);
+        this.hW1.splice(i, 1);
         if (this.cj1 === e) {
           if (this.hW1.length === 0) {
             this.cj1 = 0;
@@ -329,7 +343,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
     } else {
       this.cj1 = e;
       t = this.hW1[i];
-      this.hW1.splice(i);
+      this.hW1.splice(i, 1);
       this.hW1.push(t);
     }
   }
@@ -356,18 +370,18 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
   }
   static Or1(t, e) {
     if (t.ReportType) {
-      this.r7c(t.ReportType);
+      this.NNu(t.ReportType);
     }
     if (t.Enable) {
-      if (this.nHc(e)) {
+      if (this.Ljc(e)) {
         t.NeedHighlight = true;
         this._W1(t.Group);
         this.mM1 = t;
-        var i = this.cbu(t);
+        var i = this.xbu(t);
         var r = [];
         for (const t of this.dj1(this.cj1)) {
           for (const n of this.qr1(t.UiText.text, false)) {
-            if (!!this.nHc(n) || !Info_1.Info.IsBuildShipping) {
+            if (!!this.Ljc(n) || !Info_1.Info.IsBuildShipping) {
               r.push(n);
             }
           }
@@ -407,7 +421,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       this.Xd1(t);
     }
   }
-  static nHc(t) {
+  static Ljc(t) {
     var e = Number(t);
     if (isNaN(e)) {
       if (Log_1.Log.CheckError()) {
@@ -465,7 +479,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       i.SetLGUISpaceAbsolutePosition(new UE.Vector(e.X + t.Offset[0], e.Y + t.Offset[1], e.Z));
     }
   }
-  static cbu(t) {
+  static xbu(t) {
     var e = t.Type;
     var t = t.Style;
     var i = TermExplanationViewStyleById_1.configTermExplanationViewStyleById.GetConfig(t);
@@ -482,7 +496,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       return this.Gr1[e];
     }
   }
-  static o7c(t) {
+  static VNu(t) {
     var e = new LogReportDefine_1.EnterViewWithTermsEvent();
     e.i_scene = t;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
@@ -490,7 +504,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Debug("TermExplanation", 74, "术语解释埋点: 进入带有术语的界面", ["场景类型", t]);
     }
   }
-  static r7c(t) {
+  static NNu(t) {
     var e = new LogReportDefine_1.ClickTermExplanationEvent();
     e.i_scene = t;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
@@ -517,7 +531,7 @@ TermExplanationController.ePt = t => {
   for (const i of t) {
     var e = _a.Dr1.get(i);
     if (e && _a.qr1(e.UiText.text).length > 0) {
-      _a.o7c(e.ReportType);
+      _a.VNu(e.ReportType);
     }
   }
 };

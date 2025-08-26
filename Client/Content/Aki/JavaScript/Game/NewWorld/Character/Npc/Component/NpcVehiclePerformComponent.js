@@ -81,5 +81,5 @@ let NpcVehiclePerformComponent = class NpcVehiclePerformComponent extends BaseVe
     }
   }
 };
-NpcVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(232)], NpcVehiclePerformComponent);
+NpcVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(233)], NpcVehiclePerformComponent);
 exports.NpcVehiclePerformComponent = NpcVehiclePerformComponent; //# sourceMappingURL=NpcVehiclePerformComponent.js.map

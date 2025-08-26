@@ -14,13 +14,24 @@ class HideActorController extends ControllerBase_1.ControllerBase {
     this.Cti = false;
     this.jAn.clear();
     this.WAn.clear();
+    this.Lhd = false;
+    this.Phd = false;
+    this.Ahd.clear();
+    this.Dhd.clear();
     return true;
   }
   static OnTick(t) {
     if (this.Cti) {
-      for (const e of this.jAn) {
-        if (e.Valid) {
-          this.fti(e, true);
+      for (const i of this.jAn) {
+        if (i.Valid) {
+          this.fti(i, true);
+        }
+      }
+    }
+    if (this.Phd) {
+      for (const s of this.Ahd) {
+        if (s.Valid) {
+          this.fti(s, true);
         }
       }
     }
@@ -37,6 +48,18 @@ class HideActorController extends ControllerBase_1.ControllerBase {
       this.pti(false, true);
     }
   }
+  static HideNpcMesh() {
+    if (!this.Lhd) {
+      this.Lhd = true;
+      this.xhd(true, false);
+    }
+  }
+  static HideNpcEffect() {
+    if (!this.Phd) {
+      this.Phd = true;
+      this.xhd(false, true);
+    }
+  }
   static ShowMesh() {
     if (this.dti) {
       this.dti = false;
@@ -49,48 +72,101 @@ class HideActorController extends ControllerBase_1.ControllerBase {
       this.vti(false, true);
     }
   }
-  static pti(t, e) {
+  static ShowNpcMesh() {
+    if (this.Lhd) {
+      this.Lhd = false;
+      this.Uhd(true, false);
+    }
+  }
+  static ShowNpcEffect() {
+    if (this.Phd) {
+      this.Phd = false;
+      this.Uhd(false, true);
+    }
+  }
+  static pti(t, i) {
     if (Global_1.Global.BaseCharacter) {
-      for (const s of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
-        var i;
-        var r;
-        if (s.Valid && s.IsInit && s.Entity.Active && (r = (i = s.Entity.GetComponent(3))?.Actor) && r !== Global_1.Global.BaseCharacter && CampUtils_1.CampUtils.GetCampRelationship(r.Camp, Global_1.Global.BaseCharacter.Camp) !== 1 && (t && (r = i.DisableActor("[HideActorController] 隐藏Mesh"), this.WAn.set(s, r)), e)) {
-          this.fti(s, true);
-          this.jAn.add(s);
+      for (const r of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
+        var s;
+        var e;
+        if (r.Valid && r.IsInit && r.Entity.Active && (e = (s = r.Entity.GetComponent(3))?.Actor) && e !== Global_1.Global.BaseCharacter && CampUtils_1.CampUtils.GetCampRelationship(e.Camp, Global_1.Global.BaseCharacter.Camp) !== 1 && (t && (e = s.DisableActor("[HideActorController] 隐藏Mesh"), this.WAn.set(r, e)), i)) {
+          this.fti(r, true);
+          this.jAn.add(r);
         }
       }
     }
   }
-  static vti(t, e) {
+  static xhd(t, i) {
+    if (Global_1.Global.BaseCharacter) {
+      for (const r of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
+        var s;
+        var e;
+        if (r.Valid && r.IsInit && r.Entity.Active && (e = (s = r.Entity.GetComponent(2))?.Actor) && e !== Global_1.Global.BaseCharacter && (e = r.Entity.GetComponent(0))?.Valid && e.IsNpc() && (t && (this.g_d(r, true), e = s.DisableActor("[HideNpcActorController] 隐藏NpcMesh"), this.Dhd.set(r, e)), i)) {
+          this.fti(r, true);
+          this.Ahd.add(r);
+        }
+      }
+    }
+  }
+  static vti(t, i) {
     if (t) {
-      for (var [i, r] of this.WAn) {
-        if (i.Valid) {
-          i.Entity.GetComponent(3).EnableActor(r);
+      for (var [s, e] of this.WAn) {
+        if (s.Valid) {
+          s.Entity.GetComponent(3).EnableActor(e);
         }
       }
       this.WAn.clear();
     }
-    if (e) {
-      for (const s of this.jAn) {
-        if (s.Valid) {
-          this.fti(s, false);
+    if (i) {
+      for (const r of this.jAn) {
+        if (r.Valid) {
+          this.fti(r, false);
         }
       }
       this.jAn.clear();
     }
   }
-  static fti(t, e) {
-    t.Entity.GetComponent(40)?.CurrentSkill?.SetEffectHidden(e);
-    t.Entity.GetComponent(21)?.SetHidden(e);
+  static Uhd(t, i) {
+    if (t) {
+      for (var [s, e] of this.Dhd) {
+        if (s.Valid) {
+          s.Entity.GetComponent(2).EnableActor(e);
+          this.g_d(s, false);
+        }
+      }
+      this.Dhd.clear();
+    }
+    if (i) {
+      for (const r of this.Ahd) {
+        if (r.Valid) {
+          this.fti(r, false);
+        }
+      }
+      this.Ahd.clear();
+    }
+  }
+  static fti(t, i) {
+    t.Entity.GetComponent(40)?.CurrentSkill?.SetEffectHidden(i);
+    t.Entity.GetComponent(21)?.SetHidden(i);
+  }
+  static g_d(t, i) {
+    t.Entity.GetComponent(82)?.EnableHeadInfo(!i);
   }
   static OnClear() {
     this.dti = false;
     this.Cti = false;
     this.vti(true, true);
+    this.Lhd = false;
+    this.Phd = false;
+    this.Uhd(true, true);
     return true;
   }
 }
 (exports.HideActorController = HideActorController).dti = false;
 HideActorController.Cti = false;
 HideActorController.jAn = new Set();
-HideActorController.WAn = new Map(); //# sourceMappingURL=HideActorController.js.map
+HideActorController.WAn = new Map();
+HideActorController.Lhd = false;
+HideActorController.Phd = false;
+HideActorController.Ahd = new Set();
+HideActorController.Dhd = new Map(); //# sourceMappingURL=HideActorController.js.map

@@ -17,14 +17,14 @@ class PhantomArenaBanButtonFunctionModule {
       t.SetSelfInteractive(true);
     }
   }
-  Dku(t, o) {
+  mNu(t, o) {
     var n = this.ButtonMap.get(t);
     if (n) {
       n.add(o);
       this.Svt(t);
     }
   }
-  Bku(t, o) {
+  fNu(t, o) {
     var n = this.ButtonMap.get(t);
     if (n) {
       n.delete(o);
@@ -38,20 +38,20 @@ class PhantomArenaBanButtonFunctionModule {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "外部禁用单个按钮", ["Reason", o]);
     }
-    this.Dku(t, o);
+    this.mNu(t, o);
   }
   ResumeButton(t, o) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "外部恢复单个按钮", ["Reason", o]);
     }
-    this.Bku(t, o);
+    this.fNu(t, o);
   }
   BanButtonList(t) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "外部禁用全部按钮", ["Reason", t]);
     }
     for (const o of this.ButtonMap.keys()) {
-      this.Dku(o, t);
+      this.mNu(o, t);
     }
   }
   ResumeButtonList(t) {
@@ -59,7 +59,7 @@ class PhantomArenaBanButtonFunctionModule {
       Log_1.Log.Info("PhantomArena", 10, "外部恢复全部按钮", ["Reason", t]);
     }
     for (const o of this.ButtonMap.keys()) {
-      this.Bku(o, t);
+      this.fNu(o, t);
     }
   }
 }

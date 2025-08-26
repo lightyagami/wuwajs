@@ -20,7 +20,7 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
     this.AreaType = 0;
     this.x31 = undefined;
     this.WD_ = false;
-    this.DHc = false;
+    this.bZu = false;
     this.IsInSkillInteract = false;
   }
   cD1(t) {
@@ -86,8 +86,8 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
     var e = this.Card;
     await this.SetCard(t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshHandCardState);
-    if (e) {
-      await e.DestroyAsync();
+    if (e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("PhantomArena", 10, "LastCard Destroy Start"), await e.DestroyAsync(), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("PhantomArena", 10, "LastCard Destroy End");
     }
     this.AreaItem.SetEvolveActive(true);
     this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide();
@@ -118,13 +118,13 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
   PointerClickCard(t, e) {
     var i;
     if (this.x31) {
-      i = !this.DHc;
+      i = !this.bZu;
       if (this.x31.ReceiveClickData(2, t, this.Index, i)) {
         if (i) {
-          this.DHc = true;
+          this.bZu = true;
           this.Card?.PlaySequence("Point");
         } else {
-          this.DHc = false;
+          this.bZu = false;
           this.Card?.PlaySequence("PointClose");
         }
       } else {
@@ -181,10 +181,10 @@ class PhantomArenaAreaMonsterProxy extends PhantomArenaAreaProxyBase_1.PhantomAr
       if (this.Card.GetToggleState() === 1) {
         this.Card.SetToggleState(0, false);
       }
-      if (this.DHc) {
+      if (this.bZu) {
         this.Card.PlaySequence("PointClose");
       }
-      this.DHc = false;
+      this.bZu = false;
       this.IsInSkillInteract = false;
     }
   }

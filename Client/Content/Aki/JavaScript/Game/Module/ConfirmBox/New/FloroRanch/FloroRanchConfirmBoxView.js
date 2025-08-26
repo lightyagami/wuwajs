@@ -12,10 +12,10 @@ const FloroRanchConfirmBoxContentPanel_1 = require("./FloroRanchConfirmBoxConten
 class FloroRanchConfirmBoxView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.lbu = undefined;
+    this.wbu = undefined;
     this.Lo = undefined;
-    this._bu = undefined;
-    this.ubu = () => {
+    this.Abu = undefined;
+    this.Pbu = () => {
       this.CloseMe();
     };
     this.oPn = i => {
@@ -24,17 +24,17 @@ class FloroRanchConfirmBoxView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIText]];
-    this.BtnBindInfo = [[2, this.ubu], [0, this.ubu]];
+    this.BtnBindInfo = [[2, this.Pbu], [0, this.Pbu]];
   }
   async OnBeforeStartAsync() {
     var i = this.OpenParam;
-    this.lbu = i;
+    this.wbu = i;
     this.Lo = ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetConfirmBoxConfig(i.ConfigId);
     var t = StringUtils_1.StringUtils.IsBlank(i.GetTitle()) ? ConfigManager_1.ConfigManager.ConfirmBoxConfig.GetTitle(this.Lo.Title) : i.GetTitle();
     this.GetText(4).SetText(t);
-    this._bu = new FloroRanchConfirmBoxContentPanel_1.FloroRanchConfirmBoxContentPanel(i, this.oPn);
+    this.Abu = new FloroRanchConfirmBoxContentPanel_1.FloroRanchConfirmBoxContentPanel(i, this.oPn);
     var t = this.GetItem(1);
-    await this._bu.CreateThenShowByResourceIdAsync("UiItem_PastureTipsInfo", t);
+    await this.Abu.CreateThenShowByResourceIdAsync("UiItem_PastureTipsInfo", t);
   }
   OnStart() {
     var i = this.OpenParam.AttachView?.GetRootItem();
@@ -45,14 +45,14 @@ class FloroRanchConfirmBoxView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     this.ChildPopView?.SetBackBtnShowState(this.Lo.NeedClose);
     this.ChildPopView?.PopItem.SetMaskResponsibleState(this.Lo.NeedMaskClose);
-    this.ChildPopView?.PopItem.OverrideBackBtnCallBack(this._bu.OnClose);
+    this.ChildPopView?.PopItem.OverrideBackBtnCallBack(this.Abu.OnClose);
   }
   OnAfterShow() {
-    this.lbu.GetAfterShowFunction()?.();
+    this.wbu.GetAfterShowFunction()?.();
   }
   OnBeforeHide() {
     if (this.LastHide) {
-      this.lbu?.BeforePlayCloseFunction?.();
+      this.wbu?.BeforePlayCloseFunction?.();
     }
   }
   OnGetTimeDilation() {

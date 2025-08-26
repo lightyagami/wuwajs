@@ -58,16 +58,16 @@ class ActivitySpring25Controller extends ActivityControllerBase_1.ActivityContro
   async RequestSpringSignDrawRoleRequest() {
     var e;
     var r = Proto_SpringSignDrawRoleRequest.create();
-    var r = await Net_1.Net.CallAsync(17492, r);
-    return r !== undefined && (r.Q4n !== Proto_ErrorCode.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 23766), false) : ((e = ModelManager_1.ModelManager.Spring25Model).SyncSpringSignDrawRoleResponse(r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.Spring25InviteDone), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.CurrentActivityId), true));
+    var r = await Net_1.Net.CallAsync(25332, r);
+    return r !== undefined && (r.Q4n !== Proto_ErrorCode.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 17935), false) : ((e = ModelManager_1.ModelManager.Spring25Model).SyncSpringSignDrawRoleResponse(r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.Spring25InviteDone), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.CurrentActivityId), true));
   }
   async RequestSpringSignDrawRewardRequest(e) {
     var r = Proto_SpringSignDrawRewardRequest.create();
     r.s5n = e;
-    var r = await Net_1.Net.CallAsync(25525, r);
+    var r = await Net_1.Net.CallAsync(22569, r);
     if (r !== undefined) {
       if (r.Q4n !== Proto_ErrorCode.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 17029);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 24753);
       } else {
         (r = ModelManager_1.ModelManager.Spring25Model).SyncSpringSignDrawRewardResponse(e);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.Spring25DrawRewardDone);
@@ -78,10 +78,10 @@ class ActivitySpring25Controller extends ActivityControllerBase_1.ActivityContro
   async J2l() {
     var e = ModelManager_1.ModelManager.Spring25Model;
     var r = Proto_SpringSignSkinRewardRequest.create();
-    var r = await Net_1.Net.CallAsync(29107, r);
+    var r = await Net_1.Net.CallAsync(19603, r);
     if (r !== undefined) {
       if (r.Q4n !== Proto_ErrorCode.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 20616);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 19324);
       } else {
         e.SyncSpringSignSkinRewardResponse();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.Spring25SkinRewardDone);
@@ -91,9 +91,9 @@ class ActivitySpring25Controller extends ActivityControllerBase_1.ActivityContro
   }
   async gWl() {
     var e = Proto_SpringSignPhotoRewardRequest.create();
-    var e = await Net_1.Net.CallAsync(29391, e);
+    var e = await Net_1.Net.CallAsync(27357, e);
     if (e !== undefined && e.Q4n !== Proto_ErrorCode.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28392);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25254);
     }
   }
   HandleConfirmClickInActivitySubView() {

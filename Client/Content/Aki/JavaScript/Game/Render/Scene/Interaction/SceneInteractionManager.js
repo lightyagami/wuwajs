@@ -78,26 +78,26 @@ class SceneInteractionManager {
       this.xie();
     });
   }
-  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false) {
-    var a = GlobalData_1.GlobalData.World;
-    if (!a) {
+  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false, a = 0) {
+    var c = GlobalData_1.GlobalData.World;
+    if (!c) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RenderScene", 11, "错误，获取不到World");
       }
       return -1;
     }
-    let c = e;
+    let h = e;
     if (e.includes(".")) {
-      c = e.split(".")[0];
+      h = e.split(".")[0];
     }
     var e = this.UniqueLevelInstanceId;
-    var h = (0, puerts_1.$ref)(false);
-    var l = "KuroSceneInteraction_" + e;
-    var a = UE.LevelStreamingDynamic.LoadLevelInstance(a, c, i.op_ToVector(), r, h, l);
-    if ((0, puerts_1.$unref)(h) && a) {
-      (l = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(a, c, i, r, e, t, n, s, o);
+    var l = (0, puerts_1.$ref)(false);
+    var f = "KuroSceneInteraction_" + e;
+    var c = UE.LevelStreamingDynamic.LoadLevelInstance(c, h, i.op_ToVector(), r, l, f);
+    if ((0, puerts_1.$unref)(l) && c) {
+      (f = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(c, h, i, r, e, t, n, s, o, a);
       this.UniqueLevelInstanceId++;
-      this.AllSceneInteractionInfos.set(e, l);
+      this.AllSceneInteractionInfos.set(e, f);
       return e;
     } else {
       return -1;
@@ -252,6 +252,12 @@ class SceneInteractionManager {
     e = this.AllSceneInteractionInfos.get(e);
     if (e) {
       return e.GetPartCollisionActorsNum();
+    }
+  }
+  GetPartCollisionActor(e, t) {
+    e = this.AllSceneInteractionInfos.get(e);
+    if (e) {
+      return e.GetPartCollisionActor(t);
     }
   }
   GetInteractionEffectHookActors(e) {

@@ -7,22 +7,22 @@ exports.BaseOptimizationStrategy = undefined;
 class BaseOptimizationStrategy {
   constructor() {
     this.qW = false;
-    this.p7c = false;
-    this.v7c = false;
+    this.dVu = false;
+    this.mVu = false;
     this.GW = false;
     this.qW = this.OnEnable !== BaseOptimizationStrategy.prototype.OnEnable;
-    this.p7c = this.OnMyPlayerInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnMyPlayerInOutRangeLocal;
-    this.v7c = this.OnEntityInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnEntityInOutRangeLocal;
+    this.dVu = this.OnMyPlayerInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnMyPlayerInOutRangeLocal;
+    this.mVu = this.OnEntityInOutRangeLocal !== BaseOptimizationStrategy.prototype.OnEntityInOutRangeLocal;
     this.GW = this.OnDisable !== BaseOptimizationStrategy.prototype.OnDisable;
   }
   get NeedEnable() {
     return this.qW;
   }
   get NeedTriggerMyPlayerInOutRange() {
-    return this.p7c;
+    return this.dVu;
   }
   get NeedTriggerEntityInOutRange() {
-    return this.v7c;
+    return this.mVu;
   }
   get NeedDisable() {
     return this.GW;
@@ -33,12 +33,12 @@ class BaseOptimizationStrategy {
     }
   }
   MyPlayerEntityInOutRange(t) {
-    if (this.p7c) {
+    if (this.dVu) {
       this.OnMyPlayerInOutRangeLocal(t);
     }
   }
   EntityInOutRange(t, e) {
-    if (this.v7c) {
+    if (this.mVu) {
       this.OnEntityInOutRangeLocal(t, e);
     }
   }

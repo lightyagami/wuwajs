@@ -83,32 +83,35 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     this.i4o = undefined;
     this.Ora = false;
     this.Ad_ = false;
-    this.uBu = () => {
+    this.wVu = () => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 20, "停止声骸掉落物材质控制器的Tick ");
       }
-      this.l9e.SetEffectGroupProgress(this.gOu, this._9e);
+      this.AVu = undefined;
+      this.l9e.SetEffectGroupProgress(this.LVu, this._9e);
       this.l9e.UpdateMaterialEffectsOnly();
       if (this.l9e) {
         RenderModuleController_1.RenderModuleController.RemoveCharRenderShell(this.l9e);
       }
     };
-    this.cBu = undefined;
-    this.gOu = 0;
-    this.dBu = undefined;
+    this.AVu = undefined;
+    this.LVu = 0;
+    this.PVu = undefined;
     this.Udn = () => {
+      this.PVu = undefined;
       this.l9e.RemoveMaterialControllerDataGroupWithEnding(this._9e);
     };
-    this.mBu = undefined;
+    this.xVu = undefined;
     this.Adn = () => {
+      this.xVu = undefined;
       this.Entity.Disable("[SceneItemCaptureComponent.OnCaptureFinished] 捕获隐藏实体");
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     };
   }
   OnActivate() {
     var e;
-    this.i4o = this.Entity.GetComponent(197);
-    if (this.i4o && (this.vzi = this.i4o.GetInteractController(), this.vzi) && (e = this.Entity.GetComponent(117))) {
+    this.i4o = this.Entity.GetComponent(198);
+    if (this.i4o && (this.vzi = this.i4o.GetInteractController(), this.vzi) && (e = this.Entity.GetComponent(118))) {
       e.SetPawnNameKey(ABSORB_PAWN_NAME_KEY);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 4, "开始生成抓取幻象Item", ["EntityId", this.Entity.Id]);
@@ -122,17 +125,17 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     }
   }
   OnClear() {
-    if (this.cBu) {
-      TimerSystem_1.TimerSystem.Remove(this.cBu);
-      this.cBu = undefined;
+    if (this.AVu) {
+      TimerSystem_1.TimerSystem.Remove(this.AVu);
+      this.AVu = undefined;
     }
-    if (this.dBu) {
-      TimerSystem_1.TimerSystem.Remove(this.dBu);
-      this.dBu = undefined;
+    if (this.PVu) {
+      TimerSystem_1.TimerSystem.Remove(this.PVu);
+      this.PVu = undefined;
     }
-    if (this.mBu) {
-      TimerSystem_1.TimerSystem.Remove(this.mBu);
-      this.mBu = undefined;
+    if (this.xVu) {
+      TimerSystem_1.TimerSystem.Remove(this.xVu);
+      this.xVu = undefined;
     }
     return true;
   }
@@ -158,7 +161,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   }
   Cmn() {
     let t = 0;
-    const i = this.Entity.GetComponent(202);
+    const i = this.Entity.GetComponent(203);
     let e = 100;
     var o = i.CreatureData.GetPbEntityInitData();
     if ((0, IComponent_1.getComponent)(o.ComponentsData, "VisionItemComponent")) {
@@ -244,7 +247,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     if (!this.Mao || !this.vao) {
       this.koe();
     }
-    var e = this.Entity.GetComponent(202);
+    var e = this.Entity.GetComponent(203);
     var t = e.ActorLocation;
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Mao, t);
     this.Lz.DeepCopy(t);
@@ -317,13 +320,13 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
       if (e) {
         this._9e = this.l9e.AddMaterialControllerDataGroup(e);
         e = e.DataMap.GetKey(0);
-        this.gOu = e.LoopTime.Start;
+        this.LVu = e.LoopTime.Start;
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Battle", 4, "开始倒计时关闭Rendering.Tick", ["EntityId", this.Entity.Id], ["Delay", this.gOu]);
+          Log_1.Log.Debug("Battle", 4, "开始倒计时关闭Rendering.Tick", ["EntityId", this.Entity.Id], ["Delay", this.LVu]);
         }
-        this.cBu = TimerSystem_1.TimerSystem.Delay(this.uBu, this.gOu * 1000, undefined, "SceneItemCapture Disable Tick");
+        this.AVu = TimerSystem_1.TimerSystem.Delay(this.wVu, this.LVu * 1000, undefined, "SceneItemCapture Disable Tick");
         if (this.Ad_) {
-          this.Entity.GetComponent(202).SkeletalMesh.SetHiddenInGame(false);
+          this.Entity.GetComponent(203).SkeletalMesh.SetHiddenInGame(false);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 4, "生成抓取幻象Item结束", ["EntityId", this.Entity.Id]);
           }
@@ -343,7 +346,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   wdn(e) {
     if (this.Entity.Valid) {
       if (e) {
-        const t = this.Entity.GetComponent(202).SkeletalMesh;
+        const t = this.Entity.GetComponent(203).SkeletalMesh;
         t.PlayAnimation(e, false);
         t.SetPosition(0);
         t.SetPlayRate(0);
@@ -363,7 +366,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     }
   }
   ExecuteCapture(e) {
-    var t = this.Entity.GetComponent(202).ActorLocationProxy;
+    var t = this.Entity.GetComponent(203).ActorLocationProxy;
     var i = Global_1.Global.BaseCharacter.CharacterActorComponent;
     var o = Vector_1.Vector.Create(t);
     o.SubtractionEqual(i.ActorLocationProxy);
@@ -385,20 +388,20 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   }
   AfterCapture() {
     this.Ora = true;
-    var e = this.Entity.GetComponent(118);
+    var e = this.Entity.GetComponent(119);
     if (e) {
       e.CloseInteract("触发收复后关闭交互");
     }
     if (this.Ldn) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.Ldn);
     }
-    this.dBu = TimerSystem_1.TimerSystem.Delay(this.Udn, this.Idn);
-    this.mBu = TimerSystem_1.TimerSystem.Delay(this.Adn, this.ydn);
+    this.PVu = TimerSystem_1.TimerSystem.Delay(this.Udn, this.Idn);
+    this.xVu = TimerSystem_1.TimerSystem.Delay(this.Adn, this.ydn);
     if (EffectSystem_1.EffectSystem.IsValid(this.rvi)) {
       EffectSystem_1.EffectSystem.StopEffectById(this.rvi, "开始收服，关闭特效", false);
     }
     RenderModuleController_1.RenderModuleController.AddCharRenderShell(this.l9e);
   }
 };
-SceneItemCaptureComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(146)], SceneItemCaptureComponent);
+SceneItemCaptureComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(147)], SceneItemCaptureComponent);
 exports.SceneItemCaptureComponent = SceneItemCaptureComponent; //# sourceMappingURL=SceneItemCaptureComponent.js.map

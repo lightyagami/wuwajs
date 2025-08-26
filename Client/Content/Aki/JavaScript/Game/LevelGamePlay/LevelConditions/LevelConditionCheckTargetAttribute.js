@@ -35,7 +35,7 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
     return t;
   }
   rLe(e, r) {
-    e = e.Entity?.GetComponent(173);
+    e = e.Entity?.GetComponent(174);
     if (!e) {
       return false;
     }

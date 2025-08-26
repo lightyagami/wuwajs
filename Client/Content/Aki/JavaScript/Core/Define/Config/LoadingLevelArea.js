@@ -40,6 +40,9 @@ class LoadingLevelArea {
   get Type() {
     return this.type();
   }
+  get DuringTime() {
+    return this.duringtime();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -175,6 +178,14 @@ class LoadingLevelArea {
   }
   type() {
     var t = this.J7.__offset(this.z7, 22);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  duringtime() {
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

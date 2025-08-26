@@ -42,7 +42,7 @@ class TsTaskInteractTarget extends TsTaskAbortImmediatelyBase_1.default {
       if (this.TsBlackboardKey && (this.OnMontageEnded ||= (t, e) => {
         this.EndTime = Time_1.Time.WorldTime;
       }, this.EndTime = Time_1.Time.WorldTime, i = r.CharActorComp.Entity.Id, i = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(i, this.TsBlackboardKey)) && (i = WorldFunctionLibrary_1.default.GetDynamicEntity(i))) {
-        this.AnimComp = r.CharActorComp.Entity.GetComponent(177);
+        this.AnimComp = r.CharActorComp.Entity.GetComponent(178);
         this.ExecuteInteractTarget(i, r.CharActorComp);
       } else {
         this.FinishExecute(false);
@@ -59,7 +59,7 @@ class TsTaskInteractTarget extends TsTaskAbortImmediatelyBase_1.default {
     var i = ControllerHolder_1.ControllerHolder.CharacterController.GetActorComponent(t);
     let r = i.ActorLocation;
     let s = i.ActorRotation;
-    i = t.Entity.GetComponent(103);
+    i = t.Entity.GetComponent(104);
     if (i?.IsInit) {
       if (t = i.GetInteractPosition()) {
         r = t;

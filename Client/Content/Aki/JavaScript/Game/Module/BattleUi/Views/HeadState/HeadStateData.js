@@ -24,7 +24,7 @@ const UPDATE_TOLERATION = 0.1;
 class HeadStateData {
   constructor() {
     this.CommonParam = undefined;
-    this.Jh = undefined;
+    this.Entity = undefined;
     this.E0 = 0;
     this.OC = undefined;
     this.h1t = undefined;
@@ -154,18 +154,18 @@ class HeadStateData {
   }
   Initialize(t) {
     this.CommonParam = ModelManager_1.ModelManager.BattleUiModel.HeadStateCommonParam;
-    this.Jh = t;
+    this.Entity = t;
     this.E0 = t.Id;
     this.OC = t.GetComponent(1)?.Owner;
     this.ActorComponent = t.GetComponent(1);
-    this.$te = t.GetComponent(173);
-    this.Xte = t.GetComponent(205);
+    this.$te = t.GetComponent(174);
+    this.Xte = t.GetComponent(206);
     this.l1t = t.GetComponent(75);
-    this._1t = t.GetComponent(148);
+    this._1t = t.GetComponent(149);
     this.u1t = t.GetComponent(0);
-    this.c1t = this.Jh.GetComponent(21);
-    this.m1t = this.Jh.GetComponent(174);
-    this.d1t = this.Jh.GetComponent(129);
+    this.c1t = this.Entity.GetComponent(21);
+    this.m1t = this.Entity.GetComponent(175);
+    this.d1t = this.Entity.GetComponent(130);
     var t = this.u1t.GetBaseInfo();
     this.h1t = t?.HeadStateViewConfig;
     this.C1t = false;
@@ -182,7 +182,7 @@ class HeadStateData {
     this.Hlt();
     this.HasHideTag = this.Xte?.HasTag(-13489149) ?? false;
     this.HasFallDownTag = this.Xte?.HasTag(1922078392) ?? false;
-    this.c$e();
+    this.AddEntityEvents();
   }
   Hlt() {
     var t = ModelManager_1.ModelManager.BattleUiModel.GetHeadStateHpColor(this.Camp);
@@ -196,9 +196,9 @@ class HeadStateData {
     }
   }
   Clear() {
-    this.m$e();
+    this.RemoveEntityEvents();
     this.UnBindAllCallback();
-    this.Jh = undefined;
+    this.Entity = undefined;
     this.OC = undefined;
     this.ActorComponent = undefined;
     this.$te = undefined;
@@ -228,15 +228,15 @@ class HeadStateData {
     this.b1t = undefined;
     this.bk_ = undefined;
   }
-  c$e() {
+  AddEntityEvents() {
     var t;
-    if (this.Jh && (EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.CharShieldChange, this.u$e) || EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) || EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) || EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) || EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), (t = this.Jh.GetComponent(205))?.Valid && (this.v1t = t.ListenForTagAddOrRemove(242005298, this.V1t), this.v1t = t.ListenForTagAddOrRemove(1261361093, this.Yrt), this.M1t = t.ListenForTagAddOrRemove(-1109506297, this.Zrt), this.E1t = t.ListenForTagAddOrRemove(-1838149281, this.ent), this.q1t = t.ListenForTagAddOrRemove(-13489149, this.Yst), this.G1t = t.ListenForTagAddOrRemove(1008164187, this.n$e), this.N1t = t.ListenForTagAddOrRemove(1996802261, this.aXe), this.O1t = t.ListenForTagAddOrRemove(1922078392, this.zrt)), (t = this.Jh.GetComponent(173))?.Valid && (t.AddListener(EAttributeId.Proto_Hardness, this.tnt, "Hardness.HeadState"), t.AddListener(EAttributeId.Proto_Rage, this.tnt, "Range.HeadState"), t.AddListener(EAttributeId.Proto_RageMax, this.tnt, "RangeMax.HeadState"), t.AddListener(EAttributeId.Proto_Lv, this.m2, "Lv.HeadState"), t.AddListener(EAttributeId.Proto_Life, this.Nbr, "Life.HeadState"), t.AddListener(EAttributeId.l5n, this.Nbr, "LifeMax.HeadState")), (t = this.Jh.GetComponent(129))?.Valid)) {
+    if (this.Entity && (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), (t = this.Entity.GetComponent(206))?.Valid && (this.v1t = t.ListenForTagAddOrRemove(242005298, this.V1t), this.v1t = t.ListenForTagAddOrRemove(1261361093, this.Yrt), this.M1t = t.ListenForTagAddOrRemove(-1109506297, this.Zrt), this.E1t = t.ListenForTagAddOrRemove(-1838149281, this.ent), this.q1t = t.ListenForTagAddOrRemove(-13489149, this.Yst), this.G1t = t.ListenForTagAddOrRemove(1008164187, this.n$e), this.N1t = t.ListenForTagAddOrRemove(1996802261, this.aXe), this.O1t = t.ListenForTagAddOrRemove(1922078392, this.zrt)), (t = this.Entity.GetComponent(174))?.Valid && (t.AddListener(EAttributeId.Proto_Hardness, this.tnt, "Hardness.HeadState"), t.AddListener(EAttributeId.Proto_Rage, this.tnt, "Range.HeadState"), t.AddListener(EAttributeId.Proto_RageMax, this.tnt, "RangeMax.HeadState"), t.AddListener(EAttributeId.Proto_Lv, this.m2, "Lv.HeadState"), t.AddListener(EAttributeId.Proto_Life, this.Nbr, "Life.HeadState"), t.AddListener(EAttributeId.l5n, this.Nbr, "LifeMax.HeadState")), (t = this.Entity.GetComponent(130))?.Valid)) {
       t.AddProgressDataChangedCallback(this.H1t);
     }
   }
-  m$e() {
+  RemoveEntityEvents() {
     var t;
-    if (this.Jh && (EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.CharShieldChange, this.u$e) && EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) && EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), this.v1t && (this.v1t.EndTask(), this.v1t = undefined), this.E1t && (this.E1t.EndTask(), this.E1t = undefined), this.M1t && (this.M1t.EndTask(), this.M1t = undefined), this.q1t && (this.q1t.EndTask(), this.q1t = undefined), this.G1t && (this.G1t.EndTask(), this.G1t = undefined), this.N1t && (this.N1t.EndTask(), this.N1t = undefined), this.O1t && (this.O1t.EndTask(), this.O1t = undefined), (t = this.Jh?.GetComponent(173)) && (t.RemoveListener(EAttributeId.Proto_Hardness, this.tnt), t.RemoveListener(EAttributeId.Proto_Rage, this.tnt), t.RemoveListener(EAttributeId.Proto_RageMax, this.tnt), t.RemoveListener(EAttributeId.Proto_Lv, this.m2), t.RemoveListener(EAttributeId.Proto_Life, this.Nbr), t.RemoveListener(EAttributeId.l5n, this.Nbr)), t = this.Jh?.GetComponent(129))) {
+    if (this.Entity && (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), this.v1t && (this.v1t.EndTask(), this.v1t = undefined), this.E1t && (this.E1t.EndTask(), this.E1t = undefined), this.M1t && (this.M1t.EndTask(), this.M1t = undefined), this.q1t && (this.q1t.EndTask(), this.q1t = undefined), this.G1t && (this.G1t.EndTask(), this.G1t = undefined), this.N1t && (this.N1t.EndTask(), this.N1t = undefined), this.O1t && (this.O1t.EndTask(), this.O1t = undefined), (t = this.Entity?.GetComponent(174)) && (t.RemoveListener(EAttributeId.Proto_Hardness, this.tnt), t.RemoveListener(EAttributeId.Proto_Rage, this.tnt), t.RemoveListener(EAttributeId.Proto_RageMax, this.tnt), t.RemoveListener(EAttributeId.Proto_Lv, this.m2), t.RemoveListener(EAttributeId.Proto_Life, this.Nbr), t.RemoveListener(EAttributeId.l5n, this.Nbr)), t = this.Entity?.GetComponent(130))) {
       t.RemoveProgressDataChangedCallback(this.H1t);
     }
   }
@@ -293,13 +293,13 @@ class HeadStateData {
     }
   }
   GetEntity() {
-    return this.Jh;
+    return this.Entity;
   }
   GetEntityId() {
     return this.E0;
   }
   IsEntityActive() {
-    return this.Jh.Active;
+    return this.Entity.Active;
   }
   GetLevel() {
     if (this.$te) {

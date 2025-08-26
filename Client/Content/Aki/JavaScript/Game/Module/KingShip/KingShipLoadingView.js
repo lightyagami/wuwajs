@@ -9,9 +9,11 @@ const UiManager_1 = require("../../Ui/UiManager");
 class KingShipLoadingView extends UiViewBase_1.UiViewBase {
   OnStart() {
     this.UiViewSequence?.AddSequenceFinishEvent("Start", () => {
-      UiManager_1.UiManager.OpenView("KingShipMainView", this.OpenParam, () => {
-        this.CloseMe();
-      });
+      UiManager_1.UiManager.OpenView("KingShipMainView", this.OpenParam);
+      this.UiViewSequence?.PlaySequence("Close01");
+    });
+    this.UiViewSequence?.AddSequenceFinishEvent("Close01", () => {
+      this.CloseMe();
     });
   }
 }

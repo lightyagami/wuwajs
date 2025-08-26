@@ -89,7 +89,7 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetCardDataList();
     var e = new Map();
     for (const r of t) {
-      e.set(this.nsu(r.Index), r);
+      e.set(this.Psu(r.Index), r);
     }
     var i = [];
     for (let t = 0; t < CARD_TOTAL; t++) {
@@ -105,7 +105,7 @@ class PhantomArenaBattleLoading extends UiTickViewBase_1.UiTickViewBase {
     this.OpponentLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.sU1, this.GetItem(1).GetOwner());
     await this.OpponentLayout.RefreshByDataAsync(i);
   }
-  nsu(t) {
+  Psu(t) {
     if (t < CARD_FRONT) {
       return CARD_FRONT + t;
     } else {

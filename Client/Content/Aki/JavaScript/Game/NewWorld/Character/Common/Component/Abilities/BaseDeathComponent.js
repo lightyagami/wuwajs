@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (t, e, o, a) {
-  var n;
-  var i = arguments.length;
-  var h = i < 3 ? e : a === null ? a = Object.getOwnPropertyDescriptor(e, o) : a;
+  var i;
+  var n = arguments.length;
+  var h = n < 3 ? e : a === null ? a = Object.getOwnPropertyDescriptor(e, o) : a;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(t, e, o, a);
   } else {
     for (var s = t.length - 1; s >= 0; s--) {
-      if (n = t[s]) {
-        h = (i < 3 ? n(h) : i > 3 ? n(e, o, h) : n(e, o)) || h;
+      if (i = t[s]) {
+        h = (n < 3 ? i(h) : n > 3 ? i(e, o, h) : i(e, o)) || h;
       }
     }
   }
-  if (i > 3 && h) {
+  if (n > 3 && h) {
     Object.defineProperty(e, o, h);
   }
   return h;
@@ -32,12 +32,14 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
     super(...arguments);
     this.IsDeadInternal = false;
     this.MontageComponent = undefined;
+    this.TimeScaleComponent = undefined;
     this.c2c = new Map();
     this.AOr = 0;
     this.u2c = new Map();
   }
   OnStart() {
-    this.MontageComponent = this.Entity.CheckGetComponent(24);
+    this.MontageComponent = this.Entity.GetComponent(24);
+    this.TimeScaleComponent = this.Entity.GetComponent(123);
     this.d2c();
     return true;
   }
@@ -54,7 +56,9 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Battle", 19, "[DeathComponent]执行角色死亡逻辑", ["Entity", this.Entity.toString()], ["PbDataId", this.Entity?.GetComponent(0)?.GetPbDataId()]);
       }
-      return this.IsDeadInternal = true;
+      this.IsDeadInternal = true;
+      this.TimeScaleComponent?.RemoveAllTimeScale();
+      return true;
     }
   }
   HasDeathMontage(t) {
@@ -68,25 +72,25 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
   }
   PlayDeathMontageWithType(t, e, o) {
     let a = undefined;
-    var n = this.u2c.get(t);
-    if (n && n.size > 0) {
+    var i = this.u2c.get(t);
+    if (i && i.size > 0) {
       let t = undefined;
-      for (t of n.values());
+      for (t of i.values());
       if (t) {
-        a = this.MontageComponent.CreateTaskWithName(t, undefined, e);
+        a = this.MontageComponent?.CreateTaskWithName(t, undefined, e);
       }
     } else {
-      var n = this.GetDeathMontage(t);
-      if (n) {
-        a = this.MontageComponent.CreateTaskWithMontage(n, undefined, e);
+      var i = this.GetDeathMontage(t);
+      if (i) {
+        a = this.MontageComponent?.CreateTaskWithMontage(i, undefined, e);
       }
     }
     if (a === undefined) {
-      n = deathMontagePathMap.get(t);
-      CombatLog_1.CombatLog.Warn("Animation", this.Entity, "蒙太奇播放失败", ["montageType", t], ["path", n]);
+      i = deathMontagePathMap.get(t);
+      CombatLog_1.CombatLog.Warn("Animation", this.Entity, "蒙太奇播放失败", ["montageType", t], ["path", i]);
       e?.(true);
     } else {
-      this.MontageComponent.PlayMontageTaskWhenReady(a, 0, o);
+      this.MontageComponent?.PlayMontageTaskWhenReady(a, 0, o);
     }
   }
   ReplaceDeathMontage(t, e) {
@@ -104,7 +108,7 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
   }
   d2c() {
     for (var [t, e] of deathMontagePathMap.entries()) {
-      e = this.MontageComponent.GetMontageByName(e);
+      e = this.MontageComponent?.GetMontageByName(e);
       if (e) {
         this.c2c.set(t, e);
       }

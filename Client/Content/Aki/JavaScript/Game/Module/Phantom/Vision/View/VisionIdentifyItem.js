@@ -92,11 +92,11 @@ class VisionIdentifyItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   PHi(e) {
-    e = e.SlotState === 1 && this.CDu();
+    e = e.SlotState === 1 && this.zDu();
     this.GetButton(5).RootUIComp.SetRaycastTarget(e);
     this.GetItem(2).SetUIActive(e);
   }
-  CDu() {
+  zDu() {
     var e = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionLevelUpIdentify() === 1;
     return this.THi === "VisionLevelUpView" && !e || this.THi === "VisionEquipmentView";
   }

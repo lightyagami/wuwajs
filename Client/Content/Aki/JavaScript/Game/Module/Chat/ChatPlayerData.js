@@ -40,6 +40,12 @@ class ChatPlayerData {
       this.qac = t;
     }
   }
+  SetPlayerTitleId(t) {
+    this.kac = t ?? 0;
+  }
+  SetPlayerTitleExParam(t) {
+    this.qac = t;
+  }
   GetPlayerTitleId() {
     return this.kac;
   }

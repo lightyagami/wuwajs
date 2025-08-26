@@ -21,22 +21,22 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(27390, this.VGc);
-    Net_1.Net.Register(19149, this.jGc);
-    Net_1.Net.Register(24617, this.HGc);
-    Net_1.Net.Register(29505, this.$Gc);
-    Net_1.Net.Register(20331, this.A3c);
-    Net_1.Net.Register(23182, this.To1);
-    Net_1.Net.Register(16329, this.$N1);
+    Net_1.Net.Register(23659, this.VGc);
+    Net_1.Net.Register(15984, this.jGc);
+    Net_1.Net.Register(20392, this.HGc);
+    Net_1.Net.Register(24943, this.$Gc);
+    Net_1.Net.Register(28176, this.A3c);
+    Net_1.Net.Register(26737, this.To1);
+    Net_1.Net.Register(29143, this.$N1);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27390);
-    Net_1.Net.UnRegister(19149);
-    Net_1.Net.UnRegister(24617);
-    Net_1.Net.UnRegister(29505);
-    Net_1.Net.UnRegister(20331);
-    Net_1.Net.UnRegister(23182);
-    Net_1.Net.UnRegister(16329);
+    Net_1.Net.UnRegister(23659);
+    Net_1.Net.UnRegister(15984);
+    Net_1.Net.UnRegister(20392);
+    Net_1.Net.UnRegister(24943);
+    Net_1.Net.UnRegister(28176);
+    Net_1.Net.UnRegister(26737);
+    Net_1.Net.UnRegister(29143);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
@@ -54,9 +54,9 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
       e.IsEnd = true;
     }
     var o = new Protocol_1.Aki.Protocol.TEc();
-    var o = await Net_1.Net.CallAsync(18695, o);
+    var o = await Net_1.Net.CallAsync(19351, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 16140);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21430);
       if (e) {
         e.IsEnd = false;
       }
@@ -87,10 +87,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestBackToMap(o) {
     var e = new Protocol_1.Aki.Protocol.CEc();
-    Net_1.Net.Call(15560, e, e => {
+    Net_1.Net.Call(25876, e, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 16392);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 20894);
           o?.(false);
         } else {
           o?.(true);
@@ -106,10 +106,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
       NEc: e,
       VEc: []
     };
-    Net_1.Net.Call(23734, a, e => {
+    Net_1.Net.Call(29950, a, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 18633);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25371);
           o?.(false);
         } else {
           o?.(true);
@@ -123,10 +123,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
     var r = new Protocol_1.Aki.Protocol.yEc();
     r.w5n = e;
     r.VB1 = o;
-    Net_1.Net.Call(20864, r, e => {
+    Net_1.Net.Call(21338, r, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19106);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24435);
           a?.(false);
         }
         a?.(true);
@@ -139,11 +139,11 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
   static RequestExecuteOpMultiSelect(e, o, a) {
     var r = new Protocol_1.Aki.Protocol.yEc();
     r.w5n = e;
-    r.h$c = o;
-    Net_1.Net.Call(20864, r, e => {
+    r.Gju = o;
+    Net_1.Net.Call(21338, r, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19106);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24435);
           a?.(false);
         }
         a?.(true);
@@ -248,7 +248,7 @@ MapRogueController.HGc = e => {
 };
 MapRogueController.$Gc = e => {
   if (ModelManager_1.ModelManager.MapRogueModel.GameInfo) {
-    ModelManager_1.ModelManager.MapRogueModel.GameInfo.SetMood(e.JBc, e.sps, undefined, undefined, e.p9c);
+    ModelManager_1.ModelManager.MapRogueModel.GameInfo.SetMood(e.JBc, e.sps, undefined, undefined, e.Nju);
     ModelManager_1.ModelManager.MapRogueModel.GameInfo.MoodRuleId = e.um1;
   }
 };

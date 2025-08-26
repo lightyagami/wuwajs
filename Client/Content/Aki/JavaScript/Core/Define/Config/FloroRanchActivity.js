@@ -82,6 +82,21 @@ class FloroRanchActivity {
   get VoidTagId() {
     return this.voidtagid();
   }
+  get ActionStopTextKey() {
+    return this.actionstoptextkey();
+  }
+  get MaxTotalCoin() {
+    return this.maxtotalcoin();
+  }
+  get MaxDay() {
+    return this.maxday();
+  }
+  get MaxSettleText() {
+    return this.maxsettletext();
+  }
+  get GachaGuarantee() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.gachaguaranteeLength(), this.gachaguarantee, this);
+  }
   get ComicIntervalTime() {
     return this.comicintervaltime();
   }
@@ -313,8 +328,67 @@ class FloroRanchActivity {
       return 0;
     }
   }
+  actionstoptextkey(t) {
+    var i = this.J7.__offset(this.z7, 52);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  maxtotalcoin() {
+    var t = this.J7.__offset(this.z7, 54);
+    if (t) {
+      return this.J7.readInt64(this.z7 + t);
+    } else {
+      return BigInt("0");
+    }
+  }
+  maxday() {
+    var t = this.J7.__offset(this.z7, 56);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  maxsettletext(t) {
+    var i = this.J7.__offset(this.z7, 58);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  GetGachaguaranteeAt(t) {
+    return this.gachaguarantee(t);
+  }
+  gachaguarantee(t) {
+    var i = this.J7.__offset(this.z7, 60);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  gachaguaranteeLength() {
+    var t = this.J7.__offset(this.z7, 60);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  gachaguaranteeArray() {
+    var t = this.J7.__offset(this.z7, 60);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
   comicintervaltime() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -322,7 +396,7 @@ class FloroRanchActivity {
     }
   }
   recommendquestid() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -333,7 +407,7 @@ class FloroRanchActivity {
     return this.recommendquestlinklist(t);
   }
   recommendquestlinklist(t) {
-    var i = this.J7.__offset(this.z7, 56);
+    var i = this.J7.__offset(this.z7, 66);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -341,7 +415,7 @@ class FloroRanchActivity {
     }
   }
   recommendquestlinklistLength() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -349,7 +423,7 @@ class FloroRanchActivity {
     }
   }
   recommendquestlinklistArray() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -357,7 +431,7 @@ class FloroRanchActivity {
     }
   }
   recommendquestlabel(t) {
-    var i = this.J7.__offset(this.z7, 58);
+    var i = this.J7.__offset(this.z7, 68);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

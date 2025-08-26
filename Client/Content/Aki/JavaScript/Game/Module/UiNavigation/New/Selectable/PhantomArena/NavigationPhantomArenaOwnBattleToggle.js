@@ -20,7 +20,7 @@ class NavigationPhantomArenaOwnBattleToggle extends NavigationButton_1.Navigatio
     return this.ProxyInternal;
   }
   OnButtonClick() {}
-  OnCheckFindOpposite(t) {
+  OnCheckFindOpposite() {
     return !this.Proxy || !this.Proxy.SkillTriggerMask.IsInSkillInteract || this.IsInSkillInteract;
   }
   OnNotifyFocusListener(t) {

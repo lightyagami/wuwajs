@@ -46,20 +46,20 @@ class TowerController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.RQe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(27586, this.wLo);
-    Net_1.Net.Register(25568, this.BLo);
-    Net_1.Net.Register(27920, this.bLo);
-    Net_1.Net.Register(24514, this.qLo);
+    Net_1.Net.Register(15367, this.wLo);
+    Net_1.Net.Register(19719, this.BLo);
+    Net_1.Net.Register(17948, this.bLo);
+    Net_1.Net.Register(28914, this.qLo);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27586);
-    Net_1.Net.UnRegister(25568);
-    Net_1.Net.UnRegister(27920);
-    Net_1.Net.UnRegister(24514);
+    Net_1.Net.UnRegister(15367);
+    Net_1.Net.UnRegister(19719);
+    Net_1.Net.UnRegister(17948);
+    Net_1.Net.UnRegister(28914);
   }
   static async RefreshTower() {
     var e = Protocol_1.Aki.Protocol.JCs.create({});
-    var e = await Net_1.Net.CallAsync(24481, e);
+    var e = await Net_1.Net.CallAsync(21272, e);
     if (e?.wGs) {
       ModelManager_1.ModelManager.TowerModel.MaxUnlockDifficulty = e.wGs;
       if (e.wGs === TowerData_1.OVERLOCK_RISK_DIFFICULTY) {
@@ -93,7 +93,7 @@ class TowerController extends ControllerBase_1.ControllerBase {
     BlackScreenController_1.BlackScreenController.AddBlackScreen("None", "TowerStartRequest");
     t.ajn = n;
     t.hjn = e;
-    t = await Net_1.Net.CallAsync(27839, t).finally(() => {
+    t = await Net_1.Net.CallAsync(15617, t).finally(() => {
       BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "TowerStartRequest");
     });
     if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -101,7 +101,7 @@ class TowerController extends ControllerBase_1.ControllerBase {
         this.OpenSeasonUpdateConfirm();
         return;
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 29806);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20493);
         return;
       }
     }
@@ -113,13 +113,13 @@ class TowerController extends ControllerBase_1.ControllerBase {
   static TowerResetRequest(e) {
     var o = new Protocol_1.Aki.Protocol.n0s();
     o.hjn = e;
-    Net_1.Net.Call(29072, o, e => {
+    Net_1.Net.Call(16456, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTowerSeasonUpdate) {
           this.OpenSeasonUpdateConfirm();
           return;
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25642);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16125);
           return;
         }
       }
@@ -132,13 +132,13 @@ class TowerController extends ControllerBase_1.ControllerBase {
     t.ljn = o;
     t.I9n = e;
     t.Xhc = r;
-    Net_1.Net.Call(22080, t, e => {
+    Net_1.Net.Call(17741, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTowerSeasonUpdate) {
           this.OpenSeasonUpdateConfirm();
           return;
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28036);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15465);
           return;
         }
       }
@@ -151,13 +151,13 @@ class TowerController extends ControllerBase_1.ControllerBase {
   static async TowerFormationRecommendRequest(e) {
     var o = new Protocol_1.Aki.Protocol.ZCs();
     o.hjn = e;
-    var e = await Net_1.Net.CallAsync(21516, o);
+    var e = await Net_1.Net.CallAsync(25674, o);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTowerSeasonUpdate) {
         this.OpenSeasonUpdateConfirm();
         return;
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17756);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27961);
         return;
       }
     }
@@ -170,13 +170,13 @@ class TowerController extends ControllerBase_1.ControllerBase {
   static TowerApplyFloorDataRequest(e) {
     var o = new Protocol_1.Aki.Protocol.a0s();
     o._jn = e;
-    Net_1.Net.Call(29117, o, e => {
+    Net_1.Net.Call(29226, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTowerSeasonUpdate) {
           this.OpenSeasonUpdateConfirm();
           return;
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17677);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24659);
           return;
         }
       }
@@ -185,7 +185,7 @@ class TowerController extends ControllerBase_1.ControllerBase {
   }
   static GLo() {
     var e = Protocol_1.Aki.Protocol.XCs.create({});
-    Net_1.Net.Call(17390, e, e => {
+    Net_1.Net.Call(17365, e, e => {
       ModelManager_1.ModelManager.TowerModel.RefreshTowerInfo(e.UGs);
     });
   }
@@ -400,7 +400,7 @@ TowerController.qLo = e => {
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
     if (e.KRs) {
       o = e.bGs;
-      ModelManager_1.ModelManager.TowerModel.CurrentNotConfirmedFloor = new TowerData_1.TowerFloorInfo(o.hjn, o.rxs, o.ajn, o.AGs);
+      ModelManager_1.ModelManager.TowerModel.CurrentNotConfirmedFloor = new TowerData_1.TowerFloorInfo(o.hjn, o.rxs, o.ajn, o.AGs, o.Wju);
     }
     _a.ClearAllHatredInTower();
     _a.OpenTowerSettlementView(e.KRs);

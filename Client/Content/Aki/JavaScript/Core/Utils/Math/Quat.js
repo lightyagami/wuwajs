@@ -286,6 +286,11 @@ class Quat {
   GetUpVector(t) {
     return this.GetAxisZ(t);
   }
+  Equals(t, i = MathCommon_1.MathCommon.KindaSmallNumber) {
+    var h = this.Tuple;
+    var t = t.Tuple;
+    return Math.abs(h[0] - t[0]) <= i && Math.abs(h[1] - t[1]) <= i && Math.abs(h[2] - t[2]) <= i && Math.abs(h[3] - t[3]) <= i;
+  }
   static ConstructorByAxisAngle(t, i, h) {
     var t = t.Tuple;
     var h = h.Tuple;

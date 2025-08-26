@@ -35,9 +35,9 @@ class ActivityTimePointRewardController extends ActivityControllerBase_1.Activit
   static GetRewardById(t, r) {
     var e = Protocol_1.Aki.Protocol.RYs.create();
     e.s5n = r;
-    Net_1.Net.Call(25594, e, e => {
+    Net_1.Net.Call(21855, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18009);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23915);
       } else {
         ModelManager_1.ModelManager.ActivityModel.GetActivityById(t).SetRewardToGotState(r);
       }

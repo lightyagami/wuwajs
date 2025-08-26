@@ -67,6 +67,9 @@ class DeviceRenderFeature {
   get Bloom() {
     return this.bloom();
   }
+  get Raytracing() {
+    return this.raytracing();
+  }
   get OtherCommand() {
     return this.othercommand();
   }
@@ -230,8 +233,16 @@ class DeviceRenderFeature {
       return 1;
     }
   }
+  raytracing() {
+    var t = this.J7.__offset(this.z7, 42);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   othercommand(t) {
-    var i = this.J7.__offset(this.z7, 42);
+    var i = this.J7.__offset(this.z7, 44);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

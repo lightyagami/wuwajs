@@ -25,7 +25,7 @@ class NavigationPhantomArenaOpponentBattleToggle extends NavigationButton_1.Navi
       this.Proxy.GamepadLogic.HideCardTips();
     }
   }
-  OnCheckFindOpposite(t) {
+  OnCheckFindOpposite() {
     return !this.Proxy || !this.Proxy.GamepadLogic.IsInCardSelectState && (!this.Proxy.SkillTriggerMask.IsInSkillInteract || this.IsInSkillInteract);
   }
   SwitchBattleCardTips() {

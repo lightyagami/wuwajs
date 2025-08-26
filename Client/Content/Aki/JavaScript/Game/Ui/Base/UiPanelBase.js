@@ -152,6 +152,10 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.OnAfterShowImplement();
     this.OnAfterShow();
   }
+  OnFinishShowImplement() {
+    this.OnFinishShowImplementImplement();
+  }
+  OnFinishShowImplementImplement() {}
   async OnHideAsyncImplement() {
     await this.OnBeforeHideAsync();
     this.OnBeforeHide();
@@ -320,14 +324,14 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     }
     if (i) {
       var s = i.Components.Num();
-      for (const r of this.ComponentRegisterInfos) {
-        var n = r[0];
+      for (const o of this.ComponentRegisterInfos) {
+        var n = o[0];
         if (!(s <= n)) {
-          if (n = i.Components.Get(n)?.GetComponentByClass(r[1].StaticClass())) {
-            this.F_r.set(r[0], [r[1], n]);
-            this.J_r(r[1], n);
+          if (n = i.Components.Get(n)?.GetComponentByClass(o[1].StaticClass())) {
+            this.F_r.set(o[0], [o[1], n]);
+            this.J_r(o[1], n);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("UiCore", 16, "[FindInitedComponentRegistryActor]请该UI负责人和程序检查以下路径的LGUIComponentsRegistry组件, 检查是否缺失以下类型的组件", ["节点全路径为", LguiUtil_1.LguiUtil.GetActorFullPath(e)], ["缺失组件的索引为", r[0]], ["缺失的组件类型为", r[1].StaticClass().GetName()]);
+            Log_1.Log.Error("UiCore", 16, "[FindInitedComponentRegistryActor]请该UI负责人和程序检查以下路径的LGUIComponentsRegistry组件, 检查是否缺失以下类型的组件", ["节点全路径为", LguiUtil_1.LguiUtil.GetActorFullPath(e)], ["缺失组件的索引为", o[0]], ["缺失的组件类型为", o[1].StaticClass().GetName()]);
           }
         }
       }
@@ -729,6 +733,9 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   async SetExtendToggleTextureTransitionByPath(t, i, e = 9) {
     await this.j_r.SetExtendToggleTextureTransitionByPath(t, i, e);
   }
+  async SetExtendToggleSpriteTransitionByPath(t, i, e = 9) {
+    await this.j_r.SetExtendToggleSpriteTransitionByPath(t, i, e);
+  }
   async SetTextureAsync(t, i) {
     await this.j_r.SetTextureAsync(t, i);
   }
@@ -805,11 +812,11 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       this.j_r.SetDungeonEntranceIconAsync(t, i, e);
     }
   }
-  SetNiagaraTextureByPath(t, i, e, s, n = undefined, r = undefined) {
+  SetNiagaraTextureByPath(t, i, e, s, n = undefined, o = undefined) {
     if (n) {
-      this.j_r.SetNiagaraTextureSync(t, i, e, s, n, r);
+      this.j_r.SetNiagaraTextureSync(t, i, e, s, n, o);
     } else {
-      this.j_r.SetNiagaraTextureAsync(t, i, e, s, r);
+      this.j_r.SetNiagaraTextureAsync(t, i, e, s, o);
     }
   }
   SetNiagaraSystemByPath(t, i, e = undefined) {

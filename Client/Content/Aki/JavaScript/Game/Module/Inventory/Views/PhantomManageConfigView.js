@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomManageConfigView = undefined;
 const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const PhantomManagePlanConfigAll_1 = require("../../../../Core/Define/ConfigQuery/PhantomManagePlanConfigAll");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
@@ -23,6 +24,7 @@ const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsCont
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
+const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const InventoryDefine_1 = require("../InventoryDefine");
 const PhantomManageConfigItem_1 = require("../Items/PhantomManageConfigItem");
 const PhantomManageConfigTypeItem_1 = require("../Items/PhantomManageConfigTypeItem");
@@ -33,66 +35,73 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.yil = undefined;
     this.lqe = undefined;
-    this.Bqu = undefined;
-    this.kqu = undefined;
-    this.Oqu = undefined;
-    this.XAu = undefined;
-    this.qqu = undefined;
-    this.Gqu = undefined;
+    this.cGu = undefined;
+    this.dGu = undefined;
+    this.mGu = undefined;
+    this.ytd = undefined;
+    this.Std = undefined;
+    this.fGu = undefined;
+    this.gGu = undefined;
     this.Vxe = undefined;
-    this.rTu = t => {
+    this.Nhd = false;
+    this.gmd = true;
+    this.fTu = t => {
       if (t === 0) {
         this.iw1();
-        this.Fqu();
-      } else if (t === 1) {
+        var i = this.yil.GetSelectType();
+        var e = this.yil.GetSelectIndex(i);
+        const t = ModelManager_1.ModelManager.InventoryModel.GetPhantomManageConfigByTypeAndIndex(i, e);
+        this.CGu(true, t);
+      } else if (t === 2) {
         this.Fwi();
         this.mGe();
         this.Bgt();
-      } else if (t === 2) {
-        this.Nqu();
-        this.X$c();
-        this.Vqu();
-        this.jqu();
+      } else if (t === 3) {
+        this.pGu();
+        this.Bzu();
+        this.vGu();
+        this.yGu();
         this.Bgt();
         this.Fwi();
         if (!this.yil.GetEditState()) {
           this.mGe();
         }
-      } else if (t === 4) {
+      } else if (t === 5) {
         this.mGe();
       }
     };
-    this.Hqu = t => {
+    this.SGu = t => {
       var i = this.yil.GetSelectConfig();
       if (i.GetIndex() !== t.GetIndex() || t.GetType() !== i.GetType()) {
-        this.Fqu(t);
+        this.Nhd = true;
+        this.CGu(false, t);
       }
     };
-    this.$qu = () => {
+    this.MGu = () => {
       var t = this.yil.GetSelectConfig();
-      CommonInputViewController_1.CommonInputViewController.OpenSetPhantomManageConfigName(t.GetName(), this.Wqu);
+      CommonInputViewController_1.CommonInputViewController.OpenSetPhantomManageConfigName(t.GetName(), this.EGu);
     };
-    this.Qqu = () => {
+    this.IGu = () => {
       if (this.yil.GetEditState()) {
-        this.Kqu();
+        this.TGu();
       } else {
         this.Wn();
       }
     };
-    this.DFu = t => {
+    this.bGu = t => {
       var i = this.yil.GetEditState();
       let e = this.yil.GetSelectConfig().IsEmpty();
       if (i) {
         i = this.yil.GetEditData();
-        e = this._2u(i);
+        e = this.RGu(i);
       }
       return t !== 0 || !e || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(InventoryDefine_1.EMPTY_CHECK_TEXT_ID), false);
     };
-    this.Z2u = t => {
+    this.wGu = t => {
       if (this.yil.GetEditState()) {
         i = this.yil.GetEditData();
-        if (t === 1 && this._2u(i)) {
-          this.eGu();
+        if (t === 1 && this.RGu(i)) {
+          this.LGu();
           return;
         } else {
           this.yil.SetEditSwitch(t === 1);
@@ -101,75 +110,75 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
       }
       var i = this.yil.GetSelectConfig();
       if (t === 1 && i.IsEmpty()) {
-        this.eGu();
+        this.LGu();
       } else {
-        this.Yqu(t);
+        this.AGu(t);
       }
     };
-    this.zqu = () => {
+    this.PGu = () => {
       if (this.yil.GetEditState()) {
-        this.Jqu();
+        this.xGu();
       } else {
         this.yil.SetEditState(true);
       }
     };
-    this.Zqu = (t, i) => {
+    this.DGu = (t, i) => {
       if (t && (this.yil.SetEditState(false), ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PhantomProject_Warning11"), i)) {
-        this.e2u();
+        this.UGu();
       }
     };
-    this.t2u = () => {
+    this.BGu = () => {
       if (this.yil.GetEditState()) {
-        this.i2u();
+        this.kGu();
       } else {
-        this.r2u();
+        this.OGu();
       }
     };
-    this.o2u = t => {
+    this.qGu = t => {
       if (t) {
         UiManager_1.UiManager.OpenView("PhantomManageView");
       }
     };
-    this.W9c = () => {
+    this.kzu = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(InventoryDefine_1.MANAGE_CONFIG_HELP_ID);
     };
-    this.Q9c = () => {
+    this.Ozu = () => {
       var t = this.yil.GetSelectConfig();
       var i = this.yil.GetEditData();
       var e = this.yil.GetEditSwitch();
       if (t.IsEqual(e, i)) {
-        this.K9c();
+        this.qzu();
       } else {
         (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(346)).FunctionMap.set(2, () => {
-          this.K9c();
+          this.qzu();
         });
         t.IsEscViewTriggerCallBack = false;
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
       }
     };
-    this.Y$c = () => {
+    this.Gzu = () => {
       var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(347);
       t.FunctionMap.set(2, () => {
         var t = [];
         for (const s of PhantomManagePlanConfigAll_1.configPhantomManagePlanConfigAll.GetConfigList()) {
           var i;
           var e;
-          var o = new Protocol_1.Aki.Protocol.a$c();
-          o.oxu = s.Type;
+          var o = new Protocol_1.Aki.Protocol.U9u();
+          o.Pxu = s.Type;
           var r = [];
           for ([i, e] of s.RuleMap) {
             r.push({
-              hxu: i,
-              lxu: e.ArrayInt
+              Bxu: i,
+              kxu: e.ArrayInt
             });
           }
           var n = {
             c5n: s.SlotIndex,
             qjn: s.IsEnable,
             H8n: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(s.Name),
-            axu: r
+            Dxu: r
           };
-          o.rxu = n;
+          o.Axu = n;
           t.push(o);
         }
         ControllerHolder_1.ControllerHolder.InventoryController.PhantomSettingBatchUpdateRequestAsync(t).then(t => {
@@ -178,26 +187,26 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
             this.Fwi();
             this.mGe();
             this.Bgt();
-            this.Fqu();
+            this.CGu(true);
           }
         });
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
     };
-    this.n2u = () => {
+    this.GGu = () => {
       this.CloseMe();
     };
-    this.Wqu = async t => {
+    this.EGu = async t => {
       var i = this.yil.GetSelectConfig();
       var e = i.Clone();
       e.SetName(t);
       var t = await ControllerHolder_1.ControllerHolder.InventoryController.PhantomManageConfigUpdateRequest(i.GetType(), e.Integrate());
       if (t === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        this.yil.RefreshSelectConfig();
+        this.CGu(false, e);
       }
       return t;
     };
-    this.Yqu = async t => {
+    this.AGu = async t => {
       UiLayer_1.UiLayer.SetShowMaskLayer("ManageConfigSwitchClick", true);
       var i = this.yil.GetSelectConfig();
       var t = t === 1;
@@ -206,85 +215,94 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
       var i = await ControllerHolder_1.ControllerHolder.InventoryController.PhantomManageConfigUpdateRequest(i.GetType(), e.Integrate());
       if (i === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(t ? "PhantomProject_Warning09" : "PhantomProject_Warning10");
-        this.yil.RefreshSelectConfig();
+        this.CGu(false, e);
       } else {
         this.Vxe.SetConfigState(!t);
-        (e = this.GetTexture(13)).SetChangeColor(!t, e.changeColor);
+        (i = this.GetTexture(13)).SetChangeColor(!t, i.changeColor);
       }
       UiLayer_1.UiLayer.SetShowMaskLayer("ManageConfigSwitchClick", false);
     };
-    this.s2u = () => {
+    this.FGu = () => {
       return new PhantomManageConfigTypeItem_1.PhantomManageConfigTypeItem();
     };
-    this.a2u = () => {
+    this.NGu = () => {
       return new PhantomManageConfigItem_1.PhantomManageConfigItem();
     };
-    this.h2u = () => {
+    this.VGu = () => {
       return new PhantomManageSettingTitleItem_1.PhantomManageSettingTitleItem();
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UITexture], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[6, this.$qu], [10, this.Qqu], [14, this.Q9c], [15, this.Y$c]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UILoopScrollViewComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UITexture], [14, UE.UIButtonComponent], [15, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[6, this.MGu], [10, this.IGu], [14, this.Ozu], [15, this.Gzu]];
   }
   async OnBeforeStartAsync() {
     var t = [];
-    this.qqu = new ButtonItem_1.ButtonItem();
-    t.push(this.qqu.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()));
-    this.qqu.SetFunction(this.zqu);
-    this.qqu.SetLocalTextNew("PhantomProject_EditButton");
-    this.Gqu = new ButtonItem_1.ButtonItem();
-    t.push(this.Gqu.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()));
-    this.Gqu.SetFunction(this.t2u);
-    this.Gqu.SetLocalTextNew("PhantomProject_SiftButton");
+    this.fGu = new ButtonItem_1.ButtonItem();
+    t.push(this.fGu.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()));
+    this.fGu.SetFunction(this.PGu);
+    this.fGu.SetLocalTextNew("PhantomProject_EditButton");
+    this.gGu = new ButtonItem_1.ButtonItem();
+    t.push(this.gGu.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()));
+    this.gGu.SetFunction(this.BGu);
+    this.gGu.SetLocalTextNew("PhantomProject_SiftButton");
     this.Vxe = new ToggleSwitch();
     t.push(this.Vxe.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
-    this.Vxe.OnClickedSwitch = this.Z2u;
-    this.Vxe.OnCheckCanChange = this.DFu;
+    this.Vxe.OnClickedSwitch = this.wGu;
+    this.Vxe.OnCheckCanChange = this.bGu;
     await Promise.all(t);
   }
   OnStart() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
-    this.lqe.SetHelpCallBack(this.W9c);
-    this.lqe.SetCloseCallBack(this.n2u);
+    this.lqe.SetHelpCallBack(this.kzu);
+    this.lqe.SetCloseCallBack(this.GGu);
     this.yil = new PhantomManageConfigViewModel_1.PhantomManageConfigViewModel();
-    this.yil.Bind(this.rTu);
-    this.Bqu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.s2u);
+    this.yil.Bind(this.fTu);
+    this.cGu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.FGu);
     PhantomManageConfigTypeItem_1.PhantomManageConfigTypeItem.ViewModel = this.yil;
-    this.kqu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.a2u);
-    PhantomManageConfigItem_1.PhantomManageConfigItem.CallbackBtnSelect = this.Hqu;
+    this.dGu = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(2), this.GetItem(3).GetOwner(), this.NGu);
+    PhantomManageConfigItem_1.PhantomManageConfigItem.CallbackBtnSelect = this.SGu;
     PhantomManageConfigItem_1.PhantomManageConfigItem.ViewModel = this.yil;
-    this.Oqu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), this.h2u, undefined, true);
+    this.mGu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), this.VGu, undefined, true);
     PhantomManageSettingTitleItem_1.PhantomManageSettingTitleItem.ViewModel = this.yil;
-    this.XAu = this.GetScrollViewWithScrollbar(8).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
-    this.yil.SetSelectType(Protocol_1.Aki.Protocol._xu.Proto_AutoLock);
+    this.ytd = this.dGu.GetUiAnimController();
+    this.Std = this.GetScrollViewWithScrollbar(8).GetContent().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
+    this.yil.SetSelectType(Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock);
   }
   async OnPlayingStartSequenceAsync() {
-    this.XAu?.Play();
+    this.ytd?.Play();
+    this.Std?.Play();
   }
   OnBeforeDestroy() {
-    this.yil.UnBind(this.rTu);
+    this.yil.UnBind(this.fTu);
   }
   iw1() {
     var t = [];
     var i = {
-      Type: Protocol_1.Aki.Protocol._xu.Proto_AutoLock,
+      Type: Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock,
       Name: "PhantomProject_LockProject"
     };
     var e = {
-      Type: Protocol_1.Aki.Protocol._xu.Proto_AutoDisuse,
+      Type: Protocol_1.Aki.Protocol.Oxu.Proto_AutoDisuse,
       Name: "PhantomProject_DiscardProject"
     };
     t.push(i);
     t.push(e);
-    this.Bqu.RefreshByData(t);
+    this.cGu.RefreshByData(t);
   }
   async Fwi() {
     var t = this.yil.GetSelectType();
     var t = ModelManager_1.ModelManager.InventoryModel.GetPhantomManageConfigByType(t);
-    await this.kqu.RefreshByDataAsync(t);
+    await this.dGu?.RefreshByDataAsync(t);
     var t = this.yil.GetSelectConfig();
-    this.kqu.ScrollToItemByKey(t.GetIndex());
+    if (this.Nhd) {
+      if (!Info_1.Info.IsInGamepad()) {
+        this.dGu?.ScrollToDisplayingIndex(t.GetDisplayIndex());
+      }
+      this.Nhd = false;
+    } else if (this.gmd) {
+      this.dGu?.ScrollToGridIndex(t.GetIndex(), false);
+    }
   }
   mGe() {
     var t = this.yil.GetSelectType();
@@ -299,13 +317,13 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
   }
   Bgt() {
     var t = ModelManager_1.ModelManager.InventoryModel.GetSettingTitleItemDataList();
-    this.Oqu.RefreshByDataAsync(t);
+    this.mGu.RefreshByDataAsync(t);
   }
-  Vqu() {
+  vGu() {
     var t = this.yil.GetEditState();
-    this.qqu.SetLocalTextNew(t ? "PhantomProject_SaveButton02" : "PhantomProject_EditButton");
+    this.fGu.SetLocalTextNew(t ? "PhantomProject_SaveButton02" : "PhantomProject_EditButton");
   }
-  Nqu() {
+  pGu() {
     const t = this.yil.GetEditState();
     if (t) {
       this.GetItem(4).SetUIActive(true);
@@ -318,26 +336,29 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
       }
     });
   }
-  X$c() {
+  Bzu() {
     var t = this.yil.GetEditState();
     this.SetButtonUiActive(15, !t);
   }
-  jqu() {
+  yGu() {
     var t = this.yil.GetSelectConfig();
     if (this.yil.GetEditState()) {
       this.yil.InitEditDataSwitch(t);
     }
   }
-  Fqu(t) {
-    if (t) {
-      this.yil.SetSelectConfig(t);
+  CGu(t, i) {
+    var e = this.yil.GetSelectType();
+    if (i) {
+      this.yil.SetSelectConfig(i);
+      this.yil.SetSelectIndex(e, i.GetIndex());
     } else {
-      t = this.yil.GetSelectType();
-      t = ModelManager_1.ModelManager.InventoryModel.GetPhantomManageConfigByType(t);
-      this.yil.SetSelectConfig(t[0]);
+      i = ModelManager_1.ModelManager.InventoryModel.GetPhantomManageConfigByType(e);
+      this.yil.SetSelectConfig(i[0]);
+      this.yil.SetSelectIndex(e, 0);
     }
+    this.gmd = t;
   }
-  Kqu() {
+  TGu() {
     const t = this.yil.GetSelectConfig();
     var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(337);
     i.FunctionMap.set(2, () => {
@@ -349,47 +370,47 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
   Wn() {
     const t = this.yil.GetSelectType();
     const i = this.yil.GetSelectConfig();
-    i.Reset(false, true);
     var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(336);
     e.FunctionMap.set(2, () => {
-      this.l2u(t, i, false, this.Zqu);
+      i.Reset(false, true);
+      this.jGu(t, i, false, this.DGu);
     });
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
-  eGu() {
+  LGu() {
     this.Vxe.SetConfigState(false);
     var t = this.GetTexture(13);
     t.SetChangeColor(false, t.changeColor);
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(InventoryDefine_1.EMPTY_CHECK_TEXT_ID);
   }
-  Jqu() {
+  xGu() {
     const t = this.yil.GetEditSwitch();
     var i = this.yil.GetEditData();
     const e = this.yil.GetSelectType();
     var o = this.yil.GetSelectConfig();
-    var r = this._2u(i);
-    const n = this.Zqu;
+    var r = this.RGu(i);
+    const n = this.DGu;
     const s = o.Clone();
     s.SetRuleIdMapValueList(i);
     if (r) {
-      this.l2u(e, s, false, n);
+      this.jGu(e, s, false, n);
     } else {
       if (!r && t) {
-        this.l2u(e, s, t, n);
+        this.jGu(e, s, t, n);
       }
       if (!r && !t) {
         (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(335)).FunctionMap.set(2, () => {
-          this.l2u(e, s, true, n);
+          this.jGu(e, s, true, n);
         });
         o.FunctionMap.set(1, () => {
-          this.l2u(e, s, t, n);
+          this.jGu(e, s, t, n);
         });
         o.IsEscViewTriggerCallBack = false;
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
       }
     }
   }
-  async l2u(t, i, e, o) {
+  async jGu(t, i, e, o) {
     UiLayer_1.UiLayer.SetShowMaskLayer("ManageConfigRequestUpdate", true);
     i = i.Integrate();
     if (e !== undefined) {
@@ -401,7 +422,7 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     }
     UiLayer_1.UiLayer.SetShowMaskLayer("ManageConfigRequestUpdate", false);
   }
-  _2u(t) {
+  RGu(t) {
     for (const i of t.values()) {
       if (i.length !== 0) {
         return false;
@@ -409,7 +430,7 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     }
     return true;
   }
-  u2u() {
+  HGu() {
     var t;
     var i;
     var e = this.yil.GetEditState();
@@ -421,41 +442,41 @@ class PhantomManageConfigView extends UiViewBase_1.UiViewBase {
     }
     return o;
   }
-  i2u() {
+  kGu() {
     var t = this.yil.GetEditData();
-    if (this._2u(t)) {
+    if (this.RGu(t)) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(InventoryDefine_1.EMPTY_CHECK_TEXT_ID);
     } else {
-      this.c2u();
-      this.e2u();
+      this.$Gu();
+      this.UGu();
     }
   }
-  r2u() {
+  OGu() {
     var t = this.yil.GetSelectConfig();
-    if (this._2u(t.GetRuleIdMapValueList())) {
+    if (this.RGu(t.GetRuleIdMapValueList())) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(InventoryDefine_1.EMPTY_CHECK_TEXT_ID);
     } else {
-      this.c2u();
-      this.e2u();
+      this.$Gu();
+      this.UGu();
     }
   }
-  c2u() {
+  $Gu() {
     var t = {
       ConfigId: ModelManager_1.ModelManager.InventoryModel.GetFilterIdConst(),
-      SelectRuleMap: this.u2u()
+      SelectRuleMap: this.HGu()
     };
     ModelManager_1.ModelManager.FilterModel.SetFilterConfigData(4, 43, t, "");
   }
-  K9c() {
+  qzu() {
     var t = this.yil.GetSelectConfig();
     this.yil.InitEditDataSwitch(t, true);
     this.yil.SetEditState(false);
   }
-  e2u() {
+  UGu() {
     if (UiManager_1.UiManager.IsViewOpen("PhantomManageView") || UiManager_1.UiManager.IsViewHide("PhantomManageView")) {
-      UiManager_1.UiManager.CloseView("PhantomManageView", this.o2u);
+      UiManager_1.UiManager.CloseView("PhantomManageView", this.qGu);
     } else {
-      this.o2u(true);
+      this.qGu(true);
     }
   }
 }
@@ -465,11 +486,11 @@ class ToggleSwitch extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.OnClickedSwitch = undefined;
     this.OnCheckCanChange = undefined;
-    this.BFu = () => {
+    this.WGu = () => {
       var t;
       return !this.OnCheckCanChange || (t = this.GetExtendToggle(0).GetToggleState(), this.OnCheckCanChange(t));
     };
-    this.Xqu = () => {
+    this.QGu = () => {
       var t;
       if (this.OnClickedSwitch) {
         t = this.GetExtendToggle(0).GetToggleState();
@@ -479,13 +500,13 @@ class ToggleSwitch extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
-    this.BtnBindInfo = [[0, this.Xqu]];
+    this.BtnBindInfo = [[0, this.QGu]];
   }
   OnStart() {
-    this.GetExtendToggle(0).CanExecuteChange.Bind(this.BFu);
+    this.GetExtendToggle(0).CanExecuteChange.Bind(this.WGu);
   }
   SetConfigType(t) {
-    t = t === Protocol_1.Aki.Protocol._xu.Proto_AutoLock ? "PhantomProject_LockProjectTip" : "PhantomProject_DiscardProjectTip";
+    t = t === Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock ? "PhantomProject_LockProjectTip" : "PhantomProject_DiscardProjectTip";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t);
   }
   SetConfigState(t) {

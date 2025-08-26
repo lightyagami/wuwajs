@@ -111,8 +111,8 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
       var o = i?.CreatureData.GetEntityType();
       if (o === Protocol_1.Aki.Protocol.kks.Proto_Player) {
         if (this.kdn = t) {
-          this.qdn = e.GetComponent(178);
-          this.Gdn = e.GetComponent(101);
+          this.qdn = e.GetComponent(179);
+          this.Gdn = e.GetComponent(102);
           this.qdn.DeltaConveyBeltSpeed = this.iun.ToUeVector();
         } else {
           this.qdn.DeltaConveyBeltSpeed = undefined;
@@ -132,7 +132,7 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
           }
         }
       } else if (o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
-        if (e.GetComponent(156)) {
+        if (e.GetComponent(157)) {
           const i = e.GetComponent(1);
           var n = this.Ndn.indexOf(i);
           if (t) {
@@ -218,7 +218,7 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
   }
   Kdn() {
     this.Bdn = undefined;
-    var t = this.Entity.GetComponent(133).State;
+    var t = this.Entity.GetComponent(134).State;
     let e = "";
     if (t === 1) {
       e = "常态";
@@ -257,5 +257,5 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
     }
   }
 };
-SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(147)], SceneItemConveyorBeltComponent);
+SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(148)], SceneItemConveyorBeltComponent);
 exports.SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent; //# sourceMappingURL=SceneItemConveyorBeltComponent.js.map

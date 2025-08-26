@@ -287,7 +287,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     this.jYr = Stats_1.Stat.Create("ClimbingExitPositionFix3");
   }
   static get Dependencies() {
-    return [3, 178];
+    return [3, 179];
   }
   get ClimbBlocking() {
     return this.lYr;
@@ -321,14 +321,14 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     return true;
   }
   OnInit() {
-    this.Xte = this.Entity.GetComponent(205);
+    this.Xte = this.Entity.GetComponent(206);
     return true;
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Gce = this.Entity.CheckGetComponent(178);
-    this.oRe = this.Entity.GetComponent(177);
-    this.HBr = this.Entity.CheckGetComponent(175);
+    this.Gce = this.Entity.CheckGetComponent(179);
+    this.oRe = this.Entity.GetComponent(178);
+    this.HBr = this.Entity.CheckGetComponent(176);
     this.k$r = true;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveClimb, this.b$r);
@@ -729,8 +729,8 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
         this.az.FromUeQuat(h.GetRotation());
         this.az.GetForwardVector(this.Lz);
         if (GravityUtils_1.GravityUtils.GetAngleOffsetInGravityAbsForActor(this.Hte, this.Lz, t) > ENTER_CLIMB_ANGLE) {
-          if (s && Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Character", 42, "超过一定角度则不允许进入攀爬");
+          if (s && Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Character", 42, "超过一定角度则不允许进入攀爬", ["speedDirect", t], ["TmpVector", this.Lz]);
           }
         } else {
           this.Hte.Actor.KuroSetMovementMode({
@@ -754,14 +754,14 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
               }
               this.nJr(h, NORMAL_CACHE_TIME);
               this.hYr = true;
-              if (s && Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Character", 42, "成功进入攀爬状态");
+              if (s && Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("Character", 42, "成功进入攀爬状态");
               }
             }
           });
         }
-      } else if (s && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 42, "TryStartClimb检测非法，进入攀爬失败");
+      } else if (s && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Character", 42, "TryStartClimb检测非法，进入攀爬失败");
       }
     }
   }
@@ -1022,7 +1022,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     if (this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
       if (this.G$r.X < THREAHOLD_JUMP_LEAVE) {
         this.KickWallExit();
-      } else if ((t = this.Entity.GetComponent(177)).Valid) {
+      } else if ((t = this.Entity.GetComponent(178)).Valid) {
         t.ClimbDash();
       }
     }
@@ -1036,8 +1036,8 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
   }
   DetectClimbWithDirect(t, i, s = false) {
     if (!this.Active || this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
-      if (s && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 42, "已处于攀爬状态，进入攀爬检测失败");
+      if (s && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Character", 42, "已处于攀爬状态，进入攀爬检测失败");
       }
       return false;
     }
@@ -1045,14 +1045,14 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     switch (this.Q$r.D_TryUpArrives(i, this.eJr(this.pYr), this.uYr)) {
       case 1:
         this.tJr(2, (0, puerts_1.$unref)(this.uYr));
-        if (s && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Character", 42, "到顶退出，进入攀爬失败");
+        if (s && Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Character", 42, "到顶退出进入攀爬");
         }
         return true;
       case 2:
         this.tJr(7, (0, puerts_1.$unref)(this.uYr));
-        if (s && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Character", 42, "地面登上，进入攀爬失败");
+        if (s && Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Character", 42, "地面登上进入攀爬");
         }
         return true;
     }
@@ -1098,7 +1098,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     return this.Xte.HasTag(388142570) && !this.Xte.HasTag(1098729489);
   }
   foc() {
-    var s = this.Entity.GetComponent(177).MainAnimInstance;
+    var s = this.Entity.GetComponent(178).MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
       var h = s.LogicParams.ClimbInfoRef.ClimbInput;
       let t = 180 / Math.PI * Math.atan2(h.Y, h.X);

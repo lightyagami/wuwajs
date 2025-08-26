@@ -61,7 +61,7 @@ let SceneItemAiRacingMoveComponent = class SceneItemAiRacingMoveComponent extend
     this.pK_ = undefined;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(128);
+    this.Gce = this.Entity.GetComponent(129);
     return true;
   }
   OnActivate() {
@@ -69,7 +69,7 @@ let SceneItemAiRacingMoveComponent = class SceneItemAiRacingMoveComponent extend
   }
   OnTick(t) {
     if (this.mK_) {
-      if (this.Gce && this.zie && this.dK_) {
+      if (this.Gce && this.zie && this.dK_ && !this.Entity.GetComponent(0)?.GetRemoveState()) {
         this.vK_(t);
         this.yK_();
         this.SK_();
@@ -281,5 +281,5 @@ let SceneItemAiRacingMoveComponent = class SceneItemAiRacingMoveComponent extend
 ` : t;
   }
 };
-SceneItemAiRacingMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(280)], SceneItemAiRacingMoveComponent);
+SceneItemAiRacingMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(283)], SceneItemAiRacingMoveComponent);
 exports.SceneItemAiRacingMoveComponent = SceneItemAiRacingMoveComponent; //# sourceMappingURL=SceneItemAiRacingMoveComponent.js.map

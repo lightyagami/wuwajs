@@ -17,6 +17,9 @@ class BattlePass {
   get InitialLevel() {
     return this.initiallevel();
   }
+  get BattlePassRewardId() {
+    return this.battlepassrewardid();
+  }
   get LevelLimit() {
     return this.levellimit();
   }
@@ -83,7 +86,7 @@ class BattlePass {
       return 0;
     }
   }
-  levellimit() {
+  battlepassrewardid() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -91,7 +94,7 @@ class BattlePass {
       return 0;
     }
   }
-  levelupexp() {
+  levellimit() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -99,7 +102,7 @@ class BattlePass {
       return 0;
     }
   }
-  consumeid() {
+  levelupexp() {
     var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -107,7 +110,7 @@ class BattlePass {
       return 0;
     }
   }
-  consumecount() {
+  consumeid() {
     var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -115,15 +118,23 @@ class BattlePass {
       return 0;
     }
   }
-  isrecurringlevel() {
+  consumecount() {
     var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  isrecurringlevel() {
+    var t = this.J7.__offset(this.z7, 18);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetFreerecurringrewardAt(t, r) {
     return this.freerecurringreward(t);
   }
   freerecurringreward(t, r) {
-    var e = this.J7.__offset(this.z7, 18);
+    var e = this.J7.__offset(this.z7, 20);
     if (e) {
       return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
@@ -131,7 +142,7 @@ class BattlePass {
     }
   }
   freerecurringrewardLength() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -142,7 +153,7 @@ class BattlePass {
     return this.payrecurringreward(t);
   }
   payrecurringreward(t, r) {
-    var e = this.J7.__offset(this.z7, 20);
+    var e = this.J7.__offset(this.z7, 22);
     if (e) {
       return (r || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
@@ -150,7 +161,7 @@ class BattlePass {
     }
   }
   payrecurringrewardLength() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -158,14 +169,6 @@ class BattlePass {
     }
   }
   recurringlevelexp() {
-    var t = this.J7.__offset(this.z7, 22);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  weekexplimit() {
     var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -173,8 +176,16 @@ class BattlePass {
       return 0;
     }
   }
+  weekexplimit() {
+    var t = this.J7.__offset(this.z7, 26);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   exclusiverewardpath(t) {
-    var r = this.J7.__offset(this.z7, 26);
+    var r = this.J7.__offset(this.z7, 28);
     var r = r ? this.J7.__string(this.z7 + r, t) : null;
     if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(r);

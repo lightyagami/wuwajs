@@ -15,9 +15,9 @@ const PhantomArenaEntranceTaskItem_1 = require("./PhantomArenaEntranceTaskItem")
 class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
-    this.hou = undefined;
+    this.Dou = undefined;
     this.xqe = undefined;
-    this.lou = 0;
+    this.Bou = 0;
     this.TabTypeList = [];
     this.ypt = [];
     this.ou_ = () => {
@@ -27,18 +27,18 @@ class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     };
     this.l6c = t => {
       for (let e = 0; e < this.TabTypeList.length; e++) {
-        this.hou.GetLayoutItemByIndex(e).SetToggleState(t === this.TabTypeList[e], false);
+        this.Dou.GetLayoutItemByIndex(e).SetToggleState(t === this.TabTypeList[e], false);
       }
-      this.lou = t;
-      this.Esi(this.lou);
+      this.Bou = t;
+      this.Esi(this.Bou);
     };
     this.H5c = () => {
       for (let e = 0; e < this.TabTypeList.length; e++) {
-        this.hou.GetLayoutItemByIndex(e).RefreshRedDot();
+        this.Dou.GetLayoutItemByIndex(e).RefreshRedDot();
       }
-      this.Esi(this.lou);
+      this.Esi(this.Bou);
     };
-    this._ou = () => {
+    this.kou = () => {
       return new PhantomArenaEntranceTaskItem_1.PhantomBattleTaskItem();
     };
   }
@@ -46,18 +46,18 @@ class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIHorizontalLayout], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem]];
   }
   OnStart() {
-    this.hou = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.ou_);
-    this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this._ou);
+    this.Dou = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.ou_);
+    this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(2).GetOwner(), this.kou);
   }
   OnBeforeDestroy() {
-    this.hou = undefined;
+    this.Dou = undefined;
     this.xqe = undefined;
   }
   OnBeforeShow() {
     var e = this.cOn();
-    this.lou = e.length > 0 ? e[0] : 0;
-    this.hou?.RefreshByData(e, () => {
-      this.l6c(this.lou);
+    this.Bou = e.length > 0 ? e[0] : 0;
+    this.Dou?.RefreshByData(e, () => {
+      this.l6c(this.Bou);
     });
   }
   AddEventListener() {
@@ -68,7 +68,7 @@ class PhantomArenaEntranceTaskTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   cOn() {
     this.TabTypeList = ModelManager_1.ModelManager.PhantomArenaModel.GetTaskTabList();
-    this.lou = 0;
+    this.Bou = 0;
     return this.TabTypeList;
   }
   Esi(e) {

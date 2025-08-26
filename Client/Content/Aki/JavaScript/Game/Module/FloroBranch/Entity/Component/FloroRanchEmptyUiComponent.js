@@ -3,29 +3,34 @@
 var __decorate = this && this.__decorate || function (e, o, n, t) {
   var a;
   var i = arguments.length;
-  var c = i < 3 ? o : t === null ? t = Object.getOwnPropertyDescriptor(o, n) : t;
+  var r = i < 3 ? o : t === null ? t = Object.getOwnPropertyDescriptor(o, n) : t;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    c = Reflect.decorate(e, o, n, t);
+    r = Reflect.decorate(e, o, n, t);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (a = e[r]) {
-        c = (i < 3 ? a(c) : i > 3 ? a(o, n, c) : a(o, n)) || c;
+    for (var m = e.length - 1; m >= 0; m--) {
+      if (a = e[m]) {
+        r = (i < 3 ? a(r) : i > 3 ? a(o, n, r) : a(o, n)) || r;
       }
     }
   }
-  if (i > 3 && c) {
-    Object.defineProperty(o, n, c);
+  if (i > 3 && r) {
+    Object.defineProperty(o, n, r);
   }
-  return c;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FloroRanchEmptyUiComponent = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
 const FloroRanchComponentDefine_1 = require("../FloroRanchComponentDefine");
 const FloroRanchUiItemBaseComponent_1 = require("./FloroRanchUiItemBaseComponent");
 let FloroRanchEmptyUiComponent = class FloroRanchEmptyUiComponent extends FloroRanchUiItemBaseComponent_1.FloroRanchUiItemBaseComponent {
-  GetUiItem() {}
+  GetUiItem() {
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanchEmptyUiComponent GetUiItem 实体不存在", ["entityId", this.OwnerEntity.EntityId]);
+    }
+  }
   async PlayShowAnim() {
     await Promise.resolve();
   }

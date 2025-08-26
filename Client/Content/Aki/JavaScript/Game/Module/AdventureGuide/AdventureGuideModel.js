@@ -59,17 +59,18 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     this.AllMonsterDetectionRecord = new Map();
     this.AllDungeonDetectionRecord = new Map();
     this.AllSilentAreaDetectionRecord = new Map();
-    this.oK1 = [];
-    this.nK1 = [];
+    this.hK1 = [];
+    this.lK1 = [];
     this.CurrentShowLevel = 1;
     this.CurrentSelectSuitIndex = 0;
+    this.HandleShowNightMareParam = 0;
     this.VVe = new Map();
     this.TypeUnLockMap = new Map();
     this.GuideTypeUnLockMap = new Map();
     this.HVe = undefined;
     this.jVe = new Array();
     this.tql = new Set([0, 1]);
-    this.iDu = new Map();
+    this.DDu = new Map();
   }
   get HasInitData() {
     return this.P4l;
@@ -129,10 +130,10 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     return i;
   }
   GetRewardChaptersList() {
-    return this.nK1;
+    return this.lK1;
   }
   GetUnLockChaptersList() {
-    return this.oK1;
+    return this.hK1;
   }
   GetIsFromManualDetect() {
     return this.qVe;
@@ -141,10 +142,10 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     this.qVe = e;
   }
   SetUnLockChapters(e) {
-    this.oK1 = e;
+    this.hK1 = e;
   }
   SetRewardChapters(e) {
-    this.nK1 = e;
+    this.lK1 = e;
   }
   SetTaskById(e, t, r) {
     var i = this.GetTaskRecordById(e);
@@ -293,8 +294,17 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       }
     }
     if (r) {
-      const s = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
       if (e === 6 || e === 62) {
+        const s = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
+        if (e === 6) {
+          i.forEach(e => {
+            var t = e.Conf.SubDungeonId;
+            if (ModelManager_1.ModelManager.ExchangeRewardModel.IsFinishInstance(t)) {
+              s.set(e.Conf.Id, true);
+            }
+          });
+          LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, s);
+        }
         i.sort((e, t) => {
           var r = e.Conf.SubDungeonId;
           var i = t.Conf.SubDungeonId;
@@ -440,11 +450,11 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   UpdateByAdventureManualResponse(e) {
     if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22523);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28157);
     } else {
       this.P4l = true;
-      this.oK1 = e.NMs.iK1;
-      this.nK1 = e.NMs.rK1;
+      this.hK1 = e.NMs.sK1;
+      this.lK1 = e.NMs.aK1;
       for (const i of e.NMs.UMs) {
         this.WVe(i);
       }
@@ -551,7 +561,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
           this.AllMonsterDetectionRecord.set(t.o8n, new AdventureDefine_1.MonsterDetectionRecord(r, r.LockCon === 0, t.qMs));
         }
         break;
-      case Protocol_1.Aki.Protocol.r8n.xPu:
+      case Protocol_1.Aki.Protocol.r8n.sxu:
         r = this.AllDungeonDetectionRecord.get(t.o8n);
         if (r !== undefined) {
           if (r.RefreshTime > t.qMs) {
@@ -940,6 +950,17 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.DetectionRedDotRecord, this.DetectionRedDotRecord);
     }
   }
+  CheckExtraRedDotSecondary(e) {
+    for (const t of this.GetDungeonRecordsForRedDot(e, undefined)) {
+      if (this.CheckExtraRedDotDetectionItemByRecord(t)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  CheckExtraRedDotDetectionItemByRecord(e) {
+    return e.Conf.Secondary === 29 && (ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew?.GetRogueRedDotState() ?? false);
+  }
   IsDetectionTypeAllowPreOpen(e) {
     return this.tql.has(e);
   }
@@ -996,13 +1017,16 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     return i;
   }
   UpdateNightMareMsg(e, t, r) {
-    e = this.rDu(e, t);
-    this.iDu.set(e, r);
+    e = this.BDu(e, t);
+    this.DDu.set(e, r);
   }
-  rDu(e, t) {
+  BDu(e, t) {
     return MapUtil_1.MapUtil.GetGamePlayKey(e, t);
   }
   GetNightMareTarget(e, t) {
+    if (!e || !t) {
+      return [-1, -1];
+    }
     var r = ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetLevelPlayNightMareConfig(t);
     if (!r) {
       return [-1, -1];
@@ -1019,8 +1043,8 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     return i;
   }
   GetVar(e, t, r) {
-    e = this.rDu(e, t);
-    t = this.iDu.get(e);
+    e = this.BDu(e, t);
+    t = this.DDu.get(e);
     if (t !== undefined) {
       var i = t[r];
       if (i !== undefined) {
@@ -1047,6 +1071,14 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   IsNightMareHaveConfig(e, t) {
     return ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetLevelPlayNightMareConfig(t) !== undefined;
+  }
+  IsRoleTutorialNew(e) {
+    return !(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map()).get(e);
+  }
+  SetRoleTutorialNew(e) {
+    var t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
+    t.set(e, true);
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, t);
   }
 }
 exports.AdventureGuideModel = AdventureGuideModel;

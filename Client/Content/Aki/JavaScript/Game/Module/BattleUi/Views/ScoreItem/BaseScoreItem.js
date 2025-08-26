@@ -12,12 +12,12 @@ class BaseScoreItem extends BattleChildView_1.BattleChildView {
   constructor() {
     super(...arguments);
     this.IsScoreEnable = false;
-    this.nmu = (e, t) => {
+    this.Vmu = (e, t) => {
       if (this.IsValidScore(e)) {
         this.OnBattleScoreChanged(e, t);
       }
     };
-    this.smu = (e, t) => {
+    this.jmu = (e, t) => {
       if (this.IsValidScore(e)) {
         this.OnBattleScoreEnableChanged(e, t);
       }
@@ -33,12 +33,12 @@ class BaseScoreItem extends BattleChildView_1.BattleChildView {
         }
       }
     }
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.nmu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreEnableChanged, this.smu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.Vmu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreEnableChanged, this.jmu);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.nmu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreEnableChanged, this.smu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.Vmu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreEnableChanged, this.jmu);
   }
   OnShowFirstTime() {
     if (this.IsScoreEnable) {

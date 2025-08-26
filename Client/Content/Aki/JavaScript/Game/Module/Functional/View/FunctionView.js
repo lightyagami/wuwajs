@@ -171,7 +171,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.AF1 = e => {
       this.PF1();
     };
-    this.geu = () => {
+    this.Veu = () => {
       var e = ModelManager_1.ModelManager.PreDownloadModel.IsPreDownloadAvailable() || ModelManager_1.ModelManager.PreDownloadModel.IsComplete();
       this.GetButton(37)?.RootUIComp.SetUIActive(e);
     };
@@ -206,7 +206,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.TCc = new PreDownloadButton_1.PreDownloadButtonItemB(this.GetButton(37).RootUIComp);
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10060);
     this.GetButton(21).RootUIComp.SetRaycastTarget(e);
-    this.l7c();
+    this.Aqu();
     this.gHt();
     var e = this.ovt.GetCurrentSelectIndex();
     this.BNe(e);
@@ -226,7 +226,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FunctionGridSelected, this.dHt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerTitleChange, this.Gac);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.geu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFunctionViewShow);
   }
   OnRemoveEventListener() {
@@ -239,7 +239,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerTitleChange, this.Gac);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FunctionGridSelected, this.dHt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.geu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
   }
   BNe(e) {
     this.G7t.SetUIActive(e > 0);
@@ -247,7 +247,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.O7t.SetUIActive(this.fHt(e));
     this.k7t.SetUIActive(this.pHt(e));
   }
-  l7c() {
+  Aqu() {
     let e = true;
     if (CloudGameManager_1.CloudGameManager.IsCloudGame || Info_1.Info.IsPs5Platform()) {
       e = false;
@@ -516,9 +516,12 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     var s = o >= i.X ? 1 : 0;
     var n = Math.floor((n - t.Left - t.Right) / (i.X + r.X)) + s;
     var s = (e - t.Top - t.Bottom) % (i.Y + r.Y) > i.Y ? 1 : 0;
+    var e = Math.floor((e - t.Top - t.Bottom) / (i.Y + r.Y)) + s;
     return {
-      TotalGridNumber: n * (Math.floor((e - t.Top - t.Bottom) / (i.Y + r.Y)) + s),
-      OffsetWidth: o >= i.X ? o - i.X : o + r.X
+      TotalGridNumber: n * e,
+      OffsetWidth: o >= i.X ? o - i.X : o + r.X,
+      HorizontalGridNum: n,
+      VerticalGridNum: e
     };
   }
   PF1() {

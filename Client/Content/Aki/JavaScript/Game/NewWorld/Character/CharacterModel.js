@@ -27,6 +27,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const FormationAttributeController_1 = require("../../Module/Abilities/FormationAttributeController");
 const FormationDataController_1 = require("../../Module/Abilities/FormationDataController");
+const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const EntityHandle_1 = require("./EntityHandle");
 const WorldEntity_1 = require("./WorldEntity");
 const ENTITY_LRU_CAPACITY = 300;
@@ -37,10 +38,10 @@ class CharacterModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.nK = new Array();
-    this.V1u = new Array();
-    this.j1u = new Array();
-    this.Vbu = new Array();
-    this.H1u = new Array();
+    this.Tuu = new Array();
+    this.buu = new Array();
+    this.hRu = new Array();
+    this.Ruu = new Array();
     this.AwakeQueue = new PriorityQueue_1.PriorityQueue((e, t) => {
       var i = t[0].Priority;
       var r = e[0].Priority;
@@ -68,28 +69,28 @@ class CharacterModel extends ModelBase_1.ModelBase {
     this.fKo = new Map();
     this.TestSoarOn = false;
     this.EntityPool = new Lru_1.Lru(ENTITY_LRU_CAPACITY, e => new WorldEntity_1.WorldEntity(0, 0), undefined);
-    this.Ryu = 0;
+    this.SEu = 0;
     this.ZLc = 1;
     this.V8c = 1;
     this.j8c = e => {
       if (this.ZLc !== 1) {
-        this.jku();
+        this.G3u();
       }
     };
     this.dLe = () => {
       if (this.ZLc !== 1) {
-        this.jku();
+        this.G3u();
       }
     };
-    this.Acu = e => {
+    this.ddu = e => {
       if (e.PlotLevel !== "LevelD" && e.PlotLevel !== "Prompt") {
         this.ExitAllSelfCenteredMode();
       }
     };
-    this.JMu = () => {
+    this.ZMu = () => {
       this.ExitAllSelfCenteredMode();
     };
-    this.ZMu = () => {
+    this.eEu = () => {
       this.ExitAllSelfCenteredMode();
     };
     this.imc = e => {
@@ -97,17 +98,22 @@ class CharacterModel extends ModelBase_1.ModelBase {
         this.ExitAllSelfCenteredMode();
       }
     };
+    this.FQe = e => {
+      if (e === "PhantomExploreView" || e === "ChatView" || e === "ShopView") {
+        this.ExitAllSelfCenteredMode();
+      }
+    };
     this.grn = (e, t) => {
-      if (this.Ryu === 5) {
+      if (this.SEu === 5) {
         this.ExitSkillSelfCenteredMode();
       }
     };
   }
   get EnabledSelfCentered() {
-    return this.Ryu !== 0 || this.ZLc !== 1;
+    return this.SEu !== 0 || this.ZLc !== 1;
   }
   get SelfCenteredMode() {
-    return this.Ryu;
+    return this.SEu;
   }
   get SelfCenteredTimeDilation() {
     return this.ZLc;
@@ -117,31 +123,37 @@ class CharacterModel extends ModelBase_1.ModelBase {
   }
   OnInit() {
     this.nK.length = 0;
-    this.H1u.push(5);
-    this.H1u.push(3);
-    this.H1u.push(2);
-    this.H1u.push(1);
-    this.H1u.push(4);
+    this.Ruu.push(5);
+    this.Ruu.push(3);
+    this.Ruu.push(2);
+    this.Ruu.push(1);
+    this.Ruu.push(4);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInitRole, this.j8c);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.dLe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.Acu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DoLeaveLevel, this.JMu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.ZMu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.ddu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DoLeaveLevel, this.ZMu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.eEu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetGamePaused, this.imc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.FQe);
     return true;
   }
   OnClear() {
     this.ClearData();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInitRole, this.j8c);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.dLe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.Acu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DoLeaveLevel, this.JMu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.ZMu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.ddu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DoLeaveLevel, this.ZMu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.eEu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetGamePaused, this.imc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
     return true;
   }
   OnLeaveLevel() {
     this.ClearData();
+    return true;
+  }
+  OnChangeMode() {
+    this.ExitAllSelfCenteredMode();
     return true;
   }
   CreateHandle(e) {
@@ -207,7 +219,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
   ExitSkillSelfCenteredMode() {
     var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(39);
     if (e?.Valid) {
-      e.BeginSkill(SELF_CENTERED_SKILL_ID);
+      e.BeginSkillAsync(SELF_CENTERED_SKILL_ID);
     }
     ControllerHolder_1.ControllerHolder.CharacterController.ExitSelfCenteredMode(5);
   }
@@ -218,17 +230,17 @@ class CharacterModel extends ModelBase_1.ModelBase {
   ExitAllSelfCenteredMode() {
     var e;
     if (this.IsSelfCenteredModeEnabled(5) && (e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(39))?.Valid) {
-      e.BeginSkill(SELF_CENTERED_SKILL_ID);
+      e.BeginSkillAsync(SELF_CENTERED_SKILL_ID);
     }
-    for (const t of this.H1u) {
-      this.V1u[t] = false;
-      this.j1u[t] = 1;
-      this.Vbu[t] = 0;
+    for (const t of this.Ruu) {
+      this.Tuu[t] = false;
+      this.buu[t] = 1;
+      this.hRu[t] = 0;
     }
     this.SwitchSelfCenteredMode(this.GetNextSelfCenteredMode());
   }
   IsSelfCenteredModeEnabled(e) {
-    return this.V1u[e];
+    return this.Tuu[e];
   }
   EnableSelfCenteredMode(e, t, i = -1) {
     if (t <= MathUtils_1.MathUtils.SmallNumber) {
@@ -236,66 +248,66 @@ class CharacterModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("Character", 57, "Error SelfCentered TimeDilation.", ["mode", e], ["TimeDilation", t]);
       }
     } else {
-      this.V1u[e] = true;
-      this.j1u[e] = t;
-      this.Vbu[e] = i;
+      this.Tuu[e] = true;
+      this.buu[e] = t;
+      this.hRu[e] = i;
     }
   }
   DisableSelfCenteredMode(e) {
-    this.V1u[e] = false;
-    this.j1u[e] = 1;
-    this.Vbu[e] = 0;
+    this.Tuu[e] = false;
+    this.buu[e] = 1;
+    this.hRu[e] = 0;
   }
   GetNextSelfCenteredMode() {
-    for (const e of this.H1u) {
-      if (this.V1u[e]) {
+    for (const e of this.Ruu) {
+      if (this.Tuu[e]) {
         return e;
       }
     }
     return 0;
   }
-  W1u(e) {
-    if (this.V1u[e]) {
-      return this.j1u[e];
+  wuu(e) {
+    if (this.Tuu[e]) {
+      return this.buu[e];
     } else {
       return 1;
     }
   }
-  jbu(e) {
-    if (this.V1u[e]) {
-      return this.Vbu[e];
+  lRu(e) {
+    if (this.Tuu[e]) {
+      return this.hRu[e];
     } else {
       return 0;
     }
   }
   SwitchSelfCenteredMode(e) {
     var t;
-    var i = this.W1u(e);
-    return (this.Ryu !== e || !MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, i)) && !(t = this.Ryu, this.Ryu = e, this.ZLc = i, this.V8c = 1 / i, UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, i), Time_1.Time.SetInverseSelfCenteredTimeDilation(this.V8c), Time_1.Time.SetFlowTimeDilation(this.V8c), ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(this.InverseSelfCenteredTimeDilation), UE.LGUIManagerActor.GetSequencerManager(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), UE.LTweenActor.GetLTweenInstance(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, 1) ? (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "none"), this.ITu(false), TimerSystem_1.TimerSystem.Next(() => {
+    var i = this.wuu(e);
+    return (this.SEu !== e || !MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, i)) && !(t = this.SEu, this.SEu = e, this.ZLc = i, this.V8c = 1 / i, UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, i), Time_1.Time.SetInverseSelfCenteredTimeDilation(this.V8c), Time_1.Time.SetFlowTimeDilation(this.V8c), ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(this.InverseSelfCenteredTimeDilation), UE.LGUIManagerActor.GetSequencerManager(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), UE.LTweenActor.GetLTweenInstance(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, 1) ? (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "none"), this.HTu(false), TimerSystem_1.TimerSystem.Next(() => {
       if (MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, 1)) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS -1");
       } else {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200");
       }
-    })) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), this.ITu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200")), this.jku(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.Ryu]), t !== 5 && this.Ryu === 5 ? this.USu() : t === 5 && this.DSu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.Ryu, i), (t = Protocol_1.Aki.Protocol.O0u.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.jbu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(25003, t), 0);
+    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.G3u(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(16091, t), 0);
   }
-  USu() {
+  yTu() {
     FormationAttributeController_1.FormationAttributeController.AddThresholdListener(12, this.grn, 0, 0, "Strength.RoleStrengthComponent");
     FormationDataController_1.FormationDataController.AddPlayerTag(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), 1250079979);
   }
-  DSu() {
+  STu() {
     FormationAttributeController_1.FormationAttributeController.RemoveThresholdListener(12, this.grn);
     FormationDataController_1.FormationDataController.RemovePlayerTag(ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), 1250079979);
   }
-  ITu(t) {
+  HTu(t) {
     for (let e = 0; e < 16; e++) {
       EffectSystem_1.EffectSystem.SetAdditionTimeScaleEnable(e, t);
     }
   }
-  jku() {
+  G3u() {
     var e;
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-      if (t?.Valid && (e = t.Entity.GetComponent(285))?.Valid) {
+      if (t?.Valid && (e = t.Entity.GetComponent(288))?.Valid) {
         e.SetSelfCenterTimeDilation(this.InverseSelfCenteredTimeDilation);
       }
     }

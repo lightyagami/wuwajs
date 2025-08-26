@@ -73,6 +73,17 @@ class PowerView extends UiTickViewBase_1.UiTickViewBase {
       }
       this.roo = this.jXs();
       this.Soo.RefreshByData(this.roo);
+      if (this.Ioo) {
+        if ((e = this.Ioo.AutoClosePowerCount) > 0 && ModelManager_1.ModelManager.PowerModel.PowerCount >= e) {
+          this.CloseMe();
+        } else {
+          if (this.Ioo.UpdateCurrentNeedPower) {
+            e = ModelManager_1.ModelManager.PowerModel.PowerCount - this.Ioo.PowerCount;
+            ModelManager_1.ModelManager.PowerModel.CurrentNeedPower = Math.max(ModelManager_1.ModelManager.PowerModel.CurrentNeedPower - e, 0);
+          }
+          this.Ioo.PowerCount = ModelManager_1.ModelManager.PowerModel.PowerCount;
+        }
+      }
     };
     this.Boo = e => {
       if (e === ItemDefines_1.EItemId.BlackCard) {
@@ -166,7 +177,7 @@ class PowerView extends UiTickViewBase_1.UiTickViewBase {
     PowerController_1.PowerController.SendUpdatePowerRequest([ItemDefines_1.EItemId.Power, ItemDefines_1.EItemId.OverPower]);
     this.Doo = ConfigManager_1.ConfigManager.PowerConfig.GetPowerNaturalLimit();
     this.Roo = ConfigManager_1.ConfigManager.PowerConfig.GetPowerChargeLimit();
-    this.Ioo = ModelManager_1.ModelManager.PowerModel.ConfirmBoxData;
+    this.Ioo = this.OpenParam;
     this.Noo();
     this.Soo = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(7), this.Esi);
     this.roo = this.jXs();
@@ -196,7 +207,6 @@ class PowerView extends UiTickViewBase_1.UiTickViewBase {
       this.Soo.ClearChildren();
       this.Soo = undefined;
     }
-    ModelManager_1.ModelManager.PowerModel.ClearConfirmBoxData();
   }
   OnTick(e) {
     this.WXs();

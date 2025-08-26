@@ -8,6 +8,7 @@ const FNameUtil_1 = require("../../../../../../Core/Utils/FNameUtil");
 const Rotator_1 = require("../../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../../../../Core/Utils/Math/Vector2D");
+const HoldingHandsUtils_1 = require("../../../../../Module/HoldHands/HoldingHandsUtils");
 const CharacterUnifiedStateTypes_1 = require("../../Component/Abilities/CharacterUnifiedStateTypes");
 const CharacterClimbComponent_1 = require("../../Component/Move/CharacterClimbComponent");
 class AnimLogicParamsSetter {
@@ -62,7 +63,15 @@ class AnimLogicParamsSetter {
     this.EnableBlendSpaceLookAt = false;
     this.CameraMode = 0;
     this.IsOnVehicle = false;
-    this.CacheBones = false;
+    this.EnableLowerBlend = false;
+    this.EnableLeftArmBlend = false;
+    this.EnableRightArmBlend = false;
+    this.IsHoldingHands = false;
+    this.IsBeHoldingHands = false;
+    this.IsHoldingHandsReachable = false;
+    this.IsAcceptingInvitation = false;
+    this.LeftHandIkTarget = new HoldingHandsUtils_1.IkTarget();
+    this.RightHandIkTarget = new HoldingHandsUtils_1.IkTarget();
   }
 }
 exports.AnimLogicParamsSetter = AnimLogicParamsSetter;

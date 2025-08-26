@@ -210,11 +210,18 @@ class UiNavigationViewManager {
     }
   }
   static Zbo() {
-    if (UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshCurrentPanel && (UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshCurrentPanel = false, this.Xbo)) {
-      if (this.Xbo.HasAnyPanelActive()) {
-        this.Xbo.FindAddPanelConfigNavigation();
+    if (UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshPanelId !== 0) {
+      if (this.Xbo && this.Xbo.TagId === UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshPanelId) {
+        UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshPanelId = 0;
+        if (this.Xbo) {
+          if (this.Xbo.HasAnyPanelActive()) {
+            this.Xbo.FindAddPanelConfigNavigation();
+          } else {
+            this.MarkCalculateCurrentPanelDirty();
+          }
+        }
       } else {
-        this.MarkCalculateCurrentPanelDirty();
+        UiNavigationGlobalData_1.UiNavigationGlobalData.NeedRefreshPanelId = 0;
       }
     }
   }
@@ -259,6 +266,9 @@ class UiNavigationViewManager {
     if (this.Xbo) {
       this.Xbo.MarkRefreshHotKeyTextIdDirty();
     }
+  }
+  static CanFocusViewHandle(i) {
+    return !this.Xbo?.HasGamepadControlMouse() || this.Xbo === i;
   }
 }
 exports.UiNavigationViewManager = UiNavigationViewManager;

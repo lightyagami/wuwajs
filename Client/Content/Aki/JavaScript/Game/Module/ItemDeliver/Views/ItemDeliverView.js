@@ -32,10 +32,10 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
           var t = this.ugi.Context;
           if (t) {
             this.dgi = true;
-            var e = this.ugi.GetSlotDataList();
+            var i = this.ugi.GetSlotDataList();
             if (t.Type === 6) {
-              var i = [];
-              for (const o of e) {
+              var e = [];
+              for (const o of i) {
                 if (o.HasItem()) {
                   var r = {
                     F9n: [{
@@ -53,12 +53,12 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
                     case "ItemType":
                       r.V9n = Protocol_1.Aki.Protocol.V9n.H9n;
                   }
-                  i.push(r);
+                  e.push(r);
                 }
               }
-              ItemDeliverController_1.ItemDeliverController.HandInItemRequest(t, i, this.ggi);
-            } else if (t.Type === 1 && (e = e[0]).HasItem()) {
-              ItemDeliverController_1.ItemDeliverController.ItemUseRequest(t, e.GetCurrentItemConfigId(), e.GetCurrentCount(), this.ggi);
+              ItemDeliverController_1.ItemDeliverController.HandInItemRequest(t, e, this.ggi);
+            } else if (t.Type === 1 && (i = i[0]).HasItem()) {
+              ItemDeliverController_1.ItemDeliverController.ItemUseRequest(t, i.GetCurrentItemConfigId(), i.GetCurrentCount(), this.ggi);
             }
           }
         } else {
@@ -73,12 +73,12 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
       }
     };
     this.txt = t => {
-      var e;
+      var i;
       if (t.IsEnable()) {
         if (this.fgi(t.ItemConfigId, 1)) {
           this.pgi();
-          e = Math.min(t.GetCurrentCount() + 1, t.GetItemCount());
-          t.SetCurrentCount(e);
+          i = Math.min(t.GetCurrentCount() + 1, t.GetItemCount());
+          t.SetCurrentCount(i);
           this.mgi.RefreshItemGrid(t);
         } else {
           this.mgi.SetItemGridSelected(false, t);
@@ -90,12 +90,12 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
     };
     this.gke = t => !!this.ugi && this.ugi.HasEmptySlot();
     this.vgi = t => {
-      var e = Math.max(t.GetCurrentCount() - 1, 0);
-      t.SetCurrentCount(e);
+      var i = Math.max(t.GetCurrentCount() - 1, 0);
+      t.SetCurrentCount(i);
       this.mgi.RefreshItemGrid(t);
       this.fgi(t.ItemConfigId, -1);
       this.pgi();
-      if (e <= 0) {
+      if (i <= 0) {
         this.mgi.SetItemGridSelected(false, t);
       }
     };
@@ -110,14 +110,13 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
     };
     this.Egi = t => {
       var t = t.Data;
-      var e = t.GetCurrentCount() - 1;
-      t.SetCurrentCount(Math.max(e, 0));
-      var i = this.mgi.GetItemData(t.GetCurrentItemConfigId());
-      if (i) {
-        i.SetCurrentCount(i.GetCurrentCount() - 1);
-        this.mgi.RefreshItemGrid(i);
+      var i = t.GetCurrentCount() - 1;
+      t.SetCurrentCount(Math.max(i, 0));
+      var e = this.mgi.GetItemData(t.GetCurrentItemConfigId());
+      if (e && (e.SetCurrentCount(e.GetCurrentCount() - 1), this.mgi.RefreshItemGrid(e), i <= 0)) {
+        this.mgi.SetItemGridSelected(false, e);
       }
-      if (e <= 0) {
+      if (i <= 0) {
         t.ClearItem();
       }
       this.pgi();
@@ -179,22 +178,22 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
     var t = t === undefined ? "" : PublicUtil_1.PublicUtil.GetConfigTextByKey(t);
     this.GetText(3)?.SetText(t);
   }
-  fgi(e, i) {
+  fgi(i, e) {
     var r = this.ugi.GetSlotDataList();
-    if (i > 0) {
-      if (this.ugi?.IsSlotEnough(e)) {
+    if (e > 0) {
+      if (this.ugi?.IsSlotEnough(i)) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("RepeatedDeliveryItem");
         return false;
       }
       for (const h of r) {
-        var t = h.GetCurrentCount() + i;
+        var t = h.GetCurrentCount() + e;
         var t = MathUtils_1.MathUtils.Clamp(t, 0, h.GetNeedCount());
         if (!h.IsEnough()) {
           if (t <= 0) {
             h.ClearItem();
             return true;
           }
-          if (h.SetItem(e, t)) {
+          if (h.SetItem(i, t)) {
             return true;
           }
         }
@@ -202,15 +201,17 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
     } else {
       for (let t = r.length - 1; t >= 0; t--) {
         var o = r[t];
-        var s = o.GetCurrentCount() + i;
-        var s = MathUtils_1.MathUtils.Clamp(s, 0, o.GetNeedCount());
-        if (o.HasItem()) {
-          if (s <= 0) {
-            o.ClearItem();
-            return true;
-          }
-          if (o.SetItem(e, s)) {
-            return true;
+        if (o.GetCurrentItemConfigId() === i) {
+          var s = o.GetCurrentCount() + e;
+          var s = MathUtils_1.MathUtils.Clamp(s, 0, o.GetNeedCount());
+          if (o.HasItem()) {
+            if (s <= 0) {
+              o.ClearItem();
+              return true;
+            }
+            if (o.SetItem(i, s)) {
+              return true;
+            }
           }
         }
       }
@@ -218,11 +219,11 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
     return false;
   }
   pgi(t) {
-    var e = this.ugi.GetSlotDataList();
-    this.cgi?.RefreshByData(e, t);
+    var i = this.ugi.GetSlotDataList();
+    this.cgi?.RefreshByData(i, t);
   }
-  ygi(t, e) {
-    var i = [];
+  ygi(t, i) {
+    var e = [];
     var t = t.GetItemRangeList();
     if (t.length <= 1) {
       this.mgi.SetActive(false);
@@ -231,20 +232,20 @@ class ItemDeliverView extends UiViewBase_1.UiViewBase {
         var r = {
           ItemConfigId: o,
           CurrentCount: 0,
-          NeedCount: e
+          NeedCount: i
         };
-        i.push(r);
+        e.push(r);
       }
       this.mgi.Refresh({
-        ItemInfoList: i
+        ItemInfoList: e
       }).then(() => {
         var t;
-        var e;
-        var i = this.mgi.GetItemDataMainTypeMap();
+        var i;
+        var e = this.mgi.GetItemDataMainTypeMap();
         var r = this.ugi.GetSlotDataList()[0].GetNeedCount();
         var o = this.mgi.GetMainTypeIdList()[0];
-        for ([t, e] of i) {
-          for (const s of e) {
+        for ([t, i] of e) {
+          for (const s of i) {
             if (s.GetItemCount() >= r && t !== o) {
               this.mgi?.SetMainTypeRedDotVisible(t, true);
               break;

@@ -27,8 +27,8 @@ class CheckCombatStateBehaviorNode extends TickBehaviorNode_1.TickBehaviorNode {
     if (!this.Submitting && this.UXt) {
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.AXt);
       if (t?.IsInit) {
-        let e = t.Entity.GetComponent(205);
-        if (e = e || t.Entity.GetComponent(196)) {
+        let e = t.Entity.GetComponent(206);
+        if (e = e || t.Entity.GetComponent(197)) {
           if (e.HasTag(this.UXt)) {
             if (this.Foa) {
               this.SubmitNode();

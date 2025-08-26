@@ -29,32 +29,32 @@ class ActivityRegressRoleSubView extends ActivityRegressMainSubViewBase_1.Activi
     this.oCa = undefined;
     this.$Ql = undefined;
     this.XQl = 0;
-    this.Wwn = e => {
-      var i;
+    this.Wwn = i => {
+      var e;
       var t;
-      var e = this.Gda[e].Config;
-      this.ima.RefreshData(e);
-      var s = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(e.GachaId);
+      var i = this.Gda[i].Config;
+      this.ima.RefreshData(i);
+      var s = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(i.GachaId);
       if (s === undefined) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("ActivityRecall", 63, "回流活动->ActivityRecallRoleSubView.TabCallBack 不存在该抽卡数据", ["GachaId: ", e.GachaId]);
+          Log_1.Log.Debug("ActivityRecall", 63, "回流活动->ActivityRecallRoleSubView.TabCallBack 不存在该抽卡数据", ["GachaId: ", i.GachaId]);
         }
-      } else if ((i = (t = s.UsePoolId) > 0 ? s.GetPoolInfo(t) : s.GetFirstValidPool()) === undefined) {
+      } else if ((e = (t = s.UsePoolId) > 0 ? s.GetPoolInfo(t) : s.GetFirstValidPool()) === undefined) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("ActivityRecall", 63, "[回流活动]ActivityRecallRoleSubView->TabCallBack 不存在该卡池数据", ["GachaId: ", e.GachaId], ["usePoolId: ", t]);
+          Log_1.Log.Debug("ActivityRecall", 63, "[回流活动]ActivityRecallRoleSubView->TabCallBack 不存在该卡池数据", ["GachaId: ", i.GachaId], ["usePoolId: ", t]);
         }
       } else {
-        this.YQl(s, i);
-        this.Lo = e;
-        t = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaRoleId(e.GachaId);
+        this.YQl(s, e);
+        this.Lo = i;
+        t = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaRoleId(i.GachaId);
         this.tma.Update(t);
-        this.InvokePassRecallBaseCallBack(e, 2);
+        this.InvokePassRecallBaseCallBack(i, 2);
         this.SequencePlayer.PlaySequence("Start");
       }
     };
     this.rma = () => {
-      var e = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaTrialRoleId(this.Lo.GachaId);
-      RoleController_1.RoleController.OpenRoleMainView(1, 0, [e]);
+      var i = ModelManager_1.ModelManager.ActivityRegressModel.GetGachaTrialRoleId(this.Lo.GachaId);
+      RoleController_1.RoleController.OpenRoleMainView(1, 0, [i]);
     };
   }
   OnRegisterComponent() {
@@ -63,20 +63,20 @@ class ActivityRegressRoleSubView extends ActivityRegressMainSubViewBase_1.Activi
   }
   async OnBeforeStartAsync() {
     this.Xda = this.OpenParam;
-    var e = this.GetItem(4);
-    this.XQl = e.GetAnchorOffsetX();
-    e = this.GetItem(1).GetOwner();
+    var i = this.GetItem(4);
+    this.XQl = i.GetAnchorOffsetX();
+    i = this.GetItem(1).GetOwner();
     this.tma = new ActivityRoleDescribeComponent_1.ActivityRoleDescribeComponent();
-    await this.tma.CreateThenShowByActorAsync(e, undefined, true);
-    e = this.GetItem(6).GetOwner();
+    await this.tma.CreateThenShowByActorAsync(i, undefined, true);
+    i = this.GetItem(6).GetOwner();
     this.ima = new ActivityRegressRoleActivityInfoPanel_1.ActivityRegressRoleActivityInfoPanel();
-    await this.ima.CreateThenShowByActorAsync(e);
+    await this.ima.CreateThenShowByActorAsync(i);
   }
   OnStart() {
     super.OnStart();
-    var e = this.GetHorizontalLayout(0);
-    var i = this.GetItem(5);
-    this.Oda = new ActivityRegressTabGroupPanel_1.ActivityRegressTabGroupPanel(e, i, this.Wwn);
+    var i = this.GetHorizontalLayout(0);
+    var e = this.GetItem(5);
+    this.Oda = new ActivityRegressTabGroupPanel_1.ActivityRegressTabGroupPanel(i, e, this.Wwn);
     this.Oda.Init();
     this.GetItem(3).SetUIActive(true);
   }
@@ -84,37 +84,30 @@ class ActivityRegressRoleSubView extends ActivityRegressMainSubViewBase_1.Activi
     this.Oda.Destroy();
     this.Oda = undefined;
   }
-  OnUpdate(e) {
-    var i = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetSortedOpenRegressBaseConfigList();
-    var t = i[0];
-    var i = i[1];
+  OnUpdate(i) {
+    var e = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetSortedOpenRegressBaseConfigList();
     this.Gda = [];
-    var s = new ActivityRegressDefine_1.ActivityRegressTabSwitchItemCommonData();
-    s.RecallEntryType = this.Xda;
-    s.Config = t;
-    var t = ModelManager_1.ModelManager.ActivityRegressModel.GetRoleConfigByGachaId(t.GachaId);
-    s.Title = t.Name;
-    this.Gda.push(s);
-    if (i !== undefined) {
-      (t = new ActivityRegressDefine_1.ActivityRegressTabSwitchItemCommonData()).RecallEntryType = this.Xda;
-      t.Config = i;
-      s = ModelManager_1.ModelManager.ActivityRegressModel.GetRoleConfigByGachaId(i.GachaId);
+    for (const a of e) {
+      var t = new ActivityRegressDefine_1.ActivityRegressTabSwitchItemCommonData();
+      t.RecallEntryType = this.Xda;
+      t.Config = a;
+      var s = ModelManager_1.ModelManager.ActivityRegressModel.GetRoleConfigByGachaId(a.GachaId);
       t.Title = s.Name;
       this.Gda.push(t);
     }
     this.GetItem(7).SetUIActive(this.Gda.length > 1);
-    this.Oda.RefreshByData(this.Gda, e);
+    this.Oda.RefreshByData(this.Gda, i);
   }
   OnParentShow() {
     super.OnParentShow();
     this.oCa?.PlayStartSeqAsync();
   }
-  async YQl(e, i) {
+  async YQl(i, e) {
     var t;
-    var e = new GachaDefine_1.GachaPoolData(e, i);
-    var i = i.Id;
-    var i = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(i);
-    if (StringUtils_1.StringUtils.IsBlank(i.SpinePrefabResource)) {
+    var i = new GachaDefine_1.GachaPoolData(i, e);
+    var e = e.Id;
+    var e = ConfigManager_1.ConfigManager.GachaConfig.GetGachaViewInfo(e);
+    if (StringUtils_1.StringUtils.IsBlank(e.SpinePrefabResource)) {
       if (this.$Ql !== 0) {
         await this.oCa?.DestroyAsync();
         this.oCa = undefined;
@@ -126,14 +119,14 @@ class ActivityRegressRoleSubView extends ActivityRegressMainSubViewBase_1.Activi
     } else {
       await this.oCa?.DestroyAsync();
       this.oCa = new SpineRoleGachaPoolItem_1.SpineRoleGachaPoolItem(2);
-      t = i.SpinePrefabResource;
-      i = this.GetItem(8);
-      await this.oCa.CreateThenShowByResourceIdAsync(t, i);
+      t = e.SpinePrefabResource;
+      e = this.GetItem(8);
+      await this.oCa.CreateThenShowByResourceIdAsync(t, e);
       this.oCa.GetRootItem().SetAnchorOffsetX(this.XQl);
       this.$Ql = 1;
     }
     this.oCa.SetDescUiActive(false);
-    this.oCa.Update(e);
+    this.oCa.Update(i);
     this.oCa.PlayStartSeqAsync();
   }
 }

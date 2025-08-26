@@ -28,10 +28,10 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
     this.$De = new Map();
     this.YDe = true;
     this.wQl = 0;
-    this.Wsu = GameplayCueController_1.INVALID_CUE_HANDLE;
-    this.BZ1 = undefined;
+    this.vau = GameplayCueController_1.INVALID_CUE_HANDLE;
+    this.aeu = undefined;
     this.I5l = "Battle";
-    this.uK1 = undefined;
+    this.fK1 = undefined;
     this.JDe = () => {
       if (this.YDe) {
         this.YDe = false;
@@ -39,7 +39,7 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
           Log_1.Log.Debug("LevelEvent", 17, "主界面打开，战斗结算效果继续执行");
         }
         if (this.j3) {
-          TimerSystem_1.TimerSystem.Resume(this.j3);
+          TimerSystem_1.GameplayTimerSystem.Resume(this.j3);
           ModelManager_1.ModelManager.BattleUiModel.IsInBattleSettlement = true;
           ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleSettlementStateChanged, true);
@@ -52,7 +52,7 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
       if (!this.YDe) {
         this.YDe = true;
         if (this.j3) {
-          TimerSystem_1.TimerSystem.Pause(this.j3);
+          TimerSystem_1.GameplayTimerSystem.Pause(this.j3);
           ModelManager_1.ModelManager.BattleUiModel.IsInBattleSettlement = false;
           ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
           if (Log_1.Log.CheckDebug()) {
@@ -82,7 +82,7 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
         e = i;
       }
       this.wQl = e > 0 ? e : SCREEN_EFFECT_CUE_ID;
-      this.uK1 = t.BgmType;
+      this.fK1 = t.BgmType;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 17, "战斗结算效果开始");
       }
@@ -112,10 +112,10 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
     this.tRe(e);
     ControllerHolder_1.ControllerHolder.DamageUiController.SetDamageTimeScaleEnable(true);
     var e = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
-    if (e && (this.wQl !== 0 && (this.BZ1 = e.GetComponent(21), this.BZ1) && (this.Wsu = this.BZ1.AddCue(this.wQl)), e = e.GetComponent(62))) {
+    if (e && (this.wQl !== 0 && (this.aeu = e.GetComponent(21), this.aeu) && (this.vau = this.aeu.AddCue(this.wQl)), e = e.GetComponent(62))) {
       e.ClearInputCache(0, 0);
     }
-    if (this.uK1 === "BattleSoundWave") {
+    if (this.fK1 === "BattleSoundWave") {
       AudioSystem_1.AudioSystem.SetState("plot_phantom_arena_battle_state", "ending");
     } else if (e = CommonParamById_1.configCommonParamById.GetStringConfig("BattleSettlementAudioEvent")) {
       AudioSystem_1.AudioSystem.PostEvent(e);
@@ -161,14 +161,14 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
   iRe(e, t, i, o, r, n, a) {
     var l;
     var s;
-    if (e?.Valid && (s = e.Entity)?.IsInit && (l = s.GetComponent(122)) && (s = s.GetComponent(1)?.ActorLocationProxy) && Math.abs(s.X - t.X) <= i && Math.abs(s.Y - t.Y) <= i && Math.abs(s.Z - t.Z) <= i) {
+    if (e?.Valid && (s = e.Entity)?.IsInit && (l = s.GetComponent(123)) && (s = s.GetComponent(1)?.ActorLocationProxy) && Math.abs(s.X - t.X) <= i && Math.abs(s.Y - t.Y) <= i && Math.abs(s.Z - t.Z) <= i) {
       s = l.SetTimeScale(o, r, n, a, 5);
       this.$De.set(e, s);
     }
   }
   z8l() {
     var e = CommonParamById_1.configCommonParamById.GetFloatConfig("BattleSettlementTime") * TimeUtil_1.TimeUtil.InverseMillisecond;
-    this.j3 = TimerSystem_1.TimerSystem.Delay(() => {
+    this.j3 = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       this.j3 = undefined;
       this.eRe();
       this.FinishExecute(true);
@@ -182,10 +182,10 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DisActiveBattleView, this.ZDe);
     this.$De.clear();
     ControllerHolder_1.ControllerHolder.DamageUiController.SetDamageTimeScaleEnable(false);
-    if (this.Wsu !== GameplayCueController_1.INVALID_CUE_HANDLE) {
-      this.BZ1?.RemoveCueByHandle(this.Wsu);
-      this.Wsu = GameplayCueController_1.INVALID_CUE_HANDLE;
-      this.BZ1 = undefined;
+    if (this.vau !== GameplayCueController_1.INVALID_CUE_HANDLE) {
+      this.aeu?.RemoveCueByHandle(this.vau);
+      this.vau = GameplayCueController_1.INVALID_CUE_HANDLE;
+      this.aeu = undefined;
     }
     this.wQl = 0;
     if (Log_1.Log.CheckDebug()) {
@@ -196,11 +196,11 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
   Release() {
     super.Release();
     if (this.j3) {
-      TimerSystem_1.TimerSystem.Remove(this.j3);
+      TimerSystem_1.GameplayTimerSystem.Remove(this.j3);
       this.j3 = undefined;
       this.eRe();
     }
-    if (this.uK1 === "BattleSoundWave") {
+    if (this.fK1 === "BattleSoundWave") {
       AudioSystem_1.AudioSystem.SetState("plot_phantom_arena_battle_state", "none");
     }
   }

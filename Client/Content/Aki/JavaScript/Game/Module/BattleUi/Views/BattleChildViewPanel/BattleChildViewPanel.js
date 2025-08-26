@@ -40,10 +40,7 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   ShowBattleChildViewPanel() {
-    this.IsEnable = true;
-    this.rJe(0, true);
-    this.SetActive(this.Visible);
-    if (this.Visible) {
+    if (this.CheckBattleChildViewPanelShowCondition() && (this.IsEnable = true, this.rJe(0, true), this.SetActive(this.Visible), this.Visible)) {
       this.aJe();
     }
   }
@@ -141,12 +138,12 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
     }
     return e;
   }
-  NewDynamicChildViewByResourceIdWithCallback(i, t, e, s = false, h, a) {
-    const n = new e();
+  NewDynamicChildViewByResourceIdWithCallback(i, t, e, s = false, h, n) {
+    const a = new e();
     try {
-      n.NewByResourceId(i, t, s, a).then(() => {
+      a.NewByResourceId(i, t, s, n).then(() => {
         if (h) {
-          h(n);
+          h(a);
         }
       }, () => {});
     } catch (i) {
@@ -158,7 +155,7 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
         Log_1.Log.Error("UiCommon", 17, "战斗界面子界面创建失败", ["资源名", t], ["错误", i]);
       }
     }
-    return n;
+    return a;
   }
   async NewDynamicChildViewAsync(i, t, e) {
     t = new t();
@@ -169,7 +166,7 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
     return Info_1.Info.OperationType;
   }
   ListenForTagSignificantChanged(i, t, e) {
-    var i = i.Entity.GetComponent(205);
+    var i = i.Entity.GetComponent(206);
     if (i) {
       i = i.ListenForTagAddOrRemove(t, e);
       this.i$e.push(i);
@@ -184,7 +181,7 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   ContainsTag(i, t) {
-    i = i.Entity.GetComponent(205);
+    i = i.Entity.GetComponent(206);
     return !!i && i.HasTag(t);
   }
   GetItem(i) {
@@ -197,6 +194,17 @@ class BattleChildViewPanel extends UiPanelBase_1.UiPanelBase {
   }
   IsChildType(i) {
     return this.ChildType === i;
+  }
+  CheckBattleChildViewPanelShowCondition() {
+    return this.OnCheckBattleChildViewPanelShowCondition();
+  }
+  OnCheckBattleChildViewPanelShowCondition() {
+    return true;
+  }
+  GetGuideUiItemAndUiItemForShowEx(i) {
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Guide", 74, "主界面子面板聚焦引导获取方法未实现");
+    }
   }
 }
 exports.BattleChildViewPanel = BattleChildViewPanel;

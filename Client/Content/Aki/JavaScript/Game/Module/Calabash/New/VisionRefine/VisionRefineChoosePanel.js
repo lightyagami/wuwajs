@@ -34,7 +34,7 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
       var i = new VisionRefineMediumItemGrid_1.VisionRefineMediumItemGrid();
       i.BindOnExtendToggleStateChanged(this.x1c);
       i.BindOnCanExecuteChange(this.X8a);
-      i.CheckSelectByView = this.Ybu;
+      i.CheckSelectByView = this.vRu;
       return i;
     };
     this.OnClickMask = () => {
@@ -53,7 +53,7 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
       var i = i.Data;
       if (this.ys_ === i) {
         this.ClearSelection();
-      } else if ((e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i.GetUniqueId())) && e.GetVisionIfCanRefine() && (this.zbu(i), this.ShowTipsComponent(i), this.OnChangeCallBack)) {
+      } else if ((e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i.GetUniqueId())) && e.GetVisionIfCanRefine() && (this.yRu(i), this.ShowTipsComponent(i), this.OnChangeCallBack)) {
         this.OnChangeCallBack(this.ys_);
       }
     };
@@ -83,7 +83,7 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
       this.GetItem(6).SetUIActive(i?.length <= 0);
       this.ShowTipsComponent(undefined);
     };
-    this.Ybu = i => {
+    this.vRu = i => {
       return !!i && !!this.ys_ && i.GetUniqueId() === this.ys_.GetUniqueId();
     };
     this.ph1 = (i, e) => {
@@ -109,7 +109,7 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
     this.Mpt = new SortEntrance_1.SortEntrance(this.GetItem(8), this.FNt);
   }
   ClearSelection() {
-    this.zbu(undefined);
+    this.yRu(undefined);
     if (this.OnChangeCallBack) {
       this.OnChangeCallBack(this.ys_);
     }
@@ -133,14 +133,14 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
       this.GetButton(1).RootUIComp.SetUIActive(false);
     }
   }
-  zbu(i) {
+  yRu(i) {
     var e = this.ys_;
     this.ys_ = undefined;
-    this.Jbu(e);
+    this.SRu(e);
     this.ys_ = i;
-    this.Jbu(i);
+    this.SRu(i);
   }
-  Jbu(i) {
+  SRu(i) {
     var e;
     if (i && (e = this.w1c.indexOf(i), this.A1c.IsGridDisplaying(e))) {
       this.A1c.UnsafeGetGridProxy(e)?.RefreshByView(i);

@@ -14,7 +14,7 @@ class NpcCardUpdateOperation extends NpcAiOperation_1.NpcAiOperation {
   ExecuteAiOperation(e) {
     var r = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.GetCardDataByFightId(this.Info.uC1);
     if (r) {
-      r.NotifyRefreshCardData(this.Info.YM1, this.Info.Rlu);
+      r.NotifyRefreshCardData(this.Info.YM1, this.Info.__u);
     }
   }
 }

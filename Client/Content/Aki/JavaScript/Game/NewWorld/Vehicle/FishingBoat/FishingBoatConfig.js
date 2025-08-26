@@ -17,14 +17,14 @@ class FishingBoatConfig extends GongduolaConfig_1.GongduolaConfig {
     return t;
   }
   SetBaseStateMoveConfig(t) {
-    var i = this.VehicleEntity?.GetComponent(246);
+    var i = this.VehicleEntity?.GetComponent(247);
     if (i) {
       i.TurningForceInputFactor = this.BaseTurningForceForwardFactor;
       i.MaxForwardThreshold = this.BaseMaxForwardThreshold;
       i.MaxRightThreshold = this.BaseMaxRightThreshold;
     }
     let s = 1;
-    i = this.VehicleEntity?.GetComponent(172);
+    i = this.VehicleEntity?.GetComponent(173);
     if (i) {
       s = i.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.vVn);
       s /= CharacterAttributeTypes_1.PER_TEN_THOUSAND;

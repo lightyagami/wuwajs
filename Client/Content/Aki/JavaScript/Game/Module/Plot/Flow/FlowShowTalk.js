@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.FlowShowTalk = undefined;
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../../Core/Common/Log");
+const CameraController_1 = require("../../../Camera/CameraController");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -81,6 +82,7 @@ class FlowShowTalk {
     this.dbn = false;
     PlotController_1.PlotController.ClearUi();
     ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
+    CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEndShowTalk);
     ControllerHolder_1.ControllerHolder.FlowController.RunNextAction();
   }

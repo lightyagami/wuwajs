@@ -211,7 +211,7 @@ let BaseMontageComponent = BaseMontageComponent_1 = class BaseMontageComponent e
           o.vVn = 1;
           o.MVn = "";
           o.SVn = e;
-          this.MontageTaskMessageId = CombatMessage_1.CombatNet.Send(21493, this.Entity, o, i);
+          this.MontageTaskMessageId = CombatMessage_1.CombatNet.Send(19773, this.Entity, o, i);
         } else {
           CombatLog_1.CombatLog.Error("Animation", this.Entity, "请求播Montage时找不到对应contextId", ["handle", t]);
         }

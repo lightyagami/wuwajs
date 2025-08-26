@@ -78,5 +78,5 @@ let SceneItemFishingPointComponent = class SceneItemFishingPointComponent extend
     }
   }
 };
-SceneItemFishingPointComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(273)], SceneItemFishingPointComponent);
+SceneItemFishingPointComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(276)], SceneItemFishingPointComponent);
 exports.SceneItemFishingPointComponent = SceneItemFishingPointComponent; //# sourceMappingURL=SceneItemFishingPointComponent.js.map

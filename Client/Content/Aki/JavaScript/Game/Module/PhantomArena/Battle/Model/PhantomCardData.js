@@ -90,7 +90,7 @@ class PhantomCardData {
     this.RefreshFactorsByList(e.YM1);
     this.CanUse = true;
     this.EvolveNum = e.XM1;
-    this.IsUnLimitEvolve = e.Rlu;
+    this.IsUnLimitEvolve = e.__u;
     this.RGt();
   }
   RefreshFightAttr(t) {

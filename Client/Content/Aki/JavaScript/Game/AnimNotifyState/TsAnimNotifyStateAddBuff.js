@@ -17,7 +17,7 @@ class TsAnimNotifyStateAddBuff extends UE.KuroAnimNotifyState {
     r = r.GetOwner();
     if (r instanceof TsBaseCharacter_1.default) {
       var r = r?.CharacterActorComponent?.Entity;
-      var s = r.GetComponent(174);
+      var s = r.GetComponent(175);
       var r = this.GetBuffTarget(r);
       if (!s || !r) {
         return true;
@@ -38,7 +38,7 @@ class TsAnimNotifyStateAddBuff extends UE.KuroAnimNotifyState {
     r = r.GetOwner();
     if (r instanceof TsBaseCharacter_1.default) {
       var r = r?.CharacterActorComponent?.Entity;
-      var t = r.GetComponent(174);
+      var t = r.GetComponent(175);
       var r = this.GetBuffTarget(r);
       if (!t || !r) {
         return true;
@@ -56,7 +56,7 @@ class TsAnimNotifyStateAddBuff extends UE.KuroAnimNotifyState {
     return "添加BUFF";
   }
   GetBuffTarget(r) {
-    return (this.施加目标 && this.施加目标 === 1 ? r?.GetComponent(40)?.SkillTarget?.Entity : r)?.GetComponent(174);
+    return (this.施加目标 && this.施加目标 === 1 ? r?.GetComponent(40)?.SkillTarget?.Entity : r)?.GetComponent(175);
   }
 }
 exports.default = TsAnimNotifyStateAddBuff;

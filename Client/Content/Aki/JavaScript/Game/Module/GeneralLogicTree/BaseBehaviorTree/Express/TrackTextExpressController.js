@@ -66,9 +66,9 @@ class TrackTextExpressController {
     }
   }
   UpdateOnNodeStatusChange(e, t, i) {
-    this.CJ1(e, t);
+    this.jJ1(e, t);
     e = this.RQt(e, t, i);
-    this.pJ1(e);
+    this.HJ1(e);
   }
   OnBtApplyExpressionOccupation(e) {
     if (!e) {
@@ -103,7 +103,7 @@ class TrackTextExpressController {
       TimerSystem_1.TimerSystem.Remove(this.aec);
     }
   }
-  pJ1(e) {
+  HJ1(e) {
     if (this.EXt && !e) {
       if (TimerSystem_1.TimerSystem.Has(this.aec)) {
         TimerSystem_1.TimerSystem.Remove(this.aec);
@@ -123,7 +123,7 @@ class TrackTextExpressController {
   RQt(e, t, i) {
     return i === 0 && t === Protocol_1.Aki.Protocol.BNs._5n && this.Yre.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (i = ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id, this.Yre.TreeConfigId !== i) && !!e.ContainTag(0) && !e.ContainTag(2) && !(t = GeneralLogicTreeController_1.GeneralLogicTreeController.GetNodeTrackText(this.Yre.TreeIncId, e.NodeId), StringUtils_1.StringUtils.IsEmpty(t)) && !(ModelManager_1.ModelManager.GeneralLogicTreeModel.SaveUpdateInfo(this.Yre.TreeIncId, e.NodeId), 0);
   }
-  CJ1(e, t) {
+  jJ1(e, t) {
     if (e instanceof LogicNodeBase_1.LogicNodeBase) {
       switch (t) {
         case Protocol_1.Aki.Protocol.BNs._5n:

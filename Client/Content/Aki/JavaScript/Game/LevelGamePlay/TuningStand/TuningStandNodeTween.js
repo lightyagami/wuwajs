@@ -25,25 +25,25 @@ class TuningStandNodeTween {
     this.CurveX = undefined;
     this.CurveZ = undefined;
     this.SequencePlayer = undefined;
-    this.Nuu = i => {
+    this.Icu = i => {
       var e = this.NodeItem.D_K2_GetComponentLocation();
       var i = Vector_1.Vector.Create(i, e.Y, e.Z).ToUeVector();
       this.NodeItem.D_K2_SetWorldLocation(i, false, undefined, false);
     };
-    this.zuu = i => {
+    this.Dcu = i => {
       var e = this.NodeItem.D_K2_GetComponentLocation();
       var e = Vector_1.Vector.Create(e.X, e.Y, i).ToUeVector();
       this.NodeItem.D_K2_SetWorldLocation(e, false, undefined, false);
     };
-    this.d7c = () => {
+    this.Oku = () => {
       this.TweenerX &&= undefined;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TuningStandSuccessShowEnd);
     };
-    this.m7c = () => {
+    this.qku = () => {
       this.TweenerZ &&= undefined;
     };
-    this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Nuu);
-    this.DelegateZ = (0, puerts_1.toManualReleaseDelegate)(this.zuu);
+    this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Icu);
+    this.DelegateZ = (0, puerts_1.toManualReleaseDelegate)(this.Dcu);
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.NodeItem);
   }
   async InitCurveDamage() {
@@ -63,17 +63,17 @@ class TuningStandNodeTween {
     if (this.TweenerX) {
       this.TweenerX.SetEase(28);
       this.TweenerX.SetCurveFloat(this.CurveX);
-      this.TweenerX.OnCompleteCallBack.Bind(this.d7c);
+      this.TweenerX.OnCompleteCallBack.Bind(this.Oku);
     }
     if (this.TweenerZ) {
       this.TweenerZ.SetEase(28);
       this.TweenerZ.SetCurveFloat(this.CurveZ);
-      this.TweenerZ.OnCompleteCallBack.Bind(this.m7c);
+      this.TweenerZ.OnCompleteCallBack.Bind(this.qku);
     }
   }
   Clear() {
-    (0, puerts_1.releaseManualReleaseDelegate)(this.Nuu);
-    (0, puerts_1.releaseManualReleaseDelegate)(this.zuu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Icu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Dcu);
     this.CurveX = undefined;
     this.CurveZ = undefined;
     this.TweenerX &&= undefined;

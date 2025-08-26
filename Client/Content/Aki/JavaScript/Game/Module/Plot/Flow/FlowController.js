@@ -173,8 +173,8 @@ class FlowController extends ControllerWithAssistantBase_1.ControllerWithAssista
   static CheckViewControlBeginForC() {
     return this.cYt(2).CheckViewControlBeginForC();
   }
-  static GetNextNameAction(t) {
-    return this.cYt(2).GetNextNameAction(t);
+  static GetNameAction(t) {
+    return this.cYt(2).GetNameAction(t);
   }
   static GetFlowName() {
     return this.cYt(2).GetFlowName();

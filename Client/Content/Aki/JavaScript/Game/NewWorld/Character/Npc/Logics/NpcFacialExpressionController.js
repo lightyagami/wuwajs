@@ -13,9 +13,23 @@ const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
-const PLAYER_USED_ID = -1;
+class FaceExpressionInfo {
+  constructor(t) {
+    this.Id = undefined;
+    this.Type = undefined;
+    this.Config = undefined;
+    this.Asset = undefined;
+    this.Id = t;
+    this.Config = ConfigManager_1.ConfigManager.FaceExpressionConfig?.GetFaceExpressionConfig(t)?.FaceExpression;
+    this.Type = this.Config?.Type;
+  }
+  IsValid() {
+    return !!this.Config;
+  }
+}
 class NpcFacialExpressionController {
   constructor(t) {
+    this.vad = 0;
     this.Mer = new UE.FName("AniSwitch_Face");
     this.Ser = new UE.FName("FaceAniMap");
     this.yer = new UE.FName("MI_Face");
@@ -23,30 +37,29 @@ class NpcFacialExpressionController {
     this.Hte = undefined;
     this.oRe = undefined;
     this.wDe = undefined;
-    this.V0a = true;
+    this.lYc = undefined;
+    this._Yc = undefined;
     this.$0a = false;
-    this.Ter = undefined;
-    this.H0a = undefined;
-    this.j0a = undefined;
-    this.W0a = 1;
     this.Ler = undefined;
     this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
+    this.V0a = true;
+    this.W0a = 1;
     this.HOc = undefined;
     this.$Oc = undefined;
     this.$7a = new Set();
-    this.WHc = undefined;
+    this.hQc = undefined;
     this.WOc = (t, i) => {
       if (t?.IsValid() && this.HOc === t && !this.oRe?.MainAnimInstance?.Montage_IsActive(t)) {
         this.HOc = undefined;
         this.oRe?.MainAnimInstance?.OnMontageEnded.Remove(this.WOc);
-        this.X7a();
+        this.X7a("表情Montage结束");
         this.QOc("表情Montage结束");
       }
     };
     this.KOc = (t, i) => {
       if (t?.IsValid() && this.$Oc === t && !this.oRe?.MainAnimInstance?.Montage_IsActive(t)) {
         t = this.Hte?.Actor.CharRenderingComponent;
-        if (this.WHc && t) {
+        if (this.hQc && t) {
           t.CanUpdate = true;
         }
         this.$Oc = undefined;
@@ -55,17 +68,17 @@ class NpcFacialExpressionController {
       }
     };
     this.E0 = t;
-    t = EntitySystem_1.EntitySystem.Get(this.E0);
-    this.wDe = t?.GetComponent(0)?.GetPbDataId();
-    this.oRe = t?.GetComponent(44);
-    this.Hte = t?.GetComponent(2);
-    var t = t?.GetComponent(0)?.GetPbEntityInitData();
-    if (t &&= (0, IComponent_1.getComponent)(t.ComponentsData, "EntityVisibleComponent")) {
-      this.WHc = t.UseHolographicEffect;
-    }
+    this.wDe = EntitySystem_1.EntitySystem.GetComponent(t, 0)?.GetPbDataId();
+    this.oRe = EntitySystem_1.EntitySystem.GetComponent(t, 44);
+    this.Hte = EntitySystem_1.EntitySystem.GetComponent(t, 2);
   }
-  YLe() {
-    return this.wDe === PLAYER_USED_ID;
+  Init() {
+    var t;
+    var i = EntitySystem_1.EntitySystem.GetComponent(this.E0, 0)?.GetPbEntityInitData();
+    if (i && ((t = (0, IComponent_1.getComponent)(i.ComponentsData, "EntityVisibleComponent")) && (this.hQc = t.UseHolographicEffect), t = (0, IComponent_1.getComponent)(i.ComponentsData, "NpcPerformComponent")) && t.DefaultFaceExpressionId && (i = new FaceExpressionInfo(t.DefaultFaceExpressionId))?.IsValid()) {
+      this._Yc = i;
+      this.QOc("初始化默认表情");
+    }
   }
   Y0a(t, i = "") {
     var s;
@@ -78,39 +91,38 @@ class NpcFacialExpressionController {
       return ConfigManager_1.ConfigManager.FaceExpressionConfig?.GetFaceExpressionConfig(t)?.FaceExpression.Type;
     }
   }
-  z0a(t) {
-    return !!t && (this.Ter = t, this.H0a = ConfigManager_1.ConfigManager.FaceExpressionConfig?.GetFaceExpressionConfig(this.Ter)?.FaceExpression, this.j0a = this.H0a?.Type, !!this.H0a || (Log_1.Log.CheckError() && Log_1.Log.Error("NPC", 50, "获取表情配置失败", ["FaceExpressionId", this.Ter], ["PbDataId", this.wDe]), false));
-  }
   Z0a(t) {
-    if (this.E0 && !this.YLe() && this.z0a(t)) {
-      if (this.j0a === "Texture") {
-        t = this.H0a;
-        this.$0a = false;
-        this.Der(t.FaceIndex);
-      } else if (this.j0a === "Morph") {
-        this.$0a = true;
-        t = this.H0a;
-        if (this.Ler) {
-          this.XOc(this.Ler);
+    var i;
+    if (this.E0 && t) {
+      if ((i = new FaceExpressionInfo(t)).IsValid()) {
+        if (this.uYc(i)) {
+          this.lYc = i;
+          this.$0a = i.Type === "Morph";
         }
-        this.Ler = t.MorphData;
-        this.Rer(t.MorphData);
-      } else if (this.j0a === "AnimSequence") {
-        t = this.H0a;
-        if (!StringUtils_1.StringUtils.IsEmpty(t.Path)) {
-          this.RWa = ResourceSystem_1.ResourceSystem.LoadAsync(t.Path, UE.AnimSequence, t => {
-            this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
-            t = this.oRe?.MainAnimInstance?.PlaySlotAnimationAsDynamicMontage(t, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT, 0.5, 0.5, 1, 1, -1, 0, false);
-            if (ObjectUtils_1.ObjectUtils.IsValid(t)) {
-              this.oRe?.MainAnimInstance?.Montage_SetNextSection(CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, t);
-            }
-          });
-        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("NPC", 50, "获取表情配置失败", ["FaceExpressionId", t], ["PbDataId", this.wDe]);
       }
     }
   }
+  uYc(t) {
+    var i;
+    if (t.Type === "Texture") {
+      i = t.Config;
+      this.Der(i.FaceIndex);
+    } else if (t.Type === "Morph") {
+      i = t.Config;
+      if (this.Ler) {
+        this.XOc(this.Ler);
+      }
+      this.Ler = i.MorphData;
+      this.Rer(i.MorphData);
+    } else if (t.Type === "AnimSequence") {
+      this.ozc(t);
+    }
+    return true;
+  }
   Rer(t) {
-    if (!t) {
+    if (!t || t === "") {
       return false;
     }
     var i = this.Uer();
@@ -125,16 +137,38 @@ class NpcFacialExpressionController {
     }
     return true;
   }
-  XOc(t) {
-    let i = "";
-    for (const e of t.split(",")) {
-      var s = e.split(":")[0].trim();
-      i += s + ":0,";
+  ozc(i) {
+    var t;
+    if (this.RWa !== ResourceSystem_1.ResourceSystem.InvalidId && (this.lYc ?? this._Yc)?.Config.Path !== i.Config.Path) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.RWa);
+      this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
     }
-    if (i !== "") {
-      i = i.slice(0, -1);
+    if (i.Asset?.IsValid()) {
+      this.oRe?.MainAnimInstance?.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT);
+      t = this.oRe?.MainAnimInstance?.PlaySlotAnimationAsDynamicMontage(i.Asset, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT, 0.5, 0.5, 1, 1, -1, 0, false);
+      return !!ObjectUtils_1.ObjectUtils.IsValid(t) && (this.oRe?.MainAnimInstance?.Montage_SetNextSection(CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, t), true);
+    } else {
+      t = i.Config;
+      return !StringUtils_1.StringUtils.IsEmpty(t.Path) && (this.RWa = ResourceSystem_1.ResourceSystem.LoadAsync(t.Path, UE.AnimSequence, t => {
+        this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
+        if (t?.IsValid() && (i?.IsValid() && (i.Asset = t), this.oRe?.MainAnimInstance?.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT), t = this.oRe?.MainAnimInstance?.PlaySlotAnimationAsDynamicMontage(t, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT, 0.5, 0.5, 1, 1, -1, 0, false), ObjectUtils_1.ObjectUtils.IsValid(t))) {
+          this.oRe?.MainAnimInstance?.Montage_SetNextSection(CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, t);
+        }
+      }), true);
     }
-    this.Rer(i);
+  }
+  XOc(i) {
+    if (i) {
+      let t = "";
+      for (const e of i.split(",")) {
+        var s = e.split(":")[0].trim();
+        t += s + ":0,";
+      }
+      if (t !== "") {
+        t = t.slice(0, -1);
+      }
+      this.Rer(t);
+    }
   }
   Der(t) {
     var i;
@@ -193,7 +227,7 @@ class NpcFacialExpressionController {
     var s;
     if (t && this.E0 && (i = this.oRe?.MainAnimInstance)) {
       s = this.Hte?.Actor.CharRenderingComponent;
-      if (this.WHc && s) {
+      if (this.hQc && s) {
         s.CanUpdate = false;
       }
       this.$Oc = t;
@@ -216,69 +250,86 @@ class NpcFacialExpressionController {
       }
     }
   }
-  ChangeFaceForExpressionFromAnimNotify(t, i) {
-    var s = this.J0a(t);
-    if (s) {
-      if (s === "Texture" && this.W0a > 2) {
+  ChangeFaceForExpressionFromAnimNotify(t) {
+    var i = this.J0a(t);
+    if (i) {
+      if (i === "Texture" && this.W0a > 2) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("NPC", 50, "当前具有口型或来自于TD数据的表情，切换表情失败", ["PbDataId", this.wDe], ["FaceId", t]);
         }
-      } else if (!this.$7a.has(i)) {
+        return 0;
+      } else {
+        i = this.GetFacialExpressionHandleId();
         this.$7a.add(i);
         this.Z0a(t);
         this.X0a(2, "通过ANS切换表情");
+        return i;
       }
+    } else {
+      return 0;
     }
   }
   ResetFaceForExpressionFromAnimNotify(t) {
     if (!!this.$7a.delete(t) && !this.$7a.size && !this.HOc) {
-      this.X7a();
+      this.X7a("ANS表情结束");
       this.QOc("ANS表情结束");
     }
   }
   ResetFacialExpressionOuter() {
     this.oRe?.MainAnimInstance?.OnMontageEnded.Remove(this.WOc);
     this.oRe?.MainAnimInstance?.OnMontageEnded.Remove(this.KOc);
-    this.X0a(1, "强制清除");
-    this.X7a();
+    this.X7a("强制清除");
   }
   QOc(t = "") {
     if (this.$Oc) {
       this.X0a(4, t);
     } else if (this.HOc) {
-      this.Z0a(this.Ter);
+      this.Z0a(this.lYc?.Id);
       this.X0a(3, t);
-    } else if (this.$7a.size && this.Ter) {
-      this.Z0a(this.Ter);
+    } else if (this.$7a.size && this.lYc?.Id) {
+      this.Z0a(this.lYc.Id);
       this.X0a(2, t);
     } else {
-      this.X0a(1, t);
-      this.X7a();
+      this.X7a(t);
     }
   }
-  X7a() {
-    if (this.E0 && !this.YLe()) {
+  X7a(t = "") {
+    if (this.E0) {
       if (this.RWa !== ResourceSystem_1.ResourceSystem.InvalidId) {
         ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.RWa);
         this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
       }
       this.oRe?.MainAnimInstance?.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT);
-      if (this.$0a) {
-        if (this.Ler) {
+      switch (this.lYc?.Type ?? this._Yc?.Type ?? (this.$0a ? "Morph" : "Texture")) {
+        case "Texture":
+          var i = this._Yc?.Config;
+          this.Der(i?.FaceIndex ?? 1);
+          break;
+        case "Morph":
           this.XOc(this.Ler);
-        }
-      } else {
-        this.Der(1);
+          this.Ler = undefined;
+          i = this._Yc?.Config;
+          if (i?.MorphData) {
+            this.Ler = i.MorphData;
+            this.Rer(i.MorphData);
+          }
+          break;
+        case "AnimSequence":
+          if (this._Yc?.IsValid()) {
+            this.ozc(this._Yc);
+          }
       }
-      this.YOc();
+      this.lYc = undefined;
+      this.HOc = undefined;
+      this.cYc(t);
     }
   }
-  YOc() {
-    this.Ter = undefined;
-    this.H0a = undefined;
-    this.Ler = undefined;
-    this.HOc = undefined;
-    this.X0a(1, "重置表情状态");
+  cYc(t = "") {
+    if (this._Yc?.IsValid()) {
+      this.X0a(3, t);
+    } else {
+      this.X0a(1, t);
+    }
   }
   Dispose() {
     var t = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(2)?.Owner;
@@ -288,6 +339,9 @@ class NpcFacialExpressionController {
     this.oRe?.MainAnimInstance?.OnMontageEnded.Remove(this.WOc);
     this.oRe?.MainAnimInstance?.OnMontageEnded.Remove(this.KOc);
     return true;
+  }
+  GetFacialExpressionHandleId() {
+    return ++this.vad;
   }
 }
 exports.NpcFacialExpressionController = NpcFacialExpressionController;

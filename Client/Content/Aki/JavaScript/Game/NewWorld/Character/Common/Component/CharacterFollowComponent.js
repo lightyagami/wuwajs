@@ -59,7 +59,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
   }
   kZl(t) {
     this.RJl = t;
-    if (this.RJl !== 0 && (t = EntitySystem_1.EntitySystem.Get(this.RJl)?.GetComponent(95))) {
+    if (this.RJl !== 0 && (t = EntitySystem_1.EntitySystem.Get(this.RJl)?.GetComponent(96))) {
       this.Entity.GetComponent(40)?.ResetRoleGrowComponent(t);
     }
   }
@@ -104,7 +104,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
         return t;
       }
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 20, "FollowComp role is inValid", ["Id", this.RJl], ["SelfId", this.u1t?.GetCreatureDataId()]);
+        Log_1.Log.Error("Character", 20, "FollowComp role is inValid", ["Id", this.RJl], ["SelfId", this.u1t?.GetPbDataId()]);
       }
     }
   }
@@ -137,7 +137,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
         this.OZl(t);
       }
       var e;
-      var o = this.Entity.GetComponent(205);
+      var o = this.Entity.GetComponent(206);
       if (o) {
         o.RemoveTag(-1615796724);
         switch (this.u1t?.SummonType) {

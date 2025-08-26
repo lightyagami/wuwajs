@@ -14,7 +14,7 @@ class PhantomArenaAreaFunctionalItem extends PhantomArenaAreaItemBase_1.PhantomA
     super(...arguments);
     this.HRr = undefined;
     this.Sequence = undefined;
-    this.fK1 = e => {
+    this.vK1 = e => {
       if (e === "Close") {
         this.GetSprite(0).SetUIActive(false);
       }
@@ -25,7 +25,7 @@ class PhantomArenaAreaFunctionalItem extends PhantomArenaAreaItemBase_1.PhantomA
   }
   OnStartImplement() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    this.Sequence.BindOnEndSequenceEvent(this.fK1);
+    this.Sequence.BindOnEndSequenceEvent(this.vK1);
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();

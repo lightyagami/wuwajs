@@ -130,7 +130,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(202);
+    this.ActorComp = this.Entity.GetComponent(203);
     return true;
   }
   OnActivate() {
@@ -176,7 +176,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
   }
   CanConnectPortal() {
     var e;
-    return !!(this.Entity.Flag & 4) && !!this.ActorComp?.GetIsSceneInteractionLoadCompleted() && !(e = this.ActorComp.CreatureData.GetEntityOnlineInteractType(), !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(e, false)) && !!this.IsPortalPrepared && !!(e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity)?.GetComponent(1) && (!(e = e.GetComponent(216)) || !!e.IsPortalPrepared);
+    return !!(this.Entity.Flag & 4) && !!this.ActorComp?.GetIsSceneInteractionLoadCompleted() && !(e = this.ActorComp.CreatureData.GetEntityOnlineInteractType(), !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(e, false)) && !!this.IsPortalPrepared && !!(e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity)?.GetComponent(1) && (!(e = e.GetComponent(217)) || !!e.IsPortalPrepared);
   }
   LIl() {
     var e;
@@ -184,7 +184,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     var r;
     if (this.CanConnectPortal() && !this.IsPortalConnected && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl))?.Valid) {
       t = e.Entity.GetComponent(0).GetCreatureDataId();
-      r = e.Entity.GetComponent(216);
+      r = e.Entity.GetComponent(217);
       this.SetTargetCreatureDataId(t);
       r?.SetTargetCreatureDataId(this.GetCreatureDataId());
       this.AfterConnectPair();
@@ -197,7 +197,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
   RIl() {
     var e;
     if (this.IsPortalConnected) {
-      e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity?.GetComponent(216);
+      e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity?.GetComponent(217);
       this.SetTargetCreatureDataId(0);
       e?.SetTargetCreatureDataId(0);
       this.AfterDisconnectPair();
@@ -284,7 +284,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
             if (o) {
               if (this.Dll(e, e === t)) {
                 if (r?.Valid) {
-                  o = r.Entity.GetComponent(156);
+                  o = r.Entity.GetComponent(157);
                   if (o && o.CurrentState instanceof SceneItemManipulableCastProjectileState_1.SceneItemManipulatableCastProjectileState) {
                     return;
                   }
@@ -299,7 +299,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
               Log_1.Log.Info("SceneItem", 39, "无画面传送门: 不满足过门条件组，忽略", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
             }
           } else {
-            if ((o = r?.Entity?.GetComponent(156)) && o.CurrentState instanceof SceneItemManipulableCastState_1.SceneItemManipulableCastState && (t = o.CurrentState).HasHitCallback()) {
+            if ((o = r?.Entity?.GetComponent(157)) && o.CurrentState instanceof SceneItemManipulableCastState_1.SceneItemManipulableCastState && (t = o.CurrentState).HasHitCallback()) {
               t.CallHitCallback(e, this.ActorComp?.Owner);
             }
             if (Log_1.Log.CheckInfo()) {
@@ -316,7 +316,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
         Log_1.Log.Info("SceneItem", 39, "无画面传送门: BeforeTeleport", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["ActorPos", Vector_1.Vector.Create(r?.D_GetTransform().GetLocation())], ["ActorRot", Rotator_1.Rotator.Create(r?.D_GetTransform().Rotator())]);
       }
       let e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Tln)?.Entity;
-      var i = (e = e || EntitySystem_1.EntitySystem.Get(this.Tln))?.GetComponent(216);
+      var i = (e = e || EntitySystem_1.EntitySystem.Get(this.Tln))?.GetComponent(217);
       var a = this.GetTriggerActor()?.D_GetTransform();
       var s = i?.GetTriggerActor()?.D_GetTransform();
       if (a && s) {
@@ -464,7 +464,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     return !!i && (o = Vector_1.Vector.Create(i.D_K2_GetActorLocation()), t = Vector_1.Vector.Create(e.ActorLocationProxy), e = Vector_1.Vector.Create(e.LastActorLocation), i = Vector_1.Vector.Create(i.D_GetActorForwardVector()), r = Vector_1.Vector.Create(), e.Subtraction(o, r), r.Normalize(), o = i.DotProduct(r) > -MathUtils_1.MathUtils.SmallNumber, e.Subtraction(t, r), r.Normalize(), e = i.DotProduct(r) > -MathUtils_1.MathUtils.SmallNumber, o) && e;
   }
   Dll(t, r) {
-    var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Tln)?.Entity?.GetComponent(216);
+    var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Tln)?.Entity?.GetComponent(217);
     if (!o) {
       return false;
     }
@@ -562,5 +562,5 @@ SceneItemNoRenderPortalComponent.DIl = undefined;
 SceneItemNoRenderPortalComponent.AIl = undefined;
 SceneItemNoRenderPortalComponent.xIl = undefined;
 SceneItemNoRenderPortalComponent.P6a = new Set();
-SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(216)], SceneItemNoRenderPortalComponent);
+SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(217)], SceneItemNoRenderPortalComponent);
 exports.SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent; //# sourceMappingURL=SceneItemNoRenderPortalComponent.js.map

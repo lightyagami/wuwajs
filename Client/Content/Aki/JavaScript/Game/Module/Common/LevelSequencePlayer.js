@@ -69,12 +69,12 @@ class LevelSequencePlayer {
     if (i && this.Kxt.get(e) && (t = this.Qxt.GetSequencePlayerByKey(e))?.IsValid() && (t = t.SequencePlayer)?.IsValid()) {
       if (t.IsStopped()) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiCore", 10, "UI动画播放重播时已结束,重新调用播放逻辑", ["节点", this.Xxt.GetDisplayName()], ["关卡序列", this.Jxt]);
+          Log_1.Log.Debug("UiCore", 10, "UI动画播放重播时已结束,重新调用播放逻辑", ["节点", this.Xxt.GetDisplayName()], ["关卡序列", e]);
         }
         this.PlayLevelSequenceByName(e, i.IsBlock);
       } else {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiCore", 10, "UI动画播放重播时在持续,修改播放帧", ["节点", this.Xxt.GetDisplayName()], ["关卡序列", this.Jxt]);
+          Log_1.Log.Debug("UiCore", 10, "UI动画播放重播时在持续,修改播放帧", ["节点", this.Xxt.GetDisplayName()], ["关卡序列", e]);
         }
         this.Qxt.SequenceJumpToSecondByKey(e, new UE.FrameTime());
       }
@@ -136,7 +136,7 @@ class LevelSequencePlayer {
     this.Kxt.clear();
     this.zxt.clear();
     LevelSequencePlayer.ewt.delete(this);
-    this.Qxt.ClearAllSequence();
+    this.Qxt?.ClearAllSequence();
     this.Qxt = undefined;
     this.Xxt = undefined;
   }

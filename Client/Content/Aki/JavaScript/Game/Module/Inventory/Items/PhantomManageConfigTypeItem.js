@@ -13,20 +13,20 @@ class PhantomManageConfigTypeItem extends GridProxyAbstract_1.GridProxyAbstract 
     this.Pe = undefined;
     this.gke = () => {
       var t = this.GetExtendToggle(1).GetToggleState();
-      return !this.dqu() || t !== 1;
+      return !this.Hqu() || t !== 1;
     };
-    this.mqu = () => {
+    this.$qu = () => {
       if (this.Pe && PhantomManageConfigTypeItem.ViewModel && PhantomManageConfigTypeItem.ViewModel.GetSelectType() !== this.Pe.Type) {
         PhantomManageConfigTypeItem.ViewModel.SetSelectType(this.Pe.Type);
       }
     };
-    this.dqu = () => {
+    this.Hqu = () => {
       return !!this.Pe && !!PhantomManageConfigTypeItem.ViewModel && PhantomManageConfigTypeItem.ViewModel.GetSelectType() === this.Pe.Type;
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIExtendToggle], [2, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.mqu]];
+    this.BtnBindInfo = [[1, this.$qu]];
   }
   OnStart() {
     this.GetItem(2).SetUIActive(false);
@@ -35,7 +35,7 @@ class PhantomManageConfigTypeItem extends GridProxyAbstract_1.GridProxyAbstract 
   Refresh(t, e, i) {
     this.Pe = t;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t.Name);
-    t = this.dqu() ? 1 : 0;
+    t = this.Hqu() ? 1 : 0;
     this.GetExtendToggle(1).SetToggleState(t);
   }
   GetKey(t, e) {

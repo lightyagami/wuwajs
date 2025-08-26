@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ServerNotifyAssistant = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
-const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../Core/Net/Net");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
@@ -26,24 +25,24 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
     super(...arguments);
     this.X$t = e => {
       var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (t) {
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
+      if (r) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Quest", 18, "行为树节点状态更新", ["树Id", t.TreeConfigId], ["节点Id", e.b5n], ["节点状态", GeneralLogicTreeDefine_1.btNodeStatusLogString[e.H6n]]);
+          Log_1.Log.Info("Quest", 18, "行为树节点状态更新", ["树Id", r.TreeConfigId], ["节点Id", e.b5n], ["节点状态", GeneralLogicTreeDefine_1.btNodeStatusLogString[e.H6n]]);
         }
-        t.UpdateNodeState(0, e.b5n, e.H6n);
+        r.UpdateNodeState(0, e.b5n, e.H6n);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GeneralLogicTree", 18, "收到节点状态更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
       }
     };
     this.$$t = e => {
       var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (t) {
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
+      if (r) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Quest", 18, "行为树节点进度更新", ["树Id", t.TreeConfigId], ["节点Id", e.b5n]);
+          Log_1.Log.Debug("Quest", 18, "行为树节点进度更新", ["树Id", r.TreeConfigId], ["节点Id", e.b5n]);
         }
-        t.UpdateNodeProgress(e.b5n, e.nvs);
+        r.UpdateNodeProgress(e.b5n, e.nvs);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GeneralLogicTree", 18, "收到节点进度更新协议时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
       }
@@ -85,28 +84,28 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
     };
     this.Z$t = e => {
       var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (t) {
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
+      if (r) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GeneralLogicTree", 18, "服务器通知行为树回退", ["treeConfigId", t.TreeConfigId]);
+          Log_1.Log.Info("GeneralLogicTree", 18, "服务器通知行为树回退", ["treeConfigId", r.TreeConfigId]);
         }
-        var r = ModelManager_1.ModelManager.GeneralLogicTreeModel;
-        var i = t.IsTracking();
-        r.RemoveBehaviorTree(o);
-        const n = r.CreateBehaviorTree(e.$Es);
+        var t = ModelManager_1.ModelManager.GeneralLogicTreeModel;
+        var i = r.IsTracking();
+        t.RemoveBehaviorTree(o);
+        const n = t.CreateBehaviorTree(e.$Es);
         if (i) {
-          if (t.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay) {
+          if (r.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay) {
             ModelManager_1.ModelManager.LevelPlayModel.SetTrackLevelPlayId(0);
           } else {
             n.SetTrack(true);
           }
         }
-        r = new ActionTask_1.ActionTask("OnRollbackInfoNotify", () => {
+        t = new ActionTask_1.ActionTask("OnRollbackInfoNotify", () => {
           ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(2);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GeneralLogicTreePrepareRollbackFinish, n?.TreeConfigId ?? 0);
           return true;
         });
-        TaskSystem_1.TaskSystem.AddTask(r);
+        TaskSystem_1.TaskSystem.AddTask(t);
         TaskSystem_1.TaskSystem.Run();
       } else {
         if (Log_1.Log.CheckError()) {
@@ -120,35 +119,31 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
     };
     this.eYt = e => {
       var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (t) {
-        t.UpdateOccupations(e.b5n, e._Es, e.uEs);
-        t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTreeName(o);
-        e = "TaskOccupyGeneralDes_1004";
-        t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e)?.replace("{0}", "" + t) ?? e;
-        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [t]);
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
+      if (r) {
+        r.UpdateOccupations(e.b5n, e._Es, e.uEs);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GeneralLogicTree", 18, "收到服务器挂起通知时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
       }
     };
     this.iYt = e => {
       var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (t) {
-        t.UpdateTimer(e.HEs);
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
+      if (r) {
+        r.UpdateTimer(e.HEs);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GeneralLogicTree", 18, "服务器通知更新定时器时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
       }
     };
     this.oYt = e => {
       var o = MathUtils_1.MathUtils.LongToBigInt(e.C9n);
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
-      if (!t) {
+      var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o);
+      if (!r) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("GeneralLogicTree", 31, "服务器通知更新变量时：行为树不存在，1.检查本地配置是否正确 2.服务端检查协议下发顺序", ["treeId", o]);
         }
       }
-      t.UpdateTreeVars(e);
+      r.UpdateTreeVars(e);
     };
     this.rYt = e => {
       e = e.cEs;
@@ -161,8 +156,8 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
     this.nYt = e => {
       e = e.dEs;
       if (e && e.length !== 0) {
-        for (const t of e) {
-          var o = MathUtils_1.MathUtils.LongToBigInt(t);
+        for (const r of e) {
+          var o = MathUtils_1.MathUtils.LongToBigInt(r);
           ModelManager_1.ModelManager.GeneralLogicTreeModel.RemoveBehaviorTree(o);
         }
       }
@@ -175,43 +170,53 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
     this.uMa = e => {
       var o = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
       if (!o || e.W5n === o) {
-        const r = e.K4s;
-        if (r) {
-          switch (r.uS_) {
+        const t = e.K4s;
+        if (t) {
+          switch (t.uS_) {
             case Protocol_1.Aki.Protocol.tw_.Proto_ActionOpenSystem:
-              var t = r.dS_;
-              if (t) {
-                (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(t.cS_)).FunctionMap.set(1, () => {
-                  this.OpenSystemBoardResultRequest(0, r.w5n);
+              var r = t.dS_;
+              if (r) {
+                (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(r.cS_)).FunctionMap.set(1, () => {
+                  this.OpenSystemBoardResultRequest(0, t.w5n);
                 });
-                t.FunctionMap.set(2, () => {
-                  this.OpenSystemBoardResultRequest(1, r.w5n);
+                r.FunctionMap.set(2, () => {
+                  this.OpenSystemBoardResultRequest(1, t.w5n);
                 });
-                ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(t);
+                ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(r);
               } else if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("GeneralLogicTree", 18, "ActionOpenSystemBoardNotify:打开带返回值的确认框时，服务端下发参数为空");
               }
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_SoaringChallenge:
-              t = r.mS_;
-              if (!t) {
+              r = t.mS_;
+              if (!r) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("GeneralLogicTree", 18, "ActionOpenSystemBoardNotify:打开翱翔结算时，服务端下发参数为空");
                 }
                 return;
               }
-              t = new GeneralLogicTreeDefine_1.FlySettlementViewParams(t.SMs, t.aS_, t.hS_, t.lS_, ModelManager_1.ModelManager.GeneralLogicTreeModel.HistorySoarScore, r.w5n);
-              UiManager_1.UiManager.OpenView("FlySettlementView", t);
+              r = new GeneralLogicTreeDefine_1.FlySettlementViewParams(r.SMs, r.aS_, r.hS_, r.lS_, ModelManager_1.ModelManager.GeneralLogicTreeModel.HistorySoarScore, t.w5n);
+              UiManager_1.UiManager.OpenView("FlySettlementView", r);
               break;
             case Protocol_1.Aki.Protocol.tw_.Proto_FishingHandIn:
-              t = r.fS_;
-              if (!t) {
+              r = t.fS_;
+              if (!r) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("GeneralLogicTree", 10, "ActionOpenSystemBoardNotify:打开捕鱼交付界面时，服务端下发参数为空");
                 }
                 return;
               }
-              ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardInteractView(t._S_, r.w5n);
+              ControllerHolder_1.ControllerHolder.FishingController.OpenDockyardInteractView(r._S_, t.w5n);
+              break;
+            case Protocol_1.Aki.Protocol.tw_.Proto_GreatSwordChallenge:
+              r = t.$8u;
+              if (!r) {
+                if (Log_1.Log.CheckError()) {
+                  Log_1.Log.Error("GeneralLogicTree", 88, "ActionOpenSystemBoardNotify:打开大剑挑战时，服务端下发参数为空");
+                }
+                return;
+              }
+              ControllerHolder_1.ControllerHolder.GreatSwordController.RequestGreatSwordInfoAndOpenView(r.s5n, t.w5n);
           }
         }
       }
@@ -219,46 +224,46 @@ class ServerNotifyAssistant extends ControllerAssistantBase_1.ControllerAssistan
   }
   OnDestroy() {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(24338, this.X$t);
-    Net_1.Net.Register(19716, this.$$t);
-    Net_1.Net.Register(18029, this.Y$t);
-    Net_1.Net.Register(17231, this.J$t);
-    Net_1.Net.Register(27108, this.z$t);
-    Net_1.Net.Register(29659, this.Z$t);
-    Net_1.Net.Register(15193, this.eYt);
-    Net_1.Net.Register(26501, this.iYt);
-    Net_1.Net.Register(17161, this.oYt);
-    Net_1.Net.Register(24725, this.rYt);
-    Net_1.Net.Register(20336, this.nYt);
-    Net_1.Net.Register(29592, this.sYt);
-    Net_1.Net.Register(21472, this.uMa);
-    Net_1.Net.Register(18838, this.Ahl);
+    Net_1.Net.Register(16560, this.X$t);
+    Net_1.Net.Register(22498, this.$$t);
+    Net_1.Net.Register(25063, this.Y$t);
+    Net_1.Net.Register(22467, this.J$t);
+    Net_1.Net.Register(22781, this.z$t);
+    Net_1.Net.Register(28309, this.Z$t);
+    Net_1.Net.Register(28147, this.eYt);
+    Net_1.Net.Register(27948, this.iYt);
+    Net_1.Net.Register(29120, this.oYt);
+    Net_1.Net.Register(28350, this.rYt);
+    Net_1.Net.Register(17571, this.nYt);
+    Net_1.Net.Register(28215, this.sYt);
+    Net_1.Net.Register(17784, this.uMa);
+    Net_1.Net.Register(18049, this.Ahl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24338);
-    Net_1.Net.UnRegister(19716);
-    Net_1.Net.UnRegister(18029);
-    Net_1.Net.UnRegister(17231);
-    Net_1.Net.UnRegister(29659);
-    Net_1.Net.UnRegister(15193);
-    Net_1.Net.UnRegister(26501);
-    Net_1.Net.UnRegister(17161);
-    Net_1.Net.UnRegister(24725);
-    Net_1.Net.UnRegister(20336);
-    Net_1.Net.UnRegister(29592);
-    Net_1.Net.UnRegister(21472);
-    Net_1.Net.UnRegister(18838);
+    Net_1.Net.UnRegister(16560);
+    Net_1.Net.UnRegister(22498);
+    Net_1.Net.UnRegister(25063);
+    Net_1.Net.UnRegister(22467);
+    Net_1.Net.UnRegister(28309);
+    Net_1.Net.UnRegister(28147);
+    Net_1.Net.UnRegister(27948);
+    Net_1.Net.UnRegister(29120);
+    Net_1.Net.UnRegister(28350);
+    Net_1.Net.UnRegister(17571);
+    Net_1.Net.UnRegister(28215);
+    Net_1.Net.UnRegister(17784);
+    Net_1.Net.UnRegister(18049);
   }
   OpenSystemBoardResultRequest(e, o) {
-    var t = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
-    var t = Protocol_1.Aki.Protocol.mm_.create({
-      W5n: t,
+    var r = ModelManager_1.ModelManager.PlayerInfoModel.GetId();
+    var r = Protocol_1.Aki.Protocol.mm_.create({
+      W5n: r,
       j7n: e,
       w5n: o
     });
-    Net_1.Net.Call(22808, t, e => {
+    Net_1.Net.Call(21301, r, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22484, undefined, false);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 17794, undefined, false);
       }
     });
   }

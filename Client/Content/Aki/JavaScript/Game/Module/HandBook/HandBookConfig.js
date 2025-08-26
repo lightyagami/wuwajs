@@ -27,8 +27,10 @@ const ItemHandBookTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemHand
 const ItemHandBookTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemHandBookTypeById");
 const MonsterHandBookAll_1 = require("../../../Core/Define/ConfigQuery/MonsterHandBookAll");
 const MonsterHandBookById_1 = require("../../../Core/Define/ConfigQuery/MonsterHandBookById");
+const MonsterHandBookByMonsterId_1 = require("../../../Core/Define/ConfigQuery/MonsterHandBookByMonsterId");
 const MonsterHandBookByType_1 = require("../../../Core/Define/ConfigQuery/MonsterHandBookByType");
 const MonsterHandBookTypeAll_1 = require("../../../Core/Define/ConfigQuery/MonsterHandBookTypeAll");
+const MonsterHandBookTypeById_1 = require("../../../Core/Define/ConfigQuery/MonsterHandBookTypeById");
 const NounHandBookAll_1 = require("../../../Core/Define/ConfigQuery/NounHandBookAll");
 const NounHandBookById_1 = require("../../../Core/Define/ConfigQuery/NounHandBookById");
 const NounHandBookByType_1 = require("../../../Core/Define/ConfigQuery/NounHandBookByType");
@@ -79,11 +81,17 @@ class HandBookConfig extends ConfigBase_1.ConfigBase {
   GetMonsterHandBookConfigById(o) {
     return MonsterHandBookById_1.configMonsterHandBookById.GetConfig(o);
   }
+  GetMonsterHandBookConfigByMonsterId(o) {
+    return MonsterHandBookByMonsterId_1.configMonsterHandBookByMonsterId.GetConfig(o);
+  }
   GetMonsterHandBookConfigByType(o) {
     return MonsterHandBookByType_1.configMonsterHandBookByType.GetConfigList(o);
   }
   GetMonsterHandBookTypeConfig() {
     return MonsterHandBookTypeAll_1.configMonsterHandBookTypeAll.GetConfigList();
+  }
+  GetMonsterHandBookTypeConfigById(o) {
+    return MonsterHandBookTypeById_1.configMonsterHandBookTypeById.GetConfig(o);
   }
   GetMonsterHandBookConfigList() {
     return MonsterHandBookAll_1.configMonsterHandBookAll.GetConfigList();

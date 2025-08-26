@@ -8,6 +8,8 @@ const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -63,6 +65,20 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     };
     this.oa_ = () => {
       this.Ns_.OpenViewTeamRecommend();
+    };
+    this.Czc = () => {
+      this.Ns_.ExchangeTeamData();
+      this.Slo();
+      var t = this.Ns_.Id;
+      let e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerExchangeInstId);
+      if (!e || !e.has(t)) {
+        if (e) {
+          e.add(t);
+        } else {
+          e = new Set([t]);
+        }
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerExchangeInstId, e);
+      }
     };
     this.na_ = () => {
       var t = new ShipTowerDescTeamItem_1.ShipTowerDescTeamItem();
@@ -154,8 +170,8 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     ModelManager_1.ModelManager.ShipTowerModel.IsShowLeftTeamPanel = t;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [12, UE.UIItem]];
-    this.BtnBindInfo = [[3, this.zs_], [10, this.zs_], [6, this.oa_]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[3, this.zs_], [10, this.zs_], [6, this.oa_], [13, this.Czc]];
   }
   Es_() {
     this.Ns_ = ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(this.OpenParam.StageId);
@@ -217,6 +233,9 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
       this.Vs_?.UpdateRoleListByMainRoleChange();
     }
     this.Slo();
+    if (!this.Ns_.ProtoIsPassed) {
+      this.PlaySequence("Tips");
+    }
   }
   OnBeforeDestroy() {
     if (ModelManager_1.ModelManager.ShipTowerModel.ChallengeStageData !== this.Ns_) {
@@ -290,6 +309,7 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
   noc() {
     if (this.$s_) {
       this.$s_.UpdateRoleListToRoleSelectModel();
+      this.Ns_.UpdateCurSelectTeamIndex(this.$s_.Index);
       this.Ns_.UpdateOtherTeamRoleToModel(this.$s_.Index);
       this.Ns_.UpdateAllTeamRoleToModel();
     }

@@ -67,7 +67,7 @@ ItemExchangeController.Igi = () => {
     Log_1.Log.Debug("ItemExchange", 8, "请求物品兑换数据");
   }
   var e = Protocol_1.Aki.Protocol.Fns.create();
-  Net_1.Net.Call(22807, e, e => {
+  Net_1.Net.Call(23587, e, e => {
     ModelManager_1.ModelManager.ItemExchangeModel.InitItemExchangeTimeInfo(e.Ixs);
   });
 };
@@ -77,11 +77,11 @@ ItemExchangeController.ItemExchangeRequest = (n, t, e = true, o = undefined) => 
     _a.Lgi = e;
     (e = Protocol_1.Aki.Protocol.$ns.create()).L8n = n;
     e.j9n = t;
-    Net_1.Net.Call(16550, e, e => {
+    Net_1.Net.Call(28913, e, e => {
       _a.Lgi = true;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18331);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18144);
         } else {
           ModelManager_1.ModelManager.ItemExchangeModel.AddExchangeTime(n, t);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ItemExChangeResponse, e.L8n, e.n9n);

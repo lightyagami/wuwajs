@@ -26,41 +26,40 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.r71 = -1;
-    this.ynu = undefined;
+    this.Wnu = undefined;
     this.lqe = undefined;
     this.RewardLayout = undefined;
-    this.Onu = undefined;
+    this.lsu = undefined;
     this.c71 = (e, t, i) => {
       var r = new PhantomArenaMasterLevelItem_1.MasterLevelItem();
       r.CreateThenShowByActor(e);
-      r.CallbackOnSelect = this.Snu;
+      r.CallbackOnSelect = this.Qnu;
       return r;
     };
     this.rOe = () => {
       var e = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      e.ShowReceivedCallBack = this.ACu;
+      e.ShowReceivedCallBack = this.L0u;
       return e;
     };
-    this.qnu = () => {
+    this._su = () => {
       return new MasterLevelDescItem();
     };
-    this.Mnu = () => {
-      var e;
-      if (ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(this.r71)) {
-        e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelConfig(this.r71);
-        PhantomArenaController_1.PhantomArenaController.MasterLevelRewardRequest(e.Id);
+    this.Knu = () => {
+      var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelData().filter(e => ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardCanTake(e.Level)).map(e => e.Level);
+      if (e.length > 0) {
+        PhantomArenaController_1.PhantomArenaController.MasterLevelMultiRewardRequest(e);
       }
     };
-    this.Snu = (e, t) => {
+    this.Qnu = (e, t) => {
       if (this.r71 !== e) {
         this.r71 = e;
-        if (this.ynu.GetCurrentSelectIndex() !== e - 1) {
-          this.ynu.AttachToIndex(e - 1);
+        if (this.Wnu.GetCurrentSelectIndex() !== e - 1) {
+          this.Wnu.AttachToIndex(e - 1);
         }
         this.Cvt();
       }
     };
-    this.Enu = () => {
+    this.Xnu = () => {
       this.pO();
     };
     this.fFo = () => {
@@ -69,24 +68,24 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
     this.I5t = () => {
       this.CloseMe();
     };
-    this.ACu = () => {
+    this.L0u = () => {
       return ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardIfTaken(this.r71);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UITexture], [4, UE.UITexture], [5, UE.UIText], [6, UE.UIScrollViewWithScrollbarComponent], [7, UE.UIItem], [8, UE.UIHorizontalLayout], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIItem]];
-    this.BtnBindInfo = [[12, this.Mnu]];
+    this.BtnBindInfo = [[12, this.Knu]];
   }
   OnStart() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(13));
     this.lqe.SetHelpCallBack(this.fFo);
     this.lqe.SetCloseCallBack(this.I5t);
-    this.ynu = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(0).GetOwner());
+    this.Wnu = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(0).GetOwner());
     var e = this.GetItem(1);
     e.SetUIActive(false);
-    this.ynu.CreateItems(e.GetOwner(), 0, this.c71);
+    this.Wnu.CreateItems(e.GetOwner(), 0, this.c71);
     this.RewardLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(8), this.rOe);
-    this.Onu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this.qnu);
+    this.lsu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this._su);
   }
   async OnCreateAsync() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("MasterLevelCurve_Scale");
@@ -104,10 +103,10 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
     this.jqe();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaMasterInfoUpdate, this.Enu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaMasterInfoUpdate, this.Xnu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaMasterInfoUpdate, this.Enu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaMasterInfoUpdate, this.Xnu);
   }
   pO() {
     this.WLl();
@@ -119,10 +118,10 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
     var t = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelData();
     var i = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevel();
     if (e) {
-      this.ynu.ReloadView(t.length, t);
-      this.ynu.AttachToIndex(i - 1, true);
+      this.Wnu.ReloadView(t.length, t);
+      this.Wnu.AttachToIndex(i - 1, true);
     } else {
-      for (const r of this.ynu.GetItems()) {
+      for (const r of this.Wnu.GetItems()) {
         r.SetData(t);
         r.RefreshItem();
       }
@@ -145,7 +144,7 @@ class PhantomArenaMasterInfoView extends UiViewBase_1.UiViewBase {
   }
   Pqe() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelDescData(this.r71);
-    this.Onu?.RefreshByData(e);
+    this.lsu?.RefreshByData(e);
   }
   jqe() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardList(this.r71);

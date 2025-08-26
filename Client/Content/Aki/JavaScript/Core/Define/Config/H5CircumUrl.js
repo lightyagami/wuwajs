@@ -28,6 +28,9 @@ class H5CircumUrl {
   get ScoreText() {
     return this.scoretext();
   }
+  get BgPath() {
+    return this.bgpath();
+  }
   __init(t, r) {
     this.z7 = t;
     this.J7 = r;
@@ -74,6 +77,14 @@ class H5CircumUrl {
   }
   scoretext(t) {
     var r = this.J7.__offset(this.z7, 14);
+    var r = r ? this.J7.__string(this.z7 + r, t) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
+  }
+  bgpath(t) {
+    var r = this.J7.__offset(this.z7, 16);
     var r = r ? this.J7.__string(this.z7 + r, t) : null;
     if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(r);

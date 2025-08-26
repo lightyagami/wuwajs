@@ -21,12 +21,12 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     return ModelManager_1.ModelManager.FormationDataModel;
   }
   static OnInit() {
-    Net_1.Net.Register(20778, FormationDataController.BHa);
+    Net_1.Net.Register(29398, FormationDataController.BHa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(20778);
+    Net_1.Net.UnRegister(29398);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
     return true;
   }
@@ -79,7 +79,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
   static ZBe() {
     if (this.tbe) {
       this.tbe = false;
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(175)?.GetAggroSet();
+      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(176)?.GetAggroSet();
       const r = this.Model.PlayerAggroSet;
       this.ibe.length = 0;
       this.bie.length = 0;
@@ -123,7 +123,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static AddPlayerTag(t, e) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(200);
+    var a = this.GetPlayerEntity(t)?.GetComponent(201);
     if (a) {
       a?.AddTag(e);
     } else if (Log_1.Log.CheckError()) {
@@ -131,15 +131,15 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static RemovePlayerTag(t, e) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(200);
+    var a = this.GetPlayerEntity(t)?.GetComponent(201);
     if (a) {
       a?.RemoveTag(e);
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Battle", 19, "找不到对应的PlayerTag组件", ["PlayerId", t]);
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Battle", 19, "找不到对应的PlayerTag组件", ["PlayerId", t], ["tagId", e]);
     }
   }
   static GetPlayerTagCount(t, e) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(200);
+    var a = this.GetPlayerEntity(t)?.GetComponent(201);
     if (a) {
       return a?.GetTagCount(e) ?? 0;
     } else {
@@ -150,7 +150,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static HasPlayerTag(t, e, a = false) {
-    var r = this.GetPlayerEntity(t)?.GetComponent(200);
+    var r = this.GetPlayerEntity(t)?.GetComponent(201);
     if (r) {
       return a && r?.TagContainerHasTag(e) || r?.HasTag(e);
     } else {
@@ -201,7 +201,7 @@ exports.FormationDataController = FormationDataController;
 FormationDataController.ebe = new Map();
 FormationDataController.BHa = t => {
   var e = t.W5n;
-  var a = _a.GetPlayerEntity(e)?.GetComponent(224);
+  var a = _a.GetPlayerEntity(e)?.GetComponent(225);
   if (a) {
     a.UpdateFollowers(t.OI_);
   } else if (Log_1.Log.CheckWarn()) {

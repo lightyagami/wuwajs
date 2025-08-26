@@ -11,7 +11,6 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const DailyActivityController_1 = require("../DailyActivityController");
 const DailyActivityTaskController_1 = require("./DailyActivityTaskController");
 class DailyActiveTaskData {
   constructor() {
@@ -33,9 +32,10 @@ class DailyActivityTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Kkt = [];
     this.Qkt = false;
     this.Xkt = 0;
+    this.uKu = undefined;
     this.$kt = () => {
       if (this.BOe) {
-        DailyActivityController_1.DailyActivityController.RequestDailyActivityTaskReward([this.BOe]);
+        this.uKu?.();
       }
     };
     this.Ykt = () => {
@@ -68,19 +68,19 @@ class DailyActivityTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(1).SetText(t.CurrentProgress.toString() + "/" + t.TargetProgress.toString());
     var e = ConfigManager_1.ConfigManager.DailyActivityConfig.GetActivityTaskConfigById(this.BOe);
     var r = e.TaskName;
-    var a = [];
-    if (e.UpdateType === 2 && !((h = ModelManager_1.ModelManager.DailyActivityModel.AreaId) <= 0)) {
-      if ((h = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(h)) && (h = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(h.Title))) {
-        a.push(h);
+    var h = [];
+    if (e.UpdateType === 2 && !((a = ModelManager_1.ModelManager.DailyActivityModel.AreaId) <= 0)) {
+      if ((a = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(a)) && (a = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(a.Title))) {
+        h.push(a);
       }
     }
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), r, ...a);
-    var h = e.TaskFunc;
-    if (h.length >= 1) {
-      this.Wkt = Number(h[0]);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), r, ...h);
+    var a = e.TaskFunc;
+    if (a.length >= 1) {
+      this.Wkt = Number(a[0]);
     }
-    if (h.length >= 2) {
-      this.Kkt = h.slice(1);
+    if (a.length >= 2) {
+      this.Kkt = a.slice(1);
     }
     if (this.Wkt === 6) {
       this.Kkt = [ModelManager_1.ModelManager.DailyActivityModel.AreaId.toString()];
@@ -111,6 +111,9 @@ class DailyActivityTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.GetItem(3).SetUIActive(true);
         this.GetItem(7).SetUIActive(true);
     }
+  }
+  SetClickReceiveCb(t) {
+    this.uKu = t;
   }
 }
 exports.DailyActivityTaskItem = DailyActivityTaskItem;

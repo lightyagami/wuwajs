@@ -21,14 +21,14 @@ class TsAnimNotifyStateVehicleAddTag extends UE.KuroAnimNotifyState {
       return false;
     }
     var e = e.VehicleActorComponent?.Entity;
-    var r = e?.GetComponent(241);
+    var r = e?.GetComponent(242);
     if (!e || !r) {
       return false;
     }
     if (this.AddToVehicle) {
       r.TagContainer.AddExactTag(4, s);
     }
-    e = e.GetComponent(233);
+    e = e.GetComponent(234);
     if (this.AddToDriver) {
       for (const o of e.Drivers) {
         r.AddTagForPassenger(o, 4, s);
@@ -50,14 +50,14 @@ class TsAnimNotifyStateVehicleAddTag extends UE.KuroAnimNotifyState {
       return false;
     }
     var e = e.VehicleActorComponent?.Entity;
-    var s = e?.GetComponent(241);
+    var s = e?.GetComponent(242);
     if (!e || !s) {
       return false;
     }
     if (this.AddToVehicle) {
-      e?.GetComponent(205)?.TagContainer.RemoveExactTag(4, i);
+      e?.GetComponent(206)?.TagContainer.RemoveExactTag(4, i);
     }
-    e = e.GetComponent(233);
+    e = e.GetComponent(234);
     if (this.AddToDriver) {
       for (const r of e.Drivers) {
         s.RemoveTagForPassenger(r, 4, i);

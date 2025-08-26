@@ -13,7 +13,7 @@ class FloroRanchPhaseTargetView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.PNo = undefined;
-    this.Smu = () => {
+    this.ofu = () => {
       this.CloseMe();
       if (this.PNo) {
         this.PNo();
@@ -22,7 +22,7 @@ class FloroRanchPhaseTargetView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem]];
-    this.BtnBindInfo = [[6, this.Smu]];
+    this.BtnBindInfo = [[6, this.ofu]];
   }
   OnBeforeShow() {
     var e = this.OpenParam;
@@ -42,8 +42,9 @@ class FloroRanchPhaseTargetView extends UiViewBase_1.UiViewBase {
     }
     s.SetChangeColor(a, s.changeColor);
     this.GetItem(7)?.SetUIActive(a);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "FloroRanchDayNum", i.Ohu);
-    this.GetText(4)?.SetText(MathUtils_1.MathUtils.LongToNumber(i.j6n).toString());
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "FloroRanchDayNum", i._lu);
+    var e = ModelManager_1.ModelManager.FloroRanchModel.GetCoinText(MathUtils_1.MathUtils.LongToNumber(i.j6n));
+    this.GetText(4)?.SetText(e);
     this.GetText(5)?.SetText(MathUtils_1.MathUtils.LongToNumber(i.DS_).toString());
   }
 }

@@ -11,11 +11,11 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class FloroRanchTaskTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
-    this.KEu = 1;
+    this.aIu = 1;
     this.OnToggleCallBack = undefined;
     this.kqe = () => {
       if (this.OnToggleCallBack) {
-        this.OnToggleCallBack(this.GridIndex, this.KEu);
+        this.OnToggleCallBack(this.GridIndex, this.aIu);
       }
     };
   }
@@ -24,13 +24,13 @@ class FloroRanchTaskTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[1, this.kqe]];
   }
   Refresh(t, e, s) {
-    this.KEu = t.Id;
+    this.aIu = t.Id;
     t = t.TabName;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t);
     this.RefreshRedDot();
   }
   RefreshRedDot() {
-    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().IsTaskHasRedDotByTab(this.KEu);
+    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().IsTaskHasRedDotByTab(this.aIu);
     this.GetItem(2)?.SetUIActive(t);
   }
   SetToggleState(t) {

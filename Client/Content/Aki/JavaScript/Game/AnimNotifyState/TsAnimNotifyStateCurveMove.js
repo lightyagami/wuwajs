@@ -15,6 +15,7 @@ const Rotator_1 = require("../../Core/Utils/Math/Rotator");
 const Transform_1 = require("../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../Core/Utils/MathUtils");
+const TraceElementCommon_1 = require("../../Core/Utils/TraceElementCommon");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const Global_1 = require("../Global");
 const GlobalData_1 = require("../GlobalData");
@@ -24,6 +25,7 @@ const CharacterUnifiedStateTypes_1 = require("../NewWorld/Character/Common/Compo
 const SkillBehaviorCondition_1 = require("../NewWorld/Character/Common/Component/Skill/SkillBehavior/SkillBehaviorCondition");
 const SkillBehaviorMisc_1 = require("../NewWorld/Character/Common/Component/Skill/SkillBehavior/SkillBehaviorMisc");
 const ColorUtils_1 = require("../Utils/ColorUtils");
+const GravityUtils_1 = require("../Utils/GravityUtils");
 const WorldGlobal_1 = require("../World/WorldGlobal");
 const queryExtent = new UE.VectorDouble(1, 1, 500);
 const angles = [0, 270, 90, 180];
@@ -31,7 +33,7 @@ const MIN_MOVE_DISTANCE = 50;
 const MIN_MOVE_DISTANCE_SQUARED = MIN_MOVE_DISTANCE * MIN_MOVE_DISTANCE;
 const MIN_UPDATE_SPLINE_LENGTH = 100;
 const MIN_UPDATE_SPLINE_LENGTH_SQUARED = MIN_UPDATE_SPLINE_LENGTH * MIN_UPDATE_SPLINE_LENGTH;
-const MAX_MOVE_DISTANCE = 3000;
+const PROFILE_KEY = "TsAnimNotifyStateCurveMove";
 const INVALID_LAST_LOCATION_THRESHOLD_SQUARED = 1000000;
 const DEBUG_RADIUS = 30;
 const DEBUG_DURATION = 5;
@@ -70,15 +72,15 @@ class PositionBranchTargetParams {
         this.SocketName = s;
         break;
       case 1:
-        var h = this.CharSkillComp?.SkillTarget;
-        if (!h) {
+        var o = this.CharSkillComp?.GetSkillTargetForAns();
+        if (!o?.Valid) {
           return false;
         }
-        if (this.TargetActorComp?.Entity?.Valid && h.Id === this.TargetActorComp.Entity.Id) {
+        if (this.TargetActorComp?.Entity?.Valid && o.Id === this.TargetActorComp.Entity.Id) {
           return true;
         }
-        this.TargetActorComp = h.Entity.GetComponent(1);
-        this.TargetCharActorComp = h.Entity.GetComponent(3);
+        this.TargetActorComp = o.Entity.GetComponent(1);
+        this.TargetCharActorComp = o.Entity.GetComponent(3);
         this.SocketName = this.CharSkillComp.SkillTargetSocket;
         break;
       case 2:
@@ -86,14 +88,14 @@ class PositionBranchTargetParams {
         if (!t && !(t = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(this.CharActorComp.Entity.Id, i))) {
           return false;
         }
-        h = EntitySystem_1.EntitySystem.Get(t);
-        if (!h?.Valid) {
+        o = EntitySystem_1.EntitySystem.Get(t);
+        if (!o?.Valid) {
           return false;
         }
-        if (this.TargetActorComp?.Entity?.Valid && this.TargetActorComp.Entity.Id === h.Id) {
+        if (this.TargetActorComp?.Entity?.Valid && this.TargetActorComp.Entity.Id === o.Id) {
           return true;
         }
-        this.TargetActorComp = h.GetComponent(1);
+        this.TargetActorComp = o.GetComponent(1);
         this.TargetCharActorComp = undefined;
         this.SocketName = s;
     }
@@ -129,6 +131,9 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     this.自动更新运动轨迹曲线关键点 = false;
     this.运动轨迹曲线关键点 = undefined;
     this.运动轨迹曲线插值ReparamTable = undefined;
+    this.终点贴地检测 = false;
+    this.终点贴地检测距离 = 1000;
+    this.最大位移距离 = 3000;
     this.SkillBehaviorCondition = undefined;
     this.SkillBehaviorConditionFormula = "";
     this.IgnoreObstacle = false;
@@ -143,6 +148,9 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     this.PositionCorrectionConfig = undefined;
     this.MovementPositionCurve = undefined;
     this.MovementProcessDirection = 0;
+    this.EndLocationDetection = false;
+    this.EndLocationDetectionDist = 1000;
+    this.MaxMoveDistance = 3000;
     this.TmpVector = undefined;
     this.TmpVector2 = undefined;
     this.TmpVector3 = undefined;
@@ -170,6 +178,9 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     this.PositionCorrectionConfig = undefined;
     this.MovementPositionCurve = undefined;
     this.MovementProcessDirection = 0;
+    this.EndLocationDetection = false;
+    this.EndLocationDetectionDist = 1000;
+    this.MaxMoveDistance = 3000;
     this.TmpVector = undefined;
     this.TmpVector2 = undefined;
     this.TmpVector3 = undefined;
@@ -222,6 +233,9 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     this.PositionCorrectionConfig = this.位置修正配置;
     this.MovementPositionCurve = this.运动位置曲线;
     this.MovementProcessDirection = this.运动过程朝向;
+    this.EndLocationDetection = this.终点贴地检测;
+    this.EndLocationDetectionDist = this.终点贴地检测距离;
+    this.MaxMoveDistance = this.最大位移距离;
     if (this.运动轨迹曲线关键点 && !this.SplineCurves) {
       this.SplineCurves = new SplineCurve_1.SplineCurve();
     }
@@ -254,7 +268,7 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
       let t = this.ParamMap.get(i.Entity.Id);
       (t = t || (this.ParamPool.length ? this.ParamPool.pop() : new PositionBranchTargetParams())).InitLocation.DeepCopy(i.ActorLocationProxy);
       t.CharActorComp = i;
-      t.CharUnifiedComp = i.Entity.GetComponent(175);
+      t.CharUnifiedComp = i.Entity.GetComponent(176);
       t.CharSkillComp = e;
       t.RefreshTarget(this.TargetParam, this.TargetSocketPosition, this.PositionDatumTarget);
       t.NowTime = 0;
@@ -329,7 +343,7 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Movement", 42, "TsAnimNotifyStateCurveMove移动", ["CurrentLocation", s.CharActorComp.ActorLocationProxy], ["TargetPos", s.TargetPos], ["dist", t], ["distSquared2D", s.TargetVec.SizeSquared2D()]);
       }
-      if (this.IgnoreObstacle && (t = e.Entity.GetComponent(178))) {
+      if (this.IgnoreObstacle && (t = e.Entity.GetComponent(179))) {
         t.SetStepHeight(s.CharActorComp.HalfHeight);
       }
       if (this.运动轨迹曲线关键点 && this.SplineCurves && this.InitSplineTransform(s)) {
@@ -359,6 +373,9 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     if (!t || !t.AllowMovement) {
       return false;
     }
+    if (t.CharSkillComp?.IsSkillMontageInvalid(i.GetName())) {
+      return false;
+    }
     t.CanSetActorTargetPos = false;
     if (!this.SplineCurves || t.AlongStraightLine) {
       return !!t.AlongStraightLine && (t.RefreshTarget(this.TargetParam, this.TargetSocketPosition, this.PositionDatumTarget), t.TargetActorComp ? (this.MoveToTarget(s, t), t.LastLocation.DeepCopy(t.CharActorComp.ActorLocationProxy)) : Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 42, "TsAnimNotifyStateCurveMove.直线移动无目标"), t.NowTime += s, true);
@@ -384,7 +401,7 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     var s;
     var e;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t = t.CharacterActorComponent, !!(s = this.ParamMap.get(t.Entity.Id))) && (this.IgnoreObstacle && (e = t.Entity.GetComponent(178)) && e.ResetStepHeight(), s.AllowMovement = false, this.IgnoreObstacle && (s.CanSetActorTargetPos && Vector_1.Vector.Dist(s.TargetPos, s.CharActorComp.ActorLocationProxy) > MIN_MOVE_DISTANCE && (s.CharActorComp.SetActorLocation(s.TargetPos.ToUeVector(), "TsAnimNotifyStateCurveMove.技能曲线移动穿越障碍物结束", false), Log_1.Log.CheckWarn()) && Log_1.Log.Warn("Movement", 42, "技能曲线移动穿越障碍物结束SetActorLocation到终点"), s.CanSetActorTargetPos = false), this.ParamMap.delete(t.Entity.Id), s.Clear(), this.ParamPool.push(s), true);
+    return t instanceof TsBaseCharacter_1.default && (t = t.CharacterActorComponent, !!(s = this.ParamMap.get(t.Entity.Id))) && (this.IgnoreObstacle && (e = t.Entity.GetComponent(179)) && e.ResetStepHeight(), s.AllowMovement = false, this.IgnoreObstacle && (s.CanSetActorTargetPos && Vector_1.Vector.Dist(s.TargetPos, s.CharActorComp.ActorLocationProxy) > MIN_MOVE_DISTANCE && (s.CharActorComp.SetActorLocation(s.TargetPos.ToUeVector(), "TsAnimNotifyStateCurveMove.技能曲线移动穿越障碍物结束", false), Log_1.Log.CheckWarn()) && Log_1.Log.Warn("Movement", 42, "技能曲线移动穿越障碍物结束SetActorLocation到终点"), s.CanSetActorTargetPos = false), this.ParamMap.delete(t.Entity.Id), s.Clear(), this.ParamPool.push(s), true);
   }
   InitSplineTransform(t) {
     var i = this.SplineCurves?.GetSplineLength();
@@ -412,25 +429,25 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     this.TmpVector.UnaryNegation(this.TmpVector);
     this.TmpVector.Z = -this.TmpVector.Z;
     this.TmpVector.ToOrientationQuat(this.TmpQuat2);
-    var h = s / e;
+    var o = s / e;
     this.TmpVector2.DeepCopy(this.SplineCurves.SplineTransform.GetScale3D());
-    if (h > MathUtils_1.MathUtils.KindaSmallNumber) {
-      this.TmpVector2.MultiplyEqual(h);
+    if (o > MathUtils_1.MathUtils.KindaSmallNumber) {
+      this.TmpVector2.MultiplyEqual(o);
     }
     if (this.DebugMode) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Movement", 42, "InitSplineTransform", ["InitLocation", t.InitLocation], ["this.TmpQuat2", this.TmpQuat2], ["this.TmpVector", this.TmpVector], ["scale", h]);
+        Log_1.Log.Debug("Movement", 42, "InitSplineTransform", ["InitLocation", t.InitLocation], ["this.TmpQuat2", this.TmpQuat2], ["this.TmpVector", this.TmpVector], ["scale", o]);
       }
       this.DebugDraw(t.TargetPos.ToUeVector(), ColorUtils_1.ColorUtils.LinearBlack, 40);
     }
     this.TmpTransform.Set(t.InitLocation, this.TmpQuat2, this.TmpVector2);
     this.SplineCurves.SetSplineTransform(this.TmpTransform, false);
     this.SplineCurves.GetWorldLocationAtSplinePoint(0, this.TmpVector);
-    var h = Vector_1.Vector.DistSquared(this.TmpVector, t.InitLocation);
-    var o = Vector_1.Vector.DistSquared(this.TmpVector, t.CharActorComp.ActorLocationProxy);
-    if (h > MIN_UPDATE_SPLINE_LENGTH_SQUARED || o > MIN_UPDATE_SPLINE_LENGTH_SQUARED) {
+    var o = Vector_1.Vector.DistSquared(this.TmpVector, t.InitLocation);
+    var h = Vector_1.Vector.DistSquared(this.TmpVector, t.CharActorComp.ActorLocationProxy);
+    if (o > MIN_UPDATE_SPLINE_LENGTH_SQUARED || h > MIN_UPDATE_SPLINE_LENGTH_SQUARED) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Movement", 42, "初始点位置和样条第一个点位置距离太远了。", ["样条点和初始点距离Squared", h], ["样条点和当前坐标距离Squared", o], ["startLocation", this.TmpVector], ["ActorLocation", t.CharActorComp?.ActorLocationProxy]);
+        Log_1.Log.Error("Movement", 42, "初始点位置和样条第一个点位置距离太远了。", ["样条点和初始点距离Squared", o], ["样条点和当前坐标距离Squared", h], ["startLocation", this.TmpVector], ["ActorLocation", t.CharActorComp?.ActorLocationProxy]);
       }
       return false;
     } else {
@@ -482,15 +499,53 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
             }
         }
         i.AdditionEqual(t.TargetOffset);
+        if (this.EndLocationDetection && t.CharActorComp) {
+          this.DetectFloor(t.CharActorComp, i);
+        }
       }
     } else {
       i.DeepCopy(t.CharActorComp.ActorLocationProxy);
     }
   }
-  PositionCorrection(e, h, o) {
+  DetectFloor(t, i) {
+    var s = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
+    s.WorldContextObject = t.Actor;
+    s.Radius = t.ScaledRadius;
+    if (this.DebugMode) {
+      s.SetDrawDebugTrace(2);
+    }
+    s.ActorsToIgnore.Empty();
+    s.ActorsToIgnore.Add(t.Actor);
+    for (const e of ModelManager_1.ModelManager.WorldModel.ActorsToIgnoreSet) {
+      s.ActorsToIgnore.Add(e);
+    }
+    this.TmpVector.DeepCopy(i);
+    TraceElementCommon_1.TraceElementCommon.SetStartLocation(s, this.TmpVector);
+    this.TmpVector.DeepCopy(i);
+    GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, this.TmpVector, -this.EndLocationDetectionDist);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(s, this.TmpVector);
+    if (TraceElementCommon_1.TraceElementCommon.ShapeTrace(t.Actor.CapsuleComponent, s, PROFILE_KEY, PROFILE_KEY)) {
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(s.HitResult, 0, i);
+      GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, i, t.ScaledHalfHeight);
+      if (this.DebugMode) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Movement", 42, "终点检测地面 ", ["TargetPos", i]);
+        }
+        this.DebugDraw(i.ToUeVector(), ColorUtils_1.ColorUtils.LinearCyan);
+        s.SetDrawDebugTrace(0);
+      }
+      return true;
+    } else {
+      if (this.DebugMode) {
+        s.SetDrawDebugTrace(0);
+      }
+      return false;
+    }
+  }
+  PositionCorrection(e, o, h) {
     if (this.MakePositionCorrection && this.PositionCorrectionConfig && this.PositionCorrectionConfig.ActionType === 0) {
       var r = e.CharActorComp;
-      let i = h.ToUeVector();
+      let i = o.ToUeVector();
       let t = r.ActorForward;
       var a;
       var n = this.TmpVector2;
@@ -531,7 +586,7 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
             break;
           case 7:
             if (e.CharActorComp && (_ = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(e.CharActorComp.Entity.Id, this.TargetParam), (_ = EntitySystem_1.EntitySystem.Get(_))?.Valid)) {
-              [i, t] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(_.GetComponent(169).Owner);
+              [i, t] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(_.GetComponent(170).Owner);
             }
         }
         switch (this.PositionCorrectionConfig.LocationForwardType) {
@@ -593,8 +648,8 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
               var L = this.TmpVector;
               var T = this.TmpVector4;
               s.Subtraction(n, L);
-              for (const g of angles) {
-                L.RotateAngleAxis(g, Vector_1.Vector.UpVectorProxy, T);
+              for (const m of angles) {
+                L.RotateAngleAxis(m, Vector_1.Vector.UpVectorProxy, T);
                 n.Addition(T, s);
                 var u = (0, SkillBehaviorMisc_1.traceWall)(r, n, s, this.PositionCorrectionConfig.DebugTrace);
                 if (!u) {
@@ -626,15 +681,15 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
       if (this.PositionCorrectionConfig.Navigation > 0 && !UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, i, undefined, undefined, undefined, queryExtent)) {
         c = (0, puerts_1.$ref)(undefined);
         if (UE.NavigationSystemV1.D_K2_GetRandomLocationInNavigableRadius(GlobalData_1.GlobalData.World, i, c, this.PositionCorrectionConfig.Navigation)) {
-          o.DeepCopy((0, puerts_1.$unref)(c));
+          h.DeepCopy((0, puerts_1.$unref)(c));
         }
         e.CanSetActorTargetPos = true;
       } else {
         this.TmpVector.DeepCopy(i);
         this.TmpVector.SubtractionEqual(n);
-        h.Addition(this.TmpVector, o);
+        o.Addition(this.TmpVector, h);
         if (this.DebugMode && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Movement", 42, "加偏移量到最终坐标上", ["targetLocation", i], ["startLocationVec2", n], ["this.TmpVector", this.TmpVector], ["targetPos", h], ["outPos", o]);
+          Log_1.Log.Debug("Movement", 42, "加偏移量到最终坐标上", ["targetLocation", i], ["startLocationVec2", n], ["this.TmpVector", this.TmpVector], ["targetPos", o], ["outPos", h]);
         }
       }
     }
@@ -662,7 +717,7 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     t.TargetPos.Subtraction(t.LastLocation, this.TmpVector2);
     var s = this.TmpVector.DotProduct(this.TmpVector2);
     var e = this.TmpVector.Size();
-    if (e > MAX_MOVE_DISTANCE) {
+    if (e > this.MaxMoveDistance) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Movement", 42, "目标点距离太远了，不动", ["dist", e], ["current", t.CharActorComp.ActorLocationProxy], ["TargetPos", t.TargetPos]);
       }
@@ -699,7 +754,7 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     }
     var s = this.GetTowardVector(i, i.TargetVec);
     var e = this.GetRate(t, i);
-    if (!(e <= 0) && !(s < 0) && !(Vector_1.Vector.Lerp(i.InitLocation, i.TargetPos, e, this.TmpVector3), this.TmpVector3.SubtractionEqual(i.CharActorComp.ActorLocationProxy), i.CharUnifiedComp?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.TmpVector3.SizeSquared2D() < 1) && !(i.LastLocation.Subtraction(i.CharActorComp.ActorLocationProxy, this.TmpVector), this.TmpVector.SizeSquared() > INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Movement", 42, "LastLocation太远，很危险，无视掉", ["Actor", i.CharActorComp?.Actor.GetName()], ["Last", i.LastLocation], ["ActorLast", i.CharActorComp?.LastActorLocation], ["Now", i.CharActorComp?.ActorLocationProxy], ["this.TargetVec", i.TargetVec], ["this.TmpVector", this.TmpVector], ["this.TmpVector3", this.TmpVector3]), this.TmpVector3.Reset()), this.DebugMode && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 42, "MoveToTarget", ["rate", e], ["MoveVec", this.TmpVector3], ["ActorLocation", i.CharActorComp.ActorLocationProxy], ["LastTargetPos", i.LastTargetPos], ["TargetVec", i.TargetVec]), this.TmpVector2.DeepCopy(i.CharActorComp.ActorLocationProxy), this.TmpVector2.AdditionEqual(this.TmpVector3), this.DebugDraw(this.TmpVector2.ToUeVector(), ColorUtils_1.ColorUtils.LinearWhite)), this.TmpVector.DeepCopy(this.TmpVector3), i.FlyingMove ? (i.CharActorComp.AddActorWorldOffset(this.TmpVector.ToUeVector(), "TsAnimNotifyStateCurveMove直线移动.AddActorWorldOffset", true), i.CharActorComp.ResetAllCachedTime()) : i.CharActorComp.MoveComp.MoveCharacter(this.TmpVector, t, "TsAnimNotifyStateCurveMove直线移动"), e === 1)) {
+    if (!(e <= 0) && !(s < 0) && !(Vector_1.Vector.Lerp(i.InitLocation, i.TargetPos, e, this.TmpVector3), this.TmpVector3.SubtractionEqual(i.CharActorComp.ActorLocationProxy), i.CharUnifiedComp?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.TmpVector3.SizeSquared2D() < 1) && !(i.LastLocation.Subtraction(i.CharActorComp.ActorLocationProxy, this.TmpVector), this.TmpVector.SizeSquared() > INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Movement", 42, "LastLocation太远，很危险，无视掉", ["Actor", i.CharActorComp?.Actor.GetName()], ["Last", i.LastLocation], ["ActorLast", i.CharActorComp?.LastActorLocation], ["Now", i.CharActorComp?.ActorLocationProxy], ["this.TargetVec", i.TargetVec], ["this.TmpVector", this.TmpVector], ["this.TmpVector3", this.TmpVector3]), this.TmpVector3.Reset()), this.DebugMode && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 42, "TsAnimNotifyStateCurveMove.MoveToTarget", ["rate", e], ["MoveVec", this.TmpVector3], ["ActorLocation", i.CharActorComp.ActorLocationProxy], ["LastTargetPos", i.LastTargetPos], ["TargetVec", i.TargetVec]), this.TmpVector2.DeepCopy(i.CharActorComp.ActorLocationProxy), this.TmpVector2.AdditionEqual(this.TmpVector3), this.DebugDraw(this.TmpVector2.ToUeVector(), ColorUtils_1.ColorUtils.LinearWhite)), this.TmpVector.DeepCopy(this.TmpVector3), i.FlyingMove ? (i.CharActorComp.AddActorWorldOffset(this.TmpVector.ToUeVector(), "TsAnimNotifyStateCurveMove直线移动.AddActorWorldOffset", true), i.CharActorComp.ResetAllCachedTime()) : i.CharActorComp.MoveComp.MoveCharacter(this.TmpVector, t, "TsAnimNotifyStateCurveMove直线移动"), e === 1)) {
       switch (this.MovementProcessDirection) {
         case 2:
           i.TargetPos.Subtraction(i.CharActorComp.ActorLocationProxy, this.TmpVector);
@@ -724,15 +779,15 @@ class TsAnimNotifyStateCurveMove extends UE.KuroAnimNotifyState {
     var s = this.GetTowardVector(i, i.TargetVec);
     var e = this.GetRate(t, i);
     if (!(e <= 0) && !(s < 0)) {
-      if (this.ContinuallyUpdateTargetPosition && (Math.abs(e - 1) > MathUtils_1.MathUtils.KindaSmallNumber || e > 0) && (h = this.SplineCurves.GetSplinePointsNum(), this.SplineCurves.GetWorldLocationAtSplinePoint(h - 1, this.TmpVector), (o = Vector_1.Vector.DistSquared(this.TmpVector, i.TargetPos)) > 100) && o < INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (this.SplineCurves.SetLocationAtSplinePoint(h - 1, i.TargetPos, 1, true), this.DebugMode) && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Movement", 42, "SetLocationAtSplinePoint ", ["changeDist", o], ["TargetPos", i.TargetPos], ["SplinePoint", this.TmpVector]);
+      if (this.ContinuallyUpdateTargetPosition && (Math.abs(e - 1) > MathUtils_1.MathUtils.KindaSmallNumber || e > 0) && (o = this.SplineCurves.GetSplinePointsNum(), this.SplineCurves.GetWorldLocationAtSplinePoint(o - 1, this.TmpVector), (h = Vector_1.Vector.DistSquared(this.TmpVector, i.TargetPos)) > 100) && h < INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (this.SplineCurves.SetLocationAtSplinePoint(o - 1, i.TargetPos, 1, true), this.DebugMode) && Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Movement", 42, "SetLocationAtSplinePoint ", ["changeDist", h], ["TargetPos", i.TargetPos], ["SplinePoint", this.TmpVector]);
       }
-      var h = this.SplineCurves.GetSplineLength();
-      this.SplineCurves.GetTransformAtDistanceAlongSpline(h * e, 1, this.TmpTransform);
-      var o = this.TmpTransform.GetLocation();
-      this.TmpVector.DeepCopy(o);
+      var o = this.SplineCurves.GetSplineLength();
+      this.SplineCurves.GetTransformAtDistanceAlongSpline(o * e, 1, this.TmpTransform);
+      var h = this.TmpTransform.GetLocation();
+      this.TmpVector.DeepCopy(h);
       this.TmpVector.SubtractionEqual(i.CharActorComp.ActorLocationProxy);
-      if ((i.CharUnifiedComp?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground || !(this.TmpVector.SizeSquared2D() < 1)) && (this.DebugMode && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 42, "MoveToTargetAlongSpline", ["MoveVec", this.TmpVector], ["MoveVecSize", this.TmpVector?.Size()], ["dist", s], ["rate", e], ["SplineLength", h], ["this.TargetVec", i.TargetVec], ["this.TargetPos", i.TargetPos]), this.DebugDraw(o.ToUeVector(), ColorUtils_1.ColorUtils.LinearWhite)), i.LastLocation.Subtraction(i.CharActorComp.ActorLocationProxy, this.TmpVector2), this.TmpVector2.SizeSquared() > INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Movement", 42, "LastLocation太远，很危险，无视掉", ["Actor", i.CharActorComp?.Actor.GetName()], ["Last", i.LastLocation], ["ActorLast", i.CharActorComp?.LastActorLocation], ["Now", i.CharActorComp?.ActorLocationProxy], ["this.TargetVec", i.TargetVec], ["this.TmpVector", this.TmpVector]), this.TmpVector.Reset()), i.FlyingMove ? (i.CharActorComp.AddActorWorldOffset(this.TmpVector.ToUeVector(), "TsAnimNotifyStateCurveMove沿样条移动.AddActorWorldOffset", true), i.CharActorComp.ResetAllCachedTime()) : i.CharActorComp.MoveComp.MoveCharacter(this.TmpVector, t, "TsAnimNotifyStateCurveMove沿样条移动"), e !== 1)) {
+      if ((i.CharUnifiedComp?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground || !(this.TmpVector.SizeSquared2D() < 1)) && (this.DebugMode && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Movement", 42, "TsAnimNotifyStateCurveMove.MoveToTargetAlongSpline", ["MoveVec", this.TmpVector], ["MoveVecSize", this.TmpVector?.Size()], ["dist", s], ["rate", e], ["SplineLength", o], ["this.TargetVec", i.TargetVec], ["this.TargetPos", i.TargetPos]), this.DebugDraw(h.ToUeVector(), ColorUtils_1.ColorUtils.LinearWhite)), i.LastLocation.Subtraction(i.CharActorComp.ActorLocationProxy, this.TmpVector2), this.TmpVector2.SizeSquared() > INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Movement", 42, "LastLocation太远，很危险，无视掉", ["Actor", i.CharActorComp?.Actor.GetName()], ["Last", i.LastLocation], ["ActorLast", i.CharActorComp?.LastActorLocation], ["Now", i.CharActorComp?.ActorLocationProxy], ["this.TargetVec", i.TargetVec], ["this.TmpVector", this.TmpVector]), this.TmpVector.Reset()), i.FlyingMove ? (i.CharActorComp.AddActorWorldOffset(this.TmpVector.ToUeVector(), "TsAnimNotifyStateCurveMove沿样条移动.AddActorWorldOffset", true), i.CharActorComp.ResetAllCachedTime()) : i.CharActorComp.MoveComp.MoveCharacter(this.TmpVector, t, "TsAnimNotifyStateCurveMove沿样条移动"), e !== 1)) {
         switch (this.MovementProcessDirection) {
           case 2:
             i.TargetPos.Subtraction(i.CharActorComp.ActorLocationProxy, this.TmpVector);

@@ -15,6 +15,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const CombatMessage_1 = require("../../../Module/CombatMessage/CombatMessage");
 const BulletConstant_1 = require("../BulletConstant");
+const BulletLog_1 = require("../BulletStaticMethod/BulletLog");
 const BulletActionBase_1 = require("./BulletActionBase");
 class BulletActionAfterInit extends BulletActionBase_1.BulletActionBase {
   OnExecute() {
@@ -23,55 +24,55 @@ class BulletActionAfterInit extends BulletActionBase_1.BulletActionBase {
     var o;
     var l;
     var r;
-    var a = this.BulletInfo;
-    var n = a.BulletDataMain;
-    var i = a.Attacker;
-    var n = n.Execution.SendGameplayEventTagToAttackerOnStart;
-    if (n && n.TagName !== StringUtils_1.NONE_STRING && (e = a.AttackerActorComp?.Actor)?.IsValid()) {
-      (t = new UE.GameplayEventData()).OptionalObject = a.Actor;
-      UE.AbilitySystemBlueprintLibrary.SendGameplayEventToActor(e, n, t);
+    var n = this.BulletInfo;
+    var a = n.BulletDataMain;
+    var i = n.Attacker;
+    var a = a.Execution.SendGameplayEventTagToAttackerOnStart;
+    if (a && a.TagName !== StringUtils_1.NONE_STRING && (e = n.AttackerActorComp?.Actor)?.IsValid()) {
+      (t = new UE.GameplayEventData()).OptionalObject = n.Actor;
+      UE.AbilitySystemBlueprintLibrary.SendGameplayEventToActor(e, a, t);
     }
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
-      EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.BulletCreate, a);
+      EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.BulletCreate, n);
     }
-    a.IsInit = true;
-    a.ActionLogicComponent.OnAfterInit();
-    if (a.BulletInitParams.FromRemote) {
+    n.IsInit = true;
+    n.ActionLogicComponent.OnAfterInit();
+    if (n.BulletInitParams.FromRemote) {
       if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Bullet", 17, "创建被同步子弹", ["bulletRowName", a.BulletRowName]);
+        Log_1.Log.Debug("Bullet", 17, "创建被同步子弹", ...BulletLog_1.BulletLog.ToPairs(n));
       }
     } else {
       e = {
-        cVn: a.BulletEntityId,
+        cVn: n.BulletEntityId,
         W5n: ModelManager_1.ModelManager.CreatureModel.GetPlayerId()
       };
-      ModelManager_1.ModelManager.BulletModel.RegisterBullet(e, a.BulletEntityId);
-      n = a.BulletInitParams.SyncType !== 1;
-      t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(a.TargetId);
-      o = a.GetActorLocation();
-      l = a.MoveInfo.BeginSpeedRotator;
+      ModelManager_1.ModelManager.BulletModel.RegisterBullet(e, n.BulletEntityId);
+      a = n.BulletInitParams.SyncType !== 1;
+      t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(n.TargetId);
+      o = n.GetActorLocation();
+      l = n.MoveInfo.BeginSpeedRotator;
       (r = Protocol_1.Aki.Protocol.ee_.create()).uVn = e;
-      r.Mjn = MathUtils_1.MathUtils.NumberToLong(Number(a.BulletRowName));
-      r.r5n = a.BulletInitParams.SkillId;
+      r.Mjn = MathUtils_1.MathUtils.NumberToLong(Number(n.BulletRowName));
+      r.r5n = n.BulletInitParams.SkillId;
       r.P5n = o;
       r.g8n = l;
-      r.Sjn = ModelManager_1.ModelManager.BulletModel.GetBulletHandleById(a.BulletInitParams.ParentId);
-      r.Ejn = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(a.BulletInitParams.BaseTransformId));
-      r.yjn = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(a.BulletInitParams.BaseVelocityId));
+      r.Sjn = ModelManager_1.ModelManager.BulletModel.GetBulletHandleById(n.BulletInitParams.ParentId);
+      r.Ejn = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(n.BulletInitParams.BaseTransformId));
+      r.yjn = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(n.BulletInitParams.BaseVelocityId));
       r.CVn = MathUtils_1.MathUtils.NumberToLong(t);
-      r.Ijn = n;
-      r.Tjn = a.BulletInitParams.DtType;
-      r.Ljn = a.RandomPosOffset;
-      r.Djn = a.RandomInitSpeedOffset;
+      r.Ijn = a;
+      r.Tjn = n.BulletInitParams.DtType;
+      r.Ljn = n.RandomPosOffset;
+      r.Djn = n.RandomInitSpeedOffset;
       this.lra(r);
-      CombatMessage_1.CombatNet.Send(22299, i, r, a.PreContextId, a.ContextId);
+      CombatMessage_1.CombatNet.Send(29918, i, r, n.PreContextId, n.ContextId);
       if (BulletConstant_1.BulletConstant.OpenCreateLog) {
-        if (n) {
+        if (a) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Bullet", 17, "创建本地子弹", ["bulletRowName", a.BulletRowName]);
+            Log_1.Log.Debug("Bullet", 17, "创建本地子弹", ...BulletLog_1.BulletLog.ToPairs(n));
           }
         } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Bullet", 17, "创建同步子弹", ["bulletRowName", a.BulletRowName], ["skillId", a.BulletInitParams.SkillId], ["handleId", e.cVn], ["playerId", e.W5n], ["Location", o], ["Rotation", l], ["TargetId", t]);
+          Log_1.Log.Debug("Bullet", 17, "创建同步子弹", ["skillId", n.BulletInitParams.SkillId], ["Location", o], ["Rotation", l], ["TargetId", t], ...BulletLog_1.BulletLog.ToPairs(n));
         }
       }
     }

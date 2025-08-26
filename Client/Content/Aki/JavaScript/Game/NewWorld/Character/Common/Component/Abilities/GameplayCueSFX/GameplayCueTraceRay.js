@@ -43,7 +43,7 @@ class GameplayCueTraceRay extends GameplayCueEffect_1.GameplayCueEffect {
     this.c$l = undefined;
     this.vq = true;
     this.u$l = (t, e, i, s) => {
-      if (this.vq && !(i < this.l$l) && (i !== this.l$l || !(s < this._$l))) {
+      if (this.IsActive && this.vq && !(i < this.l$l) && (i !== this.l$l || !(s < this._$l))) {
         this.l$l = i;
         this._$l = s;
         var h = e.HitResult?.GetHitCount();

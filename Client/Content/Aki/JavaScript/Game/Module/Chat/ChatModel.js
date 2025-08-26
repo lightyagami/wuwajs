@@ -55,20 +55,22 @@ class ChatModel extends ModelBase_1.ModelBase {
   GetChatPlayerData(t) {
     return this.kEt.get(t);
   }
-  RefreshChatPlayerData(t, e, a) {
-    let o = this.GetChatPlayerData(t);
-    var i = (o = o || this.AddChatPlayerData(t)).GetPlayerIcon();
-    var r = o.GetPlayerName();
-    var h = ModelManager_1.ModelManager.PersonalModel;
-    var n = h.GetPersonalInfoData();
-    if (n && n.PlayerId === t) {
-      o.SetPlayerIcon(h.GetHeadPhotoId());
-      o.SetPlayerName(n.Name);
+  RefreshChatPlayerData(t, e, a, o, i) {
+    let r = this.GetChatPlayerData(t);
+    var h = (r = r || this.AddChatPlayerData(t)).GetPlayerIcon();
+    var n = r.GetPlayerName();
+    var s = ModelManager_1.ModelManager.PersonalModel;
+    var C = s.GetPersonalInfoData();
+    if (C && C.PlayerId === t) {
+      r.SetPlayerIcon(s.GetHeadPhotoId());
+      r.SetPlayerName(C.Name);
     } else {
-      o.SetPlayerIcon(e);
-      o.SetPlayerName(a);
+      r.SetPlayerIcon(e);
+      r.SetPlayerName(a);
+      r.SetPlayerTitleId(o);
+      r.SetPlayerTitleExParam(i);
     }
-    if (i !== e || r !== a) {
+    if (h !== e || n !== a) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChatPlayerInfoChanged, t);
     }
   }
@@ -214,7 +216,7 @@ class ChatModel extends ModelBase_1.ModelBase {
       a.push(i);
       var i = ModelManager_1.ModelManager.FriendModel?.GetFriendById(o);
       if (i) {
-        this.RefreshChatPlayerData(o, i.PlayerHeadPhoto, i.PlayerName);
+        this.RefreshChatPlayerData(o, i.PlayerHeadPhoto, i.PlayerName, i.PlayerTitleId, i.PlayerTitleStarLevel);
       }
     }
     t.AddHistoryChatContent(a);

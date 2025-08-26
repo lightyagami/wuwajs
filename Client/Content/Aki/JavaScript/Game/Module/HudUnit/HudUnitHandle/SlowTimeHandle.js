@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SlowTimeHandle = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -13,78 +14,85 @@ const HudUnitHandleBase_1 = require("./HudUnitHandleBase");
 class SlowTimeHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
     super(...arguments);
-    this.pTu = undefined;
-    this.B9c = false;
-    this.k9c = false;
-    this.vTu = false;
+    this.qTu = undefined;
+    this.Tzu = false;
+    this.bzu = false;
+    this.GTu = false;
     this.DP_ = false;
-    this.wyu = (e, t) => {
-      this.B9c = e === 5;
-      this.O9c();
+    this.MEu = (e, t) => {
+      this.Tzu = e === 5;
+      this.Rzu();
     };
-    this.q9c = (e, t) => {
+    this.wzu = (e, t) => {
       if (e === 1) {
-        this.k9c = t;
-        this.O9c();
+        this.bzu = t;
+        this.Rzu();
       }
     };
     this.Pni = (e, t, i) => {
-      this.MTu();
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "UpdateTimeScaleStrength", ["value", t], ["id", e]);
+      }
+      this.VTu();
     };
   }
   OnInitialize() {
     super.OnInitialize();
-    this.k9c = ModelManager_1.ModelManager.BattleUiModel.GetRoleSpecialState(1);
+    this.bzu = ModelManager_1.ModelManager.BattleUiModel.GetRoleSpecialState(1);
   }
   OnDestroyed() {
-    this.ETu();
+    this.jTu();
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.wyu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.q9c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.wzu);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.AddValueListener(12, this.Pni);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.AddMaxListener(12, this.Pni);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.wyu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.q9c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.wzu);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveValueListener(12, this.Pni);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveMaxListener(12, this.Pni);
   }
-  O9c() {
-    this.vTu = this.B9c || this.k9c;
-    if (this.vTu) {
-      this.yTu();
-      this.pTu?.SetTranslucence(false);
+  Rzu() {
+    this.GTu = this.Tzu || this.bzu;
+    if (this.GTu) {
+      this.FTu();
+      this.qTu?.SetTranslucence(false);
     } else {
-      this.STu();
-      this.pTu?.SetTranslucence(true);
+      this.NTu();
+      this.qTu?.SetTranslucence(true);
     }
   }
-  MTu() {
+  VTu() {
     var e = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetMax(12);
     var t = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetValue(12);
     this.DP_ = e <= t;
-    this.pTu?.UpdateProgress(t, e);
-    this.STu();
+    this.qTu?.UpdateProgress(t, e);
+    this.NTu();
   }
-  yTu() {
-    this.pTu ||= this.NewHudUnitWithReturn(SlowTimeUnit_1.SlowTimeUnit, "UiView_SlowMotionProgress", true, () => {
-      this.MTu();
-      if (!this.vTu) {
-        this.pTu?.SetTranslucence(true);
-      }
-    });
-  }
-  STu() {
-    if (!this.vTu && this.DP_) {
-      this.ETu();
+  FTu() {
+    if (!this.qTu) {
+      this.qTu = this.NewHudUnitWithReturn(SlowTimeUnit_1.SlowTimeUnit, "UiView_SlowMotionProgress", true, () => {
+        this.VTu();
+        if (!this.GTu) {
+          this.qTu?.SetTranslucence(true);
+        }
+      });
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, true);
     }
   }
-  ETu() {
-    if (this.pTu) {
-      this.DestroyHudUnit(this.pTu);
-      this.pTu = undefined;
+  NTu() {
+    if (!this.GTu && this.DP_) {
+      this.jTu();
+    }
+  }
+  jTu() {
+    if (this.qTu) {
+      this.DestroyHudUnit(this.qTu);
+      this.qTu = undefined;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, false);
     }
   }
 }

@@ -305,7 +305,11 @@ class TeamListItem extends UiPanelBase_1.UiPanelBase {
     this.$Sn = undefined;
     this.nqe = () => {
       if (!UiManager_1.UiManager.IsViewShow("QuickRoleSelectView")) {
-        UiManager_1.UiManager.OpenView("QuickRoleSelectView", this.D5t());
+        UiManager_1.UiManager.OpenView("QuickRoleSelectView", this.D5t(), (e, i) => {
+          if (e) {
+            UiManager_1.UiManager.GetViewByName("MowingTowerMainView")?.AddChildViewById(i);
+          }
+        });
       }
     };
     this.X4t = i => {

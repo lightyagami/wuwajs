@@ -91,9 +91,9 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     if (i instanceof TsBaseCharacter_1.default && i.CharacterActorComponent?.Entity) {
       n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.CharacterActorComponent?.Entity.Id);
     } else if (i.IsA(UE.TsEffectActor_C.StaticClass())) {
-      (n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.OwnerEntityId)).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale;
+      (n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.OwnerEntityId)).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
     } else if (i.IsA(UE.EffectSystemActor.StaticClass())) {
-      (n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.GetOwnerEntityId())).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale;
+      (n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(i.GetOwnerEntityId())).IsSyncEffectTimeScale = this.IsSyncEffectTimeScale || (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered ?? false);
     } else {
       n = new SkeletalMeshEffectContext_1.SkeletalMeshEffectContext(undefined);
     }
@@ -126,6 +126,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
       AnimNotifyEffect.AttachEffectToSkillStat.Start();
       this.AttachEffectToSkill(t, e);
       AnimNotifyEffect.AttachEffectToSkillStat.Stop();
+      this.AttachEffectToSelfCentered(t, e);
       AnimNotifyEffect.SetupTransformStat.Start();
       this.SetupTransform(EffectSystem_1.EffectSystem.GetEffectActor(e), t);
       AnimNotifyEffect.SetupTransformStat.Stop();
@@ -133,7 +134,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     }
   }
   GameplayTagsCheck(t) {
-    var e = t.CharacterActorComponent?.Entity?.GetComponent(205);
+    var e = t.CharacterActorComponent?.Entity?.GetComponent(206);
     if (e) {
       var i = this.PlayNeedTags.Num();
       if (this.NeedAnyTag) {
@@ -181,6 +182,16 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
           }
         }
         e.AttachEffectToSkill(i, t, this.SocketName, this.WhenSkillEndEnableTime);
+      }
+    }
+  }
+  AttachEffectToSelfCentered(t, e) {
+    var i;
+    if (t instanceof TsBaseCharacter_1.default) {
+      if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(39)) || !i.CurrentSkill) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(288))?.Valid) {
+          i.AddEffect(e);
+        }
       }
     }
   }

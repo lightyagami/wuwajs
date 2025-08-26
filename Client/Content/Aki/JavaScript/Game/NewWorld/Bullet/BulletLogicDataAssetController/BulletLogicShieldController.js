@@ -84,8 +84,8 @@ class BulletLogicShieldController extends BulletLogicController_1.BulletLogicCon
   BulletLogicAction(i) {
     if (this.CheckCanDefense(i)) {
       if (this.shc) {
-        var t = i.Attacker?.GetComponent(174);
-        var e = this.a7o.Attacker?.GetComponent(174);
+        var t = i.Attacker?.GetComponent(175);
+        var e = this.a7o.Attacker?.GetComponent(175);
         if (t && e) {
           for (const o of this.shc) {
             t.AddBuff(Number(o), {
@@ -98,7 +98,7 @@ class BulletLogicShieldController extends BulletLogicController_1.BulletLogicCon
         }
       }
       if (this.ahc) {
-        var l = this.a7o.Attacker?.GetComponent(174);
+        var l = this.a7o.Attacker?.GetComponent(175);
         if (l) {
           for (const h of this.ahc) {
             l.AddBuff(Number(h), {

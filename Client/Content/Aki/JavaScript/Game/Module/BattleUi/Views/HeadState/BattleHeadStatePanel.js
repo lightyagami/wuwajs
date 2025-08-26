@@ -25,8 +25,11 @@ const EliteMonsterHeadStateView_1 = require("./EliteMonsterHeadStateView");
 const GuardianHeadState_1 = require("./GuardianHeadState");
 const HeadStateData_1 = require("./HeadStateData");
 const MingSuTiHeadState_1 = require("./MingSuTiHeadState");
+const MonsterNpcAttackHeadState_1 = require("./MonsterNpcAttackHeadState");
+const MonsterNpcAttackHeadStateData_1 = require("./MonsterNpcAttackHeadStateData");
 const ProgressControlHeadState_1 = require("./ProgressControlHeadState");
-const headStateViewMap = new Map([[1, CommonHeadState_1.CommonHeadState], [2, EliteMonsterHeadStateView_1.EliteMonsterHeadStateView], [4, MingSuTiHeadState_1.MingSuTiHeadState], [5, GuardianHeadState_1.GuardianHeadState], [6, DurabilityHeadState_1.DurabilityHeadState], [7, DurabilityDamageHeadState_1.DurabilityDamageHeadState], [8, DurabilityDamageHeadState_1.DurabilityDamageHeadState], [9, ProgressControlHeadState_1.ProgressControlHeadState], [10, ChargingDeviceHeadState_1.ChargingDeviceHeadState]]);
+const headStateViewMap = new Map([[1, CommonHeadState_1.CommonHeadState], [2, EliteMonsterHeadStateView_1.EliteMonsterHeadStateView], [4, MingSuTiHeadState_1.MingSuTiHeadState], [5, GuardianHeadState_1.GuardianHeadState], [6, DurabilityHeadState_1.DurabilityHeadState], [7, DurabilityDamageHeadState_1.DurabilityDamageHeadState], [8, DurabilityDamageHeadState_1.DurabilityDamageHeadState], [9, ProgressControlHeadState_1.ProgressControlHeadState], [10, ChargingDeviceHeadState_1.ChargingDeviceHeadState], [11, MonsterNpcAttackHeadState_1.MonsterNpcAttackHeadState]]);
+const specialHeadStateDataMap = new Map([[11, MonsterNpcAttackHeadStateData_1.MonsterNpcAttackHeadStateData]]);
 class BattleHeadStatePanel {
   constructor() {
     this.olt = new Map();
@@ -148,7 +151,7 @@ class BattleHeadStatePanel {
     this.Tlt = t => {
       this.Slt(t);
     };
-    this.tWc = (t, e) => {
+    this.RQu = (t, e) => {
       e = this.EO1.get(e);
       if (e) {
         e.push(t);
@@ -336,7 +339,7 @@ class BattleHeadStatePanel {
       var i = this.plt(a);
       if (i) {
         if (!this.olt.has(a)) {
-          (i = new HeadStateData_1.HeadStateData()).Initialize(t);
+          (i = new (specialHeadStateDataMap.get(i) ?? HeadStateData_1.HeadStateData)()).Initialize(t);
           i.SetOriginalHp(e ?? 0);
           this.olt.set(a, i);
           return i;
@@ -410,7 +413,7 @@ class BattleHeadStatePanel {
         Log_1.Log.Info("Battle", 17, "[HeadState]休眠头顶状态条", ["EntityId", t]);
       }
       if (this.EO1.has(a.HeadStateType)) {
-        a.RecycleHeadStateView(this.tWc);
+        a.RecycleHeadStateView(this.RQu);
       } else {
         a.DestroyHeadStateView();
       }
@@ -438,7 +441,7 @@ class BattleHeadStatePanel {
     return !!t?.Valid && t.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
   }
   Flh(t) {
-    return !!this.vlt(t) && !!(t = t.GetComponent(129))?.Valid && !!(t = t.GetProgressData()) && t.ProgressCtrlType === "ChargingDevice";
+    return !!this.vlt(t) && !!(t = t.GetComponent(130))?.Valid && !!(t = t.GetProgressData()) && t.ProgressCtrlType === "ChargingDevice";
   }
   plt(t) {
     t = EntitySystem_1.EntitySystem.Get(t).GetComponent(0);

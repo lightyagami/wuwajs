@@ -5,11 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ShipTowerTeamTabItem = undefined;
 const UE = require("ue");
+const RedDotController_1 = require("../../../RedDot/RedDotController");
 const CommonTabItemBase_1 = require("../../Common/TabComponent/TabItem/CommonTabItemBase");
 const UiTabSequence_1 = require("../../DynamicTab/UiTabViewBehavior/UiTabSequence");
 class ShipTowerTeamTabItem extends CommonTabItemBase_1.CommonTabItemBase {
   constructor() {
     super(...arguments);
+    this.l4e = undefined;
     this.hHe = e => {
       if (e === 1) {
         this.SelectedCallBack(this.GridIndex);
@@ -30,7 +32,7 @@ class ShipTowerTeamTabItem extends CommonTabItemBase_1.CommonTabItemBase {
   OnSetToggleState(e, t) {
     this.GetTabToggle().SetToggleStateForce(e, t);
   }
-  OnRefresh(e, t, s) {
+  OnRefresh(e, t, i) {
     if (e.Data) {
       this.UpdateTabIcon(e.Data.GetIcon());
     }
@@ -46,7 +48,37 @@ class ShipTowerTeamTabItem extends CommonTabItemBase_1.CommonTabItemBase {
     this.GetText(1).SetText(e);
   }
   UpdateRedDotVisible(e) {
-    this.GetItem(2).SetUIActive(e);
+    this.Oid().SetUIActive(e);
+  }
+  Oid() {
+    return this.GetItem(2);
+  }
+  BindRedDot(e, t = 0) {
+    this.UnBindRedDot();
+    this.l4e = e;
+    if (this.l4e) {
+      RedDotController_1.RedDotController.BindRedDot(e, this.Oid(), undefined, t);
+    }
+  }
+  BindGivenUid(e, t) {
+    this.l4e = e;
+    if (this.l4e) {
+      RedDotController_1.RedDotController.BindRedDot(e, this.Oid(), undefined, t);
+    }
+  }
+  UnBindGivenUid(e) {
+    if (this.l4e) {
+      RedDotController_1.RedDotController.UnBindGivenUi(this.l4e, this.Oid(), e);
+    }
+  }
+  UnBindRedDot() {
+    if (this.l4e) {
+      RedDotController_1.RedDotController.UnBindRedDot(this.l4e);
+      this.l4e = undefined;
+    }
+  }
+  OnBeforeDestroy() {
+    this.UnBindGivenUid(0);
   }
 }
 exports.ShipTowerTeamTabItem = ShipTowerTeamTabItem;

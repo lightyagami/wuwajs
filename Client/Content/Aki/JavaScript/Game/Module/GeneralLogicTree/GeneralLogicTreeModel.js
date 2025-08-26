@@ -32,6 +32,7 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.DisableInput = false;
     this.nno = 0;
     this.HistorySoarScore = 0;
+    this.GuaranteeActionsWhenLogicTreeRemove = undefined;
   }
   OnInit() {
     this.dYt = BigInt(0);
@@ -40,6 +41,7 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.gYt = new Map();
     this.fYt = new Map();
     this.pKs = new Map();
+    this.GuaranteeActionsWhenLogicTreeRemove = new Map();
     return true;
   }
   OnLeaveLevel() {
@@ -64,7 +66,9 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     this.fYt?.clear();
     this.fYt = undefined;
     this.c$1?.clear();
-    return !(this.c$1 = undefined);
+    this.c$1 = undefined;
+    this.GuaranteeActionsWhenLogicTreeRemove?.clear();
+    return !(this.GuaranteeActionsWhenLogicTreeRemove = undefined);
   }
   SetTimerUiOwnerId(e) {
     this.dYt = e;
@@ -73,20 +77,20 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     return this.dYt === e;
   }
   CreateBehaviorTree(i) {
-    var r = MathUtils_1.MathUtils.LongToBigInt(i.C9n);
-    let t = this.CYt.get(r);
-    if (t) {
-      t.Recover(i);
-      return t;
+    var t = MathUtils_1.MathUtils.LongToBigInt(i.C9n);
+    let r = this.CYt.get(t);
+    if (r) {
+      r.Recover(i);
+      return r;
     }
-    let n = !this.IsWakeUp;
+    let o = !this.IsWakeUp;
     switch (i.hps) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
-        var o = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i.sEs);
-        if (o) {
-          s = o.IsHideInTaskList || o.Type === 11;
-          t = new BaseBehaviorTree_1.BaseBehaviorTree(r, i.sEs, i.hps, o.DungeonId, o.QuestMarkId, o.OnlineType, o.GetUiPriority(), o.IsNewQuest, s);
-          o.SetUpBehaviorTree(t);
+        var n = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i.sEs);
+        if (n) {
+          s = n.IsHideInTaskList || n.Type === 11;
+          r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, n.DungeonId, n.QuestMarkId, n.OnlineType, n.GetUiPriority(), n.IsNewQuest, s);
+          n.SetUpBehaviorTree(r);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("GeneralLogicTree", 18, "创建任务行为树时：任务不存在", ["任务Id", i.sEs]);
         }
@@ -104,30 +108,30 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
           if (s.CustomIconId !== 0) {
             e = ConfigManager_1.ConfigManager.MapConfig.GetTaskMarkConfig(s.CustomIconId)?.MarkId;
           }
-          (t = new BaseBehaviorTree_1.BaseBehaviorTree(r, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e ?? GeneralLogicTreeDefine_1.COMMONLEVELPLAY_TRACKICONID, s.OnlineType, s.GetUiPriority())).SetUseInnerTrackIconId(e !== undefined);
-          s.SetUpBehaviorTree(t);
+          (r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e ?? GeneralLogicTreeDefine_1.COMMONLEVELPLAY_TRACKICONID, s.OnlineType, s.GetUiPriority())).SetUseInnerTrackIconId(e !== undefined);
+          s.SetUpBehaviorTree(r);
           break;
         }
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeInst:
         {
-          o = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
-          if (!o) {
+          n = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
+          if (!n) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("GeneralLogicTree", 18, "创建副本行为树时：副本不存在", ["副本Id", i.sEs]);
             }
             break;
           }
           let e = GeneralLogicTreeDefine_1.COMMONLEVELPLAY_TRACKICONID;
-          switch (o.SubType) {
+          switch (n.SubType) {
             case 2:
               e = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMarkId(1);
               break;
             case 1:
               e = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestTypeMarkId(3);
           }
-          n = !ModelManager_1.ModelManager.GameModeModel.WorldDone;
-          t = new BaseBehaviorTree_1.BaseBehaviorTree(r, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e, o.OnlineType, o.GetUiPriority());
-          o.SetUpBehaviorTree(t);
+          o = !ModelManager_1.ModelManager.GameModeModel.WorldDone;
+          r = new BaseBehaviorTree_1.BaseBehaviorTree(t, i.sEs, i.hps, ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), e, n.OnlineType, n.GetUiPriority());
+          n.SetUpBehaviorTree(r);
           break;
         }
       default:
@@ -135,18 +139,18 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
           Log_1.Log.Error("GeneralLogicTree", 18, "创建行为树时找不到对应的行为树类型", ["行为树类型Id", i.hps]);
         }
     }
-    if (t) {
-      this.CYt.set(r, t);
-      this.fYt.set(r, i.d9n);
+    if (r) {
+      this.CYt.set(t, r);
+      this.fYt.set(t, i.d9n);
       let e = this.gYt.get(i.hps);
       if (!e) {
         e = new Map();
         this.gYt.set(i.hps, e);
       }
-      e.set(r, t);
-      t.InitTree(i, n);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCreateBehaviorTree, r);
-      return t;
+      e.set(t, r);
+      r.InitTree(i, o);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCreateBehaviorTree, t);
+      return r;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("GeneralLogicTree", 18, "创建行为树失败", ["行为树类型Id", i.hps], ["行为树Id", i.sEs]);
@@ -173,9 +177,9 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     }
   }
   GetBehaviorTree(e, i = false) {
-    var r = this.CYt.get(e);
-    if (r || !i) {
-      return r;
+    var t = this.CYt.get(e);
+    if (t || !i) {
+      return t;
     } else {
       return this.c$1.get(e);
     }
@@ -189,16 +193,16 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
     return this.CYt;
   }
   SaveUpdateInfo(e, i) {
-    var r;
     var t;
-    var n;
+    var r;
+    var o;
     var e = this.GetBehaviorTree(e);
     if (e) {
-      n = (e = e.GetBlackBoard()).CreateShowData();
-      r = e.ContainTag(8);
-      t = ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode() !== "Disabled";
-      n = new MissionViewDefine_1.QuestUpdateTipsShowData(n, t, r, i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.QuestUpdateInfoAdd, n);
+      o = (e = e.GetBlackBoard()).CreateShowData();
+      t = e.ContainTag(8);
+      r = ModelManager_1.ModelManager.AutoRunModel.GetAutoRunMode() !== "Disabled";
+      o = new MissionViewDefine_1.QuestUpdateTipsShowData(o, r, t, i);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.QuestUpdateInfoAdd, o);
       e.RemoveTag(8);
     }
   }

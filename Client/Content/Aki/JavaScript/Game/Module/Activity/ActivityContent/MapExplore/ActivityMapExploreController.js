@@ -33,7 +33,7 @@ class ActivityMapExploreController extends ActivityControllerBase_1.ActivityCont
     return this.Data;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17900, e => {
+    Net_1.Net.Register(21438, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Temp", 69, "stc", ["", e]);
       }
@@ -42,7 +42,7 @@ class ActivityMapExploreController extends ActivityControllerBase_1.ActivityCont
     });
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17900);
+    Net_1.Net.UnRegister(21438);
   }
   async RequestGetReward(e) {
     var t = new Protocol_1.Aki.Protocol.atc();
@@ -50,12 +50,12 @@ class ActivityMapExploreController extends ActivityControllerBase_1.ActivityCont
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Temp", 69, "atc", ["", t]);
     }
-    var e = await Net_1.Net.CallAsync(17447, t);
+    var e = await Net_1.Net.CallAsync(25047, t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Temp", 69, "htc", ["", e]);
     }
     if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17447);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25047);
     }
   }
   rqc() {

@@ -36,7 +36,7 @@ class FloroRanchHandBookSmallSlotItem extends GridProxyAbstract_1.GridProxyAbstr
   async RefreshAsync(t, e, a) {
     this.Data = t;
     var i;
-    var o = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchRarity(t.GetCardRarity());
+    var o = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchRarity(t.GetRarity());
     this.GetTexture(2)?.SetUIActive(t.IsUnLock);
     this.GetItem(11)?.SetUIActive(!t.IsUnLock);
     let s = new Set();

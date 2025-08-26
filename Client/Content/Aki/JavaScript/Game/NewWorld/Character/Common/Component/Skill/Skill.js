@@ -117,11 +117,11 @@ class Skill {
   }
   Initialize(t, i, s) {
     this.cBe = s;
-    this.$zo = s.Entity.GetComponent(174);
-    this.Lie = s.Entity.GetComponent(205);
+    this.$zo = s.Entity.GetComponent(175);
+    this.Lie = s.Entity.GetComponent(206);
     this.Hte = s.Entity.GetComponent(3);
     this.C51 = s.Entity.GetComponent(25);
-    this.vHr = s.Entity.GetComponent(122);
+    this.vHr = s.Entity.GetComponent(123);
     this.bzo = t;
     this.Nzo = i;
     this.qzo = false;

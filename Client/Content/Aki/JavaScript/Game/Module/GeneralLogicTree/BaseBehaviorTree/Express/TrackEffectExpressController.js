@@ -61,17 +61,17 @@ class TrackEffectExpressController {
   }
   UpdateOnChildQuestNodeStatusChange(t, e, i) {
     var s = t.TrackTarget;
-    if (s && s.EffectOption && (e && this.HX1(t.NodeId, s.EffectOption, this.Yre.IsTracking), i)) {
-      this.$X1(t.NodeId);
+    if (s && s.EffectOption && (e && this.gY1(t.NodeId, s.EffectOption, this.Yre.IsTracking), i)) {
+      this.CY1(t.NodeId);
     }
   }
-  HX1(t, e, i) {
+  gY1(t, e, i) {
     t = this.FQt(t, e);
     if (i) {
       t.Start();
     }
   }
-  $X1(t) {
+  CY1(t) {
     this.GetNodeTrackMarkCreator(t)?.End();
     this.kQt.delete(t);
   }

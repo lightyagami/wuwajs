@@ -34,7 +34,7 @@ class FlowActionSetEntityVisible extends FlowActionServerAction_1.FlowActionServ
       for (const r of t.EntityIds) {
         var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
         if (n) {
-          this.dLu(r, n.Entity, t.Visible, t.PerformDestroy, i);
+          this.RLu(r, n.Entity, t.Visible, t.PerformDestroy, i);
         } else {
           o.push(r);
         }
@@ -50,7 +50,9 @@ class FlowActionSetEntityVisible extends FlowActionServerAction_1.FlowActionServ
     };
   }
   OnExecute() {
-    if (this.ActionInfo.Params) {
+    if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      this.FinishExecute(true);
+    } else if (this.ActionInfo.Params) {
       var t = this.ActionInfo.Params;
       if (t.EntityIds?.length) {
         let e = false;
@@ -80,12 +82,12 @@ class FlowActionSetEntityVisible extends FlowActionServerAction_1.FlowActionServ
       this.FinishExecute(true);
     }
   }
-  dLu(t, o, i, n, r) {
+  RLu(t, o, i, n, r) {
     if (i) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(o, true, "FlowActionSetEntityVisible.OnEntityReady");
     } else {
       var i = o.GetComponent(0).GetPbEntityInitData();
-      var l = o.GetComponent(133);
+      var l = o.GetComponent(134);
       let e = false;
       if (n && i) {
         n = (0, IComponent_1.getComponent)(i?.ComponentsData, "SceneItemLifeCycleComponent");

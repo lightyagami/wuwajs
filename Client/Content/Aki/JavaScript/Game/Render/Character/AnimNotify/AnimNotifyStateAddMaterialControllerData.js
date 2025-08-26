@@ -35,7 +35,7 @@ class AnimNotifyStateAddMaterialControllerData extends UE.KuroAnimNotifyState {
           var i = (e = a instanceof TsBaseCharacter_1.default ? a.CharacterActorComponent?.GetReplaceEffect(UE.KismetSystemLibrary.GetPathName(this.MaterialAssetData)) : e) ? ResourceSystem_1.ResourceSystem.Load(e, UE.PD_CharacterControllerData_C) : this.MaterialAssetData;
           o = t.AddMaterialControllerDataWithAnimObject(i, r, undefined);
         } else {
-          o = a instanceof TsUiSceneRoleActor_1.default ? a.Model.CheckGetComponent(5).AddRenderingMaterialByData(this.MaterialAssetData) : ((t = a.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())) || ((t = a.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, new UE.Transform(), false)).Init(8), t.SetLogicOwner(a)), t.AddMaterialControllerDataWithAnimObject(this.MaterialAssetData, r, undefined));
+          o = a instanceof TsUiSceneRoleActor_1.default ? a.Model.CheckGetComponent(5).AddRenderingMaterialWithAnimObject(this.MaterialAssetData, r) : ((t = a.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())) || ((t = a.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, new UE.Transform(), false)).Init(8), t.SetLogicOwner(a)), t.AddMaterialControllerDataWithAnimObject(this.MaterialAssetData, r, undefined));
         }
         if (o >= 0) {
           let e = materialControllerStateHandleMap.get(r);

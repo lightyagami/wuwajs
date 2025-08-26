@@ -231,14 +231,14 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
           b5n: this.NodeId,
           g9n: e
         });
-        Net_1.Net.Call(21097, t, e => {
+        Net_1.Net.Call(28747, t, e => {
           switch (e.BEs) {
             case Protocol_1.Aki.Protocol.Q4n.KRs:
             case Protocol_1.Aki.Protocol.Q4n.Proto_ErrNotInSneak:
             case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBehaviorTreeNotFound:
               break;
             default:
-              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 18663);
+              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 24781);
           }
         });
       }
@@ -262,9 +262,9 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
         C9n: MathUtils_1.MathUtils.BigIntToLong(this.TreeIncId),
         b5n: this.NodeId
       });
-      Net_1.Net.Call(16025, e, e => {
+      Net_1.Net.Call(17693, e, e => {
         if (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 17117);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 21183);
         }
       });
     };
@@ -336,7 +336,7 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     this.B$t(true);
     this.A$t = true;
-    Net_1.Net.Register(20812, e => {
+    Net_1.Net.Register(20535, e => {
       e = Number(MathUtils_1.MathUtils.LongToBigInt(e.dps));
       this.R$t = e !== 0;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSneakFoundChange, this.R$t, e);
@@ -348,9 +348,9 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
         d9n: e,
         C9n: MathUtils_1.MathUtils.BigIntToLong(this.TreeIncId)
       });
-      Net_1.Net.Call(28782, e, e => {
+      Net_1.Net.Call(15223, e, e => {
         if (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 28201);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 24266);
         }
       });
     }
@@ -361,7 +361,7 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     }
     if (this.A$t) {
-      Net_1.Net.UnRegister(20812);
+      Net_1.Net.UnRegister(20535);
       this.A$t = false;
     }
   }
@@ -374,7 +374,7 @@ class QuestFailedBehaviorNode extends BehaviorNodeBase_1.BehaviorNodeBase {
     }
   }
   B$t(e) {
-    var t = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(174);
+    var t = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(175);
     if (t?.Valid) {
       if (e) {
         t.AddBuff(CharacterBuffIds_1.buffId.StealthIgnoreHateBuff, {

@@ -212,8 +212,8 @@ let LevelTagComponent = class LevelTagComponent extends BaseTagComponent_1.BaseT
       yield t;
     }
   }
-  OnAnyTagChanged(t, e, a) {
-    if (t !== undefined && a !== e && !(super.OnAnyTagChanged(t, e, a), this.Jrn.has(t))) {
+  OnAnyTagChanged(t, e, a, i) {
+    if (t !== undefined && a !== e && !(super.OnAnyTagChanged(t, e, a, i), this.Jrn.has(t))) {
       this.Jrn.set(t, a);
     }
   }
@@ -226,5 +226,5 @@ let LevelTagComponent = class LevelTagComponent extends BaseTagComponent_1.BaseT
     return false;
   }
 };
-LevelTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(196)], LevelTagComponent);
+LevelTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(197)], LevelTagComponent);
 exports.LevelTagComponent = LevelTagComponent; //# sourceMappingURL=LevelTagComponent.js.map

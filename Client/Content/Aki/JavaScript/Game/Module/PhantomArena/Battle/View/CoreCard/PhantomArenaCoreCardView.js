@@ -18,7 +18,7 @@ class PhantomArenaCoreCardView extends UiViewBase_1.UiViewBase {
     this.lPe = () => {
       this.CloseMe();
     };
-    this.R_u = (e, t) => {
+    this._1u = (e, t) => {
       if (e === "Start" && t === "Update") {
         this.UiViewSequence?.PlaySequencePurely("Update");
       }
@@ -34,8 +34,8 @@ class PhantomArenaCoreCardView extends UiViewBase_1.UiViewBase {
   OnStart() {
     this.Pe = this.OpenParam;
     this.Li1();
-    this.mTu();
-    this.L_u();
+    this.DTu();
+    this.u1u();
   }
   OnBeforeDestroy() {
     this.Pe.Callback?.();
@@ -50,7 +50,7 @@ class PhantomArenaCoreCardView extends UiViewBase_1.UiViewBase {
     this.CardItem.Refresh(e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.Name);
   }
-  mTu() {
+  DTu() {
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.TaskData.IsAllFinish;
     this.GetText(1)?.SetUIActive(!e);
     if (!e) {
@@ -59,9 +59,9 @@ class PhantomArenaCoreCardView extends UiViewBase_1.UiViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.CoreDesc);
     }
   }
-  L_u() {
+  u1u() {
     if (ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.TaskData.IsAllFinish) {
-      this.RootActor.OnSequencePlayEvent.Bind(this.R_u);
+      this.RootActor.OnSequencePlayEvent.Bind(this._1u);
     }
   }
 }

@@ -79,7 +79,7 @@ let BaseAbilityComponent = BaseAbilityComponent_1 = class BaseAbilityComponent e
       this.Pbr.SetComponentTickEnabled(false);
       this.RefreshMeshAnim();
       this.InitClass();
-      this.Xte = this.Entity.CheckGetComponent(205);
+      this.Xte = this.Entity.CheckGetComponent(206);
       this.vVs = this.CreateGameplayEventTask(this.SVs);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
       return true;

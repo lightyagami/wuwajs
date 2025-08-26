@@ -58,7 +58,7 @@ class RogueBattleTeamEditSlot extends UiPanelBase_1.UiPanelBase {
     this.GetText(6).SetText((this.Index + 1).toString());
     if (e === 0) {
       this.GetItem(1)?.SetUIActive(false);
-      this.i$c(e);
+      this.djc(e);
       this.ConfigId = e;
     } else {
       this.GetItem(1)?.SetUIActive(true);
@@ -106,12 +106,12 @@ class RogueBattleTeamEditSlot extends UiPanelBase_1.UiPanelBase {
           }
         });
         this.RunAsyncTask(n);
-        this.i$c(e);
+        this.djc(e);
         this.ConfigId = e;
       }
     }
   }
-  i$c(e) {
+  djc(e) {
     if (this.ConfigId !== e) {
       if (e === 0) {
         this.SPe?.StopSequenceByKey("PlayerIn", false, false);

@@ -26,7 +26,7 @@ class PhantomArenaCardRewardView extends UiViewBase_1.UiViewBase {
         this.CloseMe();
       }
     };
-    this.vCu = e => {
+    this.C0u = e => {
       if (e === "CardChange" && this.IsWaitingChange) {
         this.RefreshByCardId(this.CardId);
       }
@@ -48,10 +48,10 @@ class PhantomArenaCardRewardView extends UiViewBase_1.UiViewBase {
     this.RefreshByCardId(this.CardId);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.vCu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.C0u);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.vCu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.C0u);
   }
   RefreshByCardId(e) {
     this.eVi.Refresh(e);

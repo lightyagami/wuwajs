@@ -93,6 +93,7 @@ class ActivitySubViewGeneralInfo extends ActivitySubViewBase_1.ActivitySubViewBa
   }
   HideRemainTime() {
     this.w$1 = true;
+    this.LNe.SetTimeTextVisible(false);
   }
   SetBtnText(t, ...i) {
     this.ANe?.FunctionButton?.SetLocalTextNew(t, i);
@@ -105,6 +106,9 @@ class ActivitySubViewGeneralInfo extends ActivitySubViewBase_1.ActivitySubViewBa
   }
   SetRewardButtonFunction(t) {
     this.ANe?.SetRewardButtonFunction(t);
+  }
+  SetPanelTipVisible(t) {
+    this.ANe?.SetPanelTipVisible(t);
   }
   SetSubTitleTextById(t) {
     this.LNe.SetSubTitleVisible(true);

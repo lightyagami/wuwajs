@@ -21,6 +21,7 @@ const InputDistributeDefine_1 = require("../../Ui/InputDistribute/InputDistribut
 const UiManager_1 = require("../../Ui/UiManager");
 const UiModel_1 = require("../../Ui/UiModel");
 const ActivityDirectTrainHelper_1 = require("../Activity/ActivityContent/DirectTrain/ActivityDirectTrainHelper");
+const EditFormationController_1 = require("../EditFormation/EditFormationController");
 const MailBindController_1 = require("../MailBind/MailBindController");
 const TutorialController_1 = require("../Tutorial/TutorialController");
 class FunctionController extends UiControllerBase_1.UiControllerBase {
@@ -33,7 +34,7 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     this.K9t.set(10018, FunctionController.z9t);
     this.K9t.set(10015, FunctionController.Fut);
     this.K9t.set(10019, FunctionController.Z9t);
-    this.K9t.set(10007, FunctionController.e7t);
+    this.K9t.set(10007, EditFormationController_1.EditFormationController.OpenEditFormationView);
     this.K9t.set(10011, FunctionController.t7t);
     this.K9t.set(10010, FunctionController.i7t);
     this.K9t.set(10009, FunctionController.o7t);
@@ -55,7 +56,7 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     this.K9t.set(10021, FunctionController.f7t);
     this.K9t.set(10072, FunctionController.jtl);
     this.K9t.set(10086, FunctionController.D71);
-    this.K9t.set(10095, FunctionController.Vpu);
+    this.K9t.set(10095, FunctionController.Fvu);
     return true;
   }
   static InitFunctionOpenViewLimit() {
@@ -109,9 +110,9 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   static async E7t(n) {
     var o = Protocol_1.Aki.Protocol.Krs.create();
     o.d6n = n;
-    var o = await Net_1.Net.CallAsync(17826, o);
+    var o = await Net_1.Net.CallAsync(21595, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26448);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25084);
       return false;
     } else {
       ModelManager_1.ModelManager.FunctionModel.RefreshInfoManualState(n);
@@ -158,17 +159,17 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     return this.p7t.has(n);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18311, n => {
+    Net_1.Net.Register(25685, n => {
       ModelManager_1.ModelManager.FunctionModel.SetFunctionOpenInfo(n);
     });
-    Net_1.Net.Register(19866, n => {
+    Net_1.Net.Register(25221, n => {
       ModelManager_1.ModelManager.FunctionModel.UpdateFunctionOpenInfo(n);
       FunctionController.TryOpenFunctionOpenView();
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18311);
-    Net_1.Net.UnRegister(19866);
+    Net_1.Net.UnRegister(25685);
+    Net_1.Net.UnRegister(25221);
   }
   static async mXa() {
     if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId())) === 1) {
@@ -263,9 +264,6 @@ FunctionController.Z9t = () => {
 FunctionController.Fut = () => {
   ControllerHolder_1.ControllerHolder.WorldMapController.OpenView(1, false);
 };
-FunctionController.e7t = () => {
-  UiManager_1.UiManager.OpenView("EditFormationView");
-};
 FunctionController.z9t = () => {
   UiManager_1.UiManager.OpenView("TimeOfDaySecondView");
 };
@@ -315,8 +313,9 @@ FunctionController.jtl = () => {
 };
 FunctionController.D71 = () => {
   ControllerHolder_1.ControllerHolder.ChannelController.OpenGameIntroduction();
+  ModelManager_1.ModelManager.KuroSdkModel.SaveCurrentClickIntroductionVersion();
 };
-FunctionController.Vpu = () => {
+FunctionController.Fvu = () => {
   ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.TryOpenPro(false);
 };
 FunctionController.f7t = () => {

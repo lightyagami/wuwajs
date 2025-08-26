@@ -68,7 +68,7 @@ let CustomAudioControlComponent = CustomAudioControlComponent_1 = class CustomAu
         this.Q1n(true);
         break;
       case IComponent_1.EAudioRangeType.SceneActorRefComp:
-        this.Hi_ = this.Entity.GetComponent(163);
+        this.Hi_ = this.Entity.GetComponent(164);
         if (!this.Hi_) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Entity", 39, "SceneItemReferenceComponent不存在", ["ConfigId", this.EIe?.GetPbDataId()]);
@@ -128,5 +128,5 @@ let CustomAudioControlComponent = CustomAudioControlComponent_1 = class CustomAu
     }
   }
 };
-CustomAudioControlComponent = CustomAudioControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(132)], CustomAudioControlComponent);
+CustomAudioControlComponent = CustomAudioControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], CustomAudioControlComponent);
 exports.CustomAudioControlComponent = CustomAudioControlComponent; //# sourceMappingURL=CustomAudioControlComponent.js.map

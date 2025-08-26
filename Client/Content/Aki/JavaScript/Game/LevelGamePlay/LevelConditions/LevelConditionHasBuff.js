@@ -20,12 +20,12 @@ class LevelConditionHasBuff extends LevelGeneralBase_1.LevelConditionBase {
       return false;
     }
     var t = t.CharacterActorComponent.Entity;
-    var a = t.CheckGetComponent(174);
+    var a = t.CheckGetComponent(175);
     if (!a) {
       return false;
     }
     let s = a.GetBuffTotalStackById(l) > 0;
-    a = t.CheckGetComponent(190);
+    a = t.CheckGetComponent(191);
     if (a) {
       s ||= (a.GetFormationBuffComp()?.GetBuffTotalStackById(l) ?? 0) > 0;
     }

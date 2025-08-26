@@ -3,12 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ForeverTimeScaleEffect = exports.ModifyBuffTimeScale = exports.BuffOverStackCompensation = exports.AdditionBulletInterval = exports.AdditionBulletDuration = exports.AdditionBulletSize = exports.ExtraEffectModifyBuffMaxStack = exports.ModifyBuffDurationOrPeriodByInstigator = exports.ModifyBuffDurationOrPeriod = exports.PreventReduceStack = exports.ModifyToughReduce = exports.AddBuffToVision = exports.FrozenEffect = exports.AddPassiveSkill = exports.TimeScaleEffect = exports.LockLowerBound = exports.LockUpperBound = exports.LockValue = exports.ShieldEffect = undefined;
+exports.SyncTimeScaleEffect = exports.ForeverTimeScaleEffect = exports.ModifyBuffTimeScale = exports.BuffOverStackCompensation = exports.AdditionBulletInterval = exports.AdditionBulletDuration = exports.AdditionBulletSize = exports.ExtraEffectModifyBuffMaxStack = exports.ModifyBuffDurationOrPeriodByInstigator = exports.ModifyBuffDurationOrPeriod = exports.PreventReduceStack = exports.ModifyToughReduce = exports.AddBuffToVision = exports.FrozenEffect = exports.AddPassiveSkill = exports.TimeScaleEffect = exports.LockLowerBound = exports.LockUpperBound = exports.LockValue = exports.ShieldEffect = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../../../Core/Common/Log");
 const Macro_1 = require("../../../../../../../Core/Preprocessor/Macro");
 const ResourceSystem_1 = require("../../../../../../../Core/Resource/ResourceSystem");
 const DataTableUtil_1 = require("../../../../../../../Core/Utils/DataTableUtil");
+const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
 const PanelQteController_1 = require("../../../../../../Module/PanelQte/PanelQteController");
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
 const AbilityEvent_1 = require("../AbilityEvent");
@@ -46,11 +48,11 @@ class LockValue extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    this.OwnerEntity?.CheckGetComponent(172)?.AddStateAttributeLock(this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
+    this.OwnerEntity?.CheckGetComponent(173)?.AddStateAttributeLock(this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
   }
   OnExecute() {}
   OnRemoved() {
-    this.OwnerEntity?.CheckGetComponent(172)?.RemoveStateAttributeLock(this.ActiveHandleId, this.AttributeId);
+    this.OwnerEntity?.CheckGetComponent(173)?.RemoveStateAttributeLock(this.ActiveHandleId, this.AttributeId);
   }
   GetDebugEffectString() {
     return `锁定属性${this.AttributeId}为${this.Percent}% + ${this.Offset}`;
@@ -73,11 +75,11 @@ class LockUpperBound extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    this.OwnerEntity?.CheckGetComponent(172)?.AddIntervalLock(0, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
+    this.OwnerEntity?.CheckGetComponent(173)?.AddIntervalLock(0, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
   }
   OnExecute() {}
   OnRemoved() {
-    this.OwnerEntity?.CheckGetComponent(172)?.RemoveIntervalLock(0, this.ActiveHandleId, this.AttributeId);
+    this.OwnerEntity?.CheckGetComponent(173)?.RemoveIntervalLock(0, this.ActiveHandleId, this.AttributeId);
   }
   GetDebugEffectString() {
     return `锁定属性${this.AttributeId}的上限为${(this.Percent / 100).toFixed(1)}% + ${this.Offset}`;
@@ -100,11 +102,11 @@ class LockLowerBound extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    this.OwnerEntity?.CheckGetComponent(172)?.AddIntervalLock(1, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
+    this.OwnerEntity?.CheckGetComponent(173)?.AddIntervalLock(1, this.ActiveHandleId, this.AttributeId, this.Percent, this.Offset);
   }
   OnExecute() {}
   OnRemoved() {
-    this.OwnerEntity?.CheckGetComponent(172)?.RemoveIntervalLock(1, this.ActiveHandleId, this.AttributeId);
+    this.OwnerEntity?.CheckGetComponent(173)?.RemoveIntervalLock(1, this.ActiveHandleId, this.AttributeId);
   }
   GetDebugEffectString() {
     return `锁定属性${this.AttributeId}的下限为${(this.Percent / 100).toFixed(1)}% + ${this.Offset}`;
@@ -275,7 +277,7 @@ class AddBuffToVision extends ExtraEffectBase_1.BuffEffect {
         Log_1.Log.Warn("Bullet", 35, "没有父Buff的上下文信息");
       }
     }
-    var s = t?.GetComponent(174);
+    var s = t?.GetComponent(175);
     if (s) {
       for (const i of this.BuffIds) {
         s.AddBuff(i, {
@@ -288,7 +290,7 @@ class AddBuffToVision extends ExtraEffectBase_1.BuffEffect {
   }
   OnExecute() {}
   OnRemoved() {
-    var t = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.OwnerEntity, this.SummonType)?.Entity?.GetComponent(174);
+    var t = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.OwnerEntity, this.SummonType)?.Entity?.GetComponent(175);
     if (t) {
       for (const e of this.BuffIds) {
         t.RemoveBuff(e, -1, `召唤者的buff${this.BuffId}移除`);
@@ -309,7 +311,7 @@ class ModifyToughReduce extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnCreated() {
-    var t = this.OwnerEntity?.CheckGetComponent(172);
+    var t = this.OwnerEntity?.CheckGetComponent(173);
     if (t) {
       this.ModifierHandle = t.AddModifier(CharacterAttributeTypes_1.EAttributeId.Proto_ToughReduce, {
         Type: -1,
@@ -319,7 +321,7 @@ class ModifyToughReduce extends ExtraEffectBase_1.BuffEffect {
   }
   OnExecute() {}
   OnRemoved() {
-    var t = this.OwnerEntity?.CheckGetComponent(172);
+    var t = this.OwnerEntity?.CheckGetComponent(173);
     if (t) {
       t.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.Proto_ToughReduce, this.ModifierHandle);
     }
@@ -603,8 +605,8 @@ exports.BuffOverStackCompensation = BuffOverStackCompensation;
 class ModifyBuffTimeScale extends ExtraEffectBase_1.BuffEffect {
   constructor() {
     super(...arguments);
-    this.pbu = false;
-    this.vbu = false;
+    this.qbu = false;
+    this.Gbu = false;
     this.jQo = [];
     this.bge = 1;
     this.OnBuffAdd = (t, e) => {
@@ -614,15 +616,15 @@ class ModifyBuffTimeScale extends ExtraEffectBase_1.BuffEffect {
   InitParameters(t) {
     var t = t.ExtraEffectParameters;
     var e = t[0].split("#").map(t => Number(t));
-    this.pbu = e[0] === 1;
-    this.vbu = e[1] === 1;
+    this.qbu = e[0] === 1;
+    this.Gbu = e[1] === 1;
     this.jQo = t[1].split("#").map(t => Number(t));
     this.bge = Number(t[2]) * 0.0001;
   }
   OnCreated() {
     var t = this.OwnerBuffComponent;
     if (t) {
-      if (this.pbu) {
+      if (this.qbu) {
         for (const s of this.jQo) {
           for (const i of t.GetAllBuffById(s)) {
             i.SetBuffTimeScale(this.ActiveHandleId, this.bge);
@@ -630,7 +632,7 @@ class ModifyBuffTimeScale extends ExtraEffectBase_1.BuffEffect {
         }
       }
       var e = this.OwnerEntity;
-      if (this.vbu && e) {
+      if (this.Gbu && e) {
         for (const r of this.jQo) {
           AbilityEvent_1.AbilityEvent.Add(e, 3, r, this.OnBuffAdd);
         }
@@ -646,7 +648,7 @@ class ModifyBuffTimeScale extends ExtraEffectBase_1.BuffEffect {
         }
       }
       var e = this.OwnerEntity;
-      if (this.vbu && e) {
+      if (this.Gbu && e) {
         for (const r of this.jQo) {
           AbilityEvent_1.AbilityEvent.Remove(e, 3, r, this.OnBuffAdd);
         }
@@ -672,19 +674,19 @@ class ForeverTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
     this.FrozenComponent = this.OwnerEntity?.CheckGetComponent(16);
   }
   OnCreated() {
-    this.xcu();
+    this.fdu();
   }
   OnStackDecreased(t, e, s) {
-    this.xcu();
+    this.fdu();
   }
   OnStackIncreased(t, e, s) {
-    this.xcu();
+    this.fdu();
   }
   OnExecute() {}
   OnRemoved() {
     this.FrozenComponent?.RemoveForeverTimeScale(this.ActiveHandleId);
   }
-  xcu() {
+  fdu() {
     var t = this.InitTimeScale + this.BuffStackTimeScale * (this.Buff?.StackCount ?? 1);
     this.FrozenComponent?.SetForeverTimeScale(this.ActiveHandleId, this.Priority, t);
   }
@@ -693,4 +695,82 @@ class ForeverTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
   }
 }
 exports.ForeverTimeScaleEffect = ForeverTimeScaleEffect;
+class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
+  constructor() {
+    super(...arguments);
+    this.Group = undefined;
+    this.V3u = false;
+  }
+  OnExecute() {}
+  OnCreated() {
+    if (this.InstigatorEntityId !== this.OwnerEntity.Id && this.InstigatorEntity?.Valid) {
+      let t = SyncTimeScaleEffect.hWc.get(this.InstigatorEntityId);
+      if (!t) {
+        t = new SyncTimescaleGroup(this.InstigatorEntity.Entity);
+        SyncTimeScaleEffect.hWc.set(this.InstigatorEntityId, t);
+      }
+      (this.Group = t).AddOwner(this.OwnerEntity);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BuffItem", 20, "顿帧同步效果 OnCreated", ["Buff", this.BuffId], ["Instigator", this.OwnerEntity.Id], ["Owner", this.OwnerEntity.Id], ["Instigator.Valid", !!this.InstigatorEntity?.Valid]);
+      }
+      this.V3u = true;
+    }
+  }
+  OnRemoved() {
+    if (this.Group && !this.V3u && this.OwnerEntity?.Valid) {
+      this.Group.RemoveOwner(this.OwnerEntity.Id);
+      if (this.Group.CanRelease()) {
+        this.Group.Release();
+        SyncTimeScaleEffect.hWc.delete(this.InstigatorEntityId);
+      }
+      this.Group = undefined;
+    }
+  }
+}
+(exports.SyncTimeScaleEffect = SyncTimeScaleEffect).hWc = new Map();
+class SyncTimescaleGroup {
+  constructor(t = undefined) {
+    this.InstigatorEntity = t;
+    this.lWc = new Map();
+    this._Wc = undefined;
+    this.OnInstigatorTimeScaleChanged = (t, e) => {
+      for (var [, s] of this.lWc) {
+        s.SetForceTimeScale(t, true);
+      }
+    };
+    this._Wc = this.InstigatorEntity.GetComponent(180);
+    EventSystem_1.EventSystem.AddWithTarget(this.InstigatorEntity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
+  }
+  Release() {
+    EventSystem_1.EventSystem.RemoveWithTarget(this._Wc.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
+  }
+  AddOwner(t = undefined) {
+    var e;
+    if (this.lWc.get(t.Id)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("BuffItem", 20, "添加了多个Buff都有85号效果");
+      }
+    } else {
+      e = t.GetComponent(180);
+      this.lWc.set(t.Id, e);
+    }
+  }
+  RemoveOwner(t) {
+    var e = this.lWc.get(t);
+    if (e?.Valid) {
+      e.RemoveForceTimeScale(true);
+    }
+    this.lWc.delete(t);
+  }
+  SetTimeScale(t, e, s, i, r, h = false) {
+    return this._Wc.SetTimeScale(t, e, s, i, r, h);
+  }
+  RemoveTimeScale(t) {
+    this._Wc.RemoveTimeScale(t);
+  }
+  CanRelease() {
+    return this.lWc.size <= 0;
+  }
+}
 //# sourceMappingURL=ExtraEffectMisc.js.map

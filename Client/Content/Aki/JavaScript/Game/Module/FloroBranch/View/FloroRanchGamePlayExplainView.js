@@ -37,12 +37,12 @@ class FloroRanchGamePlayExplainView extends UiViewBase_1.UiViewBase {
     }
   }
   OnStart() {
-    this.V2u();
+    this.vOu();
   }
   OnBeforeDestroy() {
-    this.j2u();
+    this.yOu();
   }
-  V2u() {
+  vOu() {
     var e = {
       UiText: this.GetText(6),
       ViewType: 0,
@@ -51,7 +51,7 @@ class FloroRanchGamePlayExplainView extends UiViewBase_1.UiViewBase {
     };
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(e);
   }
-  j2u() {
+  yOu() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(6));
   }
 }

@@ -17,18 +17,19 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const ActivityData_1 = require("../../ActivityData");
 const LongShanScoreRewardData_1 = require("./LongShanScoreRewardData");
 const LongShanStageInfo_1 = require("./LongShanStageInfo");
+const TASK_FINISH_PERCENT = 100;
 class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
     this.StageIds = undefined;
     this.ROe = undefined;
     this.ScoreRewardIds = [];
-    this.FY1 = new Map();
+    this.cz1 = new Map();
     this.ScoreItemId = 0;
     this.ScoreItemTotal = 0;
     this.TaskSort = (e, t) => {
       var r;
-      var a;
+      var i;
       if (e.mMs !== t.mMs) {
         if (e.mMs) {
           return 1;
@@ -41,8 +42,8 @@ class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
         } else {
           return 1;
         }
-      } else if ((r = LongShanTaskById_1.configLongShanTaskById.GetConfig(e.s5n).SortId) !== (a = LongShanTaskById_1.configLongShanTaskById.GetConfig(t.s5n).SortId)) {
-        return r - a;
+      } else if ((r = LongShanTaskById_1.configLongShanTaskById.GetConfig(e.s5n).SortId) !== (i = LongShanTaskById_1.configLongShanTaskById.GetConfig(t.s5n).SortId)) {
+        return r - i;
       } else {
         return e.s5n - t.s5n;
       }
@@ -58,28 +59,28 @@ class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
     this.ROe?.clear();
     this.ROe = this.ROe ?? new Map();
     this.StageIds = [];
-    for (const n of LongShanStageAll_1.configLongShanStageAll.GetConfigList(this.Id)) {
-      this.StageIds.push(n.Id);
-      var t = e.Kps?.gMs?.find(e => e.s5n === n.Id);
+    for (const a of LongShanStageAll_1.configLongShanStageAll.GetConfigList(this.Id)) {
+      this.StageIds.push(a.Id);
+      var t = e.Kps?.gMs?.find(e => e.s5n === a.Id);
       if (t) {
         t = new LongShanStageInfo_1.LongShanStageInfo(t);
-        this.ROe.set(n.Id, t);
+        this.ROe.set(a.Id, t);
       }
     }
-    var r = e.Kps?.tK1;
+    var r = e.Kps?.nK1;
     if (r) {
-      for (const i of r) {
-        var a = this.GetScoreRewardDataById(i);
-        if (a) {
-          a.Achieved = true;
+      for (const n of r) {
+        var i = this.GetScoreRewardDataById(n);
+        if (i) {
+          i.Achieved = true;
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Activity", 71, "[LongShanActivity] 奖励Id不存在", ["ActivityId", this.Id], ["RewardId", i]);
+          Log_1.Log.Warn("Activity", 71, "[LongShanActivity] 奖励Id不存在", ["ActivityId", this.Id], ["RewardId", n]);
         }
       }
     }
   }
   InitScoreReward() {
-    this.FY1.clear();
+    this.cz1.clear();
     this.ScoreRewardIds = [];
     for (const t of LongShanScoreRewardByActivityId_1.configLongShanScoreRewardByActivityId.GetConfigList(this.Id) ?? []) {
       this.ScoreRewardIds.push(t.Id);
@@ -90,27 +91,27 @@ class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
       e.GetCurrentScore = this.GetScoreItemCount;
       this.ScoreItemId = t.ItemId;
       this.ScoreItemTotal = Math.max(this.ScoreItemTotal, e.Goal);
-      this.FY1.set(t.Id, e);
+      this.cz1.set(t.Id, e);
     }
   }
   UpdateStage(e) {
-    for (const n of e) {
-      var t = n.s5n;
-      var r = this.ROe.get(t);
-      var a = new LongShanStageInfo_1.LongShanStageInfo(n);
-      this.ROe.set(n.s5n, a);
+    for (const i of e) {
+      var t;
+      var r = this.ROe.get(i.s5n);
       if (r) {
-        this.OnStageInfoChange(t, r, a);
+        t = new LongShanStageInfo_1.LongShanStageInfo(i);
+        this.ROe.set(i.s5n, t);
+        this.OnStageInfoChange(r, t);
       }
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LongShanUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
-  OnStageInfoChange(e, t, r) {
-    for (var [a, n] of t.TaskInfoMap) {
-      var i = r.TaskInfoMap.get(a);
-      if (i) {
-        this.OnStageTaskInfoChange(a, n, i);
+  OnStageInfoChange(e, t) {
+    for (var [r, i] of e.TaskInfoMap) {
+      var a = t.TaskInfoMap.get(r);
+      if (a) {
+        this.OnStageTaskInfoChange(r, i, a);
       }
     }
   }
@@ -131,9 +132,6 @@ class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
   }
   NeedSelfControlFirstRedPoint() {
     return false;
-  }
-  GetStageIndex(e) {
-    return this.StageIds.indexOf(e);
   }
   GetStageInfoById(e) {
     var t = this.ROe?.get(e)?.ProtoStageInfo;
@@ -184,13 +182,13 @@ class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
   GetScoreRewardRelativeProgress(t) {
     var e = this.GetAllScoreRewardData();
     var r = e.findIndex(e => e.Id === t);
-    var a = e[r].Goal;
+    var i = e[r].Goal;
     var r = r - 1;
-    let n = 0;
+    let a = 0;
     if (r >= 0) {
-      n = e[r].Goal;
+      a = e[r].Goal;
     }
-    return (this.GetScoreItemCount() - n) / (a - n);
+    return (this.GetScoreItemCount() - a) / (i - a);
   }
   CheckStageRed(e) {
     var t = this.GetStageInfoById(e);
@@ -221,11 +219,26 @@ class ActivityLongShanData extends ActivityData_1.ActivityBaseData {
   GetExDataRedPointShowState() {
     return this.CheckAnyStageRed() || this.CheckScoreRewardRedDot();
   }
+  GetExDataFinishShowState() {
+    for (const e of this.GetAllScoreRewardData()) {
+      if (e.GetState() !== 2) {
+        return false;
+      }
+    }
+    if (this.StageIds) {
+      for (const t of this.StageIds) {
+        if (this.GetProgress(t) !== TASK_FINISH_PERCENT) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
   GetAllScoreRewardData() {
-    return Array.from(this.FY1.values()).sort((e, t) => e.Goal - t.Goal);
+    return Array.from(this.cz1.values()).sort((e, t) => e.Goal - t.Goal);
   }
   GetScoreRewardDataById(e) {
-    return this.FY1.get(e);
+    return this.cz1.get(e);
   }
   GetAllAvailableScoreRewardIds() {
     var e = [];

@@ -26,6 +26,7 @@ const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const UiManager_1 = require("../../Ui/UiManager");
 const ActivityPermanentRogueController_1 = require("./ActivityPermanentRogueController");
 const ALL_SEASON_ID = 0;
 class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
@@ -40,9 +41,11 @@ class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
     this.SortTaskData = (e, t) => e.Status === t.Status ? e.Id - t.Id : this.kB1(e.Status) - this.kB1(t.Status);
   }
   OnInit() {
+    UiManager_1.UiManager.AddOpenViewCheckFunction("RogueTaskView", ActivityPermanentRogueModel.sud, "ActivityPermanentRogueModel.CanOpenTaskView");
     return true;
   }
   OnClear() {
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("RogueTaskView", ActivityPermanentRogueModel.sud);
     return true;
   }
   GetActivityData() {
@@ -290,7 +293,7 @@ class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
     return !this.GetTaskIsEnd() && (this.GetCacheTaskOpen() <= TimeUtil_1.TimeUtil.GetServerTime() || this.GetActivityData().IsTaskReward());
   }
   CheckTaskRedDot(e) {
-    if (this.t$c(e)) {
+    if (this.IZu(e)) {
       return true;
     }
     for (const t of this.GetTaskListById(e)) {
@@ -300,7 +303,7 @@ class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
     }
     return false;
   }
-  t$c(e) {
+  IZu(e) {
     return e === 4 && this.GetActivityData()?.GetFirstCheckRedDotState(1);
   }
   kB1(e) {
@@ -667,5 +670,5 @@ class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
     return this.GetCacheTrailOpen(e) <= t;
   }
 }
-exports.ActivityPermanentRogueModel = ActivityPermanentRogueModel;
+(exports.ActivityPermanentRogueModel = ActivityPermanentRogueModel).sud = (e, t) => !ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTaskIsEnd();
 //# sourceMappingURL=ActivityPermanentRogueModel.js.map

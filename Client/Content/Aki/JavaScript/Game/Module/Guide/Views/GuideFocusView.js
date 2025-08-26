@@ -9,6 +9,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const UiLayerType_1 = require("../../../Ui/Define/UiLayerType");
 const InputManager_1 = require("../../../Ui/Input/InputManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const GuideBaseView_1 = require("./GuideBaseView");
@@ -23,6 +24,7 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     this.rZt = 4000;
     this.nZt = undefined;
     this.sZt = undefined;
+    this.YYc = undefined;
     this.aZt = () => {
       var t;
       if (!!this.hZt && (!(t = UiManager_1.UiManager.GetViewByName("BattleView")?.GetGuideUiItemAndUiItemForShowEx(this.Config.ExtraParam)) || t[0] !== this.GuideStepInfo?.ViewData?.GetAttachedUiItem())) {
@@ -53,6 +55,16 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
         this.DoCloseByFinished();
       }
     };
+    this.zYc = (t, i) => {
+      if (i.Info?.GetContainerLayerType() === UiLayerType_1.ELayerType.Pop && this.Config?.ViewName !== t) {
+        this.YYc = t;
+      }
+    };
+    this.JYc = t => {
+      if (this.YYc === t) {
+        this.YYc = undefined;
+      }
+    };
   }
   OnBeforeGuideBaseViewCreate() {
     this.Config = this.GuideStepInfo.ViewData.ViewConf;
@@ -76,6 +88,10 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     }
     if (this.sZt) {
       this.UiViewSequence.AddSequenceFinishEvent(this.sZt, this.cZt);
+    }
+    if (this.Config?.HideWhenOtherPopViewOccur) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnViewDone, this.zYc);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.JYc);
     }
   }
   OnGuideBaseViewAddEvent() {
@@ -101,6 +117,10 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
       this.nZt.Destroy();
       this.nZt = undefined;
     }
+    if (this.Config?.HideWhenOtherPopViewOccur) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnViewDone, this.zYc);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.JYc);
+    }
   }
   get hZt() {
     return this.Config?.ViewName === "BattleView" && this.Config.ExtraParam && this.Config.ExtraParam[0] === "Skill";
@@ -124,7 +144,7 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
   }
   _Zt() {
     var t = this.GuideStepInfo.ViewData.GetAttachedView();
-    if (!t || !t.GetRootActor() || !t.IsUiActiveInHierarchy() || !t.IsShow || this.HasConflictView() || !this.CheckTickCondition()) {
+    if (!t || !t.GetRootActor() || !t.IsUiActiveInHierarchy() || !t.IsShow || this.HasConflictView() || !this.CheckTickCondition() || this.YYc !== undefined) {
       return this.oZt = false;
     }
     this.oZt = true;

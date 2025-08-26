@@ -76,13 +76,13 @@ class ActivityVersionPreheatController extends ActivityControllerBase_1.Activity
     var t = Proto_PreheatSignRewardRequest.create();
     t.M_l = e;
     t.S_l = r;
-    var r = await Net_1.Net.CallAsync(17551, t);
+    var r = await Net_1.Net.CallAsync(26656, t);
     if (r !== undefined) {
       if (r.fMs !== Proto_ErrorCode.KRs) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("VersionPreheat", 64, "预热作答失败：RequestPreheatSignRewardRequest---" + r.fMs);
         }
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.fMs, 21215);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.fMs, 15543);
       } else if (r.UM_ === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("VersionPreheat", 64, "预热作答response中没有SurveyInfo", ["TVersionPreheatId", e]);
@@ -103,13 +103,13 @@ class ActivityVersionPreheatController extends ActivityControllerBase_1.Activity
     }
     var r = Proto_PreheatSignSurveyInfoRequest.create();
     r.M_l = e;
-    var r = await Net_1.Net.CallAsync(28043, r);
+    var r = await Net_1.Net.CallAsync(17997, r);
     if (r !== undefined) {
       if (r.fMs !== Proto_ErrorCode.KRs) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("VersionPreheat", 64, "预热作答失败：RequestPreheatSignRewardRequest---" + r.fMs);
         }
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.fMs, 21215);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.fMs, 15543);
       } else if (r.UM_ === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("VersionPreheat", 64, "预热问卷数据response中没有SurveyInfo", ["TVersionPreheatId", e]);

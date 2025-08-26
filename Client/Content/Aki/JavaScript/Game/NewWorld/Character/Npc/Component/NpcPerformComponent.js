@@ -60,6 +60,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
     this.IsNpcOutShowRangeInternal = false;
     this.IsNpcVisible = true;
     this.IsNpcFirstVisible = true;
+    this.CueHandles = new Set();
     this.MaterialController = undefined;
     this.IsPendingDestroy = false;
     this.IsUseFixLocation = false;
@@ -95,6 +96,11 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
   OnEnd() {
     this.MaterialController?.Dispose();
     this.DestroyVisibleDitherEvent();
+    var t = this.Entity.GetComponent(226);
+    for (const e of this.CueHandles) {
+      t?.RemoveCueByHandle(e);
+    }
+    this.CueHandles.clear();
     super.OnEnd();
     return true;
   }
@@ -190,8 +196,8 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
       Context: "[NpcPerformComponent.FixNpcOnInitLocation]"
     });
     this.ActorComp.SetActorLocation(MathUtils_1.MathUtils.CommonTempVector.ToUeVector(), "NPC待机表演使用固定位置", false);
-    var t = this.Entity.GetComponent(181);
-    var e = this.Entity.GetComponent(113);
+    var t = this.Entity.GetComponent(182);
+    var e = this.Entity.GetComponent(114);
     t?.Disable("NPC待机表演使用固定位置");
     e?.Disable("NPC待机表演使用固定位置");
   }
@@ -241,16 +247,31 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
     }
   }
   InitFromEntityData() {
-    var t;
-    var e = this.ActorComp?.CreatureData?.GetPbEntityInitData();
-    if (e && (t = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityVisibleComponent"), this.OverrideShowRange = t?.CustomVisibleRange ?? 0, t = (0, IComponent_1.getComponent)(e.ComponentsData, "NpcPerformComponent"), this.IsUseFixLocation = !!t?.FixedPosition, this.IsUseFixLocation && this.ActorComp instanceof CharacterActorComponent_1.CharacterActorComponent && (this.ActorComp.NeedFixBornLocation = false), this.IsMultiAnimState = !!this.AnimComp?.MainAnimInstance?.IsA(UE.ABP_MultiStateNPC_C.StaticClass()), this.CanSwitchAnimState(t?.DefaultAbpState))) {
-      this.SwitchAnimState({
-        TargetStateName: t?.DefaultAbpState,
-        IsNoTransition: true,
-        Context: "默认出生动画状态"
-      });
+    var t = this.ActorComp?.CreatureData?.GetPbEntityInitData();
+    if (t) {
+      var e = (0, IComponent_1.getComponent)(t.ComponentsData, "EntityVisibleComponent");
+      this.OverrideShowRange = e?.CustomVisibleRange ?? 0;
+      var e = (0, IComponent_1.getComponent)(t.ComponentsData, "NpcPerformComponent");
+      this.IsUseFixLocation = !!e?.FixedPosition;
+      if (this.IsUseFixLocation && this.ActorComp instanceof CharacterActorComponent_1.CharacterActorComponent) {
+        this.ActorComp.NeedFixBornLocation = false;
+      }
+      this.IsMultiAnimState = !!this.AnimComp?.MainAnimInstance?.IsA(UE.ABP_MultiStateNPC_C.StaticClass());
+      if (this.CanSwitchAnimState(e?.DefaultAbpState)) {
+        this.SwitchAnimState({
+          TargetStateName: e?.DefaultAbpState,
+          IsNoTransition: true,
+          Context: "默认出生动画状态"
+        });
+      }
+      if (e?.DefaultPerform?.BuffEffectIds) {
+        var i = this.Entity.GetComponent(226);
+        for (const r of e.DefaultPerform.BuffEffectIds) {
+          this.CueHandles.add(i.AddCue(r));
+        }
+      }
     }
   }
 };
-NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(186)], NpcPerformComponent);
+NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(187)], NpcPerformComponent);
 exports.NpcPerformComponent = NpcPerformComponent; //# sourceMappingURL=NpcPerformComponent.js.map

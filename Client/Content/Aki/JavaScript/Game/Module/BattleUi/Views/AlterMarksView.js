@@ -174,7 +174,7 @@ class AlterMarksView extends BattleChildView_1.BattleChildView {
             this.rYe = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
             EventSystem_1.EventSystem.AddWithTarget(this.rYe.Entity, EventDefine_1.EEventName.AiHateAddOrRemove, this.pYe);
           }
-          for (const s of this.rYe.Entity.CheckGetComponent(175).GetAggroSet()) {
+          for (const s of this.rYe.Entity.CheckGetComponent(176).GetAggroSet()) {
             var i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(s).Entity.CheckGetComponent(1).Owner;
             if (!this.X$e.has(s)) {
               i = new AlterTipMark_1.AlterTipMark(this.RootItem, i, true);

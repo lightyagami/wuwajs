@@ -77,20 +77,20 @@ class SelectGroup extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Pe = undefined;
     this.eGe = undefined;
-    this.Rqu = new Map();
+    this.oGu = new Map();
     this.qGe = [];
-    this.wqu = () => {
+    this.nGu = () => {
       var t = new SelectItem();
       t.CallbackClickItem = this.Kwi;
       t.CallbackGetState = this.GetSelectState;
       return t;
     };
-    this.GetSelectState = t => this.Rqu.has(t);
-    this.Lqu = t => {
+    this.GetSelectState = t => this.oGu.has(t);
+    this.sGu = t => {
       if (t === 1) {
         for (const i of this.eGe.GetLayoutItemMap().keys()) {
           var e = i;
-          this.Rqu.set(e, e);
+          this.oGu.set(e, e);
         }
       } else if (t === 0) {
         this.ResetSelect();
@@ -99,19 +99,19 @@ class SelectGroup extends GridProxyAbstract_1.GridProxyAbstract {
     };
     this.Kwi = (t, e) => {
       if (t === 1) {
-        this.Rqu.set(e, e);
+        this.oGu.set(e, e);
       } else {
-        this.Rqu.delete(e);
+        this.oGu.delete(e);
       }
       this.RefreshToggleAll();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIExtendToggle], [3, UE.UILayoutBase], [4, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.Lqu]];
+    this.BtnBindInfo = [[2, this.sGu]];
   }
   OnStart() {
-    this.eGe = new GenericLayout_1.GenericLayout(this.GetLayoutBase(3), this.wqu, this.GetItem(4).GetOwner());
+    this.eGe = new GenericLayout_1.GenericLayout(this.GetLayoutBase(3), this.nGu, this.GetItem(4).GetOwner());
   }
   Refresh(t, e, i) {
     this.Pe = t;
@@ -144,7 +144,7 @@ class SelectGroup extends GridProxyAbstract_1.GridProxyAbstract {
         NeedChangeColor: s.NeedChangeColor
       };
       if (e.ValueList.includes(n)) {
-        this.Rqu.set(n, n);
+        this.oGu.set(n, n);
       }
       t.push(o);
     }
@@ -153,7 +153,7 @@ class SelectGroup extends GridProxyAbstract_1.GridProxyAbstract {
   RefreshToggleAll() {
     var t = this.Pe.FilterId;
     if (ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(t).IsSupportSelectAll) {
-      t = this.Rqu.size === this.qGe.length ? 1 : 0;
+      t = this.oGu.size === this.qGe.length ? 1 : 0;
       this.GetExtendToggle(2).SetToggleState(t, false);
     }
   }
@@ -165,14 +165,14 @@ class SelectGroup extends GridProxyAbstract_1.GridProxyAbstract {
   }
   ResetSelect() {
     var t;
-    this.Rqu.clear();
+    this.oGu.clear();
     for ([, t] of this.eGe.GetLayoutItemMap()) {
       t.RefreshToggleState();
     }
     this.RefreshToggleAll();
   }
   GetSelectValueList() {
-    return Array.from(this.Rqu.values());
+    return Array.from(this.oGu.values());
   }
   GetKey(t, e) {
     return this.Pe.FilterRuleId;

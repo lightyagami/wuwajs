@@ -9,12 +9,12 @@ const FloroRanchDailyTaskBase_1 = require("./FloroRanchDailyTaskBase");
 class FloroRanchGachaTask extends FloroRanchDailyTaskBase_1.FloroRanchDailyTaskBase {
   constructor(a) {
     super();
-    this.umu = undefined;
-    this.umu = a;
+    this.Kmu = undefined;
+    this.Kmu = a;
   }
   OnExecute() {
     var a = {
-      GachaData: this.umu,
+      GachaData: this.Kmu,
       CloseCallback: () => {
         this.Complete();
       }

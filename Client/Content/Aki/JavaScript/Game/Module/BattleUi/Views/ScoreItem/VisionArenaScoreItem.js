@@ -20,11 +20,11 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
     this.SPe = undefined;
     this.bCt = undefined;
     this.AI1 = undefined;
-    this.CX1 = undefined;
-    this.xZ1 = undefined;
+    this.SX1 = undefined;
+    this.oeu = undefined;
     this.wf = false;
     this.Wft = 0;
-    this.i7c = e => {};
+    this.H2u = e => {};
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UINiagara], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UINiagara], [4, UE.UINiagara], [5, UE.UIItem], [6, UE.UISprite]];
@@ -35,7 +35,7 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
   OnBeforeShow() {
     super.OnBeforeShow();
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.SPe.BindSequenceCloseEvent(this.i7c);
+    this.SPe.BindSequenceCloseEvent(this.H2u);
     this.AI1 = this.GetUiNiagara(0);
     if (this.bCt) {
       this.AI1?.SetNiagaraSystem(this.bCt);
@@ -72,7 +72,7 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
     if (this.IsHideOrHiding) {
       this.ShowScore();
     }
-    if (!this.CX1) {
+    if (!this.SX1) {
       var t = ModelManager_1.ModelManager.BattleScoreModel?.GetScoreConfig(e, true);
       if (!t) {
         if (Log_1.Log.CheckError()) {
@@ -80,15 +80,15 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
         }
         return;
       }
-      this.CX1 = ConfigManager_1.ConfigManager.BattleScoreConfig.GetBattleScoreActionConfigByGroupId(t.LevelGroupId);
+      this.SX1 = ConfigManager_1.ConfigManager.BattleScoreConfig.GetBattleScoreActionConfigByGroupId(t.LevelGroupId);
     }
-    this.pX1(i);
-    if (this.xZ1 && this.xZ1.LowerUpperLimits[1] > 0) {
-      this.GetUiNiagara(3)?.SetNiagaraVarFloat("Dissolve", (i - this.xZ1.LowerUpperLimits[0]) / (this.xZ1.LowerUpperLimits[1] - this.xZ1.LowerUpperLimits[0]));
+    this.MX1(i);
+    if (this.oeu && this.oeu.LowerUpperLimits[1] > 0) {
+      this.GetUiNiagara(3)?.SetNiagaraVarFloat("Dissolve", (i - this.oeu.LowerUpperLimits[0]) / (this.oeu.LowerUpperLimits[1] - this.oeu.LowerUpperLimits[0]));
     }
     if (this.wf) {
-      this.UZ1();
-      this.DZ1();
+      this.neu();
+      this.seu();
       this.wf = false;
     }
   }
@@ -114,18 +114,18 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
       }
     });
   }
-  pX1(i) {
-    if (this.CX1) {
-      this.CX1.forEach(e => {
+  MX1(i) {
+    if (this.SX1) {
+      this.SX1.forEach(e => {
         if (i >= e.LowerUpperLimits[0] && i < e.LowerUpperLimits[1] && this.Wft !== e.Level) {
           this.Wft = e.Level;
-          this.xZ1 = e;
+          this.oeu = e;
           this.wf = true;
         }
       });
     }
   }
-  UZ1() {
+  neu() {
     this.SPe?.StopCurrentSequence();
     switch (this.Wft) {
       case 1:
@@ -168,7 +168,7 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
       this.SetTextureShowUntilLoaded(i, this.GetTexture(2));
     }
   }
-  DZ1() {
+  seu() {
     var e = this.Wft > 1;
     var i = this.GetUiNiagara(3);
     var t = this.GetUiNiagara(0);

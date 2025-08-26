@@ -76,12 +76,12 @@ class TsTaskPlayAction extends TsTaskAbortImmediatelyBase_1.default {
       if (s && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("AI", 6, "AnimalDebug PlayAction2", ["TsLoopTimeMillisecond", this.TsLoopTimeMillisecond], ["time", t], ["TsMontageName", this.TsMontageName], ["spMontageName", o], ["montageName", e]);
       }
-      this.InteractComponent = i.GetComponent(197);
+      this.InteractComponent = i.GetComponent(198);
       if (this.TsMaskInteract && this.InteractComponent) {
         this.InteractComponent.SetInteractionState(false, "TsTaskPlayAction ReceiveExecuteAI");
       }
       this.EndTime = t + Time_1.Time.WorldTime;
-      this.AnimComp = i.GetComponent(177);
+      this.AnimComp = i.GetComponent(178);
       if (this.AnimComp && (o = this.AnimComp.GetMontageResPathByName(e), s && Log_1.Log.CheckInfo() && Log_1.Log.Info("AI", 6, "AnimalDebug PlayAction3", ["montageResPath", o]), o?.includes("/"))) {
         ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.AnimMontage, e => {
           if (s && Log_1.Log.CheckInfo()) {

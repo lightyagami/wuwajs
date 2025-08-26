@@ -8,26 +8,26 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 class FloroRanchMilestoneData {
   constructor(e) {
     this.Lo = undefined;
-    this.LEu = false;
-    this.fAu = false;
+    this.VEu = false;
+    this.VAu = false;
     this.RewardList = [];
     this.Lo = e;
     this.RewardList = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackagePreviewItemList(e.DropId);
   }
   set IsReceive(e) {
-    this.LEu = e;
+    this.VEu = e;
   }
   get IsReceive() {
-    return this.LEu;
+    return this.VEu;
   }
   set IsFinished(e) {
-    this.fAu = e;
+    this.VAu = e;
   }
   get IsFinished() {
-    return this.fAu;
+    return this.VAu;
   }
   get IsReceivable() {
-    return this.fAu && !this.LEu;
+    return this.VAu && !this.VEu;
   }
   get Id() {
     return this.Lo.Id;

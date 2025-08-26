@@ -5,12 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WeeklyRogueConfig = undefined;
 const RogueWeeklyBuffPoolById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyBuffPoolById");
+const RogueWeeklyBuffPoolByRelatedArtifactId_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyBuffPoolByRelatedArtifactId");
 const RogueWeeklyCycleById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyCycleById");
 const RogueWeeklyParamById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyParamById");
 const RogueWeeklyRewardById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyRewardById");
 const RogueWeeklyRoomPoolById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyRoomPoolById");
 const RogueWeeklyRoomTypeById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyRoomTypeById");
 const RogueWeekQualityConfigById_1 = require("../../../Core/Define/ConfigQuery/RogueWeekQualityConfigById");
+const RogueWeekTagById_1 = require("../../../Core/Define/ConfigQuery/RogueWeekTagById");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class WeeklyRogueConfig extends ConfigBase_1.ConfigBase {
   GetWeeklyRogueParam(e) {
@@ -21,6 +23,9 @@ class WeeklyRogueConfig extends ConfigBase_1.ConfigBase {
   }
   GetRogueWeeklyBuffPool(e) {
     return RogueWeeklyBuffPoolById_1.configRogueWeeklyBuffPoolById.GetConfig(e);
+  }
+  GetRogueWeeklyBuffPoolByRelatedArtifactId(e) {
+    return RogueWeeklyBuffPoolByRelatedArtifactId_1.configRogueWeeklyBuffPoolByRelatedArtifactId.GetConfigList(e);
   }
   GetRogueWeeklyQualityConfig(e) {
     return RogueWeekQualityConfigById_1.configRogueWeekQualityConfigById.GetConfig(e);
@@ -36,6 +41,9 @@ class WeeklyRogueConfig extends ConfigBase_1.ConfigBase {
   }
   GetRoomPoolConfig(e) {
     return RogueWeeklyRoomPoolById_1.configRogueWeeklyRoomPoolById.GetConfig(e);
+  }
+  GetRogueWeekTagConfig(e) {
+    return RogueWeekTagById_1.configRogueWeekTagById.GetConfig(e);
   }
 }
 exports.WeeklyRogueConfig = WeeklyRogueConfig;

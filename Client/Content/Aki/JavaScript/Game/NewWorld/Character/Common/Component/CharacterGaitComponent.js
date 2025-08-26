@@ -36,8 +36,8 @@ let CharacterGaitComponent = class CharacterGaitComponent extends EntityComponen
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(178);
-    this.HBr = this.Entity.GetComponent(175);
+    this.Gce = this.Entity.GetComponent(179);
+    this.HBr = this.Entity.GetComponent(176);
     return !!this.Hte && !!this.Gce && !!this.HBr;
   }
   OnTick(e) {

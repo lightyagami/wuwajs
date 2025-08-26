@@ -17,12 +17,56 @@ const Transform_1 = require("../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const EffectModelAudio_1 = require("../../Render/Effect/Data/EffectModelAudio");
 const SPECIAL_MAP_ID = 9300;
 const SPECIAL_MAP_AUDIO_CD = 80;
 const SPECIAL_MAP_EVENT_SPAWN_CD = 100;
 const DELTA_TIME_INTERVAL = 25;
 const PRELOAD_ACTOR_COUNT = 20;
 const SPAWN_ACTOR_COUNT = 2;
+class EventModelInfo {
+  constructor(o) {
+    this.Event = "";
+    this.Start = false;
+    this.Event = o;
+  }
+  GetName() {
+    return this.Event;
+  }
+  GetAudioEvent() {
+    return this.Event;
+  }
+  IsValid() {
+    return this.Event !== "";
+  }
+  IsAudioEventValid() {
+    return this.Event !== "";
+  }
+  GetCompare() {
+    return this.Event;
+  }
+}
+class EffectModelInfo {
+  constructor(o) {
+    this.Model = undefined;
+    this.Model = o;
+  }
+  GetName() {
+    return this.Model?.GetName();
+  }
+  GetAudioEvent() {
+    return this.Model?.AudioEvent?.GetName();
+  }
+  IsValid() {
+    return this.Model?.IsValid() ?? false;
+  }
+  IsAudioEventValid() {
+    return this.Model?.AudioEvent?.IsValid() ?? false;
+  }
+  GetCompare() {
+    return this.Model;
+  }
+}
 class EffectAudioController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     for (let o = 0; o < PRELOAD_ACTOR_COUNT; o++) {
@@ -47,32 +91,43 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
       EffectAudioController.T2c.Start();
       for (const r of EffectAudioController.I2c) {
         var t = r[1];
-        for (const f of t.EffectUidList) {
-          var o = EffectAudioController.MQe.get(f);
-          if (o && o.EffectActor?.IsValid()) {
-            var o = o.EffectActor.D_K2_GetActorLocation();
-            var e = new UE.Vector();
-            e.Set(o.X, o.Y, o.Z);
-            if (t.EffectModel.LocationOffsets.Num() === 0) {
-              t.Locations.Add(e);
-            } else {
-              for (let o = 0; o < t.EffectModel.LocationOffsets.Num(); o++) {
-                t.Locations.Add(e.op_Addition(t.EffectModel.LocationOffsets.Get(o)));
+        if (t.EffectUidList.size !== 0) {
+          for (const f of t.EffectUidList) {
+            var o = EffectAudioController.MQe.get(f);
+            if (o && o.EffectActor?.IsValid()) {
+              var o = o.EffectActor.D_K2_GetActorLocation();
+              var e = new UE.Vector();
+              e.Set(o.X, o.Y, o.Z);
+              if (t.EffectModel instanceof EffectModelAudio_1.default && t.EffectModel.LocationOffsets.Num() !== 0) {
+                for (let o = 0; o < t.EffectModel.LocationOffsets.Num(); o++) {
+                  t.Locations.Add(e.op_Addition(t.EffectModel.LocationOffsets.Get(o)));
+                }
+              } else if (!(t.EffectModel instanceof EventModelInfo) || !t.EffectModel.Start) {
+                t.Locations.Add(e);
               }
             }
           }
-        }
-        if (t.Locations.Num() > 0) {
-          t.AkComponent.SetLocationOffsets(t.Locations);
-          t.Locations.Empty();
+          if (t.EffectModel instanceof EventModelInfo && !t.EffectModel.Start && (t.EffectModel.Start = true, AudioSystem_1.AudioSystem.SetRtpcValue("effect_count", t.EffectUidList.size, {
+            Actor: t.Actor
+          }), Log_1.Log.CheckDebug())) {
+            Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][Audio事件] ---- 音效合并更新RTPC", ["ActorUid", t.ActorUid], ["Count", t.EffectUidList.size], ["Locations", t.Locations]);
+          }
+          if (t.Locations.Num() > 0) {
+            t.AkComponent.SetLocationOffsets(t.Locations);
+            t.Locations.Empty();
+          }
         }
       }
       EffectAudioController.T2c.Stop();
     }
   }
+  static H9u(o) {
+    return new (o instanceof EffectModelAudio_1.default ? EffectModelInfo : EventModelInfo)(o);
+  }
   static AddPlayEffectAudio(o, t, e, r) {
-    var f = o.AudioEvent?.GetName();
-    if (!f || EffectAudioController.CheckSpecialInstanceDungeonEvent(f) || EffectAudioController.CheckHitEffectCooldownTime(e, f) || EffectAudioController.X81(f)) {
+    var o = EffectAudioController.H9u(o);
+    var f = o.GetAudioEvent();
+    if (!f || f.length === 0 || EffectAudioController.CheckSpecialInstanceDungeonEvent(f) || EffectAudioController.CheckHitEffectCooldownTime(e, f) || EffectAudioController.X81(f)) {
       return 0;
     } else {
       e = ++EffectAudioController.b2c;
@@ -109,10 +164,10 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
         if ((e = EffectAudioController.I2c.get(t)).EffectModel?.IsValid()) {
           e.EffectUidList.delete(o);
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][维护AudioMap] - DeleteAudioItem", ["ActorUid", t], ["EffectUid", o], ["AudioEvent", e.EffectModel.AudioEvent?.GetName()], ["AudioCount", EffectAudioController.MQe.size - 1]);
+            Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][维护AudioMap] - DeleteAudioItem", ["ActorUid", t], ["EffectUid", o], ["AudioEvent", e.EffectModel.GetAudioEvent()], ["AudioCount", EffectAudioController.MQe.size - 1]);
           }
           if (e.EffectUidList.size === 0) {
-            if (e.EffectModel.AudioEvent && (r = e.EffectModel.AudioEvent.GetName(), EffectAudioController.K6.has(r))) {
+            if ((r = e.EffectModel.GetAudioEvent()) && EffectAudioController.K6.has(r)) {
               EffectAudioController.K6.delete(r);
             }
             EffectAudioController.gTt(e);
@@ -182,7 +237,7 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
     var r;
     var f;
     if (EffectAudioController.w2c.has(o)) {
-      if ((e = EffectAudioController.w2c.get(o)).EffectModel.AudioEvent?.IsValid()) {
+      if ((e = EffectAudioController.w2c.get(o)).EffectModel.IsAudioEventValid()) {
         if (EffectAudioController.U2c >= SPAWN_ACTOR_COUNT && EffectAudioController.k2c(e.EffectModel, e.Priority)) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl] 本帧SpawnActor数量超额度,下一帧处理", ["EffectUid", o]);
@@ -195,10 +250,10 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
             (f = EffectAudioController.I2c.get(r)).EffectUidList.add(o);
             EffectAudioController.MQe.set(o, t);
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][维护AudioMap] ---- AddAudioItem", ["ActorUid", r], ["EffectUid", o], ["AudioEvent", f.EffectModel.AudioEvent?.GetName()], ["AudioCount", EffectAudioController.MQe.size]);
+              Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][维护AudioMap] ---- AddAudioItem", ["ActorUid", r], ["EffectUid", o], ["AudioEvent", f.EffectModel.GetAudioEvent()], ["AudioCount", EffectAudioController.MQe.size]);
             }
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] 未能正常获取指定ActorInfo", ["ActorUid", r], ["EffectUid", o], ["AudioEvent", e.EffectModel.AudioEvent?.GetName()]);
+            Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] 未能正常获取指定ActorInfo", ["ActorUid", r], ["EffectUid", o], ["AudioEvent", e.EffectModel.GetAudioEvent()]);
           }
         }
       } else {
@@ -210,9 +265,9 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
   }
   static k2c(o, t) {
     if (t === 2) {
-      return !EffectAudioController.B2c.has(o);
+      return !EffectAudioController.B2c.has(o.GetCompare());
     } else {
-      return !EffectAudioController.D2c.has(o);
+      return !EffectAudioController.D2c.has(o.GetCompare());
     }
   }
   static O2c(o, t) {
@@ -223,30 +278,30 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
     }
   }
   static q2c(o, t, e) {
-    if (!t.has(o)) {
+    if (!t.has(o.GetCompare())) {
       EffectAudioController.U2c++;
       var r = EffectAudioController.G2c(o, e);
       if (!r) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] 未能正常SpawnActor", ["AudioEvent", o.AudioEvent?.GetName()]);
+          Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] 未能正常SpawnActor", ["AudioEvent", o.GetAudioEvent()]);
         }
         return 0;
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][合批] -------------- SpawnActor", ["ActorUid", r.ActorUid], ["AudioEvent", o.AudioEvent?.GetName()], ["EffectActor", r.Actor?.GetName()], ["Priority", e], ["ActorMapCount", EffectAudioController.I2c.size + 1]);
+        Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][合批] -------------- SpawnActor", ["ActorUid", r.ActorUid], ["AudioEvent", o.GetAudioEvent()], ["EffectActor", r.Actor?.GetName()], ["Priority", e], ["ActorMapCount", EffectAudioController.I2c.size + 1]);
       }
       if (e !== undefined) {
         ControllerHolder_1.ControllerHolder.GameAudioController.SetRolePriority(e, r.Actor);
       }
-      t.set(o, r.ActorUid);
+      t.set(o.GetCompare(), r.ActorUid);
       EffectAudioController.I2c.set(r.ActorUid, r);
-      if (o.AudioEvent) {
-        e = o.AudioEvent.GetName();
+      e = o.GetAudioEvent();
+      if (e) {
         EffectAudioController.K6.set(e, Time_1.Time.Now);
+        EffectAudioController.e0e(r, o, e);
       }
-      EffectAudioController.e0e(r, o, o.AudioEvent);
     }
-    return t.get(o);
+    return t.get(o.GetCompare());
   }
   static G2c(o, t) {
     var e = ActorSystem_1.ActorSystem.Get(UE.BP_EffectAudio_C.StaticClass(), EffectAudioController.S2c.ToUeTransform(), undefined);
@@ -280,58 +335,57 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
     o.AkComponent.SetComponentTickEnabled(false);
     ActorSystem_1.ActorSystem.Put("特效音频播放完成Actor回池", o.Actor);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][合批] ------------ RecycleActor", ["ActorUid", o.ActorUid], ["AudioEvent", o.EffectModel.AudioEvent?.GetName()], ["ActorMapCount", EffectAudioController.I2c.size - 1]);
+      Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][合批] ------------ RecycleActor", ["ActorUid", o.ActorUid], ["AudioEvent", o.EffectModel.GetAudioEvent()], ["ActorMapCount", EffectAudioController.I2c.size - 1]);
     }
   }
-  static e0e(r, o, t, e = false) {
-    var f = r.AkComponent;
-    if (f) {
-      var i = t.GetName();
-      if (f) {
+  static e0e(r, o, t, e = false, f = false) {
+    var i = r.AkComponent;
+    if (i) {
+      if (f && o instanceof EffectModelInfo) {
         if (e) {
-          if (t.IsInfinite) {
-            if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] AudioEvent事件IsInfinite", ["ActorUid", r.ActorUid], ["AudioHandle", r.AudioHandle], ["EventName", i], ["EffectModel", o?.GetName()], ["EffectActor", r.Actor?.GetName()]);
-            }
-            return;
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] AudioEvent事件IsInfinite", ["ActorUid", r.ActorUid], ["AudioHandle", r.AudioHandle], ["EventName", t], ["EffectModel", o?.GetName()], ["EffectActor", r.Actor?.GetName()]);
           }
-          e = new UE.TransformDouble(f.D_K2_GetComponentLocation());
-          AudioSystem_1.AudioSystem.PostEvent(i, e, {
-            CallbackMask: 1,
-            CallbackHandler: (o, t) => {
-              if (r.AudioHandle || o === 0) {
-                for (const e of r.EffectUidList) {
-                  EffectAudioController.OnStopEffectAudio(e, "Callback");
-                }
+          return;
+        }
+        f = new UE.TransformDouble(i.D_K2_GetComponentLocation());
+        AudioSystem_1.AudioSystem.PostEvent(t, f, {
+          CallbackMask: 1,
+          CallbackHandler: (o, t) => {
+            if (r.AudioHandle || o === 0) {
+              for (const e of r.EffectUidList) {
+                EffectAudioController.OnStopEffectAudio(e, "Callback");
               }
             }
-          });
-        } else {
-          r.AudioHandle = AudioSystem_1.AudioSystem.PostEvent(i, f, {
-            StopWhenOwnerDestroyed: !Info_1.Info.IsGameRunning(),
-            CallbackMask: 1,
-            CallbackHandler: (o, t) => {
-              if (r.AudioHandle) {
-                for (const e of r.EffectUidList) {
-                  EffectAudioController.OnStopEffectAudio(e, "Callback");
-                }
+          }
+        });
+      } else {
+        r.AudioHandle = AudioSystem_1.AudioSystem.PostEvent(t, i, {
+          StopWhenOwnerDestroyed: !Info_1.Info.IsGameRunning(),
+          CallbackMask: 1,
+          CallbackHandler: (o, t) => {
+            if (r.AudioHandle) {
+              for (const e of r.EffectUidList) {
+                EffectAudioController.OnStopEffectAudio(e, "Callback");
               }
             }
-          });
-        }
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][Audio事件] ---------- PostEvent", ["ActorUid", r.ActorUid], ["AudioHandle", r.AudioHandle], ["EffectModel", o?.GetName()], ["EffectActor", r.Actor?.GetName()]);
-        }
+          }
+        });
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][Audio事件] ---------- PostEvent", ["ActorUid", r.ActorUid], ["AudioHandle", r.AudioHandle], ["EffectModel", o?.GetName()], ["EffectActor", r.Actor?.GetName()]);
       }
     }
   }
   static gTt(o) {
     var t;
-    if (o.AudioHandle !== 0 && (o.EffectModel.KeepAlive || (AudioSystem_1.AudioSystem.ExecuteAction(o.AudioHandle, 0, {
-      TransitionDuration: o.EffectModel.FadeOutTime,
-      TransitionFadeCurve: o.EffectModel.FadeOutCurve
-    }), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][Audio事件] ---------- StopEvent", ["ActorUid", o.ActorUid], ["AudioHandle", o.AudioHandle], ["EffectModel", o.EffectModel?.GetName()], ["EffectActor", o.Actor?.GetName()]), o.AudioHandle = 0), (t = o.EffectModel?.TrailingAudioEvent)?.IsValid())) {
-      EffectAudioController.e0e(o, o.EffectModel, t, true);
+    var e;
+    var r;
+    if (o.AudioHandle !== 0 && (o.EffectModel instanceof EffectModelInfo ? ((t = o.EffectModel).Model?.KeepAlive || (AudioSystem_1.AudioSystem.ExecuteAction(o.AudioHandle, 0, {
+      TransitionDuration: t.Model?.FadeOutTime,
+      TransitionFadeCurve: t.Model?.FadeOutCurve
+    }), o.AudioHandle = 0), e = t?.Model?.TrailingAudioEvent?.GetName(), r = t?.Model?.TrailingAudioEvent, e && r?.IsValid() && EffectAudioController.e0e(o, t, e, r.IsInfinite, true)) : (AudioSystem_1.AudioSystem.ExecuteAction(o.AudioHandle, 0), o.AudioHandle = 0), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][Audio事件] ---------- StopEvent", ["ActorUid", o.ActorUid], ["AudioHandle", o.AudioHandle], ["EffectModel", o.EffectModel?.GetName()], ["EffectActor", o.Actor?.GetName()]);
     }
   }
   static X81(o) {

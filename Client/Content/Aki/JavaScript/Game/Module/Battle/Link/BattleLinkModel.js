@@ -35,13 +35,14 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.swa = undefined;
     this.hwa = undefined;
     this.gml = undefined;
-    this.uUu = undefined;
-    this.cUu = undefined;
+    this.OUu = undefined;
+    this.qUu = undefined;
     this.NUe = -1;
     this.Oll = -1;
     this.Wke = undefined;
     this.V1l = false;
     this.H1l = false;
+    this.esd = 0;
     this.JKa = undefined;
     this.kJa = undefined;
     this.KZa = undefined;
@@ -50,7 +51,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.zul = undefined;
     this.as1 = undefined;
     this.g6_ = undefined;
-    this.dUu = undefined;
+    this.GUu = undefined;
     this.NewLinkGmTest = false;
     this.ZKa = 0;
     this.Ih1 = 0;
@@ -66,8 +67,8 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.swa = undefined;
     this.hwa = undefined;
     this.gml = undefined;
-    this.uUu?.clear();
-    this.cUu?.clear();
+    this.OUu?.clear();
+    this.qUu?.clear();
     this.NUe = -1;
     this.Oll = -1;
     this.V1l = false;
@@ -86,16 +87,16 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
       for (const i of this.zul) {
         if (!t.includes(i)) {
           e.push(i);
-          this.uUu?.delete(i);
-          this.cUu?.delete(i);
+          this.OUu?.delete(i);
+          this.qUu?.delete(i);
         }
       }
       for (const s of e) {
         this.zul.splice(this.zul.indexOf(s), 1);
       }
     } else {
-      this.uUu?.clear();
-      this.cUu?.clear();
+      this.OUu?.clear();
+      this.qUu?.clear();
     }
   }
   Jul() {
@@ -130,22 +131,23 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
       if (i) {
         this.as1?.clear();
         this.g6_?.clear();
+        this.esd = 0;
+        var t = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW);
         for (const a of i) {
-          var t;
           var s;
           var r = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(a.GetConfigId);
-          if (e.includes(r) && ((t = (s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(a.GetCreatureDataId())?.Entity)?.GetComponent(0)?.GetModelId() ?? 0) && (this.as1 === undefined && (this.as1 = new Map()), this.as1.set(r, t)), (t = s?.GetComponent(279))?.IsEnableMorph()) && (s = t.GetMorphData(1)?.ModelId)) {
+          if (e.includes(r) && ((s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(a.GetCreatureDataId())?.Entity?.GetComponent(0)?.GetModelId() ?? 0) && (this.as1 === undefined && (this.as1 = new Map()), this.as1.set(r, s)), s = t?.MorphModelIdMap.get(s))) {
             if (this.g6_ === undefined) {
               this.g6_ = new Map();
             }
             this.g6_.set(r, s);
           }
         }
-        var o = this.GetLinkConfig();
-        if (i.length === 1 && o && o.IsEnableOneRoleBurst && (i = o.OneRoleBurstTeammateId, o = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(i))) {
+        if (i.length === 1 && (i = ModelManager_1.ModelManager.RogueBattleModel.GetLinkIdByRoleIdList(e), (i = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(i))?.IsEnableOneRoleBurst) && (i = i.OneRoleBurstTeammateId, o = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(i))) {
           o = o.RoleId;
           this.as1?.set(o, i);
           e.push(o);
+          this.esd = o;
         }
       }
     }
@@ -158,11 +160,11 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     }
     if (this.V1l || this.H1l) {
       let t = e[0];
-      i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
+      var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
       if (i) {
         t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i.GetConfigId);
       }
-      o = [...e];
+      var o = [...e];
       o.splice(e.indexOf(t), 1);
       o.splice(1, 0, t);
       this.Wke = o;
@@ -191,15 +193,15 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.zul = this.Jul();
     this.zul ||= [];
     const e = this.zul;
-    this.uUu ||= new Map();
+    this.OUu ||= new Map();
     for (const r of e) {
       var s = {
         RoleId: r
       };
-      this.uUu.set(r, s);
+      this.OUu.set(r, s);
       if (this.g6_?.has(r)) {
-        this.cUu ||= new Map();
-        if (!this.cUu.has(r)) {
+        this.qUu ||= new Map();
+        if (!this.qUu.has(r)) {
           s = {
             RoleId: r
           };
@@ -207,7 +209,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
             RoleId: r,
             LinkRoleData: s
           };
-          this.cUu.set(r, s);
+          this.qUu.set(r, s);
         }
       }
     }
@@ -256,14 +258,14 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   async $sl(t) {
     const s = [];
     t.forEach((t, e) => {
-      var i = this.mUu(t);
+      var i = this.FUu(t);
       if (i) {
         s.push(this.Wll(t, i.Id, i.CharacterDataAsset));
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的配置", ["roleid", t]);
       }
       if (this.g6_?.has(t)) {
-        if (i = this.fUu(t)) {
+        if (i = this.NUu(t)) {
           s.push(this.Wll(t, i.Id, i.CharacterDataAsset));
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Battle", 67, "[BattleLink]找不到roleId的变身配置", ["roleid", t]);
@@ -273,29 +275,29 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     await Promise.all(s);
   }
   async q_1(t) {
-    this.dUu = [];
+    this.GUu = [];
     const s = this.CheckInNewBattleLink();
     t.forEach((t, e) => {
       var i;
       if (s) {
         if (i = this.as1?.get(t)) {
-          this.gUu(t, i, true);
+          this.VUu(t, i, true);
         }
         if (i = this.g6_?.get(t)) {
-          this.gUu(t, i, true);
+          this.VUu(t, i, true);
         }
       } else {
-        this.gUu(t);
+        this.VUu(t);
       }
     });
-    await Promise.all(this.dUu);
-    this.dUu = undefined;
+    await Promise.all(this.GUu);
+    this.GUu = undefined;
   }
-  gUu(e, i, t) {
+  VUu(e, i, t) {
     var s;
-    var r = this.dUu;
+    var r = this.GUu;
     var o = i && i === this.g6_?.get(e);
-    var a = (o ? this.cUu?.get(e)?.LinkRoleData : this.uUu?.get(e))?.DataAsset;
+    var a = (o ? this.qUu?.get(e)?.LinkRoleData : this.OUu?.get(e))?.DataAsset;
     if (a) {
       if (a.CharacterActorClass) {
         s = UE.KismetSystemLibrary.GetPathName(a.CharacterActorClass);
@@ -308,7 +310,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Battle", 67, "[BattleLink]找不到角色对应的DA", ["roleid", e]);
     }
-    var n = o ? this.fUu(e) : this.mUu(e);
+    var n = o ? this.NUu(e) : this.FUu(e);
     if (n) {
       if (n.NeedLoadMesh === 1 && (a = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e)?.MeshId) && (s = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, a.toString())?.网格体?.ToAssetPathName()) && s.length && s !== "None") {
         r.push(this.xsh(e, i, s));
@@ -352,7 +354,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.BP_SplitScreenCharacterData_C, t => {
       var e;
       if (t) {
-        if (e = this.CUu(i, s)) {
+        if (e = this.jUu(i, s)) {
           e.DataAsset = t;
         }
         r.SetResult();
@@ -367,7 +369,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.AnimSequence, t => {
       var e;
       if (t) {
-        if (e = this.CUu(i, s)) {
+        if (e = this.jUu(i, s)) {
           if (o) {
             e.WeaponAnimMap ||= new Map();
             e.WeaponAnimMap.set(a, t);
@@ -387,7 +389,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
       var e;
       if (t) {
-        if (e = this.CUu(i, s)) {
+        if (e = this.jUu(i, s)) {
           e.SeqBpClass = t;
         }
       } else if (Log_1.Log.CheckError()) {
@@ -418,7 +420,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.SkeletalMesh, t => {
       var e;
       if (t) {
-        if (e = this.CUu(i, s)) {
+        if (e = this.jUu(i, s)) {
           if (o) {
             e.WeaponMeshMap ||= new Map();
             e.WeaponMeshMap.set(a, t);
@@ -484,8 +486,8 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
       t.forEach((t, e) => {
         if (!(e >= this.Wke.length)) {
           var i = this.Wke[e];
-          var s = this.pUu(i);
-          var s = this.CUu(i, s);
+          var s = this.HUu(i);
+          var s = this.jUu(i, s);
           var r = s?.SeqBpClass;
           t?.SetChildActorClass(r);
           if (Log_1.Log.CheckDebug()) {
@@ -571,8 +573,8 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
       if (i) {
         let t = undefined;
         t = (t = i.GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_BASE)) || i.GetAnimInstance();
-        i = this.pUu(e);
-        i = this.CUu(e, i);
+        i = this.HUu(e);
+        i = this.jUu(e, i);
         if (s) {
           s = i?.Anim;
           s = t?.PlaySlotAnimationAsDynamicMontage(s, SequenceDefine_1.ABP_Seq_Slot_Name, 0, 0, 1, 1);
@@ -612,10 +614,10 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
       Log_1.Log.Debug("Battle", 67, "[BattleLink]分屏Bp的ChildActor为空", ["roleId", e]);
     }
   }
-  vUu(t) {
+  $Uu(t) {
     for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
       if (t === ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e.GetConfigId)) {
-        return !!e.EntityHandle?.Entity?.GetComponent(279)?.IsMorphing();
+        return !!e.EntityHandle?.Entity?.GetComponent(282)?.IsMorphing();
       }
     }
     return false;
@@ -652,14 +654,17 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色失败", ["RoleId", this.Oll]);
       }
-    } else if (t = this.mUu(this.Oll)) {
-      t = t.RoleLinkAudio;
-      AudioSystem_1.AudioSystem.PostEvent(t);
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[BattleLink]播放主控角色Link语音", ["Event", t]);
+    } else {
+      t = this.esd !== 0 ? this.esd : this.Oll;
+      if (t = this.FUu(t, true)) {
+        t = t.RoleLinkAudio;
+        AudioSystem_1.AudioSystem.PostEvent(t);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Audio", 42, "[BattleLink]播放主控角色Link语音", ["Event", t]);
+        }
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色配置失败", ["RoleId", this.Oll]);
       }
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色配置失败", ["RoleId", this.Oll]);
     }
   }
   InitBeforeStart() {
@@ -798,24 +803,32 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   GetLinkConfig() {
     return ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(this.Er1);
   }
-  mUu(t) {
-    let e = undefined;
-    var i;
-    return e = this.CheckInNewBattleLink() ? (i = this.as1?.get(t) ?? 0, ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(i)) : ConfigManager_1.ConfigManager.DreamLinkConfig?.GetRoleConfig(t);
+  FUu(e, i = false) {
+    let s = undefined;
+    if (this.CheckInNewBattleLink()) {
+      let t = this.as1?.get(e) ?? 0;
+      if (i) {
+        t = this.HUu(e);
+      }
+      s = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(t);
+    } else {
+      s = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetRoleConfig(e);
+    }
+    return s;
   }
-  fUu(t) {
+  NUu(t) {
     t = this.g6_?.get(t) ?? 0;
     return ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(t);
   }
-  CUu(t, e) {
+  jUu(t, e) {
     if (e && e !== 0 && (this.g6_?.get(t) ?? 0) === e) {
-      return this.cUu?.get(t)?.LinkRoleData;
+      return this.qUu?.get(t)?.LinkRoleData;
     }
-    return this.uUu?.get(t);
+    return this.OUu?.get(t);
   }
-  pUu(t) {
+  HUu(t) {
     let e = this.as1?.get(t);
-    return (e = this.g6_?.has(t) && this.vUu(t) ? this.g6_.get(t) : e) ?? 0;
+    return (e = this.g6_?.has(t) && this.$Uu(t) ? this.g6_.get(t) : e) ?? 0;
   }
 }
 exports.BattleLinkModel = BattleLinkModel;

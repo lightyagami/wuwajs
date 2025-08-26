@@ -7,18 +7,24 @@ exports.GameplayCueSkinDamage = undefined;
 const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueSkinDamage extends GameplayCueBase_1.GameplayCueBase {
   OnCreate() {
-    var e = this.EntityHandle.Entity?.GetComponent(210);
-    if (e) {
-      e.CuePath = this.GetPath();
-      e.ApplySkinDamage(e.CuePath, false, "GameplayCueSkinDamage生成");
+    var e;
+    var a = this.EntityHandle.Entity?.GetComponent(211);
+    if (a) {
+      a.CuePath = this.GetPath();
+      e = this.IsIgnoreEnableSetting();
+      a.IsCueIgnoreEnableSetting = e;
+      a.ApplySkinDamage(a.CuePath, e, "GameplayCueSkinDamage生成");
     }
   }
   OnDestroy() {
-    var e = this.EntityHandle.Entity?.GetComponent(210);
+    var e = this.EntityHandle.Entity?.GetComponent(211);
     if (e) {
-      e.CuePath = "";
-      e.ApplySkinDamageByType(e.SkinDamageType, false, "GameplayCueSkinDamage销毁");
+      e.ResetCueSkinDamage();
     }
+  }
+  IsIgnoreEnableSetting() {
+    var e = this.CueConfig.Parameters;
+    return e.length > 0 && e[0] === "1";
   }
 }
 exports.GameplayCueSkinDamage = GameplayCueSkinDamage;

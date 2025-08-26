@@ -13,22 +13,24 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventStopUiScreenEffect extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, r) {
-    ModelManager_1.ModelManager.ScreenEffectModel?.EndScreenEffectByPath(e.EffectDaPath);
+    var o;
     if (this.IsAsync) {
+      ModelManager_1.ModelManager.ScreenEffectModel?.EndScreenEffectByPath(e.EffectDaPath);
       this.FinishExecute(true);
-    } else if ((e = ResourceSystem_1.ResourceSystem.GetLoadedAsset(e.EffectDaPath, UE.EffectScreenPlayData_C))?.IsValid()) {
-      if ((e = e.End * CommonDefine_1.MILLIONSECOND_PER_SECOND) < TimerSystem_1.MIN_TIME) {
+    } else if (o = ResourceSystem_1.ResourceSystem.GetLoadedAsset(e.EffectDaPath, UE.EffectScreenPlayData_C)) {
+      ModelManager_1.ModelManager.ScreenEffectModel?.EndScreenEffectByPath(e.EffectDaPath);
+      if ((e = o.End * CommonDefine_1.MILLIONSECOND_PER_SECOND) < TimerSystem_1.MIN_TIME) {
         this.FinishExecute(true);
       } else {
-        TimerSystem_1.TimerSystem.Delay(() => {
+        TimerSystem_1.GameplayTimerSystem.Delay(() => {
           this.FinishExecute(true);
         }, e);
       }
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelEvent", 39, "[LevelEventStopUiScreenEffect] 特效资源未加载");
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("LevelEvent", 39, "[LevelEventStopUiScreenEffect] 特效资源未加载, 无需停止");
       }
-      this.FinishExecute(false);
+      this.FinishExecute(true);
     }
   }
 }

@@ -18,7 +18,14 @@ class FloroRanchSkillCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.CanSelect = false;
     this.OnToggleCallBack = undefined;
     this.OnCanExecuteChangeFunc = undefined;
-    this.gke = () => !!this.CanSelect && !!this.Bmo.IsUnLock && (!this.OnCanExecuteChangeFunc || this.OnCanExecuteChangeFunc(this.Bmo.Id));
+    this.gke = () => {
+      this.GetItem(10)?.SetUIActive(false);
+      if (this.CanSelect && this.Bmo.IsUnLock) {
+        return !this.OnCanExecuteChangeFunc || this.OnCanExecuteChangeFunc(this.Bmo.Id);
+      } else {
+        return false;
+      }
+    };
     this.kqe = () => {
       this.GetItem(10)?.SetUIActive(false);
       if (this.OnToggleCallBack) {
@@ -50,6 +57,7 @@ class FloroRanchSkillCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.SetTextureByPath(e.Icon, this.GetTexture(1));
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.Desc);
+    this.GetText(5).bBestFit = false;
     this.GetSprite(3).useChangeColor = e.IsActiveSkill;
     var r = e.IsActiveSkill ? "FloroRanchActiveSkill" : "FloroRanchPassiveSkill";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), r);

@@ -86,7 +86,7 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
     var a;
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
     for (const n of o) {
-      if (n.Valid && (e = n.Entity.GetComponent(174))) {
+      if (n.Valid && (e = n.Entity.GetComponent(175))) {
         e.AddBuff(CharacterBuffIds_1.buffId.Invisible, {
           InstigatorId: e.CreatureDataId,
           Reason: "HandleRoleBuffChangeInLoading"
@@ -95,7 +95,7 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
     }
     await NormalLoadingViewGlobalData_1.NormalLoadingViewGlobalData.FinishPromise?.Promise;
     for (const r of o) {
-      if (r.Valid && (a = r.Entity.GetComponent(174))) {
+      if (r.Valid && (a = r.Entity.GetComponent(175))) {
         a.RemoveBuff(CharacterBuffIds_1.buffId.Invisible, -1, "HandleRoleBuffChangeInLoading");
       }
     }
@@ -197,7 +197,7 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestLoadingConfigAsync() {
     var e = new Protocol_1.Aki.Protocol.oqc();
-    var e = await Net_1.Net.CallAsync(21332, e);
+    var e = await Net_1.Net.CallAsync(18384, e);
     return !!e && (ModelManager_1.ModelManager.LoadingModel?.SetLoadingConfig(e.sqc), true);
   }
 }

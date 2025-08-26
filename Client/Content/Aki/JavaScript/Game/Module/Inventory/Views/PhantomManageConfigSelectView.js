@@ -16,23 +16,23 @@ class PhantomManageConfigSelectView extends UiViewBase_1.UiViewBase {
     this.Scroll = undefined;
     this.C0t = undefined;
     this.sft = undefined;
-    this.Aqu = () => {
+    this.aGu = () => {
       return new PhantomManageConfigSelectGroup_1.SelectGroup();
     };
-    this.Pqu = () => {
+    this.hGu = () => {
       for (const e of this.Scroll.GetScrollItemList()) {
         e.ResetSelect();
       }
     };
-    this.xqu = () => {
-      var e = this.Uqu();
+    this.lGu = () => {
+      var e = this._Gu();
       this.C0t.CallbackConfirm(e);
       this.CloseMe();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIScrollViewWithScrollbarComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[1, this.Pqu], [2, this.xqu]];
+    this.BtnBindInfo = [[1, this.hGu], [2, this.lGu]];
   }
   OnBeforeCreate() {
     this.C0t = this.OpenParam;
@@ -49,11 +49,11 @@ class PhantomManageConfigSelectView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.sft.SetUIParent(this.GetScrollViewWithScrollbar(0).ContentUIItem);
-    this.Scroll = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.Aqu, this.sft.GetOwner());
-    var e = this.Dqu();
+    this.Scroll = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(0), this.aGu, this.sft.GetOwner());
+    var e = this.uGu();
     this.Scroll.RefreshByData(e);
   }
-  Dqu() {
+  uGu() {
     var e = this.C0t;
     var i = e.RuleIdList;
     var t = e.FilterId;
@@ -73,7 +73,7 @@ class PhantomManageConfigSelectView extends UiViewBase_1.UiViewBase {
     }
     return a;
   }
-  Uqu() {
+  _Gu() {
     var e = this.Scroll.GetScrollItemList();
     var i = new Map();
     for (const a of e) {

@@ -13,7 +13,7 @@ class LuPaAimUnit extends HudUnitBase_1.HudUnitBase {
   constructor() {
     super(...arguments);
     this.Lti = false;
-    this.cSu = false;
+    this.d7c = false;
     this.Dxt = false;
     this._at = undefined;
     this.uat = undefined;
@@ -67,11 +67,11 @@ class LuPaAimUnit extends HudUnitBase_1.HudUnitBase {
     this.GetSprite(0)?.SetFillAmount(t);
   }
   SetLockState(t) {
-    if (this.Dxt !== t || !this.cSu) {
+    if (this.Dxt !== t || !this.d7c) {
       this.Dxt = t;
       this.GetItem(1).SetUIActive(!t);
       this.GetItem(2).SetUIActive(t);
-      this.cSu ||= true;
+      this.d7c ||= true;
       if (this.IsShowOrShowing) {
         this.PlayTweenAnim(5);
       }

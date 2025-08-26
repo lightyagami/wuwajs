@@ -64,8 +64,8 @@ class RacingBetsModel extends ModelBase_1.ModelBase {
     this.Nx1 = undefined;
     this.Od1 = undefined;
     this.yO1 = false;
-    this.Hz1 = 0;
-    this.$z1 = 0;
+    this.Kz1 = 0;
+    this.Xz1 = 0;
   }
   OnClear() {
     this.Fd1();
@@ -570,14 +570,14 @@ class RacingBetsModel extends ModelBase_1.ModelBase {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RacingBetsBulletScreenShowTypeRecord, e);
   }
   get RayTracingShadowsValue() {
-    return this.Hz1;
+    return this.Kz1;
   }
   get DlssValue() {
-    return this.$z1;
+    return this.Xz1;
   }
   SetVisionValue(e, t) {
-    this.Hz1 = e;
-    this.$z1 = t;
+    this.Kz1 = e;
+    this.Xz1 = t;
   }
 }
 exports.RacingBetsModel = RacingBetsModel;

@@ -49,11 +49,11 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
     this.NZi = undefined;
     this.Po1 = 0;
     this.A11 = 0;
-    this.TK1 = 0;
+    this.wK1 = 0;
     this.JGe = () => new BirthdayRewardItem_1.BirthdayRewardItem();
     this.Awe = () => {
       var e;
-      if (this.A11 === 0 || !(TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.A11 < this.TK1)) {
+      if (this.A11 === 0 || !(TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.A11 < this.wK1)) {
         this.A11 = TimeUtil_1.TimeUtil.GetServerTimeStamp();
         if (this.BI1) {
           UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(this.kI1);
@@ -69,7 +69,7 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.GI1 = () => {
-      if (this.A11 === 0 || !(TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.A11 < this.TK1)) {
+      if (this.A11 === 0 || !(TimeUtil_1.TimeUtil.GetServerTimeStamp() - this.A11 < this.wK1)) {
         this.A11 = TimeUtil_1.TimeUtil.GetServerTimeStamp();
         this.FI1();
         this.PlaySequence("WindowOpen");
@@ -111,7 +111,7 @@ class BirthdayLetterView extends UiTickViewBase_1.UiTickViewBase {
     var e;
     var i = RoleBirthdayById_1.configRoleBirthdayById.GetConfig(this.dFe);
     if (i) {
-      this.TK1 = CommonParamById_1.configCommonParamById.GetIntConfig("BirthdayEnvelopeInterval");
+      this.wK1 = CommonParamById_1.configCommonParamById.GetIntConfig("BirthdayEnvelopeInterval");
       this.kI1 = i.SceneCameraId;
       this.OI1 = i.CardCameraId;
       AudioSystem_1.AudioSystem.SetState(RoleDefine_1.ROLE_MUTE_NATURE_AUDIO_GROUP, "mute");

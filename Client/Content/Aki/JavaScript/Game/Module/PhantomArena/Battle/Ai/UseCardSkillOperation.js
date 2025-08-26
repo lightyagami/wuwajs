@@ -32,7 +32,7 @@ class UseCardSkillOperation extends NpcAiOperation_1.NpcAiOperation {
         await e.OpponentArea.HandArea.RefreshHandCardNum(this.Info.Hg1);
       }
       r = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.FightId;
-      ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataByNpc(r, this.Info, 21637);
+      ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataByNpc(r, this.Info, 26016);
     }
   }
 }

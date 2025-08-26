@@ -25,12 +25,12 @@ class ShowerSkillButton extends UiPanelBase_1.UiPanelBase {
     this.dit = 0;
     this.hit = undefined;
     this.yit = undefined;
-    this.MJ1 = 1;
+    this.KJ1 = 1;
     this.kit = i => {
       this.cit -= SKILL_COOLDOWN_LOOP_INTERVAL;
       this.cit = Math.round(this.cit * 10) / 10;
       if (this.cit > 0) {
-        this._it.SetText(this.cit.toFixed(this.MJ1));
+        this._it.SetText(this.cit.toFixed(this.KJ1));
       } else {
         this.FinishSkillCoolDown();
       }
@@ -49,9 +49,9 @@ class ShowerSkillButton extends UiPanelBase_1.UiPanelBase {
     this.lit = this.GetItem(1);
     this.uit = this.GetSprite(2);
     this._it = this.GetText(3);
-    this.Umu(true);
+    this.gfu(true);
   }
-  Umu(i) {
+  gfu(i) {
     this.WI = i;
     this.GetButton(0)?.SetSelfInteractive(i);
   }
@@ -60,11 +60,11 @@ class ShowerSkillButton extends UiPanelBase_1.UiPanelBase {
     if (!(this.cit <= 0) && !(this.mit <= 0) && !!this.uit) {
       t = (Time_1.Time.WorldTimeSeconds - this.dit) / this.mit;
       this.uit.SetFillAmount(t);
-      this._it.SetText(this.cit.toFixed(this.MJ1));
+      this._it.SetText(this.cit.toFixed(this.KJ1));
     }
   }
   ResetSkillCoolDown() {
-    this.Umu(true);
+    this.gfu(true);
     this.lit?.SetUIActive(false);
     this.sot();
     this.cit = 0;
@@ -88,16 +88,16 @@ class ShowerSkillButton extends UiPanelBase_1.UiPanelBase {
     this.sot();
     if (i <= (this.cit = 0)) {
       this.lit.SetUIActive(false);
-      this.Umu(true);
+      this.gfu(true);
     } else {
       this.cit = i;
       this.mit = t;
       this.dit = Time_1.Time.WorldTimeSeconds - (t - i);
-      this._it?.SetText(this.cit.toFixed(this.MJ1));
+      this._it?.SetText(this.cit.toFixed(this.KJ1));
       this.hit = TimerSystem_1.TimerSystem.Forever(this.kit, SKILL_COOLDOWN_INTERVAL);
       this.not(this.hit);
       this.lit.SetUIActive(true);
-      this.Umu(false);
+      this.gfu(false);
     }
   }
   FinishSkillCoolDown() {

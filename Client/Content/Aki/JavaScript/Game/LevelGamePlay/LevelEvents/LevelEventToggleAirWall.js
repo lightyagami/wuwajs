@@ -10,21 +10,22 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventToggleAirWall extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, t, o) {
     if (e) {
-      if (t) {
-        var l = EntitySystem_1.EntitySystem.Get(t.EntityId);
-        if (!l?.Valid) {
+      var l = t;
+      if (l) {
+        var r = EntitySystem_1.EntitySystem.Get(l.EntityId);
+        if (!r?.Valid) {
           if (e.ActorRefs?.length) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("LevelEvent", 39, "状态控制entity不存在", ["EntityId", t.EntityId], ["ActorRef", e.ActorRefs[0]?.PathName]);
+              Log_1.Log.Error("LevelEvent", 39, "状态控制entity不存在", ["EntityId", l.EntityId], ["ActorRef", e.ActorRefs[0]?.PathName]);
             }
             return;
           } else {
             return undefined;
           }
         }
-        if (l.GetComponent(202)?.Owner) {
-          if (t = l.GetComponent(163)) {
-            t.HandleAirWall(e);
+        if (r.GetComponent(203)?.Owner) {
+          if (l = r.GetComponent(164)) {
+            l.HandleAirWall(e, t);
           }
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 7, "状态控制actor不存在");

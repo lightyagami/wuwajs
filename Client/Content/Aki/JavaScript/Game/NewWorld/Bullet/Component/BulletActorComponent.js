@@ -111,5 +111,5 @@ let BulletActorComponent = class BulletActorComponent extends BaseActorComponent
     this.ActorInternal.CustomTimeDilation = t;
   }
 };
-BulletActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(169)], BulletActorComponent);
+BulletActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(170)], BulletActorComponent);
 exports.BulletActorComponent = BulletActorComponent; //# sourceMappingURL=BulletActorComponent.js.map

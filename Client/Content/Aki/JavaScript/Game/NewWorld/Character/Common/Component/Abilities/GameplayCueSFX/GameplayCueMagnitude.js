@@ -7,6 +7,7 @@ exports.GameplayCueMagnitude = undefined;
 const Log_1 = require("../../../../../../../Core/Common/Log");
 const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
 const MathUtils_1 = require("../../../../../../../Core/Utils/MathUtils");
+const CameraController_1 = require("../../../../../../Camera/CameraController");
 const CharacterAttributeTypes_1 = require("../CharacterAttributeTypes");
 const GameplayCueBase_1 = require("./GameplayCueBase");
 class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
@@ -22,6 +23,7 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     this.rne = 0;
     this.Xe = 0;
     this.Z$o = 0;
+    this.cWc = false;
     this._yo = (t, i, s) => {
       if (t === this.z$o) {
         this.rne = i;
@@ -46,6 +48,8 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
       if (!t) {
         this.Z$o = 0;
       }
+    } else if (this.cWc && !MathUtils_1.MathUtils.IsNearlyEqual(this.Xe, CameraController_1.CameraController.CameraRotator.Pitch)) {
+      this.eYo(CameraController_1.CameraController.CameraRotator.Pitch, false);
     }
   }
   OnCreate() {
@@ -65,8 +69,11 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
   UseMagnitude() {
     return this.CueConfig.Magni !== 0 && !this.IsInstant;
   }
+  HasMagnitudeComponent() {
+    return !!this.$te && !!this.m1t && !!this.Xte;
+  }
   oYo() {
-    if (!this.UseMagnitude()) {
+    if (!this.UseMagnitude() || !this.HasMagnitudeComponent()) {
       return false;
     }
     let t = 0;
@@ -103,6 +110,10 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
         }
         t = this.iYo();
         break;
+      case 5:
+        this.cWc = this.CueConfig.bListenAttr;
+        t = CameraController_1.CameraController.CameraRotator.Pitch;
+        break;
       default:
         return false;
     }
@@ -128,6 +139,9 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
           if (this.CueConfig.bListenAttr) {
             this.Z$o = 0;
           }
+          break;
+        case 5:
+          this.cWc = false;
       }
     }
   }
@@ -168,9 +182,9 @@ class GameplayCueMagnitude extends GameplayCueBase_1.GameplayCueBase {
     }
   }
   iqi() {
-    this.$te = this.EntityHandle.Entity.CheckGetComponent(172);
-    this.m1t = this.EntityHandle.Entity.CheckGetComponent(209);
-    this.Xte = this.EntityHandle.Entity.CheckGetComponent(205);
+    this.$te = this.EntityHandle.Entity.GetComponent(173);
+    this.m1t = this.EntityHandle.Entity.GetComponent(210);
+    this.Xte = this.EntityHandle.Entity.GetComponent(206);
   }
 }
 exports.GameplayCueMagnitude = GameplayCueMagnitude;

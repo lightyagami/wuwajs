@@ -7,6 +7,7 @@ exports.MenuBaseConfig = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const AxisRevertByRevertType_1 = require("../../../Core/Define/ConfigQuery/AxisRevertByRevertType");
 const KeySettingByTypeIdAndInputControllerType_1 = require("../../../Core/Define/ConfigQuery/KeySettingByTypeIdAndInputControllerType");
+const KeySettingByTypeIdAndInputControllerTypeExclusive_1 = require("../../../Core/Define/ConfigQuery/KeySettingByTypeIdAndInputControllerTypeExclusive");
 const KeyTypeAll_1 = require("../../../Core/Define/ConfigQuery/KeyTypeAll");
 const MainTypeAll_1 = require("../../../Core/Define/ConfigQuery/MainTypeAll");
 const MainTypeById_1 = require("../../../Core/Define/ConfigQuery/MainTypeById");
@@ -53,6 +54,9 @@ class MenuBaseConfig extends ConfigBase_1.ConfigBase {
   }
   GetAxisRevertConfigListByRevertType(e) {
     return AxisRevertByRevertType_1.configAxisRevertByRevertType.GetConfigList(e);
+  }
+  GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(e, n, r) {
+    return KeySettingByTypeIdAndInputControllerTypeExclusive_1.configKeySettingByTypeIdAndInputControllerTypeExclusive.GetConfigList(e, n, r);
   }
 }
 exports.MenuBaseConfig = MenuBaseConfig;

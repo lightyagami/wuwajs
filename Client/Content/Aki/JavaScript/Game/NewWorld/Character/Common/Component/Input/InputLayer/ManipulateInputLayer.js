@@ -20,7 +20,7 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
   }
   Init(t) {
     t = t.Entity;
-    this.Lie = t.GetComponent(193);
+    this.Lie = t.GetComponent(194);
     this.cBe = t.GetComponent(40);
   }
   Clear() {
@@ -34,7 +34,7 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
     switch (t) {
       case InputEnums_1.EInputAction.攻击:
         if (!this.Lie.HasTag(-972568039)) {
-          this.cBe.BeginSkill(MANIPULATE_THROW_SKILL, {
+          this.cBe.BeginSkillAsync(MANIPULATE_THROW_SKILL, {
             Reason: "Manipulate InputLayer, Item Throw"
           });
         }
@@ -44,21 +44,21 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
           break;
         }
         if (!this.Lie.HasTag(1278503102)) {
-          this.cBe.BeginSkill(MANIPULATE_RELEASE_SKILL, {
+          this.cBe.BeginSkillAsync(MANIPULATE_RELEASE_SKILL, {
             Reason: "Manipulate InputLayer, Item Release"
           });
         }
         return ManipulateInputLayer.GetSwallowCommand();
       case InputEnums_1.EInputAction.技能1:
         if (this.Lie.HasTag(-1070569477)) {
-          this.cBe.BeginSkill(MANIPULATE_ROTATE_SKILL, {
+          this.cBe.BeginSkillAsync(MANIPULATE_ROTATE_SKILL, {
             Reason: "Manipulate InputLayer, Item Rotate"
           });
           return ManipulateInputLayer.GetSwallowCommand();
         }
         break;
       case InputEnums_1.EInputAction.瞄准:
-        this.cBe.BeginSkill(MANIPULATE_PARABOLA_SKILL, {
+        this.cBe.BeginSkillAsync(MANIPULATE_PARABOLA_SKILL, {
           Reason: "Manipulate InputLayer, Item Rotate"
         });
         return ManipulateInputLayer.GetSwallowCommand();
@@ -71,7 +71,7 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
     if (t === InputEnums_1.EInputAction.幻象1) {
       if (Info_1.Info.IsInTouch()) {
         if (!this.Lie.HasTag(1278503102)) {
-          this.cBe.BeginSkill(MANIPULATE_RELEASE_SKILL, {
+          this.cBe.BeginSkillAsync(MANIPULATE_RELEASE_SKILL, {
             Reason: "Manipulate InputLayer, Item Release"
           });
         }

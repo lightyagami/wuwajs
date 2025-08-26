@@ -39,7 +39,7 @@ class CharacterController extends ControllerBase_1.ControllerBase {
       t = new Uint8Array(t);
       cpp_1.FuncOpenLibrary.FreeArrayBuffer(e);
       (e = new Protocol_1.Aki.Protocol.CombatMessage.Hfs()).Ujn = t;
-      t = await Net_1.Net.CallAsync(16811, e);
+      t = await Net_1.Net.CallAsync(22847, e);
       cpp_1.FuncOpenLibrary.SetIsCheckEncrypt(t?.JLs ?? "");
     }
   }
@@ -163,8 +163,8 @@ class CharacterController extends ControllerBase_1.ControllerBase {
     }
   }
   static GetActorComponent(t) {
-    let e = t.Entity.GetComponent(202);
-    return e = (e = e || t.Entity.GetComponent(2)) || t.Entity.GetComponent(234);
+    let e = t.Entity.GetComponent(203);
+    return e = (e = e || t.Entity.GetComponent(2)) || t.Entity.GetComponent(235);
   }
   static GetTsBaseCharacterByEntity(t) {
     return t.Entity.GetComponent(3)?.Actor;

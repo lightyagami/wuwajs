@@ -43,6 +43,12 @@ class SlashAndTowerCfg {
   get ScoreStage() {
     return GameUtils_1.GameUtils.ConvertToArray(this.scorestageLength(), this.scorestage, this);
   }
+  get IsHaveBattleScore() {
+    return this.ishavebattlescore();
+  }
+  get OrderIndex() {
+    return this.orderindex();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -199,6 +205,18 @@ class SlashAndTowerCfg {
     var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  ishavebattlescore() {
+    var t = this.J7.__offset(this.z7, 26);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  orderindex() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }

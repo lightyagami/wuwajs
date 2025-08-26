@@ -8,11 +8,11 @@ const SpecialEnergyBarSlot_1 = require("./SpecialEnergyBarSlot");
 class SpecialEnergyBarSlotPlayUse extends SpecialEnergyBarSlot_1.SpecialEnergyBarSlot {
   constructor() {
     super(...arguments);
-    this.zau = new Array();
+    this.Ehu = new Array();
   }
   async InitSlotItem(e) {
     await super.InitSlotItem(e);
-    this.zau.push(0);
+    this.Ehu.push(0);
   }
   RefreshBarPercent(e = false) {
     var t = this.PercentMachine.GetCurPercent();
@@ -21,10 +21,10 @@ class SpecialEnergyBarSlotPlayUse extends SpecialEnergyBarSlot_1.SpecialEnergyBa
       var s = this.SlotItemList[e];
       var a = t * this.SlotNum - e;
       s.UpdatePercent(a, r);
-      if (this.zau[e] > 0 && a <= 0) {
-        s.PlayUseEffectWithPercent(this.zau[e]);
+      if (this.Ehu[e] > 0 && a <= 0) {
+        s.PlayUseEffectWithPercent(this.Ehu[e]);
       }
-      this.zau[e] = a;
+      this.Ehu[e] = a;
     }
     this.KeyItem?.RefreshKeyEnable(r, e);
   }

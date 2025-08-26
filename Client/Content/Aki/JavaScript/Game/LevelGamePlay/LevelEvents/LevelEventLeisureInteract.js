@@ -31,22 +31,28 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
       if (Global_1.Global.BaseCharacter) {
         var r = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
         var s = r.GetComponent(29);
-        var _ = r.GetComponent(193);
-        var a = r.GetComponent(59);
+        const c = r.GetComponent(194);
+        var _ = r.GetComponent(59);
         switch (o.Option.Type) {
           case IAction_1.ELeisureInteract.SitDown:
           case IAction_1.ELeisureInteract.SitOnGround:
-            var n = this.aic(t, o.SceneEntity);
-            if (!n) {
-              if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("LevelEvent", 36, " LevelEventLeisureInteract, 尝试坐下时交互实体不存在");
+            {
+              let e = false;
+              if (o.Option.Type === IAction_1.ELeisureInteract.SitDown && o.Option?.OnlyAllowForwardStandUp) {
+                e = true;
               }
-              this.FinishExecute(false);
-              return;
+              var a = this.aic(t, o.SceneEntity);
+              if (!a) {
+                if (Log_1.Log.CheckError()) {
+                  Log_1.Log.Error("LevelEvent", 36, " LevelEventLeisureInteract, 尝试坐下时交互实体不存在");
+                }
+                this.FinishExecute(false);
+                return;
+              }
+              var n = this.Kul(o.Option.Type);
+              s.EnterSitDownAction(a, n, e);
+              this.FinishExecute(true);
             }
-            var c = this.Kul(o.Option.Type);
-            s.EnterSitDownAction(n, c);
-            this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.Manipulate:
             if (Log_1.Log.CheckError()) {
@@ -64,8 +70,8 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
                 case 1:
                   e = t.EntityId;
               }
-              n = EntitySystem_1.EntitySystem.Get(e);
-              s.StartCatapult(n, o.Option);
+              a = EntitySystem_1.EntitySystem.Get(e);
+              s.StartCatapult(a, o.Option);
               this.FinishExecute(true);
             }
             break;
@@ -78,48 +84,50 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.StandControl2:
-            _.AddTag(1334991742);
+            c.AddTag(1334991742);
             s.PlayCustomCommonSkill(400202);
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.Soar:
-            var c = r.GetComponent(40);
+            var n = r.GetComponent(40);
             if (this.BaseContext?.Type === 9) {
-              _.TagContainer.UpdateExactTag(2, 283451623, -1);
+              c.TagContainer.UpdateExactTag(2, 283451623, -1);
             }
             ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1015);
             RouletteController_1.RouletteController.ExploreSkillSetRequest(1015);
-            c.BeginSkill(SKILL_ID_XA_CHARACTER_DIR, {
+            n.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
               Reason: "LeisureInteract行为触发翱翔"
+            }).then(() => {
+              if (this.BaseContext?.Type === 9) {
+                c.TagContainer.UpdateExactTag(2, 283451623, 1);
+              }
+              this.FinishExecute(true);
             });
-            if (this.BaseContext?.Type === 9) {
-              _.TagContainer.UpdateExactTag(2, 283451623, 1);
-            }
-            this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.Soar2:
-            n = r.GetComponent(40);
+            a = r.GetComponent(40);
             if (this.BaseContext?.Type === 9) {
-              _.TagContainer.UpdateExactTag(2, 283451623, -1);
+              c.TagContainer.UpdateExactTag(2, 283451623, -1);
             }
             RouletteController_1.RouletteController.ExploreSkillSetRequest(1015);
-            a?.SwitchCurrentSoarType(1);
-            n.BeginSkill(SKILL_ID_XA_CHARACTER_DIR, {
+            _?.SwitchCurrentSoarType(1);
+            a.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
               Reason: "LeisureInteract行为触发遨游"
+            }).then(() => {
+              if (this.BaseContext?.Type === 9) {
+                c.TagContainer.UpdateExactTag(2, 283451623, 1);
+              }
+              this.FinishExecute(true);
             });
-            if (this.BaseContext?.Type === 9) {
-              _.TagContainer.UpdateExactTag(2, 283451623, 1);
-            }
-            this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.Glide:
-            r.GetComponent(178).TrySetGlide();
+            r.GetComponent(179).TrySetGlide();
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.HookLock:
-            if (r.GetComponent(99)?.CanActivateFixHook()) {
-              c = _.HasTag(-1958756056) ? SKILL_ID_FIX_HOOK_2 : SKILL_ID_FIX_HOOK_1;
-              r.GetComponent(40).BeginSkill(c, {
+            if (r.GetComponent(100)?.CanActivateFixHook()) {
+              n = c.HasTag(-1958756056) ? SKILL_ID_FIX_HOOK_2 : SKILL_ID_FIX_HOOK_1;
+              r.GetComponent(40).BeginSkill(n, {
                 Reason: "LeisureInteract行为触发定点钩锁"
               });
               this.FinishExecute(true);
@@ -131,7 +139,7 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             }
             break;
           case IAction_1.ELeisureInteract.KiteHook:
-            if (_.HasTag(-1526637662)) {
+            if (c.HasTag(-1526637662)) {
               r.GetComponent(40).BeginSkill(SKILL_ID_XA_KITE, {
                 Reason: "LeisureInteract行为触发风筝钩锁"
               });
@@ -150,10 +158,10 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.FailurePose:
-            n = r.GetComponent(3);
+            a = r.GetComponent(3);
             tmpRotator.Set(o.Option.Rot.Y ?? 0, o.Option.Rot.Z ?? 0, o.Option.Rot.X ?? 0);
-            n.SetActorRotation(tmpRotator.ToUeRotator(), "LeisureInteract行为触发失败姿势", false);
-            n.ClearInput();
+            a.SetActorRotation(tmpRotator.ToUeRotator(), "LeisureInteract行为触发失败姿势", false);
+            a.ClearInput();
             r.GetComponent(40).BeginSkill(hardCodePoseId.get(o.Option.Type), {
               Reason: "LeisureInteract行为触发失败姿势"
             });

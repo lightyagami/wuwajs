@@ -5,4 +5,4 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WORKSPACE_BRANCH = exports.RUNTIME = undefined;
 exports.RUNTIME = "aki";
-exports.WORKSPACE_BRANCH = "branch_2.5"; //# sourceMappingURL=EditorDefine.js.map
+exports.WORKSPACE_BRANCH = "branch_2.6"; //# sourceMappingURL=EditorDefine.js.map

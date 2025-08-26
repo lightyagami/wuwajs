@@ -55,6 +55,8 @@ const IOS_STREAMING_POOL_SIZE_FOR_MESHES = 250;
 const IOS_STREAMING_POOL_SIZE_IN_LOADING = 90;
 const IOS_STREAMING_POOL_SIZE_FOR_MESHES_IN_LOADING = 90;
 const HIGH_SPEED_REMOVE_INTERVAL = 10;
+const MAX_PENDING_REMOVE_COUNT = 100;
+const LOW_MEMORY_PENDING_REMOVE_COUNT = 50;
 class WorldController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     var e;
@@ -72,7 +74,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
-    Net_1.Net.Register(18689, WorldController.RBn);
+    Net_1.Net.Register(18943, WorldController.RBn);
     TickSystem_1.TickSystem.Add(this.k1r.bind(this), "WorldController", 2);
     TickSystem_1.TickSystem.Add(this.Bbl.bind(this), "WorldController", 5, true);
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wo.ParallelOffset 1");
@@ -89,7 +91,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-    Net_1.Net.UnRegister(18689);
+    Net_1.Net.UnRegister(18943);
     ModelManager_1.ModelManager.WorldModel.ControlPlayerLastLocation = undefined;
     if (this.LTl) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.LTl);
@@ -184,13 +186,27 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
     if (this.Kr_()) {
       this.$r_ = 0;
-      this.Npr();
-      this.Opr();
+      this.cgd();
+      let e = this.dgd;
+      while (e-- > 0) {
+        this.Npr();
+        this.Opr();
+      }
+    }
+  }
+  static cgd() {
+    if ((Info_1.Info.IsLowMemoryDevice ? LOW_MEMORY_PENDING_REMOVE_COUNT : MAX_PENDING_REMOVE_COUNT) < ModelManager_1.ModelManager.CreatureModel.PendingRemoveEntitySize()) {
+      this.dgd++;
+    } else {
+      this.dgd--;
+    }
+    if (this.dgd < 1) {
+      this.dgd = 1;
     }
   }
   static Kr_() {
     this.$r_++;
-    if (ControllerHolder_1.ControllerHolder.PlayerVelocityController.IsHighSpeedMode() || ControllerHolder_1.ControllerHolder.PlayerSoarMonitorController.IsPlayerSoar) {
+    if (!Info_1.Info.IsLowMemoryDevice && ModelManager_1.ModelManager.CreatureModel.PendingRemoveEntitySize() < MAX_PENDING_REMOVE_COUNT && (ControllerHolder_1.ControllerHolder.PlayerVelocityController.IsHighSpeedMode() || ControllerHolder_1.ControllerHolder.PlayerSoarMonitorController.IsPlayerSoar)) {
       this.Xr_ = HIGH_SPEED_REMOVE_INTERVAL;
     } else {
       this.Xr_ = 0;
@@ -268,21 +284,21 @@ class WorldController extends ControllerBase_1.ControllerBase {
   static Fpr(e) {
     var t = e.Entity;
     var r = e.GetEntityType();
-    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(222)) {
+    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(223)) {
       e = e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId() || r === Protocol_1.Aki.Protocol.kks.Proto_Npc;
-      r = (r = t.GetComponent(158)) ? r.HasMoveAuthority() : e;
+      r = (r = t.GetComponent(159)) ? r.HasMoveAuthority() : e;
       t.GetComponent(1).SetAutonomous(e, r);
     }
   }
   static SetActorGravityDirection(e, t) {
-    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(236))) {
+    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(237))) {
       t.SetGravityDirect(e);
     }
   }
   static SetActorLocationAndRotation(e, t) {
     var r;
-    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(178)?.CharacterMovement)) {
-      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(178).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
+    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(179)?.CharacterMovement)) {
+      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(179).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
     }
   }
   static Vpr(e, t) {
@@ -376,17 +392,15 @@ class WorldController extends ControllerBase_1.ControllerBase {
   static Nd_(e, t, r) {
     var o = ModelManager_1.ModelManager.WorldModel.ApplyEnvironmentUpdate();
     if (o !== 0) {
-      var i = ModelManager_1.ModelManager.WorldModel.GetCachedVoxelInfo();
-      var l = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.DataLayerType);
-      var n = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.SubDataLayerType);
+      var i = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.DataLayerType);
+      var l = FNameUtil_1.FNameUtil.GetDynamicFName(ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo.SubDataLayerType);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEncloseSpaceTypeChange, o);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("LevelEvent", 60, "[WorldController]Streaming:体素参数", ["LoadAdjustValue", i.LoadAdjustValue], ["StreamingType", i.StreamingType], ["DataLayer", l], ["SubDatalayer", n]);
+        Log_1.Log.Info("LevelEvent", 60, "[WorldController]Streaming:体素参数", ["DataLayer", i], ["SubDatalayer", l]);
       }
       switch (o) {
         case 5:
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, l, n);
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginAdjustLoadRange(e, i.LoadAdjustValue, i.StreamingType);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, i, l);
           UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, true, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, true);
           cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(2);
@@ -400,17 +414,17 @@ class WorldController extends ControllerBase_1.ControllerBase {
             }
             this.RequestToNearestTeleport();
           }
-          return l;
+          return i;
         case 1:
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, l, n);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginEnterCaveOrRoom(e, i, l);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:进入封闭空间");
           }
           cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(3);
-          return l;
+          return i;
         case 6:
           UE.KuroRenderingRuntimeBPPluginBPLibrary.WpCancelAdjustLoadRange(e);
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, l, n);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, i, l);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOverlapEncloseSpace, false);
           cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(1);
           if (r) {
@@ -436,13 +450,12 @@ class WorldController extends ControllerBase_1.ControllerBase {
           break;
         case 4:
           cpp_1.FKuroGameBudgetAllocatorInterface.SetGlobalCavernMode(1);
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, l, n);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginLeaveCaveOrRoom(e, i, l);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:完成退出封闭空间");
           }
           break;
         case 3:
-          UE.KuroRenderingRuntimeBPPluginBPLibrary.WpBeginAdjustLoadRange(e, i.LoadAdjustValue, i.StreamingType);
           UE.KuroRenderingRuntimeBPPluginBPLibrary.SetIsUsingInCaveOrIndoorShadow(e, true, WorldModel_1.MOBILE_CSM_DISTANCE_INCAVE, WorldModel_1.MOBILE_CSM_DISTANCE_OUTCAVE);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("LevelEvent", 7, "[WorldController]Streaming:完成进入封闭空间");
@@ -487,42 +500,36 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
   }
   static RequestToNearestTeleport() {
-    Net_1.Net.Call(26186, Protocol_1.Aki.Protocol.ECs.create(), e => {
+    Net_1.Net.Call(20891, Protocol_1.Aki.Protocol.ECs.create(), e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29587);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27241);
       }
     });
   }
   static GetEntitiesInRangeWithLocation(t, r, o, i, e) {
-    var l;
-    var n = i instanceof Set;
+    var l = i instanceof Set;
     if (e) {
-      if (n) {
+      if (l) {
         i.clear();
       } else {
         i.length = 0;
       }
     }
-    var a = [];
-    for (let e = 0; e < 6; e++) {
+    var n = [];
+    for (let e = 0; e < 8; e++) {
       if (o & 1 << e) {
-        cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName(EntityHelper_1.globalEntityTypeQueryName[e]), a);
-        if (o & 1) {
-          l = [];
-          cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"), l);
-          a.push(...l);
-        }
-        for (const s of a) {
-          var _ = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s);
-          if (_) {
-            if (n) {
-              i.add(_);
+        cpp_1.FKuroGameBudgetAllocatorInterface.GetEntitiesInRangeWithLocation(t, r, FNameUtil_1.FNameUtil.GetDynamicFName(EntityHelper_1.globalEntityTypeQueryName[e]), n);
+        for (const _ of n) {
+          var a = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(_);
+          if (a) {
+            if (l) {
+              i.add(a);
             } else {
-              i.push(_);
+              i.push(a);
             }
           }
         }
-        a.length = 0;
+        n.length = 0;
       }
     }
   }
@@ -538,12 +545,12 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
     var o = [];
     let a = 0;
-    for (let e = 0; e < 6; e++) {
+    for (let e = 0; e < 8; e++) {
       if (t & 1 << e && (l = CreatureModel_1.globalEntityTypePerceptionType[e]) !== 4) {
         a |= l;
       }
     }
-    if (t & 32 && i) {
+    if (t & 128 && i) {
       i = [];
       cpp_1.FKuroGameBudgetAllocatorInterface.GetAllPlayerEntities(i);
       for (const d of i) {
@@ -558,8 +565,8 @@ class WorldController extends ControllerBase_1.ControllerBase {
       }
     }
     cpp_1.FKuroPerceptionInterface.GetEntitiesInRange(e, a, o);
-    for (const c of o) {
-      var s = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(c);
+    for (const E of o) {
+      var s = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(E);
       if (s) {
         if (n) {
           r.add(s);
@@ -695,6 +702,12 @@ class WorldController extends ControllerBase_1.ControllerBase {
       }
     }
   }
+  static SetEnableWorldOrigin(e) {
+    this.EnableWorldOrigin = e;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("World", 38, "EnableWorldOrigin", ["EnableWorldOrigin", e]);
+    }
+  }
   static FixWorldOriginTickCheck(e) {
     if (this.f8l() && this.Fbl(e)) {
       this.kbl("Tick", e);
@@ -721,7 +734,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
   }
   static Fbl(e) {
     this.p8l++;
-    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(205))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
+    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(206))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
   }
   static kbl(e, t) {
     if (this.mTl !== Time_1.Time.Frame) {
@@ -735,13 +748,28 @@ class WorldController extends ControllerBase_1.ControllerBase {
     this.Gbl.X = r.X;
     this.Gbl.Y = r.Y;
     this.Gbl.Z = 0;
-    UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldOrigin(GlobalData_1.GlobalData.World, r);
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("World", 38, "SetWorldOrigin", ["Origin", r], ["reason", e]);
+    if (this.EnableWorldOrigin) {
+      UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldOrigin(GlobalData_1.GlobalData.World, r);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 38, "SetWorldOrigin", ["Origin", r], ["reason", e]);
+      }
+      TimerSystem_1.GameplayTimerSystem.Next(() => {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.ForceUpdateCSMOnce 1");
+      });
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("World", 38, "SetWorldOriginIgnore");
     }
-    TimerSystem_1.GameplayTimerSystem.Next(() => {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.ForceUpdateCSMOnce 1");
-    });
+  }
+  static ToWorldRelativeLocation(e, t) {
+    if (this.EnableWorldOrigin) {
+      t.X = e.X - this.Gbl.X;
+      t.Y = e.Y - this.Gbl.Y;
+      t.Z = e.Z - this.Gbl.Z;
+    } else {
+      t.X = e.X;
+      t.Y = e.Y;
+      t.Z = e.Z;
+    }
   }
 }
 exports.WorldController = WorldController;
@@ -753,6 +781,7 @@ WorldController.mea = 0;
 WorldController.AK = false;
 WorldController.Xr_ = 0;
 WorldController.$r_ = 0;
+WorldController.dgd = 1;
 WorldController.RBn = e => {
   cpp_1.FuncOpenLibrary.TryOpen(e.KEs);
 };
@@ -833,6 +862,7 @@ WorldController.Bpr = () => {
 WorldController.Gbl = Vector_1.Vector.Create(0, 0, 0);
 WorldController.Obl = Vector_1.Vector.Create(0, 0, 0);
 WorldController.mTl = 0;
+WorldController.EnableWorldOrigin = true;
 WorldController.EnableWorldOriginLoadingCheck = true;
 WorldController.EnableWorldOriginTickCheck = true;
 WorldController.OriginNeedChangeMax = 250000;

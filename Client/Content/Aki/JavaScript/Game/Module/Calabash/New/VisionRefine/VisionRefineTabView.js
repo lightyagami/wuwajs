@@ -31,7 +31,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     this.lqe = undefined;
     this.F1c = undefined;
     this.sBc = 0;
-    this.tRu = undefined;
+    this.IRu = undefined;
     this.j1c = false;
     this.H1c = () => {
       return new VisionRefineMaterialItem_1.VisionRefineMaterialItem();
@@ -55,12 +55,12 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       this.UiViewSequence.RemoveSequenceFinishEvent("SwitchB_1", this.K1c);
     };
     this.X1c = i => {
-      this.tRu = undefined;
+      this.IRu = undefined;
       this.Y1c();
     };
     this.p5t = i => {
-      this.tRu = i;
-      this.G1c.RefreshItemSwitch(this.tRu);
+      this.IRu = i;
+      this.G1c.RefreshItemSwitch(this.IRu);
     };
     this.z1c = () => {
       var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(262);
@@ -73,7 +73,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
             this.z3e(2);
           }
         } else if (this.sBc === 2 && this.$_1()) {
-          CalabashController_1.CalabashController.RequestPhantomPolishRequest(this.q1c.GetUniqueId(), this.tRu.PropItemId);
+          CalabashController_1.CalabashController.RequestPhantomPolishRequest(this.q1c.GetUniqueId(), this.IRu.PropItemId);
         }
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineLackTip");
@@ -156,7 +156,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       i.BindSequenceCloseEvent(this.W1c);
     }
     this.sBc = 0;
-    this.tRu = undefined;
+    this.IRu = undefined;
   }
   AddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnVisionRefineResult, this.huc);
@@ -276,7 +276,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       this.B1c.RefreshByData(s, this.sBc === 2, t.GetCost());
       s = t.GetMainPropShowAttributeList(1);
       this.G1c.RefreshItemNow(s);
-      this.G1c.RefreshItemSwitch(this.tRu);
+      this.G1c.RefreshItemSwitch(this.IRu);
     } else {
       this.B1c.RefreshEmpty();
     }
@@ -291,7 +291,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     return !!ModelManager_1.ModelManager.PhantomBattleModel.IsVisionRefineMaterialEnough(this.q1c.GetUniqueId()) || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineMaterialLack"), false);
   }
   $_1() {
-    return !!this.tRu || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineAttributeEmpty"), false);
+    return !!this.IRu || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineAttributeEmpty"), false);
   }
 }
 exports.VisionRefineTabView = VisionRefineTabView;

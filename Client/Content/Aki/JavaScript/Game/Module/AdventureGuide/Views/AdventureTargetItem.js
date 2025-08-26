@@ -27,17 +27,13 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.AdventureId = 0;
     this.Pe = undefined;
     this.$Ve = undefined;
+    this._Qu = undefined;
     this.YVe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.qOe = () => {
-      if (!this.JVe) {
-        this.JVe = true;
-        if (this.Pe.Status === Protocol_1.Aki.Protocol.Aks.a3_) {
-          ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForAdventureReward(this.AdventureId).finally(() => {
-            this.JVe = false;
-          });
-        }
+      if (this.Pe.Status === Protocol_1.Aki.Protocol.Aks.a3_) {
+        this._Qu?.(this.AdventureId);
       }
     };
     this.JVe = false;
@@ -63,9 +59,9 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.PostClickAudioEvent(e);
       }
     });
-    this.$Ve.OnPostAudioStateEvent.Bind((e, r) => {
-      if (r) {
-        this.PostClickAudioEvent(r);
+    this.$Ve.OnPostAudioStateEvent.Bind((e, t) => {
+      if (t) {
+        this.PostClickAudioEvent(t);
       }
     });
   }
@@ -73,14 +69,14 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.$Ve.OnPostAudioEvent.Unbind();
     this.$Ve.OnPostAudioStateEvent.Unbind();
   }
-  Refresh(r, e, t) {
+  Refresh(t, e, r) {
     this.JVe = false;
-    var i = (this.Pe = r).AdventureTaskBase;
-    this.AdventureId = r.AdventureTaskBase.Id;
+    var i = (this.Pe = t).AdventureTaskBase;
+    this.AdventureId = t.AdventureTaskBase.Id;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.TaskText);
     this.GetItem(1).SetUIActive(false);
-    var o = r.GetTotalNum();
-    var s = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList().includes(r.AdventureTaskBase.ChapterId) ? o : r.Progress;
+    var o = t.GetTotalNum();
+    var s = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList().includes(t.AdventureTaskBase.ChapterId) ? o : t.Progress;
     var a = this.GetText(5);
     if (o !== 0) {
       a.SetUIActive(true);
@@ -99,22 +95,25 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
     this.eGe.RefreshByDataAsync(n).then(() => {
       for (const e of this.eGe.GetLayoutItemList()) {
-        e.SetReceivedVisible(r.Status === Protocol_1.Aki.Protocol.Aks.Proto_Received);
+        e.SetReceivedVisible(t.Status === Protocol_1.Aki.Protocol.Aks.Proto_Received);
       }
       this.GetScrollViewWithScrollbar(6).ScrollTo(this.eGe.GetGrid(0));
     });
     this.RootItem.SetUIActive(true);
-    this.ZVe(r.Status, !this.Pe.AdventureTaskBase.JumpTo || r.AdventureTaskBase.JumpTo?.size !== 0);
+    this.ZVe(t.Status, !this.Pe.AdventureTaskBase.JumpTo || t.AdventureTaskBase.JumpTo?.size !== 0);
   }
-  ZVe(e, r) {
+  SetClickGetButtonCb(e) {
+    this._Qu = e;
+  }
+  ZVe(e, t) {
     this.e6e(e);
     this.t6e(e);
-    this.i6e(e, r);
+    this.i6e(e, t);
     this.o6e(e);
-    this.r6e(e, r);
+    this.r6e(e, t);
   }
-  r6e(e, r) {
-    this.GetItem(7).SetUIActive(e === Protocol_1.Aki.Protocol.Aks.Proto_UnFinish && !r);
+  r6e(e, t) {
+    this.GetItem(7).SetUIActive(e === Protocol_1.Aki.Protocol.Aks.Proto_UnFinish && !t);
   }
   e6e(e) {
     this.GetItem(8).SetUIActive(e === Protocol_1.Aki.Protocol.Aks.Proto_Received);
@@ -122,8 +121,8 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
   t6e(e) {
     this.GetButton(9).RootUIComp.SetUIActive(e === Protocol_1.Aki.Protocol.Aks.a3_);
   }
-  i6e(e, r) {
-    this.GetButton(2).RootUIComp.SetUIActive(e === Protocol_1.Aki.Protocol.Aks.Proto_UnFinish && r);
+  i6e(e, t) {
+    this.GetButton(2).RootUIComp.SetUIActive(e === Protocol_1.Aki.Protocol.Aks.Proto_UnFinish && t);
   }
   o6e(e) {
     this.GetItem(4).SetUIActive(e === Protocol_1.Aki.Protocol.Aks.a3_);
@@ -131,18 +130,18 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
   Ju() {
     if (this.Pe?.AdventureTaskBase.JumpTo) {
       let e = undefined;
-      let r = undefined;
-      for (var [t, i] of this.Pe.AdventureTaskBase.JumpTo) {
-        e = t;
-        r = i;
+      let t = undefined;
+      for (var [r, i] of this.Pe.AdventureTaskBase.JumpTo) {
+        e = r;
+        t = i;
       }
-      if (e && r) {
+      if (e && t) {
         switch (e - 1) {
           case 0:
-            UiManager_1.UiManager.OpenView("QuestView", Number(r));
+            UiManager_1.UiManager.OpenView("QuestView", Number(t));
             break;
           case 1:
-            var o = ConfigManager_1.ConfigManager.MapConfig?.GetConfigMark(Number(r));
+            var o = ConfigManager_1.ConfigManager.MapConfig?.GetConfigMark(Number(t));
             if (o) {
               o = {
                 MarkType: o.ObjectType,
@@ -151,29 +150,29 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
               };
               WorldMapController_1.WorldMapController.OpenView(1, false, o);
             } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("AdventureGuide", 5, "配置了错误的开拓任务跳转参数", ["Id: ", this.Pe.AdventureTaskBase.Id], ["Parma: ", r]);
+              Log_1.Log.Error("AdventureGuide", 5, "配置了错误的开拓任务跳转参数", ["Id: ", this.Pe.AdventureTaskBase.Id], ["Parma: ", t]);
             }
             break;
           case 2:
-            if (r === "RoleRootView") {
+            if (t === "RoleRootView") {
               RoleController_1.RoleController.OpenRoleMainView(0);
             } else {
-              UiManager_1.UiManager.OpenView(r);
+              UiManager_1.UiManager.OpenView(t);
             }
             break;
           case 3:
-            o = r;
+            o = t;
             RoleController_1.RoleController.OpenRoleMainView(0, 0, [], o);
             break;
           case 4:
             o = {
-              TabViewName: r,
+              TabViewName: t,
               Param: undefined
             };
             UiManager_1.UiManager.OpenView("CalabashRootView", o);
             break;
           case 8:
-            this.hSu(Number(r));
+            this.l7c(Number(t));
             break;
           default:
             if (Log_1.Log.CheckError()) {
@@ -183,12 +182,12 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     }
   }
-  hSu(e) {
-    var r = e;
-    if (ModelManager_1.ModelManager.AdventureGuideModel.CheckTargetDungeonTypeCanShow(r)) {
+  l7c(e) {
+    var t = e;
+    if (ModelManager_1.ModelManager.AdventureGuideModel.CheckTargetDungeonTypeCanShow(t)) {
       ControllerHolder_1.ControllerHolder.AdventureGuideController.OpenGuideView("DisposableChallengeView", Number(e));
-    } else if ((e = ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetSecondaryGuideDataConf(r)?.ConditionGroupId ?? 0) > 0 && (r = ConditionGroupById_1.configConditionGroupById.GetConfig(e)?.HintText) && !StringUtils_1.StringUtils.IsEmpty(r)) {
-      e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r) ?? "";
+    } else if ((e = ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetSecondaryGuideDataConf(t)?.ConditionGroupId ?? 0) > 0 && (t = ConditionGroupById_1.configConditionGroupById.GetConfig(e)?.HintText) && !StringUtils_1.StringUtils.IsEmpty(t)) {
+      e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t) ?? "";
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("UnlockCondition", e);
     } else {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotOpen");

@@ -59,6 +59,12 @@ class PhonographModel extends ModelBase_1.ModelBase {
       }
     }
   }
+  get EntityId() {
+    var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.CurrentPlayActorEntityId);
+    if (e) {
+      return e.Entity?.EntityData?.EntityId;
+    }
+  }
   CheckAlbumHasNewMusic(e) {
     for (const t of ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicList() ?? []) {
       if (this.IsNewMusic(t.Id) && t.Album.includes(e)) {

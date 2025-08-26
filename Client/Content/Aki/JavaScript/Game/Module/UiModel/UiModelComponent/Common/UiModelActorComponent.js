@@ -85,6 +85,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
   }
   Uwr() {
     var e = this.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false);
+    e.KuroMaterialControllerUpdateGroupMode = 1;
     e.SetTickableWhenPaused(true);
     this.Lwr(e, this.ywr.GetVisible());
     if (Info_1.Info.IsPlayInEditor) {

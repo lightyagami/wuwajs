@@ -10,7 +10,7 @@ class TsDecoratorWander extends UE.BTDecorator_BlueprintBase {
   PerformConditionCheckAI(e, r) {
     var o = e.AiController;
     if (o) {
-      return !o.AiHateList.GetCurrentTarget()?.Valid && !o.CharActorComp.Entity.CheckGetComponent(205).HasTag(-1371021686);
+      return !o.AiHateList.GetCurrentTarget()?.Valid && !o.CharActorComp.Entity.CheckGetComponent(206).HasTag(-1371021686);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", e.GetClass().GetName()]);

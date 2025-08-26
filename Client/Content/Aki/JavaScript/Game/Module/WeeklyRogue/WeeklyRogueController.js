@@ -10,9 +10,12 @@ const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -21,10 +24,12 @@ const AsyncTask_1 = require("../../World/Task/AsyncTask");
 const TaskSystem_1 = require("../../World/Task/TaskSystem");
 const ActivityControllerBase_1 = require("../Activity/ActivityControllerBase");
 const ActivityManager_1 = require("../Activity/ActivityManager");
+const CombatMessage_1 = require("../CombatMessage/CombatMessage");
 const ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController");
 const ItemHintController_1 = require("../ItemHint/ItemHintController");
 const LevelLoadingController_1 = require("../LevelLoading/LevelLoadingController");
 const RoguelikeDefine_1 = require("../Roguelike/Define/RoguelikeDefine");
+const SplashScreenTask_1 = require("../SplashScreen/SplashScreenTask");
 const WeatherController_1 = require("../Weather/WeatherController");
 const WeatherModel_1 = require("../Weather/WeatherModel");
 const WeeklyRogueSubView_1 = require("./View/WeeklyRogueSubView");
@@ -32,6 +37,14 @@ const WeeklyRogueData_1 = require("./WeeklyRogueData");
 class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
+    this.DSe = (e, o) => {
+      ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew?.OnQuestStateChange(e, o);
+    };
+    this.nye = () => {
+      if (ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew?.NeedOpenActivityMainView) {
+        this.z$c();
+      }
+    };
     this.uV_ = e => {
       ModelManager_1.ModelManager.WeeklyRogueModel.CurrentLayer = e.iqs;
       ModelManager_1.ModelManager.WeeklyRogueModel.MaxLayer = e.rqs;
@@ -70,34 +83,55 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
       }
     };
     this.dV_ = e => {
+      var o;
+      if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue() && (o = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew)) {
+        o.HasNewSettle = true;
+      }
       UiManager_1.UiManager.OpenView("WeeklyRogueSettleView", e);
     };
-    this.mV_ = a => {
-      var e = new AsyncTask_1.AsyncTask("WeeklyRoguelikeSubLevelChangeTask", async () => {
-        ModelManager_1.ModelManager.SubLevelLoadingModel.ScreenEffect = 1;
-        const [o, r] = this.UWa(a);
-        if (o.length === 0 && r.length === 0) {
-          await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(15, 3);
-        } else {
-          var e = Vector_1.Vector.Create(a.iPs, a.rPs, a.gqs);
-          var t = new UE.Rotator(0, a.fqs, 0);
-          await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(15, 3);
-          const n = new CustomPromise_1.CustomPromise();
-          ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(o, r, 0, e, t, e => {
-            if (e) {
-              n.SetResult(true);
-            } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("WeeklyRogue", 34, "周常肉鸽子关卡加载失败", ["unloads", o], ["newLoads", r]);
-            }
-          });
-          await n.Promise;
-        }
-        await this.GotoNextRoomRequest();
-        await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(15, 1);
-        return true;
-      });
-      TaskSystem_1.TaskSystem.AddTask(e);
-      TaskSystem_1.TaskSystem.Run();
+    this.mV_ = n => {
+      var e = () => {
+        this.GotoNextRoomRequest(false);
+      };
+      var o = () => {
+        var e = new AsyncTask_1.AsyncTask("WeeklyRoguelikeSubLevelChangeTask", async () => {
+          ModelManager_1.ModelManager.SubLevelLoadingModel.ScreenEffect = 1;
+          const [o, r] = this.UWa(n);
+          if (o.length === 0 && r.length === 0) {
+            await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(15, 3);
+          } else {
+            var e = Vector_1.Vector.Create(n.iPs, n.rPs, n.gqs);
+            var t = new UE.Rotator(0, n.fqs, 0);
+            await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(15, 3);
+            const a = new CustomPromise_1.CustomPromise();
+            ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(o, r, 0, e, t, e => {
+              if (e) {
+                a.SetResult(true);
+              } else if (Log_1.Log.CheckError()) {
+                Log_1.Log.Error("WeeklyRogue", 34, "周常肉鸽子关卡加载失败", ["unloads", o], ["newLoads", r]);
+              }
+            });
+            await a.Promise;
+          }
+          await this.GotoNextRoomRequest();
+          await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(15, 1);
+          return true;
+        });
+        TaskSystem_1.TaskSystem.AddTask(e);
+        TaskSystem_1.TaskSystem.Run();
+      };
+      if (n.Y8u && LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.WeeklyRogueExtraEnterTips, true)) {
+        e = {
+          CurScore: n.fu1,
+          MaxScore: n.tBs,
+          ConfirmFunc: o,
+          CancelFunc: e
+        };
+        UiManager_1.UiManager.OpenView("WeeklyRogueExtraRoomConfirmView", e);
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.WeeklyRogueExtraEnterTips, false);
+        return;
+      }
+      o();
     };
     this.j7_ = o => {
       var e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleBlackFlowerCost();
@@ -119,6 +153,19 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
     this.fV_ = e => {
       ModelManager_1.ModelManager.WeeklyRogueModel.UpdateInstInfo(e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueInstDataUpdate);
+    };
+    this.NewLinkStage = Protocol_1.Aki.Protocol.qn1.Proto_NewLinkStageNone;
+    this.Zku = undefined;
+    this.br1 = e => {
+      this.NewLinkStage = e;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("WeeklyRogue", 17, "NewLinkNotify", ["stage", this.NewLinkStage]);
+      }
+      if (e === Protocol_1.Aki.Protocol.qn1.Proto_Burst) {
+        this.J$c();
+      } else {
+        this.e2u();
+      }
     };
   }
   static get Instance() {
@@ -145,22 +192,39 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
   OnGetIsOpeningActivityRelativeView() {
     throw new Error("Method not implemented.");
   }
+  z$c() {
+    var e = new SplashScreenTask_1.SplashScreenTask(0, 1, () => {
+      UiManager_1.UiManager.OpenView("WeeklyRogueActivityView");
+    });
+    ControllerHolder_1.ControllerHolder.SplashScreenController.PushSplashScreenTask(e);
+  }
+  OnAddEvents() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNewLinkStatusChanged, this.br1);
+  }
+  OnRemoveEvents() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNewLinkStatusChanged, this.br1);
+  }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(27220, this.uV_);
-    Net_1.Net.Register(24163, this.dV_);
-    Net_1.Net.Register(27130, this.mV_);
-    Net_1.Net.Register(16131, this.fV_);
-    Net_1.Net.Register(22895, this.j7_);
-    Net_1.Net.Register(26163, this.gH_);
-    Net_1.Net.Register(21627, this.$_c);
+    Net_1.Net.Register(19942, this.uV_);
+    Net_1.Net.Register(27999, this.dV_);
+    Net_1.Net.Register(23074, this.mV_);
+    Net_1.Net.Register(20625, this.fV_);
+    Net_1.Net.Register(18525, this.j7_);
+    Net_1.Net.Register(18732, this.gH_);
+    Net_1.Net.Register(21012, this.$_c);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27220);
-    Net_1.Net.UnRegister(24163);
-    Net_1.Net.UnRegister(27130);
-    Net_1.Net.UnRegister(16131);
-    Net_1.Net.UnRegister(22895);
-    Net_1.Net.UnRegister(26163);
+    Net_1.Net.UnRegister(19942);
+    Net_1.Net.UnRegister(27999);
+    Net_1.Net.UnRegister(23074);
+    Net_1.Net.UnRegister(20625);
+    Net_1.Net.UnRegister(18525);
+    Net_1.Net.UnRegister(18732);
+    Net_1.Net.UnRegister(21012);
   }
   UWa(o) {
     return [o.fL_.filter(e => !o.mL_.includes(e)), o.mL_.filter(e => !o.fL_.includes(e))];
@@ -169,38 +233,58 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
     var e = new Protocol_1.Aki.Protocol.yN_();
     e.RHn = ModelManager_1.ModelManager.WeeklyRogueModel.CurrentBindId;
     e.c5n = ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry.c5n;
-    Net_1.Net.Call(18469, e, e => {
+    Net_1.Net.Call(26033, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18469, e.lvs);
-          o?.();
+          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26033, e.lvs);
+          o?.(false);
         } else {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("WeeklyRogue", 34, "选择选项成功", ["选项索引:", ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry.c5n], ["当前BindId:", ModelManager_1.ModelManager.WeeklyRogueModel.CurrentBindId]);
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueSelectOption);
+          o?.(true);
         }
+      } else {
+        o?.(false);
       }
     });
   }
-  InstanceSettleRequest() {
+  async SelectArtifactRequest() {
+    var e = new Protocol_1.Aki.Protocol.f6u();
+    e.bN_ = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
+    e.c5n = ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry.c5n;
+    var e = await Net_1.Net.CallAsync(18982, e);
+    return !!e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18982), false) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("WeeklyRogue", 37, "[WeeklyRogue] 神器选择成功", ["Index", ModelManager_1.ModelManager.WeeklyRogueModel.SelectEntry.c5n]), true));
+  }
+  InstanceSettleRequest(o) {
     var e = new Protocol_1.Aki.Protocol.CN_();
-    Net_1.Net.Call(23863, e, e => {
+    Net_1.Net.Call(25970, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23863);
-        } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("WeeklyRogue", 34, "打开结算界面");
+          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25970);
+          o?.(false);
+        } else {
+          if (ModelManager_1.ModelManager.WeeklyRogueModel.HasLastInfo()) {
+            ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.LastInstInfo = undefined;
+          }
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("WeeklyRogue", 34, "打开结算界面");
+          }
+          o?.(true);
         }
+      } else {
+        o?.(false);
       }
     });
   }
-  async GotoNextRoomRequest() {
-    var e = new Protocol_1.Aki.Protocol.dN_();
-    var e = await Net_1.Net.CallAsync(22317, e);
+  async GotoNextRoomRequest(e = true) {
+    var o = new Protocol_1.Aki.Protocol.dN_();
+    o.X8u = e;
+    var e = await Net_1.Net.CallAsync(24985, o);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22317);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24985);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("WeeklyRogue", 34, "进入下一层成功");
@@ -216,9 +300,9 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
     t.A5n = e;
     t.k7_ = r;
     t.lUl = o;
-    Net_1.Net.Call(22514, t, e => {
+    Net_1.Net.Call(21662, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22514);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21662);
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("WeeklyRogue", 34, "黑花奖励领取成功");
       }
@@ -228,41 +312,58 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
     var o = new Protocol_1.Aki.Protocol.MN_();
     o.bN_ = ModelManager_1.ModelManager.WeeklyRogueModel.CycleId;
     o.fUs = e;
-    Net_1.Net.Call(15554, o, e => {
+    Net_1.Net.Call(16360, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15554);
-      } else {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("WeeklyRogue", 34, "进入周常成功");
-        }
-        ModelManager_1.ModelManager.EditBattleTeamModel?.SetInstanceDungeonId(undefined);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16360);
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("WeeklyRogue", 34, "进入周常成功");
       }
     });
   }
-  RogueWeeklyScoreRewardRequest(o) {
-    var e = new Protocol_1.Aki.Protocol._N_();
-    e.w6n = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.Id;
-    e.v9n = o;
-    Net_1.Net.Call(18329, e, e => {
+  async RogueWeeklyArtifactSelectStartRequest() {
+    var e = new Protocol_1.Aki.Protocol.d6u();
+    var e = await Net_1.Net.CallAsync(15459, e);
+    if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18329);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15459);
       } else {
-        ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.SetScoreRewardState(o, Protocol_1.Aki.Protocol.zps.ovs);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, ModelManager_1.ModelManager.WeeklyRogueModel.GetScoreRewardData());
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.Id);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("WeeklyRogue", 34, "周常积分奖励领取成功");
+          Log_1.Log.Debug("WeeklyRogue", 37, "[WeeklyRogue] 开始神器选择");
         }
+        await UiManager_1.UiManager.OpenViewAsync("WeeklyRogueSelectArtifactView", e.UN_);
       }
-    });
+    }
+  }
+  MultiRogueWeeklyRewardRequest() {
+    var e = new Protocol_1.Aki.Protocol.Y5u();
+    e.w6n = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.Id;
+    const o = ModelManager_1.ModelManager.WeeklyRogueModel.GetScoreRewardData().DataPageList[0].DataList.flatMap(e => e.RewardState === 1 && e.Id !== undefined ? [e.Id] : []);
+    if (o.length !== 0) {
+      e.v9n = o;
+      Net_1.Net.Call(17877, e, e => {
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17877);
+        } else {
+          o.forEach(e => {
+            ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.SetScoreRewardState(e, Protocol_1.Aki.Protocol.zps.ovs);
+          });
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, ModelManager_1.ModelManager.WeeklyRogueModel.GetScoreRewardData());
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.Id);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRedDotInfoRefresh);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("WeeklyRogue", 34, "周常积分奖励领取成功");
+          }
+        }
+      });
+    }
   }
   async RogueWeeklyLastInfoRequest() {
     var e = new Protocol_1.Aki.Protocol.Btc();
     e.w6n = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.Id;
-    var e = await Net_1.Net.CallAsync(25953, e);
+    var e = await Net_1.Net.CallAsync(22533, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25953);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22533);
       } else {
         ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.LastInstInfo = e.LN_;
       }
@@ -301,6 +402,58 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
           Log_1.Log.Error("WeeklyRogue", 34, "未知选项类型", ["optionType", e]);
         }
         return;
+    }
+  }
+  RequestNewLinkBurst() {
+    var e;
+    return this.NewLinkStage === Protocol_1.Aki.Protocol.qn1.CTs && !!(e = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity) && (CombatMessage_1.CombatNet.Send(27310, e, Protocol_1.Aki.Protocol.kn1.create()), Log_1.Log.CheckDebug() && Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽Link爆发请求"), true);
+  }
+  J$c() {
+    if (ModelManager_1.ModelManager.WeeklyRogueModel?.CheckIsInWeeklyRogue()) {
+      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
+      var o = e.GetComponent(175);
+      var r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleConfig()?.LinkId;
+      if (r) {
+        r = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(r);
+        if (r) {
+          var t = ControllerHolder_1.ControllerHolder.BattleLinkController.GetMessageId();
+          if (t) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽进入Link爆发状态, 添加Buff");
+            }
+            var a = MathUtils_1.MathUtils.LongToBigInt(t);
+            for (const l of r.BuffIdsInBrust) {
+              var n = Number(l);
+              o.AddBuff(n, {
+                InstigatorId: o.CreatureDataId,
+                Reason: "周常肉鸽link增加buff",
+                PreMessageId: a
+              });
+              this.Zku ||= [];
+              this.Zku.push(n);
+            }
+            for (const i of r.BulletIdsInBrust) {
+              ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(e, i.toString(), undefined, {}, a);
+            }
+          }
+        }
+      }
+    }
+  }
+  e2u() {
+    if (this.Zku && this.Zku.length !== 0) {
+      if (ModelManager_1.ModelManager.WeeklyRogueModel?.CheckIsInWeeklyRogue()) {
+        var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(175);
+        if (e) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽离开Link爆发状态, 移除Buff");
+          }
+          for (const o of this.Zku) {
+            e.RemoveBuff(o, -1, "周常肉鸽离开Link爆发状态");
+          }
+        }
+      }
+      this.Zku.length = 0;
     }
   }
 }

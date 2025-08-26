@@ -14,7 +14,7 @@ class MasterLevelItem extends AutoAttachItem_1.AutoAttachItem {
     this.Pe = undefined;
     this.CallbackOnSelect = undefined;
     this.SPe = undefined;
-    this.Inu = () => {
+    this.Ynu = () => {
       if (this.CallbackOnSelect && this.Pe) {
         this.CallbackOnSelect(this.Pe.Level, this);
       }
@@ -22,7 +22,7 @@ class MasterLevelItem extends AutoAttachItem_1.AutoAttachItem {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIButtonComponent], [6, UE.UITexture], [7, UE.UITexture], [8, UE.UITexture], [9, UE.UIText], [10, UE.UIText], [11, UE.UIText], [12, UE.UITexture], [13, UE.UITexture], [14, UE.UIItem], [15, UE.UITexture], [16, UE.UIItem]];
-    this.BtnBindInfo = [[5, this.Inu]];
+    this.BtnBindInfo = [[5, this.Ynu]];
   }
   OnRefreshItem(e) {
     if (e) {
@@ -58,7 +58,7 @@ class MasterLevelItem extends AutoAttachItem_1.AutoAttachItem {
     }
   }
   OnSelect() {
-    this.Inu();
+    this.Ynu();
   }
   OnUnSelect() {}
   OnMoveItem() {

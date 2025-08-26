@@ -42,16 +42,16 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
     this.MainSequencer = undefined;
     this.IsMainTalking = false;
     this.BubbleTimer = undefined;
-    this.wBu = 0;
+    this.Gku = 0;
     this.LightButtonLeft = undefined;
     this.LightButtonRight = undefined;
-    this.f7c = undefined;
-    this.g7c = undefined;
-    this.C7c = false;
-    this.RWc = false;
+    this.Fku = undefined;
+    this.Nku = undefined;
+    this.Vku = false;
+    this.zWu = false;
     this.I5t = () => {
       this.UiViewSequence.CloseSequenceName = "Close";
-      if (this.RWc) {
+      if (this.zWu) {
         this.OnClearClose();
       } else {
         this.CloseMe();
@@ -63,7 +63,7 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
     this.V2e = () => {
       return new TuningStandGridItem_1.TuningStandGridItem();
     };
-    this.xbu = e => {
+    this.Jbu = e => {
       var t = this.GridLayout.GetLayoutItemList();
       if (e !== undefined) {
         t[e].RefreshGrid();
@@ -73,7 +73,7 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.Ubu = () => {
+    this.Zbu = () => {
       if (this.TooLongHandle) {
         if (TimerSystem_1.GameplayTimerSystem.Has(this.TooLongHandle)) {
           TimerSystem_1.GameplayTimerSystem.Remove(this.TooLongHandle);
@@ -81,13 +81,13 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         this.TooLongHandle = undefined;
       }
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.ResetNavigationFocusForViewWithDirtyCheck();
-      this.RWc = true;
+      this.zWu = true;
       this.GetItem(19).SetUIActive(true);
       if (this.IsTuning) {
         ModelManager_1.ModelManager.TuningStandModel.TryStartBubbleFlow(IAction_1.ETuningStandBubbleTriggerType.LinkComplete);
       }
     };
-    this.GFu = t => {
+    this.jku = t => {
       var e;
       var i = this.GridLayout.GetLayoutItemList();
       var s = ModelManager_1.ModelManager.TuningStandModel.GetGridList();
@@ -105,37 +105,37 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         const v = r.D_K2_GetComponentLocation();
         if (h === IAction_1.ETuningStandGridType.Start1) {
           TimerSystem_1.TimerSystem.Delay(() => {
-            this.f7c?.PlayTween(a, v);
+            this.Fku?.PlayTween(a, v);
             _.StartRevolving();
           }, 250);
         }
         if (h === IAction_1.ETuningStandGridType.Start2) {
           n = true;
           _.StartRevolving();
-          this.g7c?.PlayTween(a, v);
+          this.Nku?.PlayTween(a, v);
         }
       }
       if (!n) {
         e = this.GetItem(0).D_K2_GetComponentLocation();
-        this.g7c?.PlayTween(e, e, false);
+        this.Nku?.PlayTween(e, e, false);
       }
     };
-    this.FFu = () => {
-      if (!this.C7c) {
-        this.C7c = true;
+    this.Hku = () => {
+      if (!this.Vku) {
+        this.Vku = true;
         this.MusicItem.OnBeforeLinkComplete().then(() => {
           var e = this.Config.CompleteMusic;
           if (e) {
             AudioSystem_1.AudioSystem.PostEvent(e);
           }
           this.UiViewSequence.PlaySequence("Success");
-          this.MusicItemPlay?.OnLinkComplete().then(this.cFu);
+          this.MusicItemPlay?.OnLinkComplete().then(this.$ku);
         });
       }
     };
-    this.Dbu = () => {
+    this.eRu = () => {
       var e;
-      if (!this.RWc) {
+      if (!this.zWu) {
         ModelManager_1.ModelManager.TuningStandModel.ResetGrid();
         e = ModelManager_1.ModelManager.TuningStandModel.GetGridList();
         this.GridLayout.RefreshByData(e);
@@ -144,19 +144,19 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         }, 500);
       }
     };
-    this.OPu = e => {
+    this.uxu = e => {
       if (e === IAction_1.ETuningStandBubbleTriggerType.Enter) {
-        this.NPu();
+        this.fxu();
       }
     };
-    this.VPu = e => {
+    this.gxu = e => {
       if (this.IsTuning) {
         this.GetButton(5)?.RootUIComp.SetUIActive(!e);
         this.GetButton(9)?.RootUIComp.SetUIActive(e);
         (e ? this.LightButtonRight : this.LightButtonLeft).PlayLevelSequenceByName("Start");
       }
     };
-    this.jPu = e => {
+    this.Cxu = e => {
       if (this.BubbleTimer) {
         if (TimerSystem_1.GameplayTimerSystem.Has(this.BubbleTimer)) {
           TimerSystem_1.GameplayTimerSystem.Remove(this.BubbleTimer);
@@ -175,10 +175,10 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         }
         this.IsMainTalking = true;
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), e.MainRoleTalk);
-        this.Oxu(this.MainSequencer);
+        this.dUu(this.MainSequencer);
       } else if (this.IsMainTalking) {
         this.IsMainTalking = false;
-        this.qxu(this.MainSequencer);
+        this.mUu(this.MainSequencer);
       }
       if (e.FloroTalk) {
         if (!this.GetText(6)?.IsUIActiveSelf()) {
@@ -186,35 +186,35 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         }
         this.IsFloroTalking = true;
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), e.FloroTalk);
-        this.Oxu(this.FloroSequencer);
+        this.dUu(this.FloroSequencer);
       } else if (this.IsFloroTalking) {
         this.IsFloroTalking = false;
-        this.qxu(this.FloroSequencer);
+        this.mUu(this.FloroSequencer);
       }
       e = (e.WaitTime > 1.5 ? e.WaitTime - 0.5 : e.WaitTime) * 1000;
       this.BubbleTimer = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        this.Gxu();
+        this.fUu();
       }, e);
     };
-    this.Fxu = () => {
+    this.gUu = () => {
       this.GetItem(14)?.SetUIActive(true);
     };
-    this._Fu = () => {
+    this.Wku = () => {
       this.GetItem(14)?.SetUIActive(false);
     };
-    this.uFu = () => {
+    this.Qku = () => {
       if (this.IsTuning && !ModelManager_1.ModelManager.TuningStandModel.TryStartBubbleFlow(IAction_1.ETuningStandBubbleTriggerType.Enter)) {
-        this.NPu();
+        this.fxu();
       }
       TimerSystem_1.TimerSystem.Next(() => {
         this.SetFocusOnStart();
       });
     };
-    this.cFu = () => {
+    this.$ku = () => {
       this.UiViewSequence.CloseSequenceName = "Close2";
       this.OnClearClose();
     };
-    this.Yuu = e => {
+    this.Ucu = e => {
       if (e === "In") {
         this.MusicItem?.OnStartAnim();
         for (const t of this.GridLayout.GetLayoutItemList()) {
@@ -222,13 +222,13 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.dFu = e => {
+    this.Kku = e => {
       for (const t of this.GridLayout.GetLayoutItemList()) {
         t.OnLinkMiss(e);
       }
     };
     this.lqt = () => {
-      if (Info_1.Info.IsInGamepad() && !this.RWc) {
+      if (Info_1.Info.IsInGamepad() && !this.zWu) {
         TimerSystem_1.TimerSystem.Next(() => {
           this.SetFocusOnStart();
         });
@@ -237,7 +237,7 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIButtonComponent], [6, UE.UIText], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIButtonComponent], [10, UE.UIText], [11, UE.UIGridLayout], [12, UE.UIText], [13, UE.UIButtonComponent], [14, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIButtonComponent], [21, UE.UIItem], [22, UE.UIItem]];
-    this.BtnBindInfo = [[13, this.Dbu], [5, this.Fxu], [9, this.Fxu], [20, this._Fu]];
+    this.BtnBindInfo = [[13, this.eRu], [5, this.gUu], [9, this.gUu], [20, this.Wku]];
   }
   async OnBeforeStartAsync() {
     var e = this.OpenParam;
@@ -263,10 +263,10 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
       this.MusicItemPlay = new TuningStandBubbleNode_1.TuningStandLineItem(e);
       t.push(this.MusicItemPlay.CreateThenShowByActorAsync(this.GetItem(16).GetOwner()));
     }
-    this.f7c = new TuningStandNodeTween_1.TuningStandNodeTween(this.GetItem(21), "TuningTrail01");
-    t.push(this.f7c.InitCurveDamage());
-    this.g7c = new TuningStandNodeTween_1.TuningStandNodeTween(this.GetItem(22), "TuningTrail02");
-    t.push(this.g7c.InitCurveDamage());
+    this.Fku = new TuningStandNodeTween_1.TuningStandNodeTween(this.GetItem(21), "TuningTrail01");
+    t.push(this.Fku.InitCurveDamage());
+    this.Nku = new TuningStandNodeTween_1.TuningStandNodeTween(this.GetItem(22), "TuningTrail02");
+    t.push(this.Nku.InitCurveDamage());
     await Promise.all(t);
   }
   OnStart() {
@@ -289,31 +289,36 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
     this.MainSequencer = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(7));
     this.LightButtonLeft = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetButton(5).RootUIComp);
     this.LightButtonRight = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetButton(9).RootUIComp);
-    this.UiViewSequence.AddSequenceFinishEvent("Start", this.uFu);
+    this.UiViewSequence.AddSequenceFinishEvent("Start", this.Qku);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandUpdate, this.xbu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandSuccess, this.Ubu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandSuccessShowStart, this.GFu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandSuccessShowEnd, this.FFu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandTooLongTime, this.VPu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandBubbleUpdate, this.jPu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandBubbleEnd, this.OPu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Yuu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandOnLinkMiss, this.dFu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandUpdate, this.Jbu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandSuccess, this.Zbu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandSuccessShowStart, this.jku);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandSuccessShowEnd, this.Hku);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandTooLongTime, this.gxu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandBubbleUpdate, this.Cxu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandBubbleEnd, this.uxu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Ucu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TuningStandOnLinkMiss, this.Kku);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandUpdate, this.xbu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandSuccess, this.Ubu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandSuccessShowStart, this.GFu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandSuccessShowEnd, this.FFu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandTooLongTime, this.VPu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandBubbleUpdate, this.jPu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandBubbleEnd, this.OPu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Yuu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandOnLinkMiss, this.dFu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandUpdate, this.Jbu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandSuccess, this.Zbu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandSuccessShowStart, this.jku);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandSuccessShowEnd, this.Hku);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandTooLongTime, this.gxu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandBubbleUpdate, this.Cxu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandBubbleEnd, this.uxu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Ucu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TuningStandOnLinkMiss, this.Kku);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
+  }
+  OnBeforeHide() {
+    if (!this.LastHide) {
+      this.CloseMe();
+    }
   }
   OnBeforeDestroy() {
     if (this.TooLongHandle) {
@@ -326,25 +331,25 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
     this.MusicItemPlay = undefined;
     this.GuideItem = undefined;
     ModelManager_1.ModelManager.TuningStandModel.UnloadData();
-    this.f7c?.Clear();
-    this.f7c = undefined;
-    this.g7c?.Clear();
-    this.g7c = undefined;
+    this.Fku?.Clear();
+    this.Fku = undefined;
+    this.Nku?.Clear();
+    this.Nku = undefined;
   }
-  NPu() {
-    this.LBu();
+  fxu() {
+    this.Xku();
   }
-  LBu() {
-    this.wBu++;
-    if (this.wBu > TuningStandDefine_1.TOOLONG_DELAY_MIN) {
+  Xku() {
+    this.Gku++;
+    if (this.Gku > TuningStandDefine_1.TOOLONG_DELAY_MIN) {
       ModelManager_1.ModelManager.TuningStandModel.ProcessTooLong();
     } else {
       this.TooLongHandle = TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        this.LBu();
+        this.Xku();
       }, TuningStandDefine_1.TOOLONG_DELAY);
     }
   }
-  Oxu(e) {
+  dUu(e) {
     if (e) {
       if (e.IsPlayingSequence("Off")) {
         e.StopSequenceByKey("Off");
@@ -356,7 +361,7 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  qxu(e) {
+  mUu(e) {
     if (e) {
       if (e.IsPlayingSequence("On")) {
         e.StopSequenceByKey("On");
@@ -368,7 +373,7 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  Gxu() {
+  fUu() {
     if (this.BubbleTimer) {
       if (TimerSystem_1.GameplayTimerSystem.Has(this.BubbleTimer)) {
         TimerSystem_1.GameplayTimerSystem.Remove(this.BubbleTimer);
@@ -377,11 +382,11 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
     }
     if (this.IsMainTalking) {
       this.IsMainTalking = false;
-      this.qxu(this.MainSequencer);
+      this.mUu(this.MainSequencer);
     }
     if (this.IsFloroTalking) {
       this.IsFloroTalking = false;
-      this.qxu(this.FloroSequencer);
+      this.mUu(this.FloroSequencer);
     }
   }
   GetFirstStartItem() {
@@ -397,7 +402,7 @@ class TuningStandView extends UiViewBase_1.UiViewBase {
   }
   SetFocusOnStart() {
     var e = this.GetFirstStartItem();
-    ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForViewSameGroup(e.GetRootItem());
+    ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e.GetRootItem(), true);
   }
   OnClearClose() {
     if (this.FinishCb) {

@@ -15,10 +15,10 @@ class MoralePrompt extends GenericPromptFloatTipsBase_1.GenericPromptFloatTipsBa
   OnStart() {
     super.OnStart();
     var e = this.OpenParam;
-    this.Lcu(e.AreaId);
+    this.udu(e.AreaId);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMoralePromptShow);
   }
-  Lcu(e) {
+  udu(e) {
     let r = undefined;
     switch (e) {
       case "MoraleArea1":

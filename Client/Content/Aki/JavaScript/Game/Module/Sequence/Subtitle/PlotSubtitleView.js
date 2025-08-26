@@ -153,10 +153,10 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.ibc = undefined;
     this.QMa = undefined;
     this.hTl = undefined;
-    this.zFu = undefined;
+    this.qNu = undefined;
     this.YZt = new PlotTextLogic_1.PlotAudioDelegate();
     this.Lvo = undefined;
-    this.Ssu = undefined;
+    this.Qsu = undefined;
     this.Nra = 0;
     this.HasChildViewPreloaded = false;
     this.TRn = () => {
@@ -186,10 +186,10 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.tu1 = () => {
-      this.qWc(true);
+      this.qZu(true);
     };
     this.EI1 = () => {
-      this.qWc(false);
+      this.qZu(false);
     };
     this.Dvo = t => {
       this.gto(false, false);
@@ -239,22 +239,22 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.zeo = () => {
-      this.qWc(true);
+      this.qZu(true);
       this.fha();
     };
     this.cCa = () => {
-      this.qWc(false);
+      this.qZu(false);
       this.pha();
     };
     this.Zeo = () => {
       this.fha();
       this.Lrt = false;
-      this.qWc(true);
+      this.qZu(true);
     };
     this.DZ_ = () => {
       if (ControllerHolder_1.ControllerHolder.FlowController.OpenPlotReviewView()) {
         this.fha();
-        this.qWc(true);
+        this.qZu(true);
       }
     };
     this.FQe = t => {
@@ -266,7 +266,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (t === "PlotReviewView") {
         AudioSystem_1.AudioSystem.PostEvent(PlotDefine_1.PLOT_REVIEW_EXIT_AUDIO_EVENT);
         this.Lrt = true;
-        this.qWc(false);
+        this.qZu(false);
         this.pha();
       }
     };
@@ -298,17 +298,17 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (this.pvo?.HasSubtitle()) {
         if (!this.pvo.ShowOption && this.pvo.NeedDelay && this.pvo.StartFinish) {
           this.pvo.NeedDelay = false;
-          this.Ssu = TimerSystem_1.TimerSystem.Delay(this.Msu, this.pvo.CurrentAutoPlayDelayTime);
+          this.Qsu = TimerSystem_1.TimerSystem.Delay(this.Ksu, this.pvo.CurrentAutoPlayDelayTime);
         } else if (this.vvo && !this.pvo.ShowOption && this.Bvo()) {
           this.Avo();
         }
       }
     };
-    this.Msu = () => {
+    this.Ksu = () => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 45, "自动播放延时定时器结束");
       }
-      this.Ssu = undefined;
+      this.Qsu = undefined;
       if (this.vvo) {
         this.Avo();
       }
@@ -379,7 +379,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         });
       }
     };
-    this.H_u = undefined;
+    this.R1u = undefined;
     this.Gvo = t => {
       var i = this.pvo.Skip;
       this.eMo();
@@ -394,7 +394,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (!this.OpenParam?.HideAllUi && !!t && !this.Lrt) {
         this.Lrt = true;
         this.pha();
-        this.qWc(false);
+        this.qZu(false);
       }
     };
     this.eto = (t, i) => {
@@ -420,8 +420,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
           this.Fvo();
         } else if (this.B8 === "LevelB" && this.pvo.NeedDelay && this.pvo.CurrentConfig.Type !== "CenterText") {
           this.Fvo();
-          this.Esu();
-          this.Ssu = TimerSystem_1.TimerSystem.Delay(this.Msu, this.pvo.CurrentAutoPlayDelayTime);
+          this.Xsu();
+          this.Qsu = TimerSystem_1.TimerSystem.Delay(this.Ksu, this.pvo.CurrentAutoPlayDelayTime);
         } else {
           t = TimeUtil_1.TimeUtil.GetServerTimeStamp();
           if (this.B8 !== "LevelA" && (!this.Bvo() || this.Lvo) && this.pvo.EnableSkipTime <= t) {
@@ -634,8 +634,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     if (t?.HideAllUi) {
       this.Zeo();
     }
-    this.zFu?.Clear();
-    this.zFu = new Queue_1.Queue();
+    this.qNu?.Clear();
+    this.qNu = new Queue_1.Queue();
     this.hTl?.Clear();
     this.hTl = new Queue_1.Queue();
     if (this.B8 === "LevelA") {
@@ -690,9 +690,9 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.RemoveScreenEffectPlotRoot();
     this.Kbn();
     this.Qvo();
-    this.j_u(false);
+    this.b1u(false);
     this.jvo();
-    this.Esu();
+    this.Xsu();
     this.Wvo();
     this.Xvo();
     this.ibc?.clear();
@@ -700,8 +700,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.aCa = undefined;
     this.hTl?.Clear();
     this.hTl = undefined;
-    this.zFu?.Clear();
-    this.zFu = undefined;
+    this.qNu?.Clear();
+    this.qNu = undefined;
     this.sCa = undefined;
   }
   Yeo(t) {
@@ -779,7 +779,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     InputDistributeController_1.InputDistributeController.UnBindTouch(InputMappingsDefine_1.touchIdMappings.Touch1, this.eto);
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(5));
   }
-  qWc(t) {
+  qZu(t) {
     if (t) {
       ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay = false;
       this.Oeo();
@@ -962,7 +962,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       AudioController_1.AudioController.StopEvent(this.Mvo, true, AUDIO_FADE_TIME);
       this.rMo();
       this.Ivo = undefined;
-      this.Esu();
+      this.Xsu();
     }
   }
   rMo() {
@@ -973,12 +973,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       this.yvo = undefined;
     }
   }
-  Esu() {
-    if (this.Ssu !== undefined) {
-      if (TimerSystem_1.TimerSystem.Has(this.Ssu)) {
-        TimerSystem_1.TimerSystem.Remove(this.Ssu);
+  Xsu() {
+    if (this.Qsu !== undefined) {
+      if (TimerSystem_1.TimerSystem.Has(this.Qsu)) {
+        TimerSystem_1.TimerSystem.Remove(this.Qsu);
       }
-      this.Ssu = undefined;
+      this.Qsu = undefined;
     }
   }
   Yvo() {
@@ -1057,23 +1057,23 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.nMo();
     this.sMo();
     this.aMo();
-    this.j_u(true);
+    this.b1u(true);
     this.Veo();
   }
-  j_u(t) {
+  b1u(t) {
     if (t) {
       this.MZi(this.pvo.CurrentConfig.TalkAkEvent);
-      this.H_u = this.pvo.CurrentConfig.TalkEndAkEvent;
+      this.R1u = this.pvo.CurrentConfig.TalkEndAkEvent;
     } else {
-      this.MZi(this.H_u);
-      this.H_u = undefined;
+      this.MZi(this.R1u);
+      this.R1u = undefined;
     }
   }
   kvo() {
     if (this.B8 === "LevelB" && this.hMo()) {
       this.gto(false);
     }
-    this.j_u(false);
+    this.b1u(false);
     this.Zvo();
     this.eMo();
   }
@@ -1421,12 +1421,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       var s = this.rbc(t);
       if (s) {
-        this.zFu?.Push(s);
-        await s.OpenAsync(this.sCa, t, i, e);
+        this.qNu?.Push(s);
+        await s.OpenAsync(this.sCa, t, i, e, true);
         this.aCa = s;
         var h = [];
-        for (; this.zFu && this.zFu?.Size > 1;) {
-          var o = this.zFu.Pop();
+        for (; this.qNu && this.qNu?.Size > 1;) {
+          var o = this.qNu.Pop();
           if (o) {
             h.push(this.CloseWhichBackgroundUi(o));
           }
@@ -1434,12 +1434,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         await Promise.all(h);
       } else {
         var s = new PlotChildView_1.PlotChildView();
-        this.zFu?.Push(s);
+        this.qNu?.Push(s);
         await s.OpenAsync(this.sCa, t, i, e);
         this.aCa = s;
         var r = [];
-        for (; this.zFu && this.zFu?.Size > 1;) {
-          var n = this.zFu.Pop();
+        for (; this.qNu && this.qNu?.Size > 1;) {
+          var n = this.qNu.Pop();
           if (n) {
             r.push(this.CloseWhichBackgroundUi(n));
           }
@@ -1457,12 +1457,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       var e = this.rbc(t);
       if (e) {
-        this.zFu?.Push(e);
-        await e.OpenAsyncInArray(this.sCa, t, i);
+        this.qNu?.Push(e);
+        await e.OpenAsyncInArray(this.sCa, t, i, true);
         this.aCa = e;
         var s = [];
-        for (; this.zFu && this.zFu?.Size > 1;) {
-          var h = this.zFu.Pop();
+        for (; this.qNu && this.qNu?.Size > 1;) {
+          var h = this.qNu.Pop();
           if (h) {
             s.push(this.CloseWhichBackgroundUi(h));
           }
@@ -1470,12 +1470,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         await Promise.all(s);
       } else {
         var e = new PlotChildView_1.PlotChildView();
-        this.zFu?.Push(e);
+        this.qNu?.Push(e);
         await e.OpenAsyncInArray(this.sCa, t, i);
         this.aCa = e;
         var o = [];
-        for (; this.zFu && this.zFu?.Size > 1;) {
-          var r = this.zFu.Pop();
+        for (; this.qNu && this.qNu?.Size > 1;) {
+          var r = this.qNu.Pop();
           if (r) {
             o.push(this.CloseWhichBackgroundUi(r));
           }
@@ -1500,8 +1500,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
   }
   async CloseBackgroundUiThis() {
     var t = [];
-    for (; this.zFu && this.zFu?.Size > 0;) {
-      var i = this.zFu.Pop();
+    for (; this.qNu && this.qNu?.Size > 0;) {
+      var i = this.qNu.Pop();
       if (i) {
         t.push(this.CloseWhichBackgroundUi(i));
       }

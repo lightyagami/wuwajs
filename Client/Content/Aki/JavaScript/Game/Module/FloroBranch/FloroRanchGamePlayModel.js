@@ -13,9 +13,11 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
+const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const FloroRanchCurrencyData_1 = require("./Data/FloroRanchCurrencyData");
 const FloroRanchEntityActionSystem_1 = require("./Entity/FloroRanchEntityActionSystem");
 const FloroRanchEntityCreateSystem_1 = require("./Entity/FloroRanchEntityCreateSystem");
+const FloroRanchDefine_1 = require("./FloroRanchDefine");
 const FloroRanchDailyInStageState_1 = require("./FSM/Stage/FloroRanchDailyInStageState");
 const FloroRanchStageFsm_1 = require("./FSM/Stage/FloroRanchStageFsm");
 class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
@@ -25,43 +27,45 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.SubInstanceId = 0;
     this.Races = [];
     this.SkillId = 0;
+    this.IsOver = false;
     this.CurStage = 0;
     this.RemindDay = 0;
     this.StageTarget = 0;
     this.StageDayCount = 0;
     this.TotalDayCount = 0;
     this.EnableToyCount = 0;
-    this.NSu = 0;
-    this.Dlu = false;
+    this.F7c = 0;
+    this.C_u = false;
     this.IsEndlessMode = false;
     this.CoinData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(1);
     this.DiamondData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(2);
-    this.AOu = 0;
+    this.dOu = 0;
     this.ShowEntityDebugInfo = true;
-    this.Blu = [];
-    this.klu = [];
-    this.Olu = [];
+    this.p_u = [];
+    this.v_u = [];
+    this.y_u = [];
     this.DungeonEntity = undefined;
     this.RoleEntity = undefined;
     this.N9o = new Map();
-    this.lgu = [];
+    this.sCu = [];
     this.P2i = [];
-    this.qlu = undefined;
-    this.ZLu = [];
+    this.S_u = undefined;
+    this.bAu = [];
     this.ActionInfoList = [];
     this.NeedReStart = false;
     this.NeedSettle = false;
     this.IsPause = false;
+    this.IsExit = false;
     this.$Ge = (t, i) => {
-      var e = this.ZLu.length;
-      if (e > 0 && this.ZLu[e - 1] === i) {
-        this.ZLu.pop();
+      var e = this.bAu.length;
+      if (e > 0 && this.bAu[e - 1] === i) {
+        this.bAu.pop();
       }
     };
     this.FloroRanchTimerSystem = new TimerSystem_1.TimerSystemInstance();
     this.TDe = undefined;
     this.s1t = 1;
-    this.uHc = false;
+    this.TKu = false;
     this.J_ = t => {
       if (!this.IsPause) {
         this.FloroRanchTimerSystem.Tick(t * this.s1t);
@@ -76,40 +80,40 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
     return true;
   }
-  InitGame(t, i, e) {
+  InitGame(t, i, e, s) {
     this.ActivityId = t;
     this.Races = i;
     this.SkillId = e;
+    this.IsOver = s;
   }
   EnterGame(t) {
-    if (this.Dlu) {
+    if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ConnectBan");
+    } else if (this.C_u) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch进入游戏失败：游戏已经开始");
       }
     } else {
-      this.InitData(t.bru);
-      this.RefreshDailyTaskData(t.Whu);
-      this.ZFu();
+      this.InitData(t.Zru);
+      this.RefreshDailyTaskData(t.vlu);
+      this.mOu();
       this.InitStateMachine();
       this.ChangeState(1);
     }
   }
   InitStateMachine() {
-    this.qlu = new FloroRanchStageFsm_1.FloroRanchStageFsm();
-    this.qlu.Init();
+    this.S_u = new FloroRanchStageFsm_1.FloroRanchStageFsm();
+    this.S_u.Init();
   }
-  CanFsmInsertDailyTask() {
+  CanFsmInsertSkillTask() {
     var t;
-    return this.qlu.GetCurrentStateType() === 2 && !!(t = this.qlu.GetCurrentState()) && !!(t instanceof FloroRanchDailyInStageState_1.FloroRanchDailyInStageState) && !t.IsExecutingTask();
-  }
-  EnterDailyStage() {
-    this.qlu.ChangeState(2);
+    return this.S_u.GetCurrentStateType() === 2 && !!(t = this.S_u.GetCurrentState()) && !!(t instanceof FloroRanchDailyInStageState_1.FloroRanchDailyInStageState) && !t.IsExecutingTask();
   }
   ChangeState(t) {
-    this.qlu.ChangeState(t);
+    this.S_u.ChangeState(t);
   }
   PauseGame() {
-    if (this.Dlu) {
+    if (this.C_u) {
       if (this.IsPause) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch暂停游戏失败：游戏已经暂停");
@@ -127,7 +131,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   ResumeGame() {
-    if (this.Dlu) {
+    if (this.C_u) {
       if (this.IsPause) {
         this.IsPause = false;
         for (const t of this.GetShowCardEntityList()) {
@@ -143,26 +147,29 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   ExitGame(t) {
-    if (this.Dlu) {
+    if (this.C_u) {
       if (!(this.NeedSettle = t)) {
         ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().SetSavedStage(this.CurStage);
       }
+      this.IsExit = true;
       this.ChangeState(5);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch退出游戏失败：游戏未开始");
     }
   }
   ReStartGame() {
-    if (this.Dlu) {
+    if (this.C_u) {
       this.NeedReStart = true;
+      this.IsExit = true;
       this.ChangeState(5);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch退出游戏失败：游戏未开始");
     }
   }
   GameEnd() {
-    if (this.Dlu) {
-      this.eNu();
+    if (this.C_u) {
+      this.fOu();
+      this.ExitAllEntity();
       this.ClearData();
       this.CloseAllRecordView();
     } else if (Log_1.Log.CheckError()) {
@@ -170,35 +177,35 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   InitData(t) {
-    this.Dlu = true;
+    this.C_u = true;
     this.RefreshBasicData(t);
     this.InitEntityData(t);
   }
   RefreshBasicData(t) {
-    this.SubInstanceId = t.Qiu;
-    this.CurStage = t.cru;
-    this.CoinData.SetTotal(Number(MathUtils_1.MathUtils.LongToBigInt(t.lru)));
-    this.CoinData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.xhu)));
-    this.DiamondData.SetTotal(Number(MathUtils_1.MathUtils.LongToBigInt(t._ru)));
-    this.DiamondData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.Uhu)));
-    this.StageTarget = Number(MathUtils_1.MathUtils.LongToBigInt(t.Dhu));
-    this.EnableToyCount = t.qgu;
-    this.IsEndlessMode = t.hUu;
-    this.StageDayCount = t.UUu;
-    this.TotalDayCount = t.wOu;
-    this.RemindDay = t.tGu;
+    this.SubInstanceId = t.vru;
+    this.CurStage = t.Gru;
+    this.CoinData.SetTotal(Number(MathUtils_1.MathUtils.LongToBigInt(t.kru)));
+    this.CoinData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.nlu)));
+    this.DiamondData.SetTotal(Number(MathUtils_1.MathUtils.LongToBigInt(t.Oru)));
+    this.DiamondData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.slu)));
+    this.StageTarget = Number(MathUtils_1.MathUtils.LongToBigInt(t.alu));
+    this.EnableToyCount = t.kCu;
+    this.IsEndlessMode = t.ZUu;
+    this.StageDayCount = t.uDu;
+    this.TotalDayCount = t.GBu;
+    this.RemindDay = t.FBu;
     this.ActionInfoList.length = 0;
   }
   InitEntityData(t) {
     this.N9o.clear();
-    this.Blu.length = 0;
-    this.klu.length = 0;
-    this.Olu.length = 0;
-    this.AddEntityList(t.aru);
-    this.AddEntityList(t.hru);
-    this.AddEntityList(t.uru);
-    if (t.xPu) {
-      this.DungeonEntity = FloroRanchEntityCreateSystem_1.FloroRanchEntityCreateSystem.CreateFloroRanchEntity(t.xPu);
+    this.p_u.length = 0;
+    this.v_u.length = 0;
+    this.y_u.length = 0;
+    this.AddEntityList(t.Dru);
+    this.AddEntityList(t.Bru);
+    this.AddEntityList(t.qru);
+    if (t.sxu) {
+      this.DungeonEntity = FloroRanchEntityCreateSystem_1.FloroRanchEntityCreateSystem.CreateFloroRanchEntity(t.sxu);
       this.N9o.set(this.DungeonEntity.EntityId, this.DungeonEntity);
     }
     if (t.RUs) {
@@ -207,14 +214,14 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   OnDayStart(t) {
-    this.CurStage = t._Uu;
-    this.IsEndlessMode = t.s1u;
-    this.TotalDayCount = t.wOu;
-    this.RemindDay = t.tGu;
+    this.CurStage = t.tDu;
+    this.IsEndlessMode = t.j1u;
+    this.TotalDayCount = t.GBu;
+    this.RemindDay = t.FBu;
   }
   OnStageStart(t) {
     this.StageTarget = Number(MathUtils_1.MathUtils.LongToBigInt(t.j6n));
-    this.StageDayCount = t.Ohu;
+    this.StageDayCount = t._lu;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchStageInfoRefresh);
   }
   AddEntityList(t) {
@@ -225,33 +232,28 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   AddEntity(t) {
     var i;
     var e;
-    if (!this.N9o.has(t.Ziu)) {
+    if (!this.N9o.has(t.Tru)) {
       i = FloroRanchEntityCreateSystem_1.FloroRanchEntityCreateSystem.CreateFloroRanchEntity(t);
       this.N9o.set(i.EntityId, i);
-      this.GUu(i.EntityType, i);
+      this.CDu(i.EntityType, i);
       if (i.EntityType === 1) {
-        e = this.AOu + 1;
+        e = this.dOu + 1;
         this.SetOwnCardEntityCount(e);
       }
       return i;
     }
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch实体Id重复", ["entityId", t.Ziu]);
+      Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch实体Id重复", ["entityId", t.Tru]);
     }
   }
   RefreshEntityList(t) {
-    for (const e of t) {
-      var i = this.GetEntity(e.Ziu);
-      if (i) {
-        i.RefreshEntityData(e);
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanch刷新实体数据失败：实体不存在", ["entityId", e.Ziu]);
-      }
+    for (const i of t) {
+      this.GetEntity(i.Tru).RefreshEntityData(i);
     }
   }
   RefreshRemoveEntityList(t) {
     for (const i of t) {
-      this.GetEntity(i).CheckGetComponent(0).IsRemove = true;
+      this.GetEntity(i).CheckGetComponent(0).Remove();
     }
   }
   CheckEntityIsExist(t) {
@@ -269,120 +271,133 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   RemoveOwnEntityData(t) {
-    t.CheckGetComponent(0).IsRemove = true;
-    var i = this.FUu(t.EntityType, t);
-    if (i && t.EntityType === 1) {
-      i = this.AOu - 1;
-      this.SetOwnCardEntityCount(i);
+    var i = t.CheckGetComponent(0);
+    if (i.IsValid) {
+      i.Remove();
+      if (this.pDu(t.EntityType, t) && t.EntityType === 1) {
+        i = this.dOu - 1;
+        this.SetOwnCardEntityCount(i);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanch移除实体数据失败：实体重复移除", ["entityId", t.EntityId]);
     }
   }
   ClearRemoveEntity() {
     for (const t of this.N9o.values()) {
-      if (t.CheckGetComponent(0).IsRemove) {
+      if (!t.CheckGetComponent(0).IsValid) {
         this.N9o.delete(t.EntityId);
       }
     }
   }
   OnShopItemPurchased(t) {
-    this.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(t.xhu)), Number(MathUtils_1.MathUtils.LongToBigInt(t.Uhu)));
+    this.OnCurrencyChange(Number(MathUtils_1.MathUtils.LongToBigInt(t.nlu)), Number(MathUtils_1.MathUtils.LongToBigInt(t.slu)));
     let i = undefined;
     switch (t.h5n) {
-      case Protocol_1.Aki.Protocol.Vcu.Proto_BuyCard:
-        i = t.Gcu;
-        FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntity([i.kcu]);
+      case Protocol_1.Aki.Protocol.Idu.Proto_BuyCard:
+        i = t.Sdu;
+        FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntity(i.pdu);
         break;
-      case Protocol_1.Aki.Protocol.Vcu.Proto_BuyGardGroup:
-        i = t.Fcu;
-        this.OpenAndRecordView("FloroRanchCardGroupSelectView", i.Eru);
+      case Protocol_1.Aki.Protocol.Idu.Proto_BuyGardGroup:
+        i = t.Mdu;
+        this.OpenAndRecordView("FloroRanchCardGroupSelectView", i.Yru);
         break;
-      case Protocol_1.Aki.Protocol.Vcu.Proto_BuyToy:
-        var e = (i = t.Ncu).qcu;
-        if (this.CheckEntityIsExist(e.Ziu)) {
-          this.GetEntity(e.Ziu).RefreshEntityData(e);
+      case Protocol_1.Aki.Protocol.Idu.Proto_BuyToy:
+        var e = (i = t.Edu).ydu;
+        if (this.CheckEntityIsExist(e.Tru)) {
+          this.GetEntity(e.Tru).RefreshEntityData(e);
         } else {
-          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntity([e]);
+          FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.AddEntity(e);
         }
     }
   }
   OnTributeResult(t) {
-    this.RemindDay = t.tGu;
-    this.CurStage = t._Uu;
+    this.RemindDay = t.FBu;
+    this.CurStage = t.tDu;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchStageInfoRefresh);
-    var i = Number(MathUtils_1.MathUtils.LongToBigInt(t.xhu));
-    var t = Number(MathUtils_1.MathUtils.LongToBigInt(t.Uhu));
+    var i = Number(MathUtils_1.MathUtils.LongToBigInt(t.nlu));
+    var t = Number(MathUtils_1.MathUtils.LongToBigInt(t.slu));
     this.OnCurrencyChange(i, t);
   }
   OnCurrencyChange(t, i) {
     this.CoinData.SetAmount(t);
     this.DiamondData.SetAmount(i);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchCurrencyChange);
+    this.GetGamePlayView().RefreshCurrencyInfo();
   }
-  OpenAndRecordView(s, t, h) {
+  OpenAndRecordView(s, t, o) {
     UiManager_1.UiManager.OpenView(s, t, (t, i) => {
       var e;
       if (t) {
-        t = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
+        t = this.GetGamePlayView();
         e = UiManager_1.UiManager.GetView(i);
         t.AddChild(e);
-        this.ZLu.push(i);
-        h?.();
+        this.bAu.push(i);
+        o?.();
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanch打开界面失败", ["viewName", s]);
       }
     });
   }
   ShowRecordView() {
-    for (const i of this.ZLu) {
+    for (const i of this.bAu) {
       var t = UiManager_1.UiManager.GetView(i);
       if (t) {
         t.SetActive(true);
       }
     }
-    UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView").SetShowButtonActive(false);
+    this.GetGamePlayView().SetShowButtonActive(false);
   }
   HideRecordView() {
-    for (const i of this.ZLu) {
+    for (const i of this.bAu) {
       var t = UiManager_1.UiManager.GetView(i);
       if (t) {
         t.SetActive(false);
       }
     }
-    UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView").SetShowButtonActive(true);
+    this.GetGamePlayView().SetShowButtonActive(true);
   }
   CloseAllRecordView() {
-    for (const t of this.ZLu) {
+    for (const t of this.bAu) {
       UiManager_1.UiManager.CloseViewById(t);
     }
-    this.ZLu.length = 0;
+    this.bAu.length = 0;
   }
   get OwnCardEntityCount() {
-    return this.AOu;
+    return this.dOu;
   }
   SetOwnCardEntityCount(t) {
-    this.AOu = t;
+    this.dOu = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchCardEntityCountChange);
   }
+  ExitAllEntity() {
+    for (const i of this.N9o.values()) {
+      var t = i.GetUiItemComponent();
+      if (t) {
+        t.Exit();
+      }
+    }
+  }
   ClearData() {
-    this.Dlu = false;
+    this.C_u = false;
     this.ActivityId = 0;
     this.SubInstanceId = 0;
     this.Races.length = 0;
     this.SkillId = 0;
     this.CurStage = 0;
     this.RemindDay = 0;
-    this.Blu.length = 0;
-    this.klu.length = 0;
-    this.Olu.length = 0;
+    this.p_u.length = 0;
+    this.v_u.length = 0;
+    this.y_u.length = 0;
     this.DungeonEntity = undefined;
     this.RoleEntity = undefined;
     this.P2i.length = 0;
-    this.qlu = undefined;
+    this.S_u = undefined;
     this.IsPause = false;
-    this.ZLu.length = 0;
-    this.NSu = 0;
-    this.lgu.length = 0;
-    this.AOu = 0;
+    this.bAu.length = 0;
+    this.F7c = 0;
+    this.sCu.length = 0;
+    this.dOu = 0;
     this.NeedReStart = false;
+    this.IsExit = false;
     this.ActionInfoList.length = 0;
     this.N9o.clear();
   }
@@ -394,16 +409,16 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.P2i.length = 0;
     return t;
   }
-  GUu(t, i) {
+  CDu(t, i) {
     switch (t) {
       case 0:
-        this.Blu.push(i);
+        this.p_u.push(i);
         break;
       case 1:
-        this.klu.push(i);
+        this.v_u.push(i);
         break;
       case 2:
-        this.Olu.push(i);
+        this.y_u.push(i);
         break;
       case 3:
         if (this.DungeonEntity) {
@@ -429,22 +444,22 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
         }
     }
   }
-  FUu(t, i) {
+  pDu(t, i) {
     let e = -1;
     switch (t) {
       case 0:
-        if ((e = this.Blu.indexOf(i)) !== -1) {
-          this.Blu.splice(e, 1);
+        if ((e = this.p_u.indexOf(i)) !== -1) {
+          this.p_u.splice(e, 1);
         }
         break;
       case 1:
-        if ((e = this.klu.indexOf(i)) !== -1) {
-          this.klu.splice(e, 1);
+        if ((e = this.v_u.indexOf(i)) !== -1) {
+          this.v_u.splice(e, 1);
         }
         break;
       case 2:
-        if ((e = this.Olu.indexOf(i)) !== -1) {
-          this.Olu.splice(e, 1);
+        if ((e = this.y_u.indexOf(i)) !== -1) {
+          this.y_u.splice(e, 1);
         }
         break;
       case 3:
@@ -455,20 +470,20 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
         break;
       default:
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanch移除实体失败：EntityType错误", ["type", t]);
+          Log_1.Log.Error("FloroRanchGamePlay", 78, "RemoveEntityByType失败：EntityType错误", ["type", t]);
         }
     }
     var s = e !== -1;
     if (!s) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanch移除实体失败：实体不存在", ["entityId", i.EntityId]);
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "RemoveEntityByType失败：实体不存在", ["entityId", i.EntityId]);
       }
     }
     return s;
   }
   GetShowCardEntityList() {
     var t = [];
-    for (const e of this.klu) {
+    for (const e of this.v_u) {
       var i = e.CheckGetComponent(0);
       if (i.IsValid && i.Point !== -1) {
         t.push(e);
@@ -478,7 +493,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   }
   GetShowToyEntityList() {
     var t = [];
-    for (const e of this.Olu) {
+    for (const e of this.y_u) {
       var i = e.CheckGetComponent(0);
       if (i.IsValid && i.Point !== -1) {
         t.push(e);
@@ -491,7 +506,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   }
   GetShowTerrainEntityList() {
     var t = [];
-    for (const e of this.Blu) {
+    for (const e of this.p_u) {
       var i = e.CheckGetComponent(0);
       if (i.IsValid && i.Point !== -1) {
         t.push(e);
@@ -500,7 +515,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     return t;
   }
   GetCardEntityByPoint(t) {
-    for (const e of this.klu) {
+    for (const e of this.v_u) {
       var i = e.CheckGetComponent(0);
       if (i.IsValid && i.Point === t) {
         return e;
@@ -508,7 +523,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   GetTerrainEntityByPoint(t) {
-    for (const e of this.Blu) {
+    for (const e of this.p_u) {
       var i = e.CheckGetComponent(0);
       if (i.IsValid && i.Point === t) {
         return e;
@@ -516,7 +531,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   GetToyEntityByPoint(t) {
-    for (const e of this.Olu) {
+    for (const e of this.y_u) {
       var i = e.CheckGetComponent(0);
       if (i.IsValid && i.Point === t) {
         return e;
@@ -524,52 +539,59 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   ClearLastDayIncome() {
-    this.NSu = 0;
+    this.F7c = 0;
     for (const t of this.N9o.values()) {
       t.CheckGetComponent(0).Income = 0;
     }
   }
   RefreshLastIncomeEntityList() {
-    this.lgu.length = 0;
+    this.sCu.length = 0;
     for (const t of this.N9o.values()) {
-      this.lgu.push(t);
+      this.sCu.push(t);
     }
-    this.lgu.sort((t, i) => {
-      t = t.CheckGetComponent(0);
-      i = i.CheckGetComponent(0);
-      if (i.Income !== t.Income) {
-        return i.Income - t.Income;
-      } else if (i.Point !== -1 != (t.Point !== -1)) {
-        if (i.Point !== -1) {
+    this.sCu.sort((t, i) => {
+      var e;
+      var s;
+      var o = t.CheckGetComponent(0);
+      var h = i.CheckGetComponent(0);
+      if (h.Income !== o.Income) {
+        return h.Income - o.Income;
+      } else if (o.IsValid !== (e = h.IsValid)) {
+        if (e) {
           return 1;
         } else {
           return -1;
         }
-      } else if (i.EntityType !== t.EntityType) {
-        return i.EntityType - t.EntityType;
-      } else if (i.EntityId !== t.EntityId) {
-        return i.EntityId - t.EntityId;
       } else {
-        return t.EntityId - i.EntityId;
+        e = FloroRanchDefine_1.entityTypePriority[o.EntityType] ?? 0;
+        if ((s = FloroRanchDefine_1.entityTypePriority[h.EntityType] ?? 0) !== e) {
+          return e - s;
+        } else if ((e = t.GetRace()) !== (s = i.GetRace())) {
+          return e - s;
+        } else if ((e = t.GetRarity()) !== (s = i.GetRarity())) {
+          return s - e;
+        } else {
+          return o.EntityId - h.EntityId;
+        }
       }
     });
   }
   GetLastIncomeEntityList(e, t, s) {
-    let i = this.lgu;
-    let h = (i = i.filter(t => {
+    let i = this.sCu;
+    let o = (i = i.filter(t => {
       var i = t.EntityType;
       return !!this.CheckEntityTypeIsVisible(i) && !(t = t.GetPoint(), !s && t === -1) && (e.FilterTypeId < 0 || e.FilterTypeId === i);
     })).map((t, i) => ({
       EntityData: t,
       Rank: i + 1
     }));
-    return h = t ? h : h.slice().reverse();
+    return o = t ? o : o.slice().reverse();
   }
   GetLastDayIncome() {
-    return this.NSu;
+    return this.F7c;
   }
   AddLastDayIncome(t) {
-    this.NSu += t;
+    this.F7c += t;
   }
   SetStageTarget(t) {
     this.StageTarget = t;
@@ -577,21 +599,31 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   GetStageTarget() {
     return this.StageTarget;
   }
+  GetGamePlayView() {
+    var t = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
+    if (t) {
+      return t;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("FloroRanchGamePlay", 78, "GetGamePlayView失败：view不存在");
+    }
+  }
   CheckEntityTypeIsVisible(t) {
     return t === 1 || t === 2 || t === 0;
   }
-  ZFu() {
+  mOu() {
     if (this.TDe) {
       this._1o();
     }
     this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(this.J_, TimerSystem_1.MIN_TIME);
     this.s1t = 1;
-    this.uHc = false;
+    this.TKu = false;
   }
-  eNu() {
+  fOu() {
     this._1o();
     this.s1t = 1;
-    this.uHc = false;
+    this.TKu = false;
+    this.FloroRanchTimerSystem.Clear();
   }
   _1o() {
     if (TimerSystem_1.GameplayTimerSystem.Has(this.TDe)) {
@@ -606,10 +638,50 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     return this.s1t;
   }
   get IsSkip() {
-    return this.uHc;
+    return this.TKu;
   }
   set IsSkip(t) {
-    this.uHc = t;
+    this.TKu = t;
+  }
+  GetPopupRewardStayTime() {
+    if (FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t] === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "GetPopupRewardStayTime失败：TimeDilation错误", ["TimeDilation", this.s1t]);
+      }
+      return FloroRanchDefine_1.FLORO_RANCH_REWARD_POPUP_STAY_TIME;
+    } else {
+      return FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t].PopupRewardStayTime;
+    }
+  }
+  GetPopupRewardWaitTime() {
+    if (FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t] === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "GetPopupRewardWaitTime失败：TimeDilation错误", ["TimeDilation", this.s1t]);
+      }
+      return FloroRanchDefine_1.FLORO_RANCH_REWARD_POPUP_WAIT_TIME;
+    } else {
+      return FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t].PopupRewardWaitTime;
+    }
+  }
+  GetBezierCurveTime() {
+    if (FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t] === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "GetBezierCurveTime失败：TimeDilation错误", ["TimeDilation", this.s1t]);
+      }
+      return FloroRanchDefine_1.FLORO_RANCH_REWARD_COIN_BEZIER_TIME;
+    } else {
+      return FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t].BezierCurveTime;
+    }
+  }
+  GetWageSettleWaitTime() {
+    if (FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t] === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "GetWageSettleWaitTime失败：TimeDilation错误", ["TimeDilation", this.s1t]);
+      }
+      return FloroRanchDefine_1.FLORO_RANCH_DAY_WAGE_TASK_WAIT_TIME;
+    } else {
+      return FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t].WageSettleWaitTime;
+    }
   }
 }
 exports.FloroRanchGamePlayModel = FloroRanchGamePlayModel;

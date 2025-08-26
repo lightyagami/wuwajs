@@ -704,7 +704,7 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
   UUc() {
     const e = this.NUe;
     ModelManager_1.ModelManager.EditBattleTeamModel.InstanceMultiEnter = false;
-    const t = ModelManager_1.ModelManager.PowerModel.IsPowerEnough(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetInstancePowerCost(this.NUe));
+    const t = ModelManager_1.ModelManager.PowerModel.IsPowerWithConvertedEnough(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetInstancePowerCost(this.NUe));
     var n;
     var i;
     if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.CheckInstanceLevelTooLow(this.NUe)) {

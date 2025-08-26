@@ -30,48 +30,48 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
       if (o) {
         let e = undefined;
         let i = undefined;
-        let a = 0;
-        let r = undefined;
+        let r = 0;
+        let a = undefined;
         let n = undefined;
         switch (o.Type) {
           case IAction_1.ECommonTipType.TipId:
-            r = o.Id;
-            a = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(r).TypeId;
-            e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(r).TipsText);
+            a = o.Id;
+            r = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(a).TypeId;
+            e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(a).TipsText);
             break;
           case IAction_1.ECommonTipType.ChallengeFail:
             e = o.TidMainText;
-            a = 4;
+            r = 4;
             break;
           case IAction_1.ECommonTipType.ChallengeCondition:
             e = o.TidMainText;
             i = o.TidSubText;
-            a = 0;
+            r = 0;
             break;
           case IAction_1.ECommonTipType.ChallengeSuccess:
             e = o.TidMainText;
-            a = 3;
+            r = 3;
             break;
           case IAction_1.ECommonTipType.GeneralFloatingTip:
             e = o.TidMainText;
-            a = 9;
+            r = 9;
             break;
           case IAction_1.ECommonTipType.MissionComplete:
             e = o.TidMainText;
             i = o.TidSubText;
-            a = 7;
+            r = 7;
             break;
           case IAction_1.ECommonTipType.ReachChallenge:
             e = o.TidMainText;
-            a = 5;
+            r = 5;
             break;
           case IAction_1.ECommonTipType.TriggerDelegation:
             e = o.TidMainText;
             i = o.TidSubText;
-            a = 6;
+            r = 6;
             break;
           case IAction_1.ECommonTipType.PrepareCountdown:
-            a = 13;
+            r = 13;
             break;
           case IAction_1.ECommonTipType.EnterInRange:
             var l = o.TidText;
@@ -94,12 +94,12 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
               return undefined;
             }
           case IAction_1.ECommonTipType.RemainStarWarning:
-            a = 18;
+            r = 18;
             l = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(l);
             break;
           case IAction_1.ECommonTipType.DreamlessWarning:
-            a = 20;
+            r = 20;
             var _ = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(_);
             break;
@@ -107,37 +107,41 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
             l = o;
             UiManager_1.UiManager.OpenView("PunishReportView", l);
             return;
+          case IAction_1.ECommonTipType.GreatSwordChallenge:
+            _ = o;
+            UiManager_1.UiManager.OpenView("GreatSwordOpenTipsView", _);
+            return;
           case IAction_1.ECommonTipType.WhiteCatWarning:
-            a = 22;
-            _ = o.WarningText;
-            n = new LguiUtil_1.TableTextArgNew(_);
-            break;
-          case IAction_1.ECommonTipType.BlackCatWarning:
-            a = 23;
+            r = 22;
             l = o.WarningText;
             n = new LguiUtil_1.TableTextArgNew(l);
             break;
-          case IAction_1.ECommonTipType.SlashAndTowerTip:
+          case IAction_1.ECommonTipType.BlackCatWarning:
+            r = 23;
             _ = o.WarningText;
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, _);
+            n = new LguiUtil_1.TableTextArgNew(_);
+            break;
+          case IAction_1.ECommonTipType.SlashAndTowerTip:
+            l = o.WarningText;
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, l);
             return;
           case IAction_1.ECommonTipType.BadBuKingChallengeTip:
-            l = o.WarningText;
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowBadDangoTip, l);
+            _ = o.WarningText;
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowBadDangoTip, _);
             return;
           case IAction_1.ECommonTipType.MoraleAreaTip:
-            _ = {
+            l = {
               AreaId: o.AreaType
             };
-            ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(31, undefined, undefined, [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidAreaNameText)], [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidRecommendText)], undefined, undefined, _);
+            ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(31, undefined, undefined, [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidAreaNameText)], [PublicUtil_1.PublicUtil.GetConfigTextByKey(o.TidRecommendText)], undefined, undefined, l);
             return;
           case IAction_1.ECommonTipType.NightmareLord:
-            a = 32;
+            r = 32;
             e = o.TidMainText;
             i = o.TidSubText;
             break;
           case IAction_1.ECommonTipType.NightmareSpawnPoint:
-            a = 33;
+            r = 33;
             e = o.TidMainText;
             i = o.TidSubText;
             break;
@@ -146,7 +150,7 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
         }
         e = e && PublicUtil_1.PublicUtil.GetConfigTextByKey(e);
         i = i && PublicUtil_1.PublicUtil.GetConfigTextByKey(i);
-        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(a, n, undefined, [e], [i], r, undefined, undefined, t.Duration, false, t.Token);
+        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(r, n, undefined, [e], [i], a, undefined, undefined, t.Duration, false, t.Token);
       } else {
         i = e.GeneralTextId;
         t = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(i).TypeId;

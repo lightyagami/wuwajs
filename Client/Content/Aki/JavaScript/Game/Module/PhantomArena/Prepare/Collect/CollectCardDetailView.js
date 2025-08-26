@@ -19,15 +19,15 @@ const CollectCardDetailPanel_1 = require("./CollectCardDetailPanel");
 class CollectCardDetailView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.UX1 = -1;
-    this.Feu = -1;
+    this.nY1 = -1;
+    this.ctu = -1;
     this.vua = -1;
     this.ypt = [];
     this.cs1 = undefined;
-    this.pfu = undefined;
+    this.dgu = undefined;
     this.lqe = undefined;
     this.B7t = undefined;
-    this.gnu = undefined;
+    this.Vnu = undefined;
     this.Hwn = () => {
       var t = new CollectCardDetailTabItem();
       t.CallbackOnClick = this.l6c;
@@ -35,44 +35,44 @@ class CollectCardDetailView extends UiViewBase_1.UiViewBase {
     };
     this.l6c = t => {
       if (this.vua >= 0) {
-        this.Neu(this.vua, false);
+        this.dtu(this.vua, false);
       }
       this.vua = t;
       this.B7t.SelectGridProxy(t);
-      this.Neu(this.vua, true);
+      this.dtu(this.vua, true);
     };
     this.qLn = () => {
-      var t = (this.Feu - 1 + this.ypt.length) % this.ypt.length;
-      this.Feu = t;
-      this.UX1 = this.ypt[this.Feu].CardId;
-      this.Veu();
-      this.KAu();
+      var t = (this.ctu - 1 + this.ypt.length) % this.ypt.length;
+      this.ctu = t;
+      this.nY1 = this.ypt[this.ctu].CardId;
+      this.mtu();
+      this.SPu();
     };
     this.GLn = () => {
-      var t = (this.Feu + 1) % this.ypt.length;
-      this.Feu = t;
-      this.UX1 = this.ypt[this.Feu].CardId;
-      this.Veu();
-      this.KAu();
+      var t = (this.ctu + 1) % this.ypt.length;
+      this.ctu = t;
+      this.nY1 = this.ypt[this.ctu].CardId;
+      this.mtu();
+      this.SPu();
     };
     this.I5t = () => {
-      this.CloseMe(this.Qfu);
+      this.CloseMe(this.Vgu);
     };
-    this.Qfu = t => {
-      if (this.gnu) {
-        this.gnu(this.UX1);
+    this.Vgu = t => {
+      if (this.Vnu) {
+        this.Vnu(this.nY1);
       }
     };
-    this.jeu = t => {
-      if (t === this.UX1) {
-        this.Veu();
-        this.KAu();
+    this.ftu = t => {
+      if (t === this.nY1) {
+        this.mtu();
+        this.SPu();
       }
     };
-    this.vfu = t => {
-      if (t === this.UX1) {
-        this.Veu();
-        this.KAu();
+    this.mgu = t => {
+      if (t === this.nY1) {
+        this.mtu();
+        this.SPu();
       }
     };
   }
@@ -82,17 +82,17 @@ class CollectCardDetailView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     var t = this.OpenParam;
-    this.UX1 = t.CardId ?? -1;
-    this.gnu = t.CallbackOnClose;
+    this.nY1 = t.CardId ?? -1;
+    this.Vnu = t.CallbackOnClose;
     this.ypt = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataList();
-    this.Feu = this.ypt.findIndex(t => t.CardId === this.UX1);
+    this.ctu = this.ypt.findIndex(t => t.CardId === this.nY1);
     this.B7t = new GenericLayout_1.GenericLayout(this.GetLayoutBase(0), this.Hwn);
     var t = ModelManager_1.ModelManager.PhantomArenaModel.GetDetailViewTabDataList();
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
     this.lqe.SetCloseCallBack(this.I5t);
     this.cs1 = new CollectCardDetailPanel_1.CollectCardDetailPanel();
-    this.pfu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
-    await Promise.all([this.B7t.RefreshByDataAsync(t), this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)), this.pfu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
+    this.dgu = new DeckBuilderCardOutlookUnlockPanel_1.DeckBuilderCardOutlookUnlockPanel();
+    await Promise.all([this.B7t.RefreshByDataAsync(t), this.cs1.CreateByResourceIdAsync("UiItem_CardDetail", this.GetItem(4)), this.dgu.CreateByResourceIdAsync("UiItem_CardLevelUp", this.GetItem(4)), this.lqe.CreateThenShowByActorAsync(this.GetItem(1).GetOwner())]);
     var t = ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId();
     await this.lqe.SetCurrencyItemList([t]);
   }
@@ -100,42 +100,42 @@ class CollectCardDetailView extends UiViewBase_1.UiViewBase {
     if (this.ypt.length <= 0 && Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 75, "获取卡牌图鉴数据错误");
     }
-    if (this.UX1 < 0 || this.Feu < 0) {
-      this.Feu = 0;
-      this.UX1 = this.ypt[0].CardId;
+    if (this.nY1 < 0 || this.ctu < 0) {
+      this.ctu = 0;
+      this.nY1 = this.ypt[0].CardId;
     }
-    this.Veu();
+    this.mtu();
     this.vua = 0;
     this.B7t.SelectGridProxyByKey(this.vua, true);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.jeu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.vfu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.ftu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.mgu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.jeu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.vfu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.ftu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaCardOutlookUnlock, this.mgu);
   }
-  Veu() {
-    this.cs1?.Refresh(this.UX1);
+  mtu() {
+    this.cs1?.Refresh(this.nY1);
     var t = {
-      CardId: this.UX1
+      CardId: this.nY1
     };
-    this.pfu?.Refresh(t);
+    this.dgu?.Refresh(t);
   }
-  KAu() {
-    (this.vua === 0 ? this.cs1 : this.pfu)?.PlaySwitchSequence();
+  SPu() {
+    (this.vua === 0 ? this.cs1 : this.dgu)?.PlaySwitchSequence();
   }
-  Neu(t, i) {
+  dtu(t, i) {
     if (t === 0) {
       this.cs1?.SetActive(i);
       if (i) {
         this.cs1?.PlayShowSequence();
       }
     } else {
-      this.pfu?.SetActive(i);
+      this.dgu?.SetActive(i);
       if (i) {
-        this.pfu?.PlayShowSequence();
+        this.dgu?.PlayShowSequence();
       }
     }
   }

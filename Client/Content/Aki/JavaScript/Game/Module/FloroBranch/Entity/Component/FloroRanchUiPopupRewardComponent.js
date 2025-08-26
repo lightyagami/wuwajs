@@ -29,8 +29,8 @@ let FloroRanchUiPopupRewardComponent = class FloroRanchUiPopupRewardComponent ex
   async ShowPopupReward(e, o) {
     var n = this.OwnerEntity.GetUiItemComponent();
     var t = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
-    if (t) {
-      await t.ShowPopupReward(n.GetUiItem(), e, o);
+    if (t && (n = n.GetUiItem())) {
+      await t.ShowPopupReward(n, e, o);
     }
   }
 };

@@ -19,7 +19,7 @@ class LevelConditionCheckEnemyBuff extends LevelGeneralBase_1.LevelConditionBase
         var i = Number(e.LimitParams.get("BuffId"));
         if (i) {
           for (const r of o[0]) {
-            if ((EntitySystem_1.EntitySystem.Get(r)?.GetComponent(174)?.GetBuffTotalStackById(i) ?? 0) > 0) {
+            if ((EntitySystem_1.EntitySystem.Get(r)?.GetComponent(175)?.GetBuffTotalStackById(i) ?? 0) > 0) {
               return true;
             }
           }

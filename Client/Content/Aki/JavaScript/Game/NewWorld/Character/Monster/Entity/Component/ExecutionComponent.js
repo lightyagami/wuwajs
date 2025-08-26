@@ -44,7 +44,7 @@ let ExecutionComponent = class ExecutionComponent extends EntityComponent_1.Enti
     this.vzi = undefined;
     this.Ttn = undefined;
     this.Ltn = (e, t) => {
-      var o = this.Entity.GetComponent(197);
+      var o = this.Entity.GetComponent(198);
       if (o) {
         this.vzi = o.GetInteractController();
         if (this.vzi) {
@@ -70,7 +70,7 @@ let ExecutionComponent = class ExecutionComponent extends EntityComponent_1.Enti
     return true;
   }
   OnActivate() {
-    var e = this.Entity.GetComponent(205);
+    var e = this.Entity.GetComponent(206);
     var t = this.Entity.GetComponent(0);
     var o = t.GetMonsterComponent().FightConfigId;
     this.Ttn = MonsterBattleConfById_1.configMonsterBattleConfById.GetConfig(o);
@@ -259,14 +259,14 @@ let ExecutionComponent = class ExecutionComponent extends EntityComponent_1.Enti
     return t ?? false;
   }
   wtn(e) {
-    e = e.GetComponent(174);
+    e = e.GetComponent(175);
     e?.AddBuff(CharacterBuffIds_1.buffId.ChangeRoleBuff, {
       InstigatorId: e?.CreatureDataId,
       Reason: "处决换人"
     });
   }
   btn(e) {
-    e.GetComponent(174)?.RemoveBuff(CharacterBuffIds_1.buffId.ChangeRoleBuff, -1, "处决换人失败");
+    e.GetComponent(175)?.RemoveBuff(CharacterBuffIds_1.buffId.ChangeRoleBuff, -1, "处决换人失败");
   }
 };
 ExecutionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(88)], ExecutionComponent);

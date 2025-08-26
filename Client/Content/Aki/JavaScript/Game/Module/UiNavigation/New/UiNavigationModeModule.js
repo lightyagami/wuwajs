@@ -9,239 +9,338 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Transform_1 = require("../../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
-const ModelManager_1 = require("../../../Manager/ModelManager");
+const NavigationDynamicScrollViewFindContext_1 = require("./DynScrollView/NavigationDynamicScrollViewFindContext");
+const FindOppositeNavigationResult_1 = require("./FindOppositeNavigationResult");
 const ERRORTOLERANCE = 0.0001;
 class UiNavigationModeModule {
   constructor(i) {
     this.Nxo = undefined;
     this.PBo = MathUtils_1.MathUtils.SmallNumber;
+    this.zdd = MathUtils_1.MathUtils.KindaSmallNumber;
     this.Nxo = i;
     this.PBo = i.NavigateTolerance;
+    this.zdd = i.NavigateToleranceReverse;
   }
-  xBo(i, t, e) {
-    var a = e.GetRootComponent().GetLocalSpaceCenter();
-    var o = e.GetRootComponent().GetLocalSpaceLeftBottomPoint();
+  static xBo(i, t, e) {
+    var o = e.GetRootComponent().GetLocalSpaceCenter();
+    var a = e.GetRootComponent().GetLocalSpaceLeftBottomPoint();
     var e = e.GetRootComponent().GetLocalSpaceRightTopPoint();
     if (t) {
-      t = a.X - i.X;
-      if (t < o.X || t > e.X) {
+      t = o.X - i.X;
+      if (t < a.X || t > e.X) {
         return false;
       }
     } else {
-      t = a.Y - i.Z;
-      if (t < o.Y || t > e.Y) {
+      t = o.Y - i.Z;
+      if (t < a.Y || t > e.Y) {
         return false;
       }
     }
     return true;
   }
-  wBo(i, t) {
+  static wBo(i, t) {
     return Math.abs(i - t) < MathUtils_1.MathUtils.KindaSmallNumber && (UiNavigationModeModule.BBo.X < 0 || UiNavigationModeModule.BBo.Z > 0) || t - i >= MathUtils_1.MathUtils.KindaSmallNumber;
   }
-  kRc(i, t) {
-    return t === 4 && this.Nxo.ScrollView !== i.ScrollView;
+  static kRc(i, t, e) {
+    return e === 4 && i !== t.ScrollView;
   }
-  bBo(e, i, a, o) {
-    var r = this.qBo(this.Nxo);
-    let s = 0;
+  static FindDynamicScrollViewNavigationComponent(i) {
+    var t;
+    var e;
+    if (i.NextType === 0) {
+      e = i.GroupConfig;
+      t = i.ScrollView;
+      e = e.GetOppositeListenerListByListener(t.GetOwner(), undefined);
+      return UiNavigationModeModule.FindOppositeNavigationComponent(i.LastListenerPosition, e, i.WrapMode, i.PriorityMode, i.IsVertical, i.NavigateTolerance, i.NavigateToleranceReverse, t, i.GroupConfig, i.NegativeDirection);
+    }
+    var o = i.LastListener.GetNavigationGroup().ListenerList;
+    if (i.NextType === 1) {
+      for (let i = 0, t = o.length; i < t; ++i) {
+        var a = o[i];
+        if (a.IsCanFocus()) {
+          return a;
+        }
+      }
+    } else {
+      for (let i = o.length - 1; i >= 0; --i) {
+        var r = o[i];
+        if (r.IsCanFocus()) {
+          return r;
+        }
+      }
+    }
+  }
+  static FindOppositeNavigationComponent(e, o, i, a, r, s, n, d, t, v = false) {
+    let M = 0;
     let h = Number.MAX_VALUE;
-    let n = Number.MAX_VALUE;
-    let M = false;
-    let v = undefined;
-    let d = 0;
     let l = Number.MAX_VALUE;
-    let u = Number.MIN_VALUE;
-    let _ = undefined;
-    var U = Vector_1.Vector.Create();
-    var N = Vector_1.Vector.Create();
-    for (let i = 0, t = e.length; i < t; ++i) {
-      var g = e[i];
-      if (g.GetNavigationComponent().CheckFindOpposite(this.Nxo) && !this.kRc(g, a)) {
-        this.qBo(g).Subtraction(r, U);
-        var c = U.Size();
-        N.DeepCopy(U);
-        N.Normalize();
-        var f = Vector_1.Vector.DotProduct(UiNavigationModeModule.BBo, N);
-        if (!MathUtils_1.MathUtils.IsNearlyEqual(f, 0, MathUtils_1.MathUtils.KindaSmallNumber)) {
-          var p;
-          var R;
-          var m = o ? Math.abs(U.Z) : Math.abs(U.X);
-          if (f > 0) {
-            var E = MathUtils_1.MathUtils.IsNearlyEqual(f, 1, this.PBo);
-            var C = MathUtils_1.MathUtils.IsNearlyEqual(s, 1, this.PBo);
+    let u = false;
+    let N = undefined;
+    let U = 0;
+    let g = Number.MAX_VALUE;
+    let _ = Number.MIN_VALUE;
+    let c = undefined;
+    var f = Vector_1.Vector.Create();
+    var p = Vector_1.Vector.Create();
+    for (let i = 0, t = o.length; i < t; ++i) {
+      var R = o[i];
+      if (R.GetNavigationComponent().CheckFindOpposite() && !this.kRc(d, R, a)) {
+        this.qBo(R).Subtraction(e, f);
+        var m = f.Size();
+        p.DeepCopy(f);
+        p.Normalize();
+        var C = Vector_1.Vector.DotProduct(UiNavigationModeModule.BBo, p);
+        if (!MathUtils_1.MathUtils.IsNearlyEqual(C, 0, MathUtils_1.MathUtils.KindaSmallNumber)) {
+          var E;
+          var O;
+          var V = r ? Math.abs(f.Z) : Math.abs(f.X);
+          if (C > 0) {
+            var y = MathUtils_1.MathUtils.IsNearlyEqual(C, 1, s);
+            var F = MathUtils_1.MathUtils.IsNearlyEqual(M, 1, s);
             let i = false;
             let t = false;
             switch (a) {
               case 1:
-                if (E && c < h) {
+                if (y && m < h) {
                   i = true;
                 }
                 break;
               case 0:
               case 4:
-                if ((t = this.xBo(U, o, g)) && M) {
-                  if (MathUtils_1.MathUtils.IsNearlyEqual(m, n, 1)) {
-                    if (this.wBo(c, h)) {
+                if ((t = this.xBo(f, r, R)) && u) {
+                  if (MathUtils_1.MathUtils.IsNearlyEqual(V, l, 1)) {
+                    if (this.wBo(m, h)) {
                       i = true;
                     }
-                  } else if (m < n) {
+                  } else if (V < l) {
                     i = true;
                   }
-                } else if (this.wBo(c, h)) {
+                } else if (this.wBo(m, h)) {
                   i = true;
                 }
                 break;
               case 2:
-                if (E) {
-                  if (!C || c < h) {
+                if (y) {
+                  if (!F || m < h) {
                     i = true;
                   }
-                } else if (!C && c < h) {
+                } else if (!F && m < h) {
                   i = true;
                 }
                 break;
               case 3:
-                if (E && (!C || f > s)) {
+                if (y && (!F || C > M)) {
                   i = true;
                 }
             }
             if (i) {
-              s = f;
-              h = c;
-              v = g;
-              n = m;
-              M = t;
+              M = C;
+              h = m;
+              N = R;
+              l = V;
+              u = t;
             }
           } else {
             let i = false;
             if (a === 4) {
-              if (MathUtils_1.MathUtils.IsNearlyEqual(m, u, 1)) {
-                if (c < l) {
+              if (MathUtils_1.MathUtils.IsNearlyEqual(V, _, 1)) {
+                if (m < g) {
                   i = true;
                 }
-              } else if (m > u) {
+              } else if (V > _) {
                 i = true;
               }
             } else {
-              R = MathUtils_1.MathUtils.IsNearlyEqual(f, -1, MathUtils_1.MathUtils.KindaSmallNumber);
-              p = MathUtils_1.MathUtils.IsNearlyEqual(d, -1, MathUtils_1.MathUtils.KindaSmallNumber);
-              if (R) {
-                if (!p || c > l) {
+              O = MathUtils_1.MathUtils.IsNearlyEqual(C, -1, n);
+              E = MathUtils_1.MathUtils.IsNearlyEqual(U, -1, n);
+              if (O) {
+                if (!E || m > g) {
                   i = true;
                 }
-              } else if (!p && (!(R = MathUtils_1.MathUtils.IsNearlyEqual(f, d)) && f < d || R && c > l)) {
+              } else if (!E && (!(O = MathUtils_1.MathUtils.IsNearlyEqual(C, U)) && C < U || O && m > g)) {
                 i = true;
               }
             }
             if (i) {
-              d = f;
-              u = m;
-              l = c;
-              _ = g;
+              U = C;
+              _ = V;
+              g = m;
+              c = R;
             }
           }
         }
       }
     }
-    if (MathUtils_1.MathUtils.IsNearlyEqual(s, 0)) {
-      if (!this.Nxo.HasDynamicScrollView() && i === 1 && this.nvc(_)) {
-        return _?.GetSelectableComponent();
+    if (v && c) {
+      UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
+      return c;
+    } else if (MathUtils_1.MathUtils.IsNearlyEqual(M, 0)) {
+      if ((!(d instanceof UE.UIDynScrollViewComponent) || d.IsAllItemDisplayed()) && i === 1 && this.nvc(c, d, t)) {
+        UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
+        return c;
       } else {
         return undefined;
       }
     } else {
-      return v?.GetSelectableComponent();
+      UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = true;
+      return N;
     }
   }
-  nvc(i) {
-    var t;
-    var e;
-    var a;
-    return !i?.ScrollView || !this.Nxo?.ScrollView || !(i = this.Nxo.GetNavigationGroup()) || !!(t = this.Nxo.ScrollView).CheckContentUnderSize() || !(t.Horizontal && t.HorizontalScrollbarComp && UiNavigationModeModule.BBo.X !== 0 ? (e = t.HorizontalScrollbarComp.Value, a = UiNavigationModeModule.BBo.X > 0, e < 1 - ERRORTOLERANCE && a && i?.SlideToRightOrDown || e > ERRORTOLERANCE && !a && i?.SlideToLeftOrTop) : t.Vertical && t.VerticalScrollbarComp && UiNavigationModeModule.BBo.Z !== 0 && (e = t.VerticalScrollbarComp.Value, a = UiNavigationModeModule.BBo.Z < 0, e < 1 - ERRORTOLERANCE && a && i?.SlideToRightOrDown || e > ERRORTOLERANCE && !a && i?.SlideToLeftOrTop));
+  static nvc(i, t, e) {
+    var o;
+    return !i?.ScrollView || !t || t instanceof UE.UIDynScrollViewComponent || !!t.CheckContentUnderSize() || !(t.Horizontal && t.HorizontalScrollbarComp && UiNavigationModeModule.BBo.X !== 0 ? (i = t.HorizontalScrollbarComp.Value, o = UiNavigationModeModule.BBo.X > 0, i < 1 - ERRORTOLERANCE && o && e?.SlideToRightOrDown || i > ERRORTOLERANCE && !o && e?.SlideToLeftOrTop) : t.Vertical && t.VerticalScrollbarComp && UiNavigationModeModule.BBo.Z !== 0 && (i = t.VerticalScrollbarComp.Value, o = UiNavigationModeModule.BBo.Z < 0, i < 1 - ERRORTOLERANCE && o && e?.SlideToRightOrDown || i > ERRORTOLERANCE && !o && e?.SlideToLeftOrTop));
   }
   GBo(i, t, e) {
-    let a = this.Nxo.GetNavigationComponent().FindLoopScrollViewNavigationComponent(UiNavigationModeModule.BBo.ToUeVectorOld(), i);
-    var o;
-    if (!a) {
-      o = this.Nxo.GetNavigationGroup().GetOppositeListenerListByListener(this.Nxo);
-      a = this.bBo(o, i, t, e);
-    }
-    if (!a && this.Nxo.HasDynamicScrollView()) {
-      this.nNn(this.Nxo, e);
-    }
-    return a;
-  }
-  nNn(i, t) {
-    i = i.ScrollView;
-    if (i.Vertical === t) {
-      if (t) {
-        t = UiNavigationModeModule.BBo.Z < 0;
-        i.ScrollItemIndex(!t);
-      } else {
-        t = UiNavigationModeModule.BBo.X > 0;
-        i.ScrollItemIndex(!t);
+    let o = this.Nxo.GetNavigationComponent().FindLoopScrollViewNavigationComponent(UiNavigationModeModule.BBo.ToUeVectorOld(), i);
+    var a;
+    var r;
+    var s;
+    var n;
+    if (!o) {
+      a = this.Nxo.GetNavigationGroup();
+      r = this.Nxo.ScrollView;
+      n = this.Nxo.ScrollViewActor;
+      s = this.Nxo.LayoutActor;
+      n = a.GetOppositeListenerListByListener(n, s).filter(i => i !== this.Nxo);
+      s = UiNavigationModeModule.qBo(this.Nxo);
+      n = UiNavigationModeModule.FindOppositeNavigationComponent(s, n, i, t, e, this.PBo, this.zdd, r, a);
+      o = n?.GetSelectableComponent();
+      if (!n && this.Nxo.HasDynamicScrollView()) {
+        this.Iad(s, e, i, t, a, 0);
       }
-      ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
+    }
+    return o;
+  }
+  Iad(a, r, s, n, d, v) {
+    if (this.Nxo.HasDynamicScrollView()) {
+      var M = this.Nxo.ScrollView;
+      if ((!M || r === M.Vertical || s !== 0) && !M.IsAllItemDisplayed()) {
+        var h;
+        var l = M.TotalItemNum;
+        var u = M.GetStartItemIndex();
+        var N = M.GetEndItemIndex();
+        let i = -1;
+        let t = false;
+        let e = false;
+        let o = false;
+        if (r) {
+          h = UiNavigationModeModule.BBo.Z < 0;
+          if (N === l - 1 && h) {
+            i = 0;
+            o = true;
+          } else if (u !== 0 || h) {
+            t = true;
+            e = !h;
+          } else {
+            i = l - 1;
+            o = true;
+          }
+        } else {
+          h = UiNavigationModeModule.BBo.X > 0;
+          if (N === l - 1 && h) {
+            i = 0;
+            o = true;
+          } else if (u !== 0 || h) {
+            t = true;
+            e = !h;
+          } else {
+            i = l - 1;
+            o = true;
+          }
+        }
+        N = new NavigationDynamicScrollViewFindContext_1.NavigationDynamicScrollViewFindContext();
+        N.LastListenerPosition = a;
+        N.WrapMode = s;
+        N.IsVertical = r;
+        N.PriorityMode = n;
+        N.ScrollView = M;
+        N.GroupConfig = d;
+        N.NavigateTolerance = this.PBo;
+        N.NavigateToleranceReverse = this.zdd;
+        N.NegativeDirection = o;
+        N.LastListener = this.Nxo;
+        N.NextType = v;
+        this.Nxo.PanelConfig?.MarkToFindDynamicGrid(N);
+        if (i >= 0) {
+          M.ScrollToItemIndex(i);
+        } else if (t) {
+          M.ScrollItemIndex(e);
+        }
+      }
     }
   }
-  NBo() {
+  NBo(i, t, e) {
     if (this.Nxo.HasLoopScrollView()) {
       UiNavigationModeModule.BBo.Set(1, 0, 0);
-      var i = this.Nxo.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
-      if (i) {
-        return i;
+      var o = this.Nxo.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
+      if (o) {
+        return o;
       }
     }
-    var t = this.Nxo.GetNavigationGroup().ListenerList;
-    var e = t.length;
-    if (e <= 0) {
+    var a = this.Nxo.GetNavigationGroup().ListenerList;
+    var r = a.length;
+    if (r <= 0) {
       return this.Nxo.GetSelectableComponent();
     }
-    var a = t.indexOf(this.Nxo);
-    if (a !== -1) {
-      for (let i = a + 1; i < e; i++) {
-        var o = t[i];
-        if (o.IsCanFocus()) {
-          return o.GetSelectableComponent();
+    var s = a.indexOf(this.Nxo);
+    if (s !== -1) {
+      for (let i = s + 1; i < r; i++) {
+        var n = a[i];
+        if (n.IsCanFocus()) {
+          UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = true;
+          return n.GetSelectableComponent();
         }
       }
-      if (!this.Nxo?.HasDynamicScrollView()) {
-        for (let i = 0; i < a; i++) {
-          var r = t[i];
-          if (r.IsCanFocus()) {
-            return r.GetSelectableComponent();
-          }
+      if (this.Nxo?.HasDynamicScrollView()) {
+        if (!this.Nxo.ScrollView.IsAllItemDisplayed()) {
+          UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
+          this.Iad(UiNavigationModeModule.qBo(this.Nxo), i, t, e, this.Nxo.GetNavigationGroup(), 1);
+          return;
+        }
+      }
+      for (let i = 0; i < s; i++) {
+        var d = a[i];
+        if (d.IsCanFocus()) {
+          UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
+          return d.GetSelectableComponent();
         }
       }
     }
   }
-  OBo() {
+  OBo(i, t, e) {
     if (this.Nxo.HasLoopScrollView()) {
       UiNavigationModeModule.BBo.Set(-1, 0, 0);
-      var t = this.Nxo.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
-      if (t) {
-        return t;
+      var o = this.Nxo.ScrollView.FindNavigationComponent(this.Nxo.GetSelectableComponent(), UiNavigationModeModule.BBo.ToUeVectorOld(), 2);
+      if (o) {
+        return o;
       }
     }
-    var e = this.Nxo.GetNavigationGroup().ListenerList;
-    var t = e.length;
-    if (t <= 0) {
+    var a = this.Nxo.GetNavigationGroup().ListenerList;
+    var o = a.length;
+    if (o <= 0) {
       return this.Nxo.GetSelectableComponent();
     }
-    var a = e.indexOf(this.Nxo);
-    if (a !== -1) {
-      for (let i = a - 1; i >= 0; i--) {
-        var o = e[i];
-        if (o.IsCanFocus()) {
-          return o.GetSelectableComponent();
+    var r = a.indexOf(this.Nxo);
+    if (r !== -1) {
+      for (let i = r - 1; i >= 0; i--) {
+        var s = a[i];
+        if (s.IsCanFocus()) {
+          UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = true;
+          return s.GetSelectableComponent();
         }
       }
-      if (!this.Nxo?.HasDynamicScrollView()) {
-        for (let i = t - 1; i > a; i--) {
-          var r = e[i];
-          if (r.IsCanFocus()) {
-            return r.GetSelectableComponent();
-          }
+      if (this.Nxo?.HasDynamicScrollView()) {
+        if (!this.Nxo.ScrollView.IsAllItemDisplayed()) {
+          UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
+          this.Iad(UiNavigationModeModule.qBo(this.Nxo), i, t, e, this.Nxo.GetNavigationGroup(), 2);
+          return;
+        }
+      }
+      for (let i = o - 1; i > r; i--) {
+        var n = a[i];
+        if (n.IsCanFocus()) {
+          UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive = false;
+          return n.GetSelectableComponent();
         }
       }
     }
@@ -251,9 +350,9 @@ class UiNavigationModeModule {
       switch (i.HorizontalWrapMode) {
         case 2:
           if (UiNavigationModeModule.BBo.X > 0) {
-            return this.NBo();
+            return this.NBo(false, i.HorizontalWrapMode, i.HorizontalPriorityMode);
           } else {
-            return this.OBo();
+            return this.OBo(false, i.HorizontalWrapMode, i.HorizontalPriorityMode);
           }
         case 0:
         case 1:
@@ -266,9 +365,9 @@ class UiNavigationModeModule {
       switch (i.VerticalWrapMode) {
         case 2:
           if (UiNavigationModeModule.BBo.Z < 0) {
-            return this.NBo();
+            return this.NBo(true, i.VerticalWrapMode, i.VerticalPriorityMode);
           } else {
-            return this.OBo();
+            return this.OBo(true, i.VerticalWrapMode, i.VerticalPriorityMode);
           }
         case 0:
         case 1:
@@ -344,27 +443,27 @@ class UiNavigationModeModule {
     if (t) {
       return this.kBo(t);
     }
-    var e = this.qBo(this.Nxo);
-    let a = Number.MIN_VALUE;
-    let o = this.Nxo.GetSelectableComponent();
+    var e = UiNavigationModeModule.qBo(this.Nxo);
+    let o = Number.MIN_VALUE;
+    let a = this.Nxo.GetSelectableComponent();
     var r = UE.LGUIBPLibrary.GetComponentsInChildren(i.GetOwner(), UE.TsUiNavigationBehaviorListener_C.StaticClass(), false);
     for (let i = 0, t = r.Num(); i < t; ++i) {
       var s;
-      var h;
-      var n = r.Get(i);
-      if (n.GroupName === this.Nxo.GroupName && n.IsCanFocus()) {
-        (s = this.qBo(n)).Subtraction(e, s);
-        if (!((h = Vector_1.Vector.DotProduct(UiNavigationModeModule.BBo, s)) <= 0.1)) {
-          if ((h = h / s.SizeSquared()) > a) {
-            a = h;
-            o = n.GetSelectableComponent();
+      var n;
+      var d = r.Get(i);
+      if (d.GroupName === this.Nxo.GroupName && d.IsCanFocus()) {
+        (s = UiNavigationModeModule.qBo(d)).Subtraction(e, s);
+        if (!((n = Vector_1.Vector.DotProduct(UiNavigationModeModule.BBo, s)) <= 0.1)) {
+          if ((n = n / s.SizeSquared()) > o) {
+            o = n;
+            a = d.GetSelectableComponent();
           }
         }
       }
     }
-    return o;
+    return a;
   }
-  qBo(i) {
+  static qBo(i) {
     var t = i.GetRootComponent().GetLocalSpaceCenter();
     var t = Vector_1.Vector.Create(t.X, t.Y, 0);
     Transform_1.Transform.Create(i.GetRootSceneComponent().D_K2_GetComponentToWorld()).TransformPosition(t, t);
@@ -372,8 +471,8 @@ class UiNavigationModeModule {
   }
   FindActorByDirection(i, t = true) {
     var e;
-    var a = this.VBo(i);
-    if (a === 2) {
+    var o = this.VBo(i);
+    if (o === 2) {
       e = this.Nxo.RootUIComp;
       if (t && !e.IsUIActiveInHierarchy()) {
         if (Log_1.Log.CheckError()) {
@@ -385,7 +484,7 @@ class UiNavigationModeModule {
       } else {
         return t.GetBehaviorComponent().GetRootSceneComponent();
       }
-    } else if (a === 1) {
+    } else if (o === 1) {
       this.HBo(i);
       return this.jBo()?.GetRootSceneComponent();
     } else {
@@ -394,4 +493,4 @@ class UiNavigationModeModule {
   }
 }
 (exports.UiNavigationModeModule = UiNavigationModeModule).BBo = Vector_1.Vector.Create();
-//# sourceMappingURL=UiNavigationModeModule.js.map
+UiNavigationModeModule.FindOppositeNavigationResult = new FindOppositeNavigationResult_1.FindOppositeNavigationResult(); //# sourceMappingURL=UiNavigationModeModule.js.map

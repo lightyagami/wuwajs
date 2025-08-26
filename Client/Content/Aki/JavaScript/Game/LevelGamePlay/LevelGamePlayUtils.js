@@ -249,13 +249,40 @@ class LevelGamePlayUtils {
           break;
         default:
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 72, "[LevelGamePlayUtils.GetEntityHandle] 对应的Context类型获取实体未实现", ["context.Type", t.Type]);
+            Log_1.Log.Error("Level", 72, "[LevelGamePlayUtils.GetEntityHandle] 对应的Context类型获取实体未实现", ["context.Type", t.Type]);
           }
       }
     } else if (e) {
       a = ActorUtils_1.ActorUtils.GetEntityByActor(e);
     }
     return a;
+  }
+  static GetCustomTimeDilationByContext(e) {
+    let t = undefined;
+    switch (e.Type) {
+      case 1:
+      case 5:
+        var a = this.GetEntityHandle(undefined, e);
+        var r = a?.Entity?.GetComponent(123);
+        if (a?.Valid && r) {
+          t = r.CurrentTimeScale * r.TimeDilation;
+        }
+        break;
+      case 6:
+      case 3:
+      case 4:
+      case 2:
+      case 9:
+        t = ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation;
+        break;
+      case 11:
+        for (const i of e.Contexts) {
+          if ((t = this.GetCustomTimeDilationByContext(i)) !== undefined) {
+            break;
+          }
+        }
+    }
+    return t;
   }
   static GetCheckTargetConditionEntityHandles(t, a, r) {
     const i = new Array();

@@ -27,9 +27,9 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.h81 = undefined;
     this.l81 = undefined;
     this.Hea = undefined;
-    this.WLu = undefined;
+    this.vAu = undefined;
     this.pDe = undefined;
-    this.xnu = () => {
+    this.osu = () => {
       let t = "ActivateClose";
       if (this._81(this.pDe)) {
         t = "ActivateClose";
@@ -49,13 +49,13 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
   }
   get j3() {
-    return this.WLu;
+    return this.vAu;
   }
   set j3(t) {
-    if (this.WLu && TimerSystem_1.TimerSystem.Has(this.WLu)) {
-      TimerSystem_1.TimerSystem.Remove(this.WLu);
+    if (this.vAu && TimerSystem_1.TimerSystem.Has(this.vAu)) {
+      TimerSystem_1.TimerSystem.Remove(this.vAu);
     }
-    this.WLu = t;
+    this.vAu = t;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem]];
@@ -83,11 +83,11 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnStart() {
     this.Hea.BindSequenceCloseEvent(this.$xt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestReviewMainViewBeforeHide, this.xnu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestReviewMainViewBeforeHide, this.osu);
   }
   OnBeforeDestroy() {
     this.j3 = undefined;
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestReviewMainViewBeforeHide, this.xnu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestReviewMainViewBeforeHide, this.osu);
   }
   Refresh(t) {
     this.pDe = t;
@@ -113,17 +113,17 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
       if (this.d81(t)) {
         this.l81.Refresh(t);
       }
-      this.hlu(t);
+      this.Blu(t);
     }
   }
-  hlu(t) {
+  Blu(t) {
     var e;
     var i;
     var s = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewLineDataById(t.LineId);
     if (!s?.SkipAnim) {
       if (this._81(t)) {
         if (ModelManager_1.ModelManager.QuestReviewModel.IsFirstEntry()) {
-          this.Nlu(t);
+          this.I_u(t);
           if (t.Data?.IsFirstTimeShow) {
             t.Data.IsFirstTimeShow = false;
           }
@@ -131,11 +131,11 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
             s.IsFirstTimeShow = false;
           }
         } else {
-          if (s?.IsShow && s?.IsFirstTimeShow && (this.Unu(t), t.Data?.IsFirstTimeShow)) {
+          if (s?.IsShow && s?.IsFirstTimeShow && (this.nsu(t), t.Data?.IsFirstTimeShow)) {
             t.Data.IsFirstTimeShow = false;
           }
           if (t.Data?.IsFirstTimeShow) {
-            this.Unu(t);
+            this.nsu(t);
             t.Data.IsFirstTimeShow = false;
           } else {
             this.Hea.PlayLevelSequenceByName("ActivateStart");
@@ -143,7 +143,7 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
         }
       } else if (this.u81(t)) {
         if (s?.IsDestroy && s?.IsFirstTimeDestroy) {
-          this.Dnu(t);
+          this.ssu(t);
           if (t.Data?.IsFirstTimeShow) {
             t.Data.IsFirstTimeShow = false;
           }
@@ -164,7 +164,7 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
         }
       } else if (this.d81(t)) {
         if (s?.IsDestroy && s?.IsFirstTimeDestroy) {
-          this.Bnu(t);
+          this.asu(t);
           if (t.Data?.IsFirstTimeShow) {
             t.Data.IsFirstTimeShow = false;
           }
@@ -189,7 +189,7 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
     var e = ModelManager_1.ModelManager.QuestReviewModel.GetPredecessorNodeByNodeId(t.Data?.Id ?? 0);
     return (!t.Data || t.Data.State === 0 || !t.Data.ShowOnceUnlock && !!e && e.State < 3) && t.IsDestroy;
   }
-  Unu(t) {
+  nsu(t) {
     this.s81?.SetUiActive(false);
     this.h81?.SetUiActive(true);
     this.h81?.Refresh(t);
@@ -200,7 +200,7 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.Hea?.PlayLevelSequenceByName(e.ShowSeqName);
     }, NODE_TRIGGER_ANIM_DELAY);
   }
-  Nlu(t) {
+  I_u(t) {
     this.s81?.SetUiActive(false);
     this.h81?.SetUiActive(true);
     this.h81?.Refresh(t);
@@ -210,7 +210,7 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.Hea?.PlayLevelSequenceByName(e.NodeFirstActivateSeqName);
     }, NODE_STATE_TRANS_ANIM_DELAY);
   }
-  async Dnu(t) {
+  async ssu(t) {
     this.a81?.SetUiActive(false);
     this.s81?.SetUiActive(true);
     this.s81?.SetToggleInteractive(false);
@@ -232,7 +232,7 @@ class QuestReviewNodeItem extends GridProxyAbstract_1.GridProxyAbstract {
       });
     }
   }
-  async Bnu(t) {
+  async asu(t) {
     this.l81?.SetUiActive(false);
     this.h81?.SetUiActive(true);
     this.h81?.Refresh(t);
@@ -271,17 +271,17 @@ const LINE_ALPHA = 0.5;
 class QuestReviewNodeNormalItem extends QuestReviewNodeItemBase {
   constructor(t) {
     super();
-    this.knu = t;
+    this.hsu = t;
     this.Pe = undefined;
     this.tW1 = () => {
       ControllerHolder_1.ControllerHolder.QuestReviewController.OpenQuestNodeDetail(this.Pe.Id);
       this.GetExtendToggle(13).SetToggleState(0);
       this.Pe.HasRedDot = false;
-      this.knu.SetUIActive(false);
+      this.hsu.SetUIActive(false);
     };
-    this.Rku = t => {
+    this.xNu = t => {
       if (this.Pe?.Id === t) {
-        this.knu.SetUIActive(false);
+        this.hsu.SetUIActive(false);
       }
     };
   }
@@ -290,10 +290,10 @@ class QuestReviewNodeNormalItem extends QuestReviewNodeItemBase {
     this.BtnBindInfo = [[13, this.tW1]];
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.Rku);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.xNu);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.Rku);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.xNu);
   }
   Refresh(t) {
     this.Pe = t.Data;
@@ -310,9 +310,9 @@ class QuestReviewNodeNormalItem extends QuestReviewNodeItemBase {
     this.m81.SetUIActive(this.Pe.IsBranching);
     this.GetSprite(4).SetUIActive(!t.IsLastSlotEmpty);
     this.SetSpriteByPath(t.RoundIcon, this.GetSprite(4), false);
-    this.AJ1(t);
+    this.iZ1(t);
     var e = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewLineDataById(t.LineId);
-    this.knu.SetUIActive(t.Data.HasRedDot && !e.IsDestroy);
+    this.hsu.SetUIActive(t.Data.HasRedDot && !e.IsDestroy);
   }
   SetToggleInteractive(t) {
     this.GetExtendToggle(13).SetSelfInteractive(t);
@@ -331,17 +331,17 @@ class QuestReviewNodeNormalItem extends QuestReviewNodeItemBase {
       return this.GetSprite(10);
     }
   }
-  get PJ1() {
+  get rZ1() {
     if (this.Pe.LineType === 0) {
       return this.GetSprite(6);
     } else {
       return this.GetSprite(11);
     }
   }
-  AJ1(t) {
+  iZ1(t) {
     this.m81.SetColor(UE.Color.FromHex(t.LineColorHex));
     this.f81.SetColor(UE.Color.FromHex(t.LineColorHex));
-    this.PJ1.SetColor(UE.Color.FromHex(t.LineColorHex));
+    this.rZ1.SetColor(UE.Color.FromHex(t.LineColorHex));
   }
 }
 class QuestReviewNodeDestroyItem extends QuestReviewNodeItemBase {

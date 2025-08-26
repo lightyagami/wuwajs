@@ -15,6 +15,7 @@ const UiNavigationUtil_1 = require("../UiNavigationUtil");
 const FindNavigationResult_1 = require("./FindNavigationResult");
 const NavigationGroup_1 = require("./NavigationGroup");
 const NavigationPanelHandleCreator_1 = require("./PanelHandle/NavigationPanelHandleCreator");
+const UiNavigationModeModule_1 = require("./UiNavigationModeModule");
 class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
   constructor() {
     super(...arguments);
@@ -225,27 +226,58 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
     var t = new FindNavigationResult_1.FindNavigationResult();
     if (this.IsAllowNavigate()) {
       if (this.RootUIComp.IsUIActiveInHierarchy()) {
-        for (const e of this.PanelHandle.GetSuitableNavigationListenerList(i)) {
-          if (!e) {
+        if (this.ViewHandle?.IsWaitToFindDynamicGrid) {
+          var s = this.ViewHandle.GetDynamicScrollViewNavigationContext();
+          if (!s.ScrollView.IsAllDisplayItemUpdateCompleted()) {
+            t.Result = 7;
+            this.PanelHandle.NotifyFindResult(t);
+            this.ViewHandle.NotifySuitableNavigation(t);
+            return;
+          }
+          var e = UiNavigationModeModule_1.UiNavigationModeModule.FindDynamicScrollViewNavigationComponent(s);
+          this.ViewHandle.ClearDynamicScrollViewNavigationContext();
+          if (e?.IsCanFocus()) {
+            t.Result = 1;
+            t.Listener = e;
+            this.PanelHandle.NotifyFindResult(t);
+            this.ViewHandle.NotifySuitableNavigation(t);
+            return;
+          }
+          if (s.LastListener?.IsCanFocus()) {
+            t.Result = 1;
+            t.Listener = s.LastListener;
+            this.PanelHandle.NotifyFindResult(t);
+            this.ViewHandle.NotifySuitableNavigation(t);
+            return;
+          }
+        }
+        for (const a of this.PanelHandle.GetSuitableNavigationListenerList(i)) {
+          if (!a) {
             t.Result = 6;
             break;
           }
-          let i = e;
-          if (e.IsScrollOrLayoutActor()) {
-            if (!e.IsScrollOrLayoutActive()) {
+          let i = a;
+          if (a.IsScrollOrLayoutActor()) {
+            if (!a.IsScrollOrLayoutActive()) {
               continue;
             }
-            if (e.IsInScrollOrLayoutAnimation()) {
+            if (a.IsInScrollOrLayoutAnimation()) {
               t.Result = 4;
               break;
             }
-            var s = this.PanelHandle.GetLoopOrLayoutListener(e);
-            if (!s) {
+            if (a.HasDynamicScrollView()) {
+              if (!a.ScrollView.IsAllDisplayItemUpdateCompleted()) {
+                t.Result = 7;
+                break;
+              }
+            }
+            var o = this.PanelHandle.GetLoopOrLayoutListener(a);
+            if (!o) {
               continue;
             }
-            i = s;
-          } else if (e.GetNavigationGroup()?.SuitableListenerByNoDynamic && (s = this.PanelHandle.GetSuitableListenerWithoutLayout(e))) {
-            i = s;
+            i = o;
+          } else if (a.GetNavigationGroup()?.SuitableListenerByNoDynamic && (o = this.PanelHandle.GetSuitableListenerWithoutLayout(a))) {
+            i = o;
           }
           if (i.IsCanFocus()) {
             if (!i.IsRegisterToPanelConfig()) {
@@ -260,19 +292,22 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
         if (t.Result === 0) {
           t.Result = 2;
         }
-        this.PanelHandle.NotifyFindResult(t);
       } else {
         t.Result = 2;
       }
     } else {
       t.Result = 2;
     }
+    this.PanelHandle.NotifyFindResult(t);
     this.ViewHandle.NotifySuitableNavigation(t);
   }
   CheckReFindCondition() {
     return !!this.ViewHandle && !(!this.IsInActive && this.Independent ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "[ReFindNavigation]独立界面刚刚隐藏,触发导航对象取消不做通知处理"), 1) : this.ViewHandle.HasNavigationButDisActive() ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "[ReFindNavigation]界面已经处于HasNavigationButDisActive状态,触发导航对象取消不做通知处理"), 1) : !this.Independent && !this.ViewHandle.GetIsActive());
   }
   ReFindNavigation() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("UiNavigation", 10, "触发导航的重新查找");
+    }
     if (this.CheckReFindCondition()) {
       this.ViewHandle.MarkRefreshNavigationDirty();
     }
@@ -328,7 +363,7 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
     }
   }
   NotifyListenerFocus(i) {
-    if (this.IsAllowNavigate()) {
+    if (this.ViewHandle?.IsListenerCanFocusByPanelConfig && this.IsAllowNavigate()) {
       this.ViewHandle.UpdateFocus(i);
     }
   }
@@ -370,6 +405,10 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
   get GamepadMouseItem() {
     this.GamepadMouseItemInternal ||= this.GamepadMouseActor?.GetComponentByClass(UE.UIItem.StaticClass());
     return this.GamepadMouseItemInternal;
+  }
+  MarkToFindDynamicGrid(i) {
+    this.ViewHandle?.SetDynamicScrollViewNavigationContext(i);
+    this.ViewHandle?.MarkRefreshNavigationDirty();
   }
 }
 exports.TsUiNavigationPanelConfig = TsUiNavigationPanelConfig;

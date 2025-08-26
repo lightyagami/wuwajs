@@ -21,9 +21,6 @@ exports.performanceLimitConfigs = new Map([["RoleRootView", {
 }], ["AchievementMainView", {
   FrameLimit: false,
   CacheWorldFrame: false
-}], ["CommonActivityView", {
-  FrameLimit: false,
-  CacheWorldFrame: false
 }], ["VideoView", {
   FrameLimit: false,
   CacheWorldFrame: true
@@ -94,6 +91,27 @@ exports.performanceLimitConfigs = new Map([["RoleRootView", {
   FrameLimit: false,
   CacheWorldFrame: true
 }], ["TuningStandView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["CommonActivityView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FloroRanchMainView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FloroRanchLimitRewardView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FloroRanchPermanentRewardView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FloroRanchGamePlayView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FloroRanchDungeonSelectView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
+  FrameLimit: false,
+  CacheWorldFrame: true
+}], ["FloroRanchComicView" + exports.PERFORMENCELIMIT_SEQ_TAIL, {
   FrameLimit: false,
   CacheWorldFrame: true
 }], ["FunctionView_Special", {

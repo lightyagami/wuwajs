@@ -9,11 +9,11 @@ const FloroRanchActionBase_1 = require("./FloroRanchActionBase");
 class FloroRanchDebugInfoActionData extends FloroRanchActionBase_1.FloroRanchActionDataBase {
   constructor(o) {
     super(o);
-    this.a9c = undefined;
-    this.a9c = o.Ejc;
+    this.fKu = undefined;
+    this.fKu = o.d7u;
   }
   async OnExecute() {
-    FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogTagActionInfo(this.CasterEntity, this.a9c);
+    FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogTagActionInfo(this.CasterEntity, this.fKu);
     return Promise.resolve();
   }
 }

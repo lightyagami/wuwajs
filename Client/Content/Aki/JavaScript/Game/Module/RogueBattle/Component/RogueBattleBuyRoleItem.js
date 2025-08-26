@@ -27,41 +27,48 @@ class RogueBattleBuyRoleGroupItem extends GridProxyAbstract_1.GridProxyAbstract 
     super(...arguments);
     this.OnSelectCallback = undefined;
     this.IsSelectOn = undefined;
-    this.dpu = undefined;
-    this.mpu = undefined;
+    this.dvu = undefined;
+    this.mvu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.dpu = new RogueBattleBuyRoleItem();
-    await this.dpu.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
-    this.dpu.OnSelectCallback = this.OnSelectCallback;
-    this.mpu = new RogueBattleBuyRoleItem();
-    await this.mpu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
-    this.mpu.OnSelectCallback = this.OnSelectCallback;
+    this.dvu = new RogueBattleBuyRoleItem();
+    await this.dvu.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.dvu.OnSelectCallback = this.OnSelectCallback;
+    this.mvu = new RogueBattleBuyRoleItem();
+    await this.mvu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
+    this.mvu.OnSelectCallback = this.OnSelectCallback;
   }
   Refresh(e, t, i) {
     var s = i * 2;
     var i = i * 2 + 1;
-    this.dpu.Refresh(e.Data1, this.IsSelectOn?.(s) ?? false, s);
-    this.mpu.Refresh(e.Data2, this.IsSelectOn?.(i) ?? false, i);
+    this.dvu.Refresh(e.Data1, this.IsSelectOn?.(s) ?? false, s);
+    this.mvu.Refresh(e.Data2, this.IsSelectOn?.(i) ?? false, i);
   }
-  fpu(e) {
+  fvu(e) {
     if (e % 2 == 0) {
-      return this.dpu;
+      return this.dvu;
     } else {
-      return this.mpu;
+      return this.mvu;
     }
   }
   Select(e) {
-    this.fpu(e).OnSelected();
+    this.fvu(e).OnSelected();
   }
   Deselect(e) {
-    this.fpu(e).OnDeselected();
+    this.fvu(e).OnDeselected();
   }
   GetRoleUiItem(e) {
-    return this.fpu(e).GetOriginalItem();
+    return this.fvu(e).GetOriginalItem();
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (e.length !== 0 && e[0] === "FirstRole") {
+      return this.fvu(0)?.GetGuideUiItemAndUiItemForShowEx(e);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.RogueBattleBuyRoleGroupItem = RogueBattleBuyRoleGroupItem;
@@ -70,7 +77,7 @@ class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.SPe = undefined;
     this.Pe = undefined;
-    this.gpu = -1;
+    this.gvu = -1;
     this.aho = undefined;
     this.l01 = undefined;
     this.$be = undefined;
@@ -80,7 +87,7 @@ class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
       return !this.Pe?.mIc.O2s || !!e;
     };
     this._01 = () => {
-      this.OnSelectCallback?.(this.gpu, this.Pe);
+      this.OnSelectCallback?.(this.gvu, this.Pe);
     };
   }
   OnRegisterComponent() {
@@ -98,7 +105,7 @@ class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
     this.$be = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), () => new RogueBattleStarItem());
   }
   Refresh(e, a, t) {
-    this.gpu = t;
+    this.gvu = t;
     this.Pe = e;
     this.GetExtendToggle(0).RootUIComp.SetUIActive(e !== undefined);
     this.GetItem(12).SetUIActive(e === undefined);
@@ -153,7 +160,7 @@ class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
           }
           e.push(this.$be.RefreshByDataAsync(r));
           await Promise.all(e);
-          this.ppu(a);
+          this.Cvu(a);
         });
         this.RunAsyncTask(t);
         this.SPe?.PlayLevelSequenceByName("Start");
@@ -163,23 +170,23 @@ class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
   OnSelected() {
     if (this.Pe) {
       this.GetExtendToggle(0).SetToggleState(1, false);
-      this.Gvu(true);
-      this.ppu(true);
+      this.Syu(true);
+      this.Cvu(true);
     }
   }
   OnDeselected() {
     if (this.Pe) {
       this.GetExtendToggle(0).SetToggleState(0, false);
-      this.Gvu(false);
-      this.ppu(false);
+      this.Syu(false);
+      this.Cvu(false);
     }
   }
-  Gvu(e) {
+  Syu(e) {
     for (const t of this.l01.GetLayoutItemList()) {
       t.RefreshSelectState(e);
     }
   }
-  ppu(t) {
+  Cvu(t) {
     if (this.Pe && !this.Pe.mIc.O2s) {
       var i = ModelManager_1.ModelManager.RogueBattleModel.GetRoleInfoById(this.Pe.mIc.if1);
       var e = ModelManager_1.ModelManager.RogueBattleModel.MaxRoleStar;
@@ -189,6 +196,13 @@ class RogueBattleBuyRoleItem extends UiPanelBase_1.UiPanelBase {
       for (let e = i; e < r; e++) {
         this.$be.GetLayoutItemByIndex(e)?.SetPreviewAnimOn(t);
       }
+    }
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (e.length !== 0 && e[0] === "FirstRole" && (e = this.GetExtendToggle(0)?.GetRootComponent())) {
+      return [e, e];
+    } else {
+      return undefined;
     }
   }
 }

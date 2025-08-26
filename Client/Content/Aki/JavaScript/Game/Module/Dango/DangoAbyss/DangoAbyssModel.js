@@ -573,29 +573,29 @@ class DangoAbyssModel extends ModelBase_1.ModelBase {
       return 0;
     } else if ((r = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoItemBelongId(e.IncId)) !== 0 && e.DangoId !== r && t.SlotType === 1) {
       return 1;
-    } else if (this.stu(e)) {
+    } else if (this.Atu(e)) {
       return 8;
-    } else if (this.atu(e)) {
+    } else if (this.Ptu(e)) {
       return 9;
     } else {
-      return this.htu(e);
+      return this.xtu(e);
     }
   }
-  stu(e) {
+  Atu(e) {
     var t = ModelManager_1.ModelManager.DangoAbyssModel.GetPluginItemInfoById(e.IncId);
     var r = t.GetConfig();
     var t = t.GetBelongRole();
     var r = r.SlotType === 2 && t > 0;
     return t === e.DangoId && r;
   }
-  atu(e) {
+  Ptu(e) {
     var t = ModelManager_1.ModelManager.DangoAbyssModel.GetPluginItemInfoById(e.IncId).GetRoleId();
     var t = t > 0 && t === e.DangoId;
     var r = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoAbyssRoleData(e.DangoId).GetEquipItems();
     var r = this.Zy1(r, e.IncId);
     return !!r[0] && r[1] !== e.SlotIndex && !t;
   }
-  htu(e) {
+  xtu(e) {
     var t = ModelManager_1.ModelManager.DangoAbyssModel.GetPluginItemInfoById(e.IncId);
     var r = t.GetConfig();
     var a = t.GetRoleId();

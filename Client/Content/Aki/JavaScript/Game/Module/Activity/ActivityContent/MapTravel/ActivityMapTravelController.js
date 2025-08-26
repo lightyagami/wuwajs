@@ -48,10 +48,10 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(19413, this.uFl);
+    Net_1.Net.Register(19047, this.uFl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19413);
+    Net_1.Net.UnRegister(19047);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
@@ -81,10 +81,10 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
   }
   static RequestMapTravelLevelUp(t) {
     var e = Protocol_1.Aki.Protocol.Bp_.create();
-    Net_1.Net.Call(24774, e, e => {
+    Net_1.Net.Call(23116, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18545);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18074);
           t?.(false);
         } else if (e = ActivityMapTravelController.GetMapTravelData()) {
           e.TravelLevel++;
@@ -99,27 +99,32 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
       }
     });
   }
-  static RequestTakeTravelTaskReward(t) {
-    var e = Protocol_1.Aki.Protocol.x0_.create();
-    e.gps = t;
-    Net_1.Net.Call(25263, e, e => {
+  static RequestMultiMapTravelTaskReward(r) {
+    var e = Protocol_1.Aki.Protocol.h6u.create();
+    e.gps = r;
+    Net_1.Net.Call(21127, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18863);
-        } else if (e = ActivityMapTravelController.GetMapTravelData()) {
-          e.SetTravelTaskDataDone(t);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MapTravelTaskRefresh);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22570);
+        } else {
+          const t = ActivityMapTravelController.GetMapTravelData();
+          if (t) {
+            r.forEach(e => {
+              t.SetTravelTaskDataDone(e);
+            });
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MapTravelTaskRefresh);
+          }
         }
       }
     });
   }
   static RequestTakeTaskFinalReward() {
     var e = Protocol_1.Aki.Protocol.Up_.create();
-    Net_1.Net.Call(27391, e, e => {
+    Net_1.Net.Call(20617, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18203);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26422);
         } else if (e = ActivityMapTravelController.GetMapTravelData()) {
           e.TaskFinalRewardData.IsReceived = true;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
@@ -128,17 +133,22 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
       }
     });
   }
-  static RequestTakeSoarChallengeReward(t) {
-    var e = Protocol_1.Aki.Protocol.D0_.create();
-    e.gps = t;
-    Net_1.Net.Call(29583, e, e => {
+  static RequestMultiTakeSoarChallengeReward(r) {
+    var e = Protocol_1.Aki.Protocol.f8u.create();
+    e.B6n = r;
+    Net_1.Net.Call(23793, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15308);
-        } else if (e = ActivityMapTravelController.GetMapTravelData()) {
-          e.SetSoarChallengeRewardDone(t);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MapTravelSoarRefresh);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20418);
+        } else {
+          const t = ActivityMapTravelController.GetMapTravelData();
+          if (t) {
+            r.forEach(e => {
+              t.SetSoarChallengeRewardDone(e);
+            });
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MapTravelSoarRefresh);
+          }
         }
       }
     });

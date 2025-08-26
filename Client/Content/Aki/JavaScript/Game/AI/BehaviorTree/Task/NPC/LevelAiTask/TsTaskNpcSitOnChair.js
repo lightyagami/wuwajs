@@ -96,7 +96,7 @@ class TsTaskNpcSitOnChair extends TsTaskAbortImmediatelyBase_1.default {
       this.MoveComp = this.Entity.GetComponent(45);
       if (this.MoveComp?.CharacterMovement?.IsValid()) {
         s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.TsChairEntityId);
-        this.ChairController = s?.Entity?.GetComponent(197)?.GetSubEntityInteractLogicController();
+        this.ChairController = s?.Entity?.GetComponent(198)?.GetSubEntityInteractLogicController();
         if (this.ChairController && this.ChairController.IsSceneInteractionLoadCompleted()) {
           if (this.TsMontagePath === "") {
             if (Log_1.Log.CheckError()) {

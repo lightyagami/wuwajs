@@ -152,6 +152,8 @@ function getBuffEffectClass(e) {
       return ExtraEffectMisc_1.ModifyBuffTimeScale;
     case 83:
       return ExtraEffectMisc_1.ForeverTimeScaleEffect;
+    case 85:
+      return ExtraEffectMisc_1.SyncTimeScaleEffect;
     default:
       return;
   }
@@ -202,6 +204,8 @@ function getBuffExecutionClass(e) {
       return ExtraExecutionEffect_1.ChangeBuffStackCount;
     case 84:
       return ExtraExecutionEffect_1.ModifyFuLuoLuoSpecialEnergy;
+    case 104:
+      return ExtraExecutionEffect_1.RemoveBuffByFilter;
     default:
       return;
   }

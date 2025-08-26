@@ -27,12 +27,12 @@ class BeginnerCarnivalRoleTaskView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.lqe = undefined;
     this.xqe = undefined;
-    this.phu = new Map();
+    this.$hu = new Map();
     this.j2e = undefined;
     this.Bqe = () => {
       return new BeginnerCarnivalTaskItem_1.BeginnerCarnivalTaskItem();
     };
-    this.tsu = () => {
+    this.Rsu = () => {
       this.Og();
     };
     this.I$1 = () => {
@@ -81,12 +81,12 @@ class BeginnerCarnivalRoleTaskView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[2, this.M$1], [5, this.Fy1]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshBeginnerCarnivalChoseRole, this.tsu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshBeginnerCarnivalChoseRole, this.Rsu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshBeginnerCarnivalTask, this.I$1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityClose, this.g3e);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshBeginnerCarnivalChoseRole, this.tsu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshBeginnerCarnivalChoseRole, this.Rsu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshBeginnerCarnivalTask, this.I$1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityClose, this.g3e);
   }
@@ -102,7 +102,9 @@ class BeginnerCarnivalRoleTaskView extends UiViewBase_1.UiViewBase {
     await this.j2e.CreateThenShowByActorAsync(e.GetOwner());
   }
   OnStart() {
-    if (!BeginnerCarnivalController_1.BeginnerCarnivalController.GetBeginnerCarnivalData().GetHaveChoseRoleViewEnter()) {
+    var e = BeginnerCarnivalController_1.BeginnerCarnivalController.GetBeginnerCarnivalData();
+    var i = e.ChoseRoleId;
+    if (!e.GetHaveChoseRoleViewEnter() && i <= 0) {
       this.M$1();
     }
   }
@@ -129,10 +131,10 @@ class BeginnerCarnivalRoleTaskView extends UiViewBase_1.UiViewBase {
       this.j2e.Update(e);
     }
     var i = ConfigManager_1.ConfigManager.BeginnerCarnivalConfig.GetNewbieCarnivalRole(i ? e : ABU_ID);
-    for (const [, n] of this.phu) {
+    for (const [, n] of this.$hu) {
       n.SetUiActive(false);
     }
-    let n = this.phu.get(e);
+    let n = this.$hu.get(e);
     if (n) {
       n.SetUiActive(true);
       n.SetAnimation(0, "idle", true);
@@ -140,7 +142,7 @@ class BeginnerCarnivalRoleTaskView extends UiViewBase_1.UiViewBase {
       (n = new BeginnerCarnivalSpineItem()).CreateThenShowByResourceIdAsync(i.RoleViewSpineItem, this.GetItem(1)).then(() => {
         n.SetAnimation(0, "idle", true);
       });
-      this.phu.set(e, n);
+      this.$hu.set(e, n);
     }
     var r;
     var o;

@@ -104,7 +104,7 @@ class TsEffectSystem {
     this.Mpe = Stats_1.Stat.Enable ? Stats_1.Stat.Create("this.CreateEffectHandle") : undefined;
     this.Ife = false;
     this.gah = true;
-    this.JQ1 = new ContinuousEffectController_1.ContinuousEffectController();
+    this.iK1 = new ContinuousEffectController_1.ContinuousEffectController();
     this.Tfe = () => {
       for (const t of this.Afe.GetItems()) {
         t.OnGlobalTimeScaleChange();
@@ -163,7 +163,7 @@ class TsEffectSystem {
     this.yfe.Clear();
     this.Ife = false;
     this.Dfe = true;
-    this.JQ1.Clear();
+    this.iK1.Clear();
     return true;
   }
   InitializeWithPreview(t) {
@@ -721,7 +721,7 @@ class TsEffectSystem {
         }
       }
     }
-    this.JQ1.OnPostTick(t);
+    this.iK1.OnPostTick(t);
     this.gW.Stop();
   }
   AfterTick(t) {
@@ -1235,7 +1235,7 @@ class TsEffectSystem {
   }
   SpawnEffect(t, e, i, a, r, s = 3, o, n, _, f = false, h = false) {
     if (r) {
-      this.JQ1.OnBeforeSpawnEffect(r);
+      this.iK1.OnBeforeSpawnEffect(r);
     }
     var c = !f;
     let E = undefined;
@@ -1303,7 +1303,7 @@ class TsEffectSystem {
       if (EffectEnvironment_1.EffectEnvironment.UseLog && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("RenderEffect", 3, "特效框架:创建句柄(Lru)", ["句柄Id", u.Id], ["父句柄Id", undefined], ["特效总数", this.kfe], ["句柄总数", this.Ffe], ["IsRoot", true], ["Path", u.Path], ["Lru命中率%", this.Lru.HitRate * PERCENT], ["Reason", a]);
       }
-      this.JQ1.OnAfterSpawnEffect(u);
+      this.iK1.OnAfterSpawnEffect(u);
       return u.Id;
     }
     if (Info_1.Info.IsMobilePlatform() && exports.MOBILE_EFFECT_BLACK_LIST.has(i)) {
@@ -1367,7 +1367,7 @@ class TsEffectSystem {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TestEffectAddDaRec, i);
     this.Dpe.Stop();
-    this.JQ1.OnAfterSpawnEffect(u);
+    this.iK1.OnAfterSpawnEffect(u);
     return u?.Id ?? 0;
   }
   DynamicRegisterSpawnCallback(t, e) {
@@ -1396,7 +1396,7 @@ class TsEffectSystem {
     if (EffectEnvironment_1.EffectEnvironment.UseLog && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("RenderEffect", 3, "特效框架:停止特效开始", ["句柄Id", t], ["Reason", e], ["Valid", this.IsValid(t)]);
     }
-    return !!this.IsValid(t) && (t = this.cpe(t), !this.JQ1.OnStopEffect(t)) && this.StopEffect(t, e, i, a);
+    return !!this.IsValid(t) && (t = this.cpe(t), !this.iK1.OnStopEffect(t)) && this.StopEffect(t, e, i, a);
   }
   IsValid(t) {
     var e;

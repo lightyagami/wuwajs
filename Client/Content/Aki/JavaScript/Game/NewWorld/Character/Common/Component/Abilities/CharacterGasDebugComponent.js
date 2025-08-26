@@ -22,7 +22,7 @@ var __decorate = this && this.__decorate || function (t, e, r, a) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CharacterGasDebugComponent = undefined;
+exports.CharacterGasDebugComponent = exports.OperateRecordNode = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../../../Core/Common/Log");
@@ -54,9 +54,11 @@ const CharacterBuffController_1 = require("./CharacterBuffController");
 const CharacterStatisticsComponent_1 = require("./CharacterStatisticsComponent");
 const CharacterUnifiedStateTypes_1 = require("./CharacterUnifiedStateTypes");
 var ESkillGenreName;
+var ESkillNeedRecordName;
 var EMovementModeName;
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const Info_1 = require("../../../../../../Core/Common/Info");
+const Json_1 = require("../../../../../../Core/Common/Json");
 const MAX_DEBUG_STRING_NUMS = 50;
 (function (t) {
   t[t.普攻 = 0] = "普攻";
@@ -73,6 +75,21 @@ const MAX_DEBUG_STRING_NUMS = 50;
   t[t.空中闪避 = 11] = "空中闪避";
 })(ESkillGenreName = ESkillGenreName || {});
 (function (t) {
+  t[t.跳跃 = 0] = "跳跃";
+  t[t.攻击 = 1] = "攻击";
+  t[t.闪避 = 2] = "闪避";
+  t[t.技能1 = 3] = "技能1";
+  t[t.幻象1 = 4] = "幻象1";
+  t[t.大招 = 5] = "大招";
+  t[t.幻象2 = 6] = "幻象2";
+  t[t.切换角色1 = 7] = "切换角色1";
+  t[t.切换角色2 = 8] = "切换角色2";
+  t[t.切换角色3 = 9] = "切换角色3";
+  t[t.锁定目标 = 10] = "锁定目标";
+  t[t.向右移动 = 11] = "向右移动";
+  t[t.向左移动 = 12] = "向左移动";
+})(ESkillNeedRecordName = ESkillNeedRecordName || {});
+(function (t) {
   t[t.MOVE_None = 0] = "MOVE_None";
   t[t.MOVE_Walking = 1] = "MOVE_Walking";
   t[t.MOVE_NavWalking = 2] = "MOVE_NavWalking";
@@ -82,6 +99,30 @@ const MAX_DEBUG_STRING_NUMS = 50;
   t[t.MOVE_Custom = 6] = "MOVE_Custom";
   t[t.MOVE_MAX = 7] = "MOVE_MAX";
 })(EMovementModeName = EMovementModeName || {});
+class OperateRecordNode extends Json_1.JsonObjBase {
+  constructor(t, e, r, a = false, i = "", n = 0, o = 0, s = 0, h = 0) {
+    super();
+    this.TimeLine = "";
+    this.Actor = "";
+    this.Action = "";
+    this.Press = false;
+    this.Key = "";
+    this.TimeInterval = 0;
+    this.PositionX = 0;
+    this.PositionY = 0;
+    this.PositionZ = 0;
+    this.TimeLine = t;
+    this.Actor = e;
+    this.Action = r;
+    this.Press = a;
+    this.Key = i;
+    this.TimeInterval = n;
+    this.PositionX = o;
+    this.PositionY = s;
+    this.PositionZ = h;
+  }
+}
+exports.OperateRecordNode = OperateRecordNode;
 class RecordMoveSum {
   constructor() {
     this.Name = "";
@@ -236,7 +277,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         a = this.Entity;
         (i = new Array()).push(CharacterGasDebugComponent_1.SecondsSinceStartup());
         i.push(CharacterGasDebugComponent_1.Jqr(Date.now()));
-        if (a?.GetComponent(95)) {
+        if (a?.GetComponent(96)) {
           i.push("角色");
         } else {
           i.push("怪物");
@@ -247,7 +288,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         i.push(n);
         i.push(e.toString());
         i.push(ESkillGenreName[r]);
-        n = a.GetComponent(173);
+        n = a.GetComponent(174);
         i.push(n.GetCurrentValue(EAttributeId.Proto_Atk).toFixed());
         i.push(n.GetCurrentValue(EAttributeId.Proto_Crit).toFixed());
         i.push(n.GetCurrentValue(EAttributeId.Proto_CritDamage).toFixed());
@@ -256,6 +297,29 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         i.push(n.GetCurrentValue(EAttributeId.Proto_DamageChange).toFixed());
         CharacterGasDebugComponent_1.eGr.push(i.join(","));
         CharacterGasDebugComponent_1.tGr(a, t.Entity, r);
+      }
+    };
+    this.RecordInpuuAction = (e, r, a) => {
+      if (CharacterGasDebugComponent_1.$qr && ESkillNeedRecordName[e] !== undefined && this.Yqr(this.Entity) && this.Entity?.GetComponent(3).Active) {
+        var i = this.Entity;
+        if (i?.GetComponent(96)) {
+          var n = CharacterGasDebugComponent_1.LGr(i)?.Name ?? "unknown";
+          var i = i.GetComponent(1);
+          let t = new UE.Vector(0, 0, 0);
+          if (i) {
+            i = i?.ActorLocationProxy;
+            t = new UE.Vector(i.X, i.Y, i.Z);
+          }
+          if (r) {
+            CharacterGasDebugComponent_1.oWc.set(e, new OperateRecordNode(CharacterGasDebugComponent_1.SecondsSinceStartupFix(), n, e, r, a.KeyName.toString(), t.X, t.Y, t.Z));
+          } else if (i = CharacterGasDebugComponent_1.oWc.get(e)) {
+            i.TimeInterval = Number(CharacterGasDebugComponent_1.SecondsSinceStartupFix()) - Number(i.TimeLine);
+            CharacterGasDebugComponent_1.nWc.push(new OperateRecordNode(i.TimeLine, i.Actor, i.Action, i.Press, i.Key, Number(i.TimeInterval.toFixed(2)), t.X, t.Y, t.Z));
+            CharacterGasDebugComponent_1.oWc.delete(e);
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Test", 89, "操作记录错误,只有抬起没有按下");
+          }
+        }
       }
     };
     this.ServerDebugInfo = undefined;
@@ -294,6 +358,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharRecordOperate, this.RecordMove);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.oGr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.BulletCreate, this.Xqr);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInputAction, this.RecordInpuuAction);
     return true;
   }
   OnTick(t) {
@@ -319,6 +384,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharRecordOperate, this.RecordMove);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.oGr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.BulletCreate, this.Xqr);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInputAction, this.RecordInpuuAction);
     return true;
   }
   hGr() {
@@ -331,7 +397,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return this.Oqr.join(" ");
   }
   GetTagDebugStrings() {
-    return this.Entity.GetComponent(205)?.TagContainer.GetDebugString() ?? "找不到tag组件";
+    return this.Entity.GetComponent(206)?.TagContainer.GetDebugString() ?? "找不到tag组件";
   }
   GetTagContainerDebugString(e) {
     var r = e.GameplayTags?.Num() ?? 0;
@@ -346,7 +412,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetBuffEffectDebugString(t) {
     let e = "";
-    for (const r of this.Entity.GetComponent(174).BuffEffectManager.GetAllEffects()) {
+    for (const r of this.Entity.GetComponent(175).BuffEffectManager.GetAllEffects()) {
       if (this.cGr(t, String(r.BuffId))) {
         e += `${r.constructor.name} buffId:${r.BuffId} handle:${r.ActiveHandleId}\n`;
       }
@@ -364,11 +430,11 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         this.Fqr.push(`Shield magnitude: ${r} priority: ${a} templateId: ${e}`);
       }
     }
-    t = this.Entity.GetComponent(173)?.GetLockDebugString() ?? "";
+    t = this.Entity.GetComponent(174)?.GetLockDebugString() ?? "";
     return "\n\nShields:\n" + this.Fqr.join("\n") + t;
   }
   GetAttributeDebugStrings() {
-    var e = this.Entity.GetComponent(173);
+    var e = this.Entity.GetComponent(174);
     if (!e) {
       return "Invalid";
     }
@@ -390,7 +456,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetAllAttributeDebugStrings() {
     this.Vqr.length = 0;
-    var e = this.Entity.GetComponent(173);
+    var e = this.Entity.GetComponent(174);
     for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
       var r = e.GetBaseValue(t);
       var a = e.GetCurrentValue(t);
@@ -415,7 +481,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     return t;
   }
   GetAllAttributeDebugInfo() {
-    var a = this.Entity.GetComponent(173);
+    var a = this.Entity.GetComponent(174);
     if (!a) {
       return "Invalid";
     }
@@ -462,14 +528,14 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     }
     for (const d of FormationPropertyAll_1.configFormationPropertyAll.GetConfigList()) {
       var r = d.Id;
-      var l = FormationAttributeController_1.FormationAttributeController.GetValue(r);
-      var c = FormationAttributeController_1.FormationAttributeController.GetMax(r);
+      var c = FormationAttributeController_1.FormationAttributeController.GetValue(r);
+      var l = FormationAttributeController_1.FormationAttributeController.GetMax(r);
       var f = FormationAttributeController_1.FormationAttributeController.GetSpeed(r);
       const n = e[r];
       var g = n?.y6n.toFixed(0) ?? "???";
       var m = n?.I6n.toFixed(0) ?? "???";
       var b = n?.L6n.toFixed(0) ?? "???";
-      i += `#${r}	 C:${l?.toFixed(0)}/${c?.toFixed(0)} (${f?.toFixed(0)}/s) | S:${g}/${m} (${b}/s)
+      i += `#${r}	 C:${c?.toFixed(0)}/${l?.toFixed(0)} (${f?.toFixed(0)}/s) | S:${g}/${m} (${b}/s)
 `;
     }
     return i;
@@ -494,7 +560,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   DebugResetBaseValue(t, e) {
     if (t >= EAttributeId.Proto_Lv && t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX) {
-      this.Entity.GetComponent(173).SetBaseValue(t, e);
+      this.Entity.GetComponent(174).SetBaseValue(t, e);
     }
   }
   static get IsServerLogOff() {
@@ -514,12 +580,15 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 19, "[CharacterDamageComponent]Request Buff Mode", ["isClientControl", t]);
     }
-    Net_1.Net.Call(19990, e, t => {
+    Net_1.Net.Call(29025, e, t => {
       this.ReceiveSwitchServerLogMode(t.Jjn);
     });
   }
   static SecondsSinceStartup() {
     return (Time_1.Time.WorldTimeSeconds - CharacterGasDebugComponent_1.dGr - CharacterGasDebugComponent_1.sGr).toFixed(2);
+  }
+  static SecondsSinceStartupFix() {
+    return (Time_1.Time.WorldTimeSeconds - CharacterGasDebugComponent_1.dGr).toFixed(2);
   }
   static SetDistanceMax(t) {}
   static BeginRecord() {
@@ -531,7 +600,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
     CharacterGasDebugComponent_1.rGr = undefined;
     CharacterGasDebugComponent_1.gGr(Global_1.Global.BaseCharacter.EntityId, true, false);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTimeStopRequest, this.Gmd);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EnableActionRecord, true);
   }
   static EndRecord() {
     var t;
@@ -539,214 +609,222 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       this.$qr = false;
       this.SetDamageRecord(false);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTimeStopRequest, this.Gmd);
       t = this.pGr();
       this.CleanupRecord();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EnableActionRecord, false);
       return t;
     } else {
       return "";
     }
   }
   static pGr() {
-    var t = new Array();
-    var e = "";
-    let r = "";
+    var t;
+    var e = new Array();
+    var r = "";
     UE.KuroStaticLibrary.SaveStringToFile("X秒,当前时间,对象,对象ID,对象名称,技能ID,技能类型,攻击,暴击,爆伤,生命,防御,伤害加成\n" + this.eGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "SkillRecord.csv", true);
-    var a = new Array();
-    var i = "X秒,当前时间,对象,对象ID,对象名称,子弹ID,子弹名称,伤害ID,技能ID,技能类型,子弹是否命中\n";
-    for (const $ of this.Zqr) {
-      var n = this.zqr.get($);
-      n.push(ModelManager_1.ModelManager.BulletModel.IsBulletHit($) ? "1" : "0");
-      a.push(n.join(","));
+    var a = Json_1.Json.Encode(this.nWc);
+    UE.KuroStaticLibrary.SaveStringToFile(a, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.sWc + "OperateRecord.json", true);
+    var i = new Array();
+    var a = "X秒,当前时间,对象,对象ID,对象名称,子弹ID,子弹名称,伤害ID,技能ID,技能类型,子弹是否命中\n";
+    for (const o of this.Zqr) {
+      var n = this.zqr.get(o);
+      n.push(ModelManager_1.ModelManager.BulletModel.IsBulletHit(o) ? "1" : "0");
+      i.push(n.join(","));
     }
-    UE.KuroStaticLibrary.SaveStringToFile(i + a.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BulletRecord.csv", true);
-    i = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,Config ID,攻击,暴击,爆伤,生命,防御,伤害加成\n";
-    UE.KuroStaticLibrary.SaveStringToFile(i + this.vGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord.csv", true);
-    i = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,是否暴击,唯一ID,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,削刃,大招能量,元素能量类型,元素能量,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振���上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,白条倍率,白条倍率百分比0,白条倍率百分比1,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
-    UE.KuroStaticLibrary.SaveStringToFile(i + this.MGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Attr.csv", true);
-    i = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,是否暴击,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
-    UE.KuroStaticLibrary.SaveStringToFile(i + this.EGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Snipeshot.csv", true);
-    r = "X秒,当前时间,对象,对象ID,对象名称,BuffId,Buff名称,添加or删除\n" + this.SGr.join("\n");
-    UE.KuroStaticLibrary.SaveStringToFile(r, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BuffRecord.csv", true);
-    for (const V of this.yGr.values()) {
-      t.push(V.ToCsv().join(","));
+    UE.KuroStaticLibrary.SaveStringToFile(a + i.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BulletRecord.csv", true);
+    a = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,Config ID,攻击,暴击,爆伤,生命,防御,伤害加成\n";
+    UE.KuroStaticLibrary.SaveStringToFile(a + this.vGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord.csv", true);
+    a = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,是否暴击,唯一ID,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,削刃,大招能量,元素能量类型,元素能量,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振���上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,白条倍率,白条倍率百分比0,白条倍率百分比1,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
+    UE.KuroStaticLibrary.SaveStringToFile(a + this.MGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Attr.csv", true);
+    a = "X秒,当前时间,对象,对象ID,对象名称,伤害来源,结算ID,子弹名称,伤害值,技能ID,技能名称,唯一ID,是否暴击,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,当前生命值,生命值上限,攻击,暴击,暴击伤害,防御,共鸣效率,共鸣能量上限,共鸣能量,普攻速度,重击速度,共鸣技能伤害加成,通用伤害加成,声骸技能伤害加成,普攻伤害加成,蓄力攻击伤害加成,共鸣解放伤害加成,连携技能伤害加成,物理伤害加成,冷凝伤害加成,热熔伤害加成,导电伤害加成,气动伤害加成,衍射伤害加成,解离伤害加成,物理伤害抗性,冷凝伤害抗性,热熔伤害抗性,导电伤害抗性,气动伤害抗性,衍射伤害抗性,解离伤害抗性,治疗效果加成,受治疗效果加成,通用受伤减免,物理伤害减免,冷凝伤害减免,热熔伤害减免,导电伤害减免,气动伤害减免,衍射伤害减免,解离伤害减免,韧性上限,韧性,韧性恢复速度,削韧倍率,被削韧倍率,狂暴上限,狂暴,狂暴恢复,空狂暴惩罚时间,破狂暴倍率,被破狂暴倍率,共振度上限,共振度上限,共振度恢复速度,空共振度惩罚时间,破共振度倍率,被破共振度倍率,削刃,大招能量,元素能量类型,元素能量,存在的BuffID,存在的Buff名称,存在的BuffID,存在的Buff名称\n";
+    UE.KuroStaticLibrary.SaveStringToFile(a + this.EGr.join("\n"), UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "DamageRecord_Snipeshot.csv", true);
+    t = "X秒,当前时间,对象,对象ID,对象名称,BuffId,Buff名称,添加or删除\n" + this.SGr.join("\n");
+    UE.KuroStaticLibrary.SaveStringToFile(t, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "BuffRecord.csv", true);
+    for (const s of this.yGr.values()) {
+      e.push(s.ToCsv().join(","));
     }
-    r = "对象ID,对象名称,唯一Id,普攻,蓄力,E技能,大招,QTE,极限闪避反击,地面闪避,极限闪避,被动技能,战斗幻想技,探索幻象技,空中闪避\n" + t.join("\n");
-    UE.KuroStaticLibrary.SaveStringToFile(r, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "MoveSum.csv", true);
-    t.length = 0;
-    e += r + "\n";
-    i = "角色ID,角色名称,受伤来源ConfigId,受伤来源名称,受伤来源唯一ID,总伤害,普攻,蓄力,E技能,大招,QTE,极限闪避反击,地面闪避,极限闪避,被动技能,战斗幻想技,探索幻象技,空中闪避\n";
-    for (const x of this.IGr.values()) {
-      t.push(x.ToCsvForRole().join(","));
+    t = "对象ID,对象名称,唯一Id,普攻,蓄力,E技能,大招,QTE,极限闪避反击,地面闪避,极限闪避,被动技能,战斗幻想技,探索幻象技,空中闪避\n" + e.join("\n");
+    UE.KuroStaticLibrary.SaveStringToFile(t, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "MoveSum.csv", true);
+    e.length = 0;
+    r += t + "\n";
+    a = "角色ID,角色名称,受伤来源ConfigId,受伤来源名称,受伤来源唯一ID,总伤害,普攻,蓄力,E技能,大招,QTE,极限闪避反击,地面闪避,极限闪避,被动技能,战斗幻想技,探索幻象技,空中闪避\n";
+    for (const h of this.IGr.values()) {
+      e.push(h.ToCsvForRole().join(","));
     }
-    r = i + t.join("\n");
-    UE.KuroStaticLibrary.SaveStringToFile(r, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "RoleDamageSum.csv", true);
-    t.length = 0;
-    e += r + "\n";
-    i = "怪物ConfigID,怪物名称,怪物唯一Id,攻击者ConfigId,攻击者名称,总伤害,普攻,蓄力,E技能,大招,QTE,极限闪避反击,地面闪避,极限闪避,被动技能,战斗幻想技,探索幻象技,空中闪避\n";
-    for (const j of this.TGr.values()) {
-      t.push(j.ToCsvForMonster().join(","));
+    t = a + e.join("\n");
+    UE.KuroStaticLibrary.SaveStringToFile(t, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "RoleDamageSum.csv", true);
+    e.length = 0;
+    r += t + "\n";
+    a = "怪物ConfigID,怪物名称,怪物唯一Id,攻击者ConfigId,攻击者名称,总伤害,普攻,蓄力,E技能,大招,QTE,极限闪避反击,地面闪避,极限闪避,被动技能,战斗幻想技,探索幻象技,空中闪避\n";
+    for (const u of this.TGr.values()) {
+      e.push(u.ToCsvForMonster().join(","));
     }
-    r = i + t.join("\n");
-    UE.KuroStaticLibrary.SaveStringToFile(r, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "MonsterDamageSum.csv", true);
-    t.length = 0;
-    e += r + "\n";
-    r = "";
-    var o = Time_1.Time.WorldTimeSeconds - CharacterGasDebugComponent_1.dGr - CharacterGasDebugComponent_1.sGr;
-    let s = 0;
-    while (o >= s) {
-      r += ",'" + s.toString() + "s'";
-      s += 0.5;
-    }
-    let h = "";
-    var i = (0, puerts_1.$ref)(h);
-    UE.FileSystemOperation.ReadFile(UE.KismetSystemLibrary.GetProjectDirectory() + "../Config/ResConfig/RoleDspTpl.txt", i);
-    h = (h = (0, puerts_1.$unref)(i)).replace("TPL_XAXIS_VALUES", r);
-    var u = new StringBuilder_1.StringBuilder();
-    var _ = new Map();
-    var C = new Map();
-    var l = new Map();
-    var c = new Map();
-    var f = new Map();
-    var g = new Map();
-    var m = new Map();
-    var b = new Map();
-    var p = new Map();
-    for (s = 0; o >= s;) {
-      for (var [D, d] of CharacterGasDebugComponent_1.rGr) {
-        if (!c.has(D)) {
-          c.set(D, new Array());
-        }
-        if (!f.has(D)) {
-          f.set(D, new Array());
-        }
-        if (!g.has(D)) {
-          g.set(D, new Array());
-        }
-        if (!m.has(D)) {
-          m.set(D, new Array());
-        }
-        if (!b.has(D)) {
-          b.set(D, new Array());
-        }
-        if (!p.has(D)) {
-          p.set(D, new Array());
-        }
-        if (!_.has(D)) {
-          _.set(D, 0);
-        }
-        if (!C.has(D)) {
-          C.set(D, 0);
-        }
-        if (!l.has(D)) {
-          l.set(D, false);
-        }
-        let t = false;
-        let e = false;
-        while (!d.Empty) {
-          var E = d.Top;
-          if (!(E.TimeStamp <= this.dGr + s)) {
-            break;
-          }
-          if (E.DamageValue > 0) {
-            _.set(D, _.get(D) + E.DamageValue);
-          } else if (E.InGame) {
-            l.set(D, true);
-          } else if (E.OutGame) {
-            l.set(D, false);
-          } else if (E.QteBegin) {
-            t = true;
-          } else if (E?.OutGameSkill) {
-            e = true;
-          }
-          d.Pop();
-          if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Character", 20, "打印时间", ["time", E.TimeStamp]);
-          }
-        }
-        c.get(D).push(_.get(D));
-        f.get(D).push(l.get(D) ? "-10" : "'-'");
-        g.get(D).push(t ? "-20" : "'-'");
-        m.get(D).push(e ? "-30" : "'-'");
-        var v = C.get(D);
-        p.get(D).push(v > 0 ? _.get(D) / v : 0);
-        b.get(D).push(s > 0 ? _.get(D) / s : 0);
-        if (l.get(D)) {
-          C.set(D, C.get(D) + 0.5);
-        }
+    t = a + e.join("\n");
+    UE.KuroStaticLibrary.SaveStringToFile(t, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "MonsterDamageSum.csv", true);
+    e.length = 0;
+    r += t + "\n";
+    CharacterGasDebugComponent_1.tgd();
+    return r;
+  }
+  static tgd() {
+    if (Info_1.Info.IsPlayInEditor) {
+      let t = "";
+      var a = Time_1.Time.WorldTimeSeconds - CharacterGasDebugComponent_1.dGr - CharacterGasDebugComponent_1.sGr;
+      let r = 0;
+      while (a >= r) {
+        t += ",'" + r.toString() + "s'";
+        r += 0.5;
       }
-      s += 0.5;
-    }
-    var A;
-    var y;
-    var G;
-    var I;
-    var q;
-    var M;
-    var N;
-    var O;
-    var S;
-    var L;
-    var F;
-    var U;
-    var k;
-    var H;
-    var w;
-    var Q;
-    var X;
-    var T = [];
-    var R = [];
-    var B = [];
-    for ([A, y] of c) {
-      var P = EntitySystem_1.EntitySystem.Get(A);
-      if (P?.Valid) {
-        T.push(A);
-        P = (P = P.GetComponent(0)).Valid ? P.GetRoleId() : 0;
-        if (P = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(P)) {
-          P = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(P);
-          P = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(P.Name);
-          R.push(P);
-          u.Append(StringUtils_1.StringUtils.Format("{name: '{0}伤害', type: 'line', data: [{1}],},", P, y.join(",")));
+      let e = "";
+      var i = (0, puerts_1.$ref)(e);
+      UE.FileSystemOperation.ReadFile(UE.KismetSystemLibrary.GetProjectDirectory() + "../Config/ResConfig/RoleDspTpl.txt", i);
+      e = (e = (0, puerts_1.$unref)(i)).replace("TPL_XAXIS_VALUES", t);
+      var n = new StringBuilder_1.StringBuilder();
+      var o = new Map();
+      var s = new Map();
+      var h = new Map();
+      var u = new Map();
+      var _ = new Map();
+      var C = new Map();
+      var c = new Map();
+      var l = new Map();
+      var f = new Map();
+      for (r = 0; a >= r;) {
+        for (var [g, m] of CharacterGasDebugComponent_1.rGr) {
+          if (!u.has(g)) {
+            u.set(g, new Array());
+          }
+          if (!_.has(g)) {
+            _.set(g, new Array());
+          }
+          if (!C.has(g)) {
+            C.set(g, new Array());
+          }
+          if (!c.has(g)) {
+            c.set(g, new Array());
+          }
+          if (!l.has(g)) {
+            l.set(g, new Array());
+          }
+          if (!f.has(g)) {
+            f.set(g, new Array());
+          }
+          if (!o.has(g)) {
+            o.set(g, 0);
+          }
+          if (!s.has(g)) {
+            s.set(g, 0);
+          }
+          if (!h.has(g)) {
+            h.set(g, false);
+          }
+          let t = false;
+          let e = false;
+          while (!m.Empty) {
+            var b = m.Top;
+            if (!(b.TimeStamp <= this.dGr + r)) {
+              break;
+            }
+            if (b.DamageValue > 0) {
+              o.set(g, o.get(g) + b.DamageValue);
+            } else if (b.InGame) {
+              h.set(g, true);
+            } else if (b.OutGame) {
+              h.set(g, false);
+            } else if (b.QteBegin) {
+              t = true;
+            } else if (b?.OutGameSkill) {
+              e = true;
+            }
+            m.Pop();
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Character", 20, "打印时间", ["time", b.TimeStamp]);
+            }
+          }
+          u.get(g).push(o.get(g));
+          _.get(g).push(h.get(g) ? "-10" : "'-'");
+          C.get(g).push(t ? "-20" : "'-'");
+          c.get(g).push(e ? "-30" : "'-'");
+          var p = s.get(g);
+          f.get(g).push(p > 0 ? o.get(g) / p : 0);
+          l.get(g).push(r > 0 ? o.get(g) / r : 0);
+          if (h.get(g)) {
+            s.set(g, s.get(g) + 0.5);
+          }
+        }
+        r += 0.5;
+      }
+      var D;
+      var d;
+      var E;
+      var v;
+      var A;
+      var G;
+      var y;
+      var S;
+      var I;
+      var M;
+      var U;
+      var w;
+      var R;
+      var T;
+      var B;
+      var N;
+      var L;
+      var P = [];
+      var $ = [];
+      var q = [];
+      for ([D, d] of u) {
+        var O = EntitySystem_1.EntitySystem.Get(D);
+        if (O?.Valid) {
+          P.push(D);
+          O = (O = O.GetComponent(0)).Valid ? O.GetRoleId() : 0;
+          if (O = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(O)) {
+            O = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(O);
+            O = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(O.Name);
+            $.push(O);
+            n.Append(StringUtils_1.StringUtils.Format("{name: '{0}伤害', type: 'line', data: [{1}],},", O, d.join(",")));
+          } else {
+            q.push(D);
+          }
         } else {
-          B.push(A);
+          q.push(D);
         }
-      } else {
-        B.push(A);
       }
-    }
-    for ([G, I] of b) {
-      if (!B.includes(G)) {
-        q = T.indexOf(G);
-        u.Append(StringUtils_1.StringUtils.Format("{name: '{0}绝对DPS', type: 'line', data: [{1}],},", R[q], I.join(",")));
+      for ([E, v] of l) {
+        if (!q.includes(E)) {
+          A = P.indexOf(E);
+          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}绝对DPS', type: 'line', data: [{1}],},", $[A], v.join(",")));
+        }
       }
-    }
-    for ([M, N] of p) {
-      if (!B.includes(M)) {
-        O = T.indexOf(M);
-        u.Append(StringUtils_1.StringUtils.Format("{name: '{0}站场DPS', type: 'line', data: [{1}],},", R[O], N.join(",")));
+      for ([G, y] of f) {
+        if (!q.includes(G)) {
+          S = P.indexOf(G);
+          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}站场DPS', type: 'line', data: [{1}],},", $[S], y.join(",")));
+        }
       }
-    }
-    for ([S, L] of f) {
-      if (!B.includes(S)) {
-        F = T.indexOf(S);
-        u.Append(StringUtils_1.StringUtils.Format("{name: '{0}在场上', type: 'line', data: [{1}],},", R[F], L.join(",")));
+      for ([I, M] of _) {
+        if (!q.includes(I)) {
+          U = P.indexOf(I);
+          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}在场上', type: 'line', data: [{1}],},", $[U], M.join(",")));
+        }
       }
-    }
-    for ([U, k] of g) {
-      if (!B.includes(U)) {
-        H = T.indexOf(U);
-        u.Append(StringUtils_1.StringUtils.Format("{name: '{0}QTE', type: 'line', data: [{1}],},", R[H], k.join(",")));
+      for ([w, R] of C) {
+        if (!q.includes(w)) {
+          T = P.indexOf(w);
+          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}QTE', type: 'line', data: [{1}],},", $[T], R.join(",")));
+        }
       }
-    }
-    for ([w, Q] of m) {
-      if (!B.includes(w)) {
-        X = T.indexOf(w);
-        u.Append(StringUtils_1.StringUtils.Format("{name: '{0}退场技', type: 'line', data: [{1}],},", R[X], Q.join(",")));
+      for ([B, N] of c) {
+        if (!q.includes(B)) {
+          L = P.indexOf(B);
+          n.Append(StringUtils_1.StringUtils.Format("{name: '{0}退场技', type: 'line', data: [{1}],},", $[L], N.join(",")));
+        }
       }
+      e = e.replace("CONTENT_SERIES", n.ToString());
+      UE.KuroStaticLibrary.SaveStringToFile(e, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "RoleDsp.html", true);
     }
-    h = h.replace("CONTENT_SERIES", u.ToString());
-    UE.KuroStaticLibrary.SaveStringToFile(h, UE.BlueprintPathsLibrary.ProjectSavedDir() + this.Pt + "RoleDsp.html", true);
-    return e;
   }
   Yqr(t) {
     return CharacterStatisticsComponent_1.CharacterStatisticsComponent.IsInRecordArea(t);
@@ -760,7 +838,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
       s.push(n.Type);
       s.push(n.ConfigId);
       s.push(n.Name);
-      if (a.GetComponent(95)) {
+      if (a.GetComponent(96)) {
         s.push("角色");
       } else if (a.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneEntity) {
         s.push("场景伤害");
@@ -810,7 +888,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   static DGr(t, e, r, a) {
     let i = this.IGr;
-    if (!t?.GetComponent(95)) {
+    if (!t?.GetComponent(96)) {
       i = this.TGr;
     }
     var n;
@@ -981,7 +1059,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   }
   GetCltBuffHandleSet() {
     const e = new Set();
-    this.Entity.GetComponent(209)?.GetAllBuffs()?.forEach(t => e.add(t.Handle));
+    this.Entity.GetComponent(210)?.GetAllBuffs()?.forEach(t => e.add(t.Handle));
     return e;
   }
   Union(e, t) {
@@ -995,7 +1073,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     this.er1.set(e, r);
     var t = Protocol_1.Aki.Protocol.Uis.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id));
-    Net_1.Net.Call(28584, t, t => {
+    Net_1.Net.Call(17028, t, t => {
       if (this.er1.has(e)) {
         this.Union(this.Zi1, this.er1.get(e));
         this.er1.delete(e);
@@ -1067,7 +1145,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
   static SetDamageRecord(t) {
     var e = Protocol_1.Aki.Protocol.Debug.GZn.create();
     e.tWn = t;
-    Net_1.Net.Call(24762, e, t => {
+    Net_1.Net.Call(15615, e, t => {
       if (t && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CombatInfo", 20, "", ["Response", t]);
       }
@@ -1160,8 +1238,8 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         var _ = new Array();
         for (const g of i.Zjn.$As) {
           var C = MathUtils_1.MathUtils.LongToNumber(g);
-          var l = CharacterBuffController_1.default.GetBuffDefinition(C);
-          u.push(l.Desc);
+          var c = CharacterBuffController_1.default.GetBuffDefinition(C);
+          u.push(c.Desc);
           _.push(C);
         }
         h[o + 122] = _.join("|");
@@ -1169,10 +1247,10 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         u.length = 0;
         _.length = 0;
         for (const m of i.JAs.$As) {
-          var c = MathUtils_1.MathUtils.LongToNumber(m);
-          var f = CharacterBuffController_1.default.GetBuffDefinition(c);
+          var l = MathUtils_1.MathUtils.LongToNumber(m);
+          var f = CharacterBuffController_1.default.GetBuffDefinition(l);
           u.push(f.Desc);
-          _.push(c);
+          _.push(l);
         }
         h[o + 124] = _.join("|");
         h[o + 125] = u.join("|");
@@ -1247,24 +1325,24 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
         h[u + 245] = s.ElementPowerType.toString();
         h[u + 246] = AbilityUtils_1.AbilityUtils.GetLevelValue(s.ElementPower, o, 0).toString();
         var C = new Array();
-        var l = new Array();
+        var c = new Array();
         for (const p of i.Zjn.$As) {
-          var c = MathUtils_1.MathUtils.LongToNumber(p);
-          var f = CharacterBuffController_1.default.GetBuffDefinition(c);
+          var l = MathUtils_1.MathUtils.LongToNumber(p);
+          var f = CharacterBuffController_1.default.GetBuffDefinition(l);
           C.push(f.Desc);
-          l.push(c);
+          c.push(l);
         }
-        h[u + 247] = l.join("|");
+        h[u + 247] = c.join("|");
         h[u + 248] = C.join("|");
         C.length = 0;
-        l.length = 0;
+        c.length = 0;
         for (const D of i.JAs.$As) {
           var g = MathUtils_1.MathUtils.LongToNumber(D);
           var m = CharacterBuffController_1.default.GetBuffDefinition(g);
           C.push(m.Desc);
-          l.push(g);
+          c.push(g);
         }
-        h[u + 249] = l.join("|");
+        h[u + 249] = c.join("|");
         h[u + 250] = C.join("|");
         n = h.join(",");
         this.MGr.push(n);
@@ -1304,6 +1382,7 @@ let CharacterGasDebugComponent = CharacterGasDebugComponent_1 = class CharacterG
     CharacterGasDebugComponent_1.Qyn = false;
     CharacterGasDebugComponent_1.sGr = 0;
     CharacterGasDebugComponent_1.eGr.length = 0;
+    CharacterGasDebugComponent_1.nWc.length = 0;
     CharacterGasDebugComponent_1.vGr.length = 0;
     CharacterGasDebugComponent_1.yGr.clear();
     CharacterGasDebugComponent_1.IGr.clear();
@@ -1321,6 +1400,8 @@ CharacterGasDebugComponent.$qr = false;
 CharacterGasDebugComponent.dGr = 0;
 CharacterGasDebugComponent.CGr = 0;
 CharacterGasDebugComponent.eGr = new Array();
+CharacterGasDebugComponent.nWc = new Array();
+CharacterGasDebugComponent.oWc = new Map();
 CharacterGasDebugComponent.vGr = new Array();
 CharacterGasDebugComponent.yGr = new Map();
 CharacterGasDebugComponent.IGr = new Map();
@@ -1328,6 +1409,7 @@ CharacterGasDebugComponent.TGr = new Map();
 CharacterGasDebugComponent.zqr = new Map();
 CharacterGasDebugComponent.Zqr = new Array();
 CharacterGasDebugComponent.Pt = "Statistics/FightDataRecord/";
+CharacterGasDebugComponent.sWc = "Statistics/FightOperateRecord/";
 CharacterGasDebugComponent.SGr = new Array();
 CharacterGasDebugComponent.rGr = undefined;
 CharacterGasDebugComponent.nGr = (t, e) => t.TimeStamp - e.TimeStamp;
@@ -1342,7 +1424,7 @@ CharacterGasDebugComponent.MGr = new Array();
 CharacterGasDebugComponent.Qyn = false;
 CharacterGasDebugComponent.sGr = 0;
 CharacterGasDebugComponent.Xyn = 0;
-CharacterGasDebugComponent.fGr = t => {
+CharacterGasDebugComponent.Gmd = t => {
   CharacterGasDebugComponent_1.Qyn = t;
 };
 __decorate([CombatMessage_1.CombatNet.Listen("s3n", true)], CharacterGasDebugComponent, "OnDamageRecordNotify", null);

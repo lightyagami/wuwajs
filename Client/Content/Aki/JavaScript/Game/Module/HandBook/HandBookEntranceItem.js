@@ -12,8 +12,8 @@ const GridProxyAbstract_1 = require("../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const HandBookController_1 = require("./HandBookController");
 class HandBookEntranceItem extends GridProxyAbstract_1.GridProxyAbstract {
-  constructor(e) {
-    super();
+  constructor() {
+    super(...arguments);
     this.Bei = undefined;
     this.Lxt = () => {
       switch (this.Bei.Id) {
@@ -53,10 +53,9 @@ class HandBookEntranceItem extends GridProxyAbstract_1.GridProxyAbstract {
           }
       }
     };
-    this.CreateThenShowByActor(e.GetOwner());
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIText]];
     this.BtnBindInfo = [[3, this.Lxt]];
   }
   OnStart() {}
@@ -68,16 +67,15 @@ class HandBookEntranceItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.RefreshCollectProgress();
   }
   RefreshRedDot() {
-    var e = ModelManager_1.ModelManager.HandBookModel.IsShowRedDot(this.Bei.Id);
-    var a = this.GetItem(4);
-    if (a) {
+    var e;
+    var a;
+    if (this.Bei && (e = ModelManager_1.ModelManager.HandBookModel.IsShowRedDot(this.Bei.Id), a = this.GetItem(4))) {
       a.SetUIActive(e);
     }
   }
   RefreshCollectProgress() {
     var e = HandBookController_1.HandBookController.GetCollectProgress(this.Bei.Id);
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(2), "CollectProgress", e[0], e[1]);
-    this.GetText(2)?.SetUIActive(false);
+    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(5), "CollectProgress", e[0], e[1]);
   }
 }
 exports.HandBookEntranceItem = HandBookEntranceItem;

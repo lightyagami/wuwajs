@@ -36,7 +36,7 @@ class TsAnimNotifyStateModifyTough extends UE.KuroAnimNotifyState {
           Log_1.Log.Error("Character", 19, "韧性系数计算表对应id非法", ["id", t], ["animationName", o?.GetName()]);
         }
       } else if (e && a && a?.Valid && (a.AddToughModifier("ToughRate", i.RatioNormal), a.AddToughModifier("ToughRateOnCounter", i.RatioSpecial), a.ActorComponent.IsAutonomousProxy)) {
-        CombatMessage_1.CombatNet.Send(15581, e, Protocol_1.Aki.Protocol.ve_.create({
+        CombatMessage_1.CombatNet.Send(27531, e, Protocol_1.Aki.Protocol.ve_.create({
           s5n: MathUtils_1.MathUtils.BigIntToLong(t),
           n5n: r
         }));

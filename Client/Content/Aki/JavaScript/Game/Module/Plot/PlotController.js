@@ -1,5 +1,6 @@
 "use strict";
 
+var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -7,7 +8,6 @@ exports.PlotController = undefined;
 const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
-const ue_1 = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const Time_1 = require("../../../Core/Common/Time");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
@@ -23,17 +23,20 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CharacterBuffIds_1 = require("../../NewWorld/Character/Common/Component/Abilities/CharacterBuffIds");
 const PerfSightController_1 = require("../../PerfSight/PerfSightController");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const UiLayerType_1 = require("../../Ui/Define/UiLayerType");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const InputDistributeDefine_1 = require("../../Ui/InputDistribute/InputDistributeDefine");
+const UiLayer_1 = require("../../Ui/UiLayer");
 const UiManager_1 = require("../../Ui/UiManager");
 const PlotFormation_1 = require("./PlotFormation");
 const PlotSwitchSubLevel_1 = require("./PlotSwitchSubLevel");
+const PlotAspectTransformView_1 = require("./PlotView/PlotAspectTransformView");
 const PlotViewManager_1 = require("./PlotView/PlotViewManager");
 const SequenceController_1 = require("./Sequence/SequenceController");
 class PlotController extends UiControllerBase_1.UiControllerBase {
   static OnInit() {
     this.EYi = false;
-    ResourceSystem_1.ResourceSystem.LoadAsync(ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.PlotGoBattleMaterialPath, ue_1.PD_CharacterControllerData_C, e => {
+    ResourceSystem_1.ResourceSystem.LoadAsync(ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.PlotGoBattleMaterialPath, UE.PD_CharacterControllerData_C, e => {
       if (e) {
         ModelManager_1.ModelManager.PlotModel.GoBattleMaterial = e;
       } else if (Log_1.Log.CheckError()) {
@@ -48,8 +51,35 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.PlotModel.PlotWeather.OnTick(e);
       ModelManager_1.ModelManager.PlotModel.PlotTemplate.OnTick(e);
       ModelManager_1.ModelManager.PlotModel.PlotCleanRange.OnTick(e);
-      this.HPu(e);
     }
+  }
+  static AddTickPriority2(e) {
+    this.Pnd++;
+    this.Dnd.set(this.Pnd, e);
+    return this.Pnd;
+  }
+  static RemoveTickPriority2(e) {
+    this.xnd.delete(e);
+    this.Dnd.delete(e);
+  }
+  static NextPriority2(e) {
+    e = this.AddTickPriority2(e);
+    this.xnd.add(e);
+    return e;
+  }
+  static AddAfterTick(e) {
+    this.Xad++;
+    this.Yad.set(this.Xad, e);
+    return this.Xad;
+  }
+  static RemoveAfterTick(e) {
+    this.zad.delete(e);
+    this.Yad.delete(e);
+  }
+  static NextAfterTick(e) {
+    e = this.AddAfterTick(e);
+    this.zad.add(e);
+    return e;
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BeforeLoadMap, PlotController.SYi);
@@ -95,7 +125,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     return this.yYi.CheckFormationPromise();
   }
   static async CheckSwitchSubLevel() {
-    return this.xwu.CheckSwitchSubLevelPromise();
+    return this.Vwu.CheckSwitchSubLevelPromise();
   }
   static OnStartPlotNetwork(e) {
     if (PerfSightController_1.PerfSightController.IsEnable) {
@@ -142,6 +172,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.PlotModel.IsTipsViewShowed = false;
     ModelManager_1.ModelManager.PlotModel.CurTalkItem = undefined;
     ModelManager_1.ModelManager.PlotModel.CurShowTalk = undefined;
+    this.RemoveAspectTransformView();
     Global_1.Global.CharacterCameraManager.FadeAmount = 0;
     CameraController_1.CameraController.ExitDialogMode();
     InputDistributeController_1.InputDistributeController.RefreshInputTag();
@@ -281,8 +312,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t && !this.TYi.has(t.Id)) {
       this.TYi.add(t.Id);
-      e = t?.Entity?.GetComponent(174);
-      if (t = t?.Entity?.GetComponent(205)) {
+      e = t?.Entity?.GetComponent(175);
+      if (t = t?.Entity?.GetComponent(206)) {
         if (!t.HasTag(this.LYi)) {
           t.AddTag(this.LYi);
         }
@@ -304,8 +335,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     this.TYi.clear();
   }
   static RYi(e, t) {
-    var o = e?.GetComponent(174);
-    var e = e?.GetComponent(205);
+    var o = e?.GetComponent(175);
+    var e = e?.GetComponent(206);
     if (t) {
       e?.RemoveTag(this.LYi);
       e?.RemoveTag(this.DYi);
@@ -336,7 +367,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
         this.EndInteraction();
         return false;
       }
-      var r = o.Entity.GetComponent(197);
+      var r = o.Entity.GetComponent(198);
       if (!r) {
         this.EndInteraction();
         return false;
@@ -484,7 +515,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.PlotModel.UpdateLastViewControl();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEnableControlView, e);
   }
-  static y9c() {
+  static UZu() {
     return ModelManager_1.ModelManager.PlotModel.GetLastViewControl();
   }
   static UpdateViewControl(e) {
@@ -495,7 +526,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEnableControlView, e);
   }
   static ResetViewControl() {
-    var e = this.y9c();
+    var e = this.UZu();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Plot", 45, "[ViewControl]ResetViewControl", ["value", e]);
     }
@@ -595,40 +626,40 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static ManualAdaptAspectRatio(e) {
-    ModelManager_1.ModelManager.PlotModel.IsTransitionAspectRatio = true;
-    ModelManager_1.ModelManager.PlotModel.SyncAspectRatioToRealViewPortSizeTime = e;
-    e = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent();
+    var t = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent();
+    var o = (0, puerts_1.$ref)(0);
+    var r = (0, puerts_1.$ref)(0);
+    Global_1.Global.CharacterController.GetViewportSize(o, r);
+    var o = (0, puerts_1.$unref)(o);
+    var o = o / (0, puerts_1.$unref)(r);
+    ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView?.EnableOnce(e);
+    t.bConstrainAspectRatio = false;
+    if (t.Filmback.SensorWidth / t.Filmback.SensorHeight < o) {
+      t.Filmback.SensorWidth = t.Filmback.SensorHeight * o;
+    } else {
+      t.Filmback.SensorHeight = t.Filmback.SensorWidth / o;
+    }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Plot", 26, "TransitionOutConstrainAspectRatio: Current Aspect Ratio", ["SensorWidth", e.Filmback.SensorWidth], ["SensorHeight", e.Filmback.SensorHeight], ["AspectRatio", e.Filmback.SensorWidth / e.Filmback.SensorHeight]);
+      Log_1.Log.Debug("Test", 26, "打印宽高尺寸.ManualAdaptAspectRatio");
     }
   }
-  static HPu(e) {
-    var t;
-    var o;
-    if (ModelManager_1.ModelManager.PlotModel.IsTransitionAspectRatio) {
-      t = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera.GetCineCameraComponent();
-      if (ModelManager_1.ModelManager.PlotModel.SyncAspectRatioToRealViewPortSizeTime <= 0) {
-        ModelManager_1.ModelManager.PlotModel.IsTransitionAspectRatio = false;
-        t.bConstrainAspectRatio = false;
-      } else {
-        ModelManager_1.ModelManager.PlotModel.SyncAspectRatioToRealViewPortSizeTime -= e;
-        e = (0, puerts_1.$ref)(0);
-        o = (0, puerts_1.$ref)(0);
-        Global_1.Global.CharacterController.GetViewportSize(e, o);
-        e = (0, puerts_1.$unref)(e) / (0, puerts_1.$unref)(o);
-        t.bConstrainAspectRatio = true;
-        if (t.Filmback.SensorWidth / t.Filmback.SensorHeight < e) {
-          t.Filmback.SensorWidth = t.Filmback.SensorHeight * e;
-        } else {
-          t.Filmback.SensorHeight = t.Filmback.SensorWidth / e;
-        }
-      }
+  static async CreateAspectTransformView() {
+    if (!ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView) {
+      ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView = new PlotAspectTransformView_1.PlotAspectTransformView();
+      await ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView.CreateThenShowByResourceIdAsync("UiView_BlackFadeScreen_Prefab", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Float));
+    }
+  }
+  static RemoveAspectTransformView() {
+    if (ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView) {
+      ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView.CloseMeAsync();
+      ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView = undefined;
     }
   }
 }
-(exports.PlotController = PlotController).PlotViewManager = new PlotViewManager_1.PlotViewManager();
+exports.PlotController = PlotController;
+(_a = PlotController).PlotViewManager = new PlotViewManager_1.PlotViewManager();
 PlotController.yYi = new PlotFormation_1.PlotFormation();
-PlotController.xwu = new PlotSwitchSubLevel_1.PlotSwitchSubLevel();
+PlotController.Vwu = new PlotSwitchSubLevel_1.PlotSwitchSubLevel();
 PlotController.LYi = 1659230325;
 PlotController.DYi = 426183687;
 PlotController.EYi = false;
@@ -637,6 +668,44 @@ PlotController.UYi = 0;
 PlotController.PYi = new Map();
 PlotController.AYi = 0;
 PlotController.qwa = "";
+PlotController.Dnd = new Map();
+PlotController.xnd = new Set();
+PlotController.Pnd = 0;
+PlotController.TickPriority2 = o => {
+  if (!(_a.Dnd.size <= 0)) {
+    _a.Dnd.forEach((e, t) => {
+      try {
+        e(o);
+      } catch (e) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 26, "PlotController TickPriority2 异常", ["name", t], ["error", e]);
+        }
+      }
+    });
+    if (_a.xnd.size > 0) {
+      _a.xnd.forEach(e => {
+        _a.Dnd.delete(e);
+      });
+      _a.xnd.clear();
+    }
+  }
+};
+PlotController.Yad = new Map();
+PlotController.zad = new Set();
+PlotController.Xad = 0;
+PlotController.AfterTick = o => {
+  if (!(_a.Yad.size <= 0)) {
+    _a.Yad.forEach((e, t) => {
+      e(o);
+    });
+    if (_a.zad.size > 0) {
+      _a.zad.forEach(e => {
+        _a.Yad.delete(e);
+      });
+      _a.zad.clear();
+    }
+  }
+};
 PlotController.O01 = undefined;
 PlotController.SYi = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInPlot) {

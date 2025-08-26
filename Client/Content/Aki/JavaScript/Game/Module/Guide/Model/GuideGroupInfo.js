@@ -250,6 +250,11 @@ class GuideGroupInfo {
   CheckIsGuideRunning() {
     return this.StateMachine.CurrentState !== 0;
   }
+  CheckIsGuideRunningWithoutPending() {
+    var e = this.StateMachine.CurrentState;
+    var t = this.CurrentGuideStep?.StateMachine?.CurrentState ?? 0;
+    return e !== 0 && e !== 3 && t !== 0 && t !== 2;
+  }
 }
 exports.GuideGroupInfo = GuideGroupInfo;
 //# sourceMappingURL=GuideGroupInfo.js.map

@@ -50,11 +50,11 @@ let SceneItemInhalationComponent = SceneItemInhalationComponent_1 = class SceneI
             if (i !== undefined) {
               if (this.zel(i)) {
                 if (!this.Zel.has(i)) {
-                  i.GetComponent(261).StartInhalation(this.Entity);
+                  i.GetComponent(264).StartInhalation(this.Entity);
                   this.Zel.add(i);
                 }
               } else if (this.Zel.has(i)) {
-                i.GetComponent(261).StopInhalation();
+                i.GetComponent(264).StopInhalation();
                 this.Zel.delete(i);
               }
             }
@@ -86,9 +86,9 @@ let SceneItemInhalationComponent = SceneItemInhalationComponent_1 = class SceneI
     return true;
   }
   OnStart() {
-    this.Ear = this.Entity.GetComponent(202);
+    this.Ear = this.Entity.GetComponent(203);
     this.vtn = this.Entity.GetComponent(86);
-    this.mBe = this.Entity.GetComponent(133);
+    this.mBe = this.Entity.GetComponent(134);
     this._ii = this.mBe?.StateTagId;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
     return true;
@@ -100,7 +100,7 @@ let SceneItemInhalationComponent = SceneItemInhalationComponent_1 = class SceneI
         for (var [, e] of t) {
           e = e.Entity;
           if (e !== undefined && this.zel(e)) {
-            e.GetComponent(261).StartInhalation(this.Entity);
+            e.GetComponent(264).StartInhalation(this.Entity);
             this.Zel.add(e);
           }
         }
@@ -114,7 +114,7 @@ let SceneItemInhalationComponent = SceneItemInhalationComponent_1 = class SceneI
     return false;
   }
   zel(t) {
-    var e = t.GetComponent(261);
+    var e = t.GetComponent(264);
     var i = t.GetComponent(0)?.GetBaseInfo();
     var n = e?.InhaledStrength;
     if (e !== undefined && i !== undefined && n !== undefined && !e.IsHaling) {
@@ -145,5 +145,5 @@ let SceneItemInhalationComponent = SceneItemInhalationComponent_1 = class SceneI
     return false;
   }
 };
-SceneItemInhalationComponent = SceneItemInhalationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(262)], SceneItemInhalationComponent);
+SceneItemInhalationComponent = SceneItemInhalationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(265)], SceneItemInhalationComponent);
 exports.SceneItemInhalationComponent = SceneItemInhalationComponent; //# sourceMappingURL=SceneItemInhalationComponent.js.map

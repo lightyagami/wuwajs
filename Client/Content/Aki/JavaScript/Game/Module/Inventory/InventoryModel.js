@@ -42,7 +42,8 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.emi = new Set();
     this.tmi = new Map();
     this.IsConfirmDestruction = false;
-    this.lqu = new Map();
+    this.Fqu = new Map();
+    this.J1d = undefined;
   }
   OnInit() {
     return !(ConfigManager_1.ConfigManager.InventoryConfig.GetAllMainTypeConfig().length <= 0) && !(this.SetSelectedTypeIndex(0), 0);
@@ -601,7 +602,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
       case 14:
         return this.dGc(e);
       case 15:
-        return this.VHc(e);
+        return this.Pzu(e);
       default:
         return this.GetCommonItemCount(e, t);
     }
@@ -662,7 +663,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
   dGc(e) {
     return ModelManager_1.ModelManager.FlySkinModel?.GetFlySkinItemCount(e) ?? 0;
   }
-  VHc(e) {
+  Pzu(e) {
     if (ModelManager_1.ModelManager.PhantomArenaModel?.IsCardUnlock(e) ?? false) {
       return ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e).CardGroupNum;
     } else {
@@ -802,11 +803,11 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return true;
   }
   GetPhantomManageConfigClear() {
-    return this.lqu.size === 0;
+    return this.Fqu.size === 0;
   }
   GetPhantomManageConfigByType(e) {
-    if (this.lqu.size !== 0 && this.lqu.get(e)) {
-      return this.lqu.get(e);
+    if (this.Fqu.size !== 0 && this.Fqu.get(e)) {
+      return this.Fqu.get(e);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Inventory", 75, "批量管理方案未初始化");
@@ -825,8 +826,8 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   UpdatePhantomManageConfig(e, t) {
-    var r = t.rxu;
-    var t = this.lqu.get(e);
+    var r = t.Axu;
+    var t = this.Fqu.get(e);
     if (r && t) {
       var a = r.c5n;
       for (const o of t) {
@@ -840,26 +841,26 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   CoverAllPhantomManageConfig(e) {
-    this.lqu.clear();
+    this.Fqu.clear();
     for (const s of e) {
-      var t = s.oxu;
-      let e = this.lqu.get(t);
+      var t = s.Pxu;
+      let e = this.Fqu.get(t);
       if (!e) {
         e = [];
-        this.lqu.set(t, e);
+        this.Fqu.set(t, e);
       }
       var r;
-      var a = s.rxu;
+      var a = s.Axu;
       if (a) {
         (r = new PhantomManageConfigData_1.PhantomManageConfigData(a.c5n)).SetType(t);
         r.Parse(a);
         e.push(r);
-        this.lqu.set(t, e);
+        this.Fqu.set(t, e);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Inventory", 43, "批量管理方案设置数据为空");
       }
     }
-    for (var [o, n] of this.lqu.entries()) {
+    for (var [o, n] of this.Fqu.entries()) {
       while (n.length < this.GetConfigMaxCountConst()) {
         var i = new PhantomManageConfigData_1.PhantomManageConfigData(n.length);
         i.SetType(o);
@@ -868,30 +869,30 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   InitPhantomManageConfig(e) {
-    this.lqu.clear();
-    this._qu(Protocol_1.Aki.Protocol._xu.Proto_AutoLock, e.nxu);
-    this._qu(Protocol_1.Aki.Protocol._xu.Proto_AutoDisuse, e.sxu);
+    this.Fqu.clear();
+    this.Nqu(Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock, e.xxu);
+    this.Nqu(Protocol_1.Aki.Protocol.Oxu.Proto_AutoDisuse, e.Uxu);
   }
-  uqu(e, t) {
+  Vqu(e, t) {
     for (const r of t) {
       if (r.c5n === e) {
         return r;
       }
     }
   }
-  _qu(t, r) {
+  Nqu(t, r) {
     var a = [];
     var o = this.GetConfigMaxCountConst();
     for (let e = 0; e < o; e++) {
       var n = new PhantomManageConfigData_1.PhantomManageConfigData(e);
       n.SetType(t);
-      var i = this.uqu(e, r);
+      var i = this.Vqu(e, r);
       if (i) {
         n.Parse(i);
       }
       a.push(n);
     }
-    this.lqu.set(t, a);
+    this.Fqu.set(t, a);
   }
   GetSettingTitleItemDataList() {
     var e = this.GetFilterIdConst();
@@ -916,6 +917,12 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetGridTypeByFilterRuleId(e) {
     return InventoryDefine_1.recFilterRuleToGirdType[e] ?? 1;
+  }
+  SetPhantomManageSelectSet(e) {
+    this.J1d = e;
+  }
+  GetPhantomManageSelectSet() {
+    return this.J1d;
   }
 }
 exports.InventoryModel = InventoryModel;

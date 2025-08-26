@@ -38,20 +38,20 @@ class MoraleAreaInfoView extends UiViewBase_1.UiViewBase {
     this.G$1 = t => {
       this.SelectFlag(t);
       this.FlagMonsterInfoPanel.PlayEnter();
-      this.Hsu();
+      this.Cau();
     };
     this.V$1 = () => {
       var t = ModelManager_1.ModelManager.MoraleModel?.IsMoraleGameOver() ? "Morale_title_39" : "Morale_title_21";
       this.SmallFlagDescPanel.SetActive(true);
       this.SmallFlagDescPanel.UpdateDesc(t);
     };
-    this.AUu = () => {
+    this.sDu = () => {
       ModelManager_1.ModelManager.MoraleModel?.TrackAreaExploreBox(this.AreaData.Id);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UITexture], [11, UE.UITexture], [12, UE.UISprite], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIText], [16, UE.UIText], [17, UE.UIText], [18, UE.UIItem], [19, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[14, this.V$1], [19, this.AUu]];
+    this.BtnBindInfo = [[14, this.V$1], [19, this.sDu]];
   }
   Es_() {
     if (Log_1.Log.CheckDebug()) {
@@ -79,7 +79,7 @@ class MoraleAreaInfoView extends UiViewBase_1.UiViewBase {
     this.SmallFlagDescPanel = new MoraleAreaInfoFlagDescPanel_1.MoraleAreaInfoFlagDescPanel();
     await this.SmallFlagDescPanel.Init(t);
     await this.UpdateMapData();
-    await this.$su();
+    await this.pau();
   }
   async OnPlayingStartSequenceAsync() {
     await super.OnPlayingStartSequenceAsync();
@@ -161,7 +161,7 @@ class MoraleAreaInfoView extends UiViewBase_1.UiViewBase {
     this.MapPanel.ClickCallback = this.G$1;
     await this.MapPanel.Init(this.AreaData, this.GetItem(t));
   }
-  async $su() {
+  async pau() {
     var t = this.GetTexture(10);
     var i = this.GetSprite(12);
     var e = this.AreaData.Config.DescGridBgAddX;
@@ -170,9 +170,9 @@ class MoraleAreaInfoView extends UiViewBase_1.UiViewBase {
     var s = this.AreaData.Config.DescGridBgPath;
     await this.SetTextureAsync(e, t);
     await this.SetSpriteAsync(s, i, false);
-    await this.Hsu();
+    await this.Cau();
   }
-  async Hsu() {
+  async Cau() {
     var t;
     var i = this.FlagData.TypeConfig.DescLightPath;
     if (this.LastLightBgPath !== i) {

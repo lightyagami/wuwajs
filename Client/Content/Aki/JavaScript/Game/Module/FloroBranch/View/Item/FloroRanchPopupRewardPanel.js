@@ -19,16 +19,16 @@ const FloroRanchPopupRewardItem_1 = require("./FloroRanchPopupRewardItem");
 class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.gHc = undefined;
-    this.Hvu = new Set();
-    this.$vu = [];
+    this.zKu = undefined;
+    this.Vyu = new Set();
+    this.jyu = [];
     this.TDe = undefined;
     this.ST1 = undefined;
-    this.Wvu = undefined;
-    this.aRu = undefined;
-    this.mHc = undefined;
+    this.Hyu = undefined;
+    this.ARu = undefined;
+    this.JKu = undefined;
     this.J_ = e => {
-      for (const i of this.Hvu) {
+      for (const i of this.Vyu) {
         i.Tick(e);
       }
     };
@@ -46,8 +46,8 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
     await i.Promise;
   }
   OnStart() {
-    this.Wvu = this.GetItem(1);
-    this.Wvu.SetUIActive(false);
+    this.Hyu = this.GetItem(1);
+    this.Hyu.SetUIActive(false);
   }
   OnBeforeShow() {
     this.TDe = ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Forever(this.J_, TimerSystem_1.MIN_TIME);
@@ -58,80 +58,83 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
       this.TDe = undefined;
     }
   }
-  async Qvu() {
+  async $yu() {
     let e = undefined;
     var i;
-    if (this.$vu.length > 0) {
-      e = this.$vu.pop();
+    if (this.jyu.length > 0) {
+      e = this.jyu.pop();
     } else {
       i = this.GetItem(0);
       e = new FloroRanchPopupRewardItem_1.FloroRanchPopupRewardItem();
-      i = LguiUtil_1.LguiUtil.CopyItem(this.Wvu, i);
+      i = LguiUtil_1.LguiUtil.CopyItem(this.Hyu, i);
       await e.CreateThenShowByActorAsync(i.GetOwner());
       e.InitCurve(this.ST1);
     }
     return e;
   }
-  Eyu(e) {
-    this.Hvu.delete(e);
-    this.$vu.push(e);
+  SSu(e) {
+    this.Vyu.delete(e);
+    this.jyu.push(e);
   }
   BindCoinTargetPos(e) {
-    this.gHc = Vector_1.Vector.Create(e.X, e.Y, e.Z);
+    this.zKu = Vector_1.Vector.Create(e.X, e.Y, e.Z);
   }
   BindCoinChangeCallBack(e) {
-    this.aRu = e;
+    this.ARu = e;
   }
   BindDiamondChangeCallBack(e) {
-    this.mHc = e;
+    this.JKu = e;
   }
   async ShowPopupReward(e, i, a) {
-    if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
-      if (i === 0) {
-        this.aRu(a);
-      } else if (i === 1) {
-        this.mHc(a);
-      }
-    } else {
-      var r = await this.Qvu();
-      this.Hvu.add(r);
-      var o = Vector_1.Vector.Create();
-      Vector_1.Vector.Create(e.GetRootActor().GetTransform().GetLocation()).Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, o);
-      r.FollowPosition(o);
-      e.ShowCoinNiagara(a);
-      switch (i) {
-        case 0:
-          await this.Iyu(o, r, a);
-          break;
-        case 1:
-          await this.Tyu(o, r, a);
-          break;
-        case 2:
-          await this.byu(o, r, a);
+    var r = Vector_1.Vector.Create();
+    var t = e.GetRewardPopTransform();
+    if (t) {
+      Vector_1.Vector.Create(t.GetLocation()).Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, r);
+      if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
+        if (i === 0) {
+          this.ARu(a);
+        } else if (i === 1) {
+          this.JKu(a);
+        }
+      } else {
+        var o = await this.$yu();
+        this.Vyu.add(o);
+        o.FollowPosition(r);
+        e.ShowCoinNiagara(a);
+        switch (i) {
+          case 0:
+            await this.MSu(r, o, a);
+            break;
+          case 1:
+            await this.ESu(r, o, a);
+            break;
+          case 2:
+            await this.ISu(r, o, a);
+        }
       }
     }
   }
-  async Iyu(e, i, a) {
-    if (this.gHc) {
+  async MSu(e, i, a) {
+    if (this.zKu) {
       var r = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(1);
       i.Refresh(a, r.GetSmallIcon());
       i.PlayShowRewardAnim();
-      const o = Vector_1.Vector.Create();
-      e.Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, o);
-      const t = this.gHc;
-      i.PopupReward(e, o, () => {
+      const t = Vector_1.Vector.Create();
+      e.Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, t);
+      const o = this.zKu;
+      i.PopupReward(e, t, () => {
         AudioSystem_1.AudioSystem.PostEvent("play_ui_muchang_itemcost_close");
-        i.PlayBezierCurve(o, t, () => {
+        i.PlayBezierCurve(t, o, () => {
           i.PlayCloseRewardAnim().then(() => {
-            this.Eyu(i);
+            this.SSu(i);
           });
-          this.aRu(a);
+          this.ARu(a);
         });
       });
       await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(FloroRanchDefine_1.FLORO_RANCH_REWARD_COIN_BEZIER_WAIT_TIME);
     }
   }
-  async Tyu(e, i, a) {
+  async ESu(e, i, a) {
     var r = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(2);
     i.Refresh(a, r.GetSmallIcon());
     i.PlayShowRewardAnim();
@@ -139,13 +142,14 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
     e.Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, r);
     i.PopupReward(e, r, () => {
       i.PlayHideRewardAnim().then(() => {
-        this.Eyu(i);
+        this.SSu(i);
       });
-      this.mHc(a);
+      this.JKu(a);
     });
-    await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(FloroRanchDefine_1.FLORO_RANCH_REWARD_POPUP_WAIT_TIME);
+    var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetPopupRewardWaitTime();
+    await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(e);
   }
-  async byu(e, i, a) {
+  async ISu(e, i, a) {
     var r = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(3);
     i.Refresh(a, r.GetSmallIcon());
     i.PlayShowRewardAnim();
@@ -153,10 +157,11 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
     e.Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, a);
     i.PopupReward(e, a, () => {
       i.PlayHideRewardAnim().then(() => {
-        this.Eyu(i);
+        this.SSu(i);
       });
     });
-    await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(FloroRanchDefine_1.FLORO_RANCH_REWARD_POPUP_WAIT_TIME);
+    var r = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetPopupRewardWaitTime();
+    await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(r);
   }
 }
 exports.FloroRanchPopupRewardPanel = FloroRanchPopupRewardPanel;

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NoticeReadData = exports.NoticeContentData = exports.NoticeData = exports.PostWebViewEntryPointData = exports.KuroSdkControllerTool = exports.AndroidGlobalProductContentPriceData = exports.GlobalProductContentData = exports.GlobalProductData = exports.SdkAgreementLinkData = exports.AndroidSdkAgreementData = exports.GameWindowStateData = exports.ShareData = exports.SetFontParamWindows = exports.SetFontParamAndroid = exports.QueryProductInfoParamWindows = exports.CloudSDKPayResult = exports.QueryProductInfoParamAndroid = exports.RoleInfoWindows = exports.AndroidSdkPayRole = exports.RoleInfoSdk = exports.SdkPayObject = exports.PayInfoWindowsGlobal = exports.PayInfoWindows = exports.PayInfoMacIosGlobal = exports.PayInfoCloudIos = exports.PayInfoMacIos = exports.PayInfoAndroid = exports.OpenWebViewParamWindows = exports.OpenSdkUrlWndParamWindows = exports.OpenSdkUrlWndParam = exports.OpenPostWebViewParam = exports.OpenWebViewParamCloudGame = exports.OpenCustomerServiceParamWindows = exports.OpenCustomerServiceParamMac = exports.OpenCustomerServiceExtendsInfoData = exports.OpenCustomerServiceExtendsInfo = exports.OpenCustomerServiceParamIos = exports.OpenCustomerServiceParamAndroid = exports.InitializePostWebViewParam = undefined;
+exports.NoticeReadData = exports.NoticeContentData = exports.NoticeData = exports.IntroductionData = exports.PostWebViewEntryPointData = exports.KuroSdkControllerTool = exports.AndroidGlobalProductContentPriceData = exports.GlobalProductContentData = exports.GlobalProductData = exports.SdkAgreementLinkData = exports.AndroidSdkAgreementData = exports.GameWindowStateData = exports.ShareData = exports.SetFontParamWindows = exports.SetFontParamAndroid = exports.QueryProductInfoParamWindows = exports.CloudSDKPayResult = exports.QueryProductInfoParamAndroid = exports.RoleInfoWindows = exports.AndroidSdkPayRole = exports.RoleInfoSdk = exports.SdkPayObject = exports.PayInfoWindowsGlobal = exports.PayInfoWindows = exports.PayInfoMacIosGlobal = exports.PayInfoCloudIos = exports.PayInfoMacIos = exports.PayInfoAndroid = exports.OpenWebViewParamWindows = exports.OpenSdkUrlWndParamWindows = exports.OpenSdkUrlWndParam = exports.OpenPostWebViewParam = exports.OpenWebViewParamCloudGame = exports.OpenCustomerServiceParamWindows = exports.OpenCustomerServiceParamMac = exports.OpenCustomerServiceExtendsInfoData = exports.OpenCustomerServiceExtendsInfo = exports.OpenCustomerServiceParamIos = exports.OpenCustomerServiceParamAndroid = exports.InitializePostWebViewParam = undefined;
 const Info_1 = require("../../Core/Common/Info");
 const Json_1 = require("../../Core/Common/Json");
 const Log_1 = require("../../Core/Common/Log");
@@ -75,7 +75,7 @@ class OpenCustomerServiceParamMac extends Json_1.JsonObjBase {
     this.RoleName = "";
     this.ServerId = "";
     this.ServerName = "";
-    this.RoleLevel = 0;
+    this.RoleLevel = "";
     this.VipLevel = 0;
     this.PartyName = "";
     this.RoleCreateTime = 0;
@@ -544,6 +544,13 @@ class PostWebViewEntryPointData extends Json_1.JsonObjBase {
   }
 }
 exports.PostWebViewEntryPointData = PostWebViewEntryPointData;
+class IntroductionData extends Json_1.JsonObjBase {
+  constructor() {
+    super(...arguments);
+    this.version = "";
+  }
+}
+exports.IntroductionData = IntroductionData;
 class NoticeData extends Json_1.JsonObjBase {
   constructor() {
     super(...arguments);

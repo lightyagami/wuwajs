@@ -16,6 +16,9 @@ class OpenAndCloseViewHotKey {
   get ActionName() {
     return this.actionname();
   }
+  get EffectiveType() {
+    return this.effectivetype();
+  }
   get InputControllerType() {
     return this.inputcontrollertype();
   }
@@ -73,7 +76,7 @@ class OpenAndCloseViewHotKey {
     }
     return e;
   }
-  inputcontrollertype() {
+  effectivetype() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -81,15 +84,15 @@ class OpenAndCloseViewHotKey {
       return 0;
     }
   }
-  viewname(t) {
-    var e = this.J7.__offset(this.z7, 10);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+  inputcontrollertype() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
-    return e;
   }
-  handletype(t) {
+  viewname(t) {
     var e = this.J7.__offset(this.z7, 12);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -97,19 +100,19 @@ class OpenAndCloseViewHotKey {
     }
     return e;
   }
+  handletype(t) {
+    var e = this.J7.__offset(this.z7, 14);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
   ispresstrigger() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   pressstarttime() {
-    var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  presstriggertime() {
     var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -117,12 +120,20 @@ class OpenAndCloseViewHotKey {
       return 0;
     }
   }
-  isreleasetrigger() {
+  presstriggertime() {
     var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  isreleasetrigger() {
+    var t = this.J7.__offset(this.z7, 22);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   releaseinvalidtime() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -130,18 +141,18 @@ class OpenAndCloseViewHotKey {
     }
   }
   ispressclose() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   isreleaseclose() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetViewparamAt(t) {
     return this.viewparam(t);
   }
   viewparam(t, e) {
-    var s = this.J7.__offset(this.z7, 28);
+    var s = this.J7.__offset(this.z7, 30);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, e) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -149,7 +160,7 @@ class OpenAndCloseViewHotKey {
     return s;
   }
   viewparamLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {

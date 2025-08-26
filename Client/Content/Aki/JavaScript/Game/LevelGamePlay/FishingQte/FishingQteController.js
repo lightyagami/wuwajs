@@ -32,7 +32,7 @@ class FishingQteController extends ControllerBase_1.ControllerBase {
   static FishingGetRequest(e, o) {
     var r = Protocol_1.Aki.Protocol.Hv_.create();
     r.F4n = e;
-    Net_1.Net.Call(22471, r, e => {
+    Net_1.Net.Call(17857, r, e => {
       var r;
       if (e) {
         if (r = e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -41,7 +41,7 @@ class FishingQteController extends ControllerBase_1.ControllerBase {
           ModelManager_1.ModelManager.FishingQteModel.SetTempGetDataListFromServer(e.GBs, 2);
           o?.(r, e.bMs.length);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28191);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21773);
           o?.(false);
         }
       } else {

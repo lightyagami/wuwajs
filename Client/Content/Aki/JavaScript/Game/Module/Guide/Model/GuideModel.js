@@ -18,9 +18,11 @@ class GuideModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.IsGmInvoke = false;
+    this.ShouldBlockGuideBecauseUiNotRender = false;
     this.BJt = undefined;
     this.bJt = undefined;
     this.CurrentGroupMap = undefined;
+    this.FocusGroupMapByView = undefined;
     this.qJt = undefined;
     this.GJt = undefined;
     this.NJt = undefined;
@@ -64,6 +66,7 @@ class GuideModel extends ModelBase_1.ModelBase {
     }
     this.CurrentGroupMap = new Map();
     this.kJt = new Map([[4, undefined], [1, undefined]]);
+    this.FocusGroupMapByView = new Map();
     this.FJt = 0;
     return !(this.IsGmInvoke = false);
   }
@@ -287,18 +290,18 @@ class GuideModel extends ModelBase_1.ModelBase {
             var s = e.OpenLimitCondition;
             if (!s || this.IsGmInvoke || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(s.toString(), undefined)) {
               const a = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-              var h;
-              var u = GuideModel.qT1(i);
-              if (u.find(i => i === a)) {
-                h = new GuideGroupInfo_1.GuideGroupInfo(i);
-                this.CurrentGroupMap.set(h.Id, h);
+              var u;
+              var h = GuideModel.qT1(i);
+              if (h.find(i => i === a)) {
+                u = new GuideGroupInfo_1.GuideGroupInfo(i);
+                this.CurrentGroupMap.set(u.Id, u);
                 if (Log_1.Log.CheckDebug()) {
                   Log_1.Log.Debug("Guide", 16, "创建引导组数据成功", ["组Id", i]);
                 }
-                return h;
+                return u;
               }
               if (Log_1.Log.CheckWarn()) {
-                Log_1.Log.Warn("Guide", 16, "引导组的副本Id与当前所在副本不匹配", ["组Id", i], ["当前所在副本Id", a], ["配置副本Id", u]);
+                Log_1.Log.Warn("Guide", 16, "引导组的副本Id与当前所在副本不匹配", ["组Id", i], ["当前所在副本Id", a], ["配置副本Id", h]);
               }
             } else if (Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("Guide", 16, "引导组的入队条件组不通过", ["组Id", i], ["conditionGroupId", s]);
@@ -362,6 +365,7 @@ class GuideModel extends ModelBase_1.ModelBase {
     this.bJt.clear();
     this.CurrentGroupMap.clear();
     this.BJt.clear();
+    this.FocusGroupMapByView.clear();
     if (this.qJt) {
       this.qJt.length = 0;
     }
@@ -386,6 +390,63 @@ class GuideModel extends ModelBase_1.ModelBase {
       }
     }
     return t;
+  }
+  GetRunningWithoutPendingGroupIdList() {
+    var i;
+    var e;
+    var t = [];
+    for ([i, e] of this.CurrentGroupMap) {
+      if (e.CheckIsGuideRunningWithoutPending()) {
+        t.push(i);
+      }
+    }
+    return t;
+  }
+  AddFocusGuideGroupToView(e) {
+    var i;
+    var t;
+    if (e?.CurrentGuideStep && e.CurrentGuideStep.Config.ContentType === 4 && (i = ConfigManager_1.ConfigManager.GuideConfig.GetGuideFocus(e.CurrentGuideStep.Id))) {
+      i = i.ViewName;
+      if (this.FocusGroupMapByView.has(i)) {
+        if ((t = this.FocusGroupMapByView.get(i)).find(i => i.Id === e.Id)) {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("Guide", 74, "尝试添加已存在的引导组到View", ["组Id", e.Id], ["View", i]);
+          }
+        } else {
+          t.push(e);
+        }
+      } else {
+        this.FocusGroupMapByView.set(i, [e]);
+      }
+    }
+  }
+  RemoveFocusGuideGroupFromView(e) {
+    var i;
+    var t;
+    var r;
+    if (e?.CurrentGuideStep && e.CurrentGuideStep.Config.ContentType === 4 && (i = ConfigManager_1.ConfigManager.GuideConfig.GetGuideFocus(e.CurrentGuideStep.Id))) {
+      i = i.ViewName;
+      if (this.FocusGroupMapByView.has(i)) {
+        if ((r = (t = this.FocusGroupMapByView.get(i)).findIndex(i => i.Id === e.Id)) >= 0) {
+          t.splice(r, 1);
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Guide", 74, "尝试从View中移除不存在的引导组", ["组Id", e.Id], ["View", i]);
+        }
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Guide", 74, "尝试从不存在的View中移除引导组", ["组Id", e.Id], ["View", i]);
+      }
+    }
+  }
+  FinishFocusGuideGroupOnView(i) {
+    var e = this.FocusGroupMapByView.get(i);
+    if (e && e.length !== 0) {
+      for (const t of e) {
+        this.FinishGroup(t.Id);
+      }
+      this.FocusGroupMapByView.delete(i);
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Guide", 74, "尝试结束不存在的引导组", ["View", i]);
+    }
   }
   static qT1(i) {
     i = ConfigManager_1.ConfigManager.GuideConfig?.GetGroup(i);

@@ -7,26 +7,26 @@ exports.InputTagModifyUtils = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const InputDistributeDefine_1 = require("../../Ui/InputDistribute/InputDistributeDefine");
 class InputTagModifyUtils {
-  static KK1() {
-    this.XK1.clear();
-    this.YK1.clear();
+  static JK1() {
+    this.ZK1.clear();
+    this.eX1.clear();
     for (const i of InputDistributeDefine_1.initializeInputDistributeTagDefine) {
       if (i.Tag !== InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag) {
-        this.XK1.set(i.Tag, i.ParentTag);
-        let t = this.YK1.get(i.ParentTag);
+        this.ZK1.set(i.Tag, i.ParentTag);
+        let t = this.eX1.get(i.ParentTag);
         if (!t) {
           t = new Set();
-          this.YK1.set(i.ParentTag, t);
+          this.eX1.set(i.ParentTag, t);
         }
         t.add(i.Tag);
       }
     }
   }
-  static zK1(t, i, e = false) {
-    if (!this.XK1.size || !!this.YK1.size) {
-      this.KK1();
+  static tX1(t, i, e = false) {
+    if (!this.ZK1.size || !!this.eX1.size) {
+      this.JK1();
     }
-    t = this.YK1.get(t);
+    t = this.eX1.get(t);
     if (t?.size) {
       if (i instanceof Set) {
         for (const s of t) {
@@ -37,20 +37,20 @@ class InputTagModifyUtils {
       }
       if (e) {
         for (const a of t) {
-          this.zK1(a, i, true);
+          this.tX1(a, i, true);
         }
       }
     }
   }
-  static JK1(t) {
-    if (!this.XK1.size || !!this.YK1.size) {
-      this.KK1();
+  static iX1(t) {
+    if (!this.ZK1.size || !!this.eX1.size) {
+      this.JK1();
     }
-    return this.XK1.get(t);
+    return this.ZK1.get(t);
   }
   static GetIsInputTagEnable(t, i, e = false) {
-    if (!this.XK1.size || !!this.YK1.size) {
-      this.KK1();
+    if (!this.ZK1.size || !!this.eX1.size) {
+      this.JK1();
     }
     if (e) {
       return t.includes(i);
@@ -61,11 +61,11 @@ class InputTagModifyUtils {
       if (s.has(a)) {
         return true;
       }
-      a = this.XK1.get(a);
+      a = this.ZK1.get(a);
     }
     return false;
   }
-  static ZK1(t, i, e) {
+  static rX1(t, i, e) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("LevelEvent", 39, "[修改输入Tag] 直接增删Tag", ["新增Tag", i], ["删除Tag", e], ["目标Tag列表", t]);
     }
@@ -81,14 +81,14 @@ class InputTagModifyUtils {
       }
     }
   }
-  static eX1(t, e) {
+  static oX1(t, e) {
     if (!this.GetIsInputTagEnable(t, e, false)) {
-      var s = this.JK1(e);
+      var s = this.iX1(e);
       const n = new Set();
-      this.zK1(s, n);
+      this.tX1(s, n);
       var a = new Set();
-      this.zK1(e, a, true);
-      this.ZK1(t, [e], [...a]);
+      this.tX1(e, a, true);
+      this.rX1(t, [e], [...a]);
       let i = 0;
       t.forEach(t => {
         if (n.has(t)) {
@@ -96,18 +96,18 @@ class InputTagModifyUtils {
         }
       });
       if (i === n.size && s) {
-        this.eX1(t, s);
+        this.oX1(t, s);
       }
     }
   }
-  static tX1(t, i) {
+  static nX1(t, i) {
     if (this.GetIsInputTagEnable(t, i, false)) {
-      var e = this.JK1(i);
+      var e = this.iX1(i);
       var s = new Set();
-      this.zK1(e, s);
+      this.tX1(e, s);
       var a = new Set();
-      this.zK1(i, a, true);
-      this.ZK1(t, [], [i, ...a]);
+      this.tX1(i, a, true);
+      this.rX1(t, [], [i, ...a]);
       var n = [];
       for (const o of s) {
         if (o !== i && this.GetIsInputTagEnable(t, o, false)) {
@@ -115,10 +115,10 @@ class InputTagModifyUtils {
         }
       }
       if (e) {
-        this.tX1(t, e);
+        this.nX1(t, e);
       }
       for (const r of n) {
-        this.eX1(t, r);
+        this.oX1(t, r);
       }
     }
   }
@@ -127,7 +127,7 @@ class InputTagModifyUtils {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 39, "[修改输入Tag] 添加:开始", ["目标Tag", i], ["当前Tag列表", t]);
       }
-      this.eX1(t, i);
+      this.oX1(t, i);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 39, "[修改输入Tag] 添加:完成", ["目标Tag", i], ["当前Tag列表", t]);
       }
@@ -135,12 +135,12 @@ class InputTagModifyUtils {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 39, "[修改输入Tag] 删除", ["目标Tag", i], ["当前Tag列表", t]);
       }
-      this.tX1(t, i);
+      this.nX1(t, i);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 39, "[修改输入Tag] 删除:完成", ["目标Tag", i], ["当前Tag列表", t]);
       }
     }
   }
 }
-(exports.InputTagModifyUtils = InputTagModifyUtils).XK1 = new Map();
-InputTagModifyUtils.YK1 = new Map(); //# sourceMappingURL=InputTagModifyUtils.js.map
+(exports.InputTagModifyUtils = InputTagModifyUtils).ZK1 = new Map();
+InputTagModifyUtils.eX1 = new Map(); //# sourceMappingURL=InputTagModifyUtils.js.map

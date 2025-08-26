@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomManageConfigViewModel = undefined;
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
-const ModelManager_1 = require("../../../Manager/ModelManager");
 class ViewModelBase {
   constructor() {
     this.DataMap = new Map();
@@ -43,11 +42,12 @@ class ViewModelBase {
 class PhantomManageConfigViewModel extends ViewModelBase {
   constructor() {
     super();
-    this.DataMap.set(0, Protocol_1.Aki.Protocol._xu.Proto_AutoLock);
+    this.DataMap.set(0, Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock);
     this.DataMap.set(1, undefined);
-    this.DataMap.set(2, false);
-    this.DataMap.set(3, undefined);
-    this.DataMap.set(4, false);
+    this.DataMap.set(2, undefined);
+    this.DataMap.set(3, false);
+    this.DataMap.set(4, undefined);
+    this.DataMap.set(5, false);
   }
   SetSelectType(t, e) {
     this.SetData(0, t, e);
@@ -55,33 +55,46 @@ class PhantomManageConfigViewModel extends ViewModelBase {
   GetSelectType() {
     return this.GetData(0);
   }
+  SetSelectIndex(t, e, i) {
+    let s = this.GetData(1);
+    (s = s || new Map()).set(t, e);
+    this.SetData(1, s, i);
+  }
+  GetSelectIndex(t) {
+    var e = this.GetData(1);
+    if (e) {
+      return e.get(t) ?? 0;
+    } else {
+      return 0;
+    }
+  }
   SetSelectConfig(t, e) {
-    this.SetData(1, t, e);
-  }
-  GetSelectConfig() {
-    return this.GetData(1);
-  }
-  GetEditState() {
-    return this.GetData(2);
-  }
-  SetEditState(t, e) {
     this.SetData(2, t, e);
   }
-  InitEditDataSwitch(t, e) {
-    this.SetData(4, t.GetIsOn(), e);
-    this.SetData(3, t.GetRuleIdMapValueList(), e);
+  GetSelectConfig() {
+    return this.GetData(2);
   }
-  SetEditSwitch(t, e) {
-    this.SetData(4, t, e);
-  }
-  GetEditSwitch() {
-    return this.GetData(4);
-  }
-  GetEditData() {
+  GetEditState() {
     return this.GetData(3);
   }
+  SetEditState(t, e) {
+    this.SetData(3, t, e);
+  }
+  InitEditDataSwitch(t, e) {
+    this.SetData(5, t.GetIsOn(), e);
+    this.SetData(4, t.GetRuleIdMapValueList(), e);
+  }
+  SetEditSwitch(t, e) {
+    this.SetData(5, t, e);
+  }
+  GetEditSwitch() {
+    return this.GetData(5);
+  }
+  GetEditData() {
+    return this.GetData(4);
+  }
   GetEditDataByRuleId(t) {
-    var e = this.GetData(3);
+    var e = this.GetData(4);
     if (e) {
       var i;
       var s;
@@ -96,45 +109,38 @@ class PhantomManageConfigViewModel extends ViewModelBase {
   }
   SetEditDataById(t, e, i, s) {
     let r = this.GetEditDataByRuleId(t).get(t) ?? [];
-    r = i ? this.d2u(r, e) : this.m2u(r, e);
-    var a;
-    var o = this.GetData(3);
-    for ([a] of o) {
-      if (t === a) {
-        o.set(a, r);
+    r = i ? this.KGu(r, e) : this.XGu(r, e);
+    var h;
+    var o = this.GetData(4);
+    for ([h] of o) {
+      if (t === h) {
+        o.set(h, r);
       }
     }
     if (!s) {
-      this.Notify(3);
+      this.Notify(4);
     }
   }
   SetEditDataByIdList(t, e, i) {
     var s;
-    var r = this.GetData(3);
+    var r = this.GetData(4);
     for ([s] of r) {
       if (t === s) {
         r.set(s, e);
       }
     }
     if (!i) {
-      this.Notify(3);
+      this.Notify(4);
     }
   }
-  m2u(t, e) {
+  XGu(t, e) {
     return t.filter(t => t !== e);
   }
-  d2u(t, e) {
+  KGu(t, e) {
     if (new Set(t).has(e)) {
       return t;
     } else {
       return [...t, e];
-    }
-  }
-  RefreshSelectConfig() {
-    var t = this.GetData(1);
-    var t = ModelManager_1.ModelManager.InventoryModel.GetPhantomManageConfigByTypeAndIndex(t.GetType(), t.GetIndex());
-    if (t) {
-      this.SetSelectConfig(t);
     }
   }
 }

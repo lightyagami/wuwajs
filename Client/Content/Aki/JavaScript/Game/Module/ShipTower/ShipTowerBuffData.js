@@ -23,6 +23,9 @@ class ShipTowerBuffData {
   get CanUseCount() {
     return this.TotalUseCount - this.UsedCount;
   }
+  get CanUseCountNoEdit() {
+    return this.TotalUseCount - this.UsedCountNoEdit;
+  }
   get IsUnlock() {
     return this.TotalUseCount > 0;
   }
@@ -34,6 +37,16 @@ class ShipTowerBuffData {
     if (t[0]?.IsHaveProtoData) {
       return t.filter(t => !t.IsEndLess && t.IsUnLocked()).reduce((t, e) => {
         return t + e.TeamDataList.filter(t => t.BuffDataEdit?.Id === this.Id).length;
+      }, 0);
+    } else {
+      return 0;
+    }
+  }
+  get UsedCountNoEdit() {
+    var t = ModelManager_1.ModelManager.ShipTowerModel.TowerStageDataList;
+    if (t[0]?.IsHaveProtoData) {
+      return t.filter(t => !t.IsEndLess && t.IsUnLocked()).reduce((t, e) => {
+        return t + e.TeamDataList.filter(t => t.BuffData?.Id === this.Id).length;
       }, 0);
     } else {
       return 0;

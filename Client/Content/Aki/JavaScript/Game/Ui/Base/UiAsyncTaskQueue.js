@@ -6,12 +6,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.UiAsyncTaskQueue = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const Queue_1 = require("../../../Core/Container/Queue");
+const Macro_1 = require("../../../Core/Preprocessor/Macro");
 class UiAsyncTaskQueue {
   constructor() {
     this.TaskQueue = undefined;
     this.Ak_ = false;
     this.wk_ = false;
-    this.Pk_ = undefined;
+    this.CurrentRunningTask = undefined;
+    this.RunAfterCallback = undefined;
   }
   EnQueue(s) {
     this.TaskQueue ||= new Queue_1.Queue();
@@ -23,13 +25,14 @@ class UiAsyncTaskQueue {
   async ProcessQueue() {
     if (!this.wk_ && !this.Ak_ && this.TaskQueue && this.TaskQueue.Size !== 0) {
       for (this.Ak_ = true; this.TaskQueue.Size > 0;) {
-        this.Pk_ = this.TaskQueue.Pop();
-        if (this.Pk_) {
+        this.CurrentRunningTask = this.TaskQueue.Pop();
+        if (this.CurrentRunningTask) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("UiAsyncTask", 43, "[UiAsyncTask] 任务开始执行", ["TaskName", this.Pk_.Name], ["Status", this.Pk_.Status]);
+            Log_1.Log.Debug("UiAsyncTask", 43, "[UiAsyncTask] 任务开始执行", ["TaskName", this.CurrentRunningTask.Name], ["Status", this.CurrentRunningTask.Status]);
           }
-          await this.Pk_.Run();
-          this.Pk_ = undefined;
+          await this.CurrentRunningTask.Run();
+          this.CurrentRunningTask = undefined;
+          this.RunAfterCallback?.();
         }
       }
       this.Ak_ = false;
@@ -37,7 +40,7 @@ class UiAsyncTaskQueue {
   }
   Cancel() {
     this.wk_ = true;
-    this.Pk_?.Cancel();
+    this.CurrentRunningTask?.Cancel();
     if (this.TaskQueue) {
       for (let s = 0; s < this.TaskQueue.Size; s++) {
         this.TaskQueue.Get(s)?.Cancel();

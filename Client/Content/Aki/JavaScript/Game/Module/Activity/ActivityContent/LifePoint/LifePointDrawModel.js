@@ -78,7 +78,7 @@ class LifePointDrawModel extends ModelBase_1.ModelBase {
     var o;
     let a = undefined;
     for (const i of ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities()) {
-      if (i.Type === Protocol_1.Aki.Protocol.uks.kwu) {
+      if (i.Type === Protocol_1.Aki.Protocol.uks.iAu) {
         var n = i;
         if (n.CheckIfHaveChallenge(e)) {
           a = n;
@@ -91,7 +91,7 @@ class LifePointDrawModel extends ModelBase_1.ModelBase {
   SaveChallengeRedDotState(e, r) {
     let t = undefined;
     for (const a of ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities()) {
-      if (a.Type === Protocol_1.Aki.Protocol.uks.kwu) {
+      if (a.Type === Protocol_1.Aki.Protocol.uks.iAu) {
         var o = a;
         if (o.CheckIfHaveChallenge(r)) {
           t = o;

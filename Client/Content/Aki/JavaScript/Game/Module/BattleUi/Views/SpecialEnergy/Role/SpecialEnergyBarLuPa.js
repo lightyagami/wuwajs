@@ -13,7 +13,7 @@ class SpecialEnergyBarLuPa extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
     this.cer = 0;
     this.Rdt = undefined;
     this.tYo = t => {
-      this.Uvu(t);
+      this.Oyu(t);
     };
   }
   OnRegisterComponent() {
@@ -40,14 +40,14 @@ class SpecialEnergyBarLuPa extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
     this.InitTweenAnim(7);
     this.InitTweenAnim(8);
     var t = this.TagComponent?.GetTagCount(682210009) ?? 0;
-    this.Uvu(t, true);
+    this.Oyu(t, true);
   }
-  Uvu(t, i = false) {
+  Oyu(t, i = false) {
     if (t !== this.cer || i) {
       var s = this.cer;
       this.cer = t;
       this.Rdt.SetTagCount(this.cer);
-      this.CSu(this.cer >= 2);
+      this.p7c(this.cer >= 2);
       if (i) {
         if (this.cer >= 2) {
           this.PlayTweenAnim(3);
@@ -78,7 +78,7 @@ class SpecialEnergyBarLuPa extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
       }
     }
   }
-  CSu(t) {
+  p7c(t) {
     this.GetItem(1)?.SetUIActive(!t);
     this.GetItem(2)?.SetUIActive(t);
   }

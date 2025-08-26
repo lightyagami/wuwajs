@@ -9,6 +9,7 @@ const QueryTypeDefine_1 = require("../../../../../../../Core/Define/QueryTypeDef
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../../../../../../Core/Utils/TraceElementCommon");
 const ColorUtils_1 = require("../../../../../../Utils/ColorUtils");
+const CharacterSwimComponent_1 = require("../../CharacterSwimComponent");
 exports.angles = [0, 270, 90, 180];
 exports.paramMap = new Map();
 exports.CONTEXT = "SkillBehaviorAction.SetLocation";
@@ -102,28 +103,35 @@ function traceWater(e, r, t, o) {
   }
 }
 function traceGroundWithGravity(e, r, t, o = DELTA_HEIGHT) {
-  var n = e.Entity.GetComponent(178);
-  var a = Vector_1.Vector.Create();
-  var i = a;
-  n.GravityUp.Multiply(o, i);
-  r.Subtraction(i, a);
+  var n = e.Entity.GetComponent(179);
+  var a = e.Entity.GetComponent(77);
+  var i = Vector_1.Vector.Create();
+  var c = i;
+  n.GravityUp.Multiply(o, c);
+  r.Subtraction(c, i);
   var o = getLineTrace(e.Actor, t, 0);
   TraceElementCommon_1.TraceElementCommon.SetStartLocation(o, r);
-  TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, a);
-  var c = TraceElementCommon_1.TraceElementCommon.LineTrace(o, exports.CONTEXT + ".traceGround");
-  var o = o.HitResult;
-  if (c && o.bBlockingHit) {
-    c = Vector_1.Vector.Create();
-    TraceElementCommon_1.TraceElementCommon.GetHitLocation(o, 0, c);
-    o = traceWater(e, r, a, t);
-    if (o[0]) {
-      if (o[1].Subtraction(c, i).DotProduct(n.GravityUp) >= e.ScaledHalfHeight) {
+  TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, i);
+  var r = TraceElementCommon_1.TraceElementCommon.LineTrace(o, exports.CONTEXT + ".traceGround");
+  var i = o.HitResult;
+  if (r && i.bBlockingHit) {
+    o = Vector_1.Vector.Create();
+    r = Vector_1.Vector.Create();
+    TraceElementCommon_1.TraceElementCommon.GetHitLocation(i, 0, o);
+    n.GravityUp.Multiply(e.ScaledHalfHeight, c);
+    e.ActorLocationProxy.Addition(c, r);
+    i = traceWater(e, r, o, t);
+    if (i[0]) {
+      if (i[1].Subtraction(o, r).DotProduct(n.GravityUp) >= e.ScaledHalfHeight * 2 * CharacterSwimComponent_1.LEAVE_SWIM_LESS_THAN_THIS) {
         return [false, undefined];
       }
     }
-    n.GravityUp.Multiply(e.ScaledHalfHeight, i);
-    c.AdditionEqual(i);
-    return [true, c];
+    if (a?.CheckUpWaterSurface()) {
+      return [false, undefined];
+    } else {
+      o.AdditionEqual(c);
+      return [true, o];
+    }
   }
   return [false, undefined];
 }

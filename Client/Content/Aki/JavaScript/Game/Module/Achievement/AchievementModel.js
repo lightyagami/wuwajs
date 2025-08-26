@@ -224,6 +224,9 @@ class AchievementModel extends ModelBase_1.ModelBase {
     }
     return this.Ibe.get(t);
   }
+  GetAllAchievementData() {
+    return this.Ibe;
+  }
   GetAchievementCategoryArray() {
     if (this.Sbe.length === 0) {
       this.Pbe();
@@ -247,6 +250,9 @@ class AchievementModel extends ModelBase_1.ModelBase {
       }
       return this.Tbe.get(e);
     }
+  }
+  GetAllAchievementGroupData() {
+    return this.Tbe;
   }
   GetRecentFinishedAchievementList() {
     var t;

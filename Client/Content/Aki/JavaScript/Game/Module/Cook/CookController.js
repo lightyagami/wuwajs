@@ -50,14 +50,14 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, CookController.Nqt);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28612, e => {
+    Net_1.Net.Register(24685, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10264_服务端主动推送厨师数据");
       }
       ModelManager_1.ModelManager.CookModel.UpdateCookerInfo(e.TPs);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateCookerInfo);
     });
-    Net_1.Net.Register(16729, e => {
+    Net_1.Net.Register(23824, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10265_服务端主动推送配方更新");
       }
@@ -66,8 +66,8 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28612);
-    Net_1.Net.UnRegister(16729);
+    Net_1.Net.UnRegister(24685);
+    Net_1.Net.UnRegister(23824);
   }
   static CheckCanShowExpItem() {
     return ModelManager_1.ModelManager.CookModel.GetCookerInfo().AddExp !== 0;
@@ -84,7 +84,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Debug("Cook", 49, "10260_客户端请求烹饪系统相关数据(异步刷新用)");
     }
     var e = new Protocol_1.Aki.Protocol.LZn();
-    var e = await Net_1.Net.CallAsync(26102, e);
+    var e = await Net_1.Net.CallAsync(28417, e);
     if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10260_返回请求烹饪系统相关数据(异步刷新用)");
@@ -92,7 +92,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
       CookController.Oqt(e);
       return true;
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 21916, undefined, true, false);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28142, undefined, true, false);
       if (UiManager_1.UiManager.IsViewShow("CookRootView")) {
         UiManager_1.UiManager.CloseView("CookRootView");
       }
@@ -102,7 +102,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
   static SendCookFormulaRequest(t) {
     var e = new Protocol_1.Aki.Protocol.gZn();
     e.LVn = t;
-    Net_1.Net.Call(29377, Protocol_1.Aki.Protocol.gZn.create(e), e => {
+    Net_1.Net.Call(20790, Protocol_1.Aki.Protocol.gZn.create(e), e => {
       var o;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10252_食物配方解锁请求返回");
@@ -114,7 +114,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("CookStudy", o);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateFormula);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22361);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 19805);
       }
     });
   }
@@ -124,7 +124,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     r.Q6n = o;
     r.DVn = t;
     r.AVn = ModelManager_1.ModelManager.CookModel.CurrentInteractCreatureDataLongId;
-    Net_1.Net.Call(21846, Protocol_1.Aki.Protocol.vZn.create(r), e => {
+    Net_1.Net.Call(19838, Protocol_1.Aki.Protocol.vZn.create(r), e => {
       var o;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10254_食物烹饪请求返回");
@@ -144,7 +144,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
         });
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CookSuccess);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 29720);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 26588);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CookFail);
       }
     });
@@ -195,7 +195,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     r.RVn = CookController.Fqt(o);
     r.DVn = t;
     r.AVn = ModelManager_1.ModelManager.CookModel.CurrentInteractCreatureDataLongId;
-    Net_1.Net.Call(24585, Protocol_1.Aki.Protocol.MZn.create(r), e => {
+    Net_1.Net.Call(28755, Protocol_1.Aki.Protocol.MZn.create(r), e => {
       var o;
       var t;
       if (Log_1.Log.CheckDebug()) {
@@ -223,20 +223,20 @@ class CookController extends UiControllerBase_1.UiControllerBase {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MachiningStudyFail);
         }
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 21820);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 27786);
       }
     });
   }
   static SendCertificateLevelRewardRequest() {
     var e = new Protocol_1.Aki.Protocol.EZn();
-    Net_1.Net.Call(25819, Protocol_1.Aki.Protocol.EZn.create(e), e => {
+    Net_1.Net.Call(24963, Protocol_1.Aki.Protocol.EZn.create(e), e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10258_领取厨师等级奖励返回");
       }
       if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpgradeCookerLevel);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28327);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22012);
       }
     });
   }
@@ -244,7 +244,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     var t = new Protocol_1.Aki.Protocol.mZn();
     t.xVn = o;
     t.F4n = e;
-    Net_1.Net.Call(27000, Protocol_1.Aki.Protocol.mZn.create(t), e => {
+    Net_1.Net.Call(26240, Protocol_1.Aki.Protocol.mZn.create(t), e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Cook", 49, "10250_请求修复厨具返回");
       }
@@ -254,23 +254,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FixSuccess);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 21150);
-      }
-    });
-  }
-  static SendInteractiveUpdateRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.DZn();
-    o.PVn = e;
-    Net_1.Net.Call(22544, Protocol_1.Aki.Protocol.DZn.create(o), e => {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Cook", 49, "10262_交互跟新请求");
-      }
-      if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Cook", 49, "请求交互更新成功", ["交互Id", e.PVn]);
-        }
-      } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 23393);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20492);
       }
     });
   }
@@ -556,7 +540,7 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     if (e) {
       e = EntitySystem_1.EntitySystem.Get(e);
       if (e) {
-        return e.GetComponent(196);
+        return e.GetComponent(197);
       }
     }
   }

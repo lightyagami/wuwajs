@@ -94,6 +94,15 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
   get CurSeason() {
     return this.cA_;
   }
+  get CurSeasonCfg() {
+    var e = ConfigManager_1.ConfigManager.ShipTowerConfig.GetSeasonCfgById(this.CurSeason);
+    if (e) {
+      return e;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("ShipTower", 78, "ShipTowerModel cfg is null", ["season", this.CurSeason]);
+    }
+  }
   get CurSeasonEndTime() {
     return this.UG_;
   }
@@ -196,7 +205,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   qG_() {
-    return !!this.IsOpen() && (!this.TowerStageDataList[0]?.IsHaveProtoData || !!this.TimeIsOver());
+    return !!this.IsOpen() && (!this.TowerStageDataList[0]?.IsHaveProtoData || !!this.TimeIsOver() || !!UiManager_1.UiManager.IsViewOpen("ShipTowerReviewView"));
   }
   fA_() {
     this.uA_.length = 0;
@@ -435,7 +444,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     this.CA_();
   }
   SlashAndTowerInfoResponse(e) {
-    if (!this.ls_(e, 18481, false)) {
+    if (!this.ls_(e, 29202, false)) {
       this.Zn_.length = 0;
       e?.BL_.forEach(e => {
         this.as_(e.s5n);
@@ -447,7 +456,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
       this.CheckOldSeasonBuffQualityList();
       this._5_(this.CurSeason);
       e?.BL_.forEach(e => {
-        this.GetStageDataById(e.s5n)?.ProtoUpdateData(e);
+        this.GetStageDataById(e.s5n)?.ProtoNotifyInitData(e);
       });
       this.dA_.clear();
       e?.kL_.forEach(e => {
@@ -459,7 +468,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerScoreRewardResponse(e) {
-    if (!this.ls_(e, 28516)) {
+    if (!this.ls_(e, 25264)) {
       e.cOl.forEach(e => {
         this.dA_.add(e);
       });
@@ -468,7 +477,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   EndLessHistoryResponse(e) {
-    if (!this.ls_(e, 29142)) {
+    if (!this.ls_(e, 28203)) {
       this.RecordList.length = 0;
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.CurrentRecord, e.qL_);
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.HistoryRecord, e.OL_);
@@ -508,7 +517,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerSaveRecordResponse(e, t) {
-    if (!this.ls_(t, 20299)) {
+    if (!this.ls_(t, 15212)) {
       this.GetStageDataById(e)?.CoverChallenge();
       this.CA_();
       this.SetChallengeStageDataNull();
@@ -517,7 +526,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerResetResponse(e, t) {
-    if (!this.ls_(t, 18282)) {
+    if (!this.ls_(t, 17218)) {
       this.GetStageDataById(e)?.ResetStage();
       this.CA_();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerSureResetStage, e);
@@ -525,21 +534,22 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerRecommendResponse(e, t) {
-    if (!this.ls_(t, 17585)) {
+    if (!this.ls_(t, 18714)) {
       this.GetStageDataById(e)?.ProtoUpdateTeamRecommendList(t);
     }
   }
   SlashAndTowerReviewResponse(e) {
-    if (!this.ls_(e, 22963)) {
+    if (!this.ls_(e, 24281)) {
       this.ReviewList.length = 0;
       e?.CG_.forEach(e => {
         var t = e.gG_;
-        var e = e.SMs;
+        var i = e.SMs;
         this.ReviewList.push({
           Title: this.GetStageNameById(t),
-          Score: e,
-          Grade: this.GetStageGradeResIdByStageId(t, e),
-          StageId: t
+          Score: i,
+          Grade: this.GetStageGradeResIdByStageId(t, i),
+          StageId: t,
+          IsQuickPass: e.qcd
         });
       });
       this.ReviewProgressList.length = 0;
@@ -713,6 +723,10 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     var e;
     return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), !(e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e))) && e.InstSubType === 27;
   }
+  CheckIsScoreBattle() {
+    var e;
+    return !!this.CurSeasonCfg && !!this.CurSeasonCfg.IsOpenHot && !!(e = this.ChallengeStageData) && e.StageType !== 0;
+  }
   StartChallenge(e) {
     var t = (this.ChallengeStageData = e).TeamDataList.map(e => e.BuffDataEdit?.Id ?? 0);
     this.Pac(t);
@@ -778,6 +792,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
       });
       this.BG_ = false;
       this.btc();
+      await this.CheckInitProto();
     }
     await this.QH_.Promise;
     return true;
@@ -824,6 +839,23 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
       return ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(i, i);
     } else {
       return "";
+    }
+  }
+  GetStageOrderIndexById(e) {
+    var t = this.GetStageDataById(e);
+    let i = 0;
+    if (t) {
+      i = t.OrderIndex;
+    }
+    t = ConfigManager_1.ConfigManager.ShipTowerConfig.GetStageCfgById(e);
+    return i = t ? t.OrderIndex : i;
+  }
+  GetStageIsEndlessById(e) {
+    var t = this.GetStageDataById(e);
+    if (t) {
+      return t.IsEndLess;
+    } else {
+      return !!(t = ConfigManager_1.ConfigManager.ShipTowerConfig.GetStageCfgById(e)) && t.EndLess;
     }
   }
   GetInTheBattleBuffInfo() {
@@ -986,6 +1018,9 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
   }
   IsExistFirstGetBuff() {
     return this.ts_.some(e => e.BuffList.some(e => e.IsFirstGet()));
+  }
+  GetCurrentStageTeamData() {
+    return this.GetCurrentStage()?.GetCurrentTeamData();
   }
 }
 exports.ShipTowerModel = ShipTowerModel;

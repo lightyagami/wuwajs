@@ -15,6 +15,7 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
+const InputEnums_1 = require("../../Input/InputEnums");
 const InputSettingsManager_1 = require("../../InputSettings/InputSettingsManager");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -22,12 +23,13 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 const UiLayerType_1 = require("../../Ui/Define/UiLayerType");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
-const InputMappingsDefine_1 = require("../../Ui/InputDistribute/InputMappingsDefine");
 const UiLayer_1 = require("../../Ui/UiLayer");
 const UiManager_1 = require("../../Ui/UiManager");
+const UiModel_1 = require("../../Ui/UiModel");
 const CooperationController_1 = require("../Battle/Cooperation/CooperationController");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const DamageUiManager_1 = require("../DamageUi/DamageUiManager");
+const GameMainViewStorage_1 = require("../GameMainView/GameMainViewStorage");
 const BattleUiModel_1 = require("./BattleUiModel");
 const BattleUiPool_1 = require("./BattleUiPool");
 class BattleUiControl extends UiControllerBase_1.UiControllerBase {
@@ -104,12 +106,12 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveCallback(18, this.BQe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(17984, this.Omc);
-    Net_1.Net.Register(25527, this.qmc);
+    Net_1.Net.Register(24141, this.Omc);
+    Net_1.Net.Register(29903, this.qmc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17984);
-    Net_1.Net.UnRegister(25527);
+    Net_1.Net.UnRegister(24141);
+    Net_1.Net.UnRegister(29903);
   }
   static async PreloadBattleViewFromLoading(e) {
     if (Log_1.Log.CheckDebug()) {
@@ -118,7 +120,8 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     await this.Pool.Init();
     await ModelManager_1.ModelManager.BattleUiModel.Preload();
     if (!e) {
-      BattleUiControl.bQe = await UiManager_1.UiManager.PreOpenViewAsync("BattleView");
+      e = this.GetMainViewName();
+      BattleUiControl.bQe = await UiManager_1.UiManager.PreOpenViewAsync(e);
     }
     DamageUiManager_1.DamageUiManager.PreloadDamageView();
     if (Log_1.Log.CheckDebug()) {
@@ -130,8 +133,11 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "battleView open start");
     }
-    if (!(await UiManager_1.UiManager.OpenViewAfterPreOpenedAsync(BattleUiControl.bQe))) {
-      await UiManager_1.UiManager.OpenViewAsync("BattleView");
+    var e;
+    var t = this.GetMainViewProxy();
+    if (!(await UiManager_1.UiManager.OpenViewAfterPreOpenedAsync(BattleUiControl.bQe, t))) {
+      e = this.GetMainViewName();
+      await UiManager_1.UiManager.OpenViewAsync(e, t);
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "battleView open end");
@@ -154,6 +160,38 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
         }
       }
     }
+  }
+  static GetMainViewName() {
+    var e;
+    if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+      e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      if ((e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e))?.InstSubType) {
+        e = GameMainViewStorage_1.GameMainViewStorage.HasRegisterMainViewInfo(e.InstSubType);
+        UiModel_1.UiModel.MainViewName = e ? "CommonGameMainView" : "BattleView";
+      } else {
+        UiModel_1.UiModel.MainViewName = "BattleView";
+      }
+    } else {
+      UiModel_1.UiModel.MainViewName = "BattleView";
+    }
+    return UiModel_1.UiModel.MainViewName;
+  }
+  static GetMainViewProxy() {
+    if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+      var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
+      if (e?.InstSubType) {
+        e = GameMainViewStorage_1.GameMainViewStorage.GetMainViewInfo(e.InstSubType);
+        if (e) {
+          return new e();
+        }
+      }
+    }
+  }
+  static OpenMainView() {
+    var e = this.GetMainViewProxy();
+    var t = this.GetMainViewName();
+    UiManager_1.UiManager.OpenView(t, e);
   }
   static qQe() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowHUD);
@@ -285,8 +323,8 @@ BattleUiControl.mWe = () => {
   ModelManager_1.ModelManager.BattleUiModel.OnFormationLoaded();
 };
 BattleUiControl.PQe = (e, t) => {
-  if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Valid && Info_1.Info.IsInKeyBoard() && e !== t) {
-    e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.走跑切换)?.GetCurrentPlatformKey()?.GetKeyIconPath();
+  if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Valid && Info_1.Info.IsInKeyBoard() && e !== t && (e = ModelManager_1.ModelManager.InputModel.GetCurrentInputData()) && (e = e.GetActionNameByInputAction(InputEnums_1.EInputAction.走跑切换))) {
+    e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(e)?.GetCurrentPlatformKey()?.GetKeyIconPath();
     if (t) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ChangeWalk", `<texture=${e}/>`);
     } else {

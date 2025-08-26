@@ -80,21 +80,21 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
         this.Proxy.SetOpponentSettlePoint(this.EntityId, t);
       }
     };
-    this.Nuu = t => {
+    this.Icu = t => {
       var i = this.GetUiNiagara(8).D_K2_GetComponentLocation();
       var t = Vector_1.Vector.Create(t, i.Y, i.Z).ToUeVector();
       this.GetUiNiagara(8).D_K2_SetWorldLocation(t, false, undefined, false);
     };
-    this.Vuu = t => {
+    this.Tcu = t => {
       var i = this.GetUiNiagara(8).D_K2_GetComponentLocation();
       var i = Vector_1.Vector.Create(i.X, i.Y, t).ToUeVector();
       this.GetUiNiagara(8).D_K2_SetWorldLocation(i, false, undefined, false);
     };
-    this.Bdu = () => {
+    this.vmu = () => {
       this.TweenerX &&= undefined;
       this.GetUiNiagara(8).SetUIActive(false);
     };
-    this.kdu = () => {
+    this.ymu = () => {
       this.TweenerZ &&= undefined;
     };
   }
@@ -104,8 +104,8 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
   }
   OnStart() {
     this.qU1();
-    this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Nuu);
-    this.DelegateZ = (0, puerts_1.toManualReleaseDelegate)(this.Vuu);
+    this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Icu);
+    this.DelegateZ = (0, puerts_1.toManualReleaseDelegate)(this.Tcu);
     this.GetItem(9)?.SetUIActive(false);
     this.GetText(10)?.SetUIActive(false);
     this.GetUiNiagara(8)?.SetUIActive(false);
@@ -115,8 +115,8 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
     this.GU1();
     this.TweenerX &&= undefined;
     this.TweenerZ &&= undefined;
-    (0, puerts_1.releaseManualReleaseDelegate)(this.Nuu);
-    (0, puerts_1.releaseManualReleaseDelegate)(this.Vuu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Icu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Tcu);
   }
   FU1(t) {
     this.DamageCount = t;
@@ -131,7 +131,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
     this.GetSprite(3).SetUIActive(this.IsOwn);
     this.GetSprite(4).SetUIActive(!this.IsOwn);
   }
-  juu(t, i) {
+  bcu(t, i) {
     var s = this.IsOwn ? "LightShowRight" : "LightShowLeft";
     if (this.HasTickInit) {
       this.CurPlayingIndex = -1;
@@ -157,7 +157,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
       this.HasTickInit = true;
     }
   }
-  Huu(t) {
+  Rcu(t) {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleFactorConfig(t);
     var i = t.IsBeforeBattle;
     var t = t.Name;
@@ -178,11 +178,11 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
         this.AttributeComp = undefined;
         this.OU1();
       }
-      this.Odu();
+      this.Smu();
     }
   }
-  Odu() {
-    var t = this.$uu();
+  Smu() {
+    var t = this.Lcu();
     var i = this.IsOwn ? "LightShowRight" : "LightShowLeft";
     if (t) {
       if (this.BeforeBattleFactor.length !== 0) {
@@ -194,9 +194,9 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
       } else {
         this.SequencePlayer?.PlayLevelSequenceByName(i);
       }
-      this.Huu(t);
+      this.Rcu(t);
     } else if (!(this.CurPlayingIndex < 0) && !(this.CurPlayingIndex >= this.BeforeBattleFactor.length) && !this.SequencePlayer?.IsPlayingSequence(i)) {
-      this.Huu(this.BeforeBattleFactor[this.CurPlayingIndex]);
+      this.Rcu(this.BeforeBattleFactor[this.CurPlayingIndex]);
       this.SequencePlayer?.PlayLevelSequenceByName(i);
       this.CurPlayingIndex++;
     }
@@ -220,7 +220,7 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
     this.EntityId = t;
     this.GU1();
     var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
-    this.AttributeComp = i?.Entity?.GetComponent(172);
+    this.AttributeComp = i?.Entity?.GetComponent(173);
     this.NU1();
     const s = ModelManager_1.ModelManager.PhantomArenaBattleModel.BattleData.GetCardDataByEntityId(t);
     i = s.GetFightValueByAttr(Protocol_1.Aki.Protocol.GC1.Proto_CostAbility);
@@ -228,12 +228,12 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
     this.Kbe(t);
     this.OU1();
     TimerSystem_1.GameplayTimerSystem.Delay(() => {
-      this.juu(s.ConfigId, s.ExtraFactors);
+      this.bcu(s.ConfigId, s.ExtraFactors);
     }, 600);
   }
-  $uu() {
+  Lcu() {
     if (!(this.CurShowTime + FACTOR_INTERVAL > Time_1.Time.Now)) {
-      var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EntityId)?.Entity?.GetComponent(205);
+      var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.EntityId)?.Entity?.GetComponent(206);
       if (t) {
         var i = [];
         for (const s of ModelManager_1.ModelManager.PhantomArenaBattleModel.GetPhantomTagMap()) {
@@ -278,8 +278,8 @@ class PhantomArenaBattleDetailsMonsterItem extends GridProxyAbstract_1.GridProxy
   OnAccumulateEvent(t, i, s, e) {
     var h;
     var r;
-    if (this.LastLife && (this.GetUiNiagara(8).SetUIActive(true), h = PhantomArenaDefine_1.ACCUMULATE_TWEEN_TIME, r = this.GetButton(0).RootUIComp.D_K2_GetComponentLocation(), this.TweenerX = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateX, r.X, t, h), this.TweenerZ = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateZ, r.Z, i, h), this.TweenerX && (this.TweenerX.OnCompleteCallBack.Bind(this.Bdu), this.TweenerX.SetEase(28), this.TweenerX.SetCurveFloat(s)), this.TweenerZ)) {
-      this.TweenerZ.OnCompleteCallBack.Bind(this.kdu);
+    if (this.LastLife && (this.GetUiNiagara(8).SetUIActive(true), h = PhantomArenaDefine_1.ACCUMULATE_TWEEN_TIME, r = this.GetButton(0).RootUIComp.D_K2_GetComponentLocation(), this.TweenerX = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateX, r.X, t, h), this.TweenerZ = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateZ, r.Z, i, h), this.TweenerX && (this.TweenerX.OnCompleteCallBack.Bind(this.vmu), this.TweenerX.SetEase(28), this.TweenerX.SetCurveFloat(s)), this.TweenerZ)) {
+      this.TweenerZ.OnCompleteCallBack.Bind(this.ymu);
       this.TweenerZ.SetEase(28);
       this.TweenerZ.SetCurveFloat(e);
     }
@@ -296,12 +296,12 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
     this.IsOwn = false;
     this.MaxLife = 0;
     this.CurLife = 0;
-    this.Wuu = t => {
+    this.wcu = t => {
       this.RoleHead?.RefreshDamageBar(t / this.MaxLife);
       t = Math.max(0, Math.floor(t));
       this.GetText(1).SetText(t + "/" + this.MaxLife);
     };
-    this.qdu = () => {
+    this.Mmu = () => {
       this.TweenerDamage &&= undefined;
     };
   }
@@ -309,13 +309,13 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText]];
   }
   OnStart() {
-    this.DelegateDamage = (0, puerts_1.toManualReleaseDelegate)(this.Wuu);
+    this.DelegateDamage = (0, puerts_1.toManualReleaseDelegate)(this.wcu);
   }
   OnBeforeDestroy() {
     this.TweenerDamage &&= undefined;
-    (0, puerts_1.releaseManualReleaseDelegate)(this.Wuu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.wcu);
   }
-  async tZ1() {
+  async RZ1() {
     this.RoleHead = new PhantomArenaHeadItem_1.PhantomArenaHeadItem();
     this.RoleHead.IsOwn = this.IsOwn;
     await this.RoleHead.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
@@ -326,7 +326,7 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.tZ1()]);
+    await Promise.all([this.RZ1()]);
   }
   RefreshLifeNum(t, i) {
     this.MaxLife = i;
@@ -343,7 +343,7 @@ class PhantomArenaBattleDetailsRoleItem extends UiPanelBase_1.UiPanelBase {
     var s = PhantomArenaDefine_1.DAMAGE_COUNT_TWEEN_TIME;
     this.TweenerDamage = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateDamage, this.CurLife, i, s);
     if (this.TweenerDamage) {
-      this.TweenerDamage.OnCompleteCallBack.Bind(this.qdu);
+      this.TweenerDamage.OnCompleteCallBack.Bind(this.Mmu);
       this.TweenerDamage.SetEase(28);
       this.TweenerDamage.SetCurveFloat(t);
     }
@@ -374,21 +374,21 @@ class PhantomArenaBattleDetailsSkillItem extends UiPanelBase_1.UiPanelBase {
     this.DelegateZ = undefined;
     this.SettlePoint = 0;
     this.SequencePlayer = undefined;
-    this.Nuu = t => {
+    this.Icu = t => {
       var i = this.GetUiNiagara(5).D_K2_GetComponentLocation();
       var t = Vector_1.Vector.Create(t, i.Y, i.Z).ToUeVector();
       this.GetUiNiagara(5).D_K2_SetWorldLocation(t, false, undefined, false);
     };
-    this.Vuu = t => {
+    this.Tcu = t => {
       var i = this.GetUiNiagara(5).D_K2_GetComponentLocation();
       var i = Vector_1.Vector.Create(i.X, i.Y, t).ToUeVector();
       this.GetUiNiagara(5).D_K2_SetWorldLocation(i, false, undefined, false);
     };
-    this.Bdu = () => {
+    this.vmu = () => {
       this.TweenerX &&= undefined;
       this.GetUiNiagara(5).SetUIActive(false);
     };
-    this.kdu = () => {
+    this.ymu = () => {
       this.TweenerZ &&= undefined;
     };
   }
@@ -397,15 +397,15 @@ class PhantomArenaBattleDetailsSkillItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Nuu);
-    this.DelegateZ = (0, puerts_1.toManualReleaseDelegate)(this.Vuu);
+    this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Icu);
+    this.DelegateZ = (0, puerts_1.toManualReleaseDelegate)(this.Tcu);
     this.GetUiNiagara(5).SetUIActive(false);
   }
   OnBeforeDestroy() {
     this.TweenerX &&= undefined;
     this.TweenerZ &&= undefined;
-    (0, puerts_1.releaseManualReleaseDelegate)(this.Nuu);
-    (0, puerts_1.releaseManualReleaseDelegate)(this.Vuu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Icu);
+    (0, puerts_1.releaseManualReleaseDelegate)(this.Tcu);
   }
   RefreshIcon(t) {
     this.SetTextureByPath(t, this.GetTexture(0));
@@ -427,10 +427,10 @@ class PhantomArenaBattleDetailsSkillItem extends UiPanelBase_1.UiPanelBase {
   }
   OnAccumulateEvent(t, i, s) {
     var e;
-    if (this.SettlePoint && (this.GetUiNiagara(5).SetUIActive(true), e = this.GetTexture(0).D_K2_GetComponentLocation(), this.TweenerX = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateX, e.X, t, PhantomArenaDefine_1.ACCUMULATE_TWEEN_TIME), this.TweenerZ = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateZ, e.Z, i, PhantomArenaDefine_1.ACCUMULATE_TWEEN_TIME), this.TweenerX && (this.TweenerX.SetEase(28), this.TweenerX.SetCurveFloat(s), this.TweenerX.OnCompleteCallBack.Bind(this.Bdu)), this.TweenerZ)) {
+    if (this.SettlePoint && (this.GetUiNiagara(5).SetUIActive(true), e = this.GetTexture(0).D_K2_GetComponentLocation(), this.TweenerX = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateX, e.X, t, PhantomArenaDefine_1.ACCUMULATE_TWEEN_TIME), this.TweenerZ = UE.LTweenBPLibrary.FloatTo(GlobalData_1.GlobalData.World, this.DelegateZ, e.Z, i, PhantomArenaDefine_1.ACCUMULATE_TWEEN_TIME), this.TweenerX && (this.TweenerX.SetEase(28), this.TweenerX.SetCurveFloat(s), this.TweenerX.OnCompleteCallBack.Bind(this.vmu)), this.TweenerZ)) {
       this.TweenerZ.SetEase(28);
       this.TweenerZ.SetCurveFloat(s);
-      this.TweenerZ.OnCompleteCallBack.Bind(this.kdu);
+      this.TweenerZ.OnCompleteCallBack.Bind(this.ymu);
     }
   }
 }

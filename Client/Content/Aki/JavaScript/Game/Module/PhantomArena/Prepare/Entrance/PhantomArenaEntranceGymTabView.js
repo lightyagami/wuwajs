@@ -27,17 +27,17 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   constructor() {
     super(...arguments);
     this.KW1 = 1;
-    this.rIu = false;
-    this.YAu = new Map();
+    this.gIu = false;
+    this.EPu = new Map();
     this.YCo = undefined;
-    this.ZIu = undefined;
+    this.uTu = undefined;
     this.XW1 = undefined;
     this.jFo = undefined;
     this.WFo = undefined;
-    this.eTu = 0;
-    this.Rjc = undefined;
-    this.nTu = () => {
-      this.oTu();
+    this.cTu = 0;
+    this.PZu = undefined;
+    this.CTu = () => {
+      this.gTu();
       var e = this.GetItem(13).GetAnchorOffset();
       this.SetPosition(Vector2D_1.Vector2D.Create(e.X, e.Y), false);
     };
@@ -51,9 +51,9 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
         }
       }
     };
-    this.zAu = e => {
+    this.IPu = e => {
       this.r3o(true);
-      e = this.JAu(e);
+      e = this.TPu(e);
       this.SetPosition(e, true);
     };
     this.YW1 = e => {
@@ -65,10 +65,10 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.JW1 = e => {};
     this._cr = e => {
       if (e === "AreaSwitch") {
-        this.rIu = false;
+        this.gIu = false;
         this.XW1.RefreshBg(false, this.KW1);
       } else if (e === "Start") {
-        this.equ();
+        this.TNu();
       }
     };
     this.ZW1 = () => {
@@ -86,27 +86,27 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.tQ1 = () => {
       UiManager_1.UiManager.OpenView("PhantomArenaCollectView");
     };
-    this.tTu = () => {
+    this.dTu = () => {
       this.r3o(true);
     };
     this.Agt = e => {
-      if (this.ZIu) {
-        e = Vector2D_1.Vector2D.Create(this.ZIu).AdditionEqual(e);
+      if (this.uTu) {
+        e = Vector2D_1.Vector2D.Create(this.uTu).AdditionEqual(e);
         this.SetPosition(e, false);
       }
     };
-    this.iTu = e => {
+    this.mTu = e => {
       var t = Vector2D_1.Vector2D.Create();
       e.Multiply(PhantomArenaDefine_1.GYM_INERTIA_TWEEN_TIME, t);
-      var e = Vector2D_1.Vector2D.Create(this.ZIu).AdditionEqual(t);
+      var e = Vector2D_1.Vector2D.Create(this.uTu).AdditionEqual(t);
       this.SetPosition(e, true);
     };
     this.YFo = e => {
       e = Vector2D_1.Vector2D.Create(e);
       this.SetPosition(e, false);
     };
-    this.u7c = () => {
-      for (const e of this.YAu.values()) {
+    this.bNu = () => {
+      for (const e of this.EPu.values()) {
         e.RefreshRedDot();
       }
     };
@@ -127,18 +127,18 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
         i.Level = e + 1;
         i.CallbackOnClick = this.Jj1;
         i.CallbackOnHover = this.YW1;
-        i.CallbackOnFocus = this.zAu;
+        i.CallbackOnFocus = this.IPu;
         i.CallbackOnUnHover = this.JW1;
-        this.YAu.set(e + 1, i);
+        this.EPu.set(e + 1, i);
         t.push(i.CreateThenShowByActorAsync(this.GetItem(2 + e).GetOwner()));
       }
       const i = new PhantomArenaEntranceGymItem_1.EntranceGymRepeatItem();
       i.Level = PhantomArenaDefine_1.GYM_MAX_LEVEL;
       i.CallbackOnClick = this.Jj1;
       i.CallbackOnHover = this.YW1;
-      i.CallbackOnFocus = this.zAu;
+      i.CallbackOnFocus = this.IPu;
       i.CallbackOnUnHover = this.JW1;
-      this.YAu.set(PhantomArenaDefine_1.GYM_MAX_LEVEL, i);
+      this.EPu.set(PhantomArenaDefine_1.GYM_MAX_LEVEL, i);
       t.push(i.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
       this.XW1 = new EntranceBackgroundPanel();
       t.push(this.XW1.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()));
@@ -149,15 +149,15 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.GetItem(1).SetWidth(this.GetItem(13).GetWidth());
     var e = {
       Draggable: this.GetDraggable(0),
-      CallbackOnDown: this.tTu,
+      CallbackOnDown: this.dTu,
       CallbackOnDrag: this.Agt,
-      CallbackOnInertia: this.iTu
+      CallbackOnInertia: this.mTu
     };
     this.WFo = (0, puerts_1.toManualReleaseDelegate)(this.YFo);
     this.YCo = new DragInteractComponent_1.DragInteractComponent(e);
     this.SequencePlayer.BindOnEndSequenceEvent(this._cr);
     var e = this.GetItem(14).GetAnchorOffset();
-    this.ZIu = Vector2D_1.Vector2D.Create(e.X, e.Y);
+    this.uTu = Vector2D_1.Vector2D.Create(e.X, e.Y);
   }
   OnBeforeShow() {
     this.YCo.Enable();
@@ -166,33 +166,33 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.cy1();
   }
   OnAfterShow() {
-    this.oTu();
+    this.gTu();
   }
   OnBeforeHide() {
     this.Ovt();
     this.YCo.Disable();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.nTu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.u7c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.CTu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.nTu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.u7c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.CTu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
   }
   OnBeforeDestroy() {
     (0, puerts_1.releaseManualReleaseDelegate)(this.YFo);
-    if (this.Rjc && TimerSystem_1.TimerSystem.Has(this.Rjc)) {
-      TimerSystem_1.TimerSystem.Remove(this.Rjc);
-      this.Rjc = undefined;
+    if (this.PZu && TimerSystem_1.TimerSystem.Has(this.PZu)) {
+      TimerSystem_1.TimerSystem.Remove(this.PZu);
+      this.PZu = undefined;
     }
   }
   zW1() {
-    if (this.rIu) {
+    if (this.gIu) {
       this.SequencePlayer.StopPrevSequence(true, true);
     }
     this.XW1.RefreshBg(true, this.KW1);
-    this.rIu = true;
+    this.gIu = true;
     this.SequencePlayer.PlaySequence("AreaSwitch", false, 1.6);
   }
   cy1() {
@@ -204,13 +204,13 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.SetButtonUiActive(11, i);
     this.GetSprite(15).SetUIActive(e || t || i);
   }
-  equ() {
-    for (const e of this.YAu.values()) {
+  TNu() {
+    for (const e of this.EPu.values()) {
       e.PlayUnlock();
     }
   }
-  JAu(e) {
-    e = this.YAu.get(e).GetAnchorOffsetX() - PhantomArenaDefine_1.GYM_GYM_OFFSET_MIDDLE;
+  TPu(e) {
+    e = this.EPu.get(e).GetAnchorOffsetX() - PhantomArenaDefine_1.GYM_GYM_OFFSET_MIDDLE;
     e = PhantomArenaDefine_1.GYM_BG_OFFSET_MAX - e;
     return Vector2D_1.Vector2D.Create(e, 0);
   }
@@ -222,15 +222,15 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       }
       var t = Vector2D_1.Vector2D.Create(e.X, e.Y);
       e = this.n3o(t);
-      var t = this.ZIu.ToUeVector2D();
+      var t = this.uTu.ToUeVector2D();
       var n = e.ToUeVector2D();
-      var a = this.Elh(this.ZIu.X, n.X);
+      var a = this.Elh(this.uTu.X, n.X);
       if (!i || a) {
         i = e.ToUeVector2D();
         a = Vector2D_1.Vector2D.Create(e.X * 0.85, e.Y).ToUeVector2D();
         this.GetItem(14).SetAnchorOffset(a);
         this.GetItem(13).SetAnchorOffset(i);
-        this.ZIu = e;
+        this.uTu = e;
       } else {
         this.r3o();
         this.jFo = UE.LTweenBPLibrary.Vector2To(GlobalData_1.GlobalData.World, this.WFo, t, n, PhantomArenaDefine_1.GYM_INERTIA_TWEEN_TIME, 0, 2);
@@ -242,7 +242,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   }
   n3o(e) {
     e.X;
-    e = MathCommon_1.MathCommon.Clamp(e.X, this.eTu, PhantomArenaDefine_1.GYM_BG_OFFSET_MAX);
+    e = MathCommon_1.MathCommon.Clamp(e.X, this.cTu, PhantomArenaDefine_1.GYM_BG_OFFSET_MAX);
     return Vector2D_1.Vector2D.Create(e, 0);
   }
   r3o(e) {
@@ -251,17 +251,17 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       this.jFo = undefined;
     }
   }
-  oTu() {
+  gTu() {
     var e = this.GetItem(13).Width;
     var t = this.GetItem(13).GetParentAsUIItem().Width;
-    this.eTu = t - e;
+    this.cTu = t - e;
   }
   K8e() {
     this.Ovt();
     RedDotController_1.RedDotController.BindRedDot("RedDotPhantomArenaCollect", this.GetItem(18));
     RedDotController_1.RedDotController.BindRedDot("RedDotPhantomArenaRole", this.GetItem(17));
     this.GetItem(16).SetUIActive(false);
-    for (const e of this.YAu.values()) {
+    for (const e of this.EPu.values()) {
       e.RefreshRedDot();
     }
   }
@@ -271,8 +271,8 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     var t;
-    if (e && e.length !== 0 && e[0] === "GuideHook" && !(e.length < 2) && (e = e[1], t = this.GetGuideUiItem(e), e === "1" && (this.Rjc = TimerSystem_1.TimerSystem.Delay(() => {
-      this.zAu(PhantomArenaDefine_1.GYM_MAX_LEVEL);
+    if (e && e.length !== 0 && e[0] === "GuideHook" && !(e.length < 2) && (e = e[1], t = this.GetGuideUiItem(e), e === "1" && (this.PZu = TimerSystem_1.TimerSystem.Delay(() => {
+      this.IPu(PhantomArenaDefine_1.GYM_MAX_LEVEL);
     }, 1000)), t)) {
       return [t, t];
     } else {
@@ -297,7 +297,7 @@ class EntranceBackgroundPanel extends UiPanelBase_1.UiPanelBase {
         this.SetRight(e);
     }
   }
-  nIu(e, t) {
+  pIu(e, t) {
     e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
     this.SetTextureByPath(e, t);
   }
@@ -305,25 +305,25 @@ class EntranceBackgroundPanel extends UiPanelBase_1.UiPanelBase {
     var t = e ? this.GetTexture(3) : this.GetTexture(0);
     var i = e ? this.GetTexture(4) : this.GetTexture(1);
     var e = e ? this.GetTexture(5) : this.GetTexture(2);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_LEFT_COLOR, t);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_MIDDLE_WHITE, i);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_RIGHT_GRAY, e);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_LEFT_COLOR, t);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_MIDDLE_WHITE, i);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_RIGHT_GRAY, e);
   }
   SetMiddle(e) {
     var t = e ? this.GetTexture(3) : this.GetTexture(0);
     var i = e ? this.GetTexture(4) : this.GetTexture(1);
     var e = e ? this.GetTexture(5) : this.GetTexture(2);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_LEFT_WHITE, t);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_MIDDLE_COLOR, i);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_RIGHT_GRAY, e);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_LEFT_WHITE, t);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_MIDDLE_COLOR, i);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_RIGHT_GRAY, e);
   }
   SetRight(e) {
     var t = e ? this.GetTexture(3) : this.GetTexture(0);
     var i = e ? this.GetTexture(4) : this.GetTexture(1);
     var e = e ? this.GetTexture(5) : this.GetTexture(2);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_LEFT_GRAY, t);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_MIDDLE_WHITE, i);
-    this.nIu(PhantomArenaDefine_1.GYM_BG_RIGHT_COLOR, e);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_LEFT_GRAY, t);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_MIDDLE_WHITE, i);
+    this.pIu(PhantomArenaDefine_1.GYM_BG_RIGHT_COLOR, e);
   }
 }
 //# sourceMappingURL=PhantomArenaEntranceGymTabView.js.map

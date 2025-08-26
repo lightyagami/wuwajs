@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RouletteFunctionOpenController = undefined;
 const Log_1 = require("../../../Core/Common/Log");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
-const MapRogueController_1 = require("../MapRogue/MapRogueController");
 class RouletteFunctionOpenController {
   static OpenRelateView(e) {
     var o = this.Ucc.get(e);
@@ -26,7 +26,7 @@ exports.RouletteFunctionOpenController = RouletteFunctionOpenController;
   }
 };
 RouletteFunctionOpenController.Hw1 = () => {
-  if (MapRogueController_1.MapRogueController.CheckInMapRogueInstance()) {
+  if (ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()) {
     UiManager_1.UiManager.OpenView("RogueBattleSummary");
   }
 };

@@ -30,6 +30,9 @@ class PersonalQuickRoleSelectView extends QuickRoleSelectView_1.QuickRoleSelectV
     this.RoleScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(10).GetOwner(), this.O1l);
     this.LoadingSequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.GetItem(13));
   }
+  OnBeforeShow() {
+    this.RefreshRoleList();
+  }
 }
 exports.PersonalQuickRoleSelectView = PersonalQuickRoleSelectView;
 //# sourceMappingURL=PersonalQuickRoleSelectView.js.map

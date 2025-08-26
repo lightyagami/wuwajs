@@ -16,7 +16,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.NH1 = 0;
     this.vL1 = 0;
-    this.zOu = 0;
+    this.i2u = 0;
     this.yL1 = 1;
     this.C91 = 0;
     this.p91 = 0;
@@ -27,10 +27,10 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     this.VH1 = undefined;
     this.NW1 = undefined;
     this.VW1 = undefined;
-    this.cdu = 0;
-    this.yvu = 1;
-    this.fku = false;
-    this.gku = false;
+    this.Xdu = 0;
+    this.Iyu = 1;
+    this.r2u = false;
+    this.o2u = false;
   }
   OnInit() {
     return true;
@@ -40,7 +40,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     this.VH1 = undefined;
     this.NW1 = undefined;
     this.VW1 = undefined;
-    return !(this.fku = false);
+    return !(this.r2u = false);
   }
   IsMoraleActive() {
     return this.ML1;
@@ -60,7 +60,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetLastMoraleLevel() {
-    return this.yvu;
+    return this.Iyu;
   }
   GetMoraleIndomitableLevel() {
     return this.KN1;
@@ -72,20 +72,20 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     return this.p91;
   }
   GetExpRatio() {
-    return this.cdu;
+    return this.Xdu;
   }
   GetTempMoraleMaxLevel() {
     var t = this.jW1();
     if (t) {
-      if (!this.fku) {
-        this.fku = true;
-        if (ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(174)?.HasBuff(EXTRA_TEMP_MORALE_MAX_LEVEL_BUFF_ID)) {
-          this.gku = true;
+      if (!this.r2u) {
+        this.r2u = true;
+        if (ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(175)?.HasBuff(EXTRA_TEMP_MORALE_MAX_LEVEL_BUFF_ID)) {
+          this.o2u = true;
         } else {
-          this.gku = false;
+          this.o2u = false;
         }
       }
-      if (this.gku) {
+      if (this.o2u) {
         return t.length;
       } else {
         return Math.max(1, t.length - EXTRA_TEMP_MORALE_MAX_LEVEL);
@@ -95,13 +95,13 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetMoraleMaxExp() {
-    if (this.zOu === 0) {
-      this.zOu = this.GetLevelExp(this.GetMoraleMaxLevel());
+    if (this.i2u === 0) {
+      this.i2u = this.GetLevelExp(this.GetMoraleMaxLevel());
     }
-    return this.zOu;
+    return this.i2u;
   }
   SetIsUnlockTempMoraleMaxLevel(t) {
-    this.gku = t;
+    this.o2u = t;
   }
   y91() {
     this.v91 ||= ConfigManager_1.ConfigManager.MoraleBattleConfig?.GetAllExpConfig() ?? [];
@@ -204,7 +204,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
   }
   HandleMoraleInfoNotify(t) {
     this.NH1 = t.RR1;
-    this.cdu = t.Slu;
+    this.Xdu = t.o_u;
     var e;
     var i;
     var s;
@@ -222,7 +222,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
     if (h) {
       i = (h = this.yL1) + (e = this.C91) !== t.wR1 + t.PR1;
-      s = Math.min(this.zOu, t.AR1);
+      s = Math.min(this.i2u, t.AR1);
       if (this.vL1 !== s) {
         r = this.vL1;
         this.vL1 = s;
@@ -244,7 +244,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMoraleIndomitableLevelChanged, r, this.KN1);
       }
       if (t.x9n === 1) {
-        this.yvu = h;
+        this.Iyu = h;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMoraleBattleFail);
       }
     } else {
@@ -252,7 +252,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
   }
   S91(t) {
-    this.vL1 = Math.min(this.zOu, t.AR1);
+    this.vL1 = Math.min(this.i2u, t.AR1);
     this.yL1 = t.wR1;
     this.KN1 = t.LR1;
     this.C91 = t.PR1;

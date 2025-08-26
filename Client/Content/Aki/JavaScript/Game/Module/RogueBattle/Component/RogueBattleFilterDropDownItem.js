@@ -21,7 +21,7 @@ class RogueBattleFilterDropDownItem extends DropDownItemBase_1.DropDownItemBase 
     var o;
     var r;
     if (e.v9n === 0) {
-      this.mLu();
+      this.wLu();
     } else if (t = ConfigManager_1.ConfigManager.RogueBattleConfig.GetRogueResBond(e.v9n)) {
       o = ModelManager_1.ModelManager.RogueBattleModel.IsBondLinkCanActivate(e.v9n);
       r = this.GetTexture(2);
@@ -32,7 +32,7 @@ class RogueBattleFilterDropDownItem extends DropDownItemBase_1.DropDownItemBase 
       this.GetItem(4).SetUIActive(o);
     }
   }
-  mLu() {
+  wLu() {
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_RogueSelectAll");
     this.SetTextureShowUntilLoaded(e, this.GetTexture(2));
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "RogueRes_BondSelect_Desc");

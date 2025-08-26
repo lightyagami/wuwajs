@@ -41,7 +41,7 @@ class LevelEventCaptureRequest extends LevelGeneralBase_1.LevelEventBase {
   }
   OLe() {
     var e = EntitySystem_1.EntitySystem.Get(this.E0);
-    if (e &&= e.GetComponent(146)) {
+    if (e &&= e.GetComponent(147)) {
       e.ExecuteCapture(this.NLe);
     }
   }

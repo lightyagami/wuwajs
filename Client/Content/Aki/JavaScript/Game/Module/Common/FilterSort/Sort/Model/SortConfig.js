@@ -42,6 +42,9 @@ class SortConfig extends ConfigBase_1.ConfigBase {
     }
     return o;
   }
+  GetSortFilterConfig(e) {
+    return FilterSortConfigById_1.configFilterSortConfigById.GetConfig(e);
+  }
 }
 exports.SortConfig = SortConfig;
 //# sourceMappingURL=SortConfig.js.map

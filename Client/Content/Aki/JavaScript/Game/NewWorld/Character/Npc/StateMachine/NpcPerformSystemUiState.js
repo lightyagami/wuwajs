@@ -96,9 +96,16 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
     };
     this.air = (t, e) => {
       if (this.uKo && (this.eir = t, Log_1.Log.CheckInfo() && Log_1.Log.Info("NPC", 36, "[NpcPerformSystemUiState]当打开界面时,播放进入界面的动作 EnterMontage", ["EntityId", this.Owner.Id], ["ViewName", this.uKo]), this._Ko)) {
-        this.PlayMontage({
-          MontageAsset: this.eir
-        });
+        if (this.Htr === IComponent_1.ENpcUiInteractType.AntiqueShop || this.Htr === IComponent_1.ENpcUiInteractType.ChengXiaoShanShop) {
+          this.PlayMontage({
+            MontageAsset: this.eir
+          });
+        } else {
+          this.PlayMontage({
+            MontageAsset: this.eir,
+            IsLoop: false
+          });
+        }
       }
     };
     this.hir = (t, e) => {
@@ -341,7 +348,7 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
   }
   OnEnter(t) {
     if (this.uKo && this.uKo !== "ForgingRootView") {
-      this.sva = this.Owner?.Entity?.GetComponent(186);
+      this.sva = this.Owner?.Entity?.GetComponent(187);
       this.eir = undefined;
       this.iir = undefined;
       this.ShopSuccessMontage = undefined;

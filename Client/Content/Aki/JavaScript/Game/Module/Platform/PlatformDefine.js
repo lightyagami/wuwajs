@@ -19,5 +19,6 @@ const xboxOneController = "1118_746";
 const XboxOneSController = "1118_765";
 const xboxWirelessAdapterForWindows = "1118_766";
 const backboneOne = "13706_*";
-exports.deviceIdMap = new Map([[dualSenseWirelessController, 3], [dualSenseEdgeWirelessController, 3], [dualShock4_Cuhzct1x, 3], [dualShock4_Cuhzct2x, 3], [razer_dualShock4, 3], [xboxController, 2], [xboxEliteSeriersController, 2], [xboxEliteSeries2Controller, 2], [xboxOneController2015, 2], [xboxOneWirelessController, 2], [xboxOneEliteController, 2], [xboxOneController, 2], [XboxOneSController, 2], [xboxWirelessAdapterForWindows, 2], [backboneOne, 6]]);
+const nsPro = "1406_8201";
+exports.deviceIdMap = new Map([[dualSenseWirelessController, 3], [dualSenseEdgeWirelessController, 3], [dualShock4_Cuhzct1x, 3], [dualShock4_Cuhzct2x, 3], [razer_dualShock4, 3], [xboxController, 2], [xboxEliteSeriersController, 2], [xboxEliteSeries2Controller, 2], [xboxOneController2015, 2], [xboxOneWirelessController, 2], [xboxOneEliteController, 2], [xboxOneController, 2], [XboxOneSController, 2], [xboxWirelessAdapterForWindows, 2], [backboneOne, 6], [nsPro, 7]]);
 //# sourceMappingURL=PlatformDefine.js.map

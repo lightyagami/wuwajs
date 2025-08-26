@@ -71,7 +71,7 @@ class TsAnimNotifyStateJumpLandDetect extends UE.KuroAnimNotifyState {
       a = new JumpLandDetectParams();
       this.ParamsMap.set(s, a);
     }
-    var s = a.Entity?.GetComponent(178);
+    var s = a.Entity?.GetComponent(179);
     if (this.EnableGoThrough && s?.IsKuroPlanarPhysWalkingEnable) {
       s.CharacterMovement.GoThroughLower = true;
       s.CharacterMovement.GoThroughPriority = 0;
@@ -136,24 +136,22 @@ class TsAnimNotifyStateJumpLandDetect extends UE.KuroAnimNotifyState {
     var r;
     var i;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (r = t.GetEntityIdNoBlueprint(), !!(r = this.ParamsMap.get(r))) && ((i = r.Entity.GetComponent(175)) ? (r.SetGoThrough && (t.CharacterMovement.GoThroughLower = false, r.Entity?.GetComponent(45)?.ResetHitPriorityAndGoThrough()), r.NowTime <= r.TotalTime && i.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Air && r.TotalTime > 0 && (i = (r.TotalTime - r.NowTime) / r.TotalTime, this.Move(r, i)), r.NowTime >= r.TotalTime && this.EndPointHeight <= 0 && t.KuroSetMovementMode({
-      Mode: 1,
-      CustomMode: 0,
-      Context: "[TsAnimNotifyStateJumpLandDetect.K2_NotifyEnd]"
-    }), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Test", 6, "JumpLandDetect No Unified", ["Actor", t.GetName()]), false));
+    return t instanceof TsBaseCharacter_1.default && (r = t.GetEntityIdNoBlueprint(), !!(r = this.ParamsMap.get(r))) && ((i = r.Entity.GetComponent(176)) ? (r.SetGoThrough && (t.CharacterMovement.GoThroughLower = false, r.Entity?.GetComponent(45)?.ResetHitPriorityAndGoThrough()), r.NowTime <= r.TotalTime && i.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Air && r.TotalTime > 0 && (i = (r.TotalTime - r.NowTime) / r.TotalTime, this.Move(e, r, i)), r.NowTime >= r.TotalTime && this.EndPointHeight <= 0 && this.TrySetMovementMode(t), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Test", 6, "JumpLandDetect No Unified", ["Actor", t.GetName()]), false));
   }
   K2_NotifyTick(t, e, r) {
     var i;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t = t.GetEntityIdNoBlueprint(), !!(t = this.ParamsMap.get(t))) && (t.Entity.GetComponent(175).PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground ? t.TotalTime -= r : t.NowTime <= t.TotalTime && t.TotalTime > 0 && (i = Math.min(t.TotalTime - t.NowTime, r) / t.TotalTime, this.Move(t, i), t.NowTime += r), true);
+    return t instanceof TsBaseCharacter_1.default && (t = t.GetEntityIdNoBlueprint(), !!(t = this.ParamsMap.get(t))) && (t.Entity.GetComponent(176).PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground ? t.TotalTime -= r : t.NowTime <= t.TotalTime && t.TotalTime > 0 && (i = Math.min(t.TotalTime - t.NowTime, r) / t.TotalTime, this.Move(e, t, i), t.NowTime += r), true);
   }
-  Move(t, e) {
-    var r = t.Entity.GetComponent(3);
-    t.HeightOffset.Multiply(e, this.TmpVector);
-    if (this.TmpVector.ContainsNaN() && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Movement", 6, "Move NaN", ["HeightOffset", t.HeightOffset], ["offsetRate", e]);
+  Move(t, e, r) {
+    if (!e.Entity.GetComponent(39)?.IsSkillMontageInvalid(t.GetName())) {
+      t = e.Entity.GetComponent(3);
+      e.HeightOffset.Multiply(r, this.TmpVector);
+      if (this.TmpVector.ContainsNaN() && Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Movement", 6, "Move NaN", ["HeightOffset", e.HeightOffset], ["offsetRate", r]);
+      }
+      t.AddActorWorldOffset(this.TmpVector.ToUeVector(), "TsAnimNotifyStateJumpLandDetect", true);
     }
-    r.AddActorWorldOffset(this.TmpVector.ToUeVector(), "TsAnimNotifyStateJumpLandDetect", true);
   }
   GetCurveLocation(t, e, r) {
     r.X = t.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_Y, e);
@@ -164,6 +162,15 @@ class TsAnimNotifyStateJumpLandDetect extends UE.KuroAnimNotifyState {
     r.Pitch = 0;
     r.Yaw = t.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_LOOK, e);
     r.Roll = 0;
+  }
+  TrySetMovementMode(t) {
+    if (!t.CharacterActorComponent?.Entity?.GetComponent(230)?.IsOnVehicle) {
+      t.KuroSetMovementMode({
+        Mode: 1,
+        CustomMode: 0,
+        Context: "[TsAnimNotifyStateJumpLandDetect.K2_NotifyEnd]"
+      });
+    }
   }
   GetNotifyName() {
     return "跳跃检测着陆";

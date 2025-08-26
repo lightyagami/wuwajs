@@ -12,7 +12,7 @@ class FloroRanchToyData {
   constructor(e) {
     this.Lo = undefined;
     this.P4e = true;
-    this._mu = 0;
+    this.Qmu = 0;
     this.TagData = new FloroRanchTagData_1.FloroRanchTagData();
     this.Lo = e;
     this.TagData.SetTagId(this.Lo.Tag);
@@ -24,10 +24,10 @@ class FloroRanchToyData {
     return this.P4e;
   }
   set ConditionId(e) {
-    this._mu = e;
+    this.Qmu = e;
   }
   get ConditionId() {
-    return this._mu;
+    return this.Qmu;
   }
   get ConditionText() {
     if (this.ConditionId === 0) {
@@ -64,18 +64,26 @@ class FloroRanchToyData {
   get Desc() {
     return this.TagData.Desc;
   }
-  GetCardRarity() {
+  GetRarity() {
     return this.Lo.RarityId;
   }
   get IsAdaptAllRace() {
     return this.Lo.Race.length === 0;
   }
-  GetToyRaceData() {
+  GetRace() {
     var e = this.Lo.Race;
-    if (e.length !== 0) {
+    if (e.length === 0) {
+      return -1;
+    } else {
+      return e[0];
+    }
+  }
+  GetToyRaceData() {
+    var e = this.GetRace();
+    if (e !== -1) {
       var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
       if (t) {
-        return t.GetFloroRanchRaceData(e[0]);
+        return t.GetFloroRanchRaceData(e);
       }
     }
   }

@@ -29,10 +29,10 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     this.CardUnlockQueue = [];
     this.CardOutlookUnlockQueue = [];
     this.EntranceOpenQueue = false;
-    this.Aeu = (e, t) => {
+    this.itu = (e, t) => {
       return e.ElementId - t.ElementId;
     };
-    this.bOu = (e, t) => {
+    this.CNu = (e, t) => {
       e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(e);
       t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(t);
       return e.SortIndex - t.SortIndex;
@@ -320,11 +320,11 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
   GetMasterExpWeek() {
     return this.GetPhantomArenaActivityData().GetMasterExpWeek();
   }
-  plu(e) {
+  t_u(e) {
     return ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallengeIdListByGymId(this.ActivityId, e);
   }
   GetChallengeStateListByGymLevel(e) {
-    var t = this.plu(e);
+    var t = this.t_u(e);
     if (this.GetPhantomBattleGymConfigByLevel(e).IfRepeat && t.length !== PhantomArenaDefine_1.REPEAT_GYM_MAX_DIFFICULTY && Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 75, "错误的复刷道馆难度数量", ["配置数量", t.length]);
     }
@@ -430,8 +430,11 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
   GetMasterLevelMax() {
     return ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleMasterLevelConfigByActivityId(this.ActivityId).length;
   }
-  UpdateMasterLevelByConfigId(e) {
-    this.GetPhantomArenaActivityData().UpdateMasterLevelByConfigId(e);
+  UpdateMasterLevelByConfigIds(e) {
+    const t = this.GetPhantomArenaActivityData();
+    e.forEach(e => {
+      t.UpdateMasterLevelByConfigId(e);
+    });
   }
   GetCardItemIdInBattleResult(e) {
     var t = [];
@@ -447,7 +450,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     var r = [];
     if (e) {
       for (const a of e.DS_) {
-        if (!this.cwu(a.L8n)) {
+        if (!this.Mwu(a.L8n)) {
           t = new RewardItemData_1.RewardItemData(a.L8n, a.m9n);
           r.push(t);
         }
@@ -455,7 +458,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     }
     return r;
   }
-  cwu(e) {
+  Mwu(e) {
     var t = this.GetExpItemId();
     var r = this.GetPointsItemId();
     return e === t || e === r;
@@ -562,7 +565,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
         a.push(r);
       }
     }
-    a.sort(this.Aeu);
+    a.sort(this.itu);
     return a;
   }
   GetCollectBadgeIdList() {
@@ -586,7 +589,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       t.set(r, a);
     }
     for (const [, e] of t) {
-      e.sort(this.bOu);
+      e.sort(this.CNu);
     }
     return t;
   }
@@ -661,7 +664,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       e.push(t);
     }
     var r = this.GetCardUnlockCount();
-    return this.Lmu(e, r);
+    return this.ufu(e, r);
   }
   GetCardRewardPopupTupleData(e) {
     var t;
@@ -695,7 +698,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       return 1;
     }
   }
-  Lmu(t, r) {
+  ufu(t, r) {
     var e;
     var a;
     if (t.length <= 0 || r === 0) {
@@ -723,7 +726,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       e.push(t);
     }
     var r = this.GetBadgeUnlockCount();
-    return this.Lmu(e, r);
+    return this.ufu(e, r);
   }
   GetBadgeRewardPopupTupleData(e) {
     var t;
@@ -976,11 +979,11 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
   GetPhantomArenaActivityRedDot() {
     return this.GetMasterLevelRewardRedDot() || this.CheckTaskRedDot() || this.CheckShopRedDot() || this.GetRoleRewardRedDot() || this.GetCardRewardRedDot() || this.GetBadgeRewardRedDot() || this.GetGymRedDot();
   }
-  ljc() {
+  AZu() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityId);
   }
   GetPhantomArenaButtonRedDot() {
-    this.ljc();
+    this.AZu();
     return this.GetRoleRewardRedDot() || this.GetCardRewardRedDot() || this.GetBadgeRewardRedDot() || this.GetGymRedDot();
   }
   GetGymRedDot() {
@@ -1036,11 +1039,12 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     return false;
   }
   CheckTaskRedDot() {
-    if (this.GetPhantomArenaActivityData()) {
-      var e = this.GetPhantomArenaActivityData().GetTaskMap();
-      for (const t of this.GetPhantomArenaActivityData().GetTaskTabMap()) {
-        for (const r of t[1]) {
-          if (e.get(r).H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
+    var e = this.IsInLimitTime();
+    if (e[0] && this.GetPhantomArenaActivityData()) {
+      var t = this.GetPhantomArenaActivityData().GetTaskMap();
+      for (const r of this.GetPhantomArenaActivityData().GetTaskTabMap()) {
+        for (const a of r[1]) {
+          if (t.get(a).H6n === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskFinish) {
             return true;
           }
         }
@@ -1061,9 +1065,9 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     return false;
   }
   CheckShopRedDot() {
-    var e = this.GetPhantomArenaActivityData();
-    var t = e?.GetShopId() ?? undefined;
-    return !!t && !!e?.IsUnLock() && (e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(t), t = this.GetCurUnlockShopData(e), !this.GetCacheShopOpen(t.toString()));
+    var e;
+    var t;
+    return !!this.IsInLimitTime()[0] && !!(t = (e = this.GetPhantomArenaActivityData())?.GetShopId() ?? undefined) && !!e?.IsUnLock() && !(e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(t), t = this.GetCurUnlockShopData(e), this.GetCacheShopOpen(t.toString()));
   }
   GetCurUnlockShopData(e) {
     var t = [];

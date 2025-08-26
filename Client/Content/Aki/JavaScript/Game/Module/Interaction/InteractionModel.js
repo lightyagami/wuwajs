@@ -163,8 +163,8 @@ class InteractionModel extends ModelBase_1.ModelBase {
     }
     this.x_i = e.length;
     e.sort((t, e) => {
-      t = t.GetComponent(197);
-      e = e.GetComponent(197);
+      t = t.GetComponent(198);
+      e = e.GetComponent(198);
       t = t.GetInteractController().InteractEntity.Priority;
       return e.GetInteractController().InteractEntity.Priority - t;
     });
@@ -175,7 +175,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CanAutoPickUp(t) {
     var e;
-    return !!t?.Valid && !t.GetComponent(250)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(197))?.IsPawnInteractive() && (!!t.GetComponent(117)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
+    return !!t?.Valid && !t.GetComponent(253)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(198))?.IsPawnInteractive() && (!!t.GetComponent(118)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
   }
   GetOptionInstanceIdByIndex(t) {
     let e = t;
@@ -318,7 +318,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   GetInteractController(t) {
     if (t) {
-      t = t.GetComponent(197);
+      t = t.GetComponent(198);
       if (t) {
         return t.GetInteractController();
       }
@@ -419,7 +419,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
     return this.L_i;
   }
   LockInteraction(t, e) {
-    t = t?.GetComponent(197);
+    t = t?.GetComponent(198);
     if (t && t.Valid) {
       t.SetServerLockInteract(e, "Interacting Notify");
     }
@@ -443,7 +443,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   RecoverInteractFromLock() {
     var t;
     if (this.LockInteractionEntity) {
-      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 197);
+      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 198);
       this.LockInteractionEntity = undefined;
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(1);
       t?.AfterUnlockInteractionEntity();

@@ -246,6 +246,12 @@ class BaseBehaviorTree {
   GetTreeVarByKey(e) {
     return this.BlackBoard.GetTreeVar(e);
   }
+  AddTreeVarUpdateDelegate(e, t) {
+    this.BlackBoard.AddTreeVarUpdateDelegate(e, t);
+  }
+  RemoveTreeVarUpdateDelegate(e, t) {
+    this.BlackBoard.RemoveTreeVarUpdateDelegate(e, t);
+  }
   CheckCanGiveUp() {
     if (!ModelManager_1.ModelManager.CreatureModel.IsMyWorld()) {
       return false;
@@ -501,9 +507,9 @@ class BaseBehaviorTree {
               e = l.SaveConfig?.EnterActions;
             }
             break;
-          case Protocol_1.Aki.Protocol.TOs.xGu:
+          case Protocol_1.Aki.Protocol.TOs.BBu:
             if (l.Type === "ConditionSelector" || l.Type === "ParallelSelect" || l.Type === "Select" || l.Type === "Sequence") {
-              a = t.xGu.t5n;
+              a = t.BBu.t5n;
               e = l.SaveConfig?.InitConditionActions?.[a].Action;
             }
             break;
@@ -620,7 +626,7 @@ class DynamicFlowInfo {
   ClearDynamicFlowNpcList() {
     for (const t of this.hQt) {
       var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
-      if (e &&= e.Entity.GetComponent(185)) {
+      if (e &&= e.Entity.GetComponent(186)) {
         e.PlayDynamicFlowEnd();
       }
     }

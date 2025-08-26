@@ -21,7 +21,7 @@ class AsyncUtil {
         for (const t of EntityHelper_1.globalEntityTypeQueryName) {
           e.Add(new UE.FName(t));
         }
-        cpp_1.FKuroAIPerceptionUtils.Initialize(e, 62, 1, 6, CharacterUnifiedStateTypes_1.ECharMoveState.Other, CharacterUnifiedStateTypes_1.ECharMoveState.Stand, CharacterUnifiedStateTypes_1.ECharMoveState.Walk, CharacterUnifiedStateTypes_1.ECharMoveState.WalkStop, CharacterUnifiedStateTypes_1.ECharMoveState.Glide, CharacterUnifiedStateTypes_1.ECharPositionState.Ground, 0);
+        cpp_1.FKuroAIPerceptionUtils.Initialize(e, 248, 7, 8, CharacterUnifiedStateTypes_1.ECharMoveState.Other, CharacterUnifiedStateTypes_1.ECharMoveState.Stand, CharacterUnifiedStateTypes_1.ECharMoveState.Walk, CharacterUnifiedStateTypes_1.ECharMoveState.WalkStop, CharacterUnifiedStateTypes_1.ECharMoveState.Glide, CharacterUnifiedStateTypes_1.ECharPositionState.Ground, 0);
       }
       this.Sq_ = true;
     }

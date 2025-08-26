@@ -25,7 +25,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
     this.IsSelected = false;
     this.IsForceSelected = false;
     this.MPt = true;
-    this.EPt = false;
+    this.IsAnyComponentLoading = false;
     this.UseFixedAsync = false;
     this.AllComponentLoadedCallback = undefined;
     this.SPt = undefined;
@@ -92,7 +92,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.CanItemLongPressClick = () => !this.RPt || this.RPt(this, this.Data);
-    this.HHc = (t, i) => {
+    this.sKu = (t, i) => {
       if (i) {
         this.CPt.add(t);
       } else {
@@ -105,7 +105,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
       }
       this.dPt.delete(t);
       if (!(this.dPt.size > 0)) {
-        this.EPt = false;
+        this.IsAnyComponentLoading = false;
         this.RefreshComponentVisible();
         this.RefreshComponentHierarchyIndex();
         this.AllComponentLoadedCallback?.();
@@ -134,7 +134,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
     this.fPt.length = 0;
     this.LongPressButton?.Clear();
     this.LongPressButton = undefined;
-    this.EPt = false;
+    this.IsAnyComponentLoading = false;
     this.UnBindOnExtendTogglePress();
     this.UnBindOnExtendToggleRelease();
     this.UnBindOnExtendToggleStateChanged();
@@ -305,17 +305,17 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
           i.Initialize(this.dh1, this.UseFixedAsync);
       }
       if (this.UseFixedAsync) {
-        i.OnComponentVisibleChanged = this.HHc;
+        i.OnComponentVisibleChanged = this.sKu;
       }
       this.mPt.set(t, i);
       this.dPt.add(i);
-      this.EPt = true;
+      this.IsAnyComponentLoading = true;
       i.Load().then(this.BPt, () => {});
     }
     return i;
   }
   RefreshComponentVisible() {
-    if (!this.UseFixedAsync || !this.EPt) {
+    if (!this.UseFixedAsync || !this.IsAnyComponentLoading) {
       for (const t of this.mPt.values()) {
         if (!this.CPt.has(t)) {
           t.SetActive(false);
@@ -324,6 +324,13 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
     }
   }
   ClearVisibleComponent() {
+    if (this.UseFixedAsync && this.IsAnyComponentLoading) {
+      for (const t of this.mPt.values()) {
+        if (t.InAsyncLoading()) {
+          t.Refresh(undefined);
+        }
+      }
+    }
     this.CPt.clear();
   }
   GPt(t) {
@@ -344,7 +351,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
     this.fPt.length = 0;
   }
   RefreshComponentHierarchyIndex() {
-    if (!this.EPt) {
+    if (!this.IsAnyComponentLoading) {
       for (let t = 0; t < this.fPt.length; t++) {
         this.fPt[t].SetHierarchyIndex(t);
       }

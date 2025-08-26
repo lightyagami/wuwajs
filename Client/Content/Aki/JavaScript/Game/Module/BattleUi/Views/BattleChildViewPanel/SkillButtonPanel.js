@@ -309,7 +309,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   xet() {
     var t;
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && (e = e.Entity.GetComponent(175).DirectionState, (t = this.Uet(101)) && (e === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? t.SetBehaviorToggleState(1) : t.SetBehaviorToggleState(0)), t = this.Uet(102))) {
+    if (e?.Valid && (e = e.Entity.GetComponent(176).DirectionState, (t = this.Uet(101)) && (e === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? t.SetBehaviorToggleState(1) : t.SetBehaviorToggleState(0)), t = this.Uet(102))) {
       if (e === CharacterUnifiedStateTypes_1.ECharDirectionState.LockDirection) {
         t.SetBehaviorToggleState(1);
       } else {

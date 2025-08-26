@@ -54,7 +54,7 @@ class PayPackageData {
     this.BuyLimit = t.dBs ?? 0;
     this.BoughtCount = t.X7n ?? 0;
     this.StageImage = t._Bs ?? "";
-    this.ShowStageImage = t.Mku ?? "";
+    this.ShowStageImage = t.oku ?? "";
     this.BeginTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.cps));
     this.EndTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.dps));
     this.UpdateTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.Lxs));
@@ -71,8 +71,8 @@ class PayPackageData {
     this.CloudGameTime = t.b2_ ?? 0;
     this.CloudGameIcon = t.L2_ ?? "";
     this.CloudGameDesc = t.gxs ?? "";
-    this.LabelId = t.VRu ?? 0;
-    this.PromotionShow = t.jRu ?? 0;
+    this.LabelId = t.uLu ?? 0;
+    this.PromotionShow = t.cLu ?? 0;
     this.MFi();
     this.vFi.SetGoodsData(this.pql());
     this.vFi.SetPayGiftId(this.Id);

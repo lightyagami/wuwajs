@@ -76,10 +76,10 @@ class ItemConfig {
         this.USc(i);
         break;
       case 15:
-        this.Rdu(i);
+        this._mu(i);
         break;
       case 16:
-        this.Ldu(i);
+        this.umu(i);
     }
   }
   Cmi(i) {
@@ -332,7 +332,7 @@ class ItemConfig {
     this.ItemBuffType = 0;
     this.ShowTypes = i.ShowTypes;
   }
-  Rdu(i) {
+  _mu(i) {
     this.ItemDataType = 15;
     this.ItemType = 60009;
     this.MainTypeId = 1;
@@ -349,7 +349,7 @@ class ItemConfig {
     this.ObtainedShowDescription = "";
     this.AttributesDescription = i.AttributesDescription;
   }
-  Ldu(i) {
+  umu(i) {
     this.ItemDataType = 16;
     this.ItemType = 60010;
     this.MainTypeId = 1;

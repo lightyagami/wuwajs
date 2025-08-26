@@ -59,6 +59,10 @@ class ActivityDirectTrainData extends ActivityData_1.ActivityBaseData {
       return false;
     }
   }
+  GetExDataFinishShowState() {
+    var e = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId();
+    return ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 3;
+  }
 }
 exports.ActivityDirectTrainData = ActivityDirectTrainData;
 //# sourceMappingURL=ActivityDirectTrainData.js.map

@@ -8,17 +8,19 @@ const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 class FloroRanchShopItemDataBase {
   constructor(t) {
+    this.IncId = 0;
     this.Id = 0;
     this.Price = 0;
-    this.Type = Protocol_1.Aki.Protocol.eou.Gcu;
+    this.Type = Protocol_1.Aki.Protocol.bou.Sdu;
     this.IsSold = false;
+    this.IncId = t.w5n;
     this.Id = t.s5n;
     this.Price = t.MBs;
     this.Type = t.h5n;
-    this.IsSold = t.qbu;
+    this.IsSold = t.oRu;
   }
-  BuyGoods() {
-    this.IsSold ||= true;
+  GetIsSpecialPhantom() {
+    return false;
   }
   GetToyRaceData() {}
 }
@@ -42,10 +44,13 @@ class FloroRanchShopItemCardData extends (exports.FloroRanchShopItemDataBase = F
     return this.ConfigData.GetCardQualityData();
   }
   GetRace() {
-    return this.ConfigData.GetCardRace();
+    return this.ConfigData.GetRace();
   }
   GetEarnCount() {
     return this.ConfigData.GetCardSalary();
+  }
+  GetIsSpecialPhantom() {
+    return this.ConfigData.IsSpecialPhantom;
   }
 }
 exports.FloroRanchShopItemCardData = FloroRanchShopItemCardData;

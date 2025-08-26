@@ -12,36 +12,34 @@ const FloroRanchAsyncActionBase_1 = require("./FloroRanchAsyncActionBase");
 class FloroRanchWageSettleAction extends FloroRanchAsyncActionBase_1.FloroRanchAsyncActionBase {
   constructor(e) {
     super();
-    this.aGu = undefined;
-    this.aGu = e;
+    this.iOu = undefined;
+    this.iOu = e;
   }
   async OnExecute() {
-    var e = [];
-    for (const o of this.aGu.iGu) {
-      e.push(this.hGu(o));
+    for (const e of this.iOu.WBu) {
+      await this.rOu(e);
     }
-    await Promise.all(e);
   }
-  async hGu(e) {
+  async rOu(e) {
     var o;
     var t;
-    var a = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(e.xyu);
+    var a = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(e.wSu);
     await a.GetUiItemComponent().PlayNormalAnim();
     await this.WaitIfPause();
     if (!this.IsExit()) {
       o = a.CheckGetComponent(6);
-      if (e.h5n === Protocol_1.Aki.Protocol.Qyu.Proto_UnitCoin) {
-        t = Number(MathUtils_1.MathUtils.LongToBigInt(e.Pyu));
+      if (e.h5n === Protocol_1.Aki.Protocol.jSu.Proto_UnitCoin) {
+        t = Number(MathUtils_1.MathUtils.LongToBigInt(e.RSu));
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.CoinData.ChangeAmount(t);
         a.CheckGetComponent(0).Income += t;
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.AddLastDayIncome(t);
         await o.ShowPopupReward(0, t);
-      } else if (e.h5n === Protocol_1.Aki.Protocol.Qyu.Proto_UnitDiamond) {
-        t = Number(MathUtils_1.MathUtils.LongToBigInt(e.Pyu));
+      } else if (e.h5n === Protocol_1.Aki.Protocol.jSu.Proto_UnitDiamond) {
+        t = Number(MathUtils_1.MathUtils.LongToBigInt(e.RSu));
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData.ChangeAmount(t);
         await o.ShowPopupReward(1, t);
-      } else if (e.h5n === Protocol_1.Aki.Protocol.Qyu.Proto_UnitBaseSalary) {
-        t = Number(MathUtils_1.MathUtils.LongToBigInt(e.Pyu));
+      } else if (e.h5n === Protocol_1.Aki.Protocol.jSu.Proto_UnitBaseSalary) {
+        t = Number(MathUtils_1.MathUtils.LongToBigInt(e.RSu));
         a.CheckGetComponent(0).DailySaleData.ChangeAmount(t);
         await o.ShowPopupReward(2, t);
       }

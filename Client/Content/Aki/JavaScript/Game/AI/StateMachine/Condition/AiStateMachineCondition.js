@@ -8,7 +8,6 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const CombatMessage_1 = require("../../../Module/CombatMessage/CombatMessage");
 const CharacterStateMachineNewComponent_1 = require("../../../NewWorld/Character/Common/Component/CharacterStateMachineNewComponent");
-const CombatLog_1 = require("../../../Utils/CombatLog");
 const AiStateMachine_1 = require("../AiStateMachine");
 class AiStateMachineCondition {
   constructor(t, i, e) {
@@ -64,17 +63,13 @@ class AiStateMachineCondition {
     return !this.Node.RootNode.IsAnimStateMachine && this.CheckForClient && this.Result !== this.LastResult;
   }
   ReqFsmConditionPass() {
-    const i = Protocol_1.Aki.Protocol._4n.create();
-    i.$4n = this.Node.RootNode.Uuid;
-    i.J4n = this.Transition.From;
-    i.z4n = this.Transition.To;
-    i.t5n = this.Index;
-    i.e5n = this.Result;
-    CombatMessage_1.CombatNet.Call(22437, this.Node.Entity, i, t => {
-      if (t.fMs?.Q4n) {
-        CombatLog_1.CombatLog.Warn("StateMachineNew", this.Node?.Entity, `客户端条件完成response [${i.J4n}=>${i.z4n}],index:${this.Index},request value:${i.e5n}`, ["response", t.fMs]);
-      }
-    });
+    var t = Protocol_1.Aki.Protocol.x1d.create();
+    t.$4n = this.Node.RootNode.Uuid;
+    t.J4n = this.Transition.From;
+    t.z4n = this.Transition.To;
+    t.t5n = this.Index;
+    t.e5n = this.Result;
+    CombatMessage_1.CombatNet.Send(25415, this.Node.Entity, t);
   }
   OnTick() {}
   Clear() {

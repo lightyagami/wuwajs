@@ -46,7 +46,7 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
   OnStartTask() {
     super.OnStartTask();
     if (this.EntityHandle.Entity.GetComponent(0)?.IsNpc() && this.gLe?.NpcFollow) {
-      this.EntityHandle.Entity.GetComponent(187)?.PauseAi("StartMoveWithSpline");
+      this.EntityHandle.Entity.GetComponent(188)?.PauseAi("StartMoveWithSpline");
       EventSystem_1.EventSystem.EmitWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.StartMoveWithSpline, this.gLe, this.RCl, e => {
         this.EndTask(e);
       });
@@ -67,7 +67,7 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     s?.ClearInput();
     if (this.gLe?.MoveTarget.Type === "Player") {
       s = this.EntityHandle.Entity.GetComponent(45);
-      t = this.EntityHandle.Entity.GetComponent(101);
+      t = this.EntityHandle.Entity.GetComponent(102);
       if (s) {
         s.StopMove(false);
         i = t?.MoveState;
@@ -81,7 +81,7 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     }
     this.EntityHandle.Entity.GetComponent(45).IsSpecialMove = false;
     if (this.EntityHandle.Entity.GetComponent(0)?.IsNpc() && this.gLe?.NpcFollow) {
-      this.EntityHandle.Entity.GetComponent(187)?.ResumeAi("StartMoveWithSpline");
+      this.EntityHandle.Entity.GetComponent(188)?.ResumeAi("StartMoveWithSpline");
     }
     this.B7?.(e);
   }
@@ -108,73 +108,77 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     r.ClearCacheData();
     return [e, a];
   }
-  sKl() {
-    var e = this.EntityHandle.Entity.GetComponent(1);
-    var t = e.ActorLocationProxy;
-    let i = this.nKl(t, e.Owner);
-    if (!i[0]) {
-      var s = this.gLe.CheckClimb.FallBackClimbPointId;
-      if (s && (s = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(s))?.Transform && (s = {
-        X: s.Transform.Pos.X ?? 0,
-        Y: s.Transform.Pos.Y ?? 0,
-        Z: s.Transform.Pos.Z ?? 0
-      }, i = this.nKl(s, e.Owner), Log_1.Log.CheckWarn())) {
-        Log_1.Log.Warn("AI", 42, "MoveWithSpline当前位置射线检测不到墙面，启用保底检测", ["Result", i[0]], ["CurrentLoc", t], ["DefaultLoc", s]);
+  sKl(e) {
+    var t;
+    var i;
+    var s;
+    var r = this.EntityHandle.Entity.GetComponent(1);
+    var a = this.nKl(e, r.Owner);
+    if (a[0]) {
+      a = a[1];
+      t = CharacterSplineMoveTask.jye;
+      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(a, 0, t);
+      t.MultiplyEqual(CHARACTER_TRACE_DISTANCE);
+      i = CharacterSplineMoveTask.RTe;
+      TraceElementCommon_1.TraceElementCommon.GetImpactPoint(a, 0, i);
+      i.AdditionEqual(t);
+      s = (a = this.EntityHandle.Entity.GetComponent(178)).GetMeshTransform();
+      r.SetActorLocation(i.ToUeVector(), "MoveWithSplineDetectClimb", true);
+      a.SetModelBuffer(s, 10);
+      (r = t).UnaryNegation(r);
+      return this.EntityHandle.Entity.GetComponent(102)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb || (this.EntityHandle.Entity.GetComponent(34)?.DetectClimbWithDirect(false, r.ToUeVector(), true) ?? false);
+    } else {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("AI", 42, "MoveWithSpline上墙失败,射线检测不到墙面", ["loc", e]);
       }
-      if (!i[0]) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("AI", 42, "MoveWithSpline上墙失败,射线检测不到墙面");
-        }
-        return false;
-      }
-    }
-    var t = i[1];
-    var s = CharacterSplineMoveTask.jye;
-    TraceElementCommon_1.TraceElementCommon.GetImpactNormal(t, 0, s);
-    s.MultiplyEqual(CHARACTER_TRACE_DISTANCE);
-    var r = CharacterSplineMoveTask.RTe;
-    TraceElementCommon_1.TraceElementCommon.GetImpactPoint(t, 0, r);
-    r.AdditionEqual(s);
-    var t = this.EntityHandle.Entity.GetComponent(177);
-    var a = t.GetMeshTransform();
-    e.SetActorLocation(r.ToUeVector(), "MoveWithSplineDetectClimb", true);
-    t.SetModelBuffer(a, 10);
-    var e = s;
-    e.UnaryNegation(e);
-    var r = this.EntityHandle.Entity.GetComponent(101);
-    if (r?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Climb && !this.EntityHandle.Entity.GetComponent(34)?.DetectClimbWithDirect(false, e.ToUeVector(), true)) {
       return false;
     }
-    return true;
   }
   ODe() {
-    if (this.gLe?.CheckClimb && !this.sKl()) {
-      if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("AI", 42, "MoveWithSpline上墙失败");
+    if (this.gLe?.CheckClimb) {
+      var t = this.EntityHandle.Entity.GetComponent(1);
+      let e = this.sKl(t.ActorLocationProxy);
+      if (!e) {
+        if ((o = this.gLe.CheckClimb.FallBackClimbPointId) && (o = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(o))?.Transform) {
+          o = {
+            X: o.Transform.Pos.X ?? 0,
+            Y: o.Transform.Pos.Y ?? 0,
+            Z: o.Transform.Pos.Z ?? 0
+          };
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("AI", 42, "MoveWithSpline当前位置上墙失败，启用保底检测", ["CurrentLoc", t.ActorLocationProxy], ["DefaultLoc", o]);
+          }
+          e = this.sKl(o);
+        }
       }
-      this.EndTask(false);
-      return;
+      if (!e) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("AI", 42, "MoveWithSpline上墙失败");
+        }
+        this.EndTask(false);
+        return;
+      }
     }
-    var t = this.SplineData && this.SplineData.Points.length;
-    var i = [];
-    for (let e = this.il; e <= this.wXt; ++e) {
-      i.push(Vector_1.Vector.Create(this.Spline.D_GetLocationAtSplinePoint(e, 1)));
-    }
+    var i = this.SplineData && this.SplineData.Points.length;
     var s = [];
     for (let e = this.il; e <= this.wXt; ++e) {
-      var r;
-      var a = e - this.il;
-      var a = {
-        Index: a,
-        Position: i[a]
-      };
-      if (t && ((r = this.SplineData.Points[e])?.MoveSpeed && (a.MoveSpeed = r.MoveSpeed), r?.MoveState)) {
-        a.MoveState = r.MoveState;
-      }
-      s.push(a);
+      s.push(Vector_1.Vector.Create(this.Spline.D_GetLocationAtSplinePoint(e, 1)));
     }
-    var e = {
-      Points: s,
+    var r = [];
+    for (let e = this.il; e <= this.wXt; ++e) {
+      var a;
+      var h = e - this.il;
+      var h = {
+        Index: h,
+        Position: s[h]
+      };
+      if (i && ((a = this.SplineData.Points[e])?.MoveSpeed && (h.MoveSpeed = a.MoveSpeed), a?.MoveState)) {
+        h.MoveState = a.MoveState;
+      }
+      r.push(h);
+    }
+    var t = {
+      Points: r,
       Navigation: this.SplineData?.IsNavigation ?? false,
       IsFly: this.gLe?.IsFollowStrictly ?? this.SplineData?.IsFloating ?? false,
       DebugMode: true,
@@ -189,21 +193,21 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
       },
       ReturnFalseWhenNavigationFailed: false,
       NoAsyncPoint: this.RCl,
-      StartIndex: this.gLe?.CheckClimb && s.length > 1 ? 1 : 0
+      StartIndex: this.gLe?.CheckClimb && r.length > 1 ? 1 : 0
     };
     if (this.SplineData?.CycleOption && this.SplineData.CycleOption.Type === IComponent_1.EPatrolCycleMode.Loop) {
-      e.Loop = true;
-      e.CircleMove = this.SplineData.CycleOption.IsCircle;
+      t.Loop = true;
+      t.CircleMove = this.SplineData.CycleOption.IsCircle;
     }
     if (this.SplineData?.TurnSpeed) {
-      e.TurnSpeed = this.SplineData.TurnSpeed;
+      t.TurnSpeed = this.SplineData.TurnSpeed;
     }
-    var h = this.EntityHandle.Entity.GetComponent(45);
-    if (h.IsMovingToLocation()) {
-      h.MoveToLocationEnd(1);
+    var o = this.EntityHandle.Entity.GetComponent(45);
+    if (o.IsMovingToLocation()) {
+      o.MoveToLocationEnd(1);
     }
     this.EntityHandle.Entity.GetComponent(3)?.Actor.CapsuleComponent.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.PawnPlayer, 0);
-    h.MoveAlongPath(e);
+    o.MoveAlongPath(t);
     if (this.gLe?.CheckClimb && this.EntityHandle.Entity?.Valid && !EventSystem_1.EventSystem.HasWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.xsa)) {
       EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.xsa);
     }

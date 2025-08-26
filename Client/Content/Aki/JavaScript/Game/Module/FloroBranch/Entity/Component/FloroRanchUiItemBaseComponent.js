@@ -6,10 +6,21 @@ Object.defineProperty(exports, "__esModule", {
 exports.FloroRanchUiItemBaseComponent = undefined;
 const FloroRanchEntityComponentBase_1 = require("./FloroRanchEntityComponentBase");
 class FloroRanchUiItemBaseComponent extends FloroRanchEntityComponentBase_1.FloroRanchEntityComponentBase {
+  constructor() {
+    super(...arguments);
+    this.Bhd = false;
+  }
   async ShowUiItem() {}
   async HideUiItem() {}
   Pause() {}
   Resume() {}
+  Exit() {}
+  OnExit() {
+    this.Bhd = true;
+  }
+  CheckIsExit() {
+    return this.Bhd;
+  }
   async MoveToTarget(n) {}
   async MoveToOriginalPosition() {}
   async PlayEatAnim() {}

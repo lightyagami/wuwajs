@@ -55,7 +55,7 @@ CdKeyInputController.RequestCdKey = async e => {
     Log_1.Log.Info("Functional", 37, "请求CdKey兑换", ["CdKey", e]);
   }
   CdKeyInputController.nEt();
-  var e = await Net_1.Net.CallAsync(29903, t);
+  var e = await Net_1.Net.CallAsync(16512, t);
   if (e) {
     return e.Q4n;
   }

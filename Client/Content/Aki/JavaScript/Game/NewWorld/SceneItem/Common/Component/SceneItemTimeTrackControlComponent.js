@@ -64,13 +64,13 @@ let SceneItemTimeTrackControlComponent = SceneItemTimeTrackControlComponent_1 = 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
-    this.Lie = this.Entity.GetComponent(205);
-    this.mBe = this.Entity.GetComponent(133);
+    this.Hte = this.Entity.GetComponent(203);
+    this.Lie = this.Entity.GetComponent(206);
+    this.mBe = this.Entity.GetComponent(134);
     return true;
   }
   OnActivate() {
-    var e = this.Entity.GetComponent(197);
+    var e = this.Entity.GetComponent(198);
     if (e) {
       var t = e.GetInteractController();
       if (t) {
@@ -152,5 +152,5 @@ let SceneItemTimeTrackControlComponent = SceneItemTimeTrackControlComponent_1 = 
     }
   }
 };
-SceneItemTimeTrackControlComponent = SceneItemTimeTrackControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(134)], SceneItemTimeTrackControlComponent);
+SceneItemTimeTrackControlComponent = SceneItemTimeTrackControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(135)], SceneItemTimeTrackControlComponent);
 exports.SceneItemTimeTrackControlComponent = SceneItemTimeTrackControlComponent; //# sourceMappingURL=SceneItemTimeTrackControlComponent.js.map

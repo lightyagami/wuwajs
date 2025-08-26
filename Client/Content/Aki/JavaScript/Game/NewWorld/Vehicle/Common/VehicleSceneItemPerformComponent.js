@@ -43,9 +43,9 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
       return false;
     }
     this.ActorComp = this.Entity.GetComponent(1);
-    this.AnimComp = this.Entity.GetComponent(235);
-    this.MoveComp = this.Entity.GetComponent(236);
-    this.TagComp = this.Entity.GetComponent(205);
+    this.AnimComp = this.Entity.GetComponent(236);
+    this.MoveComp = this.Entity.GetComponent(237);
+    this.TagComp = this.Entity.GetComponent(206);
     var e = this.CreatureData?.GetPbEntityInitData();
     return !!e?.ComponentsData && !!(0, IComponent_1.getComponent)(e.ComponentsData, "VehicleComponent") && !!this.InitVehicleConfig();
   }
@@ -71,7 +71,7 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
   EnterVehiclePerform(e) {
     var t;
     if (e.PassengerEntity) {
-      this.ehu("EnterVehiclePerform");
+      this.Rhu("EnterVehiclePerform");
       if (this.PassengerTagMap.has(e.PassengerEntity)) {
         t = e.PassengerEntity.GetComponent(0)?.GetPbDataId();
         if (Log_1.Log.CheckError()) {
@@ -89,7 +89,7 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
   }
   LeaveVehiclePerform(e) {
     if (e.PassengerEntity) {
-      this.ehu("LeaveVehiclePerform");
+      this.Rhu("LeaveVehiclePerform");
       this.RemoveAllTagsForPassenger(e.PassengerEntity);
       if (!this.PassengerTagMap.size) {
         this.RemoveEnterVehicleTagsForVehicle();
@@ -125,19 +125,19 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
   }
   AddTagForPassenger(e, t, i) {
     if (e && this.PassengerTagMap.has(e)) {
-      e.GetComponent(205)?.TagContainer.AddExactTag(t, i);
+      e.GetComponent(206)?.TagContainer.AddExactTag(t, i);
       this.PassengerTagMap.get(e).add(i);
     }
   }
   RemoveTagForPassenger(e, t, i) {
     if (e && this.PassengerTagMap.get(e)?.has(i)) {
-      e.GetComponent(205)?.TagContainer.RemoveExactTag(t, i);
+      e.GetComponent(206)?.TagContainer.RemoveExactTag(t, i);
       this.PassengerTagMap.get(e).delete(i);
     }
   }
   RemoveAllTagsForPassenger(e) {
     if (e) {
-      const i = e.GetComponent(205);
+      const i = e.GetComponent(206);
       var t = this.PassengerTagMap.get(e);
       if (t && i) {
         t.forEach(e => {
@@ -147,7 +147,7 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
       }
     }
   }
-  thu() {
+  Lhu() {
     for (const e of this.PassengerInfoMap.values()) {
       if (e.IsRolePassenger(true)) {
         return true;
@@ -155,14 +155,14 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
     }
     return false;
   }
-  ehu(e) {
-    if (this.thu()) {
-      this.ihu(e);
+  Rhu(e) {
+    if (this.Lhu()) {
+      this.whu(e);
     } else {
-      this.rhu(e);
+      this.Ahu(e);
     }
   }
-  ihu(e) {
+  whu(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 39, "提高载具Tick频率", ["ConfigId", this.EntityHandle?.PbDataId], ["Reason", e]);
     }
@@ -170,7 +170,7 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
       cpp_1.FKuroGameBudgetAllocatorInterface.MarkActorInFighting(GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsNormalEntityGroupConfig.GroupName, this.Entity.GameBudgetManagedToken, true);
     }
   }
-  rhu(e) {
+  Ahu(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Vehicle", 39, "降低载具Tick频率", ["ConfigId", this.EntityHandle?.PbDataId], ["Reason", e]);
     }
@@ -179,5 +179,5 @@ let VehicleSceneItemPerformComponent = class VehicleSceneItemPerformComponent ex
     }
   }
 };
-VehicleSceneItemPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(238)], VehicleSceneItemPerformComponent);
+VehicleSceneItemPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(239)], VehicleSceneItemPerformComponent);
 exports.VehicleSceneItemPerformComponent = VehicleSceneItemPerformComponent; //# sourceMappingURL=VehicleSceneItemPerformComponent.js.map

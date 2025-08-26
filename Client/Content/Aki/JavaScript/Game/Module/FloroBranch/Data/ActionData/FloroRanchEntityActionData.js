@@ -16,11 +16,11 @@ class FloroRanchEntityActionData extends FloroRanchAsyncActionBase_1.FloroRanchA
     this.EntityData = a;
   }
   async OnExecute() {
-    if (this.OperateType === Protocol_1.Aki.Protocol.Wyu.Proto_UnitOpAdd) {
+    if (this.OperateType === Protocol_1.Aki.Protocol.VSu.Proto_UnitOpAdd) {
       await this.AddEntityAction();
-    } else if (this.OperateType === Protocol_1.Aki.Protocol.Wyu.Proto_UnitOpRemove) {
+    } else if (this.OperateType === Protocol_1.Aki.Protocol.VSu.Proto_UnitOpRemove) {
       await this.RemoveEntityAction();
-    } else if (this.OperateType === Protocol_1.Aki.Protocol.Wyu.Proto_UnitReplace) {
+    } else if (this.OperateType === Protocol_1.Aki.Protocol.VSu.Proto_UnitReplace) {
       await this.ReplaceEntityAction();
     } else {
       await this.ChangeEntityAction();
@@ -34,7 +34,7 @@ class FloroRanchEntityActionData extends FloroRanchAsyncActionBase_1.FloroRanchA
     }
   }
   async RemoveEntityAction() {
-    var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.EntityData.Ziu);
+    var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.EntityData.Tru);
     ModelManager_1.ModelManager.FloroRanchGamePlayModel.RemoveOwnEntityData(t);
     var t = t.GetUiItemComponent();
     if (t) {
@@ -42,12 +42,12 @@ class FloroRanchEntityActionData extends FloroRanchAsyncActionBase_1.FloroRanchA
     }
   }
   async ChangeEntityAction() {
-    var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.EntityData.Ziu);
+    var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.EntityData.Tru);
     t.RefreshEntityData(this.EntityData);
     await t.GetUiItemComponent().PlayShowAnim();
   }
   async ReplaceEntityAction() {
-    var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.EntityData.Ziu);
+    var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.EntityData.Tru);
     await t.GetUiItemComponent().PlayHideAnim();
     t.RefreshEntityData(this.EntityData);
     await t.GetUiItemComponent().PlayShowAnim();

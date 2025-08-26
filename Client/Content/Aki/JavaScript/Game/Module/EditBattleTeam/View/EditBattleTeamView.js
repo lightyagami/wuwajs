@@ -303,7 +303,11 @@ class EditBattleTeamView extends UiViewBase_1.UiViewBase {
         e.CanConfirm = this.M1a;
         e.OnBack = this.O4t;
         e.OnHideFinish = this.P4t;
-        UiManager_1.UiManager.OpenView("QuickRoleSelectView", e);
+        UiManager_1.UiManager.OpenView("QuickRoleSelectView", e, (e, t) => {
+          if (e) {
+            this.AddChildViewById(t);
+          }
+        });
         this.k4t(false);
       }
     };

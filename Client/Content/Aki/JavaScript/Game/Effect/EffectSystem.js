@@ -5,13 +5,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.EffectSystem = exports.EFFECT_LIFETIME_FLOAT_TO_INT = exports.EFFECT_REASON_LENGTH_LIMIT = undefined;
 const cpp_1 = require("cpp");
+const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
+const Log_1 = require("../../Core/Common/Log");
 const Lru_1 = require("../../Core/Container/Lru");
 const EffectEnvironment_1 = require("../../Core/Effect/EffectEnvironment");
+const GlobalData_1 = require("../GlobalData");
 const KuroEffectSystem_1 = require("./KuroEffectSystem/KuroEffectSystem");
 const TsEffectSystem_1 = require("./TsEffectSystem");
 exports.EFFECT_REASON_LENGTH_LIMIT = 4;
 exports.EFFECT_LIFETIME_FLOAT_TO_INT = 10000;
+const EFFECT_BLACK_LIST = new Set(["/Game/Aki/Scene/EffectDataAsset/DA_Base/DA_ClusterStuff/Dust/DA_Fx_Sc3_Cluster_Dust_PMMD.DA_Fx_Sc3_Cluster_Dust_PMMD"]);
 class EffectSystem {
   static get Vdc() {
     this.oCc ||= new KuroEffectSystem_1.KuroEffectSystem();
@@ -104,10 +108,18 @@ class EffectSystem {
     return (this.Ndc ? this.Vdc : this.jdc).GetEffectLruSize();
   }
   static SpawnUnloopedEffect(t, i, s, e, h, a = 3, r, c, n, f = false, o = false) {
-    return (this.Ndc ? this.Vdc : this.jdc).SpawnUnloopedEffect(t, i, s, e, h, a, r, c, n, f, o);
+    if (s && EFFECT_BLACK_LIST.has(s)) {
+      return 0;
+    } else {
+      return (this.Ndc ? this.Vdc : this.jdc).SpawnUnloopedEffect(t, i, s, e, h, a, r, c, n, f, o);
+    }
   }
   static SpawnEffect(t, i, s, e, h, a = 3, r, c, n, f = false, o = false) {
-    return (this.Ndc ? this.Vdc : this.jdc).SpawnEffect(t, i, s, e, h, a, r, c, n, f, o);
+    if (s && EFFECT_BLACK_LIST.has(s)) {
+      return 0;
+    } else {
+      return (this.Ndc ? this.Vdc : this.jdc).SpawnEffect(t, i, s, e, h, a, r, c, n, f, o);
+    }
   }
   static DynamicRegisterSpawnCallback(t, i) {
     (this.Ndc ? this.Vdc : this.jdc).DynamicRegisterSpawnCallback(t, i);
@@ -252,6 +264,18 @@ class EffectSystem {
   }
   static RegisterCustomCheckOwnerFunc(t, i) {
     (this.Ndc ? this.Vdc : this.jdc).RegisterCustomCheckOwnerFunc(t, i);
+  }
+  static EnableNiagaraDownSampling() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("RenderEffect", 36, "Enable Niagara Down Sampling");
+    }
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Kuro.Niagara.SystemSimulation.TickOptimizeEnable 1");
+  }
+  static DisableNiagaraDownSampling() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("RenderEffect", 36, "Disable Niagara Down Sampling");
+    }
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Kuro.Niagara.SystemSimulation.TickOptimizeEnable 0");
   }
   static SetEffectQualityLevel(t, i) {
     (this.Ndc ? this.Vdc : this.jdc).SetEffectQualityLevel(t, i);

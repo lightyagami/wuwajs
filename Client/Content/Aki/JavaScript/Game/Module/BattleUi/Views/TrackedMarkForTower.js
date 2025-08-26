@@ -126,7 +126,7 @@ class TrackedMarkForTower extends TrackedMark_1.TrackedMark {
       if (!t) {
         return;
       }
-      this.$te = t.GetComponent(173);
+      this.$te = t.GetComponent(174);
       if (!this.$te) {
         return;
       }

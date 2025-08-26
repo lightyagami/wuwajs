@@ -60,6 +60,7 @@ class CameraCollision {
     this.jae = 0;
     this.Wae = 0;
     this._pa = 0;
+    this.Cku = true;
     this.IsNpcDitherEnable = true;
     this.IsPlayerXRayEnable = true;
     this.Kae = new Set();
@@ -169,12 +170,14 @@ class CameraCollision {
   }
   CheckCollision(t, i, s) {
     this.Pae.DeepCopy(i);
-    this.pae();
-    this.Xae(t, i);
-    this.$ae(t, i);
-    this.Yae();
-    this.Jae(t, i);
-    this.zae(t, i, s);
+    if (this.Cku) {
+      this.pae();
+      this.Xae(t, i);
+      this.$ae(t, i);
+      this.Yae();
+      this.Jae(t, i);
+      this.zae(t, i, s);
+    }
     this.Zae();
     this.ehe(t);
     return this.Pae;
@@ -448,7 +451,7 @@ class CameraCollision {
     return t.Subtraction(i, this.Lz).SizeSquared() < s * s;
   }
   hhe(t) {
-    return !!t.GetEntityNoBlueprint()?.GetComponent(205)?.HasTag(-1151151013);
+    return !!t.GetEntityNoBlueprint()?.GetComponent(206)?.HasTag(-1151151013);
   }
   nhe() {
     var t;
@@ -495,7 +498,7 @@ class CameraCollision {
         h = r.StartHideDistance;
         e = r.StartDitherValue;
       }
-    } else if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle && (r = t.GetEntityNoBlueprint()?.GetComponent(234)) && r.StartHideDistance > 0) {
+    } else if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle && (r = t.GetEntityNoBlueprint()?.GetComponent(235)) && r.StartHideDistance > 0) {
       s = r.CompleteHideDistance;
       h = r.StartHideDistance;
       e = r.StartDitherValue;
@@ -551,6 +554,12 @@ class CameraCollision {
   }
   Wx_(t) {
     return !!t?.IsValid() && (t instanceof TsBaseCharacter_1.default || t instanceof TsBaseVehicle_1.default) && !!ModelManager_1.ModelManager.CharacterModel.GetHandle(t.GetEntityIdNoBlueprint())?.Valid;
+  }
+  SetCameraCollisionEnable(t) {
+    this.Cku = t;
+  }
+  GetCameraCollisionEnable() {
+    return this.Cku;
   }
 }
 exports.CameraCollision = CameraCollision;

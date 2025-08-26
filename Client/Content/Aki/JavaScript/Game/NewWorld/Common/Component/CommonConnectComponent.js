@@ -176,7 +176,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   GetNeedBeProcessingEntity(t, e) {
     var i = ModelManager_1.ModelManager.ConnectGamePlayModel?.GetRelationByEntityId(this.Entity.Id);
     for (const r of t) {
-      var s = r.GetComponent(227);
+      var s = r.GetComponent(228);
       if ((!i || !i.has(r.Id)) && (!this.ServerProcessingEntities || !this.ServerProcessingEntities.has(r.Id))) {
         if (s && s !== this && this.CheckEntityMatchCondition(e, r)) {
           this.NeedBeProcessingEntity.set(r, new PassThroughPortalParam());
@@ -187,7 +187,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   CheckEntityMatchCondition(t, e) {
     if (t && !(t.length <= 0)) {
       var i = e?.GetComponent(1);
-      var s = e?.GetComponent(196);
+      var s = e?.GetComponent(197);
       if (i && s) {
         var r = i.CreatureData.GetBaseInfo();
         if (r) {
@@ -236,7 +236,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
         var i;
         var s;
         var r = [];
-        if (e.Type !== 0 && (i = e.PortalPairId, s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity?.GetComponent(215))) {
+        if (e.Type !== 0 && (i = e.PortalPairId, s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(i)?.Entity?.GetComponent(216))) {
           s = s.GetPairCreatureDataId();
           if (e.Type === 1) {
             r.push(MathUtils_1.MathUtils.NumberToLong(i));
@@ -499,8 +499,8 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
       if (!e) {
         return false;
       }
-      var n = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s)?.Entity?.GetComponent(215);
-      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetPairCreatureDataId())?.Entity?.GetComponent(215);
+      var n = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s)?.Entity?.GetComponent(216);
+      var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetPairCreatureDataId())?.Entity?.GetComponent(216);
       var n = n?.GetTriggerComp();
       var h = h?.GetTriggerComp();
       if (!n || !h) {
@@ -670,7 +670,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     }
     r.C$s = i;
     s.g$s = r;
-    Net_1.Net.Call(24120, s, t => {
+    Net_1.Net.Call(15489, s, t => {
       e.forEach(t => {
         this.ServerProcessingEntities.delete(t.Target.Id);
       });
@@ -679,7 +679,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrConnectorEntityNoExist:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16270);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17168);
       }
     });
   }
@@ -703,8 +703,8 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   }
   bna() {
     this.ActorComp = this.Entity.GetComponent(3);
-    this.Lna = this.Entity.GetComponent(120);
-    this.rXa = this.Entity.GetComponent(205);
+    this.Lna = this.Entity.GetComponent(121);
+    this.rXa = this.Entity.GetComponent(206);
     this.kCl = this.Entity.GetComponent(67);
     if (this.Tna.LogicType.Type === "Range") {
       this.cQs = this.Tna.LogicType.EnterRange;
@@ -803,9 +803,9 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     var i = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
     e.F4n = i;
     e.SDs = t;
-    Net_1.Net.Call(15309, e, t => {
+    Net_1.Net.Call(19030, e, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 24533);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27691);
       }
     });
   }
@@ -824,7 +824,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     if (t) {
       var i = ModelManager_1.ModelManager.PortalModel.GetPortal(t);
       if (i && i.Portal1Enable && i.Portal2Enable) {
-        var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(215);
+        var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(216);
         var r = (0, puerts_1.$ref)(undefined);
         s?.PortalCapture?.GetPair(r);
         var r = (0, puerts_1.$unref)(r);
@@ -844,7 +844,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
             var h = Vector_1.Vector.Create(r.GetRotation().GetForwardVector());
             h.Normalize();
             var i = [];
-            ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(o, this.cQs, 1, i);
+            ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(o, this.cQs, 7, i);
             var a = this.Tna?.LogicType;
             var _ = ModelManager_1.ModelManager.ConnectGamePlayModel?.GetRelationByEntityId(this.Entity.Id);
             for (const E of i) {
@@ -862,7 +862,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
                   const M = Vector_1.Vector.DotProduct(h, C);
                   if (!(M < 0.5) && !(l = Vector_1.Vector.Create(), PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(v.ActorLocationProxy, t, !e, l), (v = Vector_1.Vector.Distance(l, this.ActorComp.ActorLocationProxy)) > this.cQs)) {
                     if (this.kwa(c.Id, e ? 1 : 2, t)) {
-                      l = c.GetComponent(227);
+                      l = c.GetComponent(228);
                       [m, f] = this.CheckEntityMatchCondition(a?.MatchConditions, c);
                       if (l && (m && this.NeedBeProcessingEntity.set(c, new PassThroughPortalParam(e ? 1 : 2, t, v)), f)) {
                         this.CanInteractEntity.add(c);
@@ -882,14 +882,14 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     var e;
     if (ModelManager_1.ModelManager.ConnectGamePlayModel?.GetRelationByEntityId(this.Entity.Id)?.has(t.Id) || this.ServerProcessingEntities.has(t.Id)) {
       return [false, true];
-    } else if (this.ActorComp && (e = this.Tna?.LogicType) && t.GetComponent(1) && this.kwa(t.Id, 0) && t.GetComponent(227)) {
+    } else if (this.ActorComp && (e = this.Tna?.LogicType) && t.GetComponent(1) && this.kwa(t.Id, 0) && t.GetComponent(228)) {
       return this.CheckEntityMatchCondition(e?.MatchConditions, t);
     } else {
       return [false, false];
     }
   }
   Hna(t) {
-    if (t.GetComponent(227)) {
+    if (t.GetComponent(228)) {
       this.Una.add(t.Id);
     }
     return true;
@@ -905,12 +905,12 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     return true;
   }
   Bna() {
-    this.ActorComp = this.Entity.GetComponent(202);
-    this.mBe = this.Entity.GetComponent(133);
+    this.ActorComp = this.Entity.GetComponent(203);
+    this.mBe = this.Entity.GetComponent(134);
     if (this.Rna?.LogicType.MatchConditions) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
     }
-    this.mBe = this.Entity.GetComponent(133);
+    this.mBe = this.Entity.GetComponent(134);
     if (this.Rna.LogicType.Type === "Range") {
       this.EQs = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.Rna.LogicType.ActiveState);
       this.cQs = this.Rna.LogicType.EnterRange;
@@ -951,7 +951,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
       var t = this.Rna?.LogicType;
       if (t) {
         this.NeedBeProcessingEntity.clear();
-        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.ActorComp.ActorLocationProxy, this.cQs, 1, this.DKo);
+        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.ActorComp.ActorLocationProxy, this.cQs, 7, this.DKo);
         var e = [];
         for (const i of this.DKo) {
           e.push(i.Entity);
@@ -962,5 +962,5 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
   }
 };
 CommonConnectComponent.DrawTraceDebug = false;
-CommonConnectComponent = CommonConnectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(227)], CommonConnectComponent);
+CommonConnectComponent = CommonConnectComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(228)], CommonConnectComponent);
 exports.CommonConnectComponent = CommonConnectComponent; //# sourceMappingURL=CommonConnectComponent.js.map

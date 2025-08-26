@@ -954,14 +954,14 @@ class DangoAbyssActivityData extends ActivityData_1.ActivityBaseData {
       } else {
         r = s[t - 1];
         i = s[t];
-        if (r.GetIfPass() && this.Kau(i)) {
+        if (r.GetIfPass() && this.Shu(i)) {
           e = s[t].GetChallengeId();
         }
       }
     }
     return e = e === 0 ? this.GetFirstUnlockChallengeId() : e;
   }
-  Kau(t) {
+  Shu(t) {
     var e = t.GetCanChallenge();
     var r = this.GetPreChallengeFinishState(t.GetChallengeId());
     var i = t.GetConditionFinishState();

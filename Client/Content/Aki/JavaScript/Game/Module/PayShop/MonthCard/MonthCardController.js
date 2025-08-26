@@ -30,12 +30,12 @@ class MonthCardController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestMonthCardData() {
     var e = Protocol_1.Aki.Protocol.vhs.create();
-    var e = await Net_1.Net.CallAsync(25202, e);
+    var e = await Net_1.Net.CallAsync(24893, e);
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         this.H2i(e.Pbs);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17634);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25308);
       }
     }
   }
@@ -44,13 +44,13 @@ class MonthCardController extends UiControllerBase_1.UiControllerBase {
       MonthCardController.W2i(false);
     }
   }
-  static K2i() {
-    var e;
+  static K2i(e = false) {
+    var r;
     if (ModelManager_1.ModelManager.MonthCardModel.CanShowDailyRewardView) {
-      e = new SplashScreenTask_1.SplashScreenTask(1, 0, () => {
+      r = new SplashScreenTask_1.SplashScreenTask(1, 0, () => {
         MonthCardController.W2i(true);
       });
-      SplashScreenController_1.SplashScreenController.PushSplashScreenTask(e);
+      SplashScreenController_1.SplashScreenController.PushSplashScreenTask(r, e);
     }
   }
   static W2i(e) {
@@ -69,12 +69,12 @@ class MonthCardController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.NTn);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26772, MonthCardController.Q2i);
-    Net_1.Net.Register(18405, MonthCardController.X2i);
+    Net_1.Net.Register(18076, MonthCardController.Q2i);
+    Net_1.Net.Register(18303, MonthCardController.X2i);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26772);
-    Net_1.Net.UnRegister(18405);
+    Net_1.Net.UnRegister(18076);
+    Net_1.Net.UnRegister(18303);
   }
 }
 exports.MonthCardController = MonthCardController;
@@ -98,7 +98,7 @@ MonthCardController.Q2i = e => {
   ModelManager_1.ModelManager.MonthCardModel.ServerDailyReward = t;
   ModelManager_1.ModelManager.MonthCardModel.CanShowDailyRewardView = true;
   MonthCardController.H2i(e);
-  MonthCardController.K2i();
+  MonthCardController.K2i(true);
 };
 MonthCardController.X2i = e => {
   var r = e.Pbs;

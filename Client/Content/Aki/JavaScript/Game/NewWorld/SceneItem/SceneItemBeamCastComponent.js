@@ -8,8 +8,8 @@ var __decorate = this && this.__decorate || function (t, e, i, s) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     o = Reflect.decorate(t, e, i, s);
   } else {
-    for (var r = t.length - 1; r >= 0; r--) {
-      if (h = t[r]) {
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (h = t[n]) {
         o = (a < 3 ? h(o) : a > 3 ? h(e, i, o) : h(e, i)) || o;
       }
     }
@@ -46,7 +46,6 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const SceneInteractionManager_1 = require("../../Render/Scene/Interaction/SceneInteractionManager");
 const ColorUtils_1 = require("../../Utils/ColorUtils");
 const RoleTriggerController_1 = require("../Character/Role/RoleTriggerController");
-const UPDATE_INTERVAL_MS = 1;
 const MANUAL_DELAY_UPDATE_MS = 100;
 let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemBeamCastComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -58,7 +57,6 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     this.Lie = undefined;
     this.Hte = undefined;
     this.Smn = undefined;
-    this.jHc = 0;
     this.Imn = -0;
     this.Tmn = undefined;
     this.mWi = undefined;
@@ -76,12 +74,15 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     this.jUn = undefined;
     this.Uai = false;
     this.j4a = undefined;
+    this.nxe = 1;
     this.Rnn = () => {
       this.Uai = true;
       if (!this.mBe.IsInState(0)) {
         this.g_n();
       }
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n)) {
+        EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
+      }
     };
     this.g_n = () => {
       this.Gmn();
@@ -131,9 +132,9 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
   }
   OnStart() {
     this.vtn = this.Entity.GetComponent(86);
-    this.mBe = this.Entity.GetComponent(133);
-    this.Hte = this.Entity.GetComponent(202);
-    this.Lie = this.Entity.GetComponent(196);
+    this.mBe = this.Entity.GetComponent(134);
+    this.Hte = this.Entity.GetComponent(203);
+    this.Lie = this.Entity.GetComponent(197);
     if (this.vtn && this.mBe && this.Hte && this.Lie) {
       this.Tmn = new Set();
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnActorInOutRangeLocal, this.Nmn);
@@ -147,6 +148,8 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
   }
   OnActivate() {
     this.Omn("[BeamCastComp] 初始停止Tick");
+    var t = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
+    this.nxe = this.TimeDilation * t;
     if (this.Hte.GetIsSceneInteractionLoadCompleted()) {
       this.Rnn();
     } else {
@@ -179,11 +182,17 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
   }
   OnTick(t) {
     if (!!this.kmn() && !(this.Tmn.size < 0)) {
-      this.jHc += t;
-      if (this.jHc > UPDATE_INTERVAL_MS) {
-        this.jHc = 0;
-        this.Fmn();
-      }
+      this.Fmn();
+    }
+  }
+  OnChangeTimeDilation(t) {
+    var e = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
+    this.nxe = t * e;
+    if (this.qmn && EffectSystem_1.EffectSystem.IsValid(this.qmn)) {
+      EffectSystem_1.EffectSystem.SetTimeScale(this.qmn, this.nxe);
+    }
+    if (this.jUn && EffectSystem_1.EffectSystem.IsValid(this.jUn)) {
+      EffectSystem_1.EffectSystem.SetTimeScale(this.jUn, this.nxe);
     }
   }
   Gmn() {
@@ -224,7 +233,6 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     }
     this.j4a = TimerSystem_1.GameplayTimerSystem.Delay(() => {
       if (this.kmn()) {
-        this.jHc = 0;
         this.Fmn();
         this.j4a = undefined;
       }
@@ -334,9 +342,9 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
         }
         return;
       }
+      EffectSystem_1.EffectSystem.SetTimeScale(this.qmn, this.nxe);
       EffectSystem_1.EffectSystem.GetEffectActor(this.qmn).K2_AttachToActor(this.wmn, undefined, 2, 2, 2, false);
     }
-    this.jHc = 0;
     this.Fmn();
   }
   jmn() {
@@ -360,6 +368,7 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
       s = new UE.TransformDouble(s, i, e.GetScale3D());
       this.jUn = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, s, t, "[BeamCastComp.UpdateHitEffect]", new EffectContext_1.EffectContext(this.Entity.Id));
       if (EffectSystem_1.EffectSystem.IsValid(this.jUn)) {
+        EffectSystem_1.EffectSystem.SetTimeScale(this.jUn, this.nxe);
         EffectSystem_1.EffectSystem.GetEffectActor(this.jUn).K2_AttachToActor(this.Hte.Owner, undefined, 1, 1, 1, false);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 39, "[BeamCastComp] HitEffect创建失败", ["PbDataId", this.EIe?.GetPbDataId()]);
@@ -419,5 +428,5 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     }
   }
 };
-SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(214)], SceneItemBeamCastComponent);
+SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(215)], SceneItemBeamCastComponent);
 exports.SceneItemBeamCastComponent = SceneItemBeamCastComponent; //# sourceMappingURL=SceneItemBeamCastComponent.js.map

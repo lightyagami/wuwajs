@@ -8,7 +8,8 @@ const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang"
 const TowerBuffById_1 = require("../../../Core/Define/ConfigQuery/TowerBuffById");
 const TowerConfigById_1 = require("../../../Core/Define/ConfigQuery/TowerConfigById");
 const TowerConfigBySeason_1 = require("../../../Core/Define/ConfigQuery/TowerConfigBySeason");
-const TowerDifficultyByDifficulty_1 = require("../../../Core/Define/ConfigQuery/TowerDifficultyByDifficulty");
+const TowerSeasonById_1 = require("../../../Core/Define/ConfigQuery/TowerSeasonById");
+const TowerSeasonRewardByDifficulty_1 = require("../../../Core/Define/ConfigQuery/TowerSeasonRewardByDifficulty");
 const TowerTargetById_1 = require("../../../Core/Define/ConfigQuery/TowerTargetById");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 const TowerData_1 = require("./TowerData");
@@ -35,9 +36,9 @@ class TowerClimbConfig extends ConfigBase_1.ConfigBase {
     let o = -1;
     let t = -1;
     let f = -1;
-    for (const i of TowerConfigBySeason_1.configTowerConfigBySeason.GetConfigList(r === TowerData_1.VARIATION_RISK_DIFFICULTY ? e : 0)) {
-      if (i.Difficulty === r && (o < i.AreaNum && (o = i.AreaNum, t = -1), t < i.Floor)) {
-        f = i.Id;
+    for (const n of TowerConfigBySeason_1.configTowerConfigBySeason.GetConfigList(r === TowerData_1.VARIATION_RISK_DIFFICULTY ? e : 0)) {
+      if (n.Difficulty === r && (o < n.AreaNum && (o = n.AreaNum, t = -1), t < n.Floor)) {
+        f = n.Id;
       }
     }
     return f;
@@ -71,8 +72,17 @@ class TowerClimbConfig extends ConfigBase_1.ConfigBase {
     }
     return t;
   }
-  GetDifficultyReward(e) {
-    return TowerDifficultyByDifficulty_1.configTowerDifficultyByDifficulty.GetConfig(e)?.Reward;
+  GetDifficultyReward(e, r) {
+    if (r) {
+      e = TowerSeasonRewardByDifficulty_1.configTowerSeasonRewardByDifficulty.GetConfigList(e);
+      if (e) {
+        for (const o of e) {
+          if (o.RewardGroup === r) {
+            return o?.Reward;
+          }
+        }
+      }
+    }
   }
   GetTowerBuffDesc(e) {
     e = this.GetTowerBuffConfig(e);
@@ -121,6 +131,9 @@ class TowerClimbConfig extends ConfigBase_1.ConfigBase {
   }
   GetTowerInfo(e) {
     return TowerConfigById_1.configTowerConfigById.GetConfig(e);
+  }
+  GetTowerSeason(e) {
+    return TowerSeasonById_1.configTowerSeasonById.GetConfig(e);
   }
   GetTowerAreaName(e) {
     e = TowerConfigById_1.configTowerConfigById.GetConfig(e);

@@ -127,6 +127,9 @@ class MiniMapView extends BattleVisibleChildView_1.BattleVisibleChildView {
   SetBattleLinkVisible(e) {
     this.SetVisible(2, e);
   }
+  SetShipTowerVisible(e) {
+    this.SetVisible(3, e);
+  }
   RefreshMiniMap() {
     this.Nut?.ChangeMapAsync(ModelManager_1.ModelManager.MapModel.CurrentMapConfigId);
   }

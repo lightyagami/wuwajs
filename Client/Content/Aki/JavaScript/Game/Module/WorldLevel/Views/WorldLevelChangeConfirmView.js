@@ -24,7 +24,7 @@ class WorldLevelChangeConfirmView extends UiViewBase_1.UiViewBase {
     };
     this.tWt = () => {
       if (ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel > ModelManager_1.ModelManager.WorldLevelModel.WorldLevelChangeTarget) {
-        if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(205)?.HasTag(1996802261)) {
+        if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(206)?.HasTag(1996802261)) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(ConfigManager_1.ConfigManager.TextConfig.GetTextById("WorldLevelDownReject") ?? "");
         } else {
           WorldLevelController_1.WorldLevelController.SendWorldLevelDownRequest();

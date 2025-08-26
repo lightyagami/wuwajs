@@ -20,13 +20,14 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const PlotSubtitleView_1 = require("../../../Sequence/Subtitle/PlotSubtitleView");
 const PlotController_1 = require("../../PlotController");
+const SequenceQteManager_1 = require("../Qte/SequenceQteManager");
 const SequenceController_1 = require("../SequenceController");
 const SequenceDefine_1 = require("../SequenceDefine");
 const SeqBaseAssistant_1 = require("./SeqBaseAssistant");
-const SUBTITLE_ACTION_PAUSE = "Action";
-const OPTION_ACTION_PAUSE = "Option";
 const EVENT_SUCCESS = "plot_seq_qte_success";
 const EVENT_FAIL = "plot_seq_qte_timeout";
+const SUBTITLE_ACTION_PAUSE = "Action";
+const OPTION_ACTION_PAUSE = "Option";
 var ESequenceEventName;
 (function (e) {
   e[e.UpdateSeqSubtitle = 0] = "UpdateSeqSubtitle";
@@ -36,14 +37,14 @@ var ESequenceEventName;
   e[e.HandleIndependentSeqAudio = 4] = "HandleIndependentSeqAudio";
 })(ESequenceEventName = exports.ESequenceEventName ||= {});
 class CacheDialogueData {
-  constructor(e, t, o, r, l, i, n) {
+  constructor(e, t, o, i, r, l, s) {
     this.Show = e;
     this.DialogueId = t;
     this.GuardTime = o;
-    this.AudioDelay = r;
-    this.AudioTransitionDuration = l;
-    this.LanguageAudio = i;
-    this.AutoPlayDelay = n;
+    this.AudioDelay = i;
+    this.AudioTransitionDuration = r;
+    this.LanguageAudio = l;
+    this.AutoPlayDelay = s;
   }
 }
 class QteManger {
@@ -68,32 +69,32 @@ class QteManger {
   }
   HandlePlotQte(e) {
     if (this.fkl.size > 0) {
-      for (const l of this.fkl.keys()) {
-        ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(l);
+      for (const r of this.fkl.keys()) {
+        ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(r);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] sequence qte 重叠", ["fail handle id", l]);
+          Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] sequence qte 重叠", ["fail handle id", r]);
         }
       }
       this.fkl.clear();
     }
     var t;
     var o;
-    var r = ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnQteStart(e.Id);
-    if (ModelManager_1.ModelManager.SequenceModel.IsMuteAllQte || ModelManager_1.ModelManager.SequenceModel.MuteQteList.has(r)) {
+    var i = ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnQteStart(e.Id);
+    if (ModelManager_1.ModelManager.SequenceModel.IsMuteAllQte || ModelManager_1.ModelManager.SequenceModel.MuteQteList.has(i)) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] GM跳过QTE", ["QteId", r]);
+        Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] GM跳过QTE", ["QteId", i]);
       }
       ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnQteExecute(e.Id, true);
-    } else if (t = ControllerHolder_1.ControllerHolder.CommonQteController.StartQte(r, this.$El, this.XEl, 2)) {
+    } else if (t = ControllerHolder_1.ControllerHolder.CommonQteController.StartQte(i, this.$El, this.XEl, 2)) {
       o = t.Config?.BaseConfig.TimeDilation ?? 1;
       ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(o);
       ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
       this.fkl.set(t.HandleId, e.Id);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 开始", ["talkId", e.Id], ["QteId", r], ["handleId", t.HandleId]);
+        Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 开始", ["talkId", e.Id], ["QteId", i], ["handleId", t.HandleId]);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 失败", ["QteId", r]);
+      Log_1.Log.Error("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 失败", ["QteId", i]);
     }
   }
   HandlePlotQteEnd(e) {
@@ -119,19 +120,32 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.qio = new Queue_1.Queue();
     this.Gio = false;
     this.vkl = new QteManger();
+    this.JJc = new SequenceQteManager_1.SequenceQteManager();
     this.bZe = e => {
       this.Promise?.SetResult(e);
       this.Promise = undefined;
     };
-    this.OnShowDialogue = (e, t, o, r, l, i, n) => {
+    this.ZJc = (e, t, o, i, r) => {
+      this.JJc.HandleSequenceQte(e, t, true, o, i, r);
+    };
+    this.eZc = (e, t, o) => {
+      this.JJc.HandleSequenceQte(e, t, false, o);
+    };
+    this.tZc = e => {
+      this.JJc.HandleSequenceQteAnimFinish(e);
+    };
+    this.OnShowDialogue = (e, t, o, i, r, l, s) => {
       if (this.Model.State === 3) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Plot", 26, "字幕事件触发", ["bShow", e], ["id", t], ["language", i]);
+          Log_1.Log.Debug("Plot", 26, "字幕事件触发", ["bShow", e], ["id", t], ["language", l]);
         }
         o = o / SequenceDefine_1.FRAME_PER_MILLISECOND;
-        this.qio.Push(new CacheDialogueData(e, t, o, r, l, i, n));
+        this.qio.Push(new CacheDialogueData(e, t, o, i, r, l, s));
       }
     };
+  }
+  get iZc() {
+    return this.JJc.PendingOptionResult;
   }
   async LoadPromise() {
     this.Promise = new CustomPromise_1.CustomPromise();
@@ -167,6 +181,7 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     } else {
       this.Model.CurLanguageAudio = 0;
     }
+    this.JJc.Init();
   }
   EachStop() {
     this.Event.Emit(ESequenceEventName.HandleSubSequenceStop);
@@ -183,6 +198,7 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     }
     ControllerHolder_1.ControllerHolder.PlotController.RemoveViewCallback(this.bZe);
     this.vkl.StopQte();
+    this.JJc.Clear();
     if (this.Promise) {
       this.Promise.SetResult(false);
       this.Promise = undefined;
@@ -191,14 +207,26 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   }
   Nio() {
     var e;
-    if (!this.Gio && (this.Gio = true, e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.MovieSceneDialogueSubsystem.StaticClass()))) {
+    var t;
+    if (!this.Gio) {
+      this.Gio = true;
+      t = (e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.MovieSceneDialogueSubsystem.StaticClass())).GetQteManager();
       e.OnShowDialogue.Add(this.OnShowDialogue);
+      t.OnQteStart.Add(this.ZJc);
+      t.OnQteTrigger.Add(this.eZc);
+      t.OnQteAnimEnd.Add(this.tZc);
     }
   }
   Oio() {
     var e;
-    if (this.Gio && (this.Gio = false, e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.MovieSceneDialogueSubsystem.StaticClass()))) {
+    var t;
+    if (this.Gio) {
+      this.Gio = false;
+      t = (e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.MovieSceneDialogueSubsystem.StaticClass())).GetQteManager();
       e.OnShowDialogue.Remove(this.OnShowDialogue);
+      t.OnQteStart.Remove(this.ZJc);
+      t.OnQteTrigger.Remove(this.eZc);
+      t.OnQteAnimEnd.Remove(this.tZc);
     }
   }
   TriggerAllSubtitle() {
@@ -211,47 +239,58 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       }
     }
   }
-  kio(e, t, o, r, l, i, n) {
-    if (i === 0 || i === this.Model.CurLanguageAudio) {
+  kio(e, t, o, i, r, l, s) {
+    if (l === 0 || l === this.Model.CurLanguageAudio) {
       if (e) {
-        this.Fio(t, o, r, l, n);
+        this.Fio(t, o, i, r, s);
       } else {
         this.Vio(t);
       }
     }
   }
-  Fio(e, t, o, r, l) {
+  Fio(e, t, o, i, r) {
     if (e !== "None") {
       var e = parseInt(e);
-      var i = ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.CreateSubtitleFromTalkItem(e);
-      if (i) {
-        switch (i.Type) {
-          case "QTE":
-            this.vkl.HandlePlotQte(i);
-            break;
-          case "NoTextItem":
-            this.Skl(i);
-            break;
-          default:
-            this.HandlePlotSubtitle(i, t, o, r, l);
+      var l = ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.CreateSubtitleFromTalkItem(e);
+      if (l) {
+        if (this.iZc.has(l.Id)) {
+          ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnSubtitleStart(l.Id);
+        } else {
+          switch (l.Type) {
+            case "QTE":
+              this.vkl.HandlePlotQte(l);
+              break;
+            case "NoTextItem":
+              this.Skl(l);
+              break;
+            default:
+              this.HandlePlotSubtitle(l, t, o, i, r);
+          }
         }
       }
     }
   }
   Vio(e) {
     if (e !== "None") {
-      var t = parseInt(e);
-      var e = ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.CreateSubtitleFromTalkItem(t);
+      var t;
+      var o = parseInt(e);
+      var e = ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.CreateSubtitleFromTalkItem(o);
       if (e) {
-        switch (e.Type) {
-          case "QTE":
-            this.vkl.HandlePlotQteEnd(t);
-            break;
-          case "NoTextItem":
-            this.Mkl(t);
-            break;
-          default:
-            this.HandlePlotSubtitleEnd(t);
+        if (this.iZc.has(e.Id)) {
+          t = this.iZc.get(e.Id);
+          ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnSubtitleEnd(e.Id);
+          ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnSelectOption(t);
+        } else {
+          switch (e.Type) {
+            case "QTE":
+              this.vkl.HandlePlotQteEnd(o);
+              break;
+            case "NoTextItem":
+              this.Mkl(o);
+              break;
+            default:
+              this.HandlePlotSubtitleEnd(o);
+          }
         }
       }
     }
@@ -262,15 +301,15 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.Model.DefaultAudioTransitionDuration = ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioTransitionDuration;
     this.Model.IsSubtitleConfigInit = true;
   }
-  HandlePlotSubtitle(e, t, o, r, l) {
+  HandlePlotSubtitle(e, t, o, i, r) {
     if (!this.Model.IsSubtitleConfigInit) {
       this.Hio();
     }
     this.Model.CurSubtitle.Subtitles = e;
     this.Model.CurSubtitle.GuardTime = t < 0 ? 0 : t === 0 ? this.Model.DefaultGuardTime * TimeUtil_1.TimeUtil.InverseMillisecond : t;
     this.Model.CurSubtitle.AudioDelay = o < 0 ? 0 : o === 0 ? this.Model.DefaultAudioDelay * TimeUtil_1.TimeUtil.InverseMillisecond : o;
-    this.Model.CurSubtitle.AudioTransitionDuration = r < 0 ? 0 : r === 0 ? this.Model.DefaultAudioTransitionDuration * TimeUtil_1.TimeUtil.InverseMillisecond : r;
-    this.Model.CurSubtitle.AutoPlayDelay = l <= 0 ? 0 : l * TimeUtil_1.TimeUtil.InverseMillisecond;
+    this.Model.CurSubtitle.AudioTransitionDuration = i < 0 ? 0 : i === 0 ? this.Model.DefaultAudioTransitionDuration * TimeUtil_1.TimeUtil.InverseMillisecond : i;
+    this.Model.CurSubtitle.AutoPlayDelay = r <= 0 ? 0 : r * TimeUtil_1.TimeUtil.InverseMillisecond;
     e = this.Model.CurSubtitle;
     ControllerHolder_1.ControllerHolder.PlotController.PlotViewManager.OnUpdateSubtitle(e.Subtitles);
     ControllerHolder_1.ControllerHolder.FlowController.FlowSequence.OnSubtitleStart(e.Subtitles.Id);

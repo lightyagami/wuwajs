@@ -14,13 +14,29 @@ class InputIdentification {
   get Name() {
     return this.FGi;
   }
-  GetInputAction() {
-    var t;
-    return this.Hmr || ((t = this.FGi) ? (this.Hmr = InputEnums_1.EInputAction[t], this.Hmr) : undefined);
+  GetInputAction(t) {
+    if (this.Hmr) {
+      return this.Hmr;
+    }
+    if (t) {
+      t = t.GetAction(this.FGi);
+      if (t) {
+        this.Hmr = t;
+        return this.Hmr;
+      }
+    }
   }
-  GetInputAxis() {
-    var t;
-    return this.jmr || ((t = this.FGi) ? (this.jmr = InputEnums_1.EInputAxis[t], this.jmr) : undefined);
+  GetInputAxis(t) {
+    if (this.jmr) {
+      return this.jmr;
+    }
+    if (t) {
+      t = t.GetAxis(this.FGi);
+      if (t) {
+        this.jmr = t;
+        return this.jmr;
+      }
+    }
   }
 }
 exports.InputIdentification = InputIdentification;

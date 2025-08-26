@@ -19,23 +19,23 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
-const UiPopViewData_1 = require("../../Ui/Define/UiPopViewData");
 const UiManager_1 = require("../../Ui/UiManager");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 const CommonExchangeData_1 = require("../ItemExchange/View/CommonExchangeData");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const ShopController_1 = require("../Shop/ShopController");
+const PowerDefines_1 = require("./PowerDefines");
 const DEFAULTEXCHANGETIME = 60;
 const REQUESTPOWERGAP = 1;
 const CHECKPOWERGAP = 500;
 class PowerController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25417, e => {
+    Net_1.Net.Register(18577, e => {
       ModelManager_1.ModelManager.PowerModel.UpdatePowerData(e._Xs);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25417);
+    Net_1.Net.UnRegister(18577);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.loo);
@@ -45,32 +45,32 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.loo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.xkt);
   }
-  static OpenPowerView(e = 2, r = 0) {
-    ModelManager_1.ModelManager.PowerModel.CurrentNeedPower = r > 0 ? r : DEFAULTEXCHANGETIME;
-    ModelManager_1.ModelManager.PowerModel.CreateConfirmBoxData(e, r);
-    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10017) && !UiManager_1.UiManager.IsViewOpen("PowerView")) {
-      this.ZNa();
-    }
-  }
-  static async ZNa() {
-    var e;
-    await this.eFa();
-    if (ModelManager_1.ModelManager.PowerModel.ConfirmBoxData) {
-      e = new UiPopViewData_1.UiPopViewData();
-      UiManager_1.UiManager.OpenView("PowerView", e);
-    }
-  }
-  static async TryExchangePowerItem(r, e = 1) {
-    var o;
-    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10017)) {
-      await this.eFa();
-      o = ModelManager_1.ModelManager.PowerModel.GetPowerItemInfos(r);
-      if (ModelManager_1.ModelManager.PowerModel.PowerCount + o.RenewValue * e > ConfigManager_1.ConfigManager.PowerConfig.GetPowerChargeLimit()) {
+  static OpenPowerView(o = 2, n = 0) {
+    if (!!ModelManager_1.ModelManager.FunctionModel.IsOpen(10017) && !UiManager_1.UiManager.IsViewOpen("PowerView")) {
+      if (ModelManager_1.ModelManager.PowerModel.PowerCount >= ConfigManager_1.ConfigManager.PowerConfig.GetPowerChargeLimit()) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PowerBound");
       } else {
-        PowerController.ExchangePower(o, e, () => {
+        this.eFa().then(() => {
+          var e = n === 0;
+          ModelManager_1.ModelManager.PowerModel.CurrentNeedPower = e ? DEFAULTEXCHANGETIME : n;
+          var r = e ? ConfigManager_1.ConfigManager.PowerConfig.GetPowerChargeLimit() : n + ModelManager_1.ModelManager.PowerModel.PowerCount;
+          var e = new PowerDefines_1.PowerConfirmBoxData(ModelManager_1.ModelManager.PowerModel.PowerCount, o, !e, r);
+          UiManager_1.UiManager.OpenView("PowerView", e);
+        });
+      }
+    }
+  }
+  static async FZu(r, o) {
+    var e;
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10017)) {
+      await this.eFa();
+      e = ModelManager_1.ModelManager.PowerModel.GetPowerItemInfos(r);
+      if (ModelManager_1.ModelManager.PowerModel.PowerCount + e.RenewValue * o > ConfigManager_1.ConfigManager.PowerConfig.GetPowerChargeLimit()) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PowerBound");
+      } else {
+        ShopController_1.ShopController.SendShopBuyRequest(e.ShopId, e.GoodsId, e.ItemId, o, () => {
           var e = ModelManager_1.ModelManager.PowerModel.GetPowerItemInfos(r);
-          ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PowerBuySucceed", e.RenewValue);
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PowerBuySucceed", e.RenewValue * o);
         });
       }
     } else {
@@ -113,8 +113,8 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
         var n = o?.Price;
         let t = ItemDefines_1.EItemId.OverPower;
         if (n) {
-          for (var [i] of n) {
-            t = i;
+          for (var [a] of n) {
+            t = a;
             break;
           }
         }
@@ -123,7 +123,7 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
         });
       };
       var r = new CommonExchangeData_1.CommonExchangeViewData();
-      var i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.GetSrcItemId());
+      var a = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.GetSrcItemId());
       r.GetGainCount = (e, r) => r;
       r.GetConsumeCount = (e, r) => r;
       r.GetConsumeTotalCount = (e, r) => r;
@@ -136,8 +136,38 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
         e = o.GetCurrentPower();
       }
       r.StartSliderValue = r.StartSliderValue > e ? e : r.StartSliderValue;
-      r.CreateData(t, e, i);
+      r.CreateData(t, e, a);
       UiManager_1.UiManager.OpenView("CommonExchangeView", r);
+    }
+  }
+  static async OpenPowerRecoveryExchangeView(o) {
+    await this.eFa();
+    var e = ModelManager_1.ModelManager.PowerModel.GetPowerItemInfos(o);
+    if (e) {
+      var r = ConfigManager_1.ConfigManager.PowerConfig.GetPowerChargeLimit();
+      var n = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(o);
+      const i = e.RenewValue;
+      var t;
+      var a;
+      var e = Math.floor((r - ModelManager_1.ModelManager.PowerModel.PowerCount) / i);
+      var e = Math.min(e, n);
+      if (ModelManager_1.ModelManager.PowerModel.PowerCount + i > r) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PowerBound");
+      } else {
+        (r = new CommonExchangeData_1.CommonExchangeData()).InitBySrcAndDestItemId(o, ItemDefines_1.EItemId.Power, e, i);
+        r.ConfirmCallBack = (e, r) => {
+          this.FZu(o, r);
+        };
+        (t = new CommonExchangeData_1.CommonExchangeViewData()).GetGainCount = (e, r) => r * i;
+        t.GetConsumeCount = (e, r) => r;
+        t.GetConsumeTotalCount = (e, r) => r;
+        t.ShowCurrencyList = [o, ItemDefines_1.EItemId.Power];
+        if (ModelManager_1.ModelManager.PowerModel.CurrentNeedPower > 0 && (a = n * i, ModelManager_1.ModelManager.PowerModel.CurrentNeedPower <= a)) {
+          t.StartSliderValue = Math.ceil(ModelManager_1.ModelManager.PowerModel.CurrentNeedPower / i);
+        }
+        t.CreateData(r, e, n);
+        UiManager_1.UiManager.OpenView("CommonExchangeView", t);
+      }
     }
   }
   static async UseSinglePowerRecoveryItem() {
@@ -146,6 +176,8 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
   static ExchangePower(e, r, o) {
     if (e.ItemId === ItemDefines_1.EItemId.OverPower) {
       this.OpenOverPowerExchangeView();
+    } else if (e.ItemId === 10800) {
+      this.OpenPowerRecoveryExchangeView(e.ItemId);
     } else {
       ShopController_1.ShopController.SendShopBuyRequest(e.ShopId, e.GoodsId, e.ItemId, r, o);
     }
@@ -179,12 +211,12 @@ PowerController.SendUpdatePowerRequest = e => {
   var r = Protocol_1.Aki.Protocol.YZn.create();
   r.BVn = e;
   _a.Mea = TimeUtil_1.TimeUtil.GetServerTime();
-  Net_1.Net.Call(26634, r, e => {
+  Net_1.Net.Call(29506, r, e => {
     if (e) {
       if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.PowerModel.UpdatePowerData(e.uXs);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 22844);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 15711);
       }
     }
   });

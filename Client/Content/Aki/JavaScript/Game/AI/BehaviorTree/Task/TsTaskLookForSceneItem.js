@@ -58,7 +58,7 @@ class TsTaskLookForSceneItem extends TsTaskAbortImmediatelyBase_1.default {
     if (r) {
       if (this.TsOutBlackboardKey) {
         var o = r.CharActorComp.ActorLocationProxy;
-        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(o, this.TsDetectDistance, 1, this.TmpHandles);
+        ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(o, this.TsDetectDistance, 7, this.TmpHandles);
         let s = MathUtils_1.MathUtils.Square(this.DetectDistance);
         let e = undefined;
         for (const _ of this.TmpHandles) {
@@ -70,7 +70,7 @@ class TsTaskLookForSceneItem extends TsTaskAbortImmediatelyBase_1.default {
               var n = l.GetBaseInfo()?.Category?.CollectType;
               var l = l.GetBaseInfo()?.Category?.MainType;
               let t = false;
-              if (!!(t = !(t = !(t = this.TsBotanyItem && n === "Botany" && _.Entity.GetComponent(197)?.IsOnlyCollectOption() ? true : t) && this.TsMineralItem && n === "Mineral" ? true : t) && this.TsDropItem && l === "Drop" ? true : t) && (!this.TsNavigationOn || !!AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(i, o.ToUeVector(), h.ToUeVector()))) {
+              if (!!(t = !(t = !(t = this.TsBotanyItem && n === "Botany" && _.Entity.GetComponent(198)?.IsOnlyCollectOption() ? true : t) && this.TsMineralItem && n === "Mineral" ? true : t) && this.TsDropItem && l === "Drop" ? true : t) && (!this.TsNavigationOn || !!AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(i, o.ToUeVector(), h.ToUeVector()))) {
                 s = a;
                 e = _;
               }

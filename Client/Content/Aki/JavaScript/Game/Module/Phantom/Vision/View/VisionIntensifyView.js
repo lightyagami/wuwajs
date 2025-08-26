@@ -31,8 +31,6 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.TabViewComponent = undefined;
     this.yvt = [];
     this.aji = 0;
-    this.hji = false;
-    this.tHi = undefined;
     this.lji = e => {
       this.TabComponent.SetCloseBtnShowState(e);
     };
@@ -118,9 +116,13 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     }
   }
   OnHandleLoadScene() {
-    var e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.aji);
-    if (e) {
-      ControllerHolder_1.ControllerHolder.PhantomBattleController.SetMeshShow(e.GetConfigId(true), undefined, this.tHi);
+    if (!UiSceneManager_1.UiSceneManager.HasVisionSkeletalHandle()) {
+      UiSceneManager_1.UiSceneManager.InitVisionSkeletalHandle();
+    }
+    var e;
+    var t = UiSceneManager_1.UiSceneManager.GetVisionSkeletalHandle();
+    if (t && (e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.aji))) {
+      ControllerHolder_1.ControllerHolder.PhantomBattleController.SetMeshShow(e.GetConfigId(true), undefined, t);
     }
   }
   OnBeforeShow() {
@@ -167,6 +169,9 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.Ovt();
     ModelManager_1.ModelManager.PhantomBattleModel?.ReduceNeedCameraFocusMethodDisableViewCount();
   }
+  OnHandleReleaseScene() {
+    UiSceneManager_1.UiSceneManager.DestroyVisionSkeletalHandle();
+  }
   OnAfterHide() {
     var e = this.TabViewComponent.GetCurrentTabView();
     if (e) {
@@ -175,19 +180,10 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeCreate() {
     this.aji = this.OpenParam;
-    if (!UiSceneManager_1.UiSceneManager.HasVisionSkeletalHandle()) {
-      UiSceneManager_1.UiSceneManager.InitVisionSkeletalHandle();
-      this.hji = true;
-    }
-    this.tHi = UiSceneManager_1.UiSceneManager.GetVisionSkeletalHandle();
   }
   OnBeforeDestroy() {
     this.TabViewComponent.DestroyTabViewComponent();
     this.TabComponent.Destroy();
-    if (this.hji) {
-      UiSceneManager_1.UiSceneManager.DestroyVisionSkeletalHandle();
-      this.tHi = undefined;
-    }
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     const t = Number(e[0]);

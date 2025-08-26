@@ -10,8 +10,6 @@ const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLa
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const LocalStorage_1 = require("../../../Common/LocalStorage");
-const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -35,6 +33,7 @@ class NewSoundDetectItemData {
   constructor() {
     this.DetectRecordData = undefined;
     this.TracingList = undefined;
+    this.NightMareParam = 0;
   }
 }
 exports.NewSoundDetectItemData = NewSoundDetectItemData;
@@ -58,23 +57,26 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("DungeonDetection");
       } else if (this.Pe.Conf?.Secondary === 6 || this.Pe.Conf?.Secondary === 62) {
-        const r = this.Pe.Conf.SubDungeonId;
+        const o = this.Pe.Conf.SubDungeonId;
         var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(94);
         var t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.Pe.Conf.Name);
         e.SetTextArgs(t);
         e.FunctionMap.set(2, () => {
-          var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(r).FightFormationId;
+          var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o).FightFormationId;
           var e = ConfigManager_1.ConfigManager.EditBattleTeamConfig.GetFightFormationConfig(e)?.AutoRole;
           if ((e?.length ?? 0) > 0) {
             var t = new Array();
-            for (const o of e) {
-              t.push(ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleIdConfigByGroupId(o));
+            for (const i of e) {
+              t.push(ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleIdConfigByGroupId(i));
             }
             e = {
               Kah: this.Pe.Conf.Id
             };
             ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Vah = e;
-            InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(r, t, 0, 0);
+            InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(o, t, 0, 0);
+            if (this.Pe.Conf.Secondary === 6) {
+              ModelManager_1.ModelManager.AdventureGuideModel.SetRoleTutorialNew(this.Pe.Conf.Id);
+            }
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Role", 5, "未配置出战人物");
           }
@@ -104,45 +106,49 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     };
     this.x8e = e => {
-      var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(this.Pe.Conf.ShowRewardMap, e);
-      var o = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
-      var r = new Array();
-      for (const n of t.keys()) {
-        var i = [{
-          IncId: 0,
-          ItemId: n
-        }, t.get(n)];
-        r.push({
-          ItemData: i,
-          HaveFinish: o
-        });
+      if (this.Pe.Conf.Secondary !== 63) {
+        var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(this.Pe.Conf.ShowRewardMap, e);
+        var i = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
+        var o = new Array();
+        for (const n of t.keys()) {
+          var r = [{
+            IncId: 0,
+            ItemId: n
+          }, t.get(n)];
+          o.push({
+            ItemData: r,
+            HaveFinish: i
+          });
+        }
+        this.T8e.RefreshByData(o, this.w8e);
       }
-      this.T8e.RefreshByData(r, this.w8e);
     };
     this.w8e = () => {
-      this.T8e?.ScrollToLeft(0);
+      if (this.T8e?.ContentItem) {
+        this.T8e?.ScrollToLeft(0);
+      }
     };
     this.ru_ = () => {
       var t = [];
       for (const n of ConfigManager_1.ConfigManager.ConditionConfig.GetGroupConditionIds(this.Pe.Conf.LockCon)) {
-        var o;
-        var r = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionConfig(n);
+        var i;
+        var o = ConfigManager_1.ConfigManager.ConditionConfig.GetConditionConfig(n);
         let e = -1;
-        if (r.AccessId) {
-          o = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(r.AccessId);
-          e = o.SkipName;
+        if (o.AccessId) {
+          i = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(o.AccessId);
+          e = i.SkipName;
         }
-        const i = {
+        const r = {
           ConditionId: n,
-          ConditionTextId: r.Description,
+          ConditionTextId: o.Description,
           IsFinished: false,
-          AccessId: r.AccessId,
+          AccessId: o.AccessId,
           AccessType: e
         };
-        t.push(i);
+        t.push(r);
       }
-      const i = new ConditionGroupData_1.ConditionGroupData(this.Pe.Conf.LockCon, t);
-      UiManager_1.UiManager.OpenView("CommonConditionView", i);
+      const r = new ConditionGroupData_1.ConditionGroupData(this.Pe.Conf.LockCon, t);
+      UiManager_1.UiManager.OpenView("CommonConditionView", r);
     };
   }
   OnRegisterComponent() {
@@ -170,12 +176,12 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.oO_?.PlayLevelSequenceByName("Track");
     }
   }
-  Refresh(e, t, o) {
-    const r = e.DetectRecordData;
-    this.Pe = r;
+  Refresh(e, t, i) {
+    const o = e.DetectRecordData;
+    this.Pe = o;
     this.L8e?.SetUiActive(false);
-    var i = r.Conf.Secondary;
-    switch (i) {
+    var r = o.Conf.Secondary;
+    switch (r) {
       case 61:
         this.D8e?.SetUiActive(true);
         this.L8e = this.D8e;
@@ -198,65 +204,69 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.L8e = this.R8e;
     }
     this.L8e?.Update(e);
-    var n = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionPreOpen(r);
-    var a = n || !r.IsLock;
-    var s = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionNewContentOpen(r);
+    var n = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionPreOpen(o);
+    var s = n || !o.IsLock;
+    var a = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionNewContentOpen(o);
     this.GetItem(9).SetUIActive(n);
-    this.ZAt?.SetUiActive(a);
+    this.ZAt?.SetUiActive(s);
     if (this.Pe.Conf.Secondary === 63) {
       this.GetItem(6).SetUIActive(false);
-      this.GetItem(11).SetUIActive(!a);
+      this.GetItem(11).SetUIActive(!s);
     } else {
-      this.GetItem(6).SetUIActive(!a);
+      this.GetItem(6).SetUIActive(!s);
       this.GetItem(11).SetUIActive(false);
     }
-    var a = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
-    if (i === 6) {
-      i = !a.get(r.Conf.Id);
-      this.GetItem(7).SetUIActive(i);
-      if (i) {
+    if (r === 6) {
+      s = ModelManager_1.ModelManager.AdventureGuideModel.IsRoleTutorialNew(o.Conf.Id) && !ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
+      this.GetItem(7).SetUIActive(s);
+      if (s) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "New_corner");
       }
     } else {
-      a = !n && s;
-      this.GetItem(7).SetUIActive(a);
-      if (a) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), r.Conf.NewContent);
+      r = !n && a;
+      this.GetItem(7).SetUIActive(r);
+      if (r) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), o.Conf.NewContent);
       }
     }
     let l = 0;
-    if (r.Type === 0) {
-      i = r.Conf;
-      if (i.SubDungeonId && !ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(i.SubDungeonId) && r.Conf.Secondary === 6) {
+    if (o.Type === 0) {
+      s = o.Conf;
+      if (s.SubDungeonId && !ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s.SubDungeonId) && o.Conf.Secondary === 6) {
         return;
       }
     } else {
-      n = r.Conf;
-      if (r.Conf.Secondary === 61) {
+      n = o.Conf;
+      if (o.Conf.Secondary === 61) {
         l = n.AdditionalId;
       }
     }
     let h = 0;
     if (l) {
-      s = ModelManager_1.ModelManager.LordGymModel.GetHasFinishLord(l);
-      h = s + 1;
+      a = ModelManager_1.ModelManager.LordGymModel.GetHasFinishLord(l);
+      h = a + 1;
     }
     h = h !== 0 ? h : ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel;
-    var d = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(r.Conf.ShowRewardMap, h);
-    var _ = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
-    var u = new Array();
-    for (const g of d.keys()) {
-      const r = {
-        ItemData: [{
-          IncId: 0,
-          ItemId: g
-        }, d.get(g)],
-        HaveFinish: _
-      };
-      u.push(r);
+    var d = this.Pe.Conf.Secondary === 63 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(this.Pe.Conf.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(o.Conf.ShowRewardMap, h);
+    if (d) {
+      var _ = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
+      var u = new Array();
+      for (const g of d.keys()) {
+        const o = {
+          ItemData: [{
+            IncId: 0,
+            ItemId: g
+          }, d.get(g)],
+          HaveFinish: _
+        };
+        u.push(o);
+      }
+      this.T8e.RefreshByData(u, this.w8e);
+      this.nO_(e);
+      if (e.NightMareParam === e.DetectRecordData.Conf.Id && e.DetectRecordData?.IsLock) {
+        this.ru_();
+      }
     }
-    this.T8e.RefreshByData(u, this.w8e);
-    this.nO_(e);
   }
   iql() {
     var e;
@@ -268,7 +278,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       t = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(e.Conf.DungeonId);
       if (ControllerHolder_1.ControllerHolder.AdventureGuideController.IsMarkUnlock(t.MarkId)) {
         ModelManager_1.ModelManager.AdventureGuideModel.SetFromManualDetect(true);
-        ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForDetection(e.Conf.Secondary !== 2 ? Protocol_1.Aki.Protocol.r8n.xPu : Protocol_1.Aki.Protocol.r8n.Proto_SilentArea, [e.Conf.DungeonId], this.Pe.Conf.Id);
+        ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForDetection(e.Conf.Secondary !== 2 ? Protocol_1.Aki.Protocol.r8n.sxu : Protocol_1.Aki.Protocol.r8n.Proto_SilentArea, [e.Conf.DungeonId], this.Pe.Conf.Id);
       }
     }
   }
@@ -312,15 +322,15 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
       } else {
         t = e.InstanceID;
         if (t) {
-          var o = {
+          var i = {
             v9n: e.Id
           };
-          ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.m1c = o;
-          var r = [];
-          for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
-            r.push(i.GetConfigId);
+          ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.m1c = i;
+          var o = [];
+          for (const r of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
+            o.push(r.GetConfigId);
           }
-          InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(t, r, 0, 0);
+          InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(t, o, 0, 0);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("AdventureGuide", 63, "未配置预开放检测的传送点或副本入口", ["detectionId", this.Pe.Conf.Id], ["preOpenDetectionId", e?.Id]);
         }

@@ -23,7 +23,7 @@ class ExtraEffectBuffTransfer extends ExtraEffectBase_1.BuffEffect {
     this.BuffStack = [];
     this.OnEvent = (e, t, i, s) => {
       if (i.SkillMessageId && i.BulletMessageId) {
-        t = t.GetComponent(209);
+        t = t.GetComponent(210);
         if (t) {
           var r = this.BuffTransferRecords.findIndex(e => e.RecordSkillMessageId === i.SkillMessageId);
           var f = this.BuffTransferRecords.findIndex(e => e.TargetSkillMessageId === i.SkillMessageId);

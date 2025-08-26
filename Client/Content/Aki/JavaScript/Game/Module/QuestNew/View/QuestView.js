@@ -45,8 +45,8 @@ const LEVEL_HELP = 49;
 class QuestView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
-    this.amu = new QuestViewButton_1.QuestViewButton();
-    this.hmu = new QuestViewButton_1.QuestViewButton();
+    this.Hmu = new QuestViewButton_1.QuestViewButton();
+    this.$mu = new QuestViewButton_1.QuestViewButton();
     this.AH1 = new FocusModeToggle_1.FocusModeToggle();
     this.Nno = false;
     this.Ono = false;
@@ -230,7 +230,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Quest", 18, "取消任务追踪", ["任务Id", this.kno]);
         }
-        this.lmu(this.kno);
+        this.Wmu(this.kno);
         this.eso();
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Quest", 18, "QuestView.OnLeftButtonClick:当前处于未追踪状态，不可取消追踪", ["任务Id", this.kno]);
@@ -274,7 +274,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
             var s = new ConfirmBoxDefine_1.ConfirmBoxDataNew(311);
             s.FunctionMap.set(2, () => {
               QuestController_1.QuestNewController.RequestSetQuestFocusMode(t.Id, () => {
-                if (!this.zmu()) {
+                if (!this.Wfu()) {
                   this.qF1(0);
                 }
               });
@@ -296,7 +296,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
             break;
           default:
             if (this.Fno) {
-              this.zmu();
+              this.Wfu();
             } else {
               this.DH1();
             }
@@ -332,11 +332,11 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           }
           return;
       }
-      if (e && this.zmu()) {
+      if (e && this.Wfu()) {
         return;
       }
       t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(this.kno);
-      this.lmu(t.Id);
+      this.Wmu(t.Id);
       this.eso();
     };
     this.BH1 = () => {
@@ -417,7 +417,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this.EJ1 = () => {
+    this.XJ1 = () => {
       var e = ModelManager_1.ModelManager.QuestReviewModel.GetQuestEntryDataByQuestId(this.kno);
       if (e) {
         ControllerHolder_1.ControllerHolder.QuestReviewController.OpenQuestReview(e.Id);
@@ -432,7 +432,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
       t = ModelManager_1.ModelManager.QuestNewModel;
       this.GetText(7).SetText(t.GetQuestName(e));
       this.GetText(9).SetText(t.GetQuestDetails(e));
-      this.lmu(e);
+      this.Wmu(e);
       this.oso(e);
       this.rso(e);
       this.$Ma(e);
@@ -443,7 +443,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIScrollViewWithScrollbarComponent], [19, UE.UIItem], [20, UE.UISprite], [21, UE.UIItem], [22, UE.UISprite], [23, UE.UISprite], [24, UE.UIItem], [25, UE.UISprite], [26, UE.UIText], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this._5e], [16, this.tso], [30, this.EJ1]];
+    this.BtnBindInfo = [[0, this._5e], [16, this.tso], [30, this.XJ1]];
   }
   async OnBeforeStartAsync() {
     this.GetItem(4).SetUIActive(false);
@@ -461,11 +461,11 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnQuestRedDotStateChange, 0);
     this.nso();
     await this.sso();
-    await this.amu.CreateByActorAsync(this.GetItem(28).GetOwner(), this.OW1);
-    this.amu.SetButtonText("InstanceDungeonEntranceCancelTrack", true);
-    this.amu.Hide();
-    await this.hmu.CreateByActorAsync(this.GetItem(2).GetOwner(), this.qW1);
-    this.hmu.Hide();
+    await this.Hmu.CreateByActorAsync(this.GetItem(28).GetOwner(), this.OW1);
+    this.Hmu.SetButtonText("InstanceDungeonEntranceCancelTrack", true);
+    this.Hmu.Hide();
+    await this.$mu.CreateByActorAsync(this.GetItem(2).GetOwner(), this.qW1);
+    this.$mu.Hide();
     await this.AH1.CreateByActorAsync(this.GetItem(29).GetOwner());
     this.AH1.BindToggleCallback(this.PH1, this.xH1);
     this.AH1.Hide();
@@ -596,7 +596,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     await this.Ivt.RefreshTabItemByDataAsync(i);
     this.Ivt.SelectToggleByIndex(ALL_QUEST_TYPE);
   }
-  zmu() {
+  Wfu() {
     var e = this.BH1();
     if (!e) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("FollowQuestStepGuide");
@@ -611,7 +611,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
       e.UpdateListTrackState();
     }
   }
-  lmu(i) {
+  Wmu(i) {
     var s = ModelManager_1.ModelManager.QuestNewModel;
     var o = s.GetQuest(i);
     if (o) {
@@ -623,11 +623,11 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
       var _ = (o.FocusSetting?.CanOpenFocusMode ?? false) && o.IsProgressing;
       let t = undefined;
       this.Fno = this.kno === ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id;
-      this.amu.SetActive(this.Fno);
+      this.Hmu.SetActive(this.Fno);
       if (this.Fno) {
-        this.hmu.SetButtonText("PrefabTextItem_2843016624_Text", false);
+        this.$mu.SetButtonText("PrefabTextItem_2843016624_Text", false);
       } else {
-        this.hmu.SetButtonText("InstanceDungeonEntranceTrack", true);
+        this.$mu.SetButtonText("InstanceDungeonEntranceTrack", true);
       }
       switch (s.GetQuestSpecialState(o)) {
         case 4:
@@ -639,7 +639,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           this.aso(u);
           var u = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableStripColor") ?? "";
           h.SetColor(UE.Color.FromHex(u));
-          this.hmu.SetActive(l);
+          this.$mu.SetActive(l);
           this.AH1.SetActive(_);
           n.SetUIActive(true);
           break;
@@ -651,7 +651,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           this.aso(u);
           l = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableStripColor") ?? "";
           h.SetColor(UE.Color.FromHex(l));
-          this.hmu.SetActive(false);
+          this.$mu.SetActive(false);
           this.AH1.SetActive(_);
           n.SetUIActive(true);
           break;
@@ -663,7 +663,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           this.aso(u);
           l = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableStripColor") ?? "";
           h.SetColor(UE.Color.FromHex(l));
-          this.hmu.SetActive(false);
+          this.$mu.SetActive(false);
           this.AH1.SetActive(false);
           n.SetUIActive(true);
           break;
@@ -679,7 +679,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
             this.aso(u);
             l = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableStripColor") ?? "";
             h.SetColor(UE.Color.FromHex(l));
-            this.hmu.SetActive(false);
+            this.$mu.SetActive(false);
             this.AH1.SetActive(false);
             n.SetUIActive(true);
             break;
@@ -689,15 +689,15 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           r.SetText(u);
           l = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableStripColor") ?? "";
           h.SetColor(UE.Color.FromHex(l));
-          this.hmu.SetButtonText("GoToDownload", false);
-          this.hmu.SetActive(true);
+          this.$mu.SetButtonText("GoToDownload", false);
+          this.$mu.SetActive(true);
           a.GetRootComponent().SetUIActive(false);
           this.AH1.SetActive(false);
           n.SetUIActive(true);
           break;
         case 3:
-          this.hmu.SetActive(true);
-          this.hmu.SetButtonText("GoOnTask", false);
+          this.$mu.SetActive(true);
+          this.$mu.SetButtonText("GoOnTask", false);
           n.SetUIActive(false);
           this.AH1.SetActive(false);
           break;
@@ -714,7 +714,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
             this.aso(l);
             u = CommonParamById_1.configCommonParamById.GetStringConfig("TaskRemindStripColor") ?? "";
             h.SetColor(UE.Color.FromHex(u));
-            this.hmu.SetActive(true);
+            this.$mu.SetActive(true);
             this.AH1.SetActive(_);
             n.SetUIActive(true);
             break;
@@ -724,20 +724,20 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           r.SetText(l);
           u = CommonParamById_1.configCommonParamById.GetStringConfig("TaskUnableStripColor") ?? "";
           h.SetColor(UE.Color.FromHex(u));
-          this.hmu.SetActive(false);
+          this.$mu.SetActive(false);
           a.GetRootComponent().SetUIActive(false);
           this.AH1.SetActive(false);
           n.SetUIActive(true);
           break;
         case 9:
-          this.hmu.SetActive(true);
-          this.hmu.SetButtonText("Task_Focus_Tips02", false);
+          this.$mu.SetActive(true);
+          this.$mu.SetButtonText("Task_Focus_Tips02", false);
           this.AH1.SetActive(false);
           n.SetUIActive(false);
           break;
         default:
           n.SetUIActive(false);
-          this.hmu.SetActive(true);
+          this.$mu.SetActive(true);
           this.AH1.SetActive(_);
       }
       if (t) {

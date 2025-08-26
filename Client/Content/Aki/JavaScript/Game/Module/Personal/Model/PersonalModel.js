@@ -154,6 +154,7 @@ class PersonalModel extends ModelBase_1.ModelBase {
   }
   SetSignature(e) {
     this.p5i.Signature = e;
+    ModelManager_1.ModelManager.PlayerInfoModel.ChangeStringProp(8, e);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSignChange);
   }
   GetSignature() {
@@ -338,10 +339,11 @@ class PersonalModel extends ModelBase_1.ModelBase {
   SetDressedPlayerTitle(e, t = undefined) {
     this.p5i.CurPlayerTitleId = e;
     this.p5i.CurPlayerTitleLevel = t;
-    e = this.Qac.get(e);
-    if (e && t) {
-      e.StarLevel = t;
+    var r = this.Qac.get(e);
+    if (r && t) {
+      r.StarLevel = t;
     }
+    ModelManager_1.ModelManager.PlayerInfoModel.ChangeNumberProp(15, e);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerTitleChange);
   }
   UpdateUnDressedPlayerTitleList(e) {

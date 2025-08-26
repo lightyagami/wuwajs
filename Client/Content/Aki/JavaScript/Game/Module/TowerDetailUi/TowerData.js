@@ -28,11 +28,12 @@ class TowerReward {
 exports.TowerReward = TowerReward;
 exports.TOWER_TEAM_MAX_NUMBER = 3;
 class TowerFloorInfo {
-  constructor(s, t, r, e) {
+  constructor(s, t, r, e, o) {
     this.TowerId = s;
     this.Star = t;
     this.Formation = r;
     this.StarIndex = e;
+    this.IsQuickPass = o;
     this.Difficulties = -1;
     this.Area = -1;
     this.FloorNumber = -1;

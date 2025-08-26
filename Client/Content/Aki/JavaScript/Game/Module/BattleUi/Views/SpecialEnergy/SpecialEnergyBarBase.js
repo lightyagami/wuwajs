@@ -33,6 +33,7 @@ class SpecialEnergyBarBase extends UiPanelBase_1.UiPanelBase {
     this.NiagaraList = [];
     this.NeedInitKeyItem = true;
     this.KeyItem = undefined;
+    this.ExtraKeyItemList = [];
     this.NeedInitNumItem = false;
     this.NumItem = undefined;
     this.PercentMachine = new SpecialEnergyBarPercentMachine_1.SpecialEnergyBarPercentMachine();
@@ -134,6 +135,10 @@ class SpecialEnergyBarBase extends UiPanelBase_1.UiPanelBase {
       this.KeyItem?.Destroy();
       this.KeyItem = undefined;
     }
+    for (const t of this.ExtraKeyItemList) {
+      t?.Destroy();
+    }
+    this.ExtraKeyItemList.length = 0;
     if (this.NeedInitNumItem) {
       this.NeedInitNumItem = false;
       this.NumItem?.Destroy();

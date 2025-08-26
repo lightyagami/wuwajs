@@ -104,6 +104,9 @@ class ActivityDailyAdventureData extends ActivityData_1.ActivityBaseData {
   GetExDataRedPointShowState() {
     return !this.YNe() && (this.IsTaskHasReward() || this.IsPointHasReward() || this.IsDailyTips());
   }
+  GetExDataFinishShowState() {
+    return this.YNe();
+  }
   NeedSelfControlFirstRedPoint() {
     return false;
   }
@@ -132,13 +135,12 @@ class ActivityDailyAdventureData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   YNe() {
-    let t = true;
-    for (const e of this.QNe.values()) {
-      if (e.RewardState !== 2) {
-        t = false;
+    for (const t of this.QNe.values()) {
+      if (t.RewardState !== 2) {
+        return false;
       }
     }
-    return t;
+    return true;
   }
 }
 exports.ActivityDailyAdventureData = ActivityDailyAdventureData;

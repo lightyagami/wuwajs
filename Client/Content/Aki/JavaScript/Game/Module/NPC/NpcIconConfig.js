@@ -24,7 +24,7 @@ class NpcIconConfig extends ConfigBase_1.ConfigBase {
     this.IGi = 0;
     this.TGi = 0;
     this.LGi = 0;
-    this.cJ1 = 0;
+    this.qJ1 = 0;
   }
   get NpcIconHeadInfoLimitMinDistanceSquared() {
     return this.yGi;
@@ -89,8 +89,8 @@ class NpcIconConfig extends ConfigBase_1.ConfigBase {
     return i;
   }
   GetPlayerInfoIconLocationOffsetZ() {
-    this.cJ1 ||= CommonParamById_1.configCommonParamById.GetIntConfig("OnlinePlayerNameZOffset");
-    return this.cJ1;
+    this.qJ1 ||= CommonParamById_1.configCommonParamById.GetIntConfig("OnlinePlayerNameZOffset");
+    return this.qJ1;
   }
   OnClear() {
     this.pGi.clear();

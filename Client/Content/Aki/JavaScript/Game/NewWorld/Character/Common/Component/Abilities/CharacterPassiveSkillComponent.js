@@ -58,8 +58,8 @@ let CharacterPassiveSkillComponent = class CharacterPassiveSkillComponent extend
   }
   OnInit() {
     this.xOr = this.Entity.CheckGetComponent(28);
-    this.wOr = this.Entity.CheckGetComponent(174);
-    this.BOr = this.Entity.GetComponent(206);
+    this.wOr = this.Entity.CheckGetComponent(175);
+    this.BOr = this.Entity.GetComponent(207);
     this.nx = {
       SkillId: 0,
       Owner: this.Entity,
@@ -286,7 +286,7 @@ let CharacterPassiveSkillComponent = class CharacterPassiveSkillComponent extend
                 }
                 break;
               case ESkillAction.AddBuff:
-                var v = e.GetComponent(174);
+                var v = e.GetComponent(175);
                 var S = `被动技能${t}添加`;
                 for (const b of _.BuffId) {
                   v.AddBuff(b, {
@@ -297,7 +297,7 @@ let CharacterPassiveSkillComponent = class CharacterPassiveSkillComponent extend
                 }
                 break;
               case ESkillAction.RemoveBuff:
-                var d = e.GetComponent(174);
+                var d = e.GetComponent(175);
                 var C = `被动技能${t}移除`;
                 for (let t = 0; t < _.BuffId.length; t++) {
                   var f = _.StackCount[t] ?? -1;

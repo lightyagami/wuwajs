@@ -29,7 +29,7 @@ class RogueResSkillView extends UiViewBase_1.UiViewBase {
     this.SkillDetailPanel = undefined;
     this.ScrollView = undefined;
     this.SelectColumn = 0;
-    this.Htu = -1;
+    this.giu = -1;
     this.ExecuteCount = 1;
     this.CreateGridPanel = () => {
       return new RogueResSkillGridPanel_1.RogueResSkillGridPanel();
@@ -91,12 +91,12 @@ class RogueResSkillView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PermanentRogueSeasonRedDotUpdate, e);
   }
   OnBeforeShow() {
-    if (this.SelectColumn > 0 && this.Htu > 0) {
+    if (this.SelectColumn > 0 && this.giu > 0) {
       this.ScrollView.BindLateUpdate(e => {
         if (this.ExecuteCount === ANIM_ENDCOUNT) {
-          this.GetScrollViewWithScrollbar(3).SetScrollProgress(1 - (this.SelectColumn + 1) / (this.Htu + 1));
+          this.GetScrollViewWithScrollbar(3).SetScrollProgress(1 - (this.SelectColumn + 1) / (this.giu + 1));
           this.SelectColumn = -1;
-          this.Htu = -1;
+          this.giu = -1;
           this.ScrollView.UnBindLateUpdate();
         }
         this.ExecuteCount++;
@@ -129,8 +129,8 @@ class RogueResSkillView extends UiViewBase_1.UiViewBase {
       if (s === 0 && t.Column > this.SelectColumn) {
         this.SelectColumn = t.Column;
       }
-      if (t.Column > this.Htu) {
-        this.Htu = t.Column;
+      if (t.Column > this.giu) {
+        this.giu = t.Column;
       }
       this.SkillTreeConfigList[t.Column].push(r);
     }

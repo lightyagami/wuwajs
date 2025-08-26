@@ -3,21 +3,21 @@
 var CharacterActionComponent_1;
 var __decorate = this && this.__decorate || function (t, i, e, o) {
   var s;
-  var h = arguments.length;
-  var n = h < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
+  var n = arguments.length;
+  var h = n < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, i, e, o);
+    h = Reflect.decorate(t, i, e, o);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (s = t[r]) {
-        n = (h < 3 ? s(n) : h > 3 ? s(i, e, n) : s(i, e)) || n;
+        h = (n < 3 ? s(h) : n > 3 ? s(i, e, h) : s(i, e)) || h;
       }
     }
   }
-  if (h > 3 && n) {
-    Object.defineProperty(i, e, n);
+  if (n > 3 && h) {
+    Object.defineProperty(i, e, h);
   }
-  return n;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -44,6 +44,7 @@ const Global_1 = require("../../../../../Global");
 const InputController_1 = require("../../../../../Input/InputController");
 const LevelGamePlayController_1 = require("../../../../../LevelGamePlay/LevelGamePlayController");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const HoldingHandsController_1 = require("../../../../../Module/HoldHands/HoldingHandsController");
 const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const FOURTY_FIVE = 45;
 const ZERO_EIGHT = 0.8;
@@ -97,6 +98,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     this.Giant = undefined;
     this.g2r = false;
     this.f2r = Vector_1.Vector.Create();
+    this.OnLeaveSitDown = undefined;
     this.p2r = (t, i) => {
       if (!i) {
         this.LeaveSitDownAction();
@@ -117,6 +119,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
         this.PreLeaveSitDownAction("PlotNetworkStart");
       }
     };
+    this.Zfd = false;
     this.S2r = (t, i) => {
       let e = 0;
       if (this.Chair) {
@@ -151,6 +154,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
       } else {
         this.Lie?.RemoveTag(-1697149502);
       }
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharActionStateChange, 0, t);
     }
   }
   get Chair() {
@@ -168,16 +172,16 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     }
   }
   static get Dependencies() {
-    return [3, 175, 205];
+    return [3, 176, 206];
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
     this.OriginCapsuleRadius = this.Hte.Radius;
     this.OriginCapsuleHalfHeight = this.Hte.HalfHeight;
-    this.mBe = this.Entity.GetComponent(175);
-    this.Gce = this.Entity.GetComponent(178);
+    this.mBe = this.Entity.GetComponent(176);
+    this.Gce = this.Entity.GetComponent(179);
     this.cBe = this.Entity.GetComponent(40);
-    return !!this.mBe && (this.Lie = this.Entity.GetComponent(205), !!this.Lie) && (this.SetIsSitDown(false, "OnStart"), this.Chair = undefined, this.Giant = undefined, this.m2r = false, this.gU = false, this.c2r = this.Lie.ListenForTagAddOrRemove(-451106150, this.y2r), true);
+    return !!this.mBe && (this.Lie = this.Entity.GetComponent(206), !!this.Lie) && (this.SetIsSitDown(false, "OnStart"), this.Chair = undefined, this.Giant = undefined, this.m2r = false, this.gU = false, this.c2r = this.Lie.ListenForTagAddOrRemove(-451106150, this.y2r), true);
   }
   OnActivate() {
     if (this.Hte.IsAutonomousProxy && !this.gU) {
@@ -214,7 +218,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     var t;
     var i;
     var e;
-    if (this.Hte.IsAutonomousProxy && (this.IsSitDown && this.Lie.HasTag(30322312) && this.Gce.HasMoveInput && this.PreLeaveSitDownAction("HasMoveInput"), this.m2r && (e = this.Chair.GetComponent(202).ActorLocationProxy, t = this.Hte.ActorLocationProxy, i = this.Hte.ActorForwardProxy, t = Vector2D_1.Vector2D.Create(t.X - e.X, t.Y - e.Y).DotProduct(this.d2r), (e = Vector2D_1.Vector2D.Create(i.X, i.Y)).Normalize(), i = Math.acos(this.C2r.DotProduct(e)) * MathUtils_1.MathUtils.RadToDeg, t < COLLISION_RADIUS_IN || t > COLLISION_RADIUS_OUT && this.Gce.HasMoveInput || Math.abs(i) > COLLISION_RESET_ANGLE) && this.ResetCollision(), this.g2r) && this.Hte.ActorRotationProxy.Equals(this.Hte.InputRotatorProxy)) {
+    if (this.Hte.IsAutonomousProxy && (this.IsSitDown && this.Lie.HasTag(30322312) && this.Gce.HasMoveInput && this.PreLeaveSitDownAction("HasMoveInput"), this.m2r && (e = this.Chair.GetComponent(203).ActorLocationProxy, t = this.Hte.ActorLocationProxy, i = this.Hte.ActorForwardProxy, t = Vector2D_1.Vector2D.Create(t.X - e.X, t.Y - e.Y).DotProduct(this.d2r), (e = Vector2D_1.Vector2D.Create(i.X, i.Y)).Normalize(), i = Math.acos(this.C2r.DotProduct(e)) * MathUtils_1.MathUtils.RadToDeg, t < COLLISION_RADIUS_IN || t > COLLISION_RADIUS_OUT && this.Gce.HasMoveInput || Math.abs(i) > COLLISION_RESET_ANGLE) && this.ResetCollision(), this.g2r) && this.Hte.ActorRotationProxy.Equals(this.Hte.InputRotatorProxy)) {
       this.g2r = false;
       this.Lie.AddTag(1190560501);
       e = this.Entity.GetComponent(62);
@@ -226,15 +230,15 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     var e = t.Entity.GetComponent(0)?.GetPbDataId() ?? 0;
     var e = ModelManager_1.ModelManager.CreatureModel.GetOwnerEntity(e);
     let o = undefined;
-    o = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(202) : t;
+    o = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(203) : t;
     var e = (0, puerts_1.$ref)(undefined);
     o.Owner.GetAttachedActors(e);
     var s = (0, puerts_1.$unref)(e);
-    var h = s.Num();
-    for (let t = 0; t < h; ++t) {
-      var n = s.Get(t);
+    var n = s.Num();
+    for (let t = 0; t < n; ++t) {
+      var h = s.Get(t);
       var r = (0, puerts_1.$ref)(undefined);
-      n.GetAttachedActors(r);
+      h.GetAttachedActors(r);
       var a = (0, puerts_1.$unref)(r);
       var _ = a.Num();
       for (let t = 0; t < _; ++t) {
@@ -247,7 +251,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     this.m2r = false;
     this.Hte.Actor.CapsuleComponent.SetCollisionResponseToChannel(2, 2);
     if (this.Chair) {
-      if ((t = this.Chair.GetComponent(202)) && t.Entity) {
+      if ((t = this.Chair.GetComponent(203)) && t.Entity) {
         this.HTe(t, false);
       }
       this.Chair = undefined;
@@ -256,8 +260,9 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
   GetSitDownState() {
     return this.IsSitDown;
   }
-  EnterSitDownAction(t, i) {
-    return !this.Lie.HasAnyTag([-1446183172, -1371021686]) && !!t.GetComponent(202) && (this.m2r && this.Chair && this.ResetCollision(), this.cBe.StopAllSkills("CharacterActionComponent.EnterSitDownAction"), this.SitDownTypeIndex = i, this.EnterSitDownIndex = this.IsChairCanInteract(t) - 1, EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeCharActionWithTarget, 0), this.SetIsSitDown(true, "角色进入坐下动作"), this.m2r = false, this.Chair = t, this.T2r(), true);
+  EnterSitDownAction(t, i, e = false) {
+    var o;
+    return !this.Lie.HasAnyTag([-1446183172, -1371021686]) && !!(o = t.GetComponent(203)) && (this.m2r && this.Chair && this.ResetCollision(), this.cBe.StopAllSkills("CharacterActionComponent.EnterSitDownAction"), this.SitDownTypeIndex = i, this.EnterSitDownIndex = this.IsChairCanInteract(t) - 1, this.Zfd = e, EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeCharActionWithTarget, 0), this.SetIsSitDown(true, "角色进入坐下动作"), this.m2r = false, this.Chair = t, this.T2r(), HoldingHandsController_1.HoldingHandsController.SitOnCharCheckHoldHands(this.Entity, o), true);
   }
   T2r() {
     this.S2r(undefined, undefined);
@@ -273,8 +278,8 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     if (this.Chair) {
       this.cz.Reset();
       this.Gce.SetForceSpeed(this.cz);
-      t = this.Chair.GetComponent(202);
-      i = this.Chair.GetComponent(197);
+      t = this.Chair.GetComponent(203);
+      i = this.Chair.GetComponent(198);
       this.cz.DeepCopy(i.GetInteractPoint());
       this.cz.Z += this.OriginCapsuleHalfHeight;
       this.cie.DeepCopy(t.ActorRotationProxy);
@@ -286,7 +291,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     }
   }
   FTe() {
-    var t = this.Chair.GetComponent(202);
+    var t = this.Chair.GetComponent(203);
     if (t && t.Entity) {
       this.HTe(t, true);
     }
@@ -295,8 +300,14 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
   PreLeaveSitDownAction(t = "") {
     this.SetIsSitDown(false, t);
     this.IsStandingUp = true;
-    this.L2r();
+    if (this.Zfd) {
+      this.LeaveSitDownIndex = 0;
+      this.Zfd = false;
+    } else {
+      this.L2r();
+    }
     this.S2r(undefined, undefined);
+    this.OnLeaveSitDown?.();
   }
   L2r() {
     var t;
@@ -309,7 +320,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
       });
       this.cz.DeepCopy(this.Hte.InputDirectProxy);
       this.cz.Normalize();
-      t = this.Chair.GetComponent(197).GetInteractController().SectorRange;
+      t = this.Chair.GetComponent(198).GetInteractController().SectorRange;
       if (this.cz.DotProduct(this.Hte.ActorForwardProxy) > ZERO_EIGHT || !t) {
         this.LeaveSitDownIndex = 0;
       } else {
@@ -340,7 +351,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     var i;
     var e;
     if (this.Chair && this.Hte) {
-      t = this.Chair.GetComponent(202).ActorLocationProxy;
+      t = this.Chair.GetComponent(203).ActorLocationProxy;
       i = this.Hte.ActorLocationProxy;
       e = this.Hte.ActorForwardProxy;
       this.d2r = Vector2D_1.Vector2D.Create(i.X - t.X, i.Y - t.Y);
@@ -350,7 +361,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
     }
   }
   IsChairCanInteract(t) {
-    t = t.GetComponent(202);
+    t = t.GetComponent(203);
     if (!t) {
       return 0;
     }
@@ -380,42 +391,41 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
       }
     }
   }
-  StartCatapult(i, e) {
-    if (i && e.Param) {
-      var o = this.Entity.GetComponent(33);
-      if (o) {
-        var s = this.Entity.GetComponent(40);
-        if (s) {
-          var h = e.Type === IAction_1.ELeisureInteract.SuperCatapult;
-          var n = h ? SUPER_CATAPULT_SKILL_ID : CATAPULT_SKILL_ID;
-          if (s.BeginSkill(n, {
+  StartCatapult(n, h) {
+    if (n && h.Param) {
+      const r = this.Entity.GetComponent(33);
+      if (r) {
+        var t = this.Entity.GetComponent(40);
+        if (t) {
+          const a = h.Type === IAction_1.ELeisureInteract.SuperCatapult;
+          var i = a ? SUPER_CATAPULT_SKILL_ID : CATAPULT_SKILL_ID;
+          t.BeginSkillAsync(i, {
             Reason: "CharacterActionComponent.StartCatapult"
-          })) {
-            var r = i.GetComponent(1);
-            let t = undefined;
-            t = (r?.Valid ? r.Owner : i.GetComponent(0))?.D_GetTransform();
-            var r = Vector_1.Vector.Create(t.GetLocation());
-            var i = Quat_1.Quat.Create(t.GetRotation());
-            var a = e.Param.Time ?? DEFAULT_CATAPULT_TIME;
-            var _ = e.Param.Gravity ?? DEFAULT_CATAPULT_GRAVITY;
-            CharacterActionComponent_1.Lz.FromConfigVector(e.Param.P1);
-            i.RotateVector(CharacterActionComponent_1.Lz, CharacterActionComponent_1.Lz);
-            CharacterActionComponent_1.Lz.AdditionEqual(r);
-            CharacterActionComponent_1.Tz.FromConfigVector(e.Param.P2);
-            i.RotateVector(CharacterActionComponent_1.Tz, CharacterActionComponent_1.Tz);
-            CharacterActionComponent_1.Tz.AdditionEqual(r);
-            o.SetConfig(a, r, CharacterActionComponent_1.Lz, CharacterActionComponent_1.Tz, undefined, _, undefined, h);
-            var e = Vector_1.Vector.Create(CharacterActionComponent_1.Lz);
-            e.SubtractionEqual(r);
-            e.Normalize();
-            var i = Vector_1.Vector.Create(0, 0, 1);
-            var o = MathUtils_1.MathUtils.DotProduct(i, e);
-            this.IsUseCatapultUpAnim = o > Math.cos(this.D2r() / 2 / 180 * Math.PI);
-            this.f2r.DeepCopy(CharacterActionComponent_1.Tz);
-            s.BeginSkill(n, {
-              Reason: "CharacterActionComponent.StartCatapult"
-            });
-          }
+          }).then(i => {
+            if (i && this.Entity?.Valid) {
+              i = n.GetComponent(1);
+              let t = undefined;
+              t = (i?.Valid ? i.Owner : n.GetComponent(0))?.D_GetTransform();
+              var i = Vector_1.Vector.Create(t.GetLocation());
+              var e = Quat_1.Quat.Create(t.GetRotation());
+              var o = h.Param.Time ?? DEFAULT_CATAPULT_TIME;
+              var s = h.Param.Gravity ?? DEFAULT_CATAPULT_GRAVITY;
+              CharacterActionComponent_1.Lz.FromConfigVector(h.Param.P1);
+              e.RotateVector(CharacterActionComponent_1.Lz, CharacterActionComponent_1.Lz);
+              CharacterActionComponent_1.Lz.AdditionEqual(i);
+              CharacterActionComponent_1.Tz.FromConfigVector(h.Param.P2);
+              e.RotateVector(CharacterActionComponent_1.Tz, CharacterActionComponent_1.Tz);
+              CharacterActionComponent_1.Tz.AdditionEqual(i);
+              r.SetConfig(o, i, CharacterActionComponent_1.Lz, CharacterActionComponent_1.Tz, undefined, s, undefined, a);
+              var e = Vector_1.Vector.Create(CharacterActionComponent_1.Lz);
+              e.SubtractionEqual(i);
+              e.Normalize();
+              var o = Vector_1.Vector.Create(0, 0, 1);
+              var s = MathUtils_1.MathUtils.DotProduct(o, e);
+              this.IsUseCatapultUpAnim = s > Math.cos(this.D2r() / 2 / 180 * Math.PI);
+              this.f2r.DeepCopy(CharacterActionComponent_1.Tz);
+            }
+          });
         }
       }
     }
@@ -435,19 +445,31 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
       this.IsUseCatapultUpAnim = false;
     }
   }
+  StartBounceFromAns(t, i, e) {
+    var o;
+    var s;
+    var n = this.Entity.GetComponent(33);
+    if (n && this.Entity?.Valid) {
+      s = (o = this.Entity.GetComponent(1)).ActorLocationProxy;
+      CharacterActionComponent_1.Lz.DeepCopy(s);
+      CharacterActionComponent_1.Lz.Z += i;
+      n.SetConfig(t || 2, s, CharacterActionComponent_1.Lz, CharacterActionComponent_1.Lz, e, 0, o.ActorRotationProxy);
+      this.IsUseCatapultUpAnim = false;
+    }
+  }
   async StartBounceWithHorizontalOffset(t, i, e, o) {
     var s;
-    var h;
     var n;
+    var h;
     var r = this.Entity.GetComponent(33);
     return !!r && !!(s = this.Entity.GetComponent(40)) && !!(await s.BeginSkillAsync(exports.LEAVE_VEHICLE_BOUNCE_SKILL_ID, {
       Reason: "CharacterActionComponent.StartBounce"
-    })) && !!this.Entity?.Valid && !(h = (s = this.Entity.GetComponent(1)).ActorLocationProxy, n = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, h), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Hte, i), CharacterActionComponent_1.Lz.DeepCopy(h), CharacterActionComponent_1.Lz.AdditionEqual(i), GravityUtils_1.GravityUtils.SetZnInGravityForActor(this.Hte, CharacterActionComponent_1.Lz, n + t), r.SetConfig(e || 2, h, CharacterActionComponent_1.Lz, CharacterActionComponent_1.Lz, o, 0, s.ActorRotationProxy), this.IsUseCatapultUpAnim = false);
+    })) && !!this.Entity?.Valid && !(n = (s = this.Entity.GetComponent(1)).ActorLocationProxy, h = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, n), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Hte, i), CharacterActionComponent_1.Lz.DeepCopy(n), CharacterActionComponent_1.Lz.AdditionEqual(i), GravityUtils_1.GravityUtils.SetZnInGravityForActor(this.Hte, CharacterActionComponent_1.Lz, h + t), r.SetConfig(e || 2, n, CharacterActionComponent_1.Lz, CharacterActionComponent_1.Lz, o, 0, s.ActorRotationProxy), this.IsUseCatapultUpAnim = false);
   }
   EndBounce() {
     var t = this.Entity.GetComponent(40);
     if (!!t && ((t = t.CurrentSkill) === undefined || t.SkillId === BOUNCE_SKILL_ID)) {
-      (t = this.Entity.GetComponent(178)).SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
+      (t = this.Entity.GetComponent(179)).SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
       t.ActorComp?.Actor.KuroSetMovementMode({
         Mode: 3,
         Context: "[CharacterActionComponent.EndBounce]"
@@ -470,7 +492,7 @@ let CharacterActionComponent = CharacterActionComponent_1 = class CharacterActio
   }
   PlayCustomCommonSkill(t) {
     if (this.cBe?.CheckIsLoaded()) {
-      this.cBe.BeginSkill(t, {
+      this.cBe.BeginSkillAsync(t, {
         Reason: "CharacterActionComponent.PlayCustomCommonSkill"
       });
     }

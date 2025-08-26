@@ -41,12 +41,12 @@ class SpecialSkillXiaKongSummoned {
   constructor() {
     this.EntityHandle = undefined;
     this.AnimComp = undefined;
-    this.Jnu = () => {
+    this.Isu = () => {
       if (this.EntityHandle?.Valid) {
         this.AnimComp?.StartForceDisableAnimOptimization(4, false);
       }
     };
-    this.Znu = () => {
+    this.Tsu = () => {
       if (this.EntityHandle?.Valid) {
         this.AnimComp?.CancelForceDisableAnimOptimization(4);
       }
@@ -58,16 +58,16 @@ class SpecialSkillXiaKongSummoned {
   Init(t) {
     if (t?.Valid && t.Entity !== undefined) {
       this.EntityHandle = t;
-      this.AnimComp = t.Entity.GetComponent(177);
-      EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.Jnu);
-      EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Znu);
+      this.AnimComp = t.Entity.GetComponent(178);
+      EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.Isu);
+      EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Tsu);
       EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
   }
   Destroy() {
     if (this.EntityHandle?.Entity) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.Jnu);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Znu);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.Isu);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Tsu);
       EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
     this.EntityHandle = undefined;
@@ -168,7 +168,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
       if (i === LOOP_SKILL_ID && !(s < LOOP_END_TIME)) {
         i = LOOP_END_TIME - LOOP_START_TIME;
         i = s - Math.floor((s - LOOP_START_TIME) / i) * i;
-        if ((h = EntitySystem_1.EntitySystem.GetComponent(t, 177))?.Valid) {
+        if ((h = EntitySystem_1.EntitySystem.GetComponent(t, 178))?.Valid) {
           h.MontageSetPosition(i);
         }
         if (Log_1.Log.CheckDebug()) {
@@ -200,10 +200,10 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
     var t = this.Jh.GetComponent(0);
     this.Wpo = t.GetCreatureDataId();
     this.TSo = this.Jh.GetComponent(40);
-    this.a1c = this.Jh.GetComponent(179);
-    this.Xte = this.Jh.GetComponent(193);
-    this.Wwc = this.Jh.GetComponent(172);
-    this.m1t = this.Jh.GetComponent(190);
+    this.a1c = this.Jh.GetComponent(180);
+    this.Xte = this.Jh.GetComponent(194);
+    this.Wwc = this.Jh.GetComponent(173);
+    this.m1t = this.Jh.GetComponent(191);
     this.bx1 = [undefined, undefined, undefined, undefined];
     this.aO1 = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === t.GetPlayerId();
     if (this.aO1) {
@@ -294,7 +294,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
           if (!e?.Valid) {
             return;
           }
-          if (t = e.Entity?.GetComponent(179)) {
+          if (t = e.Entity?.GetComponent(180)) {
             this.bx1[i] = t;
           }
         }
@@ -355,7 +355,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
       if ((t = this.GetNextEndCircleAttrValue()) >= SUCC_MIN_ATTR_VALUE && t < SUCC_MAX_ATTR_VALUE) {
         this.rRc(true);
       }
-      this.Jh?.GetComponent(93)?.DisableRoleWithoutEffect();
+      this.Jh?.GetComponent(94)?.DisableRoleWithoutEffect();
     }
   }
   u1c() {

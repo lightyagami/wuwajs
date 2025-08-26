@@ -60,22 +60,22 @@ class TrackMarkExpressController {
       switch (i) {
         case Protocol_1.Aki.Protocol.BNs._5n:
           if (t.NodeType !== "ChildQuest" && t.ContainTag(0)) {
-            this.WX1(t.NodeId, e, r, e.IsOccupied);
+            this.pY1(t.NodeId, e, r, e.IsOccupied);
           }
           break;
         case Protocol_1.Aki.Protocol.BNs.Proto_CompletedSuccess:
         case Protocol_1.Aki.Protocol.BNs.Proto_CompletedFailed:
-          this.QX1(t.NodeId);
+          this.vY1(t.NodeId);
           break;
         case Protocol_1.Aki.Protocol.BNs.Proto_Destroy:
-          this.KX1(t.NodeId);
+          this.yY1(t.NodeId);
       }
     }
   }
   UpdateOnChildQuestNodeStatusChange(e, t, i) {
     var r = e.TrackTarget;
-    if (r && (t && (t = this.Yre.IsOccupied, this.WX1(e.NodeId, this.Yre, r, t)), i)) {
-      this.QX1(e.NodeId);
+    if (r && (t && (t = this.Yre.IsOccupied, this.pY1(e.NodeId, this.Yre, r, t)), i)) {
+      this.vY1(e.NodeId);
     }
   }
   OnBtApplyExpressionOccupation(e) {
@@ -100,18 +100,18 @@ class TrackMarkExpressController {
       this.OnBtReleaseExpressionOccupation(false);
     }
   }
-  WX1(e, t, i, r) {
-    this.XX1(e, t, i).OnNodeStart(r);
+  pY1(e, t, i, r) {
+    this.SY1(e, t, i).OnNodeStart(r);
   }
-  QX1(e) {
+  vY1(e) {
     this.GetNodeTrackMarkCreator(e)?.OnNodeEnd();
-    this.KX1(e);
+    this.yY1(e);
   }
-  XX1(e, t, i) {
+  SY1(e, t, i) {
     var r = this.GetNodeTrackMarkCreator(e);
     return r || (r = new NodeTrackMark(t, t.TreeIncId, t.TreeConfigId, e, i), this.JQt.set(e, r), r);
   }
-  KX1(e) {
+  yY1(e) {
     this.GetNodeTrackMarkCreator(e)?.Destroy();
     this.JQt.delete(e);
   }
@@ -172,14 +172,14 @@ class NodeTrackMark {
     };
     switch (s.TrackType.Type) {
       case "Locations":
-        for (const n of s.TrackType.Locations) {
-          this.zQt.push(Vector_1.Vector.Create(n.X ?? 0, n.Y ?? 0, n.Z ?? 0));
+        for (const o of s.TrackType.Locations) {
+          this.zQt.push(Vector_1.Vector.Create(o.X ?? 0, o.Y ?? 0, o.Z ?? 0));
         }
         this.RDc = s.TrackType.GravityDirection;
         break;
       case "Entities":
-        for (const o of s.TrackType.EntityIds) {
-          this.zQt.push(o);
+        for (const n of s.TrackType.EntityIds) {
+          this.zQt.push(n);
         }
         break;
       case "CaptureVisions":
@@ -299,20 +299,45 @@ class NodeTrackMark {
     }
   }
   GetTrackAreaInfo() {
-    var e = this.Uec();
-    if (e) {
-      var t = e[0];
-      var e = e[1];
-      if (typeof e == "number") {
-        return ModelManager_1.ModelManager.CreatureModel.GetEntityData(e, t ?? this.DungeonId)?.AreaId;
-      }
-      if (e instanceof Vector_1.Vector) {
-        t = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestNodeAreaInfo(this.Yut, this.Jut);
-        if (t && t.length !== 0) {
-          return t[0];
-        }
-      }
+    var e;
+    var t;
+    if (this.DefaultMapMarkId !== undefined) {
+      return ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(this.DefaultMapMarkId)?.AreaId;
+    } else if ((e = this.zQt.findIndex((e, t) => !this.iXt.get(t))) < 0) {
+      return undefined;
+    } else if (typeof (t = this.zQt[e]) == "number") {
+      return this.ynh("Entities", this.DungeonId, e, t);
+    } else if (t instanceof Vector_1.Vector) {
+      return this.ynh("Locations", this.DungeonId, e, t);
+    } else if (t instanceof TrackVision) {
+      return this.ynh("CaptureVisions", this.DungeonId, e, t);
+    } else {
+      return undefined;
     }
+  }
+  ynh(e, t, i, r) {
+    let s = 0;
+    switch (e) {
+      case "Locations":
+        if (i !== undefined && this.eXt?.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)) && a.InstSubType === 13 && (a = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestNodeAreaInfo(this.Yut, this.Jut)) && a.length > i) {
+          s = a[i];
+        }
+        break;
+      case "Entities":
+        var a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t);
+        if (a) {
+          s = ModelManager_1.ModelManager.CreatureModel.GetEntityData(r, a.MapConfigId)?.AreaId ?? 0;
+        }
+        break;
+      case "CaptureVisions":
+        var o;
+        var a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t);
+        if (a) {
+          o = r;
+          s = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o.EntityId, a.MapConfigId)?.AreaId ?? 0;
+        }
+    }
+    return s;
   }
   OnExpressOccupied() {
     if (this.oXt.size !== 0) {
@@ -399,42 +424,22 @@ class NodeTrackMark {
     if (a?.NodeType === "ChildQuest" && a.CustomTrackIconId) {
       s = a.CustomTrackIconId;
     }
-    let n = 0;
-    switch (i) {
-      case "Locations":
-        if (r !== undefined && this.eXt?.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)) && o.InstSubType === 13 && (o = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestNodeAreaInfo(this.Yut, this.Jut)) && o.length > r) {
-          n = o[r];
-        }
-        break;
-      case "Entities":
-        var o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
-        if (o) {
-          n = ModelManager_1.ModelManager.CreatureModel.GetEntityData(t, o.MapConfigId)?.AreaId ?? 0;
-        }
-        break;
-      case "CaptureVisions":
-        var h;
-        var o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
-        if (o) {
-          h = t;
-          n = ModelManager_1.ModelManager.CreatureModel.GetEntityData(h.EntityId, o.MapConfigId)?.AreaId ?? 0;
-        }
-    }
-    a = this.dXt(t);
-    let _ = undefined;
-    if (typeof a == "number") {
-      _ = a;
+    var a = this.ynh(i, e, r, t);
+    var i = this.dXt(t);
+    let o = undefined;
+    if (typeof i == "number") {
+      o = i;
     }
     i = new MapDefine_1.QuestMarkCreateInfo({
-      TrackTarget: a,
+      TrackTarget: i,
       MarkConfigId: s,
       MarkType: this.MarkType,
       MarkId: 0,
       TrackSource: this.TrackSource,
       TreeId: this.$mt,
       NodeId: this.Jut,
-      AreaId: n,
-      EntityConfigId: _,
+      AreaId: a,
+      EntityConfigId: o,
       Gravity: this.ADc(e),
       MapAndDungeonInfo: {
         DungeonId: e
@@ -549,12 +554,12 @@ class NodeTrackMark {
     var s = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
     var a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s);
     if (a) {
-      var n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.DungeonId);
-      if (n) {
+      var o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(this.DungeonId);
+      if (o) {
         if (s === this.DungeonId) {
           if (a.InstSubType !== 13 && i === 0) {
-            if ((o = a.EntranceEntities)?.length) {
-              return [o[0].DungeonId, o[0].EntranceEntityId];
+            if ((n = a.EntranceEntities)?.length) {
+              return [n[0].DungeonId, n[0].EntranceEntityId];
             } else {
               return undefined;
             }
@@ -562,16 +567,16 @@ class NodeTrackMark {
             return [s, r];
           }
         }
-        var o = a.InstSubType;
-        var h = n.InstSubType;
+        var n = a.InstSubType;
+        var h = o.InstSubType;
         let e = undefined;
         let t = 0;
-        switch (o) {
+        switch (n) {
           case 13:
             if (h === 13) {
               e = r;
               t = this.DungeonId;
-            } else if ((_ = n.EntranceEntities)?.length) {
+            } else if ((_ = o.EntranceEntities)?.length) {
               e = _[0].EntranceEntityId;
               t = _[0].DungeonId;
             }
@@ -579,7 +584,7 @@ class NodeTrackMark {
           case 12:
             if (i === 0) {
               if (h !== 13) {
-                var _ = n.EntranceEntities;
+                var _ = o.EntranceEntities;
                 if (!_?.length) {
                   break;
                 }
@@ -603,7 +608,7 @@ class NodeTrackMark {
                 t = this.DungeonId;
                 e = r;
               } else {
-                _ = n.EntranceEntities;
+                _ = o.EntranceEntities;
                 if (!_?.length) {
                   break;
                 }
@@ -631,11 +636,19 @@ class NodeTrackMark {
         return i;
       }
       let e = undefined;
+      var r;
       if (i instanceof TrackVision) {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i.EntityId);
       } else if (!(e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i))) {
         if (ModelManager_1.ModelManager.CreatureModel.CheckEntityVisible(i)) {
-          return GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetEntityConfigPosition(i, t);
+          if (r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)) {
+            return GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetEntityConfigPosition(i, r.MapConfigId);
+          } else {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("GeneralLogicTree", 18, "GeneralLogicTree：找不到副本的配置", ["行为树Id", this.Yut], ["副本Id", t]);
+            }
+            return;
+          }
         } else {
           return undefined;
         }

@@ -72,7 +72,7 @@ let PawnSensoryComponent = class PawnSensoryComponent extends EntityComponent_1.
           if (!this.Wnr.Equals(this.Hte.ActorLocationProxy)) {
             this.Wnr.DeepCopy(this.Hte.ActorLocationProxy);
           }
-          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.Hte.ActorLocationProxy, this.Uhn, 63, this.Ioe);
+          ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.Hte.ActorLocationProxy, this.Uhn, 255, this.Ioe);
           this.Ahn.HandleEntities(this.Ioe, this.Hte.ActorLocationProxy, this.Entity.Id);
         }
       }
@@ -84,5 +84,5 @@ let PawnSensoryComponent = class PawnSensoryComponent extends EntityComponent_1.
     return true;
   }
 };
-PawnSensoryComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(120)], PawnSensoryComponent);
+PawnSensoryComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(121)], PawnSensoryComponent);
 exports.PawnSensoryComponent = PawnSensoryComponent; //# sourceMappingURL=PawnSensoryComponent.js.map

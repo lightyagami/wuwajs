@@ -17,43 +17,43 @@ const ANIM_DURATION = 500;
 class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
   constructor() {
     super(...arguments);
-    this.aIu = undefined;
-    this.hIu = undefined;
-    this.lIu = undefined;
+    this.yIu = undefined;
+    this.SIu = undefined;
+    this.MIu = undefined;
     this.FA_ = [];
-    this._Iu = false;
-    this.uIu = false;
-    this.LPu = false;
+    this.EIu = false;
+    this.IIu = false;
+    this.rxu = false;
     this.ac = 0;
     this.Gtr = 0;
-    this.cIu = 0;
+    this.TIu = 0;
     this.bst = undefined;
     this.p2a = 0;
     this.Nml = false;
-    this.dIu = false;
+    this.bIu = false;
     this.Zyn = (i, t) => {
-      this.mIu(t);
+      this.RIu(t);
     };
-    this.fIu = (i, t) => {
-      this.gIu(t);
+    this.wIu = (i, t) => {
+      this.LIu(t);
     };
-    this.APu = (i, t) => {
-      this.PPu(t);
+    this.oxu = (i, t) => {
+      this.nxu(t);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem]];
   }
   OnInitData() {
-    this.aIu = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(ULTRA_CONFIG_ID);
-    this.AttributeId = this.aIu.AttributeId;
-    this.MaxAttributeId = this.aIu.MaxAttributeId;
+    this.yIu = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(ULTRA_CONFIG_ID);
+    this.AttributeId = this.yIu.AttributeId;
+    this.MaxAttributeId = this.yIu.MaxAttributeId;
   }
   AddEvents() {
     super.AddEvents();
     this.ListenForTagAddOrRemoveChanged(1907158625, this.Zyn);
-    this.ListenForTagAddOrRemoveChanged(328684835, this.fIu);
-    this.ListenForTagAddOrRemoveChanged(1623495273, this.APu);
+    this.ListenForTagAddOrRemoveChanged(328684835, this.wIu);
+    this.ListenForTagAddOrRemoveChanged(1623495273, this.oxu);
   }
   async OnBeforeStartAsync() {
     var i = [];
@@ -61,14 +61,14 @@ class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     await Promise.all(i);
   }
   async InitBarItem() {
-    this.hIu = new SpecialEnergyBarKaTiXiYaSlot_1.SpecialEnergyBarKaTiXiYaSlot();
-    this.hIu.InitData(this.RoleData, this.Config);
-    this.hIu.UiKeyItem = this.GetItem(6);
-    await this.hIu.InitByActorAsync(this.GetItem(0).GetOwner());
-    this.lIu = new SpecialEnergyBarKaTiXiYaAdultSlot_1.SpecialEnergyBarKaTiXiYaAdultSlot();
-    this.lIu.InitData(this.RoleData, this.aIu);
-    this.lIu.ForceHideBottomLine = true;
-    await this.lIu.InitByActorAsync(this.GetItem(3).GetOwner());
+    this.SIu = new SpecialEnergyBarKaTiXiYaSlot_1.SpecialEnergyBarKaTiXiYaSlot();
+    this.SIu.InitData(this.RoleData, this.Config);
+    this.SIu.UiKeyItem = this.GetItem(6);
+    await this.SIu.InitByActorAsync(this.GetItem(0).GetOwner());
+    this.MIu = new SpecialEnergyBarKaTiXiYaAdultSlot_1.SpecialEnergyBarKaTiXiYaAdultSlot();
+    this.MIu.InitData(this.RoleData, this.yIu);
+    this.MIu.ForceHideBottomLine = true;
+    await this.MIu.InitByActorAsync(this.GetItem(3).GetOwner());
     var i = new SpecialEnergyBarKaTiXiYaStar_1.SpecialEnergyBarKaTiXiYaStar();
     await i.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
     this.FA_.push(i);
@@ -91,35 +91,35 @@ class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.GetItem(1)?.SetAlpha(1);
     this.GetItem(17)?.SetAlpha(1);
     this.GetItem(2)?.SetAlpha(1);
-    this.mIu(this.TagComponent?.HasTag(1907158625) ?? false, true);
-    this.gIu(this.TagComponent?.HasTag(328684835) ?? false, true);
-    this.PPu(this.TagComponent?.HasTag(1623495273) ?? false, true);
+    this.RIu(this.TagComponent?.HasTag(1907158625) ?? false, true);
+    this.LIu(this.TagComponent?.HasTag(328684835) ?? false, true);
+    this.nxu(this.TagComponent?.HasTag(1623495273) ?? false, true);
     this._Oe(true);
   }
   ClearAllTweenAnim() {
     this.StopTweenAnim(15);
     super.ClearAllTweenAnim();
   }
-  mIu(i, t = false) {
-    if ((i !== this._Iu || !!t) && !(this._Iu = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅凭依状态", ["状态", i]), t)) {
+  RIu(i, t = false) {
+    if ((i !== this.EIu || !!t) && !(this.EIu = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅凭依状态", ["状态", i]), t)) {
       this._Oe();
     }
   }
-  gIu(i, t = false) {
-    if ((i !== this.uIu || !!t) && !(this.uIu = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅大小形态", ["大形态", i]), t)) {
+  LIu(i, t = false) {
+    if ((i !== this.IIu || !!t) && !(this.IIu = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅大小形态", ["大形态", i]), t)) {
       this._Oe();
     }
   }
-  PPu(i, t = false) {
-    if ((i !== this.LPu || !!t) && !(this.LPu = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅大招变身技能期间", ["状态", i]), t)) {
+  nxu(i, t = false) {
+    if ((i !== this.rxu || !!t) && !(this.rxu = i, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅大招变身技能期间", ["状态", i]), t)) {
       this._Oe();
     }
   }
   _Oe(i = false) {
     let t = 0;
-    if (this.uIu || this.LPu && this._Iu) {
+    if (this.IIu || this.rxu && this.EIu) {
       t = 1;
-    } else if (this._Iu) {
+    } else if (this.EIu) {
       t = 2;
     }
     if (this.ac !== t || i) {
@@ -141,8 +141,8 @@ class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
       this.GetItem(0)?.SetUIActive(this.ac !== 1);
     }
   }
-  CIu() {
-    if (this.Gtr !== this.ac && !(Time_1.Time.WorldTime < this.cIu)) {
+  AIu() {
+    if (this.Gtr !== this.ac && !(Time_1.Time.WorldTime < this.TIu)) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarKaTiXiYa]卡提希娅播放状态切换动画", ["当前状态", this.ac], ["旧状态", this.Gtr]);
       }
@@ -169,22 +169,22 @@ class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
           }
       }
       this.Gtr = this.ac;
-      this.cIu = Time_1.Time.WorldTime + ANIM_DURATION;
+      this.TIu = Time_1.Time.WorldTime + ANIM_DURATION;
     }
   }
   Tick(i) {
     super.Tick(i);
-    this.hIu?.Tick(i);
-    this.lIu?.Tick(i);
-    this.CIu();
-    if (this._Iu) {
+    this.SIu?.Tick(i);
+    this.MIu?.Tick(i);
+    this.AIu();
+    if (this.EIu) {
       if (!this.bst || !this.BuffComponent?.GetBuffByHandle(this.p2a)) {
         this.tst();
       }
       if (this.bst) {
         var t = this.bst.GetRemainDuration();
         var s = Math.ceil(t / this.bst.Duration * SpecialEnergyBarKaTiXiYaStar_1.SpecialEnergyBarKaTiXiYaStar.StarTotalNum);
-        this.bMc(this.uIu && t < this.aIu.ExtraFloatParams[0] && s <= 1);
+        this.bMc(this.IIu && t < this.yIu.ExtraFloatParams[0] && s <= 1);
         for (const h of this.FA_) {
           h.SetStarNum(s);
         }
@@ -205,8 +205,8 @@ class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     }
   }
   tst() {
-    if (this.aIu?.BuffId) {
-      this.bst = this.BuffComponent?.GetBuffById(this.aIu.BuffId);
+    if (this.yIu?.BuffId) {
+      this.bst = this.BuffComponent?.GetBuffById(this.yIu.BuffId);
       this.p2a = this.bst?.Handle ?? 0;
     } else {
       this.bst = undefined;
@@ -226,10 +226,10 @@ class SpecialEnergyBarKaTiXiYa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
   }
   OnBarPercentChanged() {
     var i = this.PercentMachine.GetCurPercent();
-    this.pIu(i >= 1);
+    this.PIu(i >= 1);
   }
-  pIu(i) {
-    if (this.dIu !== i && (this.dIu = i) && this.ac === 1) {
+  PIu(i) {
+    if (this.bIu !== i && (this.bIu = i) && this.ac === 1) {
       this.PlayTweenAnim(16);
     }
   }

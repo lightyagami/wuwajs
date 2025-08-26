@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FloroRanchDungeonSelectView = undefined;
 const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons");
@@ -22,24 +24,32 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.MAu = 0;
+    this.XAu = 0;
     this.wmo = 0;
-    this.EAu = [];
-    this.M9c = undefined;
-    this.TAu = undefined;
+    this.YAu = [];
+    this.PKu = undefined;
+    this.JAu = undefined;
     this.wVl = undefined;
     this.lat = undefined;
+    this.G1d = false;
     this.Og = (e, i) => {
-      this.M9c.LateScrollTo(this.M9c.GetItemByKey(e.Id));
-      this.M9c.SelectGridProxy(this.M9c.GetScrollItemByKey(e.Id)?.GridIndex);
+      this.PKu.LateScrollTo(this.PKu.GetItemByKey(e.Id));
+      this.PKu.SelectGridProxy(this.PKu.GetScrollItemByKey(e.Id)?.GridIndex);
       this.GetItem(4)?.SetUIActive(e.IsUnLock);
-      this.TAu?.RefreshDungeonInfo(e, i);
+      this.JAu?.RefreshDungeonInfo(e, i);
       this.GetButton(2)?.RootUIComp.SetUIActive(e.IsUnLock);
+      if (!e.IsUnLock) {
+        this.GetItem(10)?.SetUIActive(false);
+      }
     };
-    this.bAu = e => {
-      this.MAu = e;
+    this.RefreshRaceList = e => {
+      this.YAu = e;
+      this.JAu?.RefreshRaceList(e);
+    };
+    this.ZAu = e => {
+      this.XAu = e;
       var e = this.CNe.GetFloroRanchSubDungeonData(e);
-      this.EAu = e.SelectedRaceIds;
+      this.YAu = e.SelectedRaceIds;
       this.GetButton(2)?.RootUIComp.SetUIActive(e.IsUnLock);
       this.GetItem(10)?.SetUIActive(!e.IsUnLock);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "FloroRanchDayNum", e.MaxDays);
@@ -52,39 +62,51 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
         this.wVl?.SetTextByTextId(i);
       }
     };
-    this.RAu = () => {
+    this.ePu = () => {
       var e = new FloroRanchDungeonItem_1.FloroRanchDungeonItem();
       e.SetToggleCallBack(this.Og);
       return e;
     };
     this.AMo = () => {
-      this.CloseMe();
+      if (!this.G1d) {
+        this.CloseMe();
+      }
     };
-    this.wAu = () => {
-      if (this.EAu.includes(0)) {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ChooseRace");
-      } else if (this.wmo === 0) {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ChooseSkill");
-      } else {
-        FloroRanchController_1.FloroRanchController.SendFloroRanchStartPlayRequest(this.CNe.Id, this.MAu, this.EAu, this.wmo, () => {
-          this.CloseMe();
-        });
+    this.tPu = () => {
+      if (!this.G1d) {
+        if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ConnectBan");
+        } else if (this.YAu.includes(0)) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ChooseRace");
+        } else if (this.wmo === 0) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ChooseSkill");
+        } else {
+          this.G1d = true;
+          this.GetButton(2)?.RootUIComp.SetUIActive(false);
+          this.GetItem(11)?.SetUIActive(true);
+          FloroRanchController_1.FloroRanchController.SendFloroRanchStartPlayRequest(this.CNe.Id, this.XAu, this.YAu, this.wmo, () => {
+            this.G1d = false;
+            this.GetButton(2)?.RootUIComp.SetUIActive(true);
+            this.GetItem(11)?.SetUIActive(false);
+            this.CloseMe();
+          });
+        }
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.SpineSkeletonAnimationComponent], [8, UE.UIItem], [9, UE.UIScrollViewWithScrollbarComponent], [10, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.wAu], [1, this.AMo]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.SpineSkeletonAnimationComponent], [8, UE.UIItem], [9, UE.UIScrollViewWithScrollbarComponent], [10, UE.UIItem], [11, UE.UIItem]];
+    this.BtnBindInfo = [[2, this.tPu], [1, this.AMo]];
   }
   async OnBeforeStartAsync() {
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     var e = [];
-    this.M9c = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(9), this.RAu);
+    this.PKu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(9), this.ePu);
     var i = this.CNe.GetFloroRanchDungeonDataList();
-    e.push(this.M9c.RefreshByDataAsync(i, true));
-    this.TAu = new FloroRanchDungeonSelectRightPanel_1.FloroRanchDungeonSelectRightPanel();
-    this.TAu.OnSelectDifficultyCallBack = this.bAu;
-    e.push(this.TAu.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
+    e.push(this.PKu.RefreshByDataAsync(i, true));
+    this.JAu = new FloroRanchDungeonSelectRightPanel_1.FloroRanchDungeonSelectRightPanel();
+    this.JAu.OnSelectDifficultyCallBack = this.ZAu;
+    e.push(this.JAu.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
     this.wVl = new ActivityFunctionalTypeA_1.FunctionalPanelConditionLock();
     e.push(this.wVl.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()));
     this.lat = new FloroRanchSkillItem_1.FloroRanchSkillItem();
@@ -96,10 +118,14 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchSkillId, 0);
     this.RefreshSkillItem(e);
     this.GetSpine(7)?.SetAnimation(0, "idle", true);
+    this.GetItem(11)?.SetUIActive(false);
+    this.G1d = false;
   }
-  RefreshRaceList(e) {
-    this.EAu = e;
-    this.TAu?.RefreshRaceList(e);
+  OnAddEventListener() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchRaceRedDot, this.RefreshRaceList);
+  }
+  OnRemoveEventListener() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchRaceRedDot, this.RefreshRaceList);
   }
   RefreshSkillItem(e) {
     this.wmo = e;
@@ -107,6 +133,9 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
   }
   RefreshSkillItemRedDot() {
     this.lat?.RefreshRedDot();
+  }
+  OnBeforeDestroy() {
+    this.G1d = false;
   }
 }
 exports.FloroRanchDungeonSelectView = FloroRanchDungeonSelectView;

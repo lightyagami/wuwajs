@@ -23,12 +23,12 @@ const InputMappingsDefine_1 = require("../Ui/InputDistribute/InputMappingsDefine
 const InputSettingsManager_1 = require("./InputSettingsManager");
 class InputSettingsController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(18884, InputSettingsController.zih);
+    Net_1.Net.Register(26897, InputSettingsController.zih);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(18884);
+    Net_1.Net.UnRegister(26897);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
@@ -46,14 +46,14 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
   }
   static InputSettingRequest() {
     var t = new Protocol_1.Aki.Protocol.jf_();
-    Net_1.Net.Call(15045, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
+    Net_1.Net.Call(18045, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
   }
   static InputSettingUpdateRequest(t) {
     var e = new Protocol_1.Aki.Protocol.$f_();
     e.Zih = this.Ttl(t);
-    Net_1.Net.Call(26864, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
+    Net_1.Net.Call(24117, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
   }
-  static BX1() {
+  static aY1() {
     for (const a of KeySettingAll_1.configKeySettingAll.GetConfigList()) {
       if (a.ActionOrAxisName === InputMappingsDefine_1.actionMappings.切换角色4) {
         for (const r of a.ConnectedKeySettingIdList) {
@@ -96,7 +96,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
         var a = this.nrh(r.ML_, o);
         e = e || a;
       }
-      this.BX1();
+      this.aY1();
       if (Platform_1.Platform.IsPcPlatform()) {
         InputSettingsManager_1.InputSettingsManager.ChangeActionAndAxisPcKeys(t);
       }
@@ -498,6 +498,6 @@ InputSettingsController.Jih = t => {
 };
 InputSettingsController.erh = t => {
   if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28173);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22186);
   }
 }; //# sourceMappingURL=InputSettingsController.js.map

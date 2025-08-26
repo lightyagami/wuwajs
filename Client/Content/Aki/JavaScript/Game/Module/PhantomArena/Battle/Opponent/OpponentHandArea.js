@@ -30,7 +30,7 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     this.Layout = this.GetHorizontalLayout(0);
     this.OriginalSpace = this.Layout.GetSpacing();
   }
-  async pCu() {
+  async g0u() {
     var a = new OpponentHandCardItem_1.OpponentHandCardItem();
     a.SetAreaItem(this.ParentArea);
     this.HandCardItemList.push(a);
@@ -49,12 +49,12 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     }
     this.Layout.SetSpacing(a);
   }
-  async oiu() {
+  async Aiu() {
     var t = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HasFourCostInHand() ? 1 : 0;
     var e = ModelManager_1.ModelManager.PhantomArenaBattleModel.OpponentData.HandCardNum;
     var i = [];
     for (let a = t; a < e; a++) {
-      i.push(this.pCu());
+      i.push(this.g0u());
     }
     await Promise.all(i);
     this.iu1();
@@ -123,7 +123,7 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
   async AddCardList(t) {
     var e = [];
     for (let a = 0; a < t; a++) {
-      e.push(this.pCu());
+      e.push(this.g0u());
     }
     await Promise.all(e);
     this.iu1();
@@ -162,7 +162,7 @@ class OpponentHandArea extends UiPanelBase_1.UiPanelBase {
     await this.RunAsyncTask(e);
   }
   async StartTimeDrawCard(a) {
-    await this.oiu();
+    await this.Aiu();
     await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
     await this.PlayStartTimeDrawCardTween(a);
   }

@@ -1,0 +1,121 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GreatSwordCountDownView = undefined;
+const UE = require("ue");
+const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+class GreatSwordCountDownView extends UiViewBase_1.UiViewBase {
+  constructor() {
+    super(...arguments);
+    this.mNe = 0;
+    this.MYt = 0;
+    this.f6a = 0;
+    this.qdd = 10;
+    this.AYt = undefined;
+    this.JYu = undefined;
+    this.Nqa = undefined;
+    this.Fqa = undefined;
+    this.ZYu = undefined;
+    this.ezu = (e, i) => {
+      this.f6a = this.mNe;
+      this.mNe = e;
+      if (this.mNe <= 0) {
+        this.NZc();
+      } else {
+        this.tzu();
+        this.VZc();
+        if (i) {
+          this.jZc(i);
+        }
+      }
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIArtText]];
+  }
+  OnAddEventListener() {
+    super.OnAddEventListener();
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGamePlayCdChanged, this.ezu);
+  }
+  OnRemoveEventListener() {
+    super.OnRemoveEventListener();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGamePlayCdChanged, this.ezu);
+  }
+  OnStart() {
+    this.AYt = this.GetArtText(0);
+    this.JYu = this.GetArtText(3);
+    this.Nqa = this.AYt.GetArtTextData();
+    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("TextData_NumB1");
+    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUIArtTextData, (e, i) => {
+      if (e && e.IsValid()) {
+        this.Fqa = e;
+      }
+    });
+    this.ZYu = this.GetTexture(2);
+  }
+  NZc() {
+    ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing = true;
+    this.CloseMe(e => {
+      if (e) {
+        ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing = false;
+      }
+    });
+  }
+  VZc() {
+    var e = this.mNe >= this.qdd;
+    var i = this.f6a >= this.qdd;
+    if (i && !e) {
+      this.UiViewSequence?.PlaySequence("ColorChange");
+      this.AYt?.SetArtTextData(this.Fqa);
+    } else if (!i && e) {
+      this.UiViewSequence?.PlaySequence("ColorChange1");
+      this.AYt?.SetArtTextData(this.Nqa);
+    }
+  }
+  jZc(e) {
+    var i;
+    if (this.MYt === 0) {
+      this.MYt = e;
+    } else {
+      i = Math.round((e - this.MYt) / 1000);
+      this.MYt = e;
+      if (i !== 0) {
+        this.HZc(i);
+      }
+    }
+  }
+  HZc(e) {
+    this.JYu?.SetText((e > 0 ? "+" : "-") + Math.abs(e) + "s");
+    e = e < 0;
+    this.JYu?.SetArtTextData(e ? this.Fqa : this.Nqa);
+    this.izu(e);
+    if (this.UiViewSequence?.HasSequenceNameInPlaying("TimeIn")) {
+      this.UiViewSequence?.StopSequenceByKey("TimeIn", false, true);
+    }
+    this.UiViewSequence?.PlaySequence("TimeIn");
+  }
+  tzu() {
+    var e = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat5(this.mNe);
+    this.AYt?.SetText(e);
+  }
+  izu(e) {
+    if (this.ZYu) {
+      this.ZYu.SetUIActive(false);
+      e = e ? "T_BlackBladeCountDownBgRed" : "T_BlackBladeCountDownBgGreen";
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      this.SetTextureByPath(e, this.ZYu, undefined, () => {
+        this.ZYu?.SetUIActive(true);
+      });
+    }
+  }
+}
+exports.GreatSwordCountDownView = GreatSwordCountDownView;
+//# sourceMappingURL=GreatSwordCountDownView.js.map

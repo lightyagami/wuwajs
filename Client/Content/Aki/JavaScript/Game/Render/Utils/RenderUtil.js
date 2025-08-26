@@ -245,6 +245,12 @@ class RenderUtil {
       }
     }
   }
+  static SetNeedRenderKuroToonDepth() {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.kuro.NeedRenderKuroToonDepth 1");
+  }
+  static UnsetNeedRenderKuroToonDepth() {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.kuro.NeedRenderKuroToonDepth 0");
+  }
 }
 (exports.RenderUtil = RenderUtil).Sel = 0;
 RenderUtil.d6c = 0;

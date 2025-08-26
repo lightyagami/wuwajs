@@ -40,15 +40,15 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
       }
     };
     this.Dbr = new Map();
-    this.Pcu = new Map();
-    this.iBu = 0;
-    this.rBu = 0;
+    this.mdu = new Map();
+    this.F3u = 0;
+    this.N3u = 0;
     this.FrozenLockSet = new Set();
   }
   OnStart() {
     this.ActorComponent = this.Entity.CheckGetComponent(3);
     this.$br = this.Entity.CheckGetComponent(61);
-    this.ybr = this.Entity.CheckGetComponent(122);
+    this.ybr = this.Entity.CheckGetComponent(123);
     this.Ubr();
     return true;
   }
@@ -64,7 +64,7 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     return true;
   }
   Ubr() {
-    var t = this.Entity.CheckGetComponent(205);
+    var t = this.Entity.CheckGetComponent(206);
     this.Ibr = t.ListenForTagAddOrRemove(2118071836, this.Lbr);
   }
   AddTimeScaleByBuff(t, e, i, s, o) {
@@ -82,24 +82,24 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
   }
   SetForeverTimeScale(t, e, i) {
     this.RemoveForeverTimeScale(t);
-    let s = i + this.iBu;
+    let s = i + this.F3u;
     if (s < 0) {
-      CombatLog_1.CombatLog.Error("Buff", this.Entity, "buff额外效果83设置时间碰撞系数小于0,强制设置为0", ["BuffHandleId", t], ["timeDilation", i], ["BaseBuffForeverTimeScale", this.iBu]);
+      CombatLog_1.CombatLog.Warn("Buff", this.Entity, "buff额外效果83设置时间碰撞系数小于0,强制设置为0", ["BuffHandleId", t], ["timeDilation", i], ["BaseBuffForeverTimeScale", this.F3u]);
       s = 0;
     }
     i = this.ybr.SetForeverTimeScale(6, s, e);
-    this.Pcu.set(t, i);
+    this.mdu.set(t, i);
   }
   RemoveForeverTimeScale(t) {
-    var e = this.Pcu.get(t);
+    var e = this.mdu.get(t);
     if (e) {
       this.ybr.RemoveForeverTimeScale(e);
-      this.Pcu.delete(t);
+      this.mdu.delete(t);
     }
   }
   SetBuffBaseForeverTimeScale(t) {
-    if (this.iBu !== t && (this.iBu = t, this.rBu && (this.ybr.RemoveForeverTimeScale(this.rBu), this.rBu = 0), t > 0)) {
-      this.rBu = this.ybr.SetForeverTimeScale(6, t);
+    if (this.F3u !== t && (this.F3u = t, this.N3u && (this.ybr.RemoveForeverTimeScale(this.N3u), this.N3u = 0), t > 0)) {
+      this.N3u = this.ybr.SetForeverTimeScale(6, t);
     }
   }
   IsFrozen() {

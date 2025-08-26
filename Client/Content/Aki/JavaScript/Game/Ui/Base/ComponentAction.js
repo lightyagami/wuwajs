@@ -93,6 +93,16 @@ class ComponentAction {
   get IsBusy() {
     return this.IsCreating || this.IsStarting || this.IsShowing || this.IsHiding || this.IsDestroying;
   }
+  get IsPendingDestroy() {
+    let t = this.g_r.GetHeadNextNode();
+    while (t) {
+      if (t.Element.ActionCommand === EActionCommandType.Destroy && !t.Element.Processed) {
+        return true;
+      }
+      t = t.Next;
+    }
+    return false;
+  }
   async CreateAsync() {
     if (this.IsCreateOrCreating) {
       if (Log_1.Log.CheckWarn()) {
@@ -183,6 +193,7 @@ class ComponentAction {
       if (ComponentAction.OpenLog && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("UiCore", 16, "Enter ShowAsyncImplement Show", ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
       }
+      this.OnFinishShowImplement();
     }
     return true;
   }
@@ -232,11 +243,7 @@ class ComponentAction {
     return this.DestroyAsync();
   }
   async y_r() {
-    if (this.IsDestroyOrDestroying) {
-      if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("UiCore", 16, "Enter DestroyAsyncImplement failed, Duplicate call", ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-      }
-    } else {
+    if (!this.IsDestroyOrDestroying) {
       try {
         if (this.IsShowOrShowing) {
           await this.S_r();
@@ -284,6 +291,7 @@ class ComponentAction {
   }
   async OnStartAsyncImplement() {}
   async OnShowAsyncImplement() {}
+  OnFinishShowImplement() {}
   async OnHideAsyncImplement() {}
   async OnDestroyAsyncImplement() {}
   static I_r(t, e) {

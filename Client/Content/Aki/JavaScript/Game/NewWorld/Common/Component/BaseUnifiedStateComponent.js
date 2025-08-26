@@ -94,7 +94,7 @@ let BaseUnifiedStateComponent = BaseUnifiedStateComponent_1 = class BaseUnifiedS
   }
   OnStart() {
     this.ActorComponent = this.Entity.GetComponent(1);
-    this.TagComponent = this.Entity.GetComponent(205);
+    this.TagComponent = this.Entity.GetComponent(206);
     this.IsInGameInternal = false;
     this.InitCharState();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Xrn);
@@ -282,5 +282,5 @@ BaseUnifiedStateComponent.PositionEnumToTagIdInverse = undefined;
 BaseUnifiedStateComponent.DirectionEnumToTagId = undefined;
 BaseUnifiedStateComponent.DirectionEnumToTagIdInverse = undefined;
 BaseUnifiedStateComponent.BaseNeedLoad = true;
-BaseUnifiedStateComponent = BaseUnifiedStateComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(101)], BaseUnifiedStateComponent);
+BaseUnifiedStateComponent = BaseUnifiedStateComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(102)], BaseUnifiedStateComponent);
 exports.BaseUnifiedStateComponent = BaseUnifiedStateComponent; //# sourceMappingURL=BaseUnifiedStateComponent.js.map

@@ -12,6 +12,7 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const HoldingHandsController_1 = require("../../HoldHands/HoldingHandsController");
 const TeleportController_1 = require("../../Teleport/TeleportController");
 const PlotController_1 = require("../PlotController");
 const SequenceController_1 = require("../Sequence/SequenceController");
@@ -39,15 +40,16 @@ class FlowSequence {
     this.OptionActionPromise = undefined;
     this.fkl = new Map();
     this.L9_ = new Map();
-    this.v9c = undefined;
+    this.DZu = undefined;
+    this.xZu = new Array();
     this.U$i = -1;
     this.A$i = false;
     this.owt = t => {
       t *= 1000;
       if (t > TimerSystem_1.MIN_TIME && t < TimerSystem_1.MAX_TIME) {
-        this.v9c = TimerSystem_1.TimerSystem.Delay(() => {
+        this.DZu = TimerSystem_1.TimerSystem.Delay(() => {
           ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
-          this.v9c = undefined;
+          this.DZu = undefined;
         }, t);
       } else {
         ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
@@ -145,8 +147,9 @@ class FlowSequence {
     this.A$i = false;
     this.fkl.clear();
     this.L9_.clear();
-    this.v9c?.Remove();
-    this.v9c = undefined;
+    this.DZu?.Remove();
+    this.DZu = undefined;
+    this.xZu.length = 0;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "清理引用数据-FlowSequence");
     }
@@ -239,18 +242,31 @@ class FlowSequence {
     }
   }
   async q$i() {
-    var t;
     await PlotController_1.PlotController.CheckFormation();
     await PlotController_1.PlotController.CheckSwitchSubLevel();
-    if (this.T$i && !ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() && ((t = this.S$i ? this.M$i.get(this.S$i.Id) : 0) >= 0 && t < this.R$i.length && this.R$i[t] && (ModelManager_1.ModelManager.PlotModel.IsFadeIn = true), this.D$i)) {
-      if (t = t < this.D$i.length ? this.D$i[t] : undefined) {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Plot", 26, "SaveFinalPos", ["transform", t]);
+    if (this.T$i && !ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
+      var t = this.S$i ? this.M$i.get(this.S$i.Id) : 0;
+      if (t >= 0 && t < this.R$i.length && this.R$i[t]) {
+        ModelManager_1.ModelManager.PlotModel.IsFadeIn = true;
+      }
+      if (this.D$i) {
+        if (t = t < this.D$i.length ? this.D$i[t] : undefined) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Plot", 26, "SaveFinalPos", ["transform", t]);
+          }
+          await TeleportController_1.TeleportController.TeleportToPositionNoLoading(t.GetLocation().ToUeVector(), t.GetRotation().Rotator().ToUeRotator(), "FlowSequence.Stop", false);
+          FlowNetworks_1.FlowNetworks.RequestSeqEndPosition(this.nx, t.GetLocation(), t.GetRotation().Rotator());
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Plot", 26, "剧情SeqDA的FinalPos未配置，跳过时最终位置将不准确，联系策划修改");
         }
-        await TeleportController_1.TeleportController.TeleportToPositionNoLoading(t.GetLocation().ToUeVector(), t.GetRotation().Rotator().ToUeRotator(), "FlowSequence.Stop", false);
-        FlowNetworks_1.FlowNetworks.RequestSeqEndPosition(this.nx, t.GetLocation(), t.GetRotation().Rotator());
-      } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Plot", 26, "剧情SeqDA的FinalPos未配置，跳过时最终位置将不准确，联系策划修改");
+      }
+      for (const o of this.xZu) {
+        var e;
+        var i;
+        var s = ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(o.toString());
+        if (s && (e = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Leader?.Entity), i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Follower?.Entity), e) && i) {
+          HoldingHandsController_1.HoldingHandsController.RequestHoldHands(s.Key, e, i, s.LeaderHandType, false, false, "FlowSequence结束");
+        }
       }
     }
   }
@@ -272,14 +288,24 @@ class FlowSequence {
       ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.forEach((t, e) => {
         this.Djs.set(e, t);
       });
+      ModelManager_1.ModelManager.SequenceModel.FrameEventsMap.forEach((t, e) => {
+        this.Djs.set(e, t);
+      });
+      for (const e of ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e, true, "显示NPC", false);
+      }
+      var t;
+      ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.clear();
+      for (const i of ModelManager_1.ModelManager.SequenceModel.NpcGroupPerform) {
+        this.xZu.push(i);
+      }
       SequenceController_1.SequenceController.ManualFinish();
       this.p$i = false;
       if (this.fkl.size > 0) {
-        for (const e of this.fkl.keys()) {
-          this.OnQteEnd(e);
+        for (const s of this.fkl.keys()) {
+          this.OnQteEnd(s);
         }
       }
-      var t;
       if (this.y$i) {
         this.OnSubtitleEnd(this.S$i.Id);
       } else if (this.w$i() && !this.I$i) {

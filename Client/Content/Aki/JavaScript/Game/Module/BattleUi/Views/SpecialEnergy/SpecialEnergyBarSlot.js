@@ -17,6 +17,7 @@ class SpecialEnergyBarSlot extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
     this.IsMorph = false;
     this.ForceHideBottomLine = false;
     this.ForceEffectBasePercent = -1;
+    this.OverrideColor = false;
   }
   OnRegisterComponent() {
     this.SlotNum = this.Config.SlotNum;
@@ -46,7 +47,7 @@ class SpecialEnergyBarSlot extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
       for (const r of this.SlotItemList) {
         r.SetEffectBasePercent(e);
       }
-      if (this.Config.EffectColor) {
+      if (!this.OverrideColor && this.Config.EffectColor) {
         var s = UE.Color.FromHex(this.Config.EffectColor);
         var i = new UE.LinearColor(s);
         let t = s;

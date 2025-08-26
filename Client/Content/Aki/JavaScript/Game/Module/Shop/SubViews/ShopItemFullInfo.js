@@ -21,6 +21,7 @@ class ShopItemFullInfo {
     this.DefaultPrice = undefined;
     this.Price = new Map();
     this.ConditionText = "";
+    this.SortIndex = 0;
     this.ItemInfo = t;
     this.BoughtCount = s.X7n ?? 0;
     this.IsLocked = s.Z6n;
@@ -45,6 +46,7 @@ class ShopItemFullInfo {
     this.PurchaseText = s.Zqs;
     this.ItemId = s.L8n;
     this.ShopId = i;
+    this.SortIndex = s.nzc;
   }
   get LockInfo() {
     var t;

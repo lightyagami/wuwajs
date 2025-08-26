@@ -128,10 +128,10 @@ class GongduolaConfig extends VehicleConfig_1.VehicleConfig {
   }
   Init() {
     var t;
-    return !!super.Init() && !!(t = this.VehicleEntity?.GetComponent(234)) && (this.InitGongduolaMovement(t.Actor.VehicleMovementComponent), this.InitGongduolaBaseInfo(), true);
+    return !!super.Init() && !!(t = this.VehicleEntity?.GetComponent(235)) && (this.InitGongduolaMovement(t.Actor.VehicleMovementComponent), this.InitGongduolaBaseInfo(), true);
   }
   InitGongduolaBaseInfo() {
-    var t = this.VehicleEntity?.GetComponent(245);
+    var t = this.VehicleEntity?.GetComponent(246);
     if (t) {
       t.SprintStopSpeedSquared = this.SprintStopSpeed * this.SprintStopSpeed;
       t.SprintCd = this.SprintCoolDown;
@@ -145,14 +145,14 @@ class GongduolaConfig extends VehicleConfig_1.VehicleConfig {
     t.ExtraFrictionWhenExceedMaxSpeed = this.SprintExtraFriction;
     this.SetBaseStateMoveConfig(t);
     this.SetBuoyancyRelatedConfig(t);
-    t = this.VehicleEntity?.GetComponent(246);
+    t = this.VehicleEntity?.GetComponent(247);
     if (t) {
       t.TurnForwardInputMinX = this.TurnForwardInputMinX;
       t.TurnBackwardInputMaxX = this.TurnBackwardInputMaxX;
     }
   }
   SetBaseStateMoveConfig(t) {
-    var i = this.VehicleEntity?.GetComponent(246);
+    var i = this.VehicleEntity?.GetComponent(247);
     if (i) {
       i.TurningForceInputFactor = this.BaseTurningForceForwardFactor;
       i.MaxForwardThreshold = this.BaseMaxForwardThreshold;
@@ -176,7 +176,7 @@ class GongduolaConfig extends VehicleConfig_1.VehicleConfig {
     t.StaticRotFriction = this.BaseStaticRotFriction;
   }
   SetSprintStateMoveConfig(t) {
-    var i = this.VehicleEntity?.GetComponent(246);
+    var i = this.VehicleEntity?.GetComponent(247);
     if (i) {
       i.TurningForceInputFactor = this.SprintTurningForceForwardFactor;
       i.MaxForwardThreshold = this.SprintMaxForwardThreshold;

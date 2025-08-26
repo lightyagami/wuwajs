@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 const UE = require("ue");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const Global_1 = require("../../../../../Global");
 const GlobalData_1 = require("../../../../../GlobalData");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const SELF_TOKEN_ID = -1;
 const PLAYER_TOKEN_ID = -2;
+const DEFAULT_TOLERANCE = 20;
 class TsDecoratorDistanceCheck extends UE.BTDecorator_BlueprintBase {
   constructor() {
     super(...arguments);
@@ -19,18 +21,25 @@ class TsDecoratorDistanceCheck extends UE.BTDecorator_BlueprintBase {
     this.TargetPbDataId = 0;
     this.Distance = 0;
     this.IgnoreZ = false;
+    this.Tolerance = DEFAULT_TOLERANCE;
     this.IsInitTsVariables = false;
     this.TsCheckType = 0;
     this.TsSourcePbDataId = 0;
     this.TsTargetPbDataId = 0;
     this.TsDistance = 0;
     this.TsIgnoreZ = false;
+    this.TsTolerance = DEFAULT_TOLERANCE;
+    this.NeedBias = false;
   }
   Constructor() {
     this.IsInitTsVariables = false;
     this.TsCheckType = 0;
     this.TsSourcePbDataId = 0;
     this.TsTargetPbDataId = 0;
+    this.TsDistance = 0;
+    this.TsIgnoreZ = false;
+    this.TsTolerance = DEFAULT_TOLERANCE;
+    this.NeedBias = false;
   }
   InitTsVariables() {
     if (!this.IsInitTsVariables || !!GlobalData_1.GlobalData.IsPlayInEditor) {
@@ -40,46 +49,53 @@ class TsDecoratorDistanceCheck extends UE.BTDecorator_BlueprintBase {
       this.TsTargetPbDataId = this.TargetPbDataId;
       this.TsDistance = this.Distance;
       this.TsIgnoreZ = this.IgnoreZ;
+      this.TsTolerance = this.Tolerance;
     }
   }
-  PerformConditionCheckAI(t, e) {
-    var s = t.AiController;
-    if (!s) {
+  PerformConditionCheckAI(t, s) {
+    var i = t.AiController;
+    if (!i) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BehaviorTree", 6, "错误的Controller类型", ["Type", t.GetClass().GetName()]);
       }
       return false;
     }
     this.InitTsVariables();
-    t = this.GetActorCompByConfig(this.TsSourcePbDataId, s);
-    s = this.GetActorCompByConfig(this.TsTargetPbDataId, s);
-    if (!t || !s) {
+    t = this.GetActorCompByConfig(this.TsSourcePbDataId, i);
+    i = this.GetActorCompByConfig(this.TsTargetPbDataId, i);
+    if (!t || !i) {
       return false;
     }
-    var r = this.TsIgnoreZ ? Vector_1.Vector.Dist2D(t.ActorLocationProxy, s.ActorLocationProxy) : Vector_1.Vector.Dist(t.ActorLocationProxy, s.ActorLocationProxy);
+    var e = this.NeedBias ? this.TsTolerance : MathUtils_1.MathUtils.KindaSmallNumber;
+    var r = this.TsIgnoreZ ? Vector_1.Vector.Dist2D(t.ActorLocationProxy, i.ActorLocationProxy) : Vector_1.Vector.Dist(t.ActorLocationProxy, i.ActorLocationProxy);
+    let h = false;
     switch (this.TsCheckType) {
       case 0:
-        return r === this.TsDistance;
+        h = Math.abs(this.TsDistance - r) <= e;
+        break;
       case 1:
-        return r !== this.TsDistance;
+        h = Math.abs(this.TsDistance - r) > e;
+        break;
       case 2:
-        return r < this.TsDistance;
+        h = r < this.TsDistance + e;
+        break;
       case 3:
-        return r <= this.TsDistance;
+        h = r <= this.TsDistance + e;
+        break;
       case 4:
-        return r > this.TsDistance;
+        h = r > this.TsDistance - e;
+        break;
       case 5:
-        return r >= this.TsDistance;
-      default:
-        return false;
+        h = r >= this.TsDistance - e;
     }
+    return this.NeedBias = h;
   }
-  GetActorCompByConfig(t, e) {
+  GetActorCompByConfig(t, s) {
     switch (t) {
       case 0:
         return;
       case SELF_TOKEN_ID:
-        return e?.CharActorComp;
+        return s?.CharActorComp;
       case PLAYER_TOKEN_ID:
         return Global_1.Global.BaseCharacter?.CharacterActorComponent;
       default:

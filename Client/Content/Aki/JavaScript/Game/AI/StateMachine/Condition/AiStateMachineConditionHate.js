@@ -10,29 +10,31 @@ const AiStateMachineCondition_1 = require("./AiStateMachineCondition");
 class AiStateMachineConditionHate extends AiStateMachineCondition_1.AiStateMachineCondition {
   constructor() {
     super(...arguments);
-    this.Swu = (e, t) => {
-      this.Mwu();
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHate", this.Node?.Name);
+    this.Pwu = (e, t) => {
+      this.xwu();
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionHate", this.Node.Name);
+      }
     };
   }
   RegisterEvents() {
     var e;
     var t;
-    return !!super.RegisterEvents() && (e = this.Node.AiController?.CharAiDesignComp?.Entity, t = this.Node.SummonerAiController?.CharAiDesignComp?.Entity, e && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), true);
+    return !!super.RegisterEvents() && (e = this.Node.AiController?.CharAiDesignComp?.Entity, t = this.Node.SummonerAiController?.CharAiDesignComp?.Entity, e && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu) && EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu), t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu) && EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu), true);
   }
   UnregisterEvents() {
     var e;
     var t;
-    return !!super.UnregisterEvents() && (e = this.Node.AiController?.CharAiDesignComp?.Entity, t = this.Node.SummonerAiController?.CharAiDesignComp?.Entity, e && EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Swu), true);
+    return !!super.UnregisterEvents() && (e = this.Node.AiController?.CharAiDesignComp?.Entity, t = this.Node.SummonerAiController?.CharAiDesignComp?.Entity, e && EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu) && EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu), t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.AiHateTargetChanged, this.Pwu), true);
   }
-  Mwu() {
+  xwu() {
     this.ResultSelf = !!this.Node.AiController.AiHateList.GetCurrentTarget();
     if (this.ResultSelf && this.Node.SummonerAiController) {
       this.ResultSelf = !!this.Node.SummonerAiController.AiHateList.GetCurrentTarget();
     }
   }
   OnTick() {
-    this.Mwu();
+    this.xwu();
   }
   ToString(e, t = 0) {
     super.ToString(e, t);

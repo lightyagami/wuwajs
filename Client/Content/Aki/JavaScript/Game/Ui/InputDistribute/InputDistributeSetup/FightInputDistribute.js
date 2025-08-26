@@ -21,8 +21,14 @@ class FightInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
     }
   }
   OnRefresh() {
+    var t;
     if (UiLayer_1.UiLayer.UiRootItem.IsUIActiveSelf() || UiLayer_1.UiLayer.WorldSpaceUiRootItem.IsUIActiveSelf()) {
-      if (InputManager_1.InputManager.IsShowMouseCursor() && Info_1.Info.IsInKeyBoard()) {
+      if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(62)) && t.IsOnlyAllowFightInput()) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 67, "[InputDistribute]当前角色处于只允许战斗输入的状态, 设置输入分发Tag为 FightInputRootTag");
+        }
+        this.SetInputDistributeTags([InputDistributeDefine_1.inputDistributeTagDefine.FightInputRootTag]);
+      } else if (InputManager_1.InputManager.IsShowMouseCursor() && Info_1.Info.IsInKeyBoard()) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Input", 10, "[InputDistribute]刷新战斗输入时，处于键鼠设备并且在显示鼠标，设置输入分发Tag为 UiInputRootTag");
         }

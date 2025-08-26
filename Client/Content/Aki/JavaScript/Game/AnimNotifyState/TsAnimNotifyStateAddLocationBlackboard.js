@@ -107,7 +107,7 @@ class TsAnimNotifyStateAddLocationBlackboard extends UE.KuroAnimNotifyState {
       a = Math.min(s.TotalDuration, s.RunTime + e);
       let t = 0;
       t = this.Curve ? this.Curve.GetFloatValue(a / s.TotalDuration) - this.Curve.GetFloatValue(s.RunTime / s.TotalDuration) : (a - s.RunTime) / s.TotalDuration;
-      r = r.GetComponent(178);
+      r = r.GetComponent(179);
       s.AddOffset.Multiply(t, tmpVector);
       r.MoveCharacter(tmpVector, e);
       s.RunTime = a;

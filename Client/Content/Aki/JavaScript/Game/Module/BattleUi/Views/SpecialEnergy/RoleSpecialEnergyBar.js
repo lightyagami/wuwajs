@@ -5,11 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleSpecialEnergyBar = undefined;
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const SpecialEnergyBarAoGuSiTa_1 = require("./Role/SpecialEnergyBarAoGuSiTa");
 const SpecialEnergyBarBuLanTe_1 = require("./Role/SpecialEnergyBarBuLanTe");
 const SpecialEnergyBarChiXia_1 = require("./Role/SpecialEnergyBarChiXia");
 const SpecialEnergyBarChun_1 = require("./Role/SpecialEnergyBarChun");
 const SpecialEnergyBarDengDeng_1 = require("./Role/SpecialEnergyBarDengDeng");
 const SpecialEnergyBarFeibi_1 = require("./Role/SpecialEnergyBarFeibi");
+const SpecialEnergyBarFuLuoLuo_1 = require("./Role/SpecialEnergyBarFuLuoLuo");
 const SpecialEnergyBarJianXin_1 = require("./Role/SpecialEnergyBarJianXin");
 const SpecialEnergyBarJinXi_1 = require("./Role/SpecialEnergyBarJinXi");
 const SpecialEnergyBarKanTeLeiLa_1 = require("./Role/SpecialEnergyBarKanTeLeiLa");
@@ -22,6 +24,7 @@ const SpecialEnergyBarSanHua_1 = require("./Role/SpecialEnergyBarSanHua");
 const SpecialEnergyBarWind_1 = require("./Role/SpecialEnergyBarWind");
 const SpecialEnergyBarXiaKong_1 = require("./Role/SpecialEnergyBarXiaKong");
 const SpecialEnergyBarXiangLiYao_1 = require("./Role/SpecialEnergyBarXiangLiYao");
+const SpecialEnergyBarYouNuo_1 = require("./Role/SpecialEnergyBarYouNuo");
 const SpecialEnergyBarZanni_1 = require("./Role/SpecialEnergyBarZanni");
 const SpecialEnergyBarZheZhi_1 = require("./Role/SpecialEnergyBarZheZhi");
 const SpecialEnergyBarMorph_1 = require("./SpecialEnergyBarMorph");
@@ -30,8 +33,7 @@ const SpecialEnergyBarMorphPlayUse_1 = require("./SpecialEnergyBarMorphPlayUse")
 const SpecialEnergyBarPoint_1 = require("./SpecialEnergyBarPoint");
 const SpecialEnergyBarPointGraduate_1 = require("./SpecialEnergyBarPointGraduate");
 const SpecialEnergyBarSlot_1 = require("./SpecialEnergyBarSlot");
-const SpecialEnergyBarFuLuoLuo_1 = require("./Role/SpecialEnergyBarFuLuoLuo");
-const specialEnergyBarClassMap = new Map([[11, SpecialEnergyBarChun_1.SpecialEnergyBarChun], [150402, SpecialEnergyBarDengDeng_1.SpecialEnergyBarDengDeng], [110701, SpecialEnergyBarKeLaiTa_1.SpecialEnergyBarKeLaiTa], [110702, SpecialEnergyBarKeLaiTaUltra_1.SpecialEnergyBarKeLaiTaUltra], [160600, SpecialEnergyBarLuoKeKe_1.SpecialEnergyBarLuoKeKe], [120600, SpecialEnergyBarBuLanTe_1.SpecialEnergyBarBuLanTe], [150601, SpecialEnergyBarFeibi_1.SpecialEnergyBarFeibi], [160700, SpecialEnergyBarKanTeLeiLa_1.SpecialEnergyBarKanTeLeiLa], [140600, SpecialEnergyBarWind_1.SpecialEnergyBarWind], [140700, SpecialEnergyBarXiaKong_1.SpecialEnergyBarXiaKong], [150700, SpecialEnergyBarZanni_1.SpecialEnergyBarZanni], [120700, SpecialEnergyBarLuPa_1.SpecialEnergyBarLuPa], [140900, SpecialEnergyBarKaTiXiYa_1.SpecialEnergyBarKaTiXiYa], [502100, SpecialEnergyBarMorphPlayUse_1.SpecialEnergyBarMorphPlayUse], [160800, SpecialEnergyBarFuLuoLuo_1.SpecialEnergyBarFuLuoLuo]]);
+const specialEnergyBarClassMap = new Map([[11, SpecialEnergyBarChun_1.SpecialEnergyBarChun], [150402, SpecialEnergyBarDengDeng_1.SpecialEnergyBarDengDeng], [110701, SpecialEnergyBarKeLaiTa_1.SpecialEnergyBarKeLaiTa], [110702, SpecialEnergyBarKeLaiTaUltra_1.SpecialEnergyBarKeLaiTaUltra], [160600, SpecialEnergyBarLuoKeKe_1.SpecialEnergyBarLuoKeKe], [120600, SpecialEnergyBarBuLanTe_1.SpecialEnergyBarBuLanTe], [150601, SpecialEnergyBarFeibi_1.SpecialEnergyBarFeibi], [160700, SpecialEnergyBarKanTeLeiLa_1.SpecialEnergyBarKanTeLeiLa], [140600, SpecialEnergyBarWind_1.SpecialEnergyBarWind], [140700, SpecialEnergyBarXiaKong_1.SpecialEnergyBarXiaKong], [150700, SpecialEnergyBarZanni_1.SpecialEnergyBarZanni], [120700, SpecialEnergyBarLuPa_1.SpecialEnergyBarLuPa], [140900, SpecialEnergyBarKaTiXiYa_1.SpecialEnergyBarKaTiXiYa], [502100, SpecialEnergyBarMorphPlayUse_1.SpecialEnergyBarMorphPlayUse], [160800, SpecialEnergyBarFuLuoLuo_1.SpecialEnergyBarFuLuoLuo], [141000, SpecialEnergyBarYouNuo_1.SpecialEnergyBarYouNuo], [130600, SpecialEnergyBarAoGuSiTa_1.SpecialEnergyBarAoGuSiTa]]);
 const specialEnergyBarClassList = [SpecialEnergyBarPoint_1.SpecialEnergyBarPoint, SpecialEnergyBarSlot_1.SpecialEnergyBarSlot, SpecialEnergyBarPointGraduate_1.SpecialEnergyBarPointGraduate, SpecialEnergyBarMorph_1.SpecialEnergyBarMorph, SpecialEnergyBarMorph_1.SpecialEnergyBarMorph, SpecialEnergyBarMorphCountDown_1.SpecialEnergyBarMorphCountDown, SpecialEnergyBarJianXin_1.SpecialEnergyBarJianXin, SpecialEnergyBarSanHua_1.SpecialEnergyBarSanHua, SpecialEnergyBarChiXia_1.SpecialEnergyBarChiXia, SpecialEnergyBarMorphCountDown_1.SpecialEnergyBarMorphCountDown, SpecialEnergyBarJinXi_1.SpecialEnergyBarMorphJinXi, SpecialEnergyBarXiangLiYao_1.SpecialEnergyBarXiangLiYao, SpecialEnergyBarZheZhi_1.SpecialEnergyBarZheZhi];
 class RoleSpecialEnergyBar {
   constructor() {
@@ -104,9 +106,9 @@ class RoleSpecialEnergyBar {
       var i;
       var n = this.Wst?.GameplayTagComponent;
       let e = 0;
-      for (const g of this.hdt.keys()) {
-        if (g !== 0 && n?.HasTag(g)) {
-          e = g;
+      for (const o of this.hdt.keys()) {
+        if (o !== 0 && n?.HasTag(o)) {
+          e = o;
           break;
         }
       }

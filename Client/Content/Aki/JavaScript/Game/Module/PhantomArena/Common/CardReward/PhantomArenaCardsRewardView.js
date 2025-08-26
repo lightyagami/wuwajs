@@ -13,11 +13,11 @@ const CommonGridCardItem_1 = require("../CardItem/Item/CommonGridCardItem");
 class PhantomArenaCardsRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.lau = undefined;
-    this.gnu = undefined;
+    this.kau = undefined;
+    this.Vnu = undefined;
     this.Y5i = () => new RewardGridCardItem();
     this.dV1 = () => {
-      this.CloseMe(this.gnu);
+      this.CloseMe(this.Vnu);
     };
   }
   OnRegisterComponent() {
@@ -26,14 +26,14 @@ class PhantomArenaCardsRewardView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var e = this.OpenParam;
-    this.gnu = e.CallbackOnClose;
+    this.Vnu = e.CallbackOnClose;
     var e = e.CardIdList;
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetCollectCardDataListByIdList(e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), "PhantomBattle_1089");
     this.GetItem(3).SetUIActive(false);
     this.GetHorizontalLayout(4).RootUIComp.SetUIActive(true);
-    this.lau = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.Y5i);
-    this.lau.RefreshByData(e);
+    this.kau = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.Y5i);
+    this.kau.RefreshByData(e);
   }
 }
 exports.PhantomArenaCardsRewardView = PhantomArenaCardsRewardView;

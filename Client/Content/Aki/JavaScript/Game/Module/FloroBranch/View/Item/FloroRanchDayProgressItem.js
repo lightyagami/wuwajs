@@ -14,7 +14,7 @@ class FloroRanchDayProgressItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Tot = undefined;
-    this.blu = () => {
+    this.l_u = () => {
       return new PointItem();
     };
   }
@@ -22,7 +22,7 @@ class FloroRanchDayProgressItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISprite], [2, UE.UIHorizontalLayout], [3, UE.UIItem]];
   }
   OnStart() {
-    this.Tot = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.blu, this.GetItem(3).GetOwner());
+    this.Tot = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.l_u, this.GetItem(3).GetOwner());
   }
   RefreshDay(t, s) {
     var i = [];
@@ -44,17 +44,17 @@ class PointItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.xjc = false;
+    this.KKu = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite]];
   }
   Refresh(e, t, s) {
     this.GetSprite(0)?.SetUIActive(!e.IsPassed);
-    if (!this.xjc && e.IsPassed) {
+    if (!this.KKu && e.IsPassed) {
       this.ShowPassAnim();
     }
-    this.xjc = e.IsPassed;
+    this.KKu = e.IsPassed;
   }
   ShowPassAnim() {
     this.SPe ||= new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());

@@ -54,7 +54,7 @@ class TsTaskNpcPlayFlow extends TsTaskAbortImmediatelyBase_1.default {
     if (t instanceof TsAiController_1.default && this.TsFlowListName && this.TsFlowSubTitle && (t = t.AiController.CharActorComp)) {
       this.Reset();
       this.HeadInfoComp = t.Entity.GetComponent(82);
-      this.AnimComp = t.Entity.GetComponent(177);
+      this.AnimComp = t.Entity.GetComponent(178);
       this.PerformComp = t.Entity.GetComponent(46);
       if (this.HandlePlayFlow()) {
         this.HandleFlowAction(0);

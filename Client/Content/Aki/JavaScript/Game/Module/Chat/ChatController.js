@@ -55,22 +55,22 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnWorldTeamPlayerInfoChanged, this.AEt);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15916, this.PEt);
-    Net_1.Net.Register(19799, this.xEt);
-    Net_1.Net.Register(27837, this.wEt);
-    Net_1.Net.Register(27356, this.BEt);
-    Net_1.Net.Register(20711, this.bEt);
-    Net_1.Net.Register(26011, this.qEt);
-    Net_1.Net.Register(19736, this.Dhl);
+    Net_1.Net.Register(27215, this.PEt);
+    Net_1.Net.Register(16692, this.xEt);
+    Net_1.Net.Register(29775, this.wEt);
+    Net_1.Net.Register(24724, this.BEt);
+    Net_1.Net.Register(24300, this.bEt);
+    Net_1.Net.Register(22650, this.qEt);
+    Net_1.Net.Register(21639, this.Dhl);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15916);
-    Net_1.Net.UnRegister(19799);
-    Net_1.Net.UnRegister(27837);
-    Net_1.Net.UnRegister(27356);
-    Net_1.Net.UnRegister(20711);
-    Net_1.Net.UnRegister(26011);
-    Net_1.Net.UnRegister(19736);
+    Net_1.Net.UnRegister(27215);
+    Net_1.Net.UnRegister(16692);
+    Net_1.Net.UnRegister(29775);
+    Net_1.Net.UnRegister(24724);
+    Net_1.Net.UnRegister(24300);
+    Net_1.Net.UnRegister(22650);
+    Net_1.Net.UnRegister(21639);
   }
   static PrivateChatRequest(l, t, a) {
     PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestricted(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId(), e => {
@@ -92,7 +92,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "PrivateChatRequest 客户端请求私聊聊天", ["request", e]);
         }
-        Net_1.Net.Call(29370, Protocol_1.Aki.Protocol.$zn.create(e), e => {
+        Net_1.Net.Call(15625, Protocol_1.Aki.Protocol.$zn.create(e), e => {
           var t;
           var a;
           var o;
@@ -101,7 +101,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
           var i = e.B8n;
           var _ = e.Q4n;
           if (_ !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(_, 22913);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(_, 23581);
           } else {
             _ = e.O8n;
             t = e.ALs;
@@ -113,7 +113,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
             }
             n.AddChatContent(i, _, a, t, l, Protocol_1.Aki.Protocol.GFs.Proto_None, false, o, r);
             if (e = ModelManager_1.ModelManager.FriendModel?.GetFriendById(a)) {
-              n.RefreshChatPlayerData(a, e.PlayerHeadPhoto, e.PlayerName);
+              n.RefreshChatPlayerData(a, e.PlayerHeadPhoto, e.PlayerName, e.PlayerTitleId, e.PlayerTitleStarLevel);
             }
             ChatController.PrivateChatOperateRequest(Protocol_1.Aki.Protocol.xFs.Proto_ReadMsg, 0);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, false);
@@ -141,9 +141,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "ChannelChatRequest 客户端请求队伍聊天", ["request", e]);
         }
-        Net_1.Net.Call(16692, Protocol_1.Aki.Protocol.iZn.create(e), e => {
+        Net_1.Net.Call(16586, Protocol_1.Aki.Protocol.iZn.create(e), e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23129);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17976);
           } else if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Chat", 5, "ChannelChatRequest 队伍聊天服务端回应", ["response", e]);
           }
@@ -169,7 +169,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
       r = e.P8n;
       n = e.p8n;
       if (i = ModelManager_1.ModelManager.FriendModel?.GetFriendById(_)) {
-        l.RefreshChatPlayerData(_, i.PlayerHeadPhoto, i.PlayerName);
+        l.RefreshChatPlayerData(_, i.PlayerHeadPhoto, i.PlayerName, i.PlayerTitleId, i.PlayerTitleStarLevel);
       }
       if (t.GetIsOpen()) {
         i = e.F8n;
@@ -193,17 +193,19 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     var _;
     var l;
     var s;
-    var C = ModelManager_1.ModelManager.ChatModel;
-    let h = undefined;
-    let g = undefined;
-    g = e.b8n === Protocol_1.Aki.Protocol.BFs.Proto_MatchTeam ? (h = C.GetTeamChatRoom(), "TeamMatch") : (h = C.GetWorldChatRoom(), "TeamWorld");
-    if (h) {
+    var C;
+    var h;
+    var g = ModelManager_1.ModelManager.ChatModel;
+    let v = undefined;
+    let M = undefined;
+    M = e.b8n === Protocol_1.Aki.Protocol.BFs.Proto_MatchTeam ? (v = g.GetTeamChatRoom(), "TeamMatch") : (v = g.GetWorldChatRoom(), "TeamWorld");
+    if (v) {
       if (e.qLs?.NLs === Protocol_1.Aki.Protocol.GFs.Proto_ClearMessages) {
-        h.Reset();
-        C.DeleteTeamChat();
+        v.Reset();
+        g.DeleteTeamChat();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, false);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenChatRoom, h);
-      } else if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetTargetRelation([e.qLs.KI_])).get(e.qLs.KI_) !== 5 && (t = TimeUtil_1.TimeUtil.GetServerTime(), a = (e = e.qLs).GLs, o = e.P8n, r = e.p8n, n = e.NLs, i = h.GetLastTimeStamp(), _ = e.kLs, l = e.OLs, s = e.YI_, e = e.KI_, C.AddChatContent(h, g, a, o, r, n, true, t, i, _, l, s, e), C.RefreshChatPlayerData(a, l, _), n !== Protocol_1.Aki.Protocol.GFs.Proto_EnterTeam) && n !== Protocol_1.Aki.Protocol.GFs.Proto_ExitTeam) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenChatRoom, v);
+      } else if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetTargetRelation([e.qLs.KI_])).get(e.qLs.KI_) !== 5 && (t = TimeUtil_1.TimeUtil.GetServerTime(), a = (e = e.qLs).GLs, o = e.P8n, r = e.p8n, n = e.NLs, i = v.GetLastTimeStamp(), _ = e.kLs, l = e.OLs, s = e.YI_, C = e.KI_, h = e.ffd, e = e.gfd, g.AddChatContent(v, M, a, o, r, n, true, t, i, _, l, s, C), g.RefreshChatPlayerData(a, l, _, h, e), n !== Protocol_1.Aki.Protocol.GFs.Proto_EnterTeam) && n !== Protocol_1.Aki.Protocol.GFs.Proto_ExitTeam) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, false);
       }
     }
@@ -220,7 +222,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "PrivateChatHistoryRequest 客户端请求最近的私聊记录", ["request", e]);
         }
-        Net_1.Net.Call(15494, Protocol_1.Aki.Protocol.Wzn.create(e), e => {
+        Net_1.Net.Call(23640, Protocol_1.Aki.Protocol.Wzn.create(e), e => {
           var t;
           var a;
           if (Log_1.Log.CheckInfo()) {
@@ -289,9 +291,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
   }
   static async Nrh(e) {
     var t = new Array();
-    for (const v of e.VLs) {
-      if (v.KI_ !== "" && !t.includes(v.KI_)) {
-        t.push(v.KI_);
+    for (const f of e.VLs) {
+      if (f.KI_ !== "" && !t.includes(f.KI_)) {
+        t.push(f.KI_);
       }
     }
     let a = new Map();
@@ -310,28 +312,32 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
       var C;
       var h;
       var g;
+      var v;
+      var M;
       var e = e.VLs;
       o.AddTeamHistoryChatContent(r, e);
-      for (const M of e) {
-        if (a.get(M.KI_) !== 5) {
-          i = M.GLs;
-          _ = M.P8n;
-          l = M.p8n;
-          s = M.NLs;
-          C = M.kLs;
-          h = M.OLs;
-          g = Number(MathUtils_1.MathUtils.LongToBigInt(M.FLs));
-          o.RefreshChatPlayerData(i, h, C);
+      for (const c of e) {
+        if (a.get(c.KI_) !== 5) {
+          i = c.GLs;
+          _ = c.P8n;
+          l = c.p8n;
+          s = c.NLs;
+          C = c.kLs;
+          h = c.OLs;
+          g = c.ffd;
+          v = c.gfd;
+          M = Number(MathUtils_1.MathUtils.LongToBigInt(c.FLs));
+          o.RefreshChatPlayerData(i, h, C, g, v);
           if (s === Protocol_1.Aki.Protocol.GFs.Proto_None) {
-            o.AddChatRowData(i, _, l, true, n, g, 0, C, h);
+            o.AddChatRowData(i, _, l, true, n, M, 0, C, h);
           }
         }
       }
       o.SortChatRowData();
       o.ClampChatRowDataListLength();
-      for (const f of o.GetChatRowDataList()) {
+      for (const m of o.GetChatRowDataList()) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Chat", 5, "[ChatDebug]ChannelChatHistoryNotify---打印最终聊天数据", ["Content", f.Content], ["TimeStamp", f.TimeStamp], ["IsOfflineMassage", f.IsOfflineMassage]);
+          Log_1.Log.Info("Chat", 5, "[ChatDebug]ChannelChatHistoryNotify---打印最终聊天数据", ["Content", m.Content], ["TimeStamp", m.TimeStamp], ["IsOfflineMassage", m.IsOfflineMassage]);
         }
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, true);
@@ -344,7 +350,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Chat", 5, "ChatMutePlayerRequest 客户端请求屏蔽", ["request", a]);
     }
-    Net_1.Net.Call(29096, Protocol_1.Aki.Protocol.Jzn.create(a), this.NEt);
+    Net_1.Net.Call(15899, Protocol_1.Aki.Protocol.Jzn.create(a), this.NEt);
     if (t) {
       ModelManager_1.ModelManager.ChatModel.AddMutePlayer(e);
     } else {
@@ -359,7 +365,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Chat", 5, "PrivateChatOperateRequest 客户端请求聊天操作", ["request", a]);
     }
-    Net_1.Net.Call(23464, Protocol_1.Aki.Protocol.Zzn.create(a), this.OEt);
+    Net_1.Net.Call(25013, Protocol_1.Aki.Protocol.Zzn.create(a), this.OEt);
     if (e === Protocol_1.Aki.Protocol.xFs.Proto_CloseChat) {
       ModelManager_1.ModelManager.ChatModel.ClosePrivateChatRoom(t);
     }
@@ -376,7 +382,7 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
   }
   static S5a() {
     var e = new Protocol_1.Aki.Protocol.Xzn();
-    Net_1.Net.Call(15549, e, e => {
+    Net_1.Net.Call(20102, e, e => {
       if (!e.XI_ && (!this.M5a || !TimerSystem_1.GameplayTimerSystem.Has(this.M5a))) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Chat", 5, "PrivateChatDataResponse 服务端加载聊天数据失败，等待一段时间后重新请求", ["DelayTime", ChatDefine_1.DELAY_PRIVATE_CHAT_DATA_REQUEST_TIME]);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.EntityContext = exports.GeneralContext = undefined;
+exports.CustomContext = exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.DynamicInteractContext = exports.EntityContext = exports.GeneralContext = undefined;
 class GeneralContext {
   constructor() {
     this.Type = undefined;
@@ -15,13 +15,13 @@ class GeneralContext {
   }
   static GetObj(t, e, n) {
     let s = undefined;
-    let o = GeneralContext.RUe.get(t);
-    if (!o) {
-      o = [];
-      GeneralContext.RUe.set(t, o);
+    let r = GeneralContext.RUe.get(t);
+    if (!r) {
+      r = [];
+      GeneralContext.RUe.set(t, r);
     }
-    if (o.length > 0) {
-      (s = o.pop()).DUe = false;
+    if (r.length > 0) {
+      (s = r.pop()).DUe = false;
     } else {
       s = new n();
     }
@@ -70,8 +70,18 @@ class GeneralContext {
           break;
         case 11:
           t = CombinationContext.Create(...e.Contexts);
+          break;
+        case 13:
+          t = DynamicInteractContext.Create(e.EntityId, e.FinalContext);
       }
       return t;
+    }
+  }
+  static ExtractContext(t, e) {
+    if (t.Type === e) {
+      return t;
+    } else {
+      return t.Type === 11 && t.GetContextByType(e) || undefined;
     }
   }
 }
@@ -93,6 +103,24 @@ class EntityContext extends GeneralContext {
   }
 }
 exports.EntityContext = EntityContext;
+class DynamicInteractContext extends GeneralContext {
+  constructor() {
+    super();
+    this.EntityId = 0;
+    this.FinalContext = undefined;
+    this.Type = 13;
+  }
+  Reset() {
+    this.EntityId = 0;
+  }
+  static Create(t = 0, e, n) {
+    n = GeneralContext.GetObj(13, n, DynamicInteractContext);
+    n.EntityId = t;
+    n.FinalContext = e;
+    return n;
+  }
+}
+exports.DynamicInteractContext = DynamicInteractContext;
 class QuestContext extends GeneralContext {
   constructor() {
     super();
@@ -150,12 +178,12 @@ class TriggerContext extends GeneralContext {
     this.IsClientPrePerform = false;
     this.Type = 5;
   }
-  static Create(t = 0, e = 0, n, s, o) {
+  static Create(t = 0, e = 0, n, s, r) {
     n = GeneralContext.GetObj(5, n, TriggerContext);
     n.TriggerEntityId = t;
     n.OtherEntityId = e;
     n.TriggerType = s ?? 0;
-    n.IsClientPrePerform = o ?? false;
+    n.IsClientPrePerform = r ?? false;
     return n;
   }
 }
@@ -210,13 +238,13 @@ class GeneralLogicTreeContext extends GeneralContext {
     this.TreeIncId = BigInt(0);
     this.NodeId = 0;
   }
-  static Create(t, e = BigInt(0), n = 0, s = 0, o) {
-    o = GeneralContext.GetObj(6, o, GeneralLogicTreeContext);
-    o.BtType = t;
-    o.TreeIncId = e;
-    o.TreeConfigId = n;
-    o.NodeId = s;
-    return o;
+  static Create(t, e = BigInt(0), n = 0, s = 0, r) {
+    r = GeneralContext.GetObj(6, r, GeneralLogicTreeContext);
+    r.BtType = t;
+    r.TreeIncId = e;
+    r.TreeConfigId = n;
+    r.NodeId = s;
+    return r;
   }
 }
 exports.GeneralLogicTreeContext = GeneralLogicTreeContext;
@@ -272,4 +300,25 @@ class CombinationContext extends GeneralContext {
   }
 }
 exports.CombinationContext = CombinationContext;
+class CustomContext extends GeneralContext {
+  constructor() {
+    super();
+    this.xWu = undefined;
+    this.Type = 12;
+    this.xWu = {};
+  }
+  SetValueRestricted(t, e) {
+    this.xWu[t] = e;
+  }
+  GetValueRestricted(t) {
+    var e = this.xWu;
+    if (e && t in e) {
+      return e[t];
+    }
+  }
+  static Create() {
+    return GeneralContext.GetObj(12, undefined, CustomContext);
+  }
+}
+exports.CustomContext = CustomContext;
 //# sourceMappingURL=LevelGeneralContextDefine.js.map

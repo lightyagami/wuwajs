@@ -22,7 +22,8 @@ const iconTypeSprite = {
   4: "T_IconPcBtn_PsCai_UI",
   2: "T_IconPcBtn_Xbox17_UI",
   5: "T_IconPcBtn_Xbox17_UI",
-  6: "T_IconPcBtn_Xbox17_UI"
+  6: "T_IconPcBtn_Xbox17_UI",
+  7: "T_IconPcBtn_Xbox17_UI"
 };
 class GamepadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {

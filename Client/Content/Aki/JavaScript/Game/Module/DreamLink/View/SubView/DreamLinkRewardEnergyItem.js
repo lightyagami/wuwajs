@@ -9,17 +9,17 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ActivitySmallItemGrid_1 = require("../../../Activity/ActivityContent/UniversalComponents/ActivitySmallItemGrid");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
-const DreamLinkController_1 = require("../../DreamLinkController");
 class DreamLinkRewardEnergyItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Data = undefined;
     this.RewardScrollView = undefined;
+    this.cKu = undefined;
     this.W2e = () => {
       return new ActivitySmallItemGrid_1.ActivitySmallItemGrid();
     };
     this.qOe = () => {
-      DreamLinkController_1.DreamLinkController.EnergyRewardRequest(this.Data.Id);
+      this.cKu?.();
     };
   }
   OnRegisterComponent() {
@@ -31,32 +31,35 @@ class DreamLinkRewardEnergyItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetButton(0).RootUIComp.SetUIActive(false);
     this.GetItem(4).SetUIActive(false);
   }
-  Refresh(e, r, i) {
+  Refresh(e, i, t) {
     this.Data = e;
-    var t;
+    var r;
     var s;
-    var n = ConfigManager_1.ConfigManager.DreamLinkConfig.GetEnergyRewardConfig(e.Id);
-    if (n) {
-      t = e.Status === 1;
+    var a = ConfigManager_1.ConfigManager.DreamLinkConfig.GetEnergyRewardConfig(e.Id);
+    if (a) {
+      r = e.Status === 1;
       s = e.Status === 2;
       e = e.Status === 0;
-      this.jqe(n.DropId, s);
-      this.GetText(3).SetText(n.NeedEnergy.toString());
-      this.GetText(7).SetUIActive(t);
+      this.jqe(a.DropId, s);
+      this.GetText(3).SetText(a.NeedEnergy.toString());
+      this.GetText(7).SetUIActive(r);
       this.GetItem(2).SetUIActive(s);
       this.GetButton(1).RootUIComp.SetUIActive(e);
     }
   }
-  jqe(e, r) {
-    var i = [];
+  SetBtnClickCallback(e) {
+    this.cKu = e;
+  }
+  jqe(e, i) {
+    var t = [];
     for (const s of ConfigManager_1.ConfigManager.RewardConfig.GetDropPackagePreviewItemList(e)) {
-      var t = {
+      var r = {
         Item: s,
-        HasClaimed: r
+        HasClaimed: i
       };
-      i.push(t);
+      t.push(r);
     }
-    this.RewardScrollView.RefreshByData(i);
+    this.RewardScrollView.RefreshByData(t);
   }
 }
 exports.DreamLinkRewardEnergyItem = DreamLinkRewardEnergyItem;

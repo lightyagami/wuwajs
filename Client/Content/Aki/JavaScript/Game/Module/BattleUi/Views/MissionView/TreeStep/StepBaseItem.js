@@ -57,7 +57,8 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
       }
       var i = GeneralLogicTreeController_1.GeneralLogicTreeController.GetTitleTrackNodeId(this.Config.QuestScheduleType);
       var s = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      if (MapUtil_1.MapUtil.GetDungeonsRelation(s, t.DungeonId) === 3) {
+      var s = MapUtil_1.MapUtil.GetDungeonsRelation(s, t.DungeonId);
+      if (s === 3 || s !== 1 && !this.DescribeTextVisible) {
         if (t.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
           return false;
         }

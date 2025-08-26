@@ -25,7 +25,9 @@ class AiStateMachineConditionAttributeRate extends AiStateMachineCondition_1.AiS
       }
       t = this.ane / this.hne;
       this.ResultSelf = t >= this.one && t <= this.rne;
-      this.Node?.Owner.TickStateMachine(this.Result, "AiStateMachineConditionAttributeRate", this.Node?.Name);
+      if (this.Node?.Activated) {
+        this.Node.Owner.TickStateMachine(this.Result, "AiStateMachineConditionAttributeRate", this.Node.Name);
+      }
     };
   }
   OnInit(t) {

@@ -26,6 +26,7 @@ const UiCameraControlRotationComponent_1 = require("../UiCamera/UiCameraComponen
 const UiCameraManager_1 = require("../UiCamera/UiCameraManager");
 const UiCameraAnimationManager_1 = require("../UiCameraAnimation/UiCameraAnimationManager");
 const UiSceneManager_1 = require("../UiComponent/UiSceneManager");
+const UiModelUtil_1 = require("../UiModel/UiModelUtil");
 const GenericLayout_1 = require("../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const SkinDefine_1 = require("./SkinDefine");
@@ -232,6 +233,10 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   OnBeforeShow() {
+    var i = this.dmo?.Model;
+    if (i) {
+      UiModelUtil_1.UiModelUtil.SetVisible(i, true);
+    }
     var i = CommonParamById_1.configCommonParamById.GetStringConfig("ShopPreviewCharacterSkinIcon");
     var t = CommonParamById_1.configCommonParamById.GetStringConfig("ShopPreviewCharacterSkinPackIcon");
     this.SetTextureByPath(i, this.GetTexture(34));
@@ -246,6 +251,12 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnAfterShow() {
     this.Tyl();
+  }
+  OnAfterHide() {
+    var i = this.dmo?.Model;
+    if (i) {
+      UiModelUtil_1.UiModelUtil.SetVisible(i, false);
+    }
   }
   Tyl() {
     var i;
@@ -372,7 +383,7 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.xyl();
     this.jQl(this.C0t);
     this.f7l(this.C0t);
-    this.CK1(this.C0t);
+    this.SK1(this.C0t);
   }
   Fyl() {
     this.GetExtendToggle(8).SetToggleState(this.Syl === 0 ? 1 : 0, false);
@@ -575,7 +586,7 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
       this.GetItem(32).SetUIActive(false);
     }
   }
-  CK1(i) {
+  SK1(i) {
     var t;
     var e;
     var s;

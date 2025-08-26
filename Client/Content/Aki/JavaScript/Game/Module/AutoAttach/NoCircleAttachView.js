@@ -47,7 +47,7 @@ class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
     }
     return i;
   }
-  FKe() {
+  GetTrueBoundary() {
     if (this.NKe === undefined) {
       let i = 0;
       for (let t = 0; t < 1; t += FLOATDURABLENUM) {
@@ -132,10 +132,10 @@ class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
     return this.U1e;
   }
   QKe(t, i) {
-    if (this.FKe() <= 0) {
+    if (this.GetTrueBoundary() <= 0) {
       return 0;
     } else {
-      i = Math.abs(i) / this.FKe();
+      i = Math.abs(i) / this.GetTrueBoundary();
       return this.GetCurveValue(this.BoundaryCurve, i = i > 1 ? 1 : i);
     }
   }
@@ -150,13 +150,14 @@ class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
     }
     if (s && i > 0) {
       var t = s.GetCurrentPosition() + i;
-      if ((this.GetItemSize() + this.Gap) * Math.ceil((this.ShowItemNum + 1) / 2) < t) {
+      var h = s.GetCurrentPosition() + this.GetTrueBoundary();
+      if (Math.abs(t) > Math.abs(h)) {
         return false;
       }
     } else if (i < 0) {
       for (let t = 0; t < e; t++) {
         if (this.Items[t].GetCurrentShowItemIndex() === this.DataLength - 1) {
-          if (this.Items[t].GetCurrentPosition() + i < -(this.GetItemSize() + this.Gap) * Math.ceil(this.ShowItemNum / 2)) {
+          if (this.Items[t].GetCurrentPosition() + i < 0 - this.Items[t].GetCurrentPosition() - this.GetTrueBoundary()) {
             return false;
           }
         }
@@ -177,14 +178,14 @@ class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
       for (let t = 0; t < e; t++) {
         if (this.Items[t].GetCurrentShowItemIndex() === this.DataLength - 1) {
           var h = this.Items[t].GetCurrentPosition() + i;
-          if (0 - this.Items[t].GetCurrentPosition() + this.FKe() < h) {
+          if (0 - this.Items[t].GetCurrentPosition() + this.GetTrueBoundary() < h) {
             return false;
           }
         }
       }
     } else if (s && i < 0) {
       var t = s.GetCurrentPosition() + i;
-      var r = s.GetCurrentPosition() + this.FKe();
+      var r = s.GetCurrentPosition() + this.GetTrueBoundary();
       if (Math.abs(t) > Math.abs(r)) {
         return false;
       }

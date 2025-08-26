@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RpcServer = exports.Stcp = undefined;
-const MAX_MESSAGE_LENGTH = 1024;
+const MAX_MESSAGE_LENGTH = 16384;
 var EPackage;
 var EConnectStatus;
 function packageToString(t) {
@@ -67,6 +67,7 @@ class Stcp {
     for (const e of this.S5) {
       t.Msgs.push(e);
       if (JSON.stringify(t).length >= MAX_MESSAGE_LENGTH) {
+        this.x5.Error(`${this.Name} send package length exceed ${MAX_MESSAGE_LENGTH}, package: ${packageToString(t)}`);
         t.Msgs.pop();
         break;
       }

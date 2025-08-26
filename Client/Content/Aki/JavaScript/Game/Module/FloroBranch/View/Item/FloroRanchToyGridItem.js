@@ -20,7 +20,7 @@ class FloroRanchToyGridItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UITexture], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UITexture]];
     this.BtnBindInfo = [[0, this.N8e]];
   }
   OnBeforeCreate() {
@@ -60,11 +60,11 @@ class FloroRanchToyGridItem extends UiPanelBase_1.UiPanelBase {
       }
     } else {
       this.SetInfoPanelActive(false);
-      this.GetExtendToggle(0).SetSelfInteractive(false);
     }
   }
   SetInfoPanelActive(e) {
     this.GetItem(8).SetUIActive(e);
+    this.GetExtendToggle(0).SetSelfInteractive(e);
   }
   PlayShowAnim(e) {
     this.RefreshItemGrid(e);

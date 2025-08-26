@@ -13,14 +13,14 @@ class FloroRanchEvolveData {
     this.IsValid = false;
     this.CurExp = s.ILs;
     this.CurLevel = s.TLs;
-    this.ExpPerLevel = s.Bbu;
+    this.ExpPerLevel = s.tRu;
     this.IsValid = true;
   }
   Refresh(s) {
     if (s) {
       this.CurExp = s.ILs;
       this.CurLevel = s.TLs;
-      this.ExpPerLevel = s.Bbu;
+      this.ExpPerLevel = s.tRu;
       this.IsValid = true;
     } else {
       this.IsValid = false;

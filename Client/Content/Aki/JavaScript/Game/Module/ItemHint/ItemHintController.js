@@ -25,10 +25,10 @@ const showBgTypeToView = {
 };
 class ItemHintController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(23525, this.HandleItemRewardNotify);
+    Net_1.Net.Register(19816, this.HandleItemRewardNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23525);
+    Net_1.Net.UnRegister(19816);
   }
   static qgi(e) {
     if (!(e.length <= 0)) {

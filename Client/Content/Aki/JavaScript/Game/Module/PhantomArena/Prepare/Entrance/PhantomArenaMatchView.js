@@ -27,19 +27,19 @@ const PhantomArenaMatchGymItem_1 = require("./PhantomArenaMatchGymItem");
 class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Xeu = -1;
+    this.Stu = -1;
     this.o71 = undefined;
-    this.Yeu = undefined;
+    this.Mtu = undefined;
     this.s71 = undefined;
     this.a71 = undefined;
-    this.zeu = [];
+    this.Etu = [];
     this.l71 = undefined;
     this._71 = undefined;
     this.u71 = undefined;
     this.$pt = undefined;
-    this.Jeu = () => {
+    this.Itu = () => {
       var e = new PhantomArenaMatchGymItem_1.MatchGymItem();
-      e.CallbackOnClick = this.Zeu;
+      e.CallbackOnClick = this.Ttu;
       return e;
     };
     this.d71 = () => {
@@ -49,19 +49,19 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     };
     this.rOe = () => {
       var e = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      e.ShowReceivedCallBack = this.eCu;
+      e.ShowReceivedCallBack = this.JCu;
       return e;
     };
-    this.Zeu = (e, t, i) => {
-      if (this.Xeu === e || i === 2) {
+    this.Ttu = (e, t, i) => {
+      if (this.Stu === e || i === 2) {
         if (ModelManager_1.ModelManager.PhantomArenaModel.IsGymLock(e)) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(PhantomArenaDefine_1.ENTRANCE_GYM_LOCK_TEXT_ID);
         }
       } else {
-        this.Xeu = e;
+        this.Stu = e;
         this.o71 = undefined;
-        this.Yeu.DeselectCurrentGridProxy();
-        this.Yeu.SelectGridProxy(t);
+        this.Mtu.DeselectCurrentGridProxy();
+        this.Mtu.SelectGridProxy(t);
         this.WNe();
         this.f71();
         this.nOe();
@@ -86,7 +86,7 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     this.p5t = () => {
       var e;
       var t;
-      var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(this.ylu);
+      var i = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(this.r_u);
       if (i) {
         e = i.TeleporterId;
         i = i.QuestId;
@@ -95,19 +95,19 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
           t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLogicTreeTrackUpdate, t.Tree.BtType, t.Tree.TreeIncId);
         }
-        WorldMapController_1.WorldMapController.TryTeleport(e, this.Jgu);
+        WorldMapController_1.WorldMapController.TryTeleport(e, this.YCu);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 75, "获取挑战信息失败", ["ChallengeId", this.o71]);
       }
     };
-    this.Jgu = () => {
+    this.YCu = () => {
       UiManager_1.UiManager.ResetToBattleView();
     };
-    this.eCu = e => {
-      return ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateById(this.ylu) === 2;
+    this.JCu = e => {
+      return ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateById(this.r_u) === 2;
     };
-    this.u7c = () => {
-      for (const e of this.Yeu?.GetLayoutItemList()) {
+    this.bNu = () => {
+      for (const e of this.Mtu?.GetLayoutItemList()) {
         e.RefreshRedDot();
       }
     };
@@ -125,50 +125,50 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.a71 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(12), this.rOe, this.GetItem(13).GetOwner());
-    this.Yeu = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.Jeu);
+    this.Mtu = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.Itu);
     this.s71 = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.d71);
   }
   OnBeforeShow() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymLevelList(true);
-    this.zeu = e;
-    this.Yeu.RefreshByData(e);
-    this.Xeu = this.OpenParam;
-    var e = this.zeu.indexOf(this.Xeu);
-    this.Yeu.DeselectCurrentGridProxy();
-    this.Yeu.SelectGridProxy(e);
+    this.Etu = e;
+    this.Mtu.RefreshByData(e);
+    this.Stu = this.OpenParam;
+    var e = this.Etu.indexOf(this.Stu);
+    this.Mtu.DeselectCurrentGridProxy();
+    this.Mtu.SelectGridProxy(e);
     this.WNe();
     this.f71();
     this.nOe();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.u7c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.u7c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
   }
   WNe() {
-    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(this.Xeu);
+    var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(this.Stu);
     this.SetTextureByPath(e.TextureBg, this.GetTexture(15));
   }
   f71() {
     var e;
-    if (this.Xeu) {
-      e = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Xeu);
+    if (this.Stu) {
+      e = ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateListByGymLevel(this.Stu);
       this.l71 = e;
       this.s71.RefreshByData(e);
       this.s71.DeselectCurrentGridProxy();
-      if (this.ylu < 0) {
+      if (this.r_u < 0) {
         this.o71 = this.l71?.[0];
       }
       e = this.l71.indexOf(this.o71);
       this.s71.SelectGridProxy(e);
-      ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(this.Xeu);
+      ModelManager_1.ModelManager.PhantomArenaModel.SetGymRedDotChecked(this.Stu);
     } else {
       this.s71.RefreshByData([]);
     }
   }
   nOe() {
-    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(this.ylu);
+    var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleChallenge(this.r_u);
     if (e) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.ChallengeName);
       this.GetText(6).SetText(e.NpcLevel.toString());
@@ -178,13 +178,13 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
       e = e.Elements;
       this._71.RefreshElementTabIcon(e[0]);
       this.u71.RefreshElementTabIcon(e[1]);
-      e = ModelManager_1.ModelManager.PhantomArenaModel.GetFirstRewardListByChallengeId(this.ylu);
+      e = ModelManager_1.ModelManager.PhantomArenaModel.GetFirstRewardListByChallengeId(this.r_u);
       this.a71.RefreshByData(e);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 75, "获取挑战信息失败", ["ChallengeId", this.o71]);
     }
   }
-  get ylu() {
+  get r_u() {
     return this.o71?.Id ?? -1;
   }
 }

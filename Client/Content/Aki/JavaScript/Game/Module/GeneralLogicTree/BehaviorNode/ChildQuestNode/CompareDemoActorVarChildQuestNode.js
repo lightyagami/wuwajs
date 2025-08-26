@@ -19,15 +19,15 @@ const FORCE_CHECK_INTERVAL = 500;
 class CompareDemoActorVarChildQuestNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
   constructor() {
     super(...arguments);
-    this.oz1 = undefined;
-    this.nz1 = 0;
+    this.Az1 = undefined;
+    this.Pz1 = 0;
     this.Qte = [];
     this.LDe = undefined;
-    this.sz1 = false;
-    this.az1 = () => {
-      if (Info_1.Info.IsPlayInEditor && this.sz1 && this.hz1()) {
+    this.xz1 = false;
+    this.Uz1 = () => {
+      if (Info_1.Info.IsPlayInEditor && this.xz1 && this.Dz1()) {
         if (this.LDe) {
-          TimerSystem_1.TimerSystem.Remove(this.LDe);
+          TimerSystem_1.GameplayTimerSystem.Remove(this.LDe);
         }
         this.SubmitNode();
       }
@@ -35,63 +35,63 @@ class CompareDemoActorVarChildQuestNode extends ChildQuestNodeBase_1.ChildQuestN
   }
   get CorrelativeEntities() {}
   OnCreate(e) {
-    return !!super.OnCreate(e) && !!Info_1.Info.IsPlayInEditor && (e = e.Condition).Type === IQuest_1.EChildQuest.CompareActorVar && (this.oz1 = e.PreConditions, this.nz1 = e.Count, this.Qte = e.Conditions, this.LDe && (TimerSystem_1.TimerSystem.Remove(this.LDe), this.LDe = undefined), this.sz1 = false, this.lz1(), true);
+    return !!super.OnCreate(e) && !!Info_1.Info.IsPlayInEditor && (e = e.Condition).Type === IQuest_1.EChildQuest.CompareActorVar && (this.Az1 = e.PreConditions, this.Pz1 = e.Count, this.Qte = e.Conditions, this.LDe && (TimerSystem_1.GameplayTimerSystem.Remove(this.LDe), this.LDe = undefined), this.xz1 = false, this.Bz1(), true);
   }
   OnStart(e) {
     super.OnStart(e);
-    this.LDe = TimerSystem_1.TimerSystem.Forever(this.az1, FORCE_CHECK_INTERVAL);
+    this.LDe = TimerSystem_1.GameplayTimerSystem.Forever(this.Uz1, FORCE_CHECK_INTERVAL);
   }
   AddEventsOnChildQuestStart() {
     super.AddEventsOnChildQuestStart();
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.az1)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.az1);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.Uz1)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.Uz1);
     }
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.az1)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.az1);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.Uz1)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.Uz1);
     }
   }
   RemoveEventsOnChildQuestEnd() {
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.az1)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.az1);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.Uz1)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDemoInteractiveActorMemberUpdated, this.Uz1);
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.az1)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.az1);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.Uz1)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDemoInteractiveActorMemberCalled, this.Uz1);
     }
     super.RemoveEventsOnChildQuestEnd();
   }
   OnEnd(e) {
     if (this.LDe) {
-      TimerSystem_1.TimerSystem.Remove(this.LDe);
+      TimerSystem_1.GameplayTimerSystem.Remove(this.LDe);
       this.LDe = undefined;
     }
-    this.sz1 = false;
+    this.xz1 = false;
     super.OnEnd(e);
   }
-  lz1() {
+  Bz1() {
     if (Info_1.Info.IsPlayInEditor) {
       TestModuleBridge_1.TestModuleBridge.TryGetTestModuleExports().then(e => {
         if (e && e.KuroDemoInteractController) {
-          this.sz1 = true;
+          this.xz1 = true;
         }
       });
     }
   }
-  hz1() {
-    if (this.oz1 && !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.oz1, undefined)) {
+  Dz1() {
+    if (this.Az1 && !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.Az1, undefined)) {
       return false;
     }
     let e = 0;
     for (const t of this.Qte) {
-      if (this._z1(t)) {
+      if (this.kz1(t)) {
         ++e;
       }
-      if (this.uz1(e, this.Qte.length, this.nz1)) {
+      if (this.Oz1(e, this.Qte.length, this.Pz1)) {
         return true;
       }
     }
-    return this.uz1(e, this.Qte.length, this.nz1);
+    return this.Oz1(e, this.Qte.length, this.Pz1);
   }
-  uz1(e, t, r) {
+  Oz1(e, t, r) {
     switch (r) {
       case 0:
         return e === t;
@@ -108,7 +108,7 @@ class CompareDemoActorVarChildQuestNode extends ChildQuestNodeBase_1.ChildQuestN
     }
     return false;
   }
-  _z1(e) {
+  kz1(e) {
     var t;
     var r = e.ActorRef.PathName.split(".");
     var r = r[1] + "." + r[2];
@@ -119,9 +119,9 @@ class CompareDemoActorVarChildQuestNode extends ChildQuestNodeBase_1.ChildQuestN
         case "Eq":
         case "Ne":
           if ((s instanceof UE.Transform || s instanceof UE.TransformDouble) && typeof i == "object") {
-            return this.cz1(s, i, e.Compare);
+            return this.qz1(s, i, e.Compare);
           } else if (typeof s == "number" && typeof i == "number") {
-            return this.dz1(s, i, e.Compare);
+            return this.Gz1(s, i, e.Compare);
           } else {
             t = s === i;
             if (e.Compare === "Eq") {
@@ -135,13 +135,13 @@ class CompareDemoActorVarChildQuestNode extends ChildQuestNodeBase_1.ChildQuestN
         case "Le":
         case "Lt":
           if (typeof s == "number" && typeof i == "number") {
-            return this.dz1(s, i, e.Compare);
+            return this.Gz1(s, i, e.Compare);
           }
       }
     }
     return false;
   }
-  cz1(e, t, r, s = MathUtils_1.MathUtils.KindaSmallNumber) {
+  qz1(e, t, r, s = MathUtils_1.MathUtils.KindaSmallNumber) {
     var i;
     var n = r === "Eq";
     var r = e instanceof UE.Transform || e instanceof UE.TransformDouble;
@@ -171,7 +171,7 @@ class CompareDemoActorVarChildQuestNode extends ChildQuestNodeBase_1.ChildQuestN
     }
     return n;
   }
-  dz1(e, t, r, s = MathUtils_1.MathUtils.KindaSmallNumber) {
+  Gz1(e, t, r, s = MathUtils_1.MathUtils.KindaSmallNumber) {
     if (typeof e == "number" && typeof t == "number") {
       switch (r) {
         case "Ge":

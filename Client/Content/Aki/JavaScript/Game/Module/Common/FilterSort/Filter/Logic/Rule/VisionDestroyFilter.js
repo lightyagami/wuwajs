@@ -14,15 +14,18 @@ class VisionDestroyFilter extends CommonFilter_1.CommonFilter {
     this.GetPhantomItemId = i => {
       return ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomInstanceByItemId(i.GetConfigId()).PhantomItem.MonsterId;
     };
-    this.aqu = i => {
+    this.K2u = i => {
       var i = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(i.GetUniqueId()).GetPhantomFirstMainProp().Yws;
       var i = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomMainPropertyItemId(i);
       var e = i.AddType;
       var i = i.PropId;
       return ModelManager_1.ModelManager.PhantomBattleModel.GetSortRuleIdByPropIndex(i, e);
     };
-    this.hqu = i => {
+    this.X2u = i => {
       return ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomDataBase(i.GetUniqueId())?.GetCost() ?? 0;
+    };
+    this.ZLt = i => {
+      return ModelManager_1.ModelManager.InventoryModel.GetPhantomManageSelectSet()?.has(i.GetUniqueId()) ?? false;
     };
   }
   OnInitFilterMap() {
@@ -37,8 +40,11 @@ class VisionDestroyFilter extends CommonFilter_1.CommonFilter {
     this.FilterMap.set(25, VisionDestroyFilterLogic_1.VisionDestroyFilterLogic.GetVisionDestroyFetterGroup);
     this.FilterMap.set(26, VisionDestroyFilterLogic_1.VisionDestroyFilterLogic.GetVisionDestroyAttribute);
     this.FilterMap.set(28, VisionDestroyFilterLogic_1.VisionDestroyFilterLogic.GetPhantomDeprecate);
-    this.FilterMap.set(41, this.aqu);
-    this.FilterMap.set(42, this.hqu);
+    this.FilterMap.set(41, this.K2u);
+    this.FilterMap.set(42, this.X2u);
+  }
+  DefaultFilterList() {
+    return [this.ZLt];
   }
 }
 exports.VisionDestroyFilter = VisionDestroyFilter;

@@ -90,13 +90,13 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
               this.TG_();
               break;
             case 8:
-              this.Kz1();
+              this.yJ1();
               break;
             case 7:
               this.Hw1();
               break;
             case 9:
-              this.Q0u();
+              this.Qpu();
           }
         }
       } else if (e === InputMappingsDefine_1.actionMappings.组合主键) {
@@ -205,7 +205,7 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       e.SetEnvironmentKeyVisible(2, this.Bze());
       e.SetEnvironmentKeyVisible(4, this.bze());
       e.SetEnvironmentKeyVisible(7, this.QW1());
-      e.SetEnvironmentKeyVisible(9, this.K0u());
+      e.SetEnvironmentKeyVisible(9, this.Kpu());
       this.hze?.RefreshAction(InputMappingsDefine_1.actionMappings.功能菜单);
       this.yze();
       this.dze();
@@ -289,7 +289,7 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   QW1() {
     return ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance();
   }
-  K0u() {
+  Kpu() {
     return !!ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive();
   }
   Tze() {
@@ -301,7 +301,7 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   TG_() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleShipTowerBuffInfo);
   }
-  Kz1() {
+  yJ1() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiToggleMoraleBuffInfo);
   }
   Hw1() {
@@ -309,7 +309,7 @@ class ChatPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       UiManager_1.UiManager.OpenView("RogueBattleSummary");
     }
   }
-  Q0u() {
+  Qpu() {
     if (ModelManager_1.ModelManager.MoraleModel?.IsInitData && ModelManager_1.ModelManager.MoraleBattleModel?.IsMoraleActive()) {
       UiManager_1.UiManager.OpenView("MoraleAreaSumView");
     }

@@ -30,7 +30,7 @@ class NewSoundNormalItem extends UiPanelBase_1.UiPanelBase {
     var r = this.GetText(2);
     this.Co_(e);
     if (t.Conf.Secondary === 63) {
-      e = ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(t.SilentAreaDetectionRecord.Conf.MapId, t.SilentAreaDetectionRecord.Conf.LevelPlayList[0]);
+      e = ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(t.SilentAreaDetectionRecord?.Conf?.MapId, t.SilentAreaDetectionRecord?.Conf?.LevelPlayList?.[0]);
       if (e[1] < 0) {
         r?.SetText("");
       } else {

@@ -63,10 +63,10 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
     if (!super.OnStart()) {
       return false;
     }
-    this.ActorComp = this.Entity.GetComponent(234);
-    this.AnimComp = this.Entity.GetComponent(235);
-    this.MoveComp = this.Entity.GetComponent(236);
-    this.TagComp = this.Entity.GetComponent(205);
+    this.ActorComp = this.Entity.GetComponent(235);
+    this.AnimComp = this.Entity.GetComponent(236);
+    this.MoveComp = this.Entity.GetComponent(237);
+    this.TagComp = this.Entity.GetComponent(206);
     this.HasRoleAndCtrlByMe = false;
     var e = this.ActorComp?.Owner;
     if (e?.IsValid()) {
@@ -226,5 +226,5 @@ let VehiclePerformComponent = class VehiclePerformComponent extends BaseVehicleP
     this.LastActorRotation.DeepCopy(this.ActorComp.ActorRotationProxy);
   }
 };
-VehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(237)], VehiclePerformComponent);
+VehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(238)], VehiclePerformComponent);
 exports.VehiclePerformComponent = VehiclePerformComponent; //# sourceMappingURL=VehiclePerformComponent.js.map

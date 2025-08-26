@@ -42,7 +42,7 @@ class GameAudioModel extends ModelBase_1.ModelBase {
     if (!t) {
       return true;
     }
-    var s = EntitySystem_1.EntitySystem.GetComponent(e, 279)?.GetMorphData()?.ModelId ?? 0;
+    var s = EntitySystem_1.EntitySystem.GetComponent(e, 282)?.GetMorphData()?.ModelId ?? 0;
     if (n && s && !ControllerHolder_1.ControllerHolder.GameAudioController.CheckMorphAudioPlay(s, o)) {
       return false;
     }
@@ -68,7 +68,7 @@ class GameAudioModel extends ModelBase_1.ModelBase {
     return d.CheckPlayAudio(o, t, i, r);
   }
   UpdateAudioCooldownRecord(e, o, t, i, r = true) {
-    var n = EntitySystem_1.EntitySystem.GetComponent(e, 279)?.GetMorphData()?.ModelId ?? 0;
+    var n = EntitySystem_1.EntitySystem.GetComponent(e, 282)?.GetMorphData()?.ModelId ?? 0;
     var e = this.kq1(e, n);
     this.u_l.get(e).UpdateCooldownRecord(o, t, i, r);
   }

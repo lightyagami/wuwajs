@@ -16,15 +16,15 @@ const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this._au = undefined;
+    this.Oau = undefined;
     this.Nvr = undefined;
-    this.gnu = undefined;
-    this.Adu = () => {
-      this.cau();
-      this.WGu();
-      this.$0u();
+    this.Vnu = undefined;
+    this.cmu = () => {
+      this.Gau();
+      this.INu();
+      this.$pu();
     };
-    this.W0u = (e, i) => {
+    this.Wpu = (e, i) => {
       var t = this.Nvr.DS_.b51;
       if (e === "Unlock" && i === "LevelChange") {
         this.GetText(2).SetText(t.toString());
@@ -35,7 +35,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
       }
     };
     this.I5t = () => {
-      this.CloseMe(this.gnu);
+      this.CloseMe(this.Vnu);
     };
   }
   OnRegisterComponent() {
@@ -50,33 +50,36 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
         Log_1.Log.Error("PhantomArena", 75, "结算页数据为空");
       }
     }
-    this.gnu = e.CallbackOnClose;
-    this._au = new ExpTweenComponent_1.ExpTweenComponent(this.GetSprite(16), this.GetSprite(10), this.GetSprite(17), undefined);
+    this.Vnu = e.CallbackOnClose;
+    this.Oau = new ExpTweenComponent_1.ExpTweenComponent(this.GetSprite(16), this.GetSprite(10), this.GetSprite(17), undefined);
   }
   OnBeforeShow() {
     this.pO();
   }
   OnAfterShow() {
     var e = this.Nvr?.nD1 ? "Success" : "Fail";
-    this.UiViewSequence.AddSequenceFinishEvent(e, this.Adu);
-    this.RootActor.OnSequencePlayEvent.Bind(this.W0u);
+    this.UiViewSequence.AddSequenceFinishEvent(e, this.cmu);
+    this.RootActor.OnSequencePlayEvent.Bind(this.Wpu);
     this.UiViewSequence.PlaySequence(e);
   }
   OnBeforeDestroy() {
+    if (this.Oau) {
+      this.Oau.Destroy();
+    }
     this.RootActor.OnSequencePlayEvent.Unbind();
     var e = this.Nvr?.nD1 ? "Success" : "Fail";
-    this.UiViewSequence.RemoveSequenceFinishEvent(e, this.Adu);
+    this.UiViewSequence.RemoveSequenceFinishEvent(e, this.cmu);
   }
   pO() {
-    this.Cnu();
-    this.pnu();
-    this.vnu();
+    this.jnu();
+    this.Hnu();
+    this.$nu();
   }
-  Cnu() {
+  jnu() {
     var e = this.Nvr?.nD1 ? "GenericPromptTypes_3_GeneralText" : "GenericPromptTypes_4_GeneralText";
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(0), e);
   }
-  pnu() {
+  Hnu() {
     var e = this.Nvr.DS_.T51;
     var i = this.Nvr.DS_.b51;
     this.GetText(4).SetText(e.toString());
@@ -101,7 +104,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
     var i = StringUtils_1.StringUtils.Format("{0}/{1}", t.toString(), e.toString());
     this.GetText(9).SetText(i);
   }
-  vnu() {
+  $nu() {
     var e = this.Nvr.DS_.T51;
     var i = this.Nvr.DS_.b51;
     var t = ModelManager_1.ModelManager.PhantomArenaModel.GetPointsItemId();
@@ -121,7 +124,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(12), PhantomArenaDefine_1.TEXT_RESULT_LEVEL_SKILL_DESC, i);
     this.GetItem(11).SetUIActive(e !== i);
   }
-  cau() {
+  Gau() {
     var i = this.Nvr.DS_.HHn;
     if (!(i <= 0)) {
       var i = this.Nvr.DS_.T51;
@@ -135,15 +138,15 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
       if (s >= 1) {
         e = 1;
       }
-      this._au.PlayExpTween(e, s, 0, 12);
+      this.Oau.PlayExpTween(e, s, 0, 12);
     }
   }
-  WGu() {
+  INu() {
     if (this.Nvr.DS_.T51 !== this.Nvr.DS_.b51) {
       this.UiViewSequence.PlaySequence("Unlock");
     }
   }
-  $0u() {
+  $pu() {
     var e = this.Nvr.DS_.T51;
     var i = this.Nvr.DS_.b51;
     if (ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(e) !== ModelManager_1.ModelManager.PhantomArenaModel.GetMasterTitleIdByLevel(i)) {

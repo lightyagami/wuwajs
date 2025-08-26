@@ -35,14 +35,14 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
     this.FightRootInited = false;
     this.GeneralRootInited = false;
     this.nye = () => {
-      this.Txu();
+      this.$xu();
     };
-    this.bxu = undefined;
-    this.Rxu = () => {
+    this.Wxu = undefined;
+    this.Qxu = () => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCore", 39, "ScreenEffectUiRoot被销毁");
       }
-      this.bxu?.K2_DetachFromActor();
+      this.Wxu?.K2_DetachFromActor();
       this.SetGeneralRootInited(false);
     };
   }
@@ -199,25 +199,25 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
       this.HandlePool.push(e);
     }
   }
-  Txu() {
+  $xu() {
     var e = (0, puerts_1.$ref)(undefined);
     var t = ScreenEffectSystem_1.ScreenEffectSystem.GetInstance();
     var r = UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.ScreenEffect);
     if (t?.IsValid() && r) {
       t.GetScreenEffectGeneralRoot(e);
       if (e = (0, puerts_1.$unref)(e)) {
-        if (e !== this.bxu) {
-          if (this.bxu?.IsValid()) {
+        if (e !== this.Wxu) {
+          if (this.Wxu?.IsValid()) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("UiCore", 39, "ScreenEffectUiRoot被替换");
             }
-            this.bxu.OnDestroyed.Remove(this.Rxu);
-            this.bxu?.K2_DetachFromActor();
+            this.Wxu.OnDestroyed.Remove(this.Qxu);
+            this.Wxu?.K2_DetachFromActor();
             this.SetGeneralRootInited(false);
           }
-          this.bxu = e;
-          this.bxu.OnDestroyed.Add(this.Rxu);
-          this.bxu.K2_AttachRootComponentTo(r);
+          this.Wxu = e;
+          this.Wxu.OnDestroyed.Add(this.Qxu);
+          this.Wxu.K2_AttachRootComponentTo(r);
           UE.KuroStaticLibrary.SetActorPermanent(t, true, false);
           UE.KuroStaticLibrary.SetActorPermanent(e, true, false);
           this.SetGeneralRootInited(true);

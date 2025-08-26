@@ -12,18 +12,18 @@ class LifePointDrawDetailViewModel {
   constructor() {
     this.LifePointDrawActivityData = undefined;
     this.GroupId = 0;
-    this.vPu = 0;
+    this.QPu = 0;
     this.Xmt = undefined;
   }
   RegisterView(e) {
     this.Xmt = e;
     e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointGroupByGroupId(this.GroupId).ChallengeList;
-    this.vPu = e[0];
+    this.QPu = e[0];
   }
   OnSelectChallenge(e) {
-    this.vPu = e;
+    this.QPu = e;
     this.RefreshLayout();
-    this.yPu();
+    this.KPu();
     this.RefreshRewardLayout();
     this.Nft();
     this.Iwn();
@@ -36,36 +36,36 @@ class LifePointDrawDetailViewModel {
   }
   OnShowView() {
     this.RefreshLayout();
-    this.SPu();
-    this.yPu();
+    this.XPu();
+    this.KPu();
     this.RefreshRewardLayout();
     this.Nft();
     this.Iwn();
     this.SaveCurrentChallengeRedDotState();
   }
   CheckChallengeIfSelect(e) {
-    return this.vPu === e;
+    return this.QPu === e;
   }
   GetChallengeLockState(e) {
     return !ModelManager_1.ModelManager.LifePointDrawModel.GetChallengeRequireFinishState(this.LifePointDrawActivityData.Id, e);
   }
-  SPu() {
+  XPu() {
     var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointGroupByGroupId(this.GroupId).LevelNumResource;
     this.Xmt?.RefreshLevelNumSprite(e);
   }
   Nft() {
-    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.vPu).Name;
+    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.QPu).Name;
     this.Xmt?.ShowRightUpTitle(e);
   }
   Iwn() {
-    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.vPu).Desc;
+    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.QPu).Desc;
     this.Xmt?.ShowDescText(e);
   }
   sFe() {
     this.Xmt?.PlaySwitchSequence();
   }
-  yPu() {
-    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.vPu).DifficultTexture;
+  KPu() {
+    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.QPu).DifficultTexture;
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
     this.Xmt?.RefreshDifficultTexture(e);
   }
@@ -73,7 +73,7 @@ class LifePointDrawDetailViewModel {
     return ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(e).SubTitle;
   }
   RefreshRewardLayout() {
-    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.vPu).RewardId;
+    var e = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(this.QPu).RewardId;
     var t = [];
     var e = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e)?.DropPreview;
     if (e !== undefined) {
@@ -89,14 +89,14 @@ class LifePointDrawDetailViewModel {
   }
   GetCurrentChallengeFinishRewardState() {
     var e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.LifePointDrawActivityData.Id);
-    return !!e && e.GetChallengeIfGetReward(this.vPu);
+    return !!e && e.GetChallengeIfGetReward(this.QPu);
   }
   GetChallengeFinishState(e) {
     var t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.LifePointDrawActivityData.Id);
     return !!t && t.GetChallengeIfGetReward(e);
   }
   GetCurrentChallengeId() {
-    return this.vPu;
+    return this.QPu;
   }
   SaveCurrentChallengeRedDotState() {
     var e = this.GetCurrentChallengeId();

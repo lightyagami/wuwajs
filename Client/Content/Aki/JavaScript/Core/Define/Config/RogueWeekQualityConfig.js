@@ -25,6 +25,9 @@ class RogueWeekQualityConfig {
   get TokenBg() {
     return this.tokenbg();
   }
+  get TokenBgNew() {
+    return this.tokenbgnew();
+  }
   get TokenColor() {
     return this.tokencolor();
   }
@@ -79,7 +82,7 @@ class RogueWeekQualityConfig {
     }
     return i;
   }
-  tokencolor(t) {
+  tokenbgnew(t) {
     var i = this.J7.__offset(this.z7, 14);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -87,8 +90,16 @@ class RogueWeekQualityConfig {
     }
     return i;
   }
-  roleniagaracolor(t) {
+  tokencolor(t) {
     var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  roleniagaracolor(t) {
+    var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

@@ -46,9 +46,9 @@ class ActivitySubViewLongShan extends ActivitySubViewBase_1.ActivitySubViewBase 
       }
     };
     this.wOe = t => {
-      if (ActivityLongShanController_1.ActivityLongShanController.GetActivityData().GetStageInfoById(t)) {
+      if (this.ActivityBaseData.GetStageInfoById(t)) {
         this.bNn = true;
-        UiManager_1.UiManager.OpenView("LongShanView", t);
+        UiManager_1.UiManager.OpenView("LongShanView", [this.ActivityBaseData, t]);
       } else {
         ActivityLongShanController_1.ActivityLongShanController.ShowUnlockTip(t);
       }
@@ -66,7 +66,7 @@ class ActivitySubViewLongShan extends ActivitySubViewBase_1.ActivitySubViewBase 
     var t = [this.CommonInfoPanel.OnlyCreateByActorAsync(this.GetItem(2).GetOwner())];
     this.StageItems = [];
     for (const e of this.ActivityBaseData.StageIds) {
-      var i = new LongShanStageItem_1.LongShanStageItem(e);
+      var i = new LongShanStageItem_1.LongShanStageItem(this.ActivityBaseData, e);
       i.OnClickStageDetail = this.wOe;
       this.AddChild(i);
       t.push(i.OnlyCreateByActorAsync(this.GetItem(4 + this.StageItems.length).GetOwner()));
@@ -131,7 +131,7 @@ class ActivitySubViewLongShan extends ActivitySubViewBase_1.ActivitySubViewBase 
     }
   }
   BNe() {
-    var t = ActivityLongShanController_1.ActivityLongShanController.GetActivityData().CheckAnyStageRed();
+    var t = this.ActivityBaseData.CheckAnyStageRed();
     this.CommonInfoPanel?.SetFunctionRedDotVisible(t);
   }
 }

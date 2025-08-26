@@ -23,7 +23,7 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     this._Dt = undefined;
     this.Mne = 0;
     this.$Fa = undefined;
-    this.lSu = "";
+    this._7c = "";
     this.uDt = () => {
       var t = new FilterViewData_1.FilterViewData(this.Mne, this.vTt);
       FilterSortController_1.FilterSortController.OpenFilterView(t);
@@ -97,13 +97,13 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     this._Dt = t;
     this.Mne = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(t);
     this.$Fa = i ?? undefined;
-    this.lSu = e ?? "";
+    this._7c = e ?? "";
   }
   XFa() {
     var t;
     if (this.$Fa && this._Dt !== 0) {
       t = this.hDt.ConvertToStorageData();
-      ModelManager_1.ModelManager.FilterModel.SetFilterConfigData(this.$Fa, this._Dt, t, this.lSu);
+      ModelManager_1.ModelManager.FilterModel.SetFilterConfigData(this.$Fa, this._Dt, t, this._7c);
     }
   }
   dDt(t) {
@@ -141,18 +141,23 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  UpdateDataWithConfig(t, i, e, s = "", ...r) {
-    this.XFa();
-    this.mDt(t, i, s);
-    this.CDt();
-    if (!(this.Mne <= 0)) {
-      this.ypt = e;
-      this.lDt = r;
-      t = ModelManager_1.ModelManager.FilterModel.GetFilterConfigData(i, this._Dt, s);
-      this.dDt(t);
-      this.P5e();
-      if (ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt) === 0) {
-        this.qpt(true);
+  UpdateDataWithConfig(t, i, e, s = "", ...a) {
+    var r = ConfigManager_1.ConfigManager.SortConfig.GetSortFilterConfig(i);
+    if (r.SaveMode === 1 || r.SaveMode === 3) {
+      this.UpdateData(t, e, ...a);
+    } else {
+      this.XFa();
+      this.mDt(t, i, s);
+      this.CDt();
+      if (!(this.Mne <= 0)) {
+        this.ypt = e;
+        this.lDt = a;
+        r = ModelManager_1.ModelManager.FilterModel.GetFilterConfigData(i, this._Dt, s);
+        this.dDt(r);
+        this.P5e();
+        if (ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt) === 0) {
+          this.qpt(true);
+        }
       }
     }
   }

@@ -36,9 +36,9 @@ class DangoAbyssPluginEquipView extends UiViewBase_1.UiViewBase {
     this.CB1 = [];
     this.B91 = [];
     this.Lk1 = -1;
-    this.Bau = [];
-    this.kau = -1;
-    this.Oau = -1;
+    this.ahu = [];
+    this.hhu = -1;
+    this.lhu = -1;
     this.K3e = () => {
       var t = new DangoAbyssItemMediumItemGrid_1.DangoAbyssItemMediumItemGrid();
       t.BindOnExtendToggleStateChanged(this.jbe);
@@ -70,20 +70,20 @@ class DangoAbyssPluginEquipView extends UiViewBase_1.UiViewBase {
       this.O91();
     };
     this.cNc = () => {
-      const i = this.Bau;
+      const i = this.ahu;
       this.aSc();
       this.A1c.RefreshAllGridProxies();
       this.fvt();
       this.wGc();
       var t = this.yil.GetDangoId();
       var t = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoAbyssRoleData(t);
-      this.Bau = t?.GetEquipItems() ?? [];
-      var t = this.Bau.some(t => !i.includes(t)) || i.some(t => !this.Bau.includes(t));
+      this.ahu = t?.GetEquipItems() ?? [];
+      var t = this.ahu.some(t => !i.includes(t)) || i.some(t => !this.ahu.includes(t));
       if (t) {
         ControllerHolder_1.ControllerHolder.GuideController.TryFinishRunningGuides();
-        this.kau = this.QO1();
-        this.Oau = this.WO1();
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbyssPluginEquipAttrRefresh, this.Oau > -1, this.kau > -1);
+        this.hhu = this.QO1();
+        this.lhu = this.WO1();
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbyssPluginEquipAttrRefresh, this.lhu > -1, this.hhu > -1);
       }
     };
     this.mh1 = t => {
@@ -150,7 +150,7 @@ class DangoAbyssPluginEquipView extends UiViewBase_1.UiViewBase {
     this.SetButtonUiActive(13, false);
     this.pO();
     var i = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoAbyssRoleData(t);
-    this.Bau = i?.GetEquipItems() ?? [];
+    this.ahu = i?.GetEquipItems() ?? [];
   }
   OnBeforeDestroy() {
     this.yil.SetSlotIndex(-1, true);
@@ -306,14 +306,14 @@ class DangoAbyssPluginEquipView extends UiViewBase_1.UiViewBase {
           return undefined;
         }
       } else if (i === "InvalidAttr") {
-        e = this.Oau;
+        e = this.lhu;
         if (e = this.y5c?.GetGridByDisplayIndex(e)) {
           return [e, e];
         } else {
           return undefined;
         }
       } else if (i === "ValidAttr") {
-        e = this.kau;
+        e = this.hhu;
         if (e = this.y5c?.GetGridByDisplayIndex(e)) {
           return [e, e];
         } else {

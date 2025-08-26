@@ -15,8 +15,8 @@ class SeamlessTravelKeepMovementMode {
   constructor() {
     this.Hte = undefined;
     this.nx = undefined;
-    this.Pku = undefined;
-    this.xku = undefined;
+    this.kNu = undefined;
+    this.ONu = undefined;
     this.cl1 = false;
     this.mQo = false;
   }
@@ -27,14 +27,14 @@ class SeamlessTravelKeepMovementMode {
     return this.mQo;
   }
   get TargetMovementMode() {
-    return this.Pku;
+    return this.kNu;
   }
   get TargetCustomMode() {
-    return this.xku;
+    return this.ONu;
   }
   SetInitDataWithTargetMode(e, t) {
-    this.Pku = e;
-    this.xku = t;
+    this.kNu = e;
+    this.ONu = t;
   }
   static GetCurrentKeepableMovementMode(e) {
     var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp?.CharacterMovement;

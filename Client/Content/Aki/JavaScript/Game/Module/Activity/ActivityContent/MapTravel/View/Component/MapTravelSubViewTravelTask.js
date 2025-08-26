@@ -242,7 +242,14 @@ class AreaLayout extends GridProxyAbstract_1.GridProxyAbstract {
     this.gQl = false;
     this.LevelSequencePlayer = undefined;
     this.sGe = () => {
-      return new TaskNormalItem(this.ActivityBaseData);
+      var t = new TaskNormalItem(this.ActivityBaseData);
+      t.SetBtnClickCallback(() => {
+        var t = this.TaskLayout?.GetDatas().filter(t => t.Status === 0).map(t => t.Id);
+        if (t) {
+          ActivityMapTravelController_1.ActivityMapTravelController.RequestMultiMapTravelTaskReward(t);
+        }
+      });
+      return t;
     };
   }
   OnRegisterComponent() {
@@ -315,6 +322,7 @@ class TaskNormalItem extends MapTravelTaskItem_1.TaskItemBase {
   constructor() {
     super(...arguments);
     this.TaskData = undefined;
+    this.hQu = undefined;
     this.OnClickedButton = () => {
       var t = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetTravelTaskConfig(this.TaskData.Id);
       if (t.JumpId) {
@@ -322,7 +330,7 @@ class TaskNormalItem extends MapTravelTaskItem_1.TaskItemBase {
       }
     };
     this.OnClickedRewardButton = () => {
-      ActivityMapTravelController_1.ActivityMapTravelController.RequestTakeTravelTaskReward(this.TaskData.Id);
+      this.hQu?.();
     };
   }
   Refresh(t) {
@@ -349,6 +357,9 @@ class TaskNormalItem extends MapTravelTaskItem_1.TaskItemBase {
       i.push(e);
     }
     this.RewardScrollView.RefreshByData(i);
+  }
+  SetBtnClickCallback(t) {
+    this.hQu = t;
   }
 }
 class TaskLockItem extends MapTravelTaskItem_1.TaskItemBase {

@@ -7,6 +7,8 @@ exports.InputModel = exports.INPUT_COMMAND_TRANSFORM_DT_PATH = undefined;
 const ModelBase_1 = require("../../Core/Framework/ModelBase");
 const DataTableUtil_1 = require("../../Core/Utils/DataTableUtil");
 const Switcher_1 = require("../Utils/Switcher");
+const NormalWorldInputData_1 = require("./BattleInputData/NormalWorldInputData");
+const TrapDefenseInputData_1 = require("./BattleInputData/TrapDefenseInputData");
 const InputLayer_1 = require("./InputLayer");
 exports.INPUT_COMMAND_TRANSFORM_DT_PATH = "/Game/Aki/Data/Fight/DT_InputCommandTransform.DT_InputCommandTransform";
 class InputModel extends ModelBase_1.ModelBase {
@@ -15,14 +17,30 @@ class InputModel extends ModelBase_1.ModelBase {
     this.jMe = new Map([[2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [9, 0], [10, 0]]);
     this.WMe = new Array();
     this.KMe = new Map();
-    this.TPu = new Map();
+    this.ZPu = new Map();
     this.QMe = new Map();
     this.whh = new Map();
     this.OnlyMoveForward = new Switcher_1.Switcher(false);
     this.IsOpenInputAxisLog = false;
     this.Ze_ = undefined;
     this.et_ = false;
+    this.z9u = new Map();
+    this.J9u = 0;
     this.eKa = false;
+  }
+  OnInit() {
+    this.z9u.set(0, new NormalWorldInputData_1.NormalWorldInputData(0));
+    this.z9u.set(1, new TrapDefenseInputData_1.TrapDefenseInputData(1));
+    return true;
+  }
+  SetCurrentInputDataType(t) {
+    this.J9u = t;
+  }
+  GetCurrentInputData() {
+    return this.z9u.get(this.J9u);
+  }
+  GetInputData(t) {
+    return this.z9u.get(t);
   }
   GetHandlers() {
     return this.WMe;
@@ -31,15 +49,15 @@ class InputModel extends ModelBase_1.ModelBase {
     return this.KMe;
   }
   GetHoldTimes() {
-    return this.TPu;
+    return this.ZPu;
   }
   GetHoldTime(t) {
-    if (this.TPu.has(t)) {
-      return this.TPu.get(t);
+    if (this.ZPu.has(t)) {
+      return this.ZPu.get(t);
     }
   }
   SetHoldTime(t, e) {
-    this.TPu.set(t, e ?? 0);
+    this.ZPu.set(t, e ?? 0);
   }
   GetAxisValues() {
     return this.QMe;
@@ -83,7 +101,7 @@ class InputModel extends ModelBase_1.ModelBase {
   OnClear() {
     this.WMe.splice(0, this.WMe.length);
     this.KMe.clear();
-    this.TPu.clear();
+    this.ZPu.clear();
     this.QMe.clear();
     for (const t of this.whh.values()) {
       t.Clear();
@@ -92,12 +110,12 @@ class InputModel extends ModelBase_1.ModelBase {
     return true;
   }
   AddInputLayer(t, e) {
-    let s = this.whh.get(t);
-    if (!s) {
-      s = new InputLayer_1.InputLayerUnit();
-      this.whh.set(t, s);
+    let r = this.whh.get(t);
+    if (!r) {
+      r = new InputLayer_1.InputLayerUnit();
+      this.whh.set(t, r);
     }
-    s.Add(e);
+    r.Add(e);
   }
   RemoveInputLayer(t) {
     var e = this.whh.get(t.UnitId);
@@ -124,15 +142,15 @@ class InputModel extends ModelBase_1.ModelBase {
       this.et_ = true;
       var t;
       var e = new Map();
-      for (const s of DataTableUtil_1.DataTableUtil.GetDataTableAllRow(23)) {
-        if (s.Action !== 0 && s.State !== 0 && s.Tag.TagName !== "None") {
-          if (!e.has(s.Action)) {
-            e.set(s.Action, new Map());
+      for (const r of DataTableUtil_1.DataTableUtil.GetDataTableAllRow(23)) {
+        if (r.Action !== 0 && r.State !== 0 && r.Tag.TagName !== "None") {
+          if (!e.has(r.Action)) {
+            e.set(r.Action, new Map());
           }
-          if ((t = e.get(s.Action)).has(s.State)) {
-            t.get(s.State).push(s);
+          if ((t = e.get(r.Action)).has(r.State)) {
+            t.get(r.State).push(r);
           } else {
-            t.set(s.State, [s]);
+            t.set(r.State, [r]);
           }
         }
       }

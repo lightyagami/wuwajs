@@ -105,7 +105,7 @@ class OnlineTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetText(1).SetUIActive(a);
     var s = ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(e.HeadId, false);
     if (s) {
-      this.SetTextureByPath(s.GetRoleHeadIconLarge(), this.GetTexture(3));
+      this.SetTextureByPath(s.GetRoleHeadIconCircle(), this.GetTexture(3));
     }
     var s = ModelManager_1.ModelManager.FriendModel.IsMyFriend(e.PlayerId);
     var l = this.GetText(0);

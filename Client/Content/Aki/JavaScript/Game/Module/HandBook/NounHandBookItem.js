@@ -47,6 +47,7 @@ class NounHandBookItem extends UiPanelBase_1.UiPanelBase {
   Update(t, i) {
     this.A8a?.SetUiActive(false);
     this.L8a?.SetUiActive(false);
+    this.RootItem?.SetAlpha(1);
     if (t.HandBookNounConfigId) {
       this.A8a?.SetUiActive(true);
       this.A8a?.Refresh(t.HandBookNounConfigId, t.IsShowContent);

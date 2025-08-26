@@ -39,6 +39,14 @@ class ActivityTowerGuideData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
+  GetExDataFinishShowState() {
+    for (const e of this.TowerDifficultIdList) {
+      if (this.GetTowerProgressState(e) !== 3) {
+        return false;
+      }
+    }
+    return true;
+  }
   GetViewState() {
     if (!this.IsUnLock()) {
       return 0;

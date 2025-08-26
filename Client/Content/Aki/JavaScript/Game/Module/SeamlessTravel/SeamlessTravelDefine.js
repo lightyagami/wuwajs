@@ -27,7 +27,7 @@ class SeamlessTravelContext {
     this.LeastTime = s.A$s;
     this.IsTeleportInPlace = s.ra1;
     this.TransitionWeatherDaPath = s.oa1;
-    this.SceneEffectDaPath = s.SCu;
+    this.SceneEffectDaPath = s.v0u;
     if (s.PG1.length) {
       this.KeepMovementStateFeatures = new KeepMovementStateFeatures();
       for (const t of s.PG1) {
@@ -41,9 +41,9 @@ class SeamlessTravelContext {
       this.FloorParams = new SeamlessTravelFloorParams();
       this.FloorParams.ParseFloorParams(s.dta);
     }
-    if (s.MCu) {
+    if (s.y0u) {
       this.FinishParams = new SeamlessTravelFinishParams();
-      this.FinishParams.ParseFinishParams(s.MCu);
+      this.FinishParams.ParseFinishParams(s.y0u);
     }
   }
 }
@@ -61,8 +61,8 @@ class SeamlessTravelFinishParams {
     this.ScreenEffectExtraState = -1;
   }
   ParseFinishParams(s) {
-    this.NotStopScreenEffect = s.ECu;
-    this.ScreenEffectExtraState = s.XEu;
+    this.NotStopScreenEffect = s.S0u;
+    this.ScreenEffectExtraState = s.hIu;
   }
 }
 exports.SeamlessTravelFinishParams = SeamlessTravelFinishParams;

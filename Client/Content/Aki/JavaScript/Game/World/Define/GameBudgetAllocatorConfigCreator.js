@@ -65,6 +65,9 @@ class GameBudgetAllocatorConfigCreator {
   static get TsPlayerAlwaysTickConfig() {
     return this.Mvr;
   }
+  static get TsNormalEntityAlwaysTickConfig() {
+    return this.Cud;
+  }
   static get TsIdleExecConfig() {
     return this.Evr;
   }
@@ -76,6 +79,9 @@ class GameBudgetAllocatorConfigCreator {
   }
   static get TsCharacterRenderConfig() {
     return this.n3a;
+  }
+  static get TsNpcRenderConfig() {
+    return this.Rfd;
   }
   static get TsStabilizeLowEntityGroupConfig() {
     return this.Jia;
@@ -90,7 +96,7 @@ class GameBudgetAllocatorConfigCreator {
     return this.Zja;
   }
   static get TsMoveSceneItemEntityConfig() {
-    return this.EFu;
+    return this.zVu;
   }
   static get TsCollisionPlantConfig() {
     return this.w01;
@@ -111,13 +117,15 @@ class GameBudgetAllocatorConfigCreator {
     this.DJs(t);
     this.zia(t);
     this.eWa(t);
-    this.IFu(t);
+    this.JVu(t);
     this.Rvr(t);
+    this.T_d(t);
     this.Uvr(t);
     this.Avr(t);
     this.Pvr(t);
     this.xvr(t);
     this.CreateCharacterRenderConfig(t);
+    this.CreateNpcRenderConfig(t);
     this.fka(t);
     this.A01(t);
   }
@@ -269,13 +277,13 @@ class GameBudgetAllocatorConfigCreator {
     this.Zja = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
-  static IFu(t) {
+  static JVu(t) {
     var t = t.CreateMoveSceneItemEntityConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity");
     e.SignificanceGroup = 1;
     e.TickPriority = PRE_PLAYER_MOVE_TICK_PRIORITY;
-    this.EFu = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.zVu = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
   static Rvr(t) {
@@ -288,6 +296,16 @@ class GameBudgetAllocatorConfigCreator {
     var i = (0, puerts_1.$ref)(e);
     cpp_1.FKuroGameBudgetAllocatorInterface.SetDefaultTickIntervalDetailConfig(i, t.MaxInterval, t.TickReductionStartSize, t.TickReductionIntervalSize);
     cpp_1.FKuroGameBudgetAllocatorInterface.SetGroupConfig(e.GroupName, e);
+  }
+  static T_d(t) {
+    var t = t.CreateNormalEntityAlwaysTickConfig();
+    var e = new UE.GameBudgetAllocatorGroupConfig();
+    e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("NormalEntityAlwaysTickGroup");
+    e.SignificanceGroup = 3;
+    e.TickPriority = OTHER_PRIORITY;
+    e.DisableActorTickStrategy = 0;
+    this.Cud = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.wvr(e, t);
   }
   static Uvr(t) {
     var t = t.CreateAlwaysTickConfig();
@@ -346,6 +364,17 @@ class GameBudgetAllocatorConfigCreator {
     e.DisableActorTickStrategy = 1;
     e.DisableActorTickDistance = CHARCTER_RENDER_ENABLE_MAX_RANGE;
     this.n3a = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.wvr(e, t);
+  }
+  static CreateNpcRenderConfig(t) {
+    var t = t.CreateNpcRenderConfig();
+    var e = new UE.GameBudgetAllocatorGroupConfig();
+    e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("NpcRenderGroup");
+    e.SignificanceGroup = 1;
+    e.TickPriority = SIMPLE_NPC_PRIORITY;
+    e.DisableActorTickStrategy = 1;
+    e.DisableActorTickDistance = CHARCTER_RENDER_ENABLE_MAX_RANGE;
+    this.Rfd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
   static A01(t) {

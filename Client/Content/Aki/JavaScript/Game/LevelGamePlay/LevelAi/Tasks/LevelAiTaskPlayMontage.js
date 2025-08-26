@@ -33,7 +33,7 @@ class LevelAiTaskPlayMontage extends LevelAiTask_1.LevelAiTask {
     let a = false;
     this.ZV_ = s.VolatileMontagePlayByLoad(3, i, r, s => {
       if (s && t.FaceExpressionId) {
-        e?.GetComponent(187)?.ExpressionController?.ChangeFaceForExpression(s, t.FaceExpressionId);
+        e?.GetComponent(188)?.ExpressionController?.ChangeFaceForExpression(s, t.FaceExpressionId);
       }
     }, s => {
       if (a) {

@@ -122,6 +122,12 @@ class CommonConfig extends ConfigBase_1.ConfigBase {
   GetGameIntroductionGlobalUrl() {
     return CommonParamById_1.configCommonParamById.GetStringConfig("GameIntroductionGlobalUrl") ?? "";
   }
+  GetGuideMainlandLinkUrl() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("GuideMainlandLink") ?? "";
+  }
+  GetGuideOverseaLinkUrl() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("GuideOverseaLink") ?? "";
+  }
   GetPhantomArenaBattleSpeed() {
     return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("PhantomArenaBattleSpeed") ?? [1, 1.5, 2];
   }

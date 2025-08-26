@@ -135,7 +135,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.GuestEffect = false;
     this.gH1 = undefined;
     this.CH1 = undefined;
-    this.Wz1 = new Map();
+    this.pJ1 = new Map();
   }
   OnInit() {
     this.HeadStateCommonParam = new HeadStateCommonParam_1.HeadStateCommonParam();
@@ -242,7 +242,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.ClearMissionViewData();
     this.TrackDatas?.clear();
     this.Hn1.clear();
-    this.Wz1.clear();
+    this.pJ1.clear();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.JZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, this.HQe);
@@ -578,13 +578,13 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.CH1 = t;
   }
   GetRoleSpecialState(t) {
-    return this.Wz1.get(t) ?? false;
+    return this.pJ1.get(t) ?? false;
   }
   RefreshRoleSpecialState(t) {
     var e = this.vXe?.SpecialStateMap.get(t) ?? false;
-    var i = this.Wz1.get(t) ?? false;
+    var i = this.pJ1.get(t) ?? false;
     if (e !== i) {
-      this.Wz1.set(t, e);
+      this.pJ1.set(t, e);
       switch (t) {
         case 0:
           if (e) {
@@ -599,7 +599,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     }
   }
   RefreshAllRoleSpecialState() {
-    for (var [t, e] of this.Wz1) {
+    for (var [t, e] of this.pJ1) {
       if (e) {
         this.RefreshRoleSpecialState(t);
       }
@@ -612,6 +612,10 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         }
       }
     }
+  }
+  Test() {
+    this.ChildViewData = new BattleUiChildViewData_1.BattleUiChildViewData();
+    this.ChildViewData.Init();
   }
 }
 (exports.BattleUiModel = BattleUiModel).jXe = Stats_1.Stat.Create("SkillButtonEntityDataNextTick");

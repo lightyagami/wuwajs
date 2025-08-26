@@ -18,13 +18,16 @@ class TickBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
   get CorrelativeEntities() {}
   OnStart(e) {
     super.OnStart(e);
-    this.IRe = TimerSystem_1.TimerSystem.Forever(this.r6, this.IntervalTime);
+    this.IRe = TimerSystem_1.GameplayTimerSystem.Forever(this.r6, this.IntervalTime);
   }
   OnEnd(e) {
-    if (TimerSystem_1.TimerSystem.Has(this.IRe)) {
-      TimerSystem_1.TimerSystem.Remove(this.IRe);
-    }
+    this.RemoveTimer();
     super.OnEnd(e);
+  }
+  RemoveTimer() {
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.IRe)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
+    }
   }
   OnTick(e) {}
 }

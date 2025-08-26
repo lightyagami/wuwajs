@@ -128,12 +128,12 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     if (this.Hte) {
       this.Mne = this.Hte.CreatureData.GetPbDataId();
-      this.wsn = this.Entity.GetComponent(196);
+      this.wsn = this.Entity.GetComponent(197);
       if (this.wsn) {
-        this.mBe = this.Entity.GetComponent(133);
+        this.mBe = this.Entity.GetComponent(134);
         if (this.mBe) {
           this.b1n = true;
           this._Mr = true;
@@ -223,12 +223,12 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
       return false;
     }
     var t = t.CharacterActorComponent.Entity;
-    var e = t.CheckGetComponent(174);
+    var e = t.CheckGetComponent(175);
     if (!e) {
       return false;
     }
     let i = e.GetBuffTotalStackById(this.eHr) > 0;
-    e = t.CheckGetComponent(190);
+    e = t.CheckGetComponent(191);
     if (e) {
       i ||= (e.GetFormationBuffComp()?.GetBuffTotalStackById(this.eHr) ?? 0) > 0;
     }
@@ -243,7 +243,7 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
   Sdn() {
     if (!this.ddn && !this.udn()) {
       this.ddn = true;
-      SceneItemBuffController_1.SceneItemBuffController.BuffOperate(this.Entity.Id, Protocol_1.Aki.Protocol.eFs.gru, this.adn);
+      SceneItemBuffController_1.SceneItemBuffController.BuffOperate(this.Entity.Id, Protocol_1.Aki.Protocol.eFs.jru, this.adn);
     }
   }
   Edn(t) {
@@ -289,5 +289,5 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
     }
   }
 };
-SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(145)], SceneItemBuffProducerComponent);
+SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(146)], SceneItemBuffProducerComponent);
 exports.SceneItemBuffProducerComponent = SceneItemBuffProducerComponent; //# sourceMappingURL=SceneItemBuffProducerComponent.js.map

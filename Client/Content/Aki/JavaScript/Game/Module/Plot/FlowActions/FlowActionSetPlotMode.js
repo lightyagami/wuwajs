@@ -105,9 +105,12 @@ class FlowActionSetPlotMode extends FlowActionBase_1.FlowActionBase {
       t.SetResult();
     }, this.Context.UiParam);
     await t.Promise;
-    await this.Jku();
+    await this.wNu();
+    if (this.Context.SeamlessPlot) {
+      await PlotController_1.PlotController.CreateAspectTransformView();
+    }
   }
-  async Jku() {
+  async wNu() {
     const o = new Array();
     if (this.Context.NeedPreloadUiSequenceData) {
       for (const t of this.Context.NeedPreloadUiSequenceData) {
@@ -127,9 +130,17 @@ class FlowActionSetPlotMode extends FlowActionBase_1.FlowActionBase {
     }
   }
   async nYi() {
+    var e;
     if (this.eYi) {
       ModelManager_1.ModelManager.PlotModel.IsFadeIn = true;
       await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(0, 3, this.eYi?.Ease?.Duration !== undefined ? this.eYi.Ease.Duration : DEFAULT_FADE_DURATION, this.eYi.ScreenType);
+      e = {
+        ActionInfo: {
+          Name: "FadeInScreen",
+          Params: this.eYi
+        }
+      };
+      this.RecordAction(e);
     }
   }
   async rYi() {

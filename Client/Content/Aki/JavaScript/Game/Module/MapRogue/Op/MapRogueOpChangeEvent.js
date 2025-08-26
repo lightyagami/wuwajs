@@ -26,17 +26,17 @@ class MapRogueOpChangeEvent extends MapRogueOp_1.MapRogueOp {
     this.Execute(e);
   }
   OnExecute(s) {
-    var t = this.Data.pxu;
+    var t = this.Data.Kxu;
     if (t) {
       s.SetInteractAvailable(4, false);
-      for (let e = 0; e < t.yxu.length; e++) {
-        var r = t.yxu[e];
-        var i = e === t.yxu.length - 1;
-        this.Lxu(s, r.c5n, r.SIc, i);
+      for (let e = 0; e < t.Yxu.length; e++) {
+        var r = t.Yxu[e];
+        var i = e === t.Yxu.length - 1;
+        this.tUu(s, r.c5n, r.SIc, i);
       }
     }
   }
-  Lxu(r, i, a, n) {
+  tUu(r, i, a, n) {
     var e = new AsyncTask_1.AsyncTask("MapRogueOpChangeEvent.SingleGridChangeFlow", async () => {
       r.FocusOnGrid(i);
       const e = new CustomPromise_1.CustomPromise();
@@ -57,14 +57,14 @@ class MapRogueOpChangeEvent extends MapRogueOp_1.MapRogueOp {
           t.SetResult();
         }, this.wk1);
         await t.Promise;
-        this.Axu(r);
+        this.iUu(r);
       }
       return true;
     });
     TaskSystem_1.TaskSystem.AddTask(e);
     TaskSystem_1.TaskSystem.Run();
   }
-  Axu(e) {
+  iUu(e) {
     e.SetInteractAvailable(4, true);
     this.Execute(e);
   }

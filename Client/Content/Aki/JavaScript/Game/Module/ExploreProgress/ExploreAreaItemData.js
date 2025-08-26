@@ -15,6 +15,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const MapDefine_1 = require("../Map/MapDefine");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
+const ExploreProgressDefine_1 = require("./ExploreProgressDefine");
 class ExploreAreaItemData {
   constructor() {
     this.AreaId = 0;
@@ -55,6 +56,7 @@ class ExploreAreaItemData {
     this.e6_ = undefined;
     this.SpecialPlayerDesc = "";
     this.gQl = false;
+    this.yJe = [];
   }
   get IsShowProgressBar() {
     return this.Jjl && this.PlayPointTotalCount > 0 && !this.IsCompleted();
@@ -216,6 +218,20 @@ class ExploreAreaItemData {
   HasSpecialPlayPoint() {
     return this.PlayProgressDataList.some(t => t.PlayPointType === 1);
   }
+  TrackPoint() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("ExploreProgress", 87, `Track ExploreType: ${this.ExploreType}, AreaId: ${this.AreaId}`);
+    }
+    if (this.PlayIdMap.size > 0) {
+      this.TrackPlayPoint();
+    } else {
+      this.mKu();
+    }
+  }
+  mKu() {
+    var t = this.SubTypes[0];
+    ControllerHolder_1.ControllerHolder.ExploreProgressController.ExploreEntityTraceRequest(t, this.AreaId);
+  }
   TrackPlayPoint() {
     if (!this.MOl()) {
       if (this.IsFinishedPlayPoint) {
@@ -237,11 +253,11 @@ class ExploreAreaItemData {
         Log_1.Log.Debug("ExploreProgress", 69, "导航去附近标记", ["MarkId", e.MarkId], ["MarkType", e.ObjectType], ["MarkName", ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e.MarkTitle)], ["FindState", t]);
       }
       if (t === 1) {
-        ModelManager_1.ModelManager.MapModel.CreateTempMapMark(e.MarkId);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
           MarkId: e.MarkId,
           MarkType: e.ObjectType,
-          Focal: true
+          Focal: true,
+          NeedTempShow: true
         });
       } else if (t === 0) {
         this.t6_(e);
@@ -301,11 +317,11 @@ class ExploreAreaItemData {
       Log_1.Log.Debug("ExploreProgress", 69, "清场-找到任务标记", ["QuestId", t], ["QuestInfo", e], ["NodeId", i], ["QuestMarkId", r], ["IsSuspend", e?.IsSuspend()]);
     }
     if (r && !e?.IsSuspend()) {
-      ModelManager_1.ModelManager.MapModel.CreateTempMapMark(r);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
         MarkId: r,
         MarkType: 12,
-        Focal: true
+        Focal: true,
+        NeedTempShow: true
       });
       this.n6_(r, 12);
     }
@@ -317,11 +333,11 @@ class ExploreAreaItemData {
       Log_1.Log.Debug("ExploreProgress", 69, "清场-找到玩法点标记", ["PlayId", t], ["MapMark-Id", e?.MarkId], ["MapMark-Type", e?.ObjectType]);
     }
     if (e) {
-      ModelManager_1.ModelManager.MapModel.CreateTempMapMark(e.MarkId);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
         MarkId: e.MarkId,
         MarkType: e.ObjectType,
-        Focal: true
+        Focal: true,
+        NeedTempShow: true
       });
       this.n6_(e.MarkId, e.ObjectType);
     }
@@ -353,31 +369,31 @@ class ExploreAreaItemData {
   }
   IOl(t) {
     let s = undefined;
-    let a = undefined;
-    let o = Number.MAX_VALUE;
-    const n = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
+    let o = undefined;
+    let a = Number.MAX_VALUE;
+    const h = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(未缩小)", ["MyPos", n]);
+      Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(未缩小)", ["MyPos", h]);
     }
-    n.DivisionEqual(1000);
+    h.DivisionEqual(1000);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(已缩小)", ["MyPos", n], ["Scale", 1000]);
+      Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(已缩小)", ["MyPos", h], ["Scale", 1000]);
     }
     t.forEach(t => {
       var e;
       var i;
       var r = this.Czl(t);
-      if (r && (e = r.EntityConfigId, i = r.MapId, e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "标记位置(未缩小)", ["MarkPos", e]), e.DivisionEqual(MapDefine_1.UNIT * 1000), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "标记位置(已缩小)", ["MarkPos", e]), i = Vector_1.Vector.DistSquared(n, e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "计算标记与玩家的距离", ["标记id", r.MarkId], ["标记的位置", e], ["距离的平方", i], ["Info", t]), i < o)) {
-        o = i;
+      if (r && (e = r.EntityConfigId, i = r.MapId, e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "标记位置(未缩小)", ["MarkPos", e]), e.DivisionEqual(MapDefine_1.UNIT * 1000), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "标记位置(已缩小)", ["MarkPos", e]), i = Vector_1.Vector.DistSquared(h, e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "计算标记与玩家的距离", ["标记id", r.MarkId], ["标记的位置", e], ["距离的平方", i], ["Info", t]), i < a)) {
+        a = i;
         s = r;
-        a = t;
+        o = t;
       }
     });
     if (s) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "找到附近的标记", ["MarkId", s.MarkId], ["NearInfo", a]);
+        Log_1.Log.Debug("ExploreProgress", 69, "找到附近的标记", ["MarkId", s.MarkId], ["NearInfo", o]);
       }
-      this.e6_ = a;
+      this.e6_ = o;
       return s;
     }
     if (Log_1.Log.CheckDebug()) {
@@ -439,6 +455,69 @@ class ExploreAreaItemData {
       ...t,
       IgnoreHiddenType: true
     }));
+  }
+  SetEntityList(t) {
+    this.yJe = t;
+    this.CalcEntityDistance();
+    this.CreateEntityMark();
+  }
+  CalcEntityDistance() {
+    if (this.yJe && !(this.yJe.length < 2)) {
+      var t = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(this.AreaId);
+      if (t) {
+        const s = t.MapConfigId;
+        const o = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
+        let i = Number.MAX_VALUE;
+        let r = 0;
+        o.DivisionEqual(1000);
+        this.yJe.forEach((t, e) => {
+          t = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(t, s);
+          t.DivisionEqual(1000);
+          t = Vector_1.Vector.DistSquared(o, t);
+          if (t < i) {
+            i = t;
+            r = e;
+          }
+        });
+        if (r > 0) {
+          t = this.yJe[r];
+          this.yJe.splice(r, 1);
+          this.yJe.unshift(t);
+        }
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ExploreProgress", 87, "找不到区域配置信息", ["AreaId", this.AreaId]);
+      }
+    }
+  }
+  CreateEntityMark() {
+    var t;
+    var e;
+    var i;
+    var r;
+    if (this.yJe && this.yJe.length !== 0) {
+      if (t = ExploreProgressDefine_1.exploreType2MarkType.get(this.ExploreType)) {
+        if (e = ExploreProgressDefine_1.exploreType2Config.get(this.ExploreType)) {
+          if (i = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(this.AreaId)) {
+            r = this.yJe[0];
+            r = ModelManager_1.ModelManager.MapModel.CreateDyMarkByEntity(r, t, e, i.MapConfigId);
+            ModelManager_1.ModelManager.MapModel.AddPendingTempMapMarkList(r);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
+              MarkId: r,
+              MarkType: t,
+              Focal: true
+            });
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("ExploreProgress", 87, "找不到探索项对应的区域id配置", ["ExploreType", this.ExploreType]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("ExploreProgress", 87, "找不到探索项对应的标记id配置", ["ExploreType", this.ExploreType]);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("ExploreProgress", 87, "找不到探索项对应的标记类型", ["ExploreType", this.ExploreType]);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("ExploreProgress", 87, "实体Id列表为空");
+    }
   }
 }
 exports.ExploreAreaItemData = ExploreAreaItemData;

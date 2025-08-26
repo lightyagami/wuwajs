@@ -70,7 +70,7 @@ class BulletDataBase {
     this.O6o = undefined;
     this.iSa = undefined;
     this.HitActorTypeInternal = undefined;
-    this.Osu = undefined;
+    this._au = undefined;
     this.Pe = t;
   }
   get IgnoreGradient() {
@@ -436,10 +436,10 @@ class BulletDataBase {
     return this.HitActorTypeInternal;
   }
   get BigRangeSearchType() {
-    if (this.Osu === undefined) {
-      this.Osu = this.Pe.大范围子弹检测方式;
+    if (this._au === undefined) {
+      this._au = this.Pe.大范围子弹检测方式;
     }
-    return this.Osu;
+    return this._au;
   }
   Preload() {
     this.F6o();

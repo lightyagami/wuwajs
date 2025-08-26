@@ -55,7 +55,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     this.cql = -1;
     this.mql = undefined;
     this.dql = false;
-    this.Jau = undefined;
+    this.Ihu = undefined;
     this.mjl = false;
     this.Lo = undefined;
     this.Lie = undefined;
@@ -180,7 +180,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
       this.N1_ ||= [];
       this.N1_.push(this.Lo.HookEnableCondition);
     }
-    this.Lie = this.Entity.GetComponent(196);
+    this.Lie = this.Entity.GetComponent(197);
     if (this.Lie?.Valid) {
       this.Lie.AddTag(-254251760);
     }
@@ -204,7 +204,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     var e = this.Entity.GetComponent(0);
     if (e) {
       e = e.GetBaseInfo();
@@ -256,7 +256,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     if (this.ac !== t) {
       this.Lie.RemoveTag(hookPointStateTagMap.get(this.ac));
       if (this.ac === 1) {
-        this.Entity.GetComponent(202).PlaySceneInteractionEndEffect(0);
+        this.Entity.GetComponent(203).PlaySceneInteractionEndEffect(0);
       }
       this.ac = t;
       this.Lie.AddTag(hookPointStateTagMap.get(this.ac));
@@ -283,7 +283,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     var e = this.Lo?.HookInteractConfig;
     var i = e.SlashAngleType;
     var e = e.DefaultSlashDir;
-    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(205);
+    var o = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(206);
     if (o) {
       switch (i) {
         case "Slash30":
@@ -362,7 +362,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   GetSafePointLocation() {
     var t = Vector_1.Vector.Create();
     if (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") {
-      var e = this.Zau();
+      var e = this.Thu();
       if (!e) {
         return t;
       }
@@ -373,7 +373,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   GetSafePointRotation() {
     var t = Rotator_1.Rotator.Create();
     if (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") {
-      var e = this.Zau();
+      var e = this.Thu();
       if (!e) {
         return t;
       }
@@ -381,16 +381,16 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     }
     return t;
   }
-  Zau() {
-    if (this.Jau) {
-      return this.Jau;
+  Thu() {
+    if (this.Ihu) {
+      return this.Ihu;
     }
     if (this.Lo.HookInteractConfig?.Type === "SlashHook" || this.Lo.HookInteractConfig?.Type === "ChargeSlashHook") {
       var t = this.Lo?.HookInteractConfig?.SlashBackSafePointId;
       var e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t);
       if (e) {
-        this.Jau = e;
-        return this.Jau;
+        this.Ihu = e;
+        return this.Ihu;
       }
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 31, "[GetSafePointEntityData] entityData is null", ["safePointId", t]);

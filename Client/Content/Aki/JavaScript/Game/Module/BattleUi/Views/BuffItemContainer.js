@@ -24,15 +24,20 @@ class BuffItemContainer {
     this.aa = 0;
     this.rJl = false;
     this.YLe = false;
+    this.p2u = false;
+    this.v2u = undefined;
     this.m1t = undefined;
     this.vkn = undefined;
     this.PGl = 0;
   }
-  Init(t, i = MAX_ITEM_COUNT, s = false, e = false) {
+  Init(t, i = MAX_ITEM_COUNT, s = false, h = false, e = false, r = undefined) {
     this.pkn = t;
     this.aa = i;
     this.rJl = s;
-    this.YLe = e;
+    this.YLe = h;
+    this.p2u = e;
+    this.v2u = r;
+    this.y2u();
   }
   Tick(i) {
     var t = Time_1.Time.Frame;
@@ -40,19 +45,19 @@ class BuffItemContainer {
       if (this.dkn.length > MAX_ITEM_COUNT) {
         this.PGl = t + TICK_INTERVAL_FRAME_AT_MORE;
       }
-      for (const h of this.dkn) {
-        var s = h.BuffItem;
+      for (const e of this.dkn) {
+        var s = e.BuffItem;
         if (!s) {
           break;
         }
         s.Tick(i);
       }
       for (let t = this._nt.length - 1; t >= 0; t--) {
-        var e = this._nt[t];
-        if (!e.TickHiding(i)) {
+        var h = this._nt[t];
+        if (!h.TickHiding(i)) {
           this._nt.splice(t, 1);
-          e.GetRootItem().SetHierarchyIndex(this.dkn.length + this._nt.length);
-          this.unt.push(e);
+          h.GetRootItem().SetHierarchyIndex(this.dkn.length + this._nt.length);
+          this.unt.push(h);
         }
       }
     }
@@ -60,11 +65,11 @@ class BuffItemContainer {
   RefreshBuff(t) {
     this.ClearAll();
     if (t?.IsInit) {
-      this.m1t = t.Entity.GetComponent(174);
-      this.vkn = t.Entity.GetComponent(190);
+      this.m1t = t.Entity.GetComponent(175);
+      this.vkn = t.Entity.GetComponent(191);
       t = t.Entity.GetComponent(21);
       this.Fah(t);
-      if (this.YLe && (t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(226))) {
+      if (this.YLe && (t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(227))) {
         this.Fah(t);
       }
     } else {
@@ -75,50 +80,64 @@ class BuffItemContainer {
   Fah(t) {
     for (const s of t.GetAllCurrentCueRef()) {
       var i = s.CueConfig;
-      if (i.CueType === 2 || i.CueType === 14) {
+      if (i.CueType === 2 || i.CueType === 14 || i.CueType === 24) {
         this.AddBuffByCue(i, s.BuffHandleId);
       }
     }
   }
-  AddBuffByCue(i, s, e = false) {
+  AddBuffByCue(i, s, h = false) {
     var t;
-    var h = i.CueType;
-    if (h === 2) {
-      if (this.oJl(i) && !this.Ckn.has(s) && (r = this.Skn(s))) {
-        (t = this.Mkn(i)).SingleBuff = r;
-        this.Ckn.set(s, t);
-        this.Ekn(t, e);
-      }
-    } else if (h === 14 && this.oJl(i)) {
-      var r = i.Id;
-      let t = this.gkn.get(r);
-      if (t) {
-        if (t.BuffHandleSet.has(s)) {
-          return undefined;
-        } else {
-          t.BuffHandleSet.add(s);
-          return;
+    var e = i.CueType;
+    if (e !== 2 || this.p2u) {
+      if (e !== 14 || this.p2u) {
+        if (e === 24 && this.p2u && this.oJl(i) && !this.Ckn.has(s) && (e = this.Skn(s))) {
+          (t = this.Mkn(i)).SingleBuff = e;
+          this.Ckn.set(s, t);
+          this.Ekn(t, h);
         }
+      } else if (this.oJl(i)) {
+        var e = i.Id;
+        let t = this.gkn.get(e);
+        if (t) {
+          if (t.BuffHandleSet.has(s)) {
+            return undefined;
+          } else {
+            t.BuffHandleSet.add(s);
+            if (t.BuffItem && (t.BuffItem.SetNum(t.BuffHandleSet.size), h) && this.dkn.indexOf(t) < this.aa) {
+              t.BuffItem.PlayAddBuffAnim();
+            }
+            return;
+          }
+        }
+        (t = this.Mkn(i)).BuffHandleSet.add(s);
+        this.gkn.set(e, t);
+        this.Ekn(t, h);
       }
-      (t = this.Mkn(i)).BuffHandleSet.add(s);
-      this.gkn.set(r, t);
-      this.Ekn(t, e);
+    } else if (this.oJl(i) && !this.Ckn.has(s) && (t = this.Skn(s))) {
+      (e = this.Mkn(i)).SingleBuff = t;
+      this.Ckn.set(s, e);
+      this.Ekn(e, h);
     }
   }
   oJl(t) {
     return !this.rJl || !(t.Parameters.length > 4) || t.Parameters[4] !== "1";
   }
   RemoveBuffByCue(t, i, s = false) {
-    var e;
-    var h = t.CueType;
-    if (h === 2) {
-      if (e = this.Ckn.get(i)) {
+    var h;
+    var e = t.CueType;
+    if (e === 2 || e === 24) {
+      if (h = this.Ckn.get(i)) {
         this.Ckn.delete(i);
-        this.ykn(e, s);
+        this.ykn(h, s);
       }
-    } else if (h === 14 && (e = t.Id, h = this.gkn.get(e)) && h.BuffHandleSet.has(i) && (h.BuffHandleSet.delete(i), h.BuffHandleSet.size <= 0)) {
-      this.gkn.delete(e);
-      this.ykn(h, s);
+    } else if (e === 14 && (h = t.Id, e = this.gkn.get(h)) && e.BuffHandleSet.has(i)) {
+      e.BuffHandleSet.delete(i);
+      if (e.BuffHandleSet.size <= 0) {
+        this.gkn.delete(h);
+        this.ykn(e, s);
+      } else if (e.BuffItem) {
+        e.BuffItem.SetNum(e.BuffHandleSet.size);
+      }
     }
   }
   Mkn(t) {
@@ -141,12 +160,13 @@ class BuffItemContainer {
       t.BuffItem = this.cst();
       this.mst(t, s, i);
     }
+    this.y2u();
   }
   Tkn(i) {
     var s = this.dkn.length;
     for (let t = 0; t < s; t++) {
-      var e = this.dkn[t];
-      if (BuffItemInfo_1.BuffItemInfo.Compare(e, i) >= 0) {
+      var h = this.dkn[t];
+      if (BuffItemInfo_1.BuffItemInfo.Compare(h, i) >= 0) {
         this.dkn.splice(t, 0, i);
         return t;
       }
@@ -166,6 +186,7 @@ class BuffItemContainer {
         this.mst(s, this.aa - 1, false);
       }
       this.Ikn(t);
+      this.y2u();
     }
   }
   Skn(t) {
@@ -180,12 +201,12 @@ class BuffItemContainer {
     }
   }
   mst(t, i, s = false) {
-    var e = t.BuffItem;
-    e.Activate(t.BuffCueConfig, t.SingleBuff, s);
+    var h = t.BuffItem;
+    h.Activate(t.BuffCueConfig, t.SingleBuff, s, t.BuffHandleSet.size);
     if (i <= 0) {
-      e.GetRootItem().SetHierarchyIndex(0);
-    } else if (t = this.dkn[i - 1].BuffItem) {
-      e.GetRootItem().SetHierarchyIndex(t.GetRootItem().GetHierarchyIndex() + 1);
+      h.GetRootItem().SetHierarchyIndex(0);
+    } else if (s = this.dkn[i - 1].BuffItem) {
+      h.GetRootItem().SetHierarchyIndex(s.GetRootItem().GetHierarchyIndex() + 1);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Battle", 17, "要插入的buff图标前面的buff没有buffItem");
     }
@@ -195,6 +216,11 @@ class BuffItemContainer {
     if (s) {
       t.BuffItem = undefined;
       (i ? (s.DeactivateWithCloseAnim(), this._nt) : (s.Deactivate(), s.GetRootItem().SetHierarchyIndex(this.dkn.length + this._nt.length), this.unt)).push(s);
+    }
+  }
+  y2u() {
+    if (this.v2u) {
+      this.v2u.SetUIActive(this.dkn.length > this.aa);
     }
   }
   ClearAll() {

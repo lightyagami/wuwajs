@@ -31,28 +31,28 @@ class MapMarkContainer {
   Tick() {
     this.vlh.Process();
   }
-  ClearMarkItems(e, t) {
+  ClearMarkItems(e, r) {
     if (e) {
-      var r = this.rUi.get(e);
-      if (r) {
-        for (var [, a] of r) {
+      var t = this.rUi.get(e);
+      if (t) {
+        for (var [, a] of t) {
           this.hUi.delete(a.MarkId);
-          a.Destroy(t);
+          a.Destroy(r);
           this.LUi(a);
         }
-        r.clear();
+        t.clear();
       }
-      r = this.Mlh.get(e);
-      if (r) {
-        for (var [, i] of r) {
-          i.Destroy(t);
+      t = this.Mlh.get(e);
+      if (t) {
+        for (var [, i] of t) {
+          i.Destroy(r);
         }
-        r.clear();
+        t.clear();
       }
       this.vlh.CancelMapTaskByType(e);
     } else {
-      this.nIl(this.rUi, t);
-      this.nIl(this.Mlh, t);
+      this.nIl(this.rUi, r);
+      this.nIl(this.Mlh, r);
       this.sUi.clear();
       this.rUi.clear();
       this.Mlh.clear();
@@ -60,152 +60,155 @@ class MapMarkContainer {
       this.vlh.Dispose();
     }
   }
-  AddMarkItem(t, r) {
+  AddMarkItem(r, t) {
     var e;
-    if (r) {
-      if (r.IsTracked && r.MarkType !== 12) {
+    if (t) {
+      if (t.MarkId && t.MarkId > 0 && (t.MarkId < 10000000 || t.MarkId > 10000020) && ConfigManager_1.ConfigManager.MapConfig.SearchMarkConfig(t.MarkId) === undefined) {
+        MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.AddMarkItem, 未知标记", ["MarkId", t.MarkId]);
+      }
+      if (t.IsTracked && t.MarkType !== 12) {
         e = {
-          MarkType: r.MarkType,
-          MarkId: r.MarkId,
+          MarkType: t.MarkType,
+          MarkId: t.MarkId,
           Track: true
         };
         if (!ModelManager_1.ModelManager.MapModel.IsEqualToCurTrack(e)) {
           ModelManager_1.ModelManager.MapModel.SetCurTrackMark(e);
         }
-        this.sUi.add(r);
+        this.sUi.add(t);
       }
-      if (r.IsInConsistentDistrict()) {
-        MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.AddMarkItem, 被添加到跨地图列表，将不会显示在地图上", ["markType", t], ["markId", r.MarkId], ["MapType", r.MapType], ["InstanceDungeonId", r.InstanceDungeonId], ["MapId", r.MapId]);
-        this.Slh(t, r);
+      if (t.IsInConsistentDistrict()) {
+        MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.AddMarkItem, 被添加到跨地图列表，将不会显示在地图上", ["markType", r], ["markId", t.MarkId], ["MapType", t.MapType], ["InstanceDungeonId", t.InstanceDungeonId], ["MapId", t.MapId]);
+        this.Slh(r, t);
       } else {
-        let e = this.GetMarkItemsByType(t, false);
+        let e = this.GetMarkItemsByType(r, false);
         if (!e) {
           e = new Map();
-          this.rUi.set(t, e);
+          this.rUi.set(r, e);
         }
-        if (e.has(r.MarkId)) {
+        if (e.has(t.MarkId)) {
           if (ModelManager_1.ModelManager.WorldMapModel.EnableDebug) {
-            MapLogger_1.MapLogger.ErrorOnce(r.MarkId, 63, "重复添加标记_MarkMgr", ["MarkId", r.MarkId]);
+            MapLogger_1.MapLogger.ErrorOnce(t.MarkId, 63, "重复添加标记_MarkMgr", ["MarkId", t.MarkId]);
           }
         } else {
-          e.set(r.MarkId, r);
-          this.TUi(r);
-          MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.AddMarkItem", ["markType", t], ["markId", r.MarkId], ["MapType", r.MapType]);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddMapMark, r);
+          e.set(t.MarkId, t);
+          this.TUi(t);
+          MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.AddMarkItem", ["markType", r], ["markId", t.MarkId], ["MapType", t.MapType]);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddMapMark, t);
         }
       }
     }
   }
-  Slh(t, r) {
-    if (r) {
-      let e = this.GetDifferMapMarkItemsByType(t);
+  Slh(r, t) {
+    if (t) {
+      let e = this.GetDifferMapMarkItemsByType(r);
       if (!e) {
         e = new Map();
-        this.Mlh.set(t, e);
+        this.Mlh.set(r, e);
       }
-      e.set(r.MarkId, r);
+      e.set(t.MarkId, t);
     }
   }
-  RemoveMarkItem(e, t) {
-    this.vlh.CancelMapTask(e, t);
-    var r = this.GetMarkItemsByType(e);
-    if (r && r.size !== 0) {
-      var a = r.get(t);
-      r.delete(t);
-      this.hUi.delete(t);
+  RemoveMarkItem(e, r) {
+    this.vlh.CancelMapTask(e, r);
+    var t = this.GetMarkItemsByType(e);
+    if (t && t.size !== 0) {
+      var a = t.get(r);
+      t.delete(r);
+      this.hUi.delete(r);
       if (a) {
         this.LUi(a);
-        MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.RemoveMarkItem", ["markType", e], ["markId", t]);
+        MapLogger_1.MapLogger.Debug(63, "标记系统->MapMarkContainer.RemoveMarkItem", ["markType", e], ["markId", r]);
         return a;
       }
     }
   }
-  nIl(e, t) {
-    for (var [, r] of e) {
-      for (var [, a] of r) {
+  nIl(e, r) {
+    for (var [, t] of e) {
+      for (var [, a] of t) {
         this.hUi.delete(a.MarkId);
-        a.Destroy(t);
+        a.Destroy(r);
       }
     }
   }
   TUi(e) {
-    var t;
-    var r = e.WorldPosition;
-    if (r) {
-      r = MapUtil_1.MapUtil.ConvertWorldPositionToIndex(r);
-      if (t = this.nUi.get(r)) {
-        this.DO_(t, e);
+    var r;
+    var t = e.WorldPosition;
+    if (t) {
+      t = MapUtil_1.MapUtil.ConvertWorldPositionToIndex(t);
+      if (r = this.nUi.get(t)) {
+        this.DO_(r, e);
       } else {
-        t = new Set().add(e);
-        this.nUi.set(r, t);
+        r = new Set().add(e);
+        this.nUi.set(t, r);
       }
-      e.GridId = r;
+      e.GridId = t;
     }
   }
-  DO_(e, t) {
-    if (e.has(t)) {
-      MapLogger_1.MapLogger.ErrorOnce(t.MarkId, 63, "重复添加标记到格子集合中_MarkMarkContainer", ["MarkId", t.MarkId]);
+  DO_(e, r) {
+    if (e.has(r)) {
+      MapLogger_1.MapLogger.ErrorOnce(r.MarkId, 63, "重复添加标记到格子集合中_MarkMarkContainer", ["MarkId", r.MarkId]);
     } else {
-      e.add(t);
+      e.add(r);
     }
   }
   LUi(e) {
-    var t = e.GridId;
-    var t = this.nUi.get(t);
-    if (t) {
-      t.delete(e);
+    var r = e.GridId;
+    var r = this.nUi.get(r);
+    if (r) {
+      r.delete(e);
     }
   }
-  ExistMarkItem(e, t) {
-    return this.GetMarkItemPurely(e, t) !== undefined;
+  ExistMarkItem(e, r) {
+    return this.GetMarkItemPurely(e, r) !== undefined;
   }
-  ExistMarkItemTask(e, t) {
-    return this.vlh.HasTask(e, t);
+  ExistMarkItemTask(e, r) {
+    return this.vlh.HasTask(e, r);
   }
-  GetMarkItem(e, t) {
-    this.vlh.ForceExecuteTask(e, t);
-    return this.GetMarkItemPurely(e, t);
+  GetMarkItem(e, r) {
+    this.vlh.ForceExecuteTask(e, r);
+    return this.GetMarkItemPurely(e, r);
   }
-  GetMarkItemPurely(e, t) {
+  GetMarkItemPurely(e, r) {
     if (e === 0) {
-      const a = this.GetMarkItemById(t);
+      const a = this.GetMarkItemById(r);
       return a;
     }
-    var r = this.GetMarkItemsByType(e);
-    if (r) {
-      const a = r.get(t);
-      return a || this.GetDifferMapMarkItem(e, t);
+    var t = this.GetMarkItemsByType(e);
+    if (t) {
+      const a = t.get(r);
+      return a || this.GetDifferMapMarkItem(e, r);
     }
   }
   GetMarkItemById(a, e = false) {
-    var t = e => {
-      let t = undefined;
-      for (var [, r] of e) {
-        if (t = r.get(a)) {
+    var r = e => {
+      let r = undefined;
+      for (var [, t] of e) {
+        if (r = t.get(a)) {
           break;
         }
       }
-      return t;
+      return r;
     };
-    let r = t(this.GetAllMarkItems());
-    if (r === undefined && e) {
+    let t = r(this.GetAllMarkItems());
+    if (t === undefined && e) {
       e = this.GetAllDiffMapMarkItems();
-      r = t(e);
+      t = r(e);
     }
-    return r;
+    return t;
   }
-  GetDifferMapMarkItem(e, t) {
+  GetDifferMapMarkItem(e, r) {
     e = this.GetDifferMapMarkItemsByType(e);
     if (e) {
-      return e.get(t) || undefined;
+      return e.get(r) || undefined;
     }
   }
-  GetMarkItemsByType(e, t = true) {
-    var r = this.rUi.get(e);
-    if ((!r || r.size <= 0) && t) {
+  GetMarkItemsByType(e, r = true) {
+    var t = this.rUi.get(e);
+    if ((!t || t.size <= 0) && r) {
       return this.GetDifferMapMarkItemsByType(e);
     } else {
-      return r;
+      return t;
     }
   }
   GetDifferMapMarkItemsByType(e) {
@@ -220,16 +223,16 @@ class MapMarkContainer {
   GetMarkItemsByClickPosition(e) {
     var e = MapUtil_1.MapUtil.UiPosition2WorldPosition(e);
     var e = MapUtil_1.MapUtil.ConvertWorldPositionToIndex(e);
-    var t = [];
+    var r = [];
     for (const a of MapUtil_1.MapUtil.GetAroundIndex(e)) {
-      var r = this.nUi.get(a);
-      if (r) {
-        t.push(...r);
+      var t = this.nUi.get(a);
+      if (t) {
+        r.push(...t);
       }
     }
-    return t;
+    return r;
   }
-  UpdateNearbyMarkItem(e, t, r) {
+  UpdateNearbyMarkItem(e, r, t) {
     this.vlh.Flush();
     var a;
     var e = MapUtil_1.MapUtil.ConvertWorldPositionToIndex(e);
@@ -246,109 +249,109 @@ class MapMarkContainer {
     }
     this.GDl();
     for ([, a] of this.hUi) {
-      t(a);
-      var n = a.GridId;
-      if (!this.qDl.has(a.MarkId) && (!a.IsCanShowView || !i.has(n))) {
+      r(a);
+      var M = a.GridId;
+      if (!this.qDl.has(a.MarkId) && (!a.IsCanShowView || !i.has(M))) {
         this.aUi.add(a);
         this.hUi.delete(a.MarkId);
       }
     }
     for (const k of this.sUi) {
-      t(k);
+      r(k);
     }
     if (this.aUi.size !== 0) {
       for (const f of this.aUi) {
         if (!f.IsDestroy) {
-          r(f);
+          t(f);
         }
       }
       this.aUi.clear();
     }
     for (const _ of i) {
-      var M = this.nUi.get(_);
-      if (M) {
-        for (const p of M) {
-          t(p);
+      var n = this.nUi.get(_);
+      if (n) {
+        for (const p of n) {
+          r(p);
         }
       }
     }
   }
   GDl() {
     this.qDl.clear();
-    for (const r of MarkDefine_1.permanentUpdateTypeSet) {
-      var e = this.GetMarkItemsByType(r);
+    for (const t of MarkDefine_1.permanentUpdateTypeSet) {
+      var e = this.GetMarkItemsByType(t);
       if (e) {
-        for (var [, t] of e) {
-          this.hUi.set(t.MarkId, t);
-          this.qDl.add(t.MarkId);
+        for (var [, r] of e) {
+          this.hUi.set(r.MarkId, r);
+          this.qDl.add(r.MarkId);
         }
       }
     }
   }
-  FindNearbyMarkItems(r, e, a) {
+  FindNearbyMarkItems(t, e, a) {
     this.vlh.Flush();
-    var t = MapUtil_1.MapUtil.GetQueryNearestIndexSet(r.WorldPosition, e);
+    var r = MapUtil_1.MapUtil.GetQueryNearestIndexSet(t.WorldPosition, e);
     const i = [];
     const s = e * e;
-    for (const n of t) {
-      this.nUi.get(n)?.forEach(e => {
-        var t;
-        if ((a?.(e) ?? true) && (t = r.MarkType !== 9 && r.MarkType !== 22 || !MathUtils_1.MathUtils.IsNearlyZero(r.WorldPosition.Z) ? Vector_1.Vector.DistSquared(e.WorldPosition, r.WorldPosition) : Vector2D_1.Vector2D.DistSquared(Vector2D_1.Vector2D.Create(e.WorldPosition.X, e.WorldPosition.Y), Vector2D_1.Vector2D.Create(r.WorldPosition.X, r.WorldPosition.Y))) <= s) {
-          i.push([e, t]);
+    for (const M of r) {
+      this.nUi.get(M)?.forEach(e => {
+        var r;
+        if ((a?.(e) ?? true) && (r = t.MarkType !== 9 && t.MarkType !== 22 || !MathUtils_1.MathUtils.IsNearlyZero(t.WorldPosition.Z) ? Vector_1.Vector.DistSquared(e.WorldPosition, t.WorldPosition) : Vector2D_1.Vector2D.DistSquared(Vector2D_1.Vector2D.Create(e.WorldPosition.X, e.WorldPosition.Y), Vector2D_1.Vector2D.Create(t.WorldPosition.X, t.WorldPosition.Y))) <= s) {
+          i.push([e, r]);
         }
       });
     }
     if (i.length > 0) {
-      i.sort((e, t) => e[1] - t[1]);
+      i.sort((e, r) => e[1] - r[1]);
     }
     return i;
   }
-  RemoveDynamicMark(e, t) {
-    var r = this.GetMarkItem(e, t);
-    if (r && (this.TrackMapMark(e, r.MarkId, false), this.hUi.has(t) && this.hUi.delete(t), (r = this.RemoveMarkItem(e, t)) !== undefined)) {
-      r.Destroy();
+  RemoveDynamicMark(e, r) {
+    var t = this.GetMarkItem(e, r);
+    if (t && (this.TrackMapMark(e, t.MarkId, false), this.hUi.has(r) && this.hUi.delete(r), (t = this.RemoveMarkItem(e, r)) !== undefined)) {
+      t.Destroy();
     }
   }
-  TrackMapMark(t, r, a, i = false) {
-    var s = ModelManager_1.ModelManager.TrackModel.GetTrackData(1, r);
-    var n = this.GetMarkItem(t, r);
-    if (n || s) {
+  TrackMapMark(r, t, a, i = false) {
+    var s = ModelManager_1.ModelManager.TrackModel.GetTrackData(1, t);
+    var M = this.GetMarkItem(r, t);
+    if (M || s) {
       let e = 0;
       if (s) {
         e = s.TrackSource;
-        s.IconPath = n?.IconPath ?? s.IconPath;
+        s.IconPath = M?.IconPath ?? s.IconPath;
       }
-      if (n) {
-        e = n.TrackSource;
+      if (M) {
+        e = M.TrackSource;
       }
-      s = ModelManager_1.ModelManager.TrackModel.IsTracking(e, r);
+      s = ModelManager_1.ModelManager.TrackModel.IsTracking(e, t);
       if (i || s !== a) {
         if (a) {
-          if (n) {
-            i = n.MarkItemEntity.GetComponent(15)?.Config;
+          if (M) {
+            i = M.MarkItemEntity.GetComponent(15)?.Config;
             TrackController_1.TrackController.StartTrack({
-              TrackSource: n.TrackSource,
-              Id: r,
-              MarkType: t,
-              IconPath: n.IconPath,
-              TrackTarget: n.TrackTarget,
-              TrackInstanceId: n.RelativeInstanceDungeonId,
+              TrackSource: M.TrackSource,
+              Id: t,
+              MarkType: r,
+              IconPath: M.IconPath,
+              TrackTarget: M.TrackTarget,
+              TrackInstanceId: M.RelativeInstanceDungeonId,
               TrackHudEnable: i?.TrackHudEnable === 1,
               TrackAutoCancelDistance: i?.TrackAutoCancelDistance
             });
-            this.sUi.add(n);
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, n);
+            this.sUi.add(M);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, M);
           }
         } else {
-          TrackController_1.TrackController.EndTrack(e, r);
-          if (n) {
-            this.aUi.add(n);
-            this.sUi.delete(n);
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, n);
+          TrackController_1.TrackController.EndTrack(e, t);
+          if (M) {
+            this.aUi.add(M);
+            this.sUi.delete(M);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, M);
           }
         }
-      } else if (n) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, n);
+      } else if (M) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, M);
       }
     }
   }
@@ -377,56 +380,56 @@ class MapMarkContainer {
     this.sUi.clear();
   }
   GetTrackMenuMarkList() {
-    const t = [];
+    const r = [];
     this.GetMarkItemsByType(11, false)?.forEach(e => {
-      t.push(e);
+      r.push(e);
     });
     this.GetMarkItemsByType(12, false)?.forEach(e => {
       if (e.IsTracked) {
-        t.push(e);
+        r.push(e);
       }
     });
     this.sUi.forEach(e => {
       if (e.IsTracked && !e.IsInConsistentDistrict()) {
+        r.push(e);
+      }
+    });
+    return r;
+  }
+  GetNavigateMarkList() {
+    const t = [];
+    const a = ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId;
+    this.GetMarkItemsByType(11, false)?.forEach(e => {
+      var r = ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapId(e.InstanceDungeonOrMapConfigId);
+      if (a === r) {
         t.push(e);
       }
     });
-    return t;
-  }
-  GetNavigateMarkList() {
-    const r = [];
-    const a = ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId;
-    this.GetMarkItemsByType(11, false)?.forEach(e => {
-      var t = ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapId(e.InstanceDungeonOrMapConfigId);
-      if (a === t) {
-        r.push(e);
-      }
-    });
     this.GetDifferMapMarkItemsByType(11)?.forEach(e => {
-      var t = ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapId(e.InstanceDungeonOrMapConfigId);
-      if (ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(t ?? e.MapId)) {
-        r.push(e);
+      var r = ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapId(e.InstanceDungeonOrMapConfigId);
+      if (ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(r ?? e.MapId)) {
+        t.push(e);
       }
     });
     var e = ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest();
-    var t = e?.GetCurrentActiveChildQuestNode()?.NodeId ?? 0;
-    var e = e?.GetDefaultMark(t) ?? 0;
-    var t = this.GetMarkItem(12, e);
-    if (t && t.IsBtTypeQuest()) {
-      r.push(t);
+    var r = e?.GetCurrentActiveChildQuestNode()?.NodeId ?? 0;
+    var e = e?.GetDefaultMark(r) ?? 0;
+    var r = this.GetMarkItem(12, e);
+    if (r && r.IsBtTypeQuest()) {
+      t.push(r);
     }
-    return r;
+    return t;
   }
   RemoveNeedUpdateMark(e) {
     if (this.hUi.has(e)) {
       this.hUi.delete(e);
     }
   }
-  AddCreateMarkTask(e, t, r, a) {
+  AddCreateMarkTask(e, r, t, a) {
     this.vlh.AddTask({
       Priority: e ? 0 : 1,
-      MarkType: t,
-      MarkId: r,
+      MarkType: r,
+      MarkId: t,
       Execute: a
     });
   }

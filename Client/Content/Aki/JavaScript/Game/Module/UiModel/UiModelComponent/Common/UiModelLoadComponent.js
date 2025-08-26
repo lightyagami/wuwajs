@@ -45,7 +45,7 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     this.MeshArray = UE.NewArray(UE.SkeletalMesh);
     this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
     this.LoadFinishCallBack = undefined;
-    this.TY1 = ResourceSystem_1.ResourceSystem.InvalidId;
+    this.zY1 = ResourceSystem_1.ResourceSystem.InvalidId;
     this.OnPostLoadAnimClass = (u, e, c, t, f = 0) => {
       const p = this.GetMainMeshPath();
       const v = this.GetChildMeshPathList();
@@ -126,8 +126,8 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
         }
       });
     };
-    this.bY1 = (0, puerts_1.$ref)(UE.NewSet(UE.AnimationAsset));
-    this.RY1 = (0, puerts_1.$ref)(UE.NewArray(UE.AnimNotifyEvent));
+    this.JY1 = (0, puerts_1.$ref)(UE.NewSet(UE.AnimationAsset));
+    this.ZY1 = (0, puerts_1.$ref)(UE.NewArray(UE.AnimNotifyEvent));
   }
   OnInit() {
     this.UiModelActorComponent = this.Owner.CheckGetComponent(1);
@@ -185,17 +185,17 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     if (StringUtils_1.StringUtils.IsEmpty(e)) {
       this.OnPostLoadAnimClass(undefined, e, i, s, o);
     } else {
-      this.TY1 = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Class, (e, t) => {
-        this.TY1 = ResourceSystem_1.ResourceSystem.InvalidId;
+      this.zY1 = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Class, (e, t) => {
+        this.zY1 = ResourceSystem_1.ResourceSystem.InvalidId;
         this.OnPostLoadAnimClass(e, t, i, s, o);
       });
     }
   }
   GetEffectAssetByAssetClass(e) {
     if (e) {
-      (0, puerts_1.$unref)(this.bY1).Empty();
-      UE.KuroStaticLibrary.GetAnimAssetsByAnimBlueprintClass(e, this.bY1);
-      var t = (0, puerts_1.$unref)(this.bY1);
+      (0, puerts_1.$unref)(this.JY1).Empty();
+      UE.KuroStaticLibrary.GetAnimAssetsByAnimBlueprintClass(e, this.JY1);
+      var t = (0, puerts_1.$unref)(this.JY1);
       if (t.Num() !== 0) {
         var i = new Array();
         var s = t.Num();
@@ -203,9 +203,9 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
           var o = t.Get(e);
           if (o.IsA(UE.AnimSequence.StaticClass())) {
             if (o) {
-              (0, puerts_1.$unref)(this.RY1).Empty();
-              UE.KuroStaticLibrary.GetAnimSequenceNotifies(o, this.RY1);
-              var r = (0, puerts_1.$unref)(this.RY1);
+              (0, puerts_1.$unref)(this.ZY1).Empty();
+              UE.KuroStaticLibrary.GetAnimSequenceNotifies(o, this.ZY1);
+              var r = (0, puerts_1.$unref)(this.ZY1);
               var h = r.Num();
               if (h !== 0) {
                 for (let e = 0; e < h; ++e) {
@@ -235,9 +235,9 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     this.LoadFinishCallBack?.();
   }
   CancelLoad() {
-    if (this.UiModelDataComponent?.GetModelLoadState() === 1 && (UiModelResourcesManager_1.UiModelResourcesManager.CancelUiModelResourceLoad(this.LoadHandleId), this.LoadHandleId = UiModelResourcesManager_1.UiModelResourcesManager.InvalidValue, this.DestroyLoadMesh(), this.TY1 !== ResourceSystem_1.ResourceSystem.InvalidId)) {
-      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.TY1);
-      this.TY1 = ResourceSystem_1.ResourceSystem.InvalidId;
+    if (this.UiModelDataComponent?.GetModelLoadState() === 1 && (UiModelResourcesManager_1.UiModelResourcesManager.CancelUiModelResourceLoad(this.LoadHandleId), this.LoadHandleId = UiModelResourcesManager_1.UiModelResourcesManager.InvalidValue, this.DestroyLoadMesh(), this.zY1 !== ResourceSystem_1.ResourceSystem.InvalidId)) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.zY1);
+      this.zY1 = ResourceSystem_1.ResourceSystem.InvalidId;
     }
     this.ResourceLoadCache = undefined;
     this.UiModelDataComponent?.SetModelLoadState(0);

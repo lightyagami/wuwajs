@@ -20,7 +20,7 @@ class BeginnerCarnivalTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.BOe = 0;
     this.Gy1 = 0;
-    this.vhu = [];
+    this.Whu = [];
     this.xqe = undefined;
     this.JGe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
@@ -28,7 +28,7 @@ class BeginnerCarnivalTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Fy1 = () => {
       BeginnerCarnivalController_1.BeginnerCarnivalController.NewbieCarnivalAwardRequest(this.BOe);
     };
-    this.rsu = () => {
+    this.wsu = () => {
       var e = [];
       var i = ConfigManager_1.ConfigManager.BeginnerCarnivalConfig.GetNewbieCarnivalTask(this.BOe);
       for (const o of i.JumpConditionGroups) {
@@ -43,7 +43,7 @@ class BeginnerCarnivalTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
           const n = {
             ConditionId: s,
             ConditionTextId: t.Description,
-            IsFinished: this.ZZ1(s),
+            IsFinished: this.Teu(s),
             AccessId: t.AccessId,
             AccessType: i
           };
@@ -61,7 +61,7 @@ class BeginnerCarnivalTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [1, UE.UIButtonComponent], [6, UE.UIScrollViewWithScrollbarComponent], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.Fy1], [8, this.rsu], [0, this.Wpa]];
+    this.BtnBindInfo = [[1, this.Fy1], [8, this.wsu], [0, this.Wpa]];
   }
   OnStart() {
     this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this.JGe);
@@ -85,13 +85,13 @@ class BeginnerCarnivalTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     var t = n.JumpId > 0;
     var i = i.JumpTaskMap.get(this.BOe);
     var n = (i?.length ?? 0) >= n.JumpConditionGroups.length;
-    this.vhu = i ?? [];
+    this.Whu = i ?? [];
     this.GetButton(0).RootUIComp.SetUIActive(o && t && n);
     this.GetItem(7).SetUIActive(o && t && !n);
     this.GetText(2).SetUIActive(o && !t);
   }
-  ZZ1(i) {
-    return this.vhu.includes(i);
+  Teu(i) {
+    return this.Whu.includes(i);
   }
 }
 exports.BeginnerCarnivalTaskItem = BeginnerCarnivalTaskItem;

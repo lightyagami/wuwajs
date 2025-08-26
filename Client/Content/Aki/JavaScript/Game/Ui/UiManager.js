@@ -13,6 +13,8 @@ const Time_1 = require("../../Core/Common/Time");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 const GlobalData_1 = require("../GlobalData");
+const ModelManager_1 = require("../Manager/ModelManager");
+const ScrollingTipsController_1 = require("../Module/ScrollingTips/ScrollingTipsController");
 const UiCameraAnimationController_1 = require("../Module/UiCameraAnimation/UiCameraAnimationController");
 const UiCameraAnimationManager_1 = require("../Module/UiCameraAnimation/UiCameraAnimationManager");
 const UiSceneManager_1 = require("../Module/UiComponent/UiSceneManager");
@@ -362,7 +364,7 @@ class UiManager {
   }
   static ResetToBattleView(e) {
     UiManager.bCr.get(UiLayerType_1.ELayerType.Pop).CloseAllView();
-    UiManager.NormalResetToView("BattleView", e);
+    UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName, e);
   }
   static NormalResetToView(i, a) {
     UiManager.NormalResetToViewAsync(i).then(() => {
@@ -471,7 +473,7 @@ class UiManager {
         await UiActorPool_1.UiActorPool.Init();
         UiManager.OCr();
         UiNavigationViewManager_1.UiNavigationViewManager.Initialize();
-        UIGlobalMaterialParam_1.UiGlobalMaterialParam.Init();
+        await UIGlobalMaterialParam_1.UiGlobalMaterialParam.InitAsync();
         UiManager.dde();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiManagerInit);
         UiManager.Ife = 2;
@@ -635,6 +637,14 @@ class UiManager {
         }
       }
     }
+    if (r.FunctionCondition !== 0 && !ModelManager_1.ModelManager.FunctionModel.IsOpen(r.FunctionCondition)) {
+      if ((n = ModelManager_1.ModelManager.FunctionModel.GetFunctionHitTextId(r.FunctionCondition)) && n.length > 0) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(n);
+      } else {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_200440_Text");
+      }
+      return false;
+    }
     if (UiManager.XCr(e, false, a)) {
       return !!UiManager.XCr(e, true, a) || (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCore", 16, "[CanOpenView] 外部注册的全局界面OpenView检查函数不通过", ["viewName", e]), false);
     } else {
@@ -770,7 +780,7 @@ UiManager.kCr = () => {
     Log_1.Log.Info("UiCore", 16, "重置回到主界面");
   }
   UiManager.bCr.get(UiLayerType_1.ELayerType.Pop).CloseAllView();
-  UiManager.NormalResetToView("BattleView");
+  UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName);
 };
 UiManager.FCr = () => {
   if (Log_1.Log.CheckInfo()) {

@@ -77,12 +77,12 @@ class ActivityController extends ControllerBase_1.ControllerBase {
   }
   static InitActivity(e) {}
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18869, ActivityController.T4e);
-    Net_1.Net.Register(18267, ActivityController.L4e);
+    Net_1.Net.Register(27608, ActivityController.T4e);
+    Net_1.Net.Register(22726, ActivityController.L4e);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18869);
-    Net_1.Net.UnRegister(18267);
+    Net_1.Net.UnRegister(27608);
+    Net_1.Net.UnRegister(22726);
   }
   static R6t() {
     if (this.zaa !== undefined) {
@@ -138,9 +138,9 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     var e;
     if (t?.GetIfFirstOpen()) {
       (e = new Protocol_1.Aki.Protocol.M$n()).w6n = t.Id;
-      Net_1.Net.Call(24314, e, e => {
+      Net_1.Net.Call(18028, e, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18940);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24014);
         }
         ModelManager_1.ModelManager.ActivityModel.OnReceiveActivityRead(t.Id);
       });
@@ -151,10 +151,10 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     var e;
     if (t?.CanPreOpen()) {
       (e = new Protocol_1.Aki.Protocol.ak_()).w6n = t.Id;
-      Net_1.Net.Call(25191, e, e => {
+      Net_1.Net.Call(18737, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20478);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19769);
             i?.(false);
           } else {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityPreOpen, t.Id);
@@ -251,10 +251,10 @@ ActivityController.Zaa = () => {
 ActivityController.RequestActivityData = async () => {
   return !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) && new Promise(t => {
     var e = new Protocol_1.Aki.Protocol.v$n();
-    Net_1.Net.Call(29549, e, e => {
+    Net_1.Net.Call(15145, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21546);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22355);
           t(false);
         } else {
           ModelManager_1.ModelManager.ActivityModel.OnReceiveMessageData(e.Yps);

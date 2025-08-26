@@ -19,14 +19,17 @@ class RecommendQuestTipsSubPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIButtonComponent]];
     this.BtnBindInfo = [[1, this.fxl]];
   }
-  SetTipsTxtByTextId(e, ...i) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e, i);
+  SetTipsTxtByTextId(e, ...t) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e, t);
   }
   SetTipsTxt(e) {
     this.GetText(0).SetText(e);
   }
   BindClickBtnTipsCallBack(e) {
     this.pxl = e;
+  }
+  SetBtnActive(e) {
+    this.GetButton(1)?.RootUIComp.SetUIActive(e);
   }
 }
 exports.RecommendQuestTipsSubPanel = RecommendQuestTipsSubPanel;

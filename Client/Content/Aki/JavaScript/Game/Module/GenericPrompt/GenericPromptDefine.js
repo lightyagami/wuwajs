@@ -33,6 +33,7 @@ exports.genericPromptView = {
   25: "ChapterBattleDeclarationTipsWhite",
   27: "TeamTeleportFloatTips",
   26: "ChapterA",
+  35: "PlotChapterA",
   28: "DangoAbyssActivityOpen",
   29: "DangoAbyssNpcTips",
   30: "RogueResOpenTips",

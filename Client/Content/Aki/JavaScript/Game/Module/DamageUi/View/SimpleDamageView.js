@@ -15,21 +15,21 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const DamageUiManager_1 = require("../DamageUiManager");
-const ANIM_TIME = 1200;
+const ANIM_TIME = 200;
 const CRITICAL_OFFSET_SCALE = 3;
 class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.uFt = Vector_1.Vector.Create();
-    this.cX1 = new UE.VectorDouble();
+    this.gX1 = new UE.VectorDouble();
     this.cFt = 0;
     this.mFt = 0;
     this._Ft = undefined;
     this.FUn = undefined;
     this.gFt = undefined;
     this.pFt = -0;
-    this.nSu = undefined;
-    this.sSu = 1;
+    this.s7c = undefined;
+    this.a7c = 1;
   }
   Init() {
     var i = ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.GetSimpleDamageView();
@@ -41,43 +41,44 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.GetText(0)?.SetUIActive(false);
     this.GetText(2)?.SetUIActive(false);
+    this.GetItem(4)?.SetAnchorOffsetY(-80);
   }
   DestroyOverride() {
     ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.RecycleSimpleDamageView(this.RootActor);
     return true;
   }
-  InitializeData(a, r, i, s, h = false, n = false, o = false, _ = "") {
-    if (s) {
+  InitializeData(a, s, i, r, h = false, n = false, o = false, l = "") {
+    if (r) {
       SimpleDamageView.MFt.Start();
-      this.gFt = s;
-      this.uFt.FromUeVector(r);
-      this.cX1.Set(this.uFt.X, this.uFt.Y, this.uFt.Z);
-      let i = s.GetRandomOffsetX();
-      let e = s.GetRandomOffsetY();
+      this.gFt = r;
+      this.uFt.FromUeVector(s);
+      this.gX1.Set(this.uFt.X, this.uFt.Y, this.uFt.Z);
+      let i = r.GetRandomOffsetX();
+      let e = r.GetRandomOffsetY();
       if (h) {
         i *= CRITICAL_OFFSET_SCALE;
         e *= CRITICAL_OFFSET_SCALE;
       }
-      r = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      r = Vector_1.Vector.DistSquared(r, this.uFt);
-      r = MathUtils_1.MathUtils.RangeClamp(r, DamageUiManager_1.DamageUiManager.MinDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetScale, DamageUiManager_1.DamageUiManager.MinDamageOffsetScale);
-      this.cFt = i * r;
-      this.mFt = e * r;
-      r = !StringUtils_1.StringUtils.IsEmpty(_);
+      s = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
+      s = Vector_1.Vector.DistSquared(s, this.uFt);
+      s = MathUtils_1.MathUtils.RangeClamp(s, DamageUiManager_1.DamageUiManager.MinDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetScale, DamageUiManager_1.DamageUiManager.MinDamageOffsetScale);
+      this.cFt = i * s;
+      this.mFt = e * s;
+      s = !StringUtils_1.StringUtils.IsEmpty(l);
       let t = undefined;
-      t = r ? (_ = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(_), ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(_) ?? "") : n ? "+" + a : a.toString();
-      _ = this.aSu();
-      if (_) {
-        n = this.gFt.GetSequencePath(o, h, r);
-        this.sSu = SimpleDamageView.LFt.get(n) ?? 1;
-        let i = s.GetTextColor();
-        if (i = h ? s.GetCriticalTextColor() : i) {
-          this.nSu = DamageUiManager_1.DamageUiManager.PlayDamageNumBatch(t, _, i, this.sSu);
+      t = s ? (l = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(l), ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(l) ?? "") : n ? "+" + a : a.toString();
+      l = this.h7c();
+      if (l) {
+        n = this.gFt.GetSequencePath(o, h, s);
+        this.a7c = SimpleDamageView.LFt.get(n) ?? 1;
+        let i = r.GetTextColor();
+        if (i = h ? r.GetCriticalTextColor() : i) {
+          this.s7c = DamageUiManager_1.DamageUiManager.PlayDamageNumBatch(t, l, i, this.a7c);
         }
-        if (this.nSu) {
+        if (this.s7c) {
           this.pFt = ANIM_TIME;
           if (h) {
-            this.RFt(_);
+            this.RFt(l);
             this.yFt(h);
             this.TFt();
             this.SetActive(true);
@@ -99,6 +100,7 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
     if (this.RootItem) {
       if (this.FUn) {
         (e = this.GetUiNiagara(3)).SetNiagaraSystem(this.FUn);
+        e.SetUIActive(true);
         e.ActivateSystem(true);
         this.FUn = undefined;
       }
@@ -106,12 +108,12 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
       if (this.pFt <= 0) {
         DamageUiManager_1.DamageUiManager.RemoveSimpleDamageView(this);
       } else {
-        this.RFt(this.aSu());
+        this.RFt(this.h7c());
       }
     }
   }
-  aSu() {
-    var i = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.cX1);
+  h7c() {
+    var i = UE.LGUIBPLibrary.ConvertWorldPosToLGUIPos(Global_1.Global.CharacterController, this.gX1);
     if (i) {
       i.X = i.X + this.cFt;
       i.Y = i.Y + this.mFt;
@@ -123,7 +125,12 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
     this.RootItem.SetHierarchyIndex(i);
   }
   UFt(i) {
-    if (this._Ft !== i) {
+    if (this._Ft === i) {
+      if (!StringUtils_1.StringUtils.IsEmpty(i)) {
+        this.SetCriticalNiagaraVisible(true);
+        this.FUn = undefined;
+      }
+    } else {
       const e = this.GetUiNiagara(3);
       if (StringUtils_1.StringUtils.IsEmpty(i)) {
         this._Ft = undefined;
@@ -162,10 +169,10 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
   RFt(i) {
     if (i) {
       this.RootItem.SetAnchorOffset(i);
-      if (this.nSu?.IsGeometryValid()) {
-        DamageUiManager_1.DamageUiManager.UpdateDamageLocation(this.nSu, i, this.sSu);
+      if (this.s7c?.IsGeometryValid()) {
+        DamageUiManager_1.DamageUiManager.UpdateDamageLocation(this.s7c, i, this.a7c);
       } else {
-        this.nSu = undefined;
+        this.s7c = undefined;
       }
     }
   }

@@ -26,7 +26,7 @@ const ActivityDirectTrainSubView_1 = require("./ActivityDirectTrainSubView");
 class ActivityDirectTrainController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.E9c = undefined;
+    this.tQu = undefined;
     this.aU_ = undefined;
     this.nye = () => {
       if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
@@ -81,33 +81,33 @@ class ActivityDirectTrainController extends ActivityControllerBase_1.ActivityCon
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Activity", 63, "[剧情直通车]初始化剧情直通车活动");
     }
-    this.E9c = TimerSystem_1.TimerSystem.Forever(e => {
+    this.tQu = TimerSystem_1.TimerSystem.Forever(e => {
       if (ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache !== undefined && ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache.EndShowTime !== 0 && ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.ProActivityDataCache.EndShowTime < TimeUtil_1.TimeUtil.GetServerTime()) {
         ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.EmitEventsForOther(false);
         ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen = false;
-        this.E9c?.Remove();
-        this.E9c = undefined;
+        this.tQu?.Remove();
+        this.tQu = undefined;
       }
     }, 1000);
     return true;
   }
   OnClear() {
-    this.E9c?.Remove();
-    return !(this.E9c = undefined);
+    this.tQu?.Remove();
+    return !(this.tQu = undefined);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt);
-    Net_1.Net.Register(29320, this.lU_);
-    Net_1.Net.Register(25644, this.KB1);
-    Net_1.Net.Register(18243, this.XB1);
+    Net_1.Net.Register(26704, this.lU_);
+    Net_1.Net.Register(20299, this.KB1);
+    Net_1.Net.Register(22937, this.XB1);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.itt);
-    Net_1.Net.UnRegister(29320);
-    Net_1.Net.UnRegister(25644);
-    Net_1.Net.UnRegister(18243);
+    Net_1.Net.UnRegister(26704);
+    Net_1.Net.UnRegister(20299);
+    Net_1.Net.UnRegister(22937);
   }
   OnOpenView(e) {}
   OnCreateActivityData(e) {

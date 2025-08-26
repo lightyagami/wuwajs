@@ -18,13 +18,13 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     this.Data = undefined;
     this.CurCoreSlotData = undefined;
     this.CurNormalSlotDataList = [];
-    this.bTu = undefined;
+    this.WTu = undefined;
     this.NormalSlotLoopScrollView = undefined;
     this.CoreElementLayout = undefined;
     this.NormalElementLayout = undefined;
-    this.RX1 = 0;
-    this._eu = 0;
-    this.ueu = new Map();
+    this.ZX1 = 0;
+    this.keu = 0;
+    this.Oeu = new Map();
     this.e61 = () => {
       var t = new DeckBuilderCardSlotItem_1.DeckBuilderCardSlotItem();
       t.CanToggleChange = this.i61;
@@ -40,9 +40,9 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
       return t;
     };
     this.i61 = t => this.Data.CanNormalSlotItemToggleChange(t);
-    this.RTu = () => {
+    this.QTu = () => {
       var t = new DeckBuilderCardSlotItem_1.DeckBuilderCardSlotItem();
-      t.CanToggleChange = this.wTu;
+      t.CanToggleChange = this.KTu;
       t.ShortClickCallback = t => {
         this.Data?.OnCoreSlotItemSortClick?.(t);
       };
@@ -54,14 +54,14 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
       };
       return t;
     };
-    this.wTu = t => this.Data.CanCoreSlotItemToggleChange(t);
+    this.KTu = t => this.Data.CanCoreSlotItemToggleChange(t);
     this.jli = () => new CardElementItem_1.CardElementItem();
-    this.ceu = t => {
+    this.qeu = t => {
       if (t === 1) {
         this.SwitchMaskState(2);
       }
     };
-    this.LTu = t => {
+    this.XTu = t => {
       if (t === 1) {
         this.SwitchMaskState(1);
       }
@@ -71,29 +71,29 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [2, UE.UIItem], [9, UE.UIItem], [4, UE.UILayoutBase], [3, UE.UIText], [5, UE.UIItem], [7, UE.UIItem], [11, UE.UILayoutBase], [10, UE.UIText], [12, UE.UIItem], [13, UE.UILoopScrollViewComponent], [14, UE.UIItem], [6, UE.UIItem], [1, UE.UIExtendToggle], [8, UE.UIExtendToggle]];
   }
   async OnBeforeStartAsync() {
-    this.bTu = this.RTu();
+    this.WTu = this.QTu();
     this.NormalSlotLoopScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(13), this.GetItem(14).GetOwner(), this.e61, true);
     this.CoreElementLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(4), this.jli);
     this.NormalElementLayout = new GenericLayout_1.GenericLayout(this.GetLayoutBase(11), this.jli);
-    await Promise.all([this.bTu.CreateThenShowByActorAsync(this.GetItem(7).GetOwner())]);
+    await Promise.all([this.WTu.CreateThenShowByActorAsync(this.GetItem(7).GetOwner())]);
     var t = this.GetExtendToggle(1);
     var e = this.GetExtendToggle(8);
     t.SetToggleState(2);
-    this.ueu.set(1, {
+    this.Oeu.set(1, {
       SlotType: 1,
       Toggle: t,
       MaskItem: this.GetItem(2),
       Enabled: false
     });
     e.SetToggleState(2);
-    this.ueu.set(2, {
+    this.Oeu.set(2, {
       SlotType: 2,
       Toggle: e,
       MaskItem: this.GetItem(9),
       Enabled: false
     });
-    t.OnStateChange.Add(this.LTu);
-    e.OnStateChange.Add(this.ceu);
+    t.OnStateChange.Add(this.XTu);
+    e.OnStateChange.Add(this.qeu);
   }
   RefreshByData(t) {
     this.Data = t;
@@ -105,7 +105,7 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     this.RefreshCoreCardSlot(t);
     this.RefreshNormalCardSlot(t, e);
   }
-  hiu(t) {
+  Diu(t) {
     var e = t.CardId;
     var i = this.Data.ShowLocked && !ModelManager_1.ModelManager.PhantomArenaModel.IsCardUnlock(e);
     return {
@@ -121,18 +121,18 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     var i = e.GetCoreCardSlot();
     var s = e.IsCoreCardSlotLocked();
     var h = i !== undefined;
-    this.bTu.SetActive(!s && h);
+    this.WTu.SetActive(!s && h);
     this.GetItem(5).SetUIActive(!s && !h);
     this.GetItem(6).SetUIActive(s);
     var h = i?.Count ?? 0;
     var s = e.GetCoreCardCountLimit();
     this.GetText(3).SetText(h + "/" + s);
     if (i) {
-      this.CurCoreSlotData = this.hiu(i);
+      this.CurCoreSlotData = this.Diu(i);
       if (t && t === this.CurCoreSlotData.SlotInfo.CardId) {
         this.CurCoreSlotData.NeedPlayAddAnim = true;
       }
-      this.bTu.Refresh(this.CurCoreSlotData, false, 0);
+      this.WTu.Refresh(this.CurCoreSlotData, false, 0);
     }
   }
   RefreshNormalCardSlot(t, e = false, i = 0) {
@@ -141,7 +141,7 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     ModelManager_1.ModelManager.PhantomArenaModel.SortCardSlotList(h, this.Data.SortContext);
     this.CurNormalSlotDataList = [];
     for (const l of h) {
-      var r = this.hiu(l);
+      var r = this.Diu(l);
       r.NeedPlayAddAnim = t !== undefined && t === r.SlotInfo.CardId;
       this.CurNormalSlotDataList.push(r);
     }
@@ -164,10 +164,10 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     this.GetText(10).SetText(h + "/" + s);
   }
   RefreshCardSlotElements() {
-    this.ATu();
+    this.YTu();
     this.y61();
   }
-  ATu() {
+  YTu() {
     var t = this.Data.DeckInfo.GetCoreCardSlot();
     var e = [];
     if (t) {
@@ -187,10 +187,10 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
   }
   SelectCoreCardSlot() {
     var t = this.Data.DeckInfo.GetCoreCardSlot();
-    return t !== undefined && (this.NormalSlotLoopScrollView?.DeselectCurrentGridProxy(), this.bTu.OnSelected(false), this.RX1 = t.CardId, true);
+    return t !== undefined && (this.NormalSlotLoopScrollView?.DeselectCurrentGridProxy(), this.WTu.OnSelected(false), this.ZX1 = t.CardId, true);
   }
   SelectNormalCardSlotByIndex(t) {
-    this.bTu.OnDeselected(false);
+    this.WTu.OnDeselected(false);
     this.NormalSlotLoopScrollView.SelectGridProxy(t);
     if (t < 0 || t >= this.CurNormalSlotDataList.length) {
       if (Log_1.Log.CheckError()) {
@@ -198,7 +198,7 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
       }
       return false;
     } else {
-      this.RX1 = this.CurNormalSlotDataList[t].SlotInfo.CardId;
+      this.ZX1 = this.CurNormalSlotDataList[t].SlotInfo.CardId;
       return true;
     }
   }
@@ -207,23 +207,23 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
     var i = this.CurCoreSlotData;
     if (i && e === i.SlotInfo.CardId) {
       i.OutlookUnlocked = t;
-      this.bTu.RefreshOutlookState();
+      this.WTu.RefreshOutlookState();
     } else if (!((i = this.CurNormalSlotDataList.findIndex(t => t.SlotInfo.CardId === e)) < 0)) {
       this.CurNormalSlotDataList[i].OutlookUnlocked = t;
       this.NormalSlotLoopScrollView?.UnsafeGetGridProxy(i)?.RefreshOutlookState();
     }
   }
   GetSelectedCardId() {
-    return this.RX1;
+    return this.ZX1;
   }
   SetMaskAreaEnabled(t, e) {
     var i;
-    var s = this.ueu.get(t);
+    var s = this.Oeu.get(t);
     if (s && s.Enabled !== e) {
       s.Enabled = e;
       i = s.Toggle;
       if (e) {
-        if (this._eu === t) {
+        if (this.keu === t) {
           s.MaskItem.SetUIActive(false);
           i.SetToggleState(1, false);
         } else {
@@ -232,8 +232,8 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
         }
       } else {
         i.SetToggleState(2, false);
-        if (this._eu === t) {
-          this._eu = 0;
+        if (this.keu === t) {
+          this.keu = 0;
         }
       }
     }
@@ -241,14 +241,14 @@ class DeckBuilderDeckSlotsPanel extends UiPanelBase_1.UiPanelBase {
   SwitchMaskState(t) {
     var e;
     var i;
-    if (this._eu !== t && (e = this.ueu.get(t)) && e.Enabled && (e = this.ueu.get(this._eu), i = this.ueu.get(t), this._eu = t, e && e.Enabled && (e.MaskItem.SetUIActive(true), e.Toggle.SetToggleState(0, false)), i) && i.Enabled) {
+    if (this.keu !== t && (e = this.Oeu.get(t)) && e.Enabled && (e = this.Oeu.get(this.keu), i = this.Oeu.get(t), this.keu = t, e && e.Enabled && (e.MaskItem.SetUIActive(true), e.Toggle.SetToggleState(0, false)), i) && i.Enabled) {
       i.MaskItem.SetUIActive(false);
       i.Toggle.SetToggleState(1, false);
     }
   }
   GamepadTriggerDeckBuilderCardInfoView(e) {
-    if (e === this.bTu.GetRootItem()) {
-      this.bTu.TriggerLongPress();
+    if (e === this.WTu.GetRootItem()) {
+      this.WTu.TriggerLongPress();
     } else {
       for (let t = 0; t < this.CurNormalSlotDataList.length; t++) {
         var i = this.NormalSlotLoopScrollView.UnsafeGetGridProxy(t);

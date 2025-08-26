@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, i, s, h) {
   var e;
-  var o = arguments.length;
-  var r = o < 3 ? i : h === null ? h = Object.getOwnPropertyDescriptor(i, s) : h;
+  var r = arguments.length;
+  var o = r < 3 ? i : h === null ? h = Object.getOwnPropertyDescriptor(i, s) : h;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, i, s, h);
+    o = Reflect.decorate(t, i, s, h);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
       if (e = t[n]) {
-        r = (o < 3 ? e(r) : o > 3 ? e(i, s, r) : e(i, s)) || r;
+        o = (r < 3 ? e(o) : r > 3 ? e(i, s, o) : e(i, s)) || o;
       }
     }
   }
-  if (o > 3 && r) {
-    Object.defineProperty(i, s, r);
+  if (r > 3 && o) {
+    Object.defineProperty(i, s, o);
   }
-  return r;
+  return o;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -127,11 +127,11 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(234);
-    this.AnimComp = this.Entity.GetComponent(235);
-    this.TagComponent = this.Entity.GetComponent(205);
-    this.AudioComp = this.Entity.GetComponent(242);
-    this.UeMovementMgrComp = this.Entity.GetComponent(244);
+    this.ActorComp = this.Entity.GetComponent(235);
+    this.AnimComp = this.Entity.GetComponent(236);
+    this.TagComponent = this.Entity.GetComponent(206);
+    this.AudioComp = this.Entity.GetComponent(243);
+    this.UeMovementMgrComp = this.Entity.GetComponent(245);
     this.UeMovementDisableHandle = this.UeMovementMgrComp.Disable("载具出生时默认关闭移动组件");
     this.VehicleMovement = this.ActorComp.Actor.GetComponentByClass(UE.KuroVehicleMovementComponent.StaticClass());
     if (!this.VehicleMovement) {
@@ -143,7 +143,9 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
       this.GravityDirectInternal.Set(0, 0, -1);
     }
     this.GravityDirectInternal.UnaryNegation(this.GravityUpInternal);
-    this.VehicleMovement.GravityScale = 2;
+    if (this.ActorComp?.CreatureData.GetBaseInfo()?.Category.VehicleType !== "Motorcycle") {
+      this.VehicleMovement.GravityScale = 2;
+    }
     this.InitGravityDirect();
     this.CannotResponseInputCount = 0;
     if (this.TagComponent) {
@@ -194,7 +196,7 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
         if (s && this.IsMoving) {
           this.AnimComp.SetModelBuffer(t, i);
         }
-        this.ActorComp.Actor.AddMovementInput(this.ActorComp.InputDirect, 1, false);
+        this.SetInputOrder();
       }
     }
   }
@@ -383,17 +385,17 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     let s = 0;
     let h = Number.MAX_VALUE;
     var e = this.ActorComp.ActorLocationProxy;
-    var o = Vector_1.Vector.Create();
     var r = Vector_1.Vector.Create();
+    var o = Vector_1.Vector.Create();
     for (let t = 0; t < i.WorldPositionList.length - 1; t++) {
-      o.DeepCopy(i.WorldPositionList[t]);
-      r.DeepCopy(i.WorldPositionList[t + 1]);
-      this.TmpVector.Set(r.X, r.Y, r.Z);
-      this.TmpVector.SubtractionEqual(o);
+      r.DeepCopy(i.WorldPositionList[t]);
+      o.DeepCopy(i.WorldPositionList[t + 1]);
+      this.TmpVector.Set(o.X, o.Y, o.Z);
+      this.TmpVector.SubtractionEqual(r);
       var n = this.TmpVector.Size();
       this.TmpVector2.Set(e.X, e.Y, e.Z);
-      this.TmpVector2.SubtractionEqual(r);
-      if (!(this.TmpVector.DotProduct(this.TmpVector2) > 0) && !(this.TmpVector2.Set(e.X, e.Y, e.Z), this.TmpVector2.SubtractionEqual(o), this.TmpVector.DotProduct(this.TmpVector2) < 0) && !(this.TmpVector.DotProduct(this.ActorComp.ActorForwardProxy) < 0)) {
+      this.TmpVector2.SubtractionEqual(o);
+      if (!(this.TmpVector.DotProduct(this.TmpVector2) > 0) && !(this.TmpVector2.Set(e.X, e.Y, e.Z), this.TmpVector2.SubtractionEqual(r), this.TmpVector.DotProduct(this.TmpVector2) < 0) && !(this.TmpVector.DotProduct(this.ActorComp.ActorForwardProxy) < 0)) {
         this.TmpVector.CrossProduct(this.TmpVector2, this.TmpVector);
         if ((n = this.TmpVector.Size() / n) < h) {
           h = n;
@@ -413,6 +415,9 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
       }
     }
   }
+  SetInputOrder() {
+    this.ActorComp.Actor.AddMovementInput(this.ActorComp.InputDirect, 1, false);
+  }
 };
-VehicleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(236)], VehicleMoveComponent);
+VehicleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(237)], VehicleMoveComponent);
 exports.VehicleMoveComponent = VehicleMoveComponent; //# sourceMappingURL=VehicleMoveComponent.js.map

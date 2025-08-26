@@ -158,8 +158,8 @@ class TsTaskNpcPatrol extends TsTaskAbortImmediatelyBase_1.default {
       this.SingleMoveForward = Vector_1.Vector.Create();
     }
     this.MoveComp = this.Entity.GetComponent(45);
-    this.StateComp = this.Entity.GetComponent(175);
-    this.AnimComp = this.Entity.GetComponent(177);
+    this.StateComp = this.Entity.GetComponent(176);
+    this.AnimComp = this.Entity.GetComponent(178);
     this.AiComp = this.Entity.GetComponent(47);
     this.CurTime = 0;
     this.IsInit = false;
@@ -285,7 +285,7 @@ class TsTaskNpcPatrol extends TsTaskAbortImmediatelyBase_1.default {
       this.DebugComp.SaveDebugPatrolPoint(this.ActorComp.ActorLocationProxy);
     }
     if (this.GetObstacleLocation()) {
-      t = this.MoveComp.MoveToLocationLogic.CurrentToLocation;
+      t = this.MoveComp.MoveController.GetCurrentToLocation();
       t = this.CalculateAmendForward(t);
       if (!(Math.abs(MathUtils_1.MathUtils.GetAngleByVectorDot(this.SingleMoveForward, t)) > this.TsMaxChangeAngle)) {
         this.CalculateAmendMovePoint(t);

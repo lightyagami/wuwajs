@@ -86,6 +86,20 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
     this.m8();
     return t;
   }
+  AddRenderingMaterialWithAnimObject(e, t) {
+    var i = this.rKt;
+    var e = {
+      MaterialAssetData: e,
+      HandleId: ResourceSystem_1.ResourceSystem.InvalidId,
+      RenderingId: ResourceSystem_1.ResourceSystem.InvalidId,
+      WithAnimObject: true,
+      AnimMeshComp: t
+    };
+    this.tBr.set(i, e);
+    this.oBr.add(i);
+    this.m8();
+    return i;
+  }
   m8() {
     if (this.UiModelDataComponent?.GetModelLoadState() === 2) {
       for (const e of this.oBr) {
@@ -96,15 +110,19 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
   }
   rBr(e) {
     const t = this.tBr.get(e);
-    var i;
-    var e = e => {
-      t.RenderingId = this.ActorComponent.CharRenderingComponent.AddMaterialControllerData(e);
-    };
+    const i = this.ActorComponent.CharRenderingComponent;
     if (t.EffectId) {
-      i = EffectUtil_1.EffectUtil.GetEffectPath(t.EffectId);
-      t.HandleId = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.Object, e);
-    } else if (t.MaterialAssetData) {
-      e(t.MaterialAssetData);
+      e = EffectUtil_1.EffectUtil.GetEffectPath(t.EffectId);
+      t.HandleId = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Object, e => {
+        t.RenderingId = i.AddMaterialControllerData(e);
+      });
+    }
+    if (t.MaterialAssetData) {
+      if (t.WithAnimObject) {
+        t.RenderingId = i.AddMaterialControllerDataWithAnimObject(t.MaterialAssetData, t.AnimMeshComp, undefined);
+      } else {
+        t.RenderingId = i.AddMaterialControllerData(t.MaterialAssetData);
+      }
     }
   }
   RemoveRenderingMaterial(e) {

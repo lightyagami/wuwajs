@@ -10,42 +10,51 @@ const FloroRanchAsyncActionBase_1 = require("./FloroRanchAsyncActionBase");
 class FloroRanchGroupActionData extends FloroRanchAsyncActionBase_1.FloroRanchAsyncActionBase {
   constructor() {
     super(...arguments);
-    this._gu = [];
-    this.HAu = undefined;
+    this.aCu = [];
+    this.CPu = undefined;
   }
   InitActionData(t) {
-    this._gu.length = 0;
-    for (const n of t) {
-      var o = FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.CreateActionData(n);
-      this._gu.push(o);
+    this.aCu.length = 0;
+    for (const s of t) {
+      var o = FloroRanchEntityActionSystem_1.FloroRanchEntityActionSystem.CreateActionData(s);
+      this.aCu.push(o);
     }
   }
   async OnExecute() {
-    for (const t of this._gu) {
-      this.HAu = t;
+    for (const t of this.aCu) {
+      this.CPu = t;
       await this.WaitIfPause();
-      if (this.HAu.IsExit()) {
+      if (this.CPu.IsExit()) {
         return;
       }
       await t.ExecuteAction();
       await this.WaitIfPause();
-      if (this.HAu.IsExit()) {
+      if (this.CPu.IsExit()) {
         return;
       }
     }
   }
   OnPause() {
-    if (this.HAu) {
-      this.HAu.Pause();
+    if (this.CPu) {
+      this.CPu.Pause();
     }
   }
   OnResume() {
-    if (this.HAu) {
-      this.HAu.Resume();
+    if (this.CPu) {
+      this.CPu.Resume();
     }
   }
+  OnExit() {
+    if (this.CPu) {
+      this.CPu.Exit();
+    }
+    for (const t of this.aCu) {
+      t.Exit();
+    }
+    this.aCu.length = 0;
+  }
   SetIgnoreCasterEntityAnim(t) {
-    for (const o of this._gu) {
+    for (const o of this.aCu) {
       if (o instanceof FloroRanchActionBase_1.FloroRanchActionDataBase) {
         o.SetIgnoreCasterEntityAnim(t);
       }

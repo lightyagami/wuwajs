@@ -225,12 +225,14 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
   }
   OnRefresh(t, i, e) {
     super.OnRefresh(t, i, e);
-    this.klt();
-    this.Flt();
-    this.Vlt();
-    this.jlt(e);
-    this.t1t.Update(e);
-    this.nst();
+    if (this.IsActivated) {
+      this.klt();
+      this.Flt();
+      this.Vlt();
+      this.jlt(e);
+      this.t1t.Update(e);
+      this.nst();
+    }
   }
   tst() {
     var t;

@@ -13,8 +13,8 @@ class ReferenceTriggerVolumeLogic {
     this.Qsr = new Set();
     this.yu1 = new Set();
     this.$sr = [];
-    for (const i of e) {
-      var t = i.PathName.split(".");
+    for (const r of e) {
+      var t = r.PathName.split(".");
       if (t?.length === VALID_LEN) {
         this.Qsr.add(t[1] + "." + t[2]);
       }
@@ -32,6 +32,15 @@ class ReferenceTriggerVolumeLogic {
       this.Ksr.delete(e);
       this.yu1.delete(e);
     }
+  }
+  GetVolumes() {
+    var e = [];
+    for (const t of this.Ksr.values()) {
+      if (t.IsValid()) {
+        e.push(t);
+      }
+    }
+    return e;
   }
   Clear() {
     for (var [e, t] of this.Ksr) {
@@ -83,22 +92,22 @@ class ReferenceTriggerVolumeLogic {
   Jsr(e) {
     return e === RoleTriggerController_1.RoleTriggerController.GetMyRoleTrigger();
   }
-  Vr(i, e) {
+  Vr(r, e) {
     if (e?.IsValid()) {
       var t = (0, puerts_1.$ref)(undefined);
       e.GetOverlappingActors(t);
-      var r = (0, puerts_1.$unref)(t);
-      if (r?.Num() > 0) {
-        for (let e = 0, t = r.Num(); e < t; e++) {
-          var s = r.Get(e);
-          this.OnCollisionEnterFunc(i, s);
+      var i = (0, puerts_1.$unref)(t);
+      if (i?.Num() > 0) {
+        for (let e = 0, t = i.Num(); e < t; e++) {
+          var s = i.Get(e);
+          this.OnCollisionEnterFunc(r, s);
         }
       }
       e.OnActorBeginOverlap.Add((e, t) => {
-        this.OnCollisionEnterFunc(i, t);
+        this.OnCollisionEnterFunc(r, t);
       });
       e.OnActorEndOverlap.Add((e, t) => {
-        this.OnCollisionExitFunc(i, t);
+        this.OnCollisionExitFunc(r, t);
       });
     }
   }

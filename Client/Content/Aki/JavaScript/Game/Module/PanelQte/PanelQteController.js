@@ -79,7 +79,7 @@ class PanelQteController extends UiControllerBase_1.UiControllerBase {
     if (a.DisableFightInput) {
       let e = undefined;
       var n = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
-      if (e = n?.EntityHandle === a.CurRoleEntity ? n.GameplayTagComponent : a.CurRoleEntity.Entity.GetComponent(205)) {
+      if (e = n?.EntityHandle === a.CurRoleEntity ? n.GameplayTagComponent : a.CurRoleEntity.Entity.GetComponent(206)) {
         for (const r of disableInputTagIds) {
           e.RemoveTag(r);
         }

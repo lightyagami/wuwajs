@@ -37,7 +37,7 @@ class QuestReviewEntryData {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestReviewMainViewEntryAnim, e);
   }
   UpdateByServerData(e) {
-    this.X51 = e.kz1 && !e.Gz1;
+    this.X51 = e._J1 && !e.dJ1;
   }
 }
 exports.QuestReviewEntryData = QuestReviewEntryData;

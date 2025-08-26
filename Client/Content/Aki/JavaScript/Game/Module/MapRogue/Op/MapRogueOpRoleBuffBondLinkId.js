@@ -18,7 +18,7 @@ class MapRogueOpRoleBuffBondLinkId extends MapRogueOp_1.MapRogueOp {
     this.CurrentSelectCount = 0;
     this.Priority = 0;
     this.Ujt = false;
-    this.zHc = undefined;
+    this.sZu = undefined;
   }
   ToString() {
     return `[RoleBuff] IncId:${this.IncId} Type:${this.Data.LE1?.QEc?.hIc} Cur:${this.CurrentSelectCount} Max:${this.MaxSelectCount} Lock:${this.Ujt}`;
@@ -29,7 +29,7 @@ class MapRogueOpRoleBuffBondLinkId extends MapRogueOp_1.MapRogueOp {
   }
   OnStartExecute(e) {
     if (this.Data.LE1.QEc) {
-      this.JHc("RogueBattleRoleBuffSelectView");
+      this.aZu("RogueBattleRoleBuffSelectView");
     }
   }
   GetGainDataList() {
@@ -50,7 +50,7 @@ class MapRogueOpRoleBuffBondLinkId extends MapRogueOp_1.MapRogueOp {
         }
       }
       if (t) {
-        this.JHc("RogueBattleRoleStarUpView");
+        this.aZu("RogueBattleRoleStarUpView");
       } else {
         this.Execute(e);
       }
@@ -58,7 +58,7 @@ class MapRogueOpRoleBuffBondLinkId extends MapRogueOp_1.MapRogueOp {
       if (this.Data.LE1.On1.length === 0) {
         this.Execute(e);
       } else {
-        this.JHc("RogueBattleLinkUnlockView");
+        this.aZu("RogueBattleLinkUnlockView");
       }
     } else if (this.CurrentStep === 3) {
       this.ExecuteOp(e => {
@@ -68,20 +68,20 @@ class MapRogueOpRoleBuffBondLinkId extends MapRogueOp_1.MapRogueOp {
       });
     }
   }
-  JHc(t) {
+  aZu(t) {
     UiManager_1.UiManager.OpenView(t, this.IncId, e => {
-      this.ZHc();
+      this.hZu();
       if (e) {
-        this.zHc = t;
+        this.sZu = t;
       }
     });
   }
-  ZHc() {
-    if (this.zHc) {
-      if (UiManager_1.UiManager.IsViewOpen(this.zHc) || UiManager_1.UiManager.IsViewHide(this.zHc)) {
-        UiManager_1.UiManager.CloseView(this.zHc);
+  hZu() {
+    if (this.sZu) {
+      if (UiManager_1.UiManager.IsViewOpen(this.sZu) || UiManager_1.UiManager.IsViewHide(this.sZu)) {
+        UiManager_1.UiManager.CloseView(this.sZu);
       }
-      this.zHc = undefined;
+      this.sZu = undefined;
     }
   }
   Select(e) {
@@ -92,7 +92,7 @@ class MapRogueOpRoleBuffBondLinkId extends MapRogueOp_1.MapRogueOp {
   }
   OnFinish(e) {}
   OnDelete(e) {
-    this.ZHc();
+    this.hZu();
   }
   OnBeforeStartExecuteCheck(e) {
     for (const t of ModelManager_1.ModelManager.MapRogueModel.GetOpDataByType(Protocol_1.Aki.Protocol.OEc.Proto_RollBuffBondLinkId)) {

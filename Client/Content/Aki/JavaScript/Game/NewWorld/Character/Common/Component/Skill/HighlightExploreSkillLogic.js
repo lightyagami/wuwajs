@@ -22,7 +22,7 @@ class HighlightExploreSkillLogic {
     this.pzo = false;
     this.vzo = false;
     this.Seh = 0;
-    this.vsu = false;
+    this.$su = false;
     this.TDe = undefined;
     this.Lie = undefined;
     this.tWr = () => {
@@ -103,7 +103,7 @@ class HighlightExploreSkillLogic {
         this.ETt = h ?? -1;
         this.pzo = i ?? false;
         this.Seh = e * TimeUtil_1.TimeUtil.InverseMillisecond;
-        this.vsu = this.Seh < 0;
+        this.$su = this.Seh < 0;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelEvent", 79, "主动触发玩家探索技能高亮", ["Id", this.wmo]);
         }
@@ -122,7 +122,7 @@ class HighlightExploreSkillLogic {
     }
   }
   NDc() {
-    if (this.TDe !== undefined || this.vsu) {
+    if (this.TDe !== undefined || this.$su) {
       if (this.Lie && !this.Lie.HasTag(this.fzo)) {
         this.Lie.AddTag(this.fzo);
       }
@@ -160,7 +160,7 @@ class HighlightExploreSkillLogic {
     this.VDc();
     if (e) {
       let t = true;
-      if (this.wmo === 1013 && (e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(224)) && e.IsFollowerEnable()) {
+      if (this.wmo === 1013 && (e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(225)) && e.IsFollowerEnable()) {
         t = false;
       }
       ModelManager_1.ModelManager.ExploreModel.ResetExplodeSkillId(1);

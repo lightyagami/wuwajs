@@ -23,7 +23,7 @@ class SubLevel {
     this.DependOnBeginPlayLogic = false;
     this.LoadPromise = new GameModePromise_1.GameModePromise();
     this.UnLoadPromise = new GameModePromise_1.GameModePromise();
-    this.Mz1 = false;
+    this.Yz1 = false;
     this.Pd1 = undefined;
     this.xd1 = undefined;
     this.Ud1 = e => {
@@ -43,7 +43,7 @@ class SubLevel {
     if (this.DependOnBeginPlayLogic) {
       return this.Level?.IsLevelVisible() ?? false;
     } else {
-      return this.Mz1;
+      return this.Yz1;
     }
   }
   Dispose() {
@@ -58,7 +58,7 @@ class SubLevel {
     var i;
     if (e) {
       this.Level = e;
-      this.Mz1 = this.LoadVisibleParam;
+      this.Yz1 = this.LoadVisibleParam;
       if (!this.DependOnBeginPlayLogic) {
         e = e.GetLoadedLevel();
         (i = UE.KuroSubLevelVisibleSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance)).AddLevel(this.LinkId, e);
@@ -74,27 +74,26 @@ class SubLevel {
   async SetLevelVisible(e, i) {
     if (this.Level && this.Level.IsLevelLoaded()) {
       if (this.DependOnBeginPlayLogic) {
-        await this.Ez1(this.Level, e, i);
+        await this.zz1(this.Level, e, i);
       } else {
-        await this.Iz1(e, i);
+        await this.Jz1(e, i);
       }
-      this.Mz1 = e;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("GameMode", 18, "SetLevelVisible:失败,Level未加载完毕", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]);
     }
   }
-  async Ez1(e, i, s) {
+  async zz1(e, i, s) {
     var t;
     var o;
     if (e.IsLevelVisible() !== i && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleWithBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", i], ["reason", s]), this.Pd1 = new CustomPromise_1.CustomPromise(), (o = i ? e.OnLevelShown : e.OnLevelHidden).Add(t = () => {
       this.Pd1.SetResult(true);
-    }), e.SetShouldBeVisible(i), await this.Pd1.Promise, o.Remove(t), Log_1.Log.CheckDebug())) {
+    }), e.SetShouldBeVisible(i), await this.Pd1.Promise, o.Remove(t), this.Yz1 = i, Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleWithBeginPlay:结束", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", i], ["reason", s]);
     }
   }
-  async Iz1(e, i) {
+  async Jz1(e, i) {
     var s;
-    if (this.Mz1 !== e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleNoBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), s = UE.KuroSubLevelVisibleSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance), this.Pd1 = new CustomPromise_1.CustomPromise(), s = s.SetLevelActorsVisible(this.LinkId, e, this.xd1), await this.Pd1.Promise, s || Log_1.Log.CheckError() && Log_1.Log.Error("GameMode", 18, "SetLevelVisibleNoBeginPlay:失败,Actors为空", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), Log_1.Log.CheckDebug())) {
+    if (this.Yz1 !== e && (this.Yz1 = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleNoBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), s = UE.KuroSubLevelVisibleSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance), this.Pd1 = new CustomPromise_1.CustomPromise(), s = s.SetLevelActorsVisible(this.LinkId, e, this.xd1), await this.Pd1.Promise, s || Log_1.Log.CheckError() && Log_1.Log.Error("GameMode", 18, "SetLevelVisibleNoBeginPlay:失败,Actors为空", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleNoBeginPlay:结束", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]);
     }
   }

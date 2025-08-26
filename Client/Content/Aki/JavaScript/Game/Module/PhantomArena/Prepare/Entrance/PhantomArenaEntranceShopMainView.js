@@ -25,11 +25,11 @@ const PhantomArenaDefine_1 = require("../../PhantomArenaDefine");
 class PhantomArenaEntranceShopTabData extends CommonTabData_1.CommonTabData {
   constructor(e, t, i, n) {
     super(e, t);
-    this.Xau = i;
+    this.Mhu = i;
     this._ur = n;
   }
   GetRealTitle() {
-    return this.Xau;
+    return this.Mhu;
   }
   GetTabViewName() {
     return this._ur;
@@ -228,7 +228,7 @@ class PhantomArenaEntranceShopMainView extends UiTickViewBase_1.UiTickViewBase {
     var i = this.TabDataList.length;
     var i = this.TabComponent.CreateTabItemDataByLength(i);
     for (const o of i) {
-      o.RedDotName = this.sou(this.TabDataList[o.Index].ChildViewName);
+      o.RedDotName = this.xou(this.TabDataList[o.Index].ChildViewName);
     }
     await this.TabComponent.RefreshTabItemAsync(i, t);
     if (t) {
@@ -242,7 +242,7 @@ class PhantomArenaEntranceShopMainView extends UiTickViewBase_1.UiTickViewBase {
       this.TabComponent.SelectToggleByIndex(t, true);
     }
   }
-  sou(e) {
+  xou(e) {
     let t = undefined;
     switch (e) {
       case "PhantomArenaEntranceTaskTabView":

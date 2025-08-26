@@ -176,7 +176,7 @@ class TsTaskCheckTarget extends TsTaskAbortImmediatelyBase_1.default {
     if (this.CheckTagsCopy.length) {
       TsTaskCheckTarget.SwapAndClearTmpTargets();
       for (const h of TsTaskCheckTarget.TmpTargets2) {
-        var i = h.Entity.GetComponent(205);
+        var i = h.Entity.GetComponent(206);
         if (i?.Valid) {
           let s = true;
           for (var [r, a] of this.CheckTagsCopy) {

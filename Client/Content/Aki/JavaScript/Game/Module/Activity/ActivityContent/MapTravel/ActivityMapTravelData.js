@@ -25,11 +25,11 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
     this.PhantomQuestIds = new Set();
     this.SortPhantomQuestItem = (t, e) => {
       var r = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetQuestConfig(t);
-      var a = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetQuestConfig(e);
-      if (r.Sort === a.Sort) {
+      var i = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetQuestConfig(e);
+      if (r.Sort === i.Sort) {
         return t - e;
       } else {
-        return r.Sort - a.Sort;
+        return r.Sort - i.Sort;
       }
     };
     this.PhantomDataMap = new Map();
@@ -81,15 +81,38 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
       this.RefreshTravelTaskData(r);
     }
     this.TaskFinalRewardData.IsReceived = t.mE_;
-    for (const a of t.dE_) {
-      this.UnlockPhantom(a);
+    for (const i of t.dE_) {
+      this.UnlockPhantom(i);
     }
-    for (const i of t.gE_) {
-      this.RefreshSoarChallengePlayData(i);
+    for (const a of t.gE_) {
+      this.RefreshSoarChallengePlayData(a);
     }
   }
   GetExDataRedPointShowState() {
     return !!this.CanTravelLevelUp() || !!this.GetTaskRedDotState(true) || !!this.GetAllSoarItemRedDot();
+  }
+  GetExDataFinishShowState() {
+    if (this.MaxTravelLevel !== this.TravelLevel) {
+      return false;
+    }
+    if (this.TaskFinalRewardData && !this.TaskFinalRewardData.IsReceived) {
+      return false;
+    }
+    for (const r of this.AreaTaskMap.values()) {
+      if (r.Status !== 2) {
+        return false;
+      }
+    }
+    var [t, e] = this.GetPhantomQuestCount();
+    if (t !== e) {
+      return false;
+    }
+    for (const i of this.SoarChallengeRewardDataMap.values()) {
+      if (i.Status !== 2) {
+        return false;
+      }
+    }
+    return true;
   }
   SaveFirstCheckRedDotState(t, e = 0) {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, t, e, 0) === 1 || (ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, t, e, 0, 1), this.RefreshActivityRedDotState(), false);
@@ -105,16 +128,16 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
         [e, r] = this.GetPhantomQuestCount();
         break;
       case 3:
-        for (const a of this.PhantomDataMap.values()) {
-          if (a) {
+        for (const i of this.PhantomDataMap.values()) {
+          if (i) {
             e++;
           }
         }
         r = this.PhantomDataMap.size;
         break;
       case 4:
-        for (const i of this.SoarChallengeRewardDataMap.values()) {
-          if (i.Status === 2) {
+        for (const a of this.SoarChallengeRewardDataMap.values()) {
+          if (a.Status === 2) {
             e++;
           }
         }
@@ -226,11 +249,11 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
   GetAllAreaData() {
     return Array.from(this.AreaDataMap.values()).sort((t, e) => {
       var r = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetAreaConfig(t.AreaId);
-      var a = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetAreaConfig(e.AreaId);
-      if (r.Sort === a.Sort) {
+      var i = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetAreaConfig(e.AreaId);
+      if (r.Sort === i.Sort) {
         return t.AreaId - e.AreaId;
       } else {
-        return r.Sort - a.Sort;
+        return r.Sort - i.Sort;
       }
     });
   }
@@ -242,18 +265,18 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
-  RefreshTravelTaskData(a) {
-    let t = this.AreaTaskMap.get(a.s5n);
+  RefreshTravelTaskData(i) {
+    let t = this.AreaTaskMap.get(i.s5n);
     var e;
     if (!t) {
       t = new ActivityCommonDefine_1.ActivityTaskData();
-      e = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetTravelTaskConfig(a.s5n);
-      this.AreaDataMap.get(e.AreaId).TravelTaskIdSet.add(a.s5n);
-      this.AreaTaskMap.set(a.s5n, t);
+      e = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetTravelTaskConfig(i.s5n);
+      this.AreaDataMap.get(e.AreaId).TravelTaskIdSet.add(i.s5n);
+      this.AreaTaskMap.set(i.s5n, t);
     }
-    t.Refresh(a, (t, e, r) => {
+    t.Refresh(i, (t, e, r) => {
       if (t && r === 2) {
-        this.TaskFinalRewardData.FinishedIdSet.add(a.s5n);
+        this.TaskFinalRewardData.FinishedIdSet.add(i.s5n);
       }
     });
   }
@@ -280,8 +303,8 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
   }
   GetAreaTaskDataList(t) {
     var e = [];
-    for (const a of this.AreaDataMap.get(t).TravelTaskIdSet) {
-      var r = this.AreaTaskMap.get(a);
+    for (const i of this.AreaDataMap.get(t).TravelTaskIdSet) {
+      var r = this.AreaTaskMap.get(i);
       e.push(r);
     }
     e.sort(this.lVl());
@@ -290,8 +313,8 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
   GetAreaNewUnlockState(t) {
     var e = this.AreaDataMap.get(t).IsUnlock;
     var r = this.AreaDataMap.get(t).TravelTaskIdSet.size > 0;
-    var a = this.IsAreaTaskFinish(t);
-    return !!e && !a && !!r && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 5, t, 0) === 0;
+    var i = this.IsAreaTaskFinish(t);
+    return !!e && !i && !!r && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 5, t, 0) === 0;
   }
   GetAreaRewardState(t) {
     t = this.AreaDataMap.get(t);
@@ -378,33 +401,33 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
   hVl() {
     this.SoarChallengeRewardDataMap.clear();
     let e = 0;
-    for (const a of ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetAllSoarChallengeConfig()) {
+    for (const i of ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetAllSoarChallengeConfig()) {
       var r = new ActivityCommonDefine_1.ActivityTaskData();
-      r.Id = a.Id;
-      r.Target = a.NeedScore;
-      this.SoarChallengeRewardDataMap.set(a.Id, r);
-      let t = this.SoarChallengePlayDataMap.get(a.LevelPlayId);
+      r.Id = i.Id;
+      r.Target = i.NeedScore;
+      this.SoarChallengeRewardDataMap.set(i.Id, r);
+      let t = this.SoarChallengePlayDataMap.get(i.LevelPlayId);
       if (!t) {
         (t = new ActivityMapTravelDefine_1.SoarChallengePlayData()).TabIndex = e;
-        t.PlayId = a.LevelPlayId;
-        t.NameTextId = a.Name;
+        t.PlayId = i.LevelPlayId;
+        t.NameTextId = i.Name;
         t.CheckRedDot = this.CheckSoarItemRedDot;
         t.CheckFinished = this.CheckSoarItemFinished;
-        t.JumpId = a.JumpId;
-        this.SoarChallengePlayDataMap.set(a.LevelPlayId, t);
+        t.JumpId = i.JumpId;
+        this.SoarChallengePlayDataMap.set(i.LevelPlayId, t);
         e++;
       }
-      t.RewardIds.push(a.Id);
+      t.RewardIds.push(i.Id);
     }
   }
   RefreshSoarChallengePlayData(t) {
     var e = this.SoarChallengePlayDataMap.get(t.pE_);
     if (e) {
       e.HighestPoint = t.vE_;
-      for (const a of e.RewardIds) {
-        var r = this.SoarChallengeRewardDataMap.get(a);
+      for (const i of e.RewardIds) {
+        var r = this.SoarChallengeRewardDataMap.get(i);
         r.Current = e.HighestPoint;
-        if (t.yE_.includes(a)) {
+        if (t.yE_.includes(i)) {
           r.Status = 2;
         } else if (r.Current >= r.Target) {
           r.Status = 0;
@@ -440,8 +463,8 @@ class ActivityMapTravelData extends ActivityData_1.ActivityBaseData {
   }
   GetSoarItemDataList(t) {
     var e = [];
-    for (const a of t) {
-      var r = this.SoarChallengeRewardDataMap.get(a);
+    for (const i of t) {
+      var r = this.SoarChallengeRewardDataMap.get(i);
       e.push(r);
     }
     e.sort(this.lVl());

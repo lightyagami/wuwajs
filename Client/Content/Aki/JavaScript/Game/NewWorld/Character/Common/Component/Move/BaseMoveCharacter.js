@@ -25,7 +25,7 @@ const ColorUtils_1 = require("../../../../../Utils/ColorUtils");
 const CombatDebugController_1 = require("../../../../../Utils/CombatDebugController");
 const WorldFunctionLibrary_1 = require("../../../../../World/Bridge/WorldFunctionLibrary");
 const CharacterUnifiedStateTypes_1 = require("../Abilities/CharacterUnifiedStateTypes");
-const MoveToLocationLogic_1 = require("./MoveToLocationLogic");
+const MoveToLocationController_1 = require("./MoveToLocationController");
 const PatrolMoveLogic_1 = require("./PatrolMoveLogic");
 const PatrolMovePointsLogic_1 = require("./PatrolMovePointsLogic");
 const DEFAULT_TURN_SPEED = 360;
@@ -76,7 +76,7 @@ class BaseMoveCharacter {
       i.P5n = this.Hte.ActorLocationProxy;
       i.g8n = undefined;
       t.iVn = [i];
-      Net_1.Net.Send(27183, t);
+      Net_1.Net.Send(17569, t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.wDe], ["X", i.P5n.X], ["Y", i.P5n.Y], ["Z", i.P5n.Z]);
       }
@@ -95,7 +95,7 @@ class BaseMoveCharacter {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.rJo = this.Jh.GetComponent(101);
+    this.rJo = this.Jh.GetComponent(102);
     this.wDe = this.Hte.CreatureData.GetPbDataId();
     this.fJo = [];
     this.Ero = false;
@@ -113,7 +113,7 @@ class BaseMoveCharacter {
           this.mie = 0;
           this.yJo();
         }
-        if (GlobalData_1.GlobalData.IsPlayInEditor && MoveToLocationLogic_1.MoveToLocationController.DebugDraw) {
+        if (GlobalData_1.GlobalData.IsPlayInEditor && MoveToLocationController_1.MoveToLocationController.DebugDraw) {
           this.IJo();
         }
         this.Dlh(t);
@@ -340,7 +340,7 @@ class BaseMoveCharacter {
     return true;
   }
   xJo(t, i, e) {
-    return AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(this.Hte.Owner.GetWorld(), t.ToUeVector(), i.ToUeVector(), e) && e.length > 0;
+    return AiContollerLibrary_1.AiControllerLibrary.NavigationFindPath(this.Hte.Owner.GetWorld(), t.ToUeVector(), i.ToUeVector(), e, false, this.JLe?.StrictNavigation) && e.length > 0;
   }
   TJo() {
     if (Log_1.Log.CheckDebug()) {
@@ -371,12 +371,12 @@ class BaseMoveCharacter {
     var e = Protocol_1.Aki.Protocol.Yus.create();
     e.uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
     e.WRs.push(t.CollectPendingMoveInfos());
-    Net_1.Net.Send(29722, e);
+    Net_1.Net.Send(23287, e);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       t = {
         scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
         instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-        msg_id: 29722,
+        msg_id: 23287,
         immediately: true,
         sub_count: e.WRs.length,
         is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
@@ -397,7 +397,7 @@ class BaseMoveCharacter {
     t.g8n = this.Hte.ActorRotationProxy;
     var i = Protocol_1.Aki.Protocol.ecs.create();
     i.iVn = [t];
-    Net_1.Net.Send(27183, i);
+    Net_1.Net.Send(17569, i);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.wDe], ["X", t.P5n.X], ["Y", t.P5n.Y], ["Z", t.P5n.Z]);
     }
@@ -429,7 +429,7 @@ class BaseMoveCharacter {
     }
   }
   Iac(t) {
-    if (this.Hte?.IsRoleAndCtrlByMe && (0, RegisterComponent_1.isComponentInstance)(this.rJo, 175)) {
+    if (this.Hte?.IsRoleAndCtrlByMe && (0, RegisterComponent_1.isComponentInstance)(this.rJo, 176)) {
       this.rJo.MarkWalkOrRun(t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
       this.Eac = t === CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
     }

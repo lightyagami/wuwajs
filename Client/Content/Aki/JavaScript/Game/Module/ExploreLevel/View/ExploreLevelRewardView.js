@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ExploreLevelRewardView = undefined;
 const UE = require("ue");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
@@ -43,6 +45,9 @@ class ExploreLevelRewardView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeDestroy() {
     this.sOe = undefined;
+  }
+  OnAfterDestroy() {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnExploreRewardShowEnd);
   }
 }
 exports.ExploreLevelRewardView = ExploreLevelRewardView;

@@ -165,18 +165,18 @@ class KeySettingRowData {
     if (!s) {
       return "";
     }
-    let r = "";
+    let h = "";
     for (let t = 0; t < s.length; t++) {
-      var h = s[t];
-      var h = this.GetKeyIconPath(h, i);
-      if (h) {
-        r += `<texture=${h}>`;
+      var r = s[t];
+      var r = this.GetKeyIconPath(r, i);
+      if (r) {
+        h += `<texture=${r}>`;
       }
       if (t < s.length - 1) {
-        r += e;
+        h += e;
       }
     }
-    return r;
+    return h;
   }
   GetKeyIconPath(t, i) {
     var s = ConfigManager_1.ConfigManager.InputSettingsConfig;
@@ -248,14 +248,14 @@ class KeySettingRowData {
         }
       }
     } else if (this.ActionBinding) {
-      var r = [];
-      this.ActionBinding?.GetKeyNameList(r);
-      if (!(r.length <= 0)) {
+      var h = [];
+      this.ActionBinding?.GetKeyNameList(h);
+      if (!(h.length <= 0)) {
         switch (t) {
           case 1:
-            return [r[this.kPi]];
+            return [h[this.kPi]];
           case 2:
-            return [r[this.wAn]];
+            return [h[this.wAn]];
           default:
             return;
         }
@@ -293,16 +293,16 @@ class KeySettingRowData {
     var i = this.AxisBinding?.GetInputAxisKeyMap();
     if (i) {
       for (var [s, e] of i) {
-        var r = e.GetKey();
-        if (r) {
+        var h = e.GetKey();
+        if (h) {
           switch (t) {
             case 1:
-              if ((r.IsKeyboardKey || r.IsMouseButton) && e.Scale === this.HPi) {
+              if ((h.IsKeyboardKey || h.IsMouseButton) && e.Scale === this.HPi) {
                 return s;
               }
               break;
             case 2:
-              if (r.IsGamepadKey && e.Scale === this.BAn) {
+              if (h.IsGamepadKey && e.Scale === this.BAn) {
                 return s;
               }
               break;
@@ -439,17 +439,17 @@ class KeySettingRowData {
       let t = undefined;
       let i = undefined;
       const a = this.GetAxisKeyScaleMap();
-      for (var [r, h] of a) {
-        var n = InputSettings_1.InputSettings.GetKey(r);
+      for (var [h, r] of a) {
+        var n = InputSettings_1.InputSettings.GetKey(h);
         if (n) {
-          if ((n.IsKeyboardKey || n.IsMouseButton) && e === 1 && h === this.HPi) {
-            t = r;
-            i = h;
+          if ((n.IsKeyboardKey || n.IsMouseButton) && e === 1 && r === this.HPi) {
+            t = h;
+            i = r;
             break;
           }
-          if (n.IsGamepadKey && e === 2 && h === this.BAn) {
-            t = r;
-            i = h;
+          if (n.IsGamepadKey && e === 2 && r === this.BAn) {
+            t = h;
+            i = r;
             break;
           }
         }
@@ -535,8 +535,8 @@ class KeySettingRowData {
       }
       if (this.AxisBinding) {
         t = this.GetKeyScale(i);
-        for (const r of this.AxisBinding.GetKey(t)) {
-          if (r.KeyName === e) {
+        for (const h of this.AxisBinding.GetKey(t)) {
+          if (h.KeyName === e) {
             return true;
           }
         }
@@ -546,6 +546,22 @@ class KeySettingRowData {
   }
   GetActionOrAxisName() {
     return this.qPi;
+  }
+  ResetKey(t) {
+    if (this.qPi) {
+      if (this.BothActionName && this.BothActionName.length === 2) {
+        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[0]);
+        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[1]);
+      } else if (this.IsCombination(t)) {
+        if (this.IsActionOrAxis) {
+          InputSettingsManager_1.InputSettingsManager.ResetCombinationActionKeyByName(this.qPi);
+        }
+      } else if (this.IsActionOrAxis) {
+        InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.qPi);
+      } else {
+        InputSettingsManager_1.InputSettingsManager.ResetAxisKeyByName(this.qPi);
+      }
+    }
   }
 }
 exports.KeySettingRowData = KeySettingRowData;

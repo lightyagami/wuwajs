@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const QueryTypeDefine_1 = require("../../../../Core/Define/QueryTypeDefine");
 const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
@@ -133,9 +134,11 @@ class SceneCharacterInteraction {
       this.WaterEffect.Config = this.Config.水特效;
       this.WaterEffect.Start(this.OwnerCharacter);
       this.WaterEffect.Enable();
-      this.TriggerEffect = new SceneCharacterTriggerEffect_1.SceneCharacterTriggerEffect();
-      this.TriggerEffect.Start(this.OwnerCharacter);
-      this.TriggerEffect.Enable();
+      if (!Info_1.Info.IsMobilePlatform()) {
+        this.TriggerEffect = new SceneCharacterTriggerEffect_1.SceneCharacterTriggerEffect();
+        this.TriggerEffect.Start(this.OwnerCharacter);
+        this.TriggerEffect.Enable();
+      }
     }
     var t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldFeatureLevel(this.OwnerCharacter) === 1;
     this.IsEnable = false;
@@ -217,16 +220,20 @@ class SceneCharacterInteraction {
   CheckInWater(t) {
     if (this.UseCppCheck) {
       if (this.EnviInteractionData) {
-        var e = this.OwnerCharacter.CapsuleComponent.D_K2_GetComponentLocation();
-        this.WaterHeight = UE.Vector.Distance(this.EnviInteractionData.HitWaterLocation, e.op_ToVector());
+        var e = this.OwnerCharacter.CapsuleComponent;
+        var s = Vector_1.Vector.Create();
+        s.FromUeVector(e.D_K2_GetComponentLocation());
+        var e = Vector_1.Vector.Create();
+        e.FromUeVector(this.EnviInteractionData.HitWaterLocation);
+        this.WaterHeight = Vector_1.Vector.Distance(s, e);
         this.WaterNormal = Vector_1.Vector.Create(this.EnviInteractionData.HitWaterNormal);
         if (this.EnviInteractionData.bInWater) {
           this.SetInWater();
           return;
         }
         if (!this.EnviInteractionData.HitPhysicMaterial) {
-          e = RenderDataManager_1.RenderDataManager.Get().GetGlobalFootstepMaterial();
-          this.EnviInteractionData.HitPhysicMaterial = e;
+          s = RenderDataManager_1.RenderDataManager.Get().GetGlobalFootstepMaterial();
+          this.EnviInteractionData.HitPhysicMaterial = s;
         }
         if (this.EnviInteractionData.HitPhysicMaterial && this.WaterEffect.IsMaterialInUse(this.EnviInteractionData.HitPhysicMaterial)) {
           this.SetOnMaterial(this.EnviInteractionData.HitPhysicMaterial);
@@ -240,7 +247,7 @@ class SceneCharacterInteraction {
       }
       var e = this.OwnerCharacter.CapsuleComponent;
       var s = e.D_K2_GetComponentLocation();
-      var h = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(178);
+      var h = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(179);
       let t = new UE.VectorDouble(0, 0, e.CapsuleHalfHeight);
       let i = new UE.VectorDouble(0, 0, -e.CapsuleHalfHeight - this.Config.射线向下延长);
       if (h) {
@@ -258,7 +265,7 @@ class SceneCharacterInteraction {
       if (h && e.bBlockingHit) {
         var r = s.HitResult;
         var a = r.GetHitCount();
-        var n = RenderDataManager_1.RenderDataManager.Get().GetGlobalFootstepMaterial();
+        var o = RenderDataManager_1.RenderDataManager.Get().GetGlobalFootstepMaterial();
         for (let i = 0; i < a; ++i) {
           if (r.Components.Get(i).BodyInstance.CollisionResponses.ResponseToChannels.GameTraceChannel2 === 2) {
             this.WaterHeight = r.LocationZ_Array.Get(i);
@@ -266,14 +273,14 @@ class SceneCharacterInteraction {
             this.SetInWater();
             return;
           }
-          var o = r.Components.Get(i);
+          var n = r.Components.Get(i);
           let t = undefined;
-          if (o instanceof UE.LandscapeHeightfieldCollisionComponent) {
+          if (n instanceof UE.LandscapeHeightfieldCollisionComponent) {
             if (!(t = r.PhysMaterials.Get(i)) || !this.WaterEffect.IsMaterialInUse(t)) {
-              t = n;
+              t = o;
             }
-          } else if (o.BodyInstance.CollisionResponses.ResponseToChannels.WorldStatic === 2 && (!(t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(o)) || !this.WaterEffect.IsMaterialInUse(t))) {
-            t = n;
+          } else if (n.BodyInstance.CollisionResponses.ResponseToChannels.WorldStatic === 2 && (!(t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(n)) || !this.WaterEffect.IsMaterialInUse(t))) {
+            t = o;
           }
           if (t && this.WaterEffect.IsMaterialInUse(t)) {
             this.WaterHeight = r.LocationZ_Array.Get(i);

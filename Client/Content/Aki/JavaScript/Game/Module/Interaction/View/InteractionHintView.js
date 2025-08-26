@@ -340,7 +340,7 @@ class InteractionHintView extends UiTickViewBase_1.UiTickViewBase {
     if (!e?.Valid) {
       return false;
     }
-    e = e.GetComponent(118);
+    e = e.GetComponent(119);
     if (!e?.IsPawnInteractive()) {
       return false;
     }

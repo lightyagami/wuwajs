@@ -56,7 +56,7 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
       var e = this.OPt.EntityId;
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
       if (t?.Valid) {
-        var i = t.Entity.GetComponent(128);
+        var i = t.Entity.GetComponent(129);
         this.CRe = i;
         switch (this.OPt.MoveConfig.Type) {
           case IAction_1.EMoveSceneItemType.MoveToPoint:

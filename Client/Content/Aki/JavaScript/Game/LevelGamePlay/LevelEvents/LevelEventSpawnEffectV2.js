@@ -1,122 +1,218 @@
 "use strict";
 
+var __decorate = this && this.__decorate || function (e, t, n, f) {
+  var a;
+  var o = arguments.length;
+  var r = o < 3 ? t : f === null ? f = Object.getOwnPropertyDescriptor(t, n) : f;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    r = Reflect.decorate(e, t, n, f);
+  } else {
+    for (var c = e.length - 1; c >= 0; c--) {
+      if (a = e[c]) {
+        r = (o < 3 ? a(r) : o > 3 ? a(t, n, r) : a(t, n)) || r;
+      }
+    }
+  }
+  if (o > 3 && r) {
+    Object.defineProperty(t, n, r);
+  }
+  return r;
+};
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelEventSpawnEffectV2 = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
-const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const Quat_1 = require("../../../Core/Utils/Math/Quat");
 const Transform_1 = require("../../../Core/Utils/Math/Transform");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
-const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
 const EffectSystem_1 = require("../../Effect/EffectSystem");
-const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const ScreenEffectSystem_1 = require("../../Render/Effect/ScreenEffectSystem/ScreenEffectSystem");
+const ActorUtils_1 = require("../../Utils/ActorUtils");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
-class TsEffectAttachmentContext {
-  constructor(e, t, r, a, o) {
-    this.AttachToActor = e;
-    this.AttachToComponent = t;
-    this.AttachSocket = r;
-    this.AssetPath = a;
-    this.Transform = o;
+class TsAttachEffectContext {
+  constructor(e, t, n, f, a, o) {
+    this.AssetPath = e;
+    this.Transform = t;
+    this.EntityHandle = n;
+    this.ShouldAttachToEntity = f;
+    this.AttachSocket = a;
+    this.AttachOffset = o;
   }
 }
-class LevelEventSpawnEffectV2 extends LevelGeneralBase_1.LevelEventBase {
-  lr1(e, t) {
-    if (e?.IsValid()) {
-      e = e.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-      if (e?.IsValid()) {
-        t = FNameUtil_1.FNameUtil.GetDynamicFName(t);
-        if (t && (e.DoesSocketExist(t) || e.GetBoneIndex(t) !== -1)) {
-          return t;
+class TsScreenEffectContext {
+  constructor(e) {
+    this.AssetPath = e;
+  }
+}
+class TsDissolveEffectContext {
+  constructor(e) {
+    this.AssetPath = e;
+  }
+}
+function applyOffsetThenGetTransform(e, t) {
+  var n = Vector_1.Vector.Create(0, 0, 0);
+  if (e && (n.AdditionEqual(e), t)) {
+    n.AdditionEqual(Vector_1.Vector.Create(t.X ?? 0, t.Y ?? 0, t.Z ?? 0));
+  }
+  return Transform_1.Transform.Create(Quat_1.Quat.IdentityProxy, n, Vector_1.Vector.OneVectorProxy);
+}
+class SpawnEffectImplementation {
+  static RegisterEffectHandler(f) {
+    return (e, t, n) => {
+      n = n.value;
+      if (!n) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EEffectType参数不对", ["EEffectType", f]);
         }
       }
-    }
-  }
-  _r1(e, t) {
-    var r = Vector_1.Vector.Create(0, 0, 0);
-    if (e && (r.AdditionEqual(e), t)) {
-      r.AdditionEqual(Vector_1.Vector.Create(t.X ?? 0, t.Y ?? 0, t.Z ?? 0));
-    }
-    return Transform_1.Transform.Create(Quat_1.Quat.IdentityProxy, r, Vector_1.Vector.OneVectorProxy);
-  }
-  cr1(e) {
-    switch (e.Pos2.Type) {
-      case 2:
-        return this.ur1(e.Path, e.Pos2);
-      case 1:
-        return this.dr1(e.Path, e.Pos2);
-      case 0:
-        return this.mr1(e.Path, e.Pos2);
-      default:
+      if (SpawnEffectImplementation.PWu.has(f)) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("LevelEvent", 72, "[EAction.PlayEffect2] IPlayCommonEffect:" + e.Pos2);
+          Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EEffectType重复注册", ["EEffectType", f]);
         }
-        return;
+      } else {
+        SpawnEffectImplementation.PWu.set(f, n);
+      }
+    };
+  }
+  static RegisterCommonEffectContextGenerator(f) {
+    return (e, t, n) => {
+      n = n.value;
+      if (!n) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EPos2参数不对", ["EPos2", f]);
+        }
+      }
+      if (SpawnEffectImplementation.DWu.has(f)) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EPos2重复注册", ["EPos2", f]);
+        }
+      } else {
+        SpawnEffectImplementation.DWu.set(f, n);
+      }
+    };
+  }
+  static ScreenEffectHandler(e, t) {
+    var n = new TsScreenEffectContext(e.Path);
+    const f = ModelManager_1.ModelManager.ScreenEffectModel.PlayScreenEffect(e.Path);
+    if (e.DestroyTime !== undefined) {
+      TimerSystem_1.TimerSystem.Delay(() => {
+        ModelManager_1.ModelManager.ScreenEffectModel.EndScreenEffect(f);
+      }, e.DestroyTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddGuaranteeAction, "LevelEventSpawnEffectV2", t, {
+      Name: "StopEffect",
+      Params: {
+        ScreenEffectHandle: f
+      }
+    }, true);
+    return n;
+  }
+  static CommonEffectHandler(e, t) {
+    var n = SpawnEffectImplementation.DWu.get(e.Pos2.Type);
+    if (n) {
+      const f = n(e, t);
+      const a = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, f.Transform.ToUeTransform(), f.AssetPath, "[LevelEventSpawnEffect.ExecuteNew]");
+      if (e.DestroyTime !== undefined) {
+        TimerSystem_1.TimerSystem.Delay(() => {
+          EffectSystem_1.EffectSystem.StopEffectById(a, "[SpawnEffectImplementation] 定时销毁特效", true);
+        }, e.DestroyTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddGuaranteeAction, "LevelEventSpawnEffectV2", t, {
+        Name: "StopEffect",
+        Params: {
+          EffectId: a
+        }
+      }, true);
+      if (f.EntityHandle?.Valid && f.EntityHandle.Entity?.Valid && (EventSystem_1.EventSystem.OnceWithTarget(f.EntityHandle, EventDefine_1.EEventName.RemoveEntity, () => {
+        EffectSystem_1.EffectSystem.StopEffectById(a, `[SpawnEffectImplementation] 移除实体${f.EntityHandle}销毁特效`, true);
+      }), f.ShouldAttachToEntity)) {
+        n = f.EntityHandle.Entity.GetComponent(1)?.Owner;
+        e = EffectSystem_1.EffectSystem.GetEffectActor(a);
+        if (f.AttachSocket) {
+          t = n?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+          if (!t?.IsValid) {
+            return f;
+          }
+          e?.K2_AttachToComponent(t, f.AttachSocket, 2, 2, 2, false);
+        } else {
+          EffectSystem_1.EffectSystem.GetEffectActor(a)?.K2_AttachToActor(n, f.AttachSocket, 2, 2, 2, false);
+        }
+        if (f.AttachOffset) {
+          e?.D_K2_SetActorRelativeLocation(f.AttachOffset.ToUeVector(), false, undefined, false);
+        }
+      }
+      return f;
     }
   }
-  dr1(e, t) {
-    var r = t.EntityId;
-    var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
-    var a = r?.Entity?.GetComponent(1)?.ActorLocationProxy;
-    var r = r?.Entity?.GetComponent(1)?.Owner;
-    var o = r?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-    return new TsEffectAttachmentContext(undefined, o, this.lr1(r, t.AttachSocket), e, this._r1(a, t.Offset));
+  static DissolveEffectHandler(e, t) {
+    var n;
+    if (e) {
+      n = new TsDissolveEffectContext(e.Path);
+      ControllerHolder_1.ControllerHolder.VideoBpController.PlayEffect(e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddGuaranteeAction, "LevelEventSpawnEffectV2", t, {
+        Name: "StopEffect",
+        Params: {
+          Mp4Name: e.Path
+        }
+      }, true);
+      return n;
+    }
   }
-  mr1(e, t) {
-    var r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.ActorLocationProxy;
-    var a = Global_1.Global.BaseCharacter;
-    var o = a?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-    return new TsEffectAttachmentContext(undefined, o, this.lr1(a, t.AttachSocket), e, this._r1(r, t.Offset));
+  static EffectEntityPos2Context(e, t) {
+    var n = e.Pos2.EntityId;
+    var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n);
+    var f = n?.Entity?.GetComponent(1)?.ActorLocationProxy;
+    var a = n?.Entity?.GetComponent(1)?.Owner;
+    return new TsAttachEffectContext(e.Path, applyOffsetThenGetTransform(f, e.Pos2.Offset), n, true, ActorUtils_1.ActorUtils.TryGetBoneSocket(a, e.Pos2.AttachSocket), Vector_1.Vector.Create(e.Pos2.Offset.X ?? 0, e.Pos2.Offset.Y ?? 0, e.Pos2.Offset.Z ?? 0));
   }
-  ur1(e, t) {
-    return new TsEffectAttachmentContext(undefined, undefined, undefined, e, this._r1(Vector_1.Vector.Create(t.Pos.X ?? 0, t.Pos.Y ?? 0, t.Pos.Z ?? 0), undefined));
+  static EffectPlayerPos2Context(e, t) {
+    var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+    var f = n?.Entity?.GetComponent(1)?.ActorLocationProxy;
+    var n = n?.Entity?.GetComponent(1)?.Owner;
+    return new TsAttachEffectContext(e.Path, applyOffsetThenGetTransform(f, e.Pos2.Offset), ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity, true, ActorUtils_1.ActorUtils.TryGetBoneSocket(n, e.Pos2.AttachSocket), Vector_1.Vector.Create(e.Pos2.Offset.X ?? 0, e.Pos2.Offset.Y ?? 0, e.Pos2.Offset.Z ?? 0));
   }
-  fr1(e) {
-    return new TsEffectAttachmentContext(undefined, undefined, undefined, e, MathUtils_1.MathUtils.DefaultTransformProxy);
-  }
-  gr1(t) {
+  static AbsolutePos2Context(e, t) {
+    let n = undefined;
     switch (t.Type) {
-      case "Effect":
-        var e;
-        var r = this.cr1(t);
-        if (r) {
-          e = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, r.Transform.ToUeTransform(), r.AssetPath, "[LevelEventSpawnEffect.ExecuteNew]");
-          if (r.AttachSocket && r.AttachToActor) {
-            if (r.AttachToActor?.IsValid()) {
-              EffectSystem_1.EffectSystem.GetEffectActor(e)?.K2_AttachToActor(r.AttachToActor, r.AttachSocket, 2, 2, 2, false);
-            }
-          } else if (r.AttachSocket && r.AttachToComponent && r.AttachToComponent?.IsValid()) {
-            EffectSystem_1.EffectSystem.GetEffectActor(e)?.K2_AttachToComponent(r.AttachToComponent, r.AttachSocket, 2, 2, 2, false);
-          }
+      case 1:
+        if (t.EntityId !== undefined) {
+          n = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId);
         }
         break;
-      case "ScreenEffect":
-        ResourceSystem_1.ResourceSystem.LoadAsync(this.fr1(t.Path).AssetPath, UE.EffectScreenPlayData_C, e => {
-          if (e?.IsValid()) {
-            if (e.bAutoDestroy && !e.bStopByCall) {
-              ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(e);
-            } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("LevelEvent", 72, "[EAction.PlayEffect2] 检查屏幕特效:" + t.Path, ["bAutoDestroy", e.bAutoDestroy], ["bStopByCall", e.bStopByCall]);
-            }
-          }
-        });
-        break;
-      default:
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("LevelEvent", 72, "[EAction.PlayEffect2] 未实现的类型:" + t);
+      case 5:
+        if (t.TriggerEntityId !== undefined) {
+          n = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.TriggerEntityId);
         }
     }
+    return new TsAttachEffectContext(e.Path, applyOffsetThenGetTransform(Vector_1.Vector.Create(e.Pos2.Pos.X ?? 0, e.Pos2.Pos.Y ?? 0, e.Pos2.Pos.Z ?? 0), undefined), n, false);
   }
+  static SpawnEffect(e, t) {
+    var n = SpawnEffectImplementation.PWu.get(e.Type);
+    if (n) {
+      return n(e, t);
+    }
+  }
+}
+SpawnEffectImplementation.PWu = new Map();
+SpawnEffectImplementation.DWu = new Map();
+__decorate([SpawnEffectImplementation.RegisterEffectHandler("ScreenEffect")], SpawnEffectImplementation, "ScreenEffectHandler", null);
+__decorate([SpawnEffectImplementation.RegisterEffectHandler("Effect")], SpawnEffectImplementation, "CommonEffectHandler", null);
+__decorate([SpawnEffectImplementation.RegisterEffectHandler("DissolveEffect")], SpawnEffectImplementation, "DissolveEffectHandler", null);
+__decorate([SpawnEffectImplementation.RegisterCommonEffectContextGenerator(1)], SpawnEffectImplementation, "EffectEntityPos2Context", null);
+__decorate([SpawnEffectImplementation.RegisterCommonEffectContextGenerator(0)], SpawnEffectImplementation, "EffectPlayerPos2Context", null);
+__decorate([SpawnEffectImplementation.RegisterCommonEffectContextGenerator(2)], SpawnEffectImplementation, "AbsolutePos2Context", null);
+class LevelEventSpawnEffectV2 extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, t) {
     if (e) {
-      this.gr1(e);
+      SpawnEffectImplementation.SpawnEffect(e, t);
     }
   }
 }

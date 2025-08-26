@@ -130,7 +130,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     this.pie();
     this.n$t = this.Entity.GetComponent(1);
     this.Ovr = this.Entity.GetComponent(0);
-    this.rzr = this.Entity.GetComponent(121);
+    this.rzr = this.Entity.GetComponent(122);
     if (this.rzr) {
       this.rzr.SetLogicRange(ConfigManager_1.ConfigManager.LevelGamePlayConfig.ScanDetectConcealedDistance * M_TO_CM);
     }
@@ -266,7 +266,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
       }
       EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.n$t.Owner.D_GetTransform(), this.czr.ScanConcealEffectPath, "[ScanComponent.CancelEntityConcealState]", new EffectContext_1.EffectContext(this.Entity.Id));
     }
-    var t = this.Entity.GetComponent(196);
+    var t = this.Entity.GetComponent(197);
     if (t?.HasTag(1227933697)) {
       t.RemoveTag(1227933697);
     }
@@ -309,7 +309,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     }
     n = this.czr?.ItemMaterialDataPath;
     if (t && i && n) {
-      this.Entity.GetComponent(187)?.MaterialController?.ApplySimpleMaterialEffect(n);
+      this.Entity.GetComponent(188)?.MaterialController?.ApplySimpleMaterialEffect(n);
       this.jGn = true;
       this.hzr++;
     }
@@ -337,7 +337,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
               ModelManager_1.ModelManager.RenderModuleModel.DisableActorData(t);
             }
             if (this.jGn) {
-              this.Entity.GetComponent(187)?.MaterialController?.RemoveSimpleMaterialEffect();
+              this.Entity.GetComponent(188)?.MaterialController?.RemoveSimpleMaterialEffect();
             }
             this.azr.length = 0;
             this.gzr.delete(i);

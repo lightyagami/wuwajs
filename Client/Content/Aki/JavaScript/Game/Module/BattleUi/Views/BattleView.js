@@ -9,7 +9,6 @@ const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const Stats_1 = require("../../../../Core/Common/Stats");
-const Time_1 = require("../../../../Core/Common/Time");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -21,7 +20,6 @@ const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
 const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
 const DangoWorldMainPanel_1 = require("../../Dango/DangoAbyss/View/DangoWorldMainPanel");
-const BattleLinkEnergyButton_1 = require("./BattleChildView/BattleLinkEnergyButton");
 const BottomPanel_1 = require("./BattleChildViewPanel/BottomPanel");
 const CenterPanel_1 = require("./BattleChildViewPanel/CenterPanel");
 const ChatPanel_1 = require("./BattleChildViewPanel/ChatPanel");
@@ -34,6 +32,7 @@ const SkillButtonPanel_1 = require("./BattleChildViewPanel/SkillButtonPanel");
 const TopPanel_1 = require("./BattleChildViewPanel/TopPanel");
 const BattleViewProxy_1 = require("./BattleViewProxy");
 const BossStatePanel_1 = require("./BossState/BossStatePanel");
+const FormationUnitNodeHandle_1 = require("./FormationUnitNode/FormationUnitNodeHandle");
 const FullScreenPanel_1 = require("./FullScreenPanel");
 const BattleHeadStatePanel_1 = require("./HeadState/BattleHeadStatePanel");
 const PartStatePanel_1 = require("./PartStatePanel");
@@ -55,16 +54,16 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     this.Yot = undefined;
     this.Jot = false;
     this.EEl = false;
-    this.O8c = undefined;
+    this._2u = undefined;
     this.Proxy = new BattleViewProxy_1.BattleViewProxy();
     this.zot = undefined;
     this.Zot = () => {
       this.Proxy.HeadStatePanel.RefreshCurrentRole();
     };
     this.ert = () => {
-      var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
-      if (t?.RoleConfig) {
-        this.trt(t.RoleConfig.RoleType === 2);
+      var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
+      if (e?.RoleConfig) {
+        this.trt(e.RoleConfig.RoleType === 2);
       }
     };
     this.IEl = () => {
@@ -78,52 +77,52 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
         this.SetActive(true);
       }
     };
-    this.Jpe = (t, e, i) => {
-      if (e?.Valid) {
-        this.Proxy.HeadStatePanel.OnCreateEntity(e.Entity);
-        this.Vot.OnCreateEntity(e.Entity);
+    this.Jpe = (e, t, i) => {
+      if (t?.Valid) {
+        this.Proxy.HeadStatePanel.OnCreateEntity(t.Entity);
+        this.Vot.OnCreateEntity(t.Entity);
       }
     };
-    this.zpe = (t, e) => {
-      if (e?.Valid) {
-        this.Proxy.HeadStatePanel.OnRemoveEntity(e.Entity);
-        this.Vot.DestroyPartStateFromRole(e.Entity);
+    this.zpe = (e, t) => {
+      if (t?.Valid) {
+        this.Proxy.HeadStatePanel.OnRemoveEntity(t.Entity);
+        this.Vot.DestroyPartStateFromRole(t.Entity);
       }
     };
-    this.FJe = t => {
-      var e = this.ort(6).GetRootItem();
+    this.FJe = e => {
+      var t = this.ort(6).GetRootItem();
       var i = (Info_1.Info.IsInTouch() ? this.ort(5) : this.ort(7)).GetRootItem();
-      var s = e.GetHierarchyIndex();
+      var s = t.GetHierarchyIndex();
       var i = i.GetHierarchyIndex();
-      if (t && s <= i) {
+      if (e && s <= i) {
         this.Yot = s;
-        e.SetHierarchyIndex(i);
+        t.SetHierarchyIndex(i);
       } else if (this.Yot !== undefined) {
-        e.SetHierarchyIndex(this.Yot);
+        t.SetHierarchyIndex(this.Yot);
         this.Yot = undefined;
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("BattleUiSet", 37, "轮盘界面显隐，调整摇杆面板层级", ["bVisible", t]);
+        Log_1.Log.Info("BattleUiSet", 37, "轮盘界面显隐，调整摇杆面板层级", ["bVisible", e]);
       }
     };
     this.Yoh = () => {
-      for (const t of this.Kot.values()) {
-        if (t !== undefined) {
-          t.OnSeamlessTravelFinish();
+      for (const e of this.Kot.values()) {
+        if (e !== undefined) {
+          e.OnSeamlessTravelFinish();
         }
       }
     };
-    this.rrt = t => {
-      AudioSystem_1.AudioSystem.PostEvent(t);
+    this.rrt = e => {
+      AudioSystem_1.AudioSystem.PostEvent(e);
     };
-    this.KHa = t => {
-      this.RootItem?.SetAlpha(t);
+    this.KHa = e => {
+      this.RootItem?.SetAlpha(e);
     };
     this.TEl = () => {
       this.LEl();
     };
-    this.fIl = (t, e) => {
-      if (e === 0) {
+    this.fIl = (e, t) => {
+      if (t === 0) {
         if (this.EEl) {
           ControllerHolder_1.ControllerHolder.BattleUiControl.TryClosePureMode();
         } else {
@@ -134,44 +133,36 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     this.XBo = () => {
       if (Info_1.Info.IsInGamepad()) {
         if (this.Wot) {
-          if (this.O8c) {
-            this.Hot.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-          }
+          this._2u?.OnInputControllerChange(this.sza, this.Hot);
         } else {
           this.lza().then(() => {
             if (!this.IsDestroyOrDestroying) {
               this.Hot.ShowBattleChildViewPanel();
               this.Hot.RefreshOnDelayShow();
               this.jot.ShowBattleChildViewPanel();
-              if (this.O8c && Info_1.Info.IsInGamepad()) {
-                this.Hot.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-              }
+              this._2u?.OnInputControllerChange(this.sza, this.Hot);
             }
           });
         }
       } else if (Info_1.Info.IsInKeyBoard()) {
         if (this.hza) {
-          if (this.O8c) {
-            this.sza.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-          }
+          this._2u?.OnInputControllerChange(this.sza, this.Hot);
         } else {
           this._za().then(() => {
             if (!this.IsDestroyOrDestroying) {
               this.sza.ShowBattleChildViewPanel();
               this.sza.RefreshOnDelayShow();
               this.aza.ShowBattleChildViewPanel();
-              if (this.O8c && Info_1.Info.IsInKeyBoard()) {
-                this.sza.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-              }
+              this._2u?.OnInputControllerChange(this.sza, this.Hot);
             }
           });
         }
       }
     };
-    this.ttt = t => {
-      for (var [e, i] of this.Kot) {
-        if (e !== 5) {
-          if (t) {
+    this.ttt = e => {
+      for (var [t, i] of this.Kot) {
+        if (t !== 5) {
+          if (e) {
             if (i.GetVisible()) {
               i.GetRootItem().SetUIActive(true);
             }
@@ -181,10 +172,10 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this.HJe = t => {
-      for (var [e, i] of this.Kot) {
-        if (e !== 6) {
-          if (t) {
+    this.HJe = e => {
+      for (var [t, i] of this.Kot) {
+        if (t !== 6) {
+          if (e) {
             if (i.GetVisible()) {
               i.GetRootItem().SetUIActive(true);
             }
@@ -194,28 +185,28 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this._F_ = t => {
-      this.GetItem(1)?.SetUIActive(t);
-      ModelManager_1.ModelManager.BattleUiModel.IsMissionPanelVisible = t;
+    this._F_ = e => {
+      this.GetItem(1)?.SetUIActive(e);
+      ModelManager_1.ModelManager.BattleUiModel.IsMissionPanelVisible = e;
     };
     this.Tla = () => {
-      var t = this.Kot.get(6);
-      if (t = t && t.GetExecutionItem()) {
-        return [t, t];
+      var e = this.Kot.get(6);
+      if (e = e && e.GetExecutionItem()) {
+        return [e, e];
       } else {
         return undefined;
       }
     };
-    this.Lla = t => {
-      var e = this.Kot.get(3);
-      if (e) {
-        return e.GetBattleSkillItemByButtonType(Number(t[1]))?.GetGuideItem();
+    this.Lla = e => {
+      var t = this.Kot.get(3);
+      if (t) {
+        return t.GetBattleSkillItemByButtonType(Number(e[1]))?.GetGuideItem();
       }
     };
-    this.Dla = e => {
-      var i = this.Kot.get(Number(e[0]))?.GetUiActorForGuide()?.GetComponentByClass(UE.GuideHookRegistry.StaticClass());
+    this.Dla = t => {
+      var i = this.Kot.get(Number(t[0]))?.GetUiActorForGuide()?.GetComponentByClass(UE.GuideHookRegistry.StaticClass());
       if (i) {
-        var s = e[2];
+        var s = t[2];
         var n = i.GuideHookComponents.Get(s);
         if (!n) {
           if (Log_1.Log.CheckError()) {
@@ -223,17 +214,17 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
           }
         }
         var n = n.GetUIItem();
-        let t = e[1];
-        if (StringUtils_1.StringUtils.IsEmpty(t)) {
-          t = s;
+        let e = t[1];
+        if (StringUtils_1.StringUtils.IsEmpty(e)) {
+          e = s;
         }
-        e = i.GuideHookComponents.Get(t);
-        if (!e) {
+        t = i.GuideHookComponents.Get(e);
+        if (!t) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Guide", 16, "战斗界面挂接组件(GuideHookRegistry)不存在该挂接点（展示用）名称，请检查聚焦引导配置或挂接组件");
           }
         }
-        s = e.GetUIItem();
+        s = t.GetUIItem();
         return [n, s];
       }
       if (Log_1.Log.CheckError()) {
@@ -241,13 +232,13 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.Ala = () => {
-      var t;
-      var e = this.ort(2);
-      if (e) {
-        for (const i of e.GetFormationItemList()) {
+      var e;
+      var t = this.ort(2);
+      if (t) {
+        for (const i of t.GetFormationItemList()) {
           if (!i.IsMyRole) {
-            if (t = i.GetRootItem()) {
-              return [t, t];
+            if (e = i.GetRootItem()) {
+              return [e, e];
             } else {
               return undefined;
             }
@@ -255,31 +246,35 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this.MF_ = t => {
-      return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(t);
+    this.MF_ = e => {
+      return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(e);
     };
-    this.lB1 = t => this.gp1?.GetGuideUiItemAndUiItemForShowEx(t);
-    this.Lq1 = t => {
-      var e = this.O8c?.GetRootItem();
-      if (e) {
-        return [e, e];
+    this.lB1 = e => this.gp1?.GetGuideUiItemAndUiItemForShowEx(e);
+    this.Lq1 = e => {
+      var t = this._2u?.GetLinkEnergyButton()?.GetRootItem();
+      if (t) {
+        return [t, t];
       } else {
         return undefined;
       }
     };
-    this.yK1 = t => {
-      return this.ort(1)?.GetGuideUiItemAndUiItemForShowEx(t);
+    this.IK1 = e => {
+      return this.ort(1)?.GetGuideUiItemAndUiItemForShowEx(e);
     };
-    this.GGu = t => {
-      return this.ort(4)?.GetGuideUiItemAndUiItemForShowEx(t);
+    this.u2u = e => {
+      return this.ort(4)?.GetGuideUiItemAndUiItemForShowEx(e);
     };
-    this.FGu = t => {
-      return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(t);
+    this.c2u = e => {
+      return this.ort(5)?.GetGuideUiItemAndUiItemForShowEx(e);
     };
-    this.Ula = new Map([["Execution", this.Tla], ["Skill", this.Lla], ["Default", this.Dla], ["Teammate", this.Ala], ["FishingViewBtn", this.MF_], ["DangoViewBtn", this.lB1], ["LinkBtn", this.Lq1], ["DangoMissionButton", this.yK1], ["MoraleTempExp", this.GGu], ["MoraleExp", this.FGu]]);
-    this.cah = (t, e, i, s) => {
-      this.Hot?.RefreshFormationCooldownExternal(t, e, i, s);
-      this.sza?.RefreshFormationCooldownExternal(t, e, i, s);
+    this.whd = e => {
+      return this.ort(11)?.GetGuideUiItemAndUiItemForShowEx(e);
+    };
+    this.L_d = e => this._2u?.GetWeeklyRogueButton()?.GetGuideUiItemAndUiItemForShowEx(e);
+    this.Ula = new Map([["Execution", this.Tla], ["Skill", this.Lla], ["Default", this.Dla], ["Teammate", this.Ala], ["FishingViewBtn", this.MF_], ["DangoViewBtn", this.lB1], ["LinkBtn", this.Lq1], ["DangoMissionButton", this.IK1], ["MoraleTempExp", this.u2u], ["MoraleExp", this.c2u], ["ScorePanel", this.whd], ["WeeklyRogueBtn", this.L_d]]);
+    this.cah = (e, t, i, s) => {
+      this.Hot?.RefreshFormationCooldownExternal(e, t, i, s);
+      this.sza?.RefreshFormationCooldownExternal(e, t, i, s);
     };
   }
   OnRegisterComponent() {
@@ -292,28 +287,29 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   }
   async OnBeforeStartAsync() {
     this.OpenParam = this.Proxy;
-    await Promise.all([this.uza(), this.art(), this.hrt(0, BossStatePanel_1.BossStatePanel, true, 13), this.hrt(5, TopPanel_1.TopPanel, true, 26), this.hrt(4, BottomPanel_1.BottomPanel, true, 11), this.hrt(1, MissionPanel_1.MissionPanel, true, 5), this.hrt(6, CenterPanel_1.CenterPanel, true, 26), this.hrt(7, ChatPanel_1.ChatPanel, false, 6), this.hrt(8, FullScreenPanel_1.FullScreenPanel, true, 23), this.hrt(9, PositionPanel_1.PositionPanel, true, 26), this.hrt(11, ScorePanel_1.ScorePanel, true, 24), this.xFc(), this.lrt()]);
+    await Promise.all([this.uza(), this.art(), this.hrt(0, BossStatePanel_1.BossStatePanel, true, 13), this.hrt(5, TopPanel_1.TopPanel, true, 37), this.hrt(4, BottomPanel_1.BottomPanel, true, 11), this.hrt(1, MissionPanel_1.MissionPanel, true, 5), this.hrt(6, CenterPanel_1.CenterPanel, true, 37), this.hrt(7, ChatPanel_1.ChatPanel, false, 6), this.hrt(8, FullScreenPanel_1.FullScreenPanel, true, 23), this.hrt(9, PositionPanel_1.PositionPanel, true, 37), this.hrt(11, ScorePanel_1.ScorePanel, true, 24), this.xFc(), this.d2u(), this._cd()]);
+    this.lrt();
     this._rt();
-    this.q8c();
+    this._2u.Init(this.sza, this.Hot);
     this.Ore();
     this.UiViewSequence.AddSequenceStartEvent("ShowView", this.irt);
     ModelManager_1.ModelManager.BattleUiModel.UpdateViewPortSize();
     this.LEl();
   }
   async xFc() {
-    var t;
-    var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.WorldDungeonSubType === 1) {
-      e = this.GetItem(14);
+    var e;
+    var t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)?.WorldDungeonSubType === 1) {
+      t = this.GetItem(14);
       this.gp1 = new DangoWorldMainPanel_1.DangoWorldMainPanel();
-      t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiView_CelebrationPark");
-      await this.gp1.CreateByPathAsync(t, e);
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiView_CelebrationPark");
+      await this.gp1.CreateByPathAsync(e, t);
       this.Qot.push(this.gp1);
     }
   }
   Cp1() {
-    var t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)?.WorldDungeonSubType === 1) {
+    var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.WorldDungeonSubType === 1) {
       this.GetItem(4)?.SetUIActive(false);
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData?.SetChildVisible(9, 5, false);
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData?.SetChildVisible(9, 7, false);
@@ -354,23 +350,22 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       this.jot.RefreshPureMode(true);
     }
   }
-  OnTick(t) {
+  OnTick(e) {
     BattleView.vJe.Start();
-    var e = t * Time_1.Time.InverseSelfCenteredTimeDilation;
-    for (const i of this.Qot) {
-      if (i.GetVisible()) {
-        i.OnTickBattleChildViewPanel(e);
+    for (const t of this.Qot) {
+      if (t.GetVisible()) {
+        t.OnTickBattleChildViewPanel(e);
       }
     }
     this.Proxy.HeadStatePanel.Tick(e);
     this.Vot.Tick(e);
-    this.O8c?.Tick(e);
+    this._2u?.Tick(e);
     BattleView.vJe.Stop();
   }
-  OnAfterTick(t) {
-    for (const e of this.Qot) {
-      if (e.GetVisible()) {
-        e.OnAfterTickBattleChildViewPanel(t);
+  OnAfterTick(e) {
+    for (const t of this.Qot) {
+      if (t.GetVisible()) {
+        t.OnAfterTickBattleChildViewPanel(e);
       }
     }
   }
@@ -385,18 +380,18 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       this.REl();
       this.crt();
-      for (const t of this.Kot.values()) {
-        if (this.P01(t)) {
-          t.ShowBattleChildViewPanel();
+      for (const e of this.Kot.values()) {
+        if (this.P01(e)) {
+          e.ShowBattleChildViewPanel();
         } else {
-          t.HideBattleChildViewPanel();
+          e.HideBattleChildViewPanel();
         }
       }
       this.Cp1();
     }
   }
   OnAfterShow() {
-    var t;
+    var e;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[battleView]OnAfterShow");
     }
@@ -407,8 +402,8 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       this.UEl();
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.AddBattleUiCommonChildVisibleReason(0);
-      (t = ModelManager_1.ModelManager.BattleUiModel).TryBroadcastCacheRoleLevelUpData();
-      t.TryBroadcastCacheRevive();
+      (e = ModelManager_1.ModelManager.BattleUiModel).TryBroadcastCacheRoleLevelUpData();
+      e.TryBroadcastCacheRevive();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleViewActiveSequenceFinish);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActiveBattleView);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotStart);
@@ -426,8 +421,8 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[battleView]OnAfterHide");
     }
-    for (const t of this.Kot.values()) {
-      t.HideBattleChildViewPanel();
+    for (const e of this.Kot.values()) {
+      e.HideBattleChildViewPanel();
     }
   }
   OnBeforeDestroy() {
@@ -439,7 +434,8 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     this.drt();
     this.Crt();
     this.ResetFormationCooldownExternal();
-    this.G8c();
+    this._2u?.Destroy();
+    this._2u = undefined;
     this.Xot = undefined;
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       this.zot = TimerSystem_1.TimerSystem.Forever(() => {
@@ -500,15 +496,17 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     }
   }
-  trt(t) {
-    if (this.Jot !== t && (this.Jot = t, this.IsShow) && !this.EEl) {
+  trt(e) {
+    if (this.Jot !== e && (this.Jot = e, this.IsShow) && !this.EEl) {
       this.UiViewSequence?.PlaySequencePurely("Switch");
     }
   }
-  async lrt() {
+  async _cd() {
     this.Proxy.HeadStatePanel = new BattleHeadStatePanel_1.BattleHeadStatePanel();
     await this.Proxy.HeadStatePanel.Preload();
-    this.Proxy.HeadStatePanel.Init();
+  }
+  lrt() {
+    this.Proxy.HeadStatePanel?.Init();
   }
   drt() {
     if (this.Proxy.HeadStatePanel) {
@@ -526,57 +524,27 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       this.Vot = undefined;
     }
   }
-  q8c() {
-    if (!this.O8c) {
-      if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInNewBattleLink()) {
-        this.O8c = new BattleLinkEnergyButton_1.BattleLinkEnergyButton();
-        this.O8c.CreateByResourceIdAsync("UiItem_RogueScoreE").then(() => {
-          (Info_1.Info.IsInGamepad() ? this.Hot : this.sza)?.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-        });
-      }
-    }
+  ShowLinkButton(e) {
+    this._2u?.ShowLinkButton(e);
   }
-  G8c() {
-    if (this.O8c) {
-      this.O8c.Destroy();
-      this.O8c = undefined;
-    }
-  }
-  ShowLinkButton(t) {
-    if (t) {
-      if (this.O8c) {
-        this.sza?.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-        this.O8c?.SetUiActive(true);
-      } else {
-        this.O8c = new BattleLinkEnergyButton_1.BattleLinkEnergyButton();
-        this.O8c.CreateThenShowByResourceIdAsync("UiItem_RogueScoreE").then(() => {
-          this.sza?.AddChildToRoleHeadPanel(this.O8c.GetRootItem());
-          this.O8c?.SetUiActive(true);
-        });
-      }
-    } else {
-      this.O8c?.GetRootItem().DetachFromParent();
-      this.O8c?.SetUiActive(false);
-    }
-  }
-  async hrt(t, e, i = false, s = 0) {
-    var n = this.GetItem(t);
-    var e = new e();
-    await e.CreateThenShowByActorAsync(n.GetOwner(), s);
-    this.Kot.set(t, e);
+  async hrt(e, t, i = false, s = 0) {
+    var n = this.GetItem(e);
+    var t = new t();
+    await t.CreateThenShowByActorAsync(n.GetOwner(), s);
+    this.Kot.set(e, t);
     if (i) {
-      this.Qot.push(e);
+      this.Qot.push(t);
     }
-    return e;
+    return t;
   }
-  ort(t) {
-    return this.Kot.get(t);
+  ort(e) {
+    return this.Kot.get(e);
   }
   LEl() {
     this.EEl = ModelManager_1.ModelManager.BattleUiModel.PureModeData?.IsOpen ?? false;
     this.GetItem(15)?.SetUIActive(this.EEl);
-    for (const t of this.Kot.values()) {
-      t?.RefreshPureMode(this.EEl);
+    for (const e of this.Kot.values()) {
+      e?.RefreshPureMode(this.EEl);
     }
     if (!this.EEl) {
       this.GetItem(14)?.SetUIActive(true);
@@ -590,8 +558,8 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   UEl() {
     if (this.EEl) {
       this.GetItem(14)?.SetUIActive(true);
-      for (const t of this.Kot.values()) {
-        t?.RefreshPureMode(this.EEl);
+      for (const e of this.Kot.values()) {
+        e?.RefreshPureMode(this.EEl);
       }
     }
   }
@@ -601,9 +569,9 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   mrt() {
-    for (const t of this.Kot.values()) {
-      if (t !== undefined) {
-        t.Reset();
+    for (const e of this.Kot.values()) {
+      if (e !== undefined) {
+        e.Reset();
       }
     }
     this.Kot.clear();
@@ -611,10 +579,10 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   }
   crt() {
     if (Info_1.Info.IsInTouch()) {
-      var t = ModelManager_1.ModelManager.BattleUiSetModel.GetPanelDataMap();
-      if (t) {
-        for (var [e, i] of t) {
-          var s = this.ort(e);
+      var e = ModelManager_1.ModelManager.BattleUiSetModel.GetPanelDataMap();
+      if (e) {
+        for (var [t, i] of e) {
+          var s = this.ort(t);
           if (s) {
             var n;
             var a;
@@ -624,8 +592,8 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
             if (i) {
               for (var [o, _] of i) {
                 if (_.IsInitialized()) {
-                  let t = s.GetItem(o);
-                  if (t = o === -1 ? s.GetRootItem() : t) {
+                  let e = s.GetItem(o);
+                  if (e = o === -1 ? s.GetRootItem() : e) {
                     n = _.Size;
                     a = _.Alpha;
                     h = _.OffsetX;
@@ -634,13 +602,13 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
                     this.Xot.X = n;
                     this.Xot.Y = n;
                     this.Xot.Z = n;
-                    t.SetUIItemScale(this.Xot);
-                    t.SetAnchorOffsetX(h);
-                    t.SetAnchorOffsetY(r);
-                    t.SetUIItemAlpha(a);
-                    t.SetHierarchyIndex(_);
+                    e.SetUIItemScale(this.Xot);
+                    e.SetAnchorOffsetX(h);
+                    e.SetAnchorOffsetY(r);
+                    e.SetUIItemAlpha(a);
+                    e.SetHierarchyIndex(_);
                   } else if (Log_1.Log.CheckError()) {
-                    Log_1.Log.Error("BattleUiSet", 17, "刷新移动端主界面设置时，找不到对应按钮", ["panelIndex", e], ["panelItemIndex", o]);
+                    Log_1.Log.Error("BattleUiSet", 17, "刷新移动端主界面设置时，找不到对应按钮", ["panelIndex", t], ["panelItemIndex", o]);
                   }
                 }
               }
@@ -650,12 +618,12 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
       }
     }
   }
-  P01(t) {
-    return !t.IsChildType(5) || !!ModelManager_1.ModelManager.BattleUiModel.IsMissionPanelVisible;
+  P01(e) {
+    return !e.IsChildType(5) || !!ModelManager_1.ModelManager.BattleUiModel.IsMissionPanelVisible;
   }
-  GetGuideUiItemAndUiItemForShowEx(t) {
-    if (t.length !== 0) {
-      return (this.Ula.get(t[0]) || this.Ula.get("Default"))(t);
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (e.length !== 0) {
+      return (this.Ula.get(e[0]) || this.Ula.get("Default"))(e);
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Guide", 64, "BattleView相关的引导Extra参数设置错误，不能为空");
@@ -664,6 +632,10 @@ class BattleView extends UiTickViewBase_1.UiTickViewBase {
   ResetFormationCooldownExternal() {
     this.Hot?.ResetFormationCooldownExternal();
     this.sza?.ResetFormationCooldownExternal();
+  }
+  async d2u() {
+    this._2u = new FormationUnitNodeHandle_1.FormationUnitNodeHandle();
+    await this._2u.InitializeAsync(this.RootItem);
   }
 }
 (exports.BattleView = BattleView).vJe = Stats_1.Stat.Create("[BattleView]BattleViewTick");

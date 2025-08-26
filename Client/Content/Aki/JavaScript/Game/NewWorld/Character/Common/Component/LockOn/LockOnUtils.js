@@ -10,7 +10,7 @@ class LockOnUtils {
   }
   static IsValidLockOnTarget(t) {
     var e;
-    return !!t?.Valid && !!t?.IsInit && !!t?.Entity?.Active && !(e = t.Entity.GetComponent(0))?.GetRemoveState() && !!e?.GetVisible() && (!(e = t.Entity.GetComponent(205)) || !e.HasAnyTag([1008164187, -1243968098]));
+    return !!t?.Valid && !!t?.IsInit && !!t?.Entity?.Active && !(e = t.Entity.GetComponent(0))?.GetRemoveState() && !!e?.GetVisible() && (!(e = t.Entity.GetComponent(206)) || !e.HasAnyTag([1008164187, -1243968098]));
   }
 }
 exports.LockOnUtils = LockOnUtils;

@@ -175,7 +175,7 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.NYi = undefined;
     this.jZ = undefined;
     this.WZ = undefined;
-    this.jdu = undefined;
+    this.bmu = undefined;
     this.OYi = undefined;
     this.PlotTemplate = new PlotTemplate_1.PlotTemplate();
     this.KeepBgAudio = false;
@@ -196,6 +196,7 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.IsShowingHeadIcon = false;
     this.PlayFlow = undefined;
     this.HangViewHud = false;
+    this.TranslucentHud = false;
     this.HasSetRender = false;
     this.HasSetGameBudget = false;
     this.CurTalkItem = undefined;
@@ -207,13 +208,12 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.InDigitalScreen = false;
     this.CanClick = false;
     this.CanControlView = false;
-    this.S9c = false;
+    this.BZu = false;
     this.LastPlotColor = exports.INVALID_NUM;
     this.LastPlotAspect = exports.INVALID_NUM;
     this.BlackScreenNowAspect = exports.INVALID_NUM;
     this.BlackScreenLastAspect = exports.INVALID_NUM;
-    this.IsTransitionAspectRatio = false;
-    this.SyncAspectRatioToRealViewPortSizeTime = -1;
+    this.PlotAspectTransformView = undefined;
     this.HasLoadEventType = false;
     this.OnShowCenterTextFinished = () => {
       this.PlayFlow = undefined;
@@ -230,6 +230,7 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.kYi = false;
     this.PlotGlobalConfig.Init();
     this.PlotWeather.Init();
+    this.ResetAudioState();
     return true;
   }
   OnClear() {
@@ -414,8 +415,9 @@ class PlotModel extends ModelBase_1.ModelBase {
   }
   HYi() {
     var t;
-    if (this.PlotConfig.PlotLevel !== "LevelD" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40))?.Valid) {
-      t.StopAllSkills("PlotModel.StopMainCharacterSkill");
+    var e;
+    if (this.PlotConfig.PlotLevel !== "LevelD" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(297)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
+      e.CanSkillInterrupt = true;
     }
   }
   KYi() {
@@ -430,7 +432,7 @@ class PlotModel extends ModelBase_1.ModelBase {
       switch (this.PlotConfig.CameraMode) {
         case 0:
           var e = CameraController_1.CameraController.SequenceCamera.GetComponent(10);
-          if (e?.GetIsInCinematic()) {
+          if (e?.GetIsInCinematic() && !e?.GetIfNeedWaitInPlot()) {
             e.StopSequence();
           }
           break;
@@ -487,12 +489,13 @@ class PlotModel extends ModelBase_1.ModelBase {
       return true;
     }
     let i = false;
+    var o = this.CurContext.Type === 13 ? this.CurContext.FinalContext : this.CurContext;
     switch (t.PreCondition.Type) {
       case "PreOption":
         i = this.YYi(t, e);
         break;
       case "Condition":
-        i = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t.PreCondition.Conditions, undefined, this.CurContext);
+        i = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t.PreCondition.Conditions, undefined, o);
     }
     return i;
   }
@@ -509,7 +512,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   }
   SaveCharacterLockOn() {
     var t;
-    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(205)?.HasTag(-1150819426))) {
+    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(206)?.HasTag(-1150819426))) {
       this.GYi = true;
     }
   }
@@ -627,8 +630,8 @@ class PlotModel extends ModelBase_1.ModelBase {
     }
     return this.WZ.get(t);
   }
-  Hdu() {
-    this.jdu = new Map();
+  Rmu() {
+    this.bmu = new Map();
     let t = (0, PublicUtil_1.getConfigPath)(IGlobal_1.globalConfig.AbpStateConfigPath);
     if (!PublicUtil_1.PublicUtil.IsUseTempData()) {
       t = (0, PublicUtil_1.getConfigPath)(IGlobal_1.globalConfigTemp.AbpStateConfigPath);
@@ -637,14 +640,14 @@ class PlotModel extends ModelBase_1.ModelBase {
     UE.KuroStaticLibrary.LoadFileToString(e, t);
     if (e = (0, puerts_1.$unref)(e)) {
       for (const i of JSON.parse(e)) {
-        this.jdu.set(i.Abp, i);
+        this.bmu.set(i.Abp, i);
       }
     }
   }
   GetAbpStateConfig(t) {
     if (PublicUtil_1.PublicUtil.UseDbConfig()) {
-      this.jdu ||= new Map();
-      if (!this.jdu.get(t)) {
+      this.bmu ||= new Map();
+      if (!this.bmu.get(t)) {
         var e = ConfigManager_1.ConfigManager.PlotMontageConfig.GetAbpStateConfig(t);
         if (!e) {
           return;
@@ -654,12 +657,12 @@ class PlotModel extends ModelBase_1.ModelBase {
           State1: e.State1,
           State2: e.State2
         };
-        this.jdu.set(t, e);
+        this.bmu.set(t, e);
       }
-    } else if (!this.jdu) {
-      this.Hdu();
+    } else if (!this.bmu) {
+      this.Rmu();
     }
-    return this.jdu.get(t);
+    return this.bmu.get(t);
   }
   zYi() {
     this.OYi = new Map();
@@ -722,10 +725,10 @@ class PlotModel extends ModelBase_1.ModelBase {
     return this.NYi.get(t);
   }
   UpdateLastViewControl() {
-    this.S9c = this.CanControlView;
+    this.BZu = this.CanControlView;
   }
   GetLastViewControl() {
-    return this.S9c;
+    return this.BZu;
   }
 }
 exports.PlotModel = PlotModel;

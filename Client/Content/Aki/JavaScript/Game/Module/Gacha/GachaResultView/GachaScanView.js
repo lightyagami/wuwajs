@@ -77,7 +77,7 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
     this.CKt = false;
     this.gKt = undefined;
     this.C4_ = false;
-    this.P9c = 0;
+    this.oXu = 0;
     this.OWt = () => {
       var e;
       var i = this.lKt >= 5 && ChannelController_1.ChannelController.CouldShare();
@@ -169,7 +169,7 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
     if (this.C4_) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 1");
     }
-    if (Info_1.Info.IsLowMemoryDevice && (this.P9c = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.P9c !== 0)) {
+    if (Info_1.Info.IsLowMemoryDevice && (this.oXu = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.oXu !== 0)) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality 0");
     }
     var e = this.OpenParam;
@@ -662,8 +662,8 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
     if (this.C4_) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 0");
     }
-    if (Info_1.Info.IsLowMemoryDevice && this.P9c !== 0) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.P9c);
+    if (Info_1.Info.IsLowMemoryDevice && this.oXu !== 0) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.oXu);
     }
     if (Info_1.Info.IsMacPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 1");

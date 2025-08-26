@@ -87,10 +87,10 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     CombatDebugController_1.CombatDebugController.RefreshServerDebugInfo();
   }
   static GetBuffComponent(t, e) {
-    t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(209);
+    t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(210);
     if (t?.GetBuffByHandle(e)) {
       return t;
-    } else if (t && (0, RegisterComponent_1.isComponentInstance)(t, 190) && t.GetFormationBuffComp()?.GetBuffByHandle(e)) {
+    } else if (t && (0, RegisterComponent_1.isComponentInstance)(t, 191) && t.GetFormationBuffComp()?.GetBuffByHandle(e)) {
       return t.GetFormationBuffComp();
     } else {
       return undefined;
@@ -103,9 +103,9 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return CombatDebugBlueprintFunctionLibrary.GetBuffComponent(t, e)?.Entity.GetComponent(22)?.GetServerBuffTotalDuration(e) ?? -1;
   }
   static GetDebugBuff(t, e) {
-    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(209);
+    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(210);
     var r = t?.GetBuffByHandle(e);
-    return r || (!r && (0, RegisterComponent_1.isComponentInstance)(t, 190) ? t.GetFormationBuffComp().GetBuffByHandle(e) : undefined);
+    return r || (!r && (0, RegisterComponent_1.isComponentInstance)(t, 191) ? t.GetFormationBuffComp().GetBuffByHandle(e) : undefined);
   }
   static GetBuffRemainDuration(t, e) {
     return CombatDebugBlueprintFunctionLibrary.GetDebugBuff(t, e)?.GetRemainDuration() ?? -1;
@@ -115,11 +115,11 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static HasServerBuff(t, e) {
     var r = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(22);
-    return !!r && (t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(190)?.GetFormationBuffComp()?.Entity.GetComponent(22), r.HasServerBuff(e) || t?.HasServerBuff(e) || !r.HasBuffRequest(e) && !t?.HasBuffRequest(e));
+    return !!r && (t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(191)?.GetFormationBuffComp()?.Entity.GetComponent(22), r.HasServerBuff(e) || t?.HasServerBuff(e) || !r.HasBuffRequest(e) && !t?.HasBuffRequest(e));
   }
   static GetAttributeDebugString(t) {
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 22);
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 173);
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 174);
     if (!e || !r) {
       return "";
     }
@@ -151,7 +151,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static GetStateAttributeDebugString(t) {
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 22);
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 173);
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 174);
     if (!e || !r) {
       return "";
     }
@@ -227,7 +227,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     let a = "";
     if (e.GetAllPassiveSkills().length > 0) {
-      var o = EntitySystem_1.EntitySystem.GetComponent(t, 206);
+      var o = EntitySystem_1.EntitySystem.GetComponent(t, 207);
       a += "----- 客户端被动技能 -----\n";
       for (const u of e.GetAllPassiveSkills()) {
         r?.GetTrigger(u.TriggerHandle);
@@ -283,7 +283,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return (a = e ? a + "----- 服务端被动技能 -----\n" + e : a).trim();
   }
   static GetTagsDebugString(t) {
-    const n = EntitySystem_1.EntitySystem.GetComponent(t, 205)?.TagContainer;
+    const n = EntitySystem_1.EntitySystem.GetComponent(t, 206)?.TagContainer;
     t = EntitySystem_1.EntitySystem.GetComponent(t, 22);
     if (!t || !n) {
       return "";
@@ -344,7 +344,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     if (ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities().some(t => t.Id === e)) {
       a += "\n编队Cue:\n";
-      t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(226);
+      t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(227);
       if (t) {
         for (const i of t.GetAllCurrentCueRef()) {
           if (!(o.length > 0) || !!o.some(t => String(i.CueConfig.Id).includes(t))) {

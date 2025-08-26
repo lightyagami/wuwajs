@@ -40,7 +40,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.VEi = false;
     this.Ws1 = undefined;
-    this.Ceu = false;
+    this.jeu = false;
     this.OnClickQRCodeLoginBtn = () => {
       if (ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfCanQRCodeLogin()) {
         ControllerHolder_1.ControllerHolder.KuroSdkController.DoQRCodeLogin();
@@ -73,12 +73,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
               Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮");
             }
             PakKeyUpdate_1.PakKeyUpdate.CheckPakKey(() => {
-              if (UE.KuroPakKeyLibrary.HasPendingEncryptedPaks() && !BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTipWithSkip()) {
-                if (Log_1.Log.CheckWarn()) {
-                  Log_1.Log.Warn("Login", 21, "存在未成功挂载的Pak包！");
-                }
-                ControllerHolder_1.ControllerHolder.LoginController.GetAndShowStopServerNotice();
-              } else if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo()) {
+              if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo()) {
                 PakKeyUpdate_1.PakKeyUpdate.CheckVideoPakKey(() => {
                   KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportClickEnterGame(undefined));
                   HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.EnterGame, "enter_game_start");
@@ -276,8 +271,8 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       UiManager_1.UiManager.OpenView("LoginAgeTipView", LoginAgeTipView_1.ELoginShowType.AgeTip);
       UiLayer_1.UiLayer.SetShowNormalMaskLayer(true);
     };
-    this.geu = () => {
-      this.Ws1?.Refresh(this.Ceu);
+    this.Veu = () => {
+      this.Ws1?.Refresh(this.jeu);
     };
   }
   OnRegisterComponent() {
@@ -374,7 +369,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetLoginPlayerInfo, this.aSi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnConfirmServerItem, this.nSi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlayStationJoinSessionEvent, this.V5a);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.geu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoginRequestResult, this.Ckt);
@@ -383,7 +378,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetLoginPlayerInfo, this.aSi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnConfirmServerItem, this.nSi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlayStationJoinSessionEvent, this.V5a);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.geu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreDownloadAvailableUpdate, this.Veu);
   }
   OnAfterShow() {
     LoginServerController_1.LoginServerController.PingAllRegion();
@@ -502,7 +497,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     this.RefreshQRCodeLoginBtn(e);
     this.pSi();
     this.Ws1?.Refresh(e);
-    this.Ceu = e;
+    this.jeu = e;
   }
 }
 exports.LoginOfficialView = LoginOfficialView;

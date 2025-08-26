@@ -8,6 +8,9 @@ const Log_1 = require("../../../../Core/Common/Log");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 class UiNavigationGlobalData {
+  static GetListenerInstanceId() {
+    return ++this.e1d;
+  }
   static AddBlockListenerFocusTag(a) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("UiNavigation", 10, "添加禁止切换导航对象标签", ["标签", a]);
@@ -28,8 +31,9 @@ class UiNavigationGlobalData {
   }
 }
 (exports.UiNavigationGlobalData = UiNavigationGlobalData).NeedCalculateCurrentPanel = false;
-UiNavigationGlobalData.NeedRefreshCurrentPanel = false;
+UiNavigationGlobalData.NeedRefreshPanelId = 0;
 UiNavigationGlobalData.IsAllowCrossNavigationGroup = false;
 UiNavigationGlobalData.IsAllowLoopScrollInteractHighlight = false;
 UiNavigationGlobalData.VisionReplaceViewFindDefault = true;
-UiNavigationGlobalData.IBo = new Set(); //# sourceMappingURL=UiNavigationGlobalData.js.map
+UiNavigationGlobalData.IBo = new Set();
+UiNavigationGlobalData.e1d = 0; //# sourceMappingURL=UiNavigationGlobalData.js.map

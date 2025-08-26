@@ -71,6 +71,15 @@ class SilentAreaDetection {
   showrewardmapValue(t) {
     return this.showrewardmap(t)?.value();
   }
+  get ShowRewardMapCalabash() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.showrewardmapcalabashLength(), this.showrewardmapcalabashKey, this.showrewardmapcalabashValue, this);
+  }
+  showrewardmapcalabashKey(t) {
+    return this.showrewardmapcalabash(t)?.key();
+  }
+  showrewardmapcalabashValue(t) {
+    return this.showrewardmapcalabash(t)?.value();
+  }
   get BeginTimeStamp() {
     return this.begintimestamp();
   }
@@ -289,15 +298,26 @@ class SilentAreaDetection {
       return 0;
     }
   }
-  begintimestamp() {
+  GetShowrewardmapcalabashAt(t, i) {
+    return this.showrewardmapcalabash(t);
+  }
+  showrewardmapcalabash(t, i) {
+    var s = this.J7.__offset(this.z7, 40);
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  showrewardmapcalabashLength() {
     var t = this.J7.__offset(this.z7, 40);
     if (t) {
-      return this.J7.readInt32(this.z7 + t);
+      return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }
   }
-  preopenid() {
+  begintimestamp() {
     var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -305,7 +325,7 @@ class SilentAreaDetection {
       return 0;
     }
   }
-  markid() {
+  preopenid() {
     var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -313,7 +333,7 @@ class SilentAreaDetection {
       return 0;
     }
   }
-  lockcon() {
+  markid() {
     var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -321,8 +341,16 @@ class SilentAreaDetection {
       return 0;
     }
   }
-  mapid() {
+  lockcon() {
     var t = this.J7.__offset(this.z7, 48);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  mapid() {
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -333,7 +361,7 @@ class SilentAreaDetection {
     return this.phantomid(t);
   }
   phantomid(t) {
-    var i = this.J7.__offset(this.z7, 50);
+    var i = this.J7.__offset(this.z7, 52);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -341,7 +369,7 @@ class SilentAreaDetection {
     }
   }
   phantomidLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -349,7 +377,7 @@ class SilentAreaDetection {
     }
   }
   phantomidArray() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -357,14 +385,6 @@ class SilentAreaDetection {
     }
   }
   firstdropid() {
-    var t = this.J7.__offset(this.z7, 52);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  additionalid() {
     var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -372,7 +392,7 @@ class SilentAreaDetection {
       return 0;
     }
   }
-  sortid() {
+  additionalid() {
     var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -380,8 +400,16 @@ class SilentAreaDetection {
       return 0;
     }
   }
+  sortid() {
+    var t = this.J7.__offset(this.z7, 58);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   newcontent(t) {
-    var i = this.J7.__offset(this.z7, 58);
+    var i = this.J7.__offset(this.z7, 60);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -389,7 +417,7 @@ class SilentAreaDetection {
     return i;
   }
   detectiontabtype() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -400,7 +428,7 @@ class SilentAreaDetection {
     return this.phantomfettergroup(t);
   }
   phantomfettergroup(t) {
-    var i = this.J7.__offset(this.z7, 62);
+    var i = this.J7.__offset(this.z7, 64);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -408,7 +436,7 @@ class SilentAreaDetection {
     }
   }
   phantomfettergroupLength() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -416,7 +444,7 @@ class SilentAreaDetection {
     }
   }
   phantomfettergroupArray() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

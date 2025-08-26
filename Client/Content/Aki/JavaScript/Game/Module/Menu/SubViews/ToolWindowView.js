@@ -21,7 +21,7 @@ class ToolWindowView extends UiViewBase_1.UiViewBase {
     this.UBi = undefined;
     this.ABi = undefined;
     this.Lic = undefined;
-    this.mjc = undefined;
+    this.CZu = undefined;
     this.PBi = () => {
       UiManager_1.UiManager.OpenView("LogUploadView");
     };
@@ -42,7 +42,7 @@ class ToolWindowView extends UiViewBase_1.UiViewBase {
     this.wic = () => {
       UiManager_1.UiManager.OpenView("NetworkDetectionView");
     };
-    this.fjc = () => {
+    this.pZu = () => {
       UiManager_1.UiManager.OpenView("VulkanSetView");
     };
   }
@@ -79,13 +79,13 @@ class ToolWindowView extends UiViewBase_1.UiViewBase {
     var e = GameSettingsManager_1.GameSettingsManager.CheckConfigValidByCheckList(e)[0];
     this.GetItem(4).SetUIActive(e);
     if (e) {
-      this.mjc = new ToolWindowButtonItem_1.ToolWindowButtonItem(this.GetItem(4));
+      this.CZu = new ToolWindowButtonItem_1.ToolWindowButtonItem(this.GetItem(4));
       e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey("ToolsImageSet_Text");
-      this.mjc.SetText(e);
-      this.mjc.BindCallback(this.fjc);
+      this.CZu.SetText(e);
+      this.CZu.BindCallback(this.pZu);
       e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_IconVulkan");
-      this.mjc.RefreshIcon(e, () => {
-        this.mjc.SetIconVisible(true);
+      this.CZu.RefreshIcon(e, () => {
+        this.CZu.SetIconVisible(true);
       });
     }
   }

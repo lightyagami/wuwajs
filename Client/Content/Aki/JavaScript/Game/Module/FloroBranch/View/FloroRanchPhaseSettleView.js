@@ -15,33 +15,39 @@ class FloroRanchPhaseSettleView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Zge = 0;
-    this.Nvu = 0;
+    this.Gyu = 0;
     this.$It = false;
-    this.Vvu = false;
+    this.Fyu = false;
     this.PNo = undefined;
-    this.Smu = () => {
+    this.ofu = () => {
       var i = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().Id;
       var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
       if (this.$It) {
         FloroRanchController_1.FloroRanchController.SendFloroRanchPlayTributeRequest(i, t, i => {
-          this.Vvu = i.Rru;
+          this.Fyu = i.eou;
           if (this.Zge !== 0) {
             AudioSystem_1.AudioSystem.ExecuteAction(this.Zge, 0);
           }
           this.CloseMe();
+          if (this.PNo) {
+            this.PNo(this.Fyu);
+          }
         });
       } else {
         if (this.Zge !== 0) {
           AudioSystem_1.AudioSystem.ExecuteAction(this.Zge, 0);
         }
-        this.Vvu = true;
+        this.Fyu = true;
         this.CloseMe();
+        if (this.PNo) {
+          this.PNo(this.Fyu);
+        }
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIButtonComponent], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIItem], [11, UE.SpineSkeletonAnimationComponent]];
-    this.BtnBindInfo = [[5, this.Smu]];
+    this.BtnBindInfo = [[5, this.ofu]];
   }
   OnBeforeShow() {
     var i = this.OpenParam;
@@ -52,12 +58,12 @@ class FloroRanchPhaseSettleView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     var s = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
     var e = e.GetFloroRanchSubDungeonData(s).GetMaxStage() <= i;
-    this.$It = t.qhu;
+    this.$It = t.ulu;
     var s = e || !this.$It ? "Farm_Confirm" : "Farm_NewState";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), s);
-    this.Nvu = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetStageTarget();
-    this.GetText(3)?.SetText(this.Nvu.toString());
-    var i = Number(MathUtils_1.MathUtils.LongToBigInt(t.lru));
+    this.Gyu = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetStageTarget();
+    this.GetText(3)?.SetText(ModelManager_1.ModelManager.FloroRanchModel.GetCoinText(this.Gyu));
+    var i = ModelManager_1.ModelManager.FloroRanchModel.GetCoinText(Number(MathUtils_1.MathUtils.LongToBigInt(t.kru)));
     this.GetText(4)?.SetText(i.toString());
     var e = this.$It ? "FloroRanchStageSuccess" : "FloroRanchStageFail";
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e);
@@ -77,9 +83,6 @@ class FloroRanchPhaseSettleView extends UiViewBase_1.UiViewBase {
         this.GetSpine(11).SetAnimation(0, "fail_loop", true);
       });
     }
-  }
-  OnAfterDestroy() {
-    this.PNo(this.Vvu);
   }
 }
 exports.FloroRanchPhaseSettleView = FloroRanchPhaseSettleView;

@@ -54,7 +54,7 @@ class PhantomArenaHeadItem extends UiPanelBase_1.UiPanelBase {
     this.NeedAddHpEffect = false;
     this.SequencePlayer = undefined;
     this.AddHpItem = undefined;
-    this.icu = e => {
+    this.Gcu = e => {
       if (e === "DamageAccumulate") {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaBattleDamageAccumulateEnd);
       }
@@ -71,10 +71,10 @@ class PhantomArenaHeadItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.SequencePlayer.BindSequenceCloseEvent(this.icu);
+    this.SequencePlayer.BindSequenceCloseEvent(this.Gcu);
     this.RefreshDamageBar(0);
   }
-  async iZ1() {
+  async LZ1() {
     this.DialogItem = new PhantomArenaDialogItem_1.PhantomArenaDialogItem();
     if (this.IsOwn) {
       await this.DialogItem.CreateByResourceIdAsync("PnlRoleDialogUp", this.GetItem(3));
@@ -83,7 +83,7 @@ class PhantomArenaHeadItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.InitAddHpItem(), this.iZ1()]);
+    await Promise.all([this.InitAddHpItem(), this.LZ1()]);
   }
   SetBarActive(e) {
     this.GetSprite(1).SetUIActive(e);

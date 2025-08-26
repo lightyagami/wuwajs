@@ -15,6 +15,7 @@ const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDe
 const GlobalData_1 = require("../../../GlobalData");
 const LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const TsAiController_1 = require("../../Controller/TsAiController");
 const TsTaskAbortImmediatelyBase_1 = require("./TsTaskAbortImmediatelyBase");
 const PROFILE_KEY = "TsTaskNpcPatrol_GetObstacleLocation";
@@ -113,8 +114,8 @@ class TsTaskPatrolLogic extends TsTaskAbortImmediatelyBase_1.default {
           Context: "[TsTaskPatrolLogic.InitComp]"
         });
       }
-      this.StateComp = this.Entity.GetComponent(101);
-      this.AnimComp = this.Entity.GetComponent(177);
+      this.StateComp = this.Entity.GetComponent(102);
+      this.AnimComp = this.Entity.GetComponent(178);
       if (!this.PatrolLogic.IsInitialized) {
         this.PatrolLogic.GeneratePatrol(false);
       }
@@ -255,7 +256,7 @@ class TsTaskPatrolLogic extends TsTaskAbortImmediatelyBase_1.default {
         this.MoveComp.MoveCharacter(this.CacheVector, t);
       }
       if (this.AnimComp?.Valid && this.Entity.GetTickInterval() > 1 && this.ActorComp.Owner?.WasRecentlyRenderedOnScreen() && h) {
-        this.AnimComp.SetModelBuffer(h, t * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+        this.AnimComp.SetModelBuffer(h, t * CommonDefine_1.MILLIONSECOND_PER_SECOND * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       }
     }
     this.MoveComp.IsSpecialMove = true;

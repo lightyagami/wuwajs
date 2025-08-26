@@ -9,10 +9,10 @@ class LifePointChallengeData {
   constructor() {
     this.xe = 0;
     this.Tvc = false;
-    this.iPu = 0;
+    this.APu = 0;
     this.Jkt = 0;
     this.HYo = 0;
-    this.mxu = false;
+    this.Mxu = false;
   }
   GetId() {
     return this.xe;
@@ -21,7 +21,7 @@ class LifePointChallengeData {
     return this.Tvc;
   }
   GetOpenTime() {
-    return this.iPu / 1000;
+    return this.APu / 1000;
   }
   GetRewardId() {
     return this.Jkt;
@@ -30,15 +30,15 @@ class LifePointChallengeData {
     return this.HYo;
   }
   GetPreChallengeState() {
-    return this.mxu;
+    return this.Mxu;
   }
   Phrase(t) {
     this.xe = t.e8n;
     this.Tvc = t.mLs;
-    this.iPu = Number(MathUtils_1.MathUtils.LongToBigInt(t.pDs));
+    this.APu = Number(MathUtils_1.MathUtils.LongToBigInt(t.pDs));
     this.Jkt = t.N6n;
     this.HYo = t.A5n;
-    this.mxu = t.Vwu;
+    this.Mxu = t.hAu;
   }
 }
 exports.LifePointChallengeData = LifePointChallengeData;

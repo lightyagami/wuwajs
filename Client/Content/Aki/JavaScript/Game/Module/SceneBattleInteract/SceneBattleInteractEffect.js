@@ -48,8 +48,8 @@ class SceneBattleInteractEffect {
     this.l$l = 0;
     this._$l = 0;
     this.c$l = undefined;
-    this.XRu = false;
-    this.YRu = false;
+    this.twu = false;
+    this.iwu = false;
     this.u$l = (t, s, e, h) => {
       if (this.wqc && !(e < this.l$l) && (e !== this.l$l || !(h < this._$l)) && this.Lqc === 0 && !this.r$t && t) {
         var a = s.HitResult;
@@ -115,7 +115,7 @@ class SceneBattleInteractEffect {
     this.Ks1.FromUeVector(t);
   }
   SetIsCommonWeapon(t) {
-    this.YRu = t;
+    this.iwu = t;
   }
   koe() {
     this.Aqc = this.wqc.ShapeType;
@@ -145,7 +145,7 @@ class SceneBattleInteractEffect {
     }
   }
   OnTick(t) {
-    if (!this.r$t && this.WI && (!this.YRu || !ModelManager_1.ModelManager.SceneBattleInteractModel.IgnoreCommonWeapon) && (!(this.E0 > 0) || this.E0 === Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint())) {
+    if (!this.r$t && this.WI && (!this.iwu || !ModelManager_1.ModelManager.SceneBattleInteractModel.IgnoreCommonWeapon) && (!(this.E0 > 0) || this.E0 === Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint())) {
       if (this.TFc > 0 && (this.TFc -= t, this.TFc <= 0)) {
         this.WI = false;
       } else {
@@ -237,13 +237,13 @@ class SceneBattleInteractEffect {
     }
   }
   SetIgnoreCommonWeapon(t) {
-    if (this.XRu !== t) {
-      this.XRu = t;
+    if (this.twu !== t) {
+      this.twu = t;
       ModelManager_1.ModelManager.SceneBattleInteractModel.RefreshIgnoreCommonWeapon(t);
     }
   }
   GetIgnoreCommonWeapon() {
-    return this.XRu;
+    return this.twu;
   }
   SetDebug(t) {
     if (this.mWi) {

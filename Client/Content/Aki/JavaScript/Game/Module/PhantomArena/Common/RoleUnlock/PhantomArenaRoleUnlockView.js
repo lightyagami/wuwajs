@@ -27,7 +27,7 @@ class PhantomArenaRoleUnlockView extends UiViewBase_1.UiViewBase {
         this.CloseMe();
       }
     };
-    this.vCu = e => {
+    this.C0u = e => {
       if (this.IsWaitingChange && e === "Change") {
         this.RefreshViewByCardRoleId(this.CardRoleId);
       }
@@ -48,10 +48,10 @@ class PhantomArenaRoleUnlockView extends UiViewBase_1.UiViewBase {
     this.RefreshViewByCardRoleId(this.CardRoleId);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.vCu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.C0u);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.vCu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.C0u);
   }
   RefreshViewByCardRoleId(e) {
     var e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);

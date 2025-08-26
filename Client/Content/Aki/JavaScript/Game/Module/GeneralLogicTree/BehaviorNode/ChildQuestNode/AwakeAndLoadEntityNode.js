@@ -31,8 +31,12 @@ class AwakeAndLoadEntityNode extends TickBehaviorNode_1.TickBehaviorNode {
               if (!e.IsInit) {
                 return;
               }
-              e = e.Entity.GetComponent(156);
-              if (e && !e.LoadingBaseConfigFinish) {
+              var r = e.Entity.GetComponent(157);
+              if (r && !r.LoadingBaseConfigFinish) {
+                return;
+              }
+              r = e.Entity.GetComponent(203);
+              if (r && r.CreatureData.GetVisible() && !r.GetIsSceneInteractionLoadCompleted()) {
                 return;
               }
             } else if (Log_1.Log.CheckInfo()) {

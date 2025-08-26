@@ -571,11 +571,13 @@ class UiSceneManager {
     }
     await r.Promise;
     this.SetSceneFloorReflection(true, true);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.EnableKuroTranslucentPrePassStencilClear 1");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLastStepInLoadScene);
   }
   static async ExitScene() {
     await WorldController_1.WorldController.EndWorldOriginInUiMode();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.ForceUpdateCSMOnce 1");
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.EnableKuroTranslucentPrePassStencilClear 0");
     this.SetSceneFloorReflection(false, false);
     UiSceneManager.CloseUiScene();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLastStepInExitScene);

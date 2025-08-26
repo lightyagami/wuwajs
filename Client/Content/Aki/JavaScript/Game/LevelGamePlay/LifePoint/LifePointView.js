@@ -207,8 +207,8 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     this.CUl = false;
     this.gUl = false;
     this.pUl = new Map();
-    this.Djc = false;
-    this.Bjc = 0;
+    this.kWu = false;
+    this.OWu = 0;
     this.Rni = 0;
     this.v6e = () => {
       if (ModelManager_1.ModelManager.LifePointModel.Config.CloseUiAfterCompletion !== undefined) {
@@ -230,7 +230,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
           i[e].BeforeReset();
         }
       }
-      this.Djc = false;
+      this.kWu = false;
     };
     this.NFl = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(HELP_CONFIG_ID);
@@ -257,7 +257,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
       var e = this.GetText(8);
       e.SetText(this.Rlh.toString());
       e.SetColor(ModelManager_1.ModelManager.LifePointModel.NormalStepColor);
-      this.Bjc++;
+      this.OWu++;
     };
     this.Jke = () => {
       this.Rlh = this.OFl;
@@ -410,7 +410,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     AnimTask.Pool.Clear();
     ModelManager_1.ModelManager.LifePointModel.UnloadData();
     ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState = false;
-    this.kjc();
+    this.qWu();
   }
   av() {
     for (let i = 0; i < LifePointModel_1.LINE_SIZE; i++) {
@@ -457,6 +457,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     ModelManager_1.ModelManager.LifePointModel.AudioMap.clear();
   }
   kxe() {
+    var e;
     if (this.CUl || this.gUl) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelPlay", 26, "[LifePoint] 检查生命点完成");
@@ -472,14 +473,14 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
         }
         ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.RequestFinishUiGameplay(Protocol_1.Aki.Protocol.h3s.Proto_LifePoint, "");
         this.HDe?.();
-        this.Djc = true;
+        this.kWu = true;
         if (ModelManager_1.ModelManager.LifePointModel.Config.CloseUiAfterCompletion === undefined || !!ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState) {
           this.PlaySequence("Complete", this.B_e);
         }
         if (ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Colorful_Challenge_Pass");
         }
-        if (!EntitySystem_1.EntitySystem.Get(this.Rni)) {
+        if (!(e = EntitySystem_1.EntitySystem.Get(this.Rni)) || !e.Active) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Gameplay_Locked");
         }
       } else if (this.Rlh <= 0) {
@@ -511,16 +512,16 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     this.HDe?.();
     this.PlaySequence("Complete", this.B_e);
   }
-  kjc() {
+  qWu() {
     var e = new LogReportDefine_1.LifePointDrawLogEvent();
     e.i_config_id = this.Rni;
-    e.i_result = this.Djc ? 1 : 0;
+    e.i_result = this.kWu ? 1 : 0;
     var i = EntitySystem_1.EntitySystem.Get(this.Rni);
     if (i) {
       i = i?.GetComponent(0);
       e.s_type_name = i?.GetPbEntityInitData()?.BlueprintType ?? "";
     }
-    e.i_try_count = this.Bjc;
+    e.i_try_count = this.OWu;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
   }
 }

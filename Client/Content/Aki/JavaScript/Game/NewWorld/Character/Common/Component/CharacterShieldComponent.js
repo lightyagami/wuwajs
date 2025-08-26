@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, i, o) {
+var __decorate = this && this.__decorate || function (e, t, i, o) {
   var r;
   var s = arguments.length;
-  var h = s < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var n = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, i, o);
+    n = Reflect.decorate(e, t, i, o);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (r = t[n]) {
-        h = (s < 3 ? r(h) : s > 3 ? r(e, i, h) : r(e, i)) || h;
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (r = e[h]) {
+        n = (s < 3 ? r(n) : s > 3 ? r(t, i, n) : r(t, i)) || n;
       }
     }
   }
-  if (s > 3 && h) {
-    Object.defineProperty(e, i, h);
+  if (s > 3 && n) {
+    Object.defineProperty(t, i, n);
   }
-  return h;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -30,21 +30,23 @@ const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponen
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage");
+const SceneTeamController_1 = require("../../../../Module/SceneTeam/SceneTeamController");
+const AbilityEvent_1 = require("./Abilities/AbilityEvent");
 class CharacterShield {
-  constructor(t, e, i) {
-    this.Id = t;
-    this.TemplateId = e;
+  constructor(e, t, i) {
+    this.Id = e;
+    this.TemplateId = t;
     this.Value = i;
     this.Priority = 0;
     this.ShieldValue = 0;
     this.HandleId = 0;
-    this.HandleId = t;
-    t = ShieldById_1.configShieldById.GetConfig(e);
-    if (t) {
-      this.Priority = t.Priority;
+    this.HandleId = e;
+    e = ShieldById_1.configShieldById.GetConfig(t);
+    if (e) {
+      this.Priority = e.Priority;
       this.ShieldValue = i;
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Battle", 35, "护盾添加失败，护盾Id不存在", ["Id", e]);
+      Log_1.Log.Error("Battle", 35, "护盾添加失败，护盾Id不存在", ["Id", t]);
     }
   }
 }
@@ -61,69 +63,73 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
     return this.Qjr;
   }
   OnStart() {
-    this.m1t = this.Entity.CheckGetComponent(174);
-    this.Xte = this.Entity.CheckGetComponent(205);
+    this.m1t = this.Entity.CheckGetComponent(175);
+    this.Xte = this.Entity.CheckGetComponent(206);
     return true;
   }
   OnActivate() {
-    this.Kjr.clear;
+    this.Kjr.clear();
     this.Qjr = 0;
-    var t = this.Entity.GetComponent(0).ComponentDataMap.get("Jys")?.Jys?.LTs;
-    if (t) {
-      for (const e of t) {
-        this.Add(e.uVn, e.v9n, e.ETs);
+    var e = this.Entity.GetComponent(0).ComponentDataMap.get("Jys")?.Jys?.LTs;
+    if (e) {
+      for (const t of e) {
+        this.Add(t.uVn, t.v9n, t.ETs);
       }
     }
     return true;
   }
-  Xjr(t) {
-    if (this.Qjr === 0 && t > 0) {
+  Xjr(e) {
+    if (this.Qjr === 0 && e > 0) {
       this.Xte.AddTag(1219330576);
-    } else if (this.Qjr > 0 && this.Qjr + t <= 0) {
+    } else if (this.Qjr > 0 && this.Qjr + e <= 0) {
       this.Xte.RemoveTag(1219330576);
     }
-    this.Qjr += t;
+    this.Qjr += e;
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.Qjr);
   }
-  Add(t, e, i) {
-    if (this.Kjr.get(t)) {
-      this.ChangeValue(t, e, i);
+  Add(e, t, i, o = 0) {
+    var r;
+    if (this.Kjr.get(e)) {
+      this.ChangeValue(e, t, i, o);
     } else {
-      e = new CharacterShield(t, e, i);
-      this.Kjr.set(t, e);
-      this.Xjr(e.ShieldValue);
+      r = new CharacterShield(e, t, i);
+      this.Kjr.set(e, r);
+      this.Xjr(r.ShieldValue);
+      this.Ymd(0, i, o, t);
     }
     this.m1t.TriggerEvents(7, this.m1t, {});
   }
-  Remove(t) {
-    var e = this.Kjr.get(t);
-    if (e) {
-      this.Xjr(-e.ShieldValue);
+  Remove(e, t, i = 1) {
+    var o = this.Kjr.get(e);
+    if (o) {
+      this.Xjr(-o.ShieldValue);
       this.$jr();
-      this.Kjr.delete(t);
+      this.Kjr.delete(e);
+      this.Ymd(o.ShieldValue, 0, i, t);
     }
   }
-  ChangeValue(t, e, i) {
-    var o;
-    var r = this.Kjr.get(t);
-    if (r) {
-      o = r.ShieldValue;
-      r.ShieldValue = i;
-      this.Xjr(i - o);
+  ChangeValue(e, t, i, o = 2) {
+    var r;
+    var s = this.Kjr.get(e);
+    if (s) {
+      r = s.ShieldValue;
+      s.ShieldValue = i;
+      this.Xjr(i - r);
+      this.Ymd(r, i, o, t);
     } else {
-      this.Add(t, e, i);
+      this.Add(e, t, i);
     }
   }
-  static OnShieldUpdateNotify(t, e) {
-    var i = t?.GetComponent(75);
+  static OnShieldUpdateNotify(e, t) {
+    var i = e?.GetComponent(75);
     if (i) {
-      for (const s of e.kAs) {
+      for (const s of t.kAs) {
         var o = s.OAs;
         var r = Protocol_1.Aki.Protocol.O4s;
         if (o === r.Proto_EShieldUpdateTypeAdd && s.ETs > 0) {
           i.Add(s.uVn, s.v9n, s.ETs);
         } else if (o === r.Proto_EShieldUpdateTypeDel && s.ETs === 0) {
-          i.Remove(s.uVn);
+          i.Remove(s.uVn, s.v9n);
         } else if (o === r.Proto_EShieldUpdateTypeModify && s.ETs > 0) {
           i.ChangeValue(s.uVn, s.v9n, s.ETs);
         } else if (Log_1.Log.CheckWarn()) {
@@ -132,20 +138,23 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
       }
     }
   }
-  GetShieldValue(t) {
-    if (t === 0) {
+  GetShieldValue(e) {
+    if (e === 0) {
       return this.ShieldTotal;
     }
-    let e = 0;
+    let t = 0;
     for (const i of this.Kjr.values()) {
-      if (i.TemplateId === t) {
-        e += i.ShieldValue;
+      if (i.TemplateId === e) {
+        t += i.ShieldValue;
       }
     }
-    return e;
+    return t;
   }
   $jr() {
     this.m1t.TriggerEvents(8, this.m1t, {});
+  }
+  Ymd(e, t, i, o) {
+    SceneTeamController_1.SceneTeamController.EmitAbilityEvent(this.Entity, 4, AbilityEvent_1.DEFAULT_KEY, this.Entity, e, t, i, o);
   }
   GetDebugShieldInfo() {
     return this.Kjr.entries();

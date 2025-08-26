@@ -1,37 +1,37 @@
 "use strict";
 
-function checkInBox(o, p, e, r) {
-  const T = (p.X ?? 0) + (o.X ?? 0);
-  const t = (p.Y ?? 0) + (o.Y ?? 0);
-  const s = (p.Z ?? 0) + (o.Z ?? 0);
-  var p = r.X ?? 0;
-  var o = r.Y ?? 0;
+function checkInBox(p, e, o, r) {
+  const T = (e.X ?? 0) + (p.X ?? 0);
+  const t = (e.Y ?? 0) + (p.Y ?? 0);
+  const s = (e.Z ?? 0) + (p.Z ?? 0);
+  var e = r.X ?? 0;
+  var p = r.Y ?? 0;
   var r = r.Z ?? 0;
-  var i = e.X ?? 0;
-  var c = e.Y ?? 0;
-  var e = e.Z ?? 0;
-  return !(T - p > i) && !(T + p < i) && !(t - o > c) && !(t + o < c) && !(s - r > e) && !(s + r < e);
+  var i = o.X ?? 0;
+  var c = o.Y ?? 0;
+  var o = o.Z ?? 0;
+  return !(T - e > i) && !(T + e < i) && !(t - p > c) && !(t + p < c) && !(s - r > o) && !(s + r < o);
 }
-function checkInSphere(o, p, e, r) {
-  const T = (p.X ?? 0) + (o.X ?? 0);
-  const t = (p.Y ?? 0) + (o.Y ?? 0);
-  const s = (p.Z ?? 0) + (o.Z ?? 0);
-  p = (e.X ?? 0) - T;
-  o = (e.Y ?? 0) - t;
-  e = (e.Z ?? 0) - s;
-  return !(r * r < p * p + o * o + e * e);
+function checkInSphere(p, e, o, r) {
+  const T = (e.X ?? 0) + (p.X ?? 0);
+  const t = (e.Y ?? 0) + (p.Y ?? 0);
+  const s = (e.Z ?? 0) + (p.Z ?? 0);
+  e = (o.X ?? 0) - T;
+  p = (o.Y ?? 0) - t;
+  o = (o.Z ?? 0) - s;
+  return !(r * r < e * e + p * p + o * o);
 }
 var ETipsActorType;
 var ETipsActorColorType;
 var ETipsActorTransformType;
-function pickShapeParam(o) {
-  var p = o.Type;
-  var p = exports.shapeStructTemplates[p];
-  var e = {};
-  for (const r of Object.keys(p)) {
-    e[r] = o[r];
+function pickShapeParam(p) {
+  var e = p.Type;
+  var e = exports.shapeStructTemplates[e];
+  var o = {};
+  for (const r of Object.keys(e)) {
+    o[r] = p[r];
   }
-  return e;
+  return o;
 }
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -39,25 +39,26 @@ Object.defineProperty(exports, "__esModule", {
 exports.pickShapeParam = exports.shapeStructTemplates = exports.ETipsActorTransformType = exports.ETipsActorColorType = exports.ETipsActorType = exports.checkInSphere = exports.checkInBox = undefined;
 exports.checkInBox = checkInBox;
 exports.checkInSphere = checkInSphere;
-(function (o) {
-  o[o.Sphere = 0] = "Sphere";
-  o[o.Box = 1] = "Box";
-  o[o.Cylinder = 2] = "Cylinder";
-  o[o.HollowCylinder = 3] = "HollowCylinder";
-  o[o.HollowSphere = 4] = "HollowSphere";
-  o[o.Cone = 5] = "Cone";
-  o[o.Sector = 6] = "Sector";
-  o[o.TargetPoint = 7] = "TargetPoint";
-  o[o.Laser = 8] = "Laser";
-  o[o.Spline = 9] = "Spline";
+(function (p) {
+  p[p.Sphere = 0] = "Sphere";
+  p[p.Box = 1] = "Box";
+  p[p.Cylinder = 2] = "Cylinder";
+  p[p.HollowCylinder = 3] = "HollowCylinder";
+  p[p.HollowSphere = 4] = "HollowSphere";
+  p[p.Cone = 5] = "Cone";
+  p[p.Sector = 6] = "Sector";
+  p[p.TargetPoint = 7] = "TargetPoint";
+  p[p.Laser = 8] = "Laser";
+  p[p.Spline = 9] = "Spline";
+  p[p.SplineEffect = 10] = "SplineEffect";
 })(ETipsActorType = exports.ETipsActorType ||= {});
-(function (o) {
-  o[o.Inner = 0] = "Inner";
-  o[o.Outer = 1] = "Outer";
+(function (p) {
+  p[p.Inner = 0] = "Inner";
+  p[p.Outer = 1] = "Outer";
 })(ETipsActorColorType = exports.ETipsActorColorType ||= {});
-(function (o) {
-  o[o.Absolute = 0] = "Absolute";
-  o[o.Relative = 1] = "Relative";
+(function (p) {
+  p[p.Absolute = 0] = "Absolute";
+  p[p.Relative = 1] = "Relative";
 })(ETipsActorTransformType = exports.ETipsActorTransformType ||= {});
 exports.shapeStructTemplates = {
   [ETipsActorType.Box]: {
@@ -100,6 +101,7 @@ exports.shapeStructTemplates = {
   [ETipsActorType.Sector]: {
     Radius: 0,
     Angle: 0,
+    Offset: 0,
     ColorType: ETipsActorColorType.Inner,
     Type: ETipsActorType.Sector
   },
@@ -116,6 +118,10 @@ exports.shapeStructTemplates = {
   },
   [ETipsActorType.Spline]: {
     Type: ETipsActorType.Spline,
+    EntityId: 0
+  },
+  [ETipsActorType.SplineEffect]: {
+    Type: ETipsActorType.SplineEffect,
     EntityId: 0
   }
 };

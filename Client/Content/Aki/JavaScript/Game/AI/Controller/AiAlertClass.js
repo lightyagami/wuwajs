@@ -90,7 +90,7 @@ class AiAlertClass {
         if (!this.Bte.AiHateList.GetCurrentTarget()) {
           this.qte = Math.max(0, this.qte - t * this.bte.BaseDecrease * MathUtils_1.MathUtils.MillisecondToSecond);
           for (const n of this.Bte.AiPerception.Enemies) {
-            var e = EntitySystem_1.EntitySystem.GetComponent(n, 174);
+            var e = EntitySystem_1.EntitySystem.GetComponent(n, 175);
             if (e?.Valid) {
               e.RemoveBuff(CharacterBuffIds_1.buffId.StealthIgnoreHateBuff, -1, "AiAlterClass MaxValue");
             }
@@ -127,7 +127,7 @@ class AiAlertClass {
           if (this.qte >= exports.MAX_ALERT) {
             this.qte = exports.MAX_ALERT;
             for (const a of this.Bte.AiPerception.Enemies) {
-              var r = EntitySystem_1.EntitySystem.GetComponent(a, 174);
+              var r = EntitySystem_1.EntitySystem.GetComponent(a, 175);
               if (r?.Valid) {
                 r.RemoveBuff(CharacterBuffIds_1.buffId.StealthIgnoreHateBuff, -1, "AiAlterClass MaxValue");
               }

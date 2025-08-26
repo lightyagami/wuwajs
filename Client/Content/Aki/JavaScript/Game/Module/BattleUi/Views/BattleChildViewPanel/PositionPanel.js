@@ -46,7 +46,7 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.vet = undefined;
     this.lYa = undefined;
     this.bac = undefined;
-    this.Fnu = undefined;
+    this.csu = undefined;
     this.Met = true;
     this.ola = false;
     this.Eet = "";
@@ -57,12 +57,12 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.eMa = 0;
     this.tMa = 0;
     this.Lac = new Date();
-    this.Qwu = "";
+    this.Hwu = "";
     this.wQe = () => {
       this.lhh();
       this.wac();
     };
-    this.Ojc = () => {
+    this.yQu = () => {
       this.lhh();
     };
     this.ShowPlayerPosition = () => {
@@ -80,8 +80,8 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.vet = this.GetText(1);
     this.lYa = this.GetText(3);
     this.bac = this.GetText(4);
-    this.Fnu = this.GetItem(5);
-    this.Qwu = TimeUtil_1.TimeUtil.GetTimeZoneOffsetString();
+    this.csu = this.GetItem(5);
+    this.Hwu = TimeUtil_1.TimeUtil.GetTimeZoneOffsetString();
     if (!Info_1.Info.IsBuildShipping) {
       this.iMa();
     }
@@ -93,19 +93,19 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.pet.SetUIActive(this.Met);
     this.zva.SetUIActive(false);
     this.lYa?.SetUIActive(false);
-    this.Fnu?.SetUIActive(false);
+    this.csu?.SetUIActive(false);
     this.vet.SetUIActive(false);
     this.lhh();
     this.wac();
   }
   AddEvents() {
     this.ChildViewData.AddCallback(0, this.wQe);
-    this.ChildViewData.AddCallback(25, this.Ojc);
+    this.ChildViewData.AddCallback(25, this.yQu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ShowPlayerPosition, this.ShowPlayerPosition);
   }
   RemoveEvents() {
     this.ChildViewData.RemoveCallback(0, this.wQe);
-    this.ChildViewData.RemoveCallback(25, this.Ojc);
+    this.ChildViewData.RemoveCallback(25, this.yQu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ShowPlayerPosition, this.ShowPlayerPosition);
   }
   lhh() {
@@ -138,7 +138,7 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   Aac(e) {
     this.Lac.setTime(Date.now());
-    var t = TimeUtil_1.TimeUtil.DateFormat8(this.Lac, this.Qwu);
+    var t = TimeUtil_1.TimeUtil.DateFormat8(this.Lac, this.Hwu);
     this.bac.SetText(t);
   }
   Iet(e, t) {
@@ -165,7 +165,7 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
     let m = `Fps:${l} Pos: (${i},${s},${e})`;
     m = `${m = !this.ola && this.SH.size > 0 ? m + "  " + this.Zva : m} 
-CTime:${r}${this.Qwu}
+CTime:${r}${this.Hwu}
 STime:${o}
 GTime:${ModelManager_1.ModelManager.TimeOfDayModel.GameTime.HourMinuteString}`;
     if (!this.ola) {
@@ -235,10 +235,8 @@ TextureStreamingPoolSize:${_.X} NonStreaming:${_.Y}`;
     let l = 1;
     let h = 1;
     let n = 1;
-    l = 1000;
-    h = 4000;
-    n = 2000;
-    if (s > (Platform_1.Platform.IsPcPlatform() || Platform_1.Platform.IsPs5Platform(), a = 1000)) {
+    n = Platform_1.Platform.IsPcPlatform() || Platform_1.Platform.IsPs5Platform() ? (a = 1000, l = 1000, h = 4000, 600) : (a = 1000, l = 1000, h = 4000, 400);
+    if (s > a) {
       e += ` TotalActive超标,当前值是:${s}
 `;
       t = true;
@@ -264,13 +262,13 @@ TextureStreamingPoolSize:${_.X} NonStreaming:${_.Y}`;
       this.lYa?.SetUIActive(true);
       this.lYa?.SetText(e);
       if (ModelManager_1.ModelManager.GameModeModel?.MapConfig?.PakRule === 1) {
-        this.Fnu?.SetUIActive(true);
+        this.csu?.SetUIActive(true);
       } else {
-        this.Fnu?.SetUIActive(false);
+        this.csu?.SetUIActive(false);
       }
     } else {
       this.lYa?.SetUIActive(false);
-      this.Fnu?.SetUIActive(false);
+      this.csu?.SetUIActive(false);
     }
   }
   UpdateEffectState() {

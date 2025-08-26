@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.CharacterUtils = undefined;
+const Log_1 = require("../../../Core/Common/Log");
 const MonsterBattleConfById_1 = require("../../../Core/Define/ConfigQuery/MonsterBattleConfById");
 const MonsterBattleConfByRoleId_1 = require("../../../Core/Define/ConfigQuery/MonsterBattleConfByRoleId");
 const MonsterPerformanceConfById_1 = require("../../../Core/Define/ConfigQuery/MonsterPerformanceConfById");
@@ -22,7 +23,7 @@ class CharacterUtils {
     if (r?.Valid) {
       var t = r.Entity.GetComponent(0);
       var a = r.Entity.GetComponent(40);
-      var o = r.Entity.GetComponent(205);
+      var o = r.Entity.GetComponent(206);
       let e = undefined;
       r = t.GetMonsterComponent()?.FightConfigId;
       if (r) {
@@ -48,6 +49,12 @@ class CharacterUtils {
       }
     }
     return false;
+  }
+  static SetActorHiddenInGame(e, r, t) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Character", 67, "CharacterUtils.SetActorHiddenInGame", ["Actor", e.GetName()], ["IsHidden", r], ["Reason", t]);
+    }
+    e.SetActorHiddenInGame(r);
   }
 }
 exports.CharacterUtils = CharacterUtils;

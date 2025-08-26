@@ -257,7 +257,7 @@ class FishingModel extends ModelBase_1.ModelBase {
   Qn_(e, t) {
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
     if (e?.Valid) {
-      e.Entity.GetComponent(273)?.RefreshFishingPoint(t);
+      e.Entity.GetComponent(276)?.RefreshFishingPoint(t);
     }
   }
   GetFishingPointDataById(e) {
@@ -584,7 +584,7 @@ class FishingModel extends ModelBase_1.ModelBase {
     return ConfigManager_1.ConfigManager.FishingConfig.GetFishingTagConfig(e).Name;
   }
   IsOnShipVehicle() {
-    var e = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(229);
+    var e = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(230);
     return (e && e.IsOnVehicle) ?? false;
   }
   SetHandBookData(e) {

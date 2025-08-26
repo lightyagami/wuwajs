@@ -40,13 +40,12 @@ class PreDownloadController extends UiControllerBase_1.UiControllerBase {
   static ACc() {
     var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(264);
     var o = PreDownloadManager_1.PreDownloadManager.Get();
-    var r = o.GetDownloadSize();
-    var n = (r / BigInt(1048576)).toString() + "MB";
-    var o = ((o.GetNeedSpace() + r) / BigInt(1048576)).toString() + "MB";
+    var r = (o.GetDownloadSize() / BigInt(1048576)).toString() + "MB";
+    var o = (o.GetNeedSpace() / BigInt(1048576)).toString() + "MB";
     e.FunctionMap.set(2, () => {
       PreDownloadController.RCc();
     });
-    e.SetTextArgs(n, o);
+    e.SetTextArgs(r, o);
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
   static RCc() {

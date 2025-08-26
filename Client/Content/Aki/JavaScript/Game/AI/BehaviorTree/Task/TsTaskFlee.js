@@ -95,7 +95,7 @@ class TsTaskFlee extends TsTaskAbortImmediatelyBase_1.default {
           if (r) {
             const n = r.Entity;
             if (n) {
-              this.MoveComp = n.GetComponent(178);
+              this.MoveComp = n.GetComponent(179);
               if (this.MoveComp) {
                 if (this.MoveComp.CharacterMovement.MovementMode === 5) {
                   this.IsFlying = true;
@@ -141,7 +141,7 @@ class TsTaskFlee extends TsTaskAbortImmediatelyBase_1.default {
                 if (this.FoundPath) {
                   this.CurrentNavigationIndex = 1;
                   this.NavigationEndTime = Time_1.Time.WorldTime + s.AiFlee.TimeMilliseconds;
-                  if ((l = s.CharAiDesignComp.Entity.GetComponent(101))?.Valid) {
+                  if ((l = s.CharAiDesignComp.Entity.GetComponent(102))?.Valid) {
                     l.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Run);
                   }
                 } else {

@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, i, r) {
-  var s;
-  var n = arguments.length;
-  var o = n < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, i) : r;
+var __decorate = this && this.__decorate || function (e, t, i, s) {
+  var r;
+  var o = arguments.length;
+  var n = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(e, t, i, r);
+    n = Reflect.decorate(e, t, i, s);
   } else {
     for (var h = e.length - 1; h >= 0; h--) {
-      if (s = e[h]) {
-        o = (n < 3 ? s(o) : n > 3 ? s(t, i, o) : s(t, i)) || o;
+      if (r = e[h]) {
+        n = (o < 3 ? r(n) : o > 3 ? r(t, i, n) : r(t, i)) || n;
       }
     }
   }
-  if (n > 3 && o) {
-    Object.defineProperty(t, i, o);
+  if (o > 3 && n) {
+    Object.defineProperty(t, i, n);
   }
-  return o;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -42,6 +42,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     this.ParaglidingDelayHandle = undefined;
     this.PlatformActorToIgnore = undefined;
     this.GuaranteeBounceSkillEndHandle = undefined;
+    this.SwimDelayHandle = undefined;
     this.OnParaglidingDelayFinish = () => {
       var e;
       if (this.Entity?.Valid) {
@@ -51,7 +52,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
         ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(e, {
           ParamType: 2,
           IsControl: true
-        })?.EntityHandle?.Entity?.GetComponent(178)?.TrySetGlide();
+        })?.EntityHandle?.Entity?.GetComponent(179)?.TrySetGlide();
       }
     };
     this.GuaranteeBounceSkillEnd = () => {
@@ -117,32 +118,32 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
   async JumpToAirAndParagliding(e) {
     var t;
     var i;
-    var r;
     var s;
-    var n = e.PassengerEntity?.GetComponent(2);
-    if (n && (n.Actor.KuroSetMovementMode({
+    var r;
+    var o = e.PassengerEntity?.GetComponent(2);
+    if (o && (o.Actor.KuroSetMovementMode({
       Mode: 3,
       Context: "[RoleDriveVehicleComponent.JumpToAirAndParagliding]"
-    }), n = e.VehicleEntity?.GetComponent(233)) && (s = (n.Config?.BounceTime ?? VehicleConfig_1.DEFAULT_BOUNCE_TIME) * MathUtils_1.MathUtils.MillisecondToSecond, r = n.Config?.BounceHeight ?? VehicleConfig_1.DEFAULT_BOUNCE_HEIGHT, t = n.Config?.BounceCurve ?? VehicleConfig_1.DEFAULT_BOUNCE_CURVE, i = this.Entity.GetComponent(29), n?.GetVehicleVelocity(this.TmpVector1), this.TmpVector1.MultiplyEqual(s * 0.5), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, this.TmpVector1), await i?.StartBounceWithHorizontalOffset(r, this.TmpVector1, s, t)) && this.Entity?.Valid) {
+    }), o = e.VehicleEntity?.GetComponent(234)) && (r = (o.Config?.BounceTime ?? VehicleConfig_1.DEFAULT_BOUNCE_TIME) * MathUtils_1.MathUtils.MillisecondToSecond, s = o.Config?.BounceHeight ?? VehicleConfig_1.DEFAULT_BOUNCE_HEIGHT, t = o.Config?.BounceCurve ?? VehicleConfig_1.DEFAULT_BOUNCE_CURVE, i = this.Entity.GetComponent(29), o?.GetVehicleVelocity(this.TmpVector1), this.TmpVector1.MultiplyEqual(r * 0.5), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, this.TmpVector1), await i?.StartBounceWithHorizontalOffset(s, this.TmpVector1, r, t)) && this.Entity?.Valid) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillEnd, this.OnBounceSkillEnd);
-      if (n.VehicleType === "NpcVehicle") {
+      if (o.VehicleType === "NpcVehicle") {
         i = e.VehicleEntity?.GetComponent(3);
         this.PlatformActorToIgnore = i?.Actor;
       } else {
-        r = e.VehicleEntity?.GetComponent(234);
-        this.PlatformActorToIgnore = r?.Actor.PlatformActor;
+        s = e.VehicleEntity?.GetComponent(235);
+        this.PlatformActorToIgnore = s?.Actor.PlatformActor;
       }
       if (this.PlatformActorToIgnore?.IsValid()) {
         this.ActorComp?.Actor.IgnoreActorWhenMoving(this.PlatformActorToIgnore, true, true);
       }
-      s = n.Config?.ParaglidingDelayTime ?? VehicleConfig_1.PARAGLIDING_DELAY_MILISECONDS;
+      r = o.Config?.ParaglidingDelayTime ?? VehicleConfig_1.PARAGLIDING_DELAY_MILISECONDS;
       this.TagComp?.AddTag(-1747001544);
-      this.ParaglidingDelayHandle = TimerSystem_1.TimerSystem.Delay(this.OnParaglidingDelayFinish, s);
-      this.GuaranteeBounceSkillEndHandle = TimerSystem_1.TimerSystem.Delay(this.GuaranteeBounceSkillEnd, s);
+      this.ParaglidingDelayHandle = TimerSystem_1.TimerSystem.Delay(this.OnParaglidingDelayFinish, r);
+      this.GuaranteeBounceSkillEndHandle = TimerSystem_1.TimerSystem.Delay(this.GuaranteeBounceSkillEnd, r);
     }
   }
   RestoreSwimAndCollision() {
-    if (this.Entity?.Valid && (this.TagComp?.RemoveTag(464607714), this.PlatformActorToIgnore?.IsValid())) {
+    if (this.Entity?.Valid && this.PlatformActorToIgnore?.IsValid()) {
       this.ActorComp?.Actor.IgnoreActorWhenMoving(this.PlatformActorToIgnore, false, true);
       this.PlatformActorToIgnore = undefined;
     }
@@ -155,6 +156,10 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     this.TagComp.AddTag(this.GetBodyTagFromBodyType(e));
     this.TagComp.AddTag(525255941);
     this.TagComp?.AddTag(464607714);
+    if (this.SwimDelayHandle) {
+      TimerSystem_1.TimerSystem.Remove(this.SwimDelayHandle);
+      this.SwimDelayHandle = undefined;
+    }
     this.TagComp?.AddTag(-1697149502);
     super.ChangeCurrentState();
   }
@@ -167,8 +172,17 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
       });
       --this.ActorComp.MoveComp.GroundedTimeUe;
     }
+    if (this.SwimDelayHandle) {
+      TimerSystem_1.TimerSystem.Remove(this.SwimDelayHandle);
+      this.SwimDelayHandle = undefined;
+    }
     if (this.VehicleInfo?.ExitType !== 0) {
       this.TagComp.RemoveTag(464607714);
+    } else {
+      this.SwimDelayHandle = TimerSystem_1.TimerSystem.Delay(() => {
+        this.TagComp.RemoveTag(464607714);
+        this.SwimDelayHandle = undefined;
+      }, VehicleConfig_1.PARAGLIDING_DELAY_MILISECONDS);
     }
     var e = this.ActorComp.CreatureData.GetRoleConfig()?.RoleBody;
     this.TagComp.RemoveTag(this.GetBodyTagFromBodyType(e));
@@ -196,5 +210,5 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     }
   }
 };
-RoleDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(230)], RoleDriveVehicleComponent);
+RoleDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(231)], RoleDriveVehicleComponent);
 exports.RoleDriveVehicleComponent = RoleDriveVehicleComponent; //# sourceMappingURL=RoleDriveVehicleComponent.js.map

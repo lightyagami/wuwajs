@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BabelTowerSettlementView = undefined;
 const UE = require("ue");
-const AudioSystem_1 = require("../../../../../../Core/Audio/AudioSystem");
-const Info_1 = require("../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const BabelTowerActivityByActivityId_1 = require("../../../../../../Core/Define/ConfigQuery/BabelTowerActivityByActivityId");
 const BabelTowerBuffById_1 = require("../../../../../../Core/Define/ConfigQuery/BabelTowerBuffById");
@@ -23,30 +21,24 @@ const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiAsyncTask_1 = require("../../../../../Ui/Base/UiAsyncTask");
 const UiViewBase_1 = require("../../../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../../../Ui/UiManager");
-const PersonalDefine_1 = require("../../../../Personal/Model/PersonalDefine");
-const PersonalUtil_1 = require("../../../../Personal/Model/PersonalUtil");
 const ScreenShotManager_1 = require("../../../../ScreenShot/ScreenShotManager");
-const UiModelResourcesManager_1 = require("../../../../UiComponent/UiModelResourcesManager");
 const GenericLayout_1 = require("../../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../../Util/LguiUtil");
 const BabelTowerController_1 = require("../BabelTowerController");
 const BabelTowerDefine_1 = require("../BabelTowerDefine");
 const BabelTowerSettlementDeTermLayoutItem_1 = require("./BabelTowerSettlementDeTermLayoutItem");
 const BabelTowerSettlementRoleItem_1 = require("./BabelTowerSettlementRoleItem");
+const UiBehaviorGachaSequence_1 = require("../../../../../Ui/Base/UiBehaviorGachaSequence");
 class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
     this.Roc = undefined;
     this.tFe = undefined;
-    this.cVi = new Map();
-    this.Vha = new Map();
+    this.eQu = undefined;
     this.Qma = undefined;
     this.Hha = undefined;
     this.M_c = false;
-    this.E_c = undefined;
-    this.C4_ = false;
-    this.P9c = 0;
     this.gCc = undefined;
     this.CCc = undefined;
     this.avc = 0;
@@ -68,7 +60,7 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
         });
       });
     };
-    this.FQ1 = () => {
+    this.HQ1 = () => {
       var e = {
         IsDeTerm: false,
         ConfigId: this.Pe?.BuffIdList?.[0] ?? 0,
@@ -76,7 +68,7 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
       };
       UiManager_1.UiManager.OpenView("BabelTowerItemInfoView", e);
     };
-    this.NQ1 = () => {
+    this.$Q1 = () => {
       var e = {
         IsDeTerm: false,
         ConfigId: this.Pe?.BuffIdList?.[1] ?? 0,
@@ -90,18 +82,15 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIArtText], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIArtText], [6, UE.UIItem], [7, UE.UITexture], [8, UE.UITexture], [9, UE.UIVerticalLayout], [10, UE.UIHorizontalLayout], [11, UE.UIHorizontalLayout], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIText], [16, UE.UIVerticalLayout], [17, UE.UIButtonComponent], [18, UE.UIItem], [19, UE.UIButtonComponent], [20, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[14, this.T_c], [17, this.xco], [19, this.FQ1], [20, this.NQ1]];
+    this.BtnBindInfo = [[14, this.T_c], [17, this.xco], [19, this.HQ1], [20, this.$Q1]];
+  }
+  OnBeforeCreate() {
+    this.eQu = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
+    this.AddUiBehavior(this.eQu);
   }
   async OnBeforeStartAsync() {
     var e;
     var i;
-    this.C4_ = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.SkyBlending.AllowSettingLerpPerFrame") === 0;
-    if (this.C4_) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 1");
-    }
-    if (Info_1.Info.IsLowMemoryDevice && (this.P9c = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.P9c !== 0)) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality 0");
-    }
     this.Roc = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.PRc);
     this.tFe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(16), this.uyi);
     this.Pe = this.OpenParam;
@@ -114,7 +103,7 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
       i.RootUIComp.SetUIActive(false);
       this.GetItem(12).SetUIActive(false);
       this.avc = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(this.Pe.TeamRoleIdList[0]);
-      await PersonalUtil_1.PersonalUtil.PreloadRoleSequence(this.avc, this.cVi, this.Vha);
+      await this.eQu.PreLoadLevelSequence(this.avc);
       await this.RefreshAsync();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiCommon", 43, "Data为空");
@@ -122,8 +111,10 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   }
   OnHandleLoadScene() {
     this.Qma = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("SceneCamera1"), 0);
+    this.eQu.BindSceneSequenceCamera(this.Qma);
     this.Hha = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("UpdateInteractBP"), 0);
     this.Hha.SetTickableWhenPaused(true);
+    this.eQu.BindUpdateInteractBp(this.Hha);
   }
   OnBeforeShow() {
     this.TryPlayRoleSequence();
@@ -241,8 +232,8 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
       await this.Roc.RefreshByDataAsync(h);
       var w = this.Roc.GetLayoutItemList();
       for (let e = 0; e < w.length; e++) {
-        var U = e % 2 == 0 ? this.gCc : this.CCc;
-        w[e].SetLayoutPadding(U);
+        var B = e % 2 == 0 ? this.gCc : this.CCc;
+        w[e].SetLayoutPadding(B);
       }
     } else {
       this.GetVerticalLayout(9).RootUIComp.SetUIActive(false);
@@ -270,37 +261,7 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   TryPlayRoleSequence() {
     if (!this.M_c) {
       this.M_c = true;
-      this.E_c = {
-        RoleConfigId: this.avc,
-        SequenceActor: this.cVi.get(this.avc),
-        SceneSequenceCamera: this.Qma,
-        UpdateInteractBp: this.Hha
-      };
-      PersonalUtil_1.PersonalUtil.PlayRoleGachaSequence(this.E_c);
-    }
-  }
-  OnBeforeDestroy() {
-    var e = this.E_c?.SequenceActor.SequencePlayer;
-    if (e) {
-      e.Pause();
-      e.GoToEndAndStop(0);
-      AudioSystem_1.AudioSystem.PostEvent(PersonalDefine_1.STOP_AUDIO_EVENT_NAME);
-    }
-    this.Hha?.EndGachaScene();
-    for (const i of this.cVi.values()) {
-      UE.KuroActorManager.DestroyActor(i);
-    }
-    this.cVi.clear();
-    for (const t of this.Vha.values()) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(t);
-    }
-    this.Vha.clear();
-    UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
-    if (this.C4_) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 0");
-    }
-    if (Info_1.Info.IsLowMemoryDevice && this.P9c !== 0) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.P9c);
+      this.eQu.PlayRoleSequence(this.avc);
     }
   }
 }

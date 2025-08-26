@@ -19,6 +19,9 @@ class OverlayAbpMontageData {
   get MaleVariant() {
     return this.malevariant();
   }
+  get IsWalkingUsable() {
+    return this.iswalkingusable();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -50,6 +53,10 @@ class OverlayAbpMontageData {
       GameUtils_1.GameUtils.InternalizedString(e);
     }
     return e;
+  }
+  iswalkingusable() {
+    var t = this.J7.__offset(this.z7, 10);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.OverlayAbpMontageData = OverlayAbpMontageData;

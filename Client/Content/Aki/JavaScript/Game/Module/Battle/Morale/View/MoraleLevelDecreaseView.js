@@ -17,23 +17,23 @@ class MoraleLevelDecreaseView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.RL1 = undefined;
-    this.bvu = 1;
-    this.Rvu = 1;
+    this.Ayu = 1;
+    this.Pyu = 1;
     this.Wft = 1;
-    this.GRu = 1;
-    this.wvu = 0;
+    this.hLu = 1;
+    this.xyu = 0;
     this.dHl = false;
-    this.Lvu = false;
+    this.Uyu = false;
     this.f$a = 0;
-    this.Avu = () => {
-      if (this.wvu < 0) {
+    this.Dyu = () => {
+      if (this.xyu < 0) {
         this.dHl = true;
       } else {
         this.svi();
       }
     };
-    this.Pvu = () => {
-      if (this.Lvu && ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel() > 1) {
+    this.Byu = () => {
+      if (this.Uyu && ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleIndomitableLevel() > 1) {
         UiManager_1.UiManager.OpenView("MoraleIndomitableLevelView");
       }
     };
@@ -46,40 +46,40 @@ class MoraleLevelDecreaseView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnStart() {
     this.RL1 = this.GetArtText(0);
-    this.bvu = ModelManager_1.ModelManager.MoraleBattleModel.GetLastMoraleLevel();
-    this.Rvu = 1;
-    this.RL1?.SetText(this.bvu.toString());
-    this.Wft = this.bvu;
-    this.GRu = this.Wft;
-    var e = this.Rvu - this.bvu;
+    this.Ayu = ModelManager_1.ModelManager.MoraleBattleModel.GetLastMoraleLevel();
+    this.Pyu = 1;
+    this.RL1?.SetText(this.Ayu.toString());
+    this.Wft = this.Ayu;
+    this.hLu = this.Wft;
+    var e = this.Pyu - this.Ayu;
     if (e != 0) {
-      this.wvu = e / LEVEL_ANIM_DURATION;
+      this.xyu = e / LEVEL_ANIM_DURATION;
     }
   }
   OnBeforeDestroy() {}
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
-    this.UiViewSequence?.AddSequenceFinishEvent("Start", this.Avu);
-    this.UiViewSequence?.AddSequenceFinishEvent("Close", this.Pvu);
+    this.UiViewSequence?.AddSequenceFinishEvent("Start", this.Dyu);
+    this.UiViewSequence?.AddSequenceFinishEvent("Close", this.Byu);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.AMe);
-    this.UiViewSequence.RemoveSequenceFinishEvent("Start", this.Avu);
-    this.UiViewSequence?.RemoveSequenceFinishEvent("Close", this.Pvu);
+    this.UiViewSequence.RemoveSequenceFinishEvent("Start", this.Dyu);
+    this.UiViewSequence?.RemoveSequenceFinishEvent("Close", this.Byu);
   }
   OnTick(e) {
     var t;
     if (this.dHl) {
       MoraleLevelDecreaseView.Ult.Start();
-      t = e * this.wvu;
+      t = e * this.xyu;
       this.f$a += e;
-      this.GRu += t;
-      this.Wft = Math.max(this.Rvu, Math.round(this.GRu));
+      this.hLu += t;
+      this.Wft = Math.max(this.Pyu, Math.round(this.hLu));
       this.RL1?.SetText(this.Wft.toString());
-      if (this.Wft === this.Rvu || this.f$a > LEVEL_ANIM_EXPIRED_TIME) {
-        this.wvu = 0;
+      if (this.Wft === this.Pyu || this.f$a > LEVEL_ANIM_EXPIRED_TIME) {
+        this.xyu = 0;
         this.dHl = false;
-        this.Lvu = true;
+        this.Uyu = true;
         this.svi();
       }
       MoraleLevelDecreaseView.Ult.Stop();

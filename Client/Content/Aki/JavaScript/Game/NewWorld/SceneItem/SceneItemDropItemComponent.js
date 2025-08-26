@@ -192,7 +192,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     return !!t && (this.pie(t.Mys), !!this.fGt) && (this.mCn(t.Mys) && (this.Jdn = true), true);
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     this.InitDropStateFunction();
     return true;
   }
@@ -363,7 +363,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   }
   fCn() {
     var t;
-    var e = this.Entity.GetComponent(197);
+    var e = this.Entity.GetComponent(198);
     if (e &&= e.GetInteractController()) {
       (t = new LevelGameplayActionsDefine_1.ActionPickupDropItem()).EntityId = this.Entity.Id;
       e.AddClientInteractOption(t);
@@ -456,5 +456,5 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   }
 };
 SceneItemDropItemComponent.cz = Vector_1.Vector.Create();
-SceneItemDropItemComponent = SceneItemDropItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(149)], SceneItemDropItemComponent);
+SceneItemDropItemComponent = SceneItemDropItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(150)], SceneItemDropItemComponent);
 exports.SceneItemDropItemComponent = SceneItemDropItemComponent; //# sourceMappingURL=SceneItemDropItemComponent.js.map

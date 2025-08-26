@@ -230,9 +230,9 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
     this.Msn = this.Entity.GetComponent(45);
-    this.tr_ = this.Entity.GetComponent(233);
+    this.tr_ = this.Entity.GetComponent(234);
     this.o4o = this.Hte.Owner.GetComponentByClass(UE.CharacterMovementComponent.StaticClass());
-    return !!this.o4o && (this.Esn = this.Entity.GetComponent(30), this.SkelTickMgr = this.Entity.GetComponent(114), this.o4o.SetKuroOnlyTickOutside(true), this.o4o.SetComponentTickEnabled(false), this.oRe = this.Entity.GetComponent(177), this.ForbiddenTickPose = this.Entity.GetTickInterval() > 1 || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming, this.Isn = Time_1.Time.Frame, this.utl = false, this.TickMode = UeMovementTickController.EnabledMovementParallel ? 1 : 2, ModelManager_1.ModelManager.SundryModel.RoleFallingDebugLogOn && this.Hte.IsRoleAndCtrlByMe && this.SetVelocityInfoCacheEnable(true), true);
+    return !!this.o4o && (this.Esn = this.Entity.GetComponent(30), this.SkelTickMgr = this.Entity.GetComponent(115), this.o4o.SetKuroOnlyTickOutside(true), this.o4o.SetComponentTickEnabled(false), this.oRe = this.Entity.GetComponent(178), this.ForbiddenTickPose = this.Entity.GetTickInterval() > 1 || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming, this.Isn = Time_1.Time.Frame, this.utl = false, this.TickMode = UeMovementTickController.EnabledMovementParallel ? 1 : 2, ModelManager_1.ModelManager.SundryModel.RoleFallingDebugLogOn && this.Hte.IsRoleAndCtrlByMe && this.SetVelocityInfoCacheEnable(true), true);
   }
   OnEnd() {
     this.TickMode = 0;
@@ -306,7 +306,7 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
         this.Msn.ConsumeForceFallingSpeed();
         var i;
         var e;
-        var s = this.Entity.GetComponent(122)?.CurrentTimeScale ?? 1;
+        var s = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
         if (!!this.Msn.NeedRootMotionWhenAttached || !this.Msn.IsSpecialMove) {
           if (this.Msn) {
             this.Msn.GetAndConsumeAddMove(t * MathUtils_1.MathUtils.MillisecondToSecond * s, UeMovementTickManageComponent_1.Lz, UeMovementTickManageComponent_1.Gue);
@@ -325,10 +325,10 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
           this.ForbiddenTickPose = i || this.Frozen || UeSkeletalTickManageComponent_1.UeSkeletalTickController.EnabledNewSkelTickTiming;
           this.Qzl = 0;
           if ((e = this.oRe?.Actor?.Mesh) && e.bEnableUpdateRateOptimizations && !this.Msn.BasePlatform && (e.GetAnimUpdateRateParameters(this.prl), !(e = (0, puerts_1.$unref)(this.prl)).bSkipUpdate) && e.UpdateRate > this.Entity.GetTickInterval()) {
-            this.Qzl = e.UpdateRate * t / Math.max(1, this.Entity.GetTickInterval());
+            this.Qzl = e.UpdateRate * t * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation / Math.max(1, this.Entity.GetTickInterval());
           }
           if (i && this.oRe?.Valid && this.Hte.Owner.WasRecentlyRenderedOnScreen()) {
-            this.Qzl = Math.max(t, this.Qzl);
+            this.Qzl = Math.max(t * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation, this.Qzl);
           }
           if (this.Qzl <= CharacterAnimationComponent_1.MIN_BUFFER_TIME_LENGTH || !this.oRe) {
             this.o4o.KuroTickComponentOutside(t * MathUtils_1.MathUtils.MillisecondToSecond * s);
@@ -430,5 +430,5 @@ let UeMovementTickManageComponent = UeMovementTickManageComponent_1 = class UeMo
 };
 UeMovementTickManageComponent.Lz = Vector_1.Vector.Create();
 UeMovementTickManageComponent.Gue = Rotator_1.Rotator.Create();
-UeMovementTickManageComponent = UeMovementTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(113)], UeMovementTickManageComponent);
+UeMovementTickManageComponent = UeMovementTickManageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(114)], UeMovementTickManageComponent);
 exports.UeMovementTickManageComponent = UeMovementTickManageComponent; //# sourceMappingURL=UeMovementTickManageComponent.js.map

@@ -15,14 +15,14 @@ class TsAnimNotifyStateAicAnimEvent extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     var t = t.GetOwner();
-    if (this.bCallBegin && t instanceof TsBaseCharacter_1.default && (t = t.GetController()) instanceof UE.AIC_AICommon_C) {
+    if (this.bCallBegin && t instanceof TsBaseCharacter_1.default && (t = t.GetController()).AicTriggerEvent) {
       t.AicTriggerEvent(this.Name);
     }
     return true;
   }
   K2_NotifyEnd(t, e) {
     var t = t.GetOwner();
-    if (this.bCallEnd && t instanceof TsBaseCharacter_1.default && (t = t.GetController()) instanceof UE.AIC_AICommon_C) {
+    if (this.bCallEnd && t instanceof TsBaseCharacter_1.default && (t = t.GetController()).AicTriggerEvent) {
       t.AicTriggerEvent(this.Name);
     }
     return true;

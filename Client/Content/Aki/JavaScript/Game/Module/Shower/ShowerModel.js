@@ -14,37 +14,37 @@ const UiManager_1 = require("../../Ui/UiManager");
 class ShowerModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.Qgu = new Map();
-    this.Kgu = new Map();
+    this.$Cu = new Map();
+    this.WCu = new Map();
     this.TW1 = 0;
-    this.vJ1 = [];
-    this.yJ1 = [];
+    this.$J1 = [];
+    this.WJ1 = [];
     this.IsInShower = false;
   }
   get CurSelectPosIndex() {
     return this.TW1;
   }
   get PosCount() {
-    return this.yJ1.length;
+    return this.WJ1.length;
   }
   GetInviteNumString() {
-    return this.Qgu.size + "/" + this.PosCount;
+    return this.$Cu.size + "/" + this.PosCount;
   }
   GetRoleInstanceByPos(e) {
-    return this.Qgu?.get(e);
+    return this.$Cu?.get(e);
   }
   SetShowerSeatConfigIds(e) {
     if (e && !this.IsInShower) {
-      var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(229)?.Seat ?? -1;
+      var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(230)?.Seat ?? -1;
       if (t === -1) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Vehicle", 78, "共浴 玩家座位id undefined");
         }
       } else {
-        this.vJ1 = e;
-        for (let e = this.yJ1.length = 0; e < this.vJ1.length; ++e) {
+        this.$J1 = e;
+        for (let e = this.WJ1.length = 0; e < this.$J1.length; ++e) {
           if (e !== t) {
-            this.yJ1.push(e);
+            this.WJ1.push(e);
           }
         }
       }
@@ -52,7 +52,7 @@ class ShowerModel extends ModelBase_1.ModelBase {
   }
   GetShowerSeatEntityByPos(e) {
     if (!(e >= this.PosCount)) {
-      e = this.vJ1[this.yJ1[e]];
+      e = this.$J1[this.WJ1[e]];
       if (e !== 0) {
         var t = new Array();
         ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(e, t);
@@ -88,26 +88,26 @@ class ShowerModel extends ModelBase_1.ModelBase {
     var s;
     var r = this.TW1;
     let h = -1;
-    for ([t, i] of this.Qgu.entries()) {
+    for ([t, i] of this.$Cu.entries()) {
       if (i.GetRoleId() === e.GetRoleId()) {
         h = t;
         break;
       }
     }
     if (r === h) {
-      this.Qgu?.delete(r);
-    } else if (s = this.Qgu.get(r)) {
-      this.Qgu.set(r, e);
+      this.$Cu?.delete(r);
+    } else if (s = this.$Cu.get(r)) {
+      this.$Cu.set(r, e);
       if (h !== -1) {
-        this.Qgu.set(h, s);
+        this.$Cu.set(h, s);
       }
     } else {
-      this.Qgu.delete(h);
-      this.Qgu.set(r, e);
+      this.$Cu.delete(h);
+      this.$Cu.set(r, e);
     }
   }
   GetRolePos(e) {
-    for (var [t, i] of this.Qgu.entries()) {
+    for (var [t, i] of this.$Cu.entries()) {
       if (i.GetRoleId() === e.GetRoleId()) {
         return t;
       }
@@ -115,13 +115,13 @@ class ShowerModel extends ModelBase_1.ModelBase {
     return -1;
   }
   CheckRoleInCurPos(e) {
-    return this.Qgu.get(this.TW1)?.GetRoleId() === e.GetRoleId();
+    return this.$Cu.get(this.TW1)?.GetRoleId() === e.GetRoleId();
   }
   ExitAndClear() {
-    this.vJ1.length = 0;
-    this.yJ1.length = 0;
-    this.Qgu.clear();
-    this.Kgu.clear();
+    this.$J1.length = 0;
+    this.WJ1.length = 0;
+    this.$Cu.clear();
+    this.WCu.clear();
     this.IsInShower = false;
     this.TW1 = 0;
     if (UiManager_1.UiManager.IsViewOpen("ShowerMainView")) {
@@ -132,28 +132,28 @@ class ShowerModel extends ModelBase_1.ModelBase {
     }
   }
   ClearCurInviteRoles() {
-    this.Qgu.clear();
+    this.$Cu.clear();
     this.TW1 = 0;
   }
   ResetCurInviteRoles() {
-    this.Qgu.clear();
-    for (var [e, t] of this.Kgu.entries()) {
-      this.Qgu.set(e, t);
+    this.$Cu.clear();
+    for (var [e, t] of this.WCu.entries()) {
+      this.$Cu.set(e, t);
     }
   }
   SendAndSave() {
     this.IsInShower = true;
-    for (var [e, t] of this.Kgu.entries()) {
-      if (!this.Qgu.has(e)) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRemoveRideSharingPassenger, t.GetRoleId(), this.yJ1[e]);
+    for (var [e, t] of this.WCu.entries()) {
+      if (!this.$Cu.has(e)) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRemoveRideSharingPassenger, t.GetRoleId(), this.WJ1[e]);
       }
     }
-    for (var [i, s] of this.Qgu.entries()) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeRideSharingPassenger, s.GetRoleId(), this.yJ1[i]);
+    for (var [i, s] of this.$Cu.entries()) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeRideSharingPassenger, s.GetRoleId(), this.WJ1[i]);
     }
-    this.Kgu.clear();
-    for (var [r, h] of this.Qgu.entries()) {
-      this.Kgu.set(r, h);
+    this.WCu.clear();
+    for (var [r, h] of this.$Cu.entries()) {
+      this.WCu.set(r, h);
     }
   }
 }

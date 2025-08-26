@@ -161,9 +161,9 @@ class CollectItemView extends CollectItemViewBase_1.CollectItemViewBase {
     ModelManager_1.ModelManager.MingSuModel.CurrentPreviewLevel = this.CurrentShowLevel;
   }
   rqi() {
-    var e = this.GetButton(0);
-    var t = this.GetButton(1);
-    (this.CurrentShowLevel === 1 ? (e.SetSelfInteractive(false), t) : (this.CurrentShowLevel === ModelManager_1.ModelManager.MingSuModel.GetTargetDragonPoolMaxLevelById(this.PoolConfigId) ? t.SetSelfInteractive(false) : t.SetSelfInteractive(true), e)).SetSelfInteractive(true);
+    var e = this.GetButton(0).RootUIComp;
+    var t = this.GetButton(1).RootUIComp;
+    (this.CurrentShowLevel === 1 ? (e.SetUIActive(false), t) : (this.CurrentShowLevel === ModelManager_1.ModelManager.MingSuModel.GetTargetDragonPoolMaxLevelById(this.PoolConfigId) ? t.SetUIActive(false) : t.SetUIActive(true), e)).SetUIActive(true);
   }
   K0i() {
     var i = ModelManager_1.ModelManager.MingSuModel;

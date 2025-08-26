@@ -25,11 +25,11 @@ class MoraleAreaProgressItem extends GridProxyAbstract_1.GridProxyAbstract {
       return (r - this.ItemData.LastTargetScore) / (this.ItemData.TargetScore - this.ItemData.LastTargetScore);
     }
   }
-  Btu(r) {
+  aiu(r) {
     this.GetSprite(0)?.SetFillAmount(r);
   }
   SetUiProgressByScore(r) {
-    this.Btu(this.pje(r));
+    this.aiu(this.pje(r));
   }
 }
 exports.MoraleAreaProgressItem = MoraleAreaProgressItem;

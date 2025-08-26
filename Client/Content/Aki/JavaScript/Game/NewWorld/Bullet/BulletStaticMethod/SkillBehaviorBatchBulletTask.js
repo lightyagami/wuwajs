@@ -42,6 +42,7 @@ class BatchBulletPositionCircle {
   GetDelay() {
     return 0;
   }
+  OnBreak() {}
   OnEnd() {}
   async Load() {}
   static Create(t, i) {
@@ -105,6 +106,7 @@ class BatchBulletPositionDotMatrix {
     this.RotatorOffset = undefined;
     this.BeginRotator = 1;
   }
+  OnBreak() {}
   OnEnd() {}
   async Load() {}
   GetDelay() {
@@ -125,8 +127,8 @@ class BatchBulletPositionDotMatrix {
     this.Center = t.GetBlackboard(i.CenterKey);
     this.PositionOffset = new Array();
     var s = i.PositionOffset;
-    var r = s.Num();
-    for (let t = 0; t < r; t++) {
+    var e = s.Num();
+    for (let t = 0; t < e; t++) {
       this.PositionOffset.push(Vector_1.Vector.Create(s.Get(t)));
     }
     this.PositionOffsetScale = i.PositionOffsetScale;
@@ -162,30 +164,32 @@ class BatchBulletPositionDotMatrix {
 }
 class BatchBulletPositionSpline {
   constructor() {
-    this.buu = undefined;
+    this.lcu = undefined;
     this.md = undefined;
     this.zie = undefined;
     this.il = undefined;
     this.wXt = undefined;
     this.hwe = undefined;
     this.r1t = 0;
-    this.Ruu = 0;
-    this.Luu = 0;
-    this.wuu = undefined;
-    this.Auu = undefined;
+    this._cu = 0;
+    this.ucu = 0;
+    this.C_d = undefined;
+    this.p_d = undefined;
+    this.v_d = undefined;
+    this.y_d = undefined;
     this.nx = undefined;
-    this.Puu = false;
+    this.mcu = false;
     this.zDl = false;
   }
   static Create(t, i, s) {
-    var r = new BatchBulletPositionSpline();
-    r.xuu(t, i);
-    r.Luu = s.GetInterval();
-    r.nx = s;
-    return r;
+    var e = new BatchBulletPositionSpline();
+    e.fcu(t, i);
+    e.ucu = s.GetInterval();
+    e.nx = s;
+    return e;
   }
-  xuu(t, i) {
-    this.buu = i.SplineClass.ToAssetPathName();
+  fcu(t, i) {
+    this.lcu = i.SplineClass.ToAssetPathName();
     this.il = t.GetBlackboard(i.StartKey);
     if (StringUtils_1.StringUtils.IsBlank(i.EndKey)) {
       this.hwe = t.GetBlackboard(i.RotatorKey);
@@ -193,15 +197,17 @@ class BatchBulletPositionSpline {
       this.wXt = t.GetBlackboard(i.EndKey);
     }
     this.r1t = t.GetBlackboard(i.DurationKey);
-    this.Ruu = i.Delay;
-    this.wuu = i.EffectOfEnd.ToAssetPathName();
-    this.Auu = i.BulletIdOfEnd;
-    this.Puu = i.DestroyAllOnEnd;
+    this._cu = i.Delay;
+    this.C_d = i.EffectOfEnd.ToAssetPathName();
+    this.p_d = i.BulletIdOfEnd;
+    this.mcu = i.DestroyAllOnEnd;
+    this.y_d = i.BulletIdOnBreak;
+    this.v_d = i.EffectOnBreak.ToAssetPathName();
     this.zDl = i.DestroySummonBullet;
   }
   async Load() {
-    return new Promise(r => {
-      ResourceSystem_1.ResourceSystem.LoadAsync(this.buu, UE.Class, t => {
+    return new Promise(e => {
+      ResourceSystem_1.ResourceSystem.LoadAsync(this.lcu, UE.Class, t => {
         var i = Transform_1.Transform.Create();
         var s = BulletPool_1.BulletPool.CreateVector();
         if (this.wXt) {
@@ -224,36 +230,41 @@ class BatchBulletPositionSpline {
         }
         BulletPool_1.BulletPool.RecycleVector(s);
         this.zie.Duration = this.r1t;
-        r();
+        e();
       });
     });
   }
+  OnBreak() {
+    this.S_d(this.v_d, this.y_d);
+  }
   OnEnd() {
-    var t;
-    var i;
-    var s = StringUtils_1.StringUtils.IsBlank(this.wuu);
-    var r = StringUtils_1.StringUtils.IsBlank(this.Auu);
-    if ((!s || !r) && !(t = this.zie?.D_GetTransformAtTime(this.r1t, 1, true), s || (s = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, t, this.wuu, "样条批量子弹末尾特效"), EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, s, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation)), r)) {
-      s = this.nx.GetOwner();
-      r = this.nx.GetSkillId();
-      i = (i = this.nx.GetSkillComponent()?.GetSkill(r))?.SkillBehaviorAnimNotifyMessageId || i?.MNc;
-      BulletUtil_1.BulletUtil.CreateBulletFromAN(s, this.Auu, t, r, false, i);
+    this.S_d(this.C_d, this.p_d);
+  }
+  S_d(t, i) {
+    var s;
+    var e = StringUtils_1.StringUtils.IsBlank(t);
+    var r = StringUtils_1.StringUtils.IsBlank(i);
+    if ((!e || !r) && !(s = this.zie?.D_GetTransformAtTime(this.r1t, 1, true), e || (e = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, s, t, "样条批量子弹末尾特效"), EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, e, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation)), r)) {
+      t = this.nx.GetOwner();
+      e = this.nx.GetSkillId();
+      r = (r = this.nx.GetSkillComponent()?.GetSkill(e))?.SkillBehaviorAnimNotifyMessageId || r?.MNc;
+      BulletUtil_1.BulletUtil.CreateBulletFromAN(t, i, s, e, false, r);
     }
     ActorSystem_1.ActorSystem.Put("样条曲线批量子弹", this.md);
     this.md = undefined;
     this.zie = undefined;
   }
   ToTransform(t) {
-    t = this.Ruu + this.Luu * t;
+    t = this._cu + this.ucu * t;
     t = this.zie.D_GetTransformAtTime(t, 1, true, true);
     return Transform_1.Transform.Create(t);
   }
   ToTargetLocation(t) {}
   GetDelay() {
-    return this.Ruu;
+    return this._cu;
   }
   IsDestroyOnEnd() {
-    return this.Puu;
+    return this.mcu;
   }
   IsSummonChildBullet() {
     return this.zDl;
@@ -294,6 +305,7 @@ class SkillBehaviorBatchBulletTask {
             ControllerHolder_1.ControllerHolder.BulletController.SetBulletSpeedRatio(s, 1);
             ControllerHolder_1.ControllerHolder.BulletController.SetBulletLiveRatio(s, 1);
           }
+          this.bjo.OnEnd();
         }
       } else {
         if (!this.TDe?.Remove()) {
@@ -301,7 +313,7 @@ class SkillBehaviorBatchBulletTask {
             Log_1.Log.Error("Bullet", 20, "停止批量生成子弹失败");
           }
         }
-        this.bjo.OnEnd();
+        this.bjo.OnBreak();
         if (this.bjo.IsDestroyOnEnd()) {
           for (let t = 0; t < this.Vso; t++) {
             ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(this.TQ_[t], this.bjo.IsSummonChildBullet());
@@ -328,44 +340,44 @@ class SkillBehaviorBatchBulletTask {
   }
   static Create(t, i, s) {
     var i = ResourceSystem_1.ResourceSystem.Load(i.ToAssetPathName(), UE.DAC_BatchCreateBullet_C);
-    var r = i.Base;
-    var e = new SkillBehaviorBatchBulletTask();
-    e.wmo = s;
-    e.OQt = t.GetComponent(3)?.Actor;
-    if (StringUtils_1.NONE_STRING !== r.ContinueWithTag.TagName) {
-      e.Xte = t.GetComponent(205);
+    var e = i.Base;
+    var r = new SkillBehaviorBatchBulletTask();
+    r.wmo = s;
+    r.OQt = t.GetComponent(3)?.Actor;
+    if (StringUtils_1.NONE_STRING !== e.ContinueWithTag.TagName) {
+      r.Xte = t.GetComponent(206);
     }
-    e.tRr = t.GetComponent(39);
-    e.Hhc = r.StopOnSkillEnd;
-    var s = t.GetComponent(278);
-    e.IQ_ = r.ContinueWithTag.TagId;
-    e.xe = new Array();
-    var h = r.Id.Num();
+    r.tRr = t.GetComponent(39);
+    r.Hhc = e.StopOnSkillEnd;
+    var s = t.GetComponent(281);
+    r.IQ_ = e.ContinueWithTag.TagId;
+    r.xe = new Array();
+    var h = e.Id.Num();
     for (let t = 0; t < h; t++) {
-      e.xe.push(r.Id.Get(t));
+      r.xe.push(e.Id.Get(t));
     }
-    e.ZZt = r.Interval;
-    e.Vso = r.Number;
+    r.ZZt = e.Interval;
+    r.Vso = e.Number;
     if (i.BeginPos === 0) {
       t = i;
-      e.bjo = BatchBulletPositionDotMatrix.Create(s, t.Shape);
+      r.bjo = BatchBulletPositionDotMatrix.Create(s, t.Shape);
     } else if (i.BeginPos === 1) {
       t = i;
-      e.bjo = BatchBulletPositionCircle.Create(s, t.Shape);
-      if ((t = e.bjo).AngleInterval === 0) {
-        t.AngleInterval = MathCommon_1.MathCommon.RoundAngle / e.Vso;
+      r.bjo = BatchBulletPositionCircle.Create(s, t.Shape);
+      if ((t = r.bjo).AngleInterval === 0) {
+        t.AngleInterval = MathCommon_1.MathCommon.RoundAngle / r.Vso;
       }
     } else if (i.BeginPos === 2) {
       t = i;
-      e.bjo = BatchBulletPositionSpline.Create(s, t.Shape, e);
+      r.bjo = BatchBulletPositionSpline.Create(s, t.Shape, r);
     }
-    e.EQ_ = r.StartMoving === 1;
-    return e;
+    r.EQ_ = e.StartMoving === 1;
+    return r;
   }
   async StartAsync() {
     var t = new Array();
     t.push(this.bjo.Load());
-    var i = this.bjo.GetDelay();
+    var i = this.bjo.GetDelay() * MathUtils_1.MathUtils.SecondToMillisecond;
     if (i > 0) {
       t.push(this.Delay(i));
     }
@@ -384,7 +396,7 @@ class SkillBehaviorBatchBulletTask {
       Log_1.Log.Debug("Bullet", 20, "开始批量生成子弹");
     }
     if (this.bjo.GetDelay() > 0 && !this.bQ_()) {
-      this.bjo.OnEnd();
+      this.bjo.OnBreak();
     } else {
       this.TQ_ = new Array();
       if (this.ZZt > 0) {
@@ -403,12 +415,12 @@ class SkillBehaviorBatchBulletTask {
   oZo(t) {
     var i;
     var s;
-    var r = this.xe[t % this.xe.length];
+    var e = this.xe[t % this.xe.length];
     var t = this.bjo.ToTransform(t);
     if (t) {
       i = (i = this.tRr?.GetSkill(this.wmo))?.SkillBehaviorAnimNotifyMessageId || i?.MNc;
       s = this.bjo.ToTargetLocation(t);
-      return BulletUtil_1.BulletUtil.CreateBulletFromAN(this.OQt, r, t.ToUeTransform(), this.wmo, false, i, s?.ToUeVector());
+      return BulletUtil_1.BulletUtil.CreateBulletFromAN(this.OQt, e, t.ToUeTransform(), this.wmo, false, i, s?.ToUeVector());
     } else {
       return 0;
     }

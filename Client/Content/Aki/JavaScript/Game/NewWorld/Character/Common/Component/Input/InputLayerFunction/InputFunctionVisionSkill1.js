@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.getVisionSkill1SkillId = exports.visionSkill1OnRelease = exports.visionSkill1OnPress = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../../../../Core/Common/Info");
+const Log_1 = require("../../../../../../../Core/Common/Log");
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../../../../../../Core/Utils/TraceElementCommon");
 const Global_1 = require("../../../../../../Global");
@@ -36,14 +37,14 @@ function visionSkill1Function(e) {
   if (r) {
     var i = r.CharacterActorComponent?.Entity;
     if (i) {
-      var o = i.GetComponent(205);
+      var o = i.GetComponent(206);
       if (o && o.Valid && i.GetComponent(45)?.CanResponseInput() && !o.HasTag(-2100129479)) {
         var t = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(i.Id, 7, 1);
         if (t) {
           return t;
         }
         if (o.HasTag(-376090703)) {
-          if (i.GetComponent(178)?.IsOnGroundOrOnWater()) {
+          if (i.GetComponent(179)?.IsOnGroundOrOnWater()) {
             return (0, InputFunctionCommon_1.createSkillCommand)(i, InputDefine_1.SKILL_ID_YUANNIAOZE_TORNADO);
           }
         } else {
@@ -81,7 +82,7 @@ function visionSkill1Function(e) {
             n = InputDefine_1.SKILL_ID_XA_KITE;
           } else if (o.HasTag(-1771378495)) {
             n = InputDefine_1.SKILL_ID_XA_MOVABLE;
-          } else if (i.GetComponent(99)?.CanActivateFixHook()) {
+          } else if (i.GetComponent(100)?.CanActivateFixHook()) {
             n = o.HasTag(-1958756056) ? InputDefine_1.SKILL_ID_FIX_HOOK_2 : InputDefine_1.SKILL_ID_FIX_HOOK_1;
           } else {
             if (o.HasTag(-1009010563)) {
@@ -132,18 +133,31 @@ function visionSkill1Function(e) {
             });
             return;
           }
-          if (i.GetComponent(101)?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Air || !o.HasTag(1151923109) || o.HasTag(1226693610)) {
+          t = i.GetComponent(59)?.CheckSoarAllowed();
+          if (!t?.[0]) {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Input", 39, "Soar not allowed", ["Reason", t?.[1]]);
+            }
             ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
-            return;
-          }
-          t = i.GetComponent(45)?.GetHeightAboveGround(SOAR_HEIGHT_LIMIT);
-          if ((!t || t < SOAR_HEIGHT_LIMIT) && visionSkill1TraceDetectHasGround(i)) {
-            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip");
             return;
           }
           if (o.HasTag(1996802261)) {
             ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
             return;
+          }
+          r = i.GetComponent(102)?.PositionState;
+          if (r === CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
+            t = i.GetComponent(45)?.GetHeightAboveGround(SOAR_HEIGHT_LIMIT);
+            if ((!t || t < SOAR_HEIGHT_LIMIT) && visionSkill1TraceDetectHasGround(i)) {
+              ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip");
+              return;
+            }
+          } else {
+            if (r !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+              ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
+              return;
+            }
+            n = InputDefine_1.SKILL_ID_XA_GROUND;
           }
         }
         if (n !== 0) {

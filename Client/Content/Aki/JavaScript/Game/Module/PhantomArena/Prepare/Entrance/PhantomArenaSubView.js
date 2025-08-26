@@ -19,9 +19,9 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
     this.Q6a = undefined;
-    this.rbu = undefined;
-    this.epu = undefined;
-    this.Z0u = undefined;
+    this.Ebu = undefined;
+    this.evu = undefined;
+    this.Zpu = undefined;
     this.p5t = e => {
       UiManager_1.UiManager.OpenView("PhantomArenaEntranceView");
     };
@@ -31,16 +31,16 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.Jj1 = () => {
       UiManager_1.UiManager.OpenView("PhantomArenaMasterInfoView");
     };
-    this.obu = () => {
+    this.Ibu = () => {
       var e = this.ActivityBaseData;
       if (e.RecommendQuestId > 0 && !ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e.RecommendQuestId)) {
         UiManager_1.UiManager.OpenView("QuestView", e.RecommendQuestId);
       }
     };
-    this.nbu = () => {
+    this.Tbu = () => {
       this.nOe();
     };
-    this.sbu = (e, t) => {
+    this.bbu = (e, t) => {
       if (t >= Protocol_1.Aki.Protocol.hTs.a3_) {
         this.nOe();
       }
@@ -52,19 +52,19 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   async OnBeforeStartAsync() {
     this.Q6a = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.Q6a.SetData(this.ActivityBaseData);
-    this.Q6a.HideRemainTime();
     this.Q6a.SetClickFunc(this.p5t);
     await this.Q6a.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.Q6a.HideRemainTime();
     this.SetButtonUiActive(1, false);
-    this.epu = new ButtonItem_1.ButtonItem();
-    this.epu.SetFunction(this.Z6c);
-    await this.epu.CreateThenShowByActorAsync(this.GetItem(3).GetOwner());
-    this.Z0u = new ButtonItem_1.ButtonItem();
-    this.Z0u.SetFunction(this.Jj1);
-    await this.Z0u.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
-    this.rbu = new ActivityQuestTipsItem_1.ActivityQuestTipsItem();
-    await this.rbu.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
-    this.rbu.SetRewardButtonFunction(this.obu);
+    this.evu = new ButtonItem_1.ButtonItem();
+    this.evu.SetFunction(this.Z6c);
+    await this.evu.CreateThenShowByActorAsync(this.GetItem(3).GetOwner());
+    this.Zpu = new ButtonItem_1.ButtonItem();
+    this.Zpu.SetFunction(this.Jj1);
+    await this.Zpu.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
+    this.Ebu = new ActivityQuestTipsItem_1.ActivityQuestTipsItem();
+    await this.Ebu.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
+    this.Ebu.SetRewardButtonFunction(this.Ibu);
   }
   OnBeforeShow() {
     var e = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 0 ? "IdleF" : "IdleM";
@@ -73,14 +73,14 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.K8e();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.nbu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityCrossDayRefresh, this.nbu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.sbu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Tbu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityCrossDayRefresh, this.Tbu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.bbu);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.nbu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityCrossDayRefresh, this.nbu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.sbu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Tbu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityCrossDayRefresh, this.Tbu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.bbu);
   }
   OnRefreshView() {
     this.nOe();
@@ -90,44 +90,44 @@ class PhantomArenaSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.Q6a.SetBtnText(PhantomArenaDefine_1.ACTIVITY_SUBVIEW_TEXT_UNLOCK);
     this.Q6a?.RefreshFunction();
     var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime();
-    this.epu?.SetUiActive(e);
+    this.evu?.SetUiActive(e);
     if (e) {
-      this.epu?.SetText(t);
+      this.evu?.SetText(t);
     }
     this.Uke();
     this.pmt();
   }
   Uke() {
     var e = this.ActivityBaseData;
-    this.rbu.SetContentByTextId(e.RecommendQuestTips);
-    this.rbu.SetUiActive(e.RecommendQuestId > 0 && !ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e.RecommendQuestId));
+    this.Ebu.SetContentByTextId(e.RecommendQuestTips);
+    this.Ebu.SetUiActive(e.RecommendQuestId > 0 && !ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e.RecommendQuestId));
   }
   pmt() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel;
     var t = e.GetMasterLevel();
     var e = e.GetMasterLevelMax();
-    this.Z0u?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, t, e);
+    this.Zpu?.SetLocalTextNew(PhantomArenaDefine_1.ENTRANCE_LEVEL_COUNT_ID, t, e);
   }
   OnBeforeHide() {
     this.Ovt();
   }
   K8e() {
     this.Ovt();
-    this.epu.BindRedDot("RedDotPhantomArenaLimitReward");
-    this.Z0u.BindRedDot("RedDotPhantomArenaLevelReward");
+    this.evu.BindRedDot("RedDotPhantomArenaLimitReward");
+    this.Zpu.BindRedDot("RedDotPhantomArenaLevelReward");
     this.Q6a?.GetFunctional()?.FunctionButton?.BindRedDot("RedDotPhantomArenaActivity");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityBaseData.Id);
   }
   Ovt() {
-    this.epu.UnBindRedDot();
-    this.Z0u.UnBindRedDot();
+    this.evu.UnBindRedDot();
+    this.Zpu.UnBindRedDot();
     this.Q6a?.GetFunctional()?.FunctionButton?.UnBindRedDot();
   }
   OnTimer() {
     var [e, t] = ModelManager_1.ModelManager.PhantomArenaModel.IsInLimitTime();
-    this.epu?.SetUiActive(e);
+    this.evu?.SetUiActive(e);
     if (e) {
-      this.epu?.SetText(t);
+      this.evu?.SetText(t);
     }
   }
 }

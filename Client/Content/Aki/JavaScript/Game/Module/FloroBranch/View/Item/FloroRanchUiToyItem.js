@@ -14,7 +14,7 @@ const FloroRanchUiItemBase_1 = require("./FloroRanchUiItemBase");
 class FloroRanchUiToyItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
   constructor() {
     super(...arguments);
-    this.AHc = undefined;
+    this.eXu = undefined;
     this.UiLevelSequence = undefined;
     this.Zqe = () => {};
     this.N8e = () => {
@@ -22,7 +22,7 @@ class FloroRanchUiToyItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UITexture], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UITexture], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UITexture]];
     this.BtnBindInfo = [[0, this.N8e]];
   }
   OnBeforeCreate() {
@@ -49,6 +49,9 @@ class FloroRanchUiToyItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
       this.GetItem(14)?.SetUIActive(true);
       this.SetTextureShowUntilLoaded(t.SmallIcon, this.GetTexture(15));
     }
+  }
+  GetRewardPopTransform() {
+    return this.GetRootActor().GetTransform();
   }
   async PlayShowAnim() {
     await this.RefreshItem();

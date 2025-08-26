@@ -209,8 +209,8 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     this.IsBaseRoleNpc = t.SpecialNpcPerformConfig?.Type === IComponent_1.ESpecialNpcType.BaseRoleNpc;
     var e = this.Entity.GetComponent(0);
     this.Mne = e.GetPbDataId();
-    this.Y8e = this.Entity.GetComponent(118);
-    this.Lie = this.Entity.GetComponent(196);
+    this.Y8e = this.Entity.GetComponent(119);
+    this.Lie = this.Entity.GetComponent(197);
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e.GetCreatureDataId());
     this.StateMachine = new StateMachine_1.StateMachine(e, this.Pz);
     this.StateMachine.AddState(0, NpcPerformBornState_1.NpcPerformBornState, t);
@@ -245,13 +245,13 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       if (this.Owner.IsA(UE.BP_BaseNPC_C.StaticClass()) && ((t = this.Owner).CanPlayerImpact = this.Lo.IsShowStrike, t.CanLookAtPlayer = this.Lo.IsStare, this.KBr = t.CanLookAtPlayer, this.Lo.NpcHitShow ? t.CanPlayerAttack = true : t.CanPlayerAttack = false, this.oin) && (this.Lo.IsShowStrike || this.Lo.NpcHitShow)) {
         t.HitCollision.OnComponentBeginOverlap.Add(this.rin);
       }
-      this.jBr = this.Entity.GetComponent(119);
+      this.jBr = this.Entity.GetComponent(120);
       if (this.jBr) {
         this.jBr.SetSightRange(DEFAULT_SIGHT_RANGE);
       }
       this.Ore();
       this.zLn = this.Entity.GetComponent(48);
-      this.rzr = this.Entity.GetComponent(121);
+      this.rzr = this.Entity.GetComponent(122);
     }
     return true;
   }
@@ -259,6 +259,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     super.OnActivate();
     this.HandleEntryPerform();
     this.PerformGroupController.Init();
+    this.ExpressionController.Init();
     if (this.oin) {
       this.InitAiControllerType();
       this.Cin();
@@ -322,12 +323,12 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
       e.Init(this.Lo.NpcMonsterClosePerform.Range);
       e.OnEnterSensoryRange = t => this.OnMonsterNearby();
       e.OnExitSensoryRange = t => !!e.CheckInRange() || this.StateMachine.CurrentState !== 7 || this.StateMachine.Switch(1);
-      this.Ztn = this.Entity.GetComponent(120).AddSensoryInfo(e);
+      this.Ztn = this.Entity.GetComponent(121).AddSensoryInfo(e);
     }
   }
   fin() {
     if (this.Ztn >= 0) {
-      this.Entity.GetComponent(120).RemoveSensoryInfo(this.Ztn);
+      this.Entity.GetComponent(121).RemoveSensoryInfo(this.Ztn);
       this.Ztn = -1;
     }
   }
@@ -465,7 +466,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
           var s = ModelManager_1.ModelManager.CreatureModel;
           for (const h of i) {
             var r = s.GetEntityByPbDataId(h);
-            if (r?.Valid && (r = r.Entity.GetComponent(187))?.Valid) {
+            if (r?.Valid && (r = r.Entity.GetComponent(188))?.Valid) {
               r.SetUiOpenPerformance(t, e);
             }
           }
@@ -496,7 +497,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }
   }
   nin() {
-    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(205);
+    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(206);
     return !!t && (t.HasTag(1408042260) || t.HasTag(64219164) || t.HasTag(1733479717));
   }
   Ein() {
@@ -565,7 +566,7 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
   InitAiControllerType() {
     var t = this.Entity.GetComponent(47);
     var e = this.Entity.GetComponent(73);
-    if (t && e) {
+    if (t && e?.IsNeedPlan) {
       this._in = BehaviorTreeDefines_1.BehaviorTreeDefines.CanUseLevelAiBehaviorTree(this.Entity) ? 1 : 2;
     } else if (t) {
       this._in = 1;
@@ -626,5 +627,5 @@ let CommonNpcPerformComponent = CommonNpcPerformComponent_1 = class CommonNpcPer
     }, undefined, undefined, t.NpcFollow.PerformerWhenExit.Range);
   }
 };
-CommonNpcPerformComponent = CommonNpcPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(187)], CommonNpcPerformComponent);
+CommonNpcPerformComponent = CommonNpcPerformComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(188)], CommonNpcPerformComponent);
 exports.CommonNpcPerformComponent = CommonNpcPerformComponent; //# sourceMappingURL=CommonNpcPerformComponent.js.map

@@ -19,7 +19,7 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
     this.AreaType = 1;
     this.InSkillInteract = false;
   }
-  qau() {
+  uhu() {
     if (this.Card) {
       this.Card.MagicUse();
       this.Card = undefined;
@@ -38,23 +38,28 @@ class PhantomArenaAreaFunctionalProxy extends PhantomArenaAreaProxyBase_1.Phanto
     }
     t = await PhantomArenaSkillInteractFactory_1.PhantomArenaSkillInteractFactory.GetSkillInteract(t.InteractType).Execute(this.ParentArea.ParentArea.ViewProxy, this);
     if (t === 0) {
-      this.qau();
+      this.uhu();
       return true;
     } else {
-      return t !== 1 || (this.ResetToHand(), false);
+      return t !== 1;
     }
   }
-  ResetToHand() {
+  ResetCardProxy() {
     var t;
     if (this.Card) {
-      t = this.ParentArea.ParentArea.HandArea.GetCardProxy(this.Card.Data.CardId);
-      this.Card?.SetCardProxy(t);
+      if (this.Card.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
+        t = this.ParentArea.ParentArea.HandArea.GetCardProxy(this.Card.Data.CardId);
+        this.Card.SetCardProxy(t);
+      } else {
+        t = this.ParentArea.ParentArea.FunctionalArea.GetCardProxyByIndex(this.Card.Data.Index);
+        this.Card.SetCardProxy(t);
+      }
       this.SetCard(undefined);
     }
   }
   async OnHandleCardSetting(t) {
     this.SetCardResetPosition(t);
-    return !!(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardTargetInfo(t.Data.CardId, t.Data.Index)) && (await this.SetCard(t), !!(await this.OnHandleAreaBySetCard())) && (this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide(), true);
+    return !!(await ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.RequestPhantomBattleCardTargetInfo(t.Data.CardId, t.Data.Index)) && (await this.SetCard(t), (await this.OnHandleAreaBySetCard()) ? (this.ParentArea.ParentArea.ViewProxy.GuideManager.FinishCurrentGuide(), true) : (this.ResetCardProxy(), false));
   }
   CheckGuideCondition(t) {
     var e;

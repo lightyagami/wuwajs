@@ -9,7 +9,7 @@ class FloroRanchSkillData {
   constructor(t) {
     this.Lo = undefined;
     this.P4e = true;
-    this._mu = 0;
+    this.Qmu = 0;
     this.Lo = t;
   }
   get Id() {
@@ -22,10 +22,10 @@ class FloroRanchSkillData {
     return this.P4e;
   }
   set ConditionId(t) {
-    this._mu = t;
+    this.Qmu = t;
   }
   get ConditionId() {
-    return this._mu;
+    return this.Qmu;
   }
   get Name() {
     return this.Lo.Name;

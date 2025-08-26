@@ -150,7 +150,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     o.UseKeepMovementMode = false;
     let _ = undefined;
     let n = undefined;
-    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(99))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
+    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(100))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
       o.UseTreadmill = false;
       o.UseKeepKite = true;
       o.UseKeepMovementMode = true;
@@ -172,7 +172,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       });
     }
     if (o.UseKeepKite) {
-      a = r.GetComponent(99).GetCurrentTargetEntity().Entity;
+      a = r.GetComponent(100).GetCurrentTargetEntity().Entity;
       o.SeamlessTravelKeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
       o.SeamlessTravelKeepKite.SetInitData(a, r);
       if (Log_1.Log.CheckInfo()) {
@@ -188,7 +188,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
           SeamlessTravelController.AddSeamlessTravelActor(l);
         }
         var a = o.SeamlessTravelPlayerEntityHandle.Entity;
-        var r = a?.GetComponent(99);
+        var r = a?.GetComponent(100);
         if (r?.GetIsHooking() && r.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
           r.GetCurrentTargetEntity().Entity?.Disable("[无缝加载]隐藏风筝声骸");
           r.SetIsHookEndByInterrupt(true);

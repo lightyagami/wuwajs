@@ -70,7 +70,7 @@ let SceneItemResetPositionComponent = SceneItemResetPositionComponent_1 = class 
     this.rtn = (t, e) => {
       var i;
       if (!this.MMn) {
-        if ((e = this.ftn(e))?.Valid && (!(i = e.Entity.GetComponent(202)) || i.IsReadyForOverlap && i.Active) && this.wS && (i = e.Entity.GetComponent(0)?.GetPbDataId() ?? 0, this.wS.includes(i)) && !this.vMn.includes(i)) {
+        if ((e = this.ftn(e))?.Valid && (!(i = e.Entity.GetComponent(203)) || i.IsReadyForOverlap && i.Active) && this.wS && (i = e.Entity.GetComponent(0)?.GetPbDataId() ?? 0, this.wS.includes(i)) && !this.vMn.includes(i)) {
           LevelGamePlayController_1.LevelGamePlayController.OnManipulatableItemExitAreaInternal(e, undefined, this.Entity.GetComponent(0).GetCreatureDataId());
         }
       }
@@ -78,7 +78,7 @@ let SceneItemResetPositionComponent = SceneItemResetPositionComponent_1 = class 
     this.itn = (t, e, i, s) => {
       var o;
       if (!this.MMn) {
-        if ((e = this.ftn(e))?.Valid && (!(o = e.Entity.GetComponent(202)) || o.IsReadyForOverlap && o.Active) && this.wS && (o = e.Entity.GetComponent(0)?.GetPbDataId() ?? 0, this.wS.includes(o)) && !this.vMn.includes(o)) {
+        if ((e = this.ftn(e))?.Valid && (!(o = e.Entity.GetComponent(203)) || o.IsReadyForOverlap && o.Active) && this.wS && (o = e.Entity.GetComponent(0)?.GetPbDataId() ?? 0, this.wS.includes(o)) && !this.vMn.includes(o)) {
           LevelGamePlayController_1.LevelGamePlayController.OnManipulatableItemExitAreaInternal(e, undefined, this.Entity.GetComponent(0).GetCreatureDataId());
         }
       }
@@ -216,5 +216,5 @@ let SceneItemResetPositionComponent = SceneItemResetPositionComponent_1 = class 
     }
   }
 };
-SceneItemResetPositionComponent = SceneItemResetPositionComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(165)], SceneItemResetPositionComponent);
+SceneItemResetPositionComponent = SceneItemResetPositionComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(166)], SceneItemResetPositionComponent);
 exports.SceneItemResetPositionComponent = SceneItemResetPositionComponent; //# sourceMappingURL=SceneItemResetPositionComponent.js.map

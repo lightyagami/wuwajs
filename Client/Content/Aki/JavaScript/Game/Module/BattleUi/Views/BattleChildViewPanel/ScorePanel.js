@@ -16,6 +16,7 @@ const DreamLinkScoreItem_1 = require("../ScoreItem/DreamLinkScoreItem");
 const FarmGoldScoreItem_1 = require("../ScoreItem/FarmGoldScoreItem");
 const LinkScoreItem_1 = require("../ScoreItem/LinkScoreItem");
 const RogueScoreItem_1 = require("../ScoreItem/RogueScoreItem");
+const ShipTowerScoreItem_1 = require("../ScoreItem/ShipTowerScoreItem");
 const VisionArenaScoreItem_1 = require("../ScoreItem/VisionArenaScoreItem");
 const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
 class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
@@ -43,8 +44,8 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       await this.ZRl(true);
     } else if (FarmGoldController_1.FarmGoldController.CheckInFarmGold()) {
       await this.Z3l();
-    } else if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()) {
-      await this.X7_();
+    } else if (ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower() && ModelManager_1.ModelManager.ShipTowerModel.CheckIsScoreBattle()) {
+      await this.dzc();
     }
     for ([e, t] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreEnableMap()) {
       if (t) {
@@ -111,9 +112,9 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.dul.set("LinkScoreItem", e);
     await e.HideAsync();
   }
-  async X7_() {
-    var e = await this.NewDynamicChildViewByResourceId(this.RootItem, "UiItem_RogueScoreD", LinkScoreItem_1.LinkScoreItem);
-    this.dul.set("LinkScoreItem", e);
+  async dzc() {
+    var e = await this.NewDynamicChildViewByResourceId(this.RootItem, "UiItem_BurningTide", ShipTowerScoreItem_1.ShipTowerScoreItem);
+    this.dul.set("ShipTowerScoreItem", e);
     await e.HideAsync();
   }
   async wI1(e) {
@@ -147,6 +148,13 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     }
     ScorePanel.Ult.Stop();
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (e.length !== 0 && (e = this.dul.get("ShipTowerScoreItem")?.GetGuideUiItem("0"))) {
+      return [e, e];
+    } else {
+      return undefined;
+    }
   }
 }
 (exports.ScorePanel = ScorePanel).Ult = Stats_1.Stat.Create("[BattleView]ScorePanelTick");

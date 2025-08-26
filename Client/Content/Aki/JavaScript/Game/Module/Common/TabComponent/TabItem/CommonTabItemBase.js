@@ -11,6 +11,7 @@ class CommonTabItemData {
     this.Data = undefined;
     this.RedDotName = undefined;
     this.RedDotUid = undefined;
+    this.NeedUnBindAllRedDot = true;
   }
 }
 exports.CommonTabItemData = CommonTabItemData;

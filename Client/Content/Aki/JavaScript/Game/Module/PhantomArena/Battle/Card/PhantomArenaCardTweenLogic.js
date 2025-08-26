@@ -20,10 +20,10 @@ class LguiFloatTween {
     this.OAn = t => {
       this.UpdateTween?.(t);
     };
-    this.Ztu = () => {
+    this.Tiu = () => {
       this.StartTween?.();
     };
-    this.eiu = () => {
+    this.biu = () => {
       this.IsFinished = true;
       this.KillTween();
       this.CompleteTween?.();
@@ -39,8 +39,8 @@ class LguiFloatTween {
         this.Tweener.SetEase(28);
         this.Tweener.SetCurveFloat(h);
       }
-      this.Tweener.OnStartCallBack.Bind(this.Ztu);
-      this.Tweener.OnCompleteCallBack.Bind(this.eiu);
+      this.Tweener.OnStartCallBack.Bind(this.Tiu);
+      this.Tweener.OnCompleteCallBack.Bind(this.biu);
     }
   }
   KillTween() {
@@ -66,7 +66,7 @@ class PhantomArenaCardTweenLogic {
     this.LocationYTween = undefined;
     this.kAn = undefined;
   }
-  riu() {
+  wiu() {
     this.LocationXTween = new LguiFloatTween();
     this.LocationXTween.UpdateTween = t => {
       this.CardWorldPos.X = t;
@@ -75,7 +75,7 @@ class PhantomArenaCardTweenLogic {
     this.LocationXTween.CompleteTween = () => {
       this.CardWorldPos.X = this.ToPos.X;
       this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
-      this.gwu();
+      this.bwu();
     };
     this.LocationYTween = new LguiFloatTween();
     this.LocationYTween.UpdateTween = t => {
@@ -85,17 +85,17 @@ class PhantomArenaCardTweenLogic {
     this.LocationYTween.CompleteTween = () => {
       this.CardWorldPos.Z = this.ToPos.Z;
       this.eVi.SetUIWorldLocation(this.CardWorldPos.ToUeVectorOld());
-      this.gwu();
+      this.bwu();
     };
   }
-  gwu() {
+  bwu() {
     if (this.LocationXTween.IsFinished && this.LocationYTween.IsFinished) {
       this.kAn?.();
     }
   }
   Init(t) {
     this.eVi = t;
-    this.riu();
+    this.wiu();
   }
   Destroy() {
     this.LocationXTween.Destroy();

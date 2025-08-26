@@ -48,22 +48,22 @@ class AbnormalThunder extends ExtraEffectBase_1.BuffEffect {
     this.RefreshCue(t);
   }
   ClearModifier() {
-    var t = this.ExactOwnerEntity?.GetComponent(172);
+    var t = this.ExactOwnerEntity?.GetComponent(173);
     if (this.OQo) {
       t?.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.Proto_Atk, this.OQo);
       this.OQo = 0;
     }
   }
   ClearCue() {
-    var t = this.ExactOwnerEntity?.GetComponent(209);
+    var t = this.ExactOwnerEntity?.GetComponent(226);
     if (this.kQo) {
-      t?.RemoveBuffByHandle(this.kQo);
+      t?.RemoveCueByHandle(this.kQo);
       this.kQo = 0;
     }
   }
   RefreshModifier(r) {
     this.ClearModifier();
-    var t = this.ExactOwnerEntity?.GetComponent(172);
+    var t = this.ExactOwnerEntity?.GetComponent(173);
     if (t) {
       let e = 0;
       for (let t = this.FQo.length - 1; t >= 0; t--) {
@@ -85,7 +85,7 @@ class AbnormalThunder extends ExtraEffectBase_1.BuffEffect {
   }
   RefreshCue(e) {
     this.ClearCue();
-    var r = this.ExactOwnerEntity?.GetComponent(209);
+    var r = this.ExactOwnerEntity?.GetComponent(226);
     if (r) {
       let t = undefined;
       for (var [i, s] of this.VQo) {
@@ -95,7 +95,7 @@ class AbnormalThunder extends ExtraEffectBase_1.BuffEffect {
         }
       }
       if (t !== undefined) {
-        this.kQo = r.AddGameplayCue([t], -1, "AddByAbnormalThunder");
+        this.kQo = r.AddCue(t);
       }
     }
   }
@@ -130,7 +130,7 @@ class AbnormalIce extends ExtraEffectBase_1.BuffEffect {
     this.RefreshModifier(t);
   }
   ClearModifier() {
-    var t = this.ExactOwnerEntity?.GetComponent(172);
+    var t = this.ExactOwnerEntity?.GetComponent(173);
     if (this.OQo) {
       t?.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.vVn, this.OQo);
       this.OQo = 0;
@@ -138,7 +138,7 @@ class AbnormalIce extends ExtraEffectBase_1.BuffEffect {
   }
   RefreshModifier(r) {
     this.ClearModifier();
-    var t = this.ExactOwnerEntity?.GetComponent(172);
+    var t = this.ExactOwnerEntity?.GetComponent(173);
     if (t) {
       let e = 0;
       for (let t = this.HQo.length - 1; t >= 0; t--) {

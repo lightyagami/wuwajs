@@ -51,16 +51,16 @@ class FragmentMemoryCollectData {
   GetFinishTime() {
     return this._be;
   }
-  PhraseFromConfig(e) {
-    this.xe = e.Id;
+  PhraseFromConfig(t) {
+    this.xe = t.Id;
   }
   GetRank() {
     return this.GetConfig().Rank;
   }
-  Phrase(e) {
-    this.xe = e.s5n;
-    this.ige = e.o5n;
-    this._be = Number(MathUtils_1.MathUtils.LongToBigInt(e.kBs)) / 1000;
+  Phrase(t) {
+    this.xe = t.s5n;
+    this.ige = t.o5n;
+    this._be = Number(MathUtils_1.MathUtils.LongToBigInt(t.kBs)) / 1000;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FragmentRewardRedDot, this.xe);
   }
   GetTimeText() {
@@ -70,8 +70,8 @@ class FragmentMemoryCollectData {
       return TimeUtil_1.TimeUtil.DateFormatString(this._be);
     }
   }
-  BindSourceTopic(e) {
-    this.iwn = e;
+  BindSourceTopic(t) {
+    this.iwn = t;
   }
   GetClueEntrance() {
     return ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetClueEntrance(this.GetClueId());
@@ -98,14 +98,14 @@ class FragmentMemoryCollectData {
     return this.GetConfig().DropId;
   }
   GetPreviewReward() {
-    var e;
     var t;
+    var e;
     var r = [];
-    for ([e, t] of ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(this.GetDropId()).DropPreview) {
+    for ([t, e] of ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(this.GetDropId()).DropPreview) {
       var n = [{
         IncId: 0,
-        ItemId: e
-      }, t];
+        ItemId: t
+      }, e];
       r.push(n);
     }
     return r;
@@ -114,10 +114,10 @@ class FragmentMemoryCollectData {
     return this.GetBgResource();
   }
   GetBgResource() {
-    var e = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-    if (e === 1) {
+    var t = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
+    if (t === 1) {
       return this.rwn();
-    } else if (e === 0) {
+    } else if (t === 0) {
       return this.own();
     } else {
       return "";
@@ -140,27 +140,27 @@ class FragmentMemoryTopicData {
   GetId() {
     return this.xe;
   }
-  Phrase(t) {
-    this.xe = t.s5n;
-    this.swn = t.K6n;
+  Phrase(e) {
+    this.xe = e.s5n;
+    this.swn = e.K6n;
     this.nwn = [];
-    for (const i of t.NBs) {
-      var e = new FragmentMemoryCollectData();
-      e.Phrase(i);
+    for (const i of e.NBs) {
+      var t = new FragmentMemoryCollectData();
+      t.Phrase(i);
       var r = ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryCollectById(i.s5n);
-      e.PhraseFromConfig(r);
-      e.BindSourceTopic(this);
-      this.nwn.push(e);
+      t.PhraseFromConfig(r);
+      t.BindSourceTopic(this);
+      this.nwn.push(t);
     }
     var n;
-    for (const t of ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryCollectConfigListByTopicId(this.xe)) {
-      if (!this.nwn.find(e => e.GetId() === t.Id)) {
-        (n = new FragmentMemoryCollectData()).PhraseFromConfig(t);
+    for (const e of ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryCollectConfigListByTopicId(this.xe)) {
+      if (!this.nwn.find(t => t.GetId() === e.Id)) {
+        (n = new FragmentMemoryCollectData()).PhraseFromConfig(e);
         n.BindSourceTopic(this);
         this.nwn.push(n);
       }
     }
-    this.nwn.sort((e, t) => e.GetRank() - t.GetRank());
+    this.nwn.sort((t, e) => t.GetRank() - e.GetRank());
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FragmentRewardTopicRedDot, this.xe);
   }
   GetFirstOpen() {
@@ -170,24 +170,24 @@ class FragmentMemoryTopicData {
     if (this.GetFirstOpen()) {
       return true;
     }
-    for (const e of this.nwn) {
-      if (e.GetIfCanGetReward()) {
+    for (const t of this.nwn) {
+      if (t.GetIfCanGetReward()) {
         return true;
       }
     }
     return false;
   }
   GetCollectRedDotState() {
-    for (const e of this.nwn) {
-      if (e.GetIfCanGetReward()) {
+    for (const t of this.nwn) {
+      if (t.GetIfCanGetReward()) {
         return true;
       }
     }
     return false;
   }
   GetClueEntrance() {
-    var e = ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryTopicById(this.xe);
-    return ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetClueEntrance(e.ClueId);
+    var t = ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryTopicById(this.xe);
+    return ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetClueEntrance(t.ClueId);
   }
   GetClueContent() {
     return ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetClueContent(this.GetClueEntrance().ContentGroupId);
@@ -198,18 +198,29 @@ class FragmentMemoryTopicData {
   GetMemoryCollectNum() {
     return this.nwn.length;
   }
-  GetFinishCollectNum() {
-    let e = 0;
+  GetCollectRewardDoneState() {
+    if (this.nwn.length === 0) {
+      return false;
+    }
     for (const t of this.nwn) {
-      if (t.GetIfUnlock()) {
-        e++;
+      if (!t.GetIfGetReward()) {
+        return false;
       }
     }
-    return e;
+    return true;
+  }
+  GetFinishCollectNum() {
+    let t = 0;
+    for (const e of this.nwn) {
+      if (e.GetIfUnlock()) {
+        t++;
+      }
+    }
+    return t;
   }
   GetAllCollectState() {
-    for (const e of this.nwn) {
-      if (!e.GetIfUnlock()) {
+    for (const t of this.nwn) {
+      if (!t.GetIfUnlock()) {
         return false;
       }
     }
@@ -222,8 +233,8 @@ class FragmentMemoryTopicData {
     return ConfigManager_1.ConfigManager.FragmentMemoryConfig.GetPhotoMemoryTopicById(this.xe);
   }
   GetConditionDesc() {
-    var e = this.GetConfig().ConditionGroupId;
-    return LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(e) ?? "";
+    var t = this.GetConfig().ConditionGroupId;
+    return LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(t) ?? "";
   }
 }
 exports.FragmentMemoryTopicData = FragmentMemoryTopicData;

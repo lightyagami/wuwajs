@@ -79,7 +79,7 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
     this.Oyl(this.Kyl);
     this.Ywn(this.Kyl);
     this.v4e(this.Kyl);
-    this.pK1(this.Kyl);
+    this.MK1(this.Kyl);
   }
   sSt(i) {
     var e;
@@ -193,7 +193,7 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
       this.s4e?.SetActive(false);
     }
   }
-  pK1(i) {
+  MK1(i) {
     var e;
     if (i && (e = i.GetCurrentGoodsData().GetAvailableCouponItem())) {
       this.GetItem(12).SetUIActive(true);

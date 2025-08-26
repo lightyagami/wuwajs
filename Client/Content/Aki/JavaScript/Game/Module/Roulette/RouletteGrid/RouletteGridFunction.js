@@ -4,8 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RouletteGridFunction = undefined;
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const RouletteController_1 = require("../RouletteController");
 const RouletteGridBase_1 = require("./RouletteGridBase");
 class RouletteGridFunction extends RouletteGridBase_1.RouletteGridBase {
   async Init() {
@@ -35,7 +35,7 @@ class RouletteGridFunction extends RouletteGridBase_1.RouletteGridBase {
   }
   OnSelect(e) {
     if (e && this.IsDataValid()) {
-      RouletteController_1.RouletteController.FunctionOpenRequest(this.Data.Id);
+      ControllerHolder_1.ControllerHolder.RouletteController.FunctionOpenRequest(this.Data.Id);
     }
   }
 }

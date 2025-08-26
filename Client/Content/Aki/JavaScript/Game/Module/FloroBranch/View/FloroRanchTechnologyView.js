@@ -19,19 +19,19 @@ class FloroRanchTechnologyView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.yUu = [];
+    this.WUu = [];
     this.CurSelectNode = undefined;
     this.TechDetailPanel = undefined;
     this.UnlockSuccessPanel = undefined;
     this.TechnologyCoinData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(4);
     this.U1a = undefined;
     this.ScrollView = undefined;
-    this.Aku = e => {
+    this.Cqu = e => {
       this.UnlockSuccessPanel?.RefreshPanel(e);
-      this.ScrollView?.RefreshByData(this.yUu);
-      this.SUu();
+      this.ScrollView?.RefreshByData(this.WUu);
+      this.QUu();
     };
-    this.MUu = e => {
+    this.KUu = e => {
       if (this.CurSelectNode) {
         this.CurSelectNode.SetToggleState(0);
       }
@@ -45,9 +45,9 @@ class FloroRanchTechnologyView extends UiViewBase_1.UiViewBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FloroRanchDataRedDot);
       this.CloseMe();
     };
-    this.EUu = () => {
+    this.XUu = () => {
       var e = new FloroRanchTechGridPanel_1.FloroRanchTechGridPanel();
-      e.OnSelectTechNode = this.MUu;
+      e.OnSelectTechNode = this.KUu;
       return e;
     };
   }
@@ -58,23 +58,23 @@ class FloroRanchTechnologyView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     var e = [];
     this.TechDetailPanel = new FloroRanchTechDetailPanel_1.FloroRanchTechDetailPanel();
-    this.TechDetailPanel.UnlockSuccessCallback = this.Aku;
+    this.TechDetailPanel.UnlockSuccessCallback = this.Cqu;
     e.push(this.TechDetailPanel.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     this.UnlockSuccessPanel = new FloroRanchUnlockSuccessPanel_1.FloroRanchUnlockSuccessPanel();
     e.push(this.UnlockSuccessPanel.CreateByActorAsync(this.GetItem(8).GetOwner()));
     this.U1a = new FloroRanchCurrencyItem_1.FloroRanchCurrencyItem();
     e.push(this.U1a.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
-    this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.EUu, this.GetItem(5).GetOwner());
+    this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.XUu, this.GetItem(5).GetOwner());
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    this.yUu = this.CNe.GetTechnologyTreeList();
-    e.push(this.ScrollView.RefreshByDataAsync(this.yUu));
+    this.WUu = this.CNe.GetTechnologyTreeList();
+    e.push(this.ScrollView.RefreshByDataAsync(this.WUu));
     await Promise.all(e);
-    this.SUu();
+    this.QUu();
     this.GetItem(8)?.SetUIActive(false);
     this.TechDetailPanel?.SetUiActive(false);
     this.GetItem(7)?.SetUIActive(false);
   }
-  SUu() {
+  QUu() {
     var e = this.CNe.GetTechnologyCoinNum();
     this.TechnologyCoinData.SetAmount(e);
     this.U1a?.SetCurrencyData(this.TechnologyCoinData);
@@ -82,7 +82,7 @@ class FloroRanchTechnologyView extends UiViewBase_1.UiViewBase {
   TrySelectTechNode(e) {
     if (!this.CurSelectNode) {
       this.CurSelectNode = e;
-      this.MUu(e);
+      this.KUu(e);
     }
   }
 }

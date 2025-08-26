@@ -18,12 +18,12 @@ const LifePointSubView_1 = require("./LifePointSubView");
 class LifePointDrawActivityController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.ZAu = e => {
+    this.RPu = e => {
       const i = new Array();
       const n = new Array();
       e.mps.forEach(e => {
         var t = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointChallengeById(e.e8n);
-        var r = this.ePu(t.ActivityId);
+        var r = this.wPu(t.ActivityId);
         if (r) {
           r.OnLifePointChallengeDataUpdate(e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshLifePointDrawChallengeRedDot, e.e8n);
@@ -57,30 +57,30 @@ class LifePointDrawActivityController extends ActivityControllerBase_1.ActivityC
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16458, this.ZAu);
+    Net_1.Net.Register(28071, this.RPu);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16458);
+    Net_1.Net.UnRegister(28071);
   }
-  ePu(e) {
+  wPu(e) {
     if (ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) {
       return ModelManager_1.ModelManager.ActivityModel.GetActivityById(e);
     }
   }
   RequestStartChallenge(e, t) {
-    var r = new Protocol_1.Aki.Protocol.Dwu();
+    var r = new Protocol_1.Aki.Protocol.eAu();
     r.s5n = t;
     ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState = ModelManager_1.ModelManager.LifePointDrawModel.GetChallengeFinishState(e, t);
-    Net_1.Net.Call(15107, r, e => {
+    Net_1.Net.Call(28376, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19976);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19514);
       }
     });
   }
   async OpenLifePointDrawActivityView() {
     let e = undefined;
     for (const r of ModelManager_1.ModelManager.ActivityModel.GetAllActivityMap().values()) {
-      if (r.Type === Protocol_1.Aki.Protocol.uks.kwu) {
+      if (r.Type === Protocol_1.Aki.Protocol.uks.iAu) {
         var t = r;
         e = t;
         break;

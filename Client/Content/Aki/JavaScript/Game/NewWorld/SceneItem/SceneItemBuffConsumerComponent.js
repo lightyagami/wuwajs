@@ -57,11 +57,11 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
     this.Q1n = e => {
       if (e && this.sdn()) {
         this.ndn = true;
-        SceneItemBuffController_1.SceneItemBuffController.BuffOperate(this.Entity.Id, Protocol_1.Aki.Protocol.eFs.Cru, this.adn);
+        SceneItemBuffController_1.SceneItemBuffController.BuffOperate(this.Entity.Id, Protocol_1.Aki.Protocol.eFs.Hru, this.adn);
       }
     };
     this.adn = (e, t) => {
-      if (e === Protocol_1.Aki.Protocol.eFs.Cru && t) {
+      if (e === Protocol_1.Aki.Protocol.eFs.Hru && t) {
         this.hdn();
       } else {
         this.ndn = false;
@@ -99,18 +99,18 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     if (this.Hte) {
-      this.wsn = this.Entity.GetComponent(196);
+      this.wsn = this.Entity.GetComponent(197);
       if (this.wsn) {
-        this.mBe = this.Entity.GetComponent(133);
+        this.mBe = this.Entity.GetComponent(134);
         if (this.mBe) {
           this.vtn = this.Entity.GetComponent(86);
           if (this.vtn) {
             if (!ModelManager_1.ModelManager.GameModeModel.IsMulti || ModelManager_1.ModelManager.PlayerInfoModel.GetId() === ModelManager_1.ModelManager.CreatureModel.GetWorldOwner()) {
               this.Wpo = this.Hte.CreatureData.GetCreatureDataId();
               this.wsn.AddTag(HIT_CONDITION_TAGID);
-              this.Xln = this.Entity.GetComponent(154);
+              this.Xln = this.Entity.GetComponent(155);
               this.Xln.RegisterComponent(this);
               this.vtn.AddOnPlayerOverlapCallback(this.Q1n);
             }
@@ -156,12 +156,12 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
       return false;
     }
     var e = e.CharacterActorComponent.Entity;
-    var t = e.CheckGetComponent(174);
+    var t = e.CheckGetComponent(175);
     if (!t) {
       return false;
     }
     let o = t.GetBuffTotalStackById(this.eHr) > 0;
-    t = e.CheckGetComponent(190);
+    t = e.CheckGetComponent(191);
     if (t) {
       o ||= (t.GetFormationBuffComp()?.GetBuffTotalStackById(this.eHr) ?? 0) > 0;
     }
@@ -191,5 +191,5 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
     });
   }
 };
-SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], SceneItemBuffConsumerComponent);
+SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(204)], SceneItemBuffConsumerComponent);
 exports.SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent; //# sourceMappingURL=SceneItemBuffConsumerComponent.js.map

@@ -79,9 +79,9 @@ class SnapModifyBuffEffect extends ExtraEffectBase_1.BuffEffect {
   WXo(t, s) {
     switch (s) {
       case 1:
-        return this.OwnerEntity?.CheckGetComponent(173);
+        return this.OwnerEntity?.CheckGetComponent(174);
       case 0:
-        return this.InstigatorEntity?.Entity?.CheckGetComponent(173);
+        return this.InstigatorEntity?.Entity?.CheckGetComponent(174);
       case 2:
         return t.AttackerSnapshot;
       case 3:

@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ReachAreaBehaviorNode = undefined;
+const UE = require("ue");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
@@ -12,6 +13,7 @@ const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
+const GlobalData_1 = require("../../../../GlobalData");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const SceneTeamController_1 = require("../../../SceneTeam/SceneTeamController");
@@ -36,64 +38,73 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
     this.d$t = undefined;
     this.C$t = undefined;
     this.g$t = Vector_1.Vector.Create();
+    this.Pqu = undefined;
     this.f$t = undefined;
     this.p$t = 0;
     this.v$t = 0;
     this.OJa = false;
+    this.xqu = undefined;
     this.IRe = undefined;
     this.OnTick = () => {
       this.IRe = undefined;
-      var e = this.DoTaskAndGetNewInterval();
-      this.IRe = TimerSystem_1.TimerSystem.Delay(this.OnTick, e);
+      var t = this.DoTaskAndGetNewInterval();
+      this.IRe = TimerSystem_1.GameplayTimerSystem.Delay(this.OnTick, t);
     };
   }
   get CorrelativeEntities() {}
-  OnCreate(e) {
-    if (!super.OnCreate(e)) {
+  OnCreate(t) {
+    if (!super.OnCreate(t)) {
       return false;
     }
-    e = e.Condition;
-    if (e.Type !== IQuest_1.EChildQuest.ReachArea) {
+    t = t.Condition;
+    if (t.Type !== IQuest_1.EChildQuest.ReachArea) {
       return false;
     }
-    this.E0 = e.EntityId;
-    this.a$t = e.MatchRoleOption;
-    this.ConditionGrop = e.PreConditions;
-    this.EffectPathKey = e.EffectPath;
-    var t = e.RangeEntityId ? ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e.RangeEntityId) : undefined;
-    this.OJa = e.RangeEntities !== undefined && e.RangeEntities?.length > 0;
-    if (t) {
-      this._$t = e.Range;
-      var i = (0, IComponent_1.getComponent)(t.ComponentsData, "RangeComponent");
-      this.m$t = i.Shape.Type;
-      var r = t.Transform.Pos;
-      switch (i.Shape.Type) {
+    this.E0 = t.EntityId;
+    this.a$t = t.MatchRoleOption;
+    this.ConditionGrop = t.PreConditions;
+    this.EffectPathKey = t.EffectPath;
+    var e = t.RangeEntityId ? ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t.RangeEntityId) : undefined;
+    var i = t.RangeEntities;
+    this.OJa = i !== undefined && i.length > 0;
+    if (this.OJa) {
+      this.xqu = [];
+      for (const l of i) {
+        this.xqu.push(l);
+      }
+    }
+    if (e) {
+      this._$t = t.Range;
+      var s = (0, IComponent_1.getComponent)(e.ComponentsData, "RangeComponent");
+      this.m$t = s.Shape.Type;
+      var r = e.Transform.Pos;
+      switch (s.Shape.Type) {
         case "Sphere":
-          var s = i.Shape.Center;
-          this.l$t = Vector_1.Vector.Create(r.X + (s?.X ?? 0), r.Y + (s?.Y ?? 0), r.Z + (s?.Z ?? 0));
-          this._$t = i.Shape.Radius;
+          var h = s.Shape.Center;
+          this.l$t = Vector_1.Vector.Create(r.X + (h?.X ?? 0), r.Y + (h?.Y ?? 0), r.Z + (h?.Z ?? 0));
+          this._$t = s.Shape.Radius;
           break;
         case "Box":
-          var s = t.Transform.Rot;
-          var h = i.Shape.Center;
-          var o = i.Shape.Size;
-          var a = i.Shape.Rotator;
-          var s = Rotator_1.Rotator.Create(s?.Y ?? 0 + (a?.Y ?? 0), s?.Z ?? 0 + (a?.Z ?? 0), s?.X ?? 0 + (a?.X ?? 0)).Quaternion();
-          var a = Vector_1.Vector.Create(r.X + (h?.X ?? 0), r.Y + (h?.Y ?? 0), r.Z + (h?.Z ?? 0));
-          var h = Transform_1.Transform.Create(s, a, Vector_1.Vector.OneVector);
-          this.l$t = a;
-          this.d$t = Vector_1.Vector.Create(o.X ?? 0, o.Y ?? 0, o.Z ?? 0);
-          this.C$t = h;
+          var h = e.Transform.Rot;
+          var o = s.Shape.Center;
+          var a = s.Shape.Size;
+          var n = s.Shape.Rotator;
+          var h = Rotator_1.Rotator.Create(h?.Y ?? 0 + (n?.Y ?? 0), h?.Z ?? 0 + (n?.Z ?? 0), h?.X ?? 0 + (n?.X ?? 0)).Quaternion();
+          var n = Vector_1.Vector.Create(r.X + (o?.X ?? 0), r.Y + (o?.Y ?? 0), r.Z + (o?.Z ?? 0));
+          var o = Transform_1.Transform.Create(h, n, Vector_1.Vector.OneVector);
+          this.l$t = n;
+          this.d$t = Vector_1.Vector.Create(a.X ?? 0, a.Y ?? 0, a.Z ?? 0);
+          this.C$t = o;
           break;
         case "Cylinder":
-          s = i.Shape.Center;
-          this.f$t = Vector_1.Vector.Create(r.X ?? 0 + (s?.X ?? 0), r.Y + (s?.Y ?? 0), r.Z + (s?.Z ?? 0));
-          this.p$t = i.Shape.Radius;
-          this.v$t = i.Shape.Height;
+          h = s.Shape.Center;
+          this.f$t = Vector_1.Vector.Create(r.X ?? 0 + (h?.X ?? 0), r.Y + (h?.Y ?? 0), r.Z + (h?.Z ?? 0));
+          this.p$t = s.Shape.Radius;
+          this.v$t = s.Shape.Height;
       }
     } else {
-      this.l$t = Vector_1.Vector.Create(e.Pos.X, e.Pos.Y, e.Pos.Z);
-      this._$t = e.Range;
+      this.l$t = Vector_1.Vector.Create(t.Pos.X, t.Pos.Y, t.Pos.Z);
+      this._$t = t.Range;
       this.m$t = "Sphere";
     }
     return true;
@@ -101,23 +112,23 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
   OnDestroy() {
     super.OnDestroy();
   }
-  OnStart(e) {
-    super.OnStart(e);
-    this.IRe = TimerSystem_1.TimerSystem.Delay(this.OnTick, MAX_INTERVAL);
+  OnStart(t) {
+    super.OnStart(t);
+    this.IRe = TimerSystem_1.GameplayTimerSystem.Delay(this.OnTick, MAX_INTERVAL);
   }
-  OnEnd(e) {
+  OnEnd(t) {
     if (this.IRe) {
-      TimerSystem_1.TimerSystem.Remove(this.IRe);
+      TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
       this.IRe = undefined;
     }
   }
   DoTaskAndGetNewInterval() {
-    var e;
+    var t;
     this.wY++;
     if (this.Blackboard?.DungeonId !== ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id || ModelManager_1.ModelManager.TeleportModel.IsTeleport || this.Submitting || !this.Blackboard.IsTracking && this.wY % 2 != 0 || ModelManager_1.ModelManager.SceneTeamModel.IsAllDid() || this.OJa) {
       return MAX_INTERVAL;
-    } else if ((e = this.M$t()) > 1) {
-      return MathUtils_1.MathUtils.RangeClamp(e, MIN_DIST, MAX_DIST, MIN_INTERVAL, MAX_INTERVAL);
+    } else if ((t = this.M$t()) > 1) {
+      return MathUtils_1.MathUtils.RangeClamp(t, MIN_DIST, MAX_DIST, MIN_INTERVAL, MAX_INTERVAL);
     } else {
       this.SubmitNode();
       return MIN_INTERVAL;
@@ -131,53 +142,87 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
     } else if (ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam) {
       return MathUtils_1.MathUtils.LargeNumber;
     }
-    if (this.ConditionGrop && !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.ConditionGrop, undefined)) {
+    if (this.ConditionGrop && !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.ConditionGrop, undefined, this.Context)) {
       return MathUtils_1.MathUtils.LargeNumber;
     }
     if (this.E0) {
-      var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.E0);
-      if (!e) {
+      var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.E0);
+      if (!t) {
         return MathUtils_1.MathUtils.LargeNumber;
       }
-      this.c$t.DeepCopy(e.Entity.GetComponent(1).ActorLocationProxy);
+      this.c$t.DeepCopy(t.Entity.GetComponent(1).ActorLocationProxy);
     } else {
-      e = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
-      if (!e) {
+      t = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+      if (!t) {
         return MathUtils_1.MathUtils.LargeNumber;
       }
-      this.c$t.DeepCopy(e);
+      this.c$t.DeepCopy(t);
     }
     if (!this.c$t) {
       return MathUtils_1.MathUtils.LargeNumber;
     }
-    let t = MathUtils_1.MathUtils.LargeNumber;
+    let e = MathUtils_1.MathUtils.LargeNumber;
     switch (this.m$t) {
       case "Sphere":
         if (this.l$t) {
-          t = Vector_1.Vector.Distance(this.c$t, this.l$t) - this._$t;
+          e = Vector_1.Vector.Distance(this.c$t, this.l$t) - this._$t;
         }
         break;
       case "Box":
         this.C$t?.InverseTransformPosition(this.c$t, this.g$t);
-        t = Math.max(Math.abs(this.g$t.X) - this.d$t.X, Math.abs(this.g$t.Y) - this.d$t.Y, Math.abs(this.g$t.Z) - this.d$t.Z, 0);
+        e = Math.max(Math.abs(this.g$t.X) - this.d$t.X, Math.abs(this.g$t.Y) - this.d$t.Y, Math.abs(this.g$t.Z) - this.d$t.Z, 0);
         break;
       case "Cylinder":
         var i;
-        var r;
+        var s;
         if (this.f$t) {
           i = Vector_1.Vector.Dist2D(this.c$t, this.f$t);
           i = Math.max(0, i - this.p$t);
-          r = Math.max(0, Math.abs(this.c$t.Z - this.f$t.Z) - this.v$t / 2);
-          t = Math.sqrt(i * i + r * r);
+          s = Math.max(0, Math.abs(this.c$t.Z - this.f$t.Z) - this.v$t / 2);
+          e = Math.sqrt(i * i + s * s);
         }
     }
-    return t;
+    return e;
   }
   CheckCanSubmitAboutFocusMode() {
     return this.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest || !ModelManager_1.ModelManager.QuestNewModel.CheckNeedBanQuestPushByFocusMode(this.Blackboard.TreeConfigId) || !!ModelManager_1.ModelManager.LevelLoadingModel.CheckLoadingPerformExist(3) || !ControllerHolder_1.ControllerHolder.InputController.IsAllMoveEnable();
   }
   GetTargetPosition() {
     return this.l$t;
+  }
+  GetRangePbDataIds() {
+    var t = [];
+    if (this.xqu) {
+      for (const e of this.xqu) {
+        t.push(e);
+      }
+    }
+    return t;
+  }
+  DrawRange(t, e, i) {
+    switch (this.m$t) {
+      case "Sphere":
+        if (this.l$t) {
+          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, this.l$t.ToUeVector(), this._$t, i, t, e);
+        }
+        break;
+      case "Box":
+        if (this.C$t && this.d$t) {
+          UE.KismetSystemLibrary.D_DrawDebugBox(GlobalData_1.GlobalData.World, this.C$t.GetLocation().ToUeVector(), this.d$t.ToUeVector(), t, this.C$t.GetRotation().Rotator().ToUeRotator(), e);
+        }
+        break;
+      case "Cylinder":
+        var s;
+        if (this.f$t) {
+          this.Pqu ||= Vector_1.Vector.Create();
+          s = this.v$t / 2;
+          this.g$t.DeepCopy(this.f$t);
+          this.Pqu.DeepCopy(this.f$t);
+          this.g$t.Z += s;
+          this.Pqu.Z -= s;
+          UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.World, this.g$t.ToUeVector(), this.Pqu.ToUeVector(), this.p$t, i, t, e);
+        }
+    }
   }
 }
 exports.ReachAreaBehaviorNode = ReachAreaBehaviorNode;

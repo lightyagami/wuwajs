@@ -171,6 +171,15 @@ class SkillButtonEntityData {
         this.VXe();
       }
     };
+    this.Rjc = (t, i, s, h) => {
+      var e;
+      var n = this.SkillButtonDataMap.get(6);
+      if (n && (e = n.IsShowLongPress(), n.RefreshIsShowLongPress(), this.IsCurEntity) && n.IsShowLongPress() !== e) {
+        this.vvl.add(n);
+        this.VXe();
+      }
+      this.RefreshEnableByButtonType(6);
+    };
     this.hyo = (t, i) => {
       t = this.AttributeIdTagSkillButtonMapping.Get(t);
       if (t) {
@@ -418,11 +427,11 @@ class SkillButtonEntityData {
     this.IsCurEntity = i;
     this.RoleId = SkillButtonUiController_1.SkillButtonUiController.GetRoleId(t);
     this.RoleConfig = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.RoleId);
-    this.AttributeComponent = t.GetComponent(173);
-    this.GameplayTagComponent = t.GetComponent(205);
+    this.AttributeComponent = t.GetComponent(174);
+    this.GameplayTagComponent = t.GetComponent(206);
     this.SkillComponent = t.GetComponent(40);
-    this.CharacterSkillCdComponent = t.GetComponent(207);
-    this.Cvl = t.GetComponent(229);
+    this.CharacterSkillCdComponent = t.GetComponent(208);
+    this.Cvl = t.GetComponent(230);
     i = ConfigManager_1.ConfigManager.SkillButtonConfig;
     this.SkillButtonConfigList = i.GetAllSkillButtonConfig(this.RoleId);
     this.SkillCommonButtonConfigList = i.GetAllSkillCommonButtonConfig();
@@ -561,6 +570,7 @@ class SkillButtonEntityData {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnVehicleSkillEnableChanged, this.yKl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
+    EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharHoldingHandsChanged, this.Rjc);
   }
   yyo() {
     if (!(this.RoleId <= 0)) {
@@ -595,13 +605,13 @@ class SkillButtonEntityData {
           }
           var t = n.CustomHandle?.TagIds;
           if (t) {
-            for (const B of t) {
-              this.Qpl(B, this.Wpl);
+            for (const E of t) {
+              this.Qpl(E, this.Wpl);
             }
           }
           if (n.GetButtonType() === 7) {
-            for (const E of n.ExploreAsFightTagIds) {
-              this.Tyo(E, this.iO_);
+            for (const B of n.ExploreAsFightTagIds) {
+              this.Tyo(B, this.iO_);
             }
           }
         }
@@ -634,12 +644,12 @@ class SkillButtonEntityData {
               }
             }
           }
-          for (const k of (Info_1.Info.OperationType === 2 ? i.DesktopButtonTypeMap : i.PadButtonTypeMap).keys()) {
-            s.add(k);
+          for (const D of (Info_1.Info.OperationType === 2 ? i.DesktopButtonTypeMap : i.PadButtonTypeMap).keys()) {
+            s.add(D);
           }
         }
-        for (const D of s) {
-          this.Tyo(D, this.gyo);
+        for (const k of s) {
+          this.Tyo(k, this.gyo);
         }
       }
     }
@@ -834,6 +844,7 @@ class SkillButtonEntityData {
   Eyo() {
     if (this.EntityHandle?.Valid) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle, EventDefine_1.EEventName.EntityVisionSkillChanged, this.syo);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharHoldingHandsChanged, this.Rjc);
       this.Lyo();
       this.Dyo();
     }

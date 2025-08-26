@@ -32,8 +32,11 @@ class SplashScreenController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActiveBattleView, this.JDe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BeforeLoadMap, this.SYi);
   }
-  static PushSplashScreenTask(e) {
+  static PushSplashScreenTask(e, r = false) {
     this.SplashScreenQueue.EnQueue(e);
+    if (r) {
+      this.TryRunSplashScreenTask();
+    }
   }
   static FinishCurTask(e = 0) {
     this.SplashScreenQueue.FinishTask(e);
@@ -41,24 +44,28 @@ class SplashScreenController extends ControllerBase_1.ControllerBase {
   static TryRunSplashScreenTask() {
     var e;
     if (ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
-      if (UiManager_1.UiManager.IsNormalContainerEmpty()) {
-        if (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) {
-          if ((e = e.GetComponent(205)).HasTag(-1371021686) || e.HasTag(1996802261)) {
-            if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("SplashScreenTask", 71, "处于战斗中，不运行开屏动画任务");
+      if (UiManager_1.UiManager.IsViewShow("BattleView")) {
+        if (UiManager_1.UiManager.IsNormalContainerEmpty()) {
+          if (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) {
+            if ((e = e.GetComponent(206)).HasTag(-1371021686) || e.HasTag(1996802261)) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("SplashScreenTask", 71, "处于战斗中，不运行开屏动画任务");
+              }
+            } else if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+              if (Log_1.Log.CheckDebug()) {
+                Log_1.Log.Debug("SplashScreenTask", 71, "处于副本中，不运行开屏动画任务");
+              }
+            } else {
+              this.SplashScreenQueue.ProcessQueue();
             }
-          } else if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-            if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("SplashScreenTask", 71, "处于副本中，不运行开屏动画任务");
-            }
-          } else {
-            this.SplashScreenQueue.ProcessQueue();
+          } else if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("SplashScreenTask", 71, "当前角色实体不存在，不运行开屏动画任务");
           }
         } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SplashScreenTask", 71, "当前角色实体不存在，不运行开屏动画任务");
+          Log_1.Log.Debug("SplashScreenTask", 71, "待打开界面队列不为空，不运行开屏动画任务");
         }
       } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SplashScreenTask", 71, "待打开界面队列不为空，不运行开屏动画任务");
+        Log_1.Log.Debug("SplashScreenTask", 71, "未在战斗主界面，不运行开屏动画任务");
       }
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SplashScreenTask", 71, "世界未加载完成，且加载界面未关闭");

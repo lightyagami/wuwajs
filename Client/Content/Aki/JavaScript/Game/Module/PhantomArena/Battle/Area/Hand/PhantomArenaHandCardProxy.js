@@ -14,7 +14,7 @@ class PhantomArenaHandCardProxy {
     this.AreaItem = undefined;
     this.Area = undefined;
     this.WD_ = false;
-    this.T2u = -1;
+    this.iNu = -1;
     this.IsInit = false;
   }
   Init(t, i, s) {
@@ -47,7 +47,7 @@ class PhantomArenaHandCardProxy {
       }
       this.Area.CardBeginDragByHand(this.wi1);
       this.wi1.PlaySequence("DragUpHandtoTable");
-      this.SX1();
+      this.QX1();
     }
   }
   PointerDragCard(t, i) {
@@ -88,14 +88,14 @@ class PhantomArenaHandCardProxy {
       this.wi1.PlayStateSequence("UseClose");
     }
   }
-  yX1() {
+  WX1() {
     if (this.Area.FunctionalArea.CheckSettingCardPosition(this.wi1)) {
       this.wi1.PlayStateSequence("SeleToUse");
     } else {
       this.wi1.PlayStateSequence("SeleClose");
     }
   }
-  SX1() {
+  QX1() {
     if (this.Area.FunctionalArea.CheckSettingCardPosition(this.wi1)) {
       this.wi1.PlayStateSequence("UseToSele");
     }
@@ -188,7 +188,7 @@ class PhantomArenaHandCardProxy {
       },
       CompleteCallback: () => {
         this.wi1.SetUiParent(this.AreaItem.GetRootItem(), true);
-        this.yX1();
+        this.WX1();
         t.SetResult();
       },
       LocationCurveX: this.Area.RecycleCurve,
@@ -215,19 +215,19 @@ class PhantomArenaHandCardProxy {
     this.wi1.PlayLocationByItem(this.wi1.GetOriginalItem(), t, e);
     if (i) {
       this.wi1.PlaySequence("DragUpHandtoTable");
-      this.SX1();
+      this.QX1();
     }
     await s.Promise;
   }
   SetCardSelectedState(t) {
     if (t) {
-      this.T2u = this.AreaItem.GetOriginalItem().GetHierarchyIndex();
+      this.iNu = this.AreaItem.GetOriginalItem().GetHierarchyIndex();
       this.AreaItem.GetOriginalItem().SetAsLastHierarchy();
       this.wi1.SetSelectedState(true);
     } else {
-      if (this.T2u !== -1) {
-        this.AreaItem.GetOriginalItem().SetHierarchyIndex(this.T2u);
-        this.T2u = -1;
+      if (this.iNu !== -1) {
+        this.AreaItem.GetOriginalItem().SetHierarchyIndex(this.iNu);
+        this.iNu = -1;
       }
       this.wi1.SetSelectedState(false);
     }

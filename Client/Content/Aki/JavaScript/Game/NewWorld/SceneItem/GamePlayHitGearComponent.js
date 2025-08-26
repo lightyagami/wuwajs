@@ -3,21 +3,21 @@
 var GamePlayHitGearComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, o) {
   var n;
-  var r = arguments.length;
-  var s = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var s = arguments.length;
+  var r = s < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, e, i, o);
+    r = Reflect.decorate(t, e, i, o);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (n = t[a]) {
-        s = (r < 3 ? n(s) : r > 3 ? n(e, i, s) : n(e, i)) || s;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (n = t[h]) {
+        r = (s < 3 ? n(r) : s > 3 ? n(e, i, r) : n(e, i)) || r;
       }
     }
   }
-  if (r > 3 && s) {
-    Object.defineProperty(e, i, s);
+  if (s > 3 && r) {
+    Object.defineProperty(e, i, r);
   }
-  return s;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -25,9 +25,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.GamePlayHitGearComponent = undefined;
 const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
+const Time_1 = require("../../../Core/Common/Time");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
@@ -49,6 +51,7 @@ const SPEED_TO_PATROL = 500;
 const THOUSAND = 1000;
 const MIN_HIT_CD = 0.05;
 const hitBulletTypeToIntEnum = new Map(Object.entries(IComponent_1.EHitBulletType).map(([, t], e) => [t, e]));
+const SCENE_ITEM_PART_HIT_BATCH_REQUEST_MAX_NUM = 10;
 class EntityCondition {
   constructor(t) {
     this.PbDataId = t;
@@ -72,6 +75,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     this.ocn = undefined;
     this.rcn = undefined;
     this.ncn = undefined;
+    this.mZc = undefined;
     this.scn = undefined;
     this.acn = Vector_1.Vector.Create();
     this.hPl = false;
@@ -81,15 +85,22 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     this.cEn = 0;
     this.mPl = true;
     this.Lo = undefined;
+    this.fZc = false;
+    this.gZc = false;
+    this.CZc = undefined;
+    this.pZc = undefined;
+    this.m5i = 0;
     this.dPl = () => {
       this.Gce?.RemoveStopMoveCallback(this.dPl);
       this._pn?.SetEnableMovementSync(false, "GamePlayHitGearComponent OnInitialSimpleMoveStopCallback");
-      if (!this.ocn) {
-        EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.OnSceneItemHitByHitData, this.Zln);
-        this.ocn = true;
+      if (!this.Hte?.CreatureData.GetRemoveState()) {
+        if (!this.ocn) {
+          EventSystem_1.EventSystem.AddWithTarget(this, EventDefine_1.EEventName.OnSceneItemHitByHitData, this.Zln);
+          this.ocn = true;
+        }
+        this.hPl = true;
+        this.CPl();
       }
-      this.hPl = true;
-      this.CPl();
     };
     this.gPl = (t, e) => {
       this.pPl();
@@ -97,59 +108,45 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     };
     this.CPl = () => {
       var t;
-      if (this.hPl) {
-        if ((t = this.vPl()) && !this.Gce?.IsSplineMoving()) {
-          this.BDe();
-        } else if (!t && this.Gce?.IsSplineMoving()) {
-          this.qDe();
+      if (!this.Hte?.CreatureData.GetRemoveState()) {
+        if (this.hPl) {
+          if ((t = this.vPl()) && !this.Gce?.IsSplineMoving()) {
+            this.BDe();
+          } else if (!t && this.Gce?.IsSplineMoving()) {
+            this.qDe();
+          }
         }
       }
     };
     this.Zln = t => {
       if (this.lcn(t) && t.DamageId !== 0) {
-        var e = this.Entity.GetComponent(133);
+        var e = this.Entity.GetComponent(134);
         if (!e.IsInState(3)) {
-          e = TimeUtil_1.TimeUtil.GetServerTimeStamp();
-          if (e - this.ncn > this.rcn * THOUSAND) {
+          if (this.vZc(t)) {
             this._pn?.CollectSampleAndSend(true);
             var i;
-            var o = new Array();
-            if (this.Lo.HitLogicType.Type === IComponent_1.EHitLogicType.ChangeTargetState) {
-              for (const n of this.Lo.HitLogicType.TargetBulletHitConfigs) {
-                if (SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchBulletType(n.HitBullets, t, this.Entity) && LevelGeneralController_1.LevelGeneralController.CheckConditionNew(n.Conditions, this.Entity.GetComponent(1)?.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)) && (i = hitBulletTypeToIntEnum.get(n.HitBullets.Type))) {
-                  o.push(i);
+            var o;
+            var n = new Array();
+            switch (this.Lo.HitLogicType.Type) {
+              case IComponent_1.EHitLogicType.ChangeTargetState:
+                for (const s of this.Lo.HitLogicType.TargetBulletHitConfigs) {
+                  if (SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchBulletType(s.HitBullets, t, this.Entity) && LevelGeneralController_1.LevelGeneralController.CheckConditionNew(s.Conditions, this.Entity.GetComponent(1)?.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)) && (i = hitBulletTypeToIntEnum.get(s.HitBullets.Type))) {
+                    n.push(i);
+                  }
                 }
-              }
+                break;
+              case IComponent_1.EHitLogicType.ChangeByPartHit:
+                for (const r of this.Lo.HitLogicType.PartHitConfig) {
+                  if (r.HitBullets && r.PartName === t.HitPart?.toString() && SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchBulletType(r.HitBullets, t, this.Entity) && (o = hitBulletTypeToIntEnum.get(r.HitBullets.Type))) {
+                    n.push(o);
+                  }
+                }
             }
-            LevelGamePlayController_1.LevelGamePlayController.ShootTargetHitGearStateChangeRequest(this.Entity.Id, o, t.BulletId, t => {
-              if (t) {
-                if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTargetGearFinished) {
-                  if (Log_1.Log.CheckWarn()) {
-                    Log_1.Log.Warn("World", 31, "靶机关已完成");
-                  }
-                } else {
-                  if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrTargetGearEntityNotExist) {
-                    if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-                      if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrOnlineInteractNoPermission) {
-                        return undefined;
-                      } else {
-                        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 25506);
-                        return;
-                      }
-                    } else {
-                      if (this.Entity?.Valid) {
-                        EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.UpdateSceneItemState);
-                      }
-                      return;
-                    }
-                  }
-                  if (Log_1.Log.CheckWarn()) {
-                    Log_1.Log.Warn("World", 31, "靶机关不存在");
-                  }
-                }
-              }
-            });
-            this.ncn = e;
+            if (this.fZc) {
+              this.yZc(t, n);
+            } else {
+              this.SZc(t, n);
+            }
           }
         }
       }
@@ -189,7 +186,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
         case IComponent_1.EHitBulletType.FixedBulletId:
       }
     }
-    this.Entity.GetComponent(121).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
+    this.Entity.GetComponent(122).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
     t = this.Lo?.Patrol?.StateConditions;
     if (t && t.length > 0) {
       this._Pl = new Map();
@@ -209,20 +206,27 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
         t.TagListeners.set(o, undefined);
       }
     }
+    this.fZc = this.Lo.HitLogicType.Type === IComponent_1.EHitLogicType.ChangeByPartHit;
+    if (this.fZc) {
+      this.CZc = [];
+      this.pZc = [];
+      this.gZc = true;
+      this.mZc = new Map();
+    }
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     if (!this.Hte) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneGameplay", 29, "[SceneItemPatrolComponent.OnInit] SceneItemPatrolComponent初始化失败 Actor Component Undefined");
       }
       return false;
     }
-    this.Jun = this.Entity.GetComponent(154);
+    this.Jun = this.Entity.GetComponent(155);
     this.Jun.RegisterComponent(this, this.Lo);
     this._pn = this.Entity.GetComponent(67);
-    this.Gce = this.Entity.GetComponent(128);
+    this.Gce = this.Entity.GetComponent(129);
     this._pn?.SetEnableMovementSync(false, "GamePlayHitGearComponent OnStart默认关闭");
     if (this.icn && this.zun) {
       var t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.zun);
@@ -284,12 +288,12 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
       } else {
         for (var [i, o] of this._Pl) {
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
-          var n = i.Entity?.GetComponent(205);
+          var n = i.Entity?.GetComponent(206);
           if (n) {
-            for (var [r, s] of o.TagListeners) {
-              if (!s) {
-                if (s = n.ListenForTagAddOrRemove(r, this.CPl)) {
-                  o.TagListeners.set(r, s);
+            for (var [s, r] of o.TagListeners) {
+              if (!r) {
+                if (r = n.ListenForTagAddOrRemove(s, this.CPl)) {
+                  o.TagListeners.set(s, r);
                 }
               }
             }
@@ -314,7 +318,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
           e.TagListeners.set(i, undefined);
         }
         t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
-        if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.RemoveEntity, this.gPl)) {
+        if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.RemoveEntity, this.gPl)) {
           EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, t, EventDefine_1.EEventName.RemoveEntity, this.gPl);
         }
       }
@@ -368,8 +372,81 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     }
     return true;
   }
+  vZc(t) {
+    var e;
+    var i = this.rcn * THOUSAND;
+    var o = TimeUtil_1.TimeUtil.GetServerTimeStamp();
+    if (t.HitPart && this.mZc) {
+      t = t.HitPart.toString();
+      if ((e = this.mZc.get(t)) === undefined) {
+        this.mZc.set(t, o);
+        return true;
+      } else {
+        if (e = i < o - e) {
+          this.mZc.set(t, o);
+        }
+        return e;
+      }
+    } else {
+      if (t = o - this.ncn > i) {
+        this.ncn = o;
+      }
+      return t;
+    }
+  }
+  yZc(t, e) {
+    var i;
+    if (this.gZc && (TimerSystem_1.TimerSystem.Next(() => {
+      if (this.CZc && this.pZc) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("World", 79, "打击机关部位命中合并请求(结束)", ["FrontFrameHitPartBuffer", this.CZc]);
+        }
+        this.SZc(t, e, this.CZc);
+        this.CZc.length = 0;
+        [this.CZc, this.pZc] = [this.pZc, this.CZc];
+        this.gZc = true;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("World", 79, "打击机关部位命中缓冲区为undefined", ["FrontFrameHitPartBuffer", this.CZc], ["BackFrameHitPartBuffer", this.pZc]);
+      }
+    }), this.gZc = false, Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("World", 79, "打击机关部位命中合并请求(开始)");
+    }
+    if (t.HitPart && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 79, "打击机关部位命中", ["HitPart", t.HitPart], ["CurrentFrame", this.m5i], ["Time.Frame", Time_1.Time.Frame]), (i = this.m5i + 1 === Time_1.Time.Frame ? this.pZc : this.CZc).length <= SCENE_ITEM_PART_HIT_BATCH_REQUEST_MAX_NUM ? i.push(t.HitPart.toString()) : Log_1.Log.CheckError() && Log_1.Log.Error("World", 79, "打击机关部位单次命中部位数量超过最大限制, 需要检查配置", ["PbDataId", this.Entity.GetComponent(0)?.GetPbDataId()]), this.m5i + 1 !== Time_1.Time.Frame)) {
+      this.m5i = Time_1.Time.Frame;
+    }
+  }
+  SZc(t, e, i = undefined) {
+    LevelGamePlayController_1.LevelGamePlayController.ShootTargetHitGearStateChangeRequest(this.Entity.Id, e, t.BulletId, i, t => {
+      if (t) {
+        if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTargetGearFinished) {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("World", 31, "靶机关已完成");
+          }
+        } else {
+          if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrTargetGearEntityNotExist) {
+            if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+              if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrOnlineInteractNoPermission) {
+                return undefined;
+              } else {
+                ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21296);
+                return;
+              }
+            } else {
+              if (this.Entity?.Valid) {
+                EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.UpdateSceneItemState);
+              }
+              return;
+            }
+          }
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("World", 31, "靶机关不存在");
+          }
+        }
+      }
+    });
+  }
   IsCanBeManipulateLock() {
-    var t = this.Entity.GetComponent(196);
+    var t = this.Entity.GetComponent(197);
     return this.scn === -1590436469 && t.HasTag(-3775711);
   }
   GetHitPoint() {
@@ -392,7 +469,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
         if (!t?.Valid) {
           return false;
         }
-        t = t.Entity?.GetComponent(205);
+        t = t.Entity?.GetComponent(206);
         if (!t) {
           return false;
         }
@@ -403,6 +480,11 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     }
     return true;
   }
+  GetHitPartActions(t) {
+    if (this.fZc && this.Lo) {
+      return this.Lo.HitLogicType.PartHitConfig[t].Actions;
+    }
+  }
 };
-GamePlayHitGearComponent = GamePlayHitGearComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], GamePlayHitGearComponent);
+GamePlayHitGearComponent = GamePlayHitGearComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(141)], GamePlayHitGearComponent);
 exports.GamePlayHitGearComponent = GamePlayHitGearComponent; //# sourceMappingURL=GamePlayHitGearComponent.js.map

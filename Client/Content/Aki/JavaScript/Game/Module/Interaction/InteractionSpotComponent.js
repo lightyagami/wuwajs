@@ -2,19 +2,19 @@
 
 var InteractionSpotComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, n) {
-  var o;
-  var s = arguments.length;
-  var r = s < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
+  var s;
+  var o = arguments.length;
+  var r = o < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     r = Reflect.decorate(t, e, i, n);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
-      if (o = t[h]) {
-        r = (s < 3 ? o(r) : s > 3 ? o(e, i, r) : o(e, i)) || r;
+      if (s = t[h]) {
+        r = (o < 3 ? s(r) : o > 3 ? s(e, i, r) : s(e, i)) || r;
       }
     }
   }
-  if (s > 3 && r) {
+  if (o > 3 && r) {
     Object.defineProperty(e, i, r);
   }
   return r;
@@ -71,7 +71,7 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
     this.M91 = t => {
       if (this.SpotView) {
         if (this.e21) {
-          this.Ndu();
+          this.Imu();
         }
         this.SpotView.Update();
       }
@@ -87,6 +87,13 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
       if (this.Jq1) {
         EnvironmentalPerceptionController_1.EnvironmentalPerceptionController.DestroyPlayerPerceptionEvent(this.Jq1);
         this.Jq1 = undefined;
+      }
+    };
+    this.OnSceneItemStateChange = (t, e) => {
+      if (t === -1278190765) {
+        this.DZs();
+        this.Yfe();
+        TickSystem_1.TickSystem.Remove(this.sKe);
       }
     };
     this.r21 = (t = false) => {
@@ -118,8 +125,8 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(1);
-    this.xJr = this.Entity.GetComponent(117);
-    this.BJr = this.Entity.GetComponent(197);
+    this.xJr = this.Entity.GetComponent(118);
+    this.BJr = this.Entity.GetComponent(198);
     var t;
     var e;
     var i = this.Hte?.CreatureData?.GetPbEntityInitData();
@@ -142,6 +149,7 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnRemoveDynamicOption, this.r21);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMark, this.o21);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UnTrackMark, this.n21);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.OnSceneItemStateChange);
   }
   DZs() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnSelectHintChange, this.t21)) {
@@ -161,6 +169,9 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
     }
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.UnTrackMark, this.n21)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnTrackMark, this.n21);
+    }
+    if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.OnSceneItemStateChange)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.OnSceneItemStateChange);
     }
   }
   s21() {
@@ -223,13 +234,16 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
     this.Kr = true;
     if (this.SpotView) {
       UiModel_1.UiModel.RemoveNpcIconViewUnit(this.SpotView);
+      if (this.e21) {
+        EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionSpotStateChange, false);
+      }
       this.SpotView.DestroySelf(() => {
         if (this.Eqi) {
           this.Eqi.Actor?.DetachRootComponentFromParent();
           UiActorPool_1.UiActorPool.RecycleAsync(this.Eqi, this.n8);
           this.Eqi = undefined;
         }
-        if (this.e21 && (EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionSpotStateChange, false), this.FNl)) {
+        if (this.e21 && this.FNl) {
           ControllerHolder_1.ControllerHolder.TrackController.SetInteractSpotOccupied(this.FNl.TrackSource, this.FNl.Id, false);
         }
         this.SpotView = undefined;
@@ -250,7 +264,7 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
     t.DrawTime = 0.5;
     InteractionSpotComponent_1.uoe = t;
   }
-  Ndu() {
+  Imu() {
     if (InteractionSpotComponent_1.uoe === undefined) {
       InteractionSpotComponent_1.k7r();
     }
@@ -314,5 +328,5 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
   }
 };
 InteractionSpotComponent.uoe = undefined;
-InteractionSpotComponent = InteractionSpotComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(292)], InteractionSpotComponent);
+InteractionSpotComponent = InteractionSpotComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(296)], InteractionSpotComponent);
 exports.InteractionSpotComponent = InteractionSpotComponent; //# sourceMappingURL=InteractionSpotComponent.js.map

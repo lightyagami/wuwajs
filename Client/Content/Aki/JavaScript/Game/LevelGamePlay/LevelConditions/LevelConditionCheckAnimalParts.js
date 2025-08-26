@@ -34,7 +34,7 @@ class LevelConditionCheckAnimalParts extends LevelGeneralBase_1.LevelConditionBa
       }
       return false;
     }
-    var i = a.Entity.GetComponent(171);
+    var i = a.Entity.GetComponent(172);
     if (!i) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 39, "对象Entity缺少AnimalPerformComponent");

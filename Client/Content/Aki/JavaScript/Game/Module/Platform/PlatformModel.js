@@ -81,6 +81,9 @@ class PlatformModel extends ModelBase_1.ModelBase {
   cWa() {
     var t = UE.RawInputFunctionLibrary.GetRegisteredDevices();
     if (!t || t.Num() === 0) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Platform", 81, "RegisteredDevices为空");
+      }
       return 0;
     }
     for (let e = 0; e < t.Num(); e++) {
@@ -101,6 +104,8 @@ class PlatformModel extends ModelBase_1.ModelBase {
       return 3;
     } else if (e.includes("ps5")) {
       return 4;
+    } else if (e.includes("nspro")) {
+      return 7;
     } else {
       return 2;
     }
@@ -201,14 +206,14 @@ class PlatformModel extends ModelBase_1.ModelBase {
       }
       var t;
       var r;
-      var n = PlatformDefine_1.deviceIdMap.get(e);
-      if (n) {
-        return n;
+      var o = PlatformDefine_1.deviceIdMap.get(e);
+      if (o) {
+        return o;
       }
       for ([t, r] of PlatformDefine_1.deviceIdMap) {
         if (t.includes("*")) {
-          var o = t.split("*")[0];
-          if (e.startsWith(o)) {
+          var n = t.split("*")[0];
+          if (e.startsWith(n)) {
             return r;
           }
         }
@@ -222,6 +227,8 @@ class PlatformModel extends ModelBase_1.ModelBase {
         return 4;
       } else if (e.includes("BackBoneOne")) {
         return 6;
+      } else if (e.includes("nspro")) {
+        return 7;
       } else {
         return 0;
       }

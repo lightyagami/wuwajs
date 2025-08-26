@@ -53,12 +53,12 @@ let SceneItemInteractAudioComponent = class SceneItemInteractAudioComponent exte
     this.qln = "physical_obj_velocity";
   }
   static get Dependencies() {
-    return [202, 0];
+    return [203, 0];
   }
   OnStart() {
     this.mFr();
     if (this.Uln) {
-      this.n$t = this.Entity.GetComponent(202);
+      this.n$t = this.Entity.GetComponent(203);
       this.Rln = this.n$t.StaticMesh;
       if (this.Rln) {
         this.Rln.OnComponentHit.Add((t, e, i, o, s) => {
@@ -114,8 +114,8 @@ let SceneItemInteractAudioComponent = class SceneItemInteractAudioComponent exte
           this.xln = this.Anr.Size();
           if (e instanceof TsBaseItem_1.default) {
             t = ActorUtils_1.ActorUtils.GetEntityByActor(e);
-            this.wln = Vector_1.Vector.Create(t.Entity.GetComponent(127).GetVelocity());
-            this.wln.MultiplyEqual(t.Entity.GetComponent(127).Mass);
+            this.wln = Vector_1.Vector.Create(t.Entity.GetComponent(128).GetVelocity());
+            this.wln.MultiplyEqual(t.Entity.GetComponent(128).Mass);
           }
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Audio", 33, "碰撞物及被碰撞物动量", ["myMomentum", this.xln], ["otherMomentum", this.wln.Size()]);
@@ -147,5 +147,5 @@ let SceneItemInteractAudioComponent = class SceneItemInteractAudioComponent exte
     return true;
   }
 };
-SceneItemInteractAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(127)], SceneItemInteractAudioComponent);
+SceneItemInteractAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(128)], SceneItemInteractAudioComponent);
 exports.SceneItemInteractAudioComponent = SceneItemInteractAudioComponent; //# sourceMappingURL=SceneItemInteractAudioComponent.js.map

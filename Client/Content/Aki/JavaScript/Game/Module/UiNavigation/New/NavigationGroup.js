@@ -63,20 +63,20 @@ class NavigationGroup {
     }
     return r;
   }
-  GetOppositeListenerListByListener(r) {
+  GetOppositeListenerListByListener(r, i) {
     if (this.AllowNavigationInSelfDynamic) {
       return this.ListenerList;
     }
-    var i = [];
+    var s = [];
     for (let t = 0, e = this.ListenerList.length; t < e; ++t) {
-      var s = this.ListenerList[t];
-      if (r.ScrollViewActor !== undefined || s.ScrollViewActor !== undefined || r.LayoutActor !== undefined || s.LayoutActor !== undefined) {
-        if (r.ScrollViewActor === s.ScrollViewActor && r.LayoutActor === s.LayoutActor) {
-          i.push(s);
+      var o = this.ListenerList[t];
+      if (r !== undefined || o.ScrollViewActor !== undefined || i !== undefined || o.LayoutActor !== undefined) {
+        if (r === o.ScrollViewActor && i === o.LayoutActor) {
+          s.push(o);
         }
       }
     }
-    return i;
+    return s;
   }
   get AllowNavigationInSelfDynamic() {
     return this.Lo.AllowNavigationInSelfDynamic;

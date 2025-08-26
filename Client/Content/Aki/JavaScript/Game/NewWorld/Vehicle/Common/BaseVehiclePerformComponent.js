@@ -162,7 +162,7 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     var i;
     var r;
     var o;
-    return !!this.EnterConditionCheck(e, t) && ((r = e.GetComponent(1))?.CreatureData?.IsRole() ? (i = this.Entity.GetComponent(0), r = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : r.CreatureData.GetPlayerId(), (o = Protocol_1.Aki.Protocol.GC_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.GetCreatureDataId()), o.ORs = r, o.phl = true, o.fhl = t, Net_1.Net.Call(24727, o, () => {})) : this.Enter(e, t), true);
+    return !!this.EnterConditionCheck(e, t) && ((r = e.GetComponent(1))?.CreatureData?.IsRole() ? (i = this.Entity.GetComponent(0), r = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : r.CreatureData.GetPlayerId(), (o = Protocol_1.Aki.Protocol.GC_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.GetCreatureDataId()), o.ORs = r, o.phl = true, o.fhl = t, Net_1.Net.Call(26270, o, () => {})) : this.Enter(e, t), true);
   }
   Enter(e, t) {
     var i = this.DriverSeat === t;
@@ -170,7 +170,7 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     r.VehicleEntity = this.Entity;
     r.PassengerEntity = e;
     r.VehicleType = this.VehicleType;
-    r.IsDriver = i;
+    r.IsDriver = i || true;
     r.Seat = t;
     var o = e.GetComponent(0).GetPlayerId();
     var n = this.Entity.GetComponent(1);
@@ -209,7 +209,7 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     var o;
     var n;
     var s;
-    return !!this.LeaveConditionCheck(e) && ((o = e.GetComponent(1))?.CreatureData?.IsRole() ? (i = this.Entity.GetComponent(0), r = this.PassengerInfoMap.get(e.Id), o = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : o.CreatureData.GetPlayerId(), n = ControllerHolder_1.ControllerHolder.VehicleController.ToServerExitVehicleType(t), (s = Protocol_1.Aki.Protocol.GC_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.GetCreatureDataId()), s.ORs = o, s.phl = false, s.fhl = r.Seat, s.bI_ = n, Net_1.Net.Call(24727, s, () => {})) : this.Leave(e, t), true);
+    return !!this.LeaveConditionCheck(e) && ((o = e.GetComponent(1))?.CreatureData?.IsRole() ? (i = this.Entity.GetComponent(0), r = this.PassengerInfoMap.get(e.Id), o = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : o.CreatureData.GetPlayerId(), n = ControllerHolder_1.ControllerHolder.VehicleController.ToServerExitVehicleType(t), (s = Protocol_1.Aki.Protocol.GC_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(i.GetCreatureDataId()), s.ORs = o, s.phl = false, s.fhl = r.Seat, s.bI_ = n, Net_1.Net.Call(26270, s, () => {})) : this.Leave(e, t), true);
   }
   Leave(e, t = 0) {
     var i = this.Entity.GetComponent(1)?.CreatureData.GetPbDataId();
@@ -245,7 +245,7 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
   }
   EnterConditionCheck(e, t) {
-    return !(t < 0) && !(t >= this.MaxSeatCount) && !this.SeatInfoMap.has(t) && (!!this.CanBeenManipulated || this.DriverSeat !== t) && !!(t = e.GetComponent(229)) && !t.IsOnVehicle;
+    return !(t < 0) && !(t >= this.MaxSeatCount) && !this.SeatInfoMap.has(t) && (!!this.CanBeenManipulated || this.DriverSeat !== t) && !!(t = e.GetComponent(230)) && !t.IsOnVehicle;
   }
   LeaveConditionCheck(e) {
     return !!this.PassengerInfoMap.has(e.Id);
@@ -277,5 +277,5 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
   }
   GetVehicleVelocity(e) {}
 };
-BaseVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(233)], BaseVehiclePerformComponent);
+BaseVehiclePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(234)], BaseVehiclePerformComponent);
 exports.BaseVehiclePerformComponent = BaseVehiclePerformComponent; //# sourceMappingURL=BaseVehiclePerformComponent.js.map

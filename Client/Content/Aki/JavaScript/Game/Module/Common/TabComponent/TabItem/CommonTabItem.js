@@ -12,6 +12,8 @@ class CommonTabItem extends CommonTabItemBase_1.CommonTabItemBase {
     super(...arguments);
     this.kbt = undefined;
     this.RedDotName = undefined;
+    this.RedDotUid = undefined;
+    this.NeedUnBindAll = true;
     this.Bke = t => {
       if (t === 1) {
         this.SelectedCallBack(this.GridIndex);
@@ -40,12 +42,18 @@ class CommonTabItem extends CommonTabItemBase_1.CommonTabItemBase {
     this.GetItem(2).SetUIActive(false);
   }
   OnBeforeDestroy() {
-    this.UnBindRedDot();
+    if (this.NeedUnBindAll) {
+      this.UnBindRedDot();
+    } else {
+      this.UnBindGivenUid(this.RedDotUid);
+    }
   }
   OnRefresh(t, e, i) {
     this.UpdateTabIcon(t.Data?.GetIcon() ?? "");
     this.UnBindRedDot();
+    this.NeedUnBindAll = t.NeedUnBindAllRedDot;
     if (t.RedDotName) {
+      this.RedDotUid = t.RedDotUid;
       this.BindRedDot(t.RedDotName, t.RedDotUid);
     }
   }

@@ -22,6 +22,7 @@ const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
 const UiModel_1 = require("../../../Ui/UiModel");
 const TutorialController_1 = require("../../Tutorial/TutorialController");
+const GuideDefine_1 = require("../GuideDefine");
 const UiBehaviorGuideFocus_1 = require("../Views/UiBehaviorGuideFocus");
 const GuideViewData_1 = require("./GuideViewData");
 const TutorialListInfo_1 = require("./TutorialListInfo");
@@ -128,6 +129,9 @@ class ExecutingState extends StateBase_1.StateBase {
     this.QJt = true;
     var i = this.Owner.Config;
     var e = i.TimeScale;
+    if (i.ContentType === 4) {
+      ModelManager_1.ModelManager.GuideModel.AddFocusGuideGroupToView(this.Owner.OwnerGroup);
+    }
     if (e < 1 && !ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
       UiTimeDilation_1.UiTimeDilation.SetTimeDilationHighLevel(e, "GuideStep");
@@ -210,15 +214,27 @@ class PendingState extends StateBase_1.StateBase {
 }
 class BreakState extends StateBase_1.StateBase {
   OnEnter() {
+    if (this.Owner.Config.ContentType === 4) {
+      ModelManager_1.ModelManager.GuideModel.RemoveFocusGuideGroupFromView(this.Owner.OwnerGroup);
+    }
     this.Owner.OwnerGroup.Break();
   }
 }
 class FinishState extends StateBase_1.StateBase {
   OnEnter() {
+    if (this.Owner.Config.ContentType === 4) {
+      ModelManager_1.ModelManager.GuideModel.RemoveFocusGuideGroupFromView(this.Owner.OwnerGroup);
+    }
     this.Owner.OwnerGroup.PumpStep();
   }
 }
-class EndState extends StateBase_1.StateBase {}
+class EndState extends StateBase_1.StateBase {
+  OnEnter() {
+    if (this.Owner.Config.ContentType === 4) {
+      ModelManager_1.ModelManager.GuideModel.RemoveFocusGuideGroupFromView(this.Owner.OwnerGroup);
+    }
+  }
+}
 class GuideStepInfo {
   constructor(i, e) {
     this.Id = 0;
@@ -288,7 +304,7 @@ class GuideStepInfo {
     }
   }
   szt() {
-    return !!UiLayer_1.UiLayer.IsUiActive() && !ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()?.GameplayTagComponent?.HasTag(1733479717) && !UiManager_1.UiManager.IsViewShow("PhantomExploreView");
+    return !!UiLayer_1.UiLayer.IsUiActive() && !ModelManager_1.ModelManager.GuideModel.ShouldBlockGuideBecauseUiNotRender && !UiManager_1.UiManager.IsViewShow("PhantomExploreView");
   }
   azt() {
     if (this.Config.ContentType === 4 && ConfigManager_1.ConfigManager.GuideConfig.GetGuideFocus(this.Id).UseMask) {
@@ -356,8 +372,10 @@ class GuideStepInfo {
             }
             this.ozt.SetOwner(e);
             return !!this.ozt.PrepareForOpenGuideFocus() && (!(i = UiManager_1.UiManager.GetViewByName("GuideFocusView")) || i.WaitToDestroy || i.IsDestroyOrDestroying ? (this.GuideFocusBehaviorProxy || (this.GuideFocusBehaviorProxy = new UiBehaviorBase_1.UiBehaviorBaseProxy(this.ozt), this.GuideFocusBehaviorProxy.CreateAsync().then(() => {
-              this.GuideFocusBehaviorProxy.StartAsync();
-              e.AddUiBehaviorProxy(this.GuideFocusBehaviorProxy);
+              if (this.GuideFocusBehaviorProxy) {
+                this.GuideFocusBehaviorProxy.StartAsync();
+                e.AddUiBehaviorProxy(this.GuideFocusBehaviorProxy);
+              }
             }, () => {})), this.StopLockInput(), true) : (ModelManager_1.ModelManager.GuideModel.BreakTypeViewStep(this.Config.ContentType), false));
           } else {
             if (Log_1.Log.CheckWarn()) {
@@ -367,7 +385,28 @@ class GuideStepInfo {
           }
         }
       case 1:
-        return !!UiManager_1.UiManager.IsViewShow("BattleView") && !(UiManager_1.UiManager.IsViewOpen("GuideTipsView") ? (ModelManager_1.ModelManager.GuideModel.BreakTypeViewStep(this.Config.ContentType), 1) : !this.RQl() && this.Config.TimeScale < 1 && (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 64, "[Guide][有时停的【tip引导】触发时，有非战斗的页面打开，且ui未时停。引导不可触发]", ["步骤Id", this.Id]), 1));
+        {
+          let i = false;
+          for (const t of GuideDefine_1.guideTipsAllowedViews) {
+            if (UiManager_1.UiManager.IsViewOpen(t)) {
+              i = true;
+              break;
+            }
+          }
+          if (i) {
+            if (UiManager_1.UiManager.IsViewOpen("GuideTipsView")) {
+              ModelManager_1.ModelManager.GuideModel.BreakTypeViewStep(this.Config.ContentType);
+              return false;
+            } else {
+              return !!this.RQl() || !(this.Config.TimeScale < 1) || !(Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 64, "[Guide][有时停的【tip引导】触发时，有非战斗的页面打开，且ui未时停。引导不可触发]", ["步骤Id", this.Id]), 1);
+            }
+          } else {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Guide", 64, "tip引导步骤触发时, 玩家没有位于允许触发的界面", ["步骤Id", this.Id]);
+            }
+            return false;
+          }
+        }
       case 3:
         return !!this.RQl() || !(this.Config.TimeScale < 1) || !(Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 64, "[Guide][有时停的【图文引导】触发时，有非战斗的页面打开，且ui未时停。引导不可触发]", ["步骤Id", this.Id]), 1);
       default:

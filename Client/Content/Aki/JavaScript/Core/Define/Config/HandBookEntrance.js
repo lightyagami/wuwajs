@@ -13,6 +13,9 @@ class HandBookEntrance {
   get Id() {
     return this.id();
   }
+  get SortId() {
+    return this.sortid();
+  }
   get Name() {
     return this.name();
   }
@@ -22,13 +25,13 @@ class HandBookEntrance {
   get Texture() {
     return this.texture();
   }
-  __init(t, e) {
+  __init(t, s) {
     this.z7 = t;
-    this.J7 = e;
+    this.J7 = s;
     return this;
   }
-  static getRootAsHandBookEntrance(t, e) {
-    return (e || new HandBookEntrance()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsHandBookEntrance(t, s) {
+    return (s || new HandBookEntrance()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -38,29 +41,37 @@ class HandBookEntrance {
       return 0;
     }
   }
-  name(t) {
-    var e = this.J7.__offset(this.z7, 6);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+  sortid() {
+    var t = this.J7.__offset(this.z7, 6);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
-    return e;
+  }
+  name(t) {
+    var s = this.J7.__offset(this.z7, 8);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
   titleicon(t) {
-    var e = this.J7.__offset(this.z7, 8);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var s = this.J7.__offset(this.z7, 10);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return e;
+    return s;
   }
   texture(t) {
-    var e = this.J7.__offset(this.z7, 10);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var s = this.J7.__offset(this.z7, 12);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return e;
+    return s;
   }
 }
 exports.HandBookEntrance = HandBookEntrance;

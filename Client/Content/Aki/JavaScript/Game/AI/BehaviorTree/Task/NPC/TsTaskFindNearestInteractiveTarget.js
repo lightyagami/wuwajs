@@ -47,7 +47,7 @@ class TsTaskFindNearestInteractiveTarget extends TsTaskAbortImmediatelyBase_1.de
     }
   }
   GetNearestInteractiveEntity(e, t) {
-    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.NowLocation, this.TsSearchRange, 63, this.TmpHandles);
+    ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRangeWithLocation(this.NowLocation, this.TsSearchRange, 255, this.TmpHandles);
     let r = Number.MAX_VALUE;
     let s = undefined;
     for (const o of this.TmpHandles) {
@@ -62,7 +62,7 @@ class TsTaskFindNearestInteractiveTarget extends TsTaskAbortImmediatelyBase_1.de
           default:
             t = false;
         }
-        if (t && i.Entity.GetComponent(103)?.IsInit && (i = Vector_1.Vector.Dist(e.ActorLocationProxy, i.ActorLocationProxy)) < r) {
+        if (t && i.Entity.GetComponent(104)?.IsInit && (i = Vector_1.Vector.Dist(e.ActorLocationProxy, i.ActorLocationProxy)) < r) {
           r = i;
           s = o.Id;
         }

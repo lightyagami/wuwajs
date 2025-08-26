@@ -30,7 +30,7 @@ class GenericPromptView extends UiTickViewBase_1.UiTickViewBase {
       this.eJt.Push(e);
       this.oJt();
     };
-    this.GTu = e => {
+    this.nbu = e => {
       var t = this.CanCancelPromptMap.get(e);
       if (t) {
         this.eJt.Remove(t);
@@ -73,12 +73,12 @@ class GenericPromptView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InsertFloatTips, this.iJt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveFloatTips, this.GTu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveFloatTips, this.nbu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.OnPreparePhotoScreenShot);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InsertFloatTips, this.iJt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveFloatTips, this.GTu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveFloatTips, this.nbu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.OnPreparePhotoScreenShot);
   }
   nJt() {

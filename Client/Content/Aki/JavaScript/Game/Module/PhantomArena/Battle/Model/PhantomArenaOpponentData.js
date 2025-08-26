@@ -18,8 +18,8 @@ class PhantomArenaOpponentData {
     this.CardLibraryNum = 0;
     this.LastHandCardNum = 0;
     this.HandCardNum = 0;
-    this.Eou = new Map();
-    this.Iou = new Map();
+    this.Xou = new Map();
+    this.You = new Map();
     this.CanEvolveNum = 0;
     this.TaskData = undefined;
     this.InitPromise = undefined;
@@ -32,13 +32,13 @@ class PhantomArenaOpponentData {
     this.InitPromise = new CustomPromise_1.CustomPromise();
   }
   InitPlayerData(t) {
-    this.Eou.clear();
-    this.Iou.clear();
+    this.Xou.clear();
+    this.You.clear();
     this.RoleId = t.Ng1;
     this.HandCardNum = t.Hg1;
     this.RefreshLibraryNum(t.jg1);
     this.RefreshCanEvolveNum(t.eC1);
-    this.Hpu(t.Vg1);
+    this.Vvu(t.Vg1);
   }
   InitNpcAiOperationData(t) {
     this.yD1 = [];
@@ -56,9 +56,9 @@ class PhantomArenaOpponentData {
       this.hG1(a.J21);
       this.lG1(a.Z21);
       this.V81(a.N81);
-      this.you(a.pou);
-      this.$au(a.Mau);
-      this._uu(a.X1u);
+      this.Wou(a.$ou);
+      this.phu(a.Xau);
+      this.Quu(a.xuu);
     }
     this.InitPromise?.SetResult(undefined);
     this.InitPromise = undefined;
@@ -80,11 +80,11 @@ class PhantomArenaOpponentData {
   RefreshCanEvolveNum(t) {
     this.CanEvolveNum = t;
   }
-  Hpu(t) {
+  Vvu(t) {
     var a = [];
     for (const r of Object.keys(t)) {
       var e = Number(r);
-      this.Eou.set(e, t[r]);
+      this.Xou.set(e, t[r]);
       a.push(e);
     }
   }
@@ -92,7 +92,7 @@ class PhantomArenaOpponentData {
     var a = [];
     for (const r of Object.keys(t)) {
       var e = Number(r);
-      this.Eou.set(e, t[r]);
+      this.Xou.set(e, t[r]);
       a.push(e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleStatusChange, a);
@@ -101,13 +101,13 @@ class PhantomArenaOpponentData {
     var a = [];
     for (const r of Object.keys(t)) {
       var e = Number(r);
-      this.Iou.set(e, t[r]);
+      this.You.set(e, t[r]);
       a.push(e);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpponentBattleAttrChange, a);
   }
   GetBattleStatusValue(t) {
-    return this.Eou.get(t) ?? 0;
+    return this.Xou.get(t) ?? 0;
   }
   RefreshCardAttr(t, a) {
     for (const e of this.pD1.values()) {
@@ -134,19 +134,19 @@ class PhantomArenaOpponentData {
   }
   NotifyExchangeBattleCard(t) {
     var a;
-    var e = this.GetCardDataByFightId(t[0].lX1);
+    var e = this.GetCardDataByFightId(t[0].dX1);
     if (e) {
-      if (e && e.Index !== t[1]?._X1) {
+      if (e && e.Index !== t[1]?.mX1) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("PhantomArena", 10, "卡牌A位置不正确,不满足交换条件", ["AfterPos", t[0]._X1], ["Index", e.Index]);
+          Log_1.Log.Error("PhantomArena", 10, "卡牌A位置不正确,不满足交换条件", ["AfterPos", t[0].mX1], ["Index", e.Index]);
         }
-      } else if ((a = this.vD1.get(t[0]._X1)) && a.FightId !== t[1]?.lX1) {
+      } else if ((a = this.vD1.get(t[0].mX1)) && a.FightId !== t[1]?.dX1) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("PhantomArena", 10, "卡牌B位置不正确,不满足交换条件", ["AfterPos", t[1]._X1], ["Index", a.Index]);
+          Log_1.Log.Error("PhantomArena", 10, "卡牌B位置不正确,不满足交换条件", ["AfterPos", t[1].mX1], ["Index", a.Index]);
         }
       } else {
-        this.ExchangeBattleCard(e.Index, t[0]._X1);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBattleCardChange, false, e.Index, t[1]._X1);
+        this.ExchangeBattleCard(e.Index, t[0].mX1);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBattleCardChange, false, e.Index, t[1].mX1);
       }
     }
   }
@@ -327,19 +327,19 @@ class PhantomArenaOpponentData {
       this.yD1.push(t);
     }
   }
-  you(t) {
+  Wou(t) {
     if (t) {
       t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(13, t);
       this.yD1.push(t);
     }
   }
-  $au(t) {
+  phu(t) {
     if (t) {
       t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(14, t);
       this.yD1.push(t);
     }
   }
-  _uu(t) {
+  Quu(t) {
     if (t) {
       t = PhantomArenaAiOperationFactory_1.PhantomArenaAiOperationFactory.GetAiOperation(15, t);
       this.yD1.push(t);

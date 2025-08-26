@@ -15,7 +15,7 @@ class TrackModel extends ModelBase_1.ModelBase {
     this.vRo = undefined;
     this.MRo = undefined;
     this.DefaultTrackHideDis = 0;
-    this.gFu = false;
+    this.p3u = false;
   }
   OnInit() {
     this.pRo = new Map();
@@ -123,10 +123,10 @@ class TrackModel extends ModelBase_1.ModelBase {
     this.MRo?.clear();
   }
   IsForceCloseTracked() {
-    return this.gFu;
+    return this.p3u;
   }
   SetForceCloseTracked(e) {
-    this.gFu = e;
+    this.p3u = e;
   }
 }
 exports.TrackModel = TrackModel;

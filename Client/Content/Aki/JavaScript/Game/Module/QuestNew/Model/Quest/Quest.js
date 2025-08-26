@@ -255,7 +255,7 @@ class Quest extends LogicTreeContainer_1.LogicTreeContainer {
     if (this.IsQuestCanPreShow()) {
       return true;
     }
-    if (this.Status === Protocol_1.Aki.Protocol.hTs.Proto_InActive && (this.LockByLackResource || this.LockByFocusMode)) {
+    if ((this.Status === Protocol_1.Aki.Protocol.hTs.Proto_InActive || this.Status === Protocol_1.Aki.Protocol.hTs.CTs) && (this.LockByLackResource || this.LockByFocusMode)) {
       return !this.IsHideInTaskList && this.Type !== 11;
     }
     if (this.Status !== Protocol_1.Aki.Protocol.hTs.nvs) {

@@ -25,7 +25,7 @@ class RoleTopBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
     };
   }
   OnStart() {
-    this.InitChildType(26);
+    this.InitChildType(37);
     this.Ore();
   }
   OnBeforeDestroy() {

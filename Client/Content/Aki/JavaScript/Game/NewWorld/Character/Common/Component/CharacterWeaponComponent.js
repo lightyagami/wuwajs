@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, i, s, e) {
   var h;
   var o = arguments.length;
-  var a = o < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
+  var r = o < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, i, s, e);
+    r = Reflect.decorate(t, i, s, e);
   } else {
-    for (var r = t.length - 1; r >= 0; r--) {
-      if (h = t[r]) {
-        a = (o < 3 ? h(a) : o > 3 ? h(i, s, a) : h(i, s)) || a;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (h = t[a]) {
+        r = (o < 3 ? h(r) : o > 3 ? h(i, s, r) : h(i, s)) || r;
       }
     }
   }
-  if (o > 3 && a) {
-    Object.defineProperty(i, s, a);
+  if (o > 3 && r) {
+    Object.defineProperty(i, s, r);
   }
-  return a;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -40,8 +40,8 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const EffectContext_1 = require("../../../../Effect/EffectContext/EffectContext");
 const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const WeaponController_1 = require("../../../../Module/Weapon/WeaponController");
 const CharacterNameDefines_1 = require("../CharacterNameDefines");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const CharacterWeaponMesh_1 = require("./Weapon/CharacterWeaponMesh");
@@ -150,7 +150,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     this.pQr = (t, i) => {
       this.SetWeaponVisibleByTag(i, t, false);
     };
-    this.Hbu = () => {
+    this._Ru = () => {
       for (const t of this.QKr.CharacterWeapons) {
         t.UpdateHideEffectStateInSelfCentered();
       }
@@ -161,7 +161,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
         s = t.GetComponent(81);
         this.vQr();
         this.CheckAndHangWeapons(false);
-        (i ? (this.MQr(0), this) : (this.MQr(0), this.SyncParagliding(s), (i = t.GetComponent(205)).HasTag(this.oQr) && !this.Lie.HasTag(this.oQr) && (i.RemoveTag(this.oQr), this.Lie.AddTag(this.oQr)), s)).OpenParagliding(false);
+        (i ? (this.MQr(0), this) : (this.MQr(0), this.SyncParagliding(s), (i = t.GetComponent(206)).HasTag(this.oQr) && !this.Lie.HasTag(this.oQr) && (i.RemoveTag(this.oQr), this.Lie.AddTag(this.oQr)), s)).OpenParagliding(false);
         if (this.SoarWing && s.SoarWing) {
           this.$gl();
           this.SoarWing.GetAnimInstance()?.SyncAnimStates(s.SoarWing.GetAnimInstance());
@@ -171,7 +171,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       }
     };
     this.EQr = (t, i) => {
-      if (!!i && !this.ParaglidingIsOpen && this.Entity.GetComponent(175).MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
+      if (!!i && !this.ParaglidingIsOpen && this.Entity.GetComponent(176).MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
         this.OpenParagliding(true);
       }
     };
@@ -263,11 +263,11 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       this.AQr();
     };
     this.rc_ = new Set();
-    this.Pmu = undefined;
+    this.mfu = undefined;
     this.$gl = () => {
-      this.Pmu = TimerSystem_1.TimerSystem.Next(() => {
-        this.SoarWing?.SetHiddenInGame(!this.QSu());
-        this.Pmu = undefined;
+      this.mfu = TimerSystem_1.TimerSystem.Next(() => {
+        this.SoarWing?.SetHiddenInGame(!this.W7c());
+        this.mfu = undefined;
       });
     };
   }
@@ -314,10 +314,10 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.oRe = this.Entity.GetComponent(177);
-    this.Lie = this.Entity.GetComponent(205);
+    this.oRe = this.Entity.GetComponent(178);
+    this.Lie = this.Entity.GetComponent(206);
     this.y5r = this.Entity.GetComponent(51);
-    this.I5r = this.Entity.GetComponent(175);
+    this.I5r = this.Entity.GetComponent(176);
     this.Xjt = this.Hte.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player;
     this.zKr = this.Xjt || this.Hte.CreatureData.GetBaseInfo()?.Category.MonsterMatchType === 4;
     this.iQr = 0;
@@ -347,8 +347,8 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     if (this.Xjt) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.SoarTypeChange, this.$gl);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationAdd, this.Hbu);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationRemove, this.Hbu);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationAdd, this._Ru);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationRemove, this._Ru);
       this.oQr = 1905601506;
       this.rQr = this.Lie.ListenForTagAddOrRemove(this.oQr, this.EQr);
       this.nQr = this.Lie.ListenForTagAddOrRemove(262865373, this.SQr);
@@ -383,10 +383,12 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
   }
   OnEnd() {
     if (this.Xjt) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
+      if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r)) {
+        EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
+      }
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.SoarTypeChange, this.$gl);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationAdd, this.Hbu);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationRemove, this.Hbu);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationAdd, this._Ru);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationRemove, this._Ru);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.P3r);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharChangeMeshAnim, this.L3r);
     }
@@ -440,12 +442,11 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       TimerSystem_1.TimerSystem.Remove(this.JKr);
       this.JKr = undefined;
     }
-    if (this.Pmu) {
-      TimerSystem_1.TimerSystem.Remove(this.Pmu);
-      this.Pmu = undefined;
+    if (this.mfu) {
+      TimerSystem_1.TimerSystem.Remove(this.mfu);
+      this.mfu = undefined;
     }
     if (this.Xjt) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
       this.rQr.EndTask();
       this.nQr.EndTask();
       this.sQr.EndTask();
@@ -581,6 +582,11 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     }
   }
   HQr(t) {
+    var i;
+    var s = this.Paragliding.GetSocketTransform(CharacterNameDefines_1.CharacterNameDefines.ROOT, 0);
+    if (s.GetScale3D().Z > 3 && (i = this.Hte?.Actor.Mesh?.GetSocketTransform(CharacterNameDefines_1.CharacterNameDefines.GLIDEING_SOCKETNAME, 0), Log_1.Log.CheckWarn())) {
+      Log_1.Log.Warn("Test", 6, "1136590 Paragliding scale error.", ["Actor", this.Hte?.Actor.GetName()], ["BindSocket", i?.GetScale3D()], ["ParaglidingMesh", this.Paragliding.K2_GetComponentScale()], ["ParaglidingRoot", s.GetScale3D()]);
+    }
     this.ParaglidingIsOpen = !t;
     TimerSystem_1.TimerSystem.Next(() => {
       this.Paragliding.SetHiddenInGame(!this.ParaglidingIsOpen);
@@ -767,12 +773,12 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       var s = this.eQr.Meshes.Get(i);
       const h = e.Mesh;
       const o = this.eQr.WeaponEffectPath.AssetPathName?.toString();
-      const a = s.AnimInstanceSoftPtr.ToAssetPathName();
+      const r = s.AnimInstanceSoftPtr.ToAssetPathName();
       if (h instanceof UE.SkeletalMeshComponent) {
         ResourceSystem_1.ResourceSystem.LoadAsync(s.MeshSoftPtr.ToAssetPathName(), UE.SkeletalMesh, t => {
           h.SetSkeletalMesh(t);
-          if (a && a !== "") {
-            ResourceSystem_1.ResourceSystem.LoadAsync(a, UE.Class, t => {
+          if (r && r !== "") {
+            ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.Class, t => {
               h.SetAnimClass(t);
             });
           }
@@ -829,10 +835,10 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 4, "开始设置武器模型", ["modelIds", a]);
     }
-    let r = 1;
+    let n = 1;
     for (let t = 0; t < this.iQr; ++t) {
-      this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(r);
-      r += 1;
+      this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(n);
+      n += 1;
     }
     let t = 0;
     this.Jsh = false;
@@ -845,48 +851,50 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       });
       this.rc_.clear();
     }
-    for (const n of a) {
-      this.Jsh = this.Jsh || noHideEffectWeaponIds.has(n);
-      const _ = this.QKr.CharacterWeapons[t].Mesh;
-      if (_ instanceof UE.SkeletalMeshComponent) {
-        const r = 1 + t;
-        const f = ModelUtil_1.ModelUtil.GetModelConfig(n);
+    for (const _ of a) {
+      this.Jsh = this.Jsh || noHideEffectWeaponIds.has(_);
+      const f = this.QKr.CharacterWeapons[t].Mesh;
+      if (f instanceof UE.SkeletalMeshComponent) {
+        const n = 1 + t;
+        const c = ModelUtil_1.ModelUtil.GetModelConfig(_);
         var i;
-        if (f) {
-          i = ResourceSystem_1.ResourceSystem.LoadAsync(f.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
+        if (c) {
+          i = ResourceSystem_1.ResourceSystem.LoadAsync(c.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
             if (t) {
-              var i = _.GetNumMaterials();
+              var i = f.GetNumMaterials();
               for (let t = 0; t < i; ++t) {
-                _.SetMaterial(t, undefined);
+                f.SetMaterial(t, undefined);
               }
               var s = t.Materials;
               var e = s.Num();
-              _.SetAnimClass(undefined);
-              _.SetSkeletalMesh(t);
+              f.SetAnimClass(undefined);
+              f.SetSkeletalMesh(t);
               for (let t = 0; t < e; ++t) {
-                _.SetMaterial(t, s.Get(t).MaterialInterface);
+                f.SetMaterial(t, s.Get(t).MaterialInterface);
               }
-              t = f.动画蓝图.ToAssetPathName();
+              t = c.动画蓝图.ToAssetPathName();
               if (t && t !== "") {
                 ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
                   if (t) {
-                    _.SetAnimClass(t);
+                    f.SetAnimClass(t);
                   }
                 });
               }
-              this.Hte.Actor.CharRenderingComponent.AddComponentByCase(r, _);
-              const h = f.DA.AssetPathName?.toString();
+              this.Hte.Actor.CharRenderingComponent.AddComponentByCase(n, f);
+              const h = c.DA.AssetPathName?.toString();
               if (h && h !== "") {
-                const o = _.SkeletalMesh;
-                ResourceSystem_1.ResourceSystem.LoadAsync(h, UE.PD_WeaponLevelMaterialDatas_C, t => {
-                  if (t && _.SkeletalMesh === o && (WeaponController_1.WeaponController.ApplyWeaponLevelMaterial(_, t, this.WeaponEquipInfo.WeaponBreachLevel), Log_1.Log.CheckDebug())) {
+                const o = f.SkeletalMesh;
+                const r = ControllerHolder_1.ControllerHolder.WeaponController;
+                Promise.all([r.LoadCharacterRenderingFunctionLibraryAsync(), r.LoadWeaponLevelMaterialDataAsync(h)]).then(([, t]) => {
+                  if (t && f.SkeletalMesh === o && (r.ApplyWeaponLevelMaterial(f, t, this.WeaponEquipInfo.WeaponBreachLevel), Log_1.Log.CheckDebug())) {
                     Log_1.Log.Debug("Character", 25, "设置武器换色", ["materialData", h], ["level", this.WeaponEquipInfo.WeaponBreachLevel]);
                   }
                 });
               }
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Character", 4, "设置武器模型完成", ["modelId", n], ["weaponCount", a.length]);
+                Log_1.Log.Debug("Character", 4, "设置武器模型完成", ["modelId", _], ["weaponCount", a.length]);
               }
+              EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharacterWeaponLoaded);
             }
           });
           this.rc_.add(i);
@@ -1281,7 +1289,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       }
     }
   }
-  QSu() {
+  W7c() {
     return this.I5r?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.Entity.GetComponent(59)?.CurrentSoarType !== 1;
   }
   UT1() {

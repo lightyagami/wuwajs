@@ -8,6 +8,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const Global_1 = require("../../Global");
+const InputEnums_1 = require("../../Input/InputEnums");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ExploreSkillFlagDefine_1 = require("../../Module/Functional/ExploreSkillFlag/ExploreSkillFlagDefine");
@@ -62,6 +63,7 @@ class OperationRestrictUtils {
   }
   static SetOperationRestrictByDisableSectionalOption(t) {
     this.SetInputEnableAll();
+    this.SetBattleUiEnableAll(false);
     this.ClearInputLimitView();
     this.SetBattleUiRestrictByUiOption(t.UiOption);
     this.SetInputBlockRestrict(false);
@@ -77,16 +79,17 @@ class OperationRestrictUtils {
   }
   static SetInputLimitView(t, e) {
     var i = LevelEventLockInputState_1.LevelEventLockInputState.InputLimitView.indexOf(t);
-    var a = i !== -1;
+    var n = i !== -1;
     if (e) {
-      if (!a) {
+      if (!n) {
         LevelEventLockInputState_1.LevelEventLockInputState.InputLimitView.push(t);
       }
-    } else if (a) {
+    } else if (n) {
       LevelEventLockInputState_1.LevelEventLockInputState.InputLimitView.splice(i, 1);
     }
   }
   static ClearInputLimitView() {
+    LevelEventLockInputState_1.LevelEventLockInputState.InputLimitEsc = false;
     LevelEventLockInputState_1.LevelEventLockInputState.InputLimitView = [];
   }
   static SetInputEnableAll() {
@@ -149,7 +152,7 @@ class OperationRestrictUtils {
     }
   }
   static SetBattleUiRestrictByEnableUiOption(t) {
-    ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(1, this.rQc, true);
+    ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(1, this.GWu, true);
     if (LevelEventLockInputState_1.LevelEventLockInputState.RealLockInput) {
       this.SetInputRestrictByTag(InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.ShortcutKeyTag, true);
       LevelEventLockInputState_1.LevelEventLockInputState.InputLimitEsc = false;
@@ -162,7 +165,7 @@ class OperationRestrictUtils {
     }
   }
   static SetBattleUiRestrictByDisableUiOption(t) {
-    ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(1, this.rQc, false);
+    ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(1, this.GWu, false);
     this.SetInputRestrictByTag(InputDistributeDefine_1.inputDistributeTagDefine.UiInputRoot.ShortcutKeyTag, false);
     LevelEventLockInputState_1.LevelEventLockInputState.InputLimitEsc = true;
     for (const i of InputManager_1.InputManager.GetAllViewHotKeyHandle()) {
@@ -196,32 +199,32 @@ class OperationRestrictUtils {
     } else {
       i.add(3);
       i.add(2);
-      for (const n of InputManager_1.InputManager.GetAllViewHotKeyHandle()) {
-        var a = n.ViewName;
-        if (a && a !== "WorldMapView") {
-          this.SetInputLimitView(a, true);
+      for (const a of InputManager_1.InputManager.GetAllViewHotKeyHandle()) {
+        var n = a.ViewName;
+        if (n && n !== "WorldMapView") {
+          this.SetInputLimitView(n, true);
         }
       }
     }
     if (t.ShowOther) {
-      for (const l of this.rQc) {
-        if (!i.has(l) && !e.has(l)) {
-          e.add(l);
+      for (const s of this.GWu) {
+        if (!i.has(s) && !e.has(s)) {
+          e.add(s);
         }
       }
     } else {
-      for (const o of this.rQc) {
-        if (!i.has(o) && !e.has(o)) {
-          i.add(o);
+      for (const l of this.GWu) {
+        if (!i.has(l) && !e.has(l)) {
+          i.add(l);
         }
       }
-      i.add(28);
+      i.add(26);
     }
     if (t.AlwaysShowUiSections) {
-      for (const s of t.AlwaysShowUiSections) {
-        if (s === IAction_1.EUiElement.Guide) {
-          i.delete(28);
-          e.add(28);
+      for (const o of t.AlwaysShowUiSections) {
+        if (o === IAction_1.EUiElement.Guide) {
+          i.delete(26);
+          e.add(26);
         }
       }
     }
@@ -236,16 +239,16 @@ class OperationRestrictUtils {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(1, t, true);
     }
   }
-  static get rQc() {
-    if (!this.oQc) {
-      this.oQc = [];
-      for (let t = 0; t < 26; t++) {
+  static get GWu() {
+    if (!this.FWu) {
+      this.FWu = [];
+      for (let t = 0; t < 37; t++) {
         if (t !== 12 && t !== 18 && t !== 19 && t !== 9 && t !== 10) {
-          this.oQc.push(t);
+          this.FWu.push(t);
         }
       }
     }
-    return this.oQc;
+    return this.FWu;
   }
   static SetInputBlockRestrict(t) {
     if (t) {
@@ -263,35 +266,35 @@ class OperationRestrictUtils {
   }
   static SetMoveEnableAll() {
     ControllerHolder_1.ControllerHolder.InputController.SetMoveControlEnabled(true, true, true, true);
-    this.nQc(477750727, false);
-    this.nQc(-63548288, false);
-    this.nQc(229513169, false);
+    this.NWu(477750727, false);
+    this.NWu(-63548288, false);
+    this.NWu(229513169, false);
   }
   static SetMoveDisableAll() {
     ControllerHolder_1.ControllerHolder.InputController.SetMoveControlEnabled(false, false, false, false);
   }
   static SetMoveRestrictByDisableMoveOption(t) {
-    this.nQc(477750727, !!t.ForbidSprint);
-    this.nQc(-63548288, !!t.ForceWalk);
-    this.nQc(229513169, !t.ForceWalk && !!t.ForceJog);
+    this.NWu(477750727, !!t.ForbidSprint);
+    this.NWu(-63548288, !!t.ForceWalk);
+    this.NWu(229513169, !t.ForceWalk && !!t.ForceJog);
     ControllerHolder_1.ControllerHolder.InputController.SetMoveControlEnabled(t.Forward, t.Back, t.Left, t.Right);
   }
-  static nQc(t, e) {
+  static NWu(t, e) {
     var i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
-    var a = i?.GetComponent(205);
-    if (i?.Valid && a) {
+    var n = i?.GetComponent(206);
+    if (i?.Valid && n) {
       if (e) {
-        if (!a.HasTag(t)) {
+        if (!n.HasTag(t)) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("LevelEvent", 39, "[OperationRestrictUtils.SetMoveRestrictTag] 添加Tag", ["TagName", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)]);
           }
-          a.AddTag(t);
+          n.AddTag(t);
         }
-      } else if (a.HasTag(t)) {
+      } else if (n.HasTag(t)) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("LevelEvent", 39, "[OperationRestrictUtils.SetMoveRestrictTag] 删除Tag", ["TagName", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)]);
         }
-        a.RemoveTag(t);
+        n.RemoveTag(t);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 39, "[OperationRestrictUtils.SetMoveRestrictTag] 找不到对应实体Tag组件", ["TagName", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)]);
@@ -378,20 +381,29 @@ class OperationRestrictUtils {
     var e = t.DisableExploreSkill?.ExploreSkillList;
     var i = !!t.DisableExploreSkill?.IsComplementary;
     for (const l of ExploreSkillFlagDefine_1.levelExploreSkillFlagDefaultVal.keys()) {
-      const a = !!e?.includes(l);
-      const n = i ? a : !a;
-      ModelManager_1.ModelManager.ExploreSkillFlagModel.SetExploreSkillFlagEnable(l, n);
+      const n = !!e?.includes(l);
+      const a = i ? n : !n;
+      ModelManager_1.ModelManager.ExploreSkillFlagModel.SetExploreSkillFlagEnable(l, a);
     }
-    const a = !!e?.includes(IAction_1.EExploreSkillType.PlaceTemporaryTeleport);
-    const n = i ? a : !a;
-    ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, n);
+    const n = !!e?.includes(IAction_1.EExploreSkillType.PlaceTemporaryTeleport);
+    const a = i ? n : !n;
+    ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, a);
+    let s = undefined;
+    s = t.DisableBattleSkill?.IsDisableCharacterSkill ? [InputEnums_1.EInputAction.跳跃, InputEnums_1.EInputAction.攀爬, InputEnums_1.EInputAction.攻击, InputEnums_1.EInputAction.闪避, InputEnums_1.EInputAction.技能1, InputEnums_1.EInputAction.大招, InputEnums_1.EInputAction.切换角色1, InputEnums_1.EInputAction.切换角色2, InputEnums_1.EInputAction.切换角色3, InputEnums_1.EInputAction.锁定目标, InputEnums_1.EInputAction.瞄准] : [];
+    if (t.DisableBattleSkill?.IsDisablePhantomSkill) {
+      s.push(InputEnums_1.EInputAction.幻象2);
+    }
     if (t.DisplayMode === undefined || t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Disable) {
       this.SetBattleUiRestrictByUiChildType([9, 10], undefined);
-      ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
+      if (s.length <= 0) {
+        ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
+      } else {
+        ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnableWithIgnoreList(true, s, 0);
+      }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 39, "[OperationRestrictUtils.SetSkillRestrictByDisableSectionalSkillOption] 配置出错", ["SkillOption", t]);
     }
   }
 }
-(exports.OperationRestrictUtils = OperationRestrictUtils).oQc = undefined;
+(exports.OperationRestrictUtils = OperationRestrictUtils).FWu = undefined;
 //# sourceMappingURL=OperationRestrictUtils.js.map

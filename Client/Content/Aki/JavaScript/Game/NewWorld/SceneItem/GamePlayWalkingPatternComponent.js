@@ -77,10 +77,10 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     this.Qlh = -1;
     this.Nme = Vector_1.Vector.Create();
     this.Hsh = Vector_1.Vector.Create();
-    this.Ngu = -1;
-    this.Vgu = -1;
-    this.jgu = 0;
-    this.Hgu = 0;
+    this.GCu = -1;
+    this.FCu = -1;
+    this.NCu = 0;
+    this.VCu = 0;
     this.g_n = (t, i) => {
       this.t3l(t);
     };
@@ -97,16 +97,16 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
-    this.mBe = this.Entity.GetComponent(133);
+    this.Hte = this.Entity.GetComponent(203);
+    this.mBe = this.Entity.GetComponent(134);
     this.HFl = this.Disable("GamePlayWalkingPatternComponent 默认关闭Tick");
     this.i3l();
     this.r3l();
     this.mSe();
     this.t3l(this.mBe.StateTagId);
     if (this.Lo?.StayAwayFailConfig) {
-      this.Ngu = this.Lo.StayAwayFailConfig.SplineDistance;
-      this.Vgu = this.Lo.StayAwayFailConfig.StayAwayTime ?? -1;
+      this.GCu = this.Lo.StayAwayFailConfig.SplineDistance;
+      this.FCu = this.Lo.StayAwayFailConfig.StayAwayTime ?? -1;
     }
     return true;
   }
@@ -171,7 +171,7 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
         this.Klh();
         this.Wsh();
         this.n3l();
-        this.$gu(t);
+        this.jCu(t);
       }
     }
   }
@@ -189,8 +189,8 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
   Wsh() {
     if (this.zie !== undefined) {
       this.Hsh.FromUeVector(this.zie.D_FindLocationClosestToWorldLocation(this.Nme.ToUeVector(), 1));
-      this.Hgu = Vector_1.Vector.Dist2D(this.Nme, this.Hsh);
-      this.Nsh += this.Hgu;
+      this.VCu = Vector_1.Vector.Dist2D(this.Nme, this.Hsh);
+      this.Nsh += this.VCu;
       this.ksh++;
     }
   }
@@ -208,16 +208,16 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
       this.JFl.Push(t);
     }
   }
-  $gu(t) {
-    if (!(this.Ngu < 0)) {
-      if (this.Hgu > this.Ngu) {
-        this.jgu += t;
-        if (this.jgu >= this.Vgu) {
+  jCu(t) {
+    if (!(this.GCu < 0)) {
+      if (this.VCu > this.GCu) {
+        this.NCu += t;
+        if (this.NCu >= this.FCu) {
           this.EDe(-1);
-          this.jgu = 0;
+          this.NCu = 0;
         }
       } else {
-        this.jgu = 0;
+        this.NCu = 0;
       }
     }
   }
@@ -285,7 +285,7 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
         this.s3l();
       }
     } else if (this.$Fl) {
-      if (i !== undefined) {
+      if (i !== undefined && i > 0) {
         this.KFl = TimerSystem_1.TimerSystem.Delay(() => {
           this.s3l();
         }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
@@ -294,7 +294,7 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     }
     this.$Fl = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, this.WFl, "WalkingPattern");
     EffectSystem_1.EffectSystem.GetEffectActor(this.$Fl).K2_AttachToActor(this.Hnr, undefined, 2, 2, 2, false);
-    if (i !== undefined) {
+    if (i !== undefined && i > 0) {
       this.KFl = TimerSystem_1.TimerSystem.Delay(() => {
         this.s3l();
       }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
@@ -331,9 +331,9 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     i.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
     i.F4n = this.Hte.CreatureData.GetCreatureDataId();
     i.Eps = t ?? this.Vsh;
-    Net_1.Net.Call(21020, i, t => {
+    Net_1.Net.Call(21035, i, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26146);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27834);
       }
     });
     if (this.HFl === undefined) {
@@ -341,5 +341,5 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     }
   }
 };
-GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], GamePlayWalkingPatternComponent);
+GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(271)], GamePlayWalkingPatternComponent);
 exports.GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent; //# sourceMappingURL=GamePlayWalkingPatternComponent.js.map

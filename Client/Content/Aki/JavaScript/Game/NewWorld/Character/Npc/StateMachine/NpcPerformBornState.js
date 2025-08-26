@@ -19,7 +19,7 @@ class NpcPerformBornState extends NpcPerformBaseState_1.NpcPerformBaseState {
     super(...arguments);
     this.w21 = undefined;
     this.A21 = undefined;
-    this.Qdu = undefined;
+    this.Amu = undefined;
     this.P21 = false;
     this.x21 = undefined;
     this.D21 = undefined;
@@ -40,12 +40,12 @@ class NpcPerformBornState extends NpcPerformBaseState_1.NpcPerformBaseState {
     this.x21 = t?.ShowOnAwake?.MaterialDa;
   }
   OnStart() {
-    this.Owner.Entity.GetComponent(187)?.PauseAi("NpcPerformBornState");
+    this.Owner.Entity.GetComponent(188)?.PauseAi("NpcPerformBornState");
     this.k21();
   }
   OnExit(t) {
     this.ClearState();
-    this.Owner.Entity.GetComponent(187)?.ResumeAi("NpcPerformBornState");
+    this.Owner.Entity.GetComponent(188)?.ResumeAi("NpcPerformBornState");
   }
   OnDestroy() {
     this.ClearState();
@@ -67,7 +67,7 @@ class NpcPerformBornState extends NpcPerformBaseState_1.NpcPerformBaseState {
       ResourceSystem_1.ResourceSystem.LoadAsync(t.ActionMontage, UE.AnimMontage, (t, e) => {
         this.P21 = true;
         this.A21 = t;
-        this.Qdu = i;
+        this.Amu = i;
         this._al();
       });
     } else {
@@ -92,7 +92,7 @@ class NpcPerformBornState extends NpcPerformBaseState_1.NpcPerformBaseState {
     if (this?.ActorComp?.Actor?.IsValid() && this.P21 && this.U21) {
       if (this.A21?.IsValid() && (t = this.A21.SequenceLength * MathUtils_1.MathUtils.SecondToMillisecond, this.rbt = t, this.PerformComp?.ClearAction(), this.PerformComp?.PlayPerformMontage(3, {
         MontageAsset: this.A21,
-        AnimStateParam: this.Qdu,
+        AnimStateParam: this.Amu,
         IsLoop: false
       }), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("NPC", 50, "播放出生Montage", ["PbDataId", this.ActorComp.CreatureData.GetPbDataId()], ["Montage", this.A21.GetName()], ["Time", t]);

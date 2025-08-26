@@ -28,7 +28,7 @@ class LevelConditionCompareEntityState extends LevelGeneralBase_1.LevelCondition
       o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId);
     }
     if (o?.Valid) {
-      if ((a = o.Entity?.GetComponent(205))?.Valid) {
+      if ((a = o.Entity?.GetComponent(206))?.Valid) {
         e = a.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i));
         if (l === "Eq") {
           return e;
@@ -36,14 +36,14 @@ class LevelConditionCompareEntityState extends LevelGeneralBase_1.LevelCondition
           return !e;
         }
       } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("LevelCondition", 39, "[LevelConditionCompareEntityState] 获取指定实体Tag组件失败");
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("LevelCondition", 39, "[LevelConditionCompareEntityState] 获取指定实体Tag组件失败");
         }
         return false;
       }
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("LevelCondition", 39, "[LevelConditionCompareEntityState] 获取指定实体失败");
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("LevelCondition", 39, "[LevelConditionCompareEntityState] 获取指定实体失败");
       }
       return false;
     }

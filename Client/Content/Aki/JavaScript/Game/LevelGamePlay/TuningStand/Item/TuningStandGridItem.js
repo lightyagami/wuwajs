@@ -21,7 +21,7 @@ class TuningStandGridItem extends GridProxyAbstract_1.GridProxyAbstract {
   Refresh(t, i, e) {
     if ((this.Data = t).GridType !== IAction_1.ETuningStandGridType.Empty && this.Grid) {
       this.Grid.SetUiActive(false);
-      this.Dbu();
+      this.eRu();
       this.PlayShowAnim();
     }
   }
@@ -55,7 +55,7 @@ class TuningStandGridItem extends GridProxyAbstract_1.GridProxyAbstract {
   GetGrid() {
     return this.Grid;
   }
-  Dbu() {
+  eRu() {
     if (this.Data.GridType !== IAction_1.ETuningStandGridType.Empty) {
       this.Grid.ResetGrid(this.Data);
     }

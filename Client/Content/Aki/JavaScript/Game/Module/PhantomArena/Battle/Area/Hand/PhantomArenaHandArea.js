@@ -88,7 +88,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     t.Init(a, e, this.Area);
     await e.PlayMoveInSequence();
   }
-  async Ktu() {
+  async yiu() {
     var a;
     var t;
     var e;
@@ -121,7 +121,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
     this.iu1();
   }
-  async Gau(a) {
+  async chu(a) {
     var t = [];
     for (const e of a) {
       t.push(this.ru1(e));
@@ -129,7 +129,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     await Promise.all(t);
     this.iu1();
   }
-  async _nu(a) {
+  async knu(a) {
     var t = [];
     let e = 1;
     for (const i of this.CardMap.values()) {
@@ -140,7 +140,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
     await Promise.all(t);
   }
-  async unu(a) {
+  async Onu(a) {
     var t = [];
     let e = 1;
     for (const i of this.CardMap.values()) {
@@ -151,29 +151,28 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
     await Promise.all(t);
   }
-  async Fau(a, t) {
+  async dhu(a, t) {
     var e = [];
     let i = 1;
+    var r = [];
     for (const o of t) {
-      var r = this.CardMap.get(o);
-      if (r) {
-        e.push(r.PlayDiscardCardTween(a, i * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
+      var s = this.CardMap.get(o);
+      if (s) {
+        r.push(s);
+        this.CardMap.delete(o);
+        e.push(s.PlayDiscardCardTween(a, i * PhantomArenaDefine_1.PLAY_STARTTIME_CARD_TWEEN_DELAY));
       }
       i++;
     }
     await Promise.all(e);
-    var s = [];
-    for (const h of t) {
-      var n = this.CardMap.get(h);
-      if (n) {
-        s.push(n.RemoveBySequence());
-        this.CardMap.delete(h);
-      }
+    var n = [];
+    for (const h of r) {
+      n.push(h.RemoveBySequence());
     }
-    await Promise.all(s);
+    await Promise.all(n);
     this.iu1();
   }
-  async Nau(a, t) {
+  async mhu(a, t) {
     var e = [];
     let i = 1;
     for (const s of t) {
@@ -185,7 +184,7 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
     await Promise.all(e);
   }
-  async Vau(a, t) {
+  async fhu(a, t) {
     var e = [];
     let i = 1;
     for (const s of t) {
@@ -199,13 +198,13 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     await Promise.all(e);
     this.iu1();
   }
-  async jau(a) {
+  async ghu(a) {
     a = this.CardMap.get(a);
     if (a) {
       await a.PlayResetPositionTween();
     }
   }
-  async pSu(a, t, e) {
+  async v7c(a, t, e) {
     a = this.CardMap.get(a);
     if (a) {
       await a.PlayHandToFunctionalTopTween(t, e);
@@ -272,13 +271,13 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
   }
   async StartTimeDrawCard(a) {
-    await this.Ktu();
+    await this.yiu();
     ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty();
     await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
-    await this._nu(a);
+    await this.knu(a);
   }
   async EndTimeDiscardCard(a) {
-    await this.unu(a);
+    await this.Onu(a);
     for (var [t, e] of this.CardMap) {
       if (!e.IsFourCost()) {
         e.Remove();
@@ -287,19 +286,19 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     }
   }
   async DiscardCard(a, t) {
-    await this.Fau(a, t);
+    await this.dhu(a, t);
   }
   async AddCard(a, t) {
-    await this.Gau(t);
+    await this.chu(t);
     await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
-    await this.Nau(a, t);
+    await this.mhu(a, t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHandAreaAddCard, t);
   }
   async RecycleCard(a, t) {
-    await this.Vau(a, t);
+    await this.fhu(a, t);
   }
   async ResetCardPosition(a) {
-    await this.jau(a.Data.CardId);
+    await this.ghu(a.Data.CardId);
   }
   async RemoveCard(a) {
     var t = this.CardMap.get(a.Data.CardId);
@@ -313,13 +312,13 @@ class PhantomArenaHandArea extends UiPanelBase_1.UiPanelBase {
     await this.ou1(a);
     this.iu1();
     await TimerSystem_1.GameplayTimerSystem.Wait(TimerSystem_1.MIN_TIME);
-    await this.jau(a.Data.CardId);
+    await this.ghu(a.Data.CardId);
   }
   async HandToRecycle(a, t) {
-    await this.Vau(a, [t.Data.CardId]);
+    await this.fhu(a, [t.Data.CardId]);
   }
   async HandCardToFunctionalTop(a, t, e) {
-    await this.pSu(a.Data.CardId, t, e);
+    await this.v7c(a.Data.CardId, t, e);
   }
   GetGuideUiItemAndUiItemForShowEx(a) {
     var t;

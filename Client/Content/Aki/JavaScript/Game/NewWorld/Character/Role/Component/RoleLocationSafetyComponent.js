@@ -117,7 +117,7 @@ let RoleLocationSafetyComponent = class RoleLocationSafetyComponent extends Enti
     this.jya = undefined;
     this.I3r = t => {
       var e;
-      var i = t.GetComponent(97);
+      var i = t.GetComponent(98);
       if (i && (MathUtils_1.MathUtils.IsValidVector(i.Qia) ? this.Qia.DeepCopy(i.Qia) : Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 6, "Safety Inherit: Invalid Location", ["Char", t.GetComponent(3)?.Actor.GetName()], ["Location", i.Qia]), MathUtils_1.MathUtils.IsValidRotator(i.Kia) ? this.Kia.DeepCopy(i.Kia) : Log_1.Log.CheckError() && Log_1.Log.Error("Movement", 6, "Safety Inherit: Invalid Rotator", ["Char", t.GetComponent(3)?.Actor.GetName()], ["Rotator", i.Kia]), this.Hte.IsRoleAndCtrlByMe) && (this.wya.SafetyLocationConfigMap.clear(), i.wya.SafetyLocationConfigMap.forEach((t, e) => {
         this.wya.SafetyLocationConfigMap.set(e, t);
       }), i.wya.SafetyLocationConfigMap.clear(), this.Bya(), this.Pya.IsSafety = false, i.Pya.IsSafety) && ((t = t.GetComponent(3)).DefaultHalfHeight === this.Hte.DefaultHalfHeight && t.DefaultRadius === this.Hte.DefaultRadius ? (this.Pya.IsSafety = true, this.Pya.SafetyLocation.DeepCopy(i.Pya.SafetyLocation)) : ((e = Vector_1.Vector.Create(i.Pya.SafetyLocation)).Z += this.Hte.DefaultHalfHeight - t.DefaultHalfHeight, this.Pya.IsSafety = this.con(e), this.Pya.IsSafety && this.Pya.SafetyLocation.DeepCopy(e)), Log_1.Log.CheckInfo())) {
@@ -156,18 +156,18 @@ let RoleLocationSafetyComponent = class RoleLocationSafetyComponent extends Enti
     };
   }
   static get Dependencies() {
-    return [3, 175];
+    return [3, 176];
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.rJo = this.Entity.GetComponent(175);
+    this.rJo = this.Entity.GetComponent(176);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.ElevatorMove, this.Vma);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharGravityDirectChanged, this.mon);
     this.son = 0;
-    var t = this.Entity.GetComponent(205);
+    var t = this.Entity.GetComponent(206);
     if (t) {
       for (const e of disableTag) {
         if (t.HasTag(e)) {
@@ -262,7 +262,7 @@ let RoleLocationSafetyComponent = class RoleLocationSafetyComponent extends Enti
   Hma() {
     if (this.rJo.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground || this.Con(this.Hte.ActorLocationProxy)) {
       if (this.con(this.Hte.ActorLocationProxy)) {
-        if (!this.Entity.GetComponent(174)?.GetBuffById(CharacterBuffIds_1.buffId.ElevatorBuff)) {
+        if (!this.Entity.GetComponent(175)?.GetBuffById(CharacterBuffIds_1.buffId.ElevatorBuff)) {
           if (this.rJo.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
             this.Pya.IsSafety = true;
             this.Pya.SafetyLocation.DeepCopy(this.Hte.ActorLocationProxy);
@@ -364,5 +364,5 @@ let RoleLocationSafetyComponent = class RoleLocationSafetyComponent extends Enti
     }
   }
 };
-RoleLocationSafetyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(97)], RoleLocationSafetyComponent);
+RoleLocationSafetyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(98)], RoleLocationSafetyComponent);
 exports.RoleLocationSafetyComponent = RoleLocationSafetyComponent; //# sourceMappingURL=RoleLocationSafetyComponent.js.map

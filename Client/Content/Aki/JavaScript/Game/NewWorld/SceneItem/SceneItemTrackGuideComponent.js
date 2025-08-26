@@ -1,21 +1,21 @@
 "use strict";
 
 var SceneItemTrackGuideComponent_1;
-var __decorate = this && this.__decorate || function (t, e, i, s) {
+var __decorate = this && this.__decorate || function (t, i, e, s) {
   var h;
   var n = arguments.length;
-  var o = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var o = n < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, e, i, s);
+    o = Reflect.decorate(t, i, e, s);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (h = t[r]) {
-        o = (n < 3 ? h(o) : n > 3 ? h(e, i, o) : h(e, i)) || o;
+        o = (n < 3 ? h(o) : n > 3 ? h(i, e, o) : h(i, e)) || o;
       }
     }
   }
   if (n > 3 && o) {
-    Object.defineProperty(e, i, o);
+    Object.defineProperty(i, e, o);
   }
   return o;
 };
@@ -90,7 +90,7 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
       this.pEn = true;
       this.Nln?.CollectSampleAndSend();
       this.Nln?.SetEnableMovementSync(false, "SceneItemTrackGuideComponent SplineMoveStopCallback");
-      if (this.lEn?.IsValid()) {
+      if (this.lEn?.IsValid() && !this.Hte?.CreatureData.GetRemoveState()) {
         var t = this.lEn;
         this.cEn = t.GetDistanceAlongSplineAtSplinePoint(this.IAl);
         this.IAl = this.IAl + 1;
@@ -145,26 +145,26 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     };
   }
   OnInitData(t) {
-    var e = t.GetParam(SceneItemTrackGuideComponent_1)[0];
-    if (e.SplineEntityId) {
-      this.zun = e.SplineEntityId;
+    var i = t.GetParam(SceneItemTrackGuideComponent_1)[0];
+    if (i.SplineEntityId) {
+      this.zun = i.SplineEntityId;
     }
     this.b1n = false;
     this.Usi = 0;
     this.vEn = false;
     var t = this.Entity.GetComponent(0).GetModelConfig();
-    var i = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-1133639932);
-    this.y1h = !!t?.常驻特效列表.Get(i);
-    switch (e.EndType.Type) {
+    var e = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-1133639932);
+    this.y1h = !!t?.常驻特效列表.Get(e);
+    switch (i.EndType.Type) {
       case 0:
         this.nEn = undefined;
         this.rEn = 0;
         break;
       case 1:
-        this.nEn = e.EndType.FoundationId;
+        this.nEn = i.EndType.FoundationId;
         this.rEn = 1;
-        if (e.EndType.FinalOffset) {
-          this.sEn = Vector_1.Vector.Create(e.EndType.FinalOffset.X, e.EndType.FinalOffset.Y, e.EndType.FinalOffset.Z);
+        if (i.EndType.FinalOffset) {
+          this.sEn = Vector_1.Vector.Create(i.EndType.FinalOffset.X, i.EndType.FinalOffset.Y, i.EndType.FinalOffset.Z);
         } else {
           this.sEn = Vector_1.Vector.Create();
         }
@@ -180,8 +180,8 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     this.uEn = Vector_1.Vector.Create();
     this.MEn = Vector_1.Vector.Create();
     this.CEn = 0;
-    this.rzr = this.Entity.GetComponent(121);
-    this.rzr.SetLogicRange(e.Range);
+    this.rzr = this.Entity.GetComponent(122);
+    this.rzr.SetLogicRange(i.Range);
     this.Ore();
     return true;
   }
@@ -203,21 +203,21 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
   }
   OnStart() {
     var t;
-    var e;
-    this.Hte = this.Entity.GetComponent(202);
+    var i;
+    this.Hte = this.Entity.GetComponent(203);
     if (this.Hte) {
-      if (e = (t = this.Hte.CreatureData).GetBaseInfo()) {
-        this.w0n = e.OnlineInteractType ?? 2;
+      if (i = (t = this.Hte.CreatureData).GetBaseInfo()) {
+        this.w0n = i.OnlineInteractType ?? 2;
         if (this.w0n === 1) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("SceneGameplay", 29, "[PawnAdsorbComponent.OnStart] 不支持的联机类型配置", ["CreatureGenID:", t.GetOwnerId()], ["PbDataId:", t.GetPbDataId()]);
           }
           this.w0n = 0;
         }
-        this.oEn = this.Entity.GetComponent(105);
-        this.Oln = this.Entity.GetComponent(130);
-        this.Nln = this.Entity.GetComponent(158);
-        this.Gce = this.Entity.GetComponent(128);
+        this.oEn = this.Entity.GetComponent(106);
+        this.Oln = this.Entity.GetComponent(131);
+        this.Nln = this.Entity.GetComponent(159);
+        this.Gce = this.Entity.GetComponent(129);
         if (ModelManager_1.ModelManager.GameModeModel.IsMulti && !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(this.w0n, false)) {
           this.Rne = this.Disable("[SceneItemTrackGuideComponent.OnStart] 联机停止交互");
         } else {
@@ -247,19 +247,19 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     var t = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(this.zun, this.Hte.CreatureData.GetPbDataId());
     if (t) {
       this.lEn = t;
-      var e = ModelManager_1.ModelManager.GameSplineModel.GetSplineActorBySplineId(this.zun);
+      var i = ModelManager_1.ModelManager.GameSplineModel.GetSplineActorBySplineId(this.zun);
       this._En.FromUeVector(t.D_GetLocationAtDistanceAlongSpline(0, 1));
       this.dEn = t.GetNumberOfSplinePoints();
-      var i = e.SplineData;
+      var e = i.SplineData;
       this.gEn = new Array(this.dEn);
       this.fEn = new Array(this.dEn);
       var s = new Array(this.dEn);
       for (let t = 0; t < this.dEn; ++t) {
-        this.gEn[t] = !i.Points[t].IgnorePoint;
+        this.gEn[t] = !e.Points[t].IgnorePoint;
         s[t] = 0;
       }
       for (let t = 0; t < this.dEn; ++t) {
-        this.fEn[t] = MathUtils_1.MathUtils.Clamp(i.Points[t].MoveSpeed, CONFIG_DEFAULT_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED);
+        this.fEn[t] = MathUtils_1.MathUtils.Clamp(e.Points[t].MoveSpeed, CONFIG_DEFAULT_MOVEMENT_SPEED, MAX_MOVEMENT_SPEED);
         this.TEn = this.fEn[t];
       }
       this.cPl = new SceneItemMoveComponent_1.SceneItemSplineMoveAtConstantTimeParam(t);
@@ -291,9 +291,9 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     }
   }
   UEn(t) {
-    var e;
     var i;
-    if (this.lEn?.IsValid() && this.cPl) {
+    var e;
+    if (this.lEn?.IsValid() && this.cPl && !this.Hte?.CreatureData.GetRemoveState()) {
       if (this.pEn && this.AEn()) {
         if (this.RAl) {
           this.RAl = false;
@@ -302,9 +302,9 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
           this.Gce?.StopMove();
         }
       } else {
-        i = this.lEn;
-        e = this.IAl;
-        i = i.GetDistanceAlongSplineAtSplinePoint(e);
+        e = this.lEn;
+        i = this.IAl;
+        e = e.GetDistanceAlongSplineAtSplinePoint(i);
         if (this.Gce?.IsMoving) {
           this.cEn = this.Gce.GetDistanceAloneSpline();
         }
@@ -315,16 +315,16 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
         this.Entity.ChangeTickInterval(0);
         if (!this.Gce?.IsMoving) {
           this.cPl.StartDis = this.cEn;
-          this.cPl.EndDis = i;
+          this.cPl.EndDis = e;
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("SceneItem", 39, "[SceneItemTrackGuideComponent.UpdateSplineMovement] StartSplineMove", ["EntityId", this.Entity.Id], ["SplineMoveParam", this.cPl]);
           }
           this.Gce?.StartSplineMoveAtConstantTimeImplement(this.cPl, this.UAl);
         }
         if (this.rEn === 1 && this.oEn && this.IAl === this.dEn - 1) {
-          e = (this.fgn - this.cEn) * this.CEn;
-          i = MathUtils_1.MathUtils.Lerp(COMPRESS_RADIUS, NORMAL_RADIUS, e);
-          this.oEn.ApplyNiagaraParameters("Radius", i);
+          i = (this.fgn - this.cEn) * this.CEn;
+          e = MathUtils_1.MathUtils.Lerp(COMPRESS_RADIUS, NORMAL_RADIUS, i);
+          this.oEn.ApplyNiagaraParameters("Radius", e);
           this.oEn.ApplyNiagaraParameters("IsMoving", 1);
         }
       }
@@ -367,32 +367,32 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     }
   }
   xEn(t) {
-    var e;
+    var i;
     if (this.lEn?.IsValid() && !this.Gce?.IsMoving) {
-      e = Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this._En) / MOVEMENT_SPEED;
+      i = Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this._En) / MOVEMENT_SPEED;
       this.Nln?.SetEnableMovementSync(true, "UpdateNoSplineMovement UpdateToSplineStart");
-      this.Gce?.AddMoveTarget(new SceneItemMoveComponent_1.MoveTarget(Vector_1.Vector.Create(this._En), e));
+      this.Gce?.AddMoveTarget(new SceneItemMoveComponent_1.MoveTarget(Vector_1.Vector.Create(this._En), i));
       this.IEn = true;
     }
   }
   bEn(t) {
     if (this.nEn && !this.Gce?.IsMoving) {
       if (!this.aEn) {
-        var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.nEn);
-        if (!e) {
+        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.nEn);
+        if (!i) {
           return;
         }
-        var i = e.Entity.GetComponent(1);
-        if (!i || !i.Owner) {
+        var e = i.Entity.GetComponent(1);
+        if (!e || !e.Owner) {
           return;
         }
-        this.aEn = e;
-        this.hEn.DeepCopy(i.ActorLocationProxy);
+        this.aEn = i;
+        this.hEn.DeepCopy(e.ActorLocationProxy);
         this.hEn.AdditionEqual(this.sEn);
       }
-      e = Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this.hEn) / this.TEn;
+      i = Vector_1.Vector.Dist(this.Hte.ActorLocationProxy, this.hEn) / this.TEn;
       this.Nln?.SetEnableMovementSync(true, "UpdateNoSplineMovement UpdateToFoundation");
-      this.Gce?.AddMoveTarget(new SceneItemMoveComponent_1.MoveTarget(Vector_1.Vector.Create(this.hEn), e));
+      this.Gce?.AddMoveTarget(new SceneItemMoveComponent_1.MoveTarget(Vector_1.Vector.Create(this.hEn), i));
     }
   }
   E1h(t) {
@@ -436,8 +436,8 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     }
   }
   wEn(t) {
-    var e;
-    return !!this.Hte && (e = this.Hte.ActorLocationProxy, Vector_1.Vector.DistSquared(e, t) <= DISTANCE_SQUARE_THRESHOLD);
+    var i;
+    return !!this.Hte && (i = this.Hte.ActorLocationProxy, Vector_1.Vector.DistSquared(i, t) <= DISTANCE_SQUARE_THRESHOLD);
   }
   av() {
     if (!this.vEn) {
@@ -467,7 +467,7 @@ let SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = class SceneI
     }
   }
 };
-SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(168)], SceneItemTrackGuideComponent);
+SceneItemTrackGuideComponent = SceneItemTrackGuideComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(169)], SceneItemTrackGuideComponent);
 exports.SceneItemTrackGuideComponent = SceneItemTrackGuideComponent;
 class ButterflyTriggerData extends LogReportDefine_1.PlayerCommonLogData {
   constructor() {

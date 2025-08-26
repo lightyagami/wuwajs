@@ -13,17 +13,17 @@ class EffectContext {
     this.CreateFromType = 0;
     this.PlayFlag = 0;
     this.HitEffectType = 0;
-    this.zQ1 = undefined;
+    this.tK1 = undefined;
     this.EntityId = t;
     this.SourceObject = s;
     this.DisablePostProcess = i;
   }
   get AnsSlotName() {
-    return this.zQ1;
+    return this.tK1;
   }
   set AnsSlotName(t) {
     if (this.CreateFromType === 1) {
-      this.zQ1 = t;
+      this.tK1 = t;
     }
   }
   ToKuroEffectContext(t) {
@@ -34,7 +34,7 @@ class EffectContext {
     t.PlayFlag = this.PlayFlag;
     t.CreateFromBpEffectActor = this.SourceObject instanceof UE.BP_EffectActor_C;
     t.HitEffectType = this.HitEffectType;
-    t.AnsSlotName = this.zQ1;
+    t.AnsSlotName = this.tK1;
   }
 }
 exports.EffectContext = EffectContext;

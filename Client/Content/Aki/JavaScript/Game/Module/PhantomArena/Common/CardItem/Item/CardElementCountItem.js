@@ -12,14 +12,14 @@ class CardElementCountItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.Teu = undefined;
+    this.zeu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText]];
   }
   async OnBeforeStartAsync() {
-    this.Teu = new CardElementItem_1.CardElementItem();
-    await this.Teu.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.zeu = new CardElementItem_1.CardElementItem();
+    await this.zeu.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   Refresh(t, e = 0, r) {
     this.Pe = t;
@@ -27,8 +27,8 @@ class CardElementCountItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.d7s();
   }
   Hxt() {
-    this.Teu.Refresh(this.Pe.ElementId);
-    this.Teu.SetActive(this.Pe.ElementId !== 0);
+    this.zeu.Refresh(this.Pe.ElementId);
+    this.zeu.SetActive(this.Pe.ElementId !== 0);
   }
   d7s() {
     var t = this.Pe.Count.toString();

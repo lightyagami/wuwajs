@@ -41,7 +41,7 @@ class DeckBuilderQuicklyBuildView extends UiViewBase_1.UiViewBase {
       });
       PhantomArenaController_1.PhantomArenaController.OpenPhantomArenaConfirmBoxView(e);
     };
-    this.MK1 = () => {
+    this.bK1 = () => {
       var e = this.DeckLayout.GetSelectedGridIndex();
       if (!(e < 0)) {
         e = {
@@ -59,7 +59,7 @@ class DeckBuilderQuicklyBuildView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UILayoutBase], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this.xco], [2, this.MK1]];
+    this.BtnBindInfo = [[3, this.xco], [2, this.bK1]];
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaCardUnlock, this.PV1);

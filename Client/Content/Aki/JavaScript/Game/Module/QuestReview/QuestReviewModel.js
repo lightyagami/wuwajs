@@ -30,14 +30,14 @@ class QuestReviewModel extends ModelBase_1.ModelBase {
       QuestReviewTreeData: QuestReviewTreeById_1.configQuestReviewTreeById
     };
     this.NQ = new Map();
-    this.wJ1 = new Map();
+    this.tZ1 = new Map();
   }
   OnInit() {
     var e = QuestReviewEntryAll_1.configQuestReviewEntryAll.GetConfigList();
     if (e) {
       for (const t of e) {
         for (const i of t.RelatedQuest) {
-          this.wJ1.set(i, t.Id);
+          this.tZ1.set(i, t.Id);
         }
       }
     }
@@ -131,7 +131,7 @@ class QuestReviewModel extends ModelBase_1.ModelBase {
     }
   }
   GetQuestEntryDataByQuestId(e) {
-    e = this.wJ1.get(e);
+    e = this.tZ1.get(e);
     if (e) {
       return this.GetQuestReviewEntryDataById(e);
     }
@@ -179,7 +179,7 @@ class QuestReviewModel extends ModelBase_1.ModelBase {
   }
   UpdateAllQuestReviewEntryData(e) {
     for (const i of e) {
-      var t = this.GetQuestReviewEntryDataById(i.qz1);
+      var t = this.GetQuestReviewEntryDataById(i.cJ1);
       if (t) {
         t.UpdateByServerData(i);
       }
@@ -187,7 +187,7 @@ class QuestReviewModel extends ModelBase_1.ModelBase {
   }
   UpdateAllQuestReviewLineData(e) {
     for (const i of e) {
-      var t = this.GetQuestReviewLineDataById(i.Bz1);
+      var t = this.GetQuestReviewLineDataById(i.lJ1);
       if (t) {
         t.UpdateByServerData(i);
       }

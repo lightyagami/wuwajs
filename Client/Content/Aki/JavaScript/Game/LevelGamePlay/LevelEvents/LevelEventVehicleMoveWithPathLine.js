@@ -52,7 +52,7 @@ class LevelEventVehicleMoveWithPathLine extends LevelGeneralBase_1.LevelEventBas
   }
   guc() {
     if (Global_1.Global.BaseCharacter) {
-      return Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(229)?.VehicleEntity;
+      return Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(230)?.VehicleEntity;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 50, "获取玩家载具失败，找不到全局玩家角色");
@@ -63,13 +63,13 @@ class LevelEventVehicleMoveWithPathLine extends LevelGeneralBase_1.LevelEventBas
       switch (this.OPt.ControlType.Type) {
         case "EnterPathMoving":
           var e = this.OPt.SplineEntityId;
-          var t = this.Jh.GetComponent(109);
+          var t = this.Jh.GetComponent(110);
           t?.SetExtraMoveParams(this.OPt.ControlType.ControlParams);
           t?.StartSplineMove(e, this.OPt.ControlType.Pattern);
           break;
         case "ExitPathMoving":
           t = this.OPt.SplineEntityId;
-          e = this.Jh.GetComponent(109);
+          e = this.Jh.GetComponent(110);
           e?.ResetExtraMoveParams();
           e?.EndSplineMove(t);
       }

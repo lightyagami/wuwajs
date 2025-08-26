@@ -19,14 +19,14 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
     this.Pe = undefined;
     this.nvt = undefined;
     this.CA1 = undefined;
-    this.fTu = undefined;
+    this.BTu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIMultiTemplateLayout], [2, UE.UIItem], [4, UE.UILayoutBase], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText], [3, UE.UIText], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UILayoutBase], [12, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.fTu = new CardDetailTaskDescItem_1.CardDetailTaskDescItem();
-    await this.fTu.CreateThenShowByActorAsync(this.GetItem(12).GetOwner());
+    this.BTu = new CardDetailTaskDescItem_1.CardDetailTaskDescItem();
+    await this.BTu.CreateThenShowByActorAsync(this.GetItem(12).GetOwner());
   }
   OnStart() {
     this.nvt = new CardDetailAttributeLayoutItem_1.CardDetailAttributeLayoutItem(this.GetMultiTemplateLayout(1), this.GetItem(2));
@@ -90,7 +90,7 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(9).SetUIActive(true);
       this.GetLayoutBase(11).RootUIComp.SetUIActive(true);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), "PhantomBattle_1081");
-      this.fTu?.Refresh(t);
+      this.BTu?.Refresh(t);
     } else {
       this.GetItem(9).SetUIActive(false);
       this.GetLayoutBase(11).RootUIComp.SetUIActive(false);
@@ -107,7 +107,7 @@ class CardDetailItem extends UiPanelBase_1.UiPanelBase {
         } else {
           return undefined;
         }
-      } else if (e === "Task" && (t = this.fTu?.GetRootItem())) {
+      } else if (e === "Task" && (t = this.BTu?.GetRootItem())) {
         return [t, t];
       } else {
         return undefined;

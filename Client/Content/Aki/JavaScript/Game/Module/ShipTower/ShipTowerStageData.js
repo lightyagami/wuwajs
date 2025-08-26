@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ShipTowerStageData = undefined;
+const Log_1 = require("../../../Core/Common/Log");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
@@ -19,6 +20,7 @@ class ShipTowerStageData {
     this.StageType = 0;
     this.Season = 0;
     this.IsEndLess = false;
+    this.IsQuickPass = false;
     this.InstIds = [];
     this.PreLevel = [];
     this.TitleKey = "";
@@ -39,6 +41,7 @@ class ShipTowerStageData {
     this.BelongToSeason = 0;
     this.ProtoIsPassed = false;
     this.TeamRecommendList = [];
+    this.CurSelectTeamIndex = 0;
   }
   Init(e) {
     this.Id = e.Id;
@@ -64,9 +67,9 @@ class ShipTowerStageData {
       this.StageType = 1;
     }
     this.InstIds.forEach((e, t) => {
-      var s = new ShipTowerTeamData_1.ShipTowerTeamData();
-      s.Init(e, t, this.Id);
-      this.TeamDataList.push(s);
+      var i = new ShipTowerTeamData_1.ShipTowerTeamData();
+      i.Init(e, t, this.Id);
+      this.TeamDataList.push(i);
     });
   }
   IsUnLocked() {
@@ -156,17 +159,17 @@ class ShipTowerStageData {
     }
   }
   e9_() {
-    const s = ShipTowerDefine_1.shipTowerTextKey.ScoreTarget;
+    const i = ShipTowerDefine_1.shipTowerTextKey.ScoreTarget;
     var e = ShipTowerDefine_1.shipTowerTextKey.ChallengeTarget;
-    const i = [];
+    const s = [];
     e = {
       Title: ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e, e),
-      TargetList: i
+      TargetList: s
     };
     this.TargetScoreList.forEach((e, t) => {
       t = ModelManager_1.ModelManager.ShipTowerModel.GetStageGradeResId(this.ScoreStageList[t]);
-      i.push({
-        Title: ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(s, s),
+      s.push({
+        Title: ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(i, i),
         ScoreTarget: e,
         IsFinish: this.CurrentScore >= e,
         ScoreGradeRes: t
@@ -188,6 +191,15 @@ class ShipTowerStageData {
     }
     return this.cs_;
   }
+  UpdateCurSelectTeamIndex(e) {
+    if (this.CurSelectTeamIndex === e) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ShipTower", 78, "UpdateCurSelectTeamIndex", ["index", e]);
+      }
+    } else {
+      this.CurSelectTeamIndex = e;
+    }
+  }
   UpdateOtherTeamRoleToModel(t) {
     ModelManager_1.ModelManager.ShipTowerModel.ClearOtherTeamRoleData();
     this.TeamDataList.forEach(e => {
@@ -203,17 +215,29 @@ class ShipTowerStageData {
       e.UpdateAllTeamRoleToShipTowerModel();
     });
   }
-  UpdateOtherTeamRoleRepeat(t, s) {
-    const i = this.TeamDataList[t];
+  UpdateOtherTeamRoleRepeat(t, i) {
+    const s = this.TeamDataList[t];
     let r = false;
     this.TeamDataList.forEach(e => {
       if (e.Index !== t) {
-        r = e.UpdateOtherTeamRoleRepeat(i) || r;
-        e.RemoveRoleIdEdit(s);
+        r = e.UpdateOtherTeamRoleRepeat(s) || r;
+        e.RemoveRoleIdEdit(i);
       }
     });
     this.UpdateOtherTeamRoleToModel(t);
     return r;
+  }
+  ExchangeTeamData() {
+    var e = this.TeamDataList.every(e => e.TeamIsEmpty());
+    if (!e) {
+      const t = this.GetCurSelectTeamData();
+      e = this.TeamDataList.find(e => e !== t);
+      if (t && e) {
+        t.ExChangeTeamData(e);
+        this.UpdateOtherTeamRoleToModel(t.Index);
+        this.UpdateAllTeamRoleToModel();
+      }
+    }
   }
   StartChallenge() {
     if (this.IsTeamSetRoleFinishEdit()) {
@@ -248,38 +272,41 @@ class ShipTowerStageData {
     return this.InstIds[0];
   }
   Cs_() {
-    this.CurrentScore = 0;
+    let t = 0;
     this.TeamDataList.forEach(e => {
-      this.CurrentScore += e.CurrentScore;
+      t += e.CurrentScore;
     });
+    this.CurrentScore = t;
   }
   pD_() {
     this.Cs_();
     this.SaveLastData();
   }
-  ProtoUpdateData(e) {
-    this.ProtoUpdateDataBase(e);
-    this.pD_();
-  }
   ProtoUpdateDataBase(e) {
     this.IsHaveProtoData = true;
     this.ProtoIsUnLocked = e.MT_;
     this.ProtoIsPassed = e.nA_;
-    const s = this.TeamDataList[0];
-    const i = this.TeamDataList[1];
+    const i = this.TeamDataList[0];
+    const s = this.TeamDataList[1];
+    this.IsQuickPass = e.Hju;
     e.UL_?.RL_.forEach((e, t) => {
-      s.ProtoSetRole(e, t);
-    });
-    s.ProtoSetBuff(e.UL_?.AL_);
-    s.UpdateCurrentScore(e.PL_);
-    e.DL_?.RL_.forEach((e, t) => {
       i.ProtoSetRole(e, t);
     });
-    i.ProtoSetBuff(e.DL_?.AL_);
-    i.UpdateCurrentScore(e.xL_);
+    i.ProtoSetBuff(e.UL_?.AL_);
+    i.UpdateCurrentScore(e.PL_);
+    e.DL_?.RL_.forEach((e, t) => {
+      s.ProtoSetRole(e, t);
+    });
+    s.ProtoSetBuff(e.DL_?.AL_);
+    s.UpdateCurrentScore(e.xL_);
+  }
+  ProtoNotifyInitData(e) {
+    this.ProtoUpdateDataBase(e);
+    this.Cs_();
+    this.SaveLastData();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerStageUpdate, this.Id);
   }
   ProtoNotifyUpdateData(e) {
-    this.SaveLastData();
     this.ProtoUpdateDataBase(e);
     this.Cs_();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerStageUpdate, this.Id);
@@ -287,7 +314,7 @@ class ShipTowerStageData {
   SaveLastData() {
     this.LastIsPass = this.IsPassed();
     this.LastScore = this.CurrentScore;
-    this.IsNeedSureScore = this.CurrentScore > 0;
+    this.IsNeedSureScore = this.LastScore > 0;
   }
   CheckPass(e = 0) {
     return e >= this.PassScore;
@@ -322,6 +349,7 @@ class ShipTowerStageData {
     this.TeamDataList.forEach(e => {
       e.ResetStage();
     });
+    this.Sfd();
     this.pD_();
   }
   async SureCoverChallenge() {
@@ -331,6 +359,7 @@ class ShipTowerStageData {
     this.TeamDataList.forEach(e => {
       e.CoverChallenge();
     });
+    this.Sfd();
     this.pD_();
   }
   UpdateNewChallengeScore() {
@@ -345,20 +374,20 @@ class ShipTowerStageData {
     });
   }
   CopyTeamRoleToEdit(e) {
-    const s = ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(e);
+    const i = ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(e);
     this.TeamDataList.forEach((e, t) => {
-      e.CopyTeamRoleToEdit(s.TeamDataList[t]);
+      e.CopyTeamRoleToEdit(i.TeamDataList[t]);
     });
   }
   ProtoTeamEditFromResult(e) {
     var t = this.TeamDataList[0];
-    var s = this.TeamDataList[1];
+    var i = this.TeamDataList[1];
     t.ProtoTeamEditFromResult(e.sA_);
-    s.ProtoTeamEditFromResult(e.aA_);
-    var i = e.GL_ + e.FL_;
+    i.ProtoTeamEditFromResult(e.aA_);
+    var s = e.GL_ + e.FL_;
     var e = e.NL_ + e.VL_;
-    t.ProtoSetNewChallengeScore(i);
-    s.ProtoSetNewChallengeScore(e);
+    t.ProtoSetNewChallengeScore(s);
+    i.ProtoSetNewChallengeScore(e);
     this.UpdateNewChallengeScore();
   }
   async RequestTeamRecommendList() {
@@ -367,16 +396,16 @@ class ShipTowerStageData {
   ProtoUpdateTeamRecommendList(e) {
     this.TeamRecommendList.length = 0;
     e.Iuc.forEach((e, t) => {
-      const s = [];
       const i = [];
+      const s = [];
       e.Muc?.RL_.forEach(e => {
-        s.push({
+        i.push({
           Id: e,
           Count: 0
         });
       });
       e.Euc?.RL_.forEach(e => {
-        i.push({
+        s.push({
           Id: e,
           Count: 0
         });
@@ -384,8 +413,8 @@ class ShipTowerStageData {
       t = {
         UseRate: e.PGs / 100,
         Name: "" + (t + 1),
-        RoleIdList1: s,
-        RoleIdList2: i,
+        RoleIdList1: i,
+        RoleIdList2: s,
         Buff1: e.Muc?.AL_ ?? 0,
         Buff2: e.Euc?.AL_ ?? 0,
         StageData: this
@@ -395,11 +424,11 @@ class ShipTowerStageData {
   }
   UseTeamRecommend(e) {
     var t = this.TeamDataList[0];
-    var s = this.TeamDataList[1];
+    var i = this.TeamDataList[1];
     t.CopyIdsToEdit(e.RoleIdList1.map(e => e.Id));
-    s.CopyIdsToEdit(e.RoleIdList2.map(e => e.Id));
+    i.CopyIdsToEdit(e.RoleIdList2.map(e => e.Id));
     t.CopyBuffIdToEdit(e.Buff1, this.Id);
-    s.CopyBuffIdToEdit(e.Buff2, this.Id);
+    i.CopyBuffIdToEdit(e.Buff2, this.Id);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerTeamRecommendApplyFinish, this.Id);
     return true;
   }
@@ -413,6 +442,17 @@ class ShipTowerStageData {
   }
   IsOldSeasonData() {
     return !!this.IsTeamSetRoleFinish() && !this.IsTeamSetBuffFinish() || this.TeamDataList.some(e => !!e.BuffData && ModelManager_1.ModelManager.ShipTowerModel?.IsOldSeason(e.BuffData.Season));
+  }
+  GetCurrentTeamData() {
+    const t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    var e = this.TeamDataList.findIndex(e => e.InstId === t);
+    return this.TeamDataList[e >= 0 ? e : 0];
+  }
+  GetCurSelectTeamData() {
+    return this.TeamDataList[this.CurSelectTeamIndex];
+  }
+  Sfd() {
+    this.IsQuickPass = false;
   }
 }
 exports.ShipTowerStageData = ShipTowerStageData;

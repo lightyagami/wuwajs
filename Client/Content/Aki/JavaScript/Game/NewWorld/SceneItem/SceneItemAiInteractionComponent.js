@@ -41,7 +41,7 @@ let SceneItemAiInteractionComponent = class SceneItemAiInteractionComponent exte
     this.OnEntityDeadEvent = undefined;
   }
   static get Dependencies() {
-    return [202];
+    return [203];
   }
   OnStart() {
     this.LastUsedTime = -AI_USED_COLD_DOWN;
@@ -52,7 +52,7 @@ let SceneItemAiInteractionComponent = class SceneItemAiInteractionComponent exte
     };
     var e = this.Entity.GetComponent(0).GetVisible();
     this.EnableHandler = e ? -1 : this.Entity.Disable("[SceneItemAiInteractionComponent.OnStart] visible为false");
-    this.MoveComp = this.Entity.GetComponent(123);
+    this.MoveComp = this.Entity.GetComponent(124);
     AiInteractionItemQueryManager_1.AiInteractionItemQueryManager.Get().RegisterItem(this.Entity);
     return true;
   }
@@ -99,5 +99,5 @@ let SceneItemAiInteractionComponent = class SceneItemAiInteractionComponent exte
     return !!this.IsSearchByAi && this.SearchEntity.Id !== e;
   }
 };
-SceneItemAiInteractionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(144)], SceneItemAiInteractionComponent);
+SceneItemAiInteractionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(145)], SceneItemAiInteractionComponent);
 exports.SceneItemAiInteractionComponent = SceneItemAiInteractionComponent; //# sourceMappingURL=SceneItemAiInteractionComponent.js.map

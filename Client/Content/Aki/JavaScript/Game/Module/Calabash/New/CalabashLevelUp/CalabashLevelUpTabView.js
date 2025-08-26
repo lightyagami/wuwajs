@@ -283,7 +283,11 @@ class CalabashLevelUpTabView extends UiTabViewBase_1.UiTabViewBase {
     this.rOe = () => new CalabashLevelUpRewardItemGrid_1.CalabashLevelUpRewardItemGrid();
     this.mvt = () => new CalabashAttributeItem();
     this.g6e = () => {
-      CalabashController_1.CalabashController.RequestCalabashLevelReward(this.lvt);
+      var t = ModelManager_1.ModelManager.CalabashModel.GetCalabashLevel();
+      var t = Array.from({
+        length: t + 1
+      }, (t, e) => e).filter(t => ModelManager_1.ModelManager.CalabashModel.GetReceiveRewardStateByLevel(t) === 2);
+      CalabashController_1.CalabashController.RequestMultiCalabashLevelReward(t);
     };
     this.dvt = e => {
       if (e === "CommonRewardView") {

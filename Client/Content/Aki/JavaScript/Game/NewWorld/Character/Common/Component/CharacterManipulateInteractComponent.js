@@ -113,8 +113,22 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
     } else {
       this.rrn = false;
     }
-    if (this.Y7r !== t && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateSwitchToNewTarget, t !== undefined && this.z7r, t?.Entity, false), this.Y7r?.ChangeManipulateInteractPointState(0), this.Y7r = t, this.Z7r = this.z7r, this.Y7r?.ChangeManipulateInteractPointState(this.z7r ? 1 : 2), t !== undefined && this.z7r && this.lHr(false, "搜索到新的目标，清除掉当前Tag", false), this.erl = this.trl, this.trl = this.Y7r?.MarkTagId, Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Temp", 31, "[CharacterManipulateInteractComponent]刷新目标更新Tag", ["MarkTagId", this.trl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.trl) : "undefined"], ["PervTagId", this.erl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.erl) : "undefined"]);
+    if (this.Y7r !== t || this.Z7r !== this.z7r) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManipulateSwitchToNewTarget, t !== undefined && this.z7r, t?.Entity, false);
+      this.Y7r?.ChangeManipulateInteractPointState(0);
+      this.Y7r = t;
+      this.Z7r = this.z7r;
+      this.Y7r?.ChangeManipulateInteractPointState(this.z7r ? 1 : 2);
+      if (t !== undefined && this.z7r) {
+        this.lHr(false, "搜索到新的目标，清除掉当前Tag", false);
+      }
+      if (this.z7r) {
+        this.erl = this.trl;
+        this.trl = this.Y7r?.MarkTagId;
+      }
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Temp", 31, "[CharacterManipulateInteractComponent]刷新目标更新Tag", ["MarkTagId", this.trl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.trl) : "undefined"], ["PervTagId", this.erl ? GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.erl) : "undefined"]);
+      }
     }
   }
   get hHr() {
@@ -122,8 +136,8 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(205);
-    this.$zo = this.Entity.GetComponent(174);
+    this.Lie = this.Entity.GetComponent(206);
+    this.$zo = this.Entity.GetComponent(175);
     this.EIe = this.Entity.GetComponent(0);
     this.gri = CameraController_1.CameraController.FightCamera.GetComponent(5);
     this.tat = CommonParamById_1.configCommonParamById.GetStringConfig("ManipulateInteractEffectPath");
@@ -192,8 +206,8 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
           if (e.CheckTraceResult(a, this.bsr)) {
             this.z7r = false;
           }
+          this.hHr = e;
           if (this.z7r) {
-            this.hHr = e;
             if (ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId !== MANIPULATE_VISION_ID) {
               this.rrn = true;
             } else {
@@ -426,10 +440,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       } else {
         (t = Protocol_1.Aki.Protocol.Mts.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(28775, t, t => {
+        Net_1.Net.Call(18720, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 15931);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 17079);
           }
         });
       }
@@ -445,10 +459,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       } else {
         (t = Protocol_1.Aki.Protocol.Dg_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(29946, t, t => {
+        Net_1.Net.Call(27055, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 29470);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 21631);
           }
         });
       }

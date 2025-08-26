@@ -24,13 +24,13 @@ class FloroRanchSkillItem extends UiPanelBase_1.UiPanelBase {
     this.GetTexture(0)?.SetUIActive(e !== 0);
     this.GetSprite(1)?.SetUIActive(e !== 0);
     this.GetSprite(3)?.SetUIActive(e === 0);
+    this.RefreshRedDot();
     if (e === 0) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "FloroRanchSelectSkill");
     } else {
       e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetFloroRanchSkillData(e);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name);
       this.SetTextureByPath(e.Icon, this.GetTexture(0));
-      this.RefreshRedDot();
     }
   }
   RefreshRedDot() {

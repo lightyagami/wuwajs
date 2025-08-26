@@ -50,10 +50,10 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
   }
   OnDestroy() {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17978, this.Hro);
+    Net_1.Net.Register(27031, this.Hro);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17978);
+    Net_1.Net.UnRegister(27031);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.jro);
@@ -84,17 +84,18 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
         n?.();
         return 1;
       }
-      if (i.IsInFocusMode() && !i.IsInFocusOnQuest(e)) {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("FocusModeCanNotTrackOtherQuest");
-        n?.();
-        return 4;
-      }
       if (s.IsSuspend()) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("QuestTrackOccupiedTip");
         n?.();
         return 2;
       }
-      if (!s.CanShowTrackExpression()) {
+      if (i.IsInFocusMode()) {
+        if (!i.IsInFocusOnQuest(e)) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("FocusModeCanNotTrackOtherQuest");
+          n?.();
+          return 4;
+        }
+      } else if (!s.CanShowTrackExpression()) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Quest", 18, "QuestTrackAssistant.RequestTrackQuest,任务不可显示追踪表现", ["questId", e]);
         }
@@ -108,9 +109,9 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
       fHn: r ? 1 : 2,
       gHn: t
     });
-    Net_1.Net.Call(21894, i, e => {
+    Net_1.Net.Call(20281, i, e => {
       if (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 29590);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 23297);
       }
       n?.();
     });

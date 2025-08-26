@@ -203,7 +203,7 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
       if (UiManager_1.UiManager.IsViewOpen("PhotographSetupView")) {
         UiManager_1.UiManager.CloseView("PhotographSetupView");
       }
-      Net_1.Net.Send(25703, Protocol_1.Aki.Protocol._Zn.create());
+      Net_1.Net.Send(18069, Protocol_1.Aki.Protocol._Zn.create());
       PhotographController_1.PhotographController.ScreenShot({
         ScreenShot: true,
         PrepareFullScreenShot: true,
@@ -266,14 +266,14 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     GlobalData_1.GlobalData.BpEventManager.OnEnterPhotograph.Broadcast();
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (t?.Valid) {
-      t.GetComponent(114)?.SetLodBias(PhotographDefine_1.MAX_LOD_BIAS);
+      t.GetComponent(115)?.SetLodBias(PhotographDefine_1.MAX_LOD_BIAS);
     }
   }
   OnAfterDestroy() {
     GlobalData_1.GlobalData.BpEventManager.OnExitPhotograph.Broadcast();
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
     if (t?.Valid) {
-      t.GetComponent(114)?.SetLodBias(PhotographDefine_1.DEFAULT_LOD_BIAS);
+      t.GetComponent(115)?.SetLodBias(PhotographDefine_1.DEFAULT_LOD_BIAS);
     }
   }
   OnAddEventListener() {

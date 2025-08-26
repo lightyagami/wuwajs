@@ -18,9 +18,7 @@ class AchievementCompleteTipsView extends UiViewBase_1.UiViewBase {
     this.$be = undefined;
     this.Ybe = 4000;
     this.Jbe = () => {
-      if (this.Xbe !== undefined) {
-        this.CloseMe();
-      }
+      this.CloseMe();
     };
     this.zbe = () => new AchievementCompleteTipsStarItem_1.AchievementCompleteTipsStarItem();
   }
@@ -29,31 +27,34 @@ class AchievementCompleteTipsView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var e;
-    var i = this.OpenParam;
-    if (i !== undefined) {
+    var t = this.OpenParam;
+    if (t !== undefined) {
       this.$be = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.zbe);
-      e = i.GetGroupId();
+      e = t.GetGroupId();
       e = ModelManager_1.ModelManager.AchievementModel.GetAchievementGroupData(e);
       if (!StringUtils_1.StringUtils.IsEmpty(e.GetTexture())) {
         this.SetTextureByPath(e.GetTexture(), this.GetTexture(0));
       }
-      this.GetText(1).SetText(i.GetTitle());
-      this.Zbe(i);
+      this.GetText(1).SetText(t.GetTitle());
+      this.Zbe(t);
       this.Xbe = TimerSystem_1.GameplayTimerSystem.Delay(this.Jbe, this.Ybe);
     }
   }
   Zbe(e) {
-    var i = [];
-    var t = e.GetMaxStar();
+    var t = [];
+    var i = e.GetMaxStar();
     var s = e.GetAchievementConfigStar();
-    for (let e = 0; e < t; e++) {
+    for (let e = 0; e < i; e++) {
       var r = s > e;
-      i.push(r);
+      t.push(r);
     }
-    this.$be.RefreshByData(i);
+    this.$be.RefreshByData(t);
   }
   OnBeforeDestroy() {
-    this.Xbe = undefined;
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.Xbe)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.Xbe);
+      this.Xbe = undefined;
+    }
   }
 }
 exports.AchievementCompleteTipsView = AchievementCompleteTipsView;

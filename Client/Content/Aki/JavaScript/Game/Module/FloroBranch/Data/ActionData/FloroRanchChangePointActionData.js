@@ -10,7 +10,7 @@ class FloroRanchChangePointActionData extends FloroRanchActionBase_1.FloroRanchA
   constructor(o) {
     super(o);
     this.Fre = undefined;
-    this.Fre = o.G9c;
+    this.Fre = o.m7u;
   }
   async OnExecute() {
     if (!this.IsIgnoreCasterAnim) {
@@ -21,7 +21,7 @@ class FloroRanchChangePointActionData extends FloroRanchActionBase_1.FloroRanchA
       var o = [];
       var a = [];
       for (const t of this.Fre.hxs) {
-        a.push(ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(t.Ziu));
+        a.push(ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(t.Tru));
       }
       for (const e of a) {
         o.push(e.GetUiItemComponent().PlayHideAnim());

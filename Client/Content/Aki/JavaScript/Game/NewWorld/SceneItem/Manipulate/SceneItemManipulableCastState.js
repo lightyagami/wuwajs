@@ -37,7 +37,7 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
     this.NeedResetPhysicsMode = true;
     this.NeedNotifyServer = true;
     this.JAc = new Map();
-    this.BZ1 = undefined;
+    this.aeu = undefined;
     this.Ynr = () => {
       this.AfterHit = true;
     };
@@ -67,21 +67,21 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
     if (!FNameUtil_1.FNameUtil.IsNothing(this.SceneItem.ManipulateBaseConfig.投掷状态碰撞预设)) {
       this.SceneItem.ActorComp.GetPrimitiveComponent().SetCollisionProfileName(this.SceneItem.ManipulateBaseConfig.投掷状态碰撞预设);
     }
-    if (this.SceneItem.ManipulateBaseConfig.投掷状态CueId && this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Num() > 0 && (this.BZ1 = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(225), this.BZ1 !== undefined)) {
+    if (this.SceneItem.ManipulateBaseConfig.投掷状态CueId && this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Num() > 0 && (this.aeu = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(226), this.aeu !== undefined)) {
       for (let t = 0; t < this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Num(); t++) {
         var i = this.SceneItem.ManipulateBaseConfig.投掷状态CueId.GetKey(t);
         var e = this.SceneItem.ManipulateBaseConfig.投掷状态CueId.Get(i);
         if (e !== undefined && !(e <= 0)) {
-          const s = this.BZ1.AddCue(i);
+          const s = this.aeu.AddCue(i);
           if (s !== GameplayCueController_1.INVALID_CUE_HANDLE) {
             if ((e = TimerSystem_1.TimerSystem.Delay(() => {
               this.JAc.delete(s);
-              this.BZ1?.RemoveCueByHandle(s);
+              this.aeu?.RemoveCueByHandle(s);
             }, e * TimeUtil_1.TimeUtil.InverseMillisecond)) === undefined) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("SceneItem", 31, "创建TimerHandle失败", ["CueId", i]);
               }
-              this.BZ1.RemoveCueByHandle(s);
+              this.aeu.RemoveCueByHandle(s);
             } else {
               this.JAc.set(s, e);
             }
@@ -104,11 +104,11 @@ class SceneItemManipulableCastState extends SceneItemManipulableBaseState_1.Scen
     if (this.JAc && this.JAc.size > 0) {
       for (var [t, i] of this.JAc) {
         TimerSystem_1.TimerSystem.Remove(i);
-        this.BZ1?.RemoveCueByHandle(t);
+        this.aeu?.RemoveCueByHandle(t);
       }
       this.JAc.clear();
     }
-    this.BZ1 = undefined;
+    this.aeu = undefined;
   }
   StartCast() {
     var t = Vector_1.Vector.Dist(this.SceneItem.ActorComp.ActorLocationProxy, this.SceneItem.TargetActorComponent.ActorLocationProxy);

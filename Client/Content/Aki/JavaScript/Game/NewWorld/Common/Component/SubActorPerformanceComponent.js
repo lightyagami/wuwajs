@@ -93,7 +93,7 @@ let SubActorPerformanceComponent = SubActorPerformanceComponent_1 = class SubAct
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
+    this.Hte = this.Entity.GetComponent(203);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     return true;
   }
@@ -165,5 +165,5 @@ let SubActorPerformanceComponent = SubActorPerformanceComponent_1 = class SubAct
     }
   }
 };
-SubActorPerformanceComponent = SubActorPerformanceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(265)], SubActorPerformanceComponent);
+SubActorPerformanceComponent = SubActorPerformanceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], SubActorPerformanceComponent);
 exports.SubActorPerformanceComponent = SubActorPerformanceComponent; //# sourceMappingURL=SubActorPerformanceComponent.js.map

@@ -22,19 +22,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FloroRanchUiToyComponent = undefined;
+const Log_1 = require("../../../../../Core/Common/Log");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const FloroRanchComponentDefine_1 = require("../FloroRanchComponentDefine");
 const FloroRanchUiItemBaseComponent_1 = require("./FloroRanchUiItemBaseComponent");
 let FloroRanchUiToyComponent = class FloroRanchUiToyComponent extends FloroRanchUiItemBaseComponent_1.FloroRanchUiItemBaseComponent {
   constructor() {
     super(...arguments);
-    this.x0u = undefined;
+    this.Ppu = undefined;
   }
   async PlayShowAnim() {
-    this.x0u = await this.CreateUiItem();
-    if (this.x0u) {
-      await this.x0u.PlayShowAnim();
-      return this.x0u;
+    this.Ppu = await this.CreateUiItem();
+    if (this.Ppu) {
+      await this.Ppu.PlayShowAnim();
+      return this.Ppu;
     }
   }
   async CreateUiItem() {
@@ -44,19 +45,24 @@ let FloroRanchUiToyComponent = class FloroRanchUiToyComponent extends FloroRanch
     }
   }
   async PlayHideAnim() {
-    if (this.x0u) {
-      await this.x0u.PlayHideAnim();
-      this.x0u.UnbindData();
-      this.x0u = undefined;
+    if (this.Ppu) {
+      await this.Ppu.PlayHideAnim();
+      this.Ppu.UnbindData();
+      this.Ppu = undefined;
     }
   }
   async PlayNormalAnim() {
-    if (this.x0u) {
-      await this.x0u.PlayNormalAnim();
+    if (this.Ppu) {
+      await this.Ppu.PlayNormalAnim();
     }
   }
   GetUiItem() {
-    return this.x0u;
+    if (!this.Ppu) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanchUiToyComponent GetUiItem 实体不存在", ["entityId", this.OwnerEntity.EntityId]);
+      }
+    }
+    return this.Ppu;
   }
 };
 FloroRanchUiToyComponent = __decorate([(0, FloroRanchComponentDefine_1.RegisterFloroRanchEntityComponent)(8)], FloroRanchUiToyComponent);

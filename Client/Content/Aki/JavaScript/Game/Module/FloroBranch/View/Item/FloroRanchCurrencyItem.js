@@ -11,11 +11,11 @@ const UiManager_1 = require("../../../../Ui/UiManager");
 class FloroRanchCurrencyItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.fOu = undefined;
+    this.Equ = undefined;
     this.eTt = () => {
       UiManager_1.UiManager.OpenView("FloroRanchCommonTipsView", {
         TipType: 1,
-        CurrencyData: this.fOu,
+        CurrencyData: this.Equ,
         RemoveCallback: undefined,
         EntityData: undefined
       });
@@ -26,12 +26,12 @@ class FloroRanchCurrencyItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[3, this.eTt]];
   }
   SetCurrencyData(e) {
-    this.fOu = e;
+    this.Equ = e;
     e = this.GetTexture(0);
-    this.SetTextureByPath(this.fOu.GetIconPath(), e, undefined, () => {
+    this.SetTextureByPath(this.Equ.GetIconPath(), e, undefined, () => {
       this.ATt();
     });
-    e = this.fOu.GetAmount();
+    e = this.Equ.GetAmount();
     this.GetText(2).SetText(ModelManager_1.ModelManager.FloroRanchModel.GetCoinText(e));
   }
   ATt() {

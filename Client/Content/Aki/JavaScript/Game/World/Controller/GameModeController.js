@@ -16,6 +16,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const LogProfiler_1 = require("../../../Core/Common/LogProfiler");
 const Stats_1 = require("../../../Core/Common/Stats");
 const Time_1 = require("../../../Core/Common/Time");
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
 const AreaMpcById_1 = require("../../../Core/Define/ConfigQuery/AreaMpcById");
 const DataLayerConfigById_1 = require("../../../Core/Define/ConfigQuery/DataLayerConfigById");
 const InstanceDungeonById_1 = require("../../../Core/Define/ConfigQuery/InstanceDungeonById");
@@ -28,7 +29,9 @@ const TickSystem_1 = require("../../../Core/Tick/TickSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
 const BaseConfigModel_1 = require("../../../Launcher/BaseConfig/BaseConfigModel");
 const CloudGameManagerLauncher_1 = require("../../../Launcher/Platform/CloudGameManagerLauncher");
@@ -41,6 +44,7 @@ const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDevic
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
 const LevelEventLockInputState_1 = require("../../LevelGamePlay/LevelEventLockInputState");
+const SimpleLevelSequenceActor_1 = require("../../LevelGamePlay/StaticScene/SimpleLevelSequenceActor");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -56,6 +60,7 @@ const LogReportDefine_1 = require("../../Module/LogReport/LogReportDefine");
 const SeamlessTravelController_1 = require("../../Module/SeamlessTravel/SeamlessTravelController");
 const TeleportController_1 = require("../../Module/Teleport/TeleportController");
 const RoleAudioController_1 = require("../../NewWorld/Character/Role/RoleAudioController");
+const RefCompDefine_1 = require("../../NewWorld/SceneItem/RefCompController/RefCompDefine");
 const PerfSightController_1 = require("../../PerfSight/PerfSightController");
 const PreloadDefine_1 = require("../../Preload/PreloadDefine");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
@@ -75,7 +80,8 @@ const WorldController_1 = require("./WorldController");
 const TOP_CONSUMING_COUNT = 20;
 const ONE_SECOND = 1000;
 const GAME_MODE_CTRL_THINKING_INDEX = 21;
-const LOW_MEMORY_AREA_ID = 33;
+const SHOUWANG_AREA = 36;
+const lowMemoryAreaIds = new Set([33, SHOUWANG_AREA]);
 exports.LOG_STREAMING_STUCK_INTERVAL = 60000;
 const cellProgress = (0, puerts_1.$ref)(0);
 class GameModeController extends ControllerBase_1.ControllerBase {
@@ -92,6 +98,10 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       this._gr();
     }
     return true;
+  }
+  static OnLeaveLevel() {
+    this.$vn?.Clear();
+    return !(this.$vn = undefined);
   }
   static OnClear() {
     if (Info_1.Info.IsMobilePlatform() || Info_1.Info.IsGamepadPlatform()) {
@@ -138,25 +148,26 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       return false;
     }
   }
-  static async Load(r) {
-    const t = ModelManager_1.ModelManager.GameModeModel;
-    var e = t.Mode;
-    const n = t.InstanceDungeon;
-    var o = t.MapConfig;
-    t.RenderAssetDone = false;
-    t.EndDataLayerChange();
+  static async Load(l) {
+    const n = ModelManager_1.ModelManager.GameModeModel;
+    var e = n.Mode;
+    const _ = n.InstanceDungeon;
+    var o = n.MapConfig;
+    n.RenderAssetDone = false;
+    n.EndDataLayerChange();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("GameMode", 3, "加载场景:开始", ["SceneMode", e], ["副本Id", n.Id], ["地图", o.MapId], ["MapPath", o.MapPath], ["出生点位置", t.BornLocation], ["出生点旋转", t.BornRotator], ["LoadingPhase", t.LoadingPhase]);
+      Log_1.Log.Info("GameMode", 3, "加载场景:开始", ["SceneMode", e], ["副本Id", _.Id], ["地图", o.MapId], ["MapPath", o.MapPath], ["出生点位置", n.BornLocation], ["出生点旋转", n.BornRotator], ["LoadingPhase", n.LoadingPhase]);
     }
-    if (t.BornLocation) {
-      if (t.BornRotator) {
+    if (n.BornLocation) {
+      if (n.BornRotator) {
         this.m6("GameModeController.Load: Start");
-        t.LoadWorldProfiler.Restart();
-        t.CreatePromise();
-        const l = ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel;
+        n.LoadWorldProfiler.Restart();
+        n.CreatePromise();
+        n.SkipChangeSceneModeWait();
+        const i = ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel;
         e = new AsyncTask_1.AsyncTask("GameModeController.Load", async () => {
           ModelManager_1.ModelManager.GameModeModel.OpenLoadingProfiler.Restart();
-          t.LoadingPhase = 3;
+          n.LoadingPhase = 3;
           PerfSightController_1.PerfSightController.StartPersistentOrDungeon();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load");
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.OpenLoading");
@@ -165,15 +176,15 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           this.m6("GameModeController.Load:OpenLoading Start");
           await GameModeController.OpenLoading();
           this.m6("GameModeController.Load:OpenLoading End");
-          t.LoadingPhase = 4;
+          n.LoadingPhase = 4;
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.OpenLoading");
           ModelManager_1.ModelManager.GameModeModel.OpenLoadingProfiler.Stop();
           if (ModelManager_1.ModelManager.QuestResourceModel.IsSeparateVideo && (Log_1.Log.CheckInfo() && Log_1.Log.Info("QuestResource", 38, "开始检查任务资源"), ModelManager_1.ModelManager.QuestResourceModel.NeedCheckQuestResource() && (await ModelManager_1.ModelManager.QuestResourceModel.CheckQuestResource()), ModelManager_1.ModelManager.QuestResourceModel.UpdateServerQuestState(), Log_1.Log.CheckInfo())) {
             Log_1.Log.Info("QuestResource", 38, "完成检查任务资源");
           }
-          t.OpenLevelProfiler.Restart();
+          n.OpenLevelProfiler.Restart();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.OpenLevel");
-          t.LoadingPhase = 5;
+          n.LoadingPhase = 5;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BeforeLoadMap);
           this.m6("GameModeController.Load:SetLoadModeInLoading Start");
           ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "GameModeController.Load");
@@ -193,17 +204,17 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             if (GlobalData_1.GlobalData.IsRunWithEditorStartConfig()) {
               WorldGlobal_1.WorldGlobal.OpenLevel(ModelManager_1.ModelManager.GameModeModel.MapConfig.MapPath);
             } else {
-              t.IsSilentLogin = false;
+              n.IsSilentLogin = false;
               GameModeController.InitAllPlayerStarts();
-              t.OpenLevelPromise.SetResult(true);
-              t.BeginLoadMapPromise.SetResult(true);
+              n.OpenLevelPromise.SetResult(true);
+              n.BeginLoadMapPromise.SetResult(true);
             }
           } else {
-            if (l) {
+            if (i) {
               SeamlessTravelController_1.SeamlessTravelController.PreOpenLevel();
             }
             WorldGlobal_1.WorldGlobal.OpenLevel(ModelManager_1.ModelManager.GameModeModel.MapConfig.MapPath);
-            if (l) {
+            if (i) {
               await SeamlessTravelController_1.SeamlessTravelController.PostOpenLevel();
             }
           }
@@ -217,16 +228,16 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             ControllerHolder_1.ControllerHolder.WorldController.ManuallyGarbageCollection(3);
             ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(false);
           }
-          await t.BeginLoadMapPromise.Promise;
-          if (l && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]等待进入目标场景(开始)"), await ModelManager_1.ModelManager.SeamlessTravelModel.EnterDestinationMapPromise.Promise, Log_1.Log.CheckInfo())) {
+          await n.BeginLoadMapPromise.Promise;
+          if (i && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]等待进入目标场景(开始)"), await ModelManager_1.ModelManager.SeamlessTravelModel.EnterDestinationMapPromise.Promise, Log_1.Log.CheckInfo())) {
             Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]等待进入目标场景(完成)");
           }
           ActorSystem_1.ActorSystem.State = 1;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:加载地图，BeginLoadMap完成");
           }
-          await t.OpenLevelPromise.Promise;
-          if (l) {
+          await n.OpenLevelPromise.Promise;
+          if (i) {
             SeamlessTravelController_1.SeamlessTravelController.PostLoadedLevel();
           }
           this.m6("GameModeController.Load:OpenLevel End");
@@ -241,39 +252,39 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             Log_1.Log.Info("GameMode", 3, "加载场景:加载地图(完成)");
           }
           LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.OPENLEVEL_END_PROGRESS);
-          t.LoadingPhase = 6;
+          n.LoadingPhase = 6;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:等待AfterJoinSceneNotify(开始)");
           }
-          await t.AfterJoinSceneNotifyPromise.Promise;
+          await n.AfterJoinSceneNotifyPromise.Promise;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:等待AfterJoinSceneNotify(完成)");
           }
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.OpenLevel");
-          t.OpenLevelProfiler.Stop();
+          n.OpenLevelProfiler.Stop();
           {
-            t.PreloadProfiler.Restart();
+            n.PreloadProfiler.Restart();
             cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.Preload");
-            t.LoadingPhase = 7;
+            n.LoadingPhase = 7;
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("GameMode", 3, "加载场景:预加载(开始)");
             }
             this.m6("GameModeController.Load:Preload Start");
             var o = new LoadGroup_1.LoadGroup("Preload阶段");
-            const a = ELoadingPhase_1.PRELOAD_END_PROGRESS - ELoadingPhase_1.OPENLEVEL_END_PROGRESS;
+            const t = ELoadingPhase_1.PRELOAD_END_PROGRESS - ELoadingPhase_1.OPENLEVEL_END_PROGRESS;
             o.Add("应用MPC", () => {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("GameMode", 3, "加载场景:应用MPC(开始)");
               }
               this.m6("GameModeController.Load:ApplyMaterialParameterCollection Start");
-              t.PreloadApplyMaterialParameterCollectionProfiler.Restart();
-              this.ApplyMaterialParameterCollection(r.BRs);
+              n.PreloadApplyMaterialParameterCollectionProfiler.Restart();
+              this.ApplyMaterialParameterCollection(l.BRs);
               return true;
-            }, async () => t.ApplyMaterialParameterCollectionPromise.Promise, e => {
+            }, async () => n.ApplyMaterialParameterCollectionPromise.Promise, e => {
               if (e) {
-                LoadingController_1.LoadingController.AddProgress(a * 0.2, ELoadingPhase_1.PRELOAD_END_PROGRESS);
+                LoadingController_1.LoadingController.AddProgress(t * 0.2, ELoadingPhase_1.PRELOAD_END_PROGRESS);
               }
-              t.PreloadApplyMaterialParameterCollectionProfiler.Stop();
+              n.PreloadApplyMaterialParameterCollectionProfiler.Stop();
               this.m6("GameModeController.Load:ApplyMaterialParameterCollection End");
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("GameMode", 3, "加载场景:应用MPC(完成)");
@@ -285,18 +296,18 @@ class GameModeController extends ControllerBase_1.ControllerBase {
                 Log_1.Log.Info("GameMode", 3, "加载场景:预加载公共资源、实体资源(开始)");
               }
               this.m6("GameModeController.Load:CommonAndEntityAsset Start");
-              t.PreloadCommonAndEntityProfiler.Restart();
+              n.PreloadCommonAndEntityProfiler.Restart();
               this.CheckPreload(() => {
                 ModelManager_1.ModelManager.WorldModel.SetMapDone(true);
                 ModelManager_1.ModelManager.GameModeModel.RemoveLoadMapHandle("GameModeController.Load");
                 EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AfterLoadMap);
               });
               return true;
-            }, async () => t.PreloadPromise.Promise, e => {
+            }, async () => n.PreloadPromise.Promise, e => {
               if (e) {
-                LoadingController_1.LoadingController.AddProgress(a * 0.6, ELoadingPhase_1.PRELOAD_END_PROGRESS);
+                LoadingController_1.LoadingController.AddProgress(t * 0.6, ELoadingPhase_1.PRELOAD_END_PROGRESS);
               }
-              t.PreloadCommonAndEntityProfiler.Stop();
+              n.PreloadCommonAndEntityProfiler.Stop();
               this.m6("GameModeController.Load:CommonAndEntityAsset End");
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("GameMode", 3, "加载场景:预加载公共资源、实体资源(完成)", ["结果", e]);
@@ -311,14 +322,14 @@ class GameModeController extends ControllerBase_1.ControllerBase {
               return BattleUiControl_1.BattleUiControl.PreloadBattleViewFromLoading(e);
             }, e => {
               if (e) {
-                LoadingController_1.LoadingController.AddProgress(a * 0.1, ELoadingPhase_1.PRELOAD_END_PROGRESS);
+                LoadingController_1.LoadingController.AddProgress(t * 0.1, ELoadingPhase_1.PRELOAD_END_PROGRESS);
               }
               this.m6("GameModeController.Load:PreloadBattleViewFromLoading End");
               return true;
             });
             o.Add("Controller Preload", () => {
               this.m6("GameModeController.Load:Controller Preload Start");
-              t.PreloadControllerProfiler.Restart();
+              n.PreloadControllerProfiler.Restart();
               return true;
             }, async () => {
               var e = this.Manager.Preload();
@@ -341,9 +352,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
               return true;
             }, e => {
               if (e) {
-                LoadingController_1.LoadingController.AddProgress(a * 0.1, ELoadingPhase_1.PRELOAD_END_PROGRESS);
+                LoadingController_1.LoadingController.AddProgress(t * 0.1, ELoadingPhase_1.PRELOAD_END_PROGRESS);
               }
-              t.PreloadControllerProfiler.Stop();
+              n.PreloadControllerProfiler.Stop();
               this.m6("GameModeController.Load:Controller Preload End");
               return true;
             });
@@ -353,20 +364,20 @@ class GameModeController extends ControllerBase_1.ControllerBase {
               Log_1.Log.Info("GameMode", 3, "加载场景:预加载(完成)");
             }
             LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.PRELOAD_END_PROGRESS);
-            t.LoadingPhase = 8;
+            n.LoadingPhase = 8;
             cpp_1.FKuroPerfSightHelper.EndExtTag("Load.Preload");
-            t.PreloadProfiler.Stop();
+            n.PreloadProfiler.Stop();
           }
-          t.LoadDataLayerAndSubLevelProfiler.Restart();
+          n.LoadDataLayerAndSubLevelProfiler.Restart();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.SetDataLayerAndLoadSubLevel");
-          t.LoadingPhase = 9;
+          n.LoadingPhase = 9;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:检测加载DataLayer(开始)");
           }
           this.m6("GameModeController.Load:LoadDataLayer Start");
-          t.LoadDataLayerProfiler.Restart();
-          this.LoadDataLayers(r);
-          t.LoadDataLayerProfiler.Stop();
+          n.LoadDataLayerProfiler.Restart();
+          this.LoadDataLayers(l);
+          n.LoadDataLayerProfiler.Stop();
           this.m6("GameModeController.Load:LoadDataLayer End");
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:检测加载DataLayer(结束)");
@@ -376,27 +387,27 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             Log_1.Log.Info("GameMode", 3, "加载场景:检测加载子关卡(开始)");
           }
           this.m6("GameModeController.Load:LoadSubLevel Start");
-          t.LoadSubLevelProfiler.Start();
-          await ControllerHolder_1.ControllerHolder.SubLevelController.CheckLoadSubLevels(r);
-          t.LoadSubLevelProfiler.Stop();
+          n.LoadSubLevelProfiler.Start();
+          await ControllerHolder_1.ControllerHolder.SubLevelController.CheckLoadSubLevels(l);
+          n.LoadSubLevelProfiler.Stop();
           this.m6("GameModeController.Load:LoadSubLevel End");
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:检测加载子关卡(结束)");
           }
           LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.SETDATALAYER_AND_LOADSUBLEVEL_END_PROGRESS);
-          t.LoadingPhase = 10;
+          n.LoadingPhase = 10;
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.SetDataLayerAndLoadSubLevel");
-          t.LoadDataLayerAndSubLevelProfiler.Stop();
-          t.CheckVoxelStreamingSourceProfiler.Restart();
+          n.LoadDataLayerAndSubLevelProfiler.Stop();
+          n.CheckVoxelStreamingSourceProfiler.Restart();
           this.InitStreamingSources();
-          t.StartIndependentStreaming();
+          n.StartIndependentStreaming();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.CheckVoxelStreaming");
-          t.LoadingPhase = 11;
+          n.LoadingPhase = 11;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 3, "加载场景:检测体素流送(开始)");
           }
           ControllerHolder_1.ControllerHolder.WorldController.ManuallyClearStreamingPool();
-          this.AddOrRemoveRenderAssetsQueryViewInfo(t.BornLocation, ResourceSystem_1.WAIT_RENDER_ASSET_DURATION);
+          this.AddOrRemoveRenderAssetsQueryViewInfo(n.BornLocation, ResourceSystem_1.WAIT_RENDER_ASSET_DURATION);
           this.m6("GameModeController.Load:CheckVoxelStreamingCompleted Start");
           await this.CheckVoxelStreamingCompleted(ELoadingPhase_1.CHECK_VOXEL_STREAMING_END_PROGRESS - ELoadingPhase_1.SETDATALAYER_AND_LOADSUBLEVEL_END_PROGRESS, ELoadingPhase_1.CHECK_VOXEL_STREAMING_END_PROGRESS);
           this.m6("GameModeController.Load:CheckVoxelStreamingCompleted End");
@@ -405,16 +416,16 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           }
           ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(false);
           LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.CHECK_VOXEL_STREAMING_END_PROGRESS);
-          t.LoadingPhase = 12;
+          n.LoadingPhase = 12;
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.CheckVoxelStreaming");
-          t.CheckVoxelStreamingSourceProfiler.Stop();
-          if (t.PreAwakeEntityDuringLoad) {
+          n.CheckVoxelStreamingSourceProfiler.Stop();
+          if (n.PreAwakeEntityDuringLoad) {
             this.m6("GameModeController.Load:CreatePreAwakeEntity Start");
             await ControllerHolder_1.ControllerHolder.CreatureController.PreAwakeEntitiesFromPending(Protocol_1.Aki.Protocol.Nks.Proto_SceneInit);
           }
-          t.CheckStreamingSourceProfiler.Restart();
+          n.CheckStreamingSourceProfiler.Restart();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.CheckStreaming");
-          t.LoadingPhase = 13;
+          n.LoadingPhase = 13;
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 7, "加载场景:检测场景流送(开始)");
           }
@@ -430,18 +441,18 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "kepm.wp.RecordActivateGridActor");
           }
           LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.CHECK_STREAMING_END_PROGRESS);
-          t.LoadingPhase = 14;
+          n.LoadingPhase = 14;
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.CheckStreaming");
-          t.StopIndependentStreaming();
-          t.CheckStreamingSourceProfiler.Stop();
+          n.StopIndependentStreaming();
+          n.CheckStreamingSourceProfiler.Stop();
           {
-            t.CreateEntitiesProfiler.Restart();
+            n.CreateEntitiesProfiler.Restart();
             cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.CreateEntity");
-            t.LoadingPhase = 15;
+            n.LoadingPhase = 15;
             CameraController_1.CameraController.ReturnLockOnCameraMode();
             this.m6("GameModeController.Load:CreateEntities Start");
             ControllerHolder_1.ControllerHolder.CreatureController.CreateEntityFromPending(Protocol_1.Aki.Protocol.Nks.Proto_SceneInit);
-            if (l && ModelManager_1.ModelManager.SeamlessTravelModel?.UseTreadmill && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]等待地板消失(开始)"), await ModelManager_1.ModelManager.SeamlessTravelModel.TransitionFloorUnloadedPromise.Promise, Log_1.Log.CheckInfo())) {
+            if (i && ModelManager_1.ModelManager.SeamlessTravelModel?.UseTreadmill && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]等待地板消失(开始)"), await ModelManager_1.ModelManager.SeamlessTravelModel.TransitionFloorUnloadedPromise.Promise, Log_1.Log.CheckInfo())) {
               Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]等待地板消失(完成)");
             }
             if (Log_1.Log.CheckInfo()) {
@@ -460,25 +471,25 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("GameMode", 17, "加载场景:等待场景战斗实体加载(完成)");
             }
-            t.CreateEntitiesProfiler.Stop();
+            n.CreateEntitiesProfiler.Stop();
             this.m6("GameModeController.Load:CreateEntities End");
             LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.CREATE_ENTITY_END_PROGRESS);
             cpp_1.FKuroPerfSightHelper.EndExtTag("Load.CreateEntity");
             cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.CheckRenderAssets");
-            t.WaitRenderAssetsProfiler.Restart();
+            n.WaitRenderAssetsProfiler.Restart();
             let e = true;
             if (e = Info_1.Info.IsPlayInEditor ? UE.KuroEditorUtilityLibrary.GetGConfigEditorSettings("/Script/KuroEditorUtility.KuroEditorUtilitySetting", "WaitHLODResInLoading") : e) {
-              await this.CheckRenderAssetsStreamingCompleted(t.BornLocation, "加载场景:");
+              await this.CheckRenderAssetsStreamingCompleted(n.BornLocation, "加载场景:");
             } else if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("World", 41, "加载场景:编辑器跳过等待Streaming阶段，加速进入场景。你可以在UGS勾选发布模式来恢复等待。", ["DoWaitStreamingCompleted", e]);
             }
-            t.WaitRenderAssetsProfiler.Stop();
+            n.WaitRenderAssetsProfiler.Stop();
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FixBornLocation);
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("GameMode", 3, "加载场景:修正主控玩家地面位置(开始)");
             }
-            if (l) {
-              SeamlessTravelController_1.SeamlessTravelController.SetCurrentEntityAction(n);
+            if (i) {
+              SeamlessTravelController_1.SeamlessTravelController.SetCurrentEntityAction(_);
               if (ModelManager_1.ModelManager.SeamlessTravelModel?.UseKeepKite && ModelManager_1.ModelManager.SeamlessTravelModel.SeamlessTravelKeepKite?.IsActive) {
                 ModelManager_1.ModelManager.SeamlessTravelModel.SeamlessTravelKeepKite?.UpdateKeepKite();
               }
@@ -489,14 +500,14 @@ class GameModeController extends ControllerBase_1.ControllerBase {
               Log_1.Log.Info("GameMode", 3, "加载场景:修正主控玩家地面位置(完成)");
             }
             ControllerHolder_1.ControllerHolder.RoleTriggerController.UpdateTransform();
-            t.AttachStreamingSourcesToActor(ControllerHolder_1.ControllerHolder.RoleTriggerController.GetMyRoleTriggerOrUndefined());
-            t.LoadingPhase = 16;
+            n.AttachStreamingSourcesToActor(ControllerHolder_1.ControllerHolder.RoleTriggerController.GetMyRoleTriggerOrUndefined());
+            n.LoadingPhase = 16;
             cpp_1.FKuroPerfSightHelper.EndExtTag("Load.CheckRenderAssets");
           }
-          t.WorldDoneProfiler.Restart();
+          n.WorldDoneProfiler.Restart();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.WorldDone");
-          t.LoadingPhase = 17;
-          t.WorldDone = true;
+          n.LoadingPhase = 17;
+          n.WorldDone = true;
           ModelManager_1.ModelManager.CreatureModel.SetIsLoadingScene(false);
           ControllerHolder_1.ControllerHolder.InputController.SetMoveControlEnabled(true, true, true, true);
           LevelEventLockInputState_1.LevelEventLockInputState.Unlock();
@@ -507,29 +518,30 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldDone);
           RoleAudioController_1.RoleAudioController.SetUpdateAudioDynamicTrace(true);
-          if (!t.PlayTravelMp4) {
+          if (!n.PlayTravelMp4) {
             this.m6("GameModeController.Load:OpenBattleViewFromLoading Start");
-            t.OpenBattleViewProfiler.Restart();
+            n.OpenBattleViewProfiler.Restart();
             if (!ModelManager_1.ModelManager.SeamlessTravelModel?.IsSeamlessTravel) {
               await BattleUiControl_1.BattleUiControl.OpenBattleViewFromLoading();
             }
-            t.OpenBattleViewProfiler.Stop();
+            n.OpenBattleViewProfiler.Stop();
             this.m6("GameModeController.Load:OpenBattleViewFromLoading End");
           }
-          if (!l) {
+          if (!i) {
             CameraController_1.CameraController.FightCamera.LogicComponent.ResetArmLengthAndRotation(Rotator_1.Rotator.ZeroRotator);
             CameraController_1.CameraController.FightCamera.LogicComponent.ResetInitialCameraRotation();
           }
           LoadingController_1.LoadingController.SetProgress(ELoadingPhase_1.WORLD_DONE_END_PROGRESS);
-          t.LoadingPhase = 18;
+          n.LoadingPhase = 18;
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.WorldDone");
-          t.WorldDoneProfiler.Stop();
+          n.WorldDoneProfiler.Stop();
           {
+            GameModeController.RegisterDataLayerChange();
             ModelManager_1.ModelManager.GameModeModel.CloseLoadingProfiler.Restart();
             cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.CloseLoading");
             ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, "GameModeController.Load");
             ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(false);
-            t.LoadingPhase = 19;
+            n.LoadingPhase = 19;
             if (ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel) {
               await SeamlessTravelController_1.SeamlessTravelController.EndSeamlessTravel();
               ModelManager_1.ModelManager.LoadingModel.SetIsLoading(false);
@@ -550,11 +562,11 @@ class GameModeController extends ControllerBase_1.ControllerBase {
               }
               await ModelManager_1.ModelManager.GameModeModel.VideoStartPromise.Promise;
               this.m6("GameModeController.Load:OpenBattleViewFromLoading Start");
-              t.CloseLoadingPhaseOpenBattleViewProfiler.Restart();
+              n.CloseLoadingPhaseOpenBattleViewProfiler.Restart();
               if (!ModelManager_1.ModelManager.SeamlessTravelModel?.IsSeamlessTravel) {
                 await BattleUiControl_1.BattleUiControl.OpenBattleViewFromLoading();
               }
-              t.CloseLoadingPhaseOpenBattleViewProfiler.Stop();
+              n.CloseLoadingPhaseOpenBattleViewProfiler.Stop();
               this.m6("GameModeController.Load:OpenBattleViewFromLoading End");
               this.m6("GameModeController.Load:CloseLoading Start");
               await LoadingController_1.LoadingController.GameModeCloseLoading();
@@ -585,23 +597,40 @@ class GameModeController extends ControllerBase_1.ControllerBase {
                 Log_1.Log.Info("GameMode", 3, "加载场景:关闭Loading界面(完成)");
               }
             }
-            t.LoadingPhase = 20;
+            n.LoadingPhase = 20;
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("GameMode", 3, "加载场景:通知服务端加载完成（开始）");
             }
             this.m6("GameModeController.Load:SceneLoadingFinishRequest Start");
-            await ControllerHolder_1.ControllerHolder.CreatureController.SceneLoadingFinishRequest(r.BKn);
+            await ControllerHolder_1.ControllerHolder.CreatureController.SceneLoadingFinishRequest(l.BKn);
             this.m6("GameModeController.Load:SceneLoadingFinishRequest End");
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("GameMode", 3, "加载场景:通知服务端加载完成（完成）");
             }
-            WorldController_1.WorldController.EndWorldOriginInLoadingMode("JoinScene", ModelManager_1.ModelManager.GameModeModel.RoleLocation);
+            var o = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.MapConfigId;
+            var a = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id;
+            var r = Vector_1.Vector.Create(n.BornLocation);
+            if (!ControllerHolder_1.ControllerHolder.UnopenedAreaController.OnCheckUnopenedArea(r, o, a)) {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("GameMode", 3, "加载场景:检测到处于未开放区域，请求传送");
+              }
+              r = Protocol_1.Aki.Protocol.ECs.create();
+              Net_1.Net.Call(20891, r, () => {});
+            }
+            if (ModelManager_1.ModelManager.GameModeModel.MapConfig.IgnoreWorldOrigin) {
+              WorldController_1.WorldController.SetEnableWorldOrigin(true);
+              WorldController_1.WorldController.EndWorldOriginInLoadingMode("JoinScene", Vector_1.Vector.ZeroVector);
+              WorldController_1.WorldController.SetEnableWorldOrigin(false);
+            } else {
+              WorldController_1.WorldController.SetEnableWorldOrigin(true);
+              WorldController_1.WorldController.EndWorldOriginInLoadingMode("JoinScene", ModelManager_1.ModelManager.GameModeModel.RoleLocation);
+            }
             PerfSightController_1.PerfSightController.MarkLevelLoadCompleted();
             ControllerHolder_1.ControllerHolder.BlackScreenFadeController.NeedGuarantee = true;
-            t.WorldDoneAndLoadingClosed = true;
-            t.LoadingPhase = 1;
+            n.WorldDoneAndLoadingClosed = true;
+            n.LoadingPhase = 1;
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldDoneAndCloseLoading);
-            t.ResetPromise();
+            n.ResetPromise();
             this.m6("GameModeController.Load: End");
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("GameMode", 3, "加载场景:加载完成");
@@ -619,15 +648,15 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             }
             ModelManager_1.ModelManager.GameModeModel.CloseLoadingProfiler.Stop();
             ModelManager_1.ModelManager.GameModeModel.LoadWorldProfiler.Stop();
-            this.PrintLoadDetail(t.BornLocation ?? new UE.VectorDouble());
-            o = {
+            this.PrintLoadDetail(n.BornLocation ?? new UE.VectorDouble());
+            a = {
               ...new LogReportDefine_1.PlayerCommonLogData(),
               event_id: "3",
               i_inst_id: ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id.toString(),
               i_cost_time: ModelManager_1.ModelManager.GameModeModel.LoadWorldProfiler.Time.toString(),
               s_device_type: e
             };
-            LogReportController_1.LogReportController.LogReport(o);
+            LogReportController_1.LogReportController.LogReport(a);
             cpp_1.FKuroPerfSightHelper.EndExtTag("Load.CloseLoading");
             cpp_1.FKuroPerfSightHelper.EndExtTag("Load");
           }
@@ -687,28 +716,18 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("GameMode", 3, "改变场景模式:请求服务器SceneModeChangeFinishRequest(开始)");
       }
       var o = Protocol_1.Aki.Protocol.yfs.create();
-      var o = await Net_1.Net.CallAsync(23311, o);
+      var o = await Net_1.Net.CallAsync(15915, o);
       if (o && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26681);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17552);
         return false;
       } else {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 3, "改变场景模式:请求服务器SceneModeChangeFinishRequest(完成)");
         }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 70, "改变场景模式:等待加载编队(开始)");
-        }
-        await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise;
-        if (Log_1.Log.CheckInfo()) {
+        if (ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 70, "改变场景模式:等待加载编队(开始)"), await Promise.race([ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise.Promise, r.ChangeSceneModePromise.Promise]), Log_1.Log.CheckInfo())) {
           Log_1.Log.Info("GameMode", 70, "改变场景模式:等待加载编队(完成)");
         }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 70, "改变场景模式:检测场景流送(开始)", ["流送源Pos", r.StreamingSource?.D_K2_GetActorLocation()]);
-        }
-        this.m6("GameModeController.Change:CheckStreaming Start");
-        await this.Pfr(r.ChangeSceneModeVoxelPromise, r.ChangeSceneModeStreamingPromise);
-        this.m6("GameModeController.Change:CheckStreaming End");
-        if (Log_1.Log.CheckInfo()) {
+        if (r.UseWorldPartition && r.StreamingSource?.IsValid() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 70, "改变场景模式:检测场景流送(开始)", ["流送源Pos", r.StreamingSource?.D_K2_GetActorLocation()]), this.m6("GameModeController.Change:CheckStreaming Start"), await this.Pfr(r.ChangeSceneModeVoxelPromise, r.ChangeSceneModeStreamingPromise), this.m6("GameModeController.Change:CheckStreaming End"), Log_1.Log.CheckInfo())) {
           Log_1.Log.Info("GameMode", 70, "改变场景模式:检测场景流送(完成)");
         }
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.PreventEntityFalling);
@@ -738,6 +757,17 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     TaskSystem_1.TaskSystem.AddTask(o);
     await TaskSystem_1.TaskSystem.Run();
   }
+  static RegisterDataLayerChange() {
+    var e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.DataLayerSubsystem.StaticClass());
+    if (e) {
+      e.OnDataLayerActivationStateChanged.Add(this.Ggd);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 70, "注册DataLayer变化监听");
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("GameMode", 70, "注册DataLayer变化监听失败", ["DatalayerSubSystem", e]);
+    }
+  }
   static PrintWorldPartitionDebugInfo(e, o, a, r, t) {
     if (e) {
       if (!UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.WorldPartitionSubsystem.StaticClass())) {
@@ -750,19 +780,53 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Error("GameMode", 70, "WorldPartitionStreamingSourceComponent不存在");
     }
   }
-  static SwitchDataLayer(e, o, a) {
+  static SwitchDataLayer(e, o, a, r) {
+    GameModeController.AwaitSwitchDataLayer(e, o, a, r);
+  }
+  static async AwaitSwitchDataLayer(e, o, a, r) {
     if (ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode()) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("GameMode", 39, "切换DataLayer:遇到不应执行切换DataLayer的情况，使用伪切换DataLayer替代");
       }
       this.CKs(e, o, a);
     } else {
-      this.Rfr(e, o, a);
+      if (StringUtils_1.StringUtils.IsBlank(r)) {
+        await this.Rfr(e, o, a);
+      } else {
+        ModelManager_1.ModelManager.GameModeModel.CreateSwitchDataLayerWithSequencePromise();
+        ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.LevelSequence, e => {
+          ModelManager_1.ModelManager.GameModeModel.LoadSwitchDataLayerSequencePromise.SetResult(e);
+        });
+        var t = await ModelManager_1.ModelManager.GameModeModel.LoadSwitchDataLayerSequencePromise.Promise;
+        if (!t?.IsValid()) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("LevelEvent", 18, "GameModeController.SwitchDataLayer:找不到Sequence资源", ["sequencePath", r]);
+          }
+          return;
+        }
+        if (this.$vn) {
+          this.$vn.SetSequenceData(t);
+        } else {
+          this.$vn = new SimpleLevelSequenceActor_1.default(t);
+        }
+        r = [];
+        this.$vn.AddOnStopCallback(() => {
+          ModelManager_1.ModelManager.GameModeModel.SwitchDataLayerWithSequencePromise?.SetResult(true);
+        });
+        this.$vn.PlayLoop(false, 0, undefined, undefined, new RefCompDefine_1.PlayRateStruct());
+        this.Rfr(r, o, undefined, false);
+        await ModelManager_1.ModelManager.GameModeModel.SwitchDataLayerWithSequencePromise.Promise;
+        await this.Rfr(e, r, a, false);
+        TimerSystem_1.TimerSystem.Delay(() => {
+          UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.kuro.CustomCullFlag 0");
+        }, +CommonDefine_1.MILLIONSECOND_PER_SECOND);
+      }
+      GameModeController.wfr();
     }
   }
-  static async Rfr(e, o, a) {
-    var r = ModelManager_1.ModelManager.GameModeModel;
-    if (r.DataLayerSwitching) {
+  static async Rfr(e, o, a, r = true) {
+    var t = ModelManager_1.ModelManager.GameModeModel;
+    if (t.DataLayerSwitching) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GameMode", 29, "当前正在切换DataLayer");
       }
@@ -771,9 +835,11 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 29, "切换DataLayer:(开始)", ["卸载的DataLayer", e?.join()], ["加载的DataLayer", o?.join()]);
       }
-      r.BeginDataLayerChange();
+      t.BeginDataLayerChange();
       ModelManager_1.ModelManager.GameModeModel.AddLoadMapHandle("SwitchDataLayerInternal");
-      ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "SwitchDataLayerInternal");
+      if (r) {
+        ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "SwitchDataLayerInternal");
+      }
       if (e?.length || o?.length) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLevelEnvChange, 1);
       }
@@ -781,8 +847,8 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 29, "切换DataLayer:卸载DataLayer(开始)");
         }
-        for (const t of e) {
-          GameModeController.Ufr(t);
+        for (const l of e) {
+          GameModeController.Ufr(l);
         }
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 29, "切换DataLayer:卸载DataLayer(完成)");
@@ -803,17 +869,18 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("GameMode", 29, "切换DataLayer:检测场景流送(开始)");
       }
       this.m6("GameModeController.SwitchDataLayer:CheckStreaming Start");
-      await this.Pfr(r.DataLayerChangeVoxelPromise, r.DataLayerChangeStreamingPromise);
+      await this.Pfr(t.DataLayerChangeVoxelPromise, t.DataLayerChangeStreamingPromise);
       this.m6("GameModeController.SwitchDataLayer:CheckStreaming End");
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 29, "切换DataLayer:检测场景流送(完成)");
       }
-      ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, "SwitchDataLayerInternal");
+      if (r) {
+        ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, "SwitchDataLayerInternal");
+      }
       ModelManager_1.ModelManager.GameModeModel.RemoveLoadMapHandle("SwitchDataLayerInternal");
-      if (r.DataLayerSwitching) {
+      if (t.DataLayerSwitching) {
         ControllerHolder_1.ControllerHolder.CreatureController.CreateEntityFromPending(Protocol_1.Aki.Protocol.Nks.Proto_Normal);
-        r.EndDataLayerChange();
-        GameModeController.wfr();
+        t.EndDataLayerChange();
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 29, "切换DataLayer:(完成)");
         }
@@ -889,14 +956,14 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     var a;
     var r;
     var t;
-    var n = ModelManager_1.ModelManager.GameModeModel.LoadWorldProfiler;
+    var l = ModelManager_1.ModelManager.GameModeModel.LoadWorldProfiler;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("World", 3, "加载详情", ["MapPath", ModelManager_1.ModelManager.GameModeModel.MapPath], ["耗时", n.ToString()]);
+      Log_1.Log.Info("World", 3, "加载详情", ["MapPath", ModelManager_1.ModelManager.GameModeModel.MapPath], ["耗时", l.ToString()]);
     }
-    var l = ModelManager_1.ModelManager.PreloadModel.ResourcesLoadTime;
-    l.sort((e, o) => o[1] - e[1]);
+    var n = ModelManager_1.ModelManager.PreloadModel.ResourcesLoadTime;
+    n.sort((e, o) => o[1] - e[1]);
     if (UE.KuroStaticLibrary.IsWithEditor()) {
-      n = UE.KuroStaticLibrary.GetPIEStartTimeInSeconds();
+      l = UE.KuroStaticLibrary.GetPIEStartTimeInSeconds();
       t = UE.KuroStaticLibrary.GetPlatformTimeInSeconds();
       o = (r = (e, o) => {
         var a;
@@ -911,7 +978,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       a = (r = r(a, "-KuroTsSilentLoginTestFile=").replace(/\//g, "\\").split("\\"))[r.length - 1];
       r = {
         Version: BaseConfigController_1.BaseConfigController.GetVersionString(),
-        LoadingTime: t - n,
+        LoadingTime: t - l,
         MapPath: ModelManager_1.ModelManager.GameModeModel.MapPath,
         BornLocation: e.ToString(),
         TestName: a,
@@ -930,8 +997,8 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       }
     }
     if (ModelManager_1.ModelManager.PreloadModel.LoadAssetOneByOneState) {
-      for (let o = 0; o < TOP_CONSUMING_COUNT && !(o >= l.length); ++o) {
-        var _ = l[o];
+      for (let o = 0; o < TOP_CONSUMING_COUNT && !(o >= n.length); ++o) {
+        var _ = n[o];
         let e = "";
         var i = _[1];
         e = i < ONE_SECOND ? i + " ms" : i / ONE_SECOND + " s";
@@ -1011,7 +1078,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("GameMode", 54, "时停:强制解除真时停", ["timeDilation", Time_1.Time.OriginTimeDilation]);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetGamePaused, false);
-      return UE.GameplayStatics.SetGamePaused(GlobalData_1.GlobalData.World, false);
+      UE.GameplayStatics.SetGamePaused(GlobalData_1.GlobalData.World, false);
     } else {
       ModelManager_1.ModelManager.GameModeModel.ForceDisableGamePaused = false;
       if (ModelManager_1.ModelManager.GameModeModel.GamePausedReasons.size > 0) {
@@ -1022,67 +1089,73 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           Log_1.Log.Info("GameMode", 54, "时停:恢复强制解除, Set中存在reason, 执行真时停");
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetGamePaused, true);
-        return UE.GameplayStatics.SetGamePaused(GlobalData_1.GlobalData.World, true);
+        UE.GameplayStatics.SetGamePaused(GlobalData_1.GlobalData.World, true);
       } else {
         GameModeController.SetTimeDilation(Time_1.Time.OriginTimeDilation, 1);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 54, "时停:恢复强制解除, Set中不存在reason, 不执行真时停", ["timeDilation", Time_1.Time.OriginTimeDilation]);
         }
-        return true;
       }
     }
   }
-  static SetTimeDilation(e, o = 0) {
+  static SetTimeDilation(a, r = 0) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("GameMode", 54, "时停:调用假时停", ["timeDilation", e], ["timeDilationType", o]);
+      Log_1.Log.Info("GameMode", 54, "时停:调用假时停", ["timeDilation", a], ["timeDilationType", r]);
     }
-    var a;
-    var r;
     var t = ModelManager_1.ModelManager.GameModeModel.TimeDilationMap;
-    if (e === 1) {
-      t.delete(o);
+    if (a === 1) {
+      t.delete(r);
     } else {
-      t.set(o, e);
+      t.set(r, a);
     }
-    let n = 1;
-    let l = 1;
-    for ([a, r] of t) {
-      n *= r;
-      if (a !== 1) {
-        l *= r;
+    if (ModelManager_1.ModelManager.GameModeModel.ForceDisableGamePaused) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 45, "时停:由于在传送过程中，不执行假时停，只保存", ["timeDilation", a], ["timeDilationType", r]);
       }
+    } else {
+      let e = 1;
+      let o = 1;
+      for (var [l, n] of t) {
+        e *= n;
+        if (l !== 1) {
+          o *= n;
+        }
+      }
+      if (e < MathUtils_1.MathUtils.SmallNumber) {
+        e = 0;
+      }
+      if (o < MathUtils_1.MathUtils.SmallNumber) {
+        o = 0;
+      }
+      if (r !== 1) {
+        Time_1.Time.OriginTimeDilation = o;
+      }
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 54, "时停:假时停计算后的值", ["finalDilation", e], ["finalDilationWithoutPause", o], ["Time.OriginTimeDilation", Time_1.Time.OriginTimeDilation]);
+      }
+      Time_1.Time.SetTimeDilation(e);
+      ControllerHolder_1.ControllerHolder.TimeOfDayController.ChangeTimeScale(e);
+      ControllerHolder_1.ControllerHolder.CharacterController.SetTimeDilation(e);
+      ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(e);
+      ControllerHolder_1.ControllerHolder.BulletController.SetTimeDilation(e);
+      CameraController_1.CameraController.SetTimeDilation(e);
+      ControllerHolder_1.ControllerHolder.ComponentForceTickController.SetTimeDilation(e);
+      EffectEnvironment_1.EffectEnvironment.GlobalTimeScale = e;
+      a = Protocol_1.Aki.Protocol.GCs.create();
+      a.dKn = e;
+      Net_1.Net.Send(29374, a);
+      if (e === 0) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 1);
+      }
+      if (e === 1) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 0);
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TriggerUiTimeDilation);
     }
-    if (n < MathUtils_1.MathUtils.SmallNumber) {
-      n = 0;
-    }
-    if (l < MathUtils_1.MathUtils.SmallNumber) {
-      l = 0;
-    }
-    if (o !== 1) {
-      Time_1.Time.OriginTimeDilation = l;
-    }
-    Time_1.Time.SetTimeDilation(n);
-    ControllerHolder_1.ControllerHolder.TimeOfDayController.ChangeTimeScale(n);
-    ControllerHolder_1.ControllerHolder.CharacterController.SetTimeDilation(n);
-    ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(n);
-    ControllerHolder_1.ControllerHolder.BulletController.SetTimeDilation(n);
-    CameraController_1.CameraController.SetTimeDilation(n);
-    ControllerHolder_1.ControllerHolder.ComponentForceTickController.SetTimeDilation(n);
-    EffectEnvironment_1.EffectEnvironment.GlobalTimeScale = n;
-    e = Protocol_1.Aki.Protocol.GCs.create();
-    e.dKn = n;
-    Net_1.Net.Send(24035, e);
-    if (n === 0) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 1);
-    }
-    if (n === 1) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 0);
-    }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TriggerUiTimeDilation);
   }
   static FixBornLocation(e = undefined) {
     var o;
-    if (Global_1.Global.BaseCharacter && !Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(230)?.IsOnVehicle) {
+    if (Global_1.Global.BaseCharacter && !Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(231)?.IsOnVehicle) {
       if (e) {
         Global_1.Global.BaseCharacter.CharacterActorComponent.TeleportAndFindStandLocation(e);
       } else {
@@ -1092,11 +1165,11 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         Mode: 1,
         Context: "[GameModeController.FixBornLocation]"
       });
-      if (o = (e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity).GetComponent(177)) {
+      if (o = (e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity).GetComponent(178)) {
         o.MainAnimInstance?.SyncAnimStates(undefined);
       }
-      e.GetComponent(178)?.StopAllAddMove();
-      e.GetComponent(175)?.ResetCharState();
+      e.GetComponent(179)?.StopAllAddMove();
+      e.GetComponent(176)?.ResetCharState();
     }
   }
   static LoadDataLayers(e) {
@@ -1122,8 +1195,8 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           Log_1.Log.Error("GameMode", 3, "加载场景:加载DataLayer失败,不存在的配置Id", ["DataLayerId:", t]);
         }
       }
-      for (const n of o) {
-        GameModeController.Ufr(n);
+      for (const l of o) {
+        GameModeController.Ufr(l);
       }
     }
   }
@@ -1138,9 +1211,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
   static wfr() {
     var e = Protocol_1.Aki.Protocol.lms.create();
     e.r6n = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id;
-    Net_1.Net.Call(24545, e, e => {
+    Net_1.Net.Call(25396, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27916);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25121);
       }
     });
   }
@@ -1199,26 +1272,26 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       r.CheckStreamingCompletedTimerId = undefined;
     }
   }
-  static ZQs(r, t, n, l, _ = false) {
+  static ZQs(r, t, l, n, _ = false) {
     var e = r.TargetGrids;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("World", 60, "[CheckTargetStreamingCompleted] 检测参数", ["dataLayers", n !== undefined && n.Num() > 0 ? n.Get(0).toString() : undefined], ["targetGrids", e !== undefined && e.Num() > 0 ? e.Get(0).toString() : undefined]);
+      Log_1.Log.Info("World", 60, "[CheckTargetStreamingCompleted] 检测参数", ["dataLayers", l !== undefined && l.Num() > 0 ? l.Get(0).toString() : undefined], ["targetGrids", e !== undefined && e.Num() > 0 ? e.Get(0).toString() : undefined]);
     }
     let i = false;
     let d = 0;
     const g = TimerSystem_1.TimerSystem.Forever(() => {
       function e(e = false) {
         if ((d += ResourceSystem_1.CHECK_STREAMING_INTERVAL) >= exports.LOG_STREAMING_STUCK_INTERVAL) {
-          GameModeController.PrintWorldPartitionDebugInfo(r, n, false, ResourceSystem_1.STREAMING_SOURCE_RADIUS, e);
+          GameModeController.PrintWorldPartitionDebugInfo(r, l, false, ResourceSystem_1.STREAMING_SOURCE_RADIUS, e);
           d = 0;
         }
       }
       if (!i) {
         var o;
-        var a = r.IsStreamingCompletedForLayers(n, false, ResourceSystem_1.STREAMING_SOURCE_RADIUS, true, cellProgress, false);
-        if (l) {
+        var a = r.IsStreamingCompletedForLayers(l, false, ResourceSystem_1.STREAMING_SOURCE_RADIUS, true, cellProgress, false);
+        if (n) {
           o = (0, puerts_1.$unref)(cellProgress);
-          l(o);
+          n(o);
         }
         if (!a) {
           e(i);
@@ -1229,7 +1302,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         }
       }
       if (i) {
-        if (!r.IsStreamingCompletedForLayers(n, false, ResourceSystem_1.STREAMING_SOURCE_RADIUS, false, cellProgress, true)) {
+        if (!r.IsStreamingCompletedForLayers(l, false, ResourceSystem_1.STREAMING_SOURCE_RADIUS, false, cellProgress, true)) {
           e(i);
           return;
         }
@@ -1274,6 +1347,17 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       LoadingController_1.LoadingController.AddProgress(o, a);
     }
   }
+  static AppendAllBaseDatalayers(e) {
+    for (const a of WorldDefine_1.allBaseDataLayers) {
+      var o = (0, puerts_1.$ref)(undefined);
+      UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldPartitionDataLayerNameByLabel(GlobalData_1.GlobalData.World, a, o);
+      if (o) {
+        e.Add((0, puerts_1.$unref)(o));
+      } else if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("GameMode", 70, "AppendAllBaseDatalayers: 获取DataLayer名称失败", ["DataLayer:", a]);
+      }
+    }
+  }
   static async CheckStreamingCompleted(a, r) {
     var e = ModelManager_1.ModelManager.GameModeModel;
     ModelManager_1.ModelManager.WorldModel.CurEnvironmentInfo?.ResetInfo();
@@ -1283,14 +1367,14 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("World", 7, "[SoloGameMode.CheckStreamingCompleted] 玩家出生点。", ["Location", t]);
         }
-        var n = ModelManager_1.ModelManager.GameModeModel.StreamingSource.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
-        n.EnableStreamingSource();
-        var l = UE.NewArray(UE.BuiltinName);
+        var l = ModelManager_1.ModelManager.GameModeModel.StreamingSource.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
+        l.EnableStreamingSource();
+        var n = UE.NewArray(UE.BuiltinName);
         let o = ControllerHolder_1.ControllerHolder.WorldController.EnvironmentInfoUpdate(t, true, true);
         if (o) {
           t = (0, puerts_1.$ref)(undefined);
           UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldPartitionDataLayerNameByLabel(GlobalData_1.GlobalData.World, o, t);
-          l.Add((0, puerts_1.$unref)(t));
+          n.Add((0, puerts_1.$unref)(t));
         } else {
           let e = true;
           if (Info_1.Info.IsPlayInEditor) {
@@ -1304,12 +1388,13 @@ class GameModeController extends ControllerBase_1.ControllerBase {
               var _ = (0, puerts_1.$ref)(undefined);
               o = FNameUtil_1.FNameUtil.GetDynamicFName(i);
               UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldPartitionDataLayerNameByLabel(GlobalData_1.GlobalData.World, o, _);
-              l.Add((0, puerts_1.$unref)(_));
+              n.Add((0, puerts_1.$unref)(_));
             }
           }
         }
+        this.AppendAllBaseDatalayers(n);
         t = e.StreamingCompleted;
-        e.CheckStreamingCompletedTimerId = this.ZQs(n, t, l, e => {
+        e.CheckStreamingCompletedTimerId = this.ZQs(l, t, n, e => {
           LoadingController_1.LoadingController.AddProgress(Math.min(e * a, a), r);
         }, true);
         await t.Promise;
@@ -1355,13 +1440,13 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("World", 3, "检查渲染资源(开始)", ["Reason", a], ["坐标", o]);
     }
-    const n = new UE.WorldPartitionStreamingQuerySource(o.op_ToVector(), ResourceSystem_1.RENDER_ASSETS_RADIUS, false, false, undefined, false, true, undefined);
-    this.Kta(t, n, true);
+    const l = new UE.WorldPartitionStreamingQuerySource(o.op_ToVector(), ResourceSystem_1.RENDER_ASSETS_RADIUS, false, false, undefined, false, true, undefined);
+    this.Kta(t, l, true);
     if (r.CheckRenderAssetsTimeoutId?.Valid()) {
       TimerSystem_1.TimerSystem.Remove(r.CheckRenderAssetsTimeoutId);
       r.CheckRenderAssetsTimeoutId = undefined;
     }
-    const l = new GameModePromise_1.GameModePromise();
+    const n = new GameModePromise_1.GameModePromise();
     let _ = false;
     if (!GlobalData_1.GlobalData.IsPlayInEditor) {
       r.CheckRenderAssetsTimeoutId = TimerSystem_1.TimerSystem.Delay(() => {
@@ -1369,9 +1454,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("World", 3, "检查渲染资源(完成)", ["Reason", a], ["是否超时:", true], ["坐标", o], ["画质", GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel], ["相机位置", CameraController_1.CameraController.CameraLocation.ToString()], ["相机旋转", CameraController_1.CameraController.CameraRotator.ToString()]);
           }
-          this.Kta(t, n);
+          this.Kta(t, l);
           r.RenderAssetDone = true;
-          l.SetResult(true);
+          n.SetResult(true);
           this.AddOrRemoveRenderAssetsQueryViewInfo(o, 0);
         }
       }, ResourceSystem_1.RENDER_ASSETS_TIMEOUT, undefined, "GameModeController.CheckRenderAssetsStreamingCompleted", false);
@@ -1379,7 +1464,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     r.CheckRenderAssetsStreamingCompletedTimerId = TimerSystem_1.TimerSystem.Forever(() => {
       var e;
       if (!r.RenderAssetDone) {
-        e = t.IsRenderAssetsStreamingCompleted(n, _, false, false);
+        e = t.IsRenderAssetsStreamingCompleted(l, _, false, false);
         _ = true;
         if (e) {
           if (Log_1.Log.CheckInfo()) {
@@ -1392,12 +1477,12 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           TimerSystem_1.TimerSystem.Remove(r.CheckRenderAssetsStreamingCompletedTimerId);
           r.CheckRenderAssetsStreamingCompletedTimerId = undefined;
           r.RenderAssetDone = true;
-          l.SetResult(true);
+          n.SetResult(true);
           this.AddOrRemoveRenderAssetsQueryViewInfo(o, 0);
         }
       }
     }, ResourceSystem_1.CHECK_RENDERASSETS_INTERVAL);
-    return l.Promise;
+    return n.Promise;
   }
   static CheckPreload(o, a) {
     if (PreloadDefine_1.PreloadSetting.UseNewPreload) {
@@ -1423,7 +1508,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       (ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel ? (ModelManager_1.ModelManager.LoadingModel.SetIsLoading(true), e.SetResult(true), o.OpenLoadingEnd) : ModelManager_1.ModelManager.GameModeModel.PlayTravelMp4 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:播放CG(开始)"), await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(18, 5, ModelManager_1.ModelManager.GameModeModel.TravelMp4Path, () => {
         var e = Protocol_1.Aki.Protocol.D$_.create();
         e.x$_ = ModelManager_1.ModelManager.GameModeModel.TravelMp4Path ?? "";
-        Net_1.Net.Call(26138, e, e => {
+        Net_1.Net.Call(26476, e, e => {
           if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);
@@ -1495,15 +1580,16 @@ class GameModeController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.GameModeController = GameModeController;
-(_a = GameModeController).hra = () => {
+(_a = GameModeController).$vn = undefined;
+GameModeController.hra = () => {
   var e;
-  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = 0, Net_1.Net.Send(24035, e), Log_1.Log.CheckInfo())) {
+  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = 0, Net_1.Net.Send(29374, e), Log_1.Log.CheckInfo())) {
     Log_1.Log.Info("GameMode", 54, "ApplicationHasDeactivated 发生时停协议", ["TimeDilation", Time_1.Time.TimeDilation]);
   }
 };
 GameModeController.Oje = () => {
   var e;
-  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = Time_1.Time.TimeDilation, Net_1.Net.Send(24035, e), Log_1.Log.CheckInfo())) {
+  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = Time_1.Time.TimeDilation, Net_1.Net.Send(29374, e), Log_1.Log.CheckInfo())) {
     Log_1.Log.Info("GameMode", 54, "ApplicationHasReactivated 发生时停协议", ["TimeDilation", Time_1.Time.TimeDilation]);
   }
 };
@@ -1516,8 +1602,19 @@ GameModeController.nye = () => {
 GameModeController.Hje = () => {
   var e;
   if (UE.KuroStaticLibrary.IsLowMemoryDevice()) {
-    e = ((e = ModelManager_1.ModelManager.AreaModel.AreaInfo) ? ModelManager_1.ModelManager.AreaModel.GetAreaId(e, ExploreProgressDefine_1.AREA_LEVEL) : 0) === LOW_MEMORY_AREA_ID ? 0.5 : 1;
+    e = (e = ModelManager_1.ModelManager.AreaModel.AreaInfo) ? ModelManager_1.ModelManager.AreaModel.GetAreaId(e, ExploreProgressDefine_1.AREA_LEVEL) : 0;
+    e = lowMemoryAreaIds.has(e) ? 0.5 : 1;
     ModelManager_1.ModelManager.GameModeModel.ScaleStreamingSource(2, e);
+  }
+};
+GameModeController.Ggd = (e, o) => {
+  if (o && e?.IsValid()) {
+    if ((!!(o = e.GetDataLayerLabel()).op_Equality(WorldDefine_1.SpecificVolumeDatalayer1) || !!o.op_Equality(WorldDefine_1.SpecificVolumeDatalayer2)) && !ModelManager_1.ModelManager.GameModeModel.HasDataLayer(o.toString())) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 70, "DataLayer在业务端未激活", ["Datalayer", o]);
+      }
+      RenderModuleController_1.RenderModuleController.SetWorldPartitionDataLayerState(o.toString(), false);
+    }
   }
 };
 GameModeController.PreventEntityFalling = () => {

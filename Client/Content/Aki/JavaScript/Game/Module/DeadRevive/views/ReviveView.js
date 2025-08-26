@@ -35,18 +35,18 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
     this.ZFt = false;
     this.e3t = undefined;
     this.t3t = false;
-    this.Ltu = false;
+    this.eiu = false;
     this.i3t = () => {
       if (this.WFt === 0) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotRevive");
       } else if (this.ZFt) {
-        DeadReviveController_1.DeadReviveController.ReviveRequest(false, this.wtu);
+        DeadReviveController_1.DeadReviveController.ReviveRequest(false, this.tiu);
       } else if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Battle", 4, "Time Or Times Limit!!!");
       }
     };
-    this.wtu = i => {
-      if (i && this.Ltu) {
+    this.tiu = i => {
+      if (i && this.eiu) {
         ControllerHolder_1.ControllerHolder.MoraleBattleController.SetReviveFromMoraleBattle(true);
       }
     };
@@ -78,7 +78,7 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
   OnStart() {
     this.XFt = this.GetText(4);
     this.$Ft = this.GetText(9);
-    this.Ltu = ModelManager_1.ModelManager.MoraleBattleModel.IsMoraleActive();
+    this.eiu = ModelManager_1.ModelManager.MoraleBattleModel.IsMoraleActive();
     var i = this.GetItem(0);
     var e = this.GetItem(1);
     var t = this.GetButton(3);
@@ -123,18 +123,18 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(5).ShowTextNew(ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig?.ReviveTitle ?? "");
     t = this.GetText(6);
     if (!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      t.ShowTextNew(this.Atu());
+      t.ShowTextNew(this.iiu());
     }
     this.e3t = new TrainingView_1.TrainingView();
-    this.e3t.Show(this.GetHorizontalLayout(7), this.Ptu());
+    this.e3t.Show(this.GetHorizontalLayout(7), this.riu());
   }
-  Ptu() {
-    if (this.Ltu) {
+  riu() {
+    if (this.eiu) {
       return ModelManager_1.ModelManager.MoraleModel.GetMoraleBuffDataList();
     }
   }
-  Atu() {
-    if (this.Ltu) {
+  iiu() {
+    if (this.eiu) {
       return "Morale_title_29";
     } else {
       return ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig?.ReviveContent ?? "";

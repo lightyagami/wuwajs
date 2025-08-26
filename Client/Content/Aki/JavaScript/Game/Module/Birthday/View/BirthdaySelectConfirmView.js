@@ -21,14 +21,16 @@ class BirthdaySelectConfirmView extends UiViewBase_1.UiViewBase {
     this.AQ1 = false;
     this.KI1 = () => {
       if (!this.AQ1) {
-        UiManager_1.UiManager.CloseAndOpenView(this.Info.Name, "BirthdayRoleSelectView", this.QI1);
+        this.CloseMe();
         this.AQ1 = true;
       }
     };
     this.WI1 = () => {
       if (!this.AQ1) {
         this.gL1();
-        UiManager_1.UiManager.CloseAndOpenView(this.Info.Name, "BirthdayLetterView", this.QI1);
+        UiManager_1.UiManager.CloseAndOpenView(this.Info.Name, "BirthdayLetterView", this.QI1, () => {
+          UiManager_1.UiManager.CloseView("BirthdayRoleSelectView");
+        });
         this.AQ1 = true;
       }
     };

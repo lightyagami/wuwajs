@@ -36,7 +36,7 @@ class AiStateMachineTaskMontage extends AiStateMachineTask_1.AiStateMachineTask 
       this.Node.TaskFinished = true;
       this.rse = undefined;
     };
-    this.FTu = t => {
+    this.sbu = t => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("StateMachine", 84, "Montage Task OnMontageRemain", ["montage", this.GetNameByCurrentHandle()], ["remain time", t], ["remained trigger", this.RemainedTrigger]);
       }
@@ -54,7 +54,7 @@ class AiStateMachineTaskMontage extends AiStateMachineTask_1.AiStateMachineTask 
   }
   OnEnter(t) {
     var i;
-    if (!this.Node.TagComponent.HasTag(1008164187) && (this.Node.SkillComponent.StopGroup1Skill("AiStateMachineTaskMontage.OnEnter"), this.Node.TaskFinished = false, this.Dne = true, this.Playing = false, i = this.Node.MontageComponent, this.rse || (this.Ine && !this.Rne && (this.Rne = this.Node.ActorComponent.DisableActor("状态机加载动作")), this.rse = i.CreateTaskWithName(this.ise, this.Une, this.nse, this.ose), this.rse && i.SetMontageTaskRemainCb(this.rse, this.FTu)), this.rse)) {
+    if (!this.Node.TagComponent.HasTag(1008164187) && (this.Node.SkillComponent.StopGroup1Skill("AiStateMachineTaskMontage.OnEnter"), this.Node.TaskFinished = false, this.Dne = true, this.Playing = false, i = this.Node.MontageComponent, this.rse || (this.Ine && !this.Rne && (this.Rne = this.Node.ActorComponent.DisableActor("状态机加载动作")), this.rse = i.CreateTaskWithName(this.ise, this.Une, this.nse, this.ose), this.rse && i.SetMontageTaskRemainCb(this.rse, this.sbu)), this.rse)) {
       this.Playing = true;
       i.PlayMontageTaskWhenReady(this.rse, this.Node.ElapseTime * TimeUtil_1.TimeUtil.Millisecond, t, this.RemainedTrigger);
     } else {
@@ -92,12 +92,12 @@ class AiStateMachineTaskMontage extends AiStateMachineTask_1.AiStateMachineTask 
   ToString(t, i = 0) {
     (0, AiStateMachine_1.appendDepthSpace)(t, i);
   }
-  VTu(t) {
+  hbu(t) {
     return this.Node.MontageComponent.GetMontageTaskNameByHandle(t);
   }
   GetNameByCurrentHandle() {
     if (this.rse) {
-      return this.VTu(this.rse);
+      return this.hbu(this.rse);
     }
   }
 }

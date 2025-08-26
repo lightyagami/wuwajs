@@ -50,14 +50,14 @@ class PhantomBattleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.bOe = undefined;
     this.Pe = undefined;
-    this.aou = 0;
+    this.Uou = 0;
     this.JGe = () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     this.qOe = () => {
       PhantomArenaController_1.PhantomArenaController.TaskRewardRequest(this.Pe.TaskConfig.s5n);
     };
     this.i9i = () => {
-      if (this.Pe && this.aou) {
-        SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.aou);
+      if (this.Pe && this.Uou) {
+        SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.Uou);
       }
     };
   }
@@ -75,7 +75,7 @@ class PhantomBattleTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), t.Desc);
     this.GetText(4)?.SetText(this.Pe.TaskConfig.lMs + "/" + this.Pe.TaskConfig.j6n);
     var r = this.Pe.TaskConfig.H6n;
-    this.aou = t.AccessPath;
+    this.Uou = t.AccessPath;
     if (r === Protocol_1.Aki.Protocol.I$s.Proto_ActivityTaskRunning && t.AccessPath !== 0) {
       this.GetButton(0)?.RootUIComp.SetUIActive(true);
     } else {

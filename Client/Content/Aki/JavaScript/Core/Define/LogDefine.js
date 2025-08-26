@@ -92,5 +92,10 @@ exports.logAuthorInfo = {
   84: ["PZ", true],
   85: ["TZQ", true],
   86: ["LYX", true],
-  87: ["CB", true]
+  87: ["CB", true],
+  88: ["WMQ", true],
+  89: ["LX", true],
+  90: ["LJ", true],
+  91: ["DX", true],
+  92: ["LQX", true]
 }; //# sourceMappingURL=LogDefine.js.map

@@ -1,16 +1,16 @@
 "use strict";
 
 var PawnTimeScaleComponent_1;
-var __decorate = this && this.__decorate || function (e, t, i, r) {
-  var s;
+var __decorate = this && this.__decorate || function (e, t, i, s) {
+  var r;
   var o = arguments.length;
-  var n = o < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, i) : r;
+  var n = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, t, i, r);
+    n = Reflect.decorate(e, t, i, s);
   } else {
     for (var h = e.length - 1; h >= 0; h--) {
-      if (s = e[h]) {
-        n = (o < 3 ? s(n) : o > 3 ? s(t, i, n) : s(t, i)) || n;
+      if (r = e[h]) {
+        n = (o < 3 ? r(n) : o > 3 ? r(t, i, n) : r(t, i)) || n;
       }
     }
   }
@@ -32,7 +32,7 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LIMIT_SCALE = 0;
-const sourceEffectGroup = new Map([[1, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14]], [2, [15]]]);
+const sourceEffectGroup = new Map([[0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14]], [1, [15]]]);
 function getSourceEffectGroup(e) {
   for (var [t, i] of sourceEffectGroup.entries()) {
     if (i.includes(e)) {
@@ -53,17 +53,18 @@ function getSourceGroup(e) {
 }
 exports.getSourceGroup = getSourceGroup;
 class TimeScale {
-  constructor(e, t, i, r, s, o, n, h, a, u = false) {
+  constructor(e, t, i, s, r, o, n, h, a, u = false, c = false) {
     this.StartTime = e;
     this.EndTime = t;
     this.Priority = i;
-    this.TimeDilation = r;
-    this.TimeCurveFloat = s;
+    this.TimeDilation = s;
+    this.TimeCurveFloat = r;
     this.Duration = o;
     this.Id = n;
     this.SourceType = h;
     this.SourceTypeGroup = a;
     this.NeedAddSceneItemTag = u;
+    this.ImmuneSelfCenter = c;
     this.MarkDelete = false;
     this.rrr = undefined;
     this.nrr = undefined;
@@ -108,6 +109,13 @@ class TimeScale {
     }
     return this.arr ?? Infinity;
   }
+  GetCurrentTime() {
+    if (this.ImmuneSelfCenter) {
+      return Time_1.Time.PlayerWorldTimeSeconds;
+    } else {
+      return Time_1.Time.WorldTimeSeconds;
+    }
+  }
   CalculateTimeScale() {
     var e;
     var t;
@@ -115,7 +123,7 @@ class TimeScale {
     if (this.TimeCurveFloat) {
       i = this.CurveTimeRangeMin;
       e = this.CurveTimeRangeMax;
-      t = (Time_1.Time.WorldTimeSeconds - this.StartTime) / this.Duration;
+      t = (this.GetCurrentTime() - this.StartTime) / this.Duration;
       t = MathUtils_1.MathUtils.RangeClamp(t, 0, 1, i, e);
       i = this.TimeCurveFloat.GetFloatValue(t);
       return 1 - MathUtils_1.MathUtils.RangeClamp(i, this._rr, this.urr, 0, 1) * (1 - this.TimeDilation);
@@ -126,12 +134,12 @@ class TimeScale {
 }
 exports.TimeScale = TimeScale;
 class ForeverTimeScale {
-  constructor(e, t, i, r, s) {
+  constructor(e, t, i, s, r) {
     this.Priority = e;
     this.TimeDilation = t;
     this.SourceType = i;
-    this.SourceTypeGroup = r;
-    this.Id = s;
+    this.SourceTypeGroup = s;
+    this.Id = r;
     this.MarkDelete = false;
   }
   get EndTime() {
@@ -151,7 +159,8 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     this.TimeScaleList = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.CompareScalePriority);
     this.TimeScaleMap = new Map();
     this.Hhn = 1;
-    this.ForeverTimeScaleList = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.CompareScalePriority);
+    this.ForeverTimeScaleLogicView = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.CompareScalePriority);
+    this.ForeverTimeScaleViewOnly = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.CompareScalePriority);
     this.ForeverTimeScaleMap = new Map();
     this.PauseLocks = new Map();
     this.RemoveLockTimestamp = -1;
@@ -171,7 +180,8 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
   OnInit() {
     this.TimeScaleList.Clear();
     this.TimeScaleMap.clear();
-    this.ForeverTimeScaleList.Clear();
+    this.ForeverTimeScaleLogicView.Clear();
+    this.ForeverTimeScaleViewOnly.Clear();
     this.ForeverTimeScaleMap.clear();
     this.Hhn = 1;
     return true;
@@ -183,24 +193,24 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     this.Vhn = e.子弹受击顿帧时长比例 / 100;
     return true;
   }
-  IsTimescaleValid(e, t) {
-    return e.EndTime > t && !e.MarkDelete;
+  IsTimescaleValid(e) {
+    return e.EndTime > e.GetCurrentTime() && !e.MarkDelete;
   }
   OnTick(e) {}
-  SetTimeScale(e, t, i, r, s, o = false) {
-    var n;
+  SetTimeScale(e, t, i, s, r, o = false, n = false) {
     var h;
-    if (s === 2) {
-      r *= this.Vhn;
+    var a;
+    if (r === 2) {
+      s *= this.Vhn;
     }
-    if (r <= 0) {
+    if (s <= 0) {
       return -1;
     } else {
-      n = (h = Time_1.Time.WorldTimeSeconds) + r;
-      h = new TimeScale(h, n, e, Math.max(t, LIMIT_SCALE), i, r, this.Hhn++, s, getSourceGroup(s), o);
-      this.TimeScaleList.Push(h);
-      this.TimeScaleMap.set(h.Id, h);
-      return h.Id;
+      h = (a = n ? Time_1.Time.PlayerWorldTimeSeconds : Time_1.Time.WorldTimeSeconds) + s;
+      a = new TimeScale(a, h, e, Math.max(t, LIMIT_SCALE), i, s, this.Hhn++, r, getSourceGroup(r), o, n);
+      this.TimeScaleList.Push(a);
+      this.TimeScaleMap.set(a.Id, a);
+      return a.Id;
     }
   }
   RemoveTimeScale(e) {
@@ -209,15 +219,20 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
       e.MarkDelete = true;
     }
   }
-  SetForeverTimeScale(e, t, i = 0, r = false) {
-    var s = new ForeverTimeScale(i, t, e, getSourceGroup(e), this.Hhn++);
-    this.ForeverTimeScaleList.Push(s);
-    this.ForeverTimeScaleMap.set(s.Id, s);
-    if (r) {
+  RemoveAllTimeScale() {
+    for (const e of this.TimeScaleMap.values()) {
+      e.MarkDelete = true;
+    }
+  }
+  SetForeverTimeScale(e, t, i = 0, s = false) {
+    var r = new ForeverTimeScale(i, t, e, getSourceGroup(e), this.Hhn++);
+    (getSourceEffectGroup(e) === 1 ? this.ForeverTimeScaleViewOnly : this.ForeverTimeScaleLogicView).Push(r);
+    this.ForeverTimeScaleMap.set(r.Id, r);
+    if (s) {
       this.OnTick(0);
     }
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationAdd, e, t, i);
-    return s.Id;
+    return r.Id;
   }
   RemoveForeverTimeScale(e, t = false) {
     e = this.ForeverTimeScaleMap.get(e);
@@ -299,52 +314,55 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     this.DelayLocks.delete(e);
   }
   GetTopForeverTimeScale(e) {
-    while (!this.ForeverTimeScaleList.Empty) {
-      var t = this.ForeverTimeScaleList.Top;
-      if (!t) {
-        return 1;
-      }
-      if (!t.MarkDelete) {
-        if (e && getSourceEffectGroup(t.SourceType) !== e) {
-          return 1;
-        } else {
-          return t.TimeDilation;
-        }
-      }
-      this.ForeverTimeScaleMap.delete(t.Id);
-      this.ForeverTimeScaleList.Pop();
+    e = this.GetTopForeverTimeScaleConfig(e);
+    if (e) {
+      return e.TimeDilation;
+    } else {
+      return 1;
     }
-    return 1;
   }
-  GetTopForeverTimeScaleConfig(e) {
-    while (!this.ForeverTimeScaleList.Empty) {
-      var t = this.ForeverTimeScaleList.Top;
+  GetTopForeverTimeScaleByList(e) {
+    while (!e.Empty) {
+      var t = e.Top;
       if (!t) {
         return;
       }
       if (!t.MarkDelete) {
-        if (e && getSourceEffectGroup(t.SourceType) !== e) {
-          return undefined;
-        } else {
-          return t;
-        }
+        return t;
       }
       this.ForeverTimeScaleMap.delete(t.Id);
-      this.ForeverTimeScaleList.Pop();
+      e.Pop();
+    }
+  }
+  GetTopForeverTimeScaleConfig(e) {
+    var t;
+    var i;
+    if (e === undefined) {
+      t = this.GetTopForeverTimeScaleByList(this.ForeverTimeScaleViewOnly);
+      i = this.GetTopForeverTimeScaleByList(this.ForeverTimeScaleLogicView);
+      if (t !== undefined && (i === undefined || PawnTimeScaleComponent_1.CompareScalePriority(t, i) < 0)) {
+        return t;
+      } else {
+        return i;
+      }
+    } else if (e === 1) {
+      return this.GetTopForeverTimeScaleByList(this.ForeverTimeScaleViewOnly);
+    } else {
+      return this.GetTopForeverTimeScaleByList(this.ForeverTimeScaleLogicView);
     }
   }
   GetDebugString() {
     let e = "";
     var t;
-    if (this.ForeverTimeScaleList.Empty) {
+    if (this.ForeverTimeScaleLogicView.Empty && this.ForeverTimeScaleViewOnly.Empty) {
       e += `没有生效的ForeverTimeScale
 `;
     } else {
-      if (t = this.GetTopForeverTimeScaleConfig(1)) {
+      if (t = this.GetTopForeverTimeScaleConfig(0)) {
         e += `	生效的LogicAndViewTimeScale: SourceType: ${t.SourceType}, TimeDilation: ${t.TimeDilation}
 `;
       }
-      if (t = this.GetTopForeverTimeScaleConfig(2)) {
+      if (t = this.GetTopForeverTimeScaleConfig(1)) {
         e += `	生效的ViewOnlyTimeScale: SourceType: ${t.SourceType}, TimeDilation: ${t.TimeDilation}
 `;
       }
@@ -352,5 +370,5 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     return e;
   }
 };
-PawnTimeScaleComponent = PawnTimeScaleComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(122)], PawnTimeScaleComponent);
+PawnTimeScaleComponent = PawnTimeScaleComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(123)], PawnTimeScaleComponent);
 exports.PawnTimeScaleComponent = PawnTimeScaleComponent; //# sourceMappingURL=PawnTimeScaleComponent.js.map

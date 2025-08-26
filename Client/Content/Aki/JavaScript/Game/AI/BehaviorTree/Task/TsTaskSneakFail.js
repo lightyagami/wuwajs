@@ -12,7 +12,7 @@ class TsTaskSneakFail extends TsTaskAbortImmediatelyBase_1.default {
   }
   ReceiveExecuteAI(e, s) {
     if (e.AiController) {
-      ActorUtils_1.ActorUtils.GetEntityByActor(s)?.Entity?.GetComponent(205)?.TagContainer?.UpdateExactTag(3, -1951091619, 0);
+      ActorUtils_1.ActorUtils.GetEntityByActor(s)?.Entity?.GetComponent(206)?.TagContainer?.UpdateExactTag(3, -1951091619, 0);
       this.FinishExecute(true);
     } else {
       if (Log_1.Log.CheckError()) {

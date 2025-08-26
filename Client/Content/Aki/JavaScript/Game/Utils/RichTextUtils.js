@@ -14,7 +14,7 @@ const ModelManager_1 = require("../Manager/ModelManager");
 class RichTextUtils {
   static Vih(t) {
     var e = {};
-    for (RichTextUtils.GDu.lastIndex = 0; (r = RichTextUtils.GDu.exec(t)) !== null;) {
+    for (RichTextUtils.CBu.lastIndex = 0; (r = RichTextUtils.CBu.exec(t)) !== null;) {
       var i = r[1];
       var r = r[2];
       e[i] = r;
@@ -29,7 +29,7 @@ class RichTextUtils {
     (0, puerts_1.releaseManualReleaseDelegate)(RichTextUtils.hVa);
   }
 }
-(exports.RichTextUtils = RichTextUtils).GDu = /([^\s=]+)=([^=]*?)(?=\s+[^\s=]+=|\s*$)/g;
+(exports.RichTextUtils = RichTextUtils).CBu = /([^\s=]+)=([^=]*?)(?=\s+[^\s=]+=|\s*$)/g;
 RichTextUtils.lVa = () => ModelManager_1.ModelManager.PlayerInfoModel?.GetAccountName() ?? "";
 RichTextUtils._Va = () => {
   var t = ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender();

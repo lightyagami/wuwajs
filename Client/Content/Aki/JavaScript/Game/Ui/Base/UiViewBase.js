@@ -48,6 +48,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.ShowPromise = undefined;
     this.HidePromise = undefined;
     this.LoadScenePromise = undefined;
+    this.IsDestroyByClear = false;
     this.Kur = false;
     this.MaskTag = "";
     this.Qur = (e, i) => {
@@ -108,8 +109,8 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.PlaySequenceAsync(e, t).then(i);
   }
   async PlaySequenceAsync(e, i = false, t = false, s = undefined) {
-    var r = new CustomPromise_1.CustomPromise();
-    await this.UiViewSequence.PlaySequenceAsync(e, r, i, t, s);
+    var n = new CustomPromise_1.CustomPromise();
+    await this.UiViewSequence.PlaySequenceAsync(e, n, i, t, s);
   }
   SetAudioEvent(e) {
     this.AudioEvent = e;
@@ -276,6 +277,10 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.ShowPromise?.SetResult(undefined);
     this.HandleAllLoadingFinishOperation();
   }
+  OnFinishShowImplementImplement() {
+    this.OnFinishShowImplementImplementImplement();
+  }
+  OnFinishShowImplementImplementImplement() {}
   HandleCacheShowActionFailIfIsPair() {
     if (this.Hur) {
       if (Log_1.Log.CheckInfo()) {
@@ -427,7 +432,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       TimerSystem_1.GameplayTimerSystem.Remove(this.Wur);
     }
     this.Wur = undefined;
-    this.GetRootItem().SetUIParent(this.Zur());
+    this.GetOriginalItem()?.SetUIParent(this.Zur());
   }
   SetParentUiItem(e) {
     if (this.ParentUiItem !== e && (this.ParentUiItem = e, e = this.GetRootItem())) {
@@ -435,6 +440,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     }
   }
   async ClearAsync() {
+    this.IsDestroyByClear = true;
     await this.OpenPromise?.Promise;
     this.Destroy(() => {
       if (Log_1.Log.CheckInfo()) {

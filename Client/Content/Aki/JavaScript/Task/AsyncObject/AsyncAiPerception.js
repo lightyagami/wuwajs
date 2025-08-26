@@ -83,9 +83,9 @@ class AsyncAiPerception {
           maxRadius = Math.max(maxRadius, aiSenseObject.SenseDistanceRangeMin);
         }
         if (senseTargetType === 0) {
-          AsyncCommon_1.AsyncCommon.GetEntitiesInRangeWithLocation(selfLocation, maxRadius, 62, tempActors);
+          AsyncCommon_1.AsyncCommon.GetEntitiesInRangeWithLocation(selfLocation, maxRadius, 248, tempActors);
         } else {
-          AsyncCommon_1.AsyncCommon.GetEntitiesInRangeWithLocation(selfLocation, maxRadius, 1, tempActors);
+          AsyncCommon_1.AsyncCommon.GetEntitiesInRangeWithLocation(selfLocation, maxRadius, 7, tempActors);
         }
         for (const actor of tempActors) {
           const entityData = JsModelManager_1.JsModelManager.GetEntityByActor(actor);

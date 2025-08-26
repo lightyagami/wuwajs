@@ -101,11 +101,15 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
     var i = t.ActionName;
     var t = t.AxisName;
     if (!StringUtils_1.StringUtils.IsEmpty(i) && this.IsAction) {
-      return InputSettingsManager_1.InputSettingsManager.GetActionBinding(i).GetCurrentPlatformKeyByIndex(0)?.KeyName;
-    } else if (StringUtils_1.StringUtils.IsEmpty(t)) {
-      return undefined;
+      if (i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(i)) {
+        return i.GetCurrentPlatformKeyByIndex(0)?.KeyName;
+      } else {
+        return undefined;
+      }
+    } else if (!StringUtils_1.StringUtils.IsEmpty(t) && (i = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t))) {
+      return i.GetCurrentPlatformKeyByIndex(0)?.KeyName;
     } else {
-      return InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t).GetCurrentPlatformKeyByIndex(0)?.KeyName;
+      return undefined;
     }
   }
   Cqo(t, i) {

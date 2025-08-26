@@ -23,24 +23,24 @@ class MoraleBuffAddAreaItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   SetActiveState() {
-    this.ddu(true);
+    this.Ydu(true);
     this.Uar(false);
-    this.mdu(this.ItemData.Config.BuffActiveDesc);
-    this.fdu(1);
+    this.zdu(this.ItemData.Config.BuffActiveDesc);
+    this.Jdu(1);
   }
   SetLockState() {
-    this.ddu(false);
+    this.Ydu(false);
     this.Uar(false);
-    this.mdu(this.ItemData.Config.BuffLockDesc);
-    this.fdu(0.3);
+    this.zdu(this.ItemData.Config.BuffLockDesc);
+    this.Jdu(0.3);
   }
-  ddu(t) {
+  Ydu(t) {
     this.GetSprite(2)?.SetUIActive(t);
   }
-  mdu(t) {
+  zdu(t) {
     this.GetText(1)?.ShowTextNew(t);
   }
-  fdu(t) {
+  Jdu(t) {
     this.GetItem(0)?.SetAlpha(t);
   }
   Uar(t) {

@@ -115,7 +115,7 @@ class SkillBehaviorCondition {
     }
   }
   static dZo(t, i) {
-    i = i.Entity.GetComponent(205);
+    i = i.Entity.GetComponent(206);
     i = t.AnyTag ? i.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : i.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     if (t.Reverse) {
       return !i;
@@ -124,7 +124,7 @@ class SkillBehaviorCondition {
     }
   }
   static CZo(t, i) {
-    var i = i.Entity.GetComponent(173);
+    var i = i.Entity.GetComponent(174);
     var e = i.GetCurrentValue(t.AttributeId1);
     var i = t.AttributeId2 > 0 ? i.GetCurrentValue(t.AttributeId2) : 0;
     var e = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, e, t.Value + i * t.AttributeRate * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, t.RangeL, t.RangeR);
@@ -135,7 +135,7 @@ class SkillBehaviorCondition {
     }
   }
   static gZo(t, i) {
-    i = i.Entity.GetComponent(178).GetHeightAboveGround();
+    i = i.Entity.GetComponent(179).GetHeightAboveGround();
     i = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, i, t.Value, t.RangeL, t.RangeR);
     if (t.Reverse) {
       return !i;

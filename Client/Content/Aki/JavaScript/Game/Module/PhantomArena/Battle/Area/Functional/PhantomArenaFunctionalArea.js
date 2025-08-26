@@ -250,6 +250,9 @@ class PhantomArenaFunctionalArea extends UiPanelBase_1.UiPanelBase {
   RefreshAllBattleCard() {
     for (const t of this.CardProxyMap.values()) {
       if (t.Card) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("PhantomArena", 10, "RefreshAllBattleCard", ["CardId", t.Card.Data.CardId]);
+        }
         t.Card.RefreshSelfAsync();
       }
     }

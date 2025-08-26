@@ -268,7 +268,7 @@ class MontageManager {
       this.ej_ = undefined;
     }
   }
-  mj_(t = 0, e = 2, i) {
+  mj_(t = 0, e = 1, i) {
     this.VG1 = {
       Method: e,
       BlendOutTime: i

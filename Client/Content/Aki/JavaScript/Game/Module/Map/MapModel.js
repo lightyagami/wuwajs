@@ -41,8 +41,8 @@ class MapModel extends ModelBase_1.ModelBase {
     this.ADi = undefined;
     this.SSl = undefined;
     this.PDi = undefined;
-    this.UFu = [];
-    this.UnlockMapBlockIds = undefined;
+    this.FFu = [];
+    this.UnlockMapBlockIds = [];
     this.LastSafeLocation = Vector_1.Vector.Create();
     this.CacheEnrichmentAreaWorldMapCircle = undefined;
     this.CacheEnrichmentAreaEntityId = 0;
@@ -52,6 +52,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcc = [];
     this.Tj1 = new Set();
     this.of1 = new Map();
+    this.agd = undefined;
     this.LastHighLevelAreaInner = undefined;
     this.yW1 = new Map();
     this.SW1 = new TrimLru_1.TrimLru(3);
@@ -80,6 +81,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcl = new Map();
     this.UnlockMapBlockIds = [];
     this.of1 = new Map();
+    this.agd = new Map();
     this.InitTeleportMarkQueryCache();
     return true;
   }
@@ -102,6 +104,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Wcl.clear();
     this.Qcl.clear();
     this.of1.clear();
+    this.agd.clear();
     this.EDi = undefined;
     this.LDi = undefined;
     this.Nhl = undefined;
@@ -109,7 +112,6 @@ class MapModel extends ModelBase_1.ModelBase {
     this.ADi = undefined;
     this.SSl = undefined;
     this.Kpc = undefined;
-    this.UnlockMapBlockIds = undefined;
     this.CacheEnrichmentAreaWorldMapCircle = undefined;
     return !(this.CacheEnrichmentAreaEntityId = 0);
   }
@@ -196,12 +198,13 @@ class MapModel extends ModelBase_1.ModelBase {
       DestroyOnUnTrack: true,
       MapAndDungeonInfo: {
         MapConfigId: i
-      }
+      },
+      EntityConfigId: r
     });
     return this.CreateMapMark(a);
   }
   CreateTempMapMark(e) {
-    this.SSl.add(e);
+    this.AddPendingTempMapMarkList(e);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CreateTempMapMark, e);
   }
   GetPendingAddTempMapMarkList() {
@@ -209,6 +212,9 @@ class MapModel extends ModelBase_1.ModelBase {
   }
   ClearPendingAddTempMapMarkList() {
     this.SSl.clear();
+  }
+  AddPendingTempMapMarkList(e) {
+    this.SSl.add(e);
   }
   CreateMapMark(e) {
     e.MarkId = this.SpawnDynamicMarkId();
@@ -525,22 +531,26 @@ class MapModel extends ModelBase_1.ModelBase {
     return e !== undefined && (e.FogShow === 1 || ModelManager_1.ModelManager.MapModel.CheckFogUnlocked(e?.FogHide));
   }
   SetUnlockMultiMapIds(e) {
-    this.UFu = e;
+    this.FFu = e;
   }
   AddUnlockMultiMapIds(e) {
-    this.UFu = Array.from(new Set([...this.UFu, ...e]));
+    this.FFu = Array.from(new Set([...this.FFu, ...e]));
   }
   SetUnlockMapBlockIds(e) {
     this.UnlockMapBlockIds = e;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MiniMapForceUpdate);
   }
+  AddUnlockMapBlockIds(e) {
+    this.UnlockMapBlockIds = Array.from(new Set([...this.UnlockMapBlockIds, ...e]));
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MiniMapForceUpdate);
+  }
   CheckUnlockMultiMapIds(e) {
-    return this.UFu.includes(e);
+    return this.FFu.includes(e);
   }
   CheckUnlockMapBlockIds(e, r, t) {
     let i = 0;
     var a = [];
-    for (const o of this.UnlockMapBlockIds ?? []) {
+    for (const o of this.UnlockMapBlockIds) {
       var n = ConfigManager_1.ConfigManager.MapConfig.GetUnlockMapTileConfigById(o);
       if (n !== undefined && n.Block === e && n.GravityFlip === r && n.MapConfigId === t) {
         a.push(n);
@@ -784,35 +794,23 @@ class MapModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  GetDungeonLocateWorldMapLocation(e, r) {
-    if (r !== 0) {
-      var t;
-      var i;
-      var r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(r);
-      if (r !== undefined) {
-        if (r.InstSubType === 12) {
-          if ((t = this.GetDungeonEntranceConfig(r)) !== undefined) {
-            i = r.EntranceEntities[0].EntranceEntityId;
-            return ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(i, t.MapConfigId);
-          } else {
-            return undefined;
-          }
-        } else {
-          return ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, r.MapConfigId);
-        }
-      }
+  GetDungeonLocateWorldMapLocation(e) {
+    var r;
+    if (e !== 0 && (e = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e)) !== undefined && e.InstSubType === 12 && (r = this.GetDungeonEntranceConfig(e)) !== undefined) {
+      e = e.EntranceEntities[0].EntranceEntityId;
+      return ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, r.MapConfigId);
+    } else {
+      return undefined;
     }
   }
-  GetDungeonExitLocation(e, r) {
-    if (r !== 0) {
-      var t;
-      var r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(r);
-      if (r !== undefined) {
-        if (r.InstSubType === 12) {
-          t = r.ExitEntities[0];
-          return ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(t, r.MapConfigId);
-        } else {
-          return ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, r.MapConfigId);
+  GetDungeonExitLocation(e) {
+    if (e !== 0) {
+      e = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e);
+      if (e !== undefined) {
+        var r = e.InstSubType;
+        if (r === 12) {
+          r = e.ExitEntities[0];
+          return ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(r, e.MapConfigId);
         }
       }
     }
@@ -1066,6 +1064,15 @@ class MapModel extends ModelBase_1.ModelBase {
       TargetMarkType: r,
       FailedReason: 0
     };
+  }
+  GetEntityIdToMarkType(e) {
+    return this.agd?.get(e);
+  }
+  AddEntityIdToMarkType(e, r) {
+    this.agd?.set(e, r);
+  }
+  RemoveEntityIdToMarkType(e) {
+    this.agd?.delete(e);
   }
 }
 exports.MapModel = MapModel;

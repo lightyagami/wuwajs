@@ -34,7 +34,14 @@ class MapTravelSubViewSoarChallenge extends UiPanelBase_1.UiPanelBase {
       return s;
     };
     this.sGe = () => {
-      return new SoarChallengeItem(this.ActivityBaseData);
+      var e = new SoarChallengeItem(this.ActivityBaseData);
+      e.SetClickRewardCb(this.aQu);
+      return e;
+    };
+    this.aQu = () => {
+      var e = this.ActivityBaseData.GetAllSoarTabData()[this.fVl];
+      var e = this.ActivityBaseData.GetSoarItemDataList(e.RewardIds).filter(e => e.Status === 0).map(e => e.Id);
+      ActivityMapTravelController_1.ActivityMapTravelController.RequestMultiTakeSoarChallengeReward(e);
     };
     this.vVl = () => {
       var e = this.ActivityBaseData.GetAllSoarTabData()[this.fVl];
@@ -116,8 +123,9 @@ class SoarChallengeItem extends MapTravelTaskItem_1.TaskItemBase {
   constructor() {
     super(...arguments);
     this.TaskData = undefined;
+    this.aQu = undefined;
     this.OnClickedRewardButton = () => {
-      ActivityMapTravelController_1.ActivityMapTravelController.RequestTakeSoarChallengeReward(this.TaskData.Id);
+      this.aQu?.();
     };
   }
   Refresh(e) {
@@ -130,6 +138,9 @@ class SoarChallengeItem extends MapTravelTaskItem_1.TaskItemBase {
     this.RewardButtonItem.SetUiActive(e.Status === 0);
     this.GetItem(6).SetUIActive(e.Status === 1);
     this.GetItem(5).SetUIActive(t);
+  }
+  SetClickRewardCb(e) {
+    this.aQu = e;
   }
   SVl(e) {
     var i = [];

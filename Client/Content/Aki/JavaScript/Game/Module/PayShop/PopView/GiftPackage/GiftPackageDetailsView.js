@@ -193,7 +193,7 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     this.P3i();
     this.ITt();
     this.kV_();
-    this.mK1();
+    this.pK1();
   }
   myl() {
     var i = ConfigManager_1.ConfigManager.PayShopConfig.GetMonthCardShopId();
@@ -219,7 +219,7 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
   kV_() {
     this.GetItem(9).SetUIActive(this.Goods.HasCloudGameInfo() && !this.Goods.GetIfNeedExtraLimitText());
   }
-  mK1() {
+  pK1() {
     var i;
     var e = this.GetItem(10);
     var t = this.GetTexture(12);

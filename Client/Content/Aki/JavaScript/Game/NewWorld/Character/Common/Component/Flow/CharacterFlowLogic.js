@@ -70,6 +70,9 @@ class CharacterFlowLogic {
       }
     }
   }
+  IsShowDialogue() {
+    return !this.IsExecuteFlowEnd && this.EnableUpdate && this.WaitSecondsRemain > 0 && !this.IsWaitForDialogueUi;
+  }
   get IsPlaying() {
     return !this.IsExecuteFlowEnd;
   }

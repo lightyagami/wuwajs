@@ -9,9 +9,9 @@ const FloroRanchUiItemBase_1 = require("./FloroRanchUiItemBase");
 class FloroRanchUiTerrainItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
   constructor() {
     super(...arguments);
-    this.Euu = () => {};
+    this.scu = () => {};
     this.OnClickPos = () => {
-      this.Euu?.();
+      this.scu?.();
     };
   }
   OnRegisterComponent() {
@@ -19,11 +19,14 @@ class FloroRanchUiTerrainItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBas
     this.BtnBindInfo = [[0, this.OnClickPos]];
   }
   BindClickPosCallback(t) {
-    this.Euu = t;
+    this.scu = t;
   }
   async RefreshItem() {
     var t = this.Entity.CheckGetComponent(2).TerrainData;
     await this.SetTextureAsync(t.Icon, this.GetTexture(2));
+  }
+  GetRewardPopTransform() {
+    return this.GetRootActor().GetTransform();
   }
   async PlayShowAnim() {
     await this.RefreshItem();
@@ -36,10 +39,10 @@ class FloroRanchUiTerrainItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBas
     await Promise.resolve();
   }
   SetSelectState(t) {
-    this.GetExtendToggle(0).SetToggleState(t ? 1 : 0);
+    this.GetExtendToggle(0)?.SetToggleState(t ? 1 : 0);
   }
   SetInteractive(t) {
-    this.GetExtendToggle(0).SetSelfInteractive(t);
+    this.GetExtendToggle(0)?.SetSelfInteractive(t);
   }
 }
 exports.FloroRanchUiTerrainItem = FloroRanchUiTerrainItem;

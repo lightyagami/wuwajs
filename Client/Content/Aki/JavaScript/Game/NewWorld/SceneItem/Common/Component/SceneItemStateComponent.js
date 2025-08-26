@@ -66,7 +66,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
       var t = this.r_n?.CreateStageConfig.PerformDuration;
       if (t >= MIN_DELAY_THRESHOLD) {
-        this.I5a = TimerSystem_1.TimerSystem.Delay(() => {
+        this.I5a = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
           this.T5a(false);
         }, t * TimeUtil_1.TimeUtil.InverseMillisecond);
       } else {
@@ -75,7 +75,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       }
     };
     this.u_n = t => {
-      TimerSystem_1.TimerSystem.Delay(() => {
+      TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
         ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
       }, RESET_LIMIT * TimeUtil_1.TimeUtil.InverseMillisecond);
     };
@@ -99,7 +99,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this.l_n = true;
       var e = t.GetPbEntityInitData();
       if (e) {
-        this.Xte = this.Entity?.GetComponent(196);
+        this.Xte = this.Entity?.GetComponent(197);
         this.Wpo = t.GetCreatureDataId();
         this.r_n = (0, IComponent_1.getComponent)(e.ComponentsData, "SceneItemLifeCycleComponent");
         this.StateConfig = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent");
@@ -152,7 +152,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Level", 79, "[SceneItemStateComponent] 实体渐出", ["CreatureDataId", this.Wpo], ["Duration", t]);
       }
-      this.Sj1 = TimerSystem_1.TimerSystem.Delay(() => {
+      this.Sj1 = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
         if (this.Entity?.Valid) {
           this.Xte?.RemoveTag(-416978627);
           ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
@@ -163,7 +163,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
   }
   StopFadeOut() {
     if (this.Sj1) {
-      TimerSystem_1.TimerSystem.Remove(this.Sj1);
+      TimerSystem_1.FlowTimeTimerSystem.Remove(this.Sj1);
       this.Sj1 = undefined;
     }
   }
@@ -176,7 +176,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this.UpdateState(-1278190765, true);
     }
     if (this._ii !== 3 || !this.r_n) {
-      if (e = this.Entity.GetComponent(163)) {
+      if (e = this.Entity.GetComponent(164)) {
         t = (t = this.StateConfig?.State) ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t) : undefined;
         if (this.W1n !== t) {
           e.ResetToInitState(this.StateConfig.State, this.u_n);
@@ -194,7 +194,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
         BulletController_1.BulletController.CreateBulletCustomTarget(e ? e.Entity : Global_1.Global.BaseCharacter, t.toString(), this.Hte.ActorTransform, {}, this.JUn);
       }
       if (e = this.r_n.DestroyStageConfig?.PerformDuration) {
-        this.__n = TimerSystem_1.TimerSystem.Delay(() => {
+        this.__n = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
           if (this.Entity?.Valid) {
             ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
             this.__n = undefined;
@@ -228,10 +228,10 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this._ii = 0;
       i = this.r_n?.CreateStageConfig.PerformDuration;
       t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-991879492);
-      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(202).GetIsSceneInteractionLoadCompleted())) {
+      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(203).GetIsSceneInteractionLoadCompleted())) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
       } else if (i >= MIN_DELAY_THRESHOLD) {
-        this.I5a = TimerSystem_1.TimerSystem.Delay(() => {
+        this.I5a = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
           this.T5a(false);
         }, i * TimeUtil_1.TimeUtil.InverseMillisecond);
       } else {
@@ -296,8 +296,8 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
   T5a(t) {
     this.Xte?.RemoveTag(-991879492);
     if (t) {
-      if (TimerSystem_1.TimerSystem.Has(this.I5a) && this.I5a) {
-        TimerSystem_1.TimerSystem.Remove(this.I5a);
+      if (TimerSystem_1.FlowTimeTimerSystem.Has(this.I5a) && this.I5a) {
+        TimerSystem_1.FlowTimeTimerSystem.Remove(this.I5a);
       }
     } else {
       this.s_n = true;
@@ -306,5 +306,5 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
     this.I5a = undefined;
   }
 };
-SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], SceneItemStateComponent);
+SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(134)], SceneItemStateComponent);
 exports.SceneItemStateComponent = SceneItemStateComponent; //# sourceMappingURL=SceneItemStateComponent.js.map

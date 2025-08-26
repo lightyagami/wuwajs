@@ -26,6 +26,7 @@ const LongShanTaskItem_1 = require("./LongShanTaskItem");
 class LongShanView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.ActivityBaseData = undefined;
     this.GOe = undefined;
     this.NOe = 0;
     this.lqe = undefined;
@@ -33,10 +34,10 @@ class LongShanView extends UiViewBase_1.UiViewBase {
     this.OOe = undefined;
     this.kOe = () => {
       var e;
-      var i = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-      if (i.CheckIfInOpenTime) {
-        e = TimeUtil_1.TimeUtil.GetServerTime();
-        i = Math.max(i.EndOpenTime - e, 1);
+      var i;
+      if (this.ActivityBaseData.CheckIfInOpenTime) {
+        i = TimeUtil_1.TimeUtil.GetServerTime();
+        i = Math.max(this.ActivityBaseData.EndOpenTime - i, 1);
         e = this.FOe(i);
         i = TimeUtil_1.TimeUtil.GetCountDownDataFormat2(i, e[0], e[1]).CountDownText ?? "";
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), "ActivityRemainingTime", i);
@@ -48,7 +49,7 @@ class LongShanView extends UiViewBase_1.UiViewBase {
     this.HOe = () => new PageDot_1.PageDot();
     this.jOe = (e, i) => {
       var t;
-      var n;
+      var s;
       if (e.mMs !== i.mMs) {
         if (e.mMs) {
           return 1;
@@ -61,43 +62,41 @@ class LongShanView extends UiViewBase_1.UiViewBase {
         } else {
           return 1;
         }
-      } else if ((t = LongShanTaskById_1.configLongShanTaskById.GetConfig(e.s5n).SortId) !== (n = LongShanTaskById_1.configLongShanTaskById.GetConfig(i.s5n).SortId)) {
-        return t - n;
+      } else if ((t = LongShanTaskById_1.configLongShanTaskById.GetConfig(e.s5n).SortId) !== (s = LongShanTaskById_1.configLongShanTaskById.GetConfig(i.s5n).SortId)) {
+        return t - s;
       } else {
         return e.s5n - i.s5n;
       }
     };
     this.WOe = () => {
-      var e = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-      var i = e.StageIds[this.NOe];
-      var t = e.GetProgress(i);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "LongShanStage_ProgressPercentage", t);
-      var t = e.GetStageInfoById(i).cMs;
-      t.sort(this.jOe);
-      this.OOe?.RefreshByData(t, undefined, true);
+      var e = this.ActivityBaseData.StageIds[this.NOe];
+      var i = this.ActivityBaseData.GetProgress(e);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "LongShanStage_ProgressPercentage", i);
+      var i = this.ActivityBaseData.GetStageInfoById(e).cMs;
+      i.sort(this.jOe);
+      this.OOe?.RefreshByData(i, undefined, true);
     };
     this.KOe = () => {
       this.RefreshView(this.NOe - 1);
     };
     this.QOe = () => {
-      var e = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-      var i = e.StageIds[this.NOe + 1];
-      if (e.GetStageInfoById(i)) {
+      var e = this.ActivityBaseData.StageIds[this.NOe + 1];
+      if (this.ActivityBaseData.GetStageInfoById(e)) {
         this.RefreshView(this.NOe + 1);
       } else {
-        ActivityLongShanController_1.ActivityLongShanController.ShowUnlockTip(i);
+        ActivityLongShanController_1.ActivityLongShanController.ShowUnlockTip(e);
       }
     };
     this.XOe = () => {
-      var e = ActivityLongShanController_1.ActivityLongShanController.GetActivityData().GetHelpId();
+      var e = this.ActivityBaseData.GetHelpId();
       HelpController_1.HelpController.OpenHelpById(e);
     };
     this.$Oe = () => {
       this.CloseMe();
     };
     this.g3e = e => {
-      var i = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-      if (e.has(i.Id)) {
+      var i;
+      if (e.has(this.ActivityBaseData.Id)) {
         e = () => {
           this.CloseMe();
         };
@@ -120,16 +119,19 @@ class LongShanView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityClose, this.g3e);
   }
   async OnBeforeStartAsync() {
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
-    this.lqe.SetHelpCallBack(this.XOe);
-    this.lqe.SetCloseCallBack(this.$Oe);
-    var e = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-    this.lqe.SetTitle(e.GetTitle());
-    var e = e.StageIds;
-    this.NOe = e.indexOf(this.OpenParam);
-    this.tPe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.HOe);
-    await this.tPe.RefreshByDataAsync(e);
-    this.OOe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.VOe);
+    var [e, i] = this.OpenParam;
+    if (e && i) {
+      this.ActivityBaseData = e;
+      this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
+      this.lqe.SetHelpCallBack(this.XOe);
+      this.lqe.SetCloseCallBack(this.$Oe);
+      this.lqe.SetTitle(this.ActivityBaseData.GetTitle());
+      e = this.ActivityBaseData.StageIds;
+      this.NOe = e.indexOf(i);
+      this.tPe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.HOe);
+      await this.tPe.RefreshByDataAsync(e);
+      this.OOe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this.VOe);
+    }
   }
   OnBeforeShow() {
     this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(this.kOe, TimeUtil_1.TimeUtil.InverseMillisecond);
@@ -157,15 +159,14 @@ class LongShanView extends UiViewBase_1.UiViewBase {
     this.tPe.GetLayoutItemByIndex(this.NOe).UpdateShow(false);
     this.NOe = e;
     this.tPe.GetLayoutItemByIndex(this.NOe).UpdateShow(true);
-    var e = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-    var i = e.StageIds[this.NOe];
-    e.SaveNewStageFlag(i);
-    var i = LongShanStageById_1.configLongShanStageById.GetConfig(i);
-    this.SetTextureByPath(i.Picture, this.GetTexture(9));
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), i.TitleDetail);
+    e = this.ActivityBaseData.StageIds[this.NOe];
+    this.ActivityBaseData.SaveNewStageFlag(e);
+    e = LongShanStageById_1.configLongShanStageById.GetConfig(e);
+    this.SetTextureByPath(e.Picture, this.GetTexture(9));
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.TitleDetail);
     this.WOe();
     this.GetButton(5).RootUIComp.SetUIActive(this.NOe > 0);
-    this.GetButton(6).RootUIComp.SetUIActive(this.NOe < e.StageIds.length - 1);
+    this.GetButton(6).RootUIComp.SetUIActive(this.NOe < this.ActivityBaseData.StageIds.length - 1);
   }
 }
 exports.LongShanView = LongShanView;

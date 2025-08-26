@@ -32,8 +32,8 @@ class AnimalMoveToController {
     } else {
       this.sKo = undefined;
     }
-    this.mBe = t.GetComponent(101);
-    this.Gce = t.GetComponent(178);
+    this.mBe = t.GetComponent(102);
+    this.Gce = t.GetComponent(179);
     this.aKo = this.Gce.CharacterMovement.MaxAcceleration;
   }
   Init(t, i) {

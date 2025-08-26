@@ -34,7 +34,7 @@ let FloroRanchToyDataComponent = class FloroRanchToyDataComponent extends FloroR
   }
   RefreshEntityData(o) {
     var e;
-    if (o.h5n !== Protocol_1.Aki.Protocol.Nru.Ncu) {
+    if (o.h5n !== Protocol_1.Aki.Protocol.dou.Edu) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchToyDataComponent刷新数据类型错误", ["EntityType", o.h5n]);
       }

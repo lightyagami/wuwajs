@@ -89,7 +89,7 @@ class BabelTowerItemInfoView extends UiViewBase_1.UiViewBase {
         var n = MathUtils_1.MathUtils.LongToNumber(h?.yzs ?? 0);
         const e = {
           LevelId: t ?? 0,
-          Done: (h?.dMs ?? false) && (h?.Owu ?? 0) >= s,
+          Done: (h?.dMs ?? false) && (h?.rAu ?? 0) >= s,
           IsUnlock: !n || n <= l,
           StarNumber: s
         };
@@ -119,7 +119,7 @@ class BabelTowerItemInfoView extends UiViewBase_1.UiViewBase {
         var n = MathUtils_1.MathUtils.LongToNumber(h?.yzs ?? 0);
         const e = {
           LevelId: t ?? 0,
-          Done: (h?.dMs ?? false) && (h?.Owu ?? 0) >= s,
+          Done: (h?.dMs ?? false) && (h?.rAu ?? 0) >= s,
           IsUnlock: !n || n <= l,
           StarNumber: s
         };

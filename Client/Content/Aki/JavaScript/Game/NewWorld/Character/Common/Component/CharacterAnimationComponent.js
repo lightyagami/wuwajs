@@ -1,16 +1,16 @@
 "use strict";
 
 var CharacterAnimationComponent_1;
-var __decorate = this && this.__decorate || function (t, i, s, e) {
-  var h;
+var __decorate = this && this.__decorate || function (t, i, s, h) {
+  var e;
   var r = arguments.length;
-  var o = r < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
+  var o = r < 3 ? i : h === null ? h = Object.getOwnPropertyDescriptor(i, s) : h;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, i, s, e);
+    o = Reflect.decorate(t, i, s, h);
   } else {
     for (var a = t.length - 1; a >= 0; a--) {
-      if (h = t[a]) {
-        o = (r < 3 ? h(o) : r > 3 ? h(i, s, o) : h(i, s)) || o;
+      if (e = t[a]) {
+        o = (r < 3 ? e(o) : r > 3 ? e(i, s, o) : e(i, s)) || o;
       }
     }
   }
@@ -119,12 +119,15 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.r3r = 0;
     this.n3r = Vector_1.Vector.Create();
     this.s3r = undefined;
+    this.EnableLowerBlend = false;
+    this.EnableLeftArmBlend = false;
+    this.EnableRightArmBlend = false;
     this.Z_e = Transform_1.Transform.Create();
     this.a3r = Transform_1.Transform.Create();
     this.az = Quat_1.Quat.Create();
     this.KJ = Quat_1.Quat.Create();
-    this.gyu = Vector_1.Vector.Create();
-    this.Cyu = Vector_1.Vector.Create();
+    this.dSu = Vector_1.Vector.Create();
+    this.mSu = Vector_1.Vector.Create();
     this.h3r = Vector_1.Vector.Create();
     this.l3r = Vector_1.Vector.Create();
     this._3r = Vector_1.Vector.Create();
@@ -136,6 +139,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.BufferTimeLength = 0;
     this.LastRemainBufferFrame = 0;
     this.RemainBufferTime = 0;
+    this.BufferNowScale = 1;
     this.c3r = false;
     this.BufferLocation = false;
     this.Wnr = Vector_1.Vector.Create();
@@ -156,8 +160,8 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.EDa = 0;
     this.RotateBonesToTargetMgr = undefined;
     this.AGl = undefined;
-    this.pyu = [false, false, false];
-    this.vyu = [false, false, false];
+    this.fSu = [false, false, false];
+    this.gSu = [false, false, false];
     this.MainAnimInstanceRole = undefined;
     this.w3a = Vector_1.Vector.Create(-100000000, -100000000, -100000000);
     this.mn_ = 0;
@@ -167,10 +171,10 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.m2c = false;
     this.I3r = (t, i) => {
       var s;
-      if (t?.Valid && (s = t.GetComponent(177))?.Valid) {
+      if (t?.Valid && (s = t.GetComponent(178))?.Valid) {
         if (i) {
           this.T3r();
-        } else if (!t.GetComponent(205)?.HasTag(715234113)) {
+        } else if (!t.GetComponent(206)?.HasTag(715234113)) {
           if ((i = this.Mesh.GetAnimInstance()) !== (t = this.GetAnimInstance())) {
             i.SyncAnimStates(undefined);
           }
@@ -190,9 +194,9 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       this.GetAnimInstanceFromMesh();
       this.d6_();
       this.StartAnimInstance();
-      this.AIu();
+      this.jIu();
       this.Entity.GetComponent(50)?.RebuildAnimationStates();
-      this.Entity.GetComponent(114)?.RefreshCharacterAnimInstance();
+      this.Entity.GetComponent(115)?.RefreshCharacterAnimInstance();
       if (this.ActorComp) {
         this.ActorComp.IsChangingMeshAnim = false;
       }
@@ -250,8 +254,8 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       let i = false;
       for (let t = 0; t < PERFORMANCE_COUNT; ++t) {
         var s = !this.AGl || this.AGl.DisableTagIds[t] === 0 || !this.Lie.HasTag(this.AGl.DisableTagIds[t]);
-        if (s !== this.vyu[t]) {
-          this.vyu[t] = s;
+        if (s !== this.gSu[t]) {
+          this.gSu[t] = s;
           i = true;
         }
       }
@@ -329,9 +333,9 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       this.p3r = -1;
     }
   }
-  AIu() {
+  jIu() {
     for (let t = 0; t < PERFORMANCE_COUNT; ++t) {
-      this.vyu[t] = false;
+      this.gSu[t] = false;
     }
   }
   D3r() {
@@ -410,11 +414,11 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       this.Mesh = this.Actor.Mesh;
       this.Gce = this.Entity.GetComponent(45);
       this.bre = this.Entity.GetComponent(47);
-      this.Lie = this.Entity.GetComponent(205);
+      this.Lie = this.Entity.GetComponent(206);
       this.zFr = this.Entity.GetComponent(81);
-      this.$zo = this.Entity.GetComponent(174);
+      this.$zo = this.Entity.GetComponent(175);
       this.ph_ = this.Entity.GetComponent(46);
-      this.uwl = this.Entity.GetComponent(229);
+      this.uwl = this.Entity.GetComponent(230);
       this.EDa = this.Mesh?.KuroAnimInstanceLod ?? 0;
       if (this.Mesh) {
         this.Mesh.KuroLodMask = ModelManager_1.ModelManager.CreatureModel.KuroLodMask;
@@ -455,17 +459,17 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
         }
         this.AGl = t ? new PerformanceConditionParams(this, t) : undefined;
         if (t) {
-          var e = new Set();
-          for (const h of this.AGl.DisableTagIds) {
-            if (!e.has(h)) {
-              e.add(h);
-              this.Lie.AddTagAddOrRemoveListener(h, this.TagChanged);
+          var h = new Set();
+          for (const e of this.AGl.DisableTagIds) {
+            if (!h.has(e)) {
+              h.add(e);
+              this.Lie.AddTagAddOrRemoveListener(e, this.TagChanged);
             }
           }
           this.TagChanged();
         } else {
           for (let t = 0; t < PERFORMANCE_COUNT; ++t) {
-            this.vyu[t] = true;
+            this.gSu[t] = true;
             this.MainAnimInstanceRole?.ValidPerformanceIndexes.Add(t);
           }
         }
@@ -499,6 +503,26 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     if (this.MainAnimInstanceInternal instanceof UE.KuroAnimInstanceRole) {
       this.MainAnimInstanceRole = this.MainAnimInstanceInternal;
     }
+  }
+  OnChangeTimeDilation(t) {
+    var i = this.d_d();
+    var s = i > 1;
+    if (Info_1.Info.EnableForceTick) {
+      this.BufferNowTime /= this.BufferNowScale;
+      this.BufferTimeLength /= this.BufferNowScale;
+      if (s) {
+        this.BufferNowTime *= i;
+        this.BufferTimeLength *= i;
+      }
+    } else {
+      this.ZFr.BufferNowTime /= this.BufferNowScale;
+      this.ZFr.BufferTimeLength /= this.BufferNowScale;
+      if (s) {
+        this.ZFr.BufferNowTime *= i;
+        this.ZFr.BufferTimeLength *= i;
+      }
+    }
+    this.BufferNowScale = i;
   }
   Ore() {
     if (!this.m2c) {
@@ -590,7 +614,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       Log_1.Log.Info("Character", 57, "人物上场隐藏一帧 【组件Disable 隐藏结束】", ["Entity:", this.Entity.Id]);
     }
     this.p3r = -1;
-    if (!this.Entity.GetComponent(187)?.AnyIdleLoopMontagePlaying) {
+    if (!this.Entity.GetComponent(188)?.AnyIdleLoopMontagePlaying) {
       if (this.MainAnimInstanceInternal?.IsValid() && (this.MainAnimInstanceInternal.Montage_Stop(0), this.vJ.AddHoldEntity("CharacterAnimationComponent.OnDisable"), this.B$a === 0)) {
         this.B$a = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, this.OnPostEndAnimNotify);
       }
@@ -711,8 +735,8 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       s.SetScale3D(this.BufferShowTransform.GetScale3D());
     }
   }
-  SetTransformWithModelBuffer(t, i, s = undefined, e = true) {
-    var h;
+  SetTransformWithModelBuffer(t, i, s = undefined, h = true) {
+    var e;
     if (this.Mesh) {
       if (i < exports.MIN_BUFFER_TIME_LENGTH) {
         if (Log_1.Log.CheckError()) {
@@ -729,25 +753,26 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           this.ZFr.BufferTimeLength = i / 1000;
           this.ZFr?.SetComponentTickEnabled(true);
         }
-        h = this.Mesh.D_K2_GetComponentToWorld();
-        this.ActorComp.SetActorTransformExceptMesh(t, "移动表现优化，Mesh缓动", e, s);
-        this.G3r(h, this.ActorComp, this.BufferModelTransform);
+        this.BufferNowScale = this.d_d();
+        e = this.Mesh.D_K2_GetComponentToWorld();
+        this.ActorComp.SetActorTransformExceptMesh(t, "移动表现优化，Mesh缓动", h, s);
+        this.G3r(e, this.ActorComp, this.BufferModelTransform);
         this.BufferLocation = !this.BufferModelTransform.GetLocation().Equals(this.BufferShowTransform.GetLocation(), 10);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Long", ["Actor", this.ActorComp?.Actor.GetName()], ["timeLength", i]);
       }
     } else {
-      this.ActorComp.SetActorTransform(t, "移动表现优化，Mesh缓动", e, s);
+      this.ActorComp.SetActorTransform(t, "移动表现优化，Mesh缓动", h, s);
     }
   }
-  SetLocationAndRotatorWithModelBuffer(t, i, s, e, h = 2, r = true) {
+  SetLocationAndRotatorWithModelBuffer(t, i, s, h, e = 2, r = true) {
     var o;
     if (this.Mesh) {
       if (s < exports.MIN_BUFFER_TIME_LENGTH) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Short", ["Actor", this.ActorComp?.Actor.GetName()], ["timeLength", s]);
         }
-        this.ActorComp.SetActorLocationAndRotation(t, i, e + ".移动表现优化.Mesh缓动.没有缓动", r, h);
+        this.ActorComp.SetActorLocationAndRotation(t, i, h + ".移动表现优化.Mesh缓动.没有缓动", r, e);
         this.StopModelBuffer();
       } else if (Math.abs(s) < MAX_BUFFER_TIME_LENGTH) {
         if (Info_1.Info.EnableForceTick) {
@@ -758,19 +783,22 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           this.ZFr.BufferTimeLength = s / 1000;
           this.ZFr.SetComponentTickEnabled(true);
         }
+        this.BufferNowScale = this.d_d();
         o = this.Mesh.D_K2_GetComponentToWorld();
-        this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, e + "移动表现优化，Mesh缓动", r, h);
+        this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, h + "移动表现优化，Mesh缓动", r, e);
         this.G3r(o, this.ActorComp, this.BufferModelTransform);
         this.BufferLocation = !this.BufferModelTransform.GetLocation().Equals(this.BufferShowTransform.GetLocation(), 10);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Long", ["Actor", this.ActorComp?.Actor.GetName()], ["timeLength", s]);
       }
     } else {
-      this.ActorComp.SetActorLocationAndRotation(t, i, e + "移动表现优化，Mesh缓动", r, h);
+      this.ActorComp.SetActorLocationAndRotation(t, i, h + "移动表现优化，Mesh缓动", r, e);
     }
   }
   SetModelBuffer(t, i) {
+    var s;
     if (this.Mesh) {
+      s = this.d_d();
       if (i < exports.MIN_BUFFER_TIME_LENGTH) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Short", ["Actor", this.ActorComp?.Actor.GetName()], ["timeLength", i]);
@@ -788,10 +816,11 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           this.ZFr.BufferNowTime = 0;
           this.ZFr.BufferTimeLength = i / 1000;
           if (this.RemainBufferTime > 0) {
-            this.ZFr.BufferTimeLength += this.RemainBufferTime * MODEL_BUFFER_SMOOTH_FACTOR;
+            this.ZFr.BufferTimeLength += this.RemainBufferTime / this.BufferNowScale * s * MODEL_BUFFER_SMOOTH_FACTOR;
           }
           this.ZFr?.SetComponentTickEnabled(true);
         }
+        this.BufferNowScale = this.d_d();
         this.Mesh.D_K2_SetWorldTransform(t, false, undefined, true);
         this.Mesh.KuroRefreshCacheLocalTransform();
         this.G3r(t, this.ActorComp, this.BufferModelTransform);
@@ -1035,7 +1064,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     if (!(Time_1.Time.Now < this.r3r)) {
       this.r3r = Time_1.Time.Now + FIND_SIGHT_TARGET_ITEM_PERIOD;
       t = [];
-      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(SIGHT_TARGET_ITEM_DISTANCE_THREAHOLD, 63, t);
+      ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(SIGHT_TARGET_ITEM_DISTANCE_THREAHOLD, 255, t);
       this.W3r(t);
     }
   }
@@ -1045,15 +1074,15 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     this.SetSightTargetItem(undefined);
     for (const o of t) {
       if (o.Entity?.Active && o.Entity.Id !== this.Entity.Id) {
-        var e = o.Entity.GetComponent(0).GetBaseInfo()?.FocusPriority;
-        if (e) {
-          var h = o.Entity.GetComponent(1);
-          if (h?.Valid) {
-            h.ActorLocationProxy.Subtraction(i, this.h3r);
+        var h = o.Entity.GetComponent(0).GetBaseInfo()?.FocusPriority;
+        if (h) {
+          var e = o.Entity.GetComponent(1);
+          if (e?.Valid) {
+            e.ActorLocationProxy.Subtraction(i, this.h3r);
             var r = this.h3r.SizeSquared();
-            if (e > 0 && r < SQUARE_SIGHT_TARGET_ITEM_DISTANCE_THREAHOLD || e === 0 && r < s) {
+            if (h > 0 && r < SQUARE_SIGHT_TARGET_ITEM_DISTANCE_THREAHOLD || h === 0 && r < s) {
               for (const a of priorityToMaxSquareDistance) {
-                if (e <= a[0]) {
+                if (h <= a[0]) {
                   if (r > a[1]) {
                     break;
                   }
@@ -1061,7 +1090,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
                     break;
                   }
                   s = r;
-                  this.SetSightTargetItem(h);
+                  this.SetSightTargetItem(e);
                   break;
                 }
               }
@@ -1075,8 +1104,8 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     if (this.u3r < Time_1.Time.WorldTime) {
       var i = Global_1.Global.CharacterCameraManager;
       var s = i.D_GetCameraLocation();
-      var e = this.K3r(s);
-      if (e === 1) {
+      var h = this.K3r(s);
+      if (h === 1) {
         this.Kxr.FromUeVector(s);
         this.m3r.FromUeVector(this.Mesh.D_GetSocketLocation(CharacterNameDefines_1.CharacterNameDefines.BIP_001_HEAD));
         this.Kxr.Subtraction(this.m3r, t);
@@ -1084,7 +1113,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
         this.j3r(t);
         return;
       }
-      if (e === 2) {
+      if (h === 2) {
         t.FromUeVector(i.GetActorForwardVector());
         this.j3r(t);
         return;
@@ -1148,14 +1177,14 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       (s = Protocol_1.Aki.Protocol.Me_.create()).nWn = Protocol_1.Aki.Protocol.nWn.create();
       s.nWn.sWn = t.toString();
       s.nWn.aWn = !i;
-      CombatMessage_1.CombatNet.Send(26391, this.Entity, s);
+      CombatMessage_1.CombatNet.Send(29110, this.Entity, s);
     }
   }
   static BoneVisibleChangeNotify(t, i) {}
   w3r(t = true) {
     var i = Info_1.Info.IsMobilePlatform();
     var s = new UE.AnimUpdateRateParameters();
-    var e = this.Mesh.LODInfo.Num();
+    var h = this.Mesh.LODInfo.Num();
     if (t) {
       s.bShouldUseDistanceMap = true;
       s.BaseVisibleDistanceThresholds.Empty();
@@ -1167,9 +1196,9 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     } else {
       s.bShouldUseLodMap = true;
       s.LODToFrameSkipMap.Empty();
-      for (let t = 0; t < e; t++) {
-        var h = t < 2 ? 0 : t - 1;
-        s.LODToFrameSkipMap.Add(t, h);
+      for (let t = 0; t < h; t++) {
+        var e = t < 2 ? 0 : t - 1;
+        s.LODToFrameSkipMap.Add(t, e);
       }
     }
     s.BaseNonRenderedUpdateRate = i ? 15 : 8;
@@ -1185,7 +1214,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
         this.DefaultVisibilityBasedAnimTickOption = 0;
         break;
       case Protocol_1.Aki.Protocol.kks.Proto_Monster:
-        var a = this.Entity.GetComponent(222);
+        var a = this.Entity.GetComponent(223);
         var a = this.Entity.GetComponent(0).GetSummonerId() || a?.Valid;
         this.DefaultVisibilityBasedAnimTickOption = a ? 1 : 3;
         break;
@@ -1239,7 +1268,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       if (this.w3a.Equals(this.ActorComp.ActorLocationProxy)) {
         if (!(this.mn_ > Time_1.Time.Now)) {
           this.mn_ = Time_1.Time.Now + REFRESH_PERFORMANCE_PERIOD_NOT_MOVE;
-          var h;
+          var e;
           var r;
           var o;
           var a;
@@ -1247,14 +1276,14 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           var _ = this.Gce.CharacterMovement.CurrentFloor.HitResult.ImpactNormal.Z;
           var m = this.Entity.GetComponent(77).WaterHeightAboveMe;
           let s = false;
-          let e = 0;
+          let h = 0;
           for (let i = 0; i < PERFORMANCE_COUNT; ++i) {
             let t = this.AGl.Config.StandingNormalZ[i] < _ && this.AGl.Config.WaterHeight[i] > m;
-            if (t && (h = this.AGl.Config.Radius[i], t = (!(h > e) || !(r = Math.min(h, this.ActorComp.ScaledRadius * 2), (o = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace()).WorldContextObject = this.Actor, o.Radius = r, a = this.gyu, n = this.Cyu, this.ActorComp.ActorForwardProxy.Multiply(h - r, this.h3r), this.ActorComp.ActorLocationProxy.Addition(this.h3r, a), this.ActorComp.ActorLocationProxy.Subtraction(this.h3r, n), TraceElementCommon_1.TraceElementCommon.SetStartLocation(o, a), TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, n), TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.ActorComp.Actor.CapsuleComponent, o, PROFILE_KEY, PROFILE_KEY) || (this.ActorComp.ActorRightProxy.Multiply(h - r, this.h3r), this.ActorComp.ActorLocationProxy.Addition(this.h3r, a), this.ActorComp.ActorLocationProxy.Subtraction(this.h3r, n), TraceElementCommon_1.TraceElementCommon.SetStartLocation(o, a), TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, n), TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.ActorComp.Actor.CapsuleComponent, o, PROFILE_KEY, PROFILE_KEY)))) && t)) {
-              e = h;
+            if (t && (e = this.AGl.Config.Radius[i], t = (!(e > h) || !(r = Math.min(e, this.ActorComp.ScaledRadius * 2), (o = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace()).WorldContextObject = this.Actor, o.Radius = r, a = this.dSu, n = this.mSu, this.ActorComp.ActorForwardProxy.Multiply(e - r, this.h3r), this.ActorComp.ActorLocationProxy.Addition(this.h3r, a), this.ActorComp.ActorLocationProxy.Subtraction(this.h3r, n), TraceElementCommon_1.TraceElementCommon.SetStartLocation(o, a), TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, n), TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.ActorComp.Actor.CapsuleComponent, o, PROFILE_KEY, PROFILE_KEY) || (this.ActorComp.ActorRightProxy.Multiply(e - r, this.h3r), this.ActorComp.ActorLocationProxy.Addition(this.h3r, a), this.ActorComp.ActorLocationProxy.Subtraction(this.h3r, n), TraceElementCommon_1.TraceElementCommon.SetStartLocation(o, a), TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, n), TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.ActorComp.Actor.CapsuleComponent, o, PROFILE_KEY, PROFILE_KEY)))) && t)) {
+              h = e;
             }
-            if (t !== this.pyu[i]) {
-              this.pyu[i] = t;
+            if (t !== this.fSu[i]) {
+              this.fSu[i] = t;
               s = true;
             }
           }
@@ -1272,7 +1301,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     if (this.MainAnimInstanceRole) {
       this.MainAnimInstanceRole.ValidPerformanceIndexes.Empty();
       for (let t = 0; t < PERFORMANCE_COUNT; ++t) {
-        if (this.pyu[t] && this.vyu[t]) {
+        if (this.fSu[t] && this.gSu[t]) {
           this.MainAnimInstanceRole.ValidPerformanceIndexes.Add(t);
         }
       }
@@ -1313,6 +1342,8 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       t.SitDownType = i.SitDownType;
       t.SitDownDirect = i.SitDownDirect;
       t.StandUpDirect = i.StandUpDirect;
+      t.LeftHandIKTargetCS = i.LeftHandIkTarget.ToUeIkTarget();
+      t.RightHandIKTargetCS = i.RightHandIkTarget.ToUeIkTarget();
     }
   }
   GetAnimInstance() {
@@ -1322,13 +1353,13 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     }
     return this.MainAnimInstanceInternal;
   }
-  GetNeedCacheBones() {
-    return true;
+  d_d() {
+    return ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1;
   }
 };
 CharacterAnimationComponent.CameraPosition = new UE.FName("CameraPosition");
 CharacterAnimationComponent.HitCase = new UE.FName("HitCase");
 CharacterAnimationComponent.ebc = new UE.FName("DD_Bip001Pelvis");
 __decorate([CombatMessage_1.CombatNet.Listen("YFn", true)], CharacterAnimationComponent, "BoneVisibleChangeNotify", null);
-CharacterAnimationComponent = CharacterAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(177)], CharacterAnimationComponent);
+CharacterAnimationComponent = CharacterAnimationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(178)], CharacterAnimationComponent);
 exports.CharacterAnimationComponent = CharacterAnimationComponent; //# sourceMappingURL=CharacterAnimationComponent.js.map

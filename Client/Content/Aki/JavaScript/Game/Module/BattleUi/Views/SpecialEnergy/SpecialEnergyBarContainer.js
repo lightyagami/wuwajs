@@ -24,7 +24,7 @@ class SpecialEnergyBarContainer extends BattleVisibleChildView_1.BattleVisibleCh
   }
   Initialize(e) {
     super.Initialize(e);
-    this.InitChildType(26);
+    this.InitChildType(37);
     this.Mdt = e;
     this.E0 = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Id ?? 0;
     this.ydt();

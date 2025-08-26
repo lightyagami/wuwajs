@@ -98,8 +98,8 @@ let SceneItemMultiInteractionActorComponent = class SceneItemMultiInteractionAct
     };
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(202);
-    this.Lie = this.Entity.GetComponent(205);
+    this.Hte = this.Entity.GetComponent(203);
+    this.Lie = this.Entity.GetComponent(206);
     return true;
   }
   pvn() {
@@ -508,5 +508,5 @@ let SceneItemMultiInteractionActorComponent = class SceneItemMultiInteractionAct
     this.hvn = t;
   }
 };
-SceneItemMultiInteractionActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(159)], SceneItemMultiInteractionActorComponent);
+SceneItemMultiInteractionActorComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(160)], SceneItemMultiInteractionActorComponent);
 exports.SceneItemMultiInteractionActorComponent = SceneItemMultiInteractionActorComponent; //# sourceMappingURL=SceneItemMultiInteractionActorComponent.js.map

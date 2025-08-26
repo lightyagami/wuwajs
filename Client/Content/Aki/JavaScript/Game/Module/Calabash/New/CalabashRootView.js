@@ -196,7 +196,7 @@ class CalabashRootView extends UiViewBase_1.UiViewBase {
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     const t = Number(e[0]);
-    var i = this.Ivt.GetTabItemByIndex(this.yvt.findIndex(e => e.Id === t)).GetRootItem();
+    var i = this.Ivt.GetTabItemByIndex(this.yvt.findIndex(e => e.Id === t))?.GetRootItem();
     if (i) {
       return [i, i];
     }

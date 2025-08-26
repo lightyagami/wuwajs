@@ -127,7 +127,7 @@ class MoraleAreaData {
     return (t || this.x$1[this.x$1.length - 1]).Id;
   }
   IsAreaBuffActive() {
-    return !!ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(209)?.HasBuff(this.Config.BuffId) || !!ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(199)?.HasBuff(this.Config.BuffId);
+    return !!ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(210)?.HasBuff(this.Config.BuffId) || !!ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(200)?.HasBuff(this.Config.BuffId);
   }
   SetNewActiveAreaBuff(t) {
     this.IsNewActiveAreaBuff = t;

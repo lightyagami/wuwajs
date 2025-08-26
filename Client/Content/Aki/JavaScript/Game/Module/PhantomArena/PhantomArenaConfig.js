@@ -49,7 +49,7 @@ const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
-    this.weu = (t, e) => {
+    this.ttu = (t, e) => {
       return t.BitFlagId - e.BitFlagId;
     };
   }
@@ -226,7 +226,7 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
       return [];
     }
     var a = [];
-    for (const r of e.slice().sort(this.weu)) {
+    for (const r of e.slice().sort(this.ttu)) {
       a.push(r.Id);
     }
     return a;
@@ -240,7 +240,7 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
       return [];
     }
     var a = [];
-    for (const r of e.slice().sort(this.weu)) {
+    for (const r of e.slice().sort(this.ttu)) {
       a.push(r.Id);
     }
     return a;

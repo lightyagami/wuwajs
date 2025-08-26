@@ -9,23 +9,26 @@ const FloroRanchDebugLogUtil_1 = require("../../FloroRanchDebugLogUtil");
 const FloroRanchActionBase_1 = require("./FloroRanchActionBase");
 const FloroRanchGroupActionData_1 = require("./FloroRanchGroupActionData");
 class FloroRanchSacrificeActionData extends FloroRanchActionBase_1.FloroRanchActionDataBase {
-  constructor(o) {
-    super(o);
-    this.t7c = undefined;
-    this.VAu = undefined;
-    this.t7c = o.iNu;
+  constructor(t) {
+    super(t);
+    this.tOu = undefined;
+    this.fPu = undefined;
+    this.tOu = t.NBu;
   }
   async OnExecute() {
-    var o = this.CasterEntity.GetUiItemComponent();
-    FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogSacrificeActionInfo(this.CasterEntity);
-    await o.PlaySacrificeAnim();
-    ModelManager_1.ModelManager.FloroRanchGamePlayModel.RemoveOwnEntityData(this.CasterEntity);
+    var t;
     await this.WaitIfPause();
-    if (!this.IsExit()) {
-      this.VAu = new FloroRanchGroupActionData_1.FloroRanchGroupActionData();
-      this.VAu.InitActionData(this.t7c.RJ_);
-      this.VAu.SetIgnoreCasterEntityAnim(this.CasterEntity.EntityId);
-      await this.VAu.ExecuteAction();
+    if (!this.IsExit() && !(t = this.CasterEntity.GetUiItemComponent(), FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogSacrificeActionInfo(this.CasterEntity), await t.PlaySacrificeAnim(), await this.WaitIfPause(), this.IsExit())) {
+      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RemoveOwnEntityData(this.CasterEntity);
+      this.fPu = new FloroRanchGroupActionData_1.FloroRanchGroupActionData();
+      this.fPu.InitActionData(this.tOu.RJ_);
+      this.fPu.SetIgnoreCasterEntityAnim(this.CasterEntity.EntityId);
+      await this.fPu.ExecuteAction();
+    }
+  }
+  OnExit() {
+    if (this.fPu) {
+      this.fPu.Exit();
     }
   }
 }

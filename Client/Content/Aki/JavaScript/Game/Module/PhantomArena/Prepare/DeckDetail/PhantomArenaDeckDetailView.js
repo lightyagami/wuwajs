@@ -28,21 +28,21 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
     this.eVi = undefined;
     this.Ept = undefined;
     this.DA1 = undefined;
-    this.PX1 = undefined;
-    this.xX1 = undefined;
+    this.rY1 = undefined;
+    this.oY1 = undefined;
     this.ucc = undefined;
-    this.FSu = undefined;
-    this.yfu = false;
+    this.G7c = undefined;
+    this.fgu = false;
     this.NA1 = () => {
       PhantomArenaController_1.PhantomArenaController.CardUnlockRequest(this.Pe.CurCardId);
     };
-    this.Xku = (t, e) => {
+    this.MNu = (t, e) => {
       if (e === 1) {
         this.SelectCoreCardSlot();
       }
     };
-    this.wTu = t => true;
-    this.Yku = (t, e) => {
+    this.KTu = t => true;
+    this.ENu = (t, e) => {
       if (e === 1) {
         this.SelectNormalCardSlotByIndex(t.GridIndex);
       }
@@ -54,12 +54,12 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
     this.PV1 = t => {
       this.RefreshLockState();
     };
-    this.alu = t => {
+    this.Dlu = t => {
       if (t === "TipsHide") {
         this.RefreshEntryShowState();
       }
     };
-    this.Cfu = () => {
+    this.cgu = () => {
       this.ShowEntry();
       this.MLt();
     };
@@ -70,7 +70,7 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UILayoutBase], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[12, this.Cfu], [16, this.XTt]];
+    this.BtnBindInfo = [[12, this.cgu], [16, this.XTt]];
   }
   async OnBeforeStartAsync() {
     this.Pe = this.OpenParam;
@@ -78,25 +78,25 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
     this.eVi = new DetailViewCardItem_1.DetailViewCardItem();
     this.Ept = new CardDetailItem_1.CardDetailItem();
     this.DA1 = new CardDetailEntryDescLayoutItem_1.CardDetailEntryDescLayoutItem(this.GetLayoutBase(5));
-    this.xX1 = new ButtonItem_1.ButtonItem();
+    this.oY1 = new ButtonItem_1.ButtonItem();
     this.ucc = new ButtonItem_1.ButtonItem();
-    this.PX1 = new DeckBuilderDeckSlotsPanel_1.DeckBuilderDeckSlotsPanel();
-    this.FSu = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(13));
-    this.FSu.BindSequenceCloseEvent(this.alu);
-    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.Ept.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.xX1.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.PX1.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.ucc.CreateThenShowByActorAsync(this.GetItem(8).GetOwner())]);
+    this.rY1 = new DeckBuilderDeckSlotsPanel_1.DeckBuilderDeckSlotsPanel();
+    this.G7c = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(13));
+    this.G7c.BindSequenceCloseEvent(this.Dlu);
+    await Promise.all([this.eVi.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.Ept.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.oY1.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.rY1.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.ucc.CreateThenShowByActorAsync(this.GetItem(8).GetOwner())]);
     if (this.Pe.ShowLocked) {
       this.Pe.CurrencyId = ModelManager_1.ModelManager.PhantomArenaModel.GetDustItemId();
       await this.lqe.SetCurrencyItemList([this.Pe.CurrencyId]);
     }
-    this.xX1.SetFunction(this.NA1);
+    this.oY1.SetFunction(this.NA1);
     this.ucc.SetFunction(this.AMo);
     this.lqe.SetCloseCallBack(this.AMo);
     this.lqe.SetHelpBtnActive(false);
-    this.PX1.SetMaskAreaEnabled(1, false);
-    this.PX1.SetMaskAreaEnabled(2, false);
+    this.rY1.SetMaskAreaEnabled(1, false);
+    this.rY1.SetMaskAreaEnabled(2, false);
     this.RefreshDeckSlotsPanel();
     this.SelectFirstCardSlot();
-    this.yfu = false;
+    this.fgu = false;
     this.RefreshEntryShowState();
   }
   OnAddEventListener() {
@@ -108,9 +108,9 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
   RefreshDeckSlotsPanel() {
     var t = {
       DeckInfo: this.Pe.DeckInfo,
-      OnCoreSlotItemToggleStateChange: this.Xku,
-      CanCoreSlotItemToggleChange: this.wTu,
-      OnNormalSlotItemToggleStateChange: this.Yku,
+      OnCoreSlotItemToggleStateChange: this.MNu,
+      CanCoreSlotItemToggleChange: this.KTu,
+      OnNormalSlotItemToggleStateChange: this.ENu,
       CanNormalSlotItemToggleChange: this.i61,
       SortContext: {
         SortType: 1,
@@ -119,7 +119,7 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
       ShowLocked: this.Pe.ShowLocked,
       ShowOutlook: this.Pe.ShowLocked
     };
-    this.PX1?.RefreshByData(t);
+    this.rY1?.RefreshByData(t);
   }
   SelectFirstCardSlot() {
     if (!this.SelectCoreCardSlot()) {
@@ -127,11 +127,11 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
     }
   }
   SelectCoreCardSlot() {
-    return !!this.PX1.SelectCoreCardSlot() && (this.Pe.CurCardId = this.PX1.GetSelectedCardId(), this.RefreshCardDetail(), true);
+    return !!this.rY1.SelectCoreCardSlot() && (this.Pe.CurCardId = this.rY1.GetSelectedCardId(), this.RefreshCardDetail(), true);
   }
   SelectNormalCardSlotByIndex(t) {
-    this.PX1.SelectNormalCardSlotByIndex(t);
-    this.Pe.CurCardId = this.PX1.GetSelectedCardId();
+    this.rY1.SelectNormalCardSlotByIndex(t);
+    this.Pe.CurCardId = this.rY1.GetSelectedCardId();
     this.RefreshCardDetail();
   }
   RefreshCardDetail() {
@@ -198,7 +198,7 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
       LockTipItem: this.GetItem(14),
       LockTipText: this.GetText(15),
       TipText: this.GetText(9),
-      UnlockBtnItem: this.xX1,
+      UnlockBtnItem: this.oY1,
       IsUnLocked: this.IsCardUnlock(this.Pe.CurCardId),
       ShowUnlockRedDotWhenCanUnlock: true
     };
@@ -218,22 +218,22 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
     }
   }
   ShowEntry() {
-    if (!this.yfu) {
-      this.yfu = true;
-      this.FSu?.PlayOrReplaySequenceByName("TipsShow");
+    if (!this.fgu) {
+      this.fgu = true;
+      this.G7c?.PlayOrReplaySequenceByName("TipsShow");
       this.RefreshEntryShowState();
     }
   }
   HideEntry() {
-    if (this.yfu) {
-      this.yfu = false;
-      this.FSu?.PlayOrReplaySequenceByName("TipsHide");
+    if (this.fgu) {
+      this.fgu = false;
+      this.G7c?.PlayOrReplaySequenceByName("TipsHide");
     }
   }
   RefreshEntryShowState() {
-    this.GetItem(4).SetUIActive(this.yfu);
-    this.GetItem(10).SetUIActive(this.yfu);
-    this.GetItem(11).SetUIActive(this.yfu);
+    this.GetItem(4).SetUIActive(this.fgu);
+    this.GetItem(10).SetUIActive(this.fgu);
+    this.GetItem(11).SetUIActive(this.fgu);
   }
   MLt() {
     this.GetButton(16).RootUIComp.SetUIActive(true);

@@ -80,7 +80,7 @@ class ShopModel extends ModelBase_1.ModelBase {
           o.push(n);
         }
       }
-      o.sort((e, t) => e.IsInteractive() !== t.IsInteractive() ? e.IsInteractive() ? -1 : 1 : e.IsUnlocked() !== t.IsUnlocked() ? e.IsUnlocked() ? 1 : -1 : e.IsOutOfStock() !== t.IsOutOfStock() ? e.IsOutOfStock() ? 1 : -1 : e.Id <= t.Id ? -1 : 1);
+      o.sort((e, t) => e.IsInteractive() !== t.IsInteractive() ? e.IsInteractive() ? -1 : 1 : e.IsUnlocked() !== t.IsUnlocked() ? e.IsUnlocked() ? 1 : -1 : e.IsOutOfStock() !== t.IsOutOfStock() ? e.IsOutOfStock() ? 1 : -1 : e.SortIndex !== t.SortIndex ? e.SortIndex - t.SortIndex : e.Id <= t.Id ? -1 : 1);
     }
     return o;
   }

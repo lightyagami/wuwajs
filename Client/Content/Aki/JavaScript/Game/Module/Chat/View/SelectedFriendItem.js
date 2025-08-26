@@ -54,7 +54,7 @@ class SelectedFriendItem extends GridProxyAbstract_1.GridProxyAbstract {
     var t = this.GetTexture(1);
     var e = ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(e, false);
     if (e) {
-      this.SetTextureShowUntilLoaded(e.GetRoleHeadIconLarge(), t);
+      this.SetTextureShowUntilLoaded(e.GetRoleHeadIconCircle(), t);
     }
   }
   P5e() {

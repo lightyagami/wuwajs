@@ -33,7 +33,7 @@ class MoveCursorPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.AO1 = 0;
     this.C71 = true;
     this.pH1 = undefined;
-    this.EY1 = undefined;
+    this.XY1 = undefined;
     this.WBr = undefined;
     this.SPe = undefined;
     this.p71 = (e, t) => {
@@ -53,7 +53,7 @@ class MoveCursorPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     };
     this.XBo = () => {
       if (!this.pH1 || !this.WBr?.HasAnyTag(this.pH1)) {
-        this.IY1();
+        this.YY1();
         if (Info_1.Info.IsInKeyBoard()) {
           this.C71 = true;
           InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.攻击, InputMappingsDefine_1.actionMappings.闪避], this.Srt);
@@ -87,7 +87,7 @@ class MoveCursorPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
   }
   OnStart() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.EY1 = this.GetTexture(1);
+    this.XY1 = this.GetTexture(1);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[1, UE.UITexture]];
@@ -105,7 +105,7 @@ class MoveCursorPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
             this.SetUiActive(false);
             e.MorphShowSpecialEnergyBar = true;
           } else {
-            this.IY1();
+            this.YY1();
             e.MorphShowSpecialEnergyBar = false;
             InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.攻击, InputMappingsDefine_1.actionMappings.闪避], this.Srt);
             InputExtraShowCursorCenter_1.InputExtraShowCursorCenter.RegisterExtraRefreshData(THIS_VIEW_NAME, this);
@@ -122,11 +122,11 @@ class MoveCursorPanel extends BattleVisibleChildView_1.BattleVisibleChildView {
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
   }
-  IY1() {
+  YY1() {
     if (Info_1.Info.IsInKeyBoard()) {
-      this.SetTextureByPath("/Game/Aki/UI/UIResources/Common/Image/UiIconPcBtn/T_IconPcBtn_Mouse2_UI.T_IconPcBtn_Mouse2_UI", this.EY1);
+      this.SetTextureByPath("/Game/Aki/UI/UIResources/Common/Image/UiIconPcBtn/T_IconPcBtn_Mouse2_UI.T_IconPcBtn_Mouse2_UI", this.XY1);
     } else {
-      this.SetTextureByPath("/Game/Aki/UI/UIResources/Common/Image/UiIconPcBtn/T_IconPcBtn_XboxL2_UI.T_IconPcBtn_XboxL2_UI", this.EY1);
+      this.SetTextureByPath("/Game/Aki/UI/UIResources/Common/Image/UiIconPcBtn/T_IconPcBtn_XboxL2_UI.T_IconPcBtn_XboxL2_UI", this.XY1);
     }
   }
   OnHideBattleChildView() {

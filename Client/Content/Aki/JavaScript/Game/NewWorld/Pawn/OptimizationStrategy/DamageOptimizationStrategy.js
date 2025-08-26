@@ -10,19 +10,19 @@ const BaseOptimizationStrategy_1 = require("./BaseOptimizationStrategy");
 class DamageOptimizationStrategy extends BaseOptimizationStrategy_1.BaseOptimizationStrategy {
   constructor() {
     super(...arguments);
-    this.y7c = 0;
+    this.fVu = 0;
   }
   OnEnable() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Optimization", 57, "DamageUIOptimizationStrategy Enable");
     }
-    this.y7c = ControllerHolder_1.ControllerHolder.DamageUiController.EnableDamageViewOptimization();
+    this.fVu = ControllerHolder_1.ControllerHolder.DamageUiController.EnableDamageViewOptimization();
   }
   OnDisable() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Optimization", 57, "DamageUIOptimizationStrategy Disable");
     }
-    ControllerHolder_1.ControllerHolder.DamageUiController.DisableDamageViewOptimization(this.y7c);
+    ControllerHolder_1.ControllerHolder.DamageUiController.DisableDamageViewOptimization(this.fVu);
   }
 }
 exports.DamageOptimizationStrategy = DamageOptimizationStrategy;

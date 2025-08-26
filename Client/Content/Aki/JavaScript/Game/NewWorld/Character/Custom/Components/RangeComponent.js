@@ -1,22 +1,23 @@
 "use strict";
 
+var RangeComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var h;
   var o = arguments.length;
-  var r = o < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var n = o < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, e, i, s);
+    n = Reflect.decorate(t, e, i, s);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (h = t[a]) {
-        r = (o < 3 ? h(r) : o > 3 ? h(e, i, r) : h(e, i)) || r;
+    for (var r = t.length - 1; r >= 0; r--) {
+      if (h = t[r]) {
+        n = (o < 3 ? h(n) : o > 3 ? h(e, i, n) : h(e, i)) || n;
       }
     }
   }
-  if (o > 3 && r) {
-    Object.defineProperty(e, i, r);
+  if (o > 3 && n) {
+    Object.defineProperty(e, i, n);
   }
-  return r;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -52,7 +53,7 @@ const ROLETRIGGER_COLLISION_PRESET = new UE.FName("RangeComp_RoleTriggerOnly");
 const DEBUG_DETAIL_KEY = "RangeComponent";
 const CYLINDER_COMMON_PARAM_ID = "BaseCylinderStaticMeshForRange";
 const CONE_COMMON_PARAM_ID = "BaseConeStaticMeshForRange";
-let RangeComponent = class RangeComponent extends EntityComponent_1.EntityComponent {
+let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.Kua = undefined;
@@ -62,6 +63,8 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     this.Hte = undefined;
     this.Men = undefined;
     this.bjo = undefined;
+    this.Dgd = undefined;
+    this.xgd = undefined;
     this.Een = undefined;
     this.aln = undefined;
     this._P1 = new Array();
@@ -77,6 +80,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     this.xen = false;
     this.wen = false;
     this.joh = false;
+    this.Vud = false;
     this.jKs = false;
     this.Ben = undefined;
     this.ben = undefined;
@@ -103,10 +107,8 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     this.ioh = Vector_1.Vector.Create();
     this.Ken = t => {
       if (t && (this.Ien?.IsValid() || this.Ren)) {
-        if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id))?.Valid) {
+        if (ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id)?.Valid) {
           this.ht_();
-          EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.Xen);
-          EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t, EventDefine_1.EEventName.RemoveEntity, this.zpe);
           EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.GUe);
           if (!RoleTriggerController_1.RoleTriggerController.IsInitTrigger) {
             EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleTriggerInit, this.Woh);
@@ -126,7 +128,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     };
     this.QKs = () => {
       if (!this.GetIsLocalSetupComplete()) {
-        if (this.Qoh() && (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 39, "[RangeComponent] 完成初始化(开始)", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()]), this.Yen(), this.zen(false), this.GetIsNotServerRange() || this.$Ks(), this.joh = true, ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY)) && Log_1.Log.CheckInfo()) {
+        if (this.Qoh() && (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 39, "[RangeComponent] 完成初始化(开始)", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()]), this.jud(), this.zen(false), this.GetIsNotServerRange() || this.$Ks(), this.joh = true, ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY)) && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneItem", 39, "[RangeComponent] 完成初始化(结束)", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()]);
         }
       }
@@ -181,7 +183,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
         if (e.Id === this.Entity.Id) {
           EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.zpe);
           this.stn(false);
-          this.atn();
+          this.Hud();
         } else if (this.Oen?.has(e.Id)) {
           this.htn(e, false, false);
         }
@@ -198,12 +200,14 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       return undefined;
     }
   }
-  GetShapeComp() {
-    if (!(this._P1.length < 1) && this._P1[0]?.IsValid()) {
-      return this._P1[0];
-    } else {
-      return undefined;
+  GetShapeComps() {
+    var t = [];
+    for (const e of this._P1) {
+      if (e.IsValid()) {
+        t.push(e);
+      }
     }
+    return t;
   }
   GetMeshComp() {
     if (this.yen?.IsValid()) {
@@ -211,6 +215,27 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     } else {
       return undefined;
     }
+  }
+  GetExpandedExitShapeComps() {
+    var t = [];
+    if (this.uP1) {
+      for (const e of this.uP1) {
+        if (e.IsValid()) {
+          t.push(e);
+        }
+      }
+    }
+    return t;
+  }
+  GetExpandedExitMeshComp() {
+    if (this.Pen?.IsValid()) {
+      return this.Pen;
+    } else {
+      return undefined;
+    }
+  }
+  GetExpandedExitRangeValue() {
+    return this.Uen;
   }
   GetRangeType() {
     return this.bjo?.Type;
@@ -253,7 +278,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
   OnInitData() {
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(1);
-    this.Men = this.Entity.GetComponent(163);
+    this.Men = this.Entity.GetComponent(164);
     var t = this.EIe?.GetPbEntityInitData();
     return !!t && (this.XKs(t) ? (this.YKs(t), this.b7a(t), this.ooh(t), this.WKl(t), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && Log_1.Log.CheckInfo() && Log_1.Log.Info("SceneItem", 39, "[RangeComponent] 初始化网络节省配置完成", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["ReqEntityAccessRange", this.WKs], ["ReqPlayerAccessRange", this.KKs]), this.Oen = new Map(), this.Fen = false, this.ken = new Set(), this.eoh = new Set(), this.$Tl = new Map(), this.Hen = new Map(), this.jen = new Set(), this.ben = [], this.qen = [], this.Nen = [], this.wen = false, this.xen = false, this.Wen = new Map(), this.EIe.PbInRangeEntityCreatureDataIds && this.ServerUpdateEntitiesInRangeOnline(true, this.EIe.PbInRangeEntityCreatureDataIds), this.EIe.PbInRangePlayerIds && this.ServerUpdatePlayerInRangeOnline(true, this.EIe.PbInRangePlayerIds), this.Kua = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.BeginOverlap] CfgId:" + this.EIe?.GetPbDataId()), this.Xua = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.EndOverlap] CfgId:" + this.EIe?.GetPbDataId()), this.Dzl = Stats_1.Stat.CreateNoFlameGraph("[RangeComp.SetupRangeActor] CfgId:" + this.EIe?.GetPbDataId()), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneGameplay", 29, "[RangeComponent] 范围数据出错", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), false));
   }
@@ -264,6 +289,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     var h = (0, IComponent_1.getComponent)(t.ComponentsData, "MonitorComponent");
     if (e) {
       this.bjo = e.Shape;
+      this.Dgd = e.SetRangeActorCollisionResponseToChannels;
     } else if (i) {
       i = {
         Type: "Cylinder",
@@ -381,12 +407,21 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       TimerSystem_1.TimerSystem.Remove(this.w7a);
       this.w7a = undefined;
     }
-    this.atn();
+    this.Hud();
     this._P1.length = 0;
     if (this.uP1) {
       this.uP1.length = 0;
     }
     this.yen = undefined;
+    if (this.xgd && this.Ien?.IsValid()) {
+      RangeComponent_1.Ugd(this.Ien, this.xgd, false);
+    }
+    if (this.xgd) {
+      this.xgd.length = 0;
+    }
+    if (this.Dgd) {
+      this.Dgd.length = 0;
+    }
     if (this.Den && (this.Ien?.IsValid() && (this.Ien.SetActorEnableCollision(false), ActorSystem_1.ActorSystem.Put("RangeComponent.OnEnd1", this.Ien)), this.F0a?.IsValid())) {
       this.F0a.SetActorEnableCollision(false);
       ActorSystem_1.ActorSystem.Put("RangeComponent.OnEnd2", this.F0a);
@@ -409,7 +444,26 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     }
   }
   Qoh() {
-    return !!this.xen && !!this.wen && !this.Entity.IsEnd && !!RoleTriggerController_1.RoleTriggerController.IsInitTrigger;
+    return !!this.xen && !!this.wen && !this.Entity.IsEnd && !this.EIe?.GetRemoveState() && !!RoleTriggerController_1.RoleTriggerController.IsInitTrigger;
+  }
+  static Ugd(t, e, i) {
+    var s = [];
+    if (e && e.length !== 0) {
+      var h = t.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
+      if (h) {
+        for (const r of e) {
+          var o = r.CollisionChannelType;
+          var n = r.CollisionResponseType;
+          if (h.GetCollisionResponseToChannel(o) !== r.CollisionResponseType && (h.SetCollisionResponseToChannel(o, n), i)) {
+            s.push({
+              CollisionChannelType: r.CollisionChannelType,
+              CollisionResponseType: r.CollisionResponseType
+            });
+          }
+        }
+      }
+    }
+    return s;
   }
   InitRangeActorAsync() {
     this.Ren = false;
@@ -482,17 +536,17 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
         }
         var t = i.ActorRef.PathName.split(".")[1] + "." + i.ActorRef.PathName.split(".")[2];
         var e = this.aln.GetActor(new UE.FName(t));
-        if (e) {
+        if (e?.IsValid()) {
           this.InitRangeAsyncCallback?.(this.Uhl(e));
+          this.xgd = RangeComponent_1.Ugd(e, this.Dgd, true);
         } else {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Entity", 31, "[RangeComponent] Actor未找到，等待加载", ["Key", t], ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]);
           }
           this.Rhl = t => {
             var e = i.ActorRef.PathName.split(".")[1] + "." + i.ActorRef.PathName.split(".")[2];
-            if (t?.toString() === e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Entity", 31, "[RangeComponent] Actor已加载", ["Key", e], ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), e = this.aln?.GetActor(t), this.InitRangeAsyncCallback?.(!!e && this.Uhl(e)), this.Rhl)) {
-              this.aln?.OnAddToSubsystem.Remove(this.Rhl);
-              this.Rhl = undefined;
+            if (t?.toString() === e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Entity", 31, "[RangeComponent] Actor已加载", ["Key", e], ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]), e = this.aln?.GetActor(t), this.InitRangeAsyncCallback?.(!!e && this.Uhl(e)), this.Rhl && (this.aln?.OnAddToSubsystem.Remove(this.Rhl), this.Rhl = undefined), e?.IsValid())) {
+              this.xgd = RangeComponent_1.Ugd(e, this.Dgd, true);
             }
           };
           this.aln.OnAddToSubsystem.Add(this.Rhl);
@@ -641,6 +695,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
           this.tOl = this.Entity.GetComponent(1)?.Owner;
         }
         var e = Transform_1.Transform.Create(this.tOl?.D_GetTransform() ?? this.EIe.D_GetTransform());
+        e.SetScale3D(Vector_1.Vector.OneVectorProxy);
         var i = Transform_1.Transform.Create();
         var s = this.Uen && this.F0a?.IsValid() ? Transform_1.Transform.Create() : undefined;
         switch (t.Type) {
@@ -663,13 +718,13 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     this.F0a?.D_K2_SetActorTransform(i.ToUeTransform(), false, undefined, true);
     for (let t = 0; t < e.CombinationShapes.length; t++) {
       var o = e.CombinationShapes[t];
-      var r = this._P1[t];
-      var a = this.uP1?.[t];
+      var n = this._P1[t];
+      var r = this.uP1?.[t];
       this.TP1(o, i, s, h);
-      this.EP1(o, r, a);
-      r?.D_K2_SetWorldTransform(s.ToUeTransform(), false, undefined, true);
-      if (h && a && a?.IsValid()) {
-        a.D_K2_SetWorldTransform(h.ToUeTransform(), false, undefined, true);
+      this.EP1(o, n, r);
+      n?.D_K2_SetWorldTransform(s.ToUeTransform(), false, undefined, true);
+      if (h && r && r?.IsValid()) {
+        r.D_K2_SetWorldTransform(h.ToUeTransform(), false, undefined, true);
       }
     }
   }
@@ -759,28 +814,30 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
   Bzl() {
     var t;
     if (this.Ien && this.Den && !this.Ren && (t = this.bjo).Type !== "Volume" && t.Type !== "ActorRefVolume" && t.Type !== "ActorCollision" && (t = this.tOl)?.IsValid()) {
+      this.Ien?.RootComponent?.SetAbsolute(false, false, true);
       this.Ien?.K2_AttachToActor(t, undefined, 1, 1, 1, false);
+      this.F0a?.RootComponent?.SetAbsolute(false, false, true);
       this.F0a?.K2_AttachToActor(t, undefined, 1, 1, 1, false);
     }
   }
-  hku(t) {
+  tVu(t) {
     return !!t?.op_Equality(ROLETRIGGER_COLLISION_PRESET);
   }
   lt_() {
     var t = this.bjo;
     if (t.Type !== "Volume" && t.Type !== "ActorRefVolume" && t.Type !== "ActorCollision") {
       if (this.jKl) {
-        this.lku(this.LP1, false, true);
+        this.iVu(this.LP1, false, true);
       } else {
-        t = !this.hku(this.HKl);
-        this.lku(this.LP1, true, t);
+        t = !this.tVu(this.HKl);
+        this.iVu(this.LP1, true, t);
         if (!t) {
           RoleTriggerController_1.RoleTriggerController.UpdateOverlaps();
         }
       }
     }
   }
-  lku(t, ...e) {
+  iVu(t, ...e) {
     if (this._P1?.length) {
       for (const i of this._P1) {
         t(i, ...e);
@@ -795,6 +852,29 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     } else if (this.Pen) {
       t(this.Pen, ...e);
     }
+  }
+  jud() {
+    this.Yen();
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.Xen)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.Xen);
+    }
+    var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id);
+    if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
+      EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+    }
+    this.Vud = true;
+  }
+  Hud() {
+    this.atn();
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.Xen)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.Xen);
+    }
+    var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id);
+    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
+      EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, t, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+    }
+    this.roh("DisableInOutRange");
+    this.Vud = false;
   }
   Yen() {
     switch (this.bjo.Type) {
@@ -886,7 +966,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
         if (this.DP1(s)) {
           return;
         }
-        var h = s.Entity?.GetComponent(202);
+        var h = s.Entity?.GetComponent(203);
         if (h && !h.IsReadyForOverlap && (t === h?.Owner || t === h.GetMainCollisionActor())) {
           return;
         }
@@ -903,7 +983,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
   }
   aoh(t, e) {
     var i;
-    if (t?.IsValid() && (i = this.ftn(t), this._ku(e, t), this.q7a(this.Entity, EventDefine_1.EEventName.OnActorInOutRangeLocal, e, t), i?.Valid)) {
+    if (t?.IsValid() && (i = this.ftn(t), this.rVu(e, t), this.q7a(this.Entity, EventDefine_1.EEventName.OnActorInOutRangeLocal, e, t), i?.Valid)) {
       if (e) {
         if (this.$Tl?.has(i.Id)) {
           this.$Tl?.delete(i.Id);
@@ -911,7 +991,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       } else {
         this.$Tl?.set(i.Id, i);
       }
-      this.uku(e, i);
+      this.oVu(e, i);
       this.q7a(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, e, i);
       this.ReqEntityAccessRange(e, [i]);
       this.ReqMyPlayerAccessRange(e, i);
@@ -919,23 +999,25 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     }
   }
   zen(e) {
-    if (this.Ren) {
-      if (this.Men?.IsPlayerOverlappedRefVolume()) {
-        this.ttn(RoleTriggerController_1.RoleTriggerController.GetMyRoleTrigger(), true, e);
-      }
-    } else if (this.Ien?.IsValid()) {
-      var t = (0, puerts_1.$ref)(undefined);
-      this.Ien.GetOverlappingActors(t);
-      var i = (0, puerts_1.$unref)(t);
-      var s = i?.Num() ?? 0;
-      if (s > 0) {
-        for (let t = 0; t < s; t++) {
-          var h = i.Get(t);
-          this.ttn(h, true, e);
+    if (this.Vud) {
+      if (this.Ren) {
+        if (this.Men?.IsPlayerOverlappedRefVolume()) {
+          this.ttn(RoleTriggerController_1.RoleTriggerController.GetMyRoleTrigger(), true, e);
         }
+      } else if (this.Ien?.IsValid()) {
+        var t = (0, puerts_1.$ref)(undefined);
+        this.Ien.GetOverlappingActors(t);
+        var i = (0, puerts_1.$unref)(t);
+        var s = i?.Num() ?? 0;
+        if (s > 0) {
+          for (let t = 0; t < s; t++) {
+            var h = i.Get(t);
+            this.ttn(h, true, e);
+          }
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneGameplay", 39, "[RangeComponent] ForceCheckOverlapAndCallbackEnter失败 Actor not valid", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]);
       }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("SceneGameplay", 39, "[RangeComponent] ForceCheckOverlapAndCallbackEnter失败 Actor not valid", ["CreatureDataId", this.EIe.GetCreatureDataId()], ["ConfigId", this.EIe.GetPbDataId()], ["PlayerId", this.EIe.GetPlayerId()]);
     }
   }
   stn(t) {
@@ -979,18 +1061,18 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
         var s = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
         if (i.Valid && i.Entity?.Valid) {
           if (s?.Valid) {
-            for (const n of Object.keys(t.dL_._L_)) {
-              var h = t.dL_._L_[n];
-              RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, t.dL_.i6n, Number(n), s, h);
+            for (const a of Object.keys(t.dL_._L_)) {
+              var h = t.dL_._L_[a];
+              RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, t.dL_.i6n, Number(a), s, h);
             }
           }
-          for (const l of t.cL_) {
-            var o = MathUtils_1.MathUtils.LongToNumber(l.g6n);
-            var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
-            if (r?.Valid && r.Entity?.Valid) {
-              for (const _ of Object.keys(l._L_)) {
-                var a = l._L_[_];
-                RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, l.i6n, Number(_), r.Entity, a);
+          for (const _ of t.cL_) {
+            var o = MathUtils_1.MathUtils.LongToNumber(_.g6n);
+            var n = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
+            if (n?.Valid && n.Entity?.Valid) {
+              for (const l of Object.keys(_._L_)) {
+                var r = _._L_[l];
+                RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, _.i6n, Number(l), n.Entity, r);
               }
             }
           }
@@ -1024,25 +1106,25 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
         t = [t];
       }
       var o = [];
-      for (const r of t) {
+      for (const n of t) {
         let t = false;
         if (i) {
-          if (!r.Entity?.GetComponent(0)?.GetRemoveState() && !this.Oen.has(r.Id)) {
-            this.Oen.set(r.Id, r);
-            EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+          if (!n.Entity?.GetComponent(0)?.GetRemoveState() && !this.Oen.has(n.Id)) {
+            this.Oen.set(n.Id, n);
+            EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, n, EventDefine_1.EEventName.RemoveEntity, this.zpe);
             t = true;
           }
-        } else if (this.Oen.has(r.Id)) {
-          this.Oen.delete(r.Id);
-          EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, r, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+        } else if (this.Oen.has(n.Id)) {
+          this.Oen.delete(n.Id);
+          EventSystem_1.EventSystem.RemoveWithTargetUseKey(this, n, EventDefine_1.EEventName.RemoveEntity, this.zpe);
           t = true;
         }
         if (t && h) {
-          this.uku(i, r);
-          this.q7a(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, i, r);
+          this.oVu(i, n);
+          this.q7a(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, i, n);
         }
         if (t && s) {
-          o.push(r);
+          o.push(n);
         }
       }
       if (s && o.length > 0) {
@@ -1093,11 +1175,11 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       this.ken.delete(t);
     }
     if (i) {
-      this._ku(e, t);
+      this.rVu(e, t);
       this.q7a(this.Entity, EventDefine_1.EEventName.OnActorInOutRangeLocal, e, t);
     }
   }
-  uku(e, i) {
+  oVu(e, i) {
     for (let t = this.qen.length - 1; t >= 0; t--) {
       var s = this.qen[t];
       try {
@@ -1109,7 +1191,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       }
     }
   }
-  _ku(e, i) {
+  rVu(e, i) {
     for (let t = this.Nen.length - 1; t >= 0; t--) {
       var s = this.Nen[t];
       try {
@@ -1227,7 +1309,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       }
       (h = Protocol_1.Aki.Protocol.Ugs.create()).zWn = this.EIe.GetCreatureDataId();
       h.i6n = t ? Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter : Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave;
-      Net_1.Net.Call(25939, h, t => {
+      Net_1.Net.Call(16852, h, t => {
         if (t && t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           var e = MathUtils_1.MathUtils.LongToNumber(t.zWn);
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
@@ -1245,11 +1327,11 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
   ReqEntityAccessRange(t, e) {
     if (this.WKs && e?.length) {
       var i = [];
-      for (const r of e) {
+      for (const n of e) {
         var s;
-        var h = r.Entity?.GetComponent(0);
+        var h = n.Entity?.GetComponent(0);
         var o = h?.GetCreatureDataId();
-        if (o && (i.push(o), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && (s = r.Entity?.GetComponent(1), Log_1.Log.CheckInfo()) && Log_1.Log.Info("SceneItem", 39, "[RangeComp] 实体进出:(加入EntityAccessRange队列)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", h?.GetPbDataId()], ["OtherCreatureId", o], ["OtherPos", s?.ActorLocationProxy]), r.Entity?.GetComponent(1)?.ResetLocationCachedTime(), (h = r.Entity?.GetComponent(67))?.GetEnableMovementSync())) {
+        if (o && (i.push(o), ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY) && (s = n.Entity?.GetComponent(1), Log_1.Log.CheckInfo()) && Log_1.Log.Info("SceneItem", 39, "[RangeComp] 实体进出:(加入EntityAccessRange队列)", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["IsEnter", t], ["OtherPbDataId", h?.GetPbDataId()], ["OtherCreatureId", o], ["OtherPos", s?.ActorLocationProxy]), n.Entity?.GetComponent(1)?.ResetLocationCachedTime(), (h = n.Entity?.GetComponent(67))?.GetEnableMovementSync())) {
           h.CollectSampleAndSend(true);
         }
       }
@@ -1257,18 +1339,18 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
       e.zWn = this.EIe.GetCreatureDataId();
       e.HKs = i;
       e.i6n = t ? Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter : Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave;
-      Net_1.Net.Call(23478, e, t => {
+      Net_1.Net.Call(28460, e, t => {
         if (t && t.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           var e = MathUtils_1.MathUtils.LongToNumber(t.zWn);
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
           if (i.Valid && i.Entity?.Valid) {
-            for (const r of t.cL_) {
-              var s = MathUtils_1.MathUtils.LongToNumber(r.g6n);
+            for (const n of t.cL_) {
+              var s = MathUtils_1.MathUtils.LongToNumber(n.g6n);
               var h = ModelManager_1.ModelManager.CreatureModel.GetEntity(s);
               if (h?.Valid && h.Entity?.Valid) {
-                for (const a of Object.keys(r._L_)) {
-                  var o = r._L_[a];
-                  RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, r.i6n, Number(a), h.Entity, o);
+                for (const r of Object.keys(n._L_)) {
+                  var o = n._L_[r];
+                  RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, n.i6n, Number(r), h.Entity, o);
                 }
               }
             }
@@ -1282,7 +1364,7 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     s.zWn = this.EIe.GetCreatureDataId();
     s.JKs = t;
     s.zKs = e;
-    Net_1.Net.Call(17140, s, i);
+    Net_1.Net.Call(18608, s, i);
   }
   IsOverlappingPlayer() {
     return this.Ven;
@@ -1379,5 +1461,5 @@ let RangeComponent = class RangeComponent extends EntityComponent_1.EntityCompon
     }
   }
 };
-RangeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(86)], RangeComponent);
+RangeComponent = RangeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(86)], RangeComponent);
 exports.RangeComponent = RangeComponent; //# sourceMappingURL=RangeComponent.js.map

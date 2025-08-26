@@ -81,7 +81,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
       var h = EntitySystem_1.EntitySystem.Get(r);
       if (r && h?.Valid) {
         this.SelectedTargetLocation = AiContollerLibrary_1.AiControllerLibrary.GetLocationFromEntity(h);
-        var o = e.CharAiDesignComp?.Entity.GetComponent(175);
+        var o = e.CharAiDesignComp?.Entity.GetComponent(176);
         if (o?.Valid && o.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
           switch (this.TsMoveState) {
             case 1:
@@ -96,7 +96,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
         }
         this.NextCheckTime = Time_1.Time.WorldTime + this.TsFixPeriod;
         this.CacheVector.DeepCopy(s.ActorLocation);
-        if (s.Entity.GetComponent(101)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+        if (s.Entity.GetComponent(102)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
           this.CacheVector.Z -= s.HalfHeight;
         }
         this.FindNewPath(t, this.CacheVector.ToUeVector());
@@ -130,7 +130,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
         if (Vector_1.Vector.Dist(o, this.SelectedTargetLocation) > NAVIGATION_COMPLETE_DISTANCE) {
           this.SelectedTargetLocation = o;
           this.CacheVector.DeepCopy(h);
-          if (r.Entity.GetComponent(101)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+          if (r.Entity.GetComponent(102)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
             this.CacheVector.Z -= r.HalfHeight;
           }
           this.FindNewPath(t, this.CacheVector.ToUeVector());
@@ -151,7 +151,7 @@ class TsTaskMoveToActor extends TsTaskAbortImmediatelyBase_1.default {
           AiContollerLibrary_1.AiControllerLibrary.TurnToTarget(r, a, this.TsTurnSpeed);
           o.DivisionEqual(t);
           r.SetInputDirect(o, true);
-          var l = s.CharAiDesignComp?.Entity.GetComponent(175);
+          var l = s.CharAiDesignComp?.Entity.GetComponent(176);
           if (l?.Valid) {
             switch (this.TsMoveState) {
               case 1:

@@ -11,18 +11,12 @@ const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang"
 const PayShopById_1 = require("../../../Core/Define/ConfigQuery/PayShopById");
 const PayShopConditionById_1 = require("../../../Core/Define/ConfigQuery/PayShopConditionById");
 const PayShopDirectGoodsByGoodsId_1 = require("../../../Core/Define/ConfigQuery/PayShopDirectGoodsByGoodsId");
-const PayShopGoodsById_1 = require("../../../Core/Define/ConfigQuery/PayShopGoodsById");
-const PayShopGoodsByItemId_1 = require("../../../Core/Define/ConfigQuery/PayShopGoodsByItemId");
 const PayShopRecommendAll_1 = require("../../../Core/Define/ConfigQuery/PayShopRecommendAll");
 const PayShopRecommendById_1 = require("../../../Core/Define/ConfigQuery/PayShopRecommendById");
 const PayShopTabByShopId_1 = require("../../../Core/Define/ConfigQuery/PayShopTabByShopId");
 const PayShopTabByShopIdAndTabId_1 = require("../../../Core/Define/ConfigQuery/PayShopTabByShopIdAndTabId");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
-const ConfigManager_1 = require("../../Manager/ConfigManager");
 class PayShopConfig extends ConfigBase_1.ConfigBase {
-  GetPayShopGoodsConfig(o) {
-    return PayShopGoodsById_1.configPayShopGoodsById.GetConfig(o);
-  }
   GetPayShopGoodsLocalText(o) {
     return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(o);
   }
@@ -43,9 +37,6 @@ class PayShopConfig extends ConfigBase_1.ConfigBase {
       }
     }
     return a;
-  }
-  GetPayShopGoodsConfigByItemConfigId(o) {
-    return PayShopGoodsByItemId_1.configPayShopGoodsByItemId.GetConfig(o);
   }
   GetPayShopDirectGoods(o) {
     var e = PayShopDirectGoodsByGoodsId_1.configPayShopDirectGoodsByGoodsId.GetConfig(o);
@@ -78,10 +69,6 @@ class PayShopConfig extends ConfigBase_1.ConfigBase {
       }
     }
     return e;
-  }
-  GetPayShopItemName(o) {
-    o = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfig(o).ItemId;
-    return ConfigManager_1.ConfigManager.ItemConfig.GetItemName(o);
   }
   GetShopDiscountLabel(o) {
     return "ShopDiscountLabel_" + o;

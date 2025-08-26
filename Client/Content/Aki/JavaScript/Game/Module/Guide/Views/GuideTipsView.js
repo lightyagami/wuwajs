@@ -13,6 +13,7 @@ const Global_1 = require("../../../Global");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
 const UiManager_1 = require("../../../Ui/UiManager");
+const GuideDefine_1 = require("../GuideDefine");
 const GuideBaseView_1 = require("./GuideBaseView");
 const GuideCountDownItem_1 = require("./GuideCountDownItem");
 const GuideDescribeNew_1 = require("./GuideDescribeNew");
@@ -26,7 +27,7 @@ class GuideTipsView extends GuideBaseView_1.GuideBaseView {
     this.m9s = undefined;
     this.fZt = e => {
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
-      if (e && !UiManager_1.UiManager.IsViewShow("GmView") && UiManager_1.UiManager.IsViewShow("BattleView") && this.GuideStepInfo.Config.TimeScale < 1 && (e = Global_1.Global.CharacterController)) {
+      if (e && !UiManager_1.UiManager.IsViewShow("GmView") && this.rud() && this.GuideStepInfo.Config.TimeScale < 1 && (e = Global_1.Global.CharacterController)) {
         e.bShowMouseCursor = false;
         this.d9s();
       }
@@ -93,7 +94,7 @@ class GuideTipsView extends GuideBaseView_1.GuideBaseView {
     }
   }
   OnGuideBaseViewTick(e) {
-    var i = UiManager_1.UiManager.IsViewShow("BattleView") && ModelManager_1.ModelManager.BattleUiModel.ChildViewData.GetChildVisible(28) && !this.HasConflictView();
+    var i = this.rud() && ModelManager_1.ModelManager.BattleUiModel.ChildViewData.GetChildVisible(26) && !this.HasConflictView();
     if (!this.IsBusy && i !== this.gZt) {
       this.gZt = i;
       this.SetActive(i);
@@ -124,6 +125,14 @@ class GuideTipsView extends GuideBaseView_1.GuideBaseView {
     if (this.iqt) {
       this.iqt.OnDurationChange(e);
     }
+  }
+  rud() {
+    for (const e of GuideDefine_1.guideTipsAllowedViews) {
+      if (UiManager_1.UiManager.IsViewShow(e)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 exports.GuideTipsView = GuideTipsView;

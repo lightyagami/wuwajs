@@ -28,7 +28,7 @@ class DeliverBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
         if (t) {
           let e = "";
           if (t) {
-            e = t.Entity.GetComponent(117)?.PawnName ?? "";
+            e = t.Entity.GetComponent(118)?.PawnName ?? "";
           }
           if (this.HXt) {
             ItemDeliverController_1.ItemDeliverController.OpenItemDeliverViewByHandInItem(this.HXt, e, this.HGe, this.ts, this.Context);

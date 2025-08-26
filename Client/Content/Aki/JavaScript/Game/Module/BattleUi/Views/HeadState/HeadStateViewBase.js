@@ -85,7 +85,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.j1t = 0;
     this.W1t = 0;
     this.K1t = -1;
-    this.jht = false;
+    this.IsActivated = false;
     this.HeadStateData = undefined;
     this.Q1t = 0;
     this.DetailHeadStateRangeInternal = 0;
@@ -114,7 +114,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.f_t = Vector_1.Vector.Create();
     this.MoraleLevelItem = undefined;
     this.gka = new HeadStateViewNode();
-    this.iWc = undefined;
+    this.wQu = undefined;
     this.p_t = () => {
       if (this.J1t) {
         this.J1t(this.HeadStateData.GetEntity());
@@ -147,7 +147,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] CreateHeadStateView", ["headStateType", e], ["ComponentId", this.ComponentId]);
     }
-    this.rWc(e, i, s, h);
+    this.LQu(e, i, s, h);
     e = this.GetResourceId();
     i = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(e);
     if (i) {
@@ -163,7 +163,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] CreateHeadStateViewAsync", ["headStateType", e], ["ComponentId", this.ComponentId]);
     }
-    this.rWc(e, i, s, h);
+    this.LQu(e, i, s, h);
     e = this.GetResourceId();
     i = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(e);
     if (i) {
@@ -175,7 +175,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
       await this.CreateByPathAsync(s, t, true);
     }
   }
-  rWc(t, e, i, s) {
+  LQu(t, e, i, s) {
     var h = this.GetResourceId();
     if (!StringUtils_1.StringUtils.IsEmpty(h)) {
       this.Q1t = t;
@@ -201,21 +201,21 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
       if (!this.ChildViewData) {
         this.InitChildType(14);
       }
-      this.ShowBattleVisibleChildView();
+      this.ShowBattleVisibleChildView(true);
     }
   }
   RecycleHeadStateView(t) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] RecycleHeadStateView", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
     }
-    this.iWc = t;
-    if (this.jht) {
+    this.wQu = t;
+    if (this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] DeactivateByRecycle", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
       }
       this.ResetBattleHeadState();
       this.gka.UnregisterTick();
-      this.jht = false;
+      this.IsActivated = false;
     }
     this.HeadStateData = undefined;
     this.HideBattleVisibleChildView();
@@ -227,14 +227,14 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] DestroyHeadStateView", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
     }
-    this.iWc = undefined;
-    if (this.jht) {
+    this.wQu = undefined;
+    if (this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] DeactivateByDestroy", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
       }
       this.ResetBattleHeadState();
       this.gka.UnregisterTick();
-      this.jht = false;
+      this.IsActivated = false;
     }
     this.HeadStateData = undefined;
     if (this.IsEnable) {
@@ -251,20 +251,20 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     }
   }
   OnBeforeShow() {
-    if (!!this.HeadStateData && !this.jht) {
+    if (!!this.HeadStateData && !this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] ActiveBeforeShow", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
       }
       this.ActiveBattleHeadState(this.HeadStateData);
       this.gka.RegisterTick(this);
-      this.jht = true;
+      this.IsActivated = true;
     }
   }
   OnAfterHide() {
     if (!this.HeadStateData) {
-      if (this.iWc) {
-        this.iWc(this, this.HeadStateType);
-        this.iWc = undefined;
+      if (this.wQu) {
+        this.wQu(this, this.HeadStateType);
+        this.wQu = undefined;
       }
     }
   }
@@ -340,17 +340,12 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
       this.RootItem.SetUIRelativeScale3D(this.X1t.ToUeVectorOld(true));
     }
   }
-  OnCacheRefresh(t, e, i) {
-    if (this.jht) {
-      this.gka.CacheRefreshInfo(t, e, i);
-    }
-  }
   OnRefresh(t, e, i) {
-    if (this.jht) {
+    if (this.IsActivated) {
       HeadStateViewBase.Ult.Start();
       this.Distance = t;
       this.v_t(e);
-      this.LerpBarPercent(i);
+      this.nmt(i);
       HeadStateViewBase.Ult.Stop();
     }
   }
@@ -426,7 +421,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.RemoveExtraItem();
     this.u_t.Stop();
   }
-  LerpBarPercent(t) {
+  nmt(t) {
     var e;
     if (this.K1t !== -1 && !(HeadStateViewBase.e_t.Start(), (e = this.Z1t.UpdatePercent(t)) < 0 ? this.StopBarLerpAnimation() : this.M_t(e), HeadStateViewBase.e_t.Stop(), this.j1t >= this.W1t)) {
       this.K1t = this.K1t + t;
@@ -496,13 +491,19 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
   }
   OnEliteStateChange() {}
   AddOrRemoveBuff(t, e, i, s) {
-    this.OnAddOrRemoveBuff(t, e, i, s);
+    if (this.IsActivated) {
+      this.OnAddOrRemoveBuff(t, e, i, s);
+    }
   }
   RoleLevelChange(t, e, i) {
-    this.OnRoleLevelChange(t, e, i);
+    if (this.IsActivated) {
+      this.OnRoleLevelChange(t, e, i);
+    }
   }
   ChangeTeam() {
-    this.OnChangeTeam();
+    if (this.IsActivated) {
+      this.OnChangeTeam();
+    }
   }
   OnHardnessAttributeChanged() {
     this.RefreshHardnessAttributeId();

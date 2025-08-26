@@ -28,6 +28,7 @@ class TowerNormalView extends UiViewBase_1.UiViewBase {
     this.HDo = undefined;
     this.Ncl = undefined;
     this.jDo = false;
+    this.dRo = false;
     this.Fcl = false;
     this.gLt = undefined;
     this.SPe = undefined;
@@ -116,6 +117,7 @@ class TowerNormalView extends UiViewBase_1.UiViewBase {
     this.HDo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.sGe, this.GetItem(19).GetOwner());
     this.Ncl = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.sGe, this.GetItem(17).GetOwner());
     this.jDo = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.LOW_RISK_DIFFICULTY);
+    this.dRo = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.HIGH_RISK_DIFFICULTY);
     this.Fcl = ModelManager_1.ModelManager.TowerModel.GetDifficultyIsClear(TowerData_1.VARIATION_RISK_DIFFICULTY);
     if (this.jDo && !this.Fcl) {
       this.XDo(TowerData_1.HIGH_RISK_DIFFICULTY);
@@ -204,7 +206,7 @@ class TowerNormalView extends UiViewBase_1.UiViewBase {
         this.GetItem(21).SetUIActive(false);
         break;
       case TowerData_1.OVERLOCK_RISK_DIFFICULTY:
-        ModelManager_1.ModelManager.TowerModel.CurrentTowerLock = !this.Fcl;
+        ModelManager_1.ModelManager.TowerModel.CurrentTowerLock = !this.dRo;
         this.GetItem(21).SetUIActive(ModelManager_1.ModelManager.TowerModel.CurrentTowerLock);
         break;
       default:

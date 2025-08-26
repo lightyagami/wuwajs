@@ -23,7 +23,7 @@ class FloroRanchLimitRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
-    this.AEu = 1;
+    this.jEu = 1;
     this.B7t = undefined;
     this.qoh = undefined;
     this.TDe = undefined;
@@ -40,13 +40,13 @@ class FloroRanchLimitRewardView extends UiViewBase_1.UiViewBase {
         this.dx_();
       }
     };
-    this.PEu = (e, t) => {
+    this.HEu = (e, t) => {
       this.B7t.SelectGridProxy(e);
-      this.AEu = t;
+      this.jEu = t;
       this.Ooh();
     };
-    this.C9c = () => {
-      var e = this.CNe.GetFloroRanchReceivableTaskIds(true, this.AEu);
+    this.FKu = () => {
+      var e = this.CNe.GetFloroRanchReceivableTaskIds(true, this.jEu);
       FloroRanchController_1.FloroRanchController.RequestTaskReward(e);
     };
     this.mx_ = () => {
@@ -57,15 +57,15 @@ class FloroRanchLimitRewardView extends UiViewBase_1.UiViewBase {
     };
     this.Hwn = () => {
       var e = new FloroRanchTaskTabItem_1.FloroRanchTaskTabItem();
-      e.OnToggleCallBack = this.PEu;
+      e.OnToggleCallBack = this.HEu;
       return e;
     };
     this.VOe = () => {
       var e = new FloroRanchTaskItem_1.FloroRanchTaskItem();
-      e.OnGetBtnClick = this.C9c;
+      e.OnGetBtnClick = this.FKu;
       return e;
     };
-    this.xEu = () => {
+    this.$Eu = () => {
       var e = this.CNe.GetFloroRanchParamConfig().CardItemId;
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(e);
     };
@@ -75,7 +75,7 @@ class FloroRanchLimitRewardView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIHorizontalLayout], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText]];
-    this.BtnBindInfo = [[5, this.xEu]];
+    this.BtnBindInfo = [[5, this.$Eu]];
   }
   async OnBeforeStartAsync() {
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
@@ -108,21 +108,30 @@ class FloroRanchLimitRewardView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.JSi);
   }
   Ooh() {
-    var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetTaskDataByTabType(this.AEu);
+    var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetTaskDataByTabType(this.jEu);
     this.qoh.RefreshByData(e, () => {
       this.qoh.ScrollToTop(0);
     }, true);
   }
   sSt() {
-    var e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
-    var e = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.CNe.GetLimitTimeActivityEndTime(), e);
-    this.GetText(9)?.SetText(e);
+    var e;
+    if (this.CNe.IsInLimitTime()) {
+      e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
+      e = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.CNe.GetLimitTimeActivityEndTime(), e);
+      this.GetText(9)?.SetText(e);
+    } else {
+      this.k_d();
+      ControllerHolder_1.ControllerHolder.ActivityController.ShowActivityRefreshAndBackToBattleView();
+    }
   }
-  OnBeforeDestroy() {
+  k_d() {
     if (this.TDe) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }
+  }
+  OnBeforeDestroy() {
+    this.k_d();
   }
 }
 exports.FloroRanchLimitRewardView = FloroRanchLimitRewardView;

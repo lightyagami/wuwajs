@@ -41,7 +41,7 @@ class TutorialView extends UiViewBase_1.UiViewBase {
     this.ORo = 0;
     this.fGt = undefined;
     this.kRo = undefined;
-    this.Vlu = 0;
+    this.T_u = 0;
     this.Mbe = t => {
       var t = ModelManager_1.ModelManager.TutorialModel.MakeSearchList(t, this.GRo);
       var i = t.ItemData;
@@ -74,7 +74,7 @@ class TutorialView extends UiViewBase_1.UiViewBase {
       t = this.s8e[t];
       this.GRo = t;
       this.dqe.ResetSearch(true);
-      t = ModelManager_1.ModelManager.TutorialModel.GetUnlockedTutorialDataByType(t, this.Vlu);
+      t = ModelManager_1.ModelManager.TutorialModel.GetUnlockedTutorialDataByType(t, this.T_u);
       let i = -1;
       if (this.hRl > -1) {
         i = t.findIndex(t => t.SavedData?.TutorialId === this.hRl);
@@ -129,7 +129,7 @@ class TutorialView extends UiViewBase_1.UiViewBase {
     this.HUn = () => {
       var t;
       var i;
-      var e = ModelManager_1.ModelManager.TutorialModel.GetUnlockedTutorialDataByType(this.GRo, this.Vlu);
+      var e = ModelManager_1.ModelManager.TutorialModel.GetUnlockedTutorialDataByType(this.GRo, this.T_u);
       for ([t, i] of e.entries()) {
         i.Selected = t === 0;
       }
@@ -182,8 +182,8 @@ class TutorialView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     var t = this.OpenParam;
-    this.Vlu = t?.ExclusiveType ?? 0;
-    ModelManager_1.ModelManager.TutorialModel.CurrentExclusiveType = this.Vlu;
+    this.T_u = t?.ExclusiveType ?? 0;
+    ModelManager_1.ModelManager.TutorialModel.CurrentExclusiveType = this.T_u;
     this.GetItem(3).SetUIActive(false);
     for (const e in TutorialDefine_1.ETutorialType) {
       var i = Number(e);
@@ -191,7 +191,7 @@ class TutorialView extends UiViewBase_1.UiViewBase {
         this.s8e.push(i);
       }
     }
-    if (this.Vlu !== 0) {
+    if (this.T_u !== 0) {
       this.s8e.length = 0;
       this.s8e.push(TutorialDefine_1.ETutorialType.All);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotNewTutorialType, TutorialDefine_1.ETutorialType.All);

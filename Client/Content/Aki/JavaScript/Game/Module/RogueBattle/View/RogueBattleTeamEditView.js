@@ -27,9 +27,9 @@ const MAX_FORMATION_NUM = 1;
 class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.CLu = undefined;
-    this.Tpu = undefined;
-    this.pLu = [];
+    this.PLu = undefined;
+    this.Ivu = undefined;
+    this.xLu = [];
     this.Ivt = undefined;
     this.wu1 = false;
     this.tM1 = undefined;
@@ -42,14 +42,14 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
     this.kT1 = () => {
       var e;
       if (!this.wu1) {
-        e = new RogueBattleTeamRoleSelectView_1.RogueBattleTeamEditData(this.Ivt.GetSelectedIndex(), this.vLu);
+        e = new RogueBattleTeamRoleSelectView_1.RogueBattleTeamEditData(this.Ivt.GetSelectedIndex(), this.ULu);
         UiManager_1.UiManager.OpenView("RogueBattleTeamRoleSelectView", e);
       }
     };
     this.zo1 = e => {
       var t;
       if (!this.wu1) {
-        t = new RogueBattleTeamRoleSelectView_1.RogueBattleTeamEditData(this.Ivt.GetSelectedIndex(), this.vLu);
+        t = new RogueBattleTeamRoleSelectView_1.RogueBattleTeamEditData(this.Ivt.GetSelectedIndex(), this.ULu);
         UiManager_1.UiManager.OpenView("RogueBattleTeamRoleSelectView", t);
       }
     };
@@ -83,7 +83,7 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
         e();
       }
     };
-    this.WPu = () => !this.wu1;
+    this.pxu = () => !this.wu1;
     this.yqe = e => {
       e = EditFormationDefine_1.FORMATION_SPRITES[e];
       e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
@@ -94,7 +94,7 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
     this.l6c = i => {
       const a = ModelManager_1.ModelManager.RogueBattleModel?.GetFormationDataByIndex(i);
       if (a) {
-        this.pLu.forEach((e, t) => {
+        this.xLu.forEach((e, t) => {
           if (t >= a.Q6n.length) {
             e.UpdateRoleInfo(0, i);
           } else {
@@ -104,7 +104,7 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
       }
       this.Og();
     };
-    this.vLu = async e => {
+    this.ULu = async e => {
       var i = this.Ivt.GetSelectedIndex();
       var t = ModelManager_1.ModelManager.RogueBattleModel.GetFormationDataByIndex(i);
       if (t.Q6n !== e) {
@@ -113,12 +113,12 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
         let t = 0;
         for (let e = 0; e < a.Q6n.length; e++) {
           if (a.Q6n[e] !== 0) {
-            this.pLu[t].UpdateRoleInfo(a.Q6n[e], i);
+            this.xLu[t].UpdateRoleInfo(a.Q6n[e], i);
             t++;
           }
         }
-        for (let e = t; e < this.pLu.length; e++) {
-          this.pLu[e].UpdateRoleInfo(0, i);
+        for (let e = t; e < this.xLu.length; e++) {
+          this.xLu[e].UpdateRoleInfo(0, i);
         }
         this.Og();
       }
@@ -129,18 +129,18 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[3, this.L1i], [6, this.BT1]];
   }
   async OnBeforeStartAsync() {
-    this.pLu = [new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(0), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(1), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(2)];
-    this.pLu.forEach(e => {
+    this.xLu = [new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(0), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(1), new RogueBattleTeamEditSlot_1.RogueBattleTeamEditSlot(2)];
+    this.xLu.forEach(e => {
       e.OnClickCallBack = this.zo1;
     });
     var e = new CommonTabComponentData_1.CommonTabComponentData(() => new RogueBattleTeamEditTab_1.RogueBattleTeamEditTab(), this.l6c, this.yqe);
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(5), e, () => {});
     this.tM1 = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(9));
-    this.CLu = new RogueBattleLinkItem_1.RogueBattleLinkItem();
-    this.CLu.OnClickCallBack = this.kT1;
-    this.Tpu = new MapRoguePanelFetter_1.MapRoguePanelFetter();
-    this.Tpu.CheckCanOpenMenu = this.WPu;
-    await Promise.all([this.pLu[0].CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.pLu[1].CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.pLu[2].CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.CLu.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.Tpu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.Ivt.RefreshTabItemByLengthAsync(MAX_FORMATION_NUM)]);
+    this.PLu = new RogueBattleLinkItem_1.RogueBattleLinkItem();
+    this.PLu.OnClickCallBack = this.kT1;
+    this.Ivu = new MapRoguePanelFetter_1.MapRoguePanelFetter();
+    this.Ivu.CheckCanOpenMenu = this.pxu;
+    await Promise.all([this.xLu[0].CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.xLu[1].CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.xLu[2].CreateThenShowByActorAsync(this.GetItem(2).GetOwner()), this.PLu.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()), this.Ivu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner()), this.Ivt.RefreshTabItemByLengthAsync(MAX_FORMATION_NUM)]);
     this.Ivt.SetCloseBtnShowState(false);
     this.Ivt.SelectToggleByIndex(0, true);
   }
@@ -150,12 +150,12 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
     this.tM1 = undefined;
   }
   Og() {
-    this.sjc();
+    this.gjc();
     this.M3e();
     this.sF1();
   }
-  sjc() {
-    this.CLu?.RefreshLinkInfo(this.Ivt.GetSelectedIndex());
+  gjc() {
+    this.PLu?.RefreshLinkInfo(this.Ivt.GetSelectedIndex());
   }
   sF1() {
     var e = ModelManager_1.ModelManager.MapRogueModel.GetOpData(this.OpenParam);
@@ -173,6 +173,13 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
       }
     }
     this.GetButton(3).SetSelfInteractive(!e);
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (e.length !== 0 && e[0] === "FirstFetter") {
+      return this.Ivu?.GetGuideUiItemAndUiItemForShowEx(e);
+    } else {
+      return undefined;
+    }
   }
 }
 exports.RogueBattleTeamEditView = RogueBattleTeamEditView;

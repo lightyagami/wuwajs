@@ -197,6 +197,9 @@ class ConfigMarkItem extends MarkItem_1.MarkItem {
   IsMoraleFlag() {
     return this.MarkConfig.RelativeSubType === 6;
   }
+  IsNightMareFlag() {
+    return this.MarkConfig.RelativeSubType === 9;
+  }
   UpdateViewIcon() {
     var t;
     if (this.InnerView && (t = this.InnerView)) {

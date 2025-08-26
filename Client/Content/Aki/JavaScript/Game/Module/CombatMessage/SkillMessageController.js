@@ -39,11 +39,11 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     this.UIt.add(e);
   }
   static OnInit() {
-    Net_1.Net.Register(18777, SkillMessageController.sCc);
+    Net_1.Net.Register(18218, SkillMessageController.sCc);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(18777);
+    Net_1.Net.UnRegister(18218);
     SkillMessageController.UIt.clear();
     return true;
   }
@@ -109,7 +109,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     if (C) {
       n.dVn.mVn = l.FightStateComp?.GetFightState() ?? 0;
     }
-    CombatMessage_1.CombatNet.Call(27778, o, n, e => {
+    CombatMessage_1.CombatNet.Call(24984, o, n, e => {
       if (!o.IsEnd) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (C) {
@@ -134,7 +134,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
       l.WSl.F4n = t.EntityId;
       l.WSl.r5n = t.SkillId;
       l.WSl.Mjn = t.BulletId;
-      CombatMessage_1.CombatNet.Send(23398, e, l);
+      CombatMessage_1.CombatNet.Send(27938, e, l);
       return true;
     } else {
       if (Log_1.Log.CheckError()) {
@@ -158,7 +158,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     e = Protocol_1.Aki.Protocol.w3n.create();
     e.dVn = t;
     e.pVn = l;
-    CombatMessage_1.CombatNet.Call(18768, o, e, e => {
+    CombatMessage_1.CombatNet.Call(15853, o, e, e => {
       if (!o.IsEnd) {
         switch (e.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
@@ -175,7 +175,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     s.yVn = l;
     s.lVn = t;
     s.r5n = o;
-    CombatMessage_1.CombatNet.Send(23122, e, Protocol_1.Aki.Protocol.Pe_.create(s), r, a);
+    CombatMessage_1.CombatNet.Send(23213, e, Protocol_1.Aki.Protocol.Pe_.create(s), r, a);
   }
   static PassiveSkillAddRequest(e, o, t = undefined) {
     CombatLog_1.CombatLog.Info("Skill", e, "添加被动Request", ["被动技能Id", o]);
@@ -183,7 +183,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     l.IVn = MathUtils_1.MathUtils.NumberToLong(o);
     l.TVn = e.GetComponent(0).GetCreatureDataId();
     var o = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
-    CombatMessage_1.CombatNet.Send(19543, e, Protocol_1.Aki.Protocol.Be_.create(l), t, o);
+    CombatMessage_1.CombatNet.Send(17362, e, Protocol_1.Aki.Protocol.Be_.create(l), t, o);
     return o;
   }
   static PassiveSkillRemoveRequest(e, o, t = undefined, l = undefined) {
@@ -191,11 +191,16 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     var r = Protocol_1.Aki.Protocol.je_.create();
     r.IVn = MathUtils_1.MathUtils.NumberToLong(o);
     r.TVn = e.GetComponent(0).GetCreatureDataId();
-    CombatMessage_1.CombatNet.Send(24488, e, Protocol_1.Aki.Protocol.je_.create(r), t, l);
+    CombatMessage_1.CombatNet.Send(26244, e, Protocol_1.Aki.Protocol.je_.create(r), t, l);
   }
-  static aCc(e, o) {}
+  static aCc(e, o) {
+    if (!this.ClosePrintDebugFightErrInfo) {
+      CombatLog_1.CombatLog.Error("Message", undefined, e, ["info", o]);
+    }
+  }
 }
 (_a = SkillMessageController).CloseMonsterServerLogic = false;
+SkillMessageController.ClosePrintDebugFightErrInfo = false;
 SkillMessageController.UIt = new Set();
 SkillMessageController.sCc = e => {
   switch (e.Q4n) {

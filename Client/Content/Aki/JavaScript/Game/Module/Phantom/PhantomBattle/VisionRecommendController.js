@@ -24,14 +24,14 @@ class VisionRecommendController extends UiControllerBase_1.UiControllerBase {
   static RequestRoleVisionRecommendData(o) {
     var e = new Protocol_1.Aki.Protocol.Qv_();
     e.Q6n = o;
-    Net_1.Net.Call(20992, Protocol_1.Aki.Protocol.Qv_.create(e), e => {
+    Net_1.Net.Call(21974, Protocol_1.Aki.Protocol.Qv_.create(e), e => {
       ModelManager_1.ModelManager.VisionRecommendModel.OnRoleRecommendData(o, e);
     });
   }
   static RequestRoleVisionRecommendAttr(o) {
     var e = new Protocol_1.Aki.Protocol.Xv_();
     e.Q6n = o;
-    Net_1.Net.Call(20760, Protocol_1.Aki.Protocol.Xv_.create(e), e => {
+    Net_1.Net.Call(20859, Protocol_1.Aki.Protocol.Xv_.create(e), e => {
       ModelManager_1.ModelManager.VisionRecommendModel.OnRoleRecommendAttrData(o, e);
     });
   }

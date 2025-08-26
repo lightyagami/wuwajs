@@ -30,13 +30,13 @@ class LevelConditionCheckJigsawInfo extends LevelGeneralBase_1.LevelConditionBas
   _ra(e) {
     var r;
     var a = e.FoundationEntityId;
-    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a)?.Entity?.GetComponent(137);
-    return !!a && (r = e.ItemEntityId, !!(r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r)?.Entity?.GetComponent(138))) && !!a.GetAllItemOnBase().includes(r) && (a = a.GetPutItemIndex(r), r = e.PlaceIndex, a.Col === r.ColumnIndex) && a.Row === r.RowIndex;
+    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a)?.Entity?.GetComponent(138);
+    return !!a && (r = e.ItemEntityId, !!(r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r)?.Entity?.GetComponent(139))) && !!a.GetAllItemOnBase().includes(r) && (a = a.GetPutItemIndex(r), r = e.PlaceIndex, a.Col === r.ColumnIndex) && a.Row === r.RowIndex;
   }
   ura(e) {
     var e = e.ItemEntityId;
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
-    return !!e?.Entity?.GetComponent(155) && !!(e = e?.Entity?.GetComponent(128)) && e.IsMoving;
+    return !!e?.Entity?.GetComponent(156) && !!(e = e?.Entity?.GetComponent(129)) && e.IsMoving;
   }
 }
 exports.LevelConditionCheckJigsawInfo = LevelConditionCheckJigsawInfo;

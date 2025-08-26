@@ -30,6 +30,9 @@ class ActivityDoubleRewardData extends ActivityData_1.ActivityBaseData {
     var e;
     return this.LeftUpCount !== 0 && (e = this.ARn(), ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, e, 0, 0) !== 1);
   }
+  GetExDataFinishShowState() {
+    return this.LeftUpCount === 0;
+  }
   ARn() {
     var e = new Date();
     if (e.getHours() < TimeUtil_1.TimeUtil.CrossDayHour) {

@@ -15,7 +15,7 @@ class TsAnimNotifyStateNextAtt extends UE.KuroAnimNotifyState {
   K2_NotifyEnd(t, e) {
     var r;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (r = t.CharacterActorComponent?.Entity?.GetComponent(40), t = t.CharacterActorComponent?.Entity?.GetComponent(174), !r?.IsSkillMontageInvalid(e.GetName())) && (r?.Valid && r.SetSkillAcceptInput(false), t?.Valid && t.HasBuffAuthority() && t.RemoveBuff(CharacterBuffIds_1.buffId.GoDown, -1, "从TsAnimNotifyStateNextAtt移除Buff"), true);
+    return t instanceof TsBaseCharacter_1.default && (r = t.CharacterActorComponent?.Entity?.GetComponent(40), t = t.CharacterActorComponent?.Entity?.GetComponent(175), !r?.IsSkillMontageInvalid(e.GetName())) && (r?.Valid && r.SetSkillAcceptInput(false), t?.Valid && t.HasBuffAuthority() && t.RemoveBuff(CharacterBuffIds_1.buffId.GoDown, -1, "从TsAnimNotifyStateNextAtt移除Buff"), true);
   }
   GetNotifyName() {
     return "下一个技能";

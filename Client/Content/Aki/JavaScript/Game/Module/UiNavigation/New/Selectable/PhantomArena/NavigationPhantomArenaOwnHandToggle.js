@@ -20,7 +20,7 @@ class NavigationPhantomArenaOwnHandToggle extends NavigationButton_1.NavigationB
     return this.ProxyInternal;
   }
   OnButtonClick() {}
-  OnCheckFindOpposite(t) {
+  OnCheckFindOpposite() {
     return !this.Proxy || !this.Proxy.GamepadLogic.IsInCardSelectState;
   }
   OnNotifyFocusListener(t) {
@@ -28,17 +28,17 @@ class NavigationPhantomArenaOwnHandToggle extends NavigationButton_1.NavigationB
       this.Proxy.GamepadLogic.HideCardTips();
     }
   }
-  RSu() {
+  w7c() {
     return this.PanelHandle.GetNavigationListenerListByType("PhantomArenaOwnHandToggle").indexOf(this.Listener);
   }
   async TriggerSelectCard() {
     var t;
-    return !!this.Proxy && (t = this.RSu(), this.Proxy.GamepadLogic.SelectHandCard(t));
+    return !!this.Proxy && (t = this.w7c(), this.Proxy.GamepadLogic.SelectHandCard(t));
   }
   SwitchHandCardTips() {
     var t;
     if (this.Proxy) {
-      t = this.RSu();
+      t = this.w7c();
       this.Proxy.GamepadLogic.SwitchHandCardTips(t);
     }
   }

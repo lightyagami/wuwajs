@@ -26,10 +26,10 @@ class FloroRanchPermanentRewardView extends UiViewBase_1.UiViewBase {
     };
     this.VOe = () => {
       var e = new FloroRanchTaskItem_1.FloroRanchTaskItem();
-      e.OnGetBtnClick = this.C9c;
+      e.OnGetBtnClick = this.FKu;
       return e;
     };
-    this.C9c = () => {
+    this.FKu = () => {
       var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetFloroRanchReceivableTaskIds(false);
       FloroRanchController_1.FloroRanchController.RequestTaskReward(e);
     };

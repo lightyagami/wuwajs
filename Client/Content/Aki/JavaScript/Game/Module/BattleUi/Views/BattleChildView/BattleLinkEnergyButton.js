@@ -20,13 +20,13 @@ const InputDistributeController_1 = require("../../../../Ui/InputDistribute/Inpu
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
+const FormationExtraButton_1 = require("../FormationUnitNode/FormationExtraButton");
 const CombineKeyItem_1 = require("../KeyItem/CombineKeyItem");
-const BattleVisibleChildView_1 = require("./BattleVisibleChildView");
 const SCORE_NIAGARA_PATH = "/Game/Aki/Effect/UI/Niagaras/RouGe/NS_Fx_LGUI_WhiteCat_Button_Panner.NS_Fx_LGUI_WhiteCat_Button_Panner";
 const READY_NIAGARA_PATH = "/Game/Aki/Effect/UI/Niagaras/Common/NS_Fx_LGUI_Fight_Link.NS_Fx_LGUI_Fight_Link";
 const MAX_SMOOTH_TIME = 200;
 const LINK_BURST_TRIGGER_INTERVAL = 1000;
-class BattleLinkEnergyButton extends BattleVisibleChildView_1.BattleVisibleChildView {
+class BattleLinkEnergyButton extends FormationExtraButton_1.FormationExtraButton {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
@@ -84,7 +84,7 @@ class BattleLinkEnergyButton extends BattleVisibleChildView_1.BattleVisibleChild
       this.Lr1();
       this.RefreshLinkButton(t);
       if (ModelManager_1.ModelManager.BattleLinkModel?.IsNewLinkGmTest()) {
-        this.SetUiActive(true);
+        this.SetVisible(true);
       }
     };
     this.lqt = () => {
@@ -312,9 +312,9 @@ class BattleLinkEnergyButton extends BattleVisibleChildView_1.BattleVisibleChild
   }
   RefreshLinkButton(t) {
     if (t === 0) {
-      this.SetUiActive(false);
+      this.SetVisible(false);
     } else {
-      this.SetUiActive(true);
+      this.SetVisible(true);
       if (this.CheckAliveRoles()) {
         switch (t) {
           case 1:
@@ -392,6 +392,7 @@ class BattleLinkEnergyButton extends BattleVisibleChildView_1.BattleVisibleChild
         this.P8c?.SetColor(this.opi);
     }
   }
+  OnShowBattleChildView() {}
 }
 (exports.BattleLinkEnergyButton = BattleLinkEnergyButton).Ult = Stats_1.Stat.Create("[BattleView]BattleLinkEnergyButtonTick");
 //# sourceMappingURL=BattleLinkEnergyButton.js.map

@@ -15,7 +15,7 @@ const PhantomArenaDeckOverviewItem_1 = require("./PhantomArenaDeckOverviewItem")
 class PhantomArenaDeckOverviewTabView extends PhantomArenaChildViewBase_1.PhantomArenaChildViewBase {
   constructor() {
     super(...arguments);
-    this.Clu = undefined;
+    this.Hlu = undefined;
     this.M61 = () => {
       var e = new PhantomArenaDeckOverviewItem_1.PhantomArenaDeckOverviewItem();
       e.OnToggleSelect = this.E61;
@@ -83,7 +83,7 @@ class PhantomArenaDeckOverviewTabView extends PhantomArenaChildViewBase_1.Phanto
   }
   OnStart() {
     super.OnStart();
-    this.Clu = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.M61, true);
+    this.Hlu = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.M61, true);
   }
   OnBeforeShow() {
     this.ViewModel.SetViewTitle?.("PhantomArenaDeckOverviewTabView_Name");
@@ -95,19 +95,19 @@ class PhantomArenaDeckOverviewTabView extends PhantomArenaChildViewBase_1.Phanto
     this.GetButton(4).RootUIComp.SetUIActive(this.ViewModel?.CanShowSelectBtnInDeckOverviewTabView ?? false);
   }
   RefreshDeckInfoLayout() {
-    this.Clu.RefreshByData(this.ViewModel.EditableDeckList, false, () => {
-      this.Clu.ScrollToGridIndex(this.ViewModel.SelectedDeckIndex, false);
-      this.Clu.SelectGridProxy(this.ViewModel.SelectedDeckIndex);
+    this.Hlu.RefreshByData(this.ViewModel.EditableDeckList, false, () => {
+      this.Hlu.ScrollToGridIndex(this.ViewModel.SelectedDeckIndex, false);
+      this.Hlu.SelectGridProxy(this.ViewModel.SelectedDeckIndex);
     });
   }
   SelectDeckByIndex(e) {
     if (!(e < 0) && !(e >= this.ViewModel.EditableDeckList.length)) {
       this.ViewModel.SelectedDeckIndex = e;
-      this.Clu.SelectGridProxy(e);
+      this.Hlu.SelectGridProxy(e);
     }
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
-    if (e && !(e.length <= 0) && e[0] === "FirstDeck" && (e = this.Clu?.GetGridByDisplayIndex(0))) {
+    if (e && !(e.length <= 0) && e[0] === "FirstDeck" && (e = this.Hlu?.GetGridByDisplayIndex(0))) {
       return [e, e];
     } else {
       return undefined;

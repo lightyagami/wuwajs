@@ -97,7 +97,7 @@ class SceneItemManipulableDrawState extends SceneItemManipulableBaseState_1.Scen
     var a = Global_1.Global.BaseCharacter.CharacterActorComponent.ActorTransform;
     var r = a.TransformPositionNoScale(r);
     let h = UE.KismetMathLibrary.ComposeRotators(this.SceneItem.ConfigHoldRotator, a.Rotator());
-    var a = this.SceneItem.Entity.GetComponent(138);
+    var a = this.SceneItem.Entity.GetComponent(139);
     if (a?.Valid) {
       a = new UE.Rotator(0, -a.Rotation, 0);
       h = UE.KismetMathLibrary.ComposeRotators(a, h);

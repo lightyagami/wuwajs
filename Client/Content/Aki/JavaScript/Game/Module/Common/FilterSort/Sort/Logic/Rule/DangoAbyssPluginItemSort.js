@@ -51,7 +51,7 @@ class DangoAbyssPluginItemSort extends CommonSort_1.CommonSort {
       e = e[0] ?? 0;
       return (ModelManager_1.ModelManager.DangoAbyssModel.IsPluginHasValidTag(e, t) ? -1 : 1) - (ModelManager_1.ModelManager.DangoAbyssModel.IsPluginHasValidTag(e, s) ? -1 : 1);
     };
-    this.rZ1 = (t, s, r) => {
+    this.wZ1 = (t, s, r) => {
       return t.GetRoleId() - s.GetRoleId();
     };
   }
@@ -64,7 +64,7 @@ class DangoAbyssPluginItemSort extends CommonSort_1.CommonSort {
     this.SortMap.set(6, this.mB1);
     this.SortMap.set(7, this.Z$a);
     this.SortMap.set(8, this.fB1);
-    this.SortMap.set(9, this.rZ1);
+    this.SortMap.set(9, this.wZ1);
   }
 }
 exports.DangoAbyssPluginItemSort = DangoAbyssPluginItemSort;

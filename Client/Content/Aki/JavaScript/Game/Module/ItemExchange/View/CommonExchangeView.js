@@ -77,7 +77,7 @@ class CommonExchangeView extends UiTickViewBase_1.UiTickViewBase {
     this.SetItemIcon(this.GetTexture(5), e.GetSrcItemId());
     this.rNe();
     if (this.FXs.StartSliderValue > 0) {
-      this.WGe?.ChangeValue(this.FXs.StartSliderValue);
+      this.WGe?.ChangeValue(this.FXs.StartSliderValue, false);
     }
     this.bgi();
   }

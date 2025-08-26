@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PhantomArenaAreaProxyBase = undefined;
 const CustomPromise_1 = require("../../../../../../Core/Common/CustomPromise");
+const Log_1 = require("../../../../../../Core/Common/Log");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
@@ -25,6 +26,9 @@ class PhantomArenaAreaProxyBase {
   }
   DestroyCard() {
     if (this.Card) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("PhantomArena", 10, "Card Destroy");
+      }
       this.Card.Destroy();
       this.Card = undefined;
     }

@@ -82,6 +82,12 @@ class InputDistributeController extends ControllerBase_1.ControllerBase {
   static UnBindAxes(e, t) {
     ModelManager_1.ModelManager.InputDistributeModel?.UnBindAxes(e, t);
   }
+  static BindAxisIgnoreLimit(e, t) {
+    ModelManager_1.ModelManager.InputDistributeModel?.BindAxisIgnoreLimit(e, t);
+  }
+  static UnBindAxisIgnoreLimit(e, t) {
+    ModelManager_1.ModelManager.InputDistributeModel?.UnBindAxisIgnoreLimit(e, t);
+  }
   static BindTouch(e, t) {
     ModelManager_1.ModelManager.InputDistributeModel?.BindTouch(e, t);
   }

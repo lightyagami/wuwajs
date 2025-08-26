@@ -296,7 +296,7 @@ class GravityUtils {
     if (t?.MoveComp) {
       return t.MoveComp;
     } else {
-      return t?.Entity?.GetComponent(236);
+      return t?.Entity?.GetComponent(237);
     }
   }
   static GetRotatorInGravity(t, r, i) {

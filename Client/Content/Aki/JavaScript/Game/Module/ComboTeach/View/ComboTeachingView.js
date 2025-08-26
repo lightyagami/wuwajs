@@ -34,7 +34,7 @@ class ComboTeachingView extends UiTickViewBase_1.UiTickViewBase {
     this.$It = false;
     this.NodeList = [];
     this.oH1 = false;
-    this.Tjc = -1;
+    this.nKu = -1;
     this.OnPress = (e, t) => {
       var i = this.ELo.GetItemByShowIndex(ModelManager_1.ModelManager.ComboTeachingModel.CurrentNodeIndex);
       if (i) {
@@ -232,8 +232,8 @@ class ComboTeachingView extends UiTickViewBase_1.UiTickViewBase {
     t.guideID.forEach((e, t) => {
       GuideController_1.GuideController.TryStartGuide(e);
     });
-    if (e !== this.Tjc) {
-      this.Tjc = e;
+    if (e !== this.nKu) {
+      this.nKu = e;
       for (const n of this.NodeList) {
         if (n.SuccessHandle) {
           if (TimerSystem_1.TimerSystem.Has(n.SuccessHandle)) {
@@ -287,7 +287,7 @@ class ComboTeachingView extends UiTickViewBase_1.UiTickViewBase {
     if (ModelManager_1.ModelManager.ComboTeachingModel.BeforeJumpTime < 0) {
       ModelManager_1.ModelManager.ComboTeachingModel.BeforeJumpTime = 0;
     }
-    if (Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), (EntitySystem_1.EntitySystem.Get(t)?.GetComponent(178)).IsJump) && ModelManager_1.ModelManager.ComboTeachingModel.BeforeJumpTime === 0) {
+    if (Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), (EntitySystem_1.EntitySystem.Get(t)?.GetComponent(179)).IsJump) && ModelManager_1.ModelManager.ComboTeachingModel.BeforeJumpTime === 0) {
       ModelManager_1.ModelManager.ComboTeachingModel.BeforeJumpTime = BEFORE_JUMP_TIME;
     }
     var t = this.ELo.GetItemByShowIndex(ModelManager_1.ModelManager.ComboTeachingModel.CurrentNodeIndex);

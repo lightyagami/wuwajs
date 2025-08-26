@@ -57,8 +57,8 @@ class TsAiController extends UE.KuroAIController {
   InitAiController(t) {
     this.CharAiDesignComp = t;
     this.AiController = t.AiController;
-    this.CharBuffComp = t.Entity.GetComponent(174);
-    this.CharTagComp = t.Entity.GetComponent(205);
+    this.CharBuffComp = t.Entity.GetComponent(175);
+    this.CharTagComp = t.Entity.GetComponent(206);
     this.CharStateMachineComp = t.Entity.GetComponent(76);
   }
   DrawDebugLines(t) {
@@ -183,7 +183,7 @@ class TsAiController extends UE.KuroAIController {
     }
   }
   AicApplyBuffToTarget(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 209);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 210);
     if (t && this.CharBuffComp?.Valid) {
       t.AddBuffFromAi(this.AiController.AiCombatMessageId, Number(e), {
         InstigatorId: this.CharBuffComp.CreatureDataId,

@@ -22,6 +22,7 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.Uvi = 0;
+    this.zJc = 0;
     this.ShowData = undefined;
     this.wvi = false;
     this.fla = undefined;
@@ -87,6 +88,7 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   }
   OnTick(e) {
     e /= TimeUtil_1.TimeUtil.InverseMillisecond;
+    this.zJc += e;
     this.kvi(e);
     this.Uvi += e;
     if (this.Uvi >= ModelManager_1.ModelManager.LoadingModel.TipTime) {
@@ -96,24 +98,25 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   kvi(e) {
     if (!this.wvi) {
       var i = ModelManager_1.ModelManager.LoadingModel;
-      var a = MathCommon_1.MathCommon.ProgressTotalValue;
+      var t = MathCommon_1.MathCommon.ProgressTotalValue;
       var e = i.CurrentProgress + i.Speed * i.SpeedRate * e;
-      var t = Math.min(e, i.NextProgress);
-      var e = t / a;
-      i.CurrentProgress = t;
-      this.cEo(e, t);
+      var a = Math.min(e, i.NextProgress);
+      var e = a / t;
+      i.CurrentProgress = a;
+      this.cEo(e, a);
       while (i.ReachHandleQueue.Size) {
         var n = i.ReachHandleQueue.Front;
-        if (n[0] > t) {
+        if (n[0] > a) {
           break;
         }
         i.ReachHandleQueue.Pop();
         n[1]();
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Loading", 16, "TickProgress", ["progress", t]);
+          Log_1.Log.Info("Loading", 16, "TickProgress", ["progress", a]);
         }
       }
-      if (!this.wvi && a <= t) {
+      e = this.ShowData.GetDuringTime();
+      if (!this.wvi && t <= a && this.zJc >= e) {
         this.wvi = true;
         UiManager_1.UiManager.CloseView(this.Info.Name);
         this.fla?.Close();
@@ -148,9 +151,9 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   OnAfterDestroy() {
     this.fla?.Close();
   }
-  SetTextProgressValue(e, i, a = "") {
+  SetTextProgressValue(e, i, t = "") {
     i = Math.round(i);
-    this.GetText(e).SetText("" + i + a);
+    this.GetText(e).SetText("" + i + t);
   }
   SetTextureProgressRate(e, i) {
     this.GetTexture(e).SetFillAmount(i);

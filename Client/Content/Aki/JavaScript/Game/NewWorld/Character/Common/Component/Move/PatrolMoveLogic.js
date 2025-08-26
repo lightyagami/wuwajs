@@ -11,10 +11,11 @@ const Quat_1 = require("../../../../../../Core/Utils/Math/Quat");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const AiContollerLibrary_1 = require("../../../../../AI/Controller/AiContollerLibrary");
 const GlobalData_1 = require("../../../../../GlobalData");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const ColorUtils_1 = require("../../../../../Utils/ColorUtils");
 const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const CharacterUnifiedStateTypes_1 = require("../Abilities/CharacterUnifiedStateTypes");
-const MoveToLocationLogic_1 = require("./MoveToLocationLogic");
+const MoveToLocationController_1 = require("./MoveToLocationController");
 const WHILE_UPDATE_MOVE_POINT_COUNT = 2;
 const RESET_LOCATION_TOLERANCE = 10;
 class PatrolMoveLogic {
@@ -41,8 +42,8 @@ class PatrolMoveLogic {
   Init(t) {
     this.Entity = t;
     this.Hte = t.CheckGetComponent(3);
-    this.oRe = t.CheckGetComponent(177);
-    this.mBe = t.GetComponent(101);
+    this.oRe = t.CheckGetComponent(178);
+    this.mBe = t.GetComponent(102);
   }
   GetMovePoint(t) {
     if (t >= 0 && t < this.YJo.length) {
@@ -68,7 +69,7 @@ class PatrolMoveLogic {
       this.StopMove();
       return false;
     }
-    if (GlobalData_1.GlobalData.IsPlayInEditor && MoveToLocationLogic_1.MoveToLocationController.DebugDraw) {
+    if (GlobalData_1.GlobalData.IsPlayInEditor && MoveToLocationController_1.MoveToLocationController.DebugDraw) {
       this.IJo();
     }
     this.ezo();
@@ -165,7 +166,7 @@ class PatrolMoveLogic {
     if (this.oRe && this.Entity.GetTickInterval() > 1) {
       i = this.oRe.GetMeshTransform();
       this.rzo();
-      this.oRe.SetModelBuffer(i, t * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+      this.oRe.SetModelBuffer(i, t * CommonDefine_1.MILLIONSECOND_PER_SECOND * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
     } else {
       this.rzo();
     }

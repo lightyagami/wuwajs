@@ -14,19 +14,22 @@ class RewardSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemG
   constructor() {
     super(...arguments);
     this.fGt = undefined;
-    this.nNu = e => {
+    this.W2u = e => {
       if (this.fGt && this.fGt.UniqueId === e) {
         this.c4e(this.fGt);
       }
     };
   }
+  OnStart() {
+    this.SetUseFixedAsync(true);
+  }
   OnAddEvents() {
     super.OnAddEvents();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.nNu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.W2u);
   }
   OnRemoveEvents() {
     super.OnRemoveEvents();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemFuncValueChange, this.nNu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemFuncValueChange, this.W2u);
   }
   OnRefresh(e, t, o) {
     this.c4e(e);
@@ -50,47 +53,53 @@ class RewardSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemG
     }
     switch (t.ItemDataType) {
       case 1:
-        var n = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o);
-        var n = {
-          Data: e,
-          Type: 2,
-          ItemConfigId: o,
-          BottomTextId: n.Name,
-          QualityId: n.QualityId,
-          TopRightTextId: a,
-          TopRightTextBgColor: r,
-          TopRightTextColor: i
-        };
-        this.Apply(n);
-        break;
+        {
+          var n = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o);
+          const s = {
+            Data: e,
+            Type: 2,
+            ItemConfigId: o,
+            BottomTextId: n.Name,
+            QualityId: n.QualityId,
+            TopRightTextId: a,
+            TopRightTextBgColor: r,
+            TopRightTextColor: i
+          };
+          this.Apply(s);
+          return;
+        }
       case 3:
-        var n = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(e.UniqueId);
-        var m = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e.UniqueId);
-        var m = {
-          Data: e,
-          Type: 3,
-          ItemConfigId: o,
-          TopRightTextId: a,
-          TopRightTextBgColor: r,
-          TopRightTextColor: i,
-          FetterGroupId: m.GetFetterGroupId(),
-          IsPhantomLock: n.GetIsLock(),
-          IsPhantomDeprecate: n.GetIsDeprecated()
-        };
-        this.Apply(m);
-        break;
-      default:
-        n = {
-          Data: e,
-          Type: 4,
-          ItemConfigId: o,
-          BottomText: "x" + e.Count,
-          TopRightTextId: a,
-          TopRightTextBgColor: r,
-          TopRightTextColor: i
-        };
-        this.Apply(n);
+        {
+          if (ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomItemById(o).ParentMonsterId !== 0) {
+            break;
+          }
+          var n = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(e.UniqueId);
+          var m = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e.UniqueId);
+          const s = {
+            Data: e,
+            Type: 3,
+            ItemConfigId: o,
+            TopRightTextId: a,
+            TopRightTextBgColor: r,
+            TopRightTextColor: i,
+            FetterGroupId: m.GetFetterGroupId(),
+            IsPhantomLock: n.GetIsLock(),
+            IsPhantomDeprecate: n.GetIsDeprecated()
+          };
+          this.Apply(s);
+          return;
+        }
     }
+    const s = {
+      Data: e,
+      Type: 4,
+      ItemConfigId: o,
+      BottomText: "x" + e.Count,
+      TopRightTextId: a,
+      TopRightTextBgColor: r,
+      TopRightTextColor: i
+    };
+    this.Apply(s);
   }
 }
 exports.RewardSmallItemGrid = RewardSmallItemGrid;

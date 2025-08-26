@@ -11,7 +11,7 @@ class MoraleBuffItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.BuffData = undefined;
     this.ClickCallback = undefined;
-    this.nJ1 = () => {
+    this.PJ1 = () => {
       this.ClickCallback?.(this.BuffData);
     };
   }
@@ -21,7 +21,7 @@ class MoraleBuffItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIExtendToggle], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UITexture], [6, UE.UIText], [7, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.nJ1]];
+    this.BtnBindInfo = [[1, this.PJ1]];
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();
@@ -48,33 +48,33 @@ class MoraleBuffItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetStateActive() {
-    this.sJ1(true);
+    this.xJ1(true);
     this.Euo(false);
-    this.oJ1(3);
+    this.AJ1(3);
     this.Ost(this.BuffData.Config.IconPathActive);
-    this.Aou(true);
+    this.inu(true);
   }
   SetStateTempActive() {
-    this.sJ1(true);
+    this.xJ1(true);
     this.Euo(false);
-    this.oJ1(2);
+    this.AJ1(2);
     this.Ost(this.BuffData.Config.IconPathActive);
-    this.Aou(true);
+    this.inu(true);
   }
   SetStateNotActive() {
-    this.sJ1(false);
+    this.xJ1(false);
     this.Euo(true);
-    this.oJ1(4);
+    this.AJ1(4);
     this.Ost(this.BuffData.Config.IconPathNormal);
-    this.Aou(false);
+    this.inu(false);
   }
-  sJ1(t) {
+  xJ1(t) {
     this.GetSprite(0)?.SetUIActive(t);
   }
   Euo(t) {
     this.GetItem(7)?.SetUIActive(t);
   }
-  oJ1(t) {
+  AJ1(t) {
     for (const s of [3, 2, 4]) {
       this.GetItem(s)?.SetUIActive(t === s);
     }
@@ -83,7 +83,7 @@ class MoraleBuffItem extends UiPanelBase_1.UiPanelBase {
     var s = this.GetTexture(5);
     this.SetTextureByPath(t, s);
   }
-  Aou(t) {
+  inu(t) {
     var s = this.GetTexture(5);
     s.SetChangeColor(t, s.changeColor);
   }

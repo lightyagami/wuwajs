@@ -84,11 +84,11 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
       await ModelManager_1.ModelManager.QuestResourceModel.CheckQuestResource();
     }
   }
-  static bK1() {
+  static AK1() {
     ControllerHolder_1.ControllerHolder.GameModeController.InitStreamingSources();
     ModelManager_1.ModelManager.GameModeModel.DisableStreamingSources();
   }
-  static RK1(o) {
+  static PK1(o) {
     var e = GlobalData_1.GlobalData.World.GetWorld();
     if (e?.IsValid()) {
       if (o) {
@@ -98,7 +98,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static LK1() {
+  static xK1() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BeforeLoadMap);
     ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "LoadMapController.PreLoadLevelInstance");
     UE.Actor.SetKuroNetMode(1);
@@ -106,7 +106,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
     Net_1.Net.PauseAllNotifyCallback();
     ModelManager_1.ModelManager.GameModeModel.AddLoadMapHandle("LoadMapController.WorldPartitionLoadLevelInstance");
   }
-  static wK1() {
+  static UK1() {
     Net_1.Net.ResumeAllNotifyCallback();
     UiManager_1.UiManager.UnLockOpen();
     LevelSequencePlayer_1.LevelSequencePlayer.SetBanned(false);
@@ -148,10 +148,10 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
     if (o?.IsValid()) {
       var e = o.K2_GetWorldSettings();
       if (e?.IsValid()) {
-        LoadMapController.LK1();
+        LoadMapController.xK1();
         ModelManager_1.ModelManager.GameModeModel.LoadMapControllerEnableWorldPartition = e.bEnableWorldPartition;
         if (e.bEnableWorldPartition) {
-          LoadMapController.RK1(true);
+          LoadMapController.PK1(true);
           var a = ModelManager_1.ModelManager.GameModeModel.LoadMapControllerDynamicStreamingLevels.get(ModelManager_1.ModelManager.GameModeModel.MapPath);
           if (a) {
             for (const d of a) {
@@ -164,8 +164,8 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
             }
           }
         } else {
-          LoadMapController.bK1();
-          LoadMapController.RK1(false);
+          LoadMapController.AK1();
+          LoadMapController.PK1(false);
           var r = o.StreamingLevels;
           var l = new Array();
           l.push(LoadMapController.LoadLevelInstanceAsync(ModelManager_1.ModelManager.GameModeModel.MapPath, true, true));
@@ -181,7 +181,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
           }
           await Promise.all(l);
         }
-        LoadMapController.wK1();
+        LoadMapController.UK1();
       }
     }
   }

@@ -37,7 +37,7 @@ class AiStateMachineTaskRandomMontage extends AiStateMachineTask_1.AiStateMachin
     this.nse = t => {
       this.Node.TaskFinished = true;
     };
-    this.FTu = t => {
+    this.sbu = t => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("StateMachine", 84, "Random Montage Task OnMontageRemain", ["montage", this.GetNameByCurrentHandle()], ["remain time", t], ["remained trigger", this.RemainedTrigger]);
       }
@@ -77,7 +77,7 @@ class AiStateMachineTaskRandomMontage extends AiStateMachineTask_1.AiStateMachin
           var e = this.MontageNames[e];
           this.rse = i.CreateTaskWithName(e, this.Une, this.nse, this.ose);
           if (this.rse) {
-            i.SetMontageTaskRemainCb(this.rse, this.FTu);
+            i.SetMontageTaskRemainCb(this.rse, this.sbu);
             break;
           }
         }
@@ -121,12 +121,12 @@ class AiStateMachineTaskRandomMontage extends AiStateMachineTask_1.AiStateMachin
   ToString(t, i = 0) {
     (0, AiStateMachine_1.appendDepthSpace)(t, i);
   }
-  VTu(t) {
+  hbu(t) {
     return this.Node.MontageComponent.GetMontageTaskNameByHandle(t);
   }
   GetNameByCurrentHandle() {
     if (this.rse) {
-      return this.VTu(this.rse);
+      return this.hbu(this.rse);
     }
   }
 }

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VulkanSetView = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
 const GameSettingsDefine_1 = require("../../../GameSettings/GameSettingsDefine");
 const GameSettingsManager_1 = require("../../../GameSettings/GameSettingsManager");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
@@ -15,31 +16,32 @@ const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const vulkanFunctionId = GameSettingsDefine_1.EFunction.Vulkan;
+const mobileRhiNameList = ["OpenGL", "Vulkan"];
 class VulkanSetView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.NOe = -1;
-    this.gjc = -1;
-    this.Cjc = undefined;
+    this.vZu = -1;
+    this.yZu = undefined;
     this.bs_ = undefined;
-    this.pjc = undefined;
+    this.SZu = undefined;
     this.xqe = undefined;
-    this.vjc = () => {
+    this.MZu = () => {
       var e = new SetItem();
-      e.CallbackClickItem = this.yjc;
+      e.CallbackClickItem = this.EZu;
       return e;
     };
-    this.yjc = e => {
-      this.gjc = e.Value;
+    this.EZu = e => {
+      this.vZu = e.Value;
       this.xqe.SelectGridProxy(e.Index);
-      this.GetItem(4).SetUIActive(e.Index !== this.NOe);
+      this.GetItem(4).SetUIActive(this.kmd());
     };
     this.rki = () => {
       this.CloseMe();
     };
     this.p5t = () => {
-      if (!(this.gjc < 0)) {
-        GameSettingsManager_1.GameSettingsManager.HandleValueChange(vulkanFunctionId, this.gjc, 1);
+      if (!(this.vZu < 0)) {
+        GameSettingsManager_1.GameSettingsManager.HandleValueChange(vulkanFunctionId, this.vZu, 1);
         this.CloseMe();
       }
     };
@@ -49,15 +51,15 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     var e = [];
-    this.Cjc = new ButtonItem_1.ButtonItem();
-    e.push(this.Cjc.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
-    this.Cjc.SetFunction(this.rki);
+    this.yZu = new ButtonItem_1.ButtonItem();
+    e.push(this.yZu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    this.yZu.SetFunction(this.rki);
     this.bs_ = new ButtonItem_1.ButtonItem();
     e.push(this.bs_.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     this.bs_.SetFunction(this.p5t);
-    this.pjc = new TipsItem();
-    e.push(this.pjc.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
-    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.vjc);
+    this.SZu = new TipsItem();
+    e.push(this.SZu.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.MZu);
     var t = this.Fq();
     e.push(this.xqe.RefreshByDataAsync(t));
     await Promise.all(e);
@@ -74,7 +76,7 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
       r = n.indexOf(e);
     }
     this.NOe = r;
-    this.gjc = e;
+    this.vZu = e;
     for (let e = 0; e < s.length; e++) {
       t.push({
         Index: e,
@@ -85,8 +87,16 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
     return t;
   }
   OnBeforeShow() {
-    this.GetItem(4).SetUIActive(false);
+    this.GetItem(4).SetUIActive(this.kmd());
     this.xqe.SelectGridProxy(this.NOe);
+  }
+  kmd() {
+    var e = mobileRhiNameList[this.vZu];
+    var t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName();
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("GameSettings", 64, "当前选中的RHI是", ["chosen", e], ["using", t]);
+    }
+    return e !== t;
   }
 }
 exports.VulkanSetView = VulkanSetView;
@@ -95,7 +105,7 @@ class SetItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Pe = undefined;
     this.CallbackClickItem = undefined;
-    this.yjc = () => {
+    this.EZu = () => {
       if (this.Pe && this.CallbackClickItem) {
         this.CallbackClickItem(this.Pe);
       }
@@ -103,7 +113,7 @@ class SetItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
-    this.BtnBindInfo = [[0, this.yjc]];
+    this.BtnBindInfo = [[0, this.EZu]];
   }
   Refresh(e, t, i) {
     this.Pe = e;

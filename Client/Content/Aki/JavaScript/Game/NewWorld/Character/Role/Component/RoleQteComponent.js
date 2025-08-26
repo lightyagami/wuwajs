@@ -113,11 +113,11 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
   OnStart() {
     this.n$t = this.Entity.GetComponent(3);
     this.bkr = this.Entity.CheckGetComponent(18);
-    this.Xte = this.Entity.CheckGetComponent(205);
-    this.m1t = this.Entity.CheckGetComponent(174);
-    this.gon = this.Entity.CheckGetComponent(93);
+    this.Xte = this.Entity.CheckGetComponent(206);
+    this.m1t = this.Entity.CheckGetComponent(175);
+    this.gon = this.Entity.CheckGetComponent(94);
     this.tRr = this.Entity.CheckGetComponent(40);
-    this.gFe = this.Entity.CheckGetComponent(91);
+    this.gFe = this.Entity.CheckGetComponent(92);
     this.Zqn.push(this.Xte.ListenForTagAddOrRemove(166024319, this.Son));
     this.Zqn.push(this.Xte.ListenForTagAddOrRemove(1674960297, this.Ion));
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOnlineWorld, this.pze);
@@ -166,7 +166,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     if (this.Xte.HasTag(t.NoTag.TagId)) {
       return false;
     }
-    t = e.Entity.GetComponent(205);
+    t = e.Entity.GetComponent(206);
     if (!t.HasTag(166024319) || t.HasTag(1008164187)) {
       return false;
     }
@@ -185,7 +185,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     return true;
   }
   UseExitSkill(t) {
-    var e = t.Entity.GetComponent(98).GetQteTagData();
+    var e = t.Entity.GetComponent(99).GetQteTagData();
     if (e && e.ExitSkillTrigger.TagName !== "None") {
       this.GoBattleActor = t.Entity.GetComponent(3).Actor;
       (t = new UE.GameplayEventData()).Instigator = this.n$t.Actor;
@@ -212,8 +212,8 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
         Reason: "ExecuteQte"
       });
     }
-    var r = t.Entity.GetComponent(91);
-    var o = t.Entity.GetComponent(205);
+    var r = t.Entity.GetComponent(92);
+    var o = t.Entity.GetComponent(206);
     r.TriggerEvents(this.Entity);
     if (!o.HasTag(2014048239)) {
       for (let t = 0; t < e.ConsumeBuffs.Num(); t++) {
@@ -237,8 +237,8 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
         Reason: "ExecuteQte"
       });
     }
-    var r = t.Entity.GetComponent(91);
-    var o = t.Entity.GetComponent(205);
+    var r = t.Entity.GetComponent(92);
+    var o = t.Entity.GetComponent(206);
     r.TriggerEvents(this.Entity);
     if (!o.HasTag(2014048239)) {
       if (ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerSize() > 2) {
@@ -308,7 +308,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
       if ((0, RegisterComponent_1.isComponentInstance)(t, 3)) {
         e = t.ScaledRadius;
         i = t.HalfHeight;
-      } else if ((0, RegisterComponent_1.isComponentInstance)(t, 202)) {
+      } else if ((0, RegisterComponent_1.isComponentInstance)(t, 203)) {
         _ = t.GetRadius();
         e = _;
         i = _;
@@ -498,7 +498,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     var e = t.GetComponent(65)?.IsManipulating();
     var i = t.GetComponent(40);
     var r = i.SkillTarget;
-    if (!e && r?.Valid && r.Entity?.Active && !r.Entity.GetComponent(205)?.HasTag(1008164187)) {
+    if (!e && r?.Valid && r.Entity?.Active && !r.Entity.GetComponent(206)?.HasTag(1008164187)) {
       this.tRr.SkillTarget = r;
       this.tRr.SkillTargetSocket = i.SkillTargetSocket;
     } else {
@@ -535,7 +535,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     e.mUs = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id));
     e.U7a = UE.GASBPLibrary.FnvHash(this.tGn);
     var t = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
-    CombatMessage_1.CombatNet.Send(23225, this.Entity, e, undefined, t);
+    CombatMessage_1.CombatNet.Send(20386, this.Entity, e, undefined, t);
     return t;
   }
   static ExecuteQteNotify(t, e) {
@@ -545,5 +545,5 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("Xsh", true)], RoleQteComponent, "ExecuteQteNotify", null);
-RoleQteComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(98)], RoleQteComponent);
+RoleQteComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(99)], RoleQteComponent);
 exports.RoleQteComponent = RoleQteComponent; //# sourceMappingURL=RoleQteComponent.js.map

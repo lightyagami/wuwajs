@@ -76,11 +76,11 @@ class QuestReviewNodeData {
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestReviewNodeRedDot, t);
   }
   UpdateByServerData(e) {
-    if (e.Dz1) {
+    if (e.hJ1) {
       this.Cbo = 3;
-    } else if (e.Uz1) {
+    } else if (e.aJ1) {
       this.Cbo = 2;
-    } else if (e.xz1) {
+    } else if (e.sJ1) {
       this.Cbo = 1;
     } else {
       this.Cbo = 0;

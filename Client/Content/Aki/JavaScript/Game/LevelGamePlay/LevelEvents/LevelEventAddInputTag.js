@@ -40,7 +40,7 @@ class LevelEventAddInputTag extends LevelGeneralBase_1.LevelEventBase {
         case IAction_1.ELimitPlayOperation.AllowMoveNew:
           ControllerHolder_1.ControllerHolder.InputController.SetMoveControlEnabled(n.Type.Forward, n.Type.Back, n.Type.Left, n.Type.Right);
           e = "FightInputRoot.FightInput.AxisInput.MoveInput";
-          if (o?.Valid && (o.GetComponent(205)?.AddTag(477750727), Log_1.Log.CheckDebug())) {
+          if (o?.Valid && (o.GetComponent(206)?.AddTag(477750727), Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("Test", 29, "[LevelEventAddInputTag.ExecuteNew] AddTag 禁止冲刺");
           }
           break;

@@ -172,6 +172,12 @@ class CombineMeshTool {
       }
     }
   }
+  static SetFace(t, i) {
+    var t = UE.KuroMaterialControllerComponent.AddOrGetMaterialControllerComponentFromActor(t);
+    if (t && (t = t.GetRegisteredSkeletalMeshComponent(this.VKo))?.IsValid()) {
+      t.SetSkeletalMesh(i);
+    }
+  }
 }
 (exports.CombineMeshTool = CombineMeshTool).OKo = new UE.FName("PartMeshComp");
 CombineMeshTool.KKo = new UE.FName("5BaseColorTint");

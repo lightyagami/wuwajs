@@ -35,7 +35,7 @@ class TowerFloorItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIHorizontalLayout], [4, UE.UIHorizontalLayout], [5, UE.UIExtendToggle]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIHorizontalLayout], [4, UE.UIHorizontalLayout], [5, UE.UIExtendToggle], [6, UE.UIItem]];
     this.BtnBindInfo = [[0, this.kqe]];
   }
   OnStart() {
@@ -48,16 +48,16 @@ class TowerFloorItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Rjt = !ModelManager_1.ModelManager.TowerModel.GetFloorIsUnlock(this.TDo);
     var r = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerInfo(e);
     this.GetText(2).SetText("" + r.Floor);
-    var o = ModelManager_1.ModelManager.TowerModel.GetFloorData(this.TDo);
-    this.BDo = o?.Star ?? 0;
-    var s = [];
+    var s = ModelManager_1.ModelManager.TowerModel.GetFloorData(this.TDo);
+    this.BDo = s?.Star ?? 0;
+    var o = [];
     for (let e = 1; e <= TowerModel_1.FLOOR_STAR; e++) {
-      s.push(this.BDo >= e);
+      o.push(this.BDo >= e);
     }
-    this.$be.RefreshByData(s);
+    this.$be.RefreshByData(o);
     var h = [];
-    if (o) {
-      for (const a of o.Formation) {
+    if (s) {
+      for (const a of s.Formation) {
         h.push(a.Q6n);
       }
     }
@@ -74,6 +74,7 @@ class TowerFloorItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (ModelManager_1.ModelManager.TowerModel.DefaultFloor === e) {
       this.SetToggleState(1);
     }
+    this.GetItem(6).SetUIActive(s?.IsQuickPass ?? false);
   }
   BindOnClickToggle(e) {
     this.IDo = e;

@@ -51,7 +51,7 @@ class LevelConditionCheckEntityCommonTagBySelf extends LevelGeneralBase_1.LevelC
       if (!t) {
         return false;
       }
-      var i = t.GetComponent(196);
+      var i = t.GetComponent(197);
       if (!i) {
         return false;
       }

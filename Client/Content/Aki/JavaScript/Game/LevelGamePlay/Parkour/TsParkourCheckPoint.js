@@ -91,7 +91,7 @@ class TsParkourCheckPoint extends UE.Actor {
       if (!StringUtils_1.StringUtils.IsEmpty(this.CheckTag)) {
         t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
         if (t) {
-          t = t.GetComponent(205);
+          t = t.GetComponent(206);
           if (t && !t.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(this.CheckTag))) {
             return;
           }

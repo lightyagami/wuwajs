@@ -16,7 +16,8 @@ class AiStateMachineTaskSkill extends AiStateMachineTask_1.AiStateMachineTask {
     this.SkillId = 0;
     this.Timeout = 0;
     this.Done = false;
-    this.NZ1 = false;
+    this.Entered = false;
+    this.deu = false;
     this.PreExecution = false;
     this.IsAsyncTask = true;
   }
@@ -48,16 +49,17 @@ class AiStateMachineTaskSkill extends AiStateMachineTask_1.AiStateMachineTask {
       if (this.SkillId && (this.Node.ActorComponent.IsAutonomousProxy || this.PreExecution)) {
         this.Node.SkillComponent.StopAllSkills("AiStateMachineTaskSkill.OnEnter");
         t = this.Node.AiController.AiHateList.GetCurrentTarget();
+        this.Entered = true;
         this.Node.SkillComponent.BeginSkillAsync(this.SkillId, {
           Target: t?.Entity,
           ContextId: i,
           Reason: "AiStateMachineTaskSkill.OnEnter"
         }).then(t => {
-          this.NZ1 = false;
+          this.deu = false;
           this.Done = t;
           CombatMessage_1.CombatNet.RemovePendingCall(i);
         });
-        this.NZ1 = true;
+        this.deu = true;
       }
     } else {
       CombatLog_1.CombatLog.Error("StateMachineNew", this.Node.Entity, `状态节点执行技能失败，技能查询失败，节点[${this.Node.Name}]，技能名[${this.SkillName}]`);
@@ -65,7 +67,7 @@ class AiStateMachineTaskSkill extends AiStateMachineTask_1.AiStateMachineTask {
   }
   OnTick(t, i) {
     var s;
-    if (!this.NZ1 && !this.Done && (!!this.Node.ActorComponent.IsAutonomousProxy || !!this.PreExecution)) {
+    if (!!this.Entered && !this.deu && !this.Done && (!!this.Node.ActorComponent.IsAutonomousProxy || !!this.PreExecution)) {
       if (this.Node.ElapseTime < this.Timeout) {
         this.Node.SkillComponent.BeginSkillAsync(this.SkillId, {
           ContextId: i,
@@ -76,7 +78,7 @@ class AiStateMachineTaskSkill extends AiStateMachineTask_1.AiStateMachineTask {
       } else {
         CombatLog_1.CombatLog.Info("StateMachineNew", this.Node.Entity, `状态机技能释放失败 节点[${this.Node.Name}]，技能名[${this.SkillName}]`);
         (s = Protocol_1.Aki.Protocol.we_.create()).r5n = this.SkillId;
-        CombatMessage_1.CombatNet.Send(26683, this.Node.Entity, s, i);
+        CombatMessage_1.CombatNet.Send(22729, this.Node.Entity, s, i);
         this.Node.TaskFinished = true;
         this.Done = true;
       }

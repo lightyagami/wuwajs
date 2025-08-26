@@ -24,6 +24,7 @@ const EditFormationDefine_1 = require("../EditFormationDefine");
 const RoleFormationLikeItem_1 = require("../RoleFormationLikeItem");
 const UiPanelFormationRoleDangoExtension_1 = require("../UiPanelFormationRoleDangoExtension");
 const UiPanelFormationRolePhantomExtension_1 = require("../UiPanelFormationRolePhantomExtension");
+const HEALTH_ID = 3;
 class FormationRoleView extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
@@ -200,6 +201,10 @@ class FormationRoleView extends UiPanelBase_1.UiPanelBase {
       this.j5t = false;
       if (!!e && !a && !ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation()) {
         this.j5t = ModelManager_1.ModelManager.EditFormationModel.IsRoleDead(t);
+        if (this.j5t) {
+          r = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(t)?.GetAttributeData()?.GetAttrValueById(HEALTH_ID) ?? 0;
+          this.j5t = r <= 0;
+        }
       }
       this.GetItem(23).SetUIActive(this.j5t);
     }

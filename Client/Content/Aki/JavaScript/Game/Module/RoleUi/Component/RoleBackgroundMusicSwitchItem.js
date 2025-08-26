@@ -13,7 +13,7 @@ class RoleBackgroundMusicSwitchItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.RoleData = undefined;
-    this.jWc = e => {
+    this.Cjc = e => {
       if (this.RoleData !== undefined && !this.RoleData.IsTrialRole()) {
         if (e === 1) {
           ControllerHolder_1.ControllerHolder.RoleController.RoleOperateSelfBgmRequest(this.RoleData.GetDataId(), false);
@@ -22,7 +22,7 @@ class RoleBackgroundMusicSwitchItem extends UiPanelBase_1.UiPanelBase {
         }
       }
     };
-    this.HWc = e => {
+    this.pjc = e => {
       if (this.RoleData !== undefined && this.RoleData.GetDataId() === e) {
         this.Refresh();
       }
@@ -35,11 +35,11 @@ class RoleBackgroundMusicSwitchItem extends UiPanelBase_1.UiPanelBase {
     var e = this.GetExtendToggle(0);
     e.SetSelfInteractive(false);
     e.SetCanClickWhenDisable(true);
-    e.OnPointUpCallBack.Bind(this.jWc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleBackgroundMusicEnabledChanged, this.HWc);
+    e.OnPointUpCallBack.Bind(this.Cjc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleBackgroundMusicEnabledChanged, this.pjc);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleBackgroundMusicEnabledChanged, this.HWc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleBackgroundMusicEnabledChanged, this.pjc);
   }
   RefreshByRoleData(e) {
     this.RoleData = e;

@@ -16,7 +16,7 @@ class ActivitySubViewRoleGrowing extends ActivitySubViewBase_1.ActivitySubViewBa
     this.ActivityBaseData = undefined;
     this.CommonInfoPanel = undefined;
     this.UOe = () => {
-      UiManager_1.UiManager.OpenView("RoleGrowingMainView");
+      UiManager_1.UiManager.OpenView("RoleGrowingMainView", this.ActivityBaseData);
     };
     this.AOe = () => {
       this.BNe();

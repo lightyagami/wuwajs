@@ -7,7 +7,9 @@ exports.ActorUtils = undefined;
 const UE = require("ue");
 const ActorSystem_1 = require("../../Core/Actor/ActorSystem");
 const Log_1 = require("../../Core/Common/Log");
+const CommonDefine_1 = require("../../Core/Define/CommonDefine");
 const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
+const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
 const ModelManager_1 = require("../Manager/ModelManager");
 class ActorUtils {
   static LoadActorByModelConfig(e, o) {
@@ -60,6 +62,17 @@ class ActorUtils {
     }
     if (o && Log_1.Log.CheckError()) {
       Log_1.Log.Error("World", 4, "[WorldBridge.GetEntityByActor] Actor未实现接口CreatureInterface");
+    }
+  }
+  static TryGetBoneSocket(e, o) {
+    if (e?.IsValid()) {
+      e = e.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+      if (e?.IsValid()) {
+        o = FNameUtil_1.FNameUtil.GetDynamicFName(o);
+        if (o && (e.DoesSocketExist(o) || e.GetBoneIndex(o) !== CommonDefine_1.INDEX_NONE)) {
+          return o;
+        }
+      }
     }
   }
 }

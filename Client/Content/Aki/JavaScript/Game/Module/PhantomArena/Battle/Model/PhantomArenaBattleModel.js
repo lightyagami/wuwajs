@@ -35,15 +35,15 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     this.BuffEffectData = undefined;
     this.SelectCardData = undefined;
     this.IsNeedShowTimeEndConfirm = true;
-    this.Gnu = 0;
-    this.mhu = 0;
-    this.fhu = ConfigManager_1.ConfigManager.CommonConfig.GetPhantomArenaBattleSpeed();
-    this.ghu = false;
-    this.quu = false;
+    this.usu = 0;
+    this.Nhu = 0;
+    this.Vhu = ConfigManager_1.ConfigManager.CommonConfig.GetPhantomArenaBattleSpeed();
+    this.jhu = false;
+    this.Scu = false;
     this.HD1 = undefined;
-    this.Guu = undefined;
-    this._jc = false;
-    this.cjc = new Map();
+    this.Mcu = undefined;
+    this.RZu = false;
+    this.wZu = new Map();
     this.ChallengeId = 0;
     this.IsBattleLoading = false;
     this.CurrentLoading = 0;
@@ -53,10 +53,10 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     };
   }
   get Round() {
-    return this.Gnu;
+    return this.usu;
   }
   InitData() {
-    this.Gnu = 1;
+    this.usu = 1;
     this.ReplaceCardData = new PhantomArenaReplaceCardData_1.PhantomArenaReplaceCardData();
     this.OwnData = new PhantomArenaOwnData_1.PhantomArenaOwnData();
     this.OpponentData = new PhantomArenaOpponentData_1.PhantomArenaOpponentData();
@@ -65,7 +65,7 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     this.SelectCardData = new PhantomArenaSelectCardData_1.PhantomArenaSelectCardData();
   }
   SetRound(t) {
-    this.Gnu = t;
+    this.usu = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshRound);
   }
   SetReplaceCardToHandCard(t) {
@@ -125,20 +125,20 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     return e;
   }
   SetSpeedUp() {
-    this.mhu += 1;
-    if (this.mhu >= this.fhu.length) {
-      this.mhu = 0;
+    this.Nhu += 1;
+    if (this.Nhu >= this.Vhu.length) {
+      this.Nhu = 0;
     }
     this.ApplySpeedUp();
   }
   ApplySpeedUp() {
-    if (this.ghu) {
-      ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(this.fhu[this.mhu], 2);
-      this.ApplySpeedBuff(this.fhu[this.mhu]);
+    if (this.jhu) {
+      ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(this.Vhu[this.Nhu], 2);
+      this.ApplySpeedBuff(this.Vhu[this.Nhu]);
     }
   }
   GetSpeedUpText() {
-    return this.fhu[this.mhu] ?? 1;
+    return this.Vhu[this.Nhu] ?? 1;
   }
   SetNormalSpeed() {
     this.ApplySpeedBuff(1);
@@ -147,12 +147,12 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
   ApplySpeedBuff(t) {
     var t = 1 / t;
     var e = Global_1.Global.BaseCharacter;
-    if (e !== undefined && UE.KismetSystemLibrary.IsValid(e) && (e = e.EntityId, e = EntitySystem_1.EntitySystem.GetComponent(e, 122))) {
+    if (e !== undefined && UE.KismetSystemLibrary.IsValid(e) && (e = e.EntityId, e = EntitySystem_1.EntitySystem.GetComponent(e, 123))) {
       e.SetForeverTimeScale(13, t);
     }
   }
   SetIsInBattle(t) {
-    if (this.ghu = t) {
+    if (this.jhu = t) {
       this.SetTurnCountResultEnd(false);
       this.SetDealCardNotify(undefined);
       this.SetPhantomBattleBoardSettleNotify(undefined);
@@ -162,22 +162,22 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetTurnCountResultEnd() {
-    return this.quu;
+    return this.Scu;
   }
   SetTurnCountResultEnd(t) {
-    this.quu = t;
+    this.Scu = t;
   }
   SetDealCardNotify(t) {
     this.HD1 = t;
   }
   SetPhantomBattleBoardSettleNotify(t) {
-    this.Guu = t;
+    this.Mcu = t;
   }
   GetDealCardNotify() {
     return this.HD1;
   }
   GetPhantomBattleSettleNotify() {
-    return this.Guu;
+    return this.Mcu;
   }
   TryPhantomBattleDealCardNotify() {
     this.SetTurnCountResultEnd(true);
@@ -193,17 +193,17 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetPhantomTagMap() {
-    if (!this._jc) {
+    if (!this.RZu) {
       var t;
-      this._jc = true;
+      this.RZu = true;
       for (const e of ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleAllFactor()) {
         if (!e.IsBeforeBattle && !StringUtils_1.StringUtils.IsBlank(e.Tag)) {
           t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.Tag);
-          this.cjc.set(t, e.Id);
+          this.wZu.set(t, e.Id);
         }
       }
     }
-    return this.cjc;
+    return this.wZu;
   }
 }
 exports.PhantomArenaBattleModel = PhantomArenaBattleModel;

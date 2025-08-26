@@ -44,7 +44,7 @@ class UnopenedAreaPullback {
     this.xie = (t, e) => {
       if (this.hBe && (this.CBe(t), this.sBe)) {
         if (e?.Valid) {
-          e.Entity.GetComponent(178).StopMoveToLocation();
+          e.Entity.GetComponent(179).StopMoveToLocation();
           this.gBe(e, false);
         }
         this.gBe(t, true);
@@ -125,7 +125,7 @@ class UnopenedAreaPullback {
   }
   fBe(t) {
     this.DBe(t);
-    var t = t.Entity.GetComponent(178);
+    var t = t.Entity.GetComponent(179);
     var e = {
       Index: 0,
       Position: this._Be
@@ -146,7 +146,7 @@ class UnopenedAreaPullback {
     });
   }
   DBe(t) {
-    if (t.Entity?.CheckGetComponent(175)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
+    if (t.Entity?.CheckGetComponent(176)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
       t.Entity?.GetComponent(34)?.ClimbPress(true);
     }
   }
@@ -162,14 +162,14 @@ class UnopenedAreaPullback {
     }
   }
   UBe() {
-    Net_1.Net.Call(26186, Protocol_1.Aki.Protocol.ECs.create(), t => {
+    Net_1.Net.Call(20891, Protocol_1.Aki.Protocol.ECs.create(), t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 29587);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27241);
       }
     });
   }
   TBe(t) {
-    var e = t.Entity.GetComponent(178);
+    var e = t.Entity.GetComponent(179);
     e.StopMove(false);
     e.MoveToLocationEnd(1);
     var e = t.Entity.GetComponent(62);
@@ -204,10 +204,10 @@ class UnopenedAreaPullback {
     }
     this.Hte = this.dBe.Entity.GetComponent(3);
     this.cBe = this.dBe.Entity.GetComponent(40);
-    this.mBe = this.dBe.Entity.GetComponent(175);
+    this.mBe = this.dBe.Entity.GetComponent(176);
   }
   ABe(t, e) {
-    var i = this.Hte.Entity.GetComponent(205);
+    var i = this.Hte.Entity.GetComponent(206);
     if (t === 0 || i?.HasTag(-2100129479)) {
       this.Hte.Actor.KuroSetMovementMode({
         Mode: 1,
@@ -240,7 +240,7 @@ class UnopenedAreaPullback {
   SBe(t) {
     if (t) {
       if (!this.lBe) {
-        t = this.dBe?.Entity?.GetComponent(230)?.IsOnVehicle ?? false;
+        t = this.dBe?.Entity?.GetComponent(231)?.IsOnVehicle ?? false;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Map", 42, "开启定时器传送", ["Time", TELEPORT_DELAY_TIME]);
         }
@@ -263,12 +263,12 @@ class UnopenedAreaPullback {
     var i;
     if (t && t.Valid) {
       if (e) {
-        (i = t.Entity.GetComponent(205))?.AddTag(-1697149502);
+        (i = t.Entity.GetComponent(206))?.AddTag(-1697149502);
         i?.AddTag(-541178966);
         i?.AddTag(-542518289);
       }
       if (!e) {
-        (i = t.Entity.GetComponent(205))?.RemoveTag(-1697149502);
+        (i = t.Entity.GetComponent(206))?.RemoveTag(-1697149502);
         i?.RemoveTag(-541178966);
         i?.RemoveTag(-542518289);
       }

@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ActivityRegressModel = undefined;
+const Info_1 = require("../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../Core/Common/Log");
 const ModelBase_1 = require("../../../../../Core/Framework/ModelBase");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
@@ -55,6 +56,9 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   OnInit() {
     this.$k1 = TimeUtil_1.TimeUtil.Hour * 3 * TimeUtil_1.TimeUtil.OneDayHourCount;
     this.bI1();
+    if (Info_1.Info.IsPlayInEditor) {
+      this.Rfa = true;
+    }
     return true;
   }
   OnClear() {
@@ -195,8 +199,7 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
   }
   GetLastestRegressBaseConfigList(e) {
     let t = ConfigManager_1.ConfigManager.ActivityRegressConfig.GetRegressBaseConfigListByType(e).filter(e => this.CheckIfEntryOpen(e)[0]);
-    t.sort((e, t) => t.Id - e.Id);
-    return t = t.slice(0, 3);
+    return t = e === 3 ? (t.sort((e, t) => e.Id - t.Id), t.slice(0, ActivityRegressDefine_1.REGRESS_ROLE_CONFIG_MAX_NUM)) : (t.sort((e, t) => t.Id - e.Id), t.slice(0, ActivityRegressDefine_1.REGRESS_OTHER_CONFIG_MAX_NUM));
   }
   IsRegressEntrance(e) {
     return e === 1 || e === 0 || e === 2 || e === 3;
@@ -308,6 +311,7 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
           }
         }
       }
+      this.DG1(21).add(9902);
     }
     e = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllSilentAreaDetection();
     if (e) {

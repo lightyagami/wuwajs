@@ -13,10 +13,12 @@ const GameplayCueMagnitude_1 = require("./GameplayCueMagnitude");
 class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   constructor() {
     super(...arguments);
-    this.rKt = 0;
+    this.rKt = -1;
     this.aYo = 0;
+    this.Mgc = undefined;
+    this.Otd = false;
     this.hYo = e => {
-      if (e === this.rKt && this.EndCallback) {
+      if (e === this.rKt && this.EndCallback && !this.Otd) {
         this.EAl();
         e = this.EndCallback;
         this.EndCallback = undefined;
@@ -26,36 +28,29 @@ class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   }
   OnInit() {
     super.OnInit();
+    this.Mgc = undefined;
   }
   OnTick(e) {
     super.OnTick(e);
   }
   OnCreate() {
     ResourceSystem_1.ResourceSystem.LoadAsync(this.GetPath(), UE.Object, e => {
-      this.BeginCallback?.();
-      if (this.ActorInternal?.IsValid()) {
-        switch (this.lYo(e)) {
-          case 1:
-            this.aYo = 1;
-            this.rKt = this.ActorInternal.CharRenderingComponent.AddMaterialControllerData(e);
-            break;
-          case 2:
-            this.aYo = 2;
-            this.rKt = this.ActorInternal.CharRenderingComponent.AddMaterialControllerDataGroup(e);
-            break;
-          case 0:
-            this.aYo = 0;
-            if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Battle", 28, "附加材质类型错误:", ["Buff特效Id", this.CueConfig.Id], ["材质路径", this.CueConfig.Path]);
-            }
-        }
+      if (this.IsActive) {
+        this.BeginCallback?.();
+        this.Mgc = e;
+        this.qtd();
         this.I$o();
         super.OnCreate();
       }
     });
   }
   OnDestroy() {
+    this.Mgc = undefined;
     super.OnDestroy();
+    this.Gtd();
+    this.hYo(this.rKt);
+  }
+  Gtd() {
     switch (this.aYo) {
       case 1:
         this.ActorInternal.CharRenderingComponent.RemoveMaterialControllerDataWithEnding(this.rKt);
@@ -63,10 +58,39 @@ class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
       case 2:
         this.ActorInternal.CharRenderingComponent.RemoveMaterialControllerDataGroupWithEnding(this.rKt);
     }
-    this.hYo(this.rKt);
   }
   OnSetMagnitude(e) {
     this.ActorInternal.CharRenderingComponent.SetEffectProgress(e, this.rKt);
+  }
+  OnChangeRole(e) {
+    this.Otd = true;
+    if (this.Mgc && this.rKt !== -1) {
+      this.Gtd();
+      this.rKt = -1;
+    }
+    this.Otd = false;
+    super.OnChangeRole(e);
+    this.qtd();
+  }
+  qtd() {
+    if (this.ActorInternal?.IsValid() && this.Mgc !== undefined) {
+      var e = this.Mgc;
+      switch (this.lYo(e)) {
+        case 1:
+          this.aYo = 1;
+          this.rKt = this.ActorInternal.CharRenderingComponent.AddMaterialControllerData(e);
+          break;
+        case 2:
+          this.aYo = 2;
+          this.rKt = this.ActorInternal.CharRenderingComponent.AddMaterialControllerDataGroup(e);
+          break;
+        case 0:
+          this.aYo = 0;
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Battle", 28, "附加材质类型错误:", ["Buff特效Id", this.CueConfig.Id], ["材质路径", this.CueConfig.Path]);
+          }
+      }
+    }
   }
   lYo(e) {
     if (e instanceof UE.PD_CharacterControllerData_C) {

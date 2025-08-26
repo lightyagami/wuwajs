@@ -15,7 +15,7 @@ class MoraleSumLvInfoPanel extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.ItemMoraleLv = undefined;
     this.ItemUnbreakableLv = undefined;
-    this.vdu = () => {
+    this.imu = () => {
       UiManager_1.UiManager.OpenView("MoraleBuffView");
     };
   }
@@ -24,7 +24,7 @@ class MoraleSumLvInfoPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.vdu]];
+    this.BtnBindInfo = [[2, this.imu]];
   }
   async OnBeforeStartAsync() {
     await super.OnBeforeStartAsync();

@@ -43,7 +43,7 @@ class EffectUtil {
     return e;
   }
   static RefreshAdditionTimeScale(e, t) {
-    if (t?.Valid && (t = t.GetTopForeverTimeScaleConfig(1))) {
+    if (t?.Valid && (t = t.GetTopForeverTimeScaleConfig(0))) {
       EffectSystem_1.EffectSystem.SetAdditionTimeScale(t.SourceType, e, t.TimeDilation);
     }
   }
@@ -59,7 +59,7 @@ class EffectUtil {
   }
   static SetAdditionalEffectTimeScaleByEntity(e, t) {
     var f;
-    if (e?.Valid && (f = e.Entity.GetComponent(122))?.Valid) {
+    if (e?.Valid && (f = e.Entity.GetComponent(123))?.Valid) {
       EffectUtil.SetEffectTimeScale(t, f, e.Entity.TimeDilation);
     }
   }

@@ -91,6 +91,7 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         this.fje();
       });
     };
+    this.fgd = new Map();
     this.Z9s = [];
     this.Zu = (i, t, e, o) => {
       let s = this.BPn.get(i);
@@ -264,51 +265,69 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
   }
   HPn(i, t, e) {
     this.GPn = 0;
-    for (const n of i) {
-      if (n.Name === "PlayMovie") {
+    for (const l of i) {
+      if (l.Name === "PlayMovie") {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("HandBook", 5, "播片剧情");
         }
-      } else if (n.Name === "ShowTalk") {
-        for (const h of n.Params.TalkItems) {
+      } else if (l.Name === "ShowTalk") {
+        var o;
+        var s;
+        var n = l.Params.TalkItems;
+        let i = 0;
+        this.fgd.clear();
+        for (const _ of n) {
+          this.fgd.set(_.Id, i++);
           if (this.GPn < 0) {
             return;
           }
-          if (!this.GPn || !(h.Id < this.GPn)) {
-            if (h.Type === "QTE") {
-              if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("HandBook", 5, "QTE演出，屏蔽");
+          if (this.GPn) {
+            var h = this.fgd.get(this.GPn);
+            var r = this.fgd.get(_.Id);
+            if (!h || r < h) {
+              continue;
+            }
+          }
+          if (_.Type === "QTE") {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("HandBook", 5, "QTE演出，屏蔽");
+            }
+          } else if (_.Type === "NoTextItem") {
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("HandBook", 5, "无文本演出，处理跳转");
+            }
+            if (_.Actions && this.jPn(_.Actions, _.Id)) {
+              return;
+            }
+          } else {
+            this.GPn = 0;
+            if ((_.WhoId || _.TidTalk) && _.Type !== "Option") {
+              r = new HandBookDefine_1.HandBookPlotDynamicData();
+              r.BelongToNode = e;
+              h = _.WhoId ? SpeakerById_1.configSpeakerById.GetConfig(_.WhoId) : undefined;
+              let i = "";
+              if ((i = h ? PublicUtil_1.PublicUtil.GetConfigTextByTable(0, h.Id) ?? "" : i) !== " " && i !== "") {
+                i += this.zBn;
               }
-            } else {
-              this.GPn = 0;
-              if ((h.WhoId || h.TidTalk) && h.Type !== "Option") {
-                var o = new HandBookDefine_1.HandBookPlotDynamicData();
-                o.BelongToNode = e;
-                var s = h.WhoId ? SpeakerById_1.configSpeakerById.GetConfig(h.WhoId) : undefined;
-                let i = "";
-                if ((i = s ? PublicUtil_1.PublicUtil.GetConfigTextByTable(0, s.Id) ?? "" : i) !== " " && i !== "") {
-                  i += this.zBn;
-                }
-                o.TalkOwnerName = i;
-                if (h.PlayVoice) {
-                  s = PlotAudioById_1.configPlotAudioById.GetConfig(h.TidTalk);
-                  o.PlotAudio = s;
-                }
-                var s = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(h.TidTalk);
-                o.TalkText = s;
-                o.PlotId = t;
-                o.TalkItemId = h.Id;
-                this.wPn.push(o);
+              r.TalkOwnerName = i;
+              if (_.PlayVoice) {
+                a = PlotAudioById_1.configPlotAudioById.GetConfig(_.TidTalk);
+                r.PlotAudio = a;
               }
-              if (h.Options && h.Options.length > 0) {
-                s = this.BPn.get(t)?.get(h.Id) ?? 0;
-                o = h.Options[s];
-                this.jPn(o.Actions, h.Id);
-                this.tVs(h.Options, s, e, t, h.Id);
-              }
-              if (h.Actions) {
-                this.jPn(h.Actions, h.Id);
-              }
+              var a = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(_.TidTalk);
+              r.TalkText = a;
+              r.PlotId = t;
+              r.TalkItemId = _.Id;
+              this.wPn.push(r);
+            }
+            if (_.Options && _.Options.length > 0) {
+              o = this.BPn.get(t)?.get(_.Id) ?? 0;
+              s = _.Options[o];
+              this.jPn(s.Actions, _.Id);
+              this.tVs(_.Options, o, e, t, _.Id);
+            }
+            if (_.Actions && this.jPn(_.Actions, _.Id)) {
+              return;
             }
           }
         }
@@ -317,13 +336,15 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
   }
   jPn(i, t) {
     if (i) {
-      for (const o of i) {
-        if (o.Name === "FinishTalk" || o.Name === "FinishState") {
-          return;
+      for (const n of i) {
+        if (n.Name === "FinishTalk" || n.Name === "FinishState") {
+          return true;
         }
-        if (o.Name === "JumpTalk") {
-          var e = o.Params.TalkId;
-          if (e <= t) {
+        if (n.Name === "JumpTalk") {
+          var e = n.Params.TalkId;
+          var o = this.fgd.get(e);
+          var s = this.fgd.get(t);
+          if (o && o <= s) {
             this.GPn = -1;
             break;
           }
@@ -331,6 +352,7 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         }
       }
     }
+    return false;
   }
   tVs(t, e, o, s, n) {
     const h = new HandBookDefine_1.HandBookPlotDynamicData();

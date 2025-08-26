@@ -14,14 +14,14 @@ class FlowActionWait extends FlowActionBase_1.FlowActionBase {
   }
   OnExecute() {
     var e = this.ActionInfo.Params;
-    this.IRe = TimerSystem_1.TimerSystem.Delay(e => {
+    this.IRe = TimerSystem_1.GameplayTimerSystem.Delay(e => {
       this.IRe = undefined;
       this.FinishExecute(true);
     }, e.Time * TimeUtil_1.TimeUtil.InverseMillisecond);
   }
   OnInterruptExecute() {
-    if (TimerSystem_1.TimerSystem.Has(this.IRe)) {
-      TimerSystem_1.TimerSystem.Remove(this.IRe);
+    if (TimerSystem_1.GameplayTimerSystem.Has(this.IRe)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
     }
     this.FinishExecute(true);
   }

@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AbilityEvent = undefined;
+exports.AbilityEvent = exports.DEFAULT_KEY = undefined;
 const Event_1 = require("../../../../../../Core/Event/Event");
+exports.DEFAULT_KEY = 0;
 class AbilityEventInstance {
   constructor() {
     this.Nx_ = new Map();

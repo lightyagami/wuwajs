@@ -40,8 +40,9 @@ class EventVolumeInfo {
 }
 class RoleVolumeInfo {
   constructor(o, e) {
+    this.dQu = 0;
     this.qpi = RoleAudioVolumeInfo.MaxDistanceSquared;
-    this.AWc = new Map();
+    this.mQu = new Map();
     this.IsCurrentRole = false;
     this.RoleId = 0;
     this.EntityId = 0;
@@ -63,23 +64,25 @@ class RoleVolumeInfo {
     }
   }
   AddEvent(o, e) {
-    this.AWc.set(o, e);
+    this.mQu.set(o, e);
+    e.OnChangeVolume(this.dQu, this);
   }
   RemoveEvent(o) {
-    this.AWc.delete(o);
+    this.mQu.delete(o);
   }
   SetPlayEvent(o) {
     if (o) {
       this.Time = Time_1.Time.Now;
     }
     this.IsCurrentRole = o;
-    this.PWc(o ? 1 : 0);
+    this.fQu(o ? 1 : 0);
   }
   Empty() {
-    return this.AWc.size === 0;
+    return this.mQu.size === 0;
   }
-  PWc(o) {
-    for (const e of this.AWc) {
+  fQu(o) {
+    this.dQu = o;
+    for (const e of this.mQu) {
       e[1].OnChangeVolume(o, this);
     }
   }
@@ -123,7 +126,7 @@ class RoleVolumeMapInfo {
     this.RoleVolumeMap = new Map();
     this.CurrentPlayEntityId = 0;
     this.LastPlayEntityId = -1;
-    this.xWc = new PriorityQueue_1.PriorityQueue(RoleVolumeInfo.Compare);
+    this.gQu = new PriorityQueue_1.PriorityQueue(RoleVolumeInfo.Compare);
   }
   OnUpdateTeam() {
     this.MaintainCurrentList();
@@ -137,16 +140,18 @@ class RoleVolumeMapInfo {
       var t = [];
       for (const r of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
         var i;
-        var n;
-        var s = r.Entity?.GetComponent(3);
-        if (s && (i = s.Entity.Id, this.RoleVolumeMap.has(i))) {
-          (n = this.RoleVolumeMap.get(i)).UpdateDistSquared(Vector_1.Vector.DistSquared(e.ActorLocationProxy, s.ActorLocationProxy));
-          if (o < n.Priority) {
-            o = n.Priority;
+        var n = r.Entity?.GetComponent(3);
+        var s = r.Id;
+        if (n && this.RoleVolumeMap.has(s)) {
+          i = this.RoleVolumeMap.get(s);
+          n = ModelManager_1.ModelManager.RoleModel?.GetRoleBackgroundMusicEnabled(i.RoleId) ? s === e.Entity.Id ? 0 : Vector_1.Vector.DistSquared(e.ActorLocationProxy, n.ActorLocationProxy) : RoleAudioVolumeInfo.MaxDistanceSquared;
+          i.UpdateDistSquared(n);
+          if (o < i.Priority) {
+            o = i.Priority;
             t.length = 0;
-            t.push(i);
-          } else if (o === n.Priority) {
-            t.push(i);
+            t.push(s);
+          } else if (o === i.Priority) {
+            t.push(s);
           }
         }
       }
@@ -155,20 +160,20 @@ class RoleVolumeMapInfo {
       } else if (t.length === 1) {
         this.CurrentPlayEntityId = t[0];
       } else if (t.length > 1) {
-        this.xWc.Clear();
+        this.gQu.Clear();
         for (const l of t) {
-          this.xWc.Push(this.RoleVolumeMap.get(l));
+          this.gQu.Push(this.RoleVolumeMap.get(l));
         }
-        this.CurrentPlayEntityId = this.xWc.Top?.EntityId ?? 0;
+        this.CurrentPlayEntityId = this.gQu.Top?.EntityId ?? 0;
       }
       if (this.LastPlayEntityId !== this.CurrentPlayEntityId) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Audio", 42, "[RoleAudioVolumeInfo] 当前优先播放角色切换", ["优先实体ID", this.CurrentPlayEntityId], ["优先范围", o === 2 ? "内圈" : "外圈"], ["有音乐的角色数量", t.length]);
         }
         for (const u of this.RoleVolumeMap) {
-          this.LastPlayEntityId = this.CurrentPlayEntityId;
           u[1].SetPlayEvent(u[0] === this.CurrentPlayEntityId);
         }
+        this.LastPlayEntityId = this.CurrentPlayEntityId;
       }
     }
   }
@@ -199,7 +204,7 @@ class RoleVolumeMapInfo {
   }
   AddEvent(o, e, t, i, n) {
     i = new EventVolumeInfo(t, i, n);
-    this.UWc(o, e).AddEvent(t, i);
+    this.CQu(o, e).AddEvent(t, i);
     this.UpdateVolume();
   }
   RemoveEvent(o, e) {
@@ -222,7 +227,7 @@ class RoleVolumeMapInfo {
       }, RoleAudioVolumeInfo.DelayTime);
     }
   }
-  UWc(o, e) {
+  CQu(o, e) {
     if (!this.RoleVolumeMap.has(o)) {
       this.RoleVolumeMap.set(o, new RoleVolumeInfo(e, o));
       if (Log_1.Log.CheckDebug()) {
@@ -244,9 +249,9 @@ class RoleVolumeMapInfo {
 }
 class RoleAudioVolumeInfo {
   constructor() {
-    this.DWc = new RoleVolumeMapInfo();
+    this.pQu = new RoleVolumeMapInfo();
     this.dLe = () => {
-      this.DWc.OnUpdateTeam();
+      this.pQu.OnUpdateTeam();
     };
   }
   Init() {
@@ -272,7 +277,7 @@ class RoleAudioVolumeInfo {
   }
   Update() {
     if (Global_1.Global.BaseCharacter?.IsValid()) {
-      this.DWc.UpdateVolume();
+      this.pQu.UpdateVolume();
     }
   }
   PostEvent(o, t, e) {
@@ -286,21 +291,15 @@ class RoleAudioVolumeInfo {
       const r = o.EntityId;
       var s = o.CharacterActorComponent.CreatureData.GetPbDataId();
       const l = RoleAudioVolumeInfo.GetRoleId(s);
-      if (!ModelManager_1.ModelManager.RoleModel?.GetRoleBackgroundMusicEnabled(l)) {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Audio", 42, "[RoleAudioVolumeInfo] 该角色设置了BGM静音", ["EntityId", r], ["RoleId", l], ["Event", t]);
-        }
-        return 0;
-      }
       if (l && (n = AudioSystem_1.AudioSystem.PostEvent(t, e, {
         CallbackMask: 1,
         CallbackHandler: (o, e) => {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Audio", 42, "[RoleAudioVolumeInfo] 音乐播放完成回调", ["EntityId", r], ["RoleId", l], ["Handle", n], ["Event", t]);
           }
-          this.DWc.RemoveEvent(r, n);
+          this.pQu.RemoveEvent(r, n);
         }
-      }), this.DWc.AddEvent(r, l, n, t, o), i = true, Log_1.Log.CheckDebug())) {
+      }), this.pQu.AddEvent(r, l, n, t, o), i = true, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("Audio", 42, "[RoleAudioVolumeInfo] 开始播放具有音量调节的音乐", ["EntityId", r], ["RoleId", l], ["Handle", n], ["Event", t]);
       }
     }
@@ -309,7 +308,7 @@ class RoleAudioVolumeInfo {
   RemoveEvent(o, e) {
     if (o.IsA(UE.TsBaseCharacter_C.StaticClass())) {
       o = o.EntityId;
-      this.DWc.RemoveEvent(o, e);
+      this.pQu.RemoveEvent(o, e);
     }
   }
   static GetRoleId(o) {

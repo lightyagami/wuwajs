@@ -1108,7 +1108,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
   }
   Gqn(t, i) {
     let s = undefined;
-    return (s = t ? t.GetEntityNoBlueprint() : (t = i?.GetEntityNoBlueprint()?.GetComponent(0))?.IsVision() || t?.IsMonster() ? i?.GetEntityNoBlueprint() : this.Camera.CharacterEntityHandle.Entity)?.GetComponent(177)?.MainAnimInstance;
+    return (s = t ? t.GetEntityNoBlueprint() : (t = i?.GetEntityNoBlueprint()?.GetComponent(0))?.IsVision() || t?.IsMonster() ? i?.GetEntityNoBlueprint() : this.Camera.CharacterEntityHandle.Entity)?.GetComponent(178)?.MainAnimInstance;
   }
   FloatInterpTo(t, i, s, h, e) {
     s = MathUtils_1.MathUtils.InterpTo(t, i, s, h);

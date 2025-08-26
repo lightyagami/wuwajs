@@ -91,9 +91,9 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
     t = t.AiController;
     if (t) {
       if (!this.TsWalkOff) {
-        t.CharActorComp.Entity.GetComponent(178)?.SetWalkOffLedgeRecord(false);
+        t.CharActorComp.Entity.GetComponent(179)?.SetWalkOffLedgeRecord(false);
       }
-      t.CharActorComp.Entity.CheckGetComponent(175)?.SetMoveState(this.TsMoveState);
+      t.CharActorComp.Entity.CheckGetComponent(176)?.SetMoveState(this.TsMoveState);
     }
   }
   ReceiveTickAI(t, i, s) {
@@ -130,7 +130,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
         } else {
           var a = s.AiWanderInfos.GetCurrentBattleWander();
           var s = this.PreForward ? this.SelectedSkillPrecondition.DistanceRange.Min * OTHER_THRESHOLD_RATE + this.SelectedSkillPrecondition.DistanceRange.Max * THRESHOLD_RATE : this.SelectedSkillPrecondition.DistanceRange.Min * THRESHOLD_RATE + this.SelectedSkillPrecondition.DistanceRange.Max * OTHER_THRESHOLD_RATE;
-          var l = h.Entity.GetComponent(101);
+          var l = h.Entity.GetComponent(102);
           let t = this.TsMoveState;
           if (r && !o || _ < s) {
             t = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
@@ -200,7 +200,7 @@ class TsTaskSkillWander extends TsTaskAbortImmediatelyBase_1.default {
   }
   FindArea(t, i, s, e, h) {
     var r = t.CharAiDesignComp.Entity.CheckGetComponent(40);
-    var o = r.Entity.GetComponent(205);
+    var o = r.Entity.GetComponent(206);
     this.TmpForward.DeepCopy(h);
     GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(t.CharActorComp, this.TmpForward);
     this.TmpForward.Normalize();

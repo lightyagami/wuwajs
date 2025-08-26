@@ -20,7 +20,7 @@ class LevelEventGuideTrigger extends LevelGeneralBase_1.LevelEventBase {
     this.TDe = undefined;
     this.LDe = () => {
       if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.YO, undefined)) {
-        TimerSystem_1.TimerSystem.Remove(this.TDe);
+        TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
         if (this.IDe === IAction_1.EGuideTriggerType.AttackGuide) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComboTeachingViewOpen, this.mDe);
           this.IsAsync;
@@ -68,7 +68,7 @@ class LevelEventGuideTrigger extends LevelGeneralBase_1.LevelEventBase {
       };
       this.mDe = e.GuideId;
       this.IDe = e.Type;
-      this.TDe = TimerSystem_1.TimerSystem.Forever(this.LDe, 1000);
+      this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(this.LDe, 1000);
       this.LDe();
     }
   }

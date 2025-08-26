@@ -32,7 +32,7 @@ class DockyardShopPlotPanel extends UiPanelBase_1.UiPanelBase {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(this.EntityId);
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t);
     if (t) {
-      i = t?.Entity?.GetComponent(186);
+      i = t?.Entity?.GetComponent(187);
       t = t?.Entity?.GetComponent(44);
       i?.PlayPerformMontage(2, {
         MontagePath: t?.GetMontageResPathByName(e)

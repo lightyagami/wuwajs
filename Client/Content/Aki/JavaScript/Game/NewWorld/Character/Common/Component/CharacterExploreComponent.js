@@ -44,8 +44,8 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
     this.k4r = false;
     this.H4r = undefined;
     this.cBe = undefined;
-    this.bcu = undefined;
-    this.anu = undefined;
+    this.ldu = undefined;
+    this.Unu = undefined;
     this.z4r = undefined;
     this.Z4r = false;
     this.t5r = false;
@@ -115,7 +115,7 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
     };
     this.l5r = (e, t) => {};
     this.ene = (e, t) => {
-      if (this.anu.has(t)) {
+      if (this.Unu.has(t)) {
         this.Z4r = false;
         this.z4r = undefined;
         const i = ModelManager_1.ModelManager.ExploreModel;
@@ -133,17 +133,17 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
     };
   }
   get ExploreSkillHighlightHandle() {
-    if (!this.bcu) {
-      this.bcu = new HighlightExploreSkillLogic_1.HighlightExploreSkillLogic();
-      this.bcu.Init(this.Entity.GetComponent(205));
+    if (!this.ldu) {
+      this.ldu = new HighlightExploreSkillLogic_1.HighlightExploreSkillLogic();
+      this.ldu.Init(this.Entity.GetComponent(206));
     }
-    return this.bcu;
+    return this.ldu;
   }
   set ExploreSkillHighlightHandle(e) {
-    this.bcu = e;
+    this.ldu = e;
   }
   OnStart() {
-    this.O4r = this.Entity.GetComponent(99);
+    this.O4r = this.Entity.GetComponent(100);
     this.H4r = this.Entity.GetComponent(1);
     this.cBe = this.Entity.GetComponent(40);
     this.yJl = this.Entity.GetComponent(65);
@@ -291,10 +291,10 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
           this.Z4r = true;
           switch (e) {
             case 0:
-              this.anu = HOOK_SKILL_ID_MAP;
+              this.Unu = HOOK_SKILL_ID_MAP;
               break;
             case 1:
-              this.anu = MANIPULATE_SKILL_ID_MAP;
+              this.Unu = MANIPULATE_SKILL_ID_MAP;
           }
           if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene)) {
             EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene);
@@ -333,7 +333,7 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
     e = e.Entity.GetComponent(54);
     this.ExploreSkillHighlightHandle = e.ExploreSkillHighlightHandle;
     e.ExploreSkillHighlightHandle = undefined;
-    this.ExploreSkillHighlightHandle?.Init(this.Entity.GetComponent(205));
+    this.ExploreSkillHighlightHandle?.Init(this.Entity.GetComponent(206));
   }
 };
 CharacterExploreComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(54)], CharacterExploreComponent);

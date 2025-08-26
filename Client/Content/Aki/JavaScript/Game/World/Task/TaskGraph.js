@@ -10,14 +10,14 @@ const TaskGraphVisualizer_1 = require("./TaskGraphVisualizer");
 const TaskUtils_1 = require("./TaskUtils");
 class TaskGraph {
   constructor(r, s) {
-    this.BK1 = new Map();
-    this.kK1 = [];
+    this.GK1 = new Map();
+    this.FK1 = [];
     this.E7 = (r, s) => {
-      var e = (0, TaskUtils_1.getNodeCumulativePriorities)(this.BK1, this.kK1);
+      var e = (0, TaskUtils_1.getNodeCumulativePriorities)(this.GK1, this.FK1);
       return e.get(r) - e.get(s);
     };
     [...r.entries()].forEach(([r, s]) => {
-      this.BK1.set(r, {
+      this.GK1.set(r, {
         ...s,
         DependsOn: new Set(),
         DependedOnBy: new Set(),
@@ -25,8 +25,8 @@ class TaskGraph {
       });
     });
     s.forEach(([r, s]) => {
-      var e = this.BK1.get(r);
-      var o = this.BK1.get(s);
+      var e = this.GK1.get(r);
+      var o = this.GK1.get(s);
       if (!e) {
         throw new Error(`检查dependencies参数传入的被依赖ID: ${r}, 不在nodeMap中`);
       }
@@ -36,11 +36,11 @@ class TaskGraph {
       e.DependedOnBy.add(s);
       o.DependsOn.add(r);
     });
-    this.kK1 = (0, TaskUtils_1.getNodesWithNoDependencies)(this.BK1);
-    if (this.kK1.length === 0 && r.size > 0) {
+    this.FK1 = (0, TaskUtils_1.getNodesWithNoDependencies)(this.GK1);
+    if (this.FK1.length === 0 && r.size > 0) {
       throw new Error("找不到Task执行起点, 可能有一个依赖链包含了所有的Task");
     }
-    r = (0, TaskUtils_1.graphHasCycles)(this.BK1);
+    r = (0, TaskUtils_1.graphHasCycles)(this.GK1);
     if (r.HasCycle) {
       throw new Error(`检测到了循环依赖:
 ${r.Cycle.join("\n")}`);
@@ -55,7 +55,7 @@ ${r.Cycle.join("\n")}`);
       throw new Error("Concurrency需要是正数或者不传, 现在: " + t?.Concurrency);
     }
     const a = new PriorityQueue_1.PriorityQueue(this.E7);
-    this.kK1.forEach(r => {
+    this.FK1.forEach(r => {
       a.Push(r);
     });
     let n = 0;
@@ -64,7 +64,7 @@ ${r.Cycle.join("\n")}`);
       if (!e) {
         throw new Error("尝试调度一个Task的时候, 发现没货了!");
       }
-      const o = this.BK1.get(e);
+      const o = this.GK1.get(e);
       try {
         n += 1;
         if (!o.Failed) {
@@ -77,7 +77,7 @@ ${r.Cycle.join("\n")}`);
         if (t?.ContinueEvenFail ?? !o.Failed) {
           --n;
           o.DependedOnBy.forEach(r => {
-            var s = this.BK1.get(r);
+            var s = this.GK1.get(r);
             if (o.Failed) {
               s.Failed = true;
             }

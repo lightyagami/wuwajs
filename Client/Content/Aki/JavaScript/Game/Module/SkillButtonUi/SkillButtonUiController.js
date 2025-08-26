@@ -1,5 +1,6 @@
 "use strict";
 
+var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -18,6 +19,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnClear() {
+    this.wjc.clear();
     return true;
   }
   static OnAddEvents() {
@@ -83,8 +85,20 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
       return 0;
     }
   }
+  static AddEventInterface(e) {
+    if (e) {
+      this.wjc.add(e);
+    }
+  }
+  static RemoveEventInterface(e) {
+    if (e) {
+      this.wjc.delete(e);
+    }
+  }
 }
-(exports.SkillButtonUiController = SkillButtonUiController).kQe = Stats_1.Stat.Create("[ChangeRole]SkillButtonUiController");
+exports.SkillButtonUiController = SkillButtonUiController;
+(_a = SkillButtonUiController).kQe = Stats_1.Stat.Create("[ChangeRole]SkillButtonUiController");
+SkillButtonUiController.wjc = new Set();
 SkillButtonUiController.Uyo = (e, t, n) => {
   ModelManager_1.ModelManager.SkillButtonUiModel.ExecuteMultiSkillIdChanged(e, t, n);
 };
@@ -111,13 +125,25 @@ SkillButtonUiController.zpe = (e, t) => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnRemoveEntity(t);
 };
 SkillButtonUiController.OJe = () => {
-  ModelManager_1.ModelManager.SkillButtonUiModel.RefreshSkillButtonExplorePhantomSkillId(7);
+  var e = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId;
+  if (ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(e)?.SkillType !== 5) {
+    ModelManager_1.ModelManager.SkillButtonUiModel.RefreshSkillButtonExplorePhantomSkillId(7);
+  }
+  for (const t of _a.wjc) {
+    t.EquipExplorePhantomSkill?.();
+  }
 };
 SkillButtonUiController.Pyo = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnSkillCdChanged(e);
+  for (const t of _a.wjc) {
+    t.SkillCountChanged?.(e);
+  }
 };
 SkillButtonUiController.xyo = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnSkillCdChanged(e);
+  for (const t of _a.wjc) {
+    t.SkillRemainCdChanged?.(e);
+  }
 };
 SkillButtonUiController.Pet = () => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnAimStateChanged();

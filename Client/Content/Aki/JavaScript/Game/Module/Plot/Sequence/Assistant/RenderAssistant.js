@@ -55,6 +55,9 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.LSl = true;
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(0);
     }
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
+      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.Seq, false);
+    }
   }
   PreEachPlay() {
     this.uio = true;
@@ -85,6 +88,9 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(1);
     }
     this.cio = false;
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
+      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.Seq, true);
+    }
   }
   End() {
     if (this.uio) {

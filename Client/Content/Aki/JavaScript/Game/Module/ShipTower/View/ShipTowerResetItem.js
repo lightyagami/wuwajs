@@ -50,9 +50,10 @@ class ShipTowerResetItem extends UiPanelBase_1.UiPanelBase {
     t.ShowTextNew(e.BuffData?.ItemNameKey ?? "");
     t.SetColor(e.BuffData?.GetQualityColor());
     if (!i) {
-      t = e.BuffData?.CanUseCount ?? 0;
+      t = e.BuffData?.CanUseCountNoEdit ?? 0;
+      i = Math.min(t + 1, e.BuffData?.TotalUseCount ?? 0);
       this.GetText(2).SetText(t.toString());
-      this.GetText(3).SetText((t + 1).toString());
+      this.GetText(3).SetText(i.toString());
     }
   }
 }

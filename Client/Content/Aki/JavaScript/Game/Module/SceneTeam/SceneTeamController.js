@@ -46,12 +46,12 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PanelQteEnd, SceneTeamController.VOi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLevelEnvChange, SceneTeamController.PCl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnStartFlow, SceneTeamController.$an);
-    Net_1.Net.Register(15953, SceneTeamController.Apo);
-    Net_1.Net.Register(16512, SceneTeamController.Ppo);
-    Net_1.Net.Register(24233, SceneTeamController.xpo);
-    Net_1.Net.Register(25910, SceneTeamController.r$s);
-    Net_1.Net.Register(27985, SceneTeamController.Phl);
-    Net_1.Net.Register(25493, SceneTeamController.z7c);
+    Net_1.Net.Register(17820, SceneTeamController.Apo);
+    Net_1.Net.Register(16178, SceneTeamController.Ppo);
+    Net_1.Net.Register(15182, SceneTeamController.xpo);
+    Net_1.Net.Register(28847, SceneTeamController.r$s);
+    Net_1.Net.Register(21122, SceneTeamController.Phl);
+    Net_1.Net.Register(24741, SceneTeamController.Sjc);
     return true;
   }
   static OnClear() {
@@ -64,12 +64,12 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PanelQteEnd, SceneTeamController.VOi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelEnvChange, SceneTeamController.PCl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnStartFlow, SceneTeamController.$an);
-    Net_1.Net.UnRegister(15953);
-    Net_1.Net.UnRegister(16512);
-    Net_1.Net.UnRegister(24233);
-    Net_1.Net.UnRegister(25910);
-    Net_1.Net.UnRegister(27985);
-    Net_1.Net.UnRegister(25493);
+    Net_1.Net.UnRegister(17820);
+    Net_1.Net.UnRegister(16178);
+    Net_1.Net.UnRegister(15182);
+    Net_1.Net.UnRegister(28847);
+    Net_1.Net.UnRegister(21122);
+    Net_1.Net.UnRegister(24741);
     if (this.wpo) {
       TimerSystem_1.TimerSystem.Remove(this.wpo);
       this.wpo = undefined;
@@ -87,15 +87,19 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static R$1(e = undefined, o = undefined) {
-    for (const r of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true)) {
-      var t;
+  static DisableAllRoleWithoutControl(e = undefined, o = undefined, t = false) {
+    for (const n of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true)) {
       var a;
-      if (!r.IsControl()) {
-        if ((a = r.EntityHandle?.Entity) && (t = a.GetComponent(93)) && t.GetTeamState() === 1) {
-          a = a.GetComponent(1).ActorLocationProxy;
-          if (!e || !o || !(Vector_1.Vector.DistSquared(e, a) > o)) {
-            t.DisableRoleWithoutEffect();
+      var r;
+      if (!n.IsControl()) {
+        if ((r = n.EntityHandle?.Entity) && (a = r.GetComponent(94)) && a.GetTeamState() === 1) {
+          r = r.GetComponent(1).ActorLocationProxy;
+          if (!e || !o || !(Vector_1.Vector.DistSquared(e, r) > o)) {
+            if (t) {
+              a.DisableRoleWithEffect();
+            } else {
+              a.DisableRoleWithoutEffect();
+            }
           }
         }
       }
@@ -132,7 +136,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
             i = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
             (c = new Protocol_1.Aki.Protocol.qis()).Q6n = g.GetConfigId;
             c.$Hn = v;
-            if (ModelManager_1.ModelManager.GameModeModel.IsMulti && (g = o?.EntityHandle?.Entity?.GetComponent(93)?.GetTeamState() === 1, c.qGu = g, _.GetCurrentTeamItem?.GetCreatureDataId() === e) && t.GetComponent(93)?.NeedSyncTransform() && (v = t.GetComponent(3))) {
+            if (ModelManager_1.ModelManager.GameModeModel.IsMulti && (g = o?.EntityHandle?.Entity?.GetComponent(94)?.GetTeamState() === 1, c.tku = g, _.GetCurrentTeamItem?.GetCreatureDataId() === e) && t.GetComponent(94)?.NeedSyncTransform() && (v = t.GetComponent(3))) {
               g = new Protocol_1.Aki.Protocol.wn1();
               m = new Protocol_1.Aki.Protocol.Gks();
               s = new Protocol_1.Aki.Protocol.D2s();
@@ -148,7 +152,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
               g._8n = s;
               c.wn1 = g;
             }
-            CombatMessage_1.CombatNet.Call(26489, t, c, e => {
+            CombatMessage_1.CombatNet.Call(21005, t, c, e => {
               var o;
               _.ChangingRole = false;
               if (e) {
@@ -179,7 +183,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
               }
             }, undefined, i);
             if (n && _.GetCurrentTeamItem?.GetCreatureDataId() === e) {
-              t.GetComponent(209)?.AddBuff(CharacterBuffIds_1.buffId.GoBattleInvincible, {
+              t.GetComponent(210)?.AddBuff(CharacterBuffIds_1.buffId.GoBattleInvincible, {
                 InstigatorId: e,
                 PreMessageId: i,
                 Reason: "角色上场短暂无敌"
@@ -189,7 +193,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
             Log_1.Log.Info("SceneTeam", 48, "角色不允许请求切换", ["CreatureDataId", e]);
           }
         } else {
-          S = o?.EntityHandle?.Entity?.GetComponent(98)?.IsInQte ?? false;
+          S = o?.EntityHandle?.Entity?.GetComponent(99)?.IsInQte ?? false;
           v = ModelManager_1.ModelManager.SceneTeamModel.GetChangeRoleCooldown();
           _.ChangeRole(e, {
             UseGoBattleSkill: l && !S,
@@ -211,7 +215,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
       t = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
       (a = new Protocol_1.Aki.Protocol.qis()).Q6n = e.GetConfigId;
       a.$Hn = o;
-      CombatMessage_1.CombatNet.Call(26489, r, a, () => {}, undefined, t);
+      CombatMessage_1.CombatNet.Call(21005, r, a, () => {}, undefined, t);
     }
   }
   static Bpo() {
@@ -233,7 +237,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     });
     var l = n?.EntityHandle.Entity;
     if (l && n.IsMyRole()) {
-      n = l.GetComponent(98);
+      n = l.GetComponent(99);
       this.Dpo.Start();
       r.ChangeRole(e, {
         UseGoBattleSkill: a && !n.IsInQte,
@@ -247,8 +251,8 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     }
   }
   static RoleGoDownPush(e) {
-    var o = Protocol_1.Aki.Protocol.OGu.create();
-    CombatMessage_1.CombatNet.Send(17910, e, o);
+    var o = Protocol_1.Aki.Protocol.yBu.create();
+    CombatMessage_1.CombatNet.Send(19555, e, o);
   }
   static GetLivingSate(e) {
     switch (e) {
@@ -352,7 +356,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
         T.Bhl = M[0];
       }
     }
-    Net_1.Net.Call(21559, T, e => {
+    Net_1.Net.Call(19507, T, e => {
       if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "请求角色入队失败");
@@ -465,7 +469,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
         t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity;
         let e = undefined;
         if (o && t) {
-          var r = t.GetComponent(205);
+          var r = t.GetComponent(206);
           for (const l of o) {
             if (r.HasTag(l.TagId)) {
               e = l;
@@ -473,7 +477,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
             }
           }
         }
-        o = t?.GetComponent(174);
+        o = t?.GetComponent(175);
         o?.AddBuff(GameplayAbilityVisionMisc_1.VISION_APPEAR_BUFF_ID, {
           InstigatorId: o.CreatureDataId,
           Reason: "开始切换声骸编队时，声骸自身的材质和粒子"
@@ -496,19 +500,19 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
       e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       SceneTeamController.Uvl(1, undefined, false, false);
       if (e?.Valid) {
-        e.Entity?.GetComponent(174)?.RemoveAllDurationBuffs("声骸还原清理持续型buff");
+        e.Entity?.GetComponent(175)?.RemoveAllDurationBuffs("声骸还原清理持续型buff");
       }
     }
   }
   static TryUseMultiQte(e) {
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
-    var t = o.EntityHandle.Entity.GetComponent(98);
+    var t = o.EntityHandle.Entity.GetComponent(99);
     if (t.IsQteReady(e)) {
-      e.Entity.GetComponent(98).UseExitSkill(o.EntityHandle);
+      e.Entity.GetComponent(99).UseExitSkill(o.EntityHandle);
       t.ExecuteMultiQte(e);
       return true;
     } else {
-      if (!e.Entity.GetComponent(205).HasTag(166024319)) {
+      if (!e.Entity.GetComponent(206).HasTag(166024319)) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TeammateQteDisable");
       }
       return false;
@@ -579,14 +583,19 @@ SceneTeamController.zpe = (e, o) => {
   ModelManager_1.ModelManager.SceneTeamModel.OnRemoveEntity(o);
 };
 SceneTeamController.PCl = (e, o, t) => {
-  if (e === 1 || e === 4) {
-    e = o ? Vector_1.Vector.Create(o) : undefined;
-    o = SceneTeamDefine_1.DATA_LAYER_CHANGE_RADIUS * SceneTeamDefine_1.DATA_LAYER_CHANGE_RADIUS;
-    _a.R$1(e, o);
+  switch (e) {
+    case 1:
+    case 4:
+      var a = o ? Vector_1.Vector.Create(o) : undefined;
+      var r = SceneTeamDefine_1.DATA_LAYER_CHANGE_RADIUS * SceneTeamDefine_1.DATA_LAYER_CHANGE_RADIUS;
+      _a.DisableAllRoleWithoutControl(a, r);
+      break;
+    case 2:
+      _a.DisableAllRoleWithoutControl();
   }
 };
 SceneTeamController.$an = () => {
-  _a.R$1();
+  _a.DisableAllRoleWithoutControl();
 };
 SceneTeamController.xpo = e => {
   var o = MathUtils_1.MathUtils.LongToNumber(e.mUs);
@@ -606,7 +615,7 @@ SceneTeamController.xpo = e => {
       var n = e.wn1;
       var l = n ? Vector_1.Vector.Create(n.l8n) : undefined;
       var n = n ? Rotator_1.Rotator.Create(n._8n) : undefined;
-      RoleTeamComponent_1.RoleTeamComponent.OnSimulateChangeRole(r, a, e.qGu, l, n);
+      RoleTeamComponent_1.RoleTeamComponent.OnSimulateChangeRole(r, a, e.tku, l, n);
       ModelManager_1.ModelManager.SceneTeamModel.OtherPlayerChangeRole(e.W5n, o);
       for (const _ of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(e.W5n)) {
         if (_.GetCreatureDataId() === t) {
@@ -624,14 +633,14 @@ SceneTeamController.xpo = e => {
     }
   }
 };
-SceneTeamController.z7c = e => {
+SceneTeamController.Sjc = e => {
   var e = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
   if (o?.Valid) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneTeam", 48, "联机前台不受控下场同步", ["creatureDataId", e]);
     }
-    o.Entity.GetComponent(93).SimulateGoDown(true);
+    o.Entity.GetComponent(94).SimulateGoDown(true);
   } else if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("SceneTeam", 48, "联机前台不受控下场同步时，实体无效或不存在", ["creatureDataId", e]);
   }
@@ -720,7 +729,7 @@ SceneTeamController.qpo = () => {
         (a = new Protocol_1.Aki.Protocol.Xe_()).W5n = e.GetPlayerId();
         a.YHn = e.GetConfigId;
         a.JHn = e.GetCreatureDataId();
-        CombatMessage_1.CombatNet.Send(19815, o, a);
+        CombatMessage_1.CombatNet.Send(26444, o, a);
       } else if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneTeam", 48, "检查当前角色，控制特殊角色中", ["groupType", t]);
       }

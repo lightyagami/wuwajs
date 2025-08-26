@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.SkipTaskPayShop = undefined;
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
-const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
@@ -15,17 +14,17 @@ const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsCont
 const SkipTask_1 = require("./SkipTask");
 class SkipTaskPayShop extends SkipTask_1.SkipTask {
   OnRun(e, r, o) {
-    var a;
+    var i;
     this.Finish();
     if (UiManager_1.UiManager.IsViewShow("PayShopRootView")) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("IsInView");
     } else {
-      (a = new PayShopViewData_1.PayShopViewData()).PayShopId = 4;
-      ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopView(a, (e, r) => {
+      (i = new PayShopViewData_1.PayShopViewData()).PayShopId = 4;
+      ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopView(i, (e, r) => {
         if (e) {
           if (UiManager_1.UiManager.IsViewOpen("PayShopRootView")) {
             if (StringUtils_1.StringUtils.IsEmpty(o) || Number(o) === 0) {
-              if ((e = ModelManager_1.ModelManager.ItemTipsModel.GetCurrentItemTipsData()) && ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopGoodsConfigByItemConfigId(e.ConfigId)) {
+              if (e = ModelManager_1.ModelManager.ItemTipsModel.GetCurrentItemTipsData()) {
                 if (e = ModelManager_1.ModelManager.PayShopModel.GetGoodsInTab(4, e.ConfigId)) {
                   ControllerHolder_1.ControllerHolder.PayShopController.OpenExchangePopView(e.GetGoodsId());
                 } else {

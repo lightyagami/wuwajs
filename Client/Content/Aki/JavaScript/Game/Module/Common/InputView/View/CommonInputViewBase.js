@@ -21,6 +21,7 @@ const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsC
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const ButtonAndSpriteItem_1 = require("../../Button/ButtonAndSpriteItem");
 const CommonInputViewDefine_1 = require("../Model/CommonInputViewDefine");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 class CommonInputViewBase extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
@@ -93,11 +94,24 @@ class CommonInputViewBase extends UiTickViewBase_1.UiTickViewBase {
       this.InputText.SetText("", true);
     };
     this.QAt = () => {
-      var t = (0, puerts_1.$ref)("");
-      UE.LGUIBPLibrary.ClipBoardPaste(t);
-      t = (0, puerts_1.$unref)(t);
-      if (!StringUtils_1.StringUtils.IsEmpty(t)) {
-        this.InputText.SetText(t, true);
+      if (Platform_1.Platform.IsCloudGame()) {
+        let t;
+        const i = (0, puerts_1.$ref)("");
+        UE.KuroCloudGameWrapper.ClipBoardPaste();
+        TimerSystem_1.GameplayTimerSystem.Delay(() => {
+          UE.LGUIBPLibrary.ClipBoardPaste(i);
+          t = (0, puerts_1.$unref)(i);
+          if (!StringUtils_1.StringUtils.IsEmpty(t)) {
+            this.InputText.SetText(t, true);
+          }
+        }, 200);
+      } else {
+        var t = (0, puerts_1.$ref)("");
+        UE.LGUIBPLibrary.ClipBoardPaste(t);
+        t = (0, puerts_1.$unref)(t);
+        if (!StringUtils_1.StringUtils.IsEmpty(t)) {
+          this.InputText.SetText(t, true);
+        }
       }
     };
     this.XAt = () => {

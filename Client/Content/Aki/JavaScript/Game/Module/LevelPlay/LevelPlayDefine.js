@@ -27,5 +27,7 @@ exports.levelPlayTypeToNumber = {
   SpecialElite: 8,
   HighSpeedMovement: 9,
   DecisionBt: 10,
-  NightmareSpawnPoint: 11
+  NightmareSpawnPoint: 11,
+  MonsterKill: 12,
+  BlackSwordChallenge: 15
 }; //# sourceMappingURL=LevelPlayDefine.js.map

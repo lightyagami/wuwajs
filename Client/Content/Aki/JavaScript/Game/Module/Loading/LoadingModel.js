@@ -38,6 +38,7 @@ class LoadingModel extends ModelBase_1.ModelBase {
     this.gla = undefined;
     this.BGc = undefined;
     this.Fu1 = undefined;
+    this.YJc = undefined;
   }
   get TipTime() {
     this.Tvi ||= ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTime();
@@ -141,12 +142,12 @@ class LoadingModel extends ModelBase_1.ModelBase {
         return;
       }
       var e = [];
-      for (const o of this.BGc) {
-        var i = new Protocol_1.Aki.Protocol.aqc(o);
+      for (const r of this.BGc) {
+        var i = new Protocol_1.Aki.Protocol.aqc(r);
         var t = TimeUtil_1.TimeUtil.GetServerTimeStamp();
         var n = Number(MathUtils_1.MathUtils.LongToBigInt(i.cps));
-        var r = Number(MathUtils_1.MathUtils.LongToBigInt(i.dps));
-        if (n <= t && t <= r) {
+        var o = Number(MathUtils_1.MathUtils.LongToBigInt(i.dps));
+        if (n <= t && t <= o) {
           e.push(i.s5n);
         }
       }
@@ -164,6 +165,17 @@ class LoadingModel extends ModelBase_1.ModelBase {
   }
   ClearRoleLoadingInfo() {
     this.Fu1 = undefined;
+  }
+  SetSpecifiedLoadingConfigId(e) {
+    if (e && (e = ConfigManager_1.ConfigManager.LoadingConfig.GetLevelAreaById(e))?.Type === 2) {
+      this.YJc = e;
+    }
+  }
+  GetSpecifiedLoadingConfig() {
+    return this.YJc;
+  }
+  ClearSpecifiedLoadingConfig() {
+    this.YJc = undefined;
   }
   OnClear() {
     this.ypi = false;

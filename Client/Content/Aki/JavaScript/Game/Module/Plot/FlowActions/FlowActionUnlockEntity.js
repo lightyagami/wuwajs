@@ -10,7 +10,7 @@ const FlowActionBase_1 = require("./FlowActionBase");
 class FlowActionUnlockEntity extends FlowActionBase_1.FlowActionBase {
   OnExecute() {
     for (const e of this.ActionInfo.Params.EntityIds) {
-      var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e)?.Entity?.GetComponent(196);
+      var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e)?.Entity?.GetComponent(197);
       if (o) {
         o.RemoveServerTagByIdLocal(-662723379, "FlowActionUnlockEntity");
       } else if (Log_1.Log.CheckWarn()) {

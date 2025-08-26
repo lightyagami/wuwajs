@@ -50,7 +50,7 @@ class WorldMapMultiFloorComponent extends MapComponent_1.MapComponent {
   Reset() {
     this.Sal = undefined;
     this.yal = undefined;
-    this.Eal = false;
+    this.SetMultiMapMenuActive(false);
   }
   InitMultiMap() {
     var e;

@@ -26,28 +26,28 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.VmCache = undefined;
-    this.gtu = undefined;
+    this.Vtu = undefined;
     this.lqe = undefined;
-    this.m0u = undefined;
-    this.f0u = undefined;
-    this.g0u = undefined;
-    this.C0u = undefined;
-    this.p0u = undefined;
-    this.Ctu = () => {
+    this.cpu = undefined;
+    this.dpu = undefined;
+    this.mpu = undefined;
+    this.fpu = undefined;
+    this.gpu = undefined;
+    this.jtu = () => {
       this.VmCache?.OnResetClick?.();
     };
-    this.ptu = () => {
+    this.Htu = () => {
       this.VmCache?.OnConfirmClick?.();
     };
     this.qK_ = () => {
-      this.m0u?.AttachToNextItem(-1);
+      this.cpu?.AttachToNextItem(-1);
       this.VmCache?.OnLeftArrowClick?.();
     };
     this.OK_ = () => {
-      this.m0u?.AttachToNextItem(1);
+      this.cpu?.AttachToNextItem(1);
       this.VmCache?.OnRightArrowClick?.();
     };
-    this.ucu = () => {
+    this.Kcu = () => {
       this.VmCache?.OnHideClick?.();
     };
     this.lPe = () => {
@@ -86,15 +86,15 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
     this.Uye = (t, i, e) => {
       t = new FilterSettingPixListItem(t);
       t.ParentViewModel = this.VmCache;
-      t.OffsetCurve = this.p0u?.[0];
-      t.ScaleCurve = this.p0u?.[1];
-      t.AlphaCurve = this.p0u?.[2];
+      t.OffsetCurve = this.gpu?.[0];
+      t.ScaleCurve = this.gpu?.[1];
+      t.AlphaCurve = this.gpu?.[2];
       return t;
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [7, UE.UITexture], [8, UE.UIItem], [9, UE.UIButtonComponent], [10, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIText], [12, UE.UIButtonComponent], [13, UE.UIButtonComponent], [14, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [11, UE.UIItem], [15, UE.UIExtendToggle], [16, UE.UIItem], [17, UE.UIDraggableComponent], [18, UE.UIItem], [19, UE.UIItem]];
-    this.BtnBindInfo = [[9, this.Ctu], [10, this.ptu], [13, this.qK_], [12, this.OK_], [15, this.ucu]];
+    this.BtnBindInfo = [[9, this.jtu], [10, this.Htu], [13, this.qK_], [12, this.OK_], [15, this.Kcu]];
   }
   OnBeforeCreate() {
     this.VmCache = this.OpenParam;
@@ -122,28 +122,28 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
       this.lqe.SetTitleLocalText(MenuDefine_1.FILTER_SETTING_TITLE_TEXT_ID);
       await this.lqe.SetTitleIconByResourceId(MenuDefine_1.FILTER_SETTING_TITLE_ICON_RESOURCE_ID);
       this.lqe.SetCurrencyItemVisible(false);
-      this.gtu = new FilterSettingSliderItem();
-      this.gtu.OpenParam = this.OpenParam;
-      await this.gtu.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
-      this.p0u = await this.Ykl();
-      this.m0u = new CircleAttachView_1.CircleAttachView(this.GetItem(19).GetOwner());
-      this.m0u?.CreateItems(this.GetItem(11).GetOwner(), 0, this.Uye, 0);
+      this.Vtu = new FilterSettingSliderItem();
+      this.Vtu.OpenParam = this.OpenParam;
+      await this.Vtu.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
+      this.gpu = await this.Ykl();
+      this.cpu = new CircleAttachView_1.CircleAttachView(this.GetItem(19).GetOwner());
+      this.cpu?.CreateItems(this.GetItem(11).GetOwner(), 0, this.Uye, 0);
       t = this.VmCache.TexturePathList;
-      this.m0u?.ReloadView(t.length, t, this.VmCache.InitFilterIndex);
+      this.cpu?.ReloadView(t.length, t, this.VmCache.InitFilterIndex);
       this.GetItem(11)?.SetUIActive(false);
     }
   }
   OnBeforeDestroy() {
-    this.m0u?.Clear();
-    this.m0u = undefined;
+    this.cpu?.Clear();
+    this.cpu = undefined;
     this.VmCache?.OnViewDestroy?.();
     this.VmCache = undefined;
-    this.f0u?.CancelAsyncLoad();
-    this.g0u?.CancelAsyncLoad();
-    this.C0u?.CancelAsyncLoad();
-    if (this.p0u) {
-      this.p0u.length = 0;
-      this.p0u = undefined;
+    this.dpu?.CancelAsyncLoad();
+    this.mpu?.CancelAsyncLoad();
+    this.fpu?.CancelAsyncLoad();
+    if (this.gpu) {
+      this.gpu.length = 0;
+      this.gpu = undefined;
     }
   }
   OnAddEventListener() {
@@ -176,7 +176,7 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
       if (!this.VmCache.IsHideByClick) {
         this.VmCache.OnPadChangeStop?.();
       }
-      this.VmCache.PadLock = this.m0u?.MovingState() ?? false;
+      this.VmCache.PadLock = this.cpu?.MovingState() ?? false;
       if (!this.VmCache.CameraRotationLock && !this.VmCache.PadLock) {
         if (LguiEventSystemManager_1.LguiEventSystemManager.GetNowHitComponentName() === MenuDefine_1.TARGET_HIT_ITEM_FOR_FILTER) {
           var i = LguiEventSystemManager_1.LguiEventSystemManager.GetPointerEventData(0);
@@ -209,8 +209,8 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
           LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(5), this.VmCache.CoordinateTextId, this.VmCache.HorizontalString, this.VmCache.VerticalString);
         }
         if (this.VmCache.IsPropertyDirty(FilterSettingViewModel_1.FilterSettingViewModel.Flags.IntensityNormalized)) {
-          this.gtu?.SetTitleText(this.VmCache.IntensityString);
-          this.gtu?.SetSliderValue(this.VmCache.IntensityNormalized);
+          this.Vtu?.SetTitleText(this.VmCache.IntensityString);
+          this.Vtu?.SetSliderValue(this.VmCache.IntensityNormalized);
         }
         if (this.VmCache.IsPropertyDirty(FilterSettingViewModel_1.FilterSettingViewModel.Flags.FilterNameTextId)) {
           LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(6), this.VmCache.FilterNameTextId);
@@ -241,26 +241,26 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
   }
   async Ykl() {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("Ani_FilterSetting_Offset");
-    this.f0u = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.dpu = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("Ani_FilterSetting_Scale");
-    this.g0u = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    this.mpu = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("Ani_FilterSetting_Alpha");
-    this.C0u = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
-    return Promise.all([this.f0u.Promise, this.g0u.Promise, this.C0u.Promise]);
+    this.fpu = new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat);
+    return Promise.all([this.dpu.Promise, this.mpu.Promise, this.fpu.Promise]);
   }
 }
 exports.FilterSettingView = FilterSettingView;
 class FilterSettingSliderItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.vtu = t => {
-      if (this.ytu !== undefined) {
-        this.ytu.IntensityNormalized = t;
-        this.ytu.OnSliderChanged?.();
+    this.$tu = t => {
+      if (this.Wtu !== undefined) {
+        this.Wtu.IntensityNormalized = t;
+        this.Wtu.OnSliderChanged?.();
       }
     };
   }
-  get ytu() {
+  get Wtu() {
     if (this.OpenParam !== undefined) {
       return this.OpenParam;
     }
@@ -269,7 +269,7 @@ class FilterSettingSliderItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISliderComponent], [2, UE.UISprite]];
   }
   async OnBeforeStartAsync() {
-    this.GetSlider(1)?.OnValueChangeCb.Bind(this.vtu);
+    this.GetSlider(1)?.OnValueChangeCb.Bind(this.$tu);
     return Promise.resolve();
   }
   OnBeforeDestroy() {

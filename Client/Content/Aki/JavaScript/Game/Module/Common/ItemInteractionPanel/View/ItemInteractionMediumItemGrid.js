@@ -37,7 +37,7 @@ class ItemInteractionMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrol
       s.BottomText = this.hPt.toString();
     }
     this.Apply(s);
-    this.SetSelected(e.IsSelected);
+    this.SetSelected(e.IsSelected, true);
   }
   OnSelected(e) {
     if (this.WPt) {

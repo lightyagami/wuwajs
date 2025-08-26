@@ -43,6 +43,8 @@ class BulletCollisionInfo {
     this.IsInProcessHit = false;
     this.HasSearchedHitActorsCurFrame = false;
     this.ObjectsHitCurrent = new Map();
+    this.SceneItemPartHitEntityId = undefined;
+    this.SceneItemPartsHitCurrent = new Set();
     this.StopHit = false;
     this.HaveCharacterInBullet = false;
     this.CharacterEntityMap = new Map();
@@ -168,6 +170,8 @@ class BulletCollisionInfo {
     this.IsProcessOpen = false;
     this.HasSearchedHitActorsCurFrame = false;
     this.ObjectsHitCurrent.clear();
+    this.SceneItemPartsHitCurrent.clear();
+    this.SceneItemPartHitEntityId = undefined;
     this.StopHit = false;
     this.HaveCharacterInBullet = false;
     this.CharacterEntityMap.clear();

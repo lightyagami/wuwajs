@@ -30,11 +30,11 @@ class MoraleBuffView extends UiViewBase_1.UiViewBase {
     this.SelectBuff = undefined;
     this.BuffDataList = [];
     this.RoleAttrAddPanel = undefined;
-    this.aJ1 = () => {
+    this.UJ1 = () => {
       this.RoleAttrAddPanel.SetActive(true);
     };
     this.Os_ = e => {
-      this.hJ1(e);
+      this.DJ1(e);
       this.BuffInfoPanel.UpdateData(e);
       this.BuffItemList.forEach(e => {
         e.UpdateToggleState();
@@ -43,20 +43,20 @@ class MoraleBuffView extends UiViewBase_1.UiViewBase {
     this.V2i = () => {
       this.CloseMe();
     };
-    this.gdu = () => {
+    this.Zdu = () => {
       ModelManager_1.ModelManager.MoraleModel.ClearNewActiveAreaBuff();
       this.UpdateAreaBuffRedDot();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIArtText], [8, UE.UIArtText], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIScrollViewWithScrollbarComponent], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIItem]];
-    this.BtnBindInfo = [[9, this.aJ1]];
+    this.BtnBindInfo = [[9, this.UJ1]];
   }
   Es_() {
     this.BuffDataList = ModelManager_1.ModelManager.MoraleModel.BuffList;
     var e = this.BuffDataList.find(e => e.Id === this.OpenParam?.BuffId);
     this.SelectBuff = e ?? ModelManager_1.ModelManager.MoraleModel.GetStageBuffData();
-    this.hJ1(this.SelectBuff);
+    this.DJ1(this.SelectBuff);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, this.constructor.name, ["DataParam", this.OpenParam]);
     }
@@ -68,13 +68,13 @@ class MoraleBuffView extends UiViewBase_1.UiViewBase {
     this.GetItem(6).SetUIActive(false);
     this.RoleAttrAddPanel = new MoraleBuffAddPanel_1.MoraleBuffAddPanel();
     await this.RoleAttrAddPanel.Init(this.GetItem(15));
-    this.RoleAttrAddPanel.CloseCallback = this.gdu;
+    this.RoleAttrAddPanel.CloseCallback = this.Zdu;
     this.PopupCaption = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.PopupCaption.SetCloseCallBack(this.V2i);
     this.PopupCaption.SetHelpBtnActive(false);
     this.BuffInfoPanel = new MoraleBuffInfoPanel_1.MoraleBuffInfoPanel();
     await this.BuffInfoPanel.Init(this.GetItem(1));
-    await this.lJ1();
+    await this.BJ1();
     this.MoraleLvPanel = new MoraleLvInfoItem_1.MoraleLvInfoItem();
     await this.MoraleLvPanel.Init(this.GetItem(11));
     this.UnbreakableLvPanel = new MoraleUnbreakableLvInfoItem_1.MoraleUnbreakableLvInfoItem();
@@ -82,7 +82,7 @@ class MoraleBuffView extends UiViewBase_1.UiViewBase {
     this.GetSprite(2)?.SetUIActive(false);
     this.GetSprite(3)?.SetUIActive(false);
   }
-  async lJ1() {
+  async BJ1() {
     const s = [];
     var e = ModelManager_1.ModelManager.MoraleModel.BuffList;
     const a = this.GetItem(4);
@@ -142,11 +142,11 @@ class MoraleBuffView extends UiViewBase_1.UiViewBase {
       t.ScrollToLeft(i, e.GetRootItem());
     }
   }
-  hJ1(e) {
+  DJ1(e) {
     this.SelectBuff = e;
-    this.uJ1();
+    this.OJ1();
   }
-  uJ1() {
+  OJ1() {
     this.BuffDataList.forEach(e => {
       e.SetSelectState(e.Id === this.SelectBuff?.Id);
     });

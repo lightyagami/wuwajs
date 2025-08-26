@@ -19,7 +19,11 @@ class AiStateMachineActionCue extends AiStateMachineAction_1.AiStateMachineActio
     return true;
   }
   DoAction() {
-    this.Node.BuffComponent.AddGameplayCue(this.Vre, 0, "状态机");
+    for (const t of this.Vre) {
+      this.Node.GameplayCueComponent.AddCue(t, {
+        Instant: true
+      });
+    }
   }
   ToString(t, e = 0) {
     (0, AiStateMachine_1.appendDepthSpace)(t, e);

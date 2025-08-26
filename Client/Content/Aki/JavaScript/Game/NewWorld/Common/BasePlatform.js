@@ -42,11 +42,11 @@ class BasePlatform {
     var e;
     var r;
     if (this.EntityHandle?.Valid) {
-      e = Protocol_1.Aki.Protocol.Fbu.create();
+      e = Protocol_1.Aki.Protocol.sRu.create();
       r = this.EntityHandle.CreatureDataId;
       e.F4n = MathUtils_1.MathUtils.NumberToLong(r);
       e.phl = t;
-      Net_1.Net.Call(25032, e, t => {});
+      Net_1.Net.Call(20679, e, t => {});
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 31, "[BasePlatform.RequestEnterOrLeave] EntityHandle无效");
     }
@@ -85,10 +85,10 @@ class SceneItemBasePlatform extends BasePlatform {
     super(t);
     this.LeaveSphereRadiusSq = 0;
     this.CacheLocation = Vector_1.Vector.Create();
-    this.nBu = [];
+    this.sVu = [];
     this.W$o = false;
     this.IsDeltaBaseSpeedNeedZ = true;
-    var t = this.EntityHandle?.Entity.GetComponent(202);
+    var t = this.EntityHandle?.Entity.GetComponent(203);
     var e = t?.GetInteractionMainActor();
     if (e) {
       var r = e.GetAttachParentActor();
@@ -111,7 +111,7 @@ class SceneItemBasePlatform extends BasePlatform {
         for (const s of e.VehicleFeatures) {
           if (s.Type === 8) {
             for (const i of s.PlayerAttachTags) {
-              this.nBu.push(i);
+              this.sVu.push(i);
             }
             break;
           }
@@ -125,8 +125,8 @@ class SceneItemBasePlatform extends BasePlatform {
   CheckLeave(e, r) {
     if (this.EntityHandle?.Valid) {
       var s;
-      var i = this.EntityHandle.Entity.GetComponent(202);
-      var o = e?.GetComponent(178)?.CharacterMovement;
+      var i = this.EntityHandle.Entity.GetComponent(203);
+      var o = e?.GetComponent(179)?.CharacterMovement;
       let t = false;
       if (this.W$o) {
         if ((h = i?.GetMainCollisionActor()) && o) {
@@ -136,7 +136,7 @@ class SceneItemBasePlatform extends BasePlatform {
           (h = Vector_1.Vector.Create()).FromUeVector((0, puerts_1.$unref)(a));
           (a = Vector_1.Vector.Create()).FromUeVector((0, puerts_1.$unref)(s));
           a.Z += o.GetMaxJumpHeight();
-          t = this.SHc(r, a, h);
+          t = this.uQc(r, a, h);
         }
       } else {
         this.CacheLocation.DeepCopy(i.ActorLocationProxy);
@@ -148,15 +148,15 @@ class SceneItemBasePlatform extends BasePlatform {
       }
       var a;
       var h;
-      var n = e?.GetComponent(205);
-      if (this.nBu.length > 0) {
-        for (const f of this.nBu) {
+      var n = e?.GetComponent(206);
+      if (this.sVu.length > 0) {
+        for (const f of this.sVu) {
           n?.RemoveTag(f);
         }
         this.RequestEnterOrLeave(false);
       }
       if (this.W$o) {
-        if (a = e?.GetComponent(229)) {
+        if (a = e?.GetComponent(230)) {
           a.IsAttachToMoveSceneItem = false;
         }
         if (!a?.IsOnVehicle) {
@@ -173,17 +173,17 @@ class SceneItemBasePlatform extends BasePlatform {
     }
     return true;
   }
-  SHc(t, e, r) {
+  uQc(t, e, r) {
     return t.X >= r.X - e.X && t.X <= r.X + e.X && t.Y >= r.Y - e.Y && t.Y <= r.Y + e.Y && t.Z >= r.Z - e.Z && t.Z <= r.Z + e.Z;
   }
   OnCharacterEnter(t, e) {
     if (this.EntityHandle.Valid) {
       var r;
-      var s = this.EntityHandle.Entity.GetComponent(202);
+      var s = this.EntityHandle.Entity.GetComponent(203);
       var i = e?.GetOwner()?.GetEntityNoBlueprint();
-      var o = i?.GetComponent(205);
-      if (this.nBu.length > 0) {
-        for (const a of this.nBu) {
+      var o = i?.GetComponent(206);
+      if (this.sVu.length > 0) {
+        for (const a of this.sVu) {
           o?.AddTag(a);
         }
         this.RequestEnterOrLeave(true);
@@ -192,7 +192,7 @@ class SceneItemBasePlatform extends BasePlatform {
         if (r = i?.GetComponent(45)) {
           r.NeedRootMotionWhenAttached = true;
         }
-        if (r = i?.GetComponent(229)) {
+        if (r = i?.GetComponent(230)) {
           r.IsAttachToMoveSceneItem = true;
         }
         i?.GetComponent(3)?.Owner?.K2_AttachToActor(s?.Owner, undefined, 1, 1, 1, true);
@@ -209,9 +209,9 @@ class VehicleBasePlatform extends BasePlatform {
     this.LeaveSphereRadiusSq = 0;
     this.BoneName = new UE.FName("Bone_Prop001");
     this.CacheLocation = Vector_1.Vector.Create();
-    this.nBu = [];
+    this.sVu = [];
     this.IsDeltaBaseSpeedNeedZ = true;
-    var t = this.EntityHandle?.Entity.GetComponent(202);
+    var t = this.EntityHandle?.Entity.GetComponent(203);
     var e = t?.GetInteractionMainActor();
     if (e) {
       var r = e.GetAttachParentActor();
@@ -233,7 +233,7 @@ class VehicleBasePlatform extends BasePlatform {
         for (const s of e.VehicleFeatures) {
           if (s.Type === 8) {
             for (const i of s.PlayerAttachTags) {
-              this.nBu.push(i);
+              this.sVu.push(i);
             }
             break;
           }
@@ -242,10 +242,10 @@ class VehicleBasePlatform extends BasePlatform {
     }
   }
   TransformFromRelativeSpace(t, e, r, s) {
-    (this.EntityHandle?.Entity.GetComponent(234)).SkeletalMesh.D_TransformFromBoneSpace(this.BoneName, t, e, r, s);
+    (this.EntityHandle?.Entity.GetComponent(235)).SkeletalMesh.D_TransformFromBoneSpace(this.BoneName, t, e, r, s);
   }
   TransformToRelativeSpace(t, e, r, s) {
-    (this.EntityHandle?.Entity.GetComponent(234)).SkeletalMesh.D_TransformToBoneSpace(this.BoneName, t, e, r, s);
+    (this.EntityHandle?.Entity.GetComponent(235)).SkeletalMesh.D_TransformToBoneSpace(this.BoneName, t, e, r, s);
   }
   GetTransform() {
     return this.EntityHandle?.Entity.GetComponent(1).ActorTransform;
@@ -254,13 +254,13 @@ class VehicleBasePlatform extends BasePlatform {
     if (!this.EntityHandle?.Valid) {
       return true;
     }
-    var r = this.EntityHandle.Entity.GetComponent(234);
+    var r = this.EntityHandle.Entity.GetComponent(235);
     this.CacheLocation.DeepCopy(r.ActorLocationProxy);
     var r = Vector_1.Vector.DistSquared(e, this.CacheLocation);
     if (r > this.LeaveSphereRadiusSq) {
-      var s = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(205);
-      if (this.nBu.length > 0) {
-        for (const i of this.nBu) {
+      var s = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(206);
+      if (this.sVu.length > 0) {
+        for (const i of this.sVu) {
           s?.RemoveTag(i);
         }
         this.RequestEnterOrLeave(false);
@@ -271,10 +271,10 @@ class VehicleBasePlatform extends BasePlatform {
   }
   OnCharacterEnter(t, e) {
     if (this.EntityHandle.Valid) {
-      this.EntityHandle.Entity.GetComponent(114)?.SetTakeOverTick(true);
-      var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(205);
-      if (this.nBu.length > 0) {
-        for (const s of this.nBu) {
+      this.EntityHandle.Entity.GetComponent(115)?.SetTakeOverTick(true);
+      var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(206);
+      if (this.sVu.length > 0) {
+        for (const s of this.sVu) {
           r?.AddTag(s);
         }
         this.RequestEnterOrLeave(true);
@@ -298,11 +298,11 @@ class BasePlatformController {
         return r.OwnedBasePlatform;
       }
       let t = undefined;
-      if (e.Entity.GetComponent(202)) {
+      if (e.Entity.GetComponent(203)) {
         t = new SceneItemBasePlatform(e);
       } else if (e.Entity.GetComponent(3)) {
         t = new CharacterBasePlatform(e);
-      } else if (e.Entity.GetComponent(234)) {
+      } else if (e.Entity.GetComponent(235)) {
         t = new VehicleBasePlatform(e);
       }
       return r.OwnedBasePlatform = t;

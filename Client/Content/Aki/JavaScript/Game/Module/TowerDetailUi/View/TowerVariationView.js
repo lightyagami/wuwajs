@@ -36,6 +36,9 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
         this.AddChildViewById(r);
       });
     };
+    this.rzc = () => {
+      this.YDo();
+    };
     this.JDo = () => {
       if (UiManager_1.UiManager.GetViewByName("TowerNormalView")) {
         this.CloseMe();
@@ -64,9 +67,11 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerReviewGoToReward, this.rzc);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerReviewGoToReward, this.rzc);
   }
   OnBeforeShow() {
     ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY;

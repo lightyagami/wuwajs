@@ -38,14 +38,14 @@ class TimerHandle {
 }
 (exports.TimerHandle = TimerHandle).o6 = 0;
 class Timer {
-  constructor(t, i, e, s, r, o, h, n) {
+  constructor(t, i, e, s, r, h, o, n) {
     this.Id = t;
     this.IO = i;
     this.Interval = e;
     this.kC = s;
     this.Dilation = r;
-    this.Handle = o;
-    this.MJ = h;
+    this.Handle = h;
+    this.MJ = o;
     this.Reason = n;
     this.Now = -0;
     this.Next = -0;
@@ -128,25 +128,25 @@ class TimerSystemInstance {
   Has(t) {
     return t !== undefined && this.Timers.has(t.Id);
   }
-  Loop(t, i, e, s = 1, r = undefined, o = undefined, h = true) {
-    if (TimerSystemInstance.j6(i, o, h) && TimerSystemInstance.yJ(e) && TimerSystemInstance.IJ(s)) {
-      return this.fK(t, i, e, s, r, o);
+  Loop(t, i, e, s = 1, r = undefined, h = undefined, o = true) {
+    if (TimerSystemInstance.j6(i, h, o) && TimerSystemInstance.yJ(e) && TimerSystemInstance.IJ(s)) {
+      return this.fK(t, i, e, s, r, h);
     }
   }
-  Forever(t, i, e = 1, s = undefined, r = undefined, o = true) {
-    if (TimerSystemInstance.j6(i, r, o) && TimerSystemInstance.IJ(e)) {
+  Forever(t, i, e = 1, s = undefined, r = undefined, h = true) {
+    if (TimerSystemInstance.j6(i, r, h) && TimerSystemInstance.IJ(e)) {
       return this.fK(t, i, FOREVER, e, s, r);
     }
   }
-  Delay(t, i, e = undefined, s = undefined, r = true, o = 1) {
-    if (TimerSystemInstance.j6(i, s, r)) {
-      return this.fK(t, i, 1, o, e, s);
+  Delay(t, i, e = undefined, s = undefined, r = true, h = 1) {
+    if (TimerSystemInstance.j6(i, s, r) && TimerSystemInstance.IJ(h)) {
+      return this.fK(t, i, 1, h, e, s);
     }
   }
-  EmitOnTime(t, i, e = undefined, s = undefined, r = true, o = 1) {
+  EmitOnTime(t, i, e = undefined, s = undefined, r = true, h = 1) {
     i -= this.Now;
-    if (TimerSystemInstance.j6(i, s, r)) {
-      return this.fK(t, i, 1, o, e, s);
+    if (TimerSystemInstance.j6(i, s, r) && TimerSystemInstance.IJ(h)) {
+      return this.fK(t, i, 1, h, e, s);
     }
   }
   Next(t, i = undefined, e = undefined) {
@@ -183,14 +183,14 @@ class TimerSystemInstance {
     if (e.Interval !== i) {
       s = this.Now;
       if (e.State === 1) {
-        const o = e.Next + i - e.Interval;
-        e.Next = o < 0 ? 0 : o;
+        const h = e.Next + i - e.Interval;
+        e.Next = h < 0 ? 0 : h;
         e.Interval = i;
       } else {
         var r = e.Copy();
         e.State = 2;
-        const o = r.Next + i - r.Interval;
-        r.Next = o < s ? s : o;
+        const h = r.Next + i - r.Interval;
+        r.Next = h < s ? s : h;
         r.Interval = i;
         this.Registry.unregister(e);
         this.Timers.set(t.Id, r);
@@ -206,12 +206,29 @@ class TimerSystemInstance {
     var r;
     return !!TimerSystemInstance.IJ(i) && !!(e = this.TJ(t)) && (e.State === 2 && Log_1.Log.CheckError() && Log_1.Log.Error("Timer", 1, "计时器已废弃", ["id", t.Id], ["dilation", i]), e.Dilation !== i && (s = this.Now, e.State === 1 ? (e.Next = e.Next * e.Dilation / i, e.Dilation = i) : (r = e.Copy(), e.State = 2, r.Next = s + (r.Next - s) * r.Dilation / i, r.Dilation = i, this.Registry.unregister(e), this.Timers.set(t.Id, r), this.Queue.Push(r), this.Registry.register(t, r, r))), true);
   }
+  GetNextRemainTime(t) {
+    t = this.TJ(t);
+    if (!t || t.State !== 0) {
+      return -1;
+    } else {
+      return t.Next - this.Now;
+    }
+  }
   async Wait(i, e = undefined) {
     return new Promise(t => {
       this.Delay(() => {
         t();
       }, i, e);
     });
+  }
+  Clear() {
+    this.Timers.forEach(t => {
+      if (t.Handle) {
+        this.Remove(t.Handle);
+      }
+    });
+    this.Timers.clear();
+    this.Queue.Clear();
   }
   TJ(t) {
     if (t) {
@@ -236,16 +253,16 @@ class TimerSystemInstance {
       }
     }
   }
-  fK(i, e, s, r, o, h) {
+  fK(i, e, s, r, h, o) {
     if (i) {
       let t = undefined;
-      if (!o && !(t = this.StatWeakMap.get(i))) {
+      if (!h && !(t = this.StatWeakMap.get(i))) {
         t = undefined;
         this.StatWeakMap.set(i, t);
       }
       var n = this.Now;
       var a = new TimerHandle(this);
-      var s = new Timer(a.Id, i, e, s, r, a, o ?? t, h);
+      var s = new Timer(a.Id, i, e, s, r, a, h ?? t, o);
       s.Now = n;
       s.Next = n + e / r;
       this.Timers.set(a.Id, s);

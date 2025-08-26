@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FloroRanchUiCardComponent = undefined;
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
+const Log_1 = require("../../../../../Core/Common/Log");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const FloroRanchComponentDefine_1 = require("../FloroRanchComponentDefine");
@@ -30,16 +31,16 @@ const FloroRanchUiItemBaseComponent_1 = require("./FloroRanchUiItemBaseComponent
 let FloroRanchUiCardComponent = class FloroRanchUiCardComponent extends FloroRanchUiItemBaseComponent_1.FloroRanchUiItemBaseComponent {
   constructor() {
     super(...arguments);
-    this.A0u = undefined;
+    this.wpu = undefined;
   }
   async PlayShowAnim() {
-    this.A0u ||= await this.CreateUiItem();
+    this.wpu ||= await this.CreateUiItem();
     if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
       await this.ShowUiItem();
     } else {
-      await this.A0u.PlayShowAnim();
+      await this.wpu.PlayShowAnim();
     }
-    return this.A0u;
+    return this.wpu;
   }
   async CreateUiItem() {
     var i = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
@@ -48,135 +49,148 @@ let FloroRanchUiCardComponent = class FloroRanchUiCardComponent extends FloroRan
     }
   }
   async PlayHideAnim() {
-    if (this.A0u) {
+    if (this.wpu) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
         await this.HideUiItem();
       } else {
-        await this.A0u.PlayHideAnim();
+        await this.wpu.PlayHideAnim();
       }
-      this.A0u.UnbindData();
-      this.A0u = undefined;
+      this.wpu.UnbindData();
+      this.wpu = undefined;
     }
   }
   async ShowUiItem() {
-    if (this.A0u) {
-      await this.A0u.ShowUiItem();
+    if (this.wpu) {
+      await this.wpu.ShowUiItem();
     }
   }
   async HideUiItem() {
-    if (this.A0u) {
-      await this.A0u.HideUiItem();
+    if (this.wpu) {
+      await this.wpu.HideUiItem();
     }
   }
   async PlayNormalAnim() {
-    if (!!this.A0u && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
+    if (!!this.wpu && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
       this.PlayVideo();
-      await this.A0u.PlayNormalAnim();
+      await this.wpu.PlayNormalAnim();
     }
   }
   Pause() {
-    if (this.A0u) {
-      this.A0u.Pause();
+    if (this.wpu) {
+      this.wpu.Pause();
     }
   }
   Resume() {
-    if (this.A0u) {
-      this.A0u.Resume();
+    if (this.wpu) {
+      this.wpu.Resume();
+    }
+  }
+  OnExit() {
+    if (this.wpu) {
+      this.wpu.UnbindData();
+      this.wpu = undefined;
     }
   }
   GetUiItem() {
-    return this.A0u;
+    if (!this.wpu) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("FloroRanchGamePlay", 78, "FloroRanchUiCardComponent GetUiItem 实体不存在", ["entityId", this.OwnerEntity.EntityId]);
+      }
+    }
+    return this.wpu;
   }
   async MoveToTarget(i) {
-    if (this.A0u) {
+    if (this.wpu) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
-        this.A0u.MoveToOriginalPositionImmediate();
+        this.wpu.MoveToOriginalPositionImmediate();
       } else {
-        this.A0u.SetLayerTop();
-        await this.A0u.MoveToItem(i.GetRootItem());
+        this.wpu.SetLayerTop();
+        await this.wpu.MoveToItem(i.GetRootItem());
       }
     }
   }
   async MoveToOriginalPosition() {
-    if (this.A0u) {
+    if (this.wpu) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
-        this.A0u.MoveToOriginalPositionImmediate();
+        this.wpu.MoveToOriginalPositionImmediate();
       } else {
-        this.A0u.ResetLayer();
-        await this.A0u.MoveToOriginalPosition();
+        this.wpu.ResetLayer();
+        await this.wpu.MoveToOriginalPosition();
       }
     }
   }
   RefreshEvolveItem() {
-    if (this.A0u) {
-      this.A0u.RefreshEvolveItem();
+    if (this.wpu) {
+      this.wpu.RefreshEvolveItem();
     }
   }
   RefreshRemainTimeItem() {
-    if (this.A0u) {
-      this.A0u.RefreshRemainTimeItem();
+    if (this.wpu) {
+      this.wpu.RefreshRemainTimeItem();
     }
   }
   async PlayEatAnim() {
-    if (!!this.A0u && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
+    if (!!this.wpu && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
       this.PlayVideo();
-      await this.A0u.PlayEatAnim();
+      await this.wpu.PlayEatAnim();
     }
   }
   async PlayBeEatAnim() {
-    if (this.A0u) {
+    if (this.wpu) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
         await this.HideUiItem();
       } else {
         this.PlayVideo();
-        await this.A0u.PlayBeEatAnim();
+        await this.wpu.PlayBeEatAnim();
       }
-      this.A0u.UnbindData();
-      this.A0u = undefined;
+      this.wpu.UnbindData();
+      this.wpu = undefined;
     }
   }
   async PlaySacrificeAnim() {
-    if (this.A0u) {
+    if (this.wpu) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
         await this.HideUiItem();
       } else {
         this.PlayVideo();
-        await this.A0u.PlaySacrificeAnim();
+        await this.wpu.PlaySacrificeAnim();
       }
-      this.A0u.UnbindData();
-      this.A0u = undefined;
+      if (!this.CheckIsExit()) {
+        this.wpu.UnbindData();
+        this.wpu = undefined;
+      }
     }
   }
   async PlayFusionHideAnim() {
-    if (this.A0u) {
+    if (this.wpu) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
         await this.HideUiItem();
       } else {
         this.PlayVideo();
-        await this.A0u.PlayFusionHideAnim();
+        await this.wpu.PlayFusionHideAnim();
       }
-      this.A0u.UnbindData();
-      this.A0u = undefined;
+      this.wpu.UnbindData();
+      this.wpu = undefined;
     }
   }
   async PlayFusionShowAnim() {
-    this.A0u ||= await this.CreateUiItem();
+    this.wpu ||= await this.CreateUiItem();
     if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
       await this.ShowUiItem();
     } else {
       this.PlayVideo();
-      await this.A0u.PlayFusionShowAnim();
+      await this.wpu.PlayFusionShowAnim();
     }
   }
   async PlayEvolveUpAnim() {
-    if (!!this.A0u && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
+    if (!!this.wpu && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
       this.PlayVideo();
-      await this.A0u.PlayEvolveUpAnim();
+      await this.wpu.PlayEvolveUpAnim();
     }
   }
   PlayVideo() {
     var i;
-    if (this.A0u && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
+    if (this.wpu && !ModelManager_1.ModelManager.FloroRanchGamePlayModel.IsSkip) {
       i = this.OwnerEntity.CheckGetComponent(1).CardData;
       AudioSystem_1.AudioSystem.PostEvent(i.Video);
     }

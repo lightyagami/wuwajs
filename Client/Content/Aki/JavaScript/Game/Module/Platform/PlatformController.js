@@ -51,7 +51,7 @@ class PlatformController extends ControllerBase_1.ControllerBase {
     var e = new Protocol_1.Aki.Protocol.fYn();
     var r = PlatformController.PackageClientBasicInfo();
     e.Z9n = r;
-    Net_1.Net.Call(27144, e, () => {});
+    Net_1.Net.Call(26008, e, () => {});
     if (r && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Platform", 27, "客户端上报一些设备基础信息", ["CPU", r.rHn], ["DeviceId", r.oHn], ["Model", r.nHn], ["NetStatus", r.sHn], ["Platform", r.f7n]);
     }

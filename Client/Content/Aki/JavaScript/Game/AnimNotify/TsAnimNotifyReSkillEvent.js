@@ -34,7 +34,7 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
       if (!(e = o.CharacterActorComponent?.Entity)?.Valid) {
         return false;
       }
-      var l = e.GetComponent(209)?.CreateAnimNotifyContent(s.GetName(), this.exportIndex);
+      var l = e.GetComponent(210)?.CreateAnimNotifyContent(s.GetName(), this.exportIndex);
       var h = this.GetInitTransform(o);
       if (this.使用召唤者子弹) {
         var t = e.GetComponent(0).GetSummonerId();

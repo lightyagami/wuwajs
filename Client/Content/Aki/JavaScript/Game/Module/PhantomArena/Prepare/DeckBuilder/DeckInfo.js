@@ -12,21 +12,21 @@ class DeckInfo {
     this.w81 = PhantomArenaDefine_1.DECK_ID_NONE;
     this.eP1 = "";
     this.BV1 = false;
-    this.PTu = 0;
+    this.zTu = 0;
     this.tP1 = [];
     this.iP1 = new Map();
     this.kV1 = new Map();
-    this.ibu = new Map();
+    this.Mbu = new Map();
     this.rP1 = [];
-    this.xTu = undefined;
-    this.tbu = new Map();
-    this.UTu = 0;
+    this.JTu = undefined;
+    this.Sbu = new Map();
+    this.ZTu = 0;
     this.sP1 = 0;
     this.aP1 = 0;
     this.OV1 = 0;
-    this.DTu = 0;
+    this.ebu = 0;
     this.GV1 = 0;
-    this.BTu = false;
+    this.tbu = false;
   }
   DeepCopy() {
     var t;
@@ -37,12 +37,12 @@ class DeckInfo {
     i.eP1 = this.eP1;
     i.BV1 = this.BV1;
     i.OV1 = this.OV1;
-    i.DTu = this.DTu;
+    i.ebu = this.ebu;
     i.GV1 = this.GV1;
-    i.BTu = this.BTu;
-    i.PTu = this.PTu;
-    for ([t, e] of this.tbu) {
-      i.tbu.set(t, e);
+    i.tbu = this.tbu;
+    i.zTu = this.zTu;
+    for ([t, e] of this.Sbu) {
+      i.Sbu.set(t, e);
     }
     for (const r of this.tP1) {
       var s = i.AddCard({
@@ -64,9 +64,9 @@ class DeckInfo {
     var s = t.AddCount;
     if (s === 0) {
       return 9;
-    } else if ((i = t.Cost === this.PTu) && this.BTu) {
+    } else if ((i = t.Cost === this.zTu) && this.tbu) {
       return 1;
-    } else if (i && s + this.UTu > this.DTu) {
+    } else if (i && s + this.ZTu > this.ebu) {
       return 2;
     } else if (!i && s + this.sP1 > this.OV1) {
       return 4;
@@ -100,7 +100,7 @@ class DeckInfo {
     if (t === 0) {
       var i;
       var s = e.AddCount;
-      var r = e.Cost === this.PTu;
+      var r = e.Cost === this.zTu;
       let t = this.iP1.get(e.CardId);
       if (t) {
         t.Count += s;
@@ -115,7 +115,7 @@ class DeckInfo {
         this.iP1.set(i, t);
         this.tP1.push(t);
         if (r) {
-          this.xTu = t;
+          this.JTu = t;
         } else {
           this.rP1.push(t);
         }
@@ -125,11 +125,11 @@ class DeckInfo {
         }
       }
       if (r) {
-        this.UTu += s;
+        this.ZTu += s;
       } else {
         this.sP1 += s;
       }
-      this.ibu.set(e.Cost, (this.ibu.get(e.Cost) ?? 0) + s);
+      this.Mbu.set(e.Cost, (this.Mbu.get(e.Cost) ?? 0) + s);
       this.aP1 += s;
     }
     return t;
@@ -140,10 +140,10 @@ class DeckInfo {
     var s = t.CardId;
     var t = t.RemoveCount;
     var r = this.iP1.get(s);
-    return !!r && !(r.Count < t) && !(e = r.Cost === this.PTu, r.Count -= t, r.Count === 0 && (this.iP1.delete(s), this.tP1.splice(this.tP1.indexOf(r), 1), e ? this.xTu = undefined : this.rP1.splice(this.rP1.indexOf(r), 1), s = r.Element, i = this.kV1.get(s)) && (i.splice(i.indexOf(r), 1), i.length === 0) && this.kV1.delete(s), e ? this.UTu -= t : this.sP1 -= t, this.ibu.set(r.Cost, this.ibu.get(r.Cost) - t), this.aP1 -= t, 0);
+    return !!r && !(r.Count < t) && !(e = r.Cost === this.zTu, r.Count -= t, r.Count === 0 && (this.iP1.delete(s), this.tP1.splice(this.tP1.indexOf(r), 1), e ? this.JTu = undefined : this.rP1.splice(this.rP1.indexOf(r), 1), s = r.Element, i = this.kV1.get(s)) && (i.splice(i.indexOf(r), 1), i.length === 0) && this.kV1.delete(s), e ? this.ZTu -= t : this.sP1 -= t, this.Mbu.set(r.Cost, this.Mbu.get(r.Cost) - t), this.aP1 -= t, 0);
   }
   RemoveAllCard() {
-    return this.aP1 !== 0 && (this.iP1.clear(), this.tP1.length = 0, this.kV1.clear(), this.rP1.length = 0, this.xTu = undefined, this.UTu = 0, this.sP1 = 0, this.aP1 = 0, this.ibu.clear(), true);
+    return this.aP1 !== 0 && (this.iP1.clear(), this.tP1.length = 0, this.kV1.clear(), this.rP1.length = 0, this.JTu = undefined, this.ZTu = 0, this.sP1 = 0, this.aP1 = 0, this.Mbu.clear(), true);
   }
   RemoveCardByElements(t) {
     var e;
@@ -172,7 +172,7 @@ class DeckInfo {
     }
   }
   GetCoreCardSlot() {
-    return this.xTu;
+    return this.JTu;
   }
   GetNormalCardSlotList() {
     return this.rP1;
@@ -184,7 +184,7 @@ class DeckInfo {
     return this.eP1;
   }
   GetTotalCardCountLimit() {
-    return this.OV1 + this.DTu;
+    return this.OV1 + this.ebu;
   }
   SetNormalCardCountLimit(t) {
     if (!(t < this.sP1)) {
@@ -195,12 +195,12 @@ class DeckInfo {
     return this.OV1;
   }
   SetCoreCardCountLimit(t) {
-    if (!(t < this.UTu)) {
-      this.DTu = t;
+    if (!(t < this.ZTu)) {
+      this.ebu = t;
     }
   }
   GetCoreCardCountLimit() {
-    return this.DTu;
+    return this.ebu;
   }
   SetElementCountLimit(t) {
     if (!(t < this.GV1)) {
@@ -211,21 +211,21 @@ class DeckInfo {
     return this.GV1;
   }
   SetIsCoreCardSlotLocked(t) {
-    this.BTu = t;
+    this.tbu = t;
   }
   IsCoreCardSlotLocked() {
-    return this.BTu;
+    return this.tbu;
   }
   SetCostToMaxCardLimitMap(t) {
     for (var [e, i] of t) {
-      this.tbu.set(e, i);
+      this.Sbu.set(e, i);
     }
   }
   GetCostToMaxCardLimitMap() {
-    return this.tbu;
+    return this.Sbu;
   }
   GetCardMaxLimitByCost(t) {
-    return this.tbu.get(t) ?? 0;
+    return this.Sbu.get(t) ?? 0;
   }
   GetCardSlotList() {
     return this.tP1;
@@ -234,7 +234,7 @@ class DeckInfo {
     return this.aP1;
   }
   GetCoreCardCount() {
-    return this.UTu;
+    return this.ZTu;
   }
   GetNormalCardCount() {
     return this.sP1;
@@ -259,8 +259,8 @@ class DeckInfo {
   }
   GetCoreElementList() {
     var t = [];
-    if (this.xTu && this.xTu.Element !== 0) {
-      t.push(this.xTu.Element);
+    if (this.JTu && this.JTu.Element !== 0) {
+      t.push(this.JTu.Element);
     }
     return t;
   }
@@ -268,7 +268,7 @@ class DeckInfo {
     return this.IsDeckFull() && this.BV1;
   }
   IsDeckFull() {
-    return this.BTu && this.sP1 === this.OV1 || !this.BTu && this.aP1 === this.GetTotalCardCountLimit();
+    return this.tbu && this.sP1 === this.OV1 || !this.tbu && this.aP1 === this.GetTotalCardCountLimit();
   }
   GetDeckName() {
     return this.eP1;
@@ -283,10 +283,10 @@ class DeckInfo {
     this.BV1 = t;
   }
   GetCoreCost() {
-    return this.PTu;
+    return this.zTu;
   }
   SetCoreCost(t) {
-    this.PTu = t;
+    this.zTu = t;
   }
   SetDeckServerId(t) {
     this.L81 = t;
@@ -310,8 +310,8 @@ class DeckInfo {
     return e;
   }
   GetDeckFaceCardId() {
-    if (this.xTu) {
-      return this.xTu.CardId;
+    if (this.JTu) {
+      return this.JTu.CardId;
     } else if (this.rP1.length > 0) {
       this.rP1.sort(PhantomArenaDefine_1.cardSlotDefaultSortFunc);
       return this.rP1[0].CardId;
@@ -346,7 +346,7 @@ class DeckInfo {
     return this.kV1.size >= this.GV1;
   }
   GetCardCountByCost(t) {
-    return this.ibu.get(t) ?? 0;
+    return this.Mbu.get(t) ?? 0;
   }
 }
 exports.DeckInfo = DeckInfo;

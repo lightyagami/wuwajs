@@ -29,9 +29,9 @@ class CharacterDebugUtil {
   static async LoadCharacterFightDtNewPreload(e) {
     var r = e.GetComponent(0);
     var o = e.GetComponent(40);
-    var a = e.GetComponent(207);
+    var a = e.GetComponent(208);
     var t = e.GetComponent(1);
-    var l = e.GetComponent(208);
+    var l = e.GetComponent(209);
     var i = ModelManager_1.ModelManager.PreloadModelNew.GetEntityAssetElement(r.GetCreatureDataId());
     if (i) {
       var e = UE.KismetSystemLibrary.Conv_ClassToSoftClassReference(t.Actor.GetClass());

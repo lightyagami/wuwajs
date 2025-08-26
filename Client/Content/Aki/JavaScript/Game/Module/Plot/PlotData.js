@@ -9,6 +9,7 @@ const SpeakerById_1 = require("../../../Core/Define/ConfigQuery/SpeakerById");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const UiModel_1 = require("../../Ui/UiModel");
 const CAPACITY = 20;
 class PlotInfo {
   constructor() {
@@ -89,7 +90,7 @@ class PlotInfo {
     i.FadeBegin = h;
     i.KeepMainRolePose = r;
     if ((t === "LevelD" || t === "Prompt") && !i.UiParam.ViewName) {
-      i.UiParam.ViewName = "BattleView";
+      i.UiParam.ViewName = UiModel_1.UiModel.MainViewName;
     }
     if (t === "Prompt") {
       this.pbn(s, i);

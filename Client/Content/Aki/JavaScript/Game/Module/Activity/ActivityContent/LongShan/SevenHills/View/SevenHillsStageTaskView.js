@@ -25,6 +25,8 @@ class SevenHillsStageTaskView extends UiViewBase_1.UiViewBase {
     this.PageDotLayout = undefined;
     this.CaptionItem = undefined;
     this.CurrentIndex = 0;
+    this.NextSelectedIndex = 0;
+    this.IsRefreshNow = true;
     this.WOe = () => {
       var t = this.ActivityBaseData;
       var i = t.StageIds[this.CurrentIndex];
@@ -34,58 +36,77 @@ class SevenHillsStageTaskView extends UiViewBase_1.UiViewBase {
       e.sort(this.ActivityBaseData.TaskSort);
       this.TaskLayout.RefreshByData(e, undefined, true);
     };
-    this.KY1 = t => {
+    this.yz1 = t => {
       if (t === this.ActivityBaseData?.Id) {
         this.WOe();
       }
     };
     this.KOe = () => {
+      this.NextSelectedIndex = this.CurrentIndex - 1;
       this.PlaySequence("SwitchLeft");
-      this.RefreshView(this.CurrentIndex - 1);
+      if (this.IsRefreshNow) {
+        this.RefreshView();
+      }
     };
     this.QOe = () => {
       var t = this.ActivityBaseData.StageIds[this.CurrentIndex + 1];
       if (this.ActivityBaseData.IsStageUnlock(t)) {
+        this.NextSelectedIndex = this.CurrentIndex + 1;
         this.PlaySequence("SwitchRight");
-        this.RefreshView(this.CurrentIndex + 1);
+        if (this.IsRefreshNow) {
+          this.RefreshView();
+        }
       } else {
         ActivityLongShanController_1.ActivityLongShanController.ShowUnlockTip(t);
       }
     };
     this.VOe = () => new LongShanTaskItem_1.LongShanTaskItem();
     this.HOe = () => new PageDot_1.PageDot();
+    this.$An = t => {
+      if (t === "Enter" && !this.IsRefreshNow) {
+        this.RefreshView();
+      }
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UISprite], [3, UE.UIText], [4, UE.UIText], [5, UE.UIVerticalLayout], [6, UE.UIItem], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIHorizontalLayout], [10, UE.UIItem]];
     this.BtnBindInfo = [[8, this.KOe], [7, this.QOe]];
   }
   async OnBeforeStartAsync() {
-    this.ActivityBaseData = ActivityLongShanController_1.ActivityLongShanController.GetActivityData();
-    this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
-    this.CaptionItem.SetCloseCallBack(() => {
-      this.CloseMe();
-    });
-    this.CaptionItem.SetTitle(this.ActivityBaseData.GetTitle());
+    var [t, i] = this.OpenParam;
+    if (t && i) {
+      this.ActivityBaseData = t;
+      this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
+      this.CaptionItem.SetCloseCallBack(() => {
+        this.CloseMe();
+      });
+      this.CaptionItem.SetTitle(this.ActivityBaseData.GetTitle());
+      this.RefreshTitleIcon();
+      t = this.ActivityBaseData.StageIds;
+      this.CurrentIndex = t.indexOf(i);
+      this.NextSelectedIndex = this.CurrentIndex;
+      this.PageDotLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.HOe);
+      await this.PageDotLayout.RefreshByDataAsync(t);
+      this.TaskLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(5), this.VOe);
+    }
+  }
+  RefreshTitleIcon() {
     var t = CommonParamById_1.configCommonParamById.GetStringConfig("SevenHillsIconPath");
     if (t) {
-      this.CaptionItem.SetTitleIcon(t);
+      this.CaptionItem?.SetTitleIcon(t);
     }
-    var t = this.ActivityBaseData.StageIds;
-    this.CurrentIndex = t.indexOf(this.OpenParam);
-    this.PageDotLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.HOe);
-    await this.PageDotLayout.RefreshByDataAsync(t);
-    this.TaskLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(5), this.VOe);
   }
   OnBeforeShow() {
     ControllerHolder_1.ControllerHolder.ActivityController.CheckIsActivityClose(undefined, this.ActivityBaseData.Id);
-    this.RefreshView(this.CurrentIndex);
+    this.RefreshView();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.KY1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.yz1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
-  RefreshView(t) {
+  RefreshView() {
     this.PageDotLayout.GetLayoutItemByIndex(this.CurrentIndex).UpdateShow(false);
-    this.CurrentIndex = t;
+    this.CurrentIndex = this.NextSelectedIndex;
     this.PageDotLayout.GetLayoutItemByIndex(this.CurrentIndex).UpdateShow(true);
     var t = this.ActivityBaseData.StageIds[this.CurrentIndex];
     var i = LongShanStageById_1.configLongShanStageById.GetConfig(t);
@@ -98,7 +119,8 @@ class SevenHillsStageTaskView extends UiViewBase_1.UiViewBase {
     this.ActivityBaseData.SaveNewStageFlag(t);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.KY1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.yz1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
 }
 exports.SevenHillsStageTaskView = SevenHillsStageTaskView;

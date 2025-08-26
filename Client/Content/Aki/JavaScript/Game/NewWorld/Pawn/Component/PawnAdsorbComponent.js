@@ -89,7 +89,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.Bsn = t.Range;
     this.bsn = t.StartVelocity;
     this.qsn = t.Acceleration;
-    this.rzr = this.Entity.GetComponent(121);
+    this.rzr = this.Entity.GetComponent(122);
     this.rzr.SetLogicRange(SENSORY_RANGE);
     this.Ore();
     return true;
@@ -102,7 +102,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
       }
       return false;
     }
-    this.xsn = this.Entity.GetComponent(118);
+    this.xsn = this.Entity.GetComponent(119);
     if (!this.xsn) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Interaction", 29, "[PawnAdsorbComponent.OnStart] 吸收组件初始化失败 Pawn Interact Component Undefined");
@@ -120,7 +120,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.Mne = t.GetPbDataId();
     t = t.GetBaseInfo();
     this.Qsn = t.OnlineInteractType ?? 0;
-    this.wsn = this.Entity.GetComponent(196);
+    this.wsn = this.Entity.GetComponent(197);
     if (!this.wsn) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Interaction", 29, "[PawnAdsorbComponent.OnStart] 吸收组件初始化失败 LevelTagComponent Undefined", ["EntityConfigID:", this.Mne]);
@@ -167,7 +167,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     i.g8n.Yaw = s.Yaw;
     i.J8n = Time_1.Time.NowSeconds;
     t.iVn.push(i);
-    CombatMessage_1.CombatNet.Send(26919, this.Entity, t);
+    CombatMessage_1.CombatNet.Send(23365, this.Entity, t);
   }
   OnEnd() {
     this.kre();
@@ -293,5 +293,5 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     this.jsn = 0;
   }
 };
-PawnAdsorbComponent = PawnAdsorbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(115)], PawnAdsorbComponent);
+PawnAdsorbComponent = PawnAdsorbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(116)], PawnAdsorbComponent);
 exports.PawnAdsorbComponent = PawnAdsorbComponent; //# sourceMappingURL=PawnAdsorbComponent.js.map

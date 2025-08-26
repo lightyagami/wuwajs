@@ -48,9 +48,8 @@ const BasePlatform_1 = require("../../../Common/BasePlatform");
 const CharacterNameDefines_1 = require("../CharacterNameDefines");
 const CharacterAttributeTypes_1 = require("./Abilities/CharacterAttributeTypes");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
-const BaseMoveCharacter_1 = require("./Move/BaseMoveCharacter");
 const CustomMovementDefine_1 = require("./Move/CustomMovementDefine");
-const MoveToLocationLogic_1 = require("./Move/MoveToLocationLogic");
+const MoveToLocationController_1 = require("./Move/MoveToLocationController");
 const PROFILE_KEY = "CharacterMoveComponent_GetHeightAboveGround";
 const ROTATION_AIM = 1500;
 const HEIGHT_DETECT = 500;
@@ -143,7 +142,6 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.CharacterMovement = undefined;
     this.AnimComp = undefined;
     this.TimeScaleComp = undefined;
-    this.MoveToLocationLogicInternal = undefined;
     this.MoveControllerInternal = undefined;
     this.HasMoveInput = false;
     this.ForceExitStateStop = false;
@@ -173,6 +171,8 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.CharHeightAboveGround = -1;
     this.CharHeightAboveGroundDetectHeight = -1;
     this.CreatureProperty = undefined;
+    this.DefaultMovementData = undefined;
+    this.MovementDataMap = new Map();
     this.MovementData = undefined;
     this.B2r = undefined;
     this.b2r = new RotationSetting();
@@ -237,6 +237,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
     this.CurrentGravityScale = undefined;
     this.PauseLocks = new Map();
     this.MaxMoveDegree = 0;
+    this.InputScale = 1;
   }
   SetForceSpeed(t) {
     if (t.ContainsNaN() && Log_1.Log.CheckError()) {
@@ -354,7 +355,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   }
   OnStart() {
     this.InitGravityDirect();
-    this.TimeScaleComp = this.Entity.GetComponent(122);
+    this.TimeScaleComp = this.Entity.GetComponent(123);
     return true;
   }
   SetUseDebugMovementSetting(t) {
@@ -543,6 +544,11 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
       this.CharacterMovement.GoThroughPriority = this.CreatureProperty.穿透优先级;
     }
   }
+  ResetMass() {
+    if (this.CreatureProperty) {
+      this.CharacterMovement.Mass = this.CreatureProperty.重量;
+    }
+  }
   CanResponseInput() {
     return this.CannotResponseInputCount === 0;
   }
@@ -585,7 +591,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
       if (this.Entity.GetTickInterval() > 1 && this.AnimComp?.Valid && this.ActorComp.Owner.WasRecentlyRenderedOnScreen()) {
         t = this.AnimComp.GetMeshTransform();
         this.ActorComp.SetActorRotationWithPriority(this.TmpRotator.ToUeRotator(), h, 0, s);
-        this.AnimComp.SetModelBuffer(t, e * MathUtils_1.MathUtils.SecondToMillisecond);
+        this.AnimComp.SetModelBuffer(t, e * MathUtils_1.MathUtils.SecondToMillisecond * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       } else {
         this.ActorComp.SetActorRotationWithPriority(this.TmpRotator.ToUeRotator(), h, 0, s);
       }
@@ -811,17 +817,13 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   }
   SetWalkOffLedgeRecord(t) {
     if (t) {
-      --this.WalkOffCount;
-      if (this.WalkOffCount === 0) {
+      if (--this.WalkOffCount == 0) {
         this.uha = true;
         this.cha = Time_1.Time.Frame;
       }
-    } else {
-      ++this.WalkOffCount;
-      if (this.WalkOffCount === 1) {
-        this.uha = false;
-        this.SetWalkOffLedge(false);
-      }
+    } else if (++this.WalkOffCount == 1) {
+      this.uha = false;
+      this.SetWalkOffLedge(false);
     }
   }
   SetWalkOffLedge(t) {
@@ -934,23 +936,16 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   MoveAlongPath(t) {
     if (this.MoveController.IsMoving()) {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Movement", 50, "[BaseMoveComponent.MoveAlongPath]正在移动中，停止当前移动", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Actor", this.ActorComp?.Owner?.GetName()], ["IsRunning", this.MoveToLocationLogic.IsRunning]);
+        Log_1.Log.Warn("Movement", 50, "[BaseMoveComponent.MoveAlongPath]正在移动中，停止当前移动", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Actor", this.ActorComp?.Owner?.GetName()], ["IsRunning", this.MoveController.IsMovingAlongPath()]);
       }
       this.MoveController.StopMove();
     }
     this.IsStopInternal = false;
-    this.MoveToLocationLogic.MoveAlongPath(t);
+    this.MoveController.MoveAlongPath(t);
   }
   get MoveController() {
-    this.MoveControllerInternal ||= new MoveToLocationLogic_1.MoveToLocationController(this.Entity, this.MoveToLocationLogic);
+    this.MoveControllerInternal ||= new MoveToLocationController_1.MoveToLocationController(this.Entity);
     return this.MoveControllerInternal;
-  }
-  get MoveToLocationLogic() {
-    if (!this.MoveToLocationLogicInternal) {
-      this.MoveToLocationLogicInternal = new BaseMoveCharacter_1.BaseMoveCharacter();
-      this.MoveToLocationLogicInternal.Init(this.Entity);
-    }
-    return this.MoveToLocationLogicInternal;
   }
   SetTurnRate(t) {
     this.TurnRate = t;
@@ -977,6 +972,12 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
       this.PauseLocks.delete(t);
     }
   }
+  SetInputMaxDegree(t) {
+    this.MaxMoveDegree = t;
+  }
+  SetInputScale(t) {
+    this.InputScale = t;
+  }
   HasInputMoveLimit() {
     return this.MaxMoveDegree > 0;
   }
@@ -985,9 +986,12 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
       this.TmpVector.DeepCopy(t);
       if (!(MathUtils_1.MathUtils.GetAngleByVectorDot(this.ActorComp.ActorForwardProxy, t) <= this.MaxMoveDegree) && !this.TmpVector.IsNearlyZero()) {
         this.ActorComp.ActorForwardProxy.CrossProduct(this.TmpVector, this.TmpVector2);
-        t = this.TmpVector2.Z > 0;
+        t = MathUtils_1.MathUtils.DotProduct(this.TmpVector2, this.ActorComp.ActorUpProxy) > 0;
         this.TmpVector2.DeepCopy(this.ActorComp.ActorForwardProxy);
         this.TmpVector2.RotateAngleAxis(t ? this.MaxMoveDegree : this.MaxMoveDegree * -1, this.ActorComp.ActorUpProxy, i);
+        if (this.InputScale !== 1) {
+          i.MultiplyEqual(this.InputScale);
+        }
       }
     }
   }

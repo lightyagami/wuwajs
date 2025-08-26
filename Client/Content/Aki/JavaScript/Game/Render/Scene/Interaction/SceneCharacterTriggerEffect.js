@@ -14,10 +14,12 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EffectContext_1 = require("../../../Effect/EffectContext/EffectContext");
 const EffectParameterNiagara_1 = require("../../../Effect/EffectParameter/EffectParameterNiagara");
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
+const CharacterUnifiedStateTypes_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
 const DELAY_OUT_BUSH_EFFECT = 1000;
 const BUSH_WALK_EFFCT = "/Game/Aki/Effect/DataAsset/Niagara/Common/Interaction/DA_Fx_HideOnBush_Loop.DA_Fx_HideOnBush_Loop";
 const BUSH_OUT_EFFCT = "/Game/Aki/Effect/DataAsset/Niagara/Common/Interaction/DA_Fx_HideOnBush_Out.DA_Fx_HideOnBush_Out";
 const BUSH_IN_EFFCT = "/Game/Aki/Effect/DataAsset/Niagara/Common/Interaction/DA_Fx_HideOnBush_RushIn.DA_Fx_HideOnBush_RushIn";
+const SOARING_TREE_EFFCT = "/Game/Aki/Effect/DataAsset/Niagara/Common/Interaction/DA_Fx_SoaringTreeOut.DA_Fx_SoaringTreeOut";
 class VelocityHistoryCache {
   constructor() {
     this.VelocityHistory = [];
@@ -44,12 +46,10 @@ class VelocityHistoryCache {
 class SceneCharacterTriggerEffect {
   constructor() {
     this.Owner = undefined;
+    this.OwnerStateComponent = undefined;
     this.CueComponent = undefined;
     this.Data = undefined;
-    this.CacheHideOnBush = false;
-    this.CacheBushLUTIndex = 0;
-    this.CacheHitBushLocation = Vector_1.Vector.Create();
-    this.CacheHitBushEffectParam = undefined;
+    this.CacheData = undefined;
     this.IsReady = false;
     this.BushEffectHandle = 0;
     this.CurrentVelocity = new UE.VectorDouble();
@@ -63,7 +63,7 @@ class SceneCharacterTriggerEffect {
     }
   }
   Enable() {
-    if (this.IsReady && (this.IsEnabled = true, Log_1.Log.CheckInfo())) {
+    if (this.IsReady && (this.OwnerStateComponent = this.Owner.CharacterActorComponent?.Entity?.GetComponent(176), this.IsEnabled = true, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("RenderEffect", 83, "TriggerEffect Enabled", ["Owner", this.Owner.GetName()]);
     }
   }
@@ -73,9 +73,27 @@ class SceneCharacterTriggerEffect {
     }
   }
   Tick() {
-    if (this.IsEnabled && this.Data && this.Owner) {
+    if (this.IsEnabled && this.Owner) {
       this.CurrentVelocity = this.Owner.D_GetVelocity();
       this.VelocityHistory.AddVelocity(Vector_1.Vector.Create(this.CurrentVelocity.X, this.CurrentVelocity.Y, this.CurrentVelocity.Z));
+      this.YQc();
+      this.zQc();
+      this.CacheData = this.Data;
+    }
+  }
+  iSu() {
+    if (!this.IsReady) {
+      return false;
+    }
+    let t = Vector_1.Vector.Create(0, 0, -1);
+    var e = this.Owner.CharacterActorComponent?.Entity?.GetComponent(179);
+    if (e) {
+      t = e.GravityDirect;
+    }
+    return this.VelocityHistory.GetMaxVelocityDirection(t) > 500;
+  }
+  YQc() {
+    if (this.IsReady && this.Data && this.CacheData) {
       if (this.Data.bHideOnBush) {
         if (EffectSystem_1.EffectSystem.IsValid(this.BushEffectHandle)) {
           EffectSystem_1.EffectSystem.HandleSeekToTime(this.BushEffectHandle, this.CurrentVelocity.Size(), false);
@@ -83,7 +101,7 @@ class SceneCharacterTriggerEffect {
           EffectSystem_1.EffectSystem.GetEffectModel(this.BushEffectHandle);
           var i = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.Data.TriggerHitPoint.Z);
           e.D_K2_SetActorLocation(i, false, undefined, true);
-          var i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(178);
+          var i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(179);
           if (!i) {
             return;
           }
@@ -105,42 +123,41 @@ class SceneCharacterTriggerEffect {
           EffectSystem_1.EffectSystem.SetEffectParameterNiagara(this.BushEffectHandle, e);
         }
       }
-      if (!this.Data.bHideOnBush && this.CacheHideOnBush) {
-        s = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.CacheHitBushLocation.Z);
+      if (!this.Data.bHideOnBush && this.CacheData.bHideOnBush) {
+        s = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.CacheData.TriggerHitPoint.Z);
         this.EmptyUeTransform.SetLocation(s);
         this.EmptyUeTransform.SetRotation(this.CurrentVelocity.ToOrientationQuat());
         h = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, this.EmptyUeTransform, BUSH_OUT_EFFCT, "[SceneCharacterFootprintEffect.SpawnRainFootEffect]");
-        i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(178);
-        if (!i) {
-          return;
+        i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(179);
+        if (i) {
+          e = Vector_1.Vector.Create(-i.GravityDirect.X, -i.GravityDirect.Y, -i.GravityDirect.Z);
+          s = this.CurrentVelocity.GetSafeNormal(MathCommon_1.MathCommon.SmallNumber);
+          i = MathCommon_1.MathCommon.Clamp(e.DotProduct(Vector_1.Vector.Create(s.X, s.Y, s.Z)), 0, 1);
+          i = MathCommon_1.MathCommon.Lerp(1, 0.3, i);
+          e = new EffectParameterNiagara_1.EffectParameterNiagara();
+          e.UserParameterFloat = [];
+          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("VelocityStrength"), Math.max(this.CurrentVelocity.Size() / 500, 0.3) * i]);
+          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("LUTIndex"), this.CacheData.HitBushLUTIndex]);
+          if (this.CacheData.BushIEParam) {
+            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheData.BushIEParam.SpawnCountScale]);
+            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheData.BushIEParam.SpawnSizeScale]);
+            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheData.BushIEParam.UVIndexBegin]);
+            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheData.BushIEParam.UVIndexEnd]);
+            e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheData.BushIEParam.SpawnBoxExtent]);
+            e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheData.BushIEParam.SpawnBoxOffset]);
+          }
+          EffectSystem_1.EffectSystem.SetEffectParameterNiagara(h, e);
+          if (EffectSystem_1.EffectSystem.IsValid(this.BushEffectHandle)) {
+            const t = this.BushEffectHandle;
+            TimerSystem_1.TimerSystem.Delay(() => {
+              if (EffectSystem_1.EffectSystem.IsValid(t)) {
+                EffectSystem_1.EffectSystem.StopEffectById(t, "[SceneCharacterWaterEffect.StopEffect]", true, true);
+              }
+            }, DELAY_OUT_BUSH_EFFECT);
+          }
+          this.BushEffectHandle = 0;
         }
-        e = Vector_1.Vector.Create(-i.GravityDirect.X, -i.GravityDirect.Y, -i.GravityDirect.Z);
-        s = this.CurrentVelocity.GetSafeNormal(MathCommon_1.MathCommon.SmallNumber);
-        i = MathCommon_1.MathCommon.Clamp(e.DotProduct(Vector_1.Vector.Create(s.X, s.Y, s.Z)), 0, 1);
-        i = MathCommon_1.MathCommon.Lerp(1, 0.3, i);
-        e = new EffectParameterNiagara_1.EffectParameterNiagara();
-        e.UserParameterFloat = [];
-        e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("VelocityStrength"), Math.max(this.CurrentVelocity.Size() / 500, 0.3) * i]);
-        e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("LUTIndex"), this.CacheBushLUTIndex]);
-        if (this.CacheHitBushEffectParam) {
-          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheHitBushEffectParam.SpawnCountScale]);
-          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheHitBushEffectParam.SpawnSizeScale]);
-          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheHitBushEffectParam.UVIndexBegin]);
-          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheHitBushEffectParam.UVIndexEnd]);
-          e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheHitBushEffectParam.SpawnBoxExtent]);
-          e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheHitBushEffectParam.SpawnBoxOffset]);
-        }
-        EffectSystem_1.EffectSystem.SetEffectParameterNiagara(h, e);
-        if (EffectSystem_1.EffectSystem.IsValid(this.BushEffectHandle)) {
-          const t = this.BushEffectHandle;
-          TimerSystem_1.TimerSystem.Delay(() => {
-            if (EffectSystem_1.EffectSystem.IsValid(t)) {
-              EffectSystem_1.EffectSystem.StopEffectById(t, "[SceneCharacterWaterEffect.StopEffect]", true, true);
-            }
-          }, DELAY_OUT_BUSH_EFFECT);
-        }
-        this.BushEffectHandle = 0;
-      } else if (this.Data.bHideOnBush && !this.CacheHideOnBush && this.oyu()) {
+      } else if (this.Data.bHideOnBush && !this.CacheData.bHideOnBush && this.iSu()) {
         s = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, MathUtils_1.MathUtils.DefaultTransformDouble, BUSH_IN_EFFCT, "[SceneCharacterFootprintEffect.SpawnRainFootEffect]");
         i = EffectSystem_1.EffectSystem.GetEffectActor(s);
         if (i && this.Data.HitBushActor.IsValid()) {
@@ -148,7 +165,7 @@ class SceneCharacterTriggerEffect {
           i.D_K2_SetActorRelativeTransform(MathUtils_1.MathUtils.DefaultTransformDouble, false, undefined, true);
         }
         let t = 1;
-        h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(174);
+        h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(175);
         if (h && h.HasBuff(640018019)) {
           t = 3;
         }
@@ -165,22 +182,47 @@ class SceneCharacterTriggerEffect {
         }
         EffectSystem_1.EffectSystem.SetEffectParameterNiagara(s, e);
       }
-      this.CacheHideOnBush = this.Data.bHideOnBush;
-      this.CacheBushLUTIndex = this.Data.HitBushLUTIndex;
-      this.CacheHitBushLocation = Vector_1.Vector.Create(this.Data.TriggerHitPoint.X, this.Data.TriggerHitPoint.Y, this.Data.TriggerHitPoint.Z);
-      this.CacheHitBushEffectParam = this.Data.BushIEParam;
     }
   }
-  oyu() {
-    if (!this.IsReady) {
-      return false;
+  zQc() {
+    if (this.IsReady && this.Data && this.CacheData && !this.Data.OverlapTriggerMesh && this.CacheData.OverlapTriggerMesh && this.CacheData.OverlapTriggerParam0.X === 2) {
+      var h = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.Owner.D_K2_GetActorLocation().Z);
+      this.EmptyUeTransform.SetLocation(h);
+      this.EmptyUeTransform.SetRotation(this.CurrentVelocity.ToOrientationQuat());
+      var h = this.Owner.CharacterActorComponent?.Entity?.GetComponent(179);
+      if (h) {
+        let t = 0;
+        let e = 0;
+        let i = 1;
+        let s = 1;
+        if (this.OwnerStateComponent?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
+          t = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, this.EmptyUeTransform, SOARING_TREE_EFFCT, "[SceneEffect.SpawnTriggerSoaringTreeEffect]");
+          e = Math.max(this.CurrentVelocity.Size() / 500, 1);
+          if (this.CacheData.BushIEParam) {
+            i = this.CacheData.BushIEParam.SoaringSpawnSizeScale;
+            s = this.CacheData.BushIEParam.SoaringSpawnCountScale;
+          }
+        } else {
+          t = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, this.EmptyUeTransform, BUSH_OUT_EFFCT, "[SceneEffect.SpawnTriggerBushEffect]");
+          e = Math.max(this.CurrentVelocity.Size() / 500, 0.3);
+        }
+        h = new EffectParameterNiagara_1.EffectParameterNiagara();
+        h.UserParameterFloat = [];
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("VelocityStrength"), e]);
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("LUTIndex"), this.CacheData.HitBushLUTIndex]);
+        if (this.CacheData.BushIEParam) {
+          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheData.BushIEParam.SpawnCountScale]);
+          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheData.BushIEParam.SpawnSizeScale]);
+          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SoaringScale"), i]);
+          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SoaringCountScale"), s]);
+          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheData.BushIEParam.UVIndexBegin]);
+          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheData.BushIEParam.UVIndexEnd]);
+          h.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheData.BushIEParam.SpawnBoxExtent]);
+          h.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheData.BushIEParam.SpawnBoxOffset]);
+        }
+        EffectSystem_1.EffectSystem.SetEffectParameterNiagara(t, h);
+      }
     }
-    let t = Vector_1.Vector.Create(0, 0, -1);
-    var e = this.Owner.CharacterActorComponent?.Entity?.GetComponent(178);
-    if (e) {
-      t = e.GravityDirect;
-    }
-    return this.VelocityHistory.GetMaxVelocityDirection(t) > 500;
   }
 }
 exports.SceneCharacterTriggerEffect = SceneCharacterTriggerEffect;

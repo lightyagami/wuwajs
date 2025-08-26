@@ -115,7 +115,7 @@ class Log {
   static O8(r) {
     let t = undefined;
     try {
-      this.nau();
+      this.xau();
       t = Log.DHa(r);
     } catch (r) {
       if (r instanceof Error) {
@@ -126,22 +126,22 @@ class Log {
         Log.Error("Log", 1, "Log 序列化异常", ["error", r]);
       }
     } finally {
-      this.nau();
+      this.xau();
     }
     return t;
   }
   static DHa(r) {
     if (typeof r == "object" && r !== null) {
-      if (Log.sau.has(r)) {
+      if (Log.Uau.has(r)) {
         return "[Circular]";
       }
-      Log.sau.add(r);
+      Log.Uau.add(r);
     }
     return JSON.stringify(r, Log.RHa).replace(/"/g, "");
   }
-  static nau() {
-    Log.sau.clear();
-    Log.aau.clear();
+  static xau() {
+    Log.Uau.clear();
+    Log.Dau.clear();
   }
   static G8(r) {
     if (r === undefined) {
@@ -257,8 +257,8 @@ Log.A8 = undefined;
 Log.P8 = undefined;
 Log.x8 = undefined;
 Log.w8 = undefined;
-Log.sau = new Set();
-Log.aau = new Set();
+Log.Uau = new Set();
+Log.Dau = new Set();
 Log.U8 = "";
 Log.RHa = (r, o) => {
   if (o === undefined) {
@@ -273,10 +273,10 @@ Log.RHa = (r, o) => {
       if (o === null) {
         return "null";
       }
-      if (Log.aau.has(o)) {
+      if (Log.Dau.has(o)) {
         return "[Circular]";
       }
-      Log.aau.add(o);
+      Log.Dau.add(o);
       var t = o;
       if (typeof t.ToString == "function") {
         return t.ToString();

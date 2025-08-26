@@ -721,7 +721,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.OnSetActorActive(false, t);
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(122)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
     this.ActorInternal.CustomTimeDilation = t * e;
   }
   dFr() {
@@ -732,7 +732,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
           this.G61();
         } else {
           this.Entity.RegisterToGameBudgetController(this.ActorInternal);
-          this.Entity.GetComponent(121)?.RegisterPerceptionEvent();
+          this.Entity.GetComponent(122)?.RegisterPerceptionEvent();
         }
         if (this.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Player || this.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Vision || this.IsSummonsAndCtrlByMe) {
           cpp_1.FKuroGameBudgetAllocatorInterface.SetActorCavernMode(this.Entity.GameBudgetConfig.GroupName, this.Entity.GameBudgetManagedToken, 3);
@@ -798,6 +798,11 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
       case 0:
       case 3:
         this.FixBornLocation("实体初始化.地面修正");
+        break;
+      default:
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Entity", 18, "[CharacterActorComponent.FixBornLocationByMovementMode] 实体地面修正:当前处于不可修正的移动状态", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["MovementMode", this.Actor.CharacterMovement.MovementMode]);
+        }
     }
   }
   FixBornLocation(t = "unknown.FixBornLocation", e = true, i = undefined, s = false, o = false, r = true) {
@@ -854,7 +859,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
           this.Actor.CharacterMovement.Velocity = e;
         }
         this.W2r.DeepCopy(t);
-        this.Entity.GetComponent(113)?.CacheVelocityInfo("SetActorVelocity");
+        this.Entity.GetComponent(114)?.CacheVelocityInfo("SetActorVelocity");
         if (GravityUtils_1.GravityUtils.GetZnInGravityForActor(this, t) < -10000 && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 6, "1117317 Bug追踪，设置速度", ["Name", this.Actor.GetName()], ["Velocity", t]);
         }
@@ -1101,7 +1106,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     CombatLog_1.CombatLog.Info("Control", this.Entity, "设置移动主控", [e, t]);
     var e = this.Y2r;
     super.SetMoveAutonomous(t);
-    var i = this.Entity.GetComponent(177);
+    var i = this.Entity.GetComponent(178);
     if (i) {
       i.MainAnimInstance?.SetStateMachineNetMode(!t);
       i.SpecialAnimInstance?.SetStateMachineNetMode(!t);
@@ -1157,7 +1162,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
   mFr() {
     var t = this.Entity.GetComponent(0)?.GetEntityType();
     if (Protocol_1.Aki.Protocol.kks.Proto_Monster === t) {
-      var e = this.Entity.GetComponent(205);
+      var e = this.Entity.GetComponent(206);
       if (this.LockOnConfig?.IsOpened) {
         CharacterLockOnComponent_1.CharacterLockOnComponent.EnhancedEntityIds.add(this.Entity.Id);
         for (const s of CharacterLockOnComponent_1.lockOnEnhancedTags) {
@@ -1193,7 +1198,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
   get WanderDirectionType() {
     var t;
     if (this.rDn === 3) {
-      t = this.Entity.GetComponent(178)?.MovementData;
+      t = this.Entity.GetComponent(179)?.MovementData;
       this.rDn = t?.WanderDirection ?? 0;
     }
     return this.rDn;
@@ -1324,8 +1329,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     var t;
     var e;
     if (GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen && this.Entity.GameBudgetConfig && this.Entity.GameBudgetManagedToken) {
-      t = this.Entity.GetComponent(175)?.IsInFighting;
-      e = !!this.Entity.GetComponent(178)?.BasePlatform;
+      t = this.Entity.GetComponent(176)?.IsInFighting;
+      e = !!this.Entity.GetComponent(179)?.BasePlatform;
       cpp_1.FKuroGameBudgetAllocatorInterface.MarkActorInFighting(this.Entity.GameBudgetConfig.GroupName, this.Entity.GameBudgetManagedToken, t || e);
     }
   }
@@ -1437,7 +1442,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     }
     this.CFr();
     this.kNn = true;
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBornFinished);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharBornFinished, this.Entity.Id);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharBornFinished, this.Entity.Id);
   }
 };
 CharacterActorComponent.az = Quat_1.Quat.Create();

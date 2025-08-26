@@ -151,7 +151,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   }
   OnStart() {
     this.MoveComp = this.Entity.GetComponent(45);
-    this.VehicleMoveComp = this.Entity.GetComponent(236);
+    this.VehicleMoveComp = this.Entity.GetComponent(237);
     this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id);
     return true;
   }
@@ -572,6 +572,9 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   }
   DisableActor(t) {
     var i = this.DisableActorHandle.Disable(t, this.constructor.name);
+    if (this.vJ) {
+      EventSystem_1.EventSystem.EmitWithTarget(this.vJ, EventDefine_1.EEventName.OnEnableActor, this.Entity.Id, false);
+    }
     if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureData?.GetEntityType()) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Entity", 3, "DisableActor", ["CreatureDataId", this.CreatureData?.GetCreatureDataId()], ["PbDataId", this.CreatureData?.GetPbDataId()], ["Handle", i], ["Reason", t]);
     }
@@ -594,13 +597,15 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureData?.GetEntityType()) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Entity", 3, "EnableActor", ["CreatureDataId", this.CreatureData?.GetCreatureDataId()], ["PbDataId", this.CreatureData?.GetPbDataId()], ["Handle", t]);
     }
-    var i;
     var t = this.DisableActorHandle.Enable(t, this.constructor.name);
+    var i = this.DisableActorHandle.Empty;
+    if (this.vJ) {
+      EventSystem_1.EventSystem.EmitWithTarget(this.vJ, EventDefine_1.EEventName.OnEnableActor, this.Entity.Id, i);
+    }
     if (t && this.ActorInternal?.IsValid() && this.ActorInternal.bHidden !== !this.DisableActorHandle.Empty) {
-      i = this.DisableActorHandle.Empty;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, i);
       EventSystem_1.EventSystem.EmitWithTarget(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity), EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, i);
-      if (this.Entity.GetComponent(114)) {
+      if (this.Entity.GetComponent(115)) {
         TimerSystem_1.TimerSystem.Next(() => {
           if (this.ActorInternal?.IsValid()) {
             this.ActorInternal.SetActorHiddenInGame(!this.DisableActorHandle.Empty);
@@ -629,7 +634,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     return this.DisableCollisionHandle.DumpDisableInfo();
   }
   DumpDisableTickInfo() {
-    var t = this.Entity.GetComponent(111);
+    var t = this.Entity.GetComponent(112);
     if (t) {
       return t.DumpDisableTickInfo();
     } else {
@@ -659,11 +664,11 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   SetTickEnable(t, i) {
     if (t) {
       if (this.Vrn) {
-        this.Entity.GetComponent(111)?.EnableTickWithLog(this.Vrn, i);
+        this.Entity.GetComponent(112)?.EnableTickWithLog(this.Vrn, i);
         this.Vrn = undefined;
       }
     } else {
-      this.Vrn ||= this.Entity.GetComponent(111)?.DisableTickWithLog(i);
+      this.Vrn ||= this.Entity.GetComponent(112)?.DisableTickWithLog(i);
     }
   }
   OnClear() {

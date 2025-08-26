@@ -35,12 +35,12 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25655, this.PSi);
-    Net_1.Net.Register(28356, this.xSi);
+    Net_1.Net.Register(22942, this.PSi);
+    Net_1.Net.Register(24945, this.xSi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25655);
-    Net_1.Net.UnRegister(28356);
+    Net_1.Net.UnRegister(22942);
+    Net_1.Net.UnRegister(24945);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.$5e);
@@ -50,7 +50,7 @@ class LordGymController extends ControllerBase_1.ControllerBase {
   }
   static async LordGymInfoRequest() {
     var e = Protocol_1.Aki.Protocol.Ass.create({});
-    var e = await Net_1.Net.CallAsync(20825, e);
+    var e = await Net_1.Net.CallAsync(29844, e);
     if (e.jxs?.length > 0) {
       ModelManager_1.ModelManager.LordGymModel.UnLockLordGym = e.jxs;
       ModelManager_1.ModelManager.LordGymModel.UnLockLordGym.sort((e, r) => e - r);
@@ -63,12 +63,13 @@ class LordGymController extends ControllerBase_1.ControllerBase {
         ModelManager_1.ModelManager.LordGymModel.LordGymRecord.set(r.y7n, r);
       }
     }
+    ModelManager_1.ModelManager.LordGymModel.PhraseEntranceInfo(e.drd);
   }
   static async LordGymBeginRequest(e) {
     var r = Protocol_1.Aki.Protocol.wss.create();
     r.y7n = e;
-    var r = await Net_1.Net.CallAsync(17933, r);
-    return !!r && (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 17933), false) : (ModelManager_1.ModelManager.LordGymModel.CurrentChallengeLordGymId = e, ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(e) || LordGymController.ReadLordGym(e), true));
+    var r = await Net_1.Net.CallAsync(27724, r);
+    return !!r && (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 27724), false) : (ModelManager_1.ModelManager.LordGymModel.CurrentChallengeLordGymId = e, ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(e) || LordGymController.ReadLordGym(e), true));
   }
   static async OpenLordGymEntrance(e, r = 0) {
     await this.LordGymInfoRequest();
@@ -88,11 +89,11 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.LordGymModel.ReadLordGym(e);
     var r = Protocol_1.Aki.Protocol.bss.create();
     r.y7n = e;
-    await Net_1.Net.CallAsync(15136, r);
+    await Net_1.Net.CallAsync(21738, r);
   }
   static IsInEntranceEntity() {
     var e = ModelManager_1.ModelManager.LordGymModel.EntranceEntityId;
-    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(119)?.IsInInteractRange ?? false);
+    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(120)?.IsInInteractRange ?? false);
   }
   static CreateLordModelByEntranceId(e) {
     UiSceneManager_1.UiSceneManager.InitLordSkeletalHandle();
@@ -125,55 +126,55 @@ class LordGymController extends ControllerBase_1.ControllerBase {
           let r = e.CacheLocation;
           let t = e.CacheRotator;
           let o = e.CacheScale;
-          let n = e.CacheTransform;
-          var a = i.Location;
+          let a = e.CacheTransform;
+          var n = i.Location;
           if (r) {
-            r.Set(a[0], a[1], a[2]);
+            r.Set(n[0], n[1], n[2]);
           } else {
-            r = new UE.Vector(a[0], a[1], a[2]);
+            r = new UE.Vector(n[0], n[1], n[2]);
             e.CacheLocation = r;
           }
-          var a = i.Rotator;
+          var n = i.Rotator;
           if (t) {
-            t.Pitch = a[0];
-            t.Yaw = a[1];
-            t.Roll = a[2];
+            t.Pitch = n[0];
+            t.Yaw = n[1];
+            t.Roll = n[2];
           } else {
-            t = new UE.Rotator(a[0], a[1], a[2]);
+            t = new UE.Rotator(n[0], n[1], n[2]);
             e.CacheRotator = t;
           }
-          var a = i.Zoom;
+          var n = i.Zoom;
           if (o) {
-            o.Set(a[0], a[1], a[2]);
+            o.Set(n[0], n[1], n[2]);
           } else {
-            o = new UE.Vector(a[0], a[1], a[2]);
+            o = new UE.Vector(n[0], n[1], n[2]);
             e.CacheScale = o;
           }
-          if (n) {
-            n.SetLocation(r);
-            n.SetRotation(t.Quaternion());
-            n.SetScale3D(o);
+          if (a) {
+            a.SetLocation(r);
+            a.SetRotation(t.Quaternion());
+            a.SetScale3D(o);
           } else {
-            n = new UE.Transform(t, r, o);
-            e.CacheTransform = n;
+            a = new UE.Transform(t, r, o);
+            e.CacheTransform = a;
           }
-          _.SetAllMeshComponentRelativeTransform(n, false, undefined, false);
-          var a = s?.GetLoadedResource(M);
-          if (!a) {
+          _.SetAllMeshComponentRelativeTransform(a, false, undefined, false);
+          var n = s?.GetLoadedResource(M);
+          if (!n) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("UiCommon", 43, "[LordGym] 道馆界面待机动画预加载失败");
             }
           }
-          d.PlayAnimation(a, true);
+          d.PlayAnimation(n, true);
           var e = l.CheckGetComponent(5);
           if (!StringUtils_1.StringUtils.IsBlank(c)) {
-            if (a = s.GetLoadedResource(c)) {
-              e?.AddRenderingMaterialByData(a);
+            if (n = s.GetLoadedResource(c)) {
+              e?.AddRenderingMaterialByData(n);
             }
           }
           if (!StringUtils_1.StringUtils.IsBlank(g)) {
-            if (a = s.GetLoadedResource(g)) {
-              e?.AddRenderingMaterialByData(a);
+            if (n = s.GetLoadedResource(g)) {
+              e?.AddRenderingMaterialByData(n);
             }
           }
         }, r);
@@ -196,10 +197,10 @@ LordGymController.xSi = r => {
   var o = r.Jxs.y7n;
   t.LordGymRecord.set(o, r.Jxs);
   if (r.Mws) {
-    var n = [];
+    var a = [];
     for (const d of r.zxs) {
-      var a = new RewardItemData_1.RewardItemData(d.L8n, d.m9n, d.Xxs !== 0 ? d.Xxs : undefined);
-      n.push(a);
+      var n = new RewardItemData_1.RewardItemData(d.L8n, d.m9n, d.Xxs !== 0 ? d.Xxs : undefined);
+      a.push(n);
     }
     let e = undefined;
     var t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(o);
@@ -243,7 +244,7 @@ LordGymController.xSi = r => {
     var o = {
       ConfigId: ItemRewardDefine_1.LORD_GYM_RESULT,
       IsSuccess: true,
-      RewardItemDataList: n,
+      RewardItemDataList: a,
       ExploreRecordInfo: t,
       ButtonInfoList: e,
       OnCloseCallback: () => {

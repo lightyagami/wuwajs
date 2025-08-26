@@ -105,8 +105,8 @@ EnvironmentalPerceptionController.xie = (e, t) => {
   if (_a.Lie) {
     _a.Lie.RemoveTagAddOrRemoveListener(1996802261, _a.v7e);
   }
-  _a.Gce = EntitySystem_1.EntitySystem.GetComponent(e.Id, 178);
-  _a.Lie = EntitySystem_1.EntitySystem.GetComponent(e.Id, 205);
+  _a.Gce = EntitySystem_1.EntitySystem.GetComponent(e.Id, 179);
+  _a.Lie = EntitySystem_1.EntitySystem.GetComponent(e.Id, 206);
   _a.Lie?.AddTagAddOrRemoveListener(1996802261, _a.v7e);
 };
 EnvironmentalPerceptionController.Zvr = false;

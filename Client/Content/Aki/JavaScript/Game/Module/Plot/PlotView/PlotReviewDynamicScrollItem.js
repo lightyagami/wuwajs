@@ -99,14 +99,14 @@ class PlotReviewTalkItem extends UiPanelBase_1.UiPanelBase {
     this.LZ_ = () => {
       this.OnToggleClick?.(this.Index);
     };
-    this.CY1 = () => !this.CanToggleChange || this.CanToggleChange(this.Index);
+    this.HY1 = () => !this.CanToggleChange || this.CanToggleChange(this.Index);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UISprite], [3, UE.UIExtendToggle]];
     this.BtnBindInfo = [[3, this.LZ_]];
   }
   OnStart() {
-    this.GetExtendToggle(3).CanExecuteChange.Bind(this.CY1);
+    this.GetExtendToggle(3).CanExecuteChange.Bind(this.HY1);
   }
   OnBeforeDestroy() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(1));

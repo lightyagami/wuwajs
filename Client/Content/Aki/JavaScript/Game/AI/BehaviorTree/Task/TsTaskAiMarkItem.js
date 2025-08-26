@@ -45,7 +45,7 @@ class TsTaskAiMarkItem extends TsTaskAbortImmediatelyBase_1.default {
         } else {
           this.FinishExecute(false);
         }
-      } else if (!(i = EntitySystem_1.EntitySystem.Get(i)) || !(r = i.GetComponent(144)) || r.IsSearchByOther(o.Entity.Id)) {
+      } else if (!(i = EntitySystem_1.EntitySystem.Get(i)) || !(r = i.GetComponent(145)) || r.IsSearchByOther(o.Entity.Id)) {
         this.FinishExecute(false);
       } else {
         if (this.TsSearchFilterIsMarkByAi) {

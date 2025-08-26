@@ -71,7 +71,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   }
   OnInit() {
     super.OnInit();
-    this.TimeScaleComponent = this.Entity.GetComponent(122);
+    this.TimeScaleComponent = this.Entity.GetComponent(123);
     return true;
   }
   OnInitData(e) {
@@ -149,19 +149,19 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.Entity?.TimeDilation * (this.TimeScaleComponent?.CurrentTimeScale ?? 1);
   }
   GetLogicTimeScale() {
-    return this.Entity.TimeDilation * (this.TimeScaleComponent?.GetTopForeverTimeScale(1) ?? 1);
+    return this.Entity.TimeDilation * (this.TimeScaleComponent?.GetTopForeverTimeScale(0) ?? 1);
   }
   GetCurrentBuffComponent() {
-    return this.GetEntity()?.GetComponent(174);
+    return this.GetEntity()?.GetComponent(175);
   }
   GetSkillComponent() {
     return this.GetEntity()?.GetComponent(39);
   }
   GetAttributeComponent() {
-    return this.GetEntity()?.GetComponent(173);
+    return this.GetEntity()?.GetComponent(174);
   }
   GetTagComponent() {
-    return this.GetEntity()?.GetComponent(205);
+    return this.GetEntity()?.GetComponent(206);
   }
   CheckAdd(e, t, o) {
     return !this.GetTagComponent() || super.CheckAdd(e, t, o);
@@ -176,10 +176,10 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.GetEntity()?.GetComponent(1);
   }
   GetBuffLevel(e) {
-    return this.GetEntity()?.GetComponent(174)?.GetBuffLevel(e);
+    return this.GetEntity()?.GetComponent(175)?.GetBuffLevel(e);
   }
   GetCueComponent() {
-    return this.Entity.GetComponent(225);
+    return this.Entity.GetComponent(226);
   }
   GetFormationBuffTotalStackById(e, t = false) {
     return super.GetBuffTotalStackById(e, t);
@@ -208,7 +208,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       for (const B of t) {
         var m = B.EntityHandle?.Entity;
         if (B.EntityHandle?.Valid && m) {
-          var l = m?.GetComponent(174);
+          var l = m?.GetComponent(175);
           if (l && C.RemoveBuffWithTags && C.RemoveBuffWithTags.length > 0) {
             const h = `因为buff${e.Id}(handle=${e.Handle})的RemoveBuffWithTags导致移除`;
             for (const _ of C.RemoveBuffWithTags) {
@@ -271,7 +271,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       r.n5n = e.Duration;
       r.Bjn = e.StackCount;
       r.WHn = e.IsActive();
-      CombatMessage_1.CombatNet.Send(23961, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), e.PreMessageId, e.MessageId, o);
+      CombatMessage_1.CombatNet.Send(17778, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), e.PreMessageId, e.MessageId, o);
     }
   }
   BroadcastActivateBuff(e, t) {
@@ -280,7 +280,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     if (!!e && !(e.Id < 0) && !!this.NeedBroadcastBuff(e)) {
       (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = e.Handle;
       o.qjn = t;
-      CombatMessage_1.CombatNet.Send(23323, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(22908, this.Entity, o);
     }
     PlayerBuffComponent_1.R__.Stop();
   }
@@ -293,7 +293,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       s.Rjn = i ?? 0;
       s.$L1 = f === 1;
       s.WL1 = n === 1;
-      CombatMessage_1.CombatNet.Send(16523, this.Entity, s, undefined);
+      CombatMessage_1.CombatNet.Send(29370, this.Entity, s, undefined);
     }
   }
   BroadcastRemoveBuff(e, t, o, r) {
@@ -304,7 +304,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       (n = Protocol_1.Aki.Protocol.re_.create()).uVn = e.Handle;
       n.F4n = MathUtils_1.MathUtils.NumberToLong(f);
       n.Ojn = t;
-      CombatMessage_1.CombatNet.Send(20851, this.Entity, n, o, undefined, r);
+      CombatMessage_1.CombatNet.Send(25163, this.Entity, n, o, undefined, r);
     }
   }
   AddBuffOrder(e, t) {
@@ -350,5 +350,5 @@ PlayerBuffComponent.G__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackIn
 PlayerBuffComponent.F__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackDecreased");
 PlayerBuffComponent.N__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffActiveChanged");
 PlayerBuffComponent.R__ = Stats_1.Stat.Create("PlayerBuffComponent.BroadcastActivateBuff");
-PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(199)], PlayerBuffComponent);
+PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(200)], PlayerBuffComponent);
 exports.PlayerBuffComponent = PlayerBuffComponent; //# sourceMappingURL=PlayerBuffComponent.js.map

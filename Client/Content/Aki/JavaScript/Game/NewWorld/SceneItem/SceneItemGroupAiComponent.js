@@ -92,7 +92,7 @@ let SceneItemGroupAiComponent = class SceneItemGroupAiComponent extends EntityCo
   ePl(e = false) {
     for (const o of this.Bih) {
       var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityIdByPbDataId(o);
-      if (t &&= ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t)?.Entity?.GetComponent(205)) {
+      if (t &&= ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t)?.Entity?.GetComponent(206)) {
         if (e) {
           t.RemoveTag(-1250067672);
         } else {
@@ -102,5 +102,5 @@ let SceneItemGroupAiComponent = class SceneItemGroupAiComponent extends EntityCo
     }
   }
 };
-SceneItemGroupAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(257)], SceneItemGroupAiComponent);
+SceneItemGroupAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(260)], SceneItemGroupAiComponent);
 exports.SceneItemGroupAiComponent = SceneItemGroupAiComponent; //# sourceMappingURL=SceneItemGroupAiComponent.js.map

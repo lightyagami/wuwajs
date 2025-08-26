@@ -72,7 +72,12 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.Ixi = () => {
       var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(179);
       t.FunctionMap.set(2, () => {
-        InputSettingsManager_1.InputSettingsManager.ResetDefaultInputKey();
+        for (const t of this.lxi) {
+          t.ResetKey(1);
+        }
+        for (const e of this.bAn) {
+          e.ResetKey(2);
+        }
         InputSettingsController_1.InputSettingsController.InputSettingUpdateRequest(false);
         this.Refresh(this.oxi);
       });
@@ -376,8 +381,8 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     var e = ConfigManager_1.ConfigManager.MenuBaseConfig;
     for (const r of t) {
       var i = r.TypeId;
-      var s = e.GetKeySettingConfigListByTypeIdAndInputControllerType(i, 1) ?? [];
-      var i = e.GetKeySettingConfigListByTypeIdAndInputControllerType(i, 0) ?? [];
+      var s = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 1, 0) ?? [];
+      var i = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 0, 0) ?? [];
       var s = s.concat(i);
       if (!(s.length <= 0)) {
         i = new KeySettingRowData_1.KeySettingRowData();
@@ -397,8 +402,8 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     var e = ConfigManager_1.ConfigManager.MenuBaseConfig;
     for (const r of t) {
       var i = r.TypeId;
-      var s = e.GetKeySettingConfigListByTypeIdAndInputControllerType(i, 2) ?? [];
-      var i = e.GetKeySettingConfigListByTypeIdAndInputControllerType(i, 0) ?? [];
+      var s = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 2, 0) ?? [];
+      var i = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 0, 0) ?? [];
       var s = s.concat(i);
       if (!(s.length <= 0)) {
         i = new KeySettingRowData_1.KeySettingRowData();

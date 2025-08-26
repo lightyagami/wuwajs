@@ -11,7 +11,7 @@ class PhantomArenaBattleViewGamepadLogic {
     this.SelectedCard = undefined;
     this.SlotIndex = PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.HandIndex = -1;
-    this.gGu = false;
+    this.nNu = false;
   }
   get IsInHandCardSelectState() {
     return this.SelectedCard !== undefined && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
@@ -22,28 +22,28 @@ class PhantomArenaBattleViewGamepadLogic {
   get IsInCardSelectState() {
     return this.IsInHandCardSelectState || this.IsInBattleCardSelectState;
   }
-  vSu() {
+  y7c() {
     this.SelectedCard = undefined;
     this.SlotIndex = PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.HandIndex = -1;
     this.Proxy.OwnArea.FunctionalArea.ResetLastProxyIndexByGamepad();
   }
-  async ySu(t, i) {
+  async S7c(t, i) {
     var e = this.SlotIndex === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.SelectedCard = t;
     this.SlotIndex = i;
     await this.Proxy.OwnArea.HandCardBeginDragByGamepad(this.SelectedCard, this.SlotIndex, e);
   }
-  async SSu(t, i) {
+  async M7c(t, i) {
     var e = this.SlotIndex === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.SelectedCard = t;
     this.SlotIndex = i;
     await this.Proxy.OwnArea.BattleCardBeginDragByGamepad(this.SelectedCard, this.SlotIndex, e);
   }
-  async MSu(t) {
+  async E7c(t) {
     await this.Proxy.OwnArea.MoveHandCardToRecycle(t, this.SlotIndex);
   }
-  async ESu(t) {
+  async I7c(t) {
     await this.Proxy.OwnArea.MoveFunctionalCardToRecycle(t, t.Data.Index, this.SlotIndex);
   }
   CancelSelectedCard() {
@@ -53,7 +53,7 @@ class PhantomArenaBattleViewGamepadLogic {
       } else {
         this.Proxy.OwnArea.ResetSelectCardToFunctional(this.SelectedCard, this.SlotIndex);
       }
-      this.vSu();
+      this.y7c();
     }
   }
   ResetGamepadOperation() {
@@ -65,29 +65,29 @@ class PhantomArenaBattleViewGamepadLogic {
   TriggerRecycleCard() {
     if (this.SelectedCard) {
       if (this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-        this.MSu(this.SelectedCard);
+        this.E7c(this.SelectedCard);
       } else {
-        this.ESu(this.SelectedCard);
+        this.I7c(this.SelectedCard);
       }
-      this.vSu();
+      this.y7c();
     }
   }
   async SelectHandCard(t) {
     var i;
-    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.HandArea.GetCardProxyByIndex(t)) && (this.HandIndex = t, await this.ySu(i.GetCard(), 0), true);
+    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.HandArea.GetCardProxyByIndex(t)) && (this.HandIndex = t, await this.S7c(i.GetCard(), 0), true);
   }
   async SelectBattleCard(t) {
     var i;
-    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !(await this.SSu(i.Card, t), 0);
+    return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !(await this.M7c(i.Card, t), 0);
   }
   async MoveHandCardToFunctional(t) {
-    if (!!this.SelectedCard && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.gGu) {
+    if (!!this.SelectedCard && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.nNu) {
       this.SlotIndex = t;
       await this.Proxy.OwnArea.HandCardBeginDragByGamepad(this.SelectedCard, this.SlotIndex, false);
     }
   }
   async MoveBattleCardToFunctional(t) {
-    if (!!this.SelectedCard && this.SelectedCard.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.gGu) {
+    if (!!this.SelectedCard && this.SelectedCard.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.nNu) {
       this.SlotIndex = t;
       await this.Proxy.OwnArea.BattleCardBeginDragByGamepad(this.SelectedCard, this.SlotIndex, false);
     }
@@ -95,10 +95,10 @@ class PhantomArenaBattleViewGamepadLogic {
   async PutDownCardToFunctional() {
     let t = false;
     if (this.SelectedCard) {
-      this.gGu = true;
+      this.nNu = true;
       t = this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX ? await this.Proxy.OwnArea.CardEndDragByHand(this.SelectedCard) : await this.Proxy.OwnArea.CardEndDragByFunctional(this.SelectedCard, this.SelectedCard.Data.Index);
-      this.vSu();
-      this.gGu = false;
+      this.y7c();
+      this.nNu = false;
     }
     return t;
   }

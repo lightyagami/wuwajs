@@ -59,7 +59,7 @@ let SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = class Scen
             this.tdn(e);
           }, this.Ymn);
           if (this.Jmn) {
-            t = this.Entity.GetComponent(122)?.CurrentTimeScale ?? 1;
+            t = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
             if ((t = this.TimeDilation * t) == 0) {
               TimerSystem_1.TimerSystem.Pause(this.Jmn);
             } else if (t > 0) {
@@ -109,8 +109,8 @@ let SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = class Scen
     }
   }
   OnActivate() {
-    this.Hte = this.Entity.GetComponent(202);
-    this.Lie = this.Entity.GetComponent(196);
+    this.Hte = this.Entity.GetComponent(203);
+    this.Lie = this.Entity.GetComponent(197);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.BeamCastStart, this.zmn);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.BeamCastStop, this.idn);
   }
@@ -125,7 +125,7 @@ let SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = class Scen
   }
   OnChangeTimeDilation(e) {
     if (this.Jmn && TimerSystem_1.TimerSystem.Has(this.Jmn)) {
-      if ((e = e * (this.Entity.GetComponent(122)?.CurrentTimeScale ?? 1)) == 0) {
+      if ((e = e * (this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1)) == 0) {
         if (!TimerSystem_1.TimerSystem.IsPause(this.Jmn)) {
           TimerSystem_1.TimerSystem.Pause(this.Jmn);
         }
@@ -172,7 +172,7 @@ let SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = class Scen
     var e = Protocol_1.Aki.Protocol.Cgs.create();
     e.F4n = this.EIe.GetCreatureDataId();
     e.c6n = t;
-    Net_1.Net.Call(18134, e, e => {
+    Net_1.Net.Call(25172, e, e => {
       if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("SceneItem", 39, "[BeamReceiveComp] 请求执行光线接收行为出错", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["EntityBeamReceiveType", t], ["Response", e]);
       }
@@ -191,5 +191,5 @@ let SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = class Scen
     }
   }
 };
-SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(212)], SceneItemBeamReceiveComponent);
+SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(213)], SceneItemBeamReceiveComponent);
 exports.SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent; //# sourceMappingURL=SceneItemBeamReceiveComponent.js.map

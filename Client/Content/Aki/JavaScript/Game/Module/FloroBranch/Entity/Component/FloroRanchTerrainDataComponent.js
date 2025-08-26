@@ -33,7 +33,7 @@ let FloroRanchTerrainDataComponent = class FloroRanchTerrainDataComponent extend
     this.TerrainData = undefined;
   }
   RefreshEntityData(e) {
-    if (e.h5n !== Protocol_1.Aki.Protocol.Nru.Proto_Terrain) {
+    if (e.h5n !== Protocol_1.Aki.Protocol.dou.Proto_Terrain) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchTerrainDataComponent刷新数据类型错误", ["EntityType", e.h5n]);
       }

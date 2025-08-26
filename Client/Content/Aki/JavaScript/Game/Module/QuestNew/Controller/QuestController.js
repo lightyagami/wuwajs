@@ -39,38 +39,38 @@ const assistantMap = {
 class QuestNewController extends ControllerWithAssistantBase_1.ControllerWithAssistantBase {
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(15230, QuestNewController.wro);
-    Net_1.Net.Register(22933, QuestNewController.Bro);
-    Net_1.Net.Register(15248, QuestNewController.bro);
-    Net_1.Net.Register(28538, QuestNewController.qro);
-    Net_1.Net.Register(27689, QuestNewController.Gro);
-    Net_1.Net.Register(19388, QuestNewController.Nro);
-    Net_1.Net.Register(26159, QuestNewController.kka);
-    Net_1.Net.Register(29376, QuestNewController.Nka);
-    Net_1.Net.Register(29715, QuestNewController.mgl);
-    Net_1.Net.Register(25833, QuestNewController.BF1);
-    Net_1.Net.Register(29868, QuestNewController.SH1);
-    Net_1.Net.Register(29652, QuestNewController.MH1);
-    Net_1.Net.Register(24219, QuestNewController.c0u);
-    Net_1.Net.Register(16455, QuestNewController.PUu);
-    Net_1.Net.Register(19588, QuestNewController.Kku);
+    Net_1.Net.Register(23091, QuestNewController.wro);
+    Net_1.Net.Register(23044, QuestNewController.Bro);
+    Net_1.Net.Register(22983, QuestNewController.bro);
+    Net_1.Net.Register(26679, QuestNewController.qro);
+    Net_1.Net.Register(25542, QuestNewController.Gro);
+    Net_1.Net.Register(15375, QuestNewController.Nro);
+    Net_1.Net.Register(29601, QuestNewController.kka);
+    Net_1.Net.Register(15519, QuestNewController.Nka);
+    Net_1.Net.Register(16309, QuestNewController.mgl);
+    Net_1.Net.Register(24815, QuestNewController.BF1);
+    Net_1.Net.Register(27484, QuestNewController.SH1);
+    Net_1.Net.Register(29890, QuestNewController.MH1);
+    Net_1.Net.Register(29510, QuestNewController._pu);
+    Net_1.Net.Register(29986, QuestNewController.aDu);
+    Net_1.Net.Register(17983, QuestNewController.PNu);
   }
   static OnUnRegisterNetEvent() {
     super.OnUnRegisterNetEvent();
-    Net_1.Net.UnRegister(15230);
-    Net_1.Net.UnRegister(22933);
-    Net_1.Net.UnRegister(15248);
-    Net_1.Net.UnRegister(28538);
-    Net_1.Net.UnRegister(27689);
-    Net_1.Net.UnRegister(26159);
-    Net_1.Net.UnRegister(29376);
-    Net_1.Net.UnRegister(29715);
-    Net_1.Net.UnRegister(25833);
-    Net_1.Net.UnRegister(29868);
-    Net_1.Net.UnRegister(29652);
-    Net_1.Net.UnRegister(24219);
-    Net_1.Net.UnRegister(16455);
-    Net_1.Net.UnRegister(19588);
+    Net_1.Net.UnRegister(23091);
+    Net_1.Net.UnRegister(23044);
+    Net_1.Net.UnRegister(22983);
+    Net_1.Net.UnRegister(26679);
+    Net_1.Net.UnRegister(25542);
+    Net_1.Net.UnRegister(29601);
+    Net_1.Net.UnRegister(15519);
+    Net_1.Net.UnRegister(16309);
+    Net_1.Net.UnRegister(24815);
+    Net_1.Net.UnRegister(27484);
+    Net_1.Net.UnRegister(29890);
+    Net_1.Net.UnRegister(29510);
+    Net_1.Net.UnRegister(29986);
+    Net_1.Net.UnRegister(17983);
   }
   static OnInit() {
     this.InitTickOptimize(30, -1);
@@ -156,9 +156,9 @@ class QuestNewController extends ControllerWithAssistantBase_1.ControllerWithAss
       B5n: t,
       gHn: o
     });
-    Net_1.Net.Call(21402, e, e => {
+    Net_1.Net.Call(24648, e, e => {
       if (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 21955);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 23798);
       }
       ModelManager_1.ModelManager.QuestNewModel.SetQuestRedDot(t, o === 1);
     });
@@ -168,17 +168,17 @@ class QuestNewController extends ControllerWithAssistantBase_1.ControllerWithAss
     return !!t && t.TreeId !== undefined && !!(t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t.TreeId)) && !!(t = t.GetProcessingFailedNode()) && !t.NeedRequiresSecondConfirmation && t?.IsOutFailRange(e);
   }
   static SetVideoResourceDownloadTriggerId(e) {
-    this.X0u = e;
+    this.Xpu = e;
   }
   static SetIsReportDownloadNotEnoughSpace(e) {
-    this.Y0u = e;
+    this.Ypu = e;
   }
   static ConfirmQuestResourceRequest(t, o) {
     var e = Protocol_1.Aki.Protocol.Zs1.create({
       a2s: [t]
     });
-    Net_1.Net.Call(28242, e, e => {
-      if (e && (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 23452), ModelManager_1.ModelManager.QuestNewModel.RemoveLackResourceQuest(t), o)) {
+    Net_1.Net.Call(22132, e, e => {
+      if (e && (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 22702), ModelManager_1.ModelManager.QuestNewModel.RemoveLackResourceQuest(t), o)) {
         o();
       }
     });
@@ -187,9 +187,9 @@ class QuestNewController extends ControllerWithAssistantBase_1.ControllerWithAss
     e = Protocol_1.Aki.Protocol.W91.create({
       B5n: e
     });
-    Net_1.Net.Call(20936, e, e => {
+    Net_1.Net.Call(21975, e, e => {
       var t;
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrForcedOccupationResource || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_InstanceCannotSetQuestFocus || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_InstanceCannotCancelQuestFocus || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_DisabledFocusMode ? (t = ConfigManager_1.ConfigManager.ErrorCodeConfig.GetTextByErrorId(e.Q4n), ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(t)) : ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23370)), o)) {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrForcedOccupationResource || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_InstanceCannotSetQuestFocus || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_InstanceCannotCancelQuestFocus || e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_DisabledFocusMode ? (t = ConfigManager_1.ConfigManager.ErrorCodeConfig.GetTextByErrorId(e.Q4n), ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(t)) : ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24502)), o)) {
         o(false);
       }
     });
@@ -198,8 +198,8 @@ class QuestNewController extends ControllerWithAssistantBase_1.ControllerWithAss
     e = Protocol_1.Aki.Protocol.K91.create({
       B5n: e
     });
-    Net_1.Net.Call(26206, e, e => {
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19514), t)) {
+    Net_1.Net.Call(21851, e, e => {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20131), t)) {
         t();
       }
     });
@@ -208,19 +208,19 @@ class QuestNewController extends ControllerWithAssistantBase_1.ControllerWithAss
     var e = Protocol_1.Aki.Protocol.z91.create({
       B5n: t
     });
-    Net_1.Net.Call(24522, e, e => {
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25871), ModelManager_1.ModelManager.QuestNewModel.RemovePendingAcceptQuestOnFocusMode(t), o)) {
+    Net_1.Net.Call(23707, e, e => {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15657), ModelManager_1.ModelManager.QuestNewModel.RemovePendingAcceptQuestOnFocusMode(t), o)) {
         o();
       }
     });
   }
   static RequestSetFocusModeDeterCondition(e) {
-    e = Protocol_1.Aki.Protocol.K7c.create({
-      Y7c: e
+    e = Protocol_1.Aki.Protocol.N5u.create({
+      j5u: e
     });
-    Net_1.Net.Call(21556, e, e => {
+    Net_1.Net.Call(17771, e, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25871);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15657);
       }
     });
   }
@@ -236,8 +236,8 @@ QuestNewController.Rih = false;
 QuestNewController.Uih = 0;
 QuestNewController.Dih = 300;
 QuestNewController.EH1 = undefined;
-QuestNewController.X0u = undefined;
-QuestNewController.Y0u = undefined;
+QuestNewController.Xpu = undefined;
+QuestNewController.Ypu = undefined;
 QuestNewController.Oro = () => {
   QuestNewController.cYt(1).RefreshCurTrackQuest();
   QuestNewController.cYt(3).CreateMarksOnWakeUp();
@@ -421,9 +421,9 @@ QuestNewController.mgl = e => {
     ModelManager_1.ModelManager.QuestNewModel.ServerNotifyEndQuestId = e.B5n;
   } else {
     (t = new Protocol_1.Aki.Protocol.gg_()).B5n = ModelManager_1.ModelManager.QuestNewModel.ServerNotifyEndQuestId;
-    Net_1.Net.Call(29070, t, e => {
+    Net_1.Net.Call(16614, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28771);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23376);
       }
     });
   }
@@ -433,9 +433,9 @@ QuestNewController.Yht = () => {
   if (ModelManager_1.ModelManager.QuestNewModel.IsServerNotifyEnd) {
     ModelManager_1.ModelManager.QuestNewModel.IsServerNotifyEnd = false;
     (e = new Protocol_1.Aki.Protocol.gg_()).B5n = ModelManager_1.ModelManager.QuestNewModel.ServerNotifyEndQuestId;
-    Net_1.Net.Call(29070, e, e => {
+    Net_1.Net.Call(16614, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28771);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23376);
       }
     });
   }
@@ -455,10 +455,10 @@ QuestNewController.HideCancelRangeFailWaringEffect = () => {
 QuestNewController.BF1 = e => {
   var t = ModelManager_1.ModelManager.QuestNewModel;
   if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("QuestResource", 38, "WaitQuestConfirmResource", ["LackResourceQuestIds", e.Yau]);
+    Log_1.Log.Info("QuestResource", 38, "WaitQuestConfirmResource", ["LackResourceQuestIds", e.bhu]);
   }
   if (!t.QuestVideoResourceDownloadFinished) {
-    t.IsLackQuestVideoResource = e.Yau.length !== 0;
+    t.IsLackQuestVideoResource = e.bhu.length !== 0;
   }
 };
 QuestNewController.kF1 = e => {
@@ -484,8 +484,8 @@ QuestNewController.kF1 = e => {
   }
   ModelManager_1.ModelManager.QuestResourceModel.UpdateToServerResState();
   if (e === 4 || e === 3) {
-    (t = new LogReportDefine_1.DownloadVideoResLogData()).i_task_id = _a.X0u || 0;
-    t.b_if_storage_alert = _a.Y0u || false;
+    (t = new LogReportDefine_1.DownloadVideoResLogData()).i_task_id = _a.Xpu || 0;
+    t.b_if_storage_alert = _a.Ypu || false;
     t.i_role_id = n === 0 ? 2 : 1;
     if (e === 3) {
       t.i_resource_type = 2;
@@ -522,22 +522,24 @@ QuestNewController.MH1 = e => {
   }
   _a.EH1 = TimerSystem_1.TimerSystem.Delay(() => {
     LevelLoadingController_1.LevelLoadingController.CloseLoading(19);
-    QuestNewController.RequestTrackQuest(e.eH1, true, 2);
+    if (e.eH1) {
+      QuestNewController.RequestTrackQuest(e.eH1, true, 2);
+    }
     if (TimerSystem_1.TimerSystem.Has(_a.EH1)) {
       TimerSystem_1.TimerSystem.Remove(_a.EH1);
     }
   }, 2000);
 };
-QuestNewController.c0u = e => {
+QuestNewController._pu = e => {
   var t = ModelManager_1.ModelManager.QuestNewModel;
   for (const o of t.GetAllLockQuests()) {
     t.LockQuestSuspendByOnline(o, false);
   }
-  for (const r of e.r0u) {
+  for (const r of e.tpu) {
     t.AddQuestLockInfo(r);
   }
 };
-QuestNewController.PUu = e => {
+QuestNewController.aDu = e => {
   var t;
   var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e.B5n);
   if (e) {
@@ -546,13 +548,13 @@ QuestNewController.PUu = e => {
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [e]);
   }
 };
-QuestNewController.Kku = e => {
+QuestNewController.PNu = e => {
   let t = undefined;
   switch (e.x9n) {
-    case Protocol_1.Aki.Protocol.$ku.Proto_ForceOccupyFail:
+    case Protocol_1.Aki.Protocol.gku.Proto_ForceOccupyFail:
       t = "Task_Focus_Tips04";
       break;
-    case Protocol_1.Aki.Protocol.$ku.Proto_EnterSealedArea:
+    case Protocol_1.Aki.Protocol.gku.Proto_EnterSealedArea:
       t = "Task_Focus_Tips03";
   }
   if (t) {

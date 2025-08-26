@@ -5,11 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FloroRanchDungeonSelectRightPanel = undefined;
 const UE = require("ue");
-const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
-const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
-const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -19,16 +17,15 @@ const FloroRanchRaceItem_1 = require("./Item/FloroRanchRaceItem");
 class FloroRanchDungeonSelectRightPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.gAu = undefined;
-    this.CAu = undefined;
-    this.TDe = undefined;
-    this.pAu = undefined;
-    this.FEu = undefined;
+    this.jAu = undefined;
+    this.HAu = undefined;
+    this.$Au = undefined;
+    this.ZEu = undefined;
     this.OnSelectDifficultyCallBack = undefined;
-    this.vAu = e => {
-      this.CAu = e;
+    this.WAu = e => {
+      this.HAu = e;
       this.OnSelectDifficultyCallBack?.(e.Id);
-      this.pAu.SelectGridProxyByKey(e.Id);
+      this.$Au.SelectGridProxyByKey(e.Id);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "Farm_DungeonTarget", e.GetMaxStage(), e.GetStageDay());
       this.GetText(3)?.SetText(e.FirstReward.toString());
       this.GetText(4)?.SetText(e.AgainReward.toString());
@@ -37,14 +34,14 @@ class FloroRanchDungeonSelectRightPanel extends UiPanelBase_1.UiPanelBase {
       if (e) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.Name);
       }
-      this.RefreshRaceList(this.CAu.SelectedRaceIds);
+      this.RefreshRaceList(this.HAu.SelectedRaceIds);
     };
-    this.yAu = () => {
+    this.QAu = () => {
       var e = new FloroRanchDifficultyItem_1.FloroRanchDifficultyItem();
-      e.SetToggleCallBack(this.vAu);
+      e.SetToggleCallBack(this.WAu);
       return e;
     };
-    this.SAu = () => {
+    this.KAu = () => {
       return new FloroRanchRaceItem_1.FloroRanchRaceItem();
     };
   }
@@ -52,8 +49,8 @@ class FloroRanchDungeonSelectRightPanel extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[1, UE.UIHorizontalLayout], [0, UE.UIText], [1, UE.UIHorizontalLayout], [9, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText], [10, UE.UIItem], [11, UE.UIItem]];
   }
   OnStart() {
-    this.pAu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.yAu);
-    this.FEu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.SAu);
+    this.$Au = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.QAu);
+    this.ZEu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.KAu);
     var e = {
       UiText: this.GetText(5),
       ViewType: 1,
@@ -64,61 +61,32 @@ class FloroRanchDungeonSelectRightPanel extends UiPanelBase_1.UiPanelBase {
     };
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(e);
   }
-  RefreshDungeonInfo(e, i) {
-    this.gAu = e;
+  RefreshDungeonInfo(e, t) {
+    this.jAu = e;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.GetDungeonName());
     this.GetItem(6)?.SetUIActive(!e.IsUnLock);
     this.GetItem(10)?.SetUIActive(e.IsUnLock);
     if (e.IsUnLock) {
-      const t = e.GetSubDungeonData();
-      this.pAu.DeselectCurrentGridProxy();
-      this.pAu.RefreshByData(t, () => {
-        var e = i ?? t[0];
-        this.vAu(e);
+      const i = e.GetSubDungeonData();
+      this.$Au.DeselectCurrentGridProxy();
+      this.$Au.RefreshByData(i, () => {
+        var e = t ?? i[0];
+        this.WAu(e);
       });
     } else {
-      this.eeu();
-      this.kot();
+      e = LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(this.jAu.ConditionId);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), e);
     }
   }
   RefreshRaceList(e) {
-    var i = [];
-    for (const t of e) {
-      i.push(new FloroRanchDefine_1.FloroRanchSelectRaceData(t, this.CAu));
+    var t = [];
+    for (const i of e) {
+      t.push(new FloroRanchDefine_1.FloroRanchSelectRaceData(i, this.HAu));
     }
-    this.FEu.RefreshByData(i);
-  }
-  eeu() {
-    var e;
-    if (!this.gAu.IsUnLock) {
-      if (this.gAu.IsReachUnlockTime()) {
-        this.xHe();
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), "Farm_DungeonLock");
-      } else {
-        e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Farm_DungeonUnlockTime");
-        e = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.gAu.UnlockTime, e) ?? "";
-        this.GetText(7)?.SetText(e);
-      }
-    } else {
-      this.xHe();
-      this.RefreshDungeonInfo(this.gAu);
-    }
+    this.ZEu.RefreshByData(t);
   }
   OnBeforeDestroy() {
-    this.xHe();
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(5));
-  }
-  kot() {
-    this.xHe();
-    this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.eeu();
-    }, 1000);
-  }
-  xHe() {
-    if (this.TDe !== undefined) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
-      this.TDe = undefined;
-    }
   }
 }
 exports.FloroRanchDungeonSelectRightPanel = FloroRanchDungeonSelectRightPanel;

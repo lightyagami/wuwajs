@@ -67,7 +67,7 @@ class GymItemBase extends UiPanelBase_1.UiPanelBase {
 class EntranceGymItem extends (exports.GymItemBase = GymItemBase) {
   constructor() {
     super(...arguments);
-    this.vlu = undefined;
+    this.i_u = undefined;
     this.zbe = () => {
       return new PhantomArenaGymStarItem_1.GymStarItem();
     };
@@ -78,7 +78,7 @@ class EntranceGymItem extends (exports.GymItemBase = GymItemBase) {
   }
   OnStart() {
     this.SequencePlayer = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    this.vlu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.zbe);
+    this.i_u = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.zbe);
     this.GetButton(0).SetSelectionState(0);
     this.GetButton(0).FocusListenerDelegate.Bind(this.OnFocus);
   }
@@ -108,8 +108,8 @@ class EntranceGymItem extends (exports.GymItemBase = GymItemBase) {
         this.SetSpriteByPath(i.IconRoman, this.GetSprite(10), false);
         LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(1), i?.Name);
         s = t.GetChallengeStateListByGymLevel(this.Level);
-        this.vlu.RefreshByData(s);
-        this.vlu.SetActive(!e);
+        this.i_u.RefreshByData(s);
+        this.i_u.SetActive(!e);
         this.RefreshRedDot();
       }
     }

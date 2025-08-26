@@ -16,6 +16,9 @@ class FilterSortConfig {
   get SaveGroupId() {
     return GameUtils_1.GameUtils.ConvertToArray(this.savegroupidLength(), this.savegroupid, this);
   }
+  get SaveMode() {
+    return this.savemode();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -57,6 +60,14 @@ class FilterSortConfig {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  savemode() {
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

@@ -20,9 +20,9 @@ class OpponentMonsterProxy extends OpponentFunctionAreaProxy_1.OpponentFunctionA
     this.Card = await this.AddCardById(t);
     var t = this.ParentArea.ParentArea.HandArea.GetLayoutItem();
     await this.PlaySetBattleTween(t);
-    await Promise.all([this.ksu(e), this.AreaItem.SetEvolveActive(true)]);
+    await Promise.all([this.lau(e), this.AreaItem.SetEvolveActive(true)]);
   }
-  async ksu(t) {
+  async lau(t) {
     if (t) {
       PhantomArenaAssetManager_1.PhantomArenaAssetManager.RemovePhantomArenaAssetByCardConfigId(t.Data.ConfigId);
       await t.DestroyAsync();

@@ -14,67 +14,78 @@ class FloroRanchDungeonSettleRewardItem extends GridProxyAbstract_1.GridProxyAbs
     super(...arguments);
     this.Pe = undefined;
     this.nqe = () => {
-      var e;
       var t;
-      if (this.Pe !== undefined && (e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()) !== undefined) {
-        if (this.Pe.h5n === Protocol_1.Aki.Protocol.AFu.Proto_FloroRanchCard) {
-          t = e.GetFloroRanchCardData(this.Pe.s5n);
+      var i;
+      if (this.Pe !== undefined && (t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()) !== undefined) {
+        if (this.Pe.h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchCard) {
+          i = t.GetFloroRanchCardData(this.Pe.s5n);
           UiManager_1.UiManager.OpenView("FloroRanchCommonTipsView", {
             TipType: 3,
-            CardData: t
+            CardData: i
           });
-        } else if (this.Pe.h5n === Protocol_1.Aki.Protocol.AFu.Proto_FloroRanchToy) {
-          t = e.GetFloroRanchToyData(this.Pe.s5n);
+        } else if (this.Pe.h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchToy) {
+          i = t.GetFloroRanchToyData(this.Pe.s5n);
           UiManager_1.UiManager.OpenView("FloroRanchCommonTipsView", {
             TipType: 2,
-            ToyData: t
+            ToyData: i
           });
         }
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [2, UE.UITexture], [1, UE.UISprite]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [2, UE.UITexture], [1, UE.UISprite], [3, UE.UIItem], [4, UE.UITexture], [5, UE.UIItem]];
     this.BtnBindInfo = [[0, this.nqe]];
   }
-  Refresh(e) {
-    if ((this.Pe = e).h5n === Protocol_1.Aki.Protocol.AFu.Proto_FloroRanchCard) {
-      this.cHt(e.s5n);
-    } else if (e.h5n === Protocol_1.Aki.Protocol.AFu.Proto_FloroRanchToy) {
-      this.ebu(e.s5n);
+  Refresh(t) {
+    if ((this.Pe = t).h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchCard) {
+      this.cHt(t.s5n);
+    } else if (t.h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchToy) {
+      this.ybu(t.s5n);
     } else {
-      this.Twc(e.s5n);
+      this.Twc(t.s5n);
     }
   }
-  cHt(e) {
-    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    if (t !== undefined) {
-      e = (t = t.GetFloroRanchCardData(e)).GetCardQualityData();
-      this.SetTextureShowUntilLoaded(t.GetIcon(), this.GetTexture(2));
-      t = e.GetRarityShopItemBg();
+  cHt(t) {
+    var i = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    if (i !== undefined) {
+      t = (i = i.GetFloroRanchCardData(t)).GetCardQualityData();
+      this.SetTextureShowUntilLoaded(i.GetIcon(), this.GetTexture(2));
+      t = t.GetRarityShopItemBg();
       this.SetSpriteByPath(t, this.GetSprite(1), true);
       this.GetSprite(1).SetUIActive(true);
       this.GetButton(0).SetSelfInteractive(true);
+      this.GetItem(5)?.SetUIActive(i.IsSpecialPhantom);
+      this.GetItem(3)?.SetUIActive(false);
     }
   }
-  ebu(e) {
-    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    if (t !== undefined) {
-      e = (t = t.GetFloroRanchToyData(e)).GetToyQualityData();
-      this.SetTextureShowUntilLoaded(t.GetIcon(), this.GetTexture(2));
-      t = e.GetRarityShopItemBg();
+  ybu(t) {
+    var i = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    if (i !== undefined) {
+      t = (i = i.GetFloroRanchToyData(t)).GetToyQualityData();
+      this.SetTextureShowUntilLoaded(i.GetIcon(), this.GetTexture(2));
+      t = t.GetRarityShopItemBg();
       this.SetSpriteByPath(t, this.GetSprite(1), true);
       this.GetSprite(1).SetUIActive(true);
       this.GetButton(0).SetSelfInteractive(true);
+      this.GetItem(5)?.SetUIActive(false);
+      if (t = i.GetToyRaceData()) {
+        this.GetItem(3)?.SetUIActive(true);
+        this.SetTextureShowUntilLoaded(t.SmallIcon, this.GetTexture(4));
+      } else {
+        this.GetItem(3)?.SetUIActive(false);
+      }
     }
   }
-  Twc(e) {
-    var t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
-    if (t !== undefined) {
-      t = t.GetFloroRanchSkillData(e);
-      this.SetTextureShowUntilLoaded(t.Icon, this.GetTexture(2));
+  Twc(t) {
+    var i = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
+    if (i !== undefined) {
+      i = i.GetFloroRanchSkillData(t);
+      this.SetTextureShowUntilLoaded(i.Icon, this.GetTexture(2));
       this.GetSprite(1).SetUIActive(false);
       this.GetButton(0).SetSelfInteractive(false);
+      this.GetItem(5)?.SetUIActive(false);
+      this.GetItem(3)?.SetUIActive(false);
     }
   }
 }

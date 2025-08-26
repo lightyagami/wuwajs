@@ -26,7 +26,7 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
     this.SequencePlayer = undefined;
     this.RoleSpineMap = new Map();
     this.CurShowRoleSpine = undefined;
-    this.OSu = (i, t) => {
+    this.k7c = (i, t) => {
       if (this.ViewModel.TextureCardRoleId !== i && (this.ViewModel.TextureCardRoleId = i, this.RefreshRoleTexture(), t)) {
         this.PlayRoleTextureChangeAnim();
       }
@@ -97,13 +97,13 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
           }
         }
         if (t === this.ViewModel.TextureCardRoleId) {
-          this.Hxu(t);
+          this.yUu(t);
         } else {
           i?.GetRootItem().SetUIActive(false);
         }
       }
     };
-    this.Hxu = i => {
+    this.yUu = i => {
       if (this.CurShowRoleSpine) {
         this.CurShowRoleSpine.GetRootItem().SetUIActive(false);
       }
@@ -113,8 +113,8 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
         this.CurShowRoleSpine = i;
       }
     };
-    this.qSu = i => {};
-    this.alu = i => {
+    this.O7c = i => {};
+    this.Dlu = i => {
       if (i === "RoleHide") {
         this.SetRoleTextureUiActive(false);
       }
@@ -158,7 +158,7 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
     this.ViewModel.Init(i.ChallengeId);
     this.ViewModel.SetGetSwitchItemFunc(this.GetSwitchItem);
     this.ViewModel.RefreshRoleTexture = this.RefreshRoleTexture;
-    this.ViewModel.ChangeRoleTexture = this.OSu;
+    this.ViewModel.ChangeRoleTexture = this.k7c;
     this.ViewModel.ShowRoleTexture = this.ShowRoleTexture;
     this.ViewModel.HideRoleTexture = this.HideRoleTexture;
     this.ViewModel.PlayRoleTextureShowAnim = this.PlayRoleTextureShowAnim;
@@ -188,8 +188,8 @@ class PhantomArenaMainView extends PhantomArenaRootViewBase_1.PhantomArenaRootVi
     this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem();
     this.CaptionItem.SetCloseCallBack(this.B6e);
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
-    this.SequencePlayer.BindSequenceStartEvent(this.qSu);
-    this.SequencePlayer.BindSequenceCloseEvent(this.alu);
+    this.SequencePlayer.BindSequenceStartEvent(this.O7c);
+    this.SequencePlayer.BindSequenceCloseEvent(this.Dlu);
     await Promise.all([this.R61.CreateByActorAsync(this.GetItem(3).GetOwner()), this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())]);
   }
   SetRoleTextureUiActive(i) {

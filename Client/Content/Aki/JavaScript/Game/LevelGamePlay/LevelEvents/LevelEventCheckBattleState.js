@@ -9,6 +9,7 @@ const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const LevelGamePlayUtils_1 = require("../LevelGamePlayUtils");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventCheckBattleState extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
@@ -51,6 +52,7 @@ class LevelEventCheckBattleState extends LevelGeneralBase_1.LevelEventBase {
     this.hDe = this.aDe.Type;
   }
   OnTick(e) {
+    e = this.BaseContext ? e * (LevelGamePlayUtils_1.LevelGamePlayUtils.GetCustomTimeDilationByContext(this.BaseContext) ?? 1) : e;
     if (this.uDe && (this.uDe -= e, this.uDe <= 0)) {
       this.FinishExecute(true);
     }
@@ -69,7 +71,7 @@ class LevelEventCheckBattleState extends LevelGeneralBase_1.LevelEventBase {
     var e;
     if (this.sDe?.Valid) {
       e = this.lDe.Type;
-      return this.sDe.Entity.GetComponent(205)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
+      return this.sDe.Entity.GetComponent(206)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 33, "目标实体不存在，action视为执行成功", ["EntityId", this.aDe.EntityId]);

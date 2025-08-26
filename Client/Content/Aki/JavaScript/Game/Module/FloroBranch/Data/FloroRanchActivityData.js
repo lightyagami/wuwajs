@@ -27,73 +27,72 @@ const FloroRanchToyData_1 = require("./FloroRanchToyData");
 class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   constructor() {
     super(...arguments);
-    this.Pou = new Map();
-    this.nAu = new Map();
-    this.xou = new Map();
+    this.rnu = new Map();
+    this.xAu = new Map();
+    this.onu = new Map();
     this.Wlo = undefined;
-    this.cEu = new Map();
-    this.dEu = undefined;
-    this.mFu = undefined;
-    this.Uou = new Map();
-    this.mEu = undefined;
-    this.Dou = new Map();
-    this.Bou = new Map();
-    this.sAu = undefined;
-    this.Kou = undefined;
-    this.kou = new Map();
-    this.AGu = [];
-    this.yUu = [];
-    this.fEu = new Map();
-    this.gEu = new Map();
-    this.CEu = new Map();
+    this.TEu = new Map();
+    this.bEu = undefined;
+    this.oOu = undefined;
+    this.nnu = new Map();
+    this.REu = undefined;
+    this.snu = new Map();
+    this.anu = new Map();
+    this.UAu = undefined;
+    this.ynu = undefined;
+    this.hnu = new Map();
+    this.nOu = [];
+    this.WUu = [];
+    this.wEu = new Map();
+    this.LEu = new Map();
+    this.AEu = new Map();
     this.lVl = (t, o) => t.Status !== o.Status ? t.Status - o.Status : t.Id - o.Id;
-    this.pEu = new Map();
-    this.aAu = undefined;
+    this.PEu = new Map();
+    this.DAu = undefined;
     this.GetMilestoneItemCount = () => {
-      return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.hAu.MilestoneItemId);
+      return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.BAu.MilestoneItemId);
     };
-    this.hAu = undefined;
-    this.z$c = 0;
-    this.J$c = 0;
-    this.Z$c = false;
-    this.Lku = 0;
-    this.N9c = 0;
+    this.BAu = undefined;
+    this.CKu = 0;
+    this.pKu = 0;
+    this.vKu = false;
+    this.sOu = 0;
+    this.yKu = 0;
   }
   OnInit(t) {
     var o;
-    var t = t.Oiu;
+    var t = t.lru;
     if (t === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanch", 58, "FloroRanchActivityData初始化 无效activityInfo");
       }
     } else if (t.jRs) {
-      this.lAu();
-      this.Oou();
-      this.qou();
-      this.vEu();
-      this.Gou();
-      this.Fou();
-      this.Nou();
-      this.yEu();
-      this.SEu();
+      this.kAu();
+      this.lnu();
+      this._nu();
+      this.xEu();
+      this.unu();
+      this.cnu();
+      this.dnu();
+      this.UEu();
+      this.DEu();
       o = t.jRs;
-      this.z$c = MathUtils_1.MathUtils.LongToNumber(o.F$c);
-      this.J$c = MathUtils_1.MathUtils.LongToNumber(o.N$c);
-      this.Z$c = o.G$c;
-      this.UpdateFloroRanchDungeonUnlockTime();
-      this.MEu(o.Giu);
-      this.EEu(o.Niu);
-      this._Au(o.Viu);
-      this.IEu(o.m9c);
-      this.TEu(o.Fiu);
-      this.bEu(o.ysu);
-      this.REu(o.Gwu);
-      this.wEu(o.rEu);
-      this.UpdateFloroRanchMilestoneDataList(o.$iu);
-      this.cAu(o.qwu);
-      this.UpdateFloroRanchSubDungeonRedDot(o.q$c);
-      this.Lku = t.qiu;
-      this.N9c = t.cru;
+      this.CKu = MathUtils_1.MathUtils.LongToNumber(o.h7u);
+      this.pKu = MathUtils_1.MathUtils.LongToNumber(o.l7u);
+      this.vKu = o.a7u;
+      this.BEu(o.uru);
+      this.kEu(o.dru);
+      this.OAu(o.asd);
+      this.OEu(o.n7u);
+      this.qEu(o.cru);
+      this.GEu(o.Wsu);
+      this.FEu(o.nAu);
+      this.NEu(o.mEu);
+      this.UpdateFloroRanchMilestoneDataList(o.Cru);
+      this.GAu(o.oAu);
+      this.UpdateFloroRanchSubDungeonRedDot(o.s7u);
+      this.sOu = t._ru;
+      this.yKu = t.Gru;
     }
   }
   GetExDataRedPointShowState() {
@@ -102,21 +101,21 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   CheckRedDot() {
     return !!this.IsUnLock() && (this.IsLimitTaskHasRedDot() || this.IsPermanentTaskHasRedDot() || this.IsDungeonHasRedDot());
   }
-  Oou() {
+  lnu() {
     for (const a of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchCardConfigList()) {
       var t;
       var o = new FloroRanchCardData_1.FloroRanchCardData(a);
-      this.Pou.set(a.Id, o);
+      this.rnu.set(a.Id, o);
       if (o.IsShowInHandBook) {
         t = a.Race;
-        if (!this.nAu.has(t)) {
-          this.nAu.set(t, []);
+        if (!this.xAu.has(t)) {
+          this.xAu.set(t, []);
         }
-        this.nAu.get(t).push(o);
+        this.xAu.get(t).push(o);
       }
     }
   }
-  MEu(t) {
+  BEu(t) {
     for (const o of t) {
       this.UpdateFloroRanchCardData(o);
     }
@@ -125,11 +124,11 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     var o = this.GetFloroRanchCardData(t.Z4n);
     if (o !== undefined) {
       o.UpdateUnLockState(t.MT_);
-      o.ConditionId = t.iEu;
+      o.ConditionId = t.dEu;
     }
   }
   GetFloroRanchCardData(t) {
-    var o = this.Pou.get(t);
+    var o = this.rnu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -138,16 +137,16 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchCardDataListByRace(t) {
-    var o = this.nAu.get(t);
+    var o = this.xAu.get(t);
     if (o) {
-      return o.sort((t, o) => t.IsUnLock !== o.IsUnLock ? t.IsUnLock ? -1 : 1 : t.GetCardRarity() !== o.GetCardRarity() ? t.GetCardRarity() - o.GetCardRarity() : t.Id - o.Id);
+      return o.sort((t, o) => t.IsUnLock !== o.IsUnLock ? t.IsUnLock ? -1 : 1 : t.GetRarity() !== o.GetRarity() ? t.GetRarity() - o.GetRarity() : t.Id - o.Id);
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 71, "FloroRanchRaceId 无效", ["Id", t]);
     }
   }
   IsCardHasRedDot() {
-    for (const t of this.Pou.values()) {
+    for (const t of this.rnu.values()) {
       if (!t.IsDefaultUnlock && t.IsUnLock) {
         if (!(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchCardRedDot) ?? new Set()).has(t.Id)) {
           return true;
@@ -156,13 +155,13 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
-  qou() {
+  _nu() {
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchSkillConfigList()) {
       var t = new FloroRanchSkillData_1.FloroRanchSkillData(o);
-      this.xou.set(o.Id, t);
+      this.onu.set(o.Id, t);
     }
   }
-  bEu(t) {
+  GEu(t) {
     for (const o of t) {
       this.UpdateFloroRanchSkillData(o);
     }
@@ -171,11 +170,11 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     var o = this.GetFloroRanchSkillData(t.Z4n);
     if (o !== undefined) {
       o.UpdateUnLockState(t.MT_);
-      o.ConditionId = t.iEu;
+      o.ConditionId = t.dEu;
     }
   }
   GetFloroRanchSkillData(t) {
-    var o = this.xou.get(t);
+    var o = this.onu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -185,13 +184,13 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   }
   GetFloroRanchSkillDataList() {
     if (!this.Wlo) {
-      this.Wlo = [...this.xou.values()];
+      this.Wlo = [...this.onu.values()];
       this.Wlo.sort((t, o) => t.Id - o.Id);
     }
     return this.Wlo;
   }
   IsSkillHasRedDot() {
-    for (const t of this.xou.values()) {
+    for (const t of this.onu.values()) {
       if (t.IsUnLock) {
         if (!(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchSkillRedDot) ?? new Set()).has(t.Id)) {
           return true;
@@ -201,7 +200,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return false;
   }
   SaveSkillRedDot() {
-    for (const o of this.xou.values()) {
+    for (const o of this.onu.values()) {
       var t;
       if (!!o.IsUnLock && !(t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchSkillRedDot) ?? new Set()).has(o.Id)) {
         t.add(o.Id);
@@ -210,13 +209,13 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FloroRanchDataRedDot);
   }
-  vEu() {
+  xEu() {
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchRaceConfigList()) {
       var t = new FloroRanchRaceData_1.FloroRanchRaceData(o);
-      this.cEu.set(o.Id, t);
+      this.TEu.set(o.Id, t);
     }
   }
-  wEu(t) {
+  NEu(t) {
     for (const o of t) {
       this.UpdateFloroRanchRaceData(o);
     }
@@ -225,11 +224,11 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     var o = this.GetFloroRanchRaceData(t.Z4n);
     if (o !== undefined) {
       o.UpdateUnLockState(t.MT_);
-      o.ConditionId = t.iEu;
+      o.ConditionId = t.dEu;
     }
   }
   GetFloroRanchRaceData(t) {
-    var o = this.cEu.get(t);
+    var o = this.TEu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -238,27 +237,27 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchRaceDataList(t = false) {
-    if (!this.dEu || !this.mFu) {
-      this.dEu = [];
-      this.mFu = [];
-      for (const o of this.cEu.values()) {
+    if (!this.bEu || !this.oOu) {
+      this.bEu = [];
+      this.oOu = [];
+      for (const o of this.TEu.values()) {
         if (!o.IsCommon) {
-          this.dEu.push(o);
+          this.bEu.push(o);
         }
-        this.mFu.push(o);
+        this.oOu.push(o);
       }
-      this.dEu.sort((t, o) => t.Id - o.Id);
-      this.mFu.sort((t, o) => t.Id - o.Id);
+      this.bEu.sort((t, o) => t.Id - o.Id);
+      this.oOu.sort((t, o) => t.Id - o.Id);
     }
     if (t) {
-      return this.mFu;
+      return this.oOu;
     } else {
-      return this.dEu;
+      return this.bEu;
     }
   }
   IsOtherRaceHasRedDot(t) {
-    for (const o of this.cEu.values()) {
-      if (!t.includes(o.Id)) {
+    for (const o of this.TEu.values()) {
+      if (!t.includes(o.Id) && !o.IsCommon) {
         if (o.IsUnLock) {
           if (!(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchRaceRedDot) ?? new Set()).has(o.Id)) {
             return true;
@@ -268,13 +267,13 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
-  Gou() {
+  unu() {
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchToyConfigList()) {
       var t = new FloroRanchToyData_1.FloroRanchToyData(o);
-      this.Uou.set(o.Id, t);
+      this.nnu.set(o.Id, t);
     }
   }
-  EEu(t) {
+  kEu(t) {
     for (const o of t) {
       this.UpdateFloroRanchToyData(o);
     }
@@ -283,11 +282,11 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     var o = this.GetFloroRanchToyData(t.Z4n);
     if (o !== undefined) {
       o.UpdateUnLockState(t.MT_);
-      o.ConditionId = t.iEu;
+      o.ConditionId = t.dEu;
     }
   }
   GetFloroRanchToyData(t) {
-    var o = this.Uou.get(t);
+    var o = this.nnu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -296,11 +295,11 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchToyDataList() {
-    this.mEu ||= [...this.Uou.values()];
-    return this.mEu.sort((t, o) => t.IsUnLock !== o.IsUnLock ? t.IsUnLock ? -1 : 1 : t.GetCardRarity() !== o.GetCardRarity() ? t.GetCardRarity() - o.GetCardRarity() : t.IsAdaptAllRace !== o.IsAdaptAllRace ? t.IsAdaptAllRace ? -1 : 1 : t.Id - o.Id);
+    this.REu ||= [...this.nnu.values()];
+    return this.REu.sort((t, o) => t.IsUnLock !== o.IsUnLock ? t.IsUnLock ? -1 : 1 : t.GetRarity() !== o.GetRarity() ? t.GetRarity() - o.GetRarity() : t.IsAdaptAllRace !== o.IsAdaptAllRace ? t.IsAdaptAllRace ? -1 : 1 : t.Id - o.Id);
   }
   IsToyHasRedDot() {
-    for (const t of this.Uou.values()) {
+    for (const t of this.nnu.values()) {
       if (t.ConditionId !== 0 && t.IsUnLock) {
         if (!(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchToyRedDot) ?? new Set()).has(t.Id)) {
           return true;
@@ -309,58 +308,52 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
-  Fou() {
+  cnu() {
     for (const i of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchDungeonConfigList(this.Id)) {
       var t = new FloroRanchDungeonData_1.FloroRanchDungeonData(i);
-      this.Dou.set(i.Id, t);
+      this.snu.set(i.Id, t);
       for (const e of i.SubInsList) {
         var o;
         var a = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchSubDungeonConfig(e);
         if (a !== undefined) {
           (o = new FloroRanchSubDungeonData_1.FloroRanchSubDungeonData(a)).SetInstanceId(i.Id);
-          this.Bou.set(a.Id, o);
+          this.anu.set(a.Id, o);
           t.PushSubDungeonData(o);
         }
       }
     }
   }
-  _Au(t) {
+  OAu(t) {
     for (const o of t) {
       this.UpdateFloroRanchDungeonUnLock(o);
     }
   }
   UpdateFloroRanchDungeonUnLock(t) {
-    t = this.GetFloroRanchDungeonData(t);
-    if (t !== undefined) {
-      t.UpdateUnLockState(true);
+    var o = this.GetFloroRanchDungeonData(t.Z4n);
+    if (o !== undefined) {
+      o.UpdateUnLockState(t.MT_);
+      o.ConditionId = t.dEu;
     }
   }
-  UpdateFloroRanchDungeonUnlockTime() {
-    if (this.z$c !== 0) {
-      for (const t of this.Dou.values()) {
-        t.UnlockTime = this.z$c + t.DelayTime * TimeUtil_1.TimeUtil.OneDaySeconds;
-      }
-    }
-  }
-  IEu(t) {
+  OEu(t) {
     for (const o of t) {
       this.UpdateFloroRanchSubDungeonHistoryData(o);
     }
   }
   UpdateFloroRanchSubDungeonHistoryData(t) {
-    var o = this.GetFloroRanchSubDungeonData(t.Qiu);
+    var o = this.GetFloroRanchSubDungeonData(t.vru);
     if (o !== undefined) {
       o.UpdateHistoryData(t);
     }
   }
-  cAu(t) {
+  GAu(t) {
     for (const o of t) {
       this.UpdateFloroRanchSubDungeon(o, false);
     }
   }
   UpdateFloroRanchSubDungeon(t, o = true) {
     var a = this.GetFloroRanchSubDungeonData(t.Z4n);
-    if (a !== undefined && (a.UpdateUnLockState(t.MT_), a.ConditionId = t.iEu, a.IsFinished = t.eE_, o)) {
+    if (a !== undefined && (a.UpdateUnLockState(t.MT_), a.ConditionId = t.dEu, a.IsFinished = t.eE_, o)) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
     }
   }
@@ -379,7 +372,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchDungeonData(t) {
-    var o = this.Dou.get(t);
+    var o = this.snu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -388,7 +381,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchSubDungeonData(t) {
-    var o = this.Bou.get(t);
+    var o = this.anu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -397,21 +390,21 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchDungeonDataList() {
-    if (!this.sAu) {
-      this.sAu = [...this.Dou.values()];
-      this.sAu.sort((t, o) => t.SortId - o.SortId);
+    if (!this.UAu) {
+      this.UAu = [...this.snu.values()];
+      this.UAu.sort((t, o) => t.SortId - o.SortId);
     }
-    return this.sAu;
+    return this.UAu;
   }
   GetFloroRanchSubDungeonDataList() {
-    if (!this.Kou) {
-      this.Kou = [...this.Bou.values()];
-      this.Kou.sort((t, o) => t.Id - o.Id);
+    if (!this.ynu) {
+      this.ynu = [...this.anu.values()];
+      this.ynu.sort((t, o) => t.Id - o.Id);
     }
-    return this.Kou;
+    return this.ynu;
   }
   IsDungeonHasRedDot() {
-    for (const t of this.Dou.values()) {
+    for (const t of this.snu.values()) {
       if (t.HasRedDot) {
         return true;
       }
@@ -430,20 +423,20 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
     return o;
   }
-  Nou() {
+  dnu() {
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchTechnologyConfigList(this.Id)) {
       var t = new FloroRanchTechnologyData_1.FloroRanchTechnologyData(o);
-      this.kou.set(o.Id, t);
-      this.AGu.push(t);
-      this.yUu[t.Column] ||= [];
-      this.yUu[t.Column].push(t);
+      this.hnu.set(o.Id, t);
+      this.nOu.push(t);
+      this.WUu[t.Column] ||= [];
+      this.WUu[t.Column].push(t);
     }
-    for (const a of this.yUu) {
+    for (const a of this.WUu) {
       a?.sort((t, o) => t.Row - o.Row);
     }
-    this.AGu.sort((t, o) => t.Id - o.Id);
+    this.nOu.sort((t, o) => t.Id - o.Id);
   }
-  TEu(t) {
+  qEu(t) {
     for (const a of t) {
       var o = this.GetFloroRanchTechnologyData(a);
       if (o !== undefined) {
@@ -458,7 +451,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchTechnologyData(t) {
-    var o = this.kou.get(t);
+    var o = this.hnu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -467,12 +460,12 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetTechnologyTreeList() {
-    return this.yUu;
+    return this.WUu;
   }
   GetTechnologyProgress() {
-    var t = this.kou.size;
+    var t = this.hnu.size;
     let o = 0;
-    for (const a of this.kou.values()) {
+    for (const a of this.hnu.values()) {
       if (a.IsUnLock) {
         o += 1;
       }
@@ -480,7 +473,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return o + "/" + t;
   }
   GetTechnologyCoinNum() {
-    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.hAu.TechPointItem);
+    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.BAu.TechPointItem);
   }
   IsPreNodeAllUnlock(t) {
     for (const o of t.PreNode) {
@@ -491,7 +484,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return true;
   }
   HasAnyTechPointCanUnlock() {
-    for (const t of this.kou.values()) {
+    for (const t of this.hnu.values()) {
       if (!t.IsUnLock && this.IsPreNodeAllUnlock(t)) {
         if (this.GetTechnologyCoinNum() >= t.Cost) {
           return true;
@@ -502,7 +495,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   }
   GetNextCanUnlockTechId() {
     let t = -1;
-    for (const o of this.AGu) {
+    for (const o of this.nOu) {
       if (t === -1 && !o.IsUnLock) {
         t = o.Id;
       }
@@ -513,25 +506,25 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
       }
     }
     if (t === -1) {
-      return this.AGu[0].Id;
+      return this.nOu[0].Id;
     } else {
       return t;
     }
   }
-  yEu() {
+  UEu() {
     for (const a of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchTaskConfigList(this.Id)) {
       var t;
       var o = new FloroRanchTaskData_1.FloroRanchTaskData(a);
       if (o.IsLimitTime) {
-        this.fEu.set(a.Id, o);
-        (t = this.CEu.get(o.TabType) ?? []).push(o);
-        this.CEu.set(o.TabType, t);
+        this.wEu.set(a.Id, o);
+        (t = this.AEu.get(o.TabType) ?? []).push(o);
+        this.AEu.set(o.TabType, t);
       } else {
-        this.gEu.set(a.Id, o);
+        this.LEu.set(a.Id, o);
       }
     }
   }
-  REu(t) {
+  FEu(t) {
     for (const o of t) {
       this.UpdateFloroRanchTaskData(o, false);
     }
@@ -543,8 +536,8 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchTaskData(t) {
-    let o = this.fEu.get(t);
-    if (o !== undefined || (o = this.gEu.get(t)) !== undefined) {
+    let o = this.wEu.get(t);
+    if (o !== undefined || (o = this.LEu.get(t)) !== undefined) {
       return o;
     }
     if (Log_1.Log.CheckError()) {
@@ -552,13 +545,13 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetTaskDataByTabType(t) {
-    t = this.CEu.get(t) ?? [];
+    t = this.AEu.get(t) ?? [];
     t.sort(this.lVl);
     return t;
   }
   GetPermanentTaskData() {
     var t = [];
-    for (const o of this.gEu.values()) {
+    for (const o of this.LEu.values()) {
       if (o.IsUnLock) {
         t.push(o);
       }
@@ -568,7 +561,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   }
   GetFloroRanchReceivableTaskIds(t, o = 1) {
     var a = [];
-    for (const i of t ? this.CEu.get(o) ?? [] : this.gEu.values()) {
+    for (const i of t ? this.AEu.get(o) ?? [] : this.LEu.values()) {
       if (i.Status === 0) {
         a.push(i.Id);
       }
@@ -582,9 +575,9 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   GetPermanentRewardProgress() {
-    var t = this.gEu.size;
+    var t = this.LEu.size;
     let o = 0;
-    for (const a of this.gEu.values()) {
+    for (const a of this.LEu.values()) {
       if (a.Status === 2) {
         o += 1;
       }
@@ -592,12 +585,12 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return o + "/" + t;
   }
   IsLimitTaskHasRedDot() {
-    for (const t of this.fEu.values()) {
+    for (const t of this.wEu.values()) {
       if (t.Status === 0) {
         return true;
       }
     }
-    for (const o of this.pEu.values()) {
+    for (const o of this.PEu.values()) {
       if (o.IsReceivable) {
         return true;
       }
@@ -605,7 +598,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return false;
   }
   IsPermanentTaskHasRedDot() {
-    for (const t of this.gEu.values()) {
+    for (const t of this.LEu.values()) {
       if (t.Status === 0) {
         return true;
       }
@@ -613,20 +606,20 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return false;
   }
   IsTaskHasRedDotByTab(t) {
-    for (const o of this.CEu.get(t) ?? []) {
+    for (const o of this.AEu.get(t) ?? []) {
       if (o.Status === 0) {
         return true;
       }
     }
     return false;
   }
-  SEu() {
+  DEu() {
     var t = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchRewardConfigList(this.Id);
     var o = this.GetMilestoneItemCount();
     for (const i of t) {
       var a = new FloroRanchMilestoneData_1.FloroRanchMilestoneData(i);
       a.IsFinished = o >= a.Goal;
-      this.pEu.set(i.Id, a);
+      this.PEu.set(i.Id, a);
     }
   }
   UpdateFloroRanchMilestoneDataList(t) {
@@ -639,7 +632,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id);
   }
   GetFloroRanchMilestoneData(t) {
-    var o = this.pEu.get(t);
+    var o = this.PEu.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -648,15 +641,15 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchMilestoneDataList() {
-    if (!this.aAu) {
-      this.aAu = [...this.pEu.values()];
-      this.aAu.sort((t, o) => t.Id - o.Id);
+    if (!this.DAu) {
+      this.DAu = [...this.PEu.values()];
+      this.DAu.sort((t, o) => t.Id - o.Id);
     }
-    return this.aAu;
+    return this.DAu;
   }
   GetFloroRanchReceivableMilestoneIds() {
     var t = [];
-    for (const o of this.pEu.values()) {
+    for (const o of this.PEu.values()) {
       if (o.IsReceivable) {
         t.push(o.Id);
       }
@@ -665,35 +658,35 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   }
   UpdateFloroRanchMilestoneItemCount() {
     var t = this.GetMilestoneItemCount();
-    for (const o of this.pEu.values()) {
+    for (const o of this.PEu.values()) {
       o.IsFinished = t >= o.Goal;
     }
   }
-  lAu() {
-    this.hAu = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchActivityConfig(this.Id);
+  kAu() {
+    this.BAu = ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchActivityConfig(this.Id);
   }
   GetFloroRanchParamConfig() {
-    return this.hAu;
+    return this.BAu;
   }
   get CardLimitCount() {
     return this.GetFloroRanchParamConfig().AnimalNumLimit;
   }
   IsInLimitTime() {
     var t = TimeUtil_1.TimeUtil.GetServerTime();
-    return t >= this.z$c && t <= this.J$c;
+    return t >= this.CKu && t <= this.pKu;
   }
   GetLimitTimeActivityEndTime() {
-    return this.J$c;
+    return this.pKu;
   }
   ReadComic() {
-    this.Z$c = true;
+    this.vKu = true;
   }
   GetIsReadComic() {
-    return this.Z$c;
+    return this.vKu;
   }
   GetUnlockNum(t) {
     let o = 0;
-    for (const a of (t === 0 ? this.Pou : this.Uou).values()) {
+    for (const a of (t === 0 ? this.rnu : this.nnu).values()) {
       if (a.IsUnLock) {
         o += 1;
       }
@@ -701,7 +694,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return o;
   }
   GetTotalNum(t) {
-    return (t === 0 ? this.Pou : this.Uou).size;
+    return (t === 0 ? this.rnu : this.nnu).size;
   }
   GetHandBookProgress() {
     return this.GetUnlockNum(0) + this.GetUnlockNum(1) + "/" + (this.GetTotalNum(0) + this.GetTotalNum(1));
@@ -710,31 +703,31 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return this.IsToyHasRedDot() || this.IsCardHasRedDot();
   }
   HasUnFinishedSubIns() {
-    return this.Lku !== 0;
+    return this.sOu !== 0;
   }
   SetUnFinishedSubDungeonId(t) {
-    this.Lku = t;
+    this.sOu = t;
   }
   ClearUnFinishedSubDungeonId() {
-    this.Lku = 0;
-    this.N9c = 0;
+    this.sOu = 0;
+    this.yKu = 0;
   }
   SetSavedStage(t) {
-    this.N9c = t;
+    this.yKu = t;
   }
   GetSavedStage() {
-    return this.N9c;
+    return this.yKu;
   }
   GetUnFinishedSubDungeonData() {
-    if (this.Lku !== 0) {
-      return this.GetFloroRanchSubDungeonData(this.Lku);
+    if (this.sOu !== 0) {
+      return this.GetFloroRanchSubDungeonData(this.sOu);
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 71, "不存在未完成的关卡");
     }
   }
   GetRecommendQuestLinkId() {
-    var o = [this.hAu.RecommendQuestId, ...this.hAu.RecommendQuestLinkList];
+    var o = [this.BAu.RecommendQuestId, ...this.BAu.RecommendQuestLinkList];
     for (let t = o.length - 1; t >= 0; --t) {
       var a = o[t];
       var i = ModelManager_1.ModelManager.QuestNewModel.GetQuest(a);
@@ -746,7 +739,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   IsRecommendQuestFinished() {
-    var t = this.hAu.RecommendQuestId;
+    var t = this.BAu.RecommendQuestId;
     return ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(t);
   }
 }

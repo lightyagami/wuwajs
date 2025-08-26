@@ -59,6 +59,7 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Urh = e => {
       if (e === "Start" || e === "ShowView" || e === "Sle") {
         UiLayer_1.UiLayer.SetShowMaskLayer("VisionRecoveryTabView", false);
+        this.oKu();
       }
     };
     this.vMt = (e, i) => {
@@ -177,13 +178,13 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
         this.m7a(1);
       }
     };
-    this.nqu = () => {
+    this.$2u = () => {
       ControllerHolder_1.ControllerHolder.InventoryController.OpenManageConfigView();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIHorizontalLayout], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIText], [12, UE.UIText], [13, UE.UIButtonComponent], [14, UE.UIItem], [15, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this.yMt], [4, this.LMt], [7, this.M3a], [13, this.E3a], [15, this.nqu]];
+    this.BtnBindInfo = [[3, this.yMt], [4, this.LMt], [7, this.M3a], [13, this.E3a], [15, this.$2u]];
   }
   async OnBeforeStartAsync() {
     this.Xvt = new VisionRecoverySlotPanel_1.VisionRecoverySlotPanel(this.vMt, true);
@@ -215,6 +216,11 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnVisionRecoveryBatchResult, this.y3a);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.I3a);
     RedDotController_1.RedDotController.BindRedDot("VisionRecovery", this.GetItem(14));
+  }
+  OnBeforeShow() {
+    if (this.gMt) {
+      this.SMt(this.mMt, this.cMt, this.g3a);
+    }
   }
   MMt(e) {
     this.fMt = true;
@@ -316,6 +322,17 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
     this.UiViewSequence.StopPrevSequence(false);
     this.GetButton(7).RootUIComp.SetUIActive(true);
     this.UiViewSequence.PlaySequence("BatchOut");
+  }
+  oKu() {
+    if (this.ExtraParams !== undefined) {
+      switch (this.ExtraParams) {
+        case 0:
+          break;
+        case 1:
+          this.M3a();
+      }
+      this.ExtraParams = undefined;
+    }
   }
   IMt(e) {
     if (this.g3a === 0) {

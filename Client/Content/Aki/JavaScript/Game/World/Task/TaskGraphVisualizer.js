@@ -6,76 +6,76 @@ Object.defineProperty(exports, "__esModule", {
 exports.TaskGraphVisualizer = undefined;
 class TaskGraphVisualizer {
   constructor(t) {
-    this.OK1 = t;
-    this.qK1 = new Map();
-    this.GK1 = [];
-    this.FK1 = new Map();
+    this.NK1 = t;
+    this.VK1 = new Map();
+    this.jK1 = [];
+    this.HK1 = new Map();
     if (t.length === 0) {
       throw new Error("依赖列表不能为空");
     }
   }
-  NK1() {
-    this.OK1.forEach(([t, r]) => {
-      if (!this.qK1.has(t)) {
-        this.qK1.set(t, {
+  $K1() {
+    this.NK1.forEach(([t, r]) => {
+      if (!this.VK1.has(t)) {
+        this.VK1.set(t, {
           Parents: [],
           Children: []
         });
       }
-      if (!this.qK1.has(r)) {
-        this.qK1.set(r, {
+      if (!this.VK1.has(r)) {
+        this.VK1.set(r, {
           Parents: [],
           Children: []
         });
       }
-      var a = this.qK1.get(t);
+      var a = this.VK1.get(t);
       if (!a.Children.includes(r)) {
         a.Children.push(r);
       }
-      var a = this.qK1.get(r);
+      var a = this.VK1.get(r);
       if (!a.Parents.includes(t)) {
         a.Parents.push(t);
       }
     });
   }
-  VK1() {
+  WK1() {
     const s = new Map();
     const h = t => {
       if (s.has(t)) {
         return s.get(t);
       }
       let r = -1;
-      this.qK1.get(t).Parents.forEach(t => {
+      this.VK1.get(t).Parents.forEach(t => {
         r = Math.max(r, h(t));
       });
       var a = r + 1;
       s.set(t, a);
       return a;
     };
-    this.qK1.forEach((t, r) => {
+    this.VK1.forEach((t, r) => {
       if (!s.has(r)) {
         h(r);
       }
     });
     var t = Math.max(...Array.from(s.values()));
-    this.GK1 = Array.from({
+    this.jK1 = Array.from({
       length: t + 1
     }, () => []);
     s.forEach((t, r) => {
-      this.GK1[t].push(r);
+      this.jK1[t].push(r);
     });
-    this.GK1 = this.GK1.filter(t => t.length > 0).reverse();
+    this.jK1 = this.jK1.filter(t => t.length > 0).reverse();
   }
-  jK1() {
-    var t = this.GK1.map(t => t.reduce((t, r) => t + r.length + 4, 0));
+  QK1() {
+    var t = this.jK1.map(t => t.reduce((t, r) => t + r.length + 4, 0));
     const h = Math.max(...t, 10);
-    this.GK1.forEach((t, a) => {
+    this.jK1.forEach((t, a) => {
       var r = t.reduce((t, r) => t + r.length + 4, 0);
       let s = Math.floor((h - r) / 2);
       s = Math.max(s, 0);
       t.forEach(t => {
         var r = t.length;
-        this.FK1.set(t, {
+        this.HK1.set(t, {
           X: s + Math.ceil(r / 2),
           Y: a * 3,
           Width: r
@@ -84,15 +84,15 @@ class TaskGraphVisualizer {
       });
     });
   }
-  HK1() {
-    var t = this.GK1.length * 3 + 2;
-    const r = this.GK1.reduce((t, r) => Math.max(t, ...r.map(t => this.FK1.get(t).X + Math.ceil(t.length / 2) + 2)), 10);
+  KK1() {
+    var t = this.jK1.length * 3 + 2;
+    const r = this.jK1.reduce((t, r) => Math.max(t, ...r.map(t => this.HK1.get(t).X + Math.ceil(t.length / 2) + 2)), 10);
     return Array.from({
       length: t
     }, () => Array(r).fill(" "));
   }
-  $K1(h) {
-    this.FK1.forEach((a, t) => {
+  XK1(h) {
+    this.HK1.forEach((a, t) => {
       const s = a.X - Math.floor(a.Width / 2);
       t.split("").forEach((t, r) => {
         r = s + r;
@@ -102,10 +102,10 @@ class TaskGraphVisualizer {
       });
     });
   }
-  WK1(l) {
-    this.OK1.forEach(([r, a]) => {
-      var s = this.FK1.get(r);
-      var h = this.FK1.get(a);
+  YK1(l) {
+    this.NK1.forEach(([r, a]) => {
+      var s = this.HK1.get(r);
+      var h = this.HK1.get(a);
       var r = Math.min(s.Y + 1, l.length - 1);
       var i = Math.min(h.Y - 1, l.length - 1);
       for (let t = r; t <= i; t++) {
@@ -129,12 +129,12 @@ class TaskGraphVisualizer {
     });
   }
   Visualize() {
-    this.NK1();
-    this.VK1();
-    this.jK1();
-    var t = this.HK1();
-    this.WK1(t);
-    this.$K1(t);
+    this.$K1();
+    this.WK1();
+    this.QK1();
+    var t = this.KK1();
+    this.YK1(t);
+    this.XK1(t);
     return "\n" + t.map(t => t.join("").replace(/┬─┐/g, "┬─┬").replace(/┘/g, " ").replace(/\s+$/gm, "")).join("\n");
   }
 }

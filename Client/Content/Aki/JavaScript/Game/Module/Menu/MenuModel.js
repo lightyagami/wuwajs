@@ -46,20 +46,20 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.IsVulkanOpenChecked = false;
     this.pNn = new Map([[GameSettingsDefine_1.EFunction.CdKey, FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient]]);
     this.FilterSettingViewModel = undefined;
-    this._tu = undefined;
-    this.utu = undefined;
+    this.ktu = undefined;
+    this.Otu = undefined;
   }
   get IsImageQualityCustom() {
     if (this.Cac === undefined) {
       this.Cac = false;
       var e;
       var t;
-      var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
-      var i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(i);
-      for ([e, t] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(i)) {
-        if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice())) {
-          var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
-          if (n !== undefined && t !== n) {
+      var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
+      var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(n);
+      for ([e, t] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(n)) {
+        if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice()) && e !== GameSettingsDefine_1.EFunction.RayTracing) {
+          var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
+          if (i !== undefined && t !== i) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Menu", 64, "画质相关项被手动修改过", ["functionId", e], ["target value", t]);
             }
@@ -75,23 +75,23 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.Cac = e;
   }
   get FilterSettingValuesCache() {
-    if (this._tu === undefined) {
+    if (this.ktu === undefined) {
       var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues);
-      this._tu = new Map();
+      this.ktu = new Map();
       for (const t of FilterSettingAll_1.configFilterSettingAll.GetConfigList() ?? []) {
-        this._tu.set(t.Id, [e?.get(t.Id)?.[0] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 0), e?.get(t.Id)?.[1] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 1), e?.get(t.Id)?.[2] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 2)]);
+        this.ktu.set(t.Id, [e?.get(t.Id)?.[0] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 0), e?.get(t.Id)?.[1] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 1), e?.get(t.Id)?.[2] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 2)]);
       }
     }
-    return this._tu;
+    return this.ktu;
   }
   get FilterSettingIdCache() {
-    if (this.utu === undefined) {
-      this.utu = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingId) ?? MenuDefine_1.FILTER_SETTING_DEFAULT_FILTER_ID;
+    if (this.Otu === undefined) {
+      this.Otu = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingId) ?? MenuDefine_1.FILTER_SETTING_DEFAULT_FILTER_ID;
     }
-    return this.utu;
+    return this.Otu;
   }
   set FilterSettingIdCache(e) {
-    this.utu = e;
+    this.Otu = e;
   }
   OnInit() {
     this.Initialize();
@@ -124,20 +124,20 @@ class MenuModel extends ModelBase_1.ModelBase {
   CreateConfigByBaseConfig() {
     var e;
     var t;
-    var i;
     var n;
+    var i;
     var a;
     var r;
     var o;
     for ([e, t] of GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap) {
       if (this.pac(t)) {
-        i = t.MainType;
-        n = new MenuData_1.MenuData(t);
-        this.zNa.set(e, n);
-        if ((a = this.YNa.get(i)) && a.length > 0) {
-          a.push(n);
+        n = t.MainType;
+        i = new MenuData_1.MenuData(t);
+        this.zNa.set(e, i);
+        if ((a = this.YNa.get(n)) && a.length > 0) {
+          a.push(i);
         } else {
-          this.YNa.set(i, [n]);
+          this.YNa.set(n, [i]);
         }
       }
     }
@@ -188,7 +188,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.ywi = ConfigManager_1.ConfigManager.MenuBaseConfig.GetMainConfig();
     var e;
     var t;
-    var i = new Array();
+    var n = new Array();
     for ([e, t] of this.YNa) {
       if (!(t.length <= 0)) {
         if (this.ywi?.get(e) === undefined) {
@@ -196,16 +196,16 @@ class MenuModel extends ModelBase_1.ModelBase {
             Log_1.Log.Error("Menu", 64, "未能获得主类型配置（MainType）", ["main type id", e], ["MainConfigs", this.ywi]);
           }
         } else {
-          i.push(e);
+          n.push(e);
         }
       }
     }
-    i.sort((e, t) => {
+    n.sort((e, t) => {
       e = this.ywi.get(e);
       t = this.ywi.get(t);
       return e.MainSort - t.MainSort;
     });
-    return i;
+    return n;
   }
   GetTargetConfigData(e) {
     return this.YNa.get(e);
@@ -219,12 +219,151 @@ class MenuModel extends ModelBase_1.ModelBase {
   IsInMenuDataByFunctionId(e) {
     return this.zNa.has(e);
   }
-  GetQualitySettingScore() {
-    let e = 0;
-    e = Info_1.Info.IsPcOrGamepadPlatform() ? (t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RESOLUTION) ?? GameSettingsDefine_1.WINDOWS_RESOLUTION_INDEX, (t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t)).X * t.Y / 2073600) : (t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION) ?? 0, MenuDefine_1.mobileResolutionScores[t]);
+  ucd(e, t, n) {
+    e = MathUtils_1.MathUtils.Clamp(e, 0, n.length - 1);
+    t = MathUtils_1.MathUtils.Clamp(t, 0, n.length - 1);
+    return n[e] - n[t];
+  }
+  Agd(e) {
+    var t = [{
+      FunctionId: GameSettingsDefine_1.EFunction.SHADOWQUALITY,
+      Key: "ShadowQuality",
+      ScoreTable: MenuDefine_1.shadowQualityScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.NIAGARAQUALITY,
+      Key: "NiagaraQuality",
+      ScoreTable: MenuDefine_1.niagaraQualityScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.IMAGEDETAIL,
+      Key: "ImageDetail",
+      ScoreTable: MenuDefine_1.imageDetailScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.SCENEAO,
+      Key: "SceneAo",
+      ScoreTable: MenuDefine_1.sceneAoScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.ANTIALISING,
+      Key: "AntiAliasing",
+      ScoreTable: MenuDefine_1.antiAliasingScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.VOLUMEFOG,
+      Key: "VolumeFog",
+      ScoreTable: MenuDefine_1.volumeFogScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.VOLUMELIGHT,
+      Key: "VolumeLight",
+      ScoreTable: MenuDefine_1.volumeLightScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.MOTIONBLUR,
+      Key: "MotionBlur",
+      ScoreTable: MenuDefine_1.motionBlurScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.METALFX,
+      Key: "MetalFxEnable",
+      ScoreTable: MenuDefine_1.metalFxScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.BLOOM,
+      Key: "BloomEnable",
+      ScoreTable: MenuDefine_1.bloomScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.NPCDENSITY,
+      Key: "NpcDensity",
+      ScoreTable: MenuDefine_1.npcDensityScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.SUPERRESOLUTION,
+      Key: "SuperResolution",
+      ScoreTable: MenuDefine_1.superResolutionScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.RayTracedGI,
+      Key: "RayTracingGI",
+      ScoreTable: MenuDefine_1.rayTracingGIScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.RayTracedReflection,
+      Key: "RayTracingReflection",
+      ScoreTable: MenuDefine_1.rayTracingReflectionScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.RayTracedShadow,
+      Key: "RayTracedShadow",
+      ScoreTable: MenuDefine_1.rayTracedShadowScores
+    }];
+    var n = {
+      ShadowQuality: 0,
+      NiagaraQuality: 0,
+      ImageDetail: 0,
+      SceneAo: 0,
+      AntiAliasing: 0,
+      VolumeFog: 0,
+      VolumeLight: 0,
+      MotionBlur: 0,
+      MetalFxEnable: 0,
+      BloomEnable: 0,
+      NpcDensity: 0,
+      SuperResolution: 0,
+      RayTracingGI: 0,
+      RayTracingReflection: 0,
+      RayTracedShadow: 0
+    };
+    for (const [a, r] of e) {
+      var i = t.find(e => e.FunctionId === a);
+      if (i) {
+        n[i.Key] = r;
+      }
+    }
+    return {
+      recommended: n,
+      fieldMappings: t
+    };
+  }
+  ccd() {
+    var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
+    if (e === undefined) {
+      return 0;
+    }
+    e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(e);
+    if (e === undefined) {
+      return 0;
+    }
+    var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(e);
+    var {
+      recommended: n,
+      fieldMappings: e
+    } = this.Agd(e);
+    let i = 0;
+    for (const g of e) {
+      var a;
+      var r;
+      var o;
+      var s = g.FunctionId;
+      let e = n[g.Key];
+      let t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(g.FunctionId) ?? 0;
+      if (s === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && (r = a = s, [a, r, e] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(a, r, e), o = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(a) ?? 0, r = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(r) ?? 0, a === GameSettingsDefine_1.EFunction.FSR ? (e = MenuDefine_1.superResolutionScores.length - 2, o === 1 && (t = MenuDefine_1.superResolutionScores.length - 2)) : (e += 2, t = r === 99 ? 2 : r + 2), o === 0)) {
+        t = MenuDefine_1.superResolutionScores.length - 1;
+      }
+      if ((s === GameSettingsDefine_1.EFunction.RayTracedGI || s === GameSettingsDefine_1.EFunction.RayTracedReflection || s === GameSettingsDefine_1.EFunction.RayTracedShadow) && t > 0) {
+        t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) ?? 0;
+        a = 4000 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
+        r = MathUtils_1.MathUtils.Clamp(a, 0.6, 3);
+        o = this.ucd(t, e, g.ScoreTable) * r;
+        i += o;
+      } else {
+        i += this.ucd(t, e, g.ScoreTable);
+      }
+    }
+    var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 0;
+    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv() ?? 0;
+    var e = this.ucd(e, t, MenuDefine_1.pcQualityLevelScores);
+    var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RESOLUTION) ?? GameSettingsDefine_1.WINDOWS_RESOLUTION_INDEX;
+    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t);
+    var t = (t.X * t.Y / 3686400 - 1) * 40;
+    var _ = GameSettingsDeviceRender_1.GameSettingsDeviceRender.FrameRate ?? 60;
+    return i += e + t + (_ - 60) / 60 * 40;
+  }
+  GetQualitySettingScoreMobilePlatform() {
+    var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION) ?? 0;
+    var e = MenuDefine_1.mobileResolutionScores[e];
     var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.FrameRate / 30;
-    var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY) ?? 0;
-    var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.NIAGARAQUALITY) ?? 0;
+    var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY) ?? 0;
+    var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.NIAGARAQUALITY) ?? 0;
     var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL) ?? 0;
     var r = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SCENEAO) ?? 0;
     var o = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.ANTIALISING) ?? 0;
@@ -235,30 +374,50 @@ class MenuModel extends ModelBase_1.ModelBase {
     var u = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
     var l = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.BLOOM) ?? 0;
     var m = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.NPCDENSITY) ?? 0;
-    return (MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel] + MenuDefine_1.shadowQualityScores[MathUtils_1.MathUtils.Clamp(i, 0, MenuDefine_1.shadowQualityScores.length - 1)] + MenuDefine_1.niagaraQualityScores[MathUtils_1.MathUtils.Clamp(n, 0, MenuDefine_1.niagaraQualityScores.length - 1)] + MenuDefine_1.imageDetailScores[MathUtils_1.MathUtils.Clamp(a, 0, MenuDefine_1.imageDetailScores.length - 1)] + MenuDefine_1.sceneAoScores[MathUtils_1.MathUtils.Clamp(r, 0, MenuDefine_1.sceneAoScores.length - 1)] + MenuDefine_1.antiAliasingScores[MathUtils_1.MathUtils.Clamp(o, 0, MenuDefine_1.antiAliasingScores.length - 1)] + MenuDefine_1.volumeFogScores[MathUtils_1.MathUtils.Clamp(s, 0, MenuDefine_1.volumeFogScores.length - 1)] + MenuDefine_1.volumeLightScores[MathUtils_1.MathUtils.Clamp(_, 0, MenuDefine_1.volumeLightScores.length - 1)] + MenuDefine_1.motionBlurScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.motionBlurScores.length - 1)] + MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(f, 0, MenuDefine_1.amdFsrScores.length - 1)] + MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.metalFxScores.length - 1)] + MenuDefine_1.bloomScores[MathUtils_1.MathUtils.Clamp(l, 0, MenuDefine_1.bloomScores.length - 1)] + MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(m, 0, MenuDefine_1.npcDensityScores.length - 1)]) * e * t;
+    return (MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel] + MenuDefine_1.shadowQualityScores[MathUtils_1.MathUtils.Clamp(n, 0, MenuDefine_1.shadowQualityScores.length - 1)] + MenuDefine_1.niagaraQualityScores[MathUtils_1.MathUtils.Clamp(i, 0, MenuDefine_1.niagaraQualityScores.length - 1)] + MenuDefine_1.imageDetailScores[MathUtils_1.MathUtils.Clamp(a, 0, MenuDefine_1.imageDetailScores.length - 1)] + MenuDefine_1.sceneAoScores[MathUtils_1.MathUtils.Clamp(r, 0, MenuDefine_1.sceneAoScores.length - 1)] + MenuDefine_1.antiAliasingScores[MathUtils_1.MathUtils.Clamp(o, 0, MenuDefine_1.antiAliasingScores.length - 1)] + MenuDefine_1.volumeFogScores[MathUtils_1.MathUtils.Clamp(s, 0, MenuDefine_1.volumeFogScores.length - 1)] + MenuDefine_1.volumeLightScores[MathUtils_1.MathUtils.Clamp(_, 0, MenuDefine_1.volumeLightScores.length - 1)] + MenuDefine_1.motionBlurScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.motionBlurScores.length - 1)] + MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(f, 0, MenuDefine_1.amdFsrScores.length - 1)] + MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.metalFxScores.length - 1)] + MenuDefine_1.bloomScores[MathUtils_1.MathUtils.Clamp(l, 0, MenuDefine_1.bloomScores.length - 1)] + MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(m, 0, MenuDefine_1.npcDensityScores.length - 1)]) * e * t;
+  }
+  GetLoadPercentage() {
+    if (Info_1.Info.IsMobilePlatform()) {
+      return this.GetQualitySettingScoreMobilePlatform() * 100 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
+    }
+    if (Info_1.Info.IsPcPlatform()) {
+      var t = this.ccd();
+      let e = 0;
+      var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
+      if (n !== undefined) {
+        e = n;
+      }
+      var n = MenuDefine_1.pcQualityLevelWeights[MathUtils_1.MathUtils.Clamp(e, 0, MenuDefine_1.pcQualityLevelWeights.length - 1)];
+      var i = n * 0.25;
+      var a = 60 + t * i;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 92, "负载条评估", ["deviceWeight", n], ["deltaScore", t], ["scaleFactor", i], ["finalLoad", a]);
+      }
+      return a;
+    }
+    return 0;
   }
   GetGameQualityLoadInfo() {
-    var e = this.GetQualitySettingScore();
-    var t = e * 100 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
+    var e = this.GetLoadPercentage();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 40, "图像配置负载信息", ["SettingScore", e], ["DeviceScore", GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore], ["LoadPercentage", t]);
+      Log_1.Log.Info("Render", 40, "图像配置负载信息", ["DeviceScore", GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore], ["LoadPercentage", e]);
     }
-    if ((t = MathUtils_1.MathUtils.Clamp(t, 0, 100)) > 80) {
+    if ((e = MathUtils_1.MathUtils.Clamp(e, 0, 100)) > 80) {
       return {
         Desc: MenuDefine_1.SEETING_LOAD_OVER,
-        Percentage: t,
+        Percentage: e,
         BarColor: MenuDefine_1.SEETING_LOAD_OVER_COLOR
       };
-    } else if (t > 60) {
+    } else if (e > 60) {
       return {
         Desc: MenuDefine_1.SEETING_LOAD_LAGGY,
-        Percentage: t,
+        Percentage: e,
         BarColor: MenuDefine_1.SEETING_LOAD_LAGGY_COLOR
       };
     } else {
       return {
         Desc: MenuDefine_1.SEETING_LOAD_FLUID,
-        Percentage: t,
+        Percentage: e,
         BarColor: MenuDefine_1.SEETING_LOAD_FLUID_COLOR
       };
     }
@@ -267,14 +426,14 @@ class MenuModel extends ModelBase_1.ModelBase {
     return LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.GamepadOperationPreferences, false) ?? false;
   }
   CleanFilterCache() {
-    this._tu = undefined;
-    this.utu = undefined;
+    this.ktu = undefined;
+    this.Otu = undefined;
   }
   GetFilterIndexByConfigId(t) {
-    var i = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
-    if (i !== undefined) {
-      for (let e = 0; e < i.length; e++) {
-        if (t === i[e].Id) {
+    var n = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
+    if (n !== undefined) {
+      for (let e = 0; e < n.length; e++) {
+        if (t === n[e].Id) {
           return e;
         }
       }

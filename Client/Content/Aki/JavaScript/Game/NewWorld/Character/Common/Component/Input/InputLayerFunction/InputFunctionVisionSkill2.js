@@ -15,7 +15,7 @@ function visionSkill2Function(o) {
   if (n) {
     var i = n.CharacterActorComponent?.Entity;
     if (i) {
-      var t = i.GetComponent(205);
+      var t = i.GetComponent(206);
       if (t && t.Valid && (0, InputFunctionCommon_1.canResponseInput)(i)) {
         n = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(i.Id, 9, 1);
         if (n) {

@@ -13,6 +13,8 @@ const IUtil_1 = require("../../../../UniverseEditor/Interface/IUtil");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const PublicUtil_1 = require("../../../Common/PublicUtil");
+const GuaranteeActionCenter_1 = require("../../../LevelGamePlay/Guarantee/GuaranteeActionCenter");
+const LevelGeneralContextDefine_1 = require("../../../LevelGamePlay/LevelGeneralContextDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const MissionViewDefine_1 = require("../../BattleUi/Views/MissionView/MissionViewDefine");
@@ -43,6 +45,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     this.fZ = new Map();
     this.pQt = new Map();
     this.vQt = new Map();
+    this.XYu = new Map();
     this.gKs = new Map();
     this.UiTrackTextInfo = new GeneralLogicTreeDefine_1.TreeTrackTextExpressionInfo();
     this.SilentAreaShowInfo = [];
@@ -82,7 +85,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     var e = ModelManager_1.ModelManager.GeneralLogicTreeModel;
     return !!e.IsExpressionInOccupying() && !e.IsExpressionOccupyingByTree(this.TreeIncId);
   }
-  Init(e, t, i, r, s, o, n, h) {
+  Init(e, t, i, r, s, o, n, a) {
     this.BtType = e;
     this.TreeIncId = t;
     this.TreeConfigId = i;
@@ -90,7 +93,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     this.CurrentDungeonId = r;
     this.OnlineType = o;
     this.ZU_ = n;
-    this.NoExpression = h;
+    this.NoExpression = a;
     this.fQt = s;
     switch (this.BtType) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
@@ -106,6 +109,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
   Dispose() {
     this.EQt();
     this.vQt.clear();
+    this.XYu.clear();
     this.gKs.clear();
     this.GDa.splice(0, this.GDa.length);
     this.ODa.clear();
@@ -124,8 +128,29 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     let i = this.GetNodesByGroupId(t);
     (i = i || this.SQt(t)).set(e.NodeId, e);
   }
+  AddTreeVarUpdateDelegate(e, t) {
+    let i = this.XYu.get(e);
+    if (!i) {
+      i = new Set();
+      this.XYu.set(e, i);
+    }
+    i.add(t);
+  }
+  RemoveTreeVarUpdateDelegate(e, t) {
+    e = this.XYu.get(e);
+    if (e) {
+      e.delete(t);
+    }
+  }
   UpdateTreeVar(e, t) {
+    var i = this.vQt.get(e);
     this.vQt.set(e, t);
+    var e = this.XYu.get(e);
+    if (e) {
+      for (const r of e) {
+        r(i, t);
+      }
+    }
   }
   GetTreeVar(e) {
     return this.vQt.get(e);
@@ -245,7 +270,6 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     }
     let i = undefined;
     var r;
-    var s;
     var e = this.UiTrackTextInfo.MainTitle;
     if (e && !this.pCc(e)) {
       r = PublicUtil_1.PublicUtil.GetConfigTextByKey(e.TidTitle);
@@ -253,20 +277,33 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
         i = e;
       }
     }
-    let o = undefined;
+    let s = undefined;
     if (this.UiTrackTextInfo.SubTitles.length > 0) {
-      o = [];
-      for (const n of this.UiTrackTextInfo.SubTitles) {
-        if (!!n && !this.pCc(n) && (!!n.BlankTitleStillShow || !(s = PublicUtil_1.PublicUtil.GetConfigTextByKey(n.TidTitle), StringUtils_1.StringUtils.IsBlank(s)))) {
-          o.push(n);
+      s = [];
+      for (const a of this.UiTrackTextInfo.SubTitles) {
+        if (a && !this.pCc(a)) {
+          var o = PublicUtil_1.PublicUtil.GetConfigTextByKey(a.TidTitle);
+          if (StringUtils_1.StringUtils.IsBlank(o)) {
+            if (a.ConditionText) {
+              for (const h of a.ConditionText) {
+                var n = PublicUtil_1.PublicUtil.GetConfigTextByKey(h.TidTitle);
+                if (!StringUtils_1.StringUtils.IsBlank(n)) {
+                  s.push(a);
+                  break;
+                }
+              }
+            }
+          } else {
+            s.push(a);
+          }
         }
       }
-      if (o.length === 1 && !i) {
-        i = o[0];
-        o.length = 0;
+      if (s.length === 1 && !i) {
+        i = s[0];
+        s.length = 0;
       }
     }
-    return MissionViewDefine_1.BehaviorTreeViewShowData.Create(this.BtType, this.TreeIncId, this.TreeConfigId, this.IsChallengeUi(), this.TaskMarkTableId, this.ZU_, t, i, o);
+    return MissionViewDefine_1.BehaviorTreeViewShowData.Create(this.BtType, this.TreeIncId, this.TreeConfigId, this.IsChallengeUi(), this.TaskMarkTableId, this.ZU_, t, i, s);
   }
   pCc(e) {
     return e.QuestScheduleType?.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted && !!(e = this.GetNode(e.QuestScheduleType.ChildQuestId)) && e.ContainTag(1);
@@ -401,19 +438,27 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
       }
     }
   }
+  qJc(e) {
+    for (const i of e) {
+      var t = GuaranteeActionCenter_1.GuaranteeActionCenter.GetGuaranteeAction(i.Name);
+      if (t) {
+        t.Clear(i.Params, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(this.BtType, this.TreeIncId, this.TreeConfigId, undefined, undefined));
+      }
+    }
+  }
   ClearGuaranteeActions(e) {
     if (e) {
       var t = this.ODa.get(e);
       if (t) {
         for (let e = this.GDa.length - 1; e >= 0; e--) {
           if (t.has(e)) {
-            this.GDa.splice(e, 1);
+            this.qJc(this.GDa.splice(e, 1));
             t.delete(e);
           }
         }
       }
     } else {
-      this.GDa.splice(0, this.GDa.length);
+      this.qJc(this.GDa.splice(0, this.GDa.length));
     }
   }
   GetGuaranteeActions() {
